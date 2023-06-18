@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public static class Balancer
 {
-    private const int OptionId = 1268;
+    private const int OptionId = 400600;
     public static CustomRoleOption BalancerOption;
     public static CustomOption BalancerPlayerCount;
     public static CustomOption BalancerVoteTime;

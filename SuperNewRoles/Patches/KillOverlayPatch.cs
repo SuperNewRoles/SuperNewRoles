@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
@@ -6,7 +7,7 @@ namespace SuperNewRoles.Patches;
 
 class KillOverlayA
 {
-    [HarmonyPatch(typeof(KillOverlay), "ShowKillAnimation")]
+    [HarmonyPatch(typeof(KillOverlay), nameof(KillOverlay.ShowKillAnimation), new Type[] { typeof(OverlayKillAnimation), typeof(GameData.PlayerInfo), typeof(GameData.PlayerInfo) })]
     public static class KillOverlay_ShowKillAnimation_Patch
     {
         [HarmonyPrefix]

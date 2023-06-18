@@ -1,3 +1,4 @@
+/*
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AmongUs.Data;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -249,7 +250,7 @@ public class CustomHats
             else
             {
                 SPRITELOADED = true;
-                __instance.StartCoroutine(LoadHatSprite());
+                __instance.StartCoroutine(LoadHatSprite().WrapToIl2Cpp());
             }
         }
 
@@ -842,3 +843,4 @@ public static class PoolablePlayerPatch
             );
     }
 }
+*/
