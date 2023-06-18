@@ -9,11 +9,13 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -140,13 +142,38 @@ static class HudManagerStartPatch
                     return;
                 Pteranodon.IsPteranodonNow = true;
                 Pteranodon.StartPosition = PlayerControl.LocalPlayer.transform.position;
-                if (Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.5f)
+                Pteranodon.CurrentPosition = PlayerControl.LocalPlayer.transform.position;
+                bool IsRight = true;
+                if (Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f)
+                {
                     Pteranodon.TargetPosition = status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition);
+                }
                 else
+                {
+                    IsRight = false;
                     Pteranodon.TargetPosition = status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition);
+                }
                 PlayerControl.LocalPlayer.moveable = false;
                 PlayerControl.LocalPlayer.Collider.enabled = false;
                 Pteranodon.Timer = Pteranodon.StartTime;
+
+                Vector3 position = PlayerControl.LocalPlayer.transform.position;
+                byte[] buff = new byte[sizeof(float) * 3];
+                Buffer.BlockCopy(BitConverter.GetBytes(position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(position.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(position.z), 0, buff, 2 * sizeof(float), sizeof(float));
+
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PteranodonSetStatus);
+                writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                writer.Write(true);
+                writer.Write(IsRight);
+                writer.Write(Pteranodon.TargetPosition.x - Pteranodon.StartPosition.x);
+                writer.Write(buff.Length);
+                writer.Write(buff);
+                writer.EndRPC();
+                PteranodonButton.MaxTimer = Pteranodon.PteranodonCoolTime.GetFloat();
+                PteranodonButton.Timer = PteranodonButton.MaxTimer;
+                //RPCProcedure.PteranodonSetStatus(PlayerControl.LocalPlayer.PlayerId, true);
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pteranodon; },
             () =>
@@ -154,16 +181,13 @@ static class HudManagerStartPatch
                 AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();
                 if (status == null)
                     return false;
-                bool flag = Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.5f || Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.5f;
+                bool flag = Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f || Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f;
                 return PlayerControl.LocalPlayer.CanMove && flag;
             },
             () =>
             {
-                WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
-                WiseManButton.Timer = WiseManButton.MaxTimer;
-                WiseManButton.effectCancellable = false;
-                WiseManButton.EffectDuration = WiseMan.WiseManDurationTime.GetFloat();
-                WiseManButton.HasEffect = true;
+                PteranodonButton.MaxTimer = Pteranodon.PteranodonCoolTime.GetFloat();
+                PteranodonButton.Timer = PteranodonButton.MaxTimer;
             },
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PteranodonButton.png", 115f),
             new Vector3(-2f, 1, 0),

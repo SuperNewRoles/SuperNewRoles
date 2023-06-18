@@ -1621,7 +1621,12 @@ public static class RoleHelpers
         RoleId MyRole;
         if (IsChache)
         {
-            try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+            try {
+                if (p != null)
+                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+                else
+                    MyRole = RoleId.DefaultRole;
+            }
             catch { MyRole = RoleId.DefaultRole; }
         }
         else
@@ -1633,7 +1638,12 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+        try {
+            if (p != null)
+                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+            else
+                MyRole = RoleId.DefaultRole;
+        }
         catch { MyRole = RoleId.DefaultRole; }
         foreach (RoleId role in roles)
         {

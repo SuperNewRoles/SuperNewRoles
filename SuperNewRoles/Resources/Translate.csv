@@ -1368,6 +1368,8 @@ BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポ�
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
 PteranodonName,Pteranodon,プテラノドン
+PteranodonTitle1,PtePte,プテプテ
+PteranodonButtonName,Juump!!,ジャーンプ！
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
