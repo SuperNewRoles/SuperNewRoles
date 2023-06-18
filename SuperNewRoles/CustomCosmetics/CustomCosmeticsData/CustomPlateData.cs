@@ -53,6 +53,13 @@ public class CustomPlateData : NamePlateData
                     NamePlateViewData npvd = getbycache(chip.ProductId);
                     chip.image.sprite = npvd.Image;
                 }
+                else
+                {
+                    __instance.StartCoroutine(AddressableAssetExtensions.CoLoadAssetAsync<NamePlateViewData>(__instance, (IAddressableAssetProvider<NamePlateViewData>)FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(__instance.plateId), (Action<NamePlateViewData>)delegate (NamePlateViewData viewData)
+                    {
+                        chip.image.sprite = viewData?.Image;
+                    }));
+                }
             }
         }
     }
