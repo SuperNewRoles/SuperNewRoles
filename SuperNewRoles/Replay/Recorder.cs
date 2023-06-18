@@ -4,10 +4,10 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 using System.Collections;
-using BepInEx.IL2CPP.Utils;
 using System.Linq;
 using SuperNewRoles.Replay.ReplayActions;
 using System.Collections.Concurrent;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 
 namespace SuperNewRoles.Replay
 {
@@ -80,7 +80,7 @@ namespace SuperNewRoles.Replay
         public static void StartMeeting()
         {
             if (ReplayManager.IsReplayMode) return;
-            AmongUsClient.Instance.StartCoroutine(SavePositions());
+            AmongUsClient.Instance.StartCoroutine(SavePositions().WrapToIl2Cpp());
         }
         public static IEnumerator SavePositions() {
             if (writer == null) {
