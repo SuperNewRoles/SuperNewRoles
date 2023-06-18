@@ -46,6 +46,7 @@ public static class ModDownloader
         public string DescriptionShort;
         public string DescriptionLong;
         public string ModName;
+        public List<TextMeshPro> InstallText = new();
         public GameObject DescriptionPopup;
         public ModObject(string ModId, string ModGUId, string RepoURL, string DescriptionShort, string DescriptionLong, List<string> DependencyMod = null, List<string> AddDownloadURLs = null) {
             this.ModId = ModId;
@@ -61,13 +62,10 @@ public static class ModDownloader
     public static List<ModObject> ModObjects;
     public static GameObject Popup;
     public static TransitionOpen DownloadingPopup;
+    public static TextMeshPro DownloadingPopupStatusText;
+    public static PassiveButton DownloadingPopupCloseButton;
     public static void Load()
     {
-        ModObjects = new()
-        {
-            new("Reactor", "gg.reactor.api", "NuclearPowered/Reactor", "様々なMODの前提MOD","一部のMODを導入する際に必要なMODです。\nこのMODが必要な場合は、ModDownloaderを\n使用している場合は自動で導入されます。"),
-            new("LevelImpostor", "com.DigiWorm.LevelImposter", "DigiWorm0/LevelImposter", "様々なマップが追加されるMOD", "プレイヤーが作成したマップをプレイできます。\n自分でマップを作成したり、\nみんなでマップを遊ぶこともできます。", DependencyMod:new(){ "Reactor" })
-        };
     }
     public static ModObject GetModByGUId(string guid)
     {
@@ -81,33 +79,69 @@ public static class ModDownloader
             Logger.Info("MODがnullでした:"+guid);
             return;
         }
+        if (obj.Installed)
+        {
+            Logger.Info("MODがインストール済みでした:" + guid);
+            return;
+        }
         if (DownloadingPopup == null)
         {
             var template = GameObject.FindObjectOfType<MainMenuManager>().transform.FindChild("StatsPopup").GetComponent<TransitionOpen>(); ;
             DownloadingPopup = GameObject.Instantiate(template, template.transform.parent);
             DownloadingPopup.OnClose = new();
-            DownloadingPopup.transform.localPosition = new();
+            DownloadingPopup.transform.localPosition = new(0, 0, -30);
             GameObject.Destroy(DownloadingPopup.GetComponent<StatsPopup>());
-            DownloadingPopup.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
-            DownloadingPopup.transform.FindChild("Background").GetComponent<PassiveButton>().enabled = false;
-            DownloadingPopup.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
+            DownloadingPopup.transform.FindChild("Background").localScale = new Vector3(0.75f, 0.5f, 0.5f);
+            //DownloadingPopup.transform.FindChild("Background").localPosition = new Vector3(1.5f, 1f, 1f);
+            DownloadingPopup.transform.FindChild("Background/IgnoreClicks").GetComponent<PassiveButton>().OnClick = new();
+            DownloadingPopup.transform.FindChild("CloseButton").gameObject.SetActive(false);
+            DownloadingPopupStatusText = DownloadingPopup.transform.FindChild("StatsText_TMP").GetComponent<TextMeshPro>();
+            DownloadingPopupStatusText.alignment = TextAlignmentOptions.Center;
+            DownloadingPopupStatusText.transform.localPosition = new(0, 0, -2);
+            DownloadingPopupStatusText.transform.localScale = Vector3.one * 0.8f;
+            DownloadingPopup.transform.FindChild("StatNumsText_TMP").gameObject.SetActive(false);
+            DownloadingPopup.transform.FindChild("Title_TMP").GetComponent<TextMeshPro>().text = "導入中...";
+            DownloadingPopup.transform.FindChild("Title_TMP").transform.localPosition = new(0, 0.65f, -2);
+            DownloadingPopup.transform.FindChild("Title_TMP").transform.localScale = Vector3.one * 1.7f;
+            GameObject.Destroy(DownloadingPopup.transform.FindChild("Title_TMP").GetComponent<TextTranslatorTMP>());
+            PassiveButton ButtonTemplate = AccountManager.Instance.transform.FindChild("InfoTextBox/Button1").GetComponent<PassiveButton>();
+
+            var descbtn = GameObject.Instantiate(ButtonTemplate, DownloadingPopup.transform);
+            descbtn.transform.localPosition = new(0, -0.75f, 0);
+            descbtn.transform.localScale = Vector3.one * 0.8f;
+            descbtn.OnClick = new();
+            descbtn.OnClick.AddListener((UnityAction)(() =>
+            {
+                DownloadingPopup.gameObject.SetActive(false);
+            }));
+            GameObject.Destroy(descbtn.GetComponentInChildren<TextTranslatorTMP>());
+            descbtn.GetComponentInChildren<TextMeshPro>().text = "閉じる";
+            descbtn.gameObject.SetActive(false);
+            DownloadingPopupCloseButton = descbtn;
         }
+        DownloadingPopupStatusText.text = "ファイルをダウンロード中...";
+        DownloadingPopup.gameObject.SetActive(true);
         AmongUsClient.Instance.StartCoroutine(InstallMod(obj).WrapToIl2Cpp());
     }
     public static IEnumerator InstallMod(ModObject obj)
     {
         Logger.Info("インストール開始");
-        foreach (string downloadurl in obj.DownloadAssetsURL) {
+        foreach (string downloadurl in obj.DownloadAssetsURL)
+        {
+            string[] splited = downloadurl.Split("/");
+            DownloadingPopupStatusText.text = "ダウンロード中：" + splited[splited.Length - 1];
+            yield return null;
             UnityWebRequest request = UnityWebRequest.Get(downloadurl);
             yield return request.SendWebRequest();
             if (request.responseCode != (long)HttpStatusCode.OK || request.downloadHandler == null)
             {
                 Logger.Info("reponseがおかしい:"+request.responseCode.ToString());
+                DownloadingPopupStatusText.text = splited[splited.Length - 1]+"のダウンロードが失敗しました。";
+                yield return null;
                 continue;
             }
             string pluginfolder = Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins\";
             string ziptempfolder = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\ModDownloader\";
-            string[] splited = downloadurl.Split("/");
             if (File.Exists(pluginfolder + splited[splited.Length - 1])) // Clear old file in case it wasnt;
                 continue;
 
@@ -115,6 +149,8 @@ public static class ModDownloader
 
             if (downloadurl.EndsWith(".zip"))
             {
+                DownloadingPopupStatusText.text = splited[splited.Length - 1] + "を保存中";
+                yield return null;
                 var fileStream = File.Create(ziptempfolder + splited[splited.Length - 1]);
                 foreach (byte result in request.downloadHandler.GetData())
                 {
@@ -123,6 +159,8 @@ public static class ModDownloader
                 }
                 fileStream.Close();
 
+                DownloadingPopupStatusText.text = splited[splited.Length - 1] + "を解析中";
+                yield return null;
                 List<string> plugins = new();
                 ZipArchive zip = ZipFile.OpenRead(ziptempfolder + splited[splited.Length - 1]);
                 foreach (ZipArchiveEntry entry in zip.Entries)
@@ -133,14 +171,21 @@ public static class ModDownloader
                 foreach (string pluginname in plugins)
                 {
                     string[] splitedplname = pluginname.Split("/");
+                    DownloadingPopupStatusText.text = splitedplname[splitedplname.Length - 1] + "をインストール中";
+                    yield return null;
                     ZipArchiveEntry entry = zip.GetEntry(pluginname);
                     entry.ExtractToFile(pluginfolder + splitedplname[splitedplname.Length - 1], true);
                 }
+                zip.Dispose();
+                DownloadingPopupStatusText.text = splited[splited.Length - 1] + "を保存中";
+                yield return null;
                 File.Delete(ziptempfolder + splited[splited.Length - 1]);
             }
             else
             {
                 var fileStream = File.Create(pluginfolder + splited[splited.Length - 1]);
+                DownloadingPopupStatusText.text = splited[splited.Length - 1] + "をインストール中";
+                yield return null;
                 foreach (byte result in request.downloadHandler.GetData())
                 {
                     // probably want to have proper name here
@@ -149,6 +194,15 @@ public static class ModDownloader
                 fileStream.Close();
             }
             obj._installed = true;
+        }
+        DownloadingPopupStatusText.text = "完了！\n再起動すると適用されます。";
+        DownloadingPopupCloseButton.gameObject.SetActive(true);
+        foreach(TextMeshPro tmp in obj.InstallText)
+        {
+            if (tmp != null)
+            {
+                tmp.text = "インストール済み";
+            }
         }
     }
     public static void OnPopupOpen(MainMenuManager __instance)
@@ -162,7 +216,6 @@ public static class ModDownloader
                 int index = -1;
                 foreach (ModObject modobj in ModObjects)
                 {
-                    Logger.Info("YEAHHHHHH");
                     index++;
                     if (modobj.ButtonInited) continue;
                     //DescriptionButton
@@ -217,6 +270,7 @@ public static class ModDownloader
                             var installButton = GameObject.Instantiate(ButtonTemplate, obj.transform);
                             GameObject.Destroy(installButton.GetComponentInChildren<TextTranslatorTMP>());
                             installButton.GetComponentInChildren<TextMeshPro>().text = mobj.Installed ? "インストール済み" : "ダウンロード";
+                            mobj.InstallText.Add(installButton.GetComponentInChildren<TextMeshPro>());
                             installButton.transform.localPosition = new(0, -1.7f, 0);
                             installButton.transform.localScale = Vector3.one * 0.85f;
                             installButton.OnClick = new();
@@ -239,6 +293,7 @@ public static class ModDownloader
                     }));
                     GameObject.Destroy(dlbtn.GetComponentInChildren<TextTranslatorTMP>());
                     dlbtn.GetComponentInChildren<TextMeshPro>().text = mobj.Installed ? "インストール済み" : "ダウンロード";
+                    mobj.InstallText.Add(dlbtn.GetComponentInChildren<TextMeshPro>());
                 }
             }
             pasonclick(__instance);
@@ -247,6 +302,37 @@ public static class ModDownloader
     }
     public static IEnumerator DownloadModData(MainMenuManager __instance)
     {
+        var datarequest = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/SuperNewRolesData/main/ModDownloadData.json");
+        yield return datarequest.SendWebRequest();
+        if (datarequest.isNetworkError || datarequest.isHttpError)
+        {
+            Logger.Info("CANT!!!");
+            yield break;
+        }
+        var datajson = JObject.Parse(datarequest.downloadHandler.text);
+        ModObjects = new();
+
+        for (var regulation = datajson["Mods"].First; regulation != null; regulation = regulation.Next)
+        {
+            List<string> DependencyMod = new();
+            for (var regulation1 = regulation["DependencyMod"].First; regulation1 != null; regulation1 = regulation1.Next)
+            {
+                DependencyMod.Add(regulation1.ToString());
+            }
+            List<string> AddDownloadURLs = new();
+            for (var regulation1 = regulation["AddDownloadURLs"].First; regulation1 != null; regulation1 = regulation1.Next)
+            {
+                AddDownloadURLs.Add(regulation1.ToString());
+            }
+            ModObject dataobj = new(regulation["ModId"].ToString(),
+                                    regulation["ModGUId"].ToString(),
+                                    regulation["RepoURL"].ToString(),
+                                    regulation["DescriptionShort"].ToString(),
+                                    regulation["DescriptionLong"].ToString(),
+                                    DependencyMod,
+                                    AddDownloadURLs);
+            ModObjects.Add(dataobj);
+        }
         foreach (ModObject obj in ModObjects)
         {
             if (obj.DataGetted) continue;
