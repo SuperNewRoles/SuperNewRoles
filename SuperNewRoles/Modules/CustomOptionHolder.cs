@@ -489,6 +489,7 @@ public class CustomOptionHolder
     public static CustomOption FoxIsUseVent;
     public static CustomOption FoxIsImpostorLight;
     public static CustomOption FoxReport;
+    public static CustomOption FoxCanHouwaWin;
 
     public static CustomRoleOption DarkKillerOption;
     public static CustomOption DarkKillerPlayerCount;
@@ -1466,6 +1467,7 @@ public class CustomOptionHolder
         FoxIsUseVent = Create(301402, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, FoxOption);
         FoxIsImpostorLight = Create(301403, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, FoxOption);
         FoxReport = Create(301404, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
+        FoxCanHouwaWin = Create(301405, true, CustomOptionType.Neutral, "CanHouwaWin", false, FoxOption);
 
         FireFox.SetupCustomOptions();
 
