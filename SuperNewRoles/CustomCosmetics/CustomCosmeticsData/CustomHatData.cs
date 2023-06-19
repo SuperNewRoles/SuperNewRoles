@@ -114,6 +114,70 @@ public class CustomHatData : HatData
             return false;
         }
     }
+    [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetFloorAnim))]
+    class HatParentSetFloorAnimPatch
+    {
+        public static bool Prefix(HatParent __instance)
+        {
+            if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
+            __instance.BackLayer.enabled = false;
+            __instance.enabled = true;
+            __instance.FrontLayer.sprite = getbycache(__instance.Hat.ProductId).FloorImage;
+            return false;
+        }
+    }
+    [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetClimbAnim))]
+    class HatParentSetClimbAnimPatch
+    {
+        public static bool Prefix(HatParent __instance)
+        {
+            if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
+            if (__instance.options.ShowForClimb)
+            {
+                __instance.BackLayer.enabled = false;
+                __instance.enabled = true;
+                __instance.FrontLayer.sprite = getbycache(__instance.Hat.ProductId).ClimbImage;
+            }
+            return false;
+        }
+    }
+    [HarmonyPatch(typeof(HatParent), nameof(HatParent.LateUpdate))]
+    class HatParentLateUpdatePatch
+    {
+        public static bool Prefix(HatParent __instance)
+        {
+            if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
+            if (!__instance.Parent)
+            {
+                return true;
+            }
+            HatViewData hatViewData = getbycache(__instance.Hat.ProdId);
+            if (__instance.FrontLayer.sprite != hatViewData.ClimbImage && __instance.FrontLayer.sprite != hatViewData.FloorImage)
+            {
+                if ((__instance.Hat.InFront || hatViewData.BackImage) && hatViewData.LeftMainImage)
+                {
+                    __instance.FrontLayer.sprite = (__instance.Parent.flipX ? hatViewData.LeftMainImage : hatViewData.MainImage);
+                }
+                if (hatViewData.BackImage && hatViewData.LeftBackImage)
+                {
+                    __instance.BackLayer.sprite = (__instance.Parent.flipX ? hatViewData.LeftBackImage : hatViewData.BackImage);
+                }
+                else if (!hatViewData.BackImage && !__instance.Hat.InFront && hatViewData.LeftMainImage)
+                {
+                    __instance.BackLayer.sprite = (__instance.Parent.flipX ? hatViewData.LeftMainImage : hatViewData.MainImage);
+                }
+            }
+            else if (__instance.FrontLayer.sprite == hatViewData.ClimbImage || __instance.FrontLayer.sprite == hatViewData.LeftClimbImage)
+            {
+                SpriteAnimNodeSync spriteAnimNodeSync = __instance.SpriteSyncNode ?? __instance.GetComponent<SpriteAnimNodeSync>();
+                if (spriteAnimNodeSync)
+                {
+                    spriteAnimNodeSync.NodeId = 0;
+                }
+            }
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetMaterialColor))]
     class HatParentSetMaterialColorPatch
     {
