@@ -224,13 +224,13 @@ public class CustomHatData : HatData
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetIdleAnim), new Type[] { typeof(int) })]
     class HatParentSetIdleAnimPatch
     {
-        public static bool Prefix(HatParent __instance, int color)
+        public static bool Prefix(HatParent __instance, int colorId)
         {
             if (__instance.Hat != null && __instance.Hat.ProductId.StartsWith("MOD_"))
             {
                 HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
                 __instance.PopulateFromHatViewData();
-                __instance.SetMaterialColor(color);
+                __instance.SetMaterialColor(colorId);
                 return false;
             }
             return true;
