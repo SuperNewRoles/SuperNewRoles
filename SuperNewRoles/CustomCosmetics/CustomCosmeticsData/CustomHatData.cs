@@ -27,9 +27,9 @@ public class CustomHatData : HatData
     static Dictionary<string, HatViewData> cache = new();
     static HatViewData getbycache(string id)
     {
-        if (!cache.ContainsKey(id))
+        if (!cache.ContainsKey(id) || cache[id] == null)
         {
-            cache[id] = HatManagerPatch.addHatData.FirstOrDefault(x => x.ProductId == id).hatViewData;
+            cache[id] = HatManagerPatch.addHatData.FirstOrDefault(x => x.ProductId == id && x.hatViewData != null).hatViewData;
         }
         return cache[id];
     }
