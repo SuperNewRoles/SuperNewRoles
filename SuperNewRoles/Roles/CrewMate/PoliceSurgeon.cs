@@ -19,7 +19,7 @@ public static class PoliceSurgeon
 {
     internal static class CustomOptionData
     {
-        private static int optionId = 1276;
+        private static int optionId = 406000;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption HaveVitalsInTaskPhase;

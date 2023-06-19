@@ -91,12 +91,17 @@ If the host includes this mod, the position will be available to all!<br>
 [au.libhalt.net](https://au.libhalt.net) - Nice Nekomata/Ivil Nekomata idea came from **au.libhalt.net**.<br>
 [TheOtherRolesGMHaoming]<!--(https://github.com/haoming37/TheOtherRoles-GM-Haoming)--> - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - Used fix task in map,The idea for Assassin and Merine. Thanks to **yukieiji**！<br>
-[効果音ラボ](https://soundeffect-lab.info/) - Some sound effects are used. The audio files for these sound effects are licensed under the terms of this site.
+[Town Of Plus](https://github.com/tugaru1975/TownOfPlus) - I have referred to the process of displaying the crew color name and making the text color the crew color, etc. Thanks to **tugaru1975**!<br>
+[効果音ラボ](https://soundeffect-lab.info/) - Some sound effects are used. The audio files for these sound effects are licensed under the terms of this site.<br>
+<br>
+
 
 ## Used custom cosmetics
 [SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)(Licences relating to costumes held independently by SNR are listed in this repository.)<br>
 [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(Me-Me-MuraSkins)Thanks to **hinakkyu**！<br>
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)Thanks to **tugaru1975**and**Ujet222(Sakura_White)**！<br>
+[SNRGithubWiki 役職一覧#他のmodから他のmodから移植, 又は参考にした役職](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%BD%B9%E8%81%B7%E4%B8%80%E8%A6%A7#%E4%BB%96%E3%81%AEmod%E3%81%8B%E3%82%89%E7%A7%BB%E6%A4%8D-%E5%8F%88%E3%81%AF%E5%8F%82%E8%80%83%E3%81%AB%E3%81%97%E3%81%9F%E5%BD%B9%E8%81%B7) - The details of the ported Roles and the Roles of other mods that were used as references when creating SNR's original Roles are listed here.<br>
+<br>
 
 ## Developers
 [Yking](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>

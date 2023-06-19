@@ -2,13 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.Data;
 using AmongUs.GameOptions;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using Sentry;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -627,6 +625,8 @@ public static class RPCProcedure
         PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
         if (dyingTarget == null) return;
         dyingTarget.Exiled();
+        if (killerId == dyingTargetId) FinalStatusData.FinalStatuses[dyingTargetId] = FinalStatus.GuesserMisFire;
+        else FinalStatusData.FinalStatuses[dyingTargetId] = FinalStatus.GuesserKill;
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
         if (MeetingHud.Instance)
         {
@@ -773,7 +773,7 @@ public static class RPCProcedure
             else
             {
                 airshipStatus.GapPlatform.StopAllCoroutines();
-                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
+                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform).WrapToIl2Cpp());
             }
         }
     }

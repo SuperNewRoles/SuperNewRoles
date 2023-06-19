@@ -19,6 +19,14 @@ public enum TeamRoleType
     Neutral,
     Error
 }
+public enum TeamType
+{
+    Crewmate,
+    Impostor,
+    Neutral,
+    Error
+}
+
 public static class RoleHelpers
 {
     /* TODO: 蔵徒:陣営playerがうまく動いていない。SetRoleの時に``if (player.Is陣営())``がうまく動かず、リスト入りされていない。直す
