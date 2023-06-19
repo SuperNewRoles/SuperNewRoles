@@ -43,6 +43,14 @@ public class CustomPlateData : NamePlateData
     [HarmonyPatch(typeof(NameplatesTab), nameof(NameplatesTab.OnEnable))]
     class NameplatesTabOnEnablePatch
     {
+        static void makecoro(NameplatesTab __instance,  NameplateChip chip)
+        {
+            __instance.StartCoroutine(AddressableAssetExtensions.CoLoadAssetAsync<NamePlateViewData>(__instance, FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(chip.ProductId).ViewDataRef, (Action<NamePlateViewData>)delegate (NamePlateViewData viewData)
+            {
+                Logger.Info(chip.GetInstanceID()+":"+chip.image.GetInstanceID()+":"+viewData.Image.GetInstanceID());
+                chip.image.sprite = viewData?.Image;
+            }));
+        }
         public static void Postfix(NameplatesTab __instance)
         {
             __instance.StopAllCoroutines();
@@ -55,11 +63,7 @@ public class CustomPlateData : NamePlateData
                 }
                 else
                 {
-                    NameplateChip npc = chip;
-                    __instance.StartCoroutine(AddressableAssetExtensions.CoLoadAssetAsync<NamePlateViewData>(__instance, FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(__instance.plateId).ViewDataRef, (Action<NamePlateViewData>)delegate (NamePlateViewData viewData)
-                    {
-                        npc.image.sprite = viewData?.Image;
-                    }));
+                    makecoro(__instance, chip);
                 }
             }
         }
