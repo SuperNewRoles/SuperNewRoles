@@ -1466,9 +1466,10 @@ public class CustomOptionHolder
         WorkpersonOption = SetupCustomRoleOption(300800, true, RoleId.Workperson);
         WorkpersonPlayerCount = Create(300801, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorkpersonOption);
         WorkpersonIsAliveWin = Create(300802, true, CustomOptionType.Neutral, "WorkpersonIsAliveWinSetting", false, WorkpersonOption);
-        WorkpersonCommonTask = Create(300803, true, CustomOptionType.Neutral, "GameCommonTasks", 2, 0, 12, 1, WorkpersonOption);
-        WorkpersonLongTask = Create(300804, true, CustomOptionType.Neutral, "GameLongTasks", 10, 0, 69, 1, WorkpersonOption);
-        WorkpersonShortTask = Create(300805, true, CustomOptionType.Neutral, "GameShortTasks", 5, 0, 45, 1, WorkpersonOption);
+        WorkpersonIsSettingNumberOfUniqueTasks = Create(300803, false, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, WorkpersonOption);
+        WorkpersonCommonTask = Create(300804, true, CustomOptionType.Neutral, "GameCommonTasks", 2, 0, 12, 1, WorkpersonOption);
+        WorkpersonLongTask = Create(300805, true, CustomOptionType.Neutral, "GameLongTasks", 10, 0, 69, 1, WorkpersonOption);
+        WorkpersonShortTask = Create(300806, true, CustomOptionType.Neutral, "GameShortTasks", 5, 0, 45, 1, WorkpersonOption);
 
         TunaOption = SetupCustomRoleOption(300900, true, RoleId.Tuna);
         TunaPlayerCount = Create(300901, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
