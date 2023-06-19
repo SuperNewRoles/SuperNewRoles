@@ -50,7 +50,9 @@ public class CustomHatData : HatData
         public static bool Prefix(HatParent __instance)
         {
             if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
+            Logger.Info("a");
             HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
+            Logger.Info("b");
             if (hatViewData && hatViewData.AltShader)
             {
                 __instance.FrontLayer.sharedMaterial = hatViewData.AltShader;
@@ -67,17 +69,22 @@ public class CustomHatData : HatData
                     __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
                 }
             }
+            Logger.Info("c");
             int colorId = __instance.matProperties.ColorId;
             PlayerMaterial.SetColors(colorId, __instance.FrontLayer);
+            Logger.Info("d");
             if (__instance.BackLayer)
             {
                 PlayerMaterial.SetColors(colorId, __instance.BackLayer);
             }
+            Logger.Info("e");
             __instance.FrontLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
+            Logger.Info("f");
             if (__instance.BackLayer)
             {
                 __instance.BackLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
             }
+            Logger.Info("g");
             switch (__instance.matProperties.MaskType)
             {
                 case PlayerMaterial.MaskType.ScrollingUI:
@@ -111,6 +118,7 @@ public class CustomHatData : HatData
                     }
                     break;
             }
+            Logger.Info("h");
             return false;
         }
     }
@@ -174,76 +182,6 @@ public class CustomHatData : HatData
                 {
                     spriteAnimNodeSync.NodeId = 0;
                 }
-            }
-            return false;
-        }
-    }
-    [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetMaterialColor))]
-    class HatParentSetMaterialColorPatch
-    {
-        public static bool Prefix(HatParent __instance, int color)
-        {
-            if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
-            HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
-            if (hatViewData && hatViewData.AltShader)
-            {
-                __instance.FrontLayer.sharedMaterial = hatViewData.AltShader;
-                if (__instance.BackLayer)
-                {
-                    __instance.BackLayer.sharedMaterial = hatViewData.AltShader;
-                }
-            }
-            else
-            {
-                __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
-                if (__instance.BackLayer)
-                {
-                    __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
-                }
-            }
-            int colorId = __instance.matProperties.ColorId;
-            PlayerMaterial.SetColors(colorId, __instance.FrontLayer);
-            if (__instance.BackLayer)
-            {
-                PlayerMaterial.SetColors(colorId, __instance.BackLayer);
-            }
-            __instance.FrontLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
-            if (__instance.BackLayer)
-            {
-                __instance.BackLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
-            }
-            switch (__instance.matProperties.MaskType)
-            {
-                case PlayerMaterial.MaskType.ScrollingUI:
-                    if (__instance.FrontLayer)
-                    {
-                        __instance.FrontLayer.maskInteraction = (SpriteMaskInteraction)1;
-                    }
-                    if (__instance.BackLayer)
-                    {
-                        __instance.BackLayer.maskInteraction = (SpriteMaskInteraction)1;
-                    }
-                    break;
-                case PlayerMaterial.MaskType.Exile:
-                    if (__instance.FrontLayer)
-                    {
-                        __instance.FrontLayer.maskInteraction = (SpriteMaskInteraction)2;
-                    }
-                    if (__instance.BackLayer)
-                    {
-                        __instance.BackLayer.maskInteraction = (SpriteMaskInteraction)2;
-                    }
-                    break;
-                default:
-                    if (__instance.FrontLayer)
-                    {
-                        __instance.FrontLayer.maskInteraction = (SpriteMaskInteraction)0;
-                    }
-                    if (__instance.BackLayer)
-                    {
-                        __instance.BackLayer.maskInteraction = (SpriteMaskInteraction)0;
-                    }
-                    break;
             }
             return false;
         }
