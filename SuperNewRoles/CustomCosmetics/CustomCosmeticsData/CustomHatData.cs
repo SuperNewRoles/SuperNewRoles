@@ -50,6 +50,7 @@ public class CustomHatData : HatData
         public static bool Prefix(HatParent __instance)
         {
             if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
+            Logger.Info("UPDATEあっぷでーと");
             HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
             if (hatViewData && hatViewData.AltShader)
             {
@@ -220,6 +221,22 @@ public class CustomHatData : HatData
             return false;
         }
     }
+    [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetIdleAnim), new Type[] { typeof(int) })]
+    class HatParentSetIdleAnimPatch
+    {
+        public static bool Prefix(HatParent __instance, int color)
+        {
+            if (__instance.Hat != null && __instance.Hat.ProductId.StartsWith("MOD_"))
+            {
+                HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
+                __instance.PopulateFromHatViewData();
+                __instance.SetMaterialColor(color);
+                return false;
+            }
+            return true;
+        }
+    }
+
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetHat), new Type[] { typeof(int) })]
     class HatParentSetHatPatch
     {
@@ -228,7 +245,6 @@ public class CustomHatData : HatData
             if (__instance.Hat != null && __instance.Hat.ProductId.StartsWith("MOD_"))
             {
                 HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
-                __instance.hatDataAsset = new CustomAddressableAsset<HatViewData>(hatViewData);
                 __instance.PopulateFromHatViewData();
                 __instance.SetMaterialColor(color);
                 return false;
