@@ -50,9 +50,7 @@ public class CustomHatData : HatData
         public static bool Prefix(HatParent __instance)
         {
             if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
-            Logger.Info("a");
             HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
-            Logger.Info("b");
             if (hatViewData && hatViewData.AltShader)
             {
                 __instance.FrontLayer.sharedMaterial = hatViewData.AltShader;
@@ -69,22 +67,17 @@ public class CustomHatData : HatData
                     __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
                 }
             }
-            Logger.Info("c");
             int colorId = __instance.matProperties.ColorId;
             PlayerMaterial.SetColors(colorId, __instance.FrontLayer);
-            Logger.Info("d");
             if (__instance.BackLayer)
             {
                 PlayerMaterial.SetColors(colorId, __instance.BackLayer);
             }
-            Logger.Info("e");
             __instance.FrontLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
-            Logger.Info("f");
             if (__instance.BackLayer)
             {
                 __instance.BackLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
             }
-            Logger.Info("g");
             switch (__instance.matProperties.MaskType)
             {
                 case PlayerMaterial.MaskType.ScrollingUI:
@@ -118,7 +111,6 @@ public class CustomHatData : HatData
                     }
                     break;
             }
-            Logger.Info("h");
             return false;
         }
     }

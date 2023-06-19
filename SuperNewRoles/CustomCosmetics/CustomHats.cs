@@ -255,9 +255,6 @@ public class CustomHats
                 data.AddRange(addHatData);
                 hatdata = data;
                 __instance.allHats = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<HatData>(data.ToArray());
-                foreach (HatData hd in __instance.allHats) {
-                    Logger.Info(((hd.CreateAddressableAsset() as CustomAddressableAsset<HatViewData>) == null).ToString(),hd.ProdId);
-                }
                 IsLoadingnow = false;
             }
             else
