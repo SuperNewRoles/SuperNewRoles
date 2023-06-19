@@ -26,7 +26,15 @@ public class CustomPlateData : NamePlateData
     {
         if (!cache.ContainsKey(id))
         {
-            cache[id] = CustomPlate.customPlateData.FirstOrDefault(x => x.ProductId == id).plateViewData;
+            CustomPlateData cpd = CustomPlate.customPlateData.FirstOrDefault(x => x.ProductId == id);
+            if (cpd != null)
+            {
+                cache[id] = cpd.plateViewData;
+            }
+            else
+            {
+                cache[id] = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(id)?.CreateAddressableAsset()?.GetAsset();
+            }
         }
         return cache[id];
     }
@@ -74,7 +82,10 @@ public class CustomPlateData : NamePlateData
         {
             if (!plateID.StartsWith("CustomNamePlates_")) return;
             NamePlateViewData npvd = getbycache(plateID);
-            __instance.Background.sprite = npvd.Image;
+            if (npvd != null)
+            {
+                __instance.Background.sprite = npvd.Image;
+            }
         }
     }
 }
