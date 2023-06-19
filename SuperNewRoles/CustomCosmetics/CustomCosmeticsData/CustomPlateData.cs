@@ -55,9 +55,10 @@ public class CustomPlateData : NamePlateData
                 }
                 else
                 {
+                    NameplateChip npc = chip;
                     __instance.StartCoroutine(AddressableAssetExtensions.CoLoadAssetAsync<NamePlateViewData>(__instance, FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(__instance.plateId).ViewDataRef, (Action<NamePlateViewData>)delegate (NamePlateViewData viewData)
                     {
-                        chip.image.sprite = viewData?.Image;
+                        npc.image.sprite = viewData?.Image;
                     }));
                 }
             }
