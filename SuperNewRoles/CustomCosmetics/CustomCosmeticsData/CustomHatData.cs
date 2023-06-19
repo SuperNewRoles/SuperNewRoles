@@ -44,6 +44,76 @@ public class CustomHatData : HatData
         }
     }
 
+    [HarmonyPatch(typeof(HatParent), nameof(HatParent.UpdateMaterial))]
+    class HatParentUpdateMaterialPatch
+    {
+        public static bool Prefix(HatParent __instance)
+        {
+            if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
+            HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
+            if (hatViewData && hatViewData.AltShader)
+            {
+                __instance.FrontLayer.sharedMaterial = hatViewData.AltShader;
+                if (__instance.BackLayer)
+                {
+                    __instance.BackLayer.sharedMaterial = hatViewData.AltShader;
+                }
+            }
+            else
+            {
+                __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
+                if (__instance.BackLayer)
+                {
+                    __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
+                }
+            }
+            int colorId = __instance.matProperties.ColorId;
+            PlayerMaterial.SetColors(colorId, __instance.FrontLayer);
+            if (__instance.BackLayer)
+            {
+                PlayerMaterial.SetColors(colorId, __instance.BackLayer);
+            }
+            __instance.FrontLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
+            if (__instance.BackLayer)
+            {
+                __instance.BackLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
+            }
+            switch (__instance.matProperties.MaskType)
+            {
+                case PlayerMaterial.MaskType.ScrollingUI:
+                    if (__instance.FrontLayer)
+                    {
+                        __instance.FrontLayer.maskInteraction = (SpriteMaskInteraction)1;
+                    }
+                    if (__instance.BackLayer)
+                    {
+                        __instance.BackLayer.maskInteraction = (SpriteMaskInteraction)1;
+                    }
+                    break;
+                case PlayerMaterial.MaskType.Exile:
+                    if (__instance.FrontLayer)
+                    {
+                        __instance.FrontLayer.maskInteraction = (SpriteMaskInteraction)2;
+                    }
+                    if (__instance.BackLayer)
+                    {
+                        __instance.BackLayer.maskInteraction = (SpriteMaskInteraction)2;
+                    }
+                    break;
+                default:
+                    if (__instance.FrontLayer)
+                    {
+                        __instance.FrontLayer.maskInteraction = (SpriteMaskInteraction)0;
+                    }
+                    if (__instance.BackLayer)
+                    {
+                        __instance.BackLayer.maskInteraction = (SpriteMaskInteraction)0;
+                    }
+                    break;
+            }
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetMaterialColor))]
     class HatParentSetMaterialColorPatch
     {

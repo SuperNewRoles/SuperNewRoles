@@ -47,7 +47,6 @@ public class CustomPlateData : NamePlateData
         {
             __instance.StartCoroutine(AddressableAssetExtensions.CoLoadAssetAsync<NamePlateViewData>(__instance, FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(chip.ProductId).ViewDataRef, (Action<NamePlateViewData>)delegate (NamePlateViewData viewData)
             {
-                Logger.Info(chip.GetInstanceID()+":"+chip.image.GetInstanceID()+":"+viewData.Image.GetInstanceID());
                 chip.image.sprite = viewData?.Image;
             }));
         }
