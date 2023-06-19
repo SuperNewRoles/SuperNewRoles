@@ -130,7 +130,7 @@ public static class RoleSelectHandler
         SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleClass.Player, RoleTypes.Shapeshifter);
+        SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.Player, RoleTypes.Shapeshifter);
         SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.MadRaccoon.RoleClass.Player, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 

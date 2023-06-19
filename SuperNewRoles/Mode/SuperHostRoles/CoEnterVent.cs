@@ -46,7 +46,7 @@ class CoEnterVent
                 if (RoleClass.SeerFriends.IsUseVent) return true;
                 break;
             case RoleId.Worshiper:
-                if (Worshiper.RoleClass.IsUseVent) return true;
+                if (Worshiper.RoleData.IsUseVent) return true;
                 break;
             case RoleId.MadRaccoon:
                 if (MadRaccoon.RoleClass.IsUseVent) return true;

@@ -1,12 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using InnerNet;
 using SuperNewRoles.Mode;
 using TMPro;
 using UnityEngine;
@@ -55,7 +52,7 @@ public static class Analytics
         data.Add("HostFriendCode", Host.FriendCode);
         data.Add("PlayerCount", GameData.Instance.AllPlayers.Count.ToString());
         string json = data.GetString();
-        AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendClientDataUrl, json));
+        AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendClientDataUrl, json).WrapToIl2Cpp());
     }
     public static void PostSendData()
     {
@@ -120,7 +117,7 @@ public static class Analytics
         data.Add("GameMode", GameOptionsManager.Instance.currentGameMode.ToString());
         string json = data.GetString();
         Logger.Info(json, "JSON");
-        AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendDataUrl, json));
+        AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendDataUrl, json).WrapToIl2Cpp());
     }
     public static string GetString(this IDictionary<string, string> dict)
     {

@@ -225,7 +225,7 @@ public static class RoleClass
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
-        Worshiper.RoleClass.ClearAndReload();
+        Worshiper.RoleData.ClearAndReload();
         Safecracker.ClearAndReload();
         FireFox.ClearAndReload();
         Squid.ClearAndReload();

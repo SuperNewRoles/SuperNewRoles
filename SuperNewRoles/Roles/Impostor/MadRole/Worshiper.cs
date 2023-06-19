@@ -14,7 +14,7 @@ public static class Worshiper
 {
     internal class CustomOptionData
     {
-        private static int optionId = 1277;// 設定のId
+        private static int optionId = 401100;// 設定のId
 
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
@@ -32,7 +32,7 @@ public static class Worshiper
 
         public static void SetupCustomOptions()
         {
-            Option = new(optionId, true, CustomOptionType.Crewmate, "WorshiperName", RoleClass.color, 1); optionId++;
+            Option = new(optionId, true, CustomOptionType.Crewmate, "WorshiperName", RoleData.color, 1); optionId++;
             PlayerCount = Create(optionId, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option); optionId++;
             AbilitySuicideCoolTime = Create(optionId, false, CustomOptionType.Crewmate, "WorshiperAbilitySuicideCoolTime", 30f, 0f, 60f, 2.5f, Option, format: "unitSeconds"); optionId++;
             KillSuicideCoolTime = Create(optionId, true, CustomOptionType.Crewmate, "WorshiperKillSuicideCoolTime", 30f, 2.5f, 60f, 2.5f, Option, format: "unitSeconds"); optionId++;
@@ -49,7 +49,7 @@ public static class Worshiper
         }
     }
 
-    internal class RoleClass
+    internal class RoleData
     {
         public static List<PlayerControl> Player;
         public static Color32 color = ImpostorRed;
@@ -129,7 +129,7 @@ public static class Worshiper
             () =>
             {
                 var Target = PlayerControlFixedUpdatePatch.SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.color);
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleData.color);
                 return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () => { ResetSuicideKillButton(); },
@@ -160,9 +160,9 @@ public static class Worshiper
             初手&会議終了後のクールが非導入者の場合0sになってしまう為、
             SHR時はアビリティ自決のクールを0s固定にして、導入者と非導入者の差異を無くした。
         */
-        suicideButton.MaxTimer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? RoleClass.AbilitySuicideCoolTime : 0;
-        suicideButton.Timer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? RoleClass.AbilitySuicideCoolTime : 0;
-        RoleClass.suicideButtonTimer = DateTime.Now;
+        suicideButton.MaxTimer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? RoleData.AbilitySuicideCoolTime : 0;
+        suicideButton.Timer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? RoleData.AbilitySuicideCoolTime : 0;
+        RoleData.suicideButtonTimer = DateTime.Now;
     }
 
     private static void ResetSuicideKillButton()
@@ -172,10 +172,10 @@ public static class Worshiper
             SHR時非導入者クール(10s)と導入者のクール(カスタムクール)が異なる事を、SNR時共通処理として修正している。
             初手カスタムボタンクールを10sにするメソッドがあれば不要な処理。
         */
-        suicideKillButton.MaxTimer = !RoleClass.isfirstResetCool ? RoleClass.KillSuicideCoolTime : 10f;
-        suicideKillButton.Timer = !RoleClass.isfirstResetCool ? RoleClass.KillSuicideCoolTime : 10f;
-        RoleClass.suicideKillButtonTimer = DateTime.Now;
-        Logger.Info($"「初回クールリセットか?」が{RoleClass.isfirstResetCool}の為、クールを[{suicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
-        RoleClass.isfirstResetCool = false;
+        suicideKillButton.MaxTimer = !RoleData.isfirstResetCool ? RoleData.KillSuicideCoolTime : 10f;
+        suicideKillButton.Timer = !RoleData.isfirstResetCool ? RoleData.KillSuicideCoolTime : 10f;
+        RoleData.suicideKillButtonTimer = DateTime.Now;
+        Logger.Info($"「初回クールリセットか?」が{RoleData.isfirstResetCool}の為、クールを[{suicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
+        RoleData.isfirstResetCool = false;
     }
 }
