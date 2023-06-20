@@ -145,11 +145,11 @@ public class CustomHats
         if (hatShader == null && DestroyableSingleton<HatManager>.InstanceExists)
             hatShader = new Material(Shader.Find("Unlit/PlayerShader"));
 
-        HatViewData hatViewData = new()
+        HatTempViewData hatViewData = new()
         {
             MainImage = GetHatSprite(ch.resource)
         };
-        CustomHatData hat = new(hatViewData);
+        CustomHatData hat = new();
         if (ch.backresource != null)
         {
             hatViewData.BackImage = GetHatSprite(ch.backresource);
@@ -191,8 +191,7 @@ public class CustomHats
         {
             CustomHatRegistry.Add(hat.name, extend);
         }
-        hat.hatViewData = hatViewData;
-        hat.CreateTempData();
+        hat.htvd = hatViewData;
         return hat;
     }
 
