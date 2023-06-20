@@ -15,9 +15,32 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomHatData : HatData
 {
     public HatViewData hatViewData;
+    public HatTempViewData htvd;
     public CustomHatData(HatViewData hvd)
     {
         hatViewData = hvd;
+        htvd = new{
+        MainImage = hvd.MainImage,
+        BackImage = hvd.BackImage,
+        ClimbImage = hvd.ClimbImage,
+        AltShader = hvd.AltShader
+        
+        }
+    }
+    public class HatTempViewData{
+    public Sprite MainImage;
+    public Sprite BackImage;
+    public Sprite ClimbImage;
+    public Sprite AltShader;
+    public HatViewData CreateHVD{
+    return new{
+        MainImage = MainImage,
+        BackImage = BackImage,
+        ClimbImage = ClimbImage,
+        AltShader = AltShader
+        
+        }
+    }
     }
     public override AddressableAsset<HatViewData> CreateAddressableAsset()
     {
@@ -27,9 +50,9 @@ public class CustomHatData : HatData
     static Dictionary<string, HatViewData> cache = new();
     static HatViewData getbycache(string id)
     {
-        if (!cache.ContainsKey(id))
+        if (!cache.ContainsKey(id) || cache[id] == null)
         {
-            cache[id] = HatManagerPatch.addHatData.FirstOrDefault(x => x.ProductId == id).hatViewData;
+            cache[id] = HatManagerPatch.addHatData.FirstOrDefault(x => x.ProductId == id).htvd.CreateHVD();
         }
         return cache[id];
     }
