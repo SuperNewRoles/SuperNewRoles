@@ -19,12 +19,15 @@ public class CustomHatData : HatData
     public CustomHatData(HatViewData hvd)
     {
         hatViewData = hvd;
+    }
+    public void CreateTempData()
+    {
         htvd = new()
         {
-            MainImage = hvd.MainImage,
-            BackImage = hvd.BackImage,
-            ClimbImage = hvd.ClimbImage,
-            AltShader = hvd.AltShader
+            MainImage = hatViewData.MainImage,
+            BackImage = hatViewData.BackImage,
+            ClimbImage = hatViewData.ClimbImage,
+            AltShader = hatViewData.AltShader
         };
     }
     public class HatTempViewData
