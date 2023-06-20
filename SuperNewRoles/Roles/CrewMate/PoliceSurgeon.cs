@@ -663,7 +663,7 @@ internal static class PostMortemCertificate_CreateAndGet
 
         string delimiterLine = victimPlayer == null ? fullDelimiterLine : shortDelimiterLine;
 
-        builder.AppendLine(delimiterLine);
+        builder.AppendLine($"<align={"left"}>" + delimiterLine);
         builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main1"));
         builder.AppendLine(delimiterLine);
         if (victimPlayer == null) // 特定のプレイヤー指定ではない時、全員の死体検案書を取得する。
@@ -722,7 +722,7 @@ internal static class PostMortemCertificate_CreateAndGet
         // 死体検案書の文字サイズと色をchat式とCustomoverlay式に合わせて変更する
         var sizeColor = victimPlayer == null ? "<size=90%><color=#c8c2c6>" : "<size=200%><color=#7d7d7d>";
         builder.Insert(0, sizeColor);
-        builder.AppendLine("</color></size>");
+        builder.AppendLine("</align></color></size>");
 
         return builder.ToString();
 
