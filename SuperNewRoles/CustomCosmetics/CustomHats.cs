@@ -577,7 +577,7 @@ public class CustomHatLoader
 
     private static async Task LaunchHatFetcherAsync()
     {
-        //if (ConfigRoles.DebugMode.Value) return;
+        if (ConfigRoles.DebugMode.Value) return;
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
         hatDetails = new List<CustomHatOnline>();
