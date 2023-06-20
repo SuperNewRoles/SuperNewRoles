@@ -30,7 +30,7 @@ public class CustomHatData : HatData
         public Sprite MainImage;
         public Sprite BackImage;
         public Sprite ClimbImage;
-        public Material AltShader;
+        public Material AltShader => new Material(Shader.Find("Unlit/PlayerShader"));;
         public HatViewData CreateHVD
         {
             get
