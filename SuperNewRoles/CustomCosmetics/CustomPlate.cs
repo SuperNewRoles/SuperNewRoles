@@ -5,6 +5,7 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
+using static SuperNewRoles.CustomCosmetics.CustomCosmeticsData.CustomPlateData;
 
 namespace SuperNewRoles.CustomCosmetics;
 
@@ -35,18 +36,19 @@ public class CustomPlate
                 {
                     var FileName = file.Name[0..^4];
                     var Data = DownLoadClass.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
-                    NamePlateViewData npvd = new()
+                    TempPlateViewData tpvd = new()
                     {
                         Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource)
                     };
-                    var plate = new CustomPlateData(npvd);
+                    var plate = new CustomPlateData();
+                    plate.tpvd = tpvd;
                     plate.name = Data.name + "\nby " + Data.author;
                     plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
                     plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
                     plate.displayOrder = 99;
                     plate.ChipOffset = new Vector2(0f, 0.2f);
                     plate.Free = true;
-                    plate.SpritePreview = npvd.Image;
+                    plate.SpritePreview = tpvd.Image;
                     //CustomPlates.Add(plate);
                     //AllPlates.Add(plate);
                     namePlateData.Add(plate);

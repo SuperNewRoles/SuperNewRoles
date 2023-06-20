@@ -16,20 +16,30 @@ using static SuperNewRoles.Modules.Blacklist;
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomPlateData : NamePlateData
 {
-    public NamePlateViewData plateViewData;
-    public CustomPlateData(NamePlateViewData hvd)
+    public TempPlateViewData tpvd;
+    public class TempPlateViewData
     {
-        plateViewData = hvd;
-    }
+        public Sprite Image;
+        public NamePlateViewData Create
+        {
+            get
+            {
+                return new()
+                {
+                    Image = Image
+                };
+            }
+        }
+    };
     static Dictionary<string, NamePlateViewData> cache = new();
     static NamePlateViewData getbycache(string id)
     {
-        if (!cache.ContainsKey(id))
+        if (!cache.ContainsKey(id) || cache[id] == null)
         {
             CustomPlateData cpd = CustomPlate.customPlateData.FirstOrDefault(x => x.ProductId == id);
             if (cpd != null)
             {
-                cache[id] = cpd.plateViewData;
+                cache[id] = cpd.tpvd.Create;
             }
             else
             {

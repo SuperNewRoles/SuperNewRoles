@@ -39,11 +39,6 @@ public class CustomHatData : HatData
             }
         }
     }
-    public override AddressableAsset<HatViewData> CreateAddressableAsset()
-    {
-        return new CustomAddressableAsset<HatViewData>(CustomCosmeticsData.CustomHatData.HatTempViewData.hatViewData);
-    }
-
     static Dictionary<string, HatViewData> cache = new();
     static HatViewData getbycache(string id)
     {
@@ -70,7 +65,6 @@ public class CustomHatData : HatData
         public static bool Prefix(HatParent __instance)
         {
             if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
-            Logger.Info("UPDATEあっぷでーと");
 
             HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
             if (hatViewData && hatViewData.AltShader)
