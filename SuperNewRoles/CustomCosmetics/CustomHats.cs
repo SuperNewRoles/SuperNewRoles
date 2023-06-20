@@ -192,6 +192,7 @@ public class CustomHats
             CustomHatRegistry.Add(hat.name, extend);
         }
         hat.hatViewData = hatViewData;
+        hat.CreateTempData();
         return hat;
     }
 
