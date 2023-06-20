@@ -14,12 +14,7 @@ using static SuperNewRoles.Modules.Blacklist;
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomHatData : HatData
 {
-    public HatViewData hatViewData;
     public HatTempViewData htvd;
-    public CustomHatData(HatViewData hvd)
-    {
-        hatViewData = hvd;
-    }
     public void CreateTempData()
     {
         htvd = new()
