@@ -25,6 +25,8 @@ public static class CredentialsPatch
         public static string modColor = "#a6d289";
         static void Postfix(VersionShower __instance)
         {
+            if (GameObject.FindObjectOfType<MainMenuManager>() == null)
+                return;
             var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
             credentials.transform.position = new Vector3(2, -0.15f, 0);
             credentials.transform.localScale = Vector3.one * 2;

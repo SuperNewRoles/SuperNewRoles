@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public static class Pteranodon
 {
-    private const int OptionId = 1271;
+    private const int OptionId = 406000;
     public static CustomRoleOption PteranodonOption;
     public static CustomOption PteranodonPlayerCount;
     public static CustomOption PteranodonCoolTime;
