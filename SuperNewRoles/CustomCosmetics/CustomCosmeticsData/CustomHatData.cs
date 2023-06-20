@@ -79,6 +79,24 @@ public class CustomHatData : HatData
         {
             if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
             Logger.Info("UPDATEあっぷでーと");
+
+            HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
+            if (hatViewData && hatViewData.AltShader)
+            {
+                __instance.FrontLayer.sharedMaterial = hatViewData.AltShader;
+                if (__instance.BackLayer)
+                {
+                    __instance.BackLayer.sharedMaterial = hatViewData.AltShader;
+                }
+            }
+            else
+            {
+                __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
+                if (__instance.BackLayer)
+                {
+                    __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
+                }
+            }
             int colorId = __instance.matProperties.ColorId;
             PlayerMaterial.SetColors(colorId, __instance.FrontLayer);
             if (__instance.BackLayer)
@@ -124,23 +142,6 @@ public class CustomHatData : HatData
                         __instance.BackLayer.maskInteraction = (SpriteMaskInteraction)0;
                     }
                     break;
-            }
-            HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
-            if (hatViewData && hatViewData.AltShader)
-            {
-                __instance.FrontLayer.sharedMaterial = hatViewData.AltShader;
-                if (__instance.BackLayer)
-                {
-                    __instance.BackLayer.sharedMaterial = hatViewData.AltShader;
-                }
-            }
-            else
-            {
-                __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
-                if (__instance.BackLayer)
-                {
-                    __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
-                }
             }
             return false;
         }
