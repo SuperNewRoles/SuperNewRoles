@@ -25,11 +25,11 @@ public static class CredentialsPatch
         public static string modColor = "#a6d289";
         static void Postfix(VersionShower __instance)
         {
-
-            var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
-            if (amongUsLogo == null) return;
+            if (GameObject.FindObjectOfType<MainMenuManager>() == null)
+                return;
             var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
-            credentials.transform.position = new Vector3(0, 0f, 0);
+            credentials.transform.position = new Vector3(2, -0.15f, 0);
+            credentials.transform.localScale = Vector3.one * 2;
             //ブランチ名表示
             string credentialsText = "";
             if (SuperNewRolesPlugin.IsBeta)//masterビルド以外の時
@@ -45,11 +45,12 @@ public static class CredentialsPatch
             _ = AutoUpdate.checkForUpdate(credentials);
 
             var version = UnityEngine.Object.Instantiate(credentials);
-            version.transform.position = new Vector3(0, -0.35f, 0);
+            version.transform.position = new Vector3(2, -0.5f, 0);
+            version.transform.localScale = Vector3.one * 1.5f;
             version.SetText($"{SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}");
 
-            credentials.transform.SetParent(amongUsLogo.transform);
-            version.transform.SetParent(amongUsLogo.transform);
+//            credentials.transform.SetParent(amongUsLogo.transform);
+//            version.transform.SetParent(amongUsLogo.transform);
         }
     }
 
@@ -275,7 +276,8 @@ public static class CredentialsPatch
             }
 
             var snrLogo = new GameObject("bannerLogo");
-            snrLogo.transform.position = new(2, 0.5f, 0);
+            snrLogo.transform.position = new(2, 0.7f, 0);
+            snrLogo.transform.localScale = Vector3.one * 0.95f;
             //snrLogo.transform.localScale = Vector3.one;
             renderer = snrLogo.AddComponent<SpriteRenderer>();
 
