@@ -21,7 +21,9 @@ public class CustomHatData : HatData
         public Sprite MainImage;
         public Sprite BackImage;
         public Sprite ClimbImage;
-        public Material AltShader => new Material(Shader.Find("Unlit/PlayerShader"));
+        public bool adaptive;
+        public Material AltShader => adaptive ? new Material(Shader.Find("Unlit/PlayerShader")) : null;
+        public string name;
         public HatViewData CreateHVD
         {
             get
@@ -32,6 +34,7 @@ public class CustomHatData : HatData
                     BackImage = BackImage,
                     ClimbImage = ClimbImage,
                     AltShader = AltShader,
+                    name = name
                 };
             }
         }
