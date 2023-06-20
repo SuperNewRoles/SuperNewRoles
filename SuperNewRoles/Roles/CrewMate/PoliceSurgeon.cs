@@ -131,7 +131,6 @@ internal static class PostMortemCertificate_AddActualDeathTime
         {
             RoleData.MeetingTurn_Now++;
             AddActualDeathTime((int)DeadTiming.TaskPhase_killed); // タスクフェイズ中の死亡を処理する。
-            //[x]MEMO : ここでLateTaskでPoliceSurgeon_ActualDeathTimesをRPCで送る <= 此処じゃダメで草 会議終了時とかの処理ができない&ラグ影響大きそう AddActualDeathTimeの処理内に移動ホストの記録と送信を同時で行う。
         }
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting)), HarmonyPostfix]
