@@ -23,6 +23,7 @@
     <ItemGroup>
         <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
         <Reference Include="$(AmongUs)/BepInEx/interop/*.dll" />
+        <None Remove="CustomCosmetics\CustomCosmeticsData\CustomHatData.cs~RFbacc703.TMP" />
         <Reference Include="$(AmongUs)/BepInEx/plugins/Agartha.dll" />
     </ItemGroup>
 

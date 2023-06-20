@@ -1,10 +1,11 @@
-/*
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
+using static SuperNewRoles.CustomCosmetics.CustomCosmeticsData.CustomPlateData;
 
 namespace SuperNewRoles.CustomCosmetics;
 
@@ -12,6 +13,7 @@ public class CustomPlate
 {
     public static bool isAdded = false;
     static readonly List<NamePlateData> namePlateData = new();
+    public static readonly List<CustomPlateData> customPlateData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
     class UnlockedNamePlatesPatch
     {
@@ -32,22 +34,25 @@ public class CustomPlate
             {
                 try
                 {
-                    var plate = ScriptableObject.CreateInstance<NamePlateData>();
                     var FileName = file.Name[0..^4];
                     var Data = DownLoadClass.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
+                    TempPlateViewData tpvd = new()
+                    {
+                        Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource)
+                    };
+                    var plate = new CustomPlateData();
+                    plate.tpvd = tpvd;
                     plate.name = Data.name + "\nby " + Data.author;
                     plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
                     plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
                     plate.displayOrder = 99;
                     plate.ChipOffset = new Vector2(0f, 0.2f);
                     plate.Free = true;
-                    plate.viewData.viewData = new()
-                    {
-                        Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource)
-                    };
+                    plate.SpritePreview = tpvd.Image;
                     //CustomPlates.Add(plate);
                     //AllPlates.Add(plate);
                     namePlateData.Add(plate);
+                    customPlateData.Add(plate);
                     //SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み完了:" + file.Name);
                 }
                 catch (Exception e)
@@ -62,4 +67,3 @@ public class CustomPlate
         }
     }
 }
-*/
