@@ -167,8 +167,8 @@ public class CustomHats
         hat.Free = true;
         hat.NotInStore = true;
 
-        if (ch.adaptive && hatShader != null)
-            hatViewData.AltShader = hatShader;
+        if (ch.adaptive)
+            hatViewData.adaptive = true;
 
         HatExtension extend = new()
         {
