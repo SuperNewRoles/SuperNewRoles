@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
@@ -78,6 +79,18 @@ public static class Pteranodon
             }
             target.NetTransform.SnapTo(pos);
             UsingPlayers[data.Key] = (data.Value.Item1, NewTimer, pos);
+        }
+    }
+    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleAnimation))]
+    private static class PlayerPhysicsHandleAnimationPatch
+    {
+        private static void Postfix(PlayerPhysics __instance)
+        {
+            if ((__instance.myPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId && IsPteranodonNow) ||
+                UsingPlayers.ContainsKey(__instance.myPlayer.PlayerId))
+            {
+                __instance.GetSkin().SetIdle(__instance.FlipX);
+            }
         }
     }
     public static void FixedUpdate()

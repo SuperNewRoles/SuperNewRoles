@@ -178,11 +178,16 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pteranodon; },
             () =>
             {
+                if (!PlayerControl.LocalPlayer.CanMove) return false;
                 AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();
                 if (status == null)
                     return false;
+                if (status.GapPlatform.Target != null && status.GapPlatform.Target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
+                    return false;
+                }
                 bool flag = Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f || Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f;
-                return PlayerControl.LocalPlayer.CanMove && flag;
+                return flag;
             },
             () =>
             {
