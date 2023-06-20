@@ -19,28 +19,33 @@ public class CustomHatData : HatData
     public CustomHatData(HatViewData hvd)
     {
         hatViewData = hvd;
-        htvd = new{
-        MainImage = hvd.MainImage,
-        BackImage = hvd.BackImage,
-        ClimbImage = hvd.ClimbImage,
-        AltShader = hvd.AltShader
-        
-        }
+        htvd = new()
+        {
+            MainImage = hvd.MainImage,
+            BackImage = hvd.BackImage,
+            ClimbImage = hvd.ClimbImage,
+            AltShader = hvd.AltShader
+        };
     }
-    public class HatTempViewData{
-    public Sprite MainImage;
-    public Sprite BackImage;
-    public Sprite ClimbImage;
-    public Sprite AltShader;
-    public HatViewData CreateHVD{
-    return new{
-        MainImage = MainImage,
-        BackImage = BackImage,
-        ClimbImage = ClimbImage,
-        AltShader = AltShader
-        
+    public class HatTempViewData
+    {
+        public Sprite MainImage;
+        public Sprite BackImage;
+        public Sprite ClimbImage;
+        public Material AltShader;
+        public HatViewData CreateHVD
+        {
+            get
+            {
+                return new HatViewData
+                {
+                    MainImage = MainImage,
+                    BackImage = BackImage,
+                    ClimbImage = ClimbImage,
+                    AltShader = AltShader,
+                };
+            }
         }
-    }
     }
     public override AddressableAsset<HatViewData> CreateAddressableAsset()
     {
@@ -52,7 +57,7 @@ public class CustomHatData : HatData
     {
         if (!cache.ContainsKey(id) || cache[id] == null)
         {
-            cache[id] = HatManagerPatch.addHatData.FirstOrDefault(x => x.ProductId == id).htvd.CreateHVD();
+            cache[id] = HatManagerPatch.addHatData.FirstOrDefault(x => x.ProductId == id).htvd.CreateHVD;
         }
         return cache[id];
     }
@@ -80,8 +85,8 @@ public class CustomHatData : HatData
             {
                 PlayerMaterial.SetColors(colorId, __instance.BackLayer);
             }
-            
-            
+
+
             __instance.FrontLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
             if (__instance.BackLayer)
             {
