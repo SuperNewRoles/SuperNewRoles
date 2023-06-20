@@ -15,22 +15,13 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomHatData : HatData
 {
     public HatTempViewData htvd;
-    public void CreateTempData()
-    {
-        htvd = new()
-        {
-            MainImage = hatViewData.MainImage,
-            BackImage = hatViewData.BackImage,
-            ClimbImage = hatViewData.ClimbImage,
-            AltShader = hatViewData.AltShader
-        };
-    }
+    public HatViewData hatViewData;
     public class HatTempViewData
     {
         public Sprite MainImage;
         public Sprite BackImage;
         public Sprite ClimbImage;
-        public Material AltShader => new Material(Shader.Find("Unlit/PlayerShader"));;
+        public Material AltShader => new Material(Shader.Find("Unlit/PlayerShader"));
         public HatViewData CreateHVD
         {
             get
@@ -47,7 +38,7 @@ public class CustomHatData : HatData
     }
     public override AddressableAsset<HatViewData> CreateAddressableAsset()
     {
-        return new CustomAddressableAsset<HatViewData>(hatViewData);
+        return new CustomAddressableAsset<HatViewData>(CustomCosmeticsData.CustomHatData.HatTempViewData.hatViewData);
     }
 
     static Dictionary<string, HatViewData> cache = new();

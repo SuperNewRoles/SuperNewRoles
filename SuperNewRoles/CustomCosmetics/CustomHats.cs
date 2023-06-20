@@ -56,7 +56,7 @@ public class CustomHats
         public bool adaptive { get; set; }
         public bool behind { get; set; }
     }
-    
+
     private static List<CustomHat> CreateCustomHatDetails(string[] hats, bool fromDisk = false)
     {
         Dictionary<string, CustomHat> fronts = new();
@@ -145,7 +145,7 @@ public class CustomHats
         if (hatShader == null && DestroyableSingleton<HatManager>.InstanceExists)
             hatShader = new Material(Shader.Find("Unlit/PlayerShader"));
 
-        HatTempViewData hatViewData = new()
+        CustomHatData.HatTempViewData hatViewData = new()
         {
             MainImage = GetHatSprite(ch.resource)
         };
