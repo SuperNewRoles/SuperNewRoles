@@ -603,7 +603,11 @@ MadmateName,Madmate,マッドメイト,叛徒,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利,幫助內鬼獲得勝利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。,叛徒屬於船員陣營，但是其為內鬼的同伴。\n內鬼獲勝則叛徒一同獲勝。
 MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか,叛徒是否能确认内鬼玩家,叛徒是否能確認內鬼玩家
-MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量,確認身份需要完成的任務量
+IsSettingNumberOfUniqueTasks,Do you want to set a unique number of tasks required to trigger an ability?,能力発動に必要なタスク数を固有で設定するか
+IsParcentageForTaskTrigger,Is the number of tasks required to trigger the capability a percentage of the total number of tasks?,能力発動に必要なタスク数を総タスク数に対する割合にするか。
+ParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),能力が発動するタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
+TaskTriggerAbilityTaskNumber,Number of tasks required to activate fanaticism capability,能力の発動に必要なタスク数
+UnitPieces,pieces,個
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道,可以進入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道,叛徒可以使用管道
 MadmateImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
@@ -798,7 +802,6 @@ MadMayorIsCheckImpostorSetting,You can check the Impostor.,インポスターが
 MadMayorUseVentSetting,Use Vent,ベントを使える,可以进入管道,可以進入通風管道
 MadMayorVentMoveSetting,Move Vent,ベントで動ける,可以使用管道,可以在管道中移動
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
-MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）,叛变的市长确认内鬼阵营玩家需要完成的任务量,叛變的市長確認內鬼陣營玩家所需完成的任務數
 NiceHawkName,NiceHawk,ナイスホーク,鹰眼,正義的鷹眼
 NiceHawkTitle1,See it all.,全てを見渡せ,将一切尽收眼底,將一切盡收眼底
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう,把犯人抓个现行,把犯人抓個現行
@@ -1334,7 +1337,6 @@ TheThirdLittlePigName,The Third Little Pig,3番目の仔豚,猪老三,猪老三
 TheFirstLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheSecondLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheThirdLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
-TheThreeLittlePigsTaskSetting,Assign tasks separately,別にタスクを割り当てる,单独分配任务数,單獨分配任務數
 TheFirstLittlePigClearTaskSetting,Percentage of tasks required for The first little pig to complete the house,1番目の仔豚が家を完成させるのに必要なタスクの割合,猪老大盖出房子需要的任务进度,豬老大蓋出房子需要的任務進度
 TheFirstLittlePigIsCustomTimerSetting,Set the timer for The first little pig,1番目の仔豚のタイマーを設定する,猪老大盖房子有时间限制,豬老大蓋房子有時間限制
 TheFirstLittlePigCustomTimerSetting,The first little pig timer,1番目の仔豚のタイマー,猪老大盖房子的时间限制,豬老大蓋房子的時間限制

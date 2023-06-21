@@ -20,6 +20,7 @@ public static class OrientalShaman
     public static CustomOption OrientalShamanVentDurationTime;
     public static CustomOption OrientalShamanCrewTaskWinHijack;
     public static CustomOption OrientalShamanWinTask;
+    public static CustomOption OrientalShamanIsSettingNumberOfUniqueTasks;
     public static CustomOption OrientalShamanCommonTask;
     public static CustomOption OrientalShamanShortTask;
     public static CustomOption OrientalShamanLongTask;
@@ -36,7 +37,8 @@ public static class OrientalShaman
         OrientalShamanVentDurationTime = CustomOption.Create(OptionId + 4, false, CustomOptionType.Neutral, "OrientalShamanVentDurationTimeSetting", 10f, 2.5f, 60f, 2.5f, OrientalShamanOption);
         OrientalShamanCrewTaskWinHijack = CustomOption.Create(OptionId + 5, false, CustomOptionType.Neutral, "OrientalShamanCrewTaskWinHijackSetting", false, OrientalShamanOption);
         OrientalShamanWinTask = CustomOption.Create(OptionId + 6, false, CustomOptionType.Neutral, "OrientalShamanWinTaskSetting", false, OrientalShamanOption);
-        var OrientalShamanoption = SelectTask.TaskSetting(OptionId + 7, OptionId + 8, OptionId + 9, OrientalShamanWinTask, CustomOptionType.Neutral, false);
+        OrientalShamanIsSettingNumberOfUniqueTasks = CustomOption.Create(OptionId + 14, false, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, OrientalShamanWinTask);
+        var OrientalShamanoption = SelectTask.TaskSetting(OptionId + 7, OptionId + 8, OptionId + 9, OrientalShamanIsSettingNumberOfUniqueTasks, CustomOptionType.Neutral, false);
         OrientalShamanCommonTask = OrientalShamanoption.Item1;
         OrientalShamanShortTask = OrientalShamanoption.Item2;
         OrientalShamanLongTask = OrientalShamanoption.Item3;

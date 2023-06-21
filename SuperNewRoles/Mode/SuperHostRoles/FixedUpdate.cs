@@ -110,10 +110,7 @@ public static class FixedUpdate
             if (!RoleClass.Camouflager.IsCamouflage) ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, CelebrityPlayer.GetDefaultName()));
         }
 
-        if (Madmate.CheckImpostor(player) ||
-            MadMayor.CheckImpostor(player) ||
-            player.IsRole(RoleId.Marlin) ||
-            BlackCat.CheckImpostor(player))
+        if (Madmate.CheckImpostor(player) || player.IsRole(RoleId.Marlin))
         {
             foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
             {

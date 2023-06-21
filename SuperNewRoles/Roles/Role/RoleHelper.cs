@@ -854,7 +854,7 @@ public static class RoleHelpers
                 RoleClass.Jumbo.JumboPlayer.Add(player);
                 break;
             case RoleId.Worshiper:
-                Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.Add(player);
+                Roles.Impostor.MadRole.Worshiper.RoleData.Player.Add(player);
                 break;
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.Add(player);
@@ -1387,7 +1387,7 @@ public static class RoleHelpers
                 RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Worshiper:
-                Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.RemoveAll(ClearRemove);
+                Roles.Impostor.MadRole.Worshiper.RoleData.Player.RemoveAll(ClearRemove);
                 break;
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.RemoveAll(ClearRemove);
@@ -1518,7 +1518,7 @@ public static class RoleHelpers
             RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalUseVent.GetBool(),
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
-            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.RoleData.IsUseVent,
             RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
@@ -1609,7 +1609,7 @@ public static class RoleHelpers
                 RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
                 RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalIsImpostorLight.GetBool(),
-                RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsImpostorLight,
+                RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.RoleData.IsImpostorLight,
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
@@ -1866,7 +1866,7 @@ public static class RoleHelpers
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
-            else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
+            else if (Roles.Impostor.MadRole.Worshiper.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
             else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;

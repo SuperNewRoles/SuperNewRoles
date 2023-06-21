@@ -29,7 +29,7 @@ class WrapUpClass
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
-        foreach (PlayerControl p in SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer)
+        foreach (PlayerControl p in SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.Player)
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }

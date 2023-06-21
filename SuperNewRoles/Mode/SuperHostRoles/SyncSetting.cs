@@ -207,7 +207,7 @@ public static class SyncSetting
             case RoleId.Worshiper:
                 if (!player.IsMod())
                 {
-                    if (!SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight)
+                    if (!Worshiper.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
                         var switchSystemWorshiper = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
@@ -216,15 +216,15 @@ public static class SyncSetting
                 }
                 else
                 {
-                    if (Worshiper.IsImpostorLight)
+                    if (Worshiper.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                         var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(Worshiper.KillSuicideCoolTime));
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, Worshiper.AbilitySuicideCoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(Worshiper.RoleData.KillSuicideCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, Worshiper.RoleData.AbilitySuicideCoolTime);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.EvilSeer:
