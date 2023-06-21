@@ -393,6 +393,8 @@ ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う,破�
 ImpostorDescription,Default Impostor.\nShapeshifter in vanilla role are also represented as impostors.Provide support to your partner or ally.\nEven if your partner has a position，not all of his or her abilities may be superior to those of a regular impostor.\nEven if they are all top compatible，they cannot win without your support.\nYour partner or Madmate needs your action.\n\nYou can swing，you can lurk，or you can take advantage of your partner's abilities!\nIt is also a great ability to make use of your allies' abilities...\n\nDeceive，make a scapegoat，escape banishment. \nWe are the "Impostors". \nIt does not matter if we live or die.\nWe just have to kill all the crew.,通常のインポスターです。\nバニラ役職のシェイプシフターもインポスターとして表記されます。\n\n相方や味方のサポートを行いましょう。\n相方が役職持ちの場合でも、能力が全て通常のインポスターの上位互換とは限りません。\n全て上位互換であったとしても、貴方のサポートが無ければ勝つことなどできません。\n相方やマッドメイトは貴方の行動を必要としています。\n\n揺動に回るも良し、潜伏するも良し、相方の能力を生かせるよう立ち回ってみましょう!\n味方の能力を活用するのも立派な能力なのですから...\n\n騙せ　身代わりを作れ　追放を逃れろ。\n我らはインポスターだ。\n自らの生死は関係がない。\nただクルーを殺し尽くせば良いだけだ。,,預設內鬼職業。\n原版職業的變形者也被列為內鬼。\n\n為內鬼陣營的隊友提供支援。\n即使你的隊友擁有職業，他/她的能力也不一定優於原版內鬼。\n即使他們具有超強的能力，沒有你的支援他們也無法獲勝。\n你的隊友需要你的行動。\n\n你可以遊走或潛伏，或者利用隊友的能力！\n妥善利用隊友的能力也是一種很棒的能力...\n\n欺騙，找個替罪羊，避免遭放逐。\n我們是「內鬼」。\n我們的生死無關緊要。\n我們只需要殺死所有船員。
 Neutral,Neutral,第三陣営,独立阵营,中立陣營
 NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
+MadRolesSubIntro,This life is for my mastert，the Impostor.,この命は我が主たるインポスターのために
+FriendRolesSubIntro,One who stands by the jackal.,ジャッカルに寄り添いし者
 detecName,Detective,探偵,侦探,偵探
 
 # Roles
@@ -1367,6 +1369,9 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
+PteranodonName,Pteranodon,プテラノドン
+PteranodonTitle1,PtePte,プテプテ
+PteranodonButtonName,Juump!!,ジャーンプ！
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示

@@ -6,6 +6,7 @@ namespace SuperNewRoles.Modules;
 public class DeadPlayer
 {
     public static List<DeadPlayer> deadPlayers = new();
+    public static Dictionary<byte, (DateTime, PlayerControl)> ActualDeathTime;
     public PlayerControl player;
     public byte playerId;
     public DateTime timeOfDeath;
@@ -21,5 +22,11 @@ public class DeadPlayer
         this.deathReason = deathReason;
         this.killerIfExisting = killerIfExisting;
         if (killerIfExisting != null) killerIfExistingId = killerIfExisting.PlayerId;
+    }
+
+    internal static void ClearAndReloads()
+    {
+        deadPlayers = new();
+        ActualDeathTime = new();
     }
 }

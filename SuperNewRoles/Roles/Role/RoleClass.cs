@@ -37,7 +37,7 @@ public static class RoleClass
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;
-        DeadPlayer.deadPlayers = new();
+        DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
@@ -235,6 +235,7 @@ public static class RoleClass
         TheThreeLittlePigs.ClearAndReload();
         OrientalShaman.ClearAndReload();
         Balancer.ClearAndReload();
+        Pteranodon.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -1575,6 +1576,7 @@ public static class RoleClass
         public static List<PlayerControl> FoxPlayer;
         public static Color32 color = FoxPurple;
         public static Dictionary<int, int> KillGuard;
+        public static Dictionary<byte, bool> Killer;
         public static bool IsUseVent;
         public static bool UseReport;
         public static bool IsImpostorLight;
@@ -1582,6 +1584,7 @@ public static class RoleClass
         {
             FoxPlayer = new();
             KillGuard = new();
+            Killer = new();
             IsUseVent = CustomOptionHolder.FoxIsUseVent.GetBool();
             UseReport = CustomOptionHolder.FoxReport.GetBool();
             IsImpostorLight = CustomOptionHolder.FoxIsImpostorLight.GetBool();

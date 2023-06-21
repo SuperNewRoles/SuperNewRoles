@@ -935,7 +935,6 @@ public static class MurderPlayerPatch
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
-        DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -997,14 +996,11 @@ public static class MurderPlayerPatch
     }
     public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
+        // |:===== targetが生存している場合にも発生させる処理 =====:|
         // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.GetDefaultName() + "、ターゲット:" + target.GetDefaultName());
         // Collect dead player info
-        Logger.Info("追加");
-        DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
-        DeadPlayer.deadPlayers.Add(deadPlayer);
-        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
-        __instance.OnKill(target);
-        target.OnDeath(__instance);
+
+        __instance.OnKill(target); // 使われるようになった時に要仕様調整
 
         if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
         {
@@ -1020,14 +1016,75 @@ public static class MurderPlayerPatch
             }
         }
 
+        // FIXME:狐キル時にはキルクールリセットが発生しないようにして, この処理は死体が発生した時の処理にしたい。
         SerialKiller.MurderPlayer(__instance, target);
-        Seer.WrapUpPatch.MurderPlayerPatch.Postfix(target);
+        if (target.IsRole(RoleId.Fox) && !RoleClass.Fox.Killer.ContainsKey(__instance.PlayerId))
+            RoleClass.Fox.Killer.Add(__instance.PlayerId, true);
+
+
         if (IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())
         {
             new CustomMessage("MurderPlayerが発生しました", 5f);
             Logger.Info("MurderPlayerが発生しました", "DebugMode");
         }
-        Roles.Crewmate.KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
+
+        KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
+
+        if (ModeHandler.IsMode(ModeId.Default))
+        {
+            Minimalist.MurderPatch.Postfix(__instance);
+
+            Vampire.OnMurderPlayer(__instance, target); // ヴァンパイアと眷属のキルクール同期の為 対象の死亡状態にかかわらず呼び出す
+
+            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                if (Squid.Abilitys.IsKillGuard)
+                {
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(Squid.SquidNotKillTime.GetFloat(), Squid.SquidNotKillTime.GetFloat());
+                    Squid.SetKillTimer(Squid.SquidNotKillTime.GetFloat());
+                    Squid.Abilitys.IsKillGuard = false;
+                }
+
+                if (__instance.IsImpostor())
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
+
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Slugger)) // キルクリセット処理
+                {
+                    if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
+                    {
+                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
+                        HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                    }
+                }
+
+                EvilGambler.MurderPlayerPostfix(__instance); // キルクリセット処理
+
+                Doppelganger.KillCoolSetting.MurderPlayer(__instance, target); // キルクリセット処理
+            }
+        }
+
+        // |:===== 以下targetが生存している場合には発生させない処理 =====:|
+        if (target.IsAlive()) return;
+
+        target.RpcSetPet("peet_EmptyPet");
+        Logger.Info($"{target.name}が死亡した為, Petを外しました。");
+
+        Logger.Info("死亡者リストに追加");
+        DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
+        DeadPlayer.deadPlayers.Add(deadPlayer);
+        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+
+        DeadPlayer.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
+
+        if (IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())
+        {
+            new CustomMessage("\n死者が発生しました", 5f);
+            Logger.Info("死者が発生しました", "DebugMode");
+        }
+
+        target.OnDeath(__instance);
+
+        Seer.WrapUpPatch.MurderPlayerPatch.Postfix(target);
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
@@ -1035,6 +1092,8 @@ public static class MurderPlayerPatch
         }
         else if (ModeHandler.IsMode(ModeId.Default))
         {
+            Levelinger.MurderPlayer(__instance, target);
+
             if (RoleClass.Camouflager.IsCamouflage)
             {
                 PlayerOutfit outfit = new()
@@ -1056,26 +1115,7 @@ public static class MurderPlayerPatch
                     }
                 }
             }
-            if (target.IsRole(RoleId.Speeder))
-            {
-                if (RoleClass.Speeder.IsSpeedDown) Speeder.SpeedDownEnd();
-            }
-            else if (target.IsRole(RoleId.Clergyman))
-            {
-                RPCProcedure.RPCClergymanLightOut(false);
-            }
-            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
-            {
-                RoleClass.Finder.KillCount++;
-            }
-            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Slugger))
-            {
-                if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
-                {
-                    HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
-                    HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
-                }
-            }
+
             if (target.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic) && target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
                 if (NiceMechanic.TargetVent.ContainsKey(target.PlayerId) || NiceMechanic.TargetVent[target.PlayerId] is not null)
@@ -1084,6 +1124,19 @@ public static class MurderPlayerPatch
                     NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, NiceMechanic.TargetVent[target.PlayerId], false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
                 }
             }
+
+            if (target.IsRole(RoleId.Speeder))
+            {
+                if (RoleClass.Speeder.IsSpeedDown) Speeder.SpeedDownEnd();
+            }
+            else if (target.IsRole(RoleId.Clergyman))
+            {
+                RPCProcedure.RPCClergymanLightOut(false);
+            }
+
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
+                RoleClass.Finder.KillCount++;
+
             if (__instance.IsRole(RoleId.OverKiller))
             {
                 FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.OverKillerOverKill;
@@ -1099,6 +1152,7 @@ public static class MurderPlayerPatch
                     deadBody.transform.position = position;
                 }
             }
+
             if (target.IsRole(RoleId.Jumbo))
             {
                 DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
@@ -1111,7 +1165,7 @@ public static class MurderPlayerPatch
                     }
                 }
             }
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.Death);
+
             if (target.IsRole(RoleId.Assassin))
             {
                 target.Revive();
@@ -1129,44 +1183,28 @@ public static class MurderPlayerPatch
                 RoleClass.Assassin.TriggerPlayer = target;
                 return;
             }
+
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) &&
+                RoleClass.Painter.CurrentTarget != null &&
+                RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId)
+                Painter.Handle(Painter.ActionType.Death);
+
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Psychometrist))
+                Psychometrist.MurderPlayer(__instance, target);
+
+            if (target.IsRole(RoleId.Hitman))
+                Hitman.Death();
+
+            if (target.IsRole(RoleId.OrientalShaman) && OrientalShaman.OrientalShamanCausative.ContainsKey(target.PlayerId))
             {
-                Roles.Crewmate.Psychometrist.MurderPlayer(__instance, target);
-            }
-            if (target.IsDead())
-            {
-                if (target.IsRole(RoleId.Hitman))
+                PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[target.PlayerId]);
+                if (causativePlayer.IsAlive())
                 {
-                    Roles.Neutral.Hitman.Death();
-                }
-                else if (target.IsRole(RoleId.OrientalShaman) && OrientalShaman.OrientalShamanCausative.ContainsKey(target.PlayerId))
-                {
-                    PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[target.PlayerId]);
-                    if (causativePlayer.IsAlive())
-                    {
-                        RPCProcedure.RPCMurderPlayer(causativePlayer.PlayerId, causativePlayer.PlayerId, 0);
-                        causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
-                    }
+                    RPCProcedure.RPCMurderPlayer(causativePlayer.PlayerId, causativePlayer.PlayerId, 0);
+                    causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 }
             }
-            Levelinger.MurderPlayer(__instance, target);
-            if (RoleClass.Lovers.SameDie && target.IsLovers())
-            {
-                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-                {
-                    PlayerControl SideLoverPlayer = target.GetOneSideLovers();
-                    if (SideLoverPlayer.IsAlive())
-                    {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                        writer.Write(SideLoverPlayer.PlayerId);
-                        writer.Write(SideLoverPlayer.PlayerId);
-                        writer.Write(byte.MaxValue);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
-                        SideLoverPlayer.RpcSetFinalStatus(FinalStatus.LoversBomb);
-                    }
-                }
-            }
+
             if (target.IsQuarreled())
             {
                 if (AmongUsClient.Instance.AmHost)
@@ -1184,23 +1222,6 @@ public static class MurderPlayerPatch
                         GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
                     }
                 }
-            }
-            Minimalist.MurderPatch.Postfix(__instance);
-        }
-        Vampire.OnMurderPlayer(__instance, target);
-        if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
-        {
-            EvilGambler.MurderPlayerPostfix(__instance);
-            Doppelganger.KillCoolSetting.MurderPlayer(__instance, target);
-            if (__instance.IsImpostor())
-            {
-                PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
-            }
-            if (Squid.Abilitys.IsKillGuard)
-            {
-                PlayerControl.LocalPlayer.SetKillTimerUnchecked(Squid.SquidNotKillTime.GetFloat(), Squid.SquidNotKillTime.GetFloat());
-                Squid.SetKillTimer(Squid.SquidNotKillTime.GetFloat());
-                Squid.Abilitys.IsKillGuard = false;
             }
         }
     }
@@ -1316,14 +1337,14 @@ class ReportDeadBodyPatch
                     __instance.SetRoleRPC(target.Object.GetRole());
                 }
             }
-            if (__instance.IsRole(RoleId.DyingMessenger) && target != null && DyingMessenger.ActualDeathTime.ContainsKey(target.PlayerId))
+            if (__instance.IsRole(RoleId.DyingMessenger) && target != null && DeadPlayer.ActualDeathTime.ContainsKey(target.PlayerId))
             {
-                bool isGetRole = (float)(DyingMessenger.ActualDeathTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
-                bool isGetLightAndDarker = (float)(DyingMessenger.ActualDeathTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
+                bool isGetRole = (float)(DeadPlayer.ActualDeathTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
+                bool isGetLightAndDarker = (float)(DeadPlayer.ActualDeathTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
                 string firstPerson = IsSucsessChance(9) ? ModTranslation.GetString("DyingMessengerFirstPerson1") : ModTranslation.GetString("DyingMessengerFirstPerson2");
                 if (isGetRole)
                 {
-                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), firstPerson, ModTranslation.GetString($"{DyingMessenger.ActualDeathTime[target.PlayerId].Item2.GetRole()}Name"));
+                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), firstPerson, ModTranslation.GetString($"{DeadPlayer.ActualDeathTime[target.PlayerId].Item2.GetRole()}Name"));
                     new LateTask(() =>
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
@@ -1335,7 +1356,7 @@ class ReportDeadBodyPatch
                 if (isGetLightAndDarker)
                 {
                     string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), firstPerson,
-                        CustomColors.lighterColors.Contains(DyingMessenger.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
+                        CustomColors.lighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
                     new LateTask(() =>
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
