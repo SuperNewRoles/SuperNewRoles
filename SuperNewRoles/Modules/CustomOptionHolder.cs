@@ -1618,6 +1618,8 @@ public class CustomOptionHolder
 
         WiseMan.SetupCustomOptions();
 
+        Pteranodon.SetupCustomOptions();
+
         Balancer.SetupCustomOptions();
 
         MayorOption = SetupCustomRoleOption(400700, true, RoleId.Mayor);
@@ -1941,8 +1943,6 @@ public class CustomOptionHolder
         // SetupModifierCustomOptions
 
         RoleBaseHelper.SetUpOptions();
-
-        Pteranodon.SetupCustomOptions();
 
         // 表示設定
 
