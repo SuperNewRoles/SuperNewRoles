@@ -228,75 +228,6 @@ AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをで�
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
 
 # Modes
-<<<<<<< HEAD
-ModeSetting,Mode Setting,モード設定,模式设置
-SettingMode,Mode,モード,游戏模式
-SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置
-SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,大逃杀模式设置
-SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHostRoles设置
-SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置
-SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置
-SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置
-HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫
-BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀
-SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles
-ZombieModeName,Zombie Mode,ゾンビモード,生化危机
-RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式
-NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード,双盲内鬼模式
-CopsRobbersModeName,CopsRobbers,ケイドロ,警察抓小偷
-CopsRobbersModeCrewName,Thief,泥棒,小偷
-CopsRobbersModeCrewTitle1,Finish the task and win without getting caught by the police!,警察に捕まらないようにタスクを終わらせて勝利しよう,在不被警察抓到的前提下完成任务获得胜利
-CopsRobbersModeImpostorName,Police,警察,警察
-CopsRobbersModeImpostorTitle1,Catch all the thieves and win!,泥棒を全員捕まえて勝利しよう,逮捕所有小偷获得胜利
-DetectiveModeName,Detective Mode,探偵モード,侦探模式
-DetectiveModeIsWinNotCheckSetting,Not include the detective in the win condition determination.,探偵を勝利条件判定に入れない,侦探不计入胜利条件判定
-DetectiveModeIsNotTaskSetting,No tasks for detective,探偵にタスクがない,侦探没有任务
-DetectiveModeIsNotDetectiveVoteSetting,Non-Detective cannot vote,探偵以外は投票できない,侦探以外的玩家不可以投票
-DetectiveModeIsNotDetectiveMeetingButtonSetting,Non-Detective cannot press the conference button,探偵以外が会議ボタンを押せない,侦探以外的玩家不可以召开紧急会议
-DetectiveName,Detective,探偵,侦探
-DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイトを勝利させよう,通过推理帮助船员获胜
-BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数
-BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛
-BattleRoyalTeamAmount,Number of teams,チーム数,团队数
-BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间
-BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。
-BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！
-BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます)
-BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!\n能力は、シェイプシフトで発動できます!
-ZombieZombieName,Zombie,ゾンビ,僵尸
-ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利
-ZombiePoliceName,Police,警察,人类
-ZombiePoliceTitle1,Let's finish the task.,タスクを終わらせて勝利しよう,完成任务获得胜利
-ZombieTimerText,Zombies incoming! {0}s,ゾンビがやってくるまで残り{0}秒！,僵尸将在{0}秒后出现
-ZombieStartSecondSetting,Time until the zombies come.,ゾンビがやってくるまでの時間,僵尸出现倒计时
-ZombieZombieLightSetting,Zombie Visibility,ゾンビの視界,僵尸视野
-ZombieZombieSpeedSetting,Zombie Speed,ゾンビのスピード,僵尸速度
-ZombiePoliceLightSetting,Police visibility,警察の視界,人类视野
-ZombiePoliceSpeedSetting,Speed of police,警察のスピード,人类速度
-ZombieCommingLightSetting,Light before zombies,ゾンビがやってくる前の視界,僵尸出现前的视野
-ZombieCommingSpeedSetting,Speed before zombies,ゾンビがやってくる前のスピード,僵尸出现前的速度
-RandomColorHideNameSetting,Hide Name,名前を隠す,隐藏昵称
-RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜色改变
-RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变
-NeutralName,Neutral,第三陣営,独立阵营
-WinName,Win,勝利,胜利
-PlusModeSetting,Plus Mode,重複モード,附加模式
-SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏
-SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜
-SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点
-MapOptionSetting,Map Option,マップの設定,地图设置
-NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告
-NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议
-DeviceOptionsSetting,Device Options,機器の設定,飞船设备设置
-DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图
-DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える,可以观看生命监测装置和通行日志
-DeviceUseCameraSetting,Use OK Camera,カメラが使える,可以观看监控
-HASHideName,Hide,逃,躲藏者
-HASSeekName,Seek,鬼,抓捕者
-HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,死亡后隐藏尸体并清除任务
-HASUseSaboSetting,Use Sabotage,サボタージュが使える,抓捕者可以造成紧急破坏
-HASUseVentSetting,Use Vent,ベントが使える,抓捕者可以使用管道
-=======
 ModeSetting,Mode Setting,モード設定,模式设置,模式設定
 SettingMode,Mode,モード,游戏模式,遊戲模式
 SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置,躲貓貓模式設定
@@ -323,10 +254,14 @@ DetectiveModeIsNotDetectiveVoteSetting,Non-Detective cannot vote,探偵以外は
 DetectiveModeIsNotDetectiveMeetingButtonSetting,Non-Detective cannot press the conference button,探偵以外が会議ボタンを押せない,侦探以外的玩家不可以召开紧急会议,偵探以外的玩家禁止召開緊急會議
 DetectiveName,Detective,探偵,侦探,偵探
 DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイトを勝利させよう,通过推理帮助船员获胜,通過推理幫助船員獲勝
-BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数,所有玩家可見存活玩家總數
-BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛,團體戰
-BattleRoyalTeamAmount,Number of teams,チーム数,团队数,團隊數
-BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间,可擊殺所需時間
+BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数
+BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛
+BattleRoyalTeamAmount,Number of teams,チーム数,团队数
+BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间
+BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。
+BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！
+BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます)
+BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!\n能力は、シェイプシフトで発動できます!
 ZombieZombieName,Zombie,ゾンビ,僵尸,殭屍
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利,感染他人以獲得勝利
 ZombiePoliceName,Police,警察,人类,人類
@@ -361,7 +296,6 @@ HASSeekName,Seek,鬼,抓捕者,捉捕方
 HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,死亡后隐藏尸体并清除任务,死後隱藏屍體並清除任務
 HASUseSaboSetting,Use Sabotage,サボタージュが使える,抓捕者可以造成紧急破坏,捉捕方可以使用緊急破壞
 HASUseVentSetting,Use Vent,ベントが使える,抓捕者可以使用管道,捉捕方可以使用通風管道
->>>>>>> fix/v2023.3.28
 
 # FinalResults
 FinalResults,Final results,最終結果,最終結果
@@ -977,426 +911,6 @@ CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移�
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,可以把一名玩家变成叛徒,可以把一名玩家變成叛徒
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 
-<<<<<<< HEAD
-PositionSwapperName,Position Swapper,ポジションスワッパー,念动使
-PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人
-SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数
-SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム,念动使换位冷却
-PositionSwapperNumTextName,Limits:{0},残り{0}回,剩余{0}次
-PositionSwapperButtonName,PositionSwap,スワップ,移位
-PositionSwapperSwapText,Position swapper swapped you!,スワッパーによってスワップされました!,念动使交换了你的位置！
-PositionSwapperSwapText2,Position swapper swapped you!\nby the way，ykundesu is delicious，isn't it?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ,念动使交换了你的位置！\n（这里是个彩蛋，但我不知道写啥好，就祝看到它的你身体健康吧）
-TunaName,Tuna,マグロ,铁华团团长
-TunaTitle1,Always move!,常に動け！,不要停下来啊……
-TunaStoppingTimeSetting,Stopping Time,止まれる時間,团长允许停下的最大时间
-TunaAddWinSetting,Add Win,追加勝利,团长的胜利作为追加胜利而非单独胜利
-BlackCatName,Black Cat,黒猫,叛变的猎人
-BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ,为内鬼献出生命
-MafiaName,Mafia,マフィア,黑手党
-MafiaTitle1,Let's avenge our fellow impostor,仲間の敵討ちをしよう,为同伴报仇
-MafiaDescription,When all the impostors except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.,マフィア以外のインポスターが全員死亡するとキルできるようになります。\nキルが出来ない間もキルクールタイムは進みます。,黑手党属于内鬼阵营。\n除黑手党以外的内鬼阵营玩家全部死亡后，黑手党才能进行击杀。\n无法击杀时，黑手党击杀冷却也会照常减少。
-RecordsAdminDestroySetting,Cannot Use Archive Admin,アーカイブのアドミンを使用不可にする,无法使用管理地图
-SpyName,Spy,スパイ,卧底
-SpyTitle1,Deceive the Impostor and lead the Cluemate camp to victory!,インポスターを欺き、クルーメイト陣営を勝利に導こう,欺骗并找出内鬼，帮助船员取得胜利
-SpyDescription,Spies are crewmates but they look like friends to the Impostor.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。,卧底属于船员阵营。\n在内鬼看来卧底属于内鬼阵营。\n卧底没有其他特殊能力。
-SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス),波鲁斯(Polus)：将生命监测仪移动至样本室
-CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする,下载自定义帽子
-KunoichiName,Kunoichi,クノイチ,女忍
-KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け,用你的忍术来欺骗村子
-KunoichiCoolTime,Kunai Cool Time,クナイのクールタイム,女忍苦无冷却
-KunoichiKillKunai,Number of kunai required for a kill,キルに必要なクナイ数,女忍进行击杀所需要的苦无数
-KunoichiIsHide,Transparency,透明化,隐身
-KunoichiHideTime,Time required for transparency,透明化に必要な時間,女忍隐身所需要的时间
-KunoichiKunai,Kunai,クナイ,苦无
-KunoichiHideKunai,Can throw kunai during invisibility.,透明化中にクナイを投げれる,女忍隐身时可以投掷苦无
-KunoichiIsWaitAndPressTheButtonToHide,Transparency with a button,透明化をボタンで行う,女忍需要主动让自己隐身
-SecretlyKillerName,Secretly Killer,シークレットリーキラー,暗杀者
-SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに,只有死人才能守住秘密
-SettingCoolCharge,Same in kill buttons,キル時のクール同期,暗杀者技能与击杀同步冷却
-SettingBlackoutCharge,Kill cool charge during power outage,停電中にクールをためる,暗杀者熄灯时可以加快冷却
-SettingLimitName,Ability limit,制限回数,能力最大使用次数
-SecretlyKillButtonName,Secretly\nKill,シークレットリー\nキル,暗杀
-DoubleKillerName,DoubleKiller,ダブルキラー,双刀手
-MainCoolTimeSetting,MainKillCooldown,メインキルボタンのクールダウン,双刀手主击杀冷却
-SubCoolTimeSetting,SubKillCooldown,サブのキルボタンのクールダウン,双刀手副击杀冷却
-DoubleKillerSaboSetting,DoubleKillerCanUseSabotage,ダブルキラーがサボを使えるか,双刀手可以破坏
-SmasherName,Smasher,スマッシャー,粉碎者
-KillCoolTimeSetting,KillCooldown,キルクールダウン,击杀冷却
-DoubleKillerTitle1,Let's master the independent kill button!,独立したキルボタンを使いこなそう,掌握二刀流的力量
-SmasherTitle1,Let's do continuous kills!,連続キルを行おう,唯快不破！
-SuicideWisherName,Suicide Wisher,スーサイドウィッシャー‌,抑郁者
-SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう,玉玉，不响丸辣，紫砂了
-SuicideName,Suicide,自殺,自杀
-NeetName,Neet,ニート,废柴
-NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干劲呢，明天再努力吧
-FastMakerName,Fast Maker,ファストメーカー,洗脑师
-FastMakerTitle1,Let's make Madmate with a light heart.,軽い気持ちでマッドメイトを作ろう,让船员背叛成为你的俘虏
-FastMakerDescription,This role can create a Mad Mate with the first kill.,初手キルでマッドメイトを作成出来るインポスターです。
-KillName,KILL,キル,击杀
-JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる,豺狼可以将一名玩家招募为狈
-ToiletFanName,Toilet Fan,トイレファン,腹泻者
-ToiletFanTitle1,A little faster...,少しでも早く...,要……要喷射了……
-ToiletCooldownSetting,Toilet Cool Time,トイレクールタイム,腹泻者开门冷却
-ToiletName,DoorOpen,ドア開放,开门
-PolusrandomSpawn,RandomSpawn,ランダムスポーン,出生点随机
-NotImpostorExiled,Not taking the Impostor off the road,インポスターを道連れにしない,不会连带内鬼阵营玩家死亡
-NiceButtonerName,NiceButtoner,ナイスボタナー,正义的执钮人
-NiceButtonerTitle1,Let&apos;s a start meeting.,会議を開始しよう,召开会议
-EvilButtonerName,EvilButtoner,イビルボタナー,邪恶的执钮人
-EvilButtonerTitle1,Let&apos;s a start meeting.,会議を開始しよう,召开会议
-ButtonerCooldownSetting,Cooldown,クールタイム,执钮人技能冷却
-ButtonerCountSetting,Number of uses,使用回数,执钮人技能最大使用次数
-ButtonerButtonName,Meeting!,緊急会議！,召开
-RevolutionistName,Revolutionist,革命家,革命家
-RevolutionistTitle1,Let's start a revolution.,革命を起こそう,发起革命
-DictatorName,Dictator,独裁者,独裁者
-DictatorTitle1,Let's monopolize power,権力を独占しよう,掌握独裁的权力
-RevolutionistAndDictatorName,<color=#FF0033>Revolutionist</color>And<color=#336600>Dictator</color>,<color=#FF0033>革命家</color>と<color=#336600>独裁者</color>,<color=#FF0033>大</color>革<color=#336600>命</color>
-SettingRevolutionistPlayerCountName,Number of <color=#FF0033>Revolutionist</color>,<color=#FF0033>革命家</color>の人数,<color=#FF0033>革命家</color>人数
-SettingDictatorPlayerCountName,Number of <color=#336600>Dictator</color>,<color=#336600>独裁者</color>の人数,<color=#336600>独裁者</color>人数
-DictatorSubExile,When exiled， exile another player.,追放時、別のプレイヤーを追放する,独裁者被放逐时将随机选一名玩家代为放逐
-DictatorSubExileLimit,Maximum number of substitutions,身代わりの最大回数,独裁者逃避放逐的最大次数
-DictatorVoteCount,Dictatorial vote count,独裁者の票数,独裁者投票的等价票数
-RevolutionCoolTime,revolutionary cool time,革命クールタイム,发起革命的冷却
-RevolutionTouchTime,Revolutionary contact hours,革命家の接触時間,革命家发动革命所需的接触时间
-RevolutionistAddWin,Additional Victories for Revolutionist,革命家の追加勝利,革命家获得追加胜利而非单独胜利
-RevolutionistAddWinIsAlive,Additional victory only when alive,生存時のみ追加勝利,革命家仅在存活时获得追加胜利
-RevolutionistButtonName,Up to revolutionary possible,革命可能まで,时机已到，今日起兵！
-RevolutionistMeeting,Revolutionist Meeting,革命会議
-SidekickFriendsName,SidekickFriends,サイドキックフレンズ,牧狼人
-SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利
-SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。
-SpelunkerName,Spelunker,スペランカー,倒霉蛋
-SpelunkerTitle1,It's so easy to die.,簡単に死んでしまう,死亡如风，常伴吾身
-SpelunkerVentDeathChance,Probability of vent death,ベント死の確率,倒霉蛋在管道口跌倒而死的概率
-SpelunkerIsDeathCommsOrPowerdown,Power outage/community skipping death,停電/コミュサボ死,倒霉蛋会在照明或通讯破坏期间失足而死
-SpelunkerDeathCommsOrPowerdownTime,Time to power outage/community sabotage death,停電/コミュサボ死までの時間,倒霉蛋在照明或通讯期间死亡需要经过的时间
-SpelunkerLiftDeathChance,Probability of falling off the lift,昇降機リフトから転落する確率,倒霉蛋从移动平台掉下摔死的概率
-SpelunkerDoorOpenChance,Probability of death from pinched fingers in door opening,ドア開けの指挟み死の確率,倒霉蛋开门时被门夹死的概率
-HitmanName,Hitman,殺し屋,职业杀手
-HitmanTitle1,Kill the designated person.,指定された人をキルせよ,听着，所谓杀手……
-HitmanChangeTargetTime,Time for target to reset,ターゲットがリセットされる時間,职业杀手目标切换的所需时间
-HitmanIsOutMission,If the mission cannot be accomplished， it will self-destruct.,任務が遂行できないと自爆する,职业杀手在若干次击杀失败后自杀
-HitmanOutMissionLimit,Number of possible failures,失敗可能数,职业杀手可被允许的最大失败次数
-HitmanWinKillCount,Number of missions performed required to win,勝利に必要な任務遂行数,职业杀手获胜需要的成功击杀次数
-HitmanIsTargetArrow,Display arrow to target,ターゲットへ矢印を表示する,职业杀手可以通过箭头确认目标所在位置
-HitmanUpdateTargetArrowTime,Interval to update arrows,矢印を更新する間隔,职业杀手箭头更新间隔时间
-NunName,Nun,ぬーん,捣蛋鬼
-NunTitle1,Nun,ぬーん,让大家用不了移动平台
-NunButtonName,Nun,ぬーん,捣蛋
-PsychometristName,Psychometrist,サイコメトラー,验尸官
-PsychometristTitle1,Let's read the situation of the corpse.,死体の状況をよみとろう,通过尸体来搜寻线索
-PsychometristReadTime,ReadTime,よみとり時間,验尸官验尸所需时间
-PsychometristIsCheckDeathTime,Estimated time of death is available.,死亡推定時間がわかる,验尸官可以验得死亡时间
-PsychometristDeathTimeDeviation,Maximum discrepancy in estimated time of death,死亡推定時刻の最大ズレ,验尸官验得的死亡时间的最大误差
-PsychometristIsCheckDeathReason,I know the cause of death.,死因がわかる,验尸官可以验得死因
-PsychometristIsCheckFootprints,I can see the killer's footprints.,犯人の足跡が見える,验尸官可以验得凶手的足迹
-PsychometristCanCheckFootprintsTime,Time range within which footprints can be traced,足跡が追跡可能な時間範囲,凶手足迹可被探测的最大范围
-PsychometristIsReportCheckedDeadBody,You can report it even after reading it.,よみとった後でも通報できる,被验尸官验尸后的尸体仍然可以被报告
-PsychometristButtonName,reading,よみとり,验尸
-SeeThroughPersonName,SeeThroughPerson,透視者,目击者
-SeeThroughPersonTitle1,Witness the decisive moment!,決定的瞬間を目撃しよう,透过门缝目击决定性的瞬间
-MatryoshkaName,Matryoshka,マトリョーシカ,恐怖套娃
-MatryoshkaTitle1,Cloak the corpse and move the corpse.,死体をまとって死体を移動させよう,把尸体做成套娃
-MatryoshkaWearLimit,Number of times you can wear it,纏える回数,恐怖套娃最大套娃次数
-MatryoshkaAddKillCoolTime,Increased kill-cool time time for corpse coats,死体まといの増加キルクールタイムタイム,恐怖套娃每次套娃追加的击杀冷却
-MatryoshkaWearReport,can be called in while the body is still circled,まとい中でも通報可能,恐怖套娃可以在套娃状态下报告
-MatryoshkaWearTime,Coiling time,まとえる時間,恐怖套娃套娃持续时间
-MatryoshkaPutOnButtonName,Put On,着る,套娃
-MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除
-StefinderName,Stefinder,ステファインダー,二五仔
-StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう,那么答案只有一个了！
-StefinderKillCooldownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却
-StefinderVentSetting,CanUseVent,ベントを使用できる,二五仔可以使用管道
-StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五仔可以造成破坏
-StefinderSoloWinSetting,SoloWin,単独勝利,二五仔可以单独获胜
-PartTimerName,PartTimer,フリーター,打工仔
-PartTimerTitle1,If you want a part-time job...!,バイトするなら…！ ,打工人，打工魂，打工都是人上人！
-PartTimerDeathTurn,Number of turns to die from unbited status,未バイトの状態から死亡するターン数,无业状态下打工仔穷死经过的回合数
-PartTimerIsCheckTargetRole,I can see your part-time position.,バイト先の役職が見える,打工仔可以确认打工对象的职业
-PartTimerButtonName,PartTime,バイト,打工
-PainterName,Painter ,ペインター,油漆匠
-PainterTitle1,Follow the traces of paint,絵具の痕跡をたどろう,通过油漆痕迹获得信息
-PainterIsTaskComplateFootprint,Leave a trace when completing a task,タスク完了時痕跡を残す,目标完成任务后会留下油漆痕迹
-PainterIsSabotageRepairFootprint,Leave a trace when repairing a sabotage,サボタージュ修復時痕跡を残す,目标修复紧急破坏后会留下油漆痕迹
-PainterIsInVentFootprint,Leave a trace when entering a vent,ベントに入った時痕跡を残す,目标进入管道后会留下油漆痕迹
-PainterIsExitVentFootprint,Leave a trace when exiting a vent,ベントから出た時痕跡を残す,目标离开管道后会留下油漆痕迹
-PainterIsCheckVitalFootprint,Leave a trace when checking vitals,バイタルチェック時痕跡を残す,目标观看生命监测仪后会留下油漆痕迹
-PainterIsCheckAdminFootprint,Leave a trace when administering,アドミン時痕跡を残す,目标观看管理地图后会留下油漆痕迹
-PainterIsDeathFootprint,Leave a trace of the place of death,死亡場所の痕跡を残す,目标死亡后会留下油漆痕迹
-PainterIsDeathFootprintBig,Increase the size of the trace at the place of death,死亡場所の痕跡を大きくする,目标死亡后留下的油漆痕迹变大
-PainterIsFootprintMeetingDestroy,Trace disappears at meeting,痕跡が会議で消える,油漆痕迹在会议结束后消失
-PainterButtonName,Paint,ペイント,油漆
-PainterIsTaskCompleteFootprint,Leave traces when tasks are completed,タスク完了時に痕跡を残す,完成任务后会留下油漆痕迹
-FinderName,Finder,ファインダー,接头人
-FinderTitle1,Get to know your peers.,仲間を知ろう,与叛徒取得联系
-FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,接头人确认叛徒需要进行的击杀次数
-PhotographerName,Photographer,写真屋,摄影师
-PhotographerTitle1,Let's capture everyone on camera!,みんなの姿をカメラに収めよう ,茄~子！
-PhotographerIsBonus,Bonuscooltime is valid,ボーナスクールタイムが有効,摄影师一次拍摄多名玩家可以缩减冷却
-PhotographerBonusCount,Number of people to be photographed that will be Bonuscooltime.,ボーナスクールタイムになる撮影人数,摄影师缩减冷却需要拍摄的人数
-PhotographerBonusCoolTime,Bonus Cool Time,ボーナスクールタイム,摄影师一次拍摄多名玩家后的缩减冷却
-PhotographerIsImpostorVision,Impostor view,インポスターの視界,摄影师拥有内鬼视野
-PhotographerIsNotification,Notification of Shooting,撮影の通知,摄影将会被告知给被拍摄玩家
-PhotographerButtonName,Take a picture,撮影する,摄影
-TacticianName,Tactician,戦術家,战术家
-SluggerName,Slugger,スラッガー,击球手
-SluggerTitle1,Lets’ Harisen Kill!,ハリセンでキルしよう,用全垒打把其他人击飞
-SluggerChargeTime,Charge Time,チャージ時間,击球手充能时间
-SluggerIsMultiKill,Range kill possible,範囲キル可能,击球手可以大范围击杀
-SluggerButtonName,Harisen,ハリセン,挥棒
-SatsumaAndImoName,SatsumaAndImo,さつまといも,人格分裂者
-SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト,是我疯了，还是大家都疯了？
-SatsumaAndImoTitle2,Betray and betray.,手のひらをくるくる返そう
-ShiftActorName,Shift Actor,シフトアクター,模仿犯
-ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,我会比你更像你自己
-CanWatchAttribute,Can watch attribute,重複役職を見れる,模仿犯可以确认模仿对象的附加职业
-RightChance,Probability of Success,成功確率
-ShiftActorText1,'s role is,の役職は,的职业是
-ShiftActorText2,.,です,。
-MadRolesCanFixComms,Mad roles can fix comms sabotage,マッド役職がコミュサボを治せる,叛徒阵营玩家可以修理通讯破坏
-MadRolesCanFixElectrical,Mad roles can fix electrical sabotage,マッド役職が停電を治せる,叛徒阵营玩家可以修理照明破坏
-MadRolesCanVentMove,Mad roles can vent move,マッド役職がベント移動できる,叛徒阵营玩家可以在管道间移动
-DoppelgangerName,Doppelganger,ドッペルゲンガー,二重身
-DoppelgangerTitle1,\It seems that if you'll meet myself， you're dead\,同じ顔の人に出会うと死んじゃうんだって,“听说了吗，人在命不久矣的时候会见到另一个自己”
-DoppelgangerDescription,Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift，the Kill Cool  is shorter.\nIf，instead，a non-shapeShifted target is killed or a non-shapeShifted target is killed，the Kill Cool will be longer.,ドッペルゲンガーはシェイプシフトができます\nシェイプシフトをした状態で、シェイプシフトの変身先をキルするとキルクールが短くなります。\nシェイプシフトの変身先以外をキルしたり、シェイプシフトをしない状態でキルすると、キルクールが長くなってします。,二重身可以化形。\n化形状态下的二重身击杀自己的化形对象后，二重身的下一次击杀冷却缩短。\n若二重身在化形状态下击杀了自己化形对象以外的玩家，或者在未化形的状态下进行击杀，下一次击杀冷却将延长。
-DoppelgangerDurationTimeSetting,Shapeshift Duration,シェイプシフトの持続時間,二重身化形持续时间
-DoppelgangerCooldownSetting,Shapeshift Cooldown,シェイプシフトのクールタイム,二重身化形冷却
-DoppelgangerSucTimeSetting,Kill Cool Time on Success,成功時のキルクール,二重身成功击杀化形对象后的击杀冷却
-DoppelgangerNotSucTimeSetting,Kill Cool Time on Failur,失敗時のキルクール,二重身没能成功击杀后的击杀冷却
-DoppelgangerButtonName,ShapeShift,シェイプシフト,化形
-DoppelgangerDurationTimerText,{0} seconds left to deactivate.,解除まで{0}秒,{0}秒后解除化形
-WaveCannonName,Wave Cannon,波動砲,重炮手
-WaveCannonTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！
-WaveCannonChargeTime,Charge Time,チャージ時間,充能所需时间
-WaveCannonButtonName,Wave Cannon,波動砲,开炮
-IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却
-WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手
-WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！
-CrackerName,Cracker,クラッカー,神隐者
-CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐
-CrackerIsAdminView,Counted by Admins,アドミンにカウントされる,被神隐玩家可以在地图上被观测到
-CrackerIsVitalsView,Counted in Vitals,バイタルにカウントされる,被神隐玩家可以在生命监测装置上被观测到
-CrackerOneTurnSelectCount,Number of times you can crack in one turn,1ターン内にクラックできる回数,神隐者每轮可以神隐的人数
-CrackerAllTurnSelectCount,Number of times you can crack during a match,試合中にクラックできる回数,神隐者每局游戏可以神隐的人数
-CrackerIsSelfNone,Cracks are unrecognizable to the cracker,クラック者はクラックを認識できない,神隐者无法识别被神隐的玩家
-CrackerButtonName,Crack!!!,クラック,神隐
-CamouflagerName,Camouflager,カモフラージャー,隐蔽者
-CamouflagerTitle1,Let's hide in the crowd.,人混みに隠れよう,隐匿于人群之中
-CamouflagerCoolTimeSetting,Camouflage Cooltime,カモフラージュのクールタイム,隐蔽者隐蔽冷却
-CamouflagerDurationTimeSetting,Camouflage Duration,カモフラージュの持続時間,隐蔽者隐蔽持续时间
-CamouflagerCamouflageArsonistSetting,Arsonists can still see mark while activating their skill,アーソニストがカモフラージュ中に塗った人がわかる,纵火犯不受隐蔽者技能影响
-CamouflagerCamouflageDemonSetting,Demon can still see mark while activating their skill,悪魔がカモフラージュ中に呪った人がわかる,恶魔不受隐蔽者技能影响
-CamouflagerCamouflageLoversSetting,Lovers can still see mark while activating their skill,ラバーズがカモフラージュ中に相方がわかる,恋人不受隐蔽者技能影响
-CamouflagerCamouflageQuarreledSetting,Quarreled can still mark while activating their skill,クラードがカモフラージュ中に相方がわかる,福音天使不受隐蔽者技能影响
-CamouflagerCamouflageChangeColorSetting,Change the color of camouflage,カモフラージュ中の色を変更する,自定义隐蔽色
-CamouflagerCamouflageColorSetting,Camouflage color,カモフラージュ中の色,隐蔽色
-CamouflagerButtonName,Camouflager,カモフラージュ,隐蔽
-PavlovsdogsName,Pavlov's dogs,パブロフの犬,巴甫洛夫的狗
-PavlovsownerName,Pavlov's owner,パブロフのオーナー,巴甫洛夫
-PavlovsdogsTitle1,Let us be of service.,お役に立ってみせましょう,我好想做巴甫洛夫先生的狗啊
-PavlovsownerTitle1,Be my dog!,私の犬になりなさい！,狗中毒.mp3
-PavlovsownerCreateDogCoolTime,Side Kick Cool Time,サイドキックのクールタイム,技能冷却
-PavlovsownerCreateDogLimit,Number of times a side kick can be made in one match,1試合内にサイドキックできる回数,巴甫洛夫每局游戏可以驯化狗的次数
-PavlovsownerIsTargetImpostorDeath,Self-destruct if the opponent is an Impostor,相手がインポスターだと自爆する,巴甫洛夫在尝试驯化内鬼为狗的场合自杀
-PavlovsdogIsImpostorView,Pavlov's dog has a view of the impostor,パブロフの犬がインポスターの視界,巴甫洛夫的狗拥有内鬼视野
-PavlovsdogRunAwayKillCoolTime,Coold time when out of control,暴走時のクールタイム,巴甫洛夫的狗发狂时的击杀冷却
-PavlovsdogRunAwayDeathTime,Self-destruct time when out of control,暴走時の自爆タイム,巴甫洛夫的狗发狂时的自杀时限
-PavlovsdogRunAwayDeathTimeIsMeetingReset,Reset self-destruct time in a meeting,会議で自爆タイムをリセットする,会议后重置巴甫洛夫的狗的自杀时限
-PavlovsTeamWinText,Pavlov's dog and owner,パブロフの犬とオーナー,巴甫洛夫团队
-PavlovsownerCreatedogButtonName,stenciling,刷り込み,驯化
-KnightName,Knight,騎士,骑士
-KnightTitle1,I will protect you according to my beliefs.,我が信念に沿って護衛しよう,举起正义之盾
-KnightDescription,During the conference phase，you can put up a shield to prevent one kill by using the protect button. If the protection is successful，a successful protection announcement will be played at the beginning of the next meeting phase.,会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。
-KnightCanAnnounceOfProtected,Play an announcement when the protection is successful?,護衛成功時にアナウンスを流すか,骑士守护成功后通知所有玩家
-KnightSetTheUpperLimitOfTheGuarding,Do you want to set a limit on the number of protections?,護衛回数に上限を設けるか,骑士守护次数有上限
-KnightMaximumNumberOfTimes,Maximum number of times protection is possible.,護衛上限回数,骑士每轮游戏最大守护次数
-TheKnightProtected,The knight's protection was successful.,騎士の護衛が成功しました。,骑士成功护卫了一名玩家。
-KnightProtectButton,Protect,護衛,保护
-WerewolfName,Werewolf,人狼,狼人
-WerewolfTitle1,Let's kill a villager!,村人をキルしよう,杀害村民
-ConnectKillerName,ConnectKiller,コネクトキラー,浊化行者
-ConnectKillerTitle1,Lets’ Connect!,通信サボタージュでベントを繋げよう,趁通讯破坏在管道间穿行
-NekoKabochaName,NekoKabocha,ネコカボチャ,复仇者
-NekoKabochaTitle1,Let me take you on the road.,道連れを起こそう,杀人偿命
-KillCooldown,KillCooldown,キルクールダウン,击杀冷却
-CanRevengeCrewmate,Can take crewmates on the road,クルーメイトを道連れ可,复仇者可以连带船员阵营玩家
-CanRevengeImpostor,Can take Impostor on the road,インポスターを道連れ可,复仇者可以连带内鬼阵营玩家
-CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可以连带独立阵营玩家
-CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家
-GMName,GM,GM,管理员
-GMTitle1,You are Game Master,あなたはゲームマスター,你是管理员
-GMTeleport,Teleport,テレポート,传送
-GMKill,Kill,キル,击杀
-GMRevive,Revive,復活,复活
-GMExile,Exile(No Deadbody Kill),追放(死体なしキル),放逐
-GMCleanDeadbody,Clean Deadbody,死体削除,清理
-GMStartMeeting,Start Meeting,会議開始,会议
-GMCleanDeadbodyAndRevive,Clean Deadbody And Revive,死体を削除して復活,清理尸体并复活
-GMSpawnDeadBody,Spawn Deadbody,死体発生,生成尸体
-GMEndMeeting,End Meeting,会議終了,结束会议
-SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生
-SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない,找寻活着的意义
-SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本
-SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間,绝望先生自杀倒计时
-SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増える時間,绝望先生完成一个任务后倒计时的增量
-SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死の確率,绝望先生摔死的概率
-SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者,再见，绝望先生！\n绝望先生
-SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
-CupidName,Cupid,キューピット,丘比特
-CupidTitle1,Let's tie the red thread of fate,運命の赤い糸を結ぼう,牵起命运的红线
-CupidButtonName,Shoot the love arrows,恋の矢,爱之箭
-HamburgerShopName,Hamburger Shop,ハンバーガー屋,汉堡店店主
-HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう,做出美味的汉堡
-HamburgerShopTitle2,Let's make lots of burgers!,ハンバーガーをたくさん作ろう,做出一大堆汉堡
-HamburgerShopTitle3,Hamburger is Delicious,ハンバーガー is デリシャス,汉堡能够让我们创造出奇迹，我是汉堡的忠实拥护者
-HamburgerShopChangeTaskPrefab,Replace all tasks with hamburger tasks,全タスクをハンバーガータスクに置き換える,汉堡店店主的所有任务替换为做汉堡任务
-PenguinName,Penguin,ペンギン,绑匪
-PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人
-PenguinButtonName,Abduction,拉致,绑架
-PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
-LoversBreakerName,LoversBreaker,爆ぜ師,FFF团
-LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！,现充去死！现充爆炸！
-LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需击杀的恋人数
-LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる,FFF团死亡状态下也能获胜
-LoversBreakerButtonName,Blow up,爆破,爆杀现充！
-JumboName,Jumbo,ジャンボ,巨无霸
-JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！,怎么你们都这么小？
-NiceJumboName,NiceJumbo,ナイスジャンボ,正义的巨无霸
-NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方,船员中的大块头
-EvilJumboName,EvilJumbo,イビルジャンボ,邪恶的巨无霸
-EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう,用庞大的身躯征服飞船
-JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率,巨无霸生成为船员阵营的概率
-JumboMaxSize,Maximum size,最大サイズ,巨无霸最大体型
-JumboSpeedUpSize,Growth speed,成長スピード,巨无霸变大速度
-JumboWalkSoundSize,Loudness of footsteps,足音の大きさ,巨无霸脚步声音量
-DebuggerName,Debugger,デバッガー,调试员
-DebuggerButtonName,Debug,デバッグ,调试
-Functions,Functions,基本操作,基础操作
-PlayerControl,Player control,プレイヤー操作,玩家操作
-StartMeeting,Start meeting,緊急会議,召开紧急会议
-ShowRole,Show role,役職を表示,显示职业
-DeShowRole,Cancel show role,役職を非表示,取消显示职业
-Teleport,Teleport,テレポート,传送
-ReportDeadbody,Report deadbody,通報,报告
-Exile,Exile,追放,放逐
-Kill,Kill,キル,击杀
-Revive,Revive,蘇生,复活
-CleanDeadbody,Clean deadbody,死体掃除,清理
-SetRole,Set role,役職付与,职业赋予
-Crewmate,Crewmate,クルーメイト,船员
-Impostor,Impostor,インポスター,内鬼
-WorshiperName,Worshiper,崇拝者,狂信徒
-WorshiperTitle1,If I can help them，I will spare my life.,あなた方の力になれるのなら 私の命など惜しくはない。,为主人献上自己的生命
-WorshiperDescription,It has two self-determination abilities.\nIt commits suicide on the spot by using the Shapeshift when SHR and the [Suicide] ability when SNR.\nBy using the kill button，it commits suicide in the form of a sheriff misfire.\nAha，master. My will is yours and my life is for yours...\nCome，master. Let us fulfill that desire.,2つの自決能力を持ちます。\nSHR時はシェイプシフト、SNR時は[自決]能力を使用する事で、その場で自殺します。\nキルボタンを使用する事でシェリフ誤爆のような形で自殺します。\n嗚呼、ご主人。私の意思は貴方の物であり、私の命は貴方の為にあるのです・・・\nさあ、ご主人その願望をかなえましょう。,狂信徒开局获得两个自杀能力。\n通过按下“化形”键（SHR）或“自杀”键（SNR），狂信徒可以在任意地点自杀。\n通过按下“击杀”键，狂信徒可以进行类似警长走火的自杀。\n主啊。我将为您献上我的意志，我将为您献上我的生命……\n来吧，主人，我将实现您的“那个”目标……
-WorshiperAbilitySuicideCoolTime,Suicide coold time setting with ability buttons.,アビリティボタンによる自決のクールタイム設定,任意自杀的冷却
-WorshiperKillSuicideCoolTime,Suicide coold time setting with kill buttons.,キルボタンによる自決のクールタイム設定,类似走火自杀的冷却
-WorshiperSuicide,Suicide,自決,自杀
-SafecrackerName,Safecracker,金庫破り,盗贼
-SafecrackerTitle1,Open the safe， get the ability and win!,金庫を開けて、能力と勝利を手に入れよう,偷窃保险箱，获取能力并夺得胜利
-SafecrackerDescription,By opening the vault， you can acquire various abilities.\nIt grants you a kill guard， an exiled guard， vent， etc.\nOpen the safe to the end and win the game.,金庫を開けることで、様々な能力を取得することが出来ます。\nキルガードや追放ガード、ベントなどが付与されます。\n金庫を最期まで開け、勝利を手に入れましょう。,通过打开保险库，盗贼可以获得各种能力，\n如击杀保护、放逐保护、使用管道等等。\n不断打开保险库来获得胜利。
-NotAbility,None,なし,无
-SafecrackerKillGuardTaskSetting,Amount of tasks to be able to kill guard (of all tasks),キルガードが出来るようになるタスク量(全タスク内),盗贼获得击杀保护需要打开的保险库数
-SafecrackerMaxKillGuardCountSetting,Kill guard max count,キルガードできる回数,击杀保护次数
-SafecrackerExiledGuardTaskSetting,Amount of tasks to be able to be able to exiled guard (of all tasks),追放ガードが出来るようになるタスク量(全タスク内),盗贼获得放逐保护需要打开的保险库数
-SafecrackerMaxExiledGuardCountSetting,Exiled guard max count,追放ガードできる回数,放逐保护次数
-SafecrackerUseVentTaskSetting,Amount of tasks for which the vent will be available (of all tasks),ベントが使用可能になるタスク量(全タスク内),盗贼获得使用管道能力需要打开的保险库数
-SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be available (of all tasks),サボタージュが使用可能になるタスク量(全タスク内),盗贼获得破坏能力需要打开的保险库数
-SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内),盗贼获得内鬼视野需要打开的保险库数
-SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内),盗贼确认内鬼玩家需要打开的保险库数
-SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える,盗贼的全部任务替换为解锁保险库的任务
-FireFoxName,Fier Fox,炎狐,烈焰狐
-FireFoxTitle1,I am Fier Fox!,私は炎狐です！,吾乃火之化身！
-FireFoxDescription,It is a Fox that has been given a kill button instead of a kill guard.\nThe number of kills is limited and only certain camps can be killed.\nIf you press the kill button for a player who is not in the killable camp， your kill count will decrease without a kill.\nThink about who to kill and contribute to the Fox's victory.,キルガードの代わりにキルボタンを与えられた妖狐です。\nキル回数は制限されており、特定の陣営のみキル可能です。\nキル可能陣営以外にキルボタンを押してしまうと、キルせずにキル回数のみ減ってしまいます。\n誰をキルするか考え、妖狐の勝利に貢献しましょう。,烈焰狐在狐妖的基础上失去了击杀保护能力，转而获得击杀能力。\n烈焰狐的击杀有次数限制，且只能击杀特定阵营的玩家。\n如果烈焰狐尝试击杀一名其不能击杀的玩家，那次击杀无效。\n仔细思考自己要击杀的玩家，作为狐妖获得胜利。
-FireFoxCanKillCrewmateSetting,Can kill the crewmate camp,クルーメイト陣営をキルできる,可以击杀船员阵营玩家
-FireFoxCanKillImpostorSetting,Can kill the imposter camp,インポスター陣営をキルできる,可以击杀内鬼阵营玩家
-FireFoxCanKillNeutralSetting,Can kill the third camp,第三陣営をキルできる,可以击杀独立阵营玩家
-FireFoxCanKillLoversSetting,Can kill the lovers,ラバーズをキルできる,可以击杀恋人
-FireFoxIsCheckFoxSetting,You can check the fox,妖狐を視認できる,可以确认妖狐是谁
-SquidName,Squid,イカ,乌贼娘
-SquidTitle1,Use ink to survive.,墨を使って生き延びろ,喷出乌贼墨来躲避击杀
-SquidTitle2,Let's use ink to get away with it.,墨を使って逃げ切ろう,不是要杀我吗？
-SquidDescription,You can be on alert for a certain period of time.\nIf you are about to be killed while on alert， you can prevent the kill， take away your opponent's vision， and increase your own movement speed for a certain period of time.,一定時間警戒することが出来ます。\n警戒中にキルされそうになると、そのキルを防ぎ相手の視界を奪い、一定時間自身の移動速度が上昇します。,乌贼娘使用技能后会进入警戒状态。\n若有玩家尝试击杀警戒状态下的乌贼娘，那次击杀无效，那名玩家的视野暂时缩小，乌贼娘自身的速度在一定时间内上升。
-SquidCoolTimeSetting,Cool time for vigilance mode,警戒モードのクールタイム,乌贼娘警戒冷却
-SquidDurationTimeSetting,Duration of vigilance mode,警戒モードの持続時間,乌贼娘警戒持续时间
-SquidBoostSpeedSetting,Movement speed on successful counters,カウンター成功時の移動速度,乌贼娘反击成功后的移动速度
-SquidBoostSpeedTimeSetting,Time to increase movement speed on successful counters,カウンター成功時の移動速度が上がる時間,乌贼娘反击成功后移动速度提升持续时间
-SquidNotKillTimeSetting,Time when no kills can be made on successful counters,カウンター成功時のキルが出来ない時間,乌贼娘反击成功后乌贼娘不能被击杀
-SquidDownVisionSetting,Field of vision when vision is deprived,視界が奪われたときの視野,乌贼娘影响下的玩家视野
-SquidObstructionTimeSetting,Time to take away the view,視界を奪う時間,玩家视野受乌贼娘影响的持续时间
-SquidButtonName,Vigilance,警戒,警戒
-DyingMessengerName,Dying Messenger,遺言伝達者,入殓师
-DyingMessengerTitle1,Will and testament， we will tell you.,遺言、お伝え致します,为生者传达死者的遗言
-DyingMessengerDescription,When you are able to report a kill within a certain amount of time after the kill.\nYou can get the information of the killers of the dead body you reported.\nGet the information and contribute to the victory of the crew's camp.,キルされてから一定時間内で通報できた時に、\n通報した死体のキル者の情報を取得することが出来ます。\n情報を取得し、クルー陣営の勝利に貢献しましょう。,如果入殓师在出现击杀后一定时间内报告玩家的尸体，\n入殓师将会得到有关这次击杀的凶手的信息。\n入殓师需要利用获得的信息帮助船员阵营获胜。
-DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the corpse,死体からキル者の役職を読み取れる時間,报告获得凶手职业所需死亡间隔时间
-DyingMessengerGetLightAndDarkerTimeSetting,Time to read the light and darker colors of the kill from the corpse,死体からキル者の色の明暗を読み取れる時間,报告获得凶手颜色深浅所需死亡间隔时间
-DyingMessengerFirstPerson1,me,私,我
-DyingMessengerFirstPerson2,me,僕,我
-DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,把{0}杀害的人是一名{1}。
-DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,把{0}杀害的人是{1}色的。
-WiseManName,WiseMan,賢者,贤者
-WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを守ろう,用神圣之盾保护船员
-WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾
-NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工
-NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道
-EvilMechanicName,EvilMechanic,イビルメカニック,邪恶的迁管工
-EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう,尝试将管道改造得对自己有利
-MechanicButtonName,Relocate.,移設,改造
-TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚,三只小猪
-TheFirstLittlePigName,The First Little Pig,1番目の仔豚,猪老大
-TheSecondLittlePigName,The Second Little Pig,2番目の仔豚,猪老二
-TheThirdLittlePigName,The Third Little Pig,3番目の仔豚,猪老三
-TheFirstLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子
-TheSecondLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子
-TheThirdLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子
-TheThreeLittlePigsTaskSetting,Assign tasks separately,別にタスクを割り当てる,单独分配任务数
-TheFirstLittlePigClearTaskSetting,Percentage of tasks required for The first little pig to complete the house,1番目の仔豚が家を完成させるのに必要なタスクの割合,猪老大盖出房子需要的任务进度
-TheFirstLittlePigIsCustomTimerSetting,Set the timer for The first little pig,1番目の仔豚のタイマーを設定する,猪老大盖房子有时间限制
-TheFirstLittlePigCustomTimerSetting,The first little pig timer,1番目の仔豚のタイマー,猪老大盖房子的时间限制
-TheSecondLittlePigClearTaskSetting,Percentage of tasks required for The second little pig to complete the house,2番目の仔豚が家を完成させるのに必要なタスクの割合,猪老二盖出房子需要的任务进度
-TheSecondLittlePigManGuardMaxCountSetting,Number of times The second little pig can be guarded,2番目の仔豚がガードできる回数,猪老二盖好房子后可以抵挡的击杀次数
-TheThirdLittlePigClearTaskSetting,Percentage of tasks required for The third little pig to complete the house,3番目の仔豚が家を完成させるのに必要なタスクの割合,猪老三盖出房子需要的任务进度
-TheThirdLittlePigCounterKillSetting,Number of times The third little pig can be countered,3番目の仔豚がカウンターできる回数,猪老三盖好房子后可以反杀的次数
-OrientalShamanName,Oriental Shaman,陰陽師,阴阳师
-OrientalShamanTitle1,Where this ship will end up is beyond where the stars lead us.,この船の行く末は星が導くその先に,群星指引着这艘飞船的终末…
-OrientalShamanDescription,They possess a variety of abilities necessary for survival.\nInstead， can't fix sabotage.\nIf you survive to the end， you win alone.,生き抜くために必要な様々な能力を持っています。\n代わりにサボタージュは直せません。\n最後まで生き残ると単独勝利します。,阴阳师属于独立阵营，拥有各种能力，需要存活来获得胜利。\n阴阳师不能修复紧急破坏。\n阴阳师存活到游戏结束则独自获胜。
-OrientalShamanImpostorVisionSetting,Make Oriental shaman the imposter vision,陰陽師をインポスターの視界にする,阴阳师拥有内鬼视野
-OrientalShamanVentUseCoolTimeSetting,Cool time for Oriental shaman's vent,陰陽師のベントのクールタイム,阴阳师使用管道冷却
-OrientalShamanVentDurationTimeSetting,Duration of Oriental shaman's vent,陰陽師のベントの持続時間,阴阳师允许使用管道的持续时间
-OrientalShamanCrewTaskWinHijackSetting,You can hijack a task victory,タスク勝利を乗っ取れる,阴阳师的胜利优先于船员完成任务获胜
-OrientalShamanWinTaskSetting,Oriental shaman was clear task win,タスクを完了しないと勝利できない,阴阳师不完成所有任务就不能获胜
-OrientalShamanCreateShermansServantSetting,Sherman's servant can be appointed,式神を指名出来る,阴阳师可以招募一名式神
-OrientalShamanCreateShermansServantCoolSetting,Sherman's servant nomination cool time,式神指名のクールタイム,指名式神冷却
-OrientalShamanShermansServantButtoonName,Nominate Sherman's servant,式神指名,指名式神
-ShermansServantName,Sherman's Servant,式神,式神
-ShermansServantTitle1,This body is for my Lord,この身は我が主のために有り,此身为吾主所有
-ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possible to transform into the form of an Oriental shaman.\nThe Sherman's servant is basically judged as a crew， so take advantage of this to protect the Oriental shaman.,陰陽師のサイドキックです。\n陰陽師の姿に変身することが出来ます。\n式神は基本的にクルーと判定されるので、それを生かして陰陽師を守りましょう。,式神由阴阳师招募而出现。\n式神可以化形为阴阳师。\n式神会被判定为船员阵营，需要保护阴阳师。
-ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却
-ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却
-ShermansServantTransformationButtonName,Metamorphosis,変身,化形
-ReviverName,Reviver,リバイバー
-ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However， everyone will be notified of their location.\n It takes 12 seconds to resurrect， and while resurrected， you cannot move and you cannot kill. Also，\n after resurrection， the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。
-ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。
-GuardrawerName,Guardrawer,ガードロワー
-GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。
-GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。
-KingPosterName,KingPoster,キングポスター
-KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！
-KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！
-LongKillerName,LongKiller,ロングキラー
-LongKillerDescription,It has a long kill range， but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!
-DarknightName,Darknight,闇の騎士
-DarknightDescription,,闇に飲まれた騎士。キルクールタイムが0。しかし、視界も0。キル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。
-RevengerName,Revenger,リベンジャー
-RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。
-RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを開始した。
-CrystalMagicianName,CrystalMagician,クリスタルマジシャン
-CrystalMagicianDescription,,
-CrystalMagicianCrystalBot,Crystal,クリスタル
-GrimReaperName,GrimReaper,死神
-GrimReaperDescription,,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。ただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。さらに、エネルギーを貯めている位置も分かってしまう。注意しよう。
-GrimReaperAbilityStart,GrimReaper is charging energy at {0} now...,死神が{0}でエネルギーを貯め始めた...
-=======
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数,交換使最大交換次數
@@ -1797,7 +1311,29 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
->>>>>>> fix/v2023.3.28
+
+ReviverName,Reviver,リバイバー
+ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However， everyone will be notified of their location.\n It takes 12 seconds to resurrect， and while resurrected， you cannot move and you cannot kill. Also，\n after resurrection， the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。
+ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。
+GuardrawerName,Guardrawer,ガードロワー
+GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。
+GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。
+KingPosterName,KingPoster,キングポスター
+KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！
+KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！
+LongKillerName,LongKiller,ロングキラー
+LongKillerDescription,It has a long kill range， but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!
+DarknightName,Darknight,闇の騎士
+DarknightDescription,,闇に飲まれた騎士。キルクールタイムが0。しかし、視界も0。キル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。
+RevengerName,Revenger,リベンジャー
+RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。
+RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを開始した。
+CrystalMagicianName,CrystalMagician,クリスタルマジシャン
+CrystalMagicianDescription,,
+CrystalMagicianCrystalBot,Crystal,クリスタル
+GrimReaperName,GrimReaper,死神
+GrimReaperDescription,,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。ただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。さらに、エネルギーを貯めている位置も分かってしまう。注意しよう。
+GrimReaperAbilityStart,GrimReaper is charging energy at {0} now...,死神が{0}でエネルギーを貯め始めた...
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
