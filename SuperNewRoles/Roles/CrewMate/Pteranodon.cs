@@ -139,7 +139,7 @@ public static class Pteranodon
     public static void WrapUp()
     {
         IsPteranodonNow = false;
-        PlayerControl.LocalPlayer.Collider.enabled = false;
+        PlayerControl.LocalPlayer.Collider.enabled = true;
     }
     public static void SetStatus(PlayerControl player, bool Status, bool IsRight, float tarpos, Vector3 pos)
     {
