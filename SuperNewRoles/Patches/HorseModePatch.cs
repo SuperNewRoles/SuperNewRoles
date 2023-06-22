@@ -15,10 +15,9 @@ public class MainMenuPatch
     static void hidebtn(PassiveButton btn)
     {
         GameObject.Destroy(btn.GetComponent<AspectScaledAsset>());
-        btn.OnMouseOver.AddListener((UnityAction)(() => {
-            btn.transform.FindChild("Highlight").gameObject.SetActive(false);
-            btn.transform.FindChild("Inactive").gameObject.SetActive(true);
-        }));
+        btn.activeSprites = null;
+        btn.inactiveSprites = null;
+        btn.HeldButtonSprite = null;
         btn.transform.localScale = new(0.215f, 1, 1);
         btn.transform.FindChild("FontPlacer").gameObject.SetActive(false);
         btn.transform.FindChild("NewItem").gameObject.SetActive(false);
