@@ -6,10 +6,8 @@ using System.Linq;
 using System.Reflection;
 using AmongUs.Data;
 using BepInEx;
-using BepInEx.IL2CPP;
-using Cpp2IL.Core;
+using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using InnerNet;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -42,6 +40,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static BepInEx.Logging.ManualLogSource Logger;
     public static Sprite ModStamp;
     public static int optionsPage = 1;
+    public static int optionsMaxPage = 0;
     public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
     public static SuperNewRolesPlugin Instance;
     public static Dictionary<string, Dictionary<int, string>> StringDATA;

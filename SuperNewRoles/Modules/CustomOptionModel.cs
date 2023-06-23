@@ -73,6 +73,7 @@ public class CustomOption
     public List<CustomOption> children;
     public bool isHeader;
     public bool isHidden;
+    public RoleId RoleId;
 
     public virtual bool Enabled
     {
@@ -88,9 +89,9 @@ public class CustomOption
 
     }
 
-    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId roleId = RoleId.None)
     {
-        this.id = id;
+        this.id = Id;
         this.isSHROn = IsSHROn;
         this.type = type;
         this.name = name;
@@ -101,6 +102,11 @@ public class CustomOption
         this.parent = parent;
         this.isHeader = isHeader;
         this.isHidden = isHidden;
+        this.RoleId = roleId;
+        if (parent != null)
+        {
+            this.RoleId = parent.RoleId;
+        }
 
         this.children = new List<CustomOption>();
         if (parent != null)
@@ -109,23 +115,71 @@ public class CustomOption
         }
 
         selection = 0;
-        if (id > 0)
+
+        entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", Id.ToString(), defaultSelection);
+        selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
+
+        bool duplication = options.Any(x => x.id == Id);
+        string duplicationString = $"CustomOptionのId({Id})が重複しています。";
+
+        SettingPattern pattern = GetSettingPattern(Id);
+        switch (pattern)
         {
-            entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", id.ToString(), defaultSelection);
-            selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
-            if (options.Any(x => x.id == id))
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId(" + id + ")が重複しています。");
-            }
-            if (Max < id)
-            {
-                Max = id;
-            }
+            case SettingPattern.ErrorId:
+                Logger.Info($"CustomOptionのId({Id})は Id規則に従っていません。", $"{SettingPattern.ErrorId}");
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ErrorId}");
+                break;
+            case SettingPattern.GenericId:
+                if (GenericIdMax < Id) GenericIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.GenericId}");
+                break;
+            case SettingPattern.ImpostorId:
+                if (ImpostorIdMax < Id) ImpostorIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ImpostorId}");
+                break;
+            case SettingPattern.NeutralId:
+                if (NeutralIdMax < Id) NeutralIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.NeutralId}");
+                break;
+            case SettingPattern.CrewmateId:
+                if (CrewmateIdMax < Id) CrewmateIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.CrewmateId}");
+                break;
+            case SettingPattern.ModifierId:
+                if (ModifierIdMax < Id) ModifierIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ModifierId}");
+                break;
         }
         options.Add(this);
     }
-    public static int Max = 0;
 
+    public static int GenericIdMax = 0;
+    public static int ImpostorIdMax = 0;
+    public static int NeutralIdMax = 0;
+    public static int CrewmateIdMax = 0;
+    public static int ModifierIdMax = 0;
+
+    private SettingPattern GetSettingPattern(int id)
+    {
+        if (id == 0) return SettingPattern.GenericId;
+        if (id is >= 100000 and < 200000) return SettingPattern.GenericId;
+        if (id is >= 200000 and < 300000) return SettingPattern.ImpostorId;
+        if (id is >= 300000 and < 400000) return SettingPattern.NeutralId;
+        if (id is >= 400000 and < 500000) return SettingPattern.CrewmateId;
+        if (id is >= 500000 and < 600000) return SettingPattern.ModifierId;
+
+        return SettingPattern.ErrorId;
+    }
+
+    private enum SettingPattern
+    {
+        ErrorId = 0,
+        GenericId = 100000,
+        ImpostorId = 200000,
+        NeutralId = 300000,
+        CrewmateId = 400000,
+        ModifierId = 500000,
+    }
     public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
         return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format);
@@ -295,8 +349,6 @@ public class CustomRoleOption : CustomOption
 
     public CustomOption countOption = null;
 
-    public RoleId RoleId;
-
     public int Rate
     {
         get
@@ -342,10 +394,18 @@ public class CustomRoleOption : CustomOption
     {
         try
         {
-            this.RoleId = IntroData.IntroList.FirstOrDefault((_) =>
+            IntroData? intro = IntroData.IntroList.FirstOrDefault((_) =>
             {
                 return _.NameKey + "Name" == name;
-            }).RoleId;
+            });
+            if (intro != null)
+            {
+                this.RoleId = intro.RoleId;
+            }
+            else
+            {
+                Logger.Info("RoleId取得できませんでした:" + name, "CustomRoleOption");
+            }
         }
         catch
         {
@@ -963,7 +1023,82 @@ class GameOptionsDataPatch
 
     public static string OptionToString(CustomOption option)
     {
-        return option == null ? "" : $"{option.GetName()}: {option.GetString()}";
+        if (option == null) return "";
+
+        string text = option.GetName() + ":" + option.GetString();
+        var (isProcessingRequired, pattern) = ProcessingOptionCheck(option);
+
+        if (isProcessingRequired)
+            text += $"{ProcessingOptionString(option, "  ", pattern)}";
+
+        return text;
+    }
+
+    /// <summary>
+    /// CustomOptionに追記をする。
+    /// </summary>
+    /// <param name="option">追記が必要なオプション</param>
+    /// <param name="indent">追記が必要なオプションのインデント</param>
+    /// <param name="pattern">追記の内容指定</param>
+    /// <returns>string : 追記した文字列(インデントは一つ追加している)</returns>
+    internal static string ProcessingOptionString(CustomOption option, string indent = "", ProcessingPattern pattern = ProcessingPattern.None)
+    {
+        if (option == null) return "";
+        string text = "";
+
+        if (pattern == ProcessingPattern.GetTaskTriggerAbilityTaskNumber) // タスクの割合から, タスク数を求める
+        {
+            int AllTask = SelectTask.GetTotalTasks(option.RoleId);
+            if (!int.TryParse(option.GetString().Replace("%", ""), out int percent)) return ""; // int変換できない物の場合, ブランクを返す
+            float rate = percent / 100f;
+            int activeTaskNum = (int)(AllTask * rate);
+
+            text += "\n" + indent + "  " + "(" + $"{ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
+
+            if (AllTask != 0)
+                text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")}" + ")";
+            else
+            {
+                string errorText = $"{option.RoleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。" + ")";
+                text += $"=> {errorText}";
+                Logger.Error($"{errorText}", "GetTaskTriggerAbilityTaskNumber");
+            }
+        }
+
+        return text;
+    }
+
+    /// <summary>
+    /// 追記対象のオプションか判定する
+    /// </summary>
+    /// <param name="option">判定対象</param>
+    /// <returns> true : 対象 _ false: 対象外 / ProcessingPattern : 追記形式 </returns>
+    internal static (bool, ProcessingPattern) ProcessingOptionCheck(CustomOption option)
+    {
+        string optionName = option.GetName();
+
+        Dictionary<string, ProcessingPattern> targetString = new()
+        {
+            {ModTranslation.GetString("ParcentageForTaskTriggerSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerKillGuardTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerUseVentTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerExiledGuardTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerUseSaboTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerIsImpostorLightTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerCheckImpostorTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+        };
+
+        if (targetString.ContainsKey(optionName)) return (true, targetString[optionName]);
+        else return (false, ProcessingPattern.None);
+    }
+
+    /// <summary>
+    /// 追記が必要なCustomOptionの種類
+    /// </summary>
+    internal enum ProcessingPattern
+    {
+        None,
+        GetTaskTriggerAbilityTaskNumber,
     }
 
     public static string OptionsToString(CustomOption option, bool skipFirst = false)
@@ -999,7 +1134,6 @@ class GameOptionsDataPatch
         StringBuilder entry = new();
         List<string> entries = new()
             {
-
                 // First add the presets and the role counts
                 OptionToString(CustomOptionHolder.presetSelection)
             };
@@ -1118,6 +1252,7 @@ class GameOptionsDataPatch
         }
 
         int numPages = pages.Count;
+        SuperNewRolesPlugin.optionsMaxPage = numPages - 1;
         int counter = SuperNewRolesPlugin.optionsPage %= numPages;
         return pages[counter].Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
     }
@@ -1154,7 +1289,15 @@ public static class GameOptionsNextPagePatch
     {
         if (Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7))
         {
-            SuperNewRolesPlugin.optionsPage++;
+            // 試合開始前はTabキーが押されたら常に, 1ページ単位でページを送る
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+                SuperNewRolesPlugin.optionsPage++;
+            // 試合中はRegulationのoverlayを表示している時のみ, 2ページ単位でページを送る
+            else if (CustomOverlays.nowPattern == CustomOverlays.CustomOverlayPattern.Regulation) SuperNewRolesPlugin.optionsPage += 2;
+
+            // ページが最大ページを超えたら, ページを0に戻す
+            if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage)
+                SuperNewRolesPlugin.optionsPage = 0;
         }
     }
 }

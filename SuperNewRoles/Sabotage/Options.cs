@@ -12,10 +12,10 @@ public static class Options
     public static CustomOption CognitiveDeficitIsAllEndSabotageSetting;
     public static void Load()
     {
-        SabotageSetting = Create(512, false, CustomOptionType.Generic, Cs(new Color(204f / 187f, 51f / 255f, 0, 1f), "SabotageSetting"), false, null, isHeader: true);
-        CognitiveDeficitSetting = Create(513, false, CustomOptionType.Generic, "SabotageCognitiveDeficitSetting", false, SabotageSetting);
-        CognitiveDeficitOutfitUpdateTimeSetting = Create(514, false, CustomOptionType.Generic, "CognitiveDeficitSabotageOutfitUpdateTimeSetting", 3f, 0.5f, 10f, 0.5f, CognitiveDeficitSetting);
-        CognitiveDeficitReleaseTimeSetting = Create(515, false, CustomOptionType.Generic, "CognitiveDeficitSabotageReleaseTimeSetting", 3f, 0.5f, 10f, 0.5f, CognitiveDeficitSetting);
-        CognitiveDeficitIsAllEndSabotageSetting = Create(516, false, CustomOptionType.Generic, "CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting", true, CognitiveDeficitSetting);
+        SabotageSetting = Create(103400, false, CustomOptionType.Generic, Cs(new Color(204f / 187f, 51f / 255f, 0, 1f), "SabotageSetting"), false, null, isHeader: true);
+        CognitiveDeficitSetting = Create(103401, false, CustomOptionType.Generic, "SabotageCognitiveDeficitSetting", false, SabotageSetting);
+        CognitiveDeficitOutfitUpdateTimeSetting = Create(103402, false, CustomOptionType.Generic, "CognitiveDeficitSabotageOutfitUpdateTimeSetting", 3f, 0.5f, 10f, 0.5f, CognitiveDeficitSetting);
+        CognitiveDeficitReleaseTimeSetting = Create(103403, false, CustomOptionType.Generic, "CognitiveDeficitSabotageReleaseTimeSetting", 3f, 0.5f, 10f, 0.5f, CognitiveDeficitSetting);
+        CognitiveDeficitIsAllEndSabotageSetting = Create(103404, false, CustomOptionType.Generic, "CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting", true, CognitiveDeficitSetting);
     }
 }

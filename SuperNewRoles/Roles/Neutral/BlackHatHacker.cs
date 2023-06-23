@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public class BlackHatHacker
 {
-    private const int OptionId = 1271;
+    private const int OptionId = 303100;
     public static CustomRoleOption BlackHatHackerOption;
     public static CustomOption BlackHatHackerPlayerCount;
     public static CustomOption BlackHatHackerHackCoolTime;

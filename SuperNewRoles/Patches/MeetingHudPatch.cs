@@ -4,6 +4,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
@@ -13,7 +14,6 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
-using UnhollowerBaseLib;
 using UnityEngine;
 using static MeetingHud;
 
