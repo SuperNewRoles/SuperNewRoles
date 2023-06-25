@@ -111,6 +111,9 @@ If the host includes this mod, the position will be available to all!<br>
 [~~UKON people~~](https://github.com/UKON256)<br>
 [~~Sakurander~~](https://github.com/Sakurander)<br>
 
+## Supporter
+[Seono](https://github.com/Seono968) ([Twitter](https://twitter.com/Rinforzando_960))<br>
+
 ## Sponsors
 Mr. Concorde<br>
 Mr. kibou102<br>

@@ -106,6 +106,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [~~漢方薬の人~~](https://github.com/UKON256)<br>
 [~~Sakurander~~](https://github.com/Sakurander)<br>
 
+## サポーター
+[セオノ](https://github.com/Seono968) ([Twitter](https://twitter.com/Rinforzando_960))<br>
+
 ## スポンサー
 こんこるど様<br>
 kibou102様<br>
