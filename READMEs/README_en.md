@@ -107,7 +107,7 @@ If the host includes this mod, the position will be available to all!<br>
 [Yoking](https://github.com/ykundesu) ([Twitter](https://twitter.com/YYYYoking))<br>
 [Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [Kuki](https://github.com/Kuki12345)<br>
-[Glaceon](https://github.com/Glaceon-471)<br>
+[Glaceon](https://github.com/Glaceon-471) ([Twitter](https://twitter.com/Glaceon_SNR11))<br>
 [~~UKON people~~](https://github.com/UKON256)<br>
 [~~Sakurander~~](https://github.com/Sakurander)<br>
 
