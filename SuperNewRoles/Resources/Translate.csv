@@ -1399,7 +1399,7 @@ CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or 
 CommandsMessage10,/SaveLog or /sl [string to be attached to file name]：\nSave logs up to the present time in SuperNewRoles/SaveLogFolder.\nYou can arbitrarily change a part of the file name.\nIt can be used even if the string part is not described (/sl，etc. by itself).,/SaveLog 又は /sl + [ファイル名につけたい文字列] ： \nSuperNewRoles/SaveLogFolderに現時点までのログを保存します。\nファイル名の一部を任意で変更できます。\n文字列部分を記載しなくとも(/sl等単体でも)使用可能です。,/SaveLog或/sl + [与文件名对应的字符串]:\n将当前日志保存到默认为SuperNewRoles/SaveLogFolder的文件夹中。\n您可以重命名该文件夹。\n也可以不在指令后输入字符串来使用。,/SaveLog或/sl + [與文件名對應的字符串]:\n將當前日誌保存到默認為SuperNewRoles/SaveLogFolder的資料夾中。\n您可以重新命名該資料夾。\n也可以不在指令後输入字符串來使用。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,SuperNewRoles官方Discord服务器：,SuperNewRoles官方Discord伺服器：
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超新职业官方Twitter,在這裡關注超新職業官方Twitter
-TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles
+TwitterOfficialLink,Official Account : https://twitter.com/SNROfficials,公式アカウント：https://twitter.com/SNROfficials,官方Twitter：https://twitter.com/SNROfficials,官方Twitter：https://twitter.com/SNROfficials
 TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開発情報アカウント：https://twitter.com/SNRDevs,开发状况Twitter：https://twitter.com/SNRDevs,開發狀態Twitter：https://twitter.com/SNRDevs
 Team,Team,陣営,阵营,陣營
 TeamRoleType,Role,役職,,職業
