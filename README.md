@@ -16,7 +16,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
  - [最新版以外](https://github.com/ykundesu/SuperNewRoles/releases/)
 
 ## 公式情報
-- [SNR公式 Discordサーバ](https://discord.gg/Cqfwx82ynN) [![SNR公式 Discordサーバ](https://img.shields.io/discord/996781291871678544?label=Discord)](https://discord.gg/Cqfwx82ynN)
+- [SNR公式 Discordサーバ](https://discord.gg/Cqfwx82ynN)
 
 - [Github wiki](https://github.com/ykundesu/SuperNewRoles/wiki)
   - 初めに読む場所
