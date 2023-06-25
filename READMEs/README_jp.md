@@ -99,7 +99,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
 
 ## 開発者
-[よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
+[よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/YYYYoking))<br>
 [月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [Kuki](https://github.com/Kuki12345)<br>
 [Glaceon](https://github.com/Glaceon-471)<br>
