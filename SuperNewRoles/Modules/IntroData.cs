@@ -75,15 +75,15 @@ public class IntroData
         }
         IntroList.Add(this);
     }
-    public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null)
+    public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)
     {
         if (RoleId is RoleId.DefaultRole or RoleId.Bestfalsecharge)
         {
-            return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
+            return p != null && (p.IsImpostor() || IsImpostorReturn) ? ImpostorIntro : CrewmateIntro;
         }
         else if (RoleId is RoleId.Jumbo)
         {
-            return p == null ? JumboIntro : p.IsImpostor() ? EvilJumboIntro : NiceJumboIntro;
+            return p == null ? JumboIntro : (p.IsImpostor() || IsImpostorReturn) ? EvilJumboIntro : NiceJumboIntro;
         }
         try
         {

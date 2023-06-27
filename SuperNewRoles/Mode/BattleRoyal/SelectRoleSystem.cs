@@ -7,7 +7,6 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
-using UnhollowerBaseLib;
 using static MeetingHud;
 
 namespace SuperNewRoles.Mode.BattleRoyal

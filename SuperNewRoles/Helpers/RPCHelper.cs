@@ -1,6 +1,5 @@
 using System.Linq;
 using AmongUs.GameOptions;
-using AssemblyUnhollower.Extensions;
 using Hazel;
 using InnerNet;
 using Steamworks;
