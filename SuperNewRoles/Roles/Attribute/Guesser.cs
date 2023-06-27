@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
-using UnityEngine;
 using SuperNewRoles.Roles.Neutral;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Attribute;
 
@@ -88,7 +88,7 @@ class Guesser
             Teambutton.FindChild("ControllerHighlight").gameObject.SetActive(false);
             Transform TeambuttonMask = UnityEngine.Object.Instantiate(maskTemplate, TeambuttonParent);
             TMPro.TextMeshPro Teamlabel = UnityEngine.Object.Instantiate(textTemplate, Teambutton);
-            Teambutton.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+            // Teambutton.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
             RoleSelectButtons.Add((TeamRoleType)index, Teambutton.GetComponent<SpriteRenderer>());
             TeambuttonParent.localPosition = new(-2.75f + (index * 1.75f), 2.225f, -200);
             TeambuttonParent.localScale = new(0.55f, 0.55f, 1f);
@@ -142,7 +142,7 @@ class Guesser
             Pagebutton.FindChild("ControllerHighlight").gameObject.SetActive(false);
             Transform PagebuttonMask = UnityEngine.Object.Instantiate(maskTemplate, PagebuttonParent);
             TMPro.TextMeshPro Pagelabel = UnityEngine.Object.Instantiate(textTemplate, Pagebutton);
-            Pagebutton.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+            // Pagebutton.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
             PagebuttonParent.localPosition = IsNext ? new(3.535f, -2.2f, -200) : new(-3.475f, -2.2f, -200);
             PagebuttonParent.localScale = new(0.55f, 0.55f, 1f);
             Pagelabel.color = Color.white;
@@ -168,11 +168,13 @@ class Guesser
         }
 
         int ind = 0;
+        bool canCrewShot = PlayerControl.LocalPlayer.GetRole() == RoleId.NiceGuesser ? CustomOptionHolder.NiceGuesserCanShotCrew.GetBool() : CustomOptionHolder.EvilGuesserCanShotCrew.GetBool();
         foreach (IntroData roleInfo in IntroData.IntroList)
         {
             if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||
-                (roleInfo != IntroData.CrewmateIntro && roleInfo != IntroData.ImpostorIntro && IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
+                (roleInfo != IntroData.CrewmateIntro && roleInfo != IntroData.ImpostorIntro && IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0) ||
+                (roleInfo == IntroData.CrewmateIntro && !canCrewShot))
             {
                 Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                 continue; // Not guessable roles
@@ -194,7 +196,7 @@ class Guesser
             button.FindChild("ControllerHighlight").gameObject.SetActive(false);
             Transform buttonMask = UnityEngine.Object.Instantiate(maskTemplate, buttonParent);
             TMPro.TextMeshPro label = UnityEngine.Object.Instantiate(textTemplate, button);
-            button.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+            // button.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
             if (!RoleButtons.ContainsKey(roleInfo.Team))
             {
                 RoleButtons.Add(roleInfo.Team, new());

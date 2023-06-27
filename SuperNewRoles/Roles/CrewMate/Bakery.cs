@@ -1,6 +1,8 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.Crewmate;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
@@ -10,14 +12,14 @@ public class Bakery
     private static TMPro.TextMeshPro breadText;
     public static bool Prefix(
         ExileController __instance,
-        [HarmonyArgument(0)] GameData.PlayerInfo exiled,
+        [HarmonyArgument(0)] ref GameData.PlayerInfo exiled,
         bool tie)
     {
-        if (RoleClass.Assassin.TriggerPlayer == null) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
+        if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger == null && (Balancer.currentAbilityUser == null || !Balancer.IsDoubleExile)) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
         if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
         {
             Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, exiled, tie);
-            if (RoleClass.Assassin.TriggerPlayer == null)
+            if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger == null && (Balancer.currentAbilityUser == null || !Balancer.IsDoubleExile))
             {
                 return false;
             }
@@ -52,7 +54,8 @@ public class Bakery
             __instance.Player.gameObject.SetActive(false);
             __instance.completeString = printStr;
             __instance.ImpostorText.text = string.Empty;
-            __instance.StartCoroutine(__instance.Animate());
+            if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
+                __instance.StartCoroutine(__instance.Animate());
         }
         else if (RoleClass.Revolutionist.MeetingTrigger != null)
         {
@@ -78,20 +81,51 @@ public class Bakery
             __instance.Player.gameObject.SetActive(false);
             __instance.completeString = printStr;
             __instance.ImpostorText.text = string.Empty;
-            __instance.StartCoroutine(__instance.Animate());
+            if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
+                __instance.StartCoroutine(__instance.Animate());
         }
-        RoleClass.Assassin.TriggerPlayer = null;
-        __instance.exiled = null;
-        __instance.Player.gameObject.SetActive(false);
-        __instance.completeString = printStr;
-        __instance.ImpostorText.text = string.Empty;
-        if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
+        else if (Balancer.currentAbilityUser != null)
         {
-            return false;
+            if (!IsSec)
+            {
+                IsSec = true;
+                __instance.exiled = null;
+                ExileController controller = GameObject.Instantiate(__instance, __instance.transform.parent);
+                controller.exiled = Balancer.targetplayerright.Data;
+                controller.Begin(controller.exiled, false);
+                IsSec = false;
+                controller.completeString = string.Empty;
+
+                controller.Text.gameObject.SetActive(false);
+                controller.Player.UpdateFromEitherPlayerDataOrCache(controller.exiled, PlayerOutfitType.Default, PlayerMaterial.MaskType.Exile, includePet: false);
+                controller.Player.ToggleName(active: false);
+                SkinViewData skin = ShipStatus.Instance.CosmeticsCache.GetSkin(controller.exiled.Outfits[PlayerOutfitType.Default].SkinId);
+                controller.Player.FixSkinSprite(skin.EjectFrame);
+                AudioClip sound = null;
+                if (controller.EjectSound != null)
+                {
+                    sound = new(controller.EjectSound.Pointer);
+                }
+                controller.EjectSound = null;
+                void createlate(int index)
+                {
+                    new LateTask(() => { controller.StopAllCoroutines(); controller.StartCoroutine(controller.Animate()); }, 0.025f + index * 0.025f);
+                }
+                new LateTask(() => controller.StartCoroutine(controller.Animate()), 0f);
+                for (int i = 0; i < 23; i++)
+                {
+                    createlate(i);
+                }
+                new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f);
+                ExileController.Instance = __instance;
+                __instance.exiled = Balancer.targetplayerleft.Data;
+                exiled = __instance.exiled;
+                return true;
+            }
         }
-        __instance.StartCoroutine(__instance.Animate());
         return false;
     }
+    static bool IsSec;
     //生存判定
     public static bool BakeryAlive()
     {
@@ -126,6 +160,10 @@ public class Bakery
             if (GameManager.Instance.LogicOptions.currentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor)) breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
             else breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
             breadText.gameObject.SetActive(true);                                               //文字の表示
+        }
+        if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance.exiled?.PlayerId == Balancer.targetplayerleft.PlayerId)
+        {
+            __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
         }
     }
 

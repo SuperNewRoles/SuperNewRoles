@@ -90,9 +90,10 @@ class BlockTool
                             var AdminDistance = Vector2.Distance(playerposition, GetVitalOrDoorLogTransform());
                             if (AdminDistance <= distance) IsGuard = true;
                         }
-                        if (IsGuard && !p.inVent)
+                        if (IsGuard && !p.inVent && MeetingHud.Instance == null)
                         {
-                            if (!OldDesyncCommsPlayers.Contains(p.PlayerId)) { OldDesyncCommsPlayers.Add(p.PlayerId); }
+                            if (!OldDesyncCommsPlayers.Contains(p.PlayerId))
+                                OldDesyncCommsPlayers.Add(p.PlayerId);
                             MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
                             SabotageWriter.Write((byte)SystemTypes.Comms);
                             MessageExtensions.WriteNetObject(SabotageWriter, p);

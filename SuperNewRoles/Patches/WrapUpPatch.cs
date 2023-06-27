@@ -14,6 +14,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
@@ -34,9 +35,24 @@ class WrapUpPatch
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     public class AirshipExileControllerWrapUpPatch
     {
-        public static void Prefix(AirshipExileController __instance)
+        public static bool Prefix(AirshipExileController __instance)
         {
             WrapUpPatch.Prefix(__instance.exiled);
+            if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance != ExileController.Instance)
+            {
+                if (__instance.exiled != null)
+                {
+                    PlayerControl @object = __instance.exiled.Object;
+                    if (@object)
+                    {
+                        @object.Exiled();
+                    }
+                    __instance.exiled.IsDead = true;
+                }
+                GameObject.Destroy(__instance.gameObject);
+                return false;
+            }
+            return true;
         }
         public static void Postfix(AirshipExileController __instance)
         {
@@ -98,12 +114,16 @@ class WrapUpPatch
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
         ModeHandler.Wrapup(exiled);
         RedRidingHood.WrapUp(exiled);
+        Pteranodon.WrapUp();
         Roles.Neutral.Revolutionist.WrapUp();
         Roles.Neutral.Spelunker.WrapUp();
         Roles.Neutral.Hitman.WrapUp();
         Roles.Impostor.Matryoshka.WrapUp();
         Roles.Neutral.PartTimer.WrapUp();
         Roles.Crewmate.KnightProtected_Patch.WrapUp();
+        Clergyman.WrapUp();
+        Balancer.WrapUp(exiled == null ? null : exiled.Object);
+        Speeder.WrapUp();
         Bestfalsecharge.WrapUp();
         CustomRoles.OnWrapUp();
         if (AmongUsClient.Instance.AmHost)
@@ -158,6 +178,7 @@ class WrapUpPatch
                         writer.Write(byte.MaxValue);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        SideLoverPlayer.RpcSetFinalStatus(FinalStatus.LoversBomb);
                     }
                 }
             }
@@ -195,6 +216,7 @@ class WrapUpPatch
             {
                 if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                 {
+                    Player.RpcSetFinalStatus(FinalStatus.MadJesterExiled);
                     RPCProcedure.ShareWinner(Player.PlayerId);
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                     Writer.Write(Player.PlayerId);

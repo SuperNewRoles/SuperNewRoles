@@ -123,10 +123,63 @@ public static class RPCHelper
             val.EndRPC();
         }
     }
+    public static void RpcSyncOption()
+    {
+        GameManager gm = NormalGameManager.Instance;
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        writer.StartMessage(5);
+        writer.Write(AmongUsClient.Instance.GameId);
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(gm.NetId);
+                writer.StartMessage((byte)4);
+                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                writer.EndMessage();
+            }
+            writer.EndMessage();
+        }
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
+    public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1)
+    {
+        GameManager gm = NormalGameManager.Instance;
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        if (TargetClientId < 0)
+        {
+            writer.StartMessage(5);
+            writer.Write(AmongUsClient.Instance.GameId);
+        }
+        else
+        {
+            writer.StartMessage(6);
+            writer.Write(AmongUsClient.Instance.GameId);
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            writer.WritePacked(TargetClientId);
+        }
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(gm.NetId);
+                writer.StartMessage((byte)4);
+                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
+                writer.EndMessage();
+            }
+            writer.EndMessage();
+        }
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
     public static void RpcSyncMeetingHud(int TargetClientId = -1)
     {
         if (Instance is null) return;
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
         {
@@ -200,7 +253,7 @@ public static class RPCHelper
             if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
             writer.WritePacked(TargetClientId);
         }
-        Logger.Info($"共有なうーーー:{TargetClientId} : {gameOptions.GetFloat(FloatOptionNames.CrewLightMod)}");
+
         {
             writer.StartMessage(1); //0x01 Data
             {

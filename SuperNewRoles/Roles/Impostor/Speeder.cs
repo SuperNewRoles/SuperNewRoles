@@ -38,17 +38,14 @@ public class Speeder
     {
         return Player.IsRole(RoleId.Speeder);
     }
+    public static void WrapUp()
+    {
+        RoleClass.Speeder.IsSpeedDown = false;
+    }
     public static void EndMeeting()
     {
         ResetCooldown();
         ResetSpeed();
-    }
-    public static void HudUpdate()
-    {
-        if (HudManagerStartPatch.SpeederButton.Timer <= 0.1 && RoleClass.Speeder.IsSpeedDown)
-        {
-            Speeder.SpeedDownEnd();
-        }
     }
 }
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]

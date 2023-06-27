@@ -75,7 +75,7 @@ class UpdatePatch
             ObjectData.PetButton.transform.localPosition = new Vector3(6.25f, -0.5f, -55);
             ObjectData.CubeButton.transform.localPosition = new Vector3(-1.1f, 0, -1);
 
-            ObjectData.VisorButton.transform.localPosition = new Vector3(0.9f, 1.5f, -1);
+            ObjectData.VisorButton.transform.localPosition = new Vector3(0.9f, 1.5f, 0);
             ObjectData.NamePlateButton.transform.localPosition = new Vector3(3, 2.25f, -1);
             ObjectData.NamePlateButton.transform.localScale = new Vector3(8.498f, 2.145f, 2.145f);
 

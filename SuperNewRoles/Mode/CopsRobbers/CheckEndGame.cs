@@ -21,6 +21,11 @@ public static class CheckEndGame
             GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
             return false;
         }
+        else if (CustomOptionHolder.FoxCanHouwaWin.GetBool())
+        {
+            if (SuperHostRoles.EndGameCheck.CheckAndEndGameForFoxHouwaWin(__instance)) return false;
+            return false;
+        }
         else if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
             __instance.enabled = false;

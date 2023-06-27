@@ -2,7 +2,7 @@
 ![SNRImage](/images/SNRImage.png)
 
 <center>
-This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.
+This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. c Innersloth LLC.
 </center><br><center>訳:これはInnerslothが作ったものじゃなくて個人が作ったものなのでInnerslothは関係ないよ!あとこの中にある素材の一部はInnerslothのものだよ！</center>
 
 ## READMEs in other languages(他の言語のREADME)
@@ -85,6 +85,11 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TheOtherRolesGMHaoming] <!--(https://github.com/haoming37/TheOtherRoles-GM-Haoming)--> - ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加、ランダムスポーンのコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - マップのタスクが正常に動作しない問題の修正、アサシン&マーリンなどのアイデア元となりました！**yukieiji**さんありがとうございます！<br>
 [Nebula On The Ship](https://github.com/Dolly1016/Nebula) - 全ベントに接続する処理などを参考にさせていただきました。**Dolly1016**さんありがとうございます！<br>
+[Town Of Plus](https://github.com/tugaru1975/TownOfPlus) - クルーカラー名の表示及び文字色をクルーカラーにする処理等を参考にさせていただきました。 **tugaru1975**さんありがとうございます！<br>
+[効果音ラボ](https://soundeffect-lab.info/) - 一部の効果音を使用しています。この効果音の音声ファイルのライセンスはこのサイトに準じます。<br>
+<br>
+[SNRGithubWiki 役職一覧#他のmodから他のmodから移植, 又は参考にした役職](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%BD%B9%E8%81%B7%E4%B8%80%E8%A6%A7#%E4%BB%96%E3%81%AEmod%E3%81%8B%E3%82%89%E7%A7%BB%E6%A4%8D-%E5%8F%88%E3%81%AF%E5%8F%82%E8%80%83%E3%81%AB%E3%81%97%E3%81%9F%E5%BD%B9%E8%81%B7) - 移植役職及びSNRオリジナル役職作成時アイデア等を参考にした他Modさんの役職の詳細は此方に表記してあります。<br>
+<br>
 
 ## 使用させて頂いているカスタムコスメティック
 [SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)
@@ -157,7 +162,7 @@ Discordサーバーからお願いします:[Discordサーバー](https://discor
 | [イビルハッカー](#イビルハッカー)                     | [夜行性](#夜行性)                                 |
 | [ポジションスワッパー](#ポジションスワッパー)         | [スター](#スター)                                 |
 | [マフィア](#マフィア)                                 | [マッドシーア](#マッドシーア)                     |
-| [スーサイドウィッシャー‌](#スーサイドウィッシャー‌)     | [リモートシェリフ](#リモートシェリフ)             |
+| [スーサイドウィッシャー?](#スーサイドウィッシャー?)     | [リモートシェリフ](#リモートシェリフ)             |
 | [ファストメーカー](#ファストメーカー)                 | [タスクマネージャー](#タスクマネージャー)         |
 | [クノイチ](#クノイチ)                                 | [マッドメーカー](#マッドメーカー)                 |
 | [ダブルキラー](#ダブルキラー)                         | [村長](#村長)                                     |
@@ -475,7 +480,7 @@ SuperHostRoles対応。
 
 -----------------------
 
-## スーサイドウィッシャー‌
+## スーサイドウィッシャー?
 ### インポスター陣営
 
 自殺ボタンがあり、好きなタイミングで、<br>
@@ -1247,7 +1252,7 @@ SHR対応<br>
 吊られるとアサシン会議という会議を起こせる。<br>
 そこでマーリンを指定して吊ることができればインポスターが勝利できる。
 <br>
-〜マーリン/Merlin〜<br>
+?マーリン/Merlin?<br>
 クルー陣営<br>
 <br>
 最初からアサシンが誰か分かっている。正体をばらすとアサシン会議で敗北するためインポスターが誰か教えることは出来ない。<br>

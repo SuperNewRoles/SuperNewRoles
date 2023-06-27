@@ -79,7 +79,7 @@ public static class FixedUpdate
         {
             if (p.PlayerId != 0 && p.PlayerId != player.PlayerId && !p.IsBot())
             {
-                if (p.IsDead() || p.IsRole(RoleId.God))
+                if (SetNamesClass.DefaultGhostSeeRoles(p) || p.IsRole(RoleId.God))
                 {
                     DiePlayers.Add(p);
                 }
@@ -107,10 +107,7 @@ public static class FixedUpdate
             if (!RoleClass.Camouflager.IsCamouflage) ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, CelebrityPlayer.GetDefaultName()));
         }
 
-        if (Madmate.CheckImpostor(player) ||
-            MadMayor.CheckImpostor(player) ||
-            player.IsRole(RoleId.Marlin) ||
-            BlackCat.CheckImpostor(player))
+        if (Madmate.CheckImpostor(player) || player.IsRole(RoleId.Marlin))
         {
             foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
             {
@@ -299,7 +296,7 @@ public static class FixedUpdate
         }
         bool IsDemonVIew = false;
         bool IsArsonistVIew = false;
-        if ((player.IsDead() || player.IsRole(RoleId.God)) && !IsUnchecked)
+        if ((SetNamesClass.DefaultGhostSeeRoles(player) || player.IsRole(RoleId.God)) && !IsUnchecked)
         {
             if (Demon.IsViewIcon(player))
             {
@@ -321,7 +318,7 @@ public static class FixedUpdate
         }
         else if (player.IsAlive() || IsUnchecked)
         {
-            if (player.IsDead() || player.IsRole(RoleId.God))
+            if (SetNamesClass.DefaultGhostSeeRoles(player) || player.IsRole(RoleId.God))
             {
                 if (Demon.IsViewIcon(player))
                 {

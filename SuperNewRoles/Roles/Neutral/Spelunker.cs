@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -83,6 +85,14 @@ public static class Spelunker
         DeathPosition = null;
     }
     public static Vector2? DeathPosition;
+    [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.Use), new Type[] { })]
+    class MovingPlatformUsePatch
+    {
+        public static bool Prefix()
+        {
+            return !Pteranodon.IsPteranodonNow;
+        }
+    }
     [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.UsePlatform))]
     class MovingPlatformUsePlatformPatch
     {

@@ -59,8 +59,8 @@ public static class DynamicLobbies
                         if (!float.TryParse(text[4..], out var cooltime)) __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
                         var settime = cooltime;
                         if (settime == 0) settime = 0.00001f;
-                        GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.KillCooldown, settime);
-                        RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
+                        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.KillCooldown, settime);
+                        RPCHelper.RpcSyncOption();
                         __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                     }
                 }
@@ -125,10 +125,16 @@ public static class DynamicLobbies
                 // memoの中身があるなら ファイル名を任意の文字列にする。
                 else Logger.SaveLog(memo, via);
             }
-            if (text.ToLower().StartsWith("/mr") || text.ToLower().StartsWith("/MyRole"))
+            else if (text.ToLower().StartsWith("/lp"))
             {
                 handled = true;
-                AddChatPatch.MyRoleCommand(/*SendTime: sendTime, */ commandUser: PlayerControl.LocalPlayer);
+
+                string print = text.ToLower()
+                    .Replace("/lp ", "")
+                    .Replace("/lp", "");
+
+                Logger.Info(print, "任意ログ印字");
+                __instance.AddChat(PlayerControl.LocalPlayer, $"このチャットは貴方にのみ表示されています。\nLogに以下の内容を印字しました。\n「{print}」");
             }
             if (handled)
             {

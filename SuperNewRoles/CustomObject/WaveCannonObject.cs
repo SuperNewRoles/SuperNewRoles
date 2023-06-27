@@ -40,7 +40,8 @@ public class WaveCannonObject
     public Transform transform => gameObject.transform;
 
     private static Sprite _colliderSprite;
-    public static Sprite ColliderSprite {
+    public static Sprite ColliderSprite
+    {
         get
         {
             if (_colliderSprite is null)

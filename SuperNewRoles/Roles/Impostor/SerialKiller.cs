@@ -23,6 +23,7 @@ public static class SerialKiller
                             if (RoleClass.SerialKiller.SuicideTimers[p.PlayerId] <= 0)
                             {
                                 p.RpcMurderPlayer(p);
+                                p.RpcSetFinalStatus(FinalStatus.SerialKillerSelfDeath);
                             }
                         }
                     }
@@ -57,6 +58,7 @@ public static class SerialKiller
                     writer.Write(byte.MaxValue);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
+                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SerialKillerSelfDeath);
                 }
             }
         }
@@ -76,6 +78,7 @@ public static class SerialKiller
     {
         if (__instance.IsRole(RoleId.SerialKiller))
         {
+            if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.ContainsKey(__instance.PlayerId)) return;
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;

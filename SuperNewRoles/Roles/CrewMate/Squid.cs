@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public class Squid
 {
-    private const int OptionId = 1194;
+    private const int OptionId = 402800;
     public static CustomRoleOption SquidOption;
     public static CustomOption SquidPlayerCount;
     public static CustomOption SquidCoolTime;
@@ -56,7 +56,11 @@ public class Squid
                 SetVigilance(PlayerControl.LocalPlayer);
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Squid; },
-            () => { return PlayerControl.LocalPlayer.CanMove; },
+            () =>
+            {
+                if (Squid.IsVigilance.ContainsValue(true)) CustomButton.FillUp(SquidButton);
+                return PlayerControl.LocalPlayer.CanMove;
+            },
             () =>
             {
                 ResetCooldown();
