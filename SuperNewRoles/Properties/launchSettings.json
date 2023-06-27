@@ -6,6 +6,7 @@
       "environmentVariables": {
         "SNRWebUrl": "http://localhost/"
       }
+      "nativeDebugging": false
     },
     "ビルドのみ": {
       "commandName": "Project"

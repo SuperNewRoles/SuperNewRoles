@@ -204,7 +204,7 @@ public static class SyncSetting
             case RoleId.Worshiper:
                 if (!player.IsMod())
                 {
-                    if (!SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight)
+                    if (!SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
                         var switchSystemWorshiper = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
@@ -213,15 +213,15 @@ public static class SyncSetting
                 }
                 else
                 {
-                    if (SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight)
+                    if (SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                         var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.KillSuicideCoolTime));
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, SuperNewRoles.Roles.Impostor.MadRole.Worshiper.AbilitySuicideCoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.KillSuicideCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.AbilitySuicideCoolTime);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.EvilSeer:
@@ -231,7 +231,7 @@ public static class SyncSetting
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(player.GetClientId());
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }
     public static void MurderSyncSetting(PlayerControl player)
@@ -259,7 +259,7 @@ public static class SyncSetting
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(player.GetClientId());
     }
 
     public static void MeetingSyncSettings(this PlayerControl player)
@@ -270,7 +270,7 @@ public static class SyncSetting
 
         optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(player.GetClientId());
     }
     public static void GamblersetCool(PlayerControl p)
     {
@@ -279,7 +279,7 @@ public static class SyncSetting
         var optdata = OptionData.DeepCopy();
         optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool));
         if (p.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(p.GetClientId());
+        else optdata.RpcSyncOption(p.GetClientId());
     }
     public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
     {
@@ -295,7 +295,7 @@ public static class SyncSetting
         }
         else optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Doppelganger.NotSucCool));
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(player.GetClientId());
     }
     public static void CustomSyncSettings()
     {

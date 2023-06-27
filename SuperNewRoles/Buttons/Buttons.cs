@@ -9,11 +9,13 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -98,6 +100,7 @@ static class HudManagerStartPatch
     public static CustomButton JumboKillButton;
     public static CustomButton WiseManButton;
     public static CustomButton MechanicButton;
+    public static CustomButton PteranodonButton;
 
     #endregion
 
@@ -130,6 +133,79 @@ static class HudManagerStartPatch
     public static void Postfix(HudManager __instance)
     {
         Roles.Attribute.Debugger.canSeeRole = false;
+
+        PteranodonButton = new(
+            () =>
+            {
+                AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();
+                if (status == null)
+                    return;
+                Pteranodon.IsPteranodonNow = true;
+                Pteranodon.StartPosition = PlayerControl.LocalPlayer.transform.position;
+                Pteranodon.CurrentPosition = PlayerControl.LocalPlayer.transform.position;
+                bool IsRight = true;
+                if (Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f)
+                {
+                    Pteranodon.TargetPosition = status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition);
+                }
+                else
+                {
+                    IsRight = false;
+                    Pteranodon.TargetPosition = status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition);
+                }
+                PlayerControl.LocalPlayer.moveable = false;
+                PlayerControl.LocalPlayer.Collider.enabled = false;
+                Pteranodon.Timer = Pteranodon.StartTime;
+
+                Vector3 position = PlayerControl.LocalPlayer.transform.position;
+                byte[] buff = new byte[sizeof(float) * 3];
+                Buffer.BlockCopy(BitConverter.GetBytes(position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(position.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(position.z), 0, buff, 2 * sizeof(float), sizeof(float));
+
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PteranodonSetStatus);
+                writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                writer.Write(true);
+                writer.Write(IsRight);
+                writer.Write(Pteranodon.TargetPosition.x - Pteranodon.StartPosition.x);
+                writer.Write(buff.Length);
+                writer.Write(buff);
+                writer.EndRPC();
+                PteranodonButton.MaxTimer = Pteranodon.PteranodonCoolTime.GetFloat();
+                PteranodonButton.Timer = PteranodonButton.MaxTimer;
+                //RPCProcedure.PteranodonSetStatus(PlayerControl.LocalPlayer.PlayerId, true);
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pteranodon; },
+            () =>
+            {
+                if (!PlayerControl.LocalPlayer.CanMove) return false;
+                AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();
+                if (status == null)
+                    return false;
+                if (status.GapPlatform.Target != null && status.GapPlatform.Target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
+                    return false;
+                }
+                bool flag = Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f || Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f;
+                return flag;
+            },
+            () =>
+            {
+                PteranodonButton.MaxTimer = Pteranodon.PteranodonCoolTime.GetFloat();
+                PteranodonButton.Timer = PteranodonButton.MaxTimer;
+            },
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PteranodonButton.png", 115f),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("PteranodonButtonName"),
+            showButtonText = true
+        };
 
         WiseManButton = new(
             () =>
@@ -297,6 +373,7 @@ static class HudManagerStartPatch
                 if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
                 {
                     PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
+                    Target.RpcSetFinalStatus(FinalStatus.LoversBreakerKill);
                     LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
                     LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
                     if (Target.IsRole(RoleId.Cupid) && !Target.IsLovers()) return;
@@ -438,6 +515,7 @@ static class HudManagerStartPatch
                 ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptionHolder.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptionHolder.PavlovsdogKillCoolTime.GetFloat();
                 PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
+                if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return;
                 RoleClass.Pavlovsdogs.DeathTime = CustomOptionHolder.PavlovsdogRunAwayDeathTime.GetFloat();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsdogs; },
@@ -533,6 +611,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin; },
             () =>
             {
+                if (PenguinButton.isEffectActive) CustomButton.FillUp(PenguinButton);
                 return PlayerControl.LocalPlayer.CanMove && SetTarget(null, true);
             },
             () =>
@@ -1034,6 +1113,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.NiceScientist || role == RoleId.EvilScientist); },
             () =>
             {
+                if (RoleClass.NiceScientist.IsScientist) CustomButton.FillUp(ScientistButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () => { Scientist.EndMeeting(); },
@@ -1552,6 +1632,8 @@ static class HudManagerStartPatch
                 {
                     killCount = RoleClass.Sheriff.KillMaxCount;
                     flag = PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    var Target = SetTarget();
+                    PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Sheriff.color);
                 }
                 if (!Sheriff.IsSheriffButton(PlayerControl.LocalPlayer)) flag = false;
                 sheriffNumShotsText.text = killCount > 0 ? string.Format(ModTranslation.GetString("SheriffNumTextName"), killCount) : ModTranslation.GetString("CannotUse");
@@ -1595,6 +1677,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Clergyman; },
             () =>
             {
+                if (ClergymanLightOutButton.isEffectActive) CustomButton.FillUp(ClergymanLightOutButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () => { Clergyman.EndMeeting(); },
@@ -1632,6 +1715,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SpeedBooster; },
             () =>
             {
+                if (RoleClass.SpeedBooster.IsSpeedBoost) CustomButton.FillUp(SpeedBoosterBoostButton);
                 return SpeedBoosterBoostButton.Timer <= 0;
             },
             () => { SpeedBooster.EndMeeting(); },
@@ -1659,6 +1743,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilSpeedBooster || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.SpeedBooster)); },
             () =>
             {
+                if (RoleClass.EvilSpeedBooster.IsSpeedBoost) CustomButton.FillUp(EvilSpeedBoosterBoostButton);
                 return EvilSpeedBoosterBoostButton.Timer <= 0;
             },
             () => { EvilSpeedBooster.EndMeeting(); },
@@ -1960,9 +2045,10 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Speeder; },
             () =>
             {
+                if (SpeederButton.isEffectActive) CustomButton.FillUp(SpeederButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
-            () => { Speeder.EndMeeting(); },
+            Speeder.EndMeeting,
             RoleClass.Speeder.GetButtonSprite(),
 
             new Vector3(-2f, 1, 0),
@@ -1973,7 +2059,7 @@ static class HudManagerStartPatch
             () => { return false; },
             true,
             5f,
-            () => { Speeder.SpeedDownEnd(); }
+            Speeder.SpeedDownEnd
         )
         {
             buttonText = ModTranslation.GetString("SpeederButtonName"),
@@ -2087,6 +2173,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Shielder; },
             () =>
             {
+                if (RoleClass.Shielder.IsShield.ContainsValue(true)) CustomButton.FillUp(ShielderButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () =>
@@ -2173,6 +2260,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Freezer; },
             () =>
             {
+                if (FreezerButton.isEffectActive) CustomButton.FillUp(FreezerButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () => { Freezer.EndMeeting(); },
@@ -2895,6 +2983,7 @@ static class HudManagerStartPatch
                     MatryoshkaButton.buttonText = ModTranslation.GetString("MatryoshkaPutOnButtonName");
                 }
                 MatryoshkaButton.HasEffect = __instance.ReportButton.graphic.color == Palette.EnabledColor;
+                if (MatryoshkaButton.isEffectActive) CustomButton.FillUp(MatryoshkaButton);
                 return (__instance.ReportButton.graphic.color == Palette.EnabledColor || RoleClass.Matryoshka.IsLocalOn) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
@@ -3211,7 +3300,11 @@ static class HudManagerStartPatch
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
-            () => { return PlayerControl.LocalPlayer.CanMove; },
+            () =>
+            {
+                if (CamouflagerButton.isEffectActive) CustomButton.FillUp(CamouflagerButton);
+                return PlayerControl.LocalPlayer.CanMove;
+            },
             () =>
             {
                 CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;

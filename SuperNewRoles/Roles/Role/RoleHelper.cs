@@ -19,6 +19,14 @@ public enum TeamRoleType
     Neutral,
     Error
 }
+public enum TeamType
+{
+    Crewmate,
+    Impostor,
+    Neutral,
+    Error
+}
+
 public static class RoleHelpers
 {
     /* TODO: 蔵徒:陣営playerがうまく動いていない。SetRoleの時に``if (player.Is陣営())``がうまく動かず、リスト入りされていない。直す
@@ -39,6 +47,10 @@ public static class RoleHelpers
         return player != null && !player.IsImpostor() && !player.IsNeutral();
     }
 
+    public static bool IsImpostorAddedFake(this PlayerControl player)
+    {
+        return player.IsImpostor() || player.IsRole(RoleId.Egoist, RoleId.Spy);
+    }
     public static bool IsImpostor(this PlayerControl player)
     {
         return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
@@ -340,19 +352,19 @@ public static class RoleHelpers
 
     public static void UseShapeshift()
     {
+        RoleTypes myrole = PlayerControl.LocalPlayer.Data.Role.Role;
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
         foreach (CachedPlayer p in CachedPlayer.AllPlayers)
         {
             p.Data.Role.NameColor = Color.white;
-
-            CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-
-            if (p.PlayerControl.IsImpostor())
-            {
-                p.Data.Role.NameColor = RoleClass.ImpostorRed;
-            }
         }
-        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        {
+            if (p.PlayerControl.IsImpostorAddedFake())
+                p.Data.Role.NameColor = RoleClass.ImpostorRed;
+        }
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, myrole);
     }
 
     public static void SetRole(this PlayerControl player, RoleId role)
@@ -388,6 +400,8 @@ public static class RoleHelpers
             WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
+        else if (player.IsRole(RoleId.EvilScientist, RoleId.NiceScientist))
+            Scientist.SetOpacity(player, 0.1f, true);
         switch (role)
         {
             case RoleId.SoothSayer:
@@ -840,7 +854,7 @@ public static class RoleHelpers
                 RoleClass.Jumbo.JumboPlayer.Add(player);
                 break;
             case RoleId.Worshiper:
-                Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.Add(player);
+                Roles.Impostor.MadRole.Worshiper.RoleData.Player.Add(player);
                 break;
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.Add(player);
@@ -881,6 +895,12 @@ public static class RoleHelpers
             case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 //SidekickWaveCannon.allPlayers.Add(player);
+                break;
+            case RoleId.Balancer:
+                Balancer.BalancerPlayer.Add(player);
+                break;
+            case RoleId.Pteranodon:
+                Pteranodon.PteranodonPlayer.Add(player);
                 break;
             // ロールアド
             default:
@@ -1367,7 +1387,7 @@ public static class RoleHelpers
                 RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Worshiper:
-                Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.RemoveAll(ClearRemove);
+                Roles.Impostor.MadRole.Worshiper.RoleData.Player.RemoveAll(ClearRemove);
                 break;
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.RemoveAll(ClearRemove);
@@ -1396,7 +1416,13 @@ public static class RoleHelpers
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.RemoveAll(ClearRemove);
                 break;
-                //ロールリモベ
+            case RoleId.Balancer:
+                Balancer.BalancerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Pteranodon:
+                Pteranodon.PteranodonPlayer.RemoveAll(ClearRemove);
+                break;
+            // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1492,7 +1518,7 @@ public static class RoleHelpers
             RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalUseVent.GetBool(),
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
-            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.RoleData.IsUseVent,
             RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
@@ -1583,7 +1609,7 @@ public static class RoleHelpers
                 RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
                 RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalIsImpostorLight.GetBool(),
-                RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsImpostorLight,
+                RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.RoleData.IsImpostorLight,
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
@@ -1595,7 +1621,12 @@ public static class RoleHelpers
         RoleId MyRole;
         if (IsChache)
         {
-            try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+            try {
+                if (p != null)
+                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+                else
+                    MyRole = RoleId.DefaultRole;
+            }
             catch { MyRole = RoleId.DefaultRole; }
         }
         else
@@ -1607,7 +1638,12 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+        try {
+            if (p != null)
+                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+            else
+                MyRole = RoleId.DefaultRole;
+        }
         catch { MyRole = RoleId.DefaultRole; }
         foreach (RoleId role in roles)
         {
@@ -1840,7 +1876,7 @@ public static class RoleHelpers
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
-            else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
+            else if (Roles.Impostor.MadRole.Worshiper.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
             else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
@@ -1853,6 +1889,8 @@ public static class RoleHelpers
             else if (TheThreeLittlePigs.TheThirdLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheThirdLittlePig;
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
+            else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;
+            else if (Pteranodon.PteranodonPlayer.IsCheckListPlayerControl(player)) return RoleId.Pteranodon;
             // ロールチェック
         }
         catch (Exception e)

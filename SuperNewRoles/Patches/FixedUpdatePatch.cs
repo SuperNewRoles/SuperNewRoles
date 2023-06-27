@@ -111,6 +111,8 @@ public class FixedUpdate
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
                 CustomRoles.FixedUpdate(__instance);
+                Balancer.Update();
+                Pteranodon.FixedUpdateAll();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -205,6 +207,9 @@ public class FixedUpdate
                             break;
                         case RoleId.Dependents:
                             Vampire.FixedUpdate.DependentsOnly();
+                            break;
+                        case RoleId.Pteranodon:
+                            Pteranodon.FixedUpdate();
                             break;
                     }
                 }

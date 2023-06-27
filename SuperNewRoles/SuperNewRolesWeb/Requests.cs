@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles.SuperNewRolesWeb

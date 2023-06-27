@@ -1,6 +1,7 @@
 
 using System.Linq;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 
 namespace SuperNewRoles.MapCustoms;
@@ -64,10 +65,10 @@ class OptimizeMapPatch
             console.checkWalls = true;
             console.usableDistance = 0.7f;
             console.TaskTypes = new TaskTypes[0];
-            console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
+            console.ValidTasks = new Il2CppReferenceArray<TaskSet>(0);
             var list = ShipStatus.Instance.AllConsoles.ToList();
             list.Add(console);
-            ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
+            ShipStatus.Instance.AllConsoles = new Il2CppReferenceArray<Console>(list.ToArray());
         }
         if (console.Image == null)
         {

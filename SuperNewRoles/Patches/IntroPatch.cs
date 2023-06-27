@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Linq;
 using AmongUs.GameOptions;
-using BepInEx.IL2CPP.Utils.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
@@ -17,13 +16,13 @@ public static class ShouldAlwaysHorseAround
     public static bool isHorseMode;
     public static void Postfix(ref bool __result)
     {
-        if(__result) return;
+        if (__result) return;
 
         if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
         else
         {
-            __result = !MainMenuPatch.BeforeAprilR5() && HorseModeOption.enableHorseMode;
-            isHorseMode = !MainMenuPatch.BeforeAprilR5() && HorseModeOption.enableHorseMode;
+            __result = HorseModeOption.enableHorseMode;
+            isHorseMode = HorseModeOption.enableHorseMode;
         }
         return;
     }
@@ -38,10 +37,10 @@ public class IntroPatch
         {
             Logger.Info("=================Player Info=================", "Intro Begin");
             Logger.Info("=================Player Data=================", "Player Info");
-            Logger.Info($"プレイヤー数：{CachedPlayer.AllPlayers.Count}人", "All Player Count");
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}(cid:{p.GetClientId()})(pid:{p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info");
+                Logger.Info($"プレイヤー数：{CachedPlayer.AllPlayers.Count}人", "All Player Count");
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                { Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}(cid:{p.GetClientId()})(pid:{p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info"); }
             }
             Logger.Info("=================Role Data=================", "Player Info");
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -49,11 +48,17 @@ public class IntroPatch
                 Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
             }
             Logger.Info("=================Other Data=================", "Intro Begin");
-            Logger.Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
-            Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
-            foreach (IntroData data in IntroData.IntroList)
             {
-                data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum);
+                Logger.Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
+                Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
+                foreach (IntroData data in IntroData.IntroList) { data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum); }
+            }
+            Logger.Info("=================Activate Roles Data=================", " Other Data");
+            {
+                Logger.Info($"インポスター役職 : 最大 {CustomOptionHolder.impostorRolesCountMax.GetSelection()}役職", "ImpostorRole");
+                Logger.Info($"クルーメイト役職 : 最大 {CustomOptionHolder.crewmateRolesCountMax.GetSelection()}役職", "CremateRole");
+                Logger.Info($"第三陣営役職 : 最大 {CustomOptionHolder.neutralRolesCountMax.GetSelection()}役職", "NeutralRole");
+                CustomOverlays.GetActivateRoles(true); // 現在の役職設定を取得し、辞書に保存するついでにlogに記載する
             }
         }
     }
@@ -291,6 +296,14 @@ public class IntroPatch
                 yourTeam = temp;
             }
         }
+        if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                if (player.IsImpostorAddedFake())
+                    player.Data.Role.NameColor = Color.red;
+            }
+        }
     }
 
     public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
@@ -310,22 +323,22 @@ public class IntroPatch
                 ImpostorText = ModTranslation.GetString("NeutralSubIntro");
                 color = new(127, 127, 127, byte.MaxValue);
             }
+            else if (PlayerControl.LocalPlayer.IsMadRoles())
+            {
+                color = RoleClass.ImpostorRed;
+                TeamTitle = ModTranslation.GetString("MadmateName");
+                ImpostorText = ModTranslation.GetString("MadRolesSubIntro");
+            }
+            else if (PlayerControl.LocalPlayer.IsFriendRoles())
+            {
+                color = RoleClass.JackalBlue;
+                TeamTitle = ModTranslation.GetString("JackalFriendsName");
+                ImpostorText = ModTranslation.GetString("FriendRolesSubIntro");
+            }
             else
             {
                 switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    case RoleId.Madmate:
-                    case RoleId.MadJester:
-                    case RoleId.MadStuntMan:
-                    case RoleId.MadMayor:
-                    case RoleId.MadHawk:
-                    case RoleId.MadSeer:
-                    case RoleId.Worshiper:
-                    case RoleId.MadMaker:
-                    case RoleId.BlackCat:
-                    case RoleId.JackalFriends:
-                    case RoleId.SeerFriends:
-                    case RoleId.MayorFriends:
                     case RoleId.SatsumaAndImo:
                     case RoleId.GM:
                         IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);

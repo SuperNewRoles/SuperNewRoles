@@ -2,13 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.Data;
 using AmongUs.GameOptions;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using Sentry;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -27,6 +25,7 @@ namespace SuperNewRoles.Modules;
 
 public enum RoleId
 {
+    None, // RoleIdの初期化用
     DefaultRole,
     SoothSayer,
     Jester,
@@ -195,6 +194,8 @@ public enum RoleId
     OrientalShaman,
     ShermansServant,
     SidekickWaveCannon,
+    Balancer,
+    Pteranodon,
     //RoleId
 }
 
@@ -296,10 +297,31 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
+    BalancerBalance,
+    PteranodonSetStatus
 }
 
 public static class RPCProcedure
 {
+    public static void PteranodonSetStatus(byte playerId, bool Status, bool IsRight, float tarpos, byte[] buff)
+    {
+        PlayerControl player = ModHelpers.PlayerById(playerId);
+        if (player == null)
+            return;
+        Vector3 position = Vector3.zero;
+        position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+        position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+        position.z = BitConverter.ToSingle(buff, 2 * sizeof(float));
+        Pteranodon.SetStatus(player, Status, IsRight, tarpos, position);
+    }
+    public static void BalancerBalance(byte sourceId, byte player1Id, byte player2Id)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceId);
+        PlayerControl player1 = ModHelpers.PlayerById(player1Id);
+        PlayerControl player2 = ModHelpers.PlayerById(player2Id);
+        if (source is null || player1 is null || player2 is null) return;
+        Balancer.StartAbility(source, player1, player2);
+    }
     public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceId);
@@ -615,6 +637,8 @@ public static class RPCProcedure
         PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
         if (dyingTarget == null) return;
         dyingTarget.Exiled();
+        if (killerId == dyingTargetId) FinalStatusData.FinalStatuses[dyingTargetId] = FinalStatus.GuesserMisFire;
+        else FinalStatusData.FinalStatuses[dyingTargetId] = FinalStatus.GuesserKill;
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
         if (MeetingHud.Instance)
         {
@@ -761,7 +785,7 @@ public static class RPCProcedure
             else
             {
                 airshipStatus.GapPlatform.StopAllCoroutines();
-                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
+                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform).WrapToIl2Cpp());
             }
         }
     }
@@ -1861,6 +1885,12 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.PenguinMeetingEnd:
                         PenguinMeetingEnd();
+                        break;
+                    case CustomRPC.BalancerBalance:
+                        BalancerBalance(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.PteranodonSetStatus:
+                        PteranodonSetStatus(reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean(), reader.ReadSingle(), reader.ReadBytes(reader.ReadInt32()));
                         break;
                 }
             }

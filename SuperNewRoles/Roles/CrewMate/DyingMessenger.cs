@@ -6,7 +6,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public class DyingMessenger
 {
-    private const int OptionId = 1203;
+    private const int OptionId = 402700;
     public static CustomRoleOption DyingMessengerOption;
     public static CustomOption DyingMessengerPlayerCount;
     public static CustomOption DyingMessengerGetRoleTime;
@@ -21,10 +21,8 @@ public class DyingMessenger
 
     public static List<PlayerControl> DyingMessengerPlayer;
     public static Color32 color = new(191, 197, 202, byte.MaxValue);
-    public static Dictionary<byte, (DateTime, PlayerControl)> ActualDeathTime;
     public static void ClearAndReload()
     {
         DyingMessengerPlayer = new();
-        ActualDeathTime = new();
     }
 }
