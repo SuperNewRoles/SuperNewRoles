@@ -1375,6 +1375,27 @@ BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審�
 PteranodonName,Pteranodon,プテラノドン
 PteranodonTitle1,PtePte,プテプテ
 PteranodonButtonName,Juump!!,ジャーンプ！
+BlackHatHackerName,Black Hat Hacker,ブラックハットハッカー
+BlackHatHackerTitle1,Do you have an antivirus?,貴方はウイルス対策ちゃんとしてる？
+BlackHatHackerHackCoolTimeOption,Hack Cool Time,ハックのクールタイム
+BlackHatHackerHackCountableOption,Number of hacks possible,ハック可能回数
+BlackHatHackerIsNotInfectionIncreaseOption,Increase the number of hacks once the infected are gone,感染者が居なくなったらハック回数を増やす
+BlackHatHackerHackInfectiousTimeOption,Infectious time,感染時間
+BlackHatHackerNotInfectiousTimeOption,Post-meeting time when infection does not progress,会議後感染が進まない時間
+BlackHatHackerStartSelfPropagationOption,Degree of infection at which self-propagation begins,自己増殖が開始される感染度
+BlackHatHackerInfectionScopeOption,Scope of Infection,感染範囲
+BlackHatHackerCanInfectedAdminsOption,Can use infected admins,感染者アドミンを使える
+BlackHatHackerIsAdminColorOption,Infected admins can tell the color,感染者アドミンで色が分かる
+BlackHatHackerCanInfectedVitalOption,Can use infected person vitals,感染者バイタルを使える
+BlackHatHackerCanDeadWinOption,You can win even if you are dead,死亡していても勝利出来る
+BlackHatHackerHackButtonName,Hack,ハック
+BlackHatHackerHackNumText,{0} remaining,残り{0}回
+BlackHatHackerStatusOfInfection,Status of infection,感染状況
+BlackHatHackerInfected,Infected,感染済み
+BlackHatHackerPageChange,Page Change,ページ変更
+Short,Short,ショート
+Medium,Medium,ミドル
+Long,Long,ロング
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示

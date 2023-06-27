@@ -1601,8 +1601,10 @@ public class CustomOptionHolder
         StefinderPlayerCount = Create(303001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
         StefinderKillCooldown = Create(303002, false, CustomOptionType.Neutral, "StefinderKillCooldownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
         StefinderVent = Create(303003, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
-        StefinderSabo = Create(303104, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
-        StefinderSoloWin = Create(303105, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+        StefinderSabo = Create(303004, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
+        StefinderSoloWin = Create(303005, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+
+        BlackHatHacker.SetupCustomOptions();
 
         // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
 

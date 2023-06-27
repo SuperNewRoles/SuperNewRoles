@@ -4,6 +4,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
 
@@ -78,7 +79,7 @@ public static class DeviceClass
     {
         public static void Postfix()
         {
-            if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.EvilHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
+            if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.EvilHacker.IsMyAdmin && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
         }
     }
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Update))]
@@ -86,12 +87,12 @@ public static class DeviceClass
     {
         public static bool Prefix(MapCountOverlay __instance)
         {
-            if (IsAdminRestrict && !RoleClass.EvilHacker.IsMyAdmin && AdminTimer <= 0)
+            if (IsAdminRestrict && !RoleClass.EvilHacker.IsMyAdmin && !BlackHatHacker.IsMyAdmin && AdminTimer <= 0)
             {
                 MapBehaviour.Instance.Close();
                 return false;
             }
-            bool IsUse = (MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin;
+            bool IsUse = (MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin;
             if (IsUse)
             {
                 bool commsActive = false;
@@ -127,11 +128,22 @@ public static class DeviceClass
                             HashSet<int> hashSet = new();
                             int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
                             int count = 0;
+                            List<int> colors = new();
 
                             for (int j = 0; j < num; j++)
                             {
                                 Collider2D collider2D = __instance.buffer[j];
-                                if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies) count++;
+                                if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies)
+                                {
+                                    if (BlackHatHacker.IsMyAdmin)
+                                    {
+                                        if (!collider2D.GetComponent<DeadBody>()) continue;
+                                        if (!BlackHatHacker.InfectedPlayerId.Contains(collider2D.GetComponent<DeadBody>().ParentId)) continue;
+                                    }
+
+                                    count++;
+                                    colors.Add(ModHelpers.PlayerById(collider2D.GetComponent<DeadBody>().ParentId).CurrentOutfit.ColorId);
+                                }
                                 else
                                 {
                                     PlayerControl component = collider2D.GetComponent<PlayerControl>();
@@ -144,11 +156,25 @@ public static class DeviceClass
                                     if (!CustomOptionHolder.CrackerIsAdminView.GetBool() && RoleClass.Cracker.CrackedPlayers.Contains(component.PlayerId) &&
                                        (component.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptionHolder.CrackerIsSelfNone.GetBool()))
                                         continue;
+                                    if (BlackHatHacker.IsMyAdmin && !BlackHatHacker.InfectedPlayerId.Contains(component.PlayerId) && !component.AmOwner) continue;
 
                                     count++;
+                                    colors.Add(component.CurrentOutfit.ColorId);
                                 }
                             }
                             counterArea.UpdateCount(count);
+
+                            if (BlackHatHacker.IsMyAdmin && BlackHatHacker.BlackHatHackerIsAdminColor.GetBool())
+                            {
+                                int color = PlayerControl.LocalPlayer.CurrentOutfit.ColorId;
+                                for (int j = 0; j < counterArea.myIcons.Count; j++)
+                                {
+                                    PoolableBehavior icon = counterArea.myIcons[j];
+                                    PlayerControl.LocalPlayer.CurrentOutfit.ColorId = colors.Count > j ? colors[j] : 6;
+                                    PlayerControl.LocalPlayer.SetPlayerMaterialColors(icon.GetComponent<SpriteRenderer>());
+                                }
+                                PlayerControl.LocalPlayer.CurrentOutfit.ColorId = color;
+                            }
                         }
                         else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");
                     }
@@ -159,7 +185,7 @@ public static class DeviceClass
         }
         public static void Postfix(MapCountOverlay __instance)
         {
-            if (RoleClass.EvilHacker.IsMyAdmin) return;
+            if (RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin) return;
             if (!IsAdminRestrict) return;
             if (CachedPlayer.LocalPlayer.IsDead())
             {
@@ -210,8 +236,12 @@ public static class DeviceClass
     {
         public static void Postfix()
         {
-            if (RoleClass.EvilHacker.IsMyAdmin) return;
-            RoleClass.EvilHacker.IsMyAdmin = false;
+            if (RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin)
+            {
+                RoleClass.EvilHacker.IsMyAdmin = false;
+                BlackHatHacker.IsMyAdmin = false;
+                return;
+            }
             if (!IsAdminRestrict) return;
             if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
             if (CachedPlayer.LocalPlayer.IsDead()) return;
@@ -233,7 +263,7 @@ public static class DeviceClass
     {
         static void Postfix(VitalsMinigame __instance)
         {
-            if (IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null) VitalStartTime = DateTime.UtcNow;
+            if (IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null && !BlackHatHacker.IsMyVutals) VitalStartTime = DateTime.UtcNow;
             Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
         }
     }
@@ -242,7 +272,7 @@ public static class DeviceClass
     {
         static void Postfix(Minigame __instance)
         {
-            if (__instance is VitalsMinigame && IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null)
+            if (__instance is VitalsMinigame && IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null && !BlackHatHacker.IsMyVutals)
             {
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
                 if (VitalTimer <= 0) return;
@@ -257,6 +287,7 @@ public static class DeviceClass
                     RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Vital, CachedPlayer.LocalPlayer.PlayerId, false, "");
                 }
             }
+            BlackHatHacker.IsMyVutals = false;
         }
     }
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]
@@ -264,11 +295,17 @@ public static class DeviceClass
     {
         static void Postfix(VitalsMinigame __instance)
         {
-            if (!MapOption.CanUseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire) || PlayerControl.LocalPlayer.IsRole(RoleId.Dependents))
+            if ((!MapOption.CanUseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) && !BlackHatHacker.IsMyVutals)
             {
                 __instance.Close();
             }
-            if (!IsVitalRestrict || RoleClass.Doctor.Vital != null) return;
+            if (BlackHatHacker.IsMyVutals)
+            {
+                __instance.BatteryText.gameObject.SetActive(false);
+                foreach (VitalsPanel vitals in __instance.vitals)
+                    vitals.gameObject.SetActive(BlackHatHacker.InfectedPlayerId.Contains(vitals.PlayerInfo.PlayerId) || vitals.PlayerInfo.Object.AmOwner);
+            }
+            if (!IsVitalRestrict || RoleClass.Doctor.Vital != null || BlackHatHacker.IsMyVutals) return;
             if (CachedPlayer.LocalPlayer.IsDead())
             {
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);

@@ -236,6 +236,7 @@ public static class RoleClass
         OrientalShaman.ClearAndReload();
         Balancer.ClearAndReload();
         Pteranodon.ClearAndReload();
+        BlackHatHacker.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

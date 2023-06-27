@@ -196,6 +196,7 @@ public enum RoleId
     SidekickWaveCannon,
     Balancer,
     Pteranodon,
+    BlackHatHacker,
     //RoleId
 }
 
@@ -297,12 +298,18 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance,
-    PteranodonSetStatus
+    BalancerBalance = 250,
+    PteranodonSetStatus,
+    SetInfectionTimer,
 }
 
 public static class RPCProcedure
 {
+    public static void SetInfectionTimer(byte id, Dictionary<byte, float> infectionTimer)
+    {
+        if (!ModHelpers.PlayerById(id)) return;
+        BlackHatHacker.InfectionTimer[id] = infectionTimer;
+    }
     public static void PteranodonSetStatus(byte playerId, bool Status, bool IsRight, float tarpos, byte[] buff)
     {
         PlayerControl player = ModHelpers.PlayerById(playerId);
@@ -1563,6 +1570,7 @@ public static class RPCProcedure
             {CustomRPC.ShareSNRVersion,false},
             {CustomRPC.SetRoomTimerRPC,false},
             {CustomRPC.SetDeviceTime,false},
+            {CustomRPC.SetInfectionTimer,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
@@ -1891,6 +1899,13 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.PteranodonSetStatus:
                         PteranodonSetStatus(reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean(), reader.ReadSingle(), reader.ReadBytes(reader.ReadInt32()));
+                        break;
+                    case CustomRPC.SetInfectionTimer:
+                        byte id = reader.ReadByte();
+                        int num = reader.ReadInt32();
+                        Dictionary<byte, float> timer = new();
+                        for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
+                        SetInfectionTimer(id, timer);
                         break;
                 }
             }

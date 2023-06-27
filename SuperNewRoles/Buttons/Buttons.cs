@@ -3341,6 +3341,8 @@ static class HudManagerStartPatch
 
         OrientalShaman.SetupCustomButtons(__instance);
 
+        BlackHatHacker.SetupCustomButtons(__instance);
+
         SetCustomButtonCooldowns();
     }
 }
