@@ -1,9 +1,9 @@
-/*
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics;
@@ -12,6 +12,7 @@ public class CustomVisor
 {
     public static bool isAdded = false;
     static readonly List<VisorData> visorData = new();
+    public static readonly List<CustomVisorData> customVisorData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetVisorById))]
     class UnlockedVisorPatch
     {
@@ -32,22 +33,26 @@ public class CustomVisor
             {
                 try
                 {
-                    var plate = ScriptableObject.CreateInstance<VisorData>();
                     var FileName = file.Name[0..^4];
                     var Data = DownLoadClassVisor.Visordetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
-                    plate.name = Data.name + "\nby " + Data.author;
-                    plate.ProductId = "CustomVisors_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
-                    plate.BundleId = "CustomVisors_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
-                    plate.displayOrder = 99;
-                    plate.ChipOffset = new Vector2(0f, 0.2f);
-                    plate.Free = true;
-                    plate.viewData.viewData = new VisorViewData
+                    VisorViewData vvd = new VisorViewData
                     {
                         IdleFrame = Data.IsTOP
                         ? ModHelpers.CreateSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name, true)
                         : LoadTex.loadSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name)
                     };
+                    var plate = new CustomVisorData(vvd)
+                    {
+                        name = Data.name + "\nby " + Data.author,
+                        ProductId = "CustomVisors_" + Data.resource.Replace(".png", "").Replace(".jpg", ""),
+                        BundleId = "CustomVisors_" + Data.resource.Replace(".png", "").Replace(".jpg", ""),
+                        displayOrder = 99,
+                        ChipOffset = new Vector2(0f, 0.2f),
+                        Free = true,
+                        SpritePreview = vvd.IdleFrame
+                    };
                     visorData.Add(plate);
+                    customVisorData.Add(plate);
                     //SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み完了:" + file.Name);
                 }
                 catch (Exception e)
@@ -62,4 +67,3 @@ public class CustomVisor
         }
     }
 }
-*/

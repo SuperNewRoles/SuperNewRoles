@@ -13,7 +13,7 @@ public class TheThreeLittlePigs
     private const CustomOptionType type = CustomOptionType.Neutral;
     public static CustomRoleOption TheThreeLittlePigsOption;
     public static CustomOption TheThreeLittlePigsTeamCount;
-    public static CustomOption TheThreeLittlePigsTask;
+    public static CustomOption TheThreeLittlePigsIsSettingNumberOfUniqueTasks;
     public static CustomOption TheThreeLittlePigsCommonTask;
     public static CustomOption TheThreeLittlePigsShortTask;
     public static CustomOption TheThreeLittlePigsLongTask;
@@ -28,8 +28,8 @@ public class TheThreeLittlePigs
     {
         (TheThreeLittlePigsOption = new(OptionId, false, type, "TheThreeLittlePigsName", color, 1)).RoleId = RoleId.TheFirstLittlePig;
         TheThreeLittlePigsTeamCount = CustomOption.Create(OptionId + 1, false, type, "QuarreledTeamCountSetting", 1f, 1f, 4f, 1f, TheThreeLittlePigsOption);
-        TheThreeLittlePigsTask = CustomOption.Create(OptionId + 2, false, type, "TheThreeLittlePigsTaskSetting", false, TheThreeLittlePigsOption);
-        var TheThreeLittlePigsoption = SelectTask.TaskSetting(OptionId + 3, OptionId + 4, OptionId + 5, TheThreeLittlePigsTask, type);
+        TheThreeLittlePigsIsSettingNumberOfUniqueTasks = CustomOption.Create(OptionId + 2, false, type, "IsSettingNumberOfUniqueTasks", false, TheThreeLittlePigsOption);
+        var TheThreeLittlePigsoption = SelectTask.TaskSetting(OptionId + 3, OptionId + 4, OptionId + 5, TheThreeLittlePigsIsSettingNumberOfUniqueTasks, type);
         TheThreeLittlePigsCommonTask = TheThreeLittlePigsoption.Item1;
         TheThreeLittlePigsShortTask = TheThreeLittlePigsoption.Item2;
         TheThreeLittlePigsLongTask = TheThreeLittlePigsoption.Item3;
@@ -52,7 +52,7 @@ public class TheThreeLittlePigs
         get
         {
             int num = TheThreeLittlePigsCommonTask.GetInt() + TheThreeLittlePigsShortTask.GetInt() + TheThreeLittlePigsLongTask.GetInt();
-            if (!TheThreeLittlePigsTask.GetBool() || num == 0)
+            if (!TheThreeLittlePigsIsSettingNumberOfUniqueTasks.GetBool() || num == 0)
                 num = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks) +
                       GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks) +
                       GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);

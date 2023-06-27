@@ -9,11 +9,13 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -98,6 +100,7 @@ static class HudManagerStartPatch
     public static CustomButton JumboKillButton;
     public static CustomButton WiseManButton;
     public static CustomButton MechanicButton;
+    public static CustomButton PteranodonButton;
 
     #endregion
 
@@ -130,6 +133,79 @@ static class HudManagerStartPatch
     public static void Postfix(HudManager __instance)
     {
         Roles.Attribute.Debugger.canSeeRole = false;
+
+        PteranodonButton = new(
+            () =>
+            {
+                AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();
+                if (status == null)
+                    return;
+                Pteranodon.IsPteranodonNow = true;
+                Pteranodon.StartPosition = PlayerControl.LocalPlayer.transform.position;
+                Pteranodon.CurrentPosition = PlayerControl.LocalPlayer.transform.position;
+                bool IsRight = true;
+                if (Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f)
+                {
+                    Pteranodon.TargetPosition = status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition);
+                }
+                else
+                {
+                    IsRight = false;
+                    Pteranodon.TargetPosition = status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition);
+                }
+                PlayerControl.LocalPlayer.moveable = false;
+                PlayerControl.LocalPlayer.Collider.enabled = false;
+                Pteranodon.Timer = Pteranodon.StartTime;
+
+                Vector3 position = PlayerControl.LocalPlayer.transform.position;
+                byte[] buff = new byte[sizeof(float) * 3];
+                Buffer.BlockCopy(BitConverter.GetBytes(position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(position.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(position.z), 0, buff, 2 * sizeof(float), sizeof(float));
+
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PteranodonSetStatus);
+                writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                writer.Write(true);
+                writer.Write(IsRight);
+                writer.Write(Pteranodon.TargetPosition.x - Pteranodon.StartPosition.x);
+                writer.Write(buff.Length);
+                writer.Write(buff);
+                writer.EndRPC();
+                PteranodonButton.MaxTimer = Pteranodon.PteranodonCoolTime.GetFloat();
+                PteranodonButton.Timer = PteranodonButton.MaxTimer;
+                //RPCProcedure.PteranodonSetStatus(PlayerControl.LocalPlayer.PlayerId, true);
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pteranodon; },
+            () =>
+            {
+                if (!PlayerControl.LocalPlayer.CanMove) return false;
+                AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();
+                if (status == null)
+                    return false;
+                if (status.GapPlatform.Target != null && status.GapPlatform.Target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
+                    return false;
+                }
+                bool flag = Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f || Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.9f;
+                return flag;
+            },
+            () =>
+            {
+                PteranodonButton.MaxTimer = Pteranodon.PteranodonCoolTime.GetFloat();
+                PteranodonButton.Timer = PteranodonButton.MaxTimer;
+            },
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PteranodonButton.png", 115f),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("PteranodonButtonName"),
+            showButtonText = true
+        };
 
         WiseManButton = new(
             () =>
@@ -439,6 +515,7 @@ static class HudManagerStartPatch
                 ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptionHolder.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptionHolder.PavlovsdogKillCoolTime.GetFloat();
                 PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
+                if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return;
                 RoleClass.Pavlovsdogs.DeathTime = CustomOptionHolder.PavlovsdogRunAwayDeathTime.GetFloat();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsdogs; },
