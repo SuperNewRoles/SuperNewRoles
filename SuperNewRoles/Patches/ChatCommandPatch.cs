@@ -125,6 +125,17 @@ public static class DynamicLobbies
                 // memoの中身があるなら ファイル名を任意の文字列にする。
                 else Logger.SaveLog(memo, via);
             }
+            else if (text.ToLower().StartsWith("/lp"))
+            {
+                handled = true;
+
+                string print = text.ToLower()
+                    .Replace("/lp ", "")
+                    .Replace("/lp", "");
+
+                Logger.Info(print, "任意ログ印字");
+                __instance.AddChat(PlayerControl.LocalPlayer, $"このチャットは貴方にのみ表示されています。\nLogに以下の内容を印字しました。\n「{print}」");
+            }
             if (handled)
             {
                 __instance.TextArea.Clear();

@@ -111,6 +111,7 @@ class WrapUpPatch
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
         ModeHandler.Wrapup(exiled);
         RedRidingHood.WrapUp(exiled);
+        Pteranodon.WrapUp();
         Roles.Neutral.Revolutionist.WrapUp();
         Roles.Neutral.Spelunker.WrapUp();
         Roles.Neutral.Hitman.WrapUp();
