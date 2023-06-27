@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
-using UnhollowerBaseLib;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
@@ -526,9 +526,6 @@ public static class OnGameEndPatch
                             : gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor
                                 ? FinalStatus.Sabotage
                                 : FinalStatus.Alive;
-                // FIXME:守護天使の能力でのガード時、キルが起きた(MurderPlayerが通った)判定になる。このコードは根本的な修正ではないうえに、問題をマスキングしている。
-                // 妖狐やFastMakerのMK等、守護が発動した場合、死亡していなくとも[死因:キル]が記載される為、生きている場合は生存で上書きする。
-                if (!p.IsDead) finalStatus = FinalStatus.Alive;
 
                 string namesuffix = "";
                 if (p.Object.IsLovers())
@@ -620,7 +617,7 @@ public static class OnGameEndPatch
             RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
             RoleClass.Pavlovsowner.PavlovsownerPlayer,
             RoleClass.LoversBreaker.LoversBreakerPlayer,
-            Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
+            Roles.Impostor.MadRole.Worshiper.RoleData.Player,
             Safecracker.SafecrackerPlayer,
             FireFox.FireFoxPlayer,
             OrientalShaman.OrientalShamanPlayer,
@@ -1343,6 +1340,7 @@ public static class CheckGameEndHnSPatch
             if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
             if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+            if (CheckAndEndGameForFoxHouwaWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
@@ -1380,6 +1378,7 @@ public static class CheckGameEndPatch
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+            if (CheckAndEndGameForFoxHouwaWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
@@ -1598,6 +1597,37 @@ public static class CheckGameEndPatch
                 }
             }
         }
+        return false;
+    }
+    public static bool CheckAndEndGameForFoxHouwaWin(ShipStatus __instance)
+    {
+        int impostorNum = 0;
+        int crewNum = 0;
+        bool foxAlive = false;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (p.IsDead() || p.Data.Disconnected || p == null) continue;
+
+            if (p.IsImpostor()) impostorNum++;
+            else if (p.IsCrew()) crewNum++;
+            else if (RoleClass.Fox.FoxPlayer.Contains(p) || FireFox.FireFoxPlayer.Contains(p)) foxAlive = true;
+        }
+
+        if (impostorNum == crewNum && foxAlive && CustomOptionHolder.FoxCanHouwaWin.GetBool()) {
+            List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+            foxPlayers.AddRange(FireFox.FireFoxPlayer);
+            foreach (PlayerControl p in foxPlayers) {
+                if (p.IsDead()) continue;
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                Writer.Write(p.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                RPCProcedure.ShareWinner(p.PlayerId);
+
+                __instance.enabled = false;
+                CustomEndGame((GameOverReason)CustomGameOverReason.FoxWin, false);
+            }
+            return true;
+        };
         return false;
     }
     public static bool CheckAndEndGameForSuicidalIdeationWin(ShipStatus __instance)

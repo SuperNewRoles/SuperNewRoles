@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public class FireFox
 {
-    private const int OptionId = 1182;// 設定のId
+    private const int OptionId = 301500;// 設定のId
     public static CustomRoleOption FireFoxOption;
     public static CustomOption FireFoxPlayerCount;
     public static CustomOption FireFoxMaxKillCount;

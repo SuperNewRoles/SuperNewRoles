@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -310,9 +309,20 @@ class AddChatPatch
         string text = "";
         foreach (CustomOption option in options)
         {
+            if (!option.parent.Enabled && option.parent != null) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+
+            string optionName = option.GetName();
+
             text += indent + option.GetName() + ":" + option.GetString() + "\n";
+            var (isProcessingRequired, pattern) = GameOptionsDataPatch.ProcessingOptionCheck(option);
+
+            if (isProcessingRequired)
+                text += $"{GameOptionsDataPatch.ProcessingOptionString(option, indent, pattern)}\n";
+
             if (option.children.Count > 0)
             {
+                if (!option.Enabled) continue;
                 text += GetChildText(option.children, indent + "  ");
             }
         }
@@ -341,13 +351,14 @@ class AddChatPatch
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
         IntroData intro = option.Intro;
-        text += GetTeamText(intro.TeamType) + ModTranslation.GetString("TeamRoleType") + "\n";
+        text += GetTeamText(intro.TeamType) + "\n";
         text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
         text += intro.Description + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
         text += GetOptionText(option, intro);
         return text;
     }
+
     // /grのコマンド結果を返す。辞書を加工する。
     static string GetInRole()
     {
@@ -381,7 +392,7 @@ class AddChatPatch
         {
             string text = GetText(option);
             string rolename = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
-            SuperNewRolesPlugin.Logger.LogInfo(text);
+            Logger.Info(text);
             Send(target, rolename, text, time);
             time += SendTime;
         }
@@ -408,12 +419,12 @@ class AddChatPatch
             if (target == null)
             {
                 string name = PlayerControl.LocalPlayer.GetDefaultName();
-                AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name));
+                AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name).WrapToIl2Cpp());
                 return;
             }
             if (target.PlayerId != 0)
             {
-                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time));
+                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time).WrapToIl2Cpp());
             }
             else
             {
@@ -429,12 +440,12 @@ class AddChatPatch
             string name = PlayerControl.LocalPlayer.GetDefaultName();
             if (target == null)
             {
-                AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name, time));
+                AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name, time).WrapToIl2Cpp());
                 return;
             }
             if (target.PlayerId != 0)
             {
-                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time));
+                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time).WrapToIl2Cpp());
             }
             else
             {
@@ -458,7 +469,7 @@ class AddChatPatch
         {
             string name = CachedPlayer.LocalPlayer.Data.PlayerName;
             if (name == SNRCommander) return;
-            AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name));
+            AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
             return;
         }
         else if (target.PlayerId == 0)
@@ -470,7 +481,7 @@ class AddChatPatch
         }
         else
         {
-            AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command));
+            AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command).WrapToIl2Cpp());
         }
     }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)

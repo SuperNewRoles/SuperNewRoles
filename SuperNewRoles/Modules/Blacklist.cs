@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using InnerNet;
 using Newtonsoft.Json.Linq;
@@ -86,7 +86,7 @@ internal class OnGameJoinedPatch
 {
     public static void Postfix(AmongUsClient __instance)
     {
-        __instance.StartCoroutine(Blacklist.Check(__instance.ClientId));
+        __instance.StartCoroutine(Blacklist.Check(__instance.ClientId).WrapToIl2Cpp());
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
@@ -95,6 +95,6 @@ internal class OnPlayerJoinedPatch
     public static void Postfix(AmongUsClient __instance,
                                 [HarmonyArgument(0)] ClientData client)
     {
-        __instance.StartCoroutine(Blacklist.Check(client.Id));
+        __instance.StartCoroutine(Blacklist.Check(client.Id).WrapToIl2Cpp());
     }
 }

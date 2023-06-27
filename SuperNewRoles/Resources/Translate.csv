@@ -415,6 +415,8 @@ ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う,破�
 ImpostorDescription,Default Impostor.\nShapeshifter in vanilla role are also represented as impostors.Provide support to your partner or ally.\nEven if your partner has a position，not all of his or her abilities may be superior to those of a regular impostor.\nEven if they are all top compatible，they cannot win without your support.\nYour partner or Madmate needs your action.\n\nYou can swing，you can lurk，or you can take advantage of your partner's abilities!\nIt is also a great ability to make use of your allies' abilities...\n\nDeceive，make a scapegoat，escape banishment. \nWe are the "Impostors". \nIt does not matter if we live or die.\nWe just have to kill all the crew.,通常のインポスターです。\nバニラ役職のシェイプシフターもインポスターとして表記されます。\n\n相方や味方のサポートを行いましょう。\n相方が役職持ちの場合でも、能力が全て通常のインポスターの上位互換とは限りません。\n全て上位互換であったとしても、貴方のサポートが無ければ勝つことなどできません。\n相方やマッドメイトは貴方の行動を必要としています。\n\n揺動に回るも良し、潜伏するも良し、相方の能力を生かせるよう立ち回ってみましょう!\n味方の能力を活用するのも立派な能力なのですから...\n\n騙せ　身代わりを作れ　追放を逃れろ。\n我らはインポスターだ。\n自らの生死は関係がない。\nただクルーを殺し尽くせば良いだけだ。,,預設內鬼職業。\n原版職業的變形者也被列為內鬼。\n\n為內鬼陣營的隊友提供支援。\n即使你的隊友擁有職業，他/她的能力也不一定優於原版內鬼。\n即使他們具有超強的能力，沒有你的支援他們也無法獲勝。\n你的隊友需要你的行動。\n\n你可以遊走或潛伏，或者利用隊友的能力！\n妥善利用隊友的能力也是一種很棒的能力...\n\n欺騙，找個替罪羊，避免遭放逐。\n我們是「內鬼」。\n我們的生死無關緊要。\n我們只需要殺死所有船員。
 Neutral,Neutral,第三陣営,独立阵营,中立陣營
 NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
+MadRolesSubIntro,This life is for my mastert，the Impostor.,この命は我が主たるインポスターのために
+FriendRolesSubIntro,One who stands by the jackal.,ジャッカルに寄り添いし者
 detecName,Detective,探偵,侦探,偵探
 
 # Roles
@@ -625,7 +627,11 @@ MadmateName,Madmate,マッドメイト,叛徒,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利,幫助內鬼獲得勝利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。,叛徒屬於船員陣營，但是其為內鬼的同伴。\n內鬼獲勝則叛徒一同獲勝。
 MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか,叛徒是否能确认内鬼玩家,叛徒是否能確認內鬼玩家
-MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量,確認身份需要完成的任務量
+IsSettingNumberOfUniqueTasks,Do you want to set a unique number of tasks required to trigger an ability?,能力発動に必要なタスク数を固有で設定するか
+IsParcentageForTaskTrigger,Is the number of tasks required to trigger the capability a percentage of the total number of tasks?,能力発動に必要なタスク数を総タスク数に対する割合にするか。
+ParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),能力が発動するタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
+TaskTriggerAbilityTaskNumber,Number of tasks required to activate fanaticism capability,能力の発動に必要なタスク数
+UnitPieces,pieces,個
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道,可以進入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道,叛徒可以使用管道
 MadmateImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
@@ -820,7 +826,6 @@ MadMayorIsCheckImpostorSetting,You can check the Impostor.,インポスターが
 MadMayorUseVentSetting,Use Vent,ベントを使える,可以进入管道,可以進入通風管道
 MadMayorVentMoveSetting,Move Vent,ベントで動ける,可以使用管道,可以在管道中移動
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
-MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）,叛变的市长确认内鬼阵营玩家需要完成的任务量,叛變的市長確認內鬼陣營玩家所需完成的任務數
 NiceHawkName,NiceHawk,ナイスホーク,鹰眼,正義的鷹眼
 NiceHawkTitle1,See it all.,全てを見渡せ,将一切尽收眼底,將一切盡收眼底
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう,把犯人抓个现行,把犯人抓個現行
@@ -880,6 +885,7 @@ DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキ�
 FoxName,Fox,妖狐,妖狐,狐妖
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！,我是一隻小狐狸！
 FoxDescription,If you survive to the end，you win alone.\nYou will not be killed.\nThat's because I'm not me there.,最後まで生存していると単独勝利します。\nキルされることはありません。\nそりゃあそこにいる私は私ではないからね。,,如果狐妖存活到最後則獨自勝利。\n不存在什麼我被殺，因為在那的我並不是我。
+CanHouwaWin,Fox can win on stalemate,飽和勝利が可能
 SeerName,Seer,シーア,灵媒,先知
 SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。,灵媒属于船员阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n灵媒需要利用手中的情报来确认内鬼。,先知屬於船員陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n先知需要利用手中的情報來確認內鬼。,
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
@@ -1355,7 +1361,6 @@ TheThirdLittlePigName,The Third Little Pig,3番目の仔豚,猪老三,猪老三
 TheFirstLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheSecondLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheThirdLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
-TheThreeLittlePigsTaskSetting,Assign tasks separately,別にタスクを割り当てる,单独分配任务数,單獨分配任務數
 TheFirstLittlePigClearTaskSetting,Percentage of tasks required for The first little pig to complete the house,1番目の仔豚が家を完成させるのに必要なタスクの割合,猪老大盖出房子需要的任务进度,豬老大蓋出房子需要的任務進度
 TheFirstLittlePigIsCustomTimerSetting,Set the timer for The first little pig,1番目の仔豚のタイマーを設定する,猪老大盖房子有时间限制,豬老大蓋房子有時間限制
 TheFirstLittlePigCustomTimerSetting,The first little pig timer,1番目の仔豚のタイマー,猪老大盖房子的时间限制,豬老大蓋房子的時間限制
@@ -1389,6 +1394,9 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
+PteranodonName,Pteranodon,プテラノドン
+PteranodonTitle1,PtePte,プテプテ
+PteranodonButtonName,Juump!!,ジャーンプ！
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
