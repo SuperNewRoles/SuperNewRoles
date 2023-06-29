@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using AmongUs.GameOptions;
+using InnerNet;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -45,11 +46,12 @@ public static class ReplayFileReader
         replay.IsPosFloat = reader.ReadBoolean();
         return replay;
     }
+    public static GameOptionsFactory factory = new(new UnityLogger().TryCast<Hazel.ILogger>());
     public static ReplayData ReadGameOptionData(BinaryReader reader, ReplayData replay)
     {
         int length = reader.ReadInt32();
         byte[] options = reader.ReadBytes(length);
-        replay.GameOptions = GameManager.Instance.LogicOptions.gameOptionsFactory.FromBytes(options);
+        replay.GameOptions = factory.FromBytes(options);
         return replay;
     }
     public static ReplayData ReadCustomOptionData(BinaryReader reader, ReplayData replay)

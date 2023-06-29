@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace SuperNewRoles.Replay
 {
@@ -24,6 +27,23 @@ namespace SuperNewRoles.Replay
             Recorder.ClearAndReloads();
             ReplayLoader.ClearAndReloads();
         }
+        public static void CreateReplayButton(MainMenuManager __instance, PassiveButton FreePlayButton)
+        {
+            PassiveButton ReplayButton = GameObject.Instantiate(FreePlayButton, FreePlayButton.transform.parent);
+            ReplayButton.transform.localPosition = new(2f, -1.75f, 0);
+            GameObject.Destroy(ReplayButton.buttonText.GetComponent<TextTranslatorTMP>());
+            ReplayButton.buttonText.text = ModTranslation.GetString("ReplayName");
+            ReplayButton.buttonText.alignment = TextAlignmentOptions.Center;
+            ReplayButton.OnClick = new();
+            ReplayButton.OnClick.AddListener((UnityAction)(() =>
+            {
+                Logger.Info("クリック");
+                IsReplaySelector = true;
+                __instance.playLocalButton.OnClick.Invoke();
+            }));
+            ReplayButton.name = "ReplayButton";
+        }
+        public static bool IsReplaySelector = false;
         public static void HudUpdate()
         {
             if (IsReplayMode)

@@ -1424,6 +1424,9 @@ SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成�
 SNRIntroduction,introduction status,導入状況,,導入狀況
 NoFriendCode,No possession.,未所持,,不具有
 
+# Replay
+ReplayName,Replay,リプレイ
+
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫
 Agartha_ToolRoom,ToolRoom,工具室,工具室,工具室
