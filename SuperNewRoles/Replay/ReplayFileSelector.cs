@@ -62,7 +62,7 @@ namespace SuperNewRoles.Replay
             }
             public static JoinGameButton prefab;
             public static Transform prefabparent;
-            public const int MaxPageCount = 44;
+            public const int MaxPageCount = 4;
             public static void CreatePageButton(int page)
             {
                 for (int i = page * MaxPageCount; (i < FileNames.Count && (i - (page * MaxPageCount)) < MaxPageCount); i++)
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Replay
                     button.transform.localPosition = new(0, 2f - ((i - (page * MaxPageCount)) * 1.1f), -1);
                     button.transform.localScale = new(1.6f, 2, 1.8f);
                     Logger.Info(FileNames[i]);
-                    (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(FileNames[i]);
+                    (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataSelector(FileNames[i]);
                     string[] filenames = FileNames[i].Split("/");
                     string[] filesplited = filenames[filenames.Length - 1].Split(".");
                     string filename = string.Join('.', filesplited[..(filesplited.Length - 1)]);

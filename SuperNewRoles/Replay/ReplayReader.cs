@@ -16,6 +16,26 @@ namespace SuperNewRoles.Replay
         public static BinaryReader reader;
         static string filePath;
         //返り値はちゃんと読み込めたか(フアイルのデータがこわれていないか)
+        public static (ReplayData, bool) ReadReplayDataSelector(string filename)
+        {
+            (reader, filePath) = ReplayFileReader.CreateReader(filename);
+            var replay = new ReplayData();
+            try
+            {
+                replay = ReplayFileReader.ReadSNRData(reader, replay);
+                replay = ReplayFileReader.ReadGameData(reader, replay);
+
+                if (!ReplayFileReader.IsCheckSumSuc(reader, replay))
+                    return (replay, false);
+            }
+            catch (EndOfStreamException)
+            {
+                Logger.Info("ふぁいるのないようすくなすぎ！");
+                return (replay, false);
+            }
+            return (replay, true);
+        }
+        //返り値はちゃんと読み込めたか(フアイルのデータがこわれていないか)
         public static (ReplayData, bool) ReadReplayDataFirst(string filename)
         {
             (reader, filePath) = ReplayFileReader.CreateReader(filename);
