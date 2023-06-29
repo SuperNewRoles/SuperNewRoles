@@ -20,6 +20,8 @@ public class CustomHatData : HatData
     {
         public Sprite MainImage;
         public Sprite BackImage;
+        public Sprite FlipImage;
+        public Sprite BackFlipImage;
         public Sprite ClimbImage;
         public bool adaptive;
         public Material AltShader => adaptive ? new Material(Shader.Find("Unlit/PlayerShader")) : null;
@@ -32,6 +34,8 @@ public class CustomHatData : HatData
                 {
                     MainImage = MainImage,
                     BackImage = BackImage,
+                    LeftMainImage = FlipImage,
+                    LeftBackImage = BackFlipImage,
                     ClimbImage = ClimbImage,
                     AltShader = AltShader,
                     name = name
