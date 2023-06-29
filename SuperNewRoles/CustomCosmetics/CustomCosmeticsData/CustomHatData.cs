@@ -55,6 +55,8 @@ public class CustomHatData : HatData
         {
             if (!id.StartsWith("MOD_")) return true;
             __result = getbycache(id);
+            if (__result == null)
+                return true;
             return false;
         }
     }

@@ -35,6 +35,8 @@ public class CustomVisorData : VisorData
         {
             if (!id.StartsWith("CustomVisors_")) return true;
             __result = getbycache(id);
+            if (__result == null)
+                return true;
             return false;
         }
     }
