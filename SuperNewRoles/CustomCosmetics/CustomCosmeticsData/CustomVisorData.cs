@@ -36,7 +36,7 @@ public class CustomVisorData : VisorData
             if (!id.StartsWith("CustomVisors_")) return true;
             __result = getbycache(id);
             if (__result == null)
-                return true;
+                __result = __instance.visors["visor_EmptyVisor"].GetAsset();
             return false;
         }
     }

@@ -56,7 +56,7 @@ public class CustomHatData : HatData
             if (!id.StartsWith("MOD_")) return true;
             __result = getbycache(id);
             if (__result == null)
-                return true;
+                __result = __instance.hats["hat_NoHat"].GetAsset();
             return false;
         }
     }
