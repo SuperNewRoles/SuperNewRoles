@@ -21,8 +21,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
-        <Reference Include="$(AmongUs)/BepInEx/interop/*.dll" />
+        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.6.13" />
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.669" PrivateAssets="all" />
+	    <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivateAssets="all" />
         <None Remove="CustomCosmetics\CustomCosmeticsData\CustomHatData.cs~RFbacc703.TMP" />
         <Reference Include="$(AmongUs)/BepInEx/plugins/Agartha.dll" />
     </ItemGroup>
