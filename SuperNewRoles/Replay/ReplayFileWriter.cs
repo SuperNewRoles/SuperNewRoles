@@ -22,7 +22,7 @@ public static class ReplayFileWriter
     {
         Version version = SuperNewRolesPlugin.ThisVersion;
         //バージョン
-        writer.Write("SuperNewRolesReplay-" + version.Revision.ToString());
+        writer.Write(SuperNewRolesPlugin.ThisPluginModName + "-" + version.Revision.ToString());
         writer.Write(version.Major);
         writer.Write(version.Minor);
         writer.Write(version.Build);

@@ -16,7 +16,15 @@ public static class ReplayFileReader
         DirectoryInfo d = new(filePath);
         if (!d.Exists) d.Create();
         filePath += filename;// + ".replay";
-        var reader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read));
+        BinaryReader reader = null;
+        try
+        {
+            reader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read));
+        }
+        catch
+        {
+            return (null, filePath);
+        }
         return (reader, filePath);
     }
     public static ReplayData ReadSNRData(BinaryReader reader, ReplayData replay)

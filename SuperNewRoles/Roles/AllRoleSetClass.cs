@@ -74,6 +74,8 @@ class RoleManagerSelectRolesPatch
     public static bool Prefix(RoleManager __instance)
     {
         ReplayLoader.AllRoleSet();
+        if (ReplayManager.IsReplayMode)
+            return false;
         AllRoleSetClass.SetPlayerNum();
         IsNotPrefix = false;
         IsSetRoleRPC = false;
@@ -170,6 +172,8 @@ class RoleManagerSelectRolesPatch
     }
     public static void Postfix()
     {
+        if (ReplayManager.IsReplayMode)
+            return;
         IsSetRoleRPC = true;
         IsRPCSetRoleOK = false;
         IsNotPrefix = true;

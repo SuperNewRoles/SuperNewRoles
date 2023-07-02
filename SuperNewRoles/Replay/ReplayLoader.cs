@@ -72,14 +72,17 @@ namespace SuperNewRoles.Replay
         public static void CoStartGame() {
             if (ReplayManager.IsReplayMode)
             {
+                SetOptions();
                 UpdateLocalPlayerFirst();
                 SpawnBots();
                 UpdateLocalPlayerEnd();
             }
         }
-        public static void CoIntroStart()
+        public static void CoIntroDestory()
         {
-            SetOptions();
+            if (ReplayManager.CurrentReplay.IsFirstLoaded)
+                return;
+            ReplayManager.CurrentReplay.IsFirstLoaded = true;
             posindex = 0;
             postime = 0;
             actiontime = 0;
@@ -115,7 +118,7 @@ namespace SuperNewRoles.Replay
                     }
                     p.SetRole(role);
                 }
-                ShowIntro();
+                //ShowIntro();
             }
         }
         public static void ShowIntro()
@@ -130,21 +133,28 @@ namespace SuperNewRoles.Replay
         }
         public static void SetOptions()
         {
-            Logger.Info(ReplayManager.CurrentReplay.GameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString());
             GameOptionsManager.Instance.CurrentGameOptions = ReplayManager.CurrentReplay.GameOptions;
             GameManager.Instance.LogicOptions.SetGameOptions(ReplayManager.CurrentReplay.GameOptions);
-            Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString());
-            Logger.Info(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString());
+            Logger.Info(ReplayManager.CurrentReplay.GameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(),"CurrentReplay");
+            Logger.Info(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
+            Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
             ReplayManager.CurrentReplay.UpdateCustomOptionByData();
         }
         public static void GetPosAndActionsThisTurn()
         {
+            var caller = new System.Diagnostics.StackFrame(1, false);
+            var callerMethod = caller.GetMethod();
+            string callerMethodName = callerMethod.Name;
+            string callerClassName = callerMethod.DeclaringType.FullName;
+            SuperNewRolesPlugin.Logger.LogInfo("[Replay:FixedUpdate]" + callerClassName + "." + callerMethodName + " Called.");
             ReplayTurn turn = new()
             {
                 Positions = new(),
                 Actions = new()
             };
-            var reader = ReplayReader.reader;
+            var reader = ReplayManager.CurrentReplay.binaryReader;
+            Logger.Info(reader.BaseStream.Length.ToString());
+            Logger.Info(reader.BaseStream.Position.ToString());
             bool IsPosFloat = ReplayManager.CurrentReplay.IsPosFloat;
             int playercount = reader.ReadInt32();
             for (int i = 0; i < playercount; i++)
@@ -225,7 +235,10 @@ namespace SuperNewRoles.Replay
                         }
                         player.transform.position = new(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].x,
                             ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].y,
-                            0f);
+                            0f);/*
+                        Logger.Info(ReplayManager.CurrentReplay.GameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
+                        Logger.Info(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
+                        Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");*/
                         //Logger.Info($"{ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1]} => {new Vector3(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1].x,
                         //    ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1].y,
                         //    0f)}");
@@ -240,6 +253,7 @@ namespace SuperNewRoles.Replay
                     }
                 }
                 posindex++;
+                Logger.Info(posindex.ToString(),"POSINDEXXXXX");
                 postime = ReplayManager.CurrentReplay.RecordRate;
             }
             //Logger.Info("actiontime:"+actiontime.ToString());

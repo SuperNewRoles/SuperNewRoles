@@ -20,6 +20,9 @@ namespace SuperNewRoles.Replay
         {
             (reader, filePath) = ReplayFileReader.CreateReader(filename);
             var replay = new ReplayData();
+            if (reader == null)
+                return (replay, false);
+            replay.binaryReader = reader;
             try
             {
                 replay = ReplayFileReader.ReadSNRData(reader, replay);
@@ -33,6 +36,8 @@ namespace SuperNewRoles.Replay
                 Logger.Info("ふぁいるのないようすくなすぎ！");
                 return (replay, false);
             }
+            replay.CheckSum = true;
+            replay.FilePath = filename;
             return (replay, true);
         }
         //返り値はちゃんと読み込めたか(フアイルのデータがこわれていないか)
@@ -56,6 +61,8 @@ namespace SuperNewRoles.Replay
             replay = ReplayFileReader.ReadCustomOptionData(reader, replay);
             replay = ReplayFileReader.ReadPlayerData(reader, replay);
             ReplayManager.CurrentReplay = replay;
+            replay.binaryReader = reader;
+            replay.FilePath = filename;
             return (replay, true);
         }
     }

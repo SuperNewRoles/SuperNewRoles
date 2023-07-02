@@ -48,6 +48,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static bool IsUpdate = false;
     public static string NewVersion = "";
     public static string thisname;
+    public static string ThisPluginModName;
 
     public override void Load()
     {
@@ -112,12 +113,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         StringDATA = new Dictionary<string, Dictionary<int, string>>();
         Harmony.PatchAll();
-
         assembly = Assembly.GetExecutingAssembly();
         string[] resourceNames = assembly.GetManifestResourceNames();
         foreach (string resourceName in resourceNames)
             if (resourceName.EndsWith(".png"))
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
+        ThisPluginModName = IL2CPPChainloader.Instance.Plugins.FirstOrDefault(x => x.Key == "jp.ykundesu.supernewroles").Value.Metadata.Name;
     }
 
     public static bool IsApril()

@@ -26,7 +26,8 @@ public enum ReplayActionId {
     MakeVent,
     SetMechanicStatus,
     RepairSystem,
-    VotingComplete
+    VotingComplete,
+    MovingPlatform
 }
 public abstract class ReplayAction
 {
@@ -86,6 +87,8 @@ public abstract class ReplayAction
                 return new ReplayActionRepairSystem();
             case ReplayActionId.VotingComplete:
                 return new ReplayActionVotingComplete();
+            case ReplayActionId.MovingPlatform:
+                return new ReplayActionMovingPlatform();
         }
         Logger.Info("typeに合うReplayActionがありませんでした。:"+id);
         return null;

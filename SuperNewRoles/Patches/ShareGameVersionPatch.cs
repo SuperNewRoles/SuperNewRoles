@@ -5,6 +5,7 @@ using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -50,7 +51,7 @@ class ShareGameVersion
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     public class GameStartManagerStartPatch
     {
-        public static void Postfix()
+        public static void Postfix(GameStartManager __instance)
         {
             timer = 600f;
             RPCTimer = 1f;
@@ -78,6 +79,20 @@ class ShareGameVersion
         }
         public static void Postfix(GameStartManager __instance)
         {
+            if (ReplayManager.IsReplayMode)
+            {
+                if (FastDestroyableSingleton<GameStartManager>.Instance.startState == GameStartManager.StartingStates.Countdown)
+                {
+                    FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
+                }
+                else
+                {
+                    Logger.Info("COMMeDDDDDDDDDDDD!!!!!!!!!");
+                    __instance.StartButton.GetComponent<PassiveButton>().OnClick.Invoke();
+                    FastDestroyableSingleton<GameStartManager>.Instance.startState = GameStartManager.StartingStates.Countdown;
+                    FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
+                }
+            }
             Proce++;
             if (Proce >= 10)
             {

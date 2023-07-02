@@ -1426,6 +1426,14 @@ NoFriendCode,No possession.,未所持,,不具有
 
 # Replay
 ReplayName,Replay,リプレイ
+ReplayPlay,Play,再生
+ReplayCheckStart,Do you want to play it?,再生しますか？
+ReplayErrorFileDataBroken,Data in the file is corrupt!,フアイルの　データが　こわれています！
+ReplayErrorDataModNoneThisMod,The recording mod is different.\n It may not play properly.\n{0},記録MODが違います。\n正常に再生されない可能性があります。\n{0}
+ReplayErrorDiffVersion,Version compatibility is not guaranteed.\nIn this case，we will not respond to any problems that may occur.\nNow: v{0}， Replay: v{1},バージョンの互換性は保証されません。\nこの場合不具合が発生しても対応しません。\n今：v{0}，記録：v{1}
+ReplayReplaySaved,Replay saved,リプレイを保存しました
+ReplayChangeName,Change filename,ファイル名変更
+ReplayFileName,Filename,ファイル名
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫
