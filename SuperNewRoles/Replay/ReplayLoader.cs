@@ -5,6 +5,7 @@ using System.Text;
 using AmongUs.GameOptions;
 using SuperNewRoles.Replay.ReplayActions;
 using UnityEngine;
+using UnityEngine.Events;
 using static GameData;
 
 namespace SuperNewRoles.Replay
@@ -99,7 +100,44 @@ namespace SuperNewRoles.Replay
             PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.transform.parent.gameObject.SetActive(false);
             PlayerControl.LocalPlayer.cosmetics.gameObject.SetActive(false);
             PlayerControl.LocalPlayer.cosmetics.nameText.transform.parent.gameObject.SetActive(false);
+            CreateGUI();
         }
+        public static void CreateGUI() {
+            GameObject back = new();
+            GUIObject = back;
+            back.name = "ReplayGUI";
+            back.transform.parent = FastDestroyableSingleton<HudManager>.Instance.transform;
+            back.layer = 5;
+            back.transform.localPosition = new(0, -1.5f, -20f);
+            back.transform.localScale = new(0.6f, 0.9f, 0.75f);
+            SpriteRenderer backrender = back.AddComponent<SpriteRenderer>();
+            backrender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIBack.png", 110f);
+            CreateItem("Play", 0);
+            CreateItem("", 1, "Faster");
+
+            GUIObject.gameObject.SetActive(false);
+        }
+        public static SpriteRenderer CreateItem(string Id, int index, string name= "")
+        {
+            GameObject item = new();
+            item.name = Id == "" ? name : Id;
+            item.transform.parent = GUIObject.transform;
+            item.layer = 5;
+            item.transform.localPosition = new(-3.4f + 1.75f * index, 0, -20);
+            item.transform.localScale = new(0.275f, 0.175f, 0.175f);
+            SpriteRenderer itemrender = item.AddComponent<SpriteRenderer>();
+            PassiveButton btn = item.AddComponent<PassiveButton>();
+            BoxCollider2D collider = item.AddComponent<BoxCollider2D>();
+            collider.size = new(1.75f, 1.75f);
+            btn.Colliders = new[] { collider };
+            btn.OnClick = new();
+            btn.OnClick.AddListener((UnityAction)(() => {
+                Logger.Info("おけ");
+            }));
+            itemrender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUI"+Id+".png", 110f);
+            return itemrender;
+        }
+        public static GameObject GUIObject;
         static bool IsStarted;
         public static void AllRoleSet()
         {
