@@ -8,12 +8,18 @@ using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Replay
 {
-    public class ReplayData
+    public enum ReplayState
     {
-        public static ReplayData currentReplayData;
-
+        Play,
+        Pause,
+        FastPlay,
+        PlayRewind
+    }
+    public class ReplayData
+    { 
         public bool IsFirstLoaded = false;
         public string FilePath;
+        public ReplayState CurrentPlayState = ReplayState.Play;
 
         public string ReplayDataMod;
         public Version RecordVersion;
