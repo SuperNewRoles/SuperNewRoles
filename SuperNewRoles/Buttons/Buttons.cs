@@ -2316,15 +2316,14 @@ static class HudManagerStartPatch
             {
                 RoleClass.VentMaker.VentCount++;
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MakeVent);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 writer.Write(CachedPlayer.LocalPlayer.transform.position.x);
                 writer.Write(CachedPlayer.LocalPlayer.transform.position.y);
                 writer.Write(CachedPlayer.LocalPlayer.transform.position.z);
+                writer.Write(RoleClass.VentMaker.VentCount == 2);
                 writer.EndRPC();
-                RPCProcedure.MakeVent(CachedPlayer.LocalPlayer.transform.position.x, CachedPlayer.LocalPlayer.transform.position.y, CachedPlayer.LocalPlayer.transform.position.z);
-                GameObject Vent = GameObject.Find("VentMakerVent" + MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max().ToString());
-
-                RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
-                if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
+                RPCProcedure.MakeVent(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.transform.position.x, CachedPlayer.LocalPlayer.transform.position.y, CachedPlayer.LocalPlayer.transform.position.z, RoleClass.VentMaker.VentCount == 2);
+                if (RoleClass.VentMaker.VentCount >= 2) RoleClass.VentMaker.IsMakeVent = false;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.VentMaker && RoleClass.VentMaker.IsMakeVent; },
             () =>
