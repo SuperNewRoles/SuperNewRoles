@@ -112,12 +112,43 @@ namespace SuperNewRoles.Replay
             back.transform.localScale = new(0.6f, 0.9f, 0.75f);
             SpriteRenderer backrender = back.AddComponent<SpriteRenderer>();
             backrender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIBack.png", 110f);
-            CreateItem("Play", 0);
-            CreateItem("", 1, "Faster");
+            CreateItem("Pause", 0, (UnityAction)PlayOrPause, scale:new(5, 5, 5));
+            SpriteRenderer FastPlayer = CreateItem("Play", 1, (UnityAction)FastPlay, "FastPlayer");
+            FastPlayer.transform.localScale = Vector3.one * 0.8f;
+            FastPlayer.transform.localPosition = new(-1.25f, 0, 0);
+            SpriteRenderer SubFastPlayerRender = GameObject.Instantiate(FastPlayer, FastPlayer.transform.parent);
+            SubFastPlayerRender.transform.localPosition = new(1.75f, 0, 0);
+            CreateItem("Play", 2, (UnityAction)PlayRewind, "PlayRewind", new(-1, 1, 1));
+            SpriteRenderer MTNM = CreateItem("Play", 3, (UnityAction)MoveToNextMeeting, "MoveToNextMeeting");
+            MTNM.transform.localScale = new(0.6f, 1.2f, 1);
+            MTNM.transform.localPosition = new(-1.5f, 0, 0);
+            SpriteRenderer SubMTNMRender = GameObject.Instantiate(MTNM, MTNM.transform.parent);
+            SubMTNMRender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIButton.png", 110f);
+            CreateItem("Exit", 4, (UnityAction)ReplayExit);
 
-            GUIObject.gameObject.SetActive(false);
+            GUIObject.gameObject.SetActive(true);
         }
-        public static SpriteRenderer CreateItem(string Id, int index, string name= "")
+        public static void PlayOrPause()
+        {
+
+        }
+        public static void FastPlay()
+        {
+
+        }
+        public static void PlayRewind()
+        {
+
+        }
+        public static void MoveToNextMeeting()
+        {
+
+        }
+        public static void ReplayExit()
+        {
+
+        }
+        public static SpriteRenderer CreateItem(string Id, int index, UnityAction action, string name= "", Vector3? scale = null)
         {
             GameObject item = new();
             item.name = Id == "" ? name : Id;
@@ -125,7 +156,16 @@ namespace SuperNewRoles.Replay
             item.layer = 5;
             item.transform.localPosition = new(-3.4f + 1.75f * index, 0, -20);
             item.transform.localScale = new(0.275f, 0.175f, 0.175f);
-            SpriteRenderer itemrender = item.AddComponent<SpriteRenderer>();
+            GameObject renderobj = new("Renderer");
+            renderobj.layer = 5;
+            renderobj.transform.parent = item.transform;
+            renderobj.transform.localPosition = new();
+            renderobj.transform.localScale = new(1, 1, 1);
+            if (scale != null)
+            {
+                renderobj.transform.localScale = scale.Value;
+            }
+            SpriteRenderer itemrender = renderobj.AddComponent<SpriteRenderer>();
             PassiveButton btn = item.AddComponent<PassiveButton>();
             BoxCollider2D collider = item.AddComponent<BoxCollider2D>();
             collider.size = new(1.75f, 1.75f);
@@ -134,6 +174,9 @@ namespace SuperNewRoles.Replay
             btn.OnClick.AddListener((UnityAction)(() => {
                 Logger.Info("おけ");
             }));
+            btn.OnClick.AddListener(action);
+            btn.OnMouseOut = new();
+            btn.OnMouseOver = new();
             itemrender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUI"+Id+".png", 110f);
             return itemrender;
         }
