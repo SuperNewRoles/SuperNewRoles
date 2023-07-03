@@ -123,7 +123,7 @@ class ShareGameVersion
             }
             if (AmongUsClient.Instance.AmHost)
             {
-                if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false) /*|| CustomOptionHolder.IsDebugMode.GetBool()*/))
+                if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false) || CustomOptionHolder.IsDebugMode.GetBool()))
                 {
                     message += $"\n{ModTranslation.GetString("Ver20613CanNotPlayHostMode")}\n";
                     if (!Alllady613ErrorMessage)
