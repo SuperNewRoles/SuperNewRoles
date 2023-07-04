@@ -10,6 +10,10 @@ trim_trailing_whitespace = true
 insert_final_newline = false
 dotnet_diagnostic.IDE0051.severity = silent
 dotnet_diagnostic.IDE0052.severity = silent
+# 非定数フィールドは表示されませんを無効化
+dotnet_diagnostic.CA2211.severity = none
+# メソッドの結果を無視しないを無効化
+dotnet_diagnostic.CA1806.severity = none
 # usingをディレクティブごとにスペースで分けるか
 dotnet_separate_import_directive_groups = false
 # usingの先頭をSystemに並び変えるか

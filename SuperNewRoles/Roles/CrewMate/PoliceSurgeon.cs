@@ -19,7 +19,7 @@ public static class PoliceSurgeon
 {
     internal static class CustomOptionData
     {
-        private static int optionId = 406000;
+        private static int optionId = 406100;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption HaveVitalsInTaskPhase;
@@ -195,7 +195,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
                 case (int)DeadTiming.TaskPhase_killed:
                     // 遺言伝達者の辞書に死亡時刻が保存されているならば、死亡(推定)時刻を取得する。
                     // そうでなければ殺された方法(死亡理由)を、(タスクターン中の)追放に変更する。
-                    if (DyingMessenger.ActualDeathTime.ContainsKey(p.PlayerId)) actualDeathTime = CalculateEstimatedTimeOfDeath(reportTime, p);
+                    if (DeadPlayer.ActualDeathTime.ContainsKey(p.PlayerId)) actualDeathTime = CalculateEstimatedTimeOfDeath(reportTime, p);
                     else deadReason = (int)DeadTiming.TaskPhase_Exited;
                     break;
                 case (int)DeadTiming.TaskPhase_Exited:
@@ -239,7 +239,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
     /// <returns>死亡推定時刻[s]をstring型で返却</returns>
     private static int CalculateEstimatedTimeOfDeath(DateTime reportTime, PlayerControl player)
     {
-        DateTime actualDeathTime = DyingMessenger.ActualDeathTime[player.PlayerId].Item1;
+        DateTime actualDeathTime = DeadPlayer.ActualDeathTime[player.PlayerId].Item1;
         int seed = (int)actualDeathTime.Ticks;
         TimeSpan relativeDeathTime; // 相対死亡時刻 (ログ表記用)
         TimeSpan estimatedDeathTime; // 死亡推定時刻

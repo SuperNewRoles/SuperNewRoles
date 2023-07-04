@@ -82,7 +82,7 @@ public static class VentDataModules
                 {
                     ventMap["AdditionalVent_12"].Vent.Center = connect ? ventMap["BathroomVent"] : new Vent();
                     ventMap["BathroomVent"].Vent.Left = connect ? ventMap["AdditionalVent_12"] : new Vent();
-
+                    
                     ventMap["AdditionalVent_13"].Vent.Right = connect ? ventMap["SouthVent"] : new Vent();
                     ventMap["SouthVent"].Vent.Left = connect ? ventMap["AdditionalVent_13"] : new Vent();
 
