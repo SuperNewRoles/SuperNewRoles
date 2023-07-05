@@ -55,6 +55,8 @@ public class CustomPlateData : NamePlateData
         {
             if (!id.StartsWith("CustomNamePlates_")) return true;
             __result = getbycache(id);
+            if (__result == null)
+                __result = __instance.nameplates["nameplate_NoPlate"].GetAsset();
             return false;
         }
     }
