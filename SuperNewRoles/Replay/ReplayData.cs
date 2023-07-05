@@ -5,6 +5,7 @@ using System.Text;
 using AmongUs.GameOptions;
 using Il2CppSystem.IO;
 using SuperNewRoles.Mode;
+using UnityEngine;
 
 namespace SuperNewRoles.Replay
 {
@@ -15,11 +16,39 @@ namespace SuperNewRoles.Replay
         FastPlay,
         PlayRewind
     }
+    public enum MovingPlatformState
+    {
+        None,
+        Init,
+        WalkTo1st,
+        WalkTo2nd,
+        WaitEffect1st,
+        Slide,
+        WalkTo3rd,
+        WaitEffect2nd
+    }
+    public enum LadderState
+    {
+        None,
+        Init,
+        WalkTo1st,
+        WaitEffect1st,
+        WalkTo2nd,
+        WaitEffect2nd
+    }
     public class ReplayData
     { 
         public bool IsFirstLoaded = false;
         public string FilePath;
         public ReplayState CurrentPlayState = ReplayState.Play;
+
+        public MovingPlatformState CurrentMovingPlatformState = MovingPlatformState.None;
+        public int MovingPlatformFrameCount = 0;
+        public Vector3 MovingPlatformPosition = new(-999,-999,-999);
+
+        public Dictionary<byte, LadderState> CurrentLadderState = new();
+        public Vector3 LadderPosition = new(-999, -999, -999);
+        public Dictionary<byte, Ladder> CurrentLadder = new();
 
         public string ReplayDataMod;
         public Version RecordVersion;

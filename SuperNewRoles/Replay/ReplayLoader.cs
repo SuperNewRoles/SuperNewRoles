@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
+using HarmonyLib;
 using SuperNewRoles.Replay.ReplayActions;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using UnityEngine.Events;
 using static GameData;
@@ -135,6 +138,42 @@ namespace SuperNewRoles.Replay
         {
             if (ReplayManager.CurrentReplay != null)
             {
+                MovingPlatformBehaviour mpb;
+                //変更前の処理だから間違えないように
+                switch (ReplayManager.CurrentReplay.CurrentPlayState)
+                {
+                    case ReplayState.Play:
+                        mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                        if (mpb != null && mpb.Target != null)
+                        {
+                            mpb.Target.MyPhysics.body.velocity = Vector2.zero;
+                            mpb.StopAllCoroutines();
+                        }
+                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        {
+                            if (player.onLadder)
+                            {
+                                player.MyPhysics.body.velocity = Vector2.zero;
+                                player.MyPhysics.StopAllCoroutines();
+                            }
+                        }
+                        break;
+                    case ReplayState.Pause:
+                        mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                        if (mpb != null && mpb.Target != null)
+                        {
+                            mpb.IsLeft = !mpb.IsLeft;
+                            mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
+                        }
+                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        {
+                            if (player.onLadder)
+                            {
+                                player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderCustom(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
+                            }
+                        }
+                        break;
+                }
                 ReplayManager.CurrentReplay.CurrentPlayState = ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Play ? ReplayState.Pause : ReplayState.Play;
             }
             UpdateButton();
@@ -206,7 +245,6 @@ namespace SuperNewRoles.Replay
             btn.Colliders = new[] { collider };
             btn.OnClick = new();
             btn.OnClick.AddListener((UnityAction)(() => {
-                Logger.Info("おけ");
             }));
             btn.OnClick.AddListener(action);
             btn.OnMouseOut = new();
@@ -321,6 +359,55 @@ namespace SuperNewRoles.Replay
             postime = 99999;
             IsStarted = false;
         }
+        [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.Start))]
+        public static class HauntMenuMinigameStartPatch
+        {
+            public static void Postfix()
+            {
+                if (GUIObject != null)
+                    GUIObject.transform.localPosition = new(0, -0.6f, -20);
+            }
+        }
+        [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.Close))]
+        public static class HauntMenuMinigameClosePatch
+        {
+            public static void Postfix()
+            {
+                if (GUIObject != null)
+                    GUIObject.transform.localPosition = new(0, -1.5f, -20);
+            }
+        }
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+        public class MeetingHudUpdatePatch
+        {
+            public static bool Prefix() => SaboPrefix();
+        }
+        [HarmonyPatch(typeof(LifeSuppSystemType), nameof(LifeSuppSystemType.Detoriorate))]
+        public class LifeSuppSystemTypeDetorioratePatch
+        {
+            public static bool Prefix() => SaboPrefix();
+        }
+        [HarmonyPatch(typeof(HeliSabotageSystem), nameof(HeliSabotageSystem.Detoriorate))]
+        public class HeliSabotageSystemDetorioratePatch
+        {
+            public static bool Prefix() => SaboPrefix();
+        }
+        [HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Detoriorate))]
+        public class ReactorSystemTypeDetorioratePatch
+        {
+            public static bool Prefix() => SaboPrefix();
+        }
+        public static bool SaboPrefix()
+        {
+            if (ReplayManager.IsReplayMode && ReplayManager.CurrentReplay != null)
+            {
+                if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public static List<ReplayTurn> ReplayTurns;
         static float postime;
         static float actiontime;
@@ -345,13 +432,16 @@ namespace SuperNewRoles.Replay
                         //player.StopAllCoroutines();
                         //player.NetTransform.RpcSnapTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex]);
                         //if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count > posindex + 1)
-                        if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count > posindex + 1)
+                        if (!player.onLadder && !player.inMovingPlat)
                         {
-                            player.NetTransform.SnapTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1]);
-                        }
-                        player.transform.position = new(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].x,
-                            ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].y,
-                            0f);/*
+                            if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count > posindex + 1)
+                            {
+                                player.NetTransform.SnapTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1]);
+                            }
+                            player.transform.position = new(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].x,
+                                ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].y,
+                                0f);
+                        }/*
                         Logger.Info(ReplayManager.CurrentReplay.GameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
                         Logger.Info(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
                         Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");*/
