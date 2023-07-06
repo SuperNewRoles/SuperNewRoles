@@ -124,8 +124,9 @@ public static class RoleHelpers
         RoleId.TheFirstLittlePig or
         RoleId.TheSecondLittlePig or
         RoleId.TheThirdLittlePig or
-        RoleId.OrientalShaman;
-    // 第三か
+        RoleId.OrientalShaman or
+        RoleId.BlackHatHacker;
+        // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
         (player.GetRole() == RoleId.Pavlovsowner &&
@@ -904,6 +905,9 @@ public static class RoleHelpers
             case RoleId.Pteranodon:
                 Pteranodon.PteranodonPlayer.Add(player);
                 break;
+            case RoleId.BlackHatHacker:
+                BlackHatHacker.BlackHatHackerPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1424,6 +1428,9 @@ public static class RoleHelpers
             case RoleId.Pteranodon:
                 Pteranodon.PteranodonPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.BlackHatHacker:
+                BlackHatHacker.BlackHatHackerPlayer.RemoveAll(ClearRemove);
+                break;
             // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
@@ -1893,6 +1900,7 @@ public static class RoleHelpers
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;
             else if (Pteranodon.PteranodonPlayer.IsCheckListPlayerControl(player)) return RoleId.Pteranodon;
+            else if (BlackHatHacker.BlackHatHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.BlackHatHacker;
             // ロールチェック
         }
         catch (Exception e)

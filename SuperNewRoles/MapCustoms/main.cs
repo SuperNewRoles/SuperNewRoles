@@ -32,12 +32,11 @@ public class MapCustomHandler
         Airship,
     }
 }
-[HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
 class IntroCutsceneOnDestroyPatch
 {
-    public static void Prefix(IntroCutscene __instance)
+    public static void Postfix(ShipStatus __instance)
     {
-
         // 壁越しにタスクを無効化する
         if (IsMapCustom(MapCustomId.Airship) && MapCustom.AntiTaskOverWall.GetBool())
         {
@@ -62,9 +61,9 @@ class IntroCutsceneOnDestroyPatch
         //配電盤を移動させる
         MoveElecPad.MoveElecPads();
 
-        if (MapUtilities.CachedShipStatus.FastRooms.ContainsKey(SystemTypes.GapRoom))
+        if (__instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
         {
-            GameObject gapRoom = ShipStatus.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
+            GameObject gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;
             // ぬ～んを消す
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.GetBool())
             {
@@ -72,7 +71,6 @@ class IntroCutsceneOnDestroyPatch
                 gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
             }
         }
-
     }
 }
 public static class Extensions

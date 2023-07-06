@@ -29,7 +29,6 @@ public class ReplayActionVent : ReplayAction
     //アクション実行時の処理
     public override void OnAction() {
         //ここに処理書く
-        return;
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
         {

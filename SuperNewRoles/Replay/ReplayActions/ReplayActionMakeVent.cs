@@ -6,39 +6,47 @@ using System.Text;
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionMakeVent : ReplayAction
 {
+    public byte id;
     public float x;
     public float y;
     public float z;
+    public bool chain;
     public override void ReadReplayFile(BinaryReader reader) {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
+        id = reader.ReadByte();
         x = reader.ReadSingle();
         y = reader.ReadSingle();
         z = reader.ReadSingle();
+        chain = reader.ReadBoolean();
     }
     public override void WriteReplayFile(BinaryWriter writer)
     {
         writer.Write(ActionTime);
         //ここにパース処理書く
+        writer.Write(id);
         writer.Write(x);
         writer.Write(y);
         writer.Write(z);
+        writer.Write(chain);
     }
     public override ReplayActionId GetActionId() => ReplayActionId.MakeVent;
     //アクション実行時の処理
     public override void OnAction() {
         //ここに処理書く
-        RPCProcedure.MakeVent(x,y,z);
+        RPCProcedure.MakeVent(id, x, y, z, chain);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionMakeVent Create(float x,float y,float z)
+    public static ReplayActionMakeVent Create(byte id, float x, float y, float z, bool chain)
     {
         ReplayActionMakeVent action = new();
         if (!CheckAndCreate(action)) return null;
         //ここで初期化(コレは仮処理だから消してね)
+        action.id = id;
         action.x = x;
         action.y = y;
         action.z = z;
+        action.chain = chain;
         return action;
     }
 }

@@ -50,6 +50,7 @@ public enum CustomGameOverReason
     SafecrackerWin,
     TheThreeLittlePigsWin,
     OrientalShamanWin,
+    BlackHatHackerWin,
 }
 enum WinCondition
 {
@@ -84,6 +85,7 @@ enum WinCondition
     SafecrackerWin,
     TheThreeLittlePigsWin,
     OrientalShamanWin,
+    BlackHatHackerWin,
 }
 class FinalStatusPatch
 {
@@ -245,7 +247,8 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
                 {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)},
                 {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsName",TheThreeLittlePigs.color)},
-                {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)}
+                {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
+                {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -629,6 +632,7 @@ public static class OnGameEndPatch
             TheThreeLittlePigs.TheThirdLittlePig.Player,
             WaveCannonJackal.WaveCannonJackalPlayer,
             WaveCannonJackal.SidekickWaveCannonPlayer,
+            BlackHatHacker.BlackHatHackerPlayer,
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -674,6 +678,7 @@ public static class OnGameEndPatch
         bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
         bool SafecrackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SafecrackerWin;
+        bool BlackHatHackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.BlackHatHackerWin;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
         {
             JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -848,6 +853,11 @@ public static class OnGameEndPatch
         {
             (TempData.winners = new()).Add(new(WinnerPlayer.Data));
             AdditionalTempData.winCondition = WinCondition.SafecrackerWin;
+        }
+        else if (BlackHatHackerWin)
+        {
+            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            AdditionalTempData.winCondition = WinCondition.BlackHatHackerWin;
         }
 
         if (TempData.winners.ToArray().Any(x => x.IsImpostor))
@@ -1037,7 +1047,7 @@ public static class OnGameEndPatch
             if (AdditionalTempData.winCondition is WinCondition.LoversBreakerWin or WinCondition.SafecrackerWin or WinCondition.JesterWin or
                                                    WinCondition.VultureWin or WinCondition.WorkpersonWin or WinCondition.FalseChargesWin or
                                                    WinCondition.DemonWin or WinCondition.SuicidalIdeationWin or WinCondition.PhotographerWin or
-                                                   WinCondition.RevolutionistWin or WinCondition.QuarreledWin) break;
+                                                   WinCondition.RevolutionistWin or WinCondition.QuarreledWin or WinCondition.BlackHatHackerWin) break;
             if (!TheThreeLittlePigs.IsTheThreeLittlePigs(plist) || plist.IsAllDead()) continue;
             bool isAllAlive = true;
             if (plist.Count >= 3)
