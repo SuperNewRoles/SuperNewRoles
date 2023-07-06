@@ -48,7 +48,7 @@ class GameStartPatch
         {
             if (!GameStartManager._instance || !AmongUsClient.Instance.AmHost) return; // 以下ホストのみで動作
 
-            if (!(Mode.ModeHandler.IsMode(Mode.ModeId.Default) || Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf)) && !CustomOptionHolder.IsDebugMode.GetBool())
+            if (!(Mode.ModeHandler.IsMode(Mode.ModeId.Default) || Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf)) && !ModHelpers.IsDebugMode())
             {
                 FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
                 return;
@@ -64,9 +64,10 @@ class GameStartPatch
                 FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
             }
 
-            if (!CustomOptionHolder.IsDebugMode.GetBool()) return; // 以下デバッグモード限定の機能
+            // 以下デバッグモード限定の機能
+            if (!ModHelpers.IsDebugMode()) return;
 
-            if (CustomOptionHolder.DebugModeFastStart != null && CustomOptionHolder.DebugModeFastStart.GetBool()) // デバッグモードでデバッグ即開始が有効
+            if (CustomOptionHolder.DebugModeFastStart.GetBool()) // デバッグモードでデバッグ即開始が有効
             {
                 if (GameStartManager.InstanceExists && FastDestroyableSingleton<GameStartManager>.Instance.startState == GameStartManager.StartingStates.Countdown) // カウントダウン中
                 {
