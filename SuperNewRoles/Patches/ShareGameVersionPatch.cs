@@ -114,7 +114,7 @@ class ShareGameVersion
                     CustomOptionHolder.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
                     !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
                     !CustomOptionHolder.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
-                    !CustomOptionHolder.IsDebugMode.GetBool()) //Debugモードでない時
+                    !ConfigRoles.DebugMode.Value) //Debugモードでない時
                 {
                     // 警告を表示する
                     message += $"\n{ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff")}\n";
@@ -123,7 +123,7 @@ class ShareGameVersion
             }
             if (AmongUsClient.Instance.AmHost)
             {
-                if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false) || CustomOptionHolder.IsDebugMode.GetBool()))
+                if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false) || ModHelpers.IsDebugMode()))
                 {
                     message += $"\n{ModTranslation.GetString("Ver20613CanNotPlayHostMode")}\n";
                     if (!Alllady613ErrorMessage)
