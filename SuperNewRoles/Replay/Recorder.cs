@@ -95,7 +95,7 @@ namespace SuperNewRoles.Replay
             writer.Write(PlayerPositions.Count);
             Dictionary<byte, List<Vector2>> playerpositions = new(PlayerPositions);
             PlayerPositions = new();
-            foreach (var data in PlayerPositions) {
+            foreach (var data in playerpositions) {
                 int count = 0;
                 writer.Write(data.Key);
                 writer.Write(data.Value.Count);

@@ -64,11 +64,12 @@ namespace SuperNewRoles.Replay
         public static void StartMeeting()
         {
             if (!ReplayManager.IsReplayMode) return;
-            CurrentTurn++;
             posindex = 0;
             postime = 0;
             actiontime = 0;
+            CurrentTurn++;
             actionindex = 0;
+            IsStarted = true;
             GetPosAndActionsThisTurn();
             if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
@@ -328,7 +329,6 @@ namespace SuperNewRoles.Replay
                         turn.Positions[playerId].Add(new((reader.ReadInt16() / 10.0f),
                             (reader.ReadInt16() / 10.0f)));
                     }
-                    Logger.Info(i2.ToString(),"ab");
                 }
             }
             int actioncount = reader.ReadInt32();
