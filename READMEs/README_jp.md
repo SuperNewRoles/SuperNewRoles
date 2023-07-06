@@ -85,7 +85,11 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TheOtherRolesGMHaoming] <!--(https://github.com/haoming37/TheOtherRoles-GM-Haoming)--> - ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加、ランダムスポーンのコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - マップのタスクが正常に動作しない問題の修正、アサシン&マーリンなどのアイデア元となりました！**yukieiji**さんありがとうございます！<br>
 [Nebula On The Ship](https://github.com/Dolly1016/Nebula) - 全ベントに接続する処理などを参考にさせていただきました。**Dolly1016**さんありがとうございます！<br>
-[効果音ラボ](https://soundeffect-lab.info/) - 一部の効果音を使用しています。この効果音の音声ファイルのライセンスはこのサイトに準じます。
+[Town Of Plus](https://github.com/tugaru1975/TownOfPlus) - クルーカラー名の表示及び文字色をクルーカラーにする処理等を参考にさせていただきました。 **tugaru1975**さんありがとうございます！<br>
+[効果音ラボ](https://soundeffect-lab.info/) - 一部の効果音を使用しています。この効果音の音声ファイルのライセンスはこのサイトに準じます。<br>
+<br>
+[SNRGithubWiki 役職一覧#他のmodから他のmodから移植, 又は参考にした役職](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%BD%B9%E8%81%B7%E4%B8%80%E8%A6%A7#%E4%BB%96%E3%81%AEmod%E3%81%8B%E3%82%89%E7%A7%BB%E6%A4%8D-%E5%8F%88%E3%81%AF%E5%8F%82%E8%80%83%E3%81%AB%E3%81%97%E3%81%9F%E5%BD%B9%E8%81%B7) - 移植役職及びSNRオリジナル役職作成時アイデア等を参考にした他Modさんの役職の詳細は此方に表記してあります。<br>
+<br>
 
 ## 使用させて頂いているカスタムコスメティック
 [SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)
@@ -95,12 +99,15 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
 
 ## 開発者
-[よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
+[よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/YYYYoking))<br>
 [月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [Kuki](https://github.com/Kuki12345)<br>
-[Glaceon](https://github.com/Glaceon-471)<br>
+[Glaceon](https://github.com/Glaceon-471) ([Twitter](https://twitter.com/Glaceon_SNR11))<br>
 [~~漢方薬の人~~](https://github.com/UKON256)<br>
 [~~Sakurander~~](https://github.com/Sakurander)<br>
+
+## サポーター
+[セオノ](https://github.com/Seono968) ([Twitter](https://twitter.com/Rinforzando_960))<br>
 
 ## スポンサー
 こんこるど様<br>

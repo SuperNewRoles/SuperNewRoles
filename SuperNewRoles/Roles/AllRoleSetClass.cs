@@ -1063,7 +1063,7 @@ class AllRoleSetClass
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
             RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
             RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
-            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.WorshiperPlayerCount.GetFloat(),
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.Safecracker => Roles.Neutral.Safecracker.SafecrackerPlayerCount.GetFloat(),
             RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
             RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
@@ -1076,6 +1076,8 @@ class AllRoleSetClass
             RoleId.TheThirdLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount.GetFloat(),
             RoleId.OrientalShaman => OrientalShaman.OrientalShamanPlayerCount.GetFloat(),
             RoleId.Balancer => Balancer.BalancerPlayerCount.GetFloat(),
+            RoleId.Pteranodon => Pteranodon.PteranodonPlayerCount.GetFloat(),
+            RoleId.BlackHatHacker => BlackHatHacker.BlackHatHackerPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };

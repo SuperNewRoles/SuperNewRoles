@@ -111,6 +111,7 @@ class WrapUpPatch
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
         ModeHandler.Wrapup(exiled);
         RedRidingHood.WrapUp(exiled);
+        Pteranodon.WrapUp();
         Roles.Neutral.Revolutionist.WrapUp();
         Roles.Neutral.Spelunker.WrapUp();
         Roles.Neutral.Hitman.WrapUp();
@@ -139,6 +140,7 @@ class WrapUpPatch
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.WrapUp();
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
+        BlackHatHacker.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();
@@ -174,6 +176,7 @@ class WrapUpPatch
                         writer.Write(byte.MaxValue);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        SideLoverPlayer.RpcSetFinalStatus(FinalStatus.LoversBomb);
                     }
                 }
             }
@@ -211,6 +214,7 @@ class WrapUpPatch
             {
                 if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                 {
+                    Player.RpcSetFinalStatus(FinalStatus.MadJesterExiled);
                     RPCProcedure.ShareWinner(Player.PlayerId);
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                     Writer.Write(Player.PlayerId);

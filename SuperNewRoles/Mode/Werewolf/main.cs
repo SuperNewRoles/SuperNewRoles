@@ -1,7 +1,7 @@
 using System;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using UnhollowerBaseLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Werewolf;

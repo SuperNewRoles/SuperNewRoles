@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using BepInEx.IL2CPP.Utils.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Il2CppSystem.Text;
 using SuperNewRoles.MapCustoms;

@@ -6,10 +6,8 @@ using System.Linq;
 using System.Reflection;
 using AmongUs.Data;
 using BepInEx;
-using BepInEx.IL2CPP;
-using Cpp2IL.Core;
+using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using InnerNet;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -35,13 +33,14 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string ColorModName => $"<color=#ffa500>Super</color><color=#ff0000>{(IsApril() ? "Nakanzino" : "New")}</color><color=#00ff00>Roles</color>";
     public const string DiscordServer = "https://discord.gg/Cqfwx82ynN";
     public const string Twitter1 = "https://twitter.com/SNRDevs";
-    public const string Twitter2 = "https://twitter.com/SuperNewRoles";
+    public const string Twitter2 = "https://twitter.com/SNROfficials";
 
 
     public static Version ThisVersion = System.Version.Parse($"{Assembly.GetExecutingAssembly().GetName().Version}");
     public static BepInEx.Logging.ManualLogSource Logger;
     public static Sprite ModStamp;
     public static int optionsPage = 1;
+    public static int optionsMaxPage = 0;
     public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
     public static SuperNewRolesPlugin Instance;
     public static Dictionary<string, Dictionary<int, string>> StringDATA;

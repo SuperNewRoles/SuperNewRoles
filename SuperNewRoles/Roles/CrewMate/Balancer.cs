@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public static class Balancer
 {
-    private const int OptionId = 1268;
+    private const int OptionId = 400600;
     public static CustomRoleOption BalancerOption;
     public static CustomOption BalancerPlayerCount;
     public static CustomOption BalancerVoteTime;
@@ -297,7 +297,7 @@ public static class Balancer
         // UIレイヤーに移動
         BackPictureObject.gameObject.layer = 5;
         // 位置移動
-        BackPictureObject.transform.localPosition = new(0, 0, -1);
+        BackPictureObject.transform.localPosition = new(0, 0, -0.1f);
         BackPictureObject.transform.localScale = Vector3.one * 1.65f;
         //初期化
         BackPictureObject.enabled = false;

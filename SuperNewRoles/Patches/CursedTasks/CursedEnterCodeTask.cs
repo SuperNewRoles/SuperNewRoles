@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using BepInEx.IL2CPP.Utils.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -37,7 +37,7 @@ public class CursedEnterCodeTask
                 "shithuthjuyh-fhg",
             };
             code = codes.GetRandom();
-            if (!code.Contains("-")) card = code.Length <= 10 ? code : code.Insert(10, "\n");
+            if (!code.Contains('-')) card = code.Length <= 10 ? code : code.Insert(10, "\n");
             else
             {
                 for (int i = 0; i < code.Length; i++)
@@ -61,7 +61,7 @@ public class CursedEnterCodeTask
                 "hacchan-59-jane-wa",
             };
             code = codes.GetRandom();
-            if (!code.Contains("-")) card = code.Length <= 10 ? code : code.Insert(10, "\n");
+            if (!code.Contains('-')) card = code.Length <= 10 ? code : code.Insert(10, "\n");
             else
             {
                 for (int i = 0; i < code.Length; i++)
