@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using Il2CppSystem.Text;
+using UnityEngine;
 using Random = System.Random;
 
 namespace SuperNewRoles.Patches.CursedTasks;
@@ -9,7 +12,7 @@ namespace SuperNewRoles.Patches.CursedTasks;
 public class CursedDivertPowerTask
 {
     public static Dictionary<uint, CursedDivertPower> Data;
-    public static SystemTypes[] SliderOrder;
+    public static List<SystemTypes> SliderOrder;
     public static bool Change;
 
     [HarmonyPatch(typeof(DivertPowerMinigame))]
@@ -19,7 +22,7 @@ public class CursedDivertPowerTask
         public static void BeginPrefix(DivertPowerMinigame __instance)
         {
             if (!Main.IsCursed) return;
-            SliderOrder = __instance.SliderOrder;
+            SliderOrder = __instance.SliderOrder.ToList();
             __instance.SliderOrder = __instance.SliderOrder.OrderBy(x => new Random().Next()).ToArray();
             Change = true;
         }
@@ -28,15 +31,39 @@ public class CursedDivertPowerTask
     [HarmonyPatch(typeof(AcceptDivertPowerGame))]
     public static class AcceptDivertPowerGamePatch
     {
-        [HarmonyPatch(nameof(AcceptDivertPowerGame.Start)), HarmonyPrefix]
-        public static void StartPrefix(AcceptDivertPowerGame __instance)
+        [HarmonyPatch(nameof(AcceptDivertPowerGame.DoSwitch)), HarmonyPrefix]
+        public static bool DoSwitchPrefix(AcceptDivertPowerGame __instance)
         {
-            if (!Main.IsCursed) return;
-            Data[__instance.MyTask.Id].Count++;
-            Change = true;
-            if (Data[__instance.MyTask.Id].Count < 5) __instance.Close();
+            if (!Main.IsCursed) return true;
+            if (__instance.done) return false;
+            __instance.done = true;
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.SwitchSound, false, 1f, null);
+            __instance.StartCoroutine(CoDoSwitch(__instance));
+            return false;
         }
 
+        public static IEnumerator<Il2CppSystem.Collections.IEnumerator> CoDoSwitch(AcceptDivertPowerGame __instance)
+        {
+            yield return Effects.Lerp(0.25f, new Action<float>((t) =>
+            {
+                __instance.Switch.transform.localEulerAngles = new Vector3(0f, 0f, Mathf.Lerp(0f, 90f, t));
+            }));
+            __instance.LeftWires[0].SetPosition(1, new Vector3(1.265f, 0f, 0f));
+            for (int i = 0; i < __instance.RightWires.Length; i++)
+            {
+                __instance.RightWires[i].enabled = true;
+                __instance.RightWires[i].material.SetColor("_Color", Color.yellow);
+            }
+            for (int j = 0; j < __instance.LeftWires.Length; j++)
+            {
+                __instance.LeftWires[j].material.SetColor("_Color", Color.yellow);
+            }
+            Data[__instance.MyTask.Id].Count++;
+            Change = true;
+            if (Data[__instance.MyTask.Id].Count >= 5 && __instance.MyNormTask) __instance.MyNormTask.NextStep();
+            yield return __instance.CoStartClose(0.75f);
+            yield break;
+        }
     }
 
     [HarmonyPatch(typeof(DivertPowerTask))]

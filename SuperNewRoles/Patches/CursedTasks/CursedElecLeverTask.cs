@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Agartha;
 using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -50,7 +51,7 @@ public class CursedElecLeverTask
         public static void StartPostfix(ShipStatus __instance)
         {
             if (!Main.IsCursed) return;
-            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId != 4) return;
+            if (MapData.IsMap(CustomMapNames.Airship)) return;
 
             Transform electrical = __instance.transform.Find("Electrical");
             List<Transform> levers = new();

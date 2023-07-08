@@ -44,7 +44,7 @@ public class CursedSampleTask
         public static void NextStepPostfix(SampleMinigame __instance)
         {
             if (!Main.IsCursed) return;
-            Data[__instance.MyTask.Id] = new(__instance.MyTask.Id);
+            Data[__instance.MyTask.Id] = new();
         }
 
         [HarmonyPatch(nameof(SampleMinigame.SelectTube)), HarmonyPrefix]
@@ -113,7 +113,7 @@ public class CursedSampleTask
         public float DeteriorationTimer;
         public bool IsMiss;
 
-        public CursedSample(uint id)
+        public CursedSample()
         {
             IsStart = true;
             IsDeterioration = false;

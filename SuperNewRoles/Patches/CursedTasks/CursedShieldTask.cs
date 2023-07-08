@@ -37,8 +37,8 @@ public class CursedShieldTask
 
                 __instance.Shields[i] = shield.GetComponent<SpriteRenderer>();
             }
-            __instance.UpdateButtons();
             Object.Destroy(copyshield);
+            __instance.UpdateButtons();
         }
 
         [HarmonyPatch(nameof(ShieldMinigame.ToggleShield)), HarmonyPrefix]
@@ -119,7 +119,7 @@ public class CursedShieldTask
             {
                 bool flag = __instance.MyNormTask.Data[i] == 0;
                 if (!flag) num++;
-                if (__instance.Shields.Count < i) continue;
+                if (__instance.Shields.Count <= i) continue;
                 __instance.Shields[i].color = flag ? __instance.OffColor : __instance.OnColor;
             }
             if (__instance.MyNormTask.Data.All((byte b) => b == 1))

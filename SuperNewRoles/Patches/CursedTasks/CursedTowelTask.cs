@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Agartha;
 using HarmonyLib;
 using Il2CppSystem.Text;
 using UnityEngine;
@@ -252,7 +253,7 @@ public class CursedTowelTask
         public static void StartPostfix(ShipStatus __instance)
         {
             if (!Main.IsCursed) return;
-            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId != 4) return;
+            if (MapData.IsMap(CustomMapNames.Airship)) return;
             Transform towels = __instance.transform.Find("Showers/TaskTowels");
             GameObject copytowel = Object.Instantiate(towels.GetChild(0).gameObject);
 
