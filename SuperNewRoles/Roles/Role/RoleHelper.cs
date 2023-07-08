@@ -125,8 +125,9 @@ public static class RoleHelpers
         RoleId.TheFirstLittlePig or
         RoleId.TheSecondLittlePig or
         RoleId.TheThirdLittlePig or
-        RoleId.OrientalShaman;
-    // 第三か
+        RoleId.OrientalShaman or
+        RoleId.BlackHatHacker;
+        // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
         (player.GetRole() == RoleId.Pavlovsowner &&
@@ -901,6 +902,12 @@ public static class RoleHelpers
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.Add(player);
                 break;
+            case RoleId.Pteranodon:
+                Pteranodon.PteranodonPlayer.Add(player);
+                break;
+            case RoleId.BlackHatHacker:
+                BlackHatHacker.BlackHatHackerPlayer.Add(player);
+                break;
             case RoleId.MadRaccoon:
                 MadRaccoon.RoleClass.Player.Add(player);
                 break;
@@ -1421,10 +1428,16 @@ public static class RoleHelpers
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Pteranodon:
+                Pteranodon.PteranodonPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.BlackHatHacker:
+                BlackHatHacker.BlackHatHackerPlayer.RemoveAll(ClearRemove);
+                break;
             case RoleId.MadRaccoon:
                 MadRaccoon.RoleClass.Player.RemoveAll(ClearRemove);
                 break;
-                // ロールリモベ
+            // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1625,7 +1638,12 @@ public static class RoleHelpers
         RoleId MyRole;
         if (IsChache)
         {
-            try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+            try {
+                if (p != null)
+                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+                else
+                    MyRole = RoleId.DefaultRole;
+            }
             catch { MyRole = RoleId.DefaultRole; }
         }
         else
@@ -1637,7 +1655,12 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+        try {
+            if (p != null)
+                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+            else
+                MyRole = RoleId.DefaultRole;
+        }
         catch { MyRole = RoleId.DefaultRole; }
         foreach (RoleId role in roles)
         {
@@ -1884,6 +1907,8 @@ public static class RoleHelpers
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;
+            else if (Pteranodon.PteranodonPlayer.IsCheckListPlayerControl(player)) return RoleId.Pteranodon;
+            else if (BlackHatHacker.BlackHatHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.BlackHatHacker;
             else if (MadRaccoon.RoleClass.Player.IsCheckListPlayerControl(player)) return RoleId.MadRaccoon;
             // ロールチェック
         }

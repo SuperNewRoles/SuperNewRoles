@@ -41,6 +41,7 @@ public class CustomOptionHolder
     public static CustomOption enableAgartha;
 
     public static CustomOption IsDebugMode;
+    public static CustomOption CanUseChatWhenTaskPhase;
     public static CustomOption DebugModeFastStart;
     public static CustomOption IsMurderPlayerAnnounce;
 
@@ -1049,7 +1050,8 @@ public class CustomOptionHolder
         {
             IsDebugMode = Create(100800, true, CustomOptionType.Generic, "<color=#828282>デバッグモード</color>", false, null, isHeader: true);
             DebugModeFastStart = Create(100801, true, CustomOptionType.Generic, "<color=#828282>即開始</color>", false, IsDebugMode);
-            IsMurderPlayerAnnounce = Create(100802, true, CustomOptionType.Generic, "<color=#828282>MurderPlayer発生時に通知を行う</color>", false, IsDebugMode);
+            CanUseChatWhenTaskPhase = Create(100802, true, CustomOptionType.Generic, "<color=#828282>タスクフェイズ中にチャットを使える</color>", false, IsDebugMode);
+            IsMurderPlayerAnnounce = Create(100803, true, CustomOptionType.Generic, "<color=#828282>MurderPlayer発生時に通知を行う</color>", false, IsDebugMode);
         }
 
         DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
@@ -1600,8 +1602,10 @@ public class CustomOptionHolder
         StefinderPlayerCount = Create(303001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
         StefinderKillCooldown = Create(303002, false, CustomOptionType.Neutral, "StefinderKillCooldownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
         StefinderVent = Create(303003, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
-        StefinderSabo = Create(303104, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
-        StefinderSoloWin = Create(303105, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+        StefinderSabo = Create(303004, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
+        StefinderSoloWin = Create(303005, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+
+        BlackHatHacker.SetupCustomOptions();
 
         // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
 
@@ -1661,6 +1665,8 @@ public class CustomOptionHolder
         NiceGuesserCanShotCrew = Create(400405, false, CustomOptionType.Crewmate, "EvilGuesserCanCrewShotSetting", true, NiceGuesserOption);
 
         WiseMan.SetupCustomOptions();
+
+        Pteranodon.SetupCustomOptions();
 
         Balancer.SetupCustomOptions();
 

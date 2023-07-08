@@ -46,20 +46,33 @@ class GameStartPatch
     {
         public static void Postfix()
         {
-            if (Input.GetKeyDown(KeyCode.F8) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
+            if (!GameStartManager._instance || !AmongUsClient.Instance.AmHost) return; // 以下ホストのみで動作
+
+            if (!(Mode.ModeHandler.IsMode(Mode.ModeId.Default) || Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf)) && !ModHelpers.IsDebugMode())
+            {
+                FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.F7))
+            {
+                FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F8))
             {
                 FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
             }
-            if (CustomOptionHolder.DebugModeFastStart != null && CustomOptionHolder.DebugModeFastStart.GetBool() && CustomOptionHolder.IsDebugMode.GetBool())//デバッグモードでデバッグ即開始が有効
-            {//カウントダウン中
-                if (GameStartManager.InstanceExists && FastDestroyableSingleton<GameStartManager>.Instance.startState == GameStartManager.StartingStates.Countdown)
-                {//カウント0
-                    FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.F7) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
+
+            // 以下デバッグモード限定の機能
+            if (!ModHelpers.IsDebugMode()) return;
+
+            if (CustomOptionHolder.DebugModeFastStart.GetBool()) // デバッグモードでデバッグ即開始が有効
             {
-                FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
+                if (GameStartManager.InstanceExists && FastDestroyableSingleton<GameStartManager>.Instance.startState == GameStartManager.StartingStates.Countdown) // カウントダウン中
+                {
+                    FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0; //カウント0
+                }
             }
         }
     }

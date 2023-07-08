@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -38,7 +37,7 @@ public static class RoleClass
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;
-        DeadPlayer.deadPlayers = new();
+        DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
@@ -236,6 +235,8 @@ public static class RoleClass
         TheThreeLittlePigs.ClearAndReload();
         OrientalShaman.ClearAndReload();
         Balancer.ClearAndReload();
+        Pteranodon.ClearAndReload();
+        BlackHatHacker.ClearAndReload();
         MadRaccoon.RoleClass.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
@@ -1565,6 +1566,7 @@ public static class RoleClass
         public static List<PlayerControl> FoxPlayer;
         public static Color32 color = FoxPurple;
         public static Dictionary<int, int> KillGuard;
+        public static Dictionary<byte, bool> Killer;
         public static bool IsUseVent;
         public static bool UseReport;
         public static bool IsImpostorLight;
@@ -1572,6 +1574,7 @@ public static class RoleClass
         {
             FoxPlayer = new();
             KillGuard = new();
+            Killer = new();
             IsUseVent = CustomOptionHolder.FoxIsUseVent.GetBool();
             UseReport = CustomOptionHolder.FoxReport.GetBool();
             IsImpostorLight = CustomOptionHolder.FoxIsImpostorLight.GetBool();
@@ -1998,7 +2001,7 @@ public static class RoleClass
     {
         public static List<PlayerControl> VentMakerPlayer;
         public static Color32 color = ImpostorRed;
-        public static Vent Vent;
+        public static Dictionary<byte, Vent> Vent;
         public static int VentCount;
         public static bool IsMakeVent;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
@@ -2006,7 +2009,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             VentMakerPlayer = new();
-            Vent = null;
+            Vent = new();
             VentCount = 0;
             IsMakeVent = true;
         }
