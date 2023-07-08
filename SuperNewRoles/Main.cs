@@ -117,6 +117,17 @@ public partial class SuperNewRolesPlugin : BasePlugin
         foreach (string resourceName in resourceNames)
             if (resourceName.EndsWith(".png"))
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
+        Constants.CompatVersions = new int[1] { Constants.GetBroadcastVersion() };
+    }
+
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    public static class GetBroadcastVersionAwakePatch
+    {
+        public static bool Prefix(ref int __result)
+        {
+            __result = 50577350;
+            return false;
+        }
     }
 
     public static bool IsApril()
