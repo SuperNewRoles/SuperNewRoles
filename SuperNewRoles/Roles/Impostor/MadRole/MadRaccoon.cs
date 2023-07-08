@@ -15,7 +15,7 @@ public static class MadRaccoon
 {
     internal static class CustomOptionData
     {
-        private static int optionId = 406100;
+        private static int optionId = 406200;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption IsCheckImpostor;
