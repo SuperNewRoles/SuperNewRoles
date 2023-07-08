@@ -10,6 +10,18 @@ class GameStartPatch
     {
         public static bool Prefix(GameStartManager __instance)
         {
+            if (!AmongUsClient.Instance.AmHost) return true;
+
+            var HostVersion = ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[AmongUsClient.Instance.HostId].version;
+            var error = (Mode.ModeHandler.IsMode(Mode.ModeId.Default) || Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf))
+                ? string.Format(ModTranslation.GetString("PublicRoomErrorClientMode"), HostVersion)
+                : string.Format(ModTranslation.GetString("PublicRoomErrorHostMode"), HostVersion);
+
+            Logger.Error(error, "MakePublicPatch");
+            __instance.MakePublicButton.color = Palette.DisabledClear;
+            __instance.privatePublicText.color = Palette.DisabledClear;
+            PlayerControl.LocalPlayer.RpcSendChat(error);
+
             return false;
         }
     }
