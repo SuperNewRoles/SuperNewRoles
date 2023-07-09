@@ -32,12 +32,6 @@ class GameStartPatch
         {
             if (!GameStartManager._instance || !AmongUsClient.Instance.AmHost) return; // 以下ホストのみで動作
 
-            if (!(Mode.ModeHandler.IsMode(Mode.ModeId.Default) || Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf)) && !ModHelpers.IsDebugMode())
-            {
-                FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
-                return;
-            }
-
             if (Input.GetKeyDown(KeyCode.F7))
             {
                 FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
