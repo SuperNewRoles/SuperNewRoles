@@ -253,7 +253,7 @@ public class CursedTowelTask
         public static void StartPostfix(ShipStatus __instance)
         {
             if (!Main.IsCursed) return;
-            if (MapData.IsMap(CustomMapNames.Airship)) return;
+            if (!MapData.IsMap(CustomMapNames.Airship)) return;
             Transform towels = __instance.transform.Find("Showers/TaskTowels");
             GameObject copytowel = Object.Instantiate(towels.GetChild(0).gameObject);
 
