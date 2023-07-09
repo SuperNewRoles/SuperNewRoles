@@ -32,9 +32,11 @@ public enum ReplayActionId {
 public abstract class ReplayAction
 {
     public float ActionTime = 0f;
+    public int ReplayId;
     public abstract void ReadReplayFile(BinaryReader reader);
     public abstract void WriteReplayFile(BinaryWriter writer);
     public abstract void OnAction();
+    public virtual void OnReplay() { Logger.Info("Commedd!!!"); }
     public abstract ReplayActionId GetActionId();
     public static bool CheckAndCreate(ReplayAction action)
     {
@@ -45,6 +47,16 @@ public abstract class ReplayAction
         action.ActionTime = Recorder.ReplayActionTime;
         Recorder.ReplayActionTime = 0f;
         return true;
+    }
+    public static int MaxId = 0;
+    public void Init()
+    {
+        ReplayId = MaxId;
+        MaxId++;
+    }
+    public static void CoIntroDestory()
+    {
+        MaxId = 0;
     }
     public static ReplayAction CreateReplayAction(ReplayActionId id)
     {

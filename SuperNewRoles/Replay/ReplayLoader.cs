@@ -10,6 +10,7 @@ using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using UnityEngine.Events;
 using static GameData;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Replay
 {
@@ -94,6 +95,7 @@ namespace SuperNewRoles.Replay
             CurrentTurn = 0;
             actionindex = 0;
             IsStarted = true;
+            ReplayAction.CoIntroDestory();
             GetPosAndActionsThisTurn();
             if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
@@ -135,15 +137,15 @@ namespace SuperNewRoles.Replay
             GUIObject.gameObject.SetActive(true);
         }
         public static SpriteRenderer PauseButtonRenderer;
-        public static void PlayOrPause()
+        public static void SetReplayStatus(ReplayState state)
         {
-            if (ReplayManager.CurrentReplay != null)
+            MovingPlatformBehaviour mpb;
+            //変更前の処理だから間違えないように
+            switch (state)
             {
-                MovingPlatformBehaviour mpb;
-                //変更前の処理だから間違えないように
-                switch (ReplayManager.CurrentReplay.CurrentPlayState)
-                {
-                    case ReplayState.Play:
+                case ReplayState.Pause:
+                    if (ReplayManager.CurrentReplay.CurrentPlayState != ReplayState.Pause)
+                    {
                         mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
                         if (mpb != null && mpb.Target != null)
                         {
@@ -158,13 +160,17 @@ namespace SuperNewRoles.Replay
                                 player.MyPhysics.StopAllCoroutines();
                             }
                         }
-                        break;
-                    case ReplayState.Pause:
+                    }
+                    break;
+                case ReplayState.PlayRewind:
+                case ReplayState.Play:
+                    if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause)
+                    {
                         mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
                         if (mpb != null && mpb.Target != null)
                         {
                             mpb.IsLeft = !mpb.IsLeft;
-                            mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
+                            mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target, ReplayActionMovingPlatform.currentAction).WrapToIl2Cpp());
                         }
                         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                         {
@@ -173,20 +179,78 @@ namespace SuperNewRoles.Replay
                                 player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderCustom(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
                             }
                         }
-                        break;
+                    }
+                    break;
+            }
+            //巻き戻しになるか巻き戻しから戻るか
+            if ((ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind && state != ReplayState.PlayRewind) ||
+                (ReplayManager.CurrentReplay.CurrentPlayState != ReplayState.PlayRewind && state == ReplayState.PlayRewind))
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.transform.localScale = new(-player.transform.localScale.x, player.transform.localScale.y, player.transform.localScale.z);
                 }
-                ReplayManager.CurrentReplay.CurrentPlayState = ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Play ? ReplayState.Pause : ReplayState.Play;
+                if (ReplayManager.CurrentReplay.CurrentPlayState != ReplayState.PlayRewind && state == ReplayState.PlayRewind)
+                {
+                    mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                    if (mpb != null && mpb.Target != null)
+                    {
+                        mpb.Target.MyPhysics.body.velocity = Vector2.zero;
+                        ReplayManager.CurrentReplay.MovingPlatformFrameCount = ((int)(mpb.Target.MyPhysics.Speed * 60)) - ReplayManager.CurrentReplay.MovingPlatformFrameCount;
+                        mpb.StopAllCoroutines();
+                        //mpb.IsLeft = !mpb.IsLeft;
+                        mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
+                        /*
+                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        {
+                            if (player.onLadder)
+                            {
+                                player.MyPhysics.body.velocity = Vector2.one;
+                                player.MyPhysics.StopAllCoroutines();
+                                player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderRewind(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
+                            }
+                        }*/
+                    }
+                }
+                else
+                {
+                    mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                    if (mpb != null && mpb.Target != null)
+                    {
+                        ReplayManager.CurrentReplay.MovingPlatformFrameCount = ((int)(mpb.Target.MyPhysics.Speed * 60)) - ReplayManager.CurrentReplay.MovingPlatformFrameCount;
+                        mpb.Target.MyPhysics.body.velocity = Vector2.zero;
+                        mpb.StopAllCoroutines();
+                        //mpb.IsLeft = !mpb.IsLeft;
+                        mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
+                    }/*
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.onLadder)
+                        {
+                            player.MyPhysics.body.velocity = Vector2.one;
+                            player.MyPhysics.StopAllCoroutines();
+                            player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderCustom(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
+                        }
+                    }*/
+                }
+            }
+            ReplayManager.CurrentReplay.CurrentPlayState = state;
+        }
+        public static void PlayOrPause()
+        {
+            if (ReplayManager.CurrentReplay != null)
+            {
+                SetReplayStatus(ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Play ? ReplayState.Pause : ReplayState.Play);
             }
             UpdateButton();
         }
         public static void FastPlay()
         {
-
             UpdateButton();
         }
         public static void PlayRewind()
         {
-
+            SetReplayStatus(ReplayState.PlayRewind);
             UpdateButton();
         }
         public static void MoveToNextMeeting()
@@ -341,6 +405,7 @@ namespace SuperNewRoles.Replay
                 {
                     Logger.Info(replayActionId + "追加:"+reader.BaseStream.Position.ToString());
                     ReplayAction action = ReplayAction.CreateReplayAction(replayActionId);
+                    action.Init();
                     action.ReadReplayFile(reader);
                     turn.Actions.Add(action);
                     Logger.Info(replayActionId + "終わり:" + reader.BaseStream.Position.ToString());
@@ -411,17 +476,27 @@ namespace SuperNewRoles.Replay
         public static List<ReplayTurn> ReplayTurns;
         static float postime;
         static float actiontime;
-        static int CurrentTurn;
-        static int posindex;
+        public static int CurrentTurn;
+        public static int posindex;
         static int actionindex;
         public static void HudUpdate() {
             if (!IsStarted) return;
             if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause) return;
-            postime -= Time.deltaTime;
-            if (actiontime != -999)
-                actiontime -= Time.deltaTime;
-            if (postime <= 0)
+            if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind)
             {
+                postime += Time.deltaTime;
+                if (actiontime != -999)
+                    actiontime += Time.deltaTime;
+            }
+            else
+            {
+                postime -= Time.deltaTime;
+                if (actiontime != -999)
+                    actiontime -= Time.deltaTime;
+            }
+            if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind ? ReplayManager.CurrentReplay.RecordRate <= postime : postime <= 0)
+            {
+                int targetindex = posindex + (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Play ? 1 : -1);
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
@@ -434,9 +509,9 @@ namespace SuperNewRoles.Replay
                         //if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count > posindex + 1)
                         if (!player.onLadder && !player.inMovingPlat)
                         {
-                            if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count > posindex + 1)
+                            if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count > targetindex)
                             {
-                                player.NetTransform.SnapTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1]);
+                                player.NetTransform.SnapTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][targetindex]);
                             }
                             player.transform.position = new(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].x,
                                 ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].y,
@@ -458,22 +533,55 @@ namespace SuperNewRoles.Replay
                         Logger.Info(e.ToString());
                     }
                 }
-                posindex++;
+                if (targetindex >= 0)
+                {
+                    posindex = targetindex;
+                }
+                if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind)
+                {
+                    ReplayAction moving = ReplayTurns[CurrentTurn].Actions.FirstOrDefault(x => (x as ReplayActionMovingPlatform != null) && (x as ReplayActionMovingPlatform).endposindex == posindex && (x as ReplayActionMovingPlatform).CurrentTurn == CurrentTurn);
+                    if (moving != null)
+                    {
+                        ReplayActionMovingPlatform ramp = moving as ReplayActionMovingPlatform;
+                        MovingPlatformBehaviour mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                        PlayerControl movingtarget = ModHelpers.PlayerById(ramp.sourcePlayer);
+                        movingtarget.MyPhysics.body.velocity = Vector2.zero;
+                        mpb.StopAllCoroutines();
+                        //mpb.IsLeft = !mpb.IsLeft;
+                        mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, movingtarget).WrapToIl2Cpp());
+                    }
+                }
                 Logger.Info(posindex.ToString(),"POSINDEXXXXX");
-                postime = ReplayManager.CurrentReplay.RecordRate;
+                postime = ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind ? 0 : ReplayManager.CurrentReplay.RecordRate;
             }
             //Logger.Info("actiontime:"+actiontime.ToString());
-            while (actiontime <= 0 && actiontime != -999)
+            if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind)
             {
-                if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
+                while (actionindex >= 0 && actiontime >= ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime && actiontime != -999)
                 {
-                    Logger.Info("アクション！:"+ ReplayTurns[CurrentTurn].Actions[actionindex].GetActionId());
-                    ReplayTurns[CurrentTurn].Actions[actionindex].OnAction();
-                    actionindex++;
-                    if (ReplayTurns[CurrentTurn].Actions.Count > actionindex) actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
-                    else actiontime = -999;
+                    if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
+                    {
+                        Logger.Info("アクション！:" + ReplayTurns[CurrentTurn].Actions[actionindex - 1].GetActionId());
+                        ReplayTurns[CurrentTurn].Actions[actionindex - 1].OnReplay();
+                        actionindex--;
+                        if (ReplayTurns[CurrentTurn].Actions.Count > actionindex && actionindex >= 0) actiontime = 0;//ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
+                    }
                 }
             }
+            else { 
+                while (actiontime <= 0 && actiontime != -999)
+                {
+                    if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
+                    {
+                        Logger.Info("アクション！:" + ReplayTurns[CurrentTurn].Actions[actionindex].GetActionId());
+                        ReplayTurns[CurrentTurn].Actions[actionindex].OnAction();
+                        actionindex++;
+                        if (ReplayTurns[CurrentTurn].Actions.Count > actionindex) actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
+                        else actiontime = -999;
+                    }
+                }
+            }
+            Logger.Info(actionindex.ToString(),"ACTIONINDEX");
         }
     }
 }

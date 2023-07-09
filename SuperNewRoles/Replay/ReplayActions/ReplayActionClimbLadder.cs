@@ -29,7 +29,8 @@ public class ReplayActionClimbLadder : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.ClimbLadder;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
@@ -42,14 +43,53 @@ public class ReplayActionClimbLadder : ReplayAction
         {
             Logger.Info("ladderがnullだ");
         }
-        if (NetHelpers.SidGreaterThan(climbLadderSid, source.MyPhysics.lastClimbLadderSid))
-        {
-            source.MyPhysics.lastClimbLadderSid = climbLadderSid;
-            source.MyPhysics.ResetMoveState();
-            ((MonoBehaviour)source.MyPhysics).StartCoroutine(CoClimbLadderCustom(source.MyPhysics, ladder, climbLadderSid).WrapToIl2Cpp());
-        }
+        source.MyPhysics.lastClimbLadderSid = climbLadderSid;
+        source.MyPhysics.ResetMoveState();
+        ((MonoBehaviour)source.MyPhysics).StartCoroutine(CoClimbLadderCustom(source.MyPhysics, ladder, climbLadderSid).WrapToIl2Cpp());
+    }
+    public override void OnReplay()
+    {
     }
 
+    public static IEnumerator CoClimbLadderRewind(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
+    {
+        if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >= (int)LadderState.WaitEffect2nd)
+        {
+            ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WaitEffect2nd;
+            yield return Effects.Wait(0.1f);
+            ((Behaviour)__instance.myPlayer.Collider).enabled = true;
+            __instance.myPlayer.moveable = true;
+            ((Behaviour)__instance.myPlayer.NetTransform).enabled = true;
+            __instance.myPlayer.ForceKillTimerContinue = false;
+            __instance.myPlayer.onLadder = false;
+        }
+        if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >=(int)LadderState.WalkTo2nd)
+        {
+            ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WalkTo2nd;
+            yield return __instance.WalkPlayerTo(source.transform.position, 0.001f, (!source.IsTop) ? 1 : 2);
+            __instance.myPlayer.SetPetPosition(((Component)__instance.myPlayer).transform.position);
+            __instance.ResetAnimState();
+        }
+        if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >= (int)LadderState.WaitEffect1st)
+        {
+            ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WaitEffect1st;
+            yield return Effects.Wait(0.1f);
+            __instance.StartClimb(source.IsTop);
+            if (Constants.ShouldPlaySfx() && PlayerControl.LocalPlayer == __instance.myPlayer)
+            {
+                __instance.myPlayer.FootSteps.clip = source.UseSound;
+                __instance.myPlayer.FootSteps.loop = true;
+                __instance.myPlayer.FootSteps.Play();
+            }
+        }
+        if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >= (int)LadderState.WalkTo1st)
+        {
+            ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WalkTo1st;
+            yield return __instance.WalkPlayerTo(source.transform.position, 0.001f);
+        }
+        ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.None;
+        ReplayManager.CurrentReplay.CurrentLadder.Remove(__instance.myPlayer.PlayerId);
+    }
     public static IEnumerator CoClimbLadderCustom(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
     {
         if (!ReplayManager.CurrentReplay.CurrentLadderState.ContainsKey(__instance.myPlayer.PlayerId) || (int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] <= (int)LadderState.Init)

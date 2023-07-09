@@ -46,6 +46,25 @@ public class ReplayActionVent : ReplayAction
             ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoExitVent(id));
         }
     }
+    public override void OnReplay()
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
+        if (source == null)
+        {
+            Logger.Info("sourceがnullだったで");
+            return;
+        }
+        if (!isEnter)
+        {
+            ((MonoBehaviour)source.MyPhysics).StopAllCoroutines();
+            ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoEnterVent(id));
+        }
+        else
+        {
+            ((MonoBehaviour)source.MyPhysics).StopAllCoroutines();
+            ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoExitVent(id));
+        }
+    }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionVent Create(byte sourcePlayer, int id, bool isEnter)
     {

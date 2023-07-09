@@ -11,6 +11,12 @@ namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionMovingPlatform : ReplayAction
 {
     public byte sourcePlayer;
+
+    public int CurrentTurn;
+    public int endposindex;
+
+    public static ReplayActionMovingPlatform currentAction;
+
     public override void ReadReplayFile(BinaryReader reader) {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
@@ -27,7 +33,13 @@ public class ReplayActionMovingPlatform : ReplayAction
     public override void OnAction() {
         //ここに処理書く
         MovingPlatformBehaviour mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
-        mpb.StartCoroutine(UseMovingPlatform(mpb, ModHelpers.PlayerById(sourcePlayer)).WrapToIl2Cpp());
+        currentAction = this;
+        mpb.StartCoroutine(UseMovingPlatform(mpb, ModHelpers.PlayerById(sourcePlayer), this).WrapToIl2Cpp());
+    }
+    public override void OnReplay()
+    {
+        //MovingPlatformBehaviour mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+        //mpb.StartCoroutine(UseMovingPlatform(mpb, ModHelpers.PlayerById(sourcePlayer)).WrapToIl2Cpp());
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionMovingPlatform Create(byte sourcePlayer)
@@ -51,7 +63,21 @@ public class ReplayActionMovingPlatform : ReplayAction
             }
         }
     }
-    public static IEnumerator UseMovingPlatform(MovingPlatformBehaviour __instance, PlayerControl target)
+    public static IEnumerator MovingPlatformFrameCounterRewind(MovingPlatformBehaviour __instance, PlayerPhysics target)
+    {
+        while (true)
+        {
+            yield return null;
+            ReplayManager.CurrentReplay.MovingPlatformFrameCount++;
+            ReplayManager.CurrentReplay.MovingPlatformPosition = __instance.transform.localPosition;
+            if (ReplayManager.CurrentReplay.MovingPlatformFrameCount >= (int)(target.Speed * 60))
+            {
+                yield break;
+            }
+        }
+    }
+
+    public static IEnumerator UseMovingPlatform(MovingPlatformBehaviour __instance, PlayerControl target, ReplayActionMovingPlatform by = null)
     {
         if ((int)ReplayManager.CurrentReplay.CurrentMovingPlatformState <= (int)MovingPlatformState.Init)
         {
@@ -142,5 +168,11 @@ public class ReplayActionMovingPlatform : ReplayAction
         }
         ReplayManager.CurrentReplay.CurrentMovingPlatformState = MovingPlatformState.None;
         ReplayManager.CurrentReplay.MovingPlatformPosition = new(-999, -999, -999);
+        if (by != null)
+        {
+            by.CurrentTurn = ReplayLoader.CurrentTurn;
+            by.endposindex = ReplayLoader.posindex;
+        }
+        currentAction = null;
     }
 }
