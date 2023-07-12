@@ -178,9 +178,9 @@ public class CustomHats
         };
 
         if (ch.flipresource != null)
-            extend.FlipImage = GetHatSprite(ch.flipresource);
+            hatViewData.FlipImage = GetHatSprite(ch.flipresource);
         if (ch.backflipresource != null)
-            extend.BackFlipImage = GetHatSprite(ch.backflipresource);
+            hatViewData.BackFlipImage = GetHatSprite(ch.backflipresource);
 
         if (testOnly)
         {
@@ -329,7 +329,7 @@ public class CustomHats
         }
     }
 
-
+    /*
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleAnimation))]
     private static class PlayerPhysicsHandleAnimationPatch
     {
@@ -350,7 +350,7 @@ public class CustomHats
                 hp.BackLayer.sprite = __instance.Rend().flipX ? extend.BackFlipImage : hp.Hat.CreateAddressableAsset().GetAsset().BackImage;
             }
         }
-    }
+    }*/
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
     private static class ShipStatusSetHat

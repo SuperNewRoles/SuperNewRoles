@@ -1420,14 +1420,14 @@ public static class RPCProcedure
     public static void SetShielder(byte PlayerId, bool Is)
         => RoleClass.Shielder.IsShield[PlayerId] = RoleClass.Shielder.IsShield[PlayerId] = Is;
 
-    public static void MakeVent(float x, float y, float z)
+    public static void MakeVent(byte id, float x, float y, float z, bool chain)
     {
         Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
-        Vent VentMakerVent = UnityEngine.Object.Instantiate<Vent>(template);
-        if (RoleClass.VentMaker.VentCount == 2)
+        Vent VentMakerVent = UnityEngine.Object.Instantiate(template);
+        if (chain && RoleClass.VentMaker.Vent.ContainsKey(id))
         {
-            RoleClass.VentMaker.Vent.Right = VentMakerVent;
-            VentMakerVent.Right = RoleClass.VentMaker.Vent;
+            RoleClass.VentMaker.Vent[id].Right = VentMakerVent;
+            VentMakerVent.Right = RoleClass.VentMaker.Vent[id];
             VentMakerVent.Left = null;
             VentMakerVent.Center = null;
         }
@@ -1446,6 +1446,7 @@ public static class RPCProcedure
         MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
         VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
         VentMakerVent.gameObject.SetActive(true);
+        RoleClass.VentMaker.Vent[id] = VentMakerVent;
     }
     public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
     {
@@ -1743,7 +1744,7 @@ public static class RPCProcedure
                         SetSpeedFreeze(reader.ReadBoolean());
                         break;
                     case CustomRPC.MakeVent:
-                        MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                        MakeVent(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadBoolean());
                         break;
                     case CustomRPC.PositionSwapperTP:
                         PositionSwapperTP(reader.ReadByte(), reader.ReadByte());

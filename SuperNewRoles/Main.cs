@@ -33,7 +33,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string ColorModName => $"<color=#ffa500>Super</color><color=#ff0000>{(IsApril() ? "Nakanzino" : "New")}</color><color=#00ff00>Roles</color>";
     public const string DiscordServer = "https://discord.gg/Cqfwx82ynN";
     public const string Twitter1 = "https://twitter.com/SNRDevs";
-    public const string Twitter2 = "https://twitter.com/SuperNewRoles";
+    public const string Twitter2 = "https://twitter.com/SNROfficials";
 
 
     public static Version ThisVersion = System.Version.Parse($"{Assembly.GetExecutingAssembly().GetName().Version}");
@@ -117,6 +117,17 @@ public partial class SuperNewRolesPlugin : BasePlugin
         foreach (string resourceName in resourceNames)
             if (resourceName.EndsWith(".png"))
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
+        Constants.CompatVersions = new int[1] { Constants.GetBroadcastVersion() };
+    }
+
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    public static class GetBroadcastVersionAwakePatch
+    {
+        public static bool Prefix(ref int __result)
+        {
+            __result = 50577350;
+            return false;
+        }
     }
 
     public static bool IsApril()
