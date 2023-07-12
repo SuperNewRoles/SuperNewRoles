@@ -18,7 +18,7 @@ public static class DynamicLobbies
     {
         static bool Prefix(ChatController __instance)
         {
-            string text = __instance.TextArea.text;
+            string text = FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.text;
             bool handled = false;
             if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
             {
@@ -138,7 +138,7 @@ public static class DynamicLobbies
             }
             if (handled)
             {
-                __instance.TextArea.Clear();
+                FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.Clear();
                 FastDestroyableSingleton<HudManager>.Instance.Chat.TimeSinceLastMessage = 0f;
                 __instance.quickChatMenu.ResetGlyphs();
             }
