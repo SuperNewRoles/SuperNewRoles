@@ -140,7 +140,6 @@ public static class DynamicLobbies
             {
                 FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.Clear();
                 FastDestroyableSingleton<HudManager>.Instance.Chat.timeSinceLastMessage = 0f;
-                __instance.quickChatMenu.ResetGlyphs();
             }
             return !handled;
         }
