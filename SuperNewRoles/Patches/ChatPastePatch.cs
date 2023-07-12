@@ -13,16 +13,16 @@ class ChatPaste
             {
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.V }))
                 {
-                    FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.SetText(FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.text + GUIUtility.systemCopyBuffer);
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.SetText(FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text + GUIUtility.systemCopyBuffer);
                 }
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.X }))
                 {
-                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.text;
-                    FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.Clear();
+                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.Clear();
                 }
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.C }))
                 {
-                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.text;
+                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
                 }
             }
         }

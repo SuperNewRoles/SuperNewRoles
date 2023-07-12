@@ -7,7 +7,7 @@ class RoleChat
 {
     public static bool SendChat(ChatController __instance)
     {
-        string text = FastDestroyableSingleton<FreeChatInputField>.Instance.textArea.text;
+        string text = __instance.freeChatField.textArea.text;
         string[] args = text.Split(' ');
         bool handled = false;
         if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
