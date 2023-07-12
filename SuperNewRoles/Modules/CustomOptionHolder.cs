@@ -1909,7 +1909,7 @@ public class CustomOptionHolder
         PainterIsDeathFootprintBig = Create(405310, false, CustomOptionType.Crewmate, "PainterIsDeathFootprintBig", true, PainterIsDeathFootprint);
         PainterIsFootprintMeetingDestroy = Create(405311, false, CustomOptionType.Crewmate, "PainterIsFootprintMeetingDestroy", true, PainterOption);
 
-        SeeThroughPersonOption = SetupCustomRoleOption(405400, false, RoleId.SeeThroughPerson, isHidden: true);
+        SeeThroughPersonOption = SetupCustomRoleOption(405400, false, RoleId.SeeThroughPerson, selection = 0, isHidden: true);
         SeeThroughPersonPlayerCount = Create(405401, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption, isHidden: true);
 
         PsychometristOption = SetupCustomRoleOption(405500, false, RoleId.Psychometrist);
