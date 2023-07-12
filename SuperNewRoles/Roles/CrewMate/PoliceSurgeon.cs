@@ -308,7 +308,7 @@ internal static class PostMortemCertificate_Display
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
             // チャットを開いた時、Esc, Tab, hキーを押した時に 死体検案書が開かれていれば 死体検案書を閉じる。
             if (!OverlayInfo.overlayShown) return;
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening
                 || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.H))
                 OverlayInfo.HideInfoOverlay();
         }
@@ -402,7 +402,7 @@ internal static class PostMortemCertificate_Display
             return;
         }
 
-        if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && OverlayInfo.overlayShown)
+        if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening && OverlayInfo.overlayShown)
             OverlayInfo.HideInfoOverlay();
         else OverlayInfo.YoggleInfoOverlay(target);
     }
