@@ -119,6 +119,15 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
     }
 
+[HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+class Patch
+{
+    static void Postfix(ref int __result)
+    {
+        __result = Constants.GetVersion(2222, 0, 0, 0);
+    }
+}
+
     public static bool IsApril()
     {
         DateTime utcNow = DateTime.UtcNow;
