@@ -53,6 +53,7 @@ public class ReplayActionClimbLadder : ReplayAction
 
     public static IEnumerator CoClimbLadderRewind(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
     {
+        Logger.Info("COMEEEEEEEEEEEED!!!!!!!!");
         if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >= (int)LadderState.WaitEffect2nd)
         {
             ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WaitEffect2nd;
@@ -63,13 +64,14 @@ public class ReplayActionClimbLadder : ReplayAction
             __instance.myPlayer.ForceKillTimerContinue = false;
             __instance.myPlayer.onLadder = false;
         }
-        if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >=(int)LadderState.WalkTo2nd)
+        if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >= (int)LadderState.WalkTo2nd)
         {
             ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WalkTo2nd;
             yield return __instance.WalkPlayerTo(source.transform.position, 0.001f, (!source.IsTop) ? 1 : 2);
             __instance.myPlayer.SetPetPosition(((Component)__instance.myPlayer).transform.position);
             __instance.ResetAnimState();
         }
+
         if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >= (int)LadderState.WaitEffect1st)
         {
             ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WaitEffect1st;
@@ -82,6 +84,7 @@ public class ReplayActionClimbLadder : ReplayAction
                 __instance.myPlayer.FootSteps.Play();
             }
         }
+
         if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >= (int)LadderState.WalkTo1st)
         {
             ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WalkTo1st;

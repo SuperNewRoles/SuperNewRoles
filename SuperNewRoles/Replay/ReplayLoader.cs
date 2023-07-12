@@ -200,7 +200,7 @@ namespace SuperNewRoles.Replay
                         mpb.StopAllCoroutines();
                         //mpb.IsLeft = !mpb.IsLeft;
                         mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
-                        /*
+                        
                         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                         {
                             if (player.onLadder)
@@ -209,7 +209,7 @@ namespace SuperNewRoles.Replay
                                 player.MyPhysics.StopAllCoroutines();
                                 player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderRewind(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
                             }
-                        }*/
+                        }
                     }
                 }
                 else
@@ -222,7 +222,7 @@ namespace SuperNewRoles.Replay
                         mpb.StopAllCoroutines();
                         //mpb.IsLeft = !mpb.IsLeft;
                         mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
-                    }/*
+                    }
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         if (player.onLadder)
@@ -231,7 +231,7 @@ namespace SuperNewRoles.Replay
                             player.MyPhysics.StopAllCoroutines();
                             player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderCustom(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
                         }
-                    }*/
+                    }
                 }
             }
             ReplayManager.CurrentReplay.CurrentPlayState = state;
