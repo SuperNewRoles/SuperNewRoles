@@ -169,7 +169,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             }
             if (__instance.IsOpenOrOpening)
             {
-                __instance.BanButton.MenuButton.enabled = !__instance.animating;
+                __instance.banButton.MenuButton.enabled = !__instance.IsAnimating;
             }
         }
     }
