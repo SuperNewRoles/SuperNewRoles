@@ -60,7 +60,6 @@ class ShareGameVersion
             GameStartManagerUpdatePatch.Proce = 0;
             GameStartManagerUpdatePatch.LastBlockStart = false;
             GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
-            GameStartManagerUpdatePatch.Alllady613ErrorMessage = false;
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
@@ -71,7 +70,6 @@ class ShareGameVersion
         public static int Proce;
         private static string currentText = "";
         public static bool LastBlockStart;
-        internal static bool Alllady613ErrorMessage = false;
 
         public static void Prefix(GameStartManager __instance)
         {
@@ -118,23 +116,6 @@ class ShareGameVersion
                 {
                     // 警告を表示する
                     message += $"\n{ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff")}\n";
-                    blockStart = true;
-                }
-            }
-            if (AmongUsClient.Instance.AmHost)
-            {
-                if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false) || ModHelpers.IsDebugMode()))
-                {
-                    message += $"\n{ModTranslation.GetString("Ver20613CanNotPlayHostMode")}\n";
-                    if (!Alllady613ErrorMessage)
-                    {
-                        Alllady613ErrorMessage = true;
-                        new LateTask(() =>
-                            {
-                                FastDestroyableSingleton<HudManager>.Instance?.Chat?.AddChat(PlayerControl.LocalPlayer, $"{ModTranslation.GetString("DowngradeDescription")}");
-                                GUIUtility.systemCopyBuffer = "https://github.com/ykundesu/SuperNewRoles/wiki/Home/1be6c082ddb8887c04143d23484459c2aa8b66b2#shr%E3%83%A2%E3%83%BC%E3%83%89%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E6%99%82%E3%81%AF-snr-v1800-%E4%BB%A5%E9%99%8D%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%AA%E3%81%84%E3%81%A7%E4%B8%8B%E3%81%95%E3%81%84";
-                            }, 3f, "Ver20613CanNotPlayHostMode");
-                    }
                     blockStart = true;
                 }
             }
@@ -230,7 +211,7 @@ class ShareGameVersion
                 }
                 else
                 {
-                    // message = $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n" + message; (2023.6.27ではHostModeが利用できない為封印)
+                    message = $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n" + message;
                     //開始ボタンを押せないようにする。
                     __instance.ResetStartState();
 
