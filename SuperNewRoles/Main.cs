@@ -117,17 +117,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         foreach (string resourceName in resourceNames)
             if (resourceName.EndsWith(".png"))
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
-        Constants.CompatVersions = new int[1] { Constants.GetBroadcastVersion() };
-    }
-
-    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
-    public static class GetBroadcastVersionAwakePatch
-    {
-        public static bool Prefix(ref int __result)
-        {
-            __result = 50577350;
-            return false;
-        }
     }
 
     public static bool IsApril()
@@ -167,9 +156,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
                     __instance.SetVisible(true);
                 }, 0f, "AntiChatBug");
             }
-            if (__instance.IsOpen)
+            if (__instance.IsOpenOrOpening)
             {
-                __instance.BanButton.MenuButton.enabled = !__instance.animating;
+                __instance.banButton.MenuButton.enabled = !__instance.IsAnimating;
             }
         }
     }
