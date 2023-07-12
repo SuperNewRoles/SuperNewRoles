@@ -167,7 +167,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
                     __instance.SetVisible(true);
                 }, 0f, "AntiChatBug");
             }
-            if (__Instance.IsOpenOrOpening)
+            if (__instance.IsOpenOrOpening)
             {
                 __instance.BanButton.MenuButton.enabled = !__instance.animating;
             }
