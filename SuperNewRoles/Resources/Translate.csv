@@ -1420,8 +1420,6 @@ Processing,Processing...,処理中...,处理中...,處理中...
 SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成功
 SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,不具有
-PublicRoomErrorHostMode,The current v{0} cannot be made public.\nIf you want to make the room public in Host mode，\nPlease use [ AmongUs body: ver2023.3.28 + SNR: v1.7.2.0 ].,現在使用している v{0} では公開部屋にする事ができません。\nHostモードで公開部屋にしたい場合は\n[ AmongUs本体:ver2023.3.28 + SNR:v1.7.2.0 ] を使用して下さい。
-PublicRoomErrorClientMode,The current v{0} cannot be made public.\nIf you want to make the room public in Client mode，\nPlease use [ AmongUs body: ver2023.6.27 + SNR: v1.8.1.2 ].,現在使用している v{0} では公開部屋にする事ができません。\nClientモードで公開部屋にしたい場合は\n[ AmongUs本体:ver2023.6.27 + SNR:v1.8.1.2 ] を使用して下さい。
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫
