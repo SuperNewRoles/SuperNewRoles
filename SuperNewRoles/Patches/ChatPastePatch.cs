@@ -9,7 +9,7 @@ class ChatPaste
     {
         static void Postfix()
         {
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen)
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
             {
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.V }))
                 {

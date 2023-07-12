@@ -67,7 +67,7 @@ public static class VentAndSabo
             __state = false;
             if (!MeetingHud.Instance)
             {
-                if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
+                if (PlayerControl.LocalPlayer.IsUseSabo() && !__Instance.IsOpenOrOpening)
                 {
                     __instance.Close();
                     FastDestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions()
@@ -77,7 +77,7 @@ public static class VentAndSabo
                     });
                     return false;
                 }
-                if (PlayerControl.LocalPlayer.IsImpostor() && !PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
+                if (PlayerControl.LocalPlayer.IsImpostor() && !PlayerControl.LocalPlayer.IsUseSabo() && !__Instance.IsOpenOrOpening)
                 {
                     PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Crewmate;
                     __state = true;
