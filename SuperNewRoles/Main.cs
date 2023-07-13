@@ -119,15 +119,16 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
     }
 
-[HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
-class GetBroadcastVersionPatch
-{
-    static void Postfix(ref int __result)
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    class GetBroadcastVersionPatch
     {
-        if(AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) return;
-        __result = Constants.GetVersion(2222, 0, 0, 0);
+        static void Postfix(ref int __result)
+        {
+            if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
+            if (ModHelpers.IsCustomServer()) return;
+            __result = Constants.GetVersion(2222, 0, 0, 0);
+        }
     }
-}
 
     public static bool IsApril()
     {
