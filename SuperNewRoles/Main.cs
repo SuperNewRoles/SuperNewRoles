@@ -120,10 +120,11 @@ public partial class SuperNewRolesPlugin : BasePlugin
     }
 
 [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
-class Patch
+class GetBroadcastVersionPatch
 {
     static void Postfix(ref int __result)
     {
+        if(AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) return;
         __result = Constants.GetVersion(2222, 0, 0, 0);
     }
 }
