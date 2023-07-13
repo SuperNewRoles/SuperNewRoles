@@ -269,8 +269,8 @@ public class CustomOverlays
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown) HideInfoOverlay();
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening && overlayShown) HideInfoOverlay();
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening) return;
 
             if (Input.GetKeyDown(KeyCode.Escape) && overlayShown) HideInfoOverlay(); // overlayを閉じる
             else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay(CustomOverlayPattern.PlayerDataInfo); // 参加プレイヤーの情報を表示

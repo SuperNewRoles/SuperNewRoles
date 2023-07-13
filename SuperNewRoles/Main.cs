@@ -119,6 +119,17 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
     }
 
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    class GetBroadcastVersionPatch
+    {
+        static void Postfix(ref int __result)
+        {
+            if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
+            if (ModHelpers.IsCustomServer()) return;
+            __result = Constants.GetVersion(2222, 0, 0, 0);
+        }
+    }
+
     public static bool IsApril()
     {
         DateTime utcNow = DateTime.UtcNow;
@@ -156,9 +167,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
                     __instance.SetVisible(true);
                 }, 0f, "AntiChatBug");
             }
-            if (__instance.IsOpen)
+            if (__instance.IsOpenOrOpening)
             {
-                __instance.BanButton.MenuButton.enabled = !__instance.animating;
+                __instance.banButton.MenuButton.enabled = !__instance.IsAnimating;
             }
         }
     }
