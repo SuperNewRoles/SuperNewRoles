@@ -5,7 +5,7 @@ namespace SuperNewRoles.Patches;
 
 class GameStartPatch
 {
-    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
+    /*[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
     class MakePublicPatch
     {
         public static bool Prefix(GameStartManager __instance)
@@ -24,7 +24,7 @@ class GameStartPatch
 
             return false;
         }
-    }
+    }*/
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
     public static class LobbyCountDownTimer
     {
