@@ -1442,6 +1442,7 @@ PostMortemCertificate_NoDeaths_RandomMessage_13,No one has died.\nTo maintain th
 PostMortemCertificate_NoDeaths_RandomMessage_14,No one has died.\nThe only means of resistance we have is to eject them...\nEven if we end up ejecting a crewmate，it's far better than being afraid of it and needlessly increasing the number of victims...,誰も欠けずに会議が開始された。\n私達が抵抗する手段は追放しかない...\nたとえ味方を追放してしまえども、それを恐れ、無闇に犠牲者を増やすよりは遥かに...
 PostMortemCertificate_NoDeaths_RandomMessage_15,At this moment when everyone gathered without anyone missing in the emergency meeting，even if we know there are no casualties，we feel relieved...,緊急招集で誰も欠けずに全員が集まったこの瞬間、死者がいないことを知っていても安心する...
 
+
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
@@ -1490,8 +1491,6 @@ SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成�
 SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,不具有
 InformationName,Information,情報
-PublicRoomErrorHostMode,The current v{0} cannot be made public.\nIf you want to make the room public in Host mode，\nPlease use [ AmongUs body: ver2023.3.28 + SNR: v1.7.2.0 ].,現在使用している v{0} では公開部屋にする事ができません。\nHostモードで公開部屋にしたい場合は\n[ AmongUs本体:ver2023.3.28 + SNR:v1.7.2.0 ] を使用して下さい。
-PublicRoomErrorClientMode,The current v{0} cannot be made public.\nIf you want to make the room public in Client mode，\nPlease use [ AmongUs body: ver2023.6.27 + SNR: v1.8.1.2 ].,現在使用している v{0} では公開部屋にする事ができません。\nClientモードで公開部屋にしたい場合は\n[ AmongUs本体:ver2023.6.27 + SNR:v1.8.1.2 ] を使用して下さい。
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫

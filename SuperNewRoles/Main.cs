@@ -117,16 +117,16 @@ public partial class SuperNewRolesPlugin : BasePlugin
         foreach (string resourceName in resourceNames)
             if (resourceName.EndsWith(".png"))
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
-        Constants.CompatVersions = new int[1] { Constants.GetBroadcastVersion() };
     }
 
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
-    public static class GetBroadcastVersionAwakePatch
+    class GetBroadcastVersionPatch
     {
-        public static bool Prefix(ref int __result)
+        static void Postfix(ref int __result)
         {
-            __result = 50577350;
-            return false;
+            if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
+            if (ModHelpers.IsCustomServer()) return;
+            __result = Constants.GetVersion(2222, 0, 0, 0);
         }
     }
 

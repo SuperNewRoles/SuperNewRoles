@@ -198,7 +198,7 @@ public class CustomOption
         return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
     }
 
-    public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1)
+    public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1, bool isHidden = false)
     {
         if (type is CustomOptionType.Empty)
             type = IntroData.GetIntroData(roleId).Team switch
@@ -208,7 +208,7 @@ public class CustomOption
                 TeamRoleType.Crewmate => CustomOptionType.Crewmate,
                 _ => CustomOptionType.Generic
             };
-        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max);
+        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max, isHidden);
     }
 
     // Static behaviour
@@ -389,7 +389,7 @@ public class CustomRoleOption : CustomOption
         }
     }
 
-    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
+    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15, bool isHidden = false) :
         base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "")
     {
         try
@@ -412,6 +412,7 @@ public class CustomRoleOption : CustomOption
             Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
         }
         RoleOptions.Add(this);
+        this.isHidden = isHidden;
         if (max > 1)
             countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
     }
