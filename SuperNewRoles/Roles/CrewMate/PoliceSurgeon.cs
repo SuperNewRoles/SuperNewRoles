@@ -273,7 +273,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
     }
 }
 
-[HarmonyPatch] // [x]MEMO : HarmonyPatchだけを纏めた内部クラスも作成する。
+[HarmonyPatch]
 /// <summary>
 /// 死体検案書の表示関連のメソッドを集約したクラス
 /// </summary>
@@ -459,7 +459,7 @@ internal static class PostMortemCertificate_Display
         }
 
         // overlayの表示と文字表記
-        public static void ShowInfoOverlay(PlayerControl target) // [x]MEMO: ボタンターゲットのPlIdを引数にしたい ← PLCになってて草
+        public static void ShowInfoOverlay(PlayerControl target)
         {
             if (overlayShown) return;
 
@@ -684,7 +684,6 @@ internal static class PostMortemCertificate_CreateAndGet
         }
         else
         {
-            // [x]MEMO : ここでは「現在ターンの情報しか出さない」を判断しない。判断はボタン側で行う。
             isWrite = true;
 
             var victimPlayerId = victimPlayer.PlayerId;
