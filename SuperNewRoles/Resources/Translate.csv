@@ -1418,7 +1418,7 @@ PostMortemCertificate_main4,Date of Issue:,<s>本診断書</s>(検案書) 発行
 PostMortemCertificate_main5,Medical Examiner: Dr. ,(氏名) 医師
 PostMortemCertificate_AlreadyKnown_WriteTurn,<color=#89c3eb>Date and Time of Death</color>: {0} ({1} turn ago) <color=#89c3eb>{2}seconds</color> ago ({3}),<color=#89c3eb>死亡したとき</color> {0} ({1}ターン前) <color=#89c3eb>{2}秒前</color> ({3})
 PostMortemCertificate_AlreadyKnown,<color=#89c3eb>Date and Time of Death</color>: {0} <color=#89c3eb>{1}</color>seconds ago ({2}),<color=#89c3eb>死亡したとき</color> {0} <color=#89c3eb>{1}秒前</color> ({2})
-PostMortemCertificate_Unknown_WriteTurn,<color=#89c3eb>Date and Time of Death</color>: {0} ({1} turn ago) ({2}),<color=#89c3eb>死亡したとき</color> {0} ({1}ターン前) ({2})
+PostMortemCertificate_Unknown_WriteTurn,<color=#89c3eb>Date and Time of Death</color>: {0} ({1} turn ago) ({2}),<color=#89c3eb>死亡したとき</color>\n{0} ({1}ターン前) ({2})
 PostMortemCertificate_Unknown,<color=#89c3eb>Date and Time of Death</color>: {0} ({1}),<color=#89c3eb>死亡したとき</color> {0} ({1})
 PostMortemCertificate_DeadReason1,Cause of Death: EUnknown external cause of death,死因 <color=#89c3eb>不詳の外因死</color>
 PostMortemCertificate_DeadReason2,Cause of Death: <color=#89c3eb>Ejection</color>,死因 <color=#89c3eb>追放</color>
