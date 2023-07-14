@@ -1405,6 +1405,7 @@ BatteryDuration,Battery Duration,充電持続時間
 PoliceSurgeonCanResend,Would it be possible to resend post mortem certificate?,死体検案書の再送を可能にするか。
 PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn,Do you still list the time of death after the end of the meeting phase of the turn in which the death occurred?,死亡したターンの会議フェイズ終了後も、死亡時刻を表記するか。
 PoliceSurgeonHowManyTurnAgoTheDied,During the Conference Phase，does it indicate how many turns ago the dead person died?,会議フェイズ中その死者が何ターン前に死亡したかを表示するか。
+PoliceSurgeonIsUseTaiwanCalendar,Do you want to use the Republic of Taiwan Calendar?,中華民国歴表記にするか
 PoliceSurgeon_IncludeErrorInDeathTime,Whether to include an error margin in the time of death.,死亡時刻に誤差を含めるか。
 PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath,The range of error to include in the time of death.,死亡時刻に含める誤差の範囲
 PoliceSurgeonResendSHR,The setting that allows you to reconfirm the full text of [post mortem certificate] by voting for yourself is enabled. \n\nBy voting for yourself，you can reconfirm [post mortem certificate]. \n\nThe fact that you have reconfirmed post mortem certificate. \nwill not be communicated to other players. \nAlso，even after reconfirmation，you can still vote as usual.,自分に投票する事で[死体検案書]全文の再確認が可能な設定が有効です。\n\n自投票により、[死体検案書]を再確認できます。\n\n死体検案書を再確認した事は、他プレイヤーには伝わりません。\n又再確認しても、通常通りの投票は可能です。

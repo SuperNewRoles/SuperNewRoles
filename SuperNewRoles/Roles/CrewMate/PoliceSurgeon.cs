@@ -41,7 +41,7 @@ public static class PoliceSurgeon
             CanResend = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonCanResend", false, CanResend); optionId++;
             IndicateTimeOfDeathInSubsequentTurn = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn", true, Option); optionId++;
             HowManyTurnAgoTheDied = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHowManyTurnAgoTheDied", false, IndicateTimeOfDeathInSubsequentTurn); optionId++;
-            if (DataManager.Settings.Language.CurrentLanguage == SupportedLangs.TChinese) IsUseTaiwanCalendar = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIsUseTaiwanCalendar", true, Option); optionId++;
+            IsUseTaiwanCalendar = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIsUseTaiwanCalendar", true, Option, isHidden: DataManager.Settings.Language.CurrentLanguage != SupportedLangs.TChinese); optionId++;
             IncludeErrorInDeathTime = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeon_IncludeErrorInDeathTime", true, Option); optionId++;
             MarginOfErrorToIncludeInTimeOfDeath = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath", 5f, 1f, 15f, 1f, IncludeErrorInDeathTime);
         }
