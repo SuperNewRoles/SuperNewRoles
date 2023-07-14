@@ -235,7 +235,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
     /// </summary>
     /// <param name="reportTime">死体が通報された時間</param>
     /// <param name="player">死者のPlayerControl</param>
-    /// <returns>死亡推定時刻[s]をstring型で返却</returns>
+    /// <returns>int : 死亡推定時刻[s]</returns>
     private static int CalculateEstimatedTimeOfDeath(DateTime reportTime, PlayerControl player)
     {
         DateTime actualDeathTime = DeadPlayer.ActualDeathTime[player.PlayerId].Item1;
@@ -261,8 +261,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
     /// 死亡時刻に含める誤差を求める
     /// </summary>
     /// <param name="seed">乱数のシード値 (死亡時刻のミリ秒)</param>
-    /// <param name="errorTimeSpan">含める誤差の絶対値</param>
-    /// <param name="isPositive">true : 誤差が正の値 (誤差を含んだ値を求める時、真の値に加算する)</param>
+    /// <returns>TimeSpan : 誤差</returns>
     private static TimeSpan CalculateErrorTimeSpan(int seed)
     {
         int marginOfError = Mathf.Abs((int)CustomOptionData.MarginOfErrorToIncludeInTimeOfDeath.GetFloat());
