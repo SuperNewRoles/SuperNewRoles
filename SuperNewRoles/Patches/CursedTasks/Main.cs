@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -28,8 +26,6 @@ public static class Main
 
         CursedFixShowerTask.Data = new();
     }
-
-    public static List<int> Range(int start, int count) => Enumerable.Range(start, count + 1).ToList();
 
     // 1024 : 月城さんが決めた数字 , 1183 : ポケモン全国図鑑のリージョンホーム含めたポケモンの数(2023年03月02日現在)
     public static int Num { get { return Random.RandomRange(0, 1 + 1) == 1 ? 1024 : 1183; } }

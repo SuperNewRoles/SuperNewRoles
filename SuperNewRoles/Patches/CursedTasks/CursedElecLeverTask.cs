@@ -51,7 +51,7 @@ public class CursedElecLeverTask
         public static void StartPostfix(ShipStatus __instance)
         {
             if (!Main.IsCursed) return;
-            if (MapData.IsMap(CustomMapNames.Airship)) return;
+            if (!MapData.IsMap(CustomMapNames.Airship)) return;
 
             Transform electrical = __instance.transform.Find("Electrical");
             List<Transform> levers = new();

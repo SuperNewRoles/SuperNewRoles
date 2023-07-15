@@ -98,7 +98,7 @@ public class CursedTowelTask
             if (!Main.IsCursed) return;
             if (__instance.TaskType != TaskTypes.PickUpTowels) return;
             __instance.Data = new byte[25];
-            List<int> number = Main.Range(0, 100);
+            List<int> number = Enumerable.Range(0, 100).ToList();
             number.Shuffle(0);
             for (int i = 0; i < __instance.Data.Length; i++)
                 __instance.Data[i] = (byte)number[i];
