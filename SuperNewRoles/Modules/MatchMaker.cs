@@ -20,7 +20,7 @@ class MatchMaker
             ActivateRoles.Add(opt.RoleId);
         }
         string ActiveOptions = "";
-        Dictionary<string, string> ActivateOptions = new();
+        List<string> ActivateOptions = new();
         foreach (CustomOption option in CustomOption.options)
         {
             bool enabled = true;
@@ -41,11 +41,29 @@ class MatchMaker
                 parent = parent.parent;
             }
             if (enabled){
-                ActivateOptions.Add(option.id, option.GetSelection());
+                ActivateOptions.Add(option.id+":"option.GetSelection());
             }
         }
-        data["Roles"] = string.Join(ActivateRoles, ",");
-        data["Options"] = string.Join(ActivateOptions, "")
-        Analytics.GetString()
+        data["Roles"] = dstring.Join(ActivateRoles, ",");
+        data["Options"] =string.Join(ActivateOptions, "");
+        data["Mode"] = ModHelpers.GetMode(false);
+        data["NowPlayer"] = PlayerControl.AllPlayerControls.Count.ToString();
+        data["MaxPlayer"] = GameStartManager.Instance.MaxPlayer.ToString();
+        string server = "NoneServer";
+        StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
+        switch (n)
+        {
+            case StringNames.ServerAS:
+                server = "0";
+                break;
+            case StringNames.ServerNA:
+                server = "1";
+                break;
+            case StringNames.ServerEU:
+                server = "2";
+                break;
+        }
+        data["Server"] = server;
+        Analytics.GetString(data);
     }
 }

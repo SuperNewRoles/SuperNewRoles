@@ -119,6 +119,15 @@ public static class Analytics
         Logger.Info(json, "JSON");
         AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendDataUrl, json).WrapToIl2Cpp());
     }
+    public static string GetString(this IList<string> list)
+    {
+        string txt = "[]";
+        foreach (string text in list)
+        {
+            txt += text + ",";
+        }
+        return txt.Substring(0, txt.Length - 1)+"]";
+    }
     public static string GetString(this IDictionary<string, string> dict)
     {
         var items = dict.Select(kvp => $"{kvp.Key}={Il2CppSystem.Web.HttpUtility.UrlEncode(kvp.Value)}");
