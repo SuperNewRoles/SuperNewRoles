@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -236,6 +235,7 @@ public static class RoleClass
         OrientalShaman.ClearAndReload();
         Balancer.ClearAndReload();
         Pteranodon.ClearAndReload();
+        BlackHatHacker.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -1999,7 +1999,7 @@ public static class RoleClass
     {
         public static List<PlayerControl> VentMakerPlayer;
         public static Color32 color = ImpostorRed;
-        public static Vent Vent;
+        public static Dictionary<byte, Vent> Vent;
         public static int VentCount;
         public static bool IsMakeVent;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
@@ -2007,7 +2007,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             VentMakerPlayer = new();
-            Vent = null;
+            Vent = new();
             VentCount = 0;
             IsMakeVent = true;
         }
