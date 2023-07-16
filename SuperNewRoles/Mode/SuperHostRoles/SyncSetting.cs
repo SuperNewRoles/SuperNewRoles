@@ -250,6 +250,14 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, MadRaccoon.RoleClass.ShapeshifterCooldown);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, MadRaccoon.RoleClass.ShapeshifterDuration);
                 break;
+            case RoleId.Madmate:
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
+            case RoleId.JackalFriends:
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
