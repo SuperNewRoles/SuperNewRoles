@@ -61,6 +61,10 @@ public class CustomOption
                 {
                     ClientSelectedSelection = value;
                 }
+                if (GameStartManager.InstanceExists && AmongUsClient.Instance != null)
+                {
+                    Modules.MatchMaker.UpdateOption();
+                }
             }
             else
             {

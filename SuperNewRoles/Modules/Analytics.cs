@@ -126,7 +126,7 @@ public static class Analytics
         {
             txt += text + ",";
         }
-        return txt.Substring(0, txt.Length - 1)+"]";
+        return txt.Substring(0, txt.Length - 1) + "]";
     }
     public static string GetString(this IDictionary<string, string> dict)
     {
@@ -138,7 +138,7 @@ public static class Analytics
         }
         return txt.Substring(0, txt.Length - 1);
     }
-    static IEnumerator Post(string url, string jsonstr)
+    public static IEnumerator Post(string url, string jsonstr)
     {
         var request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonstr);
@@ -149,5 +149,6 @@ public static class Analytics
         yield return request.Send();
 
         Logger.Info($"Status Code: {request.responseCode}", "Analytics");
+        Logger.Info($"Result:{request.downloadHandler.text}");
     }
 }
