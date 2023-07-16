@@ -7,13 +7,24 @@ class GameStartPatch
 {
     public static bool lastPublic = false;
     public static float lastTimer;
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+    class CoStartGamePatch
+    {
+        public static void Postfix()
+        {
+            if (lastPublic && AmongUsClient.Instance.AmHost)
+            {
+                Modules.MatchMaker.EndInviting();
+            }
+        }
+    }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     class StartPatch
     {
         public static void Postfix(GameStartManager __instance)
         {
             lastPublic = AmongUsClient.Instance.IsGamePublic;
-            if (lastPublic)
+            if (lastPublic && AmongUsClient.Instance.AmHost)
                 Modules.MatchMaker.CreateRoom();
             lastTimer = 0;
         }
@@ -23,7 +34,7 @@ class GameStartPatch
     {
         public static void Postfix()
         {
-            if (GameStartManager.Instance && lastPublic)
+            if (GameStartManager.Instance && lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.UpdatePlayerCount(true);
             }
@@ -34,7 +45,7 @@ class GameStartPatch
     {
         public static void Postfix()
         {
-            if (GameStartManager.Instance && lastPublic)
+            if (GameStartManager.Instance && lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.UpdatePlayerCount();
             }
@@ -46,7 +57,7 @@ class GameStartPatch
     {
         public static void Postfix(GameStartManager __instance)
         {
-            if (lastPublic != AmongUsClient.Instance.IsGamePublic)
+            if (lastPublic != AmongUsClient.Instance.IsGamePublic && AmongUsClient.Instance.AmHost)
             {
                 if (AmongUsClient.Instance.IsGamePublic)
                 {
@@ -58,7 +69,7 @@ class GameStartPatch
                 }
                 lastPublic = AmongUsClient.Instance.IsGamePublic;
             }
-            if (lastPublic)
+            if (lastPublic && AmongUsClient.Instance.AmHost)
             {
                 lastTimer += Time.deltaTime;
                 if (lastTimer >= 12.5f)

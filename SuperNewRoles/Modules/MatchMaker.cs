@@ -11,7 +11,7 @@ namespace SuperNewRoles.Modules;
 
 public static class MatchMaker
 {
-    public static string BaseURL = "https://supermatchmakers-1-t2750592.deta.app/";
+    public static string BaseURL = "https://supermatchmaker.vercel.app/";
     public static Dictionary<string, string> CreateBaseData()
     {
         var data = new Dictionary<string, string>();
