@@ -1991,6 +1991,21 @@ public class CustomOptionHolder
         Logger.Info("設定数:" + options.Count);
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
+        /*
+        string OPTIONDATA = "{";
+        foreach (CustomOption opt in CustomOption.options)
+        {
+            OPTIONDATA += "\"" + opt.id.ToString() + "\":" + "{\"name\":\"" + opt.name + "\",\"selections\":[";
+            foreach (object selection in opt.selections)
+            {
+                OPTIONDATA += "\"" + selection.ToString() + "\",";
+            }
+            OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
+            OPTIONDATA += "]},";
+        }
+        OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
+        OPTIONDATA += "}";
+        GUIUtility.systemCopyBuffer = OPTIONDATA;*/
     }
     private static int GetRoleSettingid(int maxId) => maxId / 100;
 }
