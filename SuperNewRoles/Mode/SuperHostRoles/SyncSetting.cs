@@ -251,11 +251,11 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, MadRaccoon.RoleClass.ShapeshifterDuration);
                 break;
             case RoleId.Madmate:
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.JackalFriends:
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
         }
