@@ -83,7 +83,7 @@ public static class MatchMaker
         }
         data["roles"] = string.Join(',', ActivateRoles);
         data["options"] = string.Join(',', ActivateOptions);
-        data["mode"] = ModeHandler.GetMode(false).ToString();
+        data["mode"] = GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek ? "HNS" : ModeHandler.GetMode(false).ToString();
         AmongUsClient.Instance.StartCoroutine(Analytics.Post(BaseURL + "api/update_state", data.GetString()).WrapToIl2Cpp());
     }
     public static void CreateRoom()
@@ -125,7 +125,7 @@ public static class MatchMaker
         }
         data["Roles"] = string.Join(',', ActivateRoles);
         data["Options"] = string.Join(',', ActivateOptions);
-        data["Mode"] = ModeHandler.GetMode(false).ToString();
+        data["Mode"] = GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek ? "HNS" : ModeHandler.GetMode(false).ToString();
         data["NowPlayer"] = GameData.Instance.PlayerCount.ToString();
         data["MaxPlayer"] = GameOptionsManager.Instance.CurrentGameOptions.MaxPlayers.ToString();
         string server = "NoneServer";
