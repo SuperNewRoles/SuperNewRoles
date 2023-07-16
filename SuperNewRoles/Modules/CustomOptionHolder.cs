@@ -1991,6 +1991,7 @@ public class CustomOptionHolder
         Logger.Info("設定数:" + options.Count);
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
+        /*
         string OPTIONDATA = "{";
         foreach (CustomOption opt in CustomOption.options)
         {
@@ -2004,7 +2005,7 @@ public class CustomOptionHolder
         }
         OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
         OPTIONDATA += "}";
-        GUIUtility.systemCopyBuffer = OPTIONDATA;
+        GUIUtility.systemCopyBuffer = OPTIONDATA;*/
     }
     private static int GetRoleSettingid(int maxId) => maxId / 100;
 }
