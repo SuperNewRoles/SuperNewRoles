@@ -48,6 +48,7 @@ public static class MatchMaker
         foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions)
         {
             if (opt.GetSelection() == 0) continue;
+            if (opt.IsHidden()) continue;
             CustomOption countopt = CustomOption.options.FirstOrDefault(x => x.id == (opt.id + 1));
             for (int i = 0; i < (countopt.GetSelection() + 1); i++)
             {
@@ -93,6 +94,7 @@ public static class MatchMaker
         foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions)
         {
             if (opt.GetSelection() == 0) continue;
+            if (opt.IsHidden()) continue;
             ActivateRoles.Add(opt.RoleId.ToString());
         }
         string ActiveOptions = "";
