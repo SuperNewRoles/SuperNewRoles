@@ -99,12 +99,15 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
 
 ## 開発者
-[よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
+[よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/YYYYoking))<br>
 [月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [Kuki](https://github.com/Kuki12345)<br>
-[Glaceon](https://github.com/Glaceon-471)<br>
+[Glaceon](https://github.com/Glaceon-471) ([Twitter](https://twitter.com/Glaceon_SNR11))<br>
 [~~漢方薬の人~~](https://github.com/UKON256)<br>
 [~~Sakurander~~](https://github.com/Sakurander)<br>
+
+## サポーター
+[セオノ](https://github.com/Seono968) ([Twitter](https://twitter.com/Rinforzando_960))<br>
 
 ## スポンサー
 こんこるど様<br>

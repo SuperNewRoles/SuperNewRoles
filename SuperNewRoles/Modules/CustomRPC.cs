@@ -2,13 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.Data;
 using AmongUs.GameOptions;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using Sentry;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -27,6 +25,7 @@ namespace SuperNewRoles.Modules;
 
 public enum RoleId
 {
+    None, // RoleIdの初期化用
     DefaultRole,
     SoothSayer,
     Jester,
@@ -196,6 +195,8 @@ public enum RoleId
     ShermansServant,
     SidekickWaveCannon,
     Balancer,
+    Pteranodon,
+    BlackHatHacker,
     //RoleId
 }
 
@@ -297,11 +298,29 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance,
+    BalancerBalance = 250,
+    PteranodonSetStatus,
+    SetInfectionTimer,
 }
 
 public static class RPCProcedure
 {
+    public static void SetInfectionTimer(byte id, Dictionary<byte, float> infectionTimer)
+    {
+        if (!ModHelpers.PlayerById(id)) return;
+        BlackHatHacker.InfectionTimer[id] = infectionTimer;
+    }
+    public static void PteranodonSetStatus(byte playerId, bool Status, bool IsRight, float tarpos, byte[] buff)
+    {
+        PlayerControl player = ModHelpers.PlayerById(playerId);
+        if (player == null)
+            return;
+        Vector3 position = Vector3.zero;
+        position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+        position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+        position.z = BitConverter.ToSingle(buff, 2 * sizeof(float));
+        Pteranodon.SetStatus(player, Status, IsRight, tarpos, position);
+    }
     public static void BalancerBalance(byte sourceId, byte player1Id, byte player2Id)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceId);
@@ -773,7 +792,7 @@ public static class RPCProcedure
             else
             {
                 airshipStatus.GapPlatform.StopAllCoroutines();
-                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
+                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform).WrapToIl2Cpp());
             }
         }
     }
@@ -1399,14 +1418,14 @@ public static class RPCProcedure
     public static void SetShielder(byte PlayerId, bool Is)
         => RoleClass.Shielder.IsShield[PlayerId] = RoleClass.Shielder.IsShield[PlayerId] = Is;
 
-    public static void MakeVent(float x, float y, float z)
+    public static void MakeVent(byte id, float x, float y, float z, bool chain)
     {
         Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
-        Vent VentMakerVent = UnityEngine.Object.Instantiate<Vent>(template);
-        if (RoleClass.VentMaker.VentCount == 2)
+        Vent VentMakerVent = UnityEngine.Object.Instantiate(template);
+        if (chain && RoleClass.VentMaker.Vent.ContainsKey(id))
         {
-            RoleClass.VentMaker.Vent.Right = VentMakerVent;
-            VentMakerVent.Right = RoleClass.VentMaker.Vent;
+            RoleClass.VentMaker.Vent[id].Right = VentMakerVent;
+            VentMakerVent.Right = RoleClass.VentMaker.Vent[id];
             VentMakerVent.Left = null;
             VentMakerVent.Center = null;
         }
@@ -1425,6 +1444,7 @@ public static class RPCProcedure
         MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
         VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
         VentMakerVent.gameObject.SetActive(true);
+        RoleClass.VentMaker.Vent[id] = VentMakerVent;
     }
     public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
     {
@@ -1551,6 +1571,7 @@ public static class RPCProcedure
             {CustomRPC.ShareSNRVersion,false},
             {CustomRPC.SetRoomTimerRPC,false},
             {CustomRPC.SetDeviceTime,false},
+            {CustomRPC.SetInfectionTimer,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
@@ -1721,7 +1742,7 @@ public static class RPCProcedure
                         SetSpeedFreeze(reader.ReadBoolean());
                         break;
                     case CustomRPC.MakeVent:
-                        MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                        MakeVent(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadBoolean());
                         break;
                     case CustomRPC.PositionSwapperTP:
                         PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
@@ -1876,6 +1897,16 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.BalancerBalance:
                         BalancerBalance(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.PteranodonSetStatus:
+                        PteranodonSetStatus(reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean(), reader.ReadSingle(), reader.ReadBytes(reader.ReadInt32()));
+                        break;
+                    case CustomRPC.SetInfectionTimer:
+                        byte id = reader.ReadByte();
+                        int num = reader.ReadInt32();
+                        Dictionary<byte, float> timer = new();
+                        for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
+                        SetInfectionTimer(id, timer);
                         break;
                 }
             }

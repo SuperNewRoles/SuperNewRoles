@@ -6,10 +6,8 @@ using System.Linq;
 using System.Reflection;
 using AmongUs.Data;
 using BepInEx;
-using BepInEx.IL2CPP;
-using Cpp2IL.Core;
+using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using InnerNet;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -35,7 +33,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string ColorModName => $"<color=#ffa500>Super</color><color=#ff0000>{(IsApril() ? "Nakanzino" : "New")}</color><color=#00ff00>Roles</color>";
     public const string DiscordServer = "https://discord.gg/Cqfwx82ynN";
     public const string Twitter1 = "https://twitter.com/SNRDevs";
-    public const string Twitter2 = "https://twitter.com/SuperNewRoles";
+    public const string Twitter2 = "https://twitter.com/SNROfficials";
 
 
     public static Version ThisVersion = System.Version.Parse($"{Assembly.GetExecutingAssembly().GetName().Version}");
@@ -121,6 +119,17 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
     }
 
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    class GetBroadcastVersionPatch
+    {
+        static void Postfix(ref int __result)
+        {
+            if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
+            if (ModHelpers.IsCustomServer()) return;
+            __result = Constants.GetVersion(2222, 0, 0, 0);
+        }
+    }
+
     public static bool IsApril()
     {
         DateTime utcNow = DateTime.UtcNow;
@@ -158,9 +167,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
                     __instance.SetVisible(true);
                 }, 0f, "AntiChatBug");
             }
-            if (__instance.IsOpen)
+            if (__instance.IsOpenOrOpening)
             {
-                __instance.BanButton.MenuButton.enabled = !__instance.animating;
+                __instance.banButton.MenuButton.enabled = !__instance.IsAnimating;
             }
         }
     }

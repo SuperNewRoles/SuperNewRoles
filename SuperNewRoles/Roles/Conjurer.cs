@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Impostor;
 
 public class Conjurer
 {
-    private const int Id = 999;
+    private const int Id = 201700;
     public static CustomRoleOption Option;
     public static CustomOption PlayerCount;
     public static CustomOption Cooldown;

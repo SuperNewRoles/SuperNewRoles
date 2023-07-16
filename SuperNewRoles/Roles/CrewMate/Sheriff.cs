@@ -18,9 +18,10 @@ class Sheriff
             }
             else
             {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId)
-                    ? RoleClass.Chief.CoolTime
-                    : RoleClass.Sheriff.CoolTime;
+                if (HudManagerStartPatch.SheriffKillButton != null)
+                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId)
+                        ? RoleClass.Chief.CoolTime
+                        : RoleClass.Sheriff.CoolTime;
                 HudManagerStartPatch.SheriffKillButton.Timer = HudManagerStartPatch.SheriffKillButton.MaxTimer;
             }
         }

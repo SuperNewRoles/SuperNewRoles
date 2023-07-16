@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using AmongUs.Data;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Mode;
-using UnhollowerBaseLib;
 using UnityEngine;
 namespace SuperNewRoles.Patches;
 [Harmony]
@@ -269,8 +269,8 @@ public class CustomOverlays
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown) HideInfoOverlay();
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening && overlayShown) HideInfoOverlay();
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening) return;
 
             if (Input.GetKeyDown(KeyCode.Escape) && overlayShown) HideInfoOverlay(); // overlayを閉じる
             else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay(CustomOverlayPattern.PlayerDataInfo); // 参加プレイヤーの情報を表示
@@ -307,7 +307,8 @@ public class CustomOverlays
     {
         playerDataDictionary = new();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            if (!p.IsBot()) playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
+            if (!p.IsBot() || SuperNewRolesPlugin.IsBeta || ConfigRoles.DebugMode.Value)
+                playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
 
         // 現在有効な役職の保存は, IntroPatchの IntroCutscene.CoBegin postfixで行っている。
         // 理由は試合情報のlog記載を正常に行う為。
@@ -625,7 +626,7 @@ public class CustomOverlays
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.IsBot()) continue;
+                if (p.IsBot() && !(SuperNewRolesPlugin.IsBeta || ConfigRoles.DebugMode.Value)) continue;
                 string data = GetPlayerData(p);
 
                 if (p.PlayerId < 5) leftBuilder.AppendLine(data);
