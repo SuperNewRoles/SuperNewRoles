@@ -107,7 +107,7 @@ public static class VanillaOptionsPatch
             if (__instance.transform.parent && __instance.transform.parent == FastDestroyableSingleton<HudManager>.Instance.transform)
             {
                 popUp.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
-                popUp.transform.localPosition = new Vector3(0, 0, -800f);
+                popUp.transform.localPosition = new Vector3(0, 0, -920f);
             }
             else
             {
