@@ -149,6 +149,6 @@ public static class Analytics
         yield return request.Send();
 
         Logger.Info($"Status Code: {request.responseCode}", "Analytics");
-        Logger.Info($"Result:{request.downloadHandler.text}");
+        //Logger.Info($"Result:{request.downloadHandler.text}");
     }
 }
