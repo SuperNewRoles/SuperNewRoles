@@ -38,7 +38,7 @@ public static class PoliceSurgeon
             HaveVitalsInTaskPhase = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHaveVitalsInTaskPhase", false, Option); optionId++;
             VitalsDisplayCooldown = Create(optionId, true, CustomOptionType.Crewmate, "VitalsDisplayCooldown", 15f, 5f, 60f, 5f, HaveVitalsInTaskPhase); optionId++;
             BatteryDuration = Create(optionId, true, CustomOptionType.Crewmate, "BatteryDuration", 5f, 5f, 30f, 5f, HaveVitalsInTaskPhase); optionId++;
-            CanResend = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonCanResend", false, CanResend); optionId++;
+            CanResend = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonCanResend", false, Option); optionId++;
             IndicateTimeOfDeathInSubsequentTurn = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn", true, Option); optionId++;
             HowManyTurnAgoTheDied = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHowManyTurnAgoTheDied", false, IndicateTimeOfDeathInSubsequentTurn); optionId++;
             IsUseTaiwanCalendar = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIsUseTaiwanCalendar", true, Option, isHidden: DataManager.Settings.Language.CurrentLanguage != SupportedLangs.TChinese); optionId++;
