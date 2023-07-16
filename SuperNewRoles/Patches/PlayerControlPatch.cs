@@ -62,10 +62,9 @@ class RpcShapeshiftPatch
         if (__instance.IsRole(RoleId.MadRaccoon) && __instance == PlayerControl.LocalPlayer) // 導入者が個人で行う処理 (SHR, SNR共通)
         {
             if (isActivationShapeshift) MadRaccoon.Button.SetShapeDurationTimer();
-            // [x]MEMO:シェイプ状態いらなかったら消す <= いるので消さない <= (MadRaccoon.RoleClass.IsShapeNow = true;)タイマーセットに移動() <= 最終的に読み取らなかったので削除()()()
             else MadRaccoon.Button.ResetShapeDuration(false);
         }
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true; // [x]MEMO:今のままじゃSHRクライアントで動かない!外に出して!!
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
         if (isActivationShapeshift)
         {
             if (__instance.IsRole(RoleId.Doppelganger))
