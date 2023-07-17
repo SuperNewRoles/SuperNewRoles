@@ -110,13 +110,6 @@ class AddChatPatch
             SendCommand(sourcePlayer, text);
             return false;
         }
-        // プルリク時に残っていたら指摘お願いします　デバック用コードです。
-        else if (
-    Commands[0].Equals("/pl", StringComparison.OrdinalIgnoreCase))
-        {
-            SendCommand(sourcePlayer, "", Format(Roles.Crewmate.PoliceSurgeon.RoleData.PostMortemCertificateFullText[Roles.Crewmate.PoliceSurgeon.RoleData.MeetingTurn_Now], sourcePlayer.name));
-            return false;
-        }
         else if (
             Commands[0].Equals("/Discord", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/dc", StringComparison.OrdinalIgnoreCase)
