@@ -5,26 +5,81 @@ namespace SuperNewRoles.Patches;
 
 class GameStartPatch
 {
-    /*[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
-    class MakePublicPatch
+    public static bool lastPublic = false;
+    public static float lastTimer;
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+    class CoStartGamePatch
     {
-        public static bool Prefix(GameStartManager __instance)
+        public static void Postfix()
         {
-            if (!AmongUsClient.Instance.AmHost) return true;
-
-            var HostVersion = ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[AmongUsClient.Instance.HostId].version;
-            var error = (Mode.ModeHandler.IsMode(Mode.ModeId.Default) || Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf))
-                ? string.Format(ModTranslation.GetString("PublicRoomErrorClientMode"), HostVersion)
-                : string.Format(ModTranslation.GetString("PublicRoomErrorHostMode"), HostVersion);
-
-            Logger.Error(error, "MakePublicPatch");
-            __instance.MakePublicButton.color = Palette.DisabledClear;
-            __instance.privatePublicText.color = Palette.DisabledClear;
-            PlayerControl.LocalPlayer.RpcSendChat(error);
-
-            return false;
+            if (lastPublic && AmongUsClient.Instance.AmHost)
+            {
+                Modules.MatchMaker.EndInviting();
+            }
         }
-    }*/
+    }
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+    class StartPatch
+    {
+        public static void Postfix(GameStartManager __instance)
+        {
+            lastPublic = AmongUsClient.Instance.IsGamePublic;
+            if (lastPublic && AmongUsClient.Instance.AmHost)
+                Modules.MatchMaker.CreateRoom();
+            lastTimer = 0;
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
+    class AmongUsClientOnPlayerJoinedPatch
+    {
+        public static void Postfix()
+        {
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
+            {
+                Modules.MatchMaker.UpdatePlayerCount(true);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]
+    class AmongUsClientOnPlayerLeftPatch
+    {
+        public static void Postfix()
+        {
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
+            {
+                Modules.MatchMaker.UpdatePlayerCount();
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+    class UpdatePatch
+    {
+        public static void Postfix(GameStartManager __instance)
+        {
+            if (lastPublic != AmongUsClient.Instance.IsGamePublic && AmongUsClient.Instance.AmHost)
+            {
+                if (AmongUsClient.Instance.IsGamePublic)
+                {
+                    Modules.MatchMaker.CreateRoom();
+                }
+                else
+                {
+                    Modules.MatchMaker.EndInviting();
+                }
+                lastPublic = AmongUsClient.Instance.IsGamePublic;
+            }
+            if (lastPublic && AmongUsClient.Instance.AmHost)
+            {
+                lastTimer += Time.deltaTime;
+                if (lastTimer >= 12.5f)
+                {
+                    Modules.MatchMaker.KeepAlive();
+                    lastTimer = 0;
+                }
+            }
+        }
+    }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
     public static class LobbyCountDownTimer
     {
