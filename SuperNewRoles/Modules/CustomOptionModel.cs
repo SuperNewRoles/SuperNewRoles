@@ -61,7 +61,7 @@ public class CustomOption
                 {
                     ClientSelectedSelection = value;
                 }
-                if (GameStartManager.InstanceExists && AmongUsClient.Instance != null)
+                if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && AmongUsClient.Instance != null)
                 {
                     Modules.MatchMaker.UpdateOption();
                 }

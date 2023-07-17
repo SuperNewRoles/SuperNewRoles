@@ -128,6 +128,7 @@ public static class MatchMaker
         data["Mode"] = GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek ? "HNS" : ModeHandler.GetMode(false).ToString();
         data["NowPlayer"] = GameData.Instance.PlayerCount.ToString();
         data["MaxPlayer"] = GameOptionsManager.Instance.CurrentGameOptions.MaxPlayers.ToString();
+        data["Version"] = SuperNewRolesPlugin.VersionString;
         string server = "NoneServer";
         StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
         switch (n)
