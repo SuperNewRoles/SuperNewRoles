@@ -34,7 +34,7 @@ class GameStartPatch
     {
         public static void Postfix()
         {
-            if (GameStartManager.Instance && lastPublic && AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.UpdatePlayerCount(true);
             }
@@ -45,7 +45,7 @@ class GameStartPatch
     {
         public static void Postfix()
         {
-            if (GameStartManager.Instance && lastPublic && AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.UpdatePlayerCount();
             }
