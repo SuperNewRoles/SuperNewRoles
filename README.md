@@ -23,6 +23,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
     - [導入方法](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%B0%8E%E5%85%A5%E6%96%B9%E6%B3%95)
     - [入室・開始制限関係や,正常動作を保証しない状態についての説明](https://github.com/ykundesu/SuperNewRoles/wiki/ClientMode)
     - [解析について](https://github.com/ykundesu/SuperNewRoles/wiki/%E8%A7%A3%E6%9E%90%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
+    - [マッチメイキングについて](https://github.com/ykundesu/SuperNewRoles/wiki/%E3%83%9E%E3%83%83%E3%83%81%E3%83%A1%E3%82%A4%E3%82%AD%E3%83%B3%E3%82%B0%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
     - [Mode一覧](https://github.com/ykundesu/SuperNewRoles/wiki/Mode%E4%B8%80%E8%A6%A7)
     - [SuperHostRolesモードについて](https://github.com/ykundesu/SuperNewRoles/wiki/SuperHostRoles%28SHR%29%E3%83%A2%E3%83%BC%E3%83%89)
     - [役職一覧](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%BD%B9%E8%81%B7%E4%B8%80%E8%A6%A7)
