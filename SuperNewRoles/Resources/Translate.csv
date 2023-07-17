@@ -1377,6 +1377,7 @@ PteranodonTitle1,PtePte,プテプテ
 PteranodonButtonName,Juump!!,ジャーンプ！
 BlackHatHackerName,Black Hat Hacker,ブラックハットハッカー
 BlackHatHackerTitle1,Do you have an antivirus?,貴方はウイルス対策ちゃんとしてる？
+BlackHatHackerDescription,I need everyone's information to stay alive... So I will infect the virus...\nIf you infect everyone's phone with the virus， you win!\nIn an infected state, the virus infects surrounding non-infected persons.\nWhen the infection level is above the level at which self-propagation begins，\nThe disease progresses even if there are no infected persons around.,生きるために全員の情報が必要だ...だから僕はウイルスを感染させる...\n全員のスマホにウイルスを感染させたら勝利となります\n感染状態になると周囲の非感染者にウイルスが感染します\n自己増殖が開始される感染度以上の感染度になった場合、\n周りに感染者が居なくとも進行します
 BlackHatHackerHackCoolTimeOption,Hack Cool Time,ハックのクールタイム
 BlackHatHackerHackCountableOption,Number of hacks possible,ハック可能回数
 BlackHatHackerIsNotInfectionIncreaseOption,Increase the number of hacks once the infected are gone,感染者が居なくなったらハック回数を増やす
