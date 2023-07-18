@@ -38,6 +38,10 @@ class IntroCutsceneOnDestroyPatch
 {
     public static void Postfix(ShipStatus __instance)
     {
+        if (ModeHandler.IsMode(ModeId.BattleRoyal))
+        {
+            //SelectRoleSystem.OnEndIntro(); Logger.Info("StartOnEndIntro");
+        }
 
         // 壁越しにタスクを無効化する
         if (IsMapCustom(MapCustomId.Airship) && MapCustom.AntiTaskOverWall.GetBool())

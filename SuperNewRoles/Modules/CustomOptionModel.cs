@@ -61,6 +61,10 @@ public class CustomOption
                 {
                     ClientSelectedSelection = value;
                 }
+                if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && AmongUsClient.Instance.IsGamePublic)
+                {
+                    Modules.MatchMaker.UpdateOption();
+                }
             }
             else
             {
