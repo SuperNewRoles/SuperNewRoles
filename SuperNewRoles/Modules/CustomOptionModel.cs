@@ -23,6 +23,7 @@ public enum CustomOptionType
     Impostor,
     Neutral,
     Crewmate,
+    MatchTag,
     Empty // 使用されない
 }
 
@@ -692,9 +693,10 @@ class GameOptionsMenuStartPatch
         List<OptionBehaviour> impostorOptions = new();
         List<OptionBehaviour> neutralOptions = new();
         List<OptionBehaviour> crewmateOptions = new();
+        List<OptionBehaviour> matchTagOptions = new();
 
         List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, matchTagMenu.transform, RegulationMenu.transform };
-        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions };
+        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions, matchTagOptions };
 
         for (int i = 0; i < CustomOption.options.Count; i++)
         {
@@ -712,7 +714,8 @@ class GameOptionsMenuStartPatch
             }
             option.optionBehaviour.gameObject.SetActive(true);
         }
-        Logger.Info("通過やでええええええええええええええええ");
+        Logger.Info("SNROption - matchTagOption通過");
+
         foreach (var Regulation in CustomRegulation.RegulationData.Regulations)
         {
             if (Regulation.optionBehaviour == null)
@@ -727,6 +730,7 @@ class GameOptionsMenuStartPatch
             }
             Regulation.optionBehaviour.gameObject.SetActive(true);
         }
+        Logger.Info("RegulationOption通過");
 
         snrMenu.Children = snrOptions.ToArray();
         snrSettings.gameObject.SetActive(false);
@@ -918,6 +922,7 @@ static class GameOptionsMenuUpdatePatch
             "ImpostorSetting" => CustomOptionType.Impostor,
             "NeutralSetting" => CustomOptionType.Neutral,
             "CrewmateSetting" => CustomOptionType.Crewmate,
+            "matchTagSetting" => CustomOptionType.MatchTag,
             _ => CustomOptionType.Crewmate,
         };
     }
