@@ -193,6 +193,10 @@ public enum RoleId
     TheThirdLittlePig,
     OrientalShaman,
     ShermansServant,
+    SidekickWaveCannon,
+    Balancer,
+    Pteranodon,
+    BlackHatHacker,
     Reviver,
     Guardrawer,
     KingPoster,
@@ -201,10 +205,6 @@ public enum RoleId
     Revenger,
     CrystalMagician,
     GrimReaper,
-    SidekickWaveCannon,
-    Balancer,
-    Pteranodon,
-    BlackHatHacker,
     //RoleId
 }
 

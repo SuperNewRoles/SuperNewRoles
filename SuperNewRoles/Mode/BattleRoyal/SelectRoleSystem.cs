@@ -11,13 +11,24 @@ using static MeetingHud;
 
 namespace SuperNewRoles.Mode.BattleRoyal
 {
-    [HarmonyPatch(typeof(GameData),nameof(GameData.Serialize))]
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+    class IntroCutsceneOnDestroyPatch
+    {
+        public static void Postfix(IntroCutscene __instance)
+        {
+            if (ModeHandler.IsMode(ModeId.BattleRoyal))
+            {
+                SelectRoleSystem.OnEndIntro(); Logger.Info("StartOnEndIntro");
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameData), nameof(GameData.Serialize))]
     class GameDataSerializePatch
     {
         public static bool Is;
         public static bool Prefix(GameData __instance, ref bool __result)
         {
-            Logger.Info(FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed.ToString(),"ISST");
+            Logger.Info(FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed.ToString(), "ISST");
             if (AmongUsClient.Instance is null || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || !ModeHandler.IsMode(ModeId.BattleRoyal) || Is || !Main.IsIntroEnded)
             {
                 Is = false;
@@ -84,7 +95,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 area.AmDead = IsDead;
             }
         }
-        public static Dictionary<string, RoleId> RoleNames {
+        public static Dictionary<string, RoleId> RoleNames
+        {
             get
             {
                 if (_roleNames is null)
@@ -133,7 +145,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 bool CanRevive = false;
                 foreach (PlayerControl player in team.TeamMember)
                 {
-                    if (Reviver.IsReviver(player)) 
+                    if (Reviver.IsReviver(player))
                         CanRevive = true;
                 }
                 if (CanRevive)
@@ -148,7 +160,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 p.Data.IsDead = false;
                 if (!p.IsBot()) continue;
-                p.RpcSnapTo(new(999,999));
+                p.RpcSnapTo(new(999, 999));
             }
             RPCHelper.RpcSyncGameData();
             SyncBattleOptions.CustomSyncOptions();
