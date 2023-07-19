@@ -148,6 +148,10 @@ public class CustomOption
                 if (ModifierIdMax < Id) ModifierIdMax = Id;
                 if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ModifierId}");
                 break;
+            case SettingPattern.MatchingTagId:
+                if (MatchingTagIdMax < Id) MatchingTagIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.MatchingTagId}");
+                break;
         }
         options.Add(this);
     }
@@ -157,6 +161,7 @@ public class CustomOption
     public static int NeutralIdMax = 0;
     public static int CrewmateIdMax = 0;
     public static int ModifierIdMax = 0;
+    public static int MatchingTagIdMax = 0;
 
     private SettingPattern GetSettingPattern(int id)
     {
@@ -166,6 +171,7 @@ public class CustomOption
         if (id is >= 300000 and < 400000) return SettingPattern.NeutralId;
         if (id is >= 400000 and < 500000) return SettingPattern.CrewmateId;
         if (id is >= 500000 and < 600000) return SettingPattern.ModifierId;
+        if (id is >= 600000 and < 700000) return SettingPattern.MatchingTagId;
 
         return SettingPattern.ErrorId;
     }
@@ -178,6 +184,7 @@ public class CustomOption
         NeutralId = 300000,
         CrewmateId = 400000,
         ModifierId = 500000,
+        MatchingTagId = 600000,
     }
     public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
@@ -208,6 +215,11 @@ public class CustomOption
                 _ => CustomOptionType.Generic
             };
         return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max, isHidden);
+    }
+
+    public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag)
+    {
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
     }
 
     // Static behaviour

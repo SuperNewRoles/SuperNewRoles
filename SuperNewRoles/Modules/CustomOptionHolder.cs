@@ -1973,6 +1973,8 @@ public class CustomOptionHolder
 
         /* |: ========================= Roles Settings ========================== :| */
 
+        MatchTagOption.LoadOption(); // マッチタグの設定
+
         Logger.Info("---------- CustomOption Id Info start ----------", "CustomOptionId Info");
 
         Logger.Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
@@ -1981,6 +1983,7 @@ public class CustomOptionHolder
         Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(NeutralIdMax), "Neutral");
         Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(CrewmateIdMax), "Crewmate");
         Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(ModifierIdMax), "Modifier");
+        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(MatchingTagIdMax), "MatchingTag");
 
         Logger.Info("---------- SettingId Info----------", "SettingId Info");
         Logger.Info("CustomOptionのIdのMax:" + GenericIdMax, "Generic");
@@ -1988,6 +1991,7 @@ public class CustomOptionHolder
         Logger.Info("CustomOptionのIdのMax:" + NeutralIdMax, "Neutral");
         Logger.Info("CustomOptionのIdのMax:" + CrewmateIdMax, "Crewmate");
         Logger.Info("CustomOptionのIdのMax:" + ModifierIdMax, "Modifier");
+        Logger.Info("CustomOptionのIdのMax:" + MatchingTagIdMax, "MatchingTag");
         Logger.Info("設定数:" + options.Count);
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");

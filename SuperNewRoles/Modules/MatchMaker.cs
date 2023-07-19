@@ -6,6 +6,8 @@ using SuperNewRoles.Mode;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using System.Linq;
+using static SuperNewRoles.Modules.CustomOption;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Modules;
 
@@ -145,5 +147,132 @@ public static class MatchMaker
         }
         data["Server"] = server;
         AmongUsClient.Instance.StartCoroutine(Analytics.Post(BaseURL + "api/create_room", data.GetString()).WrapToIl2Cpp());
+    }
+}
+
+public static class MatchTagOption
+{
+    // 村レベル : 600000 ~
+    public static CustomOption BeginnerTag; // 初心者
+    public static CustomOption IntermediateTag; // 中級
+    public static CustomOption AdvancedTag; // 上級者
+    public static CustomOption CompetenceIsNotRequiredTag; // 実力不問
+
+    // プレイスタンス : 600100 ~
+    public static CustomOption SeriousTag; // ガチ勢
+    public static CustomOption EnjoyTag;  // エンジョイ勢
+
+    // プレイスタイル : 600200 ~
+    public static CustomOption SeriousnessTag; // 真剣プレイ
+    public static CustomOption WelcomeBeginnerTag; // 初心者歓迎
+
+    // 状態 600300
+    public static CustomOption NowRecordingTag; // 撮影中
+    public static CustomOption NowBeingDeliveredTag; // 配信中
+    public static CustomOption OKForRecordingTag; // 撮影OK
+    public static CustomOption OKForBeingDeliveredTag; // 配信OK
+    public static CustomOption NoRecordingTag; // 撮影NG
+    public static CustomOption NoBeingDeliveredTag; // 配信NG
+
+
+    // 会議方法 : 600400 ~
+    public static CustomOption FreeChatTag; // フリーチャット
+    public static CustomOption QuickChatTag; // クイックチャット
+    public static CustomOption VoiceChatTag; // VC
+    public static CustomOption BetterCrewLinkTag; // 近アモ
+    public static CustomOption CanListenOnlyTag; // 聞き専可
+    public static CustomOption FullVCOnlyTag; // 聞き専不可
+
+    // レギュレーション : 600500 ~
+    public static CustomOption TakadaVillageRegulationTag; // 高田村レギュ
+    public static CustomOption SheriffAndMadRegulationTag; // シェリマ
+    public static CustomOption NeutralKillerRegulationTag; // 第三キル人外入り
+    public static CustomOption VillageForOutsidersRegulationTag; // 人外村
+    public static CustomOption ManyRolesRegulationTag; // 多役
+    public static CustomOption WerewolfMoonlightRegulationTag; // 月下
+    public static CustomOption DarkPotRegulationTag; // 闇鍋
+    public static CustomOption OthersRegulationTag; // その他レギュ
+    public static CustomOption TryingOutRolesRegulationTag; // 役職お試し中(・ω・　)
+    public static CustomOption AmusementRegulationTag; // お遊びレギュ
+    public static CustomOption RegulationAdjustedTag; // レギュ調整中
+
+    // デバック : 600600 ~
+    public static CustomOption DebugNewRolesTag; // 新役職
+    public static CustomOption DebugNewFeaturesTag; // 新機能
+    public static CustomOption DebugAddFeaturesTag; // 機能追加
+    public static CustomOption DebugChangeTag; // 仕様変更
+    public static CustomOption DebugBugFixTag; // バグ修正
+    public static CustomOption DebugOthersTag; // その他(デバック)
+
+    public static void LoadOption()
+    {
+        // 村レベル : 600000 ~
+        Color villageLvColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
+        BeginnerTag = CreateMatchMakeTag(600000, true, Cs(villageLvColor, "BeginnerTag"), false, null, isHeader: true); // 初心者
+        IntermediateTag = CreateMatchMakeTag(600001, true, Cs(villageLvColor, "IntermediateTag"), false, null); // 中級者
+        AdvancedTag = CreateMatchMakeTag(600002, true, Cs(villageLvColor, "AdvancedTag"), false, null); // 上級者
+        CompetenceIsNotRequiredTag = CreateMatchMakeTag(600003, true, Cs(villageLvColor, "CompetenceIsNotRequiredTag"), false, null); // 実力不問
+
+        // プレイスタンス : 600100 ~
+        Color playingStanceColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
+        SeriousTag = CreateMatchMakeTag(600100, true, Cs(playingStanceColor, "SeriousTag"), false, null, isHeader: true); // ガチ勢
+        EnjoyTag = CreateMatchMakeTag(600101, true, Cs(playingStanceColor, "EnjoyTag"), false, null);  // エンジョイ勢
+
+        // プレイスタイル : 600200 ~
+        Color playingStyleColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
+        SeriousnessTag = CreateMatchMakeTag(600200, true, Cs(playingStyleColor, "SeriousnessTag"), false, null, isHeader: true); // 真剣プレイ
+        WelcomeBeginnerTag = CreateMatchMakeTag(600201, true, Cs(playingStyleColor, "WelcomeBeginnerTag"), false, null); // 初心者歓迎
+
+        // 状態 600300
+        Color conditionColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
+        NowRecordingTag = CreateMatchMakeTag(600300, true, Cs(conditionColor, "NowRecordingTag"), false, null, isHeader: true); // 撮影中
+        NowBeingDeliveredTag = CreateMatchMakeTag(600301, true, Cs(conditionColor, "NowBeingDeliveredTag"), false, null); // 配信中
+        OKForRecordingTag = CreateMatchMakeTag(600302, true, Cs(conditionColor, "OKForRecordingTag"), false, null); // 撮影OK
+        OKForBeingDeliveredTag = CreateMatchMakeTag(600303, true, Cs(conditionColor, "OKForBeingDeliveredTag"), false, null); // 配信OK
+        NoRecordingTag = CreateMatchMakeTag(600304, true, Cs(conditionColor, "NoRecordingTag"), false, null); // 撮影NG
+        NoBeingDeliveredTag = CreateMatchMakeTag(600305, true, Cs(conditionColor, "NoBeingDeliveredTag"), false, null); // 配信NG
+
+        // 会議方法 : 600400 ~
+        Color meetingSystemColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
+        FreeChatTag = CreateMatchMakeTag(600400, true, Cs(meetingSystemColor, "FreeChatTag"), false, null, isHeader: true); // フリーチャット
+        QuickChatTag = CreateMatchMakeTag(600401, true, Cs(meetingSystemColor, "QuickChatTag"), false, null); // クイックチャット
+        VoiceChatTag = CreateMatchMakeTag(600402, true, Cs(meetingSystemColor, "VoiceChatTag"), false, null); // VC
+        BetterCrewLinkTag = CreateMatchMakeTag(600403, true, Cs(meetingSystemColor, "BetterCrewLinkTag"), false, null); // 近アモ
+        CanListenOnlyTag = CreateMatchMakeTag(600404, true, Cs(meetingSystemColor, "CanListenOnlyTag"), false, null); // 聞き専可
+        FullVCOnlyTag = CreateMatchMakeTag(600405, true, Cs(meetingSystemColor, "FullVCOnlyTag"), false, null); // 聞き専不可
+
+        // レギュレーション : 600500 ~
+        Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
+        TakadaVillageRegulationTag = CreateMatchMakeTag(600500, true, Cs(RegulationColor, "TakadaVillageRegulationTag"), false, null, isHeader: true); // 高田村レギュ
+        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null); // シェリマ
+        NeutralKillerRegulationTag = CreateMatchMakeTag(600502, true, Cs(RegulationColor, "NeutralKillerRegulationTag"), false, null); // 第三キル人外入り
+        ManyRolesRegulationTag = CreateMatchMakeTag(600503, true, Cs(RegulationColor, "ManyRolesRegulationTag"), false, null); // 多役
+        WerewolfMoonlightRegulationTag = CreateMatchMakeTag(600504, true, Cs(RegulationColor, "WerewolfMoonlightRegulationTag"), false, null); // 月下
+        VillageForOutsidersRegulationTag = CreateMatchMakeTag(600505, true, Cs(RegulationColor, "VillageForOutsidersRegulationTag"), false, null); // 人外村
+        DarkPotRegulationTag = CreateMatchMakeTag(600506, true, Cs(RegulationColor, "DarkPotRegulationTag"), false, null); // 闇鍋
+        OthersRegulationTag = CreateMatchMakeTag(600507, true, Cs(RegulationColor, "OthersRegulationTag"), false, null); // その他
+        TryingOutRolesRegulationTag = CreateMatchMakeTag(600508, true, Cs(RegulationColor, "TryingOutRolesRegulationTag"), false, null); // 役職お試し中(・ω・　)
+        AmusementRegulationTag = CreateMatchMakeTag(600509, true, Cs(RegulationColor, "AmusementRegulationTag"), false, null); // お遊びレギュ
+        RegulationAdjustedTag = CreateMatchMakeTag(600510, true, Cs(RegulationColor, "RegulationAdjustedTag"), false, null); // レギュ調整中
+
+        // デバッグ : 600600 ~
+        Color DebugColor = new(82f / 255f, 82f / 255f, 82f / 255f, 1);
+        bool notDebugMode = !ConfigRoles.DebugMode.Value;
+        DebugNewRolesTag = CreateMatchMakeTag(600600, true, Cs(DebugColor, "新役職"), false, null, isHeader: true, isHidden: notDebugMode);
+        DebugNewFeaturesTag = CreateMatchMakeTag(600601, true, Cs(DebugColor, "新機能"), false, null, isHidden: notDebugMode);
+        DebugAddFeaturesTag = CreateMatchMakeTag(600602, true, Cs(DebugColor, "機能追加"), false, null, isHidden: notDebugMode);
+        DebugChangeTag = CreateMatchMakeTag(600603, true, Cs(DebugColor, "仕様変更"), false, null, isHidden: notDebugMode);
+        DebugBugFixTag = CreateMatchMakeTag(600604, true, Cs(DebugColor, "バグ修正"), false, null, isHidden: notDebugMode);
+        DebugOthersTag = CreateMatchMakeTag(600605, true, Cs(DebugColor, "その他(デバッグ)"), false, null, isHidden: notDebugMode);
+
+        if (notDebugMode)
+        {
+            DebugNewRolesTag.selection = 0;
+            DebugNewFeaturesTag.selection = 0;
+            DebugAddFeaturesTag.selection = 0;
+            DebugChangeTag.selection = 0;
+            DebugBugFixTag.selection = 0;
+            DebugOthersTag.selection = 0;
+        }
     }
 }
