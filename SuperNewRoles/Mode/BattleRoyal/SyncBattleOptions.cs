@@ -35,14 +35,24 @@ namespace SuperNewRoles.Mode.BattleRoyal
             var optdata = SyncSetting.OptionData.DeepCopy();
 
             PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
+            Logger.Info("SetAbilityCooltime:"+ability.KillCoolTime.ToString()+","+player.Data.PlayerName);
             optdata.SetInt(Int32OptionNames.KillDistance, ability.KillDistance);
             optdata.SetFloat(FloatOptionNames.ImpostorLightMod, ability.Light);
             optdata.SetFloat(FloatOptionNames.KillCooldown, ability.KillCoolTime);
             if (!ability.CanMove) optdata.SetFloat(FloatOptionNames.PlayerSpeedMod, 0f);
             if (player.IsRole(RoleId.KingPoster) && KingPoster.KingPosters.FirstOrDefault(x => x.CurrentPlayer == player).IsAbilityUsingNow) optdata.SetInt(Int32OptionNames.KillDistance, GameOptionsData.KillDistances.Length - 1);
 
-            if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-            optdata.RpcSyncOption(player.GetClientId(), sendOption:SendOption.None);
+            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                Logger.Info("Setted:" + player.Data.PlayerName+":Local");
+                GameOptionsManager.Instance.currentGameOptions = optdata;
+                GameManager.Instance.LogicOptions.SetGameOptions(optdata);
+            }
+            else if (!player.IsBot() && player.GetClientId() != -1)
+            {
+                Logger.Info("Setted:"+player.Data.PlayerName+":Desync");
+                optdata.RpcSyncOption(player.GetClientId(), sendOption: SendOption.None);
+            }
         }
     }
 }
