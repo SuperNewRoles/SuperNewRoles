@@ -1,11 +1,9 @@
 using System.Collections.Generic;
-using System;
-using HarmonyLib;
-using UnityEngine;
-using SuperNewRoles.Mode;
+using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using System.Linq;
+using SuperNewRoles.Mode;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
@@ -16,9 +14,11 @@ public static class MatchMaker
     public static string BaseURL = "https://supermatchmaker.vercel.app/";
     public static Dictionary<string, string> CreateBaseData()
     {
-        var data = new Dictionary<string, string>();
-        data["friendcode"] = PlayerControl.LocalPlayer.Data.FriendCode;
-        data["roomid"] = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
+        var data = new Dictionary<string, string>
+        {
+            ["friendcode"] = PlayerControl.LocalPlayer.Data.FriendCode,
+            ["roomid"] = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId)
+        };
         return data;
     }
     public static void EndInviting()
@@ -51,7 +51,7 @@ public static class MatchMaker
         {
             if (opt.GetSelection() == 0) continue;
             if (opt.IsHidden()) continue;
-            CustomOption countopt = CustomOption.options.FirstOrDefault(x => x.id == (opt.id + 1));
+            CustomOption countopt = options.FirstOrDefault(x => x.id == (opt.id + 1));
             for (int i = 0; i < (countopt.GetSelection() + 1); i++)
             {
                 ActivateRoles.Add(opt.RoleId.ToString());
@@ -59,10 +59,10 @@ public static class MatchMaker
         }
         string ActiveOptions = "";
         List<string> ActivateOptions = new();
-        foreach (CustomOption option in CustomOption.options)
+        foreach (CustomOption option in options)
         {
             bool enabled = true;
-            if (AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool())
+            if (AmongUsClient.Instance?.AmHost == false && hideSettings.GetBool())
             {
                 enabled = false;
             }
