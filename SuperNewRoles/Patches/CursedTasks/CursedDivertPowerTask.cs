@@ -5,6 +5,7 @@ using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using Il2CppSystem.Text;
 using UnityEngine;
+using IEnumerator = System.Collections.IEnumerator;
 using Random = System.Random;
 
 namespace SuperNewRoles.Patches.CursedTasks;
@@ -42,7 +43,7 @@ public class CursedDivertPowerTask
             return false;
         }
 
-        public static IEnumerator<Il2CppSystem.Collections.IEnumerator> CoDoSwitch(AcceptDivertPowerGame __instance)
+        public static IEnumerator CoDoSwitch(AcceptDivertPowerGame __instance)
         {
             yield return Effects.Lerp(0.25f, new Action<float>((t) =>
             {

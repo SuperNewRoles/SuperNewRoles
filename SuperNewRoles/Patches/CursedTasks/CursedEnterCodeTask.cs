@@ -6,6 +6,7 @@ using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using IEnumerator = System.Collections.IEnumerator;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
@@ -169,7 +170,7 @@ public class CursedEnterCodeTask
             return false;
         }
 
-        public static IEnumerator<Il2CppSystem.Collections.IEnumerator> OKAnimate(EnterCodeMinigame __instance)
+        public static IEnumerator OKAnimate(EnterCodeMinigame __instance)
         {
             __instance.animating = true;
             yield return Effects.Wait(0.1f);
@@ -190,7 +191,7 @@ public class CursedEnterCodeTask
             __instance.animating = false;
             yield break;
         }
-        public static IEnumerator<Il2CppSystem.Collections.IEnumerator> BadAnimate(EnterCodeMinigame __instance)
+        public static IEnumerator BadAnimate(EnterCodeMinigame __instance)
         {
             __instance.animating = true;
             yield return Effects.Wait(0.1f);

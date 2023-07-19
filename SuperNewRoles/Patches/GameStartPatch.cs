@@ -5,41 +5,80 @@ namespace SuperNewRoles.Patches;
 
 class GameStartPatch
 {
-    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
-    class MakePublicPatch
+    public static bool lastPublic = false;
+    public static float lastTimer;
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+    class CoStartGamePatch
     {
-        /*public static bool Prefix(GameStartManager __instance)
+        public static void Postfix()
         {
-            bool NameIncludeMod = LegacySaveManager.PlayerName.ToLower().Contains("mod");
-            bool NameIncludeSNR = LegacySaveManager.PlayerName.ToUpper().Contains("SNR");
-            bool NameIncludeSHR = LegacySaveManager.PlayerName.ToUpper().Contains("SHR");
-            if (AmongUsClient.Instance.AmHost)
+            if (lastPublic && AmongUsClient.Instance.AmHost)
             {
-                if (NameIncludeMod && !NameIncludeSNR && !NameIncludeSHR)
+                Modules.MatchMaker.EndInviting();
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+    class StartPatch
+    {
+        public static void Postfix(GameStartManager __instance)
+        {
+            lastPublic = AmongUsClient.Instance.IsGamePublic;
+            if (lastPublic && AmongUsClient.Instance.AmHost)
+                Modules.MatchMaker.CreateRoom();
+            lastTimer = 0;
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
+    class AmongUsClientOnPlayerJoinedPatch
+    {
+        public static void Postfix()
+        {
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
+            {
+                Modules.MatchMaker.UpdatePlayerCount(true);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]
+    class AmongUsClientOnPlayerLeftPatch
+    {
+        public static void Postfix()
+        {
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
+            {
+                Modules.MatchMaker.UpdatePlayerCount();
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+    class UpdatePatch
+    {
+        public static void Postfix(GameStartManager __instance)
+        {
+            if (lastPublic != AmongUsClient.Instance.IsGamePublic && AmongUsClient.Instance.AmHost)
+            {
+                if (AmongUsClient.Instance.IsGamePublic)
                 {
-                    SuperNewRolesPlugin.Logger.LogWarning("\"mod\"が名前に含まれている状態では公開部屋にすることはできません。");
-                    __instance.MakePublicButton.color = Palette.DisabledClear;
-                    __instance.privatePublicText.color = Palette.DisabledClear;
-                    PlayerControl.LocalPlayer.RpcSendChat(string.Format("Modが名前に含まれている状態では公開部屋にすることはできません。"));
-                    return false;
+                    Modules.MatchMaker.CreateRoom();
                 }
-                else if ((ModeHandler.IsMode(ModeId.SuperHostRoles, false) && NameIncludeSNR && !NameIncludeSHR) || (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && NameIncludeMod && !NameIncludeSHR))
+                else
                 {
-                    SuperNewRolesPlugin.Logger.LogWarning("SHRモードで\"SNR\"が名前に含まれている状態では公開部屋にすることはできません。");
-                    PlayerControl.LocalPlayer.RpcSendChat(string.Format("SHRモードでSNRが名前に含まれている状態では公開部屋にすることはできません。"));
-                    return false;
+                    Modules.MatchMaker.EndInviting();
                 }
-                else if (!NameIncludeSNR && !NameIncludeSHR)
+                lastPublic = AmongUsClient.Instance.IsGamePublic;
+            }
+            if (lastPublic && AmongUsClient.Instance.AmHost)
+            {
+                lastTimer += Time.deltaTime;
+                if (lastTimer >= 12.5f)
                 {
-                    SuperNewRolesPlugin.Logger.LogWarning("Mod関連のワードが名前にないので公開部屋にできません");
-                    __instance.MakePublicButton.color = Palette.DisabledClear;
-                    __instance.privatePublicText.color = Palette.DisabledClear;
-                    PlayerControl.LocalPlayer.RpcSendChat(string.Format("Mod関連のワードが名前に入っていないと公開部屋にすることはできません。特殊モードをご利用の場合は名前に「SHR」を入れてください。"));
-                    return false;
+                    Modules.MatchMaker.KeepAlive();
+                    lastTimer = 0;
                 }
             }
-            return true;
-        }*/
+        }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
     public static class LobbyCountDownTimer
@@ -47,12 +86,6 @@ class GameStartPatch
         public static void Postfix()
         {
             if (!GameStartManager._instance || !AmongUsClient.Instance.AmHost) return; // 以下ホストのみで動作
-
-            if (!(Mode.ModeHandler.IsMode(Mode.ModeId.Default) || Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf)) && !ModHelpers.IsDebugMode())
-            {
-                FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
-                return;
-            }
 
             if (Input.GetKeyDown(KeyCode.F7))
             {

@@ -5,6 +5,7 @@ using HarmonyLib;
 using Il2CppSystem.Text;
 using SuperNewRoles.MapCustoms;
 using UnityEngine;
+using IEnumerator = System.Collections.IEnumerator;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
@@ -37,7 +38,7 @@ public class CursedFixShowerTask
             return false;
         }
 
-        public static IEnumerator<Il2CppSystem.Collections.IEnumerator> Bash(FixShowerMinigame __instance, float power)
+        public static IEnumerator Bash(FixShowerMinigame __instance, float power)
         {
             __instance.animating = true;
             __instance.mallet.transform.localEulerAngles = Vector3.zero;
