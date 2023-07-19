@@ -208,10 +208,10 @@ public static class MatchTagOption
     {
         // 村レベル : 600000 ~
         Color villageLvColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
-        BeginnerTag = CreateMatchMakeTag(600000, true, Cs(villageLvColor, "BeginnerTag"), false, null, isHeader: true); // 初心者
-        IntermediateTag = CreateMatchMakeTag(600001, true, Cs(villageLvColor, "IntermediateTag"), false, null); // 中級者
-        AdvancedTag = CreateMatchMakeTag(600002, true, Cs(villageLvColor, "AdvancedTag"), false, null); // 上級者
-        CompetenceIsNotRequiredTag = CreateMatchMakeTag(600003, true, Cs(villageLvColor, "CompetenceIsNotRequiredTag"), false, null); // 実力不問
+        BeginnerTag = CreateMatchMakeTag(600000, true, Cs(new Color(134f / 255f, 214f / 255f, 31f / 255f, 1), "BeginnerTag"), false, null, isHeader: true); // 初心者
+        IntermediateTag = CreateMatchMakeTag(600001, true, Cs(new Color(12f / 255f, 184f / 255f, 232f / 255f, 1), "IntermediateTag"), false, null); // 中級者
+        AdvancedTag = CreateMatchMakeTag(600002, true, Cs(new Color(167f / 255f, 139f / 255f, 92f / 255f, 1), "AdvancedTag"), false, null); // 上級者
+        CompetenceIsNotRequiredTag = CreateMatchMakeTag(600003, true, Cs(new Color(105f / 255f, 179f / 255f, 119f / 255f, 1), "CompetenceIsNotRequiredTag"), false, null); // 実力不問
 
         // プレイスタンス : 600100 ~
         Color playingStanceColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);

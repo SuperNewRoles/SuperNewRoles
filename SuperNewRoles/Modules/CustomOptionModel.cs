@@ -600,7 +600,7 @@ class GameOptionsMenuStartPatch
 
         var matchTagTab = UnityEngine.Object.Instantiate(roleTab, crewmateTab.transform);
         var matchTagTabHighlight = matchTagTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        matchTagTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
+        matchTagTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
         matchTagTab.name = "matchTagTab";
 
         var RegulationTab = UnityEngine.Object.Instantiate(roleTab, matchTagTab.transform);
