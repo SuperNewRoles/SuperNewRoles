@@ -1398,8 +1398,8 @@ OKForBeingDeliveredTag,OK for Recording,配信OK
 NoRecordingTag,No Recording,撮影NG
 NoBeingDeliveredTag,No Recording,配信NG
 
-FreeChatTag,FreeChat,フリーチャット
-QuickChatTag,QuickChat,クイックチャット
+FreeChatTag,FreeChat Only,フリーチャットのみ
+QuickChatTag,QuickChat Only,クイックチャットのみ
 VoiceChatTag,VoiceChat,VC
 BetterCrewLinkTag,Use BetterCrewLink,近アモ
 CanListenOnlyTag,Listen only OK,聞き専可

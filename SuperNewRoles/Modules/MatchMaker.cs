@@ -265,7 +265,7 @@ public static class MatchTagOption
         DebugBugFixTag = CreateMatchMakeTag(600604, true, Cs(DebugColor, "バグ修正"), false, null, isHidden: notDebugMode);
         DebugOthersTag = CreateMatchMakeTag(600605, true, Cs(DebugColor, "その他(デバッグ)"), false, null, isHidden: notDebugMode);
 
-        if (notDebugMode)
+        if (!notDebugMode)
         {
             DebugNewRolesTag.selection = 0;
             DebugNewFeaturesTag.selection = 0;
