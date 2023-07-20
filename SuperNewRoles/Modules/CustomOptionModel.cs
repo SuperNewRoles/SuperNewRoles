@@ -1186,7 +1186,7 @@ class GameOptionsDataPatch
                 }
 
                 entry = new StringBuilder();
-                if (!GameOptionsMenuUpdatePatch.IsHidden(option))
+                if (!(GameOptionsMenuUpdatePatch.IsHidden(option) || option.type == CustomOptionType.MatchTag))
                 {
                     entry.AppendLine(OptionToString(option));
                 }
