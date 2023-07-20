@@ -243,7 +243,7 @@ public static class MatchTagOption
 
         // レギュレーション : 600500 ~
         Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
-        TakadaVillageRegulationTag = CreateMatchMakeTag(600500, true, Cs(RegulationColor, "TakadaVillageRegulationTag"), false, null, isHeader: true); // 高田村レギュ
+        TakadaVillageRegulationTag = CreateMatchMakeTag(600500, false, Cs(RegulationColor, "TakadaVillageRegulationTag"), false, null, isHeader: true); // 高田村レギュ
         SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null); // シェリマ
         NeutralKillerRegulationTag = CreateMatchMakeTag(600502, true, Cs(RegulationColor, "NeutralKillerRegulationTag"), false, null); // 第三キル人外入り
         ManyRolesRegulationTag = CreateMatchMakeTag(600503, true, Cs(RegulationColor, "ManyRolesRegulationTag"), false, null); // 多役
@@ -254,6 +254,11 @@ public static class MatchTagOption
         TryingOutRolesRegulationTag = CreateMatchMakeTag(600508, true, Cs(RegulationColor, "TryingOutRolesRegulationTag"), false, null); // 役職お試し中(・ω・　)
         AmusementRegulationTag = CreateMatchMakeTag(600509, true, Cs(RegulationColor, "AmusementRegulationTag"), false, null); // お遊びレギュ
         RegulationAdjustedTag = CreateMatchMakeTag(600510, true, Cs(RegulationColor, "RegulationAdjustedTag"), false, null); // レギュ調整中
+        // SHRでは表示しない設定を内部的にもオフにする
+        if(ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            TakadaVillageRegulationTag.selection = 0;
+        }
 
         // デバッグ : 600600 ~
         Color debugColor = (Color)Roles.RoleClass.Debugger.color;
