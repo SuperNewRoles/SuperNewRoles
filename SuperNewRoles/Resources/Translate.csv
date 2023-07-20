@@ -1417,6 +1417,9 @@ TryingOutRolesRegulationTag,Trying out a roles.,役職お試し中
 AmusementRegulationTag,Amusement regulation,お遊びレギュ
 RegulationAdjustedTag,Adjusted,レギュ調整中
 
+FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限
+FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止
+
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！,您可以在超新職業體驗各種不同的模式和職業！

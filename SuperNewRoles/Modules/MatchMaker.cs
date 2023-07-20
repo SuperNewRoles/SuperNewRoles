@@ -196,7 +196,11 @@ public static class MatchTagOption
     public static CustomOption AmusementRegulationTag; // お遊びレギュ
     public static CustomOption RegulationAdjustedTag; // レギュ調整中
 
-    // デバック : 600600 ~
+    // 使用機能 : 600600 ~
+    public static CustomOption FeatureAdminLimitTag;
+    public static CustomOption FeatureCanNotUseAdminTag;
+
+    // デバック : 600700 ~
     public static CustomOption DebugNewRolesTag; // 新役職
     public static CustomOption DebugNewFeaturesTag; // 新機能
     public static CustomOption DebugAddFeaturesTag; // 機能追加
@@ -254,21 +258,21 @@ public static class MatchTagOption
         TryingOutRolesRegulationTag = CreateMatchMakeTag(600508, true, Cs(RegulationColor, "TryingOutRolesRegulationTag"), false, null); // 役職お試し中(・ω・　)
         AmusementRegulationTag = CreateMatchMakeTag(600509, true, Cs(RegulationColor, "AmusementRegulationTag"), false, null); // お遊びレギュ
         RegulationAdjustedTag = CreateMatchMakeTag(600510, true, Cs(RegulationColor, "RegulationAdjustedTag"), false, null); // レギュ調整中
-        // SHRでは表示しない設定を内部的にもオフにする
-        if(ModeHandler.IsMode(ModeId.SuperHostRoles))
-        {
-            TakadaVillageRegulationTag.selection = 0;
-        }
+
+        // 使用機能 : 600600 ~
+        Color useFeatureColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
+        FeatureAdminLimitTag = CreateMatchMakeTag(600600, false, Cs(useFeatureColor, "FeatureAdminLimitTag"), false, null, isHeader: true); // アドミン使用制限
+        FeatureCanNotUseAdminTag = CreateMatchMakeTag(600601, true, Cs(useFeatureColor, "FeatureCanNotUseAdminTag"), false, null, isHeader: true); // アドミン禁止
 
         // デバッグ : 600600 ~
         Color debugColor = (Color)Roles.RoleClass.Debugger.color;
         bool notDebugMode = !ConfigRoles.DebugMode.Value;
-        DebugNewRolesTag = CreateMatchMakeTag(600600, true, Cs(debugColor, "新役職"), false, null, isHeader: true, isHidden: notDebugMode);
-        DebugNewFeaturesTag = CreateMatchMakeTag(600601, true, Cs(debugColor, "新機能"), false, null, isHidden: notDebugMode);
-        DebugAddFeaturesTag = CreateMatchMakeTag(600602, true, Cs(debugColor, "機能追加"), false, null, isHidden: notDebugMode);
-        DebugChangeTag = CreateMatchMakeTag(600603, true, Cs(debugColor, "仕様変更"), false, null, isHidden: notDebugMode);
-        DebugBugFixTag = CreateMatchMakeTag(600604, true, Cs(debugColor, "バグ修正"), false, null, isHidden: notDebugMode);
-        DebugOthersTag = CreateMatchMakeTag(600605, true, Cs(debugColor, "その他(デバッグ)"), false, null, isHidden: notDebugMode);
+        DebugNewRolesTag = CreateMatchMakeTag(600700, true, Cs(debugColor, "新役職"), false, null, isHeader: true, isHidden: notDebugMode);
+        DebugNewFeaturesTag = CreateMatchMakeTag(600701, true, Cs(debugColor, "新機能"), false, null, isHidden: notDebugMode);
+        DebugAddFeaturesTag = CreateMatchMakeTag(600702, true, Cs(debugColor, "機能追加"), false, null, isHidden: notDebugMode);
+        DebugChangeTag = CreateMatchMakeTag(600703, true, Cs(debugColor, "仕様変更"), false, null, isHidden: notDebugMode);
+        DebugBugFixTag = CreateMatchMakeTag(600704, true, Cs(debugColor, "バグ修正"), false, null, isHidden: notDebugMode);
+        DebugOthersTag = CreateMatchMakeTag(600705, true, Cs(debugColor, "その他(デバッグ)"), false, null, isHidden: notDebugMode);
 
         if (notDebugMode)
         {
@@ -278,6 +282,13 @@ public static class MatchTagOption
             DebugChangeTag.selection = 0;
             DebugBugFixTag.selection = 0;
             DebugOthersTag.selection = 0;
+        }
+
+        // SHRでは表示しない設定を内部的にもオフにする
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            TakadaVillageRegulationTag.selection = 0;
+            FeatureCanNotUseAdminTag.selection = 0;
         }
     }
 }
