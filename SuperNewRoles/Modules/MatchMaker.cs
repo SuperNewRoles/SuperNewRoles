@@ -256,14 +256,14 @@ public static class MatchTagOption
         RegulationAdjustedTag = CreateMatchMakeTag(600510, true, Cs(RegulationColor, "RegulationAdjustedTag"), false, null); // レギュ調整中
 
         // デバッグ : 600600 ~
-        Color DebugColor = new(82f / 255f, 82f / 255f, 82f / 255f, 1);
+        Color debugColor = (Color)Roles.RoleClass.Debugger.color;
         bool notDebugMode = !ConfigRoles.DebugMode.Value;
-        DebugNewRolesTag = CreateMatchMakeTag(600600, true, Cs(DebugColor, "新役職"), false, null, isHeader: true, isHidden: notDebugMode);
-        DebugNewFeaturesTag = CreateMatchMakeTag(600601, true, Cs(DebugColor, "新機能"), false, null, isHidden: notDebugMode);
-        DebugAddFeaturesTag = CreateMatchMakeTag(600602, true, Cs(DebugColor, "機能追加"), false, null, isHidden: notDebugMode);
-        DebugChangeTag = CreateMatchMakeTag(600603, true, Cs(DebugColor, "仕様変更"), false, null, isHidden: notDebugMode);
-        DebugBugFixTag = CreateMatchMakeTag(600604, true, Cs(DebugColor, "バグ修正"), false, null, isHidden: notDebugMode);
-        DebugOthersTag = CreateMatchMakeTag(600605, true, Cs(DebugColor, "その他(デバッグ)"), false, null, isHidden: notDebugMode);
+        DebugNewRolesTag = CreateMatchMakeTag(600600, true, Cs(debugColor, "新役職"), false, null, isHeader: true, isHidden: notDebugMode);
+        DebugNewFeaturesTag = CreateMatchMakeTag(600601, true, Cs(debugColor, "新機能"), false, null, isHidden: notDebugMode);
+        DebugAddFeaturesTag = CreateMatchMakeTag(600602, true, Cs(debugColor, "機能追加"), false, null, isHidden: notDebugMode);
+        DebugChangeTag = CreateMatchMakeTag(600603, true, Cs(debugColor, "仕様変更"), false, null, isHidden: notDebugMode);
+        DebugBugFixTag = CreateMatchMakeTag(600604, true, Cs(debugColor, "バグ修正"), false, null, isHidden: notDebugMode);
+        DebugOthersTag = CreateMatchMakeTag(600605, true, Cs(debugColor, "その他(デバッグ)"), false, null, isHidden: notDebugMode);
 
         if (notDebugMode)
         {

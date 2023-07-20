@@ -1008,10 +1008,11 @@ public class CustomOptionHolder
 
         if (ConfigRoles.DebugMode.Value)
         {
-            IsDebugMode = Create(100800, true, CustomOptionType.Generic, "<color=#828282>デバッグモード</color>", false, null, isHeader: true);
-            DebugModeFastStart = Create(100801, true, CustomOptionType.Generic, "<color=#828282>即開始</color>", false, IsDebugMode);
-            CanUseChatWhenTaskPhase = Create(100802, true, CustomOptionType.Generic, "<color=#828282>タスクフェイズ中にチャットを使える</color>", false, IsDebugMode);
-            IsMurderPlayerAnnounce = Create(100803, true, CustomOptionType.Generic, "<color=#828282>MurderPlayer発生時に通知を行う</color>", false, IsDebugMode);
+            Color debugColor = (Color)RoleClass.Debugger.color;
+            IsDebugMode = Create(100800, true, CustomOptionType.Generic, Cs(debugColor, "デバッグモード"), false, null, isHeader: true);
+            DebugModeFastStart = Create(100801, true, CustomOptionType.Generic, Cs(debugColor, "即開始"), false, IsDebugMode);
+            CanUseChatWhenTaskPhase = Create(100802, true, CustomOptionType.Generic, Cs(debugColor, "タスクフェイズ中にチャットを使える"), false, IsDebugMode);
+            IsMurderPlayerAnnounce = Create(100803, true, CustomOptionType.Generic, Cs(debugColor, "MurderPlayer発生時に通知を行う"), false, IsDebugMode);
         }
 
         DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
