@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
@@ -81,7 +82,12 @@ class ControllerManagerUpdatePatch
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
             {
                 if (MeetingHud.Instance != null)
-                    MeetingHud.Instance.RpcClose();
+                {
+                    if (ModeHandler.IsMode(ModeId.BattleRoyal))
+                        SelectRoleSystem.OnEndSetRole();
+                    else
+                        MeetingHud.Instance.RpcClose();
+                }
             }
         }
 
