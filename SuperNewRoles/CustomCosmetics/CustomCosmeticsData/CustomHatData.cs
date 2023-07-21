@@ -20,6 +20,8 @@ public class CustomHatData : HatData
     {
         public Sprite MainImage;
         public Sprite BackImage;
+        public Sprite FlipImage;
+        public Sprite BackFlipImage;
         public Sprite ClimbImage;
         public bool adaptive;
         public Material AltShader => adaptive ? new Material(Shader.Find("Unlit/PlayerShader")) : null;
@@ -32,6 +34,8 @@ public class CustomHatData : HatData
                 {
                     MainImage = MainImage,
                     BackImage = BackImage,
+                    LeftMainImage = FlipImage,
+                    LeftBackImage = BackFlipImage,
                     ClimbImage = ClimbImage,
                     AltShader = AltShader,
                     name = name
@@ -55,6 +59,8 @@ public class CustomHatData : HatData
         {
             if (!id.StartsWith("MOD_")) return true;
             __result = getbycache(id);
+            if (__result == null)
+                __result = __instance.hats["hat_NoHat"].GetAsset();
             return false;
         }
     }

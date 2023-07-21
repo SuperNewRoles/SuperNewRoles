@@ -1601,8 +1601,10 @@ public class CustomOptionHolder
         StefinderPlayerCount = Create(303001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
         StefinderKillCooldown = Create(303002, false, CustomOptionType.Neutral, "StefinderKillCooldownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
         StefinderVent = Create(303003, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
-        StefinderSabo = Create(303104, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
-        StefinderSoloWin = Create(303105, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+        StefinderSabo = Create(303004, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
+        StefinderSoloWin = Create(303005, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+
+        BlackHatHacker.SetupCustomOptions();
 
         // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
 
@@ -1995,8 +1997,9 @@ public class CustomOptionHolder
         PainterIsDeathFootprintBig = Create(405310, false, CustomOptionType.Crewmate, "PainterIsDeathFootprintBig", true, PainterIsDeathFootprint);
         PainterIsFootprintMeetingDestroy = Create(405311, false, CustomOptionType.Crewmate, "PainterIsFootprintMeetingDestroy", true, PainterOption);
 
-        SeeThroughPersonOption = SetupCustomRoleOption(405400, false, RoleId.SeeThroughPerson);
-        SeeThroughPersonPlayerCount = Create(405401, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption);
+        SeeThroughPersonOption = SetupCustomRoleOption(405400, false, RoleId.SeeThroughPerson, isHidden: true);
+        SeeThroughPersonOption.selection = 0;
+        SeeThroughPersonPlayerCount = Create(405401, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption, isHidden: true);
 
         PsychometristOption = SetupCustomRoleOption(405500, false, RoleId.Psychometrist);
         PsychometristPlayerCount = Create(405501, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PsychometristOption);
@@ -2076,6 +2079,21 @@ public class CustomOptionHolder
         Logger.Info("設定数:" + options.Count);
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
+        /*
+        string OPTIONDATA = "{";
+        foreach (CustomOption opt in CustomOption.options)
+        {
+            OPTIONDATA += "\"" + opt.id.ToString() + "\":" + "{\"name\":\"" + opt.name + "\",\"selections\":[";
+            foreach (object selection in opt.selections)
+            {
+                OPTIONDATA += "\"" + selection.ToString() + "\",";
+            }
+            OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
+            OPTIONDATA += "]},";
+        }
+        OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
+        OPTIONDATA += "}";
+        GUIUtility.systemCopyBuffer = OPTIONDATA;*/
     }
     private static int GetRoleSettingid(int maxId) => maxId / 100;
 }
