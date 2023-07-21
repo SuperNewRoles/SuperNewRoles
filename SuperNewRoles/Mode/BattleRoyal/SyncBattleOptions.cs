@@ -44,13 +44,11 @@ namespace SuperNewRoles.Mode.BattleRoyal
 
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
-                Logger.Info("Setted:" + player.Data.PlayerName+":Local");
                 GameOptionsManager.Instance.currentGameOptions = optdata;
                 GameManager.Instance.LogicOptions.SetGameOptions(optdata);
             }
             else if (!player.IsBot() && player.GetClientId() != -1)
             {
-                Logger.Info("Setted:"+player.Data.PlayerName+":Desync");
                 optdata.RpcSyncOption(player.GetClientId(), sendOption: SendOption.None);
             }
         }
