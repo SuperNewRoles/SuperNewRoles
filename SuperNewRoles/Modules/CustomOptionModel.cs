@@ -64,7 +64,8 @@ public class CustomOption
                 }
                 if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && AmongUsClient.Instance.IsGamePublic)
                 {
-                    Modules.MatchMaker.UpdateOption();
+                    MatchMaker.UpdateOption();
+                    MatchMaker.UpdateTags();
                 }
             }
             else

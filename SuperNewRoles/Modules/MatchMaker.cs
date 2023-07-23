@@ -62,6 +62,7 @@ public static class MatchMaker
         foreach (CustomOption option in options)
         {
             bool enabled = true;
+            if (option.type == CustomOptionType.MatchTag) continue;
             if (AmongUsClient.Instance?.AmHost == false && hideSettings.GetBool())
             {
                 enabled = false;
@@ -88,6 +89,31 @@ public static class MatchMaker
         data["mode"] = GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek ? "HNS" : ModeHandler.GetMode(false).ToString();
         AmongUsClient.Instance.StartCoroutine(Analytics.Post(BaseURL + "api/update_state", data.GetString()).WrapToIl2Cpp());
     }
+    public static void UpdateTags()
+    {
+        var data = CreateBaseData();
+        data["type"] = "updatetags";
+        List<string> ActiveTags = new();
+        foreach (CustomOption option in options)
+        {
+            if (option.GetSelection() == 0) continue;
+            if (option.IsHidden()) continue;
+            if (option.type != CustomOptionType.MatchTag) continue;
+
+            bool enabled = true;
+
+            if (AmongUsClient.Instance?.AmHost == false && hideSettings.GetBool())
+                enabled = false;
+
+            if (enabled)
+            {
+                ActiveTags.Add($"{option.id}");
+                Logger.Info($"{option.id}" + "ぷぇ");
+            }
+        }
+        data["updatetags"] = string.Join(',', ActiveTags);
+
+    }
     public static void CreateRoom()
     {
         var data = CreateBaseData();
@@ -97,6 +123,7 @@ public static class MatchMaker
         {
             if (opt.GetSelection() == 0) continue;
             if (opt.IsHidden()) continue;
+            if (opt.type == CustomOptionType.MatchTag) continue;
             ActivateRoles.Add(opt.RoleId.ToString());
         }
         string ActiveOptions = "";
@@ -283,9 +310,13 @@ public static class MatchTagOption
         }
 
         // SHRでは表示しない設定を内部的にもオフにする
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        try
         {
-            FeatureCanNotUseAdminTag.selection = 0;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                FeatureCanNotUseAdminTag.selection = 0;
+            }
         }
+        catch { }
     }
 }
