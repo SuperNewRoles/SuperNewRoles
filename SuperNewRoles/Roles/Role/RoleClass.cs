@@ -45,6 +45,7 @@ public static class RoleClass
         IsCoolTimeSetted = false;
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
+        AddChatPatch.RoleInfo.ClearAndReload();
         Agartha.MapData.ClearAndReloads();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();

@@ -520,6 +520,7 @@ class MeetingHudStartPatch
             {
                 SyncSetting.CustomSyncSettings();
                 SyncSetting.MeetingSyncSettings();
+                AddChatPatch.YourRoleInfoSendCommand();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         if (ModeHandler.IsMode(ModeId.Default))
