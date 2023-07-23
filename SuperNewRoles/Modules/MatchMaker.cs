@@ -184,7 +184,6 @@ public static class MatchTagOption
     public static CustomOption FullVCOnlyTag; // 聞き専不可
 
     // レギュレーション : 600500 ~
-    public static CustomOption TakadaVillageRegulationTag; // 高田村レギュ
     public static CustomOption SheriffAndMadRegulationTag; // シェリマ
     public static CustomOption NeutralKillerRegulationTag; // 第三キル人外入り
     public static CustomOption VillageForOutsidersRegulationTag; // 人外村
@@ -247,7 +246,6 @@ public static class MatchTagOption
 
         // レギュレーション : 600500 ~
         Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
-        TakadaVillageRegulationTag = CreateMatchMakeTag(600500, false, Cs(RegulationColor, "TakadaVillageRegulationTag"), false, null, isHeader: true); // 高田村レギュ
         SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null); // シェリマ
         NeutralKillerRegulationTag = CreateMatchMakeTag(600502, true, Cs(RegulationColor, "NeutralKillerRegulationTag"), false, null); // 第三キル人外入り
         ManyRolesRegulationTag = CreateMatchMakeTag(600503, true, Cs(RegulationColor, "ManyRolesRegulationTag"), false, null); // 多役
@@ -287,7 +285,6 @@ public static class MatchTagOption
         // SHRでは表示しない設定を内部的にもオフにする
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            TakadaVillageRegulationTag.selection = 0;
             FeatureCanNotUseAdminTag.selection = 0;
         }
     }
