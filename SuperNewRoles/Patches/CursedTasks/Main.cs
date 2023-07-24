@@ -17,14 +17,16 @@ public static class Main
     {
         IsCursed = CursedTask.GetBool() && ModeHandler.IsMode(ModeId.Default);
 
-        CursedSampleTask.Data = new();
-
         CursedDivertPowerTask.Data = new();
         CursedDivertPowerTask.Change = false;
 
+        CursedFixShowerTask.Data = new();
+
+        CursedSampleTask.Data = new();
+
         CursedShowerTask.Timer = new();
 
-        CursedFixShowerTask.Data = new();
+        CursedToiletTask.Count = new();
     }
 
     // 1024 : 月城さんが決めた数字 , 1183 : ポケモン全国図鑑のリージョンホーム含めたポケモンの数(2023年03月02日現在)
