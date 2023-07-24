@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Mode;
@@ -107,12 +108,19 @@ public static class MatchMaker
 
             if (enabled)
             {
-                ActiveTags.Add($"{option.id}");
-                Logger.Info($"{option.id}" + "ぷぇ");
+                // 先にカラータグを外す
+                string tagName = option.name;
+                string pattern = @"<color=#\w+>|</color>";
+
+                Regex colorRegex = new(pattern);
+                tagName = colorRegex.Replace(tagName, "");
+
+                string tagKey = ModTranslation.GetTranslateKey(tagName);
+
+                ActiveTags.Add($"{tagKey}");
             }
         }
         data["updatetags"] = string.Join(',', ActiveTags);
-
     }
     public static void CreateRoom()
     {
