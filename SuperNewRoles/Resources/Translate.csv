@@ -144,7 +144,7 @@ Setting,Setting up positions in the third camp,第三陣営の役職設定,独�
 SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加职业设置,多重職業設定
 Settingsonota,Other settings,その他の設定,其他设置,其他設定
 optionOn,<color=#03ff0c>On</color>,<color=#03ff0c>オン</color>,<color=#03ff0c>开启</color>,<color=#03ff0c>開</color>
-optionOff,<color=#f22f21>Off</color>,<color=#f22f21>オフ</color>,<color=#f22f21>关闭</color>,<color=#f22f21>關</color>
+optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#949495>关闭</color>,<color=#949495>關</color>
 preset,Preset,プリセット,预设,預設
 unitSeconds,Seconds,秒,秒,秒
 SettingPlayerCountName,Role Player,人数,人数,人數
@@ -288,7 +288,7 @@ MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告
 NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,禁用召開緊急會議
 DeviceOptionsSetting,Information Device Options,情報機器制限の設定,飞船设备设置,情報獲取裝置限制使用設定
-CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#f22f21>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#f22f21>不可能</color> の設定,<color=#03ff0c>启用</color>/<color=#f22f21>禁用</color>设置,<color=#03ff0c>可以</color>/<color=#f22f21>不行</color>使用設定
+CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#949495>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#949495>不可能</color> の設定,<color=#03ff0c>启用</color>/<color=#949495>禁用</color>设置,<color=#03ff0c>可以</color>/<color=#949495>不行</color>使用設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图,可以觀看管理員地圖
 DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える,可以观看生命监测装置和通行日志,可以觀看生命跡象檢測器與通行日誌
 DeviceUseCameraSetting,Use OK Camera,カメラが使える,可以观看监控,可以觀看監視器

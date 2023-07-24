@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
@@ -248,7 +249,7 @@ class AddChatPatch
     {
         Logger.Info("GetOptionText", "ChatHandler");
         string text = "";
-        text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
+        text += GetChildText(RoleOption.children, "  ");
         return text;
     }
 
@@ -434,7 +435,7 @@ class AddChatPatch
                         optionBuilder.AppendLine($"<align={"left"}><size=100%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
                         optionBuilder.AppendLine($"<size=80%>{intro.Description}\n</size>");
                         optionBuilder.AppendLine($"<size=70%>{ModTranslation.GetString("MessageSettings")}:");
-                        optionBuilder.AppendLine($"{GetOptionText(roleOption, intro)}</align></size>\n\n");
+                        optionBuilder.AppendLine($"{GetOptionText(roleOption, intro)}\n<color=#00000000>{roleOption.Intro.NameKey}</color></align></size>");
 
                         roleInfo = optionBuilder.ToString();
                         return (roleName, roleInfo);
