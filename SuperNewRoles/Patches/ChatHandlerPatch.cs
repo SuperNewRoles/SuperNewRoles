@@ -188,6 +188,15 @@ class AddChatPatch
             return false;
         }
         else if (
+            Commands[0].Equals("/roleinfo", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/ri", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (Commands.Length == 1) return true;
+            RoleInfoSendCommand(sourcePlayer, Commands[1]);
+            return false;
+        }
+        else if (
             Commands[0].Equals("/Winners", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/w", StringComparison.OrdinalIgnoreCase)
             )
@@ -303,19 +312,46 @@ class AddChatPatch
             time += SendTime;
         }
     }
-    internal static void RoleInfoSendCommand(PlayerControl player, RoleId roleId)
+
+    /// <summary>
+    /// コマンドで指定した役職の説明を取得する
+    /// </summary>
+    /// <param name="sourcePlayer">送信先()Hostだった場合全体送信</param>
+    /// <param name="command">指定された役職名</param>
+    internal static void RoleInfoSendCommand(PlayerControl sourcePlayer, string command)
     {
-        string roleName = null, roleInfo = null;
-        (roleName, roleInfo) = RoleInfo.GetRoleInfo(roleId);
-        SendCommand(player, roleInfo, roleName);
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
+
+        (string roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(command);
+        string beforeIdChangeRoleName =
+            isSuccess
+            ? roleNameKey.Replace("Name", "") // 翻訳キーの取得に成功していた場合, RoleIdと同様の名前にする為 キーから"Name"を外す.
+            : command; // 失敗していた場合入力された文字のまま
+
+        string roleName = "NONE", roleInfo = "";
+
+        // 参考 => https://qiita.com/masaru/items/a44dc30bfc18aac95015#fnref1
+        // 取得した役職名(string)からRoleIdを取得する。
+        var roleIdChange = Enum.TryParse(beforeIdChangeRoleName, out RoleId roleId) && Enum.IsDefined(typeof(RoleId), roleId);
+        if (roleIdChange)
+        {
+            (roleName, roleInfo) = RoleInfo.GetRoleInfo(roleId, AmongUsClient.Instance.AmHost);
+            if (roleName == "NONE") roleInfo = Format(roleInfo, command); // RoleIdからの役職情報の取得に失敗していた場合, 入力した役職名を追加する。
+            SendCommand(target, roleInfo, roleName);
+            return;
+        }
+
+        SendCommand(target, Format(ModTranslation.GetString("RoleInfoError"), command));
     }
     internal static void YourRoleInfoSendCommand()
     {
         foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
             RoleId roleId = player.GetRole();
-            string roleName = null, roleInfo = null;
-            (roleName, roleInfo) = RoleInfo.GetRoleInfo(roleId, player.IsImpostor());
+            string roleName = "NONE", roleInfo = "";
+            (roleName, roleInfo) = RoleInfo.GetRoleInfo(roleId, AmongUsClient.Instance.AmHost, player.IsImpostor());
 
             SendCommand(player, roleInfo, roleName);
         }
@@ -380,7 +416,7 @@ class AddChatPatch
         /// <returns> string_1 : 役職名, 陣営 / string_2 : 役職説明</returns>
         private static (string, string) WriteRoleInfo(RoleId roleId, bool isImpostor = false)
         {
-            string roleName = null, roleInfo = null;
+            string roleName = "NONE", roleInfo = "";
 
             // Mod役職の情報取得
             if (roleId != RoleId.DefaultRole)
@@ -436,12 +472,22 @@ class AddChatPatch
                 return (roleName, roleInfo);
             }
 
-            roleInfo = ModTranslation.GetString("RoleInfoError");
-            return (roleInfo, roleName);
+            string errorMessage = Format(ModTranslation.GetString("RoleIdInfoError"), "{0}", roleId);
+            Logger.Error($"RoleId : [ {roleId} ] の取得に失敗しました。", "WriteRoleInfo");
+            return (roleName, errorMessage);
         }
-        internal static (string, string) GetRoleInfo(RoleId roleId, bool isImpostor = false)
+
+        /// <summary>
+        /// RoleIdから役職の説明を取得する。
+        /// 呼び出し元がホストでない場合, 現在配役されている役職以外の情報を取得できないようにする。
+        /// </summary>
+        /// <param name="roleId">説明を取得したい役職のRoleId</param>
+        /// <param name="amHost">true : 使用者がホスト</param>
+        /// <param name="isImpostor">true : 取得対象がインポスター役職</param>
+        /// <returns>string.1 : 役職名 / string.2 : 役職説明</returns>
+        internal static (string, string) GetRoleInfo(RoleId roleId, bool amHost = false, bool isImpostor = false)
         {
-            string roleName = null, roleInfo = null;
+            string roleName = "NONE", roleInfo = "";
 
             if (roleId != RoleId.DefaultRole)
             {
@@ -450,7 +496,8 @@ class AddChatPatch
                     roleName = RoleInfoDic[roleId].Item1;
                     roleInfo = RoleInfoDic[roleId].Item2;
                 }
-                else (roleName, roleInfo) = WriteRoleInfo(roleId);
+                else if (amHost) (roleName, roleInfo) = WriteRoleInfo(roleId);
+                else roleInfo = ModTranslation.GetString("GetRoleInfoErrorDisable");
 
                 return (roleName, roleInfo);
             }

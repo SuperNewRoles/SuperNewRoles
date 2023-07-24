@@ -49,8 +49,11 @@ public static class ModTranslation
     /// CustomOptionで追加しているカラータグは先に外してください。
     /// </summary>
     /// <param name="value">keyを取得したい翻訳後の文</param>
-    /// <returns>keyが存在 => key / keyが存在しない => 引数をそのまま返す </returns>
-    internal static string GetTranslateKey(string value)
+    /// <returns>
+    /// string : keyが存在 => key / keyが存在しない => 引数をそのまま返す
+    /// bool : true => keyの取得に成功 / false => keyの取得に失敗
+    /// </returns>
+    internal static (string, bool) GetTranslateKey(string value)
     {
         SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
 
@@ -67,12 +70,12 @@ public static class ModTranslation
         if (key != null)
         {
             Logger.Info($"{key}", "ModTranslation");
-            return key;
+            return (key, true);
         }
         else
         {
             Logger.Info($"key not found:{value}", "ModTranslation");
-            return value;
+            return (value, false);
         }
     }
 

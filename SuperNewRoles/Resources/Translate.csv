@@ -1406,7 +1406,9 @@ TeamRoleType,Role,役職,,職業
 MessageSettings,Settings,設定,设置,設定
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业,當前啟用的職業
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
-RoleInfoError,Failed to retrieve role description.,役職の説明の取得に失敗しました。
+RoleInfoError,Failed to retrieve information for role named [ {0} ].\nSuch a role may not exist. \nPlease try entering the information again.,[ {0} ] という役職の情報の取得に失敗しました。\nそのような役職は存在しません。\n再度入力して下さい。
+RoleIdInfoError,,[ {0} ({1}) ] という役職の情報の取得に失敗しました。\n入力された役職名は正確でしたが、Mod側で役職の情報の取得を試みた際にエラーが発生し 取得に失敗しました。
+GetRoleInfoErrorDisable,If you are not a host，you will not be able to retrieve information for roles that are not currently active.,ホストでない場合、現在有効でない役職の情報は取得できません。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】
 TeamRoleTypeMessage,【RoleType:{0}】,【{0}役職】,,【{0}職業】
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。,不能在暱稱裡有「mod」時將房間狀態設置為公開。
