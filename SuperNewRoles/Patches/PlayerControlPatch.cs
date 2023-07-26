@@ -1204,7 +1204,23 @@ public static class MurderPlayerPatch
                     causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 }
             }
-
+            if (RoleClass.Lovers.SameDie && target.IsLovers())
+            {
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                {
+                    PlayerControl SideLoverPlayer = target.GetOneSideLovers();
+                    if (SideLoverPlayer.IsAlive())
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                        writer.Write(SideLoverPlayer.PlayerId);
+                        writer.Write(SideLoverPlayer.PlayerId);
+                        writer.Write(byte.MaxValue);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        SideLoverPlayer.RpcSetFinalStatus(FinalStatus.LoversBomb);
+                    }
+                }
+            }
             if (target.IsQuarreled())
             {
                 if (AmongUsClient.Instance.AmHost)
