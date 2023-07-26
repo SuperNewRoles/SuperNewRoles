@@ -263,18 +263,7 @@ class AddChatPatch
             _ => "",
         };
     }
-    static string GetText(CustomRoleOption option)
-    {
-        Logger.Info("GetText", "Chathandler");
-        string text = "\n";
-        IntroData intro = option.Intro;
-        text += GetTeamText(intro.TeamType) + ModTranslation.GetString("TeamRoleType") + "\n";
-        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
-        text += intro.Description + "\n";
-        text += ModTranslation.GetString("MessageSettings") + ":\n";
-        text += GetOptionText(option, intro);
-        return text;
-    }
+
     // /grのコマンド結果を返す。辞書を加工する。
     static string GetInRole()
     {
@@ -306,8 +295,10 @@ class AddChatPatch
         float time = 0;
         foreach (CustomRoleOption option in EnableOptions)
         {
-            string text = GetText(option);
-            string rolename = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
+            (string rolename, string text) = RoleInfo.GetRoleInfo(option.RoleId);
+            rolename = $"<align={"left"}><size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size></align>";
+            text = $"\n<color=#00000000>{option.RoleId}</color>" + text;
+            SuperNewRolesPlugin.Logger.LogInfo(rolename);
             SuperNewRolesPlugin.Logger.LogInfo(text);
             Send(target, rolename, text, time);
             time += SendTime;
@@ -429,10 +420,10 @@ class AddChatPatch
                         IntroData intro = roleOption.Intro;
                         StringBuilder optionBuilder = new();
 
-                        roleName = $"<align={"left"}><size=180%>{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size> <size=50%>\n{GetTeamText(intro.TeamType)}</align></size>";
-                        optionBuilder.AppendLine("<size=50%>\n</size>");
+                        roleName = $"<align={"left"}><size=180%>{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size></align></size>";
 
-                        optionBuilder.AppendLine($"<align={"left"}><size=100%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
+                        optionBuilder.AppendLine($"<align={"left"}><size=80%>\n" + GetTeamText(roleOption.Intro.TeamType) + "\n</size>");
+                        optionBuilder.AppendLine($"<size=100%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
                         optionBuilder.AppendLine($"<size=80%>{intro.Description}\n</size>");
                         optionBuilder.AppendLine($"<size=70%>{ModTranslation.GetString("MessageSettings")}:");
                         optionBuilder.AppendLine($"{GetOptionText(roleOption, intro)}\n<color=#00000000>{roleOption.Intro.NameKey}</color></align></size>");
@@ -480,13 +471,12 @@ class AddChatPatch
 
         /// <summary>
         /// RoleIdから役職の説明を取得する。
-        /// 呼び出し元がホストでない場合, 現在配役されている役職以外の情報を取得できないようにする。
         /// </summary>
         /// <param name="roleId">説明を取得したい役職のRoleId</param>
-        /// <param name="amHost">true : 使用者がホスト</param>
+        /// <param name="isGetAllRole">辞書に保存されていない(配役されていない)役の情報も取得するか</param>
         /// <param name="isImpostor">true : 取得対象がインポスター役職</param>
         /// <returns>string.1 : 役職名 / string.2 : 役職説明</returns>
-        internal static (string, string) GetRoleInfo(RoleId roleId, bool amHost = false, bool isImpostor = false)
+        internal static (string, string) GetRoleInfo(RoleId roleId, bool isGetAllRole = false, bool isImpostor = false)
         {
             string roleName = "NONE", roleInfo = "";
 
@@ -497,7 +487,7 @@ class AddChatPatch
                     roleName = RoleInfoDic[roleId].Item1;
                     roleInfo = RoleInfoDic[roleId].Item2;
                 }
-                else if (amHost) (roleName, roleInfo) = WriteRoleInfo(roleId);
+                else if (isGetAllRole) (roleName, roleInfo) = WriteRoleInfo(roleId);
                 else roleInfo = ModTranslation.GetString("GetRoleInfoErrorDisable");
 
                 return (roleName, roleInfo);
