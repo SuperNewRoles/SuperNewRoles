@@ -52,6 +52,7 @@ public static class Blacklist
         //new BlackPlayer("", "SuperNewRoles", 0010, "公開からの誘導はおやめください", "公開部屋から誘導してMODをプレイしていたため");
         if (request.isNetworkError || request.isHttpError)
         {
+            downloaded = false;
             Logger.Info("Blacklist Error Fetch:"+request.responseCode.ToString());
             yield break;
         }
