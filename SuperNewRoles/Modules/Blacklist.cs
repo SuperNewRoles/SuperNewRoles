@@ -42,7 +42,6 @@ public static class Blacklist
     /// <returns></returns>
     public static IEnumerator FetchBlacklist()
     {
-        Logger.Info("Connected:"+downloaded.ToString());
         if (downloaded)
         {
             yield break;
@@ -100,10 +99,13 @@ internal class DisconnectPopupClosePatch
 {
     public static void Postfix(DisconnectPopup __instance)
     {
-        __instance.transform.FindChild("CloseButton").localPosition = new(-2.75f, 0.5f, 0);
-        __instance.GetComponent<SpriteRenderer>().size = new(5, 1.5f);
-        __instance._textArea.fontSizeMin = 1.9f;
-        __instance._textArea.enableWordWrapping = true;
+        if (__instance._textArea.text.StartsWith("<size=0%>MOD</size>"))
+        {
+            __instance.transform.FindChild("CloseButton").localPosition = new(-2.75f, 0.5f, 0);
+            __instance.GetComponent<SpriteRenderer>().size = new(5, 1.5f);
+            __instance._textArea.fontSizeMin = 1.9f;
+            __instance._textArea.enableWordWrapping = true;
+        }
     }
 }
 [HarmonyPatch(typeof(DisconnectPopup), nameof(DisconnectPopup.DoShow))]
