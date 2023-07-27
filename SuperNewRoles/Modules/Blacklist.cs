@@ -34,7 +34,7 @@ public static class Blacklist
             Players.Add(this);
         }
     }
-    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app";
+    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list";
     static bool downloaded = false;
     /// <summary>
     /// 起動時などで予め取得しておく
