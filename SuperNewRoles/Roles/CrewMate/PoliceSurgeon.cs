@@ -294,7 +294,7 @@ internal static class PostMortemCertificate_Display
             bool canResend = CustomOptionData.CanResend.GetBool();
             foreach (var pl in RoleData.Player)
             {
-                Patches.AddChatPatch.SendCommand(pl, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl));
+                Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl), "#89c3eb");
                 if (canResend) Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb");
             }
         }
@@ -332,7 +332,7 @@ internal static class PostMortemCertificate_Display
 
             __instance.RpcClearVote(srcPlayer.GetClientId()); // 投票を解除する
             // 死体検案書全文を送信する。
-            Patches.AddChatPatch.SendCommand(srcPlayer, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer));
+            Patches.AddChatPatch.ChatInformation(srcPlayer, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer), "#89c3eb");
 
             return false; // 投票を無効化する
         }
@@ -344,9 +344,9 @@ internal static class PostMortemCertificate_Display
     {
         string text;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            text = $"{ModTranslation.GetString("PoliceSurgeonResendSHR")}";
+            text = $"<align={"left"}>{ModTranslation.GetString("PoliceSurgeonResendSHR")}</align>";
         else
-            text = $"{ModTranslation.GetString("PoliceSurgeonResendSNR")}";
+            text = $"<align={"left"}>{ModTranslation.GetString("PoliceSurgeonResendSNR")}</align>";
         return text;
     }
     // ネームプレート上に死体検案書を確認するためのボタンを作成する。
@@ -393,10 +393,7 @@ internal static class PostMortemCertificate_Display
         // 自分に表示されているボタンの場合死体検案書全文をチャットに表示する。
         if (target == PlayerControl.LocalPlayer)
         {
-            string name = target.Data.PlayerName;
-            target.SetName(PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(target));
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(target, "");
-            target.SetName(name);
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(target, PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(target));
             return;
         }
 
@@ -655,7 +652,7 @@ internal static class PostMortemCertificate_CreateAndGet
         bool isWrite = false; // 死体検案書に書く死者の情報があるか
         StringBuilder builder = new();
 
-        string fullDelimiterLine = "|------------------------------------------------------|";
+        string fullDelimiterLine = "|--------------------------------------------------------------|";
         string shortDelimiterLine = "|----------------------------------------------------------------|";
 
         string delimiterLine = victimPlayer == null ? fullDelimiterLine : shortDelimiterLine;
@@ -696,11 +693,10 @@ internal static class PostMortemCertificate_CreateAndGet
         if (isWrite) // 死体検案書に記載する 死者の情報がある時
         {
             builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main3")); // 上記のとおり<s>診断</s>(検案)する
-            builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main4")} {RoleData.OfficialDateNotation}"); // 本診断書(検案書) 発行年月日
+            builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main4")}{RoleData.OfficialDateNotation}"); // 本診断書(検案書) 発行年月日
             builder.AppendLine($"{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}"); // マップ名
             builder.AppendLine("");
             builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main5")} {{0}}"); // (氏名) 医師
-            builder.AppendLine("");
             builder.AppendLine(delimiterLine);
             builder.AppendLine("");
         }
@@ -712,14 +708,19 @@ internal static class PostMortemCertificate_CreateAndGet
             int rand = random.Next(1, 15 + 1);
             string transRandomText = ModTranslation.GetString($"PostMortemCertificate_NoDeaths_RandomMessage_{rand}");
 
-            builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_NoDeaths"), RoleData.OfficialDateNotation, "{0}", transRandomText)}");
+            builder.AppendLine($"<align={"left"}>{string.Format(ModTranslation.GetString("PostMortemCertificate_NoDeaths"), RoleData.OfficialDateNotation, "{0}", transRandomText)}");
         }
 
         // 死体検案書の文字サイズと色をchat式とCustomoverlay式に合わせて変更する
-        var sizeColor = victimPlayer == null ? "<size=90%><color=#c8c2c6>" : "<size=200%><color=#7d7d7d>";
+        var sizeColor = victimPlayer == null ? "<size=100%>" : "<size=200%><color=#7d7d7d>";
         builder.Insert(0, sizeColor);
-        builder.AppendLine("</align></color></size>");
-
+        if (victimPlayer != null)
+            builder.AppendLine("</align></color></size>");
+        else
+        {
+            builder.AppendLine("</align></size>");
+            builder.Replace("<color=#89c3eb>","<color=#5654a2>");
+        }
         return builder.ToString();
 
         /*構造メモ

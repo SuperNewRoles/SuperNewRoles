@@ -411,8 +411,8 @@ class AddChatPatch
     /// <param name="color">文字色, 16進数のcolorコードで指定([#FFFFFF]等)</param>
     public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white")
     {
-        string line = "|------------------------------------------------------|";
-        string name = $"<size=90%><color={color}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</color></size>";
+        string line = "|--------------------------------------------------------|";
+        string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
         string contents = $"\n{infoContents}\n　\n";
 
         SendCommand(target, contents, name);
