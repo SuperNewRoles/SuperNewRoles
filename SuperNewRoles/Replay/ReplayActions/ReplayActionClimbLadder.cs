@@ -83,12 +83,18 @@ public class ReplayActionClimbLadder : ReplayAction
                 __instance.myPlayer.FootSteps.loop = true;
                 __instance.myPlayer.FootSteps.Play();
             }
+            __instance.ResetAnimState();
         }
 
         if ((int)ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] >= (int)LadderState.WalkTo1st)
         {
             ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.WalkTo1st;
             yield return __instance.WalkPlayerTo(source.transform.position, 0.001f);
+            ((Behaviour)__instance.myPlayer.Collider).enabled = true;
+            __instance.myPlayer.moveable = true;
+            ((Behaviour)__instance.myPlayer.NetTransform).enabled = true;
+            __instance.myPlayer.ForceKillTimerContinue = false;
+            __instance.myPlayer.onLadder = false;
         }
         ReplayManager.CurrentReplay.CurrentLadderState[__instance.myPlayer.PlayerId] = LadderState.None;
         ReplayManager.CurrentReplay.CurrentLadder.Remove(__instance.myPlayer.PlayerId);

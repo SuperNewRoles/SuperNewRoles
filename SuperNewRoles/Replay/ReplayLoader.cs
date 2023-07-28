@@ -200,15 +200,15 @@ namespace SuperNewRoles.Replay
                         mpb.StopAllCoroutines();
                         //mpb.IsLeft = !mpb.IsLeft;
                         mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
-                        
-                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    }
+
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.onLadder)
                         {
-                            if (player.onLadder)
-                            {
-                                player.MyPhysics.body.velocity = Vector2.one;
-                                player.MyPhysics.StopAllCoroutines();
-                                player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderRewind(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
-                            }
+                            player.MyPhysics.body.velocity = Vector2.one;
+                            player.MyPhysics.StopAllCoroutines();
+                            player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderRewind(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
                         }
                     }
                 }
