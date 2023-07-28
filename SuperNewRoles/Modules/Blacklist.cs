@@ -82,7 +82,8 @@ public static class Blacklist
         {
             if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == clientData.FriendCode)
             {
-                if (PlayerControl.LocalPlayer.PlayerId == clientData.Character.PlayerId)
+                Logger.Info((clientData.Character == null).ToString());
+                if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
                 {
                     AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
                     AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle+"\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード："+player.ReasonCode.ToString()+"\n理由："+player.ReasonDescription+"\n期間："+(!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd")+"まで"));
