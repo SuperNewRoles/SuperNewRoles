@@ -93,6 +93,7 @@ public static class MatchMaker
     internal static void UpdateTags()
     {
         var data = CreateBaseData();
+        data["type"] = "updatetags";
         data["updatetags"] = GetTagData();
         AmongUsClient.Instance.StartCoroutine(Analytics.Post(BaseURL + "api/update_state", data.GetString()).WrapToIl2Cpp());
     }
