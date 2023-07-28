@@ -23,6 +23,7 @@ public enum CustomOptionType
     Impostor,
     Neutral,
     Crewmate,
+    MatchTag,
     Empty // 使用されない
 }
 
@@ -63,7 +64,9 @@ public class CustomOption
                 }
                 if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && AmongUsClient.Instance.IsGamePublic)
                 {
-                    Modules.MatchMaker.UpdateOption();
+                    if (id is (>= 100000 and < 600000) or 0) MatchMaker.UpdateOption();
+                    else if (id is >= 600000 and < 700000) MatchMaker.UpdateTags();
+                    else Logger.Error($"設定idが規定範囲外でした : {id}", "MatchMakerUpdate");
                 }
             }
             else
@@ -147,6 +150,10 @@ public class CustomOption
                 if (ModifierIdMax < Id) ModifierIdMax = Id;
                 if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ModifierId}");
                 break;
+            case SettingPattern.MatchingTagId:
+                if (MatchingTagIdMax < Id) MatchingTagIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.MatchingTagId}");
+                break;
         }
         options.Add(this);
     }
@@ -156,6 +163,7 @@ public class CustomOption
     public static int NeutralIdMax = 0;
     public static int CrewmateIdMax = 0;
     public static int ModifierIdMax = 0;
+    public static int MatchingTagIdMax = 0;
 
     private SettingPattern GetSettingPattern(int id)
     {
@@ -165,6 +173,7 @@ public class CustomOption
         if (id is >= 300000 and < 400000) return SettingPattern.NeutralId;
         if (id is >= 400000 and < 500000) return SettingPattern.CrewmateId;
         if (id is >= 500000 and < 600000) return SettingPattern.ModifierId;
+        if (id is >= 600000 and < 700000) return SettingPattern.MatchingTagId;
 
         return SettingPattern.ErrorId;
     }
@@ -177,6 +186,7 @@ public class CustomOption
         NeutralId = 300000,
         CrewmateId = 400000,
         ModifierId = 500000,
+        MatchingTagId = 600000,
     }
     public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
@@ -207,6 +217,11 @@ public class CustomOption
                 _ => CustomOptionType.Generic
             };
         return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max, isHidden);
+    }
+
+    public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag)
+    {
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
     }
 
     // Static behaviour
@@ -516,6 +531,11 @@ class GameOptionsMenuStartPatch
             GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingCrewmate"));
             return;
         }
+        if (GameObject.Find("matchTagSettings") != null)
+        {
+            GameObject.Find("matchTagSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingMatchTag"));
+            return;
+        }
         if (GameObject.Find("RegulationSettings") != null)
         {
             GameObject.Find("RegulationSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingRegulation"));
@@ -548,6 +568,11 @@ class GameOptionsMenuStartPatch
         crewmateSettings.name = "CrewmateSettings";
         crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "CrewmateSetting";
 
+        var matchTagSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
+        var matchTagMenu = matchTagSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
+        matchTagSettings.name = "matchTagSettings";
+        matchTagSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "matchTagSetting";
+
         var RegulationSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
         var RegulationMenu = RegulationSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
         RegulationSettings.name = "RegulationSettings";
@@ -575,7 +600,12 @@ class GameOptionsMenuStartPatch
         crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
         crewmateTab.name = "CrewmateTab";
 
-        var RegulationTab = UnityEngine.Object.Instantiate(roleTab, neutralTab.transform);
+        var matchTagTab = UnityEngine.Object.Instantiate(roleTab, crewmateTab.transform);
+        var matchTagTabHighlight = matchTagTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
+        matchTagTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
+        matchTagTab.name = "matchTagTab";
+
+        var RegulationTab = UnityEngine.Object.Instantiate(roleTab, matchTagTab.transform);
         var RegulationTabHighlight = RegulationTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
         RegulationTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
         RegulationTab.name = "RegulationTab";
@@ -585,11 +615,12 @@ class GameOptionsMenuStartPatch
         roleTab.transform.position += Vector3.left * 3f;
         snrTab.transform.position += Vector3.left * 2f;
         impostorTab.transform.localPosition = Vector3.right * 1f;
-        neutralTab.transform.localPosition = Vector3.right * 1f;
+        neutralTab.transform.localPosition = Vector3.right * 0.95f;
         crewmateTab.transform.localPosition = Vector3.right * 0.95f;
-        RegulationTab.transform.localPosition = Vector3.right * 1.85f;
+        matchTagTab.transform.localPosition = Vector3.right * 1.05f;
+        RegulationTab.transform.localPosition = Vector3.right * 0.90f;
 
-        var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, RegulationTab };
+        var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, matchTagTab, RegulationTab };
         for (int i = 0; i < tabs.Length; i++)
         {
             var button = tabs[i].GetComponentInChildren<PassiveButton>();
@@ -604,6 +635,7 @@ class GameOptionsMenuStartPatch
                 impostorSettings.gameObject.SetActive(false);
                 neutralSettings.gameObject.SetActive(false);
                 crewmateSettings.gameObject.SetActive(false);
+                matchTagSettings.gameObject.SetActive(false);
                 RegulationSettings.gameObject.SetActive(false);
                 gameSettingMenu.GameSettingsHightlight.enabled = false;
                 gameSettingMenu.RolesSettingsHightlight.enabled = false;
@@ -611,6 +643,7 @@ class GameOptionsMenuStartPatch
                 impostorTabHighlight.enabled = false;
                 neutralTabHighlight.enabled = false;
                 crewmateTabHighlight.enabled = false;
+                matchTagTabHighlight.enabled = false;
                 RegulationTabHighlight.enabled = false;
                 if (copiedIndex == 0)
                 {
@@ -647,10 +680,14 @@ class GameOptionsMenuStartPatch
                 }
                 else if (copiedIndex == 6)
                 {
+                    matchTagSettings.gameObject.SetActive(true);
+                    matchTagTabHighlight.enabled = true;
+                }
+                else if (copiedIndex == 7)
+                {
                     RegulationSettings.gameObject.SetActive(true);
                     RegulationTabHighlight.enabled = true;
                 }
-
             }));
         }
 
@@ -662,15 +699,18 @@ class GameOptionsMenuStartPatch
             UnityEngine.Object.Destroy(option.gameObject);
         foreach (OptionBehaviour option in crewmateMenu.GetComponentsInChildren<OptionBehaviour>())
             UnityEngine.Object.Destroy(option.gameObject);
+        foreach (OptionBehaviour option in matchTagMenu.GetComponentsInChildren<OptionBehaviour>())
+            UnityEngine.Object.Destroy(option.gameObject);
         foreach (OptionBehaviour option in RegulationMenu.GetComponentsInChildren<OptionBehaviour>())
             UnityEngine.Object.Destroy(option.gameObject);
         List<OptionBehaviour> snrOptions = new();
         List<OptionBehaviour> impostorOptions = new();
         List<OptionBehaviour> neutralOptions = new();
         List<OptionBehaviour> crewmateOptions = new();
+        List<OptionBehaviour> matchTagOptions = new();
 
-        List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, RegulationMenu.transform };
-        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions };
+        List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, matchTagMenu.transform, RegulationMenu.transform };
+        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions, matchTagOptions };
 
         for (int i = 0; i < CustomOption.options.Count; i++)
         {
@@ -688,7 +728,8 @@ class GameOptionsMenuStartPatch
             }
             option.optionBehaviour.gameObject.SetActive(true);
         }
-        Logger.Info("通過やでええええええええええええええええ");
+        Logger.Info("SNROption - matchTagOption通過");
+
         foreach (var Regulation in CustomRegulation.RegulationData.Regulations)
         {
             if (Regulation.optionBehaviour == null)
@@ -703,6 +744,7 @@ class GameOptionsMenuStartPatch
             }
             Regulation.optionBehaviour.gameObject.SetActive(true);
         }
+        Logger.Info("RegulationOption通過");
 
         snrMenu.Children = snrOptions.ToArray();
         snrSettings.gameObject.SetActive(false);
@@ -715,6 +757,8 @@ class GameOptionsMenuStartPatch
 
         crewmateMenu.Children = crewmateOptions.ToArray();
         crewmateSettings.gameObject.SetActive(false);
+
+        matchTagSettings.gameObject.SetActive(false);
 
         RegulationSettings.gameObject.SetActive(false);
 
@@ -892,6 +936,7 @@ static class GameOptionsMenuUpdatePatch
             "ImpostorSetting" => CustomOptionType.Impostor,
             "NeutralSetting" => CustomOptionType.Neutral,
             "CrewmateSetting" => CustomOptionType.Crewmate,
+            "matchTagSetting" => CustomOptionType.MatchTag,
             _ => CustomOptionType.Crewmate,
         };
     }
@@ -1143,7 +1188,7 @@ class GameOptionsDataPatch
                 }
 
                 entry = new StringBuilder();
-                if (!GameOptionsMenuUpdatePatch.IsHidden(option))
+                if (!(GameOptionsMenuUpdatePatch.IsHidden(option) || option.type == CustomOptionType.MatchTag))
                 {
                     entry.AppendLine(OptionToString(option));
                 }
