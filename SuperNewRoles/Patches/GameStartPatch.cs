@@ -27,7 +27,6 @@ class GameStartPatch
             if (lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.CreateRoom();
-                Modules.MatchMaker.UpdateTags();
             }
             lastTimer = 0;
         }
@@ -65,7 +64,6 @@ class GameStartPatch
                 if (AmongUsClient.Instance.IsGamePublic)
                 {
                     Modules.MatchMaker.CreateRoom();
-                    Modules.MatchMaker.UpdateTags();
                 }
                 else
                 {

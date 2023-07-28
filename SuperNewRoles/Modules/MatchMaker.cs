@@ -90,10 +90,14 @@ public static class MatchMaker
         data["mode"] = GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek ? "HNS" : ModeHandler.GetMode(false).ToString();
         AmongUsClient.Instance.StartCoroutine(Analytics.Post(BaseURL + "api/update_state", data.GetString()).WrapToIl2Cpp());
     }
-    public static void UpdateTags()
+    internal static void UpdateTags()
     {
         var data = CreateBaseData();
-        data["type"] = "updatetags";
+        data["updatetags"] = GetTagData();
+        AmongUsClient.Instance.StartCoroutine(Analytics.Post(BaseURL + "api/update_state", data.GetString()).WrapToIl2Cpp());
+    }
+    private static string GetTagData()
+    {
         List<string> ActiveTags = new();
         foreach (CustomOption option in options)
         {
@@ -118,10 +122,11 @@ public static class MatchMaker
                 string tagKey = ModTranslation.GetTranslateKey(tagName);
 
                 ActiveTags.Add($"{tagKey}");
-                Logger.Info($"タグ情報 : {tagName}({option.id}) を送信します。" ,"UpdateTags");
+                Logger.Info($"タグ情報 : {tagName}({option.id}) を送信します。");
             }
         }
-        data["updatetags"] = string.Join(',', ActiveTags);
+        string tagData = string.Join(',', ActiveTags);
+        return tagData;
     }
     public static void CreateRoom()
     {
@@ -167,6 +172,7 @@ public static class MatchMaker
         data["NowPlayer"] = GameData.Instance.PlayerCount.ToString();
         data["MaxPlayer"] = GameOptionsManager.Instance.CurrentGameOptions.MaxPlayers.ToString();
         data["Version"] = SuperNewRolesPlugin.VersionString;
+        data["updatetags"] = GetTagData();
         string server = "NoneServer";
         StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
         switch (n)
