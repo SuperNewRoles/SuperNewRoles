@@ -118,6 +118,7 @@ public static class MatchMaker
                 string tagKey = ModTranslation.GetTranslateKey(tagName);
 
                 ActiveTags.Add($"{tagKey}");
+                Logger.Info($"タグ情報 : {tagName}({option.id}) を送信します。" ,"UpdateTags");
             }
         }
         data["updatetags"] = string.Join(',', ActiveTags);

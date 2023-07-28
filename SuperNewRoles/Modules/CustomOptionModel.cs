@@ -64,16 +64,8 @@ public class CustomOption
                 }
                 if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && AmongUsClient.Instance.IsGamePublic)
                 {
-                    if (id is (>= 100000 and < 600000) or 0)
-                    {
-                        MatchMaker.UpdateOption();
-                        Logger.Info($"設定id : {id} が変更された為, ゲーム & 役職の設定を送信しました。","UpdateOption");
-                    }
-                    else if (id is >= 600000 and < 700000)
-                    {
-                        MatchMaker.UpdateTags();
-                        Logger.Info($"設定id : {id} が変更された為, タグ情報を送信しました。","UpdateTags");
-                    }
+                    if (id is (>= 100000 and < 600000) or 0) MatchMaker.UpdateOption();
+                    else if (id is >= 600000 and < 700000) MatchMaker.UpdateTags();
                     else Logger.Error($"設定idが規定範囲外でした : {id}", "MatchMakerUpdate");
                 }
             }
