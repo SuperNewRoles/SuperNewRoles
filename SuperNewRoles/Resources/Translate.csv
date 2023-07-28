@@ -1041,7 +1041,7 @@ SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼�
 SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。,規則上牧狼人被判定為船員陣營，但是其為豺狼的同伙。\n豺狼團隊獲勝則牧狼人一同獲勝。\n豺狼能確認牧狼人是誰。牧狼人需要幫助豺狼以獲得勝利。
 SpelunkerName,Spelunker,スペランカー,倒霉蛋,倒霉鬼
 SpelunkerTitle1,It's so easy to die.,簡単に死んでしまう,死亡如风，常伴吾身,人總有一死，何必在意
-SpelunkerDescription,I am a worthless weakling who can easily die over trivial matters.\nVents，ladders，doors，power outages，communication interference，elevator lifts—everything is my enemy.\nBut if I manage to survive until the end，I will seize victory and claim it solely for myself.\nNow，let's strive to stay alive.,ちょっとしたことで簡単に死ぬクソ雑魚です。\nベント、はしご、ドア、停電、通信妨害、昇降機リフト、全てが敵です。\n最後まで生存していると勝利を横取りして単独勝利します。\nさあ、生き残ろう。,倒霉蛋是可以因任何意外事件而死的杂❤鱼。\倒霉蛋可以因管道、梯子、门、破坏、移动平台等等原因而死。\n若倒霉蛋存活到游戏结束，倒霉蛋将肚子获胜。\n一定要活下去啊。,倒霉鬼是隨隨便便都能死的雜魚。\n通風管、梯子、門、停電、通訊干擾、電梯，所有東西都是倒霉鬼的敵人。\n如果倒霉鬼能活到最後，就能獨自獲勝。\n現在，努力活下去吧。
+SpelunkerDescription,I am a worthless weakling who can easily die over trivial matters.\nVents，ladders，doors，power outages，communication interference，elevator lifts—everything is my enemy.\nBut if I manage to survive until the end，I will seize victory and claim it solely for myself.\nNow，let's strive to stay alive.,ちょっとしたことで簡単に死ぬクソ雑魚です。\nベント、はしご、ドア、停電、通信妨害、昇降機リフト、全てが敵です。\n最後まで生存していると勝利を横取りして単独勝利します。\nさあ、生き残ろう。,倒霉蛋是可以因任何意外事件而死的杂❤鱼。\倒霉蛋可以因管道、梯子、门、破坏、移动平台等等原因而死。\n若倒霉蛋存活到游戏结束，倒霉蛋将肚子获胜。\n一定要活下去啊。,倒霉鬼是隨隨便便都能死的雜❤魚。\n通風管、梯子、門、停電、通訊干擾、電梯，所有東西都是倒霉鬼的敵人。\n如果倒霉鬼能活到最後，就能獨自獲勝。\n現在，努力活下去吧。
 SpelunkerVentDeathChance,Probability of vent death,ベント死の確率,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
 SpelunkerIsDeathCommsOrPowerdown,Power outage/community skipping death,停電/コミュサボ死,倒霉蛋会在照明或通讯破坏期间失足而死,倒霉鬼在停電/通訊破壞期間失足而死
 SpelunkerDeathCommsOrPowerdownTime,Time to power outage/community sabotage death,停電/コミュサボ死までの時間,倒霉蛋在照明或通讯期间死亡需要经过的时间,倒霉鬼在停電/通訊破壞期間死亡需要經過的時間
@@ -1081,7 +1081,7 @@ MatryoshkaPutOnButtonName,Put On,着る,套娃,套娃
 MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除,解除
 StefinderName,Stefinder,ステファインダー,二五仔,二五仔
 StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう,那么答案只有一个了！,那麼答案只有一個了！
-StefinderDescription,You can only make one kill.\nIf you make a kill， you are in the impostor's camp; if you do not make a kill， you are in the crew's camp.\nYou must decide which side you are going to be in when the match unfolds.,一度だけキルが出来ます。\nキルをしたらインポスター陣営、キルをしなければクルー陣営です。\n試合展開を見極めてどちらに付くか決めましょう。,二五仔只能进行一次击杀。\n使用击杀的二五仔属于内鬼阵营，不使用击杀的二五仔则属于船员阵营。\n二五仔需要根据游戏的进展来决定自己要加入哪方,二五仔只能進行一次擊殺。\n一旦你進行了擊殺，你將成為內鬼陣營；如果你沒有進行擊殺，你將維持船員陣營身分。\n你必須在遊戲結束前決定你要加入哪一方。
+StefinderDescription,You can only make one kill.\nIf you make a kill， you are in the impostor's camp; if you do not make a kill， you are in the crew's camp.\nYou must decide which side you are going to be in when the match unfolds.,一度だけキルが出来ます。\nキルをしたらインポスター陣営、キルをしなければクルー陣営です。\n試合展開を見極めてどちらに付くか決めましょう。,二五仔只能进行一次击杀。\n使用击杀的二五仔属于内鬼阵营，不使用击杀的二五仔则属于船员阵营。\n二五仔需要根据游戏的进展来决定自己要加入哪方,二五仔只能進行一次擊殺。\n一旦你進行了擊殺，你將成為內鬼陣營；如果你沒有進行擊殺，你將維持船員陣營身分。\n根據遊戲的進展決定你要加入哪一方。
 StefinderKillCooldownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却,二五仔擊殺冷卻時間
 StefinderVentSetting,CanUseVent,ベントを使用できる,二五仔可以使用管道,二五仔可以使用通風管道
 StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五仔可以造成破坏,二五仔可以造成破壞
@@ -1220,7 +1220,7 @@ GMSpawnDeadBody,Spawn Deadbody,死体発生,生成尸体,生成屍體
 GMEndMeeting,End Meeting,会議終了,结束会议,結束會議
 SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生,期望自殺者
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない,找寻活着的意义,找到活下去的意義
-SuicidalIdeationDescription,It has a self-destruct timer that extends the time to do a task.\nIt has its own fall-to-death probability.\nIf you complete the task before it self-destructs， you win alone.\nYou also win an additional victory if you survive even if you do not complete the task.,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。,绝望先生可以通过做任务延长自己的自杀倒计时。\n绝望先生持有独立的在梯子上摔死概率。\n只要绝望先生在自杀前做完了所有任务，绝望先生便可以单独获胜。\n若绝望先生没有完成所有任务，但在游戏结束时存活，绝望先生也可以获胜。
+SuicidalIdeationDescription,It has a self-destruct timer that extends the time to do a task.\nIt has its own fall-to-death probability.\nIf you complete the task before it self-destructs， you win alone.\nYou also win an additional victory if you survive even if you do not complete the task.,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。,绝望先生可以通过做任务延长自己的自杀倒计时。\n绝望先生持有独立的在梯子上摔死概率。\n只要绝望先生在自杀前做完了所有任务，绝望先生便可以单独获胜。\n若绝望先生没有完成所有任务，但在游戏结束时存活，绝望先生也可以获胜。,絕望先生能透過完成任務來延長自己的自殺倒數。\n當在自殺前做完了所有任務，你便可以單獨獲勝。\n若你沒有完成所有任務，但在遊戲結束時仍活著，你也可以獲勝。
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本,獨特的勝利文字
 SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間,绝望先生自杀倒计时,自殺倒數時間
 SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増える時間,绝望先生完成一个任务后倒计时的增量,完成一個任務後倒計時的增量
@@ -1378,53 +1378,53 @@ IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
 
 #SettingMatchTag
-SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定
+SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,,<color=#93b69c>配對標籤</color>設定
 
-BeginnerTag,Beginner,初心者
-IntermediateTag,Intermediate,中級者
-AdvancedTag,Advanced,上級者
-CompetenceIsNotRequiredTag,Competence is not required.,実力不問
+BeginnerTag,Beginner,初心者,,新手
+IntermediateTag,Intermediate,中級者,,老手
+AdvancedTag,Advanced,上級者,,高手
+CompetenceIsNotRequiredTag,Competence is not required.,実力不問,,不限實力
 
-SeriousTag,Serious Players,ガチ勢
-EnjoyTag,Enjoyers,エンジョイ勢
+SeriousTag,Serious Players,ガチ勢,,享受勝利
+EnjoyTag,Enjoyers,エンジョイ勢,,享受過程
 
-SeriousnessTag,Seriousness Play,真剣プレイ
-WelcomeBeginnerTag,,初心者歓迎
+SeriousnessTag,Seriousness Play,真剣プレイ,,認真局
+WelcomeBeginnerTag,,初心者歓迎,,歡迎新手
 
-NowRecordingTag,Now Recording,撮影中
-NowBeingDeliveredTag,Now Being Delivered,配信中
-OKForRecordingTag,OK for Recording,撮影OK
-OKForBeingDeliveredTag,OK for Recording,配信OK
-NoRecordingTag,No Recording,撮影NG
-NoBeingDeliveredTag,No Recording,配信NG
+NowRecordingTag,Now Recording,撮影中,,錄影中
+NowBeingDeliveredTag,Now Being Delivered,配信中,,直播中
+OKForRecordingTag,OK for Recording,撮影OK,,允許錄影
+OKForBeingDeliveredTag,OK for Recording,配信OK,,允許直播
+NoRecordingTag,No Recording,撮影NG,,禁止錄影
+NoBeingDeliveredTag,No Recording,配信NG,,禁止直播
 
-FreeChatTag,FreeChat Only,フリーチャットのみ
-QuickChatTag,QuickChat Only,クイックチャットのみ
-VoiceChatTag,VoiceChat,VC
-BetterCrewLinkTag,Use BetterCrewLink,近アモ
-CanListenOnlyTag,Listen only OK,聞き専可
-FullVCOnlyTag,Always use voice chat,聞き専不可
+FreeChatTag,FreeChat Only,フリーチャットのみ,,只能自由聊天
+QuickChatTag,QuickChat Only,クイックチャットのみ,,只能快速聊天
+VoiceChatTag,VoiceChat,VC,,語音聊天
+BetterCrewLinkTag,Use BetterCrewLink,近アモ,,使用BetterCrewLink
+CanListenOnlyTag,Listen only OK,聞き専可,,允許只聽不說
+FullVCOnlyTag,Always use voice chat,聞き専不可,,必須使用語音
 
-SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ
-NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り
-VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村
-ManyRolesRegulationTag,Regulation with many roles,多役
-WerewolfMoonlightRegulationTag,Werewolf Moonlight Regulation,月下
-DarkPotRegulationTag,Dark pot,闇鍋
-OthersRegulationTag,Others regulation,その他レギュ
-TryingOutRolesRegulationTag,Trying out a roles.,役職お試し中
-AmusementRegulationTag,Amusement regulation,お遊びレギュ
-RegulationAdjustedTag,Adjusted,レギュ調整中
+SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ,,警長與叛徒規則
+NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り,,中立殺手規則
+VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村,,狼人殺規則
+ManyRolesRegulationTag,Regulation with many roles,多役,,超多職業規則
+WerewolfMoonlightRegulationTag,Werewolf Moonlight Regulation,月下,,月下狼人規則
+DarkPotRegulationTag,Dark pot,闇鍋,,黑暗火鍋規則
+OthersRegulationTag,Others regulation,その他レギュ,,其他規則
+TryingOutRolesRegulationTag,Trying out a roles.,役職お試し中,,職業測試
+AmusementRegulationTag,Amusement regulation,お遊びレギュ,,娛樂規則
+RegulationAdjustedTag,Adjusted,レギュ調整中,,規則調整
 
-FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限
-FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止
+FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限,,管理員使用限制
+FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止,,禁止管理員
 
-DebugNewRolesTag,New Roles,新役職
-DebugNewFeaturesTag,New Features,新機能
-DebugAddFeaturesTag,Add Features,機能追加
-DebugChangeTag,Change,仕様変更
-DebugBugFixTag,Fix Bug,バグ修正
-DebugOthersTag,Others,その他(デバッグ)
+DebugNewRolesTag,New Roles,新役職,,新職業
+DebugNewFeaturesTag,New Features,新機能,,新功能
+DebugAddFeaturesTag,Add Features,機能追加,,增加功能
+DebugChangeTag,Change,仕様変更,,變更
+DebugBugFixTag,Fix Bug,バグ修正,,Bug修正
+DebugOthersTag,Others,その他(デバッグ),,其他（除錯）
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
@@ -1454,7 +1454,7 @@ Team,Team,陣営,阵营,陣營
 TeamRoleType,Role,役職,,職業
 MessageSettings,Settings,設定,设置,設定
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业,當前啟用的職業
-EnableTagsMessage,,現在設定されているマッチメイキングタグ,
+EnableTagsMessage,,現在設定されているマッチメイキングタグ,,當前啟用的配對標籤
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
 MyRoleErrorSHRMode,This command is not available in SHR mode.,SHRモードではこのコマンドは使用できません。,,在SHR模式中無法使用此指令。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】
