@@ -289,7 +289,7 @@ public static class MatchTagOption
 
         // レギュレーション : 600500 ~
         Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
-        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null); // シェリマ
+        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null, isHeader: true); // シェリマ
         NeutralKillerRegulationTag = CreateMatchMakeTag(600502, true, Cs(RegulationColor, "NeutralKillerRegulationTag"), false, null); // 第三キル人外入り
         ManyRolesRegulationTag = CreateMatchMakeTag(600503, true, Cs(RegulationColor, "ManyRolesRegulationTag"), false, null); // 多役
         WerewolfMoonlightRegulationTag = CreateMatchMakeTag(600504, true, Cs(RegulationColor, "WerewolfMoonlightRegulationTag"), false, null); // 月下
