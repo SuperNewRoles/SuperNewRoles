@@ -98,14 +98,17 @@ public static class Blacklist
 [HarmonyPatch(typeof(DisconnectPopup), nameof(DisconnectPopup.Close))]
 internal class DisconnectPopupClosePatch
 {
-    public static void Postfix(DisconnectPopup __instance)
+    public static void Prefix(DisconnectPopup __instance)
     {
-        if (__instance._textArea.text.StartsWith("<size=0%>MOD</size>"))
+        try
         {
             __instance.transform.FindChild("CloseButton").localPosition = new(-2.75f, 0.5f, 0);
             __instance.GetComponent<SpriteRenderer>().size = new(5, 1.5f);
             __instance._textArea.fontSizeMin = 1.9f;
             __instance._textArea.enableWordWrapping = true;
+        } catch(Exception e){
+            Logger.Info(e.ToString());
+            
         }
     }
 }
