@@ -1377,6 +1377,55 @@ PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,起飛！
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
 
+#SettingMatchTag
+SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定
+
+BeginnerTag,Beginner,初心者
+IntermediateTag,Intermediate,中級者
+AdvancedTag,Advanced,上級者
+CompetenceIsNotRequiredTag,Competence is not required.,実力不問
+
+SeriousTag,Serious Players,ガチ勢
+EnjoyTag,Enjoyers,エンジョイ勢
+
+SeriousnessTag,Seriousness Play,真剣プレイ
+WelcomeBeginnerTag,,初心者歓迎
+
+NowRecordingTag,Now Recording,撮影中
+NowBeingDeliveredTag,Now Being Delivered,配信中
+OKForRecordingTag,OK for Recording,撮影OK
+OKForBeingDeliveredTag,OK for Recording,配信OK
+NoRecordingTag,No Recording,撮影NG
+NoBeingDeliveredTag,No Recording,配信NG
+
+FreeChatTag,FreeChat Only,フリーチャットのみ
+QuickChatTag,QuickChat Only,クイックチャットのみ
+VoiceChatTag,VoiceChat,VC
+BetterCrewLinkTag,Use BetterCrewLink,近アモ
+CanListenOnlyTag,Listen only OK,聞き専可
+FullVCOnlyTag,Always use voice chat,聞き専不可
+
+SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ
+NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り
+VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村
+ManyRolesRegulationTag,Regulation with many roles,多役
+WerewolfMoonlightRegulationTag,Werewolf Moonlight Regulation,月下
+DarkPotRegulationTag,Dark pot,闇鍋
+OthersRegulationTag,Others regulation,その他レギュ
+TryingOutRolesRegulationTag,Trying out a roles.,役職お試し中
+AmusementRegulationTag,Amusement regulation,お遊びレギュ
+RegulationAdjustedTag,Adjusted,レギュ調整中
+
+FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限
+FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止
+
+DebugNewRolesTag,New Roles,新役職
+DebugNewFeaturesTag,New Features,新機能
+DebugAddFeaturesTag,Add Features,機能追加
+DebugChangeTag,Change,仕様変更
+DebugBugFixTag,Fix Bug,バグ修正
+DebugOthersTag,Others,その他(デバッグ)
+
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！,您可以在超新職業體驗各種不同的模式和職業！
@@ -1405,6 +1454,7 @@ Team,Team,陣営,阵营,陣營
 TeamRoleType,Role,役職,,職業
 MessageSettings,Settings,設定,设置,設定
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业,當前啟用的職業
+EnableTagsMessage,,現在設定されているマッチメイキングタグ,
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
 MyRoleErrorSHRMode,This command is not available in SHR mode.,SHRモードではこのコマンドは使用できません。,,在SHR模式中無法使用此指令。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】

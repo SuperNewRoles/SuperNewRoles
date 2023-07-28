@@ -194,6 +194,9 @@ public class CustomOverlays
                 Regulation(out leftText, out centerText, out rightText);
                 infoOverlayRight.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(3.75f, 0.0f, 0.0f);
                 break;
+            case CustomOverlayPattern.MatchTag:
+                MatchTag(out leftText, out centerText, out rightText);
+                break;
         }
 
         infoOverlayLeft.text = leftText;
@@ -275,6 +278,7 @@ public class CustomOverlays
             if (Input.GetKeyDown(KeyCode.Escape) && overlayShown) HideInfoOverlay(); // overlayを閉じる
             else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay(CustomOverlayPattern.PlayerDataInfo); // 参加プレイヤーの情報を表示
             else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay(CustomOverlayPattern.ActivateRoles); // 「現在配役されている役職」を表示
+            else if (Input.GetKeyDown(KeyCode.T)) YoggleInfoOverlay(CustomOverlayPattern.MatchTag); // 「現在設定されているタグ」を表示
             else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay(nowPattern, true); // 全てのoverlayの文章の更新 & GとIはページ送り
 
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
@@ -293,6 +297,7 @@ public class CustomOverlays
         PlayerDataInfo, // F3キー : 参加プレイヤーの情報(プレイヤー名,カラー,導入状況,プラットフォーム,フレンドコード)
         MyRole, // Hキー : 自分の役職の説明と設定の情報
         Regulation, // Iキー : バニラとSNRのゲーム設定の情報
+        MatchTag, // Tキー : マッチメイキングタグの情報
     }
 
     /// <summary>
@@ -756,5 +761,45 @@ public class CustomOverlays
             right = GameOptionsDataPatch.ResultData();
 
         SuperNewRolesPlugin.optionsPage = firstPage; // 現在のページを左の列に表示しているページに戻す
+    }
+
+    // マッチメイキングタグの設定を表示する
+    private static void MatchTag(out string left, out string center, out string right)
+    {
+        left = center = right = null;
+
+        Dictionary<int, string> EnableTags = new();
+        int index = 0;
+
+        foreach (CustomOption option in CustomOption.options)
+        {
+            if (option.GetSelection() == 0) continue;
+            if (option.type != CustomOptionType.MatchTag) continue;
+            if (option.IsHidden()) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+
+            string name = option.name;
+            EnableTags[index] = name;
+            index++;
+        }
+
+        const string size = "<size=150%>";
+        StringBuilder leftBuilder = new(size + ModTranslation.GetString("EnableTagsMessage") + "\n\n");
+        StringBuilder centerBuilder = new(size + "\n\n"), rightBuilder = new(size + "\n\n");
+
+        foreach (KeyValuePair<int, string> kvp in EnableTags)
+        {
+            const int line = 17;
+            if (kvp.Key < line)
+                leftBuilder.AppendLine(kvp.Value);
+            else if (kvp.Key < line * 2)
+                centerBuilder.AppendLine(kvp.Value);
+            else if (kvp.Key < line * 3)
+                rightBuilder.AppendLine(kvp.Value);
+        }
+
+        left = leftBuilder.ToString();
+        center = centerBuilder.ToString();
+        right = rightBuilder.ToString();
     }
 }

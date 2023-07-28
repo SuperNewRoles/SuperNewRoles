@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -216,6 +217,15 @@ class AddChatPatch
             SendCommand(target, builder.ToString(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
             return false;
         }
+        else if (
+            Commands[0].Equals("/tag", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/matchtag", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (sourcePlayer.AmOwner) MatchTagCommand(null);
+            else MatchTagCommand(sourcePlayer);
+            return false;
+        }
         else
         {
             return true;
@@ -277,6 +287,28 @@ class AddChatPatch
             text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Neutral].Replace(pos, "");
         return text;
     }
+    static string MatchTag()
+    {
+        StringBuilder EnableTags = new();
+        EnableTags.AppendLine(ModTranslation.GetString("EnableTagsMessage") + "\n");
+
+        foreach (CustomOption option in CustomOption.options)
+        {
+            if (option.GetSelection() == 0) continue;
+            if (option.type != CustomOptionType.MatchTag) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+            if (option.IsHidden()) continue;
+
+            string name = option.name;
+            string pattern = @"<color=#\w+>|</color>";
+
+            Regex colorRegex = new(pattern);
+            name = colorRegex.Replace(name, "");
+
+            EnableTags.AppendLine(name);
+        }
+        return $"{EnableTags}\n\n";
+    }
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
     {
         if (!AmongUsClient.Instance.AmHost) return;
@@ -315,7 +347,11 @@ class AddChatPatch
             CustomOverlays.GetActivateRoles();
         SendCommand(target, GetInRole()); // 辞書の内容を加工した文字列を取得し、ターゲットに送信する
     }
-
+    static void MatchTagCommand(PlayerControl target = null)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        SendCommand(target, MatchTag());
+    }
     static void Send(PlayerControl target, string rolename, string text, float time = 0)
     {
         text = "\n" + text + "\n                                                                                                                                                                                                                                              ";
