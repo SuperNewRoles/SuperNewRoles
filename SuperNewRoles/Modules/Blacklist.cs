@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,62 +17,76 @@ public static class Blacklist
     {
         public static List<BlackPlayer> Players = new();
         public string FriendCode;
-        public string Reason = "None";
-        public string clientId = "";
-        public BlackPlayer()
+        public string AddedMod = "None";
+        public string ReasonCode = "NoneCode";
+        public string ReasonTitle = "";
+        public string ReasonDescription = "None";
+        public DateTime? EndBanTime = null;
+        public BlackPlayer(string FriendCode, string AddedMod, string ReasonCode,
+            string ReasonTitle, string ReasonDescription, DateTime? EndBanTime = null)
         {
+            this.FriendCode = FriendCode;
+            this.AddedMod = AddedMod;
+            this.ReasonCode = ReasonCode;
+            this.ReasonTitle = ReasonTitle;
+            this.ReasonDescription = ReasonDescription;
+            this.EndBanTime = EndBanTime;
             Players.Add(this);
         }
     }
+    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list";
+    static bool downloaded = false;
     /// <summary>
     /// 起動時などで予め取得しておく
     /// </summary>
     /// <returns></returns>
-    public static IEnumerator FetchConfig()
+    public static IEnumerator FetchBlacklist()
     {
-        // config.json を GoogleDriveなどに上げる
-        var request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/AmongUs_Blacklist/main/Blacklist.json");
-        yield return request.SendWebRequest();
-        SuperNewRolesPlugin.Logger.LogInfo("前");
-        if (request.isNetworkError || request.isHttpError)
+        if (downloaded)
         {
             yield break;
         }
-        SuperNewRolesPlugin.Logger.LogInfo("通貨");
-        var json = JObject.Parse(request.downloadHandler.text);
-        for (var user = json["blockedUsers"].First; user != null; user = user.Next)
+        downloaded = true;
+        var request = UnityWebRequest.Get(BlacklistServerURL);
+        yield return request.SendWebRequest();
+        //new BlackPlayer("", "SuperNewRoles", 0010, "公開からの誘導はおやめください", "公開部屋から誘導してMODをプレイしていたため");
+        if (request.isNetworkError || request.isHttpError)
         {
-            BlackPlayer player = new()
-            {
-                FriendCode = user["FriendCode"]?.ToString(),
-                Reason = user["Reason"]?.ToString(),
-                clientId = user["clientId"]?.ToString()
-            };
-            SuperNewRolesPlugin.Logger.LogInfo(player.FriendCode);
+            downloaded = false;
+            Logger.Info("Blacklist Error Fetch:"+request.responseCode.ToString());
+            yield break;
+        }
+        var json = JObject.Parse(request.downloadHandler.text);
+        for (var user = json["blockedPlayers"].First; user != null; user = user.Next)
+        {
+            string endbantime = user["EndBanTime"]?.ToString();
+            BlackPlayer player = new(
+                user["FriendCode"]?.ToString(), user["AddedMod"]?.ToString(), user["Reason"]?["Code"]?.ToString(),
+                user["Reason"]?["Title"]?.ToString(), user["Reason"]?["Description"]?.ToString(), endbantime == "never" ? null : (DateTime.TryParse(endbantime, out DateTime resulttime) ? (resulttime - new TimeSpan(9,0,0)) : null));
         }
     }
-    public static IEnumerator Check(int clientId)
+    public static IEnumerator Check(ClientData clientData = null, int ClientId=-1)
     {
-        ClientData clientData;
-        do
+        if (clientData == null)
         {
-            yield return null;
-            clientData = AmongUsClient.Instance
-                                    .allClients
-                                    .ToArray()
-                                    .FirstOrDefault(client => client.Id == clientId);
-            SuperNewRolesPlugin.Logger.LogInfo(clientData);
-        } while (clientData == null);
-        SuperNewRolesPlugin.Logger.LogInfo(clientData.FriendCode);
-        SuperNewRolesPlugin.Logger.LogInfo("回数:" + BlackPlayer.Players.Count);
+            do
+            {
+                yield return null;
+                clientData = AmongUsClient.Instance
+                                        .allClients
+                                        .ToArray()
+                                        .FirstOrDefault(client => client.Id == ClientId);
+            } while (clientData == null);
+        }
         foreach (var player in BlackPlayer.Players)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(player.FriendCode + " : " + player.FriendCode);
-            if (player.FriendCode == clientData.FriendCode || player.clientId == clientId.ToString())
+            if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == clientData.FriendCode)
             {
-                if (PlayerControl.LocalPlayer.PlayerId == clientData.Character.PlayerId)
+                Logger.Info((clientData.Character == null).ToString());
+                if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
                 {
-                    Application.Quit();
+                    AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
+                    AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle+"\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード："+player.ReasonCode.ToString()+"\n理由："+player.ReasonDescription+"\n期間："+(!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd")+"まで"));
                 }
                 else
                 {
@@ -81,20 +96,54 @@ public static class Blacklist
         }
     }
 }
+[HarmonyPatch(typeof(DisconnectPopup), nameof(DisconnectPopup.Close))]
+internal class DisconnectPopupClosePatch
+{
+    public static void Prefix(DisconnectPopup __instance)
+    {
+        try
+        {
+            __instance.transform.FindChild("CloseButton").localPosition = new(-2.75f, 0.5f, 0);
+            __instance.GetComponent<SpriteRenderer>().size = new(5, 1.5f);
+            __instance._textArea.fontSizeMin = 1.9f;
+            __instance._textArea.enableWordWrapping = true;
+        } catch(Exception e){
+            Logger.Info(e.ToString());
+            
+        }
+    }
+}
+[HarmonyPatch(typeof(DisconnectPopup), nameof(DisconnectPopup.DoShow))]
+internal class DisconnectPopupDoShowPatch
+{
+    public static void Postfix(DisconnectPopup __instance)
+    {
+        if (AmongUsClient.Instance.LastDisconnectReason == DisconnectReasons.Custom && AmongUsClient.Instance.LastCustomDisconnect.StartsWith("<size=0%>MOD</size>"))
+        {
+            __instance.transform.FindChild("CloseButton").localPosition = new(-3.2f, 2.15f, -1);
+            __instance.GetComponent<SpriteRenderer>().size = new(6, 4);
+            __instance._textArea.fontSizeMin = 1.9f;
+            __instance._textArea.enableWordWrapping = false;
+        }
+    }
+}
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameJoined))]
 internal class OnGameJoinedPatch
 {
     public static void Postfix(AmongUsClient __instance)
     {
-        __instance.StartCoroutine(Blacklist.Check(__instance.ClientId).WrapToIl2Cpp());
+        __instance.StartCoroutine(Blacklist.Check(ClientId:__instance.ClientId).WrapToIl2Cpp());
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
 internal class OnPlayerJoinedPatch
 {
     public static void Postfix(AmongUsClient __instance,
-                                [HarmonyArgument(0)] ClientData client)
+                                [HarmonyArgument(0)] ClientData data)
     {
-        __instance.StartCoroutine(Blacklist.Check(client.Id).WrapToIl2Cpp());
+        if (__instance.AmHost)
+        {
+            __instance.StartCoroutine(Blacklist.Check(data).WrapToIl2Cpp());
+        }
     }
 }
