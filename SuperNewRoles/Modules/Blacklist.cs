@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using InnerNet;
@@ -13,6 +15,24 @@ namespace SuperNewRoles.Modules;
 
 public static class Blacklist
 {
+    public static class BlacklistEncrypt
+    {
+        public static string PublicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNi6jU8t6nZwlCiEJZvd+jMqc5\r\nYGyNbt7zAn1AuRGirWSP/qYuxjrai6h3iZ5fJGwe0CWwDQZI6CjvKWClnp6507LE\r\nKvqcDJU1E8YbBPSOc5E/gxS/wZIZWGks98q6SdXZVD4xhbhh2pJLpaJuJPnMpyTn\r\nE+NHSnHT5dCc+/LvvQIDAQAB";
+        public static RSACryptoServiceProvider rsa;
+        public static void UpdateProvider()
+        {
+            var publicKeyBytes = Convert.FromBase64String(PublicKey);
+            rsa = new();
+            rsa.ImportSubjectPublicKeyInfo(publicKeyBytes, out _);
+        }
+        public static string Encrypt(string text)
+        {
+            if (rsa == null)
+                UpdateProvider();
+            byte[] encrypted = rsa.Encrypt(Encoding.UTF8.GetBytes(text), false);
+            return Convert.ToBase64String(encrypted);
+        }
+    }
     public class BlackPlayer
     {
         public static List<BlackPlayer> Players = new();
@@ -34,7 +54,7 @@ public static class Blacklist
             Players.Add(this);
         }
     }
-    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list";
+    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list?crypto=true";
     static bool downloaded = false;
     /// <summary>
     /// 起動時などで予め取得しておく
@@ -80,7 +100,7 @@ public static class Blacklist
         }
         foreach (var player in BlackPlayer.Players)
         {
-            if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == clientData.FriendCode)
+            if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == BlacklistEncrypt.Encrypt(clientData.FriendCode))
             {
                 Logger.Info((clientData.Character == null).ToString());
                 if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
