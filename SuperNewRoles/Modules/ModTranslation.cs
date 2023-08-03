@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Reflection;
 using AmongUs.Data;
@@ -41,6 +42,38 @@ public static class ModTranslation
             SupportedLangs.TChinese => dictionary[key][4],// 繁体中国語
             _ => dictionary[key][1] // それ以外は英語
         };
+    }
+
+    /// <summary>
+    /// 翻訳語の文章から翻訳キーを取得する。
+    /// CustomOptionで追加しているカラータグは先に外してください。
+    /// </summary>
+    /// <param name="value">keyを取得したい翻訳後の文</param>
+    /// <returns>keyが存在 => key / keyが存在しない => 引数をそのまま返す </returns>
+    internal static string GetTranslateKey(string value)
+    {
+        SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
+
+        int index = langId switch
+        {
+            SupportedLangs.English => 1,
+            SupportedLangs.Japanese => 2,
+            SupportedLangs.SChinese => 3,
+            SupportedLangs.TChinese => 4,
+            _ => 1,
+        };
+
+        string key = dictionary.FirstOrDefault(x => x.Value[index].Equals(value)).Key;
+        if (key != null)
+        {
+            Logger.Info($"{key}", "ModTranslation");
+            return key;
+        }
+        else
+        {
+            Logger.Info($"key not found:{value}", "ModTranslation");
+            return value;
+        }
     }
 
     public static void LoadCsv()
