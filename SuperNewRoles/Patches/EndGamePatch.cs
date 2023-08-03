@@ -168,7 +168,7 @@ public class EndGameManagerSetUpPatch
             UnityEngine.Object.Destroy(pb.gameObject);
         }
         int num = Mathf.CeilToInt(7.5f);
-        List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
+        List<WinningPlayerData> list = TempData.winners.ToList().OrderBy(delegate (WinningPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
         }).ToList<WinningPlayerData>();
