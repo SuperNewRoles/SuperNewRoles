@@ -518,8 +518,8 @@ class MeetingHudStartPatch
         {
             new LateTask(() =>
             {
-                SyncSetting.CustomSyncSettings();
-                SyncSetting.MeetingSyncSettings();
+                SyncSetting.CustomSyncSettings(out var options);
+                SyncSetting.MeetingSyncSettings(options);
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         if (ModeHandler.IsMode(ModeId.Default))
