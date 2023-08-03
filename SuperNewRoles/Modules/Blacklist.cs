@@ -15,22 +15,23 @@ namespace SuperNewRoles.Modules;
 
 public static class Blacklist
 {
-    public static class BlacklistEncrypt
+    public static class BlacklistHash
     {
-        public static string PublicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNi6jU8t6nZwlCiEJZvd+jMqc5\r\nYGyNbt7zAn1AuRGirWSP/qYuxjrai6h3iZ5fJGwe0CWwDQZI6CjvKWClnp6507LE\r\nKvqcDJU1E8YbBPSOc5E/gxS/wZIZWGks98q6SdXZVD4xhbhh2pJLpaJuJPnMpyTn\r\nE+NHSnHT5dCc+/LvvQIDAQAB";
-        public static RSACryptoServiceProvider rsa;
-        public static void UpdateProvider()
+        public static string ToHash(string str)
         {
-            var publicKeyBytes = Convert.FromBase64String(PublicKey);
-            rsa = new();
-            rsa.ImportSubjectPublicKeyInfo(publicKeyBytes, out _);
-        }
-        public static string Encrypt(string text)
-        {
-            if (rsa == null)
-                UpdateProvider();
-            byte[] encrypted = rsa.Encrypt(Encoding.UTF8.GetBytes(text), false);
-            return Convert.ToBase64String(encrypted);
+            byte[] beforeByteArray = Encoding.UTF8.GetBytes(str);
+            SHA256 sha256 = SHA256.Create();
+
+            byte[] afterByteArray2 = sha256.ComputeHash(beforeByteArray);
+            sha256.Clear();
+
+            // バイト配列を16進数文字列に変換
+            StringBuilder sb = new();
+            foreach (byte b in afterByteArray2)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+            return sb.ToString();
         }
     }
     public class BlackPlayer
@@ -54,7 +55,7 @@ public static class Blacklist
             Players.Add(this);
         }
     }
-    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list?crypto=true";
+    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list?hash=true";
     static bool downloaded = false;
     /// <summary>
     /// 起動時などで予め取得しておく
@@ -98,11 +99,22 @@ public static class Blacklist
                                         .FirstOrDefault(client => client.Id == ClientId);
             } while (clientData == null);
         }
+        if ((clientData.FriendCode == "" || !clientData.FriendCode.Contains("#")) && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame)
+        {
+            if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
+            {
+                AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
+                AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size><size=0%>NoFriend</size>" + "<size=225%>フレンドコードがありません</size>\n\nおうちのひとにみせてください。\n\n【保護者の方へ】\nフレンドコードが設定されていないため、\nこのMODをプレイできません。\nフレンド機能を有効にしてください。\nフレンド機能を有効にする：<link=\"https://parents.innersloth.com/ja/login\">https://parents.innersloth.com/ja/login</link>";
+            }
+            else if (CustomOptionHolder.DisconnectDontHaveFriendCodeOption.GetBool())
+            {
+                AmongUsClient.Instance.KickPlayer(clientData.Id, ban: true);
+            }
+        }
         foreach (var player in BlackPlayer.Players)
         {
-            if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == BlacklistEncrypt.Encrypt(clientData.FriendCode))
+            if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == BlacklistHash.ToHash(clientData.FriendCode))
             {
-                Logger.Info((clientData.Character == null).ToString());
                 if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
                 {
                     AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
@@ -144,6 +156,10 @@ internal class DisconnectPopupDoShowPatch
             __instance.GetComponent<SpriteRenderer>().size = new(6, 4);
             __instance._textArea.fontSizeMin = 1.9f;
             __instance._textArea.enableWordWrapping = false;
+            if (AmongUsClient.Instance.LastCustomDisconnect.StartsWith("<size=0%>MOD</size><size=0%>NoFriend</size>"))
+            {
+                __instance.GetComponentInChildren<SelectableHyperLink>().transform.localPosition = new(1.25f, -1.25f, -2);
+            }
         }
     }
 }
@@ -152,7 +168,10 @@ internal class OnGameJoinedPatch
 {
     public static void Postfix(AmongUsClient __instance)
     {
-        __instance.StartCoroutine(Blacklist.Check(ClientId:__instance.ClientId).WrapToIl2Cpp());
+        if (__instance.AmHost)
+        {
+            __instance.StartCoroutine(Blacklist.Check(ClientId: __instance.ClientId).WrapToIl2Cpp());
+        }
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
