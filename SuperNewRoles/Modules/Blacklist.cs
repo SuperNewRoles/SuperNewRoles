@@ -118,7 +118,7 @@ public static class Blacklist
                 if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
                 {
                     AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
-                    AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle+"\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード："+player.ReasonCode.ToString()+"\n理由："+player.ReasonDescription+"\n期間："+(!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd")+"まで"));
+                    AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle+"\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード："+player.ReasonCode.ToString()+"\n理由："+player.ReasonDescription+"\n期間："+(!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss")+"まで"));
                 }
                 else
                 {
