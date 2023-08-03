@@ -37,6 +37,32 @@ public class ReplayActionShapeshift : ReplayAction
         }
         source.Shapeshift(target, animate);
     }
+    public override void OnReplay()
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
+        PlayerControl target = ModHelpers.PlayerById(targetPlayer);
+        if (source == null || target == null)
+        {
+            Logger.Info("対象がnullでした。");
+            return;
+        }
+        ReplayAction action = GetLastAction(this, ((ReplayAction act) => (act as ReplayActionShapeshift).sourcePlayer == this.sourcePlayer));
+        if (action == null)
+        {
+            source.Shapeshift(source, false);
+        }
+        else
+        {
+            ReplayActionShapeshift shape = action as ReplayActionShapeshift;
+            PlayerControl targetlast = ModHelpers.PlayerById(shape.targetPlayer);
+            if (targetlast == null)
+            {
+                Logger.Info("対象がnullでした。2");
+                return;
+            }
+            source.Shapeshift(targetlast, !shape.animate);
+        }
+    }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionShapeshift Create(byte sourcePlayer, byte targetPlayer, bool animate)
     {

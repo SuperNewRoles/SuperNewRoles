@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using static GameData;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionCompleteTask : ReplayAction
@@ -23,6 +25,26 @@ public class ReplayActionCompleteTask : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.CompleteTask;
     //アクション実行時の処理
+    public static void ToDontComplete(PlayerControl player,uint idx)
+    {
+        PlayerTask playerTask = player.myTasks.Find((Il2CppSystem.Predicate<PlayerTask>)((PlayerTask p) => p.Id == idx));
+        if (playerTask)
+        {
+            TaskInfo taskInfo = player.Data.FindTaskById(idx);
+            if (taskInfo != null)
+            {
+                if (taskInfo.Complete)
+                {
+                    taskInfo.Complete = false;
+                    GameData.Instance.CompletedTasks--;
+                }
+            }
+            if (playerTask is NormalPlayerTask)
+            {
+                (playerTask as NormalPlayerTask).taskStep = 0;
+            }
+        }
+    }
     public override void OnAction() {
         //ここに処理書く
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
@@ -31,7 +53,7 @@ public class ReplayActionCompleteTask : ReplayAction
             Logger.Info("sourceがnull");
             return;
         }
-        source.CompleteTask(taskId);
+        ToDontComplete(source, taskId);
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionCompleteTask Create(byte sourcePlayer, uint taskId)

@@ -30,6 +30,16 @@ public class ReplayActionExile : ReplayAction
         }
         exile.Exiled();
     }
+    public override void OnReplay()
+    {
+        PlayerControl exile = ModHelpers.PlayerById(exilePlayer);
+        if (exile == null)
+        {
+            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。exile:{exilePlayer}");
+            return;
+        }
+        exile.Revive();
+    }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionExile Create(byte exilePlayer)
     {

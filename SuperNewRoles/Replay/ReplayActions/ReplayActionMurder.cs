@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionMurder : ReplayAction
@@ -35,6 +36,21 @@ public class ReplayActionMurder : ReplayAction
         }
         source.MurderPlayer(target);
     }
+    public override void OnReplay()
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
+        PlayerControl target = ModHelpers.PlayerById(targetPlayer);
+        if (source == null || target == null)
+        {
+            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{targetPlayer}");
+            return;
+        }
+        target.Revive();
+        foreach(DeadBody deadbody in GameObject.FindObjectsOfType<DeadBody>())
+            if (deadbody.ParentId == target.PlayerId)
+                GameObject.Destroy(deadbody);
+    }
+
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionMurder Create(byte sourcePlayer, byte targetPlayer)
     {

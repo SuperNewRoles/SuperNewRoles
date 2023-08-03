@@ -33,6 +33,25 @@ public class ReplayActionSetRole : ReplayAction
         }
         target.SetRole(RoleId);
     }
+    public override void OnReplay()
+    {
+        PlayerControl target = ModHelpers.PlayerById(sourcePlayer);
+        if (target == null)
+        {
+            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{RoleId}");
+            return;
+        }
+        ReplayAction action = GetLastAction(this, (ReplayAction act) => (act as ReplayActionSetRole).sourcePlayer == sourcePlayer);
+        if (action == null)
+        {
+            target.SetRole(RoleId.DefaultRole);
+        }
+        else
+        {
+            ReplayActionSetRole rasr = action as ReplayActionSetRole;
+            target.SetRole(rasr.RoleId);
+        }
+    }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionSetRole Create(byte sourcePlayer, RoleId roleId)
     {

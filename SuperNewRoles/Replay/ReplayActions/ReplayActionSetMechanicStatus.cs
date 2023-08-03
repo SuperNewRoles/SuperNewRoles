@@ -34,6 +34,11 @@ public class ReplayActionSetMechanicStatus : ReplayAction
         //ここに処理書く
         RPCProcedure.SetVentStatusMechanic(sourcePlayer, targetVent, Is, buff);
     }
+    public override void OnReplay()
+    {
+        //ここに処理書く
+        RPCProcedure.SetVentStatusMechanic(sourcePlayer, targetVent, !Is, buff);
+    }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionSetMechanicStatus Create(byte sourcePlayer, byte targetPlayer, bool Is, byte[] buff)
     {

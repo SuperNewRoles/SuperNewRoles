@@ -33,6 +33,16 @@ public abstract class ReplayAction
 {
     public float ActionTime = 0f;
     public int ReplayId;
+    public static ReplayAction GetLastAction(ReplayAction action, Func<ReplayAction, bool> check = null)
+    {
+        ReplayAction currentaction = null;
+        foreach (ReplayAction act in ReplayLoader.ReplayTurns[ReplayLoader.CurrentTurn].Actions)
+        {
+            if (act.GetActionId() == action.GetActionId() && (currentaction == null || (act.ReplayId > currentaction.ReplayId && action.ReplayId > currentaction.ReplayId)) && (check == null || check(act)))
+                currentaction = act;
+        }
+        return currentaction;
+    }
     public abstract void ReadReplayFile(BinaryReader reader);
     public abstract void WriteReplayFile(BinaryWriter writer);
     public abstract void OnAction();

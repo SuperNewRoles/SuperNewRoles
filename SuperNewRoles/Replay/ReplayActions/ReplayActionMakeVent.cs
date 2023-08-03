@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionMakeVent : ReplayAction
@@ -35,6 +37,12 @@ public class ReplayActionMakeVent : ReplayAction
     public override void OnAction() {
         //ここに処理書く
         RPCProcedure.MakeVent(id, x, y, z, chain);
+    }
+    public override void OnReplay()
+    {
+        Vent vent = ShipStatus.Instance.AllVents.FirstOrDefault(x => x.Id == id);
+        if (vent != null)
+            GameObject.Destroy(vent);
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionMakeVent Create(byte id, float x, float y, float z, bool chain)

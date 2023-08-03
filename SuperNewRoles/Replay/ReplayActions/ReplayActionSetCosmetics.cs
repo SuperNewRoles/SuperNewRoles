@@ -82,6 +82,78 @@ public class ReplayActionSetCosmetics : ReplayAction
                 break;
         }
     }
+    public override void OnReplay()
+    {
+        PlayerControl target = ModHelpers.PlayerById(targetPlayer);
+        if (target == null)
+        {
+            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。target:{targetPlayer}");
+            return;
+        }
+        ReplayAction action = GetLastAction(this, (ReplayAction act) => (act as ReplayActionSetCosmetics).targetPlayer == targetPlayer && (act as ReplayActionSetCosmetics).CosType == CosType);
+        if (action == null)
+        {
+            switch (CosType)
+            {
+                case ReplayCosmeticsType.Name:
+                    target.SetName(ChangeTarget, dontCensor);
+                    break;
+                case ReplayCosmeticsType.Color:
+                    target.SetColor(colorId);
+                    break;
+                case ReplayCosmeticsType.Hat:
+                    target.SetHat("", colorId);
+                    break;
+                case ReplayCosmeticsType.Pet:
+                    target.SetPet("", colorId);
+                    break;
+                case ReplayCosmeticsType.Visor:
+                    target.SetVisor("", colorId);
+                    break;
+                case ReplayCosmeticsType.NamePlate:
+                    target.SetNamePlate("");
+                    break;
+                case ReplayCosmeticsType.Skin:
+                    target.SetSkin("", colorId);
+                    break;
+                default:
+                    Logger.Info($"アクションを実行しようとしましたが、CosTypeがねえよ。target:{targetPlayer},CosType:{CosType}");
+                    break;
+            }
+        }
+        else
+        {
+            ReplayActionSetCosmetics rasc = action as ReplayActionSetCosmetics;
+            switch (rasc.CosType)
+            {
+                case ReplayCosmeticsType.Name:
+                    target.SetName(rasc.ChangeTarget, rasc.dontCensor);
+                    break;
+                case ReplayCosmeticsType.Color:
+                    target.SetColor(rasc.colorId);
+                    break;
+                case ReplayCosmeticsType.Hat:
+                    target.SetHat(rasc.ChangeTarget, rasc.colorId);
+                    break;
+                case ReplayCosmeticsType.Pet:
+                    target.SetPet(rasc.ChangeTarget, rasc.colorId);
+                    break;
+                case ReplayCosmeticsType.Visor:
+                    target.SetVisor(rasc.ChangeTarget, rasc.colorId);
+                    break;
+                case ReplayCosmeticsType.NamePlate:
+                    target.SetNamePlate(rasc.ChangeTarget);
+                    break;
+                case ReplayCosmeticsType.Skin:
+                    target.SetSkin(rasc.ChangeTarget, rasc.colorId);
+                    break;
+                default:
+                    Logger.Info($"アクションを実行しようとしましたが、CosTypeがねえよ。target:{targetPlayer},CosType:{CosType}");
+                    break;
+            }
+        }
+
+    }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionSetCosmetics Create(byte targetPlayer, ReplayCosmeticsType costype, string changeTarget, int color = 0, bool dontCensor = false)
     {

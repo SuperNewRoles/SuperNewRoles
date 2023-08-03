@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SuperNewRoles.CustomObject;
+using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionSluggerExile : ReplayAction
@@ -28,6 +30,14 @@ public class ReplayActionSluggerExile : ReplayAction
     public override void OnAction() {
         //ここに処理書く
         RPCProcedure.SluggerExile(sourcePlayer, targets.ToList());
+    }
+    public override void OnReplay()
+    {
+        foreach(SluggerDeadbody db in SluggerDeadbody.DeadBodys.FindAll(x => x.PlayerId == sourcePlayer))
+        {
+            GameObject.Destroy(db.gameObject);
+        }
+        SluggerDeadbody.DeadBodys.RemoveAll(x => x.gameObject == null);
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionSluggerExile Create(byte sourcePlayer, List<byte> targets)

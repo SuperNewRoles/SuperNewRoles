@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionPlayerAnimation : ReplayAction
@@ -26,6 +27,20 @@ public class ReplayActionPlayerAnimation : ReplayAction
     public override void OnAction() {
         //ここに処理書く
         RPCProcedure.PlayPlayerAnimation(sourcePlayer, type);
+    }
+    public override void OnReplay()
+    {
+        ReplayAction action = GetLastAction(this, ((ReplayAction act) => (act as ReplayActionPlayerAnimation).sourcePlayer == sourcePlayer));
+        if (action == null)
+        {
+            RPCProcedure.PlayPlayerAnimation(sourcePlayer, (byte)RpcAnimationType.Stop);
+        }
+        else
+        {
+            ReplayActionPlayerAnimation rapa = action as ReplayActionPlayerAnimation;
+            RPCProcedure.PlayPlayerAnimation(sourcePlayer, rapa.type);
+        }
+
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionPlayerAnimation Create(byte sourcePlayer, byte type)
