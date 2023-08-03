@@ -613,6 +613,65 @@ public static class ModHelpers
         var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
         return client;
     }
+    public static T FirstOrDefault<T>(this List<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this List<T> list)
+    {
+        foreach (T obj in list)
+            return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this T[] list)
+    {
+        foreach (T obj in list)
+            return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this IEnumerable<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this IEnumerable<T> list)
+    {
+        foreach (T obj in list)
+            return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this Il2CppArrayBase<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static KeyValuePair<TKey, TValue> FirstOrDefault<TKey,TValue>(this Dictionary<TKey,TValue> list, Func<KeyValuePair<TKey,TValue>, bool> func)
+    {
+        foreach (KeyValuePair<TKey, TValue> obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Il2CppSystem.Collections.Generic.Dictionary<TKey, TValue> list, Func<Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue>, bool> func)
+    {
+        foreach (Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue> obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this Il2CppArrayBase<T> list)
+    {
+        foreach (T obj in list)
+            return obj;
+        return default;
+    }
     public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
         List<T> newList = new();
