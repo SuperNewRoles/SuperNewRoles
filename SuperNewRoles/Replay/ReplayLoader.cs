@@ -118,25 +118,24 @@ namespace SuperNewRoles.Replay
             back.transform.localScale = new(0.6f, 0.9f, 0.75f);
             SpriteRenderer backrender = back.AddComponent<SpriteRenderer>();
             backrender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIBack.png", 110f);
-            PauseButtonRenderer = CreateItem("Pause", 0, (UnityAction)PlayOrPause, scale:new(5, 5, 5));
-            SpriteRenderer FastPlayer = CreateItem("Play", 1, (UnityAction)FastPlay, "FastPlayer", size:new(6, 6));
-            FastPlayer.transform.localScale = Vector3.one * 0.8f;
-            FastPlayer.transform.localPosition = new(-1.25f, 0, 0);
-            SpriteRenderer SubFastPlayerRender = GameObject.Instantiate(FastPlayer, FastPlayer.transform.parent);
-            SubFastPlayerRender.transform.localPosition = new(1.75f, 0, 0);
-            CreateItem("Play", 2, (UnityAction)PlayRewind, "PlayRewind", new(-1, 1, 1));
+            PauseButtonRenderer = CreateItem("Pause", 0, (UnityAction)PlayOrPause, scale:new(3.25f, 4.7f, 4.7f));
+            FastPlayButtonRenderer = CreateItem("FastPlay", 1, (UnityAction)FastPlay, "FastPlayer", size:new(6, 6));
+            PlayRewindButtonRenderer = CreateItem("Play", 2, (UnityAction)PlayRewind, "PlayRewind", new(-3.25f, 4.7f, 4.7f));
             SpriteRenderer MTNM = CreateItem("Play", 3, (UnityAction)MoveToNextMeeting, "MoveToNextMeeting");
-            MTNM.transform.localScale = new(0.6f, 1f, 1);
+            MTNM.transform.localScale = new(1.95f, 4.7f, 4.7f);
             MTNM.transform.localPosition = new(1.5f, 0, 0);
             SpriteRenderer SubMTNMRender = GameObject.Instantiate(MTNM, MTNM.transform.parent);
             SubMTNMRender.transform.localScale = new(0.6f, 1.2f, 1);
             SubMTNMRender.transform.localPosition = new(-1.5f, 0, 0);
             SubMTNMRender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIButton.png", 110f);
-            CreateItem("Exit", 4, (UnityAction)ReplayExit);
+            CreateItem("Exit", 4, (UnityAction)ReplayExit, scale: new(3.25f, 4.7f, 4.7f));
 
             GUIObject.gameObject.SetActive(true);
+            UpdateButton();
         }
         public static SpriteRenderer PauseButtonRenderer;
+        public static SpriteRenderer PlayRewindButtonRenderer;
+        public static SpriteRenderer FastPlayButtonRenderer;
         public static void SetReplayStatus(ReplayState state)
         {
             MovingPlatformBehaviour mpb;
@@ -163,6 +162,7 @@ namespace SuperNewRoles.Replay
                     }
                     break;
                 case ReplayState.PlayRewind:
+                case ReplayState.FastPlay:
                 case ReplayState.Play:
                     if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause)
                     {
@@ -246,11 +246,12 @@ namespace SuperNewRoles.Replay
         }
         public static void FastPlay()
         {
+            SetReplayStatus(ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.FastPlay ? ReplayState.Pause : ReplayState.FastPlay);
             UpdateButton();
         }
         public static void PlayRewind()
         {
-            SetReplayStatus(ReplayState.PlayRewind);
+            SetReplayStatus(ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind ? ReplayState.Pause : ReplayState.PlayRewind);
             UpdateButton();
         }
         public static void MoveToNextMeeting()
@@ -260,8 +261,7 @@ namespace SuperNewRoles.Replay
         }
         public static void ReplayExit()
         {
-
-            UpdateButton();
+            AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
         }
         public static void UpdateButton()
         {
@@ -269,16 +269,40 @@ namespace SuperNewRoles.Replay
             {
                 if (PauseButtonRenderer != null)
                 {
-                    if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause)
+                    if (ReplayManager.CurrentReplay.CurrentPlayState is ReplayState.Pause)
                     {
-                        PauseButtonRenderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIPlay.png", 110f);
-                        PauseButtonRenderer.transform.localScale = Vector3.one;
+                        PauseButtonRenderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIPause.png", 110f);
                     }
                     else
                     {
-                        PauseButtonRenderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIPause.png", 110f);
-                        PauseButtonRenderer.transform.localScale = Vector3.one * 5;
+                        PauseButtonRenderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIPlay.png", 110f);
                     }
+                    PauseButtonRenderer.transform.localScale = new(3.25f, 4.7f, 4.7f);
+                }
+                if (PlayRewindButtonRenderer != null)
+                {
+                    if (ReplayManager.CurrentReplay.CurrentPlayState is ReplayState.PlayRewind)
+                    {
+                        PlayRewindButtonRenderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIPlayRewind.png", 110f);
+                        PlayRewindButtonRenderer.transform.localScale = new(3.25f, 4.7f, 4.7f);
+                    }
+                    else
+                    {
+                        PlayRewindButtonRenderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIPlay.png", 110f);
+                        PlayRewindButtonRenderer.transform.localScale = new(-3.25f, 4.7f, 4.7f);
+                    }
+                }
+                if (FastPlayButtonRenderer != null)
+                {
+                    if (ReplayManager.CurrentReplay.CurrentPlayState is ReplayState.FastPlay)
+                    {
+                        FastPlayButtonRenderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIButtonFastPlaying.png", 110f);
+                    }
+                    else
+                    {
+                        FastPlayButtonRenderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIButtonFastPlay.png", 110f);
+                    }
+                    FastPlayButtonRenderer.transform.localScale = new(3.25f, 4.7f, 4.7f);
                 }
             }
         }
