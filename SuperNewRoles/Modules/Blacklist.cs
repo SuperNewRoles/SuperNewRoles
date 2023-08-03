@@ -137,10 +137,13 @@ internal class DisconnectPopupClosePatch
     {
         try
         {
-            __instance.transform.FindChild("CloseButton").localPosition = new(-2.75f, 0.5f, 0);
-            __instance.GetComponent<SpriteRenderer>().size = new(5, 1.5f);
-            __instance._textArea.fontSizeMin = 1.9f;
-            __instance._textArea.enableWordWrapping = true;
+            if (AmongUsClient.Instance.LastDisconnectReason == DisconnectReasons.Custom && AmongUsClient.Instance.LastCustomDisconnect.StartsWith("<size=0%>MOD</size>"))
+            {
+                __instance.transform.FindChild("CloseButton").localPosition = new(-2.75f, 0.5f, 0);
+                __instance.GetComponent<SpriteRenderer>().size = new(5, 1.5f);
+                __instance._textArea.fontSizeMin = 1.9f;
+                __instance._textArea.enableWordWrapping = true;
+            }
         } catch(Exception e){
             Logger.Info(e.ToString());
             
