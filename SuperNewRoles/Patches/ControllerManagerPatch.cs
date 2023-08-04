@@ -129,6 +129,14 @@ class ControllerManagerUpdatePatch
             {
                 ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
             }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Logger.Info("Test Option Set", "Test");
+                IGameOptions options = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
+                options.SetFloat(FloatOptionNames.KillCooldown, 10f);
+                options.SetFloat(FloatOptionNames.CrewLightMod, 10f);
+                GameManager.Instance.LogicOptions.SetGameOptions(options);
+            }
             if (Input.GetKeyDown(KeyCode.F10))
             {
                 BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");
