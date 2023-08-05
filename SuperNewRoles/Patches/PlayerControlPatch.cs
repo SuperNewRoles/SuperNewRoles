@@ -51,7 +51,7 @@ class RpcShapeshiftPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
-        SyncSetting.CustomSyncSettings();
+        SyncSetting.CustomSyncSettings(out var modified);
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (target.IsBot()) return true;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
@@ -223,7 +223,7 @@ class RpcShapeshiftPatch
                         RoleClass.Camouflager.ButtonTimer = DateTime.Now;
                         RoleClass.Camouflager.IsCamouflage = true;
                         Camouflager.CamouflageSHR();
-                        SyncSetting.CustomSyncSettings(__instance);
+                        SyncSetting.CustomSyncSettings(__instance, out var modifiedCamouflager);
                     }
                     return true;
                 case RoleId.Worshiper:
@@ -726,8 +726,8 @@ static class CheckMurderPatch
         Logger.Info("全モード通過", "CheckMurder");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            SyncSetting.CustomSyncSettings(__instance);
-            SyncSetting.CustomSyncSettings(target);
+            SyncSetting.CustomSyncSettings(__instance, out var modifiedKiller);
+            SyncSetting.CustomSyncSettings(target, out var modifiedTarget);
             if (target.IsRole(RoleId.StuntMan))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
@@ -1398,7 +1398,7 @@ class ReportDeadBodyPatch
                     {
                         player.RpcRevertShapeshift(false);
                     }, 0.5f);
-                    SyncSetting.CustomSyncSettings(player);
+                    SyncSetting.CustomSyncSettings(player, out var modified);
                 }
             }
         }
