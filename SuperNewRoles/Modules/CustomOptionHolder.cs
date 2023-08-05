@@ -1883,11 +1883,6 @@ public class CustomOptionHolder
 
         Squid.SetupCustomOptions();
 
-        ShielderOption = SetupCustomRoleOption(404100, false, RoleId.Shielder);
-        ShielderPlayerCount = Create(404101, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ShielderOption);
-        ShielderCoolTime = Create(404102, false, CustomOptionType.Crewmate, "ShielderCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, ShielderOption, format: "unitCouples");
-        ShielderDurationTime = Create(404103, false, CustomOptionType.Crewmate, "ShielderDurationSetting", 10f, 2.5f, 30f, 2.5f, ShielderOption, format: "unitCouples");
-
         HamburgerShopOption = SetupCustomRoleOption(402900, true, RoleId.HamburgerShop);
         HamburgerShopPlayerCount = Create(402901, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
         HamburgerShopChangeTaskPrefab = Create(402902, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
@@ -1945,6 +1940,11 @@ public class CustomOptionHolder
         SpeedBoosterCoolTime = Create(404002, false, CustomOptionType.Crewmate, "SpeedBoosterCooldownSetting", 30f, 2.5f, 60f, 2.5f, SpeedBoosterOption, format: "unitSeconds");
         SpeedBoosterDurationTime = Create(404003, false, CustomOptionType.Crewmate, "SpeedBoosterDurationSetting", 15f, 2.5f, 60f, 2.5f, SpeedBoosterOption, format: "unitSeconds");
         SpeedBoosterSpeed = Create(404004, false, CustomOptionType.Crewmate, "SpeedBoosterPlusSpeedSetting", 1.25f, 0.0f, 5f, 0.25f, SpeedBoosterOption, format: "unitSeconds");
+
+        ShielderOption = SetupCustomRoleOption(404100, false, RoleId.Shielder);
+        ShielderPlayerCount = Create(404101, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ShielderOption);
+        ShielderCoolTime = Create(404102, false, CustomOptionType.Crewmate, "ShielderCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, ShielderOption, format: "unitCouples");
+        ShielderDurationTime = Create(404103, false, CustomOptionType.Crewmate, "ShielderDurationSetting", 10f, 2.5f, 30f, 2.5f, ShielderOption, format: "unitCouples");
 
         NiceScientistOption = SetupCustomRoleOption(404200, false, RoleId.NiceScientist);
         NiceScientistPlayerCount = Create(404201, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceScientistOption);
