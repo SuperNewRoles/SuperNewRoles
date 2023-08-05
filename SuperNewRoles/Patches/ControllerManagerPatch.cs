@@ -102,7 +102,8 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                Roles.Crewmate.Balancer.StartAbility(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls[0], PlayerControl.AllPlayerControls[1]);
+                AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
+                AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size><size=150%>" + "公開からの誘導はおやめください" + "</size>\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード:" + "0010" + "\n理由：" + "公開部屋から誘導してMODをプレイしていたため" + "\n期間：" + "永久";
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
