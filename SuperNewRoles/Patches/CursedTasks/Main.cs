@@ -22,6 +22,8 @@ public static class Main
 
         CursedFixShowerTask.Data = new();
 
+        CursedStartFansTask.Data = new();
+
         CursedSampleTask.Data = new();
 
         CursedShowerTask.Timer = new();
