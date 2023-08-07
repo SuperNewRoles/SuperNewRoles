@@ -69,6 +69,7 @@ public class BlackHatHacker
             if (!InfectionTimer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return new();
             List<byte> add = new Dictionary<byte, float>(InfectionTimer[PlayerControl.LocalPlayer.PlayerId]).
                              Where(x => !_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value)).ToDictionary(x => x.Key, y => y.Value).Keys.ToList();
+            _SelfPropagationPlayerId.AddRange(add);
             return _SelfPropagationPlayerId;
         }
     }
@@ -103,7 +104,7 @@ public class BlackHatHacker
     public static bool IsSelfPropagation(float timer)
     {
         if (BlackHatHackerStartSelfPropagation.GetSelection() == 0) return false;
-        return timer > BlackHatHackerHackInfectiousTime.GetFloat() * (int.Parse(BlackHatHackerStartSelfPropagation.GetString().Replace("%", "")) / 100f);
+        return timer >= BlackHatHackerHackInfectiousTime.GetFloat() * (int.Parse(BlackHatHackerStartSelfPropagation.GetString().Replace("%", "")) / 100f);
     }
 
     public static bool IsAllInfected(byte id)
@@ -261,7 +262,7 @@ public class BlackHatHacker
                 writer2.EndRPC();
             }
         }
-        if (PlayerControl.LocalPlayer.IsDead()) return;
+        if (PlayerControl.LocalPlayer.IsDead() && !BlackHatHackerCanDeadWin.GetBool()) return;
         NotInfectiousTimer -= Time.fixedDeltaTime;
         if (NotInfectiousTimer > 0) return;
         if (RoleClass.IsMeeting) return;
