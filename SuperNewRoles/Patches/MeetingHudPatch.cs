@@ -519,8 +519,8 @@ class MeetingHudStartPatch
         {
             new LateTask(() =>
             {
-                SyncSetting.CustomSyncSettings();
-                SyncSetting.MeetingSyncSettings();
+                SyncSetting.CustomSyncSettings(out var options);
+                SyncSetting.MeetingSyncSettings(options);
                 if (!RoleClass.IsFirstMeetingEnd) AddChatPatch.YourRoleInfoSendCommand();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
@@ -639,11 +639,11 @@ public class MeetingHudUpdatePatch
             foreach (PlayerVoteArea player in Instance.playerStates)
             {
                 PlayerControl target = null;
-                PlayerControl.AllPlayerControls.ToList().ForEach(x =>
+                foreach(PlayerControl x in PlayerControl.AllPlayerControls)
                 {
                     string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
                     if (name == x.Data.PlayerName) target = x;
-                });
+                }
                 if (target != null)
                 {
                     if (ConfigRoles.IsLightAndDarker.Value)

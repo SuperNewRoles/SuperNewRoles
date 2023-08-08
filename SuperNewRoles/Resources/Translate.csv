@@ -217,6 +217,7 @@ IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内で
 IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,击杀冷却会在修理紧急任务时停止计算,擊殺冷卻時間在緊急任務期間停止計算
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
+DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨)
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点,隨機分配配線任務位置
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数,配線任務總數
 RestrictDevicesTimeOption,Time limit setting,時間制限の設定,,時間限制設定
