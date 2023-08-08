@@ -851,7 +851,7 @@ VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能,吸
 VampireCreateDependentsCoolTime,Cool time to nominate a Dependents member,眷属指名クールタイム,吸血鬼指定眷属冷却,吸血鬼指定眷屬冷卻時間
 VampireDependentsKillCoolTime,Kill cool time for dependents,眷属のキルクールタイム,眷属击杀冷却,眷屬擊殺冷卻時間
 VampireDependentsCanVent,Vent available for use by dependents,眷属がベント使用可能,眷属可以使用管道,眷屬可以使用通風管道
-VampireDependentsButtonName,make Dependents,眷属にする,眷属,眷屬
+VampireDependentsButtonName,make Dependents,夜に堕とす,眷属,眷屬
 DependentsName,Dependents,眷属,眷属,眷屬
 DependentsTitle1,Trapped in the Night.,夜に囚われし者,你也是吸血鬼了,現在你是我們吸血鬼的一員了
 DependentsDescription,This role is Madmate who can perform kills.\nI am synchronized with the kill cool time of the Vampire.\nBright places are not my forte，but I excel in darkness.\nOnce night falls，there is no escape.,キルが出来るマッドメイトです。\nヴァンパイアとはキルクールが同期しています。\n明るいところは苦手ですが暗いところは得意です。\n夜からは、逃れられないのです。,眷属属于叛徒阵营，可以进行击杀。\n眷属的击杀冷却与吸血鬼同步。\n眷属惧怕于光明，滋长于黑暗。\n夜幕降临，则无处可逃。,眷属可以進行擊殺的內鬼協助者。\n眷属的擊殺冷卻時間與吸血鬼同步。\n眷属懼怕光明，\n一旦夜幕降臨，他人就無法逃離。
