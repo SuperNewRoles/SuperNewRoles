@@ -217,7 +217,7 @@ IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内で
 IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,击杀冷却会在修理紧急任务时停止计算,擊殺冷卻時間在緊急任務期間停止計算
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
-DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨)
+DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨),踢出未持有好友码的玩家（推荐）
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点,隨機分配配線任務位置
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数,配線任務總數
 RestrictDevicesTimeOption,Time limit setting,時間制限の設定,,時間限制設定
@@ -1381,51 +1381,51 @@ IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,
 #SettingMatchTag
 SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,,<color=#93b69c>配對標籤</color>設定
 
-BeginnerTag,Beginner,初心者,,新手
-IntermediateTag,Intermediate,中級者,,老手
-AdvancedTag,Advanced,上級者,,高手
-CompetenceIsNotRequiredTag,Competence is not required.,実力不問,,不限實力
+BeginnerTag,Beginner,初心者,菜鸟,新手
+IntermediateTag,Intermediate,中級者,熟练,老手
+AdvancedTag,Advanced,上級者,高玩,高手
+CompetenceIsNotRequiredTag,Competence is not required.,実力不問,不限,不限實力
 
-SeriousTag,Serious Players,ガチ勢,,享受勝利
-EnjoyTag,Enjoyers,エンジョイ勢,,享受過程
+SeriousTag,Serious Players,ガチ勢,竞技,享受勝利
+EnjoyTag,Enjoyers,エンジョイ勢,娱乐,享受過程
 
-SeriousnessTag,Seriousness Play,真剣プレイ,,認真局
-WelcomeBeginnerTag,,初心者歓迎,,歡迎新手
+SeriousnessTag,Seriousness Play,真剣プレイ,认真,認真局
+WelcomeBeginnerTag,,初心者歓迎,欢迎新手,歡迎新手
 
-NowRecordingTag,Now Recording,撮影中,,錄影中
-NowBeingDeliveredTag,Now Being Delivered,配信中,,直播中
-OKForRecordingTag,OK for Recording,撮影OK,,允許錄影
-OKForBeingDeliveredTag,OK for Recording,配信OK,,允許直播
-NoRecordingTag,No Recording,撮影NG,,禁止錄影
-NoBeingDeliveredTag,No Recording,配信NG,,禁止直播
+NowRecordingTag,Now Recording,撮影中,正在录制,錄影中
+NowBeingDeliveredTag,Now Being Delivered,配信中,正在直播,直播中
+OKForRecordingTag,OK for Recording,撮影OK,允许录制,允許錄影
+OKForBeingDeliveredTag,OK for Recording,配信OK,允许直播,允許直播
+NoRecordingTag,No Recording,撮影NG,禁止录制,禁止錄影
+NoBeingDeliveredTag,No Recording,配信NG,禁止直播,禁止直播
 
-FreeChatTag,FreeChat Only,フリーチャットのみ,,只能自由聊天
-QuickChatTag,QuickChat Only,クイックチャットのみ,,只能快速聊天
-VoiceChatTag,VoiceChat,VC,,語音聊天
-BetterCrewLinkTag,Use BetterCrewLink,近アモ,,使用BetterCrewLink
-CanListenOnlyTag,Listen only OK,聞き専可,,允許只聽不說
-FullVCOnlyTag,Always use voice chat,聞き専不可,,必須使用語音
+FreeChatTag,FreeChat Only,フリーチャットのみ,仅自由聊天,只能自由聊天
+QuickChatTag,QuickChat Only,クイックチャットのみ,尽快速聊天,只能快速聊天
+VoiceChatTag,VoiceChat,VC,语音聊天,語音聊天
+BetterCrewLinkTag,Use BetterCrewLink,近アモ,使用BetterCrewLink,使用BetterCrewLink
+CanListenOnlyTag,Listen only OK,聞き専可,允许只听不聊,允許只聽不說
+FullVCOnlyTag,Always use voice chat,聞き専不可,必须参加语音聊天,必須使用語音
 
-SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ,,警長與叛徒規則
-NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り,,中立殺手規則
-VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村,,狼人殺規則
-ManyRolesRegulationTag,Regulation with many roles,多役,,超多職業規則
-WerewolfMoonlightRegulationTag,Werewolf Moonlight Regulation,月下,,月下狼人規則
-DarkPotRegulationTag,Dark pot,闇鍋,,黑暗火鍋規則
-OthersRegulationTag,Others regulation,その他レギュ,,其他規則
-TryingOutRolesRegulationTag,Trying out a roles.,役職お試し中,,職業測試
-AmusementRegulationTag,Amusement regulation,お遊びレギュ,,娛樂規則
-RegulationAdjustedTag,Adjusted,レギュ調整中,,規則調整
+SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ,无间道,警長與叛徒規則
+NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り,独立阵营击杀,中立殺手規則
+VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村,狼人杀,狼人殺規則
+ManyRolesRegulationTag,Regulation with many roles,多役,超多职业,超多職業規則
+WerewolfMoonlightRegulationTag,Werewolf Moonlight Regulation,月下,月狼,月下狼人規則
+DarkPotRegulationTag,Dark pot,闇鍋,暗锅,黑暗火鍋規則
+OthersRegulationTag,Others regulation,その他レギュ,其他,其他規則
+TryingOutRolesRegulationTag,Trying out a roles.,役職お試し中,测试,職業測試
+AmusementRegulationTag,Amusement regulation,お遊びレギュ,整活,娛樂規則
+RegulationAdjustedTag,Adjusted,レギュ調整中,调整中,規則調整
 
-FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限,,管理員使用限制
-FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止,,禁止管理員
+FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限,限制使用飞船设备,管理員使用限制
+FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止,禁止使用飞船设备,禁止管理員
 
-DebugNewRolesTag,New Roles,新役職,,新職業
-DebugNewFeaturesTag,New Features,新機能,,新功能
-DebugAddFeaturesTag,Add Features,機能追加,,增加功能
-DebugChangeTag,Change,仕様変更,,變更
-DebugBugFixTag,Fix Bug,バグ修正,,Bug修正
-DebugOthersTag,Others,その他(デバッグ),,其他（除錯）
+DebugNewRolesTag,New Roles,新役職,新职业,新職業
+DebugNewFeaturesTag,New Features,新機能,新功能,新功能
+DebugAddFeaturesTag,Add Features,機能追加,追加功能,增加功能
+DebugChangeTag,Change,仕様変更,更改,變更
+DebugBugFixTag,Fix Bug,バグ修正,Bug修复,Bug修正
+DebugOthersTag,Others,その他(デバッグ),其他,其他（除錯）
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
