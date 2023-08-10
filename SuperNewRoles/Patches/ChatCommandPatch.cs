@@ -18,7 +18,7 @@ public static class DynamicLobbies
     {
         static bool Prefix(ChatController __instance)
         {
-            string text = __instance.TextArea.text;
+            string text = __instance.freeChatField.textArea.text;
             bool handled = false;
             if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
             {
@@ -125,11 +125,21 @@ public static class DynamicLobbies
                 // memoの中身があるなら ファイル名を任意の文字列にする。
                 else Logger.SaveLog(memo, via);
             }
+            else if (text.ToLower().StartsWith("/lp"))
+            {
+                handled = true;
+
+                string print = text.ToLower()
+                    .Replace("/lp ", "")
+                    .Replace("/lp", "");
+
+                Logger.Info(print, "任意ログ印字");
+                __instance.AddChat(PlayerControl.LocalPlayer, $"このチャットは貴方にのみ表示されています。\nLogに以下の内容を印字しました。\n「{print}」");
+            }
             if (handled)
             {
-                __instance.TextArea.Clear();
-                FastDestroyableSingleton<HudManager>.Instance.Chat.TimeSinceLastMessage = 0f;
-                __instance.quickChatMenu.ResetGlyphs();
+                __instance.freeChatField.textArea.Clear();
+                FastDestroyableSingleton<HudManager>.Instance.Chat.timeSinceLastMessage = 0f;
             }
             return !handled;
         }

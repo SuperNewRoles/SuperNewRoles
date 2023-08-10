@@ -21,10 +21,8 @@ public class DyingMessenger
 
     public static List<PlayerControl> DyingMessengerPlayer;
     public static Color32 color = new(191, 197, 202, byte.MaxValue);
-    public static Dictionary<byte, (DateTime, PlayerControl)> ActualDeathTime;
     public static void ClearAndReload()
     {
         DyingMessengerPlayer = new();
-        ActualDeathTime = new();
     }
 }

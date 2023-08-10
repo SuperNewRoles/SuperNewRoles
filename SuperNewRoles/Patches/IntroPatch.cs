@@ -323,22 +323,22 @@ public class IntroPatch
                 ImpostorText = ModTranslation.GetString("NeutralSubIntro");
                 color = new(127, 127, 127, byte.MaxValue);
             }
+            else if (PlayerControl.LocalPlayer.IsMadRoles())
+            {
+                color = RoleClass.ImpostorRed;
+                TeamTitle = ModTranslation.GetString("MadmateName");
+                ImpostorText = ModTranslation.GetString("MadRolesSubIntro");
+            }
+            else if (PlayerControl.LocalPlayer.IsFriendRoles())
+            {
+                color = RoleClass.JackalBlue;
+                TeamTitle = ModTranslation.GetString("JackalFriendsName");
+                ImpostorText = ModTranslation.GetString("FriendRolesSubIntro");
+            }
             else
             {
                 switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    case RoleId.Madmate:
-                    case RoleId.MadJester:
-                    case RoleId.MadStuntMan:
-                    case RoleId.MadMayor:
-                    case RoleId.MadHawk:
-                    case RoleId.MadSeer:
-                    case RoleId.Worshiper:
-                    case RoleId.MadMaker:
-                    case RoleId.BlackCat:
-                    case RoleId.JackalFriends:
-                    case RoleId.SeerFriends:
-                    case RoleId.MayorFriends:
                     case RoleId.SatsumaAndImo:
                     case RoleId.GM:
                         IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);

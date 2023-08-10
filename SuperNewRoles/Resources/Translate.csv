@@ -136,7 +136,7 @@ SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数,内
 SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数,内鬼阵营最大职业数,內鬼陣營職業數最大值
 SettingMiniImpoGhostRole,Minimum Impostor Ghost Roles,最小インポスター幽霊役職数,内鬼阵营最小亡灵职业数,內鬼陣營亡靈職業數最小值
 SettingMaxImpoGhostRole,Maximum Impostor GhostRoles,インポスター幽霊役職人数,内鬼阵营最大亡灵职业数,內鬼陣營亡靈職業數最大值
-SettingMaxRoleCount,Maximum {0} Roles,最大{0}役職,,最大{0}職業數
+SettingMaxRoleCount,Maximum {0} Roles,最大{0}役職,最大{0}职业数,最大{0}職業數
 SettingsHideSetting,Hide Setting,設定を隠す,隐藏房间设置,隱藏設定
 SettingCrewmateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定,船员阵营职业设置,船員陣營職業設定
 SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置,內鬼陣營職業設定
@@ -164,7 +164,7 @@ SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊
 SettingOptionOn,On,オン,开启,開
 SettingOptionOff,Off,オフ,关闭,關
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示,按Tab键查看更多...,按下 TAB 查看更多...
-SettingPressTabUpdateString,Press G to open the next page {0} / {1},Tabを押してページを送る {0} / {1},,按G鍵開啟下一頁 {0} / {1}
+SettingPressTabUpdateString,Press G to open the next page {0} / {1},Tabを押してページを送る {0} / {1},按Tab键或G键翻页{0} / {1},按G鍵開啟下一頁 {0} / {1}
 ErrorHostNoVersion,Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストに<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が導入されておりません。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组,房主沒有安裝<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組
 ErrorHostChangeVersion,The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストが使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンと異なります。,房主安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同,與房主安裝的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組版本不同
 ErrorHostGuidMatches,The host uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,ホストが使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルと異なります。,房主的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同,與房主的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
@@ -223,8 +223,8 @@ RestrictDevicesTimeOption,Time limit setting,時間制限の設定,,時間限制
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理地图使用时间限制,管理員地圖時間限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制,生命跡象檢測器時間限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制,監視器時間限制
-CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,,死亡時不顯示其他玩家的職業
-OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,,只有內鬼死亡時才顯示其他玩家的職業
+CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
+OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
@@ -335,7 +335,7 @@ FinalStatusRemoteSheriffKill,Executing justice,正義執行,超能轰击,正義�
 FinalStatusRemoteSheriffMisFire,Remote Sheriff MisFire,リモートシェリフ誤爆,超能反噬,轟擊誤判
 FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー自殺,躁狂,連環殺手自殺
 FinalStatusVampireKill,Death by bloodsucking,吸血死,吸血,吸血而亡
-FinalStatusDependentsExiled,Consumed by the night.,夜に歠まれた,,被黑夜吞噬
+FinalStatusDependentsExiled,Consumed by the night.,夜に歠まれた,I miss you...,被黑夜吞噬
 FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解,被肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀,自殺
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺,指名反噬
@@ -345,10 +345,10 @@ FinalStatusHitmanDead,Disposition.,処分,沉江,被處分
 FinalStatusWorshiperSelfDeath,Suicide,自決,自杀,自殺
 FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反杀,反殺
-FinalStatusGuesserKill,Deadshot by guess,推測射殺,,身分狙殺
-FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,,狙擊炸膛
-FinalStatusLoversBreakerKill,explosion,爆破,,被爆破
-FinalStatusMadJesterExiled,Death liberates,解放,,自由解放
+FinalStatusGuesserKill,Deadshot by guess,推測射殺,赌杀,身分狙殺
+FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
+FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
+FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
 
 # Sabotages
 SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定
@@ -387,19 +387,21 @@ CRHideNameSetting,Hide Name,名前を隠す,隐藏昵称,隱藏暱稱
 IsOldMode,OldMode,オルドモード,怀旧模式,懷舊模式
 CrewmateName,Crewmate,クルーメイト,船员,船員
 CrewmateTitle1,Use Task,タスクを行う,找出内鬼,找出內鬼
-CrewmateDescription,Default Crewmate.\nScientist，Engineer，and GuardianAngel in vanilla Roles are also listed as Crewmate.\n\nYou may be an ordinary person with no special abilities，but that is why you are free from any ties.\nEnjoy the freedom that only freedom can give you!\n\nBut remember that with freedom comes responsibility...\n\n.........You are responsible for whatever happens as a result of your actions.\nAbandoning responsibility for the consequences and shifting the blame to others is unforgivable.\nAccept it. That is the result of free action.,通常のクルーメイトです。\nバニラ役職の科学者，エンジニア，守護天使もクルーメイトとして表記されます。\n\n貴方は確かに特殊能力のない平凡な存在かもしれません、\nしかしそれ故に しがらみのない自由な存在です。\n自由だからこそ可能な 立ち回りを楽しんでみましょう!\n\n但し、自由には責任が伴う事を忘れずに...\n\n.........お前が起こした行動で 何が起きてもお前の責任だ。\n結果について責任を放棄する事、責任を他人に転嫁する事は赦されない。\n受け入れろ。それが自由な行動の結果なのだ。,,預設船員職業。\n原版職業的科學家、工程師、守護天使也被列為船員。\n\n你可能是不具有特殊能力的普通人，\n但這將成為不受拘束的自由存在。\n但有記住自由是有代價的...\n\n......你的任何行動都將成為你所必須付出的代價。\n對於其結果，放棄應付的責任或將責任轉嫁於他人之上是不被允許的。\n接受這件事，因為這就是自由的代價。
+CrewmateDescription,Default Crewmate.\nScientist，Engineer，and GuardianAngel in vanilla Roles are also listed as Crewmate.\n\nYou may be an ordinary person with no special abilities，but that is why you are free from any ties.\nEnjoy the freedom that only freedom can give you!\n\nBut remember that with freedom comes responsibility...\n\n.........You are responsible for whatever happens as a result of your actions.\nAbandoning responsibility for the consequences and shifting the blame to others is unforgivable.\nAccept it. That is the result of free action.,通常のクルーメイトです。\nバニラ役職の科学者，エンジニア，守護天使もクルーメイトとして表記されます。\n\n貴方は確かに特殊能力のない平凡な存在かもしれません、\nしかしそれ故に しがらみのない自由な存在です。\n自由だからこそ可能な 立ち回りを楽しんでみましょう!\n\n但し、自由には責任が伴う事を忘れずに...\n\n.........お前が起こした行動で 何が起きてもお前の責任だ。\n結果について責任を放棄する事、責任を他人に転嫁する事は赦されない。\n受け入れろ。それが自由な行動の結果なのだ。,普通船员。\n原版职业科学家、工程师以及守护天使也被视作普通船员。\n你也许是没有特殊能力的普通玩家，但这也意味着你不会受到太大的束缚。\n请尽可能享受原汁原味的玩法带给你的自由吧！\n但记住，自由往往与责任相伴&\n\n你要为你的所有行为负责。\n推卸责任是不可饶恕的行为。\n你必须接受它，这是自由的代价。,預設船員職業。\n原版職業的科學家、工程師、守護天使也被列為船員。\n\n你可能是不具有特殊能力的普通人，\n但這將成為不受拘束的自由存在。\n但有記住自由是有代價的...\n\n......你的任何行動都將成為你所必須付出的代價。\n對於其結果，放棄應付的責任或將責任轉嫁於他人之上是不被允許的。\n接受這件事，因為這就是自由的代價。
 ImpostorName,Impostor,インポスター,内鬼,內鬼
 ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う,破坏并杀死所有人,破壞並殺死所有人
-ImpostorDescription,Default Impostor.\nShapeshifter in vanilla role are also represented as impostors.Provide support to your partner or ally.\nEven if your partner has a position，not all of his or her abilities may be superior to those of a regular impostor.\nEven if they are all top compatible，they cannot win without your support.\nYour partner or Madmate needs your action.\n\nYou can swing，you can lurk，or you can take advantage of your partner's abilities!\nIt is also a great ability to make use of your allies' abilities...\n\nDeceive，make a scapegoat，escape banishment. \nWe are the "Impostors". \nIt does not matter if we live or die.\nWe just have to kill all the crew.,通常のインポスターです。\nバニラ役職のシェイプシフターもインポスターとして表記されます。\n\n相方や味方のサポートを行いましょう。\n相方が役職持ちの場合でも、能力が全て通常のインポスターの上位互換とは限りません。\n全て上位互換であったとしても、貴方のサポートが無ければ勝つことなどできません。\n相方やマッドメイトは貴方の行動を必要としています。\n\n揺動に回るも良し、潜伏するも良し、相方の能力を生かせるよう立ち回ってみましょう!\n味方の能力を活用するのも立派な能力なのですから...\n\n騙せ　身代わりを作れ　追放を逃れろ。\n我らはインポスターだ。\n自らの生死は関係がない。\nただクルーを殺し尽くせば良いだけだ。,,預設內鬼職業。\n原版職業的變形者也被列為內鬼。\n\n為內鬼陣營的隊友提供支援。\n即使你的隊友擁有職業，他/她的能力也不一定優於原版內鬼。\n即使他們具有超強的能力，沒有你的支援他們也無法獲勝。\n你的隊友需要你的行動。\n\n你可以遊走或潛伏，或者利用隊友的能力！\n妥善利用隊友的能力也是一種很棒的能力...\n\n欺騙，找個替罪羊，避免遭放逐。\n我們是「內鬼」。\n我們的生死無關緊要。\n我們只需要殺死所有船員。
+ImpostorDescription,Default Impostor.\nShapeshifter in vanilla role are also represented as impostors.Provide support to your partner or ally.\nEven if your partner has a position，not all of his or her abilities may be superior to those of a regular impostor.\nEven if they are all top compatible，they cannot win without your support.\nYour partner or Madmate needs your action.\n\nYou can swing，you can lurk，or you can take advantage of your partner's abilities!\nIt is also a great ability to make use of your allies' abilities...\n\nDeceive，make a scapegoat，escape banishment. \nWe are the "Impostors". \nIt does not matter if we live or die.\nWe just have to kill all the crew.,通常のインポスターです。\nバニラ役職のシェイプシフターもインポスターとして表記されます。\n\n相方や味方のサポートを行いましょう。\n相方が役職持ちの場合でも、能力が全て通常のインポスターの上位互換とは限りません。\n全て上位互換であったとしても、貴方のサポートが無ければ勝つことなどできません。\n相方やマッドメイトは貴方の行動を必要としています。\n\n揺動に回るも良し、潜伏するも良し、相方の能力を生かせるよう立ち回ってみましょう!\n味方の能力を活用するのも立派な能力なのですから...\n\n騙せ　身代わりを作れ　追放を逃れろ。\n我らはインポスターだ。\n自らの生死は関係がない。\nただクルーを殺し尽くせば良いだけだ。,普通内鬼。\原版职业变形者也被视为普通内鬼。为你的队友提供支持。\n即便你的其他内鬼队友拥有职业，他们也不完全是普通内鬼的上位替代。\n即便他们全都是最强的那一梯度的内鬼，没有你的帮助他们也不能获胜。\n你的内鬼或叛徒同伴需要你的帮助。\n你可以打倒钩，也可以打深水，你也可以和队友的技能打出配合。\n利用同伴的能力也是一项很优秀的能力。\n\n尽力欺骗他人，找到抗推位来避免被放逐。\n你是“内鬼”。\n是生是死并无大碍。\n只需要杀光他们就好。,預設內鬼職業。\n原版職業的變形者也被列為內鬼。\n\n為內鬼陣營的隊友提供支援。\n即使你的隊友擁有職業，他/她的能力也不一定優於原版內鬼。\n即使他們具有超強的能力，沒有你的支援他們也無法獲勝。\n你的隊友需要你的行動。\n\n你可以遊走或潛伏，或者利用隊友的能力！\n妥善利用隊友的能力也是一種很棒的能力...\n\n欺騙，找個替罪羊，避免遭放逐。\n我們是「內鬼」。\n我們的生死無關緊要。\n我們只需要殺死所有船員。
 Neutral,Neutral,第三陣営,独立阵营,中立陣營
 NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
+MadRolesSubIntro,This life is for my mastert，the Impostor.,この命は我が主たるインポスターのために,,背叛船員，為吾主內鬼而戰。
+FriendRolesSubIntro,One who stands by the jackal.,ジャッカルに寄り添いし者,,豺狼之友，同生共死。
 detecName,Detective,探偵,侦探,偵探
 
 # Roles
 NiceName,Nice,ナイス,正义的,正義的
 EvilName,Evil,イビル,邪恶的,邪惡的
 SoothSayerName,Diviner,占い師,占卜师,占卜師
-SoothSayerDescription,Divine the positions of the survivors during the meeting，\nscrutinize the information，\nand identify the Impostor Team or Neutral Teams.,会議中に生存者の役職を占い、情報を精査し、人外を特定しましょう。,,會議中占卜倖存者的職業，調查情報，並找出內鬼或中立陣營。
+SoothSayerDescription,Divine the positions of the survivors during the meeting，\nscrutinize the information，\nand identify the Impostor Team or Neutral Teams.,会議中に生存者の役職を占い、情報を精査し、人外を特定しましょう。,占卜师可以在会议中查验存活玩家的身份。\n占卜师需要仔细对比信息，\n并找出内鬼与独立阵营玩家。,會議中占卜倖存者的職業，調查情報，並找出內鬼或中立陣營。
 SoothSayerTitle1,Divine the player and find the outsider.,プレイヤーを占い人外を見つけよう,占卜并找出内鬼,占卜並找出內鬼
 SoothSayerDisplaySetting,Position visibility,陣営表示にする,占卜师可得信息为阵营而非职业,占卜師可得資訊為陣營而非職業
 SoothSayerDetailMode,Detail display,詳細表示,具体职业,具體職業
@@ -418,7 +420,7 @@ JesterIsWinClearTaskSetting,Jester was Clear Task Win,タスクを完了しな�
 JesterWinText,Jester{0}Win!,てるてる{0}勝利,小丑竟是我自己,現在看看誰才是真正的小丑
 LighterName,Lighter,ライター,执灯人,火炬
 LighterTitle1,Let's brighten our vision,視界を明るくしよう,擦亮你的眼睛,照亮這個世界
-LighterDescription,The active ability [Light!]. changes to a set field of vision for the duration of the effect. \nAcquire more information with its wide field of view and sometimes see the current criminal outside of the person who is caught off guard.,アクティブ能力[ライト!]を使用する事で、効果時間中設定した視界に変更します。\nその広い視野で多くの情報を取得し、時には油断した人外の現行犯を視認しましょう。,,主動技能「路摸思！」可以在技能持續時間内改變視野，\n利用廣闊的視野獲得更多資訊，有時還可以看到沒有防備的內鬼。
+LighterDescription,The active ability [Light!]. changes to a set field of vision for the duration of the effect. \nAcquire more information with its wide field of view and sometimes see the current criminal outside of the person who is caught off guard.,アクティブ能力[ライト!]を使用する事で、効果時間中設定した視界に変更します。\nその広い視野で多くの情報を取得し、時には油断した人外の現行犯を視認しましょう。,执灯人可以在行动阶段让自己的视野变化一段时间。\n执灯人可以利用较大的视野获取情报，有时也可以把在视野死角作案的凶手抓个现行。,主動技能「路摸思！」可以在技能持續時間内改變視野，\n利用廣闊的視野獲得更多資訊，有時還可以看到沒有防備的內鬼。
 LigtherCooldownSetting,Writer Cooldown,ライターのクールダウン,执灯人技能冷却,火炬技能冷卻時間
 LigtherDurationSetting,Lighter Duration,ライターの継続時間,执灯人技能持续时间,火炬技能持續時間
 LighterUpVisionSetting,View in light,ライト中の視界,执灯人技能持续时的视野,火炬技能持續時的視野
@@ -426,7 +428,7 @@ LighterButtonName,Light!,ライト!,点灯,路摸思！
 EvilLighterName,Evil Lighter,イビル ライター,邪恶的执灯人,邪惡的火炬
 EvilLighterTitle1,Darken Vision,視界を暗くしよう,缩减他人视野,縮減他人視野
 EvilLighterTitle2,Create a blackout sabotage that can further reduce your vision!,視界をさらに狭くできる停電のサボタージュを発生させよう,用照明破坏制造更恐怖的黑暗,利用停電製造更恐怖的黑暗！
-EvilLighterDescription,Use special power outages to reduce the amount of information the crews have and be active in the meantime.,特殊停電を使用し村の情報量を減らして、暗躍しましょう。,,利用特殊停電減少船員的資訊量，並在此期間活躍。
+EvilLighterDescription,Use special power outages to reduce the amount of information the crews have and be active in the meantime.,特殊停電を使用し村の情報量を減らして、暗躍しましょう。,邪恶的执灯人,利用特殊停電減少船員的資訊量，並在此期間活躍。
 EvilLigtherCooldownSetting,Evil Lighter Cooldown,イビルライターのクールダウン,邪恶的执灯人技能冷却,邪惡的火炬技能冷卻時間
 EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継続時間,邪恶的执灯人技能持续时间,邪惡的火炬技能持續時間
 EvilScientistName,Evil Scientist,イビルサイエンティスト,邪恶的隐身人,邪惡的隱身人
@@ -438,7 +440,7 @@ EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサ
 SheriffName,Sheriff,シェリフ,警长,警長
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人,殺死敵人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利,殺死敵人帶領船員獲得勝利
-SheriffDescription,This is a crewmate role that allows you to change the team (role) in which kills are possible. \nIf a crewmember of a team that cannot be killed is targeted for a kill，it is a misfire and the crewmember commits suicide (the setting allows you to kill the target even if it is a misfire). Take advantage of the \ncharacteristics to scrutinize the information and identify the outsider.,キルが可能な陣営(役職)を設定により変更できるクルーメイト役職です。\nキルが不可能な陣営のクルーを対象に取りキルした場合、誤射となり自殺します(設定により誤射時も対象を殺す事ができます)。\n特性を生かして、情報を精査し人外を特定しましょう。,,依據設定具有不同可擊殺的陣營。\n當擊殺不可擊殺陣營的對象時，警長將自殺。\n根據其他人的角色特性，調查情報並帶領船員獲得勝利吧
+SheriffDescription,This is a crewmate role that allows you to change the team (role) in which kills are possible. \nIf a crewmember of a team that cannot be killed is targeted for a kill，it is a misfire and the crewmember commits suicide (the setting allows you to kill the target even if it is a misfire). Take advantage of the \ncharacteristics to scrutinize the information and identify the outsider.,キルが可能な陣営(役職)を設定により変更できるクルーメイト役職です。\nキルが不可能な陣営のクルーを対象に取りキルした場合、誤射となり自殺します(設定により誤射時も対象を殺す事ができます)。\n特性を生かして、情報を精査し人外を特定しましょう。,警长可以击杀指定阵营的玩家。\n如果警长尝试击杀一名不允许击杀的阵营的玩家，他会以死谢罪（走火）。根据房间设置，那名被尝试击杀的玩家也可能死亡。\n利用自己的能力，分析情报，找出并杀死敌对玩家。,依據設定具有不同可擊殺的陣營。\n當擊殺不可擊殺陣營的對象時，警長將自殺。\n根據其他人的角色特性，調查情報並帶領船員獲得勝利吧
 SheriffCooldownSetting,Kill Cooldown,キルクールタイム,击杀冷却,擊殺冷卻
 SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀/招募（警察局长）独立阵营玩家,可以擊殺中立陣營玩家
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀/招募（警察局长）恋人,可以擊殺戀人
@@ -458,7 +460,7 @@ MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルし�
 MeetingSheriffTitle2,Kill an outsider in a meeting and lead your crewmates to victory!,人外を会議でキルしてクルーメイトを勝利に導こう,在会议中击杀敌人带领船员获得胜利,在會議中擊殺敵人帶領船員獲得勝利
 MeetingSheriffTitle3,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう,在会议中击杀敌人以阻止敌人能力的发动,在會議中擊殺敵人以阻止敵人發動能力
 MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう,在会议中击杀敌人以阻止能力发动,在會議中擊殺敵人以阻止敵人發動能力
-MeetingSheriffDescription,This is a crewmate role that allows you to change the team (role) in which kills are possible. \nIf a crewmember of a team that cannot be killed is targeted for a kill，it is a misfire and the crewmember commits suicide (the setting allows you to kill the target even if it is a misfire). Take advantage of the \ncharacteristics to scrutinize the information and identify the outsider. Sometimes you need a kill to overturn an imposter's victory.,キルが可能な陣営(役職)を設定により変更できるクルーメイト役職です。\nキルが不可能な陣営のクルーを対象に取りキルした場合、誤射となり自殺します(設定により誤射時も対象を殺す事ができます)。\n特性を生かして、情報を精査し人外を特定しましょう。時にはキルしてインポスターの勝利を覆しましょう。,,依據設定具有不同可擊殺的陣營。\n當擊殺不可擊殺陣營的對象時，法警將自殺。\n根據其他人的角色特性，調查情報並帶領船員獲得勝利。有時需要你的擊殺來顛覆內鬼陣營的勝利。
+MeetingSheriffDescription,This is a crewmate role that allows you to change the team (role) in which kills are possible. \nIf a crewmember of a team that cannot be killed is targeted for a kill，it is a misfire and the crewmember commits suicide (the setting allows you to kill the target even if it is a misfire). Take advantage of the \ncharacteristics to scrutinize the information and identify the outsider. Sometimes you need a kill to overturn an imposter's victory.,キルが可能な陣営(役職)を設定により変更できるクルーメイト役職です。\nキルが不可能な陣営のクルーを対象に取りキルした場合、誤射となり自殺します(設定により誤射時も対象を殺す事ができます)。\n特性を生かして、情報を精査し人外を特定しましょう。時にはキルしてインポスターの勝利を覆しましょう。,超能警长可以远程击杀指定阵营的玩家。\n如果超能警长尝试击杀一名不允许击杀的阵营的玩家，他会以死谢罪（超能反噬）。根据房间设置，那名被尝试击杀的玩家也可能死亡。\n利用自己的能力，分析情报，找出并杀死敌对玩家。,依據設定具有不同可擊殺的陣營。\n當擊殺不可擊殺陣營的對象時，法警將自殺。\n根據其他人的角色特性，調查情報並帶領船員獲得勝利。有時需要你的擊殺來顛覆內鬼陣營的勝利。
 MeetingSheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる,执法官可以击杀独立阵营玩家,法警可以擊殺中立陣營玩家
 MeetingSheriffIsKillMadRoleSetting,Can Kill a Madmate,マッド系役職をキルできる,执法官可以击杀叛徒系职业,法警可以擊殺叛徒系職業
 MeetingSheriffYes,Yes,できる,是,是
@@ -473,7 +475,7 @@ JackalName,Jackal,ジャッカル,豺狼,豺狼
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼,殺死所有船員和內鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利,殺死其他陣營的所有人獲得勝利
 JackalTitle3,Let's just kill them all.,全員ぶち殺そう,杀死所有人,殺了所有人
-JackalDescription,It is a neutral team that is at odds with the Imposters.  \nIt has kill ability. The player must use \nImpostors and sometimes cooperate with them，and eventually win the game by annihilating all the killable camps except his own and reducing the number of unkillable camps to less than his own. \nDuring the game，you can also add friends called Sidekicks and Jackal Friends to your team.,インポスターとも対立するキル可能な第三陣営です。\nインポスターを利用し時には協力し、最終的には自陣営以外のキル可能陣営を全滅させ、キル不可能な陣営の人数を自陣営以下にして勝利しましょう。\nゲーム中にサイドキックやジャッカルフレンズという仲間を増やす事もできます。,,這是為了增加遊戲的樂趣而設計的中立陣營。\n他可以殺死所有人，但有時需和內鬼合作，最終通過消滅除自己以外的所有帶刀陣營，並將其他陣營的人數減少到少於自己的人數，來獲得勝利。\n在遊戲中，你還可以指名跟班和與狼族職業合作。
+JackalDescription,It is a neutral team that is at odds with the Imposters.  \nIt has kill ability. The player must use \nImpostors and sometimes cooperate with them，and eventually win the game by annihilating all the killable camps except his own and reducing the number of unkillable camps to less than his own. \nDuring the game，you can also add friends called Sidekicks and Jackal Friends to your team.,インポスターとも対立するキル可能な第三陣営です。\nインポスターを利用し時には協力し、最終的には自陣営以外のキル可能陣営を全滅させ、キル不可能な陣営の人数を自陣営以下にして勝利しましょう。\nゲーム中にサイドキックやジャッカルフレンズという仲間を増やす事もできます。,豺狼是与内鬼阵营对立的拥有击杀能力的独立阵营。\n豺狼需要利用或协助内鬼，豺狼阵营以外的全部拥有击杀能力的其他阵营玩家死亡，且没有击杀能力的其他阵营玩家的存活人数在豺狼阵营玩家数以下，则豺狼阵营获胜。\n在游戏中，豺狼可以通过招募跟班与狈来扩大队伍。,這是為了增加遊戲的樂趣而設計的中立陣營。\n他可以殺死所有人，但有時需和內鬼合作，最終通過消滅除自己以外的所有帶刀陣營，並將其他陣營的人數減少到少於自己的人數，來獲得勝利。\n在遊戲中，你還可以指名跟班和與狼族職業合作。
 JackalCooldownSetting,Jackal's kill cool time,ジャッカルのキルクールタイム,击杀冷却,擊殺冷卻
 JackalUseVentSetting,Use Vent,ベントを使える,可以使用管道,可以使用通風管道
 JackalUseSaboSetting,Use Sabotage,サボタージュが使える,可以破坏,可以破壞
@@ -484,18 +486,18 @@ JackalOff,Off,オフ,关闭,關
 JackalCreateSidekickButtonName,Sidekick!,サイドキック！,招募,招募！
 SidekickName,Sidekick,サイドキック,跟班,跟班
 SidekickTitle1,Help Jackal,ジャッカルを助けよう,帮助豺狼获得胜利,幫助豺狼獲得勝利
-SidekickDescription,A jackal's companion，appointed by the jackal. \nBetray your original camp and contribute to the victory of the jackal camp by making use of your original position.\nIf a jackal dies，you will succeed him and become the next jackal，,ジャッカルにより指名されるジャッカルの仲間です。\n元の陣営を裏切り、元々の立場を生かしてジャッカル陣営の勝利に貢献しましょう\nジャッカルが死亡した場合、後を継ぎ次のジャッカルとなります。,,被豺狼指名而成為跟班。\n背叛原先的陣營，利用過去的身分，幫助豺狼陣營獲得勝利。\n如果豺狼死亡，你將繼承他的遺志，成為下一個豺狼。
+SidekickDescription,A jackal's companion，appointed by the jackal. \nBetray your original camp and contribute to the victory of the jackal camp by making use of your original position.\nIf a jackal dies，you will succeed him and become the next jackal，,ジャッカルにより指名されるジャッカルの仲間です。\n元の陣営を裏切り、元々の立場を生かしてジャッカル陣営の勝利に貢献しましょう\nジャッカルが死亡した場合、後を継ぎ次のジャッカルとなります。,跟班是狈豺狼招募而转化的豺狼阵营职业。\n跟班需要背叛原本的阵营，并设法让豺狼阵营达成胜利条件。\n如果豺狼死亡，你会晋升成为下一个豺狼。,被豺狼指名而成為跟班。\n背叛原先的陣營，利用過去的身分，幫助豺狼陣營獲得勝利。\n如果豺狼死亡，你將繼承他的遺志，成為下一個豺狼。
 TeleporterName,Teleporter,テレポーター,邪恶的传送师,邪惡的傳送師
 TeleporterTitle1,Let's get everyone together,みんなを集めよう,把所有人传送到一起,把所有人傳送聚集在一起
 TeleporterTitle2,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう,利用传送让他人远离尸体,利用傳送讓他人遠離屍體
-TeleporterDescription,This is an impostor role that allows for collective action.,集団行動をさせるインポスター役職です。,,讓大家聚集行動的內鬼職業。
+TeleporterDescription,This is an impostor role that allows for collective action.,集団行動をさせるインポスター役職です。,邪恶的传送师可以把所有人聚集到一起。,讓大家聚集行動的內鬼職業。
 TeleporterCooldownSetting,Teleporter Sabotage Kill Cooldown,テレポートのクールダウン,传送冷却,傳送冷卻
 TeleporterTeleportTimeSetting,Time to be teleported,テレポートされるまでの時間,传送所需时间,傳送所需時間
 TeleporterTeleportButton,Teleport,テレポート！,传送,傳送！
 TeleporterTPTextMessage,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!,传送师把你传送到{0},傳送師把你傳送到{0}！
 SpiritMediumName,Medium,霊媒師,通灵师,靈媒
 SpiritMediumTitle1,Divine the dead person's position,やられた人を占い役職を調べよう,对死者的灵魂通灵知晓他们的职业,向靈魂通靈以知曉他們的職業
-SpiritMediumDescription,Mediums identify the role of the deceased. \nCheck the target who was hanged to determine the true information. \nAlso，by divining the target who was cut，you can guess the possible camp of the surviving kills.,吊られたりキルされたりして死亡した人を占い役職を特定しましょう。\n吊った対象を調べることで真の情報を確定しましょう。\n又、切られた対象を占う事で生存しているキル可能陣営の推測をしましょう。,,靈媒可以通靈知曉死者的職業。\n通靈知曉死者職業，\n或通靈被殺的玩家，推測擊殺者的陣營。
+SpiritMediumDescription,Mediums identify the role of the deceased. \nCheck the target who was hanged to determine the true information. \nAlso，by divining the target who was cut，you can guess the possible camp of the surviving kills.,吊られたりキルされたりして死亡した人を占い役職を特定しましょう。\n吊った対象を調べることで真の情報を確定しましょう。\n又、切られた対象を占う事で生存しているキル可能陣営の推測をしましょう。,通灵师可以确认被放逐的玩家的职业。\n通过被放逐玩家的职业，通灵师可以甄别场上信息。\n通灵师也可以凭借信息确定场上存活的敌对势力。,靈媒可以通靈知曉死者的職業。\n通靈知曉死者職業，\n或通靈被殺的玩家，推測擊殺者的陣營。
 SpiritMediumDisplaySetting,Position visibility,陣営表示にする,通灵师可得信息为阵营而非职业,靈媒可得資訊為陣營而非職業
 SpiritMediumDetailMode,Detail display,詳細表示,具体职业,具體職業
 SpiritMediumEncampMode,Position Display,陣営表示,所属阵营,所屬陣營
@@ -504,7 +506,7 @@ SpiritMediumIsAutoMode,Automatic divination of the expelled,追放された人�
 SpeedBoosterName,Speed Booster,スピードブースター,正义的飞毛腿,正義的閃電俠
 SpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,飞一样的感觉！,速度感！
 SpeedBoosterTitle2,Lead your crew to victory with super speed!,スーパースピードでクルーを勝利に導こう,利用自己飞快的速度带领船员走向胜利,利用自己超快的速度帶領船員們走向勝利
-SpeedBoosterDescription,This is a crewmate role that can be accelerated. \nConquer tasks at that speed! Gather as much information as you can!,加速することのできるクルーメイト役職です。\nその速度でタスクを制覇せよ! 多くの情報を取得せよ!,,正義的閃電俠是一個可以加速的船員職業。\n以超快的速度完成任務！收集更多的情報！
+SpeedBoosterDescription,This is a crewmate role that can be accelerated. \nConquer tasks at that speed! Gather as much information as you can!,加速することのできるクルーメイト役職です。\nその速度でタスクを制覇せよ! 多くの情報を取得せよ!,正义的飞毛腿可以加快自己的移动速度。\n正义的飞毛腿可以利用自己的速度更快地完成任务以及获取情报。,正義的閃電俠是一個可以加速的船員職業。\n以超快的速度完成任務！收集更多的情報！
 SpeedBoosterCooldownSetting,Speed Up Cooldown,スピードアップクールダウン,正义的飞毛腿技能冷却,正義的閃電俠技能冷卻時間
 SpeedBoosterDurationSetting,Duration of speed-up,スピードアップの継続時間,正义的飞毛腿技能持续时间,正義的閃電俠技能持續時間
 SpeedBoosterPlusSpeedSetting,Double your speed,スピードの倍速,正义的飞毛腿技能持续时间内速度增加的倍数,正義的閃電俠技能持續期間速度增加的倍數
@@ -514,7 +516,7 @@ EvilSpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,�
 EvilSpeedBoosterTitle2,Use your super speed to lead your Impostor to victory!,スーパースピードでインポスターを勝利に導こう,利用自己飞快的速度带领内鬼走向胜利,利用自己超快的速度帶領內鬼們走向勝利
 EvilSpeedBoosterTitle3,Get a kill with super speed!,スーパースピードでキルをしよう,击杀并迅速的离开案发现场,擊殺並飛速地肇事逃逸
 EvilSpeedBoosterTitle4,Let's run around and kill everyone.,走りまくって皆を瞬殺しよう,利用自己飞快的速度击杀船员,利用飛快的速度擊殺遠在前方的船員
-EvilSpeedBoosterDescription,This is an impostor role that allows you to accelerate. \Use the active ability [Speed Boost] and vent to create a long-range kill and create a distraction!,加速する事ができるインポスター役職です。\nアクティブ能力[スピードブースト]とベントを使用し、遠距離キルをかまして場を錯乱せよ!!,,邪惡的閃電俠是一個可以加速的內鬼職業。\n利用主動技能「加速」，進行遠距離快速擊殺，制造混亂！
+EvilSpeedBoosterDescription,This is an impostor role that allows you to accelerate. \Use the active ability [Speed Boost] and vent to create a long-range kill and create a distraction!,加速する事ができるインポスター役職です。\nアクティブ能力[スピードブースト]とベントを使用し、遠距離キルをかまして場を錯乱せよ!!,邪恶的飞毛腿可以加快自己的移动速度。\n邪恶的飞毛腿可以利用自己的高速移动制造空间信息差来混淆视听。,邪惡的閃電俠是一個可以加速的內鬼職業。\n利用主動技能「加速」，進行遠距離快速擊殺，制造混亂！
 EvilSpeedBoosterCooldownSetting,Speed Up Cooldown,スピードアップクールダウン,邪恶的飞毛腿技能冷却,邪惡的閃電俠技能冷卻時間
 EvilSpeedBoosterDurationSetting,Speedup duration,スピードアップの継続時間,邪恶的飞毛腿技能持续时间,邪惡的閃電俠技能持續時間
 EvilSpeedBoosterPlusSpeedSetting,Double Speed,スピードの倍速,邪恶的飞毛腿技能持续时间内速度增加的倍数,邪惡的閃電俠技能持續期間速度增加的倍數
@@ -523,27 +525,27 @@ EvilSpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト,加速,�
 TaskerName,Tasker,タスカー,特务,特務
 TaskerTitle1,Finish the task and win the Impostor!,タスクを終わらせてインポスターを勝利させよう,完成任务来让内鬼获得胜利,完成任務來讓內鬼獲得勝利
 TaskerTitle2,Try to finish the task!,タスクを頑張って終わらせよう,我就是大名鼎鼎的双料高级特工，代号：穿山甲！,完美特務J，任務宣告終結
-TaskerDescription,The role can bring victory to the Impostors by completing tasks. \nIt seems they still haven’t shaken off their Crewmate mentality. \nBut the truth is，you're already assimilated. \nEven if you do tasks and resist in vain，you're nothing but a member of the Impostors.，you are still only a member of the Impostor after all.,タスクを完了させる事でもインポスターに勝利をもたらすことが可能な役職です。\nクルーメイトだった頃の意識がまだ抜けていないんでしょうね。\n・・・ただお前はもう浸食されている。\nタスクをして無駄な抵抗をした所で、お前は結局インポスターの一員でしかない。,,特務可以通過完成任務來讓內鬼獲得勝利。\n看來你還沒有擺脫船員的意識。\n但事實上，你已經被同化了。\n即使你完成任務，抵抗也是徒勞的，你終究只是內鬼的一員。
+TaskerDescription,The role can bring victory to the Impostors by completing tasks. \nIt seems they still haven’t shaken off their Crewmate mentality. \nBut the truth is，you're already assimilated. \nEven if you do tasks and resist in vain，you're nothing but a member of the Impostors.，you are still only a member of the Impostor after all.,タスクを完了させる事でもインポスターに勝利をもたらすことが可能な役職です。\nクルーメイトだった頃の意識がまだ抜けていないんでしょうね。\n・・・ただお前はもう浸食されている。\nタスクをして無駄な抵抗をした所で、お前は結局インポスターの一員でしかない。,特务可以通过完成任务来让内鬼阵营获得胜利。\n特务依然保留着身为船员的行为习惯。\n但实际上，特务早已被内鬼同化。\n即便特务徒劳地坚称自己只是在做任务，他的本质也与其他内鬼无异。,特務可以通過完成任務來讓內鬼獲得勝利。\n看來你還沒有擺脫船員的意識。\n但事實上，你已經被同化了。\n即使你完成任務，抵抗也是徒勞的，你終究只是內鬼的一員。
 TaskerIsKillCoolTaskNow,Kill cool time is saved during the task.,タスク中にキルクールタイムが貯まる,特务在任务进程中击杀冷却减少,特務在進行任務中擊殺冷卻減少
 TaskerCanKill,Killable,キルできる,特务可击杀,特務可擊殺
 TaskerWinText,Impostor Task,インポスタータスク,特务完成任务而,內鬼任務
 DoorrName,Doorr,ドアー,门卫,門衛
 DoorrTitle1,Let's open and close the door.,ドアを開け閉めしよう,控制飞船上门的开关,控制飛船上門的開關
 DoorrTitle2,Close the door to block the impostor!,ドアを閉めてインポスターを妨害しよう,关上门来拦截内鬼,關上門來攔截內鬼
-DoorrDescription,Open doors in an instant and make your movement more efficient. You can use your ability to open doors to focus on completing a task or searching for corpses. \nWhen the only way to win is to complete the task，close the door，scatter the Impostors，and sometimes stay hidden to buy time for your friends to complete the task.,ドアを一瞬で開けて、移動を効率化させましょう。ドアを能力で開けタスク遂行や死体探しに専念する事ができます。\n唯一の勝利方法がタスク完了のみになった時、ドアを閉めて、インポスターを撒き時には隠れ過ごし、仲間がタスクを完了させる時間を稼いでみましょう。,,快速打開門，讓你的移動更有效率。你可以利用你的能力來打開門，專注於完成任務或尋找屍體。\n唯一的勝利方法就是完成任務時，關上門，分散內鬼，有時候還要躲起來為船員們爭取時間來完成任務。
+DoorrDescription,Open doors in an instant and make your movement more efficient. You can use your ability to open doors to focus on completing a task or searching for corpses. \nWhen the only way to win is to complete the task，close the door，scatter the Impostors，and sometimes stay hidden to buy time for your friends to complete the task.,ドアを一瞬で開けて、移動を効率化させましょう。ドアを能力で開けタスク遂行や死体探しに専念する事ができます。\n唯一の勝利方法がタスク完了のみになった時、ドアを閉めて、インポスターを撒き時には隠れ過ごし、仲間がタスクを完了させる時間を稼いでみましょう。,门卫可以快速开门，减轻玩家的移动负担。门卫的技能可以加快任务进度与寻找实尸体的速度。\n门卫需要一心完成任务，适时关门，给内鬼添麻烦，并在特殊情况下隐藏自己为其他船员争取时间。,快速打開門，讓你的移動更有效率。你可以利用你的能力來打開門，專注於完成任務或尋找屍體。\n唯一的勝利方法就是完成任務時，關上門，分散內鬼，有時候還要躲起來為船員們爭取時間來完成任務。
 DoorrCoolTimeSetting,Door Cool Time,ドアクールタイム,门卫技能冷却,門衛技能冷卻時間
 DoorrButtonText,Door Open Or Close,ドアを開け閉めする,开/关门,開/關門
 EvilDoorrName,Evil Doorr,イビルドアー,守门人,守門人
 EvilDoorrTitle1,Open and close doors!,ドアを開け閉めしよう,控制飞船上门的开关,控制飛船上門的開關
 EvilDoorrTitle2,Try to sabotage your crewmates!,クルーメイトを妨害しよう,尝试妨碍船员,嘗試妨礙船員
 EvilDoorrTitle3,Open and close the door immediately to block your crewmate!,すぐにドアを開け閉めしてクルーメイトを妨害しよう,快速操控门的开关来拦截船员,快速操控門的開關來攔截船員
-EvilDoorrDescription,By using the ability，the door can be closed without affecting the sabotage cool time.\nLet's add noise to the information scrutiny by the door.\nTake advantage of the fact that it does not affect the coold time of sabotage to disguise the route and estimated time of death.,能力を用いる事により、サボタージュのクールに影響せずドアを閉める事ができます。\nドアによる情報精査にノイズを入れてみましょう。\nサボタージュクールに影響しない事を生かして、経路や死亡推定時刻を偽装してみましょう。,,利用你的能力，可以在不影響破壞冷卻時間的情況下關閉門。\n利用關門不影響破壞冷卻時間的優勢來偽造路線和死亡時間。
+EvilDoorrDescription,By using the ability，the door can be closed without affecting the sabotage cool time.\nLet's add noise to the information scrutiny by the door.\nTake advantage of the fact that it does not affect the coold time of sabotage to disguise the route and estimated time of death.,能力を用いる事により、サボタージュのクールに影響せずドアを閉める事ができます。\nドアによる情報精査にノイズを入れてみましょう。\nサボタージュクールに影響しない事を生かして、経路や死亡推定時刻を偽装してみましょう。,守门人可以无视内鬼破坏冷却关门。\n这可以使得与门有关的情报出现错乱。\n守门人可以利用不受限制的开关门能力来伪造路线与估计死亡时间。,利用你的能力，可以在不影響破壞冷卻時間的情況下關閉門。\n利用關門不影響破壞冷卻時間的優勢來偽造路線和死亡時間。
 EvilDoorrCoolTimeSetting,Door Cool Time,ドアクールタイム,守门人技能冷却,守門人技能冷卻時間
 ShielderName,Shielder,シールダー,卫兵,持盾者
 ShielderTitle1,Prevent outsider kills.,人外のキルを防ごう,抵挡敌人的攻击,抵禦敵人的攻擊
 ShielderTitle2,Shield yourself!,自分にシールドを張ろう,保护好自己,保護好自己
 ShielderTitle3,Try to block a foreigner's kill!,人外のキルを妨害しよう,抵挡住来自敌人的击杀,抵禦住來自敵人的擊殺
-ShielderDescription,You can put up a shield that prevents kills，like a guardian angel's protection，targeting only you.\nIf you are killed while using the shield，your opponent's kill cool time is reset.\nAlso，you can recognize the opponent's kill by the motion of breaking the shield.,守護天使の守護の様にキルを防ぐシールドを、自分のみを対象に張ることができます。\nシールド使用中にキルされた場合、相手のキルクールタイムをリセットします。\n又、シールドの破壊モーションによって相手がキルしてきた事を認識できます。,,你可以像守護天使一樣，給自己加上一個防止被殺的護盾。\n如果你在護盾使用時被殺，對手的擊殺冷卻時間會被重置。\n另外，你可以通過護盾損壞時的動畫來識別對手的擊殺動作。
+ShielderDescription,You can put up a shield that prevents kills，like a guardian angel's protection，targeting only you.\nIf you are killed while using the shield，your opponent's kill cool time is reset.\nAlso，you can recognize the opponent's kill by the motion of breaking the shield.,守護天使の守護の様にキルを防ぐシールドを、自分のみを対象に張ることができます。\nシールド使用中にキルされた場合、相手のキルクールタイムをリセットします。\n又、シールドの破壊モーションによって相手がキルしてきた事を認識できます。,卫兵可以为自己施加类似守护天使的护盾。\n在护盾生效期间有玩家尝试击杀卫兵的场合，那次击杀无效，那个击杀冷却回到设定值。\n此外，卫兵也可以通过护盾的破碎确认击杀情况。,你可以像守護天使一樣，給自己加上一個防止被殺的護盾。\n如果你在護盾使用時被殺，對手的擊殺冷卻時間會被重置。\n另外，你可以通過護盾損壞時的動畫來識別對手的擊殺動作。
 ShielderCoolTimeSetting,Shield Cool Time,シールドクールタイム,卫兵技能冷却,持盾者技能冷卻時間
 ShielderDurationSetting,Shield duration,シールド継続時間,卫兵技能持续时间,持盾者技能持續時間
 ShielderButtonName,Shield,シールド,防御,防禦
@@ -551,28 +553,28 @@ FreezerName,Freezer,フリーザー,冻结者,霜降使者
 FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう,冻住所有人来妨碍船员,凍住所有人來妨礙船員
 FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう,冻住所有人来阻碍任务的推进,凍住所有人來阻礙任務的推進
 FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう,冻住不许走！,凍住不許走！
-FreezerDescription,Stall the whole group and support your allies in activating their abilities.,全体を足止めし、味方の能力発動のサポートをしましょう。,,凍住所有人並支援內鬼使用能力。
+FreezerDescription,Stall the whole group and support your allies in activating their abilities.,全体を足止めし、味方の能力発動のサポートをしましょう。,冻结者可以让所有玩家无法移动，借此让其他内鬼恢复冷却,凍住所有人並支援內鬼使用能力。
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム,冻结者技能冷却,霜降使者技能冷卻時間
 FreezerDurationSetting,Freeze duration,フリーズ継続時間,冻结者技能持续时间,霜降使者技能持續時間
 FreezerButtonName,Freeze,フリーズ,冻结,凍結
 SpeederName,Speeder,スピーダー,缓速者,緩速者
 SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう,让所有人速度变慢以妨碍船员,讓所有人速度變慢以妨礙船員
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう,让所有人速度变慢以阻碍任务的推进,讓所有人速度變慢以阻礙任務的推進
-SpeederDescription,Slow down the overall speed to buy time to save up for kill cool time and allied ability cool.,全体の速度を遅くすることで、キルクールタイムや味方のアビリティクールを貯める時間を稼ぎましょう。,,讓所有人速度變慢，讓內鬼有充分恢復擊殺冷卻時間和破壞冷卻時間。
+SpeederDescription,Slow down the overall speed to buy time to save up for kill cool time and allied ability cool.,全体の速度を遅くすることで、キルクールタイムや味方のアビリティクールを貯める時間を稼ぎましょう。,缓速者可以让所有玩家速度变慢，借此让其他内鬼恢复冷却,讓所有人速度變慢，讓內鬼有充分恢復擊殺冷卻時間和破壞冷卻時間。
 SpeederCoolTimeSetting,Sabotage Cool Time,サボタージュクールタイム,缓速者技能冷却,緩速者技能冷卻時間
 SpeederDurationTimeSetting,Sabotage duration,サボタージュ継続時間,缓速者技能持续时间,緩速者技能持續時間
 SpeederButtonName,SpeedDown,スピードダウン,减速,緩速
 NiceGuesserName,Guesser,ゲッサー,正义的赌怪,正義的賭怪
 NiceGuesserTitle1,Let's punch out the outsider.,人外を打ち抜こう,生命就是豪赌,人生就是一場豪賭
 NiceGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份,在會議上猜測他人的身份
-NiceGuesserTitle3,Guess and kill the Imposter!,推察し、人外を撃ち抜け！,,推測並擊殺敵人！
-NiceGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nCheck if the target's coming out is true，for example，"I am a crewmate.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\n「自分はクルーメイトです」等 対象のカミングアウトが真であるか精査してみましょう。,,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n查明那些說「我是好人！」的人的身分！
+NiceGuesserTitle3,Guess and kill the Imposter!,推察し、人外を撃ち抜け！,推测身份并击杀内鬼,推測並擊殺敵人！
+NiceGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nCheck if the target's coming out is true，for example，"I am a crewmate.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\n「自分はクルーメイトです」等 対象のカミングアウトが真であるか精査してみましょう。,正义的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，正义的赌怪自杀。\n正义的赌怪可以确认目标是否在对船员说谎。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n查明那些說「我是好人！」的人的身分！
 GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,正义的赌怪能否在一次会议中多次猜测,正義的賭怪能否在一次會議中多次猜測
 GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,正义的赌怪最大可猜测次数,正義的賭怪最大可猜測次數
 EvilGuesserName,Evil Guesser,イビルゲッサー,邪恶的赌怪,邪惡的賭怪
 EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポスター以外の陣営の役職を当てよう,刺杀其他玩家,刺殺其他玩家
-EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗ればあの世行き,,太過高調將會死於他人之手
-EvilGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nSuppress the crew from declaring role. Sometimes，you can prevent your crewmates from giving out information by killing them.\nDead men do not have mouths to feed.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\nクルーメイトの役職カミングアウトを抑制しましょう。時には討って情報を出される事を阻止しましょう。\n死人に口なし。,,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n削減已暴露的強力船員陣營或中立陣營的數量，並在必要時，阻止情報遭洩漏。\n「只有死人不會開口。」
+EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗ればあの世行き,赌博的本质就是疯狂,太過高調將會死於他人之手
+EvilGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nSuppress the crew from declaring role. Sometimes，you can prevent your crewmates from giving out information by killing them.\nDead men do not have mouths to feed.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\nクルーメイトの役職カミングアウトを抑制しましょう。時には討って情報を出される事を阻止しましょう。\n死人に口なし。,邪恶的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，邪恶的赌怪自杀。\n邪恶的赌怪可以击杀身份亮明的好人，并及时封锁他们的信息。\n只有死人能保守秘密。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n削減已暴露的強力船員陣營或中立陣營的數量，並在必要時，阻止情報遭洩漏。\n「只有死人不會開口。」
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测,邪惡的賭怪能否在一次會議中多次猜測
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数,邪惡的賭怪最大可猜測次數
 EvilGuesserCanCrewShotSetting,You Can hit Crewmates,クルーメイトを打てる,邪恶的赌怪可以猜测“船员”,邪惡的賭怪可以猜測船員陣營職業
@@ -580,7 +582,7 @@ NextPage,Next Page,次のページへ,下一页,下一頁
 PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲
 VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利,吞噬屍體獲得勝利
-VultureDescription,By consuming a predetermined number of corpses，you achieve victory. \nThe direction of the corpses can be indicated by arrows based on the settings. Let's feast and devour them endlessly.,死体を設定数食べることにより勝利します。設定により死体の方向を表す矢印が表示する事ができます。\n食べて、食べて、食べまくりましょう。・・・ごちそうさまでした。,,吃掉指定數量的屍體來獲得勝利。\n根據設定，可以顯示指向屍體的箭頭。\n屍體我來了！吃到飽！
+VultureDescription,By consuming a predetermined number of corpses，you achieve victory. \nThe direction of the corpses can be indicated by arrows based on the settings. Let's feast and devour them endlessly.,死体を設定数食べることにより勝利します。設定により死体の方向を表す矢印が表示する事ができます。\n食べて、食べて、食べまくりましょう。・・・ごちそうさまでした。,秃鹫吃掉指定数量的尸体就可以获胜。根据房间设置，秃鹫可以通过箭头确认尸体位置。\n让飞船变成血肉的狂宴吧。,吃掉指定數量的屍體來獲得勝利。\n根據設定，可以顯示指向屍體的箭頭。\n屍體我來了！吃到飽！
 VultureCooldownSetting,Corpse cooldown,死体クールダウン,秃鹫技能冷却,禿鷲技能冷卻時間
 VultureDeadBodyCountSetting,Victory corpse count,勝利死体数,秃鹫胜利所需吞噬尸体数,禿鷲勝利所需吞食屍體數
 VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する,秃鹫可见指向尸体的箭头,禿鷲可見指向屍體的箭頭
@@ -624,7 +626,7 @@ MovingCooldownSetting,Teleportation Cool Time,テレポートクールタイム,
 MovingButtonSetName,Location Set,場所セット,标记,標記
 MovingButtonTpName,Teleport,テレポート,瞬移,順移
 QuarreledName,Quarreled,クラード,福音天使,冤家兄弟
-QuarreledDescription,Teams of two.\nIf both players die，they win the game alone.\nIf they commit suicide，they cannot win alone.\nLet's make up in the next life.\n,二人一組の陣営です。\n二人とも死亡すると単独勝利勝利します。\n自殺した場合単独勝利できなくなります。\n来世で仲直りしよう。,,當你和你的冤家皆死亡時，你們將獨自獲勝。\n如果你們自殺，你們將無法獨自獲勝。\n讓我們在來世中和好吧。
+QuarreledDescription,Teams of two.\nIf both players die，they win the game alone.\nIf they commit suicide，they cannot win alone.\nLet's make up in the next life.\n,二人一組の陣営です。\n二人とも死亡すると単独勝利勝利します。\n自殺した場合単独勝利できなくなります。\n来世で仲直りしよう。,福音天使两人一组。\n两名福音天使全部死亡，则福音天使单独获胜。\n若有福音天使是自杀而死，则两名玩家不能用福音天使的胜利条件获胜。\n“因为罪恶的声音在主面前甚大，主差我们来，要毁灭这地方”,當你和你的冤家皆死亡時，你們將獨自獲勝。\n如果你們自殺，你們將無法獨自獲勝。\n讓我們在來世中和好吧。
 QuarreledIntro,{0} and it's Quarreled!,{0}とクラードになりました！,{0} 和你是福音天使,{0}和你是冤家
 QuarreledTeamCountSetting,Max Teams,チーム数,福音天使最多对数,冤家兄弟最多對數
 QuarreledParSetting,Only Crewmate Team,排出される確率,福音天使生成概率,冤家兄弟生成概率
@@ -633,7 +635,7 @@ QuarreledWinText,Quarreled{0}Win,クラード{0}勝利,他们狂傲，我看见�
 OpportunistName,Opportunist,オポチュニスト,投机者,投機者
 OpportunistTitle1,We'll survive.,生き残ろう,活下去,活下去
 OpportunistTitle2,Let's try not to die.,死なないようにしよう,我……不想死……,我...不想死...
-OpportunistDescription,If you survive to the end，you will win an additional victory no matter what camp wins.\nGet into the other team and hang on to that victory.,最後まで生存しているとどんな陣営が勝っても追加勝利をします。\n上手く他陣営に取り入ってその勝利にぶら下がりましょう。,,若活到最後，你將與勝利的陣營一同獲勝。\n加入另一個陣營，並獲得勝利。
+OpportunistDescription,If you survive to the end，you will win an additional victory no matter what camp wins.\nGet into the other team and hang on to that victory.,最後まで生存しているとどんな陣営が勝っても追加勝利をします。\n上手く他陣営に取り入ってその勝利にぶら下がりましょう。,投机者存活到游戏结束，则投机者跟随获胜阵营一同获胜。\n投机者需要见风使舵，让自己活到最后获得胜利,若活到最後，你將與勝利的陣營一同獲勝。\n加入另一個陣營，並獲得勝利。
 BestfalsechargeName,Best False Charge,ベスト冤罪ヤー,冤种,大冤種
 BestfalsechargeTitle1,Lets' Task!,タスクをしよう,你已经死了,你已經死了
 BestfalsechargeDescription,After the first meeting it dies.,最初の会議が終わると死にます。,冤种属于船员阵营。\n在第一轮会议过后冤种就会死亡。,大冤種屬於船員陣營。\n在第一輪會議過後大冤種就會死亡。
@@ -658,7 +660,7 @@ SelfBomberBombCoolTimeSettting,Ability of selfbomb cooldown time.,自爆能力�
 GodName,God,神,神,神
 GodTitle1,You Are God!!,あなたは神だ,新世界的卡密！,新世界的Kami！
 GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。,神存活到游戏结束则神单独获胜。\n所有玩家的职业对神可见。,神存活到遊戲結束則神單獨獲勝。\n所有玩家的職業對神可見。
-GodDescription,I know everyone's roles. I am a god.\nIf I survive until the end，I will claim victory by myself，stealing it from others.\nDedicate that victory to the gods.,全員の役職がわかります。私は神だ。\n最後まで生存していると勝利を横取りして単独勝利します。\nその勝利を神に捧げなさい。,,吾知曉所有人的職業。吾乃神。\n若存活到遊戲結束，吾將横取勝利，獨自獲勝。\n來吧，將勝利獻給神吧。
+GodDescription,I know everyone's roles. I am a god.\nIf I survive until the end，I will claim victory by myself，stealing it from others.\nDedicate that victory to the gods.,全員の役職がわかります。私は神だ。\n最後まで生存していると勝利を横取りして単独勝利します。\nその勝利を神に捧げなさい。,全知全能之神明。\n只要神存在于飞船内，一切胜利果实都将被当作神的祭品。\n为神奉献胜利吧。,吾知曉所有人的職業。吾乃神。\n若存活到遊戲結束，吾將横取勝利，獨自獲勝。\n來吧，將勝利獻給神吧。
 GodViewVoteSetting,I know who to vote for.,投票先がわかる,神能看到所有人的投票情况,神能看到所有人的投票情況
 GodIsEndTaskWinSetting,You have to finish the task to win.,タスクを終わらせないと勝利できない,不完成所有任务则不能获胜,不完成所有任務則不能獲勝
 AllCleanerName,All Cleaner,オールクリーナー,清理者,清理者
@@ -778,7 +780,7 @@ EvilMovingName,EvilMoving,イビルムービング,邪恶的魔术师,邪惡的�
 EvilMovingTitle1,Lets Teleport Kill!,テレポートをしてキルしよう,利用魔术杀害船员,利用魔術殺害船員
 AmnesiacName,Amnesiac,忘却者,失忆者,失憶者
 AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう,努力回想你的职业,努力回想你的職業
-AmnesiacDescription,This is the Neutral role where reporting a corpse results in the role of the person of the corpse.\nWinning conditions depend on the role of the change destination.,死体をレポートするとその死体の人の役職になる第三陣営です。\n勝利条件は変化先の役職に依存します。,,失憶者屬於中立陣營，當舉報屍體時將成為死者的原職業。\n勝利條件取決於所成為職業而定。
+AmnesiacDescription,This is the Neutral role where reporting a corpse results in the role of the person of the corpse.\nWinning conditions depend on the role of the change destination.,死体をレポートするとその死体の人の役職になる第三陣営です。\n勝利条件は変化先の役職に依存します。,失忆者属于独立阵营，可以通过报告尸体来获得那名被报告的玩家的职业。\n失忆者的胜利条件与获得的职业相同。,失憶者屬於中立陣營，當舉報屍體時將成為死者的原職業。\n勝利條件取決於所成為職業而定。
 SideKillerName,SideKiller,サイドキラー,头目,頭目
 SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう,招募喽啰来获得胜利,招募喽囉來獲得勝利
 SideKillerSidekickButtonName,Erosion,浸食する,策反,策反
@@ -815,8 +817,8 @@ MadHawkName,MadHawk,マッドホーク,叛变的鹰眼,叛變的鷹眼
 MadHawkTitle1,See it all.,すべてを見渡そう,将一切尽收眼底,將一切盡收眼底
 MadJesterName,MadJester,マッドてるてる,傀儡小丑,傀儡小丑
 MadJesterTitle1,Get voted out and win with the Impostors!,投票で追放されてインポスターと勝利しよう,想办法被投出去，与内鬼一同获胜,想辦法被投出去，與內鬼一同獲勝
-MadJesterTitle2,Seeker of Liberation,解放を望む者,,尋求自由解放之人
-MadJesterTitle3,Oh，my master，please do something about this hopeless world...,嗚呼ご主人 どうしようもないこの世界をどうか...,,喔嗚...我的主人...請解放這個痛苦的世界吧...
+MadJesterTitle2,Seeker of Liberation,解放を望む者,挣脱自己可笑的命运,尋求自由解放之人
+MadJesterTitle3,Oh，my master，please do something about this hopeless world...,嗚呼ご主人 どうしようもないこの世界をどうか...,我曾被困其间…现已无拘无束…,喔嗚...我的主人...請解放這個痛苦的世界吧...
 MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.\nYou go for the gallows，climb up，tumbling down，tumbling down...\nFor I believe it will bring us glory...,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。\n貴方は絞首台をめざす、のぼる、おちる。\nそれが我らの栄光につながると信じて。,规则上傀儡小丑被视为船员阵营，但其跟随内鬼阵营获胜。\n傀儡小丑被放逐则内鬼阵营获胜。\n你听到绞刑台正向你呼唤……你爬上去……垂下身躯……日渐西沉……\n而你在死前看到，这是无辜者们的落日。,規則上傀儡小丑屬於船員陣營，但其跟隨內鬼陣營獲勝。\n傀儡小丑遭放逐則內鬼陣營獲勝。\n當你聽到處刑台正向你呼喚...你爬上去...垂下身軀...日漸西沉\n而你在死前看到的，是無辜者們的落日。
 FalseChargesName,FalseCharges,冤罪師,冤罪师,冤罪師
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利,栽贓他人獲取勝利
@@ -841,7 +843,7 @@ ObserverTitle1,Let's monitor everything.,すべてを監視しよう,监视一�
 ObserverDescription,You can see where everyone is voting during the meeting.,会議中に全員の投票先を確認できます。,窥视者属于船员阵营。\n会议阶段，窥视者可以确认所有玩家的投票对象。,中選會委員屬於船員陣營。\n會議階段，中選會委員可以確認所有玩家的投票對象。
 VampireName,Vampire,ヴァンパイア,吸血鬼,吸血鬼
 VampireTitle1,Terrorise the Night King.,夜の王に恐怖せよ,好想吸血吸到吐,創造屬於我的夜之王朝吧！
-VampireDescription,I can perform delayed kills.\nIn return，bloodstains will be left behind，and I have no intention of fixing power outages.\nI won't be detected by surveillance devices either.\nBut if I quietly bite someone in a crowd，no one will know who did it，right?,遅延キルをすることが出来ます。\n代わりに血痕は残りますし、停電は直す気はありません。\n情報機器には認識もされません。\nでも、人混みの中でこっそり噛みついたら、誰が殺ったかわからないよね。,,吸血鬼可以造成延遲擊殺。\n作為交換，吸血鬼的擊殺會留下血跡，並且吸血鬼無法修復停電。\n吸血鬼也不會被監視器看到。\n但如果吸血鬼在人群中悄悄咬人，沒人會知道是誰咬的，對吧：P
+VampireDescription,I can perform delayed kills.\nIn return，bloodstains will be left behind，and I have no intention of fixing power outages.\nI won't be detected by surveillance devices either.\nBut if I quietly bite someone in a crowd，no one will know who did it，right?,遅延キルをすることが出来ます。\n代わりに血痕は残りますし、停電は直す気はありません。\n情報機器には認識もされません。\nでも、人混みの中でこっそり噛みついたら、誰が殺ったかわからないよね。,吸血鬼可以进行延迟击杀。\n作为代价，吸血鬼击杀后会留下血迹，且不可以修复照明破坏。\n吸血鬼不会被飞船设备检测到。\n吸血鬼可以在人群中进行吸血，以避免被发现。,吸血鬼可以造成延遲擊殺。\n作為交換，吸血鬼的擊殺會留下血跡，並且吸血鬼無法修復停電。\n吸血鬼也不會被監視器看到。\n但如果吸血鬼在人群中悄悄咬人，沒人會知道是誰咬的，對吧：P
 VampireKillDelay,Kill Delay,キル遅延,击杀延迟,擊殺延遲時間
 VampireViewBloodStainsTurn,Turn to see blood,血が見えるターン,血渍可见需要经过的回合数,血跡可見需要經過的回合數
 VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能,吸血鬼可以指定一名眷属,吸血鬼可以指定一名眷屬
@@ -851,15 +853,15 @@ VampireDependentsCanVent,Vent available for use by dependents,眷属がベント
 VampireDependentsButtonName,make Dependents,眷属にする,眷属,眷屬
 DependentsName,Dependents,眷属,眷属,眷屬
 DependentsTitle1,Trapped in the Night.,夜に囚われし者,你也是吸血鬼了,現在你是我們吸血鬼的一員了
-DependentsDescription,This role is Madmate who can perform kills.\nI am synchronized with the kill cool time of the Vampire.\nBright places are not my forte，but I excel in darkness.\nOnce night falls，there is no escape.,キルが出来るマッドメイトです。\nヴァンパイアとはキルクールが同期しています。\n明るいところは苦手ですが暗いところは得意です。\n夜からは、逃れられないのです。,,眷属可以進行擊殺的內鬼協助者。\n眷属的擊殺冷卻時間與吸血鬼同步。\n眷属懼怕光明，\n一旦夜幕降臨，他人就無法逃離。
+DependentsDescription,This role is Madmate who can perform kills.\nI am synchronized with the kill cool time of the Vampire.\nBright places are not my forte，but I excel in darkness.\nOnce night falls，there is no escape.,キルが出来るマッドメイトです。\nヴァンパイアとはキルクールが同期しています。\n明るいところは苦手ですが暗いところは得意です。\n夜からは、逃れられないのです。,眷属属于叛徒阵营，可以进行击杀。\n眷属的击杀冷却与吸血鬼同步。\n眷属惧怕于光明，滋长于黑暗。\n夜幕降临，则无处可逃。,眷属可以進行擊殺的內鬼協助者。\n眷属的擊殺冷卻時間與吸血鬼同步。\n眷属懼怕光明，\n一旦夜幕降臨，他人就無法逃離。
 DarkKillerName,DarkKiller,ダークキラー,暗夜杀手,暗影殺手
 DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮隐藏于黑暗之中,將你的殺戮隱匿於黑夜之中
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,暗夜杀手击杀冷却,暗影殺手擊殺冷卻時間
 FoxName,Fox,妖狐,妖狐,狐妖
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！,我是一隻小狐狸！
-FoxDescription,If you survive to the end，you win alone.\nYou will not be killed.\nThat's because I'm not me there.,最後まで生存していると単独勝利します。\nキルされることはありません。\nそりゃあそこにいる私は私ではないからね。,,如果狐妖存活到最後則獨自勝利。\n不存在什麼我被殺，因為在那的我並不是我。
+FoxDescription,If you survive to the end，you win alone.\nYou will not be killed.\nThat's because I'm not me there.,最後まで生存していると単独勝利します。\nキルされることはありません。\nそりゃあそこにいる私は私ではないからね。,妖狐存活到游戏结束则妖狐单独获胜。\n妖狐不会被击杀。\n你什么时候产生了你看到的是本人的错觉？,如果狐妖存活到最後則獨自勝利。\n不存在什麼我被殺，因為在那的我並不是我。
 SeerName,Seer,シーア,灵媒,先知
-SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。,灵媒属于船员阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n灵媒需要利用手中的情报来确认内鬼。,先知屬於船員陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n先知需要利用手中的情報來確認內鬼。,
+SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。,灵媒属于船员阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n灵媒需要利用手中的情报来确认内鬼。,先知屬於船員陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n先知需要利用手中的情報來確認內鬼。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
 SeerMode,Mode,モード,灵媒模式,先知模式
 SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂,顯示死亡閃光和靈魂
@@ -883,7 +885,7 @@ MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！,让更多的人
 MadMakerSidekickButtonName,Solicitation,勧誘する,收买,綁樁
 DemonName,Demon,悪魔,恶魔,惡魔
 DemonTitle1,Curse the Crew and Help the Impostor!,クルーを呪いながらインポスターを手助けせよ,诅咒船员并协助内鬼,詛咒船員並協助內鬼
-DemonDescription,A curse can be placed.\nIf Impostor wins with the ǉn curse applied to everyone，including Impostor，he will intercept the victory and win alone.,呪いをかけることが出来ます。\n呪いをインポスター含め全員にかけた状態でインポスターが勝利すると、その勝利を横取りして単独勝利します。,,惡魔可以施放詛咒。\n如果內鬼獲勝時，惡魔詛咒了所有人（包括內鬼），則會搶奪勝利並獨自獲勝。
+DemonDescription,A curse can be placed.\nIf Impostor wins with the ǉn curse applied to everyone，including Impostor，he will intercept the victory and win alone.,呪いをかけることが出来ます。\n呪いをインポスター含め全員にかけた状態でインポスターが勝利すると、その勝利を横取りして単独勝利します。,恶魔可以诅咒其他玩家。\n若恶魔在内鬼达到胜利条件时诅咒了包括内鬼在内的全部存活玩家，恶魔单独获胜。,惡魔可以施放詛咒。\n如果內鬼獲勝時，惡魔詛咒了所有人（包括內鬼），則會搶奪勝利並獨自獲勝。
 DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝利できない,恶魔存活才能获胜,惡魔存活才能獲勝
 DemonButtonName,Curse,呪う,诅咒,詛咒
 TaskManagerName,TaskManager,タスクマネージャー,代理人,代理人
@@ -954,7 +956,7 @@ PositionSwapperSwapText,Position swapper swapped you!,スワッパーによっ�
 PositionSwapperSwapText2,Position swapper swapped you!\nby the way，ykundesu is delicious，isn't it?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ,念动使交换了你的位置！\n（这里是个彩蛋，但我不知道写啥好，就祝看到它的你身体健康吧）,交換使交換了你的位置！
 TunaName,Tuna,マグロ,铁华团团长,鐵華團團長
 TunaTitle1,Always move!,常に動け！,不要停下来啊……,不要停下來啊...
-TunaDescription,If you stop for the set duration after the initial meeting，you will die.\nIf you manage to survive until the end，you will seize victory and achieve a solo win.\nDon't stop! You'll die!!,初手会議以降、設定秒数停止すると死亡します。\n最後まで生存していると勝利を横取りして単独勝利します。\n止まるな!死ぬぞ!!,,在最初的會議之後，如果你停下達指定的時間，你就會死亡。\n若你能活到最後，你就能獨自獲得勝利。\n不要停下來！團長！
+TunaDescription,If you stop for the set duration after the initial meeting，you will die.\nIf you manage to survive until the end，you will seize victory and achieve a solo win.\nDon't stop! You'll die!!,初手会議以降、設定秒数停止すると死亡します。\n最後まで生存していると勝利を横取りして単独勝利します。\n止まるな!死ぬぞ!!,若铁华团团长在第一次会议阶段以后的行动阶段停止移动一段时间，则铁华团团长死亡。\n铁华团团长存活到游戏结束，则铁华团团长获胜。\n所以啊，不要停下来啊……,在最初的會議之後，如果你停下達指定的時間，你就會死亡。\n若你能活到最後，你就能獨自獲得勝利。\n不要停下來！團長！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間,团长允许停下的最大时间,團長允許停下的最大時間
 TunaAddWinSetting,Add Win,追加勝利,团长的胜利作为追加胜利而非单独胜利,團長的勝利作為追加勝利而非單獨勝利
 BlackCatName,Black Cat,黒猫,叛变的猎人,叛變的獵人
@@ -970,7 +972,7 @@ SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを�
 CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする,下载自定义帽子,下載自訂義帽子
 KunoichiName,Kunoichi,クノイチ,女忍,女忍
 KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け,用忍术来欺骗船员,用忍術來欺騙船員
-KunoichiDescription,Instead of being unable to get a kill normally，you can throw a kunai that is invisible to everyone but you.\nIf you hit a set number of kunai，you will get a kill.,通常キルが出来ない代わりに自分以外には見えないクナイを投げることが出来ます。\nクナイを設定数当てるとキル出来ます。\n不可視のキルで村を混乱に陥れましょう。,,女忍無法使用普通的擊殺，但可以投擲只有自己看得見的苦無。\n擊中指定數量的苦無，就可以造成擊殺。\n用不可視的苦無來擊殺船員並導致混亂吧。
+KunoichiDescription,Instead of being unable to get a kill normally，you can throw a kunai that is invisible to everyone but you.\nIf you hit a set number of kunai，you will get a kill.,通常キルが出来ない代わりに自分以外には見えないクナイを投げることが出来ます。\nクナイを設定数当てるとキル出来ます。\n不可視のキルで村を混乱に陥れましょう。,作为通常击杀的替代，女忍可以投掷只有自己可见的苦无。\n被苦无击中一定次数的玩家被女忍击杀。\n女忍通过不可视的苦无击杀给船员造成混乱。,女忍無法使用普通的擊殺，但可以投擲只有自己看得見的苦無。\n擊中指定數量的苦無，就可以造成擊殺。\n用不可視的苦無來擊殺船員並導致混亂吧。
 KunoichiCoolTime,Kunai Cool Time,クナイのクールタイム,女忍苦无冷却,女忍苦無冷卻
 KunoichiKillKunai,Number of kunai required for a kill,キルに必要なクナイ数,女忍进行击杀所需要的苦无数,女忍造成擊殺所需要的苦無數
 KunoichiIsHide,Transparency,透明化,隐身,隱身
@@ -997,7 +999,7 @@ SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺し�
 SuicideName,Suicide,自殺,自杀,自殺
 NeetName,Neet,ニート,废柴,尼特
 NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干劲呢，明天再努力吧,交給其他人吧
-NeetDescription,Every possible button does not exist.\nYou can't do anything，because you are Neet.\nIf you survive to the end，you win alone or additionally.,ありとあらゆるボタンが存在しません。\n何も出来ません、だってニートだもの。\n最後まで生存していると単独or追加勝利します。,,尼特沒有任何可以操作的按鈕。\n甚麼都不用做，因為你是尼特。\n根據設定，活到最後來取得獨自勝利或和他人一同勝利吧。
+NeetDescription,Every possible button does not exist.\nYou can't do anything，because you are Neet.\nIf you survive to the end，you win alone or additionally.,ありとあらゆるボタンが存在しません。\n何も出来ません、だってニートだもの。\n最後まで生存していると単独or追加勝利します。,由于过于废柴，废柴不存在任何交互按钮，不能作任何行动。\n废柴存活到游戏结束即可获胜。,尼特沒有任何可以操作的按鈕。\n甚麼都不用做，因為你是尼特。\n根據設定，活到最後來取得獨自勝利或和他人一同勝利吧。
 FastMakerName,Fast Maker,ファストメーカー,洗脑师,洗腦師
 FastMakerTitle1,Let's make Madmate with a light heart.,軽い気持ちでマッドメイトを作ろう,让船员背叛成为你的俘虏,讓船員背叛成為你的手下
 FastMakerDescription,This role can create a Mad Mate with the first kill.,初手キルでマッドメイトを作成出来るインポスターです。,洗脑师的首次击杀不会造成死亡，而是将击杀目标变为叛徒,首次擊殺可以使船員背叛
@@ -1018,10 +1020,10 @@ ButtonerCountSetting,Number of uses,使用回数,执钮人技能最大使用次�
 ButtonerButtonName,Meeting!,緊急会議！,召开,緊急會議！
 RevolutionistName,Revolutionist,革命家,革命家,革命家
 RevolutionistTitle1,Let's start a revolution.,革命を起こそう,发起革命,發起革命
-RevolutionistDescription,This is a combination position with a dictator.\nYou can spread the revolution by approaching the survivors.\nIf the revolution is spread to all the survivors，a revolutionary meeting can be held，and if the dictator is ousted，the revolutionist wins alone.,独裁者とのコンビネーション役職です。\n生存者に近づくことで革命を広めることが出来ます。\n生存者全員に革命を広げると革命会議を起こすことが出来、そこで独裁者を追放出来ると単独勝利します。,,革命家是與獨裁者競爭的職業。\n如果革命擴散到所有倖存者，將會召開革命會議。\n如果成功將獨裁者驅逐，革命家將獨自勝利或獲得追加勝利。
+RevolutionistDescription,This is a combination position with a dictator.\nYou can spread the revolution by approaching the survivors.\nIf the revolution is spread to all the survivors，a revolutionary meeting can be held，and if the dictator is ousted，the revolutionist wins alone.,独裁者とのコンビネーション役職です。\n生存者に近づくことで革命を広めることが出来ます。\n生存者全員に革命を広げると革命会議を起こすことが出来、そこで独裁者を追放出来ると単独勝利します。,革命家与独裁者为组合职业。\n革命家需要向附近存活的玩家宣传革命。\n若革命家已经向所有存活的玩家宣传过革命，则会立即召开革命会议，若在革命会议中独裁者被放逐，革命家单独获胜。,革命家是與獨裁者競爭的職業。\n如果革命擴散到所有倖存者，將會召開革命會議。\n如果成功將獨裁者驅逐，革命家將獨自勝利或獲得追加勝利。
 DictatorName,Dictator,独裁者,独裁者,獨裁者
 DictatorTitle1,Let's monopolize power,権力を独占しよう,掌握独裁的权力,掌握獨裁的權力
-DictatorDescription,This is a combination role with a Revolutionist.\nYou can vote for more than one person.\nWhen you are about to be expelled，you can substitute someone else for a set number of times.,革命家とのコンビネーション役職です。\n複数票投票することが出来ます。\nまた、追放されそうになったとき、設定回数だけ他の誰かを身代わりにすることが出来ます。,,獨裁者是與革命家競爭的職業。\n可以一次投出多張票。\n當獨裁者被驅逐時，在指定次數內可以讓其他玩家代替自己被驅逐。
+DictatorDescription,This is a combination role with a Revolutionist.\nYou can vote for more than one person.\nWhen you are about to be expelled，you can substitute someone else for a set number of times.,革命家とのコンビネーション役職です。\n複数票投票することが出来ます。\nまた、追放されそうになったとき、設定回数だけ他の誰かを身代わりにすることが出来ます。,独裁者与革命家为组合职业。\n独裁者的投票计为若干票。\n此外，独裁者被放逐的场合有若干次，可以让一名其他玩家代替其被放逐。,獨裁者是與革命家競爭的職業。\n可以一次投出多張票。\n當獨裁者被驅逐時，在指定次數內可以讓其他玩家代替自己被驅逐。
 RevolutionistAndDictatorName,<color=#FF0033>Revolutionist</color>And<color=#336600>Dictator</color>,<color=#FF0033>革命家</color>と<color=#336600>独裁者</color>,<color=#FF0033>大</color>革<color=#336600>命</color>,<color=#FF0033>大</color>革<color=#336600>命</color>
 SettingRevolutionistPlayerCountName,Number of <color=#FF0033>Revolutionist</color>,<color=#FF0033>革命家</color>の人数,<color=#FF0033>革命家</color>人数,<color=#FF0033>革命家</color>人數
 SettingDictatorPlayerCountName,Number of <color=#336600>Dictator</color>,<color=#336600>独裁者</color>の人数,<color=#336600>独裁者</color>人数,<color=#336600>獨裁者</color>人數
@@ -1039,7 +1041,7 @@ SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼�
 SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。,規則上牧狼人被判定為船員陣營，但是其為豺狼的同伙。\n豺狼團隊獲勝則牧狼人一同獲勝。\n豺狼能確認牧狼人是誰。牧狼人需要幫助豺狼以獲得勝利。
 SpelunkerName,Spelunker,スペランカー,倒霉蛋,倒霉鬼
 SpelunkerTitle1,It's so easy to die.,簡単に死んでしまう,死亡如风，常伴吾身,人總有一死，何必在意
-SpelunkerDescription,I am a worthless weakling who can easily die over trivial matters.\nVents，ladders，doors，power outages，communication interference，elevator lifts—everything is my enemy.\nBut if I manage to survive until the end，I will seize victory and claim it solely for myself.\nNow，let's strive to stay alive.,ちょっとしたことで簡単に死ぬクソ雑魚です。\nベント、はしご、ドア、停電、通信妨害、昇降機リフト、全てが敵です。\n最後まで生存していると勝利を横取りして単独勝利します。\nさあ、生き残ろう。,,倒霉鬼是隨隨便便都能死的雜魚。\n通風管、梯子、門、停電、通訊干擾、電梯，所有東西都是倒霉鬼的敵人。\n如果倒霉鬼能活到最後，就能獨自獲勝。\n現在，努力活下去吧。
+SpelunkerDescription,I am a worthless weakling who can easily die over trivial matters.\nVents，ladders，doors，power outages，communication interference，elevator lifts—everything is my enemy.\nBut if I manage to survive until the end，I will seize victory and claim it solely for myself.\nNow，let's strive to stay alive.,ちょっとしたことで簡単に死ぬクソ雑魚です。\nベント、はしご、ドア、停電、通信妨害、昇降機リフト、全てが敵です。\n最後まで生存していると勝利を横取りして単独勝利します。\nさあ、生き残ろう。,倒霉蛋是可以因任何意外事件而死的杂❤鱼。\倒霉蛋可以因管道、梯子、门、破坏、移动平台等等原因而死。\n若倒霉蛋存活到游戏结束，倒霉蛋将肚子获胜。\n一定要活下去啊。,倒霉鬼是隨隨便便都能死的雜魚。\n通風管、梯子、門、停電、通訊干擾、電梯，所有東西都是倒霉鬼的敵人。\n如果倒霉鬼能活到最後，就能獨自獲勝。\n現在，努力活下去吧。
 SpelunkerVentDeathChance,Probability of vent death,ベント死の確率,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
 SpelunkerIsDeathCommsOrPowerdown,Power outage/community skipping death,停電/コミュサボ死,倒霉蛋会在照明或通讯破坏期间失足而死,倒霉鬼在停電/通訊破壞期間失足而死
 SpelunkerDeathCommsOrPowerdownTime,Time to power outage/community sabotage death,停電/コミュサボ死までの時間,倒霉蛋在照明或通讯期间死亡需要经过的时间,倒霉鬼在停電/通訊破壞期間死亡需要經過的時間
@@ -1070,7 +1072,7 @@ SeeThroughPersonName,SeeThroughPerson,透視者,目击者,目擊者
 SeeThroughPersonTitle1,Witness the decisive moment!,決定的瞬間を目撃しよう,透过门缝目击决定性的瞬间,透過門縫目擊決定性的瞬間
 MatryoshkaName,Matryoshka,マトリョーシカ,恐怖套娃,恐怖套娃
 MatryoshkaTitle1,Cloak the corpse and move the corpse.,死体をまとって死体を移動させよう,把尸体做成套娃,把屍體做成套娃
-MatryoshkaDescription,You can move around wearing a corpse.\nHide yourself by hiding the corpse.\nYes，behind the corpse.,死体を着て移動することが出来ます。\n死体を隠して自身も隠れましょう。\nそう、死体の陰に。,,你可以穿著屍體移動。\n把屍體藏起來，自己也可以藏起來。\n就藏在屍體裡。
+MatryoshkaDescription,You can move around wearing a corpse.\nHide yourself by hiding the corpse.\nYes，behind the corpse.,死体を着て移動することが出来ます。\n死体を隠して自身も隠れましょう。\nそう、死体の陰に。,恐怖套娃可以把尸体做成套娃，套在自己身上并移动。\n恐怖套娃可以通过隐藏尸体来自己。\n也就是说，把自己藏进尸体里。,你可以穿著屍體移動。\n把屍體藏起來，自己也可以藏起來。\n就藏在屍體裡。
 MatryoshkaWearLimit,Number of times you can wear it,纏える回数,恐怖套娃最大套娃次数,恐怖套娃最大套娃次數
 MatryoshkaAddKillCoolTime,Increased kill-cool time time for corpse coats,死体まといの増加キルクールタイムタイム,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷卻
 MatryoshkaWearReport,can be called in while the body is still circled,まとい中でも通報可能,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
@@ -1079,14 +1081,14 @@ MatryoshkaPutOnButtonName,Put On,着る,套娃,套娃
 MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除,解除
 StefinderName,Stefinder,ステファインダー,二五仔,二五仔
 StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう,那么答案只有一个了！,那麼答案只有一個了！
-StefinderDescription,You can only make one kill.\nIf you make a kill， you are in the impostor's camp; if you do not make a kill， you are in the crew's camp.\nYou must decide which side you are going to be in when the match unfolds.,一度だけキルが出来ます。\nキルをしたらインポスター陣営、キルをしなければクルー陣営です。\n試合展開を見極めてどちらに付くか決めましょう。,,二五仔只能進行一次擊殺。\n一旦你進行了擊殺，你將成為內鬼陣營；如果你沒有進行擊殺，你將維持船員陣營身分。\n你必須在遊戲結束前決定你要加入哪一方。
+StefinderDescription,You can only make one kill.\nIf you make a kill， you are in the impostor's camp; if you do not make a kill， you are in the crew's camp.\nYou must decide which side you are going to be in when the match unfolds.,一度だけキルが出来ます。\nキルをしたらインポスター陣営、キルをしなければクルー陣営です。\n試合展開を見極めてどちらに付くか決めましょう。,二五仔只能进行一次击杀。\n使用击杀的二五仔属于内鬼阵营，不使用击杀的二五仔则属于船员阵营。\n二五仔需要根据游戏的进展来决定自己要加入哪方,二五仔只能進行一次擊殺。\n一旦你進行了擊殺，你將成為內鬼陣營；如果你沒有進行擊殺，你將維持船員陣營身分。\n你必須在遊戲結束前決定你要加入哪一方。
 StefinderKillCooldownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却,二五仔擊殺冷卻時間
 StefinderVentSetting,CanUseVent,ベントを使用できる,二五仔可以使用管道,二五仔可以使用通風管道
 StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五仔可以造成破坏,二五仔可以造成破壞
 StefinderSoloWinSetting,SoloWin,単独勝利,二五仔可以单独获胜,二五仔可以單獨獲勝
 PartTimerName,PartTimer,フリーター,打工仔,打工仔
 PartTimerTitle1,If you want a part-time job...!,バイトするなら…！ ,打工人，打工魂，打工都是人上人！,成為打工皇帝吧！
-PartTimerDescription,You can get a job with someone specific.\nThe victory condition depends on the opponent's role， and you can win with any team.\nIf your employer dies， re-employ someone else.\nIf you are jobless， you will starve to death.,特定の誰かに就職することが出来ます。\n勝利条件は相手の役職に依存し、どんな陣営とでも勝利出来ます。\n就職先が死亡した場合、別の誰かに再就職しましょう。\n職無しでいると飢えて死ぬぞ。,,打工仔可以在特定的對象底下打工。/n勝利條件將與老闆的陣營一致。\n當你的老闆死了，你將失業，必須再找一個新的老闆。\n若你在指定的回合數內沒有找到工作，你將會窮死。
+PartTimerDescription,You can get a job with someone specific.\nThe victory condition depends on the opponent's role， and you can win with any team.\nIf your employer dies， re-employ someone else.\nIf you are jobless， you will starve to death.,特定の誰かに就職することが出来ます。\n勝利条件は相手の役職に依存し、どんな陣営とでも勝利出来ます。\n就職先が死亡した場合、別の誰かに再就職しましょう。\n職無しでいると飢えて死ぬぞ。,打工仔可以给一名其他玩家打工。\n打工仔的胜利条件和打工对象一致。\n若打工仔的打工对象死亡，打工仔可以寻找一名其他玩家打工。\n若打工仔一段时间内没有选择玩家打工，打工仔会穷死。,打工仔可以在特定的對象底下打工。/n勝利條件將與老闆的陣營一致。\n當你的老闆死了，你將失業，必須再找一個新的老闆。\n若你在指定的回合數內沒有找到工作，你將會窮死。
 PartTimerDeathTurn,Number of turns to die from unbited status,未バイトの状態から死亡するターン数,无业状态下打工仔穷死经过的回合数,無業狀態下打工仔窮死經過的回合數
 PartTimerIsCheckTargetRole,I can see your part-time position.,バイト先の役職が見える,打工仔可以确认打工对象的职业,打工仔可以確認打工對象的職業
 PartTimerButtonName,PartTime,バイト,打工,打工
@@ -1124,11 +1126,11 @@ SluggerButtonName,Harisen,ハリセン,挥棒,揮棒
 SatsumaAndImoName,SatsumaAndImo,さつまといも,人格分裂者,人格分裂者
 SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト,是我疯了，还是大家都疯了？,是我瘋了，還是大家都瘋了？
 SatsumaAndImoTitle2,Betray and betray.,手のひらをくるくる返そう,我是叛徒，还是你是叛徒？,我是叛徒，還是你是叛徒？
-SatsumaAndImoDescription,After each meeting， the impostor and crew teams will switch sides.\nThe winner is determined by the team at the time the decision is made.\nLet's Betray and betray.,会議を挟むごとにインポスター陣営とクルー陣営が入れ替わります。\n決着が付いた時の陣営で勝敗が決定します。\n手のひらくるくるしましょう。,,每輪會議結束後，會切換自己身為內鬼和船員的身分。\n當決定勝負時，將以當時的身分決定勝負。\n諜中諜中諜！
+SatsumaAndImoDescription,After each meeting， the impostor and crew teams will switch sides.\nThe winner is determined by the team at the time the decision is made.\nLet's Betray and betray.,会議を挟むごとにインポスター陣営とクルー陣営が入れ替わります。\n決着が付いた時の陣営で勝敗が決定します。\n手のひらくるくるしましょう。,游戏开始时人格分裂者随机加入船员或内鬼阵营。每轮会议结束后，人格分裂者会改变自己的阵营。\n游戏结束时，人格分裂者按那个时候的阵营结算胜利条件。\n上演一出谍中谍的戏码吧。,每輪會議結束後，會切換自己身為內鬼和船員的身分。\n當決定勝負時，將以當時的身分決定勝負。\n諜中諜中諜！
 ShiftActorName,Shift Actor,シフトアクター,模仿犯,模仿犯
 ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,我会比你更像你自己,我會比你更像你自己
 CanWatchAttribute,Can watch attribute,重複役職を見れる,模仿犯可以确认模仿对象的附加职业,模仿犯可以確認模仿對象的附加職業
-RightChance,Probability of Success,成功確率,,模仿成功的概率
+RightChance,Probability of Success,成功確率,成功概率,模仿成功的概率
 ShiftActorText1,'s role is,の役職は,的职业是,的職業是
 ShiftActorText2,.,です,。,。
 MadRolesCanFixComms,Mad roles can fix comms sabotage,マッド役職がコミュサボを治せる,叛徒阵营玩家可以修理通讯破坏,叛徒陣營玩家可以修理通訊破壞
@@ -1218,7 +1220,7 @@ GMSpawnDeadBody,Spawn Deadbody,死体発生,生成尸体,生成屍體
 GMEndMeeting,End Meeting,会議終了,结束会议,結束會議
 SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生,期望自殺者
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない,找寻活着的意义,找到活下去的意義
-SuicidalIdeationDescription,It has a self-destruct timer that extends the time to do a task.\nIt has its own fall-to-death probability.\nIf you complete the task before it self-destructs， you win alone.\nYou also win an additional victory if you survive even if you do not complete the task.,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。
+SuicidalIdeationDescription,It has a self-destruct timer that extends the time to do a task.\nIt has its own fall-to-death probability.\nIf you complete the task before it self-destructs， you win alone.\nYou also win an additional victory if you survive even if you do not complete the task.,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。,绝望先生可以通过做任务延长自己的自杀倒计时。\n绝望先生持有独立的在梯子上摔死概率。\n只要绝望先生在自杀前做完了所有任务，绝望先生便可以单独获胜。\n若绝望先生没有完成所有任务，但在游戏结束时存活，绝望先生也可以获胜。
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本,獨特的勝利文字
 SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間,绝望先生自杀倒计时,自殺倒數時間
 SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増える時間,绝望先生完成一个任务后倒计时的增量,完成一個任務後倒計時的增量
@@ -1227,7 +1229,7 @@ SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少�
 SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时,自殺倒計時
 CupidName,Cupid,キューピット,丘比特,邱比特
 CupidTitle1,Let's tie the red thread of fate,運命の赤い糸を結ぼう,牵起命运的红线,牽起命運的紅線
-CupidDescription,You can nominate Lovers. \nYou win as soon as the rubbers you have nominated achieve rubbers win.,ラバーズを指名することが出来ます。\n指名したラバーズがラバーズ勝利を達成すると同時に勝利します。,,邱比特可以指名一對戀人。\n當你指名的戀人獲得勝利時，你將與戀人一同獲勝。
+CupidDescription,You can nominate Lovers. \nYou win as soon as the rubbers you have nominated achieve rubbers win.,ラバーズを指名することが出来ます。\n指名したラバーズがラバーズ勝利を達成すると同時に勝利します。,丘比特可以选择两名玩家成为恋人。\n只要丘比特指定的恋人作为恋人获胜，丘比特一同获胜。,邱比特可以指名一對戀人。\n當你指名的戀人獲得勝利時，你將與戀人一同獲勝。
 CupidButtonName,Shoot the love arrows,恋の矢,爱之箭,愛之箭
 HamburgerShopName,Hamburger Shop,ハンバーガー屋,汉堡店店主,蟹老闆
 HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう,做出美味的汉堡,做出美味蟹堡
@@ -1367,10 +1369,62 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
+PteranodonName,Pteranodon,プテラノドン,鸟人,無齒翼龍
+PteranodonTitle1,PtePte,プテプテ,一飞冲天啊，我,翼~翼~
+PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,起飛！
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
+
+#SettingMatchTag
+SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定
+
+BeginnerTag,Beginner,初心者
+IntermediateTag,Intermediate,中級者
+AdvancedTag,Advanced,上級者
+CompetenceIsNotRequiredTag,Competence is not required.,実力不問
+
+SeriousTag,Serious Players,ガチ勢
+EnjoyTag,Enjoyers,エンジョイ勢
+
+SeriousnessTag,Seriousness Play,真剣プレイ
+WelcomeBeginnerTag,,初心者歓迎
+
+NowRecordingTag,Now Recording,撮影中
+NowBeingDeliveredTag,Now Being Delivered,配信中
+OKForRecordingTag,OK for Recording,撮影OK
+OKForBeingDeliveredTag,OK for Recording,配信OK
+NoRecordingTag,No Recording,撮影NG
+NoBeingDeliveredTag,No Recording,配信NG
+
+FreeChatTag,FreeChat Only,フリーチャットのみ
+QuickChatTag,QuickChat Only,クイックチャットのみ
+VoiceChatTag,VoiceChat,VC
+BetterCrewLinkTag,Use BetterCrewLink,近アモ
+CanListenOnlyTag,Listen only OK,聞き専可
+FullVCOnlyTag,Always use voice chat,聞き専不可
+
+SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ
+NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り
+VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村
+ManyRolesRegulationTag,Regulation with many roles,多役
+WerewolfMoonlightRegulationTag,Werewolf Moonlight Regulation,月下
+DarkPotRegulationTag,Dark pot,闇鍋
+OthersRegulationTag,Others regulation,その他レギュ
+TryingOutRolesRegulationTag,Trying out a roles.,役職お試し中
+AmusementRegulationTag,Amusement regulation,お遊びレギュ
+RegulationAdjustedTag,Adjusted,レギュ調整中
+
+FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限
+FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止
+
+DebugNewRolesTag,New Roles,新役職
+DebugNewFeaturesTag,New Features,新機能
+DebugAddFeaturesTag,Add Features,機能追加
+DebugChangeTag,Change,仕様変更
+DebugBugFixTag,Fix Bug,バグ修正
+DebugOthersTag,Others,その他(デバッグ)
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
@@ -1394,12 +1448,13 @@ CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or 
 CommandsMessage10,/SaveLog or /sl [string to be attached to file name]：\nSave logs up to the present time in SuperNewRoles/SaveLogFolder.\nYou can arbitrarily change a part of the file name.\nIt can be used even if the string part is not described (/sl，etc. by itself).,/SaveLog 又は /sl + [ファイル名につけたい文字列] ： \nSuperNewRoles/SaveLogFolderに現時点までのログを保存します。\nファイル名の一部を任意で変更できます。\n文字列部分を記載しなくとも(/sl等単体でも)使用可能です。,/SaveLog或/sl + [与文件名对应的字符串]:\n将当前日志保存到默认为SuperNewRoles/SaveLogFolder的文件夹中。\n您可以重命名该文件夹。\n也可以不在指令后输入字符串来使用。,/SaveLog或/sl + [與文件名對應的字符串]:\n將當前日誌保存到默認為SuperNewRoles/SaveLogFolder的資料夾中。\n您可以重新命名該資料夾。\n也可以不在指令後输入字符串來使用。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,SuperNewRoles官方Discord服务器：,SuperNewRoles官方Discord伺服器：
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超新职业官方Twitter,在這裡關注超新職業官方Twitter
-TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles
+TwitterOfficialLink,Official Account : https://twitter.com/SNROfficials,公式アカウント：https://twitter.com/SNROfficials,官方Twitter：https://twitter.com/SNROfficials,官方Twitter：https://twitter.com/SNROfficials
 TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開発情報アカウント：https://twitter.com/SNRDevs,开发状况Twitter：https://twitter.com/SNRDevs,開發狀態Twitter：https://twitter.com/SNRDevs
 Team,Team,陣営,阵营,陣營
 TeamRoleType,Role,役職,,職業
 MessageSettings,Settings,設定,设置,設定
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业,當前啟用的職業
+EnableTagsMessage,,現在設定されているマッチメイキングタグ,
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
 MyRoleErrorSHRMode,This command is not available in SHR mode.,SHRモードではこのコマンドは使用できません。,,在SHR模式中無法使用此指令。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】
@@ -1413,8 +1468,8 @@ Experimenting...,Experimenting...,実験中...,测试中...,測試中...
 StartExperiment,Start experiment,実験を開始する,开始测试,開始測試
 Processing,Processing...,処理中...,处理中...,處理中...
 SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成功
-SNRIntroduction,introduction status,導入状況,,導入狀況
-NoFriendCode,No possession.,未所持,,不具有
+SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
+NoFriendCode,No possession.,未所持,未持有,不具有
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫
