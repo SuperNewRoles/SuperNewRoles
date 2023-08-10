@@ -1399,7 +1399,7 @@ Medium,Medium,ミドル
 Long,Long,ロング
 ConjurerName,Conjurer,魔術師
 ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ
-ConjurerDescription,By setting up and activating three magic circles,\nthis imposter can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。
+ConjurerDescription,By setting up and activating three magic circles，\nthis imposter can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。
 ConjurerCooldownOption,Marker placement cooldown,マーカー設置のクールダウン
 ConjurerCanAddLengthOption,Effective range of marker placement,マーカー設置有効範囲
 ConjurerCanKillImpostorOption,Can kill impostors,インポスターもキルできる
