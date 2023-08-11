@@ -859,6 +859,11 @@ public static class ModHelpers
         return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
     }
 
+    public static T GetOrAddComponent<T>(this GameObject obj) where T : Component
+    {
+        T component = obj.GetComponent<T>();
+        return component != null ? component : obj.AddComponent<T>();
+    }
     internal static Dictionary<byte, PlayerControl> IdControlDic = new(); // ClearAndReloadで初期化されます
     internal static Dictionary<int, Vent> VentIdControlDic = new(); // ClearAndReloadで初期化されます
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);

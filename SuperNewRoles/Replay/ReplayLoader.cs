@@ -511,6 +511,10 @@ namespace SuperNewRoles.Replay
                 postime += Time.deltaTime;
                 if (actiontime != -999)
                     actiontime += Time.deltaTime;
+                if (MeetingHud.Instance != null)
+                {
+                    MeetingHud.Instance.discussionTimer -= (Time.deltaTime * 2);
+                }
             }
             else
             {

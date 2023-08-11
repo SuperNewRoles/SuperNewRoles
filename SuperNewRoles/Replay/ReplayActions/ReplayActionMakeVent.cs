@@ -36,11 +36,12 @@ public class ReplayActionMakeVent : ReplayAction
     //アクション実行時の処理
     public override void OnAction() {
         //ここに処理書く
-        RPCProcedure.MakeVent(id, x, y, z, chain);
+        currentId = RPCProcedure.MakeVent(id, x, y, z, chain).Id;
     }
+    public int currentId;
     public override void OnReplay()
     {
-        Vent vent = ShipStatus.Instance.AllVents.FirstOrDefault(x => x.Id == id);
+        Vent vent = ShipStatus.Instance.AllVents.FirstOrDefault(x => x.Id == currentId);
         if (vent != null)
             GameObject.Destroy(vent);
     }

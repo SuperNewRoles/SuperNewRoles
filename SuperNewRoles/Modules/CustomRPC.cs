@@ -717,7 +717,7 @@ public static class RPCProcedure
             Logger.Info($"{target}はnullか:{Player == null}");
             if (Player == null) continue;
             Player.Exiled();
-            new SluggerDeadbody().Start(Source.PlayerId, Player.PlayerId, Source.transform.position - Player.transform.position);
+            new GameObject("SluggerDeadbody").AddComponent<SluggerDeadbody>().Init(Source.PlayerId, Player.PlayerId);
         }
     }
     public static void PlayPlayerAnimation(byte playerid, byte type)
@@ -1424,7 +1424,7 @@ public static class RPCProcedure
     public static void SetShielder(byte PlayerId, bool Is)
         => RoleClass.Shielder.IsShield[PlayerId] = RoleClass.Shielder.IsShield[PlayerId] = Is;
 
-    public static void MakeVent(byte id, float x, float y, float z, bool chain)
+    public static Vent MakeVent(byte id, float x, float y, float z, bool chain)
     {
         ReplayActionMakeVent.Create(id, x, y, z, chain);
         Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
@@ -1452,6 +1452,7 @@ public static class RPCProcedure
         VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
         VentMakerVent.gameObject.SetActive(true);
         RoleClass.VentMaker.Vent[id] = VentMakerVent;
+        return VentMakerVent;
     }
     public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
     {

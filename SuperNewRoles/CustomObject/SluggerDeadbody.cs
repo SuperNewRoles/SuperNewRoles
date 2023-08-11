@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;
 
-public class SluggerDeadbody
+public class SluggerDeadbody : CustomAnimation
 {
     public static List<SluggerDeadbody> DeadBodys = new();
-    public Vector2 Force;
     public PlayerControl Source
     {
         get
@@ -44,11 +43,7 @@ public class SluggerDeadbody
     }
     private PlayerControl _player;
     public byte PlayerId;
-    public GameObject gameObject;
-    public Transform transform => gameObject.transform;
-    public SpriteRenderer Renderer;
     public float UpdateTime;
-    public Sprite[] Sprites;
     public int Index;
     public const float DefaultUpdateTime = 0.03f;
     public int SpriteType;
@@ -76,20 +71,24 @@ public class SluggerDeadbody
         }
         return null;
     }
-    public void Start(byte SourceId, byte TargetId, Vector2 force)
+    public Rigidbody2D body;
+    public Vector2 Velocity;
+    public override void Awake()
     {
+        base.Awake();
+        body = gameObject.GetOrAddComponent<Rigidbody2D>();
+        body.gravityScale = 0;
+        spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+        spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
+    }
+    public void Init(byte SourceId, byte TargetId)
+    {
+        CustomAnimationOptions customAnimationOptions = new(GetSprites(), 10, true);
+        base.Init(customAnimationOptions);
         this.SourceId = SourceId;
         this.PlayerId = TargetId;
-        Force = force;
-        gameObject = new("SluggerDeadBody");
-        Renderer = gameObject.AddComponent<SpriteRenderer>();
-        var body = gameObject.AddComponent<Rigidbody2D>();
-        body.gravityScale = 0f;
-        Vector3 kakeru = Source.transform.position - Player.transform.position;
-        body.velocity = kakeru * -10f;
-        Index = 0;
-        Sprites = GetSprites();
-        DeadBodys.Add(this);
+        Velocity = Source.transform.position - Player.transform.position;
+        body.velocity = Velocity;
         transform.position = Player.transform.position;
         transform.localScale = new(0.1f, 0.1f, 0);
         transform.Rotate(Source.transform.position - Player.transform.position);
@@ -97,43 +96,17 @@ public class SluggerDeadbody
         {
             transform.Rotate((Source.transform.position - Player.transform.position) * -1f);
         }
-        Renderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
-        Renderer.maskInteraction = SpriteMaskInteraction.None;
-        PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, Renderer);
+        PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, spriteRenderer);
         PlayerMaterial.Properties Properties = new()
         {
             MaskLayer = 0,
             MaskType = PlayerMaterial.MaskType.None,
             ColorId = Player.Data.DefaultOutfit.ColorId
         };
-        Renderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
+        spriteRenderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
     }
-    public static void AllFixedUpdate()
+    public override void Update()
     {
-        foreach (SluggerDeadbody deadbody in DeadBodys.ToArray())
-        {
-            deadbody.FixedUpdate();
-        }
-    }
-    public void FixedUpdate()
-    {
-        //transform.position += new Vector3(Force.x,Force.y,0);
-        if (gameObject == null)
-        {
-            DeadBodys.Remove(this);
-            return;
-        }
-        UpdateTime -= Time.fixedDeltaTime;
-        if (UpdateTime <= 0)
-        {
-            UpdateTime = 0.1f;
-            Index++;
-            if (Sprites.Length <= Index)
-            {
-                Index = 0;
-            }
-            Renderer.sprite = Sprites[Index];
-        }
         if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) > 30 || RoleClass.IsMeeting)
         {
             foreach (SluggerDeadbody deadbody in DeadBodys)

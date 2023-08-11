@@ -17,12 +17,9 @@ public class Beacon
         index = Mathf.Clamp(index, 0, beaconAnimationSprites.Length - 1);
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            CustomAnimation Conjurer_Beacon_Animation = new()
-            {
-                Sprites = CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
-            };
             Transform Conjurer_Beacon1 = GameObject.Instantiate(GameObject.Find($"Beacon{Conjurer.Count}").transform);
-            Conjurer_Beacon_Animation.Start(30, Conjurer_Beacon1);
+            CustomAnimation Conjurer_Beacon_Animation = Conjurer_Beacon1.gameObject.AddComponent<CustomAnimation>();
+            CustomAnimationOptions customAnimationOptions = new(CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60),30, true);
         }
         return beaconAnimationSprites[index];
     }

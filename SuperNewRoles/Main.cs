@@ -8,6 +8,8 @@ using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
+using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -119,6 +121,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
             if (resourceName.EndsWith(".png"))
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
         ThisPluginModName = IL2CPPChainloader.Instance.Plugins.FirstOrDefault(x => x.Key == "jp.ykundesu.supernewroles").Value.Metadata.Name;
+
+        //Ewgister Il2cpp
+        ClassInjector.RegisterTypeInIl2Cpp<CustomAnimation>();
+        ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
     }
 
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]

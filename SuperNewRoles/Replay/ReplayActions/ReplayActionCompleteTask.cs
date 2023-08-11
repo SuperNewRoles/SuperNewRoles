@@ -53,6 +53,16 @@ public class ReplayActionCompleteTask : ReplayAction
             Logger.Info("sourceがnull");
             return;
         }
+        source.CompleteTask(taskId);
+    }
+    public override void OnReplay()
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
+        if (source == null)
+        {
+            Logger.Info("sourceがnull");
+            return;
+        }
         ToDontComplete(source, taskId);
     }
     //試合内でアクションがあったら実行するやつ
