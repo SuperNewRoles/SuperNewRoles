@@ -110,6 +110,7 @@ namespace SuperNewRoles.Replay
             PlayerControl.LocalPlayer.cosmetics.gameObject.SetActive(false);
             PlayerControl.LocalPlayer.cosmetics.nameText.transform.parent.gameObject.SetActive(false);
             CreateGUI();
+            UpdateUIByState();
         }
         public static void CreateGUI() {
             GameObject back = new();
@@ -522,7 +523,8 @@ namespace SuperNewRoles.Replay
         public static int CurrentTurn;
         public static int posindex;
         static int actionindex;
-        public static void HudUpdate() {
+        public static void HudUpdate()
+        {
             if (!IsStarted) return;
             if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause) return;
             if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind)
@@ -598,7 +600,7 @@ namespace SuperNewRoles.Replay
                         mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, movingtarget).WrapToIl2Cpp());
                     }
                 }
-                Logger.Info(posindex.ToString(),"POSINDEXXXXX");
+                Logger.Info(posindex.ToString(), "POSINDEXXXXX");
                 postime = ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind ? 0 : ReplayManager.CurrentReplay.RecordRate;
             }
             //Logger.Info("actiontime:"+actiontime.ToString());
@@ -615,7 +617,8 @@ namespace SuperNewRoles.Replay
                     }
                 }
             }
-            else { 
+            else
+            {
                 while (actiontime <= 0 && actiontime != -999)
                 {
                     if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
@@ -628,7 +631,55 @@ namespace SuperNewRoles.Replay
                     }
                 }
             }
-            Logger.Info(actionindex.ToString(),"ACTIONINDEX");
+            //キーボード判定
+            if (Input.GetKeyDown(ChangeUIKeyCode))
+            {
+                switch (ReplayManager.CurrentReplay.CurrentUIState)
+                {
+                    case UIState.Default:
+                        ReplayManager.CurrentReplay.CurrentUIState = UIState.HideAllUI;
+                        break;
+                    case UIState.HideAllUI:
+                        ReplayManager.CurrentReplay.CurrentUIState = UIState.ShowOperationUI;
+                        break;
+                    case UIState.ShowOperationUI:
+                        ReplayManager.CurrentReplay.CurrentUIState = UIState.Default;
+                        break;
+                }
+                UpdateUIByState();
+            }
+            else if (Input.GetKeyDown(PauseKeyCode))
+                PlayOrPause();
+            else if (Input.GetKeyDown(RewindKeyCode))
+                PlayRewind();
+            else if (Input.GetKeyDown(FastPlayKeyCode))
+                FastPlay();
         }
+        public static void UpdateUIByState()
+        {
+            bool GUIObjectActive = true;
+            bool DefaultUIActive = true;
+            switch (ReplayManager.CurrentReplay.CurrentUIState)
+            {
+                case UIState.Default:
+                    GUIObjectActive = false;
+                    break;
+                case UIState.HideAllUI:
+                    GUIObjectActive = false;
+                    DefaultUIActive = false;
+                    break;
+                default:
+                    break;
+            }
+            GUIObject.SetActive(GUIObjectActive);
+            HudManager.Instance.transform.FindChild("Buttons").gameObject.SetActive(DefaultUIActive);
+            HudManager.Instance.transform.FindChild("SimpleTextLabels").gameObject.SetActive(DefaultUIActive);
+            HudManager.Instance.transform.FindChild("TaskDisplay").gameObject.SetActive(DefaultUIActive);
+        }
+        //各キーのKeyCode
+        public const KeyCode ChangeUIKeyCode = KeyCode.F6;
+        public const KeyCode PauseKeyCode = KeyCode.K;
+        public const KeyCode RewindKeyCode = KeyCode.J;
+        public const KeyCode FastPlayKeyCode = KeyCode.L;
     }
 }

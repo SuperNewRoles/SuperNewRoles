@@ -36,11 +36,18 @@ namespace SuperNewRoles.Replay
         WalkTo2nd,
         WaitEffect2nd
     }
+    public enum UIState
+    {
+        ShowOperationUI,
+        Default,
+        HideAllUI
+    }
     public class ReplayData
     { 
         public bool IsFirstLoaded = false;
         public string FilePath;
         public ReplayState CurrentPlayState = ReplayState.Play;
+        public UIState CurrentUIState = UIState.Default;
 
         public MovingPlatformState CurrentMovingPlatformState = MovingPlatformState.None;
         public int MovingPlatformFrameCount = 0;
