@@ -1607,7 +1607,7 @@ public class CustomOptionHolder
 
         BlackHatHacker.SetupCustomOptions();
 
-        // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
+        // SetupNeutralCustomOptions
 
         /* |: ========================= Crewmate Settings ========================== :| */
 
