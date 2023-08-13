@@ -230,10 +230,13 @@ public static class ROLENAME
         private static int optionId = """+idnam+""";
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
+        // Where to write CustomOption
+
         public static void SetupCustomOptions()
         {
             Option = CustomOption.SetupCustomRoleOption(optionId, SHRON, RoleId.ROLENAME); optionId++;
             PlayerCount = CustomOption.Create(optionId, SHRON, CustomOptionType."""+namedata+""", "SettingPlayerCountName", PLAYERSTYPE[0], PLAYERSTYPE[1], PLAYERSTYPE[2], PLAYERSTYPE[3], Option); optionId++;
+            // Where to write CustomOption Create
         }
     }
 
@@ -346,48 +349,33 @@ public static class ROLENAME
 
         # ベントボタン
         if (MainClass.GetBool("A_CanVent")):
-            if (MainClass.GetBool("A_CanVentOption")):
-                # CustomOption/CustomOptionHolder.cs
-                MainClass.WriteCodes("CustomOption/CustomOptionHolder.cs", "//CustomOption",
-                                     """public static CustomOption ROLENAMEIsUseVent;\n        //CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-                if (MainClass.GetBool("TeamImpo")):
-                    MainClass.WriteCodes("CustomOption/CustomOptionHolder.cs", "//表示設定",
-                                         """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "MadmateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
-                elif (MainClass.GetBool("TeamCrew")):
-                    MainClass.WriteCodes("CustomOption/CustomOptionHolder.cs", "//表示設定",
-                                         """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
-                elif (MainClass.GetInput("TeamNeut")):
-                    MainClass.WriteCodes("CustomOption/CustomOptionHolder.cs", "//表示設定",
-                                         """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Neutral, "MadmateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
-                # Roles/Role/RoleHelper.cs
-                if (MainClass.GetBool("TeamGhost")):
-                    MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ここが幽霊役職",
-                                         """if (ROLENAME.RoleData.Player.IsCheckListPlayerControl(player))
+            # Roles/Role/RoleHelper.cs
+            MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// ベントが使える",
+            """RoleId.ROLENAME => ROLENAME.CustomOptionData.IsUseVent.GetBool(),\n            // ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+
+            '''
+            # CustomOption/CustomOptionHolder.cs
+            if (MainClass.GetBool("TeamCrew")):
+                team = "Crewmate"
+                rolepath = "Roles/CrewMate/" + MainClass.GetInput("RoleName") + ".cs"
+            elif (MainClass.GetInput("TeamNeut")):
+                team = "Neutral"
+                rolepath = "Roles/Neutral/" + MainClass.GetInput("RoleName") + ".cs"
+
+            MainClass.WriteCodes(rolepath, "// Where to write CustomOption",
+                                 """public static CustomOption IsUseVent;\n            // Where to write CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes(rolepath, "// Where to write CustomOption Create",
+                                 """IsUseVent = CustomOption.Create(optionId, SHRON, CustomOptionType."""+team+""", "MadmateUseVentSetting", false, ROLENAMEOption); optionId++;\n            // Where to write CustomOption Create""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("SHRON", MainClass.GetCBool("IsSHRON")))
+            '''
+
+        # Roles/Role/RoleHelper.cs
+        if (MainClass.GetBool("TeamGhost")):
+            MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// ここが幽霊役職",
+                                 """if (ROLENAME.RoleData.Player.IsCheckListPlayerControl(player))
                     {
                         return SuperNewRoles.RoleId.ROLENAME;
-                    }\n                //ここが幽霊役職""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-                MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ベントが使える",
-                                     """case RoleId.ROLENAME:
-                    return ROLENAME.RoleData.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                    }\n                // ここが幽霊役職""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
-                # Roles/Role/RoleClass.cs
-                MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//その他Option",
-                                     """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-                MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//くりあぁあんどりろぉどぉ",
-                                     """IsUseVent = true\n                //くりあぁあんどりろぉどぉ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            '''else:
-                # Roles/Role/RoleHelper.cs
-                MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ベントが使える",
-                """case RoleId.ROLENAME:
-                    return ROLENAME.RoleData.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-                # Roles/Role/RoleClass.cs
-                MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//その他Option",
-                """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-                # Roles/Role/RoleHelper.cs
-                MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ベント設定可視化",
-                """case RoleId.ROLENAME:
-                    returntext = CustomOptionHolder.FoxIsUseVent.name + ":" + ROLENAME.CustomOptionData.ROLENAMEIsUseVent.GetString() + "\n";
-                    break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))'''
         # インポの視界設定
         if (MainClass.GetBool("A_ImpoVisible")):
             # Roles/Role/RoleClass.cs

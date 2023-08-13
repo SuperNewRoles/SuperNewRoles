@@ -1530,6 +1530,7 @@ public static class RoleHelpers
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
+            // ベントが使える
             _ => player.IsImpostor(),
         };
     }
