@@ -12,18 +12,19 @@
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールアド			SetRoleの後ろ
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールリモベ　　　　　　ClearRoleの後ろ		
 　　・Roles/RoleHelper.cs　　　 　　　→//第三か　　　　　　　　　isNeutralの後ろ
-　　・Roles/RoleHelper.cs　　　　　　 →//ベント設定可視化        GetOptionsTextの後ろ
-　　・Roles/RoleHelper.cs　　　　　   →//ベントが使える　　　　　IsUseVentの後ろ
+　　・Roles/RoleHelper.cs　　　　　   →// ベントが使える        IsUseVentの後ろ (``_ => player.IsImpostor(),`` の上)
+        カスタムオプションの自動記述には対応していない為, 手動で追記してください。
 　　・Roles/RoleHelper.cs　　　　　　 →//インポの視界　　　　　　IsImpostorLightの後ろ
 
 　　・Roles/RoleClass.cs　　 　　 　　→//新ロールクラス　　　　　ClearAndReloadsの後ろ
-　　・Roles/RoleClass.cs　 　　　　 　→//ロールクリア　　　　　　下のほうにあるラバーズソースコードの上
+　　・Roles/RoleClass.cs　 　　　　 　→// ロールクリア          ``Quarreled.ClearAndReload();``の上
 
 　　・Intro/IntroData.cs 　　　　　　 →//イントロオブジェ　　　　一番下
 　　・Intro/IntroData.cs 　　　　　　 →//イントロ検知　　　　　　GetIntroDataの後ろ
 
-　　・CustomOption/CustomOptionHolder.cs→//CustomOption　　　　　　クラードの上(上に空行はいれない)
-　　・CustomOption/CustomOptionHolder.cs→//表示設定			下のほうのラバーズの上
+　　・CustomOption/CustomOptionHolder.cs→// SetupImpostorCustomOptions      /* |: ========================= Neutral Settings ========================== :| */ の上(間に空行を入れる)
+　　・CustomOption/CustomOptionHolder.cs→// SetupNeutralCustomOptions       /* |: ========================= Crewmate Settings ========================== :| */ の上(間に空行を入れる)
+　　・CustomOption/CustomOptionHolder.cs→// SetupCrewmateCustomOptions      /* |: ========================= Modifiers Settings ========================== :| */ の上(間に空行を入れる)
 
 　　・Buttons/Button.cs　　　　　　　 →//カスタムなボタン達　　	CustomButtonの下
 　　・Buttons/Button.cs　　　　　　　 →//クールダウンリセット　　setCustomButtonCooldownsの下
