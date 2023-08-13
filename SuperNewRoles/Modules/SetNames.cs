@@ -76,7 +76,7 @@ public class SetNamesClass
 
     public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames, Color? GhostRoleColor = null, string GhostRoleNames = "")
     {
-        if (p.IsBot()) return;
+        Logger.Info("SetPlayerRoleInfoViewStart:" + p.PlayerId.ToString());
         bool commsActive = RoleHelpers.IsComms();
         TextMeshPro playerInfo = PlayerInfos.ContainsKey(p.PlayerId) ? PlayerInfos[p.PlayerId] : null;
         if (playerInfo == null)
@@ -140,6 +140,7 @@ public class SetNamesClass
     }
     public static void SetPlayerRoleInfo(PlayerControl p)
     {
+        Logger.Info("SetPlayerRoleInfo:" + p.PlayerId.ToString());
         if (p.IsBot()) return;
         string roleNames;
         Color roleColors;
@@ -200,6 +201,7 @@ public class SetNamesClass
             GhostroleNames = GhostIntro.Name;
             GhostroleColors = GhostIntro.color;
         }
+        Logger.Info("SetPlayerRoleInfoEnd:" + p.PlayerId.ToString());
         SetPlayerRoleInfoView(p, roleColors, roleNames, GhostroleColors, GhostroleNames);
     }
     /// <summary>
@@ -377,12 +379,14 @@ public class SetNameUpdate
 {
     public static void Postfix(PlayerControl __instance)
     {
+        Logger.Info("SetNameUpdate Called:"+ SetNamesClass.DefaultGhostSeeRoles().ToString());
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
         if ((SetNamesClass.DefaultGhostSeeRoles() && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
+                Logger.Info("Updating:"+player.PlayerId.ToString());
                 SetNamesClass.SetPlayerNameColors(player);
                 SetNamesClass.SetPlayerRoleNames(player);
             }

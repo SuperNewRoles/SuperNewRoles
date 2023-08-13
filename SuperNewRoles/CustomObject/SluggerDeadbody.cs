@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace SuperNewRoles.CustomObject;
 
 public class SluggerDeadbody : CustomAnimation
 {
+    public SluggerDeadbody(IntPtr intPtr) : base(intPtr)
+    {
+    }
     public static List<SluggerDeadbody> DeadBodys = new();
     public PlayerControl Source
     {
@@ -44,7 +48,6 @@ public class SluggerDeadbody : CustomAnimation
     private PlayerControl _player;
     public byte PlayerId;
     public float UpdateTime;
-    public int Index;
     public const float DefaultUpdateTime = 0.03f;
     public int SpriteType;
     public Sprite[] GetSprites()
@@ -80,6 +83,7 @@ public class SluggerDeadbody : CustomAnimation
         body.gravityScale = 0;
         spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
         spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
+        DeadBodys.Add(this);
     }
     public void Init(byte SourceId, byte TargetId)
     {
@@ -88,6 +92,7 @@ public class SluggerDeadbody : CustomAnimation
         this.SourceId = SourceId;
         this.PlayerId = TargetId;
         Velocity = Source.transform.position - Player.transform.position;
+        Velocity *= -10f;
         body.velocity = Velocity;
         transform.position = Player.transform.position;
         transform.localScale = new(0.1f, 0.1f, 0);
@@ -105,19 +110,29 @@ public class SluggerDeadbody : CustomAnimation
         };
         spriteRenderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
     }
+    public override void Play(bool IsPlayMusic=true)
+    {
+        base.Play(IsPlayMusic);
+        body.velocity = Velocity;
+    }
+    public override void Pause(bool IsStopMusic=true)
+    {
+        base.Pause(IsStopMusic);
+        body.velocity = new();
+    }
+    public override void OnPlayRewind()
+    {
+        base.OnPlayRewind();
+        body.velocity = -Velocity;
+    }
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        DeadBodys.Remove(this);
+    }
     public override void Update()
     {
-        if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) > 30 || RoleClass.IsMeeting)
-        {
-            foreach (SluggerDeadbody deadbody in DeadBodys)
-            {
-                if (deadbody.SourceId == SourceId)
-                {
-                    GameObject.Destroy(deadbody.gameObject);
-                }
-            }
-            DeadBodys.RemoveAll(x => x.SourceId == SourceId);
-            return;
-        }
+        if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) > 30)
+            Destroy(this.gameObject);
     }
 }

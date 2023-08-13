@@ -32,7 +32,7 @@ public static class BotManager
         Bot.PlayerId = id;
         GameData.Instance.AddPlayer(Bot);
         AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
-        Bot.transform.position = new Vector3(9999f, 9999f, 0);
+        //Bot.transform.position = new Vector3(9999f, 9999f, 0);
         Bot.NetTransform.enabled = true;
         return Bot;
     }
@@ -64,6 +64,7 @@ public static class BotManager
         return Bot;
     }
     public static void SetBot(PlayerControl Bot) {
+        Logger.Info("SETBOT!!!:" + Bot.PlayerId.ToString());
         AllBots.Add(Bot);
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetBot);
         writer.Write(Bot.PlayerId);

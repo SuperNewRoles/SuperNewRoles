@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;
@@ -10,31 +11,58 @@ public struct CustomAnimationOptions
 {
     public bool PlayEndDestory { get; private set; }
     public Sprite[] Sprites { get; private set; }
-    public float frameRate { get; private set; }
+    public int frameRate { get; private set; }
     public bool IsLoop { get; private set; }
+    public bool IsMeetingDestroy { get; private set; }
+    public AudioClip EffectSound { get; private set; }
+    public bool IsEffectSoundLoop { get; private set; }
+    public Action<CustomAnimation, CustomAnimationOptions> OnEndAnimation { get; private set; }
     public CustomAnimationOptions()
     {
         Sprites = new Sprite[] { };
     }
-    public CustomAnimationOptions(Sprite[] sprites, float framerate, bool loop = false, bool playenddestroy = false)
+    public CustomAnimationOptions(Sprite[] sprites, int framerate, bool loop = false, bool playenddestroy = false, Action<CustomAnimation, CustomAnimationOptions> OnEndAnimation=null, bool IsMeetingDestroy = true, AudioClip EffectSound = null, bool IsEffectSoundLoop = false)
     {
         Sprites = sprites;
         frameRate = framerate;
         IsLoop = loop;
         PlayEndDestory = playenddestroy;
+        this.OnEndAnimation = OnEndAnimation;
+        this.IsMeetingDestroy = IsMeetingDestroy;
+        this.EffectSound = EffectSound;
     }
-
+    public void SetSprites(Sprite[] sprites, bool? IsLoop=null,int? frameRate=null)
+    {
+        Sprites = sprites;
+        if (IsLoop != null)
+            this.IsLoop = IsLoop.Value;
+        if (frameRate != null)
+            this.frameRate = frameRate.Value;
+    }
+    public void SetEffectSound(AudioClip clip, bool IsLoop)
+    {
+        EffectSound = clip;
+        IsEffectSoundLoop = IsLoop;
+    }
+    public void SetOnEndAnimation(Action<CustomAnimation, CustomAnimationOptions> newAnim)
+    {
+        this.OnEndAnimation = newAnim;
+    }
 }
 public class CustomAnimation : MonoBehaviour
 {
     public static List<CustomAnimation> CustomAnimations = new();
-
+    public CustomAnimation(IntPtr intPtr) : base(intPtr)
+    {
+    }
     public SpriteRenderer spriteRenderer;
     public bool Playing;
     public CustomAnimationOptions Options;
     private float UpdateTimer;
     private float updatetime;
-    private int Index;
+    public int Index { get; private set; }
+    public AudioSource audioSource;
+    public bool IsRewinding { get; private set; }
     public static Sprite[] GetSprites(string path, int Count)
     {
         List<Sprite> Sprites = new();
@@ -55,58 +83,114 @@ public class CustomAnimation : MonoBehaviour
         Playing = false;
         CustomAnimations.Add(this);
     }
-    public void Init(CustomAnimationOptions option)
+    public virtual void Init(CustomAnimationOptions option)
     {
         Options = option;
         spriteRenderer.sprite = option.Sprites[0];
         Index = 1;
-        updatetime = 1 / Options.frameRate;
+        updatetime = 1.0f / Options.frameRate;
         UpdateTimer = updatetime;
-        Playing = true;
+        Play();
     }
-    public void Play()
+    public virtual void Play(bool IsPlayMusic=true)
     {
         Playing = true;
+        if (IsPlayMusic)
+        {
+            if (audioSource != null)
+                audioSource.Stop();
+            if (Options.EffectSound != null)
+                audioSource = SoundManager.Instance.PlaySound(Options.EffectSound, Options.IsEffectSoundLoop, audioMixer: SoundManager.Instance.sfxMixer);
+        }
+        IsRewinding = false;
     }
-    public void Pause()
+    public virtual void Pause(bool IsStopMusic=true)
     {
         Playing = false;
+        if (IsStopMusic)
+            audioSource?.Pause();
+        IsRewinding = false;
     }
-    public void Stop()
+    public virtual void Stop(bool IsStopMusic=true)
     {
-        Playing = false;
+        Pause(IsStopMusic: IsStopMusic);
         spriteRenderer.sprite = Options.Sprites[0];
         Index = 1;
         UpdateTimer = updatetime;
     }
     public virtual void Update()
     {
+        if (Options.IsMeetingDestroy && RoleClass.IsMeeting)
+        {
+            GameObject.Destroy(this.gameObject);
+            return;
+        }
         if (Playing && Options.Sprites.Length > 1)
         {
-            UpdateTimer -= Time.deltaTime;
-            if (UpdateTimer <= 0)
+            if (IsRewinding)
             {
-                spriteRenderer.sprite = Options.Sprites[Index];
-                Index++;
-                if (Options.Sprites.Length <= Index)
+                UpdateTimer += Time.deltaTime;
+                if (UpdateTimer >= updatetime)
                 {
-                    if (Options.IsLoop)
-                        Index = 0;
-                    else
+                    spriteRenderer.sprite = Options.Sprites[Index - 1];
+                    Index--;
+                    if (Index <= 0)
                     {
-                        if (Options.PlayEndDestory)
-                            Destroy(this);
+                        if (Options.IsLoop)
+                            Index = Options.Sprites.Length;
                         else
-                            Playing = false;
-                        return;
+                        {
+                            if (Options.PlayEndDestory)
+                                Destroy(this.gameObject);
+                            else
+                                Playing = false;
+                        }
+                        if (Options.OnEndAnimation != null)
+                            Options.OnEndAnimation(this, Options);
                     }
+                    UpdateTimer = 0f;
+                    OnRenderUpdate();
                 }
-                UpdateTimer = updatetime;
+            }
+            else
+            {
+                UpdateTimer -= Time.deltaTime;
+                if (UpdateTimer <= 0)
+                {
+                    spriteRenderer.sprite = Options.Sprites[Index];
+                    Index++;
+                    if (Options.Sprites.Length <= Index)
+                    {
+                        if (Options.IsLoop)
+                            Index = 0;
+                        else
+                        {
+                            if (Options.PlayEndDestory)
+                                Destroy(this.gameObject);
+                            else
+                                Playing = false;
+                        }
+                        if (Options.OnEndAnimation != null)
+                            Options.OnEndAnimation(this, Options);
+                    }
+                    UpdateTimer = updatetime;
+                    OnRenderUpdate();
+                }
             }
         }
     }
     public virtual void OnDestroy()
     {
         CustomAnimations.Remove(this);
+        if (audioSource != null)
+            audioSource.Stop();
+    }
+    public virtual void OnRenderUpdate()
+    {
+
+    }
+    public virtual void OnPlayRewind()
+    {
+        IsRewinding = true;
     }
 }

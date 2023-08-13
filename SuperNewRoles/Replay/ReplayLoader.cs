@@ -5,6 +5,7 @@ using System.Text;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
@@ -40,6 +41,7 @@ namespace SuperNewRoles.Replay
                 Bot.SetTasks(Bot.Data.Tasks);
             }
         }
+        public static bool IsInited;
         public static void UpdateLocalPlayerFirst() {
             byte id = 254;
             PlayerControl.LocalPlayer.PlayerId = id;
@@ -82,6 +84,7 @@ namespace SuperNewRoles.Replay
                 UpdateLocalPlayerFirst();
                 SpawnBots();
                 UpdateLocalPlayerEnd();
+                IsInited = true;
             }
         }
         public static void CoIntroDestory()
@@ -211,6 +214,11 @@ namespace SuperNewRoles.Replay
                             player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderRewind(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
                         }
                     }
+                    //アニメーションの巻き戻し処理
+                    foreach (CustomAnimation anim in CustomAnimation.CustomAnimations)
+                        anim.OnPlayRewind();
+                    foreach (PlayerAnimation anim in PlayerAnimation.PlayerAnimations)
+                        anim.OnPlayRewind();
                 }
                 else
                 {
@@ -232,6 +240,11 @@ namespace SuperNewRoles.Replay
                             player.MyPhysics.StartCoroutine(ReplayActionClimbLadder.CoClimbLadderCustom(player.MyPhysics, ReplayManager.CurrentReplay.CurrentLadder.FirstOrDefault(x => x.Key == player.PlayerId).Value, player.MyPhysics.lastClimbLadderSid).WrapToIl2Cpp());
                         }
                     }
+                    //アニメーションのプレイ処理
+                    foreach(CustomAnimation anim in CustomAnimation.CustomAnimations)
+                        anim.Play();
+                    foreach (PlayerAnimation anim in PlayerAnimation.PlayerAnimations)
+                        anim.Play();
                 }
             }
             ReplayManager.CurrentReplay.CurrentPlayState = state;
@@ -350,15 +363,20 @@ namespace SuperNewRoles.Replay
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     RoleTypes role = RoleTypes.Crewmate;
+                    RoleId roleid = RoleId.DefaultRole;
                     if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         ReplayPlayer rp = ReplayManager.CurrentReplay.ReplayPlayers.FirstOrDefault(x => x.PlayerId == p.PlayerId);
                         if (rp != null)
+                        {
                             role = rp.RoleType;
+                            roleid = rp.RoleId;
+                        }
                         else
-                            Logger.Info(p.PlayerId+"の役職が参照できませんでした。");
+                            Logger.Info(p.PlayerId + "の役職が参照できませんでした。");
                     }
                     p.SetRole(role);
+                    p.SetRole(roleid);
                 }
                 //ShowIntro();
             }
@@ -447,6 +465,7 @@ namespace SuperNewRoles.Replay
             ReplayTurns = new();
             postime = 99999;
             IsStarted = false;
+            IsInited = false;
         }
         [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.Start))]
         public static class HauntMenuMinigameStartPatch

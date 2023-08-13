@@ -37,7 +37,6 @@ public class ReplayActionSluggerExile : ReplayAction
         {
             GameObject.Destroy(db.gameObject);
         }
-        SluggerDeadbody.DeadBodys.RemoveAll(x => x.gameObject == null);
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionSluggerExile Create(byte sourcePlayer, List<byte> targets)

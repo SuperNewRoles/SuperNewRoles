@@ -692,7 +692,8 @@ public static class RPCProcedure
                 Vector3 position = Vector3.zero;
                 position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
                 position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-                return new(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+
+                return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
             case WaveCannonObject.RpcType.Shoot:
                 WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
                 break;
@@ -724,8 +725,10 @@ public static class RPCProcedure
     {
         RpcAnimationType AnimType = (RpcAnimationType)type;
         PlayerAnimation PlayerAnim = PlayerAnimation.GetPlayerAnimation(playerid);
-        if (PlayerAnim == null) return;
-        ReplayActionPlayerAnimation.Create(playerid, type);
+        if (PlayerAnim == null) {
+            Logger.Info("PlayerAnimがぬるだった...:"+playerid.ToString());
+            return;
+        }
         PlayerAnim.HandleAnim(AnimType);
     }
     public static void PainterSetTarget(byte target, bool Is)

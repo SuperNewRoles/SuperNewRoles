@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Replay.ReplayActions;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;
@@ -58,6 +59,7 @@ public class PlayerAnimation
     private float updatetime;
     private float updatedefaulttime;
     private int index;
+    private bool IsRewinding;
     public Sprite[] Sprites;
     public Action OnAnimationEnd;
     public Action OnFixedUpdate;
@@ -103,6 +105,15 @@ public class PlayerAnimation
         OnAnimationEnd = onAnimationEnd;
         OnFixedUpdate = onFixedUpdate;
         SpriteRender.sprite = sprites[0];
+        IsRewinding = false;
+    }
+    public virtual void OnPlayRewind()
+    {
+        IsRewinding = true;
+    }
+    public virtual void Play()
+    {
+        IsRewinding = false;
     }
     public static void FixedAllUpdate()
     {
@@ -123,27 +134,55 @@ public class PlayerAnimation
             SpriteRender.sprite = null;
             return;
         }
-        updatetime -= Time.fixedDeltaTime;
-        if (OnFixedUpdate != null) OnFixedUpdate();
-        if (updatetime <= 0)
+        if (IsRewinding)
         {
-            index++;
-            if (Sprites.Length <= index)
+            updatetime += Time.fixedDeltaTime;
+            if (OnFixedUpdate != null) OnFixedUpdate();
+            if (updatetime >= updatedefaulttime)
             {
-                if (IsLoop)
+                index--;
+                if (index < 0)
                 {
-                    index = 0;
+                    if (IsLoop)
+                    {
+                        index = Sprites.Length - 1;
+                    }
+                    else
+                    {
+                        Playing = false;
+                        Logger.Info($"チェック:{OnAnimationEnd != null}");
+                        if (OnAnimationEnd != null) OnAnimationEnd();
+                        return;
+                    }
                 }
-                else
-                {
-                    Playing = false;
-                    Logger.Info($"チェック:{OnAnimationEnd != null}");
-                    if (OnAnimationEnd != null) OnAnimationEnd();
-                    return;
-                }
+                SpriteRender.sprite = Sprites[index];
+                updatetime = 0;
             }
-            SpriteRender.sprite = Sprites[index];
-            updatetime = updatedefaulttime;
+        }
+        else
+        {
+            updatetime -= Time.fixedDeltaTime;
+            if (OnFixedUpdate != null) OnFixedUpdate();
+            if (updatetime <= 0)
+            {
+                index++;
+                if (Sprites.Length <= index)
+                {
+                    if (IsLoop)
+                    {
+                        index = 0;
+                    }
+                    else
+                    {
+                        Playing = false;
+                        Logger.Info($"チェック:{OnAnimationEnd != null}");
+                        if (OnAnimationEnd != null) OnAnimationEnd();
+                        return;
+                    }
+                }
+                SpriteRender.sprite = Sprites[index];
+                updatetime = updatedefaulttime;
+            }
         }
     }
     public void RpcAnimation(RpcAnimationType AnimType)
@@ -156,6 +195,7 @@ public class PlayerAnimation
     }
     public void HandleAnim(RpcAnimationType AnimType)
     {
+        ReplayActionPlayerAnimation.Create(PlayerId, (byte)AnimType);
         switch (AnimType)
         {
             case RpcAnimationType.Stop:
