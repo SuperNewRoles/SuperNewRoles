@@ -206,12 +206,15 @@ class AllCheck:
         # Roles/Role/ROLENAME.cs
         if (MainClass.GetBool("Impo")):
             namedata = "Impostor"
+            idnam = "20" + MainClass.PlusIDNum() + "00"
             playerstype = "CustomOptionHolder.ImpostorPlayers"
         elif (MainClass.GetBool("Neut")):
             namedata = "Neutral"
+            idnam = "30" + MainClass.PlusIDNum() + "00"
             playerstype = "CustomOptionHolder.CrewPlayers"
         elif (MainClass.GetBool("Crew")):
             namedata = "Crewmate"
+            idnam = "40" + MainClass.PlusIDNum() + "00"
             playerstype = "CustomOptionHolder.CrewPlayers"
         with open(BasePath+"Roles/"+namedata+"/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
             x.write(
@@ -222,24 +225,31 @@ namespace SuperNewRoles.Roles."""+namedata+""";
 
 public static class ROLENAME
 {
-    private const int OptionId = IDNUM;
-    public static CustomRoleOption ROLENAMEOption;
-    public static CustomOption ROLENAMEPlayerCount;
-    public static void SetupCustomOptions()
+    public static class CustomOptionData
     {
-        ROLENAMEOption = CustomOption.SetupCustomRoleOption(OptionId, SHRON, RoleId.ROLENAME);
-        ROLENAMEPlayerCount = CustomOption.Create(OptionId + 1, SHRON, CustomOptionType."""+namedata+""", "SettingPlayerCountName", PLAYERSTYPE[0], PLAYERSTYPE[1], PLAYERSTYPE[2], PLAYERSTYPE[3], ROLENAMEOption);
+        private static int optionId = """+idnam+""";
+        public static CustomRoleOption Option;
+        public static CustomOption PlayerCount;
+        public static void SetupCustomOptions()
+        {
+            Option = CustomOption.SetupCustomRoleOption(optionId, SHRON, RoleId.ROLENAME); optionId++;
+            PlayerCount = CustomOption.Create(optionId, SHRON, CustomOptionType."""+namedata+""", "SettingPlayerCountName", PLAYERSTYPE[0], PLAYERSTYPE[1], PLAYERSTYPE[2], PLAYERSTYPE[3], Option); optionId++;
+        }
     }
-    
-    public static List<PlayerControl> ROLENAMEPlayer;
-    public static Color32 color = COLORS;
-    public static void ClearAndReload()
+
+    internal static class RoleData
     {
-        ROLENAMEPlayer = new();
+        public static List<PlayerControl> Player;
+        public static Color32 color = COLORS;
+
+        public static void ClearAndReload()
+        {
+            Player = new();
+        }
     }
-    
+
     // ここにコードを書きこんでください
-}""").replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")).replace("PLAYERSTYPE", playerstype).replace("COLORS", MainClass.GetRoleColor()))
+}""").replace("ROLENAME", MainClass.GetInput("RoleName")).replace("SHRON", MainClass.GetCBool("IsSHRON")).replace("PLAYERSTYPE", playerstype).replace("COLORS", MainClass.GetRoleColor()))
 
         # CustomRPC/CustomRPC.cs
         MainClass.WriteCodes("Modules/CustomRPC.cs", "//RoleId",
@@ -247,21 +257,21 @@ public static class ROLENAME
 
         # Roles/AllRoleSetClass.cs
         MainClass.WriteCodes("Roles/AllRoleSetClass.cs", "// プレイヤーカウント",
-                             """RoleId.ROLENAME => ROLENAME.ROLENAMEPlayerCount.GetFloat(),\n            // プレイヤーカウント""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                             """RoleId.ROLENAME => ROLENAME.CustomOptionData.PlayerCount.GetFloat(),\n            // プレイヤーカウント""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # Roles/Role/RoleHelper.cs
         if (not MainClass.GetBool("TeamGhost")):
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// ロールチェック",
-                                 """else if (ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player)) return RoleId.ROLENAME;
+                                 """else if (ROLENAME.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.ROLENAME;
             // ロールチェック""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// ロールアド",
                              """case RoleId.ROLENAME:
-                ROLENAME.ROLENAMEPlayer.Add(player);
+                ROLENAME.RoleData.Player.Add(player);
                 break;
             // ロールアド""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// ロールリモベ",
                              """case RoleId.ROLENAME:
-                ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
+                ROLENAME.RoleData.Player.RemoveAll(ClearRemove);
                 break;
             // ロールリモベ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("Neut")):
@@ -276,17 +286,17 @@ public static class ROLENAME
 
         # Roles/Role/RoleClass.cs
         MainClass.WriteCodes("Roles/Role/RoleClass.cs", "// ロールクリア", MainClass.GetInput(
-            "RoleName")+".ClearAndReload();\n        // ロールクリア")
+            "RoleName")+".RoleData.ClearAndReload();\n        // ロールクリア")
 
         # Intro/IntroData.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "// イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.ImpostorROLETYPE);
+            MainClass.WriteCodes("Modules/IntroData.cs", "// イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", ROLENAME.RoleData.color, 1, RoleId.ROLENAME, TeamRoleType.ImpostorROLETYPE);
     // イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
         elif (MainClass.GetBool("Crew")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "// イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.CrewmateROLETYPE);
+            MainClass.WriteCodes("Modules/IntroData.cs", "// イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", ROLENAME.RoleData.color, 1, RoleId.ROLENAME, TeamRoleType.CrewmateROLETYPE);
     // イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
         elif (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "// イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.NeutralROLETYPE);
+            MainClass.WriteCodes("Modules/IntroData.cs", "// イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", ROLENAME.RoleData.color, 1, RoleId.ROLENAME, TeamRoleType.NeutralROLETYPE);
     // イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
         elif (MainClass.GetBool("TeamOne")):
             print()
@@ -297,15 +307,22 @@ public static class ROLENAME
     // イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # CustomOption/CustomOptionHolder.cs
-        MainClass.WriteCodes("Modules/CustomOptionHolder.cs", "// 表示設定",
-                             """ROLENAME.SetupCustomOptions();\n\n        // 表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+        if (MainClass.GetBool("Impo")):
+            MainClass.WriteCodes("Modules/CustomOptionHolder.cs", "// SetupImpostorCustomOptions",
+                             """ROLENAME.CustomOptionData.SetupCustomOptions();\n\n        // SetupImpostorCustomOptions""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+        elif (MainClass.GetBool("Crew")):
+            MainClass.WriteCodes("Modules/CustomOptionHolder.cs", "// SetupCrewmateCustomOptions",
+                             """ROLENAME.CustomOptionData.SetupCustomOptions();\n\n        // SetupCrewmateCustomOptions""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+        elif (MainClass.GetBool("Neut")):
+            MainClass.WriteCodes("Modules/CustomOptionHolder.cs", "// SetupNeutralCustomOptions",
+                             """ROLENAME.CustomOptionData.SetupCustomOptions();\n\n        // SetupNeutralCustomOptions""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # シェリフキル
         if (MainClass.GetBool("A_CanSheriffKill_Mad")):
             # Roles/Role/RoleHelper.cs
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", ";\n        // IsMads",
                                  """ or\n        RoleId.ROLENAME;\n        // IsMads""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-        elif(MainClass.GetBool("A_CanSheriffKill_Friends")):
+        elif (MainClass.GetBool("A_CanSheriffKill_Friends")):
             # Roles/Role/RoleHelper.cs
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", ";\n        // IsFriends",
                                  """ or\n        RoleId.ROLENAME;\n        // IsFriends""".replace("ROLENAME", MainClass.GetInput("RoleName")))
@@ -320,8 +337,8 @@ public static class ROLENAME
             # Roles/Role/ROLENAME.cs
             MainClass.WriteCodes("Roles/Role/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "//ここにコードを書きこんでください",
                                  """        public static void resetCooldown() {
-            HudManagerStartPatch.ROLENAMEKillButton.MaxTimer = RoleClass.ROLENAME.KillCooldown;
-            HudManagerStartPatch.ROLENAMEKillButton.Timer = RoleClass.ROLENAME.KillCooldown;
+            HudManagerStartPatch.ROLENAMEKillButton.MaxTimer = ROLENAME.RoleData.KillCooldown;
+            HudManagerStartPatch.ROLENAMEKillButton.Timer = ROLENAME.RoleData.KillCooldown;
         }
         public static void EndMeeting() {
             resetCooldown();
@@ -345,13 +362,13 @@ public static class ROLENAME
                 # Roles/Role/RoleHelper.cs
                 if (MainClass.GetBool("TeamGhost")):
                     MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ここが幽霊役職",
-                                         """if (SuperNewRoles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
+                                         """if (ROLENAME.RoleData.Player.IsCheckListPlayerControl(player))
                     {
                         return SuperNewRoles.RoleId.ROLENAME;
                     }\n                //ここが幽霊役職""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ベントが使える",
                                      """case RoleId.ROLENAME:
-                    return RoleClass.ROLENAME.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                    return ROLENAME.RoleData.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
                 # Roles/Role/RoleClass.cs
                 MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//その他Option",
@@ -362,14 +379,14 @@ public static class ROLENAME
                 # Roles/Role/RoleHelper.cs
                 MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ベントが使える",
                 """case RoleId.ROLENAME:
-                    return RoleClass.ROLENAME.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                    return ROLENAME.RoleData.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 # Roles/Role/RoleClass.cs
                 MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//その他Option",
                 """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 # Roles/Role/RoleHelper.cs
                 MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ベント設定可視化",
                 """case RoleId.ROLENAME:
-                    returntext = CustomOptionHolder.FoxIsUseVent.name + ":" + CustomOptionHolder.ROLENAMEIsUseVent.GetString() + "\n";
+                    returntext = CustomOptionHolder.FoxIsUseVent.name + ":" + ROLENAME.CustomOptionData.ROLENAMEIsUseVent.GetString() + "\n";
                     break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))'''
         # インポの視界設定
         if (MainClass.GetBool("A_ImpoVisible")):
