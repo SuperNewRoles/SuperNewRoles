@@ -111,11 +111,12 @@ class ReturnClass:
 
     def PlusIDNum(self):
         # if (MainClass.Access):
-        #MainClass.Access = True
-        PlusNum = MainClass.Num + 1
-        MainClass.Num = PlusNum
-        Return = str(int(MainClass.GetInput("OptionNumber"))+MainClass.Num)
-        print("PlusID:", PlusNum)
+        # MainClass.Access = True
+        MainClass.Num = int(MainClass.GetInput("OptionNumber"))
+        if (MainClass.Num >= 100):
+            Return = str(MainClass.Num)
+        else:
+            Return = "0"+str(MainClass.Num)
         print("ID:", Return)
         return Return
     # チェックボックス、ラジオを更新
@@ -206,15 +207,15 @@ class AllCheck:
         # Roles/Role/ROLENAME.cs
         if (MainClass.GetBool("Impo")):
             namedata = "Impostor"
-            idnam = "20" + MainClass.PlusIDNum() + "00"
+            idnam = "2" + MainClass.PlusIDNum() + "00"
             playerstype = "CustomOptionHolder.ImpostorPlayers"
         elif (MainClass.GetBool("Neut")):
             namedata = "Neutral"
-            idnam = "30" + MainClass.PlusIDNum() + "00"
+            idnam = "3" + MainClass.PlusIDNum() + "00"
             playerstype = "CustomOptionHolder.CrewPlayers"
         elif (MainClass.GetBool("Crew")):
             namedata = "Crewmate"
-            idnam = "40" + MainClass.PlusIDNum() + "00"
+            idnam = "4" + MainClass.PlusIDNum() + "00"
             playerstype = "CustomOptionHolder.CrewPlayers"
         with open(BasePath+"Roles/"+namedata+"/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
             x.write(
@@ -440,7 +441,7 @@ MainTab = psg.Tab("メイン", [
     [psg.Text(), psg.Text("タブ:", key="SettingTabText"), psg.Radio("インポスター", group_id="OptionTab", key="TeamImpo"),
      psg.Radio("クルー", group_id="OptionTab", key="TeamCrew"), psg.Radio("第三陣営", group_id="OptionTab", key="TeamNeut")],
     [psg.Text(), psg.Check("SHR対応", key="IsSHRON")],
-    [psg.Text(), psg.Text("設定ID(int)", key="OptionNumberIDText"), psg.Input("", key="OptionNumber", size=(10, 3))], ])
+    [psg.Text(), psg.Text("設定ID(3桁の固有Id)", key="OptionNumberIDText"), psg.Input("", key="OptionNumber", size=(10, 3))], ])
 AdvanceTab = psg.Tab("詳細設定", [
     [psg.Check("タスクを削除する", key="A_ClearTask")],
     [psg.Check("シェリフキル(マッド)", key="A_CanSheriffKill_Mad")],
