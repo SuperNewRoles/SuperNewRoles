@@ -1601,6 +1601,7 @@ public static class RoleHelpers
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
+            // ベントが使える
             _ => player.IsImpostor(),
         };
     }
