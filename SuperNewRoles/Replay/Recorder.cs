@@ -95,6 +95,10 @@ namespace SuperNewRoles.Replay
             writer.Write(PlayerPositions.Count);
             Dictionary<byte, List<Vector2>> playerpositions = new(PlayerPositions);
             PlayerPositions = new();
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                PlayerPositions.TryAdd(player.PlayerId, new());
+            }
             foreach (var data in playerpositions) {
                 int count = 0;
                 writer.Write(data.Key);
@@ -186,6 +190,7 @@ namespace SuperNewRoles.Replay
             foreach (GameData.PlayerInfo player in winners) {
                 writer.Write(player.PlayerId);
             }
+            writer.Write((byte)TempData.EndReason);
             Logger.Info(writer.BaseStream.Length.ToString());
             Logger.Info(writer.BaseStream.Position.ToString());
             writer.Close();

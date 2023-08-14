@@ -376,14 +376,12 @@ public class SetNameUpdate
 {
     public static void Postfix(PlayerControl __instance)
     {
-        Logger.Info("SetNameUpdate Called:"+ SetNamesClass.DefaultGhostSeeRoles().ToString());
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
         if ((SetNamesClass.DefaultGhostSeeRoles() && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                Logger.Info("Updating:"+player.PlayerId.ToString());
                 SetNamesClass.SetPlayerNameColors(player);
                 SetNamesClass.SetPlayerRoleNames(player);
             }

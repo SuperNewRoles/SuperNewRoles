@@ -104,6 +104,8 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
+                HudManager.Instance.ShowPopUp("スマソ。無理やわ。");
+                return;
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
                 DirectoryInfo d = new(filePath);
                 Logger.Info("FileName:"+ d.GetFiles()[0].Name);

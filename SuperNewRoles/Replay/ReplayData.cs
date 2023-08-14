@@ -14,7 +14,8 @@ namespace SuperNewRoles.Replay
         Play,
         Pause,
         FastPlay,
-        PlayRewind
+        PlayRewind,
+        None
     }
     public enum MovingPlatformState
     {

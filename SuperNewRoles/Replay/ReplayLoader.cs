@@ -8,6 +8,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles.Impostor;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using static GameData;
@@ -73,7 +74,9 @@ namespace SuperNewRoles.Replay
             CurrentTurn++;
             actionindex = 0;
             IsStarted = true;
-            GetPosAndActionsThisTurn();
+            //もう読み込み済みか判定
+            if (CurrentTurn >= ReplayTurns.Count)
+                GetPosAndActionsThisTurn();
             if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
         }
@@ -102,7 +105,6 @@ namespace SuperNewRoles.Replay
             GetPosAndActionsThisTurn();
             if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
-            Logger.Info(ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime.ToString()+":"+ReplayManager.CurrentReplay.RecordRate.ToString());
             //postime -= ReplayManager.CurrentReplay.RecordRate;
             PlayerControl.LocalPlayer.Exiled();
             PlayerControl.LocalPlayer.SetTasks(new());
@@ -248,6 +250,9 @@ namespace SuperNewRoles.Replay
                         anim.Play();
                 }
             }
+            if (state == ReplayState.Pause)
+                foreach (PlayerAnimation anim in PlayerAnimation.PlayerAnimations)
+                    anim.Pause();
             ReplayManager.CurrentReplay.CurrentPlayState = state;
         }
         public static void PlayOrPause()
@@ -458,7 +463,10 @@ namespace SuperNewRoles.Replay
                     Logger.Info(replayActionId + "だったのでパス");
                 }
             }
-            Logger.Info(reader.ReadBoolean().ToString(),"終了？");
+            turn.IsGameEnd = reader.ReadBoolean();
+            if (turn.IsGameEnd) {
+                turn.CurrentEndGameData = new(reader);
+            }
             ReplayTurns.Add(turn);
         }
         public static void ClearAndReloads()
@@ -523,12 +531,85 @@ namespace SuperNewRoles.Replay
         public static int CurrentTurn;
         public static int posindex;
         static int actionindex;
+        static int currentwrapupposindex;
+        public static void OnWrapUp()
+        {
+            currentwrapupposindex = posindex;
+        }
+        public static void ShowMeetingRewindPopup()
+        {
+            HudManager.Instance.transform.FindChild("GenericDialogue/Background/FullScreen").GetComponent<BoxCollider2D>().enabled = false;
+            HudManager.Instance.transform.FindChild("GenericDialogue/CloseButton").gameObject.SetActive(false);
+            HudManager.Instance.transform.FindChild("GenericDialogue").GetComponent<DialogueBox>().enabled = false;
+            static void Createbtn(string name,string text, Vector3 pos,Action action)
+            {
+                GameObject btntemplate = DiscordManager.Instance.discordPopup.transform.FindChild("ExitGame").gameObject;
+                GameObject RewindTurnBtn = GameObject.Instantiate(btntemplate, HudManager.Instance.transform.FindChild("GenericDialogue"));
+                TextMeshPro RewindTurnTex = RewindTurnBtn.GetComponentInChildren<TextMeshPro>();
+                GameObject.Destroy(RewindTurnTex.GetComponent<TextTranslatorTMP>());
+                RewindTurnTex.text = text;
+                RewindTurnBtn.transform.localPosition = pos;
+                RewindTurnBtn.name = name;
+                PassiveButton psbtn = RewindTurnBtn.GetComponent<PassiveButton>();
+                psbtn.OnClick = new();
+                psbtn.OnClick.AddListener(action);
+            }
+            static void Reset()
+            {
+                GameObject.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/ThisPosStartButton").gameObject);
+                GameObject.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/RewindTurnButton").gameObject);
+                HudManager.Instance.transform.FindChild("GenericDialogue/Background/FullScreen").GetComponent<BoxCollider2D>().enabled = true;
+                HudManager.Instance.transform.FindChild("GenericDialogue/CloseButton").gameObject.SetActive(true);
+                HudManager.Instance.transform.FindChild("GenericDialogue").GetComponent<DialogueBox>().enabled = true;
+                HudManager.Instance.transform.FindChild("GenericDialogue").gameObject.SetActive(false);
+            }
+            Createbtn("RewindTurnButton", "前のターンの終わりから巻き戻す", new(-0.875f, -0.6f, -0.5f),() =>
+            {
+                CurrentTurn--;
+                Logger.Info(ReplayTurns[CurrentTurn].Positions.Values.FirstOrDefault().Count.ToString(), "Count");
+                posindex = ReplayTurns[CurrentTurn].Positions.Values.FirstOrDefault().Count - 1;
+                actionindex = ReplayTurns[CurrentTurn].Actions.Count - 1;
+                postime = ReplayManager.CurrentReplay.RecordRate;
+                actiontime = ReplayTurns[CurrentTurn].Actions[ReplayTurns[CurrentTurn].Actions.Count - 1].ActionTime;
+                SetReplayStatus(ReplayState.PlayRewind);
+                UpdateButton();
+                if (MeetingHud.Instance != null)
+                {
+                    GameObject.Destroy(MeetingHud.Instance.gameObject);
+                    MeetingHud.Instance = null;
+                }
+                Reset();
+                ConsoleJoystick.SetMode_Task();
+                ControllerManager.Instance.CloseAndResetAll();
+                PlayerControl.LocalPlayer.moveable = true;
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                currentwrapupposindex = 999999;
+                Logger.Info("Click Rewind Turn Button");
+            });
+            Createbtn("ThisPosStartButton", "ここからはじめる", new(0.875f, -0.6f, -0.5f), () =>
+            {
+                SetReplayStatus(ReplayState.Play);
+                UpdateButton();
+                Reset();
+            });
+            HudManager.Instance.ShowPopUp("会議を跨いでの巻き戻しはできません。");
+            ReplayManager.CurrentReplay.CurrentUIState = UIState.HideAllUI;
+            UpdateUIByState();
+            Logger.Info("Commed UI");
+        }
         public static void HudUpdate()
         {
             if (!IsStarted) return;
             if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause) return;
             if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind)
             {
+                if ((MeetingHud.Instance != null && MeetingHud.Instance.discussionTimer <= 0) ||
+                    posindex == currentwrapupposindex)
+                {
+                    ShowMeetingRewindPopup();
+                    SetReplayStatus(ReplayState.Pause);
+                    return;
+                }
                 postime += Time.deltaTime;
                 if (actiontime != -999)
                     actiontime += Time.deltaTime;
@@ -551,7 +632,7 @@ namespace SuperNewRoles.Replay
                     if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
                     try
                     {
-                        if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count <= posindex) continue;
+                        if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count <= posindex || posindex < 0) continue;
                         //Logger.Info(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].ToString());
                         //player.StopAllCoroutines();
                         //player.NetTransform.RpcSnapTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex]);
@@ -585,6 +666,11 @@ namespace SuperNewRoles.Replay
                 if (targetindex >= 0)
                 {
                     posindex = targetindex;
+                    if (ReplayTurns[CurrentTurn].IsGameEnd && ReplayTurns[CurrentTurn].Positions[0].Count <= posindex)
+                    {
+                        GameManager.Instance.RpcEndGame(ReplayTurns[CurrentTurn].CurrentEndGameData.OverReason, false);
+                        return;
+                    }
                 }
                 if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind)
                 {
@@ -606,7 +692,7 @@ namespace SuperNewRoles.Replay
             //Logger.Info("actiontime:"+actiontime.ToString());
             if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind)
             {
-                while (actionindex >= 0 && actiontime >= ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime && actiontime != -999)
+                while (ReplayTurns[CurrentTurn].Actions.Count > 0 && actionindex >= 0 && actiontime >= ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime && actiontime != -999)
                 {
                     if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                     {
@@ -619,7 +705,7 @@ namespace SuperNewRoles.Replay
             }
             else
             {
-                while (actiontime <= 0 && actiontime != -999)
+                while (ReplayTurns[CurrentTurn].Actions.Count > 0 && actiontime <= 0 && actiontime != -999)
                 {
                     if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                     {

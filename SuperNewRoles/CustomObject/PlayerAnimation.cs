@@ -42,6 +42,8 @@ public class PlayerAnimation
         transform.SetParent(Player.cosmetics.normalBodySprite.BodySprite.transform.parent);
         transform.localScale = Vector3.one * 0.5f;
         SpriteRender = gameObject.AddComponent<SpriteRenderer>();
+        IsRewinding = false;
+        IsPausing = false;
         PlayerAnimations.Add(this);
     }
     public void OnDestroy()
@@ -60,6 +62,7 @@ public class PlayerAnimation
     private float updatedefaulttime;
     private int index;
     private bool IsRewinding;
+    private bool IsPausing;
     public Sprite[] Sprites;
     public Action OnAnimationEnd;
     public Action OnFixedUpdate;
@@ -105,15 +108,27 @@ public class PlayerAnimation
         OnAnimationEnd = onAnimationEnd;
         OnFixedUpdate = onFixedUpdate;
         SpriteRender.sprite = sprites[0];
-        IsRewinding = false;
     }
     public virtual void OnPlayRewind()
     {
+        IsPausing = false;
         IsRewinding = true;
+        if (SoundManagerSource != null)
+            SoundManagerSource.pitch = -1f;
     }
     public virtual void Play()
     {
+        IsPausing = false;
         IsRewinding = false;
+        if (SoundManagerSource != null)
+            SoundManagerSource.pitch = 1f;
+    }
+    public virtual void Pause()
+    {
+        IsPausing = true;
+        IsRewinding = false;
+        if (SoundManagerSource != null)
+            SoundManagerSource.pitch = 0f;
     }
     public static void FixedAllUpdate()
     {
@@ -132,6 +147,10 @@ public class PlayerAnimation
         if (!Playing)
         {
             SpriteRender.sprite = null;
+            return;
+        }
+        if (IsPausing)
+        {
             return;
         }
         if (IsRewinding)
