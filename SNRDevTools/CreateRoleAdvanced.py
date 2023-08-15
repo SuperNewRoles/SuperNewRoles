@@ -159,6 +159,8 @@ class ReturnClass:
     # ROLENAME.csに記載するオプションを, 一時的置きする変数
     CustomOption: str = ""
     CustomOptionCreate: str = ""
+    RoleData: str = ""
+    ClearAndReload: str = ""
 
 # 戻り値なし
 class AllCheck:
@@ -306,20 +308,14 @@ class AllCheck:
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// ベントが使える",
             """RoleId.ROLENAME => ROLENAME.CustomOptionData.IsUseVent.GetBool(),\n            // ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
-            '''
             # CustomOption/CustomOptionHolder.cs
             if (MainClass.GetBool("TeamCrew")):
                 team = "Crewmate"
-                rolepath = "Roles/CrewMate/" + MainClass.GetInput("RoleName") + ".cs"
             elif (MainClass.GetInput("TeamNeut")):
                 team = "Neutral"
-                rolepath = "Roles/Neutral/" + MainClass.GetInput("RoleName") + ".cs"
 
-            MainClass.WriteCodes(rolepath, "// Write CustomOption",
-                                 """public static CustomOption IsUseVent;\n            // Write CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            MainClass.WriteCodes(rolepath, "// Write CustomOption Create",
-                                 """IsUseVent = CustomOption.Create(optionId, SHRON, CustomOptionType."""+team+""", "MadmateUseVentSetting", false, ROLENAMEOption); optionId++;\n            // Write CustomOption Create""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("SHRON", MainClass.GetCBool("IsSHRON")))
-            '''
+            MainClass.CustomOption += """\n        public static CustomOption IsUseVent;"""
+            MainClass.CustomOptionCreate += f"""\n            IsUseVent = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.{team}, "MadmateUseVentSetting", false, Option); optionId++;"""
 
         # Roles/Role/RoleHelper.cs
         if (MainClass.GetBool("TeamGhost")):
@@ -382,10 +378,12 @@ public static class ROLENAME
     {
         public static List<PlayerControl> Player;
         public static Color32 color = COLORS;
+        // Write RoleData
 
         public static void ClearAndReload()
         {
             Player = new();
+            // Write ClearAndReload
         }
     }
 
@@ -396,7 +394,9 @@ public static class ROLENAME
                 .replace("PLAYERSTYPE", playerstype)
                 .replace("COLORS", MainClass.GetRoleColor())
                 .replace("\n        // Write CustomOption", MainClass.CustomOption)
-                .replace("\n            // Write CustomOption Create", MainClass.CustomOptionCreate))
+                .replace("\n            // Write CustomOption Create", MainClass.CustomOptionCreate)
+                .replace("\n        // Write RoleData", MainClass.RoleData)
+                .replace("\n            // Write ClearAndReload", MainClass.ClearAndReload))
 
         # 翻訳
         MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation",
