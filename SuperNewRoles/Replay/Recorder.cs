@@ -8,6 +8,7 @@ using System.Linq;
 using SuperNewRoles.Replay.ReplayActions;
 using System.Collections.Concurrent;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Replay
 {
@@ -133,7 +134,7 @@ namespace SuperNewRoles.Replay
             //ゲーム終了かのフラグ
             writer.Write(false);
         }
-        public static void OnEndGame() {
+        public static void OnEndGame(GameOverReason reason) {
             Logger.Info("Start-Save-");
             if (ReplayManager.IsReplayMode) return;
             Logger.Info("Start-Save-2");
@@ -190,7 +191,8 @@ namespace SuperNewRoles.Replay
             foreach (GameData.PlayerInfo player in winners) {
                 writer.Write(player.PlayerId);
             }
-            writer.Write((byte)TempData.EndReason);
+            writer.Write((byte)reason);
+            writer.Write((byte)AdditionalTempData.winCondition);
             Logger.Info(writer.BaseStream.Length.ToString());
             Logger.Info(writer.BaseStream.Position.ToString());
             writer.Close();

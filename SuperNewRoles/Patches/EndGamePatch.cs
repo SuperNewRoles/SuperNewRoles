@@ -52,7 +52,7 @@ public enum CustomGameOverReason
     OrientalShamanWin,
     BlackHatHackerWin,
 }
-enum WinCondition
+public enum WinCondition
 {
     Default,
     HAISON,
@@ -250,6 +250,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
             };
+        Logger.Info(AdditionalTempData.winCondition.ToString(),"WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
             text = WinConditionDictionary[AdditionalTempData.winCondition].Item1;
@@ -305,7 +306,7 @@ public class EndGameManagerSetUpPatch
             haison = true;
             text = ModTranslation.GetString("NoWinner");
         }
-        else { }
+        else
         {
             text = ModTranslation.GetString(text);
         }
@@ -416,10 +417,10 @@ public class EndGameManagerSetUpPatch
         {
             SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
         }
+        Recorder.OnEndGame(AdditionalTempData.gameOverReason);
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
         IsHaison = false;
-        Recorder.OnEndGame();
     }
 }
 
@@ -479,7 +480,7 @@ public static class OnGameEndPatch
             }
             catch { }
         }
-        if (ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !ConfigRoles.DebugMode.Value)
+        if (!ReplayManager.IsReplayMode && ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !ConfigRoles.DebugMode.Value)
         {
             try
             {
@@ -550,6 +551,22 @@ public static class OnGameEndPatch
                     GhostIntroData = ghostRoles
                 });
             }
+        }
+
+        if (ReplayManager.IsReplayMode)
+        {
+            Logger.Info("ComeEndReplay");
+            var ReplayEndGameData = ReplayLoader.ReplayTurns[ReplayLoader.CurrentTurn].CurrentEndGameData;
+            if (ReplayEndGameData == null) return;
+            Logger.Info("EndNullReplay");
+            Il2CppSystem.Collections.Generic.List<WinningPlayerData> WinningPlayers = new();
+            foreach (byte winnerid in ReplayEndGameData.WinnerPlayers)
+            {
+                WinningPlayers.Add(new(GameData.Instance.GetPlayerById(winnerid)));
+            }
+            TempData.winners = WinningPlayers;
+            AdditionalTempData.winCondition = ReplayEndGameData.WinCond;
+            return;
         }
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
         List<PlayerControl> notWinners = new();
@@ -1370,6 +1387,7 @@ public static class CheckGameEndPatch
         if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
         if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
         if (ModHelpers.IsDebugMode()) return false;
+        if (ReplayManager.IsReplayMode) return false;
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (RoleClass.Revolutionist.MeetingTrigger != null) return false;
         ShipStatus __instance = ShipStatus.Instance;

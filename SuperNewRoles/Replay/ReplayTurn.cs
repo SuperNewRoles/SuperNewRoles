@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace SuperNewRoles.Replay
     {
         public List<byte> WinnerPlayers;
         public GameOverReason OverReason;
+        public WinCondition WinCond;
         public ReplayEndGameData(BinaryReader reader)
         {
             WinnerPlayers = new();
@@ -26,6 +28,7 @@ namespace SuperNewRoles.Replay
                 WinnerPlayers.Add(reader.ReadByte());
             }
             OverReason = (GameOverReason)reader.ReadByte();
+            WinCond = (WinCondition)reader.ReadByte();
         }
     }
 }

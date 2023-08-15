@@ -174,6 +174,17 @@ public class IntroPatch
 
     public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
+        if (ReplayManager.IsReplayMode)
+        {
+            var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            foreach(PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p != PlayerControl.LocalPlayer)
+                    newTeam.Add(p);
+            }
+            yourTeam = newTeam;
+            return;
+        }
         if (ModeHandler.IsMode(ModeId.Default))
         {
             var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
