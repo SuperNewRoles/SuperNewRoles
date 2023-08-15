@@ -281,7 +281,23 @@ public static class ReplayLoader
     }
     public static void MoveToNextMeeting()
     {
-
+        if (ReplayTurns[CurrentTurn].IsGameEnd)
+        {
+            GameManager.Instance.RpcEndGame(ReplayTurns[CurrentTurn].CurrentEndGameData.OverReason, false);
+            return;
+        }
+        else
+        {
+            //会議のReplayActionを実行
+            foreach(ReplayAction action in ReplayTurns[CurrentTurn].Actions)
+            {
+                if (action.GetActionId() == ReplayActionId.ReportDeadBody)
+                {
+                    action.OnAction();
+                    break;
+                }
+            }
+        }
         UpdateButton();
     }
     public static void ReplayExit()
