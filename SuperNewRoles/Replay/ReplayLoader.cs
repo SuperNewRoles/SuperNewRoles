@@ -129,16 +129,18 @@ public static class ReplayLoader
         SpriteRenderer backrender = back.AddComponent<SpriteRenderer>();
         backrender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIBack.png", 110f);
         PauseButtonRenderer = CreateItem("Pause", 0, (UnityAction)PlayOrPause, scale: new(3.25f, 4.7f, 4.7f));
-        FastPlayButtonRenderer = CreateItem("FastPlay", 1, (UnityAction)FastPlay, "FastPlayer", size: new(6, 6));
-        PlayRewindButtonRenderer = CreateItem("Play", 2, (UnityAction)PlayRewind, "PlayRewind", new(-3.25f, 4.7f, 4.7f));
-        SpriteRenderer MTNM = CreateItem("Play", 3, (UnityAction)MoveToNextMeeting, "MoveToNextMeeting");
+        //ぬるぽ対策で残しとく
+        //ｶﾞｯ!
+        FastPlayButtonRenderer = CreateItem("FastPlay_seeyou", 9, (UnityAction)FastPlay, "FastPlayer_seeyou", size: new(6, 6));
+        PlayRewindButtonRenderer = CreateItem("Play", 1, (UnityAction)PlayRewind, "PlayRewind", new(-3.25f, 4.7f, 4.7f));
+        SpriteRenderer MTNM = CreateItem("Play", 2, (UnityAction)MoveToNextMeeting, "MoveToNextMeeting");
         MTNM.transform.localScale = new(1.95f, 4.7f, 4.7f);
         MTNM.transform.localPosition = new(1.5f, 0, 0);
         SpriteRenderer SubMTNMRender = GameObject.Instantiate(MTNM, MTNM.transform.parent);
         SubMTNMRender.transform.localScale = new(0.6f, 1.2f, 1);
         SubMTNMRender.transform.localPosition = new(-1.5f, 0, 0);
         SubMTNMRender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIButton.png", 110f);
-        CreateItem("Exit", 4, (UnityAction)ReplayExit, scale: new(3.25f, 4.7f, 4.7f));
+        CreateItem("Exit", 3, (UnityAction)ReplayExit, scale: new(3.25f, 4.7f, 4.7f));
 
         GUIObject.gameObject.SetActive(true);
         UpdateButton();
@@ -335,7 +337,7 @@ public static class ReplayLoader
         item.name = Id == "" ? name : Id;
         item.transform.parent = GUIObject.transform;
         item.layer = 5;
-        item.transform.localPosition = new(-3.4f + 1.75f * index, 0, -20);
+        item.transform.localPosition = new(-3.2f + 2.15f * index, 0, -20);
         item.transform.localScale = new(0.275f, 0.175f, 0.175f);
         GameObject renderobj = new("Renderer");
         renderobj.layer = 5;
