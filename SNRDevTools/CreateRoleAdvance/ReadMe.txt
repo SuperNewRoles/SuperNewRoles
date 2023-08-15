@@ -14,7 +14,6 @@
     ・Roles/RoleHelper.cs           →//ロールリモベ　　　　　　ClearRoleの後ろ		
     ・Roles/RoleHelper.cs           →//第三か　　　　　　　　　isNeutralの後ろ
     ・Roles/RoleHelper.cs           →// ベントが使える        IsUseVentの後ろ (``_ => player.IsImpostor(),`` の上)
-        カスタムオプションの自動記述には対応していない為, 手動で追記してください。
     ・Roles/RoleHelper.cs           →//インポの視界　　　　　　IsImpostorLightの後ろ
 
     ・Roles/RoleClass.cs            →//新ロールクラス　　　　　ClearAndReloadsの後ろ
