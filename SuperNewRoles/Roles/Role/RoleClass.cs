@@ -2973,7 +2973,7 @@ public static class RoleClass
             PlaySound = new();
         }
     }
-    //新ロールクラス
+
     public static class Quarreled
     {
         public static List<List<PlayerControl>> QuarreledPlayer;

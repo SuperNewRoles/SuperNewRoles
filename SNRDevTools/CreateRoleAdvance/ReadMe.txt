@@ -5,26 +5,22 @@
 ・CRAはコメントを基準にしてソースを書き込んでいます。なのでここが欠如しているとうまく動作しない可能性があります
 
 ・コメントの場所
-    ・Roles/ロール名.cs              →//ここにソースを書き込んでください
-    ・CustomRPC/CustomRPC.cs        →//新ロールクラス
-    ・CustomRPC/CustomRPC.cs        →//セットクラス
+    ・CustomRPC/CustomRPC.cs        →//RoleId
 
-    ・Roles/RoleHelper.cs           →//ロールチェック		GetRoleの後ろ
-    ・Roles/RoleHelper.cs           →//ロールアド			SetRoleの後ろ
-    ・Roles/RoleHelper.cs           →//ロールリモベ　　　　　　ClearRoleの後ろ		
-    ・Roles/RoleHelper.cs           →//第三か　　　　　　　　　isNeutralの後ろ
-    ・Roles/RoleHelper.cs           →// ベントが使える        IsUseVentの後ろ (``_ => player.IsImpostor(),`` の上)
-    ・Roles/RoleHelper.cs           →//インポの視界　　　　　　IsImpostorLightの後ろ
+    ・Roles/Role/RoleHelper.cs      →// ロールチェック          GetRoleの後ろ
+    ・Roles/Role/RoleHelper.cs      →// ロールアド              SetRoleの後ろ
+    ・Roles/Role/RoleHelper.cs      →// ロールリモベ            ClearRoleの後ろ		
+    ・Roles/Role/RoleHelper.cs      →// 第三か                  IsNeutralの後ろ
+    ・Roles/Role/RoleHelper.cs      →// ベントが使える          IsUseVentの後ろ (``_ => player.IsImpostor(),`` の上)
+    ・Roles/Role/RoleHelper.cs      →// インポの視界            IsImpostorLightの後ろ
 
-    ・Roles/RoleClass.cs            →//新ロールクラス　　　　　ClearAndReloadsの後ろ
-    ・Roles/RoleClass.cs            →// ロールクリア          ``Quarreled.ClearAndReload();``の上
+    ・Roles/Role/RoleClass.cs       →// ロールクリア            ``Quarreled.ClearAndReload();``の上
 
-    ・Intro/IntroData.cs            →//イントロオブジェ　　　　一番下
-    ・Intro/IntroData.cs            →//イントロ検知　　　　　　GetIntroDataの後ろ
+    ・Modules/IntroData.cs            →// イントロオブジェ         一番下
 
-    ・CustomOption/CustomOptionHolder.cs→// SetupImpostorCustomOptions      /* |: ========================= Neutral Settings ========================== :| */ の上(間に空行を入れる)
-    ・CustomOption/CustomOptionHolder.cs→// SetupNeutralCustomOptions       /* |: ========================= Crewmate Settings ========================== :| */ の上(間に空行を入れる)
-    ・CustomOption/CustomOptionHolder.cs→// SetupCrewmateCustomOptions      /* |: ========================= Modifiers Settings ========================== :| */ の上(間に空行を入れる)
+    ・Modules/CustomOptionHolder.cs→// SetupImpostorCustomOptions      /* |: ========================= Neutral Settings ========================== :| */ の上(間に空行を入れる)
+    ・Modules/CustomOptionHolder.cs→// SetupNeutralCustomOptions       /* |: ========================= Crewmate Settings ========================== :| */ の上(間に空行を入れる)
+    ・Modules/CustomOptionHolder.cs→// SetupCrewmateCustomOptions      /* |: ========================= Modifiers Settings ========================== :| */ の上(間に空行を入れる)
 
     ・Buttons/Button.cs             →//カスタムなボタン達       CustomButtonの下
     ・Buttons/Button.cs             →//クールダウンリセット     setCustomButtonCooldownsの下
@@ -32,4 +28,4 @@
     ・Roles/Sheriff.cs              →//シェリフキルゥ           IsSheriffKillの下(return false;の前)
     ・Roles/Sheriff.cs              →//リモシェリフキルゥ       IsRemoteSheriffKillの下(return false;の前)
 
-    ・Resources\Translate.csv       →\n#NewRoleTranslation      \n#ConfigRoles の上
+    ・Resources/Translate.csv       →\n#NewRoleTranslation      \n#ConfigRoles の上

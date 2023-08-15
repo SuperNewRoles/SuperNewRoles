@@ -292,7 +292,7 @@ class AllCheck:
                                  """        public static CustomButton ROLENAMEKillButton""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Buttons/Buttons.cs", "//クールダウンリセット",
                                  """        ROLENAME.resetCooldown();\n        //クールダウンリセット""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            # Roles/Role/ROLENAME.cs
+            # Roles/Role/Team/ROLENAME.cs
             MainClass.WriteCodes("Roles/Role/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "//ここにコードを書きこんでください",
                                  """        public static void resetCooldown() {
             HudManagerStartPatch.ROLENAMEKillButton.MaxTimer = ROLENAME.RoleData.KillCooldown;
@@ -306,9 +306,9 @@ class AllCheck:
         if (MainClass.GetBool("A_CanVent")):
             # Roles/Role/RoleHelper.cs
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// ベントが使える",
-            """RoleId.ROLENAME => ROLENAME.CustomOptionData.IsUseVent.GetBool(),\n            // ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """RoleId.ROLENAME => ROLENAME.CustomOptionData.IsUseVent.GetBool(),\n            // ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
-            # CustomOption/CustomOptionHolder.cs
+            # Roles/Role/Team/ROLENAME.cs
             if (MainClass.GetBool("TeamCrew")):
                 team = "Crewmate"
             elif (MainClass.GetInput("TeamNeut")):
@@ -316,6 +316,21 @@ class AllCheck:
 
             MainClass.CustomOption += """\n        public static CustomOption IsUseVent;"""
             MainClass.CustomOptionCreate += f"""\n            IsUseVent = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.{team}, "MadmateUseVentSetting", false, Option); optionId++;"""
+
+        # インポの視界設定
+        if (MainClass.GetBool("A_ImpoVisible")):
+            # Roles/Role/RoleHelper.cs
+            MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// インポの視界",
+                                 """RoleId.ROLENAME => ROLENAME.CustomOptionData.IsImpostorLight.GetBool(),\n                // インポの視界""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+
+            # Roles/Role/Team/ROLENAME.cs
+            if (MainClass.GetBool("TeamCrew")):
+                team = "Crewmate"
+            elif (MainClass.GetInput("TeamNeut")):
+                team = "Neutral"
+
+            MainClass.CustomOption += """\n        public static CustomOption IsImpostorLight;"""
+            MainClass.CustomOptionCreate += f"""\n            IsImpostorLight = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.{team}, "MadmateImpostorLightSetting", false, Option); optionId++;"""
 
         # Roles/Role/RoleHelper.cs
         if (MainClass.GetBool("TeamGhost")):
@@ -325,19 +340,7 @@ class AllCheck:
                         return SuperNewRoles.RoleId.ROLENAME;
                     }\n                // ここが幽霊役職""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
-        # インポの視界設定
-        if (MainClass.GetBool("A_ImpoVisible")):
-            # Roles/Role/RoleClass.cs
-            MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//その他Option",
-                                 """public static bool IsImpostorLight;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//くりあぁあんどりろぉどぉ",
-                                 "IsImpostorLight = CustomOptionHolder.MayorFriendsIsImpostorLight.GetBool();\n                //くりあぁあんどりろぉどぉ")
-            # Roles/Role/RoleHelper.cs
-            MainClass.WriteCodes("Roles.RoleHelper.cs", "                //インポの視界",
-                                 """case RoleId.ROLENAME:
-                    return RoleClass.ROLENAME.IsImpostorLight;\n                //インポの視界""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-
-        # Roles/Role/ROLENAME.cs
+        # Roles/Role/Team/ROLENAME.cs
         if (MainClass.GetBool("Impo")):
             namedata = "Impostor"
             idnam = "2" + MainClass.PlusIDNum() + "00"
