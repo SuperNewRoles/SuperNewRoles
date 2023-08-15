@@ -156,6 +156,9 @@ class ReturnClass:
             if OKPop == "OK":
                 return "OK"
 
+    # ROLENAME.csに記載するオプションを, 一時的置きする変数
+    CustomOption: str = ""
+    CustomOptionCreate: str = ""
 
 # 戻り値なし
 class AllCheck:
@@ -204,57 +207,6 @@ class AllCheck:
 
     # すべて書く
     def AllWrite(self):
-        # Roles/Role/ROLENAME.cs
-        if (MainClass.GetBool("Impo")):
-            namedata = "Impostor"
-            idnam = "2" + MainClass.PlusIDNum() + "00"
-            playerstype = "CustomOptionHolder.ImpostorPlayers"
-        elif (MainClass.GetBool("Neut")):
-            namedata = "Neutral"
-            idnam = "3" + MainClass.PlusIDNum() + "00"
-            playerstype = "CustomOptionHolder.CrewPlayers"
-        elif (MainClass.GetBool("Crew")):
-            namedata = "Crewmate"
-            idnam = "4" + MainClass.PlusIDNum() + "00"
-            playerstype = "CustomOptionHolder.CrewPlayers"
-        with open(BasePath+"Roles/"+namedata+"/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
-            x.write(
-                ("""using System.Collections.Generic;
-using UnityEngine;
-
-namespace SuperNewRoles.Roles."""+namedata+""";
-
-public static class ROLENAME
-{
-    public static class CustomOptionData
-    {
-        private static int optionId = """+idnam+""";
-        public static CustomRoleOption Option;
-        public static CustomOption PlayerCount;
-        // Where to write CustomOption
-
-        public static void SetupCustomOptions()
-        {
-            Option = CustomOption.SetupCustomRoleOption(optionId, SHRON, RoleId.ROLENAME); optionId++;
-            PlayerCount = CustomOption.Create(optionId, SHRON, CustomOptionType."""+namedata+""", "SettingPlayerCountName", PLAYERSTYPE[0], PLAYERSTYPE[1], PLAYERSTYPE[2], PLAYERSTYPE[3], Option); optionId++;
-            // Where to write CustomOption Create
-        }
-    }
-
-    internal static class RoleData
-    {
-        public static List<PlayerControl> Player;
-        public static Color32 color = COLORS;
-
-        public static void ClearAndReload()
-        {
-            Player = new();
-        }
-    }
-
-    // ここにコードを書きこんでください
-}""").replace("ROLENAME", MainClass.GetInput("RoleName")).replace("SHRON", MainClass.GetCBool("IsSHRON")).replace("PLAYERSTYPE", playerstype).replace("COLORS", MainClass.GetRoleColor()))
-
         # CustomRPC/CustomRPC.cs
         MainClass.WriteCodes("Modules/CustomRPC.cs", "//RoleId",
                              MainClass.GetInput("RoleName")+",\n    //RoleId")
@@ -363,10 +315,10 @@ public static class ROLENAME
                 team = "Neutral"
                 rolepath = "Roles/Neutral/" + MainClass.GetInput("RoleName") + ".cs"
 
-            MainClass.WriteCodes(rolepath, "// Where to write CustomOption",
-                                 """public static CustomOption IsUseVent;\n            // Where to write CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            MainClass.WriteCodes(rolepath, "// Where to write CustomOption Create",
-                                 """IsUseVent = CustomOption.Create(optionId, SHRON, CustomOptionType."""+team+""", "MadmateUseVentSetting", false, ROLENAMEOption); optionId++;\n            // Where to write CustomOption Create""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("SHRON", MainClass.GetCBool("IsSHRON")))
+            MainClass.WriteCodes(rolepath, "// Write CustomOption",
+                                 """public static CustomOption IsUseVent;\n            // Write CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes(rolepath, "// Write CustomOption Create",
+                                 """IsUseVent = CustomOption.Create(optionId, SHRON, CustomOptionType."""+team+""", "MadmateUseVentSetting", false, ROLENAMEOption); optionId++;\n            // Write CustomOption Create""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("SHRON", MainClass.GetCBool("IsSHRON")))
             '''
 
         # Roles/Role/RoleHelper.cs
@@ -388,6 +340,63 @@ public static class ROLENAME
             MainClass.WriteCodes("Roles.RoleHelper.cs", "                //インポの視界",
                                  """case RoleId.ROLENAME:
                     return RoleClass.ROLENAME.IsImpostorLight;\n                //インポの視界""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+
+        # Roles/Role/ROLENAME.cs
+        if (MainClass.GetBool("Impo")):
+            namedata = "Impostor"
+            idnam = "2" + MainClass.PlusIDNum() + "00"
+            playerstype = "CustomOptionHolder.ImpostorPlayers"
+        elif (MainClass.GetBool("Neut")):
+            namedata = "Neutral"
+            idnam = "3" + MainClass.PlusIDNum() + "00"
+            playerstype = "CustomOptionHolder.CrewPlayers"
+        elif (MainClass.GetBool("Crew")):
+            namedata = "Crewmate"
+            idnam = "4" + MainClass.PlusIDNum() + "00"
+            playerstype = "CustomOptionHolder.CrewPlayers"
+        with open(BasePath+"Roles/"+namedata+"/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
+            x.write(
+                ("""using System.Collections.Generic;
+using UnityEngine;
+
+namespace SuperNewRoles.Roles."""+namedata+""";
+
+public static class ROLENAME
+{
+    public static class CustomOptionData
+    {
+        private static int optionId = """+idnam+""";
+        public static CustomRoleOption Option;
+        public static CustomOption PlayerCount;
+        // Write CustomOption
+
+        public static void SetupCustomOptions()
+        {
+            Option = CustomOption.SetupCustomRoleOption(optionId, SHRON, RoleId.ROLENAME); optionId++;
+            PlayerCount = CustomOption.Create(optionId, SHRON, CustomOptionType."""+namedata+""", "SettingPlayerCountName", PLAYERSTYPE[0], PLAYERSTYPE[1], PLAYERSTYPE[2], PLAYERSTYPE[3], Option); optionId++;
+            // Write CustomOption Create
+        }
+    }
+
+    internal static class RoleData
+    {
+        public static List<PlayerControl> Player;
+        public static Color32 color = COLORS;
+
+        public static void ClearAndReload()
+        {
+            Player = new();
+        }
+    }
+
+    // ここにコードを書きこんでください
+}""")
+                .replace("ROLENAME", MainClass.GetInput("RoleName"))
+                .replace("SHRON", MainClass.GetCBool("IsSHRON"))
+                .replace("PLAYERSTYPE", playerstype)
+                .replace("COLORS", MainClass.GetRoleColor())
+                .replace("\n        // Write CustomOption", MainClass.CustomOption)
+                .replace("\n            // Write CustomOption Create", MainClass.CustomOptionCreate))
 
         # 翻訳
         MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation",
