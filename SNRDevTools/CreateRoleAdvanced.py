@@ -389,6 +389,10 @@ public static class ROLENAME
                                  """case RoleId.ROLENAME:
                     return RoleClass.ROLENAME.IsImpostorLight;\n                //インポの視界""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
+        # 翻訳
+        MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation",
+                             """ROLENAMEName,ROLENAME,\nROLENAMETitle1,,\nROLENAMEDescription,,\n\n#NewRoleTranslation""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+
         # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
         #MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ベント設定可視化", "")
         MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//その他Option", "")
