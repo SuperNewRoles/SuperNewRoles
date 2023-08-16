@@ -322,11 +322,11 @@ class AllCheck:
             # キルボタン
             if (MainClass.GetBool("A_CanKill")):
                 # 翻訳
-                MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation", f"""{MainClass.GetInput("RoleName")}ButtonName,,\n\n#NewRoleTranslation""")
+                MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation", f"""{MainClass.GetInput("RoleName")}KillCooldownSetting,,\n\n#NewRoleTranslation""")
 
                 # コード
                 MainClass.CustomOption += """\n        public static CustomOption KillButtonCooldown;"""
-                MainClass.CustomOptionCreate += f"""\n            KillButtonCooldown = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.TEAMTYPE, "ROLENAMEButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;"""
+                MainClass.CustomOptionCreate += f"""\n            KillButtonCooldown = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.TEAMTYPE, "ROLENAMEKillCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;"""
                 MainClass.RoleData += """\n        public static float KillButtonCooldown;"""
                 MainClass.ClearAndReload += """\n            KillButtonCooldown  = CustomOptionData.KillButtonCooldown.GetFloat();"""
 
@@ -366,6 +366,7 @@ class AllCheck:
             if (MainClass.GetBool("A_CustomButton")):
                 # 翻訳
                 MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation", f"""{MainClass.GetInput("RoleName")}ButtonName,,\n\n#NewRoleTranslation""")
+                MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation", f"""{MainClass.GetInput("RoleName")}ButtonCooldownSetting,,\n\n#NewRoleTranslation""")
 
                 # コード
                 MainClass.CustomOption += """\n        public static CustomOption ROLENAMEButtonCooldown;"""
