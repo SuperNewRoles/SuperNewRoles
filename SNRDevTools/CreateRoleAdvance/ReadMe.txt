@@ -22,8 +22,7 @@
     ・Modules/CustomOptionHolder.cs→// SetupNeutralCustomOptions       /* |: ========================= Crewmate Settings ========================== :| */ の上(間に空行を入れる)
     ・Modules/CustomOptionHolder.cs→// SetupCrewmateCustomOptions      /* |: ========================= Modifiers Settings ========================== :| */ の上(間に空行を入れる)
 
-    ・Buttons/Button.cs             →//カスタムなボタン達       CustomButtonの下
-    ・Buttons/Button.cs             →//クールダウンリセット     setCustomButtonCooldownsの下
+    ・Buttons/Button.cs             →// SetupCustomButtons       ``SetCustomButtonCooldowns();`` の上(間に空行を入れる)
 
     ・Roles/Sheriff.cs              →//シェリフキルゥ           IsSheriffKillの下(return false;の前)
     ・Roles/Sheriff.cs              →//リモシェリフキルゥ       IsRemoteSheriffKillの下(return false;の前)
