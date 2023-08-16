@@ -24,6 +24,7 @@ public static class RoleClass
     public static bool IsMeeting;
     public static bool IsFirstMeetingEnd;
     public static bool IsCoolTimeSetted;
+    public static bool IsfirstResetCool;
     public static System.Random rnd = new((int)DateTime.Now.Ticks);
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
@@ -41,6 +42,7 @@ public static class RoleClass
         BlockPlayers = new();
         IsMeeting = false;
         IsFirstMeetingEnd = false;
+        IsfirstResetCool = true;
         RandomSpawn.IsFirstSpawn = true;
         DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
