@@ -148,6 +148,7 @@ class Seer
                 if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                 {
                     bool ModeFlag = false;
+                    Color flashColor = new(42f / 255f, 187f / 255f, 245f / 255f); // 基本の発光カラー
                     switch (role)
                     {
                         case RoleId.Seer:
@@ -161,6 +162,20 @@ class Seer
                         case RoleId.EvilSeer:
                             if (RoleClass.EvilSeer.deadBodyPositions != null) RoleClass.EvilSeer.deadBodyPositions.Add(target.transform.position);
                             ModeFlag = RoleClass.EvilSeer.mode <= 1;
+                            if (RoleClass.EvilSeer.IsFlashBodyColor)
+                            {
+                                if (RoleClass.EvilSeer.FlashColorMode == 0) // 彩光が最高
+                                {
+                                    flashColor = Palette.PlayerColors[target.Data.DefaultOutfit.ColorId];
+                                }
+                                else if (RoleClass.EvilSeer.FlashColorMode == 1) // 明暗
+                                {
+                                    flashColor =
+                                        CustomCosmetics.CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId)
+                                            ? new(137f / 255f, 195f / 255f, 235f / 255f)    // 明
+                                            : new(86f / 255f, 84f / 255f, 162f / 255f);     // 暗
+                                }
+                            }
                             break;
                         case RoleId.SeerFriends:
                             if (RoleClass.SeerFriends.deadBodyPositions != null) RoleClass.SeerFriends.deadBodyPositions.Add(target.transform.position);
@@ -173,9 +188,7 @@ class Seer
                             break;
                     }
                     if (PlayerControl.LocalPlayer.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
-                    {
-                        ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
-                    }
+                        ShowFlash(flashColor);
                 }
             }
             public static void ShowFlash_SHR(PlayerControl target)
