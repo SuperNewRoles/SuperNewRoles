@@ -61,7 +61,7 @@ class ReturnClass:
 
     def GetRoleColor(self):
         if (MainClass.GetInput("ColorHash") != "ImpostorRed"):
-            Template = "new Color32(RGBCOLOR, byte.MaxValue)".replace(
+            Template = "new(RGBCOLOR, byte.MaxValue)".replace(
                 "RGBCOLOR", str(MainClass.HashToRGB()))
             print("ハッシュを取得しました:", Template)
             return Template
@@ -70,7 +70,7 @@ class ReturnClass:
             return "RoleClass.ImpostorRed"
         elif (MainClass.GetBool("CrewColor")):
             print("クルー色を取得しました")
-            return "new Color32(0, 255, 0, byte.MaxValue)"
+            return "Palette.CrewmateBlue"
     # ハッシュをRGBに変換
 
     def HashToRGB(self):
