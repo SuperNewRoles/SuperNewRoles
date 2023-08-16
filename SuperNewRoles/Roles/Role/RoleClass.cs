@@ -19,6 +19,7 @@ public static class RoleClass
 {
     public static bool IsMeeting;
     public static bool IsCoolTimeSetted;
+    public static bool IsfirstResetCool;
     public static System.Random rnd = new((int)DateTime.Now.Ticks);
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
@@ -35,6 +36,7 @@ public static class RoleClass
         ModHelpers.VentIdControlDic = new();
         BlockPlayers = new();
         IsMeeting = false;
+        IsfirstResetCool = true;
         RandomSpawn.IsFirstSpawn = true;
         DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;

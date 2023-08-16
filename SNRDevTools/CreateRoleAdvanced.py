@@ -357,9 +357,10 @@ class AllCheck:
                 ResetButtonCool += """\n
         private static void ResetKillButtonCool()
         {
-            var cooldown = RoleClass.IsFirstMeetingEnd ? RoleData.KillButtonCooldown : 10f;
+            var cooldown = RoleClass.IsfirstResetCool ? 10f : RoleData.KillButtonCooldown;
             KillButton.MaxTimer = cooldown;
             KillButton.Timer = cooldown;
+            RoleClass.IsfirstResetCool = false;
         }"""
 
             # カスタムボタン
