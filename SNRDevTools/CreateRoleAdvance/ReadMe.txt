@@ -9,8 +9,8 @@
 
     ・Roles/Role/RoleHelper.cs      →// ロールチェック          GetRoleの後ろ
     ・Roles/Role/RoleHelper.cs      →// ロールアド              SetRoleの後ろ
-    ・Roles/Role/RoleHelper.cs      →// ロールリモベ            ClearRoleの後ろ		
-    ・Roles/Role/RoleHelper.cs      →// 第三か                  IsNeutralの後ろ
+    ・Roles/Role/RoleHelper.cs      →``    // ロールリモベ``    ClearRoleの後ろ		
+    ・Roles/Role/RoleHelper.cs      →``;\n    // 第三か``       IsNeutralの後ろ
     ・Roles/Role/RoleHelper.cs      →// ベントが使える          IsUseVentの後ろ (``_ => player.IsImpostor(),`` の上)
     ・Roles/Role/RoleHelper.cs      →// インポの視界            IsImpostorLightの後ろ
 
@@ -27,4 +27,4 @@
     ・Roles/Sheriff.cs              →//シェリフキルゥ           IsSheriffKillの下(return false;の前)
     ・Roles/Sheriff.cs              →//リモシェリフキルゥ       IsRemoteSheriffKillの下(return false;の前)
 
-    ・Resources/Translate.csv       →\n#NewRoleTranslation      \n#ConfigRoles の上
+    ・Resources/Translate.csv       →``\n#NewRoleTranslation``      \n#ConfigRoles の上
