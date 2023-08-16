@@ -401,7 +401,7 @@ class AllCheck:
             namedata = teamtype = "Crewmate"
             idnam = "4" + MainClass.PlusIDNum() + "00"
             playerstype = "CustomOptionHolder.CrewPlayers"
-        with open(BasePath+"Roles/"+namedata+"/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
+        with open(BasePath+"Roles/"+namedata+"/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x", encoding='UTF-8') as x:
             x.write(
                 ("""using System.Collections.Generic;
 using UnityEngine;
