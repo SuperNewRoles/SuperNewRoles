@@ -231,16 +231,16 @@ class AllCheck:
                 ROLENAME.RoleData.Player.Add(player);
                 break;
             // ロールアド""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-        MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// ロールリモベ",
+        MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "    // ロールリモベ",
                              """case RoleId.ROLENAME:
                 ROLENAME.RoleData.Player.RemoveAll(ClearRemove);
                 break;
-            // ロールリモベ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                // ロールリモベ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Roles/Role/RoleHelper.cs", ";\n        // 第三か",
+            MainClass.WriteCodes("Roles/Role/RoleHelper.cs", ";\n    // 第三か",
                                  """ or
         RoleId.ROLENAME;
-        // 第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+    // 第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("A_ClearTask")):
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// タスククリアか 個別表記",
                                  """case RoleId.ROLENAME:

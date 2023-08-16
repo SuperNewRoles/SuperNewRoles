@@ -125,7 +125,7 @@ public static class RoleHelpers
         RoleId.TheThirdLittlePig or
         RoleId.OrientalShaman or
         RoleId.BlackHatHacker;
-        // 第三か
+    // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
         (player.GetRole() == RoleId.Pavlovsowner &&
@@ -1429,7 +1429,7 @@ public static class RoleHelpers
             case RoleId.BlackHatHacker:
                 BlackHatHacker.BlackHatHackerPlayer.RemoveAll(ClearRemove);
                 break;
-            // ロールリモベ
+                // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1630,7 +1630,8 @@ public static class RoleHelpers
         RoleId MyRole;
         if (IsChache)
         {
-            try {
+            try
+            {
                 if (p != null)
                     MyRole = ChacheManager.MyRoleChache[p.PlayerId];
                 else
@@ -1647,7 +1648,8 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        try {
+        try
+        {
             if (p != null)
                 MyRole = ChacheManager.MyRoleChache[p.PlayerId];
             else
