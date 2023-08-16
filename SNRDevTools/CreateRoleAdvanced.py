@@ -310,46 +310,74 @@ class AllCheck:
             MainClass.CustomOptionCreate += f"""\n            IsImpostorLight = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.TEAMTYPE, "MadmateImpostorLightSetting", false, Option); optionId++;"""
 
         # キルボタン
-        '''if (MainClass.GetBool("A_CanKill")):
-            # Buttons/CustomButton.cs
-            MainClass.WriteCodes("Buttons/Buttons.cs", "// SetupCustomButtons",
-                                 """        public static CustomButton ROLENAMEKillButton""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            MainClass.WriteCodes("Buttons/Buttons.cs", "//クールダウンリセット",
-                                 """        ROLENAME.resetCooldown();\n        //クールダウンリセット""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            # Roles/Role/Team/ROLENAME.cs
-            MainClass.WriteCodes("Roles/Role/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "//ここにコードを書きこんでください",
-                                 """        public static void resetCooldown() {
-            HudManagerStartPatch.ROLENAMEKillButton.MaxTimer = ROLENAME.RoleData.KillCooldown;
-            HudManagerStartPatch.ROLENAMEKillButton.Timer = ROLENAME.RoleData.KillCooldown;
-        }
-        public static void EndMeeting() {
-            resetCooldown();
-        }\n        //ここにコードを書き込んでください""".replace("ROLENAME", MainClass.GetInput("RoleName")))'''
 
-        # カスタムボタン
-        if (MainClass.GetBool("A_CustomButton")):
-            # 翻訳
-            MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation", f"""{MainClass.GetInput("RoleName")}ButtonName,,\n\n#NewRoleTranslation""")
+        # カスタムボタン と キルボタン
+        if (MainClass.GetBool("A_CanKill") or MainClass.GetBool("A_CustomButton")):
+            # 変数
+            CustomButton: str = ""
+            SetupCustomButtons: str = ""
+            ResetButtonCool: str = ""
+            ButtonSprite: str = ""
 
-            # Buttons/Buttons.cs
-            MainClass.WriteCodes("Buttons/Buttons.cs", "// SetupCustomButtons",
-                                 """ROLENAME.Button.SetupCustomButtons(__instance);\n\n        // SetupCustomButtons""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            # キルボタン
+            if (MainClass.GetBool("A_CanKill")):
+                # 翻訳
+                MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation", f"""{MainClass.GetInput("RoleName")}ButtonName,,\n\n#NewRoleTranslation""")
 
-            # Roles/Role/Team/ROLENAME.cs
-            MainClass.Using += "\nusing SuperNewRoles.Buttons;"
-            MainClass.CustomOption += """\n        public static CustomOption ROLENAMEButtonCooldown;"""
-            MainClass.CustomOptionCreate += f"""\n            ROLENAMEButtonCooldown = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.TEAMTYPE, "ROLENAMEButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;"""
-            MainClass.RoleData += """\n        public static float ROLENAMEButtonCooldown;"""
-            MainClass.ClearAndReload += """\n            ROLENAMEButtonCooldown  = CustomOptionData.ROLENAMEButtonCooldown.GetFloat();"""
-            MainClass.CustomButtons += """
-    internal static class Button
-    {
-        private static CustomButton ROLENAMEButton;
-        private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ROLENAMEButton.png", 115f);
+                # コード
+                MainClass.CustomOption += """\n        public static CustomOption KillButtonCooldown;"""
+                MainClass.CustomOptionCreate += f"""\n            KillButtonCooldown = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.TEAMTYPE, "ROLENAMEButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;"""
+                MainClass.RoleData += """\n        public static float KillButtonCooldown;"""
+                MainClass.ClearAndReload += """\n            KillButtonCooldown  = CustomOptionData.KillButtonCooldown.GetFloat();"""
 
-        internal static void SetupCustomButtons(HudManager hm)
+                CustomButton += """\n        private static CustomButton KillButton;"""
+
+                SetupCustomButtons += """\n            KillButton = new(
+                () =>
+                {
+                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget());
+                    ResetKillButtonCool();
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.ROLENAME; },
+                () => { return SetTarget() && PlayerControl.LocalPlayer.CanMove; },
+                () => { ResetKillButtonCool(); },
+                hm.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                hm,
+                hm.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };"""
+
+                ResetButtonCool += """\n
+        private static void ResetKillButtonCool()
         {
-            ROLENAMEButton = new(
+            var cooldown = RoleClass.IsFirstMeetingEnd ? RoleData.KillButtonCooldown : 10f;
+            KillButton.MaxTimer = cooldown;
+            KillButton.Timer = cooldown;
+        }"""
+
+            # カスタムボタン
+            if (MainClass.GetBool("A_CustomButton")):
+                # 翻訳
+                MainClass.WriteCodes("Resources\Translate.csv", "\n#NewRoleTranslation", f"""{MainClass.GetInput("RoleName")}ButtonName,,\n\n#NewRoleTranslation""")
+
+                # コード
+                MainClass.CustomOption += """\n        public static CustomOption ROLENAMEButtonCooldown;"""
+                MainClass.CustomOptionCreate += f"""\n            ROLENAMEButtonCooldown = CustomOption.Create(optionId, {MainClass.GetCBool("IsSHRON")}, CustomOptionType.TEAMTYPE, "ROLENAMEButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;"""
+                MainClass.RoleData += """\n        public static float ROLENAMEButtonCooldown;"""
+                MainClass.ClearAndReload += """\n            ROLENAMEButtonCooldown  = CustomOptionData.ROLENAMEButtonCooldown.GetFloat();"""
+
+                CustomButton += """\n        private static CustomButton ROLENAMEButton;"""
+
+                ButtonSprite += """\n        private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ROLENAMEButton.png", 115f);"""
+
+                SetupCustomButtons += """\n            ROLENAMEButton = new(
                 () =>
                 {
                     // ここに能力のコードを記載する
@@ -370,15 +398,23 @@ class AllCheck:
             {
                 buttonText = ModTranslation.GetString("ROLENAMEButtonName"),
                 showButtonText = true
-            };
-        }
+            };"""
 
+                ResetButtonCool += """\n
         private static void ResetROLENAMEButtonCool()
         {
             ROLENAMEButton.MaxTimer = RoleData.ROLENAMEButtonCooldown;
             ROLENAMEButton.Timer = RoleData.ROLENAMEButtonCooldown;
-        }
-    }"""
+        }"""
+
+            # 以下共通部
+            # Buttons/Buttons.cs
+            MainClass.WriteCodes("Buttons/Buttons.cs", "// SetupCustomButtons",
+                                 """ROLENAME.Button.SetupCustomButtons(__instance);\n\n        // SetupCustomButtons""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+
+            # Roles/Role/Team/ROLENAME.cs
+            MainClass.Using += "\nusing SuperNewRoles.Buttons;"
+            MainClass.CustomButtons += """\n    internal static class Button\n    {""" + CustomButton + ButtonSprite + """\n\n        internal static void SetupCustomButtons(HudManager hm)\n        {""" + SetupCustomButtons + """\n        }""" + ResetButtonCool + """\n    }"""
 
         # Roles/Role/RoleHelper.cs
         if (MainClass.GetBool("TeamGhost")):
