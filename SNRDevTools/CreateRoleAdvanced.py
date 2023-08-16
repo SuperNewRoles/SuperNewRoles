@@ -335,11 +335,11 @@ class AllCheck:
                 SetupCustomButtons += """\n            KillButton = new(
                 () =>
                 {
-                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget());
+                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, HudManagerStartPatch.SetTarget());
                     ResetKillButtonCool();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.ROLENAME; },
-                () => { return SetTarget() && PlayerControl.LocalPlayer.CanMove; },
+                () => { return HudManagerStartPatch.SetTarget() && PlayerControl.LocalPlayer.CanMove; },
                 () => { ResetKillButtonCool(); },
                 hm.KillButton.graphic.sprite,
                 new Vector3(0, 1, 0),
