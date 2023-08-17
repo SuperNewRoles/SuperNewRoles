@@ -113,6 +113,7 @@ public class FixedUpdate
                 CustomRoles.FixedUpdate(__instance);
                 Balancer.Update();
                 Pteranodon.FixedUpdateAll();
+                BlackHatHacker.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
