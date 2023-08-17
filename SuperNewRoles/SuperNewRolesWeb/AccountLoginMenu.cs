@@ -138,7 +138,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 UserIdText.text = "@" + WebAccountManager.MyUserId;
                 LoginButtonText.GetComponent<TextTranslatorTMP>().enabled = false;
                 LoginButtonText.text = ModTranslation.GetString("SNRWebLogoutText");
-                LoginButton.transform.localPosition = new(0, 1.75f, 0);
+                LoginButton.transform.localPosition = new(0, 1.6f, 0);
             }
             else
             {
@@ -147,7 +147,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 TextTranslatorTMP textTranslatorTMP = LoginButtonText.GetComponent<TextTranslatorTMP>();
                 textTranslatorTMP.enabled = true;
                 textTranslatorTMP.ResetText();
-                LoginButton.transform.localPosition = new(0, 1.6f, 0);
+                LoginButton.transform.localPosition = new(0, 1.75f, 0);
             }
             LoginPopup.transform.localPosition = new(0, 0, -10);
             /*
