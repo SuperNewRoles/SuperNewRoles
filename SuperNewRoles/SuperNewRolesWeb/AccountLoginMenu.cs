@@ -73,17 +73,17 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 LoginButton = GameObject.Instantiate(BaseButton);
                 LoginButtonText = LoginButton.GetComponentInChildren<TextMeshPro>();
                 SuperNewRolesWebText = GameObject.Instantiate(LoginButtonText);
-                SuperNewRolesWebText.transform.localPosition = new(0, 2.45f, 0);
+                SuperNewRolesWebText.transform.localPosition = new(0, 2.2f, 0);
                 SuperNewRolesWebText.transform.localScale = Vector3.one * 3;
                 SuperNewRolesWebText.GetComponent<TextTranslatorTMP>().enabled = false;
                 SuperNewRolesWebText.enableWordWrapping = false;
                 UserIdText = GameObject.Instantiate(LoginButtonText);
-                UserIdText.transform.localPosition = new(0, 2.165f, 0);
+                UserIdText.transform.localPosition = new(0, 1.9f, 0);
                 UserIdText.transform.localScale = Vector3.one * 0.5f;
                 UserIdText.GetComponent<TextTranslatorTMP>().enabled = false;
                 UserIdText.enableWordWrapping = false;
                 LoginButton.transform.localScale = Vector3.one * 0.75f;
-                LoginButton.transform.localPosition = new(0, 1.9f, 0);
+                LoginButton.transform.localPosition = new(0, 1.6f, 0);
                 LoginButton.transform.FindChild("Background").localScale = new(0.8f, 0.75f, 1);
                 LoginButton.OnClick = new();
                 LoginButton.OnClick.AddListener((Action)(() =>
@@ -130,7 +130,9 @@ namespace SuperNewRoles.SuperNewRolesWeb
             IsUserIdInputNow = true;
             LoginPopup.gameObject.SetActive(false);
             LoginPopupTitle.text = ModTranslation.GetString("SNRWebLoginPopupTitle");
-            
+            LoginPopupCurrentTitle.transform.localPosition = new(-1.1f, 0.625f, 0);
+            LoginPopupCurrentTitle.transform.localScale = Vector3.one;
+
             if (WebAccountManager.IsLogined)
             {
                 SuperNewRolesWebText.text = string.Format(ModTranslation.GetString("SNRWebMMOnlineWelcomeText"), WebAccountManager.MyPlayerName);
@@ -147,6 +149,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 textTranslatorTMP.ResetText();
                 
             }
+            LoginPopup.transform.localPosition = new(0, 0, -10);
             /*
             var textBox = NameText.GetComponent<TextBoxTMP>();
             textBox.outputText.alignment = TextAlignmentOptions.CenterGeoAligned;
@@ -190,6 +193,9 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 LoginPopup.nameText.gameObject.SetActive(false);
                 LoginPopupBackButton.gameObject.SetActive(false);
                 LoginPopupSubmitButton.gameObject.SetActive(false);
+                LoginPopupCurrentTitle.text = ModTranslation.GetString("SNRWebLoginNow");
+                LoginPopupCurrentTitle.transform.localPosition = new(0.5f,0,0);
+                LoginPopupCurrentTitle.transform.localScale = Vector3.one * 3;
                 WebApi.Login(CurrentUserId, LoginPopup.nameText.nameSource.text, (code, handler) => {
                     if (code != 200)
                     {
@@ -219,7 +225,9 @@ namespace SuperNewRoles.SuperNewRolesWeb
             LoginPopupBackButton.gameObject.SetActive(true);
             LoginPopupSubmitButton.gameObject.SetActive(true);
             OnBackClick();
-            LoginPopupCurrentTitle.text = "<size=200%>ログインに失敗しました。\n" + LoginPopupCurrentTitle.text + "\n\n</size>";
+            LoginPopupCurrentTitle.text = "<size=200%>"+ModTranslation.GetString("SNRWebLoginNotSuc")+"\n" + LoginPopupCurrentTitle.text + "\n\n</size>";
+            LoginPopupCurrentTitle.transform.localPosition = new(-1.1f, 0.625f, 0);
+            LoginPopupCurrentTitle.transform.localScale = Vector3.one;
         }
         public static void Initialize()
         {
@@ -239,9 +247,9 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 "FindGameButton",
                 "JoinGameButton"
             };
-            var yStart = Vector3.up;
-            var yOffset = Vector3.down * 1.5f;
-            var gameObjects = toMove.Select(x => GameObject.Find("NormalMenu/" + x)).ToList();
+            var yStart = Vector3.up * 0.83f;
+            var yOffset = Vector3.down * 1.575f;
+            var gameObjects = toMove.Select(x => GameObject.Find("NormalMenu/Buttons/" + x)).ToList();
             if (gameObjects.Any(x => x == null)) return false;
             for (var i = 0; i < gameObjects.Count; i++)
             {
