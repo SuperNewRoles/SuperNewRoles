@@ -162,19 +162,29 @@ class Seer
                         case RoleId.EvilSeer:
                             if (RoleClass.EvilSeer.deadBodyPositions != null) RoleClass.EvilSeer.deadBodyPositions.Add(target.transform.position);
                             ModeFlag = RoleClass.EvilSeer.mode <= 1;
-                            if (RoleClass.EvilSeer.IsFlashBodyColor)
+                            if (RoleClass.EvilSeer.IsFlashBodyColor) // SHRModeの場合このif文は読まれない
                             {
+                                string showtext = "";
                                 if (RoleClass.EvilSeer.FlashColorMode == 0) // 彩光が最高
                                 {
                                     flashColor = Palette.PlayerColors[target.Data.DefaultOutfit.ColorId];
+                                    var crewColorText = $"[ {OutfitManager.GetColorTranslation(Palette.ColorNames[target.Data.DefaultOutfit.ColorId])} : {ModHelpers.Cs(flashColor, "■")} ]";
+                                    showtext = string.Format(ModTranslation.GetString("EvilSeerClearColorDeadText"), crewColorText);
                                 }
                                 else if (RoleClass.EvilSeer.FlashColorMode == 1) // 明暗
                                 {
-                                    flashColor =
-                                        CustomCosmetics.CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId)
-                                            ? new(137f / 255f, 195f / 255f, 235f / 255f)    // 明
-                                            : new(86f / 255f, 84f / 255f, 162f / 255f);     // 暗
+                                    var isLight = CustomCosmetics.CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId);
+
+                                    flashColor = isLight
+                                        ? new(137f / 255f, 195f / 255f, 235f / 255f)    // 明
+                                        : new(86f / 255f, 84f / 255f, 162f / 255f);     // 暗
+
+                                    showtext = isLight
+                                        ? ModTranslation.GetString("EvilSeerLightPlayerDeadText")
+                                        : ModTranslation.GetString("EvilSeerDarkPlayerDeadText");
                                 }
+                                if (CustomOptionHolder.EvilSeerIsReportingBodyColorName.GetBool() && ModeFlag)
+                                    new CustomMessage(showtext, 5, true, RoleClass.Seer.color, new(42f / 255f, 187f / 255f, 245f / 255f));
                             }
                             break;
                         case RoleId.SeerFriends:
@@ -187,8 +197,7 @@ class Seer
                             ModeFlag = RoleClass.JackalSeer.mode <= 1;
                             break;
                     }
-                    if (PlayerControl.LocalPlayer.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
-                        ShowFlash(flashColor);
+                    if (ModeFlag) ShowFlash(flashColor);
                 }
             }
             public static void ShowFlash_SHR(PlayerControl target)
