@@ -882,8 +882,8 @@ EvilSeerFlashColorMode,,死者ボディカラーの表示方法
 EvilSeerColorModeclear,,色の詳細がわかる。
 EvilSeerColorModeLightAndDark,,明暗のみがわかる。
 EvilSeerClearColorDeadText,The crew of {0} color has died.,{0}のクルーの気配が弱まりました。
-EvilSeerLightPlayerDeadText,A brightly colored crew died.,明るい色のクルーの気配が弱まりました。
-EvilSeerDarkPlayerDeadText,A dark colored crew member died.,暗い色のクルーの気配が弱まりました。
+EvilSeerLightPlayerDeadText,A brightly colored crew died.,<color=#89c3eb>明るい色</color>のクルーの気配が弱まりました。
+EvilSeerDarkPlayerDeadText,A dark colored crew member died.,<color=#74325c>暗い色</color>のクルーの気配が弱まりました。
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长,超能警長
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法,遠距離進行執法擊殺
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート,击杀时传送到被击杀者所在位置,擊殺時傳送到被擊殺者所在位置

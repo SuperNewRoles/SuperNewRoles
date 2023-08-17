@@ -177,7 +177,7 @@ class Seer
 
                                     flashColor = isLight
                                         ? new(137f / 255f, 195f / 255f, 235f / 255f)    // 明
-                                        : new(86f / 255f, 84f / 255f, 162f / 255f);     // 暗
+                                        : new(116f / 255f, 50f / 255f, 92f / 255f);     // 暗
 
                                     showtext = isLight
                                         ? ModTranslation.GetString("EvilSeerLightPlayerDeadText")
