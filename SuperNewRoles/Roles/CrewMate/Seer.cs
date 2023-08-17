@@ -58,13 +58,8 @@ class Seer
             }
         })));
     }
-    private static Sprite SoulSprite;
-    public static Sprite GetSoulSprite()
-    {
-        if (SoulSprite) return SoulSprite;
-        SoulSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
-        return SoulSprite;
-    }
+
+    private static Sprite GetSoulSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
 
     public static class WrapUpPatch
     {
@@ -76,6 +71,7 @@ class Seer
                 List<Vector3> DeadBodyPositions = new();
                 bool limitSoulDuration = false;
                 float soulDuration = 0f;
+                int soulColorId = 73; // クラッシュブルー
                 switch (role)
                 {
                     case RoleId.Seer:
@@ -122,6 +118,16 @@ class Seer
                     soul.layer = 5;
                     var rend = soul.AddComponent<SpriteRenderer>();
                     rend.sprite = GetSoulSprite();
+                    rend.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+                    rend.maskInteraction = SpriteMaskInteraction.None;
+                    PlayerMaterial.SetColors(soulColorId, rend);
+                    PlayerMaterial.Properties Properties = new()
+                    {
+                        MaskLayer = 0,
+                        MaskType = PlayerMaterial.MaskType.None,
+                        ColorId = soulColorId,
+                    };
+                    rend.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
 
                     if (limitSoulDuration)
                     {
