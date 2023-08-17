@@ -9,23 +9,20 @@ class ChatPaste
     {
         static void Postfix()
         {
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen)
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
             {
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.V }))
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.SetText(FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text + GUIUtility.systemCopyBuffer);
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.SetText(FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text + GUIUtility.systemCopyBuffer);
                 }
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.X }))
                 {
-                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text;
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.Clear();
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
+                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.Clear();
                 }
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.C }))
                 {
-                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text;
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
+                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
                 }
             }
         }

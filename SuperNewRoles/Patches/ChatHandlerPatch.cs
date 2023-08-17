@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -216,6 +217,15 @@ class AddChatPatch
             SendCommand(target, builder.ToString(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
             return false;
         }
+        else if (
+            Commands[0].Equals("/tag", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/matchtag", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (sourcePlayer.AmOwner) MatchTagCommand(null);
+            else MatchTagCommand(sourcePlayer);
+            return false;
+        }
         else
         {
             return true;
@@ -226,9 +236,20 @@ class AddChatPatch
         string text = "";
         foreach (CustomOption option in options)
         {
+            if (!option.parent.Enabled && option.parent != null) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+
+            string optionName = option.GetName();
+
             text += indent + option.GetName() + ":" + option.GetString() + "\n";
+            var (isProcessingRequired, pattern) = GameOptionsDataPatch.ProcessingOptionCheck(option);
+
+            if (isProcessingRequired)
+                text += $"{GameOptionsDataPatch.ProcessingOptionString(option, indent, pattern)}\n";
+
             if (option.children.Count > 0)
             {
+                if (!option.Enabled) continue;
                 text += GetChildText(option.children, indent + "  ");
             }
         }
@@ -257,13 +278,14 @@ class AddChatPatch
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
         IntroData intro = option.Intro;
-        text += GetTeamText(intro.TeamType) + ModTranslation.GetString("TeamRoleType") + "\n";
+        text += GetTeamText(intro.TeamType) + "\n";
         text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
         text += intro.Description + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
         text += GetOptionText(option, intro);
         return text;
     }
+
     // /grのコマンド結果を返す。辞書を加工する。
     static string GetInRole()
     {
@@ -276,6 +298,28 @@ class AddChatPatch
         if (CustomOverlays.ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
             text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Neutral].Replace(pos, "");
         return text;
+    }
+    static string MatchTag()
+    {
+        StringBuilder EnableTags = new();
+        EnableTags.AppendLine(ModTranslation.GetString("EnableTagsMessage") + "\n");
+
+        foreach (CustomOption option in CustomOption.options)
+        {
+            if (option.GetSelection() == 0) continue;
+            if (option.type != CustomOptionType.MatchTag) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+            if (option.IsHidden()) continue;
+
+            string name = option.name;
+            string pattern = @"<color=#\w+>|</color>";
+
+            Regex colorRegex = new(pattern);
+            name = colorRegex.Replace(name, "");
+
+            EnableTags.AppendLine(name);
+        }
+        return $"{EnableTags}\n\n";
     }
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
     {
@@ -297,7 +341,7 @@ class AddChatPatch
         {
             string text = GetText(option);
             string rolename = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
-            SuperNewRolesPlugin.Logger.LogInfo(text);
+            Logger.Info(text);
             Send(target, rolename, text, time);
             time += SendTime;
         }
@@ -315,7 +359,11 @@ class AddChatPatch
             CustomOverlays.GetActivateRoles();
         SendCommand(target, GetInRole()); // 辞書の内容を加工した文字列を取得し、ターゲットに送信する
     }
-
+    static void MatchTagCommand(PlayerControl target = null)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        SendCommand(target, MatchTag());
+    }
     static void Send(PlayerControl target, string rolename, string text, float time = 0)
     {
         text = "\n" + text + "\n                                                                                                                                                                                                                                              ";
