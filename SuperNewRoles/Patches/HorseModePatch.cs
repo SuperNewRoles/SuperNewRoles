@@ -36,7 +36,7 @@ public class MainMenuPatch
         var passiveHorseButton = horseButton.GetComponent<PassiveButton>();
         var spriteHorseButton = horseButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
         hidebtn(horseButton);
-        horseButton.transform.localPosition = new(1.5f, -1.1f, 0);
+        horseButton.transform.localPosition = new(1f, -1.1f, 0);
 
         horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
 
@@ -66,7 +66,7 @@ public class MainMenuPatch
         var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
         var spriteCreditsButton = CreditsButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
         hidebtn(passiveCreditsButton);
-        CreditsButton.transform.localPosition = new(2.5f, -1.1f, 0);
+        CreditsButton.transform.localPosition = new(2.8f, -1.1f, 0);
 
         spriteCreditsButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreditsButton.png", 75f);
 
@@ -87,9 +87,9 @@ public class MainMenuPatch
         var spriteModDownloaderButton = ModDownloaderButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
         hidebtn(passiveModDownloaderButton);
 
-        ModDownloaderButton.transform.localPosition = new();
+        ModDownloaderButton.transform.localPosition = new(1.9f, -1.1f, 0);
 
-        spriteModDownloaderButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
+        spriteModDownloaderButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ModDownloaderButton.png", 75f);
 
         passiveModDownloaderButton.OnClick = new ButtonClickedEvent();
 
