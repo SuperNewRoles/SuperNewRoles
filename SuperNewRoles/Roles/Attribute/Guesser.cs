@@ -189,7 +189,9 @@ class Guesser
         if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() is not 0) { CreateRole(IntroData.AssassinIntro); CreateRole(IntroData.MarlinIntro); }
         if (CustomOptionHolder.ChiefOption.GetSelection() is not 0) { CreateRole(IntroData.SheriffIntro);}
         if (CustomOptionHolder.MadMakerOption.GetSelection() is not 0 || CustomOptionHolder.FastMakerOption.GetSelection() is not 0 ||
-            (CustomOptionHolder.LevelingerOption.GetSelection() is not 0 && Levelinger.LevelingerCanUse("SidekickName")))
+            (CustomOptionHolder.LevelingerOption.GetSelection() is not 0 && Levelinger.LevelingerCanUse("SidekickName")) ||
+            (CustomOptionHolder.EvilSeerOption.GetSelection() is not 0 && CustomOptionHolder.EvilSeerMadmateSetting.GetBool()) ||
+            (CustomOptionHolder.EvilHackerOption.GetSelection() is not 0 && CustomOptionHolder.EvilHackerMadmateSetting.GetBool()))
             { CreateRole(IntroData.MadmateIntro);}
         if (CustomOptionHolder.SideKillerOption.GetSelection() is not 0) { CreateRole(IntroData.MadKillerIntro);}
         if (CustomOptionHolder.VampireOption.GetSelection() is not 0) { CreateRole(IntroData.DependentsIntro);}
