@@ -862,22 +862,24 @@ FoxName,Fox,妖狐,妖狐,狐妖
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！,我是一隻小狐狸！
 FoxDescription,If you survive to the end，you win alone.\nYou will not be killed.\nThat's because I'm not me there.,最後まで生存していると単独勝利します。\nキルされることはありません。\nそりゃあそこにいる私は私ではないからね。,妖狐存活到游戏结束则妖狐单独获胜。\n妖狐不会被击杀。\n你什么时候产生了你看到的是本人的错觉？,如果狐妖存活到最後則獨自勝利。\n不存在什麼我被殺，因為在那的我並不是我。
 SeerName,Seer,シーア,灵媒,先知
-SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。,灵媒属于船员阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n灵媒需要利用手中的情报来确认内鬼。,先知屬於船員陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n先知需要利用手中的情報來確認內鬼。
+SeerDescription,This role is responsible for information related to the dead，which can determine the time and place of death.\nUse the information obtained to identify the impostor.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。,灵媒属于船员阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n灵媒需要利用手中的情报来确认内鬼。,先知屬於船員陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n先知需要利用手中的情報來確認內鬼。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
 SeerMode,Mode,モード,灵媒模式,先知模式
-SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂,顯示死亡閃光和靈魂
+SeerModeBoth,Show Death Flash + Souls,死の点滅＆霊魂が見える,显示死亡闪光和灵魂,顯示死亡閃光和靈魂
 SeerModeFlash,Show Death Flash,死の点滅が見える,显示死亡闪光,顯示死亡閃光
-SeerModeSouls,Show Souls,幽霊が見える,显示灵魂,顯示靈魂
+SeerModeSouls,Show Souls,霊魂が見える,显示灵魂,顯示靈魂
 SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える,灵魂随时间的推移消失,靈魂隨時間的推移消失
-SeerSoulDuration,Soul Duration,幽霊が見える時間,灵魂从出现到消失经过的时间,靈魂從出現到消失經過的時間
+SeerSoulDuration,Soul Duration,霊魂が見える時間,灵魂从出现到消失经过的时间,靈魂從出現到消失經過的時間
 MadSeerName,MadSeer,マッドシーア,叛变的灵媒,叛變的先知
-MadSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。,规则上叛变的灵媒被判定为船员阵营，但是其为内鬼的同伙。可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n叛变的灵媒需要利用手中的情报扰乱场上的局势。,叛變的先知屬於船員陣營，但是其為內鬼的同伴。可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n叛變的先知需要利用手中的情報擾亂場上的局勢。
+MadSeerDescription,This role is responsible for information related to the dead，which can determine the time and place of death.\nUse the information obtained to create a diversion in the village.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。,规则上叛变的灵媒被判定为船员阵营，但是其为内鬼的同伙。可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n叛变的灵媒需要利用手中的情报扰乱场上的局势。,叛變的先知屬於船員陣營，但是其為內鬼的同伴。可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n叛變的先知需要利用手中的情報擾亂場上的局勢。
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动,感知內鬼的行動
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒,邪惡的先知
-EvilSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。,邪恶的灵媒属于内鬼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n邪恶的灵媒需要利用手中的情报帮助同伙。,邪惡的先知屬於內鬼陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n邪惡的先知需要利用手中的情報幫助同伴。
+EvilSeerDescription,This role is in charge of information related to the dead，which allows you to know the time and place of death. \nThe position is responsible for the support of the dead by knowing the actions of his or her partner.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。,邪恶的灵媒属于内鬼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n邪恶的灵媒需要利用手中的情报帮助同伙。,邪惡的先知屬於內鬼陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n邪惡的先知需要利用手中的情報幫助同伴。
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
+EvilSeerIsUniqueSetting,Do you want to set up the unique capabilities of an Evil Seer as a Seer?,シーアとしてのイビルシーアの固有能力を設定するか
 EvilSeerIsFlashColor,Make the color of the death flash dependent on the crew's body color?,死の点滅の色をクルーのボディカラー依存にするか
 EvilSeerIsReportingBodyColorName,Do you want to display body color information in text as well?,ボディカラーの情報を文字でも表示するか
+EvilSeerIsCrewSoulColor,Does the color of the soul reflect the color of the dead?,霊魂の色に死者の色を反映させるか
 EvilSeerFlashColorMode,How to display dead body color,死者ボディカラーの表示方法
 EvilSeerColorModeclear,You can see the color details.,色の詳細がわかる
 EvilSeerColorModeLightAndDark,Only light and dark are known.,明暗のみがわかる
@@ -901,13 +903,13 @@ TaskManagerName,TaskManager,タスクマネージャー,代理人,代理人
 TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう,帮助他人完成所有任务,幫助他人完成所有任務
 SeerFriendsName,SeerFriends,シーアフレンズ,狈族灵媒,狽族先知
 SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう,感知豺狼的行动,感知豺狼的行動
-SeerFriendsDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。,,狽族先知属于狼族阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狽族先知需要利用手中的情报帮助豺狼。
+SeerFriendsDescription,This role is responsible for information related to the dead，which can determine the time and place of death.\nUse the information obtained to create a diversion in the village.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。,,狽族先知属于狼族阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狽族先知需要利用手中的情报帮助豺狼。
 JackalSeerName,SeerJackal,ジャッカルシーア,狼族灵媒,狼族先知
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!,感知死亡，为豺狼带来胜利,感知死亡，為豺狼帶來勝利
-JackalSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\nインポスターの行動を把握し、利用しましょう。,狼族灵媒属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族灵媒需要利用手中的情报确认内鬼行动并化为己用。,狼族先知属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族先知需要利用手中的情报确认内鬼行动并化为己用。
+JackalSeerDescription,This role is responsible for information related to the dead，capable of determining the time and place of death.\nUnderstand and use the actions of the impostor.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\nインポスターの行動を把握し、利用しましょう。,狼族灵媒属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族灵媒需要利用手中的情报确认内鬼行动并化为己用。,狼族先知属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族先知需要利用手中的情报确认内鬼行动并化为己用。
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア),狼族灵媒学徒,狼族先知學徒
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう,用死亡感知能力来帮助豺狼,用死亡感知能力來幫助豺狼
-SidekickSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて、親ジャッカルを守り、時には切り、貢献しましょう。,狼族灵媒学徒属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族灵媒学徒需要利用手中的情报保护豺狼团队，帮助豺狼获得胜利。,狼族先知学徒属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族先知学徒需要利用手中的情报保护豺狼团队，帮助豺狼获得胜利。
+SidekickSeerDescription,This role is responsible for information related to the dead，capable of ascertaining the time and place of death.\nUse the information obtained to protect，sometimes cut，and contribute to the parent jackal.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて、親ジャッカルを守り、時には切り、貢献しましょう。,狼族灵媒学徒属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族灵媒学徒需要利用手中的情报保护豺狼团队，帮助豺狼获得胜利。,狼族先知学徒属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族先知学徒需要利用手中的情报保护豺狼团队，帮助豺狼获得胜利。
 AssassinAndMarlinName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
 AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数,<color=#ff0000>刺客</color>的人数,<color=#ff0000>刺客</color>的人數
 MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数,<color=#AFDFE4>梅林</color>的人數
@@ -1162,7 +1164,7 @@ IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクー
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
 WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班晉升時繼承重炮之力
-Sidekick (Wave Cannon)Name,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
+SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
 SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者,重炮之力的继承者,繼承重炮意志之人
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
