@@ -32,7 +32,6 @@ public class IntroData
     public static Dictionary<RoleId, IntroData> IntroDataCache = new();
     public static List<IntroData> GhostRoleData = new();
     public static List<Dictionary<RoleId,string>> IntroGroup = new()
-    //とても見やすい（笑）
     {
         //new() {{RoleId.Fox,"GodTitle1"},{RoleId.FireFox,"GodTitle1"}}
     };
@@ -109,7 +108,6 @@ public class IntroData
     }
     public static string GetTitle(string name, Int16 num,RoleId RoleId)
     {
-        //重そうな処理(知らんけど)
         if (RoleId is not RoleId.DefaultRole)
         {
             for (int i = 0;i < IntroGroup.Count;i++)
