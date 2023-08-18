@@ -194,8 +194,17 @@ class AddChatPatch
             Commands[0].Equals("/ri", StringComparison.OrdinalIgnoreCase)
             )
         {
-            if (Commands.Length != 1) RoleInfoSendCommand(sourcePlayer, Commands[1]);
-            else SendCommand(sourcePlayer, ModTranslation.GetString("RoleInfoDescription"));
+            if (Commands.Length == 1)
+                SendCommand(sourcePlayer, ModTranslation.GetString("RoleInfoDescription"));
+            else if (Commands.Length == 2)
+                RoleInfoSendCommand(sourcePlayer, Commands[1]);
+            else
+            {
+                string roleName = "";
+                for (int i = 2; i <= Commands.Length; i++) { roleName += Commands[i - 1] + " "; }
+
+                RoleInfoSendCommand(sourcePlayer, roleName.TrimEnd());
+            }
             return false;
         }
         else if (
