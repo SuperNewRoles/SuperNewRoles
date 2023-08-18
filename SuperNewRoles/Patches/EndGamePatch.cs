@@ -372,8 +372,6 @@ public class EndGameManagerSetUpPatch
         if (haison)textRenderer.text = text;
         if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else string.Format(text + " " + ModTranslation.GetString("WinName"));
-        SuperNewRolesPlugin.Logger.LogInfo(text);
-        SuperNewRolesPlugin.Logger.LogInfo(textRenderer.text);
         try
         {
             var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
