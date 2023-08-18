@@ -194,8 +194,8 @@ class AddChatPatch
             Commands[0].Equals("/ri", StringComparison.OrdinalIgnoreCase)
             )
         {
-            if (Commands.Length == 1) return true;
-            RoleInfoSendCommand(sourcePlayer, Commands[1]);
+            if (Commands.Length != 1) RoleInfoSendCommand(sourcePlayer, Commands[1]);
+            else SendCommand(sourcePlayer, ModTranslation.GetString("RoleInfoDescription"));
             return false;
         }
         else if (
@@ -340,7 +340,7 @@ class AddChatPatch
     /// <summary>
     /// コマンドで指定した役職の説明を取得する
     /// </summary>
-    /// <param name="sourcePlayer">送信先()Hostだった場合全体送信</param>
+    /// <param name="sourcePlayer">送信先(Hostだった場合全体送信)</param>
     /// <param name="command">指定された役職名</param>
     internal static void RoleInfoSendCommand(PlayerControl sourcePlayer, string command)
     {
