@@ -117,7 +117,11 @@ public class IntroData
                 foreach (KeyValuePair<RoleId, string> item in list)
                 {
                     if (GetOption(item.Key) == null) continue;
-                    if (GetOption(item.Key).GetSelection() is 0)Flag = false;
+                    if (GetOption(item.Key).GetSelection() is 0)
+                    {
+                        Flag = false;
+                        break;
+                    }
                 }
                 if (Flag && list.ContainsKey(RoleId))return ModTranslation.GetString(list[RoleId]);
             }
