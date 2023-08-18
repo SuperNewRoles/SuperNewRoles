@@ -153,7 +153,7 @@ class Seer
                 var role = PlayerControl.LocalPlayer.GetRole();
                 if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                 {
-                    const int defaultSoulColorId = 73; // クラッシュブルー
+                    const int defaultSoulColorId = (int)CustomCosmetics.CustomColors.ColorType.Crasyublue; // クラッシュブルー
                     var bodyColorId = target.Data.DefaultOutfit.ColorId;
                     var soulColorId = PlayerControl.LocalPlayer.IsDead()
                                     ? bodyColorId
