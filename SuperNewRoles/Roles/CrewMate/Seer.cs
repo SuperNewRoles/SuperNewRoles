@@ -153,7 +153,11 @@ class Seer
                 var role = PlayerControl.LocalPlayer.GetRole();
                 if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                 {
-                    const int soulColorId = 73; // クラッシュブルー
+                    const int defaultSoulColorId = 73; // クラッシュブルー
+                    var bodyColorId = target.Data.DefaultOutfit.ColorId;
+                    var soulColorId = PlayerControl.LocalPlayer.IsDead()
+                                    ? bodyColorId
+                                    : defaultSoulColorId;
                     bool flashModeFlag = false;
                     Color flashColor = new(42f / 255f, 187f / 255f, 245f / 255f); // 基本の発光カラー
 
@@ -168,16 +172,13 @@ class Seer
                             flashModeFlag = RoleClass.MadSeer.mode <= 1;
                             break;
                         case RoleId.EvilSeer:
-                            // |:===== 共通処理 =====:|
-                            var bodyColorId = target.Data.DefaultOutfit.ColorId;
-
                             // |:===== 霊魂関連の処理 =====:|
-                            var colorId =
-                                RoleClass.EvilSeer.IsUniqueSetting && CustomOptionHolder.EvilSeerIsCrewSoulColor.GetBool()
+                            soulColorId =
+                                (RoleClass.EvilSeer.IsUniqueSetting && CustomOptionHolder.EvilSeerIsCrewSoulColor.GetBool()) || PlayerControl.LocalPlayer.IsDead()
                                     ? bodyColorId
-                                    : soulColorId;
+                                    : defaultSoulColorId;
                             if (RoleClass.EvilSeer.deadBodyPositions != null)
-                                RoleClass.EvilSeer.deadBodyPositions.Add((target.transform.position, colorId));
+                                RoleClass.EvilSeer.deadBodyPositions.Add((target.transform.position, soulColorId));
 
                             // |:===== 死の点滅関連の処理 =====:|
                             flashModeFlag = RoleClass.EvilSeer.mode <= 1;
