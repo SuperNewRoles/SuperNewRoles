@@ -867,6 +867,7 @@ CanHouwaWin,Fox can win on stalemate,飽和勝利が可能
 SeerName,Seer,シーア,灵媒,先知
 SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。,灵媒属于船员阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n灵媒需要利用手中的情报来确认内鬼。,先知屬於船員陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n先知需要利用手中的情報來確認內鬼。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
+SeerCombIntro1,Why not try to pick up the words of the dead?,なぜ死者の言葉を拾おうとしないのか
 SeerMode,Mode,モード,灵媒模式,先知模式
 SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂,顯示死亡閃光和靈魂
 SeerModeFlash,Show Death Flash,死の点滅が見える,显示死亡闪光,顯示死亡閃光
@@ -879,6 +880,7 @@ MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろ
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒,邪惡的先知
 EvilSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。,邪恶的灵媒属于内鬼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n邪恶的灵媒需要利用手中的情报帮助同伙。,邪惡的先知屬於內鬼陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n邪惡的先知需要利用手中的情報幫助同伴。
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
+EvilSeerCombIntro1,Why do we treat the dead so specially?,なぜ死者を特別に扱うのか
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长,超能警長
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法,遠距離進行執法擊殺
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート,击杀时传送到被击杀者所在位置,擊殺時傳送到被擊殺者所在位置
@@ -1329,8 +1331,10 @@ WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを
 WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
 NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工,正義的機械師
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道,改造飛船上的管道
+NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？
 EvilMechanicName,EvilMechanic,イビルメカニック,邪恶的迁管工,邪惡的機械師
 EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう,尝试将管道改造得对自己有利,嘗試將管道改造得對自己有利
+EvilMechanicCombIntro1,Looks like someone is trying to get in my way,私の邪魔をするやつがいるようだ
 MechanicButtonName,Relocate.,移設,改造,改造
 TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚,三只小猪,三隻小豬
 TheFirstLittlePigName,The First Little Pig,1番目の仔豚,猪老大,猪老大

@@ -33,7 +33,8 @@ public class IntroData
     public static List<IntroData> GhostRoleData = new();
     public static List<Dictionary<RoleId,string>> IntroGroup = new()
     {
-        //new() {{RoleId.Fox,"GodTitle1"},{RoleId.FireFox,"GodTitle1"}}
+        new() {{RoleId.Seer,"SeerCombIntro1"},{RoleId.EvilSeer,"EvilSeerCombIntro1"}},
+        new() {{RoleId.NiceMechanic,"NiceMechanicCombIntro1"},{RoleId.EvilMechanic,"EvilMechanicCombIntro1"}}
     };
     public string NameKey;
     public string Name;
