@@ -1162,7 +1162,7 @@ IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクー
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
 WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班晉升時繼承重炮之力
-SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
+Sidekick (Wave Cannon)Name,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
 SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者,重炮之力的继承者,繼承重炮意志之人
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
