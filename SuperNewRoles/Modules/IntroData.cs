@@ -31,6 +31,11 @@ public class IntroData
     public static List<IntroData> IntroList = new();
     public static Dictionary<RoleId, IntroData> IntroDataCache = new();
     public static List<IntroData> GhostRoleData = new();
+    public static List<Dictionary<RoleId,string>> IntroGroup = new()
+    //とても見やすい（笑）
+    {
+        //new() {{RoleId.Fox,"GodTitle1"},{RoleId.FireFox,"GodTitle1"}}
+    };
     public string NameKey;
     public string Name;
     public Int16 TitleNum;
@@ -42,7 +47,7 @@ public class IntroData
             {
                 return _titleDesc;
             }
-            return GetTitle(NameKey, TitleNum);
+            return GetTitle(NameKey, TitleNum, RoleId);
         }
     }
     public string _titleDesc;
@@ -60,7 +65,7 @@ public class IntroData
         this.Name = ModTranslation.GetString(NameKey + "Name");
         this.RoleId = RoleId;
         this.TitleNum = TitleNum;
-        this._titleDesc = GetTitle(NameKey, TitleNum);
+        this._titleDesc = GetTitle(NameKey, TitleNum, RoleId);
         this.Description = ModTranslation.GetString(NameKey + "Description");
         this.Team = team;
         if (teamType == TeamType.Crewmate && team == TeamRoleType.Crewmate) this.TeamType = TeamType.Crewmate;
@@ -102,8 +107,23 @@ public class IntroData
         var option = CustomRoleOption.RoleOptions.FirstOrDefault((_) => _.RoleId == roleId);
         return option;
     }
-    public static string GetTitle(string name, Int16 num)
+    public static string GetTitle(string name, Int16 num,RoleId RoleId)
     {
+        //重そうな処理(知らんけど)
+        if (RoleId is not RoleId.DefaultRole)
+        {
+            for (int i = 0;i < IntroGroup.Count;i++)
+            {
+                Dictionary<RoleId,string> list = IntroGroup[i];
+                bool Flag = true;
+                foreach (KeyValuePair<RoleId, string> item in list)
+                {
+                    if (GetOption(item.Key) == null) continue;
+                    if (GetOption(item.Key).GetSelection() is 0)Flag = false;
+                }
+                if (Flag && list.ContainsKey(RoleId))return ModTranslation.GetString(list[RoleId]);
+            }
+        }
         System.Random r1 = new();
         return ModTranslation.GetString(name + "Title" + r1.Next(1, num + 1).ToString());
     }

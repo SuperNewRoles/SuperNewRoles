@@ -279,7 +279,7 @@ class AddChatPatch
         string text = "\n";
         IntroData intro = option.Intro;
         text += GetTeamText(intro.TeamType) + "\n";
-        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
+        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId) + "」\n";
         text += intro.Description + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
         text += GetOptionText(option, intro);
