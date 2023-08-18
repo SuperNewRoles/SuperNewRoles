@@ -235,6 +235,36 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ScientistCooldown, PoliceSurgeon.CustomOptionData.VitalsDisplayCooldown.GetFloat());
                 optdata.SetFloat(FloatOptionNames.ScientistBatteryCharge, PoliceSurgeon.CustomOptionData.BatteryDuration.GetFloat());
                 break;
+            case RoleId.MadRaccoon:
+                if (!player.IsMod())
+                {
+                    if (!MadRaccoon.RoleData.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
+                        var switchSystemMadRaccoon = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystemMadRaccoon != null && switchSystemMadRaccoon.IsActive) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
+                    }
+                }
+                else
+                {
+                    if (MadRaccoon.RoleData.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
+                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
+                    }
+                }
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, MadRaccoon.RoleData.ShapeshifterCooldown);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, MadRaccoon.RoleData.ShapeshifterDuration);
+                break;
+            case RoleId.Madmate:
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
+            case RoleId.JackalFriends:
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);

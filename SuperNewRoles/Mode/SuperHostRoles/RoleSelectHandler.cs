@@ -138,6 +138,7 @@ public static class RoleSelectHandler
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(Worshiper.RoleData.Player, RoleTypes.Shapeshifter);
+        SetRoleDesync(MadRaccoon.RoleData.Player, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
 

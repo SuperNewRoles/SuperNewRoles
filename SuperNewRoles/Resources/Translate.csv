@@ -1443,7 +1443,11 @@ PostMortemCertificate_NoDeaths_RandomMessage_12,No one has died...\nThis is the 
 PostMortemCertificate_NoDeaths_RandomMessage_13,No one has died.\nTo maintain this peace，we have no choice but to vote someone off.\nWe have no way to resist during tasks...,誰も欠けずに会議が開始された。\nこの平和を続けるためには追放するしかない。\nタスク中に抗う術は私達には無いのだから...
 PostMortemCertificate_NoDeaths_RandomMessage_14,No one has died.\nThe only means of resistance we have is to eject them...\nEven if we end up ejecting a crewmate，it's far better than being afraid of it and needlessly increasing the number of victims...,誰も欠けずに会議が開始された。\n私達が抵抗する手段は追放しかない...\nたとえ味方を追放してしまえども、それを恐れ、無闇に犠牲者を増やすよりは遥かに...
 PostMortemCertificate_NoDeaths_RandomMessage_15,At this moment when everyone gathered without anyone missing in the emergency meeting，even if we know there are no casualties，we feel relieved...,緊急招集で誰も欠けずに全員が集まったこの瞬間、死者がいないことを知っていても安心する...
-
+MadRaccoonName,Morpfhing raccoon dog,化け狸
+MadRaccoonTitle1,Let's surprise humans by morphing them.,化けてクルーたちを驚かそう
+MadRaccoonTitle2,If my abilities can be of service to my master，then let us utilize them and show their worth!,私の能力がご主人の為となるならば 活用してみせましょう!!
+MadRaccoonDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nI possess the ability to Shapeshift. I can disguise myself as the master to create an alibi，impersonate the master's enemies to frame them，or sow confusion in discussions!\n\nI only have the power of transformation...\nBut if this ability can be of use to the master... if I am needed...\nThen let us utilize this ability and see what we can achieve!!\nPlease note that the translation may slightly vary depending on the context and intended meaning.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nシェイプシフト能力を有します。\nご主人に化けてアリバイを作ったり、ご主人の敵に化けて罪をなすりつけたり、議論を錯乱させてみましょう!\n\n私は変化の能力しか持たない...\nただこれだけの能力が ご主人の為になるというならば...必要とされるのであれば...\nこの能力 活用してみませしょう!!
+MadRaccoonButtonName,Change radically,化ける
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
@@ -1503,7 +1507,7 @@ WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！,您可以在超新職業體驗各種不同的模式和職業！
 WelcomeMessage3,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！,有关模式和职业的详细描述请查看汉化组职业介绍！,有關模式和職業的詳細描述請查看SNR官方wiki的職業介紹！
 WelcomeMessage4,SuperNewRoles Official Wiki,SuperNewRoles公式Wiki:,超新职业职业介绍:,超新職業職業介紹：,
-WelcomeMessage5,https://wikiwiki.jp/amas-snr(Japanese),https://wikiwiki.jp/amas-snr,https://amonguscn.club（中文），https://wikiwiki.jp/amas-snr（日文）,https://wikiwiki.jp/amas-snr,https://amonguscn.club（簡體中文），https://wikiwiki.jp/amas-snr（日文）
+WelcomeMessage5,https://wikiwiki.jp/amas-snr(Japanese),https://wikiwiki.jp/amas-snr,https://amonguscn.club（中文），https://wikiwiki.jp/amas-snr（日文）,https://amonguscn.club（簡體中文），https://wikiwiki.jp/amas-snr（日文）
 WelcomeMessage6,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。,你可以通过输入命令来获取信息。,您可以通過輸入命令來獲取訊息。
 WelcomeMessage7,Send this command if you want to see a list of commands.,コマンド一覧を表示するにはこのコマンドを送信してください。,发送此命令以获取命令列表信息。,發送此命令以獲取命令列表訊息。
 WelcomeMessage8,[/commands] or [/cmd],/commands 又は /cmd,/commands 或者 /cmd,/commands 或 /cmd

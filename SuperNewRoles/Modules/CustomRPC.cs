@@ -198,6 +198,7 @@ public enum RoleId
     Pteranodon,
     BlackHatHacker,
     PoliceSurgeon,
+    MadRaccoon,
     //RoleId
 }
 
