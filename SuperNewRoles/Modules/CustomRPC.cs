@@ -197,6 +197,7 @@ public enum RoleId
     Balancer,
     Pteranodon,
     BlackHatHacker,
+    MadRaccoon,
     //RoleId
 }
 
