@@ -371,7 +371,8 @@ public class EndGameManagerSetUpPatch
         }
         if (haison)textRenderer.text = text;
         if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
-        else string.Format(text + " " + ModTranslation.GetString("WinName"));
+        else if (text == ModTranslation.GetString("GodName")) textRenderer.text = string.Format(text + " " + ModTranslation.GetString("GodWinText"));
+        else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));
         try
         {
             var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
