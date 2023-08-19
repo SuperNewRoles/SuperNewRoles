@@ -1409,9 +1409,6 @@ OKForBeingDeliveredTag,OK for Recording,配信OK,允许直播,允許直播
 NoRecordingTag,No Recording,撮影NG,禁止录制,禁止錄影
 NoBeingDeliveredTag,No Recording,配信NG,禁止直播,禁止直播
 
-ClassicTag,Classic,バニラモード : クラシック
-HidenSeekTag,HidenSeek,バニラモード : かくれんぼ
-
 FreeChatTag,FreeChat Only,フリーチャットのみ,仅自由聊天,只能自由聊天
 QuickChatTag,QuickChat Only,クイックチャットのみ,尽快速聊天,只能快速聊天
 VoiceChatTag,VoiceChat,VC,语音聊天,語音聊天

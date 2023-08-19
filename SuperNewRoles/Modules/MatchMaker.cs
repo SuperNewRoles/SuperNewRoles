@@ -226,10 +226,6 @@ public static class MatchTagOption
     public static CustomOption CanListenOnlyTag; // 聞き専可
     public static CustomOption FullVCOnlyTag; // 聞き専不可
 
-    // バニラモード : 600800 ~
-    public static CustomOption ClassicTag; // バニラモード : クラシック
-    public static CustomOption HidenSeekTag; // バニラモード : かくれんぼ
-
     // レギュレーション : 600500 ~
     public static CustomOption SheriffAndBlackCatRegulationTag; // シェリフ + 黒猫 + イビルハッカー
     public static CustomOption SheriffAndMadRegulationTag; // シェリマ
@@ -297,11 +293,6 @@ public static class MatchTagOption
         BetterCrewLinkTag = CreateMatchMakeTag(600403, true, Cs(meetingSystemColor, "BetterCrewLinkTag"), false, null); // 近アモ
         CanListenOnlyTag = CreateMatchMakeTag(600404, true, Cs(meetingSystemColor, "CanListenOnlyTag"), false, null); // 聞き専可
         FullVCOnlyTag = CreateMatchMakeTag(600405, true, Cs(meetingSystemColor, "FullVCOnlyTag"), false, null); // 聞き専不可
-
-        // バニラモード : 600800 ~
-        Color vanillaModeColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
-        ClassicTag = CreateMatchMakeTag(600800, true, Cs(vanillaModeColor, "ClassicTag"), true, null, isHeader: true); // バニラモード : クラシック
-        HidenSeekTag = CreateMatchMakeTag(600801, true, Cs(vanillaModeColor, "HidenSeekTag"), false, null); // バニラモード : かくれんぼ
 
         // レギュレーション : 600500 ~
         Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
