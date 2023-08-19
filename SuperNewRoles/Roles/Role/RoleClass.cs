@@ -1606,7 +1606,7 @@ public static class RoleClass
     {
         public static List<PlayerControl> SeerPlayer;
         public static Color color = new Color32(97, 178, 108, byte.MaxValue);
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
 
         public static float soulDuration;
         public static bool limitSoulDuration;
@@ -1625,7 +1625,7 @@ public static class RoleClass
     {
         public static List<PlayerControl> MadSeerPlayer;
         public static Color color = ImpostorRed;
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
 
         public static float soulDuration;
         public static bool limitSoulDuration;
@@ -1665,11 +1665,13 @@ public static class RoleClass
     {
         public static List<PlayerControl> EvilSeerPlayer;
         public static Color32 color = ImpostorRed;
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
 
         public static float soulDuration;
         public static bool limitSoulDuration;
         public static int mode;
+        public static bool IsUniqueSetting;
+        public static int FlashColorMode;
         public static bool IsCreateMadmate;
         public static void ClearAndReload()
         {
@@ -1678,6 +1680,8 @@ public static class RoleClass
             limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
             mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.EvilSeerMode.GetSelection();
+            IsUniqueSetting = !Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && CustomOptionHolder.EvilSeerIsUniqueSetting.GetBool();
+            FlashColorMode = CustomOptionHolder.EvilSeerFlashColorMode.GetSelection();
             IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
         }
     }
@@ -1786,7 +1790,7 @@ public static class RoleClass
         public static List<PlayerControl> SeerFriendsPlayer;
         public static Color32 color = JackalBlue;
 
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
 
         public static float soulDuration;
         public static bool limitSoulDuration;
@@ -1829,7 +1833,7 @@ public static class RoleClass
         public static List<int> CreatePlayers;
         public static Color32 color = JackalBlue;
 
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
         public static float soulDuration;
         public static bool limitSoulDuration;
         public static int mode;

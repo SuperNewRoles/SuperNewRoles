@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using AmongUs.Data;
 using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Mode;
 using UnityEngine;
 namespace SuperNewRoles.Patches;
@@ -659,18 +658,13 @@ public class CustomOverlays
         // プレイヤー名とクルーカラーを■で表記
         data += $"<size=150%>{p.PlayerId + 1}. {p.name}{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")}</size>\n";
         // クルーカラーとカラー名を表記
-        data += $"<pos=10%>{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")} : {GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId])}\n";
+        data += $"<pos=10%>{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")} : {OutfitManager.GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId])}\n";
         data += $"<size=90%><pos=10%>{ModTranslation.GetString("SNRIntroduction")} : {(p.IsMod() ? "〇" : "×")}\n"; // Mod導入状態
         data += $"<pos=10%>FriendCode : {friendCode}\n"; // フレンドコード
         data += $"<pos=10%>Platform : {p.GetClient()?.PlatformData?.Platform}</size>\n"; // プラットフォーム
 
         return data;
     }
-
-    // クルーカラーの翻訳を取得する。
-    // 参考=>https://github.com/tugaru1975/TownOfPlus/blob/main/Helpers.cs
-    private static string GetColorTranslation(StringNames name) =>
-        DestroyableSingleton<TranslationController>.Instance.GetString(name, new Il2CppReferenceArray<Il2CppSystem.Object>(0));
 
     // 自分の役職の説明をoverlayに表示する (Hキーの動作)
     private static void MyRole(out string left, out string center, out string right)

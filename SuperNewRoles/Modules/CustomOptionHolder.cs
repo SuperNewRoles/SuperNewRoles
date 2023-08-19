@@ -499,18 +499,12 @@ public class CustomOptionHolder
     public static CustomRoleOption SeerOption;
     public static CustomOption SeerPlayerCount;
     public static CustomOption SeerMode;
-    public static CustomOption SeerModeBoth;
-    public static CustomOption SeerModeFlash;
-    public static CustomOption SeerModeSouls;
     public static CustomOption SeerLimitSoulDuration;
     public static CustomOption SeerSoulDuration;
 
     public static CustomRoleOption MadSeerOption;
     public static CustomOption MadSeerPlayerCount;
     public static CustomOption MadSeerMode;
-    public static CustomOption MadSeerModeBoth;
-    public static CustomOption MadSeerModeFlash;
-    public static CustomOption MadSeerModeSouls;
     public static CustomOption MadSeerLimitSoulDuration;
     public static CustomOption MadSeerSoulDuration;
     public static CustomOption MadSeerIsCheckImpostor;
@@ -524,11 +518,13 @@ public class CustomOptionHolder
     public static CustomRoleOption EvilSeerOption;
     public static CustomOption EvilSeerPlayerCount;
     public static CustomOption EvilSeerMode;
-    public static CustomOption EvilSeerModeBoth;
-    public static CustomOption EvilSeerModeFlash;
-    public static CustomOption EvilSeerModeSouls;
     public static CustomOption EvilSeerLimitSoulDuration;
     public static CustomOption EvilSeerSoulDuration;
+    public static CustomOption EvilSeerIsUniqueSetting;
+    public static CustomOption EvilSeerIsFlashBodyColor;
+    public static CustomOption EvilSeerIsReportingBodyColorName;
+    public static CustomOption EvilSeerFlashColorMode;
+    public static CustomOption EvilSeerIsCrewSoulColor;
     public static CustomOption EvilSeerMadmateSetting;
 
     public static CustomRoleOption TeleportingJackalOption;
@@ -567,9 +563,6 @@ public class CustomOptionHolder
     public static CustomRoleOption SeerFriendsOption;
     public static CustomOption SeerFriendsPlayerCount;
     public static CustomOption SeerFriendsMode;
-    public static CustomOption SeerFriendsModeBoth;
-    public static CustomOption SeerFriendsModeFlash;
-    public static CustomOption SeerFriendsModeSouls;
     public static CustomOption SeerFriendsLimitSoulDuration;
     public static CustomOption SeerFriendsSoulDuration;
     public static CustomOption SeerFriendsIsCheckJackal;
@@ -609,9 +602,6 @@ public class CustomOptionHolder
     public static CustomRoleOption JackalSeerOption;
     public static CustomOption JackalSeerPlayerCount;
     public static CustomOption JackalSeerMode;
-    public static CustomOption JackalSeerModeBoth;
-    public static CustomOption JackalSeerModeFlash;
-    public static CustomOption JackalSeerModeSouls;
     public static CustomOption JackalSeerLimitSoulDuration;
     public static CustomOption JackalSeerSoulDuration;
     public static CustomOption JackalSeerKillCooldown;
@@ -1154,6 +1144,11 @@ public class CustomOptionHolder
         EvilSeerMode = Create(201902, false, CustomOptionType.Impostor, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, EvilSeerOption);
         EvilSeerLimitSoulDuration = Create(201903, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, EvilSeerOption);
         EvilSeerSoulDuration = Create(201904, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
+        EvilSeerIsUniqueSetting = Create(201906, false, CustomOptionType.Impostor, "EvilSeerIsUniqueSetting", true, EvilSeerOption);
+        EvilSeerIsFlashBodyColor = Create(201907, false, CustomOptionType.Impostor, "EvilSeerIsFlashColor", true, EvilSeerIsUniqueSetting);
+        EvilSeerIsReportingBodyColorName = Create(201908, false, CustomOptionType.Impostor, "EvilSeerIsReportingBodyColorName", true, EvilSeerIsFlashBodyColor);
+        EvilSeerFlashColorMode = Create(201909, false, CustomOptionType.Impostor, "EvilSeerFlashColorMode", new string[] { "EvilSeerColorModeclear", "EvilSeerColorModeLightAndDark" }, EvilSeerIsFlashBodyColor);
+        EvilSeerIsCrewSoulColor = Create(201910, false, CustomOptionType.Impostor, "EvilSeerIsCrewSoulColor", true, EvilSeerIsUniqueSetting);
         EvilSeerMadmateSetting = Create(201905, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilSeerOption);
 
         EvilButtonerOption = SetupCustomRoleOption(202000, true, RoleId.EvilButtoner);
