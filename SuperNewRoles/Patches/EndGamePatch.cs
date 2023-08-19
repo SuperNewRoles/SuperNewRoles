@@ -288,10 +288,11 @@ public class EndGameManagerSetUpPatch
         {
             __instance.WinText.text = ModTranslation.GetString("NoWinner");
             __instance.WinText.color = Color.white;
+            RoleColor = Color.white;
         }
 
 
-        textRenderer.color = AdditionalTempData.winCondition is WinCondition.HAISON or WinCondition.NoWinner ? Color.clear : RoleColor;
+        textRenderer.color = AdditionalTempData.winCondition is WinCondition.HAISON ? Color.clear : RoleColor;
         __instance.BackgroundBar.material.SetColor("_Color", RoleColor);
         var haison = false;
         if (text == "HAISON")
@@ -368,7 +369,10 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
-        textRenderer.text = haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName"));
+        if (haison)textRenderer.text = text;
+        if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
+        else if (text == ModTranslation.GetString("GodName")) textRenderer.text = string.Format(text + " " + ModTranslation.GetString("GodWinText"));
+        else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));
         try
         {
             var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
@@ -1276,7 +1280,13 @@ public static class OnGameEndPatch
             }
             AdditionalTempData.winCondition = WinCondition.HAISON;
         }
-        else if (NoWinner)
+        int i = 0;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if(p.IsAlive())break;
+            i++;
+        }
+        if (NoWinner || i == CachedPlayer.AllPlayers.Count)
         {
             TempData.winners = new();
             AdditionalTempData.winCondition = WinCondition.NoWinner;

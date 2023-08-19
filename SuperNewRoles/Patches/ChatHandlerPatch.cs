@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -257,6 +258,15 @@ class AddChatPatch
             SendCommand(target, builder.ToString(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
             return false;
         }
+        else if (
+            Commands[0].Equals("/tag", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/matchtag", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (sourcePlayer.AmOwner) MatchTagCommand(null);
+            else MatchTagCommand(sourcePlayer);
+            return false;
+        }
         else
         {
             return true;
@@ -330,6 +340,28 @@ class AddChatPatch
             text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Neutral].Replace(pos, "");
         return text;
     }
+    static string MatchTag()
+    {
+        StringBuilder EnableTags = new();
+        EnableTags.AppendLine(ModTranslation.GetString("EnableTagsMessage") + "\n");
+
+        foreach (CustomOption option in CustomOption.options)
+        {
+            if (option.GetSelection() == 0) continue;
+            if (option.type != CustomOptionType.MatchTag) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+            if (option.IsHidden()) continue;
+
+            string name = option.name;
+            string pattern = @"<color=#\w+>|</color>";
+
+            Regex colorRegex = new(pattern);
+            name = colorRegex.Replace(name, "");
+
+            EnableTags.AppendLine(name);
+        }
+        return $"{EnableTags}\n\n";
+    }
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
     {
         if (!AmongUsClient.Instance.AmHost) return;
@@ -368,7 +400,11 @@ class AddChatPatch
             CustomOverlays.GetActivateRoles();
         SendCommand(target, GetInRole()); // 辞書の内容を加工した文字列を取得し、ターゲットに送信する
     }
-
+    static void MatchTagCommand(PlayerControl target = null)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        SendCommand(target, MatchTag());
+    }
     static void Send(PlayerControl target, string rolename, string text, float time = 0)
     {
         text = "\n" + text + "\n                                                                                                                                                                                                                                              ";
@@ -441,6 +477,22 @@ class AddChatPatch
         {
             AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command).WrapToIl2Cpp());
         }
+    }
+
+    /// <summary>
+    /// システムメッセージ等を送信する。
+    /// </summary>
+    /// <param name="target">送信先</param>
+    /// <param name="infoName">情報タイトル(名前で表記)</param>
+    /// <param name="infoContents">情報本文(チャットで表記)</param>
+    /// <param name="color">文字色, 16進数のcolorコードで指定([#FFFFFF]等)</param>
+    public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white")
+    {
+        string line = "|--------------------------------------------------------|";
+        string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
+        string contents = $"\n{infoContents}\n　\n";
+
+        SendCommand(target, contents, name);
     }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
     {

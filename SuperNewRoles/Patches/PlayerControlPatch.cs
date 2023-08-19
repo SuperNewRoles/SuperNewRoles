@@ -17,6 +17,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -90,6 +91,7 @@ class RpcShapeshiftPatch
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
         SyncSetting.CustomSyncSettings();
+
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId && Mode.BattleRoyal.Main.StartSeconds <= 0)
         {
@@ -98,8 +100,16 @@ class RpcShapeshiftPatch
             return true;
         }
         if (target.IsBot()) return true;
+
+        bool isActivationShapeshift = __instance.PlayerId != target.PlayerId; // true : シェイプシフトする時 / false : シェイプシフトを解除する時
+
+        if (__instance.IsRole(RoleId.MadRaccoon) && __instance == PlayerControl.LocalPlayer) // 導入者が個人で行う処理 (SHR, SNR共通)
+        {
+            if (isActivationShapeshift) MadRaccoon.Button.SetShapeDurationTimer();
+            else MadRaccoon.Button.ResetShapeDuration(false);
+        }
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
-        if (__instance.PlayerId != target.PlayerId)
+        if (isActivationShapeshift)
         {
             if (__instance.IsRole(RoleId.Doppelganger))
             {
@@ -107,7 +117,7 @@ class RpcShapeshiftPatch
                 SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
             }
         }
-        if (__instance.PlayerId == target.PlayerId)
+        if (!isActivationShapeshift)
         {
             if (__instance.IsRole(RoleId.Doppelganger))
             {
@@ -568,6 +578,7 @@ static class CheckMurderPatch
                     case RoleId.NiceButtoner:
                     case RoleId.Madmate:
                     case RoleId.JackalFriends:
+                    case RoleId.MadRaccoon:
                         return false;
                     case RoleId.Egoist:
                         if (!RoleClass.Egoist.UseKill) return false;
@@ -987,6 +998,7 @@ public static class MurderPlayerPatch
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
+        if (target.IsRole(RoleId.MadRaccoon) && target == PlayerControl.LocalPlayer) MadRaccoon.Button.ResetShapeDuration(false);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -1256,7 +1268,23 @@ public static class MurderPlayerPatch
                     causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 }
             }
-
+            if (RoleClass.Lovers.SameDie && target.IsLovers())
+            {
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                {
+                    PlayerControl SideLoverPlayer = target.GetOneSideLovers();
+                    if (SideLoverPlayer.IsAlive())
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                        writer.Write(SideLoverPlayer.PlayerId);
+                        writer.Write(SideLoverPlayer.PlayerId);
+                        writer.Write(byte.MaxValue);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        SideLoverPlayer.RpcSetFinalStatus(FinalStatus.LoversBomb);
+                    }
+                }
+            }
             if (target.IsQuarreled())
             {
                 if (AmongUsClient.Instance.AmHost)
