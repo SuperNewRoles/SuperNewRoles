@@ -100,6 +100,17 @@ class CheckForEndVotingPatch
                     }
                 }
             }
+            else if (ModeHandler.IsMode(ModeId.BattleRoyal))
+            {
+                int votingTime = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime);
+                float num4 = __instance.discussionTimer - GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.DiscussionTime);
+                if (votingTime > 0 && num4 >= (float)votingTime)
+                {
+                    __instance.discussionTimer = 0;
+                    Mode.BattleRoyal.SelectRoleSystem.OnEndSetRole();
+                }
+                return false;
+            }
             else if (RoleClass.Assassin.TriggerPlayer != null)
             {
                 var (isVoteEnd, voteFor, voteArea) = AssassinVoteState(__instance);

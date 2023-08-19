@@ -98,6 +98,10 @@ public static class RoleSelectHandler
                 BotManager.Spawn(ModTranslation.GetString("AssassinAndMarlinName") + "BOT").Exiled();
             }
         }
+        else if (ModeHandler.IsMode(ModeId.BattleRoyal))
+        {
+            BattleRoyal.Main.SpawnBots();
+        }
     }
     public static void SetCustomRoles()
     {

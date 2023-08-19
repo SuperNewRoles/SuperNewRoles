@@ -4,6 +4,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -894,6 +895,33 @@ public static class RoleHelpers
                 break;
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.Add(player);
+                break;
+            case RoleId.Reviver:
+                new Reviver(player);
+                break;
+            case RoleId.Guardrawer:
+                new Guardrawer(player);
+                break;
+            case RoleId.KingPoster:
+                new KingPoster(player);
+                break;
+            case RoleId.LongKiller:
+                new LongKiller(player);
+                break;
+            case RoleId.Darknight:
+                new Darknight(player);
+                break;
+            case RoleId.Revenger:
+                new Revenger(player);
+                break;
+            case RoleId.CrystalMagician:
+                new CrystalMagician(player);
+                break;
+            case RoleId.GrimReaper:
+                new GrimReaper(player);
+                break;
+            case RoleId.DefaultRole when ModeHandler.IsMode(ModeId.BattleRoyal):
+                new BattleRoyalRole(player);
                 break;
             case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
@@ -1912,6 +1940,14 @@ public static class RoleHelpers
             else if (TheThreeLittlePigs.TheFirstLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheFirstLittlePig;
             else if (TheThreeLittlePigs.TheSecondLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheSecondLittlePig;
             else if (TheThreeLittlePigs.TheThirdLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheThirdLittlePig;
+            else if (Reviver.IsReviver(player)) return RoleId.Reviver;
+            else if (Guardrawer.IsGuardrawer(player)) return RoleId.Guardrawer;
+            else if (KingPoster.IsKingPoster(player)) return RoleId.KingPoster;
+            else if (LongKiller.IsLongKiller(player)) return RoleId.LongKiller;
+            else if (Darknight.IsDarknight(player)) return RoleId.Darknight;
+            else if (Revenger.IsRevenger(player)) return RoleId.Revenger;
+            else if (CrystalMagician.IsCrystalMagician(player)) return RoleId.CrystalMagician;
+            else if (GrimReaper.IsGrimReaper(player)) return RoleId.GrimReaper;
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;

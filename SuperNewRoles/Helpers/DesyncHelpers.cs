@@ -9,6 +9,11 @@ public static class DesyncHelpers
     {
         PlayerControl SeePlayer = see;
         if (see == null) SeePlayer = source;
+        if (SeePlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        {
+            source.MurderPlayer(target);
+            return;
+        }
         MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, SeePlayer.GetClientId());
         MessageExtensions.WriteNetObject(MurderWriter, target);
         AmongUsClient.Instance.FinishRpcImmediately(MurderWriter);
