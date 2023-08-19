@@ -237,7 +237,8 @@ public static class RoleClass
         Balancer.ClearAndReload();
         Pteranodon.ClearAndReload();
         BlackHatHacker.ClearAndReload();
-        MadRaccoon.RoleClass.ClearAndReload();
+        PoliceSurgeon.RoleData.ClearAndReload();
+        MadRaccoon.RoleData.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

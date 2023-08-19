@@ -18,7 +18,7 @@ public static class RoleHelper
             case RoleId.ToiletFan:
             case RoleId.NiceButtoner:
             case RoleId.Worshiper when !SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.IsImpostorLight:
-            case RoleId.MadRaccoon when !SuperNewRoles.Roles.Impostor.MadRole.MadRaccoon.RoleClass.IsImpostorLight:
+            case RoleId.MadRaccoon when !SuperNewRoles.Roles.Impostor.MadRole.MadRaccoon.RoleData.IsImpostorLight:
                 IsCrewVision = true;
                 break;
                 //クルー視界か

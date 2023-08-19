@@ -1079,6 +1079,7 @@ class AllRoleSetClass
             RoleId.Balancer => Balancer.BalancerPlayerCount.GetFloat(),
             RoleId.Pteranodon => Pteranodon.PteranodonPlayerCount.GetFloat(),
             RoleId.BlackHatHacker => BlackHatHacker.BlackHatHackerPlayerCount.GetFloat(),
+            RoleId.PoliceSurgeon => PoliceSurgeon.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.MadRaccoon => MadRaccoon.CustomOptionData.PlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,

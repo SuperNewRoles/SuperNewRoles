@@ -49,7 +49,7 @@ public static class MadRaccoon
         }
     }
 
-    internal static class RoleClass
+    internal static class RoleData
     {
         public static List<PlayerControl> Player;
         public static Color32 color = Roles.RoleClass.ImpostorRed;
@@ -117,7 +117,7 @@ public static class MadRaccoon
         {
             TimerStop();
 
-            coolTimeTimer = new Timer(RoleClass.ShapeshifterDuration * 1000);
+            coolTimeTimer = new Timer(RoleData.ShapeshifterDuration * 1000);
             coolTimeTimer.Elapsed += (source, e) =>
             {
                 ResetShapeDuration();
@@ -125,7 +125,7 @@ public static class MadRaccoon
             coolTimeTimer.AutoReset = false;
             coolTimeTimer.Enabled = true;
 
-            int num = (int)RoleClass.ShapeshifterDuration;
+            int num = (int)RoleData.ShapeshifterDuration;
             shapeDurationText.text = $"<size=255%><color=#19fe19>{num}</color></size>";
             num--;
 
@@ -158,7 +158,7 @@ public static class MadRaccoon
         }
         private static void ResetShapeshiftCool(bool endMeeting)
         {
-            float timerSet = !endMeeting ? RoleClass.ShapeshifterCooldown : 0f; // 会議終了時は能力クールを0sにする
+            float timerSet = !endMeeting ? RoleData.ShapeshifterCooldown : 0f; // 会議終了時は能力クールを0sにする
 
             shapeshiftButton.MaxTimer = timerSet;
             shapeshiftButton.Timer = timerSet;
@@ -173,7 +173,7 @@ public static class MadRaccoon
         {
             if (PlayerControl.LocalPlayer.CurrentOutfitType != PlayerOutfitType.Shapeshifted)
             {
-                Logger.Error("シェイプシフトが既に解除されている状態で[RpcRevertShapeshift]を呼ぼうとした為, 無効化しました。","MadRaccoon Button");
+                Logger.Error("シェイプシフトが既に解除されている状態で[RpcRevertShapeshift]を呼ぼうとした為, 無効化しました。", "MadRaccoon Button");
                 return;
                 // MeetingHud.Startで呼び出した際は[PlayerOutfitType.Default], 任意解除(PlayerControl.Shapeshift)で呼び出した際は[PlayerOutfitType.Shapeshifted]になって状態が変動している。
                 // その為, CurrentOutfitTypeでの制御は予備のループ対処機構として使用している。

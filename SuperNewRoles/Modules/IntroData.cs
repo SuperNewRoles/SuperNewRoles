@@ -287,6 +287,7 @@ public class IntroData
     public static IntroData BalancerIntro = new("Balancer", Balancer.color, 1, RoleId.Balancer, TeamRoleType.Crewmate);
     public static IntroData PteranodonIntro = new("Pteranodon", Pteranodon.color, 1, RoleId.Pteranodon, TeamRoleType.Crewmate);
     public static IntroData BlackHatHackerIntro = new("BlackHatHacker", BlackHatHacker.color, 1, RoleId.BlackHatHacker, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData MadRaccoonIntro = new("MadRaccoon", MadRaccoon.RoleClass.color, 2, RoleId.MadRaccoon, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData PoliceSurgeonIntro = new("PoliceSurgeon", PoliceSurgeon.RoleData.color, 1, RoleId.PoliceSurgeon, TeamRoleType.Crewmate, IntroSound: RoleTypes.Scientist);
+    public static IntroData MadRaccoonIntro = new("MadRaccoon", MadRaccoon.RoleData.color, 2, RoleId.MadRaccoon, teamType: TeamType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     // イントロオブジェ
 }

@@ -197,6 +197,7 @@ public enum RoleId
     Balancer,
     Pteranodon,
     BlackHatHacker,
+    PoliceSurgeon,
     MadRaccoon,
     //RoleId
 }
@@ -302,6 +303,7 @@ public enum CustomRPC
     BalancerBalance = 250,
     PteranodonSetStatus,
     SetInfectionTimer,
+    PoliceSurgeonSendActualDeathTimeManager,
 }
 
 public static class RPCProcedure
@@ -1908,6 +1910,9 @@ public static class RPCProcedure
                         Dictionary<byte, float> timer = new();
                         for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
                         SetInfectionTimer(id, timer);
+                        break;
+                    case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
+                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }
