@@ -226,7 +226,12 @@ public static class MatchTagOption
     public static CustomOption CanListenOnlyTag; // 聞き専可
     public static CustomOption FullVCOnlyTag; // 聞き専不可
 
+    // バニラモード : 600800 ~
+    public static CustomOption ClassicTag; // バニラモード : クラシック
+    public static CustomOption HidenSeekTag; // バニラモード : かくれんぼ
+
     // レギュレーション : 600500 ~
+    public static CustomOption SheriffAndBlackCatRegulationTag; // シェリフ + 黒猫 + イビルハッカー
     public static CustomOption SheriffAndMadRegulationTag; // シェリマ
     public static CustomOption NeutralKillerRegulationTag; // 第三キル人外入り
     public static CustomOption VillageForOutsidersRegulationTag; // 人外村
@@ -239,8 +244,14 @@ public static class MatchTagOption
     public static CustomOption RegulationAdjustedTag; // レギュ調整中
 
     // 使用機能 : 600600 ~
-    public static CustomOption FeatureAdminLimitTag;
-    public static CustomOption FeatureCanNotUseAdminTag;
+    public static CustomOption FeatureAdminLimitTag; // アドミン使用制限
+    public static CustomOption FeatureCanNotUseAdminTag; // アドミン禁止
+    public static CustomOption FeatureCanNotUseRecordsAdminTag; // アドミン禁止
+    public static CustomOption FeatureVitalLimitTag; // バイタル使用制限
+    public static CustomOption FeatureVaitalCanNotUseTag; // バイタル禁止
+    public static CustomOption FeatureCameraLimitTag; // カメラ使用制限
+    public static CustomOption FeatureCameraCanNotUseTag; // カメラ禁止
+
 
     // デバック : 600700 ~
     public static CustomOption DebugNewRolesTag; // 新役職
@@ -287,9 +298,15 @@ public static class MatchTagOption
         CanListenOnlyTag = CreateMatchMakeTag(600404, true, Cs(meetingSystemColor, "CanListenOnlyTag"), false, null); // 聞き専可
         FullVCOnlyTag = CreateMatchMakeTag(600405, true, Cs(meetingSystemColor, "FullVCOnlyTag"), false, null); // 聞き専不可
 
+        // バニラモード : 600800 ~
+        Color vanillaModeColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
+        ClassicTag = CreateMatchMakeTag(600800, true, Cs(vanillaModeColor, "ClassicTag"), true, null, isHeader: true); // バニラモード : クラシック
+        HidenSeekTag = CreateMatchMakeTag(600801, true, Cs(vanillaModeColor, "HidenSeekTag"), false, null); // バニラモード : かくれんぼ
+
         // レギュレーション : 600500 ~
         Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
-        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null, isHeader: true); // シェリマ
+        SheriffAndBlackCatRegulationTag = CreateMatchMakeTag(600500, false, Cs(RegulationColor, "SheriffAndBlackCatRegulationTag"), false, null, isHeader: true);; // シェリフ + 黒猫 + イビルハッカー
+        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null); // シェリマ
         NeutralKillerRegulationTag = CreateMatchMakeTag(600502, true, Cs(RegulationColor, "NeutralKillerRegulationTag"), false, null); // 第三キル人外入り
         ManyRolesRegulationTag = CreateMatchMakeTag(600503, true, Cs(RegulationColor, "ManyRolesRegulationTag"), false, null); // 多役
         WerewolfMoonlightRegulationTag = CreateMatchMakeTag(600504, true, Cs(RegulationColor, "WerewolfMoonlightRegulationTag"), false, null); // 月下
@@ -303,7 +320,12 @@ public static class MatchTagOption
         // 使用機能 : 600600 ~
         Color useFeatureColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
         FeatureAdminLimitTag = CreateMatchMakeTag(600600, false, Cs(useFeatureColor, "FeatureAdminLimitTag"), false, null, isHeader: true); // アドミン使用制限
-        FeatureCanNotUseAdminTag = CreateMatchMakeTag(600601, true, Cs(useFeatureColor, "FeatureCanNotUseAdminTag"), false, null, isHeader: true); // アドミン禁止
+        FeatureCanNotUseAdminTag = CreateMatchMakeTag(600601, true, Cs(useFeatureColor, "FeatureCanNotUseAdminTag"), false, null); // アドミン禁止
+        FeatureCanNotUseRecordsAdminTag = CreateMatchMakeTag(600602, false, Cs(useFeatureColor, "FeatureCanNotUseRecordsAdminTag"), false, null);  // アーカイブアドミン禁止
+        FeatureVaitalCanNotUseTag = CreateMatchMakeTag(600603, true, Cs(useFeatureColor, "FeatureVaitalCanNotUseTag"), false, null);  // バイタル禁止
+        FeatureVitalLimitTag = CreateMatchMakeTag(600604, false, Cs(useFeatureColor, "FeatureVitalLimitTag"), false, null);  // バイタル使用制限
+        FeatureCameraCanNotUseTag = CreateMatchMakeTag(600605, true, Cs(useFeatureColor, "FeatureCameraCanNotUseTag"), false, null);  // カメラ禁止
+        FeatureCameraLimitTag = CreateMatchMakeTag(600606, false, Cs(useFeatureColor, "FeatureCameraLimitTag"), false, null);  // カメラ使用制限
 
         // デバッグ : 600600 ~
         Color debugColor = (Color)Roles.RoleClass.Debugger.color;
@@ -330,7 +352,12 @@ public static class MatchTagOption
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
-                FeatureCanNotUseAdminTag.selection = 0;
+                SheriffAndBlackCatRegulationTag.selection = 0;
+
+                FeatureAdminLimitTag.selection = 0;
+                FeatureCanNotUseRecordsAdminTag.selection = 0;
+                FeatureVitalLimitTag.selection = 0;
+                FeatureCameraLimitTag.selection = 0;
             }
         }
         catch { }

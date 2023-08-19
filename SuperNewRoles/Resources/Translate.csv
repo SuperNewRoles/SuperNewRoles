@@ -1409,6 +1409,9 @@ OKForBeingDeliveredTag,OK for Recording,配信OK,允许直播,允許直播
 NoRecordingTag,No Recording,撮影NG,禁止录制,禁止錄影
 NoBeingDeliveredTag,No Recording,配信NG,禁止直播,禁止直播
 
+ClassicTag,Classic,バニラモード : クラシック
+HidenSeekTag,HidenSeek,バニラモード : かくれんぼ
+
 FreeChatTag,FreeChat Only,フリーチャットのみ,仅自由聊天,只能自由聊天
 QuickChatTag,QuickChat Only,クイックチャットのみ,尽快速聊天,只能快速聊天
 VoiceChatTag,VoiceChat,VC,语音聊天,語音聊天
@@ -1416,6 +1419,7 @@ BetterCrewLinkTag,Use BetterCrewLink,近アモ,使用BetterCrewLink,使用Better
 CanListenOnlyTag,Listen only OK,聞き専可,允许只听不聊,允許只聽不說
 FullVCOnlyTag,Always use voice chat,聞き専不可,必须参加语音聊天,必須使用語音
 
+SheriffAndBlackCatRegulationTag,Sheriff & Black Cat & EvilHacker,シェリフ & 黒猫 & イビルハッカー
 SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ,无间道,警長與叛徒規則
 NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り,独立阵营击杀,中立殺手規則
 VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村,狼人杀,狼人殺規則
@@ -1429,6 +1433,11 @@ RegulationAdjustedTag,Adjusted,レギュ調整中,调整中,規則調整
 
 FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限,限制使用飞船设备,管理員使用限制
 FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止,禁止使用飞船设备,禁止管理員
+FeatureCanNotUseRecordsAdminTag,Records dmin use prohibited,アーカイブアドミン禁止
+FeatureVaitalCanNotUseTag,Vital use prohibited,バイタル禁止
+FeatureVitalLimitTag,Vital Use Restrictions,バイタル使用制限
+FeatureCameraCanNotUseTag,Camera use prohibited,カメラ禁止
+FeatureCameraLimitTag,Camera Use Restrictions,カメラ使用制限
 
 DebugNewRolesTag,New Roles,新役職,新职业,新職業
 DebugNewFeaturesTag,New Features,新機能,新功能,新功能
