@@ -4,7 +4,10 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -228,10 +231,14 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
+            case RoleId.PoliceSurgeon:
+                optdata.SetFloat(FloatOptionNames.ScientistCooldown, PoliceSurgeon.CustomOptionData.VitalsDisplayCooldown.GetFloat());
+                optdata.SetFloat(FloatOptionNames.ScientistBatteryCharge, PoliceSurgeon.CustomOptionData.BatteryDuration.GetFloat());
+                break;
             case RoleId.MadRaccoon:
                 if (!player.IsMod())
                 {
-                    if (!MadRaccoon.RoleClass.IsImpostorLight)
+                    if (!MadRaccoon.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
                         var switchSystemMadRaccoon = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
@@ -240,15 +247,15 @@ public static class SyncSetting
                 }
                 else
                 {
-                    if (MadRaccoon.RoleClass.IsImpostorLight)
+                    if (MadRaccoon.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                         var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, MadRaccoon.RoleClass.ShapeshifterCooldown);
-                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, MadRaccoon.RoleClass.ShapeshifterDuration);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, MadRaccoon.RoleData.ShapeshifterCooldown);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, MadRaccoon.RoleData.ShapeshifterDuration);
                 break;
             case RoleId.Madmate:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);

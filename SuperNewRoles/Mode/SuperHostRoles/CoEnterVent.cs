@@ -49,7 +49,7 @@ class CoEnterVent
                 if (Worshiper.RoleData.IsUseVent) return true;
                 break;
             case RoleId.MadRaccoon:
-                if (MadRaccoon.RoleClass.IsUseVent) return true;
+                if (MadRaccoon.RoleData.IsUseVent) return true;
                 break;
             case RoleId.RemoteSheriff:
             case RoleId.Sheriff:

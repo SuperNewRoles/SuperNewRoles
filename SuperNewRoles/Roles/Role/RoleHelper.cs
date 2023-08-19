@@ -127,7 +127,7 @@ public static class RoleHelpers
         RoleId.TheThirdLittlePig or
         RoleId.OrientalShaman or
         RoleId.BlackHatHacker;
-        // 第三か
+    // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
         (player.GetRole() == RoleId.Pavlovsowner &&
@@ -908,8 +908,11 @@ public static class RoleHelpers
             case RoleId.BlackHatHacker:
                 BlackHatHacker.BlackHatHackerPlayer.Add(player);
                 break;
+            case RoleId.PoliceSurgeon:
+                PoliceSurgeon.RoleData.Player.Add(player);
+                break;
             case RoleId.MadRaccoon:
-                MadRaccoon.RoleClass.Player.Add(player);
+                MadRaccoon.RoleData.Player.Add(player);
                 break;
             // ロールアド
             default:
@@ -1434,10 +1437,13 @@ public static class RoleHelpers
             case RoleId.BlackHatHacker:
                 BlackHatHacker.BlackHatHackerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.MadRaccoon:
-                MadRaccoon.RoleClass.Player.RemoveAll(ClearRemove);
+            case RoleId.PoliceSurgeon:
+                PoliceSurgeon.RoleData.Player.RemoveAll(ClearRemove);
                 break;
-            // ロールリモベ
+            case RoleId.MadRaccoon:
+                MadRaccoon.RoleData.Player.RemoveAll(ClearRemove);
+                break;
+                // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1538,7 +1544,7 @@ public static class RoleHelpers
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
-            RoleId.MadRaccoon => MadRaccoon.RoleClass.IsUseVent,
+            RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
             _ => player.IsImpostor(),
         };
     }
@@ -1629,7 +1635,7 @@ public static class RoleHelpers
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
-                RoleId.MadRaccoon => MadRaccoon.RoleClass.IsImpostorLight,
+                RoleId.MadRaccoon => MadRaccoon.RoleData.IsImpostorLight,
                 _ => false,
             };
     }
@@ -1638,7 +1644,8 @@ public static class RoleHelpers
         RoleId MyRole;
         if (IsChache)
         {
-            try {
+            try
+            {
                 if (p != null)
                     MyRole = ChacheManager.MyRoleChache[p.PlayerId];
                 else
@@ -1655,7 +1662,8 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        try {
+        try
+        {
             if (p != null)
                 MyRole = ChacheManager.MyRoleChache[p.PlayerId];
             else
@@ -1909,7 +1917,8 @@ public static class RoleHelpers
             else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;
             else if (Pteranodon.PteranodonPlayer.IsCheckListPlayerControl(player)) return RoleId.Pteranodon;
             else if (BlackHatHacker.BlackHatHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.BlackHatHacker;
-            else if (MadRaccoon.RoleClass.Player.IsCheckListPlayerControl(player)) return RoleId.MadRaccoon;
+            else if (PoliceSurgeon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.PoliceSurgeon;
+            else if (MadRaccoon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.MadRaccoon;
             // ロールチェック
         }
         catch (Exception e)
