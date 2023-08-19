@@ -1670,6 +1670,8 @@ public static class RoleClass
         public static float soulDuration;
         public static bool limitSoulDuration;
         public static int mode;
+        public static bool IsFlashBodyColor;
+        public static int FlashColorMode;
         public static bool IsCreateMadmate;
         public static void ClearAndReload()
         {
@@ -1678,6 +1680,8 @@ public static class RoleClass
             limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
             mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.EvilSeerMode.GetSelection();
+            IsFlashBodyColor = !Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && CustomOptionHolder.EvilSeerIsFlashBodyColor.GetBool();
+            FlashColorMode = CustomOptionHolder.EvilSeerFlashColorMode.GetSelection();
             IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
         }
     }

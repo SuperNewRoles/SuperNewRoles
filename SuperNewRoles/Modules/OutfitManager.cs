@@ -1,4 +1,5 @@
 namespace SuperNewRoles.Modules;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public static class OutfitManager
 {
@@ -24,4 +25,9 @@ public static class OutfitManager
         changeToPlayer(pc, pc);
         pc.CurrentOutfitType = PlayerOutfitType.Default;
     }
-}
+
+
+    // クルーカラーの翻訳を取得する。
+    // 参考=>https://github.com/tugaru1975/TownOfPlus/blob/main/Helpers.cs
+    internal static string GetColorTranslation(StringNames name) =>
+        DestroyableSingleton<TranslationController>.Instance.GetString(name, new Il2CppReferenceArray<Il2CppSystem.Object>(0));}
