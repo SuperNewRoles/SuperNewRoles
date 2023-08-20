@@ -230,6 +230,9 @@ public static class MatchTagOption
     public static CustomOption SheriffAndBlackCatRegulationTag; // シェリフ + 黒猫 + イビルハッカー
     public static CustomOption SheriffAndMadRegulationTag; // シェリマ
     public static CustomOption NeutralKillerRegulationTag; // 第三キル人外入り
+    public static CustomOption JackalRegulationTag; // ジャッカル入り
+    public static CustomOption SidekickRegulationTag; // SK有
+    public static CustomOption SidekickKillerRegulationTag; // キル役職系SK有
     public static CustomOption VillageForOutsidersRegulationTag; // 人外村
     public static CustomOption ManyRolesRegulationTag; // 多役
     public static CustomOption WerewolfMoonlightRegulationTag; // 月下
@@ -297,8 +300,11 @@ public static class MatchTagOption
         // レギュレーション : 600500 ~
         Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
         SheriffAndBlackCatRegulationTag = CreateMatchMakeTag(600500, false, Cs(RegulationColor, "SheriffAndBlackCatRegulationTag"), false, null, isHeader: true);; // シェリフ + 黒猫 + イビルハッカー
-        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null); // シェリマ
+        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(Roles.RoleClass.Sheriff.color, "SheriffAndMadRegulationTag"), false, null); // シェリマ
         NeutralKillerRegulationTag = CreateMatchMakeTag(600502, true, Cs(RegulationColor, "NeutralKillerRegulationTag"), false, null); // 第三キル人外入り
+        JackalRegulationTag = CreateMatchMakeTag(600511, true, Cs(Roles.RoleClass.JackalBlue, "JackalRegulationTag"), false, null); // ジャッカル入り
+        SidekickRegulationTag = CreateMatchMakeTag(600512, true, Cs(RegulationColor, "SidekickRegulationTag"), false, null); // SK有
+        SidekickKillerRegulationTag = CreateMatchMakeTag(600513, false, Cs(RegulationColor, "SidekickKillerRegulationTag"), false, null); // キル役職系SK有
         ManyRolesRegulationTag = CreateMatchMakeTag(600503, true, Cs(RegulationColor, "ManyRolesRegulationTag"), false, null); // 多役
         WerewolfMoonlightRegulationTag = CreateMatchMakeTag(600504, true, Cs(RegulationColor, "WerewolfMoonlightRegulationTag"), false, null); // 月下
         VillageForOutsidersRegulationTag = CreateMatchMakeTag(600505, true, Cs(RegulationColor, "VillageForOutsidersRegulationTag"), false, null); // 人外村
@@ -344,6 +350,7 @@ public static class MatchTagOption
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 SheriffAndBlackCatRegulationTag.selection = 0;
+                SidekickKillerRegulationTag.selection = 0;
 
                 FeatureAdminLimitTag.selection = 0;
                 FeatureCanNotUseRecordsAdminTag.selection = 0;

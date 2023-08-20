@@ -1419,6 +1419,9 @@ FullVCOnlyTag,Always use voice chat,聞き専不可,必须参加语音聊天,必
 SheriffAndBlackCatRegulationTag,Sheriff & Black Cat & EvilHacker,シェリマ (黒猫 & イビルハッカー)
 SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ,无间道,警長與叛徒規則
 NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り,独立阵营击杀,中立殺手規則
+JackalRegulationTag,Jackals are enabled,ジャッカル入り
+SidekickRegulationTag,SK is available.,SK有
+SidekickKillerRegulationTag,SK Killer is available.,キル役職系SK有
 VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村,狼人杀,狼人殺規則
 ManyRolesRegulationTag,Regulation with many roles,多役,超多职业,超多職業規則
 WerewolfMoonlightRegulationTag,Werewolf Moonlight Regulation,月下,月狼,月下狼人規則
