@@ -197,6 +197,7 @@ public enum RoleId
     Balancer,
     Pteranodon,
     BlackHatHacker,
+    Moira,
     //RoleId
 }
 
@@ -301,10 +302,19 @@ public enum CustomRPC
     BalancerBalance = 250,
     PteranodonSetStatus,
     SetInfectionTimer,
+    MoiraChangeRole,
 }
 
 public static class RPCProcedure
 {
+    public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
+    {
+        (byte, byte) data = (player1, player2);
+        Moira.ChangeData.Add(data);
+        Moira.SwapVoteData = data;
+        if (IsUseEnd) Moira.AbilityUsedUp = true;
+        Moira.AbilityUsedThisMeeting = true;
+    }
     public static void SetInfectionTimer(byte id, Dictionary<byte, float> infectionTimer)
     {
         if (!ModHelpers.PlayerById(id)) return;
@@ -1907,6 +1917,9 @@ public static class RPCProcedure
                         Dictionary<byte, float> timer = new();
                         for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
                         SetInfectionTimer(id, timer);
+                        break;
+                    case CustomRPC.MoiraChangeRole:
+                        MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }

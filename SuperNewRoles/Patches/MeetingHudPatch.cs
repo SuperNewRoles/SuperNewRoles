@@ -35,6 +35,7 @@ class VotingComplete
         }
     }
 }
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
 class CheckForEndVotingPatch
 {
@@ -476,6 +477,7 @@ static class ExtendedMeetingHud
         return dic;
     }
 }
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.SetForegroundForDead))]
 class MeetingHudSetForegroundForDeadPatch
 {
@@ -484,10 +486,11 @@ class MeetingHudSetForegroundForDeadPatch
         return (RoleClass.Assassin.TriggerPlayer == null || !RoleClass.Assassin.TriggerPlayer.AmOwner) && (RoleClass.Revolutionist.MeetingTrigger == null || !RoleClass.Revolutionist.MeetingTrigger.AmOwner);
     }
 }
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
 class MeetingHudUpdateButtonsPatch
 {
-    public static bool PreFix(MeetingHud __instance)
+    public static bool Prefix(MeetingHud __instance)
     {
         if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger) { return true; }
 
@@ -507,6 +510,13 @@ class MeetingHudUpdateButtonsPatch
         return false;
     }
 }
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
+public static class MeetingHudPopulateVotesPatch
+{
+    public static void Prefix(MeetingHud __instance, ref Il2CppStructArray<VoterState> states) => Moira.SwapVoteArea(__instance, states);
+}
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 class MeetingHudStartPatch
 {
@@ -530,12 +540,12 @@ class MeetingHudStartPatch
             }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
         NiceMechanic.StartMeeting();
-        Roles.Crewmate.Celebrity.TimerStop();
+        Celebrity.TimerStop();
         TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
         NiceMechanic.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
-        Roles.Crewmate.Knight.ProtectedPlayer = null;
-        Roles.Crewmate.Knight.GuardedPlayers = new();
+        Knight.ProtectedPlayer = null;
+        Knight.GuardedPlayers = new();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
         {
             CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) =>
@@ -548,7 +558,7 @@ class MeetingHudStartPatch
 
                 RoleClass.Werewolf.IsShooted = true;
 
-                if (Roles.Crewmate.Knight.GuardedPlayers.Contains((byte)i))
+                if (Knight.GuardedPlayers.Contains((byte)i))
                 {
                     var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
                     Writer.Write((byte)i);
@@ -567,6 +577,15 @@ class MeetingHudStartPatch
                 RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, (byte)i);
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
             }, RoleClass.Werewolf.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
+        }
+        if (PlayerControl.LocalPlayer.IsAlive())
+        {
+            switch (PlayerControl.LocalPlayer.GetRole())
+            {
+                case RoleId.Moira:
+                    Moira.StartMeeting(__instance);
+                    break;
+            }
         }
         Logger.Info("会議開始時の処理 終了", "MeetingHudStartPatch");
     }
