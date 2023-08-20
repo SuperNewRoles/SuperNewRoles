@@ -1,29 +1,61 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AmongUs.GameOptions;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.Helpers;
+using UnityEngine;
 using UnityEngine.Networking;
+
 
 namespace SuperNewRoles.Modules;
 
 public static class CustomRegulation
 {
     static bool Loaded = false;
+
+    // CustomRegulation.jsonのテストをする時にtrueに変える
+    const bool IsTest = false;
     public static IEnumerator FetchRegulation()
     {
         if (Loaded) yield break;
         Logger.Info("フェチ開始いいいい");
-        var request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/SuperNewRegulations/main/Regulations.json");
-        yield return request.SendWebRequest();
-        if (request.isNetworkError || request.isHttpError)
+        JObject json;
+
+#pragma warning disable 0162 // 「到達できないコードが検出されました」の表示を無効
+        // CustomRegulation.jsonの読み込み
+        if (!IsTest)
         {
-            Logger.Info("むりやった");
-            yield break;
+            var request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/SuperNewRegulations/main/Regulations.json");
+            yield return request.SendWebRequest();
+            if (request.isNetworkError || request.isHttpError)
+            {
+                Logger.Info("むりやった");
+                yield break;
+            }
+            Logger.Info("通過");
+            json = JObject.Parse(request.downloadHandler.text);
         }
-        Logger.Info("通過");
-        var json = JObject.Parse(request.downloadHandler.text);
+        else
+        {
+            try
+            {
+                var filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Regulations.json";
+                using StreamReader sr = new(filePath);
+                var text = sr.ReadToEnd();
+                json = JObject.Parse(text);
+                Logger.Info("カスタムレギュレーションのテストファイルの読み込みに成功しました。", "ReadingRegistration");
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"カスタムレギュレーションのテストファイルの読み込みに失敗しました。 : {e}", "ReadingRegistration");
+                yield break;
+            }
+        }
+#pragma warning restore 0162
+
         RegulationData CustomData = new()
         {
             id = 0,
