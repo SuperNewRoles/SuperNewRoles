@@ -227,7 +227,7 @@ public static class MatchTagOption
     public static CustomOption FullVCOnlyTag; // 聞き専不可
 
     // レギュレーション : 600500 ~
-    public static CustomOption SheriffAndBlackCatRegulationTag; // シェリフ + 黒猫 + イビルハッカー
+    public static CustomOption SheriffAndBlackCatRegulationTag; // シェリマ (黒猫 & イビルハッカー)
     public static CustomOption SheriffAndMadRegulationTag; // シェリマ
     public static CustomOption NeutralKillerRegulationTag; // 第三キル人外入り
     public static CustomOption JackalRegulationTag; // ジャッカル入り
@@ -299,7 +299,7 @@ public static class MatchTagOption
 
         // レギュレーション : 600500 ~
         Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
-        SheriffAndBlackCatRegulationTag = CreateMatchMakeTag(600500, false, Cs(RegulationColor, "SheriffAndBlackCatRegulationTag"), false, null, isHeader: true);; // シェリフ + 黒猫 + イビルハッカー
+        SheriffAndBlackCatRegulationTag = CreateMatchMakeTag(600500, false, Cs(RegulationColor, "SheriffAndBlackCatRegulationTag"), false, null, isHeader: true); // シェリマ (黒猫 & イビルハッカー)
         SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(Roles.RoleClass.Sheriff.color, "SheriffAndMadRegulationTag"), false, null); // シェリマ
         NeutralKillerRegulationTag = CreateMatchMakeTag(600502, true, Cs(RegulationColor, "NeutralKillerRegulationTag"), false, null); // 第三キル人外入り
         JackalRegulationTag = CreateMatchMakeTag(600511, true, Cs(Roles.RoleClass.JackalBlue, "JackalRegulationTag"), false, null); // ジャッカル入り
