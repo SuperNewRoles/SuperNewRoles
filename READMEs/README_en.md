@@ -104,23 +104,19 @@ If the host includes this mod, the position will be available to all!<br>
 <br>
 
 ## Developers
-[Yoking](https://github.com/ykundesu) ([Twitter](https://twitter.com/YYYYoking))<br>
-[Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
-[Kuki](https://github.com/Kuki12345)<br>
-[Glaceon](https://github.com/Glaceon-471) ([Twitter](https://twitter.com/Glaceon_SNR11))<br>
-[~~UKON people~~](https://github.com/UKON256)<br>
-[~~Sakurander~~](https://github.com/Sakurander)<br>
+- Developer #1 : [Yoking](https://github.com/ykundesu) ([Misskey](https://misskey.io/@yoking)) ([𝕏 ( Old Twitter )](https://twitter.com/ReYYYYoking))<br>
+- Developer #7 : [Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Misskey](https://misskey.io/@Kurato_SNR7)) ([𝕏 ( Old Twitter )](https://twitter.com/Kurato_SNR7))<br>
+- Developer #9 : [Kuki](https://github.com/Kuki12345)<br>
+- Developer #11 : [Glaceon](https://github.com/Glaceon-471) ([Misskey](https://misskey.io/@GlaceonSNR11)) ([𝕏 ( Old Twitter )](https://twitter.com/Glaceon_SNR11))<br>
+- Developer #4 : [~~UKON people~~](https://github.com/UKON256)<br>
+- Developer #10 : [~~Sakurander~~](https://github.com/Sakurander)<br>
 
 ## Supporter
-[Seono](https://github.com/Seono968) ([Twitter](https://twitter.com/Rinforzando_960))<br>
+- [Seono](https://github.com/Seono968) ([𝕏 ( Old Twitter )](https://twitter.com/Rinforzando_960))<br>
 
-## Sponsors
-Mr. Concorde<br>
-Mr. kibou102<br>
-Mr. tsuchina<br>
-Mr. windows7<br>
-Mr. TeacherShibuya<br>
-Mr. cRox<br>
+## Translators
+- Mx.ZeMingoh233 (SChinese)
+- Mx.Jim137 (TChinese)
 
 ## About Contact
 Please use the Discord server:[Discord server](https://discord.gg/Cqfwx82ynN)
