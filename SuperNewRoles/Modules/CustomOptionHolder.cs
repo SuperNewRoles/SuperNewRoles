@@ -1005,7 +1005,7 @@ public class CustomOptionHolder
     public static string[] LevelingerTexts = new string[] { };
     public static List<float> CrewPlayers = new() { 1f, 1f, 15f, 1f };
     public static List<float> AlonePlayers = new() { 1f, 1f, 1f, 1f };
-    public static List<float> ImpostorPlayers = new() { 1f, 1f, 5f, 1f };
+    public static List<float> ImpostorPlayers = new() { 1f, 1f, 15f, 1f };
     public static List<float> QuarreledPlayers = new() { 1f, 1f, 7f, 1f };
     // public static CustomOption ;
 
