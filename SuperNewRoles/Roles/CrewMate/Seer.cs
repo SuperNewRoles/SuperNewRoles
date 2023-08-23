@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
@@ -88,11 +89,11 @@ class Seer
                         if (RoleClass.MadSeer.mode is not 0 and not 2) return;
                         break;
                     case RoleId.EvilSeer:
-                        DeadBodyPositions = RoleClass.EvilSeer.deadBodyPositions;
-                        RoleClass.EvilSeer.deadBodyPositions = new List<(Vector3, int)>();
-                        limitSoulDuration = RoleClass.EvilSeer.limitSoulDuration;
-                        soulDuration = RoleClass.EvilSeer.soulDuration;
-                        if (RoleClass.EvilSeer.mode is not 0 and not 2) return;
+                        DeadBodyPositions = EvilSeer.RoleData.deadBodyPositions;
+                        EvilSeer.RoleData.deadBodyPositions = new List<(Vector3, int)>();
+                        limitSoulDuration = EvilSeer.RoleData.limitSoulDuration;
+                        soulDuration = EvilSeer.RoleData.soulDuration;
+                        if (EvilSeer.RoleData.mode is not 0 and not 2) return;
                         break;
                     case RoleId.SeerFriends:
                         DeadBodyPositions = RoleClass.SeerFriends.deadBodyPositions;
@@ -174,24 +175,24 @@ class Seer
                         case RoleId.EvilSeer:
                             // |:===== 霊魂関連の処理 =====:|
                             soulColorId =
-                                (RoleClass.EvilSeer.IsUniqueSetting && CustomOptionHolder.EvilSeerIsCrewSoulColor.GetBool()) || PlayerControl.LocalPlayer.IsDead()
+                                (EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.EvilSeerIsCrewSoulColor.GetBool()) || PlayerControl.LocalPlayer.IsDead()
                                     ? bodyColorId
                                     : defaultSoulColorId;
-                            if (RoleClass.EvilSeer.deadBodyPositions != null)
-                                RoleClass.EvilSeer.deadBodyPositions.Add((target.transform.position, soulColorId));
+                            if (EvilSeer.RoleData.deadBodyPositions != null)
+                                EvilSeer.RoleData.deadBodyPositions.Add((target.transform.position, soulColorId));
 
                             // |:===== 死の点滅関連の処理 =====:|
-                            flashModeFlag = RoleClass.EvilSeer.mode <= 1;
-                            if (RoleClass.EvilSeer.IsUniqueSetting && CustomOptionHolder.EvilSeerIsFlashBodyColor.GetBool()) // SHRModeの場合このif文は読まれない
+                            flashModeFlag = EvilSeer.RoleData.mode <= 1;
+                            if (EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.EvilSeerIsFlashBodyColor.GetBool()) // SHRModeの場合このif文は読まれない
                             {
                                 string showtext = "";
-                                if (RoleClass.EvilSeer.FlashColorMode == 0) // 彩光が最高
+                                if (EvilSeer.RoleData.FlashColorMode == 0) // 彩光が最高
                                 {
                                     flashColor = Palette.PlayerColors[bodyColorId];
                                     var crewColorText = $"[ <color=#89c3eb>{OutfitManager.GetColorTranslation(Palette.ColorNames[bodyColorId])}</color> : {ModHelpers.Cs(flashColor, "■")} ]";
                                     showtext = string.Format(ModTranslation.GetString("EvilSeerClearColorDeadText"), crewColorText);
                                 }
-                                else if (RoleClass.EvilSeer.FlashColorMode == 1) // 明暗
+                                else if (EvilSeer.RoleData.FlashColorMode == 1) // 明暗
                                 {
                                     var isLight = CustomCosmetics.CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId);
 
@@ -203,7 +204,7 @@ class Seer
                                         ? ModTranslation.GetString("EvilSeerLightPlayerDeadText")
                                         : ModTranslation.GetString("EvilSeerDarkPlayerDeadText");
                                 }
-                                if (CustomOptionHolder.EvilSeerIsReportingBodyColorName.GetBool() && flashModeFlag)
+                                if (EvilSeer.CustomOptionData.EvilSeerIsReportingBodyColorName.GetBool() && flashModeFlag)
                                     new CustomMessage(showtext, 5, true, RoleClass.Seer.color, new(42f / 255f, 187f / 255f, 245f / 255f));
                             }
                             break;
@@ -224,7 +225,7 @@ class Seer
             {
                 List<List<PlayerControl>> seers = new() {
                     RoleClass.Seer.SeerPlayer,
-                    RoleClass.EvilSeer.EvilSeerPlayer,
+                    EvilSeer.RoleData.EvilSeerPlayer,
                     RoleClass.MadSeer.MadSeerPlayer,
                     RoleClass.JackalSeer.JackalSeerPlayer,
                     RoleClass.SeerFriends.SeerFriendsPlayer
