@@ -530,7 +530,7 @@ class MeetingHudStartPatch
             }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
         NiceMechanic.StartMeeting();
-        Roles.Crewmate.Celebrity.TimerStop();
+        Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.TimerStop();
         TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
         NiceMechanic.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
