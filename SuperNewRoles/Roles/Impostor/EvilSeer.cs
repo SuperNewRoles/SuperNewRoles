@@ -20,7 +20,7 @@ class EvilSeer
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption Mode;
-        public static CustomOption EvilSeerLimitSoulDuration;
+        public static CustomOption LimitSoulDuration;
         public static CustomOption SoulDuration;
         public static CustomOption IsUniqueSetting;
         public static CustomOption IsFlashBodyColor;
@@ -36,8 +36,8 @@ class EvilSeer
             Option = SetupCustomRoleOption(201900, true, RoleId.EvilSeer);
             PlayerCount = Create(201901, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
             Mode = Create(201902, false, CustomOptionType.Impostor, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, Option);
-            EvilSeerLimitSoulDuration = Create(201903, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, Option);
-            SoulDuration = Create(201904, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
+            LimitSoulDuration = Create(201903, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, Option);
+            SoulDuration = Create(201904, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, LimitSoulDuration, format: "unitCouples");
             IsUniqueSetting = Create(201906, false, CustomOptionType.Impostor, "EvilSeerIsUniqueSetting", true, Option);
             IsFlashBodyColor = Create(201907, false, CustomOptionType.Impostor, "EvilSeerIsFlashColor", true, IsUniqueSetting);
             IsReportingBodyColorName = Create(201908, false, CustomOptionType.Impostor, "EvilSeerIsReportingBodyColorName", true, IsFlashBodyColor);
@@ -69,7 +69,7 @@ class EvilSeer
         {
             Player = new();
             deadBodyPositions = new();
-            limitSoulDuration = CustomOptionData.EvilSeerLimitSoulDuration.GetBool();
+            limitSoulDuration = CustomOptionData.LimitSoulDuration.GetBool();
             soulDuration = CustomOptionData.SoulDuration.GetFloat();
             mode = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 1 : CustomOptionData.Mode.GetSelection();
             IsUniqueSetting = !ModeHandler.IsMode(ModeId.SuperHostRoles) && CustomOptionData.IsUniqueSetting.GetBool();
