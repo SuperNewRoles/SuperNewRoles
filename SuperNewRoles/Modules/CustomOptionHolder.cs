@@ -1036,16 +1036,20 @@ public class CustomOptionHolder
 
         Conjurer.SetupCustomOptions();
 
-        EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
-        EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
-        EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
-        EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
-
         EvilGuesserOption = SetupCustomRoleOption(200400, false, RoleId.EvilGuesser);
         EvilGuesserPlayerCount = Create(200401, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
         EvilGuesserShortMaxCount = Create(200402, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
         EvilGuesserShortOneMeetingCount = Create(200403, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
         EvilGuesserCanShotCrew = Create(200404, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, EvilGuesserOption);
+
+        EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
+        EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
+        EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
+        EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
+
+        EvilSeer.CustomOptionData.SetupCustomOptions();
+
+        ShiftActor.SetupCustomOptions();
 
         AssassinAndMarlinOption = new(200500, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1)
         {
@@ -1124,10 +1128,6 @@ public class CustomOptionHolder
         NunOption = SetupCustomRoleOption(201601, false, RoleId.Nun);
         NunPlayerCount = Create(201602, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
         NunCoolTime = Create(201603, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
-
-        ShiftActor.SetupCustomOptions();
-
-        EvilSeer.CustomOptionData.SetupCustomOptions();
 
         EvilButtonerOption = SetupCustomRoleOption(202000, true, RoleId.EvilButtoner);
         EvilButtonerPlayerCount = Create(202001, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilButtonerOption);
