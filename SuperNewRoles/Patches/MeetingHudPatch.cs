@@ -474,6 +474,25 @@ static class ExtendedMeetingHud
                 dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
             }
         }
+        if (Moira.AbilityUsedThisMeeting && Moira.MoiraChangeVote.GetBool())
+        {
+            if (Moira.Player.IsAlive())
+            {
+                PlayerVoteArea swapped1 = null;
+                PlayerVoteArea swapped2 = null;
+                foreach (PlayerVoteArea playerVoteArea in __instance.playerStates)
+                {
+                    if (playerVoteArea.TargetPlayerId == Moira.SwapVoteData.Item1) swapped1 = playerVoteArea;
+                    if (playerVoteArea.TargetPlayerId == Moira.SwapVoteData.Item2) swapped2 = playerVoteArea;
+                }
+                if (swapped1 != null && swapped2 != null)
+                {
+                    if (!dic.ContainsKey(swapped1.TargetPlayerId)) dic[swapped1.TargetPlayerId] = 0;
+                    if (!dic.ContainsKey(swapped2.TargetPlayerId)) dic[swapped2.TargetPlayerId] = 0;
+                    (dic[swapped1.TargetPlayerId], dic[swapped2.TargetPlayerId]) = (dic[swapped2.TargetPlayerId], dic[swapped1.TargetPlayerId]);
+                }
+            }
+        }
         return dic;
     }
 }
@@ -514,7 +533,57 @@ class MeetingHudUpdateButtonsPatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
 public static class MeetingHudPopulateVotesPatch
 {
-    public static void Prefix(MeetingHud __instance, ref Il2CppStructArray<VoterState> states) => Moira.SwapVoteArea(__instance, states);
+    public static bool Prefix(MeetingHud __instance, Il2CppStructArray<VoterState> states)
+    {
+        Moira.SwapVoteArea(__instance);
+
+        __instance.TitleText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.MeetingVotingResults);
+        int num = 0;
+        for (int i = 0; i < __instance.playerStates.Length; i++)
+        {
+            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+            playerVoteArea.ClearForResults();
+            int num2 = 0;
+            foreach (VoterState voterState in states)
+            {
+                GameData.PlayerInfo playerById = GameData.Instance.GetPlayerById(voterState.VoterId);
+                if (playerById == null)
+                {
+                    __instance.logger.Error(string.Format("Couldn't find player info for voter: {0}", voterState.VoterId), null);
+                }
+                else if (i == 0 && voterState.SkippedVote)
+                {
+                    __instance.BloopAVoteIcon(playerById, num, __instance.SkippedVoting.transform);
+                    num++;
+                }
+                else if (Moira.AbilityUsedThisMeeting && Moira.MoiraChangeVote.GetBool())
+                {
+                    if (voterState.VotedForId == Moira.SwapVoteData.Item1)
+                    {
+                        if (Moira.SwapVoteData.Item1 == playerVoteArea.TargetPlayerId)
+                        {
+                            __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
+                            num2++;
+                        }
+                    }
+                    else if (voterState.VotedForId == Moira.SwapVoteData.Item2)
+                    {
+                        if (Moira.SwapVoteData.Item2 == playerVoteArea.TargetPlayerId)
+                        {
+                            __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
+                            num2++;
+                        }
+                    }
+                }
+                else if (voterState.VotedForId == playerVoteArea.TargetPlayerId)
+                {
+                    __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
+                    num2++;
+                }
+            }
+        }
+        return false;
+    }
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

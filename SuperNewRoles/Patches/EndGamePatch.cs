@@ -1108,7 +1108,7 @@ public static class OnGameEndPatch
                 }
             }
         }
-        if (Moira.AbilityUsedUp)
+        if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
         {
             if (!((isDleted && changeTheWinCondition) || isReset))
             {

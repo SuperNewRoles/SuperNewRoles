@@ -327,9 +327,9 @@ public class SetNamesClass
     }
     public static void MoiraSet()
     {
-        if (!Moira.AbilityUsedUp) return;
+        if (!Moira.AbilityUsedUp || Moira.AbilityUsedThisMeeting) return;
         if (Moira.Player is null) return;
-        SetPlayerNameText(Moira.Player, Moira.Player.NameText().text += "(→←)");
+        SetPlayerNameText(Moira.Player, Moira.Player.NameText().text += " (→←)");
     }
     public static void CelebritySet()
     {

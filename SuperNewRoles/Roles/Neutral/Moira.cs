@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using UnityEngine;
-using static MeetingHud;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -78,11 +76,7 @@ public class Moira
     {
         if (PlayerControl.LocalPlayer.IsDead())
         {
-            foreach (PlayerVoteArea data in __instance.playerStates)
-            {
-                if (data.transform.FindChild("MoiraButton") != null)
-                    Object.Destroy(data.transform.FindChild("MoiraButton").gameObject);
-            }
+            DestroyClickButton(__instance);
             return;
         }
         if (AbilityLimit <= 0) return;
@@ -98,11 +92,7 @@ public class Moira
                 return;
             }
             UseAbility(Selected, target);
-            foreach (PlayerVoteArea data in __instance.playerStates)
-            {
-                if (data.transform.FindChild("MoiraButton") != null)
-                    Object.Destroy(data.transform.FindChild("MoiraButton").gameObject);
-            }
+            DestroyClickButton(__instance);
         }
         else
         {
@@ -120,8 +110,18 @@ public class Moira
         AbilityUsedThisMeeting = true;
     }
 
-    public static void SwapVoteArea(MeetingHud __instance, Il2CppStructArray<VoterState> states)
+    public static void DestroyClickButton(MeetingHud __instance)
     {
+        foreach (PlayerVoteArea data in __instance.playerStates)
+        {
+            if (data.transform.FindChild("MoiraButton") != null)
+                Object.Destroy(data.transform.FindChild("MoiraButton").gameObject);
+        }
+    }
+
+    public static void SwapVoteArea(MeetingHud __instance)
+    {
+        DestroyClickButton(__instance);
         if (Player.IsDead()) return;
         PlayerVoteArea swapped1 = null;
         PlayerVoteArea swapped2 = null;
@@ -134,18 +134,6 @@ public class Moira
         {
             __instance.StartCoroutine(Effects.Slide3D(swapped1.transform, swapped1.transform.localPosition, swapped2.transform.localPosition, 1.5f));
             __instance.StartCoroutine(Effects.Slide3D(swapped2.transform, swapped2.transform.localPosition, swapped1.transform.localPosition, 1.5f));
-
-            if (MoiraChangeVote.GetBool())
-            {
-                for (int i = 0;  i < states.Length; i++)
-                {
-                    VoterState state = states[i];
-                    if (state.VotedForId == SwapVoteData.Item1)
-                        state.VotedForId = SwapVoteData.Item2;
-                    if (state.VotedForId == SwapVoteData.Item2)
-                        state.VotedForId = SwapVoteData.Item1;
-                }
-            }
         }
     }
 
