@@ -175,7 +175,7 @@ class Seer
                         case RoleId.EvilSeer:
                             // |:===== 霊魂関連の処理 =====:|
                             soulColorId =
-                                (EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.EvilSeerIsCrewSoulColor.GetBool()) || PlayerControl.LocalPlayer.IsDead()
+                                (EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.IsCrewSoulColor.GetBool()) || PlayerControl.LocalPlayer.IsDead()
                                     ? bodyColorId
                                     : defaultSoulColorId;
                             if (EvilSeer.RoleData.deadBodyPositions != null)
@@ -183,7 +183,7 @@ class Seer
 
                             // |:===== 死の点滅関連の処理 =====:|
                             flashModeFlag = EvilSeer.RoleData.mode <= 1;
-                            if (EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.EvilSeerIsFlashBodyColor.GetBool()) // SHRModeの場合このif文は読まれない
+                            if (EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.IsFlashBodyColor.GetBool()) // SHRModeの場合このif文は読まれない
                             {
                                 string showtext = "";
                                 if (EvilSeer.RoleData.FlashColorMode == 0) // 彩光が最高
@@ -204,7 +204,7 @@ class Seer
                                         ? ModTranslation.GetString("EvilSeerLightPlayerDeadText")
                                         : ModTranslation.GetString("EvilSeerDarkPlayerDeadText");
                                 }
-                                if (EvilSeer.CustomOptionData.EvilSeerIsReportingBodyColorName.GetBool() && flashModeFlag)
+                                if (EvilSeer.CustomOptionData.IsReportingBodyColorName.GetBool() && flashModeFlag)
                                     new CustomMessage(showtext, 5, true, RoleClass.Seer.color, new(42f / 255f, 187f / 255f, 245f / 255f));
                             }
                             break;
@@ -225,7 +225,7 @@ class Seer
             {
                 List<List<PlayerControl>> seers = new() {
                     RoleClass.Seer.SeerPlayer,
-                    EvilSeer.RoleData.EvilSeerPlayer,
+                    EvilSeer.RoleData.Player,
                     RoleClass.MadSeer.MadSeerPlayer,
                     RoleClass.JackalSeer.JackalSeerPlayer,
                     RoleClass.SeerFriends.SeerFriendsPlayer
