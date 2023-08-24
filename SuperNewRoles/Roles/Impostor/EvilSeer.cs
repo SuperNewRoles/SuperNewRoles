@@ -27,6 +27,8 @@ class EvilSeer
         public static CustomOption IsReportingBodyColorName;
         public static CustomOption FlashColorMode;
         public static CustomOption IsCrewSoulColor;
+        public static CustomOption IsDeadBodyArrow;
+        public static CustomOption IsArrowColorAdaptive;
         public static CustomOption MadmateSetting;
 
         internal static void SetupCustomOptions()
@@ -41,6 +43,8 @@ class EvilSeer
             IsReportingBodyColorName = Create(201908, false, CustomOptionType.Impostor, "EvilSeerIsReportingBodyColorName", true, IsFlashBodyColor);
             FlashColorMode = Create(201909, false, CustomOptionType.Impostor, "EvilSeerFlashColorMode", new string[] { "EvilSeerColorModeclear", "EvilSeerColorModeLightAndDark" }, IsFlashBodyColor);
             IsCrewSoulColor = Create(201910, false, CustomOptionType.Impostor, "EvilSeerIsCrewSoulColor", true, IsUniqueSetting);
+            IsDeadBodyArrow = Create(201911, false, CustomOptionType.Impostor, "VultureShowArrowsSetting", true, IsUniqueSetting);
+            IsArrowColorAdaptive = Create(201912, false, CustomOptionType.Impostor, "EvilSeerIsArrowColorAdaptive", true, IsDeadBodyArrow);
             MadmateSetting = Create(201905, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, Option);
         }
     }
@@ -56,6 +60,8 @@ class EvilSeer
         public static int mode;
         public static bool IsUniqueSetting;
         public static int FlashColorMode;
+        public static bool IsArrow;
+        public static bool IsArrowColorAdaptive;
         public static bool IsCreateMadmate;
         public static Dictionary<DeadBody, ArrowAdaptive> DeadPlayerArrows;
 
@@ -68,6 +74,8 @@ class EvilSeer
             mode = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 1 : CustomOptionData.Mode.GetSelection();
             IsUniqueSetting = !ModeHandler.IsMode(ModeId.SuperHostRoles) && CustomOptionData.IsUniqueSetting.GetBool();
             FlashColorMode = CustomOptionData.FlashColorMode.GetSelection();
+            IsArrow = IsUniqueSetting && CustomOptionData.IsDeadBodyArrow.GetBool();
+            IsArrowColorAdaptive = IsArrow && CustomOptionData.IsArrowColorAdaptive.GetBool();
             IsCreateMadmate = CustomOptionData.MadmateSetting.GetBool();
             DeadPlayerArrows = new();
         }
@@ -78,6 +86,8 @@ class EvilSeer
         const int DefaultArrowColor = (int)CustomCosmetics.CustomColors.ColorType.Crasyublue;
         public static void FixedUpdate()
         {
+            if (!RoleData.IsArrow) return;
+
             foreach (var arrow in RoleData.DeadPlayerArrows)
             {
                 bool isTarget = false;
@@ -90,7 +100,7 @@ class EvilSeer
                 if (isTarget)
                 {
                     var deadPlayer = ModHelpers.GetPlayerControl(arrow.Key.ParentId);
-                    var arrowColor = deadPlayer.Data.DefaultOutfit.ColorId;
+                    var arrowColor = RoleData.IsArrowColorAdaptive ? deadPlayer.Data.DefaultOutfit.ColorId : DefaultArrowColor;
                     if (arrow.Value == null)
                     {
                         RoleData.DeadPlayerArrows[arrow.Key] = new(arrowColor);
@@ -110,7 +120,7 @@ class EvilSeer
                 if (RoleData.DeadPlayerArrows.Any(x => x.Key.ParentId == dead.ParentId)) continue;
 
                 var deadPlayer = ModHelpers.GetPlayerControl(dead.ParentId);
-                var arrowColor = deadPlayer.Data.DefaultOutfit.ColorId;
+                var arrowColor = RoleData.IsArrowColorAdaptive ? deadPlayer.Data.DefaultOutfit.ColorId : DefaultArrowColor;
 
                 RoleData.DeadPlayerArrows.Add(dead, new(arrowColor));
                 RoleData.DeadPlayerArrows[dead].Update(dead.transform.position, arrowColor);

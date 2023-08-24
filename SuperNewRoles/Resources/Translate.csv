@@ -883,6 +883,7 @@ EvilSeerIsCrewSoulColor,Does the color of the soul reflect the color of the dead
 EvilSeerFlashColorMode,How to display dead body color,死者ボディカラーの表示方法
 EvilSeerColorModeclear,You can see the color details.,色の詳細がわかる
 EvilSeerColorModeLightAndDark,Only light and dark are known.,明暗のみがわかる
+EvilSeerIsArrowColorAdaptive,Reflect the body color of the dead person on the corpse location arrow.,死体位置矢印に死者のボディカラーを反映させる
 EvilSeerClearColorDeadText,The crew of {0} color has died.,{0}のクルーの気配が弱まりました。
 EvilSeerLightPlayerDeadText,A brightly colored crew died.,<color=#89c3eb>明るい色</color>のクルーの気配が弱まりました。
 EvilSeerDarkPlayerDeadText,A dark colored crew member died.,<color=#74325c>暗い色</color>のクルーの気配が弱まりました。
