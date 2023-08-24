@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using UnityEngine;
@@ -55,6 +57,8 @@ class EvilSeer
         public static bool IsUniqueSetting;
         public static int FlashColorMode;
         public static bool IsCreateMadmate;
+        public static Dictionary<DeadBody, ArrowAdaptive> DeadPlayerArrows;
+
         public static void ClearAndReload()
         {
             EvilSeerPlayer = new();
@@ -65,6 +69,53 @@ class EvilSeer
             IsUniqueSetting = !ModeHandler.IsMode(ModeId.SuperHostRoles) && CustomOptionData.EvilSeerIsUniqueSetting.GetBool();
             FlashColorMode = CustomOptionData.EvilSeerFlashColorMode.GetSelection();
             IsCreateMadmate = CustomOptionData.EvilSeerMadmateSetting.GetBool();
+            DeadPlayerArrows = new();
+        }
+    }
+
+    internal static class DeadBodyArrow
+    {
+        const int DefaultArrowColor = (int)CustomCosmetics.CustomColors.ColorType.Crasyublue;
+        public static void FixedUpdate()
+        {
+            foreach (var arrow in RoleData.DeadPlayerArrows)
+            {
+                bool isTarget = false;
+                foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+                {
+                    if (arrow.Key.ParentId != dead.ParentId) continue;
+                    isTarget = true;
+                    break;
+                }
+                if (isTarget)
+                {
+                    var deadPlayer = ModHelpers.GetPlayerControl(arrow.Key.ParentId);
+                    var arrowColor = deadPlayer.Data.DefaultOutfit.ColorId;
+                    if (arrow.Value == null)
+                    {
+                        RoleData.DeadPlayerArrows[arrow.Key] = new(arrowColor);
+                    }
+                    arrow.Value.Update(arrow.Key.transform.position, arrowColor);
+                    arrow.Value.arrow.SetActive(true);
+                }
+                else
+                {
+                    if (arrow.Value?.arrow != null)
+                        UnityEngine.Object.Destroy(arrow.Value.arrow);
+                    RoleData.DeadPlayerArrows.Remove(arrow.Key);
+                }
+            }
+            foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+            {
+                if (RoleData.DeadPlayerArrows.Any(x => x.Key.ParentId == dead.ParentId)) continue;
+
+                var deadPlayer = ModHelpers.GetPlayerControl(dead.ParentId);
+                var arrowColor = deadPlayer.Data.DefaultOutfit.ColorId;
+
+                RoleData.DeadPlayerArrows.Add(dead, new(arrowColor));
+                RoleData.DeadPlayerArrows[dead].Update(dead.transform.position, arrowColor);
+                RoleData.DeadPlayerArrows[dead].arrow.SetActive(true);
+            }
         }
     }
 }
