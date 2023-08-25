@@ -154,11 +154,13 @@ class Seer
                 var role = PlayerControl.LocalPlayer.GetRole();
                 if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                 {
-                    const int defaultSoulColorId = (int)CustomCosmetics.CustomColors.ColorType.Crasyublue; // クラッシュブルー
                     var bodyColorId = target.Data.DefaultOutfit.ColorId;
+
+                    // 自分が死んだ後は, どのシーアも霊魂の色にクルーのボディカラーを反映させる。
                     var soulColorId = PlayerControl.LocalPlayer.IsDead()
                                     ? bodyColorId
-                                    : defaultSoulColorId;
+                                    : EvilSeer.RoleData.DefaultBodyColorId;
+
                     bool flashModeFlag = false;
                     Color flashColor = new(42f / 255f, 187f / 255f, 245f / 255f); // 基本の発光カラー
 
@@ -173,11 +175,20 @@ class Seer
                             flashModeFlag = RoleClass.MadSeer.mode <= 1;
                             break;
                         case RoleId.EvilSeer:
+                            // |:===== 共通の処理 =====:|
+                            var isLight = CustomCosmetics.CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId);
+
                             // |:===== 霊魂関連の処理 =====:|
-                            soulColorId =
-                                (EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.IsCrewSoulColor.GetBool()) || PlayerControl.LocalPlayer.IsDead()
-                                    ? bodyColorId
-                                    : defaultSoulColorId;
+                            var indistinctBodyColorId = isLight
+                                ? EvilSeer.RoleData.LightBodyColorId
+                                : EvilSeer.RoleData.DarkBodyColorId;
+
+                            var isBodyColor = EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.IsCrewSoulColor.GetBool();
+
+                            if (PlayerControl.LocalPlayer.IsDead() || (isBodyColor && EvilSeer.RoleData.IsClearColor)) soulColorId = bodyColorId; // 彩光が最高
+                            else if (isBodyColor) soulColorId = indistinctBodyColorId; // 明暗
+                            else soulColorId = EvilSeer.RoleData.DefaultBodyColorId; // デフォルト
+
                             if (EvilSeer.RoleData.deadBodyPositions != null)
                                 EvilSeer.RoleData.deadBodyPositions.Add((target.transform.position, soulColorId));
 
@@ -186,16 +197,14 @@ class Seer
                             if (EvilSeer.RoleData.IsUniqueSetting && EvilSeer.CustomOptionData.IsFlashBodyColor.GetBool()) // SHRModeの場合このif文は読まれない
                             {
                                 string showtext = "";
-                                if (EvilSeer.RoleData.FlashColorMode == 0) // 彩光が最高
+                                if (EvilSeer.RoleData.IsClearColor) // 彩光が最高
                                 {
                                     flashColor = Palette.PlayerColors[bodyColorId];
                                     var crewColorText = $"[ <color=#89c3eb>{OutfitManager.GetColorTranslation(Palette.ColorNames[bodyColorId])}</color> : {ModHelpers.Cs(flashColor, "■")} ]";
                                     showtext = string.Format(ModTranslation.GetString("EvilSeerClearColorDeadText"), crewColorText);
                                 }
-                                else if (EvilSeer.RoleData.FlashColorMode == 1) // 明暗
+                                else // 明暗
                                 {
-                                    var isLight = CustomCosmetics.CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId);
-
                                     flashColor = isLight
                                         ? new(137f / 255f, 195f / 255f, 235f / 255f)    // 明
                                         : new(116f / 255f, 50f / 255f, 92f / 255f);     // 暗
