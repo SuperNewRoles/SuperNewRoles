@@ -397,6 +397,7 @@ public class CustomOptionHolder
 
     public static CustomRoleOption AmnesiacOption;
     public static CustomOption AmnesiacPlayerCount;
+    public static CustomOption AmnesiacShowArrows;
 
     public static CustomRoleOption SideKillerOption;
     public static CustomOption SideKillerPlayerCount;
@@ -1471,6 +1472,7 @@ public class CustomOptionHolder
 
         AmnesiacOption = SetupCustomRoleOption(301600, false, RoleId.Amnesiac);
         AmnesiacPlayerCount = Create(301601, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);
+        AmnesiacShowArrows = Create(301602, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, AmnesiacOption);
 
         TheThreeLittlePigs.SetupCustomOptions();
 
@@ -1485,8 +1487,8 @@ public class CustomOptionHolder
         VulturePlayerCount = Create(302001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
         VultureCooldown = Create(302002, false, CustomOptionType.Neutral, "VultureCooldownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
         VultureDeadBodyMaxCount = Create(302003, false, CustomOptionType.Neutral, "VultureDeadBodyCountSetting", 3f, 1f, 6f, 1f, VultureOption);
-        VultureIsUseVent = Create(302004, false, CustomOptionType.Neutral, "MadmateUseVentSetting", false, VultureOption);
-        VultureShowArrows = Create(302005, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", false, VultureOption);
+        VultureIsUseVent = Create(302004, false, CustomOptionType.Neutral, "MadmateUseVentSetting", true, VultureOption);
+        VultureShowArrows = Create(302005, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, VultureOption);
 
         OpportunistOption = SetupCustomRoleOption(302100, true, RoleId.Opportunist);
         OpportunistPlayerCount = Create(302101, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);

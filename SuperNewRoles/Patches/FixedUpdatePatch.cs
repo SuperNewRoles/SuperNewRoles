@@ -152,7 +152,10 @@ public class FixedUpdate
                             Vampire.FixedUpdate.VampireOnly();
                             break;
                         case RoleId.Vulture:
-                            Vulture.FixedUpdate.Postfix();
+                            if (RoleClass.Vulture.ShowArrows) Vulture.FixedUpdate.Postfix();
+                            break;
+                        case RoleId.Amnesiac:
+                            if (RoleClass.Amnesiac.ShowArrows) Vulture.FixedUpdate.Postfix();
                             break;
                         case RoleId.Mafia:
                             Mafia.FixedUpdate();
@@ -239,6 +242,7 @@ public class FixedUpdate
                             }
                             break;
                         case RoleId.Vulture:
+                        case RoleId.Amnesiac:
                         case RoleId.ShermansServant:
                             foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
                             {
