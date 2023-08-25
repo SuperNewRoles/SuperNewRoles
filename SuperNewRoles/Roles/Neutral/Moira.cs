@@ -30,6 +30,7 @@ public class Moira
     public static bool AbilityUsedUp;
     public static bool AbilityUsedThisMeeting;
     public static Dictionary<byte, RoleTypes> RoleTypeData;
+    public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MoiraButton.png", 200f);
     public static PlayerControl Player
     {
         get
@@ -63,7 +64,7 @@ public class Moira
                     Transform target = Object.Instantiate(data.Buttons.transform.Find("CancelButton"), data.transform);
                     target.name = "MoiraButton";
                     target.localPosition = new Vector3(1f, 0.01f, -1f);
-                    target.GetComponent<SpriteRenderer>().sprite = RoleClass.SoothSayer.GetButtonSprite();
+                    target.GetComponent<SpriteRenderer>().sprite = GetButtonSprite();
                     PassiveButton button = target.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickButton(__instance, player)));
