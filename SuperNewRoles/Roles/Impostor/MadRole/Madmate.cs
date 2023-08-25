@@ -50,6 +50,10 @@ class Madmate
                 if (!Worshiper.RoleData.IsImpostorCheck) return false;
                 CheckTask = Worshiper.RoleData.ImpostorCheckTask;
                 break;
+            case RoleId.MadRaccoon:
+                if (!MadRaccoon.RoleData.IsImpostorCheck) return false;
+                CheckTask = MadRaccoon.RoleData.ImpostorCheckTask;
+                break;
             default:
                 return false;
         }
