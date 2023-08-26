@@ -28,12 +28,12 @@ public class TeamData
 }
 public class IntroData
 {
-    public static List<IntroData> IntroList = new();
+    public static Dictionary<RoleId, IntroData> Intros = new();
     public static Dictionary<RoleId, IntroData> IntroDataCache = new();
     public static List<IntroData> GhostRoleData = new();
     public string NameKey;
     public string Name;
-    public Int16 TitleNum;
+    public short TitleNum;
     public string TitleDesc
     {
         get
@@ -73,7 +73,7 @@ public class IntroData
         {
             GhostRoleData.Add(this);
         }
-        IntroList.Add(this);
+        Intros.Add(RoleId,this);
     }
     public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null)
     {
@@ -85,22 +85,20 @@ public class IntroData
         {
             return p == null ? JumboIntro : p.IsImpostor() ? EvilJumboIntro : NiceJumboIntro;
         }
-        try
+        if(IntroDataCache.TryGetValue(RoleId, out IntroData introData))
+            return introData;
+        else
         {
-            return IntroDataCache[RoleId];
-        }
-        catch
-        {
-            var data = IntroList.FirstOrDefault((_) => _.RoleId == RoleId);
-            if (data == null) data = CrewmateIntro;
+            if (!Intros.TryGetValue(RoleId, out IntroData data))
+                data = CrewmateIntro;
             IntroDataCache[RoleId] = data;
             return data;
         }
     }
     public static CustomRoleOption GetOption(RoleId roleId)
     {
-        var option = CustomRoleOption.RoleOptions.FirstOrDefault((_) => _.RoleId == roleId);
-        return option;
+        CustomRoleOption.RoleOptions.TryGetValue(roleId, out CustomRoleOption opt);
+        return opt;
     }
     public static string GetTitle(string name, Int16 num)
     {

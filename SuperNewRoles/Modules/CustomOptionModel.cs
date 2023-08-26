@@ -358,7 +358,7 @@ public class CustomOption
 }
 public class CustomRoleOption : CustomOption
 {
-    public static List<CustomRoleOption> RoleOptions = new();
+    public static Dictionary<RoleId, CustomRoleOption> RoleOptions = new();
 
     public CustomOption countOption = null;
 
@@ -409,7 +409,7 @@ public class CustomRoleOption : CustomOption
     {
         try
         {
-            IntroData? intro = IntroData.IntroList.FirstOrDefault((_) =>
+            IntroData? intro = IntroData.Intros.Values.FirstOrDefault((_) =>
             {
                 return _.NameKey + "Name" == name;
             });
@@ -426,7 +426,7 @@ public class CustomRoleOption : CustomOption
         {
             Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
         }
-        RoleOptions.Add(this);
+        RoleOptions.Add(RoleId, this);
         this.isHidden = isHidden;
         if (max > 1)
             countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");

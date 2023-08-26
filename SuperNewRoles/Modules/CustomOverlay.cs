@@ -328,7 +328,7 @@ public class CustomOverlays
         ActivateRolesDictionary = new(); // 辞書の初期化
         List<CustomRoleOption> EnableOptions = new();
 
-        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions.Values)
         {
             if (!option.IsRoleEnable) continue;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
@@ -683,7 +683,7 @@ public class CustomOverlays
         RoleId myRole = PlayerControl.LocalPlayer.GetRole();
 
         // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
-        IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == myRole).Select(option => { return option; });
+        IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Values.Where(option => option.RoleId == myRole).Select(option => { return option; });
         // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
         foreach (CustomRoleOption roleOption in myRoleOptions)
         {

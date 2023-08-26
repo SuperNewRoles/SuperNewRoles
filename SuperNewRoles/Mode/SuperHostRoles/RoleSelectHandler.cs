@@ -289,7 +289,7 @@ public static class RoleSelectHandler
         List<RoleId> Crewonepar = new();
         List<RoleId> Crewnotonepar = new();
 
-        foreach (IntroData intro in IntroData.IntroList)
+        foreach (IntroData intro in IntroData.Intros.Values)
         {
             if (intro.RoleId != RoleId.DefaultRole &&
                 intro.RoleId != RoleId.Revolutionist &&
