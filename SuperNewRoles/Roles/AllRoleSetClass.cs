@@ -125,6 +125,15 @@ class RoleManagerSelectRolesPatch
 
             try
             {
+                HauntedWolf.Assign.RandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+
+            try
+            {
                 AllRoleSetClass.QuarreledRandomSelect();
             }
             catch (Exception e)
@@ -256,6 +265,15 @@ class AllRoleSetClass
         }
         if (ModeHandler.IsMode(ModeId.Default))
         {
+            try
+            {
+                HauntedWolf.Assign.RandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+
             try
             {
                 QuarreledRandomSelect();
