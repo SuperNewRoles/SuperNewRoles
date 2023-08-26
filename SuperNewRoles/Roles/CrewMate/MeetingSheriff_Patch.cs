@@ -155,7 +155,7 @@ class MeetingSheriff_Patch
 
         MeetingUpdatePatch.IsFlag = false;
         MeetingUpdatePatch.IsSHRFlag = false;
-        if (!ModeHandler.IsMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
+        if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.BattleRoyal) && PlayerControl.AllPlayerControls.Count > 15)
         {
             MeetingUpdatePatch.IsFlag = true;
             Meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();

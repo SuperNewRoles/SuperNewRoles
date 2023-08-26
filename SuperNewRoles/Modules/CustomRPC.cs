@@ -197,6 +197,16 @@ public enum RoleId
     Balancer,
     Pteranodon,
     BlackHatHacker,
+    Reviver = 172,
+    Guardrawer = 173,
+    KingPoster = 174,
+    LongKiller = 175,
+    Darknight = 176,
+    Revenger = 177,
+    CrystalMagician = 178,
+    GrimReaper = 179,
+    PoliceSurgeon,
+    MadRaccoon,
     //RoleId
 }
 
@@ -301,6 +311,7 @@ public enum CustomRPC
     BalancerBalance = 250,
     PteranodonSetStatus,
     SetInfectionTimer,
+    PoliceSurgeonSendActualDeathTimeManager,
 }
 
 public static class RPCProcedure
@@ -1577,7 +1588,7 @@ public static class RPCProcedure
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
             if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId))
-                Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
+                Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
                 byte packetId = callId;
@@ -1907,6 +1918,9 @@ public static class RPCProcedure
                         Dictionary<byte, float> timer = new();
                         for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
                         SetInfectionTimer(id, timer);
+                        break;
+                    case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
+                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }
