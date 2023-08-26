@@ -878,12 +878,13 @@ EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒,邪惡的先知
 EvilSeerDescription,This role is in charge of information related to the dead，which allows you to know the time and place of death. \nThe position is responsible for the support of the dead by knowing the actions of his or her partner.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。,邪恶的灵媒属于内鬼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n邪恶的灵媒需要利用手中的情报帮助同伙。,邪惡的先知屬於內鬼陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n邪惡的先知需要利用手中的情報幫助同伴。
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
 EvilSeerIsUniqueSetting,Do you want to set up the unique capabilities of an Evil Seer as a Seer?,シーアとしてのイビルシーアの固有能力を設定するか
-EvilSeerIsFlashColor,Make the color of the death flash dependent on the crew's body color?,死の点滅の色をクルーのボディカラー依存にするか
-EvilSeerIsReportingBodyColorName,Do you want to display body color information in text as well?,ボディカラーの情報を文字でも表示するか
-EvilSeerIsCrewSoulColor,Does the color of the soul reflect the color of the dead?,霊魂の色に死者の色を反映させるか
 EvilSeerFlashColorMode,How to display dead body color,死者ボディカラーの表示方法
 EvilSeerColorModeclear,You can see the color details.,色の詳細がわかる
 EvilSeerColorModeLightAndDark,Only light and dark are known.,明暗のみがわかる
+EvilSeerIsFlashColor,Make the color of the death flash dependent on the crew's body color?,死の点滅をクルーのボディカラー依存にするか
+EvilSeerIsReportingBodyColorName,Do you want to display body color information in text as well?,ボディカラーの情報を文字でも表示するか
+EvilSeerIsCrewSoulColor,Does the color of the soul reflect the color of the dead?,霊魂をクルーのボディカラー依存にするか
+EvilSeerIsArrowColorAdaptive,Reflect the body color of the dead person on the corpse location arrow.,死体位置矢印をクルーのボディカラー依存にするか
 EvilSeerClearColorDeadText,The crew of {0} color has died.,{0}のクルーの気配が弱まりました。
 EvilSeerLightPlayerDeadText,A brightly colored crew died.,<color=#89c3eb>明るい色</color>のクルーの気配が弱まりました。
 EvilSeerDarkPlayerDeadText,A dark colored crew member died.,<color=#74325c>暗い色</color>のクルーの気配が弱まりました。

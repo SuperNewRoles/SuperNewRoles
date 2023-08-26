@@ -994,7 +994,7 @@ class AllRoleSetClass
             RoleId.DarkKiller => CustomOptionHolder.DarkKillerPlayerCount.GetFloat(),
             RoleId.Seer => CustomOptionHolder.SeerPlayerCount.GetFloat(),
             RoleId.MadSeer => CustomOptionHolder.MadSeerPlayerCount.GetFloat(),
-            RoleId.EvilSeer => CustomOptionHolder.EvilSeerPlayerCount.GetFloat(),
+            RoleId.EvilSeer => EvilSeer.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.RemoteSheriff => CustomOptionHolder.RemoteSheriffPlayerCount.GetFloat(),
             RoleId.Fox => CustomOptionHolder.FoxPlayerCount.GetFloat(),
             RoleId.TeleportingJackal => CustomOptionHolder.TeleportingJackalPlayerCount.GetFloat(),

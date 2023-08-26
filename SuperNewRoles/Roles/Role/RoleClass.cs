@@ -151,7 +151,7 @@ public static class RoleClass
         Seer.ClearAndReload();
         Crewmate.Seer.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
-        EvilSeer.ClearAndReload();
+        EvilSeer.RoleData.ClearAndReload();
         RemoteSheriff.ClearAndReload();
         TeleportingJackal.ClearAndReload();
         MadMaker.ClearAndReload();
@@ -1661,30 +1661,6 @@ public static class RoleClass
             }
             ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadSeerCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             Roles.MadSeer.CheckedImpostor = new();
-        }
-    }
-    public static class EvilSeer
-    {
-        public static List<PlayerControl> EvilSeerPlayer;
-        public static Color32 color = ImpostorRed;
-        public static List<(Vector3, int)> deadBodyPositions;
-
-        public static float soulDuration;
-        public static bool limitSoulDuration;
-        public static int mode;
-        public static bool IsUniqueSetting;
-        public static int FlashColorMode;
-        public static bool IsCreateMadmate;
-        public static void ClearAndReload()
-        {
-            EvilSeerPlayer = new();
-            deadBodyPositions = new();
-            limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
-            soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
-            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.EvilSeerMode.GetSelection();
-            IsUniqueSetting = !Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && CustomOptionHolder.EvilSeerIsUniqueSetting.GetBool();
-            FlashColorMode = CustomOptionHolder.EvilSeerFlashColorMode.GetSelection();
-            IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
         }
     }
     public static class RemoteSheriff

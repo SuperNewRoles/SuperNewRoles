@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -141,7 +142,7 @@ public static class RoleSelectHandler
         SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
-        SetVanillaRole(RoleClass.EvilSeer.EvilSeerPlayer, RoleTypes.Shapeshifter, false);
+        SetVanillaRole(EvilSeer.RoleData.Player, RoleTypes.Shapeshifter, false);
         /*============シェイプシフター役職設定============*/
 
         foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
