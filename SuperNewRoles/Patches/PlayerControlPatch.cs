@@ -443,16 +443,31 @@ static class CheckMurderPatch
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
         Logger.Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
-        if (__instance.IsBot() || target.IsBot()) return false;
-        if (__instance.IsDead() || target.IsDead()) return false;
+        if (
+                __instance.IsBot() ||
+                __instance.IsDead() ||
+                target.IsBot() ||
+                target.IsDead() ||
+                target.inVent ||
+                target.MyPhysics.Animations.IsPlayingEnterVentAnimation() ||
+                target.MyPhysics.Animations.IsPlayingAnyLadderAnimation() ||
+                target.inMovingPlat ||
+                MeetingHud.Instance != null ||
+                (!RoleClass.IsStart &&
+                AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
+           )
+        {
+            return false;
+        }
+        Logger.Info("キル可能かを通過しました。","CheckMurder");
         if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek) return true;
-        if (!RoleClass.IsStart && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) return false;
         if (__instance.PlayerId == target.PlayerId)
         {
             Logger.Info($"自爆:{target.name}", "CheckMurder");
             __instance.RpcMurderPlayer(target);
             return false;
         }
+        
         if (!AmongUsClient.Instance.AmHost) return true;
         switch (ModeHandler.GetMode())
         {
