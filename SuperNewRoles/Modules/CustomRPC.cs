@@ -126,7 +126,6 @@ public enum RoleId
     VentMaker,
     GhostMechanic,
     EvilHacker,
-    // HauntedWolf, // [ ]MEMO : RoleIdは消す
     PositionSwapper,
     Tuna,
     Mafia,

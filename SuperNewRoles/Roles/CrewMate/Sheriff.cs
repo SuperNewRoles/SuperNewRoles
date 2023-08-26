@@ -78,7 +78,7 @@ class Sheriff
                 isQuarreledKill = CustomOptionHolder.MeetingSheriffQuarreledKill.GetBool();
                 break;
         }
-        if ((targetRoleData == TeamRoleType.Impostor) || target.IsRole(RoleId.HauntedWolf)) return isImpostorKill;//インポスター、狼付きは設定がimp設定が有効な時切れる
+        if ((targetRoleData == TeamRoleType.Impostor) || target.IsHauntedWolf()) return isImpostorKill; // インポスター、狼付きは設定がimp設定が有効な時切れる
         if (target.IsMadRoles()
             || target.IsRole(RoleId.MadKiller)
             || target.IsRole(RoleId.Dependents))

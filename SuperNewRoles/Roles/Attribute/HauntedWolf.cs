@@ -65,7 +65,7 @@ class HauntedWolf
             }
             for (int i = 0; i < CustomOptionData.PlayerCount.GetFloat(); i++)
             {
-                if (SelectPlayers.Count is not (1 or 0))
+                if (SelectPlayers.Count != 0)
                 {
                     List<PlayerControl> listData = new();
                     var playerIndex = ModHelpers.GetRandomIndex(SelectPlayers);
@@ -82,11 +82,7 @@ class HauntedWolf
         internal static void SetHauntedWolf(PlayerControl player)
         {
             RoleData.Player.Add(player);
-            if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-            {
-                PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            }
-            ChacheManager.ResetLoversChache();
+            ChacheManager.ResetHauntedWolfChache();
         }
 
         internal static void SetHauntedWolfRPC(PlayerControl player)

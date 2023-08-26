@@ -1611,7 +1611,7 @@ static class HudManagerStartPatch
                         killWriter.Write(misfire);
                         killWriter.Write(alwaysKill);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
+                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsHauntedWolf() ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
                         if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
                         Sheriff.ResetKillCooldown();
                         RoleClass.Sheriff.KillMaxCount--;
