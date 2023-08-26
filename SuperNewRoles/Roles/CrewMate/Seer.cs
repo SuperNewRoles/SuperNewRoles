@@ -31,7 +31,8 @@ class Seer
     **/
     public static void ShowFlash(Color color, float duration = 1f)
     {
-        if (Renderer == null || FullScreenRenderer == null) return;
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || Renderer == null || FullScreenRenderer == null) return;
+
         FullScreenRenderer.gameObject.SetActive(true);
         FullScreenRenderer.enabled = true;
         Renderer.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>

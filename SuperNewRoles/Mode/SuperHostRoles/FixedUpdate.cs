@@ -101,10 +101,24 @@ public static class FixedUpdate
         string RoleNameText = ModHelpers.Cs(introData.color, introData.Name);
         Dictionary<byte, string> ChangePlayers = new();
 
-        foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
+        // スターパッシブ能力 [ カリスマ ] の処理
+        if (RoleClass.Celebrity.ChangeRoleView)
         {
-            if (CelebrityPlayer == player) continue;
-            if (!RoleClass.Camouflager.IsCamouflage) ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, CelebrityPlayer.GetDefaultName()));
+            foreach (PlayerControl viewPlayer in RoleClass.Celebrity.ViewPlayers)
+            {
+                if (RoleClass.Camouflager.IsCamouflage) break; // カモフラ中は処理を破棄する
+                if (viewPlayer == player) continue;
+                ChangePlayers.Add(viewPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, viewPlayer.GetDefaultName()));
+            }
+        }
+        else
+        {
+            foreach (PlayerControl celebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
+            {
+                if (RoleClass.Camouflager.IsCamouflage) break; // カモフラ中は処理を破棄する
+                if (celebrityPlayer == player) continue;
+                ChangePlayers.Add(celebrityPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, celebrityPlayer.GetDefaultName()));
+            }
         }
 
         if (Madmate.CheckImpostor(player) ||

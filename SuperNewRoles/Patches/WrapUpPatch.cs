@@ -138,7 +138,7 @@ class WrapUpPatch
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
-        Roles.Crewmate.Celebrity.WrapUp();
+        Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
