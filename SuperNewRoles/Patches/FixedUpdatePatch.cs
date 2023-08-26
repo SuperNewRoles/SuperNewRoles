@@ -74,7 +74,8 @@ public class FixedUpdate
 
     public static void Postfix(PlayerControl __instance)
     {
-        if (PlayerAnimation.GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
+        if (!PlayerAnimation.IsCreatedAnim(__instance.PlayerId))
+            new PlayerAnimation(__instance);
         if (__instance != PlayerControl.LocalPlayer) return;
         SluggerDeadbody.AllFixedUpdate();
         PlayerAnimation.FixedAllUpdate();
