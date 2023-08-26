@@ -8,6 +8,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -170,7 +171,7 @@ public static class RoleClass
         VentMaker.ClearAndReload();
         GhostMechanic.ClearAndReload();
         EvilHacker.ClearAndReload();
-        HauntedWolf.ClearAndReload();
+        HauntedWolf.RoleData.ClearAndReload();
         PositionSwapper.ClearAndReload();
         Tuna.ClearAndReload();
         Mafia.ClearAndReload();
@@ -2062,15 +2063,6 @@ public static class RoleClass
             EvilHackerPlayer = new();
             IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
             IsMyAdmin = false;
-        }
-    }
-    public static class HauntedWolf
-    {
-        public static List<PlayerControl> HauntedWolfPlayer;
-        public static Color32 color = new(50, 0, 25, byte.MaxValue);
-        public static void ClearAndReload()
-        {
-            HauntedWolfPlayer = new();
         }
     }
     public static class PositionSwapper

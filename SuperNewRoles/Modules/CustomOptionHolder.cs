@@ -658,9 +658,6 @@ public class CustomOptionHolder
     public static CustomOption GhostMechanicPlayerCount;
     public static CustomOption GhostMechanicRepairLimit;
 
-    public static CustomRoleOption HauntedWolfOption;
-    public static CustomOption HauntedWolfPlayerCount;
-
     public static CustomRoleOption EvilHackerOption;
     public static CustomOption EvilHackerPlayerCount;
     public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
@@ -1901,9 +1898,6 @@ public class CustomOptionHolder
         PsychometristIsCheckFootprints = Create(405507, false, CustomOptionType.Crewmate, "PsychometristIsCheckFootprints", true, PsychometristOption);
         PsychometristCanCheckFootprintsTime = Create(405508, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
         PsychometristIsReportCheckedDeadBody = Create(405509, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
-
-        HauntedWolfOption = SetupCustomRoleOption(405600, true, RoleId.HauntedWolf);
-        HauntedWolfPlayerCount = Create(405601, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
 
         SpyOption = SetupCustomRoleOption(405700, true, RoleId.Spy);
         SpyPlayerCount = Create(405701, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);

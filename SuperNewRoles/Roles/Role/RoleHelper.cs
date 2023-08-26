@@ -8,6 +8,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Attribute;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -694,7 +695,7 @@ public static class RoleHelpers
                 RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
                 break;
             case RoleId.HauntedWolf:
-                RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
+                HauntedWolf.RoleData.Player.Add(player);
                 break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
@@ -1234,7 +1235,7 @@ public static class RoleHelpers
                 RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.HauntedWolf:
-                RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
+                HauntedWolf.RoleData.Player.RemoveAll(ClearRemove);
                 break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
@@ -1825,7 +1826,7 @@ public static class RoleHelpers
             else if (RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.MayorFriends;
             else if (RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.VentMaker;
             else if (RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilHacker;
-            else if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player)) return RoleId.HauntedWolf;
+            else if (HauntedWolf.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.HauntedWolf;
             else if (RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player)) return RoleId.PositionSwapper;
             else if (RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player)) return RoleId.Tuna;
             else if (RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player)) return RoleId.Mafia;
