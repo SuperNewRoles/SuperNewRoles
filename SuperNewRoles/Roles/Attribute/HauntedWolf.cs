@@ -20,7 +20,7 @@ class HauntedWolf
 
         internal static void SetUpCustomRoleOptions()
         {
-            Option = Create(optionId, true, CustomOptionType.Crewmate, Cs(RoleClass.Lovers.color, "HauntedWolfName"), false, null, isHeader: true);
+            Option = Create(optionId, true, CustomOptionType.Crewmate, Cs(RoleData.color, "HauntedWolfName"), false, null, isHeader: true);
             AssignLate = Create(optionId + 1, true, CustomOptionType.Crewmate, "AssignLateSetting", rates, Option);
             PlayerCount = Create(optionId + 2, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
         }
