@@ -14,13 +14,15 @@ class HauntedWolf
     internal static class CustomOptionData
     {
         const int optionId = 405600;
-        public static CustomRoleOption Option;
+        public static CustomOption Option;
+        public static CustomOption AssignLate;
         public static CustomOption PlayerCount;
 
         internal static void SetUpCustomRoleOptions()
         {
-            Option = SetupCustomRoleOption(optionId, true, RoleId.HauntedWolf);
-            PlayerCount = Create(optionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
+            Option = Create(optionId, true, CustomOptionType.Crewmate, Cs(RoleClass.Lovers.color, "HauntedWolfName"), false, null, isHeader: true);
+            AssignLate = Create(optionId + 1, true, CustomOptionType.Crewmate, "AssignLateSetting", rates, Option);
+            PlayerCount = Create(optionId + 2, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
         }
     }
 
@@ -38,11 +40,11 @@ class HauntedWolf
     {
         internal static void RandomSelect()
         {
-            if (!CustomOptionData.Option.GetBool()) return;
-            if (CustomOptionData.Option.GetSelection() != 10)
+            if (!CustomOptionData.Option.GetBool() || CustomOptionData.AssignLate.GetSelection() == 0) return;
+            if (CustomOptionData.AssignLate.GetSelection() != 10)
             {
                 List<string> lottery = new();
-                var assignLate = CustomOptionData.Option.GetSelection();
+                var assignLate = CustomOptionData.AssignLate.GetSelection();
                 for (int i = 0; i < assignLate; i++)
                 {
                     lottery.Add("Suc");
@@ -66,17 +68,32 @@ class HauntedWolf
                 if (SelectPlayers.Count is not (1 or 0))
                 {
                     List<PlayerControl> listData = new();
-                    for (int i2 = 0; i2 < 2; i2++)
-                    {
-                        var player = ModHelpers.GetRandomIndex(SelectPlayers);
-                        listData.Add(SelectPlayers[player]);
-                        SelectPlayers.RemoveAt(player);
-                    }
-                    RoleHelpers.SetHauntedWolf(listData[0], listData[1]);
-                    RoleHelpers.SetHauntedWolfRPC(listData[0], listData[1]);
+                    var playerIndex = ModHelpers.GetRandomIndex(SelectPlayers);
+                    var playerControl = SelectPlayers[playerIndex];
+                    SelectPlayers.RemoveAt(playerIndex);
+
+                    SetHauntedWolf(playerControl);
+                    SetHauntedWolfRPC(playerControl);
                 }
             }
             ChacheManager.ResetHauntedWolfChache();
+        }
+
+        internal static void SetHauntedWolf(PlayerControl player)
+        {
+            RoleData.Player.Add(player);
+            if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+            ChacheManager.ResetLoversChache();
+        }
+
+        internal static void SetHauntedWolfRPC(PlayerControl player)
+        {
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetHauntedWolf, SendOption.Reliable, -1);
+            Writer.Write(player.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }
     }
 }
