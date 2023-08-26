@@ -6,7 +6,7 @@ using Hazel;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
-using static SuperNewRoles.Modules.CustomOptionData;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Roles.Attribute;
 class HauntedWolf
