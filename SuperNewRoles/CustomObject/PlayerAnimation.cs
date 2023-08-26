@@ -14,7 +14,7 @@ public enum RpcAnimationType
 }
 public class PlayerAnimation
 {
-    public static List<PlayerAnimation> PlayerAnimations = new();
+    public static Dictionary<byte, PlayerAnimation> PlayerAnimations = new();
     public PlayerControl Player;
     public PlayerPhysics Physics;
     public byte PlayerId;
@@ -23,11 +23,15 @@ public class PlayerAnimation
     public SpriteRenderer SpriteRender;
     public static PlayerAnimation GetPlayerAnimation(byte PlayerId)
     {
-        return PlayerAnimations.Find(x => x.PlayerId == PlayerId);
+        return PlayerAnimations.TryGetValue(PlayerId, out PlayerAnimation anim) ? anim : null;
+    }
+    public static bool IsCreatedAnim(byte PlayerId)
+    {
+        return PlayerAnimations.ContainsKey(PlayerId);
     }
     public PlayerAnimation(PlayerControl Player)
     {
-        if (PlayerAnimations.FindAll(x => x.Player != null).Count <= 0) PlayerAnimations = new();
+        if (PlayerAnimations.Values.FirstOrDefault(anim => anim.Player != null) == null) PlayerAnimations = new();
         this.Player = Player;
         if (Player == null)
         {
@@ -41,7 +45,7 @@ public class PlayerAnimation
         transform.SetParent(Player.cosmetics.normalBodySprite.BodySprite.transform.parent);
         transform.localScale = Vector3.one * 0.5f;
         SpriteRender = gameObject.AddComponent<SpriteRenderer>();
-        PlayerAnimations.Add(this);
+        PlayerAnimations.Add(PlayerId, this);
     }
     public void OnDestroy()
     {
@@ -50,7 +54,7 @@ public class PlayerAnimation
             PlayerAnimations = new();
             return;
         }
-        PlayerAnimations.Remove(this);
+        PlayerAnimations.Remove(PlayerId);
     }
     public bool Playing = false;
     public bool IsLoop;
@@ -106,7 +110,7 @@ public class PlayerAnimation
     }
     public static void FixedAllUpdate()
     {
-        foreach (PlayerAnimation Anim in PlayerAnimations.ToArray())
+        foreach (PlayerAnimation Anim in PlayerAnimations.Values)
         {
             Anim.FixedUpdate();
         }
@@ -137,7 +141,6 @@ public class PlayerAnimation
                 else
                 {
                     Playing = false;
-                    Logger.Info($"チェック:{OnAnimationEnd != null}");
                     if (OnAnimationEnd != null) OnAnimationEnd();
                     return;
                 }

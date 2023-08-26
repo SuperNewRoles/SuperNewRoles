@@ -145,7 +145,7 @@ class MeetingSheriff_Patch
     {
         if (AmongUsClient.Instance.AmHost)
         {
-            PlayerAnimation.PlayerAnimations.All(x => { x.RpcAnimation(RpcAnimationType.Stop); return false; });
+            PlayerAnimation.PlayerAnimations.Values.All(x => { x.RpcAnimation(RpcAnimationType.Stop); return false; });
         }
         LadderDead.Reset();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
