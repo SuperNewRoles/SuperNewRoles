@@ -1538,6 +1538,9 @@ public class CustomOptionHolder
         // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
 
         /* |: ========================= Crewmate Settings ========================== :| */
+        MadRolesCanFixComms = Create(500000, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
+        MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
+        MadRolesCanVentMove = Create(500002, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
 
         SheriffOption = SetupCustomRoleOption(400000, true, RoleId.Sheriff);
         SheriffPlayerCount = Create(400001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
@@ -1909,10 +1912,6 @@ public class CustomOptionHolder
         // SetupCrewmateCustomOptions
 
         /* |: ========================= Modifiers Settings ========================== :| */
-
-        MadRolesCanFixComms = Create(500000, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
-        MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
-        MadRolesCanVentMove = Create(500002, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
 
         // SetupModifierCustomOptions
 
