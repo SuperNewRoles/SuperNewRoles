@@ -444,21 +444,16 @@ static class CheckMurderPatch
     {
         Logger.Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
         if (__instance.IsBot() || target.IsBot()) return false;
-        Logger.Info("Bot通過", "CheckMurder");
         if (__instance.IsDead() || target.IsDead()) return false;
-        Logger.Info("死亡通過", "CheckMurder");
         if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek) return true;
         if (!RoleClass.IsStart && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) return false;
-        Logger.Info("非スタート通過", "CheckMurder");
         if (__instance.PlayerId == target.PlayerId)
         {
             Logger.Info($"自爆:{target.name}", "CheckMurder");
             __instance.RpcMurderPlayer(target);
             return false;
         }
-        Logger.Info("自爆通過", "CheckMurder");
         if (!AmongUsClient.Instance.AmHost) return true;
-        Logger.Info("非ホスト通過", "CheckMurder");
         switch (ModeHandler.GetMode())
         {
             case ModeId.Zombie:
