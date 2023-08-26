@@ -426,7 +426,8 @@ public class CustomRoleOption : CustomOption
         {
             Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
         }
-        RoleOptions.Add(RoleId, this);
+        if (!RoleOptions.TryAdd(RoleId, this))
+            Logger.Info(RoleId.ToString()+"を追加できませんでした。");
         this.isHidden = isHidden;
         if (max > 1)
             countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");

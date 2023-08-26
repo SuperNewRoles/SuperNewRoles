@@ -73,7 +73,8 @@ public class IntroData
         {
             GhostRoleData.Add(this);
         }
-        Intros.Add(RoleId,this);
+        if (!Intros.TryAdd(RoleId, this))
+            Logger.Info(RoleId.ToString()+"が追加されませんでした。");
     }
     public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null)
     {
