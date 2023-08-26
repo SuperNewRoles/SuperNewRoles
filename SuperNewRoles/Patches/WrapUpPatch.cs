@@ -125,7 +125,7 @@ class WrapUpPatch
         CustomRoles.OnWrapUp();
         if (AmongUsClient.Instance.AmHost)
         {
-            PlayerAnimation.PlayerAnimations.All(x =>
+            PlayerAnimation.PlayerAnimations.Values.All(x =>
             {
                 x.RpcAnimation(RpcAnimationType.Stop);
                 return false;
