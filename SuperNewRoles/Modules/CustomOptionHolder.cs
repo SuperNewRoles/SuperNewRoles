@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -1942,6 +1943,8 @@ public class CustomOptionHolder
         JumboMaxSize = Create(500303, false, CustomOptionType.Neutral, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
         JumboSpeedUpSize = Create(500304, false, CustomOptionType.Neutral, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
         JumboWalkSoundSize = Create(500305, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
+
+        HauntedWolf.CustomOptionData.SetUpCustomRoleOptions();
 
         /* |: ========================= Roles Settings ========================== :| */
 
