@@ -1276,9 +1276,11 @@ public static class RoleClass
     {
         public static List<PlayerControl> AmnesiacPlayer;
         public static Color32 color = new(125, 125, 125, byte.MaxValue);
+        public static bool ShowArrows;
         public static void ClearAndReload()
         {
             AmnesiacPlayer = new();
+            ShowArrows = CustomOptionHolder.AmnesiacShowArrows.GetBool();
         }
     }
     public static class SideKiller
