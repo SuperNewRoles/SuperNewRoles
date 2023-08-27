@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
@@ -1621,14 +1622,8 @@ public static class RoleHelpers
         RoleId MyRole;
         if (IsChache)
         {
-            try
-            {
-                if (p != null)
-                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-                else
-                    MyRole = RoleId.DefaultRole;
-            }
-            catch { MyRole = RoleId.DefaultRole; }
+            if (p != null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+                MyRole = RoleId.DefaultRole;
         }
         else
         {
@@ -1639,19 +1634,9 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        try
-        {
-            if (p != null)
-                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-            else
-                MyRole = RoleId.DefaultRole;
-        }
-        catch { MyRole = RoleId.DefaultRole; }
-        foreach (RoleId role in roles)
-        {
-            if (role == MyRole) return true;
-        }
-        return false;
+        if (p != null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+            MyRole = RoleId.DefaultRole;
+        return roles.Contains(MyRole);
     }
     public static bool IsRole(this PlayerControl player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
     public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
@@ -1722,8 +1707,7 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            try { return ChacheManager.MyRoleChache[player.PlayerId]; }
-            catch { return RoleId.DefaultRole; }
+            return ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
         try
         {
@@ -1898,7 +1882,6 @@ public static class RoleHelpers
         catch (Exception e)
         {
             SuperNewRolesPlugin.Logger.LogInfo("[RoleHelper]Error:" + e);
-            return RoleId.DefaultRole;
         }
         return RoleId.DefaultRole;
     }
