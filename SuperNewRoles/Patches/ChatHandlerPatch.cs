@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.SuperNewRolesWeb;
@@ -72,10 +75,17 @@ class AddChatPatch
             if (AmongUsClient.Instance.AmHost)
             {
                 Assassin.AddChat(sourcePlayer, chatText);
+                if (!SelectRoleSystem.OnAddChat(sourcePlayer, chatText)) return false;
             }
         }
 
-        var Commands = chatText.Split(" ");
+        var Commandsa = chatText.Split(" ");
+        var Commandsb = new List<string>();
+        foreach (string com in Commandsa)
+        {
+            Commandsb.AddRange(com.Split("　"));
+        }
+        var Commands = Commandsb.ToArray();
         if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
         {
@@ -91,6 +101,37 @@ class AddChatPatch
             if (sourcePlayer.AmOwner) sendPlayer = null;
             else sendPlayer = sourcePlayer;
             SendCommand(sendPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+            return false;
+        }
+        else if (
+            Commands[0].Equals("/BattleRoles", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/btr", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (Commands.Length > 1)
+            {
+                var data = SelectRoleSystem.RoleNames.FirstOrDefault(x => x.Key.Equals(Commands[1], StringComparison.OrdinalIgnoreCase));
+                //nullチェック
+                if (data.Equals(default(KeyValuePair<string, RoleId>)))
+                {
+                    SendCommand(sourcePlayer, ModTranslation.GetString("BattleRoyalRoleNoneText"), SelectRoleSystem.BattleRoyalCommander);
+                }
+                else
+                {
+                    IntroData intro = IntroData.GetIntroData(data.Value, IsImpostorReturn: true);
+                    SendCommand(sourcePlayer, intro.Description, "<size=200%>"+ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString($"{intro.NameKey}Name"))+"</size>");
+                }
+            }
+            else
+            {
+                string text = ModTranslation.GetString("BattleRoyalBattleRolesCommandText") + "\n\n";
+                foreach (var role in Enum.GetValues(typeof(BattleRoles)))
+                {
+                    IntroData intro = IntroData.GetIntroData((RoleId)(BattleRoles)role, IsImpostorReturn: true);
+                    text += $"{ModTranslation.GetString(intro.NameKey + "Name")}({(BattleRoles)role})\n";
+                }
+                SendCommand(sourcePlayer, text, SelectRoleSystem.BattleRoyalCommander);
+            }
             return false;
         }
         else if (
@@ -307,7 +348,7 @@ class AddChatPatch
         string text = "\n";
         IntroData intro = option.Intro;
         text += GetTeamText(intro.TeamType) + "\n";
-        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
+        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId) + "」\n";
         text += intro.Description + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
         text += GetOptionText(option, intro);
@@ -464,6 +505,22 @@ class AddChatPatch
         {
             AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command).WrapToIl2Cpp());
         }
+    }
+
+    /// <summary>
+    /// システムメッセージ等を送信する。
+    /// </summary>
+    /// <param name="target">送信先</param>
+    /// <param name="infoName">情報タイトル(名前で表記)</param>
+    /// <param name="infoContents">情報本文(チャットで表記)</param>
+    /// <param name="color">文字色, 16進数のcolorコードで指定([#FFFFFF]等)</param>
+    public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white")
+    {
+        string line = "|--------------------------------------------------------|";
+        string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
+        string contents = $"\n{infoContents}\n　\n";
+
+        SendCommand(target, contents, name);
     }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
     {

@@ -7,6 +7,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -98,6 +99,8 @@ class WrapUpPatch
         {
             exiled = null;
         }
+
+        SelectRoleSystem.OnWrapUp();
 
         Shielder.WrapUp();
         Kunoichi.WrapUp();

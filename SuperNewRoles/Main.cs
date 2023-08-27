@@ -62,6 +62,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ChacheManager.Load();
         WebConstants.Load();
         CustomCosmetics.CustomColors.Load();
+        ModDownloader.Load();
         CustomOptionHolder.Load();
         AccountLoginMenu.Initialize();
         // All Load() End
