@@ -125,7 +125,7 @@ class WrapUpPatch
         CustomRoles.OnWrapUp();
         if (AmongUsClient.Instance.AmHost)
         {
-            PlayerAnimation.PlayerAnimations.All(x =>
+            PlayerAnimation.PlayerAnimations.Values.All(x =>
             {
                 x.RpcAnimation(RpcAnimationType.Stop);
                 return false;
@@ -138,7 +138,7 @@ class WrapUpPatch
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
-        Roles.Crewmate.Celebrity.WrapUp();
+        Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {

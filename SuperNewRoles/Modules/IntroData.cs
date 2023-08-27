@@ -28,12 +28,12 @@ public class TeamData
 }
 public class IntroData
 {
-    public static List<IntroData> IntroList = new();
+    public static Dictionary<RoleId, IntroData> Intros = new();
     public static Dictionary<RoleId, IntroData> IntroDataCache = new();
     public static List<IntroData> GhostRoleData = new();
     public string NameKey;
     public string Name;
-    public Int16 TitleNum;
+    public short TitleNum;
     public string TitleDesc
     {
         get
@@ -73,7 +73,8 @@ public class IntroData
         {
             GhostRoleData.Add(this);
         }
-        IntroList.Add(this);
+        if (!Intros.TryAdd(RoleId, this))
+            Logger.Info(RoleId.ToString()+"が追加されませんでした。");
     }
     public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null)
     {
@@ -85,22 +86,20 @@ public class IntroData
         {
             return p == null ? JumboIntro : p.IsImpostor() ? EvilJumboIntro : NiceJumboIntro;
         }
-        try
+        if(IntroDataCache.TryGetValue(RoleId, out IntroData introData))
+            return introData;
+        else
         {
-            return IntroDataCache[RoleId];
-        }
-        catch
-        {
-            var data = IntroList.FirstOrDefault((_) => _.RoleId == RoleId);
-            if (data == null) data = CrewmateIntro;
+            if (!Intros.TryGetValue(RoleId, out IntroData data))
+                data = CrewmateIntro;
             IntroDataCache[RoleId] = data;
             return data;
         }
     }
     public static CustomRoleOption GetOption(RoleId roleId)
     {
-        var option = CustomRoleOption.RoleOptions.FirstOrDefault((_) => _.RoleId == roleId);
-        return option;
+        CustomRoleOption.RoleOptions.TryGetValue(roleId, out CustomRoleOption opt);
+        return opt;
     }
     public static string GetTitle(string name, Int16 num)
     {
@@ -194,7 +193,7 @@ public class IntroData
     public static IntroData DarkKillerIntro = new("DarkKiller", RoleClass.DarkKiller.color, 1, RoleId.DarkKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SeerIntro = new("Seer", RoleClass.Seer.color, 1, RoleId.Seer);
     public static IntroData MadSeerIntro = new("MadSeer", RoleClass.MadSeer.color, 1, RoleId.MadSeer, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData EvilSeerIntro = new("EvilSeer", RoleClass.EvilSeer.color, 1, RoleId.EvilSeer, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData EvilSeerIntro = new("EvilSeer", EvilSeer.RoleData.color, 1, RoleId.EvilSeer, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData RemoteSheriffIntro = new("RemoteSheriff", RoleClass.RemoteSheriff.color, 1, RoleId.RemoteSheriff, IntroSound: RoleTypes.Engineer);
     public static IntroData TeleportingJackalIntro = new("TeleportingJackal", RoleClass.TeleportingJackal.color, 1, RoleId.TeleportingJackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MadMakerIntro = new("MadMaker", RoleClass.MadMaker.color, 1, RoleId.MadMaker, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);

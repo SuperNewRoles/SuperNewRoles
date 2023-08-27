@@ -87,7 +87,7 @@ class RoleSystem
         AllRoleSetClass.Neutnotonepar = new();
         AllRoleSetClass.Crewonepar = new();
         AllRoleSetClass.Crewnotonepar = new();
-        foreach (IntroData intro in IntroData.IntroList)
+        foreach (IntroData intro in IntroData.Intros.Values)
         {
             if (intro.RoleId is
                 RoleId.Workperson or RoleId.HomeSecurityGuard or RoleId.Tuna or RoleId.ToiletFan)

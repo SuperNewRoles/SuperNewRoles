@@ -78,8 +78,7 @@ public class SetNamesClass
     {
         if (p.IsBot()) return;
         bool commsActive = RoleHelpers.IsComms();
-        TextMeshPro playerInfo = PlayerInfos.ContainsKey(p.PlayerId) ? PlayerInfos[p.PlayerId] : null;
-        if (playerInfo == null)
+        if (!PlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro playerInfo))
         {
             playerInfo = UnityEngine.Object.Instantiate(p.NameText(), p.NameText().transform.parent);
             playerInfo.fontSize *= 0.75f;
@@ -91,8 +90,7 @@ public class SetNamesClass
         playerInfo.transform.localPosition = p.NameText().transform.localPosition + Vector3.up * 0.2f;
 
         PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
-        TMPro.TextMeshPro meetingInfo = MeetingPlayerInfos.ContainsKey(p.PlayerId) ? MeetingPlayerInfos[p.PlayerId] : null;
-        if (meetingInfo == null && playerVoteArea != null)
+        if (!MeetingPlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro meetingInfo) && playerVoteArea != null)
         {
             meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
             meetingInfo.transform.localPosition += Vector3.down * 0.1f;
@@ -112,16 +110,8 @@ public class SetNamesClass
         {
             if (!p.IsClearTask())
             {
-                if (commsActive)
-                {
-                    var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                    TaskText += ModHelpers.Cs(Color.yellow, "(?/" + all + ")");
-                }
-                else
-                {
-                    var (Complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                    TaskText += ModHelpers.Cs(Color.yellow, "(" + Complete + "/" + all + ")");
-                }
+                var (complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                TaskText += ModHelpers.Cs(Color.yellow, "("+(commsActive?"?":complete.ToString())+"/"+all.ToString());
             }
         }
         catch { }
@@ -299,7 +289,7 @@ public class SetNamesClass
     }
     public static void DemonSet()
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon) || DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon, RoleId.God) || DefaultGhostSeeRoles())
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -313,7 +303,7 @@ public class SetNamesClass
     }
     public static void ArsonistSet()
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist) || DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist, RoleId.God) || DefaultGhostSeeRoles())
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -327,20 +317,13 @@ public class SetNamesClass
     }
     public static void CelebritySet()
     {
-        if (RoleClass.Celebrity.ChangeRoleView)
-        {
-            foreach (PlayerControl p in RoleClass.Celebrity.ViewPlayers)
+            foreach (PlayerControl p in
+                RoleClass.Celebrity.ChangeRoleView ?
+                RoleClass.Celebrity.ViewPlayers :
+                RoleClass.Celebrity.CelebrityPlayer)
             {
                 SetPlayerNameColor(p, RoleClass.Celebrity.color);
             }
-        }
-        else
-        {
-            foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
-            {
-                SetPlayerNameColor(p, RoleClass.Celebrity.color);
-            }
-        }
     }
     public static void SatsumaimoSet()
     {
@@ -408,24 +391,100 @@ public class SetNameUpdate
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.IsImpostor() || p.IsRole(RoleId.Spy, RoleId.Egoist))
+                    if (p.IsImpostorAddedFake())
                     {
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                     }
                 }
             }
-            if (LocalRole == RoleId.Finder)
+            switch (LocalRole)
             {
-                if (RoleClass.Finder.IsCheck)
-                {
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                case RoleId.Finder:
+                    if (RoleClass.Finder.IsCheck)
                     {
-                        if (player.IsMadRoles())
+                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                         {
-                            SetNamesClass.SetPlayerNameColor(player, Color.red);
+                            if (player.IsMadRoles())
+                            {
+                                SetNamesClass.SetPlayerNameColor(player, Color.red);
+                            }
                         }
                     }
-                }
+                    break;
+                case RoleId.Dependents:
+                    foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                    }
+                    break;
+                case RoleId.Vampire:
+                    foreach (PlayerControl p in RoleClass.Dependents.DependentsPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                    }
+                    break;
+                case RoleId.PartTimer:
+                    if (RoleClass.PartTimer.IsLocalOn)
+                    {
+                        if (CustomOptionHolder.PartTimerIsCheckTargetRole.GetBool())
+                        {
+                            SetNamesClass.SetPlayerRoleNames(RoleClass.PartTimer.CurrentTarget);
+                            SetNamesClass.SetPlayerNameColors(RoleClass.PartTimer.CurrentTarget);
+                        }
+                        else
+                        {
+                            SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
+                        }
+                    }
+                    break;
+                case RoleId.Fox:
+                case RoleId.FireFox:
+                    List<PlayerControl> foxs = new(RoleClass.Fox.FoxPlayer);
+                    foxs.AddRange(FireFox.FireFoxPlayer);
+                    foreach (PlayerControl p in foxs)
+                    {
+                        if (FireFox.FireFoxIsCheckFox.GetBool() || p.IsRole(PlayerControl.LocalPlayer.GetRole()))
+                        {
+                            SetNamesClass.SetPlayerRoleNames(p);
+                            SetNamesClass.SetPlayerNameColors(p);
+                        }
+                    }
+                    break;
+                case RoleId.TheFirstLittlePig:
+                case RoleId.TheSecondLittlePig:
+                case RoleId.TheThirdLittlePig:
+                    foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+                    {
+                        if (!players.Contains(PlayerControl.LocalPlayer)) continue;
+                        foreach (PlayerControl p in players)
+                        {
+                            SetNamesClass.SetPlayerRoleNames(p);
+                            SetNamesClass.SetPlayerNameColors(p);
+                        }
+                        break;
+                    }
+                    break;
+                case RoleId.OrientalShaman:
+                    foreach (var date in OrientalShaman.OrientalShamanCausative)
+                    {
+                        if (date.Key != PlayerControl.LocalPlayer.PlayerId) continue;
+                        SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Value));
+                        SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Value));
+                    }
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (OrientalShaman.IsKiller(player))
+                            SetNamesClass.SetPlayerNameColors(player);
+                    }
+                    break;
+                case RoleId.ShermansServant:
+                    foreach (var date in OrientalShaman.OrientalShamanCausative)
+                    {
+                        if (date.Value != PlayerControl.LocalPlayer.PlayerId) continue;
+                        SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Key));
+                        SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Key));
+                    }
+                    break;
             }
             if (PlayerControl.LocalPlayer.IsImpostor())
             {
@@ -434,8 +493,7 @@ public class SetNameUpdate
                     SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                 }
             }
-            if (PlayerControl.LocalPlayer.IsJackalTeamJackal() ||
-                PlayerControl.LocalPlayer.IsJackalTeamSidekick() ||
+            if (PlayerControl.LocalPlayer.IsJackalTeam() ||
                 JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -446,84 +504,6 @@ public class SetNameUpdate
                         SetNamesClass.SetPlayerRoleNames(p);
                         SetNamesClass.SetPlayerNameColors(p);
                     }
-                }
-            }
-            if (LocalRole == RoleId.Dependents)
-            {
-                foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer)
-                {
-                    SetNamesClass.SetPlayerNameColors(p);
-                }
-            }
-            else if (LocalRole == RoleId.Vampire)
-            {
-                foreach (PlayerControl p in RoleClass.Dependents.DependentsPlayer)
-                {
-                    SetNamesClass.SetPlayerNameColors(p);
-                }
-            }
-            else if (LocalRole == RoleId.PartTimer)
-            {
-                if (RoleClass.PartTimer.IsLocalOn)
-                {
-                    if (CustomOptionHolder.PartTimerIsCheckTargetRole.GetBool())
-                    {
-                        SetNamesClass.SetPlayerRoleNames(RoleClass.PartTimer.CurrentTarget);
-                        SetNamesClass.SetPlayerNameColors(RoleClass.PartTimer.CurrentTarget);
-                    }
-                    else
-                    {
-                        SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
-                    }
-                }
-            }
-            else if (LocalRole is RoleId.Fox or RoleId.FireFox)
-            {
-                List<PlayerControl> foxs = new(RoleClass.Fox.FoxPlayer);
-                foxs.AddRange(FireFox.FireFoxPlayer);
-                foreach (PlayerControl p in foxs)
-                {
-                    if (p.IsRole(PlayerControl.LocalPlayer.GetRole()) || FireFox.FireFoxIsCheckFox.GetBool())
-                    {
-                        SetNamesClass.SetPlayerRoleNames(p);
-                        SetNamesClass.SetPlayerNameColors(p);
-                    }
-                }
-            }
-            else if (LocalRole is RoleId.TheFirstLittlePig or RoleId.TheSecondLittlePig or RoleId.TheThirdLittlePig)
-            {
-                foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
-                {
-                    if (players.TrueForAll(x => x.PlayerId != PlayerControl.LocalPlayer.PlayerId)) continue;
-                    foreach (PlayerControl p in players)
-                    {
-                        SetNamesClass.SetPlayerRoleNames(p);
-                        SetNamesClass.SetPlayerNameColors(p);
-                    }
-                    break;
-                }
-            }
-            else if (LocalRole is RoleId.OrientalShaman)
-            {
-                foreach (var date in OrientalShaman.OrientalShamanCausative)
-                {
-                    if (date.Key != PlayerControl.LocalPlayer.PlayerId) continue;
-                    SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Value));
-                    SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Value));
-                }
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                {
-                    if (OrientalShaman.IsKiller(player))
-                        SetNamesClass.SetPlayerNameColors(player);
-                }
-            }
-            else if (LocalRole is RoleId.ShermansServant)
-            {
-                foreach (var date in OrientalShaman.OrientalShamanCausative)
-                {
-                    if (date.Value != PlayerControl.LocalPlayer.PlayerId) continue;
-                    SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Key));
-                    SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Key));
                 }
             }
             SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
@@ -544,7 +524,7 @@ public class SetNameUpdate
         }
         else
         {
-            Roles.Neutral.Pavlovsdogs.SetNameUpdate();
+            Pavlovsdogs.SetNameUpdate();
             SetNamesClass.ArsonistSet();
             SetNamesClass.DemonSet();
             SetNamesClass.CelebritySet();
