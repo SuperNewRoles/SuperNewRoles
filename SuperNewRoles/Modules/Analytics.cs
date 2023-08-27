@@ -81,7 +81,7 @@ public static class Analytics
             Options = Options.Substring(0, Options.Length - 1);
         }
 
-        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions)
+        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
         {
             if (opt.GetSelection() == 0) continue;
             ActivateRole += $"{opt.RoleId},";

@@ -169,7 +169,7 @@ class Guesser
 
         int ind = 0;
         bool canCrewShot = PlayerControl.LocalPlayer.GetRole() == RoleId.NiceGuesser ? CustomOptionHolder.NiceGuesserCanShotCrew.GetBool() : CustomOptionHolder.EvilGuesserCanShotCrew.GetBool();
-        foreach (IntroData roleInfo in IntroData.IntroList)
+        foreach (IntroData roleInfo in IntroData.Intros.Values)
         {
             if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||

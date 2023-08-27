@@ -48,7 +48,7 @@ public static class MatchMaker
         data["type"] = "updateoption";
         string ActiveRole = "";
         List<string> ActivateRoles = new();
-        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions)
+        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
         {
             if (opt.GetSelection() == 0) continue;
             if (opt.IsHidden()) continue;
@@ -134,7 +134,7 @@ public static class MatchMaker
         var data = CreateBaseData();
         string ActiveRole = "";
         List<string> ActivateRoles = new();
-        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions)
+        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
         {
             if (opt.GetSelection() == 0) continue;
             if (opt.IsHidden()) continue;

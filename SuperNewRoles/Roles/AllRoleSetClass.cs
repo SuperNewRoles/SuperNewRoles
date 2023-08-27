@@ -1108,7 +1108,7 @@ class AllRoleSetClass
         Neutnotonepar = new();
         Crewonepar = new();
         Crewnotonepar = new();
-        foreach (IntroData intro in IntroData.IntroList)
+        foreach (IntroData intro in IntroData.Intros.Values)
         {
             if (intro.RoleId != RoleId.DefaultRole &&
                 intro.RoleId != RoleId.Revolutionist &&

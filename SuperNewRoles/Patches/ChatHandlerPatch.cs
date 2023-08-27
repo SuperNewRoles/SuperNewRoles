@@ -318,7 +318,7 @@ class AddChatPatch
             return;
         }
         List<CustomRoleOption> EnableOptions = new();
-        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions.Values)
         {
             if (!option.IsRoleEnable) continue;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
