@@ -81,7 +81,7 @@ public class IntroData
         }
         IntroList.Add(this);
     }
-    public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null)
+    public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)
     {
         if (RoleId is RoleId.DefaultRole or RoleId.Bestfalsecharge)
         {
