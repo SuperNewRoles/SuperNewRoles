@@ -110,7 +110,7 @@ public class SetNamesClass
         string TaskText = "";
         try
         {
-            if (!p.IsUseTaskTrigger())
+            if (p.IsUseTaskTrigger())
             {
                 if (commsActive)
                 {
