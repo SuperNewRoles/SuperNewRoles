@@ -284,7 +284,7 @@ public static class FixedUpdate
         }
 
         string TaskText = "";
-        if (!player.IsClearTask())
+        if (!player.IsUseTaskTrigger())
         {
             try
             {

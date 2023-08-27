@@ -1529,6 +1529,10 @@ public static class RoleHelpers
         }
         return IsTaskClear;
     }
+
+    internal static bool IsUseTaskTrigger(this PlayerControl player)
+        => !player.IsClearTask() || Patches.SelectTask.GetHaveTaskManageAbility(player.GetRole());
+
     public static bool IsUseVent(this PlayerControl player)
     {
         RoleId role = player.GetRole();
