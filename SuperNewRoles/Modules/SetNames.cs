@@ -114,7 +114,7 @@ public class SetNamesClass
             if (!p.IsClearTask())
             {
                 var (complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                TaskText += ModHelpers.Cs(Color.yellow, "("+(commsActive?"?":complete.ToString())+"/"+all.ToString());
+                TaskText += ModHelpers.Cs(Color.yellow, "(" + (commsActive ? "?" : complete.ToString()) + "/" + all.ToString() + ")");
             }
         }
         catch { }
