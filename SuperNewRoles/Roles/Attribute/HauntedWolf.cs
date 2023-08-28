@@ -17,12 +17,14 @@ class HauntedWolf
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption IsAssignMadAndFriendRoles;
+        public static CustomOption IsReverseSheriffDecision;
 
         internal static void SetUpCustomRoleOptions()
         {
             Option = new(optionId, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleData.color, 1);
             PlayerCount = Create(optionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
-            IsAssignMadAndFriendRoles = Create(optionId + 4, true, CustomOptionType.Crewmate, "HauntedWolfIsAssignMadAndFriendRoles", true, Option);
+            IsAssignMadAndFriendRoles = Create(optionId + 2, true, CustomOptionType.Crewmate, "HauntedWolfIsAssignMadAndFriendRoles", true, Option);
+            IsReverseSheriffDecision = Create(optionId + 3, true, CustomOptionType.Crewmate, "HauntedWolfIsReverseSheriffDecision", true, Option);
         }
     }
 

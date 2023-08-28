@@ -78,6 +78,18 @@ class Sheriff
                 isQuarreledKill = CustomOptionHolder.MeetingSheriffQuarreledKill.GetBool();
                 break;
         }
+
+        // シェリフが狼憑きであり設定が有効なら, キル判定を反転する
+        if (sheriff.IsHauntedWolf() && Attribute.HauntedWolf.CustomOptionData.IsReverseSheriffDecision.GetBool())
+        {
+            isImpostorKill ^= true;
+            isMadRolesKill ^= true;
+            isNeutralKill ^= true;
+            isFriendRolesKill ^= true;
+            isLoversKill ^= true;
+            isQuarreledKill ^= true;
+        }
+
         if ((targetRoleData == TeamRoleType.Impostor) || target.IsHauntedWolf()) return isImpostorKill; // インポスター、狼付きは設定がimp設定が有効な時切れる
         if (target.IsMadRoles()
             || target.IsRole(RoleId.MadKiller)
