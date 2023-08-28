@@ -311,8 +311,10 @@ public static class FixedUpdate
             }
             catch { }
         }
+
         bool IsDemonVIew = false;
         bool IsArsonistVIew = false;
+        string attributeRoleName = "";
         if ((SetNamesClass.DefaultGhostSeeRoles(player) || player.IsRole(RoleId.God)) && !IsUnchecked)
         {
             if (Demon.IsViewIcon(player))
@@ -330,8 +332,16 @@ public static class FixedUpdate
                 if (RoleClass.SatsumaAndImo.TeamNumber == 1) { MySuffix += ModHelpers.Cs(Palette.White, " (C)"); }
                 else { MySuffix += ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"); }
             }
-            if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>)" + ModHelpers.Cs(introData.color, Name + MySuffix);
-            else NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>)" + ModHelpers.Cs(introData.color, MySuffix);
+            // FIXME : SHRにおいて重複役の名前変更の共通処理が完成していない。
+            if (SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.Player.Count != 0)
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.IsHauntedWolf()) attributeRoleName += " + " + ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"));
+                }
+            }
+            if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + attributeRoleName + TaskText + "</size>)" + ModHelpers.Cs(introData.color, Name + MySuffix);
+            else NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + attributeRoleName + TaskText + "</size>)" + ModHelpers.Cs(introData.color, MySuffix);
         }
         else if (player.IsAlive() || IsUnchecked)
         {
@@ -348,8 +358,8 @@ public static class FixedUpdate
                     IsArsonistVIew = true;
                 }
             }
-            if (!RoleClass.Camouflager.IsCamouflage) NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, Name + MySuffix);
-            else NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, MySuffix);
+            if (!RoleClass.Camouflager.IsCamouflage) NewName = "<size=75%>" + RoleNameText + attributeRoleName + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, Name + MySuffix);
+            else NewName = "<size=75%>" + RoleNameText + attributeRoleName + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, MySuffix);
             SuperNewRolesPlugin.Logger.LogInfo(NewName);
         }
         if (!player.IsMod())
