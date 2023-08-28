@@ -379,7 +379,6 @@ WerewolfAbilityTimeSetting,Ability Time,能力使用タイム,能力持续时间
 WerewolfAbilityTime,{0} seconds remaining until the end of the ability use time,能力使用タイムが終了するまで残り{0}秒,能力持续时间还剩{0}秒,能力持續時間還剩{0}秒
 HauntedWolfName,HauntedWolf,狼憑き,混血儿,混血兒
 HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな,别让其他船员起疑,別讓其他船員起疑
-AssignLateSetting,Probability of being assigned,アサインされる確率
 PlayerCountMessage,Players,人,名,名
 DebugModeOnText,<color=#828282>DebugMode</color>:ON,<color=#828282>デバッグモード</color>が有効です,启用<color=#828282>调试模式</color>,啟用<color=#828282>除錯模式</color>
 BattleRoyalRemaining,Remaining until kills can be made,キルができるようになるまで残り,允许击杀时的剩余人数,允許擊殺時的剩餘人數

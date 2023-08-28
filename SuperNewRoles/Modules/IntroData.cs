@@ -237,6 +237,7 @@ public class IntroData
     public static IntroData SpelunkerIntro = new("Spelunker", RoleClass.Spelunker.color, 1, RoleId.Spelunker, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SuicidalIdeationIntro = new("SuicidalIdeation", RoleClass.SuicidalIdeation.color, 1, RoleId.SuicidalIdeation, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData HitmanIntro = new("Hitman", RoleClass.Hitman.color, 1, RoleId.Hitman, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData HauntedWolfIntro = new("HauntedWolf", HauntedWolf.RoleData.color, 1, RoleId.HauntedWolf);
     public static IntroData MatryoshkaIntro = new("Matryoshka", RoleClass.Matryoshka.color, 1, RoleId.Matryoshka, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData NunIntro = new("Nun", RoleClass.Nun.color, 1, RoleId.Nun, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData PsychometristIntro = new("Psychometrist", RoleClass.Psychometrist.color, 1, RoleId.Psychometrist, IntroSound: RoleTypes.Scientist);

@@ -14,15 +14,13 @@ class HauntedWolf
     internal static class CustomOptionData
     {
         const int optionId = 405600;
-        public static CustomOption Option;
-        public static CustomOption AssignLate;
+        public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
 
         internal static void SetUpCustomRoleOptions()
         {
-            Option = Create(optionId, true, CustomOptionType.Crewmate, Cs(RoleData.color, "HauntedWolfName"), false, null, isHeader: true);
-            AssignLate = Create(optionId + 1, true, CustomOptionType.Crewmate, "AssignLateSetting", rates, Option);
-            PlayerCount = Create(optionId + 2, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
+            Option = new(optionId, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleData.color, 1);
+            PlayerCount = Create(optionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
         }
     }
 
@@ -40,11 +38,11 @@ class HauntedWolf
     {
         internal static void RandomSelect()
         {
-            if (!CustomOptionData.Option.GetBool() || CustomOptionData.AssignLate.GetSelection() == 0) return;
-            if (CustomOptionData.AssignLate.GetSelection() != 10)
+            if (CustomOptionData.Option.GetSelection() == 0) return;
+            if (CustomOptionData.Option.GetSelection() != 10)
             {
                 List<string> lottery = new();
-                var assignLate = CustomOptionData.AssignLate.GetSelection();
+                var assignLate = CustomOptionData.Option.GetSelection();
                 for (int i = 0; i < assignLate; i++)
                 {
                     lottery.Add("Suc");
@@ -61,7 +59,9 @@ class HauntedWolf
             List<PlayerControl> SelectPlayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.IsCrew() && !p.IsBot()) SelectPlayers.Add(p);
+                if (!p.IsCrew() || p.IsBot()) continue;
+                if (p.IsMadRoles() || p.IsFriendRoles()) continue;
+                SelectPlayers.Add(p);
             }
             for (int i = 0; i < CustomOptionData.PlayerCount.GetFloat(); i++)
             {
