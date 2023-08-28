@@ -165,7 +165,7 @@ public enum RoleId
     Cracker,
     WaveCannon,
     WaveCannonJackal,
-    SideKickWaveCannon,
+    SidekickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -193,7 +193,6 @@ public enum RoleId
     TheThirdLittlePig,
     OrientalShaman,
     ShermansServant,
-    SidekickWaveCannon,
     Balancer,
     Pteranodon,
     //RoleId
