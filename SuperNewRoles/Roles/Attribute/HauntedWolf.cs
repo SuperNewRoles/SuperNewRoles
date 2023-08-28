@@ -16,11 +16,13 @@ class HauntedWolf
         const int optionId = 405600;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
+        public static CustomOption IsAssignMadAndFriendRoles;
 
         internal static void SetUpCustomRoleOptions()
         {
             Option = new(optionId, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleData.color, 1);
             PlayerCount = Create(optionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
+            IsAssignMadAndFriendRoles = Create(optionId + 4, true, CustomOptionType.Crewmate, "HauntedWolfIsAssignMadAndFriendRoles", true, Option);
         }
     }
 
@@ -60,7 +62,7 @@ class HauntedWolf
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (!p.IsCrew() || p.IsBot()) continue;
-                if (p.IsMadRoles() || p.IsFriendRoles()) continue;
+                if (CustomOptionData.IsAssignMadAndFriendRoles.GetBool() && (p.IsMadRoles() || p.IsFriendRoles())) continue;
                 SelectPlayers.Add(p);
             }
             for (int i = 0; i < CustomOptionData.PlayerCount.GetFloat(); i++)
