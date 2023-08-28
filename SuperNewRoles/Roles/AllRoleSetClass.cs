@@ -1118,6 +1118,29 @@ class AllRoleSetClass
             }
         }
     }
+    /// <summary>
+    /// 通常の方法で抽選が可能な役職かを判定する。
+    /// </summary>
+    /// <param name="id">判定対象のRoleId</param>
+    /// <returns>true = 通常抽選可能, false = 通常抽選不可 (特殊な抽選, アサイン形式の役) </returns>
+    internal static bool CanRoleIdElected(RoleId id)
+    {
+        return id switch
+        {
+            RoleId.DefaultRole => false,
+            RoleId.GM => false,
+            RoleId.HauntedWolf => false,
+            RoleId.Sidekick or RoleId.SidekickSeer or RoleId.SidekickWaveCannon => true,
+            RoleId.Pavlovsdogs => false,
+            RoleId.ShermansServant => false,
+            RoleId.Revolutionist => false,
+            RoleId.Assassin => false,
+            RoleId.Jumbo => false,
+            RoleId.Nun or RoleId.Pteranodon => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
+            RoleId.Werewolf or RoleId.Knight => ModeHandler.IsMode(ModeId.Werewolf),
+            _ => true,
+        };
+    }
     public static void OneOrNotListSet()
     {
         Impoonepar = new();
@@ -1128,16 +1151,7 @@ class AllRoleSetClass
         Crewnotonepar = new();
         foreach (IntroData intro in IntroData.IntroList)
         {
-            if (intro.RoleId != RoleId.DefaultRole &&
-                intro.RoleId != RoleId.Revolutionist &&
-                intro.RoleId != RoleId.Assassin &&
-                (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
-                && !intro.IsGhostRole
-                && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
-                && intro.RoleId is not RoleId.GM
-                && intro.RoleId != RoleId.Pavlovsdogs
-                && intro.RoleId != RoleId.Jumbo
-                && intro.RoleId != RoleId.ShermansServant)
+            if (!intro.IsGhostRole && CanRoleIdElected(intro.RoleId))
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null) continue;

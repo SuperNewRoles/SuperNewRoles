@@ -838,7 +838,7 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
                 WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
                 break;
-            case RoleId.SideKickWaveCannon:
+            case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 break;
             case RoleId.Conjurer:
@@ -903,10 +903,6 @@ public static class RoleHelpers
                 break;
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.Add(player);
-                break;
-            case RoleId.SidekickWaveCannon:
-                WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
-                //SidekickWaveCannon.allPlayers.Add(player);
                 break;
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.Add(player);
@@ -1368,7 +1364,7 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
                 WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.SideKickWaveCannon:
+            case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Conjurer:
