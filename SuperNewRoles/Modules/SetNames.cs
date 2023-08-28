@@ -4,6 +4,7 @@ using System.Linq;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
@@ -74,7 +75,7 @@ public class SetNamesClass
     public static Dictionary<byte, TextMeshPro> PlayerInfos = new();
     public static Dictionary<byte, TextMeshPro> MeetingPlayerInfos = new();
 
-    public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames, Color? GhostRoleColor = null, string GhostRoleNames = "")
+    public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames, Dictionary<string, (Color, bool)> attributeRoles, Color? GhostRoleColor = null, string GhostRoleNames = "")
     {
         if (p.IsBot()) return;
         bool commsActive = RoleHelpers.IsComms();
@@ -124,6 +125,15 @@ public class SetNamesClass
         {
             playerInfoText = $"{CustomOptionHolder.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
         }
+
+        if (attributeRoles.Count != 0)
+        {
+            foreach (var kvp in attributeRoles)
+            {
+                if (!kvp.Value.Item2) continue;
+                playerInfoText += $" + {CustomOptionHolder.Cs(kvp.Value.Item1, kvp.Key)}";
+            }
+        }
         playerInfoText += TaskText;
         meetingInfoText = playerInfoText.Trim();
         playerInfo.text = playerInfoText;
@@ -137,6 +147,7 @@ public class SetNamesClass
         Color roleColors;
         string GhostroleNames = "";
         Color? GhostroleColors = null;
+
         var role = p.GetRole();
         if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.IsAlive()))
         {
@@ -185,6 +196,7 @@ public class SetNamesClass
             roleNames = introData.Name;
             roleColors = introData.color;
         }
+
         var GhostRole = p.GetGhostRole();
         if (GhostRole != RoleId.DefaultRole)
         {
@@ -192,8 +204,30 @@ public class SetNamesClass
             GhostroleNames = GhostIntro.Name;
             GhostroleColors = GhostIntro.color;
         }
-        SetPlayerRoleInfoView(p, roleColors, roleNames, GhostroleColors, GhostroleNames);
+
+        Dictionary<string, (Color, bool)> attributeRoles = new(AttributeRoleNameSet(p));
+
+        SetPlayerRoleInfoView(p, roleColors, roleNames, attributeRoles, GhostroleColors, GhostroleNames);
     }
+
+    /// <summary>
+    /// 重複役職の役職名を追加する。
+    /// key = 役職名, value.Item1 = 役職カラー, value.Item2 = 役職名の表示条件を達しているか,
+    /// </summary>
+    /// <param name="player">役職名を表示したいプレイヤー</param>
+    /// <param name="seePlayer">役職名を見るプレイヤー</param>
+    internal static Dictionary<string, (Color, bool)> AttributeRoleNameSet(PlayerControl player, PlayerControl seePlayer = null)
+    {
+        Dictionary<string, (Color, bool)> attributeRoles = new();
+        if (player.IsHauntedWolf())
+        {
+            if (seePlayer == null) seePlayer = PlayerControl.LocalPlayer;
+            var isSeeing = seePlayer.IsDead() || seePlayer.IsRole(RoleId.God, RoleId.Marlin);
+            attributeRoles.Add(ModTranslation.GetString("HauntedWolfName"), (HauntedWolf.RoleData.color, isSeeing));
+        }
+        return attributeRoles;
+    }
+
     /// <summary>
     /// 死亡後役職が見えるかの基本的な条件を取得する　(全員が役職を見られるか/Impostorのみ役職が見られるか)
     /// </summary>
@@ -319,13 +353,13 @@ public class SetNamesClass
     }
     public static void CelebritySet()
     {
-            foreach (PlayerControl p in
-                RoleClass.Celebrity.ChangeRoleView ?
-                RoleClass.Celebrity.ViewPlayers :
-                RoleClass.Celebrity.CelebrityPlayer)
-            {
-                SetPlayerNameColor(p, RoleClass.Celebrity.color);
-            }
+        foreach (PlayerControl p in
+            RoleClass.Celebrity.ChangeRoleView ?
+            RoleClass.Celebrity.ViewPlayers :
+            RoleClass.Celebrity.CelebrityPlayer)
+        {
+            SetPlayerNameColor(p, RoleClass.Celebrity.color);
+        }
     }
     public static void SatsumaimoSet()
     {
