@@ -102,7 +102,7 @@ public static class FixedUpdate
         Dictionary<byte, string> ChangePlayers = new();
 
         // スターパッシブ能力 [ カリスマ ] の処理
-        if (RoleClass.Celebrity.ChangeRoleView)
+        if (RoleClass.Celebrity.ChangeRoleView) // [ ]MEMO
         {
             foreach (PlayerControl viewPlayer in RoleClass.Celebrity.ViewPlayers)
             {
@@ -314,6 +314,7 @@ public static class FixedUpdate
 
         bool IsDemonVIew = false;
         bool IsArsonistVIew = false;
+        bool IsHauntedWolfVIew = false;
         string attributeRoleName = "";
         if ((SetNamesClass.DefaultGhostSeeRoles(player) || player.IsRole(RoleId.God)) && !IsUnchecked)
         {
@@ -332,13 +333,10 @@ public static class FixedUpdate
                 if (RoleClass.SatsumaAndImo.TeamNumber == 1) { MySuffix += ModHelpers.Cs(Palette.White, " (C)"); }
                 else { MySuffix += ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"); }
             }
-            // FIXME : SHRにおいて重複役の名前変更の共通処理が完成していない。
-            if (SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.Player.Count != 0)
+            if (player.IsHauntedWolf())
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                {
-                    if (p.IsHauntedWolf()) attributeRoleName += " + " + ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"));
-                }
+                attributeRoleName += " + " + ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"));
+                IsHauntedWolfVIew = true;
             }
             if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + attributeRoleName + TaskText + "</size>)" + ModHelpers.Cs(introData.color, Name + MySuffix);
             else NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + attributeRoleName + TaskText + "</size>)" + ModHelpers.Cs(introData.color, MySuffix);
@@ -386,6 +384,8 @@ public static class FixedUpdate
             }
         }
         string DieSuffix = "";
+        // FIXME : SHRにおいて重複役の名前変更の共通処理が完成していない。
+        if (!IsHauntedWolfVIew && player.IsHauntedWolf()) DieSuffix += " + " + ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"));
         if (!IsDemonVIew && Demon.IsViewIcon(player)) { DieSuffix += ModHelpers.Cs(RoleClass.Demon.color, " ▲"); }
         if (!IsArsonistVIew && Arsonist.IsViewIcon(player)) { DieSuffix += ModHelpers.Cs(RoleClass.Arsonist.color, " §"); }
         NewName += DieSuffix;
