@@ -23,6 +23,7 @@ public enum CustomOptionType
     Impostor,
     Neutral,
     Crewmate,
+    Modifier,
     MatchTag,
     Empty // 使用されない
 }
@@ -696,7 +697,7 @@ class GameOptionsMenuStartPatch
                     crewmateSettings.gameObject.SetActive(true);
                     crewmateTabHighlight.enabled = true;
                 }
-                else if (copiedIndex == 7)
+                else if (copiedIndex == 6)
                 {
                     modifierSettings.gameObject.SetActive(true);
                     modifierTabHighlight.enabled = true;
@@ -736,7 +737,7 @@ class GameOptionsMenuStartPatch
         List<OptionBehaviour> matchTagOptions = new();
 
         List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, modifierMenu.transform, matchTagMenu.transform, RegulationMenu.transform };
-        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions, matchTagOptions };
+        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions, modifierOptions, matchTagOptions };
 
         for (int i = 0; i < CustomOption.options.Count; i++)
         {
@@ -784,6 +785,7 @@ class GameOptionsMenuStartPatch
         crewmateMenu.Children = crewmateOptions.ToArray();
         crewmateSettings.gameObject.SetActive(false);
 
+        modifierMenu.Children = modifierOptions.ToArray();
         modifierSettings.gameObject.SetActive(false);
 
         matchTagSettings.gameObject.SetActive(false);
@@ -964,6 +966,7 @@ static class GameOptionsMenuUpdatePatch
             "ImpostorSetting" => CustomOptionType.Impostor,
             "NeutralSetting" => CustomOptionType.Neutral,
             "CrewmateSetting" => CustomOptionType.Crewmate,
+            "modifierSetting" => CustomOptionType.Modifier,
             "matchTagSetting" => CustomOptionType.MatchTag,
             _ => CustomOptionType.Crewmate,
         };
