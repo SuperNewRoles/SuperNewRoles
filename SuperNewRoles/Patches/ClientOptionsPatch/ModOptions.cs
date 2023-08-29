@@ -22,9 +22,9 @@ public static class ClientModOptionsPatch
             new SelectionBehaviour("CustomDownloadSuperNewNamePlates", () => ConfigRoles.DownloadSuperNewNamePlates.Value = !ConfigRoles.DownloadSuperNewNamePlates.Value, ConfigRoles.DownloadSuperNewNamePlates.Value),
             new SelectionBehaviour("IsNotUsingBlood", () => ConfigRoles.IsNotUsingBlood.Value = !ConfigRoles.IsNotUsingBlood.Value, ConfigRoles.IsNotUsingBlood.Value),
             new SelectionBehaviour("IsSendAnalytics", () => ConfigRoles.IsSendAnalytics.Value = !ConfigRoles.IsSendAnalytics.Value, ConfigRoles.IsSendAnalytics.Value),
-            new SelectionBehaviour("IsLightAndDarker", () => ConfigRoles.IsLightAndDarker.Value = !ConfigRoles.IsLightAndDarker.Value, ConfigRoles.IsLightAndDarker.Value)
+            new SelectionBehaviour("IsLightAndDarker", () => ConfigRoles.IsLightAndDarker.Value = !ConfigRoles.IsLightAndDarker.Value, ConfigRoles.IsLightAndDarker.Value),
+            new SelectionBehaviour("ReplayOptions", () => OpenReplayWindow(), true),
     };
-
     private static GameObject popUp;
     private static TextMeshPro titleText;
 
@@ -69,6 +69,7 @@ public static class ClientModOptionsPatch
         }
 
         SetUpOptions();
+        ReplaySetUpOptions();
         InitializeMoreButton(__instance);
     }
 
@@ -88,6 +89,21 @@ public static class ClientModOptionsPatch
                 Object.Destroy(gObj);
         }
         popUp.SetActive(false);
+
+        ReplayPopup = Object.Instantiate(prefab.gameObject);
+        Object.DontDestroyOnLoad(ReplayPopup);
+        transform = ReplayPopup.transform;
+        pos = transform.localPosition;
+        pos.z = -810f;
+        transform.localPosition = pos;
+
+        Object.Destroy(ReplayPopup.GetComponent<OptionsMenuBehaviour>());
+        foreach (var gObj in ReplayPopup.gameObject.GetAllChilds())
+        {
+            if (gObj.name is not "Background" and not "CloseButton")
+                Object.Destroy(gObj);
+        }
+        ReplayPopup.SetActive(false);
     }
 
     private static void InitializeMoreButton(OptionsMenuBehaviour __instance)
@@ -121,11 +137,24 @@ public static class ClientModOptionsPatch
         }));
     }
 
+    private static GameObject ReplayPopup;
+    private static List<ToggleButtonBehaviour> ReplayButtons;
+    public static bool OpenReplayWindow()
+    {
+        ReplayPopup.gameObject.SetActive(false);
+        ReplayPopup.gameObject.SetActive(true);
+        SetUpOptions();
+        ReplaySetUpOptions();
+        return true;
+    }
+
     private static void RefreshOpen()
     {
         popUp.gameObject.SetActive(false);
+        ReplayPopup.gameObject.SetActive(false);
         popUp.gameObject.SetActive(true);
         SetUpOptions();
+        ReplaySetUpOptions();
     }
 
     private static void CheckSetTitle()
@@ -187,6 +216,57 @@ public static class ClientModOptionsPatch
             foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                 spr.size = new Vector2(2.2f, .7f);
             modButtons.Add(button);
+        }
+    }
+    public static void ReplaySetUpOptions()
+    {
+        if (ReplayPopup.transform.GetComponentInChildren<ToggleButtonBehaviour>()) return;
+
+        ReplayButtons = new List<ToggleButtonBehaviour>();
+        var ReplayOptions = new List<SelectionBehaviour>();
+
+        for (var i = 0; i < ReplayOptions.Count; i++)
+        {
+            var info = ReplayOptions[i];
+
+            var button = Object.Instantiate(buttonPrefab, ReplayPopup.transform);
+            var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+
+            var transform = button.transform;
+            transform.localPosition = pos;
+
+            button.onState = info.DefaultValue;
+            button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+
+            button.Text.text = ModTranslation.GetString(info.Title);
+            button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
+            button.Text.font = Object.Instantiate(titleText.font);
+            button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
+
+            button.name = info.Title.Replace(" ", "") + "Toggle";
+            button.gameObject.SetActive(true);
+
+            var passiveButton = button.GetComponent<PassiveButton>();
+            var colliderButton = button.GetComponent<BoxCollider2D>();
+
+            colliderButton.size = new Vector2(2.2f, .7f);
+
+            passiveButton.OnClick = new ButtonClickedEvent();
+            passiveButton.OnMouseOut = new UnityEvent();
+            passiveButton.OnMouseOver = new UnityEvent();
+
+            passiveButton.OnClick.AddListener((Action)(() =>
+            {
+                button.onState = info.OnClick();
+                button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+            }));
+
+            passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
+            passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+
+            foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                spr.size = new Vector2(2.2f, .7f);
+            ReplayButtons.Add(button);
         }
     }
     private static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
