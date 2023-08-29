@@ -377,10 +377,6 @@ WereWolfMediumAbilityText,{0}'s Role is {1}!,{0}の役職は{1}です!,{0}的职
 WerewolfModeName,Werewolf,人狼,狼人杀,狼人殺
 WerewolfAbilityTimeSetting,Ability Time,能力使用タイム,能力持续时间,能力持續時間
 WerewolfAbilityTime,{0} seconds remaining until the end of the ability use time,能力使用タイムが終了するまで残り{0}秒,能力持续时间还剩{0}秒,能力持續時間還剩{0}秒
-HauntedWolfName,HauntedWolf,狼憑き,混血儿,混血兒
-HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな,别让其他船员起疑,別讓其他船員起疑
-HauntedWolfIsAssignMadAndFriendRoles,No overlap with Mud or Friends rolls.,マッドやフレンズロールとと重複しない
-HauntedWolfIsReverseSheriffDecision,Reverses the kill decision when duplicated on a sheriff.,シェリフに重複した時キル判定を反転する。
 PlayerCountMessage,Players,人,名,名
 DebugModeOnText,<color=#828282>DebugMode</color>:ON,<color=#828282>デバッグモード</color>が有効です,启用<color=#828282>调试模式</color>,啟用<color=#828282>除錯模式</color>
 BattleRoyalRemaining,Remaining until kills can be made,キルができるようになるまで残り,允许击杀时的剩余人数,允許擊殺時的剩餘人數
@@ -738,6 +734,12 @@ MagazinerTitle1,Save your kills!,キルを貯めよう,存下子弹以备不时�
 MagazinerSetTimeSetting,Kill cool time after magazine use,マガジン使用後のキルクールタイム,快枪手使用储存子弹后的击杀冷却,神槍手使用儲存子彈後的擊殺冷卻
 MagazinerAddButtonName,Save,貯める,储存,儲存
 MagazinerGetButtonName,Set,セット,使用,使用
+HauntedWolfName,HauntedWolf,狼憑き,混血儿,混血兒
+HauntedWolfTitle1,What? I am acting alone...,え... 私はひとりですが...
+HauntedWolfTitle2,"He does not know that I possess him.",『 こやつは 我が憑いている事を知らんのじゃ 』
+HauntedWolfDescription,This is a duplicate role distributed to Crewmate roles. Madmate and Jackal Friends also have a non-duplicate setting.\nWhile alive，the player does not know that he/she is possessed by a wolf.\nThe Sheriff and the Fortune Teller will see you as an Impostor. There is also a setting that reverses the kill decision if duplicated to the sheriff，and the divination decision if duplicated to the soothsayer or medium.\nHe wonders. That people around him talk to him as if he were acting in pairs.\nOne day，he is suspected and executed by the sheriff. He was heartbroken that someone would die because of him.\nBut the person who actually died was...!,クルー役職に重複して配布される役職です。マッドメイト及びジャッカルフレンズには重複しない設定もあります。\n生存している間は自分が狼憑きである事が分かりません。\nシェリフや占い師にはインポスターとして判定されます。シェリフに重複した場合 キル判定を，占い師や霊媒師に重複した場合 占いの判定を反転する設定もあります。\n彼は訝しむ。周囲がまるで自分が2人で行動しているかの様に話しかけて来る事を。\nある時，彼は疑われシェリフに処刑される事となった。自分のせいで死んでしまう人が出る事に心を痛めた。\nしかし実際に死んだのは...!!
+HauntedWolfIsAssignMadAndFriendRoles,No overlap with Mud or Friends rolls.,マッドやフレンズロールとと重複しない
+HauntedWolfIsReverseSheriffDecision,Reverses the kill decision when duplicated on a sheriff.,シェリフや占い師等に重複した時，判定を反転する。
 LoversName,Lovers.,ラバーズ,恋人,戀人
 LoversIntro,I'm in love with {0}!,{0}と恋に落ちてしまった！,你和{0}坠入了爱河,你和{0}墜入了愛河
 LoversDescription,Lovers is a duplicate position given in addition to other positions. Lovers person will see a heart mark next to their name.,恋人は他の役職に重複して与えられ、恋人同士は名前の後のハートマークで確認することが出来ます。,恋人为一个附加职业，由两名玩家组成。\n恋人可以在他们的名字旁边看到爱心。,恋人為一個附加職業，由兩名玩家組成。\n戀人可以在他們的名字旁邊看到愛心。
