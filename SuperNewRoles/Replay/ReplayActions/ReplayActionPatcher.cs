@@ -7,6 +7,14 @@ namespace SuperNewRoles.Replay.ReplayActions
 {
     public static class ReplayActionPatcher
     {
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
+        public static class MeetingHudClosePatch
+        {
+            public static void Postfix()
+            {
+                ReplayActionMeetingClose.Create();
+            }
+        }
         [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
         public static class ChatControllerAddChatPatch
         {
