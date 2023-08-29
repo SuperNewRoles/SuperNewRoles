@@ -739,8 +739,9 @@ HauntedWolfName,HauntedWolf,狼憑き,混血儿,混血兒
 HauntedWolfTitle1,What? I am acting alone...,え... 私はひとりですが...
 HauntedWolfTitle2,"He does not know that I possess him.",『 こやつは 我が憑いている事を知らんのじゃ 』
 HauntedWolfDescription,This is a duplicate role distributed to Crewmate roles. Madmate and Jackal Friends also have a non-duplicate setting.\nWhile alive，the player does not know that he/she is possessed by a wolf.\nThe Sheriff and the Fortune Teller will see you as an Impostor. There is also a setting that reverses the kill decision if duplicated to the sheriff，and the divination decision if duplicated to the soothsayer or medium.\nHe wonders. That people around him talk to him as if he were acting in pairs.\nOne day，he is suspected and executed by the sheriff. He was heartbroken that someone would die because of him.\nBut the person who actually died was...!,クルー役職に重複して配布される役職です。マッドメイト及びジャッカルフレンズには重複しない設定もあります。\n生存している間は自分が狼憑きである事が分かりません。\nシェリフや占い師にはインポスターとして判定されます。シェリフに重複した場合 キル判定を，占い師や霊媒師に重複した場合 占いの判定を反転する設定もあります。\n彼は訝しむ。周囲がまるで自分が2人で行動しているかの様に話しかけて来る事を。\nある時，彼は疑われシェリフに処刑される事となった。自分のせいで死んでしまう人が出る事に心を痛めた。\nしかし実際に死んだのは...!!
-HauntedWolfIsAssignMadAndFriendRoles,No overlap with Mud or Friends rolls.,マッドやフレンズロールとと重複しない
+HauntedWolfIsAssignMadAndFriendRoles,No overlap with Mud or Friends rolls.,マッドやフレンズロールと重複しない
 HauntedWolfIsReverseSheriffDecision,Reverses the kill decision when duplicated on a sheriff.,シェリフや占い師等に重複した時，判定を反転する。
+HauntedWolfIsNotDuplication,Not to be distributed in duplicate with mod roles,他のMod役職と重複して配布しない
 LoversName,Lovers.,ラバーズ,恋人,戀人
 LoversIntro,I'm in love with {0}!,{0}と恋に落ちてしまった！,你和{0}坠入了爱河,你和{0}墜入了愛河
 LoversDescription,Lovers is a duplicate position given in addition to other positions. Lovers person will see a heart mark next to their name.,恋人は他の役職に重複して与えられ、恋人同士は名前の後のハートマークで確認することが出来ます。,恋人为一个附加职业，由两名玩家组成。\n恋人可以在他们的名字旁边看到爱心。,恋人為一個附加職業，由兩名玩家組成。\n戀人可以在他們的名字旁邊看到愛心。

@@ -13,11 +13,12 @@ class HauntedWolf
 {
     internal static class CustomOptionData
     {
-        const int optionId = 405600;
+        const int optionId = 500400;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption IsAssignMadAndFriendRoles;
         public static CustomOption IsReverseSheriffDecision;
+        public static CustomOption IsNotDuplication;
 
         internal static void SetUpCustomRoleOptions()
         {
@@ -25,6 +26,7 @@ class HauntedWolf
             PlayerCount = Create(optionId + 1, true, CustomOptionType.Modifier, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
             IsAssignMadAndFriendRoles = Create(optionId + 2, true, CustomOptionType.Modifier, "HauntedWolfIsAssignMadAndFriendRoles", true, Option);
             IsReverseSheriffDecision = Create(optionId + 3, true, CustomOptionType.Modifier, "HauntedWolfIsReverseSheriffDecision", true, Option);
+            IsNotDuplication = Create(optionId + 4, true, CustomOptionType.Modifier, "HauntedWolfIsIsNotDuplication", false, Option);
         }
     }
 
@@ -61,10 +63,16 @@ class HauntedWolf
                 }
             }
             List<PlayerControl> SelectPlayers = new();
+            var isNotDuplication = CustomOptionData.IsNotDuplication.GetBool();
+            var isAssignMadAndFriendRoles = CustomOptionData.IsAssignMadAndFriendRoles.GetBool();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (!p.IsCrew() || p.IsBot()) continue;
-                if (CustomOptionData.IsAssignMadAndFriendRoles.GetBool() && (p.IsMadRoles() || p.IsFriendRoles())) continue;
+                if (isNotDuplication) // 重複して配布しない時
+                {
+                    if (p.GetRole() != RoleId.DefaultRole) continue;
+                }
+                if (isAssignMadAndFriendRoles && (p.IsMadRoles() || p.IsFriendRoles())) continue;
                 SelectPlayers.Add(p);
             }
             for (int i = 0; i < CustomOptionData.PlayerCount.GetFloat(); i++)
