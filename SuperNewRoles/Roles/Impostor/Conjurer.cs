@@ -31,7 +31,7 @@ public class Conjurer
     public static List<PlayerControl> Player;
     public static Color32 color = RoleClass.ImpostorRed;
     public static int Count; // 何回設置したか
-                             //public static int Round; // 何週目か
+    //public static int Round; // 何週目か
     public static Vector2[] Positions;
     public static void ClearAndReload()
     {

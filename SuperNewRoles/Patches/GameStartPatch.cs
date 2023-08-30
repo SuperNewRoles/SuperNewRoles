@@ -25,7 +25,9 @@ class GameStartPatch
         {
             lastPublic = AmongUsClient.Instance.IsGamePublic;
             if (lastPublic && AmongUsClient.Instance.AmHost)
+            {
                 Modules.MatchMaker.CreateRoom();
+            }
             lastTimer = 0;
         }
     }
