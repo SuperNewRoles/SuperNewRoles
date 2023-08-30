@@ -109,6 +109,7 @@ class Sheriff
         if (target.IsFriendRoles()) return (isFriendRolesKill, statusSuccess);
         if (target.IsLovers()) return (isLoversKill, statusSuccess);//ラバーズ
         if (target.IsQuarreled()) return (isQuarreledKill, statusSuccess);//クラード
+        if (isHauntedWolfDecision) return (true, statusSuccess); // シェリフの判定が反転している場合の デフォルト処理
         return (false, statusMisFire);
     }
 
