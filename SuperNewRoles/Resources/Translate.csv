@@ -308,9 +308,9 @@ FinalStatusKill,Kill,キル,被杀,被殺
 FinalStatusExiled,Exiled,追放,放逐,驅逐
 FinalStatusSheriffKill,Executing justice,正義執行,出警,警長正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火,警長誤傷
-FinalStatusHauntedSheriffKill,,憑依キル
-FinalStatusHauntedSheriffMisFire,,反発誤爆
-FinalStatusSheriffHauntedWolfKill,Executing justice,正義執行,出警,正義執行
+FinalStatusHauntedSheriffKill,Possession kill,憑依キル
+FinalStatusHauntedSheriffMisFire,Repulsion Misfire,反発誤爆
+FinalStatusSheriffHauntedWolfKill,The possession was severed,憑依断ち切り
 FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusIgnite,Ignite,焼殺,纵火,燒死
 FinalStatusDisconnected,Amputation,切断,断连,截肢
