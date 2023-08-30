@@ -890,10 +890,17 @@ EvilSeerIsArrowColorAdaptive,Reflect the body color of the dead person on the co
 EvilSeerClearColorDeadText,The crew of {0} color has died.,{0}のクルーの気配が弱まりました。
 EvilSeerLightPlayerDeadText,A brightly colored crew died.,<color=#89c3eb>明るい色</color>のクルーの気配が弱まりました。
 EvilSeerDarkPlayerDeadText,A dark colored crew member died.,<color=#74325c>暗い色</color>のクルーの気配が弱まりました。
+EvilSeerCreateSetting,Enable either HauntedWolf or Madmate creation or,狼憑き，又はマッドメイト作成を有効にするか
+EvilSeerCreateHauntedWolfMode,Mode setting for HauntedWolf or Madmate creation.,狼憑き作成，又はマッドメイト作成のモード設定
+EvilSeerCreateHauntedWolfModeBoth,[Go! haunt!!] & [Haunt],取り憑かせる & 取り憑く
+EvilSeerCreateHauntedWolfModeAbilityOnry,[Go! haunt!!] Only,取り憑かせる能力のみ
+EvilSeerCreateHauntedWolfModePassiveOnry,[Haunt] Only,取り憑く能力のみ
+EvilSeerButtonCooldownSetting,Setting the cool time for the [Go! haunt!!]] and [Haunt] abilities.,[狂わせる]及び[取り憑かせる]能力のクールタイムの設定
+EvilSeerButtonName,Go! haunt!!,取り憑かせる
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长,超能警長
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法,遠距離進行執法擊殺
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート,击杀时传送到被击杀者所在位置,擊殺時傳送到被擊殺者所在位置
-TeleportingJackalName,TeleportingJackal,テレポートジャッカル,狼族传送师,狼族傳送師
+TeleportingJackalName,TeleportingJackal,テレポートジャッカル,狼z族传送师,狼族傳送師
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう,传送并杀死所有人,傳送並殺死所有人
 MadMakerName,MadMaker,マッドメーカー,走狗,走狗
 MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！,让更多的人叛变,讓更多的人叛變

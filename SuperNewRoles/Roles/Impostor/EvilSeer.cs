@@ -6,6 +6,7 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Attribute;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
@@ -29,7 +30,9 @@ class EvilSeer
         public static CustomOption IsCrewSoulColor;
         public static CustomOption IsDeadBodyArrow;
         public static CustomOption IsArrowColorAdaptive;
-        public static CustomOption MadmateSetting;
+        public static CustomOption CreateSetting;
+        public static CustomOption CreateMode;
+        public static CustomOption EvilSeerButtonCooldown;
 
         internal static void SetupCustomOptions()
         {
@@ -45,7 +48,9 @@ class EvilSeer
             IsCrewSoulColor = Create(201910, false, CustomOptionType.Impostor, "EvilSeerIsCrewSoulColor", true, IsUniqueSetting);
             IsDeadBodyArrow = Create(201911, false, CustomOptionType.Impostor, "VultureShowArrowsSetting", true, IsUniqueSetting);
             IsArrowColorAdaptive = Create(201912, false, CustomOptionType.Impostor, "EvilSeerIsArrowColorAdaptive", true, IsDeadBodyArrow);
-            MadmateSetting = Create(201905, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, Option);
+            CreateSetting = Create(201905, false, CustomOptionType.Impostor, "EvilSeerCreateSetting", false, Option);
+            CreateMode = Create(201913, false, CustomOptionType.Impostor, "EvilSeerCreateHauntedWolfMode", new string[] { "EvilSeerCreateHauntedWolfModeBoth", "EvilSeerCreateHauntedWolfModeAbilityOnry", "EvilSeerCreateHauntedWolfModePassiveOnry", "CreateMadmateSetting" }, CreateSetting);
+            EvilSeerButtonCooldown = Create(201914, false, CustomOptionType.Impostor, "EvilSeerButtonCooldownSetting", 30f, 0f, 60f, 2.5f, CreateSetting);
         }
     }
 
@@ -62,7 +67,9 @@ class EvilSeer
         public static bool IsClearColor;
         public static bool IsArrow;
         public static bool IsArrowColorAdaptive;
-        public static bool IsCreateMadmate;
+        public static bool IsCreate;
+        public static int CreateMode; // 0:取りつかせる&憑り付く, 1:取り憑かせる, 2:取り付く, 3:マッドメイトを作れる
+        public static float EvilSeerButtonCooldown;
 
         internal const int DefaultBodyColorId = (int)CustomCosmetics.CustomColors.ColorType.Crasyublue;
         internal const int LightBodyColorId = (int)CustomCosmetics.CustomColors.ColorType.Pitchwhite;
@@ -81,8 +88,54 @@ class EvilSeer
             IsClearColor = CustomOptionData.FlashColorMode.GetSelection() == 0;
             IsArrow = IsUniqueSetting && CustomOptionData.IsDeadBodyArrow.GetBool();
             IsArrowColorAdaptive = IsArrow && CustomOptionData.IsArrowColorAdaptive.GetBool();
-            IsCreateMadmate = CustomOptionData.MadmateSetting.GetBool();
+            CreateMode = CustomOptionData.CreateMode.GetSelection();
+            IsCreate = CustomOptionData.CreateSetting.GetBool();
             DeadPlayerArrows = new();
+            EvilSeerButtonCooldown = CustomOptionData.EvilSeerButtonCooldown.GetFloat();
+        }
+    }
+
+    internal static class Button
+    {
+        private static CustomButton CreateHauntedWolfButton;
+        private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateHauntedWolfButton.png", 115f);
+
+        internal static void SetupCustomButtons(HudManager hm)
+        {
+            CreateHauntedWolfButton = new(
+                () =>
+                {
+                    var target = HudManagerStartPatch.SetTarget();
+                    if (target == null) return;
+                    RoleData.IsCreate = false;
+
+                    HauntedWolf.Assign.SetHauntedWolf(target);
+                    HauntedWolf.Assign.SetHauntedWolfRPC(target);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.EvilSeer && RoleData.CreateMode <= 1 && RoleData.IsCreate; },
+                () =>
+                {
+                    var target = HudManagerStartPatch.SetTarget();
+                    PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleData.color);
+                    return PlayerControl.LocalPlayer.CanMove && target;
+                },
+                () =>
+                {
+                    CreateHauntedWolfButton.MaxTimer = RoleData.EvilSeerButtonCooldown;
+                    CreateHauntedWolfButton.Timer = RoleData.EvilSeerButtonCooldown;
+                },
+                GetButtonSprite(),
+                new Vector3(-2f, 1, 0),
+                hm,
+                hm.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("EvilSeerButtonName"),
+                showButtonText = true
+            };
         }
     }
 
