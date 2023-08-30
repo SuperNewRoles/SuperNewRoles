@@ -103,12 +103,13 @@ class Sheriff
             isQuarreledKill ^= true;
         }
 
-        if ((targetRoleData == TeamRoleType.Impostor) || target.IsHauntedWolf()) return (isImpostorKill, statusSuccess); // インポスター、狼付きは設定がimp設定が有効な時切れる
-        if (target.IsMadRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents)) return (isMadRolesKill, statusSuccess);
-        if (target.IsNeutral()) return (isNeutralKill, statusSuccess);
-        if (target.IsFriendRoles()) return (isFriendRolesKill, statusSuccess);
-        if (target.IsLovers()) return (isLoversKill, statusSuccess);//ラバーズ
-        if (target.IsQuarreled()) return (isQuarreledKill, statusSuccess);//クラード
+        if (targetRoleData == TeamRoleType.Impostor) return (isImpostorKill, isImpostorKill ? statusSuccess : statusMisFire); // インポスター、狼付きは設定がimp設定が有効な時切れる
+        if (target.IsHauntedWolf()) return (isImpostorKill, isImpostorKill ? FinalStatus.SheriffHauntedWolfKill : statusMisFire); // インポスター、狼付きは設定がimp設定が有効な時切れる
+        if (target.IsMadRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents)) return (isMadRolesKill, isImpostorKill ? statusSuccess : statusMisFire);
+        if (target.IsNeutral()) return (isNeutralKill, isNeutralKill ? statusSuccess : statusMisFire);
+        if (target.IsFriendRoles()) return (isFriendRolesKill, isFriendRolesKill ? statusSuccess : statusMisFire);
+        if (target.IsLovers()) return (isLoversKill, isLoversKill ? statusSuccess : statusMisFire);
+        if (target.IsQuarreled()) return (isQuarreledKill, isQuarreledKill ? statusSuccess : statusMisFire);
         if (isHauntedWolfDecision) return (true, statusSuccess); // シェリフの判定が反転している場合の デフォルト処理
         return (false, statusMisFire);
     }
