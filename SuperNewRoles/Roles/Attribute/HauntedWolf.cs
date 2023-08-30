@@ -26,7 +26,7 @@ class HauntedWolf
             PlayerCount = Create(optionId + 1, true, CustomOptionType.Modifier, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
             IsAssignMadAndFriendRoles = Create(optionId + 2, true, CustomOptionType.Modifier, "HauntedWolfIsAssignMadAndFriendRoles", true, Option);
             IsReverseSheriffDecision = Create(optionId + 3, true, CustomOptionType.Modifier, "HauntedWolfIsReverseSheriffDecision", true, Option);
-            IsNotDuplication = Create(optionId + 4, true, CustomOptionType.Modifier, "HauntedWolfIsIsNotDuplication", false, Option);
+            IsNotDuplication = Create(optionId + 4, true, CustomOptionType.Modifier, "HauntedWolfIsNotDuplication", false, Option);
         }
     }
 
