@@ -28,7 +28,16 @@ class Sheriff
         catch { }
     }
 
-    public static bool IsSheriffRolesKill(PlayerControl sheriff, PlayerControl target)
+    /// <summary>
+    /// シェリフキルの判定及び, シェリフキルによる死者の死因判定を行う
+    /// </summary>
+    /// <param name="sheriff">キルを実行したシェリフ</param>
+    /// <param name="target">シェリフキルのターゲット</param>
+    /// <returns>
+    /// true : シェリフキル成功 / false : シェリフキル失敗,
+    /// FinalStatus : 死者の死因 (シェリフとターゲットどちらが死んだかは区別しないで返却)
+    /// </returns>
+    public static (bool, FinalStatus) IsSheriffRolesKill(PlayerControl sheriff, PlayerControl target)
     {
         var targetRoleData = CountChanger.GetRoleType(target);
         var isImpostorKill = true;
@@ -37,6 +46,10 @@ class Sheriff
         var isFriendRolesKill = false;
         var isLoversKill = false;
         var isQuarreledKill = false;
+
+        var isHauntedWolfDecision = sheriff.IsHauntedWolf() && Attribute.HauntedWolf.CustomOptionData.IsReverseSheriffDecision.GetBool();
+        FinalStatus statusSuccess = !isHauntedWolfDecision ? FinalStatus.SheriffKill : FinalStatus.HauntedSheriffKill;
+        FinalStatus statusMisFire = !isHauntedWolfDecision ? FinalStatus.SheriffMisFire : FinalStatus.HauntedSheriffMisFire;
 
         RoleId role = sheriff.GetRole();
 
@@ -80,7 +93,7 @@ class Sheriff
         }
 
         // シェリフが狼憑きであり設定が有効なら, キル判定を反転する
-        if (sheriff.IsHauntedWolf() && Attribute.HauntedWolf.CustomOptionData.IsReverseSheriffDecision.GetBool())
+        if (isHauntedWolfDecision)
         {
             isImpostorKill ^= true;
             isMadRolesKill ^= true;
@@ -90,16 +103,13 @@ class Sheriff
             isQuarreledKill ^= true;
         }
 
-        if ((targetRoleData == TeamRoleType.Impostor) || target.IsHauntedWolf()) return isImpostorKill; // インポスター、狼付きは設定がimp設定が有効な時切れる
-        if (target.IsMadRoles()
-            || target.IsRole(RoleId.MadKiller)
-            || target.IsRole(RoleId.Dependents))
-            return isMadRolesKill;
-        if (target.IsNeutral()) return isNeutralKill;
-        if (target.IsFriendRoles()) return isFriendRolesKill;
-        if (target.IsLovers()) return isLoversKill;//ラバーズ
-        if (target.IsQuarreled()) return isQuarreledKill;//クラード
-        return false;
+        if ((targetRoleData == TeamRoleType.Impostor) || target.IsHauntedWolf()) return (isImpostorKill, statusSuccess); // インポスター、狼付きは設定がimp設定が有効な時切れる
+        if (target.IsMadRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents)) return (isMadRolesKill, statusSuccess);
+        if (target.IsNeutral()) return (isNeutralKill, statusSuccess);
+        if (target.IsFriendRoles()) return (isFriendRolesKill, statusSuccess);
+        if (target.IsLovers()) return (isLoversKill, statusSuccess);//ラバーズ
+        if (target.IsQuarreled()) return (isQuarreledKill, statusSuccess);//クラード
+        return (false, statusMisFire);
     }
 
     public static bool IsSheriff(PlayerControl Player)

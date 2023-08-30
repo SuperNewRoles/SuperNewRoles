@@ -308,8 +308,10 @@ FinalStatusKill,Kill,キル,被杀,被殺
 FinalStatusExiled,Exiled,追放,放逐,驅逐
 FinalStatusSheriffKill,Executing justice,正義執行,出警,警長正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火,警長誤傷
-FinalStatusMeetingSheriffKill,Meeting Sheriff kill，Executing justice,正義執行,执法,執法官正義執行
-FinalStatusMeetingSheriffMisFire,Meeting Sheriff misfire,ミーティングシェリフ誤爆,误判,執法官誤傷
+FinalStatusHauntedSheriffKill,,憑依キル
+FinalStatusHauntedSheriffMisFire,,反発誤爆
+FinalStatusSheriffHauntedWolfKill,Executing justice,正義執行,出警,正義執行
+FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusIgnite,Ignite,焼殺,纵火,燒死
 FinalStatusDisconnected,Amputation,切断,断连,截肢
 FinalStatusDead,Death,死亡,死亡,死亡
@@ -331,11 +333,6 @@ FinalStatusSpelunkerVentDeath,Vent death,ベント転倒死,绊死,管道絆倒�
 FinalStatusSpelunkerOpenDoor,Door death,ドア指挟み死,夹死,被門夾死
 FinalStatusTunaSelfDeath,Heart Stop,心停止,希望之花~紧连着羁绊~,不要停下來啊！♫希望之花♫
 FinalStatusBestFalseChargesFalseCharge,False charge,冤罪追放,含冤而死,六月雪
-FinalStatusSheriffHauntedWolfKill,Executing justice,正義執行,出警,正義執行
-FinalStatusMeetingSheriffHauntedWolfKill,Executing justice,正義執行,执法,正義執法
-FinalStatusRemoteSheriffHauntedWolfKill,Executing justice,正義執行,超能轰击,正義轟擊
-FinalStatusRemoteSheriffKill,Executing justice,正義執行,超能轰击,正義轟擊
-FinalStatusRemoteSheriffMisFire,Remote Sheriff MisFire,リモートシェリフ誤爆,超能反噬,轟擊誤判
 FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー自殺,躁狂,連環殺手自殺
 FinalStatusVampireKill,Death by bloodsucking,吸血死,吸血,吸血而亡
 FinalStatusDependentsExiled,Consumed by the night.,夜に歠まれた,I miss you...,被黑夜吞噬
@@ -346,7 +343,6 @@ FinalStatusRevenge,Revenge,復讐,仇杀,仇殺
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺,暗殺
 FinalStatusHitmanDead,Disposition.,処分,沉江,被處分
 FinalStatusWorshiperSelfDeath,Suicide,自決,自杀,自殺
-FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反杀,反殺
 FinalStatusGuesserKill,Deadshot by guess,推測射殺,赌杀,身分狙殺
 FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
