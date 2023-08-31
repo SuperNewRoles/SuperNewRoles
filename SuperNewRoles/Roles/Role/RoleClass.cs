@@ -2046,6 +2046,7 @@ public static class RoleClass
         public static List<PlayerControl> EvilHackerPlayer;
         public static Color32 color = ImpostorRed;
         public static bool IsCreateMadmate;
+        public static float Cooldown;
         public static bool IsMyAdmin;
         public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
 
@@ -2063,6 +2064,7 @@ public static class RoleClass
             EvilHackerPlayer = new();
             IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
             IsMyAdmin = false;
+            Cooldown  = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
         }
     }
     public static class PositionSwapper

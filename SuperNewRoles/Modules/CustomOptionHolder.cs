@@ -663,6 +663,7 @@ public class CustomOptionHolder
     public static CustomOption EvilHackerPlayerCount;
     public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
     public static CustomOption EvilHackerMadmateSetting;
+    public static CustomOption EvilHackerButtonCooldown;
 
     public static CustomRoleOption SecretlyKillerOption;
     public static CustomOption SecretlyKillerPlayerCount;
@@ -1045,6 +1046,7 @@ public class CustomOptionHolder
         EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
         EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
         EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
+        EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "EvilSeerButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
 
         EvilSeer.CustomOptionData.SetupCustomOptions();
 

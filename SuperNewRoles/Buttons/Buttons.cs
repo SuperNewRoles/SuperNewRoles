@@ -2460,19 +2460,30 @@ static class HudManagerStartPatch
                             Madmate.CreateMadmate(target);
                             RoleClass.EvilHacker.IsCreateMadmate = false;
                             break;
-                        case RoleId.EvilSeer when EvilSeer.RoleData.IsCreateMadmate:
+                        case RoleId.EvilSeer when EvilSeer.RoleData.CanCreate:
                             Madmate.CreateMadmate(target);
-                            EvilSeer.RoleData.IsCreateMadmate = false;
+                            EvilSeer.RoleData.CanCreate = false;
                             break;
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && EvilSeer.RoleData.IsCreateMadmate)) && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && EvilSeer.RoleData.CreateMode == 4 && EvilSeer.RoleData.CanCreate)) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
                 return SetTarget() && PlayerControl.LocalPlayer.CanMove;
             },
-            () => { },
+            () =>
+            {
+                var coolDown =
+                    PlayerControl.LocalPlayer.IsRole(RoleId.EvilHacker)
+                        ? RoleClass.EvilHacker.Cooldown
+                        : PlayerControl.LocalPlayer.IsRole(RoleId.EvilSeer)
+                            ? EvilSeer.RoleData.EvilSeerButtonCooldown
+                            : 0f;
+
+                EvilHackerMadmateSetting.MaxTimer = coolDown;
+                EvilHackerMadmateSetting.Timer = coolDown;
+            },
             RoleClass.EvilHacker.GetCreateMadmateButtonSprite(),
             new Vector3(-2.925f, -0.06f, 0),
             __instance,
@@ -2485,6 +2496,8 @@ static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("CreateMadmateButton"),
             showButtonText = true
         };
+
+        EvilSeer.Button.SetupCustomButtons(__instance);
 
         PositionSwapperButton = new(
             () =>
