@@ -246,6 +246,7 @@ BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机,殭屍模式
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式,隨機顏色
+PantsRoyalModeName,Pants Royal,パンツ大騒動
 NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード,双盲内鬼模式,內鬼互不認識模式
 CopsRobbersModeName,CopsRobbers,ケイドロ,警察抓小偷,警匪追逐
 CopsRobbersModeCrewName,Thief,泥棒,小偷,小偷
@@ -284,6 +285,27 @@ ZombieCommingSpeedSetting,Speed before zombies,ゾンビがやってくる前の
 RandomColorHideNameSetting,Hide Name,名前を隠す,隐藏昵称,隱藏暱稱
 RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜色改变,暱稱顏色改變
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变,會議中暱稱顏色改變
+PantsRoyalTitle1,Guard my pants!!!,パンツを守れ！！！
+PantsRoyalTitle2,Take away the Pants!!!,パンツを奪え！！！
+PantsRoyalTitle3,This pants is mine!!!,このパンツは私のものだ！
+PantsRoyalTitle4,That pants will mine!!!,そのパンツは私が頂く！
+PantsRoyalTitle5,Are you trying to rob me of these pants?,このパンツを奪う気か？
+PantsRoyalTitle6,I don't give my pants to anyone!,パンツは誰にも渡さない！！！
+PantsRoyalTitle7,You can't give my pants!,あなたにパンツを渡さない！
+PantsRoyalTitle8,Phantom Thief，Panter!,怪盗・パンツ！
+PantsRoyalTitle9,Can you get my pants?,私のパンツを手に入れられるかな？
+PantsRoyalTitle10,Get those pants and I will survive!,そのパンツを手に入れて私は生き残る！
+PantsRoyalTitle11,Pants!Pants!Pants!,ぱんつ！ぱんつ！ぱんつ！
+PantsRoyalTitle12,This is Pants!!!,これはパンツだ...
+PantsRoyalTitle13,Lets' PantsRoyal!,さあ、パンツのために戦え！
+PantsRoyalTitle14,pants or Pants,ぱんつか、それともパンツか...
+PantsRoyalPantsYourText,Do you have Pants...?,あなたは...
+PantsRoyalPantsHaverIntroName,You have Pants!!!,パンツを履いている！！！
+PantsRoyalPantsHaverIntroTitle1,Let's guard Pants!!!,さあ、パンツを守れ！
+PantsRoyalDeadName,Couldn't get my pants on...,パンツを履けなかった...
+PantsRoyalPantsDontHaverIntroName,You don't have Pants...!,パンツを履いていない...！
+PantsRoyalPantsDontHaverIntroTitle1,Will you have pants?,あなたはパンツを手に入れられるかな？
+PantsRoyalStartAt,Pants royal will start at after ,パンツの戦いまで...
 NeutralName,Neutral,第三陣営,独立阵营,中立陣營
 WinName,Win,勝利,胜利,勝利
 PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,更多游戏设置,其他設定
