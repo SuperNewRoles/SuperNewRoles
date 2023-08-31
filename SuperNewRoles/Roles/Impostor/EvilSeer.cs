@@ -221,6 +221,10 @@ class EvilSeer
                 HauntedWolf.Assign.SetHauntedWolfRPC(killer);
             }
 
+            /// <summary>
+            /// SHRモードでの[取り付く]能力の処理
+            /// </summary>
+            /// <param name="killer">自身をキルしたプレイヤー</param>
             internal static void SuperHostRolesMode(PlayerControl killer, PlayerControl victim)
             {
                 if (!AmongUsClient.Instance.AmHost) return;
