@@ -48,7 +48,7 @@ class EvilSeer
             IsCrewSoulColor = Create(201910, false, CustomOptionType.Impostor, "EvilSeerIsCrewSoulColor", true, IsUniqueSetting);
             IsDeadBodyArrow = Create(201911, false, CustomOptionType.Impostor, "VultureShowArrowsSetting", true, IsUniqueSetting);
             IsArrowColorAdaptive = Create(201912, false, CustomOptionType.Impostor, "EvilSeerIsArrowColorAdaptive", true, IsDeadBodyArrow);
-            CreateSetting = Create(201905, false, CustomOptionType.Impostor, "EvilSeerCreateSetting", true, Option);
+            CreateSetting = Create(201905, true, CustomOptionType.Impostor, "EvilSeerCreateSetting", false, Option);
             CreateMode = Create(201913, false, CustomOptionType.Impostor, "EvilSeerCreateHauntedWolfMode", new string[] { "optionOff", "EvilSeerCreateHauntedWolfModeBoth", "EvilSeerCreateHauntedWolfModeAbilityOnry", "EvilSeerCreateHauntedWolfModePassiveOnry", "CreateMadmateSetting" }, CreateSetting);
             EvilSeerButtonCooldown = Create(201914, false, CustomOptionType.Impostor, "EvilSeerButtonCooldownSetting", 30f, 0f, 60f, 2.5f, CreateSetting);
         }
