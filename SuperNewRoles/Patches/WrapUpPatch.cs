@@ -8,6 +8,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -103,6 +104,9 @@ class WrapUpPatch
         {
             ReplayLoader.OnWrapUp();
         }
+
+        SelectRoleSystem.OnWrapUp();
+
         Shielder.WrapUp();
         Kunoichi.WrapUp();
         SerialKiller.WrapUp();

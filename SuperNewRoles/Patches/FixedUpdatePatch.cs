@@ -213,6 +213,9 @@ public class FixedUpdate
                         case RoleId.Pteranodon:
                             Pteranodon.FixedUpdate();
                             break;
+                        case RoleId.PoliceSurgeon:
+                            PoliceSurgeon.FixedUpdate();
+                            break;
                     }
                 }
                 else // -- 死亡時 --

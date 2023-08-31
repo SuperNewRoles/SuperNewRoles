@@ -4,6 +4,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
@@ -83,7 +84,12 @@ class ControllerManagerUpdatePatch
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
             {
                 if (MeetingHud.Instance != null)
-                    MeetingHud.Instance.RpcClose();
+                {
+                    if (ModeHandler.IsMode(ModeId.BattleRoyal))
+                        SelectRoleSystem.OnEndSetRole();
+                    else
+                        MeetingHud.Instance.RpcClose();
+                }
             }
         }
 
@@ -94,6 +100,7 @@ class ControllerManagerUpdatePatch
             if (Input.GetKeyDown(KeyCode.G))
             {
                 PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text, false);
+                Logger.Info(EOSManager.Instance.UserIDToken);
 
                 bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
                 //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");

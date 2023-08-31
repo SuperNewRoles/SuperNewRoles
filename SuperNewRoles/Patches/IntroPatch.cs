@@ -52,7 +52,7 @@ public class IntroPatch
             {
                 Logger.Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
                 Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
-                foreach (IntroData data in IntroData.IntroList) { data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum); }
+                foreach (IntroData data in IntroData.IntroList) { data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum, data.RoleId); }
             }
             Logger.Info("=================Activate Roles Data=================", " Other Data");
             {

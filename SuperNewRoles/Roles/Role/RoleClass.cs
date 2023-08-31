@@ -8,6 +8,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -225,7 +226,7 @@ public static class RoleClass
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
-        Impostor.MadRole.Worshiper.RoleData.ClearAndReload();
+        Worshiper.RoleData.ClearAndReload();
         Safecracker.ClearAndReload();
         FireFox.ClearAndReload();
         Squid.ClearAndReload();
@@ -238,6 +239,8 @@ public static class RoleClass
         Balancer.ClearAndReload();
         Pteranodon.ClearAndReload();
         BlackHatHacker.ClearAndReload();
+        PoliceSurgeon.RoleData.ClearAndReload();
+        MadRaccoon.RoleData.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

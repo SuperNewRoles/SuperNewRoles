@@ -15,6 +15,8 @@ using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static MeetingHud;
@@ -108,6 +110,17 @@ class CheckForEndVotingPatch
                         return false;
                     }
                 }
+            }
+            else if (ModeHandler.IsMode(ModeId.BattleRoyal))
+            {
+                int votingTime = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime);
+                float num4 = __instance.discussionTimer - GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.DiscussionTime);
+                if (votingTime > 0 && num4 >= (float)votingTime)
+                {
+                    __instance.discussionTimer = 0;
+                    Mode.BattleRoyal.SelectRoleSystem.OnEndSetRole();
+                }
+                return false;
             }
             else if (RoleClass.Assassin.TriggerPlayer != null)
             {
@@ -562,6 +575,7 @@ class MeetingHudStartPatch
         NiceMechanic.StartMeeting();
         Roles.Crewmate.Celebrity.TimerStop();
         TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
+        MadRaccoon.Button.ResetShapeDuration(false);
         NiceMechanic.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Roles.Crewmate.Knight.ProtectedPlayer = null;

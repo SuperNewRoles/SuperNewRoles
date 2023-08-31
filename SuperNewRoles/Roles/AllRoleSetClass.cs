@@ -9,6 +9,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles;
@@ -1077,8 +1078,8 @@ class AllRoleSetClass
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
             RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
             RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
-            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.CustomOptionData.PlayerCount.GetFloat(),
-            RoleId.Safecracker => Roles.Neutral.Safecracker.SafecrackerPlayerCount.GetFloat(),
+            RoleId.Worshiper => Worshiper.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Safecracker => Safecracker.SafecrackerPlayerCount.GetFloat(),
             RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
             RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
             RoleId.DyingMessenger => DyingMessenger.DyingMessengerPlayerCount.GetFloat(),
@@ -1092,6 +1093,8 @@ class AllRoleSetClass
             RoleId.Balancer => Balancer.BalancerPlayerCount.GetFloat(),
             RoleId.Pteranodon => Pteranodon.PteranodonPlayerCount.GetFloat(),
             RoleId.BlackHatHacker => BlackHatHacker.BlackHatHackerPlayerCount.GetFloat(),
+            RoleId.PoliceSurgeon => PoliceSurgeon.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.MadRaccoon => MadRaccoon.CustomOptionData.PlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };
