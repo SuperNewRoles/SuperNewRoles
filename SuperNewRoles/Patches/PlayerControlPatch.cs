@@ -99,26 +99,30 @@ class RpcShapeshiftPatch
                     if (target.IsDead()) return true;
                     if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
                     {
-                        if ((!Sheriff.IsSheriffRolesKill(__instance, target) || target.IsRole(RoleId.RemoteSheriff)) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool())
+                        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
+                        var misfire = !success;
+                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+
+                        if (alwaysKill)
                         {
                             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
                             __instance.RpcMurderPlayerCheck(target);
-                            FinalStatusClass.RpcSetFinalStatus(target, target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.SheriffInvolvedOutburst);
+                            FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
                             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
                             __instance.RpcMurderPlayer(__instance);
-                            FinalStatusClass.RpcSetFinalStatus(__instance, FinalStatus.RemoteSheriffMisFire);
+                            FinalStatusClass.RpcSetFinalStatus(__instance, status);
                             return true;
                         }
-                        else if (!Sheriff.IsSheriffRolesKill(__instance, target) || target.IsRole(RoleId.RemoteSheriff))
+                        else if (misfire)
                         {
-                            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
                             __instance.RpcMurderPlayer(__instance);
-                            FinalStatusClass.RpcSetFinalStatus(__instance, FinalStatus.RemoteSheriffMisFire);
+                            FinalStatusClass.RpcSetFinalStatus(__instance, status);
                             return true;
                         }
                         else
                         {
-                            FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
                             if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
                                 RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
                             else
@@ -130,7 +134,7 @@ class RpcShapeshiftPatch
                                 target.RpcMurderPlayer(target);
                                 __instance.RpcShowGuardEffect(__instance);
                             }
-                            FinalStatusClass.RpcSetFinalStatus(target, target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill);
+                            FinalStatusClass.RpcSetFinalStatus(target, status);
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                             return true;
                         }
@@ -337,8 +341,9 @@ class ShapeshifterMinigameShapeshiftPatch
                     if (player.IsAlive())
                     {
                         var Target = player;
-                        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
-                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool();
+                        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
+                        var misfire = !success;
+                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
                         var TargetID = Target.PlayerId;
                         var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
@@ -351,7 +356,7 @@ class ShapeshifterMinigameShapeshiftPatch
                         killWriter.Write(misfire);
                         killWriter.Write(alwaysKill);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.RemoteSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill));
+                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, status);
                         if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(Target, FinalStatus.SheriffInvolvedOutburst);
                         RoleClass.RemoteSheriff.KillMaxCount--;
                     }
@@ -459,7 +464,7 @@ static class CheckMurderPatch
         {
             return false;
         }
-        Logger.Info("キル可能かを通過しました。","CheckMurder");
+        Logger.Info("キル可能かを通過しました。", "CheckMurder");
         if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek) return true;
         if (__instance.PlayerId == target.PlayerId)
         {
@@ -467,7 +472,7 @@ static class CheckMurderPatch
             __instance.RpcMurderPlayer(target);
             return false;
         }
-        
+
         if (!AmongUsClient.Instance.AmHost) return true;
         switch (ModeHandler.GetMode())
         {
@@ -551,25 +556,27 @@ static class CheckMurderPatch
                     case RoleId.Sheriff:
                         if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.Sheriff.KillCount[__instance.PlayerId] >= 1)
                         {
-                            if (!Sheriff.IsSheriffRolesKill(__instance, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool())
+                            (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
+                            var misfire = !success;
+                            var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+                            if (alwaysKill)
                             {
                                 FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
                                 __instance.RpcMurderPlayerCheck(target);
-                                if (target.IsRole(RoleId.HauntedWolf)) __instance.RpcSetFinalStatus(FinalStatus.SheriffHauntedWolfKill);
-                                else __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
-                                FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                                __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
+                                FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
                                 __instance.RpcMurderPlayer(__instance);
-                                __instance.RpcSetFinalStatus(FinalStatus.SheriffMisFire);
+                                __instance.RpcSetFinalStatus(status);
                             }
-                            else if (!Sheriff.IsSheriffRolesKill(__instance, target))
+                            else if (misfire)
                             {
-                                FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                                FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
                                 __instance.RpcMurderPlayer(__instance);
-                                __instance.RpcSetFinalStatus(FinalStatus.SheriffMisFire);
+                                __instance.RpcSetFinalStatus(status);
                             }
                             else
                             {
-                                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
                                 if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
                                 {
                                     RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
@@ -579,8 +586,7 @@ static class CheckMurderPatch
                                     RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.SheriffKillMaxCount.GetInt() - 1;
                                 }
                                 __instance.RpcMurderPlayerCheck(target);
-                                if (target.IsRole(RoleId.HauntedWolf)) __instance.RpcSetFinalStatus(FinalStatus.SheriffHauntedWolfKill);
-                                else __instance.RpcSetFinalStatus(FinalStatus.SheriffKill);
+                                __instance.RpcSetFinalStatus(status);
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                             }
                         }

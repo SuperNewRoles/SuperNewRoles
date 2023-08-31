@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -657,9 +658,6 @@ public class CustomOptionHolder
     public static CustomRoleOption GhostMechanicOption;
     public static CustomOption GhostMechanicPlayerCount;
     public static CustomOption GhostMechanicRepairLimit;
-
-    public static CustomRoleOption HauntedWolfOption;
-    public static CustomOption HauntedWolfPlayerCount;
 
     public static CustomRoleOption EvilHackerOption;
     public static CustomOption EvilHackerPlayerCount;
@@ -1540,7 +1538,6 @@ public class CustomOptionHolder
         // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
 
         /* |: ========================= Crewmate Settings ========================== :| */
-
         SheriffOption = SetupCustomRoleOption(400000, true, RoleId.Sheriff);
         SheriffPlayerCount = Create(400001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
         SheriffCoolTime = Create(400002, true, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
@@ -1902,9 +1899,6 @@ public class CustomOptionHolder
         PsychometristCanCheckFootprintsTime = Create(405508, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
         PsychometristIsReportCheckedDeadBody = Create(405509, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
-        HauntedWolfOption = SetupCustomRoleOption(405600, true, RoleId.HauntedWolf);
-        HauntedWolfPlayerCount = Create(405601, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
-
         SpyOption = SetupCustomRoleOption(405700, true, RoleId.Spy);
         SpyPlayerCount = Create(405701, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
         SpyCanUseVent = Create(405702, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
@@ -1915,39 +1909,41 @@ public class CustomOptionHolder
 
         /* |: ========================= Modifiers Settings ========================== :| */
 
-        MadRolesCanFixComms = Create(500000, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
-        MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
-        MadRolesCanVentMove = Create(500002, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
-
         // SetupModifierCustomOptions
 
         RoleBaseHelper.SetUpOptions();
 
         // 表示設定
 
-        QuarreledOption = Create(500100, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
-        QuarreledTeamCount = Create(500101, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
-        QuarreledOnlyCrewmate = Create(500102, true, CustomOptionType.Neutral, "QuarreledOnlyCrewmateSetting", false, QuarreledOption);
+        MadRolesCanFixComms = Create(500000, true, CustomOptionType.Modifier, "MadRolesCanFixComms", false, null, isHeader: true);
+        MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Modifier, "MadRolesCanFixElectrical", false, null);
+        MadRolesCanVentMove = Create(500002, false, CustomOptionType.Modifier, "MadRolesCanVentMove", false, null);
 
-        LoversOption = Create(500200, true, CustomOptionType.Neutral, Cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
-        LoversTeamCount = Create(500201, true, CustomOptionType.Neutral, "LoversTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
-        LoversPar = Create(500202, true, CustomOptionType.Neutral, "LoversParSetting", rates, LoversOption);
-        LoversOnlyCrewmate = Create(500203, true, CustomOptionType.Neutral, "LoversOnlyCrewmateSetting", false, LoversOption);
-        LoversSingleTeam = Create(500204, true, CustomOptionType.Neutral, "LoversSingleTeamSetting", true, LoversOption);
-        LoversSameDie = Create(500205, true, CustomOptionType.Neutral, "LoversSameDieSetting", true, LoversOption);
-        LoversAliveTaskCount = Create(500206, true, CustomOptionType.Neutral, "LoversAliveTaskCountSetting", false, LoversOption);
-        LoversDuplicationQuarreled = Create(500207, true, CustomOptionType.Neutral, "LoversDuplicationQuarreledSetting", true, LoversOption);
-        var loversoption = SelectTask.TaskSetting(500208, 500209, 500210, LoversOption, CustomOptionType.Neutral, true);
+        HauntedWolf.CustomOptionData.SetUpCustomRoleOptions();
+
+        LoversOption = Create(500200, true, CustomOptionType.Modifier, Cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
+        LoversTeamCount = Create(500201, true, CustomOptionType.Modifier, "LoversTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
+        LoversPar = Create(500202, true, CustomOptionType.Modifier, "LoversParSetting", rates, LoversOption);
+        LoversOnlyCrewmate = Create(500203, true, CustomOptionType.Modifier, "LoversOnlyCrewmateSetting", false, LoversOption);
+        LoversSingleTeam = Create(500204, true, CustomOptionType.Modifier, "LoversSingleTeamSetting", true, LoversOption);
+        LoversSameDie = Create(500205, true, CustomOptionType.Modifier, "LoversSameDieSetting", true, LoversOption);
+        LoversAliveTaskCount = Create(500206, true, CustomOptionType.Modifier, "LoversAliveTaskCountSetting", false, LoversOption);
+        LoversDuplicationQuarreled = Create(500207, true, CustomOptionType.Modifier, "LoversDuplicationQuarreledSetting", true, LoversOption);
+        var loversoption = SelectTask.TaskSetting(500208, 500209, 500210, LoversOption, CustomOptionType.Modifier, true);
         LoversCommonTask = loversoption.Item1;
         LoversShortTask = loversoption.Item2;
         LoversLongTask = loversoption.Item3;
 
-        JumboOption = SetupCustomRoleOption(500300, false, RoleId.Jumbo, type: CustomOptionType.Neutral);
-        JumboPlayerCount = Create(500301, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
-        JumboCrewmateChance = Create(500302, false, CustomOptionType.Neutral, "JumboCrewmateChance", rates, JumboOption);
-        JumboMaxSize = Create(500303, false, CustomOptionType.Neutral, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
-        JumboSpeedUpSize = Create(500304, false, CustomOptionType.Neutral, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
-        JumboWalkSoundSize = Create(500305, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
+        QuarreledOption = Create(500100, true, CustomOptionType.Modifier, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
+        QuarreledTeamCount = Create(500101, true, CustomOptionType.Modifier, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
+        QuarreledOnlyCrewmate = Create(500102, true, CustomOptionType.Modifier, "QuarreledOnlyCrewmateSetting", false, QuarreledOption);
+
+        JumboOption = SetupCustomRoleOption(500300, false, RoleId.Jumbo, type: CustomOptionType.Modifier);
+        JumboPlayerCount = Create(500301, false, CustomOptionType.Modifier, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
+        JumboCrewmateChance = Create(500302, false, CustomOptionType.Modifier, "JumboCrewmateChance", rates, JumboOption);
+        JumboMaxSize = Create(500303, false, CustomOptionType.Modifier, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
+        JumboSpeedUpSize = Create(500304, false, CustomOptionType.Modifier, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
+        JumboWalkSoundSize = Create(500305, false, CustomOptionType.Modifier, "JumboWalkSoundSize", rates, JumboOption);
 
         /* |: ========================= Roles Settings ========================== :| */
 

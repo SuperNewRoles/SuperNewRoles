@@ -94,8 +94,9 @@ class MeetingSheriff_Patch
     static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
-        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
-        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target) && CustomOptionHolder.MeetingSheriffAlwaysKills.GetBool();
+        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
+        var misfire = !success;
+        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
         var TargetID = Target.PlayerId;
         var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
@@ -107,7 +108,7 @@ class MeetingSheriff_Patch
         killWriter.Write(misfire);
         killWriter.Write(alwaysKill);
         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.MeetingSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.MeetingSheriffHauntedWolfKill : FinalStatus.MeetingSheriffKill));
+        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, status);
         if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(Target, FinalStatus.SheriffInvolvedOutburst);
         RoleClass.MeetingSheriff.KillMaxCount--;
         if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)

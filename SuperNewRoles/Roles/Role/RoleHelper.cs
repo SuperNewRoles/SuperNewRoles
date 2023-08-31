@@ -9,6 +9,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Attribute;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -56,7 +57,6 @@ public static class RoleHelpers
     {
         return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
     }
-    public static bool IsHauntedWolf(this PlayerControl player) => player.IsRole(RoleId.HauntedWolf);
 
     /// <summary>
     /// We are Mad!
@@ -176,6 +176,21 @@ public static class RoleHelpers
         RoleId.SeerFriends or
         RoleId.MayorFriends;
     // IsFriends
+
+    public static bool IsHauntedWolf(this PlayerControl player, bool IsChache = true)
+    {
+        if (player.IsBot() || player == null) return false;
+        if (IsChache)
+        {
+            try { return ChacheManager.HauntedWolfChache[player.PlayerId] != null; }
+            catch { return false; }
+        }
+        foreach (PlayerControl p in HauntedWolf.RoleData.Player)
+        {
+            if (p == player) return true;
+        }
+        return false;
+    }
 
     public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
     {
@@ -694,9 +709,6 @@ public static class RoleHelpers
             case RoleId.EvilHacker:
                 RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
                 break;
-            case RoleId.HauntedWolf:
-                RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
-                break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
                 break;
@@ -827,7 +839,7 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
                 WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
                 break;
-            case RoleId.SideKickWaveCannon:
+            case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 break;
             case RoleId.Conjurer:
@@ -892,10 +904,6 @@ public static class RoleHelpers
                 break;
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.Add(player);
-                break;
-            case RoleId.SidekickWaveCannon:
-                WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
-                //SidekickWaveCannon.allPlayers.Add(player);
                 break;
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.Add(player);
@@ -1234,9 +1242,6 @@ public static class RoleHelpers
             case RoleId.EvilHacker:
                 RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.HauntedWolf:
-                RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1360,7 +1365,7 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
                 WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.SideKickWaveCannon:
+            case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Conjurer:
@@ -1809,7 +1814,6 @@ public static class RoleHelpers
             else if (RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.MayorFriends;
             else if (RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.VentMaker;
             else if (RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilHacker;
-            else if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player)) return RoleId.HauntedWolf;
             else if (RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player)) return RoleId.PositionSwapper;
             else if (RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player)) return RoleId.Tuna;
             else if (RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player)) return RoleId.Mafia;

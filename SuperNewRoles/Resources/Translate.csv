@@ -124,6 +124,7 @@ SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </co
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>内鬼阵营</color>设置,<color=#ff0000>內鬼陣營</color>設定
 SettingNeutral,<color=#808080>Neutral</color> Settings,<color=#808080>第三陣営</color>の設定,<color=#808080>独立阵营</color>设置,<color=#808080>中立陣營</color>設定
 SettingCrewmate,<color=#a9ceec>Crewmate</color> Settings,<color=#00ffff>クルーメイト</color>の設定,<color=#00ffff>船员阵营</color>设置,<color=#00ffff>船員陣營</color>設定
+modifierSettings,<color=#ff8cc5>Add-on</color> Settings,<color=#ff8cc5>アドオン</color>の設定
 SettingRegulation,Regulation Settings,レギュレーション設定,常规设置,通常設定
 SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数,船员阵营最小职业数,船員陣營職業數最少值
 SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数,船员阵营最大职业数,船員陣營職業數最大值
@@ -307,8 +308,10 @@ FinalStatusKill,Kill,キル,被杀,被殺
 FinalStatusExiled,Exiled,追放,放逐,驅逐
 FinalStatusSheriffKill,Executing justice,正義執行,出警,警長正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火,警長誤傷
-FinalStatusMeetingSheriffKill,Meeting Sheriff kill，Executing justice,正義執行,执法,執法官正義執行
-FinalStatusMeetingSheriffMisFire,Meeting Sheriff misfire,ミーティングシェリフ誤爆,误判,執法官誤傷
+FinalStatusHauntedSheriffKill,Possession kill,憑依キル
+FinalStatusHauntedSheriffMisFire,Repulsion Misfire,反発誤爆
+FinalStatusSheriffHauntedWolfKill,The possession was severed,誤認射殺
+FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusIgnite,Ignite,焼殺,纵火,燒死
 FinalStatusDisconnected,Amputation,切断,断连,截肢
 FinalStatusDead,Death,死亡,死亡,死亡
@@ -330,11 +333,6 @@ FinalStatusSpelunkerVentDeath,Vent death,ベント転倒死,绊死,管道絆倒�
 FinalStatusSpelunkerOpenDoor,Door death,ドア指挟み死,夹死,被門夾死
 FinalStatusTunaSelfDeath,Heart Stop,心停止,希望之花~紧连着羁绊~,不要停下來啊！♫希望之花♫
 FinalStatusBestFalseChargesFalseCharge,False charge,冤罪追放,含冤而死,六月雪
-FinalStatusSheriffHauntedWolfKill,Executing justice,正義執行,出警,正義執行
-FinalStatusMeetingSheriffHauntedWolfKill,Executing justice,正義執行,执法,正義執法
-FinalStatusRemoteSheriffHauntedWolfKill,Executing justice,正義執行,超能轰击,正義轟擊
-FinalStatusRemoteSheriffKill,Executing justice,正義執行,超能轰击,正義轟擊
-FinalStatusRemoteSheriffMisFire,Remote Sheriff MisFire,リモートシェリフ誤爆,超能反噬,轟擊誤判
 FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー自殺,躁狂,連環殺手自殺
 FinalStatusVampireKill,Death by bloodsucking,吸血死,吸血,吸血而亡
 FinalStatusDependentsExiled,Consumed by the night.,夜に歠まれた,I miss you...,被黑夜吞噬
@@ -345,7 +343,6 @@ FinalStatusRevenge,Revenge,復讐,仇杀,仇殺
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺,暗殺
 FinalStatusHitmanDead,Disposition.,処分,沉江,被處分
 FinalStatusWorshiperSelfDeath,Suicide,自決,自杀,自殺
-FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反杀,反殺
 FinalStatusGuesserKill,Deadshot by guess,推測射殺,赌杀,身分狙殺
 FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
@@ -377,8 +374,6 @@ WereWolfMediumAbilityText,{0}'s Role is {1}!,{0}の役職は{1}です!,{0}的职
 WerewolfModeName,Werewolf,人狼,狼人杀,狼人殺
 WerewolfAbilityTimeSetting,Ability Time,能力使用タイム,能力持续时间,能力持續時間
 WerewolfAbilityTime,{0} seconds remaining until the end of the ability use time,能力使用タイムが終了するまで残り{0}秒,能力持续时间还剩{0}秒,能力持續時間還剩{0}秒
-HauntedWolfName,HauntedWolf,狼憑き,混血儿,混血兒
-HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな,别让其他船员起疑,別讓其他船員起疑
 PlayerCountMessage,Players,人,名,名
 DebugModeOnText,<color=#828282>DebugMode</color>:ON,<color=#828282>デバッグモード</color>が有効です,启用<color=#828282>调试模式</color>,啟用<color=#828282>除錯模式</color>
 BattleRoyalRemaining,Remaining until kills can be made,キルができるようになるまで残り,允许击杀时的剩余人数,允許擊殺時的剩餘人數
@@ -736,6 +731,13 @@ MagazinerTitle1,Save your kills!,キルを貯めよう,存下子弹以备不时�
 MagazinerSetTimeSetting,Kill cool time after magazine use,マガジン使用後のキルクールタイム,快枪手使用储存子弹后的击杀冷却,神槍手使用儲存子彈後的擊殺冷卻
 MagazinerAddButtonName,Save,貯める,储存,儲存
 MagazinerGetButtonName,Set,セット,使用,使用
+HauntedWolfName,HauntedWolf,狼憑き,混血儿,混血兒
+HauntedWolfTitle1,What? I am acting alone...,え... 私はひとりですが...
+HauntedWolfTitle2,"He does not know that I possess him.",『 こやつは 我が憑いている事を知らんのじゃ 』
+HauntedWolfDescription,This is a duplicate role distributed to Crewmate roles. Madmate and Jackal Friends also have a non-duplicate setting.\nWhile alive，the player does not know that he/she is possessed by a wolf.\nThe Sheriff and the Fortune Teller will see you as an Impostor. There is also a setting that reverses the kill decision if duplicated to the sheriff，and the divination decision if duplicated to the soothsayer or medium.\nHe wonders. That people around him talk to him as if he were acting in pairs.\nOne day，he is suspected and executed by the sheriff. He was heartbroken that someone would die because of him.\nBut the person who actually died was...!,クルー役職に重複して配布される役職です。マッドメイト及びジャッカルフレンズには重複しない設定もあります。\n生存している間は自分が狼憑きである事が分かりません。\nシェリフや占い師にはインポスターとして判定されます。シェリフに重複した場合 キル判定を，占い師や霊媒師に重複した場合 占いの判定を反転する設定もあります。\n彼は訝しむ。周囲がまるで自分が2人で行動しているかの様に話しかけて来る事を。\nある時，彼は疑われシェリフに処刑される事となった。自分のせいで死んでしまう人が出る事に心を痛めた。\nしかし実際に死んだのは...!!
+HauntedWolfIsAssignMadAndFriendRoles,No overlap with Mud or Friends rolls.,マッドやフレンズロールと重複しない
+HauntedWolfIsReverseSheriffDecision,Reverses the kill decision when duplicated on a sheriff.,シェリフや占い師等に重複した時，判定を反転する。
+HauntedWolfIsNotDuplication,Not to be distributed in duplicate with mod roles,他のMod役職と重複して配布しない
 LoversName,Lovers.,ラバーズ,恋人,戀人
 LoversIntro,I'm in love with {0}!,{0}と恋に落ちてしまった！,你和{0}坠入了爱河,你和{0}墜入了愛河
 LoversDescription,Lovers is a duplicate position given in addition to other positions. Lovers person will see a heart mark next to their name.,恋人は他の役職に重複して与えられ、恋人同士は名前の後のハートマークで確認することが出来ます。,恋人为一个附加职业，由两名玩家组成。\n恋人可以在他们的名字旁边看到爱心。,恋人為一個附加職業，由兩名玩家組成。\n戀人可以在他們的名字旁邊看到愛心。

@@ -292,15 +292,7 @@ public static class RoleSelectHandler
 
         foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (intro.RoleId != RoleId.DefaultRole &&
-                intro.RoleId != RoleId.Revolutionist &&
-                intro.RoleId != RoleId.Assassin &&
-                (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
-                && !intro.IsGhostRole
-                && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
-                && intro.RoleId is not RoleId.GM
-                && intro.RoleId != RoleId.Pavlovsdogs
-                && intro.RoleId != RoleId.Jumbo)
+            if (!intro.IsGhostRole && AllRoleSetClass.CanRoleIdElected(intro.RoleId))
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null || !option.isSHROn) continue;

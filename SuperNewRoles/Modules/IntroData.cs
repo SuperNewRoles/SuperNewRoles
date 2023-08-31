@@ -6,6 +6,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Attribute;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -213,7 +214,6 @@ public class IntroData
     public static IntroData VentMakerIntro = new("VentMaker", RoleClass.VentMaker.color, 1, RoleId.VentMaker, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData GhostMechanicIntro = new("GhostMechanic", RoleClass.GhostMechanic.color, 1, RoleId.GhostMechanic, TeamRoleType.Crewmate, IsGhostRole: true);
     public static IntroData EvilHackerIntro = new("EvilHacker", RoleClass.EvilHacker.color, 1, RoleId.EvilHacker, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData HauntedWolfIntro = new("HauntedWolf", RoleClass.HauntedWolf.color, 1, RoleId.HauntedWolf);
     public static IntroData PositionSwapperIntro = new("PositionSwapper", RoleClass.PositionSwapper.color, 1, RoleId.PositionSwapper, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData TunaIntro = new("Tuna", RoleClass.Tuna.color, 1, RoleId.Tuna, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MafiaIntro = new("Mafia", RoleClass.Mafia.color, 1, RoleId.Mafia, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
@@ -236,6 +236,7 @@ public class IntroData
     public static IntroData SpelunkerIntro = new("Spelunker", RoleClass.Spelunker.color, 1, RoleId.Spelunker, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SuicidalIdeationIntro = new("SuicidalIdeation", RoleClass.SuicidalIdeation.color, 1, RoleId.SuicidalIdeation, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData HitmanIntro = new("Hitman", RoleClass.Hitman.color, 1, RoleId.Hitman, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData HauntedWolfIntro = new("HauntedWolf", HauntedWolf.RoleData.color, 2, RoleId.HauntedWolf);
     public static IntroData MatryoshkaIntro = new("Matryoshka", RoleClass.Matryoshka.color, 1, RoleId.Matryoshka, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData NunIntro = new("Nun", RoleClass.Nun.color, 1, RoleId.Nun, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData PsychometristIntro = new("Psychometrist", RoleClass.Psychometrist.color, 1, RoleId.Psychometrist, IntroSound: RoleTypes.Scientist);

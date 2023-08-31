@@ -1591,10 +1591,12 @@ static class HudManagerStartPatch
                     if (RoleClass.Sheriff.KillMaxCount > 0 && SetTarget())
                     {
                         var target = PlayerControlFixedUpdatePatch.SetTarget();
-                        var localId = CachedPlayer.LocalPlayer.PlayerId;
-                        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
                         PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
-                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+
+                        var localId = CachedPlayer.LocalPlayer.PlayerId;
+                        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
+                        var misfire = !success;
+                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
                         if (alwaysKill && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
                         {
                             alwaysKill = false;
@@ -1611,7 +1613,7 @@ static class HudManagerStartPatch
                         killWriter.Write(misfire);
                         killWriter.Write(alwaysKill);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
+                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, status);
                         if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
                         Sheriff.ResetKillCooldown();
                         RoleClass.Sheriff.KillMaxCount--;

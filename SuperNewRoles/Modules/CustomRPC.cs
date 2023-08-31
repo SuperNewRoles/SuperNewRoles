@@ -15,6 +15,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
@@ -125,7 +126,7 @@ public enum RoleId
     VentMaker,
     GhostMechanic,
     EvilHacker,
-    HauntedWolf,
+    HauntedWolf, // 情報表示用のRoleId, 役職管理としては使用していない
     PositionSwapper,
     Tuna,
     Mafia,
@@ -164,7 +165,7 @@ public enum RoleId
     Cracker,
     WaveCannon,
     WaveCannonJackal,
-    SideKickWaveCannon,
+    SidekickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -192,7 +193,6 @@ public enum RoleId
     TheThirdLittlePig,
     OrientalShaman,
     ShermansServant,
-    SidekickWaveCannon,
     Balancer,
     Pteranodon,
     //RoleId
@@ -203,6 +203,7 @@ public enum CustomRPC
     ShareOptions = 60,
     ShareSNRVersion,
     SetRole,
+    SetHauntedWolf,
     SetQuarreled,
     RPCClergymanLightOut,
     SheriffKill,
@@ -1029,6 +1030,9 @@ public static class RPCProcedure
         player.SetRole(roleId);
     }
 
+    public static void SetHauntedWolf(byte playerid)
+        => HauntedWolf.Assign.SetHauntedWolf(ModHelpers.PlayerById(playerid));
+
     public static void SetQuarreled(byte playerid1, byte playerid2)
         => RoleHelpers.SetQuarreled(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
 
@@ -1634,6 +1638,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.TeleporterTP:
                         TeleporterTP(reader.ReadByte());
+                        break;
+                    case CustomRPC.SetHauntedWolf:
+                        SetHauntedWolf(reader.ReadByte());
                         break;
                     case CustomRPC.SetQuarreled:
                         SetQuarreled(reader.ReadByte(), reader.ReadByte());
