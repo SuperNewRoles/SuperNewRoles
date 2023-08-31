@@ -57,6 +57,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ChacheManager.Load();
         CustomCosmetics.CustomColors.Load();
         ConfigRoles.Load();
+        ModDownloader.Load();
         CustomOptionHolder.Load();
         Patches.FreeNamePatch.Initialize();
         // All Load() End

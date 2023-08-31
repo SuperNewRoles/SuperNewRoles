@@ -83,9 +83,10 @@ public static class SelectTask
     /// </summary>
     /// <param name="id">判定したい役職のRoleId</param>
     /// <returns> true : 有する, false : 有さない</returns>
-    private static bool GetHaveTaskManageAbility(RoleId id)
+    internal static bool GetHaveTaskManageAbility(RoleId id)
     {
         // RoleIdと タスクで管理する能力を有すか
+        // RoleIdが重複するとタスクが配布されず, 非導入者の画面でもTaskInfoが開けなくなる。
         Dictionary<RoleId, bool> taskTriggerAbilityData = new()
         {
             { RoleId.Madmate, MadmateIsCheckImpostor.GetBool() },
@@ -101,7 +102,7 @@ public static class SelectTask
             { RoleId.Jester, JesterIsWinCleartask.GetBool() },
             { RoleId.MadJester, IsMadJesterTaskClearWin.GetBool() || MadJesterIsCheckImpostor.GetBool() },
             { RoleId.God, GodIsEndTaskWin.GetBool() },
-            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) },
+            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
             { RoleId.Workperson, true },
             { RoleId.TaskManager, true },
             { RoleId.SuicidalIdeation, true },
@@ -111,7 +112,8 @@ public static class SelectTask
             { RoleId.TheFirstLittlePig, true },
             { RoleId.TheSecondLittlePig, true },
             { RoleId.TheThirdLittlePig, true },
-            { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() }
+            { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
         };
 
         if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];
@@ -158,6 +160,7 @@ public static class SelectTask
             { RoleId.TheSecondLittlePig, TheThreeLittlePigs.TheThreeLittlePigsIsSettingNumberOfUniqueTasks.GetBool() ? (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.TheThirdLittlePig, TheThreeLittlePigs.TheThreeLittlePigsIsSettingNumberOfUniqueTasks.GetBool() ? (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanIsSettingNumberOfUniqueTasks.GetBool() ? (OrientalShaman.OrientalShamanCommonTask.GetInt(), OrientalShaman.OrientalShamanShortTask.GetInt(), OrientalShaman.OrientalShamanLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) ? (MadRaccoon.CustomOptionData.CommonTask.GetInt(),MadRaccoon.CustomOptionData.ShortTask.GetInt(), MadRaccoon.CustomOptionData.LongTask.GetInt())  : (0, 0, 0) },
         };
 
         //テンプレート

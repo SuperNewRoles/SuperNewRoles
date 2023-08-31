@@ -3,6 +3,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -1004,7 +1005,7 @@ public class CustomOptionHolder
     public static string[] LevelingerTexts = new string[] { };
     public static List<float> CrewPlayers = new() { 1f, 1f, 15f, 1f };
     public static List<float> AlonePlayers = new() { 1f, 1f, 1f, 1f };
-    public static List<float> ImpostorPlayers = new() { 1f, 1f, 5f, 1f };
+    public static List<float> ImpostorPlayers = new() { 1f, 1f, 15f, 1f };
     public static List<float> QuarreledPlayers = new() { 1f, 1f, 7f, 1f };
     // public static CustomOption ;
 
@@ -1047,10 +1048,11 @@ public class CustomOptionHolder
 
         if (ConfigRoles.DebugMode.Value)
         {
-            IsDebugMode = Create(100800, true, CustomOptionType.Generic, "<color=#828282>デバッグモード</color>", false, null, isHeader: true);
-            DebugModeFastStart = Create(100801, true, CustomOptionType.Generic, "<color=#828282>即開始</color>", false, IsDebugMode);
-            CanUseChatWhenTaskPhase = Create(100802, true, CustomOptionType.Generic, "<color=#828282>タスクフェイズ中にチャットを使える</color>", false, IsDebugMode);
-            IsMurderPlayerAnnounce = Create(100803, true, CustomOptionType.Generic, "<color=#828282>MurderPlayer発生時に通知を行う</color>", false, IsDebugMode);
+            Color debugColor = (Color)RoleClass.Debugger.color;
+            IsDebugMode = Create(100800, true, CustomOptionType.Generic, Cs(debugColor, "デバッグモード"), false, null, isHeader: true);
+            DebugModeFastStart = Create(100801, true, CustomOptionType.Generic, Cs(debugColor, "即開始"), false, IsDebugMode);
+            CanUseChatWhenTaskPhase = Create(100802, true, CustomOptionType.Generic, Cs(debugColor, "タスクフェイズ中にチャットを使える"), false, IsDebugMode);
+            IsMurderPlayerAnnounce = Create(100803, true, CustomOptionType.Generic, Cs(debugColor, "MurderPlayer発生時に通知を行う"), false, IsDebugMode);
         }
 
         DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
@@ -1609,6 +1611,9 @@ public class CustomOptionHolder
         // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
 
         /* |: ========================= Crewmate Settings ========================== :| */
+        MadRolesCanFixComms = Create(500000, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
+        MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
+        MadRolesCanVentMove = Create(500002, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
 
         SheriffOption = SetupCustomRoleOption(400000, true, RoleId.Sheriff);
         SheriffPlayerCount = Create(400001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
@@ -1704,7 +1709,9 @@ public class CustomOptionHolder
         BlackCatIsUseVent = Create(401010, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, BlackCatOption);
         BlackCatIsImpostorLight = Create(401011, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, BlackCatOption);
 
-        Roles.Impostor.MadRole.Worshiper.CustomOptionData.SetupCustomOptions();
+        Worshiper.CustomOptionData.SetupCustomOptions();
+
+        MadRaccoon.CustomOptionData.SetupCustomOptions();
 
         MadJesterOption = SetupCustomRoleOption(401200, true, RoleId.MadJester);
         MadJesterPlayerCount = Create(401201, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
@@ -1859,6 +1866,15 @@ public class CustomOptionHolder
         ToiletFanPlayerCount = Create(405901, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
         ToiletFanCoolTime = Create(405902, true, CustomOptionType.Crewmate, "ToiletCooldownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
 
+        PoliceSurgeon.CustomOptionData.SetupCustomOptions();
+
+        DoctorOption = SetupCustomRoleOption(404700, false, RoleId.Doctor);
+        DoctorPlayerCount = Create(404701, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
+        DoctorChargeTime = Create(404702, false, CustomOptionType.Crewmate, "DoctorChargeTime", 10f, 0f, 60f, 2.5f, DoctorOption);
+        DoctorUseTime = Create(404703, false, CustomOptionType.Crewmate, "DoctorUseTime", 5f, 0f, 60f, 2.5f, DoctorOption);
+
+        DyingMessenger.SetupCustomOptions();
+
         SoothSayerOption = SetupCustomRoleOption(402500, false, RoleId.SoothSayer);
         SoothSayerPlayerCount = Create(402501, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
         SoothSayerDisplayMode = Create(402502, false, CustomOptionType.Crewmate, "SoothSayerDisplaySetting", false, SoothSayerOption);
@@ -1870,8 +1886,6 @@ public class CustomOptionHolder
         SpiritMediumIsAutoMode = Create(402602, false, CustomOptionType.Crewmate, "SpiritMediumIsAutoMode", false, SpiritMediumOption);
         SpiritMediumDisplayMode = Create(402603, false, CustomOptionType.Crewmate, "SpiritMediumDisplaySetting", false, SpiritMediumOption);
         SpiritMediumMaxCount = Create(402604, false, CustomOptionType.Crewmate, "SpiritMediumMaxCountSetting", 2f, 1f, 15f, 1f, SpiritMediumOption);
-
-        DyingMessenger.SetupCustomOptions();
 
         Squid.SetupCustomOptions();
 
@@ -1960,11 +1974,6 @@ public class CustomOptionHolder
         MovingPlayerCount = Create(404601, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MovingOption);
         MovingCoolTime = Create(404602, false, CustomOptionType.Crewmate, "MovingCooldownSetting", 30f, 0f, 60f, 2.5f, MovingOption);
 
-        DoctorOption = SetupCustomRoleOption(404700, false, RoleId.Doctor);
-        DoctorPlayerCount = Create(404701, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
-        DoctorChargeTime = Create(404702, false, CustomOptionType.Crewmate, "DoctorChargeTime", 10f, 0f, 60f, 2.5f, DoctorOption);
-        DoctorUseTime = Create(404703, false, CustomOptionType.Crewmate, "DoctorUseTime", 5f, 0f, 60f, 2.5f, DoctorOption);
-
         TechnicianOption = SetupCustomRoleOption(404800, true, RoleId.Technician);
         TechnicianPlayerCount = Create(404801, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TechnicianOption);
 
@@ -2025,10 +2034,6 @@ public class CustomOptionHolder
 
         /* |: ========================= Modifiers Settings ========================== :| */
 
-        MadRolesCanFixComms = Create(500000, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
-        MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
-        MadRolesCanVentMove = Create(500002, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
-
         // SetupModifierCustomOptions
 
         RoleBaseHelper.SetUpOptions();
@@ -2061,6 +2066,8 @@ public class CustomOptionHolder
 
         /* |: ========================= Roles Settings ========================== :| */
 
+        MatchTagOption.LoadOption(); // マッチタグの設定
+
         Logger.Info("---------- CustomOption Id Info start ----------", "CustomOptionId Info");
 
         Logger.Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
@@ -2069,6 +2076,7 @@ public class CustomOptionHolder
         Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(NeutralIdMax), "Neutral");
         Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(CrewmateIdMax), "Crewmate");
         Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(ModifierIdMax), "Modifier");
+        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(MatchingTagIdMax), "MatchingTag");
 
         Logger.Info("---------- SettingId Info----------", "SettingId Info");
         Logger.Info("CustomOptionのIdのMax:" + GenericIdMax, "Generic");
@@ -2076,6 +2084,7 @@ public class CustomOptionHolder
         Logger.Info("CustomOptionのIdのMax:" + NeutralIdMax, "Neutral");
         Logger.Info("CustomOptionのIdのMax:" + CrewmateIdMax, "Crewmate");
         Logger.Info("CustomOptionのIdのMax:" + ModifierIdMax, "Modifier");
+        Logger.Info("CustomOptionのIdのMax:" + MatchingTagIdMax, "MatchingTag");
         Logger.Info("設定数:" + options.Count);
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");

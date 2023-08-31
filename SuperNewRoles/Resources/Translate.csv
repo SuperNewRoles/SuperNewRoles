@@ -38,6 +38,8 @@ creditsUpdateOk,There is updated data. Please reboot. Latest Version:v{0},更新
 modOptionsText,Options,設定,设置,設定
 moreOptionsText,Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定,一般设置与&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>设置,一般設定與&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>設定
 HaisonName,Called Game,廃村,解散游戏,結束遊戲
+NoWinner,Annihilation,全滅
+NoWinnerText,And then there was no one left,そして誰もいなくなった
 Developer,Developer,開発者,开发者,開發者
 Sponsor,Sponsor,スポンサー,支持者,贊助人
 Translator,Translator,翻訳,翻译,翻譯
@@ -258,12 +260,16 @@ DetectiveModeIsNotDetectiveVoteSetting,Non-Detective cannot vote,探偵以外は
 DetectiveModeIsNotDetectiveMeetingButtonSetting,Non-Detective cannot press the conference button,探偵以外が会議ボタンを押せない,侦探以外的玩家不可以召开紧急会议,偵探以外的玩家禁止召開緊急會議
 DetectiveName,Detective,探偵,侦探,偵探
 DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイトを勝利させよう,通过推理帮助船员获胜,通過推理幫助船員獲勝
-BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数,所有玩家可見存活玩家總數
-BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛,團體戰
-BattleRoyalTeamAmount,Number of teams,チーム数,团队数,團隊數
+BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数
+BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛
+BattleRoyalTeamAmount,Number of teams,チーム数,团队数
+BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间
+BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。
+BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！
+BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます)
+BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!\n能力は、シェイプシフトで発動できます!
 BattleRoyalIsKillCountView,Display kill count,キル数を表示する,,顯示擊殺數
 BattleRoyalIsKillCountViewSelfOnly,Show only to yourself,自分のみに表示する,,只顯示自己的擊殺數
-BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间,可擊殺所需時間
 ZombieZombieName,Zombie,ゾンビ,僵尸,殭屍
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利,感染他人以獲得勝利
 ZombiePoliceName,Police,警察,人类,人類
@@ -319,6 +325,7 @@ HASSeekName,Seek,鬼,抓捕者,捉捕方
 HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,死亡后隐藏尸体并清除任务,死後隱藏屍體並清除任務
 HASUseSaboSetting,Use Sabotage,サボタージュが使える,抓捕者可以造成紧急破坏,捉捕方可以使用緊急破壞
 HASUseVentSetting,Use Vent,ベントが使える,抓捕者可以使用管道,捉捕方可以使用通風管道
+
 
 # FinalResults
 FinalResults,Final results,最終結果,最終結果
@@ -689,6 +696,7 @@ GodDescription,If you survive to the end you take away the win. Everyone's posit
 GodDescription,I know everyone's roles. I am a god.\nIf I survive until the end，I will claim victory by myself，stealing it from others.\nDedicate that victory to the gods.,全員の役職がわかります。私は神だ。\n最後まで生存していると勝利を横取りして単独勝利します。\nその勝利を神に捧げなさい。,全知全能之神明。\n只要神存在于飞船内，一切胜利果实都将被当作神的祭品。\n为神奉献胜利吧。,吾知曉所有人的職業。吾乃神。\n若存活到遊戲結束，吾將横取勝利，獨自獲勝。\n來吧，將勝利獻給神吧。
 GodViewVoteSetting,I know who to vote for.,投票先がわかる,神能看到所有人的投票情况,神能看到所有人的投票情況
 GodIsEndTaskWinSetting,You have to finish the task to win.,タスクを終わらせないと勝利できない,不完成所有任务则不能获胜,不完成所有任務則不能獲勝
+GodWinText,Advent,降臨
 AllCleanerName,All Cleaner,オールクリーナー,清理者,清理者
 AllCleanerTitle1,Let's get rid of the corpse.,死体を消そう,杀人不留痕迹,殺人不留痕跡
 AllCleanerCountSetting,Number of times it can be used in one game,1試合中に使える回数,清理者最大可清理次数,清理者最大可清理次數
@@ -884,11 +892,12 @@ DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,暗夜杀手击杀冷却,暗影殺手擊殺冷卻時間
 FoxName,Fox,妖狐,妖狐,狐妖
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！,我是一隻小狐狸！
-FoxDescription,If you survive to the end，you win alone.\nYou will not be killed.\nThat's because I'm not me there.,最後まで生存していると単独勝利します。\nキルされることはありません。\nそりゃあそこにいる私は私ではないからね。,,如果狐妖存活到最後則獨自勝利。\n不存在什麼我被殺，因為在那的我並不是我。
+FoxDescription,If you survive to the end，you win alone.\nYou will not be killed.\nThat's because I'm not me there.,最後まで生存していると単独勝利します。\nキルされることはありません。\nそりゃあそこにいる私は私ではないからね。,妖狐存活到游戏结束则妖狐单独获胜。\n妖狐不会被击杀。\n你什么时候产生了你看到的是本人的错觉？,如果狐妖存活到最後則獨自勝利。\n不存在什麼我被殺，因為在那的我並不是我。
 CanHouwaWin,Fox can win on stalemate,飽和勝利が可能
 SeerName,Seer,シーア,灵媒,先知
 SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。,灵媒属于船员阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n灵媒需要利用手中的情报来确认内鬼。,先知屬於船員陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n先知需要利用手中的情報來確認內鬼。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
+SeerCombIntro1,Why not try to pick up the words of the dead?,なぜ死者の言葉を拾おうとしないのか
 SeerMode,Mode,モード,灵媒模式,先知模式
 SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂,顯示死亡閃光和靈魂
 SeerModeFlash,Show Death Flash,死の点滅が見える,显示死亡闪光,顯示死亡閃光
@@ -901,6 +910,7 @@ MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろ
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒,邪惡的先知
 EvilSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。,邪恶的灵媒属于内鬼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n邪恶的灵媒需要利用手中的情报帮助同伙。,邪惡的先知屬於內鬼陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n邪惡的先知需要利用手中的情報幫助同伴。
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
+EvilSeerCombIntro1,Why do we treat the dead so specially?,なぜ死者を特別に扱うのか
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长,超能警長
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法,遠距離進行執法擊殺
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート,击杀时传送到被击杀者所在位置,擊殺時傳送到被擊殺者所在位置
@@ -1067,7 +1077,7 @@ SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼�
 SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。,規則上牧狼人被判定為船員陣營，但是其為豺狼的同伙。\n豺狼團隊獲勝則牧狼人一同獲勝。\n豺狼能確認牧狼人是誰。牧狼人需要幫助豺狼以獲得勝利。
 SpelunkerName,Spelunker,スペランカー,倒霉蛋,倒霉鬼
 SpelunkerTitle1,It's so easy to die.,簡単に死んでしまう,死亡如风，常伴吾身,人總有一死，何必在意
-SpelunkerDescription,I am a worthless weakling who can easily die over trivial matters.\nVents，ladders，doors，power outages，communication interference，elevator lifts—everything is my enemy.\nBut if I manage to survive until the end，I will seize victory and claim it solely for myself.\nNow，let's strive to stay alive.,ちょっとしたことで簡単に死ぬクソ雑魚です。\nベント、はしご、ドア、停電、通信妨害、昇降機リフト、全てが敵です。\n最後まで生存していると勝利を横取りして単独勝利します。\nさあ、生き残ろう。,倒霉蛋是可以因任何意外事件而死的杂❤鱼。\倒霉蛋可以因管道、梯子、门、破坏、移动平台等等原因而死。\n若倒霉蛋存活到游戏结束，倒霉蛋将肚子获胜。\n一定要活下去啊。,倒霉鬼是隨隨便便都能死的雜魚。\n通風管、梯子、門、停電、通訊干擾、電梯，所有東西都是倒霉鬼的敵人。\n如果倒霉鬼能活到最後，就能獨自獲勝。\n現在，努力活下去吧。
+SpelunkerDescription,I am a worthless weakling who can easily die over trivial matters.\nVents，ladders，doors，power outages，communication interference，elevator lifts—everything is my enemy.\nBut if I manage to survive until the end，I will seize victory and claim it solely for myself.\nNow，let's strive to stay alive.,ちょっとしたことで簡単に死ぬクソ雑魚です。\nベント、はしご、ドア、停電、通信妨害、昇降機リフト、全てが敵です。\n最後まで生存していると勝利を横取りして単独勝利します。\nさあ、生き残ろう。,倒霉蛋是可以因任何意外事件而死的杂❤鱼。\倒霉蛋可以因管道、梯子、门、破坏、移动平台等等原因而死。\n若倒霉蛋存活到游戏结束，倒霉蛋将肚子获胜。\n一定要活下去啊。,倒霉鬼是隨隨便便都能死的雜❤魚。\n通風管、梯子、門、停電、通訊干擾、電梯，所有東西都是倒霉鬼的敵人。\n如果倒霉鬼能活到最後，就能獨自獲勝。\n現在，努力活下去吧。
 SpelunkerVentDeathChance,Probability of vent death,ベント死の確率,倒霉蛋在管道口跌倒而死的概率,倒霉鬼在管道口跌倒而死的機率
 SpelunkerIsDeathCommsOrPowerdown,Power outage/community skipping death,停電/コミュサボ死,倒霉蛋会在照明或通讯破坏期间失足而死,倒霉鬼在停電/通訊破壞期間失足而死
 SpelunkerDeathCommsOrPowerdownTime,Time to power outage/community sabotage death,停電/コミュサボ死までの時間,倒霉蛋在照明或通讯期间死亡需要经过的时间,倒霉鬼在停電/通訊破壞期間死亡需要經過的時間
@@ -1107,7 +1117,7 @@ MatryoshkaPutOnButtonName,Put On,着る,套娃,套娃
 MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除,解除
 StefinderName,Stefinder,ステファインダー,二五仔,二五仔
 StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう,那么答案只有一个了！,那麼答案只有一個了！
-StefinderDescription,You can only make one kill.\nIf you make a kill， you are in the impostor's camp; if you do not make a kill， you are in the crew's camp.\nYou must decide which side you are going to be in when the match unfolds.,一度だけキルが出来ます。\nキルをしたらインポスター陣営、キルをしなければクルー陣営です。\n試合展開を見極めてどちらに付くか決めましょう。,二五仔只能进行一次击杀。\n使用击杀的二五仔属于内鬼阵营，不使用击杀的二五仔则属于船员阵营。\n二五仔需要根据游戏的进展来决定自己要加入哪方,二五仔只能進行一次擊殺。\n一旦你進行了擊殺，你將成為內鬼陣營；如果你沒有進行擊殺，你將維持船員陣營身分。\n你必須在遊戲結束前決定你要加入哪一方。
+StefinderDescription,You can only make one kill.\nIf you make a kill， you are in the impostor's camp; if you do not make a kill， you are in the crew's camp.\nYou must decide which side you are going to be in when the match unfolds.,一度だけキルが出来ます。\nキルをしたらインポスター陣営、キルをしなければクルー陣営です。\n試合展開を見極めてどちらに付くか決めましょう。,二五仔只能进行一次击杀。\n使用击杀的二五仔属于内鬼阵营，不使用击杀的二五仔则属于船员阵营。\n二五仔需要根据游戏的进展来决定自己要加入哪方,二五仔只能進行一次擊殺。\n一旦你進行了擊殺，你將成為內鬼陣營；如果你沒有進行擊殺，你將維持船員陣營身分。\n根據遊戲的進展決定你要加入哪一方。
 StefinderKillCooldownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却,二五仔擊殺冷卻時間
 StefinderVentSetting,CanUseVent,ベントを使用できる,二五仔可以使用管道,二五仔可以使用通風管道
 StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五仔可以造成破坏,二五仔可以造成破壞
@@ -1246,7 +1256,7 @@ GMSpawnDeadBody,Spawn Deadbody,死体発生,生成尸体,生成屍體
 GMEndMeeting,End Meeting,会議終了,结束会议,結束會議
 SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生,期望自殺者
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない,找寻活着的意义,找到活下去的意義
-SuicidalIdeationDescription,It has a self-destruct timer that extends the time to do a task.\nIt has its own fall-to-death probability.\nIf you complete the task before it self-destructs， you win alone.\nYou also win an additional victory if you survive even if you do not complete the task.,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。,绝望先生可以通过做任务延长自己的自杀倒计时。\n绝望先生持有独立的在梯子上摔死概率。\n只要绝望先生在自杀前做完了所有任务，绝望先生便可以单独获胜。\n若绝望先生没有完成所有任务，但在游戏结束时存活，绝望先生也可以获胜。
+SuicidalIdeationDescription,It has a self-destruct timer that extends the time to do a task.\nIt has its own fall-to-death probability.\nIf you complete the task before it self-destructs， you win alone.\nYou also win an additional victory if you survive even if you do not complete the task.,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。,绝望先生可以通过做任务延长自己的自杀倒计时。\n绝望先生持有独立的在梯子上摔死概率。\n只要绝望先生在自杀前做完了所有任务，绝望先生便可以单独获胜。\n若绝望先生没有完成所有任务，但在游戏结束时存活，绝望先生也可以获胜。,絕望先生能透過完成任務來延長自己的自殺倒數。\n當在自殺前做完了所有任務，你便可以單獨獲勝。\n若你沒有完成所有任務，但在遊戲結束時仍活著，你也可以獲勝。
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本,獨特的勝利文字
 SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間,绝望先生自杀倒计时,自殺倒數時間
 SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増える時間,绝望先生完成一个任务后倒计时的增量,完成一個任務後倒計時的增量
@@ -1351,8 +1361,10 @@ WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを
 WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
 NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工,正義的機械師
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道,改造飛船上的管道
+NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？
 EvilMechanicName,EvilMechanic,イビルメカニック,邪恶的迁管工,邪惡的機械師
 EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう,尝试将管道改造得对自己有利,嘗試將管道改造得對自己有利
+EvilMechanicCombIntro1,Looks like someone is trying to get in my way,私の邪魔をするやつがいるようだ
 MechanicButtonName,Relocate.,移設,改造,改造
 TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚,三只小猪,三隻小豬
 TheFirstLittlePigName,The First Little Pig,1番目の仔豚,猪老大,猪老大
@@ -1385,6 +1397,29 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
+<<<<<<< HEAD
+ReviverName,Reviver,リバイバー
+ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However， everyone will be notified of their location.\n It takes 12 seconds to resurrect， and while resurrected， you cannot move and you cannot kill. Also，\n after resurrection， the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。
+ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。
+GuardrawerName,Guardrawer,ガードロワー
+GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。
+GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。
+KingPosterName,KingPoster,キングポスター
+KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！
+KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！
+LongKillerName,LongKiller,ロングキラー
+LongKillerDescription,It has a long kill range， but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!
+DarknightName,Darknight,闇の騎士
+DarknightDescription,,闇に飲まれた騎士。キルクールタイムが0。しかし、視界も0。キル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。
+RevengerName,Revenger,リベンジャー
+RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。
+RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを開始した。
+CrystalMagicianName,CrystalMagician,クリスタルマジシャン
+CrystalMagicianDescription,,
+CrystalMagicianCrystalBot,Crystal,クリスタル
+GrimReaperName,GrimReaper,死神
+GrimReaperDescription,,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。ただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。さらに、エネルギーを貯めている位置も分かってしまう。注意しよう。
+GrimReaperAbilityStart,GrimReaper is charging energy at {0} now...,死神が{0}でエネルギーを貯め始めた...
 BalancerName,Balancer,天秤,大神官,阿努比斯
 BalancerTitle1,(x+y)/2,(x+y)/2,审判他人罪孽的轻重,審判罪孽的輕重
 BalancerTitleTextEither,Put it one way or the other.,どちらかに入れろ,到底要选哪个呢,誰的罪孽更深呢
@@ -1394,12 +1429,12 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
-PteranodonName,Pteranodon,プテラノドン
-PteranodonTitle1,PtePte,プテプテ
-PteranodonButtonName,Juump!!,ジャーンプ！
+PteranodonName,Pteranodon,プテラノドン,鸟人,無齒翼龍
+PteranodonTitle1,PtePte,プテプテ,一飞冲天啊，我,翼~翼~
+PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,起飛！
 BlackHatHackerName,Black Hat Hacker,ブラックハットハッカー
 BlackHatHackerTitle1,Do you have an antivirus?,貴方はウイルス対策ちゃんとしてる？
-BlackHatHackerDescription,I need everyone's information to stay alive... So I will infect the virus...\nIf you infect everyone's phone with the virus， you win!\nIn an infected state, the virus infects surrounding non-infected persons.\nWhen the infection level is above the level at which self-propagation begins，\nThe disease progresses even if there are no infected persons around.,生きるために全員の情報が必要だ...だから僕はウイルスを感染させる...\n全員のスマホにウイルスを感染させたら勝利となります\n感染状態になると周囲の非感染者にウイルスが感染します\n自己増殖が開始される感染度以上の感染度になった場合、\n周りに感染者が居なくとも進行します
+BlackHatHackerDescription,I need everyone's information to stay alive... So I will infect the virus...\nIf you infect everyone's phone with the virus，you win!\nIn an infected state，the virus infects surrounding non-infected persons.\nWhen the infection level is above the level at which self-propagation begins，\nThe disease progresses even if there are no infected persons around.,生きるために全員の情報が必要だ...だから僕はウイルスを感染させる...\n全員のスマホにウイルスを感染させたら勝利となります\n感染状態になると周囲の非感染者にウイルスが感染します\n自己増殖が開始される感染度以上の感染度になった場合、\n周りに感染者が居なくとも進行します
 BlackHatHackerHackCoolTimeOption,Hack Cool Time,ハックのクールタイム
 BlackHatHackerHackCountableOption,Number of hacks possible,ハック可能回数
 BlackHatHackerIsNotInfectionIncreaseOption,Increase the number of hacks once the infected are gone,感染者が居なくなったらハック回数を増やす
@@ -1419,17 +1454,117 @@ BlackHatHackerPageChange,Page Change,ページ変更
 Short,Short,ショート
 Medium,Medium,ミドル
 Long,Long,ロング
+PoliceSurgeonName,Police Surgeon,警察医
+PoliceSurgeonTitle1,I just wanted to assist in helping to ensure a peaceful and happy passing，yet...,私は幸せな最期を看取る手伝いをしたかっただけなのに...
+PoliceSurgeonDescription,The role that allows you to check the time of death during meetings，and can be changed to estimate the time of death depending on the settings. \nYou can also use the portable vital monitor during task phases，depending on the settings. \nI became a doctor to save lives，to help people die peacefully，\nand to provide comfort in their final moments...\nnot to witness premature deaths like this!,会議中、死亡時刻を確認する事ができる役職です (設定により死亡推定時刻に変更可能です)。\n設定によりタスクフェイズ中に携帯バイタルを使用する事もできます。\n私が医師になったのは、命を救い、時には最期をよりよくする手助けをし、看取る為であって... この様な... 志半ばで亡くなる死を視る為ではなかったのに!!
+PoliceSurgeonHaveVitalsInTaskPhase,Do you have portable vitals in your possession during the task phase?,タスクフェイズ中に携帯バイタルを所持しているか。
+VitalsDisplayCooldown,Vitals Display Cooldown,バイタル画面クールダウン
+BatteryDuration,Battery Duration,充電持続時間
+PoliceSurgeonCanResend,Would it be possible to resend post mortem certificate?,死体検案書の再送を可能にするか。
+PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn,Do you still list the time of death after the end of the meeting phase of the turn in which the death occurred?,死亡したターンの会議フェイズ終了後も、死亡時刻を表記するか。
+PoliceSurgeonHowManyTurnAgoTheDied,During the Conference Phase，does it indicate how many turns ago the dead person died?,会議フェイズ中その死者が何ターン前に死亡したかを表示するか。
+PoliceSurgeonIsUseTaiwanCalendar,Do you want to use the Republic of Taiwan Calendar?,中華民国歴表記にするか
+PoliceSurgeon_IncludeErrorInDeathTime,Whether to include an error margin in the time of death.,死亡時刻に誤差を含めるか。
+PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath,Range of error (absolute value) to be included in time of death.,死亡時刻に含める誤差の範囲(絶対値)。
+PoliceSurgeonResendSHR,The setting that allows you to reconfirm the full text of [post mortem certificate] by voting for yourself is enabled. \n\nBy voting for yourself，you can reconfirm [post mortem certificate]. \n\nThe fact that you have reconfirmed post mortem certificate. \nwill not be communicated to other players. \nAlso，even after reconfirmation，you can still vote as usual.,自分に投票する事で[死体検案書]全文の再確認が可能な設定が有効です。\n\n自投票により、[死体検案書]を再確認できます。\n\n死体検案書を再確認した事は、他プレイヤーには伝わりません。\n又再確認しても、通常通りの投票は可能です。
+PoliceSurgeonResendSNR,The setting that allows you to reconfirm the full text of [post mortem certificate] by pressing the button displayed on your own nameplate is enabled.\n\nWhen you press a button that is displayed on another player，you will see only that player's information.,自分自身のネームプレートに表示されているボタンを押すことで、[死体検案書]全文の再確認が可能な設定が有効です。\n\n他プレイヤーに表示されているボタンを押した場合は、そのプレイヤー単体の情報のみ確認する事ができます。
+PoliceSurgeonDeathTimeUnknown,unknown.,不明
+PoliceSurgeonDeathTimeMeetingPhase,Meeting.,会議中
+PostMortemCertificate_main1,<s>Death Certificate (Autopsy Report)</s>,<s>死亡診断書</s> (死体検案書)
+PostMortemCertificate_main2,Full name ,氏名 
+PostMortemCertificate_main3,<s>Diagnose as stated</s> (Confirming as described) above,上記のとおり<s>診断</s>(検案)する
+PostMortemCertificate_main4,Date of Issue:,<s>本診断書</s>(検案書) 発行年月日 
+PostMortemCertificate_main5,Medical Examiner: Dr. ,(氏名) 医師
+PostMortemCertificate_AlreadyKnown_WriteTurn,<color=#89c3eb>Date and Time of Death</color>: {0} ({1} turn ago) <color=#89c3eb>{2}seconds</color> ago ({3}),<color=#89c3eb>死亡したとき</color>\n{0} ({1}ターン前) <color=#89c3eb>{2}秒前</color> ({3})
+PostMortemCertificate_AlreadyKnown,<color=#89c3eb>Date and Time of Death</color>: {0} <color=#89c3eb>{1}</color>seconds ago ({2}),<color=#89c3eb>死亡したとき</color>\n{0} <color=#89c3eb>{1}秒前</color> ({2})
+PostMortemCertificate_Unknown_WriteTurn,<color=#89c3eb>Date and Time of Death</color>: {0} ({1} turn ago) ({2}),<color=#89c3eb>死亡したとき</color>\n{0} ({1}ターン前) ({2})
+PostMortemCertificate_Unknown,<color=#89c3eb>Date and Time of Death</color>: {0} ({1}),<color=#89c3eb>死亡したとき</color>\n{0} ({1})
+PostMortemCertificate_DeadReason1,Cause of Death: EUnknown external cause of death,死因 <color=#89c3eb>不詳の外因死</color>
+PostMortemCertificate_DeadReason2,Cause of Death: <color=#89c3eb>Ejection</color>,死因 <color=#89c3eb>追放</color>
+PostMortemCertificate_CauseOfDeath1,<color=#89c3eb>estimated</color>,<color=#89c3eb>推定</color>
+PostMortemCertificate_CauseOfDeath2,<color=#89c3eb>confirmed</color>,<color=#89c3eb>確認</color>
+PostMortemCertificate_CauseOfDeath3,<color=#89c3eb>Approximate</color>,<color=#89c3eb>頃</color>
+PostMortemCertificate_NoDeaths,{0}/nPoliceSurgeon {1}:/ "{2}",{0}\n警察医 {1}\n「{2}」
+PostMortemCertificate_NoDeaths_RandomMessage_1,There were no deaths during this turn.,今回ターンの死者はいなかった。
+PostMortemCertificate_NoDeaths_RandomMessage_2,There were no deaths during this round. ...I wonder if there will be a sudden increase in deaths from now on...,今回ターンの死者はいなかった。\n...以降一気に死者が増えるのではないか...
+PostMortemCertificate_NoDeaths_RandomMessage_3,This turn，no one died.\nI have no way of saving crewmate from being killed by the Impostor...\nThe only thing I can do is to determine the estimated time of death of the body that will be called in the meeting someday，just to alleviate my regret..,今回ターンは誰も死亡していなかった。\n私にはインポスターに殺される仲間を助ける術はない...\nただ無念を晴らす為に、いつか会議に招集されるであろう死体の、死亡推定時刻を判断する事しかできない...
+PostMortemCertificate_NoDeaths_RandomMessage_4,No one has died.\nI hope we can continue this state of emergency meetings without any victims...,誰も死亡していなかった。\n犠牲者無しで緊急招集される、この状態が続けば良いのだが...
+PostMortemCertificate_NoDeaths_RandomMessage_5,No one has died.\nI hope no one else dies during the meeting other than being voted out...,誰も死亡していなかった。\n会議中に追放以外で死者が増えなければ良いのだが...
+PostMortemCertificate_NoDeaths_RandomMessage_6,No one had died. \nIt's fortunate that the emergency meetings are called through teleportation...\nThere's no need to fear that more people will die before everyone gathers.,誰も死亡していなかった。\n緊急招集及び通報による会議がテレポートによる強制招集である事がありがたい...\n全員が集まるまでに死者が増えるのではないかと、怯える必要が無いのだから...
+PostMortemCertificate_NoDeaths_RandomMessage_7,No one had died.\nCome to think of it，what does it mean when they say 'Please continue doing tasks even after you die'?\nYou wouldn't be able to do anything if you're dead.\nBut there are traces that suggest that the deceased continued to do their tasks.\nI wonder if I'll understand it when I die.,誰も死亡していなかった。\nそういえば、「死亡後もタスクを続けてください」と説明を受けたが何なのだろうか。\n死亡したら何もできないだろうに。\n確かに死者がタスクを進めた様な痕跡はあるが...\n...私が死亡した時に理解できるのだろうか。
+PostMortemCertificate_NoDeaths_RandomMessage_8,I know that no one has died...\nbut even knowing that，at the moment of an emergency meeting，I can't help but feel scared that a dead body will appear in the meeting room.,誰も死亡していない事は知っている...\nだが知っているとはいえ、緊急招集の瞬間は、誰かの死体が会議室に現れるのではないかと恐怖を覚える...
+PostMortemCertificate_NoDeaths_RandomMessage_9,No one has died...,誰も欠けずに会議が開始された...
+PostMortemCertificate_NoDeaths_RandomMessage_10,No one has died...\nThis person who committed the murder，are they among us...\nWhy would they bother to join us?,誰も欠けずに会議が開始された...\nこの中に殺害犯が混ざっているのか...\n...何故わざわざ混ざっているのか?
+PostMortemCertificate_NoDeaths_RandomMessage_11,No one has died...\nI wonder why the murderers usually leave a body behind...\nAre they doing it as a display? Or are they just enjoying watching us be afraid?,誰も欠けずに会議が開始された...\nそういえば、何故殺害者は基本的に死体を残すのだろうか。\n...見せしめか?\n私達が怯える姿を楽しむ愉快犯なのか...?
+PostMortemCertificate_NoDeaths_RandomMessage_12,No one has died...\nThis is the only time we can resist the killer...\nFear not，expel the enemy.\ Do not hesitate for fear of mistakenly expelling a comrade.\nIncreasing the number of victims is far more foolish.,誰も欠けずに会議が開始された...\nこれが私達が殺害犯に唯一抵抗できる時...\n恐れるな、敵を、追放するのだ。\n味方を誤って追放する事を恐れ、躊躇するな。\n犠牲者を増やす事の方が遥かに愚行なのだから...
+PostMortemCertificate_NoDeaths_RandomMessage_13,No one has died.\nTo maintain this peace，we have no choice but to vote someone off.\nWe have no way to resist during tasks...,誰も欠けずに会議が開始された。\nこの平和を続けるためには追放するしかない。\nタスク中に抗う術は私達には無いのだから...
+PostMortemCertificate_NoDeaths_RandomMessage_14,No one has died.\nThe only means of resistance we have is to eject them...\nEven if we end up ejecting a crewmate，it's far better than being afraid of it and needlessly increasing the number of victims...,誰も欠けずに会議が開始された。\n私達が抵抗する手段は追放しかない...\nたとえ味方を追放してしまえども、それを恐れ、無闇に犠牲者を増やすよりは遥かに...
+PostMortemCertificate_NoDeaths_RandomMessage_15,At this moment when everyone gathered without anyone missing in the emergency meeting，even if we know there are no casualties，we feel relieved...,緊急招集で誰も欠けずに全員が集まったこの瞬間、死者がいないことを知っていても安心する...
+MadRaccoonName,Morpfhing raccoon dog,化け狸
+MadRaccoonTitle1,Let's surprise humans by morphing them.,化けてクルーたちを驚かそう
+MadRaccoonTitle2,If my abilities can be of service to my master，then let us utilize them and show their worth!,私の能力がご主人の為となるならば 活用してみせましょう!!
+MadRaccoonDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nI possess the ability to Shapeshift. I can disguise myself as the master to create an alibi，impersonate the master's enemies to frame them，or sow confusion in discussions!\n\nI only have the power of transformation...\nBut if this ability can be of use to the master... if I am needed...\nThen let us utilize this ability and see what we can achieve!!\nPlease note that the translation may slightly vary depending on the context and intended meaning.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nシェイプシフト能力を有します。\nご主人に化けてアリバイを作ったり、ご主人の敵に化けて罪をなすりつけたり、議論を錯乱させてみましょう!\n\n私は変化の能力しか持たない...\nただこれだけの能力が ご主人の為になるというならば...必要とされるのであれば...\nこの能力 活用してみませしょう!!
+MadRaccoonButtonName,Change radically,化ける
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
+
+#SettingMatchTag
+SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,,<color=#93b69c>配對標籤</color>設定
+
+BeginnerTag,Beginner,初心者,,新手
+IntermediateTag,Intermediate,中級者,,老手
+AdvancedTag,Advanced,上級者,,高手
+CompetenceIsNotRequiredTag,Competence is not required.,実力不問,,不限實力
+
+SeriousTag,Serious Players,ガチ勢,,享受勝利
+EnjoyTag,Enjoyers,エンジョイ勢,,享受過程
+
+SeriousnessTag,Seriousness Play,真剣プレイ,,認真局
+WelcomeBeginnerTag,,初心者歓迎,,歡迎新手
+
+NowRecordingTag,Now Recording,撮影中,,錄影中
+NowBeingDeliveredTag,Now Being Delivered,配信中,,直播中
+OKForRecordingTag,OK for Recording,撮影OK,,允許錄影
+OKForBeingDeliveredTag,OK for Recording,配信OK,,允許直播
+NoRecordingTag,No Recording,撮影NG,,禁止錄影
+NoBeingDeliveredTag,No Recording,配信NG,,禁止直播
+
+FreeChatTag,FreeChat Only,フリーチャットのみ,,只能自由聊天
+QuickChatTag,QuickChat Only,クイックチャットのみ,,只能快速聊天
+VoiceChatTag,VoiceChat,VC,,語音聊天
+BetterCrewLinkTag,Use BetterCrewLink,近アモ,,使用BetterCrewLink
+CanListenOnlyTag,Listen only OK,聞き専可,,允許只聽不說
+FullVCOnlyTag,Always use voice chat,聞き専不可,,必須使用語音
+
+SheriffAndMadRegulationTag,Regulation with Sheriff and Madrole,シェリマ,,警長與叛徒規則
+NeutralKillerRegulationTag,Regulation with neutral killer,第三キル人外入り,,中立殺手規則
+VillageForOutsidersRegulationTag,Regulation for outsiders  village,人外村,,狼人殺規則
+ManyRolesRegulationTag,Regulation with many roles,多役,,超多職業規則
+WerewolfMoonlightRegulationTag,Werewolf Moonlight Regulation,月下,,月下狼人規則
+DarkPotRegulationTag,Dark pot,闇鍋,,黑暗火鍋規則
+OthersRegulationTag,Others regulation,その他レギュ,,其他規則
+TryingOutRolesRegulationTag,Trying out a roles.,役職お試し中,,職業測試
+AmusementRegulationTag,Amusement regulation,お遊びレギュ,,娛樂規則
+RegulationAdjustedTag,Adjusted,レギュ調整中,,規則調整
+
+FeatureAdminLimitTag,Admin Use Restrictions,アドミン使用制限,,管理員使用限制
+FeatureCanNotUseAdminTag,Admin use prohibited,アドミン禁止,,禁止管理員
+
+DebugNewRolesTag,New Roles,新役職,,新職業
+DebugNewFeaturesTag,New Features,新機能,,新功能
+DebugAddFeaturesTag,Add Features,機能追加,,增加功能
+DebugChangeTag,Change,仕様変更,,變更
+DebugBugFixTag,Fix Bug,バグ修正,,Bug修正
+DebugOthersTag,Others,その他(デバッグ),,其他（除錯）
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！,您可以在超新職業體驗各種不同的模式和職業！
 WelcomeMessage3,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！,有关模式和职业的详细描述请查看汉化组职业介绍！,有關模式和職業的詳細描述請查看SNR官方wiki的職業介紹！
 WelcomeMessage4,SuperNewRoles Official Wiki,SuperNewRoles公式Wiki:,超新职业职业介绍:,超新職業職業介紹：,
-WelcomeMessage5,https://wikiwiki.jp/amas-snr(Japanese),https://wikiwiki.jp/amas-snr,https://amonguscn.club（中文），https://wikiwiki.jp/amas-snr（日文）,https://wikiwiki.jp/amas-snr,https://amonguscn.club（簡體中文），https://wikiwiki.jp/amas-snr（日文）
+WelcomeMessage5,https://wikiwiki.jp/amas-snr(Japanese),https://wikiwiki.jp/amas-snr,https://amonguscn.club（中文），https://wikiwiki.jp/amas-snr（日文）,https://amonguscn.club（簡體中文），https://wikiwiki.jp/amas-snr（日文）
 WelcomeMessage6,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。,你可以通过输入命令来获取信息。,您可以通過輸入命令來獲取訊息。
 WelcomeMessage7,Send this command if you want to see a list of commands.,コマンド一覧を表示するにはこのコマンドを送信してください。,发送此命令以获取命令列表信息。,發送此命令以獲取命令列表訊息。
 WelcomeMessage8,[/commands] or [/cmd],/commands 又は /cmd,/commands 或者 /cmd,/commands 或 /cmd
@@ -1452,6 +1587,7 @@ Team,Team,陣営,阵营,陣營
 TeamRoleType,Role,役職,,職業
 MessageSettings,Settings,設定,设置,設定
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业,當前啟用的職業
+EnableTagsMessage,,現在設定されているマッチメイキングタグ,,當前啟用的配對標籤
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
 MyRoleErrorSHRMode,This command is not available in SHR mode.,SHRモードではこのコマンドは使用できません。,,在SHR模式中無法使用此指令。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】
@@ -1467,6 +1603,7 @@ Processing,Processing...,処理中...,处理中...,處理中...
 SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成功
 SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,不具有
+InformationName,Information,情報
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫

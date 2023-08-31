@@ -251,6 +251,7 @@ public static class CredentialsPatch
         }
         public static void Postfix(MainMenuManager __instance)
         {
+            __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
             if (ConfigRoles.IsUpdated)
             {
@@ -262,6 +263,7 @@ public static class CredentialsPatch
 
             instance = __instance;
 
+            AmongUsClient.Instance.StartCoroutine(ModDownloader.DownloadModData(__instance).WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance).WrapToIl2Cpp());
 
             //ViewBoosterPatch(__instance);

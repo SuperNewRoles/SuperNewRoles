@@ -102,5 +102,6 @@ public class CelebrityTimerStop
     {
         Celebrity.TimerStop();
         Neutral.TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
+        Impostor.MadRole.MadRaccoon.Button.ResetShapeDuration(false);
     }
 }

@@ -763,6 +763,14 @@ public static class ModHelpers
         return null;
     }
 
+    public static SystemTypes GetInRoom(Vector2 pos)
+    {
+        if (ShipStatus.Instance is null) return SystemTypes.Doors;
+        PlainShipRoom room = ShipStatus.Instance.AllRooms.FirstOrDefault(x => x.roomArea.ClosestPoint(pos) == pos);
+        if (room is null) return SystemTypes.Doors;
+        return room.RoomId;
+    }
+
     public static string Cs(Color c, string s)
     {
         return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
@@ -923,12 +931,12 @@ public static class ModHelpers
             list.AddRange(c);
     }
 
-    public static string GetRPCNameFromByte(byte callId) =>
+    public static string GetRPCNameFromByte(PlayerControl __instance, byte callId) =>
         Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
             Enum.GetName(typeof(RpcCalls), callId) :
         Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
             Enum.GetName(typeof(CustomRPC), callId) :
-        $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
+        $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}:{__instance.Data.PlayerName}";
     public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
     /// <summary>
     /// 文字列が半角かどうかを判定します
