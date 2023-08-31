@@ -325,6 +325,12 @@ public class SetNamesClass
             }
         }
     }
+    public static void MoiraSet()
+    {
+        if (!Moira.AbilityUsedUp || Moira.AbilityUsedThisMeeting) return;
+        if (Moira.Player is null) return;
+        SetPlayerNameText(Moira.Player, Moira.Player.NameText().text += " (→←)");
+    }
     public static void CelebritySet()
     {
         if (RoleClass.Celebrity.ChangeRoleView)
@@ -544,12 +550,13 @@ public class SetNameUpdate
         }
         else
         {
-            Roles.Neutral.Pavlovsdogs.SetNameUpdate();
+            Pavlovsdogs.SetNameUpdate();
             SetNamesClass.ArsonistSet();
             SetNamesClass.DemonSet();
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
+            SetNamesClass.MoiraSet();
         }
         SetNamesClass.SatsumaimoSet();
         SetNamesClass.JumboSet();
