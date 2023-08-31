@@ -1086,6 +1086,7 @@ class AllRoleSetClass
             RoleId.BlackHatHacker => BlackHatHacker.BlackHatHackerPlayerCount.GetFloat(),
             RoleId.PoliceSurgeon => PoliceSurgeon.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.MadRaccoon => MadRaccoon.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Moira => Moira.MoiraPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };

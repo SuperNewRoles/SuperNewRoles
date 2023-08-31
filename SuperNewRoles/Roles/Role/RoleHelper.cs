@@ -127,7 +127,8 @@ public static class RoleHelpers
         RoleId.TheSecondLittlePig or
         RoleId.TheThirdLittlePig or
         RoleId.OrientalShaman or
-        RoleId.BlackHatHacker;
+        RoleId.BlackHatHacker or
+        RoleId.Moira;
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
@@ -942,6 +943,9 @@ public static class RoleHelpers
             case RoleId.MadRaccoon:
                 MadRaccoon.RoleData.Player.Add(player);
                 break;
+            case RoleId.Moira:
+                Moira.MoiraPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1471,6 +1475,9 @@ public static class RoleHelpers
             case RoleId.MadRaccoon:
                 MadRaccoon.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Moira:
+                Moira.MoiraPlayer.RemoveAll(ClearRemove);
+                break;
                 // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
@@ -1970,6 +1977,7 @@ public static class RoleHelpers
             else if (BlackHatHacker.BlackHatHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.BlackHatHacker;
             else if (PoliceSurgeon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.PoliceSurgeon;
             else if (MadRaccoon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.MadRaccoon;
+            else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             // ロールチェック
         }
         catch (Exception e)
