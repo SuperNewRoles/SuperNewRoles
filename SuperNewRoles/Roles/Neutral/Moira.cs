@@ -23,7 +23,7 @@ public class Moira
     }
 
     public static List<PlayerControl> MoiraPlayer;
-    public static Color32 color = RoleClass.ImpostorRed;
+    public static Color32 color = new(201, 127, 219, byte.MaxValue);
     public static int AbilityLimit;
     public static List<(byte, byte)> ChangeData;
     public static (byte, byte) SwapVoteData;
