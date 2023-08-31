@@ -141,6 +141,7 @@ class WrapUpPatch
         Celebrity.WrapUp();
         TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
+        Moira.WrapUp(exiled);
         Conjurer.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {

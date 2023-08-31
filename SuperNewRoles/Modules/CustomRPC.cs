@@ -199,6 +199,7 @@ public enum RoleId
     BlackHatHacker,
     PoliceSurgeon,
     MadRaccoon,
+    Moira,
     //RoleId
 }
 
@@ -304,10 +305,19 @@ public enum CustomRPC
     PteranodonSetStatus,
     SetInfectionTimer,
     PoliceSurgeonSendActualDeathTimeManager,
+    MoiraChangeRole,
 }
 
 public static class RPCProcedure
 {
+    public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
+    {
+        (byte, byte) data = (player1, player2);
+        Moira.ChangeData.Add(data);
+        Moira.SwapVoteData = data;
+        if (IsUseEnd) Moira.AbilityUsedUp = true;
+        Moira.AbilityUsedThisMeeting = true;
+    }
     public static void SetInfectionTimer(byte id, Dictionary<byte, float> infectionTimer)
     {
         if (!ModHelpers.PlayerById(id)) return;
@@ -1913,6 +1923,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
                         PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.MoiraChangeRole:
+                        MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }

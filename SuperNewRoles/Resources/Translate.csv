@@ -1448,6 +1448,11 @@ MadRaccoonTitle1,Let's surprise humans by morphing them.,化けてクルーた�
 MadRaccoonTitle2,If my abilities can be of service to my master，then let us utilize them and show their worth!,私の能力がご主人の為となるならば 活用してみせましょう!!
 MadRaccoonDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nI possess the ability to Shapeshift. I can disguise myself as the master to create an alibi，impersonate the master's enemies to frame them，or sow confusion in discussions!\n\nI only have the power of transformation...\nBut if this ability can be of use to the master... if I am needed...\nThen let us utilize this ability and see what we can achieve!!\nPlease note that the translation may slightly vary depending on the context and intended meaning.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nシェイプシフト能力を有します。\nご主人に化けてアリバイを作ったり、ご主人の敵に化けて罪をなすりつけたり、議論を錯乱させてみましょう!\n\n私は変化の能力しか持たない...\nただこれだけの能力が ご主人の為になるというならば...必要とされるのであれば...\nこの能力 活用してみませしょう!!
 MadRaccoonButtonName,Change radically,化ける
+MoiraName,Moira,モイラ
+MoiraDescription,This is a position for enjoyable tables that messes up the board.\nAt the whim of the Goddess.\nPlay as you like， make use of outsiders， hang the crew with roles， replace them as you like， etc.,盤面をぐちゃぐちゃにするエンジョイ卓向け役職です\n女神様のきまぐーれ\n人外を活かしたり、役持ちクルーを吊ったり、適当に入れ替えたり、好きに遊びましょう
+MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！
+MoiraAbilityLimit,Number of ability usage,能力使用数
+MoiraChangeVote,I'll switch my vote as well,投票も入れ替える
 ConjurerName,Conjurer,魔術師
 ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ
 ConjurerDescription,By setting up and activating three magic circles，\nthis imposter can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。
