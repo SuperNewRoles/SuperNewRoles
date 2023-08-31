@@ -33,7 +33,7 @@ class HauntedWolf
     internal static class RoleData
     {
         public static List<PlayerControl> Player;
-        public static Color32 color = new(50, 0, 25, byte.MaxValue);
+        public static Color32 color = new(123, 108, 62, byte.MaxValue);
         public static void ClearAndReload()
         {
             Player = new();
