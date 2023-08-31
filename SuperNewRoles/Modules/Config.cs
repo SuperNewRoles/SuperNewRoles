@@ -45,7 +45,7 @@ public static class ConfigRoles
         ShareCosmeticsNamePlatesURL = SuperNewRolesPlugin.Instance.Config.Bind("ShareCosmetics", "NamePlateURL", "");
         IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "AutoRoomCreate", true);
         EnableHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "EnableHorseMode", false);
-        IsModCosmeticsAreNotLoaded = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "DownloadSuperNewNamePlates", false);
+        IsModCosmeticsAreNotLoaded = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsModCosmeticsAreNotLoaded", false);
         IsNotUsingBlood = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsNotUsingBlood", false);
         IsSendAnalytics = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalytics", true);
         IsLightAndDarker = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsLightAndDarker", true);
