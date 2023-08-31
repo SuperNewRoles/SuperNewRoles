@@ -94,7 +94,7 @@ public static class ClientModOptionsPatch
         Object.DontDestroyOnLoad(ReplayPopup);
         transform = ReplayPopup.transform;
         pos = transform.localPosition;
-        pos.z = -810f;
+        pos.z = -816.51f;
         transform.localPosition = pos;
 
         Object.Destroy(ReplayPopup.GetComponent<OptionsMenuBehaviour>());
@@ -218,22 +218,66 @@ public static class ClientModOptionsPatch
             modButtons.Add(button);
         }
     }
+    public const float ReplayQualityLowTime = 0.75f;
+    public const float ReplayQualityMediumTime = 0.5f;
+    public const float ReplayQualityHighTime = 0.25f;
+    public static void UpdateState(ToggleButtonBehaviour button,bool state)
+    {
+        button.onState = state;
+        button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+    }
+    public static List<SelectionBehaviour> ReplayOptions = new() { new SelectionBehaviour("リプレイを収録する",()=>{
+        foreach (GameObject obj in ReplayEnableObjects)
+        {
+            obj.SetActive(!ConfigRoles.ReplayEnable.Value);
+        }
+        return ConfigRoles.ReplayEnable.Value = !ConfigRoles.ReplayEnable.Value; },ConfigRoles.ReplayEnable.Value,pos: new(0, 1.8f, -0.5f)),
+        new SelectionBehaviour("ReplayOptionsQualityLow",()=>UpdateReplayQuality(ReplayQualityLowTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityLowTime,pos:new(-1.75f, -0.1f, -0.5f),scale:Vector3.one*0.75f),
+        new SelectionBehaviour("ReplayOptionsQualityMedium",()=>UpdateReplayQuality(ReplayQualityMediumTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityMediumTime,pos:new(0, -0.1f, -0.5f),scale:Vector3.one*0.75f),
+        new SelectionBehaviour("ReplayOptionsQualityHigh",()=>UpdateReplayQuality(ReplayQualityHighTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityHighTime,pos:new(1.75f, -0.1f, -0.5f),scale:Vector3.one*0.75f)};
+
+    static bool UpdateReplayQuality(float timer)
+    {
+        ConfigRoles.ReplayQualityTime.Value = timer;
+        UpdateState(ReplayOptions[1].Button, timer == ReplayQualityLowTime);
+        UpdateState(ReplayOptions[2].Button, timer == ReplayQualityMediumTime);
+        UpdateState(ReplayOptions[3].Button, timer == ReplayQualityHighTime);
+        return true;
+    }
+    static List<GameObject> ReplayEnableObjects;
     public static void ReplaySetUpOptions()
     {
         if (ReplayPopup.transform.GetComponentInChildren<ToggleButtonBehaviour>()) return;
+        ReplayPopup.name = "ReplayPopup";
+        ReplayEnableObjects = new();
 
         ReplayButtons = new List<ToggleButtonBehaviour>();
-        var ReplayOptions = new List<SelectionBehaviour>();
+        
+        TextMeshPro ReplayTMPTemplate = buttonPrefab.Text;
+        TextMeshPro ReplayQualityTitle = Object.Instantiate(ReplayTMPTemplate, ReplayPopup.transform);
+        ReplayQualityTitle.name = "QualityTitle";
+        ReplayQualityTitle.text = ModTranslation.GetString("ReplayOptionsQualityTitle");
+        ReplayQualityTitle.transform.localScale = Vector3.one * 2;
+        ReplayQualityTitle.transform.localPosition = new(0, 1.1f, -1);
+        TextMeshPro ReplayQualityDescription = Object.Instantiate(ReplayTMPTemplate, ReplayPopup.transform);
+        ReplayQualityDescription.name = "QualityDescription";
+        ReplayQualityDescription.text = ModTranslation.GetString("ReplayOptionsQualityDescription");
+        ReplayQualityDescription.transform.localPosition = new(0,0.55f,-1);
+        ReplayQualityDescription.rectTransform.sizeDelta = new(4, 0.6f);
 
+        ReplayEnableObjects.Add(ReplayQualityTitle.gameObject);
+        ReplayEnableObjects.Add(ReplayQualityDescription.gameObject);
         for (var i = 0; i < ReplayOptions.Count; i++)
         {
             var info = ReplayOptions[i];
 
             var button = Object.Instantiate(buttonPrefab, ReplayPopup.transform);
-            var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+            var pos = info.pos.HasValue ? info.pos.Value : new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
 
             var transform = button.transform;
             transform.localPosition = pos;
+            if (info.scale.HasValue)
+                transform.localScale = info.scale.Value;
 
             button.onState = info.DefaultValue;
             button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
@@ -257,8 +301,7 @@ public static class ClientModOptionsPatch
 
             passiveButton.OnClick.AddListener((Action)(() =>
             {
-                button.onState = info.OnClick();
-                button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+                UpdateState(button, info.OnClick());
             }));
 
             passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
@@ -266,7 +309,14 @@ public static class ClientModOptionsPatch
 
             foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                 spr.size = new Vector2(2.2f, .7f);
+            info.Button = button;
             ReplayButtons.Add(button);
+            if (i > 0)
+                ReplayEnableObjects.Add(button.gameObject);
+        }
+        foreach (GameObject obj in ReplayEnableObjects)
+        {
+            obj.SetActive(ConfigRoles.ReplayEnable.Value);
         }
     }
     private static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
@@ -297,12 +347,17 @@ public static class ClientModOptionsPatch
         public string Title;
         public Func<bool> OnClick;
         public bool DefaultValue;
+        public Vector3? pos;
+        public Vector3? scale;
+        public ToggleButtonBehaviour Button;
 
-        public SelectionBehaviour(string title, Func<bool> onClick, bool defaultValue)
+        public SelectionBehaviour(string title, Func<bool> onClick, bool defaultValue, Vector3? pos=null, Vector3? scale=null)
         {
             Title = title;
             OnClick = onClick;
             DefaultValue = defaultValue;
+            this.pos = pos;
+            this.scale = scale;
         }
     }
 }

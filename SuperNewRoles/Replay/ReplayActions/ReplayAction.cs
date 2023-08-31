@@ -51,8 +51,7 @@ public abstract class ReplayAction
     public abstract ReplayActionId GetActionId();
     public static bool CheckAndCreate(ReplayAction action)
     {
-        if (ReplayManager.IsReplayMode) return false;
-        Logger.Info(action.GetActionId().ToString(),"CheckAndCreate");
+        if (ReplayManager.IsReplayMode || !ReplayManager.IsRecording) return false;
         Recorder.ReplayActions.Add(action);
         //ここで秒数指定
         action.ActionTime = Recorder.ReplayActionTime;

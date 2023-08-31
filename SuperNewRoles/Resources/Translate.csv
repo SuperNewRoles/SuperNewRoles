@@ -1505,7 +1505,12 @@ ReplayErrorDataModNoneThisMod,The recording mod is different.\n It may not play 
 ReplayErrorDiffVersion,Version compatibility is not guaranteed.\nIn this case，we will not respond to any problems that may occur.\nNow: v{0}， Replay: v{1},バージョンの互換性は保証されません。\nこの場合不具合が発生しても対応しません。\n今：v{0}，記録：v{1}
 ReplayReplaySaved,Replay saved,リプレイを保存しました
 ReplayChangeName,Change filename,ファイル名変更
-ReplayFileName,Filename,ファイル名
+ReplayFileName,Filename,ファイル名,
+ReplayOptionsQualityTitle,Replay quality,リプレイ品質
+ReplayOptionsQualityDescription,The higher the number，the larger the replay file size，but the higher the quality.,高ければ高いほどリプレイファイルのサイズは増えていきますが、品質も高くなります。
+ReplayOptionsQualityLow,Low,低
+ReplayOptionsQualityMedium,Medium,中
+ReplayOptionsQualityHigh,High,高
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫

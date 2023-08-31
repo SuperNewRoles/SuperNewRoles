@@ -11,6 +11,7 @@ namespace SuperNewRoles.Replay
     {
         public static string LastSavedName;
         public static bool IsReplayMode = false;
+        public static bool IsRecording = false;
         public static ReplayData CurrentReplay
         {
             get
@@ -49,14 +50,14 @@ namespace SuperNewRoles.Replay
         {
             if (IsReplayMode)
                 ReplayLoader.HudUpdate();
-            else
+            else if (IsRecording)
                 Recorder.HudUpdate();
         }
         public static void CoIntroDestory()
         {
             if (IsReplayMode)
                 ReplayLoader.CoIntroDestory();
-            else
+            else if (IsRecording)
                 Recorder.CoIntroDestroy();
         }
     }
