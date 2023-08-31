@@ -1506,6 +1506,7 @@ ReplayErrorDiffVersion,Version compatibility is not guaranteed.\nIn this case，
 ReplayReplaySaved,Replay saved,リプレイを保存しました
 ReplayChangeName,Change filename,ファイル名変更
 ReplayFileName,Filename,ファイル名,
+ReplayOptions,Replay Options,リプレイの設定
 ReplayOptionsQualityTitle,Replay quality,リプレイ品質
 ReplayOptionsQualityDescription,The higher the number，the larger the replay file size，but the higher the quality.,高ければ高いほどリプレイファイルのサイズは増えていきますが、品質も高くなります。
 ReplayOptionsQualityLow,Low,低
