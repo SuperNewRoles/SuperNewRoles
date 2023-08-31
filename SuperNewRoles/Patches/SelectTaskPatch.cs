@@ -83,7 +83,7 @@ public static class SelectTask
     /// </summary>
     /// <param name="id">判定したい役職のRoleId</param>
     /// <returns> true : 有する, false : 有さない</returns>
-    private static bool GetHaveTaskManageAbility(RoleId id)
+    internal static bool GetHaveTaskManageAbility(RoleId id)
     {
         // RoleIdと タスクで管理する能力を有すか
         // RoleIdが重複するとタスクが配布されず, 非導入者の画面でもTaskInfoが開けなくなる。
@@ -102,7 +102,7 @@ public static class SelectTask
             { RoleId.Jester, JesterIsWinCleartask.GetBool() },
             { RoleId.MadJester, IsMadJesterTaskClearWin.GetBool() || MadJesterIsCheckImpostor.GetBool() },
             { RoleId.God, GodIsEndTaskWin.GetBool() },
-            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool()},
+            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
             { RoleId.Workperson, true },
             { RoleId.TaskManager, true },
             { RoleId.SuicidalIdeation, true },
@@ -113,7 +113,7 @@ public static class SelectTask
             { RoleId.TheSecondLittlePig, true },
             { RoleId.TheThirdLittlePig, true },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
-            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool()},
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
         };
 
         if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];

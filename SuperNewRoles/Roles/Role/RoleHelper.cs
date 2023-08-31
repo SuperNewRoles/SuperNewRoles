@@ -1491,6 +1491,12 @@ public static class RoleHelpers
         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
         RPCProcedure.SetRole(Player.PlayerId, (byte)selectRoleData);
     }
+
+    /// <summary>
+    /// クルーのタスク数にカウントしないプレイヤーかを判断する。
+    /// </summary>
+    /// <param name="player">判断対象</param>
+    /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
     public static bool IsClearTask(this PlayerControl player)
     {
         var IsTaskClear = false;
@@ -1529,6 +1535,15 @@ public static class RoleHelpers
         }
         return IsTaskClear;
     }
+
+    /// <summary>
+    /// クルーのタスクにカウントされる 又は 固有のタスクトリガー能力を有する プレイヤーかを判断する。
+    /// </summary>
+    /// <param name="player">判断対象</param>
+    /// <returns>true => タスクトリガー能力を有する / false => タスクトリガー能力を有さない</returns>
+    internal static bool IsUseTaskTrigger(this PlayerControl player)
+        => !player.IsClearTask() || Patches.SelectTask.GetHaveTaskManageAbility(player.GetRole());
+
     public static bool IsUseVent(this PlayerControl player)
     {
         RoleId role = player.GetRole();
