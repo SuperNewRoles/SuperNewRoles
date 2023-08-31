@@ -1453,6 +1453,15 @@ MoiraDescription,This is a position for enjoyable tables that messes up the boar
 MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！
 MoiraAbilityLimit,Number of ability usage,能力使用数
 MoiraChangeVote,I'll switch my vote as well,投票も入れ替える
+ConjurerName,Conjurer,魔術師
+ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ
+ConjurerDescription,By setting up and activating three magic circles，\nthis imposter can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。
+ConjurerCooldownOption,Marker placement cooldown,マーカー設置のクールダウン
+ConjurerCanAddLengthOption,Effective range of marker placement,マーカー設置有効範囲
+ConjurerCanKillImpostorOption,Can kill impostors,インポスターもキルできる
+ConjurerShowFlashOption,The screen glows when the ability is activated,能力発動時画面が発光する
+ConjurerBeaconName,Marker,マーカー
+ConjurerAddName,Compression,圧縮
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
