@@ -93,6 +93,7 @@ class HauntedWolf
 
         internal static void SetHauntedWolf(PlayerControl player)
         {
+            Logger.Info($"{player.name} を 狼憑きにします。");
             RoleData.Player.Add(player);
             ChacheManager.ResetHauntedWolfChache();
         }

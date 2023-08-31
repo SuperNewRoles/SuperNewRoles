@@ -2460,14 +2460,14 @@ static class HudManagerStartPatch
                             Madmate.CreateMadmate(target);
                             RoleClass.EvilHacker.IsCreateMadmate = false;
                             break;
-                        case RoleId.EvilSeer when EvilSeer.RoleData.IsCreate:
+                        case RoleId.EvilSeer when EvilSeer.RoleData.CanCreate:
                             Madmate.CreateMadmate(target);
-                            EvilSeer.RoleData.IsCreate = false;
+                            EvilSeer.RoleData.CanCreate = false;
                             break;
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && EvilSeer.RoleData.CreateMode == 3 && EvilSeer.RoleData.IsCreate)) && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && EvilSeer.RoleData.CreateMode == 4 && EvilSeer.RoleData.CanCreate)) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
                 return SetTarget() && PlayerControl.LocalPlayer.CanMove;

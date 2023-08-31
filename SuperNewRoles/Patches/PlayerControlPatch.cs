@@ -958,19 +958,25 @@ public static class MurderPlayerPatch
                 __instance.resetChange();
             if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.SideKiller))
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
-                    if (sideplayer != null)
-                    {
-                        if (!RoleClass.SideKiller.IsUpMadKiller)
+                    case RoleId.SideKiller:
+                        var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
+                        if (sideplayer != null)
                         {
-                            sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
-                            RoleClass.SideKiller.IsUpMadKiller = true;
+                            if (!RoleClass.SideKiller.IsUpMadKiller)
+                            {
+                                sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                RoleClass.SideKiller.IsUpMadKiller = true;
+                            }
                         }
-                    }
+                        break;
+                    case RoleId.EvilSeer:
+                        EvilSeer.Ability.OnKill.DefaultMode(__instance);
+                        break;
                 }
-                else if (target.IsRole(RoleId.ShermansServant) && OrientalShaman.IsTransformation && target.AmOwner)
+
+                if (target.IsRole(RoleId.ShermansServant) && OrientalShaman.IsTransformation && target.AmOwner)
                 {
                     OrientalShaman.SetOutfit(target, target.Data.DefaultOutfit);
                     OrientalShaman.IsTransformation = false;

@@ -217,7 +217,7 @@ public class FixedUpdate
                             Pteranodon.FixedUpdate();
                             break;
                         case RoleId.EvilSeer:
-                            EvilSeer.DeadBodyArrow.FixedUpdate();
+                            EvilSeer.Ability.DeadBodyArrowFixedUpdate();
                             break;
                     }
                 }

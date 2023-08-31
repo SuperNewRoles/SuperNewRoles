@@ -49,7 +49,7 @@ class EvilSeer
             IsDeadBodyArrow = Create(201911, false, CustomOptionType.Impostor, "VultureShowArrowsSetting", true, IsUniqueSetting);
             IsArrowColorAdaptive = Create(201912, false, CustomOptionType.Impostor, "EvilSeerIsArrowColorAdaptive", true, IsDeadBodyArrow);
             CreateSetting = Create(201905, false, CustomOptionType.Impostor, "EvilSeerCreateSetting", false, Option);
-            CreateMode = Create(201913, false, CustomOptionType.Impostor, "EvilSeerCreateHauntedWolfMode", new string[] { "EvilSeerCreateHauntedWolfModeBoth", "EvilSeerCreateHauntedWolfModeAbilityOnry", "EvilSeerCreateHauntedWolfModePassiveOnry", "CreateMadmateSetting" }, CreateSetting);
+            CreateMode = Create(201913, false, CustomOptionType.Impostor, "EvilSeerCreateHauntedWolfMode", new string[] { "optionOff", "EvilSeerCreateHauntedWolfModeBoth", "EvilSeerCreateHauntedWolfModeAbilityOnry", "EvilSeerCreateHauntedWolfModePassiveOnry", "CreateMadmateSetting" }, CreateSetting);
             EvilSeerButtonCooldown = Create(201914, false, CustomOptionType.Impostor, "EvilSeerButtonCooldownSetting", 30f, 0f, 60f, 2.5f, CreateSetting);
         }
     }
@@ -67,8 +67,12 @@ class EvilSeer
         public static bool IsClearColor;
         public static bool IsArrow;
         public static bool IsArrowColorAdaptive;
-        public static bool IsCreate;
-        public static int CreateMode; // 0:取りつかせる&憑り付く, 1:取り憑かせる, 2:取り付く, 3:マッドメイトを作れる
+        public static bool CanCreate;
+        /// <summary>
+        /// 狼憑き, マッドメイトを作成する能力のモードを取得する
+        /// </summary>
+        /// <value>0 : オフ, 1 : 取り憑かせる＆憑り付く, 2 : 取り憑かせる, 3 : 取り付く, 4 : マッドメイトを作れる</value>
+        public static int CreateMode { get; private set; }
         public static float EvilSeerButtonCooldown;
 
         internal const int DefaultBodyColorId = (int)CustomCosmetics.CustomColors.ColorType.Crasyublue;
@@ -88,8 +92,8 @@ class EvilSeer
             IsClearColor = CustomOptionData.FlashColorMode.GetSelection() == 0;
             IsArrow = IsUniqueSetting && CustomOptionData.IsDeadBodyArrow.GetBool();
             IsArrowColorAdaptive = IsArrow && CustomOptionData.IsArrowColorAdaptive.GetBool();
-            CreateMode = CustomOptionData.CreateMode.GetSelection();
-            IsCreate = CustomOptionData.CreateSetting.GetBool();
+            CreateMode = !CustomOptionData.CreateSetting.GetBool() ? 0 : CustomOptionData.CreateMode.GetSelection(); // [ ]MEMO : SHRで設定有効時「3 : 取り付く」に固定する為, 最初Notで取得
+            CanCreate = CreateMode != 0; // 「狼憑き或いはマッドメイトを作成できる状態か?」の初期値
             DeadPlayerArrows = new();
             EvilSeerButtonCooldown = CustomOptionData.EvilSeerButtonCooldown.GetFloat();
         }
@@ -107,12 +111,12 @@ class EvilSeer
                 {
                     var target = HudManagerStartPatch.SetTarget();
                     if (target == null) return;
-                    RoleData.IsCreate = false;
+                    RoleData.CanCreate = false;
 
                     HauntedWolf.Assign.SetHauntedWolf(target);
                     HauntedWolf.Assign.SetHauntedWolfRPC(target);
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.EvilSeer && RoleData.CreateMode <= 1 && RoleData.IsCreate; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.EvilSeer && RoleData.CreateMode is not 0 and <= 2 && RoleData.CanCreate; },
                 () =>
                 {
                     var target = HudManagerStartPatch.SetTarget();
@@ -139,9 +143,9 @@ class EvilSeer
         }
     }
 
-    internal static class DeadBodyArrow
+    internal static class Ability
     {
-        public static void FixedUpdate()
+        public static void DeadBodyArrowFixedUpdate()
         {
             if (!RoleData.IsArrow) return;
 
@@ -190,6 +194,23 @@ class EvilSeer
                 RoleData.DeadPlayerArrows.Add(dead, new(arrowColor));
                 RoleData.DeadPlayerArrows[dead].Update(dead.transform.position, arrowColor);
                 RoleData.DeadPlayerArrows[dead].arrow.SetActive(true);
+            }
+        }
+
+        internal static class OnKill
+        {
+            /// <summary>
+            /// 通常モードでの[取り付く]能力の処理
+            /// </summary>
+            /// <param name="killer">自身をキルしたプレイヤー</param>
+            internal static void DefaultMode(PlayerControl killer)
+            {
+                if (RoleData.CreateMode is not (1 or 3)) return;
+                if (!RoleData.CanCreate || killer == PlayerControl.LocalPlayer || killer == null) return;
+
+                RoleData.CanCreate = false;
+                HauntedWolf.Assign.SetHauntedWolf(killer);
+                HauntedWolf.Assign.SetHauntedWolfRPC(killer);
             }
         }
     }

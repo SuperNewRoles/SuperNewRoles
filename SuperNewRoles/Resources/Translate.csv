@@ -976,7 +976,7 @@ PositionSwapperNumTextName,Limits:{0},残り{0}回,剩余{0}次,剩餘{0}次
 PositionSwapperButtonName,PositionSwap,スワップ,移位,換位
 PositionSwapperSwapText,Position swapper swapped you!,スワッパーによってスワップされました!,念动使交换了你的位置！,交換使交換了你的位置！
 PositionSwapperSwapText2,Position swapper swapped you!\nby the way，ykundesu is delicious，isn't it?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ,念动使交换了你的位置！\n（这里是个彩蛋，但我不知道写啥好，就祝看到它的你身体健康吧）,交換使交換了你的位置！
-TunaName,Tuna,マグロ,铁华团团长,鐵華團團長
+TunaName,Tuna,マグロ,铁华团F团长,鐵華團團長
 TunaTitle1,Always move!,常に動け！,不要停下来啊……,不要停下來啊...
 TunaDescription,If you stop for the set duration after the initial meeting，you will die.\nIf you manage to survive until the end，you will seize victory and achieve a solo win.\nDon't stop! You'll die!!,初手会議以降、設定秒数停止すると死亡します。\n最後まで生存していると勝利を横取りして単独勝利します。\n止まるな!死ぬぞ!!,若铁华团团长在第一次会议阶段以后的行动阶段停止移动一段时间，则铁华团团长死亡。\n铁华团团长存活到游戏结束，则铁华团团长获胜。\n所以啊，不要停下来啊……,在最初的會議之後，如果你停下達指定的時間，你就會死亡。\n若你能活到最後，你就能獨自獲得勝利。\n不要停下來！團長！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間,团长允许停下的最大时间,團長允許停下的最大時間
