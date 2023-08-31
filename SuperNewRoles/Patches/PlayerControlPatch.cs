@@ -765,26 +765,6 @@ static class CheckMurderPatch
                     }
                 }
             }
-            else if (target.IsRole(RoleId.MadStuntMan))
-            {
-                if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
-                {
-                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
-                    {
-                        __instance.RpcShowGuardEffect(target);
-                        return false;
-                    }
-                    else
-                    {
-                        if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
-                        {
-                            RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
-                            __instance.RpcShowGuardEffect(target);
-                            return false;
-                        }
-                    }
-                }
-            }
             else if (target.IsRole(RoleId.Fox))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
@@ -873,9 +853,14 @@ static class CheckMurderPatch
         }
         SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
         __instance.RpcMurderPlayer(target);
-        if (target.IsRole(RoleId.NekoKabocha))
+        switch (target.GetRole())
         {
-            NekoKabocha.OnKill(__instance);
+            case RoleId.EvilSeer:
+                EvilSeer.Ability.OnKill.SuperHostRolesMode(__instance, target);
+                break;
+            case RoleId.NekoKabocha:
+                NekoKabocha.OnKill(__instance);
+                break;
         }
         SuperNewRolesPlugin.Logger.LogInfo("j(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
     }

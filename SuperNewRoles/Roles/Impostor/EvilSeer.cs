@@ -48,7 +48,7 @@ class EvilSeer
             IsCrewSoulColor = Create(201910, false, CustomOptionType.Impostor, "EvilSeerIsCrewSoulColor", true, IsUniqueSetting);
             IsDeadBodyArrow = Create(201911, false, CustomOptionType.Impostor, "VultureShowArrowsSetting", true, IsUniqueSetting);
             IsArrowColorAdaptive = Create(201912, false, CustomOptionType.Impostor, "EvilSeerIsArrowColorAdaptive", true, IsDeadBodyArrow);
-            CreateSetting = Create(201905, false, CustomOptionType.Impostor, "EvilSeerCreateSetting", false, Option);
+            CreateSetting = Create(201905, false, CustomOptionType.Impostor, "EvilSeerCreateSetting", true, Option);
             CreateMode = Create(201913, false, CustomOptionType.Impostor, "EvilSeerCreateHauntedWolfMode", new string[] { "optionOff", "EvilSeerCreateHauntedWolfModeBoth", "EvilSeerCreateHauntedWolfModeAbilityOnry", "EvilSeerCreateHauntedWolfModePassiveOnry", "CreateMadmateSetting" }, CreateSetting);
             EvilSeerButtonCooldown = Create(201914, false, CustomOptionType.Impostor, "EvilSeerButtonCooldownSetting", 30f, 0f, 60f, 2.5f, CreateSetting);
         }
@@ -68,6 +68,7 @@ class EvilSeer
         public static bool IsArrow;
         public static bool IsArrowColorAdaptive;
         public static bool CanCreate;
+        public static Dictionary<byte, bool> CanCreateSHR;
         /// <summary>
         /// 狼憑き, マッドメイトを作成する能力のモードを取得する
         /// </summary>
@@ -92,10 +93,17 @@ class EvilSeer
             IsClearColor = CustomOptionData.FlashColorMode.GetSelection() == 0;
             IsArrow = IsUniqueSetting && CustomOptionData.IsDeadBodyArrow.GetBool();
             IsArrowColorAdaptive = IsArrow && CustomOptionData.IsArrowColorAdaptive.GetBool();
-            CreateMode = !CustomOptionData.CreateSetting.GetBool() ? 0 : CustomOptionData.CreateMode.GetSelection(); // [ ]MEMO : SHRで設定有効時「3 : 取り付く」に固定する為, 最初Notで取得
-            CanCreate = CreateMode != 0; // 「狼憑き或いはマッドメイトを作成できる状態か?」の初期値
             DeadPlayerArrows = new();
             EvilSeerButtonCooldown = CustomOptionData.EvilSeerButtonCooldown.GetFloat();
+
+            CreateMode =
+                !CustomOptionData.CreateSetting.GetBool()
+                    ? 0 // 設定がオフなら, モードもオフにする
+                    : ModeHandler.IsMode(ModeId.SuperHostRoles)
+                        ? 3 // SHRなら[取り憑く]モードに固定する・
+                        : CustomOptionData.CreateMode.GetSelection(); // 設定が有効で, SHR出ない時モード設定を取得する。
+            CanCreate = CreateMode != 0; // 「狼憑き或いはマッドメイトを作成できる状態か?」の初期値
+            CanCreateSHR = new();
         }
     }
 
@@ -209,6 +217,20 @@ class EvilSeer
                 if (!RoleData.CanCreate || killer == PlayerControl.LocalPlayer || killer == null) return;
 
                 RoleData.CanCreate = false;
+                HauntedWolf.Assign.SetHauntedWolf(killer);
+                HauntedWolf.Assign.SetHauntedWolfRPC(killer);
+            }
+
+            internal static void SuperHostRolesMode(PlayerControl killer, PlayerControl victim)
+            {
+                if (!AmongUsClient.Instance.AmHost) return;
+                if (RoleData.CreateMode is not (1 or 3)) return;
+                if (killer == victim || killer == null) return;
+
+                var killerId = killer.PlayerId;
+                if (RoleData.CanCreateSHR.ContainsKey(killerId)) return;
+
+                RoleData.CanCreateSHR.Add(killerId, false);
                 HauntedWolf.Assign.SetHauntedWolf(killer);
                 HauntedWolf.Assign.SetHauntedWolfRPC(killer);
             }
