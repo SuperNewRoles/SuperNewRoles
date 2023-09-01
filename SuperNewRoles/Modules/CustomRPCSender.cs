@@ -1,8 +1,8 @@
 using System;
 using AmongUs.GameOptions;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using InnerNet;
-using UnhollowerBaseLib;
 //TOHの開発者さんたち(主に空き瓶さん)ありがとうございます
 
 namespace SuperNewRoles.Modules;
@@ -260,5 +260,15 @@ public static class CustomRpcSenderExtensions
         sender.AutoStartRpc(player.NetId, (byte)RpcCalls.MurderPlayer, tarGetClientId)
           .WriteNetObject(target)
           .EndRpc();
+    }
+    public static void RpcEndGame(this CustomRpcSender sender, GameOverReason endReason, bool showAd)
+    {
+        GameManager.Instance.ShouldCheckForGameEnd = false;
+        Logger.Info($"Endgame for {endReason}");
+        sender.StartMessage(8);
+        sender.Write(AmongUsClient.Instance.GameId);
+        sender.Write((byte)endReason);
+        sender.Write(showAd);
+        sender.EndMessage();
     }
 }

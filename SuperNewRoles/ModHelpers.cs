@@ -1,20 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Runtime;
+using Il2CppInterop.Runtime.InteropTypes;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
-using UnhollowerBaseLib;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -37,6 +39,16 @@ public static class ModHelpers
                     !MeetingHud.Instance &&
                     !ExileController.Instance;
         }
+    }
+    public static int GetAlivePlayerCount()
+    {
+        int count = 0;
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            if (p.IsAlive()) count++;
+        return count;
+    }
+    public static byte ParseToByte(this string txt) {
+        return byte.Parse(txt.ToString());
     }
     public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
     {
@@ -196,6 +208,7 @@ public static class ModHelpers
     }
     public static void SetSkinWithAnim(PlayerPhysics playerPhysics, string SkinId)
     {
+        /*
         SkinViewData nextSkin = FastDestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
         AnimationClip clip = null;
         var spriteAnim = playerPhysics.GetSkin().animator;
@@ -219,6 +232,7 @@ public static class ModHelpers
         spriteAnim.Play(clip, 1f);
         anim.Play("a", 0, progress % 1);
         anim.Update(0f);
+        */
     }
     public static Dictionary<byte, PlayerControl> AllPlayersById()
     {
@@ -492,10 +506,10 @@ public static class ModHelpers
             console.checkWalls = true;
             console.usableDistance = 0.7f;
             console.TaskTypes = new TaskTypes[0];
-            console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
+            console.ValidTasks = new Il2CppReferenceArray<TaskSet>(0);
             var list = ShipStatus.Instance.AllConsoles.ToList();
             list.Add(console);
-            ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
+            ShipStatus.Instance.AllConsoles = new Il2CppReferenceArray<Console>(list.ToArray());
         }
         if (console.Image == null)
         {
@@ -750,6 +764,14 @@ public static class ModHelpers
         return null;
     }
 
+    public static SystemTypes GetInRoom(Vector2 pos)
+    {
+        if (ShipStatus.Instance is null) return SystemTypes.Doors;
+        PlainShipRoom room = ShipStatus.Instance.AllRooms.FirstOrDefault(x => x.roomArea.ClosestPoint(pos) == pos);
+        if (room is null) return SystemTypes.Doors;
+        return room.RoomId;
+    }
+
     public static string Cs(Color c, string s)
     {
         return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
@@ -910,12 +932,12 @@ public static class ModHelpers
             list.AddRange(c);
     }
 
-    public static string GetRPCNameFromByte(byte callId) =>
+    public static string GetRPCNameFromByte(PlayerControl __instance, byte callId) =>
         Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
             Enum.GetName(typeof(RpcCalls), callId) :
         Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
             Enum.GetName(typeof(CustomRPC), callId) :
-        $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
+        $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}:{__instance.Data.PlayerName}";
     public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
     /// <summary>
     /// 文字列が半角かどうかを判定します
@@ -937,6 +959,7 @@ public static class ModHelpers
         }
         return rates.ToArray();
     }
+    public static Il2CppSystem.Collections.Generic.IEnumerable<T> IEnumerableToIl2Cpp<T>(this IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
 }
 public static class CreateFlag
 {

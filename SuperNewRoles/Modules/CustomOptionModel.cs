@@ -23,6 +23,7 @@ public enum CustomOptionType
     Impostor,
     Neutral,
     Crewmate,
+    MatchTag,
     Empty // 使用されない
 }
 
@@ -61,6 +62,12 @@ public class CustomOption
                 {
                     ClientSelectedSelection = value;
                 }
+                if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && AmongUsClient.Instance.IsGamePublic)
+                {
+                    if (id is (>= 100000 and < 600000) or 0) MatchMaker.UpdateOption();
+                    else if (id is >= 600000 and < 700000) MatchMaker.UpdateTags();
+                    else Logger.Error($"設定idが規定範囲外でした : {id}", "MatchMakerUpdate");
+                }
             }
             else
             {
@@ -73,6 +80,7 @@ public class CustomOption
     public List<CustomOption> children;
     public bool isHeader;
     public bool isHidden;
+    public RoleId RoleId;
 
     public virtual bool Enabled
     {
@@ -88,9 +96,9 @@ public class CustomOption
 
     }
 
-    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId roleId = RoleId.None)
     {
-        this.id = id;
+        this.id = Id;
         this.isSHROn = IsSHROn;
         this.type = type;
         this.name = name;
@@ -101,6 +109,11 @@ public class CustomOption
         this.parent = parent;
         this.isHeader = isHeader;
         this.isHidden = isHidden;
+        this.RoleId = roleId;
+        if (parent != null)
+        {
+            this.RoleId = parent.RoleId;
+        }
 
         this.children = new List<CustomOption>();
         if (parent != null)
@@ -109,23 +122,78 @@ public class CustomOption
         }
 
         selection = 0;
-        if (id > 0)
+
+        entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", Id.ToString(), defaultSelection);
+        selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
+
+        bool duplication = options.Any(x => x.id == Id);
+        string duplicationString = $"CustomOptionのId({Id})が重複しています。";
+
+        SettingPattern pattern = GetSettingPattern(Id);
+        switch (pattern)
         {
-            entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", id.ToString(), defaultSelection);
-            selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
-            if (options.Any(x => x.id == id))
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId(" + id + ")が重複しています。");
-            }
-            if (Max < id)
-            {
-                Max = id;
-            }
+            case SettingPattern.ErrorId:
+                Logger.Info($"CustomOptionのId({Id})は Id規則に従っていません。", $"{SettingPattern.ErrorId}");
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ErrorId}");
+                break;
+            case SettingPattern.GenericId:
+                if (GenericIdMax < Id) GenericIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.GenericId}");
+                break;
+            case SettingPattern.ImpostorId:
+                if (ImpostorIdMax < Id) ImpostorIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ImpostorId}");
+                break;
+            case SettingPattern.NeutralId:
+                if (NeutralIdMax < Id) NeutralIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.NeutralId}");
+                break;
+            case SettingPattern.CrewmateId:
+                if (CrewmateIdMax < Id) CrewmateIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.CrewmateId}");
+                break;
+            case SettingPattern.ModifierId:
+                if (ModifierIdMax < Id) ModifierIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ModifierId}");
+                break;
+            case SettingPattern.MatchingTagId:
+                if (MatchingTagIdMax < Id) MatchingTagIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.MatchingTagId}");
+                break;
         }
         options.Add(this);
     }
-    public static int Max = 0;
 
+    public static int GenericIdMax = 0;
+    public static int ImpostorIdMax = 0;
+    public static int NeutralIdMax = 0;
+    public static int CrewmateIdMax = 0;
+    public static int ModifierIdMax = 0;
+    public static int MatchingTagIdMax = 0;
+
+    private SettingPattern GetSettingPattern(int id)
+    {
+        if (id == 0) return SettingPattern.GenericId;
+        if (id is >= 100000 and < 200000) return SettingPattern.GenericId;
+        if (id is >= 200000 and < 300000) return SettingPattern.ImpostorId;
+        if (id is >= 300000 and < 400000) return SettingPattern.NeutralId;
+        if (id is >= 400000 and < 500000) return SettingPattern.CrewmateId;
+        if (id is >= 500000 and < 600000) return SettingPattern.ModifierId;
+        if (id is >= 600000 and < 700000) return SettingPattern.MatchingTagId;
+
+        return SettingPattern.ErrorId;
+    }
+
+    private enum SettingPattern
+    {
+        ErrorId = 0,
+        GenericId = 100000,
+        ImpostorId = 200000,
+        NeutralId = 300000,
+        CrewmateId = 400000,
+        ModifierId = 500000,
+        MatchingTagId = 600000,
+    }
     public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
         return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format);
@@ -144,7 +212,7 @@ public class CustomOption
         return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
     }
 
-    public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1)
+    public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1, bool isHidden = false)
     {
         if (type is CustomOptionType.Empty)
             type = IntroData.GetIntroData(roleId).Team switch
@@ -154,7 +222,12 @@ public class CustomOption
                 TeamRoleType.Crewmate => CustomOptionType.Crewmate,
                 _ => CustomOptionType.Generic
             };
-        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max);
+        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max, isHidden);
+    }
+
+    public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag)
+    {
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
     }
 
     // Static behaviour
@@ -295,8 +368,6 @@ public class CustomRoleOption : CustomOption
 
     public CustomOption countOption = null;
 
-    public RoleId RoleId;
-
     public int Rate
     {
         get
@@ -337,21 +408,30 @@ public class CustomRoleOption : CustomOption
         }
     }
 
-    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
+    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15, bool isHidden = false) :
         base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "")
     {
         try
         {
-            this.RoleId = IntroData.IntroList.FirstOrDefault((_) =>
+            IntroData? intro = IntroData.IntroList.FirstOrDefault((_) =>
             {
                 return _.NameKey + "Name" == name;
-            }).RoleId;
+            });
+            if (intro != null)
+            {
+                this.RoleId = intro.RoleId;
+            }
+            else
+            {
+                Logger.Info("RoleId取得できませんでした:" + name, "CustomRoleOption");
+            }
         }
         catch
         {
             Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
         }
         RoleOptions.Add(this);
+        this.isHidden = isHidden;
         if (max > 1)
             countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
     }
@@ -455,6 +535,11 @@ class GameOptionsMenuStartPatch
             GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingCrewmate"));
             return;
         }
+        if (GameObject.Find("matchTagSettings") != null)
+        {
+            GameObject.Find("matchTagSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingMatchTag"));
+            return;
+        }
         if (GameObject.Find("RegulationSettings") != null)
         {
             GameObject.Find("RegulationSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingRegulation"));
@@ -487,6 +572,11 @@ class GameOptionsMenuStartPatch
         crewmateSettings.name = "CrewmateSettings";
         crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "CrewmateSetting";
 
+        var matchTagSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
+        var matchTagMenu = matchTagSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
+        matchTagSettings.name = "matchTagSettings";
+        matchTagSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "matchTagSetting";
+
         var RegulationSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
         var RegulationMenu = RegulationSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
         RegulationSettings.name = "RegulationSettings";
@@ -514,7 +604,12 @@ class GameOptionsMenuStartPatch
         crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
         crewmateTab.name = "CrewmateTab";
 
-        var RegulationTab = UnityEngine.Object.Instantiate(roleTab, neutralTab.transform);
+        var matchTagTab = UnityEngine.Object.Instantiate(roleTab, crewmateTab.transform);
+        var matchTagTabHighlight = matchTagTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
+        matchTagTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
+        matchTagTab.name = "matchTagTab";
+
+        var RegulationTab = UnityEngine.Object.Instantiate(roleTab, matchTagTab.transform);
         var RegulationTabHighlight = RegulationTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
         RegulationTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
         RegulationTab.name = "RegulationTab";
@@ -524,11 +619,12 @@ class GameOptionsMenuStartPatch
         roleTab.transform.position += Vector3.left * 3f;
         snrTab.transform.position += Vector3.left * 2f;
         impostorTab.transform.localPosition = Vector3.right * 1f;
-        neutralTab.transform.localPosition = Vector3.right * 1f;
+        neutralTab.transform.localPosition = Vector3.right * 0.95f;
         crewmateTab.transform.localPosition = Vector3.right * 0.95f;
-        RegulationTab.transform.localPosition = Vector3.right * 1.85f;
+        matchTagTab.transform.localPosition = Vector3.right * 1.05f;
+        RegulationTab.transform.localPosition = Vector3.right * 0.90f;
 
-        var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, RegulationTab };
+        var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, matchTagTab, RegulationTab };
         for (int i = 0; i < tabs.Length; i++)
         {
             var button = tabs[i].GetComponentInChildren<PassiveButton>();
@@ -543,6 +639,7 @@ class GameOptionsMenuStartPatch
                 impostorSettings.gameObject.SetActive(false);
                 neutralSettings.gameObject.SetActive(false);
                 crewmateSettings.gameObject.SetActive(false);
+                matchTagSettings.gameObject.SetActive(false);
                 RegulationSettings.gameObject.SetActive(false);
                 gameSettingMenu.GameSettingsHightlight.enabled = false;
                 gameSettingMenu.RolesSettingsHightlight.enabled = false;
@@ -550,6 +647,7 @@ class GameOptionsMenuStartPatch
                 impostorTabHighlight.enabled = false;
                 neutralTabHighlight.enabled = false;
                 crewmateTabHighlight.enabled = false;
+                matchTagTabHighlight.enabled = false;
                 RegulationTabHighlight.enabled = false;
                 if (copiedIndex == 0)
                 {
@@ -586,10 +684,14 @@ class GameOptionsMenuStartPatch
                 }
                 else if (copiedIndex == 6)
                 {
+                    matchTagSettings.gameObject.SetActive(true);
+                    matchTagTabHighlight.enabled = true;
+                }
+                else if (copiedIndex == 7)
+                {
                     RegulationSettings.gameObject.SetActive(true);
                     RegulationTabHighlight.enabled = true;
                 }
-
             }));
         }
 
@@ -601,15 +703,18 @@ class GameOptionsMenuStartPatch
             UnityEngine.Object.Destroy(option.gameObject);
         foreach (OptionBehaviour option in crewmateMenu.GetComponentsInChildren<OptionBehaviour>())
             UnityEngine.Object.Destroy(option.gameObject);
+        foreach (OptionBehaviour option in matchTagMenu.GetComponentsInChildren<OptionBehaviour>())
+            UnityEngine.Object.Destroy(option.gameObject);
         foreach (OptionBehaviour option in RegulationMenu.GetComponentsInChildren<OptionBehaviour>())
             UnityEngine.Object.Destroy(option.gameObject);
         List<OptionBehaviour> snrOptions = new();
         List<OptionBehaviour> impostorOptions = new();
         List<OptionBehaviour> neutralOptions = new();
         List<OptionBehaviour> crewmateOptions = new();
+        List<OptionBehaviour> matchTagOptions = new();
 
-        List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, RegulationMenu.transform };
-        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions };
+        List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, matchTagMenu.transform, RegulationMenu.transform };
+        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions, matchTagOptions };
 
         for (int i = 0; i < CustomOption.options.Count; i++)
         {
@@ -627,7 +732,8 @@ class GameOptionsMenuStartPatch
             }
             option.optionBehaviour.gameObject.SetActive(true);
         }
-        Logger.Info("通過やでええええええええええええええええ");
+        Logger.Info("SNROption - matchTagOption通過");
+
         foreach (var Regulation in CustomRegulation.RegulationData.Regulations)
         {
             if (Regulation.optionBehaviour == null)
@@ -642,6 +748,7 @@ class GameOptionsMenuStartPatch
             }
             Regulation.optionBehaviour.gameObject.SetActive(true);
         }
+        Logger.Info("RegulationOption通過");
 
         snrMenu.Children = snrOptions.ToArray();
         snrSettings.gameObject.SetActive(false);
@@ -654,6 +761,8 @@ class GameOptionsMenuStartPatch
 
         crewmateMenu.Children = crewmateOptions.ToArray();
         crewmateSettings.gameObject.SetActive(false);
+
+        matchTagSettings.gameObject.SetActive(false);
 
         RegulationSettings.gameObject.SetActive(false);
 
@@ -831,6 +940,7 @@ static class GameOptionsMenuUpdatePatch
             "ImpostorSetting" => CustomOptionType.Impostor,
             "NeutralSetting" => CustomOptionType.Neutral,
             "CrewmateSetting" => CustomOptionType.Crewmate,
+            "matchTagSetting" => CustomOptionType.MatchTag,
             _ => CustomOptionType.Crewmate,
         };
     }
@@ -963,7 +1073,82 @@ class GameOptionsDataPatch
 
     public static string OptionToString(CustomOption option)
     {
-        return option == null ? "" : $"{option.GetName()}: {option.GetString()}";
+        if (option == null) return "";
+
+        string text = option.GetName() + ":" + option.GetString();
+        var (isProcessingRequired, pattern) = ProcessingOptionCheck(option);
+
+        if (isProcessingRequired)
+            text += $"{ProcessingOptionString(option, "  ", pattern)}";
+
+        return text;
+    }
+
+    /// <summary>
+    /// CustomOptionに追記をする。
+    /// </summary>
+    /// <param name="option">追記が必要なオプション</param>
+    /// <param name="indent">追記が必要なオプションのインデント</param>
+    /// <param name="pattern">追記の内容指定</param>
+    /// <returns>string : 追記した文字列(インデントは一つ追加している)</returns>
+    internal static string ProcessingOptionString(CustomOption option, string indent = "", ProcessingPattern pattern = ProcessingPattern.None)
+    {
+        if (option == null) return "";
+        string text = "";
+
+        if (pattern == ProcessingPattern.GetTaskTriggerAbilityTaskNumber) // タスクの割合から, タスク数を求める
+        {
+            int AllTask = SelectTask.GetTotalTasks(option.RoleId);
+            if (!int.TryParse(option.GetString().Replace("%", ""), out int percent)) return ""; // int変換できない物の場合, ブランクを返す
+            float rate = percent / 100f;
+            int activeTaskNum = (int)(AllTask * rate);
+
+            text += "\n" + indent + "  " + "(" + $"{ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
+
+            if (AllTask != 0)
+                text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")}" + ")";
+            else
+            {
+                string errorText = $"{option.RoleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。" + ")";
+                text += $"=> {errorText}";
+                Logger.Error($"{errorText}", "GetTaskTriggerAbilityTaskNumber");
+            }
+        }
+
+        return text;
+    }
+
+    /// <summary>
+    /// 追記対象のオプションか判定する
+    /// </summary>
+    /// <param name="option">判定対象</param>
+    /// <returns> true : 対象 _ false: 対象外 / ProcessingPattern : 追記形式 </returns>
+    internal static (bool, ProcessingPattern) ProcessingOptionCheck(CustomOption option)
+    {
+        string optionName = option.GetName();
+
+        Dictionary<string, ProcessingPattern> targetString = new()
+        {
+            {ModTranslation.GetString("ParcentageForTaskTriggerSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerKillGuardTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerUseVentTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerExiledGuardTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerUseSaboTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerIsImpostorLightTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerCheckImpostorTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+        };
+
+        if (targetString.ContainsKey(optionName)) return (true, targetString[optionName]);
+        else return (false, ProcessingPattern.None);
+    }
+
+    /// <summary>
+    /// 追記が必要なCustomOptionの種類
+    /// </summary>
+    internal enum ProcessingPattern
+    {
+        None,
+        GetTaskTriggerAbilityTaskNumber,
     }
 
     public static string OptionsToString(CustomOption option, bool skipFirst = false)
@@ -999,7 +1184,6 @@ class GameOptionsDataPatch
         StringBuilder entry = new();
         List<string> entries = new()
             {
-
                 // First add the presets and the role counts
                 OptionToString(CustomOptionHolder.presetSelection)
             };
@@ -1082,7 +1266,7 @@ class GameOptionsDataPatch
                 }
 
                 entry = new StringBuilder();
-                if (!GameOptionsMenuUpdatePatch.IsHidden(option))
+                if (!(GameOptionsMenuUpdatePatch.IsHidden(option) || option.type == CustomOptionType.MatchTag))
                 {
                     entry.AppendLine(OptionToString(option));
                 }

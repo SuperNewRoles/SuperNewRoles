@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
@@ -81,7 +82,12 @@ class ControllerManagerUpdatePatch
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
             {
                 if (MeetingHud.Instance != null)
-                    MeetingHud.Instance.RpcClose();
+                {
+                    if (ModeHandler.IsMode(ModeId.BattleRoyal))
+                        SelectRoleSystem.OnEndSetRole();
+                    else
+                        MeetingHud.Instance.RpcClose();
+                }
             }
         }
 
@@ -91,6 +97,8 @@ class ControllerManagerUpdatePatch
             // Spawn dummys
             if (Input.GetKeyDown(KeyCode.G))
             {
+                Logger.Info(EOSManager.Instance.UserIDToken);
+
                 PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
                 bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
@@ -102,7 +110,8 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                Roles.Crewmate.Balancer.StartAbility(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls[0], PlayerControl.AllPlayerControls[1]);
+                AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
+                AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size><size=150%>" + "公開からの誘導はおやめください" + "</size>\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード:" + "0010" + "\n理由：" + "公開部屋から誘導してMODをプレイしていたため" + "\n期間：" + "永久";
             }
             if (Input.GetKeyDown(KeyCode.P))
             {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -8,8 +7,10 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.SuperNewRolesWeb;
 using TMPro;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace SuperNewRoles.Roles;
 [HarmonyPatch]
 public static class RoleClass
 {
+    public static List<string> RuleAgrees = new();
     public static bool IsMeeting;
     public static bool IsCoolTimeSetted;
     public static System.Random rnd = new((int)DateTime.Now.Ticks);
@@ -37,7 +39,7 @@ public static class RoleClass
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;
-        DeadPlayer.deadPlayers = new();
+        DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
@@ -46,6 +48,7 @@ public static class RoleClass
         IsCoolTimeSetted = false;
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
+        GameHistoryManager.ClearAndReloads();
         Agartha.MapData.ClearAndReloads();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();
@@ -65,6 +68,7 @@ public static class RoleClass
         MeetingHudUpdatePatch.ErrorNames = new();
         FixSabotage.ClearAndReload();
         RoleBases.Role.ClearAll();
+        Patches.CursedTasks.Main.ClearAndReload();
 
         /* 陣営playerがうまく動かず使われてない為コメントアウト。
         RoleHelpers.CrewmatePlayer = new();
@@ -214,7 +218,7 @@ public static class RoleClass
         Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
-        Neutral.WaveCannonJackal.ClearAndReload();
+        WaveCannonJackal.ClearAndReload();
         //SidekickWaveCannon.Clear();
         Conjurer.ClearAndReload();
         Camouflager.ClearAndReload();
@@ -224,7 +228,7 @@ public static class RoleClass
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
-        Impostor.MadRole.Worshiper.ClearAndReload();
+        Worshiper.RoleData.ClearAndReload();
         Safecracker.ClearAndReload();
         FireFox.ClearAndReload();
         Squid.ClearAndReload();
@@ -235,6 +239,11 @@ public static class RoleClass
         TheThreeLittlePigs.ClearAndReload();
         OrientalShaman.ClearAndReload();
         Balancer.ClearAndReload();
+        Pteranodon.ClearAndReload();
+        BlackHatHacker.ClearAndReload();
+        PoliceSurgeon.RoleData.ClearAndReload();
+        MadRaccoon.RoleData.ClearAndReload();
+        Moira.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -245,7 +254,7 @@ public static class RoleClass
     public static class Debugger
     {
         public static bool AmDebugger;
-        public static Color32 color = new(130, 130, 130, byte.MaxValue);
+        public static Color32 color = new(149, 148, 154, byte.MaxValue);
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
 
         public static void ClearAndReload()
@@ -678,17 +687,10 @@ public static class RoleClass
             IsImpostorCheck = CustomOptionHolder.MadmateIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadmateIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadmateIsImpostorLight.GetBool();
-            int Common = CustomOptionHolder.MadmateCommonTask.GetInt();
-            int Long = CustomOptionHolder.MadmateLongTask.GetInt();
-            int Short = CustomOptionHolder.MadmateShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadmateCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+
+            bool IsFullTask = !CustomOptionHolder.MadmateIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.Madmate);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadmateParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class Bait
@@ -905,17 +907,11 @@ public static class RoleClass
             IsJackalCheck = CustomOptionHolder.JackalFriendsIsCheckJackal.GetBool();
             IsUseVent = CustomOptionHolder.JackalFriendsIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.JackalFriendsIsImpostorLight.GetBool();
-            int Common = CustomOptionHolder.JackalFriendsCommonTask.GetInt();
-            int Long = CustomOptionHolder.JackalFriendsLongTask.GetInt();
-            int Short = CustomOptionHolder.JackalFriendsShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
-            JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
+
+            bool IsFullTask = !CustomOptionHolder.JackalFriendsIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.JackalFriends);
+            JackalCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
+
             Roles.JackalFriends.CheckedJackal = new();
         }
     }
@@ -1342,18 +1338,10 @@ public static class RoleClass
             IsImpostorCheck = CustomOptionHolder.MadMayorIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadMayorIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadMayorIsImpostorLight.GetBool();
-            int Common = CustomOptionHolder.MadMayorCommonTask.GetInt();
-            int Long = CustomOptionHolder.MadMayorLongTask.GetInt();
-            int Short = CustomOptionHolder.MadMayorShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadMayorCheckImpostorTask.GetString().Replace("%", "")) / 100f));
-            Roles.MadMayor.CheckedImpostor = new();
+
+            bool IsFullTask = !CustomOptionHolder.MadMayorIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadMayor);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadMayorParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class NiceHawk
@@ -1396,6 +1384,8 @@ public static class RoleClass
     {
         public static List<PlayerControl> MadStuntManPlayer;
         public static Color32 color = ImpostorRed;
+        public static bool IsImpostorCheck;
+        public static int ImpostorCheckTask;
         public static Dictionary<int, int> GuardCount;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
@@ -1404,12 +1394,21 @@ public static class RoleClass
             MadStuntManPlayer = new();
             IsUseVent = CustomOptionHolder.MadStuntManIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadStuntManIsImpostorLight.GetBool();
+            IsImpostorCheck = CustomOptionHolder.MadStuntManIsCheckImpostor.GetBool();
+            IsUseVent = CustomOptionHolder.MadStuntManIsUseVent.GetBool();
+            IsImpostorLight = CustomOptionHolder.MadStuntManIsImpostorLight.GetBool();
+
+            bool IsFullTask = !CustomOptionHolder.MadStuntManIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadStuntMan);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadStuntManParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class MadHawk
     {
         public static List<PlayerControl> MadHawkPlayer;
         public static Color32 color = ImpostorRed;
+        public static bool IsImpostorCheck;
+        public static int ImpostorCheckTask;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
         public static float CoolTime;
@@ -1426,7 +1425,6 @@ public static class RoleClass
             MadHawkPlayer = new();
             IsUseVent = CustomOptionHolder.MadHawkIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadHawkIsImpostorLight.GetBool();
-            MadHawkPlayer = new();
             CoolTime = CustomOptionHolder.MadHawkCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.MadHawkDurationTime.GetFloat();
             Timer = 0;
@@ -1436,6 +1434,13 @@ public static class RoleClass
             Postion = new Vector3(0, 0, 0);
             timer1 = 0;
             Timer2 = DateTime.Now;
+            IsImpostorCheck = CustomOptionHolder.MadHawkIsCheckImpostor.GetBool();
+            IsUseVent = CustomOptionHolder.MadHawkIsUseVent.GetBool();
+            IsImpostorLight = CustomOptionHolder.MadHawkIsImpostorLight.GetBool();
+
+            bool IsFullTask = !CustomOptionHolder.MadHawkIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadHawk);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadHawkParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class MadJester
@@ -1457,17 +1462,9 @@ public static class RoleClass
             IsImpostorLight = CustomOptionHolder.MadJesterIsImpostorLight.GetBool();
             IsMadJesterTaskClearWin = CustomOptionHolder.IsMadJesterTaskClearWin.GetBool();
             IsImpostorCheck = CustomOptionHolder.MadJesterIsCheckImpostor.GetBool();
-            int Common = CustomOptionHolder.MadJesterCommonTask.GetInt();
-            int Long = CustomOptionHolder.MadJesterLongTask.GetInt();
-            int Short = CustomOptionHolder.MadJesterShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadJesterCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+            bool IsFullTask = !CustomOptionHolder.MadJesterIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadJester);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadJesterParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class FalseCharges
@@ -1575,6 +1572,7 @@ public static class RoleClass
         public static List<PlayerControl> FoxPlayer;
         public static Color32 color = FoxPurple;
         public static Dictionary<int, int> KillGuard;
+        public static Dictionary<byte, bool> Killer;
         public static bool IsUseVent;
         public static bool UseReport;
         public static bool IsImpostorLight;
@@ -1582,6 +1580,7 @@ public static class RoleClass
         {
             FoxPlayer = new();
             KillGuard = new();
+            Killer = new();
             IsUseVent = CustomOptionHolder.FoxIsUseVent.GetBool();
             UseReport = CustomOptionHolder.FoxReport.GetBool();
             IsImpostorLight = CustomOptionHolder.FoxIsImpostorLight.GetBool();
@@ -1645,18 +1644,10 @@ public static class RoleClass
             IsImpostorCheck = CustomOptionHolder.MadSeerIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadSeerIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadSeerIsImpostorLight.GetBool();
-            int Common = CustomOptionHolder.MadSeerCommonTask.GetInt();
-            int Long = CustomOptionHolder.MadSeerLongTask.GetInt();
-            int Short = CustomOptionHolder.MadSeerShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadSeerCheckImpostorTask.GetString().Replace("%", "")) / 100f));
-            Roles.MadSeer.CheckedImpostor = new();
+
+            bool IsFullTask = !CustomOptionHolder.MadSeerIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadSeer);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadSeerParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class EvilSeer
@@ -1767,16 +1758,6 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             TaskManagerPlayer = new();
-            int Common = CustomOptionHolder.TaskManagerCommonTask.GetInt();
-            int Long = CustomOptionHolder.TaskManagerLongTask.GetInt();
-            int Short = CustomOptionHolder.TaskManagerShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
         }
     }
     public static class SeerFriends
@@ -1806,17 +1787,10 @@ public static class RoleClass
             IsJackalCheck = CustomOptionHolder.SeerFriendsIsCheckJackal.GetBool();
             IsUseVent = CustomOptionHolder.SeerFriendsIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.SeerFriendsIsImpostorLight.GetBool();
-            int Common = CustomOptionHolder.SeerFriendsCommonTask.GetInt();
-            int Long = CustomOptionHolder.SeerFriendsLongTask.GetInt();
-            int Short = CustomOptionHolder.SeerFriendsShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
-            JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.SeerFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
+
+            bool IsFullTask = !CustomOptionHolder.JackalFriendsIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.JackalFriends);
+            JackalCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class JackalSeer
@@ -1960,6 +1934,8 @@ public static class RoleClass
     {
         public static List<PlayerControl> MadCleanerPlayer;
         public static Color32 color = ImpostorRed;
+        public static bool IsImpostorCheck;
+        public static int ImpostorCheckTask;
         public static float CoolTime;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
@@ -1972,6 +1948,13 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.MadCleanerCooldown.GetFloat();
             IsUseVent = CustomOptionHolder.MadCleanerIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadCleanerIsImpostorLight.GetBool();
+            IsImpostorCheck = CustomOptionHolder.MadCleanerIsCheckImpostor.GetBool();
+            IsUseVent = CustomOptionHolder.MadCleanerIsUseVent.GetBool();
+            IsImpostorLight = CustomOptionHolder.MadCleanerIsImpostorLight.GetBool();
+
+            bool IsFullTask = !CustomOptionHolder.MadCleanerIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadCleaner);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadCleanerParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class Samurai
@@ -2012,17 +1995,11 @@ public static class RoleClass
             IsJackalCheck = CustomOptionHolder.MayorFriendsIsCheckJackal.GetBool();
             IsUseVent = CustomOptionHolder.MayorFriendsIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MayorFriendsIsImpostorLight.GetBool();
-            int Common = CustomOptionHolder.MayorFriendsCommonTask.GetInt();
-            int Long = CustomOptionHolder.MayorFriendsLongTask.GetInt();
-            int Short = CustomOptionHolder.MayorFriendsShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
-            JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MayorFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
+
+            bool IsFullTask = !CustomOptionHolder.MayorFriendsIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MayorFriends);
+            JackalCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MayorFriendsParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
+
             AddVote = CustomOptionHolder.MayorFriendsVoteCount.GetInt();
         }
     }
@@ -2030,7 +2007,7 @@ public static class RoleClass
     {
         public static List<PlayerControl> VentMakerPlayer;
         public static Color32 color = ImpostorRed;
-        public static Vent Vent;
+        public static Dictionary<byte, Vent> Vent;
         public static int VentCount;
         public static bool IsMakeVent;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
@@ -2038,7 +2015,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             VentMakerPlayer = new();
-            Vent = null;
+            Vent = new();
             VentCount = 0;
             IsMakeVent = true;
         }
@@ -2161,17 +2138,10 @@ public static class RoleClass
             IsImpostorCheck = CustomOptionHolder.BlackCatIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.BlackCatIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.BlackCatIsImpostorLight.GetBool();
-            int Common = CustomOptionHolder.BlackCatCommonTask.GetInt();
-            int Long = CustomOptionHolder.BlackCatLongTask.GetInt();
-            int Short = CustomOptionHolder.BlackCatShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.BlackCatCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+
+            bool IsFullTask = !CustomOptionHolder.BlackCatIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.BlackCat);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.BlackCatParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
 

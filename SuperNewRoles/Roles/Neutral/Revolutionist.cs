@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using AssemblyUnhollower.Extensions;
 using Hazel;
 using Il2CppSystem;
 using SuperNewRoles.Patches;

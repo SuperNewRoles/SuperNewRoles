@@ -26,7 +26,7 @@ public static class VanillaOptionsPatch
     public static void MainMenuManager_StartPostfix(MainMenuManager __instance)
     {
         // Prefab for the title
-        var tmp = __instance.Announcement.Title;
+        var tmp = __instance.announcementPopUp.Title;
         tmp.alignment = TextAlignmentOptions.Center;
         tmp.transform.localPosition += Vector3.left * 0.2f;
         titleText = Object.Instantiate(tmp);
@@ -107,7 +107,7 @@ public static class VanillaOptionsPatch
             if (__instance.transform.parent && __instance.transform.parent == FastDestroyableSingleton<HudManager>.Instance.transform)
             {
                 popUp.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
-                popUp.transform.localPosition = new Vector3(0, 0, -800f);
+                popUp.transform.localPosition = new Vector3(0, 0, -920f);
             }
             else
             {

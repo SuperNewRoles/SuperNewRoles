@@ -1,12 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using InnerNet;
 using SuperNewRoles.Mode;
 using TMPro;
 using UnityEngine;
@@ -55,7 +52,7 @@ public static class Analytics
         data.Add("HostFriendCode", Host.FriendCode);
         data.Add("PlayerCount", GameData.Instance.AllPlayers.Count.ToString());
         string json = data.GetString();
-        AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendClientDataUrl, json));
+        AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendClientDataUrl, json).WrapToIl2Cpp());
     }
     public static void PostSendData()
     {
@@ -120,7 +117,16 @@ public static class Analytics
         data.Add("GameMode", GameOptionsManager.Instance.currentGameMode.ToString());
         string json = data.GetString();
         Logger.Info(json, "JSON");
-        AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendDataUrl, json));
+        AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendDataUrl, json).WrapToIl2Cpp());
+    }
+    public static string GetString(this IList<string> list)
+    {
+        string txt = "[]";
+        foreach (string text in list)
+        {
+            txt += text + ",";
+        }
+        return txt.Substring(0, txt.Length - 1) + "]";
     }
     public static string GetString(this IDictionary<string, string> dict)
     {
@@ -132,7 +138,7 @@ public static class Analytics
         }
         return txt.Substring(0, txt.Length - 1);
     }
-    static IEnumerator Post(string url, string jsonstr)
+    public static IEnumerator Post(string url, string jsonstr)
     {
         var request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonstr);
@@ -143,5 +149,6 @@ public static class Analytics
         yield return request.Send();
 
         Logger.Info($"Status Code: {request.responseCode}", "Analytics");
+        //Logger.Info($"Result:{request.downloadHandler.text}");
     }
 }

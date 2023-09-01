@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public class Squid
 {
-    private const int OptionId = 1194;
+    private const int OptionId = 402800;
     public static CustomRoleOption SquidOption;
     public static CustomOption SquidPlayerCount;
     public static CustomOption SquidCoolTime;
