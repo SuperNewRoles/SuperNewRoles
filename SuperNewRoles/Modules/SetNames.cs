@@ -79,7 +79,7 @@ public class SetNamesClass
     {
         if (p.IsBot()) return;
         bool commsActive = RoleHelpers.IsComms();
-        if (!PlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro playerInfo))
+        if (!PlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro playerInfo) || playerInfo == null)
         {
             playerInfo = UnityEngine.Object.Instantiate(p.NameText(), p.NameText().transform.parent);
             playerInfo.fontSize *= 0.75f;
@@ -91,7 +91,7 @@ public class SetNamesClass
         playerInfo.transform.localPosition = p.NameText().transform.localPosition + Vector3.up * 0.2f;
 
         PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
-        if (!MeetingPlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro meetingInfo) && playerVoteArea != null)
+        if ((!MeetingPlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro meetingInfo) || meetingInfo == null) && playerVoteArea != null)
         {
             meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
             meetingInfo.transform.localPosition += Vector3.down * 0.1f;
