@@ -93,7 +93,7 @@ class RepairSystemPatch
         SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + systemType + " : " + amount);
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            SyncSetting.CustomSyncSettings();
+            SyncSetting.CustomSyncSettings(out var modified);
             if (systemType == SystemTypes.Comms)
             {
                 Mode.SuperHostRoles.FixedUpdate.SetRoleNames();

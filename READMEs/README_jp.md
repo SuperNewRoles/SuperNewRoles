@@ -99,25 +99,21 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
 
 ## 開発者
-[よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/YYYYoking))<br>
-[月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
-[Kuki](https://github.com/Kuki12345)<br>
-[Glaceon](https://github.com/Glaceon-471) ([Twitter](https://twitter.com/Glaceon_SNR11))<br>
-[~~漢方薬の人~~](https://github.com/UKON256)<br>
-[~~Sakurander~~](https://github.com/Sakurander)<br>
+- 開発者1号 : [よっキング](https://github.com/ykundesu) ([Misskey](https://misskey.io/@yoking)) ([𝕏 ( 旧Twitter )](https://twitter.com/ReYYYYoking))<br>
+- 開発者7号 : [月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Misskey](https://misskey.io/@Kurato_SNR7)) ([𝕏 ( 旧Twitter )](https://twitter.com/Kurato_SNR7))<br>
+- 開発者9号 : [Kuki](https://github.com/Kuki12345)<br>
+- 開発者11号 : [Glaceon](https://github.com/Glaceon-471) ([Misskey](https://misskey.io/@GlaceonSNR11)) ([𝕏 ( 旧Twitter )](https://twitter.com/Glaceon_SNR11))<br><br>
+- ~~開発者4号 : [漢方薬の人](https://github.com/UKON256)~~<br>
+- ~~開発者10号 : [Sakurander](https://github.com/Sakurander)~~<br>
 
 ## サポーター
-[セオノ](https://github.com/Seono968) ([Twitter](https://twitter.com/Rinforzando_960))<br>
+- [セオノ](https://github.com/Seono968) ([𝕏 ( 旧Twitter )](https://twitter.com/Rinforzando_960))<br>
 
-## スポンサー
-こんこるど様<br>
-kibou102様<br>
-つちな様<br>
-windows7様<br>
-渋谷先生様<br>
-cRox様<br>
+## 翻訳
+- ZeMingoh233 様 (SChinese)
+- Jim137 様 (TChinese)
 
-##　キーボードショートカット
+## キーボードショートカット
 ### ホストのみ
 | キー                    | 機能                 | 使えるとき   |
 | ----------------------- | -------------------- | ------------ |

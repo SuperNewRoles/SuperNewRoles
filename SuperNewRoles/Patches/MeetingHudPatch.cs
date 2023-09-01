@@ -55,6 +55,7 @@ class CheckForEndVotingPatch
             { RoleId.MayorFriends, RoleClass.MayorFriends.AddVote },
             { RoleId.Dictator, RoleClass.Dictator.VoteCount }
         };
+
     public static bool Prefix(MeetingHud __instance)
     {
         try
@@ -617,8 +618,9 @@ class MeetingHudStartPatch
         {
             new LateTask(() =>
             {
-                SyncSetting.CustomSyncSettings();
-                SyncSetting.MeetingSyncSettings();
+                SyncSetting.CustomSyncSettings(out var options);
+                SyncSetting.MeetingSyncSettings(options);
+                if (!RoleClass.IsFirstMeetingEnd) AddChatPatch.YourRoleInfoSendCommand();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         if (ModeHandler.IsMode(ModeId.Default))
@@ -629,7 +631,7 @@ class MeetingHudStartPatch
             }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
         NiceMechanic.StartMeeting();
-        Celebrity.TimerStop();
+        Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.TimerStop();
         TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
         MadRaccoon.Button.ResetShapeDuration(false);
         NiceMechanic.StartMeeting();
@@ -746,11 +748,11 @@ public class MeetingHudUpdatePatch
             foreach (PlayerVoteArea player in Instance.playerStates)
             {
                 PlayerControl target = null;
-                PlayerControl.AllPlayerControls.ToList().ForEach(x =>
+                foreach(PlayerControl x in PlayerControl.AllPlayerControls)
                 {
                     string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
                     if (name == x.Data.PlayerName) target = x;
-                });
+                }
                 if (target != null)
                 {
                     if (ConfigRoles.IsLightAndDarker.Value)

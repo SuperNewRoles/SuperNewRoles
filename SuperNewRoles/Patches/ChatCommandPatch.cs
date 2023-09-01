@@ -106,6 +106,15 @@ public static class DynamicLobbies
                     }
                 }
             }
+            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
+            {
+                if (text.ToLower().StartsWith("/yr") || text.ToLower().StartsWith("/yourrole"))
+                {
+                    if (!AmongUsClient.Instance.AmHost) return true;
+                    handled = true;
+                    AddChatPatch.YourRoleInfoSendCommand();
+                }
+            }
             if (text.ToLower().StartsWith("/sl") || text.ToLower().StartsWith("/savelog"))
             {// ファイル名を付けてログを別の場所に保管するコマンド
 

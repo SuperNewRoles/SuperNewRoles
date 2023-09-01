@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -46,6 +47,7 @@ public class CustomOptionHolder
     public static CustomOption IsMurderPlayerAnnounce;
 
     public static CustomOption DisconnectNotPCOption;
+    public static CustomOption DisconnectDontHaveFriendCodeOption;
 
     public static CustomOption IsOldMode;
 
@@ -405,6 +407,7 @@ public class CustomOptionHolder
 
     public static CustomRoleOption AmnesiacOption;
     public static CustomOption AmnesiacPlayerCount;
+    public static CustomOption AmnesiacShowArrows;
 
     public static CustomRoleOption SideKillerOption;
     public static CustomOption SideKillerPlayerCount;
@@ -521,18 +524,12 @@ public class CustomOptionHolder
     public static CustomRoleOption SeerOption;
     public static CustomOption SeerPlayerCount;
     public static CustomOption SeerMode;
-    public static CustomOption SeerModeBoth;
-    public static CustomOption SeerModeFlash;
-    public static CustomOption SeerModeSouls;
     public static CustomOption SeerLimitSoulDuration;
     public static CustomOption SeerSoulDuration;
 
     public static CustomRoleOption MadSeerOption;
     public static CustomOption MadSeerPlayerCount;
     public static CustomOption MadSeerMode;
-    public static CustomOption MadSeerModeBoth;
-    public static CustomOption MadSeerModeFlash;
-    public static CustomOption MadSeerModeSouls;
     public static CustomOption MadSeerLimitSoulDuration;
     public static CustomOption MadSeerSoulDuration;
     public static CustomOption MadSeerIsCheckImpostor;
@@ -544,16 +541,6 @@ public class CustomOptionHolder
     public static CustomOption MadSeerParcentageForTaskTriggerSetting;
     public static CustomOption MadSeerIsUseVent;
     public static CustomOption MadSeerIsImpostorLight;
-
-    public static CustomRoleOption EvilSeerOption;
-    public static CustomOption EvilSeerPlayerCount;
-    public static CustomOption EvilSeerMode;
-    public static CustomOption EvilSeerModeBoth;
-    public static CustomOption EvilSeerModeFlash;
-    public static CustomOption EvilSeerModeSouls;
-    public static CustomOption EvilSeerLimitSoulDuration;
-    public static CustomOption EvilSeerSoulDuration;
-    public static CustomOption EvilSeerMadmateSetting;
 
     public static CustomRoleOption TeleportingJackalOption;
     public static CustomOption TeleportingJackalPlayerCount;
@@ -591,9 +578,6 @@ public class CustomOptionHolder
     public static CustomRoleOption SeerFriendsOption;
     public static CustomOption SeerFriendsPlayerCount;
     public static CustomOption SeerFriendsMode;
-    public static CustomOption SeerFriendsModeBoth;
-    public static CustomOption SeerFriendsModeFlash;
-    public static CustomOption SeerFriendsModeSouls;
     public static CustomOption SeerFriendsLimitSoulDuration;
     public static CustomOption SeerFriendsSoulDuration;
     public static CustomOption SeerFriendsIsCheckJackal;
@@ -637,9 +621,6 @@ public class CustomOptionHolder
     public static CustomRoleOption JackalSeerOption;
     public static CustomOption JackalSeerPlayerCount;
     public static CustomOption JackalSeerMode;
-    public static CustomOption JackalSeerModeBoth;
-    public static CustomOption JackalSeerModeFlash;
-    public static CustomOption JackalSeerModeSouls;
     public static CustomOption JackalSeerLimitSoulDuration;
     public static CustomOption JackalSeerSoulDuration;
     public static CustomOption JackalSeerKillCooldown;
@@ -716,13 +697,11 @@ public class CustomOptionHolder
     public static CustomOption GhostMechanicPlayerCount;
     public static CustomOption GhostMechanicRepairLimit;
 
-    public static CustomRoleOption HauntedWolfOption;
-    public static CustomOption HauntedWolfPlayerCount;
-
     public static CustomRoleOption EvilHackerOption;
     public static CustomOption EvilHackerPlayerCount;
     public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
     public static CustomOption EvilHackerMadmateSetting;
+    public static CustomOption EvilHackerButtonCooldown;
 
     public static CustomRoleOption SecretlyKillerOption;
     public static CustomOption SecretlyKillerPlayerCount;
@@ -1056,6 +1035,7 @@ public class CustomOptionHolder
         }
 
         DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
+        DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectDontHaveFriendCode"), true, null, isHeader: true);
 
         enableAgartha = Create(101000, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
@@ -1098,16 +1078,21 @@ public class CustomOptionHolder
 
         Conjurer.SetupCustomOptions();
 
-        EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
-        EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
-        EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
-        EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
-
         EvilGuesserOption = SetupCustomRoleOption(200400, false, RoleId.EvilGuesser);
         EvilGuesserPlayerCount = Create(200401, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
         EvilGuesserShortMaxCount = Create(200402, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
         EvilGuesserShortOneMeetingCount = Create(200403, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
         EvilGuesserCanShotCrew = Create(200404, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, EvilGuesserOption);
+
+        EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
+        EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
+        EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
+        EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
+        EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
+
+        EvilSeer.CustomOptionData.SetupCustomOptions();
+
+        ShiftActor.SetupCustomOptions();
 
         AssassinAndMarlinOption = new(200500, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1)
         {
@@ -1186,15 +1171,6 @@ public class CustomOptionHolder
         NunOption = SetupCustomRoleOption(201601, false, RoleId.Nun);
         NunPlayerCount = Create(201602, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
         NunCoolTime = Create(201603, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
-
-        ShiftActor.SetupCustomOptions();
-
-        EvilSeerOption = SetupCustomRoleOption(201900, true, RoleId.EvilSeer);
-        EvilSeerPlayerCount = Create(201901, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilSeerOption);
-        EvilSeerMode = Create(201902, false, CustomOptionType.Impostor, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, EvilSeerOption);
-        EvilSeerLimitSoulDuration = Create(201903, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, EvilSeerOption);
-        EvilSeerSoulDuration = Create(201904, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
-        EvilSeerMadmateSetting = Create(201905, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilSeerOption);
 
         EvilButtonerOption = SetupCustomRoleOption(202000, true, RoleId.EvilButtoner);
         EvilButtonerPlayerCount = Create(202001, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilButtonerOption);
@@ -1521,6 +1497,7 @@ public class CustomOptionHolder
 
         AmnesiacOption = SetupCustomRoleOption(301600, false, RoleId.Amnesiac);
         AmnesiacPlayerCount = Create(301601, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);
+        AmnesiacShowArrows = Create(301602, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, AmnesiacOption);
 
         TheThreeLittlePigs.SetupCustomOptions();
 
@@ -1535,8 +1512,8 @@ public class CustomOptionHolder
         VulturePlayerCount = Create(302001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
         VultureCooldown = Create(302002, false, CustomOptionType.Neutral, "VultureCooldownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
         VultureDeadBodyMaxCount = Create(302003, false, CustomOptionType.Neutral, "VultureDeadBodyCountSetting", 3f, 1f, 6f, 1f, VultureOption);
-        VultureIsUseVent = Create(302004, false, CustomOptionType.Neutral, "MadmateUseVentSetting", false, VultureOption);
-        VultureShowArrows = Create(302005, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", false, VultureOption);
+        VultureIsUseVent = Create(302004, false, CustomOptionType.Neutral, "MadmateUseVentSetting", true, VultureOption);
+        VultureShowArrows = Create(302005, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, VultureOption);
 
         OpportunistOption = SetupCustomRoleOption(302100, true, RoleId.Opportunist);
         OpportunistPlayerCount = Create(302101, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);
@@ -1615,7 +1592,6 @@ public class CustomOptionHolder
         // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
 
         /* |: ========================= Crewmate Settings ========================== :| */
-
         SheriffOption = SetupCustomRoleOption(400000, true, RoleId.Sheriff);
         SheriffPlayerCount = Create(400001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
         SheriffCoolTime = Create(400002, true, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
@@ -2022,9 +1998,6 @@ public class CustomOptionHolder
         PsychometristCanCheckFootprintsTime = Create(405508, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
         PsychometristIsReportCheckedDeadBody = Create(405509, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
-        HauntedWolfOption = SetupCustomRoleOption(405600, true, RoleId.HauntedWolf);
-        HauntedWolfPlayerCount = Create(405601, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
-
         SpyOption = SetupCustomRoleOption(405700, true, RoleId.Spy);
         SpyPlayerCount = Create(405701, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
         SpyCanUseVent = Create(405702, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
@@ -2035,6 +2008,29 @@ public class CustomOptionHolder
 
         /* |: ========================= Modifiers Settings ========================== :| */
 
+<<<<<<< HEAD
+        // SetupModifierCustomOptions
+
+        RoleBaseHelper.SetUpOptions();
+
+        // 表示設定
+
+        MadRolesCanFixComms = Create(500000, true, CustomOptionType.Modifier, "MadRolesCanFixComms", false, null, isHeader: true);
+        MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Modifier, "MadRolesCanFixElectrical", false, null);
+        MadRolesCanVentMove = Create(500002, false, CustomOptionType.Modifier, "MadRolesCanVentMove", false, null);
+
+        HauntedWolf.CustomOptionData.SetUpCustomRoleOptions();
+
+        LoversOption = Create(500200, true, CustomOptionType.Modifier, Cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
+        LoversTeamCount = Create(500201, true, CustomOptionType.Modifier, "LoversTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
+        LoversPar = Create(500202, true, CustomOptionType.Modifier, "LoversParSetting", rates, LoversOption);
+        LoversOnlyCrewmate = Create(500203, true, CustomOptionType.Modifier, "LoversOnlyCrewmateSetting", false, LoversOption);
+        LoversSingleTeam = Create(500204, true, CustomOptionType.Modifier, "LoversSingleTeamSetting", true, LoversOption);
+        LoversSameDie = Create(500205, true, CustomOptionType.Modifier, "LoversSameDieSetting", true, LoversOption);
+        LoversAliveTaskCount = Create(500206, true, CustomOptionType.Modifier, "LoversAliveTaskCountSetting", false, LoversOption);
+        LoversDuplicationQuarreled = Create(500207, true, CustomOptionType.Modifier, "LoversDuplicationQuarreledSetting", true, LoversOption);
+        var loversoption = SelectTask.TaskSetting(500208, 500209, 500210, LoversOption, CustomOptionType.Modifier, true);
+=======
         MadRolesCanFixComms = Create(500000, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
         MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
         MadRolesCanVentMove = Create(500002, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
@@ -2052,16 +2048,21 @@ public class CustomOptionHolder
         LoversAliveTaskCount = Create(500206, true, CustomOptionType.Neutral, "LoversAliveTaskCountSetting", false, LoversOption);
         LoversDuplicationQuarreled = Create(500207, true, CustomOptionType.Neutral, "LoversDuplicationQuarreledSetting", true, LoversOption);
         var loversoption = SelectTask.TaskSetting(500208, 500209, 500210, LoversOption, CustomOptionType.Neutral, true);
+>>>>>>> develop
         LoversCommonTask = loversoption.Item1;
         LoversShortTask = loversoption.Item2;
         LoversLongTask = loversoption.Item3;
 
-        JumboOption = SetupCustomRoleOption(500300, false, RoleId.Jumbo, type: CustomOptionType.Neutral);
-        JumboPlayerCount = Create(500301, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
-        JumboCrewmateChance = Create(500302, false, CustomOptionType.Neutral, "JumboCrewmateChance", rates, JumboOption);
-        JumboMaxSize = Create(500303, false, CustomOptionType.Neutral, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
-        JumboSpeedUpSize = Create(500304, false, CustomOptionType.Neutral, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
-        JumboWalkSoundSize = Create(500305, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
+        QuarreledOption = Create(500100, true, CustomOptionType.Modifier, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
+        QuarreledTeamCount = Create(500101, true, CustomOptionType.Modifier, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
+        QuarreledOnlyCrewmate = Create(500102, true, CustomOptionType.Modifier, "QuarreledOnlyCrewmateSetting", false, QuarreledOption);
+
+        JumboOption = SetupCustomRoleOption(500300, false, RoleId.Jumbo, type: CustomOptionType.Modifier);
+        JumboPlayerCount = Create(500301, false, CustomOptionType.Modifier, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
+        JumboCrewmateChance = Create(500302, false, CustomOptionType.Modifier, "JumboCrewmateChance", rates, JumboOption);
+        JumboMaxSize = Create(500303, false, CustomOptionType.Modifier, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
+        JumboSpeedUpSize = Create(500304, false, CustomOptionType.Modifier, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
+        JumboWalkSoundSize = Create(500305, false, CustomOptionType.Modifier, "JumboWalkSoundSize", rates, JumboOption);
 
         // SetupModifierCustomOptions
 
