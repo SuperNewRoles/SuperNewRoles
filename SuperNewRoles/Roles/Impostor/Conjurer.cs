@@ -4,7 +4,6 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
@@ -12,7 +11,7 @@ namespace SuperNewRoles.Roles.Impostor;
 
 public class Conjurer
 {
-    private const int Id = 201700;
+    private const int Id = 205500;
     public static CustomRoleOption Option;
     public static CustomOption PlayerCount;
     public static CustomOption Cooldown;
@@ -20,19 +19,19 @@ public class Conjurer
     public static CustomOption CanKillImpostor;
     public static CustomOption ShowFlash;
     public static void SetupCustomOptions()
-    {/*
-            Option = new(Id, false, CustomOptionType.Impostor, "ConjurerName", color, 1);
-            PlayerCount = CustomOption.Create(Id + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
-            Cooldown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "Cooldown", 10f, 1f, 30f, 0.5f, Option);
-            CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 40f, 0.5f, Option);
-            CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "CanKillImpostor", false, Option);
-            ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);*/
+    {
+        Option = CustomOption.SetupCustomRoleOption(Id, false, RoleId.Conjurer);
+        PlayerCount = CustomOption.Create(Id + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
+        Cooldown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "ConjurerCooldownOption", 10f, 1f, 30f, 0.5f, Option);
+        CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "ConjurerCanAddLengthOption", 10f, 0.5f, 40f, 0.5f, Option);
+        CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "ConjurerCanKillImpostorOption", false, Option);
+        ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ConjurerShowFlashOption", false, Option);
     }
 
     public static List<PlayerControl> Player;
     public static Color32 color = RoleClass.ImpostorRed;
     public static int Count; // 何回設置したか
-                             //public static int Round; // 何週目か
+    //public static int Round; // 何週目か
     public static Vector2[] Positions;
     public static void ClearAndReload()
     {
@@ -61,9 +60,9 @@ public class Conjurer
     private static bool CanAddBeacon()
     {
         if (!PlayerControl.LocalPlayer.CanMove) return false;
-        if (Count == 0) return true;
+        if (Count <= 0) return true;
 
-        if (Count != 3)
+        if (Count < 3)
         {
             if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Positions[Count - 1]) < CanAddLength.GetFloat())
             {
@@ -104,6 +103,12 @@ public class Conjurer
         position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
         position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
         new Beacon(position);
+    }
+
+    public static void WrapUp()
+    {
+        Beacon.ClearBeacons();
+        Count = 0;
     }
 
     public static CustomButton BeaconButton;
@@ -150,7 +155,7 @@ public class Conjurer
         StartButton = new(
         () =>
         {
-            if (PlayerControl.LocalPlayer.CanMove && Count == 3)
+            if (PlayerControl.LocalPlayer.CanMove && Count >= 3)
             {
                 //Logger.Info($"Beacon{Round}{Count}", "Beacons");
                 foreach (PlayerControl pc in CachedPlayer.AllPlayers)
@@ -193,7 +198,7 @@ public class Conjurer
             }
         },
         (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
-        () => { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
+        () => { return PlayerControl.LocalPlayer.CanMove && Count >= 3; },
         () =>
         {
             ResetCooldown();
