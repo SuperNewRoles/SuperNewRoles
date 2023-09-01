@@ -7,6 +7,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -98,6 +99,10 @@ class WrapUpPatch
         if (exiled != null && exiled.Object == null)
         {
             exiled = null;
+        }
+        if (ReplayManager.IsReplayMode)
+        {
+            ReplayLoader.OnWrapUp();
         }
 
         SelectRoleSystem.OnWrapUp();

@@ -14,6 +14,7 @@ using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
@@ -348,6 +349,7 @@ public static class RPCProcedure
         PlayerControl player1 = ModHelpers.PlayerById(player1Id);
         PlayerControl player2 = ModHelpers.PlayerById(player2Id);
         if (source is null || player1 is null || player2 is null) return;
+        ReplayActionBalancer.Create(sourceId, player1Id, player2Id);
         Balancer.StartAbility(source, player1, player2);
     }
     public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
@@ -357,6 +359,7 @@ public static class RPCProcedure
     }
     public static void SetVentStatusMechanic(byte sourceplayer, byte targetvent, bool Is, byte[] buff)
     {
+        ReplayActionSetMechanicStatus.Create(sourceplayer, targetvent, Is, buff);
         PlayerControl source = ModHelpers.PlayerById(sourceplayer);
         Vent vent = ModHelpers.VentById(targetvent);
         Vector3 position = Vector3.zero;
@@ -702,6 +705,7 @@ public static class RPCProcedure
 
     public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
     {
+        ReplayActionWavecannon.Create(Type,Id,IsFlipX,OwnerId,buff);
         Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
         switch ((WaveCannonObject.RpcType)Type)
         {
@@ -709,7 +713,8 @@ public static class RPCProcedure
                 Vector3 position = Vector3.zero;
                 position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
                 position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-                return new(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+
+                return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
             case WaveCannonObject.RpcType.Shoot:
                 WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
                 break;
@@ -726,6 +731,7 @@ public static class RPCProcedure
         Logger.Info("～SluggerExile～");
         PlayerControl Source = SourceId.GetPlayerControl();
         if (Source == null) return;
+        ReplayActionSluggerExile.Create(SourceId, Targets);
         Logger.Info("Source突破");
         foreach (byte target in Targets)
         {
@@ -733,14 +739,17 @@ public static class RPCProcedure
             Logger.Info($"{target}はnullか:{Player == null}");
             if (Player == null) continue;
             Player.Exiled();
-            new SluggerDeadbody().Start(Source.PlayerId, Player.PlayerId, Source.transform.position - Player.transform.position);
+            new GameObject("SluggerDeadbody").AddComponent<SluggerDeadbody>().Init(Source.PlayerId, Player.PlayerId);
         }
     }
     public static void PlayPlayerAnimation(byte playerid, byte type)
     {
         RpcAnimationType AnimType = (RpcAnimationType)type;
         PlayerAnimation PlayerAnim = PlayerAnimation.GetPlayerAnimation(playerid);
-        if (PlayerAnim == null) return;
+        if (PlayerAnim == null) {
+            Logger.Info("PlayerAnimがぬるだった...:"+playerid.ToString());
+            return;
+        }
         PlayerAnim.HandleAnim(AnimType);
     }
     public static void PainterSetTarget(byte target, bool Is)
@@ -1439,8 +1448,9 @@ public static class RPCProcedure
     public static void SetShielder(byte PlayerId, bool Is)
         => RoleClass.Shielder.IsShield[PlayerId] = RoleClass.Shielder.IsShield[PlayerId] = Is;
 
-    public static void MakeVent(byte id, float x, float y, float z, bool chain)
+    public static Vent MakeVent(byte id, float x, float y, float z, bool chain)
     {
+        ReplayActionMakeVent.Create(id, x, y, z, chain);
         Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
         Vent VentMakerVent = UnityEngine.Object.Instantiate(template);
         if (chain && RoleClass.VentMaker.Vent.ContainsKey(id))
@@ -1466,6 +1476,7 @@ public static class RPCProcedure
         VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
         VentMakerVent.gameObject.SetActive(true);
         RoleClass.VentMaker.Vent[id] = VentMakerVent;
+        return VentMakerVent;
     }
     public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
     {

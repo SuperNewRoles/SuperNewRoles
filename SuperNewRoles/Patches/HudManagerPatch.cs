@@ -1,5 +1,6 @@
 using HarmonyLib;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ class HudManagerPatch
         {
             WallHack.WallHackUpdate();
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            ReplayManager.HudUpdate();
             Mode.Zombie.FixedUpdate.ZombieTimerUpdate(__instance);
             CustomButton.HudUpdate();
             ButtonTime.Update();

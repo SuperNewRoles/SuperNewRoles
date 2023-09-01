@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -36,6 +37,7 @@ public static class RoleClass
     {
         ModHelpers.IdControlDic = new();
         ModHelpers.VentIdControlDic = new();
+        ReplayManager.ClearAndReloads();
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;

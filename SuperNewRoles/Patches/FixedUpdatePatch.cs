@@ -5,6 +5,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
@@ -74,9 +75,9 @@ public class FixedUpdate
 
     public static void Postfix(PlayerControl __instance)
     {
+        if (ReplayManager.IsReplayMode && !ReplayLoader.IsInited) return;
         if (PlayerAnimation.GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
         if (__instance != PlayerControl.LocalPlayer) return;
-        SluggerDeadbody.AllFixedUpdate();
         PlayerAnimation.FixedAllUpdate();
         PVCreator.FixedUpdate();
 
