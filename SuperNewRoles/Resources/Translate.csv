@@ -1517,11 +1517,11 @@ DebugBugFixTag,Fix Bug,バグ修正,,Bug修正
 DebugOthersTag,Others,その他(デバッグ),,其他（除錯）
 
 #CursedTasks
-CursedTaskOption,Cursed Mode,呪いモード
-CursedMedScanTaskText,Id : {0}Player{1}        Stature : 0b11Feet 0b110Inch\nPlayerId : {1}        PlayerName : {2}\nTeam : {3}        Role : {4}\nWeight: 0b1011100 pounds        Color : {5}        Blood Type : {6},Id : {0}プレイヤー{1}        身長 : 0b11フィート 0b110インチ\nプレイヤーId : {1}        プレイヤーネーム : {2}\n陣営 : {3}        役職 : {4}\n体重 : 0b1011100ポンド        カラー : {5}        血液型 : {6}
-CursedSampleTaskUpperText1,Samples are beginning to deteriorate,サンプルが劣化し始めています
-CursedSampleTaskUpperText2,The sample has completely deteriorated,サンプルが完全劣化してしましました
-CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1})
+CursedTaskOption,Cursed Mode,呪いモード,,詛咒模式
+CursedMedScanTaskText,Id : {0}Player{1}        Stature : 0b11Feet 0b110Inch\nPlayerId : {1}        PlayerName : {2}\nTeam : {3}        Role : {4}\nWeight: 0b1011100 pounds        Color : {5}        Blood Type : {6},Id : {0}プレイヤー{1}        身長 : 0b11フィート 0b110インチ\nプレイヤーId : {1}        プレイヤーネーム : {2}\n陣営 : {3}        役職 : {4}\n体重 : 0b1011100ポンド        カラー : {5}        血液型 : {6},,Id : {0}玩家{1}        身高 : 0b11英尺 0b110英寸\n玩家Id : {1}        玩家名稱 : {2}\n陣營 : {3}        職業 : {4}\n體重 : 0b1011100磅        顏色 : {5}        血型 : {6}
+CursedSampleTaskUpperText1,Samples are beginning to deteriorate,サンプルが劣化し始めています,,樣本開始劣化
+CursedSampleTaskUpperText2,The sample has completely deteriorated,サンプルが完全劣化してしましました,,樣本完全劣化
+CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1}),,已破壞 : ({0}/{1})
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
