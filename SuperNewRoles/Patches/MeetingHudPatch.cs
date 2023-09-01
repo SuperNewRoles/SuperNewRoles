@@ -16,6 +16,7 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
 
@@ -37,7 +38,13 @@ class VotingComplete
         }
     }
 }
-
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
+class VotingComplatePatch
+{
+    public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled, bool tie) {
+        new GameHistoryManager.MeetingHistory(states, exiled);
+    }
+}
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
 class CheckForEndVotingPatch
 {

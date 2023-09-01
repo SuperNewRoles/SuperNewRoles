@@ -11,7 +11,9 @@ using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
+using UnityEngine.Networking;
 using static System.String;
 
 namespace SuperNewRoles.Patches;
@@ -166,6 +168,32 @@ class AddChatPatch
             )
         {
             SendCommand(sourcePlayer, ModTranslation.GetString("SNROfficialTwitterMessage") + "\n\n" + ModTranslation.GetString("TwitterOfficialLink") + "\n" + ModTranslation.GetString("TwitterDevLink"));
+            return false;
+        }
+        else if (
+            Commands[0].Equals("/GenerateCode", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/gc", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            void callback(long responseCode, DownloadHandler downloadHandler)
+            {
+                if (sourcePlayer is null) return;
+                if (responseCode != 200)
+                {
+                    if (downloadHandler.text.Length > 30)
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString("SNRWebErrorReasonServer505"));
+                    }
+                    else
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString(downloadHandler.text));
+                    }
+                }
+                else
+                    SendCommand(sourcePlayer, Format(ModTranslation.GetString("SNRWebSucGenerateCode"), downloadHandler.text));
+            }
+            WebApi.GenerateCode(sourcePlayer.Data.FriendCode, callback);
+            SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebCodeGeneratingNow"));
             return false;
         }
         else if (

@@ -4,6 +4,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.SuperNewRolesWeb;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -374,8 +375,11 @@ public static class SyncSetting
     {
         public static void Postfix()
         {
+            var RPD = RoomPlayerData.Instance;
             OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
+            if (ModeHandler.IsMode(ModeId.BattleRoyal))
+                BattleRoyalWebManager.StartGame();
         }
     }
 }

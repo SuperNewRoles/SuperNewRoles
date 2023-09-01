@@ -1,3 +1,4 @@
+using SuperNewRoles.SuperNewRolesWeb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -425,6 +426,7 @@ public class EndGameManagerSetUpPatch
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
         IsHaison = false;
+        GameHistoryManager.Send(textRenderer.text, RoleColor);
     }
 }
 
@@ -1315,6 +1317,8 @@ public static class OnGameEndPatch
             };
             PlayerData.Add(data);
         }
+        GameHistoryManager.OnGameEndSet(FinalStatusPatch.FinalStatusData.FinalStatuses);
+        BattleRoyalWebManager.EndGame();
     }
 }
 [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
