@@ -1,3 +1,4 @@
+using SuperNewRoles.SuperNewRolesWeb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -296,8 +297,8 @@ public class EndGameManagerSetUpPatch
             RoleColor = Color.white;
         }
 
-
         textRenderer.color = AdditionalTempData.winCondition is WinCondition.HAISON ? Color.clear : RoleColor;
+
         __instance.BackgroundBar.material.SetColor("_Color", RoleColor);
         var haison = false;
         if (text == "HAISON")
@@ -374,7 +375,7 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
-        if (haison)textRenderer.text = text;
+        if (haison) textRenderer.text = text;
         if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) textRenderer.text = string.Format(text + " " + ModTranslation.GetString("GodWinText"));
         else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));
@@ -428,6 +429,7 @@ public class EndGameManagerSetUpPatch
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
         IsHaison = false;
+        GameHistoryManager.Send(textRenderer.text, RoleColor);
     }
 }
 
@@ -1317,7 +1319,7 @@ public static class OnGameEndPatch
         int i = 0;
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            if(p.IsAlive())break;
+            if (p.IsAlive()) break;
             i++;
         }
         if (NoWinner || i == CachedPlayer.AllPlayers.Count)
@@ -1334,6 +1336,8 @@ public static class OnGameEndPatch
             };
             PlayerData.Add(data);
         }
+        GameHistoryManager.OnGameEndSet(FinalStatusPatch.FinalStatusData.FinalStatuses);
+        BattleRoyalWebManager.EndGame();
     }
 }
 [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
@@ -1668,10 +1672,12 @@ public static class CheckGameEndPatch
             else if (RoleClass.Fox.FoxPlayer.Contains(p) || FireFox.FireFoxPlayer.Contains(p)) foxAlive = true;
         }
 
-        if (impostorNum == crewNum && foxAlive && CustomOptionHolder.FoxCanHouwaWin.GetBool()) {
+        if (impostorNum == crewNum && foxAlive && CustomOptionHolder.FoxCanHouwaWin.GetBool())
+        {
             List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
             foxPlayers.AddRange(FireFox.FireFoxPlayer);
-            foreach (PlayerControl p in foxPlayers) {
+            foreach (PlayerControl p in foxPlayers)
+            {
                 if (p.IsDead()) continue;
                 MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                 Writer.Write(p.PlayerId);

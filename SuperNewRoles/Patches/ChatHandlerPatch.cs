@@ -13,7 +13,9 @@ using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
+using UnityEngine.Networking;
 using static System.String;
 
 namespace SuperNewRoles.Patches;
@@ -40,7 +42,6 @@ public class AmongUsClientOnPlayerJoinedPatch
                 if (!__instance.myPlayer.IsBot())
                 {
                     AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
-                    AddChatPatch.SendCommand(__instance.myPlayer, "/ruleでルールを確認してね。\n確認してない人はこっちから見れるので、ちゃんと確認してね。");
                 }
             }, 1f, "Welcome Message");
             if (SuperNewRolesPlugin.IsBeta)
@@ -237,6 +238,32 @@ class AddChatPatch
             )
         {
             SendCommand(sourcePlayer, ModTranslation.GetString("SNROfficialTwitterMessage") + "\n\n" + ModTranslation.GetString("TwitterOfficialLink") + "\n" + ModTranslation.GetString("TwitterDevLink"));
+            return false;
+        }
+        else if (
+            Commands[0].Equals("/GenerateCode", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/gc", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            void callback(long responseCode, DownloadHandler downloadHandler)
+            {
+                if (sourcePlayer is null) return;
+                if (responseCode != 200)
+                {
+                    if (downloadHandler.text.Length > 30)
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString("SNRWebErrorReasonServer505"));
+                    }
+                    else
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString(downloadHandler.text));
+                    }
+                }
+                else
+                    SendCommand(sourcePlayer, Format(ModTranslation.GetString("SNRWebSucGenerateCode"), downloadHandler.text));
+            }
+            WebApi.GenerateCode(sourcePlayer.Data.FriendCode, callback);
+            SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebCodeGeneratingNow"));
             return false;
         }
         else if (

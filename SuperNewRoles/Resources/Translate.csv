@@ -1573,6 +1573,13 @@ DebugChangeTag,Change,仕様変更,,變更
 DebugBugFixTag,Fix Bug,バグ修正,,Bug修正
 DebugOthersTag,Others,その他(デバッグ),,其他（除錯）
 
+#CursedTasks
+CursedTaskOption,Cursed Mode,呪いモード
+CursedMedScanTaskText,Id : {0}Player{1}        Stature : 0b11Feet 0b110Inch\nPlayerId : {1}        PlayerName : {2}\nTeam : {3}        Role : {4}\nWeight: 0b1011100 pounds        Color : {5}        Blood Type : {6},Id : {0}プレイヤー{1}        身長 : 0b11フィート 0b110インチ\nプレイヤーId : {1}        プレイヤーネーム : {2}\n陣営 : {3}        役職 : {4}\n体重 : 0b1011100ポンド        カラー : {5}        血液型 : {6}
+CursedSampleTaskUpperText1,Samples are beginning to deteriorate,サンプルが劣化し始めています
+CursedSampleTaskUpperText2,The sample has completely deteriorated,サンプルが完全劣化してしましました
+CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1})
+
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！,您可以在超新職業體驗各種不同的模式和職業！
@@ -1643,3 +1650,21 @@ Agartha_WorkRoom,WorkRoom,仕事場,工坊,工坊
 AgarthaName,<color=#a67646>Agartha</color>,<color=#a67646>Agartha</color>,<color=#a67646>雅各泰</color>,<color=#a67646>雅戈泰</color>
 AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適用される,只在游戏开始时随机出生,只在遊戲開始時隨機重生
 AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する,在通道上增加随机出生点,在通道上增加隨機重生點
+
+# SuperNewRolesWeb
+SNRWebMMOnlineWelcomeText,Hey!{0}!,ようこそ！{0}さん！
+SNRWebMMOnlineNoneLoginText,Now， to the world of SuperNewRolesWeb!,さあ、SuperNewRolesWebの世界へ！
+SNRWebLoginPopupTitle,Login to SuperNewRolesWeb!,SuperNewRolesWebへログイン！
+SNRWebLogoutText,Logout,ログアウト
+SNRWebLoginNotSuc,Login failed.,ログインに失敗しました。
+SNRWebLoginNow,You are logging in now...,ログインしています...
+SNRWebLogin,UserId,ハンドル名
+SNRWebPassword,Password,パスワード
+SNRWebSucGenerateCode,Code was generated!\nYou code is \n{0},コードを生成しました。\nあなたのコードは\n{0}\nです。
+SNRWebCodeGeneratingNow,Code generation has started. Please wait a moment.,コードの生成を開始しました。しばらくお待ちください。
+SNRWebErrorReasonPrefix,An error has occurred.,エラーが発生しました。
+SNRWebErrorReasonAllMatch,I tried to generate it，but all the codes I generated were already in use.,生成しようとしましたが、生成したすべてのコードが生成済みでした。
+SNRWebErrorReasonUnknow,Please try again.,もう一度お試しください。
+SNRWebErrorReasonGenerated,code has already been generated.,このコードは生成済みです。
+SNRWebErrorReasonRegistered,You have already registered this friend code.\nIf you do not remember registering it, please submit an unauthorized registration request through the official SuperNewRolesWeb website.,もうこのフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。
+SNRWebBRMultiRate,{0}x Match!\nThis match will fluctuate {0}x the normal {0}x rate!,{0}倍マッチ！\nこの試合は通常の{0}倍レートが変動します！
