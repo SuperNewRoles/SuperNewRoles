@@ -53,7 +53,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
         }
         public static List<MeetingHistory> MeetingHistories;
         static Dictionary<string, string> SendData;
-        public static void OnGameEndSet(Dictionary<byte, FinalStatus> FinalStatuss)
+        public static void OnGameEndSet(Dictionary<int, FinalStatus> FinalStatuss)
         {
             if (!WebAccountManager.IsLogined) return;
             if (PlayerControl.LocalPlayer == null)
@@ -124,7 +124,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 var (playerCompleted, playerTotal) = TaskCount.TaskDate(player);
                 SendData[PlayerId + "_TotalTask"] = playerTotal.ToString();
                 SendData[PlayerId + "_CompletedTask"] = playerCompleted.ToString();
-                SendData[PlayerId + "_FinalStatus"] = FinalStatuss[player.PlayerId].ToString();
+                SendData[PlayerId + "_FinalStatus"] = FinalStatuss.ContainsKey(player.PlayerId) ? FinalStatus.Alive.ToString() : FinalStatuss[player.PlayerId].ToString();
                 SendData[PlayerId + "_IsWin"] = TempData.winners.ToList().Exists(x => x.PlayerName == player.DefaultOutfit.PlayerName) ? "a" : "b";
             }
             SendData["PlayerIds"] = PlayerIds;

@@ -1317,7 +1317,7 @@ public static class OnGameEndPatch
             };
             PlayerData.Add(data);
         }
-        GameHistoryManager.OnGameEndSet(FinalStatuss);
+        GameHistoryManager.OnGameEndSet(FinalStatusPatch.FinalStatusData.FinalStatuses);
         BattleRoyalWebManager.EndGame();
     }
 }

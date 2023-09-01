@@ -63,12 +63,12 @@ namespace SuperNewRoles.SuperNewRolesWeb
             data.Add("friendcode", fc);
             if (BROption.IsTeamBattle.GetBool()) {
                 StringBuilder result = new();
-                string[] teams = new string[Main.Teams.Count];
+                string[] teams = new string[BattleTeam.BattleTeams.Count];
                 int teamindex = 0;
-                foreach (List<PlayerControl> team in Main.Teams) {
-                    string[] fcs = new string[team.Count];
+                foreach (BattleTeam team in BattleTeam.BattleTeams) {
+                    string[] fcs = new string[team.TeamMember.Count];
                     int index = 0;
-                    foreach (PlayerControl member in team)
+                    foreach (PlayerControl member in team.TeamMember)
                     {
                         fcs[index] = member.Data.FriendCode;
                         index++;
