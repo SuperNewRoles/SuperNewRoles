@@ -223,7 +223,7 @@ public class CustomOption
                 TeamRoleType.Crewmate => CustomOptionType.Crewmate,
                 _ => CustomOptionType.Generic
             };
-        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max, isHidden);
+        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max, isHidden,roleId);
     }
 
     public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag)
@@ -409,27 +409,34 @@ public class CustomRoleOption : CustomOption
         }
     }
 
-    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15, bool isHidden = false) :
+    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15, bool isHidden = false, RoleId? role = null) :
         base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "")
     {
-        try
+        if (!role.HasValue)
         {
-            IntroData? intro = IntroData.Intros.Values.FirstOrDefault((_) =>
+            try
             {
-                return _.NameKey + "Name" == name;
-            });
-            if (intro != null)
-            {
-                this.RoleId = intro.RoleId;
+                IntroData? intro = IntroData.Intros.Values.FirstOrDefault((_) =>
+                {
+                    return _.NameKey + "Name" == name;
+                });
+                if (intro != null)
+                {
+                    this.RoleId = intro.RoleId;
+                }
+                else
+                {
+                    Logger.Info("RoleId取得できませんでした:" + name, "CustomRoleOption");
+                }
             }
-            else
+            catch
             {
-                Logger.Info("RoleId取得できませんでした:" + name, "CustomRoleOption");
+                Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
             }
         }
-        catch
+        else
         {
-            Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
+            RoleId = role.Value;
         }
         if (!RoleOptions.TryAdd(RoleId, this))
             Logger.Info(RoleId.ToString()+"を追加できませんでした。");
