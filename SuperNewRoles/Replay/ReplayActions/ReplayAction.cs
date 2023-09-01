@@ -27,8 +27,7 @@ public enum ReplayActionId {
     SetMechanicStatus,
     RepairSystem,
     VotingComplete,
-    MovingPlatform,
-    MeetingClose
+    MovingPlatform
 }
 public abstract class ReplayAction
 {
