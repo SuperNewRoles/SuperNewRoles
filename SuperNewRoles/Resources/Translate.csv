@@ -1637,10 +1637,10 @@ SNRWebLoginNow,You are logging in now...,ログインしています...
 SNRWebLogin,UserId,ハンドル名
 SNRWebPassword,Password,パスワード
 SNRWebSucGenerateCode,Code was generated!\nYou code is \n{0},コードを生成しました。\nあなたのコードは\n{0}\nです。
-SNRWebCodeGeneratingNow,,コードの生成を開始しました。しばらくお待ちください。
-SNRWebErrorReasonPrefix,,エラーが発生しました。
-SNRWebErrorReasonAllMatch,,生成しようとしましたが、生成したすべてのコードが生成済みでした。
-SNRWebErrorReasonUnknow,,もう一度お試しください。
-SNRWebErrorReasonGenerated,,このコードは生成済みです。
-SNRWebErrorReasonRegistered,,もうこのフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。
-SNRWebBRMultiRate,,{0}倍マッチ！\nこの試合は通常の{0}倍レートが変動します！
+SNRWebCodeGeneratingNow,Code generation has started. Please wait a moment.,コードの生成を開始しました。しばらくお待ちください。
+SNRWebErrorReasonPrefix,An error has occurred.,エラーが発生しました。
+SNRWebErrorReasonAllMatch,I tried to generate it，but all the codes I generated were already in use.,生成しようとしましたが、生成したすべてのコードが生成済みでした。
+SNRWebErrorReasonUnknow,Please try again.,もう一度お試しください。
+SNRWebErrorReasonGenerated,code has already been generated.,このコードは生成済みです。
+SNRWebErrorReasonRegistered,You have already registered this friend code.\nIf you do not remember registering it, please submit an unauthorized registration request through the official SuperNewRolesWeb website.,もうこのフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。
+SNRWebBRMultiRate,{0}x Match!\nThis match will fluctuate {0}x the normal {0}x rate!,{0}倍マッチ！\nこの試合は通常の{0}倍レートが変動します！
