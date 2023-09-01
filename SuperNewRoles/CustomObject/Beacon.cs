@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.CustomObject;
 
@@ -15,34 +14,15 @@ public class Beacon
     {
         if (beaconAnimationSprites == null || beaconAnimationSprites.Length == 0) return null;
         index = Mathf.Clamp(index, 0, beaconAnimationSprites.Length - 1);
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        CustomAnimation Beacon = new()
         {
-            CustomAnimation Conjurer_Beacon_Animation = new()
-            {
-                Sprites = CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
-            };
-            Transform Conjurer_Beacon1 = GameObject.Instantiate(GameObject.Find($"Beacon{Conjurer.Count}").transform);
-            Conjurer_Beacon_Animation.Start(30, Conjurer_Beacon1);
-        }
+            Sprites = CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
+        };
+        Beacon.Start(30, GameObject.Find($"Beacon{Conjurer.Count}").transform);
         return beaconAnimationSprites[index];
     }
 
-
-    public static void StartAnimation(int ventId)
-    {
-        Beacon beacon = AllBeacons.FirstOrDefault((x) => x?.vent != null && x.vent.Id == ventId);
-        if (beacon == null) return;
-
-        FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) =>
-        {
-            beacon.BeaconRenderer.sprite = GetBeaconAnimationSprite((int)(p * beaconAnimationSprites.Length));
-            beacon.BeaconRenderer.sprite = GetBeaconAnimationSprite(0);
-        })));
-    }
-
     private readonly GameObject GameObject;
-    public Vent vent;
-    private readonly SpriteRenderer BeaconRenderer;
 
     public Beacon(Vector2 p)
     {
@@ -51,8 +31,8 @@ public class Beacon
         position += (Vector3)PlayerControl.LocalPlayer.Collider.offset; // Add collider offset that DoMove moves the player up at a valid position
                                                                         // Create the marker
         GameObject.transform.position = position;
-        BeaconRenderer = GameObject.AddComponent<SpriteRenderer>();
-        BeaconRenderer.sprite = GetBeaconAnimationSprite(0);
+        SpriteRenderer sprite = GameObject.AddComponent<SpriteRenderer>();
+        sprite.sprite = GetBeaconAnimationSprite(0);
         // Only render the beacon for the conjurer
         var playerIsTrickster = PlayerControl.LocalPlayer;
         GameObject.SetActive(playerIsTrickster);
@@ -63,12 +43,12 @@ public class Beacon
 
     public static void ClearBeacons()
     {
-        int[] num = { -1, -2, -3 };
-        foreach (var n in num)
+        //int[] num = { -1, -2, -3 };
+        foreach (var beacon in AllBeacons)
         {
-            Logger.Info($"Beacon{Conjurer.Count + n}をClearします", "ClearBeacons");
-            GameObject.Find($"Beacon{Conjurer.Count + n}")?.SetActive(false);
-            GameObject.Find($"Beacon{Conjurer.Count + n}(Clone)")?.SetActive(false);
+            Logger.Info($"{beacon.GameObject.name}をClearします", "ClearBeacons");
+            Object.Destroy(beacon.GameObject);
         }
+        AllBeacons.Clear();
     }
 }

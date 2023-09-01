@@ -1,3 +1,4 @@
+using SuperNewRoles.SuperNewRolesWeb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,6 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
@@ -51,6 +51,7 @@ public enum CustomGameOverReason
     TheThreeLittlePigsWin,
     OrientalShamanWin,
     BlackHatHackerWin,
+    MoiraWin,
 }
 enum WinCondition
 {
@@ -86,6 +87,7 @@ enum WinCondition
     TheThreeLittlePigsWin,
     OrientalShamanWin,
     BlackHatHackerWin,
+    MoiraWin,
 }
 class FinalStatusPatch
 {
@@ -249,6 +251,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsName",TheThreeLittlePigs.color)},
                 {WinCondition.OrientalShamanWin,("OrientalShamanName",OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
+                {WinCondition.MoiraWin,("MoiraName",Moira.color)},
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -637,6 +640,7 @@ public static class OnGameEndPatch
             WaveCannonJackal.WaveCannonJackalPlayer,
             WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
+            Moira.MoiraPlayer,
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -1109,6 +1113,17 @@ public static class OnGameEndPatch
                     }
                 }
             }
+        }
+        if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
+        {
+            if (!((isDleted && changeTheWinCondition) || isReset))
+            {
+                TempData.winners = new();
+                isDleted = true;
+                isReset = true;
+            }
+            TempData.winners.Add(new(Moira.Player.Data));
+            AdditionalTempData.winCondition = WinCondition.MoiraWin;
         }
         List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
         foxPlayers.AddRange(FireFox.FireFoxPlayer);

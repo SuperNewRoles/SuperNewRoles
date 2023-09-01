@@ -40,6 +40,7 @@ public class AmongUsClientOnPlayerJoinedPatch
                 if (!__instance.myPlayer.IsBot())
                 {
                     AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
+                    AddChatPatch.SendCommand(__instance.myPlayer, "/ruleでルールを確認してね。\n確認してない人はこっちから見れるので、ちゃんと確認してね。");
                 }
             }, 1f, "Welcome Message");
             if (SuperNewRolesPlugin.IsBeta)

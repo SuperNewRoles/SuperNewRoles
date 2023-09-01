@@ -115,12 +115,12 @@ class WrapUpPatch
         ModeHandler.Wrapup(exiled);
         RedRidingHood.WrapUp(exiled);
         Pteranodon.WrapUp();
-        Roles.Neutral.Revolutionist.WrapUp();
-        Roles.Neutral.Spelunker.WrapUp();
-        Roles.Neutral.Hitman.WrapUp();
-        Roles.Impostor.Matryoshka.WrapUp();
-        Roles.Neutral.PartTimer.WrapUp();
-        Roles.Crewmate.KnightProtected_Patch.WrapUp();
+        Revolutionist.WrapUp();
+        Spelunker.WrapUp();
+        Hitman.WrapUp();
+        Matryoshka.WrapUp();
+        PartTimer.WrapUp();
+        KnightProtected_Patch.WrapUp();
         Clergyman.WrapUp();
         Balancer.WrapUp(exiled == null ? null : exiled.Object);
         Speeder.WrapUp();
@@ -135,15 +135,17 @@ class WrapUpPatch
             });
         }
         SecretRoom.Reset();
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.Crewmate.Painter.WrapUp();
-        Roles.Neutral.Photographer.WrapUp();
-        Roles.Impostor.Cracker.WrapUp();
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Painter.WrapUp();
+        Photographer.WrapUp();
+        Cracker.WrapUp();
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
-        Roles.Crewmate.Celebrity.WrapUp();
-        Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
+        Celebrity.WrapUp();
+        TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
+        Moira.WrapUp(exiled);
+        Conjurer.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();
@@ -158,7 +160,7 @@ class WrapUpPatch
         Vampire.DependentsExileWrapUpPatch(exiled.Object);
         SoothSayer_Patch.WrapUp(exiled.Object);
         Nekomata.NekomataEnd(exiled);
-        Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
+        NekoKabocha.OnWrapUp(exiled.Object);
 
         exiled.Object.Exiled();
         exiled.IsDead = true;

@@ -39,6 +39,13 @@ public static class ModHelpers
                     !ExileController.Instance;
         }
     }
+    public static int GetAlivePlayerCount()
+    {
+        int count = 0;
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            if (p.IsAlive()) count++;
+        return count;
+    }
     public static byte ParseToByte(this string txt) {
         return byte.Parse(txt.ToString());
     }

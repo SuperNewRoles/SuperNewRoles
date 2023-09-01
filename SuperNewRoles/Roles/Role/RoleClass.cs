@@ -19,6 +19,7 @@ namespace SuperNewRoles.Roles;
 [HarmonyPatch]
 public static class RoleClass
 {
+    public static List<string> RuleAgrees = new();
     public static bool IsMeeting;
     public static bool IsCoolTimeSetted;
     public static System.Random rnd = new((int)DateTime.Now.Ticks);
@@ -216,7 +217,7 @@ public static class RoleClass
         Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
-        Neutral.WaveCannonJackal.ClearAndReload();
+        WaveCannonJackal.ClearAndReload();
         //SidekickWaveCannon.Clear();
         Conjurer.ClearAndReload();
         Camouflager.ClearAndReload();
@@ -241,6 +242,7 @@ public static class RoleClass
         BlackHatHacker.ClearAndReload();
         PoliceSurgeon.RoleData.ClearAndReload();
         MadRaccoon.RoleData.ClearAndReload();
+        Moira.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

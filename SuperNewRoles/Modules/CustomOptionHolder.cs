@@ -1608,6 +1608,8 @@ public class CustomOptionHolder
 
         BlackHatHacker.SetupCustomOptions();
 
+        Moira.SetupCustomOptions();
+
         // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
 
         /* |: ========================= Crewmate Settings ========================== :| */

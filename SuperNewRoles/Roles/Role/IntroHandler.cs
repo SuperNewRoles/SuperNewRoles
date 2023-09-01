@@ -23,5 +23,6 @@ class IntroHandler
         if (Mode.ModeHandler.IsMode(Mode.ModeId.BattleRoyal)) Mode.BattleRoyal.Main.IsCountOK = true;
         if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles)) Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
         if (Mode.ModeHandler.IsMode(Mode.ModeId.CopsRobbers)) Mode.CopsRobbers.Main.IsStart = true;
+        if (Mode.ModeHandler.IsMode(Mode.ModeId.PantsRoyal)) Mode.PantsRoyal.main.IsStart = true;
     }
 }
