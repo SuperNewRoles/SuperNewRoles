@@ -349,7 +349,7 @@ public class BlackHatHacker
         [HarmonyPatch(nameof(HudManager.Update)), HarmonyPostfix]
         public static void UpdatePostfix(HudManager __instance)
         {
-            GameObject ChangeTab = __instance.TaskPanel.transform.Find("ChangeTab").gameObject;
+            GameObject ChangeTab = __instance.TaskPanel?.transform.Find("ChangeTab")?.gameObject;
             ChangeTab.SetActive(PlayerControl.LocalPlayer.IsRole(RoleId.BlackHatHacker) || (PlayerControl.LocalPlayer.IsDead() && BlackHatHackerPlayerCount.GetSelection() != 0));
             Vector3 pos = ChangeTab.transform.localPosition;
             pos.x = __instance.TaskPanel.tab.transform.localPosition.x;
