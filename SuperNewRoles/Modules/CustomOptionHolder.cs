@@ -1077,6 +1077,8 @@ public class CustomOptionHolder
         IsOldMode = Create(104400, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden: true);
         IsOldMode.selection = 0;
 
+        Patches.CursedTasks.Main.SetupCustomOptions();
+
         /* |: ========================= Roles Settings ========================== :| */
 
         /* |: ========================= Impostor Settings ========================== :| */

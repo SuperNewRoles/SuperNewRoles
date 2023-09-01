@@ -1516,6 +1516,13 @@ DebugChangeTag,Change,仕様変更,,變更
 DebugBugFixTag,Fix Bug,バグ修正,,Bug修正
 DebugOthersTag,Others,その他(デバッグ),,其他（除錯）
 
+#CursedTasks
+CursedTaskOption,Cursed Mode,呪いモード
+CursedMedScanTaskText,Id : {0}Player{1}        Stature : 0b11Feet 0b110Inch\nPlayerId : {1}        PlayerName : {2}\nTeam : {3}        Role : {4}\nWeight: 0b1011100 pounds        Color : {5}        Blood Type : {6},Id : {0}プレイヤー{1}        身長 : 0b11フィート 0b110インチ\nプレイヤーId : {1}        プレイヤーネーム : {2}\n陣営 : {3}        役職 : {4}\n体重 : 0b1011100ポンド        カラー : {5}        血液型 : {6}
+CursedSampleTaskUpperText1,Samples are beginning to deteriorate,サンプルが劣化し始めています
+CursedSampleTaskUpperText2,The sample has completely deteriorated,サンプルが完全劣化してしましました
+CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1})
+
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！,您可以在超新職業體驗各種不同的模式和職業！

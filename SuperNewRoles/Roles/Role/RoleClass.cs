@@ -65,6 +65,7 @@ public static class RoleClass
         MeetingHudUpdatePatch.ErrorNames = new();
         FixSabotage.ClearAndReload();
         RoleBases.Role.ClearAll();
+        Patches.CursedTasks.Main.ClearAndReload();
 
         /* 陣営playerがうまく動かず使われてない為コメントアウト。
         RoleHelpers.CrewmatePlayer = new();
