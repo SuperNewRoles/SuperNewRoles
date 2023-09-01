@@ -38,11 +38,11 @@ creditsUpdateOk,There is updated data. Please reboot. Latest Version:v{0},更新
 modOptionsText,Options,設定,设置,設定
 moreOptionsText,Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定,一般设置与&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>设置,一般設定與&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>設定
 HaisonName,Called Game,廃村,解散游戏,結束遊戲
-NoWinner,Annihilation,全滅
-NoWinnerText,And then there was no one left,そして誰もいなくなった
+NoWinner,Annihilation,全滅,,全滅
+NoWinnerText,And then there was no one left,そして誰もいなくなった,,無人生還
 Developer,Developer,開発者,开发者,開發者
 Sponsor,Sponsor,スポンサー,支持者,贊助人
-Supporter,Supporter,サポーター
+Supporter,Supporter,サポーター,,支持者
 Translator,Translator,翻訳,翻译,翻譯
 DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者,開發者與贊助人
 Analytics,Analytics,解析,解析,解析
@@ -126,7 +126,7 @@ SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </co
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>内鬼阵营</color>设置,<color=#ff0000>內鬼陣營</color>設定
 SettingNeutral,<color=#808080>Neutral</color> Settings,<color=#808080>第三陣営</color>の設定,<color=#808080>独立阵营</color>设置,<color=#808080>中立陣營</color>設定
 SettingCrewmate,<color=#a9ceec>Crewmate</color> Settings,<color=#00ffff>クルーメイト</color>の設定,<color=#00ffff>船员阵营</color>设置,<color=#00ffff>船員陣營</color>設定
-modifierSettings,<color=#ff8cc5>Add-on</color> Settings,<color=#ff8cc5>アドオン</color>の設定
+modifierSettings,<color=#ff8cc5>Add-on</color> Settings,<color=#ff8cc5>アドオン</color>の設定,,<color=#ff8cc5>附加</color>設定
 SettingRegulation,Regulation Settings,レギュレーション設定,常规设置,通常設定
 SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数,船员阵营最小职业数,船員陣營職業數最少值
 SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数,船员阵营最大职业数,船員陣營職業數最大值
@@ -221,7 +221,7 @@ IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内で
 IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,击杀冷却会在修理紧急任务时停止计算,擊殺冷卻時間在緊急任務期間停止計算
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
-DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨),踢出未持有好友码的玩家（推荐）
+DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨),踢出未持有好友码的玩家（推荐）,踢出未持有好友碼的玩家（推薦）
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点,隨機分配配線任務位置
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数,配線任務總數
 RestrictDevicesTimeOption,Time limit setting,時間制限の設定,,時間限制設定
@@ -249,7 +249,7 @@ BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机,殭屍模式
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式,隨機顏色
-PantsRoyalModeName,Pants Royal,パンツ大騒動
+PantsRoyalModeName,Pants Royal,パンツ大騒動,,褲子大逃殺
 NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード,双盲内鬼模式,內鬼互不認識模式
 CopsRobbersModeName,CopsRobbers,ケイドロ,警察抓小偷,警匪追逐
 CopsRobbersModeCrewName,Thief,泥棒,小偷,小偷
@@ -263,14 +263,14 @@ DetectiveModeIsNotDetectiveVoteSetting,Non-Detective cannot vote,探偵以外は
 DetectiveModeIsNotDetectiveMeetingButtonSetting,Non-Detective cannot press the conference button,探偵以外が会議ボタンを押せない,侦探以外的玩家不可以召开紧急会议,偵探以外的玩家禁止召開緊急會議
 DetectiveName,Detective,探偵,侦探,偵探
 DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイトを勝利させよう,通过推理帮助船员获胜,通過推理幫助船員獲勝
-BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数
-BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛
-BattleRoyalTeamAmount,Number of teams,チーム数,团队数
-BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间
-BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。
-BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！
-BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます)
-BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!\n能力は、シェイプシフトで発動できます!
+BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数,所有玩家可見存活玩家數
+BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛,啟用團隊賽
+BattleRoyalTeamAmount,Number of teams,チーム数,团队数,團隊數
+BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间,從遊戲開始到玩家可擊殺經過的時間
+BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。,,此職業不存在。請在“/battleroles”(/btr)查看職業列表。
+BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！,,{0}的職業已設定為{1}！
+BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます),,如果要查看職業詳細，請輸入/btr [職業名]。([職業名]請輸入實際的職業名)\n()中的是內部Id。(在遊戲中也可以使用)
+BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!\n能力は、シェイプシフトで発動できます!,,歡迎來到大逃殺!\n在這個會議中，只有你的隊友能看到你的聊天!在這裡和你的隊友討論，決定你的職業!\n你可以使用/setrole [職業]來決定你的職業!和你的隊友討論後決定吧!\n你可以使用/btr來查看職業列表!\n你可以使用變身來發動你的能力!
 BattleRoyalIsKillCountView,Display kill count,キル数を表示する,,顯示擊殺數
 BattleRoyalIsKillCountViewSelfOnly,Show only to yourself,自分のみに表示する,,只顯示自己的擊殺數
 ZombieZombieName,Zombie,ゾンビ,僵尸,殭屍
@@ -288,27 +288,27 @@ ZombieCommingSpeedSetting,Speed before zombies,ゾンビがやってくる前の
 RandomColorHideNameSetting,Hide Name,名前を隠す,隐藏昵称,隱藏暱稱
 RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜色改变,暱稱顏色改變
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变,會議中暱稱顏色改變
-PantsRoyalTitle1,Guard my pants!!!,パンツを守れ！！！
-PantsRoyalTitle2,Take away the Pants!!!,パンツを奪え！！！
-PantsRoyalTitle3,This pants is mine!!!,このパンツは私のものだ！
-PantsRoyalTitle4,That pants will mine!!!,そのパンツは私が頂く！
-PantsRoyalTitle5,Are you trying to rob me of these pants?,このパンツを奪う気か？
-PantsRoyalTitle6,I don't give my pants to anyone!,パンツは誰にも渡さない！！！
-PantsRoyalTitle7,You can't give my pants!,あなたにパンツを渡さない！
-PantsRoyalTitle8,Phantom Thief，Panter!,怪盗・パンツ！
-PantsRoyalTitle9,Can you get my pants?,私のパンツを手に入れられるかな？
-PantsRoyalTitle10,Get those pants and I will survive!,そのパンツを手に入れて私は生き残る！
-PantsRoyalTitle11,Pants!Pants!Pants!,ぱんつ！ぱんつ！ぱんつ！
-PantsRoyalTitle12,This is Pants!!!,これはパンツだ...
-PantsRoyalTitle13,Lets' PantsRoyal!,さあ、パンツのために戦え！
-PantsRoyalTitle14,pants or Pants,ぱんつか、それともパンツか...
-PantsRoyalPantsYourText,Do you have Pants...?,あなたは...
-PantsRoyalPantsHaverIntroName,You have Pants!!!,パンツを履いている！！！
-PantsRoyalPantsHaverIntroTitle1,Let's guard Pants!!!,さあ、パンツを守れ！
-PantsRoyalDeadName,Couldn't get my pants on...,パンツを履けなかった...
-PantsRoyalPantsDontHaverIntroName,You don't have Pants...!,パンツを履いていない...！
-PantsRoyalPantsDontHaverIntroTitle1,Will you have pants?,あなたはパンツを手に入れられるかな？
-PantsRoyalStartAt,Pants royal will start at after ,パンツの戦いまで...
+PantsRoyalTitle1,Guard my pants!!!,パンツを守れ！！！,,保護我的褲子！！！
+PantsRoyalTitle2,Take away the Pants!!!,パンツを奪え！！！,,奪取褲子！！！
+PantsRoyalTitle3,This pants is mine!!!,このパンツは私のものだ！,,現在這是我的褲子了！
+PantsRoyalTitle4,That pants will mine!!!,そのパンツは私が頂く！,,那個褲子將會成為我的東西！
+PantsRoyalTitle5,Are you trying to rob me of these pants?,このパンツを奪う気か？<,,想要奪走我的褲子嗎？
+PantsRoyalTitle6,I don't give my pants to anyone!,パンツは誰にも渡さない！！！,,我不會把我的褲子給任何人！
+PantsRoyalTitle7,You can't give my pants!,あなたにパンツを渡さない！,,我不會把我的褲子給你的！
+PantsRoyalTitle8,Phantom Thief，Panter!,怪盗・パンツ！,,褲子大盜！
+PantsRoyalTitle9,Can you get my pants?,私のパンツを手に入れられるかな？,,你能奪走我的褲子嗎？
+PantsRoyalTitle10,Get those pants and I will survive!,そのパンツを手に入れて私は生き残る！,,奪走那個褲子我就能活下去！
+PantsRoyalTitle11,Pants!Pants!Pants!,ぱんつ！ぱんつ！ぱんつ！,,褲子！褲子！褲子！
+PantsRoyalTitle12,This is Pants!!!,これはパンツだ...,,這是褲子！！！
+PantsRoyalTitle13,Lets' PantsRoyal!,さあ、パンツのために戦え！,,現在，為了褲子而戰吧！
+PantsRoyalTitle14,pants or Pants,ぱんつか、それともパンツか...,,褲子還是ㄎㄨˋ子？
+PantsRoyalPantsYourText,Do you have Pants...?,あなたは...,,你有褲子嗎？
+PantsRoyalPantsHaverIntroName,You have Pants!!!,パンツを履いている！！！,,你竟然有褲子！！！
+PantsRoyalPantsHaverIntroTitle1,Let's guard Pants!!!,さあ、パンツを守れ！,,現在，保護褲子吧！
+PantsRoyalDeadName,Couldn't get my pants on...,パンツを履けなかった...,,沒有穿上褲子...
+PantsRoyalPantsDontHaverIntroName,You don't have Pants...!,パンツを履いていない...！,,你沒有褲子！！！
+PantsRoyalPantsDontHaverIntroTitle1,Will you have pants?,あなたはパンツを手に入れられるかな？,,你會擁有褲子嗎？
+PantsRoyalStartAt,Pants royal will start at after ,パンツの戦いまで...,,褲子大逃殺將要開始...
 NeutralName,Neutral,第三陣営,独立阵营,中立陣營
 WinName,Win,勝利,胜利,勝利
 PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,更多游戏设置,其他設定
@@ -337,9 +337,9 @@ FinalStatusKill,Kill,キル,被杀,被殺
 FinalStatusExiled,Exiled,追放,放逐,驅逐
 FinalStatusSheriffKill,Executing justice,正義執行,出警,警長正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火,警長誤傷
-FinalStatusHauntedSheriffKill,Possession kill,憑依キル
-FinalStatusHauntedSheriffMisFire,Repulsion Misfire,反発誤爆
-FinalStatusSheriffHauntedWolfKill,The possession was severed,誤認射殺
+FinalStatusHauntedSheriffKill,Possession kill,憑依キル,,狼憑被殺
+FinalStatusHauntedSheriffMisFire,Repulsion Misfire,反発誤爆,,狼憑警長誤傷
+FinalStatusSheriffHauntedWolfKill,The possession was severed,誤認射殺,,狼憑警長誤殺
 FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusIgnite,Ignite,焼殺,纵火,燒死
 FinalStatusDisconnected,Amputation,切断,断连,截肢
@@ -693,7 +693,7 @@ GodDescription,If you survive to the end you take away the win. Everyone's posit
 GodDescription,I know everyone's roles. I am a god.\nIf I survive until the end，I will claim victory by myself，stealing it from others.\nDedicate that victory to the gods.,全員の役職がわかります。私は神だ。\n最後まで生存していると勝利を横取りして単独勝利します。\nその勝利を神に捧げなさい。,全知全能之神明。\n只要神存在于飞船内，一切胜利果实都将被当作神的祭品。\n为神奉献胜利吧。,吾知曉所有人的職業。吾乃神。\n若存活到遊戲結束，吾將横取勝利，獨自獲勝。\n來吧，將勝利獻給神吧。
 GodViewVoteSetting,I know who to vote for.,投票先がわかる,神能看到所有人的投票情况,神能看到所有人的投票情況
 GodIsEndTaskWinSetting,You have to finish the task to win.,タスクを終わらせないと勝利できない,不完成所有任务则不能获胜,不完成所有任務則不能獲勝
-GodWinText,Advent,降臨
+GodWinText,Advent,降臨,,神明降臨
 AllCleanerName,All Cleaner,オールクリーナー,清理者,清理者
 AllCleanerTitle1,Let's get rid of the corpse.,死体を消そう,杀人不留痕迹,殺人不留痕跡
 AllCleanerCountSetting,Number of times it can be used in one game,1試合中に使える回数,清理者最大可清理次数,清理者最大可清理次數
@@ -765,13 +765,13 @@ MagazinerTitle1,Save your kills!,キルを貯めよう,存下子弹以备不时�
 MagazinerSetTimeSetting,Kill cool time after magazine use,マガジン使用後のキルクールタイム,快枪手使用储存子弹后的击杀冷却,神槍手使用儲存子彈後的擊殺冷卻
 MagazinerAddButtonName,Save,貯める,储存,儲存
 MagazinerGetButtonName,Set,セット,使用,使用
-HauntedWolfName,HauntedWolf,狼憑き,混血儿,混血兒
-HauntedWolfTitle1,What? I am acting alone...,え... 私はひとりですが...
-HauntedWolfTitle2,"He does not know that I possess him.",『 こやつは 我が憑いている事を知らんのじゃ 』
-HauntedWolfDescription,This is a duplicate role distributed to Crewmate roles. Madmate and Jackal Friends also have a non-duplicate setting.\nWhile alive，the player does not know that he/she is possessed by a wolf.\nThe Sheriff and the Fortune Teller will see you as an Impostor. There is also a setting that reverses the kill decision if duplicated to the sheriff，and the divination decision if duplicated to the soothsayer or medium.\nHe wonders. That people around him talk to him as if he were acting in pairs.\nOne day，he is suspected and executed by the sheriff. He was heartbroken that someone would die because of him.\nBut the person who actually died was...!,クルー役職に重複して配布される役職です。マッドメイト及びジャッカルフレンズには重複しない設定もあります。\n生存している間は自分が狼憑きである事が分かりません。\nシェリフや占い師にはインポスターとして判定されます。シェリフに重複した場合 キル判定を，占い師や霊媒師に重複した場合 占いの判定を反転する設定もあります。\n彼は訝しむ。周囲がまるで自分が2人で行動しているかの様に話しかけて来る事を。\nある時，彼は疑われシェリフに処刑される事となった。自分のせいで死んでしまう人が出る事に心を痛めた。\nしかし実際に死んだのは...!!
-HauntedWolfIsAssignMadAndFriendRoles,No overlap with Mud or Friends rolls.,マッドやフレンズロールと重複しない
-HauntedWolfIsReverseSheriffDecision,Reverses the kill decision when duplicated on a sheriff.,シェリフや占い師等に重複した時，判定を反転する。
-HauntedWolfIsNotDuplication,Not to be distributed in duplicate with mod roles,他のMod役職と重複して配布しない
+HauntedWolfName,HauntedWolf,狼憑き,混血儿,狼憑者
+HauntedWolfTitle1,What? I am acting alone...,え... 私はひとりですが...,,我不是一個人...
+HauntedWolfTitle2,"He does not know that I possess him.",『 こやつは 我が憑いている事を知らんのじゃ 』,,「他不知道我和他是一夥的」
+HauntedWolfDescription,This is a duplicate role distributed to Crewmate roles. Madmate and Jackal Friends also have a non-duplicate setting.\nWhile alive，the player does not know that he/she is possessed by a wolf.\nThe Sheriff and the Fortune Teller will see you as an Impostor. There is also a setting that reverses the kill decision if duplicated to the sheriff，and the divination decision if duplicated to the soothsayer or medium.\nHe wonders. That people around him talk to him as if he were acting in pairs.\nOne day，he is suspected and executed by the sheriff. He was heartbroken that someone would die because of him.\nBut the person who actually died was...!,クルー役職に重複して配布される役職です。マッドメイト及びジャッカルフレンズには重複しない設定もあります。\n生存している間は自分が狼憑きである事が分かりません。\nシェリフや占い師にはインポスターとして判定されます。シェリフに重複した場合 キル判定を，占い師や霊媒師に重複した場合 占いの判定を反転する設定もあります。\n彼は訝しむ。周囲がまるで自分が2人で行動しているかの様に話しかけて来る事を。\nある時，彼は疑われシェリフに処刑される事となった。自分のせいで死んでしまう人が出る事に心を痛めた。\nしかし実際に死んだのは...!!,,這是一個分配給船員陣營的重複角色。狼憑者和狼憑同伴也有不重複的設定。\n在存活期間，玩家不知道自己被狼憑。\n狼憑者會被警長和占卜師視為內鬼。也有設定，若狼憑者重複給警長，則警長的判定會反轉；若狼憑者重複給占卜師或靈媒師，則占卜師的判定會反轉。\n他感到疑惑。周圍的人們好像在說他是一個人在行動。\n有一天，他被警長懷疑並被處決。他為自己的錯誤而感到痛苦。\n但實際上死的人是...!!
+HauntedWolfIsAssignMadAndFriendRoles,No overlap with Mud or Friends rolls.,マッドやフレンズロールと重複しない,,不重複分配给叛徒或狽系角色
+HauntedWolfIsReverseSheriffDecision,Reverses the kill decision when duplicated on a sheriff.,シェリフや占い師等に重複した時，判定を反転する。,,當狼憑在警長或占卜師等職業時，判定會反轉
+HauntedWolfIsNotDuplication,Not to be distributed in duplicate with mod roles,他のMod役職と重複して配布しない,,不重複分配给其他Mod角色
 LoversName,Lovers.,ラバーズ,恋人,戀人
 LoversIntro,I'm in love with {0}!,{0}と恋に落ちてしまった！,你和{0}坠入了爱河,你和{0}墜入了愛河
 LoversDescription,Lovers is a duplicate position given in addition to other positions. Lovers person will see a heart mark next to their name.,恋人は他の役職に重複して与えられ、恋人同士は名前の後のハートマークで確認することが出来ます。,恋人为一个附加职业，由两名玩家组成。\n恋人可以在他们的名字旁边看到爱心。,恋人為一個附加職業，由兩名玩家組成。\n戀人可以在他們的名字旁邊看到愛心。
@@ -887,7 +887,7 @@ VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能,吸
 VampireCreateDependentsCoolTime,Cool time to nominate a Dependents member,眷属指名クールタイム,吸血鬼指定眷属冷却,吸血鬼指定眷屬冷卻時間
 VampireDependentsKillCoolTime,Kill cool time for dependents,眷属のキルクールタイム,眷属击杀冷却,眷屬擊殺冷卻時間
 VampireDependentsCanVent,Vent available for use by dependents,眷属がベント使用可能,眷属可以使用管道,眷屬可以使用通風管道
-VampireDependentsButtonName,make Dependents,夜に堕とす,眷属,眷屬
+VampireDependentsButtonName,make Dependents,夜に堕とす,眷属,夜墮
 DependentsName,Dependents,眷属,眷属,眷屬
 DependentsTitle1,Trapped in the Night.,夜に囚われし者,你也是吸血鬼了,現在你是我們吸血鬼的一員了
 DependentsDescription,This role is Madmate who can perform kills.\nI am synchronized with the kill cool time of the Vampire.\nBright places are not my forte，but I excel in darkness.\nOnce night falls，there is no escape.,キルが出来るマッドメイトです。\nヴァンパイアとはキルクールが同期しています。\n明るいところは苦手ですが暗いところは得意です。\n夜からは、逃れられないのです。,眷属属于叛徒阵营，可以进行击杀。\n眷属的击杀冷却与吸血鬼同步。\n眷属惧怕于光明，滋长于黑暗。\n夜幕降临，则无处可逃。,眷属可以進行擊殺的內鬼協助者。\n眷属的擊殺冷卻時間與吸血鬼同步。\n眷属懼怕光明，\n一旦夜幕降臨，他人就無法逃離。
@@ -912,32 +912,26 @@ MadSeerName,MadSeer,マッドシーア,叛变的灵媒,叛變的先知
 MadSeerDescription,This role is responsible for information related to the dead，which can determine the time and place of death.\nUse the information obtained to create a diversion in the village.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。,规则上叛变的灵媒被判定为船员阵营，但是其为内鬼的同伙。可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n叛变的灵媒需要利用手中的情报扰乱场上的局势。,叛變的先知屬於船員陣營，但是其為內鬼的同伴。可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n叛變的先知需要利用手中的情報擾亂場上的局勢。
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动,感知內鬼的行動
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒,邪惡的先知
-<<<<<<< HEAD
-EvilSeerTitle1,Let's sense everyone's presence.,皆の気配を感じ取ろう
-EvilSeerDescription,This role is in charge of information related to the dead，which allows you to know the time and place of death.\nThe role can be used to support your partner by knowing what they are doing.\nThere are also settings that make the survivors Haunted Wolf.\n\nYou are surrounded by friends. You will not be lonely.\nYou will be one of them sooner or later.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。\n生存者に死霊を憑ける呪いをかける設定や、自身が死亡した時に狼憑きとして取り憑く設定もあります。\n\n貴方の周りには仲間がいる。さみしくはない。\nいずれ貴方もその一員に入るのだ。
-EvilSeerIsUniqueSetting,Do you want to set up the unique capabilities of an Evil Seer as a Seer?,シーアとしてのイビルシーアの固有能力を設定するか
-EvilSeerFlashColorMode,How to display dead body color,死者ボディカラーの表示方法
-EvilSeerColorModeclear,You can see the color details.,色の詳細がわかる
-EvilSeerColorModeLightAndDark,Only light and dark are known.,明暗のみがわかる
-EvilSeerIsFlashColor,Make the color of the death flash dependent on the crew's body color?,死の点滅をクルーのボディカラー依存にするか
-EvilSeerIsReportingBodyColorName,Do you want to display body color information in text as well?,ボディカラーの情報を文字でも表示するか
-EvilSeerIsCrewSoulColor,Does the color of the soul reflect the color of the dead?,霊魂をクルーのボディカラー依存にするか
-EvilSeerIsArrowColorAdaptive,Reflect the body color of the dead person on the corpse location arrow.,死体位置矢印をクルーのボディカラー依存にするか
-EvilSeerClearColorDeadText,The crew of {0} color has died.,{0}のクルーの気配が弱まりました。
-EvilSeerLightPlayerDeadText,A brightly colored crew died.,<color=#89c3eb>明るい色</color>のクルーの気配が弱まりました。
-EvilSeerDarkPlayerDeadText,A dark colored crew member died.,<color=#74325c>暗い色</color>のクルーの気配が弱まりました。
-EvilSeerCreateSetting,Enable either HauntedWolf or Madmate creation or,狼憑き，又はマッドメイト作成を有効にするか
-EvilSeerCreateHauntedWolfMode,Mode setting for HauntedWolf or Madmate creation.,狼憑き作成，又はマッドメイト作成のモード設定
-EvilSeerCreateHauntedWolfModeBoth,[Go! haunt!!] & [Haunt],取り憑かせる & 取り憑く
-EvilSeerCreateHauntedWolfModeAbilityOnry,[Go! haunt!!] Only,取り憑かせる能力のみ
-EvilSeerCreateHauntedWolfModePassiveOnry,[Haunt] Only,取り憑く能力のみ
-EvilSeerButtonCooldownSetting,Setting the cool time for the [Go! haunt!!]] and [Haunt] abilities.,[狂わせる]及び[取り憑かせる]能力のクールタイムの設定
-EvilSeerButtonName,Go! haunt!!,取り憑かせる
-=======
-EvilSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。,邪恶的灵媒属于内鬼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n邪恶的灵媒需要利用手中的情报帮助同伙。,邪惡的先知屬於內鬼陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n邪惡的先知需要利用手中的情報幫助同伴。
-EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
-EvilSeerCombIntro1,Why do we treat the dead so specially?,なぜ死者を特別に扱うのか
->>>>>>> develop
+EvilSeerTitle1,Let's sense everyone's presence.,皆の気配を感じ取ろう,,感知所有人的行動
+EvilSeerDescription,This role is in charge of information related to the dead，which allows you to know the time and place of death.\nThe role can be used to support your partner by knowing what they are doing.\nThere are also settings that make the survivors Haunted Wolf.\n\nYou are surrounded by friends. You will not be lonely.\nYou will be one of them sooner or later.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。\n生存者に死霊を憑ける呪いをかける設定や、自身が死亡した時に狼憑きとして取り憑く設定もあります。\n\n貴方の周りには仲間がいる。さみしくはない。\nいずれ貴方もその一員に入るのだ。,,邪惡的先知可以得知死亡時間與地點以及死者有關的情報。\n掌握對方的行動來支援你的夥伴。\n邪惡的先知可以對生存者施加死靈詛咒，使其在死亡時成為狼憑。\n\n你的周圍有朋友。你不會孤單。\n你終將成為他們的一員。
+EvilSeerIsUniqueSetting,Do you want to set up the unique capabilities of an Evil Seer as a Seer?,シーアとしてのイビルシーアの固有能力を設定するか,,是否將邪惡的先知的獨特能力設定為先知的能力
+EvilSeerFlashColorMode,How to display dead body color,死者ボディカラーの表示方法,,顯示死者身體顏色表示設定
+EvilSeerColorModeclear,You can see the color details.,色の詳細がわかる,,可以知道詳細的顏色
+EvilSeerColorModeLightAndDark,Only light and dark are known.,明暗のみがわかる,,可以知道顏色的明暗
+EvilSeerIsFlashColor,Make the color of the death flash dependent on the crew's body color?,死の点滅をクルーのボディカラー依存にするか,,是否將死亡閃光的顏色設定為身體顏色
+EvilSeerIsReportingBodyColorName,Do you want to display body color information in text as well?,ボディカラーの情報を文字でも表示するか,,是否在以文字表示屍體顏色
+EvilSeerIsCrewSoulColor,Does the color of the soul reflect the color of the dead?,霊魂をクルーのボディカラー依存にするか,,靈魂是否顯示身體顏色
+EvilSeerIsArrowColorAdaptive,Reflect the body color of the dead person on the corpse location arrow.,死体位置矢印をクルーのボディカラー依存にするか,,是否將屍體位置箭頭設定為身體顏色
+EvilSeerClearColorDeadText,The crew of {0} color has died.,{0}のクルーの気配が弱まりました。,,{0}的船員的氣息消失了。
+EvilSeerLightPlayerDeadText,A brightly colored crew died.,<color=#89c3eb>明るい色</color>のクルーの気配が弱まりました。,,<color=#89c3eb>亮色</color>的船員的氣息消失了。
+EvilSeerDarkPlayerDeadText,A dark colored crew member died.,<color=#74325c>暗い色</color>のクルーの気配が弱まりました。,,<color=#74325c>暗色</color>的船員的氣息消失了。
+EvilSeerCreateSetting,Enable either HauntedWolf or Madmate creation or,狼憑き，又はマッドメイト作成を有効にするか,,是否啟用生成狼憑或叛徒
+EvilSeerCreateHauntedWolfMode,Mode setting for HauntedWolf or Madmate creation.,狼憑き作成，又はマッドメイト作成のモード設定,,狼憑或叛徒生成模式設定
+EvilSeerCreateHauntedWolfModeBoth,[Go! haunt!!] & [Haunt],取り憑かせる & 取り憑く,,憑依能力 & 洗腦能力
+EvilSeerCreateHauntedWolfModeAbilityOnry,[Go! haunt!!] Only,取り憑かせる能力のみ,,僅憑依能力
+EvilSeerCreateHauntedWolfModePassiveOnry,[Haunt] Only,取り憑く能力のみ,,僅洗腦能力
+EvilSeerButtonCooldownSetting,Setting the cool time for the [Go! haunt!!]] and [Haunt] abilities.,[狂わせる]及び[取り憑かせる]能力のクールタイムの設定,,設定[洗腦]和[憑依]能力的冷卻時間
+EvilSeerButtonName,Go! haunt!!,取り憑かせる,,憑依他人
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长,超能警長
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法,遠距離進行執法擊殺
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート,击杀时传送到被击杀者所在位置,擊殺時傳送到被擊殺者所在位置
@@ -1008,7 +1002,7 @@ EvilHackerName,EvilHacker,イビルハッカー,骇客,駭客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利,駭入飛船獲取勝利
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,可以把一名玩家变成叛徒,可以把一名玩家變成叛徒
-CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] ability.,[狂わせる]能力のクールタイムの設定
+CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] ability.,[狂わせる]能力のクールタイムの設定,,洗腦能力的冷卻時間
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
@@ -1033,8 +1027,8 @@ SpyName,Spy,スパイ,卧底,臥底
 SpyTitle1,Deceive the Impostor and lead the Cluemate camp to victory!,インポスターを欺き、クルーメイト陣営を勝利に導こう,欺骗并找出内鬼，帮助船员取得胜利,欺騙並找出內鬼，幫助船員取得勝利
 SpyDescription,Spies are crewmates but they look like friends to the Impostor.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。,卧底属于船员阵营。\n在内鬼看来卧底属于内鬼阵营。\n卧底没有其他特殊能力。,臥底屬於船員陣營。\n在內鬼看來臥底屬於內鬼陣營。\n臥底沒有其他特殊能力。
 SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス),波鲁斯(Polus)：将生命监测仪移动至样本室,Polus：將生命跡象檢測器移動至樣本室
-IsModCosmeticsAreNotLoaded,Do not load custom hats,カスタムハットを読み込まない
-KunoichiName,Kunoichi,クノイチ,女忍,女忍下
+IsModCosmeticsAreNotLoaded,Do not load custom hats,カスタムハットを読み込まない,,不載入自定義帽子
+KunoichiName,Kunoichi,クノイチ,女忍,女忍
 KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け,用忍术来欺骗船员,用忍術來欺騙船員
 KunoichiDescription,Instead of being unable to get a kill normally，you can throw a kunai that is invisible to everyone but you.\nIf you hit a set number of kunai，you will get a kill.,通常キルが出来ない代わりに自分以外には見えないクナイを投げることが出来ます。\nクナイを設定数当てるとキル出来ます。\n不可視のキルで村を混乱に陥れましょう。,作为通常击杀的替代，女忍可以投掷只有自己可见的苦无。\n被苦无击中一定次数的玩家被女忍击杀。\n女忍通过不可视的苦无击杀给船员造成混乱。,女忍無法使用普通的擊殺，但可以投擲只有自己看得見的苦無。\n擊中指定數量的苦無，就可以造成擊殺。\n用不可視的苦無來擊殺船員並導致混亂吧。
 KunoichiCoolTime,Kunai Cool Time,クナイのクールタイム,女忍苦无冷却,女忍苦無冷卻
@@ -1389,10 +1383,10 @@ WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを
 WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
 NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工,正義的機械師
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道,改造飛船上的管道
-NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？
+NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？,,誰在搗亂這艘飛船？
 EvilMechanicName,EvilMechanic,イビルメカニック,邪恶的迁管工,邪惡的機械師
 EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう,尝试将管道改造得对自己有利,嘗試將管道改造得對自己有利
-EvilMechanicCombIntro1,Looks like someone is trying to get in my way,私の邪魔をするやつがいるようだ
+EvilMechanicCombIntro1,Looks like someone is trying to get in my way,私の邪魔をするやつがいるようだ,,看來有人想要妨礙我
 MechanicButtonName,Relocate.,移設,改造,改造
 TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚,三只小猪,三隻小豬
 TheFirstLittlePigName,The First Little Pig,1番目の仔豚,猪老大,猪老大
@@ -1425,29 +1419,28 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
-<<<<<<< HEAD
-ReviverName,Reviver,リバイバー
-ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However， everyone will be notified of their location.\n It takes 12 seconds to resurrect， and while resurrected， you cannot move and you cannot kill. Also，\n after resurrection， the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。
-ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。
-GuardrawerName,Guardrawer,ガードロワー
-GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。
-GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。
-KingPosterName,KingPoster,キングポスター
-KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！
-KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！
-LongKillerName,LongKiller,ロングキラー
-LongKillerDescription,It has a long kill range， but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!
-DarknightName,Darknight,闇の騎士
-DarknightDescription,,闇に飲まれた騎士。キルクールタイムが0。しかし、視界も0。キル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。
-RevengerName,Revenger,リベンジャー
-RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。
-RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを開始した。
-CrystalMagicianName,CrystalMagician,クリスタルマジシャン
-CrystalMagicianDescription,,
-CrystalMagicianCrystalBot,Crystal,クリスタル
-GrimReaperName,GrimReaper,死神
-GrimReaperDescription,,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。ただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。さらに、エネルギーを貯めている位置も分かってしまう。注意しよう。
-GrimReaperAbilityStart,GrimReaper is charging energy at {0} now...,死神が{0}でエネルギーを貯め始めた...
+ReviverName,Reviver,リバイバー,,復活天使
+ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However， everyone will be notified of their location.\n It takes 12 seconds to resurrect， and while resurrected， you cannot move and you cannot kill. Also，\n after resurrection， the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。,,僅限團隊使用！復活天使使用能力可以將隊友復活，但是會將全員的所在位置暴露給其他玩家。\n復活需花費12秒，且復活途中既不能移動也不能擊殺。並且，復活的玩家在復活後三秒內不能移動，但可進行擊殺。\n協助夥伴，並取得勝利。
+ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。,,復活天使在某處進行復活。
+GuardrawerName,Guardrawer,ガードロワー,,守衛
+GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。,,守衛使用能力來在一定時間內抵禦攻擊。但是自身不具有擊殺能力。使用期間內會吸引包含隊友在內附近的攻擊。
+GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。,,{0}開始阻擋附近的攻擊
+KingPosterName,KingPoster,キングポスター,,國王
+KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！,,國王在技能生效期間處於無敵狀態，但在最初與最後有大幅的硬直。利用無敵來擊殺敵人！
+KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！,,國王正在使用無敵技能！
+LongKillerName,LongKiller,ロングキラー,,遠程殺手
+LongKillerDescription,It has a long kill range， but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!,,遠程殺手的擊殺範圍很長，但擊殺冷卻時間也很長。(1.3倍)\n利用較長的擊殺範圍來擊殺敵人！
+DarknightName,Darknight,闇の騎士,,黑暗騎士
+DarknightDescription,,闇に飲まれた騎士。キルクールタイムが0。しかし、視界も0。キル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。,,被黑暗吞噬的騎士。擊殺冷卻時間為0。但視野也為0。擊殺範圍很小，但擊殺後會一同擊殺擊殺者周圍的玩家(除了自己的隊友)。雖然因為看不見而感到孤獨，但利用這份孤獨來擊殺敵人吧。
+RevengerName,Revenger,リベンジャー,,復仇者
+RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。,,復仇者會在我方擊殺將殺害自己的對象後，7秒後於死亡的地點復活。但是復活的位置會被暴露給敵方，並且復活後並無法馬上獲得擊殺能力。切勿在復活後馬上展開攻勢，以尋求團隊更高的勝率。
+RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを開始した。,,{0}將對{1}展開復仇。
+CrystalMagicianName,CrystalMagician,クリスタルマジシャン,,水晶魔術師
+CrystalMagicianDescription,,,,
+CrystalMagicianCrystalBot,Crystal,クリスタル,,水晶
+GrimReaperName,GrimReaper,死神,,死神
+GrimReaperDescription,,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。ただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。さらに、エネルギーを貯めている位置も分かってしまう。注意しよう。,,死神會使用能量使敵方無法動彈來達成片面的屠殺。但是能量儲存需要一定的時間，且無法移動。並且，能量儲放的位置是被公開的，請小心。
+GrimReaperAbilityStart,GrimReaper is charging energy at {0} now...,死神が{0}でエネルギーを貯め始めた...,,死神在{0}儲存能量。
 BalancerName,Balancer,天秤,大神官,阿努比斯
 BalancerTitle1,(x+y)/2,(x+y)/2,审判他人罪孽的轻重,審判罪孽的輕重
 BalancerTitleTextEither,Put it one way or the other.,どちらかに入れろ,到底要选哪个呢,誰的罪孽更深呢
@@ -1636,7 +1629,7 @@ CommandsMessage6,/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all a
 CommandsMessage7,/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,/AllRoles (/ar) : \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。,/AllRoles (/ar) : \n显示所有激活职业的职业描述和设置。\n(如果你是主持人将推送给房间内所有玩家)\n每1.5秒发送一个。,/AllRoles (/ar) : \n顯示所有啟用職業的職業描述與設置。\n(如果你是主持人將推送給房間內的所有玩家)\n每1.5秒發送一個。
 CommandsMessage8,/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,/AllRoles [送信間隔] (/ar [送信間隔]) : \n/AllRolesに+で送信間隔を指定できます。,/AllRoles [发送间隔] (/ar [发送间隔]) : \n你可以在/AllRoles后添加指定发送间隔时间,/AllRoles [發送間隔] (/ar [發送間隔]) : \n妳可以在/AllRoles後添加指定發送間隔時間
 CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) : \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。,/AllRoles [发送间隔] myplayer (/ar [发送间隔] (mp 或者 myp)) : \n你可以在/AllRoles [发送间隔]后添加指令发送，仅自己可见。,/AllRoles [發送間隔] myplayer (/ar [發送間隔] (mp 或 myp)) : \n你可以在/AllRoles [發送間隔]後添加指令發送，僅自己可見。
-CommandsMessage10,/roleinfo [Role name] (/ri [Role name])\nObtains information about the role from the role name.\nIf you use this command without entering a job title，you will see details on how to use the command.,/roleinfo [役職名] (/ri [役職名]) : \n役職名から役職の情報を取得します。\n役職名を入力せずこのコマンドを使用した場合、コマンド使用方法の詳細を確認する事ができます。
+CommandsMessage10,/roleinfo [Role name] (/ri [Role name])\nObtains information about the role from the role name.\nIf you use this command without entering a job title，you will see details on how to use the command.,/roleinfo [役職名] (/ri [役職名]) : \n役職名から役職の情報を取得します。\n役職名を入力せずこのコマンドを使用した場合、コマンド使用方法の詳細を確認する事ができます。,,/roleinfo [職業名] (/ri [職業名]) : \n從職業名獲取職業信息。\n如果您在不輸入職業名的情況下使用此命令，您將看到有關如何使用該命令的詳細信息。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,SuperNewRoles官方Discord服务器：,SuperNewRoles官方Discord伺服器：
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超新职业官方Twitter,在這裡關注超新職業官方Twitter
 TwitterOfficialLink,Official Account : https://twitter.com/SNROfficials,公式アカウント：https://twitter.com/SNROfficials,官方Twitter：https://twitter.com/SNROfficials,官方Twitter：https://twitter.com/SNROfficials
@@ -1649,8 +1642,8 @@ EnableTagsMessage,,現在設定されているマッチメイキングタグ,,�
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
 RoleInfoDescription,You can retrieve information about a role by searching in the form /ri [role name]. (e.g. : /ri Wave Cannon Jackal)\nYou can also use internal role names. (e.g. : /ri WaveCannonJackal)\nGuests can only search by the role they are currently assigned to.\nHosts are not restricted and search results are sent to all hosts. The host can also use the [ /yourrole(/yr) ] command to resend the role information assigned to each player.,/ri [役職名]の形で検索する事で、役職の情報を取得する事ができます。(例 : /ri マッドてるてる)\n内部的な役職名を使用する事もできます。(例 : /ri MadJester)\nゲストは現在配役されている役職からのみ検索する事ができます。\nホストは検索制限は無く、検索結果は全体に送信されます。又、ホストは [ /yourrole(/yr) ] コマンドを使用する事で、各プレイヤーに割り当てられた役職情報を再送信することができます。
 RoleInfoError,Failed to retrieve information for role named [ {0} ].\nSuch a role may not exist. \nPlease try entering the information again.,[ {0} ] という役職の情報の取得に失敗しました。\nそのような役職は存在しません。\n再度入力して下さい。
-RoleIdInfoError,Failed to retrieve information for the role [ {0} ({1}) ].\nThe role name entered was correct，but an error occurred when the mod attempted to retrieve the role information and it failed.,[ {0} ({1}) ] という役職の情報の取得に失敗しました。\n入力された役職名は正確でしたが、Mod側で役職の情報の取得を試みた際にエラーが発生し 取得に失敗しました。
-GetRoleInfoErrorDisable,If you are not a host，you will not be able to retrieve information for roles that are not currently active.,ホストでない場合、現在有効でない役職の情報は取得できません。
+RoleIdInfoError,Failed to retrieve information for the role [ {0} ({1}) ].\nThe role name entered was correct，but an error occurred when the mod attempted to retrieve the role information and it failed.,[ {0} ({1}) ] という役職の情報の取得に失敗しました。\n入力された役職名は正確でしたが、Mod側で役職の情報の取得を試みた際にエラーが発生し 取得に失敗しました。,,[ {0} ({1}) ] 這個職業的訊息獲取失敗。\n輸入的職業名稱是正確的，但是在模組嘗試獲取職業訊息時發生了錯誤，導致獲取失敗。
+GetRoleInfoErrorDisable,If you are not a host，you will not be able to retrieve information for roles that are not currently active.,ホストでない場合、現在有効でない役職の情報は取得できません。,,如果您不是主持人，您將無法獲取當前未啟用的職業的訊息。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】
 TeamRoleTypeMessage,【RoleType:{0}】,【{0}役職】,,【{0}職業】
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。,不能在暱稱裡有「mod」時將房間狀態設置為公開。
@@ -1675,19 +1668,19 @@ AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適�
 AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する,在通道上增加随机出生点,在通道上增加隨機重生點
 
 # SuperNewRolesWeb
-SNRWebMMOnlineWelcomeText,Hey!{0}!,ようこそ！{0}さん！
-SNRWebMMOnlineNoneLoginText,Now， to the world of SuperNewRolesWeb!,さあ、SuperNewRolesWebの世界へ！
-SNRWebLoginPopupTitle,Login to SuperNewRolesWeb!,SuperNewRolesWebへログイン！
-SNRWebLogoutText,Logout,ログアウト
-SNRWebLoginNotSuc,Login failed.,ログインに失敗しました。
-SNRWebLoginNow,You are logging in now...,ログインしています...
-SNRWebLogin,UserId,ハンドル名
-SNRWebPassword,Password,パスワード
-SNRWebSucGenerateCode,Code was generated!\nYou code is \n{0},コードを生成しました。\nあなたのコードは\n{0}\nです。
-SNRWebCodeGeneratingNow,Code generation has started. Please wait a moment.,コードの生成を開始しました。しばらくお待ちください。
-SNRWebErrorReasonPrefix,An error has occurred.,エラーが発生しました。
-SNRWebErrorReasonAllMatch,I tried to generate it，but all the codes I generated were already in use.,生成しようとしましたが、生成したすべてのコードが生成済みでした。
-SNRWebErrorReasonUnknow,Please try again.,もう一度お試しください。
-SNRWebErrorReasonGenerated,code has already been generated.,このコードは生成済みです。
-SNRWebErrorReasonRegistered,You have already registered this friend code.\nIf you do not remember registering it, please submit an unauthorized registration request through the official SuperNewRolesWeb website.,もうこのフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。
-SNRWebBRMultiRate,{0}x Match!\nThis match will fluctuate {0}x the normal {0}x rate!,{0}倍マッチ！\nこの試合は通常の{0}倍レートが変動します！
+SNRWebMMOnlineWelcomeText,Hey!{0}!,ようこそ！{0}さん！,,歡迎！{0}！
+SNRWebMMOnlineNoneLoginText,Now， to the world of SuperNewRolesWeb!,さあ、SuperNewRolesWebの世界へ！,,現在，進入SuperNewRolesWeb的世界！
+SNRWebLoginPopupTitle,Login to SuperNewRolesWeb!,SuperNewRolesWebへログイン！,,登入SuperNewRolesWeb！
+SNRWebLogoutText,Logout,ログアウト,,登出
+SNRWebLoginNotSuc,Login failed.,ログインに失敗しました。,,登入失敗
+SNRWebLoginNow,You are logging in now...,ログインしています...,,正在登入...
+SNRWebLogin,UserId,ハンドル名,,帳號
+SNRWebPassword,Password,パスワード,,密碼
+SNRWebSucGenerateCode,Code was generated!\nYou code is \n{0},コードを生成しました。\nあなたのコードは\n{0}\nです。,,代碼已生成！\n您的代碼是\n{0}
+SNRWebCodeGeneratingNow,Code generation has started. Please wait a moment.,コードの生成を開始しました。しばらくお待ちください。,,代碼正在生成。請稍等。
+SNRWebErrorReasonPrefix,An error has occurred.,エラーが発生しました。,,發生錯誤。
+SNRWebErrorReasonAllMatch,I tried to generate it，but all the codes I generated were already in use.,生成しようとしましたが、生成したすべてのコードが生成済みでした。,,正試圖生成代碼，但所有代碼皆已在使用中。
+SNRWebErrorReasonUnknow,Please try again.,もう一度お試しください。,,請再試一次。
+SNRWebErrorReasonGenerated,code has already been generated.,このコードは生成済みです。,,代碼已被生成。
+SNRWebErrorReasonRegistered,You have already registered this friend code.\nIf you do not remember registering it, please submit an unauthorized registration request through the official SuperNewRolesWeb website.,もうこのフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。,,您已註冊過此代碼。\n如果您不記得註冊過，請通過SuperNewRolesWeb官方網站提交未經授權的註冊請求。
+SNRWebBRMultiRate,{0}x Match!\nThis match will fluctuate {0}x the normal {0}x rate!,{0}倍マッチ！\nこの試合は通常の{0}倍レートが変動します！,,{0}倍匹配！\n此次匹配將對比平時變動{0}倍！
