@@ -20,6 +20,7 @@ public class CustomPlate
         public static void Postfix(HatManager __instance)
         {
             if (ConfigRoles.DebugMode.Value) return;
+            if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value) return;
             if (isAdded || !DownLoadClass.IsEndDownload) return;
             isAdded = true;
             SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み処理開始");

@@ -1591,10 +1591,12 @@ static class HudManagerStartPatch
                     if (RoleClass.Sheriff.KillMaxCount > 0 && SetTarget())
                     {
                         var target = PlayerControlFixedUpdatePatch.SetTarget();
-                        var localId = CachedPlayer.LocalPlayer.PlayerId;
-                        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
                         PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
-                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+
+                        var localId = CachedPlayer.LocalPlayer.PlayerId;
+                        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
+                        var misfire = !success;
+                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
                         if (alwaysKill && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
                         {
                             alwaysKill = false;
@@ -1611,7 +1613,7 @@ static class HudManagerStartPatch
                         killWriter.Write(misfire);
                         killWriter.Write(alwaysKill);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
+                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, status);
                         if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
                         Sheriff.ResetKillCooldown();
                         RoleClass.Sheriff.KillMaxCount--;
@@ -2458,19 +2460,30 @@ static class HudManagerStartPatch
                             Madmate.CreateMadmate(target);
                             RoleClass.EvilHacker.IsCreateMadmate = false;
                             break;
-                        case RoleId.EvilSeer when RoleClass.EvilSeer.IsCreateMadmate:
+                        case RoleId.EvilSeer when EvilSeer.RoleData.CanCreate:
                             Madmate.CreateMadmate(target);
-                            RoleClass.EvilSeer.IsCreateMadmate = false;
+                            EvilSeer.RoleData.CanCreate = false;
                             break;
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && RoleClass.EvilSeer.IsCreateMadmate)) && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && EvilSeer.RoleData.CreateMode == 4 && EvilSeer.RoleData.CanCreate)) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
                 return SetTarget() && PlayerControl.LocalPlayer.CanMove;
             },
-            () => { },
+            () =>
+            {
+                var coolDown =
+                    PlayerControl.LocalPlayer.IsRole(RoleId.EvilHacker)
+                        ? RoleClass.EvilHacker.Cooldown
+                        : PlayerControl.LocalPlayer.IsRole(RoleId.EvilSeer)
+                            ? EvilSeer.RoleData.EvilSeerButtonCooldown
+                            : 0f;
+
+                EvilHackerMadmateSetting.MaxTimer = coolDown;
+                EvilHackerMadmateSetting.Timer = coolDown;
+            },
             RoleClass.EvilHacker.GetCreateMadmateButtonSprite(),
             new Vector3(-2.925f, -0.06f, 0),
             __instance,
@@ -2483,6 +2496,8 @@ static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("CreateMadmateButton"),
             showButtonText = true
         };
+
+        EvilSeer.Button.SetupCustomButtons(__instance);
 
         PositionSwapperButton = new(
             () =>
@@ -2748,7 +2763,7 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                FastMakerButton.MaxTimer = RoleClass.Tuna.IsMeetingEnd ? RoleClass.DefaultKillCoolDown : 10f;
+                FastMakerButton.MaxTimer = RoleClass.IsFirstMeetingEnd ? RoleClass.DefaultKillCoolDown : 10f;
                 FastMakerButton.Timer = FastMakerButton.MaxTimer;
             },
             __instance.KillButton.graphic.sprite,

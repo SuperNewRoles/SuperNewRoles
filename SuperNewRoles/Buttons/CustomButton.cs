@@ -127,11 +127,8 @@ public class CustomButton
         {
             try
             {
-                if (btn.HasButton(isAlive, role))
-                {
-                    btn.OnMeetingEnds();
-                    btn.Update(isAlive, role);
-                }
+                btn.OnMeetingEnds();
+                if (btn.HasButton(isAlive, role)) btn.Update(isAlive, role);
             }
             catch (Exception e)
             {

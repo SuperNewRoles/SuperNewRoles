@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
 using Il2CppInterop.Runtime;
@@ -38,6 +39,16 @@ public static class ModHelpers
                     !MeetingHud.Instance &&
                     !ExileController.Instance;
         }
+    }
+    public static int GetAlivePlayerCount()
+    {
+        int count = 0;
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            if (p.IsAlive()) count++;
+        return count;
+    }
+    public static byte ParseToByte(this string txt) {
+        return byte.Parse(txt.ToString());
     }
     public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
     {
@@ -613,6 +624,65 @@ public static class ModHelpers
         var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
         return client;
     }
+    public static T FirstOrDefault<T>(this List<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this List<T> list)
+    {
+        foreach (T obj in list)
+            return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this T[] list)
+    {
+        foreach (T obj in list)
+            return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this IEnumerable<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this IEnumerable<T> list)
+    {
+        foreach (T obj in list)
+            return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this Il2CppArrayBase<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static KeyValuePair<TKey, TValue> FirstOrDefault<TKey,TValue>(this Dictionary<TKey,TValue> list, Func<KeyValuePair<TKey,TValue>, bool> func)
+    {
+        foreach (KeyValuePair<TKey, TValue> obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Il2CppSystem.Collections.Generic.Dictionary<TKey, TValue> list, Func<Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue>, bool> func)
+    {
+        foreach (Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue> obj in list)
+            if (func(obj))
+                return obj;
+        return default;
+    }
+    public static T FirstOrDefault<T>(this Il2CppArrayBase<T> list)
+    {
+        foreach (T obj in list)
+            return obj;
+        return default;
+    }
     public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
         List<T> newList = new();
@@ -751,6 +821,14 @@ public static class ModHelpers
             System.Console.WriteLine("Error loading texture from resources: " + path);
         }
         return null;
+    }
+
+    public static SystemTypes GetInRoom(Vector2 pos)
+    {
+        if (ShipStatus.Instance is null) return SystemTypes.Doors;
+        PlainShipRoom room = ShipStatus.Instance.AllRooms.FirstOrDefault(x => x.roomArea.ClosestPoint(pos) == pos);
+        if (room is null) return SystemTypes.Doors;
+        return room.RoomId;
     }
 
     public static string Cs(Color c, string s)
@@ -913,12 +991,12 @@ public static class ModHelpers
             list.AddRange(c);
     }
 
-    public static string GetRPCNameFromByte(byte callId) =>
+    public static string GetRPCNameFromByte(PlayerControl __instance, byte callId) =>
         Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
             Enum.GetName(typeof(RpcCalls), callId) :
         Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
             Enum.GetName(typeof(CustomRPC), callId) :
-        $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
+        $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}:{__instance.Data.PlayerName}";
     public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
     /// <summary>
     /// 文字列が半角かどうかを判定します
@@ -940,6 +1018,7 @@ public static class ModHelpers
         }
         return rates.ToArray();
     }
+    public static Il2CppSystem.Collections.Generic.IEnumerable<T> IEnumerableToIl2Cpp<T>(this IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
 }
 public static class CreateFlag
 {

@@ -5,6 +5,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -19,6 +20,7 @@ class EndGameCheck
         if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
         if (CheckAndEndGameForSabotageWin(__instance)) return false;
         if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+        if (CustomOptionHolder.FoxCanHouwaWin.GetBool() && CheckAndEndGameForFoxHouwaWin(__instance)) return false;
         return false;
     }
     public static bool CheckEndGameHnSs(ShipStatus __instance, PlayerStatistics statistics)
@@ -227,6 +229,42 @@ class EndGameCheck
                 }
             }
         }
+        return false;
+    }
+    public static bool CheckAndEndGameForFoxHouwaWin(ShipStatus __instance)
+    {
+        int impostorNum = 0;
+        int crewNum = 0;
+        bool foxAlive = false;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (p.IsDead() || p.Data.Disconnected || p == null) continue;
+
+            if (p.IsImpostor()) impostorNum++;
+            else if (p.IsCrew()) crewNum++;
+            else if (RoleClass.Fox.FoxPlayer.Contains(p) || FireFox.FireFoxPlayer.Contains(p)) foxAlive = true;
+        }
+
+        if (impostorNum == crewNum && foxAlive && CustomOptionHolder.FoxCanHouwaWin.GetBool()) {
+            List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+            foxPlayers.AddRange(FireFox.FireFoxPlayer);
+            foreach (PlayerControl p in foxPlayers) {
+                if (p.IsDead()) continue;
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                Writer.Write(p.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                RPCProcedure.ShareWinner(p.PlayerId);
+
+                Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+                Writer.Write((byte)CustomGameOverReason.FoxWin);
+                Writer.EndRPC();
+                RPCProcedure.SetWinCond((byte)CustomGameOverReason.FoxWin);
+
+                __instance.enabled = false;
+                CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.FoxWin, false);
+            }
+            return true;
+        };
         return false;
     }
     public static void EndGameForSabotage(ShipStatus __instance)

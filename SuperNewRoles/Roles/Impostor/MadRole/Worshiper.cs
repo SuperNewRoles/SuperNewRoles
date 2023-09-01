@@ -5,78 +5,80 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using UnityEngine;
+using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Roles.RoleClass;
 namespace SuperNewRoles.Roles.Impostor.MadRole;
 
 public static class Worshiper
 {
-    private const int optionId = 401100;// 設定のId
-
-    // CustomOptionHolder
-    public static CustomRoleOption WorshiperOption;
-    public static CustomOption WorshiperPlayerCount;
-    public static CustomOption WorshiperAbilitySuicideCoolTime;
-    public static CustomOption WorshiperKillSuicideCoolTime;
-    public static CustomOption WorshiperIsCheckImpostor;
-    public static CustomOption WorshiperCommonTask;
-    public static CustomOption WorshiperShortTask;
-    public static CustomOption WorshiperLongTask;
-    public static CustomOption WorshiperCheckImpostorTask;
-    public static CustomOption WorshiperIsUseVent;
-    public static CustomOption WorshiperIsImpostorLight;
-
-    public static void SetupCustomOptions()
+    internal class CustomOptionData
     {
-        WorshiperOption = new(optionId, true, CustomOptionType.Crewmate, "WorshiperName", color, 1);
-        WorshiperPlayerCount = CustomOption.Create(optionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorshiperOption);
-        WorshiperAbilitySuicideCoolTime = CustomOption.Create(optionId + 2, false, CustomOptionType.Crewmate, "WorshiperAbilitySuicideCoolTime", 30f, 0f, 60f, 2.5f, WorshiperOption, format: "unitSeconds");
-        WorshiperKillSuicideCoolTime = CustomOption.Create(optionId + 3, true, CustomOptionType.Crewmate, "WorshiperKillSuicideCoolTime", 30f, 2.5f, 60f, 2.5f, WorshiperOption, format: "unitSeconds");
-        WorshiperIsUseVent = CustomOption.Create(optionId + 4, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, WorshiperOption);
-        WorshiperIsImpostorLight = CustomOption.Create(optionId + 5, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, WorshiperOption);
-        WorshiperIsCheckImpostor = CustomOption.Create(optionId + 6, false, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, WorshiperOption);
-        var Worshiperoption = SelectTask.TaskSetting(optionId + 7, optionId + 8, optionId + 9, WorshiperIsCheckImpostor, CustomOptionType.Crewmate, true);
-        WorshiperCommonTask = Worshiperoption.Item1;
-        WorshiperShortTask = Worshiperoption.Item2;
-        WorshiperLongTask = Worshiperoption.Item3;
-        WorshiperCheckImpostorTask = CustomOption.Create(optionId + 10, false, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostor);
+        private static int optionId = 401100;// 設定のId
+
+        public static CustomRoleOption Option;
+        public static CustomOption PlayerCount;
+        public static CustomOption AbilitySuicideCoolTime;
+        public static CustomOption KillSuicideCoolTime;
+        public static CustomOption IsCheckImpostor;
+        public static CustomOption IsSettingNumberOfUniqueTasks;
+        public static CustomOption CommonTask;
+        public static CustomOption ShortTask;
+        public static CustomOption LongTask;
+        public static CustomOption IsParcentageForTaskTrigger;
+        public static CustomOption ParcentageForTaskTriggerSetting;
+        public static CustomOption IsUseVent;
+        public static CustomOption IsImpostorLight;
+
+        public static void SetupCustomOptions()
+        {
+            Option = new(optionId, true, CustomOptionType.Crewmate, "WorshiperName", RoleData.color, 1); optionId++;
+            PlayerCount = Create(optionId, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option); optionId++;
+            AbilitySuicideCoolTime = Create(optionId, false, CustomOptionType.Crewmate, "WorshiperAbilitySuicideCoolTime", 30f, 0f, 60f, 2.5f, Option, format: "unitSeconds"); optionId++;
+            KillSuicideCoolTime = Create(optionId, true, CustomOptionType.Crewmate, "WorshiperKillSuicideCoolTime", 30f, 2.5f, 60f, 2.5f, Option, format: "unitSeconds"); optionId++;
+            IsUseVent = Create(optionId, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, Option); optionId++;
+            IsImpostorLight = Create(optionId, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, Option); optionId++;
+            IsCheckImpostor = Create(optionId, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, Option); optionId++;
+            IsSettingNumberOfUniqueTasks = Create(optionId, false, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, IsCheckImpostor); optionId++;
+            var taskOption = SelectTask.TaskSetting(optionId, optionId + 1, optionId + 2, IsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true); optionId += 3;
+            CommonTask = taskOption.Item1;
+            ShortTask = taskOption.Item2;
+            LongTask = taskOption.Item3;
+            IsParcentageForTaskTrigger = Create(optionId, false, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, IsCheckImpostor); optionId++;
+            ParcentageForTaskTriggerSetting = Create(optionId, false, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, IsParcentageForTaskTrigger);
+        }
     }
 
-    // RoleClass
-    public static List<PlayerControl> WorshiperPlayer;
-    public static Color32 color = ImpostorRed;
-    public static bool IsUseVent;
-    public static bool IsImpostorLight;
-    public static bool IsImpostorCheck;
-    public static int ImpostorCheckTask;
-    public static float AbilitySuicideCoolTime;
-    public static float KillSuicideCoolTime;
-    private static DateTime suicideButtonTimer;
-    private static DateTime suicideKillButtonTimer;
-    private static bool isfirstResetCool;// カスタムボタンの初手クールを10sにするメソッドができれば不要
-    public static void ClearAndReload()
+    internal class RoleData
     {
-        WorshiperPlayer = new();
-
-        AbilitySuicideCoolTime = WorshiperAbilitySuicideCoolTime.GetFloat();
-        KillSuicideCoolTime = WorshiperKillSuicideCoolTime.GetFloat();
-
-        IsUseVent = WorshiperIsUseVent.GetBool();
-        IsImpostorLight = WorshiperIsImpostorLight.GetBool();
-        IsImpostorCheck = WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
-        int Common = WorshiperCommonTask.GetInt();
-        int Long = WorshiperLongTask.GetInt();
-        int Short = WorshiperShortTask.GetInt();
-        int AllTask = Common + Long + Short;
-        if (AllTask == 0)
+        public static List<PlayerControl> Player;
+        public static Color32 color = ImpostorRed;
+        public static bool IsUseVent;
+        public static bool IsImpostorLight;
+        public static bool IsImpostorCheck;
+        public static int ImpostorCheckTask;
+        public static float AbilitySuicideCoolTime;
+        public static float KillSuicideCoolTime;
+        internal static DateTime suicideButtonTimer;
+        internal static DateTime suicideKillButtonTimer;
+        internal static bool isfirstResetCool;// カスタムボタンの初手クールを10sにするメソッドができれば不要
+        public static void ClearAndReload()
         {
-            Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-            Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-            Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-        }
-        ImpostorCheckTask = (int)(AllTask * (int.Parse(WorshiperCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+            Player = new();
 
-        isfirstResetCool = true;
+            AbilitySuicideCoolTime = CustomOptionData.AbilitySuicideCoolTime.GetFloat();
+            KillSuicideCoolTime = CustomOptionData.KillSuicideCoolTime.GetFloat();
+
+            IsUseVent = CustomOptionData.IsUseVent.GetBool();
+            IsImpostorLight = CustomOptionData.IsImpostorLight.GetBool();
+            IsImpostorCheck = CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
+
+            bool IsFullTask = !CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.Worshiper);
+            ImpostorCheckTask = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 0 : IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
+
+            isfirstResetCool = true;
+        }
     }
 
 
@@ -127,7 +129,7 @@ public static class Worshiper
             () =>
             {
                 var Target = PlayerControlFixedUpdatePatch.SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, color);
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleData.color);
                 return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () => { ResetSuicideKillButton(); },
@@ -158,9 +160,9 @@ public static class Worshiper
             初手&会議終了後のクールが非導入者の場合0sになってしまう為、
             SHR時はアビリティ自決のクールを0s固定にして、導入者と非導入者の差異を無くした。
         */
-        suicideButton.MaxTimer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? AbilitySuicideCoolTime : 0;
-        suicideButton.Timer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? AbilitySuicideCoolTime : 0;
-        suicideButtonTimer = DateTime.Now;
+        suicideButton.MaxTimer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? RoleData.AbilitySuicideCoolTime : 0;
+        suicideButton.Timer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? RoleData.AbilitySuicideCoolTime : 0;
+        RoleData.suicideButtonTimer = DateTime.Now;
     }
 
     private static void ResetSuicideKillButton()
@@ -170,10 +172,10 @@ public static class Worshiper
             SHR時非導入者クール(10s)と導入者のクール(カスタムクール)が異なる事を、SNR時共通処理として修正している。
             初手カスタムボタンクールを10sにするメソッドがあれば不要な処理。
         */
-        suicideKillButton.MaxTimer = !isfirstResetCool ? KillSuicideCoolTime : 10f;
-        suicideKillButton.Timer = !isfirstResetCool ? KillSuicideCoolTime : 10f;
-        suicideKillButtonTimer = DateTime.Now;
-        Logger.Info($"「初回クールリセットか?」が{isfirstResetCool}の為、クールを[{suicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
-        isfirstResetCool = false;
+        suicideKillButton.MaxTimer = !RoleData.isfirstResetCool ? RoleData.KillSuicideCoolTime : 10f;
+        suicideKillButton.Timer = !RoleData.isfirstResetCool ? RoleData.KillSuicideCoolTime : 10f;
+        RoleData.suicideKillButtonTimer = DateTime.Now;
+        Logger.Info($"「初回クールリセットか?」が{RoleData.isfirstResetCool}の為、クールを[{suicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
+        RoleData.isfirstResetCool = false;
     }
 }

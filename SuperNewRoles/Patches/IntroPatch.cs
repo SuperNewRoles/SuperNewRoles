@@ -51,7 +51,7 @@ public class IntroPatch
             {
                 Logger.Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
                 Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
-                foreach (IntroData data in IntroData.IntroList) { data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum); }
+                foreach (IntroData data in IntroData.Intros.Values) { data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum); }
             }
             Logger.Info("=================Activate Roles Data=================", " Other Data");
             {
@@ -70,7 +70,7 @@ public class IntroPatch
         {
             if (ModeHandler.IsMode(ModeId.HideAndSeek))
             {
-                new LateTask(() => RoleClass.Tuna.IsMeetingEnd = true, 6);
+                new LateTask(() => RoleClass.IsFirstMeetingEnd = true, 6);
             }
             // プレイヤーのアイコンを生成
             if (PlayerControl.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null)
@@ -391,6 +391,8 @@ public class IntroPatch
         }
         __instance.TeamTitle.text = TeamTitle;
         __instance.ImpostorText.text = ImpostorText;
+        if (ImpostorText != "")
+            __instance.ImpostorText.gameObject.SetActive(true);
         __instance.BackgroundBar.material.color = color;
         __instance.TeamTitle.color = color;
 

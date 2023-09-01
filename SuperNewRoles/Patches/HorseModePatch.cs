@@ -12,6 +12,7 @@ public class MainMenuPatch
 {
     private static bool horseButtonState = HorseModeOption.enableHorseMode;
     private static Sprite horseModeOffSprite = null;
+
     static void hidebtn(PassiveButton btn)
     {
         GameObject.Destroy(btn.GetComponent<AspectScaledAsset>());
@@ -35,7 +36,7 @@ public class MainMenuPatch
         var passiveHorseButton = horseButton.GetComponent<PassiveButton>();
         var spriteHorseButton = horseButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
         hidebtn(horseButton);
-        horseButton.transform.localPosition = new(1.5f, -1.1f, 0);
+        horseButton.transform.localPosition = new(1.125f, -1.1f, 0);
 
         horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
 
@@ -59,11 +60,13 @@ public class MainMenuPatch
             }
         });
 
+        // Credits
+
         var CreditsButton = Object.Instantiate(bottomTemplate, null);
         var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
         var spriteCreditsButton = CreditsButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
         hidebtn(passiveCreditsButton);
-        CreditsButton.transform.localPosition = new(2.5f, -1.1f, 0);
+        CreditsButton.transform.localPosition = new(2.925f, -1.1f, 0);
 
         spriteCreditsButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreditsButton.png", 75f);
 
@@ -71,11 +74,28 @@ public class MainMenuPatch
 
         passiveCreditsButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
         {
-            SuperNewRolesPlugin.Logger.LogInfo("クリック");
             if (CredentialsPatch.LogoPatch.CreditsPopup != null)
             {
                 CredentialsPatch.LogoPatch.CreditsPopup.SetActive(true);
             }
+        });
+
+        //ModDownloader
+
+        var ModDownloaderButton = Object.Instantiate(bottomTemplate, null);
+        var passiveModDownloaderButton = ModDownloaderButton.GetComponent<PassiveButton>();
+        var spriteModDownloaderButton = ModDownloaderButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
+        hidebtn(passiveModDownloaderButton);
+
+        ModDownloaderButton.transform.localPosition = new(2.025f, -1.1f, 0);
+
+        spriteModDownloaderButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ModDownloaderButton.png", 75f);
+
+        passiveModDownloaderButton.OnClick = new ButtonClickedEvent();
+
+        passiveModDownloaderButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
+        {
+            ModDownloader.OnPopupOpen(__instance);
         });
     }
 }

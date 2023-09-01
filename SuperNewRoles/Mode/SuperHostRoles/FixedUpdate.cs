@@ -4,6 +4,9 @@ using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -101,16 +104,27 @@ public static class FixedUpdate
         string RoleNameText = ModHelpers.Cs(introData.color, introData.Name);
         Dictionary<byte, string> ChangePlayers = new();
 
-        foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
+        // スターパッシブ能力 [ カリスマ ] の処理
+        if (RoleClass.Celebrity.ChangeRoleView) // [ ]MEMO
         {
-            if (CelebrityPlayer == player) continue;
-            if (!RoleClass.Camouflager.IsCamouflage) ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, CelebrityPlayer.GetDefaultName()));
+            foreach (PlayerControl viewPlayer in RoleClass.Celebrity.ViewPlayers)
+            {
+                if (RoleClass.Camouflager.IsCamouflage) break; // カモフラ中は処理を破棄する
+                if (viewPlayer == player) continue;
+                ChangePlayers.Add(viewPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, viewPlayer.GetDefaultName()));
+            }
+        }
+        else
+        {
+            foreach (PlayerControl celebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
+            {
+                if (RoleClass.Camouflager.IsCamouflage) break; // カモフラ中は処理を破棄する
+                if (celebrityPlayer == player) continue;
+                ChangePlayers.Add(celebrityPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, celebrityPlayer.GetDefaultName()));
+            }
         }
 
-        if (Madmate.CheckImpostor(player) ||
-            MadMayor.CheckImpostor(player) ||
-            player.IsRole(RoleId.Marlin) ||
-            BlackCat.CheckImpostor(player))
+        if (Madmate.CheckImpostor(player) || player.IsRole(RoleId.Marlin))
         {
             foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
             {
@@ -284,7 +298,7 @@ public static class FixedUpdate
         }
 
         string TaskText = "";
-        if (!player.IsClearTask())
+        if (player.IsUseTaskTrigger())
         {
             try
             {
@@ -297,8 +311,11 @@ public static class FixedUpdate
             }
             catch { }
         }
+
         bool IsDemonVIew = false;
         bool IsArsonistVIew = false;
+        bool IsHauntedWolfVIew = false;
+        string attributeRoleName = "";
         if ((SetNamesClass.DefaultGhostSeeRoles(player) || player.IsRole(RoleId.God)) && !IsUnchecked)
         {
             if (Demon.IsViewIcon(player))
@@ -316,8 +333,13 @@ public static class FixedUpdate
                 if (RoleClass.SatsumaAndImo.TeamNumber == 1) { MySuffix += ModHelpers.Cs(Palette.White, " (C)"); }
                 else { MySuffix += ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"); }
             }
-            if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>)" + ModHelpers.Cs(introData.color, Name + MySuffix);
-            else NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>)" + ModHelpers.Cs(introData.color, MySuffix);
+            if (player.IsHauntedWolf())
+            {
+                attributeRoleName += " + " + ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"));
+                IsHauntedWolfVIew = true;
+            }
+            if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + attributeRoleName + TaskText + "</size>)" + ModHelpers.Cs(introData.color, Name + MySuffix);
+            else NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + attributeRoleName + TaskText + "</size>)" + ModHelpers.Cs(introData.color, MySuffix);
         }
         else if (player.IsAlive() || IsUnchecked)
         {
@@ -334,8 +356,8 @@ public static class FixedUpdate
                     IsArsonistVIew = true;
                 }
             }
-            if (!RoleClass.Camouflager.IsCamouflage) NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, Name + MySuffix);
-            else NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, MySuffix);
+            if (!RoleClass.Camouflager.IsCamouflage) NewName = "<size=75%>" + RoleNameText + attributeRoleName + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, Name + MySuffix);
+            else NewName = "<size=75%>" + RoleNameText + attributeRoleName + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, MySuffix);
             SuperNewRolesPlugin.Logger.LogInfo(NewName);
         }
         if (!player.IsMod())
@@ -362,6 +384,8 @@ public static class FixedUpdate
             }
         }
         string DieSuffix = "";
+        // FIXME : SHRにおいて重複役の名前変更の共通処理が完成していない。
+        if (!IsHauntedWolfVIew && player.IsHauntedWolf()) DieSuffix += " + " + ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"));
         if (!IsDemonVIew && Demon.IsViewIcon(player)) { DieSuffix += ModHelpers.Cs(RoleClass.Demon.color, " ▲"); }
         if (!IsArsonistVIew && Arsonist.IsViewIcon(player)) { DieSuffix += ModHelpers.Cs(RoleClass.Arsonist.color, " §"); }
         NewName += DieSuffix;
@@ -425,6 +449,11 @@ public static class FixedUpdate
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
             }
+        }
+        else if (PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon))
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            PoliceSurgeon.FixedUpdate();
         }
         SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
         if (!AmongUsClient.Instance.AmHost) return;

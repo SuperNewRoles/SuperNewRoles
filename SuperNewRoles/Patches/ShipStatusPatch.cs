@@ -48,7 +48,7 @@ class RepairSystemPatch
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.SabotageRepair);
             }
         }
-        if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
+        if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers, ModeId.PantsRoyal)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
 
         if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4) // 停電を直そうとした
         {
@@ -93,7 +93,7 @@ class RepairSystemPatch
         SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + systemType + " : " + amount);
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            SyncSetting.CustomSyncSettings();
+            SyncSetting.CustomSyncSettings(out var modified);
             if (systemType == SystemTypes.Comms)
             {
                 Mode.SuperHostRoles.FixedUpdate.SetRoleNames();

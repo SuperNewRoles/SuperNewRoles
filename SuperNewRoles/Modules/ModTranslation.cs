@@ -10,37 +10,40 @@ public static class ModTranslation
 {
     // 一番左と一行全部
     private static Dictionary<string, string[]> dictionary = new();
-    private static readonly List<string> outputtedStr = new();
+    private static readonly HashSet<string> outputtedStr = new();
     public static string GetString(string key)
     {
         // アモアス側の言語読み込みが完了しているか ? 今の言語 : 最後の言語
-        SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
+        SupportedLangs langId = DestroyableSingleton<TranslationController>.InstanceExists ? FastDestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
 
-        if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
+        if (!dictionary.TryGetValue(key, out string[] values)) return key; // keyが辞書にないならkeyのまま返す
 
-        if (dictionary[key].Length < 4 || dictionary[key][3] == "")
-        { //簡体中国語がない場合英語で返す
-            if (!outputtedStr.Contains(key))
-                Logger.Info($"SChinese not found:{key}", "ModTranslation");
-            outputtedStr.Add(key);
-            if (langId == SupportedLangs.SChinese) return dictionary[key][1];
-        }
+        if (langId is SupportedLangs.SChinese or SupportedLangs.TChinese)
+        {
+            if (langId == SupportedLangs.SChinese && (values.Length < 4 || values[3] == ""))
+            { //簡体中国語がない場合英語で返す
+                if (!outputtedStr.Contains(key))
+                    Logger.Info($"SChinese not found:{key}", "ModTranslation");
+                outputtedStr.Add(key);
+                return values[1];
+            }
 
-        if (dictionary[key].Length < 5 || dictionary[key][4] == "")
-        { //繁体中国語がない場合英語で返す
-            if (!outputtedStr.Contains(key))
-                Logger.Info($"TChinese not found:{key}", "ModTranslation");
-            outputtedStr.Add(key);
-            if (langId == SupportedLangs.TChinese) return dictionary[key][1];
+            if (langId == SupportedLangs.TChinese && (values.Length < 5 || values[4] == ""))
+            { //繁体中国語がない場合英語で返す
+                if (!outputtedStr.Contains(key))
+                    Logger.Info($"TChinese not found:{key}", "ModTranslation");
+                outputtedStr.Add(key);
+                return values[1];
+            }
         }
 
         return langId switch
         {
-            SupportedLangs.English => dictionary[key][1], // 英語
-            SupportedLangs.Japanese => dictionary[key][2],// 日本語
-            SupportedLangs.SChinese => dictionary[key][3],// 簡体中国語
-            SupportedLangs.TChinese => dictionary[key][4],// 繁体中国語
-            _ => dictionary[key][1] // それ以外は英語
+            SupportedLangs.English => values[1], // 英語
+            SupportedLangs.Japanese => values[2],// 日本語
+            SupportedLangs.SChinese => values[3],// 簡体中国語
+            SupportedLangs.TChinese => values[4],// 繁体中国語
+            _ => values[1] // それ以外は英語
         };
     }
 
@@ -49,8 +52,11 @@ public static class ModTranslation
     /// CustomOptionで追加しているカラータグは先に外してください。
     /// </summary>
     /// <param name="value">keyを取得したい翻訳後の文</param>
-    /// <returns>keyが存在 => key / keyが存在しない => 引数をそのまま返す </returns>
-    internal static string GetTranslateKey(string value)
+    /// <returns>
+    /// string : keyが存在 => key / keyが存在しない => 引数をそのまま返す
+    /// bool : true => keyの取得に成功 / false => keyの取得に失敗
+    /// </returns>
+    internal static (string, bool) GetTranslateKey(string value)
     {
         SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
 
@@ -67,12 +73,12 @@ public static class ModTranslation
         if (key != null)
         {
             Logger.Info($"{key}", "ModTranslation");
-            return key;
+            return (key, true);
         }
         else
         {
             Logger.Info($"key not found:{value}", "ModTranslation");
-            return value;
+            return (value, false);
         }
     }
 

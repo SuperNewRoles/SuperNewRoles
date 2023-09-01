@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
@@ -81,7 +82,12 @@ class ControllerManagerUpdatePatch
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
             {
                 if (MeetingHud.Instance != null)
-                    MeetingHud.Instance.RpcClose();
+                {
+                    if (ModeHandler.IsMode(ModeId.BattleRoyal))
+                        SelectRoleSystem.OnEndSetRole();
+                    else
+                        MeetingHud.Instance.RpcClose();
+                }
             }
         }
 
@@ -91,6 +97,8 @@ class ControllerManagerUpdatePatch
             // Spawn dummys
             if (Input.GetKeyDown(KeyCode.G))
             {
+                Logger.Info(EOSManager.Instance.UserIDToken);
+
                 PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
                 bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
@@ -128,6 +136,14 @@ class ControllerManagerUpdatePatch
             if (Input.GetKeyDown(KeyCode.N))
             {
                 ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Logger.Info("Test Option Set", "Test");
+                IGameOptions options = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
+                options.SetFloat(FloatOptionNames.KillCooldown, 10f);
+                options.SetFloat(FloatOptionNames.CrewLightMod, 10f);
+                GameManager.Instance.LogicOptions.SetGameOptions(options);
             }
             if (Input.GetKeyDown(KeyCode.F10))
             {

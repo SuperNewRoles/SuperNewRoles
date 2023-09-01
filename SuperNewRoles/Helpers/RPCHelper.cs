@@ -4,6 +4,7 @@ using Hazel;
 using InnerNet;
 using Steamworks;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using UnityEngine.UIElements.StyleSheets;
@@ -84,29 +85,42 @@ public static class RPCHelper
     {
         if (TargetPlayer == null || NewName == null || !AmongUsClient.Instance.AmHost) return;
         if (SeePlayer == null) SeePlayer = TargetPlayer;
+        if (SeePlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        {
+            TargetPlayer.SetName(NewName);
+            return;
+        }
         var clientId = SeePlayer.GetClientId();
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SetName, SendOption.Reliable, clientId);
         writer.Write(NewName);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
-    public static void RpcSnapTo(this PlayerControl __instance, Vector2 position)
+    public static void RpcSnapTo(this PlayerControl __instance, Vector2 position, PlayerControl seer = null)
     {
+        var caller = new System.Diagnostics.StackFrame(1, false);
+        var callerMethod = caller.GetMethod();
+        string callerMethodName = callerMethod.Name;
+        string callerClassName = callerMethod.DeclaringType.FullName;
+        SuperNewRolesPlugin.Logger.LogInfo("[SHR:RpcSnapTo] CustomSyncSettingsが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
         Logger.Info("CustomRpcSnapToが呼び出されました");
-        if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+        if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && seer is null)
         {
             __instance.NetTransform.RpcSnapTo(position);
             return;
         }
         ushort minSid = (ushort)(__instance.NetTransform.lastSequenceId + 5);
-        if (AmongUsClient.Instance.AmClient)
+        if (AmongUsClient.Instance.AmClient && (seer is null || seer.PlayerId == PlayerControl.LocalPlayer.PlayerId))
         {
             __instance.NetTransform.SnapTo(position, minSid);
         }
-        MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None);
-        NetHelpers.WriteVector2(position, val);
-        val.Write(__instance.NetTransform.lastSequenceId);
-        val.EndMessage();
+        if (seer is null || seer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+        {
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None, seer is null ? -1 : seer.GetClientId());
+            NetHelpers.WriteVector2(position, val);
+            val.Write(__instance.NetTransform.lastSequenceId);
+            val.EndRPC();
+        }
     }
     public static void RpcSyncOption()
     {
@@ -129,9 +143,9 @@ public static class RPCHelper
         AmongUsClient.Instance.SendOrDisconnect(writer);
         writer.Recycle();
     }
-    public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1)
+    public static void RpcSyncMeetingHud(int TargetClientId = -1)
     {
-        GameManager gm = NormalGameManager.Instance;
+        if (Instance is null) return;
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
 
         // 書き込み {}は読みやすさのためです。
@@ -139,7 +153,66 @@ public static class RPCHelper
         {
             writer.StartMessage(5);
             writer.Write(AmongUsClient.Instance.GameId);
-            return;
+        }
+        else
+        {
+            writer.StartMessage(6);
+            writer.Write(AmongUsClient.Instance.GameId);
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            writer.WritePacked(TargetClientId);
+        }
+        writer.StartMessage(1); //0x01 Data
+        {
+            writer.WritePacked(Instance.NetId);
+            Instance.Serialize(writer, true);
+
+        }
+        writer.EndMessage();
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
+    public static void RpcSyncGameData(int TargetClientId = -1)
+    {
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        // 書き込み {}は読みやすさのためです。
+        if (TargetClientId < 0)
+        {
+            Logger.Info("Send=>All");
+            writer.StartMessage(5);
+            writer.Write(AmongUsClient.Instance.GameId);
+        }
+        else
+        {
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            Logger.Info("Send=>"+TargetClientId.ToString());
+            writer.StartMessage(6);
+            writer.Write(AmongUsClient.Instance.GameId);
+            writer.WritePacked(TargetClientId);
+        }
+        writer.StartMessage(1); //0x01 Data
+        {
+            writer.WritePacked(GameData.Instance.NetId);
+            GameDataSerializePatch.Is = true;
+            GameData.Instance.Serialize(writer, true);
+
+        }
+        writer.EndMessage();
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
+    public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1, SendOption sendOption = SendOption.Reliable)
+    {
+        GameManager gm = NormalGameManager.Instance;
+        MessageWriter writer = MessageWriter.Get(sendOption);
+        // 書き込み {}は読みやすさのためです。
+        if (TargetClientId < 0)
+        {
+            writer.StartMessage(5);
+            writer.Write(AmongUsClient.Instance.GameId);
         }
         else
         {
@@ -153,7 +226,7 @@ public static class RPCHelper
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(gm.NetId);
-                writer.StartMessage((byte)4);
+                writer.StartMessage(4);
                 writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
                 writer.EndMessage();
             }
@@ -196,6 +269,40 @@ public static class RPCHelper
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.None, clientId);
         writer.Write(Chat);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+
+    public static void RpcSetHatUnchecked(this PlayerControl player, string hatId, PlayerControl seePlayer = null)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetHat(hatId, valueOrDefault);
+        }
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetHat, seePlayer);
+        messageWriter.Write(hatId);
+        messageWriter.EndRPC();
+    }
+    public static void RpcSetVisorUnchecked(this PlayerControl player, string visorId, PlayerControl seePlayer = null)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetVisor(visorId, valueOrDefault);
+        }
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetVisor, seePlayer);
+        messageWriter.Write(visorId);
+        messageWriter.EndRPC();
+    }
+    public static void RpcSetSkinUnchecked(this PlayerControl player, string skinId, PlayerControl seePlayer = null)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetSkin(skinId, valueOrDefault);
+        }
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetSkin, seePlayer);
+        messageWriter.Write(skinId);
+        messageWriter.EndRPC();
     }
 
     public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)
@@ -263,10 +370,52 @@ public static class RPCHelper
         else
         {
             MessageWriter writer = StartRPC(target.NetId, RpcCalls.ProtectPlayer, target);
-            writer.Write(0);
+            writer.WriteNetObject(target);
             writer.Write(0);
             writer.EndRPC();
+            target.RPCMurderPlayerPrivate(target, target);
         }
+    }
+
+    public static void RpcRevertShapeshiftUnchecked(this PlayerControl player, bool shouldAnimate, PlayerControl seer = null)
+    {
+        if (seer is not null)
+        {
+            if (AmongUsClient.Instance.AmClient && PlayerControl.LocalPlayer == seer)
+            {
+                player.Shapeshift(player, shouldAnimate);
+            }
+            else
+            {
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, 46, SendOption.None, seer.GetClientId());
+                messageWriter.WriteNetObject(player);
+                messageWriter.Write(shouldAnimate);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            }
+        }
+        else
+        {
+            if (AmongUsClient.Instance.AmClient)
+            {
+                player.Shapeshift(player, shouldAnimate);
+            }
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, 46, SendOption.None);
+            messageWriter.WriteNetObject(player);
+            messageWriter.Write(shouldAnimate);
+            AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+        }
+    }
+
+    public static void RpcExitVentUnchecked(this PlayerPhysics player, int id)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            ((MonoBehaviour)player).StopAllCoroutines();
+            ((MonoBehaviour)player).StartCoroutine(player.CoExitVent(id));
+        }
+        MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, 20, SendOption.None);
+        messageWriter.WritePacked(id);
+        messageWriter.EndMessage();
     }
 
     public static void RpcOpenToilet()

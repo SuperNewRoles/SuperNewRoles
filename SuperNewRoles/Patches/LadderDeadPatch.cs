@@ -16,9 +16,9 @@ public static class LadderDead
         if (ModeHandler.IsMode(ModeId.Default))
         {
             if (PlayerControl.LocalPlayer.IsDead()) return;
-            if (TargetLadderData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
+            if (TargetLadderData.TryGetValue(CachedPlayer.LocalPlayer.PlayerId, out Vector3 pos))
             {
-                if (Vector2.Distance(TargetLadderData[CachedPlayer.LocalPlayer.PlayerId], CachedPlayer.LocalPlayer.transform.position) < 0.5f)
+                if (Vector2.Distance(pos, CachedPlayer.LocalPlayer.transform.position) < 0.5f)
                 {
                     if (PlayerControl.LocalPlayer.moveable)
                     {
