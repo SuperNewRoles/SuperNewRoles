@@ -20,6 +20,8 @@ public static class Main
         CursedDivertPowerTask.Data = new();
         CursedDivertPowerTask.Change = false;
 
+        CursedDressUpTask.IsDisabledPlatform = false;
+
         CursedFixShowerTask.Data = new();
 
         CursedStartFansTask.Data = new();
