@@ -1785,7 +1785,7 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            return ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
+            return CacheManager.MyRoleChache != null && ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
         try
         {
