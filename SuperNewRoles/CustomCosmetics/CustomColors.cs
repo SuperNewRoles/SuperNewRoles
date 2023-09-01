@@ -219,6 +219,7 @@ public class CustomColors
                 Logger.Info(e.ToString());
             }
         }
+        CustomColorData = CustomColorDataOld;
         //CustomColorData = CustomColorDataa;
         foreach (var dic in CustomColorData)
         {
