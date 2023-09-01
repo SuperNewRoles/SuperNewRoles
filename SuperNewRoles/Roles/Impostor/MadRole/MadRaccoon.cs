@@ -167,7 +167,7 @@ public static class MadRaccoon
         {
             if (coolTimeTimer != null) coolTimeTimer.Stop();
             if (durationTimeTimer != null) durationTimeTimer.Stop();
-            shapeDurationText.text = "";
+            if (shapeDurationText != null) shapeDurationText.text = "";
         }
         private static void RevertShapeshift()
         {
