@@ -2008,7 +2008,6 @@ public class CustomOptionHolder
 
         /* |: ========================= Modifiers Settings ========================== :| */
 
-<<<<<<< HEAD
         // SetupModifierCustomOptions
 
         RoleBaseHelper.SetUpOptions();
@@ -2030,25 +2029,7 @@ public class CustomOptionHolder
         LoversAliveTaskCount = Create(500206, true, CustomOptionType.Modifier, "LoversAliveTaskCountSetting", false, LoversOption);
         LoversDuplicationQuarreled = Create(500207, true, CustomOptionType.Modifier, "LoversDuplicationQuarreledSetting", true, LoversOption);
         var loversoption = SelectTask.TaskSetting(500208, 500209, 500210, LoversOption, CustomOptionType.Modifier, true);
-=======
-        MadRolesCanFixComms = Create(500000, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
-        MadRolesCanFixElectrical = Create(500001, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
-        MadRolesCanVentMove = Create(500002, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
 
-        QuarreledOption = Create(500100, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
-        QuarreledTeamCount = Create(500101, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
-        QuarreledOnlyCrewmate = Create(500102, true, CustomOptionType.Neutral, "QuarreledOnlyCrewmateSetting", false, QuarreledOption);
-
-        LoversOption = Create(500200, true, CustomOptionType.Neutral, Cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
-        LoversTeamCount = Create(500201, true, CustomOptionType.Neutral, "LoversTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
-        LoversPar = Create(500202, true, CustomOptionType.Neutral, "LoversParSetting", rates, LoversOption);
-        LoversOnlyCrewmate = Create(500203, true, CustomOptionType.Neutral, "LoversOnlyCrewmateSetting", false, LoversOption);
-        LoversSingleTeam = Create(500204, true, CustomOptionType.Neutral, "LoversSingleTeamSetting", true, LoversOption);
-        LoversSameDie = Create(500205, true, CustomOptionType.Neutral, "LoversSameDieSetting", true, LoversOption);
-        LoversAliveTaskCount = Create(500206, true, CustomOptionType.Neutral, "LoversAliveTaskCountSetting", false, LoversOption);
-        LoversDuplicationQuarreled = Create(500207, true, CustomOptionType.Neutral, "LoversDuplicationQuarreledSetting", true, LoversOption);
-        var loversoption = SelectTask.TaskSetting(500208, 500209, 500210, LoversOption, CustomOptionType.Neutral, true);
->>>>>>> develop
         LoversCommonTask = loversoption.Item1;
         LoversShortTask = loversoption.Item2;
         LoversLongTask = loversoption.Item3;
