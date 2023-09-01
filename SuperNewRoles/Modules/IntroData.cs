@@ -108,7 +108,7 @@ public class IntroData
         var option = CustomRoleOption.RoleOptions.FirstOrDefault((_) => _.RoleId == roleId);
         return option;
     }
-    public static string GetTitle(string name, Int16 num, RoleId RoleId)
+    public static string GetTitle(string name, Int16 num, RoleId RoleId = RoleId.DefaultRole)
     {
         if (RoleId is not RoleId.DefaultRole)
         {
