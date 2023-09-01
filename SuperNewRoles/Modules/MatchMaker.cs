@@ -120,7 +120,7 @@ public static class MatchMaker
                 Regex colorRegex = new(pattern);
                 tagName = colorRegex.Replace(tagName, "");
 
-                string tagKey = ModTranslation.GetTranslateKey(tagName);
+                (string tagKey, bool success) = ModTranslation.GetTranslateKey(tagName);
 
                 ActiveTags.Add($"{tagKey}");
                 Logger.Info($"タグ情報 : {tagName}({option.id}) を送信します。");

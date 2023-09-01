@@ -2763,7 +2763,7 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                FastMakerButton.MaxTimer = RoleClass.Tuna.IsMeetingEnd ? RoleClass.DefaultKillCoolDown : 10f;
+                FastMakerButton.MaxTimer = RoleClass.IsFirstMeetingEnd ? RoleClass.DefaultKillCoolDown : 10f;
                 FastMakerButton.Timer = FastMakerButton.MaxTimer;
             },
             __instance.KillButton.graphic.sprite,

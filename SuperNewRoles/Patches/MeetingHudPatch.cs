@@ -45,6 +45,7 @@ class CheckForEndVotingPatch
             { RoleId.MayorFriends, RoleClass.MayorFriends.AddVote },
             { RoleId.Dictator, RoleClass.Dictator.VoteCount }
         };
+
     public static bool Prefix(MeetingHud __instance)
     {
         try
@@ -520,6 +521,7 @@ class MeetingHudStartPatch
             {
                 SyncSetting.CustomSyncSettings(out var options);
                 SyncSetting.MeetingSyncSettings(options);
+                if (!RoleClass.IsFirstMeetingEnd) AddChatPatch.YourRoleInfoSendCommand();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         if (ModeHandler.IsMode(ModeId.Default))

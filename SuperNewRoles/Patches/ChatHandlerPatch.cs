@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -188,6 +190,24 @@ class AddChatPatch
             return false;
         }
         else if (
+            Commands[0].Equals("/roleinfo", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/ri", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (Commands.Length == 1)
+                SendCommand(sourcePlayer, ModTranslation.GetString("RoleInfoDescription"));
+            else if (Commands.Length == 2)
+                RoleInfoSendCommand(sourcePlayer, Commands[1]);
+            else
+            {
+                string roleName = "";
+                for (int i = 2; i <= Commands.Length; i++) { roleName += Commands[i - 1] + " "; }
+
+                RoleInfoSendCommand(sourcePlayer, roleName.TrimEnd());
+            }
+            return false;
+        }
+        else if (
             Commands[0].Equals("/Winners", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/w", StringComparison.OrdinalIgnoreCase)
             )
@@ -248,7 +268,7 @@ class AddChatPatch
     {
         Logger.Info("GetOptionText", "ChatHandler");
         string text = "";
-        text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
+        text += GetChildText(RoleOption.children, "  ");
         return text;
     }
 
@@ -262,18 +282,7 @@ class AddChatPatch
             _ => "",
         };
     }
-    static string GetText(CustomRoleOption option)
-    {
-        Logger.Info("GetText", "Chathandler");
-        string text = "\n";
-        IntroData intro = option.Intro;
-        text += GetTeamText(intro.TeamType) + ModTranslation.GetString("TeamRoleType") + "\n";
-        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
-        text += intro.Description + "\n";
-        text += ModTranslation.GetString("MessageSettings") + ":\n";
-        text += GetOptionText(option, intro);
-        return text;
-    }
+
     // /grのコマンド結果を返す。辞書を加工する。
     static string GetInRole()
     {
@@ -327,11 +336,215 @@ class AddChatPatch
         float time = 0;
         foreach (CustomRoleOption option in EnableOptions)
         {
-            string text = GetText(option);
-            string rolename = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
+            (string rolename, string text) = RoleInfo.GetRoleInfo(option.RoleId);
+            rolename = $"<align={"left"}><size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size></align>";
+            text = $"\n<color=#00000000>{option.RoleId}</color>" + text;
+            SuperNewRolesPlugin.Logger.LogInfo(rolename);
             SuperNewRolesPlugin.Logger.LogInfo(text);
             Send(target, rolename, text, time);
             time += SendTime;
+        }
+    }
+
+    /// <summary>
+    /// コマンドで指定した役職の説明を取得する
+    /// </summary>
+    /// <param name="sourcePlayer">送信先(Hostだった場合全体送信)</param>
+    /// <param name="command">指定された役職名</param>
+    internal static void RoleInfoSendCommand(PlayerControl sourcePlayer, string command)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
+
+        (string roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(command);
+        string beforeIdChangeRoleName =
+            isSuccess
+            ? roleNameKey.Replace("Name", "") // 翻訳キーの取得に成功していた場合, RoleIdと同様の名前にする為 キーから"Name"を外す.
+            : command; // 失敗していた場合入力された文字のまま
+
+        string roleName = "NONE", roleInfo = "";
+
+        // 参考 => https://qiita.com/masaru/items/a44dc30bfc18aac95015#fnref1
+        // 取得した役職名(string)からRoleIdを取得する。
+        var roleIdChange = Enum.TryParse(beforeIdChangeRoleName, out RoleId roleId) && Enum.IsDefined(typeof(RoleId), roleId);
+        if (roleIdChange)
+        {
+            (roleName, roleInfo) = RoleInfo.GetRoleInfo(roleId, AmongUsClient.Instance.AmHost);
+            if (roleName == "NONE") roleInfo = Format(roleInfo, command); // RoleIdからの役職情報の取得に失敗していた場合, 入力した役職名を追加する。
+            SendCommand(target, roleInfo, roleName);
+            return;
+        }
+
+        SendCommand(target, Format(ModTranslation.GetString("RoleInfoError"), command));
+    }
+    internal static void YourRoleInfoSendCommand()
+    {
+        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        {
+            RoleId roleId = player.GetRole();
+            string roleName = "NONE", roleInfo = "";
+            (roleName, roleInfo) = RoleInfo.GetRoleInfo(roleId, AmongUsClient.Instance.AmHost, player.IsImpostor());
+
+            SendCommand(player, roleInfo, roleName);
+        }
+    }
+    internal static class RoleInfo
+    {
+        private static Dictionary<RoleId, (string, string)> RoleInfoDic;
+        private static Dictionary<TeamType, (string, string)> DefaultRoleInfoDic;
+        internal static void ClearAndReload()
+        {
+            RoleInfoDic = new();
+            DefaultRoleInfoDic = new();
+            if (AmongUsClient.Instance.AmHost) SaveEnableRoleInfo();
+        }
+
+        /// <summary>
+        /// 役職説明を記載する辞書に内容を保存する。
+        /// </summary>
+        private static void SaveEnableRoleInfo()
+        {
+            // 現在有効な役職を取得
+            List<CustomRoleOption> EnableOptions = new();
+            foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+            {
+                if (!option.IsRoleEnable) continue;
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+                EnableOptions.Add(option);
+            }
+
+            // 現在有効な役職の説明を保存
+            foreach (CustomRoleOption roleOption in EnableOptions)
+            {
+                RoleId roleId = roleOption.RoleId;
+                string roleName, info;
+                (roleName, info) = WriteRoleInfo(roleId);
+
+                if (!RoleInfoDic.ContainsKey(roleId))
+                    RoleInfoDic.Add(roleId, (roleName, info));
+                else RoleInfoDic[roleId] = (roleName, info);
+            }
+
+            // 素インポスター及び素クルーメイト時の, 役職説明の保存
+            for (int i = 0; i < 2; i++)
+            {
+                RoleId roleId = RoleId.DefaultRole;
+                string roleName, roleInfo = null;
+                TeamType teamType = (TeamType)i;
+
+                (roleName, roleInfo) = WriteRoleInfo(roleId, (TeamType)i == TeamType.Impostor);
+
+                if (!DefaultRoleInfoDic.ContainsKey(teamType))
+                    DefaultRoleInfoDic.Add(teamType, (roleName, roleInfo));
+                else DefaultRoleInfoDic[teamType] = (roleName, roleInfo);
+            }
+        }
+
+        /// <summary>
+        /// 役職の説明を取得する
+        /// </summary>
+        /// <param name="roleId">説明を取得したい役のid</param>
+        /// <param name="isImpostor">true : インポスターである</param>
+        /// <returns> string_1 : 役職名, 陣営 / string_2 : 役職説明</returns>
+        private static (string, string) WriteRoleInfo(RoleId roleId, bool isImpostor = false)
+        {
+            string roleName = "NONE", roleInfo = "";
+
+            // Mod役職の情報取得
+            if (roleId != RoleId.DefaultRole)
+            {
+                IEnumerable<CustomRoleOption> roleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == roleId).Select(option => { return option; });
+                {
+                    foreach (CustomRoleOption roleOption in roleOptions)
+                    {
+                        IntroData intro = roleOption.Intro;
+                        StringBuilder optionBuilder = new();
+
+                        roleName = $"<align={"left"}><size=180%>{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size></align></size>";
+
+                        optionBuilder.AppendLine($"<align={"left"}><size=80%>\n" + GetTeamText(roleOption.Intro.TeamType) + "\n</size>");
+                        optionBuilder.AppendLine($"<size=100%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
+                        optionBuilder.AppendLine($"<size=80%>{intro.Description}\n</size>");
+                        optionBuilder.AppendLine($"<size=70%>{ModTranslation.GetString("MessageSettings")}:");
+                        optionBuilder.AppendLine($"{GetOptionText(roleOption, intro)}\n<color=#00000000>{roleOption.Intro.NameKey}</color></align></size>");
+
+                        roleInfo = optionBuilder.ToString();
+                        return (roleName, roleInfo);
+                    }
+                }
+            }
+            else // vanilla役職の説明を取得
+            {
+                Color color;
+                TeamType teamType;
+                StringBuilder vanillaRoleBuilder = new();
+                string teamName;
+
+                if (isImpostor)
+                {
+                    color = RoleClass.ImpostorRed;
+                    teamName = "Impostor";
+                    teamType = TeamType.Impostor;
+                }
+                else
+                {
+                    color = Palette.CrewmateBlue;
+                    teamName = "Crewmate";
+                    teamType = TeamType.Crewmate;
+                }
+
+                roleName = $"<align={"left"}><size=180%>{CustomOptionHolder.Cs(color, teamName + "Name")}</size> <size=50%>\n{GetTeamText(teamType)}</align></size>";
+
+                vanillaRoleBuilder.AppendLine("\n");
+
+                vanillaRoleBuilder.AppendLine($"<align={"left"}><size=100%>「{CustomOptionHolder.Cs(color, teamName + "Title1")}」</size>\n");
+                vanillaRoleBuilder.AppendLine($"<size=80%>{ModTranslation.GetString(teamName + "Description")}</align></size>\n\n");
+
+                roleInfo = vanillaRoleBuilder.ToString();
+                return (roleName, roleInfo);
+            }
+
+            string errorMessage = Format(ModTranslation.GetString("RoleIdInfoError"), "{0}", roleId);
+            Logger.Error($"RoleId : [ {roleId} ] の取得に失敗しました。", "WriteRoleInfo");
+            return (roleName, errorMessage);
+        }
+
+        /// <summary>
+        /// RoleIdから役職の説明を取得する。
+        /// </summary>
+        /// <param name="roleId">説明を取得したい役職のRoleId</param>
+        /// <param name="isGetAllRole">辞書に保存されていない(配役されていない)役の情報も取得するか</param>
+        /// <param name="isImpostor">true : 取得対象がインポスター役職</param>
+        /// <returns>string.1 : 役職名 / string.2 : 役職説明</returns>
+        internal static (string, string) GetRoleInfo(RoleId roleId, bool isGetAllRole = false, bool isImpostor = false)
+        {
+            string roleName = "NONE", roleInfo = "";
+
+            if (roleId != RoleId.DefaultRole)
+            {
+                if (RoleInfoDic.ContainsKey(roleId))
+                {
+                    roleName = RoleInfoDic[roleId].Item1;
+                    roleInfo = RoleInfoDic[roleId].Item2;
+                }
+                else if (isGetAllRole) (roleName, roleInfo) = WriteRoleInfo(roleId);
+                else roleInfo = ModTranslation.GetString("GetRoleInfoErrorDisable");
+
+                return (roleName, roleInfo);
+            }
+            else
+            {
+                TeamType type = isImpostor ? TeamType.Impostor : TeamType.Crewmate;
+                if (DefaultRoleInfoDic.ContainsKey(type))
+                {
+                    roleName = DefaultRoleInfoDic[type].Item1;
+                    roleInfo = DefaultRoleInfoDic[type].Item2;
+                }
+                else (roleName, roleInfo) = WriteRoleInfo(roleId, isImpostor);
+
+                return (roleName, roleInfo);
+            }
         }
     }
     static void GetInRoleCommand(PlayerControl target = null)

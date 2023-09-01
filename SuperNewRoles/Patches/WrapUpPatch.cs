@@ -104,7 +104,7 @@ class WrapUpPatch
         SerialKiller.WrapUp();
         Assassin.WrapUp();
         CountChanger.CountChangerPatch.WrapUpPatch();
-        RoleClass.Tuna.IsMeetingEnd = true;
+        RoleClass.IsFirstMeetingEnd = true;
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);

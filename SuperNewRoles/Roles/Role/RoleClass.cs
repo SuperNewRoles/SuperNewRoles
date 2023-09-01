@@ -19,6 +19,7 @@ namespace SuperNewRoles.Roles;
 public static class RoleClass
 {
     public static bool IsMeeting;
+    public static bool IsFirstMeetingEnd;
     public static bool IsCoolTimeSetted;
     public static System.Random rnd = new((int)DateTime.Now.Ticks);
     public static Color ImpostorRed = Palette.ImpostorRed;
@@ -36,6 +37,7 @@ public static class RoleClass
         ModHelpers.VentIdControlDic = new();
         BlockPlayers = new();
         IsMeeting = false;
+        IsFirstMeetingEnd = false;
         RandomSpawn.IsFirstSpawn = true;
         DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
@@ -46,6 +48,7 @@ public static class RoleClass
         IsCoolTimeSetted = false;
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
+        AddChatPatch.RoleInfo.ClearAndReload();
         Agartha.MapData.ClearAndReloads();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();
@@ -2093,7 +2096,6 @@ public static class RoleClass
         public static float StoppingTime;
         public static bool IsUseVent;
         public static Dictionary<byte, float> Timers;
-        public static bool IsMeetingEnd;
         public static bool IsTunaAddWin;
         public static void ClearAndReload()
         {
@@ -2104,7 +2106,6 @@ public static class RoleClass
             if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
             IsUseVent = CustomOptionHolder.TunaIsUseVent.GetBool();
             IsTunaAddWin = CustomOptionHolder.TunaIsAddWin.GetBool();
-            IsMeetingEnd = false;
             if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
             {
                 Timers = new();
