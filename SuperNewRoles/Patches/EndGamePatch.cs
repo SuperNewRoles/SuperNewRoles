@@ -149,6 +149,7 @@ static class AdditionalTempData
         public FinalStatus Status { get; internal set; }
         public IntroData IntroData { get; set; }
         public IntroData GhostIntroData { get; set; }
+        public string AttributeRoleName { get; set; }
     }
 }
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -174,7 +175,7 @@ public class EndGameManagerSetUpPatch
             UnityEngine.Object.Destroy(pb.gameObject);
         }
         int num = Mathf.CeilToInt(7.5f);
-        List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
+        List<WinningPlayerData> list = TempData.winners.ToList().OrderBy(delegate (WinningPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
         }).ToList<WinningPlayerData>();
@@ -392,7 +393,7 @@ public class EndGameManagerSetUpPatch
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                string roleText = CustomOptionHolder.Cs(data.IntroData.color, data.IntroData.NameKey + "Name");
+                string roleText = CustomOptionHolder.Cs(data.IntroData.color, data.IntroData.NameKey + "Name") + data.AttributeRoleName;
                 if (data.GhostIntroData.RoleId != RoleId.DefaultRole)
                 {
                     roleText += $" → {CustomOptionHolder.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
@@ -547,6 +548,15 @@ public static class OnGameEndPatch
                 {
                     namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
                 }
+                Dictionary<string, (Color, bool)> attributeRoles = new(SetNamesClass.AttributeRoleNameSet(p.Object));
+                string  attributeRoleName= "";
+                if (attributeRoles.Count != 0)
+                {
+                    foreach (var kvp in attributeRoles)
+                    {
+                        attributeRoleName += $" + {CustomOptionHolder.Cs(kvp.Value.Item1, kvp.Key)}";
+                    }
+                }
                 AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                 {
                     PlayerName = p.DefaultOutfit.PlayerName,
@@ -557,7 +567,8 @@ public static class OnGameEndPatch
                     TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                     Status = finalStatus,
                     IntroData = roles,
-                    GhostIntroData = ghostRoles
+                    GhostIntroData = ghostRoles,
+                    AttributeRoleName = attributeRoleName
                 });
             }
         }

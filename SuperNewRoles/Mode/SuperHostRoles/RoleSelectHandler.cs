@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -22,7 +23,7 @@ public static class RoleSelectHandler
         OneOrNotListSet();
         AllRoleSetClass.AllRoleSet();
         SetCustomRoles();
-        SyncSetting.CustomSyncSettings();
+        SyncSetting.CustomSyncSettings(out var modified);
         ChacheManager.ResetChache();
         return sender;
     }
@@ -155,7 +156,7 @@ public static class RoleSelectHandler
         SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
-        SetVanillaRole(RoleClass.EvilSeer.EvilSeerPlayer, RoleTypes.Shapeshifter, false);
+        SetVanillaRole(EvilSeer.RoleData.Player, RoleTypes.Shapeshifter, false);
         /*============シェイプシフター役職設定============*/
 
         foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
@@ -303,17 +304,9 @@ public static class RoleSelectHandler
         List<RoleId> Crewonepar = new();
         List<RoleId> Crewnotonepar = new();
 
-        foreach (IntroData intro in IntroData.IntroList)
+        foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (intro.RoleId != RoleId.DefaultRole &&
-                intro.RoleId != RoleId.Revolutionist &&
-                intro.RoleId != RoleId.Assassin &&
-                (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
-                && !intro.IsGhostRole
-                && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
-                && intro.RoleId is not RoleId.GM
-                && intro.RoleId != RoleId.Pavlovsdogs
-                && intro.RoleId != RoleId.Jumbo)
+            if (!intro.IsGhostRole && AllRoleSetClass.CanRoleIdElected(intro.RoleId))
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null || !option.isSHROn) continue;

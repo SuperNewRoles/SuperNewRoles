@@ -48,7 +48,7 @@ public static class MatchMaker
         data["type"] = "updateoption";
         string ActiveRole = "";
         List<string> ActivateRoles = new();
-        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions)
+        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
         {
             if (opt.GetSelection() == 0) continue;
             if (opt.IsHidden()) continue;
@@ -120,7 +120,7 @@ public static class MatchMaker
                 Regex colorRegex = new(pattern);
                 tagName = colorRegex.Replace(tagName, "");
 
-                string tagKey = ModTranslation.GetTranslateKey(tagName);
+                (string tagKey, bool success) = ModTranslation.GetTranslateKey(tagName);
 
                 ActiveTags.Add($"{tagKey}");
                 Logger.Info($"タグ情報 : {tagName}({option.id}) を送信します。");
@@ -134,7 +134,7 @@ public static class MatchMaker
         var data = CreateBaseData();
         string ActiveRole = "";
         List<string> ActivateRoles = new();
-        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions)
+        foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
         {
             if (opt.GetSelection() == 0) continue;
             if (opt.IsHidden()) continue;
@@ -227,8 +227,12 @@ public static class MatchTagOption
     public static CustomOption FullVCOnlyTag; // 聞き専不可
 
     // レギュレーション : 600500 ~
+    public static CustomOption SheriffAndBlackCatRegulationTag; // シェリマ (黒猫 & イビルハッカー)
     public static CustomOption SheriffAndMadRegulationTag; // シェリマ
     public static CustomOption NeutralKillerRegulationTag; // 第三キル人外入り
+    public static CustomOption JackalRegulationTag; // ジャッカル入り
+    public static CustomOption SidekickRegulationTag; // SK有
+    public static CustomOption SidekickKillerRegulationTag; // キル役職系SK有
     public static CustomOption VillageForOutsidersRegulationTag; // 人外村
     public static CustomOption ManyRolesRegulationTag; // 多役
     public static CustomOption WerewolfMoonlightRegulationTag; // 月下
@@ -239,8 +243,14 @@ public static class MatchTagOption
     public static CustomOption RegulationAdjustedTag; // レギュ調整中
 
     // 使用機能 : 600600 ~
-    public static CustomOption FeatureAdminLimitTag;
-    public static CustomOption FeatureCanNotUseAdminTag;
+    public static CustomOption FeatureAdminLimitTag; // アドミン使用制限
+    public static CustomOption FeatureCanNotUseAdminTag; // アドミン禁止
+    public static CustomOption FeatureCanNotUseRecordsAdminTag; // アドミン禁止
+    public static CustomOption FeatureVitalLimitTag; // バイタル使用制限
+    public static CustomOption FeatureVaitalCanNotUseTag; // バイタル禁止
+    public static CustomOption FeatureCameraLimitTag; // カメラ使用制限
+    public static CustomOption FeatureCameraCanNotUseTag; // カメラ禁止
+
 
     // デバック : 600700 ~
     public static CustomOption DebugNewRolesTag; // 新役職
@@ -289,8 +299,12 @@ public static class MatchTagOption
 
         // レギュレーション : 600500 ~
         Color RegulationColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
-        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(RegulationColor, "SheriffAndMadRegulationTag"), false, null, isHeader: true); // シェリマ
+        SheriffAndBlackCatRegulationTag = CreateMatchMakeTag(600500, false, Cs(RegulationColor, "SheriffAndBlackCatRegulationTag"), false, null, isHeader: true); // シェリマ (黒猫 & イビルハッカー)
+        SheriffAndMadRegulationTag = CreateMatchMakeTag(600501, true, Cs(Roles.RoleClass.Sheriff.color, "SheriffAndMadRegulationTag"), false, null); // シェリマ
         NeutralKillerRegulationTag = CreateMatchMakeTag(600502, true, Cs(RegulationColor, "NeutralKillerRegulationTag"), false, null); // 第三キル人外入り
+        JackalRegulationTag = CreateMatchMakeTag(600511, true, Cs(Roles.RoleClass.JackalBlue, "JackalRegulationTag"), false, null); // ジャッカル入り
+        SidekickRegulationTag = CreateMatchMakeTag(600512, true, Cs(RegulationColor, "SidekickRegulationTag"), false, null); // SK有
+        SidekickKillerRegulationTag = CreateMatchMakeTag(600513, false, Cs(RegulationColor, "SidekickKillerRegulationTag"), false, null); // キル役職系SK有
         ManyRolesRegulationTag = CreateMatchMakeTag(600503, true, Cs(RegulationColor, "ManyRolesRegulationTag"), false, null); // 多役
         WerewolfMoonlightRegulationTag = CreateMatchMakeTag(600504, true, Cs(RegulationColor, "WerewolfMoonlightRegulationTag"), false, null); // 月下
         VillageForOutsidersRegulationTag = CreateMatchMakeTag(600505, true, Cs(RegulationColor, "VillageForOutsidersRegulationTag"), false, null); // 人外村
@@ -303,7 +317,12 @@ public static class MatchTagOption
         // 使用機能 : 600600 ~
         Color useFeatureColor = new(255f / 255f, 255f / 255f, 255f / 255f, 1);
         FeatureAdminLimitTag = CreateMatchMakeTag(600600, false, Cs(useFeatureColor, "FeatureAdminLimitTag"), false, null, isHeader: true); // アドミン使用制限
-        FeatureCanNotUseAdminTag = CreateMatchMakeTag(600601, true, Cs(useFeatureColor, "FeatureCanNotUseAdminTag"), false, null, isHeader: true); // アドミン禁止
+        FeatureCanNotUseAdminTag = CreateMatchMakeTag(600601, true, Cs(useFeatureColor, "FeatureCanNotUseAdminTag"), false, null); // アドミン禁止
+        FeatureCanNotUseRecordsAdminTag = CreateMatchMakeTag(600602, false, Cs(useFeatureColor, "FeatureCanNotUseRecordsAdminTag"), false, null);  // アーカイブアドミン禁止
+        FeatureVaitalCanNotUseTag = CreateMatchMakeTag(600603, true, Cs(useFeatureColor, "FeatureVaitalCanNotUseTag"), false, null);  // バイタル禁止
+        FeatureVitalLimitTag = CreateMatchMakeTag(600604, false, Cs(useFeatureColor, "FeatureVitalLimitTag"), false, null);  // バイタル使用制限
+        FeatureCameraCanNotUseTag = CreateMatchMakeTag(600605, true, Cs(useFeatureColor, "FeatureCameraCanNotUseTag"), false, null);  // カメラ禁止
+        FeatureCameraLimitTag = CreateMatchMakeTag(600606, false, Cs(useFeatureColor, "FeatureCameraLimitTag"), false, null);  // カメラ使用制限
 
         // デバッグ : 600600 ~
         Color debugColor = (Color)Roles.RoleClass.Debugger.color;
@@ -330,7 +349,13 @@ public static class MatchTagOption
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
-                FeatureCanNotUseAdminTag.selection = 0;
+                SheriffAndBlackCatRegulationTag.selection = 0;
+                SidekickKillerRegulationTag.selection = 0;
+
+                FeatureAdminLimitTag.selection = 0;
+                FeatureCanNotUseRecordsAdminTag.selection = 0;
+                FeatureVitalLimitTag.selection = 0;
+                FeatureCameraLimitTag.selection = 0;
             }
         }
         catch { }

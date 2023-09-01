@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay;
@@ -16,8 +16,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 public static class SyncSetting
 {
     public static IGameOptions OptionData;
-    public static void CustomSyncSettings(this PlayerControl player)
+    public static void CustomSyncSettings(this PlayerControl player, out IGameOptions modified)
     {
+        modified = null;
         if (!AmongUsClient.Instance.AmHost) return;
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
         var role = player.GetRole();
@@ -271,6 +272,7 @@ public static class SyncSetting
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());
+        modified = optdata.DeepCopy();
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }
     public static void MurderSyncSetting(PlayerControl player)
@@ -301,11 +303,11 @@ public static class SyncSetting
         else optdata.RpcSyncOption(player.GetClientId());
     }
 
-    public static void MeetingSyncSettings(this PlayerControl player)
+    public static void MeetingSyncSettings(this PlayerControl player, IGameOptions options = null)
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        var role = player.GetRole();
-        var optdata = OptionData.DeepCopy();
+        if (options == null) options = OptionData;
+        var optdata = options.DeepCopy();
 
         optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
@@ -336,18 +338,20 @@ public static class SyncSetting
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());
     }
-    public static void CustomSyncSettings()
+    public static void CustomSyncSettings(out List<IGameOptions> options)
     {
         var caller = new System.Diagnostics.StackFrame(1, false);
         var callerMethod = caller.GetMethod();
         string callerMethodName = callerMethod.Name;
         string callerClassName = callerMethod.DeclaringType.FullName;
         SuperNewRolesPlugin.Logger.LogInfo("[SHR:SyncSettings] CustomSyncSettingsが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+        options = new();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             if (!p.Data.Disconnected && !p.IsBot())
             {
-                CustomSyncSettings(p);
+                CustomSyncSettings(p, out var modified);
+                options.Add(modified);
             }
         }
     }
@@ -355,13 +359,19 @@ public static class SyncSetting
     /// <summary>
     /// 開票処理をゲストに送信する準備
     /// </summary>
-    public static void MeetingSyncSettings()
+    public static void MeetingSyncSettings(List<IGameOptions> options = null)
     {
+        int i = 0;
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             if (!p.Data.Disconnected && !p.IsBot())
             {
-                MeetingSyncSettings(p);
+                if (options == null || options.Count <= i) MeetingSyncSettings(p);
+                else
+                {
+                    MeetingSyncSettings(p, options[i]);
+                    i++;
+                }
             }
         }
     }
