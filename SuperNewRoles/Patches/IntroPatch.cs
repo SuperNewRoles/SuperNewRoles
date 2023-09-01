@@ -70,7 +70,7 @@ public class IntroPatch
         {
             if (ModeHandler.IsMode(ModeId.HideAndSeek))
             {
-                new LateTask(() => RoleClass.Tuna.IsMeetingEnd = true, 6);
+                new LateTask(() => RoleClass.IsFirstMeetingEnd = true, 6);
             }
             // プレイヤーのアイコンを生成
             if (PlayerControl.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null)
