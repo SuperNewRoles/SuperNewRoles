@@ -18,6 +18,24 @@ public static class ReplayFileWriter
         var writer = new BinaryWriter(new FileStream(filePath, FileMode.CreateNew, FileAccess.Write));
         return (writer, filePath);
     }
+    public static void WriteDoorData(BinaryWriter writer)
+    {
+        ElectricalDoors electrical = ShipStatus.Instance?.transform?.Find("Electrical")?.GetComponent<ElectricalDoors>();
+        if (electrical == null)
+        {
+            Logger.Info("エレキドアがありませんでした。");
+            writer.Write(false);
+        }
+        else
+        {
+            writer.Write(true);
+            writer.Write(electrical.Doors.Count);
+            foreach (StaticDoor door in electrical.Doors)
+            {
+                writer.Write(door.IsOpen);
+            }
+        }
+    }
     public static void WriteSNRData(BinaryWriter writer)
     {
         Version version = SuperNewRolesPlugin.ThisVersion;

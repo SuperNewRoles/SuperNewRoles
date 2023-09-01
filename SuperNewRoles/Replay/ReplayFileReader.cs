@@ -27,6 +27,27 @@ public static class ReplayFileReader
         }
         return (reader, filePath);
     }
+    public static ReplayData ReadDoorData(BinaryReader reader, ReplayData replay)
+    {
+        bool IsDoor = reader.ReadBoolean();
+        if (IsDoor)
+        {
+            int count = reader.ReadInt32();
+            ElectricalDoors electrical = ShipStatus.Instance?.transform?.Find("Electrical")?.GetComponent<ElectricalDoors>();
+            if (electrical == null)
+            {
+                Logger.Info("なんかドアたちがいない...");
+            }
+            else
+            {
+                foreach (StaticDoor door in electrical.Doors)
+                {
+                    door.SetOpen(reader.ReadBoolean());
+                }
+            }
+        }
+        return replay;
+    }
     public static ReplayData ReadSNRData(BinaryReader reader, ReplayData replay)
     {
         replay.ReplayDataMod = reader.ReadString();

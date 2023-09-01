@@ -60,6 +60,7 @@ namespace SuperNewRoles.Replay
             replay = ReplayFileReader.ReadGameOptionData(reader, replay);
             replay = ReplayFileReader.ReadCustomOptionData(reader, replay);
             replay = ReplayFileReader.ReadPlayerData(reader, replay);
+            replay = ReplayFileReader.ReadDoorData(reader, replay);
             ReplayManager.CurrentReplay = replay;
             replay.binaryReader = reader;
             replay.FilePath = filename;

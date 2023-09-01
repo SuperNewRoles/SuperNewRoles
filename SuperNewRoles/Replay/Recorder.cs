@@ -213,6 +213,7 @@ namespace SuperNewRoles.Replay
             ReplayFileWriter.WriteGameOptionData(writer);
             ReplayFileWriter.WriteCustomOptionData(writer);
             ReplayFileWriter.WritePlayerData(writer, FirstOutfits, FirstRoles);
+            ReplayFileWriter.WriteDoorData(writer);
         }
     }
 }
