@@ -1712,7 +1712,7 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        if (p != null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+        if (p == null || ChacheManager.MyRoleChache == null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
             MyRole = RoleId.DefaultRole;
         return roles.Contains(MyRole);
     }
