@@ -1697,10 +1697,10 @@ public static class RoleHelpers
     }
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
-        RoleId MyRole;
+        RoleId MyRole = RoleId.DefaultRole;
         if (IsChache)
         {
-            if (p != null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+            if (p != null || ChacheManager.MyRoleChache == null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
                 MyRole = RoleId.DefaultRole;
         }
         else
