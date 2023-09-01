@@ -97,7 +97,7 @@ public class CustomOption
 
     }
 
-    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId roleId = RoleId.None)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId? roleId = null)
     {
         this.id = Id;
         this.isSHROn = IsSHROn;
@@ -110,7 +110,7 @@ public class CustomOption
         this.parent = parent;
         this.isHeader = isHeader;
         this.isHidden = isHidden;
-        this.RoleId = roleId;
+        this.RoleId = roleId.HasValue ? roleId.Value : RoleId.DefaultRole;
         if (parent != null)
         {
             this.RoleId = parent.RoleId;
@@ -410,7 +410,7 @@ public class CustomRoleOption : CustomOption
     }
 
     public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15, bool isHidden = false, RoleId? role = null) :
-        base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "")
+        base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "", roleId:role)
     {
         if (!role.HasValue)
         {
@@ -439,7 +439,7 @@ public class CustomRoleOption : CustomOption
             RoleId = role.Value;
         }
         if (!RoleOptions.TryAdd(RoleId, this))
-            Logger.Info(RoleId.ToString()+"を追加できませんでした。");
+            Logger.Info(RoleId.ToString()+"を追加できんかったー："+name);
         this.isHidden = isHidden;
         if (max > 1)
             countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
