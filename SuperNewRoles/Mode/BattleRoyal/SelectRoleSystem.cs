@@ -118,6 +118,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             public static void Postfix()
             {
                 if (!AmongUsClient.Instance.AmHost) return;
+                if (!ModeHandler.IsMode(ModeId.BattleRoyal)) return;
                 if (Main.IsRoleSetted) return;
                 new LateTask(() =>
                 {
