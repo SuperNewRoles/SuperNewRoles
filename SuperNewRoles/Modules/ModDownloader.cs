@@ -362,7 +362,6 @@ public static class ModDownloader
                     }
                 }
             }
-            Logger.Info(downloadtextnew.ToString());
             var json = JObject.Parse(downloadtextnew.ToString());
             obj.VersionTag = json["tag_name"]?.ToString();
             List<string> Dlls = new();
