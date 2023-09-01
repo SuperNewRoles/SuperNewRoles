@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using InnerNet;
@@ -13,6 +15,25 @@ namespace SuperNewRoles.Modules;
 
 public static class Blacklist
 {
+    public static class BlacklistHash
+    {
+        public static string ToHash(string str)
+        {
+            byte[] beforeByteArray = Encoding.UTF8.GetBytes(str);
+            SHA256 sha256 = SHA256.Create();
+
+            byte[] afterByteArray2 = sha256.ComputeHash(beforeByteArray);
+            sha256.Clear();
+
+            // バイト配列を16進数文字列に変換
+            StringBuilder sb = new();
+            foreach (byte b in afterByteArray2)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+            return sb.ToString();
+        }
+    }
     public class BlackPlayer
     {
         public static List<BlackPlayer> Players = new();
@@ -34,7 +55,7 @@ public static class Blacklist
             Players.Add(this);
         }
     }
-    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list";
+    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list?hash=true";
     static bool downloaded = false;
     /// <summary>
     /// 起動時などで予め取得しておく
@@ -78,15 +99,28 @@ public static class Blacklist
                                         .FirstOrDefault(client => client.Id == ClientId);
             } while (clientData == null);
         }
+        if ((clientData.FriendCode == "" || !clientData.FriendCode.Contains("#")) && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame)
+        {
+            if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
+            {
+                AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
+                AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size><size=0%>NoFriend</size>" + "<size=225%>フレンドコードがありません</size>\n\nおうちのひとにみせてください。\n\n【保護者の方へ】\nフレンドコードが設定されていないため、\nこのMODをプレイできません。\nフレンド機能を有効にしてください。\nフレンド機能を有効にする：<link=\"https://parents.innersloth.com/ja/login\">https://parents.innersloth.com/ja/login</link>";
+            }
+            //フレコ持ってないクライアントをキックするやつ。もとから実装してるなら下のコメントのところまで消して
+            else if (CustomOptionHolder.DisconnectDontHaveFriendCodeOption.GetBool())
+            {
+                AmongUsClient.Instance.KickPlayer(clientData.Id, ban: true);
+            }
+            // 実装してるなら消す所ここまで
+        }
         foreach (var player in BlackPlayer.Players)
         {
-            if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == clientData.FriendCode)
+            if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == BlacklistHash.ToHash(clientData.FriendCode))
             {
-                Logger.Info((clientData.Character == null).ToString());
                 if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
                 {
                     AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
-                    AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle+"\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード："+player.ReasonCode.ToString()+"\n理由："+player.ReasonDescription+"\n期間："+(!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd")+"まで"));
+                    AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle+"\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード："+player.ReasonCode.ToString()+"\n理由："+player.ReasonDescription+"\n期間："+(!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss")+"まで"));
                 }
                 else
                 {
@@ -103,10 +137,13 @@ internal class DisconnectPopupClosePatch
     {
         try
         {
-            __instance.transform.FindChild("CloseButton").localPosition = new(-2.75f, 0.5f, 0);
-            __instance.GetComponent<SpriteRenderer>().size = new(5, 1.5f);
-            __instance._textArea.fontSizeMin = 1.9f;
-            __instance._textArea.enableWordWrapping = true;
+            if (AmongUsClient.Instance.LastDisconnectReason == DisconnectReasons.Custom && AmongUsClient.Instance.LastCustomDisconnect.StartsWith("<size=0%>MOD</size>"))
+            {
+                __instance.transform.FindChild("CloseButton").localPosition = new(-2.75f, 0.5f, 0);
+                __instance.GetComponent<SpriteRenderer>().size = new(5, 1.5f);
+                __instance._textArea.fontSizeMin = 1.9f;
+                __instance._textArea.enableWordWrapping = true;
+            }
         } catch(Exception e){
             Logger.Info(e.ToString());
             
@@ -124,6 +161,10 @@ internal class DisconnectPopupDoShowPatch
             __instance.GetComponent<SpriteRenderer>().size = new(6, 4);
             __instance._textArea.fontSizeMin = 1.9f;
             __instance._textArea.enableWordWrapping = false;
+            if (AmongUsClient.Instance.LastCustomDisconnect.StartsWith("<size=0%>MOD</size><size=0%>NoFriend</size>"))
+            {
+                __instance.GetComponentInChildren<SelectableHyperLink>().transform.localPosition = new(1.25f, -1.25f, -2);
+            }
         }
     }
 }
@@ -132,7 +173,7 @@ internal class OnGameJoinedPatch
 {
     public static void Postfix(AmongUsClient __instance)
     {
-        __instance.StartCoroutine(Blacklist.Check(ClientId:__instance.ClientId).WrapToIl2Cpp());
+        __instance.StartCoroutine(Blacklist.Check(ClientId: __instance.ClientId).WrapToIl2Cpp());
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]

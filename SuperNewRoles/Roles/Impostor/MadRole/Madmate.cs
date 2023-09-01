@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Roles;
@@ -21,6 +22,14 @@ class Madmate
                 if (!RoleClass.MadMayor.IsImpostorCheck) return false;
                 CheckTask = RoleClass.MadMayor.ImpostorCheckTask;
                 break;
+            case RoleId.MadStuntMan:
+                if (!RoleClass.MadStuntMan.IsImpostorCheck) return false;
+                CheckTask = RoleClass.MadStuntMan.ImpostorCheckTask;
+                break;
+            case RoleId.MadHawk:
+                if (!RoleClass.MadHawk.IsImpostorCheck) return false;
+                CheckTask = RoleClass.MadHawk.ImpostorCheckTask;
+                break;
             case RoleId.MadJester:
                 if (!RoleClass.MadJester.IsImpostorCheck) return false;
                 CheckTask = RoleClass.MadJester.ImpostorCheckTask;
@@ -29,13 +38,21 @@ class Madmate
                 if (!RoleClass.MadSeer.IsImpostorCheck) return false;
                 CheckTask = RoleClass.MadSeer.ImpostorCheckTask;
                 break;
+            case RoleId.MadCleaner:
+                if (!RoleClass.MadCleaner.IsImpostorCheck) return false;
+                CheckTask = RoleClass.MadCleaner.ImpostorCheckTask;
+                break;
             case RoleId.BlackCat:
                 if (!RoleClass.BlackCat.IsImpostorCheck) return false;
                 CheckTask = RoleClass.BlackCat.ImpostorCheckTask;
                 break;
             case RoleId.Worshiper:
-                if (!Roles.Impostor.MadRole.Worshiper.IsImpostorCheck) return false;
-                CheckTask = Roles.Impostor.MadRole.Worshiper.ImpostorCheckTask;
+                if (!Worshiper.RoleData.IsImpostorCheck) return false;
+                CheckTask = Worshiper.RoleData.ImpostorCheckTask;
+                break;
+            case RoleId.MadRaccoon:
+                if (!MadRaccoon.RoleData.IsImpostorCheck) return false;
+                CheckTask = MadRaccoon.RoleData.ImpostorCheckTask;
                 break;
             default:
                 return false;

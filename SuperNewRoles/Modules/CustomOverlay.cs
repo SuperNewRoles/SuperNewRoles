@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using AmongUs.Data;
 using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Mode;
 using UnityEngine;
 namespace SuperNewRoles.Patches;
@@ -329,7 +328,7 @@ public class CustomOverlays
         ActivateRolesDictionary = new(); // 辞書の初期化
         List<CustomRoleOption> EnableOptions = new();
 
-        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions.Values)
         {
             if (!option.IsRoleEnable) continue;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
@@ -659,18 +658,13 @@ public class CustomOverlays
         // プレイヤー名とクルーカラーを■で表記
         data += $"<size=150%>{p.PlayerId + 1}. {p.name}{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")}</size>\n";
         // クルーカラーとカラー名を表記
-        data += $"<pos=10%>{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")} : {GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId])}\n";
+        data += $"<pos=10%>{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")} : {OutfitManager.GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId])}\n";
         data += $"<size=90%><pos=10%>{ModTranslation.GetString("SNRIntroduction")} : {(p.IsMod() ? "〇" : "×")}\n"; // Mod導入状態
         data += $"<pos=10%>FriendCode : {friendCode}\n"; // フレンドコード
         data += $"<pos=10%>Platform : {p.GetClient()?.PlatformData?.Platform}</size>\n"; // プラットフォーム
 
         return data;
     }
-
-    // クルーカラーの翻訳を取得する。
-    // 参考=>https://github.com/tugaru1975/TownOfPlus/blob/main/Helpers.cs
-    private static string GetColorTranslation(StringNames name) =>
-        DestroyableSingleton<TranslationController>.Instance.GetString(name, new Il2CppReferenceArray<Il2CppSystem.Object>(0));
 
     // 自分の役職の説明をoverlayに表示する (Hキーの動作)
     private static void MyRole(out string left, out string center, out string right)
@@ -679,9 +673,7 @@ public class CustomOverlays
         StringBuilder option = new();
 
         // myRoleを表示できない時はエラーメッセージを表示する
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles, false))
-            left = $"<size=200%>{ModTranslation.GetString("MyRoleErrorSHRMode")}</size>";
-        else if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
             left = $"<size=200%>{ModTranslation.GetString("NotAssign")}</size>";
         if (left != null) return;
 
@@ -689,7 +681,7 @@ public class CustomOverlays
         RoleId myRole = PlayerControl.LocalPlayer.GetRole();
 
         // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
-        IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == myRole).Select(option => { return option; });
+        IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Values.Where(option => option.RoleId == myRole).Select(option => { return option; });
         // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
         foreach (CustomRoleOption roleOption in myRoleOptions)
         {
@@ -698,7 +690,7 @@ public class CustomOverlays
             left += $"<size=200%>\n{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size> <size=95%>: {AddChatPatch.GetTeamText(intro.TeamType)}</size>";
             option.AppendLine("\n");
 
-            option.AppendLine($"<size=125%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
+            option.AppendLine($"<size=125%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId))}」</size>\n");
             option.AppendLine($"<size=95%>{intro.Description}\n</size>");
             option.AppendLine($"<size=125%>{ModTranslation.GetString("MessageSettings")}:");
             option.AppendLine($"{AddChatPatch.GetOptionText(roleOption, intro)}</size>");

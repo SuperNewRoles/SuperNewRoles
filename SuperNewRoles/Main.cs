@@ -8,6 +8,8 @@ using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using InnerNet;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -53,13 +55,18 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
         Instance = this;
         // All Load() Start
+        ConfigRoles.Load();
+        WebAccountManager.Load();
+        //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
         ModTranslation.LoadCsv();
         ChacheManager.Load();
+        WebConstants.Load();
         CustomCosmetics.CustomColors.Load();
-        ConfigRoles.Load();
+        ModDownloader.Load();
         CustomOptionHolder.Load();
-        Patches.FreeNamePatch.Initialize();
+        AccountLoginMenu.Initialize();
         // All Load() End
+
 
         // Old Delete Start
 

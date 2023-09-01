@@ -15,6 +15,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
@@ -25,6 +26,7 @@ namespace SuperNewRoles.Modules;
 
 public enum RoleId
 {
+    None, // RoleIdの初期化用
     DefaultRole,
     SoothSayer,
     Jester,
@@ -125,7 +127,7 @@ public enum RoleId
     VentMaker,
     GhostMechanic,
     EvilHacker,
-    HauntedWolf,
+    HauntedWolf, // 情報表示用のRoleId, 役職管理としては使用していない
     PositionSwapper,
     Tuna,
     Mafia,
@@ -164,7 +166,7 @@ public enum RoleId
     Cracker,
     WaveCannon,
     WaveCannonJackal,
-    SideKickWaveCannon,
+    SidekickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -192,20 +194,32 @@ public enum RoleId
     TheThirdLittlePig,
     OrientalShaman,
     ShermansServant,
-    SidekickWaveCannon,
     Balancer,
     Pteranodon,
+    BlackHatHacker,
+    Reviver = 172,
+    Guardrawer = 173,
+    KingPoster = 174,
+    LongKiller = 175,
+    Darknight = 176,
+    Revenger = 177,
+    CrystalMagician = 178,
+    GrimReaper = 179,
+    PoliceSurgeon,
+    MadRaccoon,
+    Moira,
     //RoleId
 }
 
 public enum CustomRPC
 {
-    ShareOptions = 145,
+    ShareOptions = 60,
     ShareSNRVersion,
     SetRole,
+    SetHauntedWolf,
     SetQuarreled,
     RPCClergymanLightOut,
-    SheriffKill = 150,
+    SheriffKill,
     MeetingSheriffKill,
     CustomRPCKill,
     ReportDeadBody,
@@ -215,7 +229,7 @@ public enum CustomRPC
     RPCMurderPlayer,
     ShareWinner,
     TeleporterTP,
-    SidekickPromotes = 160,
+    SidekickPromotes,
     CreateSidekick,
     CreateSidekickSeer,
     CreateSidekickWaveCannon,
@@ -225,7 +239,7 @@ public enum CustomRPC
     SetRoomTimerRPC,
     SetScientistRPC,
     ReviveRPC,
-    SetHaison = 170,
+    SetHaison,
     SetWinCond,
     SetDetective,
     UseEraserCount,
@@ -235,7 +249,7 @@ public enum CustomRPC
     SetDeviceTime,
     UncheckedSetColor,
     UncheckedSetVanillaRole,
-    SetMadKiller = 180,
+    SetMadKiller,
     SetCustomSabotage,
     UseStuntmanCount,
     UseMadStuntmanCount,
@@ -245,7 +259,7 @@ public enum CustomRPC
     DemonCurse,
     ArsonistDouse,
     SetSpeedDown,
-    ShielderProtect = 190,
+    ShielderProtect,
     SetShielder,
     SetSpeedFreeze,
     MakeVent,
@@ -255,7 +269,7 @@ public enum CustomRPC
     KunaiKill,
     SetSecretRoomTeleportStatus,
     ChiefSidekick,
-    RpcSetDoorway = 200,
+    RpcSetDoorway,
     StartRevolutionMeeting,
     UncheckedUsePlatform,
     BlockReportDeadBody,
@@ -265,8 +279,8 @@ public enum CustomRPC
     PlayPlayerAnimation,
     SluggerExile,
     PainterPaintSet,
-    SharePhotograph = 210,
-    PainterSetTarget = 220,
+    SharePhotograph,
+    PainterSetTarget,
     SetFinalStatus,
     MeetingKill,
     KnightProtected,
@@ -276,7 +290,7 @@ public enum CustomRPC
     ShowFlash,
     PavlovsOwnerCreateDog,
     CrackerCrack,
-    Camouflage = 230,
+    Camouflage,
     ShowGuardEffect,
     SetLoversCupid,
     PenguinHikizuri,
@@ -286,7 +300,7 @@ public enum CustomRPC
     SetLoversBreakerWinner,
     RPCTeleport,
     SafecrackerGuardCount,
-    SetVigilance = 240,
+    SetVigilance,
     Chat,
     SetWiseManStatus,
     SetVentStatusMechanic,
@@ -296,12 +310,28 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance,
-    PteranodonSetStatus
+    BalancerBalance = 250,
+    PteranodonSetStatus,
+    SetInfectionTimer,
+    PoliceSurgeonSendActualDeathTimeManager,
+    MoiraChangeRole,
 }
 
 public static class RPCProcedure
 {
+    public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
+    {
+        (byte, byte) data = (player1, player2);
+        Moira.ChangeData.Add(data);
+        Moira.SwapVoteData = data;
+        if (IsUseEnd) Moira.AbilityUsedUp = true;
+        Moira.AbilityUsedThisMeeting = true;
+    }
+    public static void SetInfectionTimer(byte id, Dictionary<byte, float> infectionTimer)
+    {
+        if (!ModHelpers.PlayerById(id)) return;
+        BlackHatHacker.InfectionTimer[id] = infectionTimer;
+    }
     public static void PteranodonSetStatus(byte playerId, bool Status, bool IsRight, float tarpos, byte[] buff)
     {
         PlayerControl player = ModHelpers.PlayerById(playerId);
@@ -1029,6 +1059,9 @@ public static class RPCProcedure
         player.SetRole(roleId);
     }
 
+    public static void SetHauntedWolf(byte playerid)
+        => HauntedWolf.Assign.SetHauntedWolf(ModHelpers.PlayerById(playerid));
+
     public static void SetQuarreled(byte playerid1, byte playerid2)
         => RoleHelpers.SetQuarreled(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
 
@@ -1563,12 +1596,13 @@ public static class RPCProcedure
             {CustomRPC.ShareSNRVersion,false},
             {CustomRPC.SetRoomTimerRPC,false},
             {CustomRPC.SetDeviceTime,false},
+            {CustomRPC.SetInfectionTimer,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
             if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId))
-                Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
+                Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
                 byte packetId = callId;
@@ -1634,6 +1668,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.TeleporterTP:
                         TeleporterTP(reader.ReadByte());
+                        break;
+                    case CustomRPC.SetHauntedWolf:
+                        SetHauntedWolf(reader.ReadByte());
                         break;
                     case CustomRPC.SetQuarreled:
                         SetQuarreled(reader.ReadByte(), reader.ReadByte());
@@ -1891,6 +1928,19 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.PteranodonSetStatus:
                         PteranodonSetStatus(reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean(), reader.ReadSingle(), reader.ReadBytes(reader.ReadInt32()));
+                        break;
+                    case CustomRPC.SetInfectionTimer:
+                        byte id = reader.ReadByte();
+                        int num = reader.ReadInt32();
+                        Dictionary<byte, float> timer = new();
+                        for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
+                        SetInfectionTimer(id, timer);
+                        break;
+                    case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
+                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.MoiraChangeRole:
+                        MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }

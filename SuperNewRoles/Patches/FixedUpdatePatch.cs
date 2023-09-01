@@ -6,6 +6,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
@@ -74,7 +75,8 @@ public class FixedUpdate
 
     public static void Postfix(PlayerControl __instance)
     {
-        if (PlayerAnimation.GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
+        if (!PlayerAnimation.IsCreatedAnim(__instance.PlayerId))
+            new PlayerAnimation(__instance);
         if (__instance != PlayerControl.LocalPlayer) return;
         SluggerDeadbody.AllFixedUpdate();
         PlayerAnimation.FixedAllUpdate();
@@ -100,19 +102,20 @@ public class FixedUpdate
                 Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 WaveCannonJackal.WaveCannonJackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
-                Roles.Crewmate.Psychometrist.FixedUpdate();
-                Roles.Impostor.Matryoshka.FixedUpdate();
-                Roles.Neutral.PartTimer.FixedUpdate();
+                Psychometrist.FixedUpdate();
+                Matryoshka.FixedUpdate();
+                PartTimer.FixedUpdate();
                 WiseMan.FixedUpdate();
                 Vampire.FixedUpdate.AllClient();
                 ReduceKillCooldown(__instance);
-                Roles.Impostor.Penguin.FixedUpdate();
+                Penguin.FixedUpdate();
                 Squid.FixedUpdate();
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
                 CustomRoles.FixedUpdate(__instance);
                 Balancer.Update();
                 Pteranodon.FixedUpdateAll();
+                BlackHatHacker.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -152,7 +155,10 @@ public class FixedUpdate
                             Vampire.FixedUpdate.VampireOnly();
                             break;
                         case RoleId.Vulture:
-                            Vulture.FixedUpdate.Postfix();
+                            if (RoleClass.Vulture.ShowArrows) Vulture.FixedUpdate.Postfix();
+                            break;
+                        case RoleId.Amnesiac:
+                            if (RoleClass.Amnesiac.ShowArrows) Vulture.FixedUpdate.Postfix();
                             break;
                         case RoleId.Mafia:
                             Mafia.FixedUpdate();
@@ -164,10 +170,10 @@ public class FixedUpdate
                             Kunoichi.Update();
                             break;
                         case RoleId.Revolutionist:
-                            Roles.Neutral.Revolutionist.FixedUpdate();
+                            Revolutionist.FixedUpdate();
                             break;
                         case RoleId.Spelunker:
-                            Roles.Neutral.Spelunker.FixedUpdate();
+                            Spelunker.FixedUpdate();
                             break;
                         case RoleId.SuicidalIdeation:
                             SuicidalIdeation.Postfix();
@@ -176,40 +182,46 @@ public class FixedUpdate
                             Doctor.FixedUpdate();
                             break;
                         case RoleId.Psychometrist:
-                            Roles.Crewmate.Psychometrist.PsychometristFixedUpdate();
+                            Psychometrist.PsychometristFixedUpdate();
                             break;
                         case RoleId.SeeThroughPerson:
-                            Roles.Crewmate.SeeThroughPerson.FixedUpdate();
+                            SeeThroughPerson.FixedUpdate();
                             break;
                         case RoleId.Hitman:
-                            Roles.Neutral.Hitman.FixedUpdate();
+                            Hitman.FixedUpdate();
                             break;
                         case RoleId.Photographer:
-                            Roles.Neutral.Photographer.FixedUpdate();
+                            Photographer.FixedUpdate();
                             break;
                         case RoleId.Doppelganger:
-                            Roles.Impostor.Doppelganger.FixedUpdate();
+                            Doppelganger.FixedUpdate();
                             break;
                         case RoleId.Pavlovsowner:
-                            Roles.Neutral.Pavlovsdogs.OwnerFixedUpdate();
+                            Pavlovsdogs.OwnerFixedUpdate();
                             break;
                         case RoleId.WaveCannonJackal:
                             JackalSeer.JackalSeerFixedPatch.JackalSeerPlayerOutLineTarget();
                             break;
                         case RoleId.ConnectKiller:
-                            Roles.Impostor.ConnectKiller.Update();
+                            ConnectKiller.Update();
                             break;
                         case RoleId.ShiftActor:
-                            Roles.Impostor.ShiftActor.FixedUpdate();
+                            ShiftActor.FixedUpdate();
                             break;
                         case RoleId.Cupid:
-                            Roles.Neutral.Cupid.FixedUpdate();
+                            Cupid.FixedUpdate();
                             break;
                         case RoleId.Dependents:
                             Vampire.FixedUpdate.DependentsOnly();
                             break;
                         case RoleId.Pteranodon:
                             Pteranodon.FixedUpdate();
+                            break;
+                        case RoleId.EvilSeer:
+                            EvilSeer.Ability.DeadBodyArrowFixedUpdate();
+                            break;
+                        case RoleId.PoliceSurgeon:
+                            PoliceSurgeon.FixedUpdate();
                             break;
                     }
                 }
@@ -239,6 +251,7 @@ public class FixedUpdate
                             }
                             break;
                         case RoleId.Vulture:
+                        case RoleId.Amnesiac:
                         case RoleId.ShermansServant:
                             foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
                             {
@@ -246,6 +259,14 @@ public class FixedUpdate
                                     Object.Destroy(arrow.Value.arrow);
                                 RoleClass.Vulture.DeadPlayerArrows.Remove(arrow.Key);
                             }
+                            break;
+                        case RoleId.EvilSeer:
+                            foreach (var arrow in EvilSeer.RoleData.DeadPlayerArrows)
+                            {
+                                if (arrow.Value?.arrow != null)
+                                    Object.Destroy(arrow.Value.arrow);
+                                EvilSeer.RoleData.DeadPlayerArrows.Remove(arrow.Key);
+                            };
                             break;
                     }
                 }
@@ -257,7 +278,7 @@ public class FixedUpdate
                     Mafia.FixedUpdate();
                 }
                 SerialKiller.SHRFixedUpdate(PlayerControl.LocalPlayer.GetRole());
-                Roles.Impostor.Camouflager.SHRFixedUpdate();
+                Camouflager.SHRFixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

@@ -42,52 +42,19 @@ public static class SelectTask
     }
     public static (int, int, int) GetTaskCount(this PlayerControl p)
     {
-        Dictionary<RoleId, (int, int, int)> taskData = new();
-        if (MadmateCheckImpostorTask.GetBool()) taskData.Add(RoleId.Madmate, (MadmateCommonTask.GetInt(), MadmateShortTask.GetInt(), MadmateLongTask.GetInt()));
-        if (MadMayorIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadMayor, (MadMayorCommonTask.GetInt(), MadMayorShortTask.GetInt(), MadMayorLongTask.GetInt()));
-        if (MadSeerIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadSeer, (MadSeerCommonTask.GetInt(), MadSeerShortTask.GetInt(), MadSeerLongTask.GetInt()));
-        if (BlackCatIsCheckImpostor.GetBool()) taskData.Add(RoleId.BlackCat, (BlackCatCommonTask.GetInt(), BlackCatShortTask.GetInt(), BlackCatLongTask.GetInt()));
-        if (JackalFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.JackalFriends, (JackalFriendsCommonTask.GetInt(), JackalFriendsShortTask.GetInt(), JackalFriendsLongTask.GetInt()));
-        if (SeerFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.SeerFriends, (SeerFriendsCommonTask.GetInt(), SeerFriendsShortTask.GetInt(), SeerFriendsLongTask.GetInt()));
-        if (MayorFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.MayorFriends, (MayorFriendsCommonTask.GetInt(), MayorFriendsShortTask.GetInt(), MayorFriendsLongTask.GetInt()));
-        if (JesterIsWinCleartask.GetBool()) taskData.Add(RoleId.Jester, (JesterCommonTask.GetInt(), JesterShortTask.GetInt(), JesterLongTask.GetInt()));
-        if (IsMadJesterTaskClearWin.GetBool() || MadJesterCheckImpostorTask.GetBool()) taskData.Add(RoleId.MadJester, (MadJesterCommonTask.GetInt(), MadJesterShortTask.GetInt(), MadJesterLongTask.GetInt()));
-        if (GodIsEndTaskWin.GetBool()) taskData.Add(RoleId.God, (GodCommonTask.GetInt(), GodShortTask.GetInt(), GodLongTask.GetInt()));
-        if (Worshiper.WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)) taskData.Add(RoleId.Worshiper, (Worshiper.WorshiperCommonTask.GetInt(), Worshiper.WorshiperShortTask.GetInt(), Worshiper.WorshiperLongTask.GetInt()));
-        taskData.Add(RoleId.Workperson, (WorkpersonCommonTask.GetInt(), WorkpersonShortTask.GetInt(), WorkpersonLongTask.GetInt()));
-        taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
-        taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationShortTask.GetInt(), SuicidalIdeationLongTask.GetInt()));
-        taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerShortTask.GetInt(), TaskerLongTask.GetInt()));
-        taskData.Add(RoleId.HamburgerShop, (HamburgerShopCommonTask.GetInt(), HamburgerShopShortTask.GetInt(), HamburgerShopLongTask.GetInt()));
-        taskData.Add(RoleId.Safecracker, (Safecracker.SafecrackerCommonTask.GetInt(), Safecracker.SafecrackerShortTask.GetInt(), Safecracker.SafecrackerLongTask.GetInt()));
-        if (TheThreeLittlePigs.TheThreeLittlePigsTask.GetBool())
-        {
-            taskData.Add(RoleId.TheFirstLittlePig, (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()));
-            taskData.Add(RoleId.TheSecondLittlePig, (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()));
-            taskData.Add(RoleId.TheThirdLittlePig, (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()));
-        }
-        if (OrientalShaman.OrientalShamanWinTask.GetBool()) taskData.Add(RoleId.OrientalShaman, (OrientalShaman.OrientalShamanCommonTask.GetInt(), OrientalShaman.OrientalShamanShortTask.GetInt(), OrientalShaman.OrientalShamanLongTask.GetInt()));
+        RoleId roleId = p.GetRole();
 
-        //テンプレート
-        //taskData.Add(RoleId, (CommonTask.GetInt(), ShortTask.GetInt(), LongTask.GetInt()));
-
-        if (taskData.ContainsKey(p.GetRole())) // pの役職がDictionaryにあるか
-        {
-            if (taskData[p.GetRole()] != (0, 0, 0)) // pの役職をKeyでValueを取得。が(0,0,0)ではない
-                return taskData[p.GetRole()];
-        }
-        else if (p.IsLovers() && !p.IsImpostor())
+        // 特殊なタスク数設定の場合個別で判断(RoleIdで判断できない役職)
+        if (p.IsLovers() && !p.IsImpostor())
         {
             int commont = LoversCommonTask.GetInt();
             int shortt = LoversShortTask.GetInt();
             int longt = LoversLongTask.GetInt();
             if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
         }
-        else if (p.IsRole(RoleId.GM))
-        {
-            return (0, 0, 0);
-        }
-        return (SyncSetting.OptionData.GetInt(Int32OptionNames.NumCommonTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumShortTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumLongTasks));
+
+        if (GetHaveTaskManageAbility(roleId)) return GetRoleTaskData(roleId);
+        else return (SyncSetting.OptionData.GetInt(Int32OptionNames.NumCommonTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumShortTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumLongTasks));
     }
     public static (CustomOption, CustomOption, CustomOption) TaskSetting(int commonid, int shortid, int longid, CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic, bool IsSHROn = false)
     {
@@ -95,5 +62,120 @@ public static class SelectTask
         CustomOption ShortOption = CustomOption.Create(shortid, IsSHROn, type, "GameShortTasks", 1, 0, 69, 1, Child);
         CustomOption LongOption = CustomOption.Create(longid, IsSHROn, type, "GameLongTasks", 1, 0, 45, 1, Child);
         return (CommonOption, ShortOption, LongOption);
+    }
+
+    /// <summary>
+    /// 設定されたタスク数の合計を取得する
+    /// </summary>
+    /// <param name="roleId">取得したい役職のRoleId</param>
+    /// <returns>int = 設定されている, commonタスク数, shortタスク数, longタスク数の合計</returns>
+    internal static int GetTotalTasks(RoleId roleId)
+    {
+        var (roleCommon, roleLong, roleShort) = GetRoleTaskData(roleId);
+        int roleTotalTasks = 0;
+
+        roleTotalTasks = roleCommon + roleLong + roleShort;
+        return roleTotalTasks;
+    }
+
+    /// <summary>
+    /// タスクで管理する能力を有すか判定する。
+    /// </summary>
+    /// <param name="id">判定したい役職のRoleId</param>
+    /// <returns> true : 有する, false : 有さない</returns>
+    internal static bool GetHaveTaskManageAbility(RoleId id)
+    {
+        // RoleIdと タスクで管理する能力を有すか
+        // RoleIdが重複するとタスクが配布されず, 非導入者の画面でもTaskInfoが開けなくなる。
+        Dictionary<RoleId, bool> taskTriggerAbilityData = new()
+        {
+            { RoleId.Madmate, MadmateIsCheckImpostor.GetBool() },
+            { RoleId.MadMayor, MadMayorIsCheckImpostor.GetBool() },
+            { RoleId.MadStuntMan, MadStuntManIsCheckImpostor.GetBool() },
+            { RoleId.MadHawk, MadHawkIsCheckImpostor.GetBool() },
+            { RoleId.MadSeer, MadSeerIsCheckImpostor.GetBool() },
+            { RoleId.MadCleaner, MadCleanerIsCheckImpostor.GetBool() },
+            { RoleId.BlackCat, BlackCatIsCheckImpostor.GetBool() },
+            { RoleId.JackalFriends, JackalFriendsIsCheckJackal.GetBool() },
+            { RoleId.SeerFriends, SeerFriendsIsCheckJackal.GetBool() },
+            { RoleId.MayorFriends, MayorFriendsIsCheckJackal.GetBool() },
+            { RoleId.Jester, JesterIsWinCleartask.GetBool() },
+            { RoleId.MadJester, IsMadJesterTaskClearWin.GetBool() || MadJesterIsCheckImpostor.GetBool() },
+            { RoleId.God, GodIsEndTaskWin.GetBool() },
+            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
+            { RoleId.Workperson, true },
+            { RoleId.TaskManager, true },
+            { RoleId.SuicidalIdeation, true },
+            { RoleId.Tasker, true },
+            { RoleId.HamburgerShop, true },
+            { RoleId.Safecracker, true },
+            { RoleId.TheFirstLittlePig, true },
+            { RoleId.TheSecondLittlePig, true },
+            { RoleId.TheThirdLittlePig, true },
+            { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
+        };
+
+        if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];
+        else return false;
+    }
+
+    /// <summary>
+    /// 役職に設定されているタスク数を取得する。
+    /// </summary>
+    /// <param name="id">取得したい役職のRoleId</param>
+    /// <returns>
+    /// (int,int,int) : (commonタスク数, shortタスク数, longタスク数)
+    /// (固有のタスク設定数の合計が0の場合, バニラのタスク数を返す)
+    /// </returns>
+    private static (int, int, int) GetRoleTaskData(RoleId id)
+    {
+        int vanillaCommon = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+        int vanillaShort = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+        int vanillaLong = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+
+        Dictionary<RoleId, (int, int, int)> taskData = new()
+        {
+            { RoleId.Madmate, MadmateIsSettingNumberOfUniqueTasks.GetBool() ? (MadmateCommonTask.GetInt(), MadmateShortTask.GetInt(), MadmateLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadMayor, MadMayorIsSettingNumberOfUniqueTasks.GetBool() ? (MadMayorCommonTask.GetInt(), MadMayorShortTask.GetInt(), MadMayorLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadStuntMan, MadStuntManIsSettingNumberOfUniqueTasks.GetBool() ? (MadStuntManCommonTask.GetInt(), MadStuntManShortTask.GetInt(), MadStuntManLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadHawk, MadHawkIsSettingNumberOfUniqueTasks.GetBool() ? (MadHawkCommonTask.GetInt(), MadHawkShortTask.GetInt(), MadHawkLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadSeer, MadSeerIsSettingNumberOfUniqueTasks.GetBool() ? (MadSeerCommonTask.GetInt(), MadSeerShortTask.GetInt(), MadSeerLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadCleaner, MadCleanerIsSettingNumberOfUniqueTasks.GetBool() ? (MadCleanerCommonTask.GetInt(), MadCleanerShortTask.GetInt(), MadCleanerLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.BlackCat, BlackCatIsSettingNumberOfUniqueTasks.GetBool() ? (BlackCatCommonTask.GetInt(), BlackCatShortTask.GetInt(), BlackCatLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.JackalFriends, JackalFriendsIsSettingNumberOfUniqueTasks.GetBool() ? (JackalFriendsCommonTask.GetInt(), JackalFriendsShortTask.GetInt(), JackalFriendsLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.SeerFriends, SeerFriendsIsSettingNumberOfUniqueTasks.GetBool() ? (SeerFriendsCommonTask.GetInt(), SeerFriendsShortTask.GetInt(), SeerFriendsLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MayorFriends, MayorFriendsIsSettingNumberOfUniqueTasks.GetBool() ? (MayorFriendsCommonTask.GetInt(), MayorFriendsShortTask.GetInt(), MayorFriendsLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.Jester, JesterIsSettingNumberOfUniqueTasks.GetBool() ? (JesterCommonTask.GetInt(), JesterShortTask.GetInt(), JesterLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadJester, MadJesterIsSettingNumberOfUniqueTasks.GetBool() ? (MadJesterCommonTask.GetInt(), MadJesterShortTask.GetInt(), MadJesterLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.God, GodIsSettingNumberOfUniqueTasks.GetBool() ? (GodCommonTask.GetInt(), GodShortTask.GetInt(), GodLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.Worshiper, Worshiper.CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) ? (Worshiper.CustomOptionData.CommonTask.GetInt(), Worshiper.CustomOptionData.ShortTask.GetInt(), Worshiper.CustomOptionData.LongTask.GetInt())  : (0, 0, 0) },
+            { RoleId.Workperson, WorkpersonIsSettingNumberOfUniqueTasks.GetBool() ? (WorkpersonCommonTask.GetInt(), WorkpersonShortTask.GetInt(), WorkpersonLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt())},
+            { RoleId.SuicidalIdeation, SuicidalIdeationIsSettingNumberOfUniqueTasks.GetBool() ? (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationShortTask.GetInt(), SuicidalIdeationLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.Tasker, TaskerIsSettingNumberOfUniqueTasks.GetBool() ? (TaskerCommonTask.GetInt(), TaskerShortTask.GetInt(), TaskerLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.HamburgerShop, HamburgerShopIsSettingNumberOfUniqueTasks.GetBool() ? (HamburgerShopCommonTask.GetInt(), HamburgerShopShortTask.GetInt(), HamburgerShopLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.Safecracker, Safecracker.SafecrackerIsSettingNumberOfUniqueTasks.GetBool() ? (Safecracker.SafecrackerCommonTask.GetInt(), Safecracker.SafecrackerShortTask.GetInt(), Safecracker.SafecrackerLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.TheFirstLittlePig, TheThreeLittlePigs.TheThreeLittlePigsIsSettingNumberOfUniqueTasks.GetBool() ? (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.TheSecondLittlePig, TheThreeLittlePigs.TheThreeLittlePigsIsSettingNumberOfUniqueTasks.GetBool() ? (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.TheThirdLittlePig, TheThreeLittlePigs.TheThreeLittlePigsIsSettingNumberOfUniqueTasks.GetBool() ? (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.OrientalShaman, OrientalShaman.OrientalShamanIsSettingNumberOfUniqueTasks.GetBool() ? (OrientalShaman.OrientalShamanCommonTask.GetInt(), OrientalShaman.OrientalShamanShortTask.GetInt(), OrientalShaman.OrientalShamanLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) ? (MadRaccoon.CustomOptionData.CommonTask.GetInt(),MadRaccoon.CustomOptionData.ShortTask.GetInt(), MadRaccoon.CustomOptionData.LongTask.GetInt())  : (0, 0, 0) },
+        };
+
+        //テンプレート
+        // { RoleId.[RoleId], [役名]IsSettingNumberOfUniqueTasks.GetBool() ? ([役名]CommonTask.GetInt(), [役名]ShortTask.GetInt(), [役名]LongTask.GetInt()) : (0, 0, 0) },
+
+        // RoleIdが辞書に含まれ、タスクの合計値が0以上の場合
+        if (taskData.ContainsKey(id))
+            if (!(taskData[id].Item1 == 0 && taskData[id].Item2 == 0 && taskData[id].Item3 == 0))
+                return taskData[id];
+
+        // タスク数を (0, 0, 0) で返す必要のある役職
+        if (id == RoleId.GM) return (0, 0, 0);
+        else if (id == RoleId.None) return (0, 0, 0);
+
+        // RoleIdが辞書に含まれない, あるいは合計値が0だった場合, バニラのタスク数を返す
+        return (vanillaCommon, vanillaShort, vanillaLong);
     }
 }

@@ -20,7 +20,7 @@ public static class ConfigRoles
     public static ConfigEntry<bool> IsAutoRoomCreate { get; set; }
     public static ConfigEntry<bool> HideTaskArrows { get; set; }
     public static ConfigEntry<bool> EnableHorseMode { get; set; }
-    public static ConfigEntry<bool> DownloadSuperNewNamePlates { get; set; }
+    public static ConfigEntry<bool> IsModCosmeticsAreNotLoaded { get; set; }
     public static ConfigEntry<bool> IsNotUsingBlood { get; set; }
     public static ConfigEntry<bool> DownloadOtherSkins { get; set; }
     public static ConfigEntry<bool> IsUpdate { get; set; }
@@ -45,7 +45,7 @@ public static class ConfigRoles
         ShareCosmeticsNamePlatesURL = SuperNewRolesPlugin.Instance.Config.Bind("ShareCosmetics", "NamePlateURL", "");
         IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "AutoRoomCreate", true);
         EnableHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "EnableHorseMode", false);
-        DownloadSuperNewNamePlates = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "DownloadSuperNewNamePlates", true);
+        IsModCosmeticsAreNotLoaded = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsModCosmeticsAreNotLoaded", false);
         IsNotUsingBlood = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsNotUsingBlood", false);
         IsSendAnalytics = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalytics", true);
         IsLightAndDarker = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsLightAndDarker", true);

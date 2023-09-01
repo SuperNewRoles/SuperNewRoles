@@ -83,6 +83,8 @@ public static class Main
             GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
             return true;
         }
+        else if (SuperHostRoles.EndGameCheck.CheckAndEndGameForFoxHouwaWin(__instance))
+            return false;
         else if (SuperHostRoles.EndGameCheck.CheckAndEndGameForWorkpersonWin(__instance))
             return false;
         else
