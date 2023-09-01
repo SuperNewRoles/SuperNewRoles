@@ -58,6 +58,8 @@ namespace SuperNewRoles.Replay
         public Vector3 LadderPosition = new(-999, -999, -999);
         public Dictionary<byte, Ladder> CurrentLadder = new();
 
+        public List<bool> DoorTrues;
+
         public string ReplayDataMod;
         public Version RecordVersion;
         public DateTime RecordTime;

@@ -30,20 +30,13 @@ public static class ReplayFileReader
     public static ReplayData ReadDoorData(BinaryReader reader, ReplayData replay)
     {
         bool IsDoor = reader.ReadBoolean();
+        replay.DoorTrues = new();
         if (IsDoor)
         {
             int count = reader.ReadInt32();
-            ElectricalDoors electrical = ShipStatus.Instance?.transform?.Find("Electrical")?.GetComponent<ElectricalDoors>();
-            if (electrical == null)
+            for (int i = 0; i < count; i++)
             {
-                Logger.Info("なんかドアたちがいない...");
-            }
-            else
-            {
-                foreach (StaticDoor door in electrical.Doors)
-                {
-                    door.SetOpen(reader.ReadBoolean());
-                }
+                replay.DoorTrues.Add(reader.ReadBoolean());
             }
         }
         return replay;

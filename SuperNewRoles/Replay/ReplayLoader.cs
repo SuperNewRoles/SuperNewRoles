@@ -104,6 +104,23 @@ public static class ReplayLoader
         CurrentTurn = 0;
         actionindex = 0;
         IsStarted = true;
+        ElectricalDoors electrical = ShipStatus.Instance?.transform?.Find("Electrical")?.GetComponent<ElectricalDoors>();
+        if (electrical == null)
+        {
+            Logger.Info("ドアたちがいない...");
+        }
+        else
+        {
+            int index = 0;
+            foreach (StaticDoor door in electrical.Doors)
+            {
+                if (ReplayManager.CurrentReplay.DoorTrues.Count > index)
+                {
+                    door.SetOpen(ReplayManager.CurrentReplay.DoorTrues[index]);
+                    index++;
+                }
+            }
+        }
         ReplayAction.CoIntroDestory();
         GetPosAndActionsThisTurn();
         if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
