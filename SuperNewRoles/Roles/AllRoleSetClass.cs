@@ -160,6 +160,11 @@ class RoleManagerSelectRolesPatch
             Mode.BattleRoyal.Main.ChangeRole.Postfix();
             return false;
         }
+        else if (ModeHandler.IsMode(ModeId.PantsRoyal))
+        {
+            Mode.PantsRoyal.main.AssignRole();
+            return false;
+        }
         else if (ModeHandler.IsMode(ModeId.CopsRobbers))
         {
             Mode.CopsRobbers.RoleSelectHandler.Handler();
@@ -1095,6 +1100,7 @@ class AllRoleSetClass
             RoleId.BlackHatHacker => BlackHatHacker.BlackHatHackerPlayerCount.GetFloat(),
             RoleId.PoliceSurgeon => PoliceSurgeon.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.MadRaccoon => MadRaccoon.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Moira => Moira.MoiraPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };

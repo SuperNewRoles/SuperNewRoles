@@ -246,6 +246,7 @@ BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机,殭屍模式
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式,隨機顏色
+PantsRoyalModeName,Pants Royal,パンツ大騒動
 NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード,双盲内鬼模式,內鬼互不認識模式
 CopsRobbersModeName,CopsRobbers,ケイドロ,警察抓小偷,警匪追逐
 CopsRobbersModeCrewName,Thief,泥棒,小偷,小偷
@@ -284,6 +285,27 @@ ZombieCommingSpeedSetting,Speed before zombies,ゾンビがやってくる前の
 RandomColorHideNameSetting,Hide Name,名前を隠す,隐藏昵称,隱藏暱稱
 RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜色改变,暱稱顏色改變
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变,會議中暱稱顏色改變
+PantsRoyalTitle1,Guard my pants!!!,パンツを守れ！！！
+PantsRoyalTitle2,Take away the Pants!!!,パンツを奪え！！！
+PantsRoyalTitle3,This pants is mine!!!,このパンツは私のものだ！
+PantsRoyalTitle4,That pants will mine!!!,そのパンツは私が頂く！
+PantsRoyalTitle5,Are you trying to rob me of these pants?,このパンツを奪う気か？
+PantsRoyalTitle6,I don't give my pants to anyone!,パンツは誰にも渡さない！！！
+PantsRoyalTitle7,You can't give my pants!,あなたにパンツを渡さない！
+PantsRoyalTitle8,Phantom Thief，Panter!,怪盗・パンツ！
+PantsRoyalTitle9,Can you get my pants?,私のパンツを手に入れられるかな？
+PantsRoyalTitle10,Get those pants and I will survive!,そのパンツを手に入れて私は生き残る！
+PantsRoyalTitle11,Pants!Pants!Pants!,ぱんつ！ぱんつ！ぱんつ！
+PantsRoyalTitle12,This is Pants!!!,これはパンツだ...
+PantsRoyalTitle13,Lets' PantsRoyal!,さあ、パンツのために戦え！
+PantsRoyalTitle14,pants or Pants,ぱんつか、それともパンツか...
+PantsRoyalPantsYourText,Do you have Pants...?,あなたは...
+PantsRoyalPantsHaverIntroName,You have Pants!!!,パンツを履いている！！！
+PantsRoyalPantsHaverIntroTitle1,Let's guard Pants!!!,さあ、パンツを守れ！
+PantsRoyalDeadName,Couldn't get my pants on...,パンツを履けなかった...
+PantsRoyalPantsDontHaverIntroName,You don't have Pants...!,パンツを履いていない...！
+PantsRoyalPantsDontHaverIntroTitle1,Will you have pants?,あなたはパンツを手に入れられるかな？
+PantsRoyalStartAt,Pants royal will start at after ,パンツの戦いまで...
 NeutralName,Neutral,第三陣営,独立阵营,中立陣營
 WinName,Win,勝利,胜利,勝利
 PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,更多游戏设置,其他設定
@@ -1483,6 +1505,20 @@ MadRaccoonTitle1,Let's surprise humans by morphing them.,化けてクルーた�
 MadRaccoonTitle2,If my abilities can be of service to my master，then let us utilize them and show their worth!,私の能力がご主人の為となるならば 活用してみせましょう!!
 MadRaccoonDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nI possess the ability to Shapeshift. I can disguise myself as the master to create an alibi，impersonate the master's enemies to frame them，or sow confusion in discussions!\n\nI only have the power of transformation...\nBut if this ability can be of use to the master... if I am needed...\nThen let us utilize this ability and see what we can achieve!!\nPlease note that the translation may slightly vary depending on the context and intended meaning.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nシェイプシフト能力を有します。\nご主人に化けてアリバイを作ったり、ご主人の敵に化けて罪をなすりつけたり、議論を錯乱させてみましょう!\n\n私は変化の能力しか持たない...\nただこれだけの能力が ご主人の為になるというならば...必要とされるのであれば...\nこの能力 活用してみませしょう!!
 MadRaccoonButtonName,Change radically,化ける
+MoiraName,Moira,モイラ
+MoiraDescription,This is a position for enjoyable tables that messes up the board.\nAt the whim of the Goddess.\nPlay as you like， make use of outsiders， hang the crew with roles， replace them as you like， etc.,盤面をぐちゃぐちゃにするエンジョイ卓向け役職です\n女神様のきまぐーれ\n人外を活かしたり、役持ちクルーを吊ったり、適当に入れ替えたり、好きに遊びましょう
+MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！
+MoiraAbilityLimit,Number of ability usage,能力使用数
+MoiraChangeVote,I'll switch my vote as well,投票も入れ替える
+ConjurerName,Conjurer,魔術師
+ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ
+ConjurerDescription,By setting up and activating three magic circles，\nthis imposter can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。
+ConjurerCooldownOption,Marker placement cooldown,マーカー設置のクールダウン
+ConjurerCanAddLengthOption,Effective range of marker placement,マーカー設置有効範囲
+ConjurerCanKillImpostorOption,Can kill impostors,インポスターもキルできる
+ConjurerShowFlashOption,The screen glows when the ability is activated,能力発動時画面が発光する
+ConjurerBeaconName,Marker,マーカー
+ConjurerAddName,Compression,圧縮
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
