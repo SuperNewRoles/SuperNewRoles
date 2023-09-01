@@ -160,14 +160,17 @@ public static class MadRaccoon
         {
             float timerSet = !endMeeting ? RoleData.ShapeshifterCooldown : 0f; // 会議終了時は能力クールを0sにする
 
-            shapeshiftButton.MaxTimer = timerSet;
-            shapeshiftButton.Timer = timerSet;
+            if (shapeshiftButton != null)
+            {
+                shapeshiftButton.MaxTimer = timerSet;
+                shapeshiftButton.Timer = timerSet;
+            }
         }
         private static void TimerStop()
         {
             if (coolTimeTimer != null) coolTimeTimer.Stop();
             if (durationTimeTimer != null) durationTimeTimer.Stop();
-            shapeDurationText.text = "";
+            if (shapeDurationText != null) shapeDurationText.text = "";
         }
         private static void RevertShapeshift()
         {

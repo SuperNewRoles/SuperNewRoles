@@ -81,12 +81,8 @@ public static class RoleHelpers
         RoleId.BlackCat or
         RoleId.MadMaker or
         RoleId.MadCleaner or
-<<<<<<< HEAD
-        RoleId.Worshiper;
-=======
         RoleId.Worshiper or
         RoleId.MadRaccoon;
->>>>>>> develop
     // IsMads
 
     public static bool IsNeutral(this PlayerControl player) =>
@@ -132,13 +128,9 @@ public static class RoleHelpers
         RoleId.TheFirstLittlePig or
         RoleId.TheSecondLittlePig or
         RoleId.TheThirdLittlePig or
-<<<<<<< HEAD
-        RoleId.OrientalShaman;
-=======
         RoleId.OrientalShaman or
         RoleId.BlackHatHacker or
         RoleId.Moira;
->>>>>>> develop
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
@@ -920,8 +912,6 @@ public static class RoleHelpers
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.Add(player);
                 break;
-<<<<<<< HEAD
-=======
             case RoleId.Reviver:
                 new Reviver(player);
                 break;
@@ -949,11 +939,6 @@ public static class RoleHelpers
             case RoleId.DefaultRole when ModeHandler.IsMode(ModeId.BattleRoyal):
                 new BattleRoyalRole(player);
                 break;
-            case RoleId.SidekickWaveCannon:
-                WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
-                //SidekickWaveCannon.allPlayers.Add(player);
-                break;
->>>>>>> develop
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.Add(player);
                 break;
@@ -1489,8 +1474,6 @@ public static class RoleHelpers
             case RoleId.Pteranodon:
                 Pteranodon.PteranodonPlayer.RemoveAll(ClearRemove);
                 break;
-<<<<<<< HEAD
-=======
             case RoleId.BlackHatHacker:
                 BlackHatHacker.BlackHatHackerPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1503,7 +1486,6 @@ public static class RoleHelpers
             case RoleId.Moira:
                 Moira.MoiraPlayer.RemoveAll(ClearRemove);
                 break;
->>>>>>> develop
                 // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
@@ -1717,22 +1699,11 @@ public static class RoleHelpers
     }
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
-        RoleId MyRole;
+        RoleId MyRole = RoleId.DefaultRole;
         if (IsChache)
         {
-<<<<<<< HEAD
-            if (p != null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+            if (p == null || ChacheManager.MyRoleChache == null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
                 MyRole = RoleId.DefaultRole;
-=======
-            try
-            {
-                if (p != null)
-                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-                else
-                    MyRole = RoleId.DefaultRole;
-            }
-            catch { MyRole = RoleId.DefaultRole; }
->>>>>>> develop
         }
         else
         {
@@ -1743,25 +1714,9 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-<<<<<<< HEAD
-        if (p != null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+        if (p == null || ChacheManager.MyRoleChache == null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
             MyRole = RoleId.DefaultRole;
         return roles.Contains(MyRole);
-=======
-        try
-        {
-            if (p != null)
-                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-            else
-                MyRole = RoleId.DefaultRole;
-        }
-        catch { MyRole = RoleId.DefaultRole; }
-        foreach (RoleId role in roles)
-        {
-            if (role == MyRole) return true;
-        }
-        return false;
->>>>>>> develop
     }
     public static bool IsRole(this PlayerControl player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
     public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
@@ -1832,7 +1787,7 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            return ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
+            return ChacheManager.MyRoleChache != null && player != null &&ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
         try
         {
