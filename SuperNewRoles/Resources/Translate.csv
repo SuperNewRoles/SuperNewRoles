@@ -967,6 +967,7 @@ EvilHackerName,EvilHacker,イビルハッカー,骇客,駭客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利,駭入飛船獲取勝利
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,可以把一名玩家变成叛徒,可以把一名玩家變成叛徒
+CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] ability.,[狂わせる]能力のクールタイムの設定
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
