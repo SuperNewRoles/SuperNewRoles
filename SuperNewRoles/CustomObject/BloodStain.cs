@@ -47,4 +47,22 @@ public class BloodStain
 
         BloodStains.Add(this);
     }
+    public BloodStain(Vector3 pos)
+    {
+        this.owner = null;
+        this.ownerId = 255;
+        this.color = ConfigRoles.IsNotUsingBlood.Value ? new Color(0.2f, 0.2f, 0.2f) : new Color(179f / 255f, 0f, 0f);
+
+        BloodStainObject = new("BloodStain");
+        Vector3 position = new(pos.x, pos.y, pos.z + 1f);
+        BloodStainObject.transform.position = position;
+        BloodStainObject.transform.localPosition = position;
+        BloodStainObject.transform.localScale *= 1.5f;
+        BloodStainObject.transform.Rotate(0f, 0f, UnityEngine.Random.Range(0f, 360f));
+        spriteRenderer = BloodStainObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = getBloodStainSprite();
+        spriteRenderer.color = color;
+
+        BloodStains.Add(this);
+    }
 }
