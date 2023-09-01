@@ -26,6 +26,7 @@ namespace SuperNewRoles.Modules;
 
 public enum RoleId
 {
+    None, // RoleIdの初期化用
     DefaultRole,
     SoothSayer,
     Jester,
@@ -195,6 +196,18 @@ public enum RoleId
     ShermansServant,
     Balancer,
     Pteranodon,
+    BlackHatHacker,
+    Reviver = 172,
+    Guardrawer = 173,
+    KingPoster = 174,
+    LongKiller = 175,
+    Darknight = 176,
+    Revenger = 177,
+    CrystalMagician = 178,
+    GrimReaper = 179,
+    PoliceSurgeon,
+    MadRaccoon,
+    Moira,
     //RoleId
 }
 
@@ -297,12 +310,28 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance,
-    PteranodonSetStatus
+    BalancerBalance = 250,
+    PteranodonSetStatus,
+    SetInfectionTimer,
+    PoliceSurgeonSendActualDeathTimeManager,
+    MoiraChangeRole,
 }
 
 public static class RPCProcedure
 {
+    public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
+    {
+        (byte, byte) data = (player1, player2);
+        Moira.ChangeData.Add(data);
+        Moira.SwapVoteData = data;
+        if (IsUseEnd) Moira.AbilityUsedUp = true;
+        Moira.AbilityUsedThisMeeting = true;
+    }
+    public static void SetInfectionTimer(byte id, Dictionary<byte, float> infectionTimer)
+    {
+        if (!ModHelpers.PlayerById(id)) return;
+        BlackHatHacker.InfectionTimer[id] = infectionTimer;
+    }
     public static void PteranodonSetStatus(byte playerId, bool Status, bool IsRight, float tarpos, byte[] buff)
     {
         PlayerControl player = ModHelpers.PlayerById(playerId);
@@ -1567,12 +1596,13 @@ public static class RPCProcedure
             {CustomRPC.ShareSNRVersion,false},
             {CustomRPC.SetRoomTimerRPC,false},
             {CustomRPC.SetDeviceTime,false},
+            {CustomRPC.SetInfectionTimer,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
             if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId))
-                Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
+                Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
                 byte packetId = callId;
@@ -1898,6 +1928,19 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.PteranodonSetStatus:
                         PteranodonSetStatus(reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean(), reader.ReadSingle(), reader.ReadBytes(reader.ReadInt32()));
+                        break;
+                    case CustomRPC.SetInfectionTimer:
+                        byte id = reader.ReadByte();
+                        int num = reader.ReadInt32();
+                        Dictionary<byte, float> timer = new();
+                        for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
+                        SetInfectionTimer(id, timer);
+                        break;
+                    case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
+                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.MoiraChangeRole:
+                        MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }

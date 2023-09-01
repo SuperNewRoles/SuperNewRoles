@@ -109,7 +109,7 @@ public class SetNamesClass
         string TaskText = "";
         try
         {
-            if (!p.IsClearTask())
+            if (p.IsUseTaskTrigger())
             {
                 var (complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
                 TaskText += ModHelpers.Cs(Color.yellow, "(" + (commsActive ? "?" : complete.ToString()) + "/" + all.ToString() + ")");
@@ -349,6 +349,12 @@ public class SetNamesClass
             }
         }
     }
+    public static void MoiraSet()
+    {
+        if (!Moira.AbilityUsedUp || Moira.AbilityUsedThisMeeting) return;
+        if (Moira.Player is null) return;
+        SetPlayerNameText(Moira.Player, Moira.Player.NameText().text += " (→←)");
+    }
     public static void CelebritySet()
     {
         foreach (PlayerControl p in
@@ -564,6 +570,7 @@ public class SetNameUpdate
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
+            SetNamesClass.MoiraSet();
         }
         SetNamesClass.SatsumaimoSet();
         SetNamesClass.JumboSet();

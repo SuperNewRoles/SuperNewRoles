@@ -10,11 +10,14 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -46,6 +49,42 @@ public class UsePlatformPlayerControlPatch
         return false;
     }
 }
+// Allow movement interpolation to use velocities greater than the local player's
+[HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
+public static class NetworkTransformFixedUpdatePatch
+{
+    public static bool Prefix(CustomNetworkTransform __instance)
+    {
+        if (__instance.AmOwner)
+        {
+            if (__instance.HasMoved())
+            {
+                __instance.SetDirtyBit(3U);
+                return false;
+            }
+        }
+        else
+        {
+            if (__instance.interpolateMovement != 0f)
+            {
+                Vector2 vector = __instance.targetSyncPosition - __instance.body.position;
+                if (vector.sqrMagnitude >= 0.0001f)
+                {
+                    float num = __instance.interpolateMovement / __instance.sendInterval;
+                    vector.x *= num;
+                    vector.y *= num;
+                    __instance.body.velocity = vector;
+                }
+                else
+                {
+                    __instance.body.velocity = Vector2.zero;
+                }
+            }
+            __instance.targetSyncPosition += __instance.targetSyncVelocity * Time.fixedDeltaTime * 0.1f;
+        }
+        return false;
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
 class RpcShapeshiftPatch
 {
@@ -53,9 +92,23 @@ class RpcShapeshiftPatch
     {
         SyncSetting.CustomSyncSettings(out var modified);
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
+        if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId && Mode.BattleRoyal.Main.StartSeconds <= 0)
+        {
+            new LateTask(() => __instance.RpcRevertShapeshiftUnchecked(true), 0.1f);
+            BattleRoyalRole.GetObject(__instance).UseAbility(target);
+            return true;
+        }
         if (target.IsBot()) return true;
+
+        bool isActivationShapeshift = __instance.PlayerId != target.PlayerId; // true : シェイプシフトする時 / false : シェイプシフトを解除する時
+
+        if (__instance.IsRole(RoleId.MadRaccoon) && __instance == PlayerControl.LocalPlayer) // 導入者が個人で行う処理 (SHR, SNR共通)
+        {
+            if (isActivationShapeshift) MadRaccoon.Button.SetShapeDurationTimer();
+            else MadRaccoon.Button.ResetShapeDuration(false);
+        }
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
-        if (__instance.PlayerId != target.PlayerId)
+        if (isActivationShapeshift)
         {
             if (__instance.IsRole(RoleId.Doppelganger))
             {
@@ -63,7 +116,7 @@ class RpcShapeshiftPatch
                 SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
             }
         }
-        if (__instance.PlayerId == target.PlayerId)
+        if (!isActivationShapeshift)
         {
             if (__instance.IsRole(RoleId.Doppelganger))
             {
@@ -478,32 +531,46 @@ static class CheckMurderPatch
         {
             case ModeId.Zombie:
                 return false;
+            case ModeId.PantsRoyal:
+                Mode.PantsRoyal.main.OnMurderClick(__instance, target);
+                return false;
             case ModeId.BattleRoyal:
-                if (__instance == PlayerControl.LocalPlayer && isKill)
+                if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId && isKill)
                 {
+                    return false;
+                }
+                if (Mode.BattleRoyal.Main.IsTeamBattle)
+                {
+                    foreach (BattleTeam teams in BattleTeam.BattleTeams)
+                    {
+                        if (teams.IsTeam(__instance) && teams.IsTeam(target)) return false;
+                    }
+                }
+                PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
+                if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow) {
+                    Mode.BattleRoyal.Main.MurderPlayer(target, __instance, targetAbility);
+                    return false;
+                }
+                if (target.IsBot()) {
+                    if (target == CrystalMagician.Bot)
+                        CrystalMagician.UseWater(__instance);
+                    return false;
+                }
+                if (!PlayerAbility.GetPlayerAbility(__instance).CanUseKill) return false;
+                KingPoster kp = KingPoster.GetKingPoster(__instance);
+                if (!targetAbility.CanKill) return false;
+                if (__instance.IsRole(RoleId.KingPoster) && kp.IsAbilityUsingNow)
+                {
+                    kp.OnKillClick(target);
                     return false;
                 }
                 if (Mode.BattleRoyal.Main.StartSeconds <= 0)
                 {
-                    if (Mode.BattleRoyal.Main.IsTeamBattle)
-                    {
-                        foreach (List<PlayerControl> teams in Mode.BattleRoyal.Main.Teams)
-                        {
-                            if (teams.Count > 0)
-                            {
-                                if (teams.IsCheckListPlayerControl(__instance) && teams.IsCheckListPlayerControl(target))
-                                {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
                     SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]LateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
                     if (__instance.PlayerId != 0)
                     {
-                        target.Data.IsDead = true;
-                        __instance.RpcMurderPlayer(target);
-                        Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
+                        Mode.BattleRoyal.Main.MurderPlayer(__instance, target, targetAbility);
+                        isKill = false;
                     }
                     else
                     {
@@ -512,8 +579,7 @@ static class CheckMurderPatch
                         {
                             if (__instance.IsAlive() && target.IsAlive())
                             {
-                                __instance.RpcMurderPlayer(target);
-                                Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
+                                Mode.BattleRoyal.Main.MurderPlayer(__instance, target, targetAbility);
                             }
                             isKill = false;
                         }, AmongUsClient.Instance.Ping / 1000f * 1.1f, "BattleRoyal Murder");
@@ -531,6 +597,7 @@ static class CheckMurderPatch
                     case RoleId.NiceButtoner:
                     case RoleId.Madmate:
                     case RoleId.JackalFriends:
+                    case RoleId.MadRaccoon:
                         return false;
                     case RoleId.Egoist:
                         if (!RoleClass.Egoist.UseKill) return false;
@@ -936,6 +1003,7 @@ public static class MurderPlayerPatch
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
+        if (target.IsRole(RoleId.MadRaccoon) && target == PlayerControl.LocalPlayer) MadRaccoon.Button.ResetShapeDuration(false);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -1412,7 +1480,7 @@ class ReportDeadBodyPatch
         return RoleClass.Assassin.TriggerPlayer == null
         && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
         && (Mode.PlusMode.PlusGameOptions.UseMeetingButton || target != null)
-        && !ModeHandler.IsMode(ModeId.BattleRoyal)
+        && !ModeHandler.IsMode(ModeId.BattleRoyal, ModeId.PantsRoyal)
         && !ModeHandler.IsMode(ModeId.CopsRobbers)
 && (ModeHandler.IsMode(ModeId.SuperHostRoles)
             ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)

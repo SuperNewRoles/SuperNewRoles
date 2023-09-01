@@ -115,6 +115,7 @@ public class FixedUpdate
                 CustomRoles.FixedUpdate(__instance);
                 Balancer.Update();
                 Pteranodon.FixedUpdateAll();
+                BlackHatHacker.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -218,6 +219,9 @@ public class FixedUpdate
                             break;
                         case RoleId.EvilSeer:
                             EvilSeer.Ability.DeadBodyArrowFixedUpdate();
+                            break;
+                        case RoleId.PoliceSurgeon:
+                            PoliceSurgeon.FixedUpdate();
                             break;
                     }
                 }

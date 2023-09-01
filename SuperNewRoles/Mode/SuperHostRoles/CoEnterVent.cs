@@ -1,5 +1,6 @@
 using Hazel;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor.MadRole;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -45,7 +46,10 @@ class CoEnterVent
                 if (RoleClass.SeerFriends.IsUseVent) return true;
                 break;
             case RoleId.Worshiper:
-                if (SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsUseVent) return true;
+                if (Worshiper.RoleData.IsUseVent) return true;
+                break;
+            case RoleId.MadRaccoon:
+                if (MadRaccoon.RoleData.IsUseVent) return true;
                 break;
             case RoleId.RemoteSheriff:
             case RoleId.Sheriff:

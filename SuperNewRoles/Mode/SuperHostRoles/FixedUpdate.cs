@@ -4,6 +4,9 @@ using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -121,10 +124,7 @@ public static class FixedUpdate
             }
         }
 
-        if (Madmate.CheckImpostor(player) ||
-            MadMayor.CheckImpostor(player) ||
-            player.IsRole(RoleId.Marlin) ||
-            BlackCat.CheckImpostor(player))
+        if (Madmate.CheckImpostor(player) || player.IsRole(RoleId.Marlin))
         {
             foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
             {
@@ -298,7 +298,7 @@ public static class FixedUpdate
         }
 
         string TaskText = "";
-        if (!player.IsClearTask())
+        if (player.IsUseTaskTrigger())
         {
             try
             {
@@ -449,6 +449,11 @@ public static class FixedUpdate
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
             }
+        }
+        else if (PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon))
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            PoliceSurgeon.FixedUpdate();
         }
         SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
         if (!AmongUsClient.Instance.AmHost) return;

@@ -690,7 +690,7 @@ public class CustomOverlays
             left += $"<size=200%>\n{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size> <size=95%>: {AddChatPatch.GetTeamText(intro.TeamType)}</size>";
             option.AppendLine("\n");
 
-            option.AppendLine($"<size=125%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
+            option.AppendLine($"<size=125%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId))}」</size>\n");
             option.AppendLine($"<size=95%>{intro.Description}\n</size>");
             option.AppendLine($"<size=125%>{ModTranslation.GetString("MessageSettings")}:");
             option.AppendLine($"{AddChatPatch.GetOptionText(roleOption, intro)}</size>");

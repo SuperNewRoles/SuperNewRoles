@@ -81,6 +81,7 @@ public class CustomOption
     public List<CustomOption> children;
     public bool isHeader;
     public bool isHidden;
+    public RoleId RoleId;
 
     public virtual bool Enabled
     {
@@ -96,7 +97,7 @@ public class CustomOption
 
     }
 
-    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId roleId = RoleId.None)
     {
         this.id = Id;
         this.isSHROn = IsSHROn;
@@ -109,6 +110,11 @@ public class CustomOption
         this.parent = parent;
         this.isHeader = isHeader;
         this.isHidden = isHidden;
+        this.RoleId = roleId;
+        if (parent != null)
+        {
+            this.RoleId = parent.RoleId;
+        }
 
         this.children = new List<CustomOption>();
         if (parent != null)
@@ -362,8 +368,6 @@ public class CustomRoleOption : CustomOption
     public static Dictionary<RoleId, CustomRoleOption> RoleOptions = new();
 
     public CustomOption countOption = null;
-
-    public RoleId RoleId;
 
     public int Rate
     {
@@ -1101,7 +1105,82 @@ class GameOptionsDataPatch
 
     public static string OptionToString(CustomOption option)
     {
-        return option == null ? "" : $"{option.GetName()}: {option.GetString()}";
+        if (option == null) return "";
+
+        string text = option.GetName() + ":" + option.GetString();
+        var (isProcessingRequired, pattern) = ProcessingOptionCheck(option);
+
+        if (isProcessingRequired)
+            text += $"{ProcessingOptionString(option, "  ", pattern)}";
+
+        return text;
+    }
+
+    /// <summary>
+    /// CustomOptionに追記をする。
+    /// </summary>
+    /// <param name="option">追記が必要なオプション</param>
+    /// <param name="indent">追記が必要なオプションのインデント</param>
+    /// <param name="pattern">追記の内容指定</param>
+    /// <returns>string : 追記した文字列(インデントは一つ追加している)</returns>
+    internal static string ProcessingOptionString(CustomOption option, string indent = "", ProcessingPattern pattern = ProcessingPattern.None)
+    {
+        if (option == null) return "";
+        string text = "";
+
+        if (pattern == ProcessingPattern.GetTaskTriggerAbilityTaskNumber) // タスクの割合から, タスク数を求める
+        {
+            int AllTask = SelectTask.GetTotalTasks(option.RoleId);
+            if (!int.TryParse(option.GetString().Replace("%", ""), out int percent)) return ""; // int変換できない物の場合, ブランクを返す
+            float rate = percent / 100f;
+            int activeTaskNum = (int)(AllTask * rate);
+
+            text += "\n" + indent + "  " + "(" + $"{ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
+
+            if (AllTask != 0)
+                text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")}" + ")";
+            else
+            {
+                string errorText = $"{option.RoleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。" + ")";
+                text += $"=> {errorText}";
+                Logger.Error($"{errorText}", "GetTaskTriggerAbilityTaskNumber");
+            }
+        }
+
+        return text;
+    }
+
+    /// <summary>
+    /// 追記対象のオプションか判定する
+    /// </summary>
+    /// <param name="option">判定対象</param>
+    /// <returns> true : 対象 _ false: 対象外 / ProcessingPattern : 追記形式 </returns>
+    internal static (bool, ProcessingPattern) ProcessingOptionCheck(CustomOption option)
+    {
+        string optionName = option.GetName();
+
+        Dictionary<string, ProcessingPattern> targetString = new()
+        {
+            {ModTranslation.GetString("ParcentageForTaskTriggerSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerKillGuardTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerUseVentTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerExiledGuardTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerUseSaboTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerIsImpostorLightTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerCheckImpostorTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+        };
+
+        if (targetString.ContainsKey(optionName)) return (true, targetString[optionName]);
+        else return (false, ProcessingPattern.None);
+    }
+
+    /// <summary>
+    /// 追記が必要なCustomOptionの種類
+    /// </summary>
+    internal enum ProcessingPattern
+    {
+        None,
+        GetTaskTriggerAbilityTaskNumber,
     }
 
     public static string OptionsToString(CustomOption option, bool skipFirst = false)
@@ -1137,7 +1216,6 @@ class GameOptionsDataPatch
         StringBuilder entry = new();
         List<string> entries = new()
             {
-
                 // First add the presets and the role counts
                 OptionToString(CustomOptionHolder.presetSelection)
             };

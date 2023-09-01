@@ -42,6 +42,7 @@ class Logger
             string memberName = stack.GetMethod().Name;
             log_text = $"[{t}][{className}.{memberName}({Path.GetFileName(fileName)}:{lineNumber})][{tag}]{text}";
         }
+
         switch (level)
         {
             case LogLevel.Info:

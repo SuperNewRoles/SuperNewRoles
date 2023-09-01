@@ -8,9 +8,13 @@ using System.Text.RegularExpressions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
+using UnityEngine.Networking;
 using static System.String;
 
 namespace SuperNewRoles.Patches;
@@ -72,10 +76,17 @@ class AddChatPatch
             if (AmongUsClient.Instance.AmHost)
             {
                 Assassin.AddChat(sourcePlayer, chatText);
+                if (!SelectRoleSystem.OnAddChat(sourcePlayer, chatText)) return false;
             }
         }
 
-        var Commands = chatText.Split(" ");
+        var Commandsa = chatText.Split(" ");
+        var Commandsb = new List<string>();
+        foreach (string com in Commandsa)
+        {
+            Commandsb.AddRange(com.Split("　"));
+        }
+        var Commands = Commandsb.ToArray();
         if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
         {
@@ -91,6 +102,37 @@ class AddChatPatch
             if (sourcePlayer.AmOwner) sendPlayer = null;
             else sendPlayer = sourcePlayer;
             SendCommand(sendPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+            return false;
+        }
+        else if (
+            Commands[0].Equals("/BattleRoles", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/btr", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (Commands.Length > 1)
+            {
+                var data = SelectRoleSystem.RoleNames.FirstOrDefault(x => x.Key.Equals(Commands[1], StringComparison.OrdinalIgnoreCase));
+                //nullチェック
+                if (data.Equals(default(KeyValuePair<string, RoleId>)))
+                {
+                    SendCommand(sourcePlayer, ModTranslation.GetString("BattleRoyalRoleNoneText"), SelectRoleSystem.BattleRoyalCommander);
+                }
+                else
+                {
+                    IntroData intro = IntroData.GetIntroData(data.Value, IsImpostorReturn: true);
+                    SendCommand(sourcePlayer, intro.Description, "<size=200%>"+ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString($"{intro.NameKey}Name"))+"</size>");
+                }
+            }
+            else
+            {
+                string text = ModTranslation.GetString("BattleRoyalBattleRolesCommandText") + "\n\n";
+                foreach (var role in Enum.GetValues(typeof(BattleRoles)))
+                {
+                    IntroData intro = IntroData.GetIntroData((RoleId)(BattleRoles)role, IsImpostorReturn: true);
+                    text += $"{ModTranslation.GetString(intro.NameKey + "Name")}({(BattleRoles)role})\n";
+                }
+                SendCommand(sourcePlayer, text, SelectRoleSystem.BattleRoyalCommander);
+            }
             return false;
         }
         else if (
@@ -127,6 +169,32 @@ class AddChatPatch
             )
         {
             SendCommand(sourcePlayer, ModTranslation.GetString("SNROfficialTwitterMessage") + "\n\n" + ModTranslation.GetString("TwitterOfficialLink") + "\n" + ModTranslation.GetString("TwitterDevLink"));
+            return false;
+        }
+        else if (
+            Commands[0].Equals("/GenerateCode", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/gc", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            void callback(long responseCode, DownloadHandler downloadHandler)
+            {
+                if (sourcePlayer is null) return;
+                if (responseCode != 200)
+                {
+                    if (downloadHandler.text.Length > 30)
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString("SNRWebErrorReasonServer505"));
+                    }
+                    else
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString(downloadHandler.text));
+                    }
+                }
+                else
+                    SendCommand(sourcePlayer, Format(ModTranslation.GetString("SNRWebSucGenerateCode"), downloadHandler.text));
+            }
+            WebApi.GenerateCode(sourcePlayer.Data.FriendCode, callback);
+            SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebCodeGeneratingNow"));
             return false;
         }
         else if (
@@ -256,9 +324,20 @@ class AddChatPatch
         string text = "";
         foreach (CustomOption option in options)
         {
+            if (!option.parent.Enabled && option.parent != null) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+
+            string optionName = option.GetName();
+
             text += indent + option.GetName() + ":" + option.GetString() + "\n";
+            var (isProcessingRequired, pattern) = GameOptionsDataPatch.ProcessingOptionCheck(option);
+
+            if (isProcessingRequired)
+                text += $"{GameOptionsDataPatch.ProcessingOptionString(option, indent, pattern)}\n";
+
             if (option.children.Count > 0)
             {
+                if (!option.Enabled) continue;
                 text += GetChildText(option.children, indent + "  ");
             }
         }
@@ -281,6 +360,18 @@ class AddChatPatch
             TeamType.Neutral => Format(ModTranslation.GetString("TeamMessage"), ModTranslation.GetString("NeutralName").Replace("陣営", "").Replace("阵营", "").Replace("陣營", "")),
             _ => "",
         };
+    }
+    static string GetText(CustomRoleOption option)
+    {
+        Logger.Info("GetText", "Chathandler");
+        string text = "\n";
+        IntroData intro = option.Intro;
+        text += GetTeamText(intro.TeamType) + "\n";
+        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId) + "」\n";
+        text += intro.Description + "\n";
+        text += ModTranslation.GetString("MessageSettings") + ":\n";
+        text += GetOptionText(option, intro);
+        return text;
     }
 
     // /grのコマンド結果を返す。辞書を加工する。
@@ -407,7 +498,7 @@ class AddChatPatch
         {
             // 現在有効な役職を取得
             List<CustomRoleOption> EnableOptions = new();
-            foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+            foreach (CustomRoleOption option in CustomRoleOption.RoleOptions.Values)
             {
                 if (!option.IsRoleEnable) continue;
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
@@ -454,7 +545,7 @@ class AddChatPatch
             // Mod役職の情報取得
             if (roleId != RoleId.DefaultRole)
             {
-                IEnumerable<CustomRoleOption> roleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == roleId).Select(option => { return option; });
+                IEnumerable<CustomRoleOption> roleOptions = CustomRoleOption.RoleOptions.Values.Where(option => option.RoleId == roleId).Select(option => { return option; });
                 {
                     foreach (CustomRoleOption roleOption in roleOptions)
                     {
@@ -637,6 +728,22 @@ class AddChatPatch
         {
             AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command).WrapToIl2Cpp());
         }
+    }
+
+    /// <summary>
+    /// システムメッセージ等を送信する。
+    /// </summary>
+    /// <param name="target">送信先</param>
+    /// <param name="infoName">情報タイトル(名前で表記)</param>
+    /// <param name="infoContents">情報本文(チャットで表記)</param>
+    /// <param name="color">文字色, 16進数のcolorコードで指定([#FFFFFF]等)</param>
+    public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white")
+    {
+        string line = "|--------------------------------------------------------|";
+        string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
+        string contents = $"\n{infoContents}\n　\n";
+
+        SendCommand(target, contents, name);
     }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
     {

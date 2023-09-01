@@ -4,6 +4,11 @@ using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.SuperNewRolesWeb;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -204,7 +209,7 @@ public static class SyncSetting
             case RoleId.Worshiper:
                 if (!player.IsMod())
                 {
-                    if (!SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight)
+                    if (!Worshiper.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
                         var switchSystemWorshiper = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
@@ -213,19 +218,53 @@ public static class SyncSetting
                 }
                 else
                 {
-                    if (SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight)
+                    if (Worshiper.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                         var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.KillSuicideCoolTime));
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, SuperNewRoles.Roles.Impostor.MadRole.Worshiper.AbilitySuicideCoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(Worshiper.RoleData.KillSuicideCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, Worshiper.RoleData.AbilitySuicideCoolTime);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.EvilSeer:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
+            case RoleId.PoliceSurgeon:
+                optdata.SetFloat(FloatOptionNames.ScientistCooldown, PoliceSurgeon.CustomOptionData.VitalsDisplayCooldown.GetFloat());
+                optdata.SetFloat(FloatOptionNames.ScientistBatteryCharge, PoliceSurgeon.CustomOptionData.BatteryDuration.GetFloat());
+                break;
+            case RoleId.MadRaccoon:
+                if (!player.IsMod())
+                {
+                    if (!MadRaccoon.RoleData.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
+                        var switchSystemMadRaccoon = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystemMadRaccoon != null && switchSystemMadRaccoon.IsActive) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
+                    }
+                }
+                else
+                {
+                    if (MadRaccoon.RoleData.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
+                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
+                    }
+                }
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, MadRaccoon.RoleData.ShapeshifterCooldown);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, MadRaccoon.RoleData.ShapeshifterDuration);
+                break;
+            case RoleId.Madmate:
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
+            case RoleId.JackalFriends:
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
         }
@@ -280,7 +319,7 @@ public static class SyncSetting
         var optdata = OptionData.DeepCopy();
         optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool));
         if (p.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-       else  optdata.RpcSyncOption(p.GetClientId());
+        else optdata.RpcSyncOption(p.GetClientId());
     }
     public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
     {
@@ -346,8 +385,11 @@ public static class SyncSetting
     {
         public static void Postfix()
         {
+            var RPD = RoomPlayerData.Instance;
             OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
+            if (ModeHandler.IsMode(ModeId.BattleRoyal))
+                BattleRoyalWebManager.StartGame();
         }
     }
 }

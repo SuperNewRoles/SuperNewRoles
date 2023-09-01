@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -57,7 +61,7 @@ public static class RoleSelectHandler
                 CustomOptionHolder.DemonOption.GetSelection() != 0 ||
                 CustomOptionHolder.ToiletFanOption.GetSelection() != 0 ||
                 CustomOptionHolder.NiceButtonerOption.GetSelection() != 0 ||
-                SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperOption.GetSelection() != 0)
+                Worshiper.CustomOptionData.Option.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                 bot1.RpcSetRole(RoleTypes.Impostor);
@@ -95,6 +99,10 @@ public static class RoleSelectHandler
                 BotManager.Spawn(ModTranslation.GetString("AssassinAndMarlinName") + "BOT").Exiled();
             }
         }
+        else if (ModeHandler.IsMode(ModeId.BattleRoyal))
+        {
+            BattleRoyal.Main.SpawnBots();
+        }
     }
     public static void SetCustomRoles()
     {
@@ -125,13 +133,17 @@ public static class RoleSelectHandler
         if (RoleClass.SeerFriends.IsUseVent) SetVanillaRole(RoleClass.SeerFriends.SeerFriendsPlayer, RoleTypes.Engineer);
         /*============エンジニアに役職設定============*/
 
+        /*============科学者に役職設定============*/
+        if (PoliceSurgeon.RoleData.HaveVital) SetVanillaRole(PoliceSurgeon.RoleData.Player, RoleTypes.Scientist, false);
+        /*============科学者に役職設定============*/
 
         /*============シェイプシフターDesync============*/
         SetRoleDesync(RoleClass.Arsonist.ArsonistPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer, RoleTypes.Shapeshifter);
+        SetRoleDesync(Worshiper.RoleData.Player, RoleTypes.Shapeshifter);
+        SetRoleDesync(MadRaccoon.RoleData.Player, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
 
