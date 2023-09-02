@@ -27,6 +27,9 @@ public static class ConfigRoles
     public static ConfigEntry<bool> IsDeleted { get; set; }
     public static ConfigEntry<bool> IsSendAnalytics { get; set; }
     public static ConfigEntry<bool> IsLightAndDarker { get; set; }
+    //リプレイ
+    public static ConfigEntry<bool> ReplayEnable { get; set; }
+    public static ConfigEntry<float> ReplayQualityTime { get; set; }
     public static bool IsSendAnalyticsPopupViewd;
     public static bool IsUpdated = false;
     public static void Load()
@@ -53,6 +56,9 @@ public static class ConfigRoles
         Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
         IsUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsUpdate", true);
         IsDeleted = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsDeleted", false);
+        //リプレイ
+        ReplayEnable = SuperNewRolesPlugin.Instance.Config.Bind("Replay", "Enable", false);
+        ReplayQualityTime = SuperNewRolesPlugin.Instance.Config.Bind("Replay", "QualityTime", 0.5f);
         if (!IsDeleted.Value)
         {
             if (Directory.Exists(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\") && Directory.Exists(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\"))

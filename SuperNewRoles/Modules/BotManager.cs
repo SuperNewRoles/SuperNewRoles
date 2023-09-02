@@ -25,7 +25,18 @@ public static class BotManager
             return false;
         }
     }
-    public static PlayerControl Spawn(string name = "Bot")
+    public static PlayerControl SpawnBot(byte id)
+    {
+        var Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
+
+        Bot.PlayerId = id;
+        GameData.Instance.AddPlayer(Bot);
+        AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
+        //Bot.transform.position = new Vector3(9999f, 9999f, 0);
+        Bot.NetTransform.enabled = true;
+        return Bot;
+    }
+    public static PlayerControl Spawn(string name = "Bot", bool IsSetBot = true)
     {
         byte id = 0;
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -35,16 +46,9 @@ public static class BotManager
                 id = p.PlayerId;
             }
         }
-        var Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
-
         id++;
 
-        Bot.PlayerId = id;
-        // Bot.PlayerId = BotPlayerId;
-        GameData.Instance.AddPlayer(Bot);
-        AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
-        Bot.transform.position = new Vector3(9999f, 9999f, 0);
-        Bot.NetTransform.enabled = true;
+        PlayerControl Bot = SpawnBot(id);
 
         Bot.RpcSetName(name);
         Bot.RpcSetColor(1);
@@ -55,11 +59,17 @@ public static class BotManager
         Bot.RpcSetSkin("skin_None");
         GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
         SuperNewRolesPlugin.Logger.LogInfo("botスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
+
+        if (IsSetBot) SetBot(Bot);
+        return Bot;
+    }
+    public static void SetBot(PlayerControl Bot)
+    {
+        Logger.Info("SETBOT!!!:" + Bot.PlayerId.ToString());
         AllBots.Add(Bot);
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetBot);
         writer.Write(Bot.PlayerId);
         new LateTask(() => writer.EndRPC(), 0.5f, "Bot Spawn-End");
-        return Bot;
     }
     public static void Despawn(PlayerControl Bot)
     {

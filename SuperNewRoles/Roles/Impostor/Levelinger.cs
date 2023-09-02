@@ -1,5 +1,5 @@
-using SuperNewRoles.Helpers;
 using System.Collections.Generic;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -49,7 +49,7 @@ public static class Levelinger
     {
         List<string> leveData = new() { "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
         if (!leveData.Contains(data)) return false;
-        if(CustomOptionHolder.LevelingerLevelOneGetPower.GetString() == ModTranslation.GetString(data) ||
+        if (CustomOptionHolder.LevelingerLevelOneGetPower.GetString() == ModTranslation.GetString(data) ||
            CustomOptionHolder.LevelingerLevelTwoGetPower.GetString() == ModTranslation.GetString(data) ||
            CustomOptionHolder.LevelingerLevelThreeGetPower.GetString() == ModTranslation.GetString(data) ||
            CustomOptionHolder.LevelingerLevelFourGetPower.GetString() == ModTranslation.GetString(data) ||

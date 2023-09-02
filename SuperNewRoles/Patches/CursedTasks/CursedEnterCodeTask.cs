@@ -4,9 +4,9 @@ using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using UnityEngine;
+using IEnumerator = System.Collections.IEnumerator;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
-using IEnumerator = System.Collections.IEnumerator;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 

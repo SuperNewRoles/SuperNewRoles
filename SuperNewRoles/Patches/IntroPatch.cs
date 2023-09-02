@@ -4,6 +4,7 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -60,6 +61,14 @@ public class IntroPatch
                 Logger.Info($"第三陣営役職 : 最大 {CustomOptionHolder.neutralRolesCountMax.GetSelection()}役職", "NeutralRole");
                 CustomOverlays.GetActivateRoles(true); // 現在の役職設定を取得し、辞書に保存するついでにlogに記載する
             }
+        }
+    }
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+    class IntroCutsceneOnDestroyReplayPatch
+    {
+        public static void Postfix(IntroCutscene __instance)
+        {
+            ReplayManager.CoIntroDestory();
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
@@ -165,6 +174,17 @@ public class IntroPatch
 
     public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
+        if (ReplayManager.IsReplayMode)
+        {
+            var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p != PlayerControl.LocalPlayer)
+                    newTeam.Add(p);
+            }
+            yourTeam = newTeam;
+            return;
+        }
         if (ModeHandler.IsMode(ModeId.Default))
         {
             var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();

@@ -74,7 +74,7 @@ public static class Blacklist
         if (request.isNetworkError || request.isHttpError)
         {
             downloaded = false;
-            Logger.Info("Blacklist Error Fetch:"+request.responseCode.ToString());
+            Logger.Info("Blacklist Error Fetch:" + request.responseCode.ToString());
             yield break;
         }
         var json = JObject.Parse(request.downloadHandler.text);
@@ -83,10 +83,10 @@ public static class Blacklist
             string endbantime = user["EndBanTime"]?.ToString();
             BlackPlayer player = new(
                 user["FriendCode"]?.ToString(), user["AddedMod"]?.ToString(), user["Reason"]?["Code"]?.ToString(),
-                user["Reason"]?["Title"]?.ToString(), user["Reason"]?["Description"]?.ToString(), endbantime == "never" ? null : (DateTime.TryParse(endbantime, out DateTime resulttime) ? (resulttime - new TimeSpan(9,0,0)) : null));
+                user["Reason"]?["Title"]?.ToString(), user["Reason"]?["Description"]?.ToString(), endbantime == "never" ? null : (DateTime.TryParse(endbantime, out DateTime resulttime) ? (resulttime - new TimeSpan(9, 0, 0)) : null));
         }
     }
-    public static IEnumerator Check(ClientData clientData = null, int ClientId=-1)
+    public static IEnumerator Check(ClientData clientData = null, int ClientId = -1)
     {
         if (clientData == null)
         {
@@ -120,7 +120,7 @@ public static class Blacklist
                 if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
                 {
                     AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
-                    AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle+"\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード："+player.ReasonCode.ToString()+"\n理由："+player.ReasonDescription+"\n期間："+(!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss")+"まで"));
+                    AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle + "\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード：" + player.ReasonCode.ToString() + "\n理由：" + player.ReasonDescription + "\n期間：" + (!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss") + "まで"));
                 }
                 else
                 {
@@ -144,9 +144,11 @@ internal class DisconnectPopupClosePatch
                 __instance._textArea.fontSizeMin = 1.9f;
                 __instance._textArea.enableWordWrapping = true;
             }
-        } catch(Exception e){
+        }
+        catch (Exception e)
+        {
             Logger.Info(e.ToString());
-            
+
         }
     }
 }

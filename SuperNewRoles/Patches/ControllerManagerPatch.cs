@@ -1,3 +1,4 @@
+using System.IO;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -5,6 +6,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -97,9 +99,8 @@ class ControllerManagerUpdatePatch
             // Spawn dummys
             if (Input.GetKeyDown(KeyCode.G))
             {
+                PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text, false);
                 Logger.Info(EOSManager.Instance.UserIDToken);
-
-                PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
                 bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
                 //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
@@ -110,8 +111,20 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
-                AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size><size=150%>" + "公開からの誘導はおやめください" + "</size>\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード:" + "0010" + "\n理由：" + "公開部屋から誘導してMODをプレイしていたため" + "\n期間：" + "永久";
+                HudManager.Instance.ShowPopUp("スマソ。無理やわ。");
+                return;
+                string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
+                DirectoryInfo d = new(filePath);
+                Logger.Info("FileName:" + d.GetFiles()[0].Name);
+                (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[0].Name);
+                ReplayManager.IsReplayMode = true;
+                Logger.Info($"IsSuc:{IsSuc}");
+                if (IsSuc)
+                {
+                    Logger.Info($"PlayerCount:{replay.AllPlayersCount}");
+                    Logger.Info($"Mode:{replay.CustomMode}");
+                    Logger.Info($"Time:{replay.RecordTime.ToString()}");
+                }
             }
             if (Input.GetKeyDown(KeyCode.P))
             {

@@ -77,7 +77,6 @@ public class SetNamesClass
 
     public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames, Dictionary<string, (Color, bool)> attributeRoles, Color? GhostRoleColor = null, string GhostRoleNames = "")
     {
-        if (p.IsBot()) return;
         bool commsActive = RoleHelpers.IsComms();
         if (!PlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro playerInfo) || playerInfo == null)
         {
@@ -404,7 +403,7 @@ public class SetNameUpdate
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
         if ((SetNamesClass.DefaultGhostSeeRoles() && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 SetNamesClass.SetPlayerNameColors(player);
                 SetNamesClass.SetPlayerRoleNames(player);

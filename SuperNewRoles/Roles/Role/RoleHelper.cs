@@ -6,12 +6,13 @@ using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.Attribute;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -390,6 +391,7 @@ public static class RoleHelpers
 
     public static void SetRole(this PlayerControl player, RoleId role)
     {
+        ReplayActionSetRole.Create(player.PlayerId, role);
         if (!Spelunker.CheckSetRole(player, role)) return;
         if (player.IsRole(RoleId.Doppelganger) && role != RoleId.Doppelganger)
         {
@@ -1601,6 +1603,7 @@ public static class RoleHelpers
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
+            // ベントが使える
             _ => player.IsImpostor(),
         };
     }
@@ -1692,6 +1695,7 @@ public static class RoleHelpers
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
                 RoleId.MadRaccoon => MadRaccoon.RoleData.IsImpostorLight,
+                // インポの視界
                 _ => false,
             };
     }
@@ -1785,7 +1789,7 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            return ChacheManager.MyRoleChache != null && player != null &&ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
+            return ChacheManager.MyRoleChache != null && player != null && ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
         try
         {

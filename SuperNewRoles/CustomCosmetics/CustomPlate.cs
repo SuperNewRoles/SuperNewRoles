@@ -41,15 +41,17 @@ public class CustomPlate
                     {
                         Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource)
                     };
-                    var plate = new CustomPlateData();
-                    plate.tpvd = tpvd;
-                    plate.name = Data.name + "\nby " + Data.author;
-                    plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
-                    plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
-                    plate.displayOrder = 99;
-                    plate.ChipOffset = new Vector2(0f, 0.2f);
-                    plate.Free = true;
-                    plate.SpritePreview = tpvd.Image;
+                    var plate = new CustomPlateData
+                    {
+                        tpvd = tpvd,
+                        name = Data.name + "\nby " + Data.author,
+                        ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", ""),
+                        BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", ""),
+                        displayOrder = 99,
+                        ChipOffset = new Vector2(0f, 0.2f),
+                        Free = true,
+                        SpritePreview = tpvd.Image
+                    };
                     //CustomPlates.Add(plate);
                     //AllPlates.Add(plate);
                     namePlateData.Add(plate);

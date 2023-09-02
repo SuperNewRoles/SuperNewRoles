@@ -1,5 +1,7 @@
 using System.Collections;
+using SuperNewRoles.Replay.ReplayActions;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -10,6 +12,10 @@ public static class Nun
     {
         bool IsTargetOn = __instance.Target != null;
         if (Is) IsTargetOn = false;
+        if (IsTargetOn)
+        {
+            ReplayActionMovingPlatform.Create(__instance.Target.PlayerId);
+        }
         if (__instance.Target == null)
         {
             __instance.Target = PlayerControl.LocalPlayer;
