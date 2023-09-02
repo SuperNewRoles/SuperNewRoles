@@ -7,7 +7,7 @@ namespace SuperNewRoles.Replay.ReplayActions
 {
     public static class ReplayActionPatcher
     {
-        [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
+        [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
         public static class ChatControllerAddChatPatch
         {
             public static void Postfix(PlayerControl sourcePlayer, string chatText)
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Replay.ReplayActions
             [HarmonyPostfix]
             public static void SetNamePatch(PlayerControl __instance, string name, bool dontCensor)
             {
-                ReplayActionSetCosmetics.Create(__instance.PlayerId, ReplayCosmeticsType.Name, name, dontCensor:dontCensor);
+                ReplayActionSetCosmetics.Create(__instance.PlayerId, ReplayCosmeticsType.Name, name, dontCensor: dontCensor);
             }
             [HarmonyPatch(nameof(PlayerControl.CompleteTask))]
             [HarmonyPostfix]

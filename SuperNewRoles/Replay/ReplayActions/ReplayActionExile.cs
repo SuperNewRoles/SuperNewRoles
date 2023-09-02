@@ -24,7 +24,8 @@ public class ReplayActionExile : ReplayAction
     public override void OnAction()
     {
         PlayerControl exile = ModHelpers.PlayerById(exilePlayer);
-        if (exile == null) {
+        if (exile == null)
+        {
             Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。exile:{exilePlayer}");
             return;
         }

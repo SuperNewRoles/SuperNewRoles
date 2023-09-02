@@ -552,11 +552,13 @@ static class CheckMurderPatch
                     }
                 }
                 PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
-                if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow) {
+                if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow)
+                {
                     Mode.BattleRoyal.Main.MurderPlayer(target, __instance, targetAbility);
                     return false;
                 }
-                if (target.IsBot()) {
+                if (target.IsBot())
+                {
                     if (target == CrystalMagician.Bot)
                         CrystalMagician.UseWater(__instance);
                     return false;

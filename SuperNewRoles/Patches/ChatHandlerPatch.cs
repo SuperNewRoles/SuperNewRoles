@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Text.RegularExpressions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
@@ -482,6 +482,7 @@ class AddChatPatch
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        var isCommanderHost = target == PlayerControl.LocalPlayer;
         if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
         {
             SendCommand(target, ModTranslation.GetString("NotAssign"));
@@ -497,7 +498,7 @@ class AddChatPatch
         float time = 0;
         foreach (CustomRoleOption option in EnableOptions)
         {
-            (string rolename, string text) = RoleInfo.GetRoleInfo(option.RoleId);
+            (string rolename, string text) = RoleInfo.GetRoleInfo(option.RoleId, isGetAllRole: isCommanderHost);
             rolename = $"<align={"left"}><size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size></align>";
             text = $"\n<color=#00000000>{option.RoleId}</color>" + text;
             SuperNewRolesPlugin.Logger.LogInfo(rolename);

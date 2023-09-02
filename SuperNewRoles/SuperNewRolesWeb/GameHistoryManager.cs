@@ -15,23 +15,28 @@ namespace SuperNewRoles.SuperNewRolesWeb
 {
     public static class GameHistoryManager
     {
-        public static void ClearAndReloads() {
+        public static void ClearAndReloads()
+        {
             MeetingHistories = new();
             SendData = null;
         }
-        public class MeetingHistory {
+        public class MeetingHistory
+        {
             public Dictionary<byte, List<int>> VoteColors = new();
             public List<int> SkipPlayers = new();
             public byte exiledPlayer = 255;
             public List<byte> DeadPlayers = new();
             public byte reporter = 255;
             public byte reportedbody = 255;
-            public MeetingHistory(Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled) {
-                foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers) {
+            public MeetingHistory(Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled)
+            {
+                foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+                {
                     bool IsDead = player.IsDead || player.Disconnected;
-                    if (player.Object != null) 
+                    if (player.Object != null)
                         if (player.Object.IsBot()) continue;
-                    if (IsDead) {
+                    if (IsDead)
+                    {
                         DeadPlayers.Add(player.PlayerId);
                     }
                     VoteColors.Add(player.PlayerId, new());
@@ -39,10 +44,11 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 reporter = Instance.reporterId;
                 reportedbody = 255;
                 if (MeetingRoomManager.Instance != null && MeetingRoomManager.Instance.target != null)
-                        reportedbody = MeetingRoomManager.Instance.target.PlayerId;
+                    reportedbody = MeetingRoomManager.Instance.target.PlayerId;
                 if (exiled == null) exiledPlayer = 255;
                 else exiledPlayer = exiled.PlayerId;
-                foreach (VoterState state in states) {
+                foreach (VoterState state in states)
+                {
                     if (state.SkippedVote || state.VotedForId > 250)
                         SkipPlayers.Add(state.VoterId);
                     else
@@ -58,7 +64,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
             if (!WebAccountManager.IsLogined) return;
             if (PlayerControl.LocalPlayer == null)
             {
-                Logger.Info("LocalPlayerが存在しませんでした。","GameHistoryManager");
+                Logger.Info("LocalPlayerが存在しませんでした。", "GameHistoryManager");
                 return;
             }
             SendData = new();
@@ -109,7 +115,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
             {
                 string PlayerName = player.PlayerName;
                 RoleId roleId = RoleId.DefaultRole;
-                if (player.Object != null) {
+                if (player.Object != null)
+                {
                     if (player.Object.IsBot()) continue;
                     PlayerName = player.Object.GetDefaultName();
                     roleId = player.Object.GetRole();
@@ -134,7 +141,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
             // 会議情報
             SendData["MeetingCount"] = MeetingHistories.Count.ToString();
             int index = 0;
-            foreach (MeetingHistory mh in MeetingHistories) {
+            foreach (MeetingHistory mh in MeetingHistories)
+            {
                 string indexstr = index.ToString();
                 SendData[$"meeting_{indexstr}_exiled"] = mh.exiledPlayer == byte.MaxValue ? "None" : mh.exiledPlayer.ToString();
                 SendData[$"meeting_{indexstr}_dead"] = string.Join(",", mh.DeadPlayers);
@@ -142,13 +150,15 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 SendData[$"meeting_{indexstr}_VoteColorTargets"] = string.Join(",", mh.VoteColors.Keys);
                 SendData[$"meeting_{indexstr}_reporter"] = mh.reporter.ToString();
                 SendData[$"meeting_{indexstr}_reporttarget"] = mh.reportedbody.ToString();
-                foreach (var votecolor in mh.VoteColors) {
+                foreach (var votecolor in mh.VoteColors)
+                {
                     SendData[$"meeting_{indexstr}_VoteData_{votecolor.Key}"] = string.Join(",", votecolor.Value);
                 }
                 index++;
             }
         }
-        public static void Send(string WinReasonText, Color32 WinReasonColor, System.Action<long, DownloadHandler> callback = null) {
+        public static void Send(string WinReasonText, Color32 WinReasonColor, System.Action<long, DownloadHandler> callback = null)
+        {
             if (SendData == null) return;
             SendData["WinReasonText"] = WinReasonText;
             SendData["WinReasonColor_0"] = WinReasonColor.r.ToString();

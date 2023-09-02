@@ -9,7 +9,8 @@ public class ReplayActionBalancer : ReplayAction
     public byte sourcePlayer;
     public byte player1;
     public byte player2;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
@@ -26,12 +27,13 @@ public class ReplayActionBalancer : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.Balancer;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         RPCProcedure.BalancerBalance(sourcePlayer, player1, player2);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionBalancer Create(byte sourcePlayer,byte player1,byte player2)
+    public static ReplayActionBalancer Create(byte sourcePlayer, byte player1, byte player2)
     {
         ReplayActionBalancer action = new();
         if (!CheckAndCreate(action)) return null;

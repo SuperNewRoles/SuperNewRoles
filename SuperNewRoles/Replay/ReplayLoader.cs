@@ -366,14 +366,18 @@ public static class ReplayLoader
     }
     public static SpriteRenderer CreateItem(string Id, int index, UnityAction action, string name = "", Vector3? scale = null, Vector2? size = null)
     {
-        GameObject item = new();
-        item.name = Id == "" ? name : Id;
+        GameObject item = new()
+        {
+            name = Id == "" ? name : Id
+        };
         item.transform.parent = GUIObject.transform;
         item.layer = 5;
         item.transform.localPosition = new(-3.2f + 2.15f * index, 0, -20);
         item.transform.localScale = new(0.275f, 0.175f, 0.175f);
-        GameObject renderobj = new("Renderer");
-        renderobj.layer = 5;
+        GameObject renderobj = new("Renderer")
+        {
+            layer = 5
+        };
         renderobj.transform.parent = item.transform;
         renderobj.transform.localPosition = new();
         renderobj.transform.localScale = new(1, 1, 1);

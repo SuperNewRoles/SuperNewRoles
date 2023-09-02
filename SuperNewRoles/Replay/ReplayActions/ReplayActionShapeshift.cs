@@ -9,7 +9,8 @@ public class ReplayActionShapeshift : ReplayAction
     public byte sourcePlayer;
     public byte targetPlayer;
     public bool animate;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
@@ -26,7 +27,8 @@ public class ReplayActionShapeshift : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.Shapeshift;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);

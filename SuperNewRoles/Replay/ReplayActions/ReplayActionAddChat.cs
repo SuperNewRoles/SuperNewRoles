@@ -8,12 +8,13 @@ public class ReplayActionAddChat : ReplayAction
 {
     public byte sourcePlayer;
     public string chatText;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
         chatText = reader.ReadString();
-        Logger.Info(chatText,"CHATTEXT");
+        Logger.Info(chatText, "CHATTEXT");
     }
     public override void WriteReplayFile(BinaryWriter writer)
     {
@@ -24,7 +25,8 @@ public class ReplayActionAddChat : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.AddChat;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)

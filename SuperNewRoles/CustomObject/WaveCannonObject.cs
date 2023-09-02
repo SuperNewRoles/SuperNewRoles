@@ -75,7 +75,7 @@ public class WaveCannonObject : CustomAnimation
             return CachedSpritesShoot;
         }
     }
-    public static Sprite[] CachedSpritesShoot= null;
+    public static Sprite[] CachedSpritesShoot = null;
     public static Sprite[] ShootSpritesNowing
     {
         get
@@ -130,7 +130,7 @@ public class WaveCannonObject : CustomAnimation
     }
     public WaveCannonObject Init(Vector3 pos, bool FlipX, PlayerControl _owner)
     {
-        CustomAnimationOptions customAnimationOptions = new(ChargeSprites, 25, true,EffectSound: ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"),IsEffectSoundLoop:true);
+        CustomAnimationOptions customAnimationOptions = new(ChargeSprites, 25, true, EffectSound: ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), IsEffectSoundLoop: true);
         base.Init(customAnimationOptions);
         //使用者を設定
         OwnerPlayerId = _owner.PlayerId;
@@ -228,7 +228,7 @@ public class WaveCannonObject : CustomAnimation
         for (int i = 0; i < 12; i++)
             sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
         Options.SetSprites(sprites,
-            IsLoop: true,frameRate:12);
+            IsLoop: true, frameRate: 12);
         Stop();
         Play();
         Options.SetOnEndAnimation((anim, option) =>
@@ -237,9 +237,9 @@ public class WaveCannonObject : CustomAnimation
             for (int i = 0; i < 7; i++)
                 sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
 
-            option.SetSprites(sprites, IsLoop:true,frameRate: 15);
-            Stop(IsStopMusic:false);
-            Play(IsPlayMusic:false);
+            option.SetSprites(sprites, IsLoop: true, frameRate: 15);
+            Stop(IsStopMusic: false);
+            Play(IsPlayMusic: false);
             foreach (var obj in effectrenders) obj.sprite = sprites[0];
             Options.SetOnEndAnimation((anim, option) =>
             {

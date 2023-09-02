@@ -1,4 +1,3 @@
-using SuperNewRoles.SuperNewRolesWeb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +11,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
@@ -255,7 +255,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
             };
-        Logger.Info(AdditionalTempData.winCondition.ToString(),"WINCOND");
+        Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
             text = WinConditionDictionary[AdditionalTempData.winCondition].Item1;
@@ -670,7 +670,8 @@ public static class OnGameEndPatch
             WaveCannonJackal.WaveCannonJackalPlayer,
             WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
-            Moira.MoiraPlayer,                                 Roles.Impostor.MadRole.MadRaccoon.RoleData.Player
+            Moira.MoiraPlayer,
+            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);

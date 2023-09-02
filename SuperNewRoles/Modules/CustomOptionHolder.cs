@@ -1589,9 +1589,10 @@ public class CustomOptionHolder
 
         Moira.SetupCustomOptions();
 
-        // SetupNeutralCustomOptions // [ ]MEMO:第三陣営
+        // SetupNeutralCustomOptions
 
         /* |: ========================= Crewmate Settings ========================== :| */
+
         SheriffOption = SetupCustomRoleOption(400000, true, RoleId.Sheriff);
         SheriffPlayerCount = Create(400001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
         SheriffCoolTime = Create(400002, true, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
@@ -2093,4 +2094,3 @@ public class CustomOptionHolder
     }
     private static int GetRoleSettingid(int maxId) => maxId / 100;
 }
-

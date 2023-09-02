@@ -51,7 +51,7 @@ public class Revenger : BattleRoyalRole
         Logger.Info($"{ModHelpers.GetInRoom(DeathPosition)} : {DeathPosition}");
         SystemTypes roomtype = ModHelpers.GetInRoom(DeathPosition);
         string room = roomtype is SystemTypes.Doors ? "None" : FastDestroyableSingleton<TranslationController>.Instance.GetString(roomtype);
-        string msg = string.Format(ModTranslation.GetString("RevengerStartRevenge"), CurrentPlayer.GetDefaultName() , room);
+        string msg = string.Format(ModTranslation.GetString("RevengerStartRevenge"), CurrentPlayer.GetDefaultName(), room);
         ChangeName.SetNotification(msg, RoleParameter.ReviverShowNotificationDurationTime);
         ChangeName.UpdateName(true);
     }

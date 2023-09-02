@@ -8,10 +8,11 @@ public class ReplayActionDisconnect : ReplayAction
 {
     public byte sourcePlayer;
     public byte reason;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
-        Logger.Info("POS:"+reader.BaseStream.Position.ToString());
+        Logger.Info("POS:" + reader.BaseStream.Position.ToString());
         sourcePlayer = reader.ReadByte();
         Logger.Info("POS2:" + reader.BaseStream.Position.ToString());
         reason = reader.ReadByte();
@@ -25,7 +26,8 @@ public class ReplayActionDisconnect : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.Disconnect;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
@@ -36,7 +38,7 @@ public class ReplayActionDisconnect : ReplayAction
         GameData.Instance.HandleDisconnect(source, (DisconnectReasons)reason);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionDisconnect Create(byte sourcePlayer,DisconnectReasons reason)
+    public static ReplayActionDisconnect Create(byte sourcePlayer, DisconnectReasons reason)
     {
         ReplayActionDisconnect action = new();
         if (!CheckAndCreate(action)) return null;
