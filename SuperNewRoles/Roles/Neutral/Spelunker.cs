@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
@@ -98,6 +99,7 @@ public static class Spelunker
     {
         public static void Postfix(MovingPlatformBehaviour __instance, PlayerControl target)
         {
+            ReplayActionMovingPlatform.Create(target.PlayerId);
             if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId &&
                 target.IsRole(RoleId.Spelunker))
             {

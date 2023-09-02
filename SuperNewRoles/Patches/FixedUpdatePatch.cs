@@ -5,6 +5,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Crewmate;
@@ -77,8 +78,8 @@ public class FixedUpdate
     {
         if (!PlayerAnimation.IsCreatedAnim(__instance.PlayerId))
             new PlayerAnimation(__instance);
+        if (ReplayManager.IsReplayMode && !ReplayLoader.IsInited) return;
         if (__instance != PlayerControl.LocalPlayer) return;
-        SluggerDeadbody.AllFixedUpdate();
         PlayerAnimation.FixedAllUpdate();
         PVCreator.FixedUpdate();
 

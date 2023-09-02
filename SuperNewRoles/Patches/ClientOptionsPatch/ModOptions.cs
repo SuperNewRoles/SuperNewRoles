@@ -16,15 +16,14 @@ public static class ClientModOptionsPatch
             new SelectionBehaviour("CustomStremerMode", () => ConfigRoles.StreamerMode.Value = !ConfigRoles.StreamerMode.Value, ConfigRoles.StreamerMode.Value),
             new SelectionBehaviour("CustomAutoUpdate", () => ConfigRoles.AutoUpdate.Value = !ConfigRoles.AutoUpdate.Value, ConfigRoles.AutoUpdate.Value),
             new SelectionBehaviour("CustomAutoCopyGameCode", () => ConfigRoles.AutoCopyGameCode.Value = !ConfigRoles.AutoCopyGameCode.Value, ConfigRoles.AutoCopyGameCode.Value),
-            new SelectionBehaviour("CustomProcessDown", () => ConfigRoles.CustomProcessDown.Value = !ConfigRoles.CustomProcessDown.Value, ConfigRoles.CustomProcessDown.Value),
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
             new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
             new SelectionBehaviour("IsModCosmeticsAreNotLoaded", () => ConfigRoles.IsModCosmeticsAreNotLoaded.Value = !ConfigRoles.IsModCosmeticsAreNotLoaded.Value, ConfigRoles.IsModCosmeticsAreNotLoaded.Value),
             new SelectionBehaviour("IsNotUsingBlood", () => ConfigRoles.IsNotUsingBlood.Value = !ConfigRoles.IsNotUsingBlood.Value, ConfigRoles.IsNotUsingBlood.Value),
             new SelectionBehaviour("IsSendAnalytics", () => ConfigRoles.IsSendAnalytics.Value = !ConfigRoles.IsSendAnalytics.Value, ConfigRoles.IsSendAnalytics.Value),
-            new SelectionBehaviour("IsLightAndDarker", () => ConfigRoles.IsLightAndDarker.Value = !ConfigRoles.IsLightAndDarker.Value, ConfigRoles.IsLightAndDarker.Value)
+            new SelectionBehaviour("IsLightAndDarker", () => ConfigRoles.IsLightAndDarker.Value = !ConfigRoles.IsLightAndDarker.Value, ConfigRoles.IsLightAndDarker.Value),
+            new SelectionBehaviour("ReplayOptions", () => OpenReplayWindow(), true),
     };
-
     private static GameObject popUp;
     private static TextMeshPro titleText;
 
@@ -69,6 +68,7 @@ public static class ClientModOptionsPatch
         }
 
         SetUpOptions();
+        ReplaySetUpOptions();
         InitializeMoreButton(__instance);
     }
 
@@ -88,6 +88,21 @@ public static class ClientModOptionsPatch
                 Object.Destroy(gObj);
         }
         popUp.SetActive(false);
+
+        ReplayPopup = Object.Instantiate(prefab.gameObject);
+        Object.DontDestroyOnLoad(ReplayPopup);
+        transform = ReplayPopup.transform;
+        pos = transform.localPosition;
+        pos.z = -816.51f;
+        transform.localPosition = pos;
+
+        Object.Destroy(ReplayPopup.GetComponent<OptionsMenuBehaviour>());
+        foreach (var gObj in ReplayPopup.gameObject.GetAllChilds())
+        {
+            if (gObj.name is not "Background" and not "CloseButton")
+                Object.Destroy(gObj);
+        }
+        ReplayPopup.SetActive(false);
     }
 
     private static void InitializeMoreButton(OptionsMenuBehaviour __instance)
@@ -121,11 +136,24 @@ public static class ClientModOptionsPatch
         }));
     }
 
+    private static GameObject ReplayPopup;
+    private static List<ToggleButtonBehaviour> ReplayButtons;
+    public static bool OpenReplayWindow()
+    {
+        ReplayPopup.gameObject.SetActive(false);
+        ReplayPopup.gameObject.SetActive(true);
+        SetUpOptions();
+        ReplaySetUpOptions();
+        return true;
+    }
+
     private static void RefreshOpen()
     {
         popUp.gameObject.SetActive(false);
+        ReplayPopup.gameObject.SetActive(false);
         popUp.gameObject.SetActive(true);
         SetUpOptions();
+        ReplaySetUpOptions();
     }
 
     private static void CheckSetTitle()
@@ -189,6 +217,107 @@ public static class ClientModOptionsPatch
             modButtons.Add(button);
         }
     }
+    public const float ReplayQualityLowTime = 0.75f;
+    public const float ReplayQualityMediumTime = 0.5f;
+    public const float ReplayQualityHighTime = 0.25f;
+    public static void UpdateState(ToggleButtonBehaviour button,bool state)
+    {
+        button.onState = state;
+        button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+    }
+    public static List<SelectionBehaviour> ReplayOptions = new() { new SelectionBehaviour("リプレイを収録する",()=>{
+        foreach (GameObject obj in ReplayEnableObjects)
+        {
+            obj.SetActive(!ConfigRoles.ReplayEnable.Value);
+        }
+        return ConfigRoles.ReplayEnable.Value = !ConfigRoles.ReplayEnable.Value; },ConfigRoles.ReplayEnable.Value,pos: new(0, 1.8f, -0.5f)),
+        new SelectionBehaviour("ReplayOptionsQualityLow",()=>UpdateReplayQuality(ReplayQualityLowTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityLowTime,pos:new(-1.75f, -0.1f, -0.5f),scale:Vector3.one*0.75f),
+        new SelectionBehaviour("ReplayOptionsQualityMedium",()=>UpdateReplayQuality(ReplayQualityMediumTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityMediumTime,pos:new(0, -0.1f, -0.5f),scale:Vector3.one*0.75f),
+        new SelectionBehaviour("ReplayOptionsQualityHigh",()=>UpdateReplayQuality(ReplayQualityHighTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityHighTime,pos:new(1.75f, -0.1f, -0.5f),scale:Vector3.one*0.75f)};
+
+    static bool UpdateReplayQuality(float timer)
+    {
+        ConfigRoles.ReplayQualityTime.Value = timer;
+        UpdateState(ReplayOptions[1].Button, timer == ReplayQualityLowTime);
+        UpdateState(ReplayOptions[2].Button, timer == ReplayQualityMediumTime);
+        UpdateState(ReplayOptions[3].Button, timer == ReplayQualityHighTime);
+        return true;
+    }
+    static List<GameObject> ReplayEnableObjects;
+    public static void ReplaySetUpOptions()
+    {
+        if (ReplayPopup.transform.GetComponentInChildren<ToggleButtonBehaviour>()) return;
+        ReplayPopup.name = "ReplayPopup";
+        ReplayEnableObjects = new();
+
+        ReplayButtons = new List<ToggleButtonBehaviour>();
+        
+        TextMeshPro ReplayTMPTemplate = buttonPrefab.Text;
+        TextMeshPro ReplayQualityTitle = Object.Instantiate(ReplayTMPTemplate, ReplayPopup.transform);
+        ReplayQualityTitle.name = "QualityTitle";
+        ReplayQualityTitle.text = ModTranslation.GetString("ReplayOptionsQualityTitle");
+        ReplayQualityTitle.transform.localScale = Vector3.one * 2;
+        ReplayQualityTitle.transform.localPosition = new(0, 1.1f, -1);
+        TextMeshPro ReplayQualityDescription = Object.Instantiate(ReplayTMPTemplate, ReplayPopup.transform);
+        ReplayQualityDescription.name = "QualityDescription";
+        ReplayQualityDescription.text = ModTranslation.GetString("ReplayOptionsQualityDescription");
+        ReplayQualityDescription.transform.localPosition = new(0,0.55f,-1);
+        ReplayQualityDescription.rectTransform.sizeDelta = new(4, 0.6f);
+
+        ReplayEnableObjects.Add(ReplayQualityTitle.gameObject);
+        ReplayEnableObjects.Add(ReplayQualityDescription.gameObject);
+        for (var i = 0; i < ReplayOptions.Count; i++)
+        {
+            var info = ReplayOptions[i];
+
+            var button = Object.Instantiate(buttonPrefab, ReplayPopup.transform);
+            var pos = info.pos.HasValue ? info.pos.Value : new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+
+            var transform = button.transform;
+            transform.localPosition = pos;
+            if (info.scale.HasValue)
+                transform.localScale = info.scale.Value;
+
+            button.onState = info.DefaultValue;
+            button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+
+            button.Text.text = ModTranslation.GetString(info.Title);
+            button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
+            button.Text.font = Object.Instantiate(titleText.font);
+            button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
+
+            button.name = info.Title.Replace(" ", "") + "Toggle";
+            button.gameObject.SetActive(true);
+
+            var passiveButton = button.GetComponent<PassiveButton>();
+            var colliderButton = button.GetComponent<BoxCollider2D>();
+
+            colliderButton.size = new Vector2(2.2f, .7f);
+
+            passiveButton.OnClick = new ButtonClickedEvent();
+            passiveButton.OnMouseOut = new UnityEvent();
+            passiveButton.OnMouseOver = new UnityEvent();
+
+            passiveButton.OnClick.AddListener((Action)(() =>
+            {
+                UpdateState(button, info.OnClick());
+            }));
+
+            passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
+            passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+
+            foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                spr.size = new Vector2(2.2f, .7f);
+            info.Button = button;
+            ReplayButtons.Add(button);
+            if (i > 0)
+                ReplayEnableObjects.Add(button.gameObject);
+        }
+        foreach (GameObject obj in ReplayEnableObjects)
+        {
+            obj.SetActive(ConfigRoles.ReplayEnable.Value);
+        }
+    }
     private static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
     {
         for (var i = 0; i < Go.transform.childCount; i++)
@@ -217,12 +346,17 @@ public static class ClientModOptionsPatch
         public string Title;
         public Func<bool> OnClick;
         public bool DefaultValue;
+        public Vector3? pos;
+        public Vector3? scale;
+        public ToggleButtonBehaviour Button;
 
-        public SelectionBehaviour(string title, Func<bool> onClick, bool defaultValue)
+        public SelectionBehaviour(string title, Func<bool> onClick, bool defaultValue, Vector3? pos=null, Vector3? scale=null)
         {
             Title = title;
             OnClick = onClick;
             DefaultValue = defaultValue;
+            this.pos = pos;
+            this.scale = scale;
         }
     }
 }
