@@ -671,6 +671,7 @@ public static class OnGameEndPatch
             WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
             Moira.MoiraPlayer,
+            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
