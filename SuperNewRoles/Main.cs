@@ -26,11 +26,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
 {
     public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
-    public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
-    public static bool IsSecretBranch = true;
+    public const bool IsBeta = ThisAssembly.Git.Branch != MasterBranch && !IsHideText;
 
-    //プルリク時にfalseなら指摘してください
-    public const bool IsViewText = true;
+    public const bool IsSecretBranch = false; // プルリク時にtrueなら指摘してください
+    public const bool IsHideText = false; // プルリク時にtrueなら指摘してください
 
     public const string ModUrl = "ykundesu/SuperNewRoles";
     public const string MasterBranch = "master";
