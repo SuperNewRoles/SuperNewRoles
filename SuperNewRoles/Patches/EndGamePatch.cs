@@ -487,7 +487,7 @@ public static class OnGameEndPatch
             }
             catch { }
         }
-       if (!ReplayManager.IsReplayMode && ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !ConfigRoles.DebugMode.Value)
+        if (!ReplayManager.IsReplayMode && ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !ConfigRoles.DebugMode.Value)
         {
             try
             {
@@ -546,7 +546,7 @@ public static class OnGameEndPatch
                     namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
                 }
                 Dictionary<string, (Color, bool)> attributeRoles = new(SetNamesClass.AttributeRoleNameSet(p.Object));
-                string  attributeRoleName= "";
+                string attributeRoleName = "";
                 if (attributeRoles.Count != 0)
                 {
                     foreach (var kvp in attributeRoles)
@@ -569,21 +569,21 @@ public static class OnGameEndPatch
                 });
             }
         }
-        if (ReplayManager.IsReplayMode) 
-         { 
-             Logger.Info("ComeEndReplay"); 
-             var ReplayEndGameData = ReplayLoader.ReplayTurns[ReplayLoader.CurrentTurn].CurrentEndGameData; 
-             if (ReplayEndGameData == null) return; 
-             Logger.Info("EndNullReplay"); 
-             Il2CppSystem.Collections.Generic.List<WinningPlayerData> WinningPlayers = new(); 
-             foreach (byte winnerid in ReplayEndGameData.WinnerPlayers) 
-             { 
-                 WinningPlayers.Add(new(GameData.Instance.GetPlayerById(winnerid))); 
-             } 
-             TempData.winners = WinningPlayers; 
-             AdditionalTempData.winCondition = ReplayEndGameData.WinCond; 
-             return; 
-         }
+        if (ReplayManager.IsReplayMode)
+        {
+            Logger.Info("ComeEndReplay");
+            var ReplayEndGameData = ReplayLoader.ReplayTurns[ReplayLoader.CurrentTurn].CurrentEndGameData;
+            if (ReplayEndGameData == null) return;
+            Logger.Info("EndNullReplay");
+            Il2CppSystem.Collections.Generic.List<WinningPlayerData> WinningPlayers = new();
+            foreach (byte winnerid in ReplayEndGameData.WinnerPlayers)
+            {
+                WinningPlayers.Add(new(GameData.Instance.GetPlayerById(winnerid)));
+            }
+            TempData.winners = WinningPlayers;
+            AdditionalTempData.winCondition = ReplayEndGameData.WinCond;
+            return;
+        }
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
         List<PlayerControl> notWinners = new();
         List<PlayerControl> peculiarNotWinners = new();
