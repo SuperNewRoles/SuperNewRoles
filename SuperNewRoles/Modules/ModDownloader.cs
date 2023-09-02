@@ -151,6 +151,7 @@ public static class ModDownloader
             {
                 DownloadingPopupStatusText.text = splited[splited.Length - 1] + "を保存中";
                 yield return null;
+                 Directory.CreateDirectory(ziptempfolder) + @"\SuperNewRoles\CustomHatsChache\");
                 var fileStream = File.Create(ziptempfolder + splited[splited.Length - 1]);
                 foreach (byte result in request.downloadHandler.GetData())
                 {
