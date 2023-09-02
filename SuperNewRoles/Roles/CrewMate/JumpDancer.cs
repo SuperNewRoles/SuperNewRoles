@@ -97,6 +97,10 @@ public static class JumpDancer
         {
             if (JumpingPlayerIds.ContainsKey(player.PlayerId) || player.inMovingPlat || player.onLadder)
                 continue;
+            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.JumpDancerSe"+ (ModHelpers.IsSucsessChance(5) ? "1" : "2") + ".raw"), false,audioMixer:SoundManager.Instance.SfxChannel);
+            }
             JumpingPlayerIds.Add(player.PlayerId, 0f);
             player.moveable = false;
             player.MyPhysics.Animations.PlayIdleAnimation();
@@ -155,7 +159,7 @@ public static class JumpDancer
                 JumpDancerButton.MaxTimer = JumpDancerCoolTime.GetFloat();
                 JumpDancerButton.Timer = JumpDancerButton.MaxTimer;
             },
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CrackerButton.png", 115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JumpDancerButton.png", 115f),
             new(0, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -164,7 +168,7 @@ public static class JumpDancer
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("BlackHatHackerHackButtonName"),
+            buttonText = ModTranslation.GetString("JumpDancerButtonName"),
             showButtonText = true
         };
     }
