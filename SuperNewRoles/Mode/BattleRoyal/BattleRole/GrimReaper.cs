@@ -75,7 +75,8 @@ public class GrimReaper : BattleRoyalRole
                     {
                         PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
                         if (ability is null) continue;
-                        if (!team.IsTeam(player)) {
+                        if (!team.IsTeam(player))
+                        {
                             ability.CanMove = false;
                             ability.CanUseKill = false;
                             continue;

@@ -12,7 +12,8 @@ public class ReplayActionClimbLadder : ReplayAction
     public byte sourcePlayer;
     public byte ladderid;
     public byte climbLadderSid;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
@@ -153,7 +154,7 @@ public class ReplayActionClimbLadder : ReplayAction
         ReplayManager.CurrentReplay.CurrentLadder.Remove(__instance.myPlayer.PlayerId);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionClimbLadder Create(byte sourcePlayer,byte ladderid, byte cls)
+    public static ReplayActionClimbLadder Create(byte sourcePlayer, byte ladderid, byte cls)
     {
         ReplayActionClimbLadder action = new();
         if (!CheckAndCreate(action)) return null;

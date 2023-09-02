@@ -44,7 +44,8 @@ public class CrystalMagician : BattleRoyalRole
                 //クリスタルが終わったら
                 if (IsCrystalTime)
                 {
-                    foreach (PlayerControl member in BattleTeam.GetTeam(CurrentPlayer).TeamMember) {
+                    foreach (PlayerControl member in BattleTeam.GetTeam(CurrentPlayer).TeamMember)
+                    {
                         Bot.RpcSnapTo(new(999, 999), member);
                     }
                     foreach (PlayerControl player in Players)
@@ -97,7 +98,7 @@ public class CrystalMagician : BattleRoyalRole
         SyncBattleOptions.CustomSyncOptions(getter);
         Players.Add(getter);
         if (Bot is null) return;
-        Bot.RpcSnapTo(new(999,999), getter);
+        Bot.RpcSnapTo(new(999, 999), getter);
     }
     public bool CanUseAbility()
     {
@@ -112,7 +113,8 @@ public class CrystalMagician : BattleRoyalRole
         IsAbilityUsingNow = true;
         IsCrystalTime = true;
         AbilityTime = RoleParameter.CrystalMagicianCrystalTime;
-        foreach (PlayerControl player in BattleTeam.GetTeam(CurrentPlayer).TeamMember) {
+        foreach (PlayerControl player in BattleTeam.GetTeam(CurrentPlayer).TeamMember)
+        {
             Bot.RpcSnapTo(CurrentPlayer.transform.position, player);
         }
         IsCrystalTime = true;

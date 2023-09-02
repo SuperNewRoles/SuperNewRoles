@@ -9,12 +9,13 @@ public class ReplayActionVotingComplete : ReplayAction
     public MeetingHud.VoterState[] States;
     public byte exilePlayer;
     public bool tie;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         int count = reader.ReadInt32();
         List<MeetingHud.VoterState> states = new();
-        for (int i=0;i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             MeetingHud.VoterState state = new()
             {
@@ -42,7 +43,8 @@ public class ReplayActionVotingComplete : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.VotingComplete;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         GameData.PlayerInfo exile = GameData.Instance.GetPlayerById(exilePlayer);
         MeetingHud.Instance.VotingComplete(States, exile, tie);

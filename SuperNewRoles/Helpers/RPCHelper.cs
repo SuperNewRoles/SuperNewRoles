@@ -186,7 +186,7 @@ public static class RPCHelper
         else
         {
             if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
-            Logger.Info("Send=>"+TargetClientId.ToString());
+            Logger.Info("Send=>" + TargetClientId.ToString());
             writer.StartMessage(6);
             writer.Write(AmongUsClient.Instance.GameId);
             writer.WritePacked(TargetClientId);

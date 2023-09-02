@@ -16,7 +16,8 @@ public struct WebPlayer
         {
             currentPlayer = player
         };
-        WebApi.GetWebPlayerData(player.Data.FriendCode, (code, handler) => {
+        WebApi.GetWebPlayerData(player.Data.FriendCode, (code, handler) =>
+        {
             if (webPlayer.currentPlayer == null || code != 200)
             {
                 if (RoomPlayerData._instance != null)

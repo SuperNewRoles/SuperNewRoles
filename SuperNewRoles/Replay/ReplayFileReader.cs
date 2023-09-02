@@ -45,7 +45,7 @@ public static class ReplayFileReader
     {
         replay.ReplayDataMod = reader.ReadString();
         replay.RecordVersion = new Version(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadByte());
-        replay.RecordTime = DateTime.ParseExact(reader.ReadString(), "yyyy-MM-dd-HH-mm-ss" , null);
+        replay.RecordTime = DateTime.ParseExact(reader.ReadString(), "yyyy-MM-dd-HH-mm-ss", null);
         return replay;
     }
     public static ReplayData ReadGameData(BinaryReader reader, ReplayData replay)
@@ -92,7 +92,8 @@ public static class ReplayFileReader
     public static ReplayData ReadPlayerData(BinaryReader reader, ReplayData replay)
     {
         replay.ReplayPlayers = new();
-        for (int i = 0; i < replay.AllPlayersCount; i++) {
+        for (int i = 0; i < replay.AllPlayersCount; i++)
+        {
             ReplayPlayer player = new()
             {
                 PlayerId = reader.ReadByte()

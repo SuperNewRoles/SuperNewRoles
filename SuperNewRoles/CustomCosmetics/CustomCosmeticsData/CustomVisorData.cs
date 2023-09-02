@@ -111,7 +111,7 @@ public class CustomVisorData : VisorData
             return false;
         }
     }
-    [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetVisor), new Type[] { typeof(VisorData), typeof(int)})]
+    [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetVisor), new Type[] { typeof(VisorData), typeof(int) })]
     class VisorLayerSetVisorPatch
     {
         public static bool Prefix(VisorLayer __instance, VisorData data, int colorId)

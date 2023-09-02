@@ -21,7 +21,7 @@ public struct CustomAnimationOptions
     {
         Sprites = new Sprite[] { };
     }
-    public CustomAnimationOptions(Sprite[] sprites, int framerate, bool loop = false, bool playenddestroy = false, Action<CustomAnimation, CustomAnimationOptions> OnEndAnimation=null, bool IsMeetingDestroy = true, AudioClip EffectSound = null, bool IsEffectSoundLoop = false)
+    public CustomAnimationOptions(Sprite[] sprites, int framerate, bool loop = false, bool playenddestroy = false, Action<CustomAnimation, CustomAnimationOptions> OnEndAnimation = null, bool IsMeetingDestroy = true, AudioClip EffectSound = null, bool IsEffectSoundLoop = false)
     {
         Sprites = sprites;
         frameRate = framerate;
@@ -31,7 +31,7 @@ public struct CustomAnimationOptions
         this.IsMeetingDestroy = IsMeetingDestroy;
         this.EffectSound = EffectSound;
     }
-    public void SetSprites(Sprite[] sprites, bool? IsLoop=null,int? frameRate=null)
+    public void SetSprites(Sprite[] sprites, bool? IsLoop = null, int? frameRate = null)
     {
         Sprites = sprites;
         if (IsLoop != null)
@@ -92,7 +92,7 @@ public class CustomAnimation : MonoBehaviour
         UpdateTimer = updatetime;
         Play();
     }
-    public virtual void Play(bool IsPlayMusic=true)
+    public virtual void Play(bool IsPlayMusic = true)
     {
         Playing = true;
         if (IsPlayMusic)
@@ -104,14 +104,14 @@ public class CustomAnimation : MonoBehaviour
         }
         IsRewinding = false;
     }
-    public virtual void Pause(bool IsStopMusic=true)
+    public virtual void Pause(bool IsStopMusic = true)
     {
         Playing = false;
         if (IsStopMusic)
             audioSource?.Pause();
         IsRewinding = false;
     }
-    public virtual void Stop(bool IsStopMusic=true)
+    public virtual void Stop(bool IsStopMusic = true)
     {
         Pause(IsStopMusic: IsStopMusic);
         spriteRenderer.sprite = Options.Sprites[0];

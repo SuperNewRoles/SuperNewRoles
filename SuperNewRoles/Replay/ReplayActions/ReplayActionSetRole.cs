@@ -8,7 +8,8 @@ public class ReplayActionSetRole : ReplayAction
 {
     public byte sourcePlayer;
     public RoleId RoleId;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
@@ -23,7 +24,8 @@ public class ReplayActionSetRole : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.SetRole;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         PlayerControl target = ModHelpers.PlayerById(sourcePlayer);
         if (target == null)

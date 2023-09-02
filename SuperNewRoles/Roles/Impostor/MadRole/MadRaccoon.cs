@@ -1,11 +1,11 @@
 using System;
-using TMPro;
-using System.Timers;
 using System.Collections.Generic;
-using UnityEngine;
-using SuperNewRoles.Mode;
+using System.Timers;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
+using TMPro;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 

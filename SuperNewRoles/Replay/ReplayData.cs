@@ -44,7 +44,7 @@ namespace SuperNewRoles.Replay
         HideAllUI
     }
     public class ReplayData
-    { 
+    {
         public bool IsFirstLoaded = false;
         public string FilePath;
         public ReplayState CurrentPlayState = ReplayState.Play;
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Replay
 
         public MovingPlatformState CurrentMovingPlatformState = MovingPlatformState.None;
         public int MovingPlatformFrameCount = 0;
-        public Vector3 MovingPlatformPosition = new(-999,-999,-999);
+        public Vector3 MovingPlatformPosition = new(-999, -999, -999);
 
         public Dictionary<byte, LadderState> CurrentLadderState = new();
         public Vector3 LadderPosition = new(-999, -999, -999);
@@ -81,15 +81,18 @@ namespace SuperNewRoles.Replay
 
         public System.IO.BinaryReader binaryReader;
 
-        public void UpdateCustomOptionByData() {
-            foreach (CustomOption opt in CustomOption.options) {
+        public void UpdateCustomOptionByData()
+        {
+            foreach (CustomOption opt in CustomOption.options)
+            {
                 var selection = CustomOptionSelections.FirstOrDefault(x => x.Key == opt.id);
                 //nullチェック
                 if (selection.Equals(default(KeyValuePair<int, int>)))
                 {
                     opt.UpdateSelection(0);
                 }
-                else {
+                else
+                {
                     opt.UpdateSelection(selection.Value);
                 }
             }

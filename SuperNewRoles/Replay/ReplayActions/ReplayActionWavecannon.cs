@@ -11,7 +11,8 @@ public class ReplayActionWavecannon : ReplayAction
     public bool IsFlipX;
     public byte OwnerId;
     public byte[] buff;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         Type = reader.ReadByte();
@@ -34,9 +35,10 @@ public class ReplayActionWavecannon : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.Wavecannon;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
-        RPCProcedure.WaveCannon(Type,Id,IsFlipX,OwnerId,buff);
+        RPCProcedure.WaveCannon(Type, Id, IsFlipX, OwnerId, buff);
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionWavecannon Create(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)

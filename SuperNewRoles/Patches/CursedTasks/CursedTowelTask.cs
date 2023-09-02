@@ -25,7 +25,7 @@ public class CursedTowelTask
             foreach (Collider2D towel in __instance.Towels)
                 Object.Destroy(towel.gameObject);
             __instance.Towels = new Collider2D[25];
-            for (int i = 0; i < 25;  i++)
+            for (int i = 0; i < 25; i++)
             {
                 Collider2D towel = Object.Instantiate(copytowel);
                 towel.transform.SetParent(__instance.transform);

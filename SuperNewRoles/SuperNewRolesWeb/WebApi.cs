@@ -20,7 +20,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
         }
         public static void GenerateCode(string FriendCode, Action<long, DownloadHandler> callback)
         {
-            Requests.Post(WebConstants.ApiUrl + "generateACcode", new Dictionary<string, string>() { { "friendcode" , FriendCode } }.GetString(), callback);
+            Requests.Post(WebConstants.ApiUrl + "generateACcode", new Dictionary<string, string>() { { "friendcode", FriendCode } }.GetString(), callback);
         }
         public static void Login(string userid, string password, Action<long, DownloadHandler> callback)
         {

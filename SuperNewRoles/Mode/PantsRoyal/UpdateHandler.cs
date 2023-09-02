@@ -76,7 +76,7 @@ public static class UpdateHandler
                     RoleText = ModTranslation.GetString("PantsRoyalPantsHaverIntroName");
                 else
                     RoleText = ModTranslation.GetString("PantsRoyalPantsDontHaverIntroName");
-                string targetnametext = name.Replace("{ROLETEXT}",RoleText);
+                string targetnametext = name.Replace("{ROLETEXT}", RoleText);
                 if (!p.AmOwner)
                 {
                     p.RpcSetNamePrivate(targetnametext);
@@ -161,7 +161,7 @@ public static class UpdateHandler
             string TaskText = ModHelpers.Cs(Color.yellow, "(334/802)");
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                p.RpcSetName("<size=75%>" + RoleNameText + TaskText +"</size>\n"+p.GetDefaultName());
+                p.RpcSetName("<size=75%>" + RoleNameText + TaskText + "</size>\n" + p.GetDefaultName());
                 //if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
                 if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
                 {
@@ -171,7 +171,8 @@ public static class UpdateHandler
             main.CurrentTurnData.IsStarted = true;
         }
     }
-    public static void HudUpdate() {
+    public static void HudUpdate()
+    {
         if (!main.IsStart)
             return;
         else if (!main.IsMove)

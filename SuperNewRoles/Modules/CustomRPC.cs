@@ -706,7 +706,7 @@ public static class RPCProcedure
 
     public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
     {
-        ReplayActionWavecannon.Create(Type,Id,IsFlipX,OwnerId,buff);
+        ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, buff);
         Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
         switch ((WaveCannonObject.RpcType)Type)
         {
@@ -747,8 +747,9 @@ public static class RPCProcedure
     {
         RpcAnimationType AnimType = (RpcAnimationType)type;
         PlayerAnimation PlayerAnim = PlayerAnimation.GetPlayerAnimation(playerid);
-        if (PlayerAnim == null) {
-            Logger.Info("PlayerAnimがぬるだった...:"+playerid.ToString());
+        if (PlayerAnim == null)
+        {
+            Logger.Info("PlayerAnimがぬるだった...:" + playerid.ToString());
             return;
         }
         PlayerAnim.HandleAnim(AnimType);
