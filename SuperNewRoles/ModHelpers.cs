@@ -47,7 +47,8 @@ public static class ModHelpers
             if (p.IsAlive()) count++;
         return count;
     }
-    public static byte ParseToByte(this string txt) {
+    public static byte ParseToByte(this string txt)
+    {
         return byte.Parse(txt.ToString());
     }
     public static Ladder LadderById(byte id)
@@ -667,7 +668,7 @@ public static class ModHelpers
                 return obj;
         return default;
     }
-    public static KeyValuePair<TKey, TValue> FirstOrDefault<TKey,TValue>(this Dictionary<TKey,TValue> list, Func<KeyValuePair<TKey,TValue>, bool> func)
+    public static KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> list, Func<KeyValuePair<TKey, TValue>, bool> func)
     {
         foreach (KeyValuePair<TKey, TValue> obj in list)
             if (func(obj))

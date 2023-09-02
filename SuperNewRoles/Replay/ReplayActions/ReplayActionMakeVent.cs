@@ -13,7 +13,8 @@ public class ReplayActionMakeVent : ReplayAction
     public float y;
     public float z;
     public bool chain;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         id = reader.ReadByte();
@@ -34,7 +35,8 @@ public class ReplayActionMakeVent : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.MakeVent;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         currentId = RPCProcedure.MakeVent(id, x, y, z, chain).Id;
     }

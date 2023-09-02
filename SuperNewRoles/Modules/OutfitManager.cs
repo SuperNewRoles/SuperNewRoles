@@ -30,4 +30,5 @@ public static class OutfitManager
     // クルーカラーの翻訳を取得する。
     // 参考=>https://github.com/tugaru1975/TownOfPlus/blob/main/Helpers.cs
     internal static string GetColorTranslation(StringNames name) =>
-        DestroyableSingleton<TranslationController>.Instance.GetString(name, new Il2CppReferenceArray<Il2CppSystem.Object>(0));}
+        DestroyableSingleton<TranslationController>.Instance.GetString(name, new Il2CppReferenceArray<Il2CppSystem.Object>(0));
+}

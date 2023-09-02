@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public bool IsTeam(PlayerControl Player = null)
         {
-            Logger.Info($"{TeamMember.Count}","TEAMCOUNT");
+            Logger.Info($"{TeamMember.Count}", "TEAMCOUNT");
             return TeamMember.FirstOrDefault(x => x is not null && x == Player) is not null;
         }
         public BattleTeam()

@@ -7,7 +7,8 @@ namespace SuperNewRoles.Replay
 {
     public static class ReplayReader
     {
-        public static void ClearAndReloads() {
+        public static void ClearAndReloads()
+        {
             return;
             if (reader != null)
                 reader.Close();
@@ -52,7 +53,9 @@ namespace SuperNewRoles.Replay
 
                 if (!ReplayFileReader.IsCheckSumSuc(reader, replay))
                     return (replay, false);
-            } catch (EndOfStreamException) {
+            }
+            catch (EndOfStreamException)
+            {
                 Logger.Info("ふぁいるのないようすくなすぎ！");
                 return (replay, false);
             }

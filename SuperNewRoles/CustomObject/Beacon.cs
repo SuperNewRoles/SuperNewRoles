@@ -17,7 +17,7 @@ public class Beacon
         GameObject BeaconObject = GameObject.Find($"Beacon{Conjurer.Count}");
         CustomAnimation Beacon = BeaconObject.AddComponent<CustomAnimation>();
         Beacon.Init(new CustomAnimationOptions(CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
-            ,30,loop:true));
+            , 30, loop: true));
         return beaconAnimationSprites[index];
     }
 

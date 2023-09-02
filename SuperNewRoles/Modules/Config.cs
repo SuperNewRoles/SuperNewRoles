@@ -57,8 +57,8 @@ public static class ConfigRoles
         IsUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsUpdate", true);
         IsDeleted = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsDeleted", false);
         //リプレイ
-        ReplayEnable = SuperNewRolesPlugin.Instance.Config.Bind("Replay","Enable", false);
-        ReplayQualityTime = SuperNewRolesPlugin.Instance.Config.Bind("Replay","QualityTime",0.5f);
+        ReplayEnable = SuperNewRolesPlugin.Instance.Config.Bind("Replay", "Enable", false);
+        ReplayQualityTime = SuperNewRolesPlugin.Instance.Config.Bind("Replay", "QualityTime", 0.5f);
         if (!IsDeleted.Value)
         {
             if (Directory.Exists(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\") && Directory.Exists(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\"))

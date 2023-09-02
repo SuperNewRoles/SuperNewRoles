@@ -109,9 +109,11 @@ namespace SuperNewRoles.Replay
         {
             public static void Postfix(GameDiscovery __instance)
             {
-                if (Input.GetKeyDown(KeyCode.RightArrow)) {
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
                     MatchMakerStartPatch.RightButton.OnClick.Invoke();
-                } else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
                     MatchMakerStartPatch.LeftButton.OnClick.Invoke();
                 }
@@ -183,7 +185,8 @@ namespace SuperNewRoles.Replay
                 Button = GameObject.Instantiate(Button);
                 Button.GetComponent<SpriteRenderer>().sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
                 Button.OnClick = new();
-                Button.OnClick.AddListener((UnityAction)(() => {
+                Button.OnClick.AddListener((UnityAction)(() =>
+                {
 
                     if (!((CurrentPage - 1) < 0 || Math.Ceiling(FileNames.Count * 1.0 / MaxPageCount) <= (CurrentPage - 1)))
                     {
@@ -258,7 +261,7 @@ namespace SuperNewRoles.Replay
                     //バージョン
                     tmp = GameObject.Instantiate(button.gameNameText, button.transform);
                     if (replay.RecordVersion != null)
-                        tmp.text = "v"+replay.RecordVersion.ToString();
+                        tmp.text = "v" + replay.RecordVersion.ToString();
                     else
                         tmp.text = "v0.0.0.0";
                     tmp.transform.localScale *= 0.5f;
@@ -269,7 +272,8 @@ namespace SuperNewRoles.Replay
                     PassiveButton pbtn = button.GetComponent<PassiveButton>();
                     pbtn.OnClick = new();
                     string currentpath = FileNames[i];
-                    pbtn.OnClick.AddListener((UnityAction)(() => {
+                    pbtn.OnClick.AddListener((UnityAction)(() =>
+                    {
                         OnClick(replay, currentpath);
                     }));
                     Replays.Add(replay);
@@ -282,7 +286,7 @@ namespace SuperNewRoles.Replay
                 {
                     OpenAlert(ModTranslation.GetString("ReplayErrorFileDataBroken"));
                 }
-                else if (!replay.ReplayDataMod.StartsWith(SuperNewRolesPlugin.ThisPluginModName+"-"))
+                else if (!replay.ReplayDataMod.StartsWith(SuperNewRolesPlugin.ThisPluginModName + "-"))
                 {
                     OpenCheckAlert(string.Format(ModTranslation.GetString("ReplayErrorDataModNoneThisMod"), replay.ReplayDataMod), replay.GameMode == AmongUs.GameOptions.GameModes.Normal, path);
                 }
@@ -354,7 +358,7 @@ namespace SuperNewRoles.Replay
             {
                 (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(FileName);
                 ReplayManager.IsReplayMode = true;
-                Logger.Info((replay == null).ToString()+":"+(ReplayManager.CurrentReplay == null).ToString() + ":" + (ReplayManager.CurrentReplay.binaryReader == null).ToString());
+                Logger.Info((replay == null).ToString() + ":" + (ReplayManager.CurrentReplay == null).ToString() + ":" + (ReplayManager.CurrentReplay.binaryReader == null).ToString());
                 HostLocalGameButton game = GameObject.FindObjectOfType<HostLocalGameButton>();
                 if (IsNormal)
                     game.transform.FindChild("CreateGameButton").GetComponent<PassiveButton>().OnClick.Invoke();

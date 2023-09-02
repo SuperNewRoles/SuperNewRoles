@@ -10,7 +10,8 @@ public class ReplayActionSetMechanicStatus : ReplayAction
     public byte targetVent;
     public bool Is;
     public byte[] buff;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
@@ -30,7 +31,8 @@ public class ReplayActionSetMechanicStatus : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.SetMechanicStatus;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         RPCProcedure.SetVentStatusMechanic(sourcePlayer, targetVent, Is, buff);
     }

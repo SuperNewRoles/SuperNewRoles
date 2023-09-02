@@ -10,8 +10,10 @@ namespace SuperNewRoles.Mode.BattleRoyal
     {
         public static List<PlayerAbility> PlayerAbilitys = new();
         public PlayerControl CurrentPlayer;
-        public int KillDistance {
-            get {
+        public int KillDistance
+        {
+            get
+            {
                 int kds = MyKillDistance;
                 foreach (int akd in AbilityKillDistance.Values) kds += akd;
                 if (kds > 2) kds = 2;

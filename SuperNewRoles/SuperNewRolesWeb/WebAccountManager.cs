@@ -41,7 +41,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
         {
             if (Token != "")
             {
-                WebApi.CheckToken(Token, (code, handler) => {
+                WebApi.CheckToken(Token, (code, handler) =>
+                {
                     if (code != 200)
                     {
                         Token = "";
@@ -71,11 +72,11 @@ namespace SuperNewRoles.SuperNewRolesWeb
                                 OnEnd(true);
                             }
                         });
-                    
+
                 });
             }
         }
-        [HarmonyPatch(typeof(AmongUsClient),nameof(AmongUsClient.Awake))]
+        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
         class AmongUsClientAwakePatch
         {
             public static void Postfix(AmongUsClient __instance)
@@ -85,8 +86,9 @@ namespace SuperNewRoles.SuperNewRolesWeb
         }
         public static void Load()
         {
-            string supernewrolesfolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)+"\\SuperNewRoles";
-            if (!Directory.Exists(supernewrolesfolder)){
+            string supernewrolesfolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SuperNewRoles";
+            if (!Directory.Exists(supernewrolesfolder))
+            {
                 Directory.CreateDirectory(supernewrolesfolder);
             }
             string tokenfile = supernewrolesfolder + "\\WebToken.token";

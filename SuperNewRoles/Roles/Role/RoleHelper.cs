@@ -5,14 +5,14 @@ using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.Attribute;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -1787,7 +1787,7 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            return ChacheManager.MyRoleChache != null && player != null &&ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
+            return ChacheManager.MyRoleChache != null && player != null && ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
         try
         {

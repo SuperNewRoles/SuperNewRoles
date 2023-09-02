@@ -6,7 +6,8 @@ using Hazel;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 
-public enum ReplayActionId {
+public enum ReplayActionId
+{
     None,
     MurderPlayer,
     Exile,
@@ -69,7 +70,8 @@ public abstract class ReplayAction
     }
     public static ReplayAction CreateReplayAction(ReplayActionId id)
     {
-        switch (id) {
+        switch (id)
+        {
             case ReplayActionId.MurderPlayer:
                 return new ReplayActionMurder();
             case ReplayActionId.Exile:
@@ -111,7 +113,7 @@ public abstract class ReplayAction
             case ReplayActionId.MovingPlatform:
                 return new ReplayActionMovingPlatform();
         }
-        Logger.Info("typeに合うReplayActionがありませんでした。:"+id);
+        Logger.Info("typeに合うReplayActionがありませんでした。:" + id);
         return null;
     }
 }

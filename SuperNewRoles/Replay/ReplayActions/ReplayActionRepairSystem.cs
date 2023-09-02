@@ -9,7 +9,8 @@ public class ReplayActionRepairSystem : ReplayAction
     public byte systemType;
     public byte sourcePlayer;
     public byte amount;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         systemType = reader.ReadByte();
@@ -26,7 +27,8 @@ public class ReplayActionRepairSystem : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.RepairSystem;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)

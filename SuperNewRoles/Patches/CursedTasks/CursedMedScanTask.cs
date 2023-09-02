@@ -70,7 +70,7 @@ public class CursedMedScanTask
             else
             {
                 __instance.charStats.color = Color.white;
-                foreach(var blood in Bloods)
+                foreach (var blood in Bloods)
                     Object.Destroy(blood.BloodStainObject);
                 Bloods.Clear();
             }

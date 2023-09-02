@@ -5,11 +5,11 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
-using SuperNewRoles.SuperNewRolesWeb;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.SuperNewRolesWeb;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 

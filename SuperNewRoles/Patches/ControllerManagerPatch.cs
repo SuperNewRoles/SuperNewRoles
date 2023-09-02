@@ -115,11 +115,12 @@ class ControllerManagerUpdatePatch
                 return;
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
                 DirectoryInfo d = new(filePath);
-                Logger.Info("FileName:"+ d.GetFiles()[0].Name);
+                Logger.Info("FileName:" + d.GetFiles()[0].Name);
                 (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[0].Name);
                 ReplayManager.IsReplayMode = true;
                 Logger.Info($"IsSuc:{IsSuc}");
-                if (IsSuc) {
+                if (IsSuc)
+                {
                     Logger.Info($"PlayerCount:{replay.AllPlayersCount}");
                     Logger.Info($"Mode:{replay.CustomMode}");
                     Logger.Info($"Time:{replay.RecordTime.ToString()}");

@@ -177,7 +177,7 @@ public class IntroPatch
         if (ReplayManager.IsReplayMode)
         {
             var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-            foreach(PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p != PlayerControl.LocalPlayer)
                     newTeam.Add(p);
