@@ -8,6 +8,8 @@ using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
+using Il2CppInterop.Runtime.Injection;
 using InnerNet;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
@@ -25,6 +27,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
     public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
+    public static bool IsSecretBranch = true;
 
     //プルリク時にfalseなら指摘してください
     public const bool IsViewText = true;
@@ -49,6 +52,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static bool IsUpdate = false;
     public static string NewVersion = "";
     public static string thisname;
+    public static string ThisPluginModName;
 
     public override void Load()
     {
@@ -118,12 +122,21 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         StringDATA = new Dictionary<string, Dictionary<int, string>>();
         Harmony.PatchAll();
-
         assembly = Assembly.GetExecutingAssembly();
         string[] resourceNames = assembly.GetManifestResourceNames();
         foreach (string resourceName in resourceNames)
             if (resourceName.EndsWith(".png"))
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
+        ThisPluginModName = IL2CPPChainloader.Instance.Plugins.FirstOrDefault(x => x.Key == "jp.ykundesu.supernewroles").Value.Metadata.Name;
+
+        //Register Il2cpp
+        Logger.LogInfo("a");
+        ClassInjector.RegisterTypeInIl2Cpp<CustomAnimation>();
+        Logger.LogInfo("b");
+        ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
+        Logger.LogInfo("c");
+        ClassInjector.RegisterTypeInIl2Cpp<WaveCannonObject>();
+        Logger.LogInfo("d");
     }
 
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]

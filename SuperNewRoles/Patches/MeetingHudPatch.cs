@@ -10,6 +10,8 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
@@ -23,10 +25,18 @@ using static MeetingHud;
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Awake))] class AwakeMeetingPatch { public static void Postfix() => RoleClass.IsMeeting = true; }
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.RpcVotingComplete))]
+class RpcVotingComplete
+{
+    public static void Postfix(MeetingHud __instance, [HarmonyArgument(0)] Il2CppStructArray<VoterState> states, [HarmonyArgument(1)] ref GameData.PlayerInfo exiled, [HarmonyArgument(2)] bool tie)
+    {
+        if (AmongUsClient.Instance.AmHost) ReplayActionVotingComplete.Create(states, exiled is null ? (byte)255 : exiled.PlayerId, tie);
+    }
+}
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
 class VotingComplete
 {
-    public static void Prefix(MeetingHud __instance, [HarmonyArgument(0)] VoterState[] states, [HarmonyArgument(1)] ref GameData.PlayerInfo exiled, [HarmonyArgument(2)] bool tie)
+    public static void Prefix(MeetingHud __instance, [HarmonyArgument(0)] Il2CppStructArray<VoterState> states, [HarmonyArgument(1)] ref GameData.PlayerInfo exiled, [HarmonyArgument(2)] bool tie)
     {
         if (exiled != null && exiled.Object.IsBot() && RoleClass.Assassin.TriggerPlayer == null && Main.RealExiled == null)
         {
@@ -36,6 +46,7 @@ class VotingComplete
         {
             Balancer.IsDoubleExile = true;
         }
+        if (!AmongUsClient.Instance.AmHost) ReplayActionVotingComplete.Create(states, exiled is null ? (byte)255 : exiled.PlayerId, tie);
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
@@ -550,6 +561,23 @@ class MeetingHudUpdateButtonsPatch
         return false;
     }
 }
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateButtons))]
+class MeetingHudPopulateButtonsPatch
+{
+    public static void Postfix(MeetingHud __instance)
+    {
+        if (ReplayManager.IsReplayMode)
+        {
+            List<PlayerVoteArea> areas = new();
+            foreach (PlayerVoteArea area in __instance.playerStates)
+            {
+                if (area.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    areas.Add(area);
+            }
+            __instance.playerStates = areas.ToArray();;
+        }
+    }
+}
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
 public static class MeetingHudPopulateVotesPatch
@@ -613,6 +641,8 @@ class MeetingHudStartPatch
     public static void Postfix(MeetingHud __instance)
     {
         Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
+        Recorder.StartMeeting();
+        ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {

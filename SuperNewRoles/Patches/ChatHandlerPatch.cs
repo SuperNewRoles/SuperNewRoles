@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Text;
@@ -11,6 +12,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
@@ -45,17 +47,26 @@ public class AmongUsClientOnPlayerJoinedPatch
             }, 1f, "Welcome Message");
             if (SuperNewRolesPlugin.IsBeta)
             {
-                string betaText =
-                    ModTranslation.GetString("betatext1") +
-                    ModTranslation.GetString("betatext2") +
-                    $"\nBranch: {ThisAssembly.Git.Branch}" +
-                    $"\nCommitId: {ThisAssembly.Git.Commit}" +
-                    " " + "\n.";
+                string betatext = ModTranslation.GetString("betatext1");
+                betatext += ModTranslation.GetString("betatext2");
+                betatext += "\nBranch: ";
+                if (SuperNewRolesPlugin.IsSecretBranch)
+                {
+                    for (int i = 0; i < ThisAssembly.Git.Branch.Length; i++)
+                    {
+                        betatext += "*";
+                    }
+                }
+                else
+                {
+                    betatext += ThisAssembly.Git.Branch;
+                }
+                betatext += $"\nCommitId: {ThisAssembly.Git.Commit}";
                 new LateTask(() =>
                 {
                     if (!__instance.myPlayer.IsBot())
                     {
-                        AddChatPatch.SendCommand(__instance.myPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betaText}");
+                        AddChatPatch.SendCommand(__instance.myPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
                     }
                 }, 2f, "Welcome Beta Message");
             }
@@ -80,6 +91,7 @@ class AddChatPatch
             }
         }
 
+
         var Commandsa = chatText.Split(" ");
         var Commandsb = new List<string>();
         foreach (string com in Commandsa)
@@ -87,7 +99,54 @@ class AddChatPatch
             Commandsb.AddRange(com.Split("　"));
         }
         var Commands = Commandsb.ToArray();
-        if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
+        //
+        if (Commands[0].Equals("/list", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/ls", StringComparison.OrdinalIgnoreCase))
+        {
+            string text = "";
+            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
+            DirectoryInfo d = new(filePath);
+            int index = 0;
+            foreach (FileInfo info in d.GetFiles())
+            {
+                text += index.ToString() + ":" + info.Name + "\n";
+                index++;
+            }
+            SendCommand(PlayerControl.LocalPlayer, text);
+            return false;
+        }
+        if (Commands[0].Equals("/set", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/st", StringComparison.OrdinalIgnoreCase))
+        {
+            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
+            DirectoryInfo d = new(filePath);
+            (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[int.Parse(Commands[1])].Name);
+            ReplayManager.IsReplayMode = true;
+            string text = "";
+            text += "正常なファイルか:" + IsSuc.ToString() + "\n";
+            if (IsSuc)
+            {
+                text += $"PlayerCount:{replay.AllPlayersCount}\n";
+                text += $"Mode:{replay.CustomMode}\n";
+                text += $"Time:{replay.RecordTime}";
+            }
+            SendCommand(PlayerControl.LocalPlayer, text);
+            return false;
+        }
+        //
+
+        if (Commands[0].Equals("/n", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/h", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/help", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/now", StringComparison.OrdinalIgnoreCase))
+        {
+            SendCommand(sourcePlayer, "ここはTOH部屋ではなくSNR部屋です。\n/nや/hは使えません。\n/arや/grを使用してください。\n詳細は、/cmdをご覧ください！");//, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+            SendCommand(null, "みなさん、ここはTOH部屋ではなく、SNR部屋です！\n/nや/hは使えないので、/arや/grを使用してください。\n詳細は、/cmdをご覧ください！");//, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+            return false;
+        }
+        else if
+        (
+            Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
         {
             string betatext = "";
@@ -95,7 +154,18 @@ class AddChatPatch
             {
                 betatext = ModTranslation.GetString("betatext1");
                 betatext += ModTranslation.GetString("betatext2");
-                betatext += $"\nBranch: {ThisAssembly.Git.Branch}";
+                betatext += "\nBranch: ";
+                if (SuperNewRolesPlugin.IsSecretBranch)
+                {
+                    for (int i = 0; i < ThisAssembly.Git.Branch.Length; i++)
+                    {
+                        betatext += "*";
+                    }
+                }
+                else
+                {
+                    betatext += ThisAssembly.Git.Branch;
+                }
                 betatext += $"\nCommitId: {ThisAssembly.Git.Commit}";
             }
             PlayerControl sendPlayer;
@@ -120,7 +190,7 @@ class AddChatPatch
                 else
                 {
                     IntroData intro = IntroData.GetIntroData(data.Value, IsImpostorReturn: true);
-                    SendCommand(sourcePlayer, intro.Description, "<size=200%>"+ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString($"{intro.NameKey}Name"))+"</size>");
+                    SendCommand(sourcePlayer, intro.Description, "<size=200%>" + ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString($"{intro.NameKey}Name")) + "</size>");
                 }
             }
             else

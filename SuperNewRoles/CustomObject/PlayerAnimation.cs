@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Replay.ReplayActions;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;
@@ -46,6 +47,8 @@ public class PlayerAnimation
         transform.localScale = Vector3.one * 0.5f;
         SpriteRender = gameObject.AddComponent<SpriteRenderer>();
         PlayerAnimations.Add(PlayerId, this);
+        IsRewinding = false;
+        IsPausing = false;
     }
     public void OnDestroy()
     {
@@ -62,6 +65,8 @@ public class PlayerAnimation
     private float updatetime;
     private float updatedefaulttime;
     private int index;
+    private bool IsRewinding;
+    private bool IsPausing;
     public Sprite[] Sprites;
     public Action OnAnimationEnd;
     public Action OnFixedUpdate;
@@ -108,6 +113,27 @@ public class PlayerAnimation
         OnFixedUpdate = onFixedUpdate;
         SpriteRender.sprite = sprites[0];
     }
+    public virtual void OnPlayRewind()
+    {
+        IsPausing = false;
+        IsRewinding = true;
+        if (SoundManagerSource != null)
+            SoundManagerSource.pitch = -1f;
+    }
+    public virtual void Play()
+    {
+        IsPausing = false;
+        IsRewinding = false;
+        if (SoundManagerSource != null)
+            SoundManagerSource.pitch = 1f;
+    }
+    public virtual void Pause()
+    {
+        IsPausing = true;
+        IsRewinding = false;
+        if (SoundManagerSource != null)
+            SoundManagerSource.pitch = 0f;
+    }
     public static void FixedAllUpdate()
     {
         foreach (PlayerAnimation Anim in PlayerAnimations.Values)
@@ -127,26 +153,59 @@ public class PlayerAnimation
             SpriteRender.sprite = null;
             return;
         }
-        updatetime -= Time.fixedDeltaTime;
-        if (OnFixedUpdate != null) OnFixedUpdate();
-        if (updatetime <= 0)
+        if (IsPausing)
         {
-            index++;
-            if (Sprites.Length <= index)
+            return;
+        }
+        if (IsRewinding)
+        {
+            updatetime += Time.fixedDeltaTime;
+            if (OnFixedUpdate != null) OnFixedUpdate();
+            if (updatetime >= updatedefaulttime)
             {
-                if (IsLoop)
+                index--;
+                if (index < 0)
                 {
-                    index = 0;
+                    if (IsLoop)
+                    {
+                        index = Sprites.Length - 1;
+                    }
+                    else
+                    {
+                        Playing = false;
+                        Logger.Info($"チェック:{OnAnimationEnd != null}");
+                        if (OnAnimationEnd != null) OnAnimationEnd();
+                        return;
+                    }
                 }
-                else
-                {
-                    Playing = false;
-                    if (OnAnimationEnd != null) OnAnimationEnd();
-                    return;
-                }
+                SpriteRender.sprite = Sprites[index];
+                updatetime = 0;
             }
-            SpriteRender.sprite = Sprites[index];
-            updatetime = updatedefaulttime;
+        }
+        else
+        {
+            updatetime -= Time.fixedDeltaTime;
+            if (OnFixedUpdate != null) OnFixedUpdate();
+            if (updatetime <= 0)
+            {
+                index++;
+                if (Sprites.Length <= index)
+                {
+                    if (IsLoop)
+                    {
+                        index = 0;
+                    }
+                    else
+                    {
+                        Playing = false;
+                        Logger.Info($"チェック:{OnAnimationEnd != null}");
+                        if (OnAnimationEnd != null) OnAnimationEnd();
+                        return;
+                    }
+                }
+                SpriteRender.sprite = Sprites[index];
+                updatetime = updatedefaulttime;
+            }
         }
     }
     public void RpcAnimation(RpcAnimationType AnimType)
@@ -159,6 +218,7 @@ public class PlayerAnimation
     }
     public void HandleAnim(RpcAnimationType AnimType)
     {
+        ReplayActionPlayerAnimation.Create(PlayerId, (byte)AnimType);
         switch (AnimType)
         {
             case RpcAnimationType.Stop:
