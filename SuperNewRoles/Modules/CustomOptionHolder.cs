@@ -2067,6 +2067,8 @@ public class CustomOptionHolder
 
         RoleBaseHelper.SetUpOptions();
 
+        JumpDancer.SetupCustomOptions();
+
         // 表示設定
 
         /* |: ========================= Roles Settings ========================== :| */

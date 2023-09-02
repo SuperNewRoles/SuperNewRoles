@@ -35,10 +35,10 @@ public static class ModeHandler
     public static void ClearAndReload()
     {
         PlusModeHandler.ClearAndReload();
+        BattleRoyal.Main.ClearAndReload();
         if (IsMode(ModeId.BattleRoyal, false))
         {
             thisMode = ModeId.BattleRoyal;
-            BattleRoyal.Main.ClearAndReload();
         }
         else if (IsMode(ModeId.HideAndSeek, false))
         {

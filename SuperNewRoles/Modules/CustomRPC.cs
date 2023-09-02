@@ -209,6 +209,7 @@ public enum RoleId
     PoliceSurgeon,
     MadRaccoon,
     Moira,
+    JumpDancer,
     //RoleId
 }
 
@@ -315,6 +316,7 @@ public enum CustomRPC
     SetInfectionTimer,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
+    JumpDancerJump
 }
 
 public static class RPCProcedure
@@ -1571,6 +1573,18 @@ public static class RPCProcedure
             HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
     }
 
+    public static void JumpDancerJump(MessageReader reader)
+    {
+        PlayerControl source = ModHelpers.PlayerById(reader.ReadByte());
+        int count = reader.ReadInt32();
+        List<PlayerControl> players = new();
+        for (int i = 0; i < count; i++)
+        {
+            players.Add(ModHelpers.PlayerById(reader.ReadByte()));
+        }
+        JumpDancer.SetJump(source, players);
+    }
+
     public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
@@ -1946,6 +1960,10 @@ public static class RPCProcedure
                     case CustomRPC.MoiraChangeRole:
                         MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
+                    case CustomRPC.JumpDancerJump:
+                        JumpDancerJump(reader);
+                        break;
+
                 }
             }
             catch (Exception e)

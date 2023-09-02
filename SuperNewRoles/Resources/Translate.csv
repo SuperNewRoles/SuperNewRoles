@@ -1519,6 +1519,8 @@ ConjurerCanKillImpostorOption,Can kill impostors,インポスターもキルで�
 ConjurerShowFlashOption,The screen glows when the ability is activated,能力発動時画面が発光する
 ConjurerBeaconName,Marker,マーカー
 ConjurerAddName,Compression,圧縮
+JumpDancerName,Jump Dancer,ジャンプダンサー
+JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示

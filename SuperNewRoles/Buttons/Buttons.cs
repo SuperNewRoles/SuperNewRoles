@@ -3344,6 +3344,8 @@ static class HudManagerStartPatch
 
         BlackHatHacker.SetupCustomButtons(__instance);
 
+        JumpDancer.SetUpCustomButtons(__instance);
+
         SetCustomButtonCooldowns();
     }
 }
