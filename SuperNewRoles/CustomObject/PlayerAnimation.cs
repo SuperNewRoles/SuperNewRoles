@@ -46,9 +46,9 @@ public class PlayerAnimation
         transform.SetParent(Player.cosmetics.normalBodySprite.BodySprite.transform.parent);
         transform.localScale = Vector3.one * 0.5f;
         SpriteRender = gameObject.AddComponent<SpriteRenderer>();
+        PlayerAnimations.Add(PlayerId, this);
         IsRewinding = false;
         IsPausing = false;
-        PlayerAnimations.Add(PlayerId, this);
     }
     public void OnDestroy()
     {
