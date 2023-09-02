@@ -1603,6 +1603,7 @@ public static class RoleHelpers
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
+            // ベントが使える
             _ => player.IsImpostor(),
         };
     }
@@ -1694,6 +1695,7 @@ public static class RoleHelpers
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
                 RoleId.MadRaccoon => MadRaccoon.RoleData.IsImpostorLight,
+                // インポの視界
                 _ => false,
             };
     }

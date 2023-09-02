@@ -113,6 +113,7 @@ class WrapUpPatch
         Assassin.WrapUp();
         CountChanger.CountChangerPatch.WrapUpPatch();
         RoleClass.IsFirstMeetingEnd = true;
+        RoleClass.IsfirstResetCool = false;
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
