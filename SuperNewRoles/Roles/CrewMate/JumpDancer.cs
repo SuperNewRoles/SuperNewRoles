@@ -56,7 +56,7 @@ public static class JumpDancer
         foreach (var data in JumpingPlayerIds.ToArray())
         {
             PlayerControl player = ModHelpers.PlayerById(data.Key);
-            if (data.Value > 0.9f)
+            if (data.Value > 0.9f || player.inMovingPlat || player.onLadder)
             {
                 player.transform.localScale = new(0.7f, 0.7f, 1);
                 player.moveable = true;
@@ -95,7 +95,7 @@ public static class JumpDancer
     {
         foreach (PlayerControl player in players)
         {
-            if (JumpingPlayerIds.ContainsKey(player.PlayerId))
+            if (JumpingPlayerIds.ContainsKey(player.PlayerId) || player.inMovingPlat || player.onLadder)
                 continue;
             JumpingPlayerIds.Add(player.PlayerId, 0f);
             player.moveable = false;
@@ -117,7 +117,7 @@ public static class JumpDancer
     }
     static bool CheckCan(PlayerControl player)
     {
-        return !player.CanMove || JumpingPlayerIds.ContainsKey(player.PlayerId) || !(
+        return !player.CanMove || player.inMovingPlat || player.onLadder || JumpingPlayerIds.ContainsKey(player.PlayerId) || !(
                     player.MyPhysics.Animations.IsPlayingRunAnimation() ||
                     player.MyPhysics.Animations.IsPlayingGhostIdleAnimation() ||
                     player.MyPhysics.Animations.IsPlayingGuardianAngelIdleAnimation() ||
