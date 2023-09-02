@@ -1521,6 +1521,7 @@ ConjurerBeaconName,Marker,マーカー
 ConjurerAddName,Compression,圧縮
 JumpDancerName,Jump Dancer,ジャンプダンサー
 JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！
+umpDancerButtonName,Jump,ジャンプ！
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
