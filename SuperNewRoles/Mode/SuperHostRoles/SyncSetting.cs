@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.SuperNewRolesWeb;
 using SuperNewRoles.Roles.Crewmate;
@@ -388,6 +389,7 @@ public static class SyncSetting
             var RPD = RoomPlayerData.Instance;
             OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
+            ReplayLoader.CoStartGame();
             if (ModeHandler.IsMode(ModeId.BattleRoyal))
                 BattleRoyalWebManager.StartGame();
         }

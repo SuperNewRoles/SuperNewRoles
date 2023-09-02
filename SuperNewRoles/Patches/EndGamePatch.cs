@@ -9,6 +9,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -53,7 +54,7 @@ public enum CustomGameOverReason
     BlackHatHackerWin,
     MoiraWin,
 }
-enum WinCondition
+public enum WinCondition
 {
     Default,
     HAISON,
@@ -250,10 +251,11 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
                 {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)},
                 {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsName",TheThreeLittlePigs.color)},
-                {WinCondition.OrientalShamanWin,("OrientalShamanName",OrientalShaman.color)},
+                {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
             };
+        Logger.Info(AdditionalTempData.winCondition.ToString(),"WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
             text = WinConditionDictionary[AdditionalTempData.winCondition].Item1;
@@ -310,7 +312,7 @@ public class EndGameManagerSetUpPatch
             haison = true;
             text = ModTranslation.GetString("NoWinner");
         }
-        else { }
+        else
         {
             text = ModTranslation.GetString(text);
         }
@@ -424,6 +426,7 @@ public class EndGameManagerSetUpPatch
         {
             SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
         }
+        Recorder.OnEndGame(AdditionalTempData.gameOverReason);
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
         IsHaison = false;
@@ -569,6 +572,7 @@ public static class OnGameEndPatch
                 });
             }
         }
+
         if (ReplayManager.IsReplayMode)
         {
             Logger.Info("ComeEndReplay");
@@ -1423,6 +1427,7 @@ public static class CheckGameEndPatch
         if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
         if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
         if (ModHelpers.IsDebugMode()) return false;
+        if (ReplayManager.IsReplayMode) return false;
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (RoleClass.Revolutionist.MeetingTrigger != null) return false;
         ShipStatus __instance = ShipStatus.Instance;

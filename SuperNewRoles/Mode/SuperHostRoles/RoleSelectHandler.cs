@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Crewmate;
@@ -28,6 +29,7 @@ public static class RoleSelectHandler
     }
     public static void SpawnBots()
     {
+        if (ReplayManager.IsReplayMode) return;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek, ModeId.VanillaHns))
         {
             int impostor = GameManager.Instance.LogicOptions.currentGameOptions.NumImpostors;

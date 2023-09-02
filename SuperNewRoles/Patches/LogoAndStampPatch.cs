@@ -9,9 +9,9 @@ using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Replay;
 using TMPro;
 using UnityEngine;
-using System.IO;
 
 namespace SuperNewRoles.Patches;
 
@@ -288,8 +288,11 @@ public static class CredentialsPatch
 
             LoadSprites();
             renderer.sprite = bannerRendSprite;
+            __instance.howToPlayButton.transform.localPosition = new(-1.925f, -1.75f, 0);
+            PassiveButton FreePlayButton = __instance.howToPlayButton.transform.parent.FindChild("FreePlayButton").GetComponent<PassiveButton>();
+            FreePlayButton.transform.localPosition = new(-0.05f, -1.75f, 0);
+            ReplayManager.CreateReplayButton(__instance, FreePlayButton);
         }
-
 
         public static void LoadSprites()
         {
