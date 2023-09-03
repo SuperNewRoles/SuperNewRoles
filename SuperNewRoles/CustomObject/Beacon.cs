@@ -45,6 +45,8 @@ public class Beacon
         //int[] num = { -1, -2, -3 };
         foreach (var beacon in AllBeacons)
         {
+            if (beacon.GameObject == null)
+                continue;
             Logger.Info($"{beacon.GameObject.name}をClearします", "ClearBeacons");
             Object.Destroy(beacon.GameObject);
         }
