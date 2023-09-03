@@ -1,10 +1,19 @@
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.Replay;
 
 namespace SuperNewRoles.Patches;
 
 class Chat
 {
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChatNote))]
+    class ChatControllerAddChatNote
+    {
+        public static void Postfix(ChatController __instance, GameData.PlayerInfo srcPlayer, ChatNoteTypes noteType)
+        {
+            if (noteType == ChatNoteTypes.DidVote) Recorder.OnVoteChat(srcPlayer);
+        }
+    }
     [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetName))]
     public static class SetBubbleName
     {

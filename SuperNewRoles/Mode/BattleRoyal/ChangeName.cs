@@ -71,13 +71,13 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static (string, string) GetName(PlayerControl player)
         {
             string name = player.GetDefaultName();
-            IntroData data = IntroData.GetIntroData(player.GetRole(), IsImpostorReturn:true);
-            name = "<size=75%>"+ModHelpers.Cs(data.color, ModTranslation.GetString(data.NameKey + "Name")) + "</size>\n" +name+"\n\n";
+            IntroData data = IntroData.GetIntroData(player.GetRole(), IsImpostorReturn: true);
+            name = "<size=75%>" + ModHelpers.Cs(data.color, ModTranslation.GetString(data.NameKey + "Name")) + "</size>\n" + name + "\n\n";
             string selfname = name;
             selfname = "\n\n\n\n" + selfname + "\n\n\n\n";
             foreach (var notifi in Notifications)
             {
-                Logger.Info("SETNOTIF:"+notifi.Item1);
+                Logger.Info("SETNOTIF:" + notifi.Item1);
                 selfname = "<size=200%>" + notifi.Item1 + "</size>" + selfname + "\n";
             }
             return (name, selfname);

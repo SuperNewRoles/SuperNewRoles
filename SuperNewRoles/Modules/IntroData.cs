@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.Attribute;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -81,7 +81,7 @@ public class IntroData
             GhostRoleData.Add(this);
         }
         if (!Intros.TryAdd(RoleId, this))
-            Logger.Info(RoleId.ToString()+"が追加されませんでした。");
+            Logger.Info(RoleId.ToString() + "が追加されませんでした。");
     }
     public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)
     {
@@ -93,7 +93,7 @@ public class IntroData
         {
             return p == null ? JumboIntro : p.IsImpostor() ? EvilJumboIntro : NiceJumboIntro;
         }
-        if(IntroDataCache.TryGetValue(RoleId, out IntroData introData))
+        if (IntroDataCache.TryGetValue(RoleId, out IntroData introData))
             return introData;
         else
         {

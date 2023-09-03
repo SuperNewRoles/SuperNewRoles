@@ -14,11 +14,10 @@ public class Beacon
     {
         if (beaconAnimationSprites == null || beaconAnimationSprites.Length == 0) return null;
         index = Mathf.Clamp(index, 0, beaconAnimationSprites.Length - 1);
-        CustomAnimation Beacon = new()
-        {
-            Sprites = CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
-        };
-        Beacon.Start(30, GameObject.Find($"Beacon{Conjurer.Count}").transform);
+        GameObject BeaconObject = GameObject.Find($"Beacon{Conjurer.Count}");
+        CustomAnimation Beacon = BeaconObject.AddComponent<CustomAnimation>();
+        Beacon.Init(new CustomAnimationOptions(CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
+            , 30, loop: true));
         return beaconAnimationSprites[index];
     }
 
@@ -46,6 +45,8 @@ public class Beacon
         //int[] num = { -1, -2, -3 };
         foreach (var beacon in AllBeacons)
         {
+            if (beacon.GameObject == null)
+                continue;
             Logger.Info($"{beacon.GameObject.name}をClearします", "ClearBeacons");
             Object.Destroy(beacon.GameObject);
         }

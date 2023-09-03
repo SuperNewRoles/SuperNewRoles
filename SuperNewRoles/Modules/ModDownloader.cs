@@ -25,8 +25,10 @@ public static class ModDownloader
     public class ModObject
     {
         public bool DataGetted = false;
-        public bool Installed {
-            get {
+        public bool Installed
+        {
+            get
+            {
                 if (!_installed.HasValue)
                     _installed = IL2CPPChainloader.Instance.Plugins.TryGetValue(ModGUId, out PluginInfo pinfo);
                 return _installed.Value;
@@ -48,7 +50,8 @@ public static class ModDownloader
         public string ModName;
         public List<TextMeshPro> InstallText = new();
         public GameObject DescriptionPopup;
-        public ModObject(string ModId, string ModGUId, string RepoURL, string DescriptionShort, string DescriptionLong, List<string> DependencyMod = null, List<string> AddDownloadURLs = null) {
+        public ModObject(string ModId, string ModGUId, string RepoURL, string DescriptionShort, string DescriptionLong, List<string> DependencyMod = null, List<string> AddDownloadURLs = null)
+        {
             this.ModId = ModId;
             this.RepoURL = RepoURL;
             this.DependencyMod = DependencyMod == null ? new() : DependencyMod;
@@ -76,7 +79,7 @@ public static class ModDownloader
         ModObject obj = GetModByGUId(guid);
         if (obj == null)
         {
-            Logger.Info("MODがnullでした:"+guid);
+            Logger.Info("MODがnullでした:" + guid);
             return;
         }
         if (obj.Installed)
@@ -135,8 +138,8 @@ public static class ModDownloader
             yield return request.SendWebRequest();
             if (request.responseCode != (long)HttpStatusCode.OK || request.downloadHandler == null)
             {
-                Logger.Info("reponseがおかしい:"+request.responseCode.ToString());
-                DownloadingPopupStatusText.text = splited[splited.Length - 1]+"のダウンロードが失敗しました。";
+                Logger.Info("reponseがおかしい:" + request.responseCode.ToString());
+                DownloadingPopupStatusText.text = splited[splited.Length - 1] + "のダウンロードが失敗しました。";
                 yield return null;
                 continue;
             }
@@ -151,6 +154,7 @@ public static class ModDownloader
             {
                 DownloadingPopupStatusText.text = splited[splited.Length - 1] + "を保存中";
                 yield return null;
+                Directory.CreateDirectory(ziptempfolder + @"\SuperNewRoles\CustomHatsChache\");
                 var fileStream = File.Create(ziptempfolder + splited[splited.Length - 1]);
                 foreach (byte result in request.downloadHandler.GetData())
                 {
@@ -197,7 +201,7 @@ public static class ModDownloader
         }
         DownloadingPopupStatusText.text = "完了！\n再起動すると適用されます。";
         DownloadingPopupCloseButton.gameObject.SetActive(true);
-        foreach(TextMeshPro tmp in obj.InstallText)
+        foreach (TextMeshPro tmp in obj.InstallText)
         {
             if (tmp != null)
             {
@@ -239,7 +243,7 @@ public static class ModDownloader
                             GameObject.Destroy(devtitletext.GetComponent<TextTranslatorTMP>());
                             devtitletext.GetComponent<TextMeshPro>().text = mobj.ModName;
                             devtitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
-                            devtitletext.localPosition = new Vector3(0, 1.9f, - 2);
+                            devtitletext.localPosition = new Vector3(0, 1.9f, -2);
                             devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
 
                             var depetitletext = obj.transform.FindChild("StatNumsText_TMP");
@@ -274,7 +278,8 @@ public static class ModDownloader
                             installButton.transform.localPosition = new(0, -1.7f, 0);
                             installButton.transform.localScale = Vector3.one * 0.85f;
                             installButton.OnClick = new();
-                            installButton.OnClick.AddListener((UnityAction)(() => {
+                            installButton.OnClick.AddListener((UnityAction)(() =>
+                            {
                                 InstallByGuid(mobj.ModGUId);
                             }));
                         }
@@ -288,7 +293,8 @@ public static class ModDownloader
                     dlbtn.transform.localPosition = new(3f, 1.265f - (index * 0.835f), -2);
                     dlbtn.transform.localScale = Vector3.one * 0.6f;
                     dlbtn.OnClick = new();
-                    dlbtn.OnClick.AddListener((UnityAction)(() => {
+                    dlbtn.OnClick.AddListener((UnityAction)(() =>
+                    {
                         InstallByGuid(mobj.ModGUId);
                     }));
                     GameObject.Destroy(dlbtn.GetComponentInChildren<TextTranslatorTMP>());
@@ -340,7 +346,7 @@ public static class ModDownloader
             yield return request.SendWebRequest();
             if (request.isNetworkError || request.isHttpError)
             {
-                Logger.Info("むりやった:"+obj.RepoURL);
+                Logger.Info("むりやった:" + obj.RepoURL);
                 continue;
             }
             string downloadtext = request.downloadHandler.text[1..];
@@ -420,7 +426,7 @@ public static class ModDownloader
                 //Description
 
                 text = GameObject.Instantiate(TextTemplate, TextTemplate.parent);
-                text.localPosition = new Vector3(-1, - 1.95f - (index * 0.775f), -2f);
+                text.localPosition = new Vector3(-1, -1.95f - (index * 0.775f), -2f);
                 text.localScale = new Vector3(1.25f, 1.25f, 1.25f);
                 text.GetComponent<TextMeshPro>().text = modobj.DescriptionShort;
                 index++;

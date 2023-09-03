@@ -34,8 +34,10 @@ namespace SuperNewRoles.SuperNewRolesWeb
 
         static IEnumerator GetIE(string url, Action<long, DownloadHandler> callback)
         {
-            var request = new UnityWebRequest(url, "GET");
-            request.downloadHandler = new DownloadHandlerBuffer();
+            var request = new UnityWebRequest(url, "GET")
+            {
+                downloadHandler = new DownloadHandlerBuffer()
+            };
             request.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
             yield return request.Send();

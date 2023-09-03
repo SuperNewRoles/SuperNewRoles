@@ -61,7 +61,6 @@ public static class Worshiper
         public static float KillSuicideCoolTime;
         internal static DateTime suicideButtonTimer;
         internal static DateTime suicideKillButtonTimer;
-        internal static bool isfirstResetCool;// カスタムボタンの初手クールを10sにするメソッドができれば不要
         public static void ClearAndReload()
         {
             Player = new();
@@ -75,9 +74,8 @@ public static class Worshiper
 
             bool IsFullTask = !CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.Worshiper);
-            ImpostorCheckTask = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 0 : IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
 
-            isfirstResetCool = true;
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
 
@@ -167,15 +165,10 @@ public static class Worshiper
 
     private static void ResetSuicideKillButton()
     {
-        /*
-            [isfirstResetCool(初回クールリセットか?)]がtrueの場合、クールを10sにしている。
-            SHR時非導入者クール(10s)と導入者のクール(カスタムクール)が異なる事を、SNR時共通処理として修正している。
-            初手カスタムボタンクールを10sにするメソッドがあれば不要な処理。
-        */
-        suicideKillButton.MaxTimer = !RoleData.isfirstResetCool ? RoleData.KillSuicideCoolTime : 10f;
-        suicideKillButton.Timer = !RoleData.isfirstResetCool ? RoleData.KillSuicideCoolTime : 10f;
+        var cooldown = IsfirstResetCool ? 10f : RoleData.KillSuicideCoolTime;
+        suicideKillButton.MaxTimer = cooldown;
+        suicideKillButton.Timer = cooldown;
         RoleData.suicideKillButtonTimer = DateTime.Now;
-        Logger.Info($"「初回クールリセットか?」が{RoleData.isfirstResetCool}の為、クールを[{suicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
-        RoleData.isfirstResetCool = false;
+        IsfirstResetCool = false;
     }
 }

@@ -63,7 +63,7 @@ public class CustomPlateData : NamePlateData
     [HarmonyPatch(typeof(NameplatesTab), nameof(NameplatesTab.OnEnable))]
     class NameplatesTabOnEnablePatch
     {
-        static void makecoro(NameplatesTab __instance,  NameplateChip chip)
+        static void makecoro(NameplatesTab __instance, NameplateChip chip)
         {
             __instance.StartCoroutine(AddressableAssetExtensions.CoLoadAssetAsync<NamePlateViewData>(__instance, FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(chip.ProductId).ViewDataRef, (Action<NamePlateViewData>)delegate (NamePlateViewData viewData)
             {

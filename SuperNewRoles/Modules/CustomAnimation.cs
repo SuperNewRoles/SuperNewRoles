@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
-public class CustomAnimation
+public class CustomAnimation_old
 {
     public static Sprite[] GetSprites(string path, int Count)
     {
@@ -42,14 +42,6 @@ public class CustomAnimation
         index = 0;
         Animations.Add(this);
     }
-    public static void Update()
-    {
-        var deltatime = Time.deltaTime;
-        foreach (CustomAnimation anim in Animations.ToArray())
-        {
-            anim.AnimationUpdate(deltatime);
-        }
-    }
     public void AnimationUpdate(float Deltatime)
     {
         if (render == null) { Animations.Remove(this); return; }
@@ -71,10 +63,4 @@ public class CustomAnimation
         }
     }
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    class AnimationUpdatePatch
-    {
-        static void Postfix()
-            => Update();
-    }
-}
+}*/

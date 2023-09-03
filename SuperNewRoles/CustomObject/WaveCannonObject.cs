@@ -14,30 +14,20 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.CustomObject;
 
-public class WaveCannonObject
+public class WaveCannonObject : CustomAnimation
 {
+    public WaveCannonObject(IntPtr intPtr) : base(intPtr)
+    {
+    }
     public enum RpcType
     {
         Spawn,
         Shoot
     }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-    class FixedUpdatePatch
-    {
-        public static void Postfix(PlayerControl __instance)
-        {
-            if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-            {
-                AllFixedUpdate();
-            }
-        }
-    }
     public static List<WaveCannonObject> Objects = new();
 
-    public GameObject gameObject;
     public Transform effectGameObjectsParent;
     public List<GameObject> effectGameObjects;
-    public Transform transform => gameObject.transform;
 
     private static Sprite _colliderSprite;
     public static Sprite ColliderSprite
@@ -54,17 +44,57 @@ public class WaveCannonObject
 
     public PlayerControl Owner;
     public int Id;
-    private List<Sprite> sprites;
-    private float UpdateTime;
-    private float DefaultUpdateTime => 1f / freamrate;
-    private int freamrate;
-    private int index;
-    private bool IsLoop;
-    private bool Playing;
-    private readonly SpriteRenderer render;
-    private readonly List<SpriteRenderer> effectrenders;
-    private readonly byte OwnerPlayerId;
-    private Action OnPlayEnd;
+    public static Sprite[] ChargeSprites
+    {
+        get
+        {
+            if (CachedSpritesCharge == null)
+            {
+                CachedSpritesCharge = new Sprite[5];
+                for (int i = 1; i <= 5; i++)
+                {
+                    CachedSpritesCharge[i - 1] = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Charge_000{i}.png", 115f);
+                }
+            }
+            return CachedSpritesCharge;
+        }
+    }
+    public static Sprite[] CachedSpritesCharge = null;
+    public static Sprite[] ShootSprites
+    {
+        get
+        {
+            if (CachedSpritesShoot == null)
+            {
+                CachedSpritesShoot = new Sprite[12];
+                for (int i = 1; i <= 12; i++)
+                {
+                    CachedSpritesShoot[i - 1] = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f);
+                }
+            }
+            return CachedSpritesShoot;
+        }
+    }
+    public static Sprite[] CachedSpritesShoot = null;
+    public static Sprite[] ShootSpritesNowing
+    {
+        get
+        {
+            if (CachedSpritesShootNowing == null)
+            {
+                CachedSpritesShootNowing = new Sprite[7];
+                for (int i = 6; i <= 12; i++)
+                {
+                    CachedSpritesShootNowing[i - 6] = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f);
+                }
+            }
+            return CachedSpritesShootNowing;
+        }
+    }
+    public static Sprite[] CachedSpritesShootNowing = null;
+
+    private List<SpriteRenderer> effectrenders;
+    private byte OwnerPlayerId;
     public static Dictionary<byte, int> Ids;
     private static GameObject _waveCannonObjectPrefab;
     public static GameObject WaveCannonObjectPrefab
@@ -85,56 +115,57 @@ public class WaveCannonObject
     public bool IsFlipX;
     private int DestroyIndex = 0;
     static Vector3 OwnerPos;
-    static AudioSource ChargeSound;
     public List<PolygonCollider2D> colliders;
+    public bool IsShootFirst;
     public static List<(float, Vector2)> RotateSet = new() { (90, new(-3.05f, 25.5f)), (270, new(-4f, -26.5f)), (45, new(14.3f, 17.75f)), (45, new(14.3f, -17.75f)), (180, new(-30.7f, -0.8f)) };
 
-    public WaveCannonObject(Vector3 pos, bool FlipX, PlayerControl _owner)
+    public override void Awake()
     {
-        OwnerPlayerId = _owner.PlayerId;
-        if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
-        {
-            CachedPlayer.LocalPlayer.PlayerControl.moveable = false;
-
-            Camera.main.GetComponent<FollowerCamera>().Locked = true;
-        }
+        base.Awake();
         colliders = new();
         WiseManData = new();
         effectGameObjects = new();
         effectrenders = new();
+        Objects.Add(this);
+    }
+    public WaveCannonObject Init(Vector3 pos, bool FlipX, PlayerControl _owner)
+    {
+        CustomAnimationOptions customAnimationOptions = new(ChargeSprites, 25, true, EffectSound: ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), IsEffectSoundLoop: true);
+        base.Init(customAnimationOptions);
+        //使用者を設定
+        OwnerPlayerId = _owner.PlayerId;
+        //移動ロック
+        if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
+        {
+            CachedPlayer.LocalPlayer.PlayerControl.moveable = false;
+            Camera.main.GetComponent<FollowerCamera>().Locked = true;
+        }
+        //保存
         OwnerPos = _owner.transform.position;
         IsFlipX = FlipX;
         Owner = _owner;
-        Id = 0;
-        gameObject = new("WaveCannonObject");
-        render = gameObject.AddComponent<SpriteRenderer>();
-        index = 0;
-        sprites = new();
-        for (int i = 1; i <= 5; i++)
-        {
-            sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Charge_000{i}.png", 115f));
-        }
-        render.sprite = sprites[0];
-        IsLoop = true;
-        freamrate = 25;
-        Playing = true;
-        Objects.Add(this);
+        //使用者よりも前に描画
         pos.z -= 0.0003f;
+        //波動砲の位置を調整
         transform.position = pos + new Vector3(FlipX ? -4 : 4, 0, 0);
         transform.localScale = new(FlipX ? -1 : 1, 1, 1);
+        //当たり判定の親を作成
         effectGameObjectsParent = new GameObject("WaveCannonEffects").transform;
         effectGameObjectsParent.SetParent(transform);
         effectGameObjectsParent.localPosition = new(31.25f, -1.45f, 2.39f);
         effectGameObjectsParent.localScale = new(1, 1, 1);
+        //当たり判定の部分を作成
         CreateCollider(CreateEffect());
+        //Id
         if (!Ids.ContainsKey(OwnerPlayerId))
         {
             Ids[OwnerPlayerId] = 0;
         }
         Id = Ids[OwnerPlayerId];
         Ids[OwnerPlayerId]++;
+        //シュート中かを無効に
         IsShootNow = false;
-        ChargeSound = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), true);
+        return this;
     }
     public GameObject CreateRotationEffect(Vector3 PlayerPosition, float Angle)
     {
@@ -189,37 +220,32 @@ public class WaveCannonObject
     }
     public void Shoot()
     {
-        if (ChargeSound != null)
-            ChargeSound.Stop();
-        SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
+        IsShootFirst = true;
+        Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
         IsShootNow = true;
-        render.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
-        sprites = new();
-        for (int i = 1; i <= 12; i++)
+        foreach (var obj in effectrenders) obj.sprite = ShootSprites[0];
+        Sprite[] sprites = new Sprite[12];
+        for (int i = 0; i < 12; i++)
+            sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
+        Options.SetSprites(sprites,
+            IsLoop: true, frameRate: 12);
+        Stop();
+        Play();
+        Options.SetOnEndAnimation((anim, option) =>
         {
-            sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f));
-        }
-        foreach (var obj in effectrenders) obj.sprite = sprites[0];
-        IsLoop = false;
-        freamrate = 12;
-        Playing = true;
-        OnPlayEnd = () =>
-        {
-            IsLoop = true;
-            freamrate = 15;
-            Playing = true;
-            sprites = new();
-            for (int i = 6; i <= 12; i++)
-            {
-                sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f));
-            }
+            IsShootFirst = false;
+            for (int i = 0; i < 7; i++)
+                sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
+
+            option.SetSprites(sprites, IsLoop: true, frameRate: 15);
+            Stop(IsStopMusic: false);
+            Play(IsPlayMusic: false);
             foreach (var obj in effectrenders) obj.sprite = sprites[0];
-            OnPlayEnd = () =>
+            Options.SetOnEndAnimation((anim, option) =>
             {
                 DestroyIndex++;
                 if (DestroyIndex > 3)
                 {
-                    OnDestroy();
                     GameObject.Destroy(this.gameObject);
                     if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
@@ -233,15 +259,15 @@ public class WaveCannonObject
                             if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
                                 WaveCannonJackal.ResetCooldowns();
                         }
-                        CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
-                        Camera.main.GetComponent<FollowerCamera>().Locked = false;
                         HudManagerStartPatch.WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
                         HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
                         RoleClass.WaveCannon.CannotMurderPlayers = new();
                     }
                 }
-            };
-        };
+            });
+        });
+
+        //
         foreach (var data in WiseMan.WiseManData.ToArray())
         {
             if (data.Value is null) continue;
@@ -265,16 +291,10 @@ public class WaveCannonObject
         }
     }
 
-    public static void AllFixedUpdate()
+    public override void OnDestroy()
     {
-        if (Objects.Count <= 0) return;
-        foreach (WaveCannonObject obj in Objects.ToArray())
-        {
-            obj.FixedUpdate();
-        }
-    }
-    public void OnDestroy()
-    {
+        base.OnDestroy();
+        Objects.Remove(this);
         foreach (var data in WiseManData.ToArray())
         {
             if (data.Key is null) continue;
@@ -292,30 +312,25 @@ public class WaveCannonObject
                 }
             }
         }
-    }
-    public void FixedUpdate()
-    {
-        if (render == null) { Objects.Remove(this); return; }
-        if (RoleClass.IsMeeting)
+        if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
-            if (ChargeSound != null)
-                ChargeSound.Stop();
-            OnDestroy();
-            GameObject.Destroy(effectGameObjectsParent.gameObject);
-            GameObject.Destroy(gameObject);
-            return;
+            CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
+            Camera.main.GetComponent<FollowerCamera>().Locked = false;
         }
+    }
+    public override void OnRenderUpdate()
+    {
+        if (IsShootNow)
+        {
+            foreach (var obj in effectrenders) obj.sprite = IsShootFirst ? ShootSprites[Index] : ShootSpritesNowing[Index];
+        }
+    }
+    public override void Update()
+    {
+        base.Update();
         if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal)))
         {
-            OnDestroy();
             GameObject.Destroy(this.gameObject);
-            if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
-            {
-                CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
-                Camera.main.GetComponent<FollowerCamera>().Locked = false;
-            }
-            if (ChargeSound != null)
-                ChargeSound.Stop();
             return;
         }
         foreach (var data in WiseManData.ToArray())
@@ -382,27 +397,6 @@ public class WaveCannonObject
                 }
             }
         }
-        if (Playing)
-        {
-            UpdateTime -= Time.fixedDeltaTime;
-            if (UpdateTime <= 0)
-            {
-                index++;
-                if (index >= sprites.Count)
-                {
-                    index = 0;
-                    if (OnPlayEnd != null && IsLoop) OnPlayEnd();
-                    if (!IsLoop)
-                    {
-                        Playing = false;
-                        OnPlayEnd?.Invoke();
-                        return;
-                    }
-                }
-                UpdateTime = DefaultUpdateTime;
-                if (IsShootNow) foreach (var obj in effectrenders) obj.sprite = sprites[index];
-                else render.sprite = sprites[index];
-            }
-        }
+
     }
 }

@@ -309,6 +309,7 @@ PantsRoyalDeadName,Couldn't get my pants on...,パンツを履けなかった...
 PantsRoyalPantsDontHaverIntroName,You don't have Pants...!,パンツを履いていない...！,没有穿着小裤裤……,你沒有褲子！！！
 PantsRoyalPantsDontHaverIntroTitle1,Will you have pants?,あなたはパンツを手に入れられるかな？,把别人的小裤裤搞到手吧！,你會擁有褲子嗎？
 PantsRoyalStartAt,Pants royal will start at after ,パンツの戦いまで...,距离小裤裤的降临还有,褲子大逃殺將要開始...
+PantsRoyalYouareWinner,PantsRoyal's Winner!,パンツの戦いの勝者！
 NeutralName,Neutral,第三陣営,独立阵营,中立陣營
 WinName,Win,勝利,胜利,勝利
 PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,更多游戏设置,其他設定
@@ -913,6 +914,7 @@ MadSeerDescription,This role is responsible for information related to the dead�
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动,感知內鬼的行動
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒,邪惡的先知
 EvilSeerTitle1,Let's sense everyone's presence.,皆の気配を感じ取ろう,你能清晰地感知死亡,感知所有人的行動
+EvilSeerCombIntro1,Why do we treat the dead so specially?,なぜ死者を特別に扱うのか
 EvilSeerDescription,This role is in charge of information related to the dead，which allows you to know the time and place of death.\nThe role can be used to support your partner by knowing what they are doing.\nThere are also settings that make the survivors Haunted Wolf.\n\nYou are surrounded by friends. You will not be lonely.\nYou will be one of them sooner or later.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。\n生存者に死霊を憑ける呪いをかける設定や、自身が死亡した時に狼憑きとして取り憑く設定もあります。\n\n貴方の周りには仲間がいる。さみしくはない。\nいずれ貴方もその一員に入るのだ。,邪恶的灵媒属于内鬼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n邪恶的灵媒可以通过自己的能力确认同伴的行动，以此帮助同伴。\n此外，根据房间设置，邪恶的灵媒还可以诅咒一名玩家，令其在自己死亡后获得灵咒。\n\n你不孤单。你的朋友们都陪着你。\n我这就送你去见他们……,邪惡的先知可以得知死亡時間與地點以及死者有關的情報。\n掌握對方的行動來支援你的夥伴。\n邪惡的先知可以對生存者施加死靈詛咒，使其在死亡時成為狼憑。\n\n你的周圍有朋友。你不會孤單。\n你終將成為他們的一員。
 EvilSeerIsUniqueSetting,Do you want to set up the unique capabilities of an Evil Seer as a Seer?,シーアとしてのイビルシーアの固有能力を設定するか,邪恶的灵媒与灵媒不并为同一设置,是否將邪惡的先知的獨特能力設定為先知的能力
 EvilSeerFlashColorMode,How to display dead body color,死者ボディカラーの表示方法,死亡闪光表现形式,顯示死者身體顏色表示設定
@@ -1541,6 +1543,8 @@ ConjurerShowFlashOption,The screen glows when the ability is activated,能力発
 ConjurerBeaconName,Marker,マーカー,魔法阵,魔法陣
 ConjurerAddName,Compression,圧縮,施法,壓縮
 
+#NewRoleTranslation
+
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
@@ -1658,6 +1662,23 @@ SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成�
 SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,不具有
 InformationName,Information,情報,资讯,資訊
+
+# Replay
+ReplayName,Replay,リプレイ
+ReplayPlay,Play,再生
+ReplayCheckStart,Do you want to play it?,再生しますか？
+ReplayErrorFileDataBroken,Data in the file is corrupt!,フアイルの　データが　こわれています！
+ReplayErrorDataModNoneThisMod,The recording mod is different.\n It may not play properly.\n{0},記録MODが違います。\n正常に再生されない可能性があります。\n{0}
+ReplayErrorDiffVersion,Version compatibility is not guaranteed.\nIn this case，we will not respond to any problems that may occur.\nNow: v{0}， Replay: v{1},バージョンの互換性は保証されません。\nこの場合不具合が発生しても対応しません。\n今：v{0}，記録：v{1}
+ReplayReplaySaved,Replay saved,リプレイを保存しました
+ReplayChangeName,Change filename,ファイル名変更
+ReplayFileName,Filename,ファイル名,
+ReplayOptions,Replay Options,リプレイの設定
+ReplayOptionsQualityTitle,Replay quality,リプレイ品質
+ReplayOptionsQualityDescription,The higher the number，the larger the replay file size，but the higher the quality.,高ければ高いほどリプレイファイルのサイズは増えていきますが、品質も高くなります。
+ReplayOptionsQualityLow,Low,低
+ReplayOptionsQualityMedium,Medium,中
+ReplayOptionsQualityHigh,High,高
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫

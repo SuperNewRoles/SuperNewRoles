@@ -26,7 +26,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
         static string CurrentUserId;
         static bool IsUserIdInputNow;
         [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.SetText))]
-        class TextBoxTMPSetTextPatch {
+        class TextBoxTMPSetTextPatch
+        {
             public static bool Prefix(TextBoxTMP __instance, ref string input, string inputCompo)
             {
                 if (!IsUserIdInputNow && LoginPopup != null && LoginPopup.nameText != null && LoginPopup.nameText.nameSource.GetInstanceID() == __instance.GetInstanceID())
@@ -194,17 +195,19 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 LoginPopupBackButton.gameObject.SetActive(false);
                 LoginPopupSubmitButton.gameObject.SetActive(false);
                 LoginPopupCurrentTitle.text = ModTranslation.GetString("SNRWebLoginNow");
-                LoginPopupCurrentTitle.transform.localPosition = new(0.5f,0,0);
+                LoginPopupCurrentTitle.transform.localPosition = new(0.5f, 0, 0);
                 LoginPopupCurrentTitle.transform.localScale = Vector3.one * 3;
-                WebApi.Login(CurrentUserId, LoginPopup.nameText.nameSource.text, (code, handler) => {
+                WebApi.Login(CurrentUserId, LoginPopup.nameText.nameSource.text, (code, handler) =>
+                {
                     if (code != 200)
                     {
                         LoginError();
                     }
                     else
                     {
-                        WebAccountManager.SetToken(handler.text, (IsSuc) => {
-                            Logger.Info($"{IsSuc}","IsSuc");
+                        WebAccountManager.SetToken(handler.text, (IsSuc) =>
+                        {
+                            Logger.Info($"{IsSuc}", "IsSuc");
                             if (IsSuc)
                             {
                                 LoginPopup.Close();
@@ -225,7 +228,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
             LoginPopupBackButton.gameObject.SetActive(true);
             LoginPopupSubmitButton.gameObject.SetActive(true);
             OnBackClick();
-            LoginPopupCurrentTitle.text = "<size=200%>"+ModTranslation.GetString("SNRWebLoginNotSuc")+"\n" + LoginPopupCurrentTitle.text + "\n\n</size>";
+            LoginPopupCurrentTitle.text = "<size=200%>" + ModTranslation.GetString("SNRWebLoginNotSuc") + "\n" + LoginPopupCurrentTitle.text + "\n\n</size>";
             LoginPopupCurrentTitle.transform.localPosition = new(-1.1f, 0.625f, 0);
             LoginPopupCurrentTitle.transform.localScale = Vector3.one;
         }
