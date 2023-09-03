@@ -14,6 +14,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
@@ -3356,6 +3357,8 @@ static class HudManagerStartPatch
         OrientalShaman.SetupCustomButtons(__instance);
 
         BlackHatHacker.SetupCustomButtons(__instance);
+
+        MadRaccoon.Button.SetupCustomButtons(__instance);
 
         // SetupCustomButtons
 
