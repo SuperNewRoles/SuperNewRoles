@@ -48,6 +48,7 @@ public static class main
                 writer.Write(player.PlayerId);
                 writer.EndRPC();
                 player.RpcSetRole(AmongUs.GameOptions.RoleTypes.CrewmateGhost);
+                player.Data.IsDead = false;
                 Logger.Info("クルー！");
             }
             else
@@ -57,7 +58,10 @@ public static class main
             }
             Logger.Info(player.Data.Role.Role.ToString(), player.GetDefaultName());
         }
-        new LateTask(() => GameManager.Instance.LogicOptions.Manager.RpcEndGame(GameOverReason.HumansByTask, false), 0.1f);
+        RPCHelper.RpcSyncGameData();
+        new LateTask(() => { 
+            GameManager.Instance.LogicOptions.Manager.RpcEndGame(GameOverReason.HumansByTask, false);
+        }, 0.1f);
     }
     public static void AssignPants()
     {

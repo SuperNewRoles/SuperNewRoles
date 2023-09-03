@@ -89,6 +89,7 @@ public enum WinCondition
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
+    PantsRoyalWin
 }
 class FinalStatusPatch
 {
@@ -254,6 +255,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
+                {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) }
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -376,7 +378,7 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
-        if (haison) textRenderer.text = text;
+        if (haison || AdditionalTempData.winCondition == WinCondition.PantsRoyalWin) textRenderer.text = text;
         if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) textRenderer.text = string.Format(text + " " + ModTranslation.GetString("GodWinText"));
         else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));
@@ -1315,6 +1317,53 @@ public static class OnGameEndPatch
                 AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
             }
         }
+        int i = 0;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (p.IsAlive()) break;
+            i++;
+        }
+        if (NoWinner || i == CachedPlayer.AllPlayers.Count)
+        {
+            TempData.winners = new();
+            AdditionalTempData.winCondition = WinCondition.NoWinner;
+        }
+        Logger.Info("WELCOME!!!");
+        if (ModeHandler.IsMode(ModeId.PantsRoyal))
+        {
+            Logger.Info("Pants!!!!:"+(WinnerPlayer != null).ToString());
+            if (WinnerPlayer != null)
+            {
+                TempData.winners = new();
+                TempData.winners.Add(new WinningPlayerData(WinnerPlayer.Data));
+                AdditionalTempData.winCondition = WinCondition.PantsRoyalWin;
+            }
+            else
+            {
+                TempData.winners = new();
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    Logger.Info(player.Data.Role.Role+":"+player.PlayerId.ToString()+":"+player.Data.PlayerName);
+                    if (player.Data.Role.Role == AmongUs.GameOptions.RoleTypes.CrewmateGhost || player.Data.Role.Role == AmongUs.GameOptions.RoleTypes.Crewmate)
+                    {
+                        TempData.winners.Add(new WinningPlayerData(player.Data));
+                        Logger.Info("PASS!!!!!:"+player.Data.PlayerName+":"+player.PlayerId.ToString());
+                        break;
+                    }
+                }
+                if (TempData.winners.Count > 0)
+                {
+                    AdditionalTempData.winCondition = WinCondition.PantsRoyalWin;
+                    Logger.Info("ToPantsRoyalWin");
+                }
+                else
+                {
+                    AdditionalTempData.winCondition = WinCondition.NoWinner;
+                    Logger.Info("ToNoWinner");
+                }
+                Logger.Info(AdditionalTempData.winCondition.ToString()+":WINCONDITION");
+            }
+        }
         if (HAISON)
         {
             TempData.winners = new();
@@ -1327,17 +1376,6 @@ public static class OnGameEndPatch
                 }
             }
             AdditionalTempData.winCondition = WinCondition.HAISON;
-        }
-        int i = 0;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-        {
-            if (p.IsAlive()) break;
-            i++;
-        }
-        if (NoWinner || i == CachedPlayer.AllPlayers.Count)
-        {
-            TempData.winners = new();
-            AdditionalTempData.winCondition = WinCondition.NoWinner;
         }
         foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
         {
