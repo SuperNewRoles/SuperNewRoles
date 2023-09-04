@@ -171,9 +171,17 @@ public static class UpdateHandler
             {
                 p.RpcSetName("<size=75%>" + RoleNameText + TaskText + "</size>\n" + p.GetDefaultName());
                 //if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
-                if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
+                if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Airship)
                 {
                     p.RpcSnapTo(CopsRobbers.Main.GetPosition(CopsRobbers.Main.GetRandomSpawnPosition(p)));
+                }
+                else
+                {
+                    Vector2 up = Vector2.up;
+                    up = up.Rotate((float)(p.PlayerId - 1) * (360f / (float)PlayerControl.AllPlayerControls.Count));
+                    up *= ShipStatus.Instance.SpawnRadius;
+                    Vector2 position = ShipStatus.Instance.MeetingSpawnCenter + up + new Vector2(0f, 0.3636f);
+                    p.RpcSnapTo(position);
                 }
             }
             main.CurrentTurnData.IsStarted = true;
