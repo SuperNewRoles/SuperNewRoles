@@ -8,6 +8,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -99,6 +100,10 @@ class WrapUpPatch
         {
             exiled = null;
         }
+        if (ReplayManager.IsReplayMode)
+        {
+            ReplayLoader.OnWrapUp();
+        }
 
         SelectRoleSystem.OnWrapUp();
 
@@ -108,6 +113,7 @@ class WrapUpPatch
         Assassin.WrapUp();
         CountChanger.CountChangerPatch.WrapUpPatch();
         RoleClass.IsFirstMeetingEnd = true;
+        RoleClass.IsfirstResetCool = false;
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);

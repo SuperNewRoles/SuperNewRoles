@@ -14,6 +14,7 @@ using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -293,6 +294,10 @@ class RpcShapeshiftPatch
         }
         return true;
     }
+    public static void Postfix(PlayerControl __instance, PlayerControl targetPlayer, bool animate)
+    {
+        ReplayActionShapeshift.Create(__instance.PlayerId, targetPlayer.PlayerId, animate);
+    }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
 class CheckProtectPatch
@@ -547,11 +552,13 @@ static class CheckMurderPatch
                     }
                 }
                 PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
-                if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow) {
+                if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow)
+                {
                     Mode.BattleRoyal.Main.MurderPlayer(target, __instance, targetAbility);
                     return false;
                 }
-                if (target.IsBot()) {
+                if (target.IsBot())
+                {
                     if (target == CrystalMagician.Bot)
                         CrystalMagician.UseWater(__instance);
                     return false;
@@ -1074,8 +1081,13 @@ public static class MurderPlayerPatch
         // |:===== targetが生存している場合にも発生させる処理 =====:|
         // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.GetDefaultName() + "、ターゲット:" + target.GetDefaultName());
         // Collect dead player info
-
+        Logger.Info("追加");
+        DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
+        DeadPlayer.deadPlayers.Add(deadPlayer);
+        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+        ReplayActionMurder.Create(__instance.PlayerId, target.PlayerId);
         __instance.OnKill(target); // 使われるようになった時に要仕様調整
+        target.OnDeath(__instance);
 
         if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
         {
@@ -1145,9 +1157,6 @@ public static class MurderPlayerPatch
         Logger.Info($"{target.name}が死亡した為, Petを外しました。");
 
         Logger.Info("死亡者リストに追加");
-        DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
-        DeadPlayer.deadPlayers.Add(deadPlayer);
-        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
         DeadPlayer.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
 
@@ -1333,6 +1342,7 @@ public static class ExilePlayerPatch
         // Collect dead player info
         DeadPlayer deadPlayer = new(__instance, __instance.PlayerId, DateTime.UtcNow, DeathReason.Exile, null);
         DeadPlayer.deadPlayers.Add(deadPlayer);
+        ReplayActionExile.Create(__instance.PlayerId);
         __instance.OnDeath(__instance);
         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
         if (ModeHandler.IsMode(ModeId.Default))
@@ -1411,6 +1421,7 @@ class ReportDeadBodyPatch
         {
             Camouflager.ResetCamouflage();
         }
+        ReplayActionReportDeadBody.Create(__instance.PlayerId, target is null ? (byte)255 : target.PlayerId);
         if (!AmongUsClient.Instance.AmHost) return true;
         if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
         if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;

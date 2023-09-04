@@ -137,6 +137,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void OnWrapUp()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             if (!ModeHandler.IsMode(ModeId.BattleRoyal)) return;
             if (Main.IsRoleSetted) return;
             Main.IsRoleSetted = true;

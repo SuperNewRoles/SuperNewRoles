@@ -36,7 +36,7 @@ public class CustomVisor
                 {
                     var FileName = file.Name[0..^4];
                     var Data = DownLoadClassVisor.Visordetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
-                    VisorViewData vvd = new VisorViewData
+                    VisorViewData vvd = new()
                     {
                         IdleFrame = Data.IsTOP
                         ? ModHelpers.CreateSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name, true)

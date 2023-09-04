@@ -121,8 +121,9 @@ public class CustomButton
     public static void MeetingEndedUpdate()
     {
         buttons.RemoveAll(item => item.actionButton == null);
-        bool isAlive = PlayerControl.LocalPlayer.IsAlive();
-        RoleId role = PlayerControl.LocalPlayer.GetRole();
+        PlayerControl player = PlayerControl.LocalPlayer;
+        bool isAlive = player.IsAlive();
+        RoleId role = player.GetRole();
         foreach (CustomButton btn in buttons)
         {
             try
@@ -135,6 +136,7 @@ public class CustomButton
                 if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
             }
         }
+        if (player.CurrentOutfitType == PlayerOutfitType.Shapeshifted) player.RpcRevertShapeshift(false);
     }
 
     public void SetActive(bool isActive)

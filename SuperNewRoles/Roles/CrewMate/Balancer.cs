@@ -383,17 +383,8 @@ public static class Balancer
             {
                 foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
                 {
-                    if (area.TargetPlayerId == targetplayerleft.PlayerId)
-                    {
-                        area.transform.localPosition = new(999, 999, 999);
-                        leftplayerarea = area;
-                    }
-                    else if (area.TargetPlayerId == targetplayerright.PlayerId)
-                    {
-                        area.transform.localPosition = new(999, 999, 999);
-                        rightplayerarea = area;
-                    }
-                    else
+                    if (area.TargetPlayerId != targetplayerleft.PlayerId && 
+                        area.TargetPlayerId != targetplayerright.PlayerId)
                         area.gameObject.SetActive(false);
                 }
             }

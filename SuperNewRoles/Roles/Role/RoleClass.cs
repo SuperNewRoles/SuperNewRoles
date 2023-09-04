@@ -5,11 +5,12 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Replay;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Sabotage;
 using SuperNewRoles.SuperNewRolesWeb;
 using TMPro;
@@ -24,6 +25,7 @@ public static class RoleClass
     public static bool IsMeeting;
     public static bool IsFirstMeetingEnd;
     public static bool IsCoolTimeSetted;
+    public static bool IsfirstResetCool;
     public static System.Random rnd = new((int)DateTime.Now.Ticks);
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
@@ -38,9 +40,11 @@ public static class RoleClass
     {
         ModHelpers.IdControlDic = new();
         ModHelpers.VentIdControlDic = new();
+        ReplayManager.ClearAndReloads();
         BlockPlayers = new();
         IsMeeting = false;
         IsFirstMeetingEnd = false;
+        IsfirstResetCool = true;
         RandomSpawn.IsFirstSpawn = true;
         DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
@@ -2042,7 +2046,7 @@ public static class RoleClass
             EvilHackerPlayer = new();
             IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
             IsMyAdmin = false;
-            Cooldown  = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
         }
     }
     public static class PositionSwapper
@@ -2958,7 +2962,7 @@ public static class RoleClass
             PlaySound = new();
         }
     }
-    //新ロールクラス
+
     public static class Quarreled
     {
         public static List<List<PlayerControl>> QuarreledPlayer;

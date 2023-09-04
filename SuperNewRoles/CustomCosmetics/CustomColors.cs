@@ -90,7 +90,7 @@ public class CustomColors
 
     // main, shadow, isLighter
     private static Dictionary<ColorType, (Color32, Color32, bool)> CustomColorData = new() { };
-    
+
     private static Dictionary<ColorType, (Color32, Color32, bool)> CustomColorDataOld = new() {
             //明るい色(V値が70/100以上、並びはH値順、同じH値の場合はS値が高い方が先、S値も同じ場合はV値が高い方が先)
             { ColorType.Pitchwhite, (new(255, 255, 255, bmv), new(240, 240, 240, bmv), true) }, //H000
@@ -209,9 +209,9 @@ public class CustomColors
                 //カラーId,MR,MG,MB,MA,SR,SG,SB,SA,明るいならaでそれ以外ならb
                 CustomColorData.Add((ColorType)(int.Parse(values[0].ToString()) - Palette.PlayerColors.Length),
                     (new(values[1].ParseToByte(), values[2].ParseToByte(), values[3].ParseToByte(), values[4].ParseToByte())
-                    ,new(values[5].ParseToByte(), values[6].ParseToByte(), values[7].ParseToByte(), values[8].ParseToByte()),
+                    , new(values[5].ParseToByte(), values[6].ParseToByte(), values[7].ParseToByte(), values[8].ParseToByte()),
                     values[9] == "a"));
-                
+
                 i++;
             }
             catch (Exception e)

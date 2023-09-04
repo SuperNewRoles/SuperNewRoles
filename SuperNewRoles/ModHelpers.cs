@@ -47,8 +47,13 @@ public static class ModHelpers
             if (p.IsAlive()) count++;
         return count;
     }
-    public static byte ParseToByte(this string txt) {
+    public static byte ParseToByte(this string txt)
+    {
         return byte.Parse(txt.ToString());
+    }
+    public static Ladder LadderById(byte id)
+    {
+        return ShipStatus.Instance.Cast<AirshipStatus>().Ladders.FirstOrDefault((Ladder f) => f.Id == id);
     }
     public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
     {
@@ -237,7 +242,7 @@ public static class ModHelpers
     public static Dictionary<byte, PlayerControl> AllPlayersById()
     {
         Dictionary<byte, PlayerControl> res = new();
-        foreach (CachedPlayer player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             res.Add(player.PlayerId, player);
         return res;
     }
@@ -663,7 +668,7 @@ public static class ModHelpers
                 return obj;
         return default;
     }
-    public static KeyValuePair<TKey, TValue> FirstOrDefault<TKey,TValue>(this Dictionary<TKey,TValue> list, Func<KeyValuePair<TKey,TValue>, bool> func)
+    public static KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> list, Func<KeyValuePair<TKey, TValue>, bool> func)
     {
         foreach (KeyValuePair<TKey, TValue> obj in list)
             if (func(obj))
@@ -930,6 +935,11 @@ public static class ModHelpers
         return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
     }
 
+    public static T GetOrAddComponent<T>(this GameObject obj) where T : Component
+    {
+        T component = obj.GetComponent<T>();
+        return component != null ? component : obj.AddComponent<T>();
+    }
     internal static Dictionary<byte, PlayerControl> IdControlDic = new(); // ClearAndReloadで初期化されます
     internal static Dictionary<int, Vent> VentIdControlDic = new(); // ClearAndReloadで初期化されます
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
