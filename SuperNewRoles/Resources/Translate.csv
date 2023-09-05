@@ -1533,9 +1533,9 @@ MoiraDescription,This is a position for enjoyable tables that messes up the boar
 MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！,掌控命运！,命運掌握在我手中！
 MoiraAbilityLimit,Number of ability usage,能力使用数,技能最大使用次数,能力使用次數
 MoiraChangeVote,I'll switch my vote as well,投票も入れ替える,技能同时交换得票,自由改變投票對象
-ConjurerName,Conjurer,魔術師,魔术师,魔術師
-ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ,用魔术围歼敌人,包圍他們，然後消滅他們
-ConjurerDescription,By setting up and activating three magic circles，\nthis imposter can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。,魔术师属于内鬼阵营，可以在地图上放置并激活三个魔法阵。\n魔术师可以击杀处于魔法阵形成的三角形范围内的所有玩家。,魔術師能通過設置並啟動三個魔法陣，\n殺死所有在三角形範圍內的船員。
+ConjurerName,Conjurer,魔術師,大法师,魔術師
+ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ,用法术围歼敌人,包圍他們，然後消滅他們
+ConjurerDescription,By setting up and activating three magic circles，\nthis imposter can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。,大法师属于内鬼阵营，可以在地图上放置并激活三个魔法阵。\n大法师可以击杀处于魔法阵形成的三角形范围内的所有玩家。,魔術師能通過設置並啟動三個魔法陣，\n殺死所有在三角形範圍內的船員。
 ConjurerCooldownOption,Marker placement cooldown,マーカー設置のクールダウン,魔法阵安放冷却,魔法陣設置冷卻時間
 ConjurerCanAddLengthOption,Effective range of marker placement,マーカー設置有効範囲,魔法阵有效安放范围,魔法陣有效範圍
 ConjurerCanKillImpostorOption,Can kill impostors,インポスターもキルできる,技能可以同时击杀内鬼,可以殺死內鬼
