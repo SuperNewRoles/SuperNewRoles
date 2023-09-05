@@ -142,7 +142,17 @@ public static class ClientModOptionsPatch
     {
         ReplayPopup.gameObject.SetActive(false);
         ReplayPopup.gameObject.SetActive(true);
-        SetUpOptions();
+        Transform obj = GameObject.FindObjectOfType<OptionsMenuBehaviour>()?.transform;
+        if (obj?.parent && obj?.parent == FastDestroyableSingleton<HudManager>.Instance.transform)
+        {
+            ReplayPopup.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
+            ReplayPopup.transform.localPosition = new Vector3(0, 0, -920f);
+        }
+        else
+        {
+            ReplayPopup.transform.SetParent(null);
+            Object.DontDestroyOnLoad(ReplayPopup);
+        }
         ReplaySetUpOptions();
         return true;
     }
