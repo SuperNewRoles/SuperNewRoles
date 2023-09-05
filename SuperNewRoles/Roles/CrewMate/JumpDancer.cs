@@ -48,7 +48,7 @@ public static class JumpDancer
         JumpingPlayerIds = new();
         _jumpingPlayers = new();
     }
-    //1•b
+    //1ç§’
     public static void FixedUpdate()
     {
         if (JumpingPlayerIds.Count <= 0)
@@ -75,7 +75,7 @@ public static class JumpDancer
             }
             else if (data.Value <= 0.5f)
             {
-                player.transform.localScale -= new Vector3(0, Time.fixedDeltaTime, 0);
+                player.transform.localScale -= new Vector3(0, Time.fixedDeltaTime * 0.5f, 0);
                 player.transform.position -= new Vector3(0, Time.fixedDeltaTime * 2, 0);
             }
             else if (data.Value <= 0.7f)
@@ -172,5 +172,5 @@ public static class JumpDancer
             showButtonText = true
         };
     }
-    // ‚±‚±‚ÉƒR[ƒh‚ð‘‚«‚±‚ñ‚Å‚­‚¾‚³‚¢
+    // ã“ã“ã«ã‚³ãƒ¼ãƒ‰ã‚’æ›¸ãã“ã‚“ã§ãã ã•ã„
 }
