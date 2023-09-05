@@ -1863,6 +1863,8 @@ public class CustomOptionHolder
         CelebrityIsTaskPhaseFlash = Create(402403, false, CustomOptionType.Crewmate, "CelebrityIsTaskPhaseFlashSetting", false, CelebrityOption);
         CelebrityIsFlashWhileAlivingOnly = Create(402404, false, CustomOptionType.Crewmate, "CelebrityIsFlashWhileAlivingOnly", false, CelebrityIsTaskPhaseFlash);
 
+        JumpDancer.SetupCustomOptions();
+
         ToiletFanOption = SetupCustomRoleOption(405900, true, RoleId.ToiletFan);
         ToiletFanPlayerCount = Create(405901, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
         ToiletFanCoolTime = Create(405902, true, CustomOptionType.Crewmate, "ToiletCooldownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
@@ -2066,8 +2068,6 @@ public class CustomOptionHolder
         // SetupModifierCustomOptions
 
         RoleBaseHelper.SetUpOptions();
-
-        JumpDancer.SetupCustomOptions();
 
         // 表示設定
 
