@@ -18,76 +18,79 @@ public class CustomColors
 
     public enum ColorType
     {
-        Salmon,
-        Bordeaux,
-        Olive,
-        Turqoise,
-        Mint,
-        Lavender,
-        Nougat,
-        Peach,
-        Wasabi,
-        HotPink,
-        Petrol,
-        Lemon,
+        // |:===== 以下明るい色 =====:|
+        Pitchwhite = 18,
+        Posi,
+        Pitchred,
+        XmasRed,
         SignalOrange,
-        Teal,
-        Blurple,
-        Sunrise,
-        Ice,
-        PitchBlack,
-        Darkmagenta,
-        Mintcream,
-        Leaf,
-        Emerald,
+        Peach,
+        LightOrange,
         Brightyellow,
+        Sunrise,
+        Gold,
+        Pitchyellow,
+        Lightgreen,
+        Lemon,
+        Sprout,
+        Pitchgreen,
+        Emerald,
+        Mintcream,
+        Mint,
+        Melon,
+        LightCyan,
+        Teal,
+        Snow,
+        SkyBlue,
+        Ice,
         Darkaqua,
-        Matcha,
-        Pitchwhite,
+        Backblue,
         Darksky,
         Intenseblue,
-        Blueclosertoblack,
-        Sunkengreenishblue,
-        Azi,
-        Pitchred,
         Pitchblue,
-        Pitchgreen,
-        Pitchyellow,
-        Backblue,
-        Mildpurple,
-        Ashishreddishpurplecolor,
-        Melon,
-        Crasyublue,
-        Lightgreen,
-        Azuki,
-        Snow,
+        Lavender,
         LightMagenta,
+        HotPink,
         PeachFlower,
         Plum,
-        SkyBlue,
-        LightCyan,
-        LightOrange,
-        Sprout,
+        Salmon,
+
+        // |:===== 以下暗い色 =====:|
+        PitchBlack,
         Nega,
-        Gold,
-        WineRed,
-        CrazyRed,
-        TokiwaGreen,
-        Posi,
-        XmasRed,
-        XmasGreen,
         CyberRed,
+        WineRed,
+        Azuki,
+        CrazyRed,
+        Nougat,
+        Azi,
+        Olive,
         CyberYellow,
+        Wasabi,
+        Leaf,
+        Matcha,
+        XmasGreen,
         CyberGreen,
+        TokiwaGreen,
+        Petrol,
+        Sunkengreenishblue,
+        Turqoise,
         CyberBlue,
-        CyberPurple
+        Crasyublue,
+        Blueclosertoblack,
+        Blurple,
+        Mildpurple,
+        CyberPurple,
+        Darkmagenta,
+        Ashishreddishpurplecolor,
+        Bordeaux,
     }
 
     private const byte bmv = 255; // byte.MaxValue
 
     // main, shadow, isLighter
     private static Dictionary<ColorType, (Color32, Color32, bool)> CustomColorData = new() { };
-    
+
     private static Dictionary<ColorType, (Color32, Color32, bool)> CustomColorDataOld = new() {
             //明るい色(V値が70/100以上、並びはH値順、同じH値の場合はS値が高い方が先、S値も同じ場合はV値が高い方が先)
             { ColorType.Pitchwhite, (new(255, 255, 255, bmv), new(240, 240, 240, bmv), true) }, //H000
@@ -206,9 +209,9 @@ public class CustomColors
                 //カラーId,MR,MG,MB,MA,SR,SG,SB,SA,明るいならaでそれ以外ならb
                 CustomColorData.Add((ColorType)(int.Parse(values[0].ToString()) - Palette.PlayerColors.Length),
                     (new(values[1].ParseToByte(), values[2].ParseToByte(), values[3].ParseToByte(), values[4].ParseToByte())
-                    ,new(values[5].ParseToByte(), values[6].ParseToByte(), values[7].ParseToByte(), values[8].ParseToByte()),
+                    , new(values[5].ParseToByte(), values[6].ParseToByte(), values[7].ParseToByte(), values[8].ParseToByte()),
                     values[9] == "a"));
-                
+
                 i++;
             }
             catch (Exception e)
@@ -216,6 +219,7 @@ public class CustomColors
                 Logger.Info(e.ToString());
             }
         }
+        CustomColorData = CustomColorDataOld;
         //CustomColorData = CustomColorDataa;
         foreach (var dic in CustomColorData)
         {

@@ -7,8 +7,8 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Replay;
 using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -112,7 +112,8 @@ class WrapUpPatch
         SerialKiller.WrapUp();
         Assassin.WrapUp();
         CountChanger.CountChangerPatch.WrapUpPatch();
-        RoleClass.Tuna.IsMeetingEnd = true;
+        RoleClass.IsFirstMeetingEnd = true;
+        RoleClass.IsfirstResetCool = false;
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -133,7 +134,7 @@ class WrapUpPatch
         CustomRoles.OnWrapUp();
         if (AmongUsClient.Instance.AmHost)
         {
-            PlayerAnimation.PlayerAnimations.All(x =>
+            PlayerAnimation.PlayerAnimations.Values.All(x =>
             {
                 x.RpcAnimation(RpcAnimationType.Stop);
                 return false;
@@ -146,8 +147,8 @@ class WrapUpPatch
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
-        Celebrity.WrapUp();
-        TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
+        Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
+        Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
         Moira.WrapUp(exiled);
         Conjurer.WrapUp();

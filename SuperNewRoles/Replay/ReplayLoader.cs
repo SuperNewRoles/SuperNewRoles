@@ -241,10 +241,10 @@ public static class ReplayLoader
                     }
                 }
                 //アニメーションの巻き戻し処理
-                foreach (CustomAnimation anim in CustomAnimation.CustomAnimations)
+                foreach (var anim in CustomAnimation.CustomAnimations)
                     anim.OnPlayRewind();
-                foreach (PlayerAnimation anim in PlayerAnimation.PlayerAnimations)
-                    anim.OnPlayRewind();
+                foreach (var anim in PlayerAnimation.PlayerAnimations)
+                    anim.Value.OnPlayRewind();
             }
             else
             {
@@ -267,15 +267,15 @@ public static class ReplayLoader
                     }
                 }
                 //アニメーションのプレイ処理
-                foreach (CustomAnimation anim in CustomAnimation.CustomAnimations)
+                foreach (var anim in CustomAnimation.CustomAnimations)
                     anim.Play();
-                foreach (PlayerAnimation anim in PlayerAnimation.PlayerAnimations)
-                    anim.Play();
+                foreach (var anim in PlayerAnimation.PlayerAnimations)
+                    anim.Value.Play();
             }
         }
         if (state == ReplayState.Pause)
-            foreach (PlayerAnimation anim in PlayerAnimation.PlayerAnimations)
-                anim.Pause();
+            foreach (KeyValuePair<byte, PlayerAnimation> anim in PlayerAnimation.PlayerAnimations)
+                anim.Value.Pause();
         ReplayManager.CurrentReplay.CurrentPlayState = state;
     }
     public static void PlayOrPause()
@@ -306,7 +306,7 @@ public static class ReplayLoader
         else
         {
             //会議のReplayActionを実行
-            foreach(ReplayAction action in ReplayTurns[CurrentTurn].Actions)
+            foreach (ReplayAction action in ReplayTurns[CurrentTurn].Actions)
             {
                 if (action.GetActionId() == ReplayActionId.ReportDeadBody)
                 {
@@ -366,14 +366,18 @@ public static class ReplayLoader
     }
     public static SpriteRenderer CreateItem(string Id, int index, UnityAction action, string name = "", Vector3? scale = null, Vector2? size = null)
     {
-        GameObject item = new();
-        item.name = Id == "" ? name : Id;
+        GameObject item = new()
+        {
+            name = Id == "" ? name : Id
+        };
         item.transform.parent = GUIObject.transform;
         item.layer = 5;
         item.transform.localPosition = new(-3.2f + 2.15f * index, 0, -20);
         item.transform.localScale = new(0.275f, 0.175f, 0.175f);
-        GameObject renderobj = new("Renderer");
-        renderobj.layer = 5;
+        GameObject renderobj = new("Renderer")
+        {
+            layer = 5
+        };
         renderobj.transform.parent = item.transform;
         renderobj.transform.localPosition = new();
         renderobj.transform.localScale = new(1, 1, 1);

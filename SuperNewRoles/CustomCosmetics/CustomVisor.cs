@@ -19,6 +19,7 @@ public class CustomVisor
         public static void Postfix(HatManager __instance)
         {
             if (ConfigRoles.DebugMode.Value) return;
+            if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value) return;
             if (isAdded || !DownLoadClassVisor.IsEndDownload) return;
             isAdded = true;
             SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理開始");
@@ -35,7 +36,7 @@ public class CustomVisor
                 {
                     var FileName = file.Name[0..^4];
                     var Data = DownLoadClassVisor.Visordetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
-                    VisorViewData vvd = new VisorViewData
+                    VisorViewData vvd = new()
                     {
                         IdleFrame = Data.IsTOP
                         ? ModHelpers.CreateSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name, true)

@@ -7,6 +7,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -134,6 +135,15 @@ class RoleManagerSelectRolesPatch
             }
             //RpcSetRoleReplacerの送信処理
             sender.SendMessage();
+
+            try
+            {
+                HauntedWolf.Assign.RandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
 
             try
             {
@@ -275,6 +285,15 @@ class AllRoleSetClass
         }
         if (ModeHandler.IsMode(ModeId.Default))
         {
+            try
+            {
+                HauntedWolf.Assign.RandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+
             try
             {
                 QuarreledRandomSelect();
@@ -1014,7 +1033,7 @@ class AllRoleSetClass
             RoleId.DarkKiller => CustomOptionHolder.DarkKillerPlayerCount.GetFloat(),
             RoleId.Seer => CustomOptionHolder.SeerPlayerCount.GetFloat(),
             RoleId.MadSeer => CustomOptionHolder.MadSeerPlayerCount.GetFloat(),
-            RoleId.EvilSeer => CustomOptionHolder.EvilSeerPlayerCount.GetFloat(),
+            RoleId.EvilSeer => EvilSeer.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.RemoteSheriff => CustomOptionHolder.RemoteSheriffPlayerCount.GetFloat(),
             RoleId.Fox => CustomOptionHolder.FoxPlayerCount.GetFloat(),
             RoleId.TeleportingJackal => CustomOptionHolder.TeleportingJackalPlayerCount.GetFloat(),
@@ -1034,7 +1053,6 @@ class AllRoleSetClass
             RoleId.VentMaker => CustomOptionHolder.VentMakerPlayerCount.GetFloat(),
             RoleId.GhostMechanic => CustomOptionHolder.GhostMechanicPlayerCount.GetFloat(),
             RoleId.EvilHacker => CustomOptionHolder.EvilHackerPlayerCount.GetFloat(),
-            RoleId.HauntedWolf => CustomOptionHolder.HauntedWolfPlayerCount.GetFloat(),
             RoleId.PositionSwapper => CustomOptionHolder.PositionSwapperPlayerCount.GetFloat(),
             RoleId.Tuna => CustomOptionHolder.TunaPlayerCount.GetFloat(),
             RoleId.Mafia => CustomOptionHolder.MafiaPlayerCount.GetFloat(),
@@ -1125,6 +1143,29 @@ class AllRoleSetClass
             }
         }
     }
+    /// <summary>
+    /// 通常の方法で抽選が可能な役職かを判定する。
+    /// </summary>
+    /// <param name="id">判定対象のRoleId</param>
+    /// <returns>true = 通常抽選可能, false = 通常抽選不可 (特殊な抽選, アサイン形式の役) </returns>
+    internal static bool CanRoleIdElected(RoleId id)
+    {
+        return id switch
+        {
+            RoleId.DefaultRole => false,
+            RoleId.GM => false,
+            RoleId.HauntedWolf => false,
+            RoleId.Sidekick or RoleId.SidekickSeer or RoleId.SidekickWaveCannon => true,
+            RoleId.Pavlovsdogs => false,
+            RoleId.ShermansServant => false,
+            RoleId.Revolutionist => false,
+            RoleId.Assassin => false,
+            RoleId.Jumbo => false,
+            RoleId.Nun or RoleId.Pteranodon => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
+            RoleId.Werewolf or RoleId.Knight => ModeHandler.IsMode(ModeId.Werewolf),
+            _ => true,
+        };
+    }
     public static void OneOrNotListSet()
     {
         Impoonepar = new();
@@ -1133,18 +1174,9 @@ class AllRoleSetClass
         Neutnotonepar = new();
         Crewonepar = new();
         Crewnotonepar = new();
-        foreach (IntroData intro in IntroData.IntroList)
+        foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (intro.RoleId != RoleId.DefaultRole &&
-                intro.RoleId != RoleId.Revolutionist &&
-                intro.RoleId != RoleId.Assassin &&
-                (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
-                && !intro.IsGhostRole
-                && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
-                && intro.RoleId is not RoleId.GM
-                && intro.RoleId != RoleId.Pavlovsdogs
-                && intro.RoleId != RoleId.Jumbo
-                && intro.RoleId != RoleId.ShermansServant)
+            if (!intro.IsGhostRole && CanRoleIdElected(intro.RoleId))
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null) continue;

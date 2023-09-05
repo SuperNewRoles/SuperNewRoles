@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using static GameData;
 using SuperNewRoles.Patches;
+using static GameData;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionCompleteTask : ReplayAction
 {
     public byte sourcePlayer;
     public uint taskId;
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
@@ -25,7 +26,7 @@ public class ReplayActionCompleteTask : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.CompleteTask;
     //アクション実行時の処理
-    public static void ToDontComplete(PlayerControl player,uint idx)
+    public static void ToDontComplete(PlayerControl player, uint idx)
     {
         PlayerTask playerTask = player.myTasks.Find((Il2CppSystem.Predicate<PlayerTask>)((PlayerTask p) => p.Id == idx));
         if (playerTask)
@@ -45,7 +46,8 @@ public class ReplayActionCompleteTask : ReplayAction
             }
         }
     }
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)

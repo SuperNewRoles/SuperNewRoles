@@ -1,11 +1,11 @@
 using System;
-using TMPro;
-using System.Timers;
 using System.Collections.Generic;
-using UnityEngine;
-using SuperNewRoles.Mode;
+using System.Timers;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
+using TMPro;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
@@ -160,14 +160,17 @@ public static class MadRaccoon
         {
             float timerSet = !endMeeting ? RoleData.ShapeshifterCooldown : 0f; // 会議終了時は能力クールを0sにする
 
-            shapeshiftButton.MaxTimer = timerSet;
-            shapeshiftButton.Timer = timerSet;
+            if (shapeshiftButton != null)
+            {
+                shapeshiftButton.MaxTimer = timerSet;
+                shapeshiftButton.Timer = timerSet;
+            }
         }
         private static void TimerStop()
         {
             if (coolTimeTimer != null) coolTimeTimer.Stop();
             if (durationTimeTimer != null) durationTimeTimer.Stop();
-            shapeDurationText.text = "";
+            if (shapeDurationText != null) shapeDurationText.text = "";
         }
         private static void RevertShapeshift()
         {

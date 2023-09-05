@@ -36,7 +36,7 @@ public static class BotManager
         Bot.NetTransform.enabled = true;
         return Bot;
     }
-    public static PlayerControl Spawn(string name = "Bot", bool IsSetBot=true)
+    public static PlayerControl Spawn(string name = "Bot", bool IsSetBot = true)
     {
         byte id = 0;
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -63,7 +63,8 @@ public static class BotManager
         if (IsSetBot) SetBot(Bot);
         return Bot;
     }
-    public static void SetBot(PlayerControl Bot) {
+    public static void SetBot(PlayerControl Bot)
+    {
         Logger.Info("SETBOT!!!:" + Bot.PlayerId.ToString());
         AllBots.Add(Bot);
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetBot);

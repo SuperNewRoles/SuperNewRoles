@@ -379,6 +379,15 @@ public static class Balancer
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
+            if (currentAbilityUser != null)
+            {
+                foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+                {
+                    if (area.TargetPlayerId != targetplayerleft.PlayerId && 
+                        area.TargetPlayerId != targetplayerright.PlayerId)
+                        area.gameObject.SetActive(false);
+                }
+            }
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

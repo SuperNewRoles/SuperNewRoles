@@ -719,7 +719,7 @@ internal static class PostMortemCertificate_CreateAndGet
         else
         {
             builder.AppendLine("</align></size>");
-            builder.Replace("<color=#89c3eb>","<color=#5654a2>");
+            builder.Replace("<color=#89c3eb>", "<color=#5654a2>");
         }
         return builder.ToString();
 

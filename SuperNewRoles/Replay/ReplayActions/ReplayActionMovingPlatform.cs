@@ -17,7 +17,8 @@ public class ReplayActionMovingPlatform : ReplayAction
 
     public static ReplayActionMovingPlatform currentAction;
 
-    public override void ReadReplayFile(BinaryReader reader) {
+    public override void ReadReplayFile(BinaryReader reader)
+    {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
@@ -30,7 +31,8 @@ public class ReplayActionMovingPlatform : ReplayAction
     }
     public override ReplayActionId GetActionId() => ReplayActionId.MovingPlatform;
     //アクション実行時の処理
-    public override void OnAction() {
+    public override void OnAction()
+    {
         //ここに処理書く
         MovingPlatformBehaviour mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
         currentAction = this;
@@ -86,7 +88,7 @@ public class ReplayActionMovingPlatform : ReplayAction
             target.MyPhysics.ResetMoveState();
         }
         __instance.Target = target;
-        Logger.Info(ReplayManager.CurrentReplay.MovingPlatformFrameCount.ToString()+":" + ReplayManager.CurrentReplay.CurrentMovingPlatformState.ToString(), "FRAMECOUNT");
+        Logger.Info(ReplayManager.CurrentReplay.MovingPlatformFrameCount.ToString() + ":" + ReplayManager.CurrentReplay.CurrentMovingPlatformState.ToString(), "FRAMECOUNT");
         if (target.AmOwner)
         {
             PlayerControl.HideCursorTemporarily();

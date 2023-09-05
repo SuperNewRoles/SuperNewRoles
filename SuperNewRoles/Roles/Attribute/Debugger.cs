@@ -335,7 +335,7 @@ public static class Debugger
         if (currentTab is not (DebugTabs.SetRole_Crewmate or DebugTabs.SetRole_Impostor or DebugTabs.SetRole_Neutral)) return;
 
         int index = 0;
-        foreach (IntroData roleInfo in IntroData.IntroList)
+        foreach (IntroData roleInfo in IntroData.Intros.Values)
         {
             if ((roleInfo.Team == TeamRoleType.Crewmate && currentTab != DebugTabs.SetRole_Crewmate)
                 || (roleInfo.Team == TeamRoleType.Impostor && currentTab != DebugTabs.SetRole_Impostor)

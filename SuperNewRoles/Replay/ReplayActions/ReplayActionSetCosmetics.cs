@@ -50,7 +50,8 @@ public class ReplayActionSetCosmetics : ReplayAction
     public override void OnAction()
     {
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
-        if (target == null) {
+        if (target == null)
+        {
             Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。target:{targetPlayer}");
             return;
         }

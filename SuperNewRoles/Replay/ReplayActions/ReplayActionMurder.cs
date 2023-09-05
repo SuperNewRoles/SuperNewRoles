@@ -30,7 +30,8 @@ public class ReplayActionMurder : ReplayAction
         Logger.Info("キルアクション");
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
-        if (source == null || target == null) {
+        if (source == null || target == null)
+        {
             Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{targetPlayer}");
             return;
         }
@@ -46,7 +47,7 @@ public class ReplayActionMurder : ReplayAction
             return;
         }
         target.Revive();
-        foreach(DeadBody deadbody in GameObject.FindObjectsOfType<DeadBody>())
+        foreach (DeadBody deadbody in GameObject.FindObjectsOfType<DeadBody>())
             if (deadbody.ParentId == target.PlayerId)
                 GameObject.Destroy(deadbody);
     }
