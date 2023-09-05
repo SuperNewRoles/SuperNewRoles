@@ -16,6 +16,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
@@ -127,7 +128,7 @@ public enum RoleId
     VentMaker,
     GhostMechanic,
     EvilHacker,
-    HauntedWolf,
+    HauntedWolf, // 情報表示用のRoleId, 役職管理としては使用していない
     PositionSwapper,
     Tuna,
     Mafia,
@@ -166,7 +167,7 @@ public enum RoleId
     Cracker,
     WaveCannon,
     WaveCannonJackal,
-    SideKickWaveCannon,
+    SidekickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -194,7 +195,6 @@ public enum RoleId
     TheThirdLittlePig,
     OrientalShaman,
     ShermansServant,
-    SidekickWaveCannon,
     Balancer,
     Pteranodon,
     BlackHatHacker,
@@ -215,12 +215,13 @@ public enum RoleId
 
 public enum CustomRPC
 {
-    ShareOptions = 145,
+    ShareOptions = 60,
     ShareSNRVersion,
     SetRole,
+    SetHauntedWolf,
     SetQuarreled,
     RPCClergymanLightOut,
-    SheriffKill = 150,
+    SheriffKill,
     MeetingSheriffKill,
     CustomRPCKill,
     ReportDeadBody,
@@ -230,7 +231,7 @@ public enum CustomRPC
     RPCMurderPlayer,
     ShareWinner,
     TeleporterTP,
-    SidekickPromotes = 160,
+    SidekickPromotes,
     CreateSidekick,
     CreateSidekickSeer,
     CreateSidekickWaveCannon,
@@ -240,7 +241,7 @@ public enum CustomRPC
     SetRoomTimerRPC,
     SetScientistRPC,
     ReviveRPC,
-    SetHaison = 170,
+    SetHaison,
     SetWinCond,
     SetDetective,
     UseEraserCount,
@@ -250,7 +251,7 @@ public enum CustomRPC
     SetDeviceTime,
     UncheckedSetColor,
     UncheckedSetVanillaRole,
-    SetMadKiller = 180,
+    SetMadKiller,
     SetCustomSabotage,
     UseStuntmanCount,
     UseMadStuntmanCount,
@@ -260,7 +261,7 @@ public enum CustomRPC
     DemonCurse,
     ArsonistDouse,
     SetSpeedDown,
-    ShielderProtect = 190,
+    ShielderProtect,
     SetShielder,
     SetSpeedFreeze,
     MakeVent,
@@ -270,7 +271,7 @@ public enum CustomRPC
     KunaiKill,
     SetSecretRoomTeleportStatus,
     ChiefSidekick,
-    RpcSetDoorway = 200,
+    RpcSetDoorway,
     StartRevolutionMeeting,
     UncheckedUsePlatform,
     BlockReportDeadBody,
@@ -280,8 +281,8 @@ public enum CustomRPC
     PlayPlayerAnimation,
     SluggerExile,
     PainterPaintSet,
-    SharePhotograph = 210,
-    PainterSetTarget = 220,
+    SharePhotograph,
+    PainterSetTarget,
     SetFinalStatus,
     MeetingKill,
     KnightProtected,
@@ -291,7 +292,7 @@ public enum CustomRPC
     ShowFlash,
     PavlovsOwnerCreateDog,
     CrackerCrack,
-    Camouflage = 230,
+    Camouflage,
     ShowGuardEffect,
     SetLoversCupid,
     PenguinHikizuri,
@@ -301,7 +302,7 @@ public enum CustomRPC
     SetLoversBreakerWinner,
     RPCTeleport,
     SafecrackerGuardCount,
-    SetVigilance = 240,
+    SetVigilance,
     Chat,
     SetWiseManStatus,
     SetVentStatusMechanic,
@@ -707,7 +708,7 @@ public static class RPCProcedure
 
     public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
     {
-        ReplayActionWavecannon.Create(Type,Id,IsFlipX,OwnerId,buff);
+        ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, buff);
         Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
         switch ((WaveCannonObject.RpcType)Type)
         {
@@ -748,8 +749,9 @@ public static class RPCProcedure
     {
         RpcAnimationType AnimType = (RpcAnimationType)type;
         PlayerAnimation PlayerAnim = PlayerAnimation.GetPlayerAnimation(playerid);
-        if (PlayerAnim == null) {
-            Logger.Info("PlayerAnimがぬるだった...:"+playerid.ToString());
+        if (PlayerAnim == null)
+        {
+            Logger.Info("PlayerAnimがぬるだった...:" + playerid.ToString());
             return;
         }
         PlayerAnim.HandleAnim(AnimType);
@@ -1068,6 +1070,9 @@ public static class RPCProcedure
         }
         player.SetRole(roleId);
     }
+
+    public static void SetHauntedWolf(byte playerid)
+        => HauntedWolf.Assign.SetHauntedWolf(ModHelpers.PlayerById(playerid));
 
     public static void SetQuarreled(byte playerid1, byte playerid2)
         => RoleHelpers.SetQuarreled(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
@@ -1689,6 +1694,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.TeleporterTP:
                         TeleporterTP(reader.ReadByte());
+                        break;
+                    case CustomRPC.SetHauntedWolf:
+                        SetHauntedWolf(reader.ReadByte());
                         break;
                     case CustomRPC.SetQuarreled:
                         SetQuarreled(reader.ReadByte(), reader.ReadByte());

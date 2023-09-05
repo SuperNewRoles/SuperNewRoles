@@ -16,7 +16,7 @@ namespace SuperNewRoles.Replay
         public string VisorId;
         public string NamePlateId;
         public string SkinId;
-        public List<(uint,byte)> Tasks;
+        public List<(uint, byte)> Tasks;
         public RoleId RoleId;
         public RoleTypes RoleType;
     }

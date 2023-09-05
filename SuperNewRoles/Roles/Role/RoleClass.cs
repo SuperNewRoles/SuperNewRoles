@@ -6,6 +6,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -22,7 +23,9 @@ public static class RoleClass
 {
     public static List<string> RuleAgrees = new();
     public static bool IsMeeting;
+    public static bool IsFirstMeetingEnd;
     public static bool IsCoolTimeSetted;
+    public static bool IsfirstResetCool;
     public static System.Random rnd = new((int)DateTime.Now.Ticks);
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
@@ -40,6 +43,8 @@ public static class RoleClass
         ReplayManager.ClearAndReloads();
         BlockPlayers = new();
         IsMeeting = false;
+        IsFirstMeetingEnd = false;
+        IsfirstResetCool = true;
         RandomSpawn.IsFirstSpawn = true;
         DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
@@ -50,6 +55,7 @@ public static class RoleClass
         IsCoolTimeSetted = false;
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
+        AddChatPatch.RoleInfo.ClearAndReload();
         GameHistoryManager.ClearAndReloads();
         Agartha.MapData.ClearAndReloads();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
@@ -158,7 +164,7 @@ public static class RoleClass
         Seer.ClearAndReload();
         Crewmate.Seer.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
-        EvilSeer.ClearAndReload();
+        EvilSeer.RoleData.ClearAndReload();
         RemoteSheriff.ClearAndReload();
         TeleportingJackal.ClearAndReload();
         MadMaker.ClearAndReload();
@@ -177,7 +183,7 @@ public static class RoleClass
         VentMaker.ClearAndReload();
         GhostMechanic.ClearAndReload();
         EvilHacker.ClearAndReload();
-        HauntedWolf.ClearAndReload();
+        HauntedWolf.RoleData.ClearAndReload();
         PositionSwapper.ClearAndReload();
         Tuna.ClearAndReload();
         Mafia.ClearAndReload();
@@ -1275,9 +1281,11 @@ public static class RoleClass
     {
         public static List<PlayerControl> AmnesiacPlayer;
         public static Color32 color = new(125, 125, 125, byte.MaxValue);
+        public static bool ShowArrows;
         public static void ClearAndReload()
         {
             AmnesiacPlayer = new();
+            ShowArrows = CustomOptionHolder.AmnesiacShowArrows.GetBool();
         }
     }
     public static class SideKiller
@@ -1606,7 +1614,7 @@ public static class RoleClass
     {
         public static List<PlayerControl> SeerPlayer;
         public static Color color = new Color32(97, 178, 108, byte.MaxValue);
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
 
         public static float soulDuration;
         public static bool limitSoulDuration;
@@ -1625,7 +1633,7 @@ public static class RoleClass
     {
         public static List<PlayerControl> MadSeerPlayer;
         public static Color color = ImpostorRed;
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
 
         public static float soulDuration;
         public static bool limitSoulDuration;
@@ -1651,26 +1659,6 @@ public static class RoleClass
             bool IsFullTask = !CustomOptionHolder.MadSeerIsSettingNumberOfUniqueTasks.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MadSeer);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadSeerParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
-        }
-    }
-    public static class EvilSeer
-    {
-        public static List<PlayerControl> EvilSeerPlayer;
-        public static Color32 color = ImpostorRed;
-        public static List<Vector3> deadBodyPositions;
-
-        public static float soulDuration;
-        public static bool limitSoulDuration;
-        public static int mode;
-        public static bool IsCreateMadmate;
-        public static void ClearAndReload()
-        {
-            EvilSeerPlayer = new();
-            deadBodyPositions = new();
-            limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
-            soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
-            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.EvilSeerMode.GetSelection();
-            IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
         }
     }
     public static class RemoteSheriff
@@ -1768,7 +1756,7 @@ public static class RoleClass
         public static List<PlayerControl> SeerFriendsPlayer;
         public static Color32 color = JackalBlue;
 
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
 
         public static float soulDuration;
         public static bool limitSoulDuration;
@@ -1804,7 +1792,7 @@ public static class RoleClass
         public static List<int> CreatePlayers;
         public static Color32 color = JackalBlue;
 
-        public static List<Vector3> deadBodyPositions;
+        public static List<(Vector3, int)> deadBodyPositions;
         public static float soulDuration;
         public static bool limitSoulDuration;
         public static int mode;
@@ -2041,6 +2029,7 @@ public static class RoleClass
         public static List<PlayerControl> EvilHackerPlayer;
         public static Color32 color = ImpostorRed;
         public static bool IsCreateMadmate;
+        public static float Cooldown;
         public static bool IsMyAdmin;
         public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
 
@@ -2058,15 +2047,7 @@ public static class RoleClass
             EvilHackerPlayer = new();
             IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
             IsMyAdmin = false;
-        }
-    }
-    public static class HauntedWolf
-    {
-        public static List<PlayerControl> HauntedWolfPlayer;
-        public static Color32 color = new(50, 0, 25, byte.MaxValue);
-        public static void ClearAndReload()
-        {
-            HauntedWolfPlayer = new();
+            Cooldown = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
         }
     }
     public static class PositionSwapper
@@ -2095,7 +2076,6 @@ public static class RoleClass
         public static float StoppingTime;
         public static bool IsUseVent;
         public static Dictionary<byte, float> Timers;
-        public static bool IsMeetingEnd;
         public static bool IsTunaAddWin;
         public static void ClearAndReload()
         {
@@ -2106,7 +2086,6 @@ public static class RoleClass
             if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
             IsUseVent = CustomOptionHolder.TunaIsUseVent.GetBool();
             IsTunaAddWin = CustomOptionHolder.TunaIsAddWin.GetBool();
-            IsMeetingEnd = false;
             if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
             {
                 Timers = new();
@@ -2984,7 +2963,7 @@ public static class RoleClass
             PlaySound = new();
         }
     }
-    //新ロールクラス
+
     public static class Quarreled
     {
         public static List<List<PlayerControl>> QuarreledPlayer;

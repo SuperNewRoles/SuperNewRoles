@@ -120,7 +120,7 @@ class TaskCount
         for (int i = 0; i < __instance.AllPlayers.Count; i++)
         {
             GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-            if (RoleHelpers.IsUseTaskTrigger(playerInfo.Object) && !playerInfo.Object.IsBot())
+            if (!RoleHelpers.IsClearTask(playerInfo.Object) && !playerInfo.Object.IsBot())
             {
                 var (playerCompleted, playerTotal) = TaskDate(playerInfo);
                 __instance.TotalTasks += playerTotal;

@@ -245,10 +245,12 @@ class EndGameCheck
             else if (RoleClass.Fox.FoxPlayer.Contains(p) || FireFox.FireFoxPlayer.Contains(p)) foxAlive = true;
         }
 
-        if (impostorNum == crewNum && foxAlive && CustomOptionHolder.FoxCanHouwaWin.GetBool()) {
+        if (impostorNum == crewNum && foxAlive && CustomOptionHolder.FoxCanHouwaWin.GetBool())
+        {
             List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
             foxPlayers.AddRange(FireFox.FireFoxPlayer);
-            foreach (PlayerControl p in foxPlayers) {
+            foreach (PlayerControl p in foxPlayers)
+            {
                 if (p.IsDead()) continue;
                 MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                 Writer.Write(p.PlayerId);

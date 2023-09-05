@@ -92,6 +92,7 @@ If the host includes this mod, the position will be available to all!<br>
 [TheOtherRolesGMHaoming]<!--(https://github.com/haoming37/TheOtherRoles-GM-Haoming)--> - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - Used fix task in map,The idea for Assassin and Merine. Thanks to **yukieiji**！<br>
 [Town Of Plus](https://github.com/tugaru1975/TownOfPlus) - I have referred to the process of displaying the crew color name and making the text color the crew color, etc. Thanks to **tugaru1975**!<br>
+[Cursed-Among-Us](https://github.com/Devs-Us/Cursed-Among-Us) - I have referred to the task idea and processing part of the curse mode. Thanks you **Devs-Us**!<br>
 [効果音ラボ](https://soundeffect-lab.info/) - Some sound effects are used. The audio files for these sound effects are licensed under the terms of this site.<br>
 <br>
 
@@ -104,23 +105,19 @@ If the host includes this mod, the position will be available to all!<br>
 <br>
 
 ## Developers
-[Yoking](https://github.com/ykundesu) ([Twitter](https://twitter.com/YYYYoking))<br>
-[Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
-[Kuki](https://github.com/Kuki12345)<br>
-[Glaceon](https://github.com/Glaceon-471) ([Twitter](https://twitter.com/Glaceon_SNR11))<br>
-[~~UKON people~~](https://github.com/UKON256)<br>
-[~~Sakurander~~](https://github.com/Sakurander)<br>
+- Developer #1 : [Yoking](https://github.com/ykundesu) ([Misskey](https://misskey.io/@yoking)) ([𝕏 ( Old Twitter )](https://twitter.com/ReYYYYoking))<br>
+- Developer #7 : [Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Misskey](https://misskey.io/@Kurato_SNR7)) ([𝕏 ( Old Twitter )](https://twitter.com/Kurato_SNR7))<br>
+- Developer #9 : [Kuki](https://github.com/Kuki12345)<br>
+- Developer #11 : [Glaceon](https://github.com/Glaceon-471) ([Misskey](https://misskey.io/@GlaceonSNR11)) ([𝕏 ( Old Twitter )](https://twitter.com/Glaceon_SNR11))<br>
+- Developer #4 : [~~UKON people~~](https://github.com/UKON256)<br>
+- Developer #10 : [~~Sakurander~~](https://github.com/Sakurander)<br>
 
 ## Supporter
-[Seono](https://github.com/Seono968) ([Twitter](https://twitter.com/Rinforzando_960))<br>
+- [Seono](https://github.com/Seono968) ([𝕏 ( Old Twitter )](https://twitter.com/Rinforzando_960))<br>
 
-## Sponsors
-Mr. Concorde<br>
-Mr. kibou102<br>
-Mr. tsuchina<br>
-Mr. windows7<br>
-Mr. TeacherShibuya<br>
-Mr. cRox<br>
+## Translators
+- Mx.ZeMingoh233 (SChinese)
+- Mx.Jim137 (TChinese)
 
 ## About Contact
 Please use the Discord server:[Discord server](https://discord.gg/Cqfwx82ynN)

@@ -35,7 +35,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             var optdata = SyncSetting.OptionData.DeepCopy();
 
             PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
-            Logger.Info("SetAbilityCooltime:"+ability.KillCoolTime.ToString()+","+player.Data.PlayerName);
+            Logger.Info("SetAbilityCooltime:" + ability.KillCoolTime.ToString() + "," + player.Data.PlayerName);
             optdata.SetInt(Int32OptionNames.KillDistance, ability.KillDistance);
             optdata.SetFloat(FloatOptionNames.ImpostorLightMod, ability.Light);
             optdata.SetFloat(FloatOptionNames.KillCooldown, ability.KillCoolTime);

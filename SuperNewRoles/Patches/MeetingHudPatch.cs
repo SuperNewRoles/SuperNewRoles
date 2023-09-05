@@ -14,9 +14,9 @@ using SuperNewRoles.Replay;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
@@ -52,7 +52,8 @@ class VotingComplete
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
 class VotingComplatePatch
 {
-    public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled, bool tie) {
+    public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled, bool tie)
+    {
         new GameHistoryManager.MeetingHistory(states, exiled);
     }
 }
@@ -66,6 +67,7 @@ class CheckForEndVotingPatch
             { RoleId.MayorFriends, RoleClass.MayorFriends.AddVote },
             { RoleId.Dictator, RoleClass.Dictator.VoteCount }
         };
+
     public static bool Prefix(MeetingHud __instance)
     {
         try
@@ -573,7 +575,7 @@ class MeetingHudPopulateButtonsPatch
                 if (area.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId)
                     areas.Add(area);
             }
-            __instance.playerStates = areas.ToArray();;
+            __instance.playerStates = areas.ToArray(); ;
         }
     }
 }
@@ -647,8 +649,9 @@ class MeetingHudStartPatch
         {
             new LateTask(() =>
             {
-                SyncSetting.CustomSyncSettings();
-                SyncSetting.MeetingSyncSettings();
+                SyncSetting.CustomSyncSettings(out var options);
+                SyncSetting.MeetingSyncSettings(options);
+                if (!RoleClass.IsFirstMeetingEnd) AddChatPatch.YourRoleInfoSendCommand();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         if (ModeHandler.IsMode(ModeId.Default))
@@ -659,7 +662,7 @@ class MeetingHudStartPatch
             }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
         NiceMechanic.StartMeeting();
-        Celebrity.TimerStop();
+        Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.TimerStop();
         TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
         MadRaccoon.Button.ResetShapeDuration(false);
         NiceMechanic.StartMeeting();
@@ -776,11 +779,11 @@ public class MeetingHudUpdatePatch
             foreach (PlayerVoteArea player in Instance.playerStates)
             {
                 PlayerControl target = null;
-                PlayerControl.AllPlayerControls.ToList().ForEach(x =>
+                foreach (PlayerControl x in PlayerControl.AllPlayerControls)
                 {
                     string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
                     if (name == x.Data.PlayerName) target = x;
-                });
+                }
                 if (target != null)
                 {
                     if (ConfigRoles.IsLightAndDarker.Value)

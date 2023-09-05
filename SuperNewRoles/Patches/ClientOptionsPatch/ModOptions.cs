@@ -18,7 +18,7 @@ public static class ClientModOptionsPatch
             new SelectionBehaviour("CustomAutoCopyGameCode", () => ConfigRoles.AutoCopyGameCode.Value = !ConfigRoles.AutoCopyGameCode.Value, ConfigRoles.AutoCopyGameCode.Value),
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
             new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
-            new SelectionBehaviour("CustomDownloadSuperNewNamePlates", () => ConfigRoles.DownloadSuperNewNamePlates.Value = !ConfigRoles.DownloadSuperNewNamePlates.Value, ConfigRoles.DownloadSuperNewNamePlates.Value),
+            new SelectionBehaviour("IsModCosmeticsAreNotLoaded", () => ConfigRoles.IsModCosmeticsAreNotLoaded.Value = !ConfigRoles.IsModCosmeticsAreNotLoaded.Value, ConfigRoles.IsModCosmeticsAreNotLoaded.Value),
             new SelectionBehaviour("IsNotUsingBlood", () => ConfigRoles.IsNotUsingBlood.Value = !ConfigRoles.IsNotUsingBlood.Value, ConfigRoles.IsNotUsingBlood.Value),
             new SelectionBehaviour("IsSendAnalytics", () => ConfigRoles.IsSendAnalytics.Value = !ConfigRoles.IsSendAnalytics.Value, ConfigRoles.IsSendAnalytics.Value),
             new SelectionBehaviour("IsLightAndDarker", () => ConfigRoles.IsLightAndDarker.Value = !ConfigRoles.IsLightAndDarker.Value, ConfigRoles.IsLightAndDarker.Value),
@@ -220,7 +220,7 @@ public static class ClientModOptionsPatch
     public const float ReplayQualityLowTime = 0.75f;
     public const float ReplayQualityMediumTime = 0.5f;
     public const float ReplayQualityHighTime = 0.25f;
-    public static void UpdateState(ToggleButtonBehaviour button,bool state)
+    public static void UpdateState(ToggleButtonBehaviour button, bool state)
     {
         button.onState = state;
         button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
@@ -251,7 +251,7 @@ public static class ClientModOptionsPatch
         ReplayEnableObjects = new();
 
         ReplayButtons = new List<ToggleButtonBehaviour>();
-        
+
         TextMeshPro ReplayTMPTemplate = buttonPrefab.Text;
         TextMeshPro ReplayQualityTitle = Object.Instantiate(ReplayTMPTemplate, ReplayPopup.transform);
         ReplayQualityTitle.name = "QualityTitle";
@@ -261,7 +261,7 @@ public static class ClientModOptionsPatch
         TextMeshPro ReplayQualityDescription = Object.Instantiate(ReplayTMPTemplate, ReplayPopup.transform);
         ReplayQualityDescription.name = "QualityDescription";
         ReplayQualityDescription.text = ModTranslation.GetString("ReplayOptionsQualityDescription");
-        ReplayQualityDescription.transform.localPosition = new(0,0.55f,-1);
+        ReplayQualityDescription.transform.localPosition = new(0, 0.55f, -1);
         ReplayQualityDescription.rectTransform.sizeDelta = new(4, 0.6f);
 
         ReplayEnableObjects.Add(ReplayQualityTitle.gameObject);
@@ -350,7 +350,7 @@ public static class ClientModOptionsPatch
         public Vector3? scale;
         public ToggleButtonBehaviour Button;
 
-        public SelectionBehaviour(string title, Func<bool> onClick, bool defaultValue, Vector3? pos=null, Vector3? scale=null)
+        public SelectionBehaviour(string title, Func<bool> onClick, bool defaultValue, Vector3? pos = null, Vector3? scale = null)
         {
             Title = title;
             OnClick = onClick;

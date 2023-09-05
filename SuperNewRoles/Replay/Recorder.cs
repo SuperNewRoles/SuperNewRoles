@@ -1,14 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using UnityEngine;
 using System.Collections;
-using System.Linq;
-using SuperNewRoles.Replay.ReplayActions;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Replay.ReplayActions;
+using UnityEngine;
 
 namespace SuperNewRoles.Replay
 {
@@ -16,7 +16,8 @@ namespace SuperNewRoles.Replay
     {
         public static float RecordRate;
         public static bool IsPosFloat;
-        public static void ClearAndReloads() {
+        public static void ClearAndReloads()
+        {
             RecordRate = ConfigRoles.ReplayQualityTime.Value;
             IsPosFloat = ConfigRoles.ReplayQualityTime.Value >= 0.75f;
             currenttime = 99999;
@@ -31,7 +32,8 @@ namespace SuperNewRoles.Replay
             if (!ReplayManager.IsReplayMode)
                 ReplayManager.IsRecording = ConfigRoles.ReplayEnable.Value;
         }
-        static GameData.PlayerOutfit CopyOutfit(GameData.PlayerOutfit outfit) {
+        static GameData.PlayerOutfit CopyOutfit(GameData.PlayerOutfit outfit)
+        {
             GameData.PlayerOutfit result = new()
             {
                 PlayerName = string.Copy(outfit.PlayerName),
@@ -44,8 +46,10 @@ namespace SuperNewRoles.Replay
             };
             return result;
         }
-        public static void CoIntroDestroy() {
-            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers) {
+        public static void CoIntroDestroy()
+        {
+            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            {
                 FirstOutfits.Add(player.PlayerId, CopyOutfit(player.DefaultOutfit));
                 RoleId role = RoleId.DefaultRole;
                 if (player.Object != null)
@@ -69,26 +73,32 @@ namespace SuperNewRoles.Replay
         static List<(byte, byte, float)> MeetingVoteData;
         public static List<ReplayAction> ReplayActions;
         public static float ReplayActionTime;
-        public static void HudUpdate() {
+        public static void HudUpdate()
+        {
             currenttime -= Time.deltaTime;
             ReplayActionTime += Time.deltaTime;
-            if (currenttime <= 0) {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+            if (currenttime <= 0)
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
                     PlayerPositions[player.PlayerId].Add(player.transform.localPosition);
                 }
                 currenttime = RecordRate;
             }
         }
-        public static void OnVoteChat(GameData.PlayerInfo srcPlayer) {
+        public static void OnVoteChat(GameData.PlayerInfo srcPlayer)
+        {
         }
         public static void StartMeeting()
         {
             if (ReplayManager.IsReplayMode) return;
             AmongUsClient.Instance.StartCoroutine(SavePositions().WrapToIl2Cpp());
         }
-        public static IEnumerator SavePositions() {
-            if (writer == null) {
-                Logger.Info("writerがnullです","Recorder:SavePositions");
+        public static IEnumerator SavePositions()
+        {
+            if (writer == null)
+            {
+                Logger.Info("writerがnullです", "Recorder:SavePositions");
                 yield break;
             }
             if (PlayerPositions == null)
@@ -103,12 +113,15 @@ namespace SuperNewRoles.Replay
             {
                 PlayerPositions.TryAdd(player.PlayerId, new());
             }
-            foreach (var data in playerpositions) {
+            foreach (var data in playerpositions)
+            {
                 int count = 0;
                 writer.Write(data.Key);
                 writer.Write(data.Value.Count);
-                foreach (Vector3 pos in data.Value) {
-                    if (count > 240) {
+                foreach (Vector3 pos in data.Value)
+                {
+                    if (count > 240)
+                    {
                         yield return null;
                     }
                     if (IsPosFloat)
@@ -137,7 +150,8 @@ namespace SuperNewRoles.Replay
             //ゲーム終了かのフラグ
             writer.Write(false);
         }
-        public static void OnEndGame(GameOverReason reason) {
+        public static void OnEndGame(GameOverReason reason)
+        {
             Logger.Info("Start-Save-");
             if (ReplayManager.IsReplayMode) return;
             Logger.Info("Start-Save-2");
@@ -173,9 +187,9 @@ namespace SuperNewRoles.Replay
             foreach (ReplayAction action in replayactions)
             {
                 writer.Write((byte)action.GetActionId());
-                Logger.Info(index.ToString()+"開始:"+action.GetActionId().ToString()+":"+writer.BaseStream.Position.ToString());
+                Logger.Info(index.ToString() + "開始:" + action.GetActionId().ToString() + ":" + writer.BaseStream.Position.ToString());
                 action.WriteReplayFile(writer);
-                Logger.Info(index.ToString()+"終了:" + action.GetActionId().ToString() + ":" + writer.BaseStream.Position.ToString());
+                Logger.Info(index.ToString() + "終了:" + action.GetActionId().ToString() + ":" + writer.BaseStream.Position.ToString());
                 index++;
             }
             Logger.Info(writer.BaseStream.Length.ToString());
@@ -185,13 +199,15 @@ namespace SuperNewRoles.Replay
             //ゲーム終了かのフラグ
             writer.Write(true);
             List<GameData.PlayerInfo> winners = new();
-            foreach (WinningPlayerData winningPlayer in TempData.winners) {
+            foreach (WinningPlayerData winningPlayer in TempData.winners)
+            {
                 GameData.PlayerInfo target = GameData.Instance.AllPlayers.Find((Il2CppSystem.Predicate<GameData.PlayerInfo>)(x => x.PlayerName == winningPlayer.PlayerName));
                 if (target == null) continue;
                 winners.Add(target);
             }
             writer.Write(winners.Count);
-            foreach (GameData.PlayerInfo player in winners) {
+            foreach (GameData.PlayerInfo player in winners)
+            {
                 writer.Write(player.PlayerId);
             }
             writer.Write((byte)reason);
@@ -203,7 +219,8 @@ namespace SuperNewRoles.Replay
         }
         static BinaryWriter writer;
         static string filePath;
-        public static void WriteReplayDataFirst() {
+        public static void WriteReplayDataFirst()
+        {
             (writer, filePath) = ReplayFileWriter.CreateWriter();
             ReplayManager.LastSavedName = filePath;
             ReplayFileWriter.WriteSNRData(writer);

@@ -578,6 +578,7 @@ public class CustomHatLoader
     private static async Task LaunchHatFetcherAsync()
     {
         if (ConfigRoles.DebugMode.Value) return;
+        if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value) return;
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
         hatDetails = new List<CustomHatOnline>();
@@ -587,7 +588,6 @@ public class CustomHatLoader
         {
             Repos.Add(repo);
         }
-        if (!ConfigRoles.DownloadSuperNewNamePlates.Value) return;
         string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
         foreach (string repo in repos)
         {
@@ -661,7 +661,7 @@ public class CustomHatLoader
         foreach (var repo in hatRepos)
         {
             SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo.Key);
-            if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
+            if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo.Key);
             }

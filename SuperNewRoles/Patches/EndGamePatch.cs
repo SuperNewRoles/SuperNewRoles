@@ -1,4 +1,3 @@
-using SuperNewRoles.SuperNewRolesWeb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +11,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
@@ -89,6 +89,7 @@ public enum WinCondition
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
+    PantsRoyalWin
 }
 class FinalStatusPatch
 {
@@ -149,6 +150,7 @@ static class AdditionalTempData
         public FinalStatus Status { get; internal set; }
         public IntroData IntroData { get; set; }
         public IntroData GhostIntroData { get; set; }
+        public string AttributeRoleName { get; set; }
     }
 }
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -174,7 +176,7 @@ public class EndGameManagerSetUpPatch
             UnityEngine.Object.Destroy(pb.gameObject);
         }
         int num = Mathf.CeilToInt(7.5f);
-        List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
+        List<WinningPlayerData> list = TempData.winners.ToList().OrderBy(delegate (WinningPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
         }).ToList<WinningPlayerData>();
@@ -253,8 +255,9 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
+                {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) }
             };
-        Logger.Info(AdditionalTempData.winCondition.ToString(),"WINCOND");
+        Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
             text = WinConditionDictionary[AdditionalTempData.winCondition].Item1;
@@ -375,7 +378,7 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
-        if (haison) textRenderer.text = text;
+        if (haison || AdditionalTempData.winCondition == WinCondition.PantsRoyalWin) textRenderer.text = text;
         if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) textRenderer.text = string.Format(text + " " + ModTranslation.GetString("GodWinText"));
         else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));
@@ -392,7 +395,7 @@ public class EndGameManagerSetUpPatch
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                string roleText = CustomOptionHolder.Cs(data.IntroData.color, data.IntroData.NameKey + "Name");
+                string roleText = CustomOptionHolder.Cs(data.IntroData.color, data.IntroData.NameKey + "Name") + data.AttributeRoleName;
                 if (data.GhostIntroData.RoleId != RoleId.DefaultRole)
                 {
                     roleText += $" → {CustomOptionHolder.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
@@ -547,6 +550,15 @@ public static class OnGameEndPatch
                 {
                     namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
                 }
+                Dictionary<string, (Color, bool)> attributeRoles = new(SetNamesClass.AttributeRoleNameSet(p.Object));
+                string attributeRoleName = "";
+                if (attributeRoles.Count != 0)
+                {
+                    foreach (var kvp in attributeRoles)
+                    {
+                        attributeRoleName += $" + {CustomOptionHolder.Cs(kvp.Value.Item1, kvp.Key)}";
+                    }
+                }
                 AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                 {
                     PlayerName = p.DefaultOutfit.PlayerName,
@@ -557,7 +569,8 @@ public static class OnGameEndPatch
                     TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                     Status = finalStatus,
                     IntroData = roles,
-                    GhostIntroData = ghostRoles
+                    GhostIntroData = ghostRoles,
+                    AttributeRoleName = attributeRoleName
                 });
             }
         }
@@ -660,6 +673,7 @@ public static class OnGameEndPatch
             WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
             Moira.MoiraPlayer,
+            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -1303,6 +1317,53 @@ public static class OnGameEndPatch
                 AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
             }
         }
+        int i = 0;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (p.IsAlive()) break;
+            i++;
+        }
+        if (NoWinner || i == CachedPlayer.AllPlayers.Count)
+        {
+            TempData.winners = new();
+            AdditionalTempData.winCondition = WinCondition.NoWinner;
+        }
+        Logger.Info("WELCOME!!!");
+        if (ModeHandler.IsMode(ModeId.PantsRoyal))
+        {
+            Logger.Info("Pants!!!!:"+(WinnerPlayer != null).ToString());
+            if (WinnerPlayer != null)
+            {
+                TempData.winners = new();
+                TempData.winners.Add(new WinningPlayerData(WinnerPlayer.Data));
+                AdditionalTempData.winCondition = WinCondition.PantsRoyalWin;
+            }
+            else
+            {
+                TempData.winners = new();
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    Logger.Info(player.Data.Role.Role+":"+player.PlayerId.ToString()+":"+player.Data.PlayerName);
+                    if (player.Data.Role.Role == AmongUs.GameOptions.RoleTypes.CrewmateGhost || player.Data.Role.Role == AmongUs.GameOptions.RoleTypes.Crewmate)
+                    {
+                        TempData.winners.Add(new WinningPlayerData(player.Data));
+                        Logger.Info("PASS!!!!!:"+player.Data.PlayerName+":"+player.PlayerId.ToString());
+                        break;
+                    }
+                }
+                if (TempData.winners.Count > 0)
+                {
+                    AdditionalTempData.winCondition = WinCondition.PantsRoyalWin;
+                    Logger.Info("ToPantsRoyalWin");
+                }
+                else
+                {
+                    AdditionalTempData.winCondition = WinCondition.NoWinner;
+                    Logger.Info("ToNoWinner");
+                }
+                Logger.Info(AdditionalTempData.winCondition.ToString()+":WINCONDITION");
+            }
+        }
         if (HAISON)
         {
             TempData.winners = new();
@@ -1315,17 +1376,6 @@ public static class OnGameEndPatch
                 }
             }
             AdditionalTempData.winCondition = WinCondition.HAISON;
-        }
-        int i = 0;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-        {
-            if (p.IsAlive()) break;
-            i++;
-        }
-        if (NoWinner || i == CachedPlayer.AllPlayers.Count)
-        {
-            TempData.winners = new();
-            AdditionalTempData.winCondition = WinCondition.NoWinner;
         }
         foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
         {

@@ -17,7 +17,7 @@ public class Beacon
         GameObject BeaconObject = GameObject.Find($"Beacon{Conjurer.Count}");
         CustomAnimation Beacon = BeaconObject.AddComponent<CustomAnimation>();
         Beacon.Init(new CustomAnimationOptions(CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
-            ,30,loop:true));
+            , 30, loop: true));
         return beaconAnimationSprites[index];
     }
 
@@ -45,6 +45,8 @@ public class Beacon
         //int[] num = { -1, -2, -3 };
         foreach (var beacon in AllBeacons)
         {
+            if (beacon.GameObject == null)
+                continue;
             Logger.Info($"{beacon.GameObject.name}をClearします", "ClearBeacons");
             Object.Destroy(beacon.GameObject);
         }

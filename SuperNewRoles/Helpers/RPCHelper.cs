@@ -186,7 +186,7 @@ public static class RPCHelper
         else
         {
             if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
-            Logger.Info("Send=>"+TargetClientId.ToString());
+            Logger.Info("Send=>" + TargetClientId.ToString());
             writer.StartMessage(6);
             writer.Write(AmongUsClient.Instance.GameId);
             writer.WritePacked(TargetClientId);
@@ -226,7 +226,7 @@ public static class RPCHelper
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(gm.NetId);
-                writer.StartMessage((byte)4);
+                writer.StartMessage(4);
                 writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
                 writer.EndMessage();
             }

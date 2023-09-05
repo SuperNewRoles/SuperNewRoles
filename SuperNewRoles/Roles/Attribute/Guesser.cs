@@ -42,7 +42,7 @@ class Guesser
     }
     static void guesserOnClick(int buttonTarget, MeetingHud __instance)
     {
-        if (guesserUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
+        if (guesserUI != null || !(__instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted or MeetingHud.VoteStates.Discussion)) return;
         if (__instance.playerStates[buttonTarget].AmDead) return;
         Page = 1;
         RoleButtons = new();
@@ -169,7 +169,7 @@ class Guesser
 
         int ind = 0;
         bool canCrewShot = PlayerControl.LocalPlayer.GetRole() == RoleId.NiceGuesser ? CustomOptionHolder.NiceGuesserCanShotCrew.GetBool() : CustomOptionHolder.EvilGuesserCanShotCrew.GetBool();
-        foreach (IntroData roleInfo in IntroData.IntroList)
+        foreach (IntroData roleInfo in IntroData.Intros.Values)
         {
             if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||
@@ -187,6 +187,15 @@ class Guesser
         if (CustomOptionHolder.PavlovsownerOption.GetSelection() is not 0) CreateRole(IntroData.PavlovsdogsIntro);
         if (CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection() is not 0) { CreateRole(IntroData.DictatorIntro); CreateRole(IntroData.RevolutionistIntro); }
         if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() is not 0) { CreateRole(IntroData.AssassinIntro); CreateRole(IntroData.MarlinIntro); }
+        if (CustomOptionHolder.ChiefOption.GetSelection() is not 0) { CreateRole(IntroData.SheriffIntro); }
+        if (CustomOptionHolder.MadMakerOption.GetSelection() is not 0 || CustomOptionHolder.FastMakerOption.GetSelection() is not 0 ||
+            (CustomOptionHolder.LevelingerOption.GetSelection() is not 0 && Levelinger.LevelingerCanUse("SidekickName")) ||
+            (Impostor.EvilSeer.CustomOptionData.Option.GetSelection() is not 0 && Impostor.EvilSeer.RoleData.CreateMode == 4) ||
+            (CustomOptionHolder.EvilHackerOption.GetSelection() is not 0 && CustomOptionHolder.EvilHackerMadmateSetting.GetBool()))
+        { CreateRole(IntroData.MadmateIntro); }
+        if (CustomOptionHolder.SideKillerOption.GetSelection() is not 0) { CreateRole(IntroData.MadKillerIntro); }
+        if (CustomOptionHolder.VampireOption.GetSelection() is not 0) { CreateRole(IntroData.DependentsIntro); }
+        if (OrientalShaman.OrientalShamanOption.GetSelection() is not 0) { CreateRole(IntroData.ShermansServantIntro); }
         void CreateRole(IntroData roleInfo)
         {
             if (40 <= i[(int)roleInfo.Team]) i[(int)roleInfo.Team] = 0;

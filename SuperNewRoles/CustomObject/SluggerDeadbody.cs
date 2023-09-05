@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -110,12 +110,12 @@ public class SluggerDeadbody : CustomAnimation
         };
         spriteRenderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
     }
-    public override void Play(bool IsPlayMusic=true)
+    public override void Play(bool IsPlayMusic = true)
     {
         base.Play(IsPlayMusic);
         body.velocity = Velocity;
     }
-    public override void Pause(bool IsStopMusic=true)
+    public override void Pause(bool IsStopMusic = true)
     {
         base.Pause(IsStopMusic);
         body.velocity = new();

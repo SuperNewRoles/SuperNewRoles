@@ -1,18 +1,17 @@
 ﻿{
   "Devs": [
-    { "name": "よっキング", "id": 100 },
-    { "name": "月城蔵徒", "id": 100 },
-    { "name": "Kuki", "id": 100 },
-    { "name": "Glaceon", "id": 100}
+    { "number": "開発者1号", "name": "よっキング", "id": 100 },
+    { "number": "開発者7号", "name": "月城蔵徒", "id": 100 },
+    { "number": "開発者9号", "name": "Kuki", "id": 100 },
+    { "number": "開発者11号", "name": "Glaceon", "id": 100}
   ],
 
-  "Sponsers": [
-    { "name": "Concorde", "id": 100 },
-    { "name": "つちな", "id": 100 },
-    { "name": "kibou102", "id": 100 },
-    { "name": "windows7", "id": 100 },
-    { "name": "渋谷先生", "id": 100 }
+  "Supporter":[
+    { "name": "セオノ", "id": 100 }
   ],
 
-  "Translate":[]
+  "Translate":[
+    { "name": "ZeMingoh233 様", "language": "SChinese", "id": 100 },
+    { "name": "Jim137 様", "language": "TChinese", "id": 100 }
+  ]
 }

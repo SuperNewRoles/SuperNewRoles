@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -58,7 +60,6 @@ public static class RoleHelpers
     {
         return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
     }
-    public static bool IsHauntedWolf(this PlayerControl player) => player.IsRole(RoleId.HauntedWolf);
 
     /// <summary>
     /// We are Mad!
@@ -181,6 +182,21 @@ public static class RoleHelpers
         RoleId.SeerFriends or
         RoleId.MayorFriends;
     // IsFriends
+
+    public static bool IsHauntedWolf(this PlayerControl player, bool IsChache = true)
+    {
+        if (player.IsBot() || player == null) return false;
+        if (IsChache)
+        {
+            try { return ChacheManager.HauntedWolfChache[player.PlayerId] != null; }
+            catch { return false; }
+        }
+        foreach (PlayerControl p in HauntedWolf.RoleData.Player)
+        {
+            if (p == player) return true;
+        }
+        return false;
+    }
 
     public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
     {
@@ -641,7 +657,7 @@ public static class RoleHelpers
                 RoleClass.MadSeer.MadSeerPlayer.Add(player);
                 break;
             case RoleId.EvilSeer:
-                RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
+                EvilSeer.RoleData.Player.Add(player);
                 break;
             case RoleId.RemoteSheriff:
                 RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
@@ -699,9 +715,6 @@ public static class RoleHelpers
                 break;
             case RoleId.EvilHacker:
                 RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
-                break;
-            case RoleId.HauntedWolf:
-                RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                 break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
@@ -833,7 +846,7 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
                 WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
                 break;
-            case RoleId.SideKickWaveCannon:
+            case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 break;
             case RoleId.Conjurer:
@@ -925,10 +938,6 @@ public static class RoleHelpers
                 break;
             case RoleId.DefaultRole when ModeHandler.IsMode(ModeId.BattleRoyal):
                 new BattleRoyalRole(player);
-                break;
-            case RoleId.SidekickWaveCannon:
-                WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
-                //SidekickWaveCannon.allPlayers.Add(player);
                 break;
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.Add(player);
@@ -1223,7 +1232,7 @@ public static class RoleHelpers
                 RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.EvilSeer:
-                RoleClass.EvilSeer.EvilSeerPlayer.RemoveAll(ClearRemove);
+                EvilSeer.RoleData.Player.RemoveAll(ClearRemove);
                 break;
             case RoleId.TeleportingJackal:
                 RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
@@ -1281,9 +1290,6 @@ public static class RoleHelpers
                 break;
             case RoleId.EvilHacker:
                 RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.HauntedWolf:
-                RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
@@ -1408,7 +1414,7 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
                 WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.SideKickWaveCannon:
+            case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Conjurer:
@@ -1603,6 +1609,7 @@ public static class RoleHelpers
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
+            // ベントが使える
             _ => player.IsImpostor(),
         };
     }
@@ -1694,22 +1701,17 @@ public static class RoleHelpers
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
                 RoleId.MadRaccoon => MadRaccoon.RoleData.IsImpostorLight,
+                // インポの視界
                 _ => false,
             };
     }
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
-        RoleId MyRole;
+        RoleId MyRole = RoleId.DefaultRole;
         if (IsChache)
         {
-            try
-            {
-                if (p != null)
-                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-                else
-                    MyRole = RoleId.DefaultRole;
-            }
-            catch { MyRole = RoleId.DefaultRole; }
+            if (p == null || ChacheManager.MyRoleChache == null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+                MyRole = RoleId.DefaultRole;
         }
         else
         {
@@ -1720,19 +1722,9 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        try
-        {
-            if (p != null)
-                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-            else
-                MyRole = RoleId.DefaultRole;
-        }
-        catch { MyRole = RoleId.DefaultRole; }
-        foreach (RoleId role in roles)
-        {
-            if (role == MyRole) return true;
-        }
-        return false;
+        if (p == null || ChacheManager.MyRoleChache == null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+            MyRole = RoleId.DefaultRole;
+        return roles.Contains(MyRole);
     }
     public static bool IsRole(this PlayerControl player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
     public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
@@ -1803,8 +1795,7 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            try { return ChacheManager.MyRoleChache[player.PlayerId]; }
-            catch { return RoleId.DefaultRole; }
+            return ChacheManager.MyRoleChache != null && player != null && ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
         try
         {
@@ -1885,7 +1876,7 @@ public static class RoleHelpers
             else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.DarkKiller;
             else if (RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player)) return RoleId.Seer;
             else if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadSeer;
-            else if (RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilSeer;
+            else if (EvilSeer.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.EvilSeer;
             else if (RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.RemoteSheriff;
             else if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player)) return RoleId.Fox;
             else if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.TeleportingJackal;
@@ -1906,7 +1897,6 @@ public static class RoleHelpers
             else if (RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.MayorFriends;
             else if (RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.VentMaker;
             else if (RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilHacker;
-            else if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player)) return RoleId.HauntedWolf;
             else if (RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player)) return RoleId.PositionSwapper;
             else if (RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player)) return RoleId.Tuna;
             else if (RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player)) return RoleId.Mafia;
@@ -1992,7 +1982,6 @@ public static class RoleHelpers
         catch (Exception e)
         {
             SuperNewRolesPlugin.Logger.LogInfo("[RoleHelper]Error:" + e);
-            return RoleId.DefaultRole;
         }
         return RoleId.DefaultRole;
     }
