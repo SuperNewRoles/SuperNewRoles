@@ -378,9 +378,10 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
+        Logger.Info("WINCOND:"+ AdditionalTempData.winCondition.ToString());
         if (haison || AdditionalTempData.winCondition == WinCondition.PantsRoyalWin) textRenderer.text = text;
-        if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
-        else if (text == ModTranslation.GetString("GodName")) textRenderer.text = string.Format(text + " " + ModTranslation.GetString("GodWinText"));
+        else if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
+        else if (text == ModTranslation.GetString("GodName")) textRenderer.text = text + " " + ModTranslation.GetString("GodWinText");
         else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));
         try
         {
