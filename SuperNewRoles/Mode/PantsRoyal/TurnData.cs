@@ -14,6 +14,8 @@ public class TurnData
     public float TurnTimerFirst;
     public float StartTimer;
     public float LastUpdateStartTimer;
+    public float LastUpdateCountdownTime;
+    public bool CooldowntextReseted = false;
     public bool IsStarted;
     public TurnData(bool IsStart = true)
     {
@@ -47,6 +49,7 @@ public class TurnData
         StartTimer = 5;
         LastUpdateStartTimer = StartTimer + 1;
         IsStarted = IsStart;
+        LastUpdateCountdownTime = TurnTimer + 11;
     }
     public void EndTurn()
     {

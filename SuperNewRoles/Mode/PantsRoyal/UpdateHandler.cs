@@ -10,7 +10,6 @@ public static class UpdateHandler
 {
     public static void WaitSpawnUpdater()
     {
-        Logger.Info("WaitSpawnUpdater");
         bool IsMoveOK = true;
         List<PlayerControl> players = new();
         int NotLoadedCount = 0;
@@ -137,6 +136,83 @@ public static class UpdateHandler
             main.CurrentTurnData.EndTurn();
         else if (1 >= ModHelpers.GetAlivePlayerCount())
             main.CurrentTurnData.EndTurn();
+        else
+        {
+            string RoleNameText = ModHelpers.Cs(IntroData.CrewmateIntro.color, IntroData.CrewmateIntro.Name);
+            string TaskText = ModHelpers.Cs(Color.yellow, "(334/802)");
+            if (main.CurrentTurnData.TurnTimer <= 10)
+            {
+                if (main.CurrentTurnData.LastUpdateCountdownTime >= 1)
+                {
+                    int time = (int)main.CurrentTurnData.TurnTimer;
+                    // 元の値が整数ならそのまま返す
+                    if (main.CurrentTurnData.TurnTimer != time)
+                        time++;
+                    string timetext = string.Format(ModTranslation.GetString("PantsRoyalTimeRemainingText"), time);
+                    string prefix = "<size=125%>" + ModHelpers.Cs(IntroData.CrewmateIntro.color, timetext) + "</size>\n<size=75%>" + RoleNameText + TaskText + "</size>\n";
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        string nametext = prefix + p.GetDefaultName() + "\n\n";
+                        if (!p.AmOwner)
+                        {
+                            p.RpcSetNamePrivate(nametext);
+                        }
+                        else
+                        {
+                            p.SetName(nametext);
+                        }
+                    }
+                    main.CurrentTurnData.LastUpdateCountdownTime = 0;
+                }
+                else
+                {
+                    main.CurrentTurnData.LastUpdateCountdownTime += Time.deltaTime;
+                }
+            }
+            else if (10 <= main.CurrentTurnData.LastUpdateCountdownTime || (main.CurrentTurnData.LastUpdateCountdownTime >= 1 && (main.CurrentTurnData.TurnTimer % 10) >= 9.5f))
+            {
+                int time = (int)main.CurrentTurnData.TurnTimer;
+                // 元の値が整数ならそのまま返す
+                if (main.CurrentTurnData.TurnTimer != time)
+                    time++;
+                string timetext = string.Format(ModTranslation.GetString("PantsRoyalTimeRemainingText"), time);
+                string prefix = "<size=125%>" + ModHelpers.Cs(IntroData.CrewmateIntro.color, timetext) + "</size>\n<size=75%>" + RoleNameText + TaskText + "</size>\n";
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    string nametext = prefix + p.GetDefaultName() + "\n\n";
+                    if (!p.AmOwner)
+                    {
+                        p.RpcSetNamePrivate(nametext);
+                    }
+                    else
+                    {
+                        p.SetName(nametext);
+                    }
+                }
+                main.CurrentTurnData.LastUpdateCountdownTime = 0;
+                main.CurrentTurnData.CooldowntextReseted = false;
+            }
+            else if (1 <= main.CurrentTurnData.LastUpdateCountdownTime && !main.CurrentTurnData.CooldowntextReseted)
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    string nametext = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + p.GetDefaultName();
+                    if (!p.AmOwner)
+                    {
+                        p.RpcSetNamePrivate(nametext);
+                    }
+                    else
+                    {
+                        p.SetName(nametext);
+                    }
+                }
+                main.CurrentTurnData.CooldowntextReseted = true;
+            }
+            else
+            {
+                main.CurrentTurnData.LastUpdateCountdownTime += Time.deltaTime;
+            }
+        }
     }
     public static void TurnStartWait()
     {
