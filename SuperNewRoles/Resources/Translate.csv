@@ -310,6 +310,7 @@ PantsRoyalPantsDontHaverIntroName,You don't have Pants...!,パンツを履いて
 PantsRoyalPantsDontHaverIntroTitle1,Will you have pants?,あなたはパンツを手に入れられるかな？,把别人的小裤裤搞到手吧！,你會擁有褲子嗎？
 PantsRoyalStartAt,Pants royal will start at after ,パンツの戦いまで...,距离小裤裤的降临还有,褲子大逃殺將要開始...
 PantsRoyalYouareWinner,PantsRoyal's Winner!,パンツの戦いの勝者！
+PantsRoyalTimeRemainingText,{0} seconds left...,残り{0}秒...
 NeutralName,Neutral,第三陣営,独立阵营,中立陣營
 WinName,Win,勝利,胜利,勝利
 PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,更多游戏设置,其他設定
@@ -1542,6 +1543,9 @@ ConjurerCanKillImpostorOption,Can kill impostors,インポスターもキルで�
 ConjurerShowFlashOption,The screen glows when the ability is activated,能力発動時画面が発光する,技能发动时屏幕会发光,啟動能力時畫面閃爍
 ConjurerBeaconName,Marker,マーカー,魔法阵,魔法陣
 ConjurerAddName,Compression,圧縮,施法,壓縮
+JumpDancerName,Jump Dancer,ジャンプダンサー
+JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！
+JumpDancerButtonName,Jump,ジャンプ！
 
 #NewRoleTranslation
 

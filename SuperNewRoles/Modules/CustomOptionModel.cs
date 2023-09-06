@@ -11,6 +11,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 using UnityEngine.Events;
 using static SuperNewRoles.Modules.CustomRegulation;
@@ -985,7 +986,7 @@ static class GameOptionsMenuUpdatePatch
     }
     public static bool IsHidden(this CustomOption option)
     {
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false));
+        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) || ((option == JumpDancer.JumpDancerOption) && DateTime.UtcNow < new DateTime(2023, 9, 6, 11, 50, 0));
     }
     public static void Postfix(GameOptionsMenu __instance)
     {

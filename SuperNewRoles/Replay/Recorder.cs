@@ -32,6 +32,7 @@ namespace SuperNewRoles.Replay
             if (!ReplayManager.IsReplayMode)
                 ReplayManager.IsRecording = ConfigRoles.ReplayEnable.Value;
         }
+
         static GameData.PlayerOutfit CopyOutfit(GameData.PlayerOutfit outfit)
         {
             GameData.PlayerOutfit result = new()
@@ -46,6 +47,7 @@ namespace SuperNewRoles.Replay
             };
             return result;
         }
+
         public static void CoIntroDestroy()
         {
             foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
@@ -91,7 +93,7 @@ namespace SuperNewRoles.Replay
         }
         public static void StartMeeting()
         {
-            if (ReplayManager.IsReplayMode) return;
+            if (ReplayManager.IsReplayMode || !ReplayManager.IsRecording) return;
             AmongUsClient.Instance.StartCoroutine(SavePositions().WrapToIl2Cpp());
         }
         public static IEnumerator SavePositions()
@@ -153,7 +155,7 @@ namespace SuperNewRoles.Replay
         public static void OnEndGame(GameOverReason reason)
         {
             Logger.Info("Start-Save-");
-            if (ReplayManager.IsReplayMode) return;
+            if (ReplayManager.IsReplayMode || !ReplayManager.IsRecording) return;
             Logger.Info("Start-Save-2");
             Logger.Info(writer.BaseStream.Length.ToString());
             Logger.Info(writer.BaseStream.Position.ToString());

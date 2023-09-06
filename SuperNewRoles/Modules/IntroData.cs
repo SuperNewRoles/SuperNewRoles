@@ -321,5 +321,6 @@ public class IntroData
     public static IntroData PoliceSurgeonIntro = new("PoliceSurgeon", PoliceSurgeon.RoleData.color, 1, RoleId.PoliceSurgeon, TeamRoleType.Crewmate, IntroSound: RoleTypes.Scientist);
     public static IntroData MadRaccoonIntro = new("MadRaccoon", MadRaccoon.RoleData.color, 2, RoleId.MadRaccoon, teamType: TeamType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MoiraIntro = new("Moira", Moira.color, 1, RoleId.Moira, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData JumpDancerIntro = new("JumpDancer", JumpDancer.color, 1, RoleId.JumpDancer, TeamRoleType.Crewmate);
     // イントロオブジェ
 }

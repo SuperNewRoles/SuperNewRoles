@@ -252,6 +252,7 @@ public static class RoleClass
         PoliceSurgeon.RoleData.ClearAndReload();
         MadRaccoon.RoleData.ClearAndReload();
         Moira.ClearAndReload();
+        JumpDancer.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
