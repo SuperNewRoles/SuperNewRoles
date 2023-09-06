@@ -1650,6 +1650,8 @@ public class CustomOptionHolder
 
         Pteranodon.SetupCustomOptions();
 
+        JumpDancer.SetupCustomOptions();
+
         Balancer.SetupCustomOptions();
 
         MayorOption = SetupCustomRoleOption(400700, true, RoleId.Mayor);
@@ -1839,6 +1841,7 @@ public class CustomOptionHolder
         CelebrityChangeRoleView = Create(402402, true, CustomOptionType.Crewmate, "CelebrityChangeRoleViewSetting", false, CelebrityOption);
         CelebrityIsTaskPhaseFlash = Create(402403, false, CustomOptionType.Crewmate, "CelebrityIsTaskPhaseFlashSetting", false, CelebrityOption);
         CelebrityIsFlashWhileAlivingOnly = Create(402404, false, CustomOptionType.Crewmate, "CelebrityIsFlashWhileAlivingOnly", false, CelebrityIsTaskPhaseFlash);
+
 
         ToiletFanOption = SetupCustomRoleOption(405900, true, RoleId.ToiletFan);
         ToiletFanPlayerCount = Create(405901, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);

@@ -3360,6 +3360,8 @@ static class HudManagerStartPatch
 
         MadRaccoon.Button.SetupCustomButtons(__instance);
 
+        JumpDancer.SetUpCustomButtons(__instance);
+
         // SetupCustomButtons
 
         SetCustomButtonCooldowns();

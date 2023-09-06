@@ -2,6 +2,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -55,7 +56,7 @@ public static class PlayerPhysicsSpeedPatch2
         if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
         if (ModeHandler.IsMode(ModeId.Default))
         {
-            if (RoleClass.Freezer.IsSpeedDown || RoleClass.WaveCannon.IsLocalOn)
+            if (RoleClass.Freezer.IsSpeedDown || RoleClass.WaveCannon.IsLocalOn || JumpDancer.JumpingPlayerIds.ContainsKey(__instance.myPlayer.PlayerId))
             {
                 __instance.body.velocity = new Vector2(0f, 0f);
             }

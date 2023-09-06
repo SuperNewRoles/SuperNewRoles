@@ -957,6 +957,9 @@ public static class RoleHelpers
             case RoleId.Moira:
                 Moira.MoiraPlayer.Add(player);
                 break;
+            case RoleId.JumpDancer:
+                JumpDancer.JumpDancerPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1486,7 +1489,10 @@ public static class RoleHelpers
             case RoleId.Moira:
                 Moira.MoiraPlayer.RemoveAll(ClearRemove);
                 break;
-                // ロールリモベ
+                case RoleId.JumpDancer:
+                JumpDancer.JumpDancerPlayer.RemoveAll(ClearRemove);
+                break;
+            // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1970,6 +1976,7 @@ public static class RoleHelpers
             else if (PoliceSurgeon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.PoliceSurgeon;
             else if (MadRaccoon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.MadRaccoon;
             else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
+            else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             // ロールチェック
         }
         catch (Exception e)
