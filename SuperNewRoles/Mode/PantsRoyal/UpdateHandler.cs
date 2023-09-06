@@ -38,7 +38,14 @@ public static class UpdateHandler
             string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>" + string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                p.RpcSetNamePrivate(name);
+                if (!p.AmOwner)
+                {
+                    p.RpcSetNamePrivate(name);
+                }
+                else
+                {
+                    p.SetName(name);
+                }
             }
         }
 
@@ -107,7 +114,7 @@ public static class UpdateHandler
                 //if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
                 if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Airship)
                 {
-                    p.RpcSnapTo(CopsRobbers.Main.GetPosition(CopsRobbers.Main.GetRandomSpawnPosition(p)));
+                    p.RpcSnapTo(main.GetRandomAirshipPosition());
                 }
                 else
                 {

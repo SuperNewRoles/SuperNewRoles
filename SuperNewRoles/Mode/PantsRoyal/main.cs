@@ -37,6 +37,36 @@ public static class main
         LastUpdateTime = 7;
         CurrentTurnData = null;
     }
+    readonly static Dictionary<SystemTypes,Vector2> AirshipSpawnPositions = new()
+    {
+        {SystemTypes.Security, new(7.0886f, -12.501f) }, //セキュ
+        {SystemTypes.VaultRoom, new(-8.7701f, 12.4399f) }, //金庫
+        {SystemTypes.MainHall, new(10.75f, -0.05f)},
+        {SystemTypes.MedBay, new(26.6f, -5.7f)},
+        {SystemTypes.Cockpit, new(-22.09f, -1)},
+        //トイレの確率2倍！
+        {SystemTypes.Lounge,new() },
+        {SystemTypes.Records,new() },
+
+    };
+    readonly static List<Vector2> AirshipToiletSpawnPositions = new()
+    {
+        new(29.3f, 7.5f),
+        new(30.825f, 7.5f),
+        new(32.325f, 7.5f),
+        new(33.75f, 7.5f),
+    };
+    public static Vector2 GetRandomAirshipPosition()
+    {
+        SystemTypes pos = ModHelpers.GetRandom(AirshipSpawnPositions.Keys.ToList());
+        if (pos is SystemTypes.Lounge or SystemTypes.Records)
+            return ModHelpers.GetRandom(AirshipToiletSpawnPositions);
+        return AirshipSpawnPositions[pos];
+    }
+    public static void Debug_SpawnLocalPlayer()
+    {
+        PlayerControl.LocalPlayer.RpcSnapTo(GetRandomAirshipPosition());
+    }
     public static void GameEnd()
     {
         main.CurrentTurnData = null;
