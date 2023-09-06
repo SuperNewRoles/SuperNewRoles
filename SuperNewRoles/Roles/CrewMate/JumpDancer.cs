@@ -17,7 +17,7 @@ public static class JumpDancer
     {
         JumpDancerOption = CustomOption.SetupCustomRoleOption(OptionId, false, RoleId.JumpDancer);
         JumpDancerPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], JumpDancerOption);
-        JumpDancerCoolTime = CustomOption.Create(OptionId + 1, false, CustomOptionType.Crewmate, "NiceScientistCooldownSetting", 0f, 0f, 60f, 2.5f, JumpDancerOption);
+        JumpDancerCoolTime = CustomOption.Create(OptionId + 2, false, CustomOptionType.Crewmate, "NiceScientistCooldownSetting", 0f, 0f, 60f, 2.5f, JumpDancerOption);
     }
     
     public static List<PlayerControl> JumpDancerPlayer;
