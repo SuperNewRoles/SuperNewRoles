@@ -617,7 +617,7 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                PenguinButton.MaxTimer = CustomOptionHolder.PenguinCoolTime.GetFloat();
+                PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? CustomOptionHolder.PenguinCoolTime.GetFloat() : GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
                 PenguinButton.Timer = PenguinButton.MaxTimer;
                 PenguinButton.effectCancellable = false;
                 PenguinButton.EffectDuration = CustomOptionHolder.PenguinDurationTime.GetFloat();
@@ -635,7 +635,8 @@ static class HudManagerStartPatch
             5f,
             () =>
             {
-                PlayerControl.LocalPlayer.UncheckedMurderPlayer(RoleClass.Penguin.currentTarget);
+                if (ModeHandler.IsMode(ModeId.Default))
+                    PlayerControl.LocalPlayer.UncheckedMurderPlayer(RoleClass.Penguin.currentTarget);
             }
         )
         {
