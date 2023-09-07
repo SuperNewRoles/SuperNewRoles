@@ -1103,12 +1103,12 @@ public class CustomOptionHolder
         MarlinPlayerCount = Create(200503, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
         MarlinViewVote = Create(200504, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
 
-        PenguinOption = SetupCustomRoleOption(200600, false, RoleId.Penguin);
-        PenguinPlayerCount = Create(200601, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
+        PenguinOption = SetupCustomRoleOption(200600, true, RoleId.Penguin);
+        PenguinPlayerCount = Create(200601, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
         PenguinCoolTime = Create(200602, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
-        PenguinDurationTime = Create(200603, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
+        PenguinDurationTime = Create(200603, true, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinCanDefaultKill = Create(200604, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
-        PenguinMeetingKill = Create(200605, false, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
+        PenguinMeetingKill = Create(200605, true, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
 
         DoppelgangerOption = SetupCustomRoleOption(200700, true, RoleId.Doppelganger);
         DoppelgangerPlayerCount = Create(200701, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);

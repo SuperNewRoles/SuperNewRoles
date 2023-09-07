@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles;
@@ -12,7 +13,11 @@ public static class SetTarget
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
             return;
         }
-        else if (PlayerControl.LocalPlayer.IsRole(RoleId.Penguin) && !CustomOptionHolder.PenguinCanDefaultKill.GetBool() && RoleClass.Penguin.currentTarget is null)
+        else if (PlayerControl.LocalPlayer.IsRole(RoleId.Penguin) &&
+            (!CustomOptionHolder.PenguinCanDefaultKill.GetBool()
+            ||
+            !ModeHandler.IsMode(ModeId.Default))
+            && RoleClass.Penguin.currentTarget is null)
         {
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
             return;

@@ -102,8 +102,8 @@ public static class RPCHelper
         var callerMethod = caller.GetMethod();
         string callerMethodName = callerMethod.Name;
         string callerClassName = callerMethod.DeclaringType.FullName;
-        SuperNewRolesPlugin.Logger.LogInfo("[SHR:RpcSnapTo] CustomSyncSettingsが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
-        Logger.Info("CustomRpcSnapToが呼び出されました");
+        //SuperNewRolesPlugin.Logger.LogInfo("[SHR:RpcSnapTo] CustomSyncSettingsが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+        //Logger.Info("CustomRpcSnapToが呼び出されました");
         if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && seer is null)
         {
             __instance.NetTransform.RpcSnapTo(position);

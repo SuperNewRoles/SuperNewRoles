@@ -275,6 +275,7 @@ public class FixedUpdate
                 break;
             case ModeId.SuperHostRoles:
                 Mode.SuperHostRoles.FixedUpdate.Update();
+                Penguin.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Mafia))
                 {
                     Mafia.FixedUpdate();
