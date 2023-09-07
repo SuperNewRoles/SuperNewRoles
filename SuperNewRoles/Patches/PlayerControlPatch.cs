@@ -807,6 +807,20 @@ static class CheckMurderPatch
                         __instance.RpcMurderPlayer(__instance);
                         __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                         return false;
+                    case RoleId.Penguin:
+                        PlayerControl currentTarget = null;
+                        if (RoleClass.Penguin.PenguinData.Keys.ToList().IsCheckListPlayerControl(__instance))
+                        {
+                            currentTarget = RoleClass.Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
+                        }
+                        if (currentTarget == null)
+                        {
+                            Logger.Info("ペンギンを追加しました。:"+__instance.PlayerId.ToString()+":"+target.PlayerId.ToString()+":"+RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
+                            RoleClass.Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
+                            target.RpcSnapTo(__instance.transform.position);
+                            return false;
+                        }
+                        break;
                 }
                 break;
             case ModeId.Detective:
