@@ -37,6 +37,8 @@ public static class Penguin
                 if (!RoleClass.Penguin.PenguinTimer.ContainsKey(data.Key.PlayerId))
                     RoleClass.Penguin.PenguinTimer.Add(data.Key.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
                 RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] -= Time.fixedDeltaTime;
+                if (RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] <= 0 && data.Value != null && data.Value.IsAlive())
+                    data.Key.RpcMurderPlayer(data.Value);
             }
             if (data.Key == null || data.Value == null
                 || !data.Key.IsRole(RoleId.Penguin)
