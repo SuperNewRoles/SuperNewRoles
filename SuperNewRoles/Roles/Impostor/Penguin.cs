@@ -78,7 +78,10 @@ public static class Penguin
         {
             foreach (var data in RoleClass.Penguin.PenguinData.ToArray())
             {
-                ModHelpers.CheckMurderAttemptAndKill(data.Key, data.Value);
+                if (ModeHandler.IsMode(ModeId.Default))
+                    ModHelpers.CheckMurderAttemptAndKill(data.Key, data.Value);
+                else
+                    data.Key.RpcMurderPlayer(data.Value);
             }
         }
         else
