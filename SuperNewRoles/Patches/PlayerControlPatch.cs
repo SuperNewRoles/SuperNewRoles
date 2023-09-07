@@ -153,7 +153,7 @@ class RpcShapeshiftPatch
                     if (target.IsDead()) return true;
                     if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
                     {
-                        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
+                        (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
                         var misfire = !success;
                         var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
 
