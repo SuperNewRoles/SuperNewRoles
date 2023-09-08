@@ -58,6 +58,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
         Instance = this;
         // All Load() Start
+        OptionSaver.Load();
         ConfigRoles.Load();
         WebAccountManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");

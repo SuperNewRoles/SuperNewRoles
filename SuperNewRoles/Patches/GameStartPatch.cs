@@ -16,6 +16,11 @@ class GameStartPatch
             {
                 Modules.MatchMaker.EndInviting();
             }
+            if (CustomOption.IsValuesUpdated)
+            {
+                OptionSaver.WriteNowOptions();
+                CustomOption.IsValuesUpdated = false;
+            }
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
