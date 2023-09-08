@@ -68,6 +68,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomCosmetics.CustomColors.Load();
         ModDownloader.Load();
         CustomOptionHolder.Load();
+        LegacyOptionDataMigration.Load();
         AccountLoginMenu.Initialize();
         // All Load() End
 

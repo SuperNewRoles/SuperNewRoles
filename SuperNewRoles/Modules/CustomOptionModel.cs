@@ -234,6 +234,7 @@ public class CustomOption
 
     public static void SwitchPreset(int newPreset)
     {
+        OptionSaver.WriteNowOptions();
         preset = newPreset;
         (bool suc, int code, Dictionary<ushort,byte> data) = OptionSaver.LoadPreset(preset);
         if (!suc && code == -1)
@@ -243,6 +244,7 @@ public class CustomOption
                 if (option.id <= 0) continue;
                 option.selection = option.defaultSelection;
             }
+            CurrentValues = new();
             return;
         }
         foreach (CustomOption option in options)

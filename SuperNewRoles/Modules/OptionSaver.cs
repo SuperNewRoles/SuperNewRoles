@@ -9,9 +9,9 @@ namespace SuperNewRoles.Modules;
 public static class OptionSaver
 {
     private static readonly DirectoryInfo SaveDataDirectoryInfo = new("./SuperNewRoles/SaveData/");
-    private static readonly string OptionSaverFileName = $"{SaveDataDirectoryInfo.FullName}/Options.{Extension}";
-    private const string Extension = "data";
-    private static readonly string PresetFileNameBase = $"{SaveDataDirectoryInfo.FullName}/PresetOptions_";
+    public static readonly string OptionSaverFileName = $"{SaveDataDirectoryInfo.FullName}/Options.{Extension}";
+    public const string Extension = "data";
+    public static readonly string PresetFileNameBase = $"{SaveDataDirectoryInfo.FullName}/PresetOptions_";
     public const byte Version = 0;
     public static void Load()
     {
@@ -45,12 +45,16 @@ public static class OptionSaver
     {
         if (!AmongUsClient.Instance.AmHost)
             return;
+        WriteOptionData();
+        WriteNowPreset();
+    }
+    public static void WriteOptionData()
+    {
         BinaryWriter writer = new(new FileStream(OptionSaverFileName, FileMode.OpenOrCreate, FileAccess.Write));
         writer.Write(Version);
         WriteCheckSum(writer);
         writer.Write((byte)CustomOption.preset);
         writer.Close();
-        WriteNowPreset();
     }
     public static void WriteNowPreset()
     {
@@ -102,7 +106,6 @@ public static class OptionSaver
             Logger.Info("フアイルの データが こわれています！");
             return (false, -2, null);
         }
-        int preset = -4;
         Dictionary<ushort, byte> Options = new();
         if (Version != version)
         {
