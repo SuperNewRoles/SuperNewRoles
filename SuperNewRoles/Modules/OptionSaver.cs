@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 namespace SuperNewRoles.Modules;
 public static class OptionSaver
 {
-    private static readonly DirectoryInfo SaveDataDirectoryInfo = new("./SuperNewRoles/SaveData/");
-    public static readonly string OptionSaverFileName = $"{SaveDataDirectoryInfo.FullName}/Options.{Extension}";
+    static readonly DirectoryInfo directory = new("./SuperNewRoles/SaveData/");
+    public static readonly string OptionSaverFileName = $"{directory.FullName}/Options.{Extension}";
     public const string Extension = "data";
-    public static readonly string PresetFileNameBase = $"{SaveDataDirectoryInfo.FullName}/PresetOptions_";
+    public static readonly string PresetFileNameBase = $"{directory.FullName}/PresetOptions_";
     public const byte Version = 0;
+    public static object FileLocker = new();
     public static void Load()
     {
-        if (!SaveDataDirectoryInfo.Exists)
+        
+        if (!directory.Exists)
         {
-            SaveDataDirectoryInfo.Create();
-            SaveDataDirectoryInfo.Attributes |= FileAttributes.Hidden;
+            directory.Create();
+            directory.Attributes |= FileAttributes.Hidden;
         }
         ReadAndSetOption();
     }
@@ -50,25 +52,31 @@ public static class OptionSaver
     }
     public static void WriteOptionData()
     {
-        BinaryWriter writer = new(new FileStream(OptionSaverFileName, FileMode.OpenOrCreate, FileAccess.Write));
-        writer.Write(Version);
-        WriteCheckSum(writer);
-        writer.Write((byte)CustomOption.preset);
-        writer.Close();
+        lock (FileLocker)
+        {
+            BinaryWriter writer = new(new FileStream(OptionSaverFileName, FileMode.OpenOrCreate, FileAccess.Write));
+            writer.Write(Version);
+            WriteCheckSum(writer);
+            writer.Write((byte)CustomOption.preset);
+            writer.Close();
+        }
     }
     public static void WriteNowPreset()
     {
-        BinaryWriter writer = new(new FileStream(PresetFileNameBase+CustomOption.preset+"."+Extension, FileMode.OpenOrCreate, FileAccess.Write));
-        writer.Write(Version);
-        WriteCheckSum(writer);
-        List<CustomOption> options = CustomOption.options.FindAll(x => x.defaultSelection != x.selection);
-        writer.Write(options.Count);
-        foreach (CustomOption option in options)
+        lock (FileLocker)
         {
-            writer.Write((ushort)option.id);
-            writer.Write((byte)option.selection);
+            BinaryWriter writer = new(new FileStream(PresetFileNameBase + CustomOption.preset + "." + Extension, FileMode.OpenOrCreate, FileAccess.Write));
+            writer.Write(Version);
+            WriteCheckSum(writer);
+            List<CustomOption> options = CustomOption.options.FindAll(x => x.defaultSelection != x.selection);
+            writer.Write(options.Count);
+            foreach (CustomOption option in options)
+            {
+                writer.Write((ushort)option.id);
+                writer.Write((byte)option.selection);
+            }
+            writer.Close();
         }
-        writer.Close();
     }
     public static void ReadAndSetOption()
     {
@@ -90,94 +98,105 @@ public static class OptionSaver
     }
     public static (bool, int, Dictionary<ushort, byte>) LoadPreset(int num)
     {
-        BinaryReader reader;
-        try
+        lock (FileLocker)
         {
-            reader = new(new FileStream(PresetFileNameBase+num.ToString() + "."+Extension, FileMode.Open, FileAccess.Read));
-        }
-        catch (FileNotFoundException ex)
-        {
-            //後で処理書く
-            return (false, -1, null);
-        }
-        (int version, bool Checksum) = ReadLeadAndChecksum(reader);
-        if (!Checksum)
-        {
-            Logger.Info("フアイルの データが こわれています！");
-            return (false, -2, null);
-        }
-        Dictionary<ushort, byte> Options = new();
-        if (Version != version)
-        {
-            Logger.Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
-            //ここに移行処理
-            switch (version)
+            BinaryReader reader;
+            try
             {
-                default:
-                    Logger.Info("不正なバージョンが入力されました：" + version.ToString());
-                    break;
+                reader = new(new FileStream(PresetFileNameBase + num.ToString() + "." + Extension, FileMode.Open, FileAccess.Read));
             }
-        }
-        try
-        {
-            int optioncount = reader.ReadInt32();
-            ushort id;
-            byte selection;
-            for (int i = 0; i < optioncount; i++)
+            catch (FileNotFoundException ex)
             {
-                id = reader.ReadUInt16();
-                selection = reader.ReadByte();
-                if (!Options.TryAdd(id, selection))
+                //後で処理書く
+                return (false, -1, null);
+            }
+            (int version, bool Checksum) = ReadLeadAndChecksum(reader);
+            if (!Checksum)
+            {
+                Logger.Info("フアイルの データが こわれています！");
+                reader.Close();
+                return (false, -2, null);
+            }
+            Dictionary<ushort, byte> Options = new();
+            if (Version != version)
+            {
+                Logger.Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
+                //ここに移行処理
+                switch (version)
                 {
-                    Logger.Info("追加に失敗："+id.ToString()+":"+selection.ToString());
+                    default:
+                        Logger.Info("不正なバージョンが入力されました：" + version.ToString());
+                        break;
                 }
             }
-            
+            try
+            {
+                int optioncount = reader.ReadInt32();
+                ushort id;
+                byte selection;
+                for (int i = 0; i < optioncount; i++)
+                {
+                    id = reader.ReadUInt16();
+                    selection = reader.ReadByte();
+                    if (!Options.TryAdd(id, selection))
+                    {
+                        Logger.Info("追加に失敗：" + id.ToString() + ":" + selection.ToString());
+                    }
+                }
+            }
+            catch (EndOfStreamException)
+            {
+                reader.Close();
+                return (false, -3, null);
+            }
+            reader.Close();
+            return (true, 0, Options);
         }
-        catch (EndOfStreamException)
-        {
-            return (false, -3, null);
-        }
-        return (true, 0, Options);
     }
     public static (bool,int) LoadSavedOption()
     {
-        BinaryReader reader;
-        try
+        lock (FileLocker)
         {
-            reader = new(new FileStream(OptionSaverFileName, FileMode.Open, FileAccess.Read));
-        }
-        catch (FileNotFoundException ex)
-        {
-            //後で処理書く
-            return (false,-1);
-        }
-        (int version, bool Checksum) = ReadLeadAndChecksum(reader);
-        if (!Checksum)
-        {
-            Logger.Info("フアイルの データが こわれています！");
-            return (false,-2);
-        }
-        int preset = -4;
-        if (Version != version)
-        {
-            Logger.Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
-            //ここに移行処理
-            switch (version)
+            BinaryReader reader;
+            try
             {
-                default:
-                    Logger.Info("不正なバージョンが入力されました：" + version.ToString());
-                    break;
+                reader = new(new FileStream(OptionSaverFileName, FileMode.Open, FileAccess.Read));
             }
-        }
+            catch (FileNotFoundException ex)
+            {
+                //後で処理書く
+                return (false, -1);
+            }
+            (int version, bool Checksum) = ReadLeadAndChecksum(reader);
+            if (!Checksum)
+            {
+                reader.Close();
+                Logger.Info("フアイルの データが こわれています！");
+                return (false, -2);
+            }
+            int preset = -4;
+            if (Version != version)
+            {
+                Logger.Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
+                //ここに移行処理
+                switch (version)
+                {
+                    default:
+                        Logger.Info("不正なバージョンが入力されました：" + version.ToString());
+                        break;
+                }
+            }
             try
             {
                 preset = reader.ReadByte();
             }
             catch (EndOfStreamException)
             {
+                reader.Close();
                 return (false, -3);
             }
-        return (true, preset);
+            reader.Close();
+            return (true, preset);
+        }
     }
 }

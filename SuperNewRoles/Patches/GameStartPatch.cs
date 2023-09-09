@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
 
