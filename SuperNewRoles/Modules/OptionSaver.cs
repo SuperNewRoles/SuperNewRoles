@@ -16,7 +16,6 @@ public static class OptionSaver
     public static object FileLocker = new();
     public static void Load()
     {
-        
         if (!directory.Exists)
         {
             directory.Create();
