@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SuperNewRoles.Modules.CustomRegulation;
 
 namespace SuperNewRoles.Modules;
 public static class OptionSaver
@@ -44,7 +45,7 @@ public static class OptionSaver
     }
     public static void WriteNowOptions()
     {
-        if (!AmongUsClient.Instance.AmHost)
+        if (!AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
             return;
         WriteOptionData();
         WriteNowPreset();
