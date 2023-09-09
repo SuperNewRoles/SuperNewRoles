@@ -32,6 +32,7 @@ public enum CustomOptionType
 public class CustomOption
 {
     public static List<CustomOption> options = new();
+    private static Dictionary<int, CustomOption> optionids = new();
     public static int preset = 0;
     public static Dictionary<ushort, byte> CurrentValues;
     public static bool IsValuesUpdated;
@@ -98,6 +99,10 @@ public class CustomOption
     {
 
     }
+    public static CustomOption GetOption(int id)
+    {
+        return optionids.TryGetValue(id, out CustomOption opt) ? opt : null;
+    }
 
     public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId? roleId = null)
     {
@@ -162,6 +167,10 @@ public class CustomOption
                 break;
         }
         options.Add(this);
+        if (!optionids.TryAdd(id, this))
+        {
+            Logger.Info("optionidsの追加に失敗しました。");
+        }
     }
 
     public static int GenericIdMax = 0;

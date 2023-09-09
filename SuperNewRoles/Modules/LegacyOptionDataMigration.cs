@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LibCpp2IL.Elf;
 using static Rewired.Controller;
 
 namespace SuperNewRoles.Modules;
@@ -15,30 +16,51 @@ public static class LegacyOptionDataMigration
     public static void Load()
     {
         FileInfo file = new(OptionSaver.OptionSaverFileName);
+        Logger.Info("--------------------StartMigration---------------------");
+        Logger.Info("Exists:"+file.Exists);
         if (!file.Exists)
         {
             string configtext = File.ReadAllText(SuperNewRolesPlugin.Instance.Config.ConfigFilePath);
+            Logger.Info("-------ConfigText-----");
+            //Logger.Info(configtext);
+            Logger.Info("-------ConfigEnd!-----");
             for (int i = 0; i < CustomOptionHolder.presets.Length; i++)
             {
                 //もうそのプリセットが存在していたらスキップ
                 if (new FileInfo(OptionSaver.PresetFileNameBase+i.ToString()+"."+OptionSaver.Extension).Exists)
                     continue;
+                Logger.Info(i.ToString());
+                Logger.Info($"[Preset{i}]");
+                Logger.Info(configtext.Contains($"[Preset{i}]").ToString());
+                Logger.Info("--------");
                 //プリセットがなかったらスキップ
                 if (!configtext.Contains($"[Preset{i}]"))
                     continue;
                 Logger.Info("StartProcess:"+i.ToString());
                 Dictionary<ushort, byte> SaveValues = new();
-                foreach (CustomOption opt in CustomOption.options)
+                try
                 {
-                    int selection = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{i}", opt.id.ToString(), opt.defaultSelection).Value;
-                    if (selection != opt.defaultSelection)
+                    foreach (var option in CustomOption.options)
                     {
-                        SaveValues.Add((ushort)opt.id, (byte)selection);
+                        if (SuperNewRolesPlugin.Instance.Config.TryGetEntry<int>(new("Preset"+i.ToString(),option.id.ToString()), out var entry))
+                        {
+                            if (entry.Value != option.defaultSelection)
+                            {
+                                Logger.Info("NODEFAULT!!!!");
+                                SaveValues.Add((ushort)option.id, (byte)entry.Value);
+                            }
+                        }
                     }
+                }
+                catch (FormatException except)
+                {
+                    Logger.Info("Parseで多分エラーでたから、コレまでのやつを使うで！");
+                    Logger.Info("FormatException:"+except.ToString());
                 }
                 if (SaveValues.Count > 0)
                 {
-                    BinaryWriter writer = new(new FileStream(OptionSaver.PresetFileNameBase + i + "." + OptionSaver.Extension, FileMode.OpenOrCreate, FileAccess.Write));
+                    Logger.Info("WRITE!!!");
+                    BinaryWriter writer = new(new FileStream(OptionSaver.PresetFileNameBase + i.ToString() + "." + OptionSaver.Extension, FileMode.OpenOrCreate, FileAccess.Write));
                     writer.Write(OptionSaver.Version);
                     OptionSaver.WriteCheckSum(writer);
                     writer.Write(SaveValues.Count);
