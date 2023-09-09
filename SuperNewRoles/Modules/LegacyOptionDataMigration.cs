@@ -104,8 +104,7 @@ public static class LegacyOptionDataMigration
                 continue;
             }
 
-            string[] array2 = text.Split(new char[1] { '=' }, 2);
-            if (array2.Length == 2 && IsDelete)
+            if (IsDelete)
             {
                 deletetext.AppendLine(array[i]);
             }
