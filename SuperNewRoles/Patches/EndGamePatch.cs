@@ -179,7 +179,7 @@ public class EndGameManagerSetUpPatch
         List<WinningPlayerData> list = TempData.winners.ToList().OrderBy(delegate (WinningPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
-        }).ToList<WinningPlayerData>();
+        }).ToList();
         for (int i = 0; i < list.Count; i++)
         {
             WinningPlayerData winningPlayerData2 = list[i];
@@ -193,17 +193,16 @@ public class EndGameManagerSetUpPatch
             float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
             Vector3 vector = new(num7, num7, 1f);
             poolablePlayer.transform.localScale = vector;
-            poolablePlayer.UpdateFromPlayerOutfit((GameData.PlayerOutfit)winningPlayerData2, PlayerMaterial.MaskType.ComplexUI, winningPlayerData2.IsDead, true);
             if (winningPlayerData2.IsDead)
             {
-                poolablePlayer.cosmetics.currentBodySprite.BodySprite.sprite = poolablePlayer.cosmetics.currentBodySprite.GhostSprite;
+                poolablePlayer.SetBodyAsGhost();
                 poolablePlayer.SetDeadFlipX(i % 2 == 0);
             }
             else
             {
                 poolablePlayer.SetFlipX(i % 2 == 0);
             }
-
+            poolablePlayer.UpdateFromPlayerOutfit(winningPlayerData2, PlayerMaterial.MaskType.None, winningPlayerData2.IsDead, includePet: true);
             poolablePlayer.cosmetics.nameText.color = Color.white;
             poolablePlayer.cosmetics.nameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);

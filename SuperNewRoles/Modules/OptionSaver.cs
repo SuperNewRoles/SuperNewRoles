@@ -45,7 +45,7 @@ public static class OptionSaver
     }
     public static void WriteNowOptions()
     {
-        if (!AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+        if (!AmongUsClient.Instance.AmHost && RegulationData.Selected != 0)
             return;
         WriteOptionData();
         WriteNowPreset();
@@ -63,12 +63,14 @@ public static class OptionSaver
     }
     public static void WriteNowPreset()
     {
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost || RegulationData.Selected != 0)
+            return;
         lock (FileLocker)
         {
             BinaryWriter writer = new(new FileStream(PresetFileNameBase + CustomOption.preset + "." + Extension, FileMode.OpenOrCreate, FileAccess.Write));
             writer.Write(Version);
             WriteCheckSum(writer);
-            List<CustomOption> options = CustomOption.options.FindAll(x => x.defaultSelection != x.selection);
+            List<CustomOption> options = CustomOption.options.FindAll(x => x.selection != x.defaultSelection);
             writer.Write(options.Count);
             foreach (CustomOption option in options)
             {
@@ -80,6 +82,7 @@ public static class OptionSaver
     }
     public static void ReadAndSetOption()
     {
+        Logger.Info("Start LoadOption");
         (bool Suc,int preset) = LoadSavedOption();
         if (!Suc)
         {
@@ -87,6 +90,7 @@ public static class OptionSaver
             CustomOption.CurrentValues = new();
             return;
         }
+        Logger.Info($"Start LoadPreset{preset} ");
         (Suc, int code, Dictionary<ushort, byte> data) = LoadPreset(preset);
         if (!Suc)
         {
@@ -95,6 +99,7 @@ public static class OptionSaver
             return;
         }
         CustomOption.CurrentValues = data;
+        Logger.Info("End LoadOption:"+data.Count.ToString());
     }
     public static (bool, int, Dictionary<ushort, byte>) LoadPreset(int num)
     {
@@ -134,6 +139,7 @@ public static class OptionSaver
                 int optioncount = reader.ReadInt32();
                 ushort id;
                 byte selection;
+                Logger.Info(optioncount.ToString()+":"+reader.BaseStream.Length,"OPTIONCOUNT");
                 for (int i = 0; i < optioncount; i++)
                 {
                     id = reader.ReadUInt16();
