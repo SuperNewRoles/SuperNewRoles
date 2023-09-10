@@ -252,6 +252,11 @@ public class CustomOption
             {
                 if (option.id <= 0) continue;
                 option.selection = option.defaultSelection;
+                if (option.optionBehaviour is not null and StringOption stringOption)
+                {
+                    stringOption.oldValue = stringOption.Value = option.selection;
+                    stringOption.ValueText.text = option.GetString();
+                }
             }
             CurrentValues = new();
             OptionSaver.WriteNowPreset();
