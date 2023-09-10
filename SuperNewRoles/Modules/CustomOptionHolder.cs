@@ -1589,6 +1589,8 @@ public class CustomOptionHolder
 
         Moira.SetupCustomOptions();
 
+        Sauner.CustomOptionData.SetupCustomOptions();
+
         // SetupNeutralCustomOptions
 
         /* |: ========================= Crewmate Settings ========================== :| */
