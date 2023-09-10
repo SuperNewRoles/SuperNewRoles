@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
@@ -83,7 +84,7 @@ class Vampire
             Count--;
             if (Count > 0) return;
             Count = 3;
-            foreach (var data in RoleClass.Vampire.Targets.ToArray())
+            foreach (KeyValuePair<PlayerControl, PlayerControl> data in RoleClass.Vampire.Targets)
             {
                 if (data.Key == null || data.Value == null || !data.Key.IsRole(RoleId.Vampire) || data.Key.IsDead() || data.Value.IsDead())
                 {

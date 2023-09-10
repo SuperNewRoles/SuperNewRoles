@@ -521,7 +521,7 @@ public static class RPCProcedure
         if (source == null || target == null) return;
         if (IsOn)
         {
-            RoleClass.Vampire.Targets.Add(source, target);
+            RoleClass.Vampire.Targets[source] = target;
         }
         else
         {

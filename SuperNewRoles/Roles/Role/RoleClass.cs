@@ -1558,7 +1558,7 @@ public static class RoleClass
         public static float KillDelay;
         public static float Timer;
         public static DateTime KillTimer;
-        public static Dictionary<PlayerControl, PlayerControl> Targets;
+        public static PlayerData<PlayerControl> Targets;
         public static Dictionary<byte, List<BloodStain>> BloodStains;
         public static List<BloodStain> WaitActiveBloodStains;
         public static Dictionary<List<BloodStain>, int> NoActiveTurnWait;
