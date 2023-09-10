@@ -382,14 +382,21 @@ public class CustomOption
 
             if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
             {
-                if (id == 0) SwitchPreset(selection); // Switch presets
+                if (id == 0)
+                {
+                    SwitchPreset(selection);
+                    ShareOptionSelections();
+                } // Switch presets
                 else if (AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
                 {
                     CurrentValues[(ushort)id] = (byte)selection;
                     IsValuesUpdated = true;
+                    ShareOptionSelections(this);// Share all selections
                 } // Save selection to config
-
-                ShareOptionSelections(this);// Share all selections
+                else
+                {
+                    ShareOptionSelections(this);    
+                }
             }
         }
     }
