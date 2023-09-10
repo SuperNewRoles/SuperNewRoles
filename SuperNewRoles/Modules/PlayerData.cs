@@ -79,6 +79,11 @@ public class PlayerData<T> : IEnumerable
         return obj._playerdata;
     }
 
+    public bool Contains(byte player)
+    {
+        return _data == null ? false : _data.ContainsKey(player);
+    }
+    public bool Contains(PlayerControl player) => player == null ? false : Contains(player.PlayerId);
     public void Remove(PlayerControl player)
     {
         if (_data != null)

@@ -91,8 +91,8 @@ class Vampire
                     RoleClass.Vampire.Targets.Remove(data.Key);
                     continue;
                 }
-                if (!RoleClass.Vampire.BloodStains.ContainsKey(data.Value.PlayerId))
-                    RoleClass.Vampire.BloodStains.Add(data.Value.PlayerId, new());
+                if (!RoleClass.Vampire.BloodStains.Contains(data.Value.PlayerId))
+                    RoleClass.Vampire.BloodStains[data.Value.PlayerId] = new();
                 RoleClass.Vampire.BloodStains[data.Value.PlayerId].Add(new(data.Value));
             }
         }

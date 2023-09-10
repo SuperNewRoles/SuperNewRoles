@@ -525,7 +525,7 @@ public static class RPCProcedure
         }
         else
         {
-            if (RoleClass.Vampire.BloodStains.ContainsKey(target.PlayerId))
+            if (RoleClass.Vampire.BloodStains.Contains(target.PlayerId))
             {
                 if (IsKillSuc)
                 {
