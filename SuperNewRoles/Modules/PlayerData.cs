@@ -146,6 +146,8 @@ public class PlayerData<T> : IEnumerable
     }
     public IEnumerator GetEnumerator()
     {
+        if (_data == null)
+               _data = new();
         return _data.GetEnumerator();
     }
 }
