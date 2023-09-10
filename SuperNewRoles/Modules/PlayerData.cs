@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SuperNewRoles.Modules;
-public class PlayerData<T>
+public class PlayerData<T> : IEnumerable
 {
     private Dictionary<byte, T> _data;
     private Dictionary<PlayerControl, T> _playerdata;
@@ -79,6 +79,25 @@ public class PlayerData<T>
         return obj._playerdata;
     }
 
+    public void Remove(PlayerControl player)
+    {
+        if (_data != null)
+        {
+            _data.Remove(player.PlayerId);
+            if (_playerdata != null)
+                _playerdata.Remove(player);
+        }
+    }
+    public void Remove(byte player)
+    {
+        if (_data != null)
+        {
+            _data.Remove(player);
+            if (_playerdata != null)
+                _playerdata.Remove(ModHelpers.PlayerById(player));
+        }
+    }
+
     public Dictionary<byte, T> GetDicts()
     {
         return (Dictionary<byte, T>)this;
@@ -94,5 +113,9 @@ public class PlayerData<T>
         //使用する際に初期化して、メモリの負担を軽く
         _data = null;
         _playerdata = needplayerlist ? new(1) : null;
+    }
+    public IEnumerator GetEnumerator()
+    {
+        return _data.GetEnumerator();
     }
 }
