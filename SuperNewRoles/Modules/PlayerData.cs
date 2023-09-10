@@ -10,6 +10,7 @@ public class PlayerData<T> : IEnumerable
 {
     private Dictionary<byte, T> _data;
     private Dictionary<PlayerControl, T> _playerdata;
+    private T defaultvalue = default;
     public T Local
     {
         get
@@ -21,13 +22,20 @@ public class PlayerData<T> : IEnumerable
             this[PlayerControl.LocalPlayer.PlayerId] = value;
         }
     }
+    public Dictionary<byte,T>.ValueCollection Values
+    {
+        get
+        {
+            return _data.Values;
+        }
+    }
     public T this[byte key]
     {
         get
         {
-            return _data == null ? default :
+            return _data == null ? defaultvalue :
                 _data.TryGetValue(key, out T result)
-                ? result : default;
+                ? result : defaultvalue;
         }
         set
         {
@@ -46,9 +54,9 @@ public class PlayerData<T> : IEnumerable
         {
             return _data == null
                 || key == null
-                ? default
+                ? defaultvalue
                 : _data.TryGetValue(key.PlayerId, out T result)
-                ? result : default;
+                ? result : defaultvalue;
         }
         set
         {
@@ -79,6 +87,22 @@ public class PlayerData<T> : IEnumerable
         return obj._playerdata;
     }
 
+    public PlayerControl GetPCByValue(T value)
+    {
+        if (_playerdata != null)
+        {
+            return _playerdata.GetKeyByValue(value);
+        }
+        else
+        {
+            byte pid = _data.GetKeyByValue<byte, T>(value, defaultvalue:255);
+            return pid == 255 ? null : ModHelpers.PlayerById(pid);
+        }
+    }
+    public bool ContainsValue(T value)
+    {
+        return _data == null ? false : _data.ContainsValue(value);
+    }
     public bool Contains(byte player)
     {
         return _data == null ? false : _data.ContainsKey(player);
@@ -113,11 +137,12 @@ public class PlayerData<T> : IEnumerable
     /// 例(intを保存したい場合)：PlayerData<int>
     /// </summary>
     /// <param name="needplayerlist">Dictionary<PlayerControl,T>型が必要かどうか</param>
-    public PlayerData(bool needplayerlist = false)
+    public PlayerData(bool needplayerlist = false, T defaultvalue=default)
     {
         //使用する際に初期化して、メモリの負担を軽く
         _data = null;
         _playerdata = needplayerlist ? new(1) : null;
+        this.defaultvalue = defaultvalue;
     }
     public IEnumerator GetEnumerator()
     {

@@ -25,23 +25,15 @@ public static class Demon
         }
     }
 
-    public static List<PlayerControl> GetCurseData(this PlayerControl player)
-    {
-        return RoleClass.Demon.CurseData.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseData[player.PlayerId] : new();
-    }
+    public static List<PlayerControl> GetCurseData(this PlayerControl player) => RoleClass.Demon.CurseData[player];
 
-    public static List<PlayerControl> GetUntarget()
-    {
-        return RoleClass.Demon.CurseData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
-            ? RoleClass.Demon.CurseData[CachedPlayer.LocalPlayer.PlayerId]
-            : (new());
-    }
+    public static List<PlayerControl> GetUntarget() => GetCurseData(PlayerControl.LocalPlayer);
 
     public static bool IsCursed(this PlayerControl source, PlayerControl target)
     {
         if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
         if (source.PlayerId == target.PlayerId) return true;
-        if (RoleClass.Demon.CurseData.ContainsKey(source.PlayerId))
+        if (RoleClass.Demon.CurseData.Contains(source.PlayerId))
         {
             if (RoleClass.Demon.CurseData[source.PlayerId].IsCheckListPlayerControl(target))
             {
@@ -54,12 +46,12 @@ public static class Demon
     public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
     {
         if (player == null) player = PlayerControl.LocalPlayer;
-        return RoleClass.Demon.CurseData.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseData[player.PlayerId] : (new());
+        return RoleClass.Demon.CurseData.Contains(player.PlayerId) ? RoleClass.Demon.CurseData[player.PlayerId] : (new());
     }
     public static bool IsViewIcon(PlayerControl player)
     {
         if (player == null) return false;
-        foreach (var data in RoleClass.Demon.CurseData)
+        foreach (KeyValuePair<byte, List<PlayerControl>> data in RoleClass.Demon.CurseData)
         {
             foreach (PlayerControl Player in data.Value)
             {

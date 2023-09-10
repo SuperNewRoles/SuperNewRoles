@@ -237,7 +237,7 @@ public static class FixedUpdate
                 }
             }
         }
-        else if (player.IsRole(RoleId.Finder) && RoleClass.Finder.KillCounts.ContainsKey(player.PlayerId) && RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
+        else if (player.IsRole(RoleId.Finder) && RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
         {
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
