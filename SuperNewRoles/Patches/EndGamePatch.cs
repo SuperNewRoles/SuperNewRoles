@@ -53,6 +53,7 @@ public enum CustomGameOverReason
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
+    SaunerWin
 }
 public enum WinCondition
 {
@@ -89,7 +90,8 @@ public enum WinCondition
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
-    PantsRoyalWin
+    PantsRoyalWin,
+    SaunerWin
 }
 class FinalStatusPatch
 {
@@ -255,7 +257,8 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
-                {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) }
+                {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) },
+                {WinCondition.SaunerWin, ("SaunerName",Sauner.RoleData.color) }
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -674,7 +677,8 @@ public static class OnGameEndPatch
             WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
             Moira.MoiraPlayer,
-            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player
+            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
+            Sauner.RoleData.Player
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -721,6 +725,7 @@ public static class OnGameEndPatch
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
         bool SafecrackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SafecrackerWin;
         bool BlackHatHackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.BlackHatHackerWin;
+        bool SaunerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SaunerWin;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
         {
             JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -900,6 +905,11 @@ public static class OnGameEndPatch
         {
             (TempData.winners = new()).Add(new(WinnerPlayer.Data));
             AdditionalTempData.winCondition = WinCondition.BlackHatHackerWin;
+        }
+        else if (SaunerWin)
+        {
+            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            AdditionalTempData.winCondition = WinCondition.SaunerWin;
         }
 
         if (TempData.winners.ToArray().Any(x => x.IsImpostor))

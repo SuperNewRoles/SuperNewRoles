@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using Hazel;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
@@ -21,11 +24,17 @@ public static class Sauner
         private static int optionId = 303400;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
+        public static CustomOption DarkroomTime;
+        public static CustomOption ShowerTime;
+        public static CustomOption DeckTime;
 
         public static void SetupCustomOptions()
         {
             Option = CustomOption.SetupCustomRoleOption(optionId, false, RoleId.Sauner); optionId++;
             PlayerCount = CustomOption.Create(optionId, false, CustomOptionType.Neutral, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], Option); optionId++;
+            DarkroomTime = CustomOption.Create(optionId, false, CustomOptionType.Neutral, "SaunerDarkroomTime", 180f, 20f, 600f, 20f, Option); optionId++;
+            ShowerTime = CustomOption.Create(optionId, false, CustomOptionType.Neutral, "SaunerShowerTime", 20f, 20f, 600f, 20f, Option); optionId++;
+            DeckTime = CustomOption.Create(optionId, false, CustomOptionType.Neutral, "SaunerDeckTime", 60f, 20f, 600f, 20f, Option); optionId++;
         }
     }
 
@@ -34,13 +43,15 @@ public static class Sauner
         public static List<PlayerControl> Player;
         public static SaunerState CurrentState;
         public static bool LastSaunerFlash;
+        public static float SaunaTimer;
         public static Color32 color = new(219, 152, 101, byte.MaxValue);
 
         public static void ClearAndReload()
         {
             Player = new();
-            CurrentState = new();
+            CurrentState = SaunerState.Darkroom;
             LastSaunerFlash = false;
+            SaunaTimer = CustomOptionData.DarkroomTime.GetFloat();
         }
     }
 
@@ -92,7 +103,7 @@ public static class Sauner
     public static void CheckAndFlash()
     {
         if (RoleData.LastSaunerFlash)
-            Seer.ShowFlash(GetFlashColor(RoleData.CurrentState), 3, CheckAndFlash);
+            Seer.ShowFlash(GetFlashColor(RoleData.CurrentState), 6, CheckAndFlash);
     }
     public static void FixedUpdate()
     {
@@ -105,6 +116,38 @@ public static class Sauner
             else
                 Seer.HideFlash();
             Logger.Info(RoleData.CurrentState + ":" + IsRoom);
+        }
+        if (RoleData.LastSaunerFlash)
+        {
+            RoleData.SaunaTimer -= Time.fixedDeltaTime;
+            if (RoleData.SaunaTimer <= 0)
+            {
+                switch (RoleData.CurrentState)
+                {
+                    case SaunerState.Darkroom:
+                        RoleData.CurrentState = SaunerState.Shower;
+                        RoleData.SaunaTimer = CustomOptionData.ShowerTime.GetFloat();
+                        break;
+                    case SaunerState.Shower:
+                        RoleData.CurrentState = SaunerState.ObservationDeck;
+                        RoleData.SaunaTimer = CustomOptionData.DeckTime.GetFloat();
+                        break;
+                    case SaunerState.ObservationDeck:
+                        MessageWriter writer1 = RPCHelper.StartRPC(CustomRPC.ShareWinner);
+                        writer1.Write(PlayerControl.LocalPlayer.PlayerId);
+                        writer1.EndRPC();
+                        RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+                        if (AmongUsClient.Instance.AmHost) CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.SaunerWin, false);
+                        else
+                        {
+                            MessageWriter writer2 = RPCHelper.StartRPC(CustomRPC.CustomEndGame);
+                            writer2.Write((byte)CustomGameOverReason.SaunerWin);
+                            writer2.Write(false);
+                            writer2.EndRPC();
+                        }
+                        break;
+                }
+            }
         }
     }
 
