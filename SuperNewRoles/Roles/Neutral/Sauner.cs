@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -32,12 +33,14 @@ public static class Sauner
     {
         public static List<PlayerControl> Player;
         public static SaunerState CurrentState;
+        public static bool LastSaunerFlash;
         public static Color32 color = new(219, 152, 101, byte.MaxValue);
 
         public static void ClearAndReload()
         {
             Player = new();
             CurrentState = new();
+            LastSaunerFlash = false;
         }
     }
 
@@ -50,7 +53,7 @@ public static class Sauner
     /// <returns></returns>
     static bool CheckPos(Vector2 Up, Vector2 Down, Vector2 pos)
     {
-        return Up.x >= pos.x && pos.x >= Down.x &&
+        return Up.x <= pos.x && pos.x <= Down.x &&
                Up.y >= pos.y && pos.y >= Down.y;
     }
     public static bool CheckRoom(SaunerState room, Vector2 nowpos)
@@ -62,21 +65,47 @@ public static class Sauner
             case SaunerState.Shower:
                 return CheckPos(new(20.3f, 3.5f), new(24.9f, 1.4f), nowpos);
             case SaunerState.ObservationDeck:
-                       //セキュ下展望
-                return CheckPos(new(5.1f, -13.95f), new(11.1f, -17f), nowpos) ||
-                       //展望デッキ下
-                       CheckPos(new(-14.7f, -13.8f), new(-12.5f, -17f), nowpos) ||
+                //セキュ下展望と展望デッキ下
+                return CheckPos(new(-14.7f, -13.95f), new(11.1f, -17f), nowpos) ||
                        //コックピット
                        CheckPos(new(-25.2f, 1.7f), new(-16.3f, -3.9f), nowpos);
             default:
                 return false;
         }
     }
+    public static Color GetFlashColor(SaunerState state)
+    {
+        switch (state)
+        {
+            case SaunerState.Darkroom:
+                return new Color32(255, 123, 99, 103);
+            case SaunerState.Shower:
+                return new Color32(65, 161, 255, 103);
+            case SaunerState.ObservationDeck:
+                return new Color32(38, 200, 94, 103);
+            default:
+                Logger.Info("想定していないStateが渡されました:" + state.ToString());
+                return new(255, 255, 255, 255);
+        }
+    }
 
+    public static void CheckAndFlash()
+    {
+        if (RoleData.LastSaunerFlash)
+            Seer.ShowFlash(GetFlashColor(RoleData.CurrentState), 3, CheckAndFlash);
+    }
     public static void FixedUpdate()
     {
         bool IsRoom = CheckRoom(RoleData.CurrentState, PlayerControl.LocalPlayer.transform.position);
-        Logger.Info(RoleData.CurrentState+":"+IsRoom);
+        if (RoleData.LastSaunerFlash != IsRoom)
+        {
+            RoleData.LastSaunerFlash = IsRoom;
+            if (IsRoom)
+                CheckAndFlash();
+            else
+                Seer.HideFlash();
+            Logger.Info(RoleData.CurrentState + ":" + IsRoom);
+        }
     }
 
     // ここにコードを書きこんでください
