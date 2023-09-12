@@ -31,8 +31,8 @@ public class CursedShieldTask
                 box.size = new(0.88f, 0.88f);
                 ButtonBehavior button = shield.GetComponent<ButtonBehavior>();
                 button.colliders = new[] { box };
-                button.OnClick = new();
                 int key = i;
+                button.OnClick = new();
                 button.OnClick.AddListener((Action)(() => __instance.ToggleShield(key)));
 
                 __instance.Shields[i] = shield.GetComponent<SpriteRenderer>();
