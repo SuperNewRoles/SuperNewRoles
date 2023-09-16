@@ -19,6 +19,7 @@ using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Networking;
 
 namespace SuperNewRoles;
 
@@ -705,6 +706,20 @@ public static class ModHelpers
             newList.Add(item);
         }
         return newList;
+    }
+    public static AudioClip loadAudioClipFromOggResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
+    {
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        Stream stream = assembly.GetManifestResourceStream(path);
+        using (var vorbis = new NVorbis.VorbisReader(stream))
+        {
+            float[] _audioBuffer = new float[vorbis.TotalSamples]; // Just dump everything
+            int read = vorbis.ReadSamples(_audioBuffer, 0, (int)vorbis.TotalSamples);
+            AudioClip audioClip = AudioClip.Create(clipName, (int)(vorbis.TotalSamples / vorbis.Channels), vorbis.Channels, vorbis.SampleRate, false);
+            audioClip.SetData(_audioBuffer, 0);
+            return audioClip;
+        }
+
     }
     public static Dictionary<string, AudioClip> CachedAudioClips = new();
     public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")

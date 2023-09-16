@@ -60,6 +60,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         // All Load() Start
         ConfigRoles.Load();
         WebAccountManager.Load();
+        ContentManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
         ModTranslation.LoadCsv();
         ChacheManager.Load();

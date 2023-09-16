@@ -44,6 +44,7 @@ public static class Sauner
         public static SaunerState CurrentState;
         public static bool LastSaunerFlash;
         public static float SaunaTimer;
+        public static ImportantTextTask TaskText;
         public static Color32 color = new(219, 152, 101, byte.MaxValue);
 
         public static void ClearAndReload()
@@ -52,6 +53,7 @@ public static class Sauner
             CurrentState = SaunerState.Darkroom;
             LastSaunerFlash = false;
             SaunaTimer = CustomOptionData.DarkroomTime.GetFloat();
+            TaskText = null;
         }
     }
 
@@ -77,11 +79,26 @@ public static class Sauner
                 return CheckPos(new(20.3f, 3.5f), new(24.9f, 1.4f), nowpos);
             case SaunerState.ObservationDeck:
                 //セキュ下展望と展望デッキ下
-                return CheckPos(new(-14.7f, -13.95f), new(11.1f, -17f), nowpos) ||
-                       //コックピット
-                       CheckPos(new(-25.2f, 1.7f), new(-16.3f, -3.9f), nowpos);
+                return CheckPos(new(-14.7f, -13.95f), new(11.1f, -17f), nowpos);
+                       //コックピット(ミスで追加したのでコメントアウト)
+                       //|| CheckPos(new(-25.2f, 1.7f), new(-16.3f, -3.9f), nowpos);
             default:
                 return false;
+        }
+    }
+    public static List<Vector2> GetSaunaPos()
+    {
+        switch (RoleData.CurrentState)
+        {
+            case SaunerState.Darkroom:
+                return new() { new(12.5f, 2.2f) };
+            case SaunerState.Shower:
+                return new() { new(22.5f, 2.55f) };
+            case SaunerState.ObservationDeck:
+                return new() { new(-13.7f, -15), new(8f, -14.6f) };
+            default:
+                Logger.Info("GetSaunerPosで予期しない位置が入力されました："+RoleData.CurrentState.ToString());
+                return new();
         }
     }
     public static Color GetFlashColor(SaunerState state)
@@ -100,22 +117,53 @@ public static class Sauner
         }
     }
 
+    public static string GetSaunaText()
+    {
+        float OptionTime = -1;
+        string Text;
+        switch (RoleData.CurrentState)
+        {
+            case SaunerState.Darkroom:
+                Text = "InSauna";
+                OptionTime = CustomOptionData.DarkroomTime.GetFloat();
+                break;
+            case SaunerState.Shower:
+                Text = "Shower";
+                OptionTime = CustomOptionData.ShowerTime.GetFloat();
+                break;
+            case SaunerState.ObservationDeck:
+                Text = "AirBath";
+                OptionTime = CustomOptionData.DeckTime.GetFloat();
+                break;
+            default:
+                return $"エラー({RoleData.CurrentState})({RoleData.SaunaTimer})(334秒)";
+        }
+        Text = ModTranslation.GetString("SaunerText" + Text);
+        if (RoleData.SaunaTimer < OptionTime)
+        {
+            Text += string.Format(ModTranslation.GetString("SaunerTextRemaing"), (int)(RoleData.SaunaTimer + 1));
+        }
+        return Text;
+    }
     public static void CheckAndFlash()
     {
-        if (RoleData.LastSaunerFlash)
+        if (RoleData.LastSaunerFlash && !MeetingHud.Instance)
             Seer.ShowFlash(GetFlashColor(RoleData.CurrentState), 6, CheckAndFlash);
     }
     public static void FixedUpdate()
     {
-        bool IsRoom = CheckRoom(RoleData.CurrentState, PlayerControl.LocalPlayer.transform.position);
-        if (RoleData.LastSaunerFlash != IsRoom)
+        if (!MeetingHud.Instance)
         {
-            RoleData.LastSaunerFlash = IsRoom;
-            if (IsRoom)
-                CheckAndFlash();
-            else
-                Seer.HideFlash();
-            Logger.Info(RoleData.CurrentState + ":" + IsRoom);
+            bool IsRoom = CheckRoom(RoleData.CurrentState, PlayerControl.LocalPlayer.transform.position);
+            if (RoleData.LastSaunerFlash != IsRoom)
+            {
+                RoleData.LastSaunerFlash = IsRoom;
+                if (IsRoom)
+                    CheckAndFlash();
+                else
+                    Seer.HideFlash();
+                Logger.Info(RoleData.CurrentState + ":" + IsRoom);
+            }
         }
         if (RoleData.LastSaunerFlash)
         {
@@ -148,6 +196,30 @@ public static class Sauner
                         break;
                 }
             }
+        }
+        if (RoleData.TaskText == null)
+        {
+            var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
+            task.transform.SetParent(PlayerControl.LocalPlayer.transform, false);
+            PlayerControl.LocalPlayer.myTasks.Insert(1, task);
+            task.HasLocation = true;
+            RoleData.TaskText = task;
+        }
+        Color color = GetFlashColor(RoleData.CurrentState);
+        color.a = 1f;
+        RoleData.TaskText.Text = "<size=0%>Sauner</size>" + ModHelpers.Cs(color, $"{ModTranslation.GetString($"Sauner{RoleData.CurrentState}")}: {GetSaunaText()}");
+        int index = 0;
+        foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
+        {
+            NormalPlayerTask npt = t.TryCast<NormalPlayerTask>();
+            if (npt != null)
+            {
+                if (npt.Length != NormalPlayerTask.TaskLength.Common)
+                    PlayerControl.LocalPlayer.myTasks.RemoveAt(index);
+                else
+                    npt.HasLocation = false;
+            }
+            index++;
         }
     }
 

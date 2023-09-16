@@ -111,6 +111,8 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
+                SoundManager.Instance.PlaySound(ContentManager.GetContent<AudioClip>("test.ogg"), false);
+                return;
                 HudManager.Instance.ShowPopUp("スマソ。無理やわ。");
                 return;
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";

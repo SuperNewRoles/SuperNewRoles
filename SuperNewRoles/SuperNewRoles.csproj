@@ -33,10 +33,16 @@
     </Target>
 
     <ItemGroup>
+        <PackageReference Include="Costura.Fody" Version="5.7.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="GitInfo" Version="2.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="BepInEx.AutoPlugin" Version="1.0.1" PrivateAssets="all" />
+        <PackageReference Include="HashDepot" Version="3.1.0" />
+        <PackageReference Include="NVorbis" Version="0.10.5" />
     </ItemGroup>
 </Project>
