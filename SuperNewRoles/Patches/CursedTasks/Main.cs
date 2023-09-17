@@ -18,7 +18,6 @@ public static class Main
         IsCursed = CursedTask.GetBool() && ModeHandler.IsMode(ModeId.Default);
 
         CursedDivertPowerTask.Data = new();
-        CursedDivertPowerTask.Change = false;
 
         CursedDressUpTask.IsDisabledPlatform = false;
 

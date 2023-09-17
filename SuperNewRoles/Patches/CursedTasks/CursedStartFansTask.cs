@@ -31,8 +31,9 @@ public class CursedStartFansTask
                 else
                 {
                     CodeData[i] = 0;
-                    __instance.CodeIcons[i].GetComponent<PassiveButton>().OnClick = new();
-                    __instance.CodeIcons[i].GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => __instance.RotateImage(target)));
+                    PassiveButton button = __instance.CodeIcons[i].GetComponent<PassiveButton>();
+                    button.OnClick = new();
+                    button.OnClick.AddListener((Action)(() => __instance.RotateImage(target)));
                 }
             }
         }
