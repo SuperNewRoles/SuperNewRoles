@@ -38,7 +38,13 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="BepInEx.AutoPlugin" Version="1.0.1" PrivateAssets="all" />
-        <PackageReference Include="HashDepot" Version="2.0.3" />
-        <PackageReference Include="NVorbis" Version="0.10.4" />
+      <PackageReference Include="HashDepot" Version="3.1.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="NVorbis" Version="0.10.5">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 </Project>

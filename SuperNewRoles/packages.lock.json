@@ -16,19 +16,19 @@
       },
       "HashDepot": {
         "type": "Direct",
-        "requested": "[2.0.3, )",
-        "resolved": "2.0.3",
-        "contentHash": "K033sUok3i8MhGM/10tX6Bq/7MTWZJxS3eAU1z+zFv6k2+1FV9+gEAuvZYHYYJeB4v8rbkaL9fHzLoHBZOTXDA==",
+        "requested": "[3.1.0, )",
+        "resolved": "3.1.0",
+        "contentHash": "F8LFywrmvtct3TB8JXNQ4Uhzx0m3me5yAievRwBIiO09SwL7qiV2A+mOxMB21QAAP7lwsW/V2xkBStzEnMGtJw==",
         "dependencies": {
-          "System.Memory": "4.5.3",
+          "System.Memory": "4.5.5",
           "System.Runtime": "4.3.1"
         }
       },
       "NVorbis": {
         "type": "Direct",
-        "requested": "[0.10.4, )",
-        "resolved": "0.10.4",
-        "contentHash": "WYnil3DhQHzjCY0dM9I2B3r1vWip90AOuQd25KE4NrjPQBg0tBJFluRLm5YPnO5ZLDmwrfosY8jCQGQRmWI/Pg==",
+        "requested": "[0.10.5, )",
+        "resolved": "0.10.5",
+        "contentHash": "o+IptCG4Avze39HrGeztC+xIp6fOOwGVAwkoa1J++4Ji1WmZ+KIKlFl5wsgxsXqBkmdpfs/vFSUproiLKYa2bw==",
         "dependencies": {
           "System.Memory": "4.5.3",
           "System.ValueTuple": "4.5.0"
@@ -46,8 +46,8 @@
       },
       "System.Memory": {
         "type": "Transitive",
-        "resolved": "4.5.3",
-        "contentHash": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA=="
+        "resolved": "4.5.5",
+        "contentHash": "XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw=="
       },
       "System.Runtime": {
         "type": "Transitive",
