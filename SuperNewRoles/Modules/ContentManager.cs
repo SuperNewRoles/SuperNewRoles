@@ -6,6 +6,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
+using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -17,6 +19,7 @@ public static class ContentManager
     private readonly static string BasePath = $@"{Path.GetDirectoryName(Application.dataPath)}\SuperNewRoles\DownloadContent\";
     private readonly static DirectoryInfo directory = new(BasePath);
     private const string ContentURL = "https://raw.githubusercontent.com/ykundesu/SupernewRolesData/main/Contents";
+    public static MD5 MD5Hash = MD5.Create();
     public static void Load()
     {
         if (!directory.Exists)
@@ -60,16 +63,9 @@ public static class ContentManager
             string[] pathes = path.Split(".");
             switch (pathes[pathes.Length - 1])
             {
-                case "ogg":
-                    using (var vorbis = new NVorbis.VorbisReader(GetStream(content)))
-                    {
-                        Debug.Log($"Found ogg ch={vorbis.Channels} freq={vorbis.SampleRate} samp={vorbis.TotalSamples}");
-                        float[] _audioBuffer = new float[vorbis.TotalSamples]; // Just dump everything
-                        int read = vorbis.ReadSamples(_audioBuffer, 0, (int)vorbis.TotalSamples);
-                        AudioClip audioClip = AudioClip.Create("NONAMECONTENTCLIP", (int)(vorbis.TotalSamples / vorbis.Channels), vorbis.Channels, vorbis.SampleRate, false);
-                        audioClip.SetData(_audioBuffer, 0);
-                        content.Value = audioClip;
-                    }
+                case "wav":
+                    AudioClip clip = WavLoader.ToAudioClip(GetStream(content));
+                    content.Value = clip;
                     break;
                 default:
                     Logger.Info($"このタイプは対応していません。対応してください。パス：{path}、拡張子:{path[path.Length - 1]}");
@@ -83,13 +79,21 @@ public static class ContentManager
         }
         return (T)content.Value;
     }
+    [HarmonyPatch(typeof(AmongUsClient),nameof(AmongUsClient.Awake))]
+    class AmongUsClientAwakePatch
+    {
+        public static void Postfix(AmongUsClient __instance)
+        {
+            __instance.StartCoroutine(Download().WrapToIl2Cpp());
+        }
+    }
     public static IEnumerator Download()
     {
         var request = UnityWebRequest.Get($"{ContentURL}/DownloadData.json");
         yield return request.SendWebRequest();
         if (request.isNetworkError || request.isHttpError)
         {
-            Logger.Info("Content一覧の取得に失敗しました。");
+            Logger.Info("ContentItiranError:一覧の取得に失敗しました。");
             yield break;
         }
         var json = JObject.Parse(request.downloadHandler.text);
@@ -110,18 +114,21 @@ public static class ContentManager
             {
                 FileStream stream = content.file.Open(FileMode.Open);
                 //ファイルが違う、やファイルの改ざんをチェック
-                content.Downloaded = content.hash == HashDepot.XXHash.Hash32(stream).ToString();
+                content.Downloaded = content.hash == BitConverter.ToString(MD5Hash.ComputeHash(stream)).Replace("-","");
+                Logger.Info($"ファイル：{content.WebPath}が存在しました。ハッシュチェック：{content.Downloaded}");
+                stream.Close();
+                stream.Dispose();
             }
         }
         foreach (DownloadedContent content in Contents.Values)
         {
             if (!content.Downloaded)
             {
-                request = UnityWebRequest.Get($"{ContentURL}/DownloadData.json");
+                request = UnityWebRequest.Get($"{ContentURL}/{content.WebPath}");
                 yield return request.SendWebRequest();
                 if (request.isNetworkError || request.isHttpError)
                 {
-                    Logger.Info("Content一覧の取得に失敗しました。");
+                    Logger.Info("Contentダウンロードに失敗しました。:"+content.WebPath);
                     yield break;
                 }
 
@@ -180,7 +187,8 @@ public static class ContentManager
         }
         Logger.Info("b");
         FileStream o_stream = new FileStream(BasePath + "ato." + Ex, FileMode.Open, FileAccess.Read);
-        Logger.Info("HASH:" + HashDepot.XXHash.Hash32(o_stream).ToString());
+        Logger.Info("HASH:" + BitConverter.ToString(MD5Hash.ComputeHash(o_stream)).Replace("-", ""));
+        o_stream.Close();
     }
 }
 public class DownloadedContent
