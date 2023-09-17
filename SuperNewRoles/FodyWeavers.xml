@@ -3,8 +3,6 @@
   <Costura>
     <IncludeAssemblies>
       NVorbis
-    </IncludeAssemblies>
-    <IncludeAssemblies>
       HashDepot
     </IncludeAssemblies>
   </Costura>

@@ -152,7 +152,7 @@ public static class Sauner
     }
     public static void FixedUpdate()
     {
-        if (!MeetingHud.Instance)
+        if (!RoleClass.IsMeeting)
         {
             bool IsRoom = CheckRoom(RoleData.CurrentState, PlayerControl.LocalPlayer.transform.position);
             if (RoleData.LastSaunerFlash != IsRoom)
@@ -164,6 +164,10 @@ public static class Sauner
                     Seer.HideFlash();
                 Logger.Info(RoleData.CurrentState + ":" + IsRoom);
             }
+        }
+        else
+        {
+            RoleData.LastSaunerFlash = false;
         }
         if (RoleData.LastSaunerFlash)
         {

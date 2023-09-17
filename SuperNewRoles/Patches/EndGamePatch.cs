@@ -258,7 +258,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
                 {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) },
-                {WinCondition.SaunerWin, ("SaunerName",Sauner.RoleData.color) }
+                {WinCondition.SaunerWin, ("SaunerRefreshing",Sauner.RoleData.color) }
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -382,7 +382,7 @@ public class EndGameManagerSetUpPatch
             }
         }
         Logger.Info("WINCOND:"+ AdditionalTempData.winCondition.ToString());
-        if (haison || AdditionalTempData.winCondition == WinCondition.PantsRoyalWin) textRenderer.text = text;
+        if (haison || AdditionalTempData.winCondition is WinCondition.PantsRoyalWin or WinCondition.SaunerWin) textRenderer.text = text;
         else if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) textRenderer.text = text + " " + ModTranslation.GetString("GodWinText");
         else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));

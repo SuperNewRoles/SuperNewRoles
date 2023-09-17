@@ -13,6 +13,8 @@ using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
+using HashDepot;
+using NVorbis;
 
 namespace SuperNewRoles;
 

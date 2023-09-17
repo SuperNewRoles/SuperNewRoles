@@ -1559,6 +1559,7 @@ SaunerTextRemaing,({0} seconds remaining),(残り{0}秒)
 SaunerDarkroomTime,Sauna Length of Stay,サウナタイム
 SaunerShowerTime,Time to take a shower,シャワータイム
 SaunerDeckTime,Outside air bath time,外気浴タイム
+SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！
 
 #NewRoleTranslation
 
