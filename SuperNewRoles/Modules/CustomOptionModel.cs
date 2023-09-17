@@ -32,7 +32,10 @@ public enum CustomOptionType
 public class CustomOption
 {
     public static List<CustomOption> options = new();
+    private static Dictionary<int, CustomOption> optionids = new();
     public static int preset = 0;
+    public static Dictionary<ushort, byte> CurrentValues;
+    public static bool IsValuesUpdated;
 
     public int id;
     public bool isSHROn;
@@ -42,7 +45,6 @@ public class CustomOption
     public System.Object[] selections;
 
     public int defaultSelection;
-    public ConfigEntry<int> entry;
     public int HostSelection;
     public int ClientSelection;
     public int ClientSelectedSelection;
@@ -97,6 +99,10 @@ public class CustomOption
     {
 
     }
+    public static CustomOption GetOption(int id)
+    {
+        return optionids.TryGetValue(id, out CustomOption opt) ? opt : null;
+    }
 
     public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId? roleId = null)
     {
@@ -123,10 +129,7 @@ public class CustomOption
             parent.children.Add(this);
         }
 
-        selection = 0;
-
-        entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", Id.ToString(), defaultSelection);
-        selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
+        selection = Mathf.Clamp(CurrentValues.TryGetValue((ushort)id, out byte valueselection) ? valueselection : defaultSelection, 0, selections.Length - 1);
 
         bool duplication = options.Any(x => x.id == Id);
         string duplicationString = $"CustomOptionのId({Id})が重複しています。";
@@ -164,6 +167,10 @@ public class CustomOption
                 break;
         }
         options.Add(this);
+        if (!optionids.TryAdd(id, this))
+        {
+            Logger.Info("optionidsの追加に失敗しました。");
+        }
     }
 
     public static int GenericIdMax = 0;
@@ -236,19 +243,41 @@ public class CustomOption
 
     public static void SwitchPreset(int newPreset)
     {
-        CustomOption.preset = newPreset;
-        foreach (CustomOption option in CustomOption.options)
+        OptionSaver.WriteNowPreset();
+        preset = newPreset;
+        (bool suc, int code, Dictionary<ushort,byte> data) = OptionSaver.LoadPreset(preset);
+        if (!suc && code == -1)
+        {
+            foreach (CustomOption option in options)
+            {
+                if (option.id <= 0) continue;
+                option.selection = option.defaultSelection;
+                if (option.optionBehaviour is not null and StringOption stringOption)
+                {
+                    stringOption.oldValue = stringOption.Value = option.selection;
+                    stringOption.ValueText.text = option.GetString();
+                }
+            }
+            CurrentValues = new();
+            OptionSaver.WriteNowPreset();
+            return;
+        } else if (!suc)
+        {
+            Logger.Info("CustomOptionGetPresetError:"+code.ToString());
+            return;
+        }
+        foreach (CustomOption option in options)
         {
             if (option.id <= 0) continue;
 
-            option.entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", option.id.ToString(), option.defaultSelection);
-            option.selection = Mathf.Clamp(option.entry.Value, 0, option.selections.Length - 1);
+            option.selection = Mathf.Clamp(data.TryGetValue((ushort)option.id, out byte value) ? value : option.defaultSelection, 0, option.selections.Length - 1);
             if (option.optionBehaviour is not null and StringOption stringOption)
             {
                 stringOption.oldValue = stringOption.Value = option.selection;
                 stringOption.ValueText.text = option.GetString();
             }
         }
+        CurrentValues = data;
     }
 
     public static void ShareOptionSelections(CustomOption opt)
@@ -353,13 +382,21 @@ public class CustomOption
 
             if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
             {
-                if (id == 0) SwitchPreset(selection); // Switch presets
-                else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+                if (id == 0)
                 {
-                    entry.Value = selection;
+                    SwitchPreset(selection);
+                    ShareOptionSelections();
+                } // Switch presets
+                else if (AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+                {
+                    CurrentValues[(ushort)id] = (byte)selection;
+                    IsValuesUpdated = true;
+                    ShareOptionSelections(this);// Share all selections
                 } // Save selection to config
-
-                ShareOptionSelections(this);// Share all selections
+                else
+                {
+                    ShareOptionSelections(this);    
+                }
             }
         }
     }
@@ -492,6 +529,19 @@ public class CustomOptionBlank : CustomOption
         return;
     }
 
+}
+
+[HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Close))]
+public static class GameSettingMenuClosePatch
+{
+    public static void Postfix()
+    {
+        if (CustomOption.IsValuesUpdated)
+        {
+            OptionSaver.WriteNowOptions();
+            CustomOption.IsValuesUpdated = false;
+        }
+    }
 }
 
 [HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
