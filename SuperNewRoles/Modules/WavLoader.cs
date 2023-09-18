@@ -104,7 +104,7 @@ public static class WavLoader
             _ => throw new ArgumentException($"bitPerSample is not supported : bitPerSample = {bitPerSample}")
         };
         Logger.Info(audioClipData.Length.ToString()+":Length");
-        var audioClip = AudioClip.Create(audioClipName, (audioClipData.Length / 2) - 20, channels, sampleRate, false);
+        var audioClip = AudioClip.Create(audioClipName, (audioClipData.Length / 2) - 30, channels, sampleRate, false);
         audioClip.SetData(audioClipData, 0);
         return audioClip;
     }

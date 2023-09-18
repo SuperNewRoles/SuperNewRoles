@@ -45,6 +45,7 @@ public static class Sauner
         public static bool LastSaunerFlash;
         public static float SaunaTimer;
         public static ImportantTextTask TaskText;
+        public static AudioSource Audio;
         public static Color32 color = new(219, 152, 101, byte.MaxValue);
 
         public static void ClearAndReload()
@@ -54,6 +55,7 @@ public static class Sauner
             LastSaunerFlash = false;
             SaunaTimer = CustomOptionData.DarkroomTime.GetFloat();
             TaskText = null;
+            Audio = null;
         }
     }
 
@@ -150,6 +152,26 @@ public static class Sauner
         if (RoleData.LastSaunerFlash && !MeetingHud.Instance)
             Seer.ShowFlash(GetFlashColor(RoleData.CurrentState), 6, CheckAndFlash);
     }
+    public static AudioSource GetAudio(SaunerState state)
+    {
+        AudioClip clip = null;
+        switch (state)
+        {
+            case SaunerState.Darkroom:
+                clip = ContentManager.GetContent<AudioClip>("Sauner_SaunaBGM.wav");
+                break;
+            case SaunerState.Shower:
+                clip = ContentManager.GetContent<AudioClip>("Sauner_ShowerBGM.wav");
+                break;
+            case SaunerState.ObservationDeck:
+                clip = ContentManager.GetContent<AudioClip>("Sauner_BardBGM.wav");
+                break;
+
+        }
+        if (clip != null)
+            return SoundManager.Instance.PlaySound(clip, true, audioMixer: SoundManager.Instance.sfxMixer);
+        return null;
+    }
     public static void FixedUpdate()
     {
         if (!RoleClass.IsMeeting)
@@ -159,15 +181,30 @@ public static class Sauner
             {
                 RoleData.LastSaunerFlash = IsRoom;
                 if (IsRoom)
+                {
                     CheckAndFlash();
+                    if (RoleData.Audio == null)
+                        RoleData.Audio = GetAudio(RoleData.CurrentState);
+                }
                 else
+                {
                     Seer.HideFlash();
-                Logger.Info(RoleData.CurrentState + ":" + IsRoom);
+                    if (RoleData.Audio != null)
+                    {
+                        RoleData.Audio.Stop();
+                        RoleData.Audio = null;
+                    }
+                }
             }
         }
         else
         {
             RoleData.LastSaunerFlash = false;
+            if (RoleData.Audio != null)
+            {
+                RoleData.Audio.Stop();
+                RoleData.Audio = null;
+            }
         }
         if (RoleData.LastSaunerFlash)
         {
