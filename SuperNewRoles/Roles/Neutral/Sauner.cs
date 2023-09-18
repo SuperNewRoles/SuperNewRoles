@@ -60,7 +60,7 @@ public static class Sauner
     }
 
     /// <summary>
-    /// 
+    /// 今の座標が指定した座標内に入っているかを判定する
     /// </summary>
     /// <param name="Up">左上の座標</param>
     /// <param name="Down">右下の座標</param>
