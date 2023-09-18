@@ -179,7 +179,7 @@ public class EndGameManagerSetUpPatch
         List<WinningPlayerData> list = TempData.winners.ToList().OrderBy(delegate (WinningPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
-        }).ToList<WinningPlayerData>();
+        }).ToList();
         for (int i = 0; i < list.Count; i++)
         {
             WinningPlayerData winningPlayerData2 = list[i];
@@ -203,7 +203,6 @@ public class EndGameManagerSetUpPatch
                 poolablePlayer.SetFlipX(i % 2 == 0);
             }
             poolablePlayer.UpdateFromPlayerOutfit((GameData.PlayerOutfit)winningPlayerData2, PlayerMaterial.MaskType.None, winningPlayerData2.IsDead, true);
-
             poolablePlayer.cosmetics.nameText.color = Color.white;
             poolablePlayer.cosmetics.nameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);

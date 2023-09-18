@@ -58,6 +58,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
         Instance = this;
         // All Load() Start
+        OptionSaver.Load();
         ConfigRoles.Load();
         WebAccountManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
@@ -67,6 +68,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomCosmetics.CustomColors.Load();
         ModDownloader.Load();
         CustomOptionHolder.Load();
+        LegacyOptionDataMigration.Load();
         AccountLoginMenu.Initialize();
         // All Load() End
 
