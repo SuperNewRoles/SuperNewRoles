@@ -210,6 +210,7 @@ public enum RoleId
     MadRaccoon,
     Moira,
     JumpDancer,
+    Pokerface,
     //RoleId
 }
 

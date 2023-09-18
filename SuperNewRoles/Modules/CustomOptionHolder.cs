@@ -1589,6 +1589,8 @@ public class CustomOptionHolder
 
         Moira.SetupCustomOptions();
 
+        Pokerface.CustomOptionData.SetupCustomOptions();
+
         // SetupNeutralCustomOptions
 
         /* |: ========================= Crewmate Settings ========================== :| */

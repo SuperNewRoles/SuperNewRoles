@@ -152,6 +152,7 @@ optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#94949
 preset,Preset,プリセット,预设,預設
 unitSeconds,Seconds,秒,秒,秒
 SettingPlayerCountName,Role Player,人数,人数,人數
+SettingTeamCountName,Team Count,チーム数
 CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式,直播模式
 CustomAutoUpdate,Auto Update,自動アップデート,自动更新,自動更新
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする,自动复制房间代码,自動複製房間代碼
@@ -1546,6 +1547,9 @@ ConjurerAddName,Compression,圧縮,施法,施法
 JumpDancerName,Jump Dancer,ジャンプダンサー,,跳跳舞者
 JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,,離開地球表面！
 JumpDancerButtonName,Jump,ジャンプ！,,跳！
+PokerfaceName,Pokerface,
+PokerfaceTitle1,,
+PokerfaceDescription,,
 
 #NewRoleTranslation
 
