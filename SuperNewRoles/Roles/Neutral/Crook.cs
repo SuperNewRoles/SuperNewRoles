@@ -7,14 +7,14 @@ public static class Crook
 {
     public static class CustomOptionData
     {
-        private static int optionId = 303600;
+        private const int optionId = 303600;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
 
         public static void SetupCustomOptions()
         {
-            Option = CustomOption.SetupCustomRoleOption(optionId, true, RoleId.Crook); optionId++;
-            PlayerCount = CustomOption.Create(optionId, true, CustomOptionType.Neutral, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], Option); optionId++;
+            Option = CustomOption.SetupCustomRoleOption(optionId, true, RoleId.Crook);
+            PlayerCount = CustomOption.Create(optionId + 1, true, CustomOptionType.Neutral, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], Option);
         }
     }
 
