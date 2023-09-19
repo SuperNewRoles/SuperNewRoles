@@ -313,16 +313,26 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance = 250,
+    BalancerBalance,
     PteranodonSetStatus,
     SetInfectionTimer,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
-    JumpDancerJump
+    JumpDancerJump,
+    SetPokerfaceTeam
 }
 
 public static class RPCProcedure
 {
+    public static void SetPokerfaceTeam(byte playerid1, byte playerid2, byte playerid3)
+    {
+        PlayerControl player1 = ModHelpers.PlayerById(playerid1);
+        PlayerControl player2 = ModHelpers.PlayerById(playerid2);
+        PlayerControl player3 = ModHelpers.PlayerById(playerid3);
+        if (player1 == null || player2 == null || player3 == null)
+            return;
+        Pokerface.RoleData.PokerfaceTeams.Add(new(player1,player2,player3));
+    }
     public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
     {
         (byte, byte) data = (player1, player2);
@@ -1972,7 +1982,9 @@ public static class RPCProcedure
                     case CustomRPC.JumpDancerJump:
                         JumpDancerJump(reader);
                         break;
-
+                    case CustomRPC.SetPokerfaceTeam:
+                        SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
                 }
             }
             catch (Exception e)

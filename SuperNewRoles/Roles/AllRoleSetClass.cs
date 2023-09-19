@@ -769,30 +769,32 @@ class AllRoleSetClass
                         int PokerFaceTeam = (int)Math.Truncate(NeutralPlayerNum / 3f);
                         for (int i = 1; i <= NeutralPlayerNum; i++)
                         {
-                            List<PlayerControl> PokerFacePlayer = new();
+                            PlayerControl[] PokerFacePlayer = new PlayerControl[3];
                             for (int i2 = 0; i2 < 3; i2++)
                             {
                                 PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
                                 p.SetRoleRPC(RoleId.Pokerface);
                                 CrewmatePlayers.Remove(p);
-                                PokerFacePlayer.Add(p);
+                                PokerFacePlayer[i2] = p;
                             }
                             NeutralPlayerNum = NeutralPlayerNum - 3;
+                            Pokerface.RpcSetPokerfaceTeam(PokerFacePlayer);
                         }
                         if (0 >= NeutralPlayerNum || 0 >= CrewmatePlayers.Count)
                             IsNotEndRandomSelect = false;
                     }
                     else if (PlayerCount * 3 >= CrewmatePlayers.Count)
                     {
-                        List<PlayerControl> PokerFacePlayer = new();
+                        PlayerControl[] PokerFacePlayer = new PlayerControl[3];
                         for (int i2 = 0; i2 < 3; i2++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(RoleId.Pokerface);
                             CrewmatePlayers.Remove(p);
-                            PokerFacePlayer.Add(p);
+                            PokerFacePlayer[i2] = p;
                         }
                         NeutralPlayerNum = NeutralPlayerNum - 3;
+                        Pokerface.RpcSetPokerfaceTeam(PokerFacePlayer);
                         if (0 >= NeutralPlayerNum || 0 >= CrewmatePlayers.Count)
                             IsNotEndRandomSelect = false;
                     }
@@ -800,15 +802,16 @@ class AllRoleSetClass
                     {
                         for (int i = 1; i <= PlayerCount; i++)
                         {
-                            List<PlayerControl> PokerFacePlayer = new();
+                            PlayerControl[] PokerFacePlayer = new PlayerControl[3];
                             for (int i2 = 0; i2 < 3; i2++)
                             {
                                 PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
                                 p.SetRoleRPC(RoleId.Pokerface);
                                 CrewmatePlayers.Remove(p);
-                                PokerFacePlayer.Add(p);
+                                PokerFacePlayer[i2] = p;
                             }
                             NeutralPlayerNum = NeutralPlayerNum - 3;
+                            Pokerface.RpcSetPokerfaceTeam(PokerFacePlayer);
                         }
                     }
                 }

@@ -52,7 +52,7 @@ public enum CustomGameOverReason
     TheThreeLittlePigsWin,
     OrientalShamanWin,
     BlackHatHackerWin,
-    MoiraWin,
+    MoiraWin
 }
 public enum WinCondition
 {
@@ -89,7 +89,8 @@ public enum WinCondition
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
-    PantsRoyalWin
+    PantsRoyalWin,
+    PokerfaceWin
 }
 class FinalStatusPatch
 {
@@ -254,7 +255,8 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
-                {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) }
+                {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) },
+                {WinCondition.PokerfaceWin,("PokerfaceName",Pokerface.RoleData.color) }
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -673,7 +675,8 @@ public static class OnGameEndPatch
             WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
             Moira.MoiraPlayer,
-            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player
+            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
+            Pokerface.RoleData.Player
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -1060,6 +1063,25 @@ public static class OnGameEndPatch
                         AdditionalTempData.winCondition = WinCondition.LoversWin;
                     }
                 }
+            }
+        }
+        //ポーカーフェイス勝利判定
+        isReset = false;
+        foreach (Pokerface.PokerfaceTeam team in Pokerface.RoleData.PokerfaceTeams)
+        {
+            if (team.CanWin())
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                foreach (PlayerControl teammember in team.TeamPlayers)
+                {
+                    TempData.winners.Add(new(teammember.Data));
+                }
+                AdditionalTempData.winCondition = WinCondition.PokerfaceWin;
             }
         }
         isReset = false;
