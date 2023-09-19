@@ -1589,6 +1589,8 @@ public class CustomOptionHolder
 
         Moira.SetupCustomOptions();
 
+        Crook.CustomOptionData.SetupCustomOptions();  // [ ]MEMO:移動予定, 移動されていなかったら指摘ください。
+
         // SetupNeutralCustomOptions
 
         /* |: ========================= Crewmate Settings ========================== :| */

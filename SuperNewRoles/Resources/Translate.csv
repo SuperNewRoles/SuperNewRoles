@@ -1546,6 +1546,9 @@ ConjurerAddName,Compression,圧縮,施法,施法
 JumpDancerName,Jump Dancer,ジャンプダンサー,,跳跳舞者
 JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,,離開地球表面！
 JumpDancerButtonName,Jump,ジャンプ！,,跳！
+CrookName,Crook,詐欺師
+CrookTitle1,Sign this document and I promise you a happy future...,この書類にサインしてくれれば幸せな将来を約束しましょう...
+CrookDescription,As soon as the meeting starts，you can insure someone who is going to die before the next meeting.\nIf that person is killed OR expelled before the next meeting，the insurance money is received at the beginning of the meeting.\nWhen the insurance money is received，the whole group is notified at the end of the meeting that the crook has received the insurance money.\nThe con artist wins alone after receiving the insurance money for a set number of times.,会議開始してすぐに次の会議までに死にそうな人に保険をかけることが出来ます。\nその人が次の会議までにキルor追放されれば会議初回に保険金を受け取れます。\n保険金を受け取った時、会議終了時に全体に詐欺師が保険金を受け取った事が通知されます。\n設定回数保険金を受け取ったら単独勝利です。
 
 #NewRoleTranslation
 
