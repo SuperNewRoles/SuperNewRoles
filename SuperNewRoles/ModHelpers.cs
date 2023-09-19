@@ -19,6 +19,7 @@ using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Networking;
 
 namespace SuperNewRoles;
 
@@ -705,6 +706,12 @@ public static class ModHelpers
             newList.Add(item);
         }
         return newList;
+    }
+    public static AudioClip loadAudioClipFromWavResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
+    {
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        Stream stream = assembly.GetManifestResourceStream(path);
+        return WavLoader.ToAudioClip(stream, clipName);
     }
     public static Dictionary<string, AudioClip> CachedAudioClips = new();
     public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")

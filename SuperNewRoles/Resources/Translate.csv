@@ -1546,6 +1546,20 @@ ConjurerAddName,Compression,圧縮,施法,施法
 JumpDancerName,Jump Dancer,ジャンプダンサー,,跳跳舞者
 JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,,離開地球表面！
 JumpDancerButtonName,Jump,ジャンプ！,,跳！
+SaunerName,Sauner,サウナー
+SaunerTitle1,Yeah，it's exhilarating.,あ～、ととのう～
+SaunerDescription,The darkroom，showers，and observation deck，in that order，are the sole winners after spending a certain amount of time in each of these locations.,暗室、シャワー、展望デッキの順番で、それぞれの箇所で一定時間過ごすと単独勝利します。
+SaunerDarkroom,Darkroom,暗室
+SaunerShower,Shower,シャワー
+SaunerObservationDeck,Observation deck,展望デッキ
+SaunerTextInSauna,take a sauna,サウナに入る
+SaunerTextShower,take a shower,シャワーを浴びる
+SaunerTextAirBath,Take a refreshing outdoor bath!,外気浴でととのう
+SaunerTextRemaing,({0} seconds remaining),(残り{0}秒)
+SaunerDarkroomTime,Sauna Length of Stay,サウナタイム
+SaunerShowerTime,Time to take a shower,シャワータイム
+SaunerDeckTime,Outside air bath time,外気浴タイム
+SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！
 
 #NewRoleTranslation
 
