@@ -29,6 +29,12 @@ public static class Crook
         }
     }
 
-
+    internal static class Ability
+    {
+        private static class Button
+        {
+            private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CrookButton.png", 115f);
+        }
+    }
     // ここにコードを書きこんでください
 }
