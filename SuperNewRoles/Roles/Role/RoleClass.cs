@@ -47,6 +47,7 @@ public static class RoleClass
         IsfirstResetCool = true;
         RandomSpawn.IsFirstSpawn = true;
         DeadPlayer.ClearAndReloads();
+        ReportDeadBodyPatch.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
