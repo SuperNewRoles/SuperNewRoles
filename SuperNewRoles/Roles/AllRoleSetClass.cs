@@ -1120,6 +1120,7 @@ class AllRoleSetClass
             RoleId.MadRaccoon => MadRaccoon.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.Moira => Moira.MoiraPlayerCount.GetFloat(),
             RoleId.JumpDancer => JumpDancer.JumpDancerPlayerCount.GetFloat(),
+            RoleId.WellBehaver => WellBehaver.WellBehaverPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };

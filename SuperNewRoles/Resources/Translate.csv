@@ -1546,6 +1546,13 @@ ConjurerAddName,Compression,圧縮,施法,施法
 JumpDancerName,Jump Dancer,ジャンプダンサー,,跳跳舞者
 JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,,離開地球表面！
 JumpDancerButtonName,Jump,ジャンプ！,,跳！
+WellBehaverName,Well Behaver,品行方正
+WellBehaverTitle1,Be sure to conduct yourself in a dignified manner.,品行方正な行いを心がけましょう
+WellBehaverDescription,This position is a crew member but has no tasks.\nInstead， you must pick up trash that someone drops.\nWhen a certain number of trash accumulates， the person cannot stand it any longer and dies.,この役職はクルーですがタスクがありません\nその代わり、誰かが落としていくゴミを拾う必要があります\nゴミが一定数以上溜まると耐えきれなくなって死亡してしまいます
+WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数
+WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度
+WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える
+WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う
 
 #NewRoleTranslation
 

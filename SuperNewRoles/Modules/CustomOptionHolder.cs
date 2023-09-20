@@ -2008,6 +2008,8 @@ public class CustomOptionHolder
 
         Knight.SetupCustomOptions();
 
+        WellBehaver.SetupCustomOptions();
+
         // SetupCrewmateCustomOptions
 
         /* |: ========================= Modifiers Settings ========================== :| */
