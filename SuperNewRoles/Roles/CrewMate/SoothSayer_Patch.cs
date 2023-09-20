@@ -5,12 +5,11 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
 class SoothSayer_updatepatch
 {
-    static void Postfix(MeetingHud __instance)
+    internal static void UpdateButtonsPostfix(MeetingHud __instance)
     {
-        if (PlayerControl.LocalPlayer.IsDead() && PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer))
+        if (PlayerControl.LocalPlayer.IsDead())
         {
             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }

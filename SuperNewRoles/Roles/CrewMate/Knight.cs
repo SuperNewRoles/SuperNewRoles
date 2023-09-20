@@ -59,16 +59,11 @@ public static class Knight
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 class KnightProtected_Patch
 {
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
-    class KnightProtected_updatepatch
+    internal static void UpdateButtonsPostfix(MeetingHud __instance)
     {
-        static void Postfix(MeetingHud __instance)
+        if (PlayerControl.LocalPlayer.IsDead())
         {
-            //もし プレイヤーが騎士であり尚且つ死んでいる場合
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && PlayerControl.LocalPlayer.IsDead())
-            {
-                KnightProtectButtonDestroy(__instance);
-            }
+            KnightProtectButtonDestroy(__instance);
         }
     }
     /// <summary>

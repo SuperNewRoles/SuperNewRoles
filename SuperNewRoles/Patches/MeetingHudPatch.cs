@@ -561,6 +561,25 @@ class MeetingHudUpdateButtonsPatch
         }
         return false;
     }
+    static void Postfix(MeetingHud __instance)
+    {
+        var role = PlayerControl.LocalPlayer.GetRole();
+        switch (role)
+        {
+            case RoleId.SoothSayer:
+                SoothSayer_updatepatch.UpdateButtonsPostfix(__instance);
+                break;
+            case RoleId.MeetingSheriff:
+                Meetingsheriff_updatepatch.UpdateButtonsPostfix(__instance);
+                break;
+            case RoleId.Knight:
+                KnightProtected_Patch.UpdateButtonsPostfix(__instance);
+                break;
+            case RoleId.Balancer:
+                Balancer.Balancer_updatepatch.UpdateButtonsPostfix(__instance);
+                break;
+        }
+    }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateButtons))]
 class MeetingHudPopulateButtonsPatch
