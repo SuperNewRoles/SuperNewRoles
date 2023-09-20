@@ -388,7 +388,6 @@ public static class Balancer
             }
         }
     }
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     public static class Balancer_Patch
     {
         private static string nameData;
@@ -413,7 +412,7 @@ public static class Balancer
         }
         static void Event(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Balancer) && PlayerControl.LocalPlayer.IsAlive() && !IsAbilityUsed)
+            if (PlayerControl.LocalPlayer.IsAlive() && !IsAbilityUsed)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -436,7 +435,7 @@ public static class Balancer
             }
         }
 
-        static void Postfix(MeetingHud __instance)
+        internal static void MeetingHudStartPostfix(MeetingHud __instance)
         {
             Event(__instance);
         }

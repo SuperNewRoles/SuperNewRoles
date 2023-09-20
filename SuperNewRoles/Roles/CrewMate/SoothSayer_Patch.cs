@@ -15,7 +15,6 @@ class SoothSayer_updatepatch
         }
     }
 }
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 public static class SoothSayer_Patch
 {
     private static string nameData;
@@ -138,7 +137,7 @@ public static class SoothSayer_Patch
         }
     }
 
-    static void Postfix(MeetingHud __instance)
+    public static void MeetingHudStartPostfix(MeetingHud __instance)
     {
         Event(__instance);
         SpiritEvent(__instance);

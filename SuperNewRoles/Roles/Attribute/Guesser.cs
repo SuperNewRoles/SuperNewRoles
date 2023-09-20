@@ -265,7 +265,7 @@ class Guesser
                     }
                     else
                     {
-                        __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                        __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); }); // [ ]MEMO : 使用後ボタン削除
                     }
                     // Shoot player and send chat info if activated
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GuesserShoot, SendOption.Reliable, -1);
@@ -293,12 +293,11 @@ class Guesser
             return !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser, RoleId.EvilGuesser) && guesserUI != null);
         }
     }
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-    class StartMeetingPatch
+    public class StartMeetingPatch
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilGuesser, RoleId.NiceGuesser) && (RoleClass.NiceGuesser.Count > 0 || RoleClass.NiceGuesser.Count == -1))
+            if (RoleClass.NiceGuesser.Count is > 0 or (-1))
             {
                 createGuesserButton(__instance);
             }

@@ -724,6 +724,20 @@ class MeetingHudStartPatch
         {
             switch (PlayerControl.LocalPlayer.GetRole())
             {
+                case RoleId.SoothSayer:
+                case RoleId.SpiritMedium:
+                    SoothSayer_Patch.MeetingHudStartPostfix(__instance);
+                    break;
+                case RoleId.EvilGuesser:
+                case RoleId.NiceGuesser:
+                    Roles.Attribute.Guesser.StartMeetingPatch.Postfix(__instance);
+                    break;
+                case RoleId.Knight:
+                    KnightProtected_Patch.MeetingHudStartPostfix(__instance);
+                    break;
+                case RoleId.Balancer:
+                    Balancer.Balancer_Patch.MeetingHudStartPostfix(__instance);
+                    break;
                 case RoleId.Moira:
                     Moira.StartMeeting(__instance);
                     break;
