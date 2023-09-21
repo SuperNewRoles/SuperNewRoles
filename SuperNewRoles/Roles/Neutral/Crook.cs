@@ -118,7 +118,7 @@ public static class Crook
                 if (AmongUsClient.Instance.AmHost)
                 {
                     // [x]MEMO : 追放画面で保険金受給の有無をチャット通知
-                    string chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), ModHelpers.GetPlayerControl(targetId))}</align>";
+                    string chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), ModHelpers.GetPlayerControl(targetId).GetDefaultName())}</align>";
                     AddChatPatch.ChatInformation(ModHelpers.GetPlayerControl(crookId), ModTranslation.GetString("CrookName"), chatText, "#60a1bd");
                 }
 
