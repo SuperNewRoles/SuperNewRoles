@@ -314,12 +314,13 @@ public enum CustomRPC
     SetVisible,
     PenguinMeetingEnd,
     PteranodonSetStatus,
-    BalancerBalance = 250,
+    BalancerBalance,
     SetInfectionTimer,
     SendMeetingTurnNow,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
-    JumpDancerJump
+    JumpDancerJump,
+    CrookSaveSignDictionary,
 }
 
 public static class RPCProcedure
@@ -1976,7 +1977,9 @@ public static class RPCProcedure
                     case CustomRPC.JumpDancerJump:
                         JumpDancerJump(reader);
                         break;
-
+                    case CustomRPC.CrookSaveSignDictionary:
+                        Crook.Ability.SaveDic(reader.ReadByte(), reader.ReadByte());
+                        break;
                 }
             }
             catch (Exception e)

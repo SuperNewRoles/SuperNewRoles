@@ -578,6 +578,9 @@ class MeetingHudUpdateButtonsPatch
             case RoleId.Balancer:
                 Balancer.Balancer_updatepatch.UpdateButtonsPostfix(__instance);
                 break;
+            case RoleId.Crook:
+                Crook.Ability.Button.UpdateButtonsPostfix(__instance);
+                break;
         }
     }
 }
@@ -724,6 +727,11 @@ class MeetingHudStartPatch
         {
             switch (PlayerControl.LocalPlayer.GetRole())
             {
+                case RoleId.Moira:
+                    Moira.StartMeeting(__instance);
+                    break;
+
+                // 以下ネームプレート上の ボタン表示
                 case RoleId.SoothSayer:
                 case RoleId.SpiritMedium:
                     SoothSayer_Patch.MeetingHudStartPostfix(__instance);
@@ -738,8 +746,8 @@ class MeetingHudStartPatch
                 case RoleId.Balancer:
                     Balancer.Balancer_Patch.MeetingHudStartPostfix(__instance);
                     break;
-                case RoleId.Moira:
-                    Moira.StartMeeting(__instance);
+                case RoleId.Crook:
+                    Crook.Ability.Button.MeetingHudStartPostfix(__instance);
                     break;
             }
         }
