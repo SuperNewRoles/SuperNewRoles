@@ -5,8 +5,10 @@ using Hazel;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using HarmonyLib;
+using System.Text;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -39,12 +41,20 @@ public static class Crook
         /// </summary>
         /// <value>key : 会議回数 , value : ( key : 詐欺師のPlayerId , value : 保険を契約したプレイヤーのPlayerId )</value>
         internal static Dictionary<byte, Dictionary<byte, byte>> SignDictionary;
+        /// <summary>
+        /// 保険金受取回数記録
+        /// </summary>
+        /// <value>key : 詐欺師のPlayerId , value : 保険金を受け取った回数</value>
+        internal static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
 
+        internal static Dictionary<byte, byte> ReceivedTheInsuranceDictionary;
         public static void ClearAndReload()
         {
             Player = new();
             TimeForAbilityUse = CustomOptionData.TimeTheAbilityToInsureOthersIsAvailable.GetFloat();
             SignDictionary = new();
+            RecordOfTimesInsuranceClaimsAreReceived = new();
+            ReceivedTheInsuranceDictionary = new();
             Ability.Button.ClearAndReload();
         }
     }
@@ -52,6 +62,91 @@ public static class Crook
     [HarmonyPatch]
     internal static class Ability
     {
+        /// <summary>
+        /// 詐欺師と詐欺師が保険を掛けたプレイヤーの組み合わせを辞書に保存する。
+        /// </summary>
+        /// <param name="crookId">保険を掛けた詐欺師</param>
+        /// <param name="TargetId">保険が掛けられたプレイヤー</param>
+        internal static void SaveSignDictionary(byte crookId, byte TargetId)
+        {
+            if (RoleData.SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now))
+            {
+                RoleData.SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now][crookId] = TargetId;
+            }
+            else
+            {
+                Dictionary<byte, byte> dic = new()
+                {
+                    { crookId, TargetId }
+                };
+                RoleData.SignDictionary.Add(ReportDeadBodyPatch.MeetingTurn_Now, dic);
+            }
+
+            Logger.Info($"詐欺師({ModHelpers.GetPlayerControl(crookId).name})が, {ModHelpers.GetPlayerControl(TargetId).name}に保険を掛けさせました", "CrookAbility");
+        }
+
+        /// <summary>
+        /// 保険金の需給の有無を判定 及び 保存する
+        /// </summary>
+        internal static void SaveReceiptOfInsuranceProceeds()
+        {
+            // [ ]MEMO : 現状SHRSNR共用可能
+            RoleData.ReceivedTheInsuranceDictionary = new();
+
+            var previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1);
+            if (!RoleData.SignDictionary.TryGetValue(previousTurn, out var signSituationOfNowTurnDic)) return;
+
+            foreach (KeyValuePair<byte, byte> kvp in signSituationOfNowTurnDic)
+            {
+                var crookId = kvp.Key;
+                var targetId = kvp.Value;
+                if (ModHelpers.GetPlayerControl(targetId).IsAlive()) continue;
+
+                RoleData.SignDictionary[previousTurn][crookId] = targetId;
+                RoleData.ReceivedTheInsuranceDictionary[previousTurn] = targetId; // 現在ターンの需給の情報を保存
+
+                if (RoleData.RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(previousTurn, out var times))
+                {
+                    times++;
+                    RoleData.RecordOfTimesInsuranceClaimsAreReceived[crookId] = times;
+                }
+                else
+                {
+                    RoleData.RecordOfTimesInsuranceClaimsAreReceived.Add(crookId, 1);
+                }
+
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    // [x]MEMO : 追放画面で保険金受給の有無をチャット通知
+                    string chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), ModHelpers.GetPlayerControl(targetId))}</align>";
+                    AddChatPatch.ChatInformation(ModHelpers.GetPlayerControl(crookId), ModTranslation.GetString("CrookName"), chatText, "#60a1bd");
+                }
+
+                // [ ]MEMO : 此処で勝利フラグを建てる // [ ]MEMO : 勝利実行はスポーン時, この時に死んでいたら(会議キルを受けたら)実行されない
+            }
+        }
+
+        /// <summary>
+        /// 保険金の需給の有無を, 保存した辞書から取得し, アナウンスを作成する。
+        /// </summary>
+        /// <returns>bool : 保険金の需給の有無 / string : 保険金を受給した旨のアナウンステキスト </returns>
+        internal static (bool, string) GetIsReceivedTheInsuranceAndAnnounce() // [x]MEMO : 実行はパン屋.csで行う, 実行の有無と文字渡す
+        {
+            bool IsReceivedTheInsurance = false;
+            StringBuilder announceBuilder = new();
+            byte previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1);
+
+            foreach (KeyValuePair<byte, byte> kvp in RoleData.ReceivedTheInsuranceDictionary)
+            {
+                IsReceivedTheInsurance = true;
+                var target = ModHelpers.GetPlayerControl(kvp.Value);
+
+                announceBuilder.AppendLine($"{string.Format(ModTranslation.GetString("CrookReceiveAnnounce"), target.GetDefaultName())}");
+            }
+
+            return (IsReceivedTheInsurance, announceBuilder.ToString());
+        }
+
         internal static class Button
         {
             // |:========== ボタン関係の変数管理 ==========:|
@@ -116,7 +211,7 @@ public static class Crook
                 var crookId = PlayerControl.LocalPlayer.PlayerId;
 
                 // 詐欺師本人の記録
-                SaveDic(crookId, TargetId);
+                SaveSignDictionary(crookId, TargetId);
 
                 // 他者への記録の送信
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CrookSaveSignDictionary);
@@ -155,29 +250,6 @@ public static class Crook
                         });
                 }
             }
-        }
-
-        /// <summary>
-        /// 詐欺師と詐欺師が保険を掛けたプレイヤーの組み合わせを辞書に保存する。
-        /// </summary>
-        /// <param name="crookId">保険を掛けた詐欺師</param>
-        /// <param name="TargetId">保険が掛けられたプレイヤー</param>
-        internal static void SaveDic(byte crookId, byte TargetId)
-        {
-            if (RoleData.SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now))
-            {
-                RoleData.SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now][crookId] = TargetId;
-            }
-            else
-            {
-                Dictionary<byte, byte> dic = new()
-                {
-                    { crookId, TargetId }
-                };
-                RoleData.SignDictionary.Add(ReportDeadBodyPatch.MeetingTurn_Now, dic);
-            }
-
-            Logger.Info($"詐欺師({ModHelpers.GetPlayerControl(crookId).name})が, {ModHelpers.GetPlayerControl(TargetId).name}に保険を掛けさせました", "CrookAbility");
         }
     }
 }

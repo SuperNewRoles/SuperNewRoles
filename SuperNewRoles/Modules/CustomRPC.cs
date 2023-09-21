@@ -1978,7 +1978,7 @@ public static class RPCProcedure
                         JumpDancerJump(reader);
                         break;
                     case CustomRPC.CrookSaveSignDictionary:
-                        Crook.Ability.SaveDic(reader.ReadByte(), reader.ReadByte());
+                        Crook.Ability.SaveSignDictionary(reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

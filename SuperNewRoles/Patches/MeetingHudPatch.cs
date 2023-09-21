@@ -687,6 +687,7 @@ class MeetingHudStartPatch
         Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.TimerStop();
         TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
         MadRaccoon.Button.ResetShapeDuration(false);
+        Crook.Ability.SaveReceiptOfInsuranceProceeds();
         NiceMechanic.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Knight.ProtectedPlayer = null;

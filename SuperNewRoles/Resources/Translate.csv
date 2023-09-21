@@ -1552,6 +1552,8 @@ CrookDescription,As soon as the meeting starts，you can insure someone who is g
 CrookNumberOfInsuranceClaimsReceivedRequiredToWin,Number of insurance claims received required to win.,勝利に必要な保険金の受け取り数
 CrookTimeTheAbilityToInsureOthersIsAvailable,Time the ability to insure others is available.,保険をかけられる時間
 CrookErrorTargetAllladyDead,Since {0} was already dead，he could not be insured.,{0}は既に死亡していた為、保険を掛ける事ができませんでした。
+CrookReceiveAnnounce,It appears that someone has received the insurance money from the insurance policy that {0} had purchased.,誰かが{0}にかけられていた保険金を受け取ったようです。
+CrookReceiveSuccessChatAnnounce,It is possible to receive the insurance coverage that you have {0}.\nIf you are alive at the time of the expulsion process of the current meeting，you will receive the insurance benefit.,{0}にかけた保険金を受け取る事ができます。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。
 
 #NewRoleTranslation
 
