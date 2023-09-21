@@ -1,5 +1,12 @@
+using System;
+using System.Linq;
 using System.Collections.Generic;
+using Hazel;
+using SuperNewRoles.Patches;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 using UnityEngine;
+using HarmonyLib;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -27,20 +34,150 @@ public static class Crook
         public static List<PlayerControl> Player;
         public static Color32 color = new(96, 161, 189, byte.MaxValue);
         internal static float TimeForAbilityUse { get; private set; }
+        /// <summary>
+        /// 保険を契約させた詐欺師と, 契約したプレイヤーを保存する辞書
+        /// </summary>
+        /// <value>key : 会議回数 , value : ( key : 詐欺師のPlayerId , value : 保険を契約したプレイヤーのPlayerId )</value>
+        internal static Dictionary<byte, Dictionary<byte, byte>> SignDictionary;
 
         public static void ClearAndReload()
         {
             Player = new();
             TimeForAbilityUse = CustomOptionData.TimeTheAbilityToInsureOthersIsAvailable.GetFloat();
+            SignDictionary = new();
+            Ability.Button.ClearAndReload();
         }
     }
 
+    [HarmonyPatch]
     internal static class Ability
     {
-        private static class Button
+        internal static class Button
         {
+            // |:========== ボタン関係の変数管理 ==========:|
             private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CrookButton.png", 115f);
+            private static bool AllladyDead;
+
+            internal static void ClearAndReload()
+            {
+                AllladyDead = false;
+            }
+
+            // |:========================================:|
+
+            internal static void MeetingHudStartPostfix(MeetingHud __instance) // [ ]MEMO : (SHR, SNR双方で)ホストが動かす, 保険金受け取りのコードは此処にはおかない。
+                => ButtonCreate(__instance); // 詐欺師本人のみ実行するコード
+
+            private static void ButtonCreate(MeetingHud __instance)
+            {
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+                if (!PlayerControl.LocalPlayer.IsRole(RoleId.Crook)) return;
+                if (PlayerControl.LocalPlayer.IsDead())
+                {
+                    AllladyDead = true;
+                    return;
+                }
+
+                for (int i = 0; i < __instance.playerStates.Length; i++)
+                {
+                    PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                    var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+                    var playerRole = player.GetRole();
+
+                    // ネームプレートの対象が死亡している、又は自分自身ならば
+                    if (player.IsDead() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+
+                    GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+                    GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+                    targetBox.name = "CrookButton";
+                    targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
+                    SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+                    renderer.sprite = GetButtonSprite();
+                    renderer.sortingOrder = 0;
+                    PassiveButton button = targetBox.GetComponent<PassiveButton>();
+                    button.OnClick.RemoveAllListeners();
+                    byte TargetPlayerId = player.PlayerId;
+                    button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClick(TargetPlayerId, __instance)));
+                    Logger.Info($"{player.name}に[保険をかける]ボタンを作成します。", "CrookButton");
+                }
+            }
+
+            // ボタンを押したときの動作。
+            private static void OnClick(byte TargetId, MeetingHud __instance)
+            {
+                var target = ModHelpers.GetPlayerControl(TargetId);
+                if (target.IsDead())
+                {
+                    // 既に死亡していて保険をかけられなかった場合, チャットで警告を行う。
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("CrookErrorTargetAllladyDead"), target.name));
+                    return;
+                }
+
+                var crookId = PlayerControl.LocalPlayer.PlayerId;
+
+                // 詐欺師本人の記録
+                SaveDic(crookId, TargetId);
+
+                // 他者への記録の送信
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CrookSaveSignDictionary);
+                writer.Write(crookId);
+                writer.Write(TargetId);
+                writer.EndRPC();
+
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); }); // ボタン削除
+            }
+
+            /// <summary>
+            /// 会議中のボタン表示を常時更新する。
+            /// </summary>
+            /// <param name="__instance"></param>
+            internal static void UpdateButtonsPostfix(MeetingHud __instance)
+            {
+                if (AllladyDead) return; // 会議開始時点で死亡していた場合, 以下の処理を実行しないようにする。
+
+                if (PlayerControl.LocalPlayer.IsDead()) // [ ]MEMO : + 時間切れ時のボタン消去処理 (能力使用後のボタン消去はボタンの実行処理の中で行っている)
+                {
+                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); });
+                    AllladyDead = true;
+                }
+                else // 自身が生存しているなら
+                {
+                    __instance.playerStates.ToList().ForEach(x =>
+                        {
+                            if (x.transform.FindChild("CrookButton") != null)
+                            {
+                                var p = ModHelpers.PlayerById(x.TargetPlayerId);
+                                if (p.IsDead())
+                                {
+                                    UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject);
+                                }
+                            }
+                        });
+                }
+            }
+        }
+
+        /// <summary>
+        /// 詐欺師と詐欺師が保険を掛けたプレイヤーの組み合わせを辞書に保存する。
+        /// </summary>
+        /// <param name="crookId">保険を掛けた詐欺師</param>
+        /// <param name="TargetId">保険が掛けられたプレイヤー</param>
+        internal static void SaveDic(byte crookId, byte TargetId)
+        {
+            if (RoleData.SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now))
+            {
+                RoleData.SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now][crookId] = TargetId;
+            }
+            else
+            {
+                Dictionary<byte, byte> dic = new()
+                {
+                    { crookId, TargetId }
+                };
+                RoleData.SignDictionary.Add(ReportDeadBodyPatch.MeetingTurn_Now, dic);
+            }
+
+            Logger.Info($"詐欺師({ModHelpers.GetPlayerControl(crookId).name})が, {ModHelpers.GetPlayerControl(TargetId).name}に保険を掛けさせました", "CrookAbility");
         }
     }
-    // ここにコードを書きこんでください
 }
