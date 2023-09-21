@@ -36,26 +36,11 @@ public static class Crook
         public static List<PlayerControl> Player;
         public static Color32 color = new(96, 161, 189, byte.MaxValue);
         internal static float TimeForAbilityUse { get; private set; }
-        /// <summary>
-        /// 保険を契約させた詐欺師と, 契約したプレイヤーを保存する辞書
-        /// </summary>
-        /// <value>key : 会議回数 , value : ( key : 詐欺師のPlayerId , value : 保険を契約したプレイヤーのPlayerId )</value>
-        internal static Dictionary<byte, Dictionary<byte, byte>> SignDictionary;
-        /// <summary>
-        /// 保険金受取回数記録
-        /// </summary>
-        /// <value>key : 詐欺師のPlayerId , value : 保険金を受け取った回数</value>
-        internal static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
-
-        internal static Dictionary<byte, byte> ReceivedTheInsuranceDictionary;
         public static void ClearAndReload()
         {
             Player = new();
             TimeForAbilityUse = CustomOptionData.TimeTheAbilityToInsureOthersIsAvailable.GetFloat();
-            SignDictionary = new();
-            RecordOfTimesInsuranceClaimsAreReceived = new();
-            ReceivedTheInsuranceDictionary = new();
-            Ability.Button.ClearAndReload();
+            Ability.ClearAndReload();
         }
     }
 
@@ -63,15 +48,36 @@ public static class Crook
     internal static class Ability
     {
         /// <summary>
+        /// 保険を契約させた詐欺師と, 契約したプレイヤーを保存する辞書
+        /// </summary>
+        /// <value>key : 会議回数 , value : ( key : 詐欺師のPlayerId , value : 保険を契約したプレイヤーのPlayerId )</value>
+        private static Dictionary<byte, Dictionary<byte, byte>> SignDictionary;
+        /// <summary>
+        /// 保険金受取回数記録
+        /// </summary>
+        /// <value>key : 詐欺師のPlayerId , value : 保険金を受け取った回数</value>
+        private static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
+
+        private static Dictionary<byte, byte> ReceivedTheInsuranceDictionary;
+
+        internal static void ClearAndReload()
+        {
+            SignDictionary = new();
+            RecordOfTimesInsuranceClaimsAreReceived = new();
+            ReceivedTheInsuranceDictionary = new();
+            Button.ClearAndReload();
+        }
+
+        /// <summary>
         /// 詐欺師と詐欺師が保険を掛けたプレイヤーの組み合わせを辞書に保存する。
         /// </summary>
         /// <param name="crookId">保険を掛けた詐欺師</param>
         /// <param name="TargetId">保険が掛けられたプレイヤー</param>
         internal static void SaveSignDictionary(byte crookId, byte TargetId)
         {
-            if (RoleData.SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now))
+            if (SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now))
             {
-                RoleData.SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now][crookId] = TargetId;
+                SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now][crookId] = TargetId;
             }
             else
             {
@@ -79,7 +85,7 @@ public static class Crook
                 {
                     { crookId, TargetId }
                 };
-                RoleData.SignDictionary.Add(ReportDeadBodyPatch.MeetingTurn_Now, dic);
+                SignDictionary.Add(ReportDeadBodyPatch.MeetingTurn_Now, dic);
             }
 
             Logger.Info($"詐欺師({ModHelpers.GetPlayerControl(crookId).name})が, {ModHelpers.GetPlayerControl(TargetId).name}に保険を掛けさせました", "CrookAbility");
@@ -91,10 +97,10 @@ public static class Crook
         internal static void SaveReceiptOfInsuranceProceeds()
         {
             // [ ]MEMO : 現状SHRSNR共用可能
-            RoleData.ReceivedTheInsuranceDictionary = new();
+            ReceivedTheInsuranceDictionary = new();
 
             var previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1);
-            if (!RoleData.SignDictionary.TryGetValue(previousTurn, out var signSituationOfNowTurnDic)) return;
+            if (!SignDictionary.TryGetValue(previousTurn, out var signSituationOfNowTurnDic)) return;
 
             foreach (KeyValuePair<byte, byte> kvp in signSituationOfNowTurnDic)
             {
@@ -102,17 +108,17 @@ public static class Crook
                 var targetId = kvp.Value;
                 if (ModHelpers.GetPlayerControl(targetId).IsAlive()) continue;
 
-                RoleData.SignDictionary[previousTurn][crookId] = targetId;
-                RoleData.ReceivedTheInsuranceDictionary[previousTurn] = targetId; // 現在ターンの需給の情報を保存
+                SignDictionary[previousTurn][crookId] = targetId;
+                ReceivedTheInsuranceDictionary[previousTurn] = targetId; // 現在ターンの需給の情報を保存
 
-                if (RoleData.RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(previousTurn, out var times))
+                if (RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(previousTurn, out var times))
                 {
                     times++;
-                    RoleData.RecordOfTimesInsuranceClaimsAreReceived[crookId] = times;
+                    RecordOfTimesInsuranceClaimsAreReceived[crookId] = times;
                 }
                 else
                 {
-                    RoleData.RecordOfTimesInsuranceClaimsAreReceived.Add(crookId, 1);
+                    RecordOfTimesInsuranceClaimsAreReceived.Add(crookId, 1);
                 }
 
                 if (AmongUsClient.Instance.AmHost)
@@ -136,7 +142,7 @@ public static class Crook
             StringBuilder announceBuilder = new();
             byte previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1);
 
-            foreach (KeyValuePair<byte, byte> kvp in RoleData.ReceivedTheInsuranceDictionary)
+            foreach (KeyValuePair<byte, byte> kvp in ReceivedTheInsuranceDictionary)
             {
                 IsReceivedTheInsurance = true;
                 var target = ModHelpers.GetPlayerControl(kvp.Value);
