@@ -100,7 +100,7 @@ public class WellBehaver
     {
         Garbage.AllGarbageObject?.SetActive(PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || WellBehaverAllPlayerCanSeeGarbage.GetBool() || PlayerControl.LocalPlayer.IsDead());
         if (!AmongUsClient.Instance.AmHost) return;
-        if (!WellBehaverPlayer.Any(x => x.IsAlive()) || RoleClass.IsMeeting) return;
+        if (AlivePlayer.Count <= 0 || RoleClass.IsMeeting) return;
         if (Garbage.AllGarbage.Count >= WellBehaverLimitTrashCount.GetInt() * AllowableLimitCorrection.Now)
         {
             foreach (PlayerControl player in WellBehaverPlayer)
@@ -135,7 +135,6 @@ public class WellBehaver
     {
         if (!AmongUsClient.Instance.AmHost) return;
         GarbageDumpingTimer.Clear();
-        if (!WellBehaverPlayer.Any(x => x.IsAlive())) return;
         foreach (PlayerControl player in AlivePlayer)
         {
             if (player.IsAlive()) continue;
@@ -167,7 +166,6 @@ public class WellBehaver
         public static void OnDestroyPostfix()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!WellBehaverPlayer.Any(x => x.IsAlive())) return;
             AlivePlayer = WellBehaverPlayer.FindAll(x => x.IsAlive());
             AllowableLimitCorrection = (WellBehaverPlayer.Count, WellBehaverPlayer.Count, WellBehaverPlayer.Count);
             WrapUp();
@@ -181,7 +179,6 @@ public class WellBehaver
         public static void AwakePostfix()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!WellBehaverPlayer.Any(x => x.IsAlive())) return;
             AllowableLimitCorrection = (AllowableLimitCorrection.Next, AllowableLimitCorrection.NexNex, AllowableLimitCorrection.NexNex);
             foreach (PlayerControl player in AlivePlayer)
             {

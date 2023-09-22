@@ -1652,6 +1652,8 @@ public class CustomOptionHolder
 
         JumpDancer.SetupCustomOptions();
 
+        WellBehaver.SetupCustomOptions();
+
         Balancer.SetupCustomOptions();
 
         MayorOption = SetupCustomRoleOption(400700, true, RoleId.Mayor);
@@ -2007,8 +2009,6 @@ public class CustomOptionHolder
         SpyCanUseVent = Create(405702, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
 
         Knight.SetupCustomOptions();
-
-        WellBehaver.SetupCustomOptions();
 
         // SetupCrewmateCustomOptions
 
