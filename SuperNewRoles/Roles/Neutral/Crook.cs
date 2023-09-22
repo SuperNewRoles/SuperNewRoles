@@ -39,21 +39,15 @@ public static class Crook
         internal static float NumberNeededWin { get; private set; }
 
         /// <summary>
-        /// 詐欺師が勝利条件を満たしているかを保存する。
+        /// 勝利条件 [ 指定回数の保険金を受領可能か ] を, 詐欺師全体で 満たしている者がいるかの判定を保存する。
         /// </summary>
-        /// <value>
-        /// Item1 => true : 会議開始時に最後の保険金の取得が可能である,
-        /// Item2 => true : 追放時に最後の保険金を受け取る事ができた
-        /// </value>
-        /// 2つフラグを保存するのは, [ 勝利条件を満たしたかの判定 (Meeting.start) ] と [ 勝利処理の実行 (WarpUp) ] の 実行タイミングが別の為。
-        internal static (bool, bool) IsWinFlag;
-
+        internal static bool FirstWinFlag;
 
         public static void ClearAndReload()
         {
             Player = new();
             TimeForAbilityUse = CustomOptionData.TimeTheAbilityToInsureOthersIsAvailable.GetFloat();
-            IsWinFlag = (false, false);
+            FirstWinFlag = false;
             NumberNeededWin = CustomOptionData.NumberOfInsuranceClaimsReceivedRequiredToWin.GetFloat();
             Ability.ClearAndReload();
         }
@@ -72,7 +66,7 @@ public static class Crook
         /// 保険金受取回数記録
         /// </summary>
         /// <value>key : 詐欺師のPlayerId , value : 保険金を受け取った回数</value>
-        internal static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
+        private static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
 
         /// <summary>
         /// 現在ターンで誰が誰の保険金を受け取っているか保存する。
@@ -148,14 +142,13 @@ public static class Crook
                     RecordOfTimesInsuranceClaimsAreReceived.Add(crookId, times);
                 }
 
-                if (AmongUsClient.Instance.AmHost)
-                {
-                    // [x]MEMO : 追放画面で保険金受給の有無をチャット通知
-                    bool privateWinFlag = times >= RoleData.NumberNeededWin; // 詐欺師個人の勝利判定の取得
-                    if (privateWinFlag) RoleData.IsWinFlag.Item1 = true; // IsWinFlag は 詐欺師全体の勝利判定を保存する。
-                    var remainingNumber = RoleData.NumberNeededWin - times;
-                    Logger.Info($"{crook.name} => 現在{times}回目の取得, 勝利に必要な回数は残り{remainingNumber}回", "crook");
+                bool privateWinFlag = times >= RoleData.NumberNeededWin; // 詐欺師個人の勝利判定の取得
+                if (privateWinFlag) RoleData.FirstWinFlag = true;
+                var remainingNumber = RoleData.NumberNeededWin - times;
+                Logger.Info($"{crook.name} => 現在{times}回目の取得, 勝利に必要な回数は残り{remainingNumber}回", "crook");
 
+                if (AmongUsClient.Instance.AmHost) // [x]MEMO : 追放画面で保険金受給の有無をチャット通知
+                {
                     string chatText;
                     if (privateWinFlag) chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSetWinFlagChatAnnounce"), target.GetDefaultName(), times)}</align>";
                     else chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), target.GetDefaultName(), times, remainingNumber)}</align>";
@@ -167,36 +160,53 @@ public static class Crook
         }
 
         /// <summary>
-        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら勝利処理を実行させる。
+        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行し, 更にゲストに実行させる。
         /// </summary>
         internal static void CheckWinWrapUp()
         {
             if (!AmongUsClient.Instance.AmHost) return;
+
             // 勝利条件を誰も満たしていなかったら以下を読まない。(無駄にforeach処理を読まない様, 会議開始時に記録した物を利用し, 2段階で判定している。)
-            if (!RoleData.IsWinFlag.Item1) return;
+            if (!RoleData.FirstWinFlag) return;
+
+            Logger.Info($"勝利条件を満たした 詐欺師が存在した", "FirstWinFlag");
+            bool crookFinalWinFlag = GetTheLastDecisionAndWinners().Item1; // 保険金受領場所に到達できたか
+            if (!crookFinalWinFlag) return; // 出来なかったら, return
+
+            // 全体に詐欺師の勝利処理を実行させる。
+            var reason = (GameOverReason)CustomGameOverReason.CrookWin;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
+            CheckGameEndPatch.CustomEndGame(reason, false);
+        }
+
+        /// <summary>
+        /// 勝利条件を達成していた詐欺師が, 勝利処理を実行可能か 判断する
+        /// </summary>
+        /// <returns>
+        /// Item1 => true : 保険金受領場所(追放画面)に到達し, 最後の保険金を受給できた。 / false : 保険金受領場所に到達できず, 最後の保険金を受給できなかった。,
+        /// Item2 => 勝利可能な詐欺師達
+        /// </returns>
+        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners() //　Item2をこのメソッドに変更して, 勝利リスト追加も此処に移行
+        {
+            List<PlayerControl> winners = new();
+            var winfLag = false;
 
             foreach (KeyValuePair<byte, byte> kvp in RecordOfTimesInsuranceClaimsAreReceived)
             {
                 bool privateWinFlag = kvp.Value >= RoleData.NumberNeededWin; // 詐欺師個人の勝利判定の取得
-                if (!privateWinFlag) continue; //
+                if (!privateWinFlag) continue;
 
                 var crook = ModHelpers.GetPlayerControl(kvp.Key);
                 if (crook.IsDead()) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
 
-                RoleData.IsWinFlag.Item2 = true; // 追放画面に遷移し最後の保険金を受け取れた。
-                Logger.Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "IsWinFlag.Item2");
-                break;
+                winfLag = true; // 追放画面に遷移し最後の保険金を受け取れた。
+                winners.Add(crook);
             }
 
-            if (!RoleData.IsWinFlag.Item2) return;
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
-            writer.Write((byte)CustomGameOverReason.CrookWin);
-            writer.EndRPC();
-            RPCProcedure.SetWinCond((byte)CustomGameOverReason.CrookWin);
+            if (winfLag) Logger.Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "FinalWinFlag");
+            else Logger.Info($"最後の保険金の受給にどの詐欺師もたどり着けなかった。", "FinalWinFlag");
 
-            var reason = (GameOverReason)CustomGameOverReason.CrookWin;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
-            CheckGameEndPatch.CustomEndGame(reason, false);
+            return (winfLag, winners);
         }
 
         /// <summary>

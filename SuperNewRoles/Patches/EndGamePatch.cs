@@ -1165,22 +1165,24 @@ public static class OnGameEndPatch
             AdditionalTempData.winCondition = WinCondition.MoiraWin;
         }
         isReset = false;
-        if (Crook.RoleData.IsWinFlag.Item1 && Crook.RoleData.IsWinFlag.Item2) // 勝利判定が実行される前に, 既に勝利条件を満たしている為 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)
+        // 詐欺師は, 勝利判定が実行される前に既に勝利条件を満たしている為, 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)
+        if (Crook.RoleData.FirstWinFlag)
         {
-            if (!((isDleted && changeTheWinCondition) || isReset))
+            (bool crookFinalWinFlag, List<PlayerControl> crookWinners) = Crook.Ability.GetTheLastDecisionAndWinners();
+            if (crookFinalWinFlag) // 最終的な勝利条件(受給回数, 生存, 最終の保管金の受領場所(追放処理)にたどり着いた) を 満たしている詐欺師がいたら
             {
-                TempData.winners = new();
-                isDleted = true;
-                isReset = true;
-            }
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
 
-            foreach (KeyValuePair<byte, byte> kvp in Crook.Ability.RecordOfTimesInsuranceClaimsAreReceived)
-            {
-                var crook = ModHelpers.GetPlayerControl(kvp.Key);
-                if (kvp.Value < Crook.RoleData.NumberNeededWin) continue;
-                if (crook.IsDead()) continue;
-                Logger.Info($"{crook.name}は勝利リストに入った","EndGame CrookWin");
-                TempData.winners.Add(new(crook.Data));
+                foreach (var winner in crookWinners)
+                {
+                    Logger.Info($"{winner.name}は勝利リストに入った", "EndGame CrookWin");
+                    TempData.winners.Add(new(winner.Data));
+                }
                 AdditionalTempData.winCondition = WinCondition.CrookWin;
             }
         }
