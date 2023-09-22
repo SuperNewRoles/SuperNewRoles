@@ -152,6 +152,7 @@ optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#94949
 preset,Preset,プリセット,预设,預設
 unitSeconds,Seconds,秒,秒,秒
 SettingPlayerCountName,Role Player,人数,人数,人數
+SettingTeamCountName,Team Count,チーム数
 CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式,直播模式
 CustomAutoUpdate,Auto Update,自動アップデート,自动更新,自動更新
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする,自动复制房间代码,自動複製房間代碼
@@ -1567,6 +1568,9 @@ WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数
 WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度
 WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える
 WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う
+PokerfaceName,Pokerface,ポーカーフェイス
+PokerfaceTitle1,Nothing，though?,なにもありませんけど？
+PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive, you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。
 
 #NewRoleTranslation
 

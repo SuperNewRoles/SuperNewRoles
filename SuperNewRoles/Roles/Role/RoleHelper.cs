@@ -131,7 +131,8 @@ public static class RoleHelpers
         RoleId.OrientalShaman or
         RoleId.BlackHatHacker or
         RoleId.Moira or
-        RoleId.Sauner;
+        RoleId.Sauner or
+        RoleId.Pokerface;
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
@@ -967,6 +968,9 @@ public static class RoleHelpers
             case RoleId.WellBehaver:
                 WellBehaver.WellBehaverPlayer.Add(player);
                 break;
+            case RoleId.Pokerface:
+                Pokerface.RoleData.Player.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1505,7 +1509,10 @@ public static class RoleHelpers
             case RoleId.WellBehaver:
                 WellBehaver.WellBehaverPlayer.RemoveAll(ClearRemove);
                 break;
-            // ロールリモベ
+            case RoleId.Pokerface:
+                Pokerface.RoleData.Player.RemoveAll(ClearRemove);
+                break;
+                // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1623,6 +1630,7 @@ public static class RoleHelpers
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
+            RoleId.Pokerface => Pokerface.CustomOptionData.CanUseVent.GetBool(),
             // ベントが使える
             _ => player.IsImpostor(),
         };
@@ -1993,6 +2001,7 @@ public static class RoleHelpers
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
             else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
+            else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
             // ロールチェック
         }
         catch (Exception e)
