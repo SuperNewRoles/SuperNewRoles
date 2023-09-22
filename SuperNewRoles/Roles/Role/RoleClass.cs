@@ -254,6 +254,7 @@ public static class RoleClass
         Moira.ClearAndReload();
         JumpDancer.ClearAndReload();
         Sauner.RoleData.ClearAndReload();
+        Rocket.RoleData.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

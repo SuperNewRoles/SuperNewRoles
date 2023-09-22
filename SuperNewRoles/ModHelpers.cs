@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -482,7 +483,20 @@ public static class ModHelpers
         return tasks.ToArray().ToList();
     }
     static float tien;
-
+    public static string GetStringByCount(char txt, int count)
+    {
+        StringBuilder builder = new();
+        for(int i = 0; i < count; i++)
+        {
+            builder.Append(txt);
+        }
+        return builder.ToString();
+    }
+    public static int GetDigit(int num)
+    {
+        // Mathf.Log10(0)はNegativeInfinityを返すため、別途処理する。
+        return (num == 0) ? 1 : ((int)Mathf.Log10(num) + 1);
+    }
     public static void SetSemiTransparent(this PoolablePlayer player, bool value)
     {
         float alpha = value ? 0.25f : 1f;

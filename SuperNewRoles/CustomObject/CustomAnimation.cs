@@ -63,17 +63,19 @@ public class CustomAnimation : MonoBehaviour
     public int Index { get; private set; }
     public AudioSource audioSource;
     public bool IsRewinding { get; private set; }
-    public static Sprite[] GetSprites(string path, int Count)
+    public static Sprite[] GetSprites(string path, int Count, int Digits=4)
     {
-        List<Sprite> Sprites = new();
+        Sprite[] Sprites = new Sprite[Count];
         for (int i = 1; i < Count + 1; i++)
         {
-            string countdata = "000" + i.ToString();
-            if (i >= 10)
+            int zerodigts = Digits - ModHelpers.GetDigit(Count);
+            if (zerodigts < 0)
             {
-                countdata = i >= 100 ? "0" + i.ToString() : "00" + i.ToString();
+                Logger.Info("Digitsミスってね？直して～～～");
+                return Sprites.ToArray();
             }
-            Sprites.Add(ModHelpers.LoadSpriteFromResources(path + "_" + countdata + ".png", 110f));
+            string countdata = ModHelpers.GetStringByCount('0',zerodigts) + i.ToString();
+            Sprites[Count - 1] = ModHelpers.LoadSpriteFromResources(path + "_" + countdata + ".png", 110f);
         }
         return Sprites.ToArray();
     }

@@ -18,6 +18,7 @@ using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
@@ -211,6 +212,7 @@ public enum RoleId
     Moira,
     JumpDancer,
     Sauner,
+    Rocket,
     //RoleId
 }
 
@@ -313,16 +315,46 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance = 250,
+    BalancerBalance,
     PteranodonSetStatus,
     SetInfectionTimer,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
-    JumpDancerJump
+    JumpDancerJump,
+    RocketSeize,
+    RocketLetsRocket
 }
 
 public static class RPCProcedure
 {
+    public static void RocketSeize(byte sourceid, byte targetid)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceid);
+        PlayerControl target = ModHelpers.PlayerById(targetid);
+        if (source == null || target == null)
+            return;
+        if (!Rocket.RoleData.RocketData.TryGetValue(source, out List<PlayerControl> players))
+            players = new();
+        players.Add(target);
+        Rocket.RoleData.RocketData[source] = players;
+    }
+    public static void RocketLetsRocket(byte sourceid)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceid);
+        if (source == null)
+            return;
+        if (!Rocket.RoleData.RocketData.TryGetValue(source, out List<PlayerControl> players))
+        {
+            Logger.Info("RocketMuri:ロケット無理でした。");
+            return;
+        }
+        foreach (PlayerControl player in players)
+        {
+            player.Exiled();
+            new GameObject("RocketDeadbody").AddComponent<RocketDeadbody>().Init(player);
+        }
+        Rocket.RoleData.RocketData.Remove(source);
+    }
     public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
     {
         (byte, byte) data = (player1, player2);
@@ -1972,7 +2004,12 @@ public static class RPCProcedure
                     case CustomRPC.JumpDancerJump:
                         JumpDancerJump(reader);
                         break;
-
+                    case CustomRPC.RocketSeize:
+                        RocketSeize(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.RocketLetsRocket:
+                        RocketLetsRocket(reader.ReadByte());
+                        break;
                 }
             }
             catch (Exception e)

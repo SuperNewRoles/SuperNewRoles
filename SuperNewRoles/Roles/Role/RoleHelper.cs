@@ -964,6 +964,9 @@ public static class RoleHelpers
             case RoleId.Sauner:
                 Sauner.RoleData.Player.Add(player);
                 break;
+            case RoleId.Rocket:
+                Rocket.RoleData.Player.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1499,6 +1502,9 @@ public static class RoleHelpers
         case RoleId.Sauner:
                 Sauner.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Rocket:
+                Rocket.RoleData.Player.RemoveAll(ClearRemove);
+                break;
                 // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
@@ -1985,6 +1991,7 @@ public static class RoleHelpers
             else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
+            else if (Rocket.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Rocket;
             // ロールチェック
         }
         catch (Exception e)
