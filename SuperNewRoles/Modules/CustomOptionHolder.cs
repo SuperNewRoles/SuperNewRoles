@@ -1654,6 +1654,8 @@ public class CustomOptionHolder
 
         JumpDancer.SetupCustomOptions();
 
+        WellBehaver.SetupCustomOptions();
+
         Balancer.SetupCustomOptions();
 
         MayorOption = SetupCustomRoleOption(400700, true, RoleId.Mayor);

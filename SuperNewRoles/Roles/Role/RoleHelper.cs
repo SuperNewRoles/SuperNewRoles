@@ -964,6 +964,9 @@ public static class RoleHelpers
             case RoleId.Sauner:
                 Sauner.RoleData.Player.Add(player);
                 break;
+            case RoleId.WellBehaver:
+                WellBehaver.WellBehaverPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1493,13 +1496,16 @@ public static class RoleHelpers
             case RoleId.Moira:
                 Moira.MoiraPlayer.RemoveAll(ClearRemove);
                 break;
-                case RoleId.JumpDancer:
+            case RoleId.JumpDancer:
                 JumpDancer.JumpDancerPlayer.RemoveAll(ClearRemove);
                 break;
-        case RoleId.Sauner:
+            case RoleId.Sauner:
                 Sauner.RoleData.Player.RemoveAll(ClearRemove);
                 break;
-                // ロールリモベ
+            case RoleId.WellBehaver:
+                WellBehaver.WellBehaverPlayer.RemoveAll(ClearRemove);
+                break;
+            // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1540,6 +1546,7 @@ public static class RoleHelpers
             case RoleId.SatsumaAndImo:
             case RoleId.ShermansServant:
             case RoleId.SidekickWaveCannon:
+            case RoleId.WellBehaver:
                 // タスククリアか 個別表記
                 IsTaskClear = true;
                 break;
@@ -1985,6 +1992,7 @@ public static class RoleHelpers
             else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
+            else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
             // ロールチェック
         }
         catch (Exception e)
