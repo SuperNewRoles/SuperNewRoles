@@ -36,10 +36,25 @@ public static class Crook
         public static List<PlayerControl> Player;
         public static Color32 color = new(96, 161, 189, byte.MaxValue);
         internal static float TimeForAbilityUse { get; private set; }
+        internal static float NumberNeededWin { get; private set; }
+
+        /// <summary>
+        /// 詐欺師が勝利条件を満たしているかを保存する。
+        /// </summary>
+        /// <value>
+        /// Item1 => true : 会議開始時に最後の保険金の取得が可能である,
+        /// Item2 => true : 追放時に最後の保険金を受け取る事ができた
+        /// </value>
+        /// 2つフラグを保存するのは, [ 勝利条件を満たしたかの判定 (Meeting.start) ] と [ 勝利処理の実行 (WarpUp) ] の 実行タイミングが別の為。
+        internal static (bool, bool) IsWinFlag;
+
+
         public static void ClearAndReload()
         {
             Player = new();
             TimeForAbilityUse = CustomOptionData.TimeTheAbilityToInsureOthersIsAvailable.GetFloat();
+            IsWinFlag = (false, false);
+            NumberNeededWin = CustomOptionData.NumberOfInsuranceClaimsReceivedRequiredToWin.GetFloat();
             Ability.ClearAndReload();
         }
     }
@@ -56,8 +71,11 @@ public static class Crook
         /// 保険金受取回数記録
         /// </summary>
         /// <value>key : 詐欺師のPlayerId , value : 保険金を受け取った回数</value>
-        private static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
-
+        internal static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
+        /// <summary>
+        /// 現在ターンで誰が誰の保険金を受け取っているか保存する。
+        /// (MeetingStartで前回ターンの情報を削除してから判定し保存, ExileController.Beginで参照する。)
+        /// </summary>
         private static Dictionary<byte, byte> ReceivedTheInsuranceDictionary;
 
         internal static void ClearAndReload()
@@ -92,25 +110,31 @@ public static class Crook
         }
 
         /// <summary>
-        /// 保険金の需給の有無を判定 及び 保存する
+        /// 保険金の受給の有無を判定 及び 保存する
         /// </summary>
         internal static void SaveReceiptOfInsuranceProceeds()
         {
             // [ ]MEMO : 現状SHRSNR共用可能
             ReceivedTheInsuranceDictionary = new();
 
-            var previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1);
-            if (!SignDictionary.TryGetValue(previousTurn, out var signSituationOfNowTurnDic)) return;
+            var previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1); // 前回ターンのターン数
+
+            if (!SignDictionary.TryGetValue(previousTurn, out var signSituationOfNowTurnDic)) return; // 前回ターンの詐欺情報が保存されていなかったら以下を読まない。
 
             foreach (KeyValuePair<byte, byte> kvp in signSituationOfNowTurnDic)
             {
-                var crookId = kvp.Key;
                 var targetId = kvp.Value;
-                if (ModHelpers.GetPlayerControl(targetId).IsAlive()) continue;
+                var target = ModHelpers.GetPlayerControl(targetId);
+                if (ModHelpers.GetPlayerControl(targetId).IsAlive()) continue; // ターゲットが生存していたら 以下を読まない
+
+                var crookId = kvp.Key;
+                var crook = ModHelpers.GetPlayerControl(crookId);
+                if (crook.IsDead()) continue; // 詐欺師が死亡していたら 以下を読まない
 
                 SignDictionary[previousTurn][crookId] = targetId;
-                ReceivedTheInsuranceDictionary[previousTurn] = targetId; // 現在ターンの需給の情報を保存
+                ReceivedTheInsuranceDictionary[previousTurn] = targetId; // 現在ターンの受給の情報を保存
 
+                // 詐欺師ごとの保険金受給回数を保存
                 if (RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(previousTurn, out var times))
                 {
                     times++;
@@ -118,24 +142,65 @@ public static class Crook
                 }
                 else
                 {
-                    RecordOfTimesInsuranceClaimsAreReceived.Add(crookId, 1);
+                    times = 1;
+                    RecordOfTimesInsuranceClaimsAreReceived.Add(crookId, times);
                 }
 
                 if (AmongUsClient.Instance.AmHost)
                 {
                     // [x]MEMO : 追放画面で保険金受給の有無をチャット通知
-                    string chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), ModHelpers.GetPlayerControl(targetId).GetDefaultName())}</align>";
-                    AddChatPatch.ChatInformation(ModHelpers.GetPlayerControl(crookId), ModTranslation.GetString("CrookName"), chatText, "#60a1bd");
-                }
+                    bool privateWinFlag = times >= RoleData.NumberNeededWin; // 詐欺師個人の勝利判定の取得
+                    if (privateWinFlag) RoleData.IsWinFlag.Item1 = true; // IsWinFlag は 詐欺師全体の勝利判定を保存する。
+                    var remainingNumber = RoleData.NumberNeededWin - times;
+                    Logger.Info($"{crook.name} => 現在{times}回目の取得, 勝利に必要な回数は残り{remainingNumber}回", "crook");
 
-                // [ ]MEMO : 此処で勝利フラグを建てる // [ ]MEMO : 勝利実行はスポーン時, この時に死んでいたら(会議キルを受けたら)実行されない
+                    string chatText;
+                    if (privateWinFlag) chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSetWinFlagChatAnnounce"), target.GetDefaultName(), times)}</align>";
+                    else chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), target.GetDefaultName(), times, remainingNumber)}</align>";
+                    AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), chatText, "#60a1bd");
+
+                    // [x]MEMO : 此処で勝利フラグを建てる // [x]MEMO : 勝利実行はスポーン時, この時に死んでいたら(会議キルを受けたら)実行されない
+                }
             }
         }
 
         /// <summary>
-        /// 保険金の需給の有無を, 保存した辞書から取得し, アナウンスを作成する。
+        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら勝利処理を実行させる。
         /// </summary>
-        /// <returns>bool : 保険金の需給の有無 / string : 保険金を受給した旨のアナウンステキスト </returns>
+        internal static void CheckWinWrapUp()
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            // 勝利条件を誰も満たしていなかったら以下を読まない。(無駄にforeach処理を読まない様, 会議開始時に記録した物を利用し, 2段階で判定している。)
+            if (!RoleData.IsWinFlag.Item1) return;
+
+            foreach (KeyValuePair<byte, byte> kvp in RecordOfTimesInsuranceClaimsAreReceived)
+            {
+                bool privateWinFlag = kvp.Value >= RoleData.NumberNeededWin; // 詐欺師個人の勝利判定の取得
+                if (!privateWinFlag) continue; //
+
+                var crook = ModHelpers.GetPlayerControl(kvp.Key);
+                if (crook.IsDead()) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
+
+                RoleData.IsWinFlag.Item2 = true; // 追放画面に遷移し最後の保険金を受け取れた。
+                Logger.Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "IsWinFlag.Item2");
+                break;
+            }
+
+            if (!RoleData.IsWinFlag.Item2) return;
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+            writer.Write((byte)CustomGameOverReason.CrookWin);
+            writer.EndRPC();
+            RPCProcedure.SetWinCond((byte)CustomGameOverReason.CrookWin);
+
+            var reason = (GameOverReason)CustomGameOverReason.CrookWin;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
+            CheckGameEndPatch.CustomEndGame(reason, false);
+        }
+
+        /// <summary>
+        /// 保険金の受給の有無を, 保存した辞書から取得し, アナウンスを作成する。
+        /// </summary>
+        /// <returns>bool : 保険金の受給の有無 / string : 保険金を受給した旨のアナウンステキスト </returns>
         internal static (bool, string) GetIsReceivedTheInsuranceAndAnnounce() // [x]MEMO : 実行はパン屋.csで行う, 実行の有無と文字渡す
         {
             bool IsReceivedTheInsurance = false;

@@ -1553,7 +1553,8 @@ CrookNumberOfInsuranceClaimsReceivedRequiredToWin,Number of insurance claims rec
 CrookTimeTheAbilityToInsureOthersIsAvailable,Time the ability to insure others is available.,保険をかけられる時間
 CrookErrorTargetAllladyDead,Since {0} was already dead，he could not be insured.,{0}は既に死亡していた為、保険を掛ける事ができませんでした。
 CrookReceiveAnnounce,It appears that someone has received the insurance money from the insurance policy that {0} had purchased.,誰かが{0}にかけられていた保険金を受け取ったようです。
-CrookReceiveSuccessChatAnnounce,It is possible to receive the insurance coverage that you have {0}.\nIf you are alive at the time of the expulsion process of the current meeting，you will receive the insurance benefit.,{0}にかけた保険金を受け取る事ができます。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。
+CrookReceiveSetWinFlagChatAnnounce,It is possible to receive the insurance coverage that you have {0}.This is the {1}th time you have received the insurance money. \nReceipt of this insurance payment satisfies the win condition.,{0}にかけた保険金を受け取る事ができます。今回は{1}回目の受給です。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。\n今回の受給により勝利条件を達成します。
+CrookReceiveSuccessChatAnnounce,It is possible to receive the insurance coverage that you have {0}.This is the {1}th time you have received the insurance money. \nIf you are alive at the time of the expulsion process of the current meeting，you will receive the insurance benefit.\nTo win，you need to receive {2} more times.,{0}にかけた保険金を受け取る事ができます。今回は{1}回目の受給です。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。\n勝利するには 後{2}回受け取る必要があります。
 
 #NewRoleTranslation
 

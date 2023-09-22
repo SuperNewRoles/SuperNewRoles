@@ -53,6 +53,7 @@ public enum CustomGameOverReason
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
+    CrookWin,
 }
 public enum WinCondition
 {
@@ -89,6 +90,7 @@ public enum WinCondition
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
+    CrookWin,
     PantsRoyalWin
 }
 class FinalStatusPatch
@@ -254,6 +256,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
+                {WinCondition.CrookWin,("CrookName",Crook.RoleData.color)},
                 {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) }
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
@@ -377,7 +380,7 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
-        Logger.Info("WINCOND:"+ AdditionalTempData.winCondition.ToString());
+        Logger.Info("WINCOND:" + AdditionalTempData.winCondition.ToString());
         if (haison || AdditionalTempData.winCondition == WinCondition.PantsRoyalWin) textRenderer.text = text;
         else if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) textRenderer.text = text + " " + ModTranslation.GetString("GodWinText");
@@ -673,7 +676,8 @@ public static class OnGameEndPatch
             WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
             Moira.MoiraPlayer,
-            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player
+            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
+            Crook.RoleData.Player
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -720,6 +724,7 @@ public static class OnGameEndPatch
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
         bool SafecrackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SafecrackerWin;
         bool BlackHatHackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.BlackHatHackerWin;
+        bool CrookWin = gameOverReason == (GameOverReason)CustomGameOverReason.CrookWin;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
         {
             JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -734,6 +739,7 @@ public static class OnGameEndPatch
             ArsonistWin = EndData == CustomGameOverReason.ArsonistWin;
             VultureWin = EndData == CustomGameOverReason.VultureWin;
             NeetWin = EndData == CustomGameOverReason.NeetWin;
+            CrookWin = EndData == CustomGameOverReason.CrookWin;
         }
         if (JesterWin)
         {
@@ -793,7 +799,7 @@ public static class OnGameEndPatch
             }
             AdditionalTempData.winCondition = WinCondition.DemonWin;
         }
-        else if (ArsonistWin)
+        else if (ArsonistWin)  // [ ]MEMO : あーそにすと勝利
         {
             TempData.winners = new();
             foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
@@ -1158,7 +1164,27 @@ public static class OnGameEndPatch
             TempData.winners.Add(new(Moira.Player.Data));
             AdditionalTempData.winCondition = WinCondition.MoiraWin;
         }
-        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+        isReset = false;
+        if (Crook.RoleData.IsWinFlag.Item1 && Crook.RoleData.IsWinFlag.Item2) // 勝利判定が実行される前に, 既に勝利条件を満たしている為 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)
+        {
+            if (!((isDleted && changeTheWinCondition) || isReset))
+            {
+                TempData.winners = new();
+                isDleted = true;
+                isReset = true;
+            }
+
+            foreach (KeyValuePair<byte, byte> kvp in Crook.Ability.RecordOfTimesInsuranceClaimsAreReceived)
+            {
+                var crook = ModHelpers.GetPlayerControl(kvp.Key);
+                if (kvp.Value < Crook.RoleData.NumberNeededWin) continue;
+                if (crook.IsDead()) continue;
+                Logger.Info($"{crook.name}は勝利リストに入った","EndGame CrookWin");
+                TempData.winners.Add(new(crook.Data));
+                AdditionalTempData.winCondition = WinCondition.CrookWin;
+            }
+        }
+        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer); // [x]MEMO : 同時に条件満たした詐欺師は同時勝利
         foxPlayers.AddRange(FireFox.FireFoxPlayer);
         isReset = false;
         foreach (PlayerControl player in foxPlayers)
@@ -1331,7 +1357,7 @@ public static class OnGameEndPatch
         Logger.Info("WELCOME!!!");
         if (ModeHandler.IsMode(ModeId.PantsRoyal))
         {
-            Logger.Info("Pants!!!!:"+(WinnerPlayer != null).ToString());
+            Logger.Info("Pants!!!!:" + (WinnerPlayer != null).ToString());
             if (WinnerPlayer != null)
             {
                 TempData.winners = new();
@@ -1343,11 +1369,11 @@ public static class OnGameEndPatch
                 TempData.winners = new();
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    Logger.Info(player.Data.Role.Role+":"+player.PlayerId.ToString()+":"+player.Data.PlayerName);
+                    Logger.Info(player.Data.Role.Role + ":" + player.PlayerId.ToString() + ":" + player.Data.PlayerName);
                     if (player.Data.Role.Role == AmongUs.GameOptions.RoleTypes.CrewmateGhost || player.Data.Role.Role == AmongUs.GameOptions.RoleTypes.Crewmate)
                     {
                         TempData.winners.Add(new WinningPlayerData(player.Data));
-                        Logger.Info("PASS!!!!!:"+player.Data.PlayerName+":"+player.PlayerId.ToString());
+                        Logger.Info("PASS!!!!!:" + player.Data.PlayerName + ":" + player.PlayerId.ToString());
                         break;
                     }
                 }
@@ -1361,7 +1387,7 @@ public static class OnGameEndPatch
                     AdditionalTempData.winCondition = WinCondition.NoWinner;
                     Logger.Info("ToNoWinner");
                 }
-                Logger.Info(AdditionalTempData.winCondition.ToString()+":WINCONDITION");
+                Logger.Info(AdditionalTempData.winCondition.ToString() + ":WINCONDITION");
             }
         }
         if (HAISON)
