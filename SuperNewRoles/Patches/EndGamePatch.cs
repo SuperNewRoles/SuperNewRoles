@@ -1079,7 +1079,9 @@ public static class OnGameEndPatch
                 }
                 foreach (PlayerControl teammember in team.TeamPlayers)
                 {
-                    TempData.winners.Add(new(teammember.Data));
+                    //ポーカーフェイスじゃない場合を考慮する
+                    if (teammember.IsRole(RoleId.Pokerface))
+                        TempData.winners.Add(new(teammember.Data));
                 }
                 AdditionalTempData.winCondition = WinCondition.PokerfaceWin;
             }
