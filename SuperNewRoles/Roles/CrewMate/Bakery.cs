@@ -166,13 +166,13 @@ public class Bakery
 
         if (isBakeryAlive) // パン屋 生存していたら実行
         {
-            Logger.Info("パン屋がパンを焼きました"); // ログ
+            Logger.Info("パン屋がパンを焼きました","ConfirmImpostorSecondText"); // ログ
             changeStringBuilder.AppendLine(GetExileText());
         }
 
         if (isCrookGetInsure.Item1) // 詐欺師 保険金受給していたら実行
         {
-            Logger.Info("詐欺師が保険金を受け取りました"); // ログ
+            Logger.Info("詐欺師が保険金を受け取りました","ConfirmImpostorSecondText"); // ログ
             changeStringBuilder.AppendLine(isCrookGetInsure.Item2);
         }
 
