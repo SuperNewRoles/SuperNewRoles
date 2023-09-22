@@ -67,15 +67,18 @@ public static class Crook
         /// </summary>
         /// <value>key : 会議回数 , value : ( key : 詐欺師のPlayerId , value : 保険を契約したプレイヤーのPlayerId )</value>
         private static Dictionary<byte, Dictionary<byte, byte>> SignDictionary;
+
         /// <summary>
         /// 保険金受取回数記録
         /// </summary>
         /// <value>key : 詐欺師のPlayerId , value : 保険金を受け取った回数</value>
         internal static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
+
         /// <summary>
         /// 現在ターンで誰が誰の保険金を受け取っているか保存する。
         /// (MeetingStartで前回ターンの情報を削除してから判定し保存, ExileController.Beginで参照する。)
         /// </summary>
+        /// <value>key : 保険金を需給できた詐欺師のプレイヤーID / value : 保険金を掛けられていた対象のプレイヤーID</value>
         private static Dictionary<byte, byte> ReceivedTheInsuranceDictionary;
 
         internal static void ClearAndReload()
@@ -131,8 +134,7 @@ public static class Crook
                 var crook = ModHelpers.GetPlayerControl(crookId);
                 if (crook.IsDead()) continue; // 詐欺師が死亡していたら 以下を読まない
 
-                SignDictionary[previousTurn][crookId] = targetId;
-                ReceivedTheInsuranceDictionary[previousTurn] = targetId; // 現在ターンの受給の情報を保存
+                ReceivedTheInsuranceDictionary[crookId] = targetId; // 今回ターンの 受給の状況を保存
 
                 // 詐欺師ごとの保険金受給回数を保存
                 if (RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(previousTurn, out var times))
@@ -231,7 +233,7 @@ public static class Crook
 
             // |:========================================:|
 
-            internal static void MeetingHudStartPostfix(MeetingHud __instance) // [ ]MEMO : (SHR, SNR双方で)ホストが動かす, 保険金受け取りのコードは此処にはおかない。
+            internal static void MeetingHudStartPostfix(MeetingHud __instance) // [x]MEMO : (SHR, SNR双方で)ホストが動かす, 保険金受け取りのコードは此処にはおかない。 <= meetingStartに詐欺師の処理が2つある
                 => ButtonCreate(__instance); // 詐欺師本人のみ実行するコード
 
             private static void ButtonCreate(MeetingHud __instance)
