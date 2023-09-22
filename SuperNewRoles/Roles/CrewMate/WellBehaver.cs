@@ -82,7 +82,7 @@ public class WellBehaver
                 WellBehaverPickUpGarbageButton.MaxTimer = 0f;
                 WellBehaverPickUpGarbageButton.Timer = WellBehaverPickUpGarbageButton.MaxTimer;
             },
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PteranodonButton.png", 115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WellBehaverButton.png", 115f),
             new Vector3(-2f, 0, 0),
             __instance,
             __instance.AbilityButton,
@@ -101,7 +101,7 @@ public class WellBehaver
         Garbage.AllGarbageObject?.SetActive(PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || WellBehaverAllPlayerCanSeeGarbage.GetBool() || PlayerControl.LocalPlayer.IsDead());
         if (!AmongUsClient.Instance.AmHost) return;
         if (AlivePlayer.Count <= 0 || RoleClass.IsMeeting) return;
-        if (Garbage.AllGarbage.Count >= WellBehaverLimitTrashCount.GetInt() * AllowableLimitCorrection.Now)
+        if (Garbage.AllGarbage.Count >= WellBehaverLimitTrashCount.GetInt() * AllowableLimitCorrection.Now && WellBehaverPlayer.Any(x => x.IsAlive()))
         {
             foreach (PlayerControl player in WellBehaverPlayer)
             {
@@ -109,10 +109,9 @@ public class WellBehaver
                 player.RpcMurderPlayer(player);
                 player.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
             }
-            return;
         }
 
-        List<byte> keys = GarbageDumpingTimer.Keys.ToList().FindAll(x => GameManager.Instance.LogicOptions.currentGameOptions.MapId != 4 || !IsWaitSpawn(ModHelpers.PlayerById(x)));
+        List<byte> keys = GarbageDumpingTimer.Keys.ToList().FindAll(x => (GameManager.Instance.LogicOptions.currentGameOptions.MapId != 4 || !IsWaitSpawn(ModHelpers.PlayerById(x))));
         foreach (byte id in keys)
         {
             PlayerControl player = ModHelpers.PlayerById(id);

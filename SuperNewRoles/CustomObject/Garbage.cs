@@ -34,7 +34,7 @@ public class Garbage
     {
         GarbageObject = new($"Garbage {Count}") { layer = 11 };
         GarbageObject.transform.SetParent(AllGarbageObject.transform);
-        GarbageObject.transform.position = new(pos.x, pos.y, pos.y / 1000f + 0.01f);
+        GarbageObject.transform.position = new(pos.x, pos.y, pos.y / 1000f - 1f);
 
         GarbageRenderer = GarbageObject.AddComponent<SpriteRenderer>();
         GarbageRenderer.sprite = GarbageSprites.GetRandom();
