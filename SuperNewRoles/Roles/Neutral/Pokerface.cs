@@ -14,12 +14,14 @@ public static class Pokerface
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption CanUseVent;
+        public static CustomOption WinnerOnlyAlive;
 
         public static void SetupCustomOptions()
         {
             Option = CustomOption.SetupCustomRoleOption(optionId, true, RoleId.Pokerface); optionId++;
             PlayerCount = CustomOption.Create(optionId, true, CustomOptionType.Neutral, "SettingTeamCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], Option); optionId++;
             CanUseVent = CustomOption.Create(optionId, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, Option); optionId++;
+            WinnerOnlyAlive = CustomOption.Create(optionId, true, CustomOptionType.Neutral, "PokerfaceWinnerOnlyAlive", false, Option); optionId++;
         }
     }
 
