@@ -1078,11 +1078,12 @@ public static class OnGameEndPatch
                     isReset = true;
                 }
                 foreach (PlayerControl teammember in team.TeamPlayers)
-                {
                     //ポーカーフェイスじゃない場合を考慮する
                     if (teammember.IsRole(RoleId.Pokerface))
+                        //生存者のみ勝利の設定が無効もしくは対象が生存している場合は追加する
+                        if (!Pokerface.CustomOptionData.WinnerOnlyAlive.GetBool() ||
+                            teammember.IsAlive())
                         TempData.winners.Add(new(teammember.Data));
-                }
                 AdditionalTempData.winCondition = WinCondition.PokerfaceWin;
             }
         }
