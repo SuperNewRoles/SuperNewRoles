@@ -111,7 +111,13 @@ public class WellBehaver
             }
         }
 
-        List<byte> keys = GarbageDumpingTimer.Keys.ToList().FindAll(x => (GameManager.Instance.LogicOptions.currentGameOptions.MapId != 4 || !IsWaitSpawn(ModHelpers.PlayerById(x))));
+        List<byte> keys = GarbageDumpingTimer.Keys.ToList().FindAll(x =>
+        {
+            PlayerControl player = ModHelpers.PlayerById(x);
+            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Airship && IsWaitSpawn(player)) return false;
+            if (player.inMovingPlat || player.onLadder) return false;
+            return true;
+        });
         foreach (byte id in keys)
         {
             PlayerControl player = ModHelpers.PlayerById(id);
