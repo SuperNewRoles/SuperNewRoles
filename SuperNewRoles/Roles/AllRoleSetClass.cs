@@ -1217,7 +1217,8 @@ class AllRoleSetClass
             RoleId.Revolutionist => false,
             RoleId.Assassin => false,
             RoleId.Jumbo => false,
-            RoleId.Nun or RoleId.Pteranodon or RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
+            RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
+            RoleId.Nun or RoleId.Pteranodon => UnityEngine.Object.FindAnyObjectByType<MovingPlatformBehaviour>(), // ぬーんがあるならば選出が可能
             RoleId.Werewolf or RoleId.Knight => ModeHandler.IsMode(ModeId.Werewolf),
             _ => true,
         };
