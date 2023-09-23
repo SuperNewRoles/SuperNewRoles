@@ -98,6 +98,8 @@ public class WellBehaver
 
     public static void FixedUpdate()
     {
+        //誰もいないなら処理しない
+        if (WellBehaverPlayer.Count <= 0) return;
         Garbage.AllGarbageObject?.SetActive(PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || WellBehaverAllPlayerCanSeeGarbage.GetBool() || PlayerControl.LocalPlayer.IsDead());
         if (!AmongUsClient.Instance.AmHost) return;
         if (AlivePlayer.Count <= 0 || RoleClass.IsMeeting) return;
@@ -139,6 +141,8 @@ public class WellBehaver
     public static void WrapUp()
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        //誰もいないなら処理しない
+        if (WellBehaverPlayer.Count <= 0) return;
         GarbageDumpingTimer.Clear();
         foreach (PlayerControl player in AlivePlayer)
         {
