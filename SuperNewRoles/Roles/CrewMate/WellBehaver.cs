@@ -52,9 +52,9 @@ public class WellBehaver
             {
                 Garbage garbage = null;
                 float min_distance = float.MaxValue;
+                Vector2 truepos = PlayerControl.LocalPlayer.GetTruePosition();
                 foreach (Garbage data in Garbage.AllGarbage)
                 {
-                    Vector2 truepos = PlayerControl.LocalPlayer.GetTruePosition();
                     Vector2 pos = data.GarbageObject.transform.position;
                     if (PhysicsHelpers.AnythingBetween(truepos, pos, Constants.ShadowMask, false)) continue;
                     float distance = Vector2.Distance(truepos, pos);
@@ -98,9 +98,8 @@ public class WellBehaver
 
     public static void FixedUpdate()
     {
-        //誰もいないなら処理しない
-        if (WellBehaverPlayer.Count <= 0) return;
-        Garbage.AllGarbageObject?.SetActive(PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || WellBehaverAllPlayerCanSeeGarbage.GetBool() || PlayerControl.LocalPlayer.IsDead());
+        bool active = PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || WellBehaverAllPlayerCanSeeGarbage.GetBool() || PlayerControl.LocalPlayer.IsDead();
+        if (Garbage.AllGarbageObject?.activeSelf != active) Garbage.AllGarbageObject?.SetActive(active);
         if (!AmongUsClient.Instance.AmHost) return;
         if (AlivePlayer.Count <= 0 || RoleClass.IsMeeting) return;
         if (Garbage.AllGarbage.Count >= WellBehaverLimitTrashCount.GetInt() * AllowableLimitCorrection.Now && WellBehaverPlayer.Any(x => x.IsAlive()))
@@ -113,13 +112,14 @@ public class WellBehaver
             }
         }
 
-        List<byte> keys = GarbageDumpingTimer.Keys.ToList().FindAll(x =>
+        List<byte> keys = new();
+        foreach (byte key in GarbageDumpingTimer.Keys)
         {
-            PlayerControl player = ModHelpers.PlayerById(x);
-            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Airship && IsWaitSpawn(player)) return false;
-            if (player.inMovingPlat || player.onLadder) return false;
-            return true;
-        });
+            PlayerControl player = ModHelpers.PlayerById(key);
+            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Airship && IsWaitSpawn(player)) continue;
+            if (player.inMovingPlat || player.onLadder) continue;
+            keys.Add(key);
+        }
         foreach (byte id in keys)
         {
             PlayerControl player = ModHelpers.PlayerById(id);
@@ -141,7 +141,7 @@ public class WellBehaver
     public static void WrapUp()
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        //誰もいないなら処理しない
+        // 誰もいないなら処理しない
         if (WellBehaverPlayer.Count <= 0) return;
         GarbageDumpingTimer.Clear();
         foreach (PlayerControl player in AlivePlayer)
@@ -150,21 +150,20 @@ public class WellBehaver
             AllowableLimitCorrection = (AllowableLimitCorrection.Now, AllowableLimitCorrection.Next - 1, AllowableLimitCorrection.NexNex - 1);
         }
         AlivePlayer = WellBehaverPlayer.FindAll(x => x.IsAlive());
-        if (WellBehaverPlayer.Count <= 1)
+        int count = AlivePlayer.Count;
+
+        // Capacityを指定してメモリにやさしく
+        List<PlayerControl> players = new(PlayerControl.AllPlayerControls.Count / 2);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            if (player.IsAlive() && (!player.IsRole(RoleId.WellBehaver) || count > 1))
+                players.Add(player);
+
+        for (int i = 0; i < count; i++)
         {
-            List<PlayerControl> players = PlayerControl.AllPlayerControls.ToList().FindAll(x => x.IsAlive());
-            players.RemoveAll(x => x.PlayerId == WellBehaverPlayer[0].PlayerId);
-            GarbageDumpingTimer[players.GetRandom().PlayerId] = 0f;
-        }
-        else
-        {
-            List<PlayerControl> players = PlayerControl.AllPlayerControls.ToList().FindAll(x => x.IsAlive());
-            for (int i = 0; i < WellBehaverPlayer.Count(x => x.IsAlive()); i++)
-            {
-                PlayerControl player = players.GetRandom();
-                players.RemoveAll(x => x.PlayerId == player.PlayerId);
-                GarbageDumpingTimer[player.PlayerId] = 0f;
-            }
+            PlayerControl player = players.GetRandom();
+            // 必要ない場合には削除しない
+            if (count > 1) players.RemoveAll(x => x.PlayerId == player.PlayerId);
+            GarbageDumpingTimer[player.PlayerId] = 0f;
         }
     }
 
@@ -192,7 +191,7 @@ public class WellBehaver
             foreach (PlayerControl player in AlivePlayer)
             {
                 if (player.IsAlive()) continue;
-                AllowableLimitCorrection = (AllowableLimitCorrection.Now, AllowableLimitCorrection.Next, AllowableLimitCorrection.NexNex - 1);
+                AllowableLimitCorrection = (AllowableLimitCorrection.Now, AllowableLimitCorrection.Next - 1, AllowableLimitCorrection.NexNex - 1);
             }
             AlivePlayer = WellBehaverPlayer.FindAll(x => x.IsAlive());
         }
