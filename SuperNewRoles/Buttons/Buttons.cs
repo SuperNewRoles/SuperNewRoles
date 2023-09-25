@@ -516,7 +516,7 @@ static class HudManagerStartPatch
                 ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptionHolder.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptionHolder.PavlovsdogKillCoolTime.GetFloat();
                 PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
-                if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return;
+                if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.Contains(PlayerControl.LocalPlayer.PlayerId)) return;
                 RoleClass.Pavlovsdogs.DeathTime = CustomOptionHolder.PavlovsdogRunAwayDeathTime.GetFloat();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsdogs; },

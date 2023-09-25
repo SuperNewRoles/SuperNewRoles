@@ -42,6 +42,17 @@ public static class ModHelpers
                     !ExileController.Instance;
         }
     }
+    public static TKey GetKeyByValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TValue value, TKey defaultvalue = default)
+    {
+        foreach (var pair in dictionary)
+        {
+            if (EqualityComparer<TValue>.Default.Equals(pair.Value, value))
+            {
+                return pair.Key;
+            }
+        }
+        return defaultvalue; // 見つからなかった場合
+    }
     public static int GetAlivePlayerCount()
     {
         int count = 0;

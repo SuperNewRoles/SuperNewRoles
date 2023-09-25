@@ -554,11 +554,11 @@ public static class RPCProcedure
         if (source == null || target == null) return;
         if (IsOn)
         {
-            RoleClass.Vampire.Targets.Add(source, target);
+            RoleClass.Vampire.Targets[source] = target;
         }
         else
         {
-            if (RoleClass.Vampire.BloodStains.ContainsKey(target.PlayerId))
+            if (RoleClass.Vampire.BloodStains.Contains(target.PlayerId))
             {
                 if (IsKillSuc)
                 {
@@ -913,7 +913,7 @@ public static class RPCProcedure
         PlayerControl TargetPlayer = ModHelpers.PlayerById(target);
         PlayerControl SourcePlayer = ModHelpers.PlayerById(source);
         if (TargetPlayer == null || SourcePlayer == null) return;
-        if (!RoleClass.Arsonist.DouseData.ContainsKey(source)) RoleClass.Arsonist.DouseData[source] = new();
+        if (!RoleClass.Arsonist.DouseData.Contains(source)) RoleClass.Arsonist.DouseData[source] = new();
         if (!Arsonist.IsDoused(SourcePlayer, TargetPlayer))
         {
             RoleClass.Arsonist.DouseData[source].Add(TargetPlayer);
@@ -924,7 +924,7 @@ public static class RPCProcedure
         PlayerControl TargetPlayer = ModHelpers.PlayerById(target);
         PlayerControl SourcePlayer = ModHelpers.PlayerById(source);
         if (TargetPlayer == null || SourcePlayer == null) return;
-        if (!RoleClass.Demon.CurseData.ContainsKey(source)) RoleClass.Demon.CurseData[source] = new();
+        if (!RoleClass.Demon.CurseData.Contains(source)) RoleClass.Demon.CurseData[source] = new();
         if (!Demon.IsCursed(SourcePlayer, TargetPlayer))
         {
             RoleClass.Demon.CurseData[source].Add(TargetPlayer);
@@ -1493,7 +1493,7 @@ public static class RPCProcedure
         ReplayActionMakeVent.Create(id, x, y, z, chain);
         Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
         Vent VentMakerVent = UnityEngine.Object.Instantiate(template);
-        if (chain && RoleClass.VentMaker.Vent.ContainsKey(id))
+        if (chain && RoleClass.VentMaker.Vent.Contains(id))
         {
             RoleClass.VentMaker.Vent[id].Right = VentMakerVent;
             VentMakerVent.Right = RoleClass.VentMaker.Vent[id];
