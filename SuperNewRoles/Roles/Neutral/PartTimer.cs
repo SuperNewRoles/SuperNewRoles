@@ -7,7 +7,7 @@ public static class PartTimer
 {
     public static void FixedUpdate()
     {
-        foreach (KeyValuePair<PlayerControl, byte> data in RoleClass.PartTimer.Data)
+        foreach (KeyValuePair<PlayerControl, byte> data in (Dictionary<PlayerControl, byte>)RoleClass.PartTimer.Data)
         {
             PlayerControl value = ModHelpers.PlayerById(data.Value);
             if (!data.Key.IsRole(RoleId.PartTimer))

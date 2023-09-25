@@ -1278,7 +1278,7 @@ public static class OnGameEndPatch
                 }
             }
         }
-        foreach (KeyValuePair<PlayerControl, byte> PartTimerData in RoleClass.PartTimer.Data) //フリーター
+        foreach (KeyValuePair<PlayerControl, byte> PartTimerData in (Dictionary<PlayerControl, byte>)RoleClass.PartTimer.Data) //フリーター
         {
             PlayerControl PartTimerValue = ModHelpers.PlayerById(PartTimerData.Value);
             if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerValue.Data.PlayerName))

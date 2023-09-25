@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SuperNewRoles.Modules;
-public class PlayerData<T> : IEnumerable
+public class PlayerData<T>
 {
     private Dictionary<byte, T> _data;
     private Dictionary<PlayerControl, T> _playerdata;
@@ -20,6 +20,13 @@ public class PlayerData<T> : IEnumerable
         set
         {
             this[PlayerControl.LocalPlayer.PlayerId] = value;
+        }
+    }
+    public int Count
+    {
+        get
+        {
+            return _data != null ? _data.Count : 0;
         }
     }
     public Dictionary<byte,T>.ValueCollection Values
@@ -70,21 +77,52 @@ public class PlayerData<T> : IEnumerable
     }
     public static implicit operator Dictionary<byte, T>(PlayerData<T> obj)
     {
+        if (obj == null)
+            return new();
         return obj._data ?? (obj._data = new());
     }
     public static implicit operator Dictionary<PlayerControl, T>(PlayerData<T> obj)
     {
-        if (obj._playerdata == null) {
+        if (obj == null)
+            return new();
+        if (obj._playerdata == null)
+        {
             Logger.Info("needplayerlistが無効なのにも関わらず、PlayerControlをKeyにしたDictionaryが要求されました。needplayerlistを有効に変更してください。");
-            obj._playerdata = new(obj._data.Count);
-            foreach (var value in obj._data)
+            if (obj._data == null)
             {
-                PlayerControl p = ModHelpers.PlayerById(value.Key);
-                if (p != null)
-                    obj._playerdata[p] = value.Value;
+                obj._data = new();
+                obj._playerdata = new();
+            }
+            else
+            {
+                obj._playerdata = new(obj._data.Count);
+                foreach (var value in obj._data)
+                {
+                    PlayerControl p = ModHelpers.PlayerById(value.Key);
+                    if (p != null)
+                        obj._playerdata[p] = value.Value;
+                }
             }
         }
         return obj._playerdata;
+    }
+    public bool TryGetValue(PlayerControl key, out T result)
+    {
+        if (_data == null || key == null)
+        {
+            result = default;
+            return false;
+        }
+        return TryGetValue(key.PlayerId, out result);
+    }
+    public bool TryGetValue(byte key, out T result)
+    {
+        if (_data == null)
+        {
+            result = default;
+            return false;
+        }
+        return _data.TryGetValue(key, out result);
     }
 
     public PlayerControl GetPCByValue(T value)
@@ -147,7 +185,7 @@ public class PlayerData<T> : IEnumerable
     public IEnumerator GetEnumerator()
     {
         if (_data == null)
-               _data = new();
+            _data = new();
         return _data.GetEnumerator();
     }
 }

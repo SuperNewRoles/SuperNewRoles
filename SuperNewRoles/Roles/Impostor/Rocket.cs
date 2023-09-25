@@ -30,7 +30,7 @@ public static class Rocket
         //処理するデータがないならパス
         if (RoleData.RocketData.Count <= 0)
             return;
-        foreach (var data in RoleData.RocketData.ToArray())
+        foreach (KeyValuePair<PlayerControl, List<PlayerControl>> data in (Dictionary<PlayerControl,List<PlayerControl>>)RoleData.RocketData)
         {
             //削除するか判定する
             if (data.Key == null || data.Value == null || data.Value.Count <= 0 || data.Key.IsDead() || data.Value.IsAllDead() ||
@@ -54,15 +54,15 @@ public static class Rocket
         public static Color32 color = RoleClass.ImpostorRed;
         public static float RocketButtonCooldown;
         public static float RocketButtonAfterCooldown;
-        public static Dictionary<PlayerControl, List<PlayerControl>> RocketData;
-        public static List<PlayerControl> LocalData => RocketData.ContainsKey(PlayerControl.LocalPlayer) ? RocketData[PlayerControl.LocalPlayer] : new();
+        public static PlayerData<List<PlayerControl>> RocketData;
+        public static List<PlayerControl> LocalData => RocketData[PlayerControl.LocalPlayer];
 
         public static void ClearAndReload()
         {
             Player = new();
             RocketButtonCooldown  = CustomOptionData.RocketButtonCooldown.GetFloat();
             RocketButtonAfterCooldown = CustomOptionData.RocketButtonAfterCooldown.GetFloat();
-            RocketData = new();
+            RocketData = new(true, new());
         }
     }
 
@@ -114,8 +114,8 @@ public static class Rocket
                     RPCProcedure.RocketLetsRocket(PlayerControl.LocalPlayer.PlayerId);
                     ResetRocketButtonCool();
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Rocket; },
-                () => { return PlayerControl.LocalPlayer.CanMove && HudManagerStartPatch.SetTarget(RoleData.LocalData, Crewmateonly: true) && RoleData.LocalData.Count > 0; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Rocket && RoleData.LocalData.Count > 0; },
+                () => { return PlayerControl.LocalPlayer.CanMove; },
                 () => { ResetRocketButtonCool(); },
                 GetButtonSprite(),
                 new Vector3(-2f, 1, 0),

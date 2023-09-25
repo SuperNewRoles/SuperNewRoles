@@ -31,6 +31,10 @@ public struct CustomAnimationOptions
         this.IsMeetingDestroy = IsMeetingDestroy;
         this.EffectSound = EffectSound;
     }
+    public void SetPlayEndDestroy(bool Is)
+    {
+        PlayEndDestory = Is;
+    }
     public void SetSprites(Sprite[] sprites, bool? IsLoop = null, int? frameRate = null)
     {
         Sprites = sprites;
@@ -68,7 +72,7 @@ public class CustomAnimation : MonoBehaviour
         Sprite[] Sprites = new Sprite[Count];
         for (int i = 1; i < Count + 1; i++)
         {
-            int zerodigts = Digits - ModHelpers.GetDigit(Count);
+            int zerodigts = Digits - ModHelpers.GetDigit(i);
             if (zerodigts < 0)
             {
                 Logger.Info("Digitsミスってね？直して～～～");

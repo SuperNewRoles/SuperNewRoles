@@ -350,6 +350,7 @@ public static class RPCProcedure
         }
         foreach (PlayerControl player in players)
         {
+            if (player == null) continue;
             player.Exiled();
             new GameObject("RocketDeadbody").AddComponent<RocketDeadbody>().Init(player);
         }

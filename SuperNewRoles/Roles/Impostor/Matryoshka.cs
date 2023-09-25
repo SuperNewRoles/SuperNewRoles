@@ -9,7 +9,7 @@ public static class Matryoshka
 {
     public static void FixedUpdate()
     {
-        foreach (KeyValuePair<PlayerControl, DeadBody> Data in RoleClass.Matryoshka.Data)
+        foreach (KeyValuePair<PlayerControl, DeadBody> Data in (Dictionary<PlayerControl, DeadBody>)RoleClass.Matryoshka.Data)
         {
             if (Data.Value == null) continue;
             Data.Value.Reported = !CustomOptionHolder.MatryoshkaWearReport.GetBool();
