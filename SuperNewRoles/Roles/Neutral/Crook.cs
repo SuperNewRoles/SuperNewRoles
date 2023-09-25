@@ -356,12 +356,20 @@ public static class Crook
             /// <summary>
             /// タイマーを停止させ, 関連する変数をリセットする。
             /// </summary>
-            private static void SNRTimerStop()
+            internal static void SNRTimerStop(bool isEndGame = false)
             {
-                if (CountDownTimer != null) CountDownTimer.Stop();
+                if (CountDownTimer != null)
+                {
+                    CountDownTimer.Stop();
+                    if (isEndGame) CountDownTimer.Dispose();
+                }
                 AbilityCountDown = 0;
 
-                if (ChangeBlueTimer != null) ChangeBlueTimer.Stop();
+                if (ChangeBlueTimer != null)
+                {
+                    ChangeBlueTimer.Stop();
+                    if (isEndGame) CountDownTimer.Dispose();
+                }
                 IsChangeBlue = false;
             }
 
