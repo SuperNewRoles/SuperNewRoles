@@ -182,7 +182,7 @@ public static class Crook
             }
             IsChangeBlue = false;
 
-            if (isStartGraceTimeTimer) InHostMode.TimerStop(isEndGame);
+            if (!isStartGraceTimeTimer) InHostMode.TimerStop(isEndGame);
         }
 
         /// <summary>
