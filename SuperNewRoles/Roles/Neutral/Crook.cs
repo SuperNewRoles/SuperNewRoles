@@ -127,7 +127,7 @@ public static class Crook
                         }
                         else // ホストモードなら カウントダウンを表示させる。
                         {
-                            InHostMode.IsAllladyCountdownToSecond = false;
+                            InHostMode.IsAllladyCountdownToSecond = new();
                         }
                     }
                 }
@@ -481,14 +481,14 @@ public static class Crook
             /// <summary>
             /// 現在の秒数はカウントダウン済みかを示す
             /// </summary>
-            internal static bool IsAllladyCountdownToSecond; // Countdownの変数の制御は共通処理側で行う。
+            internal static Dictionary<byte, bool> IsAllladyCountdownToSecond; // Countdownの変数の制御は共通処理側で行う。
 
             private static Timer GraceTimeTimer;
 
             internal static void ClearAndReload()
             {
                 IsTimeToNullTheVote = true;
-                IsAllladyCountdownToSecond = false;
+                IsAllladyCountdownToSecond = new();
             }
 
             internal static void TimeoutCountdownAnnounce()
@@ -501,15 +501,17 @@ public static class Crook
 
                 foreach (var crook in RoleData.Player)
                 {
+                    IsAllladyCountdownToSecond.TryGetValue(crook.PlayerId, out bool isAllladyCountdown); // この秒数は既にカウントしているか?
+
                     // 以下順番前後変更禁止
-                    if (!IsAllladyCountdownToSecond && !SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now)) // 今回の会議の保険契約情報が, 誰一人保存されていないなら
+                    if (!isAllladyCountdown && !SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now)) // 今回の会議の保険契約情報が, 誰一人保存されていないなら
                     {
-                        IsAllladyCountdownToSecond = true;
+                        IsAllladyCountdownToSecond[crook.PlayerId] = true;
                         AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
                     }
-                    else if (!IsAllladyCountdownToSecond && !SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now].ContainsKey(crook.PlayerId)) // 特定の詐欺師の, 今回の会議の保険契約情報が保存されていないなら
+                    else if (!isAllladyCountdown && !SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now].ContainsKey(crook.PlayerId)) // 特定の詐欺師の, 今回の会議の保険契約情報が保存されていないなら
                     {
-                        IsAllladyCountdownToSecond = true;
+                        IsAllladyCountdownToSecond[crook.PlayerId] = true;
                         AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
                     }
                     else
@@ -608,7 +610,7 @@ public static class Crook
                 if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return;
 
                 IsTimeToNullTheVote = true;
-                IsAllladyCountdownToSecond = false;
+                IsAllladyCountdownToSecond = new();
             }
         }
     }
