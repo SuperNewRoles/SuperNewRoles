@@ -302,34 +302,31 @@ internal static class PostMortemCertificate_Display
                 || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.H))
                 OverlayInfo.HideInfoOverlay();
         }
-
-        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote)), HarmonyPrefix]
-        /// <summary>
-        /// 自投票リセット形式での死体検案書閲覧要求
-        /// </summary>
-        /// <param name="srcPlayerId">投票者のplayerId</param>
-        /// <param name="suspectPlayerId">投票先のplayerId</param>
-        /// <param name="__instance"></param>
-        /// <returns> true:投票を反映する / false:投票を反映しない </returns>
-        static bool MeetingHudCastVote_Prefix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
-        {
-            // SHRで, 設定が有効な時, 警察医が自投票していたら
-            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
-            if (!CustomOptionData.CanResend.GetBool()) return true;
-
-            if (srcPlayerId != suspectPlayerId) return true;
-
-            PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
-            if (!srcPlayer.IsRole(RoleId.PoliceSurgeon)) return true;
-
-            __instance.RpcClearVote(srcPlayer.GetClientId()); // 投票を解除する
-            // 死体検案書全文を送信する。
-            Patches.AddChatPatch.ChatInformation(srcPlayer, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer), "#89c3eb");
-
-            return false; // 投票を無効化する
-        }
     }
 #pragma warning restore 8321
+
+    /// <summary>
+    /// 自投票リセット形式での死体検案書閲覧要求
+    /// </summary>
+    /// <param name="srcPlayerId">投票者のplayerId</param>
+    /// <param name="suspectPlayerId">投票先のplayerId</param>
+    /// <returns> true : 投票を反映する / false : 投票を反映しない </returns>
+    internal static bool MeetingHudCastVote_Prefix(byte srcPlayerId, byte suspectPlayerId)
+    {
+        // SHRで, 設定が有効な時, 警察医が自投票していたら
+        if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return true;
+
+        if (!CustomOptionData.CanResend.GetBool()) return true;
+        if (srcPlayerId != suspectPlayerId) return true;
+
+        PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
+        if (!srcPlayer.IsRole(RoleId.PoliceSurgeon)) return true;
+
+        // 死体検案書全文を送信する。
+        AddChatPatch.ChatInformation(srcPlayer, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer), "#89c3eb");
+
+        return false;
+    }
 
     // 死体検案書再確認方法に関するシステムメッセージ
     private static string AboutResendPostMortemCertificate()

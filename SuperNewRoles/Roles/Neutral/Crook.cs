@@ -485,8 +485,8 @@ public static class Crook
 
             internal static void TimeoutCountdownAnnounce()
             {
-                if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-                if (!AmongUsClient.Instance.AmHost) return;
+                if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return;
+
                 if (AbilityCountDown is not (<= 5 and >= 0)) { return; }
 
                 string warningStr = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), AbilityCountDown);
@@ -512,12 +512,25 @@ public static class Crook
             }
 
             /// <summary>
+            /// 自投票リセット形式での死体検案書閲覧要求
+            /// </summary>
+            /// <param name="srcPlayerId">投票者のplayerId</param>
+            /// <param name="suspectPlayerId">投票先のplayerId</param>
+            /// <returns> true : 投票を反映する / false : 投票を反映しない </returns>
+            internal static bool MeetingHudCastVote_Prefix(byte srcPlayerId, byte suspectPlayerId)
+            {
+                // SHRで, 設定が有効な時, 警察医が自投票していたら
+                if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return true;
+
+                return false;
+            }
+
+            /// <summary>
             /// 投票無効化猶予時間の制御
             /// </summary>
             internal static void SetGraceTimeTimer()
             {
-                if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-                if (!AmongUsClient.Instance.AmHost) return;
+                if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return;
 
                 IsTimeToNullTheVote = true;
 
@@ -543,8 +556,7 @@ public static class Crook
 
             internal static void WrapUp()
             {
-                if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-                if (!AmongUsClient.Instance.AmHost) return;
+                if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return;
 
                 IsTimeToNullTheVote = true;
                 IsAllladyCountdownToSecond = false;

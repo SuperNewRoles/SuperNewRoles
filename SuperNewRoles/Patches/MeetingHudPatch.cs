@@ -25,6 +25,38 @@ using static MeetingHud;
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Awake))] class AwakeMeetingPatch { public static void Postfix() => RoleClass.IsMeeting = true; }
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote))]
+class CastVotePatch
+{
+    public static bool Prefix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
+    {
+        PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
+        PlayerControl suspectPlayer = ModHelpers.GetPlayerControl(suspectPlayerId); // 現在使用していない
+
+        bool IsValidVote = true;
+
+        RoleId srcPlayerRole = srcPlayer.GetRole();
+        switch (srcPlayerRole)
+        {
+            case RoleId.PoliceSurgeon:
+                IsValidVote = PostMortemCertificate_Display.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
+                break;
+            case RoleId.Crook:
+                IsValidVote = Crook.Ability.InHostMode.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
+                break;
+        }
+
+        if (IsValidVote) // 有効票であれば,
+        {
+            return true; // そのまま通す。
+        }
+        else // 無効票であれば,
+        {
+            __instance.RpcClearVote(srcPlayer.GetClientId()); // 投票を解除し,
+            return false; // 無効化する。
+        }
+    }
+}
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.RpcVotingComplete))]
 class RpcVotingComplete
 {
