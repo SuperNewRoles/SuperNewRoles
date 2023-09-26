@@ -106,6 +106,15 @@ public class PlayerData<T>
         }
         return obj._playerdata;
     }
+    public bool Any(Func<KeyValuePair<byte, T>, bool> func)
+    {
+        if (_data == null)
+            return false;
+        foreach (KeyValuePair<byte, T> obj in _data)
+            if (func(obj))
+                return true;
+        return false;
+    }
     public bool TryGetValue(PlayerControl key, out T result)
     {
         if (_data == null || key == null)

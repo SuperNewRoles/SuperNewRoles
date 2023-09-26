@@ -664,14 +664,14 @@ public static class ModHelpers
     }
     public static T FirstOrDefault<T>(this List<T> list)
     {
-        foreach (T obj in list)
-            return obj;
+        if (list.Count > 0)
+            return list[0];
         return default;
     }
     public static T FirstOrDefault<T>(this T[] list)
     {
-        foreach (T obj in list)
-            return obj;
+        if (list.Length > 0)
+            return list[0];
         return default;
     }
     public static T FirstOrDefault<T>(this IEnumerable<T> list, Func<T, bool> func)
@@ -700,6 +700,20 @@ public static class ModHelpers
             if (func(obj))
                 return obj;
         return default;
+    }
+    public static bool Any<TKey,TValue>(this Dictionary<TKey,TValue> dict, Func<KeyValuePair<TKey, TValue>, bool> func)
+    {
+        foreach (KeyValuePair<TKey, TValue> obj in dict)
+            if (func(obj))
+                return true;
+        return false;
+    }
+    public static bool Any<T>(this List<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return true;
+        return false;
     }
     public static Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Il2CppSystem.Collections.Generic.Dictionary<TKey, TValue> list, Func<Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue>, bool> func)
     {

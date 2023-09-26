@@ -1090,6 +1090,8 @@ public class CustomOptionHolder
         EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
         EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
 
+        Rocket.CustomOptionData.SetupCustomOptions();
+
         EvilSeer.CustomOptionData.SetupCustomOptions();
 
         ShiftActor.SetupCustomOptions();
@@ -1358,8 +1360,6 @@ public class CustomOptionHolder
 
         WerewolfOption = new(205200, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
         WerewolfPlayerCount = Create(205201, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
-
-        Rocket.CustomOptionData.SetupCustomOptions();
 
         // SetupImpostorCustomOptions
 

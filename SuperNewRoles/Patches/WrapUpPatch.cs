@@ -132,6 +132,7 @@ class WrapUpPatch
         Speeder.WrapUp();
         Bestfalsecharge.WrapUp();
         CustomRoles.OnWrapUp();
+        Rocket.WrapUp();
         if (AmongUsClient.Instance.AmHost)
         {
             PlayerAnimation.PlayerAnimations.Values.All(x =>
@@ -157,6 +158,7 @@ class WrapUpPatch
             p.resetChange();
         }
         RoleClass.Doppelganger.Targets = new();
+        //ここから下追放者がいる場合
         if (exiled == null) return;
         if (exiled.Object.IsRole(RoleId.Jumbo) && exiled.Object.IsCrew())
         {

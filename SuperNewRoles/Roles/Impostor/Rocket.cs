@@ -22,7 +22,30 @@ public static class Rocket
             Option = CustomOption.SetupCustomRoleOption(optionId, false, RoleId.Rocket); optionId++;
             PlayerCount = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SettingPlayerCountName", CustomOptionHolder.ImpostorPlayers[0], CustomOptionHolder.ImpostorPlayers[1], CustomOptionHolder.ImpostorPlayers[2], CustomOptionHolder.ImpostorPlayers[3], Option); optionId++;
             RocketButtonCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;
-            RocketButtonAfterCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonAfterCooldown", 5f, 0.5f, 15f, 0.5f, Option); optionId++;
+            RocketButtonAfterCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonAfterCooldown", 5f, 0f, 60f, 2.5f, Option); optionId++;
+        }
+    }
+    public static void WrapUp()
+    {
+        //処理するデータがないならパス
+        if (RoleData.RocketData.Count <= 0)
+            return;
+        foreach (KeyValuePair<PlayerControl, List<PlayerControl>> data in (Dictionary<PlayerControl, List<PlayerControl>>)RoleData.RocketData)
+        {
+            //削除するか判定する
+            if (data.Key == null || data.Value == null || data.Value.Count <= 0 || data.Key.IsDead() || data.Value.IsAllDead() ||
+                !data.Key.IsRole(RoleId.Rocket))
+            {
+                RoleData.RocketData.Remove(data.Key);
+                return;
+            }
+            foreach (PlayerControl player in data.Value)
+            {
+                if (player == null || player.IsDead())
+                    continue;
+                player.Exiled();
+            }
+            RoleData.RocketData.Remove(data.Key);
         }
     }
     public static void FixedUpdate()
@@ -39,10 +62,16 @@ public static class Rocket
                 RoleData.RocketData.Remove(data.Key);
                 return;
             }
-            //死亡している場合にさよなら
-            data.Value.RemoveAll(x => x == null || x.IsDead());
+            int index = -1;
             foreach (PlayerControl player in data.Value)
             {
+                index++;
+                if (player == null || player.IsDead())
+                {
+                    //死亡している場合にさよなら
+                    data.Value.RemoveAt(index);
+                    continue;
+                }
                 player.transform.position = data.Key.transform.position;
             }
         }
@@ -70,7 +99,8 @@ public static class Rocket
     {
         private static CustomButton RocketSeizeButton;
         private static CustomButton RocketRocketButton;
-        private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RocketButton.png", 115f);
+        private static Sprite GetButtonSeizeSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RocketSeizeButton.png", 115f);
+        private static Sprite GetButtonRocketSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RocketRocketButton.png", 115f);
 
         internal static void SetupCustomButtons(HudManager hm)
         {
@@ -92,7 +122,7 @@ public static class Rocket
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Rocket; },
                 () => { return PlayerControl.LocalPlayer.CanMove && HudManagerStartPatch.SetTarget(RoleData.LocalData, Crewmateonly: true); },
                 () => { ResetRocketButtonCool(); },
-                GetButtonSprite(),
+                GetButtonSeizeSprite(),
                 new Vector3(-2f, 1, 0),
                 hm,
                 hm.AbilityButton,
@@ -117,12 +147,12 @@ public static class Rocket
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Rocket && RoleData.LocalData.Count > 0; },
                 () => { return PlayerControl.LocalPlayer.CanMove; },
                 () => { ResetRocketButtonCool(); },
-                GetButtonSprite(),
+                GetButtonRocketSprite(),
                 new Vector3(-2f, 1, 0),
                 hm,
                 hm.AbilityButton,
-                KeyCode.F,
-                49,
+                KeyCode.Q,
+                8,
                 () => { return false; }
             )
             {

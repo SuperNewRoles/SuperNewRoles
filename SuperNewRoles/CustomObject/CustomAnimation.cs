@@ -16,6 +16,7 @@ public struct CustomAnimationOptions
     public bool IsMeetingDestroy { get; private set; }
     public AudioClip EffectSound { get; private set; }
     public bool IsEffectSoundLoop { get; private set; }
+    public float UpdateTime { get; private set; }
     public Action<CustomAnimation, CustomAnimationOptions> OnEndAnimation { get; private set; }
     public CustomAnimationOptions()
     {
@@ -30,6 +31,7 @@ public struct CustomAnimationOptions
         this.OnEndAnimation = OnEndAnimation;
         this.IsMeetingDestroy = IsMeetingDestroy;
         this.EffectSound = EffectSound;
+        UpdateTime = 1.0f / frameRate;
     }
     public void SetPlayEndDestroy(bool Is)
     {
@@ -41,7 +43,10 @@ public struct CustomAnimationOptions
         if (IsLoop != null)
             this.IsLoop = IsLoop.Value;
         if (frameRate != null)
+        {
             this.frameRate = frameRate.Value;
+            UpdateTime = 1.0f / this.frameRate;
+        }
     }
     public void SetEffectSound(AudioClip clip, bool IsLoop)
     {
@@ -63,7 +68,6 @@ public class CustomAnimation : MonoBehaviour
     public bool Playing;
     public CustomAnimationOptions Options;
     private float UpdateTimer;
-    private float updatetime;
     public int Index { get; private set; }
     public AudioSource audioSource;
     public bool IsRewinding { get; private set; }
@@ -79,7 +83,7 @@ public class CustomAnimation : MonoBehaviour
                 return Sprites.ToArray();
             }
             string countdata = ModHelpers.GetStringByCount('0',zerodigts) + i.ToString();
-            Sprites[Count - 1] = ModHelpers.LoadSpriteFromResources(path + "_" + countdata + ".png", 110f);
+            Sprites[i - 1] = ModHelpers.LoadSpriteFromResources(path + "_" + countdata + ".png", 110f);
         }
         return Sprites.ToArray();
     }
@@ -94,8 +98,7 @@ public class CustomAnimation : MonoBehaviour
         Options = option;
         spriteRenderer.sprite = option.Sprites[0];
         Index = 1;
-        updatetime = 1.0f / Options.frameRate;
-        UpdateTimer = updatetime;
+        UpdateTimer = Options.UpdateTime;
         Play();
     }
     public virtual void Play(bool IsPlayMusic = true)
@@ -122,7 +125,7 @@ public class CustomAnimation : MonoBehaviour
         Pause(IsStopMusic: IsStopMusic);
         spriteRenderer.sprite = Options.Sprites[0];
         Index = 1;
-        UpdateTimer = updatetime;
+        UpdateTimer = Options.UpdateTime;
     }
     public virtual void Update()
     {
@@ -136,7 +139,7 @@ public class CustomAnimation : MonoBehaviour
             if (IsRewinding)
             {
                 UpdateTimer += Time.deltaTime;
-                if (UpdateTimer >= updatetime)
+                if (UpdateTimer >= Options.UpdateTime)
                 {
                     spriteRenderer.sprite = Options.Sprites[Index - 1];
                     Index--;
@@ -179,7 +182,7 @@ public class CustomAnimation : MonoBehaviour
                         if (Options.OnEndAnimation != null)
                             Options.OnEndAnimation(this, Options);
                     }
-                    UpdateTimer = updatetime;
+                    UpdateTimer = Options.UpdateTime;
                     OnRenderUpdate();
                 }
             }
