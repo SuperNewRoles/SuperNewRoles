@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
@@ -77,6 +78,9 @@ public static class Crook
         /// <value>key : 保険金を需給できた詐欺師のプレイヤーID / value : 保険金を掛けられていた対象のプレイヤーID</value>
         private static Dictionary<byte, byte> ReceivedTheInsuranceDictionary;
         private static float AbilityCountDown;
+        private static Timer CountDownTimer; // 能力使用可能時間を管理するタイマー
+        private static Timer ChangeBlueTimer; // 能力使用可能時間の終了警告を, 5秒前から0.25秒間隔で文字を点滅させる事で行うタイマー
+        private static bool IsChangeBlue; // 0.25秒間隔で文字を点滅させる為の変数
 
         internal static void ClearAndReload()
         {
@@ -84,15 +88,101 @@ public static class Crook
             RecordOfTimesInsuranceClaimsAreReceived = new();
             ReceivedTheInsuranceDictionary = new();
             AbilityCountDown = RoleData.TimeForAbilityUse;
-            Button.ClearAndReload();
+            IsChangeBlue = false;
+            InClientMode.ClearAndReload();
         }
 
         /// <summary>
-        /// 詐欺師と詐欺師が保険を掛けたプレイヤーの組み合わせを辞書に保存する。
+        /// アビリティ使用可能時間の管理, 表示を行う。(SHR, SNR共通処理)
+        /// </summary>
+        private static void SetAvailabilityTimeTimer()
+        {
+            AbilityCountDown = RoleData.TimeForAbilityUse;
+            bool isClientMode = ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf);
+
+            if (!isClientMode)
+            {
+                float second = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - RoleData.TimeForAbilityUse + 7f;
+                string announce = string.Format(ModTranslation.GetString("CrookSHRMeetingStartAnnounce"), "#FF4B00", second, second - 10f);
+
+                foreach (var crook in RoleData.Player)
+                {
+                    if (crook.IsDead()) continue;
+                    AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), announce, "#60a1bd"); // 初ターンは役職説明の上に表示される為, このアナウンスに気づかない事があるがそれは仕様とする。
+                }
+            }
+
+            CountDownTimer = new Timer(1000);
+            CountDownTimer.Elapsed += (source, e) =>
+            {
+                if (AbilityCountDown > 0)
+                {
+                    AbilityCountDown--;
+                    if (AbilityCountDown <= 5) // 残り5秒目から
+                    {
+                        if (isClientMode) // クライアントモードなら 終了警告音を鳴らす
+                        {
+                            SoundManager.Instance.PlaySound(MeetingHud.Instance.VoteEndingSound, false, 1f, null).pitch = Mathf.Lerp(1.5f, 0.8f, AbilityCountDown / 10f);
+                        }
+                        else // ホストモードなら カウントダウンを表示させる。
+                        {
+                            InHostMode.IsAllladyCountdownToSecond = false;
+                        }
+                    }
+                }
+                else
+                {
+                    TimerStop();
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles)) InHostMode.SetGraceTimeTimer();
+                }
+            };
+            CountDownTimer.AutoReset = AbilityCountDown >= 0;
+            CountDownTimer.Enabled = true;
+
+            ChangeBlueTimer = new(250); // 0.25秒間隔で文字を点滅する
+            ChangeBlueTimer.Elapsed += (source, e) =>
+            {
+                if (AbilityCountDown > 5)
+                {
+                    IsChangeBlue = false; // 残り5秒目までは文字色は白
+                }
+                else
+                {
+                    IsChangeBlue ^= true; // 文字色を点滅させる
+                }
+            };
+            ChangeBlueTimer.AutoReset = AbilityCountDown > 0;
+            ChangeBlueTimer.Enabled = true;
+        }
+
+        /// <summary>
+        /// タイマーを停止させ, 関連する変数をリセットする。
+        /// </summary>
+        internal static void TimerStop(bool isEndGame = false)
+        {
+            if (CountDownTimer != null)
+            {
+                CountDownTimer.Stop();
+                if (isEndGame) CountDownTimer.Dispose();
+            }
+            AbilityCountDown = 0;
+
+            if (ChangeBlueTimer != null)
+            {
+                ChangeBlueTimer.Stop();
+                if (isEndGame) CountDownTimer.Dispose();
+            }
+            IsChangeBlue = false;
+
+            InHostMode.TimerStop(isEndGame);
+        }
+
+        /// <summary>
+        /// 詐欺師と詐欺師が保険を掛けたプレイヤーの組み合わせを辞書に保存する。(SHR, SNR共通処理)
         /// </summary>
         /// <param name="crookId">保険を掛けた詐欺師</param>
         /// <param name="TargetId">保険が掛けられたプレイヤー</param>
-        internal static void SaveSignDictionary(byte crookId, byte TargetId)
+        internal static void SaveSignDictionary(byte crookId, byte TargetId)// [ ]:MEMO 共通
         {
             if (SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now))
             {
@@ -111,11 +201,13 @@ public static class Crook
         }
 
         /// <summary>
-        /// 保険金の受給の有無を判定 及び 保存する
+        /// 会議開始時に, 今回ターンのアビリティの管理を実行し, 前回ターンの保険金の受給の有無を判定 及び 保存する
         /// </summary>
-        internal static void SaveReceiptOfInsuranceProceeds()
+        internal static void SaveReceiptOfInsuranceProceeds() // [x]:MEMO 共通
         {
-            // [ ]MEMO : 現状SHRSNR共用可能
+            SetAvailabilityTimeTimer(); // SHR, SNR両方でアビリティ使用可能時間の管理を実行する。
+
+            // [x]MEMO : 現状SHRSNR共用可能
             ReceivedTheInsuranceDictionary = new();
 
             var previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1); // 前回ターンのターン数
@@ -154,8 +246,8 @@ public static class Crook
                 if (AmongUsClient.Instance.AmHost) // [x]MEMO : 追放画面で保険金受給の有無をチャット通知
                 {
                     string chatText;
-                    if (privateWinFlag) chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSetWinFlagChatAnnounce"), target.GetDefaultName(), times)}</align>";
-                    else chatText = $"<align={"left"}>{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), target.GetDefaultName(), times, remainingNumber)}</align>";
+                    if (privateWinFlag) chatText = $"{string.Format(ModTranslation.GetString("CrookReceiveSetWinFlagChatAnnounce"), target.GetDefaultName(), times)}";
+                    else chatText = $"{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), target.GetDefaultName(), times, remainingNumber)}";
                     AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), chatText, "#60a1bd");
 
                     // [x]MEMO : 此処で勝利フラグを建てる // [x]MEMO : 勝利実行はスポーン時, この時に死んでいたら(会議キルを受けたら)実行されない
@@ -164,12 +256,14 @@ public static class Crook
         }
 
         /// <summary>
-        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行し, 更にゲストに実行させる。
+        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行し, 更にゲストに実行させる。(SHR, SNR共通処理)
         /// </summary>
-        internal static void CheckWinWrapUp()
+        internal static void CheckWinWrapUp()// [ ]:MEMO 共通
         {
-            // 能力使用可能時間をリセット (タイマーストップ時にリセットしないのは, これが0sの時 残り会議秒数の表示を置換しない制御にしている為, 会議中にリセットできないから)
-            AbilityCountDown = RoleData.TimeForAbilityUse;
+            TimerStop(); // 会議中に能力終了しない場合を想定
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) InHostMode.WrapUp();
+            AbilityCountDown = RoleData.TimeForAbilityUse; // 能力使用可能時間をリセット (タイマーストップ時にリセットしないのは, これが0sの時 残り会議秒数の表示を置換しない制御にしている為, 会議中にリセットできないから)
+
             if (!AmongUsClient.Instance.AmHost) return;
 
             // 勝利条件を誰も満たしていなかったら以下を読まない。(無駄にforeach処理を読まない様, 会議開始時に記録した物を利用し, 2段階で判定している。)
@@ -186,13 +280,13 @@ public static class Crook
         }
 
         /// <summary>
-        /// 勝利条件を達成していた詐欺師が, 勝利処理を実行可能か 判断する
+        /// 勝利条件を達成していた詐欺師が, 勝利処理を実行可能か 判断する。(SHR, SNR共通処理)
         /// </summary>
         /// <returns>
         /// Item1 => true : 保険金受領場所(追放画面)に到達し, 最後の保険金を受給できた。 / false : 保険金受領場所に到達できず, 最後の保険金を受給できなかった。,
         /// Item2 => 勝利可能な詐欺師達
         /// </returns>
-        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners() //　Item2をこのメソッドに変更して, 勝利リスト追加も此処に移行
+        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners() //　Item2をこのメソッドに変更して, 勝利リスト追加も此処に移行 // [ ]:MEMO 共通
         {
             List<PlayerControl> winners = new();
             var winfLag = false;
@@ -216,10 +310,10 @@ public static class Crook
         }
 
         /// <summary>
-        /// 保険金の受給の有無を, 保存した辞書から取得し, アナウンスを作成する。
+        /// 保険金の受給の有無を, 保存した辞書から取得し, アナウンスを作成する。(SHR, SNR共通処理)
         /// </summary>
         /// <returns>bool : 保険金の受給の有無 / string : 保険金を受給した旨のアナウンステキスト </returns>
-        internal static (bool, string) GetIsReceivedTheInsuranceAndAnnounce() // [x]MEMO : 実行はパン屋.csで行う, 実行の有無と文字渡す
+        internal static (bool, string) GetIsReceivedTheInsuranceAndAnnounce() // [x]MEMO : 実行はパン屋.csで行う, 実行の有無と文字渡す // [ ]:MEMO 共通
         {
             bool IsReceivedTheInsurance = false;
             StringBuilder announceBuilder = new();
@@ -237,25 +331,18 @@ public static class Crook
         }
 
         [HarmonyPatch]
-        internal static class Button
+        internal static class InClientMode
         {
             // |:========== ボタン関係の変数管理 ==========:|
             private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CrookButton.png", 115f);
             private static bool AllladyDead;
-            private static Timer CountDownTimer; // 能力使用可能時間を管理するタイマー
-            private static Timer ChangeBlueTimer; // 能力使用可能時間の終了警告を, 5秒前から0.25秒間隔で文字を点滅させる事で行うタイマー
-            private static bool IsChangeBlue; // 0.25秒間隔で文字を点滅させる為の変数
 
             internal static void ClearAndReload()
             {
                 AllladyDead = false;
-                IsChangeBlue = false;
             }
 
             // |:========================================:|
-
-            // [x]MEMO : (SHR, SNR双方で)ホストが動かす, 保険金受け取りのコードは此処にはおかない。 <= meetingStartに詐欺師の処理が2つある
-            internal static void MeetingHudStartPostfix(MeetingHud __instance) => ButtonCreate(__instance); // 詐欺師本人のみ実行するコード
 
             /// <summary>
             /// 詐欺師の能力使用可能時間を, 議論時間のタイマーを置換して表示する。
@@ -275,17 +362,22 @@ public static class Crook
                 __result = announce;
             }
 
+            internal static void MeetingHudStartPostfix(MeetingHud __instance) // 詐欺師本人のみ実行する (詐欺師にはHostがSNR,SHR共通で動かす``MeetingHud.Start Postfix``もある。))
+                => ButtonCreate(__instance);
+
+            /// <summary>
+            /// 詐欺師のボタンを作成するコード。
+            /// </summary>
+            /// <param name="__instance"></param>
             private static void ButtonCreate(MeetingHud __instance)
             {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+                if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return;
                 if (!PlayerControl.LocalPlayer.IsRole(RoleId.Crook)) return;
                 if (PlayerControl.LocalPlayer.IsDead())
                 {
                     AllladyDead = true;
                     return;
                 }
-
-                SNRAvailabilityTimeTimer();
 
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -311,71 +403,11 @@ public static class Crook
                 }
             }
 
-            /// <summary>
-            /// アビリティ使用可能時間の管理, 表示を行う。
-            /// </summary>
-            private static void SNRAvailabilityTimeTimer()
-            {
-                AbilityCountDown = RoleData.TimeForAbilityUse;
-
-                CountDownTimer = new Timer(1000);
-                CountDownTimer.Elapsed += (source, e) =>
-                {
-                    if (AbilityCountDown > 0)
-                    {
-                        AbilityCountDown--;
-                        if (AbilityCountDown <= 5) // 残り5秒目から, 終了警告音を鳴らす
-                        {
-                            SoundManager.Instance.PlaySound(MeetingHud.Instance.VoteEndingSound, false, 1f, null).pitch = Mathf.Lerp(1.5f, 0.8f, AbilityCountDown / 10f);
-                        }
-                    }
-                    else
-                    {
-                        SNRTimerStop();
-                    }
-                };
-                CountDownTimer.AutoReset = AbilityCountDown >= 0;
-                CountDownTimer.Enabled = true;
-
-                ChangeBlueTimer = new(250); // 0.25秒間隔で文字を点滅する
-                ChangeBlueTimer.Elapsed += (source, e) =>
-                {
-                    if (AbilityCountDown > 5)
-                    {
-                        IsChangeBlue = false; // 残り5秒目までは文字色は白
-                    }
-                    else
-                    {
-                        IsChangeBlue ^= true; // 文字色を点滅させる
-                    }
-                };
-                ChangeBlueTimer.AutoReset = AbilityCountDown > 0;
-                ChangeBlueTimer.Enabled = true;
-            }
-
-            /// <summary>
-            /// タイマーを停止させ, 関連する変数をリセットする。
-            /// </summary>
-            internal static void SNRTimerStop(bool isEndGame = false)
-            {
-                if (CountDownTimer != null)
-                {
-                    CountDownTimer.Stop();
-                    if (isEndGame) CountDownTimer.Dispose();
-                }
-                AbilityCountDown = 0;
-
-                if (ChangeBlueTimer != null)
-                {
-                    ChangeBlueTimer.Stop();
-                    if (isEndGame) CountDownTimer.Dispose();
-                }
-                IsChangeBlue = false;
-            }
-
             // ボタンを押したときの動作。
             private static void OnClick(byte TargetId, MeetingHud __instance)
             {
+                if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return;
+
                 var target = ModHelpers.GetPlayerControl(TargetId);
                 if (target.IsDead())
                 {
@@ -384,7 +416,7 @@ public static class Crook
                     return;
                 }
 
-                SNRTimerStop();
+                TimerStop();
 
                 var crookId = PlayerControl.LocalPlayer.PlayerId;
 
@@ -406,6 +438,7 @@ public static class Crook
             /// <param name="__instance"></param>
             internal static void UpdateButtonsPostfix(MeetingHud __instance)
             {
+                if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return;
                 if (AllladyDead) return; // 会議開始時点で死亡していた場合, 以下の処理を実行しないようにする。
 
                 if (PlayerControl.LocalPlayer.IsDead() || AbilityCountDown == 0) // [x]MEMO : + 時間切れ時のボタン消去処理 (能力使用後のボタン消去はボタンの実行処理の中で行っている)
@@ -427,6 +460,94 @@ public static class Crook
                             }
                         });
                 }
+            }
+        }
+
+        internal static class InHostMode
+        {
+            /// <summary>
+            /// 詐欺師全体において 投票を無効化する可能性がある時間か?
+            /// </summary>
+            private static bool IsTimeToNullTheVote;
+
+            /// <summary>
+            /// 現在の秒数はカウントダウン済みか?
+            /// </summary>
+            internal static bool IsAllladyCountdownToSecond; // Countdownの変数の制御は共通処理側で行う。
+
+            private static Timer GraceTimeTimer;
+
+            internal static void ClearAndReload()
+            {
+                IsTimeToNullTheVote = true;
+                IsAllladyCountdownToSecond = false;
+            }
+
+            internal static void TimeoutCountdownAnnounce()
+            {
+                if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+                if (!AmongUsClient.Instance.AmHost) return;
+                if (AbilityCountDown is not (<= 5 and >= 0)) { return; }
+
+                string warningStr = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), AbilityCountDown);
+
+                foreach (var crook in RoleData.Player)
+                {
+                    // 以下順番前後変更禁止
+                    if (!IsAllladyCountdownToSecond && !SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now)) // 今回の会議の保険契約情報が, 誰一人保存されていないなら
+                    {
+                        IsAllladyCountdownToSecond = true;
+                        AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
+                    }
+                    else if (!IsAllladyCountdownToSecond && SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now].ContainsKey(crook.PlayerId)) // 特定の詐欺師の, 今回の会議の保険契約情報が保存されていないなら
+                    {
+                        IsAllladyCountdownToSecond = true;
+                        AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 投票無効化猶予時間の制御
+            /// </summary>
+            internal static void SetGraceTimeTimer()
+            {
+                if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+                if (!AmongUsClient.Instance.AmHost) return;
+
+                IsTimeToNullTheVote = true;
+
+                GraceTimeTimer = new(10000); // 10秒 リピートなしのタイマー
+                GraceTimeTimer.Elapsed += (source, e) =>
+                {
+                    IsTimeToNullTheVote = false; // 投票を無効化する時間か? を オフにする (以降, 条件判定せず投票が可能になる)
+                };
+                GraceTimeTimer.AutoReset = false;
+                GraceTimeTimer.Enabled = true;
+            }
+
+            internal static void TimerStop(bool isEndGame = false)
+            {
+                if (!AmongUsClient.Instance.AmHost) return;
+
+                if (GraceTimeTimer != null)
+                {
+                    GraceTimeTimer.Stop();
+                    if (isEndGame) GraceTimeTimer.Dispose();
+                }
+            }
+
+            internal static void WrapUp()
+            {
+                if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+                if (!AmongUsClient.Instance.AmHost) return;
+
+                IsTimeToNullTheVote = true;
+                IsAllladyCountdownToSecond = false;
             }
         }
     }

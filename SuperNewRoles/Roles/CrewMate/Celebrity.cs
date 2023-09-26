@@ -108,6 +108,6 @@ public class CelebrityTimerStop
         Celebrity.AbilityOverflowingBrilliance.TimerStop(isEndGame);
         Neutral.TheThreeLittlePigs.TheFirstLittlePig.TimerStop(isEndGame);
         Impostor.MadRole.MadRaccoon.Button.ResetShapeDuration(false, isEndGame);
-        Neutral.Crook.Ability.Button.SNRTimerStop(isEndGame);
+        Neutral.Crook.Ability.TimerStop(isEndGame);
     }
 }

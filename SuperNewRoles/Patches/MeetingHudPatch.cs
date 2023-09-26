@@ -579,7 +579,14 @@ class MeetingHudUpdateButtonsPatch
                 Balancer.Balancer_updatepatch.UpdateButtonsPostfix(__instance);
                 break;
             case RoleId.Crook:
-                Crook.Ability.Button.UpdateButtonsPostfix(__instance);
+                if (ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf))
+                {
+                    Crook.Ability.InClientMode.UpdateButtonsPostfix(__instance);
+                }
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                {
+                    Crook.Ability.InHostMode.TimeoutCountdownAnnounce();
+                }
                 break;
         }
     }
@@ -748,7 +755,7 @@ class MeetingHudStartPatch
                     Balancer.Balancer_Patch.MeetingHudStartPostfix(__instance);
                     break;
                 case RoleId.Crook:
-                    Crook.Ability.Button.MeetingHudStartPostfix(__instance);
+                    Crook.Ability.InClientMode.MeetingHudStartPostfix(__instance);
                     break;
             }
         }

@@ -812,7 +812,7 @@ class AddChatPatch
     {
         string line = "|--------------------------------------------------------|";
         string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
-        string contents = $"\n{infoContents}\n　\n";
+        string contents = $"\n<align={"left"}>{infoContents}</align>\n　\n";
 
         SendCommand(target, contents, name);
     }
