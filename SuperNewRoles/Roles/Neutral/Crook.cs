@@ -90,6 +90,7 @@ public static class Crook
             AbilityCountDown = RoleData.TimeForAbilityUse;
             IsChangeBlue = false;
             InClientMode.ClearAndReload();
+            InHostMode.ClearAndReload();
         }
 
         /// <summary>
@@ -132,8 +133,15 @@ public static class Crook
                 }
                 else
                 {
-                    TimerStop();
-                    if (ModeHandler.IsMode(ModeId.SuperHostRoles)) InHostMode.SetGraceTimeTimer();
+                    if (isClientMode)
+                    {
+                        TimerStop();
+                    }
+                    else
+                    {
+                        TimerStop(isStartGraceTimeTimer: true);
+                        InHostMode.SetGraceTimeTimer();
+                    }
                 }
             };
             CountDownTimer.AutoReset = AbilityCountDown >= 0;
@@ -158,7 +166,7 @@ public static class Crook
         /// <summary>
         /// タイマーを停止させ, 関連する変数をリセットする。
         /// </summary>
-        internal static void TimerStop(bool isEndGame = false)
+        internal static void TimerStop(bool isEndGame = false, bool isStartGraceTimeTimer = false)
         {
             if (CountDownTimer != null)
             {
@@ -174,7 +182,7 @@ public static class Crook
             }
             IsChangeBlue = false;
 
-            InHostMode.TimerStop(isEndGame);
+            if (isStartGraceTimeTimer) InHostMode.TimerStop(isEndGame);
         }
 
         /// <summary>
@@ -466,12 +474,12 @@ public static class Crook
         internal static class InHostMode
         {
             /// <summary>
-            /// 詐欺師全体において 投票を無効化する可能性がある時間か?
+            /// 投票無効化時間 ( 能力指定受付時間 + 猶予時間 ) であるかを示す
             /// </summary>
             private static bool IsTimeToNullTheVote;
 
             /// <summary>
-            /// 現在の秒数はカウントダウン済みか?
+            /// 現在の秒数はカウントダウン済みかを示す
             /// </summary>
             internal static bool IsAllladyCountdownToSecond; // Countdownの変数の制御は共通処理側で行う。
 
@@ -499,7 +507,7 @@ public static class Crook
                         IsAllladyCountdownToSecond = true;
                         AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
                     }
-                    else if (!IsAllladyCountdownToSecond && SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now].ContainsKey(crook.PlayerId)) // 特定の詐欺師の, 今回の会議の保険契約情報が保存されていないなら
+                    else if (!IsAllladyCountdownToSecond && !SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now].ContainsKey(crook.PlayerId)) // 特定の詐欺師の, 今回の会議の保険契約情報が保存されていないなら
                     {
                         IsAllladyCountdownToSecond = true;
                         AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
@@ -517,12 +525,55 @@ public static class Crook
             /// <param name="srcPlayerId">投票者のplayerId</param>
             /// <param name="suspectPlayerId">投票先のplayerId</param>
             /// <returns> true : 投票を反映する / false : 投票を反映しない </returns>
-            internal static bool MeetingHudCastVote_Prefix(byte srcPlayerId, byte suspectPlayerId)
+            internal static bool MeetingHudCastVote_Prefix(byte crookId, byte targetId)
             {
-                // SHRで, 設定が有効な時, 警察医が自投票していたら
                 if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return true;
+                if (targetId is 252 or 253/*スキップ*/ or 254/*無投票*/ or 255/*未投票*/) return true; // スキップ系統なら 時間判定を行わず 有効票を返す。
+                if (SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now) && SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now].ContainsKey(crookId)) return true; // 既に契約させているなら 時間判定を行わず 有効票を返す。
 
-                return false;
+                if (!IsTimeToNullTheVote) // 投票無効化時間でないならば,
+                {
+                    return true; // 有効票を返す。
+                }
+                else // 投票無効化時間内であり,
+                {
+                    PlayerControl crook = ModHelpers.GetPlayerControl(crookId);
+                    PlayerControl target = ModHelpers.GetPlayerControl(targetId);
+
+                    if (AbilityCountDown > 0) // 能力使用可能な時間内なら
+                    {
+                        if (crookId != targetId) // 自投票でないなら
+                        {
+                            string infoStr = string.Format(ModTranslation.GetString("CrookVoteSuccessMessage"), target.name);
+                            AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), infoStr, "#60a1bd");
+
+                            // ホストの記録
+                            SaveSignDictionary(crookId, targetId);
+
+                            // 導入者ゲストへの記録送信
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CrookSaveSignDictionary);
+                            writer.Write(crookId);
+                            writer.Write(targetId);
+                            writer.EndRPC();
+                        }
+                        else
+                        {
+                            string infoStr = string.Format(ModTranslation.GetString("CrookVoteErrorMessage"), target.name);
+                            AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), infoStr, "#60a1bd");
+                        }
+
+                        return false; // 無効票を返す。
+                    }
+                    else // 能力使用不可な時間なら
+                    {
+                        float second = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - RoleData.TimeForAbilityUse - 3f;
+                        string warningStr = string.Format(ModTranslation.GetString("CrookErrorTimeout"), "#FF4B00", second);
+
+                        Logger.Info($"{crook.name}は, 能力使用時間内に保険を契約させられず, 猶予時間以内に投票しました。[バニラ会議時間 : {GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime)}, 能力使用可能時間 {RoleData.TimeForAbilityUse - 7f}, 猶予時間終了時間{second}]", "Crook Vote");
+                        AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
+                        return false; // 無効票を返す。
+                    }
+                }
             }
 
             /// <summary>
@@ -531,8 +582,6 @@ public static class Crook
             internal static void SetGraceTimeTimer()
             {
                 if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return;
-
-                IsTimeToNullTheVote = true;
 
                 GraceTimeTimer = new(10000); // 10秒 リピートなしのタイマー
                 GraceTimeTimer.Elapsed += (source, e) =>

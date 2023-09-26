@@ -31,7 +31,7 @@ class CastVotePatch
     public static bool Prefix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
     {
         PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
-        PlayerControl suspectPlayer = ModHelpers.GetPlayerControl(suspectPlayerId); // 現在使用していない
+        PlayerControl suspectPlayer = ModHelpers.GetPlayerControl(suspectPlayerId);
 
         bool IsValidVote = true;
 
@@ -53,6 +53,7 @@ class CastVotePatch
         else // 無効票であれば,
         {
             __instance.RpcClearVote(srcPlayer.GetClientId()); // 投票を解除し,
+            Logger.Info($"{srcPlayer.name}({srcPlayerRole}) の 投票を無効化しました。 (投票先 : {(suspectPlayer != null ? $"{suspectPlayer.name}({suspectPlayer.GetRole()})" : "投票者無し")}", "Vote Void"); // ログに記載し,
             return false; // 無効化する。
         }
     }
