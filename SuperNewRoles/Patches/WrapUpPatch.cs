@@ -245,6 +245,10 @@ class WrapUpPatch
                 }
             }
         }
+        else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            CheckForEndVotingPatch.ResetExiledPlayerName();
+        }
         Mode.SuperHostRoles.Main.RealExiled = null;
 
         Logger.Info("[追放が発生していた場合のみ 会議終了時に行う処理] 通過", "WrapUp");

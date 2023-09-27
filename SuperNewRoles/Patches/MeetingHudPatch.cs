@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
@@ -101,10 +102,13 @@ class CheckForEndVotingPatch
             { RoleId.Dictator, RoleClass.Dictator.VoteCount }
         };
 
+    private static PlayerControl ChangeNameExiledPlayer = null;
+
     public static bool Prefix(MeetingHud __instance)
     {
         try
         {
+
             if (!AmongUsClient.Instance.AmHost) return true;
             if (ModeHandler.IsMode(ModeId.Detective) && Mode.Detective.Main.IsNotDetectiveVote)
             {
@@ -396,37 +400,68 @@ class CheckForEndVotingPatch
                         }
                     }, 5f, "Assissn Set Skin SHR");
                 }
-                if (Bakery.BakeryAlive())
+
+                bool isBakeryAlive = Bakery.BakeryAlive(); // パン屋 生存判定
+                (bool, string) isCrookGetInsure = Crook.Ability.GetIsReceivedTheInsuranceAndAnnounce(); // 詐欺師 保険金受給判定
+                bool isUseConfirmImpostorSecondText = false; // 2つ目の追放テキストとして記載する内容はあるか?
+                StringBuilder changeStringBuilder = new(); // 変更する文字を, 一時的に保管する。
+
+                if (isBakeryAlive) // パン屋が生存しているならば
                 {
+                    string confirmImpostorSecondText = $"{Bakery.GetExileText()}\n";
+                    changeStringBuilder.AppendLine(Bakery.GetExileText());
+                    isUseConfirmImpostorSecondText = true;
+                }
+                if (isCrookGetInsure.Item1) // 詐欺師が保険金を受け取ったのならば
+                {
+                    string confirmImpostorSecondText = isCrookGetInsure.Item2;
+                    changeStringBuilder.AppendLine(confirmImpostorSecondText);
+                    isUseConfirmImpostorSecondText = true;
+                }
+
+                if (isUseConfirmImpostorSecondText) // 2つ目の追放テキストが必要なら
+                {
+                    const string exileText = "<size=300%>{0}</size>\n";
+                    string confirmImpostorSecondText = $"<size=300%>{changeStringBuilder}</size><size=0%>";
+
                     if (exiledPlayer == null)
                     {
-                        foreach (PlayerControl p in BotManager.AllBots)
+                        string name = RoleSelectHandler.ConfirmImpostorSecondTextBot.GetDefaultName();
+
+                        exiledPlayer = RoleSelectHandler.ConfirmImpostorSecondTextBot.Data;
+                        ChangeNameExiledPlayer = RoleSelectHandler.ConfirmImpostorSecondTextBot;
+                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                         {
-                            if (p.IsDead())
+                            if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                             {
-                                exiledPlayer = p.Data;
-                                foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
-                                {
-                                    if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
-                                    {
-                                        p.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
-                                    }
-                                }
-                                new LateTask(() => p.RpcSetName(p.GetDefaultName()), 5f, "Remove Bakery Bot Name(ex==null)");
-                                break;
+                                RoleSelectHandler.ConfirmImpostorSecondTextBot.RpcSetNamePrivate(string.Format(exileText, FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip)) + confirmImpostorSecondText, p2);
                             }
                         }
                     }
                     else if (!exiledPlayer.Object.IsBot())
                     {
+                        ChangeNameExiledPlayer = exiledPlayer.Object;
+                        bool isConfirmImpostor = GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor);
+
                         foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                         {
                             if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                             {
-                                exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + exiledPlayer.Object.GetDefaultName(), p2);
+                                if (!isConfirmImpostor)
+                                {
+                                    string playerExiledText = string.Format(exileText, FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.ExileTextNonConfirm));
+                                    exiledPlayer.Object.RpcSetNamePrivate(string.Format(playerExiledText, exiledPlayer.Object.GetDefaultName()) + confirmImpostorSecondText, p2);
+                                }
+                                else
+                                {
+                                    string playerExiledText =
+                                        p2.IsImpostor()
+                                                ? string.Format(exileText, FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.ExileTextPP))
+                                                : string.Format(exileText, FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.ExileTextPN));
+                                    exiledPlayer.Object.RpcSetNamePrivate(string.Format(playerExiledText, exiledPlayer.Object.GetDefaultName()) + confirmImpostorSecondText, p2);
+                                }
                             }
                         }
-                        new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.GetDefaultName()), 5f, "Remove Bakery Bot Name(ex!=null)");
                     }
                 }
             }
@@ -480,6 +515,17 @@ class CheckForEndVotingPatch
             SuperNewRolesPlugin.Logger.LogInfo("エラー:" + ex);
             throw;
         }
+    }
+
+    /// <summary>
+    /// 追放メッセージを非導入ゲストに表記する為に 名前を変えた, プレイヤー又はBotの名前を元に戻す
+    /// </summary>
+    internal static void ResetExiledPlayerName()
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (ChangeNameExiledPlayer == null) return;
+
+        ChangeNameExiledPlayer.RpcSetName(ChangeNameExiledPlayer.GetDefaultName());
     }
 
     private static Tuple<bool, byte, PlayerVoteArea> AssassinVoteState(MeetingHud __instance)

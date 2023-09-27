@@ -12,6 +12,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 public static class RoleSelectHandler
 {
     public static CustomRpcSender sender = null;
+    /// <summary>
+    /// 追放メッセージを表記する為のBot
+    /// </summary>
+    /// <value>現在はパン屋Bot 又は 詐欺師Botのみ</value>
+    public static PlayerControl ConfirmImpostorSecondTextBot = null;
+
     public static CustomRpcSender RoleSelect(CustomRpcSender send)
     {
         sender = send;
@@ -91,9 +97,20 @@ public static class RoleSelectHandler
                     crewmate++;
                 }
             }
-            if (CustomOptionHolder.BakeryOption.GetSelection() != 0)
+            ConfirmImpostorSecondTextBot = null; // 2つ目の追放メッセージ用Botの初期化
+            if (CustomOptionHolder.BakeryOption.GetSelection() != 0 || Crook.CustomOptionData.Option.GetSelection() != 0)
             {
-                BotManager.Spawn("パン屋BOT").Exiled();
+                string name = CustomOptionHolder.BakeryOption.GetSelection() != 0 ? "パン屋BOT" : "詐欺師BOT";
+                BotManager.Spawn(name).Exiled();
+
+                foreach (PlayerControl p in BotManager.AllBots)
+                {
+                    if (p.GetDefaultName() == name)
+                    {
+                        ConfirmImpostorSecondTextBot = p;
+                        break;
+                    }
+                }
             }
             else if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() != 0)
             {
