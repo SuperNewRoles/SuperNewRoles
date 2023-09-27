@@ -642,6 +642,11 @@ class MeetingHudUpdateButtonsPatch
     }
     static void Postfix(MeetingHud __instance)
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            Crook.Ability.InHostMode.TimeoutCountdownAnnounce();
+        }
+
         var role = PlayerControl.LocalPlayer.GetRole();
         switch (role)
         {
@@ -661,10 +666,6 @@ class MeetingHudUpdateButtonsPatch
                 if (ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf))
                 {
                     Crook.Ability.InClientMode.UpdateButtonsPostfix(__instance);
-                }
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                {
-                    Crook.Ability.InHostMode.TimeoutCountdownAnnounce();
                 }
                 break;
         }
