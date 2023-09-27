@@ -283,7 +283,6 @@ public static class Crook
 
             // 全体に詐欺師の勝利処理を実行させる。
             var reason = (GameOverReason)CustomGameOverReason.CrookWin;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
             CheckGameEndPatch.CustomEndGame(reason, false);
         }
 
