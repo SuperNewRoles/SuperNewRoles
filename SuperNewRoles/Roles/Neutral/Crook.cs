@@ -305,6 +305,7 @@ public static class Crook
 
                 var crook = ModHelpers.GetPlayerControl(kvp.Key);
                 if (crook.IsDead()) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
+                if (crook.IsRole(RoleId.Crook)) continue; // 役職が変わった「元詐欺師」は 勝利不可。
 
                 winfLag = true; // 追放画面に遷移し最後の保険金を受け取れた。
                 winners.Add(crook);
