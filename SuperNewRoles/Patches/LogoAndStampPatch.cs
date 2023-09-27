@@ -54,7 +54,6 @@ public static class CredentialsPatch
             //            version.transform.SetParent(amongUsLogo.transform);
         }
     }
-
     [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
     private static class PingTrackerPatch
     {

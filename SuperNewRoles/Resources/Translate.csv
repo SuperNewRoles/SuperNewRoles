@@ -1546,6 +1546,20 @@ ConjurerAddName,Compression,圧縮,施法,施法
 JumpDancerName,Jump Dancer,ジャンプダンサー,,跳跳舞者
 JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,,離開地球表面！
 JumpDancerButtonName,Jump,ジャンプ！,,跳！
+SaunerName,Sauner,サウナー
+SaunerTitle1,Yeah，it's exhilarating.,あ～、ととのう～
+SaunerDescription,The darkroom，showers，and observation deck，in that order，are the sole winners after spending a certain amount of time in each of these locations.,暗室、シャワー、展望デッキの順番で、それぞれの箇所で一定時間過ごすと単独勝利します。
+SaunerDarkroom,Darkroom,暗室
+SaunerShower,Shower,シャワー
+SaunerObservationDeck,Observation deck,展望デッキ
+SaunerTextInSauna,take a sauna,サウナに入る
+SaunerTextShower,take a shower,シャワーを浴びる
+SaunerTextAirBath,Take a refreshing outdoor bath!,外気浴でととのう
+SaunerTextRemaing,({0} seconds remaining),(残り{0}秒)
+SaunerDarkroomTime,Sauna Length of Stay,サウナタイム
+SaunerShowerTime,Time to take a shower,シャワータイム
+SaunerDeckTime,Outside air bath time,外気浴タイム
+SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！
 CrookName,Crook,詐欺師
 CrookTitle1,Sign this document and I promise you a happy future...,この書類にサインしてくれれば幸せな将来を約束しましょう...
 CrookDescription,As soon as the meeting starts，you can insure someone who is going to die before the next meeting.\nIf that person is killed OR expelled before the next meeting，the insurance money is received at the beginning of the meeting.\nWhen the insurance money is received，the whole group is notified at the end of the meeting that the crook has received the insurance money.\nThe con artist wins alone after receiving the insurance money for a set number of times.\n\n...I hear that even the mighty enemy of ours，the Impostor，is afraid of his own death and anxious about his own future.\nSo it is only natural that you are worried...\n\nNow，Sign this document and I promise you a happy future...,会議開始してすぐに次の会議までに死にそうな人に保険をかけることが出来ます。\nその人が次の会議までにキルor追放されれば会議初回に保険金を受け取れます。\n保険金を受け取った時、会議終了時に全体に詐欺師が保険金を受け取った事が通知されます。\n設定回数保険金を受け取ったら単独勝利です。\n\n...強大な我々の敵、そうあのインポスターですら、自らの死に恐怖を、自身の将来に不安を抱いていると聴きおよびます。\nだから貴方が不安なのは当然なことなのです...\n\nさあ、この書類にサインを... さすれば幸せな将来を約束しましょう...

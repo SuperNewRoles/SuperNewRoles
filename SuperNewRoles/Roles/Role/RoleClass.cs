@@ -254,6 +254,7 @@ public static class RoleClass
         MadRaccoon.RoleData.ClearAndReload();
         Moira.ClearAndReload();
         JumpDancer.ClearAndReload();
+        Sauner.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();

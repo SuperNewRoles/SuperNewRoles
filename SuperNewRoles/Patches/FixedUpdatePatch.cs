@@ -225,6 +225,9 @@ public class FixedUpdate
                         case RoleId.PoliceSurgeon:
                             PoliceSurgeon.FixedUpdate();
                             break;
+                        case RoleId.Sauner:
+                            Sauner.FixedUpdate();
+                            break;
                     }
                 }
                 else // -- 死亡時 --

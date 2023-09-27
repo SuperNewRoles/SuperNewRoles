@@ -131,6 +131,7 @@ public static class RoleHelpers
         RoleId.OrientalShaman or
         RoleId.BlackHatHacker or
         RoleId.Moira or
+        RoleId.Sauner or
         RoleId.Crook;
     // 第三か
 
@@ -961,6 +962,9 @@ public static class RoleHelpers
             case RoleId.JumpDancer:
                 JumpDancer.JumpDancerPlayer.Add(player);
                 break;
+            case RoleId.Sauner:
+                Sauner.RoleData.Player.Add(player);
+                break;
             case RoleId.Crook:
                 Crook.RoleData.Player.Add(player);
                 break;
@@ -1496,6 +1500,9 @@ public static class RoleHelpers
             case RoleId.JumpDancer:
                 JumpDancer.JumpDancerPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Sauner:
+                Sauner.RoleData.Player.RemoveAll(ClearRemove);
+                break;
             case RoleId.Crook:
                 Crook.RoleData.Player.RemoveAll(ClearRemove);
                 break;
@@ -1984,6 +1991,7 @@ public static class RoleHelpers
             else if (MadRaccoon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.MadRaccoon;
             else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
+            else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
             else if (Crook.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Crook;
             // ロールチェック
         }

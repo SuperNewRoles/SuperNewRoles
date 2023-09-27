@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.MapOption;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -17,6 +19,16 @@ public static class VentAndSabo
             [HarmonyArgument(0)] PlayerTask task)
         {
             Il2CppSystem.Collections.Generic.List<Vector2> locations = task.Locations;
+            //サウナー
+            ImportantTextTask imptsk;
+            if ((imptsk = task.TryCast<ImportantTextTask>()) != null)
+            {
+                if (imptsk.Text.StartsWith("<size=0%>Sauner</size>"))
+                {
+                    locations = Sauner.GetSaunaPos().ToIl2CppList();
+                }
+            }
+
             for (int i = 0; i < locations.Count; i++)
             {
                 Vector3 localPosition = locations[i] / MapUtilities.CachedShipStatus.MapScale;

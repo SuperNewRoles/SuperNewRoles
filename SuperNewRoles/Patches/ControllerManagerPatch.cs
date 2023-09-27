@@ -43,8 +43,14 @@ class ControllerManagerUpdatePatch
 {
     static readonly (int, int)[] resolutions = { (480, 270), (640, 360), (800, 450), (1280, 720), (1600, 900), (1920, 1080) };
     static int resolutionIndex = 0;
+    static AudioSource source;
     public static void Postfix()
     {
+        if (source != null)
+        {
+            Logger.Info(source.time.ToString(),"a");
+            Logger.Info(source.timeSamples.ToString(),"b");
+        }
         //解像度変更
         if (Input.GetKeyDown(KeyCode.F9))
         {
@@ -111,6 +117,8 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
+                source = SoundManager.Instance.PlaySound(ContentManager.GetContent<AudioClip>("Sauner_SaunaBGM.wav"), true);
+                return;
                 HudManager.Instance.ShowPopUp("スマソ。無理やわ。");
                 return;
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";

@@ -1120,6 +1120,7 @@ class AllRoleSetClass
             RoleId.MadRaccoon => MadRaccoon.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.Moira => Moira.MoiraPlayerCount.GetFloat(),
             RoleId.JumpDancer => JumpDancer.JumpDancerPlayerCount.GetFloat(),
+            RoleId.Sauner => Sauner.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.Crook => Crook.CustomOptionData.PlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
@@ -1162,7 +1163,7 @@ class AllRoleSetClass
             RoleId.Revolutionist => false,
             RoleId.Assassin => false,
             RoleId.Jumbo => false,
-            RoleId.Nun or RoleId.Pteranodon => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
+            RoleId.Nun or RoleId.Pteranodon or RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
             RoleId.Werewolf or RoleId.Knight => ModeHandler.IsMode(ModeId.Werewolf),
             _ => true,
         };
