@@ -1560,6 +1560,14 @@ SaunerDarkroomTime,Sauna Length of Stay,サウナタイム
 SaunerShowerTime,Time to take a shower,シャワータイム
 SaunerDeckTime,Outside air bath time,外気浴タイム
 SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！
+BatName,Bat,コウモリ
+BatTitle1,Sound deceives all.,音は全てを惑わす
+BatDescription,This position allows you to use ultrasonic waves to stop the information updates of information devices such as Admins and Vitals for a certain period of time.\nShift and manipulate information to mislead the village.,超音波で一定時間アドミンやバイタル等の情報機器の情報更新を止める事ができる役職です。\n情報をずらし、操り、村を惑わしましょう。
+BatButtonName,Ultrasonic,超音波
+BatButtonDurationSetting,Number of seconds to stop updating,更新を止める秒数
+BatIsCanUseCountSetting,Limit the number of times the ability is used.,能力の使用回数を制限する
+BatCanUseCountSetting,Number of times the ability can be used,能力を使用できる回数
+BatNumTextName,Remaining {0} Ultrasonic,残り{0}超音波
 
 #NewRoleTranslation
 

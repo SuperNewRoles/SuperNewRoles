@@ -1121,6 +1121,7 @@ class AllRoleSetClass
             RoleId.Moira => Moira.MoiraPlayerCount.GetFloat(),
             RoleId.JumpDancer => JumpDancer.JumpDancerPlayerCount.GetFloat(),
             RoleId.Sauner => Sauner.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Bat => Bat.CustomOptionData.PlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };

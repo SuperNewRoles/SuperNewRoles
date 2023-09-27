@@ -211,6 +211,7 @@ public enum RoleId
     Moira,
     JumpDancer,
     Sauner,
+    Bat,
     //RoleId
 }
 
@@ -313,12 +314,13 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance = 250,
+    BalancerBalance,
     PteranodonSetStatus,
     SetInfectionTimer,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
-    JumpDancerJump
+    JumpDancerJump,
+    BatSetDeviceStop
 }
 
 public static class RPCProcedure
@@ -1971,6 +1973,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.JumpDancerJump:
                         JumpDancerJump(reader);
+                        break;
+                    case CustomRPC.BatSetDeviceStop:
+                        Roles.Impostor.Bat.BatSetDeviceStop();
                         break;
 
                 }
