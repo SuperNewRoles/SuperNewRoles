@@ -190,7 +190,7 @@ public static class Crook
         /// </summary>
         /// <param name="crookId">保険を掛けた詐欺師</param>
         /// <param name="TargetId">保険が掛けられたプレイヤー</param>
-        internal static void SaveSignDictionary(byte crookId, byte TargetId)// [ ]:MEMO 共通
+        internal static void SaveSignDictionary(byte crookId, byte TargetId)
         {
             if (SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now))
             {
@@ -211,11 +211,10 @@ public static class Crook
         /// <summary>
         /// 会議開始時に, 今回ターンのアビリティの管理を実行し, 前回ターンの保険金の受給の有無を判定 及び 保存する
         /// </summary>
-        internal static void SaveReceiptOfInsuranceProceeds() // [x]:MEMO 共通
+        internal static void SaveReceiptOfInsuranceProceeds()
         {
             SetAvailabilityTimeTimer(); // SHR, SNR両方でアビリティ使用可能時間の管理を実行する。
 
-            // [x]MEMO : 現状SHRSNR共用可能
             ReceivedTheInsuranceDictionary = new();
 
             var previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1); // 前回ターンのターン数
@@ -251,14 +250,12 @@ public static class Crook
                 var remainingNumber = RoleData.NumberNeededWin - times;
                 Logger.Info($"{crook.name} => 現在{times}回目の取得, 勝利に必要な回数は残り{remainingNumber}回", "crook");
 
-                if (AmongUsClient.Instance.AmHost) // [x]MEMO : 追放画面で保険金受給の有無をチャット通知
+                if (AmongUsClient.Instance.AmHost) // 追放画面で保険金受給の有無をチャット通知
                 {
                     string chatText;
                     if (privateWinFlag) chatText = $"{string.Format(ModTranslation.GetString("CrookReceiveSetWinFlagChatAnnounce"), target.GetDefaultName(), times)}";
                     else chatText = $"{string.Format(ModTranslation.GetString("CrookReceiveSuccessChatAnnounce"), target.GetDefaultName(), times, remainingNumber)}";
                     AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), chatText, "#60a1bd");
-
-                    // [x]MEMO : 此処で勝利フラグを建てる // [x]MEMO : 勝利実行はスポーン時, この時に死んでいたら(会議キルを受けたら)実行されない
                 }
             }
         }
@@ -266,7 +263,7 @@ public static class Crook
         /// <summary>
         /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行し, 更にゲストに実行させる。(SHR, SNR共通処理)
         /// </summary>
-        internal static void CheckWinWrapUp()// [ ]:MEMO 共通
+        internal static void CheckWinWrapUp()
         {
             TimerStop(); // 会議中に能力終了しない場合を想定
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) InHostMode.WrapUp();
@@ -293,7 +290,7 @@ public static class Crook
         /// Item1 => true : 保険金受領場所(追放画面)に到達し, 最後の保険金を受給できた。 / false : 保険金受領場所に到達できず, 最後の保険金を受給できなかった。,
         /// Item2 => 勝利可能な詐欺師達
         /// </returns>
-        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners() //　Item2をこのメソッドに変更して, 勝利リスト追加も此処に移行 // [ ]:MEMO 共通
+        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners() //　Item2をこのメソッドに変更して, 勝利リスト追加も此処に移行
         {
             List<PlayerControl> winners = new();
             var winfLag = false;
@@ -321,7 +318,7 @@ public static class Crook
         /// 保険金の受給の有無を, 保存した辞書から取得し, アナウンスを作成する。(SHR, SNR共通処理)
         /// </summary>
         /// <returns>bool : 保険金の受給の有無 / string : 保険金を受給した旨のアナウンステキスト </returns>
-        internal static (bool, string) GetIsReceivedTheInsuranceAndAnnounce() // [x]MEMO : 実行はパン屋.csで行う, 実行の有無と文字渡す // [ ]:MEMO 共通
+        internal static (bool, string) GetIsReceivedTheInsuranceAndAnnounce()
         {
             bool IsReceivedTheInsurance = false;
             StringBuilder announceBuilder = new();
@@ -449,7 +446,7 @@ public static class Crook
                 if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return;
                 if (AllladyDead) return; // 会議開始時点で死亡していた場合, 以下の処理を実行しないようにする。
 
-                if (PlayerControl.LocalPlayer.IsDead() || AbilityCountDown == 0) // [x]MEMO : + 時間切れ時のボタン消去処理 (能力使用後のボタン消去はボタンの実行処理の中で行っている)
+                if (PlayerControl.LocalPlayer.IsDead() || AbilityCountDown == 0)
                 {
                     __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); });
                     AllladyDead = true;

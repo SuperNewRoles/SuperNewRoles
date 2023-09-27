@@ -1449,7 +1449,7 @@ public class CustomOptionHolder
         JesterShortTask = jesteroption.Item2;
         JesterLongTask = jesteroption.Item3;
 
-        Crook.CustomOptionData.SetupCustomOptions();  // [x]MEMO:移動予定, 移動されていなかったら指摘ください。
+        Crook.CustomOptionData.SetupCustomOptions();
 
         Sauner.CustomOptionData.SetupCustomOptions();
 

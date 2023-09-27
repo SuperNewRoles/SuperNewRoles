@@ -804,7 +804,7 @@ public static class OnGameEndPatch
             }
             AdditionalTempData.winCondition = WinCondition.DemonWin;
         }
-        else if (ArsonistWin)  // [ ]MEMO : あーそにすと勝利
+        else if (ArsonistWin)
         {
             TempData.winners = new();
             foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
@@ -1196,7 +1196,7 @@ public static class OnGameEndPatch
                 AdditionalTempData.winCondition = WinCondition.CrookWin;
             }
         }
-        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer); // [x]MEMO : 同時に条件満たした詐欺師は同時勝利
+        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
         foxPlayers.AddRange(FireFox.FireFoxPlayer);
         isReset = false;
         foreach (PlayerControl player in foxPlayers)

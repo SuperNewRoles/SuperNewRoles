@@ -105,7 +105,7 @@ public static class FixedUpdate
         Dictionary<byte, string> ChangePlayers = new();
 
         // スターパッシブ能力 [ カリスマ ] の処理
-        if (RoleClass.Celebrity.ChangeRoleView) // [ ]MEMO
+        if (RoleClass.Celebrity.ChangeRoleView)
         {
             foreach (PlayerControl viewPlayer in RoleClass.Celebrity.ViewPlayers)
             {
