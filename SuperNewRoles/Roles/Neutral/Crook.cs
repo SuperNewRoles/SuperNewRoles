@@ -546,7 +546,17 @@ public static class Crook
 
                     if (AbilityCountDown > 0) // 能力使用可能な時間内なら
                     {
-                        if (crookId != targetId) // 自投票でないなら
+                        if (crookId == targetId) // 自投票なら
+                        {
+                            string infoStr = string.Format(ModTranslation.GetString("CrookVoteBotErrorMessage"), target.name);
+                            AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), infoStr, "#60a1bd");
+                        }
+                        else if (target.IsBot()) //　ターゲットがBotなら
+                        {
+                            string infoStr = string.Format(ModTranslation.GetString("CrookVoteYourselfErrorMessage"), target.name);
+                            AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), infoStr, "#60a1bd");
+                        }
+                        else
                         {
                             string infoStr = string.Format(ModTranslation.GetString("CrookVoteSuccessMessage"), target.name);
                             AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), infoStr, "#60a1bd");
@@ -559,11 +569,6 @@ public static class Crook
                             writer.Write(crookId);
                             writer.Write(targetId);
                             writer.EndRPC();
-                        }
-                        else
-                        {
-                            string infoStr = string.Format(ModTranslation.GetString("CrookVoteErrorMessage"), target.name);
-                            AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), infoStr, "#60a1bd");
                         }
 
                         return false; // 無効票を返す。
