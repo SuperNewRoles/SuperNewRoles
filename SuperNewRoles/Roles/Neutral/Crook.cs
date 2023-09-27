@@ -501,6 +501,8 @@ public static class Crook
 
                 foreach (var crook in RoleData.Player)
                 {
+                    if (crook.IsDead()) continue;
+
                     IsAllladyCountdownToSecond.TryGetValue(crook.PlayerId, out bool isAllladyCountdown); // この秒数は既にカウントしているか?
 
                     // 以下順番前後変更禁止
