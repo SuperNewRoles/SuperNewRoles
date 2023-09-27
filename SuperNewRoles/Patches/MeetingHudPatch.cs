@@ -29,12 +29,20 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote))]
 class CastVotePatch
 {
+    /// <summary>
+    /// 投票が有効であるか無効であるかを取得し, 無効ならば投票を反映せず, 投票者の投票権を復活させる。
+    /// (ホストのみが行う処理)
+    /// </summary>
+    /// <param name="srcPlayerId">投票したプレイヤーのPlayerId</param>
+    /// <param name="suspectPlayerId">投票先のPlayerId</param>
+    /// <param name="__instance"></param>
+    /// <returns>true : 投票を有効票として扱う / false : 投票を無効票として扱う </returns>
     public static bool Prefix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
     {
         PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
         PlayerControl suspectPlayer = ModHelpers.GetPlayerControl(suspectPlayerId);
 
-        bool IsValidVote = true;
+        bool IsValidVote = true; // 投票が有効になるかを一時的に保存する
 
         RoleId srcPlayerRole = srcPlayer.GetRole();
         switch (srcPlayerRole)
