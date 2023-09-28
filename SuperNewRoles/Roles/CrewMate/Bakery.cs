@@ -158,6 +158,7 @@ public class Bakery
                 __instance.Text.transform);
 
         StringBuilder changeStringBuilder = new(); // 変更する文字を, 一時的に保管する。
+        bool isUseConfirmImpostorSecondText = false; // 2つ目の追放テキストとして記載する内容はあるかを保存する
 
         bool isBakeryAlive = BakeryAlive(); // パン屋 生存判定
         (bool, string) isCrookGetInsure = Neutral.Crook.Ability.GetIsReceivedTheInsuranceAndAnnounce(); // 詐欺師 保険金受給判定
@@ -166,19 +167,21 @@ public class Bakery
 
         if (isBakeryAlive) // パン屋 生存していたら実行
         {
-            Logger.Info("パン屋がパンを焼きました","ConfirmImpostorSecondText"); // ログ
+            Logger.Info("パン屋がパンを焼きました", "ConfirmImpostorSecondText"); // ログ
+            isUseConfirmImpostorSecondText = true;
             changeStringBuilder.AppendLine(GetExileText());
         }
 
         if (isCrookGetInsure.Item1) // 詐欺師 保険金受給していたら実行
         {
-            Logger.Info("詐欺師が保険金を受け取りました","ConfirmImpostorSecondText"); // ログ
+            Logger.Info("詐欺師が保険金を受け取りました", "ConfirmImpostorSecondText"); // ログ
+            isUseConfirmImpostorSecondText = true;
             changeStringBuilder.AppendLine(isCrookGetInsure.Item2);
         }
 
         // |:========== 2段目の追放確認テキスト 表示 ==========:|
 
-        if (isBakeryAlive || isCrookGetInsure.Item1)
+        if (isUseConfirmImpostorSecondText)
         {
             // 文字位置変更
             if (GameManager.Instance.LogicOptions.currentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor))
