@@ -317,7 +317,7 @@ public static class DeviceClass
                         vitals.IsDead = false;
                         vitals.Background.sprite = __instance.PanelPrefab.Background.sprite;
                         vitals.Cardio.gameObject.SetActive(true);
-                        vitals.SetAlive();
+                        vitals.Cardio.SetAlive();
                     }
                     else if (vitals.PlayerInfo.Disconnected)
                     {

@@ -1567,7 +1567,7 @@ BatButtonName,Ultrasonic,超音波
 BatButtonDurationSetting,Number of seconds to stop updating,更新を止める秒数
 BatIsCanUseCountSetting,Limit the number of times the ability is used.,能力の使用回数を制限する
 BatCanUseCountSetting,Number of times the ability can be used,能力を使用できる回数
-BatNumTextName,Remaining {0} Ultrasonic,残り{0}超音波
+BatNumTextName,Remaining {0} times,残り{0}回
 
 #NewRoleTranslation
 

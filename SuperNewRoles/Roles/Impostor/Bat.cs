@@ -42,6 +42,8 @@ public static class Bat
             RoleData.AliveData[player.PlayerId] = player.IsAlive();
         }
         RoleData.RoomAdminData = new();
+        if (MapBehaviour.Instance == null)
+            FastDestroyableSingleton<HudManager>.Instance.InitMap();
         MapCountOverlay __instance = MapBehaviour.Instance.countOverlay;
         foreach (CounterArea counterArea in __instance.CountAreas)
         {
