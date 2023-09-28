@@ -19,7 +19,7 @@ public class RocketDeadbody : CustomAnimation
         spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
         transform.localScale = Vector3.one * 0.45f;
     }
-    public void Init(PlayerControl Player)
+    public void Init(PlayerControl Player, int index, int maxcount)
     {
         CustomAnimationOptions customAnimationOptions = new(GetSprites("SuperNewRoles.Resources.Rocket.RocketPlayer", 2), 10, true);
         base.Init(customAnimationOptions);
@@ -32,7 +32,22 @@ public class RocketDeadbody : CustomAnimation
             ColorId = Player.Data.DefaultOutfit.ColorId
         };
         spriteRenderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
-        transform.position = new(Player.transform.position.x, Player.transform.position.y, -10);
+        if (maxcount <= 1)
+        {
+            transform.position = new(Player.transform.position.x, Player.transform.position.y, -10);
+        }
+        else
+        {
+            if (index % 2 == 0)
+            {
+                transform.position = new(Player.transform.position.x - (0.5f * (index / 2.0f)), Player.transform.position.y, -10);
+            }
+            else
+            {
+                transform.position = new(Player.transform.position.x + (0.5f * (index / 2 + 1)), Player.transform.position.y, -10);
+            }
+
+        }
         BasePos = transform.position;
         IsFirework = false;
     }

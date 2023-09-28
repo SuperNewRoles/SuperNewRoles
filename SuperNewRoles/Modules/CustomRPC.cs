@@ -348,11 +348,13 @@ public static class RPCProcedure
             Logger.Info("RocketMuri:ロケット無理でした。");
             return;
         }
+        int count = 0;
         foreach (PlayerControl player in players)
         {
             if (player == null) continue;
             player.Exiled();
-            new GameObject("RocketDeadbody").AddComponent<RocketDeadbody>().Init(player);
+            new GameObject("RocketDeadbody").AddComponent<RocketDeadbody>().Init(player, count, players.Count);
+            count++;
         }
         Rocket.RoleData.RocketData.Remove(source);
     }

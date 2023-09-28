@@ -11,6 +11,7 @@ public class PlayerData<T>
     private Dictionary<byte, T> _data;
     private Dictionary<PlayerControl, T> _playerdata;
     private T defaultvalue = default;
+    private bool nonsetinit = false;
     public T Local
     {
         get
@@ -36,13 +37,18 @@ public class PlayerData<T>
             return _data.Values;
         }
     }
+    private T _result;
     public T this[byte key]
     {
         get
         {
-            return _data == null ? defaultvalue :
-                _data.TryGetValue(key, out T result)
-                ? result : defaultvalue;
+            if (_data == null || !_data.TryGetValue(key, out _result))
+            {
+                if (nonsetinit)
+                    this[key] = defaultvalue;
+                return defaultvalue;
+            }
+            return _result;
         }
         set
         {
@@ -59,11 +65,15 @@ public class PlayerData<T>
     {
         get
         {
-            return _data == null
-                || key == null
-                ? defaultvalue
-                : _data.TryGetValue(key.PlayerId, out T result)
-                ? result : defaultvalue;
+            if (key == null)
+                return defaultvalue;
+            if (_data == null || !_data.TryGetValue(key.PlayerId, out _result))
+            {
+                if (nonsetinit)
+                    this[key] = defaultvalue;
+                return defaultvalue;
+            }
+            return _result;
         }
         set
         {
@@ -105,6 +115,12 @@ public class PlayerData<T>
             }
         }
         return obj._playerdata;
+    }
+    public void Reset()
+    {
+        _data = null;
+        if (_playerdata != null)
+            _playerdata = new();
     }
     public bool Any(Func<KeyValuePair<byte, T>, bool> func)
     {
@@ -184,12 +200,13 @@ public class PlayerData<T>
     /// 例(intを保存したい場合)：PlayerData<int>
     /// </summary>
     /// <param name="needplayerlist">Dictionary<PlayerControl,T>型が必要かどうか</param>
-    public PlayerData(bool needplayerlist = false, T defaultvalue=default)
+    public PlayerData(bool needplayerlist = false, T defaultvalue=default, bool nonsetinit = false)
     {
         //使用する際に初期化して、メモリの負担を軽く
         _data = null;
         _playerdata = needplayerlist ? new(1) : null;
         this.defaultvalue = defaultvalue;
+        this.nonsetinit = nonsetinit;
     }
     public IEnumerator GetEnumerator()
     {

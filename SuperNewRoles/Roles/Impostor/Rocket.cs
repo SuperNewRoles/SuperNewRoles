@@ -16,6 +16,7 @@ public static class Rocket
         public static CustomOption PlayerCount;
         public static CustomOption RocketButtonCooldown;
         public static CustomOption RocketButtonAfterCooldown;
+        public static CustomOption RocketChargeTime;
 
         public static void SetupCustomOptions()
         {
@@ -23,6 +24,7 @@ public static class Rocket
             PlayerCount = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SettingPlayerCountName", CustomOptionHolder.ImpostorPlayers[0], CustomOptionHolder.ImpostorPlayers[1], CustomOptionHolder.ImpostorPlayers[2], CustomOptionHolder.ImpostorPlayers[3], Option); optionId++;
             RocketButtonCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;
             RocketButtonAfterCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonAfterCooldown", 5f, 0f, 60f, 2.5f, Option); optionId++;
+            RocketChargeTime = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketChargeTimeSetting", 3, 0.5f, 10f, 0.5f, Option); optionId++;
         }
     }
     public static void WrapUp()
@@ -36,7 +38,6 @@ public static class Rocket
             if (data.Key == null || data.Value == null || data.Value.Count <= 0 || data.Key.IsDead() || data.Value.IsAllDead() ||
                 !data.Key.IsRole(RoleId.Rocket))
             {
-                RoleData.RocketData.Remove(data.Key);
                 return;
             }
             foreach (PlayerControl player in data.Value)
@@ -45,11 +46,14 @@ public static class Rocket
                     continue;
                 player.Exiled();
             }
-            RoleData.RocketData.Remove(data.Key);
         }
+        RoleData.RocketData.Reset();
     }
     public static void FixedUpdate()
     {
+        //会議中なら処理しない
+        if (RoleClass.IsMeeting)
+            return;
         //処理するデータがないならパス
         if (RoleData.RocketData.Count <= 0)
             return;
@@ -116,8 +120,10 @@ public static class Rocket
                     writer.Write(target.PlayerId);
                     writer.EndRPC();
                     RPCProcedure.RocketSeize(PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
-                    RocketSeizeButton.MaxTimer = RoleData.RocketButtonCooldown;
-                    RocketSeizeButton.Timer = RoleData.RocketButtonCooldown;
+                    RocketSeizeButton.MaxTimer = RoleData.RocketButtonAfterCooldown;
+                    RocketSeizeButton.Timer = RoleData.RocketButtonAfterCooldown;
+                    RocketRocketButton.MaxTimer = CustomOptionData.RocketChargeTime.GetFloat();
+                    RocketRocketButton.Timer = RocketRocketButton.MaxTimer;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Rocket; },
                 () => { return PlayerControl.LocalPlayer.CanMove && HudManagerStartPatch.SetTarget(RoleData.LocalData, Crewmateonly: true); },
@@ -165,7 +171,7 @@ public static class Rocket
         {
             RocketSeizeButton.MaxTimer = RoleData.RocketButtonCooldown;
             RocketSeizeButton.Timer = RoleData.RocketButtonCooldown;
-            RocketRocketButton.MaxTimer = 0;
+            RocketRocketButton.MaxTimer = CustomOptionData.RocketChargeTime.GetFloat();
             RocketRocketButton.Timer = 0;
         }
     }

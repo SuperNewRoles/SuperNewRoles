@@ -1090,8 +1090,6 @@ public class CustomOptionHolder
         EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
         EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
 
-        Rocket.CustomOptionData.SetupCustomOptions();
-
         EvilSeer.CustomOptionData.SetupCustomOptions();
 
         ShiftActor.SetupCustomOptions();
@@ -1111,6 +1109,8 @@ public class CustomOptionHolder
         PenguinDurationTime = Create(200603, true, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinCanDefaultKill = Create(200604, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
         PenguinMeetingKill = Create(200605, true, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
+
+        Rocket.CustomOptionData.SetupCustomOptions();
 
         DoppelgangerOption = SetupCustomRoleOption(200700, true, RoleId.Doppelganger);
         DoppelgangerPlayerCount = Create(200701, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);

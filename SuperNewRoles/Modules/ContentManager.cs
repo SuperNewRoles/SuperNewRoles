@@ -18,7 +18,7 @@ public static class ContentManager
     private readonly static Dictionary<string, DownloadedContent> Contents = new();
     private readonly static string BasePath = $@"{Path.GetDirectoryName(Application.dataPath)}\SuperNewRoles\DownloadContent\";
     private readonly static DirectoryInfo directory = new(BasePath);
-    private const string ContentURL = "c";
+    private const string ContentURL = "https://raw.githubusercontent.com/ykundesu/SupernewRolesData/main/Contents";
     public static MD5 MD5Hash = MD5.Create();
     public static void Load()
     {
