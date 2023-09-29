@@ -1560,6 +1560,14 @@ SaunerDarkroomTime,Sauna Length of Stay,サウナタイム
 SaunerShowerTime,Time to take a shower,シャワータイム
 SaunerDeckTime,Outside air bath time,外気浴タイム
 SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！
+FrankensteinName,Frankenstein,フランケンシュタイン
+FrankensteinTitle1,I seem to have created a monster.,私は怪物を造ってしまったようだ
+FrankensteinDescription,If you use the ability on a corpse， you will be able to revive and manipulate it.\nIn this state， you can only make one kill.\nAfter the kill， the corpse reverts back to its original state.\nIf you survive after a certain number of kills， you win the game.\n\nI seem to have created a monster.\nAnd there are other monsters on this ship.\nIf this happens， I will have no choice but to survive by pitting that monster against my monster.,死体に能力を使用すると、その死体を蘇生し操作することが出来るようになります。\nその状態で一度だけキルをすることが出来ます。\nキルをしたら死体に戻ります。\n一定数キルをした上で生き残ると横取り勝利します。\n\n私は怪物を造ってしまったようだ。\nそしてこの船には他に怪物がいるらしい。\nこうなったらその怪物と私の怪物をぶつけて生き残るしかあるまい。
+FrankensteinCreateCoolTimeSetting,Cool time for creation a monster,化物作成のクールタイム
+FrankensteinWinKillCountSetting,Number of kills needed to win,勝利に必要なキル数
+FrankensteinMonsterImpostorLightSetting,Imposter vision of a monster,化物がインポスター視野
+FrankensteinMonsterCanVentOetting,Monsters can use vent,怪物がベントを使える
+FrankensteinCreateMonsterButtonName,Create Monster,怪物作成
 
 #NewRoleTranslation
 

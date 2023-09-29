@@ -211,6 +211,7 @@ public enum RoleId
     Moira,
     JumpDancer,
     Sauner,
+    Frankenstein,
     //RoleId
 }
 
@@ -313,16 +314,50 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance = 250,
+    BalancerBalance,
     PteranodonSetStatus,
     SetInfectionTimer,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
-    JumpDancerJump
+    JumpDancerJump,
+    SetFrankensteinMonster,
+    MoveDeadBody,
 }
 
 public static class RPCProcedure
 {
+    public static void MoveDeadBody(byte id, float x, float y)
+    {
+        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        {
+            if (dead.ParentId == id)
+            {
+                dead.transform.position = new(x, y, y / 1000f);
+                return;
+            }
+        }
+    }
+    public static void SetFrankensteinMonster(byte id, byte body, bool kill)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (!player) return;
+        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        {
+            if (dead.ParentId == body)
+            {
+                Frankenstein.MonsterPlayer[id] = dead;
+                player.setOutfit(GameData.Instance.GetPlayerById(body).DefaultOutfit);
+                return;
+            }
+        }
+        Frankenstein.MonsterPlayer[id] = null;
+        if (kill) Frankenstein.KillCount[id]--;
+        new LateTask(() =>
+        {
+            if (player.AmOwner) player.RpcSnapTo(Frankenstein.OriginalPosition);
+            player.setOutfit(player.Data.DefaultOutfit);
+        }, 0.1f, "SetFrankensteinMonster");
+    }
     public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
     {
         (byte, byte) data = (player1, player2);
@@ -1972,7 +2007,12 @@ public static class RPCProcedure
                     case CustomRPC.JumpDancerJump:
                         JumpDancerJump(reader);
                         break;
-
+                    case CustomRPC.SetFrankensteinMonster:
+                        SetFrankensteinMonster(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.MoveDeadBody:
+                        MoveDeadBody(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
+                        break;
                 }
             }
             catch (Exception e)

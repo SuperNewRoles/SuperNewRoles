@@ -118,6 +118,7 @@ public class FixedUpdate
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();
                 JumpDancer.FixedUpdate();
+                Frankenstein.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -258,6 +259,7 @@ public class FixedUpdate
                         case RoleId.Vulture:
                         case RoleId.Amnesiac:
                         case RoleId.ShermansServant:
+                        case RoleId.Frankenstein:
                             foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
                             {
                                 if (arrow.Value?.arrow != null)

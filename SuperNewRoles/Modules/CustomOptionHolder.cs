@@ -1591,6 +1591,8 @@ public class CustomOptionHolder
 
         Moira.SetupCustomOptions();
 
+        Frankenstein.SetupCustomOptions();
+
         // SetupNeutralCustomOptions
 
         /* |: ========================= Crewmate Settings ========================== :| */

@@ -1048,6 +1048,11 @@ public static class MurderPlayerPatch
                     case RoleId.EvilSeer:
                         EvilSeer.Ability.OnKill.DefaultMode(__instance);
                         break;
+                    case RoleId.Frankenstein when Frankenstein.IsMonster(target):
+                        target.RpcProtectPlayer(target, 0);
+                        Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[target.PlayerId].ParentId, target.GetTruePosition());
+                        Frankenstein.SetMonsterPlayer(target.PlayerId);
+                        break;
                 }
 
                 if (target.IsRole(RoleId.ShermansServant) && OrientalShaman.IsTransformation && target.AmOwner)
@@ -1058,16 +1063,12 @@ public static class MurderPlayerPatch
             }
             else if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                if (__instance.IsRole(RoleId.EvilGambler))
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    if (RoleClass.EvilGambler.GetSuc())
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
-                    }
-                    else
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
-                    }
+                    case RoleId.EvilGambler:
+                        if (RoleClass.EvilGambler.GetSuc()) PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
+                        else PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
+                        break;
                 }
             }
 
@@ -1397,6 +1398,15 @@ public static class ExilePlayerPatch
                     RPCProcedure.ExiledRPC(causativePlayer.PlayerId);
                     causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 }
+            }
+            if (__instance.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(__instance))
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
+                writer.Write(__instance.PlayerId);
+                writer.EndRPC();
+                RPCProcedure.ReviveRPC(__instance.PlayerId);
+                Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[__instance.PlayerId].ParentId, __instance.GetTruePosition());
+                Frankenstein.SetMonsterPlayer(__instance.PlayerId);
             }
             if (RoleClass.Lovers.SameDie && __instance.IsLovers())
             {
