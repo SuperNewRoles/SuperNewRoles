@@ -270,7 +270,7 @@ public static class Crook
             TimerStop(); // 会議中に能力終了しない場合を想定
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) InHostMode.WrapUp();
             AbilityCountDown = RoleData.TimeForAbilityUse; // 能力使用可能時間をリセット (タイマーストップ時にリセットしないのは, これが0sの時 残り会議秒数の表示を置換しない制御にしている為, 会議中にリセットできないから)
-            if (exiledPlayer.IsRole(RoleId.Crook)) ExiledCrook.Add(exiledPlayer.PlayerId); // 追放者が詐欺師ならListに追加
+            if (exiledPlayer != null) { if (exiledPlayer.IsRole(RoleId.Crook)) { ExiledCrook.Add(exiledPlayer.PlayerId); } } // 追放者が詐欺師ならListに追加
 
             if (!AmongUsClient.Instance.AmHost) return;
 
