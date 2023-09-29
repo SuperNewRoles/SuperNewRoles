@@ -77,6 +77,7 @@ public static class Crook
         /// </summary>
         /// <value>key : 保険金を需給できた詐欺師のプレイヤーID / value : 保険金を掛けられていた対象のプレイヤーID</value>
         private static Dictionary<byte, byte> ReceivedTheInsuranceDictionary;
+        private static List<byte> ExiledCrook;
         private static float AbilityCountDown;
         private static Timer CountDownTimer; // 能力使用可能時間を管理するタイマー
         private static Timer ChangeBlueTimer; // 能力使用可能時間の終了警告を, 5秒前から0.25秒間隔で文字を点滅させる事で行うタイマー
@@ -87,6 +88,7 @@ public static class Crook
             SignDictionary = new();
             RecordOfTimesInsuranceClaimsAreReceived = new();
             ReceivedTheInsuranceDictionary = new();
+            ExiledCrook = new();
             AbilityCountDown = RoleData.TimeForAbilityUse;
             IsChangeBlue = false;
             InClientMode.ClearAndReload();
@@ -263,11 +265,12 @@ public static class Crook
         /// <summary>
         /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行し, 更にゲストに実行させる。(SHR, SNR共通処理)
         /// </summary>
-        internal static void CheckWinWrapUp()
+        internal static void CheckWinWrapUp(PlayerControl exiledPlayer)
         {
             TimerStop(); // 会議中に能力終了しない場合を想定
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) InHostMode.WrapUp();
             AbilityCountDown = RoleData.TimeForAbilityUse; // 能力使用可能時間をリセット (タイマーストップ時にリセットしないのは, これが0sの時 残り会議秒数の表示を置換しない制御にしている為, 会議中にリセットできないから)
+            if (exiledPlayer.IsRole(RoleId.Crook)) ExiledCrook.Add(exiledPlayer.PlayerId); // 追放者が詐欺師ならListに追加
 
             if (!AmongUsClient.Instance.AmHost) return;
 
@@ -290,7 +293,7 @@ public static class Crook
         /// Item1 => true : 保険金受領場所(追放画面)に到達し, 最後の保険金を受給できた。 / false : 保険金受領場所に到達できず, 最後の保険金を受給できなかった。,
         /// Item2 => 勝利可能な詐欺師達
         /// </returns>
-        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners() //　Item2をこのメソッドに変更して, 勝利リスト追加も此処に移行
+        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners()
         {
             List<PlayerControl> winners = new();
             var winfLag = false;
@@ -301,8 +304,8 @@ public static class Crook
                 if (!privateWinFlag) continue;
 
                 var crook = ModHelpers.GetPlayerControl(kvp.Key);
-                if (crook.IsDead()) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
                 if (crook.IsRole(RoleId.Crook)) continue; // 役職が変わった「元詐欺師」は 勝利不可。
+                if (crook.IsDead() || ExiledCrook.Contains(crook.PlayerId)) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
 
                 winfLag = true; // 追放画面に遷移し最後の保険金を受け取れた。
                 winners.Add(crook);
