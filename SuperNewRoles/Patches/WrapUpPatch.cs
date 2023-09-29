@@ -132,7 +132,7 @@ class WrapUpPatch
         Speeder.WrapUp();
         Bestfalsecharge.WrapUp();
         CustomRoles.OnWrapUp();
-        Rocket.WrapUp();
+        Rocket.WrapUp(exiled == null ? null : exiled.Object);
         if (AmongUsClient.Instance.AmHost)
         {
             PlayerAnimation.PlayerAnimations.Values.All(x =>

@@ -65,6 +65,8 @@ public class RocketDeadbody : CustomAnimation
                     Options.SetPlayEndDestroy(true);
                     transform.localScale = Vector3.one * FireworksSize;
                     spriteRenderer.sprite = Options.Sprites.FirstOrDefault();
+                    Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.RocketSound.raw"), false);
+                    Play();
                     return;
                 }
             }
