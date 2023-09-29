@@ -27,7 +27,7 @@ public static class Rocket
             RocketChargeTime = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketChargeTimeSetting", 3, 0.5f, 10f, 0.5f, Option); optionId++;
         }
     }
-    public static void WrapUp()
+    public static void WrapUp(PlayerControl exiled)
     {
         //処理するデータがないならパス
         if (RoleData.RocketData.Count <= 0)
@@ -36,9 +36,9 @@ public static class Rocket
         {
             //削除するか判定する
             if (data.Key == null || data.Value == null || data.Value.Count <= 0 || data.Key.IsDead() || data.Value.IsAllDead() ||
-                !data.Key.IsRole(RoleId.Rocket))
+                !data.Key.IsRole(RoleId.Rocket) || (exiled != null && exiled.PlayerId == data.Key.PlayerId))
             {
-                return;
+                continue;
             }
             foreach (PlayerControl player in data.Value)
             {
