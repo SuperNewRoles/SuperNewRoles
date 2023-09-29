@@ -308,7 +308,7 @@ public static class ModDownloader
     }
     public static IEnumerator DownloadModData(MainMenuManager __instance)
     {
-        var datarequest = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/SuperNewRolesData/main/ModDownloadData.json");
+        var datarequest = UnityWebRequest.Get("https://raw.githubusercontent.com/SuperNewRoles/SuperNewRolesData/main/ModDownloadData.json");
         yield return datarequest.SendWebRequest();
         if (datarequest.isNetworkError || datarequest.isHttpError)
         {

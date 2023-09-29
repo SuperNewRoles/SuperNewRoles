@@ -28,7 +28,7 @@ public static class CustomRegulation
         // CustomRegulation.jsonの読み込み
         if (!IsTest)
         {
-            var request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/SuperNewRegulations/main/Regulations.json");
+            var request = UnityWebRequest.Get("https://raw.githubusercontent.com/SuperNewRoles/SuperNewRegulations/main/Regulations.json");
             yield return request.SendWebRequest();
             if (request.isNetworkError || request.isHttpError)
             {
