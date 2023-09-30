@@ -91,9 +91,9 @@ public static class Crook
                     ExiledCrookPlayerId.Add(exiledPlayer.PlayerId); // Listに追加し, 受領処理実行タイミングを調整する
                 }
 
-                if (AmongUsClient.Instance.AmHost) // ホストなら待機してから実行する // [ ]MEMO : LateTask調整中
+                if (AmongUsClient.Instance.AmHost) // ホストなら待機してから実行する
                 {
-                    DecisionOfVictory.DecisionToReceiptOfInsurance();
+                    new LateTask(DecisionOfVictory.DecisionToReceiptOfInsurance, 100f, "Crook WinCheckProcess");
                 }
                 else // ゲストなら到達したら直ぐに実行する
                 {
