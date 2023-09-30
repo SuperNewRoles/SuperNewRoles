@@ -1178,7 +1178,7 @@ public static class OnGameEndPatch
         // 詐欺師は, 勝利判定が実行される前に既に勝利条件を満たしている為, 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)
         if (Crook.RoleData.FirstWinFlag)
         {
-            (bool crookFinalWinFlag, List<PlayerControl> crookWinners) = Crook.Ability.GetTheLastDecisionAndWinners();
+            (bool crookFinalWinFlag, List<PlayerControl> crookWinners) = Crook.DecisionOfVictory.GetTheLastDecisionAndWinners();
             if (crookFinalWinFlag) // 最終的な勝利条件(受給回数, 生存, 最終の保管金の受領場所(追放処理)にたどり着いた) を 満たしている詐欺師がいたら
             {
                 if (!((isDleted && changeTheWinCondition) || isReset))

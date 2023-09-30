@@ -158,7 +158,7 @@ class WrapUpPatch
             p.resetChange();
         }
         RoleClass.Doppelganger.Targets = new();
-        Crook.Ability.CheckWinWrapUp(exiled == null ? null : exiled.Object);
+        Crook.WrapUp.GeneralProcess(exiled == null ? null : exiled.Object);
 
         Logger.Info("[追放の有無問わず 会議終了時に行う処理] 通過", "WrapUp");
 

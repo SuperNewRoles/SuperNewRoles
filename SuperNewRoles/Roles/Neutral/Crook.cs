@@ -52,7 +52,104 @@ public static class Crook
             TimeForAbilityUse = CustomOptionData.TimeTheAbilityToInsureOthersIsAvailable.GetFloat() + 7f; // 7f は 会議開始アニメーション所要時間
             NumberNeededWin = CustomOptionData.NumberOfInsuranceClaimsReceivedRequiredToWin.GetFloat();
             FirstWinFlag = false;
+            WrapUp.ExiledCrookPlayerId = new();
             Ability.ClearAndReload();
+        }
+    }
+
+    internal static class WrapUp
+    {
+        internal static List<byte> ExiledCrookPlayerId;
+        internal static void GeneralProcess(PlayerControl exiledPlayer)
+        {
+            ResetTimerProcess();
+            WinCheckProcess(exiledPlayer);
+        }
+
+        private static void ResetTimerProcess()
+        {
+            Ability.TimerStop(); // 会議中に能力終了しない場合を想定
+            Ability.AbilityCountDown = RoleData.TimeForAbilityUse; // 能力使用可能時間をリセット (タイマーストップ時にリセットしないのは, これが0sの時 残り会議秒数の表示を置換しない制御にしている為, 会議中にリセットできないから)
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Ability.InHostMode.ResetTimerRelatedVariableOnWarpUp();
+        }
+
+        private static void WinCheckProcess(PlayerControl exiledPlayer)
+        {
+            if (exiledPlayer == null) // 追放者がいないなら
+            {
+                DecisionOfVictory.DecisionToReceiptOfInsurance(); // 詐欺師の受領判定のみ行う
+            }
+            else // 追放者がいて,
+            {
+                if (!exiledPlayer.IsRole(RoleId.Crook)) // 追放者が詐欺師でないなら
+                {
+                    DecisionOfVictory.DecisionToReceiptOfInsurance();
+                    return;
+                }
+                else // 追放者が詐欺師なら
+                {
+                    ExiledCrookPlayerId.Add(exiledPlayer.PlayerId); // Listに追加し, 受領処理実行タイミングを調整する
+                }
+
+                if (AmongUsClient.Instance.AmHost) // ホストなら待機してから実行する // [ ]MEMO : LateTask調整中
+                {
+                    DecisionOfVictory.DecisionToReceiptOfInsurance();
+                }
+                else // ゲストなら到達したら直ぐに実行する
+                {
+                    DecisionOfVictory.DecisionToReceiptOfInsurance();
+                }
+            }
+        }
+    }
+
+    internal static class DecisionOfVictory
+    {
+        /// <summary>
+        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行する。(SHR, SNR共通処理)
+        /// </summary>
+        internal static void DecisionToReceiptOfInsurance()
+        {
+            // 条件判定タイミング(会議開始時)に, 条件を誰も満たしていなかったら以下を読まない。
+            if (!(AmongUsClient.Instance.AmHost && RoleData.FirstWinFlag)) return;
+            Logger.Info($"勝利条件を満たした 詐欺師が存在した", "FirstWinFlag");
+
+            if (GetTheLastDecisionAndWinners().Item1) // 受領判定時に勝利条件を満たしていたら, 勝利処理を実行する。
+            {
+                var reason = (GameOverReason)CustomGameOverReason.CrookWin;
+                CheckGameEndPatch.CustomEndGame(reason, false);
+            }
+        }
+
+        /// <summary>
+        /// 勝利条件を達成していた詐欺師が, 勝利処理を実行可能か 判断する。(SHR, SNR共通処理)
+        /// </summary>
+        /// <returns>
+        /// Item1 => true : 保険金受領場所(追放画面)に到達し, 最後の保険金を受給できた。 / false : 保険金受領場所に到達できず, 最後の保険金を受給できなかった。
+        /// Item2 => 勝利可能な詐欺師達
+        /// </returns>
+        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners()
+        {
+            List<PlayerControl> winners = new();
+            var winFlag = false;
+
+            foreach (KeyValuePair<byte, byte> kvp in Ability.RecordOfTimesInsuranceClaimsAreReceived)
+            {
+                bool privateWinFlag = kvp.Value >= RoleData.NumberNeededWin; // 詐欺師個人の勝利判定の取得
+                if (!privateWinFlag) continue;
+
+                var crook = ModHelpers.GetPlayerControl(kvp.Key);
+                if (!crook.IsRole(RoleId.Crook)) continue; // 役職が変わった「元詐欺師」は 勝利不可。
+                if (crook.IsDead() || WrapUp.ExiledCrookPlayerId.Contains(crook.PlayerId)) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
+
+                winFlag = true; // 追放画面に遷移し最後の保険金を受け取れた。
+                winners.Add(crook);
+            }
+
+            if (winFlag) Logger.Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "FinalWinFlag");
+            else Logger.Info($"最後の保険金の受給にどの詐欺師もたどり着けなかった。", "FinalWinFlag");
+
+            return (winFlag, winners);
         }
     }
 
@@ -69,16 +166,15 @@ public static class Crook
         /// 保険金受取回数記録
         /// </summary>
         /// <value>key : 詐欺師のPlayerId , value : 保険金を受け取った回数</value>
-        private static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
+        internal static Dictionary<byte, byte> RecordOfTimesInsuranceClaimsAreReceived;
 
         /// <summary>
         /// 現在ターンで誰が誰の保険金を受け取っているか保存する。
-        /// (MeetingStartで前回ターンの情報を削除してから判定し保存, ExileController.Beginで参照する。)
+        /// (MeetingStartで前回ターンの情報を削除してから判定し保存, WarpUpで参照する。)
         /// </summary>
         /// <value>key : 保険金を需給できた詐欺師のプレイヤーID / value : 保険金を掛けられていた対象のプレイヤーID</value>
         private static Dictionary<byte, byte> ReceivedTheInsuranceDictionary;
-        private static List<byte> ExiledCrook;
-        private static float AbilityCountDown;
+        internal static float AbilityCountDown;
         private static Timer CountDownTimer; // 能力使用可能時間を管理するタイマー
         private static Timer ChangeBlueTimer; // 能力使用可能時間の終了警告を, 5秒前から0.25秒間隔で文字を点滅させる事で行うタイマー
         private static bool IsChangeBlue; // 0.25秒間隔で文字を点滅させる為の変数
@@ -88,7 +184,6 @@ public static class Crook
             SignDictionary = new();
             RecordOfTimesInsuranceClaimsAreReceived = new();
             ReceivedTheInsuranceDictionary = new();
-            ExiledCrook = new();
             AbilityCountDown = RoleData.TimeForAbilityUse;
             IsChangeBlue = false;
             InClientMode.ClearAndReload();
@@ -260,61 +355,6 @@ public static class Crook
                     AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), chatText, "#60a1bd");
                 }
             }
-        }
-
-        /// <summary>
-        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行し, 更にゲストに実行させる。(SHR, SNR共通処理)
-        /// </summary>
-        internal static void CheckWinWrapUp(PlayerControl exiledPlayer)
-        {
-            TimerStop(); // 会議中に能力終了しない場合を想定
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) InHostMode.WrapUp();
-            AbilityCountDown = RoleData.TimeForAbilityUse; // 能力使用可能時間をリセット (タイマーストップ時にリセットしないのは, これが0sの時 残り会議秒数の表示を置換しない制御にしている為, 会議中にリセットできないから)
-            if (exiledPlayer != null) { if (exiledPlayer.IsRole(RoleId.Crook)) { ExiledCrook.Add(exiledPlayer.PlayerId); } } // 追放者が詐欺師ならListに追加
-
-            if (!AmongUsClient.Instance.AmHost) return;
-
-            // 勝利条件を誰も満たしていなかったら以下を読まない。(無駄にforeach処理を読まない様, 会議開始時に記録した物を利用し, 2段階で判定している。)
-            if (!RoleData.FirstWinFlag) return;
-
-            Logger.Info($"勝利条件を満たした 詐欺師が存在した", "FirstWinFlag");
-            bool crookFinalWinFlag = GetTheLastDecisionAndWinners().Item1; // 保険金受領場所に到達できたか
-            if (!crookFinalWinFlag) return; // 出来なかったら, return
-
-            // 全体に詐欺師の勝利処理を実行させる。
-            var reason = (GameOverReason)CustomGameOverReason.CrookWin;
-            CheckGameEndPatch.CustomEndGame(reason, false);
-        }
-
-        /// <summary>
-        /// 勝利条件を達成していた詐欺師が, 勝利処理を実行可能か 判断する。(SHR, SNR共通処理)
-        /// </summary>
-        /// <returns>
-        /// Item1 => true : 保険金受領場所(追放画面)に到達し, 最後の保険金を受給できた。 / false : 保険金受領場所に到達できず, 最後の保険金を受給できなかった。
-        /// Item2 => 勝利可能な詐欺師達
-        /// </returns>
-        internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners()
-        {
-            List<PlayerControl> winners = new();
-            var winFlag = false;
-
-            foreach (KeyValuePair<byte, byte> kvp in RecordOfTimesInsuranceClaimsAreReceived)
-            {
-                bool privateWinFlag = kvp.Value >= RoleData.NumberNeededWin; // 詐欺師個人の勝利判定の取得
-                if (!privateWinFlag) continue;
-
-                var crook = ModHelpers.GetPlayerControl(kvp.Key);
-                if (!crook.IsRole(RoleId.Crook)) continue; // 役職が変わった「元詐欺師」は 勝利不可。
-                if (crook.IsDead() || ExiledCrook.Contains(crook.PlayerId)) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
-
-                winFlag = true; // 追放画面に遷移し最後の保険金を受け取れた。
-                winners.Add(crook);
-            }
-
-            if (winFlag) Logger.Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "FinalWinFlag");
-            else Logger.Info($"最後の保険金の受給にどの詐欺師もたどり着けなかった。", "FinalWinFlag");
-
-            return (winFlag, winners);
         }
 
         /// <summary>
@@ -612,7 +652,7 @@ public static class Crook
                 }
             }
 
-            internal static void WrapUp()
+            internal static void ResetTimerRelatedVariableOnWarpUp()
             {
                 if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return;
 
