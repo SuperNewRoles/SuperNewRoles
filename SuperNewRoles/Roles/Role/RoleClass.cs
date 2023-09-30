@@ -2034,6 +2034,10 @@ public static class RoleClass
         public static Color32 color = ImpostorRed;
         public static bool IsCreateMadmate;
         public static float Cooldown;
+        /// <summary>アドミン上でインポスターのマークが赤く見えるかどうか</summary>
+        public static bool CanSeeImpostorPositions;
+        /// <summary>アドミン上で死体のマークが青く見えるかどうか</summary>
+        public static bool CanSeeDeadBodyPositions;
         public static bool IsMyAdmin;
         public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
 
@@ -2050,6 +2054,9 @@ public static class RoleClass
         {
             EvilHackerPlayer = new();
             IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
+            var hasEnhancedAdmin = CustomOptionHolder.EvilHackerHasEnhancedAdmin.GetBool();
+            CanSeeImpostorPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeImpostorPositions.GetBool();
+            CanSeeDeadBodyPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeDeadBodyPositions.GetBool();
             IsMyAdmin = false;
             Cooldown = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
         }
