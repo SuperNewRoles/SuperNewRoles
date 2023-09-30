@@ -290,13 +290,13 @@ public static class Crook
         /// 勝利条件を達成していた詐欺師が, 勝利処理を実行可能か 判断する。(SHR, SNR共通処理)
         /// </summary>
         /// <returns>
-        /// Item1 => true : 保険金受領場所(追放画面)に到達し, 最後の保険金を受給できた。 / false : 保険金受領場所に到達できず, 最後の保険金を受給できなかった。,
+        /// Item1 => true : 保険金受領場所(追放画面)に到達し, 最後の保険金を受給できた。 / false : 保険金受領場所に到達できず, 最後の保険金を受給できなかった。
         /// Item2 => 勝利可能な詐欺師達
         /// </returns>
         internal static (bool, List<PlayerControl>) GetTheLastDecisionAndWinners()
         {
             List<PlayerControl> winners = new();
-            var winfLag = false;
+            var winFlag = false;
 
             foreach (KeyValuePair<byte, byte> kvp in RecordOfTimesInsuranceClaimsAreReceived)
             {
@@ -307,14 +307,14 @@ public static class Crook
                 if (!crook.IsRole(RoleId.Crook)) continue; // 役職が変わった「元詐欺師」は 勝利不可。
                 if (crook.IsDead() || ExiledCrook.Contains(crook.PlayerId)) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
 
-                winfLag = true; // 追放画面に遷移し最後の保険金を受け取れた。
+                winFlag = true; // 追放画面に遷移し最後の保険金を受け取れた。
                 winners.Add(crook);
             }
 
-            if (winfLag) Logger.Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "FinalWinFlag");
+            if (winFlag) Logger.Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "FinalWinFlag");
             else Logger.Info($"最後の保険金の受給にどの詐欺師もたどり着けなかった。", "FinalWinFlag");
 
-            return (winfLag, winners);
+            return (winFlag, winners);
         }
 
         /// <summary>
