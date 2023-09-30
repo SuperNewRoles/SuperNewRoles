@@ -705,6 +705,7 @@ public class CustomOptionHolder
     public static CustomOption EvilHackerHasEnhancedAdmin;
     public static CustomOption EvilHackerCanSeeImpostorPositions;
     public static CustomOption EvilHackerCanSeeDeadBodyPositions;
+    public static CustomOption EvilHackerCanUseAdminDuringMeeting;
 
     public static CustomRoleOption SecretlyKillerOption;
     public static CustomOption SecretlyKillerPlayerCount;
@@ -1095,6 +1096,7 @@ public class CustomOptionHolder
         EvilHackerHasEnhancedAdmin = Create(200306, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, EvilHackerOption);
         EvilHackerCanSeeImpostorPositions = Create(200307, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, EvilHackerHasEnhancedAdmin);
         EvilHackerCanSeeDeadBodyPositions = Create(200308, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, EvilHackerHasEnhancedAdmin);
+        EvilHackerCanUseAdminDuringMeeting = Create(200309, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringMeeting", true, EvilHackerOption);
 
         EvilSeer.CustomOptionData.SetupCustomOptions();
 
