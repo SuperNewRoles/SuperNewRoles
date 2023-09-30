@@ -524,7 +524,7 @@ public static class Crook
             }
 
             /// <summary>
-            /// 自投票リセット形式での死体検案書閲覧要求
+            /// 投票形式による詐欺師の保険を契約させる対象指定
             /// </summary>
             /// <param name="srcPlayerId">投票者のplayerId</param>
             /// <param name="suspectPlayerId">投票先のplayerId</param>
