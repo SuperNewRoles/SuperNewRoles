@@ -1,4 +1,5 @@
 using HarmonyLib;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patches;
 
@@ -13,5 +14,19 @@ class MapBehaviorGetIsOpenStoppedPatch
             return false;
         }
         return true;
+    }
+}
+
+[HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Show))]
+public static class MapBehaviourShowPatch
+{
+    public static void Prefix([HarmonyArgument(0)] MapOptions opts)
+    {
+        // 会議中にマップを開くとアドミンを見ることができる
+        if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && RoleClass.EvilHacker.CanUseAdminDuringMeeting && MeetingHud.Instance && opts.Mode == MapOptions.Modes.Normal)
+        {
+            RoleClass.EvilHacker.IsMyAdmin = true;
+            opts.Mode = MapOptions.Modes.CountOverlay;
+        }
     }
 }
