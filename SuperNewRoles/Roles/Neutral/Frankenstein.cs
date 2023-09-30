@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patches;
 using UnityEngine;
+using IEnumerator = System.Collections.IEnumerator;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -76,7 +79,7 @@ public class Frankenstein
                 OriginalPosition = PlayerControl.LocalPlayer.transform.position;
                 SetMonsterPlayer();
             },
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.OrientalShamanButton.png", 115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FrankensteinCreateMonsterButton.png", 115f),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -169,5 +172,24 @@ public class Frankenstein
         writer.Write(pos.y);
         writer.EndRPC();
         RPCProcedure.MoveDeadBody(id, pos.x, pos.y);
+    }
+
+    public static IEnumerator KillPerform(PlayerControl source, PlayerControl target)
+    {
+        if (source.AmOwner) SoundManager.Instance.PlaySound(source.KillSfx, false, 0.8f, null);
+        FollowerCamera cam = Camera.main.GetComponent<FollowerCamera>();
+        KillAnimation.SetMovement(source, false);
+        if (source.AmOwner)
+        {
+            cam.Locked = true;
+            ConsoleJoystick.SetMode_Task();
+            PlayerControl.LocalPlayer.MyPhysics.inputHandler.enabled = true;
+        }
+        yield return source.MyPhysics.Animations.CoPlayCustomAnimation(source.KillAnimations.Random().BlurAnim);
+        source.NetTransform.SnapTo(target.transform.position);
+        source.MyPhysics.Animations.PlayIdleAnimation();
+        KillAnimation.SetMovement(source, true);
+        if (source.AmOwner) cam.Locked = false;
+        yield break;
     }
 }

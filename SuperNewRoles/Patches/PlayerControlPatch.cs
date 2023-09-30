@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -13,7 +13,6 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -25,7 +24,6 @@ using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 
@@ -1006,6 +1004,20 @@ public static class MurderPlayerPatch
             target.protectedByGuardian = true;
             return false;
         }
+        if (target.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(target))
+        {
+            if (__instance.AmOwner)
+            {
+                if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.KillSfx, false, 0.8f, null);
+                __instance.NetTransform.RpcSnapTo(target.transform.position);
+            }
+            if (target.AmOwner)
+            {
+                Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[target.PlayerId].ParentId, target.GetTruePosition());
+                Frankenstein.SetMonsterPlayer(target.PlayerId);
+            }
+            return false;
+        }
         if (target.IsRole(RoleId.WiseMan) && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
         {
             WiseMan.WiseManData[target.PlayerId] = null;
@@ -1047,11 +1059,6 @@ public static class MurderPlayerPatch
                         break;
                     case RoleId.EvilSeer:
                         EvilSeer.Ability.OnKill.DefaultMode(__instance);
-                        break;
-                    case RoleId.Frankenstein when Frankenstein.IsMonster(target):
-                        target.RpcProtectPlayer(target, 0);
-                        Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[target.PlayerId].ParentId, target.GetTruePosition());
-                        Frankenstein.SetMonsterPlayer(target.PlayerId);
                         break;
                 }
 
