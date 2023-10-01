@@ -23,6 +23,7 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Modules;
 
@@ -213,6 +214,8 @@ public enum RoleId
     JumpDancer,
     Sauner,
     Rocket,
+    WellBehaver,
+    Pokerface,
     //RoleId
 }
 
@@ -322,7 +325,10 @@ public enum CustomRPC
     MoiraChangeRole,
     JumpDancerJump,
     RocketSeize,
-    RocketLetsRocket
+    RocketLetsRocket,
+    CreateGarbage,
+    DestroyGarbage,
+    SetPokerfaceTeam
 }
 
 public static class RPCProcedure
@@ -358,6 +364,17 @@ public static class RPCProcedure
         }
         Rocket.RoleData.RocketData.Remove(source);
     }
+    public static void SetPokerfaceTeam(byte playerid1, byte playerid2, byte playerid3)
+    {
+        PlayerControl player1 = ModHelpers.PlayerById(playerid1);
+        PlayerControl player2 = ModHelpers.PlayerById(playerid2);
+        PlayerControl player3 = ModHelpers.PlayerById(playerid3);
+        if (player1 == null || player2 == null || player3 == null)
+            return;
+        Pokerface.RoleData.PokerfaceTeams.Add(new(player1,player2,player3));
+    }
+    public static void DestroyGarbage(string name) => Garbage.AllGarbage.Find(x => x.GarbageObject.name == name)?.Clear();
+    public static void CreateGarbage(float x, float y) => new Garbage(new(x, y));
     public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
     {
         (byte, byte) data = (player1, player2);
@@ -2012,6 +2029,15 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.RocketLetsRocket:
                         RocketLetsRocket(reader.ReadByte());
+                        break;
+                    case CustomRPC.CreateGarbage:
+                        CreateGarbage(reader.ReadSingle(), reader.ReadSingle());
+                        break;
+                    case CustomRPC.DestroyGarbage:
+                        DestroyGarbage(reader.ReadString());
+                        break;
+                    case CustomRPC.SetPokerfaceTeam:
+                        SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

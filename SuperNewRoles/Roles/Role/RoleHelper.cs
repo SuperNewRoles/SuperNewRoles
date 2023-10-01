@@ -131,7 +131,8 @@ public static class RoleHelpers
         RoleId.OrientalShaman or
         RoleId.BlackHatHacker or
         RoleId.Moira or
-        RoleId.Sauner;
+        RoleId.Sauner or
+        RoleId.Pokerface;
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
@@ -967,6 +968,12 @@ public static class RoleHelpers
             case RoleId.Rocket:
                 Rocket.RoleData.Player.Add(player);
                 break;
+            case RoleId.WellBehaver:
+                WellBehaver.WellBehaverPlayer.Add(player);
+                break;
+            case RoleId.Pokerface:
+                Pokerface.RoleData.Player.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1496,14 +1503,20 @@ public static class RoleHelpers
             case RoleId.Moira:
                 Moira.MoiraPlayer.RemoveAll(ClearRemove);
                 break;
-                case RoleId.JumpDancer:
+            case RoleId.JumpDancer:
                 JumpDancer.JumpDancerPlayer.RemoveAll(ClearRemove);
                 break;
-        case RoleId.Sauner:
+            case RoleId.Sauner:
                 Sauner.RoleData.Player.RemoveAll(ClearRemove);
                 break;
             case RoleId.Rocket:
                 Rocket.RoleData.Player.RemoveAll(ClearRemove);
+                break;
+            case RoleId.WellBehaver:
+                WellBehaver.WellBehaverPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Pokerface:
+                Pokerface.RoleData.Player.RemoveAll(ClearRemove);
                 break;
                 // ロールリモベ
         }
@@ -1546,6 +1559,7 @@ public static class RoleHelpers
             case RoleId.SatsumaAndImo:
             case RoleId.ShermansServant:
             case RoleId.SidekickWaveCannon:
+            case RoleId.WellBehaver:
                 // タスククリアか 個別表記
                 IsTaskClear = true;
                 break;
@@ -1622,6 +1636,7 @@ public static class RoleHelpers
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
+            RoleId.Pokerface => Pokerface.CustomOptionData.CanUseVent.GetBool(),
             // ベントが使える
             _ => player.IsImpostor(),
         };
@@ -1992,6 +2007,8 @@ public static class RoleHelpers
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
             else if (Rocket.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Rocket;
+            else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
+            else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
             // ロールチェック
         }
         catch (Exception e)

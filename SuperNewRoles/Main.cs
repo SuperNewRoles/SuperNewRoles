@@ -31,7 +31,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public const bool IsSecretBranch = false; // プルリク時にtrueなら指摘してください
     public const bool IsHideText = false; // プルリク時にtrueなら指摘してください
 
-    public const string ModUrl = "ykundesu/SuperNewRoles";
+    public const string ModUrl = "SuperNewRoles/SuperNewRoles";
     public const string MasterBranch = "master";
     public static string ModName => IsApril() ? "SuperNakanzinoRoles" : "SuperNewRoles";
     public static string ColorModName => $"<color=#ffa500>Super</color><color=#ff0000>{(IsApril() ? "Nakanzino" : "New")}</color><color=#00ff00>Roles</color>";

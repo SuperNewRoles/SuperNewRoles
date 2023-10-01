@@ -1424,6 +1424,22 @@ public class CustomOptionHolder
         HitmanIsArrowView = Create(303207, false, CustomOptionType.Neutral, "HitmanIsTargetArrow", true, HitmanOption);
         HitmanArrowUpdateTime = Create(303208, false, CustomOptionType.Neutral, "HitmanUpdateTargetArrowTime", 0f, 0f, 120f, 2.5f, HitmanIsArrowView);
 
+        ArsonistOption = SetupCustomRoleOption(302400, true, RoleId.Arsonist);
+        ArsonistPlayerCount = Create(302401, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);
+        ArsonistCoolTime = Create(302402, true, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, ArsonistOption, format: "unitSeconds");
+        ArsonistDurationTime = Create(302403, true, CustomOptionType.Neutral, "ArsonistDurationTimeSetting", 3f, 0.5f, 10f, 0.5f, ArsonistOption, format: "unitSeconds");
+        ArsonistIsUseVent = Create(302404, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, ArsonistOption);
+
+        VultureOption = SetupCustomRoleOption(302000, false, RoleId.Vulture);
+        VulturePlayerCount = Create(302001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
+        VultureCooldown = Create(302002, false, CustomOptionType.Neutral, "VultureCooldownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
+        VultureDeadBodyMaxCount = Create(302003, false, CustomOptionType.Neutral, "VultureDeadBodyCountSetting", 3f, 1f, 6f, 1f, VultureOption);
+        VultureIsUseVent = Create(302004, false, CustomOptionType.Neutral, "MadmateUseVentSetting", true, VultureOption);
+        VultureShowArrows = Create(302005, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, VultureOption);
+
+        OpportunistOption = SetupCustomRoleOption(302100, true, RoleId.Opportunist);
+        OpportunistPlayerCount = Create(302101, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);
+
         JesterOption = SetupCustomRoleOption(300500, true, RoleId.Jester);
         JesterPlayerCount = Create(300501, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
         JesterIsVent = Create(300502, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, JesterOption);
@@ -1434,8 +1450,9 @@ public class CustomOptionHolder
         JesterCommonTask = jesteroption.Item1;
         JesterShortTask = jesteroption.Item2;
         JesterLongTask = jesteroption.Item3;
-
         Sauner.CustomOptionData.SetupCustomOptions();
+
+        Pokerface.CustomOptionData.SetupCustomOptions();
 
         trueloverOption = SetupCustomRoleOption(300600, true, RoleId.truelover);
         trueloverPlayerCount = Create(300601, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], trueloverOption);
@@ -1512,16 +1529,6 @@ public class CustomOptionHolder
         FalseChargesExileTurn = Create(301902, true, CustomOptionType.Neutral, "FalseChargesExileTurn", 2f, 1f, 10f, 1f, FalseChargesOption);
         FalseChargesCoolTime = Create(301903, true, CustomOptionType.Neutral, "FalseChargesCoolTime", 15f, 0f, 75f, 2.5f, FalseChargesOption);
 
-        VultureOption = SetupCustomRoleOption(302000, false, RoleId.Vulture);
-        VulturePlayerCount = Create(302001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
-        VultureCooldown = Create(302002, false, CustomOptionType.Neutral, "VultureCooldownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
-        VultureDeadBodyMaxCount = Create(302003, false, CustomOptionType.Neutral, "VultureDeadBodyCountSetting", 3f, 1f, 6f, 1f, VultureOption);
-        VultureIsUseVent = Create(302004, false, CustomOptionType.Neutral, "MadmateUseVentSetting", true, VultureOption);
-        VultureShowArrows = Create(302005, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, VultureOption);
-
-        OpportunistOption = SetupCustomRoleOption(302100, true, RoleId.Opportunist);
-        OpportunistPlayerCount = Create(302101, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);
-
         EgoistOption = SetupCustomRoleOption(302200, true, RoleId.Egoist);
         EgoistPlayerCount = Create(302201, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EgoistOption);
         EgoistUseVent = Create(302202, true, CustomOptionType.Neutral, "EgoistUseVentSetting", false, EgoistOption);
@@ -1535,12 +1542,6 @@ public class CustomOptionHolder
         DemonIsUseVent = Create(302304, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, DemonOption);
         DemonIsCheckImpostor = Create(302305, true, CustomOptionType.Neutral, "MadmateIsCheckImpostorSetting", false, DemonOption);
         DemonIsAliveWin = Create(302306, true, CustomOptionType.Neutral, "DemonIsAliveWinSetting", false, DemonOption);
-
-        ArsonistOption = SetupCustomRoleOption(302400, true, RoleId.Arsonist);
-        ArsonistPlayerCount = Create(302401, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);
-        ArsonistCoolTime = Create(302402, true, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, ArsonistOption, format: "unitSeconds");
-        ArsonistDurationTime = Create(302403, true, CustomOptionType.Neutral, "ArsonistDurationTimeSetting", 3f, 0.5f, 10f, 0.5f, ArsonistOption, format: "unitSeconds");
-        ArsonistIsUseVent = Create(302404, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, ArsonistOption);
 
         NeetOption = SetupCustomRoleOption(302500, false, RoleId.Neet);
         NeetPlayerCount = Create(302501, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NeetOption);
@@ -1655,6 +1656,8 @@ public class CustomOptionHolder
         Pteranodon.SetupCustomOptions();
 
         JumpDancer.SetupCustomOptions();
+
+        WellBehaver.SetupCustomOptions();
 
         Balancer.SetupCustomOptions();
 

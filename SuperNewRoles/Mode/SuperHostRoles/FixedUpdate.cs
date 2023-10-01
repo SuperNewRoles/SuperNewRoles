@@ -254,6 +254,21 @@ public static class FixedUpdate
                 }
             }
         }
+        else if (player.IsRole(RoleId.Pokerface))
+        {
+            Pokerface.PokerfaceTeam pokerfaceTeam = Pokerface.GetPokerfaceTeam(player);
+            if (pokerfaceTeam != null)
+            {
+                foreach (PlayerControl pokerplayer in pokerfaceTeam.TeamPlayers)
+                {
+                    if (pokerplayer.PlayerId == player.PlayerId)
+                        continue;
+                    if (!ChangePlayers.ContainsKey(pokerplayer.PlayerId))
+                        ChangePlayers.Add(pokerplayer.PlayerId, pokerplayer.GetDefaultName());
+                    ChangePlayers[pokerplayer.PlayerId] = ModHelpers.Cs(Pokerface.RoleData.color, ChangePlayers[pokerplayer.PlayerId]);
+                }
+            }
+        }
 
         if (player.IsLovers() &&
             ((RoleClass.Camouflager.LoversMark && RoleClass.Camouflager.IsCamouflage) || !RoleClass.Camouflager.IsCamouflage))

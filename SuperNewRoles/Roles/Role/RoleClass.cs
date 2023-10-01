@@ -255,6 +255,8 @@ public static class RoleClass
         JumpDancer.ClearAndReload();
         Sauner.RoleData.ClearAndReload();
         Rocket.RoleData.ClearAndReload();
+        WellBehaver.ClearAndReload();
+        Pokerface.RoleData.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

@@ -524,6 +524,16 @@ public class SetNameUpdate
                         SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Key));
                     }
                     break;
+                case RoleId.Pokerface:
+                    Pokerface.PokerfaceTeam team = Pokerface.GetPokerfaceTeam(PlayerControl.LocalPlayer.PlayerId);
+                    if (team != null)
+                    {
+                        foreach (PlayerControl member in team.TeamPlayers)
+                        {
+                            SetNamesClass.SetPlayerNameColor(member, Pokerface.RoleData.color);
+                        }
+                    }
+                    break;
             }
             if (PlayerControl.LocalPlayer.IsImpostor())
             {

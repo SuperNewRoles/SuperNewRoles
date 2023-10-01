@@ -153,6 +153,7 @@ class WrapUpPatch
         BlackHatHacker.WrapUp();
         Moira.WrapUp(exiled);
         Conjurer.WrapUp();
+        WellBehaver.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();

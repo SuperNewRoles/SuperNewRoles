@@ -119,6 +119,7 @@ public class FixedUpdate
                 BlackHatHacker.FixedUpdate();
                 JumpDancer.FixedUpdate();
                 Rocket.FixedUpdate();
+                WellBehaver.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

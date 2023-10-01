@@ -3364,6 +3364,8 @@ static class HudManagerStartPatch
         JumpDancer.SetUpCustomButtons(__instance);
 
         Rocket.Button.SetupCustomButtons(__instance);
+      
+        WellBehaver.SetupCustomButtons(__instance);
 
         // SetupCustomButtons
 
