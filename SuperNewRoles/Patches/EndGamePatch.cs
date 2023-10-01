@@ -259,7 +259,6 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
-                {WinCondition.SaunerWin, ("SaunerRefreshing",Sauner.RoleData.color) },
                 {WinCondition.CrookWin,("CrookName",Crook.RoleData.color)},
                 {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) },
                 {WinCondition.SaunerWin, ("SaunerRefreshing",Sauner.RoleData.color) },
