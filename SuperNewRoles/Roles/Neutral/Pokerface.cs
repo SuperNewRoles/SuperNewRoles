@@ -11,7 +11,7 @@ public static class Pokerface
     public static class CustomOptionData
     {
         private static int optionId = 303500;
-        public static CustomRoleOption Option;
+        public static CustomRoleOption ;
         public static CustomOption PlayerCount;
         public static CustomOption CanUseVent;
         public static CustomOption WinnerOnlyAlive;
@@ -59,7 +59,7 @@ public static class Pokerface
         }
         public bool CanWin()
         {
-            byte i = 0;
+            bool AlivePlayerOnShip = false;
             foreach (PlayerControl player in TeamPlayers)
             {
                 //プレイヤーが存在しないならパス
@@ -69,19 +69,13 @@ public static class Pokerface
                 if (!player.IsRole(RoleId.Pokerface))
                     continue;
                 //もう生存者が居るか確認
-                if (i == 255 && player.IsAlive())
+                if (AlivePlayerOnShip && player.IsAlive())
                     return false;
-                //もう死亡者が2人かつ最後のプレイヤーが生存しているか確認
-                else if (i == 2 && player.IsAlive())
-                    return true;
-                //生存者がいない場合、もう生存者が居ると設定
+                //これまでのforeachループ内に生存者がいなかった場合、生存者が居ると設定
                 else if (player.IsAlive())
-                    i = 255;
-                //生存者がいない場合、死亡者数を増やす
-                else if (i != 255)
-                    i++;
+                    AlivePlayerOnShip = true;
             }
-            return i == 255;
+            return AlivePlayerOnShip;
         }
     }
     public static PokerfaceTeam GetPokerfaceTeam(byte playerid)
