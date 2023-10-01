@@ -385,7 +385,7 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
-        Logger.Info("WINCOND:"+ AdditionalTempData.winCondition.ToString());
+        Logger.Info("WINCOND:" + AdditionalTempData.winCondition.ToString());
         if (haison || AdditionalTempData.winCondition is WinCondition.PantsRoyalWin or WinCondition.SaunerWin) textRenderer.text = text;
         else if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) textRenderer.text = text + " " + ModTranslation.GetString("GodWinText");
@@ -1099,7 +1099,7 @@ public static class OnGameEndPatch
                         //生存者のみ勝利の設定が無効もしくは対象が生存している場合は追加する
                         if (!Pokerface.CustomOptionData.WinnerOnlyAlive.GetBool() ||
                             teammember.IsAlive())
-                        TempData.winners.Add(new(teammember.Data));
+                            TempData.winners.Add(new(teammember.Data));
                 AdditionalTempData.winCondition = WinCondition.PokerfaceWin;
             }
         }
