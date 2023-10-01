@@ -254,7 +254,6 @@ public static class CredentialsPatch
         public static void Postfix(MainMenuManager __instance)
         {
             __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
-            __instance.StartCoroutine(SuperNewRolesPlugin.GetIsChangeVersion().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
             if (ConfigRoles.IsUpdated)
             {

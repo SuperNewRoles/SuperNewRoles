@@ -1,6 +1,5 @@
 global using SuperNewRoles.Modules;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,7 +13,6 @@ using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace SuperNewRoles;
 
@@ -150,30 +148,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
             if (ModHelpers.IsCustomServer()) return;
-            if (canpublic)
-                __result += 25;
-            else
-                __result = Constants.GetVersion(2222, 0, 0, 0);
+            __result += 25;
         }
-    }
-    static bool downloaded = false;
-    static bool canpublic = true;
-    public static IEnumerator GetIsChangeVersion()
-    {
-        if (downloaded)
-        {
-            yield break;
-        }
-        downloaded = true;
-        var request = UnityWebRequest.Get("https://raw.githubusercontent.com/SuperNewRoles/SuperNewRolesData/main/Is2222.data");
-        yield return request.SendWebRequest();
-        //new BlackPlayer("", "SuperNewRoles", 0010, "公開からの誘導はおやめください", "公開部屋から誘導してMODをプレイしていたため");
-        if (request.isNetworkError || request.isHttpError)
-        {
-            downloaded = false;
-            yield break;
-        }
-        canpublic = false;
     }
 
     public static bool IsApril()
