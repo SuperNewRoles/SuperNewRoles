@@ -1566,6 +1566,7 @@ RocketTitle2,Booooom!!!!!,ボーーーーン！
 RocketDescription,You can grab other crew members and launch them upward for a kill at any time you like.\nYou can grab more than one crew member，but if the meeting is called before you launch，you will fail to launch.\nIf the meeting ends without expulsion，you can launch，but the victims will not remain silent.\nAlso，the launched crew will be visible to others.,他クルーを掴み、好きなタイミングで上に向かって打ち上げてキルすることが出来ます。\nクルーは複数人掴むことが出来ますが、打ち飛ばす前に会議が呼ばれると打ち上げ損なってしまいます。\n追放されずに会議が終了すれば打ち上げられますが、被害者たちが黙ってはいないでしょう。\nまた、打ち上げたクルーは他人目線でも見えてしまいます。
 RocketSeizeButtonName,Catch,掴む
 RocketLetsButtonName,Boooom!!!,ボーーン！！！
+RocketLetsButtonName2,WashUp,打ち上げる
 RocketButtonCooldownSetting,First catch cool time,最初に掴むクールタイム
 RocketButtonAfterCooldown,Cool time to catch after the second time,二回目以降に掴むクールタイム
 RocketChargeTimeSetting,Rocket Chargetime,ロケットのチャージタイム
