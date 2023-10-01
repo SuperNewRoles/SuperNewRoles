@@ -59,6 +59,9 @@ public static class Crook
 
     internal static class WrapUp
     {
+        /// <summary>
+        /// 追放された詐欺師を保存する事で, 受領判定及び勝利判定時に死亡済みとして扱えるようにする。
+        /// </summary>
         internal static List<byte> ExiledCrookPlayerId;
         internal static void GeneralProcess(PlayerControl exiledPlayer)
         {
@@ -88,11 +91,12 @@ public static class Crook
                 }
                 else // 追放者が詐欺師なら
                 {
-                    ExiledCrookPlayerId.Add(exiledPlayer.PlayerId); // Listに追加し, 受領処理実行タイミングを調整する
+                    ExiledCrookPlayerId.Add(exiledPlayer.PlayerId); // Listに追加し, 受領判定時に死者として扱える様にする。
                 }
 
-                if (AmongUsClient.Instance.AmHost) // ホストなら待機してから実行する
+                if (AmongUsClient.Instance.AmHost) // ホストなら待機してから実行する (遅延しないとゲスト側が追放者保存処理を行う前に 勝利判定が実行されてしまう)
                 {
+                    // 100fの遅延な理由は, 7号テスト環境で 100f遅延でも ゲストが追放者をListに保存してから 21m後にホストが送信した勝利処理が到達していた為。
                     new LateTask(DecisionOfVictory.DecisionToReceiptOfInsurance, 100f, "Crook WinCheckProcess");
                 }
                 else // ゲストなら到達したら直ぐに実行する
