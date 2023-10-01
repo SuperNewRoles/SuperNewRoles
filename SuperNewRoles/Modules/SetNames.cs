@@ -586,7 +586,7 @@ public class SetNameUpdate
 
         if (RoleClass.PartTimer.Data.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
         {
-            PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Data.GetKey(CachedPlayer.LocalPlayer.PlayerId));
+            PlayerControl PartTimerTarget = RoleClass.PartTimer.Data.GetPCByValue(PlayerControl.LocalPlayer.PlayerId);
             SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
             SetNamesClass.SetPlayerNameColors(PartTimerTarget);
         }

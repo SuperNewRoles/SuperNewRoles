@@ -1174,6 +1174,7 @@ class AllRoleSetClass
             RoleId.Moira => Moira.MoiraPlayerCount.GetFloat(),
             RoleId.JumpDancer => JumpDancer.JumpDancerPlayerCount.GetFloat(),
             RoleId.Sauner => Sauner.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Rocket => Rocket.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.WellBehaver => WellBehaver.WellBehaverPlayerCount.GetFloat(),
             RoleId.Pokerface => Pokerface.CustomOptionData.PlayerCount.GetFloat(),
             // プレイヤーカウント

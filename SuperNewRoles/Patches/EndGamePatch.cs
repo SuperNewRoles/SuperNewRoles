@@ -1303,10 +1303,10 @@ public static class OnGameEndPatch
                 }
             }
         }
-        foreach (var PartTimerData in RoleClass.PartTimer.PlayerData) //フリーター
+        foreach (KeyValuePair<PlayerControl, byte> PartTimerData in (Dictionary<PlayerControl, byte>)RoleClass.PartTimer.Data) //フリーター
         {
-            Logger.Info(PartTimerData.Key.Data.PlayerName);
-            if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerData.Value.Data.PlayerName))
+            PlayerControl PartTimerValue = ModHelpers.PlayerById(PartTimerData.Value);
+            if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerValue.Data.PlayerName))
             {
                 WinningPlayerData wpd = new(PartTimerData.Key.Data);
                 TempData.winners.Add(wpd);

@@ -132,13 +132,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ThisPluginModName = IL2CPPChainloader.Instance.Plugins.FirstOrDefault(x => x.Key == "jp.ykundesu.supernewroles").Value.Metadata.Name;
 
         //Register Il2cpp
-        Logger.LogInfo("a");
         ClassInjector.RegisterTypeInIl2Cpp<CustomAnimation>();
-        Logger.LogInfo("b");
         ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
-        Logger.LogInfo("c");
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonObject>();
-        Logger.LogInfo("d");
+        ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
     }
 
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]

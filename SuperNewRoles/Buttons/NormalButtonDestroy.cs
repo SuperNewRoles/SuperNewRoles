@@ -20,6 +20,7 @@ public class NormalButtonDestroy
             { RoleId.Smasher, (NormalButton.KillButton, true) },
             { RoleId.Conjurer, (NormalButton.KillButton, true) },
             { RoleId.Tasker, (NormalButton.KillButton, !CustomOptionHolder.TaskerCanKill.GetBool()) },
+            { RoleId.Rocket, (NormalButton.KillButton, true)},
 
             { RoleId.Minimalist, (NormalButton.ReportButton, !RoleClass.Minimalist.UseReport) },
             { RoleId.Fox, (NormalButton.ReportButton, !RoleClass.Fox.UseReport) },

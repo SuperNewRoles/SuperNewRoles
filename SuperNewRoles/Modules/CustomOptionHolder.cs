@@ -1110,6 +1110,8 @@ public class CustomOptionHolder
         PenguinCanDefaultKill = Create(200604, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
         PenguinMeetingKill = Create(200605, true, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
 
+        Rocket.CustomOptionData.SetupCustomOptions();
+
         DoppelgangerOption = SetupCustomRoleOption(200700, true, RoleId.Doppelganger);
         DoppelgangerPlayerCount = Create(200701, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
         DoppelgangerDurationTime = Create(200702, true, CustomOptionType.Impostor, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, DoppelgangerOption);
