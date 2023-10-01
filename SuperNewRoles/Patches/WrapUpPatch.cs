@@ -133,6 +133,7 @@ class WrapUpPatch
         Speeder.WrapUp();
         Bestfalsecharge.WrapUp();
         CustomRoles.OnWrapUp();
+        Rocket.WrapUp(exiled == null ? null : exiled.Object);
         if (AmongUsClient.Instance.AmHost)
         {
             PlayerAnimation.PlayerAnimations.Values.All(x =>
@@ -153,11 +154,13 @@ class WrapUpPatch
         BlackHatHacker.WrapUp();
         Moira.WrapUp(exiled);
         Conjurer.WrapUp();
+        WellBehaver.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();
         }
         RoleClass.Doppelganger.Targets = new();
+
         Crook.WrapUp.GeneralProcess(exiled == null ? null : exiled.Object);
 
         Logger.Info("[追放の有無問わず 会議終了時に行う処理] 通過", "WrapUp");

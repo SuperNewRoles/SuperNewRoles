@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -6,13 +7,14 @@ public static class PartTimer
 {
     public static void FixedUpdate()
     {
-        foreach (var data in RoleClass.PartTimer.PlayerData)
+        foreach (KeyValuePair<PlayerControl, byte> data in (Dictionary<PlayerControl, byte>)RoleClass.PartTimer.Data)
         {
+            PlayerControl value = ModHelpers.PlayerById(data.Value);
             if (!data.Key.IsRole(RoleId.PartTimer))
             {
                 RoleClass.PartTimer.Data.Remove(data.Key.PlayerId);
             }
-            else if (data.Value.IsDead())
+            else if (value.IsDead())
             {
                 if (data.Key.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {

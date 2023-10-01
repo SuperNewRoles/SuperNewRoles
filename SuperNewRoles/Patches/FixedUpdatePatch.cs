@@ -118,6 +118,8 @@ public class FixedUpdate
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();
                 JumpDancer.FixedUpdate();
+                Rocket.FixedUpdate();
+                WellBehaver.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

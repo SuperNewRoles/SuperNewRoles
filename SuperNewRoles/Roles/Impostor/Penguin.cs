@@ -20,7 +20,8 @@ public static class Penguin
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (RoleClass.Penguin.PenguinData.Any(x => x.Value != null && x.Value.PlayerId == __instance.myPlayer.PlayerId))
+                if (RoleClass.Penguin.PenguinData.Any(x => x.Value != null && x.Value.PlayerId == __instance.myPlayer.PlayerId) ||
+                    Rocket.RoleData.RocketData.Any(x => x.Value.Any(y => y.PlayerId == __instance.myPlayer.PlayerId)))
                 {
                     __instance.body.velocity = new(0f, 0f);
                 }
