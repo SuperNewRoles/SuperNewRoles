@@ -1450,6 +1450,8 @@ public class CustomOptionHolder
         JesterLongTask = jesteroption.Item3;
         Sauner.CustomOptionData.SetupCustomOptions();
 
+        Pokerface.CustomOptionData.SetupCustomOptions();
+
         trueloverOption = SetupCustomRoleOption(300600, true, RoleId.truelover);
         trueloverPlayerCount = Create(300601, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], trueloverOption);
 
@@ -1652,6 +1654,8 @@ public class CustomOptionHolder
         Pteranodon.SetupCustomOptions();
 
         JumpDancer.SetupCustomOptions();
+
+        WellBehaver.SetupCustomOptions();
 
         Balancer.SetupCustomOptions();
 

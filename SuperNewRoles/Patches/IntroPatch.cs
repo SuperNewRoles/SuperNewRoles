@@ -289,6 +289,18 @@ public class IntroPatch
                         }
                         yourTeam = TheThreeLittlePigsTeams;
                         break;
+                    case RoleId.Pokerface:
+                        Il2CppSystem.Collections.Generic.List<PlayerControl> PokerfaceTeams = new();
+                        Pokerface.PokerfaceTeam team = Pokerface.GetPokerfaceTeam(PlayerControl.LocalPlayer.PlayerId);
+                        if (team != null)
+                        {
+                            foreach (var player in team.TeamPlayers)
+                            {
+                                PokerfaceTeams.Add(player);
+                            }
+                        }
+                        yourTeam = PokerfaceTeams;
+                        break;
                     default:
                         if (PlayerControl.LocalPlayer.IsImpostor())
                         {
@@ -336,7 +348,7 @@ public class IntroPatch
         string ImpostorText = __instance.ImpostorText.text;
         if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
         {
-            if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+            if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM,RoleId.Pokerface))
             {
                 IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 TeamTitle = ModTranslation.GetString("Neutral");
@@ -361,6 +373,7 @@ public class IntroPatch
                 {
                     case RoleId.SatsumaAndImo:
                     case RoleId.GM:
+                    case RoleId.Pokerface:
                         IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                         color = Intro.color;
                         TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");

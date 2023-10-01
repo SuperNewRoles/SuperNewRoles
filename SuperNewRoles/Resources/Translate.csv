@@ -152,6 +152,7 @@ optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#94949
 preset,Preset,プリセット,预设,預設
 unitSeconds,Seconds,秒,秒,秒
 SettingPlayerCountName,Role Player,人数,人数,人數
+SettingTeamCountName,Team Count,チーム数
 CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式,直播模式
 CustomAutoUpdate,Auto Update,自動アップデート,自动更新,自動更新
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする,自动复制房间代码,自動複製房間代碼
@@ -1560,6 +1561,17 @@ SaunerDarkroomTime,Sauna Length of Stay,サウナタイム
 SaunerShowerTime,Time to take a shower,シャワータイム
 SaunerDeckTime,Outside air bath time,外気浴タイム
 SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！
+WellBehaverName,Well Behaver,品行方正
+WellBehaverTitle1,Be sure to conduct yourself in a dignified manner.,品行方正な行いを心がけましょう
+WellBehaverDescription,This position is a crew member but has no tasks.\nInstead， you must pick up trash that someone drops.\nWhen a certain number of trash accumulates， the person cannot stand it any longer and dies.,この役職はクルーですがタスクがありません\nその代わり、誰かが落としていくゴミを拾う必要があります\nゴミが一定数以上溜まると耐えきれなくなって死亡してしまいます
+WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数
+WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度
+WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える
+WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う
+PokerfaceName,Pokerface,ポーカーフェイス
+PokerfaceTitle1,Nothing，though?,なにもありませんけど？
+PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。
+PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する
 
 #NewRoleTranslation
 
