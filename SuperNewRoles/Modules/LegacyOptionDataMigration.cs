@@ -33,14 +33,14 @@ public static class LegacyOptionDataMigration
                 if (!configtext.Contains($"[Preset{i}]"))
                     continue;
                 Logger.Info("Start Preset"+i.ToString()+" Migration", "Migration LagacyOption");
-                Dictionary<ushort, byte> SaveValues = new();
+                Dictionary<uint, byte> SaveValues = new();
                 string presettext = $"Preset{i}";
                 foreach (CustomOption opt in CustomOption.options)
                 {
                     int selection = SuperNewRolesPlugin.Instance.Config.Bind(presettext, opt.id.ToString(), opt.defaultSelection).Value;
                     if (selection != opt.defaultSelection)
                     {
-                        SaveValues.Add((ushort)opt.id, (byte)selection);
+                        SaveValues.TryAdd((uint)opt.id, (byte)selection);
                     }
                 }
                 if (SaveValues.Count > 0)
@@ -68,7 +68,7 @@ public static class LegacyOptionDataMigration
             {
                 foreach (CustomOption opt in CustomOption.options)
                 {
-                    opt.selection = Mathf.Clamp(CustomOption.CurrentValues.TryGetValue((ushort)opt.id, out byte valueselection) ? valueselection : opt.defaultSelection, 0, opt.selections.Length - 1);
+                    opt.selection = Mathf.Clamp(CustomOption.CurrentValues.TryGetValue((uint)opt.id, out byte valueselection) ? valueselection : opt.defaultSelection, 0, opt.selections.Length - 1);
                 }
                 DeleteOptionConfig();
             }
