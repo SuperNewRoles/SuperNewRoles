@@ -34,7 +34,7 @@ public class CustomOption
     public static List<CustomOption> options = new();
     private static Dictionary<int, CustomOption> optionids = new();
     public static int preset = 0;
-    public static Dictionary<ushort, byte> CurrentValues;
+    public static Dictionary<uint, byte> CurrentValues;
     public static bool IsValuesUpdated;
 
     public int id;
@@ -129,7 +129,7 @@ public class CustomOption
             parent.children.Add(this);
         }
 
-        selection = Mathf.Clamp(CurrentValues.TryGetValue((ushort)id, out byte valueselection) ? valueselection : defaultSelection, 0, selections.Length - 1);
+        selection = Mathf.Clamp(CurrentValues.TryGetValue((uint)id, out byte valueselection) ? valueselection : defaultSelection, 0, selections.Length - 1);
 
         bool duplication = options.Any(x => x.id == Id);
         string duplicationString = $"CustomOptionのId({Id})が重複しています。";
@@ -245,7 +245,7 @@ public class CustomOption
     {
         OptionSaver.WriteNowPreset();
         preset = newPreset;
-        (bool suc, int code, Dictionary<ushort,byte> data) = OptionSaver.LoadPreset(preset);
+        (bool suc, int code, Dictionary<uint,byte> data) = OptionSaver.LoadPreset(preset);
         if (!suc && code == -1)
         {
             foreach (CustomOption option in options)
@@ -270,7 +270,7 @@ public class CustomOption
         {
             if (option.id <= 0) continue;
 
-            option.selection = Mathf.Clamp(data.TryGetValue((ushort)option.id, out byte value) ? value : option.defaultSelection, 0, option.selections.Length - 1);
+            option.selection = Mathf.Clamp(data.TryGetValue((uint)option.id, out byte value) ? value : option.defaultSelection, 0, option.selections.Length - 1);
             if (option.optionBehaviour is not null and StringOption stringOption)
             {
                 stringOption.oldValue = stringOption.Value = option.selection;
@@ -389,7 +389,7 @@ public class CustomOption
                 } // Switch presets
                 else if (AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
                 {
-                    CurrentValues[(ushort)id] = (byte)selection;
+                    CurrentValues[(uint)id] = (byte)selection;
                     IsValuesUpdated = true;
                     ShareOptionSelections(this);// Share all selections
                 } // Save selection to config
