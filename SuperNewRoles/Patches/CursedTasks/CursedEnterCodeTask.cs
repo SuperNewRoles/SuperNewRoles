@@ -129,8 +129,9 @@ public class CursedEnterCodeTask
                 ui.name = $"reactorButton{i + 11}";
                 ui.transform.localPosition = new(pos.x + (0.43f * line), pos.y, -0.1f);
                 int key = i;
-                ui.GetComponent<ButtonBehavior>().OnClick = new();
-                ui.GetComponent<ButtonBehavior>().OnClick.AddListener((Action)(() => __instance.EnterDigit(key + 10)));
+                ButtonBehavior button = ui.GetComponent<ButtonBehavior>();
+                button.OnClick = new();
+                button.OnClick.AddListener((Action)(() => __instance.EnterDigit(key + 10)));
                 line++;
             }
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
@@ -83,15 +84,15 @@ class Vampire
             Count--;
             if (Count > 0) return;
             Count = 3;
-            foreach (var data in RoleClass.Vampire.Targets.ToArray())
+            foreach (KeyValuePair<PlayerControl, PlayerControl> data in (Dictionary<PlayerControl,PlayerControl>)RoleClass.Vampire.Targets)
             {
                 if (data.Key == null || data.Value == null || !data.Key.IsRole(RoleId.Vampire) || data.Key.IsDead() || data.Value.IsDead())
                 {
                     RoleClass.Vampire.Targets.Remove(data.Key);
                     continue;
                 }
-                if (!RoleClass.Vampire.BloodStains.ContainsKey(data.Value.PlayerId))
-                    RoleClass.Vampire.BloodStains.Add(data.Value.PlayerId, new());
+                if (!RoleClass.Vampire.BloodStains.Contains(data.Value.PlayerId))
+                    RoleClass.Vampire.BloodStains[data.Value.PlayerId] = new();
                 RoleClass.Vampire.BloodStains[data.Value.PlayerId].Add(new(data.Value));
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -19,6 +20,7 @@ using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Networking;
 
 namespace SuperNewRoles;
 
@@ -39,6 +41,17 @@ public static class ModHelpers
                     !MeetingHud.Instance &&
                     !ExileController.Instance;
         }
+    }
+    public static TKey GetKeyByValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TValue value, TKey defaultvalue = default)
+    {
+        foreach (var pair in dictionary)
+        {
+            if (EqualityComparer<TValue>.Default.Equals(pair.Value, value))
+            {
+                return pair.Key;
+            }
+        }
+        return defaultvalue; // 見つからなかった場合
     }
     public static int GetAlivePlayerCount()
     {
@@ -481,7 +494,20 @@ public static class ModHelpers
         return tasks.ToArray().ToList();
     }
     static float tien;
-
+    public static string GetStringByCount(char txt, int count)
+    {
+        StringBuilder builder = new();
+        for(int i = 0; i < count; i++)
+        {
+            builder.Append(txt);
+        }
+        return builder.ToString();
+    }
+    public static int GetDigit(int num)
+    {
+        // Mathf.Log10(0)はNegativeInfinityを返すため、別途処理する。
+        return (num == 0) ? 1 : ((int)Mathf.Log10(num) + 1);
+    }
     public static void SetSemiTransparent(this PoolablePlayer player, bool value)
     {
         float alpha = value ? 0.25f : 1f;
@@ -638,14 +664,14 @@ public static class ModHelpers
     }
     public static T FirstOrDefault<T>(this List<T> list)
     {
-        foreach (T obj in list)
-            return obj;
+        if (list.Count > 0)
+            return list[0];
         return default;
     }
     public static T FirstOrDefault<T>(this T[] list)
     {
-        foreach (T obj in list)
-            return obj;
+        if (list.Length > 0)
+            return list[0];
         return default;
     }
     public static T FirstOrDefault<T>(this IEnumerable<T> list, Func<T, bool> func)
@@ -674,6 +700,20 @@ public static class ModHelpers
             if (func(obj))
                 return obj;
         return default;
+    }
+    public static bool Any<TKey,TValue>(this Dictionary<TKey,TValue> dict, Func<KeyValuePair<TKey, TValue>, bool> func)
+    {
+        foreach (KeyValuePair<TKey, TValue> obj in dict)
+            if (func(obj))
+                return true;
+        return false;
+    }
+    public static bool Any<T>(this List<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return true;
+        return false;
     }
     public static Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Il2CppSystem.Collections.Generic.Dictionary<TKey, TValue> list, Func<Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue>, bool> func)
     {
@@ -705,6 +745,12 @@ public static class ModHelpers
             newList.Add(item);
         }
         return newList;
+    }
+    public static AudioClip loadAudioClipFromWavResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
+    {
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        Stream stream = assembly.GetManifestResourceStream(path);
+        return WavLoader.ToAudioClip(stream, clipName);
     }
     public static Dictionary<string, AudioClip> CachedAudioClips = new();
     public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")

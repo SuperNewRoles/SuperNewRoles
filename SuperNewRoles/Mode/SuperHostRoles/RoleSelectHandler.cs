@@ -132,6 +132,7 @@ public static class RoleSelectHandler
         if (RoleClass.BlackCat.IsUseVent) SetVanillaRole(RoleClass.BlackCat.BlackCatPlayer, RoleTypes.Engineer);
         if (RoleClass.MadSeer.IsUseVent) SetVanillaRole(RoleClass.MadSeer.MadSeerPlayer, RoleTypes.Engineer);
         if (RoleClass.SeerFriends.IsUseVent) SetVanillaRole(RoleClass.SeerFriends.SeerFriendsPlayer, RoleTypes.Engineer);
+        if (Pokerface.CustomOptionData.CanUseVent.GetBool()) SetVanillaRole(Pokerface.RoleData.Player, RoleTypes.Engineer);
         /*============エンジニアに役職設定============*/
 
         /*============科学者に役職設定============*/

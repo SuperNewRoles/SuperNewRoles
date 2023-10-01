@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ class GameStartPatch
             if (lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.EndInviting();
+            }
+            if (CustomOption.IsValuesUpdated)
+            {
+                OptionSaver.WriteNowOptions();
+                CustomOption.IsValuesUpdated = false;
             }
         }
     }

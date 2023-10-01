@@ -118,6 +118,8 @@ public class FixedUpdate
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();
                 JumpDancer.FixedUpdate();
+                Rocket.FixedUpdate();
+                WellBehaver.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -224,6 +226,9 @@ public class FixedUpdate
                             break;
                         case RoleId.PoliceSurgeon:
                             PoliceSurgeon.FixedUpdate();
+                            break;
+                        case RoleId.Sauner:
+                            Sauner.FixedUpdate();
                             break;
                     }
                 }

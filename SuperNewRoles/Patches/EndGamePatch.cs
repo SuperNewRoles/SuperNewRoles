@@ -53,6 +53,7 @@ public enum CustomGameOverReason
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
+    SaunerWin
 }
 public enum WinCondition
 {
@@ -89,7 +90,9 @@ public enum WinCondition
     OrientalShamanWin,
     BlackHatHackerWin,
     MoiraWin,
-    PantsRoyalWin
+    PantsRoyalWin,
+    SaunerWin,
+    PokerfaceWin
 }
 class FinalStatusPatch
 {
@@ -179,7 +182,7 @@ public class EndGameManagerSetUpPatch
         List<WinningPlayerData> list = TempData.winners.ToList().OrderBy(delegate (WinningPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
-        }).ToList<WinningPlayerData>();
+        }).ToList();
         for (int i = 0; i < list.Count; i++)
         {
             WinningPlayerData winningPlayerData2 = list[i];
@@ -193,17 +196,16 @@ public class EndGameManagerSetUpPatch
             float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
             Vector3 vector = new(num7, num7, 1f);
             poolablePlayer.transform.localScale = vector;
-            poolablePlayer.UpdateFromPlayerOutfit((GameData.PlayerOutfit)winningPlayerData2, PlayerMaterial.MaskType.ComplexUI, winningPlayerData2.IsDead, true);
             if (winningPlayerData2.IsDead)
             {
-                poolablePlayer.cosmetics.currentBodySprite.BodySprite.sprite = poolablePlayer.cosmetics.currentBodySprite.GhostSprite;
+                poolablePlayer.SetBodyAsGhost();
                 poolablePlayer.SetDeadFlipX(i % 2 == 0);
             }
             else
             {
                 poolablePlayer.SetFlipX(i % 2 == 0);
             }
-
+            poolablePlayer.UpdateFromPlayerOutfit((GameData.PlayerOutfit)winningPlayerData2, PlayerMaterial.MaskType.None, winningPlayerData2.IsDead, true);
             poolablePlayer.cosmetics.nameText.color = Color.white;
             poolablePlayer.cosmetics.nameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
@@ -255,7 +257,9 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)},
                 {WinCondition.BlackHatHackerWin,("BlackHatHackerName",BlackHatHacker.color)},
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
-                {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) }
+                {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) },
+                {WinCondition.SaunerWin, ("SaunerRefreshing",Sauner.RoleData.color) },
+                {WinCondition.PokerfaceWin,("PokerfaceName",Pokerface.RoleData.color) }
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -379,7 +383,7 @@ public class EndGameManagerSetUpPatch
             }
         }
         Logger.Info("WINCOND:"+ AdditionalTempData.winCondition.ToString());
-        if (haison || AdditionalTempData.winCondition == WinCondition.PantsRoyalWin) textRenderer.text = text;
+        if (haison || AdditionalTempData.winCondition is WinCondition.PantsRoyalWin or WinCondition.SaunerWin) textRenderer.text = text;
         else if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) textRenderer.text = text + " " + ModTranslation.GetString("GodWinText");
         else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));
@@ -674,7 +678,9 @@ public static class OnGameEndPatch
             WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
             Moira.MoiraPlayer,
-            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player
+            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
+            Sauner.RoleData.Player,
+            Pokerface.RoleData.Player
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -721,6 +727,7 @@ public static class OnGameEndPatch
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
         bool SafecrackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SafecrackerWin;
         bool BlackHatHackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.BlackHatHackerWin;
+        bool SaunerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SaunerWin;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
         {
             JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -901,6 +908,11 @@ public static class OnGameEndPatch
             (TempData.winners = new()).Add(new(WinnerPlayer.Data));
             AdditionalTempData.winCondition = WinCondition.BlackHatHackerWin;
         }
+        else if (SaunerWin)
+        {
+            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            AdditionalTempData.winCondition = WinCondition.SaunerWin;
+        }
 
         if (TempData.winners.ToArray().Any(x => x.IsImpostor))
         {
@@ -1061,6 +1073,28 @@ public static class OnGameEndPatch
                         AdditionalTempData.winCondition = WinCondition.LoversWin;
                     }
                 }
+            }
+        }
+        //ポーカーフェイス勝利判定
+        isReset = false;
+        foreach (Pokerface.PokerfaceTeam team in Pokerface.RoleData.PokerfaceTeams)
+        {
+            if (team.CanWin())
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                foreach (PlayerControl teammember in team.TeamPlayers)
+                    //ポーカーフェイスじゃない場合を考慮する
+                    if (teammember.IsRole(RoleId.Pokerface))
+                        //生存者のみ勝利の設定が無効もしくは対象が生存している場合は追加する
+                        if (!Pokerface.CustomOptionData.WinnerOnlyAlive.GetBool() ||
+                            teammember.IsAlive())
+                        TempData.winners.Add(new(teammember.Data));
+                AdditionalTempData.winCondition = WinCondition.PokerfaceWin;
             }
         }
         isReset = false;
@@ -1269,10 +1303,10 @@ public static class OnGameEndPatch
                 }
             }
         }
-        foreach (var PartTimerData in RoleClass.PartTimer.PlayerData) //フリーター
+        foreach (KeyValuePair<PlayerControl, byte> PartTimerData in (Dictionary<PlayerControl, byte>)RoleClass.PartTimer.Data) //フリーター
         {
-            Logger.Info(PartTimerData.Key.Data.PlayerName);
-            if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerData.Value.Data.PlayerName))
+            PlayerControl PartTimerValue = ModHelpers.PlayerById(PartTimerData.Value);
+            if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerValue.Data.PlayerName))
             {
                 WinningPlayerData wpd = new(PartTimerData.Key.Data);
                 TempData.winners.Add(wpd);
