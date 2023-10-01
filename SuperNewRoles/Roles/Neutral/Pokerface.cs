@@ -11,7 +11,7 @@ public static class Pokerface
     public static class CustomOptionData
     {
         private static int optionId = 303500;
-        public static CustomRoleOption ;
+        public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption CanUseVent;
         public static CustomOption WinnerOnlyAlive;
