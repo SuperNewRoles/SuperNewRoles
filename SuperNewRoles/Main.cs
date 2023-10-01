@@ -148,7 +148,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
             if (ModHelpers.IsCustomServer()) return;
-            __result = Constants.GetVersion(2222, 0, 0, 0);
+            __result += 25;
         }
     }
 
