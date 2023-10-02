@@ -1472,7 +1472,7 @@ class ReportDeadBodyPatch
                 if (isGetLightAndDarker)
                 {
                     string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), firstPerson,
-                        CustomColors.lighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
+                        CustomColors.LighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
                     new LateTask(() =>
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);

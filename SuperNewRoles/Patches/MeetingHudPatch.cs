@@ -790,7 +790,7 @@ public class MeetingHudUpdatePatch
                     {
                         if (player.NameText.text.Contains(GetLightAndDarkerText(true)) ||
                             player.NameText.text.Contains(GetLightAndDarkerText(false))) continue;
-                        player.NameText.text += GetLightAndDarkerText(CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId));
+                        player.NameText.text += GetLightAndDarkerText(CustomColors.LighterColors.Contains(target.Data.DefaultOutfit.ColorId));
                     }
                     else player.NameText.text = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
                 }
