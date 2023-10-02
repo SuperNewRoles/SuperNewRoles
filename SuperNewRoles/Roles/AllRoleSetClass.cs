@@ -634,7 +634,7 @@ class AllRoleSetClass
                 }
 
                 int PlayerCount = (int)GetPlayerCount(selectRoleData);
-                if (selectRoleData is not RoleId.TheFirstLittlePig)
+                if (selectRoleData is not RoleId.TheFirstLittlePig and not RoleId.Pokerface)
                 {
                     if (PlayerCount >= NeutralPlayerNum)
                     {
@@ -759,6 +759,59 @@ class AllRoleSetClass
                             writer.Write(TheThreeLittlePigsPlayer[2].PlayerId);
                             writer.EndRPC();
                             RPCProcedure.SetTheThreeLittlePigsTeam(TheThreeLittlePigsPlayer[0].PlayerId, TheThreeLittlePigsPlayer[1].PlayerId, TheThreeLittlePigsPlayer[2].PlayerId);
+                        }
+                    }
+                }
+                else if (selectRoleData is RoleId.Pokerface)
+                {
+                    if (PlayerCount * 3 >= NeutralPlayerNum)
+                    {
+                        int PokerFaceTeam = (int)Math.Truncate(NeutralPlayerNum / 3f);
+                        for (int i = 1; i <= NeutralPlayerNum; i++)
+                        {
+                            PlayerControl[] PokerFacePlayer = new PlayerControl[3];
+                            for (int i2 = 0; i2 < 3; i2++)
+                            {
+                                PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                                p.SetRoleRPC(RoleId.Pokerface);
+                                CrewmatePlayers.Remove(p);
+                                PokerFacePlayer[i2] = p;
+                            }
+                            NeutralPlayerNum = NeutralPlayerNum - 3;
+                            Pokerface.RpcSetPokerfaceTeam(PokerFacePlayer);
+                        }
+                        if (0 >= NeutralPlayerNum || 0 >= CrewmatePlayers.Count)
+                            IsNotEndRandomSelect = false;
+                    }
+                    else if (PlayerCount * 3 >= CrewmatePlayers.Count)
+                    {
+                        PlayerControl[] PokerFacePlayer = new PlayerControl[3];
+                        for (int i2 = 0; i2 < 3; i2++)
+                        {
+                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.Pokerface);
+                            CrewmatePlayers.Remove(p);
+                            PokerFacePlayer[i2] = p;
+                        }
+                        NeutralPlayerNum = NeutralPlayerNum - 3;
+                        Pokerface.RpcSetPokerfaceTeam(PokerFacePlayer);
+                        if (0 >= NeutralPlayerNum || 0 >= CrewmatePlayers.Count)
+                            IsNotEndRandomSelect = false;
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            PlayerControl[] PokerFacePlayer = new PlayerControl[3];
+                            for (int i2 = 0; i2 < 3; i2++)
+                            {
+                                PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                                p.SetRoleRPC(RoleId.Pokerface);
+                                CrewmatePlayers.Remove(p);
+                                PokerFacePlayer[i2] = p;
+                            }
+                            NeutralPlayerNum = NeutralPlayerNum - 3;
+                            Pokerface.RpcSetPokerfaceTeam(PokerFacePlayer);
                         }
                     }
                 }
@@ -1121,6 +1174,9 @@ class AllRoleSetClass
             RoleId.Moira => Moira.MoiraPlayerCount.GetFloat(),
             RoleId.JumpDancer => JumpDancer.JumpDancerPlayerCount.GetFloat(),
             RoleId.Sauner => Sauner.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Rocket => Rocket.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.WellBehaver => WellBehaver.WellBehaverPlayerCount.GetFloat(),
+            RoleId.Pokerface => Pokerface.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.Frankenstein => Frankenstein.FrankensteinPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
@@ -1163,7 +1219,8 @@ class AllRoleSetClass
             RoleId.Revolutionist => false,
             RoleId.Assassin => false,
             RoleId.Jumbo => false,
-            RoleId.Nun or RoleId.Pteranodon or RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
+            RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
+            RoleId.Nun or RoleId.Pteranodon => UnityEngine.Object.FindAnyObjectByType<MovingPlatformBehaviour>(), // ぬーんがあるならば選出が可能
             RoleId.Werewolf or RoleId.Knight => ModeHandler.IsMode(ModeId.Werewolf),
             _ => true,
         };

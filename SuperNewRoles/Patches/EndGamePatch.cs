@@ -93,6 +93,7 @@ public enum WinCondition
     MoiraWin,
     PantsRoyalWin,
     SaunerWin,
+    PokerfaceWin,
     FrankensteinWin,
 }
 class FinalStatusPatch
@@ -260,6 +261,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.MoiraWin,("MoiraName",Moira.color)},
                 {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) },
                 {WinCondition.SaunerWin, ("SaunerRefreshing",Sauner.RoleData.color) },
+                {WinCondition.PokerfaceWin,("PokerfaceName",Pokerface.RoleData.color) },
                 {WinCondition.FrankensteinWin, ("FrankensteinName",Frankenstein.color) },
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
@@ -681,6 +683,7 @@ public static class OnGameEndPatch
             Moira.MoiraPlayer,
             Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
             Sauner.RoleData.Player,
+            Pokerface.RoleData.Player,
             Frankenstein.FrankensteinPlayer,
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
@@ -1076,6 +1079,28 @@ public static class OnGameEndPatch
                 }
             }
         }
+        //ポーカーフェイス勝利判定
+        isReset = false;
+        foreach (Pokerface.PokerfaceTeam team in Pokerface.RoleData.PokerfaceTeams)
+        {
+            if (team.CanWin())
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                foreach (PlayerControl teammember in team.TeamPlayers)
+                    //ポーカーフェイスじゃない場合を考慮する
+                    if (teammember.IsRole(RoleId.Pokerface))
+                        //生存者のみ勝利の設定が無効もしくは対象が生存している場合は追加する
+                        if (!Pokerface.CustomOptionData.WinnerOnlyAlive.GetBool() ||
+                            teammember.IsAlive())
+                        TempData.winners.Add(new(teammember.Data));
+                AdditionalTempData.winCondition = WinCondition.PokerfaceWin;
+            }
+        }
         isReset = false;
         foreach (PlayerControl player in RoleClass.Spelunker.SpelunkerPlayer)
         {
@@ -1296,10 +1321,10 @@ public static class OnGameEndPatch
                 }
             }
         }
-        foreach (var PartTimerData in RoleClass.PartTimer.PlayerData) //フリーター
+        foreach (KeyValuePair<PlayerControl, byte> PartTimerData in (Dictionary<PlayerControl, byte>)RoleClass.PartTimer.Data) //フリーター
         {
-            Logger.Info(PartTimerData.Key.Data.PlayerName);
-            if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerData.Value.Data.PlayerName))
+            PlayerControl PartTimerValue = ModHelpers.PlayerById(PartTimerData.Value);
+            if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerValue.Data.PlayerName))
             {
                 WinningPlayerData wpd = new(PartTimerData.Key.Data);
                 TempData.winners.Add(wpd);

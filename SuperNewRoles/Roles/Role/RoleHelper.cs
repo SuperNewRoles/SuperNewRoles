@@ -132,6 +132,7 @@ public static class RoleHelpers
         RoleId.BlackHatHacker or
         RoleId.Moira or
         RoleId.Sauner or
+        RoleId.Pokerface or
         RoleId.Frankenstein;
     // 第三か
 
@@ -965,6 +966,15 @@ public static class RoleHelpers
             case RoleId.Sauner:
                 Sauner.RoleData.Player.Add(player);
                 break;
+            case RoleId.Rocket:
+                Rocket.RoleData.Player.Add(player);
+                break;
+            case RoleId.WellBehaver:
+                WellBehaver.WellBehaverPlayer.Add(player);
+                break;
+            case RoleId.Pokerface:
+                Pokerface.RoleData.Player.Add(player);
+                break;
             case RoleId.Frankenstein:
                 Frankenstein.FrankensteinPlayer.Add(player);
                 break;
@@ -1503,6 +1513,15 @@ public static class RoleHelpers
             case RoleId.Sauner:
                 Sauner.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Rocket:
+                Rocket.RoleData.Player.RemoveAll(ClearRemove);
+                break;
+            case RoleId.WellBehaver:
+                WellBehaver.WellBehaverPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Pokerface:
+                Pokerface.RoleData.Player.RemoveAll(ClearRemove);
+                break;
             case RoleId.Frankenstein:
                 Frankenstein.FrankensteinPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1547,6 +1566,7 @@ public static class RoleHelpers
             case RoleId.SatsumaAndImo:
             case RoleId.ShermansServant:
             case RoleId.SidekickWaveCannon:
+            case RoleId.WellBehaver:
                 // タスククリアか 個別表記
                 IsTaskClear = true;
                 break;
@@ -1623,6 +1643,7 @@ public static class RoleHelpers
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
+            RoleId.Pokerface => Pokerface.CustomOptionData.CanUseVent.GetBool(),
             RoleId.Frankenstein => Frankenstein.IsMonster(PlayerControl.LocalPlayer) && Frankenstein.FrankensteinMonsterCanVent.GetBool(),
             // ベントが使える
             _ => player.IsImpostor(),
@@ -1994,6 +2015,9 @@ public static class RoleHelpers
             else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
+            else if (Rocket.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Rocket;
+            else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
+            else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
             else if (Frankenstein.FrankensteinPlayer.IsCheckListPlayerControl(player)) return RoleId.Frankenstein;
             // ロールチェック
         }

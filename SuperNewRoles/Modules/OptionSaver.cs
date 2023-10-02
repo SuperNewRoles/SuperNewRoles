@@ -74,7 +74,7 @@ public static class OptionSaver
             writer.Write(options.Count);
             foreach (CustomOption option in options)
             {
-                writer.Write((ushort)option.id);
+                writer.Write((uint)option.id);
                 writer.Write((byte)option.selection);
             }
             writer.Close();
@@ -91,7 +91,7 @@ public static class OptionSaver
             return;
         }
         Logger.Info($"Start LoadPreset{preset} ");
-        (Suc, int code, Dictionary<ushort, byte> data) = LoadPreset(preset);
+        (Suc, int code, Dictionary<uint, byte> data) = LoadPreset(preset);
         if (!Suc)
         {
             Logger.Info("プリセット読み込みでエラーが発生しました。:" + code.ToString());
@@ -101,7 +101,7 @@ public static class OptionSaver
         CustomOption.CurrentValues = data;
         Logger.Info("End LoadOption:"+data.Count.ToString());
     }
-    public static (bool, int, Dictionary<ushort, byte>) LoadPreset(int num)
+    public static (bool, int, Dictionary<uint, byte>) LoadPreset(int num)
     {
         lock (FileLocker)
         {
@@ -122,7 +122,7 @@ public static class OptionSaver
                 reader.Close();
                 return (false, -2, null);
             }
-            Dictionary<ushort, byte> Options = new();
+            Dictionary<uint, byte> Options = new();
             if (Version != version)
             {
                 Logger.Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
@@ -137,12 +137,12 @@ public static class OptionSaver
             try
             {
                 int optioncount = reader.ReadInt32();
-                ushort id;
+                uint id;
                 byte selection;
                 Logger.Info(optioncount.ToString()+":"+reader.BaseStream.Length,"OPTIONCOUNT");
                 for (int i = 0; i < optioncount; i++)
                 {
-                    id = reader.ReadUInt16();
+                    id = reader.ReadUInt32();
                     selection = reader.ReadByte();
                     if (!Options.TryAdd(id, selection))
                     {

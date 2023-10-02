@@ -66,7 +66,7 @@ public class AmongUsClientOnPlayerJoinedPatch
                 {
                     if (!__instance.myPlayer.IsBot())
                     {
-                        AddChatPatch.SendCommand(__instance.myPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+                        AddChatPatch.SendCommand(__instance.myPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by TeamSuperNewRoles{betatext}");
                     }
                 }, 2f, "Welcome Beta Message");
             }

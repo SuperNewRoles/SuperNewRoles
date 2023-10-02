@@ -401,7 +401,7 @@ class CheckForEndVotingPatch
             if (exiledPlayer != null && exiledPlayer.Object.IsRole(RoleId.Dictator))
             {
                 bool Flag = false;
-                if (!RoleClass.Dictator.SubExileLimitData.ContainsKey(exiledPlayer.Object.PlayerId))
+                if (!RoleClass.Dictator.SubExileLimitData.Contains(exiledPlayer.Object.PlayerId))
                 {
                     RoleClass.Dictator.SubExileLimitData[exiledPlayer.Object.PlayerId] = RoleClass.Dictator.SubExileLimit;
                 }
