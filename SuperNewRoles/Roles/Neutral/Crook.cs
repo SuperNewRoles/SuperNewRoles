@@ -52,17 +52,13 @@ public static class Crook
             TimeForAbilityUse = CustomOptionData.TimeTheAbilityToInsureOthersIsAvailable.GetFloat() + 7f; // 7f は 会議開始アニメーション所要時間
             NumberNeededWin = CustomOptionData.NumberOfInsuranceClaimsReceivedRequiredToWin.GetFloat();
             FirstWinFlag = false;
-            WrapUp.ExiledCrookPlayerId = new();
+            DecisionOfVictory.ExiledCrookPlayerId = new();
             Ability.ClearAndReload();
         }
     }
 
     internal static class WrapUp
     {
-        /// <summary>
-        /// 追放された詐欺師を保存する事で, 受領判定及び勝利判定時に死亡済みとして扱えるようにする。
-        /// </summary>
-        internal static List<byte> ExiledCrookPlayerId;
         internal static void GeneralProcess(PlayerControl exiledPlayer)
         {
             ResetTimerProcess();
@@ -76,33 +72,24 @@ public static class Crook
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Ability.InHostMode.ResetTimerRelatedVariableOnWarpUp();
         }
 
+        /// <summary>
+        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行する。(SHR, SNR共通処理)
+        /// </summary>
         private static void WinCheckProcess(PlayerControl exiledPlayer)
         {
-            if (exiledPlayer == null) // 追放者がいないなら
+            if (exiledPlayer != null && exiledPlayer.IsRole(RoleId.Crook)) // 追放者がいて, 役職が詐欺師なら
             {
-                DecisionOfVictory.DecisionToReceiptOfInsurance(); // 詐欺師の受領判定のみ行う
+                DecisionOfVictory.ExiledCrookPlayerId.Add(exiledPlayer.PlayerId); // Listに追加し, 受領判定時に死者として扱える様にする。
             }
-            else // 追放者がいて,
-            {
-                if (!exiledPlayer.IsRole(RoleId.Crook)) // 追放者が詐欺師でないなら
-                {
-                    DecisionOfVictory.DecisionToReceiptOfInsurance();
-                    return;
-                }
-                else // 追放者が詐欺師なら
-                {
-                    ExiledCrookPlayerId.Add(exiledPlayer.PlayerId); // Listに追加し, 受領判定時に死者として扱える様にする。
-                }
 
-                if (AmongUsClient.Instance.AmHost) // ホストなら待機してから実行する (遅延しないとゲスト側が追放者保存処理を行う前に 勝利判定が実行されてしまう)
-                {
-                    // 100fの遅延な理由は, 7号テスト環境で 100f遅延でも ゲストが追放者をListに保存してから 21m後にホストが送信した勝利処理が到達していた為。
-                    new LateTask(DecisionOfVictory.DecisionToReceiptOfInsurance, 100f, "Crook WinCheckProcess");
-                }
-                else // ゲストなら到達したら直ぐに実行する
-                {
-                    DecisionOfVictory.DecisionToReceiptOfInsurance();
-                }
+            // 条件判定タイミング(会議開始時)に, 条件を誰も満たしていなかったら以下を読まない。
+            if (!(AmongUsClient.Instance.AmHost && RoleData.FirstWinFlag)) return;
+            Logger.Info($"勝利条件を満たした 詐欺師が存在した", "FirstWinFlag");
+
+            if (DecisionOfVictory.GetTheLastDecisionAndWinners().Item1) // 受領判定時に勝利条件を満たしていたら, 勝利処理を実行する。
+            {
+                var reason = (GameOverReason)CustomGameOverReason.CrookWin;
+                CheckGameEndPatch.CustomEndGame(reason, false);
             }
         }
     }
@@ -110,20 +97,11 @@ public static class Crook
     internal static class DecisionOfVictory
     {
         /// <summary>
-        /// 詐欺師全体で勝利条件を満たしている者がいるかを取得し, 満たしていたら詐欺師勝利処理を実行する。(SHR, SNR共通処理)
+        /// 追放された詐欺師を保存する事で, 受領判定及び勝利判定時に死亡済みとして扱えるようにする。
+        /// FIXME : 基幹バグである「追放中は未だ死んでいない」事により生じるバグを役職側で調整している状態。
+        /// 基幹バグが修正され次第必要がなくなる変数
         /// </summary>
-        internal static void DecisionToReceiptOfInsurance()
-        {
-            // 条件判定タイミング(会議開始時)に, 条件を誰も満たしていなかったら以下を読まない。
-            if (!(AmongUsClient.Instance.AmHost && RoleData.FirstWinFlag)) return;
-            Logger.Info($"勝利条件を満たした 詐欺師が存在した", "FirstWinFlag");
-
-            if (GetTheLastDecisionAndWinners().Item1) // 受領判定時に勝利条件を満たしていたら, 勝利処理を実行する。
-            {
-                var reason = (GameOverReason)CustomGameOverReason.CrookWin;
-                CheckGameEndPatch.CustomEndGame(reason, false);
-            }
-        }
+        internal static List<byte> ExiledCrookPlayerId;
 
         /// <summary>
         /// 勝利条件を達成していた詐欺師が, 勝利処理を実行可能か 判断する。(SHR, SNR共通処理)
@@ -144,7 +122,7 @@ public static class Crook
 
                 var crook = ModHelpers.GetPlayerControl(kvp.Key);
                 if (!crook.IsRole(RoleId.Crook)) continue; // 役職が変わった「元詐欺師」は 勝利不可。
-                if (crook.IsDead() || WrapUp.ExiledCrookPlayerId.Contains(crook.PlayerId)) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
+                if (crook.IsDead() || ExiledCrookPlayerId.Contains(crook.PlayerId)) continue; // 保険金受給時 (追放処理時) に死亡している 詐欺師は勝利不可。
 
                 winFlag = true; // 追放画面に遷移し最後の保険金を受け取れた。
                 winners.Add(crook);
