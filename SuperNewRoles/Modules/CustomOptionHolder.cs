@@ -702,6 +702,11 @@ public class CustomOptionHolder
     public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
     public static CustomOption EvilHackerMadmateSetting;
     public static CustomOption EvilHackerButtonCooldown;
+    public static CustomOption EvilHackerHasEnhancedAdmin;
+    public static CustomOption EvilHackerCanSeeImpostorPositions;
+    public static CustomOption EvilHackerCanSeeDeadBodyPositions;
+    public static CustomOption EvilHackerCanUseAdminDuringMeeting;
+    public static CustomOption EvilHackerSabotageMapShowsAdmin;
 
     public static CustomRoleOption SecretlyKillerOption;
     public static CustomOption SecretlyKillerPlayerCount;
@@ -1089,6 +1094,11 @@ public class CustomOptionHolder
         EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
         EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
         EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
+        EvilHackerHasEnhancedAdmin = Create(200306, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, EvilHackerOption);
+        EvilHackerCanSeeImpostorPositions = Create(200307, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, EvilHackerHasEnhancedAdmin);
+        EvilHackerCanSeeDeadBodyPositions = Create(200308, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, EvilHackerHasEnhancedAdmin);
+        EvilHackerCanUseAdminDuringMeeting = Create(200309, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringMeeting", true, EvilHackerOption);
+        EvilHackerSabotageMapShowsAdmin = Create(200310, false, CustomOptionType.Impostor, "EvilHackerSabotageMapShowsAdmin", true, EvilHackerOption);
 
         EvilSeer.CustomOptionData.SetupCustomOptions();
 
