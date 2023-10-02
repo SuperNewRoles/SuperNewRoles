@@ -152,7 +152,7 @@ optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#94949
 preset,Preset,プリセット,预设,預設
 unitSeconds,Seconds,秒,秒,秒
 SettingPlayerCountName,Role Player,人数,人数,人數
-SettingTeamCountName,Team Count,チーム数
+SettingTeamCountName,Team Count,チーム数,,隊伍數
 CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式,直播模式
 CustomAutoUpdate,Auto Update,自動アップデート,自动更新,自動更新
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする,自动复制房间代码,自動複製房間代碼
@@ -1547,41 +1547,41 @@ ConjurerAddName,Compression,圧縮,施法,施法
 JumpDancerName,Jump Dancer,ジャンプダンサー,,跳跳舞者
 JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,,離開地球表面！
 JumpDancerButtonName,Jump,ジャンプ！,,跳！
-SaunerName,Sauner,サウナー
-SaunerTitle1,Yeah，it's exhilarating.,あ～、ととのう～
-SaunerDescription,The darkroom，showers，and observation deck，in that order，are the sole winners after spending a certain amount of time in each of these locations.,暗室、シャワー、展望デッキの順番で、それぞれの箇所で一定時間過ごすと単独勝利します。
-SaunerDarkroom,Darkroom,暗室
-SaunerShower,Shower,シャワー
-SaunerObservationDeck,Observation deck,展望デッキ
-SaunerTextInSauna,take a sauna,サウナに入る
-SaunerTextShower,take a shower,シャワーを浴びる
-SaunerTextAirBath,Take a refreshing outdoor bath!,外気浴でととのう
-SaunerTextRemaing,({0} seconds remaining),(残り{0}秒)
-SaunerDarkroomTime,Sauna Length of Stay,サウナタイム
-SaunerShowerTime,Time to take a shower,シャワータイム
-SaunerDeckTime,Outside air bath time,外気浴タイム
-SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！
-RocketName,Rocket,ロケット
-RocketTitle1,Launch high into the sky!,空高く打ち上がれ！
-RocketTitle2,Booooom!!!!!,ボーーーーン！
-RocketDescription,You can grab other crew members and launch them upward for a kill at any time you like.\nYou can grab more than one crew member，but if the meeting is called before you launch，you will fail to launch.\nIf the meeting ends without expulsion，you can launch，but the victims will not remain silent.\nAlso，the launched crew will be visible to others.,他クルーを掴み、好きなタイミングで上に向かって打ち上げてキルすることが出来ます。\nクルーは複数人掴むことが出来ますが、打ち飛ばす前に会議が呼ばれると打ち上げ損なってしまいます。\n追放されずに会議が終了すれば打ち上げられますが、被害者たちが黙ってはいないでしょう。\nまた、打ち上げたクルーは他人目線でも見えてしまいます。
-RocketSeizeButtonName,Catch,掴む
-RocketLetsButtonName,Boooom!!!,ボーーン！！！
-RocketLetsButtonName2,WashUp,打ち上げる
-RocketButtonCooldownSetting,First catch cool time,最初に掴むクールタイム
-RocketButtonAfterCooldown,Cool time to catch after the second time,二回目以降に掴むクールタイム
-RocketChargeTimeSetting,Rocket Chargetime,ロケットのチャージタイム
-WellBehaverName,Well Behaver,品行方正
-WellBehaverTitle1,Be sure to conduct yourself in a dignified manner.,品行方正な行いを心がけましょう
-WellBehaverDescription,This position is a crew member but has no tasks.\nInstead， you must pick up trash that someone drops.\nWhen a certain number of trash accumulates， the person cannot stand it any longer and dies.,この役職はクルーですがタスクがありません\nその代わり、誰かが落としていくゴミを拾う必要があります\nゴミが一定数以上溜まると耐えきれなくなって死亡してしまいます
-WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数
-WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度
-WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える
-WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う
-PokerfaceName,Pokerface,ポーカーフェイス
-PokerfaceTitle1,Nothing，though?,なにもありませんけど？
-PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。
-PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する
+SaunerName,Sauner,サウナー,,三溫暖愛好者
+SaunerTitle1,Yeah，it's exhilarating.,あ～、ととのう～,,啊～，好舒服～
+SaunerDescription,The darkroom，showers，and observation deck，in that order，are the sole winners after spending a certain amount of time in each of these locations.,暗室、シャワー、展望デッキの順番で、それぞれの箇所で一定時間過ごすと単独勝利します。,,在蒸氣室、淋浴間、展望台中，依序待上一段時間，就能獨自獲勝。
+SaunerDarkroom,Darkroom,暗室,,蒸氣室
+SaunerShower,Shower,シャワー,,淋浴間
+SaunerObservationDeck,Observation deck,展望デッキ,,展望台
+SaunerTextInSauna,take a sauna,サウナに入る,,三溫暖
+SaunerTextShower,take a shower,シャワーを浴びる,,冷水浴
+SaunerTextAirBath,Take a refreshing outdoor bath!,外気浴でととのう,,外氣浴
+SaunerTextRemaing,({0} seconds remaining),(残り{0}秒),,(剩餘{0}秒)
+SaunerDarkroomTime,Sauna Length of Stay,サウナタイム,,三溫暖所需時間
+SaunerShowerTime,Time to take a shower,シャワータイム,,淋浴所需時間
+SaunerDeckTime,Outside air bath time,外気浴タイム,,外氣浴所需時間
+SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！,,三溫暖太爽了吧！
+RocketName,Rocket,ロケット,,火箭人
+RocketTitle1,Launch high into the sky!,空高く打ち上がれ！,,高高飛起來！
+RocketTitle2,Booooom!!!!!,ボーーーーン！,,轟轟轟！！！
+RocketDescription,You can grab other crew members and launch them upward for a kill at any time you like.\nYou can grab more than one crew member，but if the meeting is called before you launch，you will fail to launch.\nIf the meeting ends without expulsion，you can launch，but the victims will not remain silent.\nAlso，the launched crew will be visible to others.,他クルーを掴み、好きなタイミングで上に向かって打ち上げてキルすることが出来ます。\nクルーは複数人掴むことが出来ますが、打ち飛ばす前に会議が呼ばれると打ち上げ損なってしまいます。\n追放されずに会議が終了すれば打ち上げられますが、被害者たちが黙ってはいないでしょう。\nまた、打ち上げたクルーは他人目線でも見えてしまいます。,,你可以隨時抓住其他船員，然後將他們向上發射，進行擊殺。\n你可以抓住多個船員，但如果在發射前召開會議，你將無法發射火箭。\n如果會議結束後沒有被放逐，可以執行火箭發射，但注意受害者並不會保持沉默。\n此外，其他人可以看見被發射的船員。
+RocketSeizeButtonName,Catch,掴む,,上火箭
+RocketLetsButtonName,Boooom!!!,ボーーン！！！,,發射！！！
+RocketLetsButtonName2,WashUp,打ち上げる,,升空
+RocketButtonCooldownSetting,First catch cool time,最初に掴むクールタイム,,火箭人第一次抓人的冷卻時間
+RocketButtonAfterCooldown,Cool time to catch after the second time,二回目以降に掴むクールタイム,,火箭人第二次後抓人的冷卻時間
+RocketChargeTimeSetting,Rocket Chargetime,ロケットのチャージタイム,,火箭發射的冷卻時間
+WellBehaverName,Well Behaver,品行方正,,潔癖狂
+WellBehaverTitle1,Be sure to conduct yourself in a dignified manner.,品行方正な行いを心がけましょう,,我不想看到垃圾
+WellBehaverDescription,This position is a crew member but has no tasks.\nInstead， you must pick up trash that someone drops.\nWhen a certain number of trash accumulates， the person cannot stand it any longer and dies.,この役職はクルーですがタスクがありません\nその代わり、誰かが落としていくゴミを拾う必要があります\nゴミが一定数以上溜まると耐えきれなくなって死亡してしまいます,,潔癖狂屬於船員陣營，但沒有任務。\n作為替代，你必須撿起其他人丟下的垃圾。\n當垃圾累積到一定數量時，你將無法忍受髒亂而自殺。
+WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数,,潔癖狂能容許的垃圾的上限數量
+WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度,,垃圾被丟棄的頻率
+WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える,,所有玩家都可以看見垃圾
+WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う,,撿垃圾
+PokerfaceName,Pokerface,ポーカーフェイス,,撲克臉
+PokerfaceTitle1,Nothing，though?,なにもありませんけど？,,無事發生對吧？
+PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。,,撲克臉是由三人構成的職業。他們可以互相認出彼此！\n如果三人中有兩人死亡，而剩餘一人活到最後，那麼三人都將取得勝利！（依規則可能是只有活到最後的撲克臉獲勝）\n撲克臉沒有擊殺能力。如果三人中有兩人以上存活，那麼三人都將失敗。
+PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する,,只有活到最後的撲克臉才能獲勝。
 
 #NewRoleTranslation
 
