@@ -348,7 +348,7 @@ public class IntroPatch
         string ImpostorText = __instance.ImpostorText.text;
         if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
         {
-            if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM,RoleId.Pokerface))
+            if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM, RoleId.Pokerface))
             {
                 IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 TeamTitle = ModTranslation.GetString("Neutral");
