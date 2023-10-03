@@ -1389,9 +1389,11 @@ WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
 NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工,正義的機械師
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道,改造飛船上的管道
 NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？,什么人在给飞船搞破坏？,誰在搗亂這艘飛船？
+NiceMechanicDescription,This role has the ability to move vents.\nThe destination of those vents remains unchanged.,ベントを移動させることが出来るクルーメイトです。\nベントの接続先は変わりません。
 EvilMechanicName,EvilMechanic,イビルメカニック,邪恶的迁管工,邪惡的機械師
 EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう,尝试将管道改造得对自己有利,嘗試將管道改造得對自己有利
 EvilMechanicCombIntro1,Looks like someone is trying to get in my way,私の邪魔をするやつがいるようだ,其他人休想挡我的路,哪個野孩子擋了我的路
+EvilMechanicDescription,This role has the ability to move vents.\nThe destination of those vents remains unchanged.,ベントを移動させることが出来るインポスターです。\nベントの接続先は変わりません。
 MechanicButtonName,Relocate.,移設,改造,改造
 TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚,三只小猪,三隻小豬
 TheFirstLittlePigName,The First Little Pig,1番目の仔豚,猪老大,猪老大
