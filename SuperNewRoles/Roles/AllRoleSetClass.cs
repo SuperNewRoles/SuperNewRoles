@@ -1177,6 +1177,7 @@ class AllRoleSetClass
             RoleId.Rocket => Rocket.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.WellBehaver => WellBehaver.WellBehaverPlayerCount.GetFloat(),
             RoleId.Pokerface => Pokerface.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Spider => Spider.CustomOptionData.PlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };

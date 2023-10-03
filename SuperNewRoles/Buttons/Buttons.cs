@@ -782,7 +782,7 @@ static class HudManagerStartPatch
                 SluggerButton.Timer = SluggerButton.MaxTimer;
                 if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
                 {
-                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
+                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer, null);
                 }
             }
         )
@@ -3366,6 +3366,8 @@ static class HudManagerStartPatch
         Rocket.Button.SetupCustomButtons(__instance);
       
         WellBehaver.SetupCustomButtons(__instance);
+
+        Spider.Button.SetupCustomButtons(__instance);
 
         // SetupCustomButtons
 

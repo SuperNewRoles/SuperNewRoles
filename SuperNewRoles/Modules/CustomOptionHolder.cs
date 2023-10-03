@@ -1361,6 +1361,8 @@ public class CustomOptionHolder
         WerewolfOption = new(205200, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
         WerewolfPlayerCount = Create(205201, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
+        Spider.CustomOptionData.SetupCustomOptions();
+
         // SetupImpostorCustomOptions
 
         /* |: ========================= Neutral Settings ========================== :| */

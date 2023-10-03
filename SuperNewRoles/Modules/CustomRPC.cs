@@ -216,6 +216,7 @@ public enum RoleId
     Rocket,
     WellBehaver,
     Pokerface,
+    Spider,
     //RoleId
 }
 
@@ -328,11 +329,30 @@ public enum CustomRPC
     RocketLetsRocket,
     CreateGarbage,
     DestroyGarbage,
-    SetPokerfaceTeam
+    SetPokerfaceTeam,
+    SetSpiderTrap,
+    SpiderTrapCatch
 }
 
 public static class RPCProcedure
 {
+    public static void SetSpiderTrap(byte source, float x, float y)
+    {
+        PlayerControl player = ModHelpers.PlayerById(source);
+        if (player == null)
+            return;
+        SpiderTrap.Create(player, new(x,y));
+    }
+    public static void SpiderTrapCatch(byte sourceid, byte targetid)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceid);
+        PlayerControl target = ModHelpers.PlayerById(targetid);
+        if (source == null || target == null)
+            return;
+        if (!SpiderTrap.SpiderTraps.TryGetValue(sourceid, out SpiderTrap trap) || trap == null)
+            return;
+        trap.CatchPlayer(target);
+    }
     public static void RocketSeize(byte sourceid, byte targetid)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -2038,6 +2058,12 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetPokerfaceTeam:
                         SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetSpiderTrap:
+                        SetSpiderTrap(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
+                        break;
+                    case CustomRPC.SpiderTrapCatch:
+                        SpiderTrapCatch(reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

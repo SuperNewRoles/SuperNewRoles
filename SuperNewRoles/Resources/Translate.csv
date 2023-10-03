@@ -1582,6 +1582,15 @@ PokerfaceName,Pokerface,ポーカーフェイス
 PokerfaceTitle1,Nothing，though?,なにもありませんけど？
 PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。
 PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する
+SpiderName,Spider,スパイダー
+SpiderTitle1,Tangle, stop, and finish.,絡めて止めて、そして仕留める
+SpiderTitle2,Its threads entwine even life.,その糸は命さえも絡みとる
+SpiderDescription,You can set traps that the crew can't move when they step on them.\nKilling a crew member caught in the trap will shorten the kill cool.,クルーが踏むと身動き出来なくなる罠を仕掛けることが出来ます。\n罠に捕まったクルーをキルするとキルクールが短くなります。
+SpiderButtonName,Trap!,罠
+SpiderButtonCooldownSetting,Trap Installation Cool Time,罠設置クールタイム 
+SpiderButtonActivateSetting,Trap Activation Seconds,罠有効化秒数 
+SpiderSpentSetting,total hours spent working,拘束時間
+SpiderTrapKillTimeSetting,Trap Killtime,罠キルクールタイム 
 
 #NewRoleTranslation
 
