@@ -692,7 +692,6 @@ SelfBomberButtonName,Self Bomb,自爆,自爆,自爆
 SelfBomberBombCoolTimeSettting,Ability of selfbomb cooldown time.,自爆能力のクールタイム,恐怖分子自爆冷却,恐怖分子自爆冷卻
 GodName,God,神,神,神
 GodTitle1,You Are God!!,あなたは神だ,新世界的卡密！,新世界的Kami！
-GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。,神存活到游戏结束则神单独获胜。\n所有玩家的职业对神可见。,神存活到遊戲結束則神單獨獲勝。\n所有玩家的職業對神可見。
 GodDescription,I know everyone's roles. I am a god.\nIf I survive until the end，I will claim victory by myself，stealing it from others.\nDedicate that victory to the gods.,全員の役職がわかります。私は神だ。\n最後まで生存していると勝利を横取りして単独勝利します。\nその勝利を神に捧げなさい。,全知全能之神明。\n只要神存在于飞船内，一切胜利果实都将被当作神的祭品。\n为神奉献胜利吧。,吾知曉所有人的職業。吾乃神。\n若存活到遊戲結束，吾將横取勝利，獨自獲勝。\n來吧，將勝利獻給神吧。
 GodViewVoteSetting,I know who to vote for.,投票先がわかる,神能看到所有人的投票情况,神能看到所有人的投票情況
 GodIsEndTaskWinSetting,You have to finish the task to win.,タスクを終わらせないと勝利できない,不完成所有任务则不能获胜,不完成所有任務則不能獲勝
