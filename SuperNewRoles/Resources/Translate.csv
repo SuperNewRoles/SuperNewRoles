@@ -1173,6 +1173,7 @@ PainterButtonName,Paint,ペイント,油漆,油漆
 PainterIsTaskCompleteFootprint,Leave traces when tasks are completed,タスク完了時に痕跡を残す,完成任务后会留下油漆痕迹,完成任務後會留下油漆痕跡
 FinderName,Finder,ファインダー,接头人,接頭人
 FinderTitle1,Get to know your peers.,仲間を知ろう,与叛徒取得联系,與叛徒取得聯繫
+FinderDescription,After a set number of kills，the name of the crew member with the mad role is displayed in red.\nThis ability is the reverse of the mad role's ability to fanaticism.,設定回数キルを行うとマッドロールを持つクルーの名前が赤く表示されます。\nマッドロールが有する狂信能力の逆方向にあたる能力です。\n\n待っていないで、自分から仲間を探しに行こう!
 FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,接头人确认叛徒需要进行的击杀次数,接頭人確認叛徒需要進行的擊殺次數
 PhotographerName,Photographer,写真屋,摄影师,攝影師
 PhotographerTitle1,Let's capture everyone on camera!,みんなの姿をカメラに収めよう ,茄~子！,3...2...1...！
