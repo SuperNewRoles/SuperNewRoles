@@ -1122,6 +1122,7 @@ HitmanIsTargetArrow,Display arrow to target,ターゲットへ矢印を表示す
 HitmanUpdateTargetArrowTime,Interval to update arrows,矢印を更新する間隔,职业杀手箭头更新间隔时间,專業殺手箭頭更新間隔時間
 NunName,Nun,ぬーん,捣蛋鬼,搗蛋鬼
 NunTitle1,Nun,ぬーん,让大家用不了移动平台,讓大家用不了移動平台
+NunDescription,This role allows the lift to be moved to the opposite side.\nIf the ability is used when the crew is already on the lift，the lift is returned with the crew on it.\n\nBy imprisoning the crew on the lift or by moving the position of the lift，it can also interfere with a Crewmate's task or an emergency meeting.\nThe lift's location can create noise for information to prove the location of survivors or to guess the path of the dead. It can also be used to disguise one's own route.\n\nNun nun nun? Nuh-nuh-nuh. Nuh-nuh-nuh.,昇降機を反対側に動かす事が可能な役職です。\nクルーが既に昇降機に乗っている時に能力を使用した場合は、クルーごと昇降機を返送します。\n\n昇降機上にクルーを幽閉する事や、昇降機の位置が移動する事により、クルーメイトのタスクや、緊急招集を妨害する事も出来ます。\n昇降機の位置情報による、生存者の位置証明や死者の経路推測にノイズをもたらします。自身の経路の偽装にも使用可能です。\n\nぬーん ぬーん ぬん? ぬーんぬん ぬん
 NunButtonName,Nun,ぬーん,捣蛋,搗蛋
 PsychometristName,Psychometrist,サイコメトラー,验尸官,驗屍官
 PsychometristTitle1,Let's read the situation of the corpse.,死体の状況をよみとろう,通过尸体来搜寻线索,透過屍體來搜尋線索
