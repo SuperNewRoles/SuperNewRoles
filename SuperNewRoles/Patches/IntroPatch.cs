@@ -77,6 +77,10 @@ public class IntroPatch
         public static PoolablePlayer playerPrefab;
         public static void Prefix(IntroCutscene __instance)
         {
+            foreach (PlayerControl player in BotManager.AllBots)
+            {
+                GameData.Instance.RemovePlayer(player.PlayerId);
+            }
             if (ModeHandler.IsMode(ModeId.HideAndSeek))
             {
                 new LateTask(() => RoleClass.IsFirstMeetingEnd = true, 6);
