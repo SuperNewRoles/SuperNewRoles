@@ -1010,6 +1010,7 @@ CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] abil
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
+PositionSwapperDescription,By using the ability，it can swap its own position with a randomly selected target.\nNeither you nor the target will be notified of who you swap with.\nUse the swap ability to mix up your routes and confuse your crew!,能力を使用する事で、ランダムに選択された対象と自身の位置を入れ換える事ができます。\n誰とスワップされたかは、自身にも対象にも通知されません。\nスワップ能力で経路をごちゃ混ぜにして、クルー達を混乱させましょう!!
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数,交換使最大交換次數
 SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム,念动使换位冷却,交換使交換位置冷卻時間
 PositionSwapperNumTextName,Limits:{0},残り{0}回,剩余{0}次,剩餘{0}次
