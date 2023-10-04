@@ -101,16 +101,8 @@ public static class RoleSelectHandler
             if (CustomOptionHolder.BakeryOption.GetSelection() != 0 || Crook.CustomOptionData.Option.GetSelection() != 0)
             {
                 string name = CustomOptionHolder.BakeryOption.GetSelection() != 0 ? "パン屋BOT" : "詐欺師BOT";
-                BotManager.Spawn(name).Exiled();
-
-                foreach (PlayerControl p in BotManager.AllBots)
-                {
-                    if (p.GetDefaultName() == name)
-                    {
-                        ConfirmImpostorSecondTextBot = p;
-                        break;
-                    }
-                }
+                ConfirmImpostorSecondTextBot = BotManager.Spawn(name);
+                ConfirmImpostorSecondTextBot.Exiled();
             }
             else if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() != 0)
             {
