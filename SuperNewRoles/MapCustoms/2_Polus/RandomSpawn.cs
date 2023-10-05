@@ -1,46 +1,71 @@
+using System.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using Hazel;
+using SuperNewRoles.Mode;
+using UnityEngine;
 
 namespace SuperNewRoles.MapCustoms;
 
-[HarmonyPatch(typeof(ShipStatus))]
-class PolusRandomSpawn
+public static class PolusRandomSpawn
 {
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.SpawnPlayer))]
-    public static void Postfix(PlayerControl player)
+    public static readonly Vector2[] SpawnPositions = new Vector2[]
     {
-        // Polusの湧き位置をランダムにする
-        if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.PolusRandomSpawn.GetBool() && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId && AmongUsClient.Instance.AmHost)
+        new(34.8f, -6.5f),   // 研究室
+        new(36.52f, -19.9f), // 標本室
+        new(19.5f, -17.4f),  // ミーティング
+        new(32.6f, -15.7f),  // 溶岩上
+        new(20.65f, -12f),   // ストレージ
+        new(9.75f, -12.2f),  // エレキ
+        new(2.3f, -24.1f),   // 酸素
+        new(12.1f, -16.5f),  // コミュ
+    };
+
+    public static IEnumerator Spawn(PlayerControl player)
+    {
+        yield return Effects.Wait(3f);
+        int randam = new System.Random().Next(SpawnPositions.Length + 1);
+        if (randam == 0) player.NetTransform.RpcSnapTo(ShipStatus.Instance.InitialSpawnCenter);
+        else player.NetTransform.RpcSnapTo(SpawnPositions[randam - 1]);
+        yield break;
+    }
+
+    [HarmonyPatch(typeof(ShipStatus))]
+    public static class ShipStatusPatch
+    {
+        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.SpawnPlayer)), HarmonyPostfix]
+        public static void SpawnPlayerPostfix()
         {
-            System.Random rand = new();
-            int randVal = rand.Next(0, 11);
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RandomSpawn, SendOption.Reliable, -1);
-            writer.Write(player.Data.PlayerId);
-            writer.Write((byte)randVal);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.RandomSpawn(player.Data.PlayerId, (byte)randVal);
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus, false) && MapCustom.PolusRandomSpawn.GetBool())
+            {
+                HudManager.Instance.StartCoroutine(Spawn(PlayerControl.LocalPlayer).WrapToIl2Cpp());
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
+                {
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.IsMod()) continue;
+                        HudManager.Instance.StartCoroutine(Spawn(player).WrapToIl2Cpp());
+                    }
+                }
+            }
         }
     }
-}
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
-class MeetingHudClosePatch
-{
-    static void Postfix()
+
+    [HarmonyPatch(typeof(MeetingHud))]
+    public static class MeetingHudClosePatch
     {
-        if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.PolusRandomSpawn.GetBool())
+        [HarmonyPatch(nameof(MeetingHud.Close)), HarmonyPostfix]
+        public static void ClosePostfix()
         {
-            if (AmongUsClient.Instance.AmHost)
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus, false) && MapCustom.PolusRandomSpawn.GetBool())
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                HudManager.Instance.StartCoroutine(Spawn(PlayerControl.LocalPlayer).WrapToIl2Cpp());
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
-                    System.Random rand = new();
-                    int randVal = rand.Next(0, 11);
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RandomSpawn, SendOption.Reliable, -1);
-                    writer.Write(player.Data.PlayerId);
-                    writer.Write((byte)randVal);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.RandomSpawn(player.Data.PlayerId, (byte)randVal);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.IsMod()) continue;
+                        HudManager.Instance.StartCoroutine(Spawn(player).WrapToIl2Cpp());
+                    }
                 }
             }
         }
