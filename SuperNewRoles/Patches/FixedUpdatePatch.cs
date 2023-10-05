@@ -53,19 +53,6 @@ public class FixedUpdate
 
     static void ReduceKillCooldown(PlayerControl __instance)
     {
-        if (Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.IsAlwaysReduceCooldown.GetBool())
-        {
-            // オプションがOFFの場合はベント内はクールダウン減少を止める
-            bool exceptInVent = !Mode.PlusMode.PlusGameOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
-            // 配電盤タスク中はクールダウン減少を止める
-            bool exceptOnTask = !Mode.PlusMode.PlusGameOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
-
-            if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
-            {
-                __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
-                return;
-            }
-        }
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
         {
             if (!__instance.Data.IsDead && !__instance.CanMove && Minigame.Instance != null && Minigame.Instance.MyNormTask != null && Minigame.Instance.MyNormTask.Owner.AmOwner)
