@@ -38,6 +38,12 @@ class MapCustom
     public static CustomOption AddWireTask;
     public static CustomOption AntiTaskOverWall;
     internal static CustomOption ShuffleElectricalDoors;
+    /// <summary>昇降機右の上下の影を変更する設定</summary>
+    public static CustomOption ModifyGapRoomOneWayShadow;
+    /// <summary>インポスターが下から上を見ることができる設定</summary>
+    public static CustomOption GapRoomShadowIgnoresImpostors;
+    /// <summary>非インポスターが上から下を見ることができない設定</summary>
+    public static CustomOption DisableGapRoomShadowForNonImpostor;
 
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
@@ -76,6 +82,9 @@ class MapCustom
         AddWireTask = Create(103207, false, CustomOptionType.Generic, "AddWireTaskSetting", false, AirshipSetting);
         AntiTaskOverWall = Create(103208, false, CustomOptionType.Generic, "AntiTaskOverWallSetting", false, AirshipSetting);
         ShuffleElectricalDoors = Create(103209, false, CustomOptionType.Generic, "ShuffleElectricalDoorsSetting", false, AirshipSetting);
+        ModifyGapRoomOneWayShadow = Create(103210, false, CustomOptionType.Generic, "ModifyGapRoomOneWayShadow", false, AirshipSetting);
+        GapRoomShadowIgnoresImpostors = Create(103211, false, CustomOptionType.Generic, "GapRoomShadowIgnoresImpostors", true, ModifyGapRoomOneWayShadow);
+        DisableGapRoomShadowForNonImpostor = Create(103212, false, CustomOptionType.Generic, "DisableGapRoomShadowForNonImpostor", true, ModifyGapRoomOneWayShadow);
 
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
