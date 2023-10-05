@@ -71,8 +71,8 @@ public static class AirShipRandomSpawn
         {
             if (!AmongUsClient.Instance.AmHost) return;
             if (!(MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())) return;
-            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId != 4) return;
             if (!IsLoaded) return;
+
             List<PlayerControl> players = new();
             bool EndLoaded = true;
             int NotLoadedCount = 0;
