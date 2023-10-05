@@ -69,6 +69,7 @@ public static class AirShipRandomSpawn
         [HarmonyPatch(nameof(HudManager.Update)), HarmonyPostfix]
         public static void UpdatePostfix()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             if (!(MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())) return;
             if (GameManager.Instance.LogicOptions.currentGameOptions.MapId != 4) return;
             if (!IsLoaded) return;
@@ -95,7 +96,7 @@ public static class AirShipRandomSpawn
             {
                 LastCount = players.Count;
                 string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>" + string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (!p.AmOwner) p.RpcSetNamePrivate(name);
                     else p.SetName(name);
@@ -106,7 +107,12 @@ public static class AirShipRandomSpawn
                 IsLoaded = false;
                 FixedUpdate.SetRoleNames();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    string name = p.GetDefaultName();
+                    if (!p.AmOwner) p.RpcSetNamePrivate(name);
+                    else p.SetName(name);
                     p.RpcSnapTo(Locations.GetRandom());
+                }
             }
         }
     }
