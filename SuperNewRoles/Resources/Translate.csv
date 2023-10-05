@@ -1009,6 +1009,7 @@ CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] abil
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
+PositionSwapperDescription,By using the ability，it can swap its own position with a randomly selected target.\nNeither you nor the target will be notified of who you swap with.\nUse the swap ability to mix up your routes and confuse your crew!,能力を使用する事で、ランダムに選択された対象と自身の位置を入れ換える事ができます。\n誰とスワップされたかは、自身にも対象にも通知されません。\nスワップ能力で経路をごちゃ混ぜにして、クルー達を混乱させましょう!!
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数,交換使最大交換次數
 SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム,念动使换位冷却,交換使交換位置冷卻時間
 PositionSwapperNumTextName,Limits:{0},残り{0}回,剩余{0}次,剩餘{0}次
@@ -1057,6 +1058,8 @@ DoubleKillerTitle1,Let's master the independent kill button!,独立したキル�
 SmasherTitle1,Let's do continuous kills!,連続キルを行おう,唯快不破！,天下武功，唯快不破！
 SuicideWisherName,Suicide Wisher,スーサイドウィッシャー,抑郁者,抑鬱者
 SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう,玉玉，不响丸辣，紫砂了,遇事不決，自殺解決
+SuicideWisherTitle2,They who is caught in the impulse to die.,死への衝動に捕らわれし者
+SuicideWisherDescription,This is an Impostor role where suicide is possible.\nIn SHR mode，you can commit suicide by performing a Shapeshift.\nTake advantage of your suicide ability to disguise information and disrupt the village!\n\nDistant memories of when we were Crewmate call to me...\nAha，my partner.\nI will be released first，but at least I left you a little something to leave behind. Good luck.,自殺が可能なインポスター役職です。\nSHRモードではシェイプシフトを行う事で自殺します。\n自殺能力により、情報を偽装し村を混乱させてみましょう!\n\nクルーメイトであった頃の遠い記憶が私を呼ぶ...\n嗚呼 相方よ。\n私は先に解放されるが、せめてもの置き土産は残してやった。頑張れよ。
 SuicideName,Suicide,自殺,自杀,自殺
 NeetName,Neet,ニート,废柴,尼特
 NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干劲呢，明天再努力吧,交給其他人吧
@@ -1118,6 +1121,7 @@ HitmanIsTargetArrow,Display arrow to target,ターゲットへ矢印を表示す
 HitmanUpdateTargetArrowTime,Interval to update arrows,矢印を更新する間隔,职业杀手箭头更新间隔时间,專業殺手箭頭更新間隔時間
 NunName,Nun,ぬーん,捣蛋鬼,搗蛋鬼
 NunTitle1,Nun,ぬーん,让大家用不了移动平台,讓大家用不了移動平台
+NunDescription,This role allows the lift to be moved to the opposite side.\nIf the ability is used when the crew is already on the lift，the lift is returned with the crew on it.\n\nBy imprisoning the crew on the lift or by moving the position of the lift，it can also interfere with a Crewmate's task or an emergency meeting.\nThe lift's location can create noise for information to prove the location of survivors or to guess the path of the dead. It can also be used to disguise one's own route.\n\nNun nun nun? Nuh-nuh-nuh. Nuh-nuh-nuh.,昇降機を反対側に動かす事が可能な役職です。\nクルーが既に昇降機に乗っている時に能力を使用した場合は、クルーごと昇降機を返送します。\n\n昇降機上にクルーを幽閉する事や、昇降機の位置が移動する事により、クルーメイトのタスクや、緊急招集を妨害する事も出来ます。\n昇降機の位置情報による、生存者の位置証明や死者の経路推測にノイズをもたらします。自身の経路の偽装にも使用可能です。\n\nぬーん ぬーん ぬん? ぬーんぬん ぬん
 NunButtonName,Nun,ぬーん,捣蛋,搗蛋
 PsychometristName,Psychometrist,サイコメトラー,验尸官,驗屍官
 PsychometristTitle1,Let's read the situation of the corpse.,死体の状況をよみとろう,通过尸体来搜寻线索,透過屍體來搜尋線索
@@ -1168,6 +1172,7 @@ PainterButtonName,Paint,ペイント,油漆,油漆
 PainterIsTaskCompleteFootprint,Leave traces when tasks are completed,タスク完了時に痕跡を残す,完成任务后会留下油漆痕迹,完成任務後會留下油漆痕跡
 FinderName,Finder,ファインダー,接头人,接頭人
 FinderTitle1,Get to know your peers.,仲間を知ろう,与叛徒取得联系,與叛徒取得聯繫
+FinderDescription,After a set number of kills，the name of the crew member with the mad role is displayed in red.\nThis ability is the reverse of the mad role's ability to fanaticism.,設定回数キルを行うとマッドロールを持つクルーの名前が赤く表示されます。\nマッドロールが有する狂信能力の逆方向にあたる能力です。\n\n待っていないで、自分から仲間を探しに行こう!
 FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,接头人确认叛徒需要进行的击杀次数,接頭人確認叛徒需要進行的擊殺次數
 PhotographerName,Photographer,写真屋,摄影师,攝影師
 PhotographerTitle1,Let's capture everyone on camera!,みんなの姿をカメラに収めよう ,茄~子！,3...2...1...！
