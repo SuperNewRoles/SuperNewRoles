@@ -1,5 +1,6 @@
 using HarmonyLib;
 using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
@@ -17,10 +18,50 @@ class MapBehaviorGetIsOpenStoppedPatch
     }
 }
 
-[HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Show))]
-public static class MapBehaviourShowPatch
+[HarmonyPatch(typeof(MapBehaviour))]
+public static class MapBehaviourPatch
 {
-    public static void Prefix([HarmonyArgument(0)] MapOptions opts)
+    private static readonly Sprite doorClosedSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorClosed.png", 115f);
+    private static readonly SpriteRenderer doorClosedRendererPrefab = CreatePrefab();
+    /// <summary>マップ上のドア閉まってるよマークの配列<br/>インデックスで<see cref="ShipStatus.AllDoors"/>と対応する</summary>
+    public static SpriteRenderer[] DoorClosedMarks;
+
+    private static SpriteRenderer CreatePrefab()
+    {
+        var prefabObject = new GameObject("SNR_DoorClosed");
+        var renderer = prefabObject.AddComponent<SpriteRenderer>();
+        renderer.sprite = doorClosedSprite;
+        // シーン切替時に破棄されないようにする これで1回生成すればずっと使える
+        Object.DontDestroyOnLoad(prefabObject);
+        prefabObject.SetActive(false);
+        prefabObject.layer = 5;  // UIレイヤ
+        return renderer;
+    }
+
+    [HarmonyPatch(nameof(MapBehaviour.Awake)), HarmonyPostfix]
+    public static void AwakePostfix(MapBehaviour __instance)
+    {
+        if (!CanSeeDoorsMark())
+        {
+            return;
+        }
+        var allDoors = ShipStatus.Instance.AllDoors;
+        var mapScale = ShipStatus.Instance.MapScale;
+        DoorClosedMarks = new SpriteRenderer[allDoors.Length];
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            var door = allDoors[i];
+            var mark = DoorClosedMarks[i] = Object.Instantiate(doorClosedRendererPrefab, __instance.taskOverlay.transform.parent);
+            var localPosition = door.transform.position / mapScale;
+            localPosition.z = -3f;
+            mark.transform.localPosition = localPosition;
+            mark.gameObject.SetActive(true);
+            mark.enabled = false;
+        }
+    }
+
+    [HarmonyPatch(nameof(MapBehaviour.Show)), HarmonyPrefix]
+    public static void ShowPrefix([HarmonyArgument(0)] MapOptions opts)
     {
         // 会議中にマップを開くとアドミンを見ることができる
         if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && RoleClass.EvilHacker.CanUseAdminDuringMeeting && MeetingHud.Instance && opts.Mode == MapOptions.Modes.Normal)
@@ -29,7 +70,8 @@ public static class MapBehaviourShowPatch
             opts.Mode = MapOptions.Modes.CountOverlay;
         }
     }
-    public static void Postfix(MapBehaviour __instance, [HarmonyArgument(0)] MapOptions opts)
+    [HarmonyPatch(nameof(MapBehaviour.Show)), HarmonyPostfix]
+    public static void ShowPostfix(MapBehaviour __instance, [HarmonyArgument(0)] MapOptions opts)
     {
         if (!__instance.IsOpen)
         {
@@ -51,4 +93,26 @@ public static class MapBehaviourShowPatch
             __instance.countOverlay.transform.SetLocalZ(-3f);
         }
     }
+
+    [HarmonyPatch(nameof(MapBehaviour.FixedUpdate)), HarmonyPostfix]
+    public static void FixedUpdatePostfix()
+    {
+        if (!CanSeeDoorsMark())
+        {
+            return;
+        }
+        var allDoors = ShipStatus.Instance.AllDoors;
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            var door = allDoors[i];
+            var mark = DoorClosedMarks[i];
+            if (door == null || mark == null)
+            {
+                continue;
+            }
+            mark.enabled = !door.Open;
+        }
+    }
+
+    public static bool CanSeeDoorsMark() => CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && RoleClass.EvilHacker.MapShowsDoorState;
 }

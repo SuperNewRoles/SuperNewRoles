@@ -1015,6 +1015,7 @@ EvilHackerCanSeeImpostorPositions,Can See Impostor Positions,インポスター�
 EvilHackerCanSeeDeadBodyPositions,Can See Dead-Body Positions,死体の位置がわかる
 EvilHackerCanUseAdminDuringMeeting,Can Use Admin During Meeting,会議中にアドミンを使用できる
 EvilHackerSabotageMapShowsAdmin,Sabotage Map Shows Admin,サボタージュマップにもアドミンを表示する
+EvilHackerMapShowsDoorState,Map Shows Doors Status,マップにドアの開閉状況を表示する
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
