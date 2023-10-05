@@ -216,6 +216,7 @@ public enum RoleId
     Rocket,
     WellBehaver,
     Pokerface,
+    Frankenstein,
     //RoleId
 }
 
@@ -328,11 +329,45 @@ public enum CustomRPC
     RocketLetsRocket,
     CreateGarbage,
     DestroyGarbage,
-    SetPokerfaceTeam
+    SetPokerfaceTeam,
+    SetFrankensteinMonster,
+    MoveDeadBody,
 }
 
 public static class RPCProcedure
 {
+    public static void MoveDeadBody(byte id, float x, float y)
+    {
+        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        {
+            if (dead.ParentId == id)
+            {
+                dead.transform.position = new(x, y, y / 1000f);
+                return;
+            }
+        }
+    }
+    public static void SetFrankensteinMonster(byte id, byte body, bool kill)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (!player) return;
+        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        {
+            if (dead.ParentId == body)
+            {
+                Frankenstein.MonsterPlayer[id] = dead;
+                player.setOutfit(GameData.Instance.GetPlayerById(body).DefaultOutfit);
+                return;
+            }
+        }
+        Frankenstein.MonsterPlayer[id] = null;
+        if (kill) Frankenstein.KillCount[id]--;
+        new LateTask(() =>
+        {
+            if (player.AmOwner) player.RpcSnapTo(Frankenstein.OriginalPosition);
+            player.setOutfit(player.Data.DefaultOutfit);
+        }, 0.1f, "SetFrankensteinMonster");
+    }
     public static void RocketSeize(byte sourceid, byte targetid)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -2038,6 +2073,12 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetPokerfaceTeam:
                         SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetFrankensteinMonster:
+                        SetFrankensteinMonster(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.MoveDeadBody:
+                        MoveDeadBody(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
                         break;
                 }
             }
