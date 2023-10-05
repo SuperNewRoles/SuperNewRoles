@@ -1402,6 +1402,9 @@ TheThirdLittlePigName,The Third Little Pig,3番目の仔豚,猪老三,猪老三
 TheFirstLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheSecondLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheThirdLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
+TheFirstLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。
+TheSecondLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。
+TheThirdLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。
 TheFirstLittlePigClearTaskSetting,Percentage of tasks required for The first little pig to complete the house,1番目の仔豚が家を完成させるのに必要なタスクの割合,猪老大盖出房子需要的任务进度,豬老大蓋出房子需要的任務進度
 TheFirstLittlePigIsCustomTimerSetting,Set the timer for The first little pig,1番目の仔豚のタイマーを設定する,猪老大盖房子有时间限制,豬老大蓋房子有時間限制
 TheFirstLittlePigCustomTimerSetting,The first little pig timer,1番目の仔豚のタイマー,猪老大盖房子的时间限制,豬老大蓋房子的時間限制
