@@ -30,6 +30,7 @@ public static class AirShipRandomSpawn
             if (ModeHandler.IsMode(ModeId.Default, false)) PlayerControl.LocalPlayer.RpcSnapTo(__instance.Locations.Random().Location);
             else
             {
+                if (ModeHandler.GetMode() is ModeId.CopsRobbers or ModeId.PantsRoyal) return true;
                 Locations = __instance.Locations.ToList().ConvertAll(x => (Vector2)x.Location);
                 IsLoaded = true;
                 LastCount = -1;
