@@ -61,21 +61,27 @@ public static class MapBehaviourPatch
     }
 
     [HarmonyPatch(nameof(MapBehaviour.Show)), HarmonyPrefix]
-    public static void ShowPrefix([HarmonyArgument(0)] MapOptions opts)
+    public static void ShowPrefix([HarmonyArgument(0)] MapOptions opts, ref bool __state /* Postfixで現在位置マークを表示させるかどうか */)
     {
+        __state = false;
         // 会議中にマップを開くとアドミンを見ることができる
         if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && RoleClass.EvilHacker.CanUseAdminDuringMeeting && MeetingHud.Instance && opts.Mode == MapOptions.Modes.Normal)
         {
             RoleClass.EvilHacker.IsMyAdmin = true;
             opts.Mode = MapOptions.Modes.CountOverlay;
+            __state = true;
         }
     }
     [HarmonyPatch(nameof(MapBehaviour.Show)), HarmonyPostfix]
-    public static void ShowPostfix(MapBehaviour __instance, [HarmonyArgument(0)] MapOptions opts)
+    public static void ShowPostfix(MapBehaviour __instance, [HarmonyArgument(0)] MapOptions opts, bool __state)
     {
         if (!__instance.IsOpen)
         {
             return;
+        }
+        if (__state)
+        {
+            __instance.HerePoint.enabled = true;
         }
         // サボタージュマップにアドミンを表示する
         if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && RoleClass.EvilHacker.SabotageMapShowsAdmin && !MeetingHud.Instance && opts.Mode == MapOptions.Modes.Sabotage)
