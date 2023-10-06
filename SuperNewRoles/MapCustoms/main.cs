@@ -4,15 +4,14 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.BattleRoyal;
 using UnityEngine;
-using static PlayerControl;
 using static SuperNewRoles.MapCustoms.MapCustomHandler;
 
 namespace SuperNewRoles.MapCustoms;
 
 public class MapCustomHandler
 {
+  
     public static bool IsMapCustom(MapCustomId mapCustomId)
     {
         // 全マップの共通条件を取得

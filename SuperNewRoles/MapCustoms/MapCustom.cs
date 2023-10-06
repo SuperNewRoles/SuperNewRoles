@@ -53,27 +53,27 @@ class MapCustom
 
     public static void CreateOption()
     {
-        MapCustomOption = Create(102800, false, CustomOptionType.Generic, Cs(new Color(132f / 187f, 162f / 255f, 212f / 255f, 1f), "MapCustom"), false, null, true);
+        MapCustomOption = Create(102800, true, CustomOptionType.Generic, Cs(new Color(132f / 187f, 162f / 255f, 212f / 255f, 1f), "MapCustom"), false, null, true);
 
         /*===============スケルド===============*/
-        SkeldSetting = Create(102900, false, CustomOptionType.Generic, "<color=#8fbc8f>Skeld</color>", false, MapCustomOption);
+        SkeldSetting = Create(102900, true, CustomOptionType.Generic, "<color=#8fbc8f>Skeld</color>", false, MapCustomOption);
         // SkeldRandomSpawn = Create(1248, false, CustomOptionType.Generic, "RandomSpawnOption", false, SkeldSetting);
 
         /*===============ミラ===============*/
-        MiraSetting = Create(103000, false, CustomOptionType.Generic, "<color=#cd5c5c>Mira</color>", false, MapCustomOption);
+        MiraSetting = Create(103000, true, CustomOptionType.Generic, "<color=#cd5c5c>Mira</color>", false, MapCustomOption);
         // MiraRandomSpawn = Create(103001, false, CustomOptionType.Generic, "RandomSpawnOption", false, MiraSetting);
         MiraAdditionalVents = Create(103002, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MiraSetting);
         AddVitalsMira = Create(103003, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MiraSetting);
 
         /*===============ポーラス===============*/
-        PolusSetting = Create(103100, false, CustomOptionType.Generic, "<color=#4b0082>Polus</color>", false, MapCustomOption);
-        PolusRandomSpawn = Create(103101, false, CustomOptionType.Generic, "RandomSpawnOption", false, PolusSetting);
+        PolusSetting = Create(103100, true, CustomOptionType.Generic, "<color=#4b0082>Polus</color>", false, MapCustomOption);
+        PolusRandomSpawn = Create(103101, true, CustomOptionType.Generic, "RandomSpawnOption", false, PolusSetting);
         PolusAdditionalVents = Create(103102, false, CustomOptionType.Generic, "PolusAdditionalVents", false, PolusSetting);
         SpecimenVital = Create(103103, false, CustomOptionType.Generic, "SpecimenVitalSetting", false, PolusSetting);
 
         /*===============エアーシップ===============*/
-        AirshipSetting = Create(103200, false, CustomOptionType.Generic, "<color=#ff0000>Airship</color>", false, MapCustomOption);
-        AirshipRandomSpawn = Create(103201, false, CustomOptionType.Generic, "RandomSpawnOption", false, AirshipSetting);
+        AirshipSetting = Create(103200, true, CustomOptionType.Generic, "<color=#ff0000>Airship</color>", false, MapCustomOption);
+        AirshipRandomSpawn = Create(103201, true, CustomOptionType.Generic, "RandomSpawnOption", false, AirshipSetting);
         SecretRoomOption = Create(103202, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
         AirShipAdditionalVents = Create(103203, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, AirshipSetting);
         AirshipDisableMovingPlatform = Create(103204, false, CustomOptionType.Generic, "AirshipDisableMovingPlatformSetting", false, AirshipSetting);
