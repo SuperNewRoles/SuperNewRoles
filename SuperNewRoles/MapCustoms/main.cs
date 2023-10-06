@@ -4,9 +4,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.BattleRoyal;
 using UnityEngine;
-using static PlayerControl;
 using static SuperNewRoles.MapCustoms.MapCustomHandler;
 
 namespace SuperNewRoles.MapCustoms;
@@ -14,14 +12,14 @@ namespace SuperNewRoles.MapCustoms;
 public class MapCustomHandler
 {
     // TODO:デフォルトである(≒SHRでない)判定が正常にできていない為修正必要
-    public static bool IsMapCustom(MapCustomId mapCustomId)
+    public static bool IsMapCustom(MapCustomId mapCustomId, bool isDefaultOnly = true)
     {
-        return mapCustomId switch
+        return MapCustom.MapCustomOption.GetBool() && (ModeHandler.IsMode(ModeId.Default) || !isDefaultOnly) && mapCustomId switch
         {
-            MapCustomId.Skeld => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 0 && MapCustom.MapCustomOption.GetBool() && MapCustom.SkeldSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
-            MapCustomId.Mira => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 1 && MapCustom.MapCustomOption.GetBool() && MapCustom.MiraSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
-            MapCustomId.Polus => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 2 && MapCustom.MapCustomOption.GetBool() && MapCustom.PolusSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
-            MapCustomId.Airship => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 4 && MapCustom.MapCustomOption.GetBool() && MapCustom.AirshipSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
+            MapCustomId.Skeld => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 0 && MapCustom.SkeldSetting.GetBool(),
+            MapCustomId.Mira => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 1 && MapCustom.MiraSetting.GetBool(),
+            MapCustomId.Polus => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 2 && MapCustom.PolusSetting.GetBool(),
+            MapCustomId.Airship => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 4 && MapCustom.AirshipSetting.GetBool(),
             _ => false,
         };
     }
