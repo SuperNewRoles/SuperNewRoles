@@ -4,6 +4,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles.Attribute;
@@ -45,8 +46,8 @@ public static class RoleClass
         IsMeeting = false;
         IsFirstMeetingEnd = false;
         IsfirstResetCool = true;
-        RandomSpawn.IsFirstSpawn = true;
         DeadPlayer.ClearAndReloads();
+        ReportDeadBodyPatch.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
@@ -68,10 +69,11 @@ public static class RoleClass
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
         Mode.ModeHandler.ClearAndReload();
-        MapCustoms.MapCustomClearAndReload.ClearAndReload();
-        MapCustoms.AdditionalVents.ClearAndReload();
-        MapCustoms.SpecimenVital.ClearAndReload();
-        MapCustoms.MoveElecPad.ClearAndReload();
+        MapCustomClearAndReload.ClearAndReload();
+        AdditionalVents.ClearAndReload();
+        SpecimenVital.ClearAndReload();
+        MoveElecPad.ClearAndReload();
+        AirShipRandomSpawn.ClearAndReload();
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
         FixSabotage.ClearAndReload();
@@ -257,6 +259,7 @@ public static class RoleClass
         Rocket.RoleData.ClearAndReload();
         WellBehaver.ClearAndReload();
         Pokerface.RoleData.ClearAndReload();
+        Crook.RoleData.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -2034,6 +2037,15 @@ public static class RoleClass
         public static Color32 color = ImpostorRed;
         public static bool IsCreateMadmate;
         public static float Cooldown;
+        /// <summary>アドミン上でインポスターのマークが赤く見えるかどうか</summary>
+        public static bool CanSeeImpostorPositions;
+        /// <summary>アドミン上で死体のマークが青く見えるかどうか</summary>
+        public static bool CanSeeDeadBodyPositions;
+        public static bool CanUseAdminDuringMeeting;
+        /// <summary>サボタージュマップにアドミンが表示されるかどうか</summary>
+        public static bool SabotageMapShowsAdmin;
+        /// <summary>アドミンにドアの開閉状況が表示される</summary>
+        public static bool MapShowsDoorState;
         public static bool IsMyAdmin;
         public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
 
@@ -2050,6 +2062,12 @@ public static class RoleClass
         {
             EvilHackerPlayer = new();
             IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
+            var hasEnhancedAdmin = CustomOptionHolder.EvilHackerHasEnhancedAdmin.GetBool();
+            CanSeeImpostorPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeImpostorPositions.GetBool();
+            CanSeeDeadBodyPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeDeadBodyPositions.GetBool();
+            CanUseAdminDuringMeeting = CustomOptionHolder.EvilHackerCanUseAdminDuringMeeting.GetBool();
+            SabotageMapShowsAdmin = CustomOptionHolder.EvilHackerSabotageMapShowsAdmin.GetBool();
+            MapShowsDoorState = CustomOptionHolder.EvilHackerMapShowsDoorState.GetBool();
             IsMyAdmin = false;
             Cooldown = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
         }
