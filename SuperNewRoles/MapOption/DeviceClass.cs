@@ -114,6 +114,10 @@ public static class DeviceClass
                     __instance.SabotageText.gameObject.SetActive(false);
                 }
 
+                // インポスターや死体の色が変わる役職等が増えたらここに条件を追加
+                bool canSeeImpostorIcon = RoleClass.EvilHacker.IsMyAdmin && RoleClass.EvilHacker.CanSeeImpostorPositions;
+                bool canSeeDeadIcon = RoleClass.EvilHacker.IsMyAdmin && RoleClass.EvilHacker.CanSeeDeadBodyPositions;
+
                 for (int i = 0; i < __instance.CountAreas.Length; i++)
                 {
                     CounterArea counterArea = __instance.CountAreas[i];
@@ -129,12 +133,21 @@ public static class DeviceClass
                             int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
                             int count = 0;
                             List<int> colors = new();
+                            // 死体の色で表示する数
+                            int numDeadIcons = 0;
+                            // インポスターの色で表示する数
+                            int numImpostorIcons = 0;
 
                             for (int j = 0; j < num; j++)
                             {
                                 Collider2D collider2D = __instance.buffer[j];
                                 if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies)
                                 {
+                                    if (canSeeDeadIcon)
+                                    {
+                                        numDeadIcons++;
+                                    }
+
                                     if (BlackHatHacker.IsMyAdmin)
                                     {
                                         if (!collider2D.GetComponent<DeadBody>()) continue;
@@ -160,6 +173,10 @@ public static class DeviceClass
 
                                     count++;
                                     colors.Add(component.CurrentOutfit.ColorId);
+                                    if (canSeeImpostorIcon && component.IsImpostor())
+                                    {
+                                        numImpostorIcons++;
+                                    }
                                 }
                             }
                             counterArea.UpdateCount(count);
@@ -174,6 +191,16 @@ public static class DeviceClass
                                     PlayerControl.LocalPlayer.SetPlayerMaterialColors(icon.GetComponent<SpriteRenderer>());
                                 }
                                 PlayerControl.LocalPlayer.CurrentOutfit.ColorId = color;
+                            }
+                            else
+                            {
+                                foreach (PoolableBehavior icon in counterArea.myIcons)
+                                {
+                                    Material material = icon.GetComponent<SpriteRenderer>().material;
+                                    Color iconColor = numImpostorIcons-- > 0 ? Palette.ImpostorRed : numDeadIcons-- > 0 ? Color.gray : Color.yellow;
+                                    material.SetColor(PlayerMaterial.BackColor, iconColor);
+                                    material.SetColor(PlayerMaterial.BodyColor, iconColor);
+                                }
                             }
                         }
                         else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");

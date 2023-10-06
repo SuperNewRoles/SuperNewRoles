@@ -9,6 +9,7 @@ using InnerNet;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
@@ -516,8 +517,8 @@ static class CheckMurderPatch
                 target.MyPhysics.Animations.IsPlayingAnyLadderAnimation() ||
                 target.inMovingPlat ||
                 MeetingHud.Instance != null ||
-                (!RoleClass.IsStart &&
-                AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
+                (!RoleClass.IsStart && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) ||
+                AirShipRandomSpawn.IsLoaded
            )
         {
             return false;
