@@ -203,7 +203,7 @@ public class IntroData
     public static IntroData MadKillerIntro = new("MadKiller", RoleClass.SideKiller.color, 1, RoleId.MadKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SurvivorIntro = new("Survivor", RoleClass.Survivor.color, 1, RoleId.Survivor, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData MadMayorIntro = new("MadMayor", RoleClass.MadMayor.color, 1, RoleId.MadMayor, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData NiceHawkIntro = new("NiceHawk", RoleClass.NiceHawk.color, 2, RoleId.NiceHawk, IntroSound: RoleTypes.Impostor);
+    public static IntroData NiceHawkIntro = new("NiceHawk", RoleClass.NiceHawk.color, 2, RoleId.NiceHawk, IntroSound: RoleTypes.Crewmate);
     public static IntroData BakeryIntro = new("Bakery", RoleClass.Bakery.color, 1, RoleId.Bakery);
     public static IntroData MadStuntManIntro = new("MadStuntMan", RoleClass.MadStuntMan.color, 1, RoleId.MadStuntMan, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData MadHawkIntro = new("MadHawk", RoleClass.MadHawk.color, 1, RoleId.MadHawk, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
@@ -326,5 +326,6 @@ public class IntroData
     public static IntroData RocketIntro = new("Rocket", Rocket.RoleData.color, 2, RoleId.Rocket, TeamRoleType.Impostor, IntroSound : RoleTypes.Impostor);
     public static IntroData WellBehaverIntro = new("WellBehaver", WellBehaver.color, 1, RoleId.WellBehaver, TeamRoleType.Crewmate);
     public static IntroData PokerfaceIntro = new("Pokerface", Pokerface.RoleData.color, 1, RoleId.Pokerface, TeamRoleType.Neutral);
+    public static IntroData CrookIntro = new("Crook", Crook.RoleData.color, 1, RoleId.Crook, TeamRoleType.Neutral, IntroSound: RoleTypes.Impostor);
     // イントロオブジェ
 }

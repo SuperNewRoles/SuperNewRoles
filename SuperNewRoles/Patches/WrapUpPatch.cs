@@ -105,6 +105,7 @@ class WrapUpPatch
             ReplayLoader.OnWrapUp();
         }
 
+        // |:========== 追放の有無問わず 会議終了時に行う処理 開始 ==========:|
         SelectRoleSystem.OnWrapUp();
 
         Shielder.WrapUp();
@@ -159,8 +160,21 @@ class WrapUpPatch
             p.resetChange();
         }
         RoleClass.Doppelganger.Targets = new();
-        //ここから下追放者がいる場合
+
+        Crook.WrapUp.GeneralProcess(exiled == null ? null : exiled.Object);
+
+        Logger.Info("[追放の有無問わず 会議終了時に行う処理] 通過", "WrapUp");
+
+        // |:========== 追放が発生していた場合のみ 会議終了時に行う処理 開始 ==========:|
+
         if (exiled == null) return;
+
+        exiled.Object.Exiled();
+        exiled.IsDead = true;
+        FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
+
+        var Player = ModHelpers.PlayerById(exiled.PlayerId);
+
         if (exiled.Object.IsRole(RoleId.Jumbo) && exiled.Object.IsCrew())
         {
             GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.NoWinner, false);
@@ -171,10 +185,6 @@ class WrapUpPatch
         Nekomata.NekomataEnd(exiled);
         NekoKabocha.OnWrapUp(exiled.Object);
 
-        exiled.Object.Exiled();
-        exiled.IsDead = true;
-        FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
-        var Player = ModHelpers.PlayerById(exiled.PlayerId);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             if (RoleClass.Lovers.SameDie && Player.IsLovers())
@@ -238,6 +248,12 @@ class WrapUpPatch
                 }
             }
         }
+        else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            CheckForEndVotingPatch.ResetExiledPlayerName();
+        }
         Mode.SuperHostRoles.Main.RealExiled = null;
+
+        Logger.Info("[追放が発生していた場合のみ 会議終了時に行う処理] 通過", "WrapUp");
     }
 }
