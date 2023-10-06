@@ -1462,6 +1462,9 @@ public class CustomOptionHolder
         JesterCommonTask = jesteroption.Item1;
         JesterShortTask = jesteroption.Item2;
         JesterLongTask = jesteroption.Item3;
+
+        Crook.CustomOptionData.SetupCustomOptions();
+
         Sauner.CustomOptionData.SetupCustomOptions();
 
         Pokerface.CustomOptionData.SetupCustomOptions();

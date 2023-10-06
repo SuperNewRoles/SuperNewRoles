@@ -47,6 +47,7 @@ public static class RoleClass
         IsFirstMeetingEnd = false;
         IsfirstResetCool = true;
         DeadPlayer.ClearAndReloads();
+        ReportDeadBodyPatch.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
@@ -258,6 +259,7 @@ public static class RoleClass
         Rocket.RoleData.ClearAndReload();
         WellBehaver.ClearAndReload();
         Pokerface.RoleData.ClearAndReload();
+        Crook.RoleData.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

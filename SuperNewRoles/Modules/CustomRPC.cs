@@ -216,6 +216,7 @@ public enum RoleId
     Rocket,
     WellBehaver,
     Pokerface,
+    Crook,
     //RoleId
 }
 
@@ -317,9 +318,10 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance,
     PteranodonSetStatus,
+    BalancerBalance,
     SetInfectionTimer,
+    SendMeetingTurnNow,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
     JumpDancerJump,
@@ -327,7 +329,8 @@ public enum CustomRPC
     RocketLetsRocket,
     CreateGarbage,
     DestroyGarbage,
-    SetPokerfaceTeam
+    SetPokerfaceTeam,
+    CrookSaveSignDictionary,
 }
 
 public static class RPCProcedure
@@ -1967,8 +1970,11 @@ public static class RPCProcedure
                         for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
                         SetInfectionTimer(id, timer);
                         break;
+                    case CustomRPC.SendMeetingTurnNow:
+                        ReportDeadBodyPatch.SaveMeetingTurnNow(reader.ReadByte());
+                        break;
                     case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
-                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.MoiraChangeRole:
                         MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
@@ -1990,6 +1996,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetPokerfaceTeam:
                         SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.CrookSaveSignDictionary:
+                        Crook.Ability.SaveSignDictionary(reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

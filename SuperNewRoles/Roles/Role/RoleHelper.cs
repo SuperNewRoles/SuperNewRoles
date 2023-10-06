@@ -132,7 +132,8 @@ public static class RoleHelpers
         RoleId.BlackHatHacker or
         RoleId.Moira or
         RoleId.Sauner or
-        RoleId.Pokerface;
+        RoleId.Pokerface or
+        RoleId.Crook;
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
@@ -974,6 +975,9 @@ public static class RoleHelpers
             case RoleId.Pokerface:
                 Pokerface.RoleData.Player.Add(player);
                 break;
+            case RoleId.Crook:
+                Crook.RoleData.Player.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1518,6 +1522,9 @@ public static class RoleHelpers
             case RoleId.Pokerface:
                 Pokerface.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Crook:
+                Crook.RoleData.Player.RemoveAll(ClearRemove);
+                break;
                 // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
@@ -2009,6 +2016,7 @@ public static class RoleHelpers
             else if (Rocket.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Rocket;
             else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
             else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
+            else if (Crook.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Crook;
             // ロールチェック
         }
         catch (Exception e)

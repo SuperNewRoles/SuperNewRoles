@@ -149,9 +149,9 @@ public static class MadRaccoon
         /// </summary>
         /// <param name="beforeRevertShapeshift">
         /// bool => true : シェイプが未だ解除されていない / false : シェイプが既に解除されている</param>
-        internal static void ResetShapeDuration(bool beforeRevertShapeshift = true)
+        internal static void ResetShapeDuration(bool beforeRevertShapeshift = true, bool isEndGame = false)
         {
-            TimerStop();
+            TimerStop(isEndGame);
             ResetShapeshiftCool(false);
 
             if (beforeRevertShapeshift) RevertShapeshift();
@@ -166,10 +166,18 @@ public static class MadRaccoon
                 shapeshiftButton.Timer = timerSet;
             }
         }
-        private static void TimerStop()
+        private static void TimerStop(bool isEndGame = false)
         {
-            if (coolTimeTimer != null) coolTimeTimer.Stop();
-            if (durationTimeTimer != null) durationTimeTimer.Stop();
+            if (coolTimeTimer != null)
+            {
+                coolTimeTimer.Stop();
+                if (isEndGame) coolTimeTimer.Dispose();
+            }
+            if (durationTimeTimer != null)
+            {
+                durationTimeTimer.Stop();
+                if (isEndGame) durationTimeTimer.Dispose();
+            }
             if (shapeDurationText != null) shapeDurationText.text = "";
         }
         private static void RevertShapeshift()
