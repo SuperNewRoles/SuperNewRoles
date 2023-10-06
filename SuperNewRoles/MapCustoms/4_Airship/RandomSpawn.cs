@@ -106,7 +106,6 @@ public static class AirShipRandomSpawn
             if (EndLoaded)
             {
                 IsLoaded = false;
-                FixedUpdate.SetRoleNames();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     string name = p.GetDefaultName();
@@ -114,6 +113,7 @@ public static class AirShipRandomSpawn
                     else p.SetName(name);
                     p.RpcSnapTo(Locations.GetRandom());
                 }
+                FixedUpdate.SetRoleNames();
             }
         }
     }
