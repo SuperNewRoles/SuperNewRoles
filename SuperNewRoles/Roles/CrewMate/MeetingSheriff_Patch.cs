@@ -46,12 +46,11 @@ class MeetingUpdatePatch
         }
     }
 }
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
 class Meetingsheriff_updatepatch
 {
-    static void Postfix(MeetingHud __instance)
+    internal static void UpdateButtonsPostfix(MeetingHud __instance)
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.IsDead())
+        if (PlayerControl.LocalPlayer.IsDead())
         {
             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
         }
