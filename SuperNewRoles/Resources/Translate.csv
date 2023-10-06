@@ -1191,6 +1191,7 @@ SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト
 SatsumaAndImoTitle2,Betray and betray.,手のひらをくるくる返そう,我是叛徒，还是你是叛徒？,我是叛徒，還是你是叛徒？
 SatsumaAndImoDescription,After each meeting， the impostor and crew teams will switch sides.\nThe winner is determined by the team at the time the decision is made.\nLet's Betray and betray.,会議を挟むごとにインポスター陣営とクルー陣営が入れ替わります。\n決着が付いた時の陣営で勝敗が決定します。\n手のひらくるくるしましょう。,游戏开始时人格分裂者随机加入船员或内鬼阵营。每轮会议结束后，人格分裂者会改变自己的阵营。\n游戏结束时，人格分裂者按那个时候的阵营结算胜利条件。\n上演一出谍中谍的戏码吧。,每輪會議結束後，會切換自己身為內鬼和船員的身分。\n當決定勝負時，將以當時的身分決定勝負。\n諜中諜中諜！
 ShiftActorName,Shift Actor,シフトアクター,模仿犯,模仿犯
+ShiftActorDescription,By shapeshifting，you can confirm the role of the shapeshifted object. Duplicate roles can also be confirmed by setting.\nDepending on the settings，it may fail to confirm the role. If it fails，the target role is displayed as [Crewmate].\nAfter the number of available times of the ability is used up，only the normal Shapeshift ability will be available.\n\nNow，let's imitate his life and play it out perfectly.,シェイプシフトを行う事で，シェイプした対象の役職を確認する事ができます。設定により重複役も確認する事ができます。/n設定により，役職の確認に失敗する事もあります。失敗した場合は対象の役職を[クルーメイト]と表示します。/n能力の使用可能回数を使い切った後は，通常のシェイプシフト能力のみ有します。\n\nさあ，彼の人生を模倣し，完璧に演じ切ろう。
 ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,我会比你更像你自己,我會比你更像你自己
 CanWatchAttribute,Can watch attribute,重複役職を見れる,模仿犯可以确认模仿对象的附加职业,模仿犯可以確認模仿對象的附加職業
 RightChance,Probability of Success,成功確率,成功概率,模仿成功的概率
