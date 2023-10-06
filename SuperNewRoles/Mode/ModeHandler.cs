@@ -1,3 +1,4 @@
+using System;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -173,25 +174,10 @@ public static class ModeHandler
     public static ModeId GetMode(bool IsChache = true)
     {
         if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
-        if (IsChache)
-        {
-            return thisMode;
-        }
-        if (IsMode(ModeId.Default, false)) return ModeId.Default;
-        if (IsMode(ModeId.SuperHostRoles, false)) return ModeId.SuperHostRoles;
-        if (IsMode(ModeId.BattleRoyal, false)) return ModeId.BattleRoyal;
-        if (IsMode(ModeId.Zombie, false)) return ModeId.Zombie;
-        return IsMode(ModeId.RandomColor, false)
-            ? ModeId.RandomColor
-            : IsMode(ModeId.NotImpostorCheck, false)
-            ? ModeId.NotImpostorCheck
-            : IsMode(ModeId.Detective, false)
-            ? ModeId.Detective
-            : IsMode(ModeId.CopsRobbers, false)
-            ? ModeId.CopsRobbers
-            : IsMode(ModeId.Werewolf, false)
-            ? ModeId.Werewolf
-            : ModeId.No;
+        if (IsChache) return thisMode;
+        foreach (ModeId id in Enum.GetValues(typeof(ModeId)))
+            if (IsMode(id, false)) return id;
+        return ModeId.No;
     }
     public static string GetThisModeIntro()
     {
