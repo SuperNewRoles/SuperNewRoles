@@ -557,7 +557,7 @@ public class CustomHatLoader
     public static Dictionary<string, string> hatRepos = new()
         {
 
-            { "https://raw.githubusercontent.com/SuperNewRoles/SuperNewNamePlates/master", "SuperNewNamePlates" },
+            { "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/master", "SuperNewCosmetics" },
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
             { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },

@@ -2080,22 +2080,15 @@ public class CustomOptionHolder
 
         Logger.Info("---------- CustomOption Id Info start ----------", "CustomOptionId Info");
 
-        Logger.Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(GenericIdMax), "Generic");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(ImpostorIdMax), "Impostor");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(NeutralIdMax), "Neutral");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(CrewmateIdMax), "Crewmate");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(ModifierIdMax), "Modifier");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(MatchingTagIdMax), "MatchingTag");
-
-        Logger.Info("---------- SettingId Info----------", "SettingId Info");
-        Logger.Info("CustomOptionのIdのMax:" + GenericIdMax, "Generic");
-        Logger.Info("CustomOptionのIdのMax:" + ImpostorIdMax, "Impostor");
-        Logger.Info("CustomOptionのIdのMax:" + NeutralIdMax, "Neutral");
-        Logger.Info("CustomOptionのIdのMax:" + CrewmateIdMax, "Crewmate");
-        Logger.Info("CustomOptionのIdのMax:" + ModifierIdMax, "Modifier");
-        Logger.Info("CustomOptionのIdのMax:" + MatchingTagIdMax, "MatchingTag");
         Logger.Info("設定数:" + options.Count);
+
+        Logger.Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
+        Logger.Info($"SettingRoleIdのMax: 1 - {GetRoleSettingid(GenericIdMax)}", "Generic ");
+        Logger.Info($"SettingRoleIdのMax: 2 - {GetRoleSettingid(ImpostorIdMax)}", "Impostor");
+        Logger.Info($"SettingRoleIdのMax: 3 - {GetRoleSettingid(NeutralIdMax)}", "Neutral ");
+        Logger.Info($"SettingRoleIdのMax: 4 - {GetRoleSettingid(CrewmateIdMax)}", "Crewmate");
+        Logger.Info($"SettingRoleIdのMax: 5 - {GetRoleSettingid(ModifierIdMax)}", "Modifier");
+        Logger.Info($"SettingRoleIdのMax: 6 - {GetRoleSettingid(MatchingTagIdMax)}", "MatchingTag");
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
         /*
@@ -2114,5 +2107,11 @@ public class CustomOptionHolder
         OPTIONDATA += "}";
         GUIUtility.systemCopyBuffer = OPTIONDATA;*/
     }
-    private static int GetRoleSettingid(int maxId) => maxId / 100;
+
+    /// <summary>
+    /// 各分類毎の最終設定Idを取得する
+    /// </summary>
+    /// <param name="maxId">処理したい6桁の設定Id</param>
+    /// <returns></returns>
+    private static string GetRoleSettingid(int maxId) => $"{maxId / 100}"[1..];
 }

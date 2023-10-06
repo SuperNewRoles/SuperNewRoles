@@ -247,7 +247,7 @@ public class IntroData
     public static IntroData KunoichiIntro = new("Kunoichi", RoleClass.Kunoichi.color, 1, RoleId.Kunoichi, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData DoubleKillerIntro = new("DoubleKiller", RoleClass.DoubleKiller.color, 1, RoleId.DoubleKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SmasherIntro = new("Smasher", RoleClass.Smasher.color, 1, RoleId.Smasher, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData SuicideWisherIntro = new("SuicideWisher", RoleClass.SuicideWisher.color, 1, RoleId.SuicideWisher, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData SuicideWisherIntro = new("SuicideWisher", RoleClass.SuicideWisher.color, 2, RoleId.SuicideWisher, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData NeetIntro = new("Neet", RoleClass.Neet.color, 1, RoleId.Neet, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData FastMakerIntro = new("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData ToiletFanIntro = new("ToiletFan", RoleClass.ToiletFan.color, 1, RoleId.ToiletFan);
