@@ -2034,6 +2034,15 @@ public static class RoleClass
         public static Color32 color = ImpostorRed;
         public static bool IsCreateMadmate;
         public static float Cooldown;
+        /// <summary>アドミン上でインポスターのマークが赤く見えるかどうか</summary>
+        public static bool CanSeeImpostorPositions;
+        /// <summary>アドミン上で死体のマークが青く見えるかどうか</summary>
+        public static bool CanSeeDeadBodyPositions;
+        public static bool CanUseAdminDuringMeeting;
+        /// <summary>サボタージュマップにアドミンが表示されるかどうか</summary>
+        public static bool SabotageMapShowsAdmin;
+        /// <summary>アドミンにドアの開閉状況が表示される</summary>
+        public static bool MapShowsDoorState;
         public static bool IsMyAdmin;
         public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
 
@@ -2050,6 +2059,12 @@ public static class RoleClass
         {
             EvilHackerPlayer = new();
             IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
+            var hasEnhancedAdmin = CustomOptionHolder.EvilHackerHasEnhancedAdmin.GetBool();
+            CanSeeImpostorPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeImpostorPositions.GetBool();
+            CanSeeDeadBodyPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeDeadBodyPositions.GetBool();
+            CanUseAdminDuringMeeting = CustomOptionHolder.EvilHackerCanUseAdminDuringMeeting.GetBool();
+            SabotageMapShowsAdmin = CustomOptionHolder.EvilHackerSabotageMapShowsAdmin.GetBool();
+            MapShowsDoorState = CustomOptionHolder.EvilHackerMapShowsDoorState.GetBool();
             IsMyAdmin = false;
             Cooldown = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
         }
