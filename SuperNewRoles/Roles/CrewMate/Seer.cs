@@ -190,7 +190,7 @@ class Seer
                             break;
                         case RoleId.EvilSeer:
                             // |:===== 共通の処理 =====:|
-                            var isLight = CustomCosmetics.CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId);
+                            var isLight = CustomCosmetics.CustomColors.LighterColors.Contains(target.Data.DefaultOutfit.ColorId);
 
                             // |:===== 霊魂関連の処理 =====:|
                             var indistinctBodyColorId = isLight

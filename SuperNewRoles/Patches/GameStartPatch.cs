@@ -1,5 +1,7 @@
 using BepInEx.Configuration;
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -94,6 +96,16 @@ class GameStartPatch
         public static void Postfix()
         {
             if (!GameStartManager._instance || !AmongUsClient.Instance.AmHost) return; // 以下ホストのみで動作
+
+            if (CustomOptionHolder.ProhibitModColor.GetBool() || ModeHandler.IsMode(ModeId.SuperHostRoles, false))
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (!player) continue;
+                    if (player.Data.DefaultOutfit.ColorId < CustomColors.DefaultPickAbleColors) continue;
+                    player.CheckColor((byte)player.Data.DefaultOutfit.ColorId);
+                }
+            }
 
             if (Input.GetKeyDown(KeyCode.F7))
             {
