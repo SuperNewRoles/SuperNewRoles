@@ -55,6 +55,7 @@ public enum CustomGameOverReason
     MoiraWin,
     SaunerWin,
     CrookWin,
+    FrankensteinWin,
 }
 public enum WinCondition
 {
@@ -95,6 +96,7 @@ public enum WinCondition
     SaunerWin,
     PokerfaceWin,
     CrookWin,
+    FrankensteinWin,
 }
 class FinalStatusPatch
 {
@@ -262,7 +264,8 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.CrookWin,("CrookName",Crook.RoleData.color)},
                 {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) },
                 {WinCondition.SaunerWin, ("SaunerRefreshing",Sauner.RoleData.color) },
-                {WinCondition.PokerfaceWin,("PokerfaceName",Pokerface.RoleData.color) }
+                {WinCondition.PokerfaceWin,("PokerfaceName",Pokerface.RoleData.color) },
+                {WinCondition.FrankensteinWin, ("FrankensteinName",Frankenstein.color) },
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -685,6 +688,7 @@ public static class OnGameEndPatch
             Sauner.RoleData.Player,
             Pokerface.RoleData.Player,
             Crook.RoleData.Player,
+            Frankenstein.FrankensteinPlayer,
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -1186,6 +1190,20 @@ public static class OnGameEndPatch
                         AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
                     }
                 }
+            }
+        }
+        foreach (KeyValuePair<byte, int> data in Frankenstein.KillCount)
+        {
+            if (data.Value <= 0)
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                TempData.winners.Add(new(GameData.Instance.GetPlayerById(data.Key)));
+                AdditionalTempData.winCondition = WinCondition.FrankensteinWin;
             }
         }
         if (Moira.AbilityUsedUp && Moira.Player.IsAlive())

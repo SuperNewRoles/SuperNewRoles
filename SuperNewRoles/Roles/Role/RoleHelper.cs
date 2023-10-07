@@ -133,7 +133,8 @@ public static class RoleHelpers
         RoleId.Moira or
         RoleId.Sauner or
         RoleId.Pokerface or
-        RoleId.Crook;
+        RoleId.Crook or
+        RoleId.Frankenstein;
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
@@ -978,6 +979,9 @@ public static class RoleHelpers
             case RoleId.Crook:
                 Crook.RoleData.Player.Add(player);
                 break;
+            case RoleId.Frankenstein:
+                Frankenstein.FrankensteinPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1525,6 +1529,9 @@ public static class RoleHelpers
             case RoleId.Crook:
                 Crook.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Frankenstein:
+                Frankenstein.FrankensteinPlayer.RemoveAll(ClearRemove);
+                break;
                 // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
@@ -1644,6 +1651,7 @@ public static class RoleHelpers
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
             RoleId.Pokerface => Pokerface.CustomOptionData.CanUseVent.GetBool(),
+            RoleId.Frankenstein => Frankenstein.IsMonster(PlayerControl.LocalPlayer) && Frankenstein.FrankensteinMonsterCanVent.GetBool(),
             // ベントが使える
             _ => player.IsImpostor(),
         };
@@ -1736,6 +1744,7 @@ public static class RoleHelpers
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
                 RoleId.MadRaccoon => MadRaccoon.RoleData.IsImpostorLight,
+                RoleId.Frankenstein => Frankenstein.IsMonster(PlayerControl.LocalPlayer) && Frankenstein.FrankensteinMonsterImpostorLight.GetBool(),
                 // インポの視界
                 _ => false,
             };
@@ -2017,6 +2026,7 @@ public static class RoleHelpers
             else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
             else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
             else if (Crook.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Crook;
+            else if (Frankenstein.FrankensteinPlayer.IsCheckListPlayerControl(player)) return RoleId.Frankenstein;
             // ロールチェック
         }
         catch (Exception e)

@@ -260,6 +260,7 @@ public static class RoleClass
         WellBehaver.ClearAndReload();
         Pokerface.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
+        Frankenstein.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

@@ -1178,6 +1178,7 @@ class AllRoleSetClass
             RoleId.WellBehaver => WellBehaver.WellBehaverPlayerCount.GetFloat(),
             RoleId.Pokerface => Pokerface.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.Crook => Crook.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Frankenstein => Frankenstein.FrankensteinPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };

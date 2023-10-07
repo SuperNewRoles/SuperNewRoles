@@ -99,7 +99,7 @@ public static class OrientalShaman
             {
                 PlayerControl target = HudManagerStartPatch.SetTarget();
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(target, color);
-                return target && !IsKiller(target);
+                return target && !Frankenstein.IsMonster(target) && !IsKiller(target);
             },
             () =>
             {
