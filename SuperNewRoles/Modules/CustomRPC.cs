@@ -323,13 +323,12 @@ public enum CustomRPC
     PenguinMeetingEnd,
     BalancerBalance,
     PteranodonSetStatus,
-    BalancerBalance,
     SetInfectionTimer,
     SendMeetingTurnNow,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
     JumpDancerJump,
-    BatSetDeviceStop
+    BatSetDeviceStop,
     RocketSeize,
     RocketLetsRocket,
     CreateGarbage,
@@ -349,7 +348,7 @@ public static class RPCProcedure
         PlayerControl player = ModHelpers.PlayerById(source);
         if (player == null)
             return;
-        SpiderTrap.Create(player, new(x,y), id);
+        SpiderTrap.Create(player, new(x, y), id);
     }
     public static void SpiderTrapCatch(ushort id, byte targetid)
     {
@@ -430,7 +429,7 @@ public static class RPCProcedure
         PlayerControl player3 = ModHelpers.PlayerById(playerid3);
         if (player1 == null || player2 == null || player3 == null)
             return;
-        Pokerface.RoleData.PokerfaceTeams.Add(new(player1,player2,player3));
+        Pokerface.RoleData.PokerfaceTeams.Add(new(player1, player2, player3));
     }
     public static void DestroyGarbage(string name) => Garbage.AllGarbage.Find(x => x.GarbageObject.name == name)?.Clear();
     public static void CreateGarbage(float x, float y) => new Garbage(new(x, y));
