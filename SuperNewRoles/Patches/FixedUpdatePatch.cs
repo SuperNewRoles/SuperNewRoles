@@ -105,6 +105,7 @@ public class FixedUpdate
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();
                 JumpDancer.FixedUpdate();
+                Bat.FixedUpdate();
                 Rocket.FixedUpdate();
                 WellBehaver.FixedUpdate();
                 Frankenstein.FixedUpdate();

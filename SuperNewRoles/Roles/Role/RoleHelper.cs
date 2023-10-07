@@ -967,6 +967,9 @@ public static class RoleHelpers
             case RoleId.Sauner:
                 Sauner.RoleData.Player.Add(player);
                 break;
+            case RoleId.Bat:
+                Bat.RoleData.Player.Add(player);
+                break;
             case RoleId.Rocket:
                 Rocket.RoleData.Player.Add(player);
                 break;
@@ -1517,6 +1520,9 @@ public static class RoleHelpers
             case RoleId.Sauner:
                 Sauner.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Bat:
+                Bat.RoleData.Player.RemoveAll(ClearRemove);
+                break;
             case RoleId.Rocket:
                 Rocket.RoleData.Player.RemoveAll(ClearRemove);
                 break;
@@ -2022,6 +2028,7 @@ public static class RoleHelpers
             else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
+            else if (Bat.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Bat;
             else if (Rocket.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Rocket;
             else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
             else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
