@@ -216,6 +216,7 @@ public enum RoleId
     Rocket,
     WellBehaver,
     Pokerface,
+    Crook,
     Frankenstein,
     //RoleId
 }
@@ -274,7 +275,6 @@ public enum CustomRPC
     MakeVent,
     PositionSwapperTP,
     FixLights,
-    RandomSpawn,
     KunaiKill,
     SetSecretRoomTeleportStatus,
     ChiefSidekick,
@@ -319,9 +319,10 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance,
     PteranodonSetStatus,
+    BalancerBalance,
     SetInfectionTimer,
+    SendMeetingTurnNow,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
     JumpDancerJump,
@@ -330,6 +331,7 @@ public enum CustomRPC
     CreateGarbage,
     DestroyGarbage,
     SetPokerfaceTeam,
+    CrookSaveSignDictionary,
     SetFrankensteinMonster,
     MoveDeadBody,
 }
@@ -1610,50 +1612,6 @@ public static class RPCProcedure
         source.transform.localPosition = target.transform.localPosition;
     }
 
-    public static void RandomSpawn(byte playerId, byte locId)
-    {
-        HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
-        { // Delayed action
-            if (p == 1f)
-            {
-                //ShipStatus.Instance.InitialSpawnCenter = new(16.64f, -2.46f);
-                Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
-                Vector2 ElectricalSpawn = new(5.53f, -9.84f);
-                Vector2 O2Spawn = new(3.28f, -21.67f);
-                Vector2 SpecimenSpawn = new(36.54f, -20.84f);
-                Vector2 LaboSpawn = new(34.91f, -6.50f);
-                Vector2 CommsSpawn = new(12.24f, -15.9473f);
-                Vector2 StorageSpawn = new(20.9707f, -12.3396f);
-                Vector2 MeetingSpawnUnder = new(22.0948f, -25.1668f);
-                Vector2 LocketSpawn = new(26.6442f, -6.775f);
-                Vector2 LeftReactorSpawn = new(4.6395f, -4.2884f);
-                var loc = locId switch
-                {
-                    0 => ShipStatus.Instance.InitialSpawnCenter,
-                    1 => MeetingSpawnCenter,
-                    2 => ElectricalSpawn,
-                    3 => O2Spawn,
-                    4 => SpecimenSpawn,
-                    5 => LaboSpawn,
-                    6 => CommsSpawn,
-                    7 => StorageSpawn,
-                    8 => MeetingSpawnUnder,
-                    9 => LocketSpawn,
-                    10 => LeftReactorSpawn,
-                    _ => ShipStatus.Instance.InitialSpawnCenter,
-                };
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                {
-                    if (player.Data.PlayerId == playerId)
-                    {
-                        player.transform.position = loc;
-                        break;
-                    }
-                }
-            }
-        })));
-    }
-
     public static void ShowFlash()
     {
         Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
@@ -1892,9 +1850,6 @@ public static class RPCProcedure
                     case CustomRPC.FixLights:
                         FixLights();
                         break;
-                    case CustomRPC.RandomSpawn:
-                        RandomSpawn(reader.ReadByte(), reader.ReadByte());
-                        break;
                     case CustomRPC.KunaiKill:
                         KunaiKill(reader.ReadByte(), reader.ReadByte());
                         break;
@@ -2050,8 +2005,11 @@ public static class RPCProcedure
                         for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
                         SetInfectionTimer(id, timer);
                         break;
+                    case CustomRPC.SendMeetingTurnNow:
+                        ReportDeadBodyPatch.SaveMeetingTurnNow(reader.ReadByte());
+                        break;
                     case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
-                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.MoiraChangeRole:
                         MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
@@ -2073,6 +2031,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetPokerfaceTeam:
                         SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.CrookSaveSignDictionary:
+                        Crook.Ability.SaveSignDictionary(reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.SetFrankensteinMonster:
                         SetFrankensteinMonster(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());

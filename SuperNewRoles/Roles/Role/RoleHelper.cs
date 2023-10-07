@@ -133,6 +133,7 @@ public static class RoleHelpers
         RoleId.Moira or
         RoleId.Sauner or
         RoleId.Pokerface or
+        RoleId.Crook or
         RoleId.Frankenstein;
     // 第三か
 
@@ -975,6 +976,9 @@ public static class RoleHelpers
             case RoleId.Pokerface:
                 Pokerface.RoleData.Player.Add(player);
                 break;
+            case RoleId.Crook:
+                Crook.RoleData.Player.Add(player);
+                break;
             case RoleId.Frankenstein:
                 Frankenstein.FrankensteinPlayer.Add(player);
                 break;
@@ -1522,6 +1526,9 @@ public static class RoleHelpers
             case RoleId.Pokerface:
                 Pokerface.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Crook:
+                Crook.RoleData.Player.RemoveAll(ClearRemove);
+                break;
             case RoleId.Frankenstein:
                 Frankenstein.FrankensteinPlayer.RemoveAll(ClearRemove);
                 break;
@@ -2018,6 +2025,7 @@ public static class RoleHelpers
             else if (Rocket.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Rocket;
             else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
             else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
+            else if (Crook.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Crook;
             else if (Frankenstein.FrankensteinPlayer.IsCheckListPlayerControl(player)) return RoleId.Frankenstein;
             // ロールチェック
         }

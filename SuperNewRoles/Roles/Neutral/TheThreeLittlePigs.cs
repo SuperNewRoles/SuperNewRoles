@@ -135,10 +135,11 @@ public class TheThreeLittlePigs
             if (PlayerControl.LocalPlayer ? PlayerControl.LocalPlayer.IsAlive() : true) return;
             Logger.Info($"{FlashTime / 1000}sにタイマーセット", "TheFirstLittlePig");
         }
-        public void TimerStop()
+        public void TimerStop(bool isEndGame = false)
         {
             if (Timer == null) return;
             Timer.Stop();
+            if (isEndGame) Timer.Dispose();
             Logger.Info($"タイマーを止めました", "TheFirstLittlePig");
         }
         public TheFirstLittlePigClass()
