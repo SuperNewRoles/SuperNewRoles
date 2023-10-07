@@ -4,19 +4,17 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.BattleRoyal;
 using UnityEngine;
-using static PlayerControl;
 using static SuperNewRoles.MapCustoms.MapCustomHandler;
 
 namespace SuperNewRoles.MapCustoms;
 
 public class MapCustomHandler
 {
-    public static bool IsMapCustom(MapCustomId mapCustomId)
+  
+    public static bool IsMapCustom(MapCustomId mapCustomId, bool isDefaultOnly=true)
     {
-        // 全マップの共通条件を取得
-        bool isCommonDecision = (ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)) && MapCustom.MapCustomOption.GetBool();
+        bool isCommonDecision = MapCustom.MapCustomOption.GetBool() && (ModeHandler.IsMode(ModeId.Default) || !isDefaultOnly);
         if (!isCommonDecision) return false; // 共通条件を満たしていなかったら, 早期リターン
 
         byte isMapId = GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId);

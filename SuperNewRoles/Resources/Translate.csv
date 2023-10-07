@@ -152,7 +152,7 @@ optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#94949
 preset,Preset,プリセット,预设,預設
 unitSeconds,Seconds,秒,秒,秒
 SettingPlayerCountName,Role Player,人数,人数,人數
-SettingTeamCountName,Team Count,チーム数
+SettingTeamCountName,Team Count,チーム数,,隊伍數
 CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式,直播模式
 CustomAutoUpdate,Auto Update,自動アップデート,自动更新,自動更新
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする,自动复制房间代码,自動複製房間代碼
@@ -231,6 +231,9 @@ OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポ
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
+ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する
+GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる
+DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置,模式設定
@@ -1003,6 +1006,12 @@ EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船�
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,可以把一名玩家变成叛徒,可以把一名玩家變成叛徒
 CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] ability.,[狂わせる]能力のクールタイムの設定,[洗脑]技能冷却设置,洗腦能力的冷卻時間
+EvilHackerHasEnhancedAdmin,Has Enhanced Admin,強化版アドミンを持つ
+EvilHackerCanSeeImpostorPositions,Can See Impostor Positions,インポスターの位置がわかる
+EvilHackerCanSeeDeadBodyPositions,Can See Dead-Body Positions,死体の位置がわかる
+EvilHackerCanUseAdminDuringMeeting,Can Use Admin During Meeting,会議中にアドミンを使用できる
+EvilHackerSabotageMapShowsAdmin,Sabotage Map Shows Admin,サボタージュマップにもアドミンを表示する
+EvilHackerMapShowsDoorState,Map Shows Doors Status,マップにドアの開閉状況を表示する
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
@@ -1556,41 +1565,56 @@ ConjurerAddName,Compression,圧縮,施法,施法
 JumpDancerName,Jump Dancer,ジャンプダンサー,,跳跳舞者
 JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,,離開地球表面！
 JumpDancerButtonName,Jump,ジャンプ！,,跳！
-SaunerName,Sauner,サウナー
-SaunerTitle1,Yeah，it's exhilarating.,あ～、ととのう～
-SaunerDescription,The darkroom，showers，and observation deck，in that order，are the sole winners after spending a certain amount of time in each of these locations.,暗室、シャワー、展望デッキの順番で、それぞれの箇所で一定時間過ごすと単独勝利します。
-SaunerDarkroom,Darkroom,暗室
-SaunerShower,Shower,シャワー
-SaunerObservationDeck,Observation deck,展望デッキ
-SaunerTextInSauna,take a sauna,サウナに入る
-SaunerTextShower,take a shower,シャワーを浴びる
-SaunerTextAirBath,Take a refreshing outdoor bath!,外気浴でととのう
-SaunerTextRemaing,({0} seconds remaining),(残り{0}秒)
-SaunerDarkroomTime,Sauna Length of Stay,サウナタイム
-SaunerShowerTime,Time to take a shower,シャワータイム
-SaunerDeckTime,Outside air bath time,外気浴タイム
-SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！
-RocketName,Rocket,ロケット
-RocketTitle1,Launch high into the sky!,空高く打ち上がれ！
-RocketTitle2,Booooom!!!!!,ボーーーーン！
-RocketDescription,You can grab other crew members and launch them upward for a kill at any time you like.\nYou can grab more than one crew member，but if the meeting is called before you launch，you will fail to launch.\nIf the meeting ends without expulsion，you can launch，but the victims will not remain silent.\nAlso，the launched crew will be visible to others.,他クルーを掴み、好きなタイミングで上に向かって打ち上げてキルすることが出来ます。\nクルーは複数人掴むことが出来ますが、打ち飛ばす前に会議が呼ばれると打ち上げ損なってしまいます。\n追放されずに会議が終了すれば打ち上げられますが、被害者たちが黙ってはいないでしょう。\nまた、打ち上げたクルーは他人目線でも見えてしまいます。
-RocketSeizeButtonName,Catch,掴む
-RocketLetsButtonName,Boooom!!!,ボーーン！！！
-RocketLetsButtonName2,WashUp,打ち上げる
-RocketButtonCooldownSetting,First catch cool time,最初に掴むクールタイム
-RocketButtonAfterCooldown,Cool time to catch after the second time,二回目以降に掴むクールタイム
-RocketChargeTimeSetting,Rocket Chargetime,ロケットのチャージタイム
-WellBehaverName,Well Behaver,品行方正
-WellBehaverTitle1,Be sure to conduct yourself in a dignified manner.,品行方正な行いを心がけましょう
-WellBehaverDescription,This position is a crew member but has no tasks.\nInstead， you must pick up trash that someone drops.\nWhen a certain number of trash accumulates， the person cannot stand it any longer and dies.,この役職はクルーですがタスクがありません\nその代わり、誰かが落としていくゴミを拾う必要があります\nゴミが一定数以上溜まると耐えきれなくなって死亡してしまいます
-WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数
-WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度
-WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える
-WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う
-PokerfaceName,Pokerface,ポーカーフェイス
-PokerfaceTitle1,Nothing，though?,なにもありませんけど？
-PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。
-PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する
+CrookName,Crook,詐欺師
+CrookTitle1,Sign this document and I promise you a happy future...,この書類にサインしてくれれば幸せな将来を約束しましょう...
+CrookDescription,As soon as the meeting starts，you can insure someone who is going to die before the next meeting.\nIf that person is killed OR expelled before the next meeting，the insurance money is received at the beginning of the meeting.\nWhen the insurance money is received，the whole group is notified at the end of the meeting that the crook has received the insurance money.\nThe con artist wins alone after receiving the insurance money for a set number of times.\n\n...I hear that even the mighty enemy of ours，the Impostor，is afraid of his own death and anxious about his own future.\nSo it is only natural that you are worried...\n\nNow，Sign this document and I promise you a happy future...,会議開始してすぐに次の会議までに死にそうな人に保険をかけることが出来ます。\nその人が次の会議までにキルor追放されれば会議初回に保険金を受け取れます。\n保険金を受け取った時、会議終了時に全体に詐欺師が保険金を受け取った事が通知されます。\n設定回数保険金を受け取ったら単独勝利です。\n\n...強大な我々の敵、そうあのインポスターですら、自らの死に恐怖を、自身の将来に不安を抱いていると聴きおよびます。\nだから貴方が不安なのは当然なことなのです...\n\nさあ、この書類にサインを... さすれば幸せな将来を約束しましょう...
+CrookNumberOfInsuranceClaimsReceivedRequiredToWin,Number of insurance claims received required to win.,勝利に必要な保険金の受け取り数
+CrookTimeTheAbilityToInsureOthersIsAvailable,Time the ability to insure others is available.,保険をかけられる時間
+CrookVoteSuccessMessage,I was able to get {0} to sign up for insurance.,{0}に保険を契約させる事が出来ました。
+CrookVoteYourselfErrorMessage,You cannot insure yourself.\nVoting and target selection has been invalidated.\n\nPlease select another crew again.,自分自身に保険をかける事はできません。\n投票及び対象選択を無効化します。\n\n再度他のクルーを選択してください。
+CrookVoteBotErrorMessage,Bot cannot be insured.\nVoting and target selection has been invalidated.\n\nPlease select another crew again.,Botに保険をかける事はできません。\n投票及び対象選択を無効化します。\n\n再度他のクルーを選択してください。
+CrookErrorTimeout,<color={0}>The acceptance of the selection of the subject to be insured by the ballot is closed.</color>\n\nVoting is disabled until the message "Voting Ends In: {1}s" <color={0}>is displayed，in order to prevent false votes due to time running out.</color>\nPlease note that the time is measured by the host and may differ from the actual time due to lag or other reasons.,<color={0}>投票により保険を契約させる対象の選択の受け付けは、締め切っております。</color>\n\n「投票終了まであと: {1}秒」と表示されるまでは <color={0}>時間切れによる誤投票を防止する為、投票を無効化しております。</color>\n時間の計測はホストによる処理である為、ラグ等により実際の表記と異なる可能性がある事をご了承ください。
+CrookSHRMeetingStartAnnounce,<color={0}>The ability can be used for the duration of "Voting Ends In: {1}s"</color>.\n\nBy voting during the available time，you can make other players sign insurance contracts with your chosen target.\nVotes for ability use are not notified to other players and can be followed by regular votes.\n\n<color={0}>Even if the ability usage time expires，there is a 10-second grace period (up to {2} seconds) during which voting is disabled</color>. This is to account for lag and similar factors.\nIf a skip vote or a vote has already been completed，it will not be invalidated at the time of invalidation.,<color={0}>能力が使用可能な時間は\n「投票終了まであと: {1}秒」と表示されるまで</color>です。\n\n使用可能な時間の間に投票する事で、投票先のプレイヤーに保険を契約させます。\n能力使用の為の投票は他のプレイヤーに通知されず解除される為、通常の投票もその後行う事が可能です。\n\n<color={0}>能力使用時間が切れても、10秒間({2}秒まで)は投票を無効化</color>します。これはラグ等を考慮した猶予時間です。\n投票無効化時間において、スキップ票 又は 投票が完了済みな場合は無効化しません。
+CrookErrorTargetAllladyDead,Since {0} was already dead，he could not be insured.,{0}は既に死亡していた為、保険を契約させる事ができませんでした。
+CrookReceiveAnnounce,It appears that someone has received the insurance money from the insurance policy that {0} had purchased.,誰かが{0}にかけられていた保険金を受け取ったようです。
+CrookInsuredChatAnnounce,Crook : {0} got {1} to sign up for insurance.,詐欺師 : {0}が {1} に保険を契約させました。
+CrookReceiveSetWinFlagChatAnnounce,It is possible to receive the insurance coverage that you have {0}.This is the {1}th time you have received the insurance money. \nReceipt of this insurance payment satisfies the win condition.,{0}にかけた保険金を受け取る事ができます。今回は{1}回目の受給です。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。\n今回の受給により勝利条件を達成します。
+CrookReceiveSuccessChatAnnounce,It is possible to receive the insurance coverage that you have {0}.This is the {1}th time you have received the insurance money. \nIf you are alive at the time of the expulsion process of the current meeting，you will receive the insurance benefit.\nTo win，you need to receive {2} more times.,{0}にかけた保険金を受け取る事ができます。今回は{1}回目の受給です。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。\n勝利するには 後{2}回受け取る必要があります。
+SaunerName,Sauner,サウナー,,三溫暖愛好者
+SaunerTitle1,Yeah，it's exhilarating.,あ～、ととのう～,,啊～，好舒服～
+SaunerDescription,The darkroom，showers，and observation deck，in that order，are the sole winners after spending a certain amount of time in each of these locations.,暗室、シャワー、展望デッキの順番で、それぞれの箇所で一定時間過ごすと単独勝利します。,,在蒸氣室、淋浴間、展望台中，依序待上一段時間，就能獨自獲勝。
+SaunerDarkroom,Darkroom,暗室,,蒸氣室
+SaunerShower,Shower,シャワー,,淋浴間
+SaunerObservationDeck,Observation deck,展望デッキ,,展望台
+SaunerTextInSauna,take a sauna,サウナに入る,,三溫暖
+SaunerTextShower,take a shower,シャワーを浴びる,,冷水浴
+SaunerTextAirBath,Take a refreshing outdoor bath!,外気浴でととのう,,外氣浴
+SaunerTextRemaing,({0} seconds remaining),(残り{0}秒),,(剩餘{0}秒)
+SaunerDarkroomTime,Sauna Length of Stay,サウナタイム,,三溫暖所需時間
+SaunerShowerTime,Time to take a shower,シャワータイム,,淋浴所需時間
+SaunerDeckTime,Outside air bath time,外気浴タイム,,外氣浴所需時間
+SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！,,三溫暖太爽了吧！
+RocketName,Rocket,ロケット,,火箭人
+RocketTitle1,Launch high into the sky!,空高く打ち上がれ！,,高高飛起來！
+RocketTitle2,Booooom!!!!!,ボーーーーン！,,轟轟轟！！！
+RocketDescription,You can grab other crew members and launch them upward for a kill at any time you like.\nYou can grab more than one crew member，but if the meeting is called before you launch，you will fail to launch.\nIf the meeting ends without expulsion，you can launch，but the victims will not remain silent.\nAlso，the launched crew will be visible to others.,他クルーを掴み、好きなタイミングで上に向かって打ち上げてキルすることが出来ます。\nクルーは複数人掴むことが出来ますが、打ち飛ばす前に会議が呼ばれると打ち上げ損なってしまいます。\n追放されずに会議が終了すれば打ち上げられますが、被害者たちが黙ってはいないでしょう。\nまた、打ち上げたクルーは他人目線でも見えてしまいます。,,你可以隨時抓住其他船員，然後將他們向上發射，進行擊殺。\n你可以抓住多個船員，但如果在發射前召開會議，你將無法發射火箭。\n如果會議結束後沒有被放逐，可以執行火箭發射，但注意受害者並不會保持沉默。\n此外，其他人可以看見被發射的船員。
+RocketSeizeButtonName,Catch,掴む,,上火箭
+RocketLetsButtonName,Boooom!!!,ボーーン！！！,,發射！！！
+RocketLetsButtonName2,WashUp,打ち上げる,,升空
+RocketButtonCooldownSetting,First catch cool time,最初に掴むクールタイム,,火箭人第一次抓人的冷卻時間
+RocketButtonAfterCooldown,Cool time to catch after the second time,二回目以降に掴むクールタイム,,火箭人第二次後抓人的冷卻時間
+RocketChargeTimeSetting,Rocket Chargetime,ロケットのチャージタイム,,火箭發射的冷卻時間
+WellBehaverName,Well Behaver,品行方正,,潔癖狂
+WellBehaverTitle1,Be sure to conduct yourself in a dignified manner.,品行方正な行いを心がけましょう,,我不想看到垃圾
+WellBehaverDescription,This position is a crew member but has no tasks.\nInstead， you must pick up trash that someone drops.\nWhen a certain number of trash accumulates， the person cannot stand it any longer and dies.,この役職はクルーですがタスクがありません\nその代わり、誰かが落としていくゴミを拾う必要があります\nゴミが一定数以上溜まると耐えきれなくなって死亡してしまいます,,潔癖狂屬於船員陣營，但沒有任務。\n作為替代，你必須撿起其他人丟下的垃圾。\n當垃圾累積到一定數量時，你將無法忍受髒亂而自殺。
+WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数,,潔癖狂能容許的垃圾的上限數量
+WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度,,垃圾被丟棄的頻率
+WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える,,所有玩家都可以看見垃圾
+WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う,,撿垃圾
+PokerfaceName,Pokerface,ポーカーフェイス,,撲克臉
+PokerfaceTitle1,Nothing，though?,なにもありませんけど？,,無事發生對吧？
+PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。,,撲克臉是由三人構成的職業。他們可以互相認出彼此！\n如果三人中有兩人死亡，而剩餘一人活到最後，那麼三人都將取得勝利！（依規則可能是只有活到最後的撲克臉獲勝）\n撲克臉沒有擊殺能力。如果三人中有兩人以上存活，那麼三人都將失敗。
+PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する,,只有活到最後的撲克臉才能獲勝。
 
 #NewRoleTranslation
 
