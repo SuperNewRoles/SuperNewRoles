@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
@@ -170,6 +171,25 @@ public class IntroPatch
                 }
             }
         }
+        public static void Postfix()
+        {
+            // 昇降右の影
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.ModifyGapRoomOneWayShadow.GetBool() && ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.GapRoom, out var gapRoom))
+            {
+                var gapRoomShadow = gapRoom.GetComponentInChildren<OneWayShadows>();
+                var amImpostorLight = PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.IsImpostorLight();
+                if (MapCustom.GapRoomShadowIgnoresImpostors.GetBool() && amImpostorLight)
+                {
+                    // オブジェクトを非アクティブにすると影判定自体が消えるのでどちらからでも見通せる
+                    gapRoomShadow.gameObject.SetActive(false);
+                }
+                else if (MapCustom.DisableGapRoomShadowForNonImpostor.GetBool() && !amImpostorLight)
+                {
+                    // OneWayShadowsを無効にしても影判定は残るので普通の壁のような双方向の影になる
+                    gapRoomShadow.enabled = false;
+                }
+            }
+        }
     }
 
     public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
@@ -289,6 +309,18 @@ public class IntroPatch
                         }
                         yourTeam = TheThreeLittlePigsTeams;
                         break;
+                    case RoleId.Pokerface:
+                        Il2CppSystem.Collections.Generic.List<PlayerControl> PokerfaceTeams = new();
+                        Pokerface.PokerfaceTeam team = Pokerface.GetPokerfaceTeam(PlayerControl.LocalPlayer.PlayerId);
+                        if (team != null)
+                        {
+                            foreach (var player in team.TeamPlayers)
+                            {
+                                PokerfaceTeams.Add(player);
+                            }
+                        }
+                        yourTeam = PokerfaceTeams;
+                        break;
                     default:
                         if (PlayerControl.LocalPlayer.IsImpostor())
                         {
@@ -336,7 +368,7 @@ public class IntroPatch
         string ImpostorText = __instance.ImpostorText.text;
         if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
         {
-            if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+            if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM, RoleId.Pokerface))
             {
                 IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 TeamTitle = ModTranslation.GetString("Neutral");
@@ -361,6 +393,7 @@ public class IntroPatch
                 {
                     case RoleId.SatsumaAndImo:
                     case RoleId.GM:
+                    case RoleId.Pokerface:
                         IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                         color = Intro.color;
                         TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");

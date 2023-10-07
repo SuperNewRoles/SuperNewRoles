@@ -85,11 +85,12 @@ class Celebrity
         /// <summary>
         /// タイマーを止める
         /// </summary>
-        public static void TimerStop()
+        public static void TimerStop(bool isEndGame = false)
         {
             if (timer == null) return;
 
             timer.Stop();
+            if (isEndGame) timer.Dispose();
             Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
         }
     }
@@ -103,8 +104,10 @@ public class CelebrityTimerStop
     /// </summary>
     public static void Postfix()
     {
-        Celebrity.AbilityOverflowingBrilliance.TimerStop();
-        Neutral.TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
-        Impostor.MadRole.MadRaccoon.Button.ResetShapeDuration(false);
+        const bool isEndGame = true;
+        Celebrity.AbilityOverflowingBrilliance.TimerStop(isEndGame);
+        Neutral.TheThreeLittlePigs.TheFirstLittlePig.TimerStop(isEndGame);
+        Impostor.MadRole.MadRaccoon.Button.ResetShapeDuration(false, isEndGame);
+        Neutral.Crook.Ability.TimerStop(isEndGame);
     }
 }

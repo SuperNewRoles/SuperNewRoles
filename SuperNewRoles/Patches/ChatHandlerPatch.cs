@@ -66,7 +66,7 @@ public class AmongUsClientOnPlayerJoinedPatch
                 {
                     if (!__instance.myPlayer.IsBot())
                     {
-                        AddChatPatch.SendCommand(__instance.myPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+                        AddChatPatch.SendCommand(__instance.myPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by TeamSuperNewRoles{betatext}");
                     }
                 }, 2f, "Welcome Beta Message");
             }
@@ -812,7 +812,7 @@ class AddChatPatch
     {
         string line = "|--------------------------------------------------------|";
         string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
-        string contents = $"\n{infoContents}\n　\n";
+        string contents = $"\n<align={"left"}>{infoContents}</align>\n　\n";
 
         SendCommand(target, contents, name);
     }

@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -25,7 +25,6 @@ using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 
@@ -516,8 +515,8 @@ static class CheckMurderPatch
                 target.MyPhysics.Animations.IsPlayingAnyLadderAnimation() ||
                 target.inMovingPlat ||
                 MeetingHud.Instance != null ||
-                (!RoleClass.IsStart &&
-                AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
+                (!RoleClass.IsStart && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) ||
+                AirShipRandomSpawn.IsLoaded
            )
         {
             return false;
@@ -815,7 +814,7 @@ static class CheckMurderPatch
                         }
                         if (currentTarget == null)
                         {
-                            Logger.Info("ペンギンを追加しました。:"+__instance.PlayerId.ToString()+":"+target.PlayerId.ToString()+":"+RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
+                            Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
                             RoleClass.Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
                             target.RpcSnapTo(__instance.transform.position);
                             return false;
@@ -1006,6 +1005,20 @@ public static class MurderPlayerPatch
             target.protectedByGuardian = true;
             return false;
         }
+        if (target.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(target))
+        {
+            if (__instance.AmOwner)
+            {
+                if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.KillSfx, false, 0.8f, null);
+                __instance.NetTransform.RpcSnapTo(target.transform.position);
+            }
+            if (target.AmOwner)
+            {
+                Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[target.PlayerId].ParentId, target.GetTruePosition());
+                Frankenstein.SetMonsterPlayer(target.PlayerId);
+            }
+            return false;
+        }
         if (target.IsRole(RoleId.WiseMan) && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
         {
             WiseMan.WiseManData[target.PlayerId] = null;
@@ -1058,16 +1071,12 @@ public static class MurderPlayerPatch
             }
             else if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                if (__instance.IsRole(RoleId.EvilGambler))
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    if (RoleClass.EvilGambler.GetSuc())
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
-                    }
-                    else
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
-                    }
+                    case RoleId.EvilGambler:
+                        if (RoleClass.EvilGambler.GetSuc()) PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
+                        else PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
+                        break;
                 }
             }
 
@@ -1119,8 +1128,8 @@ public static class MurderPlayerPatch
 
         // FIXME:狐キル時にはキルクールリセットが発生しないようにして, この処理は死体が発生した時の処理にしたい。
         SerialKiller.MurderPlayer(__instance, target);
-        if (target.IsRole(RoleId.Fox) && !RoleClass.Fox.Killer.ContainsKey(__instance.PlayerId))
-            RoleClass.Fox.Killer.Add(__instance.PlayerId, true);
+        if (target.IsRole(RoleId.Fox) && !RoleClass.Fox.Killer.Contains(__instance.PlayerId))
+            RoleClass.Fox.Killer[__instance.PlayerId] = true;
 
 
         if (IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())
@@ -1398,6 +1407,15 @@ public static class ExilePlayerPatch
                     causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 }
             }
+            if (__instance.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(__instance))
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
+                writer.Write(__instance.PlayerId);
+                writer.EndRPC();
+                RPCProcedure.ReviveRPC(__instance.PlayerId);
+                Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[__instance.PlayerId].ParentId, __instance.GetTruePosition());
+                Frankenstein.SetMonsterPlayer(__instance.PlayerId);
+            }
             if (RoleClass.Lovers.SameDie && __instance.IsLovers())
             {
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -1419,6 +1437,12 @@ public static class ExilePlayerPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
 class ReportDeadBodyPatch
 {
+    public static byte MeetingTurn_Now { get; private set; }
+    public static void ClearAndReloads()
+    {
+        MeetingTurn_Now = 0;
+    }
+
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
     {
         if (__instance.IsRole(RoleId.GM))
@@ -1472,7 +1496,7 @@ class ReportDeadBodyPatch
                 if (isGetLightAndDarker)
                 {
                     string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), firstPerson,
-                        CustomColors.lighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
+                        CustomColors.LighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
                     new LateTask(() =>
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
@@ -1512,6 +1536,18 @@ class ReportDeadBodyPatch
             : !ModeHandler.IsMode(ModeId.Zombie)
             && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId));
     }
+
+    public static void Postfix()
+    {
+        if (!AmongUsClient.Instance.AmHost) return; // ホスト以外此処は読まないが, バニラ側の使用が変更された時に問題が起きないように ホスト以外はreturnする。
+        MeetingTurn_Now++;
+
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SendMeetingTurnNow);
+        writer.Write(MeetingTurn_Now);
+        writer.EndRPC();
+    }
+
+    public static void SaveMeetingTurnNow(byte nowTurn) => MeetingTurn_Now = nowTurn;
 }
 public static class PlayerControlFixedUpdatePatch
 {

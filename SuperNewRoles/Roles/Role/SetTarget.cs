@@ -22,6 +22,11 @@ public static class SetTarget
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
             return;
         }
+        else if (PlayerControl.LocalPlayer.IsRole(RoleId.Rocket))
+        {
+            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+            return;
+        }
         List<PlayerControl> untarget = new();
         untarget.AddRange(RoleClass.SideKiller.MadKillerPlayer);
         untarget.AddRange(RoleClass.Spy.SpyPlayer);

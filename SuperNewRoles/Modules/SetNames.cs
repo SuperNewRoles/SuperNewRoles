@@ -524,6 +524,16 @@ public class SetNameUpdate
                         SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Key));
                     }
                     break;
+                case RoleId.Pokerface:
+                    Pokerface.PokerfaceTeam team = Pokerface.GetPokerfaceTeam(PlayerControl.LocalPlayer.PlayerId);
+                    if (team != null)
+                    {
+                        foreach (PlayerControl member in team.TeamPlayers)
+                        {
+                            SetNamesClass.SetPlayerNameColor(member, Pokerface.RoleData.color);
+                        }
+                    }
+                    break;
             }
             if (PlayerControl.LocalPlayer.IsImpostor())
             {
@@ -576,7 +586,7 @@ public class SetNameUpdate
 
         if (RoleClass.PartTimer.Data.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
         {
-            PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Data.GetKey(CachedPlayer.LocalPlayer.PlayerId));
+            PlayerControl PartTimerTarget = RoleClass.PartTimer.Data.GetPCByValue(PlayerControl.LocalPlayer.PlayerId);
             SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
             SetNamesClass.SetPlayerNameColors(PartTimerTarget);
         }

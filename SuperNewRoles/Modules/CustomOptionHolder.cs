@@ -49,6 +49,8 @@ public class CustomOptionHolder
     public static CustomOption DisconnectNotPCOption;
     public static CustomOption DisconnectDontHaveFriendCodeOption;
 
+    public static CustomOption ProhibitModColor;
+
     public static CustomOption IsOldMode;
 
     public static CustomOption DetectiveRate;
@@ -702,6 +704,12 @@ public class CustomOptionHolder
     public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
     public static CustomOption EvilHackerMadmateSetting;
     public static CustomOption EvilHackerButtonCooldown;
+    public static CustomOption EvilHackerHasEnhancedAdmin;
+    public static CustomOption EvilHackerCanSeeImpostorPositions;
+    public static CustomOption EvilHackerCanSeeDeadBodyPositions;
+    public static CustomOption EvilHackerCanUseAdminDuringMeeting;
+    public static CustomOption EvilHackerSabotageMapShowsAdmin;
+    public static CustomOption EvilHackerMapShowsDoorState;
 
     public static CustomRoleOption SecretlyKillerOption;
     public static CustomOption SecretlyKillerPlayerCount;
@@ -1037,6 +1045,8 @@ public class CustomOptionHolder
         DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
         DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectDontHaveFriendCode"), true, null, isHeader: true);
 
+        ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "ProhibitModColor"), false, null, isHeader: true);
+
         enableAgartha = Create(101000, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
         GMOption = Create(101100, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
@@ -1089,6 +1099,12 @@ public class CustomOptionHolder
         EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
         EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
         EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
+        EvilHackerHasEnhancedAdmin = Create(200306, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, EvilHackerOption);
+        EvilHackerCanSeeImpostorPositions = Create(200307, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, EvilHackerHasEnhancedAdmin);
+        EvilHackerCanSeeDeadBodyPositions = Create(200308, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, EvilHackerHasEnhancedAdmin);
+        EvilHackerCanUseAdminDuringMeeting = Create(200309, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringMeeting", true, EvilHackerOption);
+        EvilHackerSabotageMapShowsAdmin = Create(200310, false, CustomOptionType.Impostor, "EvilHackerSabotageMapShowsAdmin", true, EvilHackerOption);
+        EvilHackerMapShowsDoorState = Create(200311, false, CustomOptionType.Impostor, "EvilHackerMapShowsDoorState", true, EvilHackerOption);
 
         EvilSeer.CustomOptionData.SetupCustomOptions();
 
@@ -1109,6 +1125,8 @@ public class CustomOptionHolder
         PenguinDurationTime = Create(200603, true, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinCanDefaultKill = Create(200604, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
         PenguinMeetingKill = Create(200605, true, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
+
+        Rocket.CustomOptionData.SetupCustomOptions();
 
         DoppelgangerOption = SetupCustomRoleOption(200700, true, RoleId.Doppelganger);
         DoppelgangerPlayerCount = Create(200701, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
@@ -1424,6 +1442,22 @@ public class CustomOptionHolder
         HitmanIsArrowView = Create(303207, false, CustomOptionType.Neutral, "HitmanIsTargetArrow", true, HitmanOption);
         HitmanArrowUpdateTime = Create(303208, false, CustomOptionType.Neutral, "HitmanUpdateTargetArrowTime", 0f, 0f, 120f, 2.5f, HitmanIsArrowView);
 
+        ArsonistOption = SetupCustomRoleOption(302400, true, RoleId.Arsonist);
+        ArsonistPlayerCount = Create(302401, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);
+        ArsonistCoolTime = Create(302402, true, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, ArsonistOption, format: "unitSeconds");
+        ArsonistDurationTime = Create(302403, true, CustomOptionType.Neutral, "ArsonistDurationTimeSetting", 3f, 0.5f, 10f, 0.5f, ArsonistOption, format: "unitSeconds");
+        ArsonistIsUseVent = Create(302404, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, ArsonistOption);
+
+        VultureOption = SetupCustomRoleOption(302000, false, RoleId.Vulture);
+        VulturePlayerCount = Create(302001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
+        VultureCooldown = Create(302002, false, CustomOptionType.Neutral, "VultureCooldownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
+        VultureDeadBodyMaxCount = Create(302003, false, CustomOptionType.Neutral, "VultureDeadBodyCountSetting", 3f, 1f, 6f, 1f, VultureOption);
+        VultureIsUseVent = Create(302004, false, CustomOptionType.Neutral, "MadmateUseVentSetting", true, VultureOption);
+        VultureShowArrows = Create(302005, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, VultureOption);
+
+        OpportunistOption = SetupCustomRoleOption(302100, true, RoleId.Opportunist);
+        OpportunistPlayerCount = Create(302101, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);
+
         JesterOption = SetupCustomRoleOption(300500, true, RoleId.Jester);
         JesterPlayerCount = Create(300501, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
         JesterIsVent = Create(300502, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, JesterOption);
@@ -1435,7 +1469,11 @@ public class CustomOptionHolder
         JesterShortTask = jesteroption.Item2;
         JesterLongTask = jesteroption.Item3;
 
+        Crook.CustomOptionData.SetupCustomOptions();
+
         Sauner.CustomOptionData.SetupCustomOptions();
+
+        Pokerface.CustomOptionData.SetupCustomOptions();
 
         trueloverOption = SetupCustomRoleOption(300600, true, RoleId.truelover);
         trueloverPlayerCount = Create(300601, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], trueloverOption);
@@ -1512,16 +1550,6 @@ public class CustomOptionHolder
         FalseChargesExileTurn = Create(301902, true, CustomOptionType.Neutral, "FalseChargesExileTurn", 2f, 1f, 10f, 1f, FalseChargesOption);
         FalseChargesCoolTime = Create(301903, true, CustomOptionType.Neutral, "FalseChargesCoolTime", 15f, 0f, 75f, 2.5f, FalseChargesOption);
 
-        VultureOption = SetupCustomRoleOption(302000, false, RoleId.Vulture);
-        VulturePlayerCount = Create(302001, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
-        VultureCooldown = Create(302002, false, CustomOptionType.Neutral, "VultureCooldownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
-        VultureDeadBodyMaxCount = Create(302003, false, CustomOptionType.Neutral, "VultureDeadBodyCountSetting", 3f, 1f, 6f, 1f, VultureOption);
-        VultureIsUseVent = Create(302004, false, CustomOptionType.Neutral, "MadmateUseVentSetting", true, VultureOption);
-        VultureShowArrows = Create(302005, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, VultureOption);
-
-        OpportunistOption = SetupCustomRoleOption(302100, true, RoleId.Opportunist);
-        OpportunistPlayerCount = Create(302101, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);
-
         EgoistOption = SetupCustomRoleOption(302200, true, RoleId.Egoist);
         EgoistPlayerCount = Create(302201, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EgoistOption);
         EgoistUseVent = Create(302202, true, CustomOptionType.Neutral, "EgoistUseVentSetting", false, EgoistOption);
@@ -1535,12 +1563,6 @@ public class CustomOptionHolder
         DemonIsUseVent = Create(302304, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, DemonOption);
         DemonIsCheckImpostor = Create(302305, true, CustomOptionType.Neutral, "MadmateIsCheckImpostorSetting", false, DemonOption);
         DemonIsAliveWin = Create(302306, true, CustomOptionType.Neutral, "DemonIsAliveWinSetting", false, DemonOption);
-
-        ArsonistOption = SetupCustomRoleOption(302400, true, RoleId.Arsonist);
-        ArsonistPlayerCount = Create(302401, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);
-        ArsonistCoolTime = Create(302402, true, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, ArsonistOption, format: "unitSeconds");
-        ArsonistDurationTime = Create(302403, true, CustomOptionType.Neutral, "ArsonistDurationTimeSetting", 3f, 0.5f, 10f, 0.5f, ArsonistOption, format: "unitSeconds");
-        ArsonistIsUseVent = Create(302404, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, ArsonistOption);
 
         NeetOption = SetupCustomRoleOption(302500, false, RoleId.Neet);
         NeetPlayerCount = Create(302501, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NeetOption);
@@ -1592,6 +1614,8 @@ public class CustomOptionHolder
         BlackHatHacker.SetupCustomOptions();
 
         Moira.SetupCustomOptions();
+
+        Frankenstein.SetupCustomOptions();
 
         // SetupNeutralCustomOptions
 
@@ -1655,6 +1679,8 @@ public class CustomOptionHolder
         Pteranodon.SetupCustomOptions();
 
         JumpDancer.SetupCustomOptions();
+
+        WellBehaver.SetupCustomOptions();
 
         Balancer.SetupCustomOptions();
 
@@ -2065,22 +2091,15 @@ public class CustomOptionHolder
 
         Logger.Info("---------- CustomOption Id Info start ----------", "CustomOptionId Info");
 
-        Logger.Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(GenericIdMax), "Generic");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(ImpostorIdMax), "Impostor");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(NeutralIdMax), "Neutral");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(CrewmateIdMax), "Crewmate");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(ModifierIdMax), "Modifier");
-        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(MatchingTagIdMax), "MatchingTag");
-
-        Logger.Info("---------- SettingId Info----------", "SettingId Info");
-        Logger.Info("CustomOptionのIdのMax:" + GenericIdMax, "Generic");
-        Logger.Info("CustomOptionのIdのMax:" + ImpostorIdMax, "Impostor");
-        Logger.Info("CustomOptionのIdのMax:" + NeutralIdMax, "Neutral");
-        Logger.Info("CustomOptionのIdのMax:" + CrewmateIdMax, "Crewmate");
-        Logger.Info("CustomOptionのIdのMax:" + ModifierIdMax, "Modifier");
-        Logger.Info("CustomOptionのIdのMax:" + MatchingTagIdMax, "MatchingTag");
         Logger.Info("設定数:" + options.Count);
+
+        Logger.Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
+        Logger.Info($"SettingRoleIdのMax: 1 - {GetRoleSettingid(GenericIdMax)}", "Generic ");
+        Logger.Info($"SettingRoleIdのMax: 2 - {GetRoleSettingid(ImpostorIdMax)}", "Impostor");
+        Logger.Info($"SettingRoleIdのMax: 3 - {GetRoleSettingid(NeutralIdMax)}", "Neutral ");
+        Logger.Info($"SettingRoleIdのMax: 4 - {GetRoleSettingid(CrewmateIdMax)}", "Crewmate");
+        Logger.Info($"SettingRoleIdのMax: 5 - {GetRoleSettingid(ModifierIdMax)}", "Modifier");
+        Logger.Info($"SettingRoleIdのMax: 6 - {GetRoleSettingid(MatchingTagIdMax)}", "MatchingTag");
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
         /*
@@ -2099,5 +2118,11 @@ public class CustomOptionHolder
         OPTIONDATA += "}";
         GUIUtility.systemCopyBuffer = OPTIONDATA;*/
     }
-    private static int GetRoleSettingid(int maxId) => maxId / 100;
+
+    /// <summary>
+    /// 各分類毎の最終設定Idを取得する
+    /// </summary>
+    /// <param name="maxId">処理したい6桁の設定Id</param>
+    /// <returns></returns>
+    private static string GetRoleSettingid(int maxId) => $"{maxId / 100}"[1..];
 }

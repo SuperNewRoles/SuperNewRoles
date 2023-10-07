@@ -31,7 +31,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public const bool IsSecretBranch = false; // プルリク時にtrueなら指摘してください
     public const bool IsHideText = false; // プルリク時にtrueなら指摘してください
 
-    public const string ModUrl = "ykundesu/SuperNewRoles";
+    public const string ModUrl = "SuperNewRoles/SuperNewRoles";
     public const string MasterBranch = "master";
     public static string ModName => IsApril() ? "SuperNakanzinoRoles" : "SuperNewRoles";
     public static string ColorModName => $"<color=#ffa500>Super</color><color=#ff0000>{(IsApril() ? "Nakanzino" : "New")}</color><color=#00ff00>Roles</color>";
@@ -132,13 +132,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ThisPluginModName = IL2CPPChainloader.Instance.Plugins.FirstOrDefault(x => x.Key == "jp.ykundesu.supernewroles").Value.Metadata.Name;
 
         //Register Il2cpp
-        Logger.LogInfo("a");
         ClassInjector.RegisterTypeInIl2Cpp<CustomAnimation>();
-        Logger.LogInfo("b");
         ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
-        Logger.LogInfo("c");
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonObject>();
-        Logger.LogInfo("d");
+        ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
     }
 
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
@@ -148,7 +145,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
             if (ModHelpers.IsCustomServer()) return;
-            __result = Constants.GetVersion(2222, 0, 0, 0);
+            __result += 25;
         }
     }
 

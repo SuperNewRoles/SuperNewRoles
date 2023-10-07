@@ -31,23 +31,16 @@ public static class Arsonist
         }
     }
 
-    public static List<PlayerControl> GetDouseData(this PlayerControl player)
-    {
-        return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : new();
-    }
+    public static List<PlayerControl> GetDouseData(this PlayerControl player) =>
+        RoleClass.Arsonist.DouseData[player.PlayerId];
 
-    public static List<PlayerControl> GetUntarget()
-    {
-        return RoleClass.Arsonist.DouseData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
-            ? RoleClass.Arsonist.DouseData[CachedPlayer.LocalPlayer.PlayerId]
-            : (new());
-    }
+    public static List<PlayerControl> GetUntarget() => GetDouseData(PlayerControl.LocalPlayer);
 
     public static bool IsDoused(this PlayerControl source, PlayerControl target)
     {
         if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
         if (source.PlayerId == target.PlayerId) return true;
-        if (RoleClass.Arsonist.DouseData.ContainsKey(source.PlayerId))
+        if (RoleClass.Arsonist.DouseData.Contains(source.PlayerId))
         {
             if (RoleClass.Arsonist.DouseData[source.PlayerId].IsCheckListPlayerControl(target))
             {
@@ -60,12 +53,12 @@ public static class Arsonist
     public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
     {
         if (player == null) player = PlayerControl.LocalPlayer;
-        return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : (new());
+        return RoleClass.Arsonist.DouseData[player.PlayerId];
     }
     public static bool IsViewIcon(PlayerControl player)
     {
         if (player == null) return false;
-        foreach (var data in RoleClass.Arsonist.DouseData)
+        foreach (KeyValuePair<byte, List<PlayerControl>> data in RoleClass.Arsonist.DouseData)
         {
             foreach (PlayerControl Player in data.Value)
             {
@@ -156,7 +149,7 @@ public static class Arsonist
 
     public static void SettingAfire()
     {
-        foreach (var data in RoleClass.Arsonist.DouseData)
+        foreach (KeyValuePair<byte, List<PlayerControl>> data in RoleClass.Arsonist.DouseData)
         {
             foreach (PlayerControl player in data.Value)
             {

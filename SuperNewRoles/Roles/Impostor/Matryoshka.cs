@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
@@ -8,16 +9,15 @@ public static class Matryoshka
 {
     public static void FixedUpdate()
     {
-        foreach (var Data in RoleClass.Matryoshka.Data)
+        foreach (KeyValuePair<PlayerControl, DeadBody> Data in (Dictionary<PlayerControl, DeadBody>)RoleClass.Matryoshka.Data)
         {
             if (Data.Value == null) continue;
             Data.Value.Reported = !CustomOptionHolder.MatryoshkaWearReport.GetBool();
             foreach (SpriteRenderer deadbody in Data.Value.bodyRenderers) deadbody.enabled = false;
-            PlayerControl player = ModHelpers.PlayerById(Data.Key);
-            Data.Value.transform.position = player.transform.position;
-            if (!player.IsRole(RoleId.Matryoshka))
+            Data.Value.transform.position = Data.Key.transform.position;
+            if (!Data.Key.IsRole(RoleId.Matryoshka))
             {
-                Set(player, null, false);
+                Set(Data.Key, null, false);
             }
         }
     }
@@ -37,7 +37,7 @@ public static class Matryoshka
         }
         if (!Is)
         {
-            if (RoleClass.Matryoshka.Data.ContainsKey(source.PlayerId))
+            if (RoleClass.Matryoshka.Data.Contains(source.PlayerId))
             {
                 if (RoleClass.Matryoshka.Data[source.PlayerId] != null)
                 {

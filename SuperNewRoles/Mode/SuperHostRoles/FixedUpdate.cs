@@ -105,7 +105,7 @@ public static class FixedUpdate
         Dictionary<byte, string> ChangePlayers = new();
 
         // スターパッシブ能力 [ カリスマ ] の処理
-        if (RoleClass.Celebrity.ChangeRoleView) // [ ]MEMO
+        if (RoleClass.Celebrity.ChangeRoleView)
         {
             foreach (PlayerControl viewPlayer in RoleClass.Celebrity.ViewPlayers)
             {
@@ -237,7 +237,7 @@ public static class FixedUpdate
                 }
             }
         }
-        else if (player.IsRole(RoleId.Finder) && RoleClass.Finder.KillCounts.ContainsKey(player.PlayerId) && RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
+        else if (player.IsRole(RoleId.Finder) && RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
         {
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
@@ -251,6 +251,21 @@ public static class FixedUpdate
                     {
                         ChangePlayers[Player.PlayerId] = ModHelpers.Cs(RoleClass.ImpostorRed, ChangePlayers[Player.PlayerId]);
                     }
+                }
+            }
+        }
+        else if (player.IsRole(RoleId.Pokerface))
+        {
+            Pokerface.PokerfaceTeam pokerfaceTeam = Pokerface.GetPokerfaceTeam(player);
+            if (pokerfaceTeam != null)
+            {
+                foreach (PlayerControl pokerplayer in pokerfaceTeam.TeamPlayers)
+                {
+                    if (pokerplayer.PlayerId == player.PlayerId)
+                        continue;
+                    if (!ChangePlayers.ContainsKey(pokerplayer.PlayerId))
+                        ChangePlayers.Add(pokerplayer.PlayerId, pokerplayer.GetDefaultName());
+                    ChangePlayers[pokerplayer.PlayerId] = ModHelpers.Cs(Pokerface.RoleData.color, ChangePlayers[pokerplayer.PlayerId]);
                 }
             }
         }
