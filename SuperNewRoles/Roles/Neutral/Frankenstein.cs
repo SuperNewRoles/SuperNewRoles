@@ -152,7 +152,8 @@ public class Frankenstein
     {
         if (!player) return false;
         byte id = player.PlayerId;
-        return MonsterPlayer.Contains(id);
+        if (!MonsterPlayer.TryGetValue(id, out DeadBody body)) return false;
+        return body;
     }
     /// <summary>
     /// 他の人がモンスターをキルした時に処理する
