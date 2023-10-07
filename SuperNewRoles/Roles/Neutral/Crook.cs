@@ -191,55 +191,6 @@ public static class Crook
                     AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), announce, "#60a1bd"); // 初ターンは役職説明の上に表示される為, このアナウンスに気づかない事があるがそれは仕様とする。
                 }
             }
-
-            CountDownTimer = new Timer(1000);
-            CountDownTimer.Elapsed += (source, e) =>
-            {
-                if (AbilityCountDown > 0)
-                {
-                    AbilityCountDown--;
-                    if (AbilityCountDown <= 5) // 残り5秒目から
-                    {
-                        if (isClientMode) // クライアントモードなら 終了警告音を鳴らす
-                        {
-                            SoundManager.Instance.PlaySound(MeetingHud.Instance.VoteEndingSound, false, 1f, null).pitch = Mathf.Lerp(1.5f, 0.8f, AbilityCountDown / 10f);
-                        }
-                        else // ホストモードなら カウントダウンを表示させる。
-                        {
-                            InHostMode.IsAllladyCountdownToSecond = new();
-                        }
-                    }
-                }
-                else
-                {
-                    if (isClientMode)
-                    {
-                        TimerStop();
-                    }
-                    else
-                    {
-                        TimerStop(isStartGraceTimeTimer: true);
-                        InHostMode.SetGraceTimeTimer();
-                    }
-                }
-            };
-            CountDownTimer.AutoReset = AbilityCountDown >= 0;
-            CountDownTimer.Enabled = true;
-
-            ChangeBlueTimer = new(250); // 0.25秒間隔で文字を点滅する
-            ChangeBlueTimer.Elapsed += (source, e) =>
-            {
-                if (AbilityCountDown > 5)
-                {
-                    IsChangeBlue = false; // 残り5秒目までは文字色は白
-                }
-                else
-                {
-                    IsChangeBlue ^= true; // 文字色を点滅させる
-                }
-            };
-            ChangeBlueTimer.AutoReset = AbilityCountDown > 0;
-            ChangeBlueTimer.Enabled = true;
         }
 
         /// <summary>
@@ -417,6 +368,58 @@ public static class Crook
                     AllladyDead = true;
                     return;
                 }
+
+                bool isClientMode = ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf);
+
+                CountDownTimer = new Timer(1000);
+                CountDownTimer.Elapsed += (source, e) =>
+                {
+                    if (AbilityCountDown > 0)
+                    {
+                        AbilityCountDown--;
+                        if (AbilityCountDown <= 5) // 残り5秒目から
+                        {
+                            if (isClientMode) // クライアントモードなら 終了警告音を鳴らす
+                            {
+                                SoundManager.Instance.PlaySound(MeetingHud.Instance.VoteEndingSound, false, 1f, null).pitch = Mathf.Lerp(1.5f, 0.8f, AbilityCountDown / 10f);
+                            }
+                            else // ホストモードなら カウントダウンを表示させる。
+                            {
+                                InHostMode.IsAllladyCountdownToSecond = new();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (isClientMode)
+                        {
+                            TimerStop();
+                        }
+                        else
+                        {
+                            TimerStop(isStartGraceTimeTimer: true);
+                            InHostMode.SetGraceTimeTimer();
+                        }
+                    }
+                };
+
+                CountDownTimer.AutoReset = AbilityCountDown >= 0;
+                CountDownTimer.Enabled = true;
+
+                ChangeBlueTimer = new(250); // 0.25秒間隔で文字を点滅する
+                ChangeBlueTimer.Elapsed += (source, e) =>
+                {
+                    if (AbilityCountDown > 5)
+                    {
+                        IsChangeBlue = false; // 残り5秒目までは文字色は白
+                    }
+                    else
+                    {
+                        IsChangeBlue ^= true; // 文字色を点滅させる
+                    }
+                };
+                ChangeBlueTimer.AutoReset = AbilityCountDown > 0;
+                ChangeBlueTimer.Enabled = true;
 
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
