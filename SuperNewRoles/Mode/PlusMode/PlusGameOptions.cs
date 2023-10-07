@@ -14,10 +14,6 @@ class PlusGameOptions
 
     public static CustomOption CanGhostSeeVote;
 
-    public static CustomOption IsAlwaysReduceCooldown;
-    public static CustomOption IsAlwaysReduceCooldownExceptInVent;
-    public static CustomOption IsAlwaysReduceCooldownExceptOnTask;
-
     public static CustomOption LadderDead;
     public static CustomOption LadderDeadChance;
 
@@ -43,10 +39,6 @@ class PlusGameOptions
         OnlyImpostorGhostSeeRole = Create(103601, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanNotGhostSeeRole);
 
         CanGhostSeeVote = Create(103700, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
-
-        IsAlwaysReduceCooldown = Create(103800, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, PlusGameOptionSetting, isHeader: true);
-        IsAlwaysReduceCooldownExceptInVent = Create(103801, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
-        IsAlwaysReduceCooldownExceptOnTask = Create(103802, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
         LadderDead = Create(103900, true, CustomOptionType.Generic, "LadderDead", false, PlusGameOptionSetting, isHeader: true);
         LadderDeadChance = Create(103901, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);

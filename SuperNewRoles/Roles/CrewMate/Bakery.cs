@@ -1,3 +1,4 @@
+using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -9,7 +10,7 @@ namespace SuperNewRoles.Roles;
 [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
 public class Bakery
 {
-    private static TMPro.TextMeshPro breadText;
+    private static TMPro.TextMeshPro confirmImpostorSecondText;
     public static bool Prefix(
         ExileController __instance,
         [HarmonyArgument(0)] ref GameData.PlayerInfo exiled,
@@ -126,41 +127,73 @@ public class Bakery
         return false;
     }
     static bool IsSec;
-    //生存判定
+    // 生存判定
     public static bool BakeryAlive()
     {
+        if (RoleClass.Bakery.BakeryPlayer.Count <= 0) return false;
+
         foreach (PlayerControl p in RoleClass.Bakery.BakeryPlayer)
         {
             if (p.IsAlive())
             {
-                SuperNewRolesPlugin.Logger.LogInfo("パン屋が生きていると判定されました");
+                Logger.Info("パン屋が生きていると判定されました");
                 return true;
             }
         }
-        SuperNewRolesPlugin.Logger.LogInfo("パン屋が生きていないと判定されました");
+        Logger.Info("パン屋が生きていないと判定されました");
         return false;
     }
     public static string GetExileText()
     {
-        //翻訳
+        // 翻訳
         var rand = new System.Random();
         return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
     }
 
     static void Postfix(ExileController __instance)
     {
-        breadText = UnityEngine.Object.Instantiate(                                             //文字定義
+        // 文字定義
+        confirmImpostorSecondText = Object.Instantiate(
                 __instance.ImpostorText,
                 __instance.Text.transform);
-        breadText.text = GetExileText();                                                        //文字の内容を変える
-        bool isBakeryAlive = BakeryAlive();                                                     //Boolの取得(生存判定)
-        if (isBakeryAlive)                                                                      //if文(Bakeryが生きていたら実行)
+
+        StringBuilder changeStringBuilder = new(); // 変更する文字を, 一時的に保管する。
+        bool isUseConfirmImpostorSecondText = false; // 2つ目の追放テキストとして記載する内容はあるかを保存する
+
+        bool isBakeryAlive = BakeryAlive(); // パン屋 生存判定
+        (bool, string) isCrookGetInsure = Neutral.Crook.Ability.GetIsReceivedTheInsuranceAndAnnounce(); // 詐欺師 保険金受給判定
+
+        // |:========== 2段目の追放確認テキスト 取得 ==========:|
+
+        if (isBakeryAlive) // パン屋 生存していたら実行
         {
-            SuperNewRolesPlugin.Logger.LogInfo("パン屋がパンを焼きました");                     //ログ
-            if (GameManager.Instance.LogicOptions.currentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor)) breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
-            else breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
-            breadText.gameObject.SetActive(true);                                               //文字の表示
+            Logger.Info("パン屋がパンを焼きました", "ConfirmImpostorSecondText"); // ログ
+            isUseConfirmImpostorSecondText = true;
+            changeStringBuilder.AppendLine(GetExileText());
         }
+
+        if (isCrookGetInsure.Item1) // 詐欺師 保険金受給していたら実行
+        {
+            Logger.Info("詐欺師が保険金を受け取りました", "ConfirmImpostorSecondText"); // ログ
+            isUseConfirmImpostorSecondText = true;
+            changeStringBuilder.AppendLine(isCrookGetInsure.Item2);
+        }
+
+        // |:========== 2段目の追放確認テキスト 表示 ==========:|
+
+        if (isUseConfirmImpostorSecondText)
+        {
+            // 文字位置変更
+            if (GameManager.Instance.LogicOptions.currentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor))
+                confirmImpostorSecondText.transform.localPosition += new Vector3(0f, -0.4f, 0f);
+            else confirmImpostorSecondText.transform.localPosition += new Vector3(0f, -0.2f, 0f);
+
+            confirmImpostorSecondText.text = changeStringBuilder.ToString(); // 文字の内容を変える
+            confirmImpostorSecondText.gameObject.SetActive(true); // 文字の表示
+        }
+
+        // |:================================================:|
+
         if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance.exiled?.PlayerId == Balancer.targetplayerleft.PlayerId)
         {
             __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
@@ -173,7 +206,7 @@ public class Bakery
     {
         static void Postfix()
         {
-            breadText.gameObject.SetActive(false);
+            confirmImpostorSecondText.gameObject.SetActive(false);
         }
     }
 }

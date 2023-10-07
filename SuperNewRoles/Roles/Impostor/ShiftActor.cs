@@ -95,7 +95,12 @@ public static class ShiftActor
                 }
                 else if (target.IsQuarreled())
                 {
-                    TargetRoleText += ModHelpers.Cs(RoleClass.Quarreled.color, "○"); //　クラード
+                    TargetRoleText += ModHelpers.Cs(Quarreled.color, "○"); //　クラード
+                }
+
+                if (target.IsHauntedWolf())
+                {
+                    TargetRoleText += $" + {ModHelpers.Cs(Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}";
                 }
             }
         }
