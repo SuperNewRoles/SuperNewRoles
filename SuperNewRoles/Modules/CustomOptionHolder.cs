@@ -1152,6 +1152,8 @@ public class CustomOptionHolder
         VampireDependentsKillCoolTime = Create(200906, false, CustomOptionType.Impostor, "VampireDependentsKillCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
         VampireDependentsCanVent = Create(200907, false, CustomOptionType.Impostor, "VampireDependentsCanVent", true, VampireCanCreateDependents);
 
+        Spider.CustomOptionData.SetupCustomOptions();
+      
         Bat.CustomOptionData.SetupCustomOptions();
 
         KunoichiOption = SetupCustomRoleOption(201000, false, RoleId.Kunoichi);

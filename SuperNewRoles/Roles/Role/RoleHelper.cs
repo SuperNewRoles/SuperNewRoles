@@ -979,6 +979,9 @@ public static class RoleHelpers
             case RoleId.Pokerface:
                 Pokerface.RoleData.Player.Add(player);
                 break;
+            case RoleId.Spider:
+                Spider.RoleData.Player.Add(player);
+                break;
             case RoleId.Crook:
                 Crook.RoleData.Player.Add(player);
                 break;
@@ -1532,6 +1535,9 @@ public static class RoleHelpers
             case RoleId.Pokerface:
                 Pokerface.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Spider:
+                Spider.RoleData.Player.RemoveAll(ClearRemove);
+                break;
             case RoleId.Crook:
                 Crook.RoleData.Player.RemoveAll(ClearRemove);
                 break;
@@ -1778,11 +1784,24 @@ public static class RoleHelpers
     }
     public static bool IsRole(this PlayerControl player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
     public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
-    public static float GetCoolTime(PlayerControl __instance)
+    public static float GetCoolTime(PlayerControl __instance, PlayerControl target)
     {
         float addition = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         if (ModeHandler.IsMode(ModeId.Default))
         {
+            //対象がトラップで捕まっていた場合にキルクールを変更
+            if (target != null)
+            {
+                    //__instanceがスパイダーかつ
+                if (__instance.IsRole(RoleId.Spider)
+                    //相手が罠にキャッチされてるかつ
+                    && SpiderTrap.CatchingPlayers.ContainsKey(target.PlayerId)
+                    //その罠を仕掛けたのが__instanceだった場合
+                    && SpiderTrap.CatchingPlayers[target.PlayerId] == __instance.PlayerId)
+                {
+                    return Spider.CustomOptionData.SpiderTrapKillTimeSetting.GetFloat();
+                }
+            }
             addition = __instance.GetRole() switch
             {
                 RoleId.SerialKiller => RoleClass.SerialKiller.KillTime,
@@ -1807,7 +1826,7 @@ public static class RoleHelpers
     public static float GetEndMeetingKillCoolTime(PlayerControl p)
     {
         if (p.IsRole(RoleId.EvilGambler, RoleId.Doppelganger)) return GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-        return GetCoolTime(p);
+        return GetCoolTime(p, null);
     }
     public static RoleId GetGhostRole(this PlayerControl player, bool IsChache = true)
     {
@@ -2032,6 +2051,7 @@ public static class RoleHelpers
             else if (Rocket.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Rocket;
             else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
             else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
+            else if (Spider.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Spider;
             else if (Crook.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Crook;
             else if (Frankenstein.FrankensteinPlayer.IsCheckListPlayerControl(player)) return RoleId.Frankenstein;
             // ロールチェック

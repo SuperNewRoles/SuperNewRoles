@@ -217,6 +217,7 @@ public enum RoleId
     Rocket,
     WellBehaver,
     Pokerface,
+    Spider,
     Crook,
     Frankenstein,
     //RoleId
@@ -334,6 +335,8 @@ public enum CustomRPC
     CreateGarbage,
     DestroyGarbage,
     SetPokerfaceTeam,
+    SetSpiderTrap,
+    SpiderTrapCatch,
     CrookSaveSignDictionary,
     SetFrankensteinMonster,
     MoveDeadBody,
@@ -341,6 +344,22 @@ public enum CustomRPC
 
 public static class RPCProcedure
 {
+    public static void SetSpiderTrap(byte source, float x, float y, ushort id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(source);
+        if (player == null)
+            return;
+        SpiderTrap.Create(player, new(x,y), id);
+    }
+    public static void SpiderTrapCatch(ushort id, byte targetid)
+    {
+        PlayerControl target = ModHelpers.PlayerById(targetid);
+        if (target == null)
+            return;
+        if (!SpiderTrap.SpiderTraps.TryGetValue(id, out SpiderTrap trap) || trap == null)
+            return;
+        trap.CatchPlayer(target);
+    }
     public static void MoveDeadBody(byte id, float x, float y)
     {
         foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
@@ -2037,6 +2056,12 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetPokerfaceTeam:
                         SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetSpiderTrap:
+                        SetSpiderTrap(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadUInt16());
+                        break;
+                    case CustomRPC.SpiderTrapCatch:
+                        SpiderTrapCatch(reader.ReadUInt16(), reader.ReadByte());
                         break;
                     case CustomRPC.CrookSaveSignDictionary:
                         Crook.Ability.SaveSignDictionary(reader.ReadByte(), reader.ReadByte());

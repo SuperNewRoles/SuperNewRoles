@@ -327,6 +327,7 @@ public class IntroData
     public static IntroData RocketIntro = new("Rocket", Rocket.RoleData.color, 2, RoleId.Rocket, TeamRoleType.Impostor, IntroSound : RoleTypes.Impostor);
     public static IntroData WellBehaverIntro = new("WellBehaver", WellBehaver.color, 1, RoleId.WellBehaver, TeamRoleType.Crewmate);
     public static IntroData PokerfaceIntro = new("Pokerface", Pokerface.RoleData.color, 1, RoleId.Pokerface, TeamRoleType.Neutral);
+    public static IntroData SpiderIntro = new("Spider", Spider.RoleData.color, 2, RoleId.Spider, TeamRoleType.Impostor, IntroSound : RoleTypes.Impostor);
     public static IntroData CrookIntro = new("Crook", Crook.RoleData.color, 1, RoleId.Crook, TeamRoleType.Neutral, IntroSound: RoleTypes.Impostor);
     public static IntroData FrankensteinIntro = new("Frankenstein", Frankenstein.color, 1, RoleId.Frankenstein, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     // イントロオブジェ

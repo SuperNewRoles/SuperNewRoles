@@ -8,6 +8,7 @@ using Hazel;
 using InnerNet;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
@@ -471,7 +472,7 @@ class KillButtonDoClickPatch
             }
             if (!(__instance.currentTarget.IsRole(RoleId.Bait) || __instance.currentTarget.IsRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
             {
-                PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, __instance.currentTarget);
                 RoleClass.Vampire.target = __instance.currentTarget;
                 RoleClass.Vampire.KillTimer = DateTime.Now;
                 RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
@@ -491,7 +492,7 @@ class KillButtonDoClickPatch
             // Handle blank kill
             if (res == MurderAttemptResult.BlankKill)
             {
-                PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, __instance.currentTarget);
             }
             __instance.SetTarget(null);
         }
@@ -1146,8 +1147,10 @@ public static class MurderPlayerPatch
 
             Vampire.OnMurderPlayer(__instance, target); // ヴァンパイアと眷属のキルクール同期の為 対象の死亡状態にかかわらず呼び出す
 
+            Logger.Info("ComeDefaultCheck");
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
+                Logger.Info("ComePlayerCheck");
                 if (Squid.Abilitys.IsKillGuard)
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(Squid.SquidNotKillTime.GetFloat(), Squid.SquidNotKillTime.GetFloat());
@@ -1156,7 +1159,7 @@ public static class MurderPlayerPatch
                 }
 
                 if (__instance.IsImpostor())
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance, target), RoleHelpers.GetCoolTime(__instance, target));
 
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Slugger)) // キルクリセット処理
                 {

@@ -260,6 +260,7 @@ public static class RoleClass
         Rocket.RoleData.ClearAndReload();
         WellBehaver.ClearAndReload();
         Pokerface.RoleData.ClearAndReload();
+        Spider.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
         Frankenstein.ClearAndReload();
         // ロールクリア
