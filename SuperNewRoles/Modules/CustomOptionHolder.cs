@@ -49,6 +49,8 @@ public class CustomOptionHolder
     public static CustomOption DisconnectNotPCOption;
     public static CustomOption DisconnectDontHaveFriendCodeOption;
 
+    public static CustomOption ProhibitModColor;
+
     public static CustomOption IsOldMode;
 
     public static CustomOption DetectiveRate;
@@ -1043,6 +1045,8 @@ public class CustomOptionHolder
         DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
         DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectDontHaveFriendCode"), true, null, isHeader: true);
 
+        ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "ProhibitModColor"), false, null, isHeader: true);
+
         enableAgartha = Create(101000, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
         GMOption = Create(101100, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
@@ -1149,6 +1153,8 @@ public class CustomOptionHolder
         VampireDependentsCanVent = Create(200907, false, CustomOptionType.Impostor, "VampireDependentsCanVent", true, VampireCanCreateDependents);
 
         Spider.CustomOptionData.SetupCustomOptions();
+      
+        Bat.CustomOptionData.SetupCustomOptions();
 
         KunoichiOption = SetupCustomRoleOption(201000, false, RoleId.Kunoichi);
         KunoichiPlayerCount = Create(201001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], KunoichiOption);
@@ -1610,6 +1616,8 @@ public class CustomOptionHolder
         BlackHatHacker.SetupCustomOptions();
 
         Moira.SetupCustomOptions();
+
+        Frankenstein.SetupCustomOptions();
 
         // SetupNeutralCustomOptions
 

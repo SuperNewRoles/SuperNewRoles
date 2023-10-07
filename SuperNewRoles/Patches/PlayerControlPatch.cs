@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -15,7 +15,6 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -27,7 +26,6 @@ using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 
@@ -1008,6 +1006,20 @@ public static class MurderPlayerPatch
             target.protectedByGuardian = true;
             return false;
         }
+        if (target.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(target))
+        {
+            if (__instance.AmOwner)
+            {
+                if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.KillSfx, false, 0.8f, null);
+                __instance.NetTransform.RpcSnapTo(target.transform.position);
+            }
+            if (target.AmOwner)
+            {
+                Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[target.PlayerId].ParentId, target.GetTruePosition());
+                Frankenstein.SetMonsterPlayer(target.PlayerId);
+            }
+            return false;
+        }
         if (target.IsRole(RoleId.WiseMan) && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
         {
             WiseMan.WiseManData[target.PlayerId] = null;
@@ -1060,16 +1072,12 @@ public static class MurderPlayerPatch
             }
             else if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                if (__instance.IsRole(RoleId.EvilGambler))
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    if (RoleClass.EvilGambler.GetSuc())
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
-                    }
-                    else
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
-                    }
+                    case RoleId.EvilGambler:
+                        if (RoleClass.EvilGambler.GetSuc()) PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
+                        else PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
+                        break;
                 }
             }
 
@@ -1402,6 +1410,15 @@ public static class ExilePlayerPatch
                     causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 }
             }
+            if (__instance.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(__instance))
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
+                writer.Write(__instance.PlayerId);
+                writer.EndRPC();
+                RPCProcedure.ReviveRPC(__instance.PlayerId);
+                Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[__instance.PlayerId].ParentId, __instance.GetTruePosition());
+                Frankenstein.SetMonsterPlayer(__instance.PlayerId);
+            }
             if (RoleClass.Lovers.SameDie && __instance.IsLovers())
             {
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -1482,7 +1499,7 @@ class ReportDeadBodyPatch
                 if (isGetLightAndDarker)
                 {
                     string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), firstPerson,
-                        CustomColors.lighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
+                        CustomColors.LighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
                     new LateTask(() =>
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
