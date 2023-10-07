@@ -6,6 +6,7 @@ using System.Reflection;
 using AmongUs.Data.Legacy;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics;
@@ -13,8 +14,9 @@ namespace SuperNewRoles.CustomCosmetics;
 public class CustomColors
 {
     protected static Dictionary<int, string> ColorStrings = new();
-    public static List<int> lighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
-    public static uint pickAbleColors = (uint)Palette.ColorNames.Length;
+    public static List<int> LighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
+    public static readonly uint DefaultPickAbleColors = (uint)Palette.ColorNames.Length;
+    public static uint PickAbleColors = DefaultPickAbleColors;
 
     public enum ColorType
     {
@@ -246,7 +248,7 @@ public class CustomColors
                 isLighterColor = false
             });
         }
-        pickAbleColors += (uint)colors.Count; // Colors to show in Tab
+        PickAbleColors += (uint)colors.Count; // Colors to show in Tab
         /** Hidden Colors **/
 
         /** Add Colors **/
@@ -258,7 +260,7 @@ public class CustomColors
             colorList.Add(cc.color);
             shadowList.Add(cc.shadow);
             if (cc.isLighterColor)
-                lighterColors.Add(colorList.Count - 1);
+                LighterColors.Add(colorList.Count - 1);
         }
 
         Palette.ColorNames = longList.ToArray();
@@ -334,7 +336,7 @@ public class CustomColors
             public static void Postfix()
             {
                 if (!needsPatch) return;
-                LegacySaveManager.colorConfig %= pickAbleColors;
+                LegacySaveManager.colorConfig %= PickAbleColors;
                 needsPatch = false;
             }
         }
@@ -342,14 +344,16 @@ public class CustomColors
         private static class PlayerControlCheckColorPatch
         {
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
-            { // Fix incorrect color assignment
-                uint color = (uint)bodyColor;
-                if (IsTaken(__instance, color) || color >= Palette.PlayerColors.Length)
+            {
+                uint pickAble = CustomOptionHolder.ProhibitModColor.GetBool() || ModeHandler.IsMode(ModeId.SuperHostRoles, false) ? DefaultPickAbleColors : PickAbleColors;
+                // Fix incorrect color assignment
+                uint color = bodyColor;
+                if (IsTaken(__instance, color) || color >= pickAble)
                 {
                     int num = 0;
-                    while (num++ < 50 && (color >= pickAbleColors || IsTaken(__instance, color)))
+                    while (num++ < 50 && (color >= pickAble || IsTaken(__instance, color)))
                     {
-                        color = (color + 1) % pickAbleColors;
+                        color = (color + 1) % pickAble;
                     }
                 }
                 //Logger.Info(color.ToString() + "をセット:" + isTaken(__instance, color).ToString()+":"+ (color >= Palette.PlayerColors.Length));
