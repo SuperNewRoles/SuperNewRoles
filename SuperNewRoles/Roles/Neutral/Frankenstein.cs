@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public class Frankenstein
 {
-    private const int OptionId = 303600;
+    private const int OptionId = 303700;
     public static CustomRoleOption FrankensteinOption;
     public static CustomOption FrankensteinPlayerCount;
     public static CustomOption FrankensteinCreateCoolTime;

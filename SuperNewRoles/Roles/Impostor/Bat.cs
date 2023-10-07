@@ -10,7 +10,7 @@ public static class Bat
 {
     public static class CustomOptionData
     {
-        private static int optionId = 205600;
+        private static int optionId = 205800;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption BatButtonCooldown;
