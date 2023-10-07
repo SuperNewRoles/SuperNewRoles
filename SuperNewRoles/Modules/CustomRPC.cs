@@ -385,6 +385,7 @@ public static class RPCProcedure
         }
         Frankenstein.MonsterPlayer[id] = null;
         if (kill) Frankenstein.KillCount[id]--;
+        //遅延させて戻す
         new LateTask(() =>
         {
             if (player.AmOwner) player.RpcSnapTo(Frankenstein.OriginalPosition);

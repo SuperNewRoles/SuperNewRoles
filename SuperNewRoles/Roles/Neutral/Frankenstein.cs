@@ -99,6 +99,8 @@ public class Frankenstein
                 ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 MoveDeadBody(MonsterPlayer.Local.ParentId, PlayerControl.LocalPlayer.GetTruePosition());
                 SetMonsterPlayer(kill: true);
+                FrankensteinCreateMonsterButton.MaxTimer = FrankensteinCreateCoolTime.GetFloat();
+                FrankensteinCreateMonsterButton.Timer = FrankensteinCreateMonsterButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Frankenstein && IsMonster(PlayerControl.LocalPlayer); },
             () =>
@@ -150,10 +152,19 @@ public class Frankenstein
     {
         if (!player) return false;
         byte id = player.PlayerId;
-        if (!MonsterPlayer.TryGetValue(id, out DeadBody body)) return false;
-        return body;
+        return MonsterPlayer.Contains(id);
     }
-
+    /// <summary>
+    /// 他の人がモンスターをキルした時に処理する
+    /// </summary>
+    /// <param name="target"></param>
+    public static void OnMurderMonster(PlayerControl target)
+    {
+        MoveDeadBody(MonsterPlayer[target.PlayerId]?.ParentId ?? 255, target.GetTruePosition());
+        SetMonsterPlayer(target.PlayerId);
+        FrankensteinCreateMonsterButton.MaxTimer = FrankensteinCreateCoolTime.GetFloat();
+        FrankensteinCreateMonsterButton.Timer = FrankensteinCreateMonsterButton.MaxTimer;
+    }
     public static void SetMonsterPlayer(byte? player = null, byte target = byte.MaxValue, bool kill = false)
     {
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetFrankensteinMonster);
@@ -164,6 +175,11 @@ public class Frankenstein
         RPCProcedure.SetFrankensteinMonster(player.GetValueOrDefault(PlayerControl.LocalPlayer.PlayerId), target, kill);
     }
 
+    /// <summary>
+    /// 死体の位置を移動させる
+    /// </summary>
+    /// <param name="id">対象の死体のPlayerId</param>
+    /// <param name="pos">移動先</param>
     public static void MoveDeadBody(byte id, Vector2 pos)
     {
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MoveDeadBody);

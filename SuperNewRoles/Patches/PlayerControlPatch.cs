@@ -1008,15 +1008,17 @@ public static class MurderPlayerPatch
         }
         if (target.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(target))
         {
+            //相手がフランケン(怪物)で、自分がキルした場合
             if (__instance.AmOwner)
             {
+                //音を出して、キルテレポートさせる
                 if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.KillSfx, false, 0.8f, null);
                 __instance.NetTransform.RpcSnapTo(target.transform.position);
             }
+            //自分がフランケン(怪物)で、相手にキルされた場合
             if (target.AmOwner)
             {
-                Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[target.PlayerId].ParentId, target.GetTruePosition());
-                Frankenstein.SetMonsterPlayer(target.PlayerId);
+                Frankenstein.OnMurderMonster(target);
             }
             return false;
         }
@@ -1412,12 +1414,16 @@ public static class ExilePlayerPatch
             }
             if (__instance.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(__instance))
             {
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
-                writer.Write(__instance.PlayerId);
-                writer.EndRPC();
-                RPCProcedure.ReviveRPC(__instance.PlayerId);
-                Frankenstein.MoveDeadBody(Frankenstein.MonsterPlayer[__instance.PlayerId].ParentId, __instance.GetTruePosition());
-                Frankenstein.SetMonsterPlayer(__instance.PlayerId);
+                //一応会議中に死んだ時とかは蘇らないようにしておく
+                if (!RoleClass.IsMeeting)
+                {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
+                    writer.Write(__instance.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.ReviveRPC(__instance.PlayerId);
+                }
+                if (__instance.AmOwner)
+                    Frankenstein.OnMurderMonster(__instance);
             }
             if (RoleClass.Lovers.SameDie && __instance.IsLovers())
             {
