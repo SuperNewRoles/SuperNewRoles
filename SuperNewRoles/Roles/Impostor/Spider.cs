@@ -59,8 +59,9 @@ public static class Spider
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(pos.x);
                     writer.Write(pos.y);
+                    writer.Write((ushort)(SpiderTrap.MaxId+1));
                     writer.EndRPC();
-                    RPCProcedure.SetSpiderTrap(PlayerControl.LocalPlayer.PlayerId, pos.x, pos.y);
+                    RPCProcedure.SetSpiderTrap(PlayerControl.LocalPlayer.PlayerId, pos.x, pos.y, (ushort)(SpiderTrap.MaxId + 1));
                     // ここに能力のコードを記載する
 
                     ResetSpiderButtonCool();

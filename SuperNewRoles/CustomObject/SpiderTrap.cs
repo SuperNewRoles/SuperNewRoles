@@ -12,9 +12,11 @@ using UnityEngine;
 namespace SuperNewRoles.CustomObject;
 public class SpiderTrap : MonoBehaviour
 {
-    public static PlayerData<SpiderTrap> SpiderTraps;
+    public static Dictionary<ushort, SpiderTrap> SpiderTraps;
     //キャッチされてる人、キャッチしてる人
     public static Dictionary<byte, byte> CatchingPlayers;
+    public static ushort MaxId;
+    private ushort Id;
     private PlayerControl Source;
     private byte SourceId;
     private PlayerControl CatchingPlayer;
@@ -29,15 +31,16 @@ public class SpiderTrap : MonoBehaviour
     {
         SpiderTraps = new();
         CatchingPlayers = new();
+        MaxId = 0;
     }
-    public static void Create(PlayerControl player, Vector2 pos)
+    public static void Create(PlayerControl player, Vector2 pos, ushort id)
     {
         if (player == null)
             return;
-        SpiderTraps[player.PlayerId] = new GameObject("SpiderTrap").AddComponent<SpiderTrap>();
-        SpiderTraps[player.PlayerId].Init(player, pos);
+        SpiderTraps[id] = new GameObject("SpiderTrap").AddComponent<SpiderTrap>();
+        SpiderTraps[id].Init(player, pos, id);
     }
-    public void Init(PlayerControl player, Vector2 pos)
+    public void Init(PlayerControl player, Vector2 pos, ushort id)
     {
         //設置者を設定
         Source = player;
@@ -56,6 +59,10 @@ public class SpiderTrap : MonoBehaviour
         //まだ無効なら半透明にする
         if (!Activated)
             renderer.color = new Color(1, 1, 1, 0.5f);
+        //個別でIdをセット
+        Id = id;
+        if (Id > MaxId)
+            MaxId = Id;
     }
     public void Awake()
     {
@@ -90,7 +97,7 @@ public class SpiderTrap : MonoBehaviour
                     if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, transform.position) <= TrapCatchDistance)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SpiderTrapCatch);
-                        writer.Write(SourceId);
+                        writer.Write(Id);
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         writer.EndRPC();
                         CatchPlayer(PlayerControl.LocalPlayer);
@@ -128,7 +135,7 @@ public class SpiderTrap : MonoBehaviour
     public void OnDestroy()
     {
         Logger.Info("SpiderTrapObjectDeleted");
-        SpiderTraps.Remove(SourceId);
+        SpiderTraps.Remove(Id);
         CatchingPlayers.Remove(CatchingPlayerId);
         //矢印を破棄
         if (arrow != null)

@@ -336,20 +336,19 @@ public enum CustomRPC
 
 public static class RPCProcedure
 {
-    public static void SetSpiderTrap(byte source, float x, float y)
+    public static void SetSpiderTrap(byte source, float x, float y, ushort id)
     {
         PlayerControl player = ModHelpers.PlayerById(source);
         if (player == null)
             return;
-        SpiderTrap.Create(player, new(x,y));
+        SpiderTrap.Create(player, new(x,y), id);
     }
-    public static void SpiderTrapCatch(byte sourceid, byte targetid)
+    public static void SpiderTrapCatch(ushort id, byte targetid)
     {
-        PlayerControl source = ModHelpers.PlayerById(sourceid);
         PlayerControl target = ModHelpers.PlayerById(targetid);
-        if (source == null || target == null)
+        if (target == null)
             return;
-        if (!SpiderTrap.SpiderTraps.TryGetValue(sourceid, out SpiderTrap trap) || trap == null)
+        if (!SpiderTrap.SpiderTraps.TryGetValue(id, out SpiderTrap trap) || trap == null)
             return;
         trap.CatchPlayer(target);
     }
@@ -2060,10 +2059,10 @@ public static class RPCProcedure
                         SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.SetSpiderTrap:
-                        SetSpiderTrap(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
+                        SetSpiderTrap(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadUInt16());
                         break;
                     case CustomRPC.SpiderTrapCatch:
-                        SpiderTrapCatch(reader.ReadByte(), reader.ReadByte());
+                        SpiderTrapCatch(reader.ReadUInt16(), reader.ReadByte());
                         break;
                 }
             }
