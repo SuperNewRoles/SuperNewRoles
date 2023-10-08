@@ -16,7 +16,7 @@ public static class AirShipRandomSpawn
     public static void ClearAndReload()
     {
         Locations = new();
-        IsLoaded = false;
+        IsLoaded = true;
         LastCount = -1;
     }
 
@@ -32,7 +32,7 @@ public static class AirShipRandomSpawn
             {
                 if (ModeHandler.GetMode(false) is ModeId.CopsRobbers or ModeId.PantsRoyal) return true;
                 Locations = __instance.Locations.ToList().ConvertAll(x => (Vector2)x.Location);
-                IsLoaded = true;
+                IsLoaded = false;
                 LastCount = -1;
                 PlayerControl.LocalPlayer.RpcSnapTo(new(-30, 30));
             }
@@ -71,8 +71,9 @@ public static class AirShipRandomSpawn
         public static void UpdatePostfix()
         {
             if (!AmongUsClient.Instance.AmHost) return;
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (!(MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())) return;
-            if (!IsLoaded) return;
+            if (IsLoaded) return;
 
             List<PlayerControl> players = new();
             bool EndLoaded = true;
@@ -105,13 +106,14 @@ public static class AirShipRandomSpawn
             }
             if (EndLoaded)
             {
-                IsLoaded = false;
+                IsLoaded = true;
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     string name = p.GetDefaultName();
                     if (!p.AmOwner) p.RpcSetNamePrivate(name);
                     else p.SetName(name);
-                    p.RpcSnapTo(Locations.GetRandom());
+                    if (!p.IsBot())
+                        p.RpcSnapTo(Locations.GetRandom());
                 }
                 FixedUpdate.SetRoleNames();
             }
