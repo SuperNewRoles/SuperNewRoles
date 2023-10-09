@@ -93,8 +93,6 @@ class WrapUpPatch
                 }
             }
         }
-        MapCustoms.AirShipRandomSpawn.IsLoaded = false;
-        MapCustoms.AirShipRandomSpawn.LastCount = -1;
     }
     public static void Postfix(GameData.PlayerInfo exiled)
     {
