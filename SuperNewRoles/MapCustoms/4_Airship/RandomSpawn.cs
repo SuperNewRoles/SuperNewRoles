@@ -35,8 +35,11 @@ public static class AirShipRandomSpawn
                 Locations = __instance.Locations.ToList().ConvertAll(x => (Vector2)x.Location);
                 IsLoading = true;
                 LastCount = -1;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    if (RoleClass.IsFirstMeetingEnd && !p.IsBot()) p.RpcSnapTo(new(3, 6));
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        if (RoleClass.IsFirstMeetingEnd && !p.IsBot()) p.RpcSnapTo(new(3, 6));
+                }
                 PlayerControl.LocalPlayer.RpcSnapTo(new(-30, 30));
             }
             __instance.Close();
