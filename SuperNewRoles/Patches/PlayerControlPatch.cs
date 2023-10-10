@@ -518,7 +518,7 @@ static class CheckMurderPatch
                 target.inMovingPlat ||
                 MeetingHud.Instance != null ||
                 (!RoleClass.IsStart && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) ||
-                AirShipRandomSpawn.IsLoaded
+                AirShipRandomSpawn.IsLoading
            )
         {
             return false;
