@@ -4,6 +4,7 @@ using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.MapCustoms;
@@ -11,12 +12,12 @@ namespace SuperNewRoles.MapCustoms;
 public static class AirShipRandomSpawn
 {
     public static List<Vector2> Locations;
-    public static bool IsLoaded;
+    public static bool IsLoading;
     public static int LastCount;
     public static void ClearAndReload()
     {
         Locations = new();
-        IsLoaded = false;
+        IsLoading = false;
         LastCount = -1;
     }
 
@@ -32,8 +33,13 @@ public static class AirShipRandomSpawn
             {
                 if (ModeHandler.GetMode(false) is ModeId.CopsRobbers or ModeId.PantsRoyal) return true;
                 Locations = __instance.Locations.ToList().ConvertAll(x => (Vector2)x.Location);
-                IsLoaded = true;
+                IsLoading = true;
                 LastCount = -1;
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        if (RoleClass.IsFirstMeetingEnd && !p.IsBot()) p.RpcSnapTo(new(3, 6));
+                }
                 PlayerControl.LocalPlayer.RpcSnapTo(new(-30, 30));
             }
             __instance.Close();
@@ -71,8 +77,9 @@ public static class AirShipRandomSpawn
         public static void UpdatePostfix()
         {
             if (!AmongUsClient.Instance.AmHost) return;
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (!(MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())) return;
-            if (!IsLoaded) return;
+            if (!IsLoading) return;
 
             List<PlayerControl> players = new();
             bool EndLoaded = true;
@@ -81,8 +88,7 @@ public static class AirShipRandomSpawn
             {
                 if (ModHelpers.IsPositionDistance(p.transform.position, new(3, 6), 0.5f) ||
                     ModHelpers.IsPositionDistance(p.transform.position, new(-25, 40), 0.5f) ||
-                    ModHelpers.IsPositionDistance(p.transform.position, new(-1.4f, 2.3f), 0.5f)
-                    )
+                    ModHelpers.IsPositionDistance(p.transform.position, new(-1.4f, 2.3f), 0.5f))
                 {
                     EndLoaded = false;
                     NotLoadedCount++;
@@ -105,13 +111,14 @@ public static class AirShipRandomSpawn
             }
             if (EndLoaded)
             {
-                IsLoaded = false;
+                IsLoading = false;
+                LastCount = -1;
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     string name = p.GetDefaultName();
                     if (!p.AmOwner) p.RpcSetNamePrivate(name);
                     else p.SetName(name);
-                    p.RpcSnapTo(Locations.GetRandom());
+                    if (!p.IsBot()) p.RpcSnapTo(Locations.GetRandom());
                 }
                 FixedUpdate.SetRoleNames();
             }
