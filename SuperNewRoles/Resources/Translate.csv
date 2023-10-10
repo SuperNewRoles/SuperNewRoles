@@ -231,10 +231,10 @@ OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポ
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
-ProhibitModColor,Prohibit mod color,Modカラーを禁止にする,,禁止Mod顏色
-ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する,,修改移動平台上下的影子
-GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,,內鬼可以從下方看到上方
-DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,,內鬼可以從上方看到下方
+ProhibitModColor,Prohibit mod color,Modカラーを禁止にする,禁止使用模组自定义颜色,禁止Mod顏色
+ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する,更改间隙室的视野遮蔽效果,修改移動平台上下的影子
+GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼可以從下方看到上方
+DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,內鬼可以從上方看到下方
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置,模式設定
@@ -423,8 +423,8 @@ ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う,破�
 ImpostorDescription,Default Impostor.\nShapeshifter in vanilla role are also represented as impostors.Provide support to your partner or ally.\nEven if your partner has a position，not all of his or her abilities may be superior to those of a regular impostor.\nEven if they are all top compatible，they cannot win without your support.\nYour partner or Madmate needs your action.\n\nYou can swing，you can lurk，or you can take advantage of your partner's abilities!\nIt is also a great ability to make use of your allies' abilities...\n\nDeceive，make a scapegoat，escape banishment. \nWe are the "Impostors". \nIt does not matter if we live or die.\nWe just have to kill all the crew.,通常のインポスターです。\nバニラ役職のシェイプシフターもインポスターとして表記されます。\n\n相方や味方のサポートを行いましょう。\n相方が役職持ちの場合でも、能力が全て通常のインポスターの上位互換とは限りません。\n全て上位互換であったとしても、貴方のサポートが無ければ勝つことなどできません。\n相方やマッドメイトは貴方の行動を必要としています。\n\n揺動に回るも良し、潜伏するも良し、相方の能力を生かせるよう立ち回ってみましょう!\n味方の能力を活用するのも立派な能力なのですから...\n\n騙せ　身代わりを作れ　追放を逃れろ。\n我らはインポスターだ。\n自らの生死は関係がない。\nただクルーを殺し尽くせば良いだけだ。,普通内鬼。\原版职业变形者也被视为普通内鬼。为你的队友提供支持。\n即便你的其他内鬼队友拥有职业，他们也不完全是普通内鬼的上位替代。\n即便他们全都是最强的那一梯度的内鬼，没有你的帮助他们也不能获胜。\n你的内鬼或叛徒同伴需要你的帮助。\n你可以打倒钩，也可以打深水，你也可以和队友的技能打出配合。\n利用同伴的能力也是一项很优秀的能力。\n\n尽力欺骗他人，找到抗推位来避免被放逐。\n你是“内鬼”。\n是生是死并无大碍。\n只需要杀光他们就好。,預設內鬼職業。\n原版職業的變形者也被列為內鬼。\n\n為內鬼陣營的隊友提供支援。\n即使你的隊友擁有職業，他/她的能力也不一定優於原版內鬼。\n即使他們具有超強的能力，沒有你的支援他們也無法獲勝。\n你的隊友需要你的行動。\n\n你可以遊走或潛伏，或者利用隊友的能力！\n妥善利用隊友的能力也是一種很棒的能力...\n\n欺騙，找個替罪羊，避免遭放逐。\n我們是「內鬼」。\n我們的生死無關緊要。\n我們只需要殺死所有船員。
 Neutral,Neutral,第三陣営,独立阵营,中立陣營
 NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
-MadRolesSubIntro,This life is for my mastert，the Impostor.,この命は我が主たるインポスターのために,,背叛船員，為吾主內鬼而戰。
-FriendRolesSubIntro,One who stands by the jackal.,ジャッカルに寄り添いし者,,豺狼之友，同生共死。
+MadRolesSubIntro,This life is for my mastert，the Impostor.,この命は我が主たるインポスターのために,为内鬼献出生命,背叛船員，為吾主內鬼而戰。
+FriendRolesSubIntro,One who stands by the jackal.,ジャッカルに寄り添いし者,帮助豺狼获得胜利,豺狼之友，同生共死。
 detecName,Detective,探偵,侦探,偵探
 
 # Roles
@@ -862,7 +862,7 @@ MadJesterTitle3,Oh，my master，please do something about this hopeless world..
 MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.\nYou go for the gallows，climb up，tumbling down，tumbling down...\nFor I believe it will bring us glory...,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。\n貴方は絞首台をめざす、のぼる、おちる。\nそれが我らの栄光につながると信じて。,规则上傀儡小丑被视为船员阵营，但其跟随内鬼阵营获胜。\n傀儡小丑被放逐则内鬼阵营获胜。\n你听到绞刑台正向你呼唤……你爬上去……垂下身躯……日渐西沉……\n而你在死前看到，这是无辜者们的落日。,規則上傀儡小丑屬於船員陣營，但其跟隨內鬼陣營獲勝。\n傀儡小丑遭放逐則內鬼陣營獲勝。\n當你聽到處刑台正向你呼喚...你爬上去...垂下身軀...日漸西沉\n而你在死前看到的，是無辜者們的落日。
 FalseChargesName,FalseCharges,冤罪師,冤罪师,冤罪師
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利,栽贓他人獲取勝利
-FalseChargesDescription,I have the ability to falsely accuse others. \nBy using this ability，I sacrifice myself and if the player I falsely accused is voted out within the specified timeframe，I achieve a solo victory.,冤罪を吹っ掛けることが出来ます。\n冤罪を吹っ掛けると自身はキルされますが、設定ターン内にキルさせた相手が追放されれば単独勝利します。,,冤罪師可以栽贓他人。\n栽贓他人後自己會被殺，如果在設定的會議輪數內被栽贓的人被投出去，則可以獨自獲勝。
+FalseChargesDescription,I have the ability to falsely accuse others. \nBy using this ability，I sacrifice myself and if the player I falsely accused is voted out within the specified timeframe，I achieve a solo victory.,冤罪を吹っ掛けることが出来ます。\n冤罪を吹っ掛けると自身はキルされますが、設定ターン内にキルさせた相手が追放されれば単独勝利します。,冤罪师属于独立阵营，需要栽赃他人获得胜利。\n冤罪师可以在行动阶段强迫其他玩家击杀自己。若在指定轮数的会议阶段内作为栽赃对象的玩家被放逐，冤罪师单独获胜。,冤罪師可以栽贓他人。\n栽贓他人後自己會被殺，如果在設定的會議輪數內被栽贓的人被投出去，則可以獨自獲勝。
 FalseChargesExileTurn,Turn of the false accusation range,冤罪の範囲のターン,冤罪师栽赃后可以获胜的会议轮数,冤罪師栽贓後可以獲勝的會議輪數
 FalseChargesCoolTime,Cool Time,クールタイム,冤罪师栽赃冷却,冤罪師栽贓冷卻時間
 FalseChargesButtonTitle,False Charge,冤罪,栽赃,栽贓
@@ -1007,16 +1007,16 @@ EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船�
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,可以把一名玩家变成叛徒,可以把一名玩家變成叛徒
 CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] ability.,[狂わせる]能力のクールタイムの設定,[洗脑]技能冷却设置,洗腦能力的冷卻時間
-EvilHackerHasEnhancedAdmin,Has Enhanced Admin,強化版アドミンを持つ,,駭客擁有強化版管理員地圖
-EvilHackerCanSeeImpostorPositions,Can See Impostor Positions,インポスターの位置がわかる,,駭客可以看到內鬼的位置
-EvilHackerCanSeeDeadBodyPositions,Can See Dead-Body Positions,死体の位置がわかる,,駭客可以看到屍體的位置
-EvilHackerCanUseAdminDuringMeeting,Can Use Admin During Meeting,会議中にアドミンを使用できる,,駭客可以在會議中使用管理員地圖
-EvilHackerSabotageMapShowsAdmin,Sabotage Map Shows Admin,サボタージュマップにもアドミンを表示する,,駭客可以在破壞地圖中看到管理員地圖
-EvilHackerMapShowsDoorState,Map Shows Doors Status,マップにドアの開閉状況を表示する,,駭客可以在地圖中看到門的開關狀態
+EvilHackerHasEnhancedAdmin,Has Enhanced Admin,強化版アドミンを持つ,骇客持有强化管理地图,駭客擁有強化版管理員地圖
+EvilHackerCanSeeImpostorPositions,Can See Impostor Positions,インポスターの位置がわかる,可以确认内鬼位置,駭客可以看到內鬼的位置
+EvilHackerCanSeeDeadBodyPositions,Can See Dead-Body Positions,死体の位置がわかる,可以确认尸体位置,駭客可以看到屍體的位置
+EvilHackerCanUseAdminDuringMeeting,Can Use Admin During Meeting,会議中にアドミンを使用できる,可以在会议中查看管理地图,駭客可以在會議中使用管理員地圖
+EvilHackerSabotageMapShowsAdmin,Sabotage Map Shows Admin,サボタージュマップにもアドミンを表示する,内鬼地图以管理地图的形式显示,駭客可以在破壞地圖中看到管理員地圖
+EvilHackerMapShowsDoorState,Map Shows Doors Status,マップにドアの開閉状況を表示する,地图上会显示门的开关情况,駭客可以在地圖中看到門的開關狀態
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
-PositionSwapperDescription,By using the ability，it can swap its own position with a randomly selected target.\nNeither you nor the target will be notified of who you swap with.\nUse the swap ability to mix up your routes and confuse your crew!,能力を使用する事で、ランダムに選択された対象と自身の位置を入れ換える事ができます。\n誰とスワップされたかは、自身にも対象にも通知されません。\nスワップ能力で経路をごちゃ混ぜにして、クルー達を混乱させましょう!!,,交換使可以和隨機一名玩家交換位置。\n你和目標都不會知道和誰交換了位置。\n使用交換位置能力來混淆你的路線，迷惑其他玩家！
+PositionSwapperDescription,By using the ability，it can swap its own position with a randomly selected target.\nNeither you nor the target will be notified of who you swap with.\nUse the swap ability to mix up your routes and confuse your crew!,能力を使用する事で、ランダムに選択された対象と自身の位置を入れ換える事ができます。\n誰とスワップされたかは、自身にも対象にも通知されません。\nスワップ能力で経路をごちゃ混ぜにして、クルー達を混乱させましょう!!,念动使属于内鬼阵营，可以将自己的位置与一名随机玩家交换。\n任何玩家都不能确认与念动使交换位置的玩家。\n念动使需要使用能力混淆自己的行动来迷惑船员。,交換使可以和隨機一名玩家交換位置。\n你和目標都不會知道和誰交換了位置。\n使用交換位置能力來混淆你的路線，迷惑其他玩家！
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数,交換使最大交換次數
 SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム,念动使换位冷却,交換使交換位置冷卻時間
 PositionSwapperNumTextName,Limits:{0},残り{0}回,剩余{0}次,剩餘{0}次
@@ -1065,8 +1065,8 @@ DoubleKillerTitle1,Let's master the independent kill button!,独立したキル�
 SmasherTitle1,Let's do continuous kills!,連続キルを行おう,唯快不破！,天下武功，唯快不破！
 SuicideWisherName,Suicide Wisher,スーサイドウィッシャー,抑郁者,抑鬱者
 SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう,玉玉，不响丸辣，紫砂了,遇事不決，自殺解決
-SuicideWisherTitle2,They who is caught in the impulse to die.,死への衝動に捕らわれし者,,下輩子會更好
-SuicideWisherDescription,This is an Impostor role where suicide is possible.\nIn SHR mode，you can commit suicide by performing a Shapeshift.\nTake advantage of your suicide ability to disguise information and disrupt the village!\n\nDistant memories of when we were Crewmate call to me...\nAha，my partner.\nI will be released first，but at least I left you a little something to leave behind. Good luck.,自殺が可能なインポスター役職です。\nSHRモードではシェイプシフトを行う事で自殺します。\n自殺能力により、情報を偽装し村を混乱させてみましょう!\n\nクルーメイトであった頃の遠い記憶が私を呼ぶ...\n嗚呼 相方よ。\n私は先に解放されるが、せめてもの置き土産は残してやった。頑張れよ。,,抑鬱者是擁有自殺能力的內鬼陣營職業。\n妥善利用自殺能力混淆並干擾船員陣營!\n\n來自內心深處遙遠的記憶正在呼喊著吾...\n嗚呼 吾的朋友啊。\n雖然吾先於汝輩一步離開了，但吾留下的遺產將會庇佑汝輩的。
+SuicideWisherTitle2,They who is caught in the impulse to die.,死への衝動に捕らわれし者,让我死吧……,下輩子會更好
+SuicideWisherDescription,This is an Impostor role where suicide is possible.\nIn SHR mode，you can commit suicide by performing a Shapeshift.\nTake advantage of your suicide ability to disguise information and disrupt the village!\n\nDistant memories of when we were Crewmate call to me...\nAha，my partner.\nI will be released first，but at least I left you a little something to leave behind. Good luck.,自殺が可能なインポスター役職です。\nSHRモードではシェイプシフトを行う事で自殺します。\n自殺能力により、情報を偽装し村を混乱させてみましょう!\n\nクルーメイトであった頃の遠い記憶が私を呼ぶ...\n嗚呼 相方よ。\n私は先に解放されるが、せめてもの置き土産は残してやった。頑張れよ。,抑郁者属于内鬼阵营，拥有自杀的能力。\n在SHR模式中，抑郁者可以通过按下“化形”按钮来自杀。\n利用自杀的能力来干扰船员信息。\n我回想起了遥远的记忆……\n啊，我的同伴们。\n我无法忍受自己的罪恶，只能给你们留下这最后一点帮助了。加油。,抑鬱者是擁有自殺能力的內鬼陣營職業。\n妥善利用自殺能力混淆並干擾船員陣營!\n\n來自內心深處遙遠的記憶正在呼喊著吾...\n嗚呼 吾的朋友啊。\n雖然吾先於汝輩一步離開了，但吾留下的遺產將會庇佑汝輩的。
 SuicideName,Suicide,自殺,自杀,自殺
 NeetName,Neet,ニート,废柴,尼特
 NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干劲呢，明天再努力吧,交給其他人吧
@@ -1128,7 +1128,7 @@ HitmanIsTargetArrow,Display arrow to target,ターゲットへ矢印を表示す
 HitmanUpdateTargetArrowTime,Interval to update arrows,矢印を更新する間隔,职业杀手箭头更新间隔时间,專業殺手箭頭更新間隔時間
 NunName,Nun,ぬーん,捣蛋鬼,搗蛋鬼
 NunTitle1,Nun,ぬーん,让大家用不了移动平台,讓大家用不了移動平台
-NunDescription,This role allows the lift to be moved to the opposite side.\nIf the ability is used when the crew is already on the lift，the lift is returned with the crew on it.\n\nBy imprisoning the crew on the lift or by moving the position of the lift，it can also interfere with a Crewmate's task or an emergency meeting.\nThe lift's location can create noise for information to prove the location of survivors or to guess the path of the dead. It can also be used to disguise one's own route.\n\nNun nun nun? Nuh-nuh-nuh. Nuh-nuh-nuh.,昇降機を反対側に動かす事が可能な役職です。\nクルーが既に昇降機に乗っている時に能力を使用した場合は、クルーごと昇降機を返送します。\n\n昇降機上にクルーを幽閉する事や、昇降機の位置が移動する事により、クルーメイトのタスクや、緊急招集を妨害する事も出来ます。\n昇降機の位置情報による、生存者の位置証明や死者の経路推測にノイズをもたらします。自身の経路の偽装にも使用可能です。\n\nぬーん ぬーん ぬん? ぬーんぬん ぬん,,搗蛋鬼可以在移動平台的另一側使用平台。\n當船員位於移動平台上時，使用技能會將船員往回移動。\n\n將船員們困於移動平台上，可以干擾船員的任務或緊急會議。\n移動平台的位置可以提供訊息，證明存活者的位置或推測死者的路線。也可以用來偽裝自己的路線。\n\n搗蛋鬼立大功？
+NunDescription,This role allows the lift to be moved to the opposite side.\nIf the ability is used when the crew is already on the lift，the lift is returned with the crew on it.\n\nBy imprisoning the crew on the lift or by moving the position of the lift，it can also interfere with a Crewmate's task or an emergency meeting.\nThe lift's location can create noise for information to prove the location of survivors or to guess the path of the dead. It can also be used to disguise one's own route.\n\nNun nun nun? Nuh-nuh-nuh. Nuh-nuh-nuh.,昇降機を反対側に動かす事が可能な役職です。\nクルーが既に昇降機に乗っている時に能力を使用した場合は、クルーごと昇降機を返送します。\n\n昇降機上にクルーを幽閉する事や、昇降機の位置が移動する事により、クルーメイトのタスクや、緊急招集を妨害する事も出来ます。\n昇降機の位置情報による、生存者の位置証明や死者の経路推測にノイズをもたらします。自身の経路の偽装にも使用可能です。\n\nぬーん ぬーん ぬん? ぬーんぬん ぬん,捣蛋鬼可以使间隙室的移动平台反向移动到另一侧。\n若这个技能发动时，一名玩家正在使用移动平台，那名玩家跟随移动平台一同被移动到另一侧。\n\n捣蛋鬼可以通过自己的技能妨碍船员的行动。,搗蛋鬼可以在移動平台的另一側使用平台。\n當船員位於移動平台上時，使用技能會將船員往回移動。\n\n將船員們困於移動平台上，可以干擾船員的任務或緊急會議。\n移動平台的位置可以提供訊息，證明存活者的位置或推測死者的路線。也可以用來偽裝自己的路線。\n\n搗蛋鬼立大功？
 NunButtonName,Nun,ぬーん,捣蛋,搗蛋
 PsychometristName,Psychometrist,サイコメトラー,验尸官,驗屍官
 PsychometristTitle1,Let's read the situation of the corpse.,死体の状況をよみとろう,通过尸体来搜寻线索,透過屍體來搜尋線索
@@ -1179,7 +1179,7 @@ PainterButtonName,Paint,ペイント,油漆,油漆
 PainterIsTaskCompleteFootprint,Leave traces when tasks are completed,タスク完了時に痕跡を残す,完成任务后会留下油漆痕迹,完成任務後會留下油漆痕跡
 FinderName,Finder,ファインダー,接头人,接頭人
 FinderTitle1,Get to know your peers.,仲間を知ろう,与叛徒取得联系,與叛徒取得聯繫
-FinderDescription,After a set number of kills，the name of the crew member with the mad role is displayed in red.\nThis ability is the reverse of the mad role's ability to fanaticism.,設定回数キルを行うとマッドロールを持つクルーの名前が赤く表示されます。\nマッドロールが有する狂信能力の逆方向にあたる能力です。\n\n待っていないで、自分から仲間を探しに行こう!,,接頭人在達到指定的擊殺數後，會顯示內鬼陣營的船員的名字。\n\n不要等待，去主動尋找你的同伴吧！
+FinderDescription,After a set number of kills，the name of the crew member with the mad role is displayed in red.\nThis ability is the reverse of the mad role's ability to fanaticism.,設定回数キルを行うとマッドロールを持つクルーの名前が赤く表示されます。\nマッドロールが有する狂信能力の逆方向にあたる能力です。\n\n待っていないで、自分から仲間を探しに行こう!,接头人属于内鬼阵营。在进行了一定次数的击杀后，接头人将确认所有叛徒阵营玩家。\n积极进行击杀，来接应混入船员中的内应吧！,接頭人在達到指定的擊殺數後，會顯示內鬼陣營的船員的名字。\n\n不要等待，去主動尋找你的同伴吧！
 FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,接头人确认叛徒需要进行的击杀次数,接頭人確認叛徒需要進行的擊殺次數
 PhotographerName,Photographer,写真屋,摄影师,攝影師
 PhotographerTitle1,Let's capture everyone on camera!,みんなの姿をカメラに収めよう ,茄~子！,3...2...1...！
@@ -1201,7 +1201,7 @@ SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト
 SatsumaAndImoTitle2,Betray and betray.,手のひらをくるくる返そう,我是叛徒，还是你是叛徒？,我是叛徒，還是你是叛徒？
 SatsumaAndImoDescription,After each meeting， the impostor and crew teams will switch sides.\nThe winner is determined by the team at the time the decision is made.\nLet's Betray and betray.,会議を挟むごとにインポスター陣営とクルー陣営が入れ替わります。\n決着が付いた時の陣営で勝敗が決定します。\n手のひらくるくるしましょう。,游戏开始时人格分裂者随机加入船员或内鬼阵营。每轮会议结束后，人格分裂者会改变自己的阵营。\n游戏结束时，人格分裂者按那个时候的阵营结算胜利条件。\n上演一出谍中谍的戏码吧。,每輪會議結束後，會切換自己身為內鬼和船員的身分。\n當決定勝負時，將以當時的身分決定勝負。\n諜中諜中諜！
 ShiftActorName,Shift Actor,シフトアクター,模仿犯,模仿犯
-ShiftActorDescription,By shapeshifting，you can confirm the role of the shapeshifted object. Duplicate roles can also be confirmed by setting.\nDepending on the settings，it may fail to confirm the role. If it fails，the target role is displayed as [Crewmate].\nAfter the number of available times of the ability is used up，only the normal Shapeshift ability will be available.\n\nNow，let's imitate his life and play it out perfectly.,シェイプシフトを行う事で，シェイプした対象の役職を確認する事ができます。設定により重複役も確認する事ができます。/n設定により，役職の確認に失敗する事もあります。失敗した場合は対象の役職を[クルーメイト]と表示します。/n能力の使用可能回数を使い切った後は，通常のシェイプシフト能力のみ有します。\n\nさあ，彼の人生を模倣し，完璧に演じ切ろう。,,模仿犯可以透過模仿來確認模仿對象的身分。根據設定也能得知對方的附加職業。\n根據設定，模仿可能會失敗。失敗時，模仿對象的職業會以[船員]來表示。\n使用能力達到次數上限後，將僅剩模仿能力而無法判別對象身分。\n\n模仿對方的人生，完美演繹吧！
+ShiftActorDescription,By shapeshifting，you can confirm the role of the shapeshifted object. Duplicate roles can also be confirmed by setting.\nDepending on the settings，it may fail to confirm the role. If it fails，the target role is displayed as [Crewmate].\nAfter the number of available times of the ability is used up，only the normal Shapeshift ability will be available.\n\nNow，let's imitate his life and play it out perfectly.,シェイプシフトを行う事で，シェイプした対象の役職を確認する事ができます。設定により重複役も確認する事ができます。/n設定により，役職の確認に失敗する事もあります。失敗した場合は対象の役職を[クルーメイト]と表示します。/n能力の使用可能回数を使い切った後は，通常のシェイプシフト能力のみ有します。\n\nさあ，彼の人生を模倣し，完璧に演じ切ろう。,模仿犯属于内鬼阵营。模仿犯可以通过化形为一名玩家来确认那名玩家的职业（包括附加职业）。\n根据房间设置，模仿犯有一定概率确认职业失败。失败的场合，那名玩家的职业会显示为“船员”。\n若模仿犯技能发动次数到达上限，则技能不再拥有确认职业效果，仅适用化形效果。\n\n来完美演绎他人的人生吧。,模仿犯可以透過模仿來確認模仿對象的身分。根據設定也能得知對方的附加職業。\n根據設定，模仿可能會失敗。失敗時，模仿對象的職業會以[船員]來表示。\n使用能力達到次數上限後，將僅剩模仿能力而無法判別對象身分。\n\n模仿對方的人生，完美演繹吧！
 ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,我会比你更像你自己,我會比你更像你自己
 CanWatchAttribute,Can watch attribute,重複役職を見れる,模仿犯可以确认模仿对象的附加职业,模仿犯可以確認模仿對象的附加職業
 RightChance,Probability of Success,成功確率,成功概率,模仿成功的概率
@@ -1231,8 +1231,8 @@ SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟�
 SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者,重炮之力的继承者,繼承重炮意志之人
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
-CrackerDescription,By using the ability called "Crack"， you can remove the opponent from both Admin and Vital.\nOn Vital， the time of death is shifted， and with Admin alone， you won't be able to locate the body.\nHowever， if you fail to kill the target you used it on， you might get exposed.,「クラック」という能力を使うことで、相手をアドミンやバイタルから消すことが出来ます。\nバイタル上では死亡タイミングがズレ、アドミンだけでは死体位置が分からなくなります。\nただし、使った相手をキルしそこなうと、バレてしまうかもしれません。,,神隱者可以透過使用技能「神隱」來讓對方無法在管理員地圖與生命跡象檢測器上被觀測到。\n在生命跡象檢測器上，死亡時間將會被改變，同時在管理員地圖上，屍體位置將會消失。\n但是，如果神隱者沒有成功擊殺使用技能的對象，神隱者可能會被發現。
-CrackerIsAdminView,Counted by Admins,アドミンにカウントされる,被神隐玩家可以在地图上被观测到,被神隱玩家可以在管理員地圖上被觀測到
+CrackerDescription,By using the ability called "Crack"， you can remove the opponent from both Admin and Vital.\nOn Vital， the time of death is shifted， and with Admin alone， you won't be able to locate the body.\nHowever， if you fail to kill the target you used it on， you might get exposed.,「クラック」という能力を使うことで、相手をアドミンやバイタルから消すことが出来ます。\nバイタル上では死亡タイミングがズレ、アドミンだけでは死体位置が分からなくなります。\nただし、使った相手をキルしそこなうと、バレてしまうかもしれません。,神隐者属于内鬼阵营，可以让一名玩家在管理地图与生命监测装置上消失一段时间。\n对于那名玩家：生命监测装置上会显示错乱的死亡时间，管理地图上无法定位该玩家的位置。\n需要注意：若该玩家没有被击杀，神隐者有可能会暴露。,神隱者可以透過使用技能「神隱」來讓對方無法在管理員地圖與生命跡象檢測器上被觀測到。\n在生命跡象檢測器上，死亡時間將會被改變，同時在管理員地圖上，屍體位置將會消失。\n但是，如果神隱者沒有成功擊殺使用技能的對象，神隱者可能會被發現。
+CrackerIsAdminView,Counted by Admins,アドミンにカウントされる,被神隐玩家可以在地图上被观测到,被神隱玩家可以在地圖上被觀測到
 CrackerIsVitalsView,Counted in Vitals,バイタルにカウントされる,被神隐玩家可以在生命监测装置上被观测到,被神隱玩家可以在生命跡象檢測器上被觀測到
 CrackerOneTurnSelectCount,Number of times you can crack in one turn,1ターン内にクラックできる回数,神隐者每轮可以神隐的人数,神隱者每輪可以神隱的人數
 CrackerAllTurnSelectCount,Number of times you can crack during a match,試合中にクラックできる回数,神隐者每局游戏可以神隐的人数,神隱者每局遊戲可以神隱的人數
@@ -1253,7 +1253,7 @@ PavlovsdogsName,Pavlov's dogs,パブロフの犬,巴甫洛夫的狗,巴甫洛夫
 PavlovsownerName,Pavlov's owner,パブロフのオーナー,巴甫洛夫,巴甫洛夫
 PavlovsdogsTitle1,Let us be of service.,お役に立ってみせましょう,我好想做巴甫洛夫先生的狗啊,我好想做巴甫洛夫先生的狗啊
 PavlovsownerTitle1,Be my dog!,私の犬になりなさい！,狗中毒.mp3,成為我的狗吧！
-PavlovsownerDescription,There are an owner and a dog.\nThe owner has the ability to nominate the dog.\nThe dog has a kill button.\nIf the dog survives and the number of non-kill-capable survivors becomes equal to or less than the number of factions， it will achieve victory.\nWhen the owner dies， the collar is removed.\nBeware of the ferocious dog.,オーナーと犬が存在します。\nオーナーは犬を指名する能力を持ちます。\n犬はキルボタンを持ちます。\n犬が生存した状態でキル能力を持たない生存者数が陣営数以下になれば勝利します。\nオーナーが死ぬと首輪が外れる。\n猛犬には気をつけなさい。,,巴甫洛夫團隊包含主人和狗，主人可以馴服他人為狗，\n狗具有擊殺能力。\n當巴甫洛夫團隊存活的人數大於等於不具有擊殺能力的倖存者人數時，巴甫洛夫團隊獲勝。\n當主人死亡時，狗會失去項圈。\n小心瘋狗咬人！
+PavlovsownerDescription,There are an owner and a dog.\nThe owner has the ability to nominate the dog.\nThe dog has a kill button.\nIf the dog survives and the number of non-kill-capable survivors becomes equal to or less than the number of factions， it will achieve victory.\nWhen the owner dies， the collar is removed.\nBeware of the ferocious dog.,オーナーと犬が存在します。\nオーナーは犬を指名する能力を持ちます。\n犬はキルボタンを持ちます。\n犬が生存した状態でキル能力を持たない生存者数が陣営数以下になれば勝利します。\nオーナーが死ぬと首輪が外れる。\n猛犬には気をつけなさい。,巴甫洛夫团队分为一名巴甫洛夫与若干名巴甫洛夫的狗。\n巴甫洛夫可以将一名玩家变为巴甫洛夫的狗。\n巴甫洛夫的狗可以击杀。\n若巴甫洛夫的狗存活，且其他不持有击杀能力的存活玩家总数不大于巴甫洛夫团队玩家数，巴甫洛夫团队胜利。\n当巴甫洛夫死亡时，巴甫洛夫的狗将失控，获得嗜血效果。\n小心恶犬。,巴甫洛夫團隊包含主人和狗，主人可以馴服他人為狗，\n狗具有擊殺能力。\n當巴甫洛夫團隊存活的人數大於等於不具有擊殺能力的倖存者人數時，巴甫洛夫團隊獲勝。\n當主人死亡時，狗會失去項圈。\n小心瘋狗咬人！
 PavlovsownerCreateDogCoolTime,Side Kick Cool Time,サイドキックのクールタイム,技能冷却,技能冷却時間
 PavlovsownerCreateDogLimit,Number of times a side kick can be made in one match,1試合内にサイドキックできる回数,巴甫洛夫每局游戏可以驯化狗的次数,巴甫洛夫每局遊戲可以馴服狗的次數
 PavlovsownerIsTargetImpostorDeath,Self-destruct if the opponent is an Impostor,相手がインポスターだと自爆する,巴甫洛夫在尝试驯化内鬼为狗的场合自杀,巴甫洛夫在嘗試馴服內鬼為狗的場合自殺
@@ -1318,8 +1318,8 @@ PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进�
 PenguinMeetingKill,Kill when the meeting starts,能力発動中に会議が始まった場合キルをする,技能持续期间若会议阶段开始则进行击杀,綁架中進入會議則撕票
 LoversBreakerName,LoversBreaker,爆ぜ師,FFF团,現充爆破者
 LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！,现充去死！现充爆炸！,現充通通爆破吧！
-LoversBreakerDescription,I will achieve a solo victory by 'exploding' more lovers than the specified number， and then having all lovers die.\nI don't want to see other people being lovey-dovey!!!!!!!, ラバーズを設定数以上「爆破」し、その上で全てのラバーズが死亡すると単独勝利をします。\n私は他人がイチャイチャしているのを見たくないんだ！！！！！,,現充爆破者可以通過爆破超過指定數量的戀人，然後讓所有戀人死亡來獲得獨自勝利。\n我不想看到其他人在談戀愛！！！！！
-LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需击杀的恋人数,現充爆破者所需擊殺戀人數
+LoversBreakerDescription,I will achieve a solo victory by 'exploding' more lovers than the specified number， and then having all lovers die.\nI don't want to see other people being lovey-dovey!!!!!!!, ラバーズを設定数以上「爆破」し、その上で全てのラバーズが死亡すると単独勝利をします。\n私は他人がイチャイチャしているのを見たくないんだ！！！！！,FFF团属于独立阵营。若FFF团处刑了足够数量的恋人，且所有恋人全部死亡，FFF团单独获胜。\n革命的同志们呐！请高举我们手中的火把！,現充爆破者可以通過爆破超過指定數量的戀人，然後讓所有戀人死亡來獲得獨自勝利。\n我不想看到其他人在談戀愛！！！！！
+LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需处刑的恋人数,現充爆破者所需擊殺戀人數
 LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる,FFF团死亡状态下也能获胜,現充爆破者死亡狀態下也能獲勝
 LoversBreakerButtonName,Blow up,爆破,爆杀现充！,現充爆破！
 JumboName,Jumbo,ジャンボ,巨无霸,超大型巨人
@@ -1402,11 +1402,11 @@ WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
 NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工,正義的機械師
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道,改造飛船上的管道
 NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？,什么人在给飞船搞破坏？,誰在搗亂這艘飛船？
-NiceMechanicDescription,This role has the ability to move vents.\nThe destination of those vents remains unchanged.,ベントを移動させることが出来るクルーメイトです。\nベントの接続先は変わりません。,,正義的機械師可以移動通風管道。\n通風管道的目的地不會改變。
+NiceMechanicDescription,This role has the ability to move vents.\nThe destination of those vents remains unchanged.,ベントを移動させることが出来るクルーメイトです。\nベントの接続先は変わりません。,正义的迁管工属于船员阵营，可以移动管道口的位置。\n迁管工不会改变管道之间的连通关系。,正義的機械師可以移動通風管道。\n通風管道的目的地不會改變。
 EvilMechanicName,EvilMechanic,イビルメカニック,邪恶的迁管工,邪惡的機械師
 EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう,尝试将管道改造得对自己有利,嘗試將管道改造得對自己有利
 EvilMechanicCombIntro1,Looks like someone is trying to get in my way,私の邪魔をするやつがいるようだ,其他人休想挡我的路,哪個野孩子擋了我的路
-EvilMechanicDescription,This role has the ability to move vents.\nThe destination of those vents remains unchanged.,ベントを移動させることが出来るインポスターです。\nベントの接続先は変わりません。,,邪惡的機械師可以移動通風管道。\n通風管道的目的地不會改變。
+EvilMechanicDescription,This role has the ability to move vents.\nThe destination of those vents remains unchanged.,ベントを移動させることが出来るインポスターです。\nベントの接続先は変わりません。,邪恶的迁管工属于内鬼阵营，可以移动管道口的位置。\n迁管工不会改变管道之间的连通关系。,邪惡的機械師可以移動通風管道。\n通風管道的目的地不會改變。
 MechanicButtonName,Relocate.,移設,改造,改造
 TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚,三只小猪,三隻小豬
 TheFirstLittlePigName,The First Little Pig,1番目の仔豚,猪老大,猪老大
@@ -1415,9 +1415,9 @@ TheThirdLittlePigName,The Third Little Pig,3番目の仔豚,猪老三,猪老三
 TheFirstLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheSecondLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheThirdLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
-TheFirstLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。,,三人...三隻一組的陣營。\n每個人都可以通過完成任務來建造房子，當房子建造完成後，你將獲得個人能力。\n你的勝利條件是消滅可怕的狼。\n現在，讓我們一起擊敗可怕的狼吧。
-TheSecondLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。,,三人...三隻一組的陣營。\n每個人都可以通過完成任務來建造房子，當房子建造完成後，你將獲得個人能力。\n你的勝利條件是消滅可怕的狼。\n現在，讓我們一起擊敗可怕的狼吧。
-TheThirdLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。,,三人...三隻一組的陣營。\n每個人都可以通過完成任務來建造房子，當房子建造完成後，你將獲得個人能力。\n你的勝利條件是消滅可怕的狼。\n現在，讓我們一起擊敗可怕的狼吧。
+TheFirstLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。,三只小猪三人……啊不，三头一组，属于独立阵营。\n三只小猪团队的每名玩家都可以通过完成任务来搭建小屋。小屋搭建完毕后，三只小猪将各自获得对应的能力。\n三只小猪需要消灭掉可怕的大野狼获得胜利。\n赶跑可怕的大野狼吧！,三人...三隻一組的陣營。\n每個人都可以通過完成任務來建造房子，當房子建造完成後，你將獲得個人能力。\n你的勝利條件是消滅可怕的狼。\n現在，讓我們一起擊敗可怕的狼吧。
+TheSecondLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。,三只小猪三人……啊不，三头一组，属于独立阵营。\n三只小猪团队的每名玩家都可以通过完成任务来搭建小屋。小屋搭建完毕后，三只小猪将各自获得对应的能力。\n三只小猪需要消灭掉可怕的大野狼获得胜利。\n赶跑可怕的大野狼吧！,三人...三隻一組的陣營。\n每個人都可以通過完成任務來建造房子，當房子建造完成後，你將獲得個人能力。\n你的勝利條件是消滅可怕的狼。\n現在，讓我們一起擊敗可怕的狼吧。
+TheThirdLittlePigsDescription,You are a group of three... no, a trio of three.\nEach of you can build a house by completing tasks， and when the house is complete， you will gain individual abilities.\nYour victory condition is to eliminate the scary wolves.\nNow， let's defeat the wolves.,3人…いえ、3匹1組の陣営です。\nそれぞれタスクをこなすことで家を建てることが出来、家が完成するとそれぞれ能力を得ることが出来ます。\n怖い狼がいなくなれば勝利です。\nさあ、狼を倒しましょう。,三只小猪三人……啊不，三头一组，属于独立阵营。\n三只小猪团队的每名玩家都可以通过完成任务来搭建小屋。小屋搭建完毕后，三只小猪将各自获得对应的能力。\n三只小猪需要消灭掉可怕的大野狼获得胜利。\n赶跑可怕的大野狼吧！,三人...三隻一組的陣營。\n每個人都可以通過完成任務來建造房子，當房子建造完成後，你將獲得個人能力。\n你的勝利條件是消滅可怕的狼。\n現在，讓我們一起擊敗可怕的狼吧。
 TheFirstLittlePigClearTaskSetting,Percentage of tasks required for The first little pig to complete the house,1番目の仔豚が家を完成させるのに必要なタスクの割合,猪老大盖出房子需要的任务进度,豬老大蓋出房子需要的任務進度
 TheFirstLittlePigIsCustomTimerSetting,Set the timer for The first little pig,1番目の仔豚のタイマーを設定する,猪老大盖房子有时间限制,豬老大蓋房子有時間限制
 TheFirstLittlePigCustomTimerSetting,The first little pig timer,1番目の仔豚のタイマー,猪老大盖房子的时间限制,豬老大蓋房子的時間限制
@@ -1563,59 +1563,59 @@ ConjurerCanKillImpostorOption,Can kill impostors,インポスターもキルで�
 ConjurerShowFlashOption,The screen glows when the ability is activated,能力発動時画面が発光する,技能发动时屏幕会发光,啟動能力時畫面閃爍
 ConjurerBeaconName,Marker,マーカー,魔法阵,魔法陣
 ConjurerAddName,Compression,圧縮,施法,施法
-JumpDancerName,Jump Dancer,ジャンプダンサー,,跳跳舞者
-JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,,離開地球表面！
-JumpDancerButtonName,Jump,ジャンプ！,,跳！
-CrookName,Crook,詐欺師,,欺詐師
-CrookTitle1,Sign this document and I promise you a happy future...,この書類にサインしてくれれば幸せな将来を約束しましょう...,,簽下這份文件後，我保證你會有個幸福的未來...
-CrookDescription,As soon as the meeting starts，you can insure someone who is going to die before the next meeting.\nIf that person is killed OR expelled before the next meeting，the insurance money is received at the beginning of the meeting.\nWhen the insurance money is received，the whole group is notified at the end of the meeting that the crook has received the insurance money.\nThe con artist wins alone after receiving the insurance money for a set number of times.\n\n...I hear that even the mighty enemy of ours，the Impostor，is afraid of his own death and anxious about his own future.\nSo it is only natural that you are worried...\n\nNow，Sign this document and I promise you a happy future...,会議開始してすぐに次の会議までに死にそうな人に保険をかけることが出来ます。\nその人が次の会議までにキルor追放されれば会議初回に保険金を受け取れます。\n保険金を受け取った時、会議終了時に全体に詐欺師が保険金を受け取った事が通知されます。\n設定回数保険金を受け取ったら単独勝利です。\n\n...強大な我々の敵、そうあのインポスターですら、自らの死に恐怖を、自身の将来に不安を抱いていると聴きおよびます。\nだから貴方が不安なのは当然なことなのです...\n\nさあ、この書類にサインを... さすれば幸せな将来を約束しましょう...,,欺詐師可以在會議開始時，為下一個會議前會死的人投保。\n如果那個人在下一個會議前被殺或被放逐，欺詐師會在下一個會議開始時收到保險金。\n當欺詐師收到保險金時，全體玩家會在會議結束時收到通知。\n欺詐師在收到設定次數的保險金後，就能獨自獲勝。\n\n...聽說就連我們的強大敵人，內鬼，也害怕死亡，擔心未來。\n所以你的擔心是很自然的...\n\n現在，簽下這份文件，我保證你會有個幸福的未來...
-CrookNumberOfInsuranceClaimsReceivedRequiredToWin,Number of insurance claims received required to win.,勝利に必要な保険金の受け取り数,,欺詐師獲勝所需的保險金數量
-CrookTimeTheAbilityToInsureOthersIsAvailable,Time the ability to insure others is available.,保険をかけられる時間,,欺詐師可以為他人投保的時間
-CrookVoteSuccessMessage,I was able to get {0} to sign up for insurance.,{0}に保険を契約させる事が出来ました。,,{0}成功地簽下了保險。
-CrookVoteYourselfErrorMessage,You cannot insure yourself.\nVoting and target selection has been invalidated.\n\nPlease select another crew again.,自分自身に保険をかける事はできません。\n投票及び対象選択を無効化します。\n\n再度他のクルーを選択してください。,,你不能為自己投保。\n投票及目標選擇已無效。\n\n請重新選擇一個船員。
-CrookVoteBotErrorMessage,Bot cannot be insured.\nVoting and target selection has been invalidated.\n\nPlease select another crew again.,Botに保険をかける事はできません。\n投票及び対象選択を無効化します。\n\n再度他のクルーを選択してください。,,你不能為機器人投保。\n投票及目標選擇已無效。\n\n請重新選擇一個船員。
-CrookErrorTimeout,<color={0}>The acceptance of the selection of the subject to be insured by the ballot is closed.</color>\n\nVoting is disabled until the message "Voting Ends In: {1}s" <color={0}>is displayed，in order to prevent false votes due to time running out.</color>\nPlease note that the time is measured by the host and may differ from the actual time due to lag or other reasons.,<color={0}>投票により保険を契約させる対象の選択の受け付けは、締め切っております。</color>\n\n「投票終了まであと: {1}秒」と表示されるまでは <color={0}>時間切れによる誤投票を防止する為、投票を無効化しております。</color>\n時間の計測はホストによる処理である為、ラグ等により実際の表記と異なる可能性がある事をご了承ください。,,<color={0}>投票選擇保險對象已經結束。</color>\n\n為了防止因超時而造成誤投，<color={0}>在「投票結束還剩: {1}秒」顯示之前，投票將會被無效化。</color>\n請注意，由於時間是本地計算，可能因為延遲等原因而與實際時間不同。
-CrookSHRMeetingStartAnnounce,<color={0}>The ability can be used for the duration of "Voting Ends In: {1}s"</color>.\n\nBy voting during the available time，you can make other players sign insurance contracts with your chosen target.\nVotes for ability use are not notified to other players and can be followed by regular votes.\n\n<color={0}>Even if the ability usage time expires，there is a 10-second grace period (up to {2} seconds) during which voting is disabled</color>. This is to account for lag and similar factors.\nIf a skip vote or a vote has already been completed，it will not be invalidated at the time of invalidation.,<color={0}>能力が使用可能な時間は\n「投票終了まであと: {1}秒」と表示されるまで</color>です。\n\n使用可能な時間の間に投票する事で、投票先のプレイヤーに保険を契約させます。\n能力使用の為の投票は他のプレイヤーに通知されず解除される為、通常の投票もその後行う事が可能です。\n\n<color={0}>能力使用時間が切れても、10秒間({2}秒まで)は投票を無効化</color>します。これはラグ等を考慮した猶予時間です。\n投票無効化時間において、スキップ票 又は 投票が完了済みな場合は無効化しません。,,<color={0}>能力可以在「投票結束還剩: {1}秒」顯示時使用</color>。\n\n在這段時間內投票，可以讓你選擇的對象簽下保險合約。\n能力使用的投票不會通知給其他玩家，並且可以在之後進行正常投票。\n\n<color={0}>即使能力使用時間結束，也會有10秒的緩衝時間(最多{2}秒)來無效化投票</color>。這是為了考慮到延遲等因素。\n在無效化時間內，如果已經有人投票或者投票已經結束，則不會無效化。
-CrookErrorTargetAllladyDead,Since {0} was already dead，he could not be insured.,{0}は既に死亡していた為、保険を契約させる事ができませんでした。,,{0}已經死亡，不能為他投保。
-CrookReceiveAnnounce,It appears that someone has received the insurance money from the insurance policy that {0} had purchased.,誰かが{0}にかけられていた保険金を受け取ったようです。,,似乎有人收到了{0}所投保的保險金。
-CrookInsuredChatAnnounce,Crook : {0} got {1} to sign up for insurance.,詐欺師 : {0}が {1} に保険を契約させました。,,欺詐師 : {0}讓{1}簽下了保險。
-CrookReceiveSetWinFlagChatAnnounce,It is possible to receive the insurance coverage that you have {0}.This is the {1}th time you have received the insurance money. \nReceipt of this insurance payment satisfies the win condition.,{0}にかけた保険金を受け取る事ができます。今回は{1}回目の受給です。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。\n今回の受給により勝利条件を達成します。,,你可以收到{0}所投保的保險金。這是你第{1}次收到保險金。\n當這次會議的放逐環節後仍存活的條件下，將會獲得保險金。\n收到保險金後，你就能獲勝。
-CrookReceiveSuccessChatAnnounce,It is possible to receive the insurance coverage that you have {0}.This is the {1}th time you have received the insurance money. \nIf you are alive at the time of the expulsion process of the current meeting，you will receive the insurance benefit.\nTo win，you need to receive {2} more times.,{0}にかけた保険金を受け取る事ができます。今回は{1}回目の受給です。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。\n勝利するには 後{2}回受け取る必要があります。,,你可以收到{0}所投保的保險金。這是你第{1}次收到保險金。\n當這次會議的放逐環節後仍存活的條件下，將會獲得保險金。\n為了獲勝，你還需要再收到{2}次保險金。
-SaunerName,Sauner,サウナー,,三溫暖愛好者
-SaunerTitle1,Yeah，it's exhilarating.,あ～、ととのう～,,啊～，好舒服～
-SaunerDescription,The darkroom，showers，and observation deck，in that order，are the sole winners after spending a certain amount of time in each of these locations.,暗室、シャワー、展望デッキの順番で、それぞれの箇所で一定時間過ごすと単独勝利します。,,在蒸氣室、淋浴間、展望台中，依序待上一段時間，就能獨自獲勝。
-SaunerDarkroom,Darkroom,暗室,,蒸氣室
-SaunerShower,Shower,シャワー,,淋浴間
-SaunerObservationDeck,Observation deck,展望デッキ,,展望台
-SaunerTextInSauna,take a sauna,サウナに入る,,三溫暖
-SaunerTextShower,take a shower,シャワーを浴びる,,冷水浴
-SaunerTextAirBath,Take a refreshing outdoor bath!,外気浴でととのう,,外氣浴
-SaunerTextRemaing,({0} seconds remaining),(残り{0}秒),,(剩餘{0}秒)
-SaunerDarkroomTime,Sauna Length of Stay,サウナタイム,,三溫暖所需時間
-SaunerShowerTime,Time to take a shower,シャワータイム,,淋浴所需時間
-SaunerDeckTime,Outside air bath time,外気浴タイム,,外氣浴所需時間
-SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！,,三溫暖太爽了吧！
-RocketName,Rocket,ロケット,,火箭人
-RocketTitle1,Launch high into the sky!,空高く打ち上がれ！,,高高飛起來！
-RocketTitle2,Booooom!!!!!,ボーーーーン！,,轟轟轟！！！
-RocketDescription,You can grab other crew members and launch them upward for a kill at any time you like.\nYou can grab more than one crew member，but if the meeting is called before you launch，you will fail to launch.\nIf the meeting ends without expulsion，you can launch，but the victims will not remain silent.\nAlso，the launched crew will be visible to others.,他クルーを掴み、好きなタイミングで上に向かって打ち上げてキルすることが出来ます。\nクルーは複数人掴むことが出来ますが、打ち飛ばす前に会議が呼ばれると打ち上げ損なってしまいます。\n追放されずに会議が終了すれば打ち上げられますが、被害者たちが黙ってはいないでしょう。\nまた、打ち上げたクルーは他人目線でも見えてしまいます。,,你可以隨時抓住其他船員，然後將他們向上發射，進行擊殺。\n你可以抓住多個船員，但如果在發射前召開會議，你將無法發射火箭。\n如果會議結束後沒有被放逐，可以執行火箭發射，但注意受害者並不會保持沉默。\n此外，其他人可以看見被發射的船員。
-RocketSeizeButtonName,Catch,掴む,,上火箭
-RocketLetsButtonName,Boooom!!!,ボーーン！！！,,發射！！！
-RocketLetsButtonName2,WashUp,打ち上げる,,升空
-RocketButtonCooldownSetting,First catch cool time,最初に掴むクールタイム,,火箭人第一次抓人的冷卻時間
-RocketButtonAfterCooldown,Cool time to catch after the second time,二回目以降に掴むクールタイム,,火箭人第二次後抓人的冷卻時間
-RocketChargeTimeSetting,Rocket Chargetime,ロケットのチャージタイム,,火箭發射的冷卻時間
-WellBehaverName,Well Behaver,品行方正,,潔癖狂
-WellBehaverTitle1,Be sure to conduct yourself in a dignified manner.,品行方正な行いを心がけましょう,,我不想看到垃圾
-WellBehaverDescription,This position is a crew member but has no tasks.\nInstead， you must pick up trash that someone drops.\nWhen a certain number of trash accumulates， the person cannot stand it any longer and dies.,この役職はクルーですがタスクがありません\nその代わり、誰かが落としていくゴミを拾う必要があります\nゴミが一定数以上溜まると耐えきれなくなって死亡してしまいます,,潔癖狂屬於船員陣營，但沒有任務。\n作為替代，你必須撿起其他人丟下的垃圾。\n當垃圾累積到一定數量時，你將無法忍受髒亂而自殺。
-WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数,,潔癖狂能容許的垃圾的上限數量
-WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度,,垃圾被丟棄的頻率
-WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える,,所有玩家都可以看見垃圾
-WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う,,撿垃圾
-PokerfaceName,Pokerface,ポーカーフェイス,,撲克臉
-PokerfaceTitle1,Nothing，though?,なにもありませんけど？,,無事發生對吧？
-PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。,,撲克臉是由三人構成的職業。他們可以互相認出彼此！\n如果三人中有兩人死亡，而剩餘一人活到最後，那麼三人都將取得勝利！（依規則可能是只有活到最後的撲克臉獲勝）\n撲克臉沒有擊殺能力。如果三人中有兩人以上存活，那麼三人都將失敗。
-PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する,,只有活到最後的撲克臉才能獲勝。
+JumpDancerName,Jump Dancer,ジャンプダンサー,跳跳虎,跳跳舞者
+JumpDancerTitle1,Jump!Jump!Jump,ぴょんっと飛び出そう！,我要飞起来啦！,離開地球表面！
+JumpDancerButtonName,Jump,ジャンプ！,跳跃,跳！
+CrookName,Crook,詐欺師,欺诈师,欺詐師
+CrookTitle1,Sign this document and I promise you a happy future...,この書類にサインしてくれれば幸せな将来を約束しましょう...,把这份协议签了，我保证你后顾无忧……,簽下這份文件後，我保證你會有個幸福的未來...
+CrookDescription,As soon as the meeting starts，you can insure someone who is going to die before the next meeting.\nIf that person is killed OR expelled before the next meeting，the insurance money is received at the beginning of the meeting.\nWhen the insurance money is received，the whole group is notified at the end of the meeting that the crook has received the insurance money.\nThe con artist wins alone after receiving the insurance money for a set number of times.\n\n...I hear that even the mighty enemy of ours，the Impostor，is afraid of his own death and anxious about his own future.\nSo it is only natural that you are worried...\n\nNow，Sign this document and I promise you a happy future...,会議開始してすぐに次の会議までに死にそうな人に保険をかけることが出来ます。\nその人が次の会議までにキルor追放されれば会議初回に保険金を受け取れます。\n保険金を受け取った時、会議終了時に全体に詐欺師が保険金を受け取った事が通知されます。\n設定回数保険金を受け取ったら単独勝利です。\n\n...強大な我々の敵、そうあのインポスターですら、自らの死に恐怖を、自身の将来に不安を抱いていると聴きおよびます。\nだから貴方が不安なのは当然なことなのです...\n\nさあ、この書類にサインを... さすれば幸せな将来を約束しましょう...,欺诈师属于独立阵营。每轮会议阶段开始时，欺诈师可以选择一名玩家投保。\n若那名玩家在下一轮会议阶段开始前被击杀或放逐，欺诈师获得一个保险金标记，\n然后所有玩家在会议阶段结束时确认这一情报。\n欺诈师获得一定数量的保险金标记后，欺诈师单独获胜。\n\n即便是那些强大的，混在我们当中的内鬼，也畏惧着自己的死亡，对未来感到焦虑。\n你会感到担忧也是自然的……\n\n来，把这份协议签了，我保证你后顾无忧……,欺詐師可以在會議開始時，為下一個會議前會死的人投保。\n如果那個人在下一個會議前被殺或被放逐，欺詐師會在下一個會議開始時收到保險金。\n當欺詐師收到保險金時，全體玩家會在會議結束時收到通知。\n欺詐師在收到設定次數的保險金後，就能獨自獲勝。\n\n...聽說就連我們的強大敵人，內鬼，也害怕死亡，擔心未來。\n所以你的擔心是很自然的...\n\n現在，簽下這份文件，我保證你會有個幸福的未來...
+CrookNumberOfInsuranceClaimsReceivedRequiredToWin,Number of insurance claims received required to win.,勝利に必要な保険金の受け取り数,获胜所需获得保险金标记数,欺詐師獲勝所需的保險金數量
+CrookTimeTheAbilityToInsureOthersIsAvailable,Time the ability to insure others is available.,保険をかけられる時間,允许选择玩家投保的时间,欺詐師可以為他人投保的時間
+CrookVoteSuccessMessage,I was able to get {0} to sign up for insurance.,{0}に保険を契約させる事が出来ました。,成功与{0}签订了保险协议。,{0}成功地簽下了保險。
+CrookVoteYourselfErrorMessage,You cannot insure yourself.\nVoting and target selection has been invalidated.\n\nPlease select another crew again.,自分自身に保険をかける事はできません。\n投票及び対象選択を無効化します。\n\n再度他のクルーを選択してください。,你不可以给自己投保。\n本次技能发动已经被无效。\n\n请选择另一名玩家。,你不能為自己投保。\n投票及目標選擇已無效。\n\n請重新選擇一個船員。
+CrookVoteBotErrorMessage,Bot cannot be insured.\nVoting and target selection has been invalidated.\n\nPlease select another crew again.,Botに保険をかける事はできません。\n投票及び対象選択を無効化します。\n\n再度他のクルーを選択してください。,你不可以给人机投保。\n本次技能发动已经被无效。\n\n请选择另一名玩家。,你不能為機器人投保。\n投票及目標選擇已無效。\n\n請重新選擇一個船員。
+CrookErrorTimeout,<color={0}>The acceptance of the selection of the subject to be insured by the ballot is closed.</color>\n\nVoting is disabled until the message "Voting Ends In: {1}s" <color={0}>is displayed，in order to prevent false votes due to time running out.</color>\nPlease note that the time is measured by the host and may differ from the actual time due to lag or other reasons.,<color={0}>投票により保険を契約させる対象の選択の受け付けは、締め切っております。</color>\n\n「投票終了まであと: {1}秒」と表示されるまでは <color={0}>時間切れによる誤投票を防止する為、投票を無効化しております。</color>\n時間の計測はホストによる処理である為、ラグ等により実際の表記と異なる可能性がある事をご了承ください。,<color={0}>投保选择时间已经结束。</color>\n为避免因时间耗尽而造成错误投票，在显示「投保时间还剩：{1}秒」之前，欺诈师将无法进行投票操作。\n请注意，投票时间以主机的游戏时间为基准计算，因此投票时间可能会因延迟等原因与标准时间不一致。,<color={0}>投票選擇保險對象已經結束。</color>\n\n為了防止因超時而造成誤投，<color={0}>在「投票結束還剩: {1}秒」顯示之前，投票將會被無效化。</color>\n請注意，由於時間是本地計算，可能因為延遲等原因而與實際時間不同。
+CrookSHRMeetingStartAnnounce,<color={0}>The ability can be used for the duration of "Voting Ends In: {1}s"</color>.\n\nBy voting during the available time，you can make other players sign insurance contracts with your chosen target.\nVotes for ability use are not notified to other players and can be followed by regular votes.\n\n<color={0}>Even if the ability usage time expires，there is a 10-second grace period (up to {2} seconds) during which voting is disabled</color>. This is to account for lag and similar factors.\nIf a skip vote or a vote has already been completed，it will not be invalidated at the time of invalidation.,<color={0}>能力が使用可能な時間は\n「投票終了まであと: {1}秒」と表示されるまで</color>です。\n\n使用可能な時間の間に投票する事で、投票先のプレイヤーに保険を契約させます。\n能力使用の為の投票は他のプレイヤーに通知されず解除される為、通常の投票もその後行う事が可能です。\n\n<color={0}>能力使用時間が切れても、10秒間({2}秒まで)は投票を無効化</color>します。これはラグ等を考慮した猶予時間です。\n投票無効化時間において、スキップ票 又は 投票が完了済みな場合は無効化しません。,<color={0}>欺诈师的技能可用时间从\n「投保时间还剩：{1}秒」显示时</color>开始。\n在这段时间内，欺诈师可以通过投票进行投保操作。\n这个方式进行的投票不会告知给其他玩家，在这之后可以随时进行通常投票。\n\n<color={0}>在允许的技能可用时间结束后，有默认10秒钟(最多{2}秒)的时间内欺诈师不能投票。</color>这段时间是为防止延迟等原因出现的错误。,若在这段时间之前通常投票操作已经完成，投票不会无效化。\n
+CrookErrorTargetAllladyDead,Since {0} was already dead，he could not be insured.,{0}は既に死亡していた為、保険を契約させる事ができませんでした。,{0}已经死亡，不可以被选为投保对象。,{0}已經死亡，不能為他投保。
+CrookReceiveAnnounce,It appears that someone has received the insurance money from the insurance policy that {0} had purchased.,誰かが{0}にかけられていた保険金を受け取ったようです。,有人因为{0}投的保险从中获益。,似乎有人收到了{0}所投保的保險金。
+CrookInsuredChatAnnounce,Crook : {0} got {1} to sign up for insurance.,詐欺師 : {0}が {1} に保険を契約させました。,欺诈师：{0}让{1}签订了保险协议。,欺詐師 : {0}讓{1}簽下了保險。
+CrookReceiveSetWinFlagChatAnnounce,It is possible to receive the insurance coverage that you have {0}.This is the {1}th time you have received the insurance money. \nReceipt of this insurance payment satisfies the win condition.,{0}にかけた保険金を受け取る事ができます。今回は{1}回目の受給です。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。\n今回の受給により勝利条件を達成します。,你即将从{0}处获得保险金。这是第{1}枚保险金标记。\n若你在本轮会议结束时仍然存活，你就可以获得保险金。\n获得该枚保险金标记后，你就将获胜。,你可以收到{0}所投保的保險金。這是你第{1}次收到保險金。\n當這次會議的放逐環節後仍存活的條件下，將會獲得保險金。\n收到保險金後，你就能獲勝。
+CrookReceiveSuccessChatAnnounce,It is possible to receive the insurance coverage that you have {0}.This is the {1}th time you have received the insurance money. \nIf you are alive at the time of the expulsion process of the current meeting，you will receive the insurance benefit.\nTo win，you need to receive {2} more times.,{0}にかけた保険金を受け取る事ができます。今回は{1}回目の受給です。\n現在会議の追放処理時に生存していた場合、保険金を受け取ります。\n勝利するには 後{2}回受け取る必要があります。,你即将从{0}处获得保险金。这是第{1}枚保险金标记。\n若你在本轮会议结束时仍然存活，你就可以获得保险金。\n获得该枚保险金标记后，你还需要获得{2}枚保险金标记来获胜。,你可以收到{0}所投保的保險金。這是你第{1}次收到保險金。\n當這次會議的放逐環節後仍存活的條件下，將會獲得保險金。\n為了獲勝，你還需要再收到{2}次保險金。
+SaunerName,Sauner,サウナー,洗浴王,三溫暖愛好者
+SaunerTitle1,Yeah，it's exhilarating.,あ～、ととのう～,啊～真舒服~,啊～，好舒服～
+SaunerDescription,The darkroom，showers，and observation deck，in that order，are the sole winners after spending a certain amount of time in each of these locations.,暗室、シャワー、展望デッキの順番で、それぞれの箇所で一定時間過ごすと単独勝利します。,洗浴王属于独立阵营。只要洗浴王按照大厅暗房、淋浴室、瞭望台的顺序在每处各停留一段时间，洗浴王就能独自获胜。,在蒸氣室、淋浴間、展望台中，依序待上一段時間，就能獨自獲勝。
+SaunerDarkroom,Darkroom,暗室,暗房,蒸氣室
+SaunerShower,Shower,シャワー,淋浴室,淋浴間
+SaunerObservationDeck,Observation deck,展望デッキ,瞭望台,展望台
+SaunerTextInSauna,take a sauna,サウナに入る,蒸个桑拿,三溫暖
+SaunerTextShower,take a shower,シャワーを浴びる,冲个凉水澡,冷水浴
+SaunerTextAirBath,Take a refreshing outdoor bath!,外気浴でととのう,呼吸一下新鲜空气！,外氣浴
+SaunerTextRemaing,({0} seconds remaining),(残り{0}秒),(剩余{0}秒),(剩餘{0}秒)
+SaunerDarkroomTime,Sauna Length of Stay,サウナタイム,蒸桑拿所需时间,三溫暖所需時間
+SaunerShowerTime,Time to take a shower,シャワータイム,冲澡所需时间,淋浴所需時間
+SaunerDeckTime,Outside air bath time,外気浴タイム,呼吸新鲜空气所需时间,外氣浴所需時間
+SaunerRefreshing,Sauner was refreshing!,サウナーがととのった！,神清气爽！,三溫暖太爽了吧！
+RocketName,Rocket,ロケット,火箭兵,火箭人
+RocketTitle1,Launch high into the sky!,空高く打ち上がれ！,上天去吧！,高高飛起來！
+RocketTitle2,Booooom!!!!!,ボーーーーン！,光芒砰然绽放🎵烟花映入眼帘🎵,轟轟轟！！！
+RocketDescription,You can grab other crew members and launch them upward for a kill at any time you like.\nYou can grab more than one crew member，but if the meeting is called before you launch，you will fail to launch.\nIf the meeting ends without expulsion，you can launch，but the victims will not remain silent.\nAlso，the launched crew will be visible to others.,他クルーを掴み、好きなタイミングで上に向かって打ち上げてキルすることが出来ます。\nクルーは複数人掴むことが出来ますが、打ち飛ばす前に会議が呼ばれると打ち上げ損なってしまいます。\n追放されずに会議が終了すれば打ち上げられますが、被害者たちが黙ってはいないでしょう。\nまた、打ち上げたクルーは他人目線でも見えてしまいます。,火箭兵可以在任意时间将一名玩家绑上火箭并将其发射上天。\n火箭兵可以将若干名玩家一同发射，但若在火箭发射前行动阶段结束，火箭就无法发射。\n若会议阶段没有玩家被放逐，则火箭可以发射，但被发射的玩家可以留下遗言。\n此外，所有玩家都可以确认被发射的玩家是谁。,你可以隨時抓住其他船員，然後將他們向上發射，進行擊殺。\n你可以抓住多個船員，但如果在發射前召開會議，你將無法發射火箭。\n如果會議結束後沒有被放逐，可以執行火箭發射，但注意受害者並不會保持沉默。\n此外，其他人可以看見被發射的船員。
+RocketSeizeButtonName,Catch,掴む,绑人,上火箭
+RocketLetsButtonName,Boooom!!!,ボーーン！！！,发射,發射！！！
+RocketLetsButtonName2,WashUp,打ち上げる,点火,升空
+RocketButtonCooldownSetting,First catch cool time,最初に掴むクールタイム,火箭兵第一次绑人冷却,火箭人第一次抓人的冷卻時間
+RocketButtonAfterCooldown,Cool time to catch after the second time,二回目以降に掴むクールタイム,火箭兵第二次及以后绑人冷却,火箭人第二次後抓人的冷卻時間
+RocketChargeTimeSetting,Rocket Chargetime,ロケットのチャージタイム,火箭充能所需时间,火箭發射的冷卻時間
+WellBehaverName,Well Behaver,品行方正,洁癖,潔癖狂
+WellBehaverTitle1,Be sure to conduct yourself in a dignified manner.,品行方正な行いを心がけましょう,文明宇宙，从你我做起,我不想看到垃圾
+WellBehaverDescription,This position is a crew member but has no tasks.\nInstead， you must pick up trash that someone drops.\nWhen a certain number of trash accumulates， the person cannot stand it any longer and dies.,この役職はクルーですがタスクがありません\nその代わり、誰かが落としていくゴミを拾う必要があります\nゴミが一定数以上溜まると耐えきれなくなって死亡してしまいます,洁癖属于船员阵营，不需要做任务。\n作为代替 ，洁癖需要捡起其他人丢下的垃圾。\n当被丢下的垃圾累计到一定数量时，洁癖将无法忍受并死亡。,潔癖狂屬於船員陣營，但沒有任務。\n作為替代，你必須撿起其他人丟下的垃圾。\n當垃圾累積到一定數量時，你將無法忍受髒亂而自殺。
+WellBehaverLimitTrashCountSetting,Allowable number of garbage,ゴミの許容数,洁癖可以忍受的最大垃圾数,潔癖狂能容許的垃圾的上限數量
+WellBehaverFrequencyGarbageDumpingSetting,Frequency of garbage dumping,ゴミが捨てられる頻度,垃圾被丢弃的频率,垃圾被丟棄的頻率
+WellBehaverCanAllPlayerSeeGarbageSetting,All player can see garbage,全プレイヤーがゴミを見える,垃圾对所有玩家可见,所有玩家都可以看見垃圾
+WellBehaverPickUpGarbageButtonName,Pick up garbage,ゴミを拾う,捡垃圾,撿垃圾
+PokerfaceName,Pokerface,ポーカーフェイス,仿生人,撲克臉
+PokerfaceTitle1,Nothing，though?,なにもありませんけど？,软体不稳定,無事發生對吧？
+PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。,仿生人三人一组。所有仿生人互认。\n若游戏结束时仅有一名仿生人存活，则所有仿生人都获胜。\n仿生人没有击杀能力。若游戏结束时有两名以上仿生人存活，仿生人不能获胜。,撲克臉是由三人構成的職業。他們可以互相認出彼此！\n如果三人中有兩人死亡，而剩餘一人活到最後，那麼三人都將取得勝利！（依規則可能是只有活到最後的撲克臉獲勝）\n撲克臉沒有擊殺能力。如果三人中有兩人以上存活，那麼三人都將失敗。
+PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する,只有存活的仿生人能获胜,只有活到最後的撲克臉才能獲勝。
 
 #NewRoleTranslation
 
