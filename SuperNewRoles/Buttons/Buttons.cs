@@ -94,7 +94,6 @@ static class HudManagerStartPatch
     public static CustomButton PavlovsdogKillButton;
     public static CustomButton CamouflagerButton;
     public static CustomButton CupidButton;
-    public static CustomButton PenguinButton;
     public static CustomButton VampireCreateDependentsButton;
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
@@ -599,50 +598,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        PenguinButton = new(
-            () =>
-            {
-                PlayerControl target = SetTarget(null, true);
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PenguinHikizuri);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(target.PlayerId);
-                writer.EndRPC();
-                RPCProcedure.PenguinHikizuri(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin; },
-            () =>
-            {
-                if (PenguinButton.isEffectActive) CustomButton.FillUp(PenguinButton);
-                return PlayerControl.LocalPlayer.CanMove && SetTarget(null, true);
-            },
-            () =>
-            {
-                PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? Penguin.PenguinCoolTime.GetFloat() : RoleClass.IsFirstMeetingEnd ? GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown) : 10;
-                PenguinButton.Timer = PenguinButton.MaxTimer;
-                PenguinButton.effectCancellable = false;
-                PenguinButton.EffectDuration = Penguin.PenguinDurationTime.GetFloat();
-                PenguinButton.HasEffect = true;
-                PenguinButton.Sprite = Penguin.GetButtonSprite();
-            },
-            Penguin.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; },
-            true,
-            5f,
-            () =>
-            {
-                if (ModeHandler.IsMode(ModeId.Default))
-                    PlayerControl.LocalPlayer.UncheckedMurderPlayer(Penguin.currentTarget);
-            }
-        )
-        {
-            buttonText = ModTranslation.GetString("PenguinButtonName"),
-            showButtonText = true
-        };
+        Penguin.SetupCustomButtons(__instance);
 
         WaveCannonButton = new(
             () =>

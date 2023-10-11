@@ -1586,7 +1586,7 @@ public static class RPCProcedure
     {
         Penguin.PenguinData.Clear();
         if (PlayerControl.LocalPlayer.GetRole() == RoleId.Penguin)
-            HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+            Penguin.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
     }
 
     public static void JumpDancerJump(MessageReader reader)

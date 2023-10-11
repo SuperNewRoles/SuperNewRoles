@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -44,6 +45,54 @@ public static class Penguin
         bool Is = ModHelpers.IsSucsessChance(4);
         _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
     }
+    public static CustomButton PenguinButton;
+    public static void SetupCustomButtons(HudManager __instance)
+    {
+        PenguinButton = new(
+            () =>
+            {
+                PlayerControl target = HudManagerStartPatch.SetTarget(null, true);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PenguinHikizuri);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                writer.Write(target.PlayerId);
+                writer.EndRPC();
+                RPCProcedure.PenguinHikizuri(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin; },
+            () =>
+            {
+                if (PenguinButton.isEffectActive) CustomButton.FillUp(PenguinButton);
+                return PlayerControl.LocalPlayer.CanMove && HudManagerStartPatch.SetTarget(null, true);
+            },
+            () =>
+            {
+                PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? Penguin.PenguinCoolTime.GetFloat() : RoleClass.IsFirstMeetingEnd ? GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown) : 10;
+                PenguinButton.Timer = PenguinButton.MaxTimer;
+                PenguinButton.effectCancellable = false;
+                PenguinButton.EffectDuration = Penguin.PenguinDurationTime.GetFloat();
+                PenguinButton.HasEffect = true;
+                PenguinButton.Sprite = Penguin.GetButtonSprite();
+            },
+            Penguin.GetButtonSprite(),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; },
+            true,
+            5f,
+            () =>
+            {
+                if (ModeHandler.IsMode(ModeId.Default))
+                    PlayerControl.LocalPlayer.UncheckedMurderPlayer(Penguin.currentTarget);
+            }
+        )
+        {
+            buttonText = ModTranslation.GetString("PenguinButtonName"),
+            showButtonText = true
+        };
+    }
 
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
     public static class PlayerPhysicsSpeedPatch
@@ -83,10 +132,10 @@ public static class Penguin
 
                 if (data.Key != null && data.Key.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    HudManagerStartPatch.PenguinButton.isEffectActive = false;
-                    HudManagerStartPatch.PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? PenguinCoolTime.GetFloat() : GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-                    HudManagerStartPatch.PenguinButton.Timer = HudManagerStartPatch.PenguinButton.MaxTimer;
-                    HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                    PenguinButton.isEffectActive = false;
+                    PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? PenguinCoolTime.GetFloat() : GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                    PenguinButton.Timer = PenguinButton.MaxTimer;
+                    PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 }
                 PenguinData.Remove(data.Key);
                 continue;
