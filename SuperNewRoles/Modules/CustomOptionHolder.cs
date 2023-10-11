@@ -946,13 +946,6 @@ public class CustomOptionHolder
     public static CustomOption HamburgerShopShortTask;
     public static CustomOption HamburgerShopLongTask;
 
-    public static CustomRoleOption PenguinOption;
-    public static CustomOption PenguinPlayerCount;
-    public static CustomOption PenguinCoolTime;
-    public static CustomOption PenguinDurationTime;
-    public static CustomOption PenguinCanDefaultKill;
-    public static CustomOption PenguinMeetingKill;
-
     public static CustomRoleOption DependentsOption;
     public static CustomOption DependentsPlayerCount;
 
@@ -1119,12 +1112,7 @@ public class CustomOptionHolder
         MarlinPlayerCount = Create(200503, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
         MarlinViewVote = Create(200504, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
 
-        PenguinOption = SetupCustomRoleOption(200600, true, RoleId.Penguin);
-        PenguinPlayerCount = Create(200601, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
-        PenguinCoolTime = Create(200602, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
-        PenguinDurationTime = Create(200603, true, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
-        PenguinCanDefaultKill = Create(200604, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
-        PenguinMeetingKill = Create(200605, true, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
+        Penguin.SetupCustomOptions();
 
         Rocket.CustomOptionData.SetupCustomOptions();
 

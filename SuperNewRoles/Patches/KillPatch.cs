@@ -305,7 +305,7 @@ static class CheckMurderPatch
                 if (currentTarget != null)
                     break;
                 Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + Penguin.PenguinData.TryAdd(__instance, target).ToString());
-                Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
+                Penguin.PenguinTimer.TryAdd(__instance.PlayerId, Penguin.PenguinDurationTime.GetFloat());
                 target.RpcSnapTo(__instance.transform.position);
                 return false;
         }

@@ -13,6 +13,22 @@ namespace SuperNewRoles.Roles.Impostor;
 [HarmonyPatch]
 public static class Penguin
 {
+    public static CustomRoleOption PenguinOption;
+    public static CustomOption PenguinPlayerCount;
+    public static CustomOption PenguinCoolTime;
+    public static CustomOption PenguinDurationTime;
+    public static CustomOption PenguinCanDefaultKill;
+    public static CustomOption PenguinMeetingKill;
+    public static void SetupCustomOptions()
+    {
+        PenguinOption = CustomOption.SetupCustomRoleOption(200600, true, RoleId.Penguin);
+        PenguinPlayerCount = CustomOption.Create(200601, true, CustomOptionType.Impostor, "SettingPlayerCountName", CustomOptionHolder.ImpostorPlayers[0], CustomOptionHolder.ImpostorPlayers[1], CustomOptionHolder.ImpostorPlayers[2], CustomOptionHolder.ImpostorPlayers[3], PenguinOption);
+        PenguinCoolTime = CustomOption.Create(200602, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
+        PenguinDurationTime = CustomOption.Create(200603, true, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
+        PenguinCanDefaultKill = CustomOption.Create(200604, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
+        PenguinMeetingKill = CustomOption.Create(200605, true, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
+    }
+
     public static List<PlayerControl> PenguinPlayer;
     public static Color32 color = RoleClass.ImpostorRed;
     public static Dictionary<PlayerControl, PlayerControl> PenguinData;
@@ -53,7 +69,7 @@ public static class Penguin
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && data.Key != null)
             {
                 if (!PenguinTimer.ContainsKey(data.Key.PlayerId))
-                    PenguinTimer.Add(data.Key.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
+                    PenguinTimer.Add(data.Key.PlayerId, PenguinDurationTime.GetFloat());
                 PenguinTimer[data.Key.PlayerId] -= Time.fixedDeltaTime;
                 if (PenguinTimer[data.Key.PlayerId] <= 0 && data.Value != null && data.Value.IsAlive())
                     data.Key.RpcMurderPlayer(data.Value);
@@ -68,7 +84,7 @@ public static class Penguin
                 if (data.Key != null && data.Key.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     HudManagerStartPatch.PenguinButton.isEffectActive = false;
-                    HudManagerStartPatch.PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? CustomOptionHolder.PenguinCoolTime.GetFloat() : GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                    HudManagerStartPatch.PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? PenguinCoolTime.GetFloat() : GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
                     HudManagerStartPatch.PenguinButton.Timer = HudManagerStartPatch.PenguinButton.MaxTimer;
                     HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 }
@@ -92,7 +108,7 @@ public static class Penguin
     public static void Prefix(PlayerControl __instance)
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        if (CustomOptionHolder.PenguinMeetingKill.GetBool())
+        if (PenguinMeetingKill.GetBool())
         {
             foreach (var data in PenguinData.ToArray())
             {

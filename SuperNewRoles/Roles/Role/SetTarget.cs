@@ -15,7 +15,7 @@ public static class SetTarget
             return;
         }
         else if (PlayerControl.LocalPlayer.IsRole(RoleId.Penguin) &&
-            (!CustomOptionHolder.PenguinCanDefaultKill.GetBool()
+            (!Penguin.PenguinCanDefaultKill.GetBool()
             ||
             !ModeHandler.IsMode(ModeId.Default))
             && Penguin.currentTarget is null)

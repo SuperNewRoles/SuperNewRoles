@@ -617,10 +617,10 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? CustomOptionHolder.PenguinCoolTime.GetFloat() : RoleClass.IsFirstMeetingEnd ? GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown) : 10;
+                PenguinButton.MaxTimer = ModeHandler.IsMode(ModeId.Default) ? Penguin.PenguinCoolTime.GetFloat() : RoleClass.IsFirstMeetingEnd ? GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown) : 10;
                 PenguinButton.Timer = PenguinButton.MaxTimer;
                 PenguinButton.effectCancellable = false;
-                PenguinButton.EffectDuration = CustomOptionHolder.PenguinDurationTime.GetFloat();
+                PenguinButton.EffectDuration = Penguin.PenguinDurationTime.GetFloat();
                 PenguinButton.HasEffect = true;
                 PenguinButton.Sprite = Penguin.GetButtonSprite();
             },
