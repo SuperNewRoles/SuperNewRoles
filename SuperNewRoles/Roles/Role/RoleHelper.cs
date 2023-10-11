@@ -866,7 +866,7 @@ public static class RoleHelpers
                 RoleClass.HamburgerShop.HamburgerShopPlayer.Add(player);
                 break;
             case RoleId.Penguin:
-                RoleClass.Penguin.PenguinPlayer.Add(player);
+                Penguin.PenguinPlayer.Add(player);
                 break;
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.Add(player);
@@ -1450,7 +1450,7 @@ public static class RoleHelpers
                 RoleClass.HamburgerShop.HamburgerShopPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Penguin:
-                RoleClass.Penguin.PenguinPlayer.RemoveAll(ClearRemove);
+                Penguin.PenguinPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
@@ -1993,7 +1993,7 @@ public static class RoleHelpers
             else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
             else if (RoleClass.Cupid.CupidPlayer.IsCheckListPlayerControl(player)) return RoleId.Cupid;
             else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
-            else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
+            else if (Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;

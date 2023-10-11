@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Impostor;
 
 namespace SuperNewRoles.Roles;
 
@@ -17,7 +18,7 @@ public static class SetTarget
             (!CustomOptionHolder.PenguinCanDefaultKill.GetBool()
             ||
             !ModeHandler.IsMode(ModeId.Default))
-            && RoleClass.Penguin.currentTarget is null)
+            && Penguin.currentTarget is null)
         {
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
             return;

@@ -622,9 +622,9 @@ static class HudManagerStartPatch
                 PenguinButton.effectCancellable = false;
                 PenguinButton.EffectDuration = CustomOptionHolder.PenguinDurationTime.GetFloat();
                 PenguinButton.HasEffect = true;
-                PenguinButton.Sprite = RoleClass.Penguin.GetButtonSprite();
+                PenguinButton.Sprite = Penguin.GetButtonSprite();
             },
-            RoleClass.Penguin.GetButtonSprite(),
+            Penguin.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -636,7 +636,7 @@ static class HudManagerStartPatch
             () =>
             {
                 if (ModeHandler.IsMode(ModeId.Default))
-                    PlayerControl.LocalPlayer.UncheckedMurderPlayer(RoleClass.Penguin.currentTarget);
+                    PlayerControl.LocalPlayer.UncheckedMurderPlayer(Penguin.currentTarget);
             }
         )
         {

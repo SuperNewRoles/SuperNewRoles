@@ -600,7 +600,7 @@ public static class RPCProcedure
         PlayerControl source = ModHelpers.PlayerById(sourceId);
         PlayerControl target = ModHelpers.PlayerById(targetId);
         if (source == null || target == null) return;
-        RoleClass.Penguin.PenguinData.Add(source, target);
+        Penguin.PenguinData.Add(source, target);
     }
 
     public static void ShowGuardEffect(byte showerid, byte targetid)
@@ -1584,7 +1584,7 @@ public static class RPCProcedure
 
     public static void PenguinMeetingEnd()
     {
-        RoleClass.Penguin.PenguinData.Clear();
+        Penguin.PenguinData.Clear();
         if (PlayerControl.LocalPlayer.GetRole() == RoleId.Penguin)
             HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
     }
