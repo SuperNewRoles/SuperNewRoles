@@ -14,13 +14,13 @@ using Il2CppInterop.Runtime.InteropTypes;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Networking;
 
 namespace SuperNewRoles;
 
@@ -1075,6 +1075,20 @@ public static class ModHelpers
         return rates.ToArray();
     }
     public static Il2CppSystem.Collections.Generic.IEnumerable<T> IEnumerableToIl2Cpp<T>(this IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
+    public static void ResetKillCool(this PlayerControl player, float timer = float.NegativeInfinity)
+    {
+        IGameOptions optdata = SyncSetting.OptionDatas[player].DeepCopy();
+        if (timer == float.NegativeInfinity) timer = SyncSetting.OptionDatas[player].GetFloat(FloatOptionNames.KillCooldown);
+        if (player.AmOwner) player.SetKillTimerUnchecked(timer);
+        else
+        {
+            IGameOptions killcool = optdata.DeepCopy();
+            killcool.SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(timer * 2));
+            killcool.RpcSyncOption(player.GetClientId(), SendOption.None);
+            player.RpcShowGuardEffect(player);
+            optdata.RpcSyncOption(player.GetClientId(), SendOption.None);
+        }
+    }
 }
 public static class CreateFlag
 {

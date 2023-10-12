@@ -92,7 +92,7 @@ class RpcShapeshiftPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
-        SyncSetting.CustomSyncSettings(out var modified);
+        SyncSetting.CustomSyncSettings();
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId && Mode.BattleRoyal.Main.StartSeconds <= 0)
         {
@@ -282,7 +282,7 @@ class RpcShapeshiftPatch
                         RoleClass.Camouflager.ButtonTimer = DateTime.Now;
                         RoleClass.Camouflager.IsCamouflage = true;
                         Camouflager.CamouflageSHR();
-                        SyncSetting.CustomSyncSettings(__instance, out var modifiedCamouflager);
+                        SyncSetting.CustomSyncSettings(__instance);
                     }
                     return true;
                 case RoleId.Worshiper:
@@ -717,7 +717,7 @@ static class CheckMurderPatch
                         if (!__instance.IsDoused(target))
                         {
                             __instance.RpcShowGuardEffect(target);// 守護エフェクト
-                            SyncSetting.OptionData.DeepCopy().SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Arsonist.DurationTime);// シェイプクールダウンを塗り時間に
+                            SyncSetting.DefaultOption.DeepCopy().SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Arsonist.DurationTime);// シェイプクールダウンを塗り時間に
                             new LateTask(() =>
                             {
                                 if (Vector2.Distance(__instance.transform.position, target.transform.position) <= 1.75f)//1.75f以内にターゲットがいるなら
@@ -728,7 +728,7 @@ static class CheckMurderPatch
                                 }
                                 else
                                 {//塗れなかったらキルクールリセット
-                                    SyncSetting.OptionData.DeepCopy().SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(0f));
+                                    SyncSetting.DefaultOption.DeepCopy().SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(0f));
                                 }
                             }, RoleClass.Arsonist.DurationTime, "SHR Arsonist Douse");
                         }
@@ -831,8 +831,8 @@ static class CheckMurderPatch
         Logger.Info("全モード通過", "CheckMurder");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            SyncSetting.CustomSyncSettings(__instance, out var modifiedKiller);
-            SyncSetting.CustomSyncSettings(target, out var modifiedTarget);
+            SyncSetting.CustomSyncSettings(__instance);
+            SyncSetting.CustomSyncSettings(target);
             if (target.IsRole(RoleId.StuntMan))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
@@ -957,20 +957,19 @@ static class CheckMurderPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
 static class PlayerControlSetCooldownPatch
 {
-    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
+    public static bool Prefix(PlayerControl __instance, float time)
     {
+        float cool = RoleHelpers.GetEndMeetingKillCoolTime(__instance);
+        if (cool <= 0f) return true;
         if (GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) == time && !RoleClass.IsCoolTimeSetted)
         {
-            __instance.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(__instance), RoleHelpers.GetEndMeetingKillCoolTime(__instance));
+            __instance.SetKillTimerUnchecked(cool, cool);
             RoleClass.IsCoolTimeSetted = true;
             return false;
         }
-        if (__instance.Data.Role.CanUseKillButton && GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) > 0f)
-        {
-            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
-            return false;
-        }
-        return true;
+        time = Mathf.Clamp(time, 0f, cool);
+        __instance.SetKillTimerUnchecked(time, cool);
+        return false;
     }
 }
 [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
@@ -1505,7 +1504,7 @@ class ReportDeadBodyPatch
                     {
                         player.RpcRevertShapeshift(false);
                     }, 0.5f);
-                    SyncSetting.CustomSyncSettings(player, out var modified);
+                    SyncSetting.CustomSyncSettings(player);
                 }
             }
         }

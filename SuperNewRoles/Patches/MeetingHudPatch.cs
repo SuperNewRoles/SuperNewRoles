@@ -766,8 +766,8 @@ class MeetingHudStartPatch
         {
             new LateTask(() =>
             {
-                SyncSetting.CustomSyncSettings(out var options);
-                SyncSetting.MeetingSyncSettings(options);
+                SyncSetting.CustomSyncSettings();
+                SyncSetting.MeetingSyncSettings();
                 if (!RoleClass.IsFirstMeetingEnd) AddChatPatch.YourRoleInfoSendCommand();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
@@ -882,7 +882,7 @@ public static class OpenVotes
     public static bool VoteSyncSetting(this PlayerControl player)
     {
         var role = player.GetRole();
-        var optdata = SyncSetting.OptionData.DeepCopy();
+        var optdata = SyncSetting.DefaultOption.DeepCopy();
 
         switch (role)
         {
