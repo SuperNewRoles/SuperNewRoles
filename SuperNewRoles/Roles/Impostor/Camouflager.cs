@@ -136,7 +136,7 @@ public class Camouflager
             {
                 new LateTask(() =>
                 {
-                    Mode.SuperHostRoles.FixedUpdate.SetRoleName(player);
+                    Mode.SuperHostRoles.ChangeName.SetRoleName(player);
                 }, 0.25f);
             }
         }
@@ -185,7 +185,7 @@ public class Camouflager
                         ResetCamouflage();
                         new LateTask(() =>
                         {
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                            Mode.SuperHostRoles.ChangeName.SetRoleNames();
                         }, 0.25f);
                     }
                 }

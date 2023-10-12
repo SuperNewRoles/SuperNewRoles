@@ -120,7 +120,7 @@ public static class AirShipRandomSpawn
                     else p.SetName(name);
                     if (!p.IsBot()) p.RpcSnapTo(Locations.GetRandom());
                 }
-                FixedUpdate.SetRoleNames();
+                ChangeName.SetRoleNames();
             }
         }
     }

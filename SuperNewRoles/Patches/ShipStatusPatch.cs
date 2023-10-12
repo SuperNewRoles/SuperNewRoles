@@ -98,7 +98,7 @@ class RepairSystemPatch
             SyncSetting.CustomSyncSettings(out var modified);
             if (systemType == SystemTypes.Comms)
             {
-                Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                Mode.SuperHostRoles.ChangeName.SetRoleNames();
             }
         }
     }
