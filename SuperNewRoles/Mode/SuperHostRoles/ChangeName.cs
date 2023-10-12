@@ -99,8 +99,8 @@ public static class ChangeName
 
         //UpdateTime[player.PlayerId] = UpdateDefaultTime;
 
-        List<PlayerControl> CanAllRolePlayers = new();
-        List<PlayerControl> AlivePlayers = new();
+        HashSet<PlayerControl> CanAllRolePlayers = new();
+        HashSet<PlayerControl> AlivePlayers = new();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             //導入者ではないかつ
