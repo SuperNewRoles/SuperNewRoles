@@ -1663,9 +1663,13 @@ public static class RoleHelpers
     {
         try
         {
-            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                if (task.TaskType == TaskTypes.FixComms)
-                    return true;
+            if (MapUtilities.Systems.TryGetValue(SystemTypes.Comms, out Il2CppSystem.Object obj))
+            {
+                HudOverrideSystemType host = .CastFast<HudOverrideSystemType>();
+                if (host != null)
+                    return host.IsActive;
+            }
+            return false;
         }
         catch (Exception e)
         {

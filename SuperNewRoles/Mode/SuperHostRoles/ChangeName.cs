@@ -112,25 +112,21 @@ public static class ChangeName
             {
                 //神、もしくは死亡していてかつ役職が見れる場合
                 if (SetNamesClass.DefaultGhostSeeRoles(p) || p.IsRole(RoleId.God))
-                {
                     CanAllRolePlayers.Add(p);
-                }
                 else
-                {
                     AlivePlayers.Add(p);
-                }
             }
         }
         bool IsHideAndSeek = ModeHandler.IsMode(ModeId.HideAndSeek);
         //必要がないなら処理しない
         if (player.IsMod() && CanAllRolePlayers.Count < 1 && (!IsHideAndSeek || !player.IsImpostor())) return;
 
-        var introData = IntroData.GetIntroData(player.GetRole(), player);
+        RoleId PlayerRole = player.GetRole();
 
+        var introData = IntroData.GetIntroData(PlayerRole, player);
         StringBuilder NewName = new();
         StringBuilder MySuffix = new();
         StringBuilder RoleNameText = new(ModHelpers.Cs(introData.color, introData.Name));
-        RoleId PlayerRole = player.GetRole();
         PlayerData<string> ChangePlayers = new(needplayerlist:true);
 
         // カモフラ中は処理を破棄する
