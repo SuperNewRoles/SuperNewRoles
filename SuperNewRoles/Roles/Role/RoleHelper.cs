@@ -1665,7 +1665,7 @@ public static class RoleHelpers
         {
             if (MapUtilities.Systems.TryGetValue(SystemTypes.Comms, out Il2CppSystem.Object obj))
             {
-                HudOverrideSystemType host = .CastFast<HudOverrideSystemType>();
+                HudOverrideSystemType host = obj.CastFast<HudOverrideSystemType>();
                 if (host != null)
                     return host.IsActive;
             }
@@ -1681,9 +1681,13 @@ public static class RoleHelpers
     {
         try
         {
-            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                if (task.TaskType == TaskTypes.FixLights)
-                    return true;
+            if (MapUtilities.Systems.TryGetValue(SystemTypes.Electrical, out Il2CppSystem.Object obj))
+            {
+                SwitchSystem ss = obj.CastFast<SwitchSystem>();
+                if (ss != null)
+                    return ss.IsActive;
+            }
+            return false;
         }
         catch { }
         return false;
