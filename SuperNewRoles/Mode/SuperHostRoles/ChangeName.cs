@@ -12,18 +12,6 @@ using UnityEngine;
 namespace SuperNewRoles.Mode.SuperHostRoles;
 public static class ChangeName
 {
-    //途中で変更できないようにここに保存しておく
-    private static string _tempPlayerName;
-    private static string TempPlayerName {
-        get
-        {
-            return _tempPlayerName;
-        }
-    }
-    private static void SetTempPlayerName(string name)
-    {
-        _tempPlayerName = name;
-    }
     private static string GetNowName(this PlayerData<string> pd, PlayerControl p)
     {
         if (!pd.TryGetValue(p, out string result))
@@ -139,7 +127,6 @@ public static class ChangeName
 
         var introData = IntroData.GetIntroData(player.GetRole(), player);
 
-        SetTempPlayerName(player.GetDefaultName());
         StringBuilder NewName = new();
         StringBuilder MySuffix = new();
         StringBuilder RoleNameText = new(ModHelpers.Cs(introData.color, introData.Name));
