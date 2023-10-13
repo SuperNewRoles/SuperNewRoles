@@ -56,7 +56,7 @@ public static class Penguin
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 writer.Write(target.PlayerId);
                 writer.EndRPC();
-                RPCProcedure.PenguinHikizuri(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
+                PenguinHikizuri(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin; },
             () =>
@@ -170,8 +170,21 @@ public static class Penguin
         else
         {
             RPCHelper.StartRPC(CustomRPC.PenguinMeetingEnd).EndRPC();
-            RPCProcedure.PenguinMeetingEnd();
+            PenguinMeetingEnd();
         }
     }
 
+    public static void PenguinHikizuri(byte sourceId, byte targetId)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceId);
+        PlayerControl target = ModHelpers.PlayerById(targetId);
+        if (source == null || target == null) return;
+        Penguin.PenguinData.Add(source, target);
+    }
+    public static void PenguinMeetingEnd()
+    {
+        Penguin.PenguinData.Clear();
+        if (PlayerControl.LocalPlayer.GetRole() == RoleId.Penguin)
+            Penguin.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+    }
 }
