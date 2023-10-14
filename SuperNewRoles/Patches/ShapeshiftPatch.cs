@@ -20,7 +20,7 @@ class RpcShapeshiftPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
-        SyncSetting.CustomSyncSettings(out var modified);
+        SyncSetting.CustomSyncSettings();
         if (RoleClass.Assassin.TriggerPlayer != null)
             return false;
         // バトルロイヤルモードで、
@@ -208,7 +208,7 @@ class RpcShapeshiftPatch
                         RoleClass.Camouflager.ButtonTimer = DateTime.Now;
                         RoleClass.Camouflager.IsCamouflage = true;
                         Camouflager.CamouflageSHR();
-                        SyncSetting.CustomSyncSettings(__instance, out var modifiedCamouflager);
+                        SyncSetting.CustomSyncSettings(__instance);
                     return true;
                 case RoleId.Worshiper:
                     __instance.RpcMurderPlayer(__instance);
