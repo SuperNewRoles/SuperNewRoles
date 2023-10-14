@@ -106,6 +106,230 @@ class KillButtonDoClickPatch
 static class CheckMurderPatch
 {
     public static bool isKill = false;
+
+
+    public static bool HandleSHR(PlayerControl __instance, PlayerControl target)
+    {
+        if (RoleClass.Assassin.TriggerPlayer != null) return false;
+        switch (__instance.GetRole())
+        {
+            case RoleId.RemoteSheriff:
+            case RoleId.ToiletFan:
+            case RoleId.NiceButtoner:
+            case RoleId.Madmate:
+            case RoleId.JackalFriends:
+            case RoleId.MadRaccoon:
+            case RoleId.Egoist when !RoleClass.Egoist.UseKill:
+                return false;
+            case RoleId.FalseCharges:
+                target.RpcMurderPlayer(__instance);
+                target.RpcSetFinalStatus(FinalStatus.FalseChargesFalseCharge);
+                RoleClass.FalseCharges.FalseChargePlayers[__instance.PlayerId] = target.PlayerId;
+                RoleClass.FalseCharges.AllTurns[__instance.PlayerId] = RoleClass.FalseCharges.DefaultTurn;
+                return false;
+            case RoleId.truelover:
+                if (__instance.IsLovers()) return false;
+                if (target == null || target.IsLovers() || RoleClass.Truelover.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                __instance.RpcShowGuardEffect(target);
+                RoleClass.Truelover.CreatePlayers.Add(__instance.PlayerId);
+                RoleHelpers.SetLovers(__instance, target);
+                RoleHelpers.SetLoversRPC(__instance, target);
+                Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                Mode.SuperHostRoles.ChangeName.SetRoleName(target);
+                return false;
+            case RoleId.Sheriff:
+                //もうキルできる回数がないならreturn
+                if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) &&
+                    RoleClass.Sheriff.KillCount[__instance.PlayerId] <= 0)
+                    return false;
+                (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
+                var misfire = !success;
+                var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+                if (alwaysKill || misfire)
+                {
+                    if (alwaysKill)
+                    {
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
+                        __instance.RpcMurderPlayerCheck(target);
+                        __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
+                    }
+                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcSetFinalStatus(status);
+                }
+                else
+                {
+                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
+                    if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
+                        RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.SheriffKillMaxCount.GetInt();
+                    RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
+                    __instance.RpcMurderPlayerCheck(target);
+                    target.RpcSetFinalStatus(status);
+                    Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                }
+                return false;
+            case RoleId.MadMaker:
+                if (!target.IsImpostor())
+                {
+                    if (target == null ||
+                        RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId))
+                        return false;
+                    __instance.RpcShowGuardEffect(target);
+                    RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
+                    Madmate.CreateMadmate(target);
+                    Mode.SuperHostRoles.ChangeName.SetRoleName(target);
+                }
+                else
+                {
+                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcSetFinalStatus(FinalStatus.MadmakerMisSet);
+                }
+                return false;
+            case RoleId.Demon:
+                if (__instance.IsCursed(target))
+                    return false;
+                Demon.DemonCurse(target, __instance);
+                __instance.RpcShowGuardEffect(target);
+                Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                return false;
+            case RoleId.OverKiller:
+                __instance.RpcMurderPlayerCheck(target);
+                target.RpcSetFinalStatus(FinalStatus.OverKillerOverKill);
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.Data.Disconnected ||
+                        p.PlayerId == target.PlayerId ||
+                        p.IsBot())
+                        continue;
+                    for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
+                    {
+                        if (p.PlayerId != 0)
+                            __instance.RPCMurderPlayerPrivate(target, p);
+                        else
+                            __instance.MurderPlayer(target);
+                    }
+                }
+                return false;
+            case RoleId.Arsonist:
+                if (__instance.IsDoused(target))
+                    return false;
+                __instance.RpcShowGuardEffect(target);// 守護エフェクト
+                SyncSetting.DefaultOption.DeepCopy().SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Arsonist.DurationTime);// シェイプクールダウンを塗り時間に
+                new LateTask(() =>
+                {
+                    if (Vector2.Distance(__instance.transform.position, target.transform.position) <= 1.75f)//1.75f以内にターゲットがいるなら
+                    {
+                        Arsonist.ArsonistDouse(target, __instance);
+                        __instance.RpcShowGuardEffect(target);// もう一度エフェクト
+                        Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                    }
+                    else
+                    {//塗れなかったらキルクールリセット
+                        SyncSetting.DefaultOption.DeepCopy().SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(0f));
+                    }
+                }, RoleClass.Arsonist.DurationTime, "SHR Arsonist Douse");
+                return false;
+            case RoleId.Mafia:
+                if (!Mafia.IsKillFlag()) return false;
+                break;
+            case RoleId.FastMaker:
+                if (RoleClass.FastMaker.IsCreatedMadmate)//まだ作ってなくて、設定が有効の時
+                {
+                    //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
+                    Logger.Info("マッドメイトを作成済みの為 普通のキル", "FastMakerSHR");
+                    break;
+                }
+                if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                __instance.RpcShowGuardEffect(target);
+                RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
+                Madmate.CreateMadmate(target);//クルーにして、マッドにする
+                Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
+                RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
+                Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
+                return false;
+            case RoleId.Jackal:
+                if (RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
+                {
+                    // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
+                    if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSHR");
+                    else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
+                    else Logger.Info("不正なキル", "JackalSHR");
+                    break;
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
+                if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                __instance.RpcShowGuardEffect(target);
+                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                if (!target.IsImpostor())
+                {
+                    Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
+                }
+                Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
+                Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
+                return false;
+            case RoleId.JackalSeer:
+                if (RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.JackalSeer.CanCreateFriend)//まだ作ってなくて、設定が有効の時
+                {
+                    // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
+                    if (!RoleClass.JackalSeer.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSeerSHR");
+                    else if (RoleClass.JackalSeer.CanCreateFriend && RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSeerSHR");
+                    else Logger.Info("不正なキル", "JackalSeerSHR");
+                    break;
+                }
+                Logger.Info("未作成 且つ 設定が有効である為 フレンズを作成", "JackalSeerSHR");
+                if (target == null || RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                __instance.RpcShowGuardEffect(target);
+                RoleClass.JackalSeer.CreatePlayers.Add(__instance.PlayerId);
+                if (!target.IsImpostor())
+                {
+                    Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
+                }
+                Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
+                Logger.Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
+                return false;
+            case RoleId.DarkKiller:
+                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (ma != null && !ma.IsActive) return false;
+                break;
+            case RoleId.Worshiper:
+                __instance.RpcMurderPlayer(__instance);
+                __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                return false;
+            case RoleId.Penguin:
+                PlayerControl currentTarget = null;
+                if (RoleClass.Penguin.PenguinData.Keys.Contains(__instance))
+                {
+                    currentTarget = RoleClass.Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
+                }
+                if (currentTarget != null)
+                    break;
+                Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
+                RoleClass.Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
+                target.RpcSnapTo(__instance.transform.position);
+                return false;
+        }
+        SyncSetting.CustomSyncSettings(__instance);
+        SyncSetting.CustomSyncSettings(target);
+        switch (target.GetRole())
+        {
+            case RoleId.StuntMan:
+                if (!EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
+                    break;
+                if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    RoleClass.StuntMan.GuardCount[target.PlayerId] = CustomOptionHolder.StuntManMaxGuardCount.GetInt();
+                if (RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0)
+                    break;
+                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                __instance.RpcShowGuardEffect(target);
+                return false;
+            case RoleId.Fox:
+                if (!EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
+                    break;
+                __instance.RpcShowGuardEffect(target);
+                return false;
+        }
+        return true;
+    }
+
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
         Logger.Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
@@ -198,203 +422,9 @@ static class CheckMurderPatch
                 }
                 return false;
             case ModeId.SuperHostRoles:
-                if (RoleClass.Assassin.TriggerPlayer != null) return false;
-                switch (__instance.GetRole())
-                {
-                    case RoleId.RemoteSheriff:
-                    case RoleId.ToiletFan:
-                    case RoleId.NiceButtoner:
-                    case RoleId.Madmate:
-                    case RoleId.JackalFriends:
-                    case RoleId.MadRaccoon:
-                    case RoleId.Egoist when !RoleClass.Egoist.UseKill:
-                        return false;
-                    case RoleId.FalseCharges:
-                        target.RpcMurderPlayer(__instance);
-                        target.RpcSetFinalStatus(FinalStatus.FalseChargesFalseCharge);
-                        RoleClass.FalseCharges.FalseChargePlayers[__instance.PlayerId] = target.PlayerId;
-                        RoleClass.FalseCharges.AllTurns[__instance.PlayerId] = RoleClass.FalseCharges.DefaultTurn;
-                        return false;
-                    case RoleId.truelover:
-                        if (__instance.IsLovers()) return false;
-                        if (target == null || target.IsLovers() || RoleClass.Truelover.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                        __instance.RpcShowGuardEffect(target);
-                        RoleClass.Truelover.CreatePlayers.Add(__instance.PlayerId);
-                        RoleHelpers.SetLovers(__instance, target);
-                        RoleHelpers.SetLoversRPC(__instance, target);
-                        Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
-                        Mode.SuperHostRoles.ChangeName.SetRoleName(target);
-                        return false;
-                    case RoleId.Sheriff:
-                        //もうキルできる回数がないならreturn
-                        if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) &&
-                            RoleClass.Sheriff.KillCount[__instance.PlayerId] <= 0)
-                            return false;
-                        (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
-                        var misfire = !success;
-                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        if (alwaysKill || misfire)
-                        {
-                            if (alwaysKill)
-                            {
-                                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
-                                __instance.RpcMurderPlayerCheck(target);
-                                __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
-                            }
-                            __instance.RpcMurderPlayer(__instance);
-                            __instance.RpcSetFinalStatus(status);
-                        }
-                        else
-                        {
-                            FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
-                            if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
-                                RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.SheriffKillMaxCount.GetInt();
-                            RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
-                            __instance.RpcMurderPlayerCheck(target);
-                            target.RpcSetFinalStatus(status);
-                            Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
-                        }
-                        return false;
-                    case RoleId.MadMaker:
-                        if (!target.IsImpostor())
-                        {
-                            if (target == null ||
-                                RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId))
-                                return false;
-                            __instance.RpcShowGuardEffect(target);
-                            RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
-                            Madmate.CreateMadmate(target);
-                            Mode.SuperHostRoles.ChangeName.SetRoleName(target);
-                        }
-                        else
-                        {
-                            __instance.RpcMurderPlayer(__instance);
-                            __instance.RpcSetFinalStatus(FinalStatus.MadmakerMisSet);
-                        }
-                        return false;
-                    case RoleId.Demon:
-                        if (__instance.IsCursed(target))
-                            return false;
-                        Demon.DemonCurse(target, __instance);
-                        __instance.RpcShowGuardEffect(target);
-                        Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
-                        return false;
-                    case RoleId.OverKiller:
-                        __instance.RpcMurderPlayerCheck(target);
-                        target.RpcSetFinalStatus(FinalStatus.OverKillerOverKill);
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                        {
-                            if (p.Data.Disconnected ||
-                                p.PlayerId == target.PlayerId ||
-                                p.IsBot())
-                                continue;
-                            for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
-                            {
-                                if (p.PlayerId != 0)
-                                    __instance.RPCMurderPlayerPrivate(target, p);
-                                else
-                                    __instance.MurderPlayer(target);
-                            }
-                        }
-                        return false;
-                    case RoleId.Arsonist:
-                        if (__instance.IsDoused(target))
-                            return false;
-                        __instance.RpcShowGuardEffect(target);// 守護エフェクト
-                        SyncSetting.DefaultOption.DeepCopy().SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Arsonist.DurationTime);// シェイプクールダウンを塗り時間に
-                        new LateTask(() =>
-                        {
-                            if (Vector2.Distance(__instance.transform.position, target.transform.position) <= 1.75f)//1.75f以内にターゲットがいるなら
-                            {
-                                Arsonist.ArsonistDouse(target, __instance);
-                                __instance.RpcShowGuardEffect(target);// もう一度エフェクト
-                                Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
-                            }
-                            else
-                            {//塗れなかったらキルクールリセット
-                                SyncSetting.DefaultOption.DeepCopy().SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(0f));
-                            }
-                        }, RoleClass.Arsonist.DurationTime, "SHR Arsonist Douse");
-                        return false;
-                    case RoleId.Mafia:
-                        if (!Mafia.IsKillFlag()) return false;
-                        break;
-                    case RoleId.FastMaker:
-                        if (RoleClass.FastMaker.IsCreatedMadmate)//まだ作ってなくて、設定が有効の時
-                        {
-                            //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            Logger.Info("マッドメイトを作成済みの為 普通のキル", "FastMakerSHR");
-                            break;
-                        }
-                        if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                        __instance.RpcShowGuardEffect(target);
-                        RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                        Madmate.CreateMadmate(target);//クルーにして、マッドにする
-                        Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
-                        RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
-                        Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
-                        return false;
-                    case RoleId.Jackal:
-                        if (RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
-                        {
-                            // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSHR");
-                            else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
-                            else Logger.Info("不正なキル", "JackalSHR");
-                            break;
-                        }
-                        SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
-                        if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                        __instance.RpcShowGuardEffect(target);
-                        RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
-                        if (!target.IsImpostor())
-                        {
-                            Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
-                        }
-                        Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
-                        Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
-                        return false;
-                    case RoleId.JackalSeer:
-                        if (RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.JackalSeer.CanCreateFriend)//まだ作ってなくて、設定が有効の時
-                        {
-                            // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            if (!RoleClass.JackalSeer.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSeerSHR");
-                            else if (RoleClass.JackalSeer.CanCreateFriend && RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSeerSHR");
-                            else Logger.Info("不正なキル", "JackalSeerSHR");
-                            break;
-                        }
-                        Logger.Info("未作成 且つ 設定が有効である為 フレンズを作成", "JackalSeerSHR");
-                        if (target == null || RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                        __instance.RpcShowGuardEffect(target);
-                        RoleClass.JackalSeer.CreatePlayers.Add(__instance.PlayerId);
-                        if (!target.IsImpostor())
-                        {
-                            Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
-                        }
-                        Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
-                        Logger.Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
-                        return false;
-                    case RoleId.DarkKiller:
-                        var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (ma != null && !ma.IsActive) return false;
-                        break;
-                    case RoleId.Worshiper:
-                        __instance.RpcMurderPlayer(__instance);
-                        __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
-                        return false;
-                    case RoleId.Penguin:
-                        PlayerControl currentTarget = null;
-                        if (RoleClass.Penguin.PenguinData.Keys.Contains(__instance))
-                        {
-                            currentTarget = RoleClass.Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
-                        }
-                        if (currentTarget != null)
-                            break;
-                        Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
-                        RoleClass.Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
-                        target.RpcSnapTo(__instance.transform.position);
-                        return false;
-                }
+                bool SHRresult = HandleSHR(__instance, target);
+                if (!SHRresult)
+                    return false;
                 break;
             case ModeId.Detective:
                 if (target.PlayerId ==
@@ -403,29 +433,6 @@ static class CheckMurderPatch
                 break;
         }
         Logger.Info("全モード通過", "CheckMurder");
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-        {
-            SyncSetting.CustomSyncSettings(__instance);
-            SyncSetting.CustomSyncSettings(target);
-            switch (target.GetRole())
-            {
-                case RoleId.StuntMan:
-                    if (!EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
-                        break;
-                    if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
-                        RoleClass.StuntMan.GuardCount[target.PlayerId] = CustomOptionHolder.StuntManMaxGuardCount.GetInt();
-                    if (RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0)
-                        break;
-                    RoleClass.StuntMan.GuardCount[target.PlayerId]--;
-                    __instance.RpcShowGuardEffect(target);
-                    return false;
-                case RoleId.Fox:
-                    if (!EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
-                        break;
-                    __instance.RpcShowGuardEffect(target);
-                    return false;
-            }
-        }
         Logger.Info("全スタントマン系通過", "CheckMurder");
         __instance.RpcMurderPlayerCheck(target);
         Camouflager.ResetCamouflageSHR(target);
