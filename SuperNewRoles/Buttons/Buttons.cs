@@ -2355,32 +2355,10 @@ static class HudManagerStartPatch
 
                 foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                 {
-                    switch (task.TaskType)
-                    {
-                        case TaskTypes.FixLights:
-                            RPCHelper.StartRPC(CustomRPC.FixLights).EndRPC();
-                            RPCProcedure.FixLights();
-                            break;
-                        case TaskTypes.RestoreOxy:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
-                            break;
-                        case TaskTypes.ResetReactor:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 16);
-                            break;
-                        case TaskTypes.ResetSeismic:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Laboratory, 16);
-                            break;
-                        case TaskTypes.FixComms:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
-                            break;
-                        case TaskTypes.StopCharles:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
-                            break;
-                    }
+                    if (task.TaskType is not (TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles))
+                        Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(task.TaskType);
                 }
+
                 if (RoleClass.GhostMechanic.LimitCount <= 0)
                 {
                     GhostMechanicNumRepairText.text = "";
@@ -3364,7 +3342,7 @@ static class HudManagerStartPatch
         JumpDancer.SetUpCustomButtons(__instance);
 
         Rocket.Button.SetupCustomButtons(__instance);
-      
+
         WellBehaver.SetupCustomButtons(__instance);
 
         // SetupCustomButtons

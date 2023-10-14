@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Helpers;
+using InnerNet;
+using Hazel;
 
 namespace SuperNewRoles.Sabotage;
 
@@ -82,5 +85,110 @@ public class FixSabotage
         if (SetFixSabotageDictionary.ContainsKey(role)) return role;
         else if (PlayerControl.LocalPlayer.IsMadRoles()) return RoleId.Madmate;
         return role;
+    }
+
+    public static class RepairProcsee
+    {
+        public static void ReceiptOfSabotageFixing(TaskTypes taskType)
+        {
+            if (taskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+            {
+                if (ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) FixingSabotageSNR(taskType);
+                else FixingSabotageSHR(taskType);
+            }
+        }
+
+        private static void FixingSabotageSNR(TaskTypes taskType)
+        {
+            switch (taskType)
+            {
+                case TaskTypes.FixLights:
+                    RPCHelper.StartRPC(CustomRPC.FixLights).EndRPC();
+                    RPCProcedure.FixLights();
+                    break;
+                case TaskTypes.RestoreOxy:
+                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
+                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
+                    break;
+                case TaskTypes.ResetReactor:
+                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 16);
+                    break;
+                case TaskTypes.ResetSeismic:
+                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Laboratory, 16);
+                    break;
+                case TaskTypes.FixComms:
+                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
+                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
+                    break;
+                case TaskTypes.StopCharles:
+                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
+                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
+                    break;
+            }
+        }
+
+        private static void FixingSabotageSHR(TaskTypes taskType)
+        {
+            //Logger.Info($"{taskType}");
+
+            bool IsSecondUnit = false;
+            SystemTypes sabotageId = (SystemTypes)255;
+            (int, int) amount = (0, 0);
+
+            switch (taskType)
+            {
+                case TaskTypes.FixLights:
+                    FixLigftsSHR();
+                    break;
+                case TaskTypes.RestoreOxy:
+                    IsSecondUnit = true;
+                    sabotageId = SystemTypes.LifeSupp;
+                    amount = (0 | 64, 1 | 64);
+                    break;
+                case TaskTypes.ResetReactor:
+                    sabotageId = SystemTypes.Reactor;
+                    amount.Item1 = 16;
+                    break;
+                case TaskTypes.ResetSeismic:
+                    sabotageId = SystemTypes.Laboratory;
+                    amount.Item1 = 16;
+                    break;
+                case TaskTypes.FixComms:
+                    IsSecondUnit = true;
+                    sabotageId = SystemTypes.Comms;
+                    amount = (16 | 0, 16 | 1);
+                    break;
+                case TaskTypes.StopCharles:
+                    IsSecondUnit = true;
+                    sabotageId = SystemTypes.Reactor;
+                    amount = (0 | 16, 1 | 16);
+                    break;
+            }
+
+            if ((byte)sabotageId != 255)
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    ClientData cd = player.GetClient();
+
+                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
+                    SabotageFixWriter.Write((byte)sabotageId);
+                    MessageExtensions.WriteNetObject(SabotageFixWriter, player);
+                    SabotageFixWriter.Write((byte)amount.Item1);
+                    AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
+
+                    if (IsSecondUnit)
+                    {
+                        MessageWriter SabotageFixWriterSecond = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
+                        SabotageFixWriterSecond.Write((byte)sabotageId);
+                        MessageExtensions.WriteNetObject(SabotageFixWriterSecond, player);
+                        SabotageFixWriterSecond.Write((byte)amount.Item2);
+                        AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriterSecond);
+                    }
+                }
+            }
+        }
+
+        private static void FixLigftsSHR() { }
     }
 }

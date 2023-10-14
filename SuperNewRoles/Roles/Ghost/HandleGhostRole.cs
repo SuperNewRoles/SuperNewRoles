@@ -51,7 +51,11 @@ class HandleGhostRole
                 break;
 
         }
+
         player.SetRoleRPC(assignrole);
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !player.IsMod())
+            player.RpcSetRole(AmongUs.GameOptions.RoleTypes.GuardianAngel);
+
         return true;
     }
 
