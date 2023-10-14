@@ -14,7 +14,7 @@ public class RedRidingHood
             {
                 DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId)?.FirstOrDefault();
                 if (deadPlayer.killerIfExisting == null) return;
-                var killer = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
+                var killer = PlayerControl.AllPlayerControls.FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
 
                 if (killer != null && ((CustomOptionHolder.NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead()) || (player != null && killer.PlayerId == player.Object.PlayerId)))
                 {

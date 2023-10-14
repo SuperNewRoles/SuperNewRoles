@@ -82,7 +82,7 @@ static class Main
             p.SetHat("", 0);
         }
 
-        SyncSetting.OptionData = GameManager.Instance.LogicOptions.currentGameOptions;
+        SyncSetting.DefaultOption = GameManager.Instance.LogicOptions.currentGameOptions;
         ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.GetFloat();
         ZombieOptions.ZombieSpeed = ZombieOptions.ZombieSpeedOption.GetFloat();
         ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.GetFloat();

@@ -134,7 +134,7 @@ class KnightProtected_Patch
     /// </summary>
     static void KnightProtectButtonDestroy(MeetingHud __instance)
     {
-        __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("KnightProtectButton") != null) Object.Destroy(x.transform.FindChild("KnightProtectButton").gameObject); });
+        __instance.playerStates.ForEach(x => { if (x.transform.FindChild("KnightProtectButton") != null) Object.Destroy(x.transform.FindChild("KnightProtectButton").gameObject); });
         SuperNewRolesPlugin.Logger.LogInfo("[Knight] 護衛可能な条件を満たしていない為、護衛ボタンを消去しました。");
     }
     /// <summary>
