@@ -72,6 +72,219 @@ public static class NetworkTransformFixedUpdatePatch
         return false;
     }
 }
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
+class RpcShapeshiftPatch
+{
+    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+    {
+        SyncSetting.CustomSyncSettings();
+        if (RoleClass.Assassin.TriggerPlayer != null) return false;
+        if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId && Mode.BattleRoyal.Main.StartSeconds <= 0)
+        {
+            new LateTask(() => __instance.RpcRevertShapeshiftUnchecked(true), 0.1f);
+            BattleRoyalRole.GetObject(__instance).UseAbility(target);
+            return true;
+        }
+        if (target.IsBot()) return true;
+
+        bool isActivationShapeshift = __instance.PlayerId != target.PlayerId; // true : シェイプシフトする時 / false : シェイプシフトを解除する時
+
+        if (__instance.IsRole(RoleId.MadRaccoon) && __instance == PlayerControl.LocalPlayer) // 導入者が個人で行う処理 (SHR, SNR共通)
+        {
+            if (isActivationShapeshift) MadRaccoon.Button.SetShapeDurationTimer();
+            else MadRaccoon.Button.ResetShapeDuration(false);
+        }
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
+        if (isActivationShapeshift)
+        {
+            if (__instance.IsRole(RoleId.Doppelganger))
+            {
+                RoleClass.Doppelganger.Targets.Add(__instance.PlayerId, target);
+                SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
+            }
+        }
+        if (!isActivationShapeshift)
+        {
+            if (__instance.IsRole(RoleId.Doppelganger))
+            {
+                RoleClass.Doppelganger.Targets.Remove(__instance.PlayerId);
+                SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
+            }
+            if (ModeHandler.IsMode(ModeId.Default))
+            {
+                if (__instance.IsRole(RoleId.Doppelganger))
+                {
+                    Doppelganger.ResetShapeCool();
+                }
+            }
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (__instance.IsRole(RoleId.RemoteSheriff))
+                {
+                    __instance.RpcShowGuardEffect(target);
+                }
+            }
+            return true;
+        }
+        if (__instance.IsRole(RoleId.ShiftActor))
+        {
+            Roles.Impostor.ShiftActor.Shapeshift(__instance, target);
+            return true;
+        }
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            switch (__instance.GetRole())
+            {
+                case RoleId.RemoteSheriff:
+                    if (target.IsDead()) return true;
+                    if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
+                    {
+                        (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
+                        var misfire = !success;
+                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+
+                        if (alwaysKill)
+                        {
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
+                            __instance.RpcMurderPlayerCheck(target);
+                            FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                            __instance.RpcMurderPlayer(__instance);
+                            FinalStatusClass.RpcSetFinalStatus(__instance, status);
+                            return true;
+                        }
+                        else if (misfire)
+                        {
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
+                            __instance.RpcMurderPlayer(__instance);
+                            FinalStatusClass.RpcSetFinalStatus(__instance, status);
+                            return true;
+                        }
+                        else
+                        {
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
+                            if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
+                                RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
+                            else
+                                RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.RemoteSheriffKillMaxCount.GetInt() - 1;
+                            if (RoleClass.RemoteSheriff.IsKillTeleport)
+                                __instance.RpcMurderPlayerCheck(target);
+                            else
+                            {
+                                target.RpcMurderPlayer(target);
+                                __instance.RpcShowGuardEffect(__instance);
+                            }
+                            FinalStatusClass.RpcSetFinalStatus(target, status);
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                            return true;
+                        }
+                    }
+                    return true;
+                case RoleId.SelfBomber:
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                        {
+                            if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SelfBomberScope.GetFloat()))
+                            {
+                                __instance.RpcMurderPlayerCheck(p);
+                                p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
+                            }
+                        }
+                    }
+                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
+                    return false;
+                case RoleId.Samurai:
+                    if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId))
+                    {
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                        {
+                            if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                            {
+                                if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SamuraiScope.GetFloat()))
+                                {
+                                    p.RpcSetFinalStatus(FinalStatus.SamuraiKill);
+                                    __instance.RpcMurderPlayerCheck(p);
+                                }
+                            }
+                        }
+                        RoleClass.Samurai.SwordedPlayer.Add(__instance.PlayerId);
+                    }
+                    return false;
+                case RoleId.Arsonist:
+                    foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+                    {
+                        if (Arsonist.IsWin(p))
+                        {
+                            RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            Writer.Write(p.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                            Arsonist.SettingAfire();
+
+                            Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+                            Writer.Write((byte)CustomGameOverReason.ArsonistWin);
+                            Writer.EndRPC();
+                            RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+
+                            RoleClass.Arsonist.TriggerArsonistWin = true;
+                            AdditionalTempData.winCondition = WinCondition.ArsonistWin;
+                            __instance.enabled = false;
+                            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
+                            return true;
+                        }
+                    }
+                    return false;
+                case RoleId.SuicideWisher:
+                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
+                    return false;
+                case RoleId.ToiletFan:
+                    RPCHelper.RpcOpenToilet();
+                    return false;
+                case RoleId.NiceButtoner:
+                    if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                        RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId]--;
+                    else
+                        RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptionHolder.NiceButtonerCount.GetInt() - 1;
+                    if (RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1)
+                        EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
+                    return false;
+                case RoleId.EvilButtoner:
+                    if (RoleClass.EvilButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                        RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId]--;
+                    else
+                        RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptionHolder.EvilButtonerCount.GetInt() - 1;
+                    if (RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1)
+                        EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
+                    return false;
+                case RoleId.Camouflager:
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
+                        RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                        RoleClass.Camouflager.IsCamouflage = true;
+                        Camouflager.CamouflageSHR();
+                        SyncSetting.CustomSyncSettings(__instance);
+                    }
+                    return true;
+                case RoleId.Worshiper:
+                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                    return true;
+                case RoleId.EvilSeer:
+                    return false;//shapeとしての能力は持たせない為、誤爆封じで導入者のみ使用不可にする。
+            }
+        }
+        return true;
+    }
+    public static void Postfix(PlayerControl __instance, PlayerControl targetPlayer, bool animate)
+    {
+        ReplayActionShapeshift.Create(__instance.PlayerId, targetPlayer.PlayerId, animate);
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
 class CheckProtectPatch
 {
@@ -84,20 +297,19 @@ class CheckProtectPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
 static class PlayerControlSetCooldownPatch
 {
-    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
+    public static bool Prefix(PlayerControl __instance, float time)
     {
+        float cool = RoleHelpers.GetEndMeetingKillCoolTime(__instance);
+        if (cool <= 0f) return true;
         if (GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) == time && !RoleClass.IsCoolTimeSetted)
         {
-            __instance.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(__instance), RoleHelpers.GetEndMeetingKillCoolTime(__instance));
+            __instance.SetKillTimerUnchecked(cool, cool);
             RoleClass.IsCoolTimeSetted = true;
             return false;
         }
-        if (__instance.Data.Role.CanUseKillButton && GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) > 0f)
-        {
-            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
-            return false;
-        }
-        return true;
+        time = Mathf.Clamp(time, 0f, cool);
+        __instance.SetKillTimerUnchecked(time, cool);
+        return false;
     }
 }
 [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
@@ -281,7 +493,7 @@ class ReportDeadBodyPatch
                     {
                         player.RpcRevertShapeshift(false);
                     }, 0.5f);
-                    SyncSetting.CustomSyncSettings(player, out var modified);
+                    SyncSetting.CustomSyncSettings(player);
                 }
             }
         }

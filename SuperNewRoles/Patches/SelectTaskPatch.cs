@@ -31,7 +31,7 @@ public static class SelectTask
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
             {
                 var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
-                var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, commont, shortt, longt);
+                var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, (commont, shortt, longt));
                 taskTypeIds = new Il2CppStructArray<byte>(TasksList.Count);
                 for (int i = 0; i < TasksList.Count; i++)
                 {
@@ -54,7 +54,7 @@ public static class SelectTask
         }
 
         if (GetHaveTaskManageAbility(roleId)) return GetRoleTaskData(roleId);
-        else return (SyncSetting.OptionData.GetInt(Int32OptionNames.NumCommonTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumShortTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumLongTasks));
+        else return (SyncSetting.DefaultOption.GetInt(Int32OptionNames.NumCommonTasks), SyncSetting.DefaultOption.GetInt(Int32OptionNames.NumShortTasks), SyncSetting.DefaultOption.GetInt(Int32OptionNames.NumLongTasks));
     }
     public static (CustomOption, CustomOption, CustomOption) TaskSetting(int commonid, int shortid, int longid, CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic, bool IsSHROn = false)
     {

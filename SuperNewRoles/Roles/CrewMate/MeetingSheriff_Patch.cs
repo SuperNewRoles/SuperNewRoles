@@ -52,7 +52,7 @@ class Meetingsheriff_updatepatch
     {
         if (PlayerControl.LocalPlayer.IsDead())
         {
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
         }
     }
     public static void Change()
@@ -112,7 +112,7 @@ class MeetingSheriff_Patch
         RoleClass.MeetingSheriff.KillMaxCount--;
         if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)
         {
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
         }
 
     }

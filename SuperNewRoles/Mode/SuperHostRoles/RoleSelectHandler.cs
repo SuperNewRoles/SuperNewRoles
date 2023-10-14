@@ -28,7 +28,7 @@ public static class RoleSelectHandler
         OneOrNotListSet();
         AllRoleSetClass.AllRoleSet();
         SetCustomRoles();
-        SyncSetting.CustomSyncSettings(out var modified);
+        SyncSetting.CustomSyncSettings();
         ChacheManager.ResetChache();
         return sender;
     }

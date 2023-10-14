@@ -14,7 +14,7 @@ namespace SuperNewRoles.Patches.CursedTasks;
 public class CursedDressUpTask
 {
     public static Transform PanelDummy;
-    public static float PlayerSpeed => SyncSetting.OptionData.GetFloat(FloatOptionNames.PlayerSpeedMod);
+    public static float PlayerSpeed => SyncSetting.DefaultOption.GetFloat(FloatOptionNames.PlayerSpeedMod);
     public static float MoveSpeed => PlayerSpeed * PlayerControl.LocalPlayer.MyPhysics.Speed - 0.25f * PlayerSpeed * 1.5f;
     public static bool IsDisabledPlatform;
 

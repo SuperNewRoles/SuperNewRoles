@@ -301,7 +301,7 @@ static class CheckMurderPatch
                         if (__instance.IsDoused(target))
                             return false;
                         __instance.RpcShowGuardEffect(target);// 守護エフェクト
-                        SyncSetting.OptionData.DeepCopy().SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Arsonist.DurationTime);// シェイプクールダウンを塗り時間に
+                        SyncSetting.DefaultOption.DeepCopy().SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Arsonist.DurationTime);// シェイプクールダウンを塗り時間に
                         new LateTask(() =>
                         {
                             if (Vector2.Distance(__instance.transform.position, target.transform.position) <= 1.75f)//1.75f以内にターゲットがいるなら
@@ -312,7 +312,7 @@ static class CheckMurderPatch
                             }
                             else
                             {//塗れなかったらキルクールリセット
-                                SyncSetting.OptionData.DeepCopy().SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(0f));
+                                SyncSetting.DefaultOption.DeepCopy().SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(0f));
                             }
                         }, RoleClass.Arsonist.DurationTime, "SHR Arsonist Douse");
                         return false;
@@ -384,7 +384,7 @@ static class CheckMurderPatch
                         return false;
                     case RoleId.Penguin:
                         PlayerControl currentTarget = null;
-                        if (RoleClass.Penguin.PenguinData.Keys.ToList().IsCheckListPlayerControl(__instance))
+                        if (RoleClass.Penguin.PenguinData.Keys.Contains(__instance))
                         {
                             currentTarget = RoleClass.Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
                         }
@@ -405,8 +405,8 @@ static class CheckMurderPatch
         Logger.Info("全モード通過", "CheckMurder");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            SyncSetting.CustomSyncSettings(__instance, out var modifiedKiller);
-            SyncSetting.CustomSyncSettings(target, out var modifiedTarget);
+            SyncSetting.CustomSyncSettings(__instance);
+            SyncSetting.CustomSyncSettings(target);
             switch (target.GetRole())
             {
                 case RoleId.StuntMan:
