@@ -273,7 +273,7 @@ public static class Crook
                 ReceivedTheInsuranceDictionary[crookId] = targetId; // 今回ターンの 受給の状況を保存
 
                 // 詐欺師ごとの保険金受給回数を保存
-                if (RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(previousTurn, out var times))
+                if (RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(crookId, out var times))
                 {
                     times++;
                     RecordOfTimesInsuranceClaimsAreReceived[crookId] = times;
