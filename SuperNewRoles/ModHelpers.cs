@@ -448,7 +448,7 @@ public static class ModHelpers
     {
         if (player == null) return;
 
-        List<byte> taskTypeIds = player.GenerateTasks(numCommon, numShort, numLong);
+        List<byte> taskTypeIds = player.GenerateTasks((numCommon, numShort, numLong));
 
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetTasks, SendOption.Reliable, -1);
         writer.Write(player.PlayerId);
