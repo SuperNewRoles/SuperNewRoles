@@ -103,7 +103,7 @@ public static class PoliceSurgeon
         if (PlayerControl.LocalPlayer.GetRole() != RoleId.PoliceSurgeon) return;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
 
-        var optData = SyncSetting.OptionData.DeepCopy();
+        var optData = SyncSetting.DefaultOption.DeepCopy();
 
         optData.SetFloat(FloatOptionNames.ScientistCooldown, CustomOptionData.VitalsDisplayCooldown.GetFloat());
         optData.SetFloat(FloatOptionNames.ScientistBatteryCharge, CustomOptionData.BatteryDuration.GetFloat());

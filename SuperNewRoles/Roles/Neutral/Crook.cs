@@ -273,7 +273,7 @@ public static class Crook
                 ReceivedTheInsuranceDictionary[crookId] = targetId; // 今回ターンの 受給の状況を保存
 
                 // 詐欺師ごとの保険金受給回数を保存
-                if (RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(previousTurn, out var times))
+                if (RecordOfTimesInsuranceClaimsAreReceived.TryGetValue(crookId, out var times))
                 {
                     times++;
                     RecordOfTimesInsuranceClaimsAreReceived[crookId] = times;
@@ -471,7 +471,7 @@ public static class Crook
                 writer.Write(TargetId);
                 writer.EndRPC();
 
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); }); // ボタン削除
+                __instance.playerStates.ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); }); // ボタン削除
             }
 
             /// <summary>
@@ -485,12 +485,12 @@ public static class Crook
 
                 if (PlayerControl.LocalPlayer.IsDead() || AbilityCountDown == 0)
                 {
-                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); });
+                    __instance.playerStates.ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); });
                     AllladyDead = true;
                 }
                 else // 自身が生存しているなら
                 {
-                    __instance.playerStates.ToList().ForEach(x =>
+                    __instance.playerStates.ForEach(x =>
                         {
                             if (x.transform.FindChild("CrookButton") != null)
                             {
