@@ -29,7 +29,7 @@ public class ZombieOptions
     static float GetSpeed(float speed) { return speed <= 0 ? 0.001f : speed; }
     public static void FirstChangeSettings()
     {
-        var optdata = SyncSetting.OptionData.DeepCopy();
+        var optdata = SyncSetting.DefaultOption.DeepCopy();
         optdata.SetFloat(FloatOptionNames.CrewLightMod, GetSpeed(ZombieCommingLightOption.GetFloat()));
         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, GetSpeed(ZombieCommingSpeedOption.GetFloat()));
         foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -40,7 +40,7 @@ public class ZombieOptions
     }
     public static void ChengeSetting(PlayerControl player)
     {
-        var optdata = SyncSetting.OptionData.DeepCopy();
+        var optdata = SyncSetting.DefaultOption.DeepCopy();
 
         if (player.IsZombie())
         {
