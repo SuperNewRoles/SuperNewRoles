@@ -23,7 +23,7 @@ public static class Assassin
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
         if (RoleClass.Assassin.TriggerPlayer != null && sourcePlayer.PlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
         {
-            var player = CachedPlayer.AllPlayers.ToArray().ToList().FirstOrDefault((_) => chatText.Equals(_.PlayerControl.name));
+            var player = CachedPlayer.AllPlayers.FirstOrDefault((_) => chatText.Equals(_.PlayerControl.name));
             if (player == null || player.PlayerControl.IsBot()) return;
 
             Il2CppStructArray<MeetingHud.VoterState> array =

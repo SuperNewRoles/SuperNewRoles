@@ -488,11 +488,11 @@ class CheckForEndVotingPatch
                 }
                 if (Flag)
                 {
-                    List<PlayerControl> DictatorSubExileTargetList = PlayerControl.AllPlayerControls.ToArray().ToList();
-                    DictatorSubExileTargetList.RemoveAll(p =>
+                    var DictatorSubExileTargetList = PlayerControl.AllPlayerControls;
+                    DictatorSubExileTargetList.RemoveAll((Il2CppSystem.Predicate<PlayerControl>)(p =>
                     {
                         return p.IsDead() || p.PlayerId == exiledPlayer.PlayerId;
-                    });
+                    }));
                     exiledPlayer = ModHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
                 }
             }
@@ -793,7 +793,11 @@ class MeetingHudStartPatch
             {
                 if (RoleClass.Werewolf.IsShooted || CachedPlayer.LocalPlayer.IsDead() || !Mode.Werewolf.Main.IsUseButton())
                 {
-                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                    foreach (PlayerVoteArea state in __instance.playerStates)
+                    {
+                        if (state.transform.FindChild("WerewolfKillButton") != null)
+                            GameObject.Destroy(state.transform.FindChild("WerewolfKillButton").gameObject);
+                    }
                     return;
                 }
 
@@ -808,7 +812,7 @@ class MeetingHudStartPatch
                     PlayerControl player = ModHelpers.PlayerById((byte)i);
                     var Guard = GameObject.Instantiate<RoleEffectAnimation>(FastDestroyableSingleton<RoleManager>.Instance.protectAnim, player.transform);
                     Guard.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
-                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                    __instance.playerStates.ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
                     return;
                 }
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MeetingKill);
@@ -816,7 +820,7 @@ class MeetingHudStartPatch
                 writer.Write((byte)i);
                 writer.EndRPC();
                 RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, (byte)i);
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                __instance.playerStates.ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
             }, RoleClass.Werewolf.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
         }
         if (PlayerControl.LocalPlayer.IsAlive())

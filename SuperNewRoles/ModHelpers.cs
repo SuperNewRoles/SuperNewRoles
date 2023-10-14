@@ -456,40 +456,40 @@ public static class ModHelpers
         AmongUsClient.Instance.FinishRpcImmediately(writer);
         RPCProcedure.UncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
     }
-    public static List<byte> GenerateTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
+    public static List<byte> GenerateTasks(this PlayerControl player, (int numCommon, int numShort, int numLong) task)
     {
-        if (numCommon + numShort + numLong <= 0)
+        if (task.numCommon + task.numShort + task.numLong <= 0)
         {
-            numShort = 1;
+            task.numShort = 1;
         }
         if (player.IsRole(RoleId.HamburgerShop) && (ModeHandler.IsMode(ModeId.SuperHostRoles) || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()))
         {
-            return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
+            return Roles.CrewMate.HamburgerShop.GenerateTasks(task.numCommon + task.numShort + task.numLong);
         }
         else if (player.IsRole(RoleId.Safecracker) && !(Safecracker.SafecrackerChangeTaskPrefab.GetBool() || GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship))
         {
-            return Safecracker.GenerateTasks(numCommon + numShort + numLong);
+            return Safecracker.GenerateTasks(task.numCommon + task.numShort + task.numLong);
         }
         var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
         var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
         var commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-        foreach (var task in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
+        foreach (var ct in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(ct);
 
         var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-        foreach (var task in MapUtilities.CachedShipStatus.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
+        foreach (var st in MapUtilities.CachedShipStatus.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(st);
 
         var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-        foreach (var task in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
+        foreach (var lt in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(lt);
 
         int start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numCommon, tasks, hashSet, commonTasks);
 
         start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numShort, tasks, hashSet, shortTasks);
 
         start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numLong, tasks, hashSet, longTasks);
 
         return tasks.ToList();
     }
@@ -540,7 +540,7 @@ public static class ModHelpers
             console.ValidTasks = new Il2CppReferenceArray<TaskSet>(0);
             var list = ShipStatus.Instance.AllConsoles.ToList();
             list.Add(console);
-            ShipStatus.Instance.AllConsoles = new Il2CppReferenceArray<Console>(list.ToArray());
+            ShipStatus.Instance.AllConsoles = list.ToArray();
         }
         if (console.Image == null)
         {
@@ -583,7 +583,7 @@ public static class ModHelpers
             console.ValidTasks = new(0);
             var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
             list.Add(console);
-            MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
+            MapUtilities.CachedShipStatus.AllConsoles = list.ToArray();
         }
         if (console.Image == null)
         {

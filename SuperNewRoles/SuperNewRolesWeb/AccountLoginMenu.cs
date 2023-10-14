@@ -252,11 +252,13 @@ namespace SuperNewRoles.SuperNewRolesWeb
             };
             var yStart = Vector3.up * 0.83f;
             var yOffset = Vector3.down * 1.575f;
-            var gameObjects = toMove.Select(x => GameObject.Find("NormalMenu/Buttons/" + x)).ToList();
+            var gameObjects = toMove.Select(x => GameObject.Find("NormalMenu/Buttons/" + x));
             if (gameObjects.Any(x => x == null)) return false;
-            for (var i = 0; i < gameObjects.Count; i++)
+            int index = 0;
+            foreach (GameObject obj in gameObjects)
             {
-                gameObjects[i].transform.position = yStart + (yOffset * i);
+                obj.transform.position = yStart + (yOffset * index);
+                index++;
             }
             return true;
         }

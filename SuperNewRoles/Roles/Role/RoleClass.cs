@@ -2371,7 +2371,7 @@ public static class RoleClass
         public static float CoolTime;
         public static float TouchTime;
         public static List<byte> RevolutionedPlayerId;
-        public static List<PlayerControl> RevolutionedPlayer
+        public static PlayerControl[] RevolutionedPlayer
         {
             get
             {
@@ -2386,7 +2386,7 @@ public static class RoleClass
                     }
                     _revolutionedPlayer = newList.ToArray();
                 }
-                return _revolutionedPlayer.ToList();
+                return _revolutionedPlayer;
             }
         }
         public static PlayerControl[] _revolutionedPlayer;
