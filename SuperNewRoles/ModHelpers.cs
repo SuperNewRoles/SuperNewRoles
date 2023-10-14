@@ -491,7 +491,7 @@ public static class ModHelpers
         start = 0;
         MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
 
-        return tasks.ToArray().ToList();
+        return tasks.ToList();
     }
     static float tien;
     public static string GetStringByCount(char txt, int count)
@@ -652,8 +652,15 @@ public static class ModHelpers
     }
     public static InnerNet.ClientData GetClient(this PlayerControl player)
     {
-        var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
+        var client = AmongUsClient.Instance.allClients.FirstOrDefault(cd => cd.Character.PlayerId == player.PlayerId);
         return client;
+    }
+    public static T FirstOrDefault<T>(this Il2CppSystem.Collections.Generic.List<T> list, Func<T, bool> func)
+    {
+        foreach (T obj in list)
+            if (func(obj))
+                return obj;
+        return default;
     }
     public static T FirstOrDefault<T>(this List<T> list, Func<T, bool> func)
     {
@@ -701,6 +708,11 @@ public static class ModHelpers
                 return obj;
         return default;
     }
+    public static void ForEach<T>(this Il2CppArrayBase<T> list, Action<T> func)
+    {
+        foreach (T obj in list)
+            func(obj);
+    }
     public static bool Any<TKey,TValue>(this Dictionary<TKey,TValue> dict, Func<KeyValuePair<TKey, TValue>, bool> func)
     {
         foreach (KeyValuePair<TKey, TValue> obj in dict)
@@ -730,16 +742,11 @@ public static class ModHelpers
     }
     public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
-        List<T> newList = new();
-        foreach (T item in list)
-        {
-            newList.Add(item);
-        }
-        return newList;
+        return new(list._items);
     }
     public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
     {
-        Il2CppSystem.Collections.Generic.List<T> newList = new();
+        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count);
         foreach (T item in list)
         {
             newList.Add(item);
@@ -885,6 +892,11 @@ public static class ModHelpers
     public static string Cs(Color c, string s)
     {
         return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
+    }
+    public static T GetRandom<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+    {
+        var indexData = UnityEngine.Random.Range(0, list.Count);
+        return list[indexData];
     }
     public static T GetRandom<T>(this List<T> list)
     {

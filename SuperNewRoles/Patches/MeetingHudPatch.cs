@@ -144,7 +144,7 @@ class CheckForEndVotingPatch
 
                             var VotingDatadetective = __instance.CustomCalculateVotes();
 
-                            exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
+                            exiledPlayerdetective = GameData.Instance.AllPlayers.FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
 
                             __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
                         }
@@ -158,7 +158,7 @@ class CheckForEndVotingPatch
                             statesdetective = statesListdetective.ToArray();
 
                             var VotingDatadetective = __instance.CustomCalculateVotes();
-                            exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == 253);
+                            exiledPlayerdetective = GameData.Instance.AllPlayers.FirstOrDefault(info => !tiedetective && info.PlayerId == 253);
 
                             __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
                         }
@@ -370,7 +370,7 @@ class CheckForEndVotingPatch
                 }
             }
 
-            exiledPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
+            exiledPlayer = GameData.Instance.AllPlayers.FirstOrDefault(info => !tie && info.PlayerId == exileId);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
