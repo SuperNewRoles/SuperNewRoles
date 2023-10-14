@@ -174,7 +174,7 @@ class EvilSeer
                     if (RoleData.IsArrowColorAdaptive && RoleData.IsClearColor) arrowColor = deadPlayer.Data.DefaultOutfit.ColorId; // 最高が最高
                     else if (RoleData.IsArrowColorAdaptive) // 明暗
                     {
-                        var isLight = CustomCosmetics.CustomColors.lighterColors.Contains(deadPlayer.Data.DefaultOutfit.ColorId);
+                        var isLight = CustomCosmetics.CustomColors.LighterColors.Contains(deadPlayer.Data.DefaultOutfit.ColorId);
                         arrowColor = isLight ? RoleData.LightBodyColorId : RoleData.DarkBodyColorId;
                     }
 

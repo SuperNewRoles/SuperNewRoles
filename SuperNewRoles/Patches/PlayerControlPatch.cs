@@ -9,6 +9,7 @@ using InnerNet;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
@@ -189,7 +190,7 @@ class RpcShapeshiftPatch
                                 __instance.RpcShowGuardEffect(__instance);
                             }
                             FinalStatusClass.RpcSetFinalStatus(target, status);
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
                             return true;
                         }
                     }
@@ -516,8 +517,8 @@ static class CheckMurderPatch
                 target.MyPhysics.Animations.IsPlayingAnyLadderAnimation() ||
                 target.inMovingPlat ||
                 MeetingHud.Instance != null ||
-                (!RoleClass.IsStart &&
-                AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
+                (!RoleClass.IsStart && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) ||
+                AirShipRandomSpawn.IsLoading
            )
         {
             return false;
@@ -623,8 +624,8 @@ static class CheckMurderPatch
                             RoleClass.Truelover.CreatePlayers.Add(__instance.PlayerId);
                             RoleHelpers.SetLovers(__instance, target);
                             RoleHelpers.SetLoversRPC(__instance, target);
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(target);
                         }
                         return false;
                     case RoleId.Sheriff:
@@ -661,7 +662,7 @@ static class CheckMurderPatch
                                 }
                                 __instance.RpcMurderPlayerCheck(target);
                                 __instance.RpcSetFinalStatus(status);
-                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                                Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
                             }
                         }
                         return false;
@@ -672,7 +673,7 @@ static class CheckMurderPatch
                             __instance.RpcShowGuardEffect(target);
                             RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
                             Madmate.CreateMadmate(target);
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(target);
                         }
                         else
                         {
@@ -685,7 +686,7 @@ static class CheckMurderPatch
                         {
                             Demon.DemonCurse(target, __instance);
                             __instance.RpcShowGuardEffect(target);
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
                         }
                         return false;
                     case RoleId.OverKiller:
@@ -723,7 +724,7 @@ static class CheckMurderPatch
                                 {
                                     Arsonist.ArsonistDouse(target, __instance);
                                     __instance.RpcShowGuardEffect(target);// もう一度エフェクト
-                                    Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                                    Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
                                 }
                                 else
                                 {//塗れなかったらキルクールリセット
@@ -742,7 +743,7 @@ static class CheckMurderPatch
                             __instance.RpcShowGuardEffect(target);
                             RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
                             Madmate.CreateMadmate(target);//クルーにして、マッドにする
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
                             RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
                             Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
                             return false;
@@ -764,7 +765,7 @@ static class CheckMurderPatch
                             {
                                 Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                             }
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
                             Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
                             return false;
                         }
@@ -787,7 +788,7 @@ static class CheckMurderPatch
                             {
                                 Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                             }
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                            Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
                             Logger.Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
                             return false;
                         }
@@ -815,7 +816,7 @@ static class CheckMurderPatch
                         }
                         if (currentTarget == null)
                         {
-                            Logger.Info("ペンギンを追加しました。:"+__instance.PlayerId.ToString()+":"+target.PlayerId.ToString()+":"+RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
+                            Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
                             RoleClass.Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
                             target.RpcSnapTo(__instance.transform.position);
                             return false;
@@ -1419,6 +1420,12 @@ public static class ExilePlayerPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
 class ReportDeadBodyPatch
 {
+    public static byte MeetingTurn_Now { get; private set; }
+    public static void ClearAndReloads()
+    {
+        MeetingTurn_Now = 0;
+    }
+
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
     {
         if (__instance.IsRole(RoleId.GM))
@@ -1472,7 +1479,7 @@ class ReportDeadBodyPatch
                 if (isGetLightAndDarker)
                 {
                     string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), firstPerson,
-                        CustomColors.lighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
+                        CustomColors.LighterColors.Contains(DeadPlayer.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
                     new LateTask(() =>
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
@@ -1512,6 +1519,18 @@ class ReportDeadBodyPatch
             : !ModeHandler.IsMode(ModeId.Zombie)
             && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId));
     }
+
+    public static void Postfix()
+    {
+        if (!AmongUsClient.Instance.AmHost) return; // ホスト以外此処は読まないが, バニラ側の使用が変更された時に問題が起きないように ホスト以外はreturnする。
+        MeetingTurn_Now++;
+
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SendMeetingTurnNow);
+        writer.Write(MeetingTurn_Now);
+        writer.EndRPC();
+    }
+
+    public static void SaveMeetingTurnNow(byte nowTurn) => MeetingTurn_Now = nowTurn;
 }
 public static class PlayerControlFixedUpdatePatch
 {

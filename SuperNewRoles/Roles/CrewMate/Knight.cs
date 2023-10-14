@@ -56,19 +56,13 @@ public static class Knight
     }
 }
 
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 class KnightProtected_Patch
 {
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
-    class KnightProtected_updatepatch
+    internal static void UpdateButtonsPostfix(MeetingHud __instance)
     {
-        static void Postfix(MeetingHud __instance)
+        if (PlayerControl.LocalPlayer.IsDead())
         {
-            //もし プレイヤーが騎士であり尚且つ死んでいる場合
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && PlayerControl.LocalPlayer.IsDead())
-            {
-                KnightProtectButtonDestroy(__instance);
-            }
+            KnightProtectButtonDestroy(__instance);
         }
     }
     /// <summary>
@@ -107,7 +101,7 @@ class KnightProtected_Patch
     {
         //もし　プレーヤーが護衛可能な状態の生きている[騎士]であり　且つ
         //護衛可能回数に上限がない状態　又は　護衛可能回数に条件があるが上限に達していない場合なら
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && PlayerControl.LocalPlayer.IsAlive() && CanProtect && (!KnightSetTheUpperLimitOfTheGuarding.GetBool() || (KnightSetTheUpperLimitOfTheGuarding.GetBool() && Times >= 1)))
+        if (PlayerControl.LocalPlayer.IsAlive() && CanProtect && (!KnightSetTheUpperLimitOfTheGuarding.GetBool() || (KnightSetTheUpperLimitOfTheGuarding.GetBool() && Times >= 1)))
         {
             for (int i = 0; i < __instance.playerStates.Length; i++)
             {
@@ -131,7 +125,7 @@ class KnightProtected_Patch
             }
         }
     }
-    static void Postfix(MeetingHud __instance)
+    internal static void MeetingHudStartPostfix(MeetingHud __instance)
     {
         Event(__instance);
     }

@@ -162,7 +162,7 @@ class RoleManagerSelectRolesPatch
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
-            FixedUpdate.SetRoleNames();
+            ChangeName.SetRoleNames();
             return false;
         }
         else if (ModeHandler.IsMode(ModeId.BattleRoyal))
@@ -1177,6 +1177,7 @@ class AllRoleSetClass
             RoleId.Rocket => Rocket.CustomOptionData.PlayerCount.GetFloat(),
             RoleId.WellBehaver => WellBehaver.WellBehaverPlayerCount.GetFloat(),
             RoleId.Pokerface => Pokerface.CustomOptionData.PlayerCount.GetFloat(),
+            RoleId.Crook => Crook.CustomOptionData.PlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };
