@@ -31,7 +31,7 @@ public static class SelectTask
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
             {
                 var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
-                var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, commont, shortt, longt);
+                var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, (commont, shortt, longt));
                 taskTypeIds = new Il2CppStructArray<byte>(TasksList.Count);
                 for (int i = 0; i < TasksList.Count; i++)
                 {
