@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles;
 
 class Madmate
 {
-    public static List<byte> CheckedImpostor;
+    public static HashSet<byte> CheckedImpostor;
     public static bool CheckImpostor(PlayerControl p)
     {
         if (CheckedImpostor.Contains(p.PlayerId)) return true;

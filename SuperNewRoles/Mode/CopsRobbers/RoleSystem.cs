@@ -136,7 +136,7 @@ class RoleSystem
         AllRoleSetClass.CrewOrImpostorSet();
         AllRoleSetClass.AllRoleSet();
         SuperHostRoles.RoleSelectHandler.SetCustomRoles();
-        SyncSetting.CustomSyncSettings(out var modified);
+        SyncSetting.CustomSyncSettings();
         ChacheManager.ResetChache();
     }
 }

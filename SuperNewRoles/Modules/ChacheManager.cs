@@ -13,12 +13,12 @@ class ChacheManager
     public static Dictionary<int, PlayerControl> QuarreledChache;
     public static void Load()
     {
-        MyRoleChache = new Dictionary<int, RoleId>();
-        MyGhostRoleChache = new Dictionary<int, RoleId>();
-        HauntedWolfChache = new Dictionary<int, PlayerControl>();
-        LoversChache = new Dictionary<int, PlayerControl>();
+        MyRoleChache = new();
+        MyGhostRoleChache = new();
+        HauntedWolfChache = new ();
+        LoversChache = new();
         FakeLoversChache = new();
-        QuarreledChache = new Dictionary<int, PlayerControl>();
+        QuarreledChache = new();
     }
     public static void ResetChache()
     {
