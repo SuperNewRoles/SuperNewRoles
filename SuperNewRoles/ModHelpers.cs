@@ -722,6 +722,8 @@ public static class ModHelpers
     }
     public static bool Any<T>(this List<T> list, Func<T, bool> func)
     {
+        if (list == null)
+            return false;
         foreach (T obj in list)
             if (func(obj))
                 return true;
