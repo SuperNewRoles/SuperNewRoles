@@ -810,7 +810,7 @@ static class CheckMurderPatch
                         return false;
                     case RoleId.Penguin:
                         PlayerControl currentTarget = null;
-                        if (RoleClass.Penguin.PenguinData.Keys.ToList().IsCheckListPlayerControl(__instance))
+                        if (RoleClass.Penguin.PenguinData.Keys.Contains(__instance))
                         {
                             currentTarget = RoleClass.Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
                         }
