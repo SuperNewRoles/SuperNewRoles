@@ -15,7 +15,7 @@ class WrapUpClass
     public static void WrapUp(GameData.PlayerInfo exiled)
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        FixedUpdate.SetRoleNames();
+        ChangeName.SetRoleNames();
         foreach (PlayerControl p in BotManager.AllBots)
         {
             p.RpcSetName(p.GetDefaultName());
@@ -38,7 +38,7 @@ class WrapUpClass
         static IEnumerator ResetName()
         {
             yield return new WaitForSeconds(1);
-            FixedUpdate.SetRoleNames();
+            ChangeName.SetRoleNames();
         }
         Roles.BestFalseCharge.WrapUp();
         if (exiled == null) return;

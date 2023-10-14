@@ -265,6 +265,7 @@ public static class RoleClass
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
         ChacheManager.Load();
+        DebugModeManager.ClearAndReloads();
     }
 
     public static class Debugger
