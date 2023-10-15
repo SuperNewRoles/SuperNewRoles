@@ -247,7 +247,9 @@ static class CheckMurderPatch
                 Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
                 return false;
             case RoleId.Jackal:
-                if (RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
+                //まだ作ってなくて、設定が有効の時
+                if (RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId) ||
+                    !RoleClass.Jackal.CanCreateFriend)
                 {
                     // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
                     if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSHR");
