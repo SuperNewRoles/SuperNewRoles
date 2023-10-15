@@ -87,6 +87,7 @@ public static class Pteranodon
     {
         private static void Postfix(PlayerPhysics __instance)
         {
+            if (UsingPlayers == null) return;
             if ((__instance.myPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId && IsPteranodonNow) ||
                 UsingPlayers.ContainsKey(__instance.myPlayer.PlayerId))
             {
