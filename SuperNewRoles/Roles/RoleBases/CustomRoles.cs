@@ -12,6 +12,10 @@ public static class CustomRoles
         else Role.allRoles.DoIf(x => x.player == player, x => x.MeFixedUpdateDead());
         Role.allRoles.Do((x) => x.FixedUpdate());
     }
+    public static void OnReportDeadBody(PlayerControl player, GameData.PlayerInfo target)
+    {
+        Role.allRoles.Do(x => x.OnReportDeadBody(player, target));
+    }
 
     public static void OnMeetingStart()
     {
