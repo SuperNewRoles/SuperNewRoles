@@ -51,21 +51,23 @@ public static class NetworkTransformFixedUpdatePatch
 {
     public static bool Prefix(CustomNetworkTransform __instance)
     {
-        if (__instance.AmOwner && __instance.HasMoved())
+        if (__instance.AmOwner)
         {
-            __instance.SetDirtyBit(3U);
+            if (__instance.HasMoved())
+                __instance.SetDirtyBit(3U);
             return false;
         }
         if (__instance.interpolateMovement != 0f)
         {
-            Vector2 vector = Vector2.zero;
+            Vector2 vector = __instance.targetSyncPosition - __instance.body.position;
             if (vector.sqrMagnitude >= 0.0001f)
             {
-                vector = __instance.targetSyncPosition - __instance.body.position;
                 float num = __instance.interpolateMovement / __instance.sendInterval;
                 vector.x *= num;
                 vector.y *= num;
             }
+            else
+                vector = Vector2.zero;
             __instance.body.velocity = vector;
         }
         __instance.targetSyncPosition += __instance.targetSyncVelocity * Time.fixedDeltaTime * 0.1f;
@@ -315,8 +317,11 @@ public static class PlayerControlFixedUpdatePatch
         {
             PlayerInfo playerInfo = allPlayers[i];
             if (playerInfo.Disconnected ||
-                playerInfo.PlayerId == targetingPlayer.PlayerId && !playerInfo.IsDead && (!onlyCrewmates || !playerInfo.Role.IsImpostor))
-                break;
+                playerInfo.PlayerId == targetingPlayer.PlayerId ||
+                playerInfo.IsDead ||
+                (onlyCrewmates && playerInfo.Role.IsImpostor)
+               )
+                continue;
             PlayerControl @object = playerInfo.Object;
             if (untargetablePlayers != null &&
                 untargetablePlayers.Any(x => x == @object))
@@ -324,10 +329,8 @@ public static class PlayerControlFixedUpdatePatch
                 // if that player is not targetable: skip check
                 continue;
             }
-            if (!@object ||
-                (@object.inVent && !targetPlayersInVents) ||
-                @object.IsDead()
-               )
+            if (@object == null ||
+                (@object.inVent && !targetPlayersInVents))
                 continue;
             Vector2 vector = @object.GetTruePosition() - truePosition;
             float magnitude = vector.magnitude;

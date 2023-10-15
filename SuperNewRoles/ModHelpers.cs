@@ -744,7 +744,12 @@ public static class ModHelpers
     }
     public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
-        return new(list._items);
+        List<T> newList = new(list.Count);
+        foreach (T item in list)
+        {
+            newList.Add(item);
+        }
+        return newList;
     }
     public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
     {
