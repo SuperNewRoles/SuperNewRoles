@@ -1112,8 +1112,6 @@ public class CustomOptionHolder
         MarlinPlayerCount = Create(200503, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
         MarlinViewVote = Create(200504, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
 
-        Penguin.SetupCustomOptions();
-
         Rocket.CustomOptionData.SetupCustomOptions();
 
         DoppelgangerOption = SetupCustomRoleOption(200700, true, RoleId.Doppelganger);

@@ -865,9 +865,6 @@ public static class RoleHelpers
             case RoleId.HamburgerShop:
                 RoleClass.HamburgerShop.HamburgerShopPlayer.Add(player);
                 break;
-            case RoleId.Penguin:
-                Penguin.PenguinPlayer.Add(player);
-                break;
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.Add(player);
                 break;
@@ -1448,9 +1445,6 @@ public static class RoleHelpers
                 break;
             case RoleId.HamburgerShop:
                 RoleClass.HamburgerShop.HamburgerShopPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Penguin:
-                Penguin.PenguinPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);

@@ -598,8 +598,6 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        Penguin.SetupCustomButtons(__instance);
-
         WaveCannonButton = new(
             () =>
             {

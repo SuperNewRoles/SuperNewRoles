@@ -6,14 +6,32 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-[HarmonyPatch]
-public static class Penguin
+public class Penguin : RoleBase
 {
+    private static RoleInfo roleInfo;
+    public static RoleInfo GetRoleInfo()
+    {
+        if (roleInfo == null) 
+        roleInfo = new(
+            typeof(Penguin),
+            RoleId.Penguin,
+            200600,
+            RoleClass.ImpostorRed,
+            SetupCustomOptions,
+            ClearAndReload
+        );
+        return roleInfo;
+    }
+    public Penguin()
+        : base(GetRoleInfo())
+    { }
+
     public static CustomRoleOption PenguinOption;
     public static CustomOption PenguinPlayerCount;
     public static CustomOption PenguinCoolTime;
@@ -45,6 +63,16 @@ public static class Penguin
         bool Is = ModHelpers.IsSucsessChance(4);
         _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
     }
+    public override void PostInit()
+    {
+        PenguinPlayer.Add(player);
+        if (PenguinPlayer.Count == 1)
+        {
+            SetupCustomButtons(FastDestroyableSingleton<HudManager>.Instance);
+        }
+    }
+    public override void ResetRole() => PenguinPlayer.RemoveAll(x => x.PlayerId == player.PlayerId);
+
     public static CustomButton PenguinButton;
     public static void SetupCustomButtons(HudManager __instance)
     {
@@ -110,8 +138,10 @@ public static class Penguin
             }
         }
     }
-    public static void FixedUpdate()
+    public override void FixedUpdate() => FixedUpdateRole();
+    public static void FixedUpdateRole()
     {
+        if (ModeHandler.GetMode() != ModeId.SuperHostRoles) return;
         if (PenguinData.Count <= 0) return;
         foreach (var data in PenguinData.ToArray())
         {
@@ -153,8 +183,8 @@ public static class Penguin
             }
         }
     }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
-    public static void Prefix(PlayerControl __instance)
+    public override void OnReportDeadBody(PlayerControl player, GameData.PlayerInfo target) => OnReportDeadBodyRole(player, target);
+    public static void OnReportDeadBodyRole(PlayerControl player, GameData.PlayerInfo target)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (PenguinMeetingKill.GetBool())
