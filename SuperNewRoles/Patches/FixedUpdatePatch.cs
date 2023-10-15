@@ -268,6 +268,7 @@ public class FixedUpdate
             case ModeId.SuperHostRoles:
                 Mode.SuperHostRoles.FixedUpdate.Update();
                 Penguin.FixedUpdate();
+                CustomRoles.FixedUpdate(__instance);
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Mafia))
                 {
                     Mafia.FixedUpdate();
