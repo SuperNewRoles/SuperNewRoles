@@ -13,7 +13,7 @@ public abstract class Role
     public static List<Role> allRoles = new();
     public PlayerControl player;
     public readonly RoleInfo RoleInfo;
-    public RoleId roleId => RoleInfo.RoleId;
+    public RoleId RoleId => RoleInfo.RoleId;
 
     public Role( RoleInfo roleInfo) { RoleInfo = roleInfo; }
 
@@ -44,10 +44,10 @@ public abstract class Role
     }
 }
 
-public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
+public abstract class RoleBase : Role
 {
-    public static List<T> players = new();
-    public static RoleId RoleId;
+    public static List<RoleBase> players = new();
+    //public static RoleId RoleId;
     //設定を有効にするか
     public bool CanUseVentOptionOn = false;
     public bool CanUseVentOptionDefault;
@@ -128,7 +128,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
     public void Init(PlayerControl player)
     {
         this.player = player;
-        players.Add((T)this);
+        players.Add(this);
         allRoles.Add(this);
         PostInit();
         ObjectId = MaxObjectId;
@@ -138,7 +138,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
 
 
 
-    public static T local
+    public static RoleBase local
     {
         get
         {
@@ -176,7 +176,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         get { return players.Count > 0; }
     }
 
-    public static T GetRole(PlayerControl player = null)
+    public static RoleBase GetRole(PlayerControl player = null)
     {
         player = player ?? PlayerControl.LocalPlayer;
         return players.FirstOrDefault(x => x.player == player);
@@ -187,22 +187,19 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         return players.Any(x => x.player == player);
     }
 
-    public static T SetRole(PlayerControl player)
+    public void SetRole(PlayerControl player)
     {
         if (!IsRole(player))
         {
-            T role = new();
-            role.Init(player);
-            return role;
+            Init(player);
         }
-        return null;
     }
 
-    public static void EraseRole(PlayerControl player)
+    public void EraseRole(PlayerControl player)
     {
         players.DoIf(x => x.player == player, x => x.ResetRole());
-        players.RemoveAll(x => x.player == player && x.roleId == RoleId);
-        allRoles.RemoveAll(x => x.player == player && x.roleId == RoleId);
+        players.RemoveAll(x => x.player == player);
+        allRoles.RemoveAll(x => x.player == player && x.RoleId == RoleId);
         if (_local is not null && player.PlayerId == _local.PlayerId) _local = null;
     }
 
