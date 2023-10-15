@@ -169,6 +169,7 @@ public class FixSabotage
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
+                    if (player == null) continue;
                     ClientData cd = player.GetClient();
 
                     MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
