@@ -169,7 +169,7 @@ public class FixSabotage
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (player == null) continue;
+                    if (player == null || player.IsBot()) continue; // [ ]MEMO : bot除外処理はリリース版コードmergeすれば必要なくなる為, プルリク前に消す
                     ClientData cd = player.GetClient();
 
                     MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
