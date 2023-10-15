@@ -298,14 +298,14 @@ static class CheckMurderPatch
                 return false;
             case RoleId.Penguin:
                 PlayerControl currentTarget = null;
-                if (RoleClass.Penguin.PenguinData.Keys.Contains(__instance))
+                if (Penguin.PenguinData.Keys.Contains(__instance))
                 {
-                    currentTarget = RoleClass.Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
+                    currentTarget = Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
                 }
                 if (currentTarget != null)
                     break;
-                Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
-                RoleClass.Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
+                Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + Penguin.PenguinData.TryAdd(__instance, target).ToString());
+                Penguin.PenguinTimer.TryAdd(__instance.PlayerId, Penguin.PenguinDurationTime.GetFloat());
                 target.RpcSnapTo(__instance.transform.position);
                 return false;
         }

@@ -1150,7 +1150,7 @@ class AllRoleSetClass
             RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount.GetFloat(),
             RoleId.Cupid => CustomOptionHolder.CupidPlayerCount.GetFloat(),
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetFloat(),
-            RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
+            RoleId.Penguin => Penguin.PenguinPlayerCount.GetFloat(),
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
             RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
             RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
