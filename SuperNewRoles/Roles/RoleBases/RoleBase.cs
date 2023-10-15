@@ -10,7 +10,11 @@ using UnityEngine;
 namespace SuperNewRoles.Roles.RoleBases;
 public abstract class Role
 {
-    public static List<Role> allRoles = new();
+    //allRoles 割り当てられた役職について役職毎に１インスタンスを管理
+    //public static List<Role> allRoles = new();
+    public static Role[] allRoles => allRolesNoDuplicate.Values.ToArray();
+    public static Dictionary<RoleId, Role> allRolesNoDuplicate = new ();
+
     public PlayerControl player;
     public readonly RoleInfo RoleInfo;
     public RoleId RoleId => RoleInfo.RoleId;
@@ -40,7 +44,8 @@ public abstract class Role
     public static void ClearAll()
     {
         MaxObjectId = 0;
-        allRoles = new List<Role>();
+        //allRoles = new List<Role>();
+        allRolesNoDuplicate = new();
     }
 }
 
@@ -129,7 +134,8 @@ public abstract class RoleBase : Role
     {
         this.player = player;
         players.Add(this);
-        allRoles.Add(this);
+        //allRoles.Add(this);
+        allRolesNoDuplicate.TryAdd(RoleId, this);
         PostInit();
         ObjectId = MaxObjectId;
         MaxObjectId++;
@@ -199,7 +205,7 @@ public abstract class RoleBase : Role
     {
         players.DoIf(x => x.player == player, x => x.ResetRole());
         players.RemoveAll(x => x.player == player);
-        allRoles.RemoveAll(x => x.player == player && x.RoleId == RoleId);
+        //allRoles.RemoveAll(x => x.player == player && x.roleId == RoleId);
         if (_local is not null && player.PlayerId == _local.PlayerId) _local = null;
     }
 
