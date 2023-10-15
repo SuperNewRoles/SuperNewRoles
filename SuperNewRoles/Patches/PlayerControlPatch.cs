@@ -321,7 +321,7 @@ public static class PlayerControlFixedUpdatePatch
                 playerInfo.IsDead ||
                 (onlyCrewmates && playerInfo.Role.IsImpostor)
                )
-                break;
+                continue;
             PlayerControl @object = playerInfo.Object;
             if (untargetablePlayers != null &&
                 untargetablePlayers.Any(x => x == @object))
@@ -329,10 +329,8 @@ public static class PlayerControlFixedUpdatePatch
                 // if that player is not targetable: skip check
                 continue;
             }
-            if (!@object ||
-                (@object.inVent && !targetPlayersInVents) ||
-                @object.IsDead()
-               )
+            if (@object == null ||
+                (@object.inVent && !targetPlayersInVents))
                 continue;
             Vector2 vector = @object.GetTruePosition() - truePosition;
             float magnitude = vector.magnitude;
