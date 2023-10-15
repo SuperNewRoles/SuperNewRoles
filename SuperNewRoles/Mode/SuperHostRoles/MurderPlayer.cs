@@ -19,7 +19,7 @@ class MurderPlayer
             RoleClass.Finder.KillCount++;
         }
         if (!AmongUsClient.Instance.AmHost) return;
-        FixedUpdate.SetRoleNames();
+        ChangeName.SetRoleNames();
         if (__instance.IsRole(RoleId.Finder))
         {
             RoleClass.Finder.KillCounts[__instance.PlayerId]++;
@@ -70,7 +70,7 @@ class MurderPlayer
             }
         }
         Roles.Bait.MurderPostfix(__instance, target);
-        FixedUpdate.SetRoleName(target);
+        ChangeName.SetRoleName(target);
         Seer.WrapUpPatch.MurderPlayerPatch.ShowFlash_SHR(target);
     }
 }

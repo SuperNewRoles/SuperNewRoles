@@ -520,7 +520,7 @@ public static class OnGameEndPatch
     {
         if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
         {
-            GameManager.Instance.LogicOptions.SetGameOptions(SyncSetting.OptionData.DeepCopy());
+            GameManager.Instance.LogicOptions.SetGameOptions(SyncSetting.DefaultOption.DeepCopy());
             RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
         }
         var gameOverReason = AdditionalTempData.gameOverReason;

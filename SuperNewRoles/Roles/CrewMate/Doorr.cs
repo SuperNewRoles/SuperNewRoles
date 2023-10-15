@@ -38,7 +38,7 @@ class Doorr
     }
     private static PlainDoor GetDoor()
     {
-        return GameObject.FindObjectsOfType<DoorConsole>().ToArray().FirstOrDefault(x =>
+        return GameObject.FindObjectsOfType<DoorConsole>().FirstOrDefault(x =>
         {
             if (x.MyDoor == null) return false;
             float num = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.transform.position);
