@@ -20,15 +20,15 @@ public abstract class Role
     public int ObjectId;
     public int AbilityLimit;
     public static int MaxObjectId = 0;
-
-    public abstract void OnMeetingStart();
-    public abstract void OnWrapUp();
+    public virtual void OnReportDeadBody(PlayerControl player, GameData.PlayerInfo target) { }
+    public virtual void OnMeetingStart() { }
+    public virtual void OnWrapUp() { }
     public virtual void FixedUpdate() { }
     public virtual void MeFixedUpdateAlive() { }
     public virtual void MeFixedUpdateDead() { }
-    public abstract void OnKill(PlayerControl target);
-    public abstract void OnDeath(PlayerControl killer = null);
-    public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
+    public virtual void OnKill(PlayerControl target) { }
+    public virtual void OnDeath(PlayerControl killer = null) { }
+    public virtual void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
     public virtual void EndUseAbility() { }
     public virtual void ResetRole() { }
     public virtual void PostInit() { }
@@ -122,7 +122,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         if (IsImpostorViewOptionOn) IsImpostorViewOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "MadmateImpostorLightSetting", IsImpostorViewOptionDefault, RoleOption); OptionId++;
         SetupMyOptions();
     }
-    public abstract void SetupMyOptions();
+    public virtual void SetupMyOptions() { }
 
 
     public void Init(PlayerControl player)
