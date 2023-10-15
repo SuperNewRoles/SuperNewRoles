@@ -13,6 +13,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -980,8 +981,8 @@ public static class RoleHelpers
                 break;
             // ロールアド
             default:
-                SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
-                return;
+                RoleBaseHelper.SetRole(player, role);
+                break;
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.Add(player);
@@ -1016,7 +1017,8 @@ public static class RoleHelpers
             return p.PlayerId == ClearTarget.PlayerId;
         }
         ClearTarget = player;
-        switch (player.GetRole())
+        var role = player.GetRole();
+        switch (role)
         {
             case RoleId.SoothSayer:
                 RoleClass.SoothSayer.SoothSayerPlayer.RemoveAll(ClearRemove);
@@ -1526,6 +1528,9 @@ public static class RoleHelpers
                 Crook.RoleData.Player.RemoveAll(ClearRemove);
                 break;
                 // ロールリモベ
+            default:
+                RoleBaseHelper.EraseRole(player, role);
+                break;
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);

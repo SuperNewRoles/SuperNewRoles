@@ -12,6 +12,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using SuperNewRoles.SuperNewRolesWeb;
 using TMPro;
@@ -234,7 +235,6 @@ public static class RoleClass
         Camouflager.ClearAndReload();
         Cupid.ClearAndReload();
         HamburgerShop.ClearAndReload();
-        Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
@@ -260,6 +260,8 @@ public static class RoleClass
         WellBehaver.ClearAndReload();
         Pokerface.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
+
+        RoleBaseHelper.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

@@ -2036,11 +2036,13 @@ public class CustomOptionHolder
 
         // SetupCrewmateCustomOptions
 
+        RoleBaseHelper.SetUpOptions();
+
         /* |: ========================= Modifiers Settings ========================== :| */
 
         // SetupModifierCustomOptions
 
-        RoleBaseHelper.SetUpOptions();
+        //RoleBaseHelper.SetUpOptions();
 
         // 表示設定
 
@@ -2077,7 +2079,7 @@ public class CustomOptionHolder
 
         // SetupModifierCustomOptions
 
-        RoleBaseHelper.SetUpOptions();
+        //RoleBaseHelper.SetUpOptions();
 
         // 表示設定
 
