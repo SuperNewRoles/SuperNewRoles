@@ -12,7 +12,11 @@ public abstract class Role
 {
     public static List<Role> allRoles = new();
     public PlayerControl player;
-    public RoleId roleId;
+    public readonly RoleInfo RoleInfo;
+    public RoleId roleId => RoleInfo.RoleId;
+
+    public Role( RoleInfo roleInfo) { RoleInfo = roleInfo; }
+
     public int ObjectId;
     public int AbilityLimit;
     public static int MaxObjectId = 0;
@@ -90,15 +94,18 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
     public CustomOption IsImpostorViewOpt => IsImpostorViewOption;
     public CustomOption CoolTimeOpt => CoolTimeOption;
     public CustomOption DurationTimeOpt => DurationTimeOption;
-    public RoleBase()
-    {
+    public RoleBase(RoleInfo roleInfo)
+        : base(roleInfo) { }
 
-    }
+    //public RoleBase()
+    //{
 
-    public RoleBase(bool isFirst)
-    {
-        if (RoleOption is null) SetUpOption();
-    }
+    //}
+
+    //public RoleBase(bool isFirst)
+    //{
+    //    if (RoleOption is null) SetUpOption();
+    //}
 
     public void SetUpOption()
     {
