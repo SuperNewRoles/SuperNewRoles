@@ -48,7 +48,7 @@ class Guesser
         RoleButtons = new();
         RoleSelectButtons = new();
         PageButtons = new();
-        __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(false));
+        __instance.playerStates.ForEach(x => x.gameObject.SetActive(false));
 
         Transform container = UnityEngine.Object.Instantiate(__instance.transform.FindChild("MeetingContents/PhoneUI"), __instance.transform);
         container.transform.localPosition = new Vector3(0, 0, -200f);
@@ -72,7 +72,7 @@ class Guesser
         exitButton.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
         exitButton.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
         {
-            __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));
+            __instance.playerStates.ForEach(x => x.gameObject.SetActive(true));
             UnityEngine.Object.Destroy(container.gameObject);
         }));
         ExitButton = exitButton.GetComponent<PassiveButton>();
@@ -251,7 +251,7 @@ class Guesser
 
 
                     // Reset the GUI
-                    __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));
+                    __instance.playerStates.ForEach(x => x.gameObject.SetActive(true));
                     UnityEngine.Object.Destroy(container.gameObject);
 
                     if (RoleClass.NiceGuesser.Count == -1)
@@ -261,11 +261,11 @@ class Guesser
                     RoleClass.NiceGuesser.Count--;
                     if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptionHolder.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptionHolder.NiceGuesserShortOneMeetingCount.GetBool()))
                     {
-                        __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == dyingTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                        __instance.playerStates.ForEach(x => { if (x.TargetPlayerId == dyingTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                     }
                     else
                     {
-                        __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                        __instance.playerStates.ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                     }
                     // Shoot player and send chat info if activated
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GuesserShoot, SendOption.Reliable, -1);
