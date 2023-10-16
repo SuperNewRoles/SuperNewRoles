@@ -127,7 +127,7 @@ static class CheckProtectPatch
                 break;
         }
 
-        if (useAbility) // アビリティが発動された場合, 守護の障子を行う
+        if (useAbility) // アビリティが発動された場合, 守護の表示を行う
         {
             __instance.RpcShowGuardEffect(__instance);
         }
