@@ -40,7 +40,7 @@ static class CheckProtectPatch
                     }
                 }
                 // タスクが取得されていて, 使用回数を使い切っていない場合リペアを発動する。
-                if (sabotageType != TaskTypes.None && RoleClass.GhostMechanic.AbilityUsedCountSHR[__instance.PlayerId] <= CustomOptionHolder.GhostMechanicRepairLimit.GetInt())
+                if (sabotageType != TaskTypes.None && RoleClass.GhostMechanic.AbilityUsedCountSHR[__instance.PlayerId] < CustomOptionHolder.GhostMechanicRepairLimit.GetInt())
                 {
                     useAbility = true;
                     Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(sabotageType);
