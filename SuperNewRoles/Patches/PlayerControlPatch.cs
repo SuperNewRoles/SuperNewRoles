@@ -94,48 +94,6 @@ static class PlayerControlSetCooldownPatch
     }
 }
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
-static class CheckProtectPatch
-{
-    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
-    {
-        if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
-
-        bool useAbility = false;
-        RoleId angelRole = __instance.GetGhostRole();
-
-        switch (angelRole)
-        {
-            case RoleId.GhostMechanic:
-                TaskTypes sabotageType = TaskTypes.None;
-
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks) // 亡霊整備士自身のタスクを検索した場合サボタージュを取得できなかった為, ホストのタスクを参照している。
-                {
-                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
-                    {
-                        sabotageType = task.TaskType;
-                        break;
-                    }
-                }
-
-                if (sabotageType != TaskTypes.None && RoleClass.GhostMechanic.AbilityUsedCountSHR[__instance.PlayerId] <= CustomOptionHolder.GhostMechanicRepairLimit.GetInt())
-                {
-                    useAbility = true;
-                    Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(sabotageType);
-                    RoleClass.GhostMechanic.AbilityUsedCountSHR[__instance.PlayerId]++;
-                }
-                break;
-        }
-
-        if (useAbility) // アビリティが発動された場合, 守護の表示を行う
-        {
-            __instance.RpcShowGuardEffect(__instance);
-        }
-
-        return false;
-    }
-}
-
 [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
 public static class SwitchMinigameBeginPatch
 {
