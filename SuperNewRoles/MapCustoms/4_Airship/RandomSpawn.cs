@@ -116,11 +116,14 @@ public static class AirShipRandomSpawn
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     string name = p.GetDefaultName();
-                    if (!p.AmOwner) p.RpcSetNamePrivate(name);
-                    else p.SetName(name);
-                    if (!p.IsBot()) p.RpcSnapTo(Locations.GetRandom());
+                    p.RpcSetNamePrivate(name);
+                    if (!p.IsBot())
+                    {
+                        p.RpcSnapTo(Locations.GetRandom());
+                        p.ResetKillCool(RoleClass.IsFirstMeetingEnd ? float.NegativeInfinity : 10f);
+                    }
                 }
-                FixedUpdate.SetRoleNames();
+                new LateTask(() => ChangeName.SetRoleNames(),0.1f, "RandomSpawnSetRoleNames");
             }
         }
     }

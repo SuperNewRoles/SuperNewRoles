@@ -144,7 +144,7 @@ class CheckForEndVotingPatch
 
                             var VotingDatadetective = __instance.CustomCalculateVotes();
 
-                            exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
+                            exiledPlayerdetective = GameData.Instance.AllPlayers.FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
 
                             __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
                         }
@@ -158,7 +158,7 @@ class CheckForEndVotingPatch
                             statesdetective = statesListdetective.ToArray();
 
                             var VotingDatadetective = __instance.CustomCalculateVotes();
-                            exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == 253);
+                            exiledPlayerdetective = GameData.Instance.AllPlayers.FirstOrDefault(info => !tiedetective && info.PlayerId == 253);
 
                             __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
                         }
@@ -370,7 +370,7 @@ class CheckForEndVotingPatch
                 }
             }
 
-            exiledPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
+            exiledPlayer = GameData.Instance.AllPlayers.FirstOrDefault(info => !tie && info.PlayerId == exileId);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -488,11 +488,11 @@ class CheckForEndVotingPatch
                 }
                 if (Flag)
                 {
-                    List<PlayerControl> DictatorSubExileTargetList = PlayerControl.AllPlayerControls.ToArray().ToList();
-                    DictatorSubExileTargetList.RemoveAll(p =>
+                    var DictatorSubExileTargetList = PlayerControl.AllPlayerControls;
+                    DictatorSubExileTargetList.RemoveAll((Il2CppSystem.Predicate<PlayerControl>)(p =>
                     {
                         return p.IsDead() || p.PlayerId == exiledPlayer.PlayerId;
-                    });
+                    }));
                     exiledPlayer = ModHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
                 }
             }
@@ -766,8 +766,8 @@ class MeetingHudStartPatch
         {
             new LateTask(() =>
             {
-                SyncSetting.CustomSyncSettings(out var options);
-                SyncSetting.MeetingSyncSettings(options);
+                SyncSetting.CustomSyncSettings();
+                SyncSetting.MeetingSyncSettings();
                 if (!RoleClass.IsFirstMeetingEnd) AddChatPatch.YourRoleInfoSendCommand();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
@@ -793,7 +793,11 @@ class MeetingHudStartPatch
             {
                 if (RoleClass.Werewolf.IsShooted || CachedPlayer.LocalPlayer.IsDead() || !Mode.Werewolf.Main.IsUseButton())
                 {
-                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                    foreach (PlayerVoteArea state in __instance.playerStates)
+                    {
+                        if (state.transform.FindChild("WerewolfKillButton") != null)
+                            GameObject.Destroy(state.transform.FindChild("WerewolfKillButton").gameObject);
+                    }
                     return;
                 }
 
@@ -808,7 +812,7 @@ class MeetingHudStartPatch
                     PlayerControl player = ModHelpers.PlayerById((byte)i);
                     var Guard = GameObject.Instantiate<RoleEffectAnimation>(FastDestroyableSingleton<RoleManager>.Instance.protectAnim, player.transform);
                     Guard.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
-                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                    __instance.playerStates.ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
                     return;
                 }
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MeetingKill);
@@ -816,7 +820,7 @@ class MeetingHudStartPatch
                 writer.Write((byte)i);
                 writer.EndRPC();
                 RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, (byte)i);
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                __instance.playerStates.ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
             }, RoleClass.Werewolf.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
         }
         if (PlayerControl.LocalPlayer.IsAlive())
@@ -882,7 +886,7 @@ public static class OpenVotes
     public static bool VoteSyncSetting(this PlayerControl player)
     {
         var role = player.GetRole();
-        var optdata = SyncSetting.OptionData.DeepCopy();
+        var optdata = SyncSetting.DefaultOption.DeepCopy();
 
         switch (role)
         {

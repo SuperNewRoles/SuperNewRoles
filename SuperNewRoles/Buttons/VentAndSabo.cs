@@ -188,7 +188,7 @@ public static class VentAndSabo
         public static void Prefix(Vent __instance, ref bool enabled)
         {
             if (!Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
-            if (NiceMechanic.TargetVent.ContainsValue(__instance) && ModHelpers.PlayerById(NiceMechanic.TargetVent.ToArray().FirstOrDefault(x => x.Value == __instance).Key).IsRole(RoleId.NiceMechanic)) enabled = false;
+            if (NiceMechanic.TargetVent.ContainsValue(__instance) && ModHelpers.PlayerById(NiceMechanic.TargetVent.FirstOrDefault(x => x.Value == __instance).Key).IsRole(RoleId.NiceMechanic)) enabled = false;
         }
     }
 

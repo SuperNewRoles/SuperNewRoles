@@ -375,7 +375,7 @@ public static class Balancer
         {
             if (PlayerControl.LocalPlayer.IsDead())
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+                __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
             if (currentAbilityUser != null)
             {
@@ -398,7 +398,7 @@ public static class Balancer
             if (currentTarget == null)
             {
                 currentTarget = Target;
-                __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == currentTarget.PlayerId && x.transform.FindChild("BalancerButton") != null) x.transform.FindChild("BalancerButton").gameObject.SetActive(false); });
+                __instance.playerStates.ForEach(x => { if (x.TargetPlayerId == currentTarget.PlayerId && x.transform.FindChild("BalancerButton") != null) x.transform.FindChild("BalancerButton").gameObject.SetActive(false); });
                 return;
             }
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.BalancerBalance);
@@ -408,7 +408,7 @@ public static class Balancer
             writer.EndRPC();
             RPCProcedure.BalancerBalance(PlayerControl.LocalPlayer.PlayerId, currentTarget.PlayerId, Target.PlayerId);
             IsAbilityUsed = true;
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
         }
         static void Event(MeetingHud __instance)
         {
