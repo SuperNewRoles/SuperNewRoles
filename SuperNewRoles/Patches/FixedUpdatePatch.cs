@@ -11,6 +11,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -81,6 +82,7 @@ public class FixedUpdate
 
         SetBasePlayerOutlines();
         LadderDead.FixedUpdate();
+        CustomRoles.FixedUpdate();
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
@@ -100,7 +102,7 @@ public class FixedUpdate
                 Squid.FixedUpdate();
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
-                CustomRoles.FixedUpdate(__instance);
+                CustomRoles.FixedUpdate();
                 Balancer.Update();
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();

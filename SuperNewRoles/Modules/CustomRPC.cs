@@ -20,6 +20,8 @@ using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
@@ -331,10 +333,21 @@ public enum CustomRPC
     DestroyGarbage,
     SetPokerfaceTeam,
     CrookSaveSignDictionary,
+    RoleRpcHandler
 }
 
 public static class RPCProcedure
 {
+    public static void RoleRpcHandler(MessageReader reader)
+    {
+        byte playerId = reader.ReadByte();
+        RoleBase role = RoleBaseManager.GetRoleBaseById(playerId);
+        if (role == null)
+            return;
+        if (role is not IRpcHandler)
+            return;
+        (role as IRpcHandler).RpcReader(reader);
+    }
     public static void RocketSeize(byte sourceid, byte targetid)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -1999,6 +2012,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CrookSaveSignDictionary:
                         Crook.Ability.SaveSignDictionary(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.RoleRpcHandler:
+                        RoleRpcHandler(reader);
                         break;
                 }
             }

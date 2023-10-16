@@ -13,6 +13,8 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -1602,8 +1604,10 @@ public static class RoleHelpers
     public static bool IsUseVent(this PlayerControl player)
     {
         RoleId role = player.GetRole();
+        RoleBase roleBase = player.GetRoleBase();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
         if (ModeHandler.IsMode(ModeId.VanillaHns)) return false;
+        if (roleBase != null && roleBase is IVentAvailable) return (roleBase as IVentAvailable).CanUseVent;
         return role switch
         {
             RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,

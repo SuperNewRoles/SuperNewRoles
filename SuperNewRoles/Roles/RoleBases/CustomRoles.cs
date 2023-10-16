@@ -2,25 +2,57 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.RoleBases;
 public static class CustomRoles
 {
-    public static void FixedUpdate(PlayerControl player)
+    public static void FixedUpdate()
     {
-        if (player.IsAlive()) Role.allRoles.DoIf(x => x.player == player, x => x.MeFixedUpdateAlive());
-        else Role.allRoles.DoIf(x => x.player == player, x => x.MeFixedUpdateDead());
-        Role.allRoles.Do((x) => x.FixedUpdate());
+        RoleBase roleBase = PlayerControl.LocalPlayer.GetRoleBase();
+        IFixedUpdaterMe ifum = roleBase as IFixedUpdaterMe;
+        IReadOnlyList<IFixedUpdaterAll> IFixedUpdaterAlls = RoleBaseManager.GetInterfaces<IFixedUpdaterAll>();
+        switch (ModeHandler.GetMode())
+        {
+            case ModeId.Default:
+                foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
+                    all.FixedUpdateAllDefault();
+
+                if (ifum != null)
+                {
+                    ifum.FixedUpdateMeDefault();
+                    if (PlayerControl.LocalPlayer.IsAlive())
+                        ifum.FixedUpdateMeDefaultAlive();
+                    else
+                        ifum.FixedUpdateMeDefaultDead();
+                }
+                break;
+            case ModeId.SuperHostRoles:
+                foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
+                    all.FixedUpdateAllSHR();
+                if (ifum != null)
+                {
+                    ifum.FixedUpdateMeSHR();
+                    if (PlayerControl.LocalPlayer.IsAlive())
+                        ifum.FixedUpdateMeSHRAlive();
+                    else
+                        ifum.FixedUpdateMeSHRDead();
+                }
+                break;
+        }
     }
 
     public static void OnMeetingStart()
     {
-        Role.allRoles.Do(x => x.OnMeetingStart());
+        RoleBaseManager.GetInterfaces<IMeetingHandler>()
+            .Do(x => x.StartMeeting());
     }
 
     public static void OnWrapUp()
     {
-        Role.allRoles.Do(x => x.OnWrapUp());
+        RoleBaseManager.GetInterfaces<IWrapUpHandler>()
+            .Do(x => x.OnWrapUp());
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
@@ -30,18 +62,24 @@ public static class CustomRoles
         {
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
-                Role.allRoles.Do(x => x.HandleDisconnect(player, reason));
+                RoleBaseManager.PlayerRoles.Values.Do(
+                    x => {
+                        if (x is IHandleDisconnect handleDisconnect)
+                            handleDisconnect.OnDisconnect();
+                    }
+               );
             }
         }
     }
 
     public static void OnKill(this PlayerControl player, PlayerControl target)
     {
-        Role.allRoles.DoIf(x => x.player == player, x => x.OnKill(target));
+        RoleBaseManager.GetInterfaces<IMurderHandler>().Do(x => x.OnMurderPlayer(player, target));
     }
 
     public static void OnDeath(this PlayerControl player, PlayerControl killer)
     {
-        Role.allRoles.DoIf(x => x.player == player, x => x.OnDeath(killer));
+        RoleBaseManager.
+            GetInterfaces<IDeathHandler>().Do(x => x.OnDeath(player));
     }
 }
