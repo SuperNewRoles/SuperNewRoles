@@ -118,6 +118,8 @@ LightColor,bright,明るい,亮,亮
 DarkerColor,darker,暗い,暗,暗
 
 # CustomOptions
+CanUseVentOption,Can usevent,ベントを使用できる,可以使用管道,可以使用通風管道
+CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使用破坏,可以使用破壞
 MapCustom,Map Custom,マップ改造,地图设置,地圖設定
 SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,Airship：机密室,AirShip：密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
