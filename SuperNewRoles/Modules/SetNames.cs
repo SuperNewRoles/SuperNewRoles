@@ -6,6 +6,8 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
 using UnityEngine;
 
@@ -401,7 +403,13 @@ public class SetNameUpdate
     {
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
-        if ((SetNamesClass.DefaultGhostSeeRoles() && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
+        bool CanSeeAllRole =
+            (SetNamesClass.DefaultGhostSeeRoles() &&
+            LocalRole != RoleId.NiceRedRidingHood) ||
+            Debugger.canSeeRole ||
+            (PlayerControl.LocalPlayer.GetRoleBase() is INameHandler nameHandler &&
+            nameHandler.AmAllRoleVisible);
+        if (CanSeeAllRole)
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
@@ -409,6 +417,7 @@ public class SetNameUpdate
                 SetNamesClass.SetPlayerRoleNames(player);
             }
         }
+        //TODO:神移行時にINameHandlerに移行する
         else if (LocalRole == RoleId.God)
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -558,7 +567,7 @@ public class SetNameUpdate
             SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
             SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
         }
-
+        CustomRoles.NameHandler(CanSeeAllRole);
         //名前の奴
         if (RoleClass.Camouflager.IsCamouflage)
         {

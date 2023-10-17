@@ -42,6 +42,21 @@ public static class CustomRoles
                 break;
         }
     }
+    public static void NameHandler(bool CanSeeAllRole = false)
+    {
+        if (CanSeeAllRole)
+        {
+            RoleBaseManager.GetInterfaces<INameHandler>()
+                .Do(x => x.OnHandleDeadPlayer());
+        }
+        else
+        {
+            if (PlayerControl.LocalPlayer.GetRoleBase() is INameHandler nameHandler)
+            {
+                nameHandler.OnHandleName();
+            }
+        }
+    }
 
     public static void OnMeetingStart()
     {
