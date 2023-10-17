@@ -2375,7 +2375,8 @@ static class HudManagerStartPatch
                         break;
                     }
                 GhostMechanicNumRepairText.text = string.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
-                return sabotageActive && PlayerControl.LocalPlayer.CanMove;
+                if (ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return sabotageActive && PlayerControl.LocalPlayer.CanMove;
+                else return sabotageActive && PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.GhostRoleSetTarget();
             },
             () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
             RoleClass.GhostMechanic.GetButtonSprite(),

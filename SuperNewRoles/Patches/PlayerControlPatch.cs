@@ -385,6 +385,49 @@ public static class PlayerControlFixedUpdatePatch
         }
         return result;
     }
+
+    public static PlayerControl GhostRoleSetTarget(bool onlyCrewmates = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+    { // ほとんど通常のSetTargetと同じだが, 事故を防ぐ為に分割
+        PlayerControl result = null;
+        if (!MapUtilities.CachedShipStatus) return result;
+
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
+
+        Vector2 truePosition = targetingPlayer.GetTruePosition();
+        Il2CppSystem.Collections.Generic.List<PlayerInfo> allPlayers = Instance.AllPlayers;
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            PlayerInfo playerInfo = allPlayers[i]; // ボタンの対象判定
+            if (playerInfo.Disconnected ||
+                playerInfo.PlayerId == targetingPlayer.PlayerId ||
+                playerInfo.IsDead ||
+                (onlyCrewmates && playerInfo.Role.IsImpostor))
+            {
+                continue;
+            }
+
+            PlayerControl @object = playerInfo.Object;
+            if (@object == null || (untargetablePlayers != null && untargetablePlayers.Any(x => x == @object)))
+            {
+                // if that player is not targetable: skip check
+                continue;
+            }
+
+            Vector2 vector = @object.GetTruePosition() - truePosition;
+            float magnitude = vector.magnitude;
+            if (magnitude > num ||
+                PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+            {
+                continue;
+            }
+
+            result = @object;
+            num = magnitude;
+        }
+        return result;
+    }
+
     public static void SetPlayerOutline(PlayerControl target, Color color)
     {
         Material material = target?.MyRend()?.material;
