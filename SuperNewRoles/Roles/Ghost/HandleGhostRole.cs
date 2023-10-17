@@ -12,7 +12,7 @@ class HandleGhostRole
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl player)
         {
-            if (!(ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.SuperHostRoles))) return true;
+            if (!ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles, ModeId.Werewolf)) return true;
             //生存者と割り当て済みの人は弾く
             if (player.IsAlive() || !player.IsGhostRole(RoleId.DefaultRole)) return false;
             //幽霊役職がアサインされていたら守護天使をアサインしない

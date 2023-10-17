@@ -393,6 +393,11 @@ public static class PlayerControlFixedUpdatePatch
 
         float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
+        if (!targetingPlayer.Data.IsDead)
+        {
+            Logger.Info($"{targetingPlayer.name}は, 生存している為 幽霊役職用の対象取得を使用できません。");
+            return result; // ボタンの使用者が生きていたらnullを返す
+        }
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
         Il2CppSystem.Collections.Generic.List<PlayerInfo> allPlayers = Instance.AllPlayers;
