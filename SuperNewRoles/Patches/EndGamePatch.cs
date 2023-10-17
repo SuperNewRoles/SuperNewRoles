@@ -11,6 +11,8 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
@@ -932,6 +934,21 @@ public static class OnGameEndPatch
         bool isDleted = false;
         bool changeTheWinCondition = Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.IsChangeTheWinCondition.GetBool();
         bool isReset = false;
+
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.GetRoleBase() is IAdditionalWinner additionalWinner)
+            {
+                IAdditionalWinner.AdditionalWinData additionalWinData = additionalWinner.CanWin();
+                if (additionalWinData.CanWin)
+                {
+                    if (additionalWinData.winCondition != AdditionalTempData.winCondition)
+                        TempData.winners = new(1);
+                    TempData.winners.Add(new(player.Data));
+                    AdditionalTempData.winCondition = additionalWinData.winCondition;
+                }
+            }
+        }
 
         foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
         {

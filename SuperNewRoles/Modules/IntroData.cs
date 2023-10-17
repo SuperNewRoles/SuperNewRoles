@@ -8,6 +8,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -133,8 +134,19 @@ public class IntroData
     }
     public static void PlayIntroSound(RoleId RoleId)
     {
-        var Info = GetIntroData(RoleId, PlayerControl.LocalPlayer);
-        PlayerControl.LocalPlayer.Data.Role.IntroSound = RoleManager.Instance.AllRoles.Where((role) => role.Role == Info.IntroSound).FirstOrDefault().IntroSound;
+        RoleBase roleBase = PlayerControl.LocalPlayer.GetRoleBase();
+        AudioClip clip = null;
+        if (roleBase != null)
+        {
+            clip = roleBase.GetIntroAudioClip();
+        }
+        else
+        {
+            var Info = GetIntroData(RoleId, PlayerControl.LocalPlayer);
+            clip = RoleManager.Instance.GetRole(Info.IntroSound)?.IntroSound;
+        }
+
+        PlayerControl.LocalPlayer.Data.Role.IntroSound = clip;
         SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.Data.Role.IntroSound, false, 1);
     }
 

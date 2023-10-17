@@ -49,10 +49,10 @@ public static class CustomRoles
             .Do(x => x.StartMeeting());
     }
 
-    public static void OnWrapUp()
+    public static void OnWrapUp(PlayerControl exiled)
     {
         RoleBaseManager.GetInterfaces<IWrapUpHandler>()
-            .Do(x => x.OnWrapUp());
+            .Do(x => x.OnWrapUp(exiled));
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
@@ -72,14 +72,23 @@ public static class CustomRoles
         }
     }
 
-    public static void OnKill(this PlayerControl player, PlayerControl target)
+    public static void OnExild(DeadPlayer deadPlayer)
     {
-        RoleBaseManager.GetInterfaces<IMurderHandler>().Do(x => x.OnMurderPlayer(player, target));
+        DeathInfo info = new(deadPlayer);
+        RoleBaseManager.GetInterfaces<IDeathHandler>()
+            .Do(x => x.OnExiled(info));
+        OnDeath(info);
+    }
+    public static void OnKill(DeadPlayer deadPlayer)
+    {
+        DeathInfo info = new(deadPlayer);
+        RoleBaseManager.GetInterfaces<IDeathHandler>().Do(x => x.OnMurderPlayer(info));
+        OnDeath(info);
     }
 
-    public static void OnDeath(this PlayerControl player, PlayerControl killer)
+    public static void OnDeath(DeathInfo info)
     {
         RoleBaseManager.
-            GetInterfaces<IDeathHandler>().Do(x => x.OnDeath(player));
+            GetInterfaces<IDeathHandler>().Do(x => x.OnDeath(info));
     }
 }

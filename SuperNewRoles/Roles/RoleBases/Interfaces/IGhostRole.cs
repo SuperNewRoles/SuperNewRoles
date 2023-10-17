@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
-public interface IMurderHandler
+/// <summary>
+/// 幽霊役職用のインターフェース
+/// </summary>
+public interface IGhostRole
 {
-    public void OnMurderPlayer(PlayerControl source, PlayerControl target);
 }

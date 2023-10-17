@@ -38,6 +38,7 @@ public class OptionInfo
     private (float DurationTimeDefault, float DurationTimeMin, float DurationTimeMax, float DurationTimeStep, bool SupportSHR)? DurationTimeOpt { get; }
     private bool isHidden { get; }
     private float MaxPlayer { get; }
+    private Action OptionCreater;
     public OptionInfo(RoleId role, int OptionId, bool SupportSHR,
         (bool CanUseVentDefault, bool SupportSHR)? VentOption = null,
         (bool CanUseSaboDefault, bool SupportSHR)? SaboOption = null,
@@ -48,6 +49,7 @@ public class OptionInfo
         (float DurationTimeDefault, float DurationTimeMin,
         float DurationTimeMax, float DurationTimeStep,
         bool SupportSHR)? DurationTimeOption = null,
+        Action optionCreator = null,
         bool isHidden = false,
         float MaxPlayer = -1,
         DateTime? RoleOpenTimeUTC = null
@@ -63,6 +65,7 @@ public class OptionInfo
         this.OptionId = OptionId;
         this.RoleOpenTimeUTC = RoleOpenTimeUTC;
         this.MaxPlayer = MaxPlayer;
+        this.OptionCreater = optionCreator;
         OptionInfos.TryAdd(Role, this);
     }
     public void CreateOption()
@@ -94,6 +97,8 @@ public class OptionInfo
             CoolTimeOption = CustomOption.Create(OptionId++, CoolTimeOpt.Value.SupportSHR, RoleOption.type, "CoolTimeOption", CoolTimeOpt.Value.CoolTimeDefault, CoolTimeOpt.Value.CoolTimeMin, CoolTimeOpt.Value.CoolTimeMax, CoolTimeOpt.Value.CoolTimeStep, RoleOption, isHidden:isHidden);
         if (DurationTimeOpt.HasValue)
             DurationTimeOption = CustomOption.Create(OptionId++, DurationTimeOpt.Value.SupportSHR, RoleOption.type, "DurationTimeOption", DurationTimeOpt.Value.DurationTimeDefault, DurationTimeOpt.Value.DurationTimeMin, DurationTimeOpt.Value.DurationTimeMax, DurationTimeOpt.Value.DurationTimeStep, RoleOption, isHidden:isHidden);
+        if (OptionCreater != null)
+            OptionCreater.Invoke();
     }
     //RoleIdからOptionInfoを取得する
     public static OptionInfo GetOptionInfo(RoleId role)

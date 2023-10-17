@@ -8,6 +8,8 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -548,7 +550,15 @@ public class IntroPatch
                 }
 
                 __instance.RoleText.text = data.Name;               //役職名を変更
-                __instance.RoleBlurbText.text = data.TitleDesc;     //イントロの簡易説明を変更
+                if (PlayerControl.LocalPlayer.GetRoleBase() is IGroupIntro GroupIntro &&
+                GroupIntro.IsGroupIntro(out string IntroText))
+                {
+                    __instance.RoleBlurbText.text = IntroText;       //イントロのグループ説明を変更
+                }
+                else
+                {
+                    __instance.RoleBlurbText.text = data.TitleDesc;     //イントロの簡易説明を変更
+                }
 
                 if (myrole is RoleId.DefaultRole)
                 {
