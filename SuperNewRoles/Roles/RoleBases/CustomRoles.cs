@@ -48,6 +48,11 @@ public static class CustomRoles
         RoleBaseManager.GetInterfaces<IMeetingHandler>()
             .Do(x => x.StartMeeting());
     }
+    public static void OnMeetingClose()
+    {
+        RoleBaseManager.GetInterfaces<IMeetingHandler>()
+            .Do(x => x.CloseMeeting());
+    }
 
     public static void OnWrapUp(PlayerControl exiled)
     {

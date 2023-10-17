@@ -753,6 +753,14 @@ public static class MeetingHudPopulateVotesPatch
     }
 }
 
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
+class MeetingHudClosePatch
+{
+    public static void Postfix(MeetingHud __instance)
+    {
+        CustomRoles.OnMeetingClose();
+    }
+}
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 class MeetingHudStartPatch
 {

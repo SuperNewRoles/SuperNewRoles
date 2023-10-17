@@ -1607,7 +1607,7 @@ public static class RoleHelpers
         RoleBase roleBase = player.GetRoleBase();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
         if (ModeHandler.IsMode(ModeId.VanillaHns)) return false;
-        if (roleBase != null && roleBase is IVentAvailable) return (roleBase as IVentAvailable).CanUseVent;
+        if (roleBase != null && roleBase is IVentAvailable ventAvailable) return ventAvailable.CanUseVent;
         return role switch
         {
             RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
