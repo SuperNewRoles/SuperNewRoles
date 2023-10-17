@@ -42,6 +42,24 @@ public static class CustomRoles
                 break;
         }
     }
+    public static void OnIntroStart()
+    {
+        RoleBaseManager.GetInterfaces<IIntroHandler>()
+            .Do(x => x.OnIntroStart());
+        if (PlayerControl.LocalPlayer.GetRoleBase() is IIntroHandler introHandler)
+        {
+            introHandler.OnIntroStartMe();
+        }
+    }
+    public static void OnIntroDestroy()
+    {
+        RoleBaseManager.GetInterfaces<IIntroHandler>()
+            .Do(x => x.OnIntroDestory());
+        if (PlayerControl.LocalPlayer.GetRoleBase() is IIntroHandler introHandler)
+        {
+            introHandler.OnIntroDestoryMe();
+        }
+    }
     public static void NameHandler(bool CanSeeAllRole = false)
     {
         if (CanSeeAllRole)

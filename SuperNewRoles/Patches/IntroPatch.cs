@@ -64,6 +64,7 @@ public class IntroPatch
                 Logger.Info($"第三陣営役職 : 最大 {CustomOptionHolder.neutralRolesCountMax.GetSelection()}役職", "NeutralRole");
                 CustomOverlays.GetActivateRoles(true); // 現在の役職設定を取得し、辞書に保存するついでにlogに記載する
             }
+            CustomRoles.OnIntroStart();
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
@@ -179,6 +180,7 @@ public class IntroPatch
         }
         public static void Postfix()
         {
+            CustomRoles.OnIntroDestroy();
             // 昇降右の影
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.ModifyGapRoomOneWayShadow.GetBool() && ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.GapRoom, out var gapRoom))
             {
