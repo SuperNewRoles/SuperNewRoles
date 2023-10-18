@@ -2,23 +2,22 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles;
 
-class HandleGhostRole
+public class HandleGhostRole
 {
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.AssignRoleOnDeath))]
-    class AssignRole
+    public class AssignRole
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl player)
         {
             if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf, ModeId.SuperHostRoles)) return true; // クラシック以外は弾く
-
             if (player.IsAlive()) return false; //生存者は弾く
-            // 憑依不可能な設定なら
-            if (Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.CanNotGhostHaveHaunt.GetBool()) return false;
 
-            return true;
+            if (GetReleaseHauntAbility(player)) return true; // 憑依可能な設定なら
+            else return false; // 憑依不可能な設定なら
         }
 
         public static void Postfix([HarmonyArgument(0)] PlayerControl player)
@@ -32,6 +31,36 @@ class HandleGhostRole
             if (isAssign && ModeHandler.IsMode(ModeId.SuperHostRoles)) // 幽霊役職が配布された非導入者の役職を守護天使に変更する
             {
                 if (!player.IsMod()) player.RpcSetRole(AmongUs.GameOptions.RoleTypes.GuardianAngel);
+            }
+        }
+
+        /// <summary>
+        /// 憑依能力を開放するか判定する
+        /// </summary>
+        /// <param name="player">判定するプレイヤー</param>
+        /// <returns>true : 開放する / false : 開放しない</returns>
+        public static bool GetReleaseHauntAbility(PlayerControl player)
+        {
+            if (player.IsAlive()) return false; // 生存している場合は開放しない物として早期return
+
+            // 無効化しない設定なら早期リターン
+            if (!Mode.PlusMode.PlusGameOptions.IsNotGhostHaveHaunt) return true;
+            if (player == null || player.IsBot()) return true; // PLCのnullチェック
+
+            if (!Mode.PlusMode.PlusGameOptions.IsReleasingHauntAfterCompleteTasks) return false;
+            else // タスク完了後に開放する設定なら, タスク数の確認処理を行う
+            {
+                bool isCompleteTasks;
+                if (player.IsCrew() && !(player.IsMadRoles() || player.IsFriendRoles())) // クルーはタスクが完了次第解放, クルー以外は初期開放
+                {
+                    var taskdata = TaskCount.TaskDate(player.Data).Item1; // 完了タスク数
+                    int AllTask = SelectTask.GetTotalTasks(player.GetRole()); // 全タスク数
+
+                    isCompleteTasks = taskdata >= AllTask; // 全タスクが完了しているなら, true
+                }
+                else isCompleteTasks = true;
+
+                return isCompleteTasks;
             }
         }
     }
