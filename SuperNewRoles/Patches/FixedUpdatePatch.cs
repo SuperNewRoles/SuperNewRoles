@@ -278,7 +278,13 @@ public class FixedUpdate
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                 }
-
+                else
+                {
+                    if (!PlayerControl.LocalPlayer.IsGhostRole(RoleId.DefaultRole) && PlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.CrewmateGhost)
+                    {
+                        NormalButtonDestroy.DisableHauntButton(); // 幽霊役職で, 自身がクルーメイトゴーストの場合憑依ボタンを非表示にする。
+                    }
+                }
                 break;
             case ModeId.NotImpostorCheck:
                 if (AmongUsClient.Instance.AmHost)
