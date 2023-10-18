@@ -2355,8 +2355,11 @@ static class HudManagerStartPatch
 
                 foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                 {
-                    if (task.TaskType is not (TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles))
+                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                    {
                         Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(task.TaskType);
+                        break;
+                    }
                 }
 
                 if (RoleClass.GhostMechanic.LimitCount <= 0)
