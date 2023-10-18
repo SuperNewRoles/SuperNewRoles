@@ -12,8 +12,11 @@ class HandleGhostRole
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl player)
         {
+            if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf, ModeId.SuperHostRoles)) return true; // クラシック以外は弾く
+
             if (player.IsAlive()) return false; //生存者は弾く
-            if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf, ModeId.SuperHostRoles)) return true;
+            // 憑依不可能な設定なら
+            if (Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.CanNotGhostHaveHaunt.GetBool()) return false;
 
             return true;
         }

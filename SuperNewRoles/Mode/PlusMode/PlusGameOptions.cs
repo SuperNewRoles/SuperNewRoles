@@ -14,6 +14,8 @@ class PlusGameOptions
 
     public static CustomOption CanGhostSeeVote;
 
+    public static CustomOption CanNotGhostHaveHaunt;
+
     public static CustomOption LadderDead;
     public static CustomOption LadderDeadChance;
 
@@ -39,6 +41,8 @@ class PlusGameOptions
         OnlyImpostorGhostSeeRole = Create(103601, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanNotGhostSeeRole);
 
         CanGhostSeeVote = Create(103700, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
+
+        CanNotGhostHaveHaunt = Create(104700, true, CustomOptionType.Generic, "CanNotGhostHaveHaunt", false, PlusGameOptionSetting, isHeader: true);
 
         LadderDead = Create(103900, true, CustomOptionType.Generic, "LadderDead", false, PlusGameOptionSetting, isHeader: true);
         LadderDeadChance = Create(103901, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
