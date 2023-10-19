@@ -16,7 +16,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
  - [最新版以外](https://github.com/ykundesu/SuperNewRoles/releases/)
 
 ## 支援
-### [FANBOX](https://supernewroles.fanbox.cc)で受け付けております！<br>
+### [FANBOX](https://supernewroles.fanbox.cc)で受け付けております！
 ### [https://supernewroles.fanbox.cc](https://supernewroles.fanbox.cc)
 
 ## 公式情報
