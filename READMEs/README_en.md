@@ -12,8 +12,8 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [日本語](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp.md)
 
 # Support
-Accepted at [FANBOX](https://supernewroles.fanbox.cc)!<br>
-[https://supernewroles.fanbox.cc](https://supernewroles.fanbox.cc)
+## Accepted at [FANBOX](https://supernewroles.fanbox.cc)!<br>
+## [https://supernewroles.fanbox.cc](https://supernewroles.fanbox.cc)
 
 # Features of this mod
 ## Controller Compatible
