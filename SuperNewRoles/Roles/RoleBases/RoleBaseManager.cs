@@ -35,11 +35,24 @@ public static class RoleBaseManager
         Type[] Interfaces = roleType.GetInterfaces();
         foreach (Type Interface in Interfaces)
         {
-            if (!AllInterfaces.TryGetValue(Interface, out List<RoleBase> RoleBases))
-                AllInterfaces[Interface] = RoleBases = new(1);
-            RoleBases.Add(roleBase);
+            if (!AllInterfaces.TryGetValue(Interface, out List<RoleBase> IRoleBases))
+                AllInterfaces[Interface] = IRoleBases = new(1);
+            IRoleBases.Add(roleBase);
         }
         return roleBase;
+    }
+    public static void ClearRole(PlayerControl player, RoleBase roleBase)
+    {
+        roleBase.Dispose();
+        PlayerRoles.Remove(player);
+        //Interfacesから削除
+        Type roleType = roleBase.Roleinfo.RoleObjectType;
+        Type[] Interfaces = roleType.GetInterfaces();
+        foreach (Type Interface in Interfaces)
+        {
+            if (AllInterfaces.TryGetValue(Interface, out List<RoleBase> IRoleBases))
+                IRoleBases.Remove(roleBase);
+        }
     }
     public static RoleBase GetRoleBaseById(this byte PlayerId)
     {

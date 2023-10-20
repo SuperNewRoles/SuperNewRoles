@@ -1,20 +1,36 @@
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles;
 
-public class Bestfalsecharge
+public class Bestfalsecharge : RoleBase, IWrapUpHandler
 {
-    public static void WrapUp()
+    public static new RoleInfo Roleinfo = new(
+        typeof(Bestfalsecharge),
+        (p) => new Bestfalsecharge(p),
+        RoleId.Bestfalsecharge,
+        "Bestfalsecharge",
+        TeamRoleType.Crewmate
+           );
+    public static new OptionInfo Optioninfo = new(RoleId.Bestfalsecharge, 403200, true);
+    public static new IntroInfo Introinfo = new(RoleId.Bestfalsecharge);
+    public bool IsOnMeeting = false;
+    public Bestfalsecharge(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        if (ModeHandler.IsMode(ModeId.Default) && AmongUsClient.Instance.AmHost && !RoleClass.Bestfalsecharge.IsOnMeeting)
+        IsOnMeeting = false;
+    }
+    public void OnWrapUp()
+    {
+        if (ModeHandler.IsMode(ModeId.Default) &&
+            AmongUsClient.Instance.AmHost &&
+            !IsOnMeeting)
         {
-            foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
-            {
-                p.RpcExiledUnchecked();
-                p.RpcSetFinalStatus(FinalStatus.BestFalseChargesFalseCharge);
-            }
-            RoleClass.Bestfalsecharge.IsOnMeeting = true;
+            Player.RpcExiledUnchecked();
+            Player.RpcSetFinalStatus(FinalStatus.BestFalseChargesFalseCharge);
+            IsOnMeeting = true;
         }
 
         //===========以下さつまいも===========//

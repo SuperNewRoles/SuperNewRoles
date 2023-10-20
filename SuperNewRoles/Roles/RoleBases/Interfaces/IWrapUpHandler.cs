@@ -11,8 +11,18 @@ namespace SuperNewRoles.Roles.RoleBases.Interfaces;
 public interface IWrapUpHandler
 {
     /// <summary>
-    /// WrapUp時に実行
+    /// WrapUp時に追放者がいる場合に実行
     /// </summary>
-    /// <param name="exiled">追放者(nullの可能性あり)</param>
-    public void OnWrapUp(PlayerControl exiled);
+    /// <param name="exiled">追放者</param>
+    public void OnWrapUp(PlayerControl exiled)
+    {
+
+    }
+    /// <summary>
+    /// WrapUp時に必ず実行
+    /// </summary>
+    public void OnWrapUp()
+    {
+
+    }
 }

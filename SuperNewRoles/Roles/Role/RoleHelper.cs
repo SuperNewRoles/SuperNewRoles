@@ -528,9 +528,6 @@ public static class RoleHelpers
             case RoleId.EvilGambler:
                 RoleClass.EvilGambler.EvilGamblerPlayer.Add(player);
                 break;
-            case RoleId.Bestfalsecharge:
-                RoleClass.Bestfalsecharge.BestfalsechargePlayer.Add(player);
-                break;
             case RoleId.Researcher:
                 RoleClass.Researcher.ResearcherPlayer.Add(player);
                 break;
@@ -982,6 +979,9 @@ public static class RoleHelpers
                 break;
             // ロールアド
             default:
+                //RoleBaseで選出したなら
+                if (RoleBaseManager.SetRole(player, role) != null)
+                    break;
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
         }
@@ -1115,9 +1115,6 @@ public static class RoleHelpers
                 break;
             case RoleId.EvilGambler:
                 RoleClass.EvilGambler.EvilGamblerPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Bestfalsecharge:
-                RoleClass.Bestfalsecharge.BestfalsechargePlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Researcher:
                 RoleClass.Researcher.ResearcherPlayer.RemoveAll(ClearRemove);
@@ -1527,6 +1524,11 @@ public static class RoleHelpers
             case RoleId.Crook:
                 Crook.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            default:
+                RoleBase roleBase = player.GetRoleBase();
+                if (roleBase != null)
+                    RoleBaseManager.ClearRole(player, roleBase);
+                break;
                 // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
@@ -1844,6 +1846,10 @@ public static class RoleHelpers
         {
             return ChacheManager.MyRoleChache != null && player != null && ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
+        //ロルベの場合はロルベのロールを返す
+        RoleBase roleBase = player.GetRoleBase();
+        if (roleBase != null)
+            return roleBase.Role;
         try
         {
             if (RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player)) return RoleId.SoothSayer;
@@ -1879,7 +1885,6 @@ public static class RoleHelpers
             else if (RoleClass.Opportunist.OpportunistPlayer.IsCheckListPlayerControl(player)) return RoleId.Opportunist;
             else if (RoleClass.NiceGambler.NiceGamblerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGambler;
             else if (RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGambler;
-            else if (RoleClass.Bestfalsecharge.BestfalsechargePlayer.IsCheckListPlayerControl(player)) return RoleId.Bestfalsecharge;
             else if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(player)) return RoleId.Researcher;
             else if (RoleClass.SelfBomber.SelfBomberPlayer.IsCheckListPlayerControl(player)) return RoleId.SelfBomber;
             else if (RoleClass.God.GodPlayer.IsCheckListPlayerControl(player)) return RoleId.God;

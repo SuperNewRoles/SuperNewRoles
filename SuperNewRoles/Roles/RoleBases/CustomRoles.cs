@@ -90,7 +90,11 @@ public static class CustomRoles
     public static void OnWrapUp(PlayerControl exiled)
     {
         RoleBaseManager.GetInterfaces<IWrapUpHandler>()
-            .Do(x => x.OnWrapUp(exiled));
+            .Do(x => {
+                x.OnWrapUp();
+                if (exiled != null)
+                    x.OnWrapUp(exiled);
+            });
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]

@@ -1912,9 +1912,6 @@ public class CustomOptionHolder
         BaitPlayerCount = Create(403101, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
         BaitReportTime = Create(403102, true, CustomOptionType.Crewmate, "BaitReportTimeSetting", 2f, 1f, 4f, 0.5f, BaitOption);
 
-        BestfalsechargeOption = SetupCustomRoleOption(403200, true, RoleId.Bestfalsecharge);
-        BestfalsechargePlayerCount = Create(403201, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BestfalsechargeOption);
-
         NiceMechanic.SetupCustomOptions();
 
         NiceRedRidingHoodOption = SetupCustomRoleOption(403400, false, RoleId.NiceRedRidingHood);

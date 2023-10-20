@@ -10,6 +10,7 @@ public abstract class RoleBase : IDisposable
 {
     public static int MaxInstanceId = int.MinValue;
     public PlayerControl Player { get; private set; }
+    public RoleId Role => Roleinfo.Role;
     //比較用なので各クライアントごとに違ってもOK
     //逆に比較用以外に使うな
     private int InstanceId { get; }
@@ -17,10 +18,11 @@ public abstract class RoleBase : IDisposable
     public readonly OptionInfo Optioninfo;
     public readonly IntroInfo Introinfo;
     //後で処理書く
-    public RoleBase(RoleInfo roleInfo, OptionInfo optionInfo, IntroInfo introInfo)
+    public RoleBase(PlayerControl player, RoleInfo roleInfo, OptionInfo optionInfo, IntroInfo introInfo)
     {
         InstanceId = MaxInstanceId;
         MaxInstanceId++;
+        this.Player = player;
         this.Roleinfo = roleInfo;
         this.Optioninfo = optionInfo;
         this.Introinfo = introInfo;

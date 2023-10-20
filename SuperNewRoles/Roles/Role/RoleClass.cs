@@ -120,7 +120,6 @@ public static class RoleClass
         Opportunist.ClearAndReload();
         NiceGambler.ClearAndReload();
         EvilGambler.ClearAndReload();
-        Bestfalsecharge.ClearAndReload();
         Researcher.ClearAndReload();
         SelfBomber.ClearAndReload();
         God.ClearAndReload();
@@ -815,17 +814,6 @@ public static class RoleClass
                 a.Add("No");
             }
             return ModHelpers.GetRandom<string>(a) == "Suc";
-        }
-    }
-    public static class Bestfalsecharge
-    {
-        public static List<PlayerControl> BestfalsechargePlayer;
-        public static Color32 color = new(0, 255, 0, byte.MaxValue);
-        public static bool IsOnMeeting;
-        public static void ClearAndReload()
-        {
-            BestfalsechargePlayer = new();
-            IsOnMeeting = false;
         }
     }
     public static class Researcher
