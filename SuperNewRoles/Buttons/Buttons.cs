@@ -2366,8 +2366,10 @@ static class HudManagerStartPatch
                 {
                     GhostMechanicNumRepairText.text = "";
                 }
+
+                GhostMechanic.ResetCool();
             },
-            (bool isAlive, RoleId role) => { return !isAlive && PlayerControl.LocalPlayer.IsGhostRole(RoleId.GhostMechanic) && RoleClass.GhostMechanic.LimitCount > 0; },
+            (bool isAlive, RoleId role) => { return !isAlive && GhostMechanic.ButtonDisplayCondition(); },
             () =>
             {
                 bool sabotageActive = false;
@@ -2381,7 +2383,7 @@ static class HudManagerStartPatch
                 if (ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return sabotageActive && PlayerControl.LocalPlayer.CanMove;
                 else return sabotageActive && PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.GhostRoleSetTarget();
             },
-            () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
+            () => { GhostMechanic.ResetCool(true); },
             RoleClass.GhostMechanic.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,

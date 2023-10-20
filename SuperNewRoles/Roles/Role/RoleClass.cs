@@ -76,6 +76,7 @@ public static class RoleClass
         AirShipRandomSpawn.ClearAndReload();
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
+        ReleaseGhostAbility.ClearAndReload();
         FixSabotage.ClearAndReload();
         RoleBases.Role.ClearAll();
         Patches.CursedTasks.Main.ClearAndReload();
@@ -2024,14 +2025,19 @@ public static class RoleClass
         public static List<PlayerControl> GhostMechanicPlayer;
         public static Color32 color = new(25, 68, 142, byte.MaxValue);
         public static int LimitCount;
+        public static int MaxLimit { get; private set; }
+        public static float Cooldown;
+        public static float KeepCooldown;
         public static PlayerData<int> AbilityUsedCountSHR;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
 
         public static void ClearAndReload()
         {
             GhostMechanicPlayer = new();
-            LimitCount = CustomOptionHolder.GhostMechanicRepairLimit.GetInt();
+            MaxLimit = LimitCount = CustomOptionHolder.GhostMechanicRepairLimit.GetInt();
             AbilityUsedCountSHR = new();
+            Cooldown = CustomOptionHolder.GhostMechanicCooldown.GetFloat();
+            KeepCooldown = 0f;
         }
     }
     public static class EvilHacker
