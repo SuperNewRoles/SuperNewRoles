@@ -10,8 +10,4 @@ namespace SuperNewRoles.Roles.RoleBases.Interfaces;
 /// </summary>
 public interface IImpostor : IVentAvailable, IKiller
 {
-    /// <summary>
-    /// キルできるかどうか
-    /// </summary>
-    public bool CanUseKill => true;
 }

@@ -7,6 +7,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -128,6 +129,7 @@ public static class ChangeName
         StringBuilder MySuffix = new();
         StringBuilder RoleNameText = new(ModHelpers.Cs(introData.color, introData.Name));
         PlayerData<string> ChangePlayers = new(needplayerlist:true);
+        ISupportSHR playerSHR = player as ISupportSHR;
 
         // カモフラ中は処理を破棄する
         if (!RoleClass.Camouflager.IsCamouflage)
@@ -172,6 +174,10 @@ public static class ChangeName
         }
         else
         {
+            if (playerSHR != null)
+            {
+                playerSHR.BuildName(MySuffix, RoleNameText, ChangePlayers);
+            }
             switch (PlayerRole)
             {
                 case RoleId.Demon:
