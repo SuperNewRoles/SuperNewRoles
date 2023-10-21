@@ -104,27 +104,20 @@ class UpdatePatch
             __instance.itemName.transform.localPosition = new Vector3(4.25f, -1.2f, -5);
             int i = 0;
             __instance.itemName.text = "プリセット" + (ObjectData.SelectedPreset.Value + 1);
-            try
+            foreach (PoolablePlayer player in ObjectData.PresetAreas)
             {
-                foreach (PoolablePlayer player in ObjectData.PresetAreas)
-                {
-                    var outfit = new GameData.PlayerOutfit();
-                    var data = SelectPatch.GetData(i);
-                    outfit.ColorId = data.BodyColor.Value;
-                    outfit.HatId = data.Hat.Value;
-                    outfit.VisorId = data.Visor.Value;
-                    outfit.SkinId = data.Skin.Value;
-                    outfit.NamePlateId = data.NamePlate.Value;
-                    outfit.PetId = data.Pet.Value;
-                    Logger.Info(outfit.PetId, "");
-                    player.UpdateFromPlayerOutfit(outfit, PlayerMaterial.MaskType.ComplexUI, false, data.Pet.Value == "");
-                    player.transform.FindChild("PetSlot").gameObject.SetActive(data.Pet.Value != "");
-                    i++;
-                }
-            }
-            catch
-            {
-                Logger.Error("エラー", "");
+                var outfit = new GameData.PlayerOutfit();
+                var data = SelectPatch.GetData(i);
+                outfit.ColorId = data.BodyColor.Value;
+                outfit.HatId = data.Hat.Value;
+                outfit.VisorId = data.Visor.Value;
+                outfit.SkinId = data.Skin.Value;
+                outfit.NamePlateId = data.NamePlate.Value;
+                outfit.PetId = data.Pet.Value;
+                Logger.Info(outfit.PetId, "");
+                player.UpdateFromPlayerOutfit(outfit, PlayerMaterial.MaskType.ComplexUI, false, data.Pet.Value == "");
+                player.cosmetics.petParent.gameObject.SetActive(data.Pet.Value != "");
+                i++;
             }
         }
     }
