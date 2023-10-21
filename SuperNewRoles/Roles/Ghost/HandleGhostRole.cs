@@ -53,10 +53,8 @@ public class HandleGhostRole
                 bool isCompleteTasks;
                 if (player.IsCrew() && !(player.IsMadRoles() || player.IsFriendRoles())) // クルーはタスクが完了次第解放, クルー以外は初期開放
                 {
-                    var taskdata = TaskCount.TaskDate(player.Data).Item1; // 完了タスク数
-                    int AllTask = SelectTask.GetTotalTasks(player.GetRole()); // 全タスク数
-
-                    isCompleteTasks = taskdata >= AllTask; // 全タスクが完了しているなら, true
+                    var taskdata = TaskCount.TaskDate(player.Data); // タスク状況の取得
+                    isCompleteTasks = taskdata.Item1 >= taskdata.Item2; // 全タスクが完了しているなら, true
                 }
                 else isCompleteTasks = true;
 
