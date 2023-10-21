@@ -489,7 +489,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vampire && !RoleClass.Vampire.CreatedDependents; },
             () =>
             {
-                return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl target = SetTarget(Crewmateonly: true);
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -577,9 +578,10 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
             () =>
             {
-                var Target = SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Pavlovsdogs.color);
-                return PlayerControl.LocalPlayer.CanMove && Pavlovsdogs.SetTarget();
+                var target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Pavlovsdogs.color);
+                target = Pavlovsdogs.SetTarget();
+                return PlayerControl.LocalPlayer.CanMove && target && !Frankenstein.IsMonster(target);
             },
             () =>
             {
@@ -782,7 +784,7 @@ static class HudManagerStartPatch
                 SluggerButton.Timer = SluggerButton.MaxTimer;
                 if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
                 {
-                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
+                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer, null);
                 }
             }
         )
@@ -1319,7 +1321,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
             () =>
             {
-                return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl target = PlayerControlFixedUpdatePatch.JackalSetTarget();
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -1375,7 +1378,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick; },
             () =>
             {
-                return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl target = PlayerControlFixedUpdatePatch.JackalSetTarget();
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -1804,7 +1808,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Levelinger && RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Sidekick) && !RoleClass.Levelinger.IsCreateMadmate; },
             () =>
             {
-                return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl target = SetTarget(Crewmateonly: true);
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -1842,7 +1847,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SideKiller && !RoleClass.SideKiller.IsCreateMadKiller; },
             () =>
             {
-                return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl target = SetTarget(Crewmateonly: true);
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -1895,7 +1901,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.MadMaker && ModeHandler.IsMode(ModeId.Default) && !RoleClass.MadMaker.IsCreateMadmate; },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl target = SetTarget();
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () => { },
             RoleClass.Jackal.GetButtonSprite(),
@@ -2098,7 +2105,7 @@ static class HudManagerStartPatch
             {
                 var target = SetTarget();
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Chief.color);
-                return target && PlayerControl.LocalPlayer.CanMove;
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () => { },
             RoleClass.Chief.GetButtonSprite(),
@@ -2456,7 +2463,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && EvilSeer.RoleData.CreateMode == 4 && EvilSeer.RoleData.CanCreate)) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl target = SetTarget();
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -2745,7 +2753,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !ModeHandler.IsMode(ModeId.SuperHostRoles); },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl target = SetTarget();
+                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -3347,9 +3356,15 @@ static class HudManagerStartPatch
 
         JumpDancer.SetUpCustomButtons(__instance);
 
+        Bat.Button.SetupCustomButtons(__instance);
+      
         Rocket.Button.SetupCustomButtons(__instance);
 
         WellBehaver.SetupCustomButtons(__instance);
+
+        Spider.Button.SetupCustomButtons(__instance);
+      
+        Frankenstein.SetupCustomButtons(__instance);
 
         // SetupCustomButtons
 
