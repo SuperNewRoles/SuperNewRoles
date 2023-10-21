@@ -235,6 +235,7 @@ ProhibitModColor,Prohibit mod color,Modカラーを禁止にする,禁止使用�
 ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する,更改间隙室的视野遮蔽效果,修改移動平台上下的影子
 GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼可以從下方看到上方
 DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,內鬼可以從上方看到下方
+MoveGapRoomDownload,Move GapRoom Download,昇降機のダウンロードタスクを移動する
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置,模式設定

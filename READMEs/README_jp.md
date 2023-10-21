@@ -15,6 +15,10 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 - 公式情報としては更新を停止しています。
 - 現在有志の皆様に更新して頂いております。
 
+# 支援
+## [FANBOX](https://supernewroles.fanbox.cc)で受け付けております！
+## [https://supernewroles.fanbox.cc](https://supernewroles.fanbox.cc)
+
 # このMODの特徴
 ## コントローラー対応
 ボタンの使用にコントローラーが使えます!
