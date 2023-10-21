@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Hazel;
 using Il2CppSystem;
 using SuperNewRoles.Patches;
@@ -122,7 +123,7 @@ public static class Revolutionist
         }
         else
         {
-            PlayerControl target = Buttons.HudManagerStartPatch.SetTarget(untarget: RoleClass.Revolutionist.RevolutionedPlayer);
+            PlayerControl target = Buttons.HudManagerStartPatch.SetTarget(untarget: RoleClass.Revolutionist.RevolutionedPlayer.ToList());
             SetPlayerOutline(target, RoleClass.Revolutionist.color);
             if (Buttons.HudManagerStartPatch.RevolutionistButton.Timer <= 0)
             {

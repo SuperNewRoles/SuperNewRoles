@@ -32,7 +32,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             if (!AmongUsClient.Instance.AmHost) return;
             if (!ModeHandler.IsMode(ModeId.BattleRoyal)) return;
             var role = player.GetRole();
-            var optdata = SyncSetting.OptionData.DeepCopy();
+            var optdata = SyncSetting.DefaultOption.DeepCopy();
 
             PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
             Logger.Info("SetAbilityCooltime:" + ability.KillCoolTime.ToString() + "," + player.Data.PlayerName);

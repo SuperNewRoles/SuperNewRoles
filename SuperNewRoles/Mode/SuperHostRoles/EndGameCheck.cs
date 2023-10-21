@@ -89,7 +89,7 @@ class EndGameCheck
                 }
             }
         }
-        FixedUpdate.SetRoleNames(true);
+        ChangeName.SetRoleNames(true);
         __instance.enabled = false;
         GameManager.Instance.RpcEndGame(reason, showAd);
     }
