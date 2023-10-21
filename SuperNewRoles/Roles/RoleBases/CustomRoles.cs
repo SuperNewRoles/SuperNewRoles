@@ -156,7 +156,7 @@ public static class CustomRoles
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
         if (roleInfo != null)
             return ModTranslation.GetString($"{roleInfo.NameKey}Name");
-        return $"{IntroData.GetIntrodata(role, player, IsImpostorReturn)?.NameKey}Name";
+        return ModTranslation.GetString($"{IntroData.GetIntrodata(role, player, IsImpostorReturn)?.NameKey}Name");
     }
     public static string GetRoleNameKey(PlayerControl player, bool IsImpostorReturn = false)
     {
@@ -179,7 +179,7 @@ public static class CustomRoles
         if (roleInfo != null)
             return CustomOptionHolder.Cs(roleInfo.RoleColor, $"{roleInfo.NameKey}Name");
         IntroData intro = IntroData.GetIntrodata(role, player, IsImpostorReturn);
-        if (intro != null)
+        if (intro == null)
             return null;
         return CustomOptionHolder.Cs(intro.color, $"{intro?.NameKey}Name");
     }
