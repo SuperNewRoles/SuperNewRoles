@@ -1194,17 +1194,21 @@ public static class OnGameEndPatch
         }
         foreach (KeyValuePair<byte, int> data in Frankenstein.KillCount)
         {
-            if (data.Value <= 0)
+            //勝利に必要なキル数を満たしているか
+            if (data.Value > 0)
+                continue;
+            //生存していなければ勝利できない
+            GameData.PlayerInfo FrankenPlayer = GameData.Instance.GetPlayerById(data.Key);
+            if (FrankenPlayer.IsDead())
+                continue;
+            if (!((isDleted && changeTheWinCondition) || isReset))
             {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-                TempData.winners.Add(new(GameData.Instance.GetPlayerById(data.Key)));
-                AdditionalTempData.winCondition = WinCondition.FrankensteinWin;
+                TempData.winners = new();
+                isDleted = true;
+                isReset = true;
             }
+            TempData.winners.Add(new(FrankenPlayer));
+            AdditionalTempData.winCondition = WinCondition.FrankensteinWin;
         }
         if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
         {
