@@ -1000,6 +1000,7 @@ MayorFriendsDescription,It is judged as Crewmate.\nBut is in the Jackal camp. Ja
 VentMakerName,VentMaker,ベントメーカー,管道工,管道工
 VentMakerTitle1,Let's make a vent!,ベントを作ろう！,挖掘管道,挖掘通風管道
 GhostMechanicName,GhostMechanic,亡霊整備士,亡灵工程师,亡靈工程師
+GhostMechanicDescription,,サボタージュを修復する事ができる幽霊役職です。\nクールタイムはバニラ役職の守護天使と同様です。(初回クールタイムは0秒で，アビリティ使用後は会議でクールタイムのリセットを行わない)\nSHRモード時は，会議フェイズを経過してからアビリティが使用可能になります。\n\n...私はインポスターの妨害の修復を他のクルーに任せ、緊急招集ボタンの前で待機していた。\nしかし、いつまで経っても直らず...そして殺された。\nそこにいたのは修復しているふりをしていたインポスターだったようだ。\nだから今度は私が...インポスターを妨害してやる!!!
 GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the machine.,機械を治せなかった未練を解消しよう,弥补生前未能修好飞船的遗憾,彌補生前未能修好飛船的遺憾
 GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数,可修复破坏次数,可修復破壞次數
 GhostMechanicButtonName,Repair,修復,修复,修復
