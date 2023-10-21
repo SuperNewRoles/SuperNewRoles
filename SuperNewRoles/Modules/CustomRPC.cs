@@ -595,14 +595,6 @@ public static class RPCProcedure
         }
     }
 
-    public static void PenguinHikizuri(byte sourceId, byte targetId)
-    {
-        PlayerControl source = ModHelpers.PlayerById(sourceId);
-        PlayerControl target = ModHelpers.PlayerById(targetId);
-        if (source == null || target == null) return;
-        RoleClass.Penguin.PenguinData.Add(source, target);
-    }
-
     public static void ShowGuardEffect(byte showerid, byte targetid)
     {
         if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
@@ -1582,13 +1574,6 @@ public static class RPCProcedure
         Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
     }
 
-    public static void PenguinMeetingEnd()
-    {
-        RoleClass.Penguin.PenguinData.Clear();
-        if (PlayerControl.LocalPlayer.GetRole() == RoleId.Penguin)
-            HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
-    }
-
     public static void JumpDancerJump(MessageReader reader)
     {
         PlayerControl source = ModHelpers.PlayerById(reader.ReadByte());
@@ -1904,7 +1889,7 @@ public static class RPCProcedure
                         SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.PenguinHikizuri:
-                        PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
+                        Penguin.PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.SetVampireStatus:
                         SetVampireStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
@@ -1955,7 +1940,7 @@ public static class RPCProcedure
                         SetVisible(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.PenguinMeetingEnd:
-                        PenguinMeetingEnd();
+                        Penguin.PenguinMeetingEnd();
                         break;
                     case CustomRPC.BalancerBalance:
                         BalancerBalance(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());

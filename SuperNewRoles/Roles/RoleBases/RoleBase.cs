@@ -10,21 +10,29 @@ using UnityEngine;
 namespace SuperNewRoles.Roles.RoleBases;
 public abstract class Role
 {
-    public static List<Role> allRoles = new();
+    //allRoles 割り当てられた役職について役職毎に１インスタンスを管理
+    //public static List<Role> allRoles = new();
+    public static Role[] allRoles => allRolesNoDuplicate.Values.ToArray();
+    public static Dictionary<RoleId, Role> allRolesNoDuplicate = new ();
+
     public PlayerControl player;
-    public RoleId roleId;
+    public readonly RoleInfo RoleInfo;
+    public RoleId RoleId => RoleInfo.RoleId;
+
+    public Role( RoleInfo roleInfo) { RoleInfo = roleInfo; }
+
     public int ObjectId;
     public int AbilityLimit;
     public static int MaxObjectId = 0;
-
-    public abstract void OnMeetingStart();
-    public abstract void OnWrapUp();
+    public virtual void OnReportDeadBody(PlayerControl player, GameData.PlayerInfo target) { }
+    public virtual void OnMeetingStart() { }
+    public virtual void OnWrapUp() { }
     public virtual void FixedUpdate() { }
     public virtual void MeFixedUpdateAlive() { }
     public virtual void MeFixedUpdateDead() { }
-    public abstract void OnKill(PlayerControl target);
-    public abstract void OnDeath(PlayerControl killer = null);
-    public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
+    public virtual void OnKill(PlayerControl target) { }
+    public virtual void OnDeath(PlayerControl killer = null) { }
+    public virtual void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
     public virtual void EndUseAbility() { }
     public virtual void ResetRole() { }
     public virtual void PostInit() { }
@@ -36,14 +44,15 @@ public abstract class Role
     public static void ClearAll()
     {
         MaxObjectId = 0;
-        allRoles = new List<Role>();
+        //allRoles = new List<Role>();
+        allRolesNoDuplicate = new();
     }
 }
 
-public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
+public abstract class RoleBase : Role
 {
-    public static List<T> players = new();
-    public static RoleId RoleId;
+    public static List<RoleBase> players = new();
+    //public static RoleId RoleId;
     //設定を有効にするか
     public bool CanUseVentOptionOn = false;
     public bool CanUseVentOptionDefault;
@@ -90,15 +99,18 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
     public CustomOption IsImpostorViewOpt => IsImpostorViewOption;
     public CustomOption CoolTimeOpt => CoolTimeOption;
     public CustomOption DurationTimeOpt => DurationTimeOption;
-    public RoleBase()
-    {
+    public RoleBase(RoleInfo roleInfo)
+        : base(roleInfo) { }
 
-    }
+    //public RoleBase()
+    //{
 
-    public RoleBase(bool isFirst)
-    {
-        if (RoleOption is null) SetUpOption();
-    }
+    //}
+
+    //public RoleBase(bool isFirst)
+    //{
+    //    if (RoleOption is null) SetUpOption();
+    //}
 
     public void SetUpOption()
     {
@@ -115,14 +127,15 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         if (IsImpostorViewOptionOn) IsImpostorViewOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "MadmateImpostorLightSetting", IsImpostorViewOptionDefault, RoleOption); OptionId++;
         SetupMyOptions();
     }
-    public abstract void SetupMyOptions();
+    public virtual void SetupMyOptions() { }
 
 
     public void Init(PlayerControl player)
     {
         this.player = player;
-        players.Add((T)this);
-        allRoles.Add(this);
+        players.Add(this);
+        //allRoles.Add(this);
+        allRolesNoDuplicate.TryAdd(RoleId, this);
         PostInit();
         ObjectId = MaxObjectId;
         MaxObjectId++;
@@ -131,7 +144,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
 
 
 
-    public static T local
+    public static RoleBase local
     {
         get
         {
@@ -169,7 +182,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         get { return players.Count > 0; }
     }
 
-    public static T GetRole(PlayerControl player = null)
+    public static RoleBase GetRole(PlayerControl player = null)
     {
         player = player ?? PlayerControl.LocalPlayer;
         return players.FirstOrDefault(x => x.player == player);
@@ -180,22 +193,19 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         return players.Any(x => x.player == player);
     }
 
-    public static T SetRole(PlayerControl player)
+    public void SetRole(PlayerControl player)
     {
         if (!IsRole(player))
         {
-            T role = new();
-            role.Init(player);
-            return role;
+            Init(player);
         }
-        return null;
     }
 
-    public static void EraseRole(PlayerControl player)
+    public void EraseRole(PlayerControl player)
     {
         players.DoIf(x => x.player == player, x => x.ResetRole());
-        players.RemoveAll(x => x.player == player && x.roleId == RoleId);
-        allRoles.RemoveAll(x => x.player == player && x.roleId == RoleId);
+        players.RemoveAll(x => x.player == player);
+        //allRoles.RemoveAll(x => x.player == player && x.roleId == RoleId);
         if (_local is not null && player.PlayerId == _local.PlayerId) _local = null;
     }
 

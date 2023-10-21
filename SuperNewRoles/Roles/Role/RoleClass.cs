@@ -12,6 +12,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using SuperNewRoles.SuperNewRolesWeb;
 using TMPro;
@@ -234,7 +235,6 @@ public static class RoleClass
         Camouflager.ClearAndReload();
         Cupid.ClearAndReload();
         HamburgerShop.ClearAndReload();
-        Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
@@ -260,6 +260,8 @@ public static class RoleClass
         WellBehaver.ClearAndReload();
         Pokerface.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
+
+        RoleBaseHelper.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -2906,24 +2908,6 @@ public static class RoleClass
         }
     }
 
-    public static class Penguin
-    {
-        public static List<PlayerControl> PenguinPlayer;
-        public static Color32 color = ImpostorRed;
-        public static Dictionary<PlayerControl, PlayerControl> PenguinData;
-        public static Dictionary<byte, float> PenguinTimer;
-        public static PlayerControl currentTarget => PenguinData.ContainsKey(CachedPlayer.LocalPlayer) ? PenguinData[CachedPlayer.LocalPlayer] : null;
-        private static Sprite _buttonSprite;
-        public static Sprite GetButtonSprite() => _buttonSprite;
-        public static void ClearAndReload()
-        {
-            PenguinPlayer = new();
-            PenguinData = new();
-            PenguinTimer = new();
-            bool Is = ModHelpers.IsSucsessChance(4);
-            _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
-        }
-    }
     public static class Dependents
     {
         public static List<PlayerControl> DependentsPlayer;
