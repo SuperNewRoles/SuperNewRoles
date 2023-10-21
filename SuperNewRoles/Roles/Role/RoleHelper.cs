@@ -1824,7 +1824,7 @@ public static class RoleHelpers
         return RoleId.DefaultRole;
     }
     public static bool IsGhostRole(this RoleId role) =>
-        IntroData.GetIntroData(role).IsGhostRole;
+        CustomRoles.IsGhostRole(role);
 
     public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {

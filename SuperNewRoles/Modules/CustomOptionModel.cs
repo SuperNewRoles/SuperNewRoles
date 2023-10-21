@@ -12,6 +12,8 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using UnityEngine.Events;
 using static SuperNewRoles.Modules.CustomRegulation;
@@ -224,7 +226,7 @@ public class CustomOption
     public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1, bool isHidden = false)
     {
         if (type is CustomOptionType.Empty)
-            type = IntroData.GetIntroData(roleId).Team switch
+            type = CustomRoles.GetRoleTeam(roleId) switch
             {
                 TeamRoleType.Impostor => CustomOptionType.Impostor,
                 TeamRoleType.Neutral => CustomOptionType.Neutral,
@@ -423,11 +425,11 @@ public class CustomRoleOption : CustomOption
         }
     }
 
-    public IntroData Intro
+    public IntroInfo Introinfo
     {
         get
         {
-            return IntroData.GetIntroData(RoleId);
+            return IntroInfo.GetIntroInfo(RoleId);
         }
     }
 

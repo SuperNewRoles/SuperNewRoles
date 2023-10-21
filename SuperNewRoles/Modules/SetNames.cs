@@ -163,8 +163,7 @@ public class SetNamesClass
         }
         else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
         {
-            var introData = IntroData.GetIntroData(role, p);
-            roleNames = introData.Name;
+            roleNames = IntroData.StefinderIntro.Name;
             roleColors = RoleClass.ImpostorRed;
         }
         else if (p.IsPavlovsTeam())
@@ -178,30 +177,28 @@ public class SetNamesClass
         {
             if (p.IsRole(RoleId.WaveCannonJackal))
             {
-                var introData = IntroData.GetIntroData(RoleId.Jackal, p);
+                var introData = IntroData.JackalIntro;
                 roleNames = introData.Name;
                 roleColors = introData.color;
             }
             else
             {
-                var introData = IntroData.GetIntroData(RoleId.Sidekick, p);
+                var introData = IntroData.SidekickIntro;
                 roleNames = introData.Name;
                 roleColors = introData.color;
             }
         }
         else
         {
-            var introData = IntroData.GetIntroData(role, p);
-            roleNames = introData.Name;
-            roleColors = introData.color;
+            roleNames = CustomRoles.GetRoleName(role, p);
+            roleColors = CustomRoles.GetRoleColor(role, p);
         }
 
         var GhostRole = p.GetGhostRole();
         if (GhostRole != RoleId.DefaultRole)
         {
-            var GhostIntro = IntroData.GetIntroData(GhostRole, p);
-            GhostroleNames = GhostIntro.Name;
-            GhostroleColors = GhostIntro.color;
+            GhostroleNames = CustomRoles.GetRoleName(GhostRole, p);
+            GhostroleColors = CustomRoles.GetRoleColor(GhostRole, p);
         }
 
         Dictionary<string, (Color, bool)> attributeRoles = new(AttributeRoleNameSet(p));
@@ -251,7 +248,7 @@ public class SetNamesClass
     {
         var role = player.GetRole();
         if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
-        SetPlayerNameColor(player, IntroData.GetIntroData(role).color);
+        SetPlayerNameColor(player, CustomRoles.GetRoleColor(player));
     }
     public static void SetPlayerRoleNames(PlayerControl player)
     {

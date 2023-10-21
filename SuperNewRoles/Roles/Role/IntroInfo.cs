@@ -8,11 +8,37 @@ using AmongUs.GameOptions;
 namespace SuperNewRoles.Roles.Role;
 public class IntroInfo
 {
+    public static Dictionary<RoleId, IntroInfo> IntroInfos = new();
     public RoleTypes IntroSound;
     public RoleId Role;
-    public IntroInfo(RoleId role, RoleTypes introSound = RoleTypes.Crewmate)
+    public short IntroNum;
+    public string NameKey => RoleInfoManager.GetRoleInfo(Role)?.NameKey;
+    private string _titleDesc;
+    public string IntroDesc
+    {
+        get
+        {
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            {
+                return _titleDesc;
+            }
+            return IntroData.GetTitle(NameKey, IntroNum, Role);
+        }
+    }
+    public IntroInfo(RoleId role, short introNum = 1, RoleTypes introSound = RoleTypes.Crewmate)
     {
         this.Role = role;
+        this.IntroNum = introNum;
         this.IntroSound = introSound;
+        _titleDesc = IntroData.GetTitle(NameKey, IntroNum, Role);
+        IntroInfos.Add(role, this);
+    }
+    public void UpdateIntroDesc()
+    {
+        _titleDesc = IntroData.GetTitle(NameKey, IntroNum, Role);
+    }
+    public static IntroInfo GetIntroInfo(RoleId role)
+    {
+        return IntroInfos.TryGetValue(role, out IntroInfo info) ? info : null;
     }
 }

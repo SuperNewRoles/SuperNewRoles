@@ -2,6 +2,7 @@
 using System;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Role;
 public class RoleInfo
@@ -9,6 +10,7 @@ public class RoleInfo
     public Type RoleObjectType { get; }
     public RoleId Role { get; }
     public string NameKey { get; }
+    public Color32 RoleColor { get; }
     public TeamRoleType Team { get; }
     public bool IsGhostRole { get; }
     private Func<PlayerControl, RoleBase> _createInstance { get; }
@@ -17,7 +19,8 @@ public class RoleInfo
         Func<PlayerControl, RoleBase> createInstance,
         RoleId role,
         string namekey,
-        TeamRoleType team
+        TeamRoleType team,
+        Color32 roleColor
         )
     {
         this.RoleObjectType = roleObjectType;
@@ -26,6 +29,7 @@ public class RoleInfo
         this.NameKey = namekey;
         this.Team = team;
         this.IsGhostRole = RoleObjectType.IsSubclassOf(typeof(IGhostRole));
+        this.RoleColor = roleColor;
         RoleInfoManager.RoleInfos.Add(role, this);
     }
     public RoleBase CreateInstance(PlayerControl player)

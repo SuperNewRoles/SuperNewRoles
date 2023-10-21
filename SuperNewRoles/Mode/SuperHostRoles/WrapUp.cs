@@ -40,7 +40,6 @@ class WrapUpClass
             yield return new WaitForSeconds(1);
             ChangeName.SetRoleNames();
         }
-        Roles.BestFalseCharge.WrapUp();
         if (exiled == null) return;
         if (exiled.Object.IsRole(RoleId.Sheriff) || exiled.Object.IsRole(RoleId.truelover) || exiled.Object.IsRole(RoleId.MadMaker))
         {

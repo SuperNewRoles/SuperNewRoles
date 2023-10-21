@@ -13,8 +13,9 @@ public class Bestfalsecharge : RoleBase, IWrapUpHandler
         (p) => new Bestfalsecharge(p),
         RoleId.Bestfalsecharge,
         "Bestfalsecharge",
-        TeamRoleType.Crewmate
-           );
+        TeamRoleType.Crewmate,
+        RoleClass.CrewmateWhite
+        );
     public static new OptionInfo Optioninfo = new(RoleId.Bestfalsecharge, 403200, true);
     public static new IntroInfo Introinfo = new(RoleId.Bestfalsecharge);
     public bool IsOnMeeting = false;
@@ -24,14 +25,16 @@ public class Bestfalsecharge : RoleBase, IWrapUpHandler
     }
     public void OnWrapUp()
     {
-        if (ModeHandler.IsMode(ModeId.Default) &&
-            AmongUsClient.Instance.AmHost &&
-            !IsOnMeeting)
-        {
+        if (!AmongUsClient.Instance.AmHost ||
+            IsOnMeeting)
+            return;
+        if (ModeHandler.IsMode(ModeId.Default))
             Player.RpcExiledUnchecked();
-            Player.RpcSetFinalStatus(FinalStatus.BestFalseChargesFalseCharge);
-            IsOnMeeting = true;
-        }
+        else
+            Player.RpcInnerExiled();
+        Player.RpcSetFinalStatus(FinalStatus.BestFalseChargesFalseCharge);
+
+        IsOnMeeting = true;
 
         //===========以下さつまいも===========//
         RoleClass.SatsumaAndImo.TeamNumber = RoleClass.SatsumaAndImo.TeamNumber == 1 ? 2 : 1;

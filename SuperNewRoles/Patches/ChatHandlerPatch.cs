@@ -14,6 +14,7 @@ using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -189,8 +190,7 @@ class AddChatPatch
                 }
                 else
                 {
-                    IntroData intro = IntroData.GetIntroData(data.Value, IsImpostorReturn: true);
-                    SendCommand(sourcePlayer, intro.Description, "<size=200%>" + ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString($"{intro.NameKey}Name")) + "</size>");
+                    SendCommand(sourcePlayer, CustomRoles.GetRoleDescription(data.Value), "<size=200%>" + ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value)) + "</size>");
                 }
             }
             else
@@ -198,8 +198,7 @@ class AddChatPatch
                 string text = ModTranslation.GetString("BattleRoyalBattleRolesCommandText") + "\n\n";
                 foreach (var role in Enum.GetValues(typeof(BattleRoles)))
                 {
-                    IntroData intro = IntroData.GetIntroData((RoleId)(BattleRoles)role, IsImpostorReturn: true);
-                    text += $"{ModTranslation.GetString(intro.NameKey + "Name")}({(BattleRoles)role})\n";
+                    text += $"{CustomRoles.GetRoleName((RoleId)(BattleRoles)role)}({(BattleRoles)role})\n";
                 }
                 SendCommand(sourcePlayer, text, SelectRoleSystem.BattleRoyalCommander);
             }
@@ -369,7 +368,7 @@ class AddChatPatch
                 if (data.role == null)
                     builder.Append(ModTranslation.GetString("WinnerGetError"));
                 else
-                    builder.Append(ModTranslation.GetString(IntroData.GetIntroData((RoleId)data.role).NameKey + "Name"));
+                    builder.Append(CustomRoles.GetRoleName(data.role.Value));
                 builder.AppendLine();
             }
             SendCommand(target, builder.ToString(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
@@ -435,8 +434,7 @@ class AddChatPatch
     {
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
-        IntroData intro = option.Intro;
-        text += GetTeamText(intro.TeamType) + "\n";
+        text += GetTeamText(CustomRoles.GetRoleTeam(option.RoleId)) + "\n";
         text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId) + "」\n";
         text += intro.Description + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
