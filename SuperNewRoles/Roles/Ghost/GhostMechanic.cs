@@ -30,9 +30,9 @@ public static class GhostMechanic
         Buttons.HudManagerStartPatch.GhostMechanicRepairButton.Timer =
             !isRespawn // 能力使用時のクールリセットなら
                 ? RoleClass.GhostMechanic.Cooldown // 設定したクールにリセットする
-                : !ModeHandler.IsMode(ModeId.SuperHostRoles) || RoleClass.GhostMechanic.MaxLimit == RoleClass.GhostMechanic.LimitCount // SHRでない, 又はSHRであっても未発動なら
+                : RoleClass.GhostMechanic.MaxLimit == RoleClass.GhostMechanic.LimitCount // 未発動なら
                     ? 0f // 0秒にリセットする
-                    : RoleClass.GhostMechanic.KeepCooldown; // SHRで 既にAbility使用済みの場合, 会議時に保存したクールでリセットする。
+                    : RoleClass.GhostMechanic.KeepCooldown; // 既にAbility使用済みの場合, 会議時に保存したクールでリセットする。
     }
 
     /// <summary>
