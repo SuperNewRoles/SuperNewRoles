@@ -162,7 +162,7 @@ class RoleManagerSelectRolesPatch
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
-            FixedUpdate.SetRoleNames();
+            ChangeName.SetRoleNames();
             return false;
         }
         else if (ModeHandler.IsMode(ModeId.BattleRoyal))

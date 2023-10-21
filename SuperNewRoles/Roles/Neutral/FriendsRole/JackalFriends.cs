@@ -5,7 +5,7 @@ namespace SuperNewRoles.Roles;
 
 class JackalFriends
 {
-    public static List<byte> CheckedJackal;
+    public static HashSet<byte> CheckedJackal;
     public static bool CheckJackal(PlayerControl p)
     {
         if (CheckedJackal.Contains(p.PlayerId)) return true;
