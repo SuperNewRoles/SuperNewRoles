@@ -1000,7 +1000,8 @@ MayorFriendsDescription,It is judged as Crewmate.\nBut is in the Jackal camp. Ja
 VentMakerName,VentMaker,ベントメーカー,管道工,管道工
 VentMakerTitle1,Let's make a vent!,ベントを作ろう！,挖掘管道,挖掘通風管道
 GhostMechanicName,GhostMechanic,亡霊整備士,亡灵工程师,亡靈工程師
-GhostMechanicDescription,,サボタージュを修復する事ができる幽霊役職です。\nクールタイムはバニラ役職の守護天使と同様です。(初回クールタイムは0秒で，アビリティ使用後は会議でクールタイムのリセットを行わない)\nSHRモード時は，会議フェイズを経過してからアビリティが使用可能になります。\n\n...私はインポスターの妨害の修復を他のクルーに任せ、緊急招集ボタンの前で待機していた。\nしかし、いつまで経っても直らず...そして殺された。\nそこにいたのは修復しているふりをしていたインポスターだったようだ。\nだから今度は私が...インポスターを妨害してやる!!!
+GhostMechanicDescription,It is a ghost role that can repair sabotage.\nThe cool time is the same as that of the vanilla role of guardian angel. (The initial coold time is 0 seconds, and the coold time is not reset in the meeting after the ability is used.)
+When in SHR mode, abilities become available after the conference phase has elapsed.\n\n... I left the repair of the impostor's interference to the rest of the crew and waited in front of the emergency call button.\nBut no matter how long it took，it was never fixed... And then I was killed.\nIt seems that what was there was the impostor who pretended to be repairing it.\nSo now I'm going to... I'm going to sabotage Impostor!!!,サボタージュを修復する事ができる幽霊役職です。\nクールタイムはバニラ役職の守護天使と同様です。(初回クールタイムは0秒で，アビリティ使用後は会議でクールタイムのリセットを行わない)\nSHRモード時は，会議フェイズを経過してからアビリティが使用可能になります。\n\n...私はインポスターの妨害の修復を他のクルーに任せ、緊急招集ボタンの前で待機していた。\nしかし、いつまで経っても直らず...そして殺された。\nそこにいたのは修復しているふりをしていたインポスターだったようだ。\nだから今度は私が...インポスターを妨害してやる!!!
 GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the machine.,機械を治せなかった未練を解消しよう,弥补生前未能修好飞船的遗憾,彌補生前未能修好飛船的遺憾
 GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数,可修复破坏次数,可修復破壞次數
 GhostMechanicButtonName,Repair,修復,修复,修復
