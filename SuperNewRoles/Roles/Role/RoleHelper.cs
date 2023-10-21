@@ -2074,6 +2074,14 @@ public static class RoleHelpers
     {
         return player == null || player.Data.Disconnected || player.Data.IsDead;
     }
+    public static bool IsDead(this GameData.PlayerInfo player)
+    {
+        return player == null || player.Disconnected || player.IsDead;
+    }
+    public static bool IsAlive(this GameData.PlayerInfo player)
+    {
+        return player != null && !player.Disconnected && !player.IsDead;
+    }
     public static bool IsAlive(this PlayerControl player)
     {
         return player != null && !player.Data.Disconnected && !player.Data.IsDead;
