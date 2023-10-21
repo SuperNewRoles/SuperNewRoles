@@ -2,10 +2,12 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -20,7 +22,8 @@ public static class Penguin
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (RoleClass.Penguin.PenguinData.Any(x => x.Value != null && x.Value.PlayerId == __instance.myPlayer.PlayerId) ||
+                if (SpiderTrap.CatchingPlayers.ContainsKey(__instance.myPlayer.PlayerId) ||
+                    RoleClass.Penguin.PenguinData.Any(x => x.Value != null && x.Value.PlayerId == __instance.myPlayer.PlayerId) ||
                     Rocket.RoleData.RocketData.Any(x => x.Value.Any(y => y.PlayerId == __instance.myPlayer.PlayerId)))
                 {
                     __instance.body.velocity = new(0f, 0f);

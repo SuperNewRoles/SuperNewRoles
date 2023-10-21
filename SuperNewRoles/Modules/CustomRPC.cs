@@ -213,10 +213,13 @@ public enum RoleId
     Moira,
     JumpDancer,
     Sauner,
+    Bat,
     Rocket,
     WellBehaver,
     Pokerface,
+    Spider,
     Crook,
+    Frankenstein,
     //RoleId
 }
 
@@ -318,23 +321,77 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    PteranodonSetStatus,
     BalancerBalance,
+    PteranodonSetStatus,
     SetInfectionTimer,
     SendMeetingTurnNow,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
     JumpDancerJump,
+    BatSetDeviceStop,
     RocketSeize,
     RocketLetsRocket,
     CreateGarbage,
     DestroyGarbage,
     SetPokerfaceTeam,
+    SetSpiderTrap,
+    SpiderTrapCatch,
     CrookSaveSignDictionary,
+    SetFrankensteinMonster,
+    MoveDeadBody,
 }
 
 public static class RPCProcedure
 {
+    public static void SetSpiderTrap(byte source, float x, float y, ushort id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(source);
+        if (player == null)
+            return;
+        SpiderTrap.Create(player, new(x, y), id);
+    }
+    public static void SpiderTrapCatch(ushort id, byte targetid)
+    {
+        PlayerControl target = ModHelpers.PlayerById(targetid);
+        if (target == null)
+            return;
+        if (!SpiderTrap.SpiderTraps.TryGetValue(id, out SpiderTrap trap) || trap == null)
+            return;
+        trap.CatchPlayer(target);
+    }
+    public static void MoveDeadBody(byte id, float x, float y)
+    {
+        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        {
+            if (dead.ParentId == id)
+            {
+                dead.transform.position = new(x, y, y / 1000f);
+                return;
+            }
+        }
+    }
+    public static void SetFrankensteinMonster(byte id, byte body, bool kill)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (!player) return;
+        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        {
+            if (dead.ParentId == body)
+            {
+                Frankenstein.MonsterPlayer[id] = dead;
+                player.setOutfit(GameData.Instance.GetPlayerById(body).DefaultOutfit);
+                return;
+            }
+        }
+        Frankenstein.MonsterPlayer[id] = null;
+        if (kill) Frankenstein.KillCount[id]--;
+        //遅延させて戻す
+        new LateTask(() =>
+        {
+            if (player.AmOwner) player.RpcSnapTo(Frankenstein.OriginalPosition);
+            player.setOutfit(player.Data.DefaultOutfit);
+        }, 0.1f, "SetFrankensteinMonster");
+    }
     public static void RocketSeize(byte sourceid, byte targetid)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -373,7 +430,7 @@ public static class RPCProcedure
         PlayerControl player3 = ModHelpers.PlayerById(playerid3);
         if (player1 == null || player2 == null || player3 == null)
             return;
-        Pokerface.RoleData.PokerfaceTeams.Add(new(player1,player2,player3));
+        Pokerface.RoleData.PokerfaceTeams.Add(new(player1, player2, player3));
     }
     public static void DestroyGarbage(string name) => Garbage.AllGarbage.Find(x => x.GarbageObject.name == name)?.Clear();
     public static void CreateGarbage(float x, float y) => new Garbage(new(x, y));
@@ -1982,6 +2039,9 @@ public static class RPCProcedure
                     case CustomRPC.JumpDancerJump:
                         JumpDancerJump(reader);
                         break;
+                    case CustomRPC.BatSetDeviceStop:
+                        Roles.Impostor.Bat.BatSetDeviceStop();
+                        break;
                     case CustomRPC.RocketSeize:
                         RocketSeize(reader.ReadByte(), reader.ReadByte());
                         break;
@@ -1997,8 +2057,20 @@ public static class RPCProcedure
                     case CustomRPC.SetPokerfaceTeam:
                         SetPokerfaceTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
+                    case CustomRPC.SetSpiderTrap:
+                        SetSpiderTrap(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadUInt16());
+                        break;
+                    case CustomRPC.SpiderTrapCatch:
+                        SpiderTrapCatch(reader.ReadUInt16(), reader.ReadByte());
+                        break;
                     case CustomRPC.CrookSaveSignDictionary:
                         Crook.Ability.SaveSignDictionary(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetFrankensteinMonster:
+                        SetFrankensteinMonster(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.MoveDeadBody:
+                        MoveDeadBody(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
                         break;
                 }
             }

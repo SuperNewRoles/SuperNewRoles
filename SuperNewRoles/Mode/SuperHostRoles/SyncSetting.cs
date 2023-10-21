@@ -241,6 +241,13 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
         }
+
+        RoleId ghostRole = player.GetGhostRole();
+        if (ghostRole != RoleId.DefaultRole) // バニラ幽霊役職でないなら, クールタイムをセットする
+        {
+            optdata.SetFloat(FloatOptionNames.GuardianAngelCooldown, GuardianAngelCooldown.SetCooldown(ghostRole));
+        }
+
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());

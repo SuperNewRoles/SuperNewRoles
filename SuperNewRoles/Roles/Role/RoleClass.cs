@@ -76,6 +76,7 @@ public static class RoleClass
         AirShipRandomSpawn.ClearAndReload();
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
+        ReleaseGhostAbility.ClearAndReload();
         FixSabotage.ClearAndReload();
         RoleBases.Role.ClearAll();
         Patches.CursedTasks.Main.ClearAndReload();
@@ -256,10 +257,13 @@ public static class RoleClass
         Moira.ClearAndReload();
         JumpDancer.ClearAndReload();
         Sauner.RoleData.ClearAndReload();
+        Bat.RoleData.ClearAndReload();
         Rocket.RoleData.ClearAndReload();
         WellBehaver.ClearAndReload();
         Pokerface.RoleData.ClearAndReload();
+        Spider.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
+        Frankenstein.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -1591,7 +1595,7 @@ public static class RoleClass
         public static List<PlayerControl> FoxPlayer;
         public static Color32 color = FoxPurple;
         public static Dictionary<int, int> KillGuard;
-        public static PlayerData< bool> Killer;
+        public static PlayerData<bool> Killer;
         public static bool IsUseVent;
         public static bool UseReport;
         public static bool IsImpostorLight;
@@ -1732,7 +1736,7 @@ public static class RoleClass
     public static class Demon
     {
         public static List<PlayerControl> DemonPlayer;
-        public static PlayerData< List<PlayerControl>> CurseData;
+        public static PlayerData<List<PlayerControl>> CurseData;
         public static Color32 color = new(110, 0, 165, byte.MaxValue);
         public static bool IsUseVent;
         public static bool IsCheckImpostor;
@@ -1743,7 +1747,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             DemonPlayer = new();
-            CurseData = new(defaultvalue:new());
+            CurseData = new(defaultvalue: new());
             IsUseVent = CustomOptionHolder.DemonIsUseVent.GetBool();
             CoolTime = CustomOptionHolder.DemonCoolTime.GetFloat();
             IsCheckImpostor = CustomOptionHolder.DemonIsCheckImpostor.GetBool();
@@ -1868,7 +1872,7 @@ public static class RoleClass
     public static class Arsonist
     {
         public static List<PlayerControl> ArsonistPlayer;
-        public static PlayerData< List<PlayerControl>> DouseData;
+        public static PlayerData<List<PlayerControl>> DouseData;
         public static Color32 color = new(238, 112, 46, byte.MaxValue);
         public static bool IsUseVent;
         public static float CoolTime;
@@ -1883,7 +1887,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             ArsonistPlayer = new();
-            DouseData = new(defaultvalue:new());
+            DouseData = new(defaultvalue: new());
             IsUseVent = CustomOptionHolder.ArsonistIsUseVent.GetBool();
             CoolTime = CustomOptionHolder.ArsonistCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.ArsonistDurationTime.GetFloat();
@@ -2006,7 +2010,7 @@ public static class RoleClass
     {
         public static List<PlayerControl> VentMakerPlayer;
         public static Color32 color = ImpostorRed;
-        public static PlayerData< Vent> Vent;
+        public static PlayerData<Vent> Vent;
         public static int VentCount;
         public static bool IsMakeVent;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
@@ -2024,12 +2028,19 @@ public static class RoleClass
         public static List<PlayerControl> GhostMechanicPlayer;
         public static Color32 color = new(25, 68, 142, byte.MaxValue);
         public static int LimitCount;
+        public static int MaxLimit { get; private set; }
+        public static float Cooldown;
+        public static float KeepCooldown;
+        public static PlayerData<int> AbilityUsedCountSHR;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
 
         public static void ClearAndReload()
         {
             GhostMechanicPlayer = new();
-            LimitCount = CustomOptionHolder.GhostMechanicRepairLimit.GetInt();
+            MaxLimit = LimitCount = CustomOptionHolder.GhostMechanicRepairLimit.GetInt();
+            AbilityUsedCountSHR = new();
+            Cooldown = CustomOptionHolder.GhostMechanicCooldown.GetFloat();
+            KeepCooldown = 0f;
         }
     }
     public static class EvilHacker
@@ -2094,11 +2105,11 @@ public static class RoleClass
     {
         public static List<PlayerControl> TunaPlayer;
         public static Color32 color = new(0, 255, 255, byte.MaxValue);
-        public static PlayerData< Vector2> Position;
+        public static PlayerData<Vector2> Position;
         public static float Timer;
         public static float StoppingTime;
         public static bool IsUseVent;
-        public static PlayerData< float> Timers;
+        public static PlayerData<float> Timers;
         public static bool IsTunaAddWin;
         public static void ClearAndReload()
         {
@@ -2348,7 +2359,7 @@ public static class RoleClass
         public static Color32 color = ImpostorRed;
         public static int CheckMadmateKillCount;
         public static int KillCount;
-        public static PlayerData< int> KillCounts;
+        public static PlayerData<int> KillCounts;
         public static bool IsCheck
         {
             get
@@ -2417,7 +2428,7 @@ public static class RoleClass
         public static Color32 color = new(0, 102, 51, byte.MaxValue);
         public static int VoteCount;
         public static int SubExileLimit;
-        public static PlayerData< int> SubExileLimitData;
+        public static PlayerData<int> SubExileLimitData;
         public static void ClearAndReload()
         {
             DictatorPlayer = new();
@@ -2504,7 +2515,7 @@ public static class RoleClass
         public static float WearTime;
         public static float MyKillCoolTime;
         public static bool IsLocalOn => Data.Local != null;
-        public static PlayerData< DeadBody> Data;
+        public static PlayerData<DeadBody> Data;
         public static Sprite PutOnButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
         public static Sprite TakeOffButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
         public static void ClearAndReload()
