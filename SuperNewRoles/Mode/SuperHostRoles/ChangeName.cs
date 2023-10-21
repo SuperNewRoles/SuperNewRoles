@@ -127,14 +127,14 @@ public static class ChangeName
         StringBuilder NewName = new();
         StringBuilder MySuffix = new();
         StringBuilder RoleNameText = new(ModHelpers.Cs(introData.color, introData.Name));
-        PlayerData<string> ChangePlayers = new(needplayerlist:true);
+        PlayerData<string> ChangePlayers = new(needplayerlist: true);
 
         // カモフラ中は処理を破棄する
         if (!RoleClass.Camouflager.IsCamouflage)
         {
             // スターパッシブ能力 [ カリスマ ] の処理
             List<PlayerControl> CelebrityViewPlayers = RoleClass.Celebrity.ChangeRoleView ?
-             RoleClass.Celebrity.ViewPlayers : RoleClass.Celebrity.CelebrityPlayer;
+            RoleClass.Celebrity.ViewPlayers : RoleClass.Celebrity.CelebrityPlayer;
 
             foreach (PlayerControl viewPlayer in CelebrityViewPlayers)
             {
@@ -311,8 +311,9 @@ public static class ChangeName
         bool IsDemonVIew = false;
         bool IsArsonistVIew = false;
         bool IsHauntedWolfVIew = false;
+        bool IsGhostMechanicVIew = false; // 幽霊役職が1つしかない為, 単独処理
         StringBuilder attributeRoleName = new();
-        
+
         if ((SetNamesClass.DefaultGhostSeeRoles(player) || player.IsRole(RoleId.God)) && !IsUnchecked)
         {
             if (Demon.IsViewIcon(player))
@@ -329,6 +330,11 @@ public static class ChangeName
             {
                 attributeRoleName.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
                 IsHauntedWolfVIew = true;
+            }
+            if (player.IsGhostRole(RoleId.GhostMechanic))
+            {
+                attributeRoleName.Append($" + {ModHelpers.Cs(RoleClass.GhostMechanic.color, ModTranslation.GetString("GhostMechanicName"))}");
+                IsGhostMechanicVIew = true;
             }
             NewName.Append($"(<size=75%>{ModHelpers.Cs(introData.color, introData.Name)}{attributeRoleName}{TaskText}</size>)");
             if (!RoleClass.Camouflager.IsCamouflage)
@@ -382,12 +388,14 @@ public static class ChangeName
         }
         StringBuilder DieSuffix = new();
         // FIXME : SHRにおいて重複役の名前変更の共通処理が完成していない。
-        if (!IsHauntedWolfVIew && player.IsHauntedWolf())
-            DieSuffix.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
         if (!IsDemonVIew && Demon.IsViewIcon(player))
             DieSuffix.Append(ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
         if (!IsArsonistVIew && Arsonist.IsViewIcon(player))
             DieSuffix.Append(ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
+        if (!IsHauntedWolfVIew && player.IsHauntedWolf())
+            DieSuffix.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
+        if (!IsGhostMechanicVIew && player.IsGhostRole(RoleId.GhostMechanic))
+            DieSuffix.Append($" + {ModHelpers.Cs(RoleClass.GhostMechanic.color, ModTranslation.GetString("GhostMechanicName"))}");
         NewName.Append(DieSuffix);
         string NewNameString = NewName.ToString();
         foreach (PlayerControl DiePlayer in CanAllRolePlayers)

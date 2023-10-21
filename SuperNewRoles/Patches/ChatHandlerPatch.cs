@@ -544,11 +544,20 @@ class AddChatPatch
     {
         foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
+            if (player == null || player.IsBot()) return;
             RoleId roleId = player.GetRole();
+            RoleId ghostRoleId = player.GetGhostRole();
+
             string roleName = "NONE", roleInfo = "";
             (roleName, roleInfo) = RoleInfo.GetRoleInfo(roleId, AmongUsClient.Instance.AmHost, player.IsImpostor());
-
             SendCommand(player, roleInfo, roleName);
+
+            if (ghostRoleId != RoleId.DefaultRole)
+            {
+                string ghostRoleName = "NONE", ghostRoleInfo = "";
+                (ghostRoleName, ghostRoleInfo) = RoleInfo.GetRoleInfo(ghostRoleId, AmongUsClient.Instance.AmHost, player.IsImpostor());
+                SendCommand(player, ghostRoleInfo, ghostRoleName);
+            }
         }
     }
     internal static class RoleInfo
