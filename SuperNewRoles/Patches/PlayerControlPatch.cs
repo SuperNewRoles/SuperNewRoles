@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;

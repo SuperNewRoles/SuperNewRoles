@@ -256,10 +256,13 @@ public static class RoleClass
         Moira.ClearAndReload();
         JumpDancer.ClearAndReload();
         Sauner.RoleData.ClearAndReload();
+        Bat.RoleData.ClearAndReload();
         Rocket.RoleData.ClearAndReload();
         WellBehaver.ClearAndReload();
         Pokerface.RoleData.ClearAndReload();
+        Spider.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
+        Frankenstein.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
