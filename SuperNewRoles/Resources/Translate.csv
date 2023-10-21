@@ -1620,7 +1620,7 @@ PokerfaceTitle1,Nothing，though?,なにもありませんけど？,软体不稳
 PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。,仿生人三人一组。所有仿生人互认。\n若游戏结束时仅有一名仿生人存活，则所有仿生人都获胜。\n仿生人没有击杀能力。若游戏结束时有两名以上仿生人存活，仿生人不能获胜。,撲克臉是由三人構成的職業。他們可以互相認出彼此！\n如果三人中有兩人死亡，而剩餘一人活到最後，那麼三人都將取得勝利！（依規則可能是只有活到最後的撲克臉獲勝）\n撲克臉沒有擊殺能力。如果三人中有兩人以上存活，那麼三人都將失敗。
 PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する,只有存活的仿生人能获胜,只有活到最後的撲克臉才能獲勝。
 GhostRoleAbilitySuccess,The ability of the ghost role has been activated.,幽霊役職の能力を発動しました。
-GhostRoleAbilityCoolReset,,能力のクールタイムのリセットに伴い，守護エフェクトを発生させました。
+GhostRoleAbilityCoolReset,The protective effect was generated with the resetting of the cooldown time of the ability.,能力のクールタイムのリセットに伴い，守護エフェクトを発生させました。
 GhostRoleAbilityNotCoolReset,The protective effect was generated with the resetting of the cooldown time of the ability.,クールタイムが存在しない設定の為，守護エフェクトは発生していません。
 GhostRoleAbilitylimitCount,The remaining number of usable abilities is {0}.,残りアビリティ使用可能回数は，{0}回です。
 GhostRoleAbilityMissNotRole,The current role does not have the ability to activate upon death.,現在の役職は，死亡時に発動できるアビリティを有しません。
