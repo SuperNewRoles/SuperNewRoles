@@ -1417,10 +1417,13 @@ public static class ExilePlayerPatch
                 //一応会議中に死んだ時とかは蘇らないようにしておく
                 if (!RoleClass.IsMeeting)
                 {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
-                    writer.Write(__instance.PlayerId);
-                    writer.EndRPC();
-                    RPCProcedure.ReviveRPC(__instance.PlayerId);
+                    new LateTask(() =>
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
+                        writer.Write(__instance.PlayerId);
+                        writer.EndRPC();
+                        RPCProcedure.ReviveRPC(__instance.PlayerId);
+                    }, 0.1f, "Revive Frankenstein");
                 }
                 if (__instance.AmOwner)
                     Frankenstein.OnMurderMonster(__instance);
