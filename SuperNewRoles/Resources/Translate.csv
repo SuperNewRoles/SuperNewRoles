@@ -229,15 +229,15 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
 OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
-CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない
-ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,タスク完了後に憑依能力を開放する。
+CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない,,死者不具有憑依能力
+ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,タスク完了後に憑依能力を開放する。,,任務完成後啟用憑依能力
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
 ProhibitModColor,Prohibit mod color,Modカラーを禁止にする,禁止使用模组自定义颜色,禁止Mod顏色
-ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する,更改间隙室的视野遮蔽效果,修改移動平台上下的影子
-GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼可以從下方看到上方
-DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,內鬼可以從上方看到下方
-MoveGapRoomDownload,Move GapRoom Download,昇降機のダウンロードタスクを移動する
+ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する,更改间隙室的视野遮蔽效果,修改間隙室的視野遮蔽效果
+GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼於間隙室可以從下方看到上方
+DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,僅內鬼於間隙室可以從上方看到下方
+MoveGapRoomDownload,Move GapRoom Download,昇降機のダウンロードタスクを移動する,,移動間隙室的下載任務位置
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置,模式設定
@@ -1001,12 +1001,12 @@ MayorFriendsDescription,It is judged as Crewmate.\nBut is in the Jackal camp. Ja
 VentMakerName,VentMaker,ベントメーカー,管道工,管道工
 VentMakerTitle1,Let's make a vent!,ベントを作ろう！,挖掘管道,挖掘通風管道
 GhostMechanicName,GhostMechanic,亡霊整備士,亡灵工程师,亡靈工程師
-GhostMechanicDescription,It is a ghost role that can repair sabotage.\nThe cool time is the same as that of the vanilla role of guardian angel. (The initial coold time is 0 seconds，and the coold time is not reset in the meeting after the ability is used.)\nWhen in SHR mode，abilities become available after the conference phase has elapsed.\n\n... I left the repair of the impostor's interference to the rest of the crew and waited in front of the emergency call button.\nBut no matter how long it took，it was never fixed... And then I was killed.\nIt seems that what was there was the impostor who pretended to be repairing it.\nSo now I'm going to... I'm going to sabotage Impostor!!!,サボタージュを修復する事ができる幽霊役職です。\nクールタイムはバニラ役職の守護天使と同様です。(初回クールタイムは0秒で，アビリティ使用後は会議でクールタイムのリセットを行わない)\nSHRモード時は，会議フェイズを経過してからアビリティが使用可能になります。\n\n...私はインポスターの妨害の修復を他のクルーに任せ、緊急招集ボタンの前で待機していた。\nしかし、いつまで経っても直らず...そして殺された。\nそこにいたのは修復しているふりをしていたインポスターだったようだ。\nだから今度は私が...インポスターを妨害してやる!!!
+GhostMechanicDescription,It is a ghost role that can repair sabotage.\nThe cool time is the same as that of the vanilla role of guardian angel. (The initial coold time is 0 seconds，and the coold time is not reset in the meeting after the ability is used.)\nWhen in SHR mode，abilities become available after the conference phase has elapsed.\n\n... I left the repair of the impostor's interference to the rest of the crew and waited in front of the emergency call button.\nBut no matter how long it took，it was never fixed... And then I was killed.\nIt seems that what was there was the impostor who pretended to be repairing it.\nSo now I'm going to... I'm going to sabotage Impostor!!!,サボタージュを修復する事ができる幽霊役職です。\nクールタイムはバニラ役職の守護天使と同様です。(初回クールタイムは0秒で，アビリティ使用後は会議でクールタイムのリセットを行わない)\nSHRモード時は，会議フェイズを経過してからアビリティが使用可能になります。\n\n...私はインポスターの妨害の修復を他のクルーに任せ、緊急招集ボタンの前で待機していた。\nしかし、いつまで経っても直らず...そして殺された。\nそこにいたのは修復しているふりをしていたインポスターだったようだ。\nだから今度は私が...インポスターを妨害してやる!!!,,亡靈工程師可以修復破壞。\n冷卻時間與守護天使相同。(初始冷卻時間為0秒，使用能力後不會在會議中重置冷卻時間)\n在SHR模式下，能力會在會議結束後才能使用。\n\n...我把內鬼的破壞修好的事交給其他船員，自己在緊急會議召集按鈕前等待。\n但是，不管過了多久都沒有修好...然後我就被殺了。\n那裡的人似乎是假裝在修理的內鬼。\n所以現在我要...我要破壞內鬼!!!
 GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the machine.,機械を治せなかった未練を解消しよう,弥补生前未能修好飞船的遗憾,彌補生前未能修好飛船的遺憾
 GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数,可修复破坏次数,可修復破壞次數
 GhostMechanicButtonName,Repair,修復,修复,修復
 GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次,剩餘{0}次
-GhostMechanicAbilityUseError,The ability cannot be activated when sabotage is not occurring.,サボタージュが発生していない時に，能力を発動する事はできません。
+GhostMechanicAbilityUseError,The ability cannot be activated when sabotage is not occurring.,サボタージュが発生していない時に，能力を発動する事はできません。,,沒有發生破壞時不能使用能力。
 EvilHackerName,EvilHacker,イビルハッカー,骇客,駭客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利,駭入飛船獲取勝利
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
@@ -1188,7 +1188,7 @@ FinderDescription,After a set number of kills，the name of the crew member with
 FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,接头人确认叛徒需要进行的击杀次数,接頭人確認叛徒需要進行的擊殺次數
 PhotographerName,Photographer,写真屋,摄影师,攝影師
 PhotographerTitle1,Let's capture everyone on camera!,みんなの姿をカメラに収めよう ,茄~子！,3...2...1...！
-PhotographerDescription,I can capture people within my field of view.\nIf I photograph all the survivors， I achieve a solo victory.\nSay cheese! Smile， won't you?,視界内にいる人を撮影することが出来ます。\n生存者全員を写真に収めると単独勝利します。\nはい、チーズ。笑って？,摄影师可以给自己视野内的所有玩家拍照。\n若摄影师一次给所有存活玩家拍照，摄影师单独获胜。\n来，茄~子！对，笑一个！,攝影師可以拍攝視界內的玩家。\n如果拍攝了所有的生還者，攝影師可以獲得單獨勝利。\n來~笑個！
+PhotographerDescription,I can capture people within my field of view.\nIf I photograph all the survivors， I achieve a solo victory.\nSay cheese! Smile， won't you?,視界内にいる人を撮影することが出来ます。\n生存者全員を写真に収めると単独勝利します。\nはい、チーズ。笑って？,摄影师可以给自己视野内的所有玩家拍照。\n若摄影师一次给所有存活玩家拍照，摄影师单独获胜。\n来，茄~子！对，笑一个！,攝影師可以拍攝視野範圍內的玩家。\n如果拍攝了所有的生還者，攝影師可以獲得單獨勝利。\n來~笑個！
 PhotographerIsBonus,Bonuscooltime is valid,ボーナスクールタイムが有効,摄影师一次拍摄多名玩家可以缩减冷却,摄影師一次拍攝多名玩家可以縮減冷卻
 PhotographerBonusCount,Number of people to be photographed that will be Bonuscooltime.,ボーナスクールタイムになる撮影人数,摄影师缩减冷却需要拍摄的人数,摄影師縮減冷卻需要拍攝的人數
 PhotographerBonusCoolTime,Bonus Cool Time,ボーナスクールタイム,摄影师一次拍摄多名玩家后的缩减冷却,摄影師一次拍攝多名玩家後的縮減冷卻
@@ -1621,39 +1621,39 @@ PokerfaceName,Pokerface,ポーカーフェイス,仿生人,撲克臉
 PokerfaceTitle1,Nothing，though?,なにもありませんけど？,软体不稳定,無事發生對吧？
 PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。,仿生人三人一组。所有仿生人互认。\n若游戏结束时仅有一名仿生人存活，则所有仿生人都获胜。\n仿生人没有击杀能力。若游戏结束时有两名以上仿生人存活，仿生人不能获胜。,撲克臉是由三人構成的職業。他們可以互相認出彼此！\n如果三人中有兩人死亡，而剩餘一人活到最後，那麼三人都將取得勝利！（依規則可能是只有活到最後的撲克臉獲勝）\n撲克臉沒有擊殺能力。如果三人中有兩人以上存活，那麼三人都將失敗。
 PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する,只有存活的仿生人能获胜,只有活到最後的撲克臉才能獲勝。
-GhostRoleAbilitySuccess,The ability of the ghost role has been activated.,幽霊役職の能力を発動しました。
-GhostRoleAbilityCoolReset,The protective effect was generated with the resetting of the cooldown time of the ability.,能力のクールタイムのリセットに伴い，守護エフェクトを発生させました。
-GhostRoleAbilityNotCoolReset,The protective effect was generated with the resetting of the cooldown time of the ability.,クールタイムが存在しない設定の為，守護エフェクトは発生していません。
-GhostRoleAbilitylimitCount,The remaining number of usable abilities is {0}.,残りアビリティ使用可能回数は，{0}回です。
-GhostRoleAbilityMissNotRole,The current role does not have the ability to activate upon death.,現在の役職は，死亡時に発動できるアビリティを有しません。
-GhostRoleAbilityMissNotRelease,Because one turn has not elapsed since the death，the ability cannot be used.\nThe abilities will be opened from the next Task Phase onward.,死亡してから1ターン経過していない為，アビリティを使用できません。\n次回のタスクフェイズ以降からアビリティを開放します。
-GhostRoleAbilityMissLimit,The player cannot use abilities because one turn has not elapsed since his death.\nThe abilities will be opened from the next Task Phase or later.,使用可能回数を使い切っている為，アビリティを使用できません。発動を無効化しました。
-GhostRoleAbilityMissConditionNotMet,The activation conditions were not met.,発動条件を満たしていませんでした。
-SpiderName,Spider,スパイダー
-SpiderTitle1,Tangle，stop，and finish.,絡めて止めて、そして仕留める
-SpiderTitle2,Its threads entwine even life.,その糸は命さえも絡みとる
-SpiderDescription,You can set traps that the crew can't move when they step on them.\nKilling a crew member caught in the trap will shorten the kill cool.,クルーが踏むと身動き出来なくなる罠を仕掛けることが出来ます。\n罠に捕まったクルーをキルするとキルクールが短くなります。
-SpiderButtonName,Trap!,罠
-SpiderButtonCooldownSetting,Trap Installation Cool Time,罠設置クールタイム 
-SpiderButtonActivateSetting,Trap Activation Seconds,罠有効化秒数 
-SpiderSpentSetting,total hours spent working,拘束時間
-SpiderTrapKillTimeSetting,Trap Killtime,罠キルクールタイム
-FrankensteinName,Frankenstein,フランケンシュタイン
-FrankensteinTitle1,I seem to have created a monster.,私は怪物を造ってしまったようだ
-FrankensteinDescription,If you use the ability on a corpse， you will be able to revive and manipulate it.\nIn this state， you can only make one kill.\nAfter the kill， the corpse reverts back to its original state.\nIf you survive after a certain number of kills， you win the game.\n\nI seem to have created a monster.\nAnd there are other monsters on this ship.\nIf this happens， I will have no choice but to survive by pitting that monster against my monster.,死体に能力を使用すると、その死体を蘇生し操作することが出来るようになります。\nその状態で一度だけキルをすることが出来ます。\nキルをしたら死体に戻ります。\n一定数キルをした上で生き残ると横取り勝利します。\n\n私は怪物を造ってしまったようだ。\nそしてこの船には他に怪物がいるらしい。\nこうなったらその怪物と私の怪物をぶつけて生き残るしかあるまい。
-FrankensteinCreateCoolTimeSetting,Cool time for creation a monster,化物作成のクールタイム
-FrankensteinWinKillCountSetting,Number of kills needed to win,勝利に必要なキル数
-FrankensteinMonsterImpostorLightSetting,Imposter vision of a monster,化物がインポスター視野
-FrankensteinMonsterCanVentOetting,Monsters can use vent,怪物がベントを使える
-FrankensteinCreateMonsterButtonName,Create Monster,怪物作成
-BatName,Bat,コウモリ
-BatTitle1,Sound deceives all.,音は全てを惑わす
-BatDescription,This position allows you to use ultrasonic waves to stop the information updates of information devices such as Admins and Vitals for a certain period of time.\nShift and manipulate information to mislead the village.,超音波で一定時間アドミンやバイタル等の情報機器の情報更新を止める事ができる役職です。\n情報をずらし、操り、村を惑わしましょう。
-BatButtonName,Ultrasonic,超音波
-BatButtonDurationSetting,Number of seconds to stop updating,更新を止める秒数
-BatIsCanUseCountSetting,Limit the number of times the ability is used.,能力の使用回数を制限する
-BatCanUseCountSetting,Number of times the ability can be used,能力を使用できる回数
-BatNumTextName,Remaining {0} times,残り{0}回
+GhostRoleAbilitySuccess,The ability of the ghost role has been activated.,幽霊役職の能力を発動しました。,,幽靈職業的能力已發動。
+GhostRoleAbilityCoolReset,The protective effect was generated with the resetting of the cooldown time of the ability.,能力のクールタイムのリセットに伴い，守護エフェクトを発生させました。,,守護效果發動，已重置能力的冷卻時間。
+GhostRoleAbilityNotCoolReset,The protective effect was generated with the resetting of the cooldown time of the ability.,クールタイムが存在しない設定の為，守護エフェクトは発生していません。,,守護效果無法發動，因為沒有設置冷卻時間。
+GhostRoleAbilitylimitCount,The remaining number of usable abilities is {0}.,残りアビリティ使用可能回数は，{0}回です。,,能力剩餘使用次數為{0}次。
+GhostRoleAbilityMissNotRole,The current role does not have the ability to activate upon death.,現在の役職は，死亡時に発動できるアビリティを有しません。,,現在的職業沒有死亡時能發動的能力。
+GhostRoleAbilityMissNotRelease,Because one turn has not elapsed since the death，the ability cannot be used.\nThe abilities will be opened from the next Task Phase onward.,死亡してから1ターン経過していない為，アビリティを使用できません。\n次回のタスクフェイズ以降からアビリティを開放します。,,因為死亡後還沒有經過一個回合，所以無法使用能力。\n下一個任務階段之後，能力將會啟用。
+GhostRoleAbilityMissLimit,The player cannot use abilities because one turn has not elapsed since his death.\nThe abilities will be opened from the next Task Phase or later.,使用可能回数を使い切っている為，アビリティを使用できません。発動を無効化しました。,,能力發動無效。已達到能力使用次數上限。
+GhostRoleAbilityMissConditionNotMet,The activation conditions were not met.,発動条件を満たしていませんでした。,,無法發動能力。未達成能力發動條件。
+SpiderName,Spider,スパイダー,,蜘蛛怪
+SpiderTitle1,Tangle，stop，and finish.,絡めて止めて、そして仕留める,,纏住並阻止，然後了結
+SpiderTitle2,Its threads entwine even life.,その糸は命さえも絡みとる,,蜘蛛之絲連命都能從地獄拉起
+SpiderDescription,You can set traps that the crew can't move when they step on them.\nKilling a crew member caught in the trap will shorten the kill cool.,クルーが踏むと身動き出来なくなる罠を仕掛けることが出来ます。\n罠に捕まったクルーをキルするとキルクールが短くなります。,,蜘蛛怪可以設置蜘蛛網，當船員踩到蜘蛛網時，會被困住無法移動。\n擊殺被蜘蛛網困住的船員，可以縮短你的殺人冷卻時間。
+SpiderButtonName,Trap!,罠,,蜘蛛網
+SpiderButtonCooldownSetting,Trap Installation Cool Time,罠設置クールタイム,,蜘蛛網設置冷卻時間
+SpiderButtonActivateSetting,Trap Activation Seconds,罠有効化秒数,,蜘蛛網啟用時間
+SpiderSpentSetting,total hours spent working,拘束時間,,被蜘蛛網困住的時間
+SpiderTrapKillTimeSetting,Trap Killtime,罠キルクールタイム,,擊殺被蜘蛛網困住的船員後的冷卻時間
+FrankensteinName,Frankenstein,フランケンシュタイン,,科學怪人
+FrankensteinTitle1,I seem to have created a monster.,私は怪物を造ってしまったようだ,,我好像造了個怪物
+FrankensteinDescription,If you use the ability on a corpse， you will be able to revive and manipulate it.\nIn this state， you can only make one kill.\nAfter the kill， the corpse reverts back to its original state.\nIf you survive after a certain number of kills， you win the game.\n\nI seem to have created a monster.\nAnd there are other monsters on this ship.\nIf this happens， I will have no choice but to survive by pitting that monster against my monster.,死体に能力を使用すると、その死体を蘇生し操作することが出来るようになります。\nその状態で一度だけキルをすることが出来ます。\nキルをしたら死体に戻ります。\n一定数キルをした上で生き残ると横取り勝利します。\n\n私は怪物を造ってしまったようだ。\nそしてこの船には他に怪物がいるらしい。\nこうなったらその怪物と私の怪物をぶつけて生き残るしかあるまい。,,科學怪人可以使用能力操控屍體並可以進行一次擊殺。\n完成擊殺後，屍體將恢復原狀。\n在達到一定的擊殺數量後將獨自獲勝。\n\n我好像造了個怪物。\n而且這艘船上還有其他怪物。\n如果這樣的話，我只能讓我的怪物與那個怪物對決來生存下去。
+FrankensteinCreateCoolTimeSetting,Cool time for creation a monster,化物作成のクールタイム,,創造怪物的冷卻時間
+FrankensteinWinKillCountSetting,Number of kills needed to win,勝利に必要なキル数,,科學怪人獲勝所需的擊殺數量
+FrankensteinMonsterImpostorLightSetting,Imposter vision of a monster,化物がインポスター視野,,怪物擁有內鬼視野
+FrankensteinMonsterCanVentOetting,Monsters can use vent,怪物がベントを使える,,怪物可以使用通風管道
+FrankensteinCreateMonsterButtonName,Create Monster,怪物作成,,創造怪物
+BatName,Bat,コウモリ,,蝙蝠怪
+BatTitle1,Sound deceives all.,音は全てを惑わす,,超音波操控一切
+BatDescription,This position allows you to use ultrasonic waves to stop the information updates of information devices such as Admins and Vitals for a certain period of time.\nShift and manipulate information to mislead the village.,超音波で一定時間アドミンやバイタル等の情報機器の情報更新を止める事ができる役職です。\n情報をずらし、操り、村を惑わしましょう。,,蝙蝠怪可以使用超音波來停止管理員地圖和生命探測器等設備的更新。\n使用超音波來誤導船員。
+BatButtonName,Ultrasonic,超音波,,超音波
+BatButtonDurationSetting,Number of seconds to stop updating,更新を止める秒数,,設備停止更新的秒數
+BatIsCanUseCountSetting,Limit the number of times the ability is used.,能力の使用回数を制限する,,限制超音波的可使用次數
+BatCanUseCountSetting,Number of times the ability can be used,能力を使用できる回数,,能力的使用次數上限
+BatNumTextName,Remaining {0} times,残り{0}回,,剩餘{0}次
 
 #NewRoleTranslation
 
