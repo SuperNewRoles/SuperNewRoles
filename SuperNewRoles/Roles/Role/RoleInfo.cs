@@ -12,6 +12,7 @@ public class RoleInfo
     public string NameKey { get; }
     public Color32 RoleColor { get; }
     public TeamRoleType Team { get; }
+    public TeamType TeamType { get; }
     public bool IsGhostRole { get; }
     private Func<PlayerControl, RoleBase> _createInstance { get; }
     public RoleInfo(
@@ -19,8 +20,9 @@ public class RoleInfo
         Func<PlayerControl, RoleBase> createInstance,
         RoleId role,
         string namekey,
-        TeamRoleType team,
-        Color32 roleColor
+        Color32 roleColor,
+        TeamRoleType team = TeamRoleType.Crewmate,
+        TeamType teamType = TeamType.Crewmate
         )
     {
         this.RoleObjectType = roleObjectType;
@@ -30,6 +32,7 @@ public class RoleInfo
         this.Team = team;
         this.IsGhostRole = RoleObjectType.IsSubclassOf(typeof(IGhostRole));
         this.RoleColor = roleColor;
+        this.TeamType = teamType;
         RoleInfoManager.RoleInfos.Add(role, this);
     }
     public RoleBase CreateInstance(PlayerControl player)

@@ -158,6 +158,31 @@ public static class CustomRoles
             return ModTranslation.GetString($"{roleInfo.NameKey}Name");
         return $"{IntroData.GetIntrodata(role, player, IsImpostorReturn)?.NameKey}Name";
     }
+    public static string GetRoleNameKey(PlayerControl player, bool IsImpostorReturn = false)
+    {
+        return GetRoleNameKey(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static string GetRoleNameKey(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return roleInfo.NameKey;
+        return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.NameKey;
+    }
+    public static string GetRoleNameOnColor(PlayerControl player, bool IsImpostorReturn = false)
+    {
+        return GetRoleNameOnColor(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static string GetRoleNameOnColor(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return CustomOptionHolder.Cs(roleInfo.RoleColor, $"{roleInfo.NameKey}Name");
+        IntroData intro = IntroData.GetIntrodata(role, player, IsImpostorReturn);
+        if (intro != null)
+            return null;
+        return CustomOptionHolder.Cs(intro.color, $"{intro?.NameKey}Name");
+    }
     public static TeamRoleType GetRoleTeam(PlayerControl player, bool IsImpostorReturn=false)
     {
         return GetRoleTeam(player.GetRole(), player, IsImpostorReturn);
@@ -176,12 +201,16 @@ public static class CustomRoles
             return roleInfo.IsGhostRole;
         return IntroData.GetIntrodata(role)?.IsGhostRole ?? false;
     }
-    public static string GetRoleIntro(RoleId role)
+    public static string GetRoleIntro(PlayerControl player)
+    {
+        return GetRoleIntro(player.GetRole(), player);
+    }
+    public static string GetRoleIntro(RoleId role, PlayerControl player = null)
     {
         IntroInfo introInfo = IntroInfo.GetIntroInfo(role);
         if (introInfo != null)
             return introInfo.IntroDesc;
-        return IntroData.GetIntrodata(role)?.TitleDesc;
+        return IntroData.GetIntrodata(role, player)?.TitleDesc;
     }
     public static string GetRoleDescription(RoleId role)
     {
@@ -189,5 +218,16 @@ public static class CustomRoles
         if (roleInfo != null)
             return ModTranslation.GetString($"{roleInfo.NameKey}Description");
         return IntroData.GetIntrodata(role)?.Description;
+    }
+    public static TeamType GetRoleTeamType(PlayerControl player, bool IsImpostorReturn = false)
+    {
+        return GetRoleTeamType(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static TeamType GetRoleTeamType(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return roleInfo.TeamType;
+        return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.TeamType ?? TeamType.Error;
     }
 }

@@ -233,7 +233,7 @@ public class CustomOption
                 TeamRoleType.Crewmate => CustomOptionType.Crewmate,
                 _ => CustomOptionType.Generic
             };
-        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max, isHidden, roleId);
+        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", CustomRoles.GetRoleColor(roleId), max, isHidden, roleId);
     }
 
     public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag)

@@ -13,8 +13,9 @@ public class Bestfalsecharge : RoleBase, IWrapUpHandler
         (p) => new Bestfalsecharge(p),
         RoleId.Bestfalsecharge,
         "Bestfalsecharge",
+        RoleClass.CrewmateWhite,
         TeamRoleType.Crewmate,
-        RoleClass.CrewmateWhite
+        TeamType.Crewmate
         );
     public static new OptionInfo Optioninfo = new(RoleId.Bestfalsecharge, 403200, true);
     public static new IntroInfo Introinfo = new(RoleId.Bestfalsecharge);

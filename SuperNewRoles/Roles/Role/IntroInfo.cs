@@ -12,7 +12,8 @@ public class IntroInfo
     public RoleTypes IntroSound;
     public RoleId Role;
     public short IntroNum;
-    public string NameKey => RoleInfoManager.GetRoleInfo(Role)?.NameKey;
+    public string NameKey => _nameKey != null ? _nameKey : _nameKey = RoleInfoManager.GetRoleInfo(Role)?.NameKey;
+    private string _nameKey;
     private string _titleDesc;
     public string IntroDesc
     {
