@@ -778,6 +778,11 @@ class MeetingHudStartPatch
                 SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
+
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            ReleaseGhostAbility.MeetingHudStartPostfix();
+        }
         NiceMechanic.StartMeeting();
         Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.TimerStop();
         TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
@@ -848,6 +853,15 @@ class MeetingHudStartPatch
                     break;
                 case RoleId.Crook:
                     Crook.Ability.InClientMode.MeetingHudStartPostfix(__instance);
+                    break;
+            }
+        }
+        else if (PlayerControl.LocalPlayer.IsDead())
+        {
+            switch (PlayerControl.LocalPlayer.GetGhostRole())
+            {
+                case RoleId.GhostMechanic:
+                    GhostMechanic.MeetingHudStart();
                     break;
             }
         }

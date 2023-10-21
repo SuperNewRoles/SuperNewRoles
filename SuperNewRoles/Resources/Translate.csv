@@ -1000,10 +1000,12 @@ MayorFriendsDescription,It is judged as Crewmate.\nBut is in the Jackal camp. Ja
 VentMakerName,VentMaker,ベントメーカー,管道工,管道工
 VentMakerTitle1,Let's make a vent!,ベントを作ろう！,挖掘管道,挖掘通風管道
 GhostMechanicName,GhostMechanic,亡霊整備士,亡灵工程师,亡靈工程師
+GhostMechanicDescription,It is a ghost role that can repair sabotage.\nThe cool time is the same as that of the vanilla role of guardian angel. (The initial coold time is 0 seconds，and the coold time is not reset in the meeting after the ability is used.)\nWhen in SHR mode，abilities become available after the conference phase has elapsed.\n\n... I left the repair of the impostor's interference to the rest of the crew and waited in front of the emergency call button.\nBut no matter how long it took，it was never fixed... And then I was killed.\nIt seems that what was there was the impostor who pretended to be repairing it.\nSo now I'm going to... I'm going to sabotage Impostor!!!,サボタージュを修復する事ができる幽霊役職です。\nクールタイムはバニラ役職の守護天使と同様です。(初回クールタイムは0秒で，アビリティ使用後は会議でクールタイムのリセットを行わない)\nSHRモード時は，会議フェイズを経過してからアビリティが使用可能になります。\n\n...私はインポスターの妨害の修復を他のクルーに任せ、緊急招集ボタンの前で待機していた。\nしかし、いつまで経っても直らず...そして殺された。\nそこにいたのは修復しているふりをしていたインポスターだったようだ。\nだから今度は私が...インポスターを妨害してやる!!!
 GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the machine.,機械を治せなかった未練を解消しよう,弥补生前未能修好飞船的遗憾,彌補生前未能修好飛船的遺憾
 GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数,可修复破坏次数,可修復破壞次數
 GhostMechanicButtonName,Repair,修復,修复,修復
 GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次,剩餘{0}次
+GhostMechanicAbilityUseError,The ability cannot be activated when sabotage is not occurring.,サボタージュが発生していない時に，能力を発動する事はできません。
 EvilHackerName,EvilHacker,イビルハッカー,骇客,駭客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利,駭入飛船獲取勝利
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
@@ -1618,6 +1620,14 @@ PokerfaceName,Pokerface,ポーカーフェイス,仿生人,撲克臉
 PokerfaceTitle1,Nothing，though?,なにもありませんけど？,软体不稳定,無事發生對吧？
 PokerfaceDescription,This role is elected by a team of three. They start with each other recognizable!\nIf you survive to the end with two of the three people on your team dead，everyone on your team wins!\nThere is no kill ability.If more than 2 of your team members are alive，you lose.,この役職は３人チームで選出されます。お互いは認知できた状態でスタート！\nチームの３人中２人が死んだ状態で最後まで生き残ればチームの全員が勝利だ！\nキル能力はない。2人以上生きてたら敗北だ。,仿生人三人一组。所有仿生人互认。\n若游戏结束时仅有一名仿生人存活，则所有仿生人都获胜。\n仿生人没有击杀能力。若游戏结束时有两名以上仿生人存活，仿生人不能获胜。,撲克臉是由三人構成的職業。他們可以互相認出彼此！\n如果三人中有兩人死亡，而剩餘一人活到最後，那麼三人都將取得勝利！（依規則可能是只有活到最後的撲克臉獲勝）\n撲克臉沒有擊殺能力。如果三人中有兩人以上存活，那麼三人都將失敗。
 PokerfaceWinnerOnlyAlive,Only surviving poker faces win.,生き残ったポーカーフェイスのみ勝利する,只有存活的仿生人能获胜,只有活到最後的撲克臉才能獲勝。
+GhostRoleAbilitySuccess,The ability of the ghost role has been activated.,幽霊役職の能力を発動しました。
+GhostRoleAbilityCoolReset,The protective effect was generated with the resetting of the cooldown time of the ability.,能力のクールタイムのリセットに伴い，守護エフェクトを発生させました。
+GhostRoleAbilityNotCoolReset,The protective effect was generated with the resetting of the cooldown time of the ability.,クールタイムが存在しない設定の為，守護エフェクトは発生していません。
+GhostRoleAbilitylimitCount,The remaining number of usable abilities is {0}.,残りアビリティ使用可能回数は，{0}回です。
+GhostRoleAbilityMissNotRole,The current role does not have the ability to activate upon death.,現在の役職は，死亡時に発動できるアビリティを有しません。
+GhostRoleAbilityMissNotRelease,Because one turn has not elapsed since the death，the ability cannot be used.\nThe abilities will be opened from the next Task Phase onward.,死亡してから1ターン経過していない為，アビリティを使用できません。\n次回のタスクフェイズ以降からアビリティを開放します。
+GhostRoleAbilityMissLimit,The player cannot use abilities because one turn has not elapsed since his death.\nThe abilities will be opened from the next Task Phase or later.,使用可能回数を使い切っている為，アビリティを使用できません。発動を無効化しました。
+GhostRoleAbilityMissConditionNotMet,The activation conditions were not met.,発動条件を満たしていませんでした。
 SpiderName,Spider,スパイダー
 SpiderTitle1,Tangle，stop，and finish.,絡めて止めて、そして仕留める
 SpiderTitle2,Its threads entwine even life.,その糸は命さえも絡みとる

@@ -52,7 +52,8 @@ public static class Helpers
     }
 
     /// <summary>
-    /// 守護ガードのエフェクトを表示する(キルクールもリセット)
+    /// 守護ガードのエフェクトを表示する。
+    /// showerのキルクール及び守護クールのリセットも行う。
     /// </summary>
     /// <param name="shower">エフェクトを見れる人</param>
     /// <param name="target">エフェクトをかける人</param>

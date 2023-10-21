@@ -2362,38 +2362,21 @@ static class HudManagerStartPatch
 
                 foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                 {
-                    switch (task.TaskType)
+                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
                     {
-                        case TaskTypes.FixLights:
-                            RPCHelper.StartRPC(CustomRPC.FixLights).EndRPC();
-                            RPCProcedure.FixLights();
-                            break;
-                        case TaskTypes.RestoreOxy:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
-                            break;
-                        case TaskTypes.ResetReactor:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 16);
-                            break;
-                        case TaskTypes.ResetSeismic:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Laboratory, 16);
-                            break;
-                        case TaskTypes.FixComms:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
-                            break;
-                        case TaskTypes.StopCharles:
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
-                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
-                            break;
+                        Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(task.TaskType);
+                        break;
                     }
                 }
+
                 if (RoleClass.GhostMechanic.LimitCount <= 0)
                 {
                     GhostMechanicNumRepairText.text = "";
                 }
+
+                GhostMechanic.ResetCool();
             },
-            (bool isAlive, RoleId role) => { return !isAlive && PlayerControl.LocalPlayer.IsGhostRole(RoleId.GhostMechanic) && RoleClass.GhostMechanic.LimitCount > 0; },
+            (bool isAlive, RoleId role) => { return !isAlive && GhostMechanic.ButtonDisplayCondition(); },
             () =>
             {
                 bool sabotageActive = false;
@@ -2404,9 +2387,10 @@ static class HudManagerStartPatch
                         break;
                     }
                 GhostMechanicNumRepairText.text = string.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
-                return sabotageActive && PlayerControl.LocalPlayer.CanMove;
+                if (ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return sabotageActive && PlayerControl.LocalPlayer.CanMove;
+                else return sabotageActive && PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.GhostRoleSetTarget();
             },
-            () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
+            () => { GhostMechanic.ResetCool(true); },
             RoleClass.GhostMechanic.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
@@ -3375,7 +3359,7 @@ static class HudManagerStartPatch
         Bat.Button.SetupCustomButtons(__instance);
       
         Rocket.Button.SetupCustomButtons(__instance);
-      
+
         WellBehaver.SetupCustomButtons(__instance);
 
         Spider.Button.SetupCustomButtons(__instance);

@@ -698,6 +698,7 @@ public class CustomOptionHolder
     public static CustomRoleOption GhostMechanicOption;
     public static CustomOption GhostMechanicPlayerCount;
     public static CustomOption GhostMechanicRepairLimit;
+    public static CustomOption GhostMechanicCooldown;
 
     public static CustomRoleOption EvilHackerOption;
     public static CustomOption EvilHackerPlayerCount;
@@ -1690,9 +1691,10 @@ public class CustomOptionHolder
         MayorPlayerCount = Create(400701, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorOption);
         MayorVoteCount = Create(400702, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorOption);
 
-        GhostMechanicOption = SetupCustomRoleOption(400800, false, RoleId.GhostMechanic);
-        GhostMechanicPlayerCount = Create(400801, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
-        GhostMechanicRepairLimit = Create(400802, false, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
+        GhostMechanicOption = SetupCustomRoleOption(400800, true, RoleId.GhostMechanic);
+        GhostMechanicPlayerCount = Create(400801, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
+        GhostMechanicRepairLimit = Create(400802, true, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
+        GhostMechanicCooldown = Create(400803, true, CustomOptionType.Crewmate, "NiceScientistCooldownSetting", 60f, 0f, 120f, 5f, GhostMechanicOption);
 
         MadmateOption = SetupCustomRoleOption(400900, true, RoleId.Madmate);
         MadmatePlayerCount = Create(400901, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadmateOption);
