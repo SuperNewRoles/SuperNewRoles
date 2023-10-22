@@ -105,8 +105,10 @@ public class FixedUpdate
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();
                 JumpDancer.FixedUpdate();
+                Bat.FixedUpdate();
                 Rocket.FixedUpdate();
                 WellBehaver.FixedUpdate();
+                Frankenstein.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -247,6 +249,7 @@ public class FixedUpdate
                         case RoleId.Vulture:
                         case RoleId.Amnesiac:
                         case RoleId.ShermansServant:
+                        case RoleId.Frankenstein:
                             foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
                             {
                                 if (arrow.Value?.arrow != null)
@@ -278,7 +281,13 @@ public class FixedUpdate
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                 }
-
+                else
+                {
+                    if (!PlayerControl.LocalPlayer.IsGhostRole(RoleId.DefaultRole) && PlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.CrewmateGhost)
+                    {
+                        NormalButtonDestroy.DisableHauntButton(); // 幽霊役職で, 自身がクルーメイトゴーストの場合憑依ボタンを非表示にする。
+                    }
+                }
                 break;
             case ModeId.NotImpostorCheck:
                 if (AmongUsClient.Instance.AmHost)

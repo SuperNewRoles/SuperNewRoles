@@ -44,6 +44,8 @@ class MapCustom
     public static CustomOption GapRoomShadowIgnoresImpostors;
     /// <summary>非インポスターが上から下を見ることができない設定</summary>
     public static CustomOption DisableGapRoomShadowForNonImpostor;
+    /// <summary>昇降右のダウンロードをはしごの下に移動する設定</summary>
+    public static CustomOption MoveGapRoomDownload;
 
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
@@ -85,6 +87,7 @@ class MapCustom
         ModifyGapRoomOneWayShadow = Create(103210, false, CustomOptionType.Generic, "ModifyGapRoomOneWayShadow", false, AirshipSetting);
         GapRoomShadowIgnoresImpostors = Create(103211, false, CustomOptionType.Generic, "GapRoomShadowIgnoresImpostors", true, ModifyGapRoomOneWayShadow);
         DisableGapRoomShadowForNonImpostor = Create(103212, false, CustomOptionType.Generic, "DisableGapRoomShadowForNonImpostor", true, ModifyGapRoomOneWayShadow);
+        MoveGapRoomDownload = Create(103213, false, CustomOptionType.Generic, "MoveGapRoomDownload", false, AirshipSetting);
 
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);

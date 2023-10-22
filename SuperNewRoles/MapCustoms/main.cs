@@ -11,7 +11,7 @@ namespace SuperNewRoles.MapCustoms;
 
 public class MapCustomHandler
 {
-  
+
     public static bool IsMapCustom(MapCustomId mapCustomId, bool isDefaultOnly=true)
     {
         bool isCommonDecision = MapCustom.MapCustomOption.GetBool() && (ModeHandler.IsMode(ModeId.Default) || !isDefaultOnly);
@@ -69,14 +69,26 @@ class IntroCutsceneOnDestroyPatch
         //配電盤を移動させる
         MoveElecPad.MoveElecPads();
 
-        if (__instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
+        if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
         {
             GameObject gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;
             // ぬ～んを消す
-            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.GetBool())
+            if (MapCustom.AirshipDisableMovingPlatform.GetBool())
             {
                 gapRoom.GetComponentInChildren<MovingPlatformBehaviour>().gameObject.SetActive(false);
                 gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
+            }
+            // 昇降機右のダウンロードを下に移動
+            if (MapCustom.MoveGapRoomDownload.GetBool())
+            {
+                var downloadConsole = __instance.AllConsoles.FirstOrDefault(console => console.Room == SystemTypes.GapRoom && console.ValidTasks.Any(taskSet => taskSet.taskType == TaskTypes.UploadData));
+                if (downloadConsole != null)
+                {
+                    var localPosition = downloadConsole.transform.localPosition;
+                    localPosition.x = 3.6f;
+                    localPosition.y = -3.9f;
+                    downloadConsole.transform.localPosition = localPosition;
+                }
             }
         }
     }

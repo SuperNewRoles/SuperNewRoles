@@ -82,6 +82,7 @@ public static class DeviceClass
             if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.EvilHacker.IsMyAdmin && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
         }
     }
+    public static bool IsChanging = false;
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Update))]
     class MapCountOverlayUpdatePatch
     {
@@ -95,6 +96,8 @@ public static class DeviceClass
             bool IsUse = (MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin;
             if (IsUse)
             {
+                if (IsChanging)
+                    return false;
                 bool commsActive = false;
                 foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
                     if (task.TaskType == TaskTypes.FixComms) commsActive = true;
@@ -132,6 +135,11 @@ public static class DeviceClass
                             HashSet<int> hashSet = new();
                             int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
                             int count = 0;
+                            if (Roles.Impostor.Bat.RoleData.IsDeviceStop)
+                            {
+                                counterArea.UpdateCount(Roles.Impostor.Bat.RoleData.RoomAdminData.TryGetValue((int)counterArea.RoomType, out int batadmincount) ? batadmincount : 0);
+                                continue;
+                            }
                             List<int> colors = new();
                             // 死体の色で表示する数
                             int numDeadIcons = 0;
@@ -326,11 +334,36 @@ public static class DeviceClass
             {
                 __instance.Close();
             }
-            if (BlackHatHacker.IsMyVutals)
+            if (Roles.Impostor.Bat.RoleData.IsDeviceStop)
             {
-                __instance.BatteryText.gameObject.SetActive(false);
                 foreach (VitalsPanel vitals in __instance.vitals)
-                    vitals.gameObject.SetActive(BlackHatHacker.InfectedPlayerId.Contains(vitals.PlayerInfo.PlayerId) || vitals.PlayerInfo.Object.AmOwner);
+                {
+                    if (Roles.Impostor.Bat.RoleData.AliveData.TryGetValue(vitals.PlayerInfo.PlayerId, out bool IsSetAlive) ? IsSetAlive : false)
+                    {
+                        vitals.IsDiscon = false;
+                        vitals.IsDead = false;
+                        vitals.Background.sprite = __instance.PanelPrefab.Background.sprite;
+                        vitals.Cardio.gameObject.SetActive(true);
+                        vitals.Cardio.SetAlive();
+                    }
+                    else if (vitals.PlayerInfo.Disconnected)
+                    {
+                        vitals.SetDisconnected();
+                    }
+                    else
+                    {
+                        vitals.SetDead();
+                    }
+                }
+            }
+            else
+            {
+                if (BlackHatHacker.IsMyVutals)
+                {
+                    __instance.BatteryText.gameObject.SetActive(false);
+                    foreach (VitalsPanel vitals in __instance.vitals)
+                        vitals.gameObject.SetActive(BlackHatHacker.InfectedPlayerId.Contains(vitals.PlayerInfo.PlayerId) || vitals.PlayerInfo.Object.AmOwner);
+                }
             }
             if (!IsVitalRestrict || RoleClass.Doctor.Vital != null || BlackHatHacker.IsMyVutals) return;
             if (CachedPlayer.LocalPlayer.IsDead())
