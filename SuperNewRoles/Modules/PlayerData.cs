@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SuperNewRoles.Modules;
+
 public class PlayerData<T>
 {
     private Dictionary<byte, T> _data;
@@ -30,7 +31,7 @@ public class PlayerData<T>
             return _data != null ? _data.Count : 0;
         }
     }
-    public Dictionary<byte,T>.ValueCollection Values
+    public Dictionary<byte, T>.ValueCollection Values
     {
         get
         {
@@ -44,8 +45,7 @@ public class PlayerData<T>
         {
             if (_data == null || !_data.TryGetValue(key, out _result))
             {
-                if (nonsetinit)
-                    this[key] = defaultvalue;
+                if (nonsetinit) this[key] = defaultvalue;
                 return defaultvalue;
             }
             return _result;
@@ -65,12 +65,10 @@ public class PlayerData<T>
     {
         get
         {
-            if (key == null)
-                return defaultvalue;
+            if (key == null) return defaultvalue;
             if (_data == null || !_data.TryGetValue(key.PlayerId, out _result))
             {
-                if (nonsetinit)
-                    this[key] = defaultvalue;
+                if (nonsetinit) this[key] = defaultvalue;
                 return defaultvalue;
             }
             return _result;
@@ -119,7 +117,7 @@ public class PlayerData<T>
     public void Reset()
     {
         _data = null;
-        if (_playerdata != null)
+        if (_playerdata != null) 
             _playerdata = new();
     }
     public bool Any(Func<KeyValuePair<byte, T>, bool> func)
@@ -127,10 +125,10 @@ public class PlayerData<T>
         if (_data == null)
             return false;
         foreach (KeyValuePair<byte, T> obj in _data)
-            if (func(obj))
-                return true;
+            if (func(obj)) return true;
         return false;
     }
+
     public bool TryGetValue(PlayerControl key, out T result)
     {
         if (_data == null || key == null)
@@ -140,6 +138,7 @@ public class PlayerData<T>
         }
         return TryGetValue(key.PlayerId, out result);
     }
+
     public bool TryGetValue(byte key, out T result)
     {
         if (_data == null)
@@ -158,7 +157,7 @@ public class PlayerData<T>
         }
         else
         {
-            byte pid = _data.GetKeyByValue<byte, T>(value, defaultvalue:255);
+            byte pid = _data.GetKeyByValue<byte, T>(value, defaultvalue: 255);
             return pid == 255 ? null : ModHelpers.PlayerById(pid);
         }
     }
@@ -200,7 +199,7 @@ public class PlayerData<T>
     /// 例(intを保存したい場合)：PlayerData<int>
     /// </summary>
     /// <param name="needplayerlist">Dictionary<PlayerControl,T>型が必要かどうか</param>
-    public PlayerData(bool needplayerlist = false, T defaultvalue=default, bool nonsetinit = false)
+    public PlayerData(bool needplayerlist = false, T defaultvalue = default, bool nonsetinit = false)
     {
         //使用する際に初期化して、メモリの負担を軽く
         _data = null;

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
@@ -93,6 +94,7 @@ static class PlayerControlSetCooldownPatch
         return false;
     }
 }
+
 [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
 public static class SwitchMinigameBeginPatch
 {
@@ -205,8 +207,8 @@ class ReportDeadBodyPatch
             MeetingRoomManager.Instance.AssignSelf(__instance, target);
             if (!AmongUsClient.Instance.AmHost)
                 return false;
-                FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
-                __instance.RpcStartMeeting(target);
+            FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+            __instance.RpcStartMeeting(target);
             return false;
         }
         if (RoleClass.Camouflager.IsCamouflage)
@@ -384,9 +386,57 @@ public static class PlayerControlFixedUpdatePatch
         }
         return result;
     }
+
+    public static PlayerControl GhostRoleSetTarget(bool onlyCrewmates = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+    { // ほとんど通常のSetTargetと同じだが, 事故を防ぐ為に分割
+        PlayerControl result = null;
+        if (!MapUtilities.CachedShipStatus) return result;
+
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
+        if (!targetingPlayer.Data.IsDead)
+        {
+            Logger.Info($"{targetingPlayer.name}は, 生存している為 幽霊役職用の対象取得を使用できません。");
+            return result; // ボタンの使用者が生きていたらnullを返す
+        }
+
+        Vector2 truePosition = targetingPlayer.GetTruePosition();
+        Il2CppSystem.Collections.Generic.List<PlayerInfo> allPlayers = Instance.AllPlayers;
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            PlayerInfo playerInfo = allPlayers[i]; // ボタンの対象判定
+            if (playerInfo.Disconnected ||
+                playerInfo.PlayerId == targetingPlayer.PlayerId ||
+                playerInfo.IsDead ||
+                (onlyCrewmates && playerInfo.Role.IsImpostor))
+            {
+                continue;
+            }
+
+            PlayerControl @object = playerInfo.Object;
+            if (@object == null || (untargetablePlayers != null && untargetablePlayers.Any(x => x == @object)))
+            {
+                // if that player is not targetable: skip check
+                continue;
+            }
+
+            Vector2 vector = @object.GetTruePosition() - truePosition;
+            float magnitude = vector.magnitude;
+            if (magnitude > num ||
+                PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+            {
+                continue;
+            }
+
+            result = @object;
+            num = magnitude;
+        }
+        return result;
+    }
+
     public static void SetPlayerOutline(PlayerControl target, Color color)
     {
-        Material material= target?.MyRend()?.material;
+        Material material = target?.MyRend()?.material;
         if (material == null) return;
         material.SetFloat("_Outline", 1f);
         material.SetColor("_OutlineColor", color);

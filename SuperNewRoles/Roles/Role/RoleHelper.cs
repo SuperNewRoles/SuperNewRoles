@@ -135,7 +135,8 @@ public static class RoleHelpers
         RoleId.Moira or
         RoleId.Sauner or
         RoleId.Pokerface or
-        RoleId.Crook;
+        RoleId.Crook or
+        RoleId.Frankenstein;
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
@@ -965,6 +966,9 @@ public static class RoleHelpers
             case RoleId.Sauner:
                 Sauner.RoleData.Player.Add(player);
                 break;
+            case RoleId.Bat:
+                Bat.RoleData.Player.Add(player);
+                break;
             case RoleId.Rocket:
                 Rocket.RoleData.Player.Add(player);
                 break;
@@ -974,8 +978,14 @@ public static class RoleHelpers
             case RoleId.Pokerface:
                 Pokerface.RoleData.Player.Add(player);
                 break;
+            case RoleId.Spider:
+                Spider.RoleData.Player.Add(player);
+                break;
             case RoleId.Crook:
                 Crook.RoleData.Player.Add(player);
+                break;
+            case RoleId.Frankenstein:
+                Frankenstein.FrankensteinPlayer.Add(player);
                 break;
             // ロールアド
             default:
@@ -1512,6 +1522,9 @@ public static class RoleHelpers
             case RoleId.Sauner:
                 Sauner.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Bat:
+                Bat.RoleData.Player.RemoveAll(ClearRemove);
+                break;
             case RoleId.Rocket:
                 Rocket.RoleData.Player.RemoveAll(ClearRemove);
                 break;
@@ -1521,15 +1534,21 @@ public static class RoleHelpers
             case RoleId.Pokerface:
                 Pokerface.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Spider:
+                Spider.RoleData.Player.RemoveAll(ClearRemove);
+                break;
             case RoleId.Crook:
                 Crook.RoleData.Player.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Frankenstein:
+                Frankenstein.FrankensteinPlayer.RemoveAll(ClearRemove);
+                break;
+            // ロールリモベ
             default:
                 RoleBase roleBase = player.GetRoleBase();
                 if (roleBase != null)
                     RoleBaseManager.ClearRole(player, roleBase);
                 break;
-                // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1650,6 +1669,7 @@ public static class RoleHelpers
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             RoleId.MadRaccoon => MadRaccoon.RoleData.IsUseVent,
             RoleId.Pokerface => Pokerface.CustomOptionData.CanUseVent.GetBool(),
+            RoleId.Frankenstein => Frankenstein.IsMonster(PlayerControl.LocalPlayer) && Frankenstein.FrankensteinMonsterCanVent.GetBool(),
             // ベントが使える
             _ => player.IsImpostor(),
         };
@@ -1750,6 +1770,7 @@ public static class RoleHelpers
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
                 RoleId.MadRaccoon => MadRaccoon.RoleData.IsImpostorLight,
+                RoleId.Frankenstein => Frankenstein.IsMonster(PlayerControl.LocalPlayer) && Frankenstein.FrankensteinMonsterImpostorLight.GetBool(),
                 // インポの視界
                 _ => false,
             };
@@ -1777,11 +1798,24 @@ public static class RoleHelpers
     }
     public static bool IsRole(this PlayerControl player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
     public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
-    public static float GetCoolTime(PlayerControl __instance)
+    public static float GetCoolTime(PlayerControl __instance, PlayerControl target)
     {
         float addition = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         if (ModeHandler.IsMode(ModeId.Default))
         {
+            //対象がトラップで捕まっていた場合にキルクールを変更
+            if (target != null)
+            {
+                    //__instanceがスパイダーかつ
+                if (__instance.IsRole(RoleId.Spider)
+                    //相手が罠にキャッチされてるかつ
+                    && SpiderTrap.CatchingPlayers.ContainsKey(target.PlayerId)
+                    //その罠を仕掛けたのが__instanceだった場合
+                    && SpiderTrap.CatchingPlayers[target.PlayerId] == __instance.PlayerId)
+                {
+                    return Spider.CustomOptionData.SpiderTrapKillTimeSetting.GetFloat();
+                }
+            }
             addition = __instance.GetRole() switch
             {
                 RoleId.SerialKiller => RoleClass.SerialKiller.KillTime,
@@ -1806,7 +1840,7 @@ public static class RoleHelpers
     public static float GetEndMeetingKillCoolTime(PlayerControl p)
     {
         if (p.IsRole(RoleId.EvilGambler, RoleId.Doppelganger)) return GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-        return GetCoolTime(p);
+        return GetCoolTime(p, null);
     }
     public static RoleId GetGhostRole(this PlayerControl player, bool IsChache = true)
     {
@@ -2030,10 +2064,13 @@ public static class RoleHelpers
             else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
+            else if (Bat.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Bat;
             else if (Rocket.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Rocket;
             else if (WellBehaver.WellBehaverPlayer.IsCheckListPlayerControl(player)) return RoleId.WellBehaver;
             else if (Pokerface.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Pokerface;
+            else if (Spider.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Spider;
             else if (Crook.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Crook;
+            else if (Frankenstein.FrankensteinPlayer.IsCheckListPlayerControl(player)) return RoleId.Frankenstein;
             // ロールチェック
         }
         catch (Exception e)
@@ -2045,6 +2082,14 @@ public static class RoleHelpers
     public static bool IsDead(this PlayerControl player)
     {
         return player == null || player.Data.Disconnected || player.Data.IsDead;
+    }
+    public static bool IsDead(this GameData.PlayerInfo player)
+    {
+        return player == null || player.Disconnected || player.IsDead;
+    }
+    public static bool IsAlive(this GameData.PlayerInfo player)
+    {
+        return player != null && !player.Disconnected && !player.IsDead;
     }
     public static bool IsAlive(this PlayerControl player)
     {

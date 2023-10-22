@@ -252,7 +252,7 @@ public class WaveCannonObject : CustomAnimation
                         if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
                         {
                             if (CustomOptionHolder.WaveCannonIsSyncKillCoolTime.GetBool())
-                                PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer));
+                                PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
                         }
                         else
                         {
