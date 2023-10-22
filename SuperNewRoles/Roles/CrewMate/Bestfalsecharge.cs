@@ -6,7 +6,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles;
 
-public class Bestfalsecharge : RoleBase, IWrapUpHandler
+public class Bestfalsecharge : RoleBase, IWrapUpHandler, ICrewmate
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Bestfalsecharge),

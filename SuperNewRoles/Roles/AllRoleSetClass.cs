@@ -1233,43 +1233,44 @@ class AllRoleSetClass
             _ => true,
         };
     }
-    static void SetChance(int selection, RoleId role, TeamRoleType Team)
+    static List<RoleId> GetTeamChanceList(bool IsOne,TeamRoleType Team)
     {
-        if (selection == 0)
-            return;
-        if (selection == 10)
+        if (IsOne)
         {
             switch (Team)
             {
                 case TeamRoleType.Crewmate:
-                    Crewonepar.Add(role);
-                    break;
+                    return Crewnotonepar;
                 case TeamRoleType.Impostor:
-                    Impoonepar.Add(role);
-                    break;
+                    return Imponotonepar;
                 case TeamRoleType.Neutral:
-                    Neutonepar.Add(role);
-                    break;
+                    return Neutnotonepar;
             }
+            return null;
         }
-        else
+        switch (Team)
         {
-            for (int i = 0; i < selection; i++)
-            {
-                switch (Team)
-                {
-                    case TeamRoleType.Crewmate:
-                        Crewnotonepar.Add(role);
-                        break;
-                    case TeamRoleType.Impostor:
-                        Imponotonepar.Add(role);
-                        break;
-                    case TeamRoleType.Neutral:
-                        Neutnotonepar.Add(role);
-                        break;
-                }
-            }
+            case TeamRoleType.Crewmate:
+                return Crewonepar;
+            case TeamRoleType.Impostor:
+                return Impoonepar;
+            case TeamRoleType.Neutral:
+                return Neutonepar;
         }
+        return null;
+    }
+    static void SetChance(int selection, RoleId role, TeamRoleType Team)
+    {
+        if (selection == 0)
+            return;
+        List<RoleId> chanceList = GetTeamChanceList(selection == 10, Team);
+        if (selection == 10)
+        {
+            chanceList.Add(role);
+            return;
+        }
+        for (int i = 0; i < selection; i++)
+            chanceList.Add(role);
     }
     public static void OneOrNotListSet()
     {

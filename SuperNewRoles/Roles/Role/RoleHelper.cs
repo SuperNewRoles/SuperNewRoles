@@ -1576,6 +1576,8 @@ public static class RoleHelpers
     /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
     public static bool IsClearTask(this PlayerControl player)
     {
+        if (player.GetRoleBase() is ITaskHolder taskHolder)
+            return !taskHolder.CountTask;
         var IsTaskClear = false;
         if (player.IsImpostor()) IsTaskClear = true;
         if (player.IsMadRoles()) IsTaskClear = true;
