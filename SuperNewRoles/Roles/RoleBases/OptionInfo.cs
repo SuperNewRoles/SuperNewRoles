@@ -66,6 +66,7 @@ public class OptionInfo
         this.RoleOpenTimeUTC = RoleOpenTimeUTC;
         this.MaxPlayer = MaxPlayer;
         this.OptionCreater = optionCreator;
+        this.isHidden = isHidden;
         OptionInfos.TryAdd(Role, this);
     }
     public void CreateOption()
@@ -97,6 +98,7 @@ public class OptionInfo
             CoolTimeOption = CustomOption.Create(OptionId++, CoolTimeOpt.Value.SupportSHR, RoleOption.type, "CoolTimeOption", CoolTimeOpt.Value.CoolTimeDefault, CoolTimeOpt.Value.CoolTimeMin, CoolTimeOpt.Value.CoolTimeMax, CoolTimeOpt.Value.CoolTimeStep, RoleOption, isHidden:isHidden);
         if (DurationTimeOpt.HasValue)
             DurationTimeOption = CustomOption.Create(OptionId++, DurationTimeOpt.Value.SupportSHR, RoleOption.type, "DurationTimeOption", DurationTimeOpt.Value.DurationTimeDefault, DurationTimeOpt.Value.DurationTimeMin, DurationTimeOpt.Value.DurationTimeMax, DurationTimeOpt.Value.DurationTimeStep, RoleOption, isHidden:isHidden);
+        //個別設定を生成する
         if (OptionCreater != null)
             OptionCreater.Invoke();
     }

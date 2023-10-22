@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rewired.UI.ControlMapper;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
-/// <summary>
-/// キル役職に使うインターフェース
-/// </summary>
-public interface IKiller
+public interface ICustomButton
 {
-    public bool CanUseKill => true;
+    public CustomButtonInfo[] CustomButtonInfos { get; }
 }

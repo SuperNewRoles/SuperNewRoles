@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -1072,6 +1073,10 @@ public class CustomOptionHolder
         /* |: ========================= Roles Settings ========================== :| */
 
         /* |: ========================= Impostor Settings ========================== :| */
+
+        var SortedOptionInfos = OptionInfo.OptionInfos.OrderBy(x => (int)x.Key);
+        foreach (var optionInfo in SortedOptionInfos)
+            optionInfo.Value.CreateOption();
 
         WaveCannonOption = SetupCustomRoleOption(200000, false, RoleId.WaveCannon, CustomOptionType.Impostor);
         WaveCannonPlayerCount = Create(200001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
