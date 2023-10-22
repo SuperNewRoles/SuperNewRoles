@@ -11,7 +11,6 @@ public static class RoleBaseManager
 {
     public static PlayerData<RoleBase> PlayerRoles { get; private set; } = new();
     private static Dictionary<Type, List<RoleBase>> AllInterfaces = new();
-    public static readonly List<RoleInfo> RoleInfos = new();
     public static void ClearAndReloads()
     {
         PlayerRoles = new();
@@ -26,9 +25,8 @@ public static class RoleBaseManager
     }
     public static RoleBase SetRole(PlayerControl player, RoleId role)
     {
-        //処理を後で書く
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
-        if (roleInfo != null)
+        if (roleInfo == null)
             return null;
         RoleBase roleBase = roleInfo.CreateInstance(player);
         PlayerRoles[player] = roleBase;
