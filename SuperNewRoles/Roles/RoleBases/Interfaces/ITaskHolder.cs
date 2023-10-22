@@ -13,7 +13,11 @@ public interface ITaskHolder
     /// <summary>
     /// タスクをクルーメイト勝利にカウントするか
     /// </summary>
-    public bool CountTask => this is ICrewmate;
+    public bool CountTask => this is ICrewmate &&
+        (this is not ISupportSHR supportSHR ||
+        supportSHR.DesyncRole is
+        AmongUs.GameOptions.RoleTypes.Impostor or
+        AmongUs.GameOptions.RoleTypes.Shapeshifter);
     /// <summary>
     /// 独自のタスク数を持っているか
     /// </summary>
