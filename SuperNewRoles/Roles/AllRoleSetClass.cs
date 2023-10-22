@@ -12,6 +12,8 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 
 namespace SuperNewRoles;
 
@@ -1010,6 +1012,9 @@ class AllRoleSetClass
     }
     public static float GetPlayerCount(RoleId roleData)
     {
+        OptionInfo optionInfo = OptionInfo.GetOptionInfo(roleData);
+        if (optionInfo != null)
+            return optionInfo.PlayerCount;
         return roleData switch
         {
             RoleId.SoothSayer => CustomOptionHolder.SoothSayerPlayerCount.GetFloat(),
@@ -1228,6 +1233,44 @@ class AllRoleSetClass
             _ => true,
         };
     }
+    static void SetChance(int selection, RoleId role, TeamRoleType Team)
+    {
+        if (selection == 0)
+            return;
+        if (selection == 10)
+        {
+            switch (Team)
+            {
+                case TeamRoleType.Crewmate:
+                    Crewonepar.Add(role);
+                    break;
+                case TeamRoleType.Impostor:
+                    Impoonepar.Add(role);
+                    break;
+                case TeamRoleType.Neutral:
+                    Neutonepar.Add(role);
+                    break;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < selection; i++)
+            {
+                switch (Team)
+                {
+                    case TeamRoleType.Crewmate:
+                        Crewnotonepar.Add(role);
+                        break;
+                    case TeamRoleType.Impostor:
+                        Imponotonepar.Add(role);
+                        break;
+                    case TeamRoleType.Neutral:
+                        Neutnotonepar.Add(role);
+                        break;
+                }
+            }
+        }
+    }
     public static void OneOrNotListSet()
     {
         Impoonepar = new();
@@ -1243,42 +1286,17 @@ class AllRoleSetClass
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null) continue;
                 var selection = option.GetSelection();
-                if (selection != 0)
-                {
-                    if (selection == 10)
-                    {
-                        switch (intro.Team)
-                        {
-                            case TeamRoleType.Crewmate:
-                                Crewonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Impostor:
-                                Impoonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Neutral:
-                                Neutonepar.Add(intro.RoleId);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 1; i <= selection; i++)
-                        {
-                            switch (intro.Team)
-                            {
-                                case TeamRoleType.Crewmate:
-                                    Crewnotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Impostor:
-                                    Imponotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Neutral:
-                                    Neutnotonepar.Add(intro.RoleId);
-                                    break;
-                            }
-                        }
-                    }
-                }
+                SetChance(selection, intro.RoleId, intro.Team);
+            }
+        }
+        foreach (RoleInfo roleInfo in RoleInfoManager.RoleInfos.Values)
+        {
+            if (!roleInfo.IsGhostRole && CanRoleIdElected(roleInfo.Role))
+            {
+                var option = IntroData.GetOption(roleInfo.Role);
+                if (option == null) continue;
+                var selection = option.GetSelection();
+                SetChance(selection, roleInfo.Role, roleInfo.Team);
             }
         }
         SetJumboTicket();

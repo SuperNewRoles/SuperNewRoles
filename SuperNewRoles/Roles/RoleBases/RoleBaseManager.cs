@@ -28,6 +28,8 @@ public static class RoleBaseManager
     {
         //処理を後で書く
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return null;
         RoleBase roleBase = roleInfo.CreateInstance(player);
         PlayerRoles[player] = roleBase;
         //全てのインターフェイスを取得

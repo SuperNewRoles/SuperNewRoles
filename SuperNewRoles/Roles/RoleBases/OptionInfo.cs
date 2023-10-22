@@ -76,15 +76,15 @@ public class OptionInfo
             return;
         //設定を作成
         RoleOption = CustomOption.SetupCustomRoleOption(
-            OptionId, SupportSHR, Role, isHidden:isHidden);
+            OptionId++, SupportSHR, Role, isHidden:isHidden);
         List<float> PlayerCount = CustomOptionHolder.CrewPlayers;
-        if (MaxPlayer != -1)
+        if (MaxPlayer != -1f)
             PlayerCount = new(4) { 1, 1, MaxPlayer, 1 };
         else if (RoleOption.type == CustomOptionType.Impostor)
             PlayerCount = CustomOptionHolder.ImpostorPlayers;
         PlayerCountOption = CustomOption.Create(
             OptionId++,
-            false, CustomOptionType.Neutral,
+            SupportSHR, RoleOption.type,
             "SettingPlayerCountName",
             PlayerCount[0], PlayerCount[1], PlayerCount[2],
             PlayerCount[3], RoleOption);

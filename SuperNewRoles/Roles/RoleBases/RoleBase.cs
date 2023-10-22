@@ -14,9 +14,9 @@ public abstract class RoleBase : IDisposable
     //比較用なので各クライアントごとに違ってもOK
     //逆に比較用以外に使うな
     private int InstanceId { get; }
-    public readonly RoleInfo Roleinfo;
-    public readonly OptionInfo Optioninfo;
-    public readonly IntroInfo Introinfo;
+    public RoleInfo Roleinfo { get; }
+    public OptionInfo Optioninfo { get; }
+    public IntroInfo Introinfo { get; }
     //後で処理書く
     public RoleBase(PlayerControl player, RoleInfo roleInfo, OptionInfo optionInfo, IntroInfo introInfo)
     {
