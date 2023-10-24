@@ -122,7 +122,7 @@ class AntiHackingBan
             }
             if (chatText.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                FastDestroyableSingleton<Telemetry>.Instance.SendWho();
+                FastDestroyableSingleton<UnityTelemetry>.Instance.SendWho();
             }
             MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 13, SendOption.None);
             obj.Write(chatText);

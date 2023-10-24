@@ -45,7 +45,7 @@ public static class ElectricPatch
         }
     }
 }
-[HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Detoriorate))]
+[HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Deteriorate))]
 public static class MeltdownBooster
 {
     public static void Prefix(ReactorSystemType __instance, float deltaTime)
@@ -77,7 +77,7 @@ public static class MeltdownBooster
     }
 }
 
-[HarmonyPatch(typeof(HeliSabotageSystem), nameof(HeliSabotageSystem.Detoriorate))]
+[HarmonyPatch(typeof(HeliSabotageSystem), nameof(HeliSabotageSystem.Deteriorate))]
 public static class HeliMeltdownBooster
 {
     public static void Prefix(HeliSabotageSystem __instance)
