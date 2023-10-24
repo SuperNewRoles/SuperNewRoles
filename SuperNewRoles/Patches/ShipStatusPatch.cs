@@ -30,7 +30,7 @@ public static class ShipStatus_Awake_Patch
         MapUtilities.CachedShipStatus = __instance;
     }
 }
-[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RepairSystem))]
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem))]
 class RepairSystemPatch
 {
     public static bool Prefix(ShipStatus __instance,
