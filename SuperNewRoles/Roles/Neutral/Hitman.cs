@@ -126,7 +126,7 @@ public static class Hitman
         RoleClass.Hitman.OutMissionLimit--;
         if (RoleClass.Hitman.OutMissionLimit <= 0)
         {
-            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
             PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.HitmanDead);
         }
     }

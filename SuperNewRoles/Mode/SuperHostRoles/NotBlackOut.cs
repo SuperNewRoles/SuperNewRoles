@@ -21,7 +21,7 @@ public static class NotBlackOut
         new LateTask(() =>
         {
             SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
-            MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+            MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
             SabotageWriter.Write(reactorId);
             MessageExtensions.WriteNetObject(SabotageWriter, pc);
             SabotageWriter.Write((byte)128);
@@ -29,7 +29,7 @@ public static class NotBlackOut
         }, delay, "Reactor Desync");
         new LateTask(() =>
         {
-            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
             SabotageFixWriter.Write(reactorId);
             MessageExtensions.WriteNetObject(SabotageFixWriter, pc);
             SabotageFixWriter.Write((byte)16);
@@ -39,7 +39,7 @@ public static class NotBlackOut
         if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4) //Airship用
             new LateTask(() =>
             {
-                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
                 SabotageFixWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, pc);
                 SabotageFixWriter.Write((byte)17);

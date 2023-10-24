@@ -131,7 +131,7 @@ class Main
         }
         else
         {
-            source.RpcMurderPlayer(target);
+            source.RpcMurderPlayer(target, true);
         }
         SyncBattleOptions.CustomSyncOptions();
         if (source.IsRole(RoleId.Darknight))

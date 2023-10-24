@@ -152,7 +152,7 @@ public class CursedDivertPowerTask
                         task.TargetSystem = types.GetRandom();
                     }
                     else task.TargetSystem = Data[task.Id].Target;
-                    task.UpdateArrow();
+                    task.UpdateArrowAndLocation();
 
                 }
             }

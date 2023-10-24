@@ -544,17 +544,17 @@ public static class ReplayLoader
     {
         public static bool Prefix() => SaboPrefix();
     }
-    [HarmonyPatch(typeof(LifeSuppSystemType), nameof(LifeSuppSystemType.Detoriorate))]
+    [HarmonyPatch(typeof(LifeSuppSystemType), nameof(LifeSuppSystemType.Deteriorate))]
     public class LifeSuppSystemTypeDetorioratePatch
     {
         public static bool Prefix() => SaboPrefix();
     }
-    [HarmonyPatch(typeof(HeliSabotageSystem), nameof(HeliSabotageSystem.Detoriorate))]
+    [HarmonyPatch(typeof(HeliSabotageSystem), nameof(HeliSabotageSystem.Deteriorate))]
     public class HeliSabotageSystemDetorioratePatch
     {
         public static bool Prefix() => SaboPrefix();
     }
-    [HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Detoriorate))]
+    [HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Deteriorate))]
     public class ReactorSystemTypeDetorioratePatch
     {
         public static bool Prefix() => SaboPrefix();
