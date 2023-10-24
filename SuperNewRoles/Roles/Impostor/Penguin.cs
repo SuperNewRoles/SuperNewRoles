@@ -42,7 +42,7 @@ public static class Penguin
                     RoleClass.Penguin.PenguinTimer.Add(data.Key.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
                 RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] -= Time.fixedDeltaTime;
                 if (RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] <= 0 && data.Value != null && data.Value.IsAlive())
-                    data.Key.RpcMurderPlayer(data.Value);
+                    data.Key.RpcMurderPlayer(data.Value, true);
             }
             if (data.Key == null || data.Value == null
                 || !data.Key.IsRole(RoleId.Penguin)
@@ -85,7 +85,7 @@ public static class Penguin
                 if (ModeHandler.IsMode(ModeId.Default))
                     ModHelpers.CheckMurderAttemptAndKill(data.Key, data.Value);
                 else
-                    data.Key.RpcMurderPlayer(data.Value);
+                    data.Key.RpcMurderPlayer(data.Value, true);
             }
         }
         else

@@ -130,7 +130,7 @@ static class CheckMurderPatch
             case RoleId.Egoist when !RoleClass.Egoist.UseKill:
                 return false;
             case RoleId.FalseCharges:
-                target.RpcMurderPlayer(__instance);
+                target.RpcMurderPlayer(__instance, true);
                 target.RpcSetFinalStatus(FinalStatus.FalseChargesFalseCharge);
                 RoleClass.FalseCharges.FalseChargePlayers[__instance.PlayerId] = target.PlayerId;
                 RoleClass.FalseCharges.AllTurns[__instance.PlayerId] = RoleClass.FalseCharges.DefaultTurn;
@@ -161,7 +161,7 @@ static class CheckMurderPatch
                         __instance.RpcMurderPlayerCheck(target);
                         __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
                     }
-                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcMurderPlayer(__instance, true);
                     __instance.RpcSetFinalStatus(status);
                 }
                 else
@@ -188,7 +188,7 @@ static class CheckMurderPatch
                 }
                 else
                 {
-                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcMurderPlayer(__instance, true);
                     __instance.RpcSetFinalStatus(FinalStatus.MadmakerMisSet);
                 }
                 return false;
@@ -213,7 +213,7 @@ static class CheckMurderPatch
                         if (p.PlayerId != 0)
                             __instance.RPCMurderPlayerPrivate(target, p);
                         else
-                            __instance.MurderPlayer(target);
+                            __instance.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
                     }
                 }
                 return false;
@@ -301,7 +301,7 @@ static class CheckMurderPatch
                 if (ma != null && !ma.IsActive) return false;
                 break;
             case RoleId.Worshiper:
-                __instance.RpcMurderPlayer(__instance);
+                __instance.RpcMurderPlayer(__instance, true);
                 __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 return false;
             case RoleId.Penguin:
@@ -364,7 +364,7 @@ static class CheckMurderPatch
         if (__instance.PlayerId == target.PlayerId)
         {
             Logger.Info($"自爆:{target.name}", "CheckMurder");
-            __instance.RpcMurderPlayer(target);
+            __instance.RpcMurderPlayer(target, true);
             return false;
         }
 
@@ -513,7 +513,7 @@ static class CheckMurderPatch
             return;
         }
         SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
-        __instance.RpcMurderPlayer(target);
+        __instance.RpcMurderPlayer(target, true);
         switch (target.GetRole())
         {
             case RoleId.EvilSeer:

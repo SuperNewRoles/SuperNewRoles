@@ -156,7 +156,7 @@ class ControllerManagerUpdatePatch
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
-                ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
+                ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer, true);//ModHelpers.PlayerById(2));
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {

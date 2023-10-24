@@ -15,7 +15,7 @@ public static class Spelunker
         {
             if (role != RoleId.Spelunker)
             {
-                player.RpcMurderPlayer(player);
+                player.RpcMurderPlayer(player, true);
                 player.RpcSetFinalStatus(FinalStatus.SpelunkerSetRoleDeath);
                 return false;
             }
@@ -45,7 +45,7 @@ public static class Spelunker
                     RoleClass.Spelunker.IsVentChecked = true;
                     if (ModHelpers.IsSucsessChance(RoleClass.Spelunker.VentDeathChance))
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerVentDeath);
                     }
                 }
@@ -65,7 +65,7 @@ public static class Spelunker
                     RoleClass.Spelunker.CommsOrLightdownTime -= Time.fixedDeltaTime;
                     if (RoleClass.Spelunker.CommsOrLightdownTime <= 0)
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerCommsElecDeath);
                     }
                 }
@@ -77,7 +77,7 @@ public static class Spelunker
         }
         if (DeathPosition != null && Vector2.Distance((Vector2)DeathPosition, CachedPlayer.LocalPlayer.transform.position) < 0.5f)
         {
-            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
             PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.NunDeath);
         }
     }
@@ -123,7 +123,7 @@ public static class Spelunker
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.DoorOpenChance))
                 {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                     PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerOpenDoor);
                 }
             }

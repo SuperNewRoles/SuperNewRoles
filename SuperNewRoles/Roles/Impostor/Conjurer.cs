@@ -179,7 +179,7 @@ public class Conjurer
                                 }
                                 else
                                 {
-                                    pc.RpcMurderPlayer(pc);
+                                    pc.RpcMurderPlayer(pc, true);
                                 }
                             }
                         }

@@ -59,7 +59,7 @@ public class TurnData
             if (player.IsDead()) continue;
             if (main.IsPantsHaver(player)) continue;
             player.RpcSnapTo(new(-30, 30));
-            player.RpcMurderPlayer(player);
+            player.RpcMurderPlayer(player, true);
         }
         if (ModHelpers.GetAlivePlayerCount() <= 1)
             main.GameEnd();

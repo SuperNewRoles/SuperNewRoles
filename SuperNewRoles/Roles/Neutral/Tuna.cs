@@ -16,7 +16,7 @@ public class Tuna
                 {
                     if (RoleClass.Tuna.Timer <= 0.1f)
                     {
-                        CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl, true);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.TunaSelfDeath);
                     }
                     RoleClass.Tuna.Timer -= Time.deltaTime;
@@ -39,7 +39,7 @@ public class Tuna
                         RoleClass.Tuna.Timers[p.PlayerId] -= Time.deltaTime;
                         if (RoleClass.Tuna.Timers[p.PlayerId] <= 0)
                         {
-                            p.RpcMurderPlayer(p);
+                            p.RpcMurderPlayer(p, true);
                         }
                     }
                     else
