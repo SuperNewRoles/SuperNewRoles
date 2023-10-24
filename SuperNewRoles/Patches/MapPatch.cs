@@ -116,7 +116,7 @@ public static class MapBehaviourPatch
             {
                 continue;
             }
-            mark.enabled = !door.Open;
+            mark.enabled = !door.IsOpen;
         }
     }
 

@@ -66,7 +66,7 @@ public class CursedRecordsTask
             folder.gameObject.SetActive(false);
             int id = byte.MaxValue - ((Color32)folder.color).a;
             __instance.MyNormTask.Data[id] = IntRange.NextByte(1, 9);
-            __instance.MyNormTask.UpdateArrow();
+            __instance.MyNormTask.UpdateArrowAndLocation();
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.grabDocument, false, 1f, null);
             __instance.StartCoroutine(__instance.CoStartClose(0.75f));
             return false;

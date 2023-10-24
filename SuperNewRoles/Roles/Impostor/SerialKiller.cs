@@ -22,7 +22,7 @@ public static class SerialKiller
                             RoleClass.SerialKiller.SuicideTimers[p.PlayerId] -= Time.fixedDeltaTime;
                             if (RoleClass.SerialKiller.SuicideTimers[p.PlayerId] <= 0)
                             {
-                                p.RpcMurderPlayer(p);
+                                p.RpcMurderPlayer(p, true);
                                 p.RpcSetFinalStatus(FinalStatus.SerialKillerSelfDeath);
                             }
                         }

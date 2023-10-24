@@ -11,7 +11,7 @@ public class SuicidalIdeation
     {
         if (!PlayerControl.LocalPlayer.IsAlive()) return;
         //ボタンのカウントが0になったら自殺する
-        if (HudManagerStartPatch.SuicidalIdeationButton.Timer <= 0f) PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+        if (HudManagerStartPatch.SuicidalIdeationButton.Timer <= 0f) PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
         //タスクを完了したかを検知
         var (playerCompleted, playerTotal) = TaskCount.TaskDate(PlayerControl.LocalPlayer.Data);
         if (RoleClass.SuicidalIdeation.CompletedTask <= playerCompleted)
