@@ -679,6 +679,11 @@ public class CustomOverlays
 
         // 役職を所持している時の記載
         RoleId myRole = PlayerControl.LocalPlayer.GetRole();
+        if (PlayerControl.LocalPlayer.IsDead())
+        {
+            RoleId ghostRole = PlayerControl.LocalPlayer.GetGhostRole();
+            if (ghostRole != RoleId.DefaultRole) myRole = ghostRole;
+        }
 
         // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
         IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Values.Where(option => option.RoleId == myRole).Select(option => { return option; });
