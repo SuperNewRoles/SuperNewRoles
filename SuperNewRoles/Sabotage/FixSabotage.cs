@@ -195,7 +195,7 @@ public class FixSabotage
                 if (player == null || player.IsBot()) continue;
                 ClientData cd = player.GetClient();
 
-                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cd.Id);
                 SabotageFixWriter.Write((byte)sabotageId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, player);
                 SabotageFixWriter.Write((byte)amount.Item1);
@@ -203,7 +203,7 @@ public class FixSabotage
 
                 if (IsSecondUnit) // 2つ目のamountをが必要なものは送信する
                 {
-                    MessageWriter SabotageFixWriterSecond = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
+                    MessageWriter SabotageFixWriterSecond = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cd.Id);
                     SabotageFixWriterSecond.Write((byte)sabotageId);
                     MessageExtensions.WriteNetObject(SabotageFixWriterSecond, player);
                     SabotageFixWriterSecond.Write((byte)amount.Item2);
@@ -230,7 +230,7 @@ public class FixSabotage
                 ClientData cd = player.GetClient();
                 foreach (byte amount in amounts) // Listに保存されているスイッチを一気に押す
                 {
-                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
+                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cd.Id);
                     SabotageFixWriter.Write((byte)SystemTypes.Electrical);
                     MessageExtensions.WriteNetObject(SabotageFixWriter, player);
                     SabotageFixWriter.Write(amount | 128);

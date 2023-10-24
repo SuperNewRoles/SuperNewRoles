@@ -102,7 +102,7 @@ public static class Helpers
 
         // ReactorサボをDesyncで発動
         SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
-        MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+        MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
         SabotageWriter.Write(reactorId);
         MessageExtensions.WriteNetObject(SabotageWriter, shower);
         SabotageWriter.Write((byte)128);
@@ -110,7 +110,7 @@ public static class Helpers
 
         new LateTask(() =>
         { // Reactorサボを修理
-            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
             SabotageFixWriter.Write(reactorId);
             MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
             SabotageFixWriter.Write((byte)16);
@@ -120,7 +120,7 @@ public static class Helpers
         if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4) //Airship用
             new LateTask(() =>
             { // Reactorサボを修理
-                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
                 SabotageFixWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
                 SabotageFixWriter.Write((byte)17);
