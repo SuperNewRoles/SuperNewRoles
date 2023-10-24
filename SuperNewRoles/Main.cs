@@ -62,94 +62,72 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
         Instance = this;
         bool CreatedVersionPatch = false;
-        try
-        {
-            // All Load() Start
-            OptionSaver.Load();
-            ConfigRoles.Load();
-            WebAccountManager.Load();
-            ContentManager.Load();
-            //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
-            ModTranslation.LoadCsv();
-            ChacheManager.Load();
-            WebConstants.Load();
-            CustomCosmetics.CustomColors.Load();
-            ModDownloader.Load();
-            CustomOptionHolder.Load();
-            LegacyOptionDataMigration.Load();
-            AccountLoginMenu.Initialize();
-            // All Load() End
-
-
-            // Old Delete Start
-
-            try
-            {
-                DirectoryInfo d = new(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
-                string[] files = d.GetFiles("*.dll.old").Select(x => x.FullName).ToArray(); // Getting old versions
-                foreach (string f in files)
-                    File.Delete(f);
-            }
-            catch (Exception e)
-            {
-                System.Console.WriteLine("Exception occured when clearing old versions:\n" + e);
-            }
-
-            // Old Delete End
-
-            SuperNewRoles.Logger.Info(DateTime.Now.ToString("D"), "DateTime Now"); // 2022年11月24日
-            SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
-            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
-            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits");
-            SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag");
-            SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
-            SuperNewRoles.Logger.Info(VersionString, "VersionString");
-            SuperNewRoles.Logger.Info(Version, nameof(Version));
-            SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン(プレイしているプラットフォーム)
-            try
-            {
-                var directoryPath = Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins";
-                SuperNewRoles.Logger.Info($"DirectoryPathが半角のみ:{ModHelpers.IsOneByteOnlyString(directoryPath)}", "IsOneByteOnly path"); // フォルダパスが半角のみで構成されているか
-                var di = new DirectoryInfo(directoryPath);
-                var pluginFiles = di.GetFiles();
-                foreach (var f in pluginFiles)
-                {
-                    var name = f.Name;
-                    SuperNewRoles.Logger.Info($"---------- {name} -----------", "Data");
-                    SuperNewRoles.Logger.Info(name, nameof(pluginFiles)); // ファイル名
-                    SuperNewRoles.Logger.Info($"{f.Length}MB", name); // サイズをバイト単位で取得
-                }
-            }
-            catch (Exception e)
-            {
-                SuperNewRoles.Logger.Error($"pluginFilesの取得時に例外発生{e.ToString()}", "pluginFiles");
-            }
-
-            Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
-
-            StringDATA = new Dictionary<string, Dictionary<int, string>>();
-        }
-        catch (Exception e)
-        {
-            //バージョン違いの場合パッチを適用する
-            SetNonVanilaVersionPatch();
-            Logger.LogError("LoadError:\n" + e.Message);
-            CreatedVersionPatch = true;
-        }
-        try
-        {
-            Harmony.PatchAll();
-        }
-        catch (Exception e)
-        {
-            //全て解除する
-            Harmony.UnpatchAll();
-            //バージョン違いの場合パッチを適用する
-            if (!CreatedVersionPatch)
-                SetNonVanilaVersionPatch();
-            Logger.LogError("PatchError:\n"+e.Message);
-        }
         SetNonVanilaVersionPatch();
+        // All Load() Start
+        OptionSaver.Load();
+        ConfigRoles.Load();
+        WebAccountManager.Load();
+        ContentManager.Load();
+        //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
+        ModTranslation.LoadCsv();
+        ChacheManager.Load();
+        WebConstants.Load();
+        CustomCosmetics.CustomColors.Load();
+        ModDownloader.Load();
+        CustomOptionHolder.Load();
+        LegacyOptionDataMigration.Load();
+        AccountLoginMenu.Initialize();
+        // All Load() End
+
+
+        // Old Delete Start
+
+        try
+        {
+            DirectoryInfo d = new(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
+            string[] files = d.GetFiles("*.dll.old").Select(x => x.FullName).ToArray(); // Getting old versions
+            foreach (string f in files)
+                File.Delete(f);
+        }
+        catch (Exception e)
+        {
+            System.Console.WriteLine("Exception occured when clearing old versions:\n" + e);
+        }
+
+        // Old Delete End
+
+        SuperNewRoles.Logger.Info(DateTime.Now.ToString("D"), "DateTime Now"); // 2022年11月24日
+        SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
+        SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
+        SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits");
+        SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag");
+        SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
+        SuperNewRoles.Logger.Info(VersionString, "VersionString");
+        SuperNewRoles.Logger.Info(Version, nameof(Version));
+        SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン(プレイしているプラットフォーム)
+        try
+        {
+            var directoryPath = Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins";
+            SuperNewRoles.Logger.Info($"DirectoryPathが半角のみ:{ModHelpers.IsOneByteOnlyString(directoryPath)}", "IsOneByteOnly path"); // フォルダパスが半角のみで構成されているか
+            var di = new DirectoryInfo(directoryPath);
+            var pluginFiles = di.GetFiles();
+            foreach (var f in pluginFiles)
+            {
+                var name = f.Name;
+                SuperNewRoles.Logger.Info($"---------- {name} -----------", "Data");
+                SuperNewRoles.Logger.Info(name, nameof(pluginFiles)); // ファイル名
+                SuperNewRoles.Logger.Info($"{f.Length}MB", name); // サイズをバイト単位で取得
+            }
+        }
+        catch (Exception e)
+        {
+            SuperNewRoles.Logger.Error($"pluginFilesの取得時に例外発生{e.ToString()}", "pluginFiles");
+        }
+
+        Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
+
+        StringDATA = new Dictionary<string, Dictionary<int, string>>();
+        Harmony.PatchAll();
         var assembly = Assembly.GetExecutingAssembly();
         string[] resourceNames = assembly.GetManifestResourceNames();
         foreach (string resourceName in resourceNames)
@@ -208,7 +186,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
             builder.AppendLine("<link=\"https://x.com/SNROfficials\">SuperNewRoles公式X:https://x.com/SNROfficials</link>");
             builder.AppendLine("<link=\"https://github.com/SuperNewRoles/SuperNewRoles/releases/\">SuperNewRoles公式Githubリリースページ:https://github.com/SuperNewRoles/SuperNewRoles/releases/</link>");
             //builder.AppendLine("(リンクを押すとブラウザが開きます)");
-            builder.AppendLine("ってわけで、下のOKを押すとバニラがプレイできます!");
             builder.AppendLine("リリースを待っててね!");
             popup.TextAreaTMP.text = builder.ToString();
             popup.gameObject.SetActive(true);

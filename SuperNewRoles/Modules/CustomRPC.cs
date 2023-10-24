@@ -280,7 +280,6 @@ public enum CustomRPC
     KunaiKill,
     SetSecretRoomTeleportStatus,
     ChiefSidekick,
-    RpcSetDoorway,
     StartRevolutionMeeting,
     UncheckedUsePlatform,
     BlockReportDeadBody,
@@ -339,6 +338,7 @@ public enum CustomRPC
     CrookSaveSignDictionary,
     SetFrankensteinMonster,
     MoveDeadBody,
+    RpcSetDoorway
 }
 
 public static class RPCProcedure
@@ -1881,7 +1881,7 @@ public static class RPCProcedure
                         ChiefSidekick(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.RpcSetDoorway:
-                        RPCHelper.RpcSetDoorway(reader.ReadByte(), reader.ReadBoolean());
+                        RPCHelper.SetDoorway(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.StartRevolutionMeeting:
                         StartRevolutionMeeting(reader.ReadByte());

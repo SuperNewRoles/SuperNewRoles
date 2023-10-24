@@ -63,11 +63,11 @@ public static class RPCHelper
         writer.EndRPC();
     }
 
-    public static void RpcSetDoorway(byte id, bool Open)
+    public static void SetDoorway(byte id, bool Open)
     {
         MapUtilities.CachedShipStatus.AllDoors.FirstOrDefault((a) => a.Id == id).SetDoorway(Open);
     }
-    public static void RpcSetDoorway(this PlainDoor door, bool Open)
+    public static void RpcSetDoorway(this OpenableDoor door, bool Open)
     {
         door.SetDoorway(Open);
         MessageWriter writer = StartRPC(CustomRPC.RpcSetDoorway);

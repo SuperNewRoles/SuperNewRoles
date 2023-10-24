@@ -1,3 +1,4 @@
+using System;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.MapCustoms;
@@ -30,7 +31,7 @@ public static class ShipStatus_Awake_Patch
         MapUtilities.CachedShipStatus = __instance;
     }
 }
-[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem))]
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
 class UpdateSystemPatch
 {
     public static bool Prefix(ShipStatus __instance,

@@ -47,6 +47,7 @@ public class UsePlatformPlayerControlPatch
     }
 }
 // Allow movement interpolation to use velocities greater than the local player's
+/*
 [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
 public static class NetworkTransformFixedUpdatePatch
 {
@@ -75,6 +76,7 @@ public static class NetworkTransformFixedUpdatePatch
         return false;
     }
 }
+*/
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
 static class PlayerControlSetCooldownPatch
