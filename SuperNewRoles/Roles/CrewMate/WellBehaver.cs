@@ -107,7 +107,7 @@ public class WellBehaver
             foreach (PlayerControl player in WellBehaverPlayer)
             {
                 if (player.IsDead()) continue;
-                player.RpcMurderPlayer(player);
+                player.RpcMurderPlayer(player, true);
                 player.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
             }
         }
