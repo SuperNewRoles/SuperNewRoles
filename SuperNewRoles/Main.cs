@@ -55,14 +55,14 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string thisname;
     public static string ThisPluginModName;
     //対応しているバージョン。nullなら全て。
-    public static string[] SupportVanilaVersion = new string[] { "2023.7.12" };
+    public static string[] SupportVanilaVersion = new string[] { "2023.10.24" };
 
     public override void Load()
     {
         Logger = Log;
         Instance = this;
         bool CreatedVersionPatch = false;
-        SetNonVanilaVersionPatch();
+        //SetNonVanilaVersionPatch();
         // All Load() Start
         OptionSaver.Load();
         ConfigRoles.Load();
