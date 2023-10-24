@@ -26,7 +26,7 @@ public enum ReplayActionId
     Disconnect,
     MakeVent,
     SetMechanicStatus,
-    RepairSystem,
+    UpdateSystem,
     VotingComplete,
     MovingPlatform
 }
@@ -106,8 +106,8 @@ public abstract class ReplayAction
                 return new ReplayActionMakeVent();
             case ReplayActionId.SetMechanicStatus:
                 return new ReplayActionSetMechanicStatus();
-            case ReplayActionId.RepairSystem:
-                return new ReplayActionRepairSystem();
+            case ReplayActionId.UpdateSystem:
+                return new ReplayActionUpdateSystem();
             case ReplayActionId.VotingComplete:
                 return new ReplayActionVotingComplete();
             case ReplayActionId.MovingPlatform:
