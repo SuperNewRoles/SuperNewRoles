@@ -666,7 +666,7 @@ public static class RPCProcedure
         PlayerControl target = ModHelpers.PlayerById(targetid);
         if (target == null) return;
         PlayerControl.LocalPlayer.ProtectPlayer(target, 0);
-        PlayerControl.LocalPlayer.MurderPlayer(target);
+        PlayerControl.LocalPlayer.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
     }
     public static void KnightProtectClear(byte Target)
     {
@@ -748,7 +748,7 @@ public static class RPCProcedure
         if (source == null || target == null) return;
         if (IsSelfDeath)
         {
-            source.MurderPlayer(source);
+            source.MurderPlayer(source, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
         else
         {
@@ -1207,12 +1207,12 @@ public static class RPCProcedure
 
         if (alwaysKill)
         {
-            sheriff.MurderPlayer(target);
-            sheriff.MurderPlayer(sheriff);
+            sheriff.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
+            sheriff.MurderPlayer(sheriff, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
         else if (MissFire)
         {
-            sheriff.MurderPlayer(sheriff);
+            sheriff.MurderPlayer(sheriff, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
         else
         {
@@ -1220,16 +1220,16 @@ public static class RPCProcedure
             {
                 if (CachedPlayer.LocalPlayer.PlayerId == SheriffId)
                 {
-                    target.MurderPlayer(target);
+                    target.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
                 }
                 else
                 {
-                    sheriff.MurderPlayer(target);
+                    sheriff.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
                 }
             }
             else
             {
-                sheriff.MurderPlayer(target);
+                sheriff.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
             }
         }
     }
@@ -1331,13 +1331,13 @@ public static class RPCProcedure
         if (notTargetId == targetId)
         {
             PlayerControl Player = ModHelpers.PlayerById(targetId);
-            Player.MurderPlayer(Player);
+            Player.MurderPlayer(Player, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
         else
         {
             PlayerControl notTargetPlayer = ModHelpers.PlayerById(notTargetId);
             PlayerControl TargetPlayer = ModHelpers.PlayerById(targetId);
-            notTargetPlayer.MurderPlayer(TargetPlayer);
+            notTargetPlayer.MurderPlayer(TargetPlayer, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
     }
     public static void RPCClergymanLightOut(bool Start)
@@ -1524,7 +1524,7 @@ public static class RPCProcedure
         if (source != null && target != null)
         {
             if (showAnimation == 0) KillAnimationCoPerformKillPatch.hideNextAnimation = true;
-            source.MurderPlayer(target);
+            source.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
     }
     public static void ShareWinner(byte playerid)
@@ -1560,7 +1560,7 @@ public static class RPCProcedure
         PlayerControl target = ModHelpers.PlayerById(targetId);
         if (target == null || source == null) return;
         source.ProtectPlayer(target, colorid);
-        source.MurderPlayer(target);
+        source.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         source.ProtectPlayer(target, colorid);
         if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
     }
