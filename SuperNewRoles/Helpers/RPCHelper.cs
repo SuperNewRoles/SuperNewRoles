@@ -420,10 +420,10 @@ public static class RPCHelper
 
     public static void RpcOpenToilet()
     {
-        foreach (var i in new[] { 79, 80, 81, 82 })
+        foreach (byte i in new[] { 79, 80, 81, 82 })
         {
             Logger.Info($"amount:{i}", "RpcOpenToilet");
-            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Doors, i);
+            MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Doors, i);
         }
     }
 }

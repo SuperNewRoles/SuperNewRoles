@@ -112,22 +112,22 @@ public class FixSabotage
                     RPCProcedure.FixLights();
                     break;
                 case TaskTypes.RestoreOxy:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, 0 | 64);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, 1 | 64);
                     break;
                 case TaskTypes.ResetReactor:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 16);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Reactor, 16);
                     break;
                 case TaskTypes.ResetSeismic:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Laboratory, 16);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Laboratory, 16);
                     break;
                 case TaskTypes.FixComms:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
                     break;
                 case TaskTypes.StopCharles:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Reactor, 0 | 16);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Reactor, 1 | 16);
                     break;
                 default:
                     Logger.Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");

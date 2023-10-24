@@ -54,7 +54,7 @@ public static class Main
 
             button.OnClick.AddListener((Action)(() =>
             {
-                if (SabotageManager.InfectedOverlayInstance.CanUseSpecial)
+                if (SabotageManager.InfectedOverlayInstance.CanUseSabotage)
                 {
                     SabotageManager.CustomSabotageRPC(PlayerControl.LocalPlayer, SabotageManager.CustomSabotage.CognitiveDeficit, true);
                 }
@@ -69,11 +69,11 @@ public static class Main
         {
             if (IsAllEndSabotage)
             {
-                SabotageManager.InfectedOverlayInstance.SabSystem.Timer = SabotageManager.SabotageMaxTime;
+                SabotageManager.InfectedOverlayInstance.sabSystem.Timer = SabotageManager.SabotageMaxTime;
             }
             else if (!IsLocalEnd)
             {
-                SabotageManager.InfectedOverlayInstance.SabSystem.Timer = SabotageManager.SabotageMaxTime;
+                SabotageManager.InfectedOverlayInstance.sabSystem.Timer = SabotageManager.SabotageMaxTime;
             }
         }
         bool IsOK = true;

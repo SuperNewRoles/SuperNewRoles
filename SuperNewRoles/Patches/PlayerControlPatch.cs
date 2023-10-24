@@ -274,7 +274,7 @@ class ReportDeadBodyPatch
                 {
                     new LateTask(() =>
                     {
-                        player.RpcRevertShapeshift(false);
+                        player.RpcShapeshift(player, false);
                     }, 0.5f);
                     SyncSetting.CustomSyncSettings(player);
                 }

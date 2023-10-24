@@ -31,7 +31,7 @@ public static class ShipStatus_Awake_Patch
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem))]
-class RepairSystemPatch
+class UpdateSystemPatch
 {
     public static bool Prefix(ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
@@ -68,7 +68,7 @@ class RepairSystemPatch
         }
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
+            bool returndata = MorePatch.UpdateSystem(__instance, systemType, player, amount);
             return returndata;
         }
         return true;
@@ -78,7 +78,7 @@ class RepairSystemPatch
         [HarmonyArgument(1)] PlayerControl player,
         [HarmonyArgument(2)] byte amount)
     {
-        ReplayActionRepairSystem.Create(systemType, player.PlayerId, amount);
+        ReplayActionUpdateSystem.Create(systemType, player.PlayerId, amount);
         if (!RoleHelpers.IsSabotage())
         {
             new LateTask(() =>

@@ -136,7 +136,7 @@ public class CustomButton
                 if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
             }
         }
-        if (player.CurrentOutfitType == PlayerOutfitType.Shapeshifted) player.RpcRevertShapeshift(false);
+        if (player.CurrentOutfitType == PlayerOutfitType.Shapeshifted) player.RpcShapeshift(player, false);
     }
 
     public void SetActive(bool isActive)

@@ -535,15 +535,20 @@ public static class MurderPlayerPatch
 {
     public static bool resetToCrewmate = false;
     public static bool resetToDead = false;
-    public static bool Prefix(PlayerControl __instance, ref PlayerControl target)
+    public static bool Prefix(PlayerControl __instance, ref PlayerControl target, MurderResultFlags resultFlags)
     {
+        __instance.isKilling = false;
+        if (resultFlags.HasFlag(MurderResultFlags.FailedError))
+        {
+            return false;
+        }
         if (Knight.GuardedPlayers.Contains(target.PlayerId))
         {
             var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
             Writer.Write(target.PlayerId);
             Writer.EndRPC();
             RPCProcedure.KnightProtectClear(target.PlayerId);
-            target.protectedByGuardian = true;
+            target.protectedByGuardianId = -1;
             return false;
         }
         if (target.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(target))

@@ -313,7 +313,7 @@ class ShapeshifterMinigameShapeshiftPatch
                     {
                         if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                         {
-                            PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+                            PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
                         }
                     }, 1.5f, "SHR RemoteSheriff Shape Revert");
                     PlayerControl.LocalPlayer.RpcShapeshift(player, true);

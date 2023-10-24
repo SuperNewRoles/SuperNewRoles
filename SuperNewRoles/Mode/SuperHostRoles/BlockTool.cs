@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 class BlockTool
 {
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem))]
-    class RepairSystemPatch
+    class UpdateSystemPatch
     {
         public static void Prefix(
             [HarmonyArgument(0)] SystemTypes systemType,
