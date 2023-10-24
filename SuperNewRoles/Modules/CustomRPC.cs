@@ -983,6 +983,8 @@ public static class RPCProcedure
     }
     public static void FixLights()
     {
+        if (!MapUtilities.Systems.ContainsKey(SystemTypes.Electrical))
+            return;
         SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
         switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
     }

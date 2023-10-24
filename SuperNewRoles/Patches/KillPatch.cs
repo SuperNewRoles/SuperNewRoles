@@ -297,7 +297,9 @@ static class CheckMurderPatch
                 Logger.Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
                 return false;
             case RoleId.DarkKiller:
-                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (!MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
+                    return false;
+                var ma = elec.CastFast<SwitchSystem>();
                 if (ma != null && !ma.IsActive) return false;
                 break;
             case RoleId.Worshiper:
@@ -637,11 +639,13 @@ public static class MurderPlayerPatch
         }
 
         //ダークキラーがキルできるか判定
-        var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-        if (__instance.IsRole(RoleId.DarkKiller) &&
-            ma != null &&
-            !ma.IsActive)
-            return false;
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem)) {
+            var ma = elecsystem.CastFast<SwitchSystem>();
+            if (__instance.IsRole(RoleId.DarkKiller) &&
+                ma != null &&
+                !ma.IsActive)
+                return false;
+        }
         if (!AmongUsClient.Instance.AmHost ||
             __instance.PlayerId == target.PlayerId)
             return true;

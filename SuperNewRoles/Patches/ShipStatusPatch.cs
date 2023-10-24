@@ -119,12 +119,14 @@ class LightPatch
 {
     public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player, ref float __result)
     {
-        ISystemType systemType = __instance.Systems.ContainsKey(SystemTypes.Electrical) ? __instance.Systems[SystemTypes.Electrical] : null;
-        if (systemType == null) return true;
-        SwitchSystem switchSystem = systemType.TryCast<SwitchSystem>();
-        if (switchSystem == null) return true;
+        float num = 1f;
+        if (__instance.Systems.ContainsKey(SystemTypes.Electrical))
+        {
+            SwitchSystem switchSystem = __instance.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
+            if (switchSystem != null)
+                num = switchSystem.Value / 255f;
+        }
 
-        float num = switchSystem.Value / 255f;
 
         __result = player == null || player.IsDead
             ? __instance.MaxLightRadius
@@ -144,8 +146,10 @@ class LightPatch
         if (Clergyman.IsLightOutVision()) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
         if (isImpostor) return shipStatus.MaxLightRadius * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
 
-        SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
-        float lerpValue = switchSystem.Value / 255f;
+        float lerpValue = 1;
+        if (shipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)){
+            lerpValue = elec.TryCast<SwitchSystem>().Value / 255f;
+        }
         var LocalPlayer = PlayerControl.LocalPlayer;
         if (LocalPlayer.IsRole(RoleId.Dependents) ||
             (LocalPlayer.IsRole(RoleId.Nocturnality) && !ModeHandler.IsMode(ModeId.SuperHostRoles)))

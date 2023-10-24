@@ -2600,7 +2600,9 @@ static class HudManagerStartPatch
             49,
             () =>
             {
-                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                SwitchSystem ma = null;
+                if (MapUtilities.CachedShipStatus.Systems.ContainsKey(SystemTypes.Electrical))
+                    ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                 return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove);
             }
         );

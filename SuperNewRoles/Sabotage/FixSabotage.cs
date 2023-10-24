@@ -214,6 +214,8 @@ public class FixSabotage
 
         private static void FixLigftsSHR()
         {
+            if (!MapUtilities.Systems.ContainsKey(SystemTypes.Electrical))
+                return;
             SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             List<byte> amounts = new();
             for (int i = 0; i < SwitchSystem.NumSwitches; i++)
