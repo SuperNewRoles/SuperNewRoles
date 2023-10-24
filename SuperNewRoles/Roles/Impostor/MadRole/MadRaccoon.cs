@@ -190,7 +190,7 @@ public static class MadRaccoon
                 // その為, CurrentOutfitTypeでの制御は予備のループ対処機構として使用している。
             }
             PlayerControl.LocalPlayer.NetTransform.Halt();
-            PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+            PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
         }
     }
 }

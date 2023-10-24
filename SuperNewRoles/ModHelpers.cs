@@ -477,7 +477,7 @@ public static class ModHelpers
         foreach (var ct in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(ct);
 
         var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-        foreach (var st in MapUtilities.CachedShipStatus.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(st);
+        foreach (var st in MapUtilities.CachedShipStatus.ShortTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(st);
 
         var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
         foreach (var lt in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(lt);

@@ -148,7 +148,7 @@ public static class Worshiper
     private static void Suicide()
     {
         //自殺
-        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
     }
 

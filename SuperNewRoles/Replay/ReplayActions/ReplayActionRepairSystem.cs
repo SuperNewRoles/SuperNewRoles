@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
-public class ReplayActionRepairSystem : ReplayAction
+public class ReplayActionUpdateSystem : ReplayAction
 {
     public byte systemType;
     public byte sourcePlayer;
@@ -25,7 +25,7 @@ public class ReplayActionRepairSystem : ReplayAction
         writer.Write(sourcePlayer);
         writer.Write(amount);
     }
-    public override ReplayActionId GetActionId() => ReplayActionId.RepairSystem;
+    public override ReplayActionId GetActionId() => ReplayActionId.UpdateSystem;
     //アクション実行時の処理
     public override void OnAction()
     {
@@ -36,12 +36,12 @@ public class ReplayActionRepairSystem : ReplayAction
             Logger.Info("エラー");
             return;
         }
-        ShipStatus.Instance.RepairSystem((SystemTypes)systemType, source, amount);
+        ShipStatus.Instance.UpdateSystem((SystemTypes)systemType, source, amount);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionRepairSystem Create(SystemTypes systemType, byte sourcePlayer, byte amount)
+    public static ReplayActionUpdateSystem Create(SystemTypes systemType, byte sourcePlayer, byte amount)
     {
-        ReplayActionRepairSystem action = new();
+        ReplayActionUpdateSystem action = new();
         if (!CheckAndCreate(action)) return null;
         //ここで初期化(コレは仮処理だから消してね)
         action.systemType = (byte)systemType;

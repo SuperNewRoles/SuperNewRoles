@@ -53,7 +53,7 @@ public class CursedRefuelStageTask
                         __instance.MyNormTask.Data[1] += 1;
                         if (__instance.MyNormTask.Data[1] % 2 == 0) __instance.MyNormTask.NextStep();
                     }
-                    __instance.MyNormTask.UpdateArrow();
+                    __instance.MyNormTask.UpdateArrowAndLocation();
                 }
             }
             __instance.destGauge.value = __instance.timer;

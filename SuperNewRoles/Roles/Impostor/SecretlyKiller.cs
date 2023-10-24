@@ -31,7 +31,7 @@ public static class SecretlyKiller
     //シークレットキル (by:Buttons.cs)
     public static void SecretlyKill()
     {
-        RoleClass.SecretlyKiller.target.RpcMurderPlayer(RoleClass.SecretlyKiller.target);
+        RoleClass.SecretlyKiller.target.RpcMurderPlayer(RoleClass.SecretlyKiller.target, true);
         RoleClass.SecretlyKiller.target = null;
     }
 }

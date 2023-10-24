@@ -47,6 +47,7 @@ public class UsePlatformPlayerControlPatch
     }
 }
 // Allow movement interpolation to use velocities greater than the local player's
+/*
 [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
 public static class NetworkTransformFixedUpdatePatch
 {
@@ -75,6 +76,7 @@ public static class NetworkTransformFixedUpdatePatch
         return false;
     }
 }
+*/
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
 static class PlayerControlSetCooldownPatch
@@ -274,7 +276,7 @@ class ReportDeadBodyPatch
                 {
                     new LateTask(() =>
                     {
-                        player.RpcRevertShapeshift(false);
+                        player.RpcShapeshift(player, false);
                     }, 0.5f);
                     SyncSetting.CustomSyncSettings(player);
                 }

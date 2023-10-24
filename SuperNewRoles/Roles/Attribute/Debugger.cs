@@ -144,7 +144,7 @@ public static class Debugger
             if (!RoleClass.Debugger.AmDebugger) return;
 
             var target = Debugger.target;
-            target.RpcMurderPlayer(target);
+            target.RpcMurderPlayer(target, true);
             Minigame.Instance.Close();
         });
 

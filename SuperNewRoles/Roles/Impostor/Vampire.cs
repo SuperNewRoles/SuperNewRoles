@@ -77,7 +77,7 @@ class Vampire
         {
             if (RoleClass.IsMeeting) return;
             foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive()) return;
-            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
         }
         public static void AllClient()
         {

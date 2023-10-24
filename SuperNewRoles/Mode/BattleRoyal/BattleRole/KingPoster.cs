@@ -61,7 +61,7 @@ public class KingPoster : BattleRoyalRole
                     //ショートの距離か判定
                     if (Vector2.Distance(p.transform.position, CurrentPlayer.transform.position) > GameOptionsData.KillDistances[0]) continue;
                     if (BattleTeam.GetTeam(CurrentPlayer).IsTeam(p)) continue;
-                    CurrentPlayer.RpcMurderPlayer(p);
+                    CurrentPlayer.RpcMurderPlayer(p, true);
                 }
             }
             if (AbilityTime <= 0)

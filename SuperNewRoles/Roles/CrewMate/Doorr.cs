@@ -18,17 +18,17 @@ class Doorr
     }
     public static bool CheckTarget()
     {
-        PlainDoor door = GetDoor();
+        OpenableDoor door = GetDoor();
         return door != null;
     }
     public static void DoorrBtn()
     {
         Logger.Info("ボタンクリック", "DoorrBtn");
-        PlainDoor door = GetDoor();
+        OpenableDoor door = GetDoor();
         Logger.Info($"nullチェック:{door != null}", "DoorrBtn");
         if (door != null)
         {
-            door.RpcSetDoorway(!door.Open);
+            door.RpcSetDoorway(!door.IsOpen);
         }
     }
     private static float IsPos(Vector3 mypos, PlainDoor Door, float distance)
@@ -36,7 +36,7 @@ class Doorr
         var Distance = Vector3.Distance(mypos, Door.transform.position);
         return Distance <= distance ? Distance : 0f;
     }
-    private static PlainDoor GetDoor()
+    private static OpenableDoor GetDoor()
     {
         return GameObject.FindObjectsOfType<DoorConsole>().FirstOrDefault(x =>
         {
