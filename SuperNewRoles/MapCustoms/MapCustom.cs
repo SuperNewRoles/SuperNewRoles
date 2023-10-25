@@ -50,6 +50,10 @@ class MapCustom
     /*===============ファングル===============*/
     public static CustomOption TheFungleSetting;
     public static CustomOption TheFungleRandomSpawn;
+    public static CustomOption TheFungleZiplineOption;
+    public static CustomOption TheFungleZiplineUpTime;
+    public static CustomOption TheFungleZiplineDownTime;
+    public static CustomOption TheFungleZiplineUpOrDown;
 
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
@@ -94,8 +98,12 @@ class MapCustom
         MoveGapRoomDownload = Create(103213, false, CustomOptionType.Generic, "MoveGapRoomDownload", false, AirshipSetting);
 
         /*===============ファングル===============*/
-        TheFungleSetting = Create(104800, false, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
-        TheFungleRandomSpawn = Create(104801, false, CustomOptionType.Generic, "RandomSpawnOption", false, TheFungleSetting);
+        TheFungleSetting = Create(104800, true, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
+        TheFungleRandomSpawn = Create(104801, true, CustomOptionType.Generic, "RandomSpawnOption", false, TheFungleSetting);
+        TheFungleZiplineOption = Create(104802, true, CustomOptionType.Generic, "TheFungleZiplineOption", false, TheFungleSetting);
+        TheFungleZiplineUpTime = Create(104803, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleZiplineOption);
+        TheFungleZiplineDownTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleZiplineOption);
+        TheFungleZiplineUpOrDown = Create(104805, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZiplineAlways", "TheFungleZiplineOnlyUp", "TheFungleZiplineOnlyDown" }, TheFungleZiplineOption);
 
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
