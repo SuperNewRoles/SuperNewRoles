@@ -163,7 +163,7 @@ public class CustomHats
         hatViewData.name = hat.ProdId;
         hat.InFront = !ch.behind;
         hat.NoBounce = !ch.bounce;
-        hat.ChipOffset = new Vector2(0f, 0.2f);
+        hat.ChipOffset = new Vector2(0f, 0.25f);
         hat.Free = true;
         hat.NotInStore = true;
 
