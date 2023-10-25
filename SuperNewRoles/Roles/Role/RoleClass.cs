@@ -221,7 +221,7 @@ public static class RoleClass
         GM.ClearAndReload();
         Cracker.ClearAndReload();
         NekoKabocha.ClearAndReload();
-        WaveCannon.ClearAndReload();
+        WaveCannonObject.Ids = new();
         Doppelganger.ClearAndReload();
         Werewolf.ClearAndReload();
         Knight.ClearAndReload();
@@ -2731,22 +2731,6 @@ public static class RoleClass
             DefaultCount = CustomOptionHolder.CrackerOneTurnSelectCount.GetInt();
             TurnCount = DefaultCount;
             currentCrackedPlayerControls = new();
-        }
-    }
-
-    public static class WaveCannon
-    {
-        public static List<PlayerControl> WaveCannonPlayer;
-        public static Color32 color = ImpostorRed;
-        public static List<byte> CannotMurderPlayers;
-        public static bool IsLocalOn => WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId) != null;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
-
-        public static void ClearAndReload()
-        {
-            WaveCannonPlayer = new();
-            WaveCannonObject.Ids = new();
-            CannotMurderPlayers = new();
         }
     }
     public static class Doppelganger

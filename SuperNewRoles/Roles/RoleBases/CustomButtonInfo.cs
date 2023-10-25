@@ -34,16 +34,16 @@ public class CustomButtonInfo
     private Func<bool> StopCountCoolFunc { get; }
     private Func<float> GetCoolTimeFunc { get; }
     private Func<float> GetDurationTimeFunc { get; }
+    private Action OnEffectEndsFunc { get; }
     private ActionButton BaseButton { get; }
-    private ICustomButton icustomButton { get; }
+    private ICustomButton icustomButton { get; set; }
+    private RoleBase roleBase { get; set; }
     private Sprite buttonSprite { get; }
     private KeyCode? HotKey { get; }
     private int joystickKey { get; }
     private bool showButtonText { get; }
     private Vector3 positionOffset { get; }
     private string ButtonText { get; }
-    private RoleBase roleBase { get; }
-
     public bool HasAbility { get; }
     public int AbilityCount { get; private set; }
     //InfoText
@@ -56,7 +56,8 @@ public class CustomButtonInfo
     /// <param name=""></param>
     public CustomButtonInfo(
         int? AbilityCount,
-        ICustomButton icb, Action OnClick,
+        RoleBase roleBase,
+        Action OnClick,
         Func<bool, bool> HasButton,
         CustomButtonCouldType CouldUseType,
         Action OnMeetingEnds, Sprite Sprite,
@@ -69,15 +70,16 @@ public class CustomButtonInfo
         Func<bool> StopCountCoolFunc = null,
         ActionButton baseButton = null,
         Func<float> DurationTime = null,
-        Func<bool> CouldUse = null)
+        Func<bool> CouldUse = null,
+        Action OnEffectEnds = null)
     {
         this.HasAbility = false;
         this.AbilityCount = AbilityCount ?? 334;
         this.OnClickFunc = OnClick;
         this.HasButtonFunc = HasButton;
         this.CouldUseFunc = CouldUse;
-        this.icustomButton = icb;
-        this.roleBase = icb as RoleBase;
+        this.roleBase = roleBase;
+        this.icustomButton = roleBase as ICustomButton;
         this.OnMeetingEndsFunc = OnMeetingEnds;
         this.buttonSprite = Sprite;
         this.BaseButton = BaseButton;
@@ -85,6 +87,9 @@ public class CustomButtonInfo
         this.StopCountCoolFunc = StopCountCoolFunc;
         this.ButtonText = buttonText;
         this.showButtonText = showButtonText;
+        this.GetCoolTimeFunc = CoolTime;
+        this.GetDurationTimeFunc = DurationTime;
+        this.OnEffectEndsFunc = OnEffectEnds;
         if (this.BaseButton == null)
             this.BaseButton = FastDestroyableSingleton<HudManager>.Instance.AbilityButton;
         this.HotKey = HotKey;
@@ -111,11 +116,16 @@ public class CustomButtonInfo
             (OnClick, HasButton, CouldUse, OnMeetingEnds,
             buttonSprite, positionOffset,
             FastDestroyableSingleton<HudManager>.Instance,
-            BaseButton, HotKey, joystickKey, StopCountCool)
+            BaseButton, HotKey, joystickKey, StopCountCool,
+            GetDurationTimeFunc != null, GetDurationTimeFunc?.Invoke() ?? 5f, OnEffectEnds)
         {
             buttonText = ButtonText,
             showButtonText = showButtonText
         };
+    }
+    public void OnEffectEnds()
+    {
+        OnEffectEndsFunc?.Invoke();
     }
     public bool StopCountCool()
     {
@@ -129,6 +139,7 @@ public class CustomButtonInfo
         if (GetDurationTimeFunc != null)
         {
             customButton.EffectDuration = GetDurationTimeFunc?.Invoke() ?? 0;
+            customButton.HasEffect = true;
         }
     }
     public void OnMeetingEnds()

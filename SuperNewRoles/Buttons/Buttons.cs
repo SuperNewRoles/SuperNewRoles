@@ -88,7 +88,6 @@ static class HudManagerStartPatch
     public static CustomButton StefinderKillButton;
     public static CustomButton SluggerButton;
     public static CustomButton CrackerButton;
-    public static CustomButton WaveCannonButton;
     public static CustomButton DoppelgangerButton;
     public static CustomButton PavlovsownerCreatedogButton;
     public static CustomButton PavlovsdogKillButton;
@@ -643,71 +642,6 @@ static class HudManagerStartPatch
         )
         {
             buttonText = ModTranslation.GetString("PenguinButtonName"),
-            showButtonText = true
-        };
-
-        WaveCannonButton = new(
-            () =>
-            {
-                var pos = CachedPlayer.LocalPlayer.transform.position;
-                byte[] buff = new byte[sizeof(float) * 2];
-                Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
-                writer.Write((byte)WaveCannonObject.RpcType.Spawn);
-                writer.Write((byte)0);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.WriteBytesAndSize(buff);
-                writer.EndRPC();
-                RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
-            },
-            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.WaveCannon || role == RoleId.WaveCannonJackal) && (!WaveCannonJackal.IwasSidekicked.Contains(PlayerControl.LocalPlayer.PlayerId) || WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool()); },
-            () =>
-            {
-                return PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
-                WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
-                WaveCannonButton.effectCancellable = false;
-                WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonChargeTime.GetFloat() : WaveCannonJackal.WaveCannonJackalChargeTime.GetFloat();
-                WaveCannonButton.HasEffect = true;
-            },
-            RoleClass.WaveCannon.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; },
-            true,
-            5f,
-            () =>
-            {
-                WaveCannonObject obj = WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && x.Id == WaveCannonObject.Ids[CachedPlayer.LocalPlayer.PlayerId] - 1);
-                if (obj == null)
-                {
-                    Logger.Info("nullなのでreturnしました", "WaveCannonButton");
-                    return;
-                }
-                var pos = CachedPlayer.LocalPlayer.transform.position;
-                byte[] buff = new byte[sizeof(float) * 2];
-                Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
-                writer.Write((byte)WaveCannonObject.RpcType.Shoot);
-                writer.Write((byte)obj.Id);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.WriteBytesAndSize(buff);
-                writer.EndRPC();
-                RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
-            }
-        )
-        {
-            buttonText = ModTranslation.GetString("WaveCannonButtonName"),
             showButtonText = true
         };
 

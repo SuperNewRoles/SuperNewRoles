@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class RoleInfo
     public TeamRoleType Team { get; }
     public TeamType TeamType { get; }
     public bool IsGhostRole { get; }
+
+    private RoleTags Tags;
     private Func<PlayerControl, RoleBase> _createInstance { get; }
     public RoleInfo(
         Type roleObjectType,
@@ -21,6 +24,7 @@ public class RoleInfo
         RoleId role,
         string namekey,
         Color32 roleColor,
+        RoleTags tags,
         TeamRoleType team = TeamRoleType.Crewmate,
         TeamType teamType = TeamType.Crewmate
         )
@@ -33,6 +37,7 @@ public class RoleInfo
         this.IsGhostRole = RoleObjectType.IsSubclassOf(typeof(IGhostRole));
         this.RoleColor = roleColor;
         this.TeamType = teamType;
+        this.Tags = tags;
         RoleInfoManager.RoleInfos.Add(role, this);
     }
     public RoleBase CreateInstance(PlayerControl player)
@@ -41,5 +46,43 @@ public class RoleInfo
             return _createInstance(player);
         //Instance作成Functionが設定ていない場合はActivatorで作成
         return Activator.CreateInstance(RoleObjectType, player as object) as RoleBase;
+    }
+}
+public enum RoleTag
+{
+    Information, //情報系
+    PowerPlayResistance, //PP対抗
+    SpecialKiller, //特殊キラー
+    Killer, //キラー
+    Bomb, //爆発系
+    Hacchan, //ハッチャン役
+    PlayTimeAdjustment, //試合時間調整系
+    Haloween, //ハロウィン役
+    CanSidekick, //サイドキック可能役
+    CustomObject, //カスタムオブジェクト使用役
+    CanUseVent, //ベント使用可能役
+
+}
+public enum TeamTag
+{
+    Impostor,
+    Crewmate,
+    Neutral,
+    Jackal,
+    Sidekick,
+    JackalFriends,
+    Madmate,
+    MadKiller,
+}
+public class RoleTags
+{
+    public readonly RoleTag[] Tags;
+    public readonly TeamTag TeamTag;
+    private RoleId Role;
+    public RoleTags(RoleId role, TeamTag teamtag, params RoleTag[] tag)
+    {
+        this.Role = role;
+        this.Tags = tag;
+        this.TeamTag = teamtag;
     }
 }

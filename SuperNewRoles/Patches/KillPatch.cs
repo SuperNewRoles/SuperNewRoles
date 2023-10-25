@@ -711,15 +711,14 @@ public static class MurderPlayerPatch
 
                 Doppelganger.KillCoolSetting.MurderPlayer(__instance, target); // キルクリセット処理
 
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                if (WaveCannon.IsSyncKillCoolTime.GetBool() &&
+                    PlayerControl.LocalPlayer.GetRoleBase() is WaveCannon wavecannon
+                    )
                 {
-                    if (CustomOptionHolder.WaveCannonIsSyncKillCoolTime.GetBool())
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptionHolder.WaveCannonCoolTime.GetFloat();
-                }
-                else
-                {
-                    if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
+                    wavecannon?
+                        .CustomButtonInfos?
+                        .FirstOrDefault()?
+                        .ResetCoolTime();
                 }
             }
         }

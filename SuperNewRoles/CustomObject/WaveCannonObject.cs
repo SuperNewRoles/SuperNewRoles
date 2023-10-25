@@ -8,7 +8,9 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -24,7 +26,7 @@ public class WaveCannonObject : CustomAnimation
         Spawn,
         Shoot
     }
-    public static List<WaveCannonObject> Objects = new();
+    public static PlayerData<WaveCannonObject> Objects = new();
 
     public Transform effectGameObjectsParent;
     public List<GameObject> effectGameObjects;
@@ -126,7 +128,6 @@ public class WaveCannonObject : CustomAnimation
         WiseManData = new();
         effectGameObjects = new();
         effectrenders = new();
-        Objects.Add(this);
     }
     public WaveCannonObject Init(Vector3 pos, bool FlipX, PlayerControl _owner)
     {
@@ -165,6 +166,7 @@ public class WaveCannonObject : CustomAnimation
         Ids[OwnerPlayerId]++;
         //シュート中かを無効に
         IsShootNow = false;
+        Objects[OwnerPlayerId] = this;
         return this;
     }
     public GameObject CreateRotationEffect(Vector3 PlayerPosition, float Angle)
@@ -259,9 +261,11 @@ public class WaveCannonObject : CustomAnimation
                             if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
                                 WaveCannonJackal.ResetCooldowns();
                         }
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
-                        HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
-                        RoleClass.WaveCannon.CannotMurderPlayers = new();
+                        Owner.GetRoleBase<WaveCannon>()?
+                        .CustomButtonInfos?
+                        .FirstOrDefault()?
+                        .ResetCoolTime();
+                        Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers = new();
                     }
                 }
             });
@@ -294,7 +298,7 @@ public class WaveCannonObject : CustomAnimation
     public override void OnDestroy()
     {
         base.OnDestroy();
-        Objects.Remove(this);
+        Objects.Remove(OwnerPlayerId);
         foreach (var data in WiseManData.ToArray())
         {
             if (data.Key is null) continue;
@@ -361,7 +365,7 @@ public class WaveCannonObject : CustomAnimation
                 {
                     if (player.IsDead()) continue;
                     if (WiseManData.ContainsKey(player)) continue;
-                    if (RoleClass.WaveCannon.CannotMurderPlayers.Contains(player.PlayerId)) continue;
+                    if (Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers.Contains(player.PlayerId)) continue;
                     if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
                     //float posdata = player.GetTruePosition().y - transform.position.y;
                     //if (posdata is > 1 or < (-1)) continue;
@@ -378,7 +382,7 @@ public class WaveCannonObject : CustomAnimation
                             msgwriter.Write(0);
                             msgwriter.EndRPC();
                             RPCProcedure.ShielderProtect(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
-                            RoleClass.WaveCannon.CannotMurderPlayers.Add(player.PlayerId);
+                            Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers.Add(player.PlayerId);
                             return;
                         }
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);

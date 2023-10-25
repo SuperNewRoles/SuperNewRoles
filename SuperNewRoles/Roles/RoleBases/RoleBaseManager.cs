@@ -62,4 +62,8 @@ public static class RoleBaseManager
     {
         return PlayerRoles[player];
     }
+    public static T GetRoleBase<T>(this PlayerControl player) where T : RoleBase
+    {
+        return PlayerRoles[player] as T;
+    }
 }

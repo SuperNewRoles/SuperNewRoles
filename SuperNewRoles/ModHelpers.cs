@@ -446,6 +446,16 @@ public static class ModHelpers
         }
         return MurderAttemptResult.PerformKill;
     }
+    public static void AllRun<T>(this List<T> list, Action<T> act)
+    {
+        foreach (T obj in list)
+            act(obj);
+    }
+    public static void AllRun<T>(this T[] array, Action<T> act)
+    {
+        foreach (T obj in array)
+            act(obj);
+    }
     public static void GenerateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
     {
         if (player == null) return;

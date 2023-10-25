@@ -825,9 +825,6 @@ public static class RoleHelpers
             case RoleId.Cracker:
                 RoleClass.Cracker.CrackerPlayer.Add(player);
                 break;
-            case RoleId.WaveCannon:
-                RoleClass.WaveCannon.WaveCannonPlayer.Add(player);
-                break;
             case RoleId.NekoKabocha:
                 NekoKabocha.NekoKabochaPlayer.Add(player);
                 break;
@@ -1417,9 +1414,6 @@ public static class RoleHelpers
             case RoleId.Cracker:
                 RoleClass.Cracker.CrackerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.WaveCannon:
-                RoleClass.WaveCannon.WaveCannonPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.NekoKabocha:
                 NekoKabocha.NekoKabochaPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1580,9 +1574,9 @@ public static class RoleHelpers
             return !taskHolder.CountTask;
         var IsTaskClear = false;
         if (player.IsImpostor()) IsTaskClear = true;
-        if (player.IsMadRoles()) IsTaskClear = true;
-        if (player.IsFriendRoles()) IsTaskClear = true;
-        if (player.IsNeutral()) IsTaskClear = true;
+        else if (player.IsMadRoles()) IsTaskClear = true;
+        else if (player.IsFriendRoles()) IsTaskClear = true;
+        else if (player.IsNeutral()) IsTaskClear = true;
         switch (player.GetRole())
         {
             case RoleId.HomeSecurityGuard:
@@ -2021,7 +2015,6 @@ public static class RoleHelpers
             else if (RoleClass.GM.gm != null && RoleClass.GM.gm.PlayerId == player.PlayerId) return RoleId.GM;
             else if (RoleClass.Cracker.CrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Cracker;
             else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
-            else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
             else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
             else if (RoleClass.Werewolf.WerewolfPlayer.IsCheckListPlayerControl(player)) return RoleId.Werewolf;
             else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;

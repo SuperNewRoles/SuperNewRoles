@@ -14,6 +14,7 @@ public class Bestfalsecharge : RoleBase, IWrapUpHandler, ICrewmate
         RoleId.Bestfalsecharge,
         "Bestfalsecharge",
         RoleClass.CrewmateWhite,
+        new(RoleId.Bestfalsecharge, TeamTag.Crewmate),
         TeamRoleType.Crewmate,
         TeamType.Crewmate
         );

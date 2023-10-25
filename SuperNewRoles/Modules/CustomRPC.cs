@@ -299,7 +299,6 @@ public enum CustomRPC
     KnightProtected,
     KnightProtectClear,
     GuesserShoot,
-    WaveCannon,
     ShowFlash,
     PavlovsOwnerCreateDog,
     CrackerCrack,
@@ -831,24 +830,6 @@ public static class RPCProcedure
         if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
     }
 
-    public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
-    {
-        ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, buff);
-        Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
-        switch ((WaveCannonObject.RpcType)Type)
-        {
-            case WaveCannonObject.RpcType.Spawn:
-                Vector3 position = Vector3.zero;
-                position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
-                position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-
-                return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
-            case WaveCannonObject.RpcType.Shoot:
-                WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
-                break;
-        }
-        return null;
-    }
     public static void SetFinalStatus(byte targetId, FinalStatus Status)
     {
         FinalStatusData.FinalStatuses[targetId] = Status;
@@ -1948,9 +1929,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CrackerCrack:
                         CrackerCrack(reader.ReadByte());
-                        break;
-                    case CustomRPC.WaveCannon:
-                        WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());
                         break;
                     case CustomRPC.ShowFlash:
                         ShowFlash();

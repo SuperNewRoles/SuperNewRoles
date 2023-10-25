@@ -81,7 +81,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
             {
                 foreach (FieldInfo field in t.GetFields())
                 {
-                    Logger.LogInfo(field.FieldType.ToString());
                     if (field.IsStatic && field.FieldType == RoleInfoType)
                         field.GetValue(null);
                 }

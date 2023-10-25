@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
@@ -54,5 +56,27 @@ public abstract class RoleBase : IDisposable
     public override int GetHashCode()
     {
         return InstanceId;
+    }
+    //IRpcHandler向け
+    private int LastPosition;
+    public MessageWriter RpcWriter
+    {
+        get
+        {
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RoleRpcHandler);
+            // 自身のPlayerIdを送信
+            writer.Write(Player?.PlayerId ?? (byte)255);
+            LastPosition = writer.Length;
+            return writer;
+        }
+    }
+    public void SendRpc(MessageWriter writer)
+    {
+        if (this is not IRpcHandler rpcHandler)
+            return;
+        MessageReader reader = MessageReader.Get(writer.Buffer.ToArray()[(LastPosition - 1)..]);
+        reader.ReadByte();
+        rpcHandler.RpcReader(reader);
+        writer.EndRPC();
     }
 }
