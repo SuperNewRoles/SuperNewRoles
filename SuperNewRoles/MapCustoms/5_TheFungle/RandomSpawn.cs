@@ -37,7 +37,7 @@ public static class FungleRandomSpawn
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.SpawnPlayer)), HarmonyPostfix]
         public static void SpawnPlayerPostfix()
         {
-            if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) ||
+            if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false) ||
                 !MapCustomClearAndReload.FungleRandomSpawn)
                 return;
             HudManager.Instance.StartCoroutine(Spawn(PlayerControl.LocalPlayer).WrapToIl2Cpp());
