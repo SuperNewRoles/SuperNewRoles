@@ -70,7 +70,7 @@ class IntroCutsceneOnDestroyPatch
 
         //配電盤を移動させる
         MoveElecPad.MoveElecPads();
-
+        FungleShipStatus fungleShipStatus;
         if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
         {
             GameObject gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;
@@ -92,6 +92,15 @@ class IntroCutsceneOnDestroyPatch
                     downloadConsole.transform.localPosition = localPosition;
                 }
             }
+        }
+        //ジップラインの設定
+        else if (IsMapCustom(MapCustomId.TheFungle, true) &&
+                MapCustom.TheFungleZiplineOption.GetBool() &&
+                (fungleShipStatus = __instance.CastFast<FungleShipStatus>()) != null
+                )
+        {
+            fungleShipStatus.Zipline.upTravelTime = MapCustom.TheFungleZiplineUpTime.GetFloat();
+            fungleShipStatus.Zipline.downTravelTime = MapCustom.TheFungleZiplineDownTime.GetFloat();
         }
     }
 }
