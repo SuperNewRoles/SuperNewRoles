@@ -11,7 +11,7 @@ public static class DesyncHelpers
         if (see == null) SeePlayer = source;
         if (SeePlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
         {
-            source.MurderPlayer(target);
+            source.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
             return;
         }
         MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, SeePlayer.GetClientId());

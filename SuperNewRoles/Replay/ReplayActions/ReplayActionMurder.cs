@@ -35,7 +35,7 @@ public class ReplayActionMurder : ReplayAction
             Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{targetPlayer}");
             return;
         }
-        source.MurderPlayer(target);
+        source.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
     }
     public override void OnReplay()
     {

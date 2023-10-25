@@ -10,10 +10,10 @@ namespace SuperNewRoles.Patches;
 
 class TaskCount
 {
-    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.PickRandomConsoles))]
+    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.PickRandomConsoles), new Type[] { typeof(TaskTypes), typeof(Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<byte>) })]
     class NormalPlayerTaskPickRandomConsolesPatch
     {
-        static void Postfix(NormalPlayerTask __instance, TaskTypes taskType, byte[] consoleIds)
+        static void Postfix(NormalPlayerTask __instance, TaskTypes taskType)
         {
             if (taskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.MapOption.WireTaskIsRandom) return;
             List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(taskType)).ToList<global::Console>();

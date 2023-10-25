@@ -104,13 +104,13 @@ class RpcShapeshiftPatch
                         __instance.RpcMurderPlayerCheck(target);
                         FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
                         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
-                        __instance.RpcMurderPlayer(__instance);
+                        __instance.RpcMurderPlayer(__instance, true);
                         FinalStatusClass.RpcSetFinalStatus(__instance, status);
                     }
                     else if (misfire)
                     {
                         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
-                        __instance.RpcMurderPlayer(__instance);
+                        __instance.RpcMurderPlayer(__instance, true);
                         FinalStatusClass.RpcSetFinalStatus(__instance, status);
                     }
                     else
@@ -124,7 +124,7 @@ class RpcShapeshiftPatch
                             __instance.RpcMurderPlayerCheck(target);
                         else
                         {
-                            target.RpcMurderPlayer(target);
+                            target.RpcMurderPlayer(target, true);
                             __instance.RpcShowGuardEffect(__instance);
                         }
                         FinalStatusClass.RpcSetFinalStatus(target, status);
@@ -143,7 +143,7 @@ class RpcShapeshiftPatch
                             }
                         }
                     }
-                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcMurderPlayer(__instance, true);
                     __instance.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
                     return false;
                 case RoleId.Samurai:
@@ -183,7 +183,7 @@ class RpcShapeshiftPatch
                     }
                     return false;
                 case RoleId.SuicideWisher:
-                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcMurderPlayer(__instance, true);
                     __instance.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
                     return false;
                 case RoleId.ToiletFan:
@@ -211,7 +211,7 @@ class RpcShapeshiftPatch
                         SyncSetting.CustomSyncSettings(__instance);
                     return true;
                 case RoleId.Worshiper:
-                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcMurderPlayer(__instance, true);
                     __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                     return true;
                 case RoleId.EvilSeer:
@@ -313,7 +313,7 @@ class ShapeshifterMinigameShapeshiftPatch
                     {
                         if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                         {
-                            PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+                            PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
                         }
                     }, 1.5f, "SHR RemoteSheriff Shape Revert");
                     PlayerControl.LocalPlayer.RpcShapeshift(player, true);

@@ -300,7 +300,7 @@ public static class OrientalShaman
         ShermansServantSuicideButton = new(
             () =>
             {
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                 PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
             },
             (bool isAlive, RoleId role) => { return role == RoleId.ShermansServant && isAlive; },
@@ -378,7 +378,7 @@ public static class OrientalShaman
 
                 if (!player.IsRole(RoleId.OrientalShaman) && PlayerControl.LocalPlayer.IsAlive())
                 {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                     PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 }
 

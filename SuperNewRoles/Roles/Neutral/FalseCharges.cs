@@ -57,7 +57,7 @@ public static class FalseCharges
                                 {
                                     if (!p.Data.Disconnected && p.PlayerId != data.Key)
                                     {
-                                        p.RpcMurderPlayer(p);
+                                        p.RpcMurderPlayer(p, true);
                                     }
                                 }
                                 var player = ModHelpers.PlayerById(data.Key);

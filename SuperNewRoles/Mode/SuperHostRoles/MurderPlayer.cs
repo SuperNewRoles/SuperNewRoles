@@ -66,7 +66,7 @@ class MurderPlayer
             PlayerControl Side = target.GetOneSideLovers();
             if (Side.IsAlive())
             {
-                Side.RpcMurderPlayer(Side);
+                Side.RpcMurderPlayer(Side, true);
             }
         }
         Roles.Bait.MurderPostfix(__instance, target);
