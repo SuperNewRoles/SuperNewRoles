@@ -139,9 +139,10 @@ public class MapCustomClearAndReload
         else
         {
             AirshipSetting = MapCustom.AirshipSetting.GetBool();
-            FungleSetting = MapCustom.TheFungleSetting.GetBool();
             AgarthaSetting = MapCustom.AgarthaSetting.GetBool();
         }
+        FungleSetting = MapCustom.TheFungleSetting.GetBool();
+
         /*===============エアーシップ===============*/
         // FIXME:CustomMapIdをSHR時はfalseにするのがうまく動作していないようなので此処で取得している。そちらを直したら移動する。
         AirshipRandomSpawn = AirshipSetting && MapCustom.AirshipRandomSpawn.GetBool();
