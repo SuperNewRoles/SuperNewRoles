@@ -24,6 +24,7 @@ public class MapCustomHandler
             MapCustomId.Mira => isMapId == 1 && MapCustom.MiraSetting.GetBool(),
             MapCustomId.Polus => isMapId == 2 && MapCustom.PolusSetting.GetBool(),
             MapCustomId.Airship => isMapId == 4 && MapCustom.AirshipSetting.GetBool(),
+            MapCustomId.TheFungle => isMapId == 5 && MapCustom.TheFungleSetting.GetBool(),
             _ => false,
         };
     }
@@ -33,6 +34,7 @@ public class MapCustomHandler
         Mira,
         Polus,
         Airship,
+        TheFungle,
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]

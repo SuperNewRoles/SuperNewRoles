@@ -47,6 +47,10 @@ class MapCustom
     /// <summary>昇降右のダウンロードをはしごの下に移動する設定</summary>
     public static CustomOption MoveGapRoomDownload;
 
+    /*===============ファングル===============*/
+    public static CustomOption TheFungleSetting;
+    public static CustomOption TheFungleRandomSpawn;
+
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
     public static CustomOption AgarthaRandomSpawn;
@@ -89,6 +93,10 @@ class MapCustom
         DisableGapRoomShadowForNonImpostor = Create(103212, false, CustomOptionType.Generic, "DisableGapRoomShadowForNonImpostor", true, ModifyGapRoomOneWayShadow);
         MoveGapRoomDownload = Create(103213, false, CustomOptionType.Generic, "MoveGapRoomDownload", false, AirshipSetting);
 
+        /*===============ファングル===============*/
+        TheFungleSetting = Create(104800, false, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
+        TheFungleRandomSpawn = Create(104801, false, CustomOptionType.Generic, "RandomSpawnOption", false, TheFungleSetting);
+
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
         AgarthaRandomSpawn = Create(103301, false, CustomOptionType.Generic, "RandomSpawnOption", true, AgarthaSetting);
@@ -103,6 +111,10 @@ public class MapCustomClearAndReload
     internal static bool AirshipSetting;
     public static bool AirshipRandomSpawn;
 
+    /*===============ファングル===============*/
+    internal static bool FungleSetting;
+    public static bool FungleRandomSpawn;
+
     /*===============アガルタ===============*/
     internal static bool AgarthaSetting;
     public static bool AgarthaRandomSpawn;
@@ -113,16 +125,21 @@ public class MapCustomClearAndReload
         if (!MapCustom.MapCustomOption.GetBool() || ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             AirshipSetting = false;
+            FungleSetting = false;
             AgarthaSetting = false;
         }
         else
         {
             AirshipSetting = MapCustom.AirshipSetting.GetBool();
+            FungleSetting = MapCustom.TheFungleSetting.GetBool();
             AgarthaSetting = MapCustom.AgarthaSetting.GetBool();
         }
         /*===============エアーシップ===============*/
         // FIXME:CustomMapIdをSHR時はfalseにするのがうまく動作していないようなので此処で取得している。そちらを直したら移動する。
         AirshipRandomSpawn = AirshipSetting && MapCustom.AirshipRandomSpawn.GetBool();
+
+        /*===============ファングル===============*/
+        FungleRandomSpawn = FungleSetting && MapCustom.TheFungleRandomSpawn.GetBool();
 
         /*===============アガルタ===============*/
         // TODO:仮の設定取得方式
