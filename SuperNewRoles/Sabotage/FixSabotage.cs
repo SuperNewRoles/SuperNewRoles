@@ -116,7 +116,7 @@ public class FixSabotage
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, 1 | 64);
                     break;
                 case TaskTypes.ResetReactor:
-                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Reactor, 16);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 16);
                     break;
                 case TaskTypes.ResetSeismic:
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Laboratory, 16);
