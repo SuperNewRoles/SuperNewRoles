@@ -102,7 +102,7 @@ class MapCustom
         TheFungleSetting = Create(104800, true, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
         TheFungleRandomSpawn = Create(104801, true, CustomOptionType.Generic, "RandomSpawnOption", false, TheFungleSetting);
         TheFungleZiplineOption = Create(104802, true, CustomOptionType.Generic, "TheFungleZiplineOption", false, TheFungleSetting);
-        TheFungleCanUseZiplineOption = Create(104806, false, CustomOptionType.Generic, "TheFungleCanUseZiplineOption", false, TheFungleZiplineOption);
+        TheFungleCanUseZiplineOption = Create(104806, false, CustomOptionType.Generic, "TheFungleCanUseZiplineOption", true, TheFungleZiplineOption);
         TheFungleZiplineUpTime = Create(104803, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
         TheFungleZiplineDownTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
         TheFungleZiplineUpOrDown = Create(104805, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZiplineAlways", "TheFungleZiplineOnlyUp", "TheFungleZiplineOnlyDown" }, TheFungleCanUseZiplineOption);
