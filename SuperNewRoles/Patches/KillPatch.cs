@@ -115,6 +115,7 @@ static class CheckMurderPatch
 {
     public static bool isKill = false;
 
+    public static bool IsKillSuc = false;
 
     public static bool HandleSHR(PlayerControl __instance, PlayerControl target)
     {
@@ -344,6 +345,7 @@ static class CheckMurderPatch
 
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
+        IsKillSuc = true;
         Logger.Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
         if (
                 __instance.IsBot() ||
@@ -359,7 +361,8 @@ static class CheckMurderPatch
                 AirShipRandomSpawn.IsLoading
            )
         {
-            return false;
+            MurderHelpers.RpcMurderPlayerFailed(__instance, target);
+            return IsKillSuc = false;
         }
         Logger.Info("キル可能かを通過しました。", "CheckMurder");
         if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek) return true;
@@ -374,42 +377,42 @@ static class CheckMurderPatch
         switch (ModeHandler.GetMode())
         {
             case ModeId.Zombie:
-                return false;
+                return IsKillSuc = false;
             case ModeId.PantsRoyal:
                 Mode.PantsRoyal.main.OnMurderClick(__instance, target);
-                return false;
+                return IsKillSuc = false;
             case ModeId.BattleRoyal:
                 if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId && isKill)
-                    return false;
+                    return IsKillSuc = false;
                 if (Mode.BattleRoyal.Main.IsTeamBattle)
                 {
                     foreach (BattleTeam teams in BattleTeam.BattleTeams)
                     {
                         if (teams.IsTeam(__instance) && teams.IsTeam(target))
-                            return false;
+                            return IsKillSuc = false;
                     }
                 }
                 PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
                 if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow)
                 {
                     Mode.BattleRoyal.Main.MurderPlayer(target, __instance, targetAbility);
-                    return false;
+                    return IsKillSuc = false;
                 }
                 if (target.IsBot())
                 {
                     if (target == CrystalMagician.Bot)
                         CrystalMagician.UseWater(__instance);
-                    return false;
+                    return IsKillSuc = false;
                 }
                 if (!PlayerAbility.GetPlayerAbility(__instance).CanUseKill)
-                    return false;
+                    return IsKillSuc = false;
                 KingPoster kp = KingPoster.GetKingPoster(__instance);
                 if (!targetAbility.CanKill)
-                    return false;
+                    return IsKillSuc = false;
                 if (__instance.IsRole(RoleId.KingPoster) && kp.IsAbilityUsingNow)
                 {
                     kp.OnKillClick(target);
-                    return false;
+                    return IsKillSuc = false;
                 }
                 if (Mode.BattleRoyal.Main.StartSeconds <= 0)
                 {
@@ -436,13 +439,18 @@ static class CheckMurderPatch
             case ModeId.SuperHostRoles:
                 bool SHRresult = HandleSHR(__instance, target);
                 if (!SHRresult)
-                    return false;
+                    return IsKillSuc = false;
                 break;
             case ModeId.Detective:
                 if (target.PlayerId ==
                     Mode.Detective.Main.DetectivePlayer.PlayerId)
-                    return false;
+                    return IsKillSuc = false;
                 break;
+        }
+        if (!IsKillSuc)
+        {
+            MurderHelpers.RpcMurderPlayerFailed(__instance, target);
+            return false;
         }
         Logger.Info("全モード通過", "CheckMurder");
         Logger.Info("全スタントマン系通過", "CheckMurder");
@@ -515,7 +523,7 @@ static class CheckMurderPatch
             return;
         }
         SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
-        __instance.RpcMurderPlayer(target, true);
+        __instance.RpcMurderPlayerOnCheck(target);
         switch (target.GetRole())
         {
             case RoleId.EvilSeer:
