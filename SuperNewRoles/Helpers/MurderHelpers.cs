@@ -16,6 +16,7 @@ public static class MurderHelpers
         writer.WriteNetObject(target);
         writer.Write((int)flags);
         writer.EndRPC();
+        player.MurderPlayer(target, flags);
     }
     public static void RpcMurderPlayerForce(this PlayerControl player, PlayerControl target)
     {
