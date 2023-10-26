@@ -161,6 +161,7 @@ class BlockTool
             1 => new Vector2(15.51107f, -2.897387f),
             2 => new Vector2(26.20935f, -16.04406f),
             4 => new Vector2(25.28237f, -8.145635f),
+            5 => new Vector2(1.535f, -0.419f),
             _ => new(1000, 1000)
         };
     }

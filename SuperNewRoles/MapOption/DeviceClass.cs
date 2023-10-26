@@ -480,7 +480,10 @@ public static class DeviceClass
             TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
             TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
             TimeRemaining.transform.position = Vector3.zero;
-            TimeRemaining.transform.localPosition = new Vector3(0.95f, 4.45f);
+            TimeRemaining.transform.localPosition =
+                GameManager.Instance.LogicOptions.currentGameOptions.MapId == 5 ?
+                new(2.3f, 4.2f, -10) :
+                new(0.95f, 4.45f, -10f);
             TimeRemaining.transform.localScale *= 1.8f;
             TimeRemaining.color = Palette.White;
         }
@@ -507,7 +510,29 @@ public static class DeviceClass
     {
         public static void Postfix() => IsCameraCloseNow = false;
     }
+    [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Begin))]
+    class FungleSurveillanceMinigameBeginPatch
+    {
+        public static void Postfix() => IsCameraCloseNow = false;
+    }
+    [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Close))]
+    class FungleSurveillanceMinigameClosePatch
+    {
+        public static void Postfix() => CameraClose();
+    }
 
+    [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Update))]
+    class FungleSurveillanceMinigameUpdatePatch
+    {
+        public static void Postfix(FungleSurveillanceMinigame __instance)
+        {
+            if (!MapOption.CanUseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
+            {
+                __instance.Close();
+            }
+            CameraUpdate(__instance);
+        }
+    }
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Update))]
     class PlanetSurveillanceMinigameUpdatePatch
     {

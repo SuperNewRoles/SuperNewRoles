@@ -78,6 +78,23 @@ public static class NetworkTransformFixedUpdatePatch
 }
 */
 
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckUseZipline))]
+static class PlayerControlCheckUseZiplinePatch
+{
+    public static bool Prefix(PlayerControl target, ZiplineBehaviour ziplineBehaviour, bool fromTop)
+    {
+        if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, isDefaultOnly:false))
+            return true;
+        if (!MapCustom.TheFungleZiplineOption.GetBool())
+            return true;
+        //上下可能
+        int selection = MapCustom.TheFungleZiplineUpOrDown.GetSelection();
+        if (selection == 0)
+            return true;
+        return (!fromTop && selection == 1) ||
+               (fromTop && selection == 2);
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
 static class PlayerControlSetCooldownPatch
 {
