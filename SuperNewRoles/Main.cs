@@ -203,7 +203,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             if (ModHelpers.IsCustomServer()) return;
             __result += 25;
         }
-    ｝
+    }
     [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
     public static class ConstantsVersionModdedPatch
     {
