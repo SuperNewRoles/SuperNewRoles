@@ -73,18 +73,7 @@ public static class Helpers
             var crs = CustomRpcSender.Create("RpcShowGuardEffect");
             var clientId = shower.GetClientId();
             Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
-            crs.StartMessage(clientId);
-            crs.StartRpc(shower.NetId, (byte)RpcCalls.ProtectPlayer)// 守護を始める
-                .WriteNetObject(target) // targetを対象に
-                .Write(0) // ProtectPlayerの引数2の、coloridを0で実行
-                .EndRpc(); // 守護終わり
-
-            crs.StartRpc(shower.NetId, (byte)RpcCalls.MurderPlayer) // キルを始める
-                .WriteNetObject(target) // targetを対象に
-                .EndRpc(); // キル終わり
-
-            crs.EndMessage(); // RpcShowGuardEffect終わり
-            crs.SendMessage(); // ログへ出力(のはず)
+            MurderHelpers.RpcForceGuard(shower, target, shower);
         }
     }
     /// <summary>
