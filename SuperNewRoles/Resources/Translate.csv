@@ -218,6 +218,7 @@ AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフ�
 AddWireTaskSetting,Add Wire Task,配線タスクを追加する,追加修复配线任务,增加配線任務
 RandomSpawnOption,Random Spawn,ランダムスポーン,启用随机出生点,隨機重生點
 TheFungleZiplineOption,Zipline Options,ジップラインの設定
+TheFungleCanUseZiplineOption,Can Use Zipline,ジップラインを使用できる,启用绳索,啟用繩索
 TheFungleZiplineUpTime,Zipline Up Time,ジップラインの上昇時間,上升时间,上升時間
 TheFungleZiplineDownTime,Zipline Down Time,ジップラインの下降時間,下降时间,下降時間
 TheFungleZiplineUpOrDown,Zipline Direction,ジップラインの方向,方向,方向
