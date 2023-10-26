@@ -308,14 +308,10 @@ static class CheckMurderPatch
                 __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 return false;
             case RoleId.Penguin:
-                PlayerControl currentTarget = null;
-                if (RoleClass.Penguin.PenguinData.Keys.Contains(__instance))
-                {
-                    currentTarget = RoleClass.Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
-                }
+                PlayerControl currentTarget = RoleClass.Penguin.PenguinData[__instance];
                 if (currentTarget != null)
                     break;
-                Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
+                RoleClass.Penguin.PenguinData[__instance] = target;
                 RoleClass.Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
                 target.RpcSnapTo(__instance.transform.position);
                 return false;
@@ -447,17 +443,19 @@ static class CheckMurderPatch
                     return IsKillSuc = false;
                 break;
         }
-        if (!IsKillSuc)
-        {
-            MurderHelpers.RpcMurderPlayerFailed(__instance, target);
-            return false;
-        }
         Logger.Info("全モード通過", "CheckMurder");
         Logger.Info("全スタントマン系通過", "CheckMurder");
         __instance.RpcMurderPlayerCheck(target);
         Camouflager.ResetCamouflageSHR(target);
         Logger.Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
         return false;
+    }
+    public static void Postfix(PlayerControl __instance, PlayerControl target)
+    {
+        if (!IsKillSuc)
+        {
+            MurderHelpers.RpcMurderPlayerFailed(__instance, target);
+        }
     }
     public static void RpcCheckExile(this PlayerControl __instance)
     {
