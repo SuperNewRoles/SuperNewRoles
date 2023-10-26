@@ -224,6 +224,10 @@ TheFungleZiplineUpOrDown,Zipline Direction,ジップラインの方向,方向,�
 TheFungleZiplineAlways,Both,両方,两者,兩者
 TheFungleZiplineOnlyUp,Up Only,上昇のみ,只上升,只上升
 TheFungleZiplineOnlyDown,Down Only,下降のみ,只下降,只下降
+TheFungleCameraOption,Camera Options,カメラの設定
+TheFungleCameraChangeRange,Camera Change Range,カメラの範囲切り替え,切换范围,切換範圍
+TheFungleCameraSpeed,Camera Speed,カメラの速度,速度,速度
+TheFungleMushroomMixupCantOpenMeeting,Mushroom Mixup Can't Open Meeting,キノコカオス中にミーティングを開けなくする
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
 DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨),踢出未持有好友码的玩家（推荐）,踢出未持有好友碼的玩家（推薦）

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
@@ -513,7 +514,19 @@ public static class DeviceClass
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Begin))]
     class FungleSurveillanceMinigameBeginPatch
     {
-        public static void Postfix() => IsCameraCloseNow = false;
+        public static void Postfix(FungleSurveillanceMinigame __instance)
+        {
+            IsCameraCloseNow = false;
+            if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle))
+                return;
+            if (!MapCustom.TheFungleCameraOption.GetBool())
+                return;
+            float speed = MapCustom.TheFungleCameraSpeed.GetFloat() / 10f;
+            __instance.buttonMoveSpeed = speed;
+            __instance.joystickMoveSpeed = speed;
+            __instance.keyboardMoveSpeed = speed;
+            __instance.mobileJoystickMoveSpeed = speed;
+        }
     }
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Close))]
     class FungleSurveillanceMinigameClosePatch

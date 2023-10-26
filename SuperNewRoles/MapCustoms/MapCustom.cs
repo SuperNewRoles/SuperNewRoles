@@ -54,6 +54,10 @@ class MapCustom
     public static CustomOption TheFungleZiplineUpTime;
     public static CustomOption TheFungleZiplineDownTime;
     public static CustomOption TheFungleZiplineUpOrDown;
+    public static CustomOption TheFungleCameraOption;
+    public static CustomOption TheFungleCameraChangeRange;
+    public static CustomOption TheFungleCameraSpeed;
+    public static CustomOption TheFungleMushroomMixupCantOpenMeeting;
 
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
@@ -104,6 +108,10 @@ class MapCustom
         TheFungleZiplineUpTime = Create(104803, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleZiplineOption);
         TheFungleZiplineDownTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleZiplineOption);
         TheFungleZiplineUpOrDown = Create(104805, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZiplineAlways", "TheFungleZiplineOnlyUp", "TheFungleZiplineOnlyDown" }, TheFungleZiplineOption);
+        TheFungleCameraOption = Create(104807, true, CustomOptionType.Generic, "TheFungleCameraOption", false, TheFungleSetting);
+        TheFungleCameraChangeRange = Create(104808, false, CustomOptionType.Generic, "TheFungleCameraChangeRange", false, TheFungleCameraOption);
+        TheFungleCameraSpeed = Create(104809, false, CustomOptionType.Generic, "TheFungleCameraSpeed", 1f, 0f, 10f, 0.25f, TheFungleCameraOption);
+        TheFungleMushroomMixupCantOpenMeeting = Create(104810, false, CustomOptionType.Generic, "TheFungleMushroomMixupCantOpenMeeting", false, TheFungleSetting);
 
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
