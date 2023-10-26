@@ -135,6 +135,14 @@ public class CustomHatData : HatData
                     }
                     break;
             }
+            if (__instance.matProperties.MaskLayer <= 0)
+            {
+                PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(__instance.FrontLayer, __instance.matProperties.IsLocalPlayer);
+                if (__instance.BackLayer)
+                {
+                    PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(__instance.BackLayer, __instance.matProperties.IsLocalPlayer);
+                }
+            }
             return false;
         }
     }
