@@ -55,6 +55,7 @@ class MapCustom
     public static CustomOption TheFungleZiplineUpTime;
     public static CustomOption TheFungleZiplineDownTime;
     public static CustomOption TheFungleZiplineUpOrDown;
+    public static CustomOption TheFungleAdditionalAdmin;
 
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
@@ -106,6 +107,7 @@ class MapCustom
         TheFungleZiplineUpTime = Create(104803, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
         TheFungleZiplineDownTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
         TheFungleZiplineUpOrDown = Create(104805, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZiplineAlways", "TheFungleZiplineOnlyUp", "TheFungleZiplineOnlyDown" }, TheFungleCanUseZiplineOption);
+        TheFungleAdditionalAdmin = Create(104813, false, CustomOptionType.Generic, "TheFungleAdditionalAdmin", false, TheFungleSetting);
 
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
