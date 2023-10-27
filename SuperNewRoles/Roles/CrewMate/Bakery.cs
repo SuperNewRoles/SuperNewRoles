@@ -85,7 +85,7 @@ public class Bakery
             if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
                 __instance.StartCoroutine(__instance.Animate());
         }
-        else if (Balancer.currentAbilityUser != null)
+        else if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile)
         {
             if (!IsSec)
             {
@@ -121,6 +121,11 @@ public class Bakery
                 ExileController.Instance = __instance;
                 __instance.exiled = Balancer.targetplayerleft.Data;
                 exiled = __instance.exiled;
+                if (ModHelpers.IsMap(MapNames.Fungle))
+                {
+                    ModHelpers.SetActiveAllObject(controller.gameObject.GetChildren(), "RaftAnimation", false);
+                    controller.transform.localPosition = new(-3.75f, -0.2f, -60f);
+                }
                 return true;
             }
         }
