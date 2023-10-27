@@ -204,7 +204,15 @@ public partial class SuperNewRolesPlugin : BasePlugin
             __result += 25;
         }
     }
-
+    [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
+    public static class ConstantsVersionModdedPatch
+    {
+        public static bool Prefix(ref bool __result)
+        {
+            __result = true;
+            return false;
+        }
+    }
     public static bool IsApril()
     {
         DateTime utcNow = DateTime.UtcNow;
