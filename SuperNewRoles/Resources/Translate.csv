@@ -113,6 +113,7 @@ colorCyberYellow,CyberYellow,サイバーイエロー,赛博黄,電馭黃
 colorCyberGreen,CyberGreen,サイバーグリーン,赛博绿,電馭綠
 colorCyberBlue,CyberBlue,サイバーブルー,赛博蓝,電馭藍
 colorCyberPurple,CyberPurple,サイバーパープル,赛博紫,電馭紫
+colorHalloweenOrange,HalloweenOrange,ハロウィンオレンジ
 
 LightColor,bright,明るい,亮,亮
 DarkerColor,darker,暗い,暗,暗
@@ -218,12 +219,20 @@ AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフ�
 AddWireTaskSetting,Add Wire Task,配線タスクを追加する,追加修复配线任务,增加配線任務
 RandomSpawnOption,Random Spawn,ランダムスポーン,启用随机出生点,隨機重生點
 TheFungleZiplineOption,Zipline Options,ジップラインの設定
+TheFungleCanUseZiplineOption,Can Use Zipline,ジップラインを使用できる,启用绳索,啟用繩索
 TheFungleZiplineUpTime,Zipline Up Time,ジップラインの上昇時間,上升时间,上升時間
 TheFungleZiplineDownTime,Zipline Down Time,ジップラインの下降時間,下降时间,下降時間
 TheFungleZiplineUpOrDown,Zipline Direction,ジップラインの方向,方向,方向
 TheFungleZiplineAlways,Both,両方,两者,兩者
 TheFungleZiplineOnlyUp,Up Only,上昇のみ,只上升,只上升
 TheFungleZiplineOnlyDown,Down Only,下降のみ,只下降,只下降
+TheFungleCameraOption,Camera Options,カメラの設定
+TheFungleCameraChangeRange,Camera Change Range,カメラの範囲切り替え,切换范围,切換範圍
+TheFungleCameraSpeed,Camera Speed,カメラの速度,速度,速度
+TheFungleMushroomMixupOption,Mushroom Mixup Options,キノコカオスの設定
+TheFungleMushroomMixupCantOpenMeeting,Mushroom Mixup Can't Open Meeting,キノコカオス中にミーティングを開けなくする
+TheFungleMushroomMixupTime,Mushroom Mixup Seconds,キノコカオスの秒数,持续时间,持續時間
+TheFungleAdditionalAdmin,Additional Admin,アドミンを追加する,追加管理员,增加管理员
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
 DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨),踢出未持有好友码的玩家（推荐）,踢出未持有好友碼的玩家（推薦）
