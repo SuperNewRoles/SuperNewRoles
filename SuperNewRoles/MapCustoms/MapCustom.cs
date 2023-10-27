@@ -61,6 +61,7 @@ class MapCustom
     public static CustomOption TheFungleMushroomMixupOption;
     public static CustomOption TheFungleMushroomMixupCantOpenMeeting;
     public static CustomOption TheFungleMushroomMixupTime;
+    public static CustomOption TheFungleAdditionalAdmin;
 
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
@@ -108,7 +109,7 @@ class MapCustom
         TheFungleSetting = Create(104800, true, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
         TheFungleRandomSpawn = Create(104801, true, CustomOptionType.Generic, "RandomSpawnOption", false, TheFungleSetting);
         TheFungleZiplineOption = Create(104802, true, CustomOptionType.Generic, "TheFungleZiplineOption", false, TheFungleSetting);
-        TheFungleCanUseZiplineOption = Create(104803, false, CustomOptionType.Generic, "TheFungleCanUseZiplineOption", true, TheFungleZiplineOption);
+        TheFungleCanUseZiplineOption = Create(104803, true, CustomOptionType.Generic, "TheFungleCanUseZiplineOption", true, TheFungleZiplineOption);
         TheFungleZiplineUpTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
         TheFungleZiplineDownTime = Create(104805, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
         TheFungleZiplineUpOrDown = Create(104806, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZ      
@@ -118,6 +119,7 @@ class MapCustom
         TheFungleMushroomMixupOption = Create(104810, true, CustomOptionType.Generic, "TheFungleMushroomMixupOption", false, TheFungleSetting);
         TheFungleMushroomMixupCantOpenMeeting = Create(104811, true, CustomOptionType.Generic, "TheFungleMushroomMixupCantOpenMeeting", false, TheFungleMushroomMixupOption);
         TheFungleMushroomMixupTime = Create(104812, true, CustomOptionType.Generic, "TheFungleMushroomMixupTime", 10f, 1f, 30f, 0.5f, TheFungleMushroomMixupOption);
+        TheFungleAdditionalAdmin = Create(104813, false, CustomOptionType.Generic, "TheFungleAdditionalAdmin", false, TheFungleSetting);
 
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);

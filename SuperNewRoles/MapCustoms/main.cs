@@ -71,7 +71,11 @@ class IntroCutsceneOnDestroyPatch
 
         //配電盤を移動させる
         MoveElecPad.MoveElecPads();
-        FungleShipStatus fungleShipStatus;
+
+        //ファングルにアドミンを追加！
+        FungleAdditionalAdmin.AddAdmin();
+
+        FungleShipStatus fungleShipStatus;        
         if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
         {
             GameObject gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;
