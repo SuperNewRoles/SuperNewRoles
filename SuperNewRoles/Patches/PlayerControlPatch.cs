@@ -87,6 +87,8 @@ static class PlayerControlCheckUseZiplinePatch
             return true;
         if (!MapCustom.TheFungleZiplineOption.GetBool())
             return true;
+        if (!MapCustom.TheFungleCanUseZiplineOption.GetBool())
+            return false;
         //上下可能
         int selection = MapCustom.TheFungleZiplineUpOrDown.GetSelection();
         if (selection == 0)

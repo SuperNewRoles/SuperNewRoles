@@ -51,6 +51,7 @@ class MapCustom
     public static CustomOption TheFungleSetting;
     public static CustomOption TheFungleRandomSpawn;
     public static CustomOption TheFungleZiplineOption;
+    public static CustomOption TheFungleCanUseZiplineOption;
     public static CustomOption TheFungleZiplineUpTime;
     public static CustomOption TheFungleZiplineDownTime;
     public static CustomOption TheFungleZiplineUpOrDown;
@@ -107,9 +108,10 @@ class MapCustom
         TheFungleSetting = Create(104800, true, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
         TheFungleRandomSpawn = Create(104801, true, CustomOptionType.Generic, "RandomSpawnOption", false, TheFungleSetting);
         TheFungleZiplineOption = Create(104802, true, CustomOptionType.Generic, "TheFungleZiplineOption", false, TheFungleSetting);
-        TheFungleZiplineUpTime = Create(104803, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleZiplineOption);
-        TheFungleZiplineDownTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleZiplineOption);
-        TheFungleZiplineUpOrDown = Create(104805, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZiplineAlways", "TheFungleZiplineOnlyUp", "TheFungleZiplineOnlyDown" }, TheFungleZiplineOption);
+        TheFungleCanUseZiplineOption = Create(104803, false, CustomOptionType.Generic, "TheFungleCanUseZiplineOption", true, TheFungleZiplineOption);
+        TheFungleZiplineUpTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
+        TheFungleZiplineDownTime = Create(104805, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
+        TheFungleZiplineUpOrDown = Create(104806, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZ      
         TheFungleCameraOption = Create(104807, false, CustomOptionType.Generic, "TheFungleCameraOption", false, TheFungleSetting);
         TheFungleCameraChangeRange = Create(104808, false, CustomOptionType.Generic, "TheFungleCameraChangeRange", 7.5f, 0.5f, 15f, 0.5f, TheFungleCameraOption);
         TheFungleCameraSpeed = Create(104809, false, CustomOptionType.Generic, "TheFungleCameraSpeed", 1f, 0f, 10f, 0.25f, TheFungleCameraOption);
