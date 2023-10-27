@@ -369,11 +369,7 @@ public static class RPCHelper
         }
         else
         {
-            MessageWriter writer = StartRPC(target.NetId, RpcCalls.ProtectPlayer, target);
-            writer.WriteNetObject(target);
-            writer.Write(0);
-            writer.EndRPC();
-            target.RPCMurderPlayerPrivate(target, target);
+            MurderHelpers.RpcForceGuard(target, target, target);
         }
     }
 

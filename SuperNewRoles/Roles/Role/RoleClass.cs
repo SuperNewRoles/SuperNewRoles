@@ -2921,15 +2921,15 @@ public static class RoleClass
     {
         public static List<PlayerControl> PenguinPlayer;
         public static Color32 color = ImpostorRed;
-        public static Dictionary<PlayerControl, PlayerControl> PenguinData;
+        public static PlayerData<PlayerControl> PenguinData;
         public static Dictionary<byte, float> PenguinTimer;
-        public static PlayerControl currentTarget => PenguinData.ContainsKey(CachedPlayer.LocalPlayer) ? PenguinData[CachedPlayer.LocalPlayer] : null;
+        public static PlayerControl currentTarget => PenguinData.Local;
         private static Sprite _buttonSprite;
         public static Sprite GetButtonSprite() => _buttonSprite;
         public static void ClearAndReload()
         {
             PenguinPlayer = new();
-            PenguinData = new();
+            PenguinData = new(needplayerlist:true);
             PenguinTimer = new();
             bool Is = ModHelpers.IsSucsessChance(4);
             _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
