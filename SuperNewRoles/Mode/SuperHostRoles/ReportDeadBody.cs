@@ -16,6 +16,7 @@ class ReportDeadBody
         {
             //会議ボタンのみで起こる処理
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false) &&
+                MapCustom.TheFungleMushroomMixupOption.GetBool() &&
                 MapCustom.TheFungleMushroomMixupCantOpenMeeting.GetBool() &&
                 __instance.IsMushroomMixupActive())
                 return false;

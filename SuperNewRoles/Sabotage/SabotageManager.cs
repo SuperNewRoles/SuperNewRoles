@@ -27,6 +27,7 @@ public static class SabotageManager
         if (RoleHelpers.IsSabotage())
             return false;
         if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false) &&
+            MapCustom.TheFungleMushroomMixupOption.GetBool() &&
             MapCustom.TheFungleMushroomMixupCantOpenMeeting.GetBool() &&
             PlayerControl.LocalPlayer.IsMushroomMixupActive())
             return false;
