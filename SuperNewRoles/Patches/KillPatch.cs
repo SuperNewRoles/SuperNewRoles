@@ -115,6 +115,7 @@ static class CheckMurderPatch
 {
     public static bool isKill = false;
 
+    public static bool IsKillSuc = false;
 
     public static bool HandleSHR(PlayerControl __instance, PlayerControl target)
     {
@@ -130,7 +131,7 @@ static class CheckMurderPatch
             case RoleId.Egoist when !RoleClass.Egoist.UseKill:
                 return false;
             case RoleId.FalseCharges:
-                target.RpcMurderPlayer(__instance);
+                target.RpcMurderPlayer(__instance, true);
                 target.RpcSetFinalStatus(FinalStatus.FalseChargesFalseCharge);
                 RoleClass.FalseCharges.FalseChargePlayers[__instance.PlayerId] = target.PlayerId;
                 RoleClass.FalseCharges.AllTurns[__instance.PlayerId] = RoleClass.FalseCharges.DefaultTurn;
@@ -161,7 +162,7 @@ static class CheckMurderPatch
                         __instance.RpcMurderPlayerCheck(target);
                         __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
                     }
-                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcMurderPlayer(__instance, true);
                     __instance.RpcSetFinalStatus(status);
                 }
                 else
@@ -188,7 +189,7 @@ static class CheckMurderPatch
                 }
                 else
                 {
-                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcMurderPlayer(__instance, true);
                     __instance.RpcSetFinalStatus(FinalStatus.MadmakerMisSet);
                 }
                 return false;
@@ -213,7 +214,7 @@ static class CheckMurderPatch
                         if (p.PlayerId != 0)
                             __instance.RPCMurderPlayerPrivate(target, p);
                         else
-                            __instance.MurderPlayer(target);
+                            __instance.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
                     }
                 }
                 return false;
@@ -297,22 +298,20 @@ static class CheckMurderPatch
                 Logger.Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
                 return false;
             case RoleId.DarkKiller:
-                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (!MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
+                    return false;
+                var ma = elec.CastFast<SwitchSystem>();
                 if (ma != null && !ma.IsActive) return false;
                 break;
             case RoleId.Worshiper:
-                __instance.RpcMurderPlayer(__instance);
+                __instance.RpcMurderPlayer(__instance, true);
                 __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 return false;
             case RoleId.Penguin:
-                PlayerControl currentTarget = null;
-                if (RoleClass.Penguin.PenguinData.Keys.Contains(__instance))
-                {
-                    currentTarget = RoleClass.Penguin.PenguinData.FirstOrDefault(x => x.Key != null && x.Key.PlayerId == __instance.PlayerId).Value;
-                }
+                PlayerControl currentTarget = RoleClass.Penguin.PenguinData[__instance];
                 if (currentTarget != null)
                     break;
-                Logger.Info("ペンギンを追加しました。:" + __instance.PlayerId.ToString() + ":" + target.PlayerId.ToString() + ":" + RoleClass.Penguin.PenguinData.TryAdd(__instance, target).ToString());
+                RoleClass.Penguin.PenguinData[__instance] = target;
                 RoleClass.Penguin.PenguinTimer.TryAdd(__instance.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
                 target.RpcSnapTo(__instance.transform.position);
                 return false;
@@ -342,6 +341,7 @@ static class CheckMurderPatch
 
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
+        IsKillSuc = true;
         Logger.Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
         if (
                 __instance.IsBot() ||
@@ -357,14 +357,15 @@ static class CheckMurderPatch
                 AirShipRandomSpawn.IsLoading
            )
         {
-            return false;
+            MurderHelpers.RpcMurderPlayerFailed(__instance, target);
+            return IsKillSuc = false;
         }
         Logger.Info("キル可能かを通過しました。", "CheckMurder");
         if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek) return true;
         if (__instance.PlayerId == target.PlayerId)
         {
             Logger.Info($"自爆:{target.name}", "CheckMurder");
-            __instance.RpcMurderPlayer(target);
+            __instance.RpcMurderPlayer(target, true);
             return false;
         }
 
@@ -372,42 +373,42 @@ static class CheckMurderPatch
         switch (ModeHandler.GetMode())
         {
             case ModeId.Zombie:
-                return false;
+                return IsKillSuc = false;
             case ModeId.PantsRoyal:
                 Mode.PantsRoyal.main.OnMurderClick(__instance, target);
-                return false;
+                return IsKillSuc = false;
             case ModeId.BattleRoyal:
                 if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId && isKill)
-                    return false;
+                    return IsKillSuc = false;
                 if (Mode.BattleRoyal.Main.IsTeamBattle)
                 {
                     foreach (BattleTeam teams in BattleTeam.BattleTeams)
                     {
                         if (teams.IsTeam(__instance) && teams.IsTeam(target))
-                            return false;
+                            return IsKillSuc = false;
                     }
                 }
                 PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
                 if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow)
                 {
                     Mode.BattleRoyal.Main.MurderPlayer(target, __instance, targetAbility);
-                    return false;
+                    return IsKillSuc = false;
                 }
                 if (target.IsBot())
                 {
                     if (target == CrystalMagician.Bot)
                         CrystalMagician.UseWater(__instance);
-                    return false;
+                    return IsKillSuc = false;
                 }
                 if (!PlayerAbility.GetPlayerAbility(__instance).CanUseKill)
-                    return false;
+                    return IsKillSuc = false;
                 KingPoster kp = KingPoster.GetKingPoster(__instance);
                 if (!targetAbility.CanKill)
-                    return false;
+                    return IsKillSuc = false;
                 if (__instance.IsRole(RoleId.KingPoster) && kp.IsAbilityUsingNow)
                 {
                     kp.OnKillClick(target);
-                    return false;
+                    return IsKillSuc = false;
                 }
                 if (Mode.BattleRoyal.Main.StartSeconds <= 0)
                 {
@@ -434,12 +435,12 @@ static class CheckMurderPatch
             case ModeId.SuperHostRoles:
                 bool SHRresult = HandleSHR(__instance, target);
                 if (!SHRresult)
-                    return false;
+                    return IsKillSuc = false;
                 break;
             case ModeId.Detective:
                 if (target.PlayerId ==
                     Mode.Detective.Main.DetectivePlayer.PlayerId)
-                    return false;
+                    return IsKillSuc = false;
                 break;
         }
         Logger.Info("全モード通過", "CheckMurder");
@@ -448,6 +449,13 @@ static class CheckMurderPatch
         Camouflager.ResetCamouflageSHR(target);
         Logger.Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
         return false;
+    }
+    public static void Postfix(PlayerControl __instance, PlayerControl target)
+    {
+        if (!IsKillSuc)
+        {
+            MurderHelpers.RpcMurderPlayerFailed(__instance, target);
+        }
     }
     public static void RpcCheckExile(this PlayerControl __instance)
     {
@@ -513,7 +521,7 @@ static class CheckMurderPatch
             return;
         }
         SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
-        __instance.RpcMurderPlayer(target);
+        __instance.RpcMurderPlayerOnCheck(target);
         switch (target.GetRole())
         {
             case RoleId.EvilSeer:
@@ -535,15 +543,20 @@ public static class MurderPlayerPatch
 {
     public static bool resetToCrewmate = false;
     public static bool resetToDead = false;
-    public static bool Prefix(PlayerControl __instance, ref PlayerControl target)
+    public static bool Prefix(PlayerControl __instance, ref PlayerControl target, MurderResultFlags resultFlags)
     {
+        __instance.isKilling = false;
+        if (resultFlags.HasFlag(MurderResultFlags.FailedError))
+        {
+            return false;
+        }
         if (Knight.GuardedPlayers.Contains(target.PlayerId))
         {
             var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
             Writer.Write(target.PlayerId);
             Writer.EndRPC();
             RPCProcedure.KnightProtectClear(target.PlayerId);
-            target.protectedByGuardian = true;
+            target.protectedByGuardianId = -1;
             return false;
         }
         if (target.IsRole(RoleId.Frankenstein) && Frankenstein.IsMonster(target))
@@ -632,11 +645,13 @@ public static class MurderPlayerPatch
         }
 
         //ダークキラーがキルできるか判定
-        var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-        if (__instance.IsRole(RoleId.DarkKiller) &&
-            ma != null &&
-            !ma.IsActive)
-            return false;
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem)) {
+            var ma = elecsystem.CastFast<SwitchSystem>();
+            if (__instance.IsRole(RoleId.DarkKiller) &&
+                ma != null &&
+                !ma.IsActive)
+                return false;
+        }
         if (!AmongUsClient.Instance.AmHost ||
             __instance.PlayerId == target.PlayerId)
             return true;

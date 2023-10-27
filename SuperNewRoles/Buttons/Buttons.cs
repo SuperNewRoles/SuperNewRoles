@@ -373,7 +373,7 @@ static class HudManagerStartPatch
                 PlayerControl Target = SetTarget();
                 if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
                 {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(Target, true);
                     Target.RpcSetFinalStatus(FinalStatus.LoversBreakerKill);
                     LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
                     LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
@@ -419,7 +419,7 @@ static class HudManagerStartPatch
                 }
                 else
                 {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                     PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
                 }
             },
@@ -529,7 +529,7 @@ static class HudManagerStartPatch
                     PavlovsdogKillSelfText.text = RoleClass.Pavlovsdogs.DeathTime > 0 ? string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.Pavlovsdogs.DeathTime) + 1) : "";
                     if (RoleClass.Pavlovsdogs.DeathTime <= 0)
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                     }
                 }
                 var Target = SetTarget();
@@ -2095,7 +2095,7 @@ static class HudManagerStartPatch
                     }
                     else
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
                     }
                 }
@@ -2600,7 +2600,9 @@ static class HudManagerStartPatch
             49,
             () =>
             {
-                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                SwitchSystem ma = null;
+                if (MapUtilities.CachedShipStatus.Systems.ContainsKey(SystemTypes.Electrical))
+                    ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                 return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove);
             }
         );
@@ -2703,7 +2705,7 @@ static class HudManagerStartPatch
             () =>
             {
                 //自殺
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                 PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicideWisher && ModeHandler.IsMode(ModeId.Default); },

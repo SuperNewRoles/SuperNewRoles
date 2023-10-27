@@ -47,6 +47,22 @@ class MapCustom
     /// <summary>昇降右のダウンロードをはしごの下に移動する設定</summary>
     public static CustomOption MoveGapRoomDownload;
 
+    /*===============ファングル===============*/
+    public static CustomOption TheFungleSetting;
+    public static CustomOption TheFungleRandomSpawn;
+    public static CustomOption TheFungleZiplineOption;
+    public static CustomOption TheFungleCanUseZiplineOption;
+    public static CustomOption TheFungleZiplineUpTime;
+    public static CustomOption TheFungleZiplineDownTime;
+    public static CustomOption TheFungleZiplineUpOrDown;
+    public static CustomOption TheFungleCameraOption;
+    public static CustomOption TheFungleCameraChangeRange;
+    public static CustomOption TheFungleCameraSpeed;
+    public static CustomOption TheFungleMushroomMixupOption;
+    public static CustomOption TheFungleMushroomMixupCantOpenMeeting;
+    public static CustomOption TheFungleMushroomMixupTime;
+    public static CustomOption TheFungleAdditionalAdmin;
+
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
     public static CustomOption AgarthaRandomSpawn;
@@ -89,6 +105,21 @@ class MapCustom
         DisableGapRoomShadowForNonImpostor = Create(103212, false, CustomOptionType.Generic, "DisableGapRoomShadowForNonImpostor", true, ModifyGapRoomOneWayShadow);
         MoveGapRoomDownload = Create(103213, false, CustomOptionType.Generic, "MoveGapRoomDownload", false, AirshipSetting);
 
+        /*===============ファングル===============*/
+        TheFungleSetting = Create(104800, true, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
+        TheFungleRandomSpawn = Create(104801, true, CustomOptionType.Generic, "RandomSpawnOption", false, TheFungleSetting);
+        TheFungleZiplineOption = Create(104802, true, CustomOptionType.Generic, "TheFungleZiplineOption", false, TheFungleSetting);
+        TheFungleCanUseZiplineOption = Create(104803, true, CustomOptionType.Generic, "TheFungleCanUseZiplineOption", true, TheFungleZiplineOption);
+        TheFungleZiplineUpTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
+        TheFungleZiplineDownTime = Create(104805, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
+        TheFungleZiplineUpOrDown = Create(104805, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZiplineAlways", "TheFungleZiplineOnlyUp", "TheFungleZiplineOnlyDown" }, TheFungleCanUseZiplineOption); TheFungleCameraOption = Create(104807, false, CustomOptionType.Generic, "TheFungleCameraOption", false, TheFungleSetting);
+        TheFungleCameraChangeRange = Create(104808, false, CustomOptionType.Generic, "TheFungleCameraChangeRange", 7.5f, 0.5f, 15f, 0.5f, TheFungleCameraOption);
+        TheFungleCameraSpeed = Create(104809, false, CustomOptionType.Generic, "TheFungleCameraSpeed", 1f, 0f, 10f, 0.25f, TheFungleCameraOption);
+        TheFungleMushroomMixupOption = Create(104810, true, CustomOptionType.Generic, "TheFungleMushroomMixupOption", false, TheFungleSetting);
+        TheFungleMushroomMixupCantOpenMeeting = Create(104811, true, CustomOptionType.Generic, "TheFungleMushroomMixupCantOpenMeeting", false, TheFungleMushroomMixupOption);
+        TheFungleMushroomMixupTime = Create(104812, true, CustomOptionType.Generic, "TheFungleMushroomMixupTime", 10f, 1f, 30f, 0.5f, TheFungleMushroomMixupOption);
+        TheFungleAdditionalAdmin = Create(104813, false, CustomOptionType.Generic, "TheFungleAdditionalAdmin", false, TheFungleSetting);
+
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
         AgarthaRandomSpawn = Create(103301, false, CustomOptionType.Generic, "RandomSpawnOption", true, AgarthaSetting);
@@ -103,6 +134,10 @@ public class MapCustomClearAndReload
     internal static bool AirshipSetting;
     public static bool AirshipRandomSpawn;
 
+    /*===============ファングル===============*/
+    internal static bool FungleSetting;
+    public static bool FungleRandomSpawn;
+
     /*===============アガルタ===============*/
     internal static bool AgarthaSetting;
     public static bool AgarthaRandomSpawn;
@@ -113,6 +148,7 @@ public class MapCustomClearAndReload
         if (!MapCustom.MapCustomOption.GetBool() || ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             AirshipSetting = false;
+            FungleSetting = false;
             AgarthaSetting = false;
         }
         else
@@ -120,9 +156,14 @@ public class MapCustomClearAndReload
             AirshipSetting = MapCustom.AirshipSetting.GetBool();
             AgarthaSetting = MapCustom.AgarthaSetting.GetBool();
         }
+        FungleSetting = MapCustom.TheFungleSetting.GetBool();
+
         /*===============エアーシップ===============*/
         // FIXME:CustomMapIdをSHR時はfalseにするのがうまく動作していないようなので此処で取得している。そちらを直したら移動する。
         AirshipRandomSpawn = AirshipSetting && MapCustom.AirshipRandomSpawn.GetBool();
+
+        /*===============ファングル===============*/
+        FungleRandomSpawn = FungleSetting && MapCustom.TheFungleRandomSpawn.GetBool();
 
         /*===============アガルタ===============*/
         // TODO:仮の設定取得方式

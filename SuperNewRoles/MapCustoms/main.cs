@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -24,6 +25,7 @@ public class MapCustomHandler
             MapCustomId.Mira => isMapId == 1 && MapCustom.MiraSetting.GetBool(),
             MapCustomId.Polus => isMapId == 2 && MapCustom.PolusSetting.GetBool(),
             MapCustomId.Airship => isMapId == 4 && MapCustom.AirshipSetting.GetBool(),
+            MapCustomId.TheFungle => isMapId == 5 && MapCustom.TheFungleSetting.GetBool(),
             _ => false,
         };
     }
@@ -33,6 +35,7 @@ public class MapCustomHandler
         Mira,
         Polus,
         Airship,
+        TheFungle,
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
@@ -69,6 +72,10 @@ class IntroCutsceneOnDestroyPatch
         //配電盤を移動させる
         MoveElecPad.MoveElecPads();
 
+        //ファングルにアドミンを追加！
+        FungleAdditionalAdmin.AddAdmin();
+
+        FungleShipStatus fungleShipStatus;        
         if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
         {
             GameObject gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;
@@ -89,6 +96,32 @@ class IntroCutsceneOnDestroyPatch
                     localPosition.y = -3.9f;
                     downloadConsole.transform.localPosition = localPosition;
                 }
+            }
+        }
+        //ジップラインの設定
+        else if (IsMapCustom(MapCustomId.TheFungle, false))
+        {
+            fungleShipStatus = __instance.CastFast<FungleShipStatus>();
+            if (IsMapCustom(MapCustomId.TheFungle, true))
+            {
+                if (MapCustom.TheFungleZiplineOption.GetBool())
+                {
+                    fungleShipStatus.Zipline.upTravelTime = MapCustom.TheFungleZiplineUpTime.GetFloat();
+                    fungleShipStatus.Zipline.downTravelTime = MapCustom.TheFungleZiplineDownTime.GetFloat();
+                }
+                if (MapCustom.TheFungleCameraOption.GetBool())
+                {
+                    Transform SecurityBoundary = fungleShipStatus.transform.FindChild("SecurityBoundary");
+                    float size = MapCustom.TheFungleCameraChangeRange.GetFloat();
+                    EdgeCollider2D SecurityBoundaryCollider = SecurityBoundary.GetComponent<EdgeCollider2D>();
+                    Vector2[] array = new Vector2[] { new(-size, -size), new(-size, size), new(size, size), new(size, -size), new(-size, -size) };
+                    SecurityBoundaryCollider.points = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<Vector2>(array);
+                    SecurityBoundaryCollider.offset = new(-10f, 2.5f);
+                }
+            }
+            if (MapCustom.TheFungleMushroomMixupOption.GetBool())
+            {
+                fungleShipStatus.specialSabotage.secondsForAutoHeal = MapCustom.TheFungleMushroomMixupTime.GetFloat();
             }
         }
     }

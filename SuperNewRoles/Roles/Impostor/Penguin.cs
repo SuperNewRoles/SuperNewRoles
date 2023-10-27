@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -34,7 +35,7 @@ public static class Penguin
     public static void FixedUpdate()
     {
         if (RoleClass.Penguin.PenguinData.Count <= 0) return;
-        foreach (var data in RoleClass.Penguin.PenguinData.ToArray())
+        foreach (var data in ((Dictionary<PlayerControl, PlayerControl>)RoleClass.Penguin.PenguinData).ToArray())
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && data.Key != null)
             {
@@ -42,7 +43,7 @@ public static class Penguin
                     RoleClass.Penguin.PenguinTimer.Add(data.Key.PlayerId, CustomOptionHolder.PenguinDurationTime.GetFloat());
                 RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] -= Time.fixedDeltaTime;
                 if (RoleClass.Penguin.PenguinTimer[data.Key.PlayerId] <= 0 && data.Value != null && data.Value.IsAlive())
-                    data.Key.RpcMurderPlayer(data.Value);
+                    data.Key.RpcMurderPlayer(data.Value, true);
             }
             if (data.Key == null || data.Value == null
                 || !data.Key.IsRole(RoleId.Penguin)
@@ -80,12 +81,12 @@ public static class Penguin
         if (!AmongUsClient.Instance.AmHost) return;
         if (CustomOptionHolder.PenguinMeetingKill.GetBool())
         {
-            foreach (var data in RoleClass.Penguin.PenguinData.ToArray())
+            foreach (var data in ((Dictionary<PlayerControl, PlayerControl>)RoleClass.Penguin.PenguinData).ToArray())
             {
                 if (ModeHandler.IsMode(ModeId.Default))
                     ModHelpers.CheckMurderAttemptAndKill(data.Key, data.Value);
                 else
-                    data.Key.RpcMurderPlayer(data.Value);
+                    data.Key.RpcMurderPlayer(data.Value, true);
             }
         }
         else

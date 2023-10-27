@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 
 namespace SuperNewRoles.Sabotage;
 
@@ -23,13 +24,21 @@ public static class SabotageManager
     }
     public static bool IsOKMeeting()
     {
-        return !RoleHelpers.IsSabotage()
-&& (thisSabotage == CustomSabotage.None
-|| thisSabotage switch
-{
-    CustomSabotage.CognitiveDeficit => CognitiveDeficit.Main.IsLocalEnd,
-    _ => false,
-});
+        if (RoleHelpers.IsSabotage())
+            return false;
+        if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false) &&
+            MapCustom.TheFungleMushroomMixupOption.GetBool() &&
+            MapCustom.TheFungleMushroomMixupCantOpenMeeting.GetBool() &&
+            PlayerControl.LocalPlayer.IsMushroomMixupActive())
+            return false;
+        if (thisSabotage != CustomSabotage.None &&
+            !(thisSabotage switch
+        {
+            CustomSabotage.CognitiveDeficit => CognitiveDeficit.Main.IsLocalEnd,
+            _ => false,
+        }))
+            return false;
+        return true;
     }
     public static InfectedOverlay InfectedOverlayInstance;
     public const float SabotageMaxTime = 30f;
@@ -67,7 +76,7 @@ public static class SabotageManager
         {
             if (InfectedOverlayInstance != null)
             {
-                float specialActive = (InfectedOverlayInstance.doors != null && InfectedOverlayInstance.doors.IsActive) ? 1f : InfectedOverlayInstance.SabSystem.PercentCool;
+                float specialActive = (InfectedOverlayInstance.doors != null && InfectedOverlayInstance.doors.IsActive) ? 1f : InfectedOverlayInstance.sabSystem.PercentCool;
                 foreach (ButtonBehavior button in CustomButtons)
                 {
                     button.spriteRenderer.material.SetFloat("_Percent", specialActive);

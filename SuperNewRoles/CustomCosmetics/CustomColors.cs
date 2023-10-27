@@ -28,6 +28,7 @@ public class CustomColors
         SignalOrange,
         Peach,
         LightOrange,
+        HalloweenOrange,
         Brightyellow,
         Sunrise,
         Gold,
@@ -101,7 +102,8 @@ public class CustomColors
             { ColorType.XmasRed, (new(219, 41, 41, bmv), new(255, 255, 255, bmv), true) }, //H000,S074
             { ColorType.SignalOrange, (new(0xF7, 0x44, 0x17, bmv), new(0x9B, 0x2E, 0x0F, bmv), true) }, //H012
             { ColorType.Peach, (new(255, 164, 119, bmv), new(238, 128, 100, bmv), true) }, //H020
-            { ColorType.LightOrange, (new(255, 215, 176, bmv), new(240, 177, 124, bmv), true) }, //H030
+            { ColorType.HalloweenOrange, (new(255, 156, 59, bmv), new(163, 71, 255, bmv), true) }, //H030,S072
+            { ColorType.LightOrange, (new(255, 215, 176, bmv), new(240, 177, 124, bmv), true) }, //H030,S031
             { ColorType.Brightyellow, (new(248, 181, 0, bmv), new(255, 102, 0, bmv), true) }, //H044
             { ColorType.Sunrise, (new(0xFF, 0xCA, 0x19, bmv), new(0xDB, 0x44, 0x42, bmv), true) }, //H046
             { ColorType.Gold, (new(255, 216, 70, bmv), new(226, 168, 13, bmv), true) }, //H047

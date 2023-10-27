@@ -73,18 +73,7 @@ public static class Helpers
             var crs = CustomRpcSender.Create("RpcShowGuardEffect");
             var clientId = shower.GetClientId();
             Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
-            crs.StartMessage(clientId);
-            crs.StartRpc(shower.NetId, (byte)RpcCalls.ProtectPlayer)// 守護を始める
-                .WriteNetObject(target) // targetを対象に
-                .Write(0) // ProtectPlayerの引数2の、coloridを0で実行
-                .EndRpc(); // 守護終わり
-
-            crs.StartRpc(shower.NetId, (byte)RpcCalls.MurderPlayer) // キルを始める
-                .WriteNetObject(target) // targetを対象に
-                .EndRpc(); // キル終わり
-
-            crs.EndMessage(); // RpcShowGuardEffect終わり
-            crs.SendMessage(); // ログへ出力(のはず)
+            MurderHelpers.RpcForceGuard(shower, target, shower);
         }
     }
     /// <summary>
@@ -102,7 +91,7 @@ public static class Helpers
 
         // ReactorサボをDesyncで発動
         SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
-        MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+        MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
         SabotageWriter.Write(reactorId);
         MessageExtensions.WriteNetObject(SabotageWriter, shower);
         SabotageWriter.Write((byte)128);
@@ -110,7 +99,7 @@ public static class Helpers
 
         new LateTask(() =>
         { // Reactorサボを修理
-            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
             SabotageFixWriter.Write(reactorId);
             MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
             SabotageFixWriter.Write((byte)16);
@@ -120,7 +109,7 @@ public static class Helpers
         if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4) //Airship用
             new LateTask(() =>
             { // Reactorサボを修理
-                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
                 SabotageFixWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
                 SabotageFixWriter.Write((byte)17);

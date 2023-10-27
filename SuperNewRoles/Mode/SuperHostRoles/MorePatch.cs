@@ -14,7 +14,7 @@ class MorePatch
         }
     }
 
-    public static bool RepairSystem
+    public static bool UpdateSystem
     (ShipStatus __instance,
             SystemTypes systemType,
             PlayerControl player,

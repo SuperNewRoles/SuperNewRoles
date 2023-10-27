@@ -477,7 +477,7 @@ public static class ModHelpers
         foreach (var ct in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(ct);
 
         var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-        foreach (var st in MapUtilities.CachedShipStatus.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(st);
+        foreach (var st in MapUtilities.CachedShipStatus.ShortTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(st);
 
         var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
         foreach (var lt in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(lt);
@@ -1092,6 +1092,12 @@ public static class ModHelpers
             rates.Add(text);
         }
         return rates.ToArray();
+    }
+    public static bool IsMap(MapNames Map)
+    {
+        if (GameManager.Instance == null)
+            return false;
+        return GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)Map;
     }
     public static Il2CppSystem.Collections.Generic.IEnumerable<T> IEnumerableToIl2Cpp<T>(this IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
     public static void ResetKillCool(this PlayerControl player, float timer = float.NegativeInfinity)

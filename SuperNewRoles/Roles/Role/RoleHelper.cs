@@ -1685,7 +1685,13 @@ public static class RoleHelpers
         {
             if (MapUtilities.Systems.TryGetValue(SystemTypes.Comms, out Il2CppSystem.Object obj))
             {
-                HudOverrideSystemType host = obj.CastFast<HudOverrideSystemType>();
+                if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 6)
+                {
+                    HqHudSystemType host2 = obj.TryCast<HqHudSystemType>();
+                    if (host2 != null)
+                        return host2.IsActive;
+                }
+                HudOverrideSystemType host = obj.TryCast<HudOverrideSystemType>();
                 if (host != null)
                     return host.IsActive;
             }

@@ -47,6 +47,7 @@ public class UsePlatformPlayerControlPatch
     }
 }
 // Allow movement interpolation to use velocities greater than the local player's
+/*
 [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
 public static class NetworkTransformFixedUpdatePatch
 {
@@ -75,7 +76,27 @@ public static class NetworkTransformFixedUpdatePatch
         return false;
     }
 }
+*/
 
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckUseZipline))]
+static class PlayerControlCheckUseZiplinePatch
+{
+    public static bool Prefix(PlayerControl target, ZiplineBehaviour ziplineBehaviour, bool fromTop)
+    {
+        if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, isDefaultOnly:false))
+            return true;
+        if (!MapCustom.TheFungleZiplineOption.GetBool())
+            return true;
+        if (!MapCustom.TheFungleCanUseZiplineOption.GetBool())
+            return false;
+        //上下可能
+        int selection = MapCustom.TheFungleZiplineUpOrDown.GetSelection();
+        if (selection == 0)
+            return true;
+        return (!fromTop && selection == 1) ||
+               (fromTop && selection == 2);
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
 static class PlayerControlSetCooldownPatch
 {
@@ -274,7 +295,7 @@ class ReportDeadBodyPatch
                 {
                     new LateTask(() =>
                     {
-                        player.RpcRevertShapeshift(false);
+                        player.RpcShapeshift(player, false);
                     }, 0.5f);
                     SyncSetting.CustomSyncSettings(player);
                 }
