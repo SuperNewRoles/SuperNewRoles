@@ -1,4 +1,5 @@
 using System.Linq;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -14,6 +15,11 @@ class ReportDeadBody
         if (target == null)
         {
             //会議ボタンのみで起こる処理
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false) &&
+                MapCustom.TheFungleMushroomMixupOption.GetBool() &&
+                MapCustom.TheFungleMushroomMixupCantOpenMeeting.GetBool() &&
+                __instance.IsMushroomMixupActive())
+                return false;
             return true;
         };
 
