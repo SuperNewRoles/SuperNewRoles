@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -94,13 +95,30 @@ class IntroCutsceneOnDestroyPatch
             }
         }
         //ジップラインの設定
-        else if (IsMapCustom(MapCustomId.TheFungle, true) &&
-                MapCustom.TheFungleZiplineOption.GetBool() &&
-                (fungleShipStatus = __instance.CastFast<FungleShipStatus>()) != null
-                )
+        else if (IsMapCustom(MapCustomId.TheFungle, false))
         {
-            fungleShipStatus.Zipline.upTravelTime = MapCustom.TheFungleZiplineUpTime.GetFloat();
-            fungleShipStatus.Zipline.downTravelTime = MapCustom.TheFungleZiplineDownTime.GetFloat();
+            fungleShipStatus = __instance.CastFast<FungleShipStatus>();
+            if (IsMapCustom(MapCustomId.TheFungle, true))
+            {
+                if (MapCustom.TheFungleZiplineOption.GetBool())
+                {
+                    fungleShipStatus.Zipline.upTravelTime = MapCustom.TheFungleZiplineUpTime.GetFloat();
+                    fungleShipStatus.Zipline.downTravelTime = MapCustom.TheFungleZiplineDownTime.GetFloat();
+                }
+                if (MapCustom.TheFungleCameraOption.GetBool())
+                {
+                    Transform SecurityBoundary = fungleShipStatus.transform.FindChild("SecurityBoundary");
+                    float size = MapCustom.TheFungleCameraChangeRange.GetFloat();
+                    EdgeCollider2D SecurityBoundaryCollider = SecurityBoundary.GetComponent<EdgeCollider2D>();
+                    Vector2[] array = new Vector2[] { new(-size, -size), new(-size, size), new(size, size), new(size, -size), new(-size, -size) };
+                    SecurityBoundaryCollider.points = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<Vector2>(array);
+                    SecurityBoundaryCollider.offset = new(-10f, 2.5f);
+                }
+            }
+            if (MapCustom.TheFungleMushroomMixupOption.GetBool())
+            {
+                fungleShipStatus.specialSabotage.secondsForAutoHeal = MapCustom.TheFungleMushroomMixupTime.GetFloat();
+            }
         }
     }
 }

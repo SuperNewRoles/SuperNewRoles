@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
@@ -513,7 +514,28 @@ public static class DeviceClass
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Begin))]
     class FungleSurveillanceMinigameBeginPatch
     {
-        public static void Postfix() => IsCameraCloseNow = false;
+        public static void Prefix()
+        {
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) &&
+                MapCustom.TheFungleCameraOption.GetBool() &&
+                ShipStatus.Instance.TryCast<FungleShipStatus>().LastBinocularPos == Vector2.zero)
+            {
+                ShipStatus.Instance.TryCast<FungleShipStatus>().LastBinocularPos = new(-16.9f, 0.35f);
+            }
+        }
+        public static void Postfix(FungleSurveillanceMinigame __instance)
+        {
+            IsCameraCloseNow = false;
+            if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle))
+                return;
+            if (!MapCustom.TheFungleCameraOption.GetBool())
+                return;
+            float speed = MapCustom.TheFungleCameraSpeed.GetFloat() / 10f;
+            __instance.buttonMoveSpeed = speed;
+            __instance.joystickMoveSpeed = speed;
+            __instance.keyboardMoveSpeed = speed;
+            __instance.mobileJoystickMoveSpeed = speed;
+        }
     }
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Close))]
     class FungleSurveillanceMinigameClosePatch
@@ -524,12 +546,15 @@ public static class DeviceClass
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Update))]
     class FungleSurveillanceMinigameUpdatePatch
     {
-        public static void Postfix(FungleSurveillanceMinigame __instance)
+        public static void Prefix(FungleSurveillanceMinigame __instance)
         {
             if (!MapOption.CanUseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
             {
                 __instance.Close();
             }
+        }
+        public static void Postfix(FungleSurveillanceMinigame __instance)
+        {
             CameraUpdate(__instance);
         }
     }
