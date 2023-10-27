@@ -1093,6 +1093,12 @@ public static class ModHelpers
         }
         return rates.ToArray();
     }
+    public static bool IsMap(MapNames Map)
+    {
+        if (GameManager.Instance == null)
+            return false;
+        return GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)Map;
+    }
     public static Il2CppSystem.Collections.Generic.IEnumerable<T> IEnumerableToIl2Cpp<T>(this IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
     public static void ResetKillCool(this PlayerControl player, float timer = float.NegativeInfinity)
     {

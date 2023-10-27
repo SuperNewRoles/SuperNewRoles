@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -34,7 +35,7 @@ public static class Penguin
     public static void FixedUpdate()
     {
         if (RoleClass.Penguin.PenguinData.Count <= 0) return;
-        foreach (var data in RoleClass.Penguin.PenguinData.ToArray())
+        foreach (var data in ((Dictionary<PlayerControl, PlayerControl>)RoleClass.Penguin.PenguinData).ToArray())
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && data.Key != null)
             {
@@ -80,7 +81,7 @@ public static class Penguin
         if (!AmongUsClient.Instance.AmHost) return;
         if (CustomOptionHolder.PenguinMeetingKill.GetBool())
         {
-            foreach (var data in RoleClass.Penguin.PenguinData.ToArray())
+            foreach (var data in ((Dictionary<PlayerControl, PlayerControl>)RoleClass.Penguin.PenguinData).ToArray())
             {
                 if (ModeHandler.IsMode(ModeId.Default))
                     ModHelpers.CheckMurderAttemptAndKill(data.Key, data.Value);
