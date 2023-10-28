@@ -1658,7 +1658,7 @@ FrankensteinName,Frankenstein,フランケンシュタイン,弗兰肯斯坦,科
 FrankensteinTitle1,I seem to have created a monster.,私は怪物を造ってしまったようだ,他既赋予了我生命，又带来了难言的痛苦……,我好像造了個怪物
 FrankensteinDescription,If you use the ability on a corpse， you will be able to revive and manipulate it.\nIn this state， you can only make one kill.\nAfter the kill， the corpse reverts back to its original state.\nIf you survive after a certain number of kills， you win the game.\n\nI seem to have created a monster.\nAnd there are other monsters on this ship.\nIf this happens， I will have no choice but to survive by pitting that monster against my monster.,死体に能力を使用すると、その死体を蘇生し操作することが出来るようになります。\nその状態で一度だけキルをすることが出来ます。\nキルをしたら死体に戻ります。\n一定数キルをした上で生き残ると横取り勝利します。\n\n私は怪物を造ってしまったようだ。\nそしてこの船には他に怪物がいるらしい。\nこうなったらその怪物と私の怪物をぶつけて生き残るしかあるまい。,弗兰肯斯坦属于独立阵营，可以把死亡玩家的尸体复活为科学怪人并操纵其进行击杀。\n弗兰肯斯坦操控的每具尸体最多击杀一名玩家。\n在击杀完成后，那具尸体回到原本的位置。\n弗兰肯斯坦通过这种方式击杀一定数量的玩家后即可单独获胜。\n\n这世界上,谁不是罪犯呢?\n那些没有缘故就驱逐我的人,同样有罪!\n我那么努力地试着融入人群,可我依然还是个异类!\m为什么我不能只做我自己……,科學怪人可以使用能力操控屍體並可以進行一次擊殺。\n完成擊殺後，屍體將恢復原狀。\n在達到一定的擊殺數量後將獨自獲勝。\n\n我好像造了個怪物。\n而且這艘船上還有其他怪物。\n如果這樣的話，我只能讓我的怪物與那個怪物對決來生存下去。
 FrankensteinCreateCoolTimeSetting,Cool time for creation a monster,化物作成のクールタイム,制造科学怪人冷却
-FrankensteinWinKillCountSetting,Number of kills needed to win,勝利に必要なキル数弗兰肯斯坦获胜所需击杀玩家数
+FrankensteinWinKillCountSetting,Number of kills needed to win,勝利に必要なキル数,弗兰肯斯坦获胜所需击杀玩家数
 FrankensteinMonsterImpostorLightSetting,Imposter vision of a monster,化物がインポスター視野,科学怪人拥有内鬼视野
 FrankensteinMonsterCanVentOetting,Monsters can use vent,怪物がベントを使える,科学怪人可以使用管道
 FrankensteinCreateMonsterButtonName,Create Monster,怪物作成,人体实验
