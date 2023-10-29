@@ -23,7 +23,6 @@ public static class FungleRandomSpawn
         new(14.75f, 0f), //中腹
         new(21.65f, 13.75f) //通信
     };
-
     public static IEnumerator Spawn(PlayerControl player)
     {
         yield return Effects.Wait(3f);

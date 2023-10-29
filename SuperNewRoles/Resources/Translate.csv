@@ -218,6 +218,9 @@ MoveElecPadSetting,Move the switchboard.,配電盤を移動する,更改配电�
 AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフトを無効化する,禁用移动平台,禁用移動平台
 AddWireTaskSetting,Add Wire Task,配線タスクを追加する,追加修复配线任务,增加配線任務
 RandomSpawnOption,Random Spawn,ランダムスポーン,启用随机出生点,隨機重生點
+TheFungleSpawnType,Spawn Type,スポーン方法,出生点类型,重生點類型
+TheFungleSpawnTypeNormal,Normal,通常,正常,正常
+TheFungleSpawnTypeSelect,Select Spawn,選択式スポーン,选择出生点,選擇重生點
 TheFungleZiplineOption,Zipline Options,ジップラインの設定
 TheFungleCanUseZiplineOption,Can Use Zipline,ジップラインを使用できる,启用绳索,啟用繩索
 TheFungleZiplineUpTime,Zipline Up Time,ジップラインの上昇時間,上升时间,上升時間
@@ -233,6 +236,9 @@ TheFungleMushroomMixupOption,Mushroom Mixup Options,キノコカオスの設定
 TheFungleMushroomMixupCantOpenMeeting,Mushroom Mixup Can't Open Meeting,キノコカオス中にミーティングを開けなくする
 TheFungleMushroomMixupTime,Mushroom Mixup Seconds,キノコカオスの秒数,持续时间,持續時間
 TheFungleAdditionalAdmin,Additional Admin,アドミンを追加する,追加管理员,增加管理员
+TheFunglePowerOutageSabotage,Additonal Power Outage Sabotage,停電サボタージュを追加する,配电板系统,配電箱系統
+TheFungleHideSporeMask,Can see the player in the spore,胞子の中にいるプレイヤーを見れる,隐藏孢子面具,隱藏孢子面具
+TheFungleHideSporeMaskOnlyImpostor,Can see only Impostor,インポスターだけ見れる,只能看到内鬼,只能看到內鬼
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
 DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨),踢出未持有好友码的玩家（推荐）,踢出未持有好友碼的玩家（推薦）
