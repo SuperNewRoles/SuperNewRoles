@@ -218,6 +218,9 @@ MoveElecPadSetting,Move the switchboard.,配電盤を移動する,更改配电�
 AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフトを無効化する,禁用移动平台,禁用移動平台
 AddWireTaskSetting,Add Wire Task,配線タスクを追加する,追加修复配线任务,增加配線任務
 RandomSpawnOption,Random Spawn,ランダムスポーン,启用随机出生点,隨機重生點
+TheFungleSpawnType,Spawn Type,スポーン方法,出生点类型,重生點類型
+TheFungleSpawnTypeNormal,Normal,通常,正常,正常
+TheFungleSpawnTypeSelect,Select Spawn,選択式スポーン,选择出生点,選擇重生點
 TheFungleZiplineOption,Zipline Options,ジップラインの設定,,繩索使用設定
 TheFungleCanUseZiplineOption,Can Use Zipline,ジップラインを使用できる,启用绳索,啟用繩索
 TheFungleZiplineUpTime,Zipline Up Time,ジップラインの上昇時間,上升时间,上升時間
@@ -233,6 +236,9 @@ TheFungleMushroomMixupOption,Mushroom Mixup Options,キノコカオスの設定,
 TheFungleMushroomMixupCantOpenMeeting,Mushroom Mixup Can't Open Meeting,キノコカオス中にミーティングを開けなくする,,迷茫香菇啟動時不能開會
 TheFungleMushroomMixupTime,Mushroom Mixup Seconds,キノコカオスの秒数,持续时间,迷茫香菇持續時間
 TheFungleAdditionalAdmin,Additional Admin,アドミンを追加する,追加管理员,增加管理员
+TheFunglePowerOutageSabotage,Additonal Power Outage Sabotage,停電サボタージュを追加する,配电板系统,配電箱系統
+TheFungleHideSporeMask,Can see the player in the spore,胞子の中にいるプレイヤーを見れる,隐藏孢子面具,隱藏孢子面具
+TheFungleHideSporeMaskOnlyImpostor,Can see only Impostor,インポスターだけ見れる,只能看到内鬼,只能看到內鬼
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
 DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨),踢出未持有好友码的玩家（推荐）,踢出未持有好友碼的玩家（推薦）
@@ -1658,7 +1664,7 @@ FrankensteinName,Frankenstein,フランケンシュタイン,弗兰肯斯坦,科
 FrankensteinTitle1,I seem to have created a monster.,私は怪物を造ってしまったようだ,他既赋予了我生命，又带来了难言的痛苦……,我好像造了個怪物
 FrankensteinDescription,If you use the ability on a corpse， you will be able to revive and manipulate it.\nIn this state， you can only make one kill.\nAfter the kill， the corpse reverts back to its original state.\nIf you survive after a certain number of kills， you win the game.\n\nI seem to have created a monster.\nAnd there are other monsters on this ship.\nIf this happens， I will have no choice but to survive by pitting that monster against my monster.,死体に能力を使用すると、その死体を蘇生し操作することが出来るようになります。\nその状態で一度だけキルをすることが出来ます。\nキルをしたら死体に戻ります。\n一定数キルをした上で生き残ると横取り勝利します。\n\n私は怪物を造ってしまったようだ。\nそしてこの船には他に怪物がいるらしい。\nこうなったらその怪物と私の怪物をぶつけて生き残るしかあるまい。,弗兰肯斯坦属于独立阵营，可以把死亡玩家的尸体复活为科学怪人并操纵其进行击杀。\n弗兰肯斯坦操控的每具尸体最多击杀一名玩家。\n在击杀完成后，那具尸体回到原本的位置。\n弗兰肯斯坦通过这种方式击杀一定数量的玩家后即可单独获胜。\n\n这世界上,谁不是罪犯呢?\n那些没有缘故就驱逐我的人,同样有罪!\n我那么努力地试着融入人群,可我依然还是个异类!\m为什么我不能只做我自己……,科學怪人可以使用能力操控屍體並可以進行一次擊殺。\n完成擊殺後，屍體將恢復原狀。\n在達到一定的擊殺數量後將獨自獲勝。\n\n我好像造了個怪物。\n而且這艘船上還有其他怪物。\n如果這樣的話，我只能讓我的怪物與那個怪物對決來生存下去。
 FrankensteinCreateCoolTimeSetting,Cool time for creation a monster,化物作成のクールタイム,制造科学怪人冷却,創造怪物的冷卻時間
-FrankensteinWinKillCountSetting,Number of kills needed to win,勝利に必要なキル数弗兰肯斯坦获胜所需击杀玩家数,科學怪人獲勝所需的擊殺數量
+FrankensteinWinKillCountSetting,Number of kills needed to win,勝利に必要なキル数,弗兰肯斯坦获胜所需击杀玩家数,科學怪人獲勝所需的擊殺數量
 FrankensteinMonsterImpostorLightSetting,Imposter vision of a monster,化物がインポスター視野,科学怪人拥有内鬼视野,怪物擁有內鬼視野
 FrankensteinMonsterCanVentOetting,Monsters can use vent,怪物がベントを使える,科学怪人可以使用管道,怪物可以使用通風管道
 FrankensteinCreateMonsterButtonName,Create Monster,怪物作成,人体实验,創造怪物
