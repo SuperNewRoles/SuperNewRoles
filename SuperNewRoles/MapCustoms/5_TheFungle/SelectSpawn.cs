@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
@@ -40,116 +42,73 @@ public static class FungleSelectSpawn
             __result = SelectSpawn().WrapToIl2Cpp();
             return false;
         }
-        static SpawnInMinigame.SpawnLocation[] Locations = new SpawnInMinigame.SpawnLocation[4]
+        static Tuple<StringNames, Vector3, string, Func<AudioClip>>[] Locations =
+            new Tuple<StringNames, Vector3, string, Func<AudioClip>>[]
+            {
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
+                ((StringNames)50999, new Vector3(-9.81f, 0.6f),"Campfire", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
+                (StringNames.Dropship, new Vector3(-8f, 10.5f), "Dropship", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
+                (StringNames.Cafeteria, new Vector3(-16.16f, 7.25f), "Cafeteria", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
+                (StringNames.Kitchen, new Vector3(-15.5f, -7.5f), "Kitchen", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
+                (StringNames.Greenhouse, new Vector3(9.25f, -12f), "Hotroom", GetGreenHouseSound),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
+                (StringNames.UpperEngine, new Vector3(14.75f, 0f), "UpperEngine", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
+                (StringNames.Comms, new Vector3(21.65f, 13.75f), "Comms", null)
+            };
+        static Dictionary<SystemTypes, AudioClip> _cachedSounds = new();
+        static AudioClip GetGreenHouseSound()
         {
-            new(){ Name = (StringNames)50999,
-                Location = new(-9.81f, 0.6f),
-                Image = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FungleSelectSpawn.Campfire.png", 115f)},
-            new(){ Name = StringNames.Dropship, Location = new(-8f, 10.5f),
-                Image = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FungleSelectSpawn.Dropship.png", 115f)},
-            new(){ Name = StringNames.Cafeteria, Location = new(-16.16f, 7.25f),
-                Image = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FungleSelectSpawn.Cafeteria.png", 115f)},
-            new(){ Name = StringNames.Kitchen, Location = new(-15.5f, -7.5f),
-                Image = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FungleSelectSpawn.Kitchen.png", 115f)},
-        };
+            return null;
+            if (_cachedSounds.TryGetValue(SystemTypes.Greenhouse, out AudioClip clip))
+                return clip;
+            if (!ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.Greenhouse, out PlainShipRoom room))
+                return null;
+            Transform trans = room.transform.FindChild("AMB_Muffled");
+            if (trans == null)
+                return null;
+            clip = trans.GetComponent<AmbientSoundPlayer>().AmbientSound;
+            clip.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+            return _cachedSounds[SystemTypes.Greenhouse] = clip;
+        }
+        static SpawnInMinigame.SpawnLocation Create(SpawnInMinigame miniGame, Tuple<StringNames, Vector3, string, Func<AudioClip>> obj)
+        {
+            SpawnInMinigame.SpawnLocation baseL = miniGame.Locations.FirstOrDefault();
+            return new()
+            {
+                Name = obj.Item1,
+                Location = obj.Item2,
+                Image = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.FungleSelectSpawn.{obj.Item3}.png", 90f),
+                Rollover = null,
+                RolloverSfx = obj.Item4?.Invoke()
+            };
+        }
         public static IEnumerator SelectSpawn()
         {
-            SpawnInMinigame spawnInMinigame = Object.Instantiate(Agartha.MapLoader.Airship.TryCast<AirshipStatus>().SpawnInGame);
+            SpawnInMinigame spawnInMinigame = GameObject.Instantiate<SpawnInMinigame>(Agartha.MapLoader.Airship.TryCast<AirshipStatus>().SpawnInGame);
             spawnInMinigame.transform.SetParent(Camera.main.transform, false);
-            spawnInMinigame.transform.localPosition = new(0f, 0f, -600f);
-            spawnInMinigame.Locations = new(Locations);
-            spawnInMinigame.Begin(null);
-            yield return spawnInMinigame.WaitForFinish();
-        }
-    }
-}
-public class FunglePreSpawnMinigame : Minigame
-{
-    public struct SpawnLocation
-    {
-        public string NameKey;
-
-        public Sprite Image;
-
-        public AnimationClip Rollover;
-
-        public AudioClip RolloverSfx;
-
-        public Vector3 Location;
-    }
-
-    public SpawnLocation[] Locations;
-
-    public PassiveButton[] Buttons;
-
-    public TextMeshPro Text;
-
-    public AudioClip DefaultRolloverSound;
-
-    public UiElement DefaultButtonSelected;
-
-
-    private bool gotButton;
-    public const int ButtonLength = 3;
-    public FunglePreSpawnMinigame(System.IntPtr ptr) : base(ptr) { }
-    public PassiveButton GenerateButton(Transform parent)
-    {
-        return Instantiate(Agartha.MapLoader.Airship.TryCast<AirshipStatus>().SpawnInGame.LocationButtons.FirstOrDefault(), parent);
-    }
-    public override void Begin(PlayerTask task)
-    {
-        base.Begin(task);
-        SpawnLocation[] array = Locations.ToArray();
-        array.Shuffle();
-        array = (from s in array.Take(ButtonLength)
-                 orderby s.Location.x, s.Location.y descending
-                 select s).ToArray();
-        for (int i = 0; i < ButtonLength; i++)
-        {
-            PassiveButton obj = GenerateButton(this.transform);
-            SpawnLocation pt = array[i];
-            obj.OnClick.AddListener((UnityAction)(() =>
+            spawnInMinigame.transform.localPosition = new Vector3(0f, 0f, -600f);
+            List<SpawnInMinigame.SpawnLocation> locations = new(Locations.Length);
+            foreach(var loc in Locations)
             {
-                SpawnAt(pt);
-            }));
-            obj.GetComponent<SpriteAnim>().Stop();
-            obj.GetComponent<SpriteRenderer>().sprite = pt.Image;
-            obj.GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString(pt.NameKey);
-            ButtonAnimRolloverHandler component = obj.GetComponent<ButtonAnimRolloverHandler>();
-            component.StaticOutImage = pt.Image;
-            //component.RolloverAnim = pt.Rollover;
-            //component.HoverSound = pt.RolloverSfx ? pt.RolloverSfx : DefaultRolloverSound;
-        }
-        if (GameManager.Instance != null && GameManager.Instance.IsNormal())
-        {
-            foreach (GameData.PlayerInfo allPlayer in GameData.Instance.AllPlayers)
-            {
-                if (allPlayer != null && allPlayer.Object != null && !allPlayer.Disconnected)
-                {
-                    allPlayer.Object.NetTransform.transform.position = new Vector2(-25f, 40f);
-                    allPlayer.Object.NetTransform.Halt();
-                }
+                locations.Add(Create(spawnInMinigame, loc));
             }
-        }
-        //this.StartCoroutine(RunTimer());
-        //ControllerManager.Instance.OpenOverlayMenu(this.name, null, DefaultButtonSelected, ControllerSelectable);
-        PlayerControl.HideCursorTemporarily();
-        ConsoleJoystick.SetMode_Menu();
-    }
-    private void SpawnAt(SpawnLocation spawnPoint)
-    {
-        //IL_0056: Unknown result type (might be due to invalid IL or missing references)
-        //IL_005b: Unknown result type (might be due to invalid IL or missing references)
-        if (amClosing == CloseState.None)
-        {
-           // Logger.GlobalInstance.Info($"Player selected spawn point {spawnPoint.Name}");
-            gotButton = true;
-            PlayerControl.LocalPlayer.SetKinematic(b: true);
-            PlayerControl.LocalPlayer.NetTransform.SetPaused(isPaused: true);
-            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(spawnPoint.Location);
-            DestroyableSingleton<HudManager>.Instance.PlayerCam.SnapToTarget();
-            ((MonoBehaviour)this).StopAllCoroutines();
-            //((MonoBehaviour)this).StartCoroutine(CoSpawnAt(PlayerControl.LocalPlayer, spawnPoint));
+            spawnInMinigame.Locations = new(locations.ToArray());
+            spawnInMinigame.Begin(null);
+            foreach (PassiveButton button in spawnInMinigame.LocationButtons)
+            {
+                button.transform.localPosition = new(button.transform.localPosition.x,
+                    0.5f, 0);
+                button.GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0f, -1.09f, 0f);
+                BoxCollider2D collider = button.GetComponent<BoxCollider2D>();
+                collider.size = new(1.7f, 1.5f);
+                collider.offset = new(0f, 0.03f);
+            }
+            yield return spawnInMinigame.WaitForFinish();
         }
     }
 }
