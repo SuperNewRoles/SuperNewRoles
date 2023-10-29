@@ -110,19 +110,19 @@ class MapCustom
 
         /*===============ファングル===============*/
         TheFungleSetting = Create(104800, true, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
-        TheFungleSpawnType = Create(104814, true, CustomOptionType.Generic, "TheFungleSpawnType", new string[] { "TheFungleSpawnTypeNormal", "RandomSpawnOption", "TheFungleSpawnTypeSelect" }, TheFungleSetting);
+        TheFungleSpawnType = Create(104817, true, CustomOptionType.Generic, "TheFungleSpawnType", new string[] { "TheFungleSpawnTypeNormal", "RandomSpawnOption", "TheFungleSpawnTypeSelect" }, TheFungleSetting);
         TheFungleZiplineOption = Create(104802, true, CustomOptionType.Generic, "TheFungleZiplineOption", false, TheFungleSetting);
         TheFungleCanUseZiplineOption = Create(104803, true, CustomOptionType.Generic, "TheFungleCanUseZiplineOption", true, TheFungleZiplineOption);
         TheFungleZiplineUpTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
         TheFungleZiplineDownTime = Create(104805, false, CustomOptionType.Generic, "TheFungleZiplineDownTime", 1.75f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
-        TheFungleZiplineUpOrDown = Create(104805, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZiplineAlways", "TheFungleZiplineOnlyUp", "TheFungleZiplineOnlyDown" }, TheFungleCanUseZiplineOption); TheFungleCameraOption = Create(104807, false, CustomOptionType.Generic, "TheFungleCameraOption", false, TheFungleSetting);
+        TheFungleZiplineUpOrDown = Create(104806, true, CustomOptionType.Generic, "TheFungleZiplineUpOrDown", new string[] { "TheFungleZiplineAlways", "TheFungleZiplineOnlyUp", "TheFungleZiplineOnlyDown" }, TheFungleCanUseZiplineOption); TheFungleCameraOption = Create(104807, false, CustomOptionType.Generic, "TheFungleCameraOption", false, TheFungleSetting);
         TheFungleCameraChangeRange = Create(104808, false, CustomOptionType.Generic, "TheFungleCameraChangeRange", 7.5f, 0.5f, 15f, 0.5f, TheFungleCameraOption);
         TheFungleCameraSpeed = Create(104809, false, CustomOptionType.Generic, "TheFungleCameraSpeed", 1f, 0f, 10f, 0.25f, TheFungleCameraOption);
         TheFungleMushroomMixupOption = Create(104810, true, CustomOptionType.Generic, "TheFungleMushroomMixupOption", false, TheFungleSetting);
         TheFungleMushroomMixupCantOpenMeeting = Create(104811, true, CustomOptionType.Generic, "TheFungleMushroomMixupCantOpenMeeting", false, TheFungleMushroomMixupOption);
         TheFungleMushroomMixupTime = Create(104812, true, CustomOptionType.Generic, "TheFungleMushroomMixupTime", 10f, 1f, 30f, 0.5f, TheFungleMushroomMixupOption);
         TheFungleAdditionalAdmin = Create(104813, false, CustomOptionType.Generic, "TheFungleAdditionalAdmin", false, TheFungleSetting);
-        TheFunglePowerOutageSabotage = Create(104817, false, CustomOptionType.Generic, "TheFunglePowerOutageSabotage", false, TheFungleSetting);
+        TheFunglePowerOutageSabotage = Create(104814, false, CustomOptionType.Generic, "TheFunglePowerOutageSabotage", false, TheFungleSetting);
         TheFungleHideSporeMask = Create(104815, false, CustomOptionType.Generic, "TheFungleHideSporeMask", false, TheFungleSetting,isHidden:true);
         TheFungleHideSporeMaskOnlyImpostor = Create(104816, false, CustomOptionType.Generic, "TheFungleHideSporeMaskOnlyImpostor", false, TheFungleHideSporeMask);
         TheFungleHideSporeMask.selection=0;
