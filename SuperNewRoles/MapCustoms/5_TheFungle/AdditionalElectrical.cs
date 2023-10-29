@@ -47,6 +47,7 @@ public static class FungleAdditionalElectrical
                 return;
             MapRoom mapRoom = GameObject.Instantiate(Agartha.MapLoader.Airship.MapPrefab.infectedOverlay.rooms.FirstOrDefault(x => x.room == SystemTypes.Electrical), __instance.infectedOverlay.transform);
             mapRoom.Parent = __instance.infectedOverlay;
+            mapRoom.transform.localPosition = new(-0.83f, -1.8f, -1f);
             var buttons = __instance.infectedOverlay.allButtons.ToList();
             buttons.Add(mapRoom.GetComponentInChildren<ButtonBehavior>());
             __instance.infectedOverlay.allButtons = buttons.ToArray();
