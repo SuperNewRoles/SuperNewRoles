@@ -12,6 +12,7 @@ using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using InnerNet;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.SuperNewRolesWeb;
 using TMPro;
 using UnityEngine;

@@ -49,7 +49,7 @@ class MapCustom
 
     /*===============ファングル===============*/
     public static CustomOption TheFungleSetting;
-    public static CustomOption TheFungleRandomSpawn;
+    public static CustomOption TheFungleSpawnType;
     public static CustomOption TheFungleZiplineOption;
     public static CustomOption TheFungleCanUseZiplineOption;
     public static CustomOption TheFungleZiplineUpTime;
@@ -110,7 +110,7 @@ class MapCustom
 
         /*===============ファングル===============*/
         TheFungleSetting = Create(104800, true, CustomOptionType.Generic, "<color=#fd7e00>The Fungle</color>", false, MapCustomOption);
-        TheFungleRandomSpawn = Create(104801, true, CustomOptionType.Generic, "RandomSpawnOption", false, TheFungleSetting);
+        TheFungleSpawnType = Create(104814, true, CustomOptionType.Generic, "TheFungleSpawnType", new string[] { "TheFungleSpawnTypeNormal", "RandomSpawnOption", "TheFungleSpawnTypeSelect" }, TheFungleSetting);
         TheFungleZiplineOption = Create(104802, true, CustomOptionType.Generic, "TheFungleZiplineOption", false, TheFungleSetting);
         TheFungleCanUseZiplineOption = Create(104803, true, CustomOptionType.Generic, "TheFungleCanUseZiplineOption", true, TheFungleZiplineOption);
         TheFungleZiplineUpTime = Create(104804, false, CustomOptionType.Generic, "TheFungleZiplineUpTime", 4f, 0.5f, 12f, 0.5f, TheFungleCanUseZiplineOption);
@@ -134,7 +134,6 @@ class MapCustom
         AgarthaRandomSpawnIsAddSpawnWay = Create(103303, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
     }
 }
-
 public class MapCustomClearAndReload
 {
     /*===============エアーシップ===============*/
@@ -170,7 +169,7 @@ public class MapCustomClearAndReload
         AirshipRandomSpawn = AirshipSetting && MapCustom.AirshipRandomSpawn.GetBool();
 
         /*===============ファングル===============*/
-        FungleRandomSpawn = FungleSetting && MapCustom.TheFungleRandomSpawn.GetBool();
+        FungleRandomSpawn = FungleHandler.IsFungleSpawnType(FungleHandler.FungleSpawnType.Random);
 
         /*===============アガルタ===============*/
         // TODO:仮の設定取得方式
