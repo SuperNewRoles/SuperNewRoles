@@ -118,6 +118,10 @@ class IntroCutsceneOnDestroyPatch
                     SecurityBoundaryCollider.points = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<Vector2>(array);
                     SecurityBoundaryCollider.offset = new(-10f, 2.5f);
                 }
+                if (MapCustom.TheFunglePowerOutageSabotage.GetBool())
+                {
+                    FungleAdditionalElectrical.CreateElectrical();
+                }
             }
             if (MapCustom.TheFungleMushroomMixupOption.GetBool())
             {
