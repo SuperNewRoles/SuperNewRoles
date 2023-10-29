@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
@@ -24,9 +26,29 @@ class WrapUpPatch
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public class ExileControllerWrapUpPatch
     {
-        public static void Prefix(ExileController __instance)
+        public static IEnumerator WrapUpCoro(ExileController __instance)
+        {
+            if (__instance.exiled != null)
+            {
+                PlayerControl @object = __instance.exiled.Object;
+                if (@object)
+                {
+                    @object.Exiled();
+                }
+                __instance.exiled.IsDead = true;
+            }
+            if (DestroyableSingleton<TutorialManager>.InstanceExists || !GameManager.Instance.LogicFlow.IsGameOverDueToDeath())
+            {
+                yield return ShipStatus.Instance.PrespawnStep();
+                __instance.ReEnableGameplay();
+            }
+            Object.Destroy(__instance.gameObject);
+        }
+        public static bool Prefix(ExileController __instance)
         {
             WrapUpPatch.Prefix(__instance.exiled);
+            __instance.StartCoroutine(WrapUpCoro(__instance).WrapToIl2Cpp());
+            return false;
         }
         public static void Postfix(ExileController __instance)
         {

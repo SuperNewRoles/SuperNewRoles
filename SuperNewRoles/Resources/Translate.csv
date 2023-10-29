@@ -218,6 +218,9 @@ MoveElecPadSetting,Move the switchboard.,配電盤を移動する,更改配电�
 AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフトを無効化する,禁用移动平台,禁用移動平台
 AddWireTaskSetting,Add Wire Task,配線タスクを追加する,追加修复配线任务,增加配線任務
 RandomSpawnOption,Random Spawn,ランダムスポーン,启用随机出生点,隨機重生點
+TheFungleSpawnType,Spawn Type,スポーン方法,出生点类型,重生點類型
+TheFungleSpawnTypeNormal,Normal,通常,正常,正常
+TheFungleSpawnTypeSelect,Select Spawn,選択式スポーン,选择出生点,選擇重生點
 TheFungleZiplineOption,Zipline Options,ジップラインの設定
 TheFungleCanUseZiplineOption,Can Use Zipline,ジップラインを使用できる,启用绳索,啟用繩索
 TheFungleZiplineUpTime,Zipline Up Time,ジップラインの上昇時間,上升时间,上升時間
