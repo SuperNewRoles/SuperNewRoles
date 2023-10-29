@@ -62,6 +62,9 @@ class MapCustom
     public static CustomOption TheFungleMushroomMixupCantOpenMeeting;
     public static CustomOption TheFungleMushroomMixupTime;
     public static CustomOption TheFungleAdditionalAdmin;
+    public static CustomOption TheFunglePowerOutageSabotage;
+    public static CustomOption TheFungleHideSporeMask;
+    public static CustomOption TheFungleHideSporeMaskOnlyImpostor;
 
     /*===============アガルタ===============*/
     public static CustomOption AgarthaSetting;
@@ -119,6 +122,10 @@ class MapCustom
         TheFungleMushroomMixupCantOpenMeeting = Create(104811, true, CustomOptionType.Generic, "TheFungleMushroomMixupCantOpenMeeting", false, TheFungleMushroomMixupOption);
         TheFungleMushroomMixupTime = Create(104812, true, CustomOptionType.Generic, "TheFungleMushroomMixupTime", 10f, 1f, 30f, 0.5f, TheFungleMushroomMixupOption);
         TheFungleAdditionalAdmin = Create(104813, false, CustomOptionType.Generic, "TheFungleAdditionalAdmin", false, TheFungleSetting);
+        TheFunglePowerOutageSabotage = Create(104817, false, CustomOptionType.Generic, "TheFunglePowerOutageSabotage", false, TheFungleSetting);
+        TheFungleHideSporeMask = Create(104815, false, CustomOptionType.Generic, "TheFungleHideSporeMask", false, TheFungleSetting,isHidden:true);
+        TheFungleHideSporeMaskOnlyImpostor = Create(104816, false, CustomOptionType.Generic, "TheFungleHideSporeMaskOnlyImpostor", false, TheFungleHideSporeMask);
+        TheFungleHideSporeMask.selection=0;
 
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
@@ -158,7 +165,6 @@ public class MapCustomClearAndReload
         FungleSetting = MapCustom.TheFungleSetting.GetBool();
 
         /*===============エアーシップ===============*/
-        // FIXME:CustomMapIdをSHR時はfalseにするのがうまく動作していないようなので此処で取得している。そちらを直したら移動する。
         AirshipRandomSpawn = AirshipSetting && MapCustom.AirshipRandomSpawn.GetBool();
 
         /*===============ファングル===============*/
