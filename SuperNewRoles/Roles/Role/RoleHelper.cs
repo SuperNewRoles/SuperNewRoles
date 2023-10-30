@@ -1678,16 +1678,16 @@ public static class RoleHelpers
     {
         try
         {
+            if (isMushroomMixAsSabotage && PlayerControl.LocalPlayer.IsMushroomMixupActive())
+            {
+                return true;
+            }
             foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
             {
                 if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
                 {
                     return true;
                 }
-            }
-            if (PlayerControl.LocalPlayer.IsMushroomMixupActive())
-            {
-                return isMushroomMixAsSabotage;
             }
         }
         catch { }
