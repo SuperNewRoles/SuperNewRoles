@@ -20,7 +20,7 @@ public static class HamburgerShop
             {
                 PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
                 tempminigame = task.MinigamePrefab;
-                if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles) return;
+                if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles or TaskTypes.MushroomMixupSabotage) return;
                 ShipStatus ship = GameManager.Instance.LogicOptions.currentGameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : MapLoader.Airship;
                 task.MinigamePrefab = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger).MinigamePrefab;
             }

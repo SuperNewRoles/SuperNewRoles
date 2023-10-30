@@ -2360,13 +2360,20 @@ static class HudManagerStartPatch
             {
                 RoleClass.GhostMechanic.LimitCount--;
 
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                if (!PlayerControl.LocalPlayer.IsMushroomMixupActive())
                 {
-                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     {
-                        Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(task.TaskType);
-                        break;
+                        if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                        {
+                            Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(task.TaskType);
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(TaskTypes.MushroomMixupSabotage);
                 }
 
                 if (RoleClass.GhostMechanic.LimitCount <= 0)
@@ -2379,13 +2386,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return !isAlive && GhostMechanic.ButtonDisplayCondition(); },
             () =>
             {
-                bool sabotageActive = false;
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
-                    {
-                        sabotageActive = true;
-                        break;
-                    }
+                bool sabotageActive = RoleHelpers.IsSabotage();
                 GhostMechanicNumRepairText.text = string.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
                 if (ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return sabotageActive && PlayerControl.LocalPlayer.CanMove;
                 else return sabotageActive && PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.GhostRoleSetTarget();
@@ -3359,13 +3360,13 @@ static class HudManagerStartPatch
         JumpDancer.SetUpCustomButtons(__instance);
 
         Bat.Button.SetupCustomButtons(__instance);
-      
+
         Rocket.Button.SetupCustomButtons(__instance);
 
         WellBehaver.SetupCustomButtons(__instance);
 
         Spider.Button.SetupCustomButtons(__instance);
-      
+
         Frankenstein.SetupCustomButtons(__instance);
 
         // SetupCustomButtons
