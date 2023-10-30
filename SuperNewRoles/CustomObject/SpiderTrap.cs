@@ -19,7 +19,7 @@ public class SpiderTrap : MonoBehaviour
     private ushort Id;
     private PlayerControl Source;
     private byte SourceId;
-    private PlayerControl CatchingPlayer;
+    public PlayerControl CatchingPlayer { get; private set; }
     private byte CatchingPlayerId;
     private float ActivateTimer;
     public float DestroyTimer;
@@ -96,11 +96,17 @@ public class SpiderTrap : MonoBehaviour
                     //自分視点でキャッチされるか判定する
                     if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, transform.position) <= TrapCatchDistance)
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SpiderTrapCatch);
-                        writer.Write(Id);
-                        writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                        writer.EndRPC();
-                        CatchPlayer(PlayerControl.LocalPlayer);
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            RPCProcedure.CheckSpiderTrapCatch(Id, PlayerControl.LocalPlayer.PlayerId);
+                        }
+                        else
+                        {
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CheckSpiderTrapCatch);
+                            writer.Write(Id);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            writer.EndRPC();
+                        }
                     }
                 }
             }

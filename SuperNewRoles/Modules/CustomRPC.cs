@@ -334,6 +334,7 @@ public enum CustomRPC
     DestroyGarbage,
     SetPokerfaceTeam,
     SetSpiderTrap,
+    CheckSpiderTrapCatch,
     SpiderTrapCatch,
     CrookSaveSignDictionary,
     SetFrankensteinMonster,
@@ -358,6 +359,31 @@ public static class RPCProcedure
         if (!SpiderTrap.SpiderTraps.TryGetValue(id, out SpiderTrap trap) || trap == null)
             return;
         trap.CatchPlayer(target);
+    }
+    public static void CheckSpiderTrapCatch(ushort id, byte targetid)
+    {
+        if (!AmongUsClient.Instance.AmHost)
+            return;
+        PlayerControl target = ModHelpers.PlayerById(targetid);
+        if (target == null)
+            return;
+        // 対象が捕まっている場合は何もしない
+        if (SpiderTrap.CatchingPlayers.ContainsKey(target.PlayerId))
+            return;
+        // トラップがない場合は何もしない
+        if (!SpiderTrap.SpiderTraps.TryGetValue(id, out SpiderTrap trap) || trap == null)
+            return;
+        // トラップがすでに捕まえている場合は何もしない
+        if (trap.CatchingPlayer != null)
+            return;
+        // 対象が死んでいる場合は何もしない
+        if (target.IsDead())
+            return;
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SpiderTrapCatch);
+        writer.Write(id);
+        writer.Write(targetid);
+        writer.EndRPC();
+        SpiderTrapCatch(id, targetid);
     }
     public static void MoveDeadBody(byte id, float x, float y)
     {
@@ -2060,6 +2086,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetSpiderTrap:
                         SetSpiderTrap(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadUInt16());
+                        break;
+                    case CustomRPC.CheckSpiderTrapCatch:
+                        CheckSpiderTrapCatch(reader.ReadUInt16(), reader.ReadByte());
                         break;
                     case CustomRPC.SpiderTrapCatch:
                         SpiderTrapCatch(reader.ReadUInt16(), reader.ReadByte());
