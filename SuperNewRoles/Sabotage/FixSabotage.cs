@@ -129,6 +129,9 @@ public class FixSabotage
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
                     break;
+                case TaskTypes.MushroomMixupSabotage:
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 16 | 1);
+                    break;
                 default:
                     Logger.Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
                     break;
