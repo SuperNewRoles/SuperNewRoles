@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using AmongUs.GameOptions;
@@ -42,7 +43,7 @@ class WrapUpPatch
                 yield return ShipStatus.Instance.PrespawnStep();
                 __instance.ReEnableGameplay();
             }
-            Object.Destroy(__instance.gameObject);
+            GameObject.Destroy(__instance.gameObject);
         }
         public static bool Prefix(ExileController __instance)
         {
@@ -185,6 +186,8 @@ class WrapUpPatch
 
         Crook.WrapUp.GeneralProcess(exiled == null ? null : exiled.Object);
 
+        FixAfterMeetingVent();
+
         Logger.Info("[追放の有無問わず 会議終了時に行う処理] 通過", "WrapUp");
 
         // |:========== 追放が発生していた場合のみ 会議終了時に行う処理 開始 ==========:|
@@ -277,5 +280,22 @@ class WrapUpPatch
         Mode.SuperHostRoles.Main.RealExiled = null;
 
         Logger.Info("[追放が発生していた場合のみ 会議終了時に行う処理] 通過", "WrapUp");
+    }
+    static void FixAfterMeetingVent()
+    {
+        //ベントがなければ帰れ！！！
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out ISystemType vent))
+            return;
+        VentilationSystem ventilationSystem = vent.TryCast<VentilationSystem>();
+        // VentiSystemでなければ帰れ！！！
+        if (ventilationSystem == null)
+            return;
+        foreach (var ventdata in ventilationSystem.PlayersInsideVents)
+        {
+            PlayerControl player = ModHelpers.PlayerById(ventdata.Key);
+            if (player == null)
+                continue;
+            player.MyPhysics.RpcExitVent(ventdata.Value);
+        }
     }
 }
