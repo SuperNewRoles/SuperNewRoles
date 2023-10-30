@@ -289,7 +289,7 @@ public class CustomColors
         {
             public static bool Prefix(ref string __result, [HarmonyArgument(0)] StringNames name)
             {
-                if ((int)name >= 50000)
+                if ((int)name >= 50000 && (int)name < 50999)
                 {
                     string text = ColorStrings[(int)name];
                     if (text != null)
