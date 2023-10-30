@@ -1,6 +1,7 @@
 using System;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -31,6 +32,38 @@ public static class ShipStatus_Awake_Patch
         MapUtilities.CachedShipStatus = __instance;
     }
 }
+[HarmonyPatch(typeof(SwitchSystem), nameof(SwitchSystem.UpdateSystem))]
+class SwitchSystemPatch
+{
+    public static void Postfix()
+    {
+        Logger.Info("COMEEEEEEEEEEEEEEEEEEESWITCHSYSTEMMMMMM");
+    }
+}
+
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(MessageReader) })]
+class UpdateSystemMessagReaderPatch
+{
+    public static bool Prefix(ShipStatus __instance,
+        [HarmonyArgument(0)] SystemTypes systemType,
+        [HarmonyArgument(1)] PlayerControl player,
+        [HarmonyArgument(2)] MessageReader msgReader)
+    {
+        int position = msgReader.Position;
+        amount = msgReader.ReadByte();
+        msgReader.Position = position;
+        return UpdateSystemPatch.Prefix(__instance, systemType, player, amount);
+    }
+    static byte amount;
+    public static void Postfix(ShipStatus __instance,
+        [HarmonyArgument(0)] SystemTypes systemType,
+        [HarmonyArgument(1)] PlayerControl player,
+        [HarmonyArgument(2)] MessageReader msgReader)
+    {
+        UpdateSystemPatch.Postfix(__instance, systemType, player, amount);
+    }
+}
+
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
 class UpdateSystemPatch
 {
@@ -39,6 +72,7 @@ class UpdateSystemPatch
         [HarmonyArgument(1)] PlayerControl player,
         [HarmonyArgument(2)] byte amount)
     {
+        Logger.Info("COMEUPDATESYSTEMMMMMMMMM");
         if (PlusModeHandler.IsMode(PlusModeId.NotSabotage))
         {
             return false;
@@ -75,10 +109,12 @@ class UpdateSystemPatch
         return true;
     }
     public static void Postfix(
+        ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
         [HarmonyArgument(1)] PlayerControl player,
         [HarmonyArgument(2)] byte amount)
     {
+        Logger.Info("COMEELECTRICALLLLLLL");
         ReplayActionUpdateSystem.Create(systemType, player.PlayerId, amount);
         if (!RoleHelpers.IsSabotage())
         {
@@ -96,6 +132,7 @@ class UpdateSystemPatch
         SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + systemType + " : " + amount);
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
+            Logger.Info("IIIIIIIIIIIIIIIIIISACTIVE:"+__instance.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>().IsActive.ToString());
             SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Comms)
             {
