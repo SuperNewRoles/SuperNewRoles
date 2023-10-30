@@ -290,12 +290,7 @@ class WrapUpPatch
         // VentiSystemでなければ帰れ！！！
         if (ventilationSystem == null)
             return;
-        foreach (var ventdata in ventilationSystem.PlayersInsideVents)
-        {
-            PlayerControl player = ModHelpers.PlayerById(ventdata.Key);
-            if (player == null)
-                continue;
-            player.MyPhysics.RpcExitVent(ventdata.Value);
-        }
+        ventilationSystem.PlayersInsideVents = new();
+        ventilationSystem.IsDirty = true;
     }
 }
