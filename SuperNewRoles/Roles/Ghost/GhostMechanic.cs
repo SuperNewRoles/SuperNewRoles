@@ -51,14 +51,22 @@ public static class GhostMechanic
         int limitCount = 0;
         string errorMsg = null;
 
-        foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks) // 亡霊整備士自身のタスクを検索した場合サボタージュを取得できなかった為, ホストのタスクを参照している。
+        if (!PlayerControl.LocalPlayer.IsMushroomMixupActive())
         {
-            if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks) // 亡霊整備士自身のタスクを検索した場合サボタージュを取得できなかった為, ホストのタスクを参照している。
             {
-                sabotageType = task.TaskType;
-                break; // サボタージュが1つ取得された時点で, タスクを取得するforeachから抜ける
+                if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                {
+                    sabotageType = task.TaskType;
+                    break; // サボタージュが1つ取得された時点で, タスクを取得するforeachから抜ける
+                }
             }
         }
+        else
+        {
+            sabotageType = TaskTypes.MushroomMixupSabotage;
+        }
+
         // タスクが取得されていて, 使用回数を使い切っていない場合リペアを発動する。
         if (sabotageType != TaskTypes.None)
         {
