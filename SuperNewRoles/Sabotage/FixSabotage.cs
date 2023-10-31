@@ -111,24 +111,26 @@ public class FixSabotage
                     RPCHelper.StartRPC(CustomRPC.FixLights).EndRPC();
                     RPCProcedure.FixLights();
                     break;
-                case TaskTypes.RestoreOxy:
+                case TaskTypes.RestoreOxy: // 酸素 (Skeld, Mira)
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, 0 | 64);
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, 1 | 64);
                     break;
-                case TaskTypes.ResetReactor:
+                case TaskTypes.ResetReactor: // リアクター (Skeld, Mira, Fungle)
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Reactor, 16);
-                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 16);
                     break;
-                case TaskTypes.ResetSeismic:
+                case TaskTypes.StopCharles: // 衝突回避 (Airship)
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 0 | 16);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 1 | 16);
+                    break;
+                case TaskTypes.ResetSeismic: // 耐震 (Polus)
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Laboratory, 16);
                     break;
                 case TaskTypes.FixComms:
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
                     break;
-                case TaskTypes.StopCharles:
-                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Reactor, 0 | 16);
-                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Reactor, 1 | 16);
+                case TaskTypes.MushroomMixupSabotage:
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 16 | 1);
                     break;
                 default:
                     Logger.Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
@@ -165,6 +167,12 @@ public class FixSabotage
                     sabotageId = SystemTypes.Reactor;
                     amount.Item1 = 16;
                     break;
+                case TaskTypes.StopCharles:
+                    IsfixingSaboHere = true;
+                    IsSecondUnit = true;
+                    sabotageId = SystemTypes.HeliSabotage;
+                    amount = (0 | 16, 1 | 16);
+                    break;
                 case TaskTypes.ResetSeismic:
                     IsfixingSaboHere = true;
                     sabotageId = SystemTypes.Laboratory;
@@ -175,12 +183,6 @@ public class FixSabotage
                     IsSecondUnit = true;
                     sabotageId = SystemTypes.Comms;
                     amount = (16 | 0, 16 | 1);
-                    break;
-                case TaskTypes.StopCharles:
-                    IsfixingSaboHere = true;
-                    IsSecondUnit = true;
-                    sabotageId = SystemTypes.Reactor;
-                    amount = (0 | 16, 1 | 16);
                     break;
                 default:
                     IsfixingSaboHere = false;

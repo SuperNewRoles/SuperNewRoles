@@ -1,6 +1,7 @@
 using System;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -31,6 +32,30 @@ public static class ShipStatus_Awake_Patch
         MapUtilities.CachedShipStatus = __instance;
     }
 }
+
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(MessageReader) })]
+class UpdateSystemMessagReaderPatch
+{
+    public static bool Prefix(ShipStatus __instance,
+        [HarmonyArgument(0)] SystemTypes systemType,
+        [HarmonyArgument(1)] PlayerControl player,
+        [HarmonyArgument(2)] MessageReader msgReader)
+    {
+        int position = msgReader.Position;
+        amount = msgReader.ReadByte();
+        msgReader.Position = position;
+        return UpdateSystemPatch.Prefix(__instance, systemType, player, amount);
+    }
+    static byte amount;
+    public static void Postfix(ShipStatus __instance,
+        [HarmonyArgument(0)] SystemTypes systemType,
+        [HarmonyArgument(1)] PlayerControl player,
+        [HarmonyArgument(2)] MessageReader msgReader)
+    {
+        UpdateSystemPatch.Postfix(__instance, systemType, player, amount);
+    }
+}
+
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
 class UpdateSystemPatch
 {
@@ -75,6 +100,7 @@ class UpdateSystemPatch
         return true;
     }
     public static void Postfix(
+        ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
         [HarmonyArgument(1)] PlayerControl player,
         [HarmonyArgument(2)] byte amount)
@@ -99,7 +125,7 @@ class UpdateSystemPatch
             SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Comms)
             {
-                Mode.SuperHostRoles.ChangeName.SetRoleNames();
+                ChangeName.SetRoleNames();
             }
         }
     }
