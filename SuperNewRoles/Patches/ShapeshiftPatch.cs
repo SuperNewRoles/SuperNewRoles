@@ -14,123 +14,71 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-#region RpcShapeshiftPatch
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
-class RpcShapeshiftPatch
+#region CheckShapeshiftPatch
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckShapeshift))]
+class CheckShapeshiftPatch
 {
-    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+    public static bool Prefix(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
     {
-        SyncSetting.CustomSyncSettings();
+        __instance.logger.Debug($"Checking if {__instance.PlayerId} can shapeshift into {(target == null ? "null player" : target.PlayerId.ToString())}");
+        if (AmongUsClient.Instance.IsGameOver || !AmongUsClient.Instance.AmHost)
+            return false;
+        if (target == null ||
+            target.Data == null ||
+            __instance.Data.IsDead || __instance.Data.Disconnected)
+        {
+            int num = target != null ? target.PlayerId : -1;
+            __instance.logger.Warning($"Bad shapeshift from {__instance.PlayerId} to {num}");
+            __instance.RpcRejectShapeshift();
+            return false;
+        }
+        if (target.IsMushroomMixupActive() && shouldAnimate)
+        {
+            __instance.logger.Warning("Tried to shapeshift while mushroom mixup was active");
+            __instance.RpcRejectShapeshift();
+            return false;
+        }
+        if (MeetingHud.Instance && shouldAnimate)
+        {
+            __instance.logger.Warning("Tried to shapeshift while a meeting was starting");
+            __instance.RpcRejectShapeshift();
+            return false;
+        }
+        //ここからMod側のチェック
+        if (!HandleShapeshiftCheck(__instance, target, shouldAnimate))
+        {
+            __instance.RpcRejectShapeshift();
+            //まあでも解除する場合はそのまま解除で通した方がいいよね
+            if (__instance.PlayerId == target.PlayerId)
+                __instance.RpcShapeshift(__instance, shouldAnimate);
+            return false;
+        }
+        __instance.RpcShapeshift(target, shouldAnimate);
+        return false;
+    }
+    static bool HandleShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
+    {
         if (RoleClass.Assassin.TriggerPlayer != null)
             return false;
+        if (target.IsBot())
+            return false;
         // バトルロイヤルモードで、
-        // ホストが自分以外のプレイヤーを
+        // 対象が対象以外のプレイヤーに
         // シェイプシフトしようとした時
         if (ModeHandler.IsMode(ModeId.BattleRoyal)
-            && AmongUsClient.Instance.AmHost
             && __instance.PlayerId != target.PlayerId
             && Mode.BattleRoyal.Main.StartSeconds <= 0)
         {
-            new LateTask(() => __instance.RpcRevertShapeshiftUnchecked(true), 0.1f);
             BattleRoyalRole.GetObject(__instance).UseAbility(target);
-            return true;
+            return false;
         }
-        if (target.IsBot())
-            return true;
 
         bool isActivationShapeshift = __instance.PlayerId != target.PlayerId; // true : シェイプシフトする時 / false : シェイプシフトを解除する時
 
-        if (__instance.IsRole(RoleId.MadRaccoon) &&
-            __instance == PlayerControl.LocalPlayer) // 導入者が個人で行う処理 (SHR, SNR共通)
-        {
-            if (isActivationShapeshift)
-                MadRaccoon.Button.SetShapeDurationTimer();
-            else
-                MadRaccoon.Button.ResetShapeDuration(false);
-        }
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost)
-            return true;
-        if (isActivationShapeshift)
-        {
-            if (__instance.IsRole(RoleId.Doppelganger))
-            {
-                RoleClass.Doppelganger.Targets.Add(__instance.PlayerId, target);
-                SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
-            }
-        }
-        else
-        {
-            if (__instance.IsRole(RoleId.Doppelganger))
-            {
-                RoleClass.Doppelganger.Targets.Remove(__instance.PlayerId);
-                SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
-            }
-            if (ModeHandler.IsMode(ModeId.Default))
-            {
-                if (__instance.IsRole(RoleId.Doppelganger))
-                {
-                    Doppelganger.ResetShapeCool();
-                }
-            }
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            {
-                if (__instance.IsRole(RoleId.RemoteSheriff))
-                {
-                    __instance.RpcShowGuardEffect(target);
-                }
-            }
-            return true;
-        }
-        if (__instance.IsRole(RoleId.ShiftActor))
-        {
-            Roles.Impostor.ShiftActor.Shapeshift(__instance, target);
-            return true;
-        }
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             switch (__instance.GetRole())
             {
-                case RoleId.RemoteSheriff:
-                    if (target.IsDead()) return true;
-                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1) return true;
-                    
-                        (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
-                        var misfire = !success;
-                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-
-                    if (alwaysKill)
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
-                        __instance.RpcMurderPlayerCheck(target);
-                        FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
-                        __instance.RpcMurderPlayer(__instance, true);
-                        FinalStatusClass.RpcSetFinalStatus(__instance, status);
-                    }
-                    else if (misfire)
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
-                        __instance.RpcMurderPlayer(__instance, true);
-                        FinalStatusClass.RpcSetFinalStatus(__instance, status);
-                    }
-                    else
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
-                        if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
-                            RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
-                        else
-                            RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.RemoteSheriffKillMaxCount.GetInt() - 1;
-                        if (RoleClass.RemoteSheriff.IsKillTeleport)
-                            __instance.RpcMurderPlayerCheck(target);
-                        else
-                        {
-                            target.RpcMurderPlayer(target, true);
-                            __instance.RpcShowGuardEffect(__instance);
-                        }
-                        FinalStatusClass.RpcSetFinalStatus(target, status);
-                        Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
-                    }
-                    return true;
                 case RoleId.SelfBomber:
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
@@ -157,7 +105,7 @@ class RpcShapeshiftPatch
                         p.RpcSetFinalStatus(FinalStatus.SamuraiKill);
                         __instance.RpcMurderPlayerCheck(p);
                     }
-                    RoleClass.Samurai.SwordedPlayer.Add(__instance.PlayerId);                    
+                    RoleClass.Samurai.SwordedPlayer.Add(__instance.PlayerId);
                     return false;
                 case RoleId.Arsonist:
                     foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
@@ -203,6 +151,123 @@ class RpcShapeshiftPatch
                     if (RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] >= 0)
                         EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                     return false;
+                case RoleId.EvilSeer:
+                    return false;//shapeとしての能力は持たせない為、誤爆封じで導入者のみ使用不可にする。
+                case RoleId.RemoteSheriff:
+                    //対象が死んでいる場合はシェイプシフトできない
+                    if (target.IsDead())
+                        return false;
+                    //もう残り回数がない場合はシェイプシフトできない
+                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) &&
+                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] <= 0)
+                        return false;
+                    break;
+
+            }
+        }
+        //おめでとう！無事にシェイプシフトできました！
+        return true;
+    }
+}
+#endregion
+#region ShapeshiftPatch
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
+class RpcShapeshiftPatch
+{
+    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+    {
+        SyncSetting.CustomSyncSettings();
+
+        bool isActivationShapeshift = __instance.PlayerId != target.PlayerId; // true : シェイプシフトする時 / false : シェイプシフトを解除する時
+
+        if (__instance.IsRole(RoleId.MadRaccoon) &&
+            __instance == PlayerControl.LocalPlayer) // 導入者が個人で行う処理 (SHR, SNR共通)
+        {
+            if (isActivationShapeshift)
+                MadRaccoon.Button.SetShapeDurationTimer();
+            else
+                MadRaccoon.Button.ResetShapeDuration(false);
+        }
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost)
+            return true;
+        if (isActivationShapeshift)
+        {
+            if (__instance.IsRole(RoleId.Doppelganger))
+            {
+                RoleClass.Doppelganger.Targets.Add(__instance.PlayerId, target);
+                SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
+            }
+        }
+        else
+        {
+            if (__instance.IsRole(RoleId.Doppelganger))
+            {
+                RoleClass.Doppelganger.Targets.Remove(__instance.PlayerId);
+                SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
+            }
+            if (ModeHandler.IsMode(ModeId.Default))
+            {
+                if (__instance.IsRole(RoleId.Doppelganger))
+                {
+                    Doppelganger.ResetShapeCool();
+                }
+            }
+            else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (__instance.IsRole(RoleId.RemoteSheriff))
+                {
+                    __instance.RpcShowGuardEffect(target);
+                }
+            }
+            return true;
+        }
+        if (__instance.IsRole(RoleId.ShiftActor))
+        {
+            ShiftActor.Shapeshift(__instance, target);
+            return true;
+        }
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            switch (__instance.GetRole())
+            {
+                case RoleId.RemoteSheriff:                    
+                        (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
+                        var misfire = !success;
+                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+
+                    if (alwaysKill)
+                    {
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
+                        __instance.RpcMurderPlayerCheck(target);
+                        FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                        __instance.RpcMurderPlayer(__instance, true);
+                        FinalStatusClass.RpcSetFinalStatus(__instance, status);
+                    }
+                    else if (misfire)
+                    {
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
+                        __instance.RpcMurderPlayer(__instance, true);
+                        FinalStatusClass.RpcSetFinalStatus(__instance, status);
+                    }
+                    else
+                    {
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
+                        if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
+                            RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
+                        else
+                            RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.RemoteSheriffKillMaxCount.GetInt() - 1;
+                        if (RoleClass.RemoteSheriff.IsKillTeleport)
+                            __instance.RpcMurderPlayerCheck(target);
+                        else
+                        {
+                            target.RpcMurderPlayer(target, true);
+                            __instance.RpcShowGuardEffect(__instance);
+                        }
+                        FinalStatusClass.RpcSetFinalStatus(target, status);
+                        ChangeName.SetRoleName(__instance);
+                    }
+                    return true;
                 case RoleId.Camouflager:
                         RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
                         RoleClass.Camouflager.ButtonTimer = DateTime.Now;
@@ -214,8 +279,6 @@ class RpcShapeshiftPatch
                     __instance.RpcMurderPlayer(__instance, true);
                     __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                     return true;
-                case RoleId.EvilSeer:
-                    return false;//shapeとしての能力は持たせない為、誤爆封じで導入者のみ使用不可にする。
             }
         }
         return true;
