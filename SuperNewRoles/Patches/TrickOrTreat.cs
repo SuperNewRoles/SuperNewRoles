@@ -18,6 +18,8 @@ public static class TrickOrTreat
             //とりあえず僕の誕生日終わるまで出しとく
             if (DateTime.UtcNow >= new DateTime(2023, 11, 4, 15, 0, 0))
                 return true;
+            if (Constants.ShouldHorseAround())
+                return true;
             int index = 1;
             foreach (PlayerParticleInfo info in __instance.Sprites)
             {
@@ -29,16 +31,16 @@ public static class TrickOrTreat
             __instance.fill = new RandomFill<PlayerParticleInfo>();
             if (Constants.ShouldHorseAround())
             {
-                __instance.fill.Set(__instance.HorseSprites.WrapToIl2Cpp().TryCast<Il2CppSystem.Collections.Generic.IEnumerable<PlayerParticleInfo>>());
+                __instance.fill.Set(__instance.HorseSprites.ToArray().WrapToIl2Cpp().TryCast<Il2CppSystem.Collections.Generic.IEnumerable<PlayerParticleInfo>>());
                 __instance.pool.Prefab = __instance.HorsePrefab;
             }
             else
             {
-                __instance.fill.Set(__instance.Sprites.WrapToIl2Cpp().TryCast<Il2CppSystem.Collections.Generic.IEnumerable<PlayerParticleInfo>>());
+                __instance.fill.Set(__instance.Sprites.ToArray().WrapToIl2Cpp().TryCast<Il2CppSystem.Collections.Generic.IEnumerable<PlayerParticleInfo>>());
             }
-            foreach (PoolableBehavior beh in __instance.pool.inactiveChildren)
+            for (int i = 0; i < 30; i++)
             {
-                __instance.pool.inactiveChildren.Add(GameObject.Instantiate(beh, beh.transform.parent));
+                __instance.pool.CreateOneInactive(__instance.pool.Prefab);
             }
             int num = 0;
             while (__instance.pool.NotInUse > 0)
