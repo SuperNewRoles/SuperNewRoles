@@ -44,7 +44,6 @@ public static class TrickOrTreat
             while (__instance.pool.NotInUse > 0)
             {
                 PlayerParticle playerParticle = __instance.pool.Get<PlayerParticle>();
-                PlayerMaterial.SetColors(num++, playerParticle.myRend);
                 __instance.PlacePlayer(playerParticle, initial: true);
             }
             return false;
