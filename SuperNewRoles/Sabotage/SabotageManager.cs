@@ -24,7 +24,7 @@ public static class SabotageManager
     }
     public static bool IsOKMeeting()
     {
-        if (RoleHelpers.IsSabotage())
+        if (RoleHelpers.IsSabotage(false))
             return false;
         if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false) &&
             MapCustom.TheFungleMushroomMixupOption.GetBool() &&
