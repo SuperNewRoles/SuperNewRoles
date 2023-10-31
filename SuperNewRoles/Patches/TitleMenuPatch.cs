@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using HarmonyLib;
 using TMPro;
@@ -11,9 +12,13 @@ public class MainMenuStartPatcha
 {
     private static void Postfix(PlayerParticles __instance)
     {
+        //とりあえず僕の誕生日終わるまで出しとく
+        if (DateTime.UtcNow < new DateTime(2023, 11, 4, 15, 0, 0) &&
+            !Constants.ShouldHorseAround())
+            return;
         foreach (var item in __instance.pool.activeChildren)
         {
-            PlayerMaterial.SetColors(ModHelpers.GetRandomIndex<Color32>(Palette.PlayerColors.ToList()), item.TryCast<PlayerParticle>().myRend);
+            PlayerMaterial.SetColors(ModHelpers.GetRandomIndex(Palette.PlayerColors.ToList()), item.TryCast<PlayerParticle>().myRend);
         }
     }
 }
@@ -51,7 +56,7 @@ public class MainMenuStartPatch
             buttonSpriteDiscord.color = textDiscord.color = discordColor;
         });
 
-        var buttonTwitter = Object.Instantiate(template, null);
+        var buttonTwitter = GameObject.Instantiate(template, null);
         GameObject.Destroy(buttonTwitter.GetComponent<AspectPosition>());
         buttonTwitter.transform.localPosition = new(0.25f, -2, 0);
 
@@ -75,12 +80,12 @@ public class MainMenuStartPatch
             buttonSpriteTwitter.color = textTwitter.color = TwitterColor;
         });
 
-        var buttonTwitterSNRDevs = Object.Instantiate(template, null);
+        var buttonTwitterSNRDevs = GameObject.Instantiate(template, null);
         GameObject.Destroy(buttonTwitterSNRDevs.GetComponent<AspectPosition>());
         buttonTwitterSNRDevs.transform.localPosition = new(2f, -2.25f, 0);
         buttonTwitterSNRDevs.SetActive(false);
 
-        var buttonTwitterSuperNewRoles = Object.Instantiate(template, null);
+        var buttonTwitterSuperNewRoles = GameObject.Instantiate(template, null);
         GameObject.Destroy(buttonTwitterSuperNewRoles.GetComponent<AspectPosition>());
         buttonTwitterSuperNewRoles.transform.localPosition = new(2f, -1.75f, 0);
         buttonTwitterSuperNewRoles.SetActive(false);

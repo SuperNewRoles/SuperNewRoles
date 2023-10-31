@@ -31,21 +31,26 @@ public static class TrickOrTreat
             __instance.fill = new RandomFill<PlayerParticleInfo>();
             if (Constants.ShouldHorseAround())
             {
-                __instance.fill.Set(__instance.HorseSprites.ToArray().WrapToIl2Cpp().TryCast<Il2CppSystem.Collections.Generic.IEnumerable<PlayerParticleInfo>>());
+                __instance.fill.Set(__instance.HorseSprites.IEnumerableToIl2Cpp());
                 __instance.pool.Prefab = __instance.HorsePrefab;
             }
             else
             {
-                __instance.fill.Set(__instance.Sprites.ToArray().WrapToIl2Cpp().TryCast<Il2CppSystem.Collections.Generic.IEnumerable<PlayerParticleInfo>>());
+                __instance.fill.Set(__instance.Sprites.IEnumerableToIl2Cpp());
             }
-            for (int i = 0; i < 30; i++)
+            int AdditionalCount = ModHelpers.GetRandomInt(15,min:5);
+            Logger.Info($"{AdditionalCount}お菓子増量キャンペーン中！");
+            for (int i = 0; i < AdditionalCount; i++)
             {
                 __instance.pool.CreateOneInactive(__instance.pool.Prefab);
             }
             int num = 0;
+            Shader shader = Shader.Find("Sprites/Default");
             while (__instance.pool.NotInUse > 0)
             {
                 PlayerParticle playerParticle = __instance.pool.Get<PlayerParticle>();
+                playerParticle.myRend.material.shader = shader;
+                playerParticle.myRend.sharedMaterial.shader = shader;
                 __instance.PlacePlayer(playerParticle, initial: true);
             }
             return false;
