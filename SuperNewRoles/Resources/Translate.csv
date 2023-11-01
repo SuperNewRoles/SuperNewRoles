@@ -120,7 +120,7 @@ DarkerColor,darker,暗い,暗,暗
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置,地圖設定
-SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,Airship：机密室,AirShip：密室
+SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加机密室,追加密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
 SettingpresetSelection,Preset,プリセット,预设,預設
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>设置,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>設定
@@ -200,12 +200,11 @@ PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター�
 MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
-AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する,米拉总部(Mira)：追加生命监测装置,MiraHQ：增加生命跡象檢測器
 VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化,播放管道动画,啟用通風管道動畫
 MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖改造
-AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇(AirShip)：增加管道,AirShip：增加通風管道
-PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯(Polus)：增加管道,Polus：增加通風管道
-MiraAdditionalVents,MiraAdditionalVents,ミラにベントを追加する,米拉总部(Mira)：增加管道,MiraHQ：增加通風管道
+AdditionalVents,AdditionalVents,ベントを追加する,增加管道,增加通風管道
+AdditionalVitals,Adding vitals,バイタルを追加する,追加生命监测装置,增加生命跡象檢測器
+SpecimenVitalSetting,Move Vital to specimen,標本室にバイタルを移動する,将生命监测仪移动至样本室,將生命跡象檢測器移動至樣本室
 Zoomafterdeath,Zoom function after death,死後のズーム機能,死亡玩家功能设定,死亡玩家功能設定
 mousemode,Mouse wheel Mode,マウスホイールモード,鼠标滚轮模式,滑鼠滾輪模式
 clairvoyantmode,ClairvoyantMode,千里眼モード,千里眼模式,千里眼模式
@@ -1064,7 +1063,6 @@ RecordsAdminDestroySetting,Cannot Use Archive Admin,アーカイブのアドミ�
 SpyName,Spy,スパイ,卧底,臥底
 SpyTitle1,Deceive the Impostor and lead the Cluemate camp to victory!,インポスターを欺き、クルーメイト陣営を勝利に導こう,欺骗并找出内鬼，帮助船员取得胜利,欺騙並找出內鬼，幫助船員取得勝利
 SpyDescription,Spies are crewmates but they look like friends to the Impostor.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。,卧底属于船员阵营。\n在内鬼看来卧底属于内鬼阵营。\n卧底没有其他特殊能力。,臥底屬於船員陣營。\n在內鬼看來臥底屬於內鬼陣營。\n臥底沒有其他特殊能力。
-SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス),波鲁斯(Polus)：将生命监测仪移动至样本室,Polus：將生命跡象檢測器移動至樣本室
 IsModCosmeticsAreNotLoaded,Do not load custom hats,カスタムハットを読み込まない,未读取自定义装扮帽,未載入自定義帽子
 KunoichiName,Kunoichi,クノイチ,女忍,女忍
 KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け,用忍术来欺骗船员,用忍術來欺騙船員
@@ -1107,7 +1105,6 @@ ToiletFanName,Toilet Fan,トイレファン,腹泻者,腹瀉者
 ToiletFanTitle1,A little faster...,少しでも早く...,要……要喷射了……,馬桶...你在哪？
 ToiletCooldownSetting,Toilet Cool Time,トイレクールタイム,腹泻者开门冷却,腹瀉者開門冷卻時間
 ToiletName,DoorOpen,ドア開放,开门,開門
-PolusrandomSpawn,RandomSpawn,ランダムスポーン,出生点随机,隨機重生點
 NotImpostorExiled,Not taking the Impostor off the road,インポスターを道連れにしない,不会连带内鬼阵营玩家死亡,不會連帶內鬼陣營玩家死亡
 NiceButtonerName,NiceButtoner,ナイスボタナー,正义的执钮人,正義的執鈕人
 NiceButtonerTitle1,Let&apos;s a start meeting.,会議を開始しよう,召开会议,召開會議
