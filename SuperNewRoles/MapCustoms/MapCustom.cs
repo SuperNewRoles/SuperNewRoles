@@ -77,11 +77,11 @@ class MapCustom
         MapCustomOption = Create(102800, true, CustomOptionType.Generic, Cs(new Color(132f / 187f, 162f / 255f, 212f / 255f, 1f), "MapCustom"), false, null, true);
 
         /*===============スケルド===============*/
-        SkeldSetting = Create(102900, true, CustomOptionType.Generic, "<color=#8fbc8f>Skeld</color>", false, MapCustomOption);
+        SkeldSetting = Create(102900, true, CustomOptionType.Generic, "<color=#8fbc8f>The Skeld</color>", false, MapCustomOption);
         // SkeldRandomSpawn = Create(1248, false, CustomOptionType.Generic, "RandomSpawnOption", false, SkeldSetting);
 
         /*===============ミラ===============*/
-        MiraSetting = Create(103000, true, CustomOptionType.Generic, "<color=#cd5c5c>Mira</color>", false, MapCustomOption);
+        MiraSetting = Create(103000, true, CustomOptionType.Generic, "<color=#cd5c5c>Mira HQ</color>", false, MapCustomOption);
         // MiraRandomSpawn = Create(103001, false, CustomOptionType.Generic, "RandomSpawnOption", false, MiraSetting);
         MiraAdditionalVents = Create(103002, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MiraSetting);
         AddVitalsMira = Create(103003, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MiraSetting);
