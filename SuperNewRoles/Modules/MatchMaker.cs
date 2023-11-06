@@ -12,7 +12,7 @@ namespace SuperNewRoles.Modules;
 
 public static class MatchMaker
 {
-    public static string BaseURL = "https://matchmaker.supernewroles.com";
+    public static string BaseURL = "https://matchmaker.supernewroles.com/";
     public static Dictionary<string, string> CreateBaseData()
     {
         var data = new Dictionary<string, string>
