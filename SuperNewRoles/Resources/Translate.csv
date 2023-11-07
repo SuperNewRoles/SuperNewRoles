@@ -1756,6 +1756,11 @@ WelcomeMessage7,SuperNewRoles Official Wiki,SuperNewRoles公式Wiki :,超新职�
 WelcomeMessage8,https://github.com/SuperNewRoles/SuperNewRoles/wiki(Japanese),https://github.com/SuperNewRoles/SuperNewRoles/wiki,https://amonguscn.club（中文），https://github.com/SuperNewRoles/SuperNewRoles/wiki（日文）,https://amonguscn.club（簡體中文），https://github.com/SuperNewRoles/SuperNewRoles/wiki（日文）
 WelcomeMessage9,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。,你可以通过输入命令来获取信息。,您可以通過輸入命令來獲取訊息。
 WelcomeMessage10,To view a list of executable commands，send the command : [ /commands ] or [ /cmd ].,実行可能なコマンド一覧を表示するには\nコマンド : [ /commands ] 又は [ /cmd ] を送信してください。
+SNRWebWelcomMessage1_HostSend,Send your match results to SNRWeb.,SNRWebに試合の戦績を送信します。
+SNRWebWelcomMessage1_GestSend,,SNRWebにログインしている導入者が参加した場合，試合の戦績が送信されます。
+SNRWebWelcomMessage2,By participating in the game，you agree to submit your information to SNRWeb.,ゲームへの参加をもってSNRWebへの情報送信に同意したものとみなします。
+SNRWebWelcomMessage3,For a simplified explanation of SNRWeb，see the command : [ /getwebinfo ] or [ /gwi ].,SNRWebについての簡易説明は，\nコマンド : [ /getwebinfo ] 又は [ /gwi ]でご確認ください。
+SNRWebWelcomMessage4,For a detailed explanation，please refer to the "SNR Webについて" page on the official wiki.,又，詳細説明については公式wikiの[SNR Webについて]というページを御覧ください。
 CommandsMessage0,Commands in the command list:\n() are also possible.It is not case sensitive.,コマンド一覧:\n()の中にあるコマンドでも可能です。大文字と小文字は区別されません。,命令列表:\n也可以发送()中的命令。不区分大小写。,命令列表；\n也可以發送()中的命令。不區分大小寫。
 CommandsTitelModInfo,# Command to get information about Mod,# Modに関する情報を取得するコマンド
 CommandsMessageModInfo1,<color={0}>/welcome</color> : \nResend WelcomeMessage. (When the host executes it，it is sent to everyone.),<color={0}>/welcome</color> : \nWelcomeMessageを再送します。(ホストが実行すると全員に送信します)

@@ -139,6 +139,7 @@ internal static class GetChatCommands
         const string endText = " " + "\n." + "</size></align>";
 
         string mainText;
+        string webWarningText = null;
 
         mainText =
             $"{ModTranslation.GetString("WelcomeMessage1")}\n\n" +
@@ -152,7 +153,19 @@ internal static class GetChatCommands
             $"{ModTranslation.GetString("WelcomeMessage9")}\n" +
             $"{ModTranslation.GetString("WelcomeMessage10")}\n";
 
-        welcomeMessage = startText + mainText + endText;
+            if (WebAccountManager.IsLogined || CustomOptionHolder.SNRWebSendConditionHostDependency.GetBool())
+            {
+                string SNRWebWelcomMessage1 = WebAccountManager.IsLogined ? "SNRWebWelcomMessage1_HostSend" : "SNRWebWelcomMessage1_GestSend";
+
+                webWarningText =
+                    "\n<color=#4d4398>|-----------------------------------------------------------------------------|</color>\n\n" +
+                    $"<color=#FF4B00>{ModTranslation.GetString(SNRWebWelcomMessage1)}</color>\n" +
+                    $"{ModTranslation.GetString("SNRWebWelcomMessage2")}\n" +
+                    $"{ModTranslation.GetString("SNRWebWelcomMessage3")}\n" +
+                    $"{ModTranslation.GetString("SNRWebWelcomMessage4")}\n";
+            }
+
+        welcomeMessage = startText + mainText + webWarningText + endText;
 
         return welcomeMessage;
     }
