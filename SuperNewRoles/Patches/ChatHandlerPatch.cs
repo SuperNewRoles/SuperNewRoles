@@ -108,7 +108,6 @@ class AddChatPatch
             }
         }
 
-
         var Commandsa = chatText.Split(" ");
         var Commandsb = new List<string>();
         foreach (string com in Commandsa)
@@ -116,42 +115,6 @@ class AddChatPatch
             Commandsb.AddRange(com.Split("　"));
         }
         var Commands = Commandsb.ToArray();
-        //
-        if (Commands[0].Equals("/list", StringComparison.OrdinalIgnoreCase) ||
-            Commands[0].Equals("/ls", StringComparison.OrdinalIgnoreCase))
-        {
-            string text = "";
-            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
-            DirectoryInfo d = new(filePath);
-            int index = 0;
-            foreach (FileInfo info in d.GetFiles())
-            {
-                text += index.ToString() + ":" + info.Name + "\n";
-                index++;
-            }
-            SendCommand(PlayerControl.LocalPlayer, text);
-            return false;
-        }
-        if (Commands[0].Equals("/set", StringComparison.OrdinalIgnoreCase) ||
-            Commands[0].Equals("/st", StringComparison.OrdinalIgnoreCase))
-        {
-            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
-            DirectoryInfo d = new(filePath);
-            (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[int.Parse(Commands[1])].Name);
-            ReplayManager.IsReplayMode = true;
-            string text = "";
-            text += "正常なファイルか:" + IsSuc.ToString() + "\n";
-            if (IsSuc)
-            {
-                text += $"PlayerCount:{replay.AllPlayersCount}\n";
-                text += $"Mode:{replay.CustomMode}\n";
-                text += $"Time:{replay.RecordTime}";
-            }
-            SendCommand(PlayerControl.LocalPlayer, text);
-            return false;
-        }
-        //
-
         if (Commands[0].Equals("/n", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/h", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/help", StringComparison.OrdinalIgnoreCase) ||
@@ -918,4 +881,10 @@ class AddChatPatch
             .EndRpc()
             .SendMessage();
     }
+}
+
+internal static class HostProcessChatCommand
+{
+    internal enum CommandType
+    {}
 }
