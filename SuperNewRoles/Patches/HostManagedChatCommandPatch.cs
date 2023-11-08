@@ -182,13 +182,19 @@ internal static class GetChatCommands
             $"{ModTranslation.GetString("CommandsMessageRoleInfo3")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageRoleInfo4")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageRoleInfo5")}\n\n" +
-            $"{ModTranslation.GetString("CommandsMessageRoleInfo6")}\n\n";
+            $"{ModTranslation.GetString("CommandsMessageRoleInfo6")}\n\n" +
+            $"{ModTranslation.GetString("CommandsMessageRoleInfo7")}\n\n";
+
+
+        string OthersText =
+            $"<size=100%>{ModTranslation.GetString("CommandsTitelOthers")}</size>\n" +
+            $"{ModTranslation.GetString("CommandsMessageOthers1")}\n\n" +
+            $"{ModTranslation.GetString("CommandsMessageOthers2")}\n\n";
 
         const string endTag = "</size></align>";
         const string line = "<color={0}>|-----------------------------------------------------------------------------|</color>\n";
 
         string commandList =
-            line +
             startTag +
             line +
             startText +
@@ -198,6 +204,8 @@ internal static class GetChatCommands
             externalInfoText +
             line +
             roleInfoText +
+            line +
+            OthersText +
             line +
             endTag;
 
