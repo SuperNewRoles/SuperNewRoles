@@ -37,10 +37,10 @@ internal static class HostManagedChatCommandPatch
     }
 
     /// <summary>
-    ///
+    /// チャットで送信された文字列を小文字で判定し, 該当するコマンドを取得する
     /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
+    /// <param name="command">チャットで送信された単語(' 'で区切った先頭のみ)</param>
+    /// <returns>該当したコマンドの種類</returns>
     internal static CommandType CheckChatCommand(string command)
         => command.ToLower() switch
         {
@@ -60,7 +60,13 @@ internal static class HostManagedChatCommandPatch
             _ => CommandType.None,
         };
 
-    internal static void ReturnCommandResult(PlayerControl commandUser, CommandType type, string[] Commands)
+    /// <summary>
+    /// コマンドの処理を実行する
+    /// </summary>
+    /// <param name="commandUser">コマンド使用者</param>
+    /// <param name="type">使用されたコマンドの種類</param>
+    /// <param name="Commands">実行するコマンド</param>
+    internal static void ChatCommandExecution(PlayerControl commandUser, CommandType type, string[] Commands)
     {
         switch (type)
         {
@@ -77,19 +83,15 @@ internal static class HostManagedChatCommandPatch
                 SendCommand(commandUser, "ここはTOH部屋ではなくSNR部屋です。\n/nや/hは使えません。\n/arや/grを使用してください。\n詳細は、/cmdをご覧ください！");//, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
                 SendCommand(null, "みなさん、ここはTOH部屋ではなく、SNR部屋です！\n/nや/hは使えないので、/arや/grを使用してください。\n詳細は、/cmdをご覧ください！");//, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
                 break;
-
             case CommandType.AllRoles:
                 GetChatCommands.ProcessAllRoles(commandUser, Commands);
                 break;
-
             case CommandType.GetInRoles:
                 GetChatCommands.ProcessGetInRoles(commandUser, Commands);
                 break;
-
             case CommandType.RoleInfo:
                 GetChatCommands.ProcessRoleInfo(commandUser, Commands);
                 break;
-
             case CommandType.Winners:
                 if (OnGameEndPatch.PlayerData != null)
                 {
@@ -121,6 +123,9 @@ internal static class HostManagedChatCommandPatch
     }
 }
 
+/// <summary>
+/// コマンドの処理を行うメソッドを置くクラス
+/// </summary>
 internal static class GetChatCommands
 {
     internal static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
@@ -382,7 +387,9 @@ internal static class GetChatCommands
     }
 }
 
-
+/// <summary>
+/// 役職情報のコマンドや文章作成を管理しているクラス
+/// </summary>
 internal static class RoleinformationText
 {
     internal static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)

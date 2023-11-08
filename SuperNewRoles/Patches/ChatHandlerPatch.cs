@@ -61,7 +61,7 @@ internal class AddChatPatch
         HostManagedChatCommandPatch.CommandType commandType = HostManagedChatCommandPatch.CheckChatCommand(Commands[0]);
         if (commandType != HostManagedChatCommandPatch.CommandType.None)
         {
-            if (AmongUsClient.Instance.AmHost) HostManagedChatCommandPatch.ReturnCommandResult(sourcePlayer, commandType, Commands);
+            if (AmongUsClient.Instance.AmHost) HostManagedChatCommandPatch.ChatCommandExecution(sourcePlayer, commandType, Commands);
             return false;
         }
 
