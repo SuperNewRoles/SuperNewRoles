@@ -227,19 +227,51 @@ class AddChatPatch
             Commands[0].Equals("/Cmd", StringComparison.OrdinalIgnoreCase)
             )
         {
+            const string startTag =$"<align={"left"}><size=80%>";
+
+            string startText =
+                $"{ModTranslation.GetString("CommandsMessage0")}\n\n";
+
+            string modInfoText =
+                $"<size=100%>{ModTranslation.GetString("CommandsTitelModInfo")}</size>\n" +
+                $"{ModTranslation.GetString("CommandsMessageModInfo1")}\n\n" +
+                $"{ModTranslation.GetString("CommandsMessageModInfo2")}\n\n" +
+                $"{ModTranslation.GetString("CommandsMessageModInfo3")}\n\n";
+
+            string externalInfoText =
+                $"<size=100%>{ModTranslation.GetString("CommandsTitelExternalInfo")}</size>\n" +
+                $"{ModTranslation.GetString("CommandsMessageExternalInfo1")}\n\n" +
+                $"{ModTranslation.GetString("CommandsMessageExternalInfo2")}\n\n";
+
+            string roleInfoText =
+                $"<size=100%>{ModTranslation.GetString("CommandsTitelRoleInfo")}</size>\n" +
+                $"{ModTranslation.GetString("CommandsMessageRoleInfo1")}\n\n" +
+                $"{ModTranslation.GetString("CommandsMessageRoleInfo2")}\n\n" +
+                $"{ModTranslation.GetString("CommandsMessageRoleInfo3")}\n\n" +
+                $"{ModTranslation.GetString("CommandsMessageRoleInfo4")}\n\n" +
+                $"{ModTranslation.GetString("CommandsMessageRoleInfo5")}\n\n" +
+                $"{ModTranslation.GetString("CommandsMessageRoleInfo6")}\n\n";
+
+            const string endTag = "</size></align>";
+            const string line = "<color={0}>|-----------------------------------------------------------------------------|</color>\n";
+
             string text =
-                ModTranslation.GetString("CommandsMessage0") + "\n\n" +
-                ModTranslation.GetString("CommandsMessage1") + "\n" +
-                ModTranslation.GetString("CommandsMessage2") + "\n" +
-                ModTranslation.GetString("CommandsMessage3") + "\n" +
-                ModTranslation.GetString("CommandsMessage4") + "\n" +
-                ModTranslation.GetString("CommandsMessage5") + "\n" +
-                ModTranslation.GetString("CommandsMessage6") + "\n" +
-                ModTranslation.GetString("CommandsMessage7") + "\n" +
-                ModTranslation.GetString("CommandsMessage8") + "\n" +
-                ModTranslation.GetString("CommandsMessage9") + "\n" +
-                ModTranslation.GetString("CommandsMessage10");
-            SendCommand(sourcePlayer, text);
+                line +
+                startTag +
+                line +
+                startText +
+                line +
+                modInfoText +
+                line +
+                externalInfoText +
+                line +
+                roleInfoText +
+                line +
+                endTag;
+
+            const string commandColor = "#4d4398";
+
+            SendCommand(sourcePlayer, Format(text, commandColor));
             return false;
         }
         else if (Commands[0].Equals("/welcome", StringComparison.OrdinalIgnoreCase))
