@@ -28,23 +28,14 @@ public class AmongUsClientOnPlayerJoinedPatch
     {
         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
         {
-            string text =
-                ModTranslation.GetString("WelcomeMessage1") + "\n" +
-                ModTranslation.GetString("WelcomeMessage2") + "\n" +
-                ModTranslation.GetString("WelcomeMessage3") + "\n" +
-                ModTranslation.GetString("WelcomeMessage4") + "\n" +
-                ModTranslation.GetString("WelcomeMessage5") + "\n" +
-                ModTranslation.GetString("WelcomeMessage6") + "\n" +
-                ModTranslation.GetString("WelcomeMessage7") + "\n" +
-                ModTranslation.GetString("WelcomeMessage8") +
-                " " + "\n.";
             new LateTask(() =>
             {
                 if (!__instance.myPlayer.IsBot())
                 {
-                    AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
+                    AddChatPatch.SendCommand(__instance.myPlayer, GetWelcomeMessage(), AddChatPatch.WelcomeToSuperNewRoles);
                 }
             }, 1f, "Welcome Message");
+
             if (SuperNewRolesPlugin.IsBeta)
             {
                 string betatext = ModTranslation.GetString("betatext1");
@@ -71,6 +62,32 @@ public class AmongUsClientOnPlayerJoinedPatch
                 }, 2f, "Welcome Beta Message");
             }
         }
+    }
+
+    public static string GetWelcomeMessage()
+    {
+        string welcomeMessage;
+
+        const string startText = $"<align={"left"}><size=80%>";
+        const string endText = " " + "\n." + "</size></align>";
+
+        string mainText;
+
+        mainText =
+            $"{ModTranslation.GetString("WelcomeMessage1")}\n\n" +
+            $"{ModTranslation.GetString("WelcomeMessage2")}\n" +
+            $"<color=#FF4B00>{ModTranslation.GetString("WelcomeMessage3")}</color>\n" +
+            $"{ModTranslation.GetString("WelcomeMessage4")}\n\n" +
+            $"{ModTranslation.GetString("WelcomeMessage5")}\n" +
+            $"{ModTranslation.GetString("WelcomeMessage6")}\n" +
+            $"{ModTranslation.GetString("WelcomeMessage7")}\n" +
+            $"{ModTranslation.GetString("WelcomeMessage8")}\n\n" +
+            $"{ModTranslation.GetString("WelcomeMessage9")}\n" +
+            $"{ModTranslation.GetString("WelcomeMessage10")}\n";
+
+        welcomeMessage = startText + mainText + endText;
+
+        return welcomeMessage;
     }
 }
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
@@ -223,6 +240,11 @@ class AddChatPatch
                 ModTranslation.GetString("CommandsMessage9") + "\n" +
                 ModTranslation.GetString("CommandsMessage10");
             SendCommand(sourcePlayer, text);
+            return false;
+        }
+        else if (Commands[0].Equals("/welcome", StringComparison.OrdinalIgnoreCase))
+        {
+            SendCommand(sourcePlayer.AmOwner ? null : sourcePlayer, AmongUsClientOnPlayerJoinedPatch.GetWelcomeMessage(), WelcomeToSuperNewRoles);
             return false;
         }
         else if (
