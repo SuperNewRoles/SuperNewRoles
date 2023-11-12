@@ -153,17 +153,17 @@ internal static class GetChatCommands
             $"{ModTranslation.GetString("WelcomeMessage9")}\n" +
             $"{ModTranslation.GetString("WelcomeMessage10")}\n";
 
-            if (WebAccountManager.IsLogined || CustomOptionHolder.SNRWebSendConditionHostDependency.GetBool())
-            {
-                string SNRWebWelcomMessage1 = WebAccountManager.IsLogined ? "SNRWebWelcomMessage1_HostSend" : "SNRWebWelcomMessage1_GestSend";
+        if (WebAccountManager.IsLogined || CustomOptionHolder.SNRWebSendConditionHostDependency.GetBool())
+        {
+            string SNRWebWelcomMessage1 = WebAccountManager.IsLogined ? "SNRWebWelcomMessage1_HostSend" : "SNRWebWelcomMessage1_GestSend";
 
-                webWarningText =
-                    "\n<color=#4d4398>|-----------------------------------------------------------------------------|</color>\n\n" +
-                    $"<color=#FF4B00>{ModTranslation.GetString(SNRWebWelcomMessage1)}</color>\n" +
-                    $"{ModTranslation.GetString("SNRWebWelcomMessage2")}\n" +
-                    $"{ModTranslation.GetString("SNRWebWelcomMessage3")}\n" +
-                    $"{ModTranslation.GetString("SNRWebWelcomMessage4")}\n";
-            }
+            webWarningText =
+                "\n<color=#4d4398>|-----------------------------------------------------------------------------|</color>\n\n" +
+                $"<color=#FF4B00>{ModTranslation.GetString(SNRWebWelcomMessage1)}</color>\n" +
+                $"{ModTranslation.GetString("SNRWebWelcomMessage2")}\n" +
+                $"{ModTranslation.GetString("SNRWebWelcomMessage3")}\n" +
+                $"{ModTranslation.GetString("SNRWebWelcomMessage4")}\n";
+        }
 
         welcomeMessage = startText + mainText + webWarningText + endText;
 
@@ -181,7 +181,8 @@ internal static class GetChatCommands
             $"<size=100%>{ModTranslation.GetString("CommandsTitelModInfo")}</size>\n" +
             $"{ModTranslation.GetString("CommandsMessageModInfo1")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageModInfo2")}\n\n" +
-            $"{ModTranslation.GetString("CommandsMessageModInfo3")}\n\n";
+            $"{ModTranslation.GetString("CommandsMessageModInfo3")}\n\n" +
+            $"{ModTranslation.GetString("CommandsMessageModInfo4")}\n\n";
 
         string externalInfoText =
             $"<size=100%>{ModTranslation.GetString("CommandsTitelExternalInfo")}</size>\n" +
