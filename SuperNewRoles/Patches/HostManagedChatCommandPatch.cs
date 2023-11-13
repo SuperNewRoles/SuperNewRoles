@@ -272,7 +272,7 @@ internal static class GetChatCommands
             }
             if (!float.TryParse(Commands[1], out float sendtime))
             {
-                Logger.Info("送信感覚の取得に失敗した為, コマンドが実行できませんでした。", "/ar");
+                Logger.Info("送信間隔の取得に失敗した為, コマンドが実行できませんでした。", "/ar");
                 return;
             }
             RoleinformationText.RoleCommand(SendTime: sendtime, target: sendPlayer);
