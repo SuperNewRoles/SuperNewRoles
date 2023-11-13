@@ -103,6 +103,7 @@ class KillButtonDoClickPatch
                 );
         }
         __instance.SetTarget(null);
+        return false;
     }
 }
 #endregion
