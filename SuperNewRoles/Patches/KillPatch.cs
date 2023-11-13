@@ -35,74 +35,74 @@ class KillButtonDoClickPatch
     {
         if (!ModeHandler.IsMode(ModeId.Default))
         {
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
+                return true;
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+                return true;
+            if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
-                    {
-                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                        {
-                            p.Data.Role.NameColor = Color.white;
-                        }
-                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                        {
-                            if (p.IsImpostor())
-                            {
-                                p.Data.Role.NameColor = RoleClass.ImpostorRed;
-                            }
-                        }
-                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
-                        PlayerControl.LocalPlayer.killTimer = 0.001f;
-                    }
-                    return false;
+                    p.Data.Role.NameColor = Color.white;
                 }
+                CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.IsImpostor())
+                    {
+                        p.Data.Role.NameColor = RoleClass.ImpostorRed;
+                    }
+                }
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                PlayerControl.LocalPlayer.killTimer = 0.001f;
             }
-            return true;
+            return false;
         }
-        if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove)
+        if (!(__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove))
+            return false;
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Kunoichi))
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Kunoichi))
-            {
-                Kunoichi.KillButtonClick();
-                return false;
-            }
-            if (!(__instance.currentTarget.IsRole(RoleId.Bait) || __instance.currentTarget.IsRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
-            {
-                PlayerControl.LocalPlayer.killTimer =
-                    RoleHelpers.GetCoolTime(
-                        PlayerControl.LocalPlayer,
-                        __instance.currentTarget
-                    );
-                RoleClass.Vampire.target = __instance.currentTarget;
-                RoleClass.Vampire.KillTimer = DateTime.Now;
-                RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
-
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetVampireStatus);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(RoleClass.Vampire.target.PlayerId);
-                writer.Write(true);
-                writer.EndRPC();
-                RPCProcedure.SetVampireStatus(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Vampire.target.PlayerId, true, false);
-                return false;
-            }
-            bool showAnimation = true;
-
-            // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
-            MurderAttemptResult res = CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
-            // Handle blank kill
-            if (res == MurderAttemptResult.BlankKill)
-            {
-                PlayerControl.LocalPlayer.killTimer =
-                    RoleHelpers.GetCoolTime(
-                        PlayerControl.LocalPlayer,
-                        __instance.currentTarget
-                    );
-            }
-            __instance.SetTarget(null);
+            Kunoichi.KillButtonClick();
+            return false;
         }
+        if (!(__instance.currentTarget.IsRole(RoleId.Bait) || __instance.currentTarget.IsRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
+        {
+            PlayerControl.LocalPlayer.killTimer =
+                RoleHelpers.GetCoolTime(
+                    PlayerControl.LocalPlayer,
+                    __instance.currentTarget
+                );
+            RoleClass.Vampire.target = __instance.currentTarget;
+            RoleClass.Vampire.KillTimer = DateTime.Now;
+            RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
+
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetVampireStatus);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+            writer.Write(RoleClass.Vampire.target.PlayerId);
+            writer.Write(true);
+            writer.EndRPC();
+            RPCProcedure.SetVampireStatus(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Vampire.target.PlayerId, true, false);
+            return false;
+        }
+        bool showAnimation = true;
+
+        //会議中ならさよなら
+        if (MeetingHud.Instance != null)
+            return false;
+
+        // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
+        MurderAttemptResult res = CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
+        // Handle blank kill
+        if (res == MurderAttemptResult.BlankKill)
+        {
+            PlayerControl.LocalPlayer.killTimer =
+                RoleHelpers.GetCoolTime(
+                    PlayerControl.LocalPlayer,
+                    __instance.currentTarget
+                );
+        }
+        __instance.SetTarget(null);
         return false;
     }
 }
