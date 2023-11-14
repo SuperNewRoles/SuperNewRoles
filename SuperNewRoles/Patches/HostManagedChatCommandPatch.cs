@@ -44,7 +44,7 @@ internal static class HostManagedChatCommandPatch
     internal static CommandType CheckChatCommand(string command)
         => command.ToLower() switch
         {
-            "/welcome" => CommandType.Welcome,
+            "/welcome" or "/wlc" => CommandType.Welcome,
             "/commands" or "/cmd" => CommandType.CommandList,
             "/version" or "/v" => CommandType.Version,
             "/now" or "/n" or "/help" or "/h" => CommandType.ThisModisSNR,
