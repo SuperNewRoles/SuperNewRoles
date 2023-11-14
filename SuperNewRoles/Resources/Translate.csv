@@ -1761,6 +1761,22 @@ SNRWebWelcomMessage1_GestSend,,SNRWebにログインしている導入者が参�
 SNRWebWelcomMessage2,By participating in the game，you agree to submit your information to SNRWeb.,ゲームへの参加をもってSNRWebへの情報送信に同意したものとみなします。
 SNRWebWelcomMessage3,For a simplified explanation of SNRWeb，see the command : [ /getwebinfo ] or [ /gwi ].,SNRWebについての簡易説明は，\nコマンド : [ /getwebinfo ] 又は [ /gwi ]でご確認ください。
 SNRWebWelcomMessage4,For a detailed explanation，please refer to the "SNR Webについて" page on the official wiki.,又，詳細説明については公式wikiの[SNR Webについて]というページを御覧ください。
+GetWebInfo_01,Service Description Overview,サービス内容 概要
+GetWebInfo_02,This is a web service provided by SNR\nthat allows you to record and check your results，\nand to check your ranking in some modes.\n\nThe language of the web service content is basically Japanese only.\nInformation sent from mod can be displayed in languages other than Japanese，depending on the language setting at the time of transmission.,戦績の記録と確認及び，\n一部モードにおけるランキングを確認する事が可能な\nSNRが提供するwebサービスです。
+GetWebInfo_03,Information for non-registered players,登録していないプレイヤー向けの情報
+GetWebInfo_04,About the information to be sent,送信される情報について
+GetWebInfo_05_Host,If you participate in the game,ゲームに参加した場合
+GetWebInfo_05_Guest,If there is a user of the service who has installed a mod，\nwhen they joins the game，they will be able to,Modを導入している当サービス利用者がいる場合，\nゲームに参加すると
+GetWebInfo_05_Main,The following information will be transmitted to and stored，\n in the web services provided by SNR.,SNRが提供するwebサービスに，\n以下の情報が送信及び保存されます。
+GetWebInfo_06,・Friend Code\n・Match Result,・ フレンドコード\n・  試合結果
+GetWebInfo_07,Handling of Friend Codes,フレンドコードの取り扱いについて
+GetWebInfo_08,It is used to store game results\n and to link stored data to players.,試合結果の保存及び，\n保存されているデータとプレイヤーを紐づける為に使用しております。
+GetWebInfo_09,Individuals are identified on the Web service display\nby their registered IDs and player names.,Webサービスの表示上での個人の識別は，登録しているID及びプレイヤー名で行っています。
+GetWebInfo_10,The friend code will not be published\nin a way that is recognizable to the outside world if you are not a registered user of the service.\n<size=50%> (Even in the case of service registrants、the friend code will not be published unless the setting is enabled.)</size>,フレンドコードを外部が認識できる形で公開する事は，\nサービス未登録者の場合はありません。\n<size=50%>(サービス登録者の場合も設定を有効にしないと公開されません。)</size>
+GetWebInfo_11,Information for service use,サービス利用にあたる情報
+GetWebInfo_12,Terms of Use,利用規約
+GetWebInfo_13,Please refer to the following URL.(Japanese langage only),次記のURLを参照して下さい。
+GetWebInfo_15,Privacy Policy,プライバシーポリシー
 CommandsMessage0,Commands in the command list:\n() are also possible.It is not case sensitive.,コマンド一覧:\n()の中にあるコマンドでも可能です。大文字と小文字は区別されません。,命令列表:\n也可以发送()中的命令。不区分大小写。,命令列表；\n也可以發送()中的命令。不區分大小寫。
 CommandsTitelModInfo,# Command to get information about Mod,# Modに関する情報を取得するコマンド
 CommandsMessageModInfo1,<color={0}>/welcome</color> : \nResend WelcomeMessage. (When the host executes it，it is sent to everyone.),<color={0}>/welcome</color> : \nWelcomeMessageを再送します。(ホストが実行すると全員に送信します)
