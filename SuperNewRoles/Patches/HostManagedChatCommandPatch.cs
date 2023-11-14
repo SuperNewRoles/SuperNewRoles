@@ -177,25 +177,25 @@ internal static class GetChatCommands
 
     internal static string GetChatCommandList()
     {
-        const string startTag = $"<align={"left"}><size=80%>";
+        const string startTag = $"<align={"left"}><size=60%>";
 
         string startText =
             $"{ModTranslation.GetString("CommandsMessage0")}\n\n";
 
         string modInfoText =
-            $"<size=100%>{ModTranslation.GetString("CommandsTitelModInfo")}</size>\n" +
+            $"<size=100%><b>{ModTranslation.GetString("CommandsTitelModInfo")}</b></size>\n" +
             $"{ModTranslation.GetString("CommandsMessageModInfo1")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageModInfo2")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageModInfo3")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageModInfo4")}\n\n";
 
         string externalInfoText =
-            $"<size=100%>{ModTranslation.GetString("CommandsTitelExternalInfo")}</size>\n" +
+            $"<size=100%><b>{ModTranslation.GetString("CommandsTitelExternalInfo")}</b></size>\n" +
             $"{ModTranslation.GetString("CommandsMessageExternalInfo1")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageExternalInfo2")}\n\n";
 
         string roleInfoText =
-            $"<size=100%>{ModTranslation.GetString("CommandsTitelRoleInfo")}</size>\n" +
+            $"<size=100%><b>{ModTranslation.GetString("CommandsTitelRoleInfo")}</b></size>\n" +
             $"{ModTranslation.GetString("CommandsMessageRoleInfo1")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageRoleInfo2")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageRoleInfo3")}\n\n" +
@@ -206,12 +206,12 @@ internal static class GetChatCommands
 
 
         string OthersText =
-            $"<size=100%>{ModTranslation.GetString("CommandsTitelOthers")}</size>\n" +
+            $"<size=100%><b>{ModTranslation.GetString("CommandsTitelOthers")}</b></size>\n" +
             $"{ModTranslation.GetString("CommandsMessageOthers1")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageOthers2")}\n\n";
 
         const string endTag = "</size></align>";
-        const string line = "<color={0}>|-----------------------------------------------------------------------------|</color>\n";
+        const string line = "<color={0}><size=80%>|-----------------------------------------------------------------------------|</size></color>\n";
 
         string commandList =
             startTag +
@@ -229,8 +229,9 @@ internal static class GetChatCommands
             endTag;
 
         const string commandColor = "#4d4398";
+        const string commandSize = "80%";
 
-        return Format(commandList, commandColor);
+        return Format(commandList, commandColor, commandSize);
     }
 
     internal static string GetVersionMessage()
