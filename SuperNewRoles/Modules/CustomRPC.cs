@@ -1224,24 +1224,15 @@ public static class RPCProcedure
     /// </summary>
     /// <param name="SheriffId">SheriffのPlayerId</param>
     /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
-    /// <param name="MissFire">誤爆したか</param>
-    /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
-    public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
+    /// <param name="isTargetKill">対象をキル可能か</param>
+    /// <param name="isSuicide">シェリフは自殺するか(誤爆 & 自殺)</param>
+    public static void SheriffKill(byte SheriffId, byte TargetId, bool isTargetKill, bool isSuicide)
     {
         PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
         PlayerControl target = ModHelpers.PlayerById(TargetId);
         if (sheriff == null || target == null) return;
 
-        if (alwaysKill)
-        {
-            sheriff.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-            sheriff.MurderPlayer(sheriff, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-        }
-        else if (MissFire)
-        {
-            sheriff.MurderPlayer(sheriff, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-        }
-        else
+        if (isTargetKill)
         {
             if (sheriff.IsRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
             {
@@ -1258,6 +1249,11 @@ public static class RPCProcedure
             {
                 sheriff.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
             }
+        }
+
+        if (isSuicide)
+        {
+            sheriff.MurderPlayer(sheriff, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
     }
 
