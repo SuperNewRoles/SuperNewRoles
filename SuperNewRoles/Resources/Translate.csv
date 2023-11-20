@@ -510,7 +510,7 @@ SheriffYes,Yes,できる,是,是
 SheriffNo,No,できない,否,否
 CannotUse,Number of kills remaining: 0,キル残り回数:0,擊殺剩餘次數：0
 SheriffMaxKillCountSetting,Maximum number of kills,最大キル数,最大可击杀/招募（警察局长）次数,最大可擊殺次數
-SheriffKillButtonName,Kill,キル,击杀,擊殺
+SheriffKillButtonName,Execution.,執行,击杀,擊殺
 SheriffNumTextName,{0} shots remaining.,残り{0}発,还剩{0} 次,剩餘{0}次
 MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ,执法官,法警
 MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルしよう,在会议中击杀敌人,在會議中擊殺敵人
