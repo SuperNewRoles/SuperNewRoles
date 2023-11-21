@@ -25,6 +25,7 @@ public enum FinalStatus
     SheriffHauntedWolfKill,
     SheriffInvolvedOutburst,
     SheriffSuicide,
+    HauntedSheriffSuicide,
     Ignite,
     Disconnected,
     Dead,

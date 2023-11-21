@@ -116,21 +116,17 @@ class Sheriff
     /// </returns>
     private static (bool, FinalStatus) IsSheriffSuicide(bool isJudgment, SheriffRoleExecutionData data)
     {
-        FinalStatus reasonMisFire = data.IsHauntedWolfDecision ? FinalStatus.HauntedSheriffMisFire : FinalStatus.SheriffMisFire;
         if (isJudgment) // 執行成功時
         {
-            if (data.Mode == SheriffRoleExecutionData.ExecutionMode.AlwaysSuicideMode) // 常にシェリフが自殺する場合
+            return data.Mode switch
             {
-                return (true, FinalStatus.SheriffSuicide);
-            }
-            else // シェリフの自殺は誤射時のみの場合
-            {
-                return (false, FinalStatus.Alive);
-            }
+                SheriffRoleExecutionData.ExecutionMode.AlwaysSuicideMode => (true, !data.IsHauntedWolfDecision ? FinalStatus.SheriffSuicide : FinalStatus.HauntedSheriffSuicide),
+                _ => (false, FinalStatus.Alive)
+            };
         }
         else // 誤爆時
         {
-            return (true, reasonMisFire);
+            return (true, !data.IsHauntedWolfDecision ? FinalStatus.SheriffMisFire : FinalStatus.HauntedSheriffMisFire);
         }
     }
 

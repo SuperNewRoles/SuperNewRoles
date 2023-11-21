@@ -369,6 +369,7 @@ FinalStatusHauntedSheriffMisFire,Repulsion Misfire,反発誤爆,走火…？,狼
 FinalStatusSheriffHauntedWolfKill,The possession was severed,誤認射殺,破咒出警,狼憑警長誤殺
 FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusSheriffSuicide,Killed in the line of duty.,殉職
+FinalStatusHauntedSheriffSuicide,Dying in vain of a person who is possessed,徒死(憑依誤認)
 FinalStatusIgnite,Ignite,焼殺,纵火,燒死
 FinalStatusDisconnected,Amputation,切断,断连,截肢
 FinalStatusDead,Death,死亡,死亡,死亡
