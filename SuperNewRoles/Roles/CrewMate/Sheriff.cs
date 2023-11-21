@@ -86,7 +86,7 @@ class Sheriff
         killData.isTargetKill = isJudgment; // 判定成功 又は 判定失敗時に[誤射時も対象を殺す]設定が有効な場合, 対象をキル可能として返す
         killData.targetDeadReason = isJudgment ? statusSuccess : FinalStatus.Alive;
 
-        bool isAlwaysKill = data.Mode == SheriffRoleExecutionData.ExecutionMode.AlwaysKillMode;
+        bool isAlwaysKill = data.Mode == SheriffRoleExecutionData.ExecutionMode.AlwaysKill;
 
         if (isJudgment) // 判定成功時
         {
@@ -120,11 +120,11 @@ class Sheriff
         {
             return data.Mode switch
             {
-                SheriffRoleExecutionData.ExecutionMode.AlwaysSuicideMode => (true, !data.IsHauntedWolfDecision ? FinalStatus.SheriffSuicide : FinalStatus.HauntedSheriffSuicide),
+                SheriffRoleExecutionData.ExecutionMode.AlwaysSuicide => (true, !data.IsHauntedWolfDecision ? FinalStatus.SheriffSuicide : FinalStatus.HauntedSheriffSuicide),
                 _ => (false, FinalStatus.Alive)
             };
         }
-        else // 誤爆時
+        else // 誤射時
         {
             return (true, !data.IsHauntedWolfDecision ? FinalStatus.SheriffMisFire : FinalStatus.HauntedSheriffMisFire);
         }
@@ -173,15 +173,15 @@ class Sheriff
 
         public enum ExecutionMode
         {
-            DefaultDeadMode,
-            AlwaysSuicideMode,
-            AlwaysKillMode
+            Default, // 通常 (成功時のみ対象を殺害, 誤射時のみ自殺)
+            AlwaysSuicide, // 常に自殺する
+            AlwaysKill // 誤射時も対象を殺す
         }
 
 
         public SheriffRoleExecutionData(PlayerControl sheriff)
         {
-            ExecutionMode mode = ExecutionMode.DefaultDeadMode;
+            ExecutionMode mode = ExecutionMode.Default;
 
             var isImpostorKill = true;
             var isMadRolesKill = false;

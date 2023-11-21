@@ -502,7 +502,7 @@ SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀/招募（警察局长）叛徒系职业,可以擊殺叛徒系職業
 SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる,可以击杀内鬼,可以擊殺內鬼
 SheriffExecutionMode,Behavior settings for successful execution and misfiring.,執行成功時及び誤射時の挙動設定
-SheriffDefaultDeadMode,When misfired，suicide.,誤射時 自殺する
+SheriffDefaultExecutionMode,When misfired，suicide.,誤射時 自殺する
 SheriffAlwaysSuicideMode,Regardless of the outcome，they commit suicide.,結果に関わらず 自殺する
 SheriffAlwaysKillMode,Killing a target and himself when it is misfiring.,誤射時も 対象を殺し自殺する
 SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる,可以击杀狈系职业,可以擊殺狽系職業
