@@ -255,6 +255,7 @@ ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,�
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
 ProhibitModColor,Prohibit mod color,Modカラーを禁止にする,禁止使用模组自定义颜色,禁止Mod顏色
+SendYourRoleAllTurn,,毎ターン役職情報を送信する
 ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する,更改间隙室的视野遮蔽效果,修改間隙室的視野遮蔽效果
 GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼於間隙室可以從下方看到上方
 DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,僅內鬼於間隙室可以從上方看到下方
