@@ -57,7 +57,7 @@ class Sheriff
     private static bool IsSheriffJudgment(PlayerControl target, SheriffRoleExecutionData data)
     {
         if (CountChanger.GetRoleType(target) == TeamRoleType.Impostor) return data.IsImpostorKill; // インポスターは, インポスターキル可能設定が有効な時切れる
-        if (target.IsMadRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents)) return data.IsMadRolesKill;
+        if (target.IsMadRoles() || target.IsRole(RoleId.MadKiller, RoleId.Dependents)) return data.IsMadRolesKill;
         if (target.IsNeutral()) return data.IsNeutralKill;
         if (target.IsFriendRoles()) return data.IsFriendRolesKill;
         if (target.IsLovers()) return data.IsLoversKill;
