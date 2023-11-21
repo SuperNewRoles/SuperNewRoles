@@ -190,8 +190,6 @@ class Sheriff
             var isLoversKill = false;
             var isQuarreledKill = false;
 
-            IsHauntedWolfDecision = sheriff.IsHauntedWolf() && Attribute.HauntedWolf.CustomOptionData.IsReverseSheriffDecision.GetBool();
-
             RoleId role = sheriff.GetRole();
 
             switch (role)
@@ -237,6 +235,8 @@ class Sheriff
                     break;
             }
 
+            IsHauntedWolfDecision = sheriff.IsHauntedWolf() && Attribute.HauntedWolf.CustomOptionData.IsReverseSheriffDecision.GetBool();
+
             // シェリフが狼憑きであり設定が有効なら, キル判定を反転する
             if (IsHauntedWolfDecision)
             {
@@ -249,6 +249,7 @@ class Sheriff
             }
 
             Mode = mode;
+
             IsImpostorKill = isImpostorKill;
             IsMadRolesKill = isMadRolesKill;
             IsNeutralKill = isNeutralKill;
