@@ -53,7 +53,6 @@ public static class PoliceSurgeon
         public static List<PlayerControl> Player;
         public static Color32 color = new(137, 195, 235, byte.MaxValue);
         public static bool HaveVital;
-        public static int MeetingTurn_Now; // ReportDeadBodyで代入している為 Host以外は正常に反映されていません (SNRはクライアント個人処理の為同時にRpcで送る必要がある)
         internal const string ElapsedTurn = "ELAPSEDTRUN"; // ターン数置換に使う定数
         internal const string PoliceSurgeonName = "POLICESURGEONNAME"; // 警察医名置換に使う定数
         public static string OfficialDateNotation; // 日付公的表記
@@ -77,7 +76,6 @@ public static class PoliceSurgeon
         {
             Player = new();
             HaveVital = CustomOptionData.HaveVitalsInTaskPhase.GetBool();
-            MeetingTurn_Now = 0;
             OfficialDateNotation = PostMortemCertificate_CreateAndGet.GetOfficialDateNotation();
             PersonalInformationManager = new();
             PostMortemCertificateFullText = new();
@@ -121,7 +119,7 @@ public static class PoliceSurgeon
         internal int DeadTurn { get; private set; }
 
         /// <summary> 死因 </summary>
-        internal PostMortemCertificate_AddActualDeathTime.DeadTiming DeadReason { get; private set; }
+        internal PoliceSurgeon_AddActualDeathTime.DeadTiming DeadReason { get; private set; }
 
         /// <summary> 死亡時刻 </summary>
         internal DateTime ActualDeathTime { get; private set; }
@@ -132,7 +130,7 @@ public static class PoliceSurgeon
         /// <summary> 個人の死体検案書 </summary>
         internal string PostMortemCertificate { get; private set; }
 
-        internal PersonalInformationOfTheDead(byte id, int deadTurn, PostMortemCertificate_AddActualDeathTime.DeadTiming deadReason, DateTime actualDeathTime, int estimatedDeathTime)
+        internal PersonalInformationOfTheDead(byte id, int deadTurn, PoliceSurgeon_AddActualDeathTime.DeadTiming deadReason, DateTime actualDeathTime, int estimatedDeathTime)
         {
             this.VictimId = id;
             this.DeadTurn = deadTurn;
@@ -142,11 +140,11 @@ public static class PoliceSurgeon
             this.PostMortemCertificate = PostMortemCertificate_CreateAndGet.CreateBody(this);
         }
 
-        internal static PersonalInformationOfTheDead Create(byte id, int deadTurn, PostMortemCertificate_AddActualDeathTime.DeadTiming deadReason, DateTime actualDeathTime, int estimatedDeathTime)
+        internal static PersonalInformationOfTheDead Create(byte id, int deadTurn, PoliceSurgeon_AddActualDeathTime.DeadTiming deadReason, DateTime actualDeathTime, int estimatedDeathTime)
             => new(id, deadTurn, deadReason, actualDeathTime, estimatedDeathTime);
 
         internal static string GetPostMortemCertificate(PersonalInformationOfTheDead info) =>
-            info.PostMortemCertificate.Replace(RoleData.ElapsedTurn, $"{RoleData.MeetingTurn_Now - info.DeadTurn}").Replace(RoleData.PoliceSurgeonName, PlayerControl.LocalPlayer.name);
+            info.PostMortemCertificate.Replace(RoleData.ElapsedTurn, $"{ReportDeadBodyPatch.MeetingTurn_Now - info.DeadTurn}").Replace(RoleData.PoliceSurgeonName, PlayerControl.LocalPlayer.name);
 
         /// <summary>
         /// 死亡情報を記録しているListに既に登録されているプレイヤーか調べる
@@ -179,20 +177,13 @@ public static class PoliceSurgeon
 /// <summary>
 /// 死亡(推定)時刻の計算や保存に関係するメソッドを纏めたクラス
 /// </summary>
-internal static class PostMortemCertificate_AddActualDeathTime
+internal static class PoliceSurgeon_AddActualDeathTime
 {
 #pragma warning disable 8321
     // 警察医が存在しない場合読む必要のないHarmonyPatchをまとめている
     internal static void Harmony()
     {
         if (RoleData.Player.Count <= 0) return; // 警察医が存在しない場合harmonyを読まないようにする。
-
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody)), HarmonyPostfix]
-        static void ReportDeadBody_Postfix()
-        {
-            RoleData.MeetingTurn_Now++;
-            AddActualDeathTime((int)DeadTiming.TaskPhase_killed); // タスクフェイズ中の死亡を処理する。
-        }
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting)), HarmonyPostfix]
         // 会議中の死亡を記録する。
@@ -217,6 +208,11 @@ internal static class PostMortemCertificate_AddActualDeathTime
         }
 #pragma warning restore 8321
     }
+    internal static void ReportDeadBody_Postfix()
+    {
+        if (RoleData.Player.Count <= 0) return; // 警察医が存在しない場合読まない
+        AddActualDeathTime((int)DeadTiming.TaskPhase_killed); // タスクフェイズ中の死亡を処理する
+    }
 
     /// <summary>
     /// ホストからrpcで送られた死体検案書用死亡情報を辞書[ActualDeathTimeManager]に格納する
@@ -224,10 +220,9 @@ internal static class PostMortemCertificate_AddActualDeathTime
     /// <param name="victimPlayerId">死者のPlayerId => Key</param>
     /// <param name="actualDeathTime">死亡(推定)時刻 => value.Item1</param>
     /// <param name="deadReason">死因 => value.Item2</param>
-    /// <param name="nowTurn">現在ターン数 => value.Item3 & RoleData.MeetingTurn_Now</param>
+    /// <param name="nowTurn">現在ターン数 => value.Item3 & ReportDeadBodyPatch.MeetingTurn_Now</param>
     internal static void RPCImportActualDeathTimeManager(byte victimPlayerId, byte actualDeathTime, byte deadReason, byte nowTurn)
     {
-        RoleData.MeetingTurn_Now = nowTurn;
         if (!PersonalInformationOfTheDead.IsAlreadyInfoRecorded(RoleData.PersonalInformationManager, victimPlayerId))
         {
             RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(victimPlayerId, nowTurn, (DeadTiming)deadReason, DeadPlayer.ActualDeathTime[victimPlayerId].Item1, actualDeathTime));
@@ -269,7 +264,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
             Logger.Info($"{p.name} : 死亡推定時刻_{estimatedDeathTime}s");
 
             // 死亡情報を一元管理している辞書に保存する。(この辞書に保存するのはここでのみ)
-            RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(p.PlayerId, RoleData.MeetingTurn_Now, deadReason, DeadPlayer.ActualDeathTime[p.PlayerId].Item1, estimatedDeathTime));
+            RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(p.PlayerId, ReportDeadBodyPatch.MeetingTurn_Now, deadReason, DeadPlayer.ActualDeathTime[p.PlayerId].Item1, estimatedDeathTime));
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) continue; // SHRの場合RPCは送らない
 
@@ -278,7 +273,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
             writer.Write(p.PlayerId);
             writer.Write((byte)estimatedDeathTime);
             writer.Write((byte)deadReason);
-            writer.Write((byte)RoleData.MeetingTurn_Now);
+            writer.Write((byte)ReportDeadBodyPatch.MeetingTurn_Now);
             writer.EndRPC();
         }
     }
@@ -430,7 +425,7 @@ internal static class PostMortemCertificate_Display
             if (playerRole is RoleId.Fox or RoleId.Vampire or RoleId.Dependents) continue;
             // 死亡ターン以外に情報を表示しない設定で、自分自身でなく、ネームプレートの対象が現在ターンに死亡した者でもないなら
             var personalInfo = PersonalInformationOfTheDead.GetPersonalInformationOfTheDead(RoleData.PersonalInformationManager, player.PlayerId);
-            if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId && personalInfo.Item1 && personalInfo.Item2.DeadTurn != RoleData.MeetingTurn_Now) continue;
+            if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId && personalInfo.Item1 && personalInfo.Item2.DeadTurn != ReportDeadBodyPatch.MeetingTurn_Now) continue;
 
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
@@ -614,8 +609,8 @@ internal static class PostMortemCertificate_CreateAndGet
     /// <returns>string : 死体検案書 (名前は送信先の警察医名に置き換わっている)</returns>
     internal static string GetPostMortemCertificateFullText(PlayerControl policeSurgeon)
     {
-        if (!RoleData.PostMortemCertificateFullText.ContainsKey(RoleData.MeetingTurn_Now)) RoleData.PostMortemCertificateFullText.Add(RoleData.MeetingTurn_Now, CreateBody());
-        return RoleData.PostMortemCertificateFullText[RoleData.MeetingTurn_Now].Replace(RoleData.PoliceSurgeonName, policeSurgeon.name);
+        if (!RoleData.PostMortemCertificateFullText.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now)) RoleData.PostMortemCertificateFullText.Add(ReportDeadBodyPatch.MeetingTurn_Now, CreateBody());
+        return RoleData.PostMortemCertificateFullText[ReportDeadBodyPatch.MeetingTurn_Now].Replace(RoleData.PoliceSurgeonName, policeSurgeon.name);
     }
 
     /// <summary>
@@ -737,7 +732,7 @@ internal static class PostMortemCertificate_CreateAndGet
             foreach (var info in RoleData.PersonalInformationManager)
             {
                 // 以降に進むのは、[全てのターンの死亡情報を出す時]の全てのプレイヤーの情報と　[現在ターンの死亡情報しか出さない時]の現在ターンに死亡したプレイヤーの情報
-                if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && info.DeadTurn != RoleData.MeetingTurn_Now) continue;
+                if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && info.DeadTurn != ReportDeadBodyPatch.MeetingTurn_Now) continue;
 
                 // 妖狐とヴァンパイアと眷属は検案書を作成しない
                 var victimPlayerRole = ModHelpers.PlayerById(info.VictimId).GetRole();
@@ -745,7 +740,7 @@ internal static class PostMortemCertificate_CreateAndGet
 
                 isWrite = true;
 
-                builder.Append(CreateContents(info).Replace(RoleData.ElapsedTurn, $"{RoleData.MeetingTurn_Now - info.DeadTurn}"));
+                builder.Append(CreateContents(info).Replace(RoleData.ElapsedTurn, $"{ReportDeadBodyPatch.MeetingTurn_Now - info.DeadTurn}"));
                 builder.AppendLine(delimiterLine);
             }
         }
@@ -837,7 +832,7 @@ internal static class PostMortemCertificate_CreateAndGet
 
         switch (victimInfo.DeadReason)
         {
-            case PostMortemCertificate_AddActualDeathTime.DeadTiming.TaskPhase_killed:
+            case PoliceSurgeon_AddActualDeathTime.DeadTiming.TaskPhase_killed:
                 if (inError)
                 {
                     if (isWritingTurn)
@@ -859,8 +854,8 @@ internal static class PostMortemCertificate_CreateAndGet
                 builder.AppendLine("");
                 break;
 
-            case PostMortemCertificate_AddActualDeathTime.DeadTiming.TaskPhase_Exited:
-            case PostMortemCertificate_AddActualDeathTime.DeadTiming.MeetingPhase:
+            case PoliceSurgeon_AddActualDeathTime.DeadTiming.TaskPhase_Exited:
+            case PoliceSurgeon_AddActualDeathTime.DeadTiming.MeetingPhase:
                 if (isWritingTurn)
                     // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
                     builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), RoleData.OfficialDateNotation, RoleData.ElapsedTurn, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
@@ -871,7 +866,7 @@ internal static class PostMortemCertificate_CreateAndGet
                 builder.AppendLine("");
                 break;
 
-            case PostMortemCertificate_AddActualDeathTime.DeadTiming.Exited:
+            case PoliceSurgeon_AddActualDeathTime.DeadTiming.Exited:
                 if (isWritingTurn)
                     // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
                     builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), RoleData.OfficialDateNotation, RoleData.ElapsedTurn, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
