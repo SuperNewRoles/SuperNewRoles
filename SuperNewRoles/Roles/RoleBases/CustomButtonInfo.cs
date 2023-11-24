@@ -80,6 +80,7 @@ public class CustomButtonInfo
         this.CouldUseFunc = CouldUse;
         this.roleBase = roleBase;
         this.icustomButton = roleBase as ICustomButton;
+        this.CouldUseType = CouldUseType;
         this.OnMeetingEndsFunc = OnMeetingEnds;
         this.buttonSprite = Sprite;
         this.BaseButton = BaseButton;
