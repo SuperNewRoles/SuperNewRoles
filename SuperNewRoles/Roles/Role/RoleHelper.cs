@@ -1670,13 +1670,27 @@ public static class RoleHelpers
             _ => player.IsImpostor(),
         };
     }
-    public static bool IsSabotage()
+
+    /// <summary>
+    /// サボタージュが発動しているか
+    /// </summary>
+    /// <param name="isMushroomMixAsSabotage">キノコカオスをサボタージュとみなして判定するか</param>
+    /// <returns>true : 発動している / false : 発動していない</returns>
+    public static bool IsSabotage(bool isMushroomMixAsSabotage = true)
     {
         try
         {
+            if (isMushroomMixAsSabotage && PlayerControl.LocalPlayer.IsMushroomMixupActive())
+            {
+                return true;
+            }
             foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+            {
                 if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                {
                     return true;
+                }
+            }
         }
         catch { }
         return false;
@@ -1687,7 +1701,13 @@ public static class RoleHelpers
         {
             if (MapUtilities.Systems.TryGetValue(SystemTypes.Comms, out Il2CppSystem.Object obj))
             {
-                HudOverrideSystemType host = obj.CastFast<HudOverrideSystemType>();
+                if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 6)
+                {
+                    HqHudSystemType host2 = obj.TryCast<HqHudSystemType>();
+                    if (host2 != null)
+                        return host2.IsActive;
+                }
+                HudOverrideSystemType host = obj.TryCast<HudOverrideSystemType>();
                 if (host != null)
                     return host.IsActive;
             }
@@ -1802,7 +1822,7 @@ public static class RoleHelpers
             //対象がトラップで捕まっていた場合にキルクールを変更
             if (target != null)
             {
-                    //__instanceがスパイダーかつ
+                //__instanceがスパイダーかつ
                 if (__instance.IsRole(RoleId.Spider)
                     //相手が罠にキャッチされてるかつ
                     && SpiderTrap.CatchingPlayers.ContainsKey(target.PlayerId)

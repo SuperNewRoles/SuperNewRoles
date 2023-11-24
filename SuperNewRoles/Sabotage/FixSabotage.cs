@@ -111,23 +111,26 @@ public class FixSabotage
                     RPCHelper.StartRPC(CustomRPC.FixLights).EndRPC();
                     RPCProcedure.FixLights();
                     break;
-                case TaskTypes.RestoreOxy:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
+                case TaskTypes.RestoreOxy: // 酸素 (Skeld, Mira)
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, 0 | 64);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, 1 | 64);
                     break;
-                case TaskTypes.ResetReactor:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 16);
+                case TaskTypes.ResetReactor: // リアクター (Skeld, Mira, Fungle)
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Reactor, 16);
                     break;
-                case TaskTypes.ResetSeismic:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Laboratory, 16);
+                case TaskTypes.StopCharles: // 衝突回避 (Airship)
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 0 | 16);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 1 | 16);
+                    break;
+                case TaskTypes.ResetSeismic: // 耐震 (Polus)
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Laboratory, 16);
                     break;
                 case TaskTypes.FixComms:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
                     break;
-                case TaskTypes.StopCharles:
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
-                    MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
+                case TaskTypes.MushroomMixupSabotage:
+                    MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 16 | 1);
                     break;
                 default:
                     Logger.Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
@@ -164,6 +167,12 @@ public class FixSabotage
                     sabotageId = SystemTypes.Reactor;
                     amount.Item1 = 16;
                     break;
+                case TaskTypes.StopCharles:
+                    IsfixingSaboHere = true;
+                    IsSecondUnit = true;
+                    sabotageId = SystemTypes.HeliSabotage;
+                    amount = (0 | 16, 1 | 16);
+                    break;
                 case TaskTypes.ResetSeismic:
                     IsfixingSaboHere = true;
                     sabotageId = SystemTypes.Laboratory;
@@ -174,12 +183,6 @@ public class FixSabotage
                     IsSecondUnit = true;
                     sabotageId = SystemTypes.Comms;
                     amount = (16 | 0, 16 | 1);
-                    break;
-                case TaskTypes.StopCharles:
-                    IsfixingSaboHere = true;
-                    IsSecondUnit = true;
-                    sabotageId = SystemTypes.Reactor;
-                    amount = (0 | 16, 1 | 16);
                     break;
                 default:
                     IsfixingSaboHere = false;
@@ -195,7 +198,7 @@ public class FixSabotage
                 if (player == null || player.IsBot()) continue;
                 ClientData cd = player.GetClient();
 
-                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cd.Id);
                 SabotageFixWriter.Write((byte)sabotageId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, player);
                 SabotageFixWriter.Write((byte)amount.Item1);
@@ -203,7 +206,7 @@ public class FixSabotage
 
                 if (IsSecondUnit) // 2つ目のamountをが必要なものは送信する
                 {
-                    MessageWriter SabotageFixWriterSecond = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
+                    MessageWriter SabotageFixWriterSecond = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cd.Id);
                     SabotageFixWriterSecond.Write((byte)sabotageId);
                     MessageExtensions.WriteNetObject(SabotageFixWriterSecond, player);
                     SabotageFixWriterSecond.Write((byte)amount.Item2);
@@ -214,6 +217,8 @@ public class FixSabotage
 
         private static void FixLigftsSHR()
         {
+            if (!MapUtilities.Systems.ContainsKey(SystemTypes.Electrical))
+                return;
             SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             List<byte> amounts = new();
             for (int i = 0; i < SwitchSystem.NumSwitches; i++)
@@ -230,7 +235,7 @@ public class FixSabotage
                 ClientData cd = player.GetClient();
                 foreach (byte amount in amounts) // Listに保存されているスイッチを一気に押す
                 {
-                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cd.Id);
+                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cd.Id);
                     SabotageFixWriter.Write((byte)SystemTypes.Electrical);
                     MessageExtensions.WriteNetObject(SabotageFixWriter, player);
                     SabotageFixWriter.Write(amount | 128);

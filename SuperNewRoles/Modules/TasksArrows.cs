@@ -25,7 +25,7 @@ public static class TasksArrow
         }
     }
 
-    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.UpdateArrow))]
+    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.UpdateArrowAndLocation))]
     public static class NormalPlayerTaskUpdateArrowPatch
     {
         public static void Postfix(NormalPlayerTask __instance)
@@ -37,7 +37,7 @@ public static class TasksArrow
         }
     }
 
-    [HarmonyPatch(typeof(AirshipUploadTask), nameof(AirshipUploadTask.UpdateArrow))]
+    [HarmonyPatch(typeof(AirshipUploadTask), nameof(AirshipUploadTask.UpdateArrowAndLocation))]
     public static class AirshipUploadTaskUpdateArrowPatch
     {
         public static void Postfix(AirshipUploadTask __instance)

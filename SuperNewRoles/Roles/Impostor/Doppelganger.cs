@@ -30,12 +30,12 @@ public class Doppelganger
         }
         else if (PlayerControl.LocalPlayer.inVent)
         {
-            PlayerControl.LocalPlayer.RpcRevertShapeshift(false);
+            PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, false);
         }
         else
         {
             PlayerControl.LocalPlayer.NetTransform.Halt();
-            PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+            PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
         }
     }
     public static void ResetShapeCool()
@@ -67,7 +67,7 @@ public class Doppelganger
         {
             RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
         }
-        if (shape && RoleClass.IsMeeting) PlayerControl.LocalPlayer.RpcRevertShapeshift(false);
+        if (shape && RoleClass.IsMeeting) PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, false);
     }
     public class KillCoolSetting
     {

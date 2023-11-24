@@ -39,7 +39,7 @@ public class Darknight : BattleRoyalRole
             if (player.IsDead()) continue;
             if (team.IsTeam(player)) continue;
             if (Vector2.Distance(target.transform.position, player.transform.position) > GameOptionsData.KillDistances[0]) continue;
-            CurrentPlayer.RpcMurderPlayer(player);
+            CurrentPlayer.RpcMurderPlayer(player, true);
         }
         IsKillingNow = false;
     }

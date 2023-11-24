@@ -372,7 +372,7 @@ static class HudManagerStartPatch
                 PlayerControl Target = SetTarget();
                 if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
                 {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(Target, true);
                     Target.RpcSetFinalStatus(FinalStatus.LoversBreakerKill);
                     LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
                     LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
@@ -418,7 +418,7 @@ static class HudManagerStartPatch
                 }
                 else
                 {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                     PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
                 }
             },
@@ -528,7 +528,7 @@ static class HudManagerStartPatch
                     PavlovsdogKillSelfText.text = RoleClass.Pavlovsdogs.DeathTime > 0 ? string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.Pavlovsdogs.DeathTime) + 1) : "";
                     if (RoleClass.Pavlovsdogs.DeathTime <= 0)
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                     }
                 }
                 var Target = SetTarget();
@@ -2029,7 +2029,7 @@ static class HudManagerStartPatch
                     }
                     else
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
                     }
                 }
@@ -2294,13 +2294,20 @@ static class HudManagerStartPatch
             {
                 RoleClass.GhostMechanic.LimitCount--;
 
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                if (!PlayerControl.LocalPlayer.IsMushroomMixupActive())
                 {
-                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     {
-                        Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(task.TaskType);
-                        break;
+                        if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                        {
+                            Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(task.TaskType);
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(TaskTypes.MushroomMixupSabotage);
                 }
 
                 if (RoleClass.GhostMechanic.LimitCount <= 0)
@@ -2313,13 +2320,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return !isAlive && GhostMechanic.ButtonDisplayCondition(); },
             () =>
             {
-                bool sabotageActive = false;
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
-                    {
-                        sabotageActive = true;
-                        break;
-                    }
+                bool sabotageActive = RoleHelpers.IsSabotage();
                 GhostMechanicNumRepairText.text = string.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
                 if (ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return sabotageActive && PlayerControl.LocalPlayer.CanMove;
                 else return sabotageActive && PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.GhostRoleSetTarget();
@@ -2534,7 +2535,9 @@ static class HudManagerStartPatch
             49,
             () =>
             {
-                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                SwitchSystem ma = null;
+                if (MapUtilities.CachedShipStatus.Systems.ContainsKey(SystemTypes.Electrical))
+                    ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                 return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove);
             }
         );
@@ -2637,7 +2640,7 @@ static class HudManagerStartPatch
             () =>
             {
                 //自殺
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                 PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicideWisher && ModeHandler.IsMode(ModeId.Default); },
@@ -3291,13 +3294,13 @@ static class HudManagerStartPatch
         JumpDancer.SetUpCustomButtons(__instance);
 
         Bat.Button.SetupCustomButtons(__instance);
-      
+
         Rocket.Button.SetupCustomButtons(__instance);
 
         WellBehaver.SetupCustomButtons(__instance);
 
         Spider.Button.SetupCustomButtons(__instance);
-      
+
         Frankenstein.SetupCustomButtons(__instance);
 
         // SetupCustomButtons
