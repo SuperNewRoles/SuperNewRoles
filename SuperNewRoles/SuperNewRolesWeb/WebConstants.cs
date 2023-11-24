@@ -7,7 +7,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
 {
     public static class WebConstants
     {
-        public const string WebUrlDefault = "https://web.supernewroles.com";
+        public const string WebUrlDefault = "https://web.supernewroles.com/";
         public const string ApiUrlPrefix = "api/";
         public static string ApiUrl => WebUrl + ApiUrlPrefix;
         public static string WebUrlDebug;
