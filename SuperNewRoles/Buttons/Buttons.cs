@@ -1599,28 +1599,29 @@ static class HudManagerStartPatch
                         var target = PlayerControlFixedUpdatePatch.SetTarget();
                         PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
 
-                        var localId = CachedPlayer.LocalPlayer.PlayerId;
-                        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
-                        var misfire = !success;
-                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        if (alwaysKill && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
+                        (var killResult, var suicideResult) = Sheriff.SheriffKillResult(CachedPlayer.LocalPlayer, target);
+                        if (killResult.Item1 && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
                         {
-                            alwaysKill = false;
+                            killResult.Item1 = false;
                             Squid.SetVigilance(target, false);
                             Squid.SetSpeedBoost(target);
                             RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
                         }
+
+                        var localId = CachedPlayer.LocalPlayer.PlayerId;
                         var targetId = target.PlayerId;
 
-                        RPCProcedure.SheriffKill(localId, targetId, misfire, alwaysKill);
+                        RPCProcedure.SheriffKill(localId, targetId, killResult.Item1, suicideResult.Item1);
                         MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
                         killWriter.Write(localId);
                         killWriter.Write(targetId);
-                        killWriter.Write(misfire);
-                        killWriter.Write(alwaysKill);
+                        killWriter.Write(killResult.Item1);
+                        killWriter.Write(suicideResult.Item1);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, status);
-                        if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
+
+                        if (killResult.Item1) FinalStatusClass.RpcSetFinalStatus(target, killResult.Item2);
+                        if (suicideResult.Item1) FinalStatusClass.RpcSetFinalStatus(CachedPlayer.LocalPlayer, suicideResult.Item2);
+
                         Sheriff.ResetKillCooldown();
                         RoleClass.Sheriff.KillMaxCount--;
                     }

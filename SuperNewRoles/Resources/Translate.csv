@@ -357,7 +357,6 @@ HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,�
 HASUseSaboSetting,Use Sabotage,サボタージュが使える,抓捕者可以造成紧急破坏,捉捕方可以使用緊急破壞
 HASUseVentSetting,Use Vent,ベントが使える,抓捕者可以使用管道,捉捕方可以使用通風管道
 
-
 # FinalResults
 FinalResults,Final results,最終結果,最終結果
 FinalStatusAlive,Survival,生存,存活,生存
@@ -367,8 +366,10 @@ FinalStatusSheriffKill,Executing justice,正義執行,出警,警長正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火,警長誤傷
 FinalStatusHauntedSheriffKill,Possession kill,憑依キル,出警…？,狼憑被殺
 FinalStatusHauntedSheriffMisFire,Repulsion Misfire,反発誤爆,走火…？,狼憑警長誤傷
-FinalStatusSheriffHauntedWolfKill,The possession was severed,破咒出警,狼憑警長誤殺
+FinalStatusSheriffHauntedWolfKill,The possession was severed,誤認射殺,破咒出警,狼憑警長誤殺
 FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
+FinalStatusSheriffSuicide,Killed in the line of duty.,殉職
+FinalStatusHauntedSheriffSuicide,Dying in vain of a person who is possessed,徒死(憑依誤認)
 FinalStatusIgnite,Ignite,焼殺,纵火,燒死
 FinalStatusDisconnected,Amputation,切断,断连,截肢
 FinalStatusDead,Death,死亡,死亡,死亡
@@ -500,14 +501,17 @@ SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀/招募（警察局长）恋人,可以擊殺戀人
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀/招募（警察局长）叛徒系职业,可以擊殺叛徒系職業
 SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる,可以击杀内鬼,可以擊殺內鬼
-SheriffAlwaysKills,Killing a target even when it is misfiring.,誤射した時も対象を殺す,警长误杀时选择的对象也会死亡,警長誤殺時該對象也會死亡
+SheriffExecutionMode,Behavior settings for successful execution and misfiring.,執行成功時及び誤射時の挙動設定
+SheriffDefaultExecutionMode,When misfired，suicide.,誤射時 自殺する
+SheriffAlwaysSuicideMode,Regardless of the outcome，they commit suicide.,結果に関わらず 自殺する
+SheriffAlwaysKillMode,Killing a target and himself when it is misfiring.,誤射時も 対象を殺し自殺する
 SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる,可以击杀狈系职业,可以擊殺狽系職業
 SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使,可以擊殺冤家兄弟
 SheriffYes,Yes,できる,是,是
 SheriffNo,No,できない,否,否
 CannotUse,Number of kills remaining: 0,キル残り回数:0,擊殺剩餘次數：0
 SheriffMaxKillCountSetting,Maximum number of kills,最大キル数,最大可击杀/招募（警察局长）次数,最大可擊殺次數
-SheriffKillButtonName,Kill,キル,击杀,擊殺
+SheriffKillButtonName,Execution.,執行,击杀,擊殺
 SheriffNumTextName,{0} shots remaining.,残り{0}発,还剩{0} 次,剩餘{0}次
 MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ,执法官,法警
 MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルしよう,在会议中击杀敌人,在會議中擊殺敵人
