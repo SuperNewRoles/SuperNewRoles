@@ -878,13 +878,6 @@ public class CustomOptionHolder
     public static CustomOption StefinderSabo;
     public static CustomOption StefinderSoloWin;
 
-    public static CustomRoleOption SluggerOption;
-    public static CustomOption SluggerPlayerCount;
-    public static CustomOption SluggerChargeTime;
-    public static CustomOption SluggerCoolTime;
-    public static CustomOption SluggerIsMultiKill;
-    public static CustomOption SluggerIsKillCoolSync;
-
     public static CustomRoleOption ConnectKillerOption;
     public static CustomOption ConnectKillerPlayerCount;
 
@@ -1078,13 +1071,6 @@ public class CustomOptionHolder
         var SortedOptionInfos = OptionInfo.OptionInfos.OrderBy(x => (int)x.Key);
         foreach (var optionInfo in SortedOptionInfos)
             optionInfo.Value.CreateOption();
-
-        SluggerOption = SetupCustomRoleOption(200100, false, RoleId.Slugger);
-        SluggerPlayerCount = Create(200101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
-        SluggerChargeTime = Create(200102, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
-        SluggerCoolTime = Create(200103, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
-        SluggerIsMultiKill = Create(200104, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
-        SluggerIsKillCoolSync = Create(200105, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, SluggerOption);
 
         Conjurer.SetupCustomOptions();
 

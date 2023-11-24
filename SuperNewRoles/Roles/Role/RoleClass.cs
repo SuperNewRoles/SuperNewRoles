@@ -215,7 +215,6 @@ public static class RoleClass
         Painter.ClearAndReload();
         Photographer.ClearAndReload();
         Stefinder.ClearAndReload();
-        Slugger.ClearAndReload();
         ShiftActor.ClearAndReload();
         ConnectKiller.ClearAndReload();
         GM.ClearAndReload();
@@ -2676,16 +2675,6 @@ public static class RoleClass
             StefinderPlayer = new();
             IsKill = false;
             IsKillPlayer = new();
-        }
-    }
-    public static class Slugger
-    {
-        public static List<PlayerControl> SluggerPlayer;
-        public static Color32 color = ImpostorRed;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SluggerButton.png", 115f);
-        public static void ClearAndReload()
-        {
-            SluggerPlayer = new();
         }
     }
     public static class ConnectKiller

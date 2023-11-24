@@ -715,10 +715,9 @@ public static class MurderPlayerPatch
 
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Slugger)) // キルクリセット処理
                 {
-                    if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
+                    if (Slugger.IsKillCoolSync.GetBool())
                     {
-                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
-                        HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                        PlayerControl.LocalPlayer.GetRoleBase<Slugger>().CustomButtonInfos.FirstOrDefault().ResetCoolTime();
                     }
                 }
 

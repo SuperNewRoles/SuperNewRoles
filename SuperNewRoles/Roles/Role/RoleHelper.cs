@@ -809,9 +809,6 @@ public static class RoleHelpers
             case RoleId.Stefinder:
                 RoleClass.Stefinder.StefinderPlayer.Add(player);
                 break;
-            case RoleId.Slugger:
-                RoleClass.Slugger.SluggerPlayer.Add(player);
-                break;
             case RoleId.ShiftActor:
                 ShiftActor.Player.Add(player);
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Shapeshifter);
@@ -1398,9 +1395,6 @@ public static class RoleHelpers
                 break;
             case RoleId.Stefinder:
                 RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Slugger:
-                RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.ShiftActor:
                 ShiftActor.Player.RemoveAll(ClearRemove);
@@ -2029,7 +2023,6 @@ public static class RoleHelpers
             else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
             else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
             else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
-            else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
             else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
             else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
             else if (RoleClass.GM.gm != null && RoleClass.GM.gm.PlayerId == player.PlayerId) return RoleId.GM;

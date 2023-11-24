@@ -33,6 +33,8 @@ public enum RoleId
 {
     None, // RoleIdの初期化用
     DefaultRole,
+    WaveCannon,
+    Slugger,
     SoothSayer,
     Jester,
     Lighter,
@@ -164,12 +166,10 @@ public enum RoleId
     Photographer,
     Stefinder,
     Stefinder1,
-    Slugger,
     ShiftActor,
     ConnectKiller,
     GM,
     Cracker,
-    WaveCannon,
     WaveCannonJackal,
     SidekickWaveCannon,
     NekoKabocha,
@@ -289,7 +289,6 @@ public enum CustomRPC
     SetMatryoshkaDeadbody,
     StefinderIsKilled,
     PlayPlayerAnimation,
-    SluggerExile,
     PainterPaintSet,
     SharePhotograph,
     PainterSetTarget,
@@ -860,22 +859,6 @@ public static class RPCProcedure
         FinalStatusData.FinalStatuses[targetId] = Status;
     }
 
-    public static void SluggerExile(byte SourceId, List<byte> Targets)
-    {
-        Logger.Info("～SluggerExile～");
-        PlayerControl Source = SourceId.GetPlayerControl();
-        if (Source == null) return;
-        ReplayActionSluggerExile.Create(SourceId, Targets);
-        Logger.Info("Source突破");
-        foreach (byte target in Targets)
-        {
-            PlayerControl Player = target.GetPlayerControl();
-            Logger.Info($"{target}はnullか:{Player == null}");
-            if (Player == null) continue;
-            Player.Exiled();
-            new GameObject("SluggerDeadbody").AddComponent<SluggerDeadbody>().Init(Source.PlayerId, Player.PlayerId);
-        }
-    }
     public static void PlayPlayerAnimation(byte playerid, byte type)
     {
         RpcAnimationType AnimType = (RpcAnimationType)type;
@@ -1934,16 +1917,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.PlayPlayerAnimation:
                         PlayPlayerAnimation(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SluggerExile:
-                        source = reader.ReadByte();
-                        byte count = reader.ReadByte();
-                        List<byte> Targets = new();
-                        for (int i = 0; i < count; i++)
-                        {
-                            Targets.Add(reader.ReadByte());
-                        }
-                        SluggerExile(source, Targets);
                         break;
                     case CustomRPC.MeetingKill:
                         MeetingKill(reader.ReadByte(), reader.ReadByte());

@@ -86,7 +86,6 @@ static class HudManagerStartPatch
     public static CustomButton PainterButton;
     public static CustomButton PhotographerButton;
     public static CustomButton StefinderKillButton;
-    public static CustomButton SluggerButton;
     public static CustomButton CrackerButton;
     public static CustomButton DoppelgangerButton;
     public static CustomButton PavlovsownerCreatedogButton;
@@ -642,88 +641,6 @@ static class HudManagerStartPatch
         )
         {
             buttonText = ModTranslation.GetString("PenguinButtonName"),
-            showButtonText = true
-        };
-
-        SluggerButton = new(
-            () =>
-            {
-                var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
-                anim.RpcAnimation(RpcAnimationType.SluggerCharge);
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Slugger; },
-            () =>
-            {
-                if (SluggerButton.isEffectActive && !PlayerControl.LocalPlayer.CanMove)
-                {
-                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
-                    SluggerButton.isEffectActive = false;
-                    anim.RpcAnimation(RpcAnimationType.Stop);
-                }
-                return PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
-                SluggerButton.Timer = SluggerButton.MaxTimer;
-                SluggerButton.effectCancellable = false;
-                SluggerButton.EffectDuration = CustomOptionHolder.SluggerChargeTime.GetFloat();
-                SluggerButton.HasEffect = true;
-            },
-            RoleClass.Slugger.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; },
-            true,
-            5f,
-            () =>
-            {
-                List<PlayerControl> targets = new();
-                //一気にキルできるか。後に設定で変更可に
-                if (CustomOptionHolder.SluggerIsMultiKill.GetBool())
-                {
-                    targets = Slugger.SetTarget();
-                }
-                else
-                {
-                    if (FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget != null) targets.Add(FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget);
-                }
-                RpcAnimationType animationType = RpcAnimationType.SluggerMurder;
-                //空振り判定
-                if (targets.Count <= 0)
-                {
-                    animationType = RpcAnimationType.SluggerMurder;
-                }
-                var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
-                anim.RpcAnimation(animationType);
-                MessageWriter writer = RPCHelper.StartRPC((RpcCalls)CustomRPC.SluggerExile);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write((byte)targets.Count);
-                foreach (PlayerControl Target in targets)
-                {
-                    writer.Write(Target.PlayerId);
-                }
-                writer.EndRPC();
-                List<byte> targetsId = new();
-                foreach (PlayerControl Target in targets)
-                {
-                    targetsId.Add(Target.PlayerId);
-                    Target.RpcSetFinalStatus(FinalStatus.SluggerHarisen);
-                }
-                RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, targetsId);
-                SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
-                SluggerButton.Timer = SluggerButton.MaxTimer;
-                if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
-                {
-                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer, null);
-                }
-            }
-        )
-        {
-            buttonText = ModTranslation.GetString("SluggerButtonName"),
             showButtonText = true
         };
 

@@ -282,7 +282,6 @@ public class IntroData
     public static IntroData PhotographerIntro = new("Photographer", RoleClass.Photographer.color, 1, RoleId.Photographer, TeamRoleType.Neutral);
     public static IntroData StefinderIntro = new("Stefinder", RoleClass.Stefinder.color, 1, RoleId.Stefinder, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData StefinderIntro1 = new("Stefinder", RoleClass.ImpostorRed, 1, RoleId.Stefinder1, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData SluggerIntro = new("Slugger", RoleClass.Slugger.color, 1, RoleId.Slugger, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData ShiftActorIntro = new("ShiftActor", ShiftActor.color, 1, RoleId.ShiftActor, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData ConnectKillerIntro = new("ConnectKiller", RoleClass.ConnectKiller.color, 1, RoleId.ConnectKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData GMIntro = new("GM", RoleClass.GM.color, 1, RoleId.GM, TeamRoleType.Neutral, IntroSound: RoleTypes.Engineer);

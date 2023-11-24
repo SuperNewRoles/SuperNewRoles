@@ -1140,7 +1140,6 @@ class AllRoleSetClass
             RoleId.SeeThroughPerson => CustomOptionHolder.SeeThroughPersonPlayerCount.GetFloat(),
             RoleId.Photographer => CustomOptionHolder.PhotographerPlayerCount.GetFloat(),
             RoleId.Stefinder => CustomOptionHolder.StefinderPlayerCount.GetFloat(),
-            RoleId.Slugger => CustomOptionHolder.SluggerPlayerCount.GetFloat(),
             RoleId.ShiftActor => ShiftActor.ShiftActorPlayerCount.GetFloat(),
             RoleId.ConnectKiller => CustomOptionHolder.ConnectKillerPlayerCount.GetFloat(),
             RoleId.Cracker => CustomOptionHolder.CrackerPlayerCount.GetFloat(),
