@@ -47,13 +47,27 @@ public class CustomButtonInfo
     public bool HasAbility { get; }
     public int AbilityCount { get; private set; }
     //InfoText
-
     /// <summary>
     /// CustomButtonInfo
     /// </summary>
-    /// <param name="OnClick">クリックした時の処理</param>
-    /// <param name="HasButton">ボタンを表示するか</param>
-    /// <param name=""></param>
+    /// <param name="AbilityCount">使用可能回数(無限ならnull)</param>
+    /// <param name="roleBase">関係しているロルベ(thisでOK)</param>
+    /// <param name="OnClick">クリック時の処理</param>
+    /// <param name="HasButton">ボタンを表示するか(nullなら自分のときにtrue)</param>
+    /// <param name="CouldUseType">使用できるか(一括判定、ビット演算方式)</param>
+    /// <param name="OnMeetingEnds">会議終了時の処理(なければnull、クールタイムは自動リセット)</param>
+    /// <param name="Sprite">見た目</param>
+    /// <param name="CoolTime">クールタイム</param>
+    /// <param name="positionOffset">positionOffset</param>
+    /// <param name="buttonText">ボタンの表示テキスト</param>
+    /// <param name="HotKey">押す時のキー</param>
+    /// <param name="joystickKey">コントローラーのキー</param>
+    /// <param name="showButtonText">ボタンの表示テキストを表示するか</param>
+    /// <param name="StopCountCoolFunc">クールタイムを止めるか(なければnull)</param>
+    /// <param name="baseButton">もとにするActionButton(キルボなど、なければAbilityButton)</param>
+    /// <param name="DurationTime">継続時間(継続時間を使わなければnull)</param>
+    /// <param name="CouldUse">使用するかのAction(不必要ならnull)</param>
+    /// <param name="OnEffectEnds">継続時間が終わった時の処理(なければnull)</param>
     public CustomButtonInfo(
         int? AbilityCount,
         RoleBase roleBase,

@@ -68,6 +68,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         Logger = Log;
         Instance = this;
+        ModTranslation.LoadCsv();
         bool CreatedVersionPatch = false;
 
         //初期状態ではRoleInfoやOptionInfoなどが読み込まれていないため、
@@ -96,7 +97,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         WebAccountManager.Load();
         ContentManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
-        ModTranslation.LoadCsv();
         ChacheManager.Load();
         WebConstants.Load();
         CustomCosmetics.CustomColors.Load();
