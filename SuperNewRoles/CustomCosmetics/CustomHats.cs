@@ -384,6 +384,7 @@ public class CustomHats
 
                         Hatdata.ViewDataRef = assetRef;
                         Hatdata.CreateAddressableAsset();
+                        HatManagerPatch.addHatData.Add(Hatdata);
                         pc.HatRenderer().Hat = Hatdata;
                         pc.HatRenderer().SetHat(color);
                     }
