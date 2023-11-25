@@ -59,7 +59,7 @@ public class CustomButtonInfo
     /// <param name="Sprite">見た目</param>
     /// <param name="CoolTime">クールタイム</param>
     /// <param name="positionOffset">positionOffset</param>
-    /// <param name="buttonText">ボタンの表示テキスト</param>
+    /// <param name="buttonText">ボタンの表示テキスト(未翻訳のものでもOK)</param>
     /// <param name="HotKey">押す時のキー</param>
     /// <param name="joystickKey">コントローラーのキー</param>
     /// <param name="showButtonText">ボタンの表示テキストを表示するか</param>
@@ -100,7 +100,7 @@ public class CustomButtonInfo
         this.BaseButton = BaseButton;
         this.positionOffset = positionOffset;
         this.StopCountCoolFunc = StopCountCoolFunc;
-        this.ButtonText = buttonText;
+        this.ButtonText = ModTranslation.GetString(buttonText);
         this.showButtonText = showButtonText;
         this.GetCoolTimeFunc = CoolTime;
         this.GetDurationTimeFunc = DurationTime;

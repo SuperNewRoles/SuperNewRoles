@@ -228,7 +228,7 @@ public static class RoleClass
         Pavlovsowner.ClearAndReload();
         WaveCannonJackal.ClearAndReload();
         //SidekickWaveCannon.Clear();
-        Conjurer.ClearAndReload();
+        Beacon.AllBeacons = new();
         Camouflager.ClearAndReload();
         Cupid.ClearAndReload();
         HamburgerShop.ClearAndReload();

@@ -33,8 +33,11 @@ public enum RoleId
 {
     None, // RoleIdの初期化用
     DefaultRole,
+
     WaveCannon,
     Slugger,
+    Conjurer,
+
     SoothSayer,
     Jester,
     Lighter,
@@ -178,7 +181,6 @@ public enum RoleId
     Knight,
     Pavlovsdogs,
     Pavlovsowner,
-    Conjurer,
     Camouflager,
     Cupid,
     HamburgerShop,

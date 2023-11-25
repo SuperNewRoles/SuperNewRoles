@@ -846,9 +846,6 @@ public static class RoleHelpers
             case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 break;
-            case RoleId.Conjurer:
-                Conjurer.Player.Add(player);
-                break;
             case RoleId.Camouflager:
                 RoleClass.Camouflager.CamouflagerPlayer.Add(player);
                 break;
@@ -1431,9 +1428,6 @@ public static class RoleHelpers
                 break;
             case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Conjurer:
-                Conjurer.Player.RemoveAll(ClearRemove);
                 break;
             case RoleId.Camouflager:
                 RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
@@ -2035,7 +2029,6 @@ public static class RoleHelpers
             else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
             else if (WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
             else if (WaveCannonJackal.SidekickWaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.SidekickWaveCannon;
-            else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
             else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
             else if (RoleClass.Cupid.CupidPlayer.IsCheckListPlayerControl(player)) return RoleId.Cupid;
             else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;

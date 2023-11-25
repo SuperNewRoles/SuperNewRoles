@@ -3145,8 +3145,6 @@ static class HudManagerStartPatch
         RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
         RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
-        Conjurer.SetupCustomButtons(__instance);
-
         GM.CreateButton(__instance);
 
         CamouflagerButton = new(

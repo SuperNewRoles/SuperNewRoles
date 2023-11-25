@@ -1072,8 +1072,6 @@ public class CustomOptionHolder
         foreach (var optionInfo in SortedOptionInfos)
             optionInfo.Value.CreateOption();
 
-        Conjurer.SetupCustomOptions();
-
         EvilGuesserOption = SetupCustomRoleOption(200400, false, RoleId.EvilGuesser);
         EvilGuesserPlayerCount = Create(200401, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
         EvilGuesserShortMaxCount = Create(200402, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
