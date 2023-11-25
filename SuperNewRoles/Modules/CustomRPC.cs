@@ -37,6 +37,7 @@ public enum RoleId
     WaveCannon,
     Slugger,
     Conjurer,
+    Mushroomer,
 
     SoothSayer,
     Jester,

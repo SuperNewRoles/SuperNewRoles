@@ -16,6 +16,8 @@ public static class CustomSpores
     public static Mushroom AddMushroom(Vector2 position, int id = -1)
     {
         Dictionary<int, Mushroom> mushrooms = mushRooms;
+        Vector3 position3 = position;
+        position3.z = 1;
         Il2CppSystem.Collections.Generic.Dictionary<int, Mushroom> mushroomsShip = null;
         if (ModHelpers.IsMap(MapNames.Fungle))
         {
@@ -28,7 +30,7 @@ public static class CustomSpores
             else
                 id = mushroomsShip.entries.Max(x => x.key) + 1;
         Mushroom newmushRoom = GameObject.Instantiate(Agartha.MapLoader.FungleObject.GetComponentInChildren<Mushroom>(), ShipStatus.Instance.transform);
-        newmushRoom.transform.localPosition = position;
+        newmushRoom.transform.localPosition = position3;
         newmushRoom.id = id;
         newmushRoom.origPosition = position;
         if (mushrooms != null)
