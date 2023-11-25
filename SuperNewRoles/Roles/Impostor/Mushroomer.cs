@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
