@@ -140,11 +140,13 @@ public class Mushroomer : RoleBase, IImpostor, ICustomButton, IRpcHandler, IWrap
     private void CustomTriggerSpores(Mushroom mushroom)
     {
         mushroom.secondsSporeIsActive = MushroomExplosionDurationTime.GetFloat();
+        mushroom.transform.localScale = Vector3.one * MushroomExplosionRange.GetInt();
         mushroom.TriggerSpores();
     }
     public static void MushroomResetStatePatch(Mushroom __instance)
     {
         //デフォルトに戻す
+        __instance.transform.localScale = Vector3.one;
         __instance.secondsSporeIsActive = 5f;
         __instance.sporeMask.transform.localScale = new(2.4f, 2.4f, 1.2f);
     }
