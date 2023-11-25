@@ -203,18 +203,6 @@ public class CustomOptionHolder
     public static CustomOption SpeederCoolTime;
     public static CustomOption SpeederDurationTime;
 
-    public static CustomRoleOption NiceGuesserOption;
-    public static CustomOption NiceGuesserPlayerCount;
-    public static CustomOption NiceGuesserShortOneMeetingCount;
-    public static CustomOption NiceGuesserShortMaxCount;
-    public static CustomOption NiceGuesserCanShotCrew;
-
-    public static CustomRoleOption EvilGuesserOption;
-    public static CustomOption EvilGuesserPlayerCount;
-    public static CustomOption EvilGuesserShortOneMeetingCount;
-    public static CustomOption EvilGuesserShortMaxCount;
-    public static CustomOption EvilGuesserCanShotCrew;
-
     public static CustomRoleOption VultureOption;
     public static CustomOption VulturePlayerCount;
     public static CustomOption VultureCooldown;
@@ -1072,12 +1060,6 @@ public class CustomOptionHolder
         foreach (var optionInfo in SortedOptionInfos)
             optionInfo.Value.CreateOption();
 
-        EvilGuesserOption = SetupCustomRoleOption(200400, false, RoleId.EvilGuesser);
-        EvilGuesserPlayerCount = Create(200401, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
-        EvilGuesserShortMaxCount = Create(200402, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
-        EvilGuesserShortOneMeetingCount = Create(200403, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
-        EvilGuesserCanShotCrew = Create(200404, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, EvilGuesserOption);
-
         EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
         EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
         EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
@@ -1653,12 +1635,6 @@ public class CustomOptionHolder
         ChiefSheriffFriendsRoleKill = Create(400309, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, ChiefOption);
         ChiefSheriffCanKillLovers = Create(400310, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
         ChiefSheriffQuarreledKill = Create(400311, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, ChiefOption);
-
-        NiceGuesserOption = SetupCustomRoleOption(400401, false, RoleId.NiceGuesser);
-        NiceGuesserPlayerCount = Create(400402, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
-        NiceGuesserShortMaxCount = Create(400403, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
-        NiceGuesserShortOneMeetingCount = Create(400404, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
-        NiceGuesserCanShotCrew = Create(400405, false, CustomOptionType.Crewmate, "EvilGuesserCanCrewShotSetting", true, NiceGuesserOption);
 
         WiseMan.SetupCustomOptions();
 

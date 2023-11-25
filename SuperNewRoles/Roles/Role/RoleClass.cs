@@ -108,8 +108,6 @@ public static class RoleClass
         Shielder.ClearAndReload();
         Speeder.ClearAndReload();
         Freezer.ClearAndReload();
-        NiceGuesser.ClearAndReload();
-        EvilGuesser.ClearAndReload();
         Vulture.ClearAndReload();
         NiceScientist.ClearAndReload();
         Clergyman.ClearAndReload();
@@ -596,26 +594,6 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.SpeederCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.SpeederDurationTime.GetFloat();
             IsSpeedDown = false;
-        }
-    }
-    public static class NiceGuesser
-    {
-        public static List<PlayerControl> NiceGuesserPlayer;
-        public static Color32 color = Color.yellow;
-        public static int Count;
-        public static void ClearAndReload()
-        {
-            NiceGuesserPlayer = new();
-            Count = -1;
-        }
-    }
-    public static class EvilGuesser
-    {
-        public static List<PlayerControl> EvilGuesserPlayer;
-        public static Color32 color = ImpostorRed;
-        public static void ClearAndReload()
-        {
-            EvilGuesserPlayer = new();
         }
     }
     public static class Vulture

@@ -490,12 +490,6 @@ public static class RoleHelpers
             case RoleId.Freezer:
                 RoleClass.Freezer.FreezerPlayer.Add(player);
                 break;
-            case RoleId.NiceGuesser:
-                RoleClass.NiceGuesser.NiceGuesserPlayer.Add(player);
-                break;
-            case RoleId.EvilGuesser:
-                RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
-                break;
             case RoleId.Vulture:
                 RoleClass.Vulture.VulturePlayer.Add(player);
                 break;
@@ -1077,12 +1071,6 @@ public static class RoleHelpers
                 break;
             case RoleId.Freezer:
                 RoleClass.Freezer.FreezerPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.NiceGuesser:
-                RoleClass.NiceGuesser.NiceGuesserPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.EvilGuesser:
-                RoleClass.EvilGuesser.EvilGuesserPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Vulture:
                 RoleClass.Vulture.VulturePlayer.RemoveAll(ClearRemove);
@@ -1910,8 +1898,6 @@ public static class RoleHelpers
             else if (RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player)) return RoleId.Shielder;
             else if (RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player)) return RoleId.Speeder;
             else if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player)) return RoleId.Freezer;
-            else if (RoleClass.NiceGuesser.NiceGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGuesser;
-            else if (RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGuesser;
             else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
             else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;
             else if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player)) return RoleId.Clergyman;

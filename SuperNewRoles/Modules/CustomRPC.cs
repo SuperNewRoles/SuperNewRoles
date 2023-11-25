@@ -37,6 +37,7 @@ public enum RoleId
     WaveCannon,
     Slugger,
     Conjurer,
+    EvilGuesser,
 
     SoothSayer,
     Jester,
@@ -58,7 +59,6 @@ public enum RoleId
     Speeder,
     Freezer,
     NiceGuesser,
-    EvilGuesser,
     Vulture,
     NiceScientist,
     Clergyman,

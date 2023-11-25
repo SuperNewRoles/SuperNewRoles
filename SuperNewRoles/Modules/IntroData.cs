@@ -173,8 +173,6 @@ public class IntroData
     public static IntroData ShielderIntro = new("Shielder", RoleClass.Shielder.color, 3, RoleId.Shielder);
     public static IntroData FreezerIntro = new("Freezer", RoleClass.Freezer.color, 3, RoleId.Freezer, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SpeederIntro = new("Speeder", RoleClass.Speeder.color, 2, RoleId.Speeder, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData NiceGuesserIntro = new("NiceGuesser", RoleClass.NiceGuesser.color, 3, RoleId.NiceGuesser, IntroSound: RoleTypes.Engineer);
-    public static IntroData EvilGuesserIntro = new("EvilGuesser", RoleClass.EvilGuesser.color, 2, RoleId.EvilGuesser, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData VultureIntro = new("Vulture", RoleClass.Vulture.color, 1, RoleId.Vulture, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData NiceScientistIntro = new("NiceScientist", RoleClass.NiceScientist.color, 2, RoleId.NiceScientist);
     public static IntroData ClergymanIntro = new("Clergyman", RoleClass.Clergyman.color, 2, RoleId.Clergyman);
