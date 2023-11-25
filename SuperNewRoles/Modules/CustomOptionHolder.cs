@@ -1048,8 +1048,6 @@ public class CustomOptionHolder
         foreach (var optionInfo in SortedOptionInfos)
             optionInfo.Value.CreateOption();
 
-        EvilSeer.CustomOptionData.SetupCustomOptions();
-
         ShiftActor.SetupCustomOptions();
 
         AssassinAndMarlinOption = new(200500, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1)

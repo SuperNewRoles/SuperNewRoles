@@ -10,10 +10,12 @@ namespace SuperNewRoles.Roles.RoleBases;
 public static class RoleBaseManager
 {
     public static PlayerData<RoleBase> PlayerRoles { get; private set; } = new();
+    public static Dictionary<Type, List<RoleBase>> RoleBaseTypes { get; private set; } = new();
     private static Dictionary<Type, List<RoleBase>> AllInterfaces = new();
     public static void ClearAndReloads()
     {
         PlayerRoles = new();
+        RoleBaseTypes = new();
         AllInterfaces = new();
     }
     public static IReadOnlyList<T> GetInterfaces<T>()
@@ -30,6 +32,9 @@ public static class RoleBaseManager
             return null;
         RoleBase roleBase = roleInfo.CreateInstance(player);
         PlayerRoles[player] = roleBase;
+        if (!RoleBaseTypes.ContainsKey(roleInfo.RoleObjectType))
+            RoleBaseTypes.Add(roleInfo.RoleObjectType, new());
+        RoleBaseTypes[roleInfo.RoleObjectType].Add(roleBase);
         //全てのインターフェイスを取得
         Type roleType = roleInfo.RoleObjectType;
         Type[] Interfaces = roleType.GetInterfaces();
@@ -45,6 +50,7 @@ public static class RoleBaseManager
     {
         roleBase.Dispose();
         PlayerRoles.Remove(player);
+        RoleBaseTypes[roleBase.Roleinfo.RoleObjectType].Remove(roleBase);
         //Interfacesから削除
         Type roleType = roleBase.Roleinfo.RoleObjectType;
         Type[] Interfaces = roleType.GetInterfaces();
@@ -54,7 +60,7 @@ public static class RoleBaseManager
                 IRoleBases.Remove(roleBase);
         }
     }
-    public static RoleBase GetLocalRoleBase(this byte PlayerId)
+    public static RoleBase GetLocalRoleBase()
     {
         return PlayerRoles.Local;
     }
@@ -69,6 +75,10 @@ public static class RoleBaseManager
     public static RoleBase GetRoleBase(this PlayerControl player)
     {
         return PlayerRoles[player];
+    }
+    public static IReadOnlyList<T> GetRoleBases<T>() where T : RoleBase
+    {
+        return RoleBaseTypes.TryGetValue(typeof(T), out List<RoleBase> value) ? value.Cast<T>().ToList() : new();
     }
     public static T GetRoleBase<T>(this PlayerControl player) where T : RoleBase
     {

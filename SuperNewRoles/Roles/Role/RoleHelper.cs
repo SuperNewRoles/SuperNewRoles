@@ -653,9 +653,6 @@ public static class RoleHelpers
             case RoleId.MadSeer:
                 RoleClass.MadSeer.MadSeerPlayer.Add(player);
                 break;
-            case RoleId.EvilSeer:
-                EvilSeer.RoleData.Player.Add(player);
-                break;
             case RoleId.RemoteSheriff:
                 RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
                 break;
@@ -1233,9 +1230,6 @@ public static class RoleHelpers
                 break;
             case RoleId.MadSeer:
                 RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.EvilSeer:
-                EvilSeer.RoleData.Player.RemoveAll(ClearRemove);
                 break;
             case RoleId.TeleportingJackal:
                 RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
@@ -1946,7 +1940,6 @@ public static class RoleHelpers
             else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.DarkKiller;
             else if (RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player)) return RoleId.Seer;
             else if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadSeer;
-            else if (EvilSeer.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.EvilSeer;
             else if (RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.RemoteSheriff;
             else if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player)) return RoleId.Fox;
             else if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.TeleportingJackal;

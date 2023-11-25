@@ -161,9 +161,9 @@ public static class RoleClass
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
         Seer.ClearAndReload();
-        Crewmate.Seer.ShowFlash_ClearAndReload();
+        Crewmate.SeerHandler.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
-        EvilSeer.RoleData.ClearAndReload();
+        EvilSeer.CreateMode = -1;
         RemoteSheriff.ClearAndReload();
         TeleportingJackal.ClearAndReload();
         MadMaker.ClearAndReload();
@@ -1589,7 +1589,8 @@ public static class RoleClass
     {
         public static List<PlayerControl> SeerPlayer;
         public static Color color = new Color32(97, 178, 108, byte.MaxValue);
-        public static List<(Vector3, int)> deadBodyPositions;
+
+        public static List<(Vector3, int)> deadBodyPositions { get; set; }
 
         public static float soulDuration;
         public static bool limitSoulDuration;

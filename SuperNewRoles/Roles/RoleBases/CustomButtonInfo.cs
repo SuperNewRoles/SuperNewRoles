@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
@@ -196,6 +197,8 @@ public class CustomButtonInfo
     /// <returns></returns>
     public PlayerControl SetTarget()
     {
-        return CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
+        CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
+        PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
+        return CurrentTarget;
     }
 }

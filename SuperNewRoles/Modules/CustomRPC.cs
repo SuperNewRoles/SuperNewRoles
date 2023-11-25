@@ -40,6 +40,7 @@ public enum RoleId
     EvilGuesser,
     NiceGuesser,
     EvilHacker,
+    EvilSeer,
 
     SoothSayer,
     Jester,
@@ -118,7 +119,6 @@ public enum RoleId
     Fox,
     Seer,
     MadSeer,
-    EvilSeer,
     RemoteSheriff,
     TeleportingJackal,
     MadMaker,
@@ -1638,7 +1638,7 @@ public static class RPCProcedure
 
     public static void ShowFlash()
     {
-        Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+        SeerHandler.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
     }
 
     public static void PenguinMeetingEnd()

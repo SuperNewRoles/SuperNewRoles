@@ -2260,8 +2260,6 @@ static class HudManagerStartPatch
         GhostMechanicRepairButton.buttonText = ModTranslation.GetString("GhostMechanicButtonName");
         GhostMechanicRepairButton.showButtonText = true;
 
-        EvilSeer.Button.SetupCustomButtons(__instance);
-
         PositionSwapperButton = new(
             () =>
             {

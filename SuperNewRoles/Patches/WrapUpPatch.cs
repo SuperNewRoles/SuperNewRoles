@@ -169,7 +169,7 @@ class WrapUpPatch
         Photographer.WrapUp();
         Cracker.WrapUp();
         RoleClass.IsMeeting = false;
-        Seer.WrapUpPatch.WrapUpPostfix();
+        SeerHandler.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
