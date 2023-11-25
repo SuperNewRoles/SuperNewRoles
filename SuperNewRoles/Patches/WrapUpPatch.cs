@@ -175,7 +175,6 @@ class WrapUpPatch
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
         Moira.WrapUp(exiled);
-        Conjurer.WrapUp();
         WellBehaver.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
