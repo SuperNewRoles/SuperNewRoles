@@ -148,32 +148,27 @@ static class CheckMurderPatch
                 return false;
             case RoleId.Sheriff:
                 //もうキルできる回数がないならreturn
-                if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) &&
-                    RoleClass.Sheriff.KillCount[__instance.PlayerId] <= 0)
-                    return false;
-                (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
-                var misfire = !success;
-                var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                if (alwaysKill || misfire)
+                if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) && RoleClass.Sheriff.KillCount[__instance.PlayerId] <= 0) return false;
+
+                (var killResult, var suicideResult) = Sheriff.SheriffKillResult(__instance, target);
+
+                if (killResult.Item1)
                 {
-                    if (alwaysKill)
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
-                        __instance.RpcMurderPlayerCheck(target);
-                        __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
-                    }
-                    __instance.RpcMurderPlayer(__instance, true);
-                    __instance.RpcSetFinalStatus(status);
-                }
-                else
-                {
-                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
+                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = killResult.Item2;
+                    __instance.RpcMurderPlayerCheck(target);
+                    target.RpcSetFinalStatus(killResult.Item2);
+
                     if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
                         RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.SheriffKillMaxCount.GetInt();
                     RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
-                    __instance.RpcMurderPlayerCheck(target);
-                    target.RpcSetFinalStatus(status);
                     Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                }
+
+                if (suicideResult.Item1)
+                {
+                    FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = suicideResult.Item2;
+                    __instance.RpcMurderPlayer(__instance, true);
+                    __instance.RpcSetFinalStatus(suicideResult.Item2);
                 }
                 return false;
             case RoleId.MadMaker:
@@ -645,7 +640,8 @@ public static class MurderPlayerPatch
         }
 
         //ダークキラーがキルできるか判定
-        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem)) {
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem))
+        {
             var ma = elecsystem.CastFast<SwitchSystem>();
             if (__instance.IsRole(RoleId.DarkKiller) &&
                 ma != null &&

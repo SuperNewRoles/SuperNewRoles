@@ -540,6 +540,7 @@ public static class OnGameEndPatch
                 {
                     playerrole = RoleId.Stefinder1;
                 }
+                RoleId playerghostrole = p.Object.GetGhostRole();
                 var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
                 if (p.Object.IsImpostor())
                 {
@@ -580,7 +581,9 @@ public static class OnGameEndPatch
                     TasksTotal = tasksTotal,
                     TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                     Status = finalStatus,
-                    AttributeRoleName = attributeRoleName
+                    AttributeRoleName = attributeRoleName,
+                    RoleId = playerrole,
+                    GhostRoleId = playerghostrole,
                 });
             }
         }
