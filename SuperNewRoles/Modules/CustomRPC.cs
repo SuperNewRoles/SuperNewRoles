@@ -38,6 +38,7 @@ public enum RoleId
     Slugger,
     Conjurer,
     EvilGuesser,
+    NiceGuesser,
 
     SoothSayer,
     Jester,
@@ -58,7 +59,6 @@ public enum RoleId
     Shielder,
     Speeder,
     Freezer,
-    NiceGuesser,
     Vulture,
     NiceScientist,
     Clergyman,
