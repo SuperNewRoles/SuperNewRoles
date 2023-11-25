@@ -710,9 +710,6 @@ public static class RoleHelpers
             case RoleId.GhostMechanic:
                 RoleClass.GhostMechanic.GhostMechanicPlayer.Add(player);
                 break;
-            case RoleId.EvilHacker:
-                RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
-                break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
                 break;
@@ -1293,9 +1290,6 @@ public static class RoleHelpers
                 break;
             case RoleId.GhostMechanic:
                 RoleClass.GhostMechanic.GhostMechanicPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.EvilHacker:
-                RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
@@ -1972,7 +1966,6 @@ public static class RoleHelpers
             else if (RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadCleaner;
             else if (RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.MayorFriends;
             else if (RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.VentMaker;
-            else if (RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilHacker;
             else if (RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player)) return RoleId.PositionSwapper;
             else if (RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player)) return RoleId.Tuna;
             else if (RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player)) return RoleId.Mafia;

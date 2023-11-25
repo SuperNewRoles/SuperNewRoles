@@ -181,7 +181,6 @@ public static class RoleClass
         MayorFriends.ClearAndReload();
         VentMaker.ClearAndReload();
         GhostMechanic.ClearAndReload();
-        EvilHacker.ClearAndReload();
         HauntedWolf.RoleData.ClearAndReload();
         PositionSwapper.ClearAndReload();
         Tuna.ClearAndReload();
@@ -2005,47 +2004,6 @@ public static class RoleClass
             AbilityUsedCountSHR = new();
             Cooldown = CustomOptionHolder.GhostMechanicCooldown.GetFloat();
             KeepCooldown = 0f;
-        }
-    }
-    public static class EvilHacker
-    {
-        public static List<PlayerControl> EvilHackerPlayer;
-        public static Color32 color = ImpostorRed;
-        public static bool IsCreateMadmate;
-        public static float Cooldown;
-        /// <summary>アドミン上でインポスターのマークが赤く見えるかどうか</summary>
-        public static bool CanSeeImpostorPositions;
-        /// <summary>アドミン上で死体のマークが青く見えるかどうか</summary>
-        public static bool CanSeeDeadBodyPositions;
-        public static bool CanUseAdminDuringMeeting;
-        /// <summary>サボタージュマップにアドミンが表示されるかどうか</summary>
-        public static bool SabotageMapShowsAdmin;
-        /// <summary>アドミンにドアの開閉状況が表示される</summary>
-        public static bool MapShowsDoorState;
-        public static bool IsMyAdmin;
-        public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
-
-        public static Sprite GetButtonSprite()
-        {
-            byte mapId = GameOptionsManager.Instance.CurrentGameOptions.MapId;
-            UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
-            if (mapId is 0 or 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
-            else if (mapId == 1) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
-            else if (mapId == 4) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
-            return button.Image;
-        }
-        public static void ClearAndReload()
-        {
-            EvilHackerPlayer = new();
-            IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
-            var hasEnhancedAdmin = CustomOptionHolder.EvilHackerHasEnhancedAdmin.GetBool();
-            CanSeeImpostorPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeImpostorPositions.GetBool();
-            CanSeeDeadBodyPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeDeadBodyPositions.GetBool();
-            CanUseAdminDuringMeeting = CustomOptionHolder.EvilHackerCanUseAdminDuringMeeting.GetBool();
-            SabotageMapShowsAdmin = CustomOptionHolder.EvilHackerSabotageMapShowsAdmin.GetBool();
-            MapShowsDoorState = CustomOptionHolder.EvilHackerMapShowsDoorState.GetBool();
-            IsMyAdmin = false;
-            Cooldown = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
         }
     }
     public static class PositionSwapper

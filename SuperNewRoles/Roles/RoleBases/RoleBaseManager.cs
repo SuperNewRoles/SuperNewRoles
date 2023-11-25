@@ -54,6 +54,14 @@ public static class RoleBaseManager
                 IRoleBases.Remove(roleBase);
         }
     }
+    public static RoleBase GetLocalRoleBase(this byte PlayerId)
+    {
+        return PlayerRoles.Local;
+    }
+    public static T GetLocalRoleBase<T>() where T : RoleBase
+    {
+        return PlayerRoles.Local as T;
+    }
     public static RoleBase GetRoleBaseById(this byte PlayerId)
     {
         return PlayerRoles[PlayerId];

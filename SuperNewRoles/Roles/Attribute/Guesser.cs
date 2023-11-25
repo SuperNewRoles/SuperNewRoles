@@ -211,7 +211,7 @@ class Guesser
         if (CustomOptionHolder.MadMakerOption.GetSelection() is not 0 || CustomOptionHolder.FastMakerOption.GetSelection() is not 0 ||
             (CustomOptionHolder.LevelingerOption.GetSelection() is not 0 && Levelinger.LevelingerCanUse("SidekickName")) ||
             (EvilSeer.CustomOptionData.Option.GetSelection() is not 0 && Impostor.EvilSeer.RoleData.CreateMode == 4) ||
-            (CustomOptionHolder.EvilHackerOption.GetSelection() is not 0 && CustomOptionHolder.EvilHackerMadmateSetting.GetBool()))
+            EvilHacker.Optioninfo.RoleOption.GetSelection() is not 0 && EvilHacker.MadmateSetting.GetBool())
         { CreateRole(IntroData.MadmateIntro); }
         if (CustomOptionHolder.SideKillerOption.GetSelection() is not 0) { CreateRole(IntroData.MadKillerIntro); }
         if (CustomOptionHolder.VampireOption.GetSelection() is not 0) { CreateRole(IntroData.DependentsIntro); }

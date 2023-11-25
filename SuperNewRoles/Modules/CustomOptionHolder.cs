@@ -689,18 +689,6 @@ public class CustomOptionHolder
     public static CustomOption GhostMechanicRepairLimit;
     public static CustomOption GhostMechanicCooldown;
 
-    public static CustomRoleOption EvilHackerOption;
-    public static CustomOption EvilHackerPlayerCount;
-    public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
-    public static CustomOption EvilHackerMadmateSetting;
-    public static CustomOption EvilHackerButtonCooldown;
-    public static CustomOption EvilHackerHasEnhancedAdmin;
-    public static CustomOption EvilHackerCanSeeImpostorPositions;
-    public static CustomOption EvilHackerCanSeeDeadBodyPositions;
-    public static CustomOption EvilHackerCanUseAdminDuringMeeting;
-    public static CustomOption EvilHackerSabotageMapShowsAdmin;
-    public static CustomOption EvilHackerMapShowsDoorState;
-
     public static CustomRoleOption SecretlyKillerOption;
     public static CustomOption SecretlyKillerPlayerCount;
     public static CustomOption SecretlyKillerKillCoolTime;
@@ -1059,18 +1047,6 @@ public class CustomOptionHolder
         var SortedOptionInfos = OptionInfo.OptionInfos.OrderBy(x => (int)x.Key);
         foreach (var optionInfo in SortedOptionInfos)
             optionInfo.Value.CreateOption();
-
-        EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
-        EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
-        EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
-        EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
-        EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
-        EvilHackerHasEnhancedAdmin = Create(200306, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, EvilHackerOption);
-        EvilHackerCanSeeImpostorPositions = Create(200307, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, EvilHackerHasEnhancedAdmin);
-        EvilHackerCanSeeDeadBodyPositions = Create(200308, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, EvilHackerHasEnhancedAdmin);
-        EvilHackerCanUseAdminDuringMeeting = Create(200309, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringMeeting", true, EvilHackerOption);
-        EvilHackerSabotageMapShowsAdmin = Create(200310, false, CustomOptionType.Impostor, "EvilHackerSabotageMapShowsAdmin", true, EvilHackerOption);
-        EvilHackerMapShowsDoorState = Create(200311, false, CustomOptionType.Impostor, "EvilHackerMapShowsDoorState", true, EvilHackerOption);
 
         EvilSeer.CustomOptionData.SetupCustomOptions();
 

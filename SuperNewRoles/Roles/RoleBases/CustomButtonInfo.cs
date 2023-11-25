@@ -85,7 +85,9 @@ public class CustomButtonInfo
         ActionButton baseButton = null,
         Func<float> DurationTime = null,
         Func<bool> CouldUse = null,
-        Action OnEffectEnds = null)
+        Action OnEffectEnds = null,
+        Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
+        Func<bool> SetTargetCrewmateOnly=null)
     {
         this.HasAbility = false;
         this.AbilityCount = AbilityCount ?? 334;
@@ -114,6 +116,8 @@ public class CustomButtonInfo
         else if (this.HotKey.HasValue) {
             this.joystickKey = JoystickKeys.TryGetValue(HotKey.Value, out int joykey) ? joykey : -1;
         }
+        this.TargetCrewmateOnly = SetTargetCrewmateOnly;
+        this.UntargetPlayer = SetTargetUntargetPlayer;
         GetOrCreateButton();
     }
     public void OnClick()

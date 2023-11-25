@@ -8,6 +8,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Impostor;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -185,7 +186,7 @@ public class BlackHatHacker
                 BlackHatHackerAdminButtoon.Timer = 0f;
                 IsMyAdmin = false;
             },
-            RoleClass.EvilHacker.GetButtonSprite(),
+            EvilHacker.GetAdminButtonSprite(),
             new(-1, 1, 0),
             __instance,
             __instance.AbilityButton,

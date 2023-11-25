@@ -12,6 +12,8 @@ using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
+namespace SuperNewRoles.Roles.;
+
 public class RoleBaseTemplate : RoleBase
 {
     public static new RoleInfo Roleinfo = new(

@@ -1108,7 +1108,6 @@ class AllRoleSetClass
             RoleId.MayorFriends => CustomOptionHolder.MayorFriendsPlayerCount.GetFloat(),
             RoleId.VentMaker => CustomOptionHolder.VentMakerPlayerCount.GetFloat(),
             RoleId.GhostMechanic => CustomOptionHolder.GhostMechanicPlayerCount.GetFloat(),
-            RoleId.EvilHacker => CustomOptionHolder.EvilHackerPlayerCount.GetFloat(),
             RoleId.PositionSwapper => CustomOptionHolder.PositionSwapperPlayerCount.GetFloat(),
             RoleId.Tuna => CustomOptionHolder.TunaPlayerCount.GetFloat(),
             RoleId.Mafia => CustomOptionHolder.MafiaPlayerCount.GetFloat(),

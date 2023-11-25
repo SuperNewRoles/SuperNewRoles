@@ -247,7 +247,6 @@ public class IntroData
     public static IntroData MayorFriendsIntro = new("MayorFriends", RoleClass.MayorFriends.color, 1, RoleId.MayorFriends, teamType: TeamType.Neutral);
     public static IntroData VentMakerIntro = new("VentMaker", RoleClass.VentMaker.color, 1, RoleId.VentMaker, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData GhostMechanicIntro = new("GhostMechanic", RoleClass.GhostMechanic.color, 1, RoleId.GhostMechanic, TeamRoleType.Crewmate, IsGhostRole: true);
-    public static IntroData EvilHackerIntro = new("EvilHacker", RoleClass.EvilHacker.color, 1, RoleId.EvilHacker, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData PositionSwapperIntro = new("PositionSwapper", RoleClass.PositionSwapper.color, 1, RoleId.PositionSwapper, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData TunaIntro = new("Tuna", RoleClass.Tuna.color, 1, RoleId.Tuna, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MafiaIntro = new("Mafia", RoleClass.Mafia.color, 1, RoleId.Mafia, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
