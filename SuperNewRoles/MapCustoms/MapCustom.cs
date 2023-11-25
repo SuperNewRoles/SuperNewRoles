@@ -123,9 +123,8 @@ class MapCustom
         TheFungleMushroomMixupTime = Create(104812, true, CustomOptionType.Generic, "TheFungleMushroomMixupTime", 10f, 1f, 30f, 0.5f, TheFungleMushroomMixupOption);
         TheFungleAdditionalAdmin = Create(104813, false, CustomOptionType.Generic, "TheFungleAdditionalAdmin", false, TheFungleSetting);
         TheFunglePowerOutageSabotage = Create(104814, false, CustomOptionType.Generic, "TheFunglePowerOutageSabotage", false, TheFungleSetting);
-        TheFungleHideSporeMask = Create(104815, false, CustomOptionType.Generic, "TheFungleHideSporeMask", false, TheFungleSetting,isHidden:true);
+        TheFungleHideSporeMask = Create(104815, false, CustomOptionType.Generic, "TheFungleHideSporeMask", false, TheFungleSetting);
         TheFungleHideSporeMaskOnlyImpostor = Create(104816, false, CustomOptionType.Generic, "TheFungleHideSporeMaskOnlyImpostor", false, TheFungleHideSporeMask);
-        TheFungleHideSporeMask.selection=0;
 
         /*===============アガルタ===============*/
         AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);

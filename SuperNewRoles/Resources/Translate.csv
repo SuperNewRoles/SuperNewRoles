@@ -1693,6 +1693,8 @@ MushroomerMushroomExplosionRange,Explosion range,爆発範囲
 MushroomerMushroomExplosionDurationTime,Mushroom gas's duration time,キノコガスの持続時間
 MushroomerPlanetButtonName,Put Mushroom!,キノコ！,种蘑菇！,種蘑菇！
 MushroomerPlanetAbilityCountText,Remaining {0} mushrooms,残り{0}キノコ,剩余{0}个蘑菇,剩餘{0}個蘑菇
+MushroomerExplosionButtonName,Explosion!,爆発！,爆炸！,爆炸！
+MushroomerExplosionAbilityCountText,Remaining {0} explosions,残り{0}爆発,剩余{0}爆炸,剩餘{0}爆炸
 
 #NewRoleTranslation
 
