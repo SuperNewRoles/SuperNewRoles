@@ -378,7 +378,13 @@ public class CustomHats
                     {
                         var color = pc.CurrentOutfit.ColorId;
                         pc.SetHat("hat_dusk", color);
-                        pc.HatRenderer().Hat = CreateHatData(hats[0], true, true);
+                        CustomHatData Hatdata = CreateHatData(hats[0], true, true);
+
+                        var assetRef = new AssetReference(Hatdata.htvd.CreateHVD.Pointer);
+
+                        Hatdata.ViewDataRef = assetRef;
+                        Hatdata.CreateAddressableAsset();
+                        pc.HatRenderer().Hat = Hatdata;
                         pc.HatRenderer().SetHat(color);
                     }
                 }
