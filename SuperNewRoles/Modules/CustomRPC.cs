@@ -20,6 +20,8 @@ using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
@@ -200,14 +202,14 @@ public enum RoleId
     Balancer,
     Pteranodon,
     BlackHatHacker,
-    Reviver = 172,
-    Guardrawer = 173,
-    KingPoster = 174,
-    LongKiller = 175,
-    Darknight = 176,
-    Revenger = 177,
-    CrystalMagician = 178,
-    GrimReaper = 179,
+    Reviver,
+    Guardrawer,
+    KingPoster,
+    LongKiller,
+    Darknight,
+    Revenger,
+    CrystalMagician,
+    GrimReaper,
     PoliceSurgeon,
     MadRaccoon,
     Moira,
@@ -296,7 +298,6 @@ public enum CustomRPC
     KnightProtected,
     KnightProtectClear,
     GuesserShoot,
-    WaveCannon,
     ShowFlash,
     PavlovsOwnerCreateDog,
     CrackerCrack,
@@ -337,6 +338,7 @@ public enum CustomRPC
     CheckSpiderTrapCatch,
     SpiderTrapCatch,
     CrookSaveSignDictionary,
+    RoleRpcHandler,
     SetFrankensteinMonster,
     MoveDeadBody,
     RpcSetDoorway
@@ -344,6 +346,16 @@ public enum CustomRPC
 
 public static class RPCProcedure
 {
+    public static void RoleRpcHandler(MessageReader reader)
+    {
+        byte playerId = reader.ReadByte();
+        RoleBase role = RoleBaseManager.GetRoleBaseById(playerId);
+        if (role == null)
+            return;
+        if (role is not IRpcHandler)
+            return;
+        (role as IRpcHandler).RpcReader(reader);
+    }
     public static void SetSpiderTrap(byte source, float x, float y, ushort id)
     {
         PlayerControl player = ModHelpers.PlayerById(source);
@@ -843,24 +855,6 @@ public static class RPCProcedure
         if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
     }
 
-    public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
-    {
-        ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, buff);
-        Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
-        switch ((WaveCannonObject.RpcType)Type)
-        {
-            case WaveCannonObject.RpcType.Spawn:
-                Vector3 position = Vector3.zero;
-                position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
-                position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-
-                return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
-            case WaveCannonObject.RpcType.Shoot:
-                WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
-                break;
-        }
-        return null;
-    }
     public static void SetFinalStatus(byte targetId, FinalStatus Status)
     {
         FinalStatusData.FinalStatuses[targetId] = Status;
@@ -1959,9 +1953,6 @@ public static class RPCProcedure
                     case CustomRPC.CrackerCrack:
                         CrackerCrack(reader.ReadByte());
                         break;
-                    case CustomRPC.WaveCannon:
-                        WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());
-                        break;
                     case CustomRPC.ShowFlash:
                         ShowFlash();
                         break;
@@ -2091,6 +2082,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CrookSaveSignDictionary:
                         Crook.Ability.SaveSignDictionary(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.RoleRpcHandler:
+                        RoleRpcHandler(reader);
                         break;
                     case CustomRPC.SetFrankensteinMonster:
                         SetFrankensteinMonster(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());

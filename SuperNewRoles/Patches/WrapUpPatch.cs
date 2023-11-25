@@ -154,8 +154,7 @@ class WrapUpPatch
         Clergyman.WrapUp();
         Balancer.WrapUp(exiled == null ? null : exiled.Object);
         Speeder.WrapUp();
-        Bestfalsecharge.WrapUp();
-        CustomRoles.OnWrapUp();
+        CustomRoles.OnWrapUp(exiled?.Object);
         Rocket.WrapUp(exiled == null ? null : exiled.Object);
         if (AmongUsClient.Instance.AmHost)
         {

@@ -175,7 +175,6 @@ public class Conjurer
                                     msgwriter.Write(0);
                                     msgwriter.EndRPC();
                                     RPCProcedure.ShielderProtect(CachedPlayer.LocalPlayer.PlayerId, pc.PlayerId, 0);
-                                    RoleClass.WaveCannon.CannotMurderPlayers.Add(pc.PlayerId);
                                 }
                                 else
                                 {

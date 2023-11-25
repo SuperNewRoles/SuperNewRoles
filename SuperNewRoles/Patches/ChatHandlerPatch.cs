@@ -14,6 +14,7 @@ using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -189,8 +190,7 @@ class AddChatPatch
                 }
                 else
                 {
-                    IntroData intro = IntroData.GetIntroData(data.Value, IsImpostorReturn: true);
-                    SendCommand(sourcePlayer, intro.Description, "<size=200%>" + ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString($"{intro.NameKey}Name")) + "</size>");
+                    SendCommand(sourcePlayer, CustomRoles.GetRoleDescription(data.Value), "<size=200%>" + ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value)) + "</size>");
                 }
             }
             else
@@ -198,8 +198,7 @@ class AddChatPatch
                 string text = ModTranslation.GetString("BattleRoyalBattleRolesCommandText") + "\n\n";
                 foreach (var role in Enum.GetValues(typeof(BattleRoles)))
                 {
-                    IntroData intro = IntroData.GetIntroData((RoleId)(BattleRoles)role, IsImpostorReturn: true);
-                    text += $"{ModTranslation.GetString(intro.NameKey + "Name")}({(BattleRoles)role})\n";
+                    text += $"{CustomRoles.GetRoleName((RoleId)(BattleRoles)role)}({(BattleRoles)role})\n";
                 }
                 SendCommand(sourcePlayer, text, SelectRoleSystem.BattleRoyalCommander);
             }
@@ -369,7 +368,7 @@ class AddChatPatch
                 if (data.role == null)
                     builder.Append(ModTranslation.GetString("WinnerGetError"));
                 else
-                    builder.Append(ModTranslation.GetString(IntroData.GetIntroData((RoleId)data.role).NameKey + "Name"));
+                    builder.Append(CustomRoles.GetRoleName(data.role.Value));
                 builder.AppendLine();
             }
             SendCommand(target, builder.ToString(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
@@ -413,7 +412,7 @@ class AddChatPatch
         }
         return text;
     }
-    internal static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
+    internal static string GetOptionText(CustomRoleOption RoleOption)
     {
         Logger.Info("GetOptionText", "ChatHandler");
         string text = "";
@@ -435,12 +434,11 @@ class AddChatPatch
     {
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
-        IntroData intro = option.Intro;
-        text += GetTeamText(intro.TeamType) + "\n";
-        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId) + "」\n";
-        text += intro.Description + "\n";
+        text += GetTeamText(CustomRoles.GetRoleTeamType(option.RoleId)) + "\n";
+        text += "「" + CustomRoles.GetRoleIntro(option.RoleId) + "」\n";
+        text += CustomRoles.GetRoleDescription(option.RoleId) + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
-        text += GetOptionText(option, intro);
+        text += GetOptionText(option);
         return text;
     }
 
@@ -499,7 +497,7 @@ class AddChatPatch
         foreach (CustomRoleOption option in EnableOptions)
         {
             (string rolename, string text) = RoleInfo.GetRoleInfo(option.RoleId, isGetAllRole: isCommanderHost);
-            rolename = $"<align={"left"}><size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size></align>";
+            rolename = $"<align={"left"}><size=115%>\n" + CustomOptionHolder.Cs(CustomRoles.GetRoleColor(option.RoleId), CustomRoles.GetRoleName(option.RoleId)) + "</size></align>";
             text = $"\n<color=#00000000>{option.RoleId}</color>" + text;
             SuperNewRolesPlugin.Logger.LogInfo(rolename);
             SuperNewRolesPlugin.Logger.LogInfo(text);
@@ -629,16 +627,15 @@ class AddChatPatch
                 {
                     foreach (CustomRoleOption roleOption in roleOptions)
                     {
-                        IntroData intro = roleOption.Intro;
                         StringBuilder optionBuilder = new();
 
-                        roleName = $"<align={"left"}><size=180%>{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size></align></size>";
+                        roleName = $"<align={"left"}><size=180%>{CustomRoles.GetRoleNameOnColor(roleOption.RoleId)}</size></align></size>";
 
-                        optionBuilder.AppendLine($"<align={"left"}><size=80%>\n" + GetTeamText(roleOption.Intro.TeamType) + "\n</size>");
-                        optionBuilder.AppendLine($"<size=100%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
-                        optionBuilder.AppendLine($"<size=80%>{intro.Description}\n</size>");
+                        optionBuilder.AppendLine($"<align={"left"}><size=80%>\n" + GetTeamText(CustomRoles.GetRoleTeamType(roleOption.RoleId)) + "\n</size>");
+                        optionBuilder.AppendLine($"<size=100%>「{CustomOptionHolder.Cs(CustomRoles.GetRoleColor(roleOption.RoleId), CustomRoles.GetRoleIntro(roleOption.RoleId))}」</size>\n");
+                        optionBuilder.AppendLine($"<size=80%>{CustomRoles.GetRoleDescription(roleOption.RoleId)}\n</size>");
                         optionBuilder.AppendLine($"<size=70%>{ModTranslation.GetString("MessageSettings")}:");
-                        optionBuilder.AppendLine($"{GetOptionText(roleOption, intro)}\n<color=#00000000>{roleOption.Intro.NameKey}</color></align></size>");
+                        optionBuilder.AppendLine($"{GetOptionText(roleOption)}\n<color=#00000000>{CustomRoles.GetRoleName(roleOption.RoleId)}</color></align></size>");
 
                         roleInfo = optionBuilder.ToString();
                         return (roleName, roleInfo);

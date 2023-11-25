@@ -8,6 +8,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -83,7 +84,8 @@ public class IntroData
         if (!Intros.TryAdd(RoleId, this))
             Logger.Info(RoleId.ToString() + "が追加されませんでした。");
     }
-    public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)
+    [Obsolete]
+    public static IntroData GetIntrodata(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)
     {
         if (RoleId is RoleId.DefaultRole or RoleId.Bestfalsecharge)
         {
@@ -133,8 +135,19 @@ public class IntroData
     }
     public static void PlayIntroSound(RoleId RoleId)
     {
-        var Info = GetIntroData(RoleId, PlayerControl.LocalPlayer);
-        PlayerControl.LocalPlayer.Data.Role.IntroSound = RoleManager.Instance.AllRoles.Where((role) => role.Role == Info.IntroSound).FirstOrDefault().IntroSound;
+        RoleBase roleBase = PlayerControl.LocalPlayer.GetRoleBase();
+        AudioClip clip = null;
+        if (roleBase != null)
+        {
+            clip = roleBase.GetIntroAudioClip();
+        }
+        else
+        {
+            var Info = GetIntrodata(RoleId, PlayerControl.LocalPlayer);
+            clip = RoleManager.Instance.GetRole(Info.IntroSound)?.IntroSound;
+        }
+
+        PlayerControl.LocalPlayer.Data.Role.IntroSound = clip;
         SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.Data.Role.IntroSound, false, 1);
     }
 
@@ -173,7 +186,6 @@ public class IntroData
     public static IntroData OpportunistIntro = new("Opportunist", RoleClass.Opportunist.color, 2, RoleId.Opportunist, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData NiceGamblerIntro = new("NiceGambler", RoleClass.NiceGambler.color, 1, RoleId.NiceGambler);
     public static IntroData EvilGamblerIntro = new("EvilGambler", RoleClass.EvilGambler.color, 1, RoleId.EvilGambler, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData BestfalsechargeIntro = new("Bestfalsecharge", RoleClass.Bestfalsecharge.color, 1, RoleId.Bestfalsecharge);
     public static IntroData ResearcherIntro = new("Researcher", RoleClass.Researcher.color, 1, RoleId.Researcher, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SelfBomberIntro = new("SelfBomber", RoleClass.SelfBomber.color, 1, RoleId.SelfBomber, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData GodIntro = new("God", RoleClass.God.color, 1, RoleId.God, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
@@ -276,7 +288,6 @@ public class IntroData
     public static IntroData GMIntro = new("GM", RoleClass.GM.color, 1, RoleId.GM, TeamRoleType.Neutral, IntroSound: RoleTypes.Engineer);
     public static IntroData CrackerIntro = new("Cracker", RoleClass.Cracker.color, 1, RoleId.Cracker, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData NekoKabochaIntro = new("NekoKabocha", NekoKabocha.color, 1, RoleId.NekoKabocha, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData WaveCannonIntro = new("WaveCannon", RoleClass.WaveCannon.color, 1, RoleId.WaveCannon, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData DoppelgangerIntro = new("Doppelganger", RoleClass.Doppelganger.color, 1, RoleId.Doppelganger, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData WerewolfIntro = new("Werewolf", RoleClass.Werewolf.color, 1, RoleId.Werewolf, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData KnightIntro = new("Knight", Knight.color, 1, RoleId.Knight);

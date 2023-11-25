@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -1074,11 +1075,9 @@ public class CustomOptionHolder
 
         /* |: ========================= Impostor Settings ========================== :| */
 
-        WaveCannonOption = SetupCustomRoleOption(200000, false, RoleId.WaveCannon, CustomOptionType.Impostor);
-        WaveCannonPlayerCount = Create(200001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
-        WaveCannonCoolTime = Create(200002, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
-        WaveCannonChargeTime = Create(200003, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
-        WaveCannonIsSyncKillCoolTime = Create(200004, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, WaveCannonOption);
+        var SortedOptionInfos = OptionInfo.OptionInfos.OrderBy(x => (int)x.Key);
+        foreach (var optionInfo in SortedOptionInfos)
+            optionInfo.Value.CreateOption();
 
         SluggerOption = SetupCustomRoleOption(200100, false, RoleId.Slugger);
         SluggerPlayerCount = Create(200101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
@@ -1919,9 +1918,6 @@ public class CustomOptionHolder
         BaitOption = SetupCustomRoleOption(403100, true, RoleId.Bait);
         BaitPlayerCount = Create(403101, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
         BaitReportTime = Create(403102, true, CustomOptionType.Crewmate, "BaitReportTimeSetting", 2f, 1f, 4f, 0.5f, BaitOption);
-
-        BestfalsechargeOption = SetupCustomRoleOption(403200, true, RoleId.Bestfalsecharge);
-        BestfalsechargePlayerCount = Create(403201, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BestfalsechargeOption);
 
         NiceMechanic.SetupCustomOptions();
 

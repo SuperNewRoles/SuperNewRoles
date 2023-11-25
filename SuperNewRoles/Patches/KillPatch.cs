@@ -671,8 +671,7 @@ public static class MurderPlayerPatch
         DeadPlayer.deadPlayers.Add(deadPlayer);
         FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
         ReplayActionMurder.Create(__instance.PlayerId, target.PlayerId);
-        __instance.OnKill(target); // 使われるようになった時に要仕様調整
-        target.OnDeath(__instance);
+        CustomRoles.OnKill(deadPlayer);
 
         // FIXME:狐キル時にはキルクールリセットが発生しないようにして, この処理は死体が発生した時の処理にしたい。
         SerialKiller.MurderPlayer(__instance, target);
@@ -723,15 +722,14 @@ public static class MurderPlayerPatch
 
                 Doppelganger.KillCoolSetting.MurderPlayer(__instance, target); // キルクリセット処理
 
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                if (WaveCannon.IsSyncKillCoolTime.GetBool() &&
+                    PlayerControl.LocalPlayer.GetRoleBase() is WaveCannon wavecannon
+                    )
                 {
-                    if (CustomOptionHolder.WaveCannonIsSyncKillCoolTime.GetBool())
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptionHolder.WaveCannonCoolTime.GetFloat();
-                }
-                else
-                {
-                    if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
+                    wavecannon?
+                        .CustomButtonInfos?
+                        .FirstOrDefault()?
+                        .ResetCoolTime();
                 }
             }
         }
@@ -751,8 +749,6 @@ public static class MurderPlayerPatch
             new CustomMessage("\n死者が発生しました", 5f);
             Logger.Info("死者が発生しました", "DebugMode");
         }
-
-        target.OnDeath(__instance);
 
         Seer.WrapUpPatch.MurderPlayerPatch.Postfix(target);
 

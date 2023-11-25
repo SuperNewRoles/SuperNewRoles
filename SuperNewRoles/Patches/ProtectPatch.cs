@@ -9,6 +9,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
+using SuperNewRoles.Roles.RoleBases;
 
 namespace SuperNewRoles.Patches;
 
@@ -129,7 +130,7 @@ static class CheckProtectPatch
             }
         }
 
-        Color roleColor = angelRole != RoleId.DefaultRole ? IntroData.GetIntroData(angelRole).color : IntroData.GetIntroData(angel.GetRole()).color;
+        Color roleColor = angelRole != RoleId.DefaultRole ? CustomRoles.GetRoleColor(angelRole) : CustomRoles.GetRoleColor(angel.GetRole());
         string colorCode = string.Format($"#{CustomOptionHolder.ToByte(roleColor.r):X2}{CustomOptionHolder.ToByte(roleColor.g):X2}{CustomOptionHolder.ToByte(roleColor.b):X2}{CustomOptionHolder.ToByte(roleColor.a):X2}");
 
         return (announceBuilder.ToString(), colorCode);

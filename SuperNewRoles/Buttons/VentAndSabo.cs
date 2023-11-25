@@ -5,6 +5,7 @@ using HarmonyLib;
 using SuperNewRoles.MapOption;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -238,7 +239,7 @@ public static class VentAndSabo
         static void Postfix(Vent __instance)
         {
             // Vent outline set role color
-            var color = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer).color;
+            var color = CustomRoles.GetRoleColor(PlayerControl.LocalPlayer);
             string[] outlines = new[] { "_OutlineColor", "_AddColor" };
             foreach (var name in outlines)
                 __instance.myRend.material.SetColor(name, color);

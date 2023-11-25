@@ -119,6 +119,11 @@ LightColor,bright,明るい,亮,亮
 DarkerColor,darker,暗い,暗,暗
 
 # CustomOptions
+CanUseVentOption,Can usevent,ベントを使用できる,可以使用管道,可以使用通風管道
+CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使用破坏,可以使用破壞
+IsImpostorVisionOption,Impostor vision,インポスターの視界か
+CoolTimeOption,Cool time,クールタイム,冷却时间,冷卻時間
+DurationTimeOption,Duration time,持続時間,持续时间,持續時間
 MapCustom,Map Custom,マップ改造,地图设置,地圖設定
 SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加机密室,追加密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖

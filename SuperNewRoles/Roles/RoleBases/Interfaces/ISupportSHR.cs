@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AmongUs.GameOptions;
+
+namespace SuperNewRoles.Roles.RoleBases.Interfaces;
+public interface ISupportSHR
+{
+    /// <summary>
+    /// 実際にセットする役職
+    /// </summary>
+    public RoleTypes RealRole { get; }
+    public bool IsRealRoleNotModOnly => false;
+    /// <summary>
+    /// Desyncの場合はDesync役職を設定する
+    /// </summary>
+    public RoleTypes DesyncRole => RealRole;
+    /// <summary>
+    /// Desync役職か判定
+    /// </summary>
+    public sealed bool IsDesync => RealRole != DesyncRole;
+    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers);
+}

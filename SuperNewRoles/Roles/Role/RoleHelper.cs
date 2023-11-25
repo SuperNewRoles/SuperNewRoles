@@ -13,6 +13,8 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -527,9 +529,6 @@ public static class RoleHelpers
             case RoleId.EvilGambler:
                 RoleClass.EvilGambler.EvilGamblerPlayer.Add(player);
                 break;
-            case RoleId.Bestfalsecharge:
-                RoleClass.Bestfalsecharge.BestfalsechargePlayer.Add(player);
-                break;
             case RoleId.Researcher:
                 RoleClass.Researcher.ResearcherPlayer.Add(player);
                 break;
@@ -826,9 +825,6 @@ public static class RoleHelpers
             case RoleId.Cracker:
                 RoleClass.Cracker.CrackerPlayer.Add(player);
                 break;
-            case RoleId.WaveCannon:
-                RoleClass.WaveCannon.WaveCannonPlayer.Add(player);
-                break;
             case RoleId.NekoKabocha:
                 NekoKabocha.NekoKabochaPlayer.Add(player);
                 break;
@@ -990,6 +986,9 @@ public static class RoleHelpers
                 break;
             // ロールアド
             default:
+                //RoleBaseで選出したなら
+                if (RoleBaseManager.SetRole(player, role) != null)
+                    break;
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
         }
@@ -1123,9 +1122,6 @@ public static class RoleHelpers
                 break;
             case RoleId.EvilGambler:
                 RoleClass.EvilGambler.EvilGamblerPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Bestfalsecharge:
-                RoleClass.Bestfalsecharge.BestfalsechargePlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Researcher:
                 RoleClass.Researcher.ResearcherPlayer.RemoveAll(ClearRemove);
@@ -1418,9 +1414,6 @@ public static class RoleHelpers
             case RoleId.Cracker:
                 RoleClass.Cracker.CrackerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.WaveCannon:
-                RoleClass.WaveCannon.WaveCannonPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.NekoKabocha:
                 NekoKabocha.NekoKabochaPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1544,7 +1537,12 @@ public static class RoleHelpers
             case RoleId.Frankenstein:
                 Frankenstein.FrankensteinPlayer.RemoveAll(ClearRemove);
                 break;
-                // ロールリモベ
+            // ロールリモベ
+            default:
+                RoleBase roleBase = player.GetRoleBase();
+                if (roleBase != null)
+                    RoleBaseManager.ClearRole(player, roleBase);
+                break;
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1572,11 +1570,13 @@ public static class RoleHelpers
     /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
     public static bool IsClearTask(this PlayerControl player)
     {
+        if (player.GetRoleBase() is ITaskHolder taskHolder)
+            return !taskHolder.CountTask;
         var IsTaskClear = false;
         if (player.IsImpostor()) IsTaskClear = true;
-        if (player.IsMadRoles()) IsTaskClear = true;
-        if (player.IsFriendRoles()) IsTaskClear = true;
-        if (player.IsNeutral()) IsTaskClear = true;
+        else if (player.IsMadRoles()) IsTaskClear = true;
+        else if (player.IsFriendRoles()) IsTaskClear = true;
+        else if (player.IsNeutral()) IsTaskClear = true;
         switch (player.GetRole())
         {
             case RoleId.HomeSecurityGuard:
@@ -1621,8 +1621,10 @@ public static class RoleHelpers
     public static bool IsUseVent(this PlayerControl player)
     {
         RoleId role = player.GetRole();
+        RoleBase roleBase = player.GetRoleBase();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
         if (ModeHandler.IsMode(ModeId.VanillaHns)) return false;
+        if (roleBase != null && roleBase is IVentAvailable ventAvailable) return ventAvailable.CanUseVent;
         return role switch
         {
             RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
@@ -1872,7 +1874,7 @@ public static class RoleHelpers
         return RoleId.DefaultRole;
     }
     public static bool IsGhostRole(this RoleId role) =>
-        IntroData.GetIntroData(role).IsGhostRole;
+        CustomRoles.IsGhostRole(role);
 
     public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
@@ -1894,6 +1896,10 @@ public static class RoleHelpers
         {
             return ChacheManager.MyRoleChache != null && player != null && ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
+        //ロルベの場合はロルベのロールを返す
+        RoleBase roleBase = player.GetRoleBase();
+        if (roleBase != null)
+            return roleBase.Role;
         try
         {
             if (RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player)) return RoleId.SoothSayer;
@@ -1929,7 +1935,6 @@ public static class RoleHelpers
             else if (RoleClass.Opportunist.OpportunistPlayer.IsCheckListPlayerControl(player)) return RoleId.Opportunist;
             else if (RoleClass.NiceGambler.NiceGamblerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGambler;
             else if (RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGambler;
-            else if (RoleClass.Bestfalsecharge.BestfalsechargePlayer.IsCheckListPlayerControl(player)) return RoleId.Bestfalsecharge;
             else if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(player)) return RoleId.Researcher;
             else if (RoleClass.SelfBomber.SelfBomberPlayer.IsCheckListPlayerControl(player)) return RoleId.SelfBomber;
             else if (RoleClass.God.GodPlayer.IsCheckListPlayerControl(player)) return RoleId.God;
@@ -2030,7 +2035,6 @@ public static class RoleHelpers
             else if (RoleClass.GM.gm != null && RoleClass.GM.gm.PlayerId == player.PlayerId) return RoleId.GM;
             else if (RoleClass.Cracker.CrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Cracker;
             else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
-            else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
             else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
             else if (RoleClass.Werewolf.WerewolfPlayer.IsCheckListPlayerControl(player)) return RoleId.Werewolf;
             else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;

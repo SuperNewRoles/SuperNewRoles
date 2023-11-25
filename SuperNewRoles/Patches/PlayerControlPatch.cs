@@ -151,7 +151,7 @@ public static class ExilePlayerPatch
         DeadPlayer deadPlayer = new(__instance, __instance.PlayerId, DateTime.UtcNow, DeathReason.Exile, null);
         DeadPlayer.deadPlayers.Add(deadPlayer);
         ReplayActionExile.Create(__instance.PlayerId);
-        __instance.OnDeath(__instance);
+        CustomRoles.OnExild(deadPlayer);
         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
         if (ModeHandler.IsMode(ModeId.Default))
         {

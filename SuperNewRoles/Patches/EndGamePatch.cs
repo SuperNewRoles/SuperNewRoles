@@ -11,6 +11,8 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
@@ -155,8 +157,8 @@ static class AdditionalTempData
         public int PlayerId { get; set; }
         public int ColorId { get; set; }
         public FinalStatus Status { get; internal set; }
-        public IntroData IntroData { get; set; }
-        public IntroData GhostIntroData { get; set; }
+        public RoleId RoleId { get; set; }
+        public RoleId GhostRoleId { get; set; }
         public string AttributeRoleName { get; set; }
     }
 }
@@ -219,7 +221,7 @@ public class EndGameManagerSetUpPatch
             {
                 Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                 if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroData.color, data.IntroData.Name))}";
+                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId))}";
             }
         }
 
@@ -406,10 +408,10 @@ public class EndGameManagerSetUpPatch
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                string roleText = CustomOptionHolder.Cs(data.IntroData.color, data.IntroData.NameKey + "Name") + data.AttributeRoleName;
-                if (data.GhostIntroData.RoleId != RoleId.DefaultRole)
+                string roleText = CustomRoles.GetRoleNameOnColor(data.RoleId) + data.AttributeRoleName;
+                if (data.GhostRoleId != RoleId.DefaultRole)
                 {
-                    roleText += $" → {CustomOptionHolder.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
+                    roleText += $" → {CustomRoles.GetRoleNameOnColor(data.GhostRoleId)}";
                 }
                 //位置調整:ExR参考  by 漢方
                 string result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
@@ -533,12 +535,12 @@ public static class OnGameEndPatch
             if (p != null && p.Object != null && !p.Object.IsBot())
             {
                 //var p = pc.Data;
-                var roles = IntroData.GetIntroData(p.Object.GetRole(), p.Object);
+                RoleId playerrole = p.Object.GetRole();
                 if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
                 {
-                    roles = IntroData.StefinderIntro1;
+                    playerrole = RoleId.Stefinder1;
                 }
-                var ghostRoles = IntroData.GetIntroData(p.Object.GetGhostRole(), p.Object);
+                RoleId playerghostrole = p.Object.GetGhostRole();
                 var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
                 if (p.Object.IsImpostor())
                 {
@@ -579,9 +581,9 @@ public static class OnGameEndPatch
                     TasksTotal = tasksTotal,
                     TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                     Status = finalStatus,
-                    IntroData = roles,
-                    GhostIntroData = ghostRoles,
-                    AttributeRoleName = attributeRoleName
+                    AttributeRoleName = attributeRoleName,
+                    RoleId = playerrole,
+                    GhostRoleId = playerghostrole,
                 });
             }
         }
@@ -936,6 +938,21 @@ public static class OnGameEndPatch
         bool isDleted = false;
         bool changeTheWinCondition = Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.IsChangeTheWinCondition.GetBool();
         bool isReset = false;
+
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.GetRoleBase() is IAdditionalWinner additionalWinner)
+            {
+                IAdditionalWinner.AdditionalWinData additionalWinData = additionalWinner.CanWin();
+                if (additionalWinData.CanWin)
+                {
+                    if (additionalWinData.winCondition != AdditionalTempData.winCondition)
+                        TempData.winners = new(1);
+                    TempData.winners.Add(new(player.Data));
+                    AdditionalTempData.winCondition = additionalWinData.winCondition;
+                }
+            }
+        }
 
         foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
         {
@@ -1491,7 +1508,7 @@ class ExileControllerMessagePatch
                 // Exile role text
                 if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                 {
-                    __result = player.Data.PlayerName + " は " + ModTranslation.GetString(IntroData.GetIntroData(player.GetRole(), player).NameKey + "Name") + " だった！";
+                    __result = player.Data.PlayerName + " は " + CustomRoles.GetRoleName(player) + " だった！";
                 }
             }
         }
