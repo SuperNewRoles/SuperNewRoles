@@ -41,6 +41,7 @@ public enum RoleId
     NiceGuesser,
     EvilHacker,
     EvilSeer,
+    //RoleId
 
     SoothSayer,
     Jester,
@@ -224,7 +225,6 @@ public enum RoleId
     Spider,
     Crook,
     Frankenstein,
-    //RoleId
 }
 
 public enum CustomRPC
