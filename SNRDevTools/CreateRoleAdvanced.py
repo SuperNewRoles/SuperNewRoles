@@ -24,7 +24,7 @@ class ReturnClass:
     # 入力をゲット+戻り値として返す
     def GetInput(self, key):
         if values[key] == "":
-            MainClass.CreateErrorWindow("エラーが発生しました。\n値が空白です\n" + "Key:" + key)
+            MainClass.CreateOKWindow("値が空白です\n" + "Key:" + key)
             return
         else:
             return values[key]
@@ -102,13 +102,13 @@ class ReturnClass:
         MainWindow[key].Update(value=bool)
 
     # エラーウィンドウ作成
-    def CreateErrorWindow(self, text):
+    '''def CreateErrorWindow(self, text):
         ErrorPop = psg.popup_error(text, title="エラー")
         print("エラー:"+text)
         while True:
             if ErrorPop == "Error":
                 MainWindow.close()
-                sys.exit()
+                sys.exit()'''
 
     # 通知作成
     def CreateNotify(self, Title, Text):
@@ -257,7 +257,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.TEAM.ROLENAME;
 
-public class ROLENAME : RoleBase, INTERFACES
+public class ROLENAME : RoleBaseINTERFACES
 {
     public static new RoleInfo Roleinfo = new(
         typeof(ROLENAME),
@@ -316,7 +316,7 @@ psg.theme('Default1')
 MainTab = psg.Tab("メイン", [
     [psg.Text("Role名(英名):", key="RoleNameText"), psg.InputText("", size=(15, 1), key="RoleName")],
     [psg.Text("陣営:    "), psg.Radio("インポスター", "TeamName", key="Impostor", default=True), psg.Radio("クルー", "TeamName", key="Crewmate"), psg.Radio("第三陣営", "TeamName", key="Neutral")],
-    [psg.Text("属性:    "), psg.Radio("なし", group_id="Attribute", key="None", default=True), psg.Radio("幽霊役職", group_id="Attribute", key="GhostRole"), psg.Radio("ジャッカル", group_id="Attribute", key="Jackal"), psg.Radio("マッドメイト", group_id="Madmate", key="Madmate")],
+    [psg.Text("属性:    "), psg.Radio("なし", group_id="Attribute", key="None", default=True), psg.Radio("幽霊役職", group_id="Attribute", key="GhostRole"), psg.Radio("ジャッカル", group_id="Attribute", key="Jackal"), psg.Radio("マッドメイト", group_id="Attribute", key="Madmate")],
     [psg.Text("イントロ音声:", key="IntroSoundText"), psg.Radio("クルー", "IntroSound", key="CrewIntroSound", default=True), psg.Radio("エンジニア", "IntroSound", key="EngineerIntroSound"), psg.Radio("科学者", "IntroSound", key="ScientistIntroSound"), psg.Radio("インポ", "IntroSound", key="ImpoIntroSound"), psg.Radio("シェイプ", "IntroSound", key="ShapeIntroSound")],
     [psg.Text("役職カラー:", key="ColorText"), psg.Radio("インポ色", "RoleColor", key="ImpoColor", default=True), psg.Radio("ナイス緑色", "RoleColor", key="CrewColor"),  psg.ColorChooserButton("色選択", key="ColorButton", target="ColorHash")],
     [psg.Text("取得ハッシュ:", key="ColorHashText"), psg.Input("ImpostorRed", key="ColorHash")],
