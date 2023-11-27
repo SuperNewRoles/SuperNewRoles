@@ -270,7 +270,7 @@ public class ROLENAME : RoleBaseINTERFACES
         TeamType.TEAM
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.ROLENAME, OPTIONID, ,
+        new(RoleId.ROLENAME, OPTIONID, SHRSUPPORT,
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.ROLENAME, introSound: INTRO);
@@ -287,13 +287,14 @@ INTERFACECODE
             .replace("ROLENAME", MainClass.GetInput("RoleName"))
             .replace("INTERFACES", MainClass.Interfaces)
             .replace("OPTIONID", idnum)
+            .replace("SHRSUPPORT", MainClass.GetCBool("ISupportSHR"))
             .replace("INTRO", MainClass.GetIntroSoundType())
             .replace("COLORS", MainClass.GetRoleColor())
             .replace("INTERFACECODE", MainClass.InterfacesCodes)
             )
 
         # 終了報告
-        MainClass.CreateNotify("CreateRoleAdvanced.py", "役職の作成が終了しました")
+        #MainClass.CreateNotify("CreateRoleAdvanced.py", "役職の作成が終了しました")
 
 
 # 変数
@@ -321,7 +322,7 @@ MainTab = psg.Tab("メイン", [
     [psg.Text("役職カラー:", key="ColorText"), psg.Radio("インポ色", "RoleColor", key="ImpoColor", default=True), psg.Radio("ナイス緑色", "RoleColor", key="CrewColor"),  psg.ColorChooserButton("色選択", key="ColorButton", target="ColorHash")],
     [psg.Text("取得ハッシュ:", key="ColorHashText"), psg.Input("ImpostorRed", key="ColorHash")],
     [psg.Text()],
-    [psg.Text(), psg.Text("タブ:", key="SettingTabText"), psg.Radio("インポスター", group_id="OptionTab", key="TeamImpo"), psg.Radio("クルー", group_id="OptionTab", key="TeamCrew"), psg.Radio("第三陣営", group_id="OptionTab", key="TeamNeut")],
+    [psg.Text(), psg.Text("タブ:", key="SettingTabText"), psg.Radio("インポスター", group_id="OptionTab", key="TeamImpo", default=True), psg.Radio("クルー", group_id="OptionTab", key="TeamCrew"), psg.Radio("第三陣営", group_id="OptionTab", key="TeamNeut")],
     [psg.Text(), psg.Check("SHR対応", key="ISupportSHR")],
     [psg.Text(), psg.Text("設定ID(3桁の固有Id)", key="OptionNumberIDText"), psg.Input("", key="OptionNumber", size=(10, 3))],
 ])
