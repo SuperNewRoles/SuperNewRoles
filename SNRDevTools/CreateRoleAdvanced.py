@@ -281,13 +281,16 @@ public class ROLENAME : RoleBase, INTERFACES
     public ROLENAME(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
     }
+INTERFACECODE
 }"""
             .replace("TEAM", MainClass.GetTeam())
             .replace("ROLENAME", MainClass.GetInput("RoleName"))
             .replace("INTERFACES", MainClass.Interfaces)
             .replace("OPTIONID", idnum)
             .replace("INTRO", MainClass.GetIntroSoundType())
-            .replace("COLORS", MainClass.GetRoleColor()))
+            .replace("COLORS", MainClass.GetRoleColor())
+            .replace("INTERFACECODE", MainClass.InterfacesCodes)
+            )
 
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvanced.py", "役職の作成が終了しました")
