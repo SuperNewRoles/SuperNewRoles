@@ -64,17 +64,37 @@ public static class RoleBaseManager
     {
         return PlayerRoles.Local;
     }
+    public static bool TryGetLocalRoleBase(out RoleBase result)
+    {
+        result = PlayerRoles.Local;
+        return result != null;
+    }
     public static T GetLocalRoleBase<T>() where T : RoleBase
     {
         return PlayerRoles.Local as T;
+    }
+    public static bool TryGetLocalRoleBase<T>(out T result) where T : RoleBase
+    {
+        result = PlayerRoles.Local as T;
+        return result != null;
     }
     public static RoleBase GetRoleBaseById(this byte PlayerId)
     {
         return PlayerRoles[PlayerId];
     }
+    public static bool TryGetRoleBaseById(this byte PlayerId, out RoleBase result)
+    {
+        result = PlayerRoles[PlayerId];
+        return result != null;
+    }
     public static RoleBase GetRoleBase(this PlayerControl player)
     {
         return PlayerRoles[player];
+    }
+    public static bool TryGetRoleBase(this PlayerControl player, out RoleBase result)
+    {
+        result = PlayerRoles[player];
+        return result != null;
     }
     public static IReadOnlyList<T> GetRoleBases<T>() where T : RoleBase
     {
@@ -83,5 +103,10 @@ public static class RoleBaseManager
     public static T GetRoleBase<T>(this PlayerControl player) where T : RoleBase
     {
         return PlayerRoles[player] as T;
+    }
+    public static bool TryGetRoleBase<T>(this PlayerControl player, out T result) where T : RoleBase
+    {
+        result = PlayerRoles[player] as T;
+        return result != null;
     }
 }
