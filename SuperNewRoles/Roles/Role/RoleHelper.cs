@@ -6,6 +6,7 @@ using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -1568,8 +1569,10 @@ public static class RoleHelpers
     /// </summary>
     /// <param name="player">判断対象</param>
     /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
-    public static bool IsClearTask(this PlayerControl player)
+    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst=true)
     {
+        if (IsUseFirst && TaskCount.IsClearTaskPlayer != null)
+            return TaskCount.IsClearTaskPlayer[player];
         if (player.GetRoleBase() is ITaskHolder taskHolder)
             return !taskHolder.CountTask;
         var IsTaskClear = false;
