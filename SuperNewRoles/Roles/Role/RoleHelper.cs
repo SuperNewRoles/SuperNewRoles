@@ -4,6 +4,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Replay.ReplayActions;
@@ -1561,6 +1562,14 @@ public static class RoleHelpers
         killWriter.Write((byte)selectRoleData);
         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
         RPCProcedure.SetRole(Player.PlayerId, (byte)selectRoleData);
+    }
+    public static void SwapRoleRPC(this PlayerControl Player1, PlayerControl Player2)
+    {
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SwapRole);
+        writer.Write(Player1.PlayerId);
+        writer.Write(Player2.PlayerId);
+        writer.EndRPC();
+        RPCProcedure.SwapRole(Player1.PlayerId, Player2.PlayerId);
     }
 
     /// <summary>
