@@ -103,7 +103,6 @@ public class FixedUpdate
                 Squid.FixedUpdate();
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
-                CustomRoles.FixedUpdate();
                 Balancer.Update();
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();

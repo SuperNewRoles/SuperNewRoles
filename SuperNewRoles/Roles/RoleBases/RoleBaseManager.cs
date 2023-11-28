@@ -10,17 +10,23 @@ namespace SuperNewRoles.Roles.RoleBases;
 public static class RoleBaseManager
 {
     public static PlayerData<RoleBase> PlayerRoles { get; private set; } = new();
-    public static Dictionary<Type, List<RoleBase>> RoleBaseTypes { get; private set; } = new();
-    private static Dictionary<Type, List<RoleBase>> AllInterfaces = new();
+    public static Dictionary<string, HashSet<RoleBase>> RoleBaseTypes { get; private set; } = new();
+    private static Dictionary<string, HashSet<RoleBase>> AllInterfaces = new();
+    private static HashSet<IFixedUpdaterAll> fixedUpdaterAlls;
     public static void ClearAndReloads()
     {
         PlayerRoles = new();
         RoleBaseTypes = new();
         AllInterfaces = new();
+        fixedUpdaterAlls = new();
+    }
+    public static IReadOnlySet<IFixedUpdaterAll> GetFixedUpdaterAlls()
+    {
+        return fixedUpdaterAlls;
     }
     public static IReadOnlyList<T> GetInterfaces<T>()
     {
-        if (!AllInterfaces.TryGetValue(typeof(T), out List<RoleBase> RoleBases) ||
+        if (!AllInterfaces.TryGetValue(nameof(T), out HashSet<RoleBase> RoleBases) ||
             RoleBases == null)
             return new List<T>();
         return RoleBases.Cast<T>().ToList();
@@ -32,33 +38,37 @@ public static class RoleBaseManager
             return null;
         RoleBase roleBase = roleInfo.CreateInstance(player);
         PlayerRoles[player] = roleBase;
-        if (!RoleBaseTypes.ContainsKey(roleInfo.RoleObjectType))
-            RoleBaseTypes.Add(roleInfo.RoleObjectType, new());
-        RoleBaseTypes[roleInfo.RoleObjectType].Add(roleBase);
+        if (!RoleBaseTypes.ContainsKey(roleInfo.RoleObjectTypeName))
+            RoleBaseTypes.Add(roleInfo.RoleObjectTypeName, new());
+        RoleBaseTypes[roleInfo.RoleObjectTypeName].Add(roleBase);
         //全てのインターフェイスを取得
         Type roleType = roleInfo.RoleObjectType;
         Type[] Interfaces = roleType.GetInterfaces();
         foreach (Type Interface in Interfaces)
         {
-            if (!AllInterfaces.TryGetValue(Interface, out List<RoleBase> IRoleBases))
-                AllInterfaces[Interface] = IRoleBases = new(1);
+            if (!AllInterfaces.TryGetValue(Interface.Name, out HashSet<RoleBase> IRoleBases))
+                AllInterfaces[Interface.Name] = IRoleBases = new(1);
             IRoleBases.Add(roleBase);
         }
+        if (roleBase is IFixedUpdaterAll fixedUpdaterAll)
+            fixedUpdaterAlls.Add(fixedUpdaterAll);
         return roleBase;
     }
     public static void ClearRole(PlayerControl player, RoleBase roleBase)
     {
         roleBase.Dispose();
         PlayerRoles.Remove(player);
-        RoleBaseTypes[roleBase.Roleinfo.RoleObjectType].Remove(roleBase);
+        RoleBaseTypes[roleBase.Roleinfo.RoleObjectTypeName].Remove(roleBase);
         //Interfacesから削除
         Type roleType = roleBase.Roleinfo.RoleObjectType;
         Type[] Interfaces = roleType.GetInterfaces();
         foreach (Type Interface in Interfaces)
         {
-            if (AllInterfaces.TryGetValue(Interface, out List<RoleBase> IRoleBases))
+            if (AllInterfaces.TryGetValue(Interface.Name, out HashSet<RoleBase> IRoleBases))
                 IRoleBases.Remove(roleBase);
         }
+        if (roleBase is IFixedUpdaterAll fixedUpdaterAll)
+            fixedUpdaterAlls.Remove(fixedUpdaterAll);
     }
     public static RoleBase GetLocalRoleBase()
     {
@@ -98,7 +108,7 @@ public static class RoleBaseManager
     }
     public static IReadOnlyList<T> GetRoleBases<T>() where T : RoleBase
     {
-        return RoleBaseTypes.TryGetValue(typeof(T), out List<RoleBase> value) ? value.Cast<T>().ToList() : new();
+        return RoleBaseTypes.TryGetValue(nameof(T), out HashSet<RoleBase> value) ? value.Cast<T>().ToList() : new();
     }
     public static T GetRoleBase<T>(this PlayerControl player) where T : RoleBase
     {

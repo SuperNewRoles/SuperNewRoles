@@ -14,7 +14,7 @@ public static class CustomRoles
     {
         RoleBase roleBase = PlayerControl.LocalPlayer.GetRoleBase();
         IFixedUpdaterMe ifum = roleBase as IFixedUpdaterMe;
-        IReadOnlyList<IFixedUpdaterAll> IFixedUpdaterAlls = RoleBaseManager.GetInterfaces<IFixedUpdaterAll>();
+        IReadOnlySet<IFixedUpdaterAll> IFixedUpdaterAlls = RoleBaseManager.GetFixedUpdaterAlls();
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
