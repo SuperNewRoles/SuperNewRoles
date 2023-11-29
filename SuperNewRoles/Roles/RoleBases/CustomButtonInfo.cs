@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ public class CustomButtonInfo
     /// <param name="Sprite">見た目</param>
     /// <param name="CoolTime">クールタイム</param>
     /// <param name="positionOffset">positionOffset</param>
-    /// <param name="buttonText">ボタンの表示テキスト</param>
+    /// <param name="buttonText">ボタンの表示テキスト(未翻訳のものでもOK)</param>
     /// <param name="HotKey">押す時のキー</param>
     /// <param name="joystickKey">コントローラーのキー</param>
     /// <param name="showButtonText">ボタンの表示テキストを表示するか</param>
@@ -85,7 +86,9 @@ public class CustomButtonInfo
         ActionButton baseButton = null,
         Func<float> DurationTime = null,
         Func<bool> CouldUse = null,
-        Action OnEffectEnds = null)
+        Action OnEffectEnds = null,
+        Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
+        Func<bool> SetTargetCrewmateOnly=null)
     {
         this.HasAbility = false;
         this.AbilityCount = AbilityCount ?? 334;
@@ -100,7 +103,7 @@ public class CustomButtonInfo
         this.BaseButton = BaseButton;
         this.positionOffset = positionOffset;
         this.StopCountCoolFunc = StopCountCoolFunc;
-        this.ButtonText = buttonText;
+        this.ButtonText = ModTranslation.GetString(buttonText);
         this.showButtonText = showButtonText;
         this.GetCoolTimeFunc = CoolTime;
         this.GetDurationTimeFunc = DurationTime;
@@ -114,6 +117,8 @@ public class CustomButtonInfo
         else if (this.HotKey.HasValue) {
             this.joystickKey = JoystickKeys.TryGetValue(HotKey.Value, out int joykey) ? joykey : -1;
         }
+        this.TargetCrewmateOnly = SetTargetCrewmateOnly;
+        this.UntargetPlayer = SetTargetUntargetPlayer;
         GetOrCreateButton();
     }
     public void OnClick()
@@ -192,6 +197,8 @@ public class CustomButtonInfo
     /// <returns></returns>
     public PlayerControl SetTarget()
     {
-        return CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
+        CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
+        PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
+        return CurrentTarget;
     }
 }

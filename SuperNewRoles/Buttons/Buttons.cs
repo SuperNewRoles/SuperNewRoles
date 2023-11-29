@@ -86,7 +86,6 @@ static class HudManagerStartPatch
     public static CustomButton PainterButton;
     public static CustomButton PhotographerButton;
     public static CustomButton StefinderKillButton;
-    public static CustomButton SluggerButton;
     public static CustomButton CrackerButton;
     public static CustomButton DoppelgangerButton;
     public static CustomButton PavlovsownerCreatedogButton;
@@ -642,88 +641,6 @@ static class HudManagerStartPatch
         )
         {
             buttonText = ModTranslation.GetString("PenguinButtonName"),
-            showButtonText = true
-        };
-
-        SluggerButton = new(
-            () =>
-            {
-                var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
-                anim.RpcAnimation(RpcAnimationType.SluggerCharge);
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Slugger; },
-            () =>
-            {
-                if (SluggerButton.isEffectActive && !PlayerControl.LocalPlayer.CanMove)
-                {
-                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
-                    SluggerButton.isEffectActive = false;
-                    anim.RpcAnimation(RpcAnimationType.Stop);
-                }
-                return PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
-                SluggerButton.Timer = SluggerButton.MaxTimer;
-                SluggerButton.effectCancellable = false;
-                SluggerButton.EffectDuration = CustomOptionHolder.SluggerChargeTime.GetFloat();
-                SluggerButton.HasEffect = true;
-            },
-            RoleClass.Slugger.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; },
-            true,
-            5f,
-            () =>
-            {
-                List<PlayerControl> targets = new();
-                //一気にキルできるか。後に設定で変更可に
-                if (CustomOptionHolder.SluggerIsMultiKill.GetBool())
-                {
-                    targets = Slugger.SetTarget();
-                }
-                else
-                {
-                    if (FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget != null) targets.Add(FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget);
-                }
-                RpcAnimationType animationType = RpcAnimationType.SluggerMurder;
-                //空振り判定
-                if (targets.Count <= 0)
-                {
-                    animationType = RpcAnimationType.SluggerMurder;
-                }
-                var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
-                anim.RpcAnimation(animationType);
-                MessageWriter writer = RPCHelper.StartRPC((RpcCalls)CustomRPC.SluggerExile);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write((byte)targets.Count);
-                foreach (PlayerControl Target in targets)
-                {
-                    writer.Write(Target.PlayerId);
-                }
-                writer.EndRPC();
-                List<byte> targetsId = new();
-                foreach (PlayerControl Target in targets)
-                {
-                    targetsId.Add(Target.PlayerId);
-                    Target.RpcSetFinalStatus(FinalStatus.SluggerHarisen);
-                }
-                RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, targetsId);
-                SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
-                SluggerButton.Timer = SluggerButton.MaxTimer;
-                if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
-                {
-                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer, null);
-                }
-            }
-        )
-        {
-            buttonText = ModTranslation.GetString("SluggerButtonName"),
             showButtonText = true
         };
 
@@ -2343,92 +2260,6 @@ static class HudManagerStartPatch
         GhostMechanicRepairButton.buttonText = ModTranslation.GetString("GhostMechanicButtonName");
         GhostMechanicRepairButton.showButtonText = true;
 
-        EvilHackerButton = new(
-            () =>
-            {
-                FastDestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions()
-                {
-                    Mode = MapOptions.Modes.CountOverlay,
-                    AllowMovementWhileMapOpen = CustomOptionHolder.EvilHackerCanMoveWhenUsesAdmin.GetBool()
-                });
-                RoleClass.EvilHacker.IsMyAdmin = true;
-            },
-            (bool isAlive, RoleId role) => { return role == RoleId.EvilHacker; },
-            () =>
-            {
-                return PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                EvilHackerButton.MaxTimer = 0f;
-                EvilHackerButton.Timer = 0f;
-                RoleClass.EvilHacker.IsMyAdmin = false;
-            },
-            RoleClass.EvilHacker.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("ADMINButton"),
-            showButtonText = true
-        };
-
-        EvilHackerMadmateSetting = new(
-            () =>
-            {
-                var target = SetTarget();
-                if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
-                {
-                    switch (PlayerControl.LocalPlayer.GetRole())
-                    {
-                        case RoleId.EvilHacker when RoleClass.EvilHacker.IsCreateMadmate:
-                            Madmate.CreateMadmate(target);
-                            RoleClass.EvilHacker.IsCreateMadmate = false;
-                            break;
-                        case RoleId.EvilSeer when EvilSeer.RoleData.CanCreate:
-                            Madmate.CreateMadmate(target);
-                            EvilSeer.RoleData.CanCreate = false;
-                            break;
-                    }
-                }
-            },
-            (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && EvilSeer.RoleData.CreateMode == 4 && EvilSeer.RoleData.CanCreate)) && ModeHandler.IsMode(ModeId.Default); },
-            () =>
-            {
-                PlayerControl target = SetTarget();
-                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                var coolDown =
-                    PlayerControl.LocalPlayer.IsRole(RoleId.EvilHacker)
-                        ? RoleClass.EvilHacker.Cooldown
-                        : PlayerControl.LocalPlayer.IsRole(RoleId.EvilSeer)
-                            ? EvilSeer.RoleData.EvilSeerButtonCooldown
-                            : 0f;
-
-                EvilHackerMadmateSetting.MaxTimer = coolDown;
-                EvilHackerMadmateSetting.Timer = coolDown;
-            },
-            RoleClass.EvilHacker.GetCreateMadmateButtonSprite(),
-            new Vector3(-2.925f, -0.06f, 0),
-            __instance,
-            __instance.AbilityButton,
-            null,
-            0,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("CreateMadmateButton"),
-            showButtonText = true
-        };
-
-        EvilSeer.Button.SetupCustomButtons(__instance);
-
         PositionSwapperButton = new(
             () =>
             {
@@ -3227,8 +3058,6 @@ static class HudManagerStartPatch
         RoleClass.Doppelganger.DoppelgangerDurationText.enableWordWrapping = false;
         RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
         RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
-
-        Conjurer.SetupCustomButtons(__instance);
 
         GM.CreateButton(__instance);
 

@@ -520,7 +520,7 @@ static class CheckMurderPatch
         switch (target.GetRole())
         {
             case RoleId.EvilSeer:
-                EvilSeer.Ability.OnKill.SuperHostRolesMode(__instance, target);
+                target.GetRoleBase<EvilSeer>().OnKillSuperHostRolesMode(__instance, target);
                 break;
             case RoleId.NekoKabocha:
                 NekoKabocha.OnKill(__instance);
@@ -614,7 +614,7 @@ public static class MurderPlayerPatch
                     }
                     break;
                 case RoleId.EvilSeer:
-                    EvilSeer.Ability.OnKill.DefaultMode(__instance);
+                    RoleBaseManager.GetLocalRoleBase<EvilSeer>().OnKillDefaultMode(__instance);
                     break;
             }
 
@@ -711,10 +711,9 @@ public static class MurderPlayerPatch
 
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Slugger)) // キルクリセット処理
                 {
-                    if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
+                    if (Slugger.IsKillCoolSync.GetBool())
                     {
-                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
-                        HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                        PlayerControl.LocalPlayer.GetRoleBase<Slugger>().CustomButtonInfos.FirstOrDefault().ResetCoolTime();
                     }
                 }
 
@@ -750,7 +749,7 @@ public static class MurderPlayerPatch
             Logger.Info("死者が発生しました", "DebugMode");
         }
 
-        Seer.WrapUpPatch.MurderPlayerPatch.Postfix(target);
+        SeerHandler.WrapUpPatch.MurderPlayerPatch.Postfix(target);
 
         switch (ModeHandler.GetMode())
         {

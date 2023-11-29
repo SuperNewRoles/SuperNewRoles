@@ -150,7 +150,7 @@ public static class Sauner
     public static void CheckAndFlash()
     {
         if (RoleData.LastSaunerFlash && !MeetingHud.Instance)
-            Seer.ShowFlash(GetFlashColor(RoleData.CurrentState), 6, CheckAndFlash);
+            SeerHandler.ShowFlash(GetFlashColor(RoleData.CurrentState), 6, CheckAndFlash);
     }
     public static AudioSource GetAudio(SaunerState state)
     {
@@ -188,7 +188,7 @@ public static class Sauner
                 }
                 else
                 {
-                    Seer.HideFlash();
+                    SeerHandler.HideFlash();
                     if (RoleData.Audio != null)
                     {
                         RoleData.Audio.Stop();

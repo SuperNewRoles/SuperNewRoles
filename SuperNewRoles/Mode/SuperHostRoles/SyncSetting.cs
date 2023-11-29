@@ -8,6 +8,8 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -242,6 +244,10 @@ public static class SyncSetting
             case RoleId.JackalFriends:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
+            default:
+                if (player.GetRoleBase() is ISupportSHR supportSHR)
+                    supportSHR.BuildSetting(optdata);
                 break;
         }
 

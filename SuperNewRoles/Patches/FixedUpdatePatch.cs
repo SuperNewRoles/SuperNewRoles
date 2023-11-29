@@ -1,5 +1,6 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppSystem.Runtime.Remoting.Lifetime;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -102,7 +103,6 @@ public class FixedUpdate
                 Squid.FixedUpdate();
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
-                CustomRoles.FixedUpdate();
                 Balancer.Update();
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();
@@ -213,7 +213,7 @@ public class FixedUpdate
                             Pteranodon.FixedUpdate();
                             break;
                         case RoleId.EvilSeer:
-                            EvilSeer.Ability.DeadBodyArrowFixedUpdate();
+                            RoleBaseManager.GetLocalRoleBase<EvilSeer>().DeadBodyArrowFixedUpdate();
                             break;
                         case RoleId.PoliceSurgeon:
                             PoliceSurgeon.FixedUpdate();
@@ -260,11 +260,11 @@ public class FixedUpdate
                             }
                             break;
                         case RoleId.EvilSeer:
-                            foreach (var arrow in EvilSeer.RoleData.DeadPlayerArrows)
+                            foreach (var arrow in RoleBaseManager.GetLocalRoleBase<EvilSeer>().DeadPlayerArrows)
                             {
                                 if (arrow.Value?.arrow != null)
                                     Object.Destroy(arrow.Value.arrow);
-                                EvilSeer.RoleData.DeadPlayerArrows.Remove(arrow.Key);
+                                RoleBaseManager.GetLocalRoleBase<EvilSeer>().DeadPlayerArrows.Remove(arrow.Key);
                             };
                             break;
                     }

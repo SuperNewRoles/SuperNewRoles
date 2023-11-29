@@ -87,7 +87,6 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
                 WaveCannonObject.Objects[OwnerId]?.Shoot();
                 break;
         }
-        return;
     }
     public void ButtonOnClick()
     {

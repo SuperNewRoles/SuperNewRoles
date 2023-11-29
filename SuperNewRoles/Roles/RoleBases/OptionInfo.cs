@@ -10,7 +10,7 @@ public class OptionInfo
     public static Dictionary<RoleId, OptionInfo> OptionInfos = new();
     public RoleId Role { get; }
     public bool SupportSHR { get; }
-    public int OptionId { get; private set; }
+    public int OptionId { get; set; }
     public bool IsHidden => isHidden || (RoleOpenTimeUTC != null && RoleOpenTimeUTC.Value > DateTime.UtcNow);
     public DateTime? RoleOpenTimeUTC { get; }
     //外から参照する郡

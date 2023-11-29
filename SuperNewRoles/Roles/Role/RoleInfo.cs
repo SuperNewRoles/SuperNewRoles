@@ -9,6 +9,7 @@ namespace SuperNewRoles.Roles.Role;
 public class RoleInfo
 {
     public Type RoleObjectType { get; }
+    public string RoleObjectTypeName { get; }
     public RoleId Role { get; }
     public string NameKey { get; }
     public Color32 RoleColor { get; }
@@ -30,6 +31,7 @@ public class RoleInfo
         )
     {
         this.RoleObjectType = roleObjectType;
+        this.RoleObjectTypeName = roleObjectType.Name;
         this.Role = role;
         this._createInstance = createInstance;
         this.NameKey = namekey;
@@ -44,7 +46,8 @@ public class RoleInfo
     {
         if (_createInstance != null)
             return _createInstance(player);
-        //Instance作成Functionが設定ていない場合はActivatorで作成
+        //Instance作成
+        //Functionが設定ていない場合はActivatorで作成
         return Activator.CreateInstance(RoleObjectType, player as object) as RoleBase;
     }
 }
