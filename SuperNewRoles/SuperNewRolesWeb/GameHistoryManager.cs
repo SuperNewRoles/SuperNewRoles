@@ -67,6 +67,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 Logger.Info("LocalPlayerが存在しませんでした。", "GameHistoryManager");
                 return;
             }
+            if (!AmongUsClient.Instance.AmHost && !CustomOptionHolder.SNRWebSendConditionHostDependency.GetBool()) return;
+
             SendData = new();
             //認証情報
             SendData["token"] = WebAccountManager.Token;
@@ -93,7 +95,11 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 {
                     if (wp.currentPlayer == null) continue;
                     if (wp.currentPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
-                    if (wp.currentPlayer.PlayerId < PlayerControl.LocalPlayer.PlayerId) return;
+                    if (wp.currentPlayer.PlayerId < PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        SendData = null;
+                        return;
+                    }
                 }
                 IsMeOnly = false;
             }
