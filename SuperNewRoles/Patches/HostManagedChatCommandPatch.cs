@@ -34,6 +34,7 @@ internal static class HostManagedChatCommandPatch
         DiscordLink,
         TwitterLink,
         GenerateCode,
+        WebInfo,
     }
 
     /// <summary>
@@ -57,6 +58,7 @@ internal static class HostManagedChatCommandPatch
             "/discord" or "/dc" => CommandType.DiscordLink,
             "/Twitter" or "/tw" => CommandType.TwitterLink,
             "/generatecode" or "/gc" => CommandType.GenerateCode,
+            "/getwebinfo" or "/gwi" => CommandType.WebInfo,
             _ => CommandType.None,
         };
 
@@ -119,6 +121,9 @@ internal static class HostManagedChatCommandPatch
                 if (commandUser == null) return;
                 GetChatCommands.CreateGenerateCode(commandUser);
                 break;
+            case CommandType.WebInfo:
+                SendCommand(commandUser, GetChatCommands.GetWebInfo(), $"<size={(SuperNewRolesPlugin.IsApril() ? "130%" : "150%")}>About {SuperNewRolesPlugin.ColorModName}Web</size>");
+                break;
         }
     }
 }
@@ -139,6 +144,7 @@ internal static class GetChatCommands
         const string endText = " " + "\n." + "</size></align>";
 
         string mainText;
+        string webWarningText = null;
 
         mainText =
             $"{ModTranslation.GetString("WelcomeMessage1")}\n\n" +
@@ -152,7 +158,19 @@ internal static class GetChatCommands
             $"{ModTranslation.GetString("WelcomeMessage9")}\n" +
             $"{ModTranslation.GetString("WelcomeMessage10")}\n";
 
-        welcomeMessage = startText + mainText + endText;
+        if (WebAccountManager.IsLogined || CustomOptionHolder.SNRWebSendConditionHostDependency.GetBool())
+        {
+            string SNRWebWelcomMessage1 = WebAccountManager.IsLogined ? "SNRWebWelcomMessage1_HostSend" : "SNRWebWelcomMessage1_GestSend";
+
+            webWarningText =
+                "\n<color=#4d4398>|-----------------------------------------------------------------------------|</color>\n\n" +
+                $"<color=#FF4B00>{ModTranslation.GetString(SNRWebWelcomMessage1)}</color>\n" +
+                $"{ModTranslation.GetString("SNRWebWelcomMessage2")}\n" +
+                $"{ModTranslation.GetString("SNRWebWelcomMessage3")}\n" +
+                $"{ModTranslation.GetString("SNRWebWelcomMessage4")}\n";
+        }
+
+        welcomeMessage = startText + mainText + webWarningText + endText;
 
         return welcomeMessage;
     }
@@ -168,7 +186,8 @@ internal static class GetChatCommands
             $"<size=100%><b>{ModTranslation.GetString("CommandsTitelModInfo")}</b></size>\n" +
             $"{ModTranslation.GetString("CommandsMessageModInfo1")}\n\n" +
             $"{ModTranslation.GetString("CommandsMessageModInfo2")}\n\n" +
-            $"{ModTranslation.GetString("CommandsMessageModInfo3")}\n\n";
+            $"{ModTranslation.GetString("CommandsMessageModInfo3")}\n\n" +
+            $"{ModTranslation.GetString("CommandsMessageModInfo4")}\n\n";
 
         string externalInfoText =
             $"<size=100%><b>{ModTranslation.GetString("CommandsTitelExternalInfo")}</b></size>\n" +
@@ -241,6 +260,39 @@ internal static class GetChatCommands
         return VersionText;
     }
 
+    internal static string GetWebInfo()
+    {
+        const string line = "<color=#4d4398>|----------------------------------------------------------------------------------------|</color>\n";
+        const string startText = $"<align={"left"}><size=70%>";
+        const string endText = " \n.</size></align>";
+        const string titelText = "<size={0}><b>[{1}]</b>\n</size>";
+
+        string webInfoText =
+            startText +
+            Format(titelText, "100%", ModTranslation.GetString("GetWebInfo_01")) +
+            $"{ModTranslation.GetString("GetWebInfo_02")}\n\n" +
+            line +
+            Format(titelText, "100%", ModTranslation.GetString("GetWebInfo_03")) +
+            Format(titelText, "90%", ModTranslation.GetString("GetWebInfo_04")) +
+            $"{(WebAccountManager.IsLogined ? ModTranslation.GetString("GetWebInfo_05_Host") : ModTranslation.GetString("GetWebInfo_05_Guest"))}{ModTranslation.GetString("GetWebInfo_05_Main")}\n" +
+            $"{ModTranslation.GetString("GetWebInfo_06")}\n\n" +
+            Format(titelText, "90%", ModTranslation.GetString("GetWebInfo_07")) +
+            $"{ModTranslation.GetString("GetWebInfo_08")}\n" +
+            $"{ModTranslation.GetString("GetWebInfo_09")}\n\n" +
+            $"<color=#FF4B00>{ModTranslation.GetString("GetWebInfo_10")}</color>\n\n" +
+            line +
+            Format(titelText, "100%", ModTranslation.GetString("GetWebInfo_11")) +
+            Format(titelText, "90%", ModTranslation.GetString("GetWebInfo_12")) +
+            $"{ModTranslation.GetString("GetWebInfo_13")}\n" +
+            $"[ {WebConstants.WebUrl}docs/terms ]\n\n" +
+            Format(titelText, "90%", ModTranslation.GetString("GetWebInfo_15")) +
+            $"{ModTranslation.GetString("GetWebInfo_13")}\n" +
+            $"[ {WebConstants.WebUrl}docs/privacy ]\n\n" +
+            endText;
+
+        return webInfoText;
+    }
+
     internal static void ProcessAllRoles(PlayerControl commandUser, string[] Commands)
     {
         PlayerControl sendPlayer = commandUser.AmOwner ? null : commandUser;
@@ -259,7 +311,7 @@ internal static class GetChatCommands
             }
             if (!float.TryParse(Commands[1], out float sendtime))
             {
-                Logger.Info("送信感覚の取得に失敗した為, コマンドが実行できませんでした。", "/ar");
+                Logger.Info("送信間隔の取得に失敗した為, コマンドが実行できませんでした。", "/ar");
                 return;
             }
             RoleinformationText.RoleCommand(SendTime: sendtime, target: sendPlayer);
