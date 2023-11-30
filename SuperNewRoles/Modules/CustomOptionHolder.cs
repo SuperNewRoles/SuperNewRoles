@@ -49,7 +49,10 @@ public class CustomOptionHolder
     public static CustomOption DisconnectNotPCOption;
     public static CustomOption DisconnectDontHaveFriendCodeOption;
 
+    public static CustomOption SNRWebSendConditionHostDependency;
+
     public static CustomOption ProhibitModColor;
+    public static CustomOption SendYourRoleAllTurn;
 
     public static CustomOption IsOldMode;
 
@@ -1043,10 +1046,14 @@ public class CustomOptionHolder
             IsMurderPlayerAnnounce = Create(100803, true, CustomOptionType.Generic, Cs(debugColor, "MurderPlayer発生時に通知を行う"), false, IsDebugMode);
         }
 
-        DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
-        DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectDontHaveFriendCode"), true, null, isHeader: true);
+        Color roomSetting = new(238f / 187f, 204f / 255f, 203f / 255f, 1f);
+        DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(roomSetting, "DisconnectNotPC"), true, null, isHeader: true);
+        DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(roomSetting, "DisconnectDontHaveFriendCode"), true, null);
 
-        ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "ProhibitModColor"), false, null, isHeader: true);
+        SNRWebSendConditionHostDependency = Create(104900, true, CustomOptionType.Generic, Cs(roomSetting, "SNRWebTransmissionConditionHostDependency"), false, null, isHeader: true);
+
+        ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(roomSetting, "ProhibitModColor"), false, null, isHeader: true);
+        SendYourRoleAllTurn = Create(105000, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "SendYourRoleAllTurn"), false, null);
 
         enableAgartha = Create(101000, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
@@ -1154,7 +1161,7 @@ public class CustomOptionHolder
         VampireDependentsCanVent = Create(200907, false, CustomOptionType.Impostor, "VampireDependentsCanVent", true, VampireCanCreateDependents);
 
         Spider.CustomOptionData.SetupCustomOptions();
-      
+
         Bat.CustomOptionData.SetupCustomOptions();
 
         KunoichiOption = SetupCustomRoleOption(201000, false, RoleId.Kunoichi);

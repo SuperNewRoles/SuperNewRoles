@@ -210,11 +210,8 @@ internal static class Kunoichi
             if (player.cosmetics.hat != null)
                 player.cosmetics.hat.SpriteColor = color;
 
-            if (player.GetPet()?.rend != null)
-                player.GetPet().rend.color = color;
-
-            if (player.GetPet()?.shadowRend != null)
-                player.GetPet().shadowRend.color = color;
+            if (player.GetPet() != null)
+                player.GetPet().ForEachRenderer(true, (Il2CppSystem.Action<SpriteRenderer>)((render) => render.color = color));
 
             if (player.VisorSlot() != null)
                 player.VisorSlot().Image.color = color;
