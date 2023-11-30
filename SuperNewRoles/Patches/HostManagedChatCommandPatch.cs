@@ -50,7 +50,7 @@ internal static class HostManagedChatCommandPatch
             "/version" or "/v" => CommandType.Version,
             "/now" or "/n" or "/help" or "/h" => CommandType.ThisModisSNR,
             "/allroles" or "/ar" => CommandType.AllRoles,
-            "getinroles" or "gr" => CommandType.GetInRoles,
+            "/getinroles" or "/gr" => CommandType.GetInRoles,
             "/roleinfo" or "/ri" => CommandType.RoleInfo,
             "/winners" or "/w" => CommandType.Winners,
             "/matchtag" or "/tag" => CommandType.MatchMakingTags,
