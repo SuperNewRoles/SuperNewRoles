@@ -10,6 +10,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
         public const string WebUrlDefault = "https://web.supernewroles.com/";
         public const string ApiUrlPrefix = "api/";
         public static string ApiUrl => WebUrl + ApiUrlPrefix;
+        public const string CApiUrlPrefix = "api/";
+        public static string CApiUrl => WebUrl + CApiUrlPrefix;
         public static string WebUrlDebug;
         public static string WebUrl { get { return IsDebugUrl ? WebUrlDebug : WebUrlDefault; } }
         public static bool IsDebugUrl = false;

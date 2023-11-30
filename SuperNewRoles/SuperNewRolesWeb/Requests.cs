@@ -29,7 +29,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
 
             callback(request.responseCode, request.downloadHandler);
 
-            //Logger.Info($"Status Code: {request.responseCode}", "Analytics");
+            Logger.Info($"Connected To {url} And Status Code: {request.responseCode}", "SNRWeb");
         }
 
         static IEnumerator GetIE(string url, Action<long, DownloadHandler> callback)
