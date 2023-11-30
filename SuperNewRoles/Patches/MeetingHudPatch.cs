@@ -768,7 +768,7 @@ class MeetingHudStartPatch
             {
                 SyncSetting.CustomSyncSettings();
                 SyncSetting.MeetingSyncSettings();
-                if (!RoleClass.IsFirstMeetingEnd) AddChatPatch.YourRoleInfoSendCommand();
+                if (CustomOptionHolder.SendYourRoleAllTurn.GetBool() || !RoleClass.IsFirstMeetingEnd) RoleinformationText.YourRoleInfoSendCommand();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         if (ModeHandler.IsMode(ModeId.Default))
