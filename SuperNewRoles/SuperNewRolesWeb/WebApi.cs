@@ -41,7 +41,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
         }
         public static void GetWebPlayerData(string FriendCode, Action<long, DownloadHandler> callback)
         {
-            Requests.Post(WebConstants.ApiUrl + "getwebplayerdata", GetString(new() { { "token", WebAccountManager.Token }, { "FriendCode", FriendCode } }), callback);
+            Requests.Post(WebConstants.CApiUrl + "getwebplayerdata", GetString(new() { { "token", WebAccountManager.Token }, { "FriendCode", FriendCode } }), callback);
         }
         public static void BRStartgame(Dictionary<string, string> data, Action<long, DownloadHandler> callback)
         {
