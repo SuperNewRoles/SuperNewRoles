@@ -203,9 +203,6 @@ public class FixedUpdate
                         case RoleId.ShiftActor:
                             ShiftActor.FixedUpdate();
                             break;
-                        case RoleId.Cupid:
-                            Cupid.FixedUpdate();
-                            break;
                         case RoleId.Dependents:
                             Vampire.FixedUpdate.DependentsOnly();
                             break;

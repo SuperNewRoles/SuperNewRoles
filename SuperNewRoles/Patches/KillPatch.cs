@@ -365,6 +365,8 @@ static class CheckMurderPatch
         }
 
         if (!AmongUsClient.Instance.AmHost) return true;
+        if (!CustomRoles.OnCheckMurderPlayer(__instance, target))
+            return IsKillSuc = false;
         switch (ModeHandler.GetMode())
         {
             case ModeId.Zombie:

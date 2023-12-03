@@ -304,7 +304,6 @@ public enum CustomRPC
     CrackerCrack,
     Camouflage,
     ShowGuardEffect,
-    SetLoversCupid,
     PenguinHikizuri,
     SetVampireStatus,
     SyncDeathMeeting,
@@ -658,11 +657,6 @@ public static class RPCProcedure
                 DeviceClass.VitalTimer = time;
                 break;
         }
-    }
-    public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
-    {
-        RoleClass.Cupid.CupidLoverPair[sourceid] = player1;
-        SetLovers(player1, player2);
     }
 
     public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
@@ -1945,9 +1939,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.ShowGuardEffect:
                         ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetLoversCupid:
-                        SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.PenguinHikizuri:
                         PenguinHikizuri(reader.ReadByte(), reader.ReadByte());

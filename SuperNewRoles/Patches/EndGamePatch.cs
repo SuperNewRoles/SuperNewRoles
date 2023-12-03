@@ -692,8 +692,12 @@ public static class OnGameEndPatch
             Crook.RoleData.Player,
             Frankenstein.FrankensteinPlayer,
             });
-        notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.IsNeutral() && !notWinners.Contains(player))
+                notWinners.Add(player);
+        }
 
         foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
         {
@@ -1090,12 +1094,12 @@ public static class OnGameEndPatch
                             isReset = true;
                         }
                         TempData.winners.Add(new(player.Data));
-                        if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
+                        Cupid cupid = RoleBaseManager.GetRoleBases<Cupid>().FirstOrDefault(x => x.currentPair != null && x.currentPair.PlayerId == player.PlayerId);
+                        if (cupid != null)
                         {
-
-                            PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId));
+                            PlayerControl cPlayer = cupid.Player;
                             if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
-                                TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId)).Data));
+                                TempData.winners.Add(new(cupid.Player.Data));
                         }
                         AdditionalTempData.winCondition = WinCondition.LoversWin;
                     }
@@ -1360,11 +1364,12 @@ public static class OnGameEndPatch
                     foreach (PlayerControl player in plist)
                     {
                         TempData.winners.Add(new(player.Data));
-                        if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
+                        Cupid cupid = RoleBaseManager.GetRoleBases<Cupid>().FirstOrDefault(x => x.currentPair != null && x.currentPair.PlayerId == player.PlayerId);
+                        if (cupid != null)
                         {
-                            PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId));
+                            PlayerControl cPlayer = cupid.Player;
                             if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
-                                TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId)).Data));
+                                TempData.winners.Add(new(cupid.Player.Data));
                         }
                     }
                 }
@@ -1973,7 +1978,7 @@ public static class CheckGameEndPatch
                                 numPavlovsTeamAlive++;
                             }
                         }
-                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(playerInfo.Object.PlayerId))) numLoversAlive++;
+                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.TryGetRoleBase<Cupid>(out Cupid cupid) && cupid.Created)) numLoversAlive++;
                     }
                 }
             }
