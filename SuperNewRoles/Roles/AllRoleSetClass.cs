@@ -1238,45 +1238,43 @@ class AllRoleSetClass
         Crewnotonepar = new();
         foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (!intro.IsGhostRole && CanRoleIdElected(intro.RoleId))
+            if (intro.IsGhostRole || !CanRoleIdElected(intro.RoleId))
+                continue;
+            var option = IntroData.GetOption(intro.RoleId);
+            if (option == null) continue;
+            var selection = option.GetSelection();
+            if (selection == 0)
+                continue;
+            if (selection == 10)
             {
-                var option = IntroData.GetOption(intro.RoleId);
-                if (option == null) continue;
-                var selection = option.GetSelection();
-                if (selection != 0)
+                switch (intro.Team)
                 {
-                    if (selection == 10)
+                    case TeamRoleType.Crewmate:
+                        Crewonepar.Add(intro.RoleId);
+                        break;
+                    case TeamRoleType.Impostor:
+                        Impoonepar.Add(intro.RoleId);
+                        break;
+                    case TeamRoleType.Neutral:
+                        Neutonepar.Add(intro.RoleId);
+                        break;
+                }
+            }
+            else
+            {
+                for (int i = 1; i <= selection; i++)
+                {
+                    switch (intro.Team)
                     {
-                        switch (intro.Team)
-                        {
-                            case TeamRoleType.Crewmate:
-                                Crewonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Impostor:
-                                Impoonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Neutral:
-                                Neutonepar.Add(intro.RoleId);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 1; i <= selection; i++)
-                        {
-                            switch (intro.Team)
-                            {
-                                case TeamRoleType.Crewmate:
-                                    Crewnotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Impostor:
-                                    Imponotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Neutral:
-                                    Neutnotonepar.Add(intro.RoleId);
-                                    break;
-                            }
-                        }
+                        case TeamRoleType.Crewmate:
+                            Crewnotonepar.Add(intro.RoleId);
+                            break;
+                        case TeamRoleType.Impostor:
+                            Imponotonepar.Add(intro.RoleId);
+                            break;
+                        case TeamRoleType.Neutral:
+                            Neutnotonepar.Add(intro.RoleId);
+                            break;
                     }
                 }
             }
