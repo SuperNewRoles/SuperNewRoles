@@ -107,8 +107,11 @@ public class IntroPatch
                     MapOption.MapOption.playerIcons[p.PlayerId] = player;
                     if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
                     {
-                        player.transform.localPosition = bottomLeft + new Vector3(-0.25f, 0f, 0);
-                        player.transform.localScale = Vector3.one * 0.4f;
+                        player.transform.localPosition = new(-4.5f, -2.15f, -9f);
+                        player.transform.localScale = Vector3.one * 0.6f;
+                        Transform PlayerNames = player.NameText().transform.parent;
+                        PlayerNames.localPosition = new(0, -0.5f, 0f);
+                        PlayerNames.localScale = Vector3.one * 1.5f;
                         player.gameObject.SetActive(false);
                     }
                     else if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
@@ -167,7 +170,7 @@ public class IntroPatch
                 Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
                 if (FastDestroyableSingleton<HudManager>.Instance != null)
                 {
-                    Vector3 bottomLeft = new Vector3(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z) + new Vector3(-0.25f, 1f, 0);
+                    Vector3 bottomLeft = new(-4.65f, -2.25f, -9);
                     RoleClass.Hitman.cooldownText = Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.transform);
                     RoleClass.Hitman.cooldownText.alignment = TMPro.TextAlignmentOptions.Center;
                     RoleClass.Hitman.cooldownText.transform.localPosition = bottomLeft + new Vector3(0f, -1f, -1f);
