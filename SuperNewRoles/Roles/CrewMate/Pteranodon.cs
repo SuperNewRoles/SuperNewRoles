@@ -158,6 +158,7 @@ public static class Pteranodon
             UsingPlayers.Add(player.PlayerId, (tarpos, StartTime, pos));
             player.NetTransform.enabled = false;
             player.Collider.enabled = false;
+            player.moveable = false;
         }
         else
         {
@@ -165,6 +166,7 @@ public static class Pteranodon
             player.NetTransform.enabled = true;
             player.Collider.enabled = true;
             player.transform.position = pos;
+            player.moveable = true;
         }
     }
     // ここにコードを書きこんでください
