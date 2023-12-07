@@ -10,6 +10,7 @@ namespace SuperNewRoles.Patches;
 
 class TaskCount
 {
+    public static PlayerData<bool> IsClearTaskPlayer;
     [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.PickRandomConsoles), new Type[] { typeof(TaskTypes), typeof(Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<byte>) })]
     class NormalPlayerTaskPickRandomConsolesPatch
     {
