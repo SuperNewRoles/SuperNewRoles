@@ -9,6 +9,10 @@ namespace SuperNewRoles.Roles.RoleBases;
 
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
+
+namespace SuperNewRoles.Roles.;
 
 public class RoleBaseTemplate : RoleBase
 {
@@ -27,7 +31,7 @@ public class RoleBaseTemplate : RoleBase
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.RoleBaseTemplate, introSound: RoleTypes.Impostor);
-    public static void CreateOption()
+    private static void CreateOption()
     {
     }
     public RoleBaseTemplate(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)

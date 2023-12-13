@@ -245,10 +245,12 @@ class ReportDeadBodyPatch
                 target.PlayerId == __instance.PlayerId)
                 return true;
             if (__instance.IsRole(RoleId.Amnesiac) &&
+                target != null &&
                 !target.Disconnected)
             {
                 __instance.RPCSetRoleUnchecked(target.RoleWhenAlive is null ? target.Role.Role : target.RoleWhenAlive.Value);
-                __instance.SetRoleRPC(target.Object.GetRole());
+                __instance.SwapRoleRPC(target.Object);
+                target.Object.SetRoleRPC(__instance.GetRole());
             }
             if (__instance.IsRole(RoleId.DyingMessenger) &&
                 target != null &&

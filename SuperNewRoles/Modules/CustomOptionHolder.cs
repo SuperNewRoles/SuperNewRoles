@@ -50,7 +50,10 @@ public class CustomOptionHolder
     public static CustomOption DisconnectNotPCOption;
     public static CustomOption DisconnectDontHaveFriendCodeOption;
 
+    public static CustomOption SNRWebSendConditionHostDependency;
+
     public static CustomOption ProhibitModColor;
+    public static CustomOption SendYourRoleAllTurn;
 
     public static CustomOption IsOldMode;
 
@@ -202,18 +205,6 @@ public class CustomOptionHolder
     public static CustomOption SpeederPlayerCount;
     public static CustomOption SpeederCoolTime;
     public static CustomOption SpeederDurationTime;
-
-    public static CustomRoleOption NiceGuesserOption;
-    public static CustomOption NiceGuesserPlayerCount;
-    public static CustomOption NiceGuesserShortOneMeetingCount;
-    public static CustomOption NiceGuesserShortMaxCount;
-    public static CustomOption NiceGuesserCanShotCrew;
-
-    public static CustomRoleOption EvilGuesserOption;
-    public static CustomOption EvilGuesserPlayerCount;
-    public static CustomOption EvilGuesserShortOneMeetingCount;
-    public static CustomOption EvilGuesserShortMaxCount;
-    public static CustomOption EvilGuesserCanShotCrew;
 
     public static CustomRoleOption VultureOption;
     public static CustomOption VulturePlayerCount;
@@ -701,18 +692,6 @@ public class CustomOptionHolder
     public static CustomOption GhostMechanicRepairLimit;
     public static CustomOption GhostMechanicCooldown;
 
-    public static CustomRoleOption EvilHackerOption;
-    public static CustomOption EvilHackerPlayerCount;
-    public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
-    public static CustomOption EvilHackerMadmateSetting;
-    public static CustomOption EvilHackerButtonCooldown;
-    public static CustomOption EvilHackerHasEnhancedAdmin;
-    public static CustomOption EvilHackerCanSeeImpostorPositions;
-    public static CustomOption EvilHackerCanSeeDeadBodyPositions;
-    public static CustomOption EvilHackerCanUseAdminDuringMeeting;
-    public static CustomOption EvilHackerSabotageMapShowsAdmin;
-    public static CustomOption EvilHackerMapShowsDoorState;
-
     public static CustomRoleOption SecretlyKillerOption;
     public static CustomOption SecretlyKillerPlayerCount;
     public static CustomOption SecretlyKillerKillCoolTime;
@@ -1037,10 +1016,14 @@ public class CustomOptionHolder
             IsMurderPlayerAnnounce = Create(100803, true, CustomOptionType.Generic, Cs(debugColor, "MurderPlayer発生時に通知を行う"), false, IsDebugMode);
         }
 
-        DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
-        DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectDontHaveFriendCode"), true, null, isHeader: true);
+        Color roomSetting = new(238f / 187f, 204f / 255f, 203f / 255f, 1f);
+        DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(roomSetting, "DisconnectNotPC"), true, null, isHeader: true);
+        DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(roomSetting, "DisconnectDontHaveFriendCode"), true, null);
 
-        ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "ProhibitModColor"), false, null, isHeader: true);
+        SNRWebSendConditionHostDependency = Create(104900, true, CustomOptionType.Generic, Cs(roomSetting, "SNRWebTransmissionConditionHostDependency"), false, null, isHeader: true);
+
+        ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(roomSetting, "ProhibitModColor"), false, null, isHeader: true);
+        SendYourRoleAllTurn = Create(105000, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "SendYourRoleAllTurn"), false, null);
 
         enableAgartha = Create(101000, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
@@ -1071,26 +1054,6 @@ public class CustomOptionHolder
         var SortedOptionInfos = OptionInfo.OptionInfos.OrderBy(x => (int)x.Key);
         foreach (var optionInfo in SortedOptionInfos)
             optionInfo.Value.CreateOption();
-
-        EvilGuesserOption = SetupCustomRoleOption(200400, false, RoleId.EvilGuesser);
-        EvilGuesserPlayerCount = Create(200401, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
-        EvilGuesserShortMaxCount = Create(200402, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
-        EvilGuesserShortOneMeetingCount = Create(200403, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
-        EvilGuesserCanShotCrew = Create(200404, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, EvilGuesserOption);
-
-        EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
-        EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
-        EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
-        EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
-        EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
-        EvilHackerHasEnhancedAdmin = Create(200306, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, EvilHackerOption);
-        EvilHackerCanSeeImpostorPositions = Create(200307, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, EvilHackerHasEnhancedAdmin);
-        EvilHackerCanSeeDeadBodyPositions = Create(200308, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, EvilHackerHasEnhancedAdmin);
-        EvilHackerCanUseAdminDuringMeeting = Create(200309, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringMeeting", true, EvilHackerOption);
-        EvilHackerSabotageMapShowsAdmin = Create(200310, false, CustomOptionType.Impostor, "EvilHackerSabotageMapShowsAdmin", true, EvilHackerOption);
-        EvilHackerMapShowsDoorState = Create(200311, false, CustomOptionType.Impostor, "EvilHackerMapShowsDoorState", true, EvilHackerOption);
-
-        EvilSeer.CustomOptionData.SetupCustomOptions();
 
         ShiftActor.SetupCustomOptions();
 
@@ -1653,12 +1616,6 @@ public class CustomOptionHolder
         ChiefSheriffFriendsRoleKill = Create(400309, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, ChiefOption);
         ChiefSheriffCanKillLovers = Create(400310, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
         ChiefSheriffQuarreledKill = Create(400311, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, ChiefOption);
-
-        NiceGuesserOption = SetupCustomRoleOption(400401, false, RoleId.NiceGuesser);
-        NiceGuesserPlayerCount = Create(400402, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
-        NiceGuesserShortMaxCount = Create(400403, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
-        NiceGuesserShortOneMeetingCount = Create(400404, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
-        NiceGuesserCanShotCrew = Create(400405, false, CustomOptionType.Crewmate, "EvilGuesserCanCrewShotSetting", true, NiceGuesserOption);
 
         WiseMan.SetupCustomOptions();
 

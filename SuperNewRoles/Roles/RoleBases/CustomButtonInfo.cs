@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
 using UnityEngine;
@@ -94,7 +95,9 @@ public class CustomButtonInfo
         Func<bool> CouldUse = null,
         Action OnEffectEnds = null,
         bool HasAbilityCountText = false,
-        string AbilityCountTextFormat = null)
+        string AbilityCountTextFormat = null,
+        Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
+        Func<bool> SetTargetCrewmateOnly=null)
     {
         this.HasAbility = AbilityCount != null;
         this.AbilityCount = AbilityCount ?? 334;
@@ -124,6 +127,8 @@ public class CustomButtonInfo
         else if (this.HotKey.HasValue) {
             this.joystickKey = JoystickKeys.TryGetValue(HotKey.Value, out int joykey) ? joykey : -1;
         }
+        this.TargetCrewmateOnly = SetTargetCrewmateOnly;
+        this.UntargetPlayer = SetTargetUntargetPlayer;
         GetOrCreateButton();
         if (HasAbilityCountText)
         {
@@ -224,6 +229,8 @@ public class CustomButtonInfo
     /// <returns></returns>
     public PlayerControl SetTarget()
     {
-        return CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
+        CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
+        PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
+        return CurrentTarget;
     }
 }

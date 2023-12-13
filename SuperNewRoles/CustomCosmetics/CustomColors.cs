@@ -170,22 +170,6 @@ public class CustomColors
         List<Color32> shadowList = Enumerable.ToList(Palette.ShadowColors);
         List<CustomColor> colors = new();
         var noLighterColorTemp = new List<KeyValuePair<ColorType, (Color32, Color32, bool)>>();
-        /*
-        string outputtext = "\n";
-        for (int index = 0; index < Palette.PlayerColors.Length; index++) {
-            Color32 pc = Palette.PlayerColors[index];
-            Color32 sc = Palette.ShadowColors[index];
-            outputtext += $"*{index},{pc.r},{pc.g},{pc.b},{pc.a},{sc.r},{sc.g},{sc.b},{sc.a},{(lighterColors.Contains(index) ? "a" : "b")}\n";
-        }
-        int indexa = Palette.PlayerColors.Length;
-        foreach (var data in CustomColorDataa)
-        {
-            Color32 pc = data.Value.Item1;
-            Color32 sc = data.Value.Item2;
-            outputtext += $"{(int)data.Key + Palette.PlayerColors.Length},{pc.r},{pc.g},{pc.b},{pc.a},{sc.r},{sc.g},{sc.b},{sc.a},{(data.Value.Item3 ? "a" : "b")}\n";
-            indexa++;
-        }
-        SuperNewRolesPlugin.Logger.LogInfo(outputtext);*/
         CustomColorData = new();
 
         var fileName = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.Color.csv");
@@ -264,10 +248,27 @@ public class CustomColors
             if (cc.isLighterColor)
                 LighterColors.Add(colorList.Count - 1);
         }
-
+        /*
+        string outputtext = "\n";
+        for (int index = 0; index < Palette.PlayerColors.Length; index++)
+        {
+            Color32 pc = Palette.PlayerColors[index];
+            Color32 sc = Palette.ShadowColors[index];
+            outputtext += $"*{index},{pc.r},{pc.g},{pc.b},{pc.a},{sc.r},{sc.g},{sc.b},{sc.a},{(LighterColors.Contains(index) ? "a" : "b")}\n";
+        }
+        int indexa = Palette.PlayerColors.Length;
+        foreach (var data in CustomColorDataOld)
+        {
+            Color32 pc = data.Value.Item1;
+            Color32 sc = data.Value.Item2;
+            outputtext += $"{(int)data.Key + Palette.PlayerColors.Length},{pc.r},{pc.g},{pc.b},{pc.a},{sc.r},{sc.g},{sc.b},{sc.a},{(data.Value.Item3 ? "a" : "b")}\n";
+            indexa++;
+        }
+        SuperNewRolesPlugin.Logger.LogInfo(outputtext);*/
         Palette.ColorNames = longList.ToArray();
         Palette.PlayerColors = colorList.ToArray();
         Palette.ShadowColors = shadowList.ToArray();
+        
     }
 
     protected internal struct CustomColor

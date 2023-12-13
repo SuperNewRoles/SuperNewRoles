@@ -21,5 +21,18 @@ public interface ISupportSHR
     /// Desync役職か判定
     /// </summary>
     public sealed bool IsDesync => RealRole != DesyncRole;
-    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers);
+    /// <summary>
+    /// インポスター視界かを設定
+    /// nullの場合はクルーか第三でDesyncインポならクルーに設定
+    /// </summary>
+    public bool? IsImpostorLight => null;
+    public bool IsZeroCoolEngineer => false;
+    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
+    {
+
+    }
+    public void BuildSetting(IGameOptions gameOptions)
+    {
+
+    }
 }

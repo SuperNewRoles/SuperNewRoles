@@ -4,8 +4,10 @@ using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -490,12 +492,6 @@ public static class RoleHelpers
             case RoleId.Freezer:
                 RoleClass.Freezer.FreezerPlayer.Add(player);
                 break;
-            case RoleId.NiceGuesser:
-                RoleClass.NiceGuesser.NiceGuesserPlayer.Add(player);
-                break;
-            case RoleId.EvilGuesser:
-                RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
-                break;
             case RoleId.Vulture:
                 RoleClass.Vulture.VulturePlayer.Add(player);
                 break;
@@ -659,9 +655,6 @@ public static class RoleHelpers
             case RoleId.MadSeer:
                 RoleClass.MadSeer.MadSeerPlayer.Add(player);
                 break;
-            case RoleId.EvilSeer:
-                EvilSeer.RoleData.Player.Add(player);
-                break;
             case RoleId.RemoteSheriff:
                 RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
                 break;
@@ -715,9 +708,6 @@ public static class RoleHelpers
                 break;
             case RoleId.GhostMechanic:
                 RoleClass.GhostMechanic.GhostMechanicPlayer.Add(player);
-                break;
-            case RoleId.EvilHacker:
-                RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
                 break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
@@ -1078,12 +1068,6 @@ public static class RoleHelpers
             case RoleId.Freezer:
                 RoleClass.Freezer.FreezerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.NiceGuesser:
-                RoleClass.NiceGuesser.NiceGuesserPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.EvilGuesser:
-                RoleClass.EvilGuesser.EvilGuesserPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Vulture:
                 RoleClass.Vulture.VulturePlayer.RemoveAll(ClearRemove);
                 break;
@@ -1249,9 +1233,6 @@ public static class RoleHelpers
             case RoleId.MadSeer:
                 RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.EvilSeer:
-                EvilSeer.RoleData.Player.RemoveAll(ClearRemove);
-                break;
             case RoleId.TeleportingJackal:
                 RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1305,9 +1286,6 @@ public static class RoleHelpers
                 break;
             case RoleId.GhostMechanic:
                 RoleClass.GhostMechanic.GhostMechanicPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.EvilHacker:
-                RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.PositionSwapper:
                 RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
@@ -1550,51 +1528,68 @@ public static class RoleHelpers
         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
         RPCProcedure.SetRole(Player.PlayerId, (byte)selectRoleData);
     }
+    public static void SwapRoleRPC(this PlayerControl Player1, PlayerControl Player2)
+    {
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SwapRole);
+        writer.Write(Player1.PlayerId);
+        writer.Write(Player2.PlayerId);
+        writer.EndRPC();
+        RPCProcedure.SwapRole(Player1.PlayerId, Player2.PlayerId);
+    }
 
     /// <summary>
     /// クルーのタスク数にカウントしないプレイヤーかを判断する。
     /// </summary>
     /// <param name="player">判断対象</param>
     /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
-    public static bool IsClearTask(this PlayerControl player)
+    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst=true)
     {
-        if (player.GetRoleBase() is ITaskHolder taskHolder)
-            return !taskHolder.CountTask;
+        //タスクをカウントしない役職に就いた/就いていた場合はカウントしない
+        if (IsUseFirst && TaskCount.IsClearTaskPlayer != null && TaskCount.IsClearTaskPlayer[player])
+            return true;
         var IsTaskClear = false;
-        if (player.IsImpostor()) IsTaskClear = true;
-        else if (player.IsMadRoles()) IsTaskClear = true;
-        else if (player.IsFriendRoles()) IsTaskClear = true;
-        else if (player.IsNeutral()) IsTaskClear = true;
-        switch (player.GetRole())
+        if (player.GetRoleBase() is ITaskHolder taskHolder)
+            IsTaskClear = !taskHolder.CountTask;
+        else
         {
-            case RoleId.HomeSecurityGuard:
-            case RoleId.MadKiller:
-            case RoleId.Dependents:
-            case RoleId.SatsumaAndImo:
-            case RoleId.ShermansServant:
-            case RoleId.SidekickWaveCannon:
-            case RoleId.WellBehaver:
-                // タスククリアか 個別表記
+            if (player.IsImpostor()) IsTaskClear = true;
+            else if (player.IsMadRoles()) IsTaskClear = true;
+            else if (player.IsFriendRoles()) IsTaskClear = true;
+            else if (player.IsNeutral()) IsTaskClear = true;
+            switch (player.GetRole())
+            {
+                case RoleId.HomeSecurityGuard:
+                case RoleId.MadKiller:
+                case RoleId.Dependents:
+                case RoleId.SatsumaAndImo:
+                case RoleId.ShermansServant:
+                case RoleId.SidekickWaveCannon:
+                case RoleId.WellBehaver:
+                    // タスククリアか 個別表記
+                    IsTaskClear = true;
+                    break;
+                case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
+                    IsTaskClear = true;
+                    break;
+                case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                case RoleId.RemoteSheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                case RoleId.ToiletFan when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                case RoleId.NiceButtoner when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                    // インポスター置き換えクルー役職系のタスククリア
+                    IsTaskClear = true;
+                    break;
+            }
+            if (!IsTaskClear
+                && (player.IsQuarreled()
+                    || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers()))
+                )
+            {
                 IsTaskClear = true;
-                break;
-            case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
-                IsTaskClear = true;
-                break;
-            case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
-            case RoleId.RemoteSheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
-            case RoleId.ToiletFan when ModeHandler.IsMode(ModeId.SuperHostRoles):
-            case RoleId.NiceButtoner when ModeHandler.IsMode(ModeId.SuperHostRoles):
-                // インポスター置き換えクルー役職系のタスククリア
-                IsTaskClear = true;
-                break;
+            }
         }
-        if (!IsTaskClear
-            && (player.IsQuarreled()
-                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers()))
-            )
-        {
-            IsTaskClear = true;
-        }
+        //タスクをカウントしなくなっていた場合はこれからもカウントしない
+        if (TaskCount.IsClearTaskPlayer != null && !IsTaskClear)
+            TaskCount.IsClearTaskPlayer[player] = IsTaskClear;
         return IsTaskClear;
     }
 
@@ -1910,8 +1905,6 @@ public static class RoleHelpers
             else if (RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player)) return RoleId.Shielder;
             else if (RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player)) return RoleId.Speeder;
             else if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player)) return RoleId.Freezer;
-            else if (RoleClass.NiceGuesser.NiceGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGuesser;
-            else if (RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGuesser;
             else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
             else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;
             else if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player)) return RoleId.Clergyman;
@@ -1966,7 +1959,6 @@ public static class RoleHelpers
             else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.DarkKiller;
             else if (RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player)) return RoleId.Seer;
             else if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadSeer;
-            else if (EvilSeer.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.EvilSeer;
             else if (RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.RemoteSheriff;
             else if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player)) return RoleId.Fox;
             else if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.TeleportingJackal;
@@ -1986,7 +1978,6 @@ public static class RoleHelpers
             else if (RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadCleaner;
             else if (RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.MayorFriends;
             else if (RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.VentMaker;
-            else if (RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilHacker;
             else if (RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player)) return RoleId.PositionSwapper;
             else if (RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player)) return RoleId.Tuna;
             else if (RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player)) return RoleId.Mafia;
