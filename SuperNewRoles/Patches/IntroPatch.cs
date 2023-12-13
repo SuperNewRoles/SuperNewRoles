@@ -83,6 +83,13 @@ public class IntroPatch
         public static PoolablePlayer playerPrefab;
         public static void Prefix(IntroCutscene __instance)
         {
+            TaskCount.IsClearTaskPlayer = null;
+            PlayerData<bool> TaskPlayers = new(defaultvalue: false);
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                TaskPlayers[player] = player.IsClearTask(IsUseFirst:false);
+            }
+            TaskCount.IsClearTaskPlayer = TaskPlayers;
             foreach (PlayerControl player in BotManager.AllBots)
             {
                 GameData.Instance.RemovePlayer(player.PlayerId);

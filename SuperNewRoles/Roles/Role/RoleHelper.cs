@@ -4,8 +4,10 @@ using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -1520,51 +1522,68 @@ public static class RoleHelpers
         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
         RPCProcedure.SetRole(Player.PlayerId, (byte)selectRoleData);
     }
+    public static void SwapRoleRPC(this PlayerControl Player1, PlayerControl Player2)
+    {
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SwapRole);
+        writer.Write(Player1.PlayerId);
+        writer.Write(Player2.PlayerId);
+        writer.EndRPC();
+        RPCProcedure.SwapRole(Player1.PlayerId, Player2.PlayerId);
+    }
 
     /// <summary>
     /// クルーのタスク数にカウントしないプレイヤーかを判断する。
     /// </summary>
     /// <param name="player">判断対象</param>
     /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
-    public static bool IsClearTask(this PlayerControl player)
+    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst=true)
     {
-        if (player.GetRoleBase() is ITaskHolder taskHolder)
-            return !taskHolder.CountTask;
+        //タスクをカウントしない役職に就いた/就いていた場合はカウントしない
+        if (IsUseFirst && TaskCount.IsClearTaskPlayer != null && TaskCount.IsClearTaskPlayer[player])
+            return true;
         var IsTaskClear = false;
-        if (player.IsImpostor()) IsTaskClear = true;
-        else if (player.IsMadRoles()) IsTaskClear = true;
-        else if (player.IsFriendRoles()) IsTaskClear = true;
-        else if (player.IsNeutral()) IsTaskClear = true;
-        switch (player.GetRole())
+        if (player.GetRoleBase() is ITaskHolder taskHolder)
+            IsTaskClear = !taskHolder.CountTask;
+        else
         {
-            case RoleId.HomeSecurityGuard:
-            case RoleId.MadKiller:
-            case RoleId.Dependents:
-            case RoleId.SatsumaAndImo:
-            case RoleId.ShermansServant:
-            case RoleId.SidekickWaveCannon:
-            case RoleId.WellBehaver:
-                // タスククリアか 個別表記
+            if (player.IsImpostor()) IsTaskClear = true;
+            else if (player.IsMadRoles()) IsTaskClear = true;
+            else if (player.IsFriendRoles()) IsTaskClear = true;
+            else if (player.IsNeutral()) IsTaskClear = true;
+            switch (player.GetRole())
+            {
+                case RoleId.HomeSecurityGuard:
+                case RoleId.MadKiller:
+                case RoleId.Dependents:
+                case RoleId.SatsumaAndImo:
+                case RoleId.ShermansServant:
+                case RoleId.SidekickWaveCannon:
+                case RoleId.WellBehaver:
+                    // タスククリアか 個別表記
+                    IsTaskClear = true;
+                    break;
+                case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
+                    IsTaskClear = true;
+                    break;
+                case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                case RoleId.RemoteSheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                case RoleId.ToiletFan when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                case RoleId.NiceButtoner when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                    // インポスター置き換えクルー役職系のタスククリア
+                    IsTaskClear = true;
+                    break;
+            }
+            if (!IsTaskClear
+                && (player.IsQuarreled()
+                    || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers()))
+                )
+            {
                 IsTaskClear = true;
-                break;
-            case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
-                IsTaskClear = true;
-                break;
-            case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
-            case RoleId.RemoteSheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
-            case RoleId.ToiletFan when ModeHandler.IsMode(ModeId.SuperHostRoles):
-            case RoleId.NiceButtoner when ModeHandler.IsMode(ModeId.SuperHostRoles):
-                // インポスター置き換えクルー役職系のタスククリア
-                IsTaskClear = true;
-                break;
+            }
         }
-        if (!IsTaskClear
-            && (player.IsQuarreled()
-                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers()))
-            )
-        {
-            IsTaskClear = true;
-        }
+        //タスクをカウントしなくなっていた場合はこれからもカウントしない
+        if (TaskCount.IsClearTaskPlayer != null && !IsTaskClear)
+            TaskCount.IsClearTaskPlayer[player] = IsTaskClear;
         return IsTaskClear;
     }
 
