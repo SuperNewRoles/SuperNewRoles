@@ -227,7 +227,6 @@ public static class RoleClass
         //SidekickWaveCannon.Clear();
         Beacon.AllBeacons = new();
         Camouflager.ClearAndReload();
-        Cupid.ClearAndReload();
         HamburgerShop.ClearAndReload();
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
@@ -2782,26 +2781,6 @@ public static class RoleClass
         {
             WerewolfPlayer = new();
             IsShooted = false;
-        }
-    }
-    public static class Cupid
-    {
-        public static List<PlayerControl> CupidPlayer;
-        public static Color32 color = Lovers.color;
-        public static PlayerControl currentLovers;
-        public static PlayerControl currentTarget;
-        public static bool Created;
-        public static Dictionary<byte, byte> CupidLoverPair;
-
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.cupidButton.png", 115f);
-
-        public static void ClearAndReload()
-        {
-            CupidPlayer = new();
-            currentLovers = null;
-            currentTarget = null;
-            Created = false;
-            CupidLoverPair = new();
         }
     }
 

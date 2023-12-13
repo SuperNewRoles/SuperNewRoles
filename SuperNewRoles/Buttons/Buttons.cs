@@ -16,6 +16,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using TMPro;
 using UnityEngine;
 
@@ -91,7 +92,6 @@ static class HudManagerStartPatch
     public static CustomButton PavlovsownerCreatedogButton;
     public static CustomButton PavlovsdogKillButton;
     public static CustomButton CamouflagerButton;
-    public static CustomButton CupidButton;
     public static CustomButton PenguinButton;
     public static CustomButton VampireCreateDependentsButton;
     public static CustomButton DependentsKillButton;
@@ -382,7 +382,7 @@ static class HudManagerStartPatch
                         bool IsAliveLovers = false;
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(p.PlayerId))))
+                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.TryGetRoleBase<Cupid>(out Cupid cupid) & cupid.Created)))
                             {
                                 IsAliveLovers = true;
                                 break;
@@ -676,62 +676,6 @@ static class HudManagerStartPatch
             )
         {
             buttonText = ModTranslation.GetString("PhotographerButtonName"),
-            showButtonText = true
-        };
-
-        CupidButton = new(
-            () =>
-            {
-                PlayerControl target = RoleClass.Cupid.currentTarget;
-                if (target.IsLovers() || target.IsRole(RoleId.LoversBreaker)) return;
-                if (RoleClass.Cupid.currentLovers is null)
-                {
-                    RoleClass.Cupid.currentLovers = target;
-                    CupidButton.MaxTimer = CustomOptionHolder.CupidCoolTime.GetFloat();
-                    CupidButton.Timer = CupidButton.MaxTimer;
-                }
-                else
-                {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetLoversCupid);
-                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                    writer.Write(RoleClass.Cupid.currentLovers.PlayerId);
-                    writer.Write(target.PlayerId);
-                    writer.EndRPC();
-                    RPCProcedure.SetLoversCupid(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Cupid.currentLovers.PlayerId, target.PlayerId);
-                    RoleClass.Cupid.Created = true;
-                }
-                RoleClass.Cupid.currentTarget = null;
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Cupid && !RoleClass.Cupid.Created; },
-            () =>
-            {
-                if (!RoleClass.Cupid.Created && RoleClass.Cupid.currentLovers != null && RoleClass.Cupid.currentLovers.IsDead())
-                {
-                    RoleClass.Cupid.currentLovers = null;
-                }
-                if (!PlayerControl.LocalPlayer.CanMove) return false;
-                List<PlayerControl> untarget = new();
-                if (RoleClass.Cupid.currentLovers != null)
-                {
-                    untarget.Add(RoleClass.Cupid.currentLovers);
-                }
-                return RoleClass.Cupid.currentTarget = SetTarget(untarget);
-            },
-            () =>
-            {
-                CupidButton.MaxTimer = CustomOptionHolder.CupidCoolTime.GetFloat();
-                CupidButton.Timer = CupidButton.MaxTimer;
-            },
-            RoleClass.Cupid.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-            )
-        {
-            buttonText = ModTranslation.GetString("CupidButtonName"),
             showButtonText = true
         };
 

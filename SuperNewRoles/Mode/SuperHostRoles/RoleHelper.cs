@@ -1,4 +1,5 @@
 
+using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -10,10 +11,12 @@ public static class RoleHelper
     public static bool IsCrewVision(this PlayerControl player)
     {
         var IsCrewVision = false;
-        if (player.GetRoleBase() is ISupportSHR supportSHR &&
-            supportSHR.IsImpostorLight.HasValue)
+        if (player.GetRoleBase() is ISupportSHR supportSHR)
         {
-            IsCrewVision = !supportSHR.IsImpostorLight.Value;
+            if (supportSHR.IsImpostorLight.HasValue)
+                IsCrewVision = !supportSHR.IsImpostorLight.Value;
+            else if (supportSHR.IsDesync && supportSHR.RealRole is RoleTypes.Crewmate or RoleTypes.Engineer or RoleTypes.Scientist)
+                IsCrewVision = true;
         }
         if (!IsCrewVision)
         {

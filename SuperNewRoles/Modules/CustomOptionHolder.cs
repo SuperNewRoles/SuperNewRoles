@@ -908,10 +908,6 @@ public class CustomOptionHolder
     public static CustomOption CamouflagerCamouflageChangeColor;
     public static CustomOption CamouflagerCamouflageColor;
 
-    public static CustomRoleOption CupidOption;
-    public static CustomOption CupidPlayerCount;
-    public static CustomOption CupidCoolTime;
-
     public static CustomRoleOption HamburgerShopOption;
     public static CustomOption HamburgerShopPlayerCount;
     public static CustomOption HamburgerShopChangeTaskPrefab;
@@ -1464,10 +1460,6 @@ public class CustomOptionHolder
         RevolutionistTouchTime = Create(301007, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
         RevolutionistAddWin = Create(301008, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
         RevolutionistAddWinIsAlive = Create(301009, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
-
-        CupidOption = SetupCustomRoleOption(301100, false, RoleId.Cupid);
-        CupidPlayerCount = Create(301101, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
-        CupidCoolTime = Create(301102, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
 
         LoversBreakerOption = SetupCustomRoleOption(301200, false, RoleId.LoversBreaker);
         LoversBreakerPlayerCount = Create(301201, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);

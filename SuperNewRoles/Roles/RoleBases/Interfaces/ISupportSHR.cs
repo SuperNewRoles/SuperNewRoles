@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles.RoleBases.Interfaces;
 public interface ISupportSHR
 {
     /// <summary>
-    /// 実際にセットする役職
+    /// 判定上の役職
     /// </summary>
     public RoleTypes RealRole { get; }
     public bool IsRealRoleNotModOnly => false;
