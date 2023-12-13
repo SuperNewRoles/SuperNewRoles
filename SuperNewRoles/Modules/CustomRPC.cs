@@ -41,6 +41,7 @@ public enum RoleId
     NiceGuesser,
     EvilHacker,
     EvilSeer,
+    Cupid,
     //RoleId
 
     SoothSayer,
@@ -183,7 +184,6 @@ public enum RoleId
     Pavlovsdogs,
     Pavlovsowner,
     Camouflager,
-    Cupid,
     HamburgerShop,
     Penguin,
     Dependents,
