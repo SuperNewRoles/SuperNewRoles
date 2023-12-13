@@ -42,6 +42,7 @@ public enum RoleId
     EvilHacker,
     EvilSeer,
     Cupid,
+    Santa,
     //RoleId
 
     SoothSayer,

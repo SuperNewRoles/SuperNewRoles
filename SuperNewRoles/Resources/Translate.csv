@@ -1683,6 +1683,11 @@ BatButtonDurationSetting,Number of seconds to stop updating,更新を止める�
 BatIsCanUseCountSetting,Limit the number of times the ability is used.,能力の使用回数を制限する,超声波有发动次数限制,限制超音波的可使用次數
 BatCanUseCountSetting,Number of times the ability can be used,能力を使用できる回数,超声波最大发动次数,能力的使用次數上限
 BatNumTextName,Remaining {0} times,残り{0}回,剩余{0}次,剩餘{0}次
+SantaName,Santa,サンタ
+SantaTitle1,Are you a good crew?I give present to you!,良い子にはプレゼントをあげよう
+SantaDescription,You can give present(role) to crewmate，\nbut if you try to give impostor a present，you will kill himself...\nMerry Christmas!,良い子(クルーメイト)にはプレゼント(役職)を配ることが出来ます。ただし、悪い子(インポスターや第三陣営)にプレゼントを配ろうとすると自殺してしまいます。メリー・クリスマス！
+SantaCanUseAbilityCount,Number of gifts Santa has,サンタが持っているプレゼント数
+SantaPresentRoleOptionFormat,You can give out {0}.,{0}を配れる,
 
 #NewRoleTranslation
 
