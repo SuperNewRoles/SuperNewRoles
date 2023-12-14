@@ -63,4 +63,5 @@ public enum FinalStatus
     GuesserMisFire,
     LoversBreakerKill,
     MadJesterExiled,
+    SantaSelf
 }

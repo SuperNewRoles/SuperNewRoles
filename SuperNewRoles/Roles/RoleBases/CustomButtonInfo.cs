@@ -46,7 +46,7 @@ public class CustomButtonInfo
     private Vector3 positionOffset { get; }
     private string ButtonText { get; }
     public bool HasAbility { get; }
-    public int AbilityCount { get; private set; }
+    public int AbilityCount { get; set; }
     //InfoText
     /// <summary>
     /// CustomButtonInfo

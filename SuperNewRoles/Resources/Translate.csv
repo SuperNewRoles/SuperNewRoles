@@ -1687,7 +1687,9 @@ SantaName,Santa,サンタ
 SantaTitle1,Are you a good crew?I give present to you!,良い子にはプレゼントをあげよう
 SantaDescription,You can give present(role) to crewmate，\nbut if you try to give impostor a present，you will kill himself...\nMerry Christmas!,良い子(クルーメイト)にはプレゼント(役職)を配ることが出来ます。ただし、悪い子(インポスターや第三陣営)にプレゼントを配ろうとすると自殺してしまいます。メリー・クリスマス！
 SantaCanUseAbilityCount,Number of presents Santa has,プレゼントの数
-SantaPresentRoleOptionFormat,You can give out {0}.,{0}を配れる,
+SantaPresentRoleOptionFormat,Probability of distributing {0},{0}を配れる確率,
+SantaButtonName,Present!,プレゼント！
+SantaAbilityCountFormat,Remaining {0} presents,残り{0}プレゼント
 
 #NewRoleTranslation
 
