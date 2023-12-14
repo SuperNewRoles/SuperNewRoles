@@ -12,6 +12,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using SuperNewRoles.SuperNewRolesWeb;
 using TMPro;
@@ -46,6 +47,7 @@ public static class RoleClass
         IsMeeting = false;
         IsFirstMeetingEnd = false;
         IsfirstResetCool = true;
+        RoleBaseManager.ClearAndReloads();
         DeadPlayer.ClearAndReloads();
         ReportDeadBodyPatch.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
