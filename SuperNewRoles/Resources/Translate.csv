@@ -412,6 +412,7 @@ FinalStatusGuesserKill,Deadshot by guess,推測射殺,赌杀,身分狙殺
 FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
 FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
+FinalStatusSantaSelf,Santa bomb!,ソリから転落
 
 # Sabotages
 SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定
