@@ -1640,7 +1640,7 @@ public class CustomOptionHolder
         MadmateIsParcentageForTaskTrigger = Create(400907, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadmateIsCheckImpostor);
         MadmateParcentageForTaskTriggerSetting = Create(400908, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadmateIsParcentageForTaskTrigger);
         MadmateIsUseVent = Create(400909, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadmateOption);
-        MadmateIsImpostorLight = Create(400910, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption); ;
+        MadmateIsImpostorLight = Create(400910, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption);
 
         BlackCatOption = SetupCustomRoleOption(401000, true, RoleId.BlackCat);
         BlackCatPlayerCount = Create(401001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);

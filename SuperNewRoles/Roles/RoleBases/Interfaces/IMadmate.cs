@@ -1,10 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
-public interface IMadmate
+public interface IMadmate : IVentAvailable
 {
+    public int CheckTask => -1;
+    public bool HasCheckImpostorAbility { get; }
+    public bool IsImpostorLight { get; }
+    public bool CanSeeImpostor(PlayerControl me)
+    {
+        return HasCheckImpostorAbility && CheckTask <= TaskCount.TaskDate(me.Data).Item1;
+    }
 }

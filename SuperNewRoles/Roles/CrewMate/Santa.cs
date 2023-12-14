@@ -1,7 +1,7 @@
-
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Hazel;
+using Il2CppSystem;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -85,30 +85,22 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
 
     private void SantaOnClick()
     {
-        PlayerControl target = SantaButtonInfo.CurrentTarget;
-        if (target == null)
-            return;
-        MessageWriter writer = RpcWriter;
-        if (target.IsCrew())
-        {
-            writer.Write(target.PlayerId);
-            RoleId role = ModHelpers.GetRandom(RoleAssignTickets);
-            writer.Write((short)role);
-        }
-        else
-        {
-            //255だと失敗(自爆)
-            writer.Write(255);
-        }
-        SendRpc(writer);
+        MessageWriter writer = ButtonOnClick(SantaButtonInfo, RpcWriter,
+            RoleAssignTickets, (target) => !target.IsCrew());
+        if (writer != null)
+            SendRpc(writer);
+    }
+    public static CustomButtonInfo CreateSantaButtonInfo(RoleBase roleBase, int abilityCount, System.Action OnClick, string ButtonPath, System.Func<float> CoolTimeFunc)
+    {
+        return new(abilityCount, roleBase, OnClick,
+            (isAlive) => isAlive, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget, null,
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources."+ButtonPath+".png", 115f),
+            CoolTimeFunc, new(-2, 1, 0),
+            "SantaButtonName", KeyCode.F);
     }
     public Santa(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        SantaButtonInfo = new(CanUseAbilityCount.GetInt(), this, () => SantaOnClick(),
-            (isAlive) => isAlive, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget, null,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SantaButton.png", 115f),
-            () => Optioninfo.CoolTime, new(-2,1,0),
-            "SantaButtonName", KeyCode.F);
+        SantaButtonInfo = CreateSantaButtonInfo(this, CanUseAbilityCount.GetInt(), () => SantaOnClick(), "SantaButton", () => Optioninfo.CoolTime);
         CustomButtonInfos = new CustomButtonInfo[1] { SantaButtonInfo };
         RoleAssignTickets = new();
         for(int i = 0; i < PresetRoleOptions.Length; i++)
@@ -126,6 +118,25 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
                 SetTicket(roleId, 1);
             }
         }
+    }
+    public static MessageWriter ButtonOnClick(CustomButtonInfo buttonInfo, MessageWriter rpcWriter, List<RoleId> roleAssignTickets, System.Func<PlayerControl, bool> isSelfBomb)
+    {
+        PlayerControl target = buttonInfo.CurrentTarget;
+        if (target == null)
+            return null;
+        MessageWriter writer = rpcWriter;
+        if (!isSelfBomb.Invoke(target))
+        {
+            writer.Write(target.PlayerId);
+            RoleId role = ModHelpers.GetRandom(roleAssignTickets);
+            writer.Write((short)role);
+        }
+        else
+        {
+            //255だと失敗(自爆)
+            writer.Write(255);
+        }
+        return writer;
     }
     private void SetTicket(RoleId roleId, int count)
     {

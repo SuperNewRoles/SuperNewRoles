@@ -90,7 +90,7 @@ public class CustomButtonInfo
         Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
         Func<bool> SetTargetCrewmateOnly=null)
     {
-        this.HasAbility = false;
+        this.HasAbility = AbilityCount != null;
         this.AbilityCount = AbilityCount ?? 334;
         this.OnClickFunc = OnClick;
         this.HasButtonFunc = HasButton;
