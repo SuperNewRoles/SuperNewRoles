@@ -25,6 +25,7 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.BlackSanta, 406600, false,
+            CoolTimeOption: (30f, 2.5f, 60f, 2.5f, false),
             VentOption:(false, false),
             ImpostorVisionOption:(false, false),
             optionCreator: CreateOption);
