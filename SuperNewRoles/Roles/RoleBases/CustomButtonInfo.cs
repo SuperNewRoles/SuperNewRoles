@@ -170,7 +170,7 @@ public class CustomButtonInfo
     }
     public bool HasButton(bool IsAlive, RoleId _)
     {
-        return roleBase?.Player?.PlayerId == PlayerControl.LocalPlayer.PlayerId &&
+        return roleBase?.Player != null && roleBase.Player.PlayerId == PlayerControl.LocalPlayer.PlayerId &&
             (HasButtonFunc?.Invoke(IsAlive) ?? true);
     }
     public bool CouldUse()
