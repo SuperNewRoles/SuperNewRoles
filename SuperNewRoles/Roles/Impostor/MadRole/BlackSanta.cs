@@ -100,7 +100,14 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     private void BlackSantaOnClick()
     {
         MessageWriter writer = Santa.ButtonOnClick(BlackSantaButtonInfo,
-            RpcWriter, RoleAssignTickets, (target) => !target.IsImpostor() || (TryLoversToDeath.GetBool() && target.IsLovers()));
+            RpcWriter, RoleAssignTickets, (target) =>
+            {
+                if (!target.IsImpostor())
+                    return true;
+                if (TryLoversToDeath.GetBool() && target.IsLovers())
+                    return true;
+                return false;
+            });
         if (writer != null)
             SendRpc(writer);
     }
