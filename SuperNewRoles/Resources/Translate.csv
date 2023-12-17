@@ -1691,9 +1691,12 @@ SantaCanUseAbilityCount,Number of presents Santa has,プレゼントの数
 SantaPresentRoleOptionFormat,Probability of distributing {0},{0}を配れる確率,
 SantaButtonName,Present!,プレゼント！
 SantaAbilityCountFormat,Remaining {0} presents,残り{0}プレゼント
+SantaTryRoleToDeath,Can't you give a present to {0},{0}にはプレゼントを配れない
+SantaAnd, and ,と
 BlackSantaName,BlackSanta,ブラックサンタ
 BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!
 BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！
+
 
 #NewRoleTranslation
 

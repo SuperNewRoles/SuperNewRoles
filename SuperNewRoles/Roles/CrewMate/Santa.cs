@@ -46,12 +46,31 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
         RoleId.SuicidalIdeation
     };
     private static CustomOption[] PresetRoleOptions { get; set; }
-    
+
+    private static CustomOption TryLoversToDeath { get; set; }
+    private static CustomOption TryMadFriendsToDeath { get; set; }
+
     private static void CreateOption()
     {
         CanUseAbilityCount = CustomOption.Create(Optioninfo.OptionId++, false, Optioninfo.RoleOption.type,
             "SantaCanUseAbilityCount", 1, 1, 15, 1,
             Optioninfo.RoleOption);
+        TryLoversToDeath = CustomOption.Create(Optioninfo.OptionId++, false, Optioninfo.RoleOption.type,
+            string.Format(
+                ModTranslation.GetString(
+                    "SantaTryRoleToDeath"
+                ),
+                CustomOptionHolder.Cs(RoleClass.Lovers.color, "LoversName")
+        ), false, Optioninfo.RoleOption);
+        TryMadFriendsToDeath = CustomOption.Create(Optioninfo.OptionId++, false, Optioninfo.RoleOption.type,
+            string.Format(
+                ModTranslation.GetString(
+                    "SantaTryRoleToDeath"
+                ),
+                CustomOptionHolder.Cs(RoleClass.Lovers.color, "MadmateName") +
+                ModTranslation.GetString("SantaAnd") +
+                CustomOptionHolder.Cs(RoleClass.Lovers.color, "JackalFriendsName")
+        ), false, Optioninfo.RoleOption);
         PresetRoleOptions = new CustomOption[PresetRolesParam.Length];
         for (int i = 0; i < PresetRolesParam.Length; i++)
         {
@@ -86,7 +105,22 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
     private void SantaOnClick()
     {
         MessageWriter writer = ButtonOnClick(SantaButtonInfo, RpcWriter,
-            RoleAssignTickets, (target) => !target.IsCrew());
+            RoleAssignTickets, (target) =>
+            {
+                //自爆するならtrue
+                if (!target.IsCrew())
+                    return true;
+                if (TryMadFriendsToDeath.GetBool())
+                    if (
+                        target.IsMadRoles() ||
+                        target.IsFriendRoles()
+                    )
+                        return true;
+                if (TryLoversToDeath.GetBool() &&
+                target.IsLovers())
+                    return true;
+                return false;
+            });
         if (writer != null)
             SendRpc(writer);
     }

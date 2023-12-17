@@ -52,7 +52,8 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     };
     private static CustomOption[] PresetRoleOptions { get; set; }
 
-    private static CustomOption CanUseAbilityCount;
+    private static CustomOption CanUseAbilityCount { get; set; }
+    private static CustomOption TryLoversToDeath { get; set; }
 
     private static void CreateOption()
     {
@@ -67,6 +68,13 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
         CanUseAbilityCount = CustomOption.Create(Optioninfo.OptionId++, false, Optioninfo.RoleOption.type,
             "SantaCanUseAbilityCount", 1, 1, 15, 1,
             Optioninfo.RoleOption);
+        TryLoversToDeath = CustomOption.Create(Optioninfo.OptionId++, false, Optioninfo.RoleOption.type,
+            string.Format(
+                ModTranslation.GetString(
+                    "SantaTryRoleToDeath"
+                ),
+                CustomOptionHolder.Cs(RoleClass.Lovers.color, "LoversName")
+        ), false, Optioninfo.RoleOption);
         PresetRoleOptions = new CustomOption[PresetRolesParam.Length];
         for (int i = 0; i < PresetRolesParam.Length; i++)
         {
@@ -92,7 +100,7 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     private void BlackSantaOnClick()
     {
         MessageWriter writer = Santa.ButtonOnClick(BlackSantaButtonInfo,
-            RpcWriter, RoleAssignTickets, (target) => target.IsCrew());
+            RpcWriter, RoleAssignTickets, (target) => !target.IsImpostor() || (TryLoversToDeath.GetBool() && target.IsLovers()));
         if (writer != null)
             SendRpc(writer);
     }
