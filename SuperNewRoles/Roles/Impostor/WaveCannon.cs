@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Hazel;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
+using static SuperNewRoles.WaveCannonObj.WaveCannonObject;
 
 namespace SuperNewRoles.Roles.Impostor;
 public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
@@ -58,12 +59,16 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
             Logger.Info("nullなのでreturnしました", "WaveCannonButton");
             return;
         }
+
+        WCAnimType AnimType = WCAnimType.Default;
+
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RpcWriter;
         writer.Write((byte)WaveCannonObject.RpcType.Shoot);
         writer.Write((byte)obj.Id);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+        writer.Write((byte)AnimType);
         writer.Write(pos.x);
         writer.Write(pos.y);
         SendRpc(writer);
@@ -75,13 +80,14 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
         byte Id = reader.ReadByte();
         bool IsFlipX = reader.ReadBoolean();
         byte OwnerId = reader.ReadByte();
+        WCAnimType AnimType = (WCAnimType)reader.ReadByte();
         Vector3 position = new(reader.ReadSingle(), reader.ReadSingle());
         ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, position);
         Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {position} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
         switch ((WaveCannonObject.RpcType)Type)
         {
             case WaveCannonObject.RpcType.Spawn:
-                new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+                new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId), AnimType);
                 break;
             case WaveCannonObject.RpcType.Shoot:
                 WaveCannonObject.Objects[OwnerId]?.Shoot();

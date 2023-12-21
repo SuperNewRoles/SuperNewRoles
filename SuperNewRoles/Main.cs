@@ -22,6 +22,7 @@ using TMPro;
 using UnityEngine;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.Role;
+using SuperNewRoles.WaveCannonObj;
 
 namespace SuperNewRoles;
 

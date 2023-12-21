@@ -15,6 +15,7 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using SuperNewRoles.SuperNewRolesWeb;
+using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
 
