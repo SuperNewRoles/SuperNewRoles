@@ -82,7 +82,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
     {
         WCSantaHandler SantaHandler = new GameObject("Santa").AddComponent<WCSantaHandler>();
         SantaHandler.transform.parent = CannonObject.transform;
-        SantaHandler.transform.localPosition = new(-2.3f, 0.3f, 0.1f);
+        SantaHandler.transform.localPosition = new(-2.5f, 0.3f, 0.1f);
         SantaHandler.transform.localScale = new(-0.1f, 0.1f, 0.1f);
         Santas.Add(SantaHandler);
         //タイマーをリセット
