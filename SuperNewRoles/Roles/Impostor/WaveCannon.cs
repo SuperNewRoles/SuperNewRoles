@@ -60,15 +60,13 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
             return;
         }
 
-        WCAnimType AnimType = WCAnimType.Default;
-
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RpcWriter;
         writer.Write((byte)WaveCannonObject.RpcType.Shoot);
         writer.Write((byte)obj.Id);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-        writer.Write((byte)AnimType);
+        writer.Write((byte)0);
         writer.Write(pos.x);
         writer.Write(pos.y);
         SendRpc(writer);
@@ -98,10 +96,14 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
     {
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RpcWriter;
+
+        WCAnimType AnimType = WCAnimType.Santa;
+
         writer.Write((byte)WaveCannonObject.RpcType.Spawn);
         writer.Write((byte)0);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+        writer.Write((byte)AnimType);
         writer.Write(pos.x);
         writer.Write(pos.y);
         SendRpc(writer);

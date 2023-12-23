@@ -3,8 +3,101 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SuperNewRoles.CustomObject;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using UnityEngine;
 
 namespace SuperNewRoles.WaveCannonObj.AnimationHandlers;
 public class WCSantaAnimHandler : IWaveCannonAnimationHandler
 {
+    public WaveCannonObject CannonObject { get; }
+
+    public List<WCSantaHandler> Santas;
+    private float SantaSpawnTimer;
+    private const float SantaSpawnTimeInterval = 0.35f;
+
+    public Sprite ColliderSprite => WCDefaultAnimHandler.ColliderSpriteStatic;
+
+    public WCSantaAnimHandler(WaveCannonObject waveCannonObject)
+    {
+        CannonObject = waveCannonObject;
+        Santas = new();
+        SantaSpawnTimer = -1;
+    }
+    public CustomAnimationOptions Init()
+    {
+        return new CustomAnimationOptions(WCDefaultAnimHandler.ChargeSprites, 25, true, EffectSound: ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), IsEffectSoundLoop: true);
+    }
+
+    public void OnShot()
+    {
+        SpawnSanta();
+        Sprite[] sprites = new Sprite[12];
+        for (int i = 0; i < 12; i++)
+            sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
+        CannonObject.Options.SetSprites(sprites,
+            IsLoop: true, frameRate: 12);
+        CannonObject.Stop();
+        CannonObject.Play();
+        CannonObject.Options.SetOnEndAnimation((anim, option) =>
+        {
+            CannonObject.IsShootFirst = false;
+            for (int i = 0; i < 7; i++)
+                sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
+
+            option.SetSprites(sprites, IsLoop: true, frameRate: 15);
+            CannonObject.Stop(IsStopMusic: false);
+            CannonObject.Play(IsPlayMusic: false);
+            CannonObject.Options.SetOnEndAnimation((anim, option) =>
+            {
+                CannonObject.DestroyIndex++;
+                if (CannonObject.DestroyIndex > 3)
+                {
+                    if (CannonObject.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                    {
+                        if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                        {
+                            if (WaveCannon.IsSyncKillCoolTime.GetBool())
+                                PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
+                        }
+                        else {
+                            if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                                WaveCannonJackal.ResetCooldowns();
+                        }
+                        Logger.Info("FFF");
+                        CannonObject.Owner.GetRoleBase<WaveCannon>()?
+                        .CustomButtonInfos?
+                        .FirstOrDefault()?
+                        .ResetCoolTime();
+                        CannonObject.Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers = new();
+                    }
+                    GameObject.Destroy(CannonObject.gameObject);
+                }
+            });
+        });
+    }
+    private void SpawnSanta()
+    {
+        WCSantaHandler SantaHandler = new GameObject("Santa").AddComponent<WCSantaHandler>();
+        SantaHandler.transform.parent = CannonObject.transform;
+        SantaHandler.transform.localPosition = new(-2.3f, 0.3f, 0.1f);
+        SantaHandler.transform.localScale = new(-0.1f, 0.1f, 0.1f);
+        Santas.Add(SantaHandler);
+        //タイマーをリセット
+        SantaSpawnTimer = SantaSpawnTimeInterval;
+    }
+    public void RendererUpdate()
+    {
+
+    }
+    public void OnUpdate()
+    {
+        if (SantaSpawnTimer == -1)
+            return;
+        SantaSpawnTimer -= Time.deltaTime;
+        if (SantaSpawnTimer <= 0)
+            SpawnSanta();
+    }
 }

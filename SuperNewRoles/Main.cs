@@ -168,6 +168,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonObject>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<SpiderTrap>();
+        ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
     }
     static bool ViewdNonVersion = false;
     public static void SetNonVanilaVersionPatch()
