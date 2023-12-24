@@ -12,8 +12,10 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using SuperNewRoles.SuperNewRolesWeb;
+using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
 
@@ -46,6 +48,7 @@ public static class RoleClass
         IsMeeting = false;
         IsFirstMeetingEnd = false;
         IsfirstResetCool = true;
+        RoleBaseManager.ClearAndReloads();
         DeadPlayer.ClearAndReloads();
         ReportDeadBodyPatch.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
@@ -78,7 +81,6 @@ public static class RoleClass
         MeetingHudUpdatePatch.ErrorNames = new();
         ReleaseGhostAbility.ClearAndReload();
         FixSabotage.ClearAndReload();
-        RoleBases.Role.ClearAll();
         Patches.CursedTasks.Main.ClearAndReload();
 
         /* 陣営playerがうまく動かず使われてない為コメントアウト。
@@ -109,8 +111,6 @@ public static class RoleClass
         Shielder.ClearAndReload();
         Speeder.ClearAndReload();
         Freezer.ClearAndReload();
-        NiceGuesser.ClearAndReload();
-        EvilGuesser.ClearAndReload();
         Vulture.ClearAndReload();
         NiceScientist.ClearAndReload();
         Clergyman.ClearAndReload();
@@ -122,7 +122,6 @@ public static class RoleClass
         Opportunist.ClearAndReload();
         NiceGambler.ClearAndReload();
         EvilGambler.ClearAndReload();
-        Bestfalsecharge.ClearAndReload();
         Researcher.ClearAndReload();
         SelfBomber.ClearAndReload();
         God.ClearAndReload();
@@ -165,9 +164,9 @@ public static class RoleClass
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
         Seer.ClearAndReload();
-        Crewmate.Seer.ShowFlash_ClearAndReload();
+        Crewmate.SeerHandler.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
-        EvilSeer.RoleData.ClearAndReload();
+        EvilSeer.CreateMode = -1;
         RemoteSheriff.ClearAndReload();
         TeleportingJackal.ClearAndReload();
         MadMaker.ClearAndReload();
@@ -185,7 +184,6 @@ public static class RoleClass
         MayorFriends.ClearAndReload();
         VentMaker.ClearAndReload();
         GhostMechanic.ClearAndReload();
-        EvilHacker.ClearAndReload();
         HauntedWolf.RoleData.ClearAndReload();
         PositionSwapper.ClearAndReload();
         Tuna.ClearAndReload();
@@ -217,13 +215,12 @@ public static class RoleClass
         Painter.ClearAndReload();
         Photographer.ClearAndReload();
         Stefinder.ClearAndReload();
-        Slugger.ClearAndReload();
         ShiftActor.ClearAndReload();
         ConnectKiller.ClearAndReload();
         GM.ClearAndReload();
         Cracker.ClearAndReload();
         NekoKabocha.ClearAndReload();
-        WaveCannon.ClearAndReload();
+        WaveCannonObject.Ids = new();
         Doppelganger.ClearAndReload();
         Werewolf.ClearAndReload();
         Knight.ClearAndReload();
@@ -231,9 +228,8 @@ public static class RoleClass
         Pavlovsowner.ClearAndReload();
         WaveCannonJackal.ClearAndReload();
         //SidekickWaveCannon.Clear();
-        Conjurer.ClearAndReload();
+        Beacon.AllBeacons = new();
         Camouflager.ClearAndReload();
-        Cupid.ClearAndReload();
         HamburgerShop.ClearAndReload();
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
@@ -264,6 +260,7 @@ public static class RoleClass
         Spider.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
         Frankenstein.ClearAndReload();
+        TaskCount.IsClearTaskPlayer = null;
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -601,26 +598,6 @@ public static class RoleClass
             IsSpeedDown = false;
         }
     }
-    public static class NiceGuesser
-    {
-        public static List<PlayerControl> NiceGuesserPlayer;
-        public static Color32 color = Color.yellow;
-        public static int Count;
-        public static void ClearAndReload()
-        {
-            NiceGuesserPlayer = new();
-            Count = -1;
-        }
-    }
-    public static class EvilGuesser
-    {
-        public static List<PlayerControl> EvilGuesserPlayer;
-        public static Color32 color = ImpostorRed;
-        public static void ClearAndReload()
-        {
-            EvilGuesserPlayer = new();
-        }
-    }
     public static class Vulture
     {
         public static List<PlayerControl> VulturePlayer;
@@ -820,17 +797,6 @@ public static class RoleClass
                 a.Add("No");
             }
             return ModHelpers.GetRandom<string>(a) == "Suc";
-        }
-    }
-    public static class Bestfalsecharge
-    {
-        public static List<PlayerControl> BestfalsechargePlayer;
-        public static Color32 color = new(0, 255, 0, byte.MaxValue);
-        public static bool IsOnMeeting;
-        public static void ClearAndReload()
-        {
-            BestfalsechargePlayer = new();
-            IsOnMeeting = false;
         }
     }
     public static class Researcher
@@ -1626,7 +1592,8 @@ public static class RoleClass
     {
         public static List<PlayerControl> SeerPlayer;
         public static Color color = new Color32(97, 178, 108, byte.MaxValue);
-        public static List<(Vector3, int)> deadBodyPositions;
+
+        public static List<(Vector3, int)> deadBodyPositions { get; set; }
 
         public static float soulDuration;
         public static bool limitSoulDuration;
@@ -2041,47 +2008,6 @@ public static class RoleClass
             AbilityUsedCountSHR = new();
             Cooldown = CustomOptionHolder.GhostMechanicCooldown.GetFloat();
             KeepCooldown = 0f;
-        }
-    }
-    public static class EvilHacker
-    {
-        public static List<PlayerControl> EvilHackerPlayer;
-        public static Color32 color = ImpostorRed;
-        public static bool IsCreateMadmate;
-        public static float Cooldown;
-        /// <summary>アドミン上でインポスターのマークが赤く見えるかどうか</summary>
-        public static bool CanSeeImpostorPositions;
-        /// <summary>アドミン上で死体のマークが青く見えるかどうか</summary>
-        public static bool CanSeeDeadBodyPositions;
-        public static bool CanUseAdminDuringMeeting;
-        /// <summary>サボタージュマップにアドミンが表示されるかどうか</summary>
-        public static bool SabotageMapShowsAdmin;
-        /// <summary>アドミンにドアの開閉状況が表示される</summary>
-        public static bool MapShowsDoorState;
-        public static bool IsMyAdmin;
-        public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
-
-        public static Sprite GetButtonSprite()
-        {
-            byte mapId = GameOptionsManager.Instance.CurrentGameOptions.MapId;
-            UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
-            if (mapId is 0 or 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
-            else if (mapId == 1) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
-            else if (mapId == 4) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
-            return button.Image;
-        }
-        public static void ClearAndReload()
-        {
-            EvilHackerPlayer = new();
-            IsCreateMadmate = CustomOptionHolder.EvilHackerMadmateSetting.GetBool();
-            var hasEnhancedAdmin = CustomOptionHolder.EvilHackerHasEnhancedAdmin.GetBool();
-            CanSeeImpostorPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeImpostorPositions.GetBool();
-            CanSeeDeadBodyPositions = hasEnhancedAdmin && CustomOptionHolder.EvilHackerCanSeeDeadBodyPositions.GetBool();
-            CanUseAdminDuringMeeting = CustomOptionHolder.EvilHackerCanUseAdminDuringMeeting.GetBool();
-            SabotageMapShowsAdmin = CustomOptionHolder.EvilHackerSabotageMapShowsAdmin.GetBool();
-            MapShowsDoorState = CustomOptionHolder.EvilHackerMapShowsDoorState.GetBool();
-            IsMyAdmin = false;
-            Cooldown = CustomOptionHolder.EvilHackerButtonCooldown.GetFloat();
         }
     }
     public static class PositionSwapper
@@ -2691,16 +2617,6 @@ public static class RoleClass
             IsKillPlayer = new();
         }
     }
-    public static class Slugger
-    {
-        public static List<PlayerControl> SluggerPlayer;
-        public static Color32 color = ImpostorRed;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SluggerButton.png", 115f);
-        public static void ClearAndReload()
-        {
-            SluggerPlayer = new();
-        }
-    }
     public static class ConnectKiller
     {
         public static List<PlayerControl> ConnectKillerPlayer;
@@ -2744,22 +2660,6 @@ public static class RoleClass
             DefaultCount = CustomOptionHolder.CrackerOneTurnSelectCount.GetInt();
             TurnCount = DefaultCount;
             currentCrackedPlayerControls = new();
-        }
-    }
-
-    public static class WaveCannon
-    {
-        public static List<PlayerControl> WaveCannonPlayer;
-        public static Color32 color = ImpostorRed;
-        public static List<byte> CannotMurderPlayers;
-        public static bool IsLocalOn => WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId) != null;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
-
-        public static void ClearAndReload()
-        {
-            WaveCannonPlayer = new();
-            WaveCannonObject.Ids = new();
-            CannotMurderPlayers = new();
         }
     }
     public static class Doppelganger
@@ -2884,26 +2784,6 @@ public static class RoleClass
         {
             WerewolfPlayer = new();
             IsShooted = false;
-        }
-    }
-    public static class Cupid
-    {
-        public static List<PlayerControl> CupidPlayer;
-        public static Color32 color = Lovers.color;
-        public static PlayerControl currentLovers;
-        public static PlayerControl currentTarget;
-        public static bool Created;
-        public static Dictionary<byte, byte> CupidLoverPair;
-
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.cupidButton.png", 115f);
-
-        public static void ClearAndReload()
-        {
-            CupidPlayer = new();
-            currentLovers = null;
-            currentTarget = null;
-            Created = false;
-            CupidLoverPair = new();
         }
     }
 

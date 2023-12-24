@@ -6,8 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -97,11 +99,11 @@ internal static class HostManagedChatCommandPatch
             case CommandType.Winners:
                 if (OnGameEndPatch.PlayerData != null)
                 {
-                    SendCommand(commandUser.AmOwner ? null : commandUser, ModTranslation.GetString("WinnersNoneData"), GetChatCommands.SNRCommander);
+                    SendCommand(commandUser.AmOwner ? null : commandUser, GetChatCommands.GetWinnerMessage(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
                 }
                 else
                 {
-                    SendCommand(commandUser.AmOwner ? null : commandUser, GetChatCommands.GetWinnerMessage(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
+                    SendCommand(commandUser.AmOwner ? null : commandUser, ModTranslation.GetString("WinnersNoneData"), GetChatCommands.SNRCommander);
                 }
                 break;
             case CommandType.MatchMakingTags:
@@ -361,10 +363,10 @@ internal static class GetChatCommands
             builder.Append(" : ");
             builder.Append(ModTranslation.GetString($"FinalStatus{data.finalStatus}"));
             builder.Append(" : ");
-            if (data.role == null)
+            if (!data.role.HasValue)
                 builder.Append(ModTranslation.GetString("WinnerGetError"));
             else
-                builder.Append(ModTranslation.GetString(IntroData.GetIntroData((RoleId)data.role).NameKey + "Name"));
+                builder.Append(CustomRoles.GetRoleNameKey(data.role.Value));
             builder.AppendLine();
         }
         return builder.ToString();
@@ -405,18 +407,16 @@ internal static class GetChatCommands
             }
             else
             {
-                IntroData intro = IntroData.GetIntroData(data.Value, IsImpostorReturn: true);
-                string name = $"<size=200%>{ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString($"{intro.NameKey}Name"))}</size>";
-                return (intro.Description, name);
+                string name = $"<size=200%>{ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value, IsImpostorReturn:true))}</size>";
+                return (CustomRoles.GetRoleDescription(data.Value), name);
             }
         }
         else
         {
             string text = ModTranslation.GetString("BattleRoyalBattleRolesCommandText") + "\n\n";
-            foreach (var role in Enum.GetValues(typeof(Mode.BattleRoyal.BattleRole.BattleRoles)))
+            foreach (var role in Enum.GetValues(typeof(BattleRoles)))
             {
-                IntroData intro = IntroData.GetIntroData((RoleId)(Mode.BattleRoyal.BattleRole.BattleRoles)role, IsImpostorReturn: true);
-                text += $"{ModTranslation.GetString(intro.NameKey + "Name")}({(Mode.BattleRoyal.BattleRole.BattleRoles)role})\n";
+                text += $"{CustomRoles.GetRoleName((RoleId)(BattleRoles)role)}({(BattleRoles)role})\n";
             }
             return (text, Mode.BattleRoyal.SelectRoleSystem.BattleRoyalCommander);
         }
@@ -473,10 +473,8 @@ internal static class RoleinformationText
         foreach (CustomRoleOption option in EnableOptions)
         {
             (string rolename, string text) = RoleInfo.GetRoleInfo(option.RoleId, isGetAllRole: isCommanderHost);
-            rolename = $"<align={"left"}><size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size></align>";
+            rolename = $"<align={"left"}><size=115%>\n" + CustomRoles.GetRoleNameOnColor(option.RoleId) + "</size></align>";
             text = $"\n<color=#00000000>{option.RoleId}</color>" + text;
-            SuperNewRolesPlugin.Logger.LogInfo(rolename);
-            SuperNewRolesPlugin.Logger.LogInfo(text);
             Send(target, rolename, text, time);
             time += SendTime;
         }
@@ -629,16 +627,15 @@ internal static class RoleinformationText
                 {
                     foreach (CustomRoleOption roleOption in roleOptions)
                     {
-                        IntroData intro = roleOption.Intro;
                         StringBuilder optionBuilder = new();
 
-                        roleName = $"<align={"left"}><size=180%>{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size></align></size>";
+                        roleName = $"<align={"left"}><size=180%>{CustomRoles.GetRoleNameOnColor(roleOption.RoleId)}</size></align></size>";
 
-                        optionBuilder.AppendLine($"<align={"left"}><size=80%>\n" + GetTeamText(roleOption.Intro.TeamType) + "\n</size>");
-                        optionBuilder.AppendLine($"<size=100%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
-                        optionBuilder.AppendLine($"<size=80%>{intro.Description}\n</size>");
+                        optionBuilder.AppendLine($"<align={"left"}><size=80%>\n" + GetTeamText(CustomRoles.GetRoleTeamType(roleOption.RoleId)) + "\n</size>");
+                        optionBuilder.AppendLine($"<size=100%>「{CustomOptionHolder.Cs(CustomRoles.GetRoleColor(roleOption.RoleId), CustomRoles.GetRoleIntro(roleOption.RoleId))}」</size>\n");
+                        optionBuilder.AppendLine($"<size=80%>{CustomRoles.GetRoleDescription(roleOption.RoleId)}\n</size>");
                         optionBuilder.AppendLine($"<size=70%>{ModTranslation.GetString("MessageSettings")}:");
-                        optionBuilder.AppendLine($"{GetOptionText(roleOption, intro)}\n<color=#00000000>{roleOption.Intro.NameKey}</color></align></size>");
+                        optionBuilder.AppendLine($"{GetOptionText(roleOption)}\n<color=#00000000>{CustomRoles.GetRoleNameKey(roleOption.RoleId)}</color></align></size>");
 
                         roleInfo = optionBuilder.ToString();
                         return (roleName, roleInfo);

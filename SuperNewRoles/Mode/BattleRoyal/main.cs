@@ -162,7 +162,12 @@ class Main
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                if (ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.CopsRobbers) || (ModeHandler.IsMode(ModeId.PantsRoyal) && PantsRoyal.main.IsPantsHaver(__instance.myPlayer.PlayerId)))
+                if (ModeHandler.IsMode(ModeId.BattleRoyal,
+                    ModeId.Zombie, ModeId.CopsRobbers) ||
+                    (
+                    ModeHandler.IsMode(ModeId.PantsRoyal) &&
+                    PantsRoyal.main.IsPantsHaver(__instance.myPlayer.PlayerId)
+                    ))
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
                     writer.WritePacked(127);

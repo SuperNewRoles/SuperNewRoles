@@ -1,26 +1,103 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using HarmonyLib;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.RoleBases;
 public static class CustomRoles
 {
-    public static void FixedUpdate(PlayerControl player)
+    public static void FixedUpdate()
     {
-        if (player.IsAlive()) Role.allRoles.DoIf(x => x.player == player, x => x.MeFixedUpdateAlive());
-        else Role.allRoles.DoIf(x => x.player == player, x => x.MeFixedUpdateDead());
-        Role.allRoles.Do((x) => x.FixedUpdate());
+        RoleBase roleBase = PlayerControl.LocalPlayer.GetRoleBase();
+        IFixedUpdaterMe ifum = roleBase as IFixedUpdaterMe;
+        IReadOnlySet<IFixedUpdaterAll> IFixedUpdaterAlls = RoleBaseManager.GetFixedUpdaterAlls();
+        switch (ModeHandler.GetMode())
+        {
+            case ModeId.Default:
+                foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
+                    all.FixedUpdateAllDefault();
+
+                if (ifum != null)
+                {
+                    ifum.FixedUpdateMeDefault();
+                    if (PlayerControl.LocalPlayer.IsAlive())
+                        ifum.FixedUpdateMeDefaultAlive();
+                    else
+                        ifum.FixedUpdateMeDefaultDead();
+                }
+                break;
+            case ModeId.SuperHostRoles:
+                foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
+                    all.FixedUpdateAllSHR();
+                if (ifum != null)
+                {
+                    ifum.FixedUpdateMeSHR();
+                    if (PlayerControl.LocalPlayer.IsAlive())
+                        ifum.FixedUpdateMeSHRAlive();
+                    else
+                        ifum.FixedUpdateMeSHRDead();
+                }
+                break;
+        }
+    }
+    public static void OnIntroStart()
+    {
+        RoleBaseManager.GetInterfaces<IIntroHandler>()
+            .Do(x => x.OnIntroStart());
+        if (PlayerControl.LocalPlayer.GetRoleBase() is IIntroHandler introHandler)
+        {
+            introHandler.OnIntroStartMe();
+        }
+    }
+    public static void OnIntroDestroy()
+    {
+        RoleBaseManager.GetInterfaces<IIntroHandler>()
+            .Do(x => x.OnIntroDestory());
+        if (PlayerControl.LocalPlayer.GetRoleBase() is IIntroHandler introHandler)
+        {
+            introHandler.OnIntroDestoryMe();
+        }
+    }
+    public static void NameHandler(bool CanSeeAllRole = false)
+    {
+        if (CanSeeAllRole)
+        {
+            RoleBaseManager.GetInterfaces<INameHandler>()
+                .Do(x => x.OnHandleDeadPlayer());
+        }
+        else
+        {
+            if (PlayerControl.LocalPlayer.GetRoleBase() is INameHandler nameHandler)
+            {
+                nameHandler.OnHandleName();
+            }
+        }
     }
 
     public static void OnMeetingStart()
     {
-        Role.allRoles.Do(x => x.OnMeetingStart());
+        RoleBaseManager.GetInterfaces<IMeetingHandler>()
+            .Do(x => x.StartMeeting());
+    }
+    public static void OnMeetingClose()
+    {
+        RoleBaseManager.GetInterfaces<IMeetingHandler>()
+            .Do(x => x.CloseMeeting());
     }
 
-    public static void OnWrapUp()
+    public static void OnWrapUp(PlayerControl exiled)
     {
-        Role.allRoles.Do(x => x.OnWrapUp());
+        RoleBaseManager.GetInterfaces<IWrapUpHandler>()
+            .Do(x => {
+                x.OnWrapUp();
+                if (exiled != null)
+                    x.OnWrapUp(exiled);
+            });
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
@@ -30,18 +107,149 @@ public static class CustomRoles
         {
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
-                Role.allRoles.Do(x => x.HandleDisconnect(player, reason));
+                RoleBaseManager.PlayerRoles.Values.Do(
+                    x => {
+                        if (x is IHandleDisconnect handleDisconnect)
+                            handleDisconnect.OnDisconnect();
+                    }
+               );
             }
         }
     }
 
-    public static void OnKill(this PlayerControl player, PlayerControl target)
+    public static void OnExild(DeadPlayer deadPlayer)
     {
-        Role.allRoles.DoIf(x => x.player == player, x => x.OnKill(target));
+        DeathInfo info = new(deadPlayer);
+        RoleBaseManager.GetInterfaces<IDeathHandler>()
+            .Do(x => x.OnExiled(info));
+        OnDeath(info);
+    }
+    public static void OnKill(DeadPlayer deadPlayer)
+    {
+        DeathInfo info = new(deadPlayer);
+        RoleBaseManager.GetInterfaces<IDeathHandler>().Do(x => x.OnMurderPlayer(info));
+        OnDeath(info);
+    }
+    public static bool OnCheckMurderPlayer(PlayerControl source, PlayerControl target)
+    {
+        bool resultsource = true;
+        bool resulttarget = true;
+        bool result = RoleBaseManager.GetInterfaces<ICheckMurderHandler>().All(x => x.OnCheckMurderPlayer(source, target));
+        if (source.GetRoleBase() is ICheckMurderHandler checkMurderHandlerSource)
+            resultsource = checkMurderHandlerSource.OnCheckMurderPlayerAmKiller(target);
+        if (target.GetRoleBase() is ICheckMurderHandler checkMurderHandlerTarget)
+            resulttarget = checkMurderHandlerTarget.OnCheckMurderPlayerAmTarget(source);
+        return result && resultsource && resulttarget;
     }
 
-    public static void OnDeath(this PlayerControl player, PlayerControl killer)
+    public static void OnDeath(DeathInfo info)
     {
-        Role.allRoles.DoIf(x => x.player == player, x => x.OnDeath(killer));
+        RoleBaseManager.
+            GetInterfaces<IDeathHandler>().Do(x => x.OnDeath(info));
+    }
+
+    public static Color GetRoleColor(PlayerControl player, bool IsImpostorReturn = false)
+    {
+        return GetRoleColor(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static Color GetRoleColor(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return roleInfo.RoleColor;
+        return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.color ?? new();
+    }
+    public static string GetRoleName(PlayerControl player, bool IsImpostorReturn = false)
+    {
+        return GetRoleName(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static string GetRoleName(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return ModTranslation.GetString($"{roleInfo.NameKey}Name");
+        return ModTranslation.GetString($"{IntroData.GetIntrodata(role, player, IsImpostorReturn)?.NameKey}Name");
+    }
+    public static string GetRoleNameKey(PlayerControl player, bool IsImpostorReturn = false)
+    {
+        return GetRoleNameKey(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static string GetRoleNameKey(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return roleInfo.NameKey;
+        return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.NameKey;
+    }
+    public static string GetRoleNameOnColor(PlayerControl player, bool IsImpostorReturn = false)
+    {
+        return GetRoleNameOnColor(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static string GetRoleNameOnColor(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return CustomOptionHolder.Cs(roleInfo.RoleColor, $"{roleInfo.NameKey}Name");
+        IntroData intro = IntroData.GetIntrodata(role, player, IsImpostorReturn);
+        if (intro == null)
+            return null;
+        return CustomOptionHolder.Cs(intro.color, $"{intro?.NameKey}Name");
+    }
+    public static TeamRoleType GetRoleTeam(PlayerControl player, bool IsImpostorReturn=false)
+    {
+        return GetRoleTeam(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static TeamRoleType GetRoleTeam(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return roleInfo.Team;
+        return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.Team ?? TeamRoleType.Error;
+    }
+    public static bool IsGhostRole(RoleId role)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return roleInfo.IsGhostRole;
+        return IntroData.GetIntrodata(role)?.IsGhostRole ?? false;
+    }
+    public static string GetRoleIntro(PlayerControl player)
+    {
+        return GetRoleIntro(player.GetRole(), player);
+    }
+    public static string GetRoleIntro(RoleId role, PlayerControl player = null)
+    {
+        IntroInfo introInfo = IntroInfo.GetIntroInfo(role);
+        if (introInfo != null)
+            return introInfo.IntroDesc;
+        return IntroData.GetIntrodata(role, player)?.TitleDesc;
+    }
+    public static string GetRoleDescription(RoleId role)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return ModTranslation.GetString($"{roleInfo.NameKey}Description");
+        return IntroData.GetIntrodata(role)?.Description;
+    }
+    public static TeamType GetRoleTeamType(PlayerControl player, bool IsImpostorReturn = false)
+    {
+        return GetRoleTeamType(player.GetRole(), player, IsImpostorReturn);
+    }
+    public static TeamType GetRoleTeamType(RoleId role, PlayerControl player = null, bool IsImpostorReturn = false)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null)
+            return roleInfo.TeamType;
+        return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.TeamType ?? TeamType.Error;
+    }
+    public static PlayerControl[] GetRolePlayers<T>() where T : RoleBase
+    {
+        IReadOnlyList<T> Roles = RoleBaseManager.GetRoleBases<T>();
+        PlayerControl[] Players = new PlayerControl[Roles.Count];
+        for (int i=0;i<Roles.Count;i++)
+        {
+            Players[i] = Roles[i].Player;
+        }
+        return Players;
     }
 }

@@ -153,18 +153,16 @@ public class Moira
         PlayerControl player1 = ModHelpers.PlayerById(player1Id);
         PlayerControl player2 = ModHelpers.PlayerById(player2Id);
         if (player1 is null || player2 is null) return;
-        RoleId player1Role = player1.GetRole();
-        RoleId player2Role = player2.GetRole();
         RoleTypes player1RoleType = !player1.Data.RoleWhenAlive.HasValue ? player1.Data.Role.Role : RoleTypeData.ContainsKey(player1Id) ? RoleTypeData[player1Id] : player1.Data.RoleWhenAlive.Value;
         RoleTypes player2RoleType = !player2.Data.RoleWhenAlive.HasValue ? player2.Data.Role.Role : RoleTypeData.ContainsKey(player2Id) ? RoleTypeData[player2Id] : player2.Data.RoleWhenAlive.Value;
 
-        player1.SetRoleRPC(player2Role);
         if (player1.IsAlive()) player1.RPCSetRoleUnchecked(player2RoleType);
         RoleTypeData[player1Id] = player2RoleType;
 
-        player2.SetRoleRPC(player1Role);
         if (player2.IsAlive()) player2.RPCSetRoleUnchecked(player1RoleType);
         RoleTypeData[player2Id] = player1RoleType;
+
+        RPCProcedure.SwapRole(player1Id, player2Id);
     }
 
     public static void WrapUp(GameData.PlayerInfo exiled)
