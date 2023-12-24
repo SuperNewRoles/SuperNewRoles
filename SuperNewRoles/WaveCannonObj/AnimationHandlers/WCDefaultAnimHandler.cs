@@ -114,7 +114,6 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                         .CustomButtonInfos?
                         .FirstOrDefault()?
                         .ResetCoolTime();
-                        CannonObject.Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers = new();
                     }
                     GameObject.Destroy(CannonObject.gameObject);
                 }

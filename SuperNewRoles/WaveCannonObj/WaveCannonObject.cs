@@ -75,6 +75,7 @@ public class WaveCannonObject : CustomAnimation
     static Vector3 OwnerPos;
     public List<PolygonCollider2D> colliders;
     public bool IsShootFirst;
+    public List<byte> CannotMurderPlayers;
     public static List<(float, Vector2)> RotateSet = new() { (90, new(-3.05f, 25.5f)), (270, new(-4f, -26.5f)), (45, new(14.3f, 17.75f)), (45, new(14.3f, -17.75f)), (180, new(-30.7f, -0.8f)) };
 
     public override void Awake()
@@ -84,6 +85,7 @@ public class WaveCannonObject : CustomAnimation
         WiseManData = new();
         effectGameObjects = new();
         effectrenders = new();
+        CannotMurderPlayers = new();
     }
     private IWaveCannonAnimationHandler CreateAnimHandler(WCAnimType? animType = null)
     {
@@ -283,7 +285,7 @@ public class WaveCannonObject : CustomAnimation
                 {
                     if (player.IsDead()) continue;
                     if (WiseManData.ContainsKey(player)) continue;
-                    if (Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers.Contains(player.PlayerId)) continue;
+                    if (CannotMurderPlayers.Contains(player.PlayerId)) continue;
                     if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
                     //float posdata = player.GetTruePosition().y - transform.position.y;
                     //if (posdata is > 1 or < (-1)) continue;
@@ -300,7 +302,7 @@ public class WaveCannonObject : CustomAnimation
                             msgwriter.Write(0);
                             msgwriter.EndRPC();
                             RPCProcedure.ShielderProtect(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
-                            Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers.Add(player.PlayerId);
+                            CannotMurderPlayers.Add(player.PlayerId);
                             return;
                         }
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);

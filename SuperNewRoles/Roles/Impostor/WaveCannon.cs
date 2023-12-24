@@ -48,10 +48,8 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
         AnimationTypeOption = CustomOption.Create(200005, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts, Optioninfo.RoleOption);
     }
 
-    public List<byte> CannotMurderPlayers;
     public WaveCannon(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        CannotMurderPlayers = new();
         CustomButtonInfos = new CustomButtonInfo[1]
         {
             new(null, this, ButtonOnClick, (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
