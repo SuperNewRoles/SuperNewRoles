@@ -16,7 +16,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
 
     public List<WCSantaHandler> Santas;
     private float SantaSpawnTimer;
-    private const float SantaSpawnTimeInterval = 0.35f;
+    public static readonly float SantaSpawnTimeInterval = 0.3f;
 
     public Sprite ColliderSprite => WCDefaultAnimHandler.ColliderSpriteStatic;
 
@@ -73,6 +73,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                         .ResetCoolTime();
                         CannonObject.Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers = new();
                     }
+                    Santas.ForEach(santa => { if (santa != null) santa.transform.SetParent(null, true); });
                     GameObject.Destroy(CannonObject.gameObject);
                 }
             });
@@ -82,7 +83,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
     {
         WCSantaHandler SantaHandler = new GameObject("Santa").AddComponent<WCSantaHandler>();
         SantaHandler.transform.parent = CannonObject.transform;
-        SantaHandler.transform.localPosition = new(-2.4f, 0.3f, 0.1f);
+        SantaHandler.transform.localPosition = new(-2.4f, 0.275f, 0.1f);
         SantaHandler.transform.localScale = new(-0.1f, 0.1f, 0.1f);
         Santas.Add(SantaHandler);
         //タイマーをリセット
@@ -96,6 +97,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
     {
         if (SantaSpawnTimer == -1)
             return;
+        Santas.RemoveAll(x => x == null);
         SantaSpawnTimer -= Time.deltaTime;
         if (SantaSpawnTimer <= 0)
             SpawnSanta();
