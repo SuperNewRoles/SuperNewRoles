@@ -154,8 +154,7 @@ class WrapUpPatch
         Clergyman.WrapUp();
         Balancer.WrapUp(exiled == null ? null : exiled.Object);
         Speeder.WrapUp();
-        Bestfalsecharge.WrapUp();
-        CustomRoles.OnWrapUp();
+        CustomRoles.OnWrapUp(exiled?.Object);
         Rocket.WrapUp(exiled == null ? null : exiled.Object);
         if (AmongUsClient.Instance.AmHost)
         {
@@ -170,13 +169,12 @@ class WrapUpPatch
         Photographer.WrapUp();
         Cracker.WrapUp();
         RoleClass.IsMeeting = false;
-        Seer.WrapUpPatch.WrapUpPostfix();
+        SeerHandler.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
         Moira.WrapUp(exiled);
-        Conjurer.WrapUp();
         WellBehaver.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {

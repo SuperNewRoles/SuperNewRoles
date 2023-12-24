@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -34,7 +35,7 @@ public static class SoothSayer_Patch
         }
         else
         {
-            if (introData != RoleId.ShermansServant) nameData = IntroData.GetIntroData(introData, Target).NameKey;
+            if (introData != RoleId.ShermansServant) nameData = CustomRoles.GetRoleNameKey(introData, Target);
             else nameData = "Crewmate";
         }
         var name = ModTranslation.GetString(nameData + "Name");
@@ -80,7 +81,7 @@ public static class SoothSayer_Patch
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
         var introData = Target.GetRole();
-        nameData = IntroData.GetIntroData(introData, Target).NameKey;
+        nameData = CustomRoles.GetRoleNameKey(introData, Target);
         var isReverseDecision = Attribute.HauntedWolf.CustomOptionData.IsReverseSheriffDecision.GetBool() && PlayerControl.LocalPlayer.IsHauntedWolf();
         if (RoleClass.SpiritMedium.DisplayMode)
         {
@@ -93,7 +94,7 @@ public static class SoothSayer_Patch
         }
         else
         {
-            if (introData != RoleId.ShermansServant) nameData = IntroData.GetIntroData(introData, Target).NameKey;
+            if (introData != RoleId.ShermansServant) nameData = CustomRoles.GetRoleNameKey(introData, Target);
             else nameData = "Crewmate";
         }
         var name = ModTranslation.GetString(nameData + "Name");

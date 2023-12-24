@@ -47,14 +47,107 @@ class CheckShapeshiftPatch
         //ここからMod側のチェック
         if (!HandleShapeshiftCheck(__instance, target, shouldAnimate))
         {
-            __instance.RpcRejectShapeshift();
             //まあでも解除する場合はそのまま解除で通した方がいいよね
             if (__instance.PlayerId == target.PlayerId)
                 __instance.RpcShapeshift(__instance, shouldAnimate);
+            else
+                __instance.RpcRejectShapeshift();
             return false;
         }
         __instance.RpcShapeshift(target, shouldAnimate);
         return false;
+    }
+    static bool HandleSHRShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
+    {
+        //以下解除なら処理しない
+        if (__instance == target) return true;
+        switch (__instance.GetRole())
+        {
+            case RoleId.SelfBomber:
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                    {
+                        if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SelfBomberScope.GetFloat()))
+                        {
+                            __instance.RpcMurderPlayerCheck(p);
+                            p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
+                        }
+                    }
+                }
+                __instance.RpcMurderPlayer(__instance, true);
+                __instance.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
+                return false;
+            case RoleId.Samurai:
+                if (RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId)) return false;
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.IsDead() ||
+                        p.PlayerId == __instance.PlayerId ||
+                        SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SamuraiScope.GetFloat()))
+                        continue;
+                    p.RpcSetFinalStatus(FinalStatus.SamuraiKill);
+                    __instance.RpcMurderPlayerCheck(p);
+                }
+                RoleClass.Samurai.SwordedPlayer.Add(__instance.PlayerId);
+                return false;
+            case RoleId.Arsonist:
+                foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+                {
+                    if (!Arsonist.IsWin(p)) continue;
+                    RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(p.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                    Arsonist.SettingAfire();
+
+                    Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+                    Writer.Write((byte)CustomGameOverReason.ArsonistWin);
+                    Writer.EndRPC();
+                    RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+
+                    RoleClass.Arsonist.TriggerArsonistWin = true;
+                    AdditionalTempData.winCondition = WinCondition.ArsonistWin;
+                    __instance.enabled = false;
+                    GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
+                    return true;
+                }
+                return false;
+            case RoleId.SuicideWisher:
+                __instance.RpcMurderPlayer(__instance, true);
+                __instance.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
+                return false;
+            case RoleId.ToiletFan:
+                RPCHelper.RpcOpenToilet();
+                return false;
+            case RoleId.NiceButtoner:
+                if (!RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                    RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptionHolder.NiceButtonerCount.GetInt();
+                RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId]--;
+                if (RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] >= 0)
+                    EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
+                return false;
+            case RoleId.EvilButtoner:
+                if (!RoleClass.EvilButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                    RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptionHolder.EvilButtonerCount.GetInt();
+                RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId]--;
+                if (RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] >= 0)
+                    EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
+                return false;
+            case RoleId.EvilSeer:
+                return false;//shapeとしての能力は持たせない為、誤爆封じで導入者のみ使用不可にする。
+            case RoleId.RemoteSheriff:
+                //対象が死んでいる場合はシェイプシフトできない
+                if (target.IsDead())
+                    return false;
+                //もう残り回数がない場合はシェイプシフトできない
+                if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) &&
+                    RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] <= 0)
+                    return false;
+                break;
+        }
+        return true;
     }
     static bool HandleShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
     {
@@ -77,93 +170,10 @@ class CheckShapeshiftPatch
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            switch (__instance.GetRole())
-            {
-                case RoleId.SelfBomber:
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
-                        {
-                            if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SelfBomberScope.GetFloat()))
-                            {
-                                __instance.RpcMurderPlayerCheck(p);
-                                p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
-                            }
-                        }
-                    }
-                    __instance.RpcMurderPlayer(__instance, true);
-                    __instance.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
-                    return false;
-                case RoleId.Samurai:
-                    if (RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId)) return false;
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        if (p.IsDead() ||
-                            p.PlayerId == __instance.PlayerId ||
-                            SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SamuraiScope.GetFloat()))
-                            continue;
-                        p.RpcSetFinalStatus(FinalStatus.SamuraiKill);
-                        __instance.RpcMurderPlayerCheck(p);
-                    }
-                    RoleClass.Samurai.SwordedPlayer.Add(__instance.PlayerId);
-                    return false;
-                case RoleId.Arsonist:
-                    foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
-                    {
-                        if (!Arsonist.IsWin(p)) continue;
-                        RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                        Writer.Write(p.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-
-                        Arsonist.SettingAfire();
-
-                        Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
-                        Writer.Write((byte)CustomGameOverReason.ArsonistWin);
-                        Writer.EndRPC();
-                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
-
-                        RoleClass.Arsonist.TriggerArsonistWin = true;
-                        AdditionalTempData.winCondition = WinCondition.ArsonistWin;
-                        __instance.enabled = false;
-                        GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
-                        return true;
-                    }
-                    return false;
-                case RoleId.SuicideWisher:
-                    __instance.RpcMurderPlayer(__instance, true);
-                    __instance.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
-                    return false;
-                case RoleId.ToiletFan:
-                    RPCHelper.RpcOpenToilet();
-                    return false;
-                case RoleId.NiceButtoner:
-                    if (!RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
-                        RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptionHolder.NiceButtonerCount.GetInt();
-                    RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId]--;
-                    if (RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] >= 0)
-                        EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
-                    return false;
-                case RoleId.EvilButtoner:
-                    if (!RoleClass.EvilButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
-                        RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptionHolder.EvilButtonerCount.GetInt();
-                    RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId]--;
-                    if (RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] >= 0)
-                        EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
-                    return false;
-                case RoleId.EvilSeer:
-                    return false;//shapeとしての能力は持たせない為、誤爆封じで導入者のみ使用不可にする。
-                case RoleId.RemoteSheriff:
-                    //対象が死んでいる場合はシェイプシフトできない
-                    if (target.IsDead())
-                        return false;
-                    //もう残り回数がない場合はシェイプシフトできない
-                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) &&
-                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] <= 0)
-                        return false;
-                    break;
-
-            }
+            bool ShapeshiftResultSHR = HandleSHRShapeshiftCheck(__instance, target, shouldAnimate);
+            //falseが返ってきたらシェイプシフトできない
+            if (!ShapeshiftResultSHR)
+                return false;
         }
         //おめでとう！無事にシェイプシフトできました！
         return true;
@@ -230,29 +240,15 @@ class RpcShapeshiftPatch
         {
             switch (__instance.GetRole())
             {
-                case RoleId.RemoteSheriff:                    
-                        (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
-                        var misfire = !success;
-                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+                case RoleId.RemoteSheriff:
+                    (var killResult, var suicideResult) = Sheriff.SheriffKillResult(__instance, target);
 
-                    if (alwaysKill)
+                    if (killResult.Item1)
                     {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = killResult.Item2;
                         __instance.RpcMurderPlayerCheck(target);
-                        FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
-                        __instance.RpcMurderPlayer(__instance, true);
-                        FinalStatusClass.RpcSetFinalStatus(__instance, status);
-                    }
-                    else if (misfire)
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
-                        __instance.RpcMurderPlayer(__instance, true);
-                        FinalStatusClass.RpcSetFinalStatus(__instance, status);
-                    }
-                    else
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
+                        target.RpcSetFinalStatus(killResult.Item2);
+
                         if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
                             RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
                         else
@@ -264,16 +260,22 @@ class RpcShapeshiftPatch
                             target.RpcMurderPlayer(target, true);
                             __instance.RpcShowGuardEffect(__instance);
                         }
-                        FinalStatusClass.RpcSetFinalStatus(target, status);
                         ChangeName.SetRoleName(__instance);
+                    }
+
+                    if (suicideResult.Item1)
+                    {
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = suicideResult.Item2;
+                        __instance.RpcMurderPlayer(__instance, true);
+                        __instance.RpcSetFinalStatus(suicideResult.Item2);
                     }
                     return true;
                 case RoleId.Camouflager:
-                        RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
-                        RoleClass.Camouflager.ButtonTimer = DateTime.Now;
-                        RoleClass.Camouflager.IsCamouflage = true;
-                        Camouflager.CamouflageSHR();
-                        SyncSetting.CustomSyncSettings(__instance);
+                    RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
+                    RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    RoleClass.Camouflager.IsCamouflage = true;
+                    Camouflager.CamouflageSHR();
+                    SyncSetting.CustomSyncSettings(__instance);
                     return true;
                 case RoleId.Worshiper:
                     __instance.RpcMurderPlayer(__instance, true);
@@ -332,7 +334,7 @@ class ShapeshifterMinigameBeginPatch
             int num2 = index / 3;
             ShapeshifterPanel panel = GameObject.Instantiate(__instance.PanelPrefab, __instance.transform);
             panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
-            
+
             Create(panel, index, Data.Value);
             panel.PlayerIcon.gameObject.SetActive(false);
             panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
@@ -385,24 +387,25 @@ class ShapeshifterMinigameShapeshiftPatch
                 {
                     if (player.IsAlive())
                     {
-                        var Target = player;
-                        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
-                        var misfire = !success;
-                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        var TargetID = Target.PlayerId;
-                        var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+                        var target = player;
+                        (var killResult, var suicideResult) = Sheriff.SheriffKillResult(CachedPlayer.LocalPlayer, target);
 
                         PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
 
-                        RPCProcedure.SheriffKill(LocalID, TargetID, misfire, alwaysKill);
+                        var localId = CachedPlayer.LocalPlayer.PlayerId;
+                        var targetId = target.PlayerId;
+
+                        RPCProcedure.SheriffKill(localId, targetId, killResult.Item1, suicideResult.Item1);
                         MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
-                        killWriter.Write(LocalID);
-                        killWriter.Write(TargetID);
-                        killWriter.Write(misfire);
-                        killWriter.Write(alwaysKill);
+                        killWriter.Write(localId);
+                        killWriter.Write(targetId);
+                        killWriter.Write(killResult.Item1);
+                        killWriter.Write(suicideResult.Item1);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, status);
-                        if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(Target, FinalStatus.SheriffInvolvedOutburst);
+
+                        if (killResult.Item1) FinalStatusClass.RpcSetFinalStatus(target, killResult.Item2);
+                        if (suicideResult.Item1) FinalStatusClass.RpcSetFinalStatus(CachedPlayer.LocalPlayer, suicideResult.Item2);
+
                         RoleClass.RemoteSheriff.KillMaxCount--;
                     }
                     Sheriff.ResetKillCooldown();

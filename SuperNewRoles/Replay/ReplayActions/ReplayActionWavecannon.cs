@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionWavecannon : ReplayAction
@@ -10,7 +11,7 @@ public class ReplayActionWavecannon : ReplayAction
     public byte Id;
     public bool IsFlipX;
     public byte OwnerId;
-    public byte[] buff;
+    public Vector3 position;
     public override void ReadReplayFile(BinaryReader reader)
     {
         ActionTime = reader.ReadSingle();
@@ -19,8 +20,7 @@ public class ReplayActionWavecannon : ReplayAction
         Id = reader.ReadByte();
         IsFlipX = reader.ReadBoolean();
         OwnerId = reader.ReadByte();
-        int count = reader.ReadInt32();
-        buff = reader.ReadBytes(count);
+        position = new Vector3(reader.ReadSingle(), reader.ReadSingle());
     }
     public override void WriteReplayFile(BinaryWriter writer)
     {
@@ -30,18 +30,18 @@ public class ReplayActionWavecannon : ReplayAction
         writer.Write(Id);
         writer.Write(IsFlipX);
         writer.Write(OwnerId);
-        writer.Write(buff.Length);
-        writer.Write(buff);
+        writer.Write(position.x);
+        writer.Write(position.y);
     }
     public override ReplayActionId GetActionId() => ReplayActionId.Wavecannon;
     //アクション実行時の処理
     public override void OnAction()
     {
         //ここに処理書く
-        RPCProcedure.WaveCannon(Type, Id, IsFlipX, OwnerId, buff);
+        //WaveCannon(Type, Id, IsFlipX, OwnerId, buff);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionWavecannon Create(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
+    public static ReplayActionWavecannon Create(byte Type, byte Id, bool IsFlipX, byte OwnerId, Vector3 position)
     {
         ReplayActionWavecannon action = new();
         if (!CheckAndCreate(action)) return null;
@@ -50,7 +50,7 @@ public class ReplayActionWavecannon : ReplayAction
         action.Id = Id;
         action.IsFlipX = IsFlipX;
         action.OwnerId = OwnerId;
-        action.buff = buff;
+        action.position = position;
         return action;
     }
 }

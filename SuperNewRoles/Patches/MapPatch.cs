@@ -1,5 +1,7 @@
 using HarmonyLib;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -9,7 +11,7 @@ class MapBehaviorGetIsOpenStoppedPatch
 {
     static bool Prefix(ref bool __result)
     { // イビルハッカーがアドミン使用中に移動できる
-        if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && CustomOptionHolder.EvilHackerCanMoveWhenUsesAdmin.GetBool())
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilHacker) && EvilHacker.CanMoveWhenUsesAdmin.GetBool())
         {
             __result = false;
             return false;
@@ -64,10 +66,10 @@ public static class MapBehaviourPatch
     public static void ShowPrefix([HarmonyArgument(0)] MapOptions opts, ref bool __state /* Postfixで現在位置マークを表示させるかどうか */)
     {
         __state = false;
-        // 会議中にマップを開くとアドミンを見ることができる
-        if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && RoleClass.EvilHacker.CanUseAdminDuringMeeting && MeetingHud.Instance && opts.Mode == MapOptions.Modes.Normal)
+        EvilHacker evilHacker = PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>();        // 会議中にマップを開くとアドミンを見ることができる
+        if (evilHacker != null && EvilHacker.CanUseAdminDuringMeeting.GetBool() && MeetingHud.Instance && opts.Mode == MapOptions.Modes.Normal)
         {
-            RoleClass.EvilHacker.IsMyAdmin = true;
+            evilHacker.IsMyAdmin = true;
             opts.Mode = MapOptions.Modes.CountOverlay;
             __state = true;
         }
@@ -83,10 +85,11 @@ public static class MapBehaviourPatch
         {
             __instance.HerePoint.enabled = true;
         }
+        EvilHacker evilHacker = PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>();
         // サボタージュマップにアドミンを表示する
-        if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && RoleClass.EvilHacker.SabotageMapShowsAdmin && !MeetingHud.Instance && opts.Mode == MapOptions.Modes.Sabotage)
+        if (evilHacker != null && EvilHacker.SabotageMapShowsAdmin.GetBool() && !MeetingHud.Instance && opts.Mode == MapOptions.Modes.Sabotage)
         {
-            RoleClass.EvilHacker.IsMyAdmin = true;
+            evilHacker.IsMyAdmin = true;
             __instance.countOverlay.gameObject.SetActive(true);
             __instance.countOverlay.SetOptions(true, true);
             __instance.countOverlayAllowsMovement = true;
@@ -120,5 +123,5 @@ public static class MapBehaviourPatch
         }
     }
 
-    public static bool CanSeeDoorsMark() => CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && RoleClass.EvilHacker.MapShowsDoorState;
+    public static bool CanSeeDoorsMark() => CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilHacker) && EvilHacker.MapShowsDoorState.GetBool();
 }

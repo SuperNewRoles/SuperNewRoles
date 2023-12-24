@@ -3,6 +3,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -56,7 +57,8 @@ public static class PlayerPhysicsSpeedPatch2
         if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
         if (ModeHandler.IsMode(ModeId.Default))
         {
-            if (RoleClass.Freezer.IsSpeedDown || RoleClass.WaveCannon.IsLocalOn || JumpDancer.JumpingPlayerIds.ContainsKey(__instance.myPlayer.PlayerId))
+            if (RoleClass.Freezer.IsSpeedDown ||
+                WaveCannonObject.Objects.Contains(__instance.myPlayer) || JumpDancer.JumpingPlayerIds.ContainsKey(__instance.myPlayer.PlayerId))
             {
                 __instance.body.velocity = new Vector2(0f, 0f);
             }
