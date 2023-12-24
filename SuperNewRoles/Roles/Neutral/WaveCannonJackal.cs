@@ -143,6 +143,8 @@ class WaveCannonJackal
     {
         HudManagerStartPatch.JackalKillButton.MaxTimer = WaveCannonJackalKillCooldown.GetFloat();
         HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
+        HudManagerStartPatch.WaveCannonButton.MaxTimer = WaveCannonJackalCoolTime.GetFloat();
+        HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
     }
 
     public static void EndMeetingResetCooldown()
