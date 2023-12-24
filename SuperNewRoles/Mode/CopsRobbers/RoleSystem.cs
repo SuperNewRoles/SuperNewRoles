@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers;
@@ -61,7 +62,6 @@ class RoleSystem
         }
         */
 
-        var introData = IntroData.GetIntroData(player.GetRole(), player);
         string TaskText = "";
         if (!player.IsImpostor())
         {
@@ -76,7 +76,7 @@ class RoleSystem
             }
             catch { }
         }
-        NewName = "<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.Cs(introData.color, Name));
+        NewName = "<size=75%>" + CustomRoles.GetRoleNameOnColor(player) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.Cs(CustomRoles.GetRoleColor(player), Name));
         player.RpcSetNamePrivate(NewName);
     }
     public static void AssignRole()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.BattleRoyal
@@ -71,8 +72,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static (string, string) GetName(PlayerControl player)
         {
             string name = player.GetDefaultName();
-            IntroData data = IntroData.GetIntroData(player.GetRole(), IsImpostorReturn: true);
-            name = "<size=75%>" + ModHelpers.Cs(data.color, ModTranslation.GetString(data.NameKey + "Name")) + "</size>\n" + name + "\n\n";
+            name = "<size=75%>" + ModHelpers.Cs(CustomRoles.GetRoleColor(player.GetRole(), IsImpostorReturn:true), CustomRoles.GetRoleName(player.GetRole(), IsImpostorReturn: true)) + "</size>\n" + name + "\n\n";
             string selfname = name;
             selfname = "\n\n\n\n" + selfname + "\n\n\n\n";
             foreach (var notifi in Notifications)
