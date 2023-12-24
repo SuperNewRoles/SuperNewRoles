@@ -97,7 +97,7 @@ class WaveCannonJackal
                         if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
                         {
                             var sidePlayer = RoleClass.SideKiller.GetSidePlayer(target); // targetのサイドキラーを取得
-                            if (sidePlayer != null) // null(作っていない)ならば処理しない
+                            if (sidePlayer != null && sidePlayer.IsAlive()) // null(作っていない)ならば処理しない
                             {
                                 sidePlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                 RoleClass.SideKiller.IsUpMadKiller = true;
