@@ -4,6 +4,8 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static System.String;
 
@@ -93,7 +95,7 @@ internal class AddChatPatch
         }
         return text;
     }
-    internal static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
+    internal static string GetOptionText(CustomRoleOption RoleOption)
     {
         Logger.Info("GetOptionText", "ChatHandler");
         string text = "";
@@ -115,12 +117,11 @@ internal class AddChatPatch
     {
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
-        IntroData intro = option.Intro;
-        text += GetTeamText(intro.TeamType) + "\n";
-        text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId) + "」\n";
-        text += intro.Description + "\n";
+        text += GetTeamText(CustomRoles.GetRoleTeamType(option.RoleId)) + "\n";
+        text += "「" + CustomRoles.GetRoleIntro(option.RoleId) + "」\n";
+        text += CustomRoles.GetRoleDescription(option.RoleId) + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
-        text += GetOptionText(option, intro);
+        text += GetOptionText(option);
         return text;
     }
     internal static void Send(PlayerControl target, string rolename, string text, float time = 0)

@@ -20,7 +20,10 @@ using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
 using Object = UnityEngine.Object;
@@ -31,6 +34,19 @@ public enum RoleId
 {
     None, // RoleIdの初期化用
     DefaultRole,
+
+    WaveCannon,
+    Slugger,
+    Conjurer,
+    EvilGuesser,
+    NiceGuesser,
+    EvilHacker,
+    EvilSeer,
+    Cupid,
+    Santa,
+    BlackSanta,
+    //RoleId
+
     SoothSayer,
     Jester,
     Lighter,
@@ -50,8 +66,6 @@ public enum RoleId
     Shielder,
     Speeder,
     Freezer,
-    NiceGuesser,
-    EvilGuesser,
     Vulture,
     NiceScientist,
     Clergyman,
@@ -110,7 +124,6 @@ public enum RoleId
     Fox,
     Seer,
     MadSeer,
-    EvilSeer,
     RemoteSheriff,
     TeleportingJackal,
     MadMaker,
@@ -129,7 +142,6 @@ public enum RoleId
     MayorFriends,
     VentMaker,
     GhostMechanic,
-    EvilHacker,
     HauntedWolf, // 情報表示用のRoleId, 役職管理としては使用していない
     PositionSwapper,
     Tuna,
@@ -162,12 +174,10 @@ public enum RoleId
     Photographer,
     Stefinder,
     Stefinder1,
-    Slugger,
     ShiftActor,
     ConnectKiller,
     GM,
     Cracker,
-    WaveCannon,
     WaveCannonJackal,
     SidekickWaveCannon,
     NekoKabocha,
@@ -176,9 +186,7 @@ public enum RoleId
     Knight,
     Pavlovsdogs,
     Pavlovsowner,
-    Conjurer,
     Camouflager,
-    Cupid,
     HamburgerShop,
     Penguin,
     Dependents,
@@ -200,14 +208,14 @@ public enum RoleId
     Balancer,
     Pteranodon,
     BlackHatHacker,
-    Reviver = 172,
-    Guardrawer = 173,
-    KingPoster = 174,
-    LongKiller = 175,
-    Darknight = 176,
-    Revenger = 177,
-    CrystalMagician = 178,
-    GrimReaper = 179,
+    Reviver,
+    Guardrawer,
+    KingPoster,
+    LongKiller,
+    Darknight,
+    Revenger,
+    CrystalMagician,
+    GrimReaper,
     PoliceSurgeon,
     MadRaccoon,
     Moira,
@@ -220,7 +228,6 @@ public enum RoleId
     Spider,
     Crook,
     Frankenstein,
-    //RoleId
 }
 
 public enum CustomRPC
@@ -228,6 +235,7 @@ public enum CustomRPC
     ShareOptions = 60,
     ShareSNRVersion,
     SetRole,
+    SwapRole,
     SetHauntedWolf,
     SetQuarreled,
     RPCClergymanLightOut,
@@ -287,7 +295,6 @@ public enum CustomRPC
     SetMatryoshkaDeadbody,
     StefinderIsKilled,
     PlayPlayerAnimation,
-    SluggerExile,
     PainterPaintSet,
     SharePhotograph,
     PainterSetTarget,
@@ -296,13 +303,11 @@ public enum CustomRPC
     KnightProtected,
     KnightProtectClear,
     GuesserShoot,
-    WaveCannon,
     ShowFlash,
     PavlovsOwnerCreateDog,
     CrackerCrack,
     Camouflage,
     ShowGuardEffect,
-    SetLoversCupid,
     PenguinHikizuri,
     SetVampireStatus,
     SyncDeathMeeting,
@@ -337,19 +342,45 @@ public enum CustomRPC
     CheckSpiderTrapCatch,
     SpiderTrapCatch,
     CrookSaveSignDictionary,
+    RoleRpcHandler,
     SetFrankensteinMonster,
     MoveDeadBody,
-    RpcSetDoorway
+    RpcSetDoorway,
+    WaveCannon
 }
 
 public static class RPCProcedure
 {
+    public static void RoleRpcHandler(MessageReader reader)
+    {
+        byte playerId = reader.ReadByte();
+        RoleBase role = RoleBaseManager.GetRoleBaseById(playerId);
+        if (role == null)
+            return;
+        if (role is not IRpcHandler)
+            return;
+        (role as IRpcHandler).RpcReader(reader);
+    }
     public static void SetSpiderTrap(byte source, float x, float y, ushort id)
     {
         PlayerControl player = ModHelpers.PlayerById(source);
         if (player == null)
             return;
         SpiderTrap.Create(player, new(x, y), id);
+    }
+    public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, Vector2 position, WaveCannonObject.WCAnimType AnimType)
+    {
+        ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, position);
+        Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {position} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
+        switch ((WaveCannonObject.RpcType)Type)
+        {
+            case WaveCannonObject.RpcType.Spawn:
+                return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId), AnimType);
+            case WaveCannonObject.RpcType.Shoot:
+                WaveCannonObject.Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                break;
+        }
+        return null;
     }
     public static void SpiderTrapCatch(ushort id, byte targetid)
     {
@@ -646,11 +677,6 @@ public static class RPCProcedure
                 break;
         }
     }
-    public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
-    {
-        RoleClass.Cupid.CupidLoverPair[sourceid] = player1;
-        SetLovers(player1, player2);
-    }
 
     public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
     {
@@ -843,45 +869,11 @@ public static class RPCProcedure
         if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
     }
 
-    public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
-    {
-        ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, buff);
-        Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
-        switch ((WaveCannonObject.RpcType)Type)
-        {
-            case WaveCannonObject.RpcType.Spawn:
-                Vector3 position = Vector3.zero;
-                position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
-                position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-
-                return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
-            case WaveCannonObject.RpcType.Shoot:
-                WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
-                break;
-        }
-        return null;
-    }
     public static void SetFinalStatus(byte targetId, FinalStatus Status)
     {
         FinalStatusData.FinalStatuses[targetId] = Status;
     }
 
-    public static void SluggerExile(byte SourceId, List<byte> Targets)
-    {
-        Logger.Info("～SluggerExile～");
-        PlayerControl Source = SourceId.GetPlayerControl();
-        if (Source == null) return;
-        ReplayActionSluggerExile.Create(SourceId, Targets);
-        Logger.Info("Source突破");
-        foreach (byte target in Targets)
-        {
-            PlayerControl Player = target.GetPlayerControl();
-            Logger.Info($"{target}はnullか:{Player == null}");
-            if (Player == null) continue;
-            Player.Exiled();
-            new GameObject("SluggerDeadbody").AddComponent<SluggerDeadbody>().Init(Source.PlayerId, Player.PlayerId);
-        }
-    }
     public static void PlayPlayerAnimation(byte playerid, byte type)
     {
         RpcAnimationType AnimType = (RpcAnimationType)type;
@@ -1209,6 +1201,30 @@ public static class RPCProcedure
         }
         player.SetRole(roleId);
     }
+    public static void SwapRole(byte playerid1, byte playerid2)
+    {
+        var player1 = ModHelpers.PlayerById(playerid1);
+        var player2 = ModHelpers.PlayerById(playerid2);
+        RoleBase player1role = player1.GetRoleBase();
+        RoleBase player2role = player2.GetRoleBase();
+        RoleId player1id = player1.GetRole();
+        RoleId player2id = player2.GetRole();
+        if (player1role != null)
+            player1role.SetPlayer(player2);
+        if (player2role != null)
+            player2role.SetPlayer(player1);
+        if (player1role == null)
+        {
+            player2.ClearRole();
+            player2.SetRole(player1id);
+        }
+        if (player2role == null)
+        {
+            player1.ClearRole();
+            player1.SetRole(player2id);
+        }
+        ChacheManager.ResetMyRoleChache();
+    }
 
     public static void SetHauntedWolf(byte playerid)
         => HauntedWolf.Assign.SetHauntedWolf(ModHelpers.PlayerById(playerid));
@@ -1224,24 +1240,15 @@ public static class RPCProcedure
     /// </summary>
     /// <param name="SheriffId">SheriffのPlayerId</param>
     /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
-    /// <param name="MissFire">誤爆したか</param>
-    /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
-    public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
+    /// <param name="isTargetKill">対象をキル可能か</param>
+    /// <param name="isSuicide">シェリフは自殺するか(誤爆 & 自殺)</param>
+    public static void SheriffKill(byte SheriffId, byte TargetId, bool isTargetKill, bool isSuicide)
     {
         PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
         PlayerControl target = ModHelpers.PlayerById(TargetId);
         if (sheriff == null || target == null) return;
 
-        if (alwaysKill)
-        {
-            sheriff.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-            sheriff.MurderPlayer(sheriff, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-        }
-        else if (MissFire)
-        {
-            sheriff.MurderPlayer(sheriff, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-        }
-        else
+        if (isTargetKill)
         {
             if (sheriff.IsRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
             {
@@ -1258,6 +1265,11 @@ public static class RPCProcedure
             {
                 sheriff.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
             }
+        }
+
+        if (isSuicide)
+        {
+            sheriff.MurderPlayer(sheriff, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
     }
 
@@ -1663,7 +1675,7 @@ public static class RPCProcedure
 
     public static void ShowFlash()
     {
-        Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+        SeerHandler.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
     }
 
     public static void PenguinMeetingEnd()
@@ -1753,6 +1765,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetRole:
                         SetRole(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SwapRole:
+                        SwapRole(reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.SheriffKill:
                         SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
@@ -1941,16 +1956,6 @@ public static class RPCProcedure
                     case CustomRPC.PlayPlayerAnimation:
                         PlayPlayerAnimation(reader.ReadByte(), reader.ReadByte());
                         break;
-                    case CustomRPC.SluggerExile:
-                        source = reader.ReadByte();
-                        byte count = reader.ReadByte();
-                        List<byte> Targets = new();
-                        for (int i = 0; i < count; i++)
-                        {
-                            Targets.Add(reader.ReadByte());
-                        }
-                        SluggerExile(source, Targets);
-                        break;
                     case CustomRPC.MeetingKill:
                         MeetingKill(reader.ReadByte(), reader.ReadByte());
                         break;
@@ -1962,9 +1967,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CrackerCrack:
                         CrackerCrack(reader.ReadByte());
-                        break;
-                    case CustomRPC.WaveCannon:
-                        WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());
                         break;
                     case CustomRPC.ShowFlash:
                         ShowFlash();
@@ -1983,9 +1985,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.ShowGuardEffect:
                         ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetLoversCupid:
-                        SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.PenguinHikizuri:
                         PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
@@ -2096,11 +2095,17 @@ public static class RPCProcedure
                     case CustomRPC.CrookSaveSignDictionary:
                         Crook.Ability.SaveSignDictionary(reader.ReadByte(), reader.ReadByte());
                         break;
+                    case CustomRPC.RoleRpcHandler:
+                        RoleRpcHandler(reader);
+                        break;
                     case CustomRPC.SetFrankensteinMonster:
                         SetFrankensteinMonster(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.MoveDeadBody:
                         MoveDeadBody(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
+                        break;
+                    case CustomRPC.WaveCannon:
+                        WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), new(reader.ReadSingle(), reader.ReadSingle()), (WaveCannonObject.WCAnimType)reader.ReadByte());
                         break;
                 }
             }

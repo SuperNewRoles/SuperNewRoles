@@ -5,7 +5,9 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using TMPro;
 using UnityEngine;
 
@@ -80,7 +82,7 @@ public static class DeviceClass
     {
         public static void Postfix()
         {
-            if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.EvilHacker.IsMyAdmin && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
+            if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
         }
     }
     public static bool IsChanging = false;
@@ -89,12 +91,12 @@ public static class DeviceClass
     {
         public static bool Prefix(MapCountOverlay __instance)
         {
-            if (IsAdminRestrict && !RoleClass.EvilHacker.IsMyAdmin && !BlackHatHacker.IsMyAdmin && AdminTimer <= 0)
+            if (IsAdminRestrict && !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) && !BlackHatHacker.IsMyAdmin && AdminTimer <= 0)
             {
                 MapBehaviour.Instance.Close();
                 return false;
             }
-            bool IsUse = (MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin;
+            bool IsUse = (MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || (PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) || BlackHatHacker.IsMyAdmin;
             if (IsUse)
             {
                 if (IsChanging)
@@ -118,9 +120,10 @@ public static class DeviceClass
                     __instance.SabotageText.gameObject.SetActive(false);
                 }
 
+                bool IsMyAdmin = PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false;
                 // インポスターや死体の色が変わる役職等が増えたらここに条件を追加
-                bool canSeeImpostorIcon = RoleClass.EvilHacker.IsMyAdmin && RoleClass.EvilHacker.CanSeeImpostorPositions;
-                bool canSeeDeadIcon = RoleClass.EvilHacker.IsMyAdmin && RoleClass.EvilHacker.CanSeeDeadBodyPositions;
+                bool canSeeImpostorIcon = IsMyAdmin && EvilHacker.CanSeeImpostorPositions.GetBool();
+                bool canSeeDeadIcon = IsMyAdmin && EvilHacker.CanSeeDeadBodyPositions.GetBool();
 
                 for (int i = 0; i < __instance.CountAreas.Length; i++)
                 {
@@ -221,7 +224,7 @@ public static class DeviceClass
         }
         public static void Postfix(MapCountOverlay __instance)
         {
-            if (RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin) return;
+            if ((PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) || BlackHatHacker.IsMyAdmin) return;
             if (!IsAdminRestrict) return;
             if (CachedPlayer.LocalPlayer.IsDead())
             {
@@ -272,9 +275,14 @@ public static class DeviceClass
     {
         public static void Postfix()
         {
-            if (RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin)
+            EvilHacker evilHacker = PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>();
+            if (evilHacker?.IsMyAdmin ?? false)
             {
-                RoleClass.EvilHacker.IsMyAdmin = false;
+                evilHacker.IsMyAdmin = false;
+                return;
+            }
+            if (BlackHatHacker.IsMyAdmin)
+            {
                 BlackHatHacker.IsMyAdmin = false;
                 return;
             }
@@ -291,6 +299,20 @@ public static class DeviceClass
                 writer.Write("");
                 writer.EndRPC();
                 RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, false, "");
+            }
+        }
+    }
+    [HarmonyPatch(typeof(CounterArea), nameof(CounterArea.UpdateCount))]
+    public static class CounterAreaUpdateCountPatch
+    {
+        public static void Postfix(CounterArea __instance)
+        {
+            // 会議中にアドミンが投票エリアに隠れて見えなくなるのを直す
+            // ref: MapBehaviour.GenericShow
+            foreach (var icon in __instance.myIcons)
+            {
+                var renderer = icon.GetComponent<SpriteRenderer>();
+                renderer.material.SetInt(PlayerMaterial.MaskLayer, 255);
             }
         }
     }

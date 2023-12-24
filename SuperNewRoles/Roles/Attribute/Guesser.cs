@@ -3,11 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Attribute;
 
+public class GuesserBase : RoleBase
+{
+    public int Count { get; private set; }
+    public bool CanShotOneMeeting { get; }
+    public bool CanShotCrew { get; }
+    public GuesserBase(int ShotMaxCount, bool CanShotOneMeeting, bool CanShotCrew, PlayerControl p, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(p, Roleinfo, Optioninfo, Introinfo)
+    {
+        Count = ShotMaxCount;
+        this.CanShotOneMeeting = CanShotOneMeeting;
+        this.CanShotCrew = CanShotCrew;
+    }
+    public void UseCount()
+    {
+        Count--;
+    }
+}
 class Guesser
 {
     public const int MaxOneScreenRole = 40;
@@ -42,6 +61,7 @@ class Guesser
     }
     static void guesserOnClick(int buttonTarget, MeetingHud __instance)
     {
+        GuesserBase guesserBaseMe = PlayerControl.LocalPlayer.GetRoleBase<GuesserBase>();
         if (guesserUI != null || !(__instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted or MeetingHud.VoteStates.Discussion)) return;
         if (__instance.playerStates[buttonTarget].AmDead) return;
         Page = 1;
@@ -168,7 +188,7 @@ class Guesser
         }
 
         int ind = 0;
-        bool canCrewShot = PlayerControl.LocalPlayer.GetRole() == RoleId.NiceGuesser ? CustomOptionHolder.NiceGuesserCanShotCrew.GetBool() : CustomOptionHolder.EvilGuesserCanShotCrew.GetBool();
+        bool canCrewShot = guesserBaseMe.CanShotCrew;
         foreach (IntroData roleInfo in IntroData.Intros.Values)
         {
             if (roleInfo == null ||
@@ -190,8 +210,8 @@ class Guesser
         if (CustomOptionHolder.ChiefOption.GetSelection() is not 0) { CreateRole(IntroData.SheriffIntro); }
         if (CustomOptionHolder.MadMakerOption.GetSelection() is not 0 || CustomOptionHolder.FastMakerOption.GetSelection() is not 0 ||
             (CustomOptionHolder.LevelingerOption.GetSelection() is not 0 && Levelinger.LevelingerCanUse("SidekickName")) ||
-            (Impostor.EvilSeer.CustomOptionData.Option.GetSelection() is not 0 && Impostor.EvilSeer.RoleData.CreateMode == 4) ||
-            (CustomOptionHolder.EvilHackerOption.GetSelection() is not 0 && CustomOptionHolder.EvilHackerMadmateSetting.GetBool()))
+            (EvilSeer.Optioninfo.RoleOption.GetSelection() is not 0 && EvilSeer.CreateMode == 4) ||
+            EvilHacker.Optioninfo.RoleOption.GetSelection() is not 0 && EvilHacker.MadmateSetting.GetBool())
         { CreateRole(IntroData.MadmateIntro); }
         if (CustomOptionHolder.SideKillerOption.GetSelection() is not 0) { CreateRole(IntroData.MadKillerIntro); }
         if (CustomOptionHolder.VampireOption.GetSelection() is not 0) { CreateRole(IntroData.DependentsIntro); }
@@ -235,7 +255,7 @@ class Guesser
                 {
                     PlayerControl focusedTarget = ModHelpers.PlayerById(__instance.playerStates[buttonTarget].TargetPlayerId);
                     if (!(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted) || focusedTarget == null) return;
-                    if (RoleClass.NiceGuesser.Count is not (-1) and <= 0) return;
+                    if (guesserBaseMe.Count is not (-1) and <= 0) return;
 
                     var Role = focusedTarget.GetRole();
 
@@ -254,12 +274,8 @@ class Guesser
                     __instance.playerStates.ForEach(x => x.gameObject.SetActive(true));
                     UnityEngine.Object.Destroy(container.gameObject);
 
-                    if (RoleClass.NiceGuesser.Count == -1)
-                    {
-                        RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptionHolder.NiceGuesserShortMaxCount.GetInt() : CustomOptionHolder.EvilGuesserShortMaxCount.GetInt();
-                    }
-                    RoleClass.NiceGuesser.Count--;
-                    if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptionHolder.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptionHolder.NiceGuesserShortOneMeetingCount.GetBool()))
+                    guesserBaseMe.UseCount();
+                    if ((guesserBaseMe.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && guesserBaseMe.CanShotOneMeeting)
                     {
                         __instance.playerStates.ForEach(x => { if (x.TargetPlayerId == dyingTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                     }
@@ -297,7 +313,7 @@ class Guesser
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (RoleClass.NiceGuesser.Count is > 0 or (-1))
+            if (PlayerControl.LocalPlayer.GetRoleBase<GuesserBase>().Count is > 0 or (-1))
             {
                 createGuesserButton(__instance);
             }

@@ -26,7 +26,7 @@ public class TheThreeLittlePigs
     public static CustomOption TheThirdLittlePigMaxCounterCount;
     public static void SetupCustomOptions()
     {
-        (TheThreeLittlePigsOption = new(OptionId, false, type, "TheThreeLittlePigsName", color, 1)).RoleId = RoleId.TheFirstLittlePig;
+        TheThreeLittlePigsOption = new(OptionId, false, type, "TheThreeLittlePigsName", color, 1, role:RoleId.TheFirstLittlePig);
         TheThreeLittlePigsTeamCount = CustomOption.Create(OptionId + 1, false, type, "QuarreledTeamCountSetting", 1f, 1f, 4f, 1f, TheThreeLittlePigsOption);
         TheThreeLittlePigsIsSettingNumberOfUniqueTasks = CustomOption.Create(OptionId + 2, false, type, "IsSettingNumberOfUniqueTasks", false, TheThreeLittlePigsOption);
         var TheThreeLittlePigsoption = SelectTask.TaskSetting(OptionId + 3, OptionId + 4, OptionId + 5, TheThreeLittlePigsIsSettingNumberOfUniqueTasks, type);
@@ -122,7 +122,7 @@ public class TheThreeLittlePigs
             {
                 if (PlayerControl.LocalPlayer.IsAlive() && TaskCheck(PlayerControl.LocalPlayer))
                 {
-                    Seer.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
+                    SeerHandler.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
                     Logger.Info($"{FlashTime / 1000}s経過して、条件が達成されていた為発光させました", "TheFirstLittlePig");
                 }
                 else

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -17,6 +18,7 @@ public class CustomOptionHolder
     public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
     public static string[] rates4 = new string[] { "0%", "25%", "50%", "75%", "100%" };
+    public static string[] ratesper5 = new string[] { "0%","5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%" };
     private static List<string> presetList()
     {
         var tmp = new List<string>();
@@ -100,7 +102,7 @@ public class CustomOptionHolder
     public static CustomOption SheriffCoolTime;
     public static CustomOption SheriffKillMaxCount;
     public static CustomOption SheriffCanKillImpostor;
-    public static CustomOption SheriffAlwaysKills;
+    public static CustomOption SheriffExecutionMode;
     //=============================================
     public static CustomOption SheriffMadRoleKill;
     //シェリフマッドキル
@@ -118,7 +120,7 @@ public class CustomOptionHolder
     public static CustomRoleOption RemoteSheriffOption;
     public static CustomOption RemoteSheriffPlayerCount;
     public static CustomOption RemoteSheriffCoolTime;
-    public static CustomOption RemoteSheriffAlwaysKills;
+    public static CustomOption RemoteSheriffExecutionMode;
     public static CustomOption RemoteSheriffMadRoleKill;
     public static CustomOption RemoteSheriffNeutralKill;
     public static CustomOption RemoteSheriffFriendRolesKill;
@@ -129,7 +131,7 @@ public class CustomOptionHolder
 
     public static CustomRoleOption MeetingSheriffOption;
     public static CustomOption MeetingSheriffPlayerCount;
-    public static CustomOption MeetingSheriffAlwaysKills;
+    public static CustomOption MeetingSheriffExecutionMode;
     public static CustomOption MeetingSheriffMadRoleKill;
     public static CustomOption MeetingSheriffNeutralKill;
     public static CustomOption MeetingSheriffFriendsRoleKill;
@@ -204,18 +206,6 @@ public class CustomOptionHolder
     public static CustomOption SpeederPlayerCount;
     public static CustomOption SpeederCoolTime;
     public static CustomOption SpeederDurationTime;
-
-    public static CustomRoleOption NiceGuesserOption;
-    public static CustomOption NiceGuesserPlayerCount;
-    public static CustomOption NiceGuesserShortOneMeetingCount;
-    public static CustomOption NiceGuesserShortMaxCount;
-    public static CustomOption NiceGuesserCanShotCrew;
-
-    public static CustomRoleOption EvilGuesserOption;
-    public static CustomOption EvilGuesserPlayerCount;
-    public static CustomOption EvilGuesserShortOneMeetingCount;
-    public static CustomOption EvilGuesserShortMaxCount;
-    public static CustomOption EvilGuesserCanShotCrew;
 
     public static CustomRoleOption VultureOption;
     public static CustomOption VulturePlayerCount;
@@ -646,7 +636,7 @@ public class CustomOptionHolder
     public static CustomRoleOption ChiefOption;
     public static CustomOption ChiefPlayerCount;
     public static CustomOption ChiefSheriffCoolTime;
-    public static CustomOption ChiefSheriffAlwaysKills;
+    public static CustomOption ChiefSheriffExecutionMode;
     public static CustomOption ChiefSheriffCanKillImpostor;
     public static CustomOption ChiefSheriffCanKillNeutral;
     public static CustomOption ChiefSheriffCanKillLovers;
@@ -702,18 +692,6 @@ public class CustomOptionHolder
     public static CustomOption GhostMechanicPlayerCount;
     public static CustomOption GhostMechanicRepairLimit;
     public static CustomOption GhostMechanicCooldown;
-
-    public static CustomRoleOption EvilHackerOption;
-    public static CustomOption EvilHackerPlayerCount;
-    public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
-    public static CustomOption EvilHackerMadmateSetting;
-    public static CustomOption EvilHackerButtonCooldown;
-    public static CustomOption EvilHackerHasEnhancedAdmin;
-    public static CustomOption EvilHackerCanSeeImpostorPositions;
-    public static CustomOption EvilHackerCanSeeDeadBodyPositions;
-    public static CustomOption EvilHackerCanUseAdminDuringMeeting;
-    public static CustomOption EvilHackerSabotageMapShowsAdmin;
-    public static CustomOption EvilHackerMapShowsDoorState;
 
     public static CustomRoleOption SecretlyKillerOption;
     public static CustomOption SecretlyKillerPlayerCount;
@@ -880,21 +858,8 @@ public class CustomOptionHolder
     public static CustomOption StefinderSabo;
     public static CustomOption StefinderSoloWin;
 
-    public static CustomRoleOption SluggerOption;
-    public static CustomOption SluggerPlayerCount;
-    public static CustomOption SluggerChargeTime;
-    public static CustomOption SluggerCoolTime;
-    public static CustomOption SluggerIsMultiKill;
-    public static CustomOption SluggerIsKillCoolSync;
-
     public static CustomRoleOption ConnectKillerOption;
     public static CustomOption ConnectKillerPlayerCount;
-
-    public static CustomRoleOption WaveCannonOption;
-    public static CustomOption WaveCannonPlayerCount;
-    public static CustomOption WaveCannonCoolTime;
-    public static CustomOption WaveCannonChargeTime;
-    public static CustomOption WaveCannonIsSyncKillCoolTime;
 
     public static CustomRoleOption CrackerOption;
     public static CustomOption CrackerPlayerCount;
@@ -937,10 +902,6 @@ public class CustomOptionHolder
     public static CustomOption CamouflagerCamouflageQuarreled;
     public static CustomOption CamouflagerCamouflageChangeColor;
     public static CustomOption CamouflagerCamouflageColor;
-
-    public static CustomRoleOption CupidOption;
-    public static CustomOption CupidPlayerCount;
-    public static CustomOption CupidCoolTime;
 
     public static CustomRoleOption HamburgerShopOption;
     public static CustomOption HamburgerShopPlayerCount;
@@ -1050,7 +1011,7 @@ public class CustomOptionHolder
         DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(roomSetting, "DisconnectNotPC"), true, null, isHeader: true);
         DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(roomSetting, "DisconnectDontHaveFriendCode"), true, null);
 
-        SNRWebSendConditionHostDependency = Create(104900, true, CustomOptionType.Generic, Cs(roomSetting, "SNRWebTransmissionConditionHostDependency"), false, null, isHeader: true);
+        SNRWebSendConditionHostDependency = Create(104901, true, CustomOptionType.Generic, Cs(roomSetting, "SNRWebTransmissionConditionHostDependency"), true, null, isHeader: true);
 
         ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(roomSetting, "ProhibitModColor"), false, null, isHeader: true);
         SendYourRoleAllTurn = Create(105000, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "SendYourRoleAllTurn"), false, null);
@@ -1081,47 +1042,13 @@ public class CustomOptionHolder
 
         /* |: ========================= Impostor Settings ========================== :| */
 
-        WaveCannonOption = SetupCustomRoleOption(200000, false, RoleId.WaveCannon, CustomOptionType.Impostor);
-        WaveCannonPlayerCount = Create(200001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
-        WaveCannonCoolTime = Create(200002, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
-        WaveCannonChargeTime = Create(200003, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
-        WaveCannonIsSyncKillCoolTime = Create(200004, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, WaveCannonOption);
-
-        SluggerOption = SetupCustomRoleOption(200100, false, RoleId.Slugger);
-        SluggerPlayerCount = Create(200101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
-        SluggerChargeTime = Create(200102, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
-        SluggerCoolTime = Create(200103, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
-        SluggerIsMultiKill = Create(200104, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
-        SluggerIsKillCoolSync = Create(200105, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, SluggerOption);
-
-        Conjurer.SetupCustomOptions();
-
-        EvilGuesserOption = SetupCustomRoleOption(200400, false, RoleId.EvilGuesser);
-        EvilGuesserPlayerCount = Create(200401, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
-        EvilGuesserShortMaxCount = Create(200402, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
-        EvilGuesserShortOneMeetingCount = Create(200403, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
-        EvilGuesserCanShotCrew = Create(200404, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, EvilGuesserOption);
-
-        EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
-        EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
-        EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
-        EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
-        EvilHackerButtonCooldown = Create(200305, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, EvilHackerMadmateSetting);
-        EvilHackerHasEnhancedAdmin = Create(200306, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, EvilHackerOption);
-        EvilHackerCanSeeImpostorPositions = Create(200307, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, EvilHackerHasEnhancedAdmin);
-        EvilHackerCanSeeDeadBodyPositions = Create(200308, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, EvilHackerHasEnhancedAdmin);
-        EvilHackerCanUseAdminDuringMeeting = Create(200309, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringMeeting", true, EvilHackerOption);
-        EvilHackerSabotageMapShowsAdmin = Create(200310, false, CustomOptionType.Impostor, "EvilHackerSabotageMapShowsAdmin", true, EvilHackerOption);
-        EvilHackerMapShowsDoorState = Create(200311, false, CustomOptionType.Impostor, "EvilHackerMapShowsDoorState", true, EvilHackerOption);
-
-        EvilSeer.CustomOptionData.SetupCustomOptions();
+        var SortedOptionInfos = OptionInfo.OptionInfos.OrderBy(x => (int)x.Key);
+        foreach (var optionInfo in SortedOptionInfos)
+            optionInfo.Value.CreateOption();
 
         ShiftActor.SetupCustomOptions();
 
-        AssassinAndMarlinOption = new(200500, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1)
-        {
-            RoleId = RoleId.Assassin
-        };
+        AssassinAndMarlinOption = new(200500, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1, role: RoleId.Assassin);
         AssassinPlayerCount = Create(200501, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarlinOption);
         AssassinViewVote = Create(200502, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
         MarlinPlayerCount = Create(200503, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
@@ -1429,8 +1356,7 @@ public class CustomOptionHolder
         TeleportingJackalCoolTime = Create(300306, false, CustomOptionType.Neutral, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
         TeleportingJackalDurationTime = Create(300307, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
 
-        (PavlovsownerOption = new(300400, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1))
-        .RoleId = RoleId.Pavlovsowner;
+        PavlovsownerOption = new(300400, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1, role: RoleId.Pavlovsowner);
         PavlovsownerPlayerCount = Create(300401, false, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], PavlovsownerOption);
         PavlovsownerCreateCoolTime = Create(300402, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, PavlovsownerOption);
         PavlovsownerCreateDogLimit = Create(300403, false, CustomOptionType.Neutral, "PavlovsownerCreateDogLimit", 1f, 1f, 15f, 1f, PavlovsownerOption);
@@ -1512,10 +1438,7 @@ public class CustomOptionHolder
         TunaIsUseVent = Create(300903, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, TunaOption);
         TunaIsAddWin = Create(300904, true, CustomOptionType.Neutral, "TunaAddWinSetting", false, TunaOption);
 
-        RevolutionistAndDictatorOption = new(301000, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1)
-        {
-            RoleId = RoleId.Revolutionist
-        };
+        RevolutionistAndDictatorOption = new(301000, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1, role: RoleId.Revolutionist);
         RevolutionistPlayerCount = Create(301001, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
         DictatorPlayerCount = Create(301002, false, CustomOptionType.Neutral, "SettingDictatorPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
         DictatorVoteCount = Create(301003, false, CustomOptionType.Neutral, "DictatorVoteCount", 2f, 1f, 100f, 1f, RevolutionistAndDictatorOption);
@@ -1525,10 +1448,6 @@ public class CustomOptionHolder
         RevolutionistTouchTime = Create(301007, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
         RevolutionistAddWin = Create(301008, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
         RevolutionistAddWinIsAlive = Create(301009, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
-
-        CupidOption = SetupCustomRoleOption(301100, false, RoleId.Cupid);
-        CupidPlayerCount = Create(301101, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
-        CupidCoolTime = Create(301102, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
 
         LoversBreakerOption = SetupCustomRoleOption(301200, false, RoleId.LoversBreaker);
         LoversBreakerPlayerCount = Create(301201, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);
@@ -1635,7 +1554,7 @@ public class CustomOptionHolder
         SheriffPlayerCount = Create(400001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
         SheriffCoolTime = Create(400002, true, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
         SheriffKillMaxCount = Create(400003, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
-        SheriffAlwaysKills = Create(400004, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, SheriffOption);
+        SheriffExecutionMode = Create(400011, true, CustomOptionType.Crewmate, "SheriffExecutionMode", new string[] { "SheriffDefaultExecutionMode", "SheriffAlwaysSuicideMode", "SheriffAlwaysKillMode" }, SheriffOption);
         SheriffCanKillImpostor = Create(400005, true, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, SheriffOption);
         SheriffMadRoleKill = Create(400006, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
         SheriffNeutralKill = Create(400007, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, SheriffOption);
@@ -1648,7 +1567,7 @@ public class CustomOptionHolder
         RemoteSheriffCoolTime = Create(400103, false, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
         RemoteSheriffKillMaxCount = Create(400104, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, RemoteSheriffOption, format: "unitSeconds");
         RemoteSheriffIsKillTeleportSetting = Create(400105, true, CustomOptionType.Crewmate, "RemoteSheriffIsKillTeleportSetting", false, RemoteSheriffOption);
-        RemoteSheriffAlwaysKills = Create(400106, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, RemoteSheriffOption);
+        RemoteSheriffExecutionMode = Create(400112, true, CustomOptionType.Crewmate, "SheriffExecutionMode", new string[] { "SheriffDefaultExecutionMode", "SheriffAlwaysSuicideMode", "SheriffAlwaysKillMode" }, RemoteSheriffOption);
         RemoteSheriffMadRoleKill = Create(400107, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, RemoteSheriffOption);
         RemoteSheriffNeutralKill = Create(400108, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, RemoteSheriffOption);
         RemoteSheriffFriendRolesKill = Create(400109, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, RemoteSheriffOption);
@@ -1659,7 +1578,7 @@ public class CustomOptionHolder
         MeetingSheriffPlayerCount = Create(400202, false, CustomOptionType.Crewmate, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
         MeetingSheriffKillMaxCount = Create(400203, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
         MeetingSheriffOneMeetingMultiKill = Create(400204, false, CustomOptionType.Crewmate, "MeetingSheriffMeetingmultipleKillSetting", false, MeetingSheriffOption);
-        MeetingSheriffAlwaysKills = Create(400205, false, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, MeetingSheriffOption);
+        MeetingSheriffExecutionMode = Create(400211, true, CustomOptionType.Crewmate, "SheriffExecutionMode", new string[] { "SheriffDefaultExecutionMode", "SheriffAlwaysSuicideMode", "SheriffAlwaysKillMode" }, MeetingSheriffOption);
         MeetingSheriffMadRoleKill = Create(400206, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillMadRoleSetting", false, MeetingSheriffOption);
         MeetingSheriffNeutralKill = Create(400207, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillNeutralSetting", false, MeetingSheriffOption);
         MeetingSheriffFriendsRoleKill = Create(400208, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, MeetingSheriffOption);
@@ -1670,19 +1589,13 @@ public class CustomOptionHolder
         ChiefPlayerCount = Create(400302, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
         ChiefSheriffCoolTime = Create(400303, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
         ChiefSheriffKillLimit = Create(400304, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
-        ChiefSheriffAlwaysKills = Create(400305, false, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, ChiefOption);
+        ChiefSheriffExecutionMode = Create(400312, true, CustomOptionType.Crewmate, "SheriffExecutionMode", new string[] { "SheriffDefaultExecutionMode", "SheriffAlwaysSuicideMode", "SheriffAlwaysKillMode" }, ChiefOption);
         ChiefSheriffCanKillImpostor = Create(400306, false, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, ChiefOption);
         ChiefSheriffCanKillMadRole = Create(400307, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
         ChiefSheriffCanKillNeutral = Create(400308, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
         ChiefSheriffFriendsRoleKill = Create(400309, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, ChiefOption);
         ChiefSheriffCanKillLovers = Create(400310, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
         ChiefSheriffQuarreledKill = Create(400311, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, ChiefOption);
-
-        NiceGuesserOption = SetupCustomRoleOption(400401, false, RoleId.NiceGuesser);
-        NiceGuesserPlayerCount = Create(400402, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
-        NiceGuesserShortMaxCount = Create(400403, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
-        NiceGuesserShortOneMeetingCount = Create(400404, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
-        NiceGuesserCanShotCrew = Create(400405, false, CustomOptionType.Crewmate, "EvilGuesserCanCrewShotSetting", true, NiceGuesserOption);
 
         WiseMan.SetupCustomOptions();
 
@@ -1714,7 +1627,7 @@ public class CustomOptionHolder
         MadmateIsParcentageForTaskTrigger = Create(400907, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadmateIsCheckImpostor);
         MadmateParcentageForTaskTriggerSetting = Create(400908, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadmateIsParcentageForTaskTrigger);
         MadmateIsUseVent = Create(400909, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadmateOption);
-        MadmateIsImpostorLight = Create(400910, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption); ;
+        MadmateIsImpostorLight = Create(400910, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption);
 
         BlackCatOption = SetupCustomRoleOption(401000, true, RoleId.BlackCat);
         BlackCatPlayerCount = Create(401001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
@@ -1926,9 +1839,6 @@ public class CustomOptionHolder
         BaitOption = SetupCustomRoleOption(403100, true, RoleId.Bait);
         BaitPlayerCount = Create(403101, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
         BaitReportTime = Create(403102, true, CustomOptionType.Crewmate, "BaitReportTimeSetting", 2f, 1f, 4f, 0.5f, BaitOption);
-
-        BestfalsechargeOption = SetupCustomRoleOption(403200, true, RoleId.Bestfalsecharge);
-        BestfalsechargePlayerCount = Create(403201, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BestfalsechargeOption);
 
         NiceMechanic.SetupCustomOptions();
 

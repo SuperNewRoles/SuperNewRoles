@@ -128,7 +128,7 @@ public class SpiderTrap : MonoBehaviour
         if (SourceId == PlayerControl.LocalPlayer.PlayerId)
         {
             //発光させる
-            Seer.ShowFlash(RoleClass.ImpostorRed);
+            SeerHandler.ShowFlash(RoleClass.ImpostorRed);
             //矢印を出す処理を書く
             arrow = new(RoleClass.ImpostorRed);
             arrow.Update(CatchingPlayer.transform.position);

@@ -148,32 +148,27 @@ static class CheckMurderPatch
                 return false;
             case RoleId.Sheriff:
                 //もうキルできる回数がないならreturn
-                if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) &&
-                    RoleClass.Sheriff.KillCount[__instance.PlayerId] <= 0)
-                    return false;
-                (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
-                var misfire = !success;
-                var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                if (alwaysKill || misfire)
+                if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) && RoleClass.Sheriff.KillCount[__instance.PlayerId] <= 0) return false;
+
+                (var killResult, var suicideResult) = Sheriff.SheriffKillResult(__instance, target);
+
+                if (killResult.Item1)
                 {
-                    if (alwaysKill)
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
-                        __instance.RpcMurderPlayerCheck(target);
-                        __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
-                    }
-                    __instance.RpcMurderPlayer(__instance, true);
-                    __instance.RpcSetFinalStatus(status);
-                }
-                else
-                {
-                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
+                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = killResult.Item2;
+                    __instance.RpcMurderPlayerCheck(target);
+                    target.RpcSetFinalStatus(killResult.Item2);
+
                     if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
                         RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.SheriffKillMaxCount.GetInt();
                     RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
-                    __instance.RpcMurderPlayerCheck(target);
-                    target.RpcSetFinalStatus(status);
                     Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                }
+
+                if (suicideResult.Item1)
+                {
+                    FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = suicideResult.Item2;
+                    __instance.RpcMurderPlayer(__instance, true);
+                    __instance.RpcSetFinalStatus(suicideResult.Item2);
                 }
                 return false;
             case RoleId.MadMaker:
@@ -370,6 +365,8 @@ static class CheckMurderPatch
         }
 
         if (!AmongUsClient.Instance.AmHost) return true;
+        if (!CustomRoles.OnCheckMurderPlayer(__instance, target))
+            return IsKillSuc = false;
         switch (ModeHandler.GetMode())
         {
             case ModeId.Zombie:
@@ -525,7 +522,7 @@ static class CheckMurderPatch
         switch (target.GetRole())
         {
             case RoleId.EvilSeer:
-                EvilSeer.Ability.OnKill.SuperHostRolesMode(__instance, target);
+                target.GetRoleBase<EvilSeer>().OnKillSuperHostRolesMode(__instance, target);
                 break;
             case RoleId.NekoKabocha:
                 NekoKabocha.OnKill(__instance);
@@ -610,7 +607,7 @@ public static class MurderPlayerPatch
             {
                 case RoleId.SideKiller:
                     var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
-                    if (sideplayer == null)
+                    if (sideplayer == null || sideplayer.IsDead())
                         break;
                     if (!RoleClass.SideKiller.IsUpMadKiller)
                     {
@@ -619,7 +616,7 @@ public static class MurderPlayerPatch
                     }
                     break;
                 case RoleId.EvilSeer:
-                    EvilSeer.Ability.OnKill.DefaultMode(__instance);
+                    RoleBaseManager.GetLocalRoleBase<EvilSeer>().OnKillDefaultMode(__instance);
                     break;
             }
 
@@ -645,7 +642,8 @@ public static class MurderPlayerPatch
         }
 
         //ダークキラーがキルできるか判定
-        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem)) {
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem))
+        {
             var ma = elecsystem.CastFast<SwitchSystem>();
             if (__instance.IsRole(RoleId.DarkKiller) &&
                 ma != null &&
@@ -675,8 +673,7 @@ public static class MurderPlayerPatch
         DeadPlayer.deadPlayers.Add(deadPlayer);
         FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
         ReplayActionMurder.Create(__instance.PlayerId, target.PlayerId);
-        __instance.OnKill(target); // 使われるようになった時に要仕様調整
-        target.OnDeath(__instance);
+        CustomRoles.OnKill(deadPlayer);
 
         // FIXME:狐キル時にはキルクールリセットが発生しないようにして, この処理は死体が発生した時の処理にしたい。
         SerialKiller.MurderPlayer(__instance, target);
@@ -716,10 +713,9 @@ public static class MurderPlayerPatch
 
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Slugger)) // キルクリセット処理
                 {
-                    if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
+                    if (Slugger.IsKillCoolSync.GetBool())
                     {
-                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
-                        HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                        PlayerControl.LocalPlayer.GetRoleBase<Slugger>().CustomButtonInfos.FirstOrDefault().ResetCoolTime();
                     }
                 }
 
@@ -727,15 +723,14 @@ public static class MurderPlayerPatch
 
                 Doppelganger.KillCoolSetting.MurderPlayer(__instance, target); // キルクリセット処理
 
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                if (WaveCannon.IsSyncKillCoolTime.GetBool() &&
+                    PlayerControl.LocalPlayer.GetRoleBase() is WaveCannon wavecannon
+                    )
                 {
-                    if (CustomOptionHolder.WaveCannonIsSyncKillCoolTime.GetBool())
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptionHolder.WaveCannonCoolTime.GetFloat();
-                }
-                else
-                {
-                    if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
+                    wavecannon?
+                        .CustomButtonInfos?
+                        .FirstOrDefault()?
+                        .ResetCoolTime();
                 }
             }
         }
@@ -756,9 +751,7 @@ public static class MurderPlayerPatch
             Logger.Info("死者が発生しました", "DebugMode");
         }
 
-        target.OnDeath(__instance);
-
-        Seer.WrapUpPatch.MurderPlayerPatch.Postfix(target);
+        SeerHandler.WrapUpPatch.MurderPlayerPatch.Postfix(target);
 
         switch (ModeHandler.GetMode())
         {

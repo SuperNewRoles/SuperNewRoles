@@ -161,6 +161,7 @@ public static class SelectTask
             { RoleId.TheThirdLittlePig, TheThreeLittlePigs.TheThreeLittlePigsIsSettingNumberOfUniqueTasks.GetBool() ? (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanIsSettingNumberOfUniqueTasks.GetBool() ? (OrientalShaman.OrientalShamanCommonTask.GetInt(), OrientalShaman.OrientalShamanShortTask.GetInt(), OrientalShaman.OrientalShamanLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) ? (MadRaccoon.CustomOptionData.CommonTask.GetInt(),MadRaccoon.CustomOptionData.ShortTask.GetInt(), MadRaccoon.CustomOptionData.LongTask.GetInt())  : (0, 0, 0) },
+            { RoleId.BlackSanta, BlackSanta.IsSettingNumberOfUniqueTasks.GetBool() ? (BlackSanta.CommonTaskOption.GetInt(), BlackSanta.ShortTaskOption.GetInt(), BlackSanta.LongTaskOption.GetInt()) : (0, 0, 0)}
         };
 
         //テンプレート

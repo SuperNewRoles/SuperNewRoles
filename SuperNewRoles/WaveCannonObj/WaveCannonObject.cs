@@ -4,97 +4,55 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.WaveCannonObj.AnimationHandlers;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-namespace SuperNewRoles.CustomObject;
+namespace SuperNewRoles.WaveCannonObj;
 
 public class WaveCannonObject : CustomAnimation
 {
     public WaveCannonObject(IntPtr intPtr) : base(intPtr)
     {
     }
+    public enum WCAnimType
+    {
+        Default,
+        Santa
+    }
     public enum RpcType
     {
         Spawn,
         Shoot
     }
-    public static List<WaveCannonObject> Objects = new();
+    public static readonly IReadOnlyDictionary<string, Func<WaveCannonObject, IWaveCannonAnimationHandler>> WCCreateAnimHandlers =
+        new Dictionary<string, Func<WaveCannonObject, IWaveCannonAnimationHandler>>()
+    {
+        { WCAnimType.Default.ToString(), (waveCannon) => new WCDefaultAnimHandler(waveCannon) },
+        { WCAnimType.Santa.ToString(), (waveCannon) => new WCSantaAnimHandler(waveCannon) }
+    };
+    public static PlayerData<WaveCannonObject> Objects = new();
 
     public Transform effectGameObjectsParent;
     public List<GameObject> effectGameObjects;
 
-    private static Sprite _colliderSprite;
-    public static Sprite ColliderSprite
-    {
-        get
-        {
-            if (_colliderSprite is null)
-            {
-                _colliderSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_0004.png", 115f);
-            }
-            return _colliderSprite;
-        }
-    }
+    public WCAnimType CurrentAnimType { get; private set; }
+    public IWaveCannonAnimationHandler CurrentAnimationHandler { get; private set; }
 
     public PlayerControl Owner;
     public int Id;
-    public static Sprite[] ChargeSprites
-    {
-        get
-        {
-            if (CachedSpritesCharge == null)
-            {
-                CachedSpritesCharge = new Sprite[5];
-                for (int i = 1; i <= 5; i++)
-                {
-                    CachedSpritesCharge[i - 1] = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Charge_000{i}.png", 115f);
-                }
-            }
-            return CachedSpritesCharge;
-        }
-    }
-    public static Sprite[] CachedSpritesCharge = null;
-    public static Sprite[] ShootSprites
-    {
-        get
-        {
-            if (CachedSpritesShoot == null)
-            {
-                CachedSpritesShoot = new Sprite[12];
-                for (int i = 1; i <= 12; i++)
-                {
-                    CachedSpritesShoot[i - 1] = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f);
-                }
-            }
-            return CachedSpritesShoot;
-        }
-    }
-    public static Sprite[] CachedSpritesShoot = null;
-    public static Sprite[] ShootSpritesNowing
-    {
-        get
-        {
-            if (CachedSpritesShootNowing == null)
-            {
-                CachedSpritesShootNowing = new Sprite[7];
-                for (int i = 6; i <= 12; i++)
-                {
-                    CachedSpritesShootNowing[i - 6] = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f);
-                }
-            }
-            return CachedSpritesShootNowing;
-        }
-    }
-    public static Sprite[] CachedSpritesShootNowing = null;
 
-    private List<SpriteRenderer> effectrenders;
-    private byte OwnerPlayerId;
+    public List<SpriteRenderer> effectrenders { get; private set; }
+    public byte OwnerPlayerId { get; private set; }
     public static Dictionary<byte, int> Ids;
     private static GameObject _waveCannonObjectPrefab;
     public static GameObject WaveCannonObjectPrefab
@@ -113,10 +71,11 @@ public class WaveCannonObject : CustomAnimation
     public Dictionary<PlayerControl, (RoleEffectAnimation, float, Vector3)> WiseManData;
     public bool IsShootNow;
     public bool IsFlipX;
-    private int DestroyIndex = 0;
+    public int DestroyIndex { get; set; } = 0;
     static Vector3 OwnerPos;
     public List<PolygonCollider2D> colliders;
     public bool IsShootFirst;
+    public List<byte> CannotMurderPlayers;
     public static List<(float, Vector2)> RotateSet = new() { (90, new(-3.05f, 25.5f)), (270, new(-4f, -26.5f)), (45, new(14.3f, 17.75f)), (45, new(14.3f, -17.75f)), (180, new(-30.7f, -0.8f)) };
 
     public override void Awake()
@@ -126,11 +85,29 @@ public class WaveCannonObject : CustomAnimation
         WiseManData = new();
         effectGameObjects = new();
         effectrenders = new();
-        Objects.Add(this);
+        CannotMurderPlayers = new();
     }
-    public WaveCannonObject Init(Vector3 pos, bool FlipX, PlayerControl _owner)
+    private IWaveCannonAnimationHandler CreateAnimHandler(WCAnimType? animType = null)
     {
-        CustomAnimationOptions customAnimationOptions = new(ChargeSprites, 25, true, EffectSound: ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), IsEffectSoundLoop: true);
+        if (animType == null)
+            animType = CurrentAnimType;
+        if (WCCreateAnimHandlers.TryGetValue(animType.ToString(), out var handler))
+            return handler(this);
+        return null;
+    }
+    public WaveCannonObject Init(Vector3 pos, bool FlipX, PlayerControl _owner, WCAnimType animType)
+    {
+        CurrentAnimType = animType;
+        Logger.Info("WaveCannon Animation:"+animType.ToString());
+        CurrentAnimationHandler = CreateAnimHandler();
+        if (CurrentAnimationHandler == null)
+        {
+            throw new Exception($"Failed to create animation handler for {animType}" +
+                                 "How to fix: Make sure you have added the animation handler to the WCCreateAnimHandlers dictionary in WaveCannonObject.cs\n" +
+                                 $"{animType}のHandlerの生成に失敗しました。\n" +
+                                 "修正方法: WaveCannonObject.csのWCCreateAnimHandlersにHandlerを追加してください。");
+        }
+        CustomAnimationOptions customAnimationOptions = CurrentAnimationHandler.Init();
         base.Init(customAnimationOptions);
         //使用者を設定
         OwnerPlayerId = _owner.PlayerId;
@@ -158,13 +135,12 @@ public class WaveCannonObject : CustomAnimation
         CreateCollider(CreateEffect());
         //Id
         if (!Ids.ContainsKey(OwnerPlayerId))
-        {
             Ids[OwnerPlayerId] = 0;
-        }
         Id = Ids[OwnerPlayerId];
         Ids[OwnerPlayerId]++;
         //シュート中かを無効に
         IsShootNow = false;
+        Objects[OwnerPlayerId] = this;
         return this;
     }
     public GameObject CreateRotationEffect(Vector3 PlayerPosition, float Angle)
@@ -172,9 +148,7 @@ public class WaveCannonObject : CustomAnimation
         //PlayerPosition.x -= 13;
         float posvalue = PlayerPosition.x - effectrenders[0].transform.parent.position.x;
         if (posvalue < 0)
-        {
             posvalue *= -1;
-        }
         effectrenders[0].transform.parent.localScale = new(posvalue * 0.0145f, 1, 1);
         SpriteRenderer effectrender = CreateEffect();
         GameObject effect = effectrender.transform.parent.gameObject;
@@ -199,7 +173,7 @@ public class WaveCannonObject : CustomAnimation
     }
     public SpriteRenderer CreateEffect()
     {
-        GameObject NewEffect = GameObject.Instantiate(WaveCannonObjectPrefab, effectGameObjectsParent);
+        GameObject NewEffect = Instantiate(WaveCannonObjectPrefab, effectGameObjectsParent);
         Vector3 pos = NewEffect.transform.localPosition;
         pos.z += 0.1f;
         NewEffect.transform.localPosition = pos;
@@ -211,7 +185,7 @@ public class WaveCannonObject : CustomAnimation
     public PolygonCollider2D CreateCollider(SpriteRenderer render)
     {
         Sprite oldSprite = render.sprite;
-        render.sprite = ColliderSprite;
+        render.sprite = CurrentAnimationHandler.ColliderSprite;
         PolygonCollider2D collider = render.gameObject.AddComponent<PolygonCollider2D>();
         collider.isTrigger = true;
         render.sprite = oldSprite;
@@ -223,49 +197,8 @@ public class WaveCannonObject : CustomAnimation
         IsShootFirst = true;
         Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
         IsShootNow = true;
-        foreach (var obj in effectrenders) obj.sprite = ShootSprites[0];
-        Sprite[] sprites = new Sprite[12];
-        for (int i = 0; i < 12; i++)
-            sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
-        Options.SetSprites(sprites,
-            IsLoop: true, frameRate: 12);
-        Stop();
-        Play();
-        Options.SetOnEndAnimation((anim, option) =>
-        {
-            IsShootFirst = false;
-            for (int i = 0; i < 7; i++)
-                sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
 
-            option.SetSprites(sprites, IsLoop: true, frameRate: 15);
-            Stop(IsStopMusic: false);
-            Play(IsPlayMusic: false);
-            foreach (var obj in effectrenders) obj.sprite = sprites[0];
-            Options.SetOnEndAnimation((anim, option) =>
-            {
-                DestroyIndex++;
-                if (DestroyIndex > 3)
-                {
-                    GameObject.Destroy(this.gameObject);
-                    if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
-                    {
-                        if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
-                        {
-                            if (CustomOptionHolder.WaveCannonIsSyncKillCoolTime.GetBool())
-                                PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
-                        }
-                        else
-                        {
-                            if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                                WaveCannonJackal.ResetCooldowns();
-                        }
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
-                        HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
-                        RoleClass.WaveCannon.CannotMurderPlayers = new();
-                    }
-                }
-            });
-        });
+        CurrentAnimationHandler.OnShot();
 
         //
         foreach (var data in WiseMan.WiseManData.ToArray())
@@ -277,7 +210,7 @@ public class WaveCannonObject : CustomAnimation
             CreateRotationEffect(player.GetTruePosition(), data.Value.Value);
             WiseMan.WiseManData[player.PlayerId] = null;
             WiseMan.WiseManPosData[player] = null;
-            RoleEffectAnimation anim = UnityEngine.Object.Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, player.gameObject.transform);
+            RoleEffectAnimation anim = Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, player.gameObject.transform);
             anim.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
             WiseManData[player] = (anim, 0.75f, player.transform.position);
             anim.Renderer.transform.localScale = new(1.1f, 1.6f, 1);
@@ -294,7 +227,7 @@ public class WaveCannonObject : CustomAnimation
     public override void OnDestroy()
     {
         base.OnDestroy();
-        Objects.Remove(this);
+        Objects.Remove(OwnerPlayerId);
         foreach (var data in WiseManData.ToArray())
         {
             if (data.Key is null) continue;
@@ -305,12 +238,8 @@ public class WaveCannonObject : CustomAnimation
                 Camera.main.GetComponent<FollowerCamera>().Locked = false;
             }
             foreach (var anim in data.Key.GetComponentsInChildren<RoleEffectAnimation>())
-            {
                 if (anim is not null)
-                {
-                    GameObject.Destroy(anim.gameObject);
-                }
-            }
+                    Destroy(anim.gameObject);
         }
         if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
@@ -321,18 +250,17 @@ public class WaveCannonObject : CustomAnimation
     public override void OnRenderUpdate()
     {
         if (IsShootNow)
-        {
-            foreach (var obj in effectrenders) obj.sprite = IsShootFirst ? ShootSprites[Index] : ShootSpritesNowing[Index];
-        }
+            CurrentAnimationHandler.RendererUpdate();
     }
     public override void Update()
     {
         base.Update();
         if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal)))
         {
-            GameObject.Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
+        CurrentAnimationHandler.OnUpdate();
         foreach (var data in WiseManData.ToArray())
         {
             if (data.Key is null) continue;
@@ -340,9 +268,7 @@ public class WaveCannonObject : CustomAnimation
             data.Key.moveable = false;
             data.Key.transform.position = data.Value.Item3;
             if (data.Key.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-            {
                 Camera.main.GetComponent<FollowerCamera>().Locked = true;
-            }
             if (data.Value.Item2 > 0)
             {
                 WiseManData[data.Key] = (data.Value.Item1, data.Value.Item2 - Time.fixedDeltaTime, data.Value.Item3);
@@ -352,16 +278,14 @@ public class WaveCannonObject : CustomAnimation
             data.Value.Item1.AudioSource.Pause();
         }
         if (Owner != null && OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting)
-        {
             //Owner.transform.position = OwnerPos;
 
             if (IsShootNow)
-            {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (player.IsDead()) continue;
                     if (WiseManData.ContainsKey(player)) continue;
-                    if (RoleClass.WaveCannon.CannotMurderPlayers.Contains(player.PlayerId)) continue;
+                    if (CannotMurderPlayers.Contains(player.PlayerId)) continue;
                     if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
                     //float posdata = player.GetTruePosition().y - transform.position.y;
                     //if (posdata is > 1 or < (-1)) continue;
@@ -378,7 +302,7 @@ public class WaveCannonObject : CustomAnimation
                             msgwriter.Write(0);
                             msgwriter.EndRPC();
                             RPCProcedure.ShielderProtect(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
-                            RoleClass.WaveCannon.CannotMurderPlayers.Add(player.PlayerId);
+                            CannotMurderPlayers.Add(player.PlayerId);
                             return;
                         }
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
@@ -395,8 +319,6 @@ public class WaveCannonObject : CustomAnimation
                         }
                     }
                 }
-            }
-        }
 
     }
 }
