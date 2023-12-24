@@ -107,7 +107,7 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RpcWriter;
 
-        WCAnimType AnimType = WCCreateAnimHandlers.Keys.ToList()[AnimationTypeOption.GetSelection()]
+        WCAnimType AnimType = (WCAnimType)AnimationTypeOption.GetSelection();
 
         writer.Write((byte)WaveCannonObject.RpcType.Spawn);
         writer.Write((byte)0);
