@@ -1140,7 +1140,6 @@ class AllRoleSetClass
             RoleId.ConnectKiller => CustomOptionHolder.ConnectKillerPlayerCount.GetFloat(),
             RoleId.Cracker => CustomOptionHolder.CrackerPlayerCount.GetFloat(),
             RoleId.NekoKabocha => NekoKabocha.NekoKabochaPlayerCount.GetFloat(),
-            RoleId.WaveCannon => CustomOptionHolder.WaveCannonPlayerCount.GetFloat(),
             RoleId.Doppelganger => CustomOptionHolder.DoppelgangerPlayerCount.GetFloat(),
             RoleId.Werewolf => CustomOptionHolder.WerewolfPlayerCount.GetFloat(),
             RoleId.Knight => Knight.KnightPlayerCount.GetFloat(),

@@ -860,12 +860,6 @@ public class CustomOptionHolder
     public static CustomRoleOption ConnectKillerOption;
     public static CustomOption ConnectKillerPlayerCount;
 
-    public static CustomRoleOption WaveCannonOption;
-    public static CustomOption WaveCannonPlayerCount;
-    public static CustomOption WaveCannonCoolTime;
-    public static CustomOption WaveCannonChargeTime;
-    public static CustomOption WaveCannonIsSyncKillCoolTime;
-
     public static CustomRoleOption CrackerOption;
     public static CustomOption CrackerPlayerCount;
     public static CustomOption CrackerCoolTime;
