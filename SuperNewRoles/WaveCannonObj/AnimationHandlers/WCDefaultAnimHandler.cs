@@ -105,11 +105,16 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                     if (CannonObject.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
                         if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                        {
                             if (WaveCannon.IsSyncKillCoolTime.GetBool())
                                 PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
-                            else
+                        }
+                        else
+                        {
                             if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
                                 WaveCannonJackal.ResetCooldowns();
+                            WaveCannonJackal.WCResetCooldowns();
+                        }
                         CannonObject.Owner.GetRoleBase<WaveCannon>()?
                         .CustomButtonInfos?
                         .FirstOrDefault()?
