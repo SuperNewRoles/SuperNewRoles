@@ -71,7 +71,6 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                         .CustomButtonInfos?
                         .FirstOrDefault()?
                         .ResetCoolTime();
-                        CannonObject.Owner.GetRoleBase<WaveCannon>().CannotMurderPlayers = new();
                     }
                     Santas.ForEach(santa => { if (santa != null) santa.transform.SetParent(null, true); });
                     GameObject.Destroy(CannonObject.gameObject);

@@ -238,7 +238,7 @@ public class FixedUpdate
                             if (!RoleClass.SideKiller.IsUpMadKiller)
                             {
                                 var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
-                                if (sideplayer != null)
+                                if (sideplayer != null && sideplayer.IsAlive())
                                 {
                                     sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                     RoleClass.SideKiller.IsUpMadKiller = true;
