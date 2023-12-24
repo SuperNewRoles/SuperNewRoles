@@ -56,7 +56,7 @@ class WaveCannonJackal
             AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
             index++;
         }
-        WaveCannonJackalAnimTypeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts, WaveCannonJackalOption);
+        WaveCannonJackalAnimTypeOption = Create(OptionId, false, CustomOptionType.Neutral, "WaveCannonAnimationType", AnimTypeTexts, WaveCannonJackalOption);
     }
     // CustomOption End
 
