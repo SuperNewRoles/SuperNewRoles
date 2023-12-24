@@ -18,18 +18,20 @@ public enum FinalStatus
     Alive,
     Kill,
     Exiled,
+    Disconnected,
+    Dead,
+    Sabotage,
+
     SheriffKill,
     SheriffMisFire,
     HauntedSheriffKill,
     HauntedSheriffMisFire,
     SheriffHauntedWolfKill,
     SheriffInvolvedOutburst,
-    Ignite,
-    Disconnected,
-    Dead,
-    Sabotage,
+    SheriffSuicide,
+    HauntedSheriffSuicide,
     NekomataExiled,
-
+    Ignite,
     SluggerHarisen,
     LoversBomb,
     KunaiKill,
@@ -61,4 +63,5 @@ public enum FinalStatus
     GuesserMisFire,
     LoversBreakerKill,
     MadJesterExiled,
+    SantaSelf
 }

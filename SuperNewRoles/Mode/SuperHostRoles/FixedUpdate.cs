@@ -7,6 +7,8 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -16,6 +18,7 @@ public static class FixedUpdate
     public static void RoleFixedUpdate() { }
     public static void Update()
     {
+        ISupportSHR playerSHR = PlayerControl.LocalPlayer.GetRoleBase() as ISupportSHR;
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
         {
             if (RoleClass.Sheriff.KillMaxCount >= 1)
@@ -36,7 +39,10 @@ public static class FixedUpdate
             }
         }
         else if
-            (PlayerControl.LocalPlayer.IsRole
+            ((playerSHR is IKiller &&
+            !PlayerControl.LocalPlayer.IsImpostor())
+            ||
+            PlayerControl.LocalPlayer.IsRole
                 (
                     RoleId.Jackal,
                     RoleId.JackalSeer,

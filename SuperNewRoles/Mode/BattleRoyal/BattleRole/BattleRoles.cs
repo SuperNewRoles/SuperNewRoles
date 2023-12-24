@@ -8,13 +8,13 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
     {
         //RoleIdの値を設定するんだ！
         None = 0,
-        Reviver = 172,
-        Guardrawer = 173,
-        KingPoster = 174,
-        LongKiller = 175,
-        Darknight = 176,
-        Revenger = 177,
-        CrystalMagician = 178,
-        GrimReaper = 179
+        Reviver = RoleId.Reviver,
+        Guardrawer = RoleId.Guardrawer,
+        KingPoster = RoleId.KingPoster,
+        LongKiller = RoleId.LongKiller,
+        Darknight = RoleId.DarkKiller,
+        Revenger = RoleId.Revenger,
+        CrystalMagician = RoleId.CrystalMagician,
+        GrimReaper = RoleId.GrimReaper
     }
 }

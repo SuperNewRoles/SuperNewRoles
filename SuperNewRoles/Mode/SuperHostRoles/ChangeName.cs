@@ -7,12 +7,14 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 public static class ChangeName
 {
-    private static string GetNowName(this PlayerData<string> pd, PlayerControl p)
+    public static string GetNowName(this PlayerData<string> pd, PlayerControl p)
     {
         if (!pd.TryGetValue(p, out string result))
             result = p.GetDefaultName();
@@ -123,11 +125,11 @@ public static class ChangeName
 
         RoleId PlayerRole = player.GetRole();
 
-        var introData = IntroData.GetIntroData(PlayerRole, player);
         StringBuilder NewName = new();
         StringBuilder MySuffix = new();
-        StringBuilder RoleNameText = new(ModHelpers.Cs(introData.color, introData.Name));
-        PlayerData<string> ChangePlayers = new(needplayerlist: true);
+        StringBuilder RoleNameText = new(ModHelpers.Cs(CustomRoles.GetRoleColor(player), CustomRoles.GetRoleName(player)));
+        PlayerData<string> ChangePlayers = new(needplayerlist:true);
+        ISupportSHR playerSHR = player as ISupportSHR;
 
         // カモフラ中は処理を破棄する
         if (!RoleClass.Camouflager.IsCamouflage)
@@ -172,6 +174,10 @@ public static class ChangeName
         }
         else
         {
+            if (playerSHR != null)
+            {
+                playerSHR.BuildName(MySuffix, RoleNameText, ChangePlayers);
+            }
             switch (PlayerRole)
             {
                 case RoleId.Demon:
@@ -276,13 +282,13 @@ public static class ChangeName
             case RoleId.Sheriff:
                 if (RoleClass.Sheriff.KillCount.TryGetValue(player.PlayerId, out int svalue))
                 {
-                    RoleNameText.Append(ModHelpers.Cs(introData.color, svalue.ToString()));
+                    RoleNameText.Append(ModHelpers.Cs(IntroData.SheriffIntro.color, svalue.ToString()));
                 }
                 break;
             case RoleId.RemoteSheriff:
                 if (RoleClass.RemoteSheriff.KillCount.TryGetValue(player.PlayerId, out int rsvalue))
                 {
-                    RoleNameText.Append(ModHelpers.Cs(introData.color, rsvalue.ToString()));
+                    RoleNameText.Append(ModHelpers.Cs(IntroData.RemoteSheriffIntro.color, rsvalue.ToString()));
                 }
                 break;
             case RoleId.Mafia:
@@ -336,14 +342,14 @@ public static class ChangeName
                 attributeRoleName.Append($" + {ModHelpers.Cs(RoleClass.GhostMechanic.color, ModTranslation.GetString("GhostMechanicName"))}");
                 IsGhostMechanicVIew = true;
             }
-            NewName.Append($"(<size=75%>{ModHelpers.Cs(introData.color, introData.Name)}{attributeRoleName}{TaskText}</size>)");
+            NewName.Append($"(<size=75%>{ModHelpers.Cs(CustomRoles.GetRoleColor(player), CustomRoles.GetRoleName(player))}{attributeRoleName}{TaskText}</size>)");
             if (!RoleClass.Camouflager.IsCamouflage)
             {
-                NewName.Append(ModHelpers.Cs(introData.color, $"{player.GetDefaultName()}{MySuffix}"));
+                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), $"{player.GetDefaultName()}{MySuffix}"));
             }
             else
             {
-                NewName.Append(ModHelpers.Cs(introData.color, MySuffix.ToString()));
+                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), MySuffix.ToString()));
             }
         }
         else if (player.IsAlive() || IsUnchecked)
@@ -363,9 +369,9 @@ public static class ChangeName
             }
             NewName.Append($"<size=75%>{RoleNameText}{attributeRoleName}{TaskText}</size>\n");
             if (!RoleClass.Camouflager.IsCamouflage)
-                NewName.Append(ModHelpers.Cs(introData.color, player.GetDefaultName() + MySuffix));
+                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), player.GetDefaultName() + MySuffix));
             else
-                NewName.Append(ModHelpers.Cs(introData.color, MySuffix.ToString()));
+                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), MySuffix.ToString()));
         }
         if (!player.IsMod())
         {

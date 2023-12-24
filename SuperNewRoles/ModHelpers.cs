@@ -18,6 +18,8 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -444,6 +446,16 @@ public static class ModHelpers
         }
         return MurderAttemptResult.PerformKill;
     }
+    public static void AllRun<T>(this List<T> list, Action<T> act)
+    {
+        foreach (T obj in list)
+            act(obj);
+    }
+    public static void AllRun<T>(this T[] array, Action<T> act)
+    {
+        foreach (T obj in array)
+            act(obj);
+    }
     public static void GenerateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
     {
         if (player == null) return;
@@ -461,6 +473,14 @@ public static class ModHelpers
         if (task.numCommon + task.numShort + task.numLong <= 0)
         {
             task.numShort = 1;
+        }
+        ITaskHolder taskHolder = player.GetRoleBase() as ITaskHolder;
+        if (taskHolder != null)
+        {
+            if (taskHolder.HaveMyNumTask(out (int,int,int)? mynumtask))
+                task = mynumtask.Value;
+            if (taskHolder.AssignTask(out List<byte> mytasks, task))
+                return mytasks;
         }
         if (player.IsRole(RoleId.HamburgerShop) && (ModeHandler.IsMode(ModeId.SuperHostRoles) || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()))
         {

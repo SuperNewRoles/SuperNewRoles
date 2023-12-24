@@ -240,29 +240,15 @@ class RpcShapeshiftPatch
         {
             switch (__instance.GetRole())
             {
-                case RoleId.RemoteSheriff:                    
-                        (var success, var status) = Sheriff.IsSheriffRolesKill(__instance, target);
-                        var misfire = !success;
-                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+                case RoleId.RemoteSheriff:
+                    (var killResult, var suicideResult) = Sheriff.SheriffKillResult(__instance, target);
 
-                    if (alwaysKill)
+                    if (killResult.Item1)
                     {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = killResult.Item2;
                         __instance.RpcMurderPlayerCheck(target);
-                        FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
-                        __instance.RpcMurderPlayer(__instance, true);
-                        FinalStatusClass.RpcSetFinalStatus(__instance, status);
-                    }
-                    else if (misfire)
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = status;
-                        __instance.RpcMurderPlayer(__instance, true);
-                        FinalStatusClass.RpcSetFinalStatus(__instance, status);
-                    }
-                    else
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = status;
+                        target.RpcSetFinalStatus(killResult.Item2);
+
                         if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
                             RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
                         else
@@ -274,16 +260,22 @@ class RpcShapeshiftPatch
                             target.RpcMurderPlayer(target, true);
                             __instance.RpcShowGuardEffect(__instance);
                         }
-                        FinalStatusClass.RpcSetFinalStatus(target, status);
                         ChangeName.SetRoleName(__instance);
+                    }
+
+                    if (suicideResult.Item1)
+                    {
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = suicideResult.Item2;
+                        __instance.RpcMurderPlayer(__instance, true);
+                        __instance.RpcSetFinalStatus(suicideResult.Item2);
                     }
                     return true;
                 case RoleId.Camouflager:
-                        RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
-                        RoleClass.Camouflager.ButtonTimer = DateTime.Now;
-                        RoleClass.Camouflager.IsCamouflage = true;
-                        Camouflager.CamouflageSHR();
-                        SyncSetting.CustomSyncSettings(__instance);
+                    RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
+                    RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    RoleClass.Camouflager.IsCamouflage = true;
+                    Camouflager.CamouflageSHR();
+                    SyncSetting.CustomSyncSettings(__instance);
                     return true;
                 case RoleId.Worshiper:
                     __instance.RpcMurderPlayer(__instance, true);
@@ -342,7 +334,7 @@ class ShapeshifterMinigameBeginPatch
             int num2 = index / 3;
             ShapeshifterPanel panel = GameObject.Instantiate(__instance.PanelPrefab, __instance.transform);
             panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
-            
+
             Create(panel, index, Data.Value);
             panel.PlayerIcon.gameObject.SetActive(false);
             panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
@@ -395,24 +387,25 @@ class ShapeshifterMinigameShapeshiftPatch
                 {
                     if (player.IsAlive())
                     {
-                        var Target = player;
-                        (var success, var status) = Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
-                        var misfire = !success;
-                        var alwaysKill = misfire && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        var TargetID = Target.PlayerId;
-                        var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+                        var target = player;
+                        (var killResult, var suicideResult) = Sheriff.SheriffKillResult(CachedPlayer.LocalPlayer, target);
 
                         PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
 
-                        RPCProcedure.SheriffKill(LocalID, TargetID, misfire, alwaysKill);
+                        var localId = CachedPlayer.LocalPlayer.PlayerId;
+                        var targetId = target.PlayerId;
+
+                        RPCProcedure.SheriffKill(localId, targetId, killResult.Item1, suicideResult.Item1);
                         MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
-                        killWriter.Write(LocalID);
-                        killWriter.Write(TargetID);
-                        killWriter.Write(misfire);
-                        killWriter.Write(alwaysKill);
+                        killWriter.Write(localId);
+                        killWriter.Write(targetId);
+                        killWriter.Write(killResult.Item1);
+                        killWriter.Write(suicideResult.Item1);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, status);
-                        if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(Target, FinalStatus.SheriffInvolvedOutburst);
+
+                        if (killResult.Item1) FinalStatusClass.RpcSetFinalStatus(target, killResult.Item2);
+                        if (suicideResult.Item1) FinalStatusClass.RpcSetFinalStatus(CachedPlayer.LocalPlayer, suicideResult.Item2);
+
                         RoleClass.RemoteSheriff.KillMaxCount--;
                     }
                     Sheriff.ResetKillCooldown();

@@ -6,6 +6,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
@@ -31,6 +32,7 @@ class WaveCannonJackal
     public static CustomOption WaveCannonJackalSKCooldown;
     public static CustomOption WaveCannonJackalNewJackalCreateSidekick;
     public static CustomOption WaveCannonJackalNewJackalHaveWaveCannon;
+    public static CustomOption WaveCannonJackalAnimTypeOption;
     public static void SetupCustomOptions()
     {
         WaveCannonJackalOption = SetupCustomRoleOption(OptionId, false, RoleId.WaveCannonJackal, CustomOptionType.Neutral); OptionId++;
@@ -46,7 +48,15 @@ class WaveCannonJackal
         WaveCannonJackalSKCooldown = Create(OptionId, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalCreateSidekick, format: "unitSeconds"); OptionId++;
         WaveCannonJackalNewJackalCreateSidekick = Create(OptionId, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, WaveCannonJackalCreateSidekick); OptionId++;
         WaveCannonJackalNewJackalHaveWaveCannon = Create(OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalNewJackalHaveWaveCannon", false, WaveCannonJackalCreateSidekick); OptionId++;
-        WaveCannonJackalCreateFriend = Create(OptionId, false, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, WaveCannonJackalOption);
+        WaveCannonJackalCreateFriend = Create(OptionId, false, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, WaveCannonJackalOption); OptionId++;
+        string[] AnimTypeTexts = new string[WaveCannonObject.WCCreateAnimHandlers.Count];
+        int index = 0;
+        foreach (string TypeName in WaveCannonObject.WCCreateAnimHandlers.Keys)
+        {
+            AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
+            index++;
+        }
+        WaveCannonJackalAnimTypeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts, WaveCannonJackalOption);
     }
     // CustomOption End
 

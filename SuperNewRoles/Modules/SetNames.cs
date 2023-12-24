@@ -6,6 +6,8 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
 using UnityEngine;
 
@@ -161,8 +163,7 @@ public class SetNamesClass
         }
         else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
         {
-            var introData = IntroData.GetIntroData(role, p);
-            roleNames = introData.Name;
+            roleNames = IntroData.StefinderIntro.Name;
             roleColors = RoleClass.ImpostorRed;
         }
         else if (p.IsPavlovsTeam())
@@ -176,30 +177,28 @@ public class SetNamesClass
         {
             if (p.IsRole(RoleId.WaveCannonJackal))
             {
-                var introData = IntroData.GetIntroData(RoleId.Jackal, p);
+                var introData = IntroData.JackalIntro;
                 roleNames = introData.Name;
                 roleColors = introData.color;
             }
             else
             {
-                var introData = IntroData.GetIntroData(RoleId.Sidekick, p);
+                var introData = IntroData.SidekickIntro;
                 roleNames = introData.Name;
                 roleColors = introData.color;
             }
         }
         else
         {
-            var introData = IntroData.GetIntroData(role, p);
-            roleNames = introData.Name;
-            roleColors = introData.color;
+            roleNames = CustomRoles.GetRoleName(role, p);
+            roleColors = CustomRoles.GetRoleColor(role, p);
         }
 
         var GhostRole = p.GetGhostRole();
         if (GhostRole != RoleId.DefaultRole)
         {
-            var GhostIntro = IntroData.GetIntroData(GhostRole, p);
-            GhostroleNames = GhostIntro.Name;
-            GhostroleColors = GhostIntro.color;
+            GhostroleNames = CustomRoles.GetRoleName(GhostRole, p);
+            GhostroleColors = CustomRoles.GetRoleColor(GhostRole, p);
         }
 
         Dictionary<string, (Color, bool)> attributeRoles = new(AttributeRoleNameSet(p));
@@ -249,7 +248,7 @@ public class SetNamesClass
     {
         var role = player.GetRole();
         if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
-        SetPlayerNameColor(player, IntroData.GetIntroData(role).color);
+        SetPlayerNameColor(player, CustomRoles.GetRoleColor(player));
     }
     public static void SetPlayerRoleNames(PlayerControl player)
     {
@@ -300,13 +299,6 @@ public class SetNamesClass
             SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.NameText().text + suffix);
             if (!side.Data.Disconnected)
                 SetPlayerNameText(side, side.NameText().text + suffix);
-        }
-        else if (PlayerControl.LocalPlayer.IsRole(RoleId.Cupid) && RoleClass.Cupid.Created && RoleClass.Cupid.currentLovers != null)
-        {
-            PlayerControl side = RoleClass.Cupid.currentLovers.GetOneSideLovers();
-            SetPlayerNameText(RoleClass.Cupid.currentLovers, $"{RoleClass.Cupid.currentLovers.NameText().text}{suffix}");
-            if (!side.Data.Disconnected)
-                SetPlayerNameText(side, $"{side.NameText().text}{suffix}");
         }
         else if ((DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
         {
@@ -401,7 +393,13 @@ public class SetNameUpdate
     {
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
-        if ((SetNamesClass.DefaultGhostSeeRoles() && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
+        bool CanSeeAllRole =
+            (SetNamesClass.DefaultGhostSeeRoles() &&
+            LocalRole != RoleId.NiceRedRidingHood) ||
+            Debugger.canSeeRole ||
+            (PlayerControl.LocalPlayer.GetRoleBase() is INameHandler nameHandler &&
+            nameHandler.AmAllRoleVisible);
+        if (CanSeeAllRole)
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
@@ -409,6 +407,7 @@ public class SetNameUpdate
                 SetNamesClass.SetPlayerRoleNames(player);
             }
         }
+        //TODO:神移行時にINameHandlerに移行する
         else if (LocalRole == RoleId.God)
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -558,7 +557,7 @@ public class SetNameUpdate
             SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
             SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
         }
-
+        CustomRoles.NameHandler(CanSeeAllRole);
         //名前の奴
         if (RoleClass.Camouflager.IsCamouflage)
         {

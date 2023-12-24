@@ -5,6 +5,7 @@ using System.Text;
 using AmongUs.Data;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 namespace SuperNewRoles.Patches;
 [Harmony]
@@ -531,7 +532,7 @@ public class CustomOverlays
 
         var options = optionsnotorder.OrderBy((CustomRoleOption x) =>
         {
-            return x.Intro.Team switch
+            return CustomRoles.GetRoleTeam(x.RoleId) switch
             {
                 TeamRoleType.Impostor => 0,
                 TeamRoleType.Neutral => 1000,
@@ -543,10 +544,11 @@ public class CustomOverlays
         TeamRoleType type = TeamRoleType.Error;
         foreach (CustomRoleOption option in options)
         {
+            TeamRoleType optionteam = CustomRoles.GetRoleTeam(option.RoleId);
             // 役職の分類を記載する部分を作成 (【インポスター役職】等)
-            if (type != option.Intro.Team)
+            if (type != optionteam)
             {
-                type = option.Intro.Team;
+                type = optionteam;
                 string teamText = $"{string.Format(ModTranslation.GetString("TeamRoleTypeMessage"), GetRoleTypeText(type))}{ModTranslation.GetString("SettingMaxRoleCount")}\n";
                 if (type == TeamRoleType.Impostor) impostorRoles.AppendLine($"{string.Format(teamText, CustomOptionHolder.impostorRolesCountMax.GetSelection())}");
                 else if (type == TeamRoleType.Crewmate) crewmateRoles.AppendLine($"{string.Format(teamText, CustomOptionHolder.crewmateRolesCountMax.GetSelection())}");
@@ -575,7 +577,7 @@ public class CustomOverlays
         string roleTextTemplate = $"{{0}} : <pos=75%>{{1}}{ModTranslation.GetString("PlayerCountMessage")}　{{2}}%"; // 文章構造をテンプレートとして取得
         foreach (KeyValuePair<CustomRoleOption, (TeamRoleType, int, string)> kvp in dic.OrderByDescending(i => i.Value.Item3))
         {
-            string roleText = string.Format(roleTextTemplate, kvp.Key.Intro.Name, kvp.Value.Item2, kvp.Value.Item3);
+            string roleText = string.Format(roleTextTemplate, CustomRoles.GetRoleName(kvp.Key.RoleId), kvp.Value.Item2, kvp.Value.Item3);
             type = kvp.Value.Item1;
             if (type == TeamRoleType.Impostor) impostorRoles.AppendLine(roleText);
             else if (type == TeamRoleType.Crewmate) crewmateRoles.AppendLine(roleText);
@@ -690,15 +692,13 @@ public class CustomOverlays
         // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
         foreach (CustomRoleOption roleOption in myRoleOptions)
         {
-            IntroData intro = roleOption.Intro;
-
-            left += $"<size=200%>\n{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size> <size=95%>: {AddChatPatch.GetTeamText(intro.TeamType)}</size>";
+            left += $"<size=200%>\n{CustomRoles.GetRoleNameOnColor(roleOption.RoleId)}</size> <size=95%>: {AddChatPatch.GetTeamText(CustomRoles.GetRoleTeamType(roleOption.RoleId))}</size>";
             option.AppendLine("\n");
 
-            option.AppendLine($"<size=125%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum, intro.RoleId))}」</size>\n");
-            option.AppendLine($"<size=95%>{intro.Description}\n</size>");
+            option.AppendLine($"<size=125%>「{CustomOptionHolder.Cs(CustomRoles.GetRoleColor(roleOption.RoleId), CustomRoles.GetRoleIntro(roleOption.RoleId))}」</size>\n");
+            option.AppendLine($"<size=95%>{CustomRoles.GetRoleDescription(roleOption.RoleId)}\n</size>");
             option.AppendLine($"<size=125%>{ModTranslation.GetString("MessageSettings")}:");
-            option.AppendLine($"{AddChatPatch.GetOptionText(roleOption, intro)}</size>");
+            option.AppendLine($"{AddChatPatch.GetOptionText(roleOption)}</size>");
         }
 
         center = option.ToString();

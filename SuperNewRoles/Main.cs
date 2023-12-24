@@ -14,8 +14,15 @@ using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.SuperNewRolesWeb;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Attribute;
 using TMPro;
 using UnityEngine;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.WaveCannonObj;
 
 namespace SuperNewRoles;
 
@@ -62,7 +69,28 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         Logger = Log;
         Instance = this;
+        ModTranslation.LoadCsv();
         bool CreatedVersionPatch = false;
+
+        //初期状態ではRoleInfoやOptionInfoなどが読み込まれていないため、
+        //ここで読み込む
+        Type RoleInfoType = typeof(RoleInfo);
+        Type RoleBaseType = typeof(RoleBase);
+        Assembly.GetAssembly(RoleBaseType)
+        .GetTypes()
+        .Where(t =>
+        {
+            if (t.IsSubclassOf(RoleBaseType))
+            {
+                foreach (FieldInfo field in t.GetFields())
+                {
+                    if (field.IsStatic && field.FieldType == RoleInfoType)
+                        field.GetValue(null);
+                }
+            }
+            return false;
+        }).ToList();
+
         //SetNonVanilaVersionPatch();
         // All Load() Start
         OptionSaver.Load();
@@ -70,7 +98,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         WebAccountManager.Load();
         ContentManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
-        ModTranslation.LoadCsv();
         ChacheManager.Load();
         WebConstants.Load();
         CustomCosmetics.CustomColors.Load();
@@ -82,7 +109,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
 
         // Old Delete Start
-
         try
         {
             DirectoryInfo d = new(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
@@ -142,6 +168,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonObject>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<SpiderTrap>();
+        ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
     }
     static bool ViewdNonVersion = false;
     public static void SetNonVanilaVersionPatch()
