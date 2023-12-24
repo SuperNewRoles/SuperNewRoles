@@ -46,7 +46,7 @@ public class CustomButtonInfo
     private Vector3 positionOffset { get; }
     private string ButtonText { get; }
     public bool HasAbility { get; }
-    public int AbilityCount { get; private set; }
+    public int AbilityCount { get; set; }
     //InfoText
     /// <summary>
     /// CustomButtonInfo
@@ -90,7 +90,7 @@ public class CustomButtonInfo
         Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
         Func<bool> SetTargetCrewmateOnly=null)
     {
-        this.HasAbility = false;
+        this.HasAbility = AbilityCount != null;
         this.AbilityCount = AbilityCount ?? 334;
         this.OnClickFunc = OnClick;
         this.HasButtonFunc = HasButton;
@@ -170,7 +170,7 @@ public class CustomButtonInfo
     }
     public bool HasButton(bool IsAlive, RoleId _)
     {
-        return roleBase?.Player?.PlayerId == PlayerControl.LocalPlayer.PlayerId &&
+        return roleBase?.Player != null && roleBase.Player.PlayerId == PlayerControl.LocalPlayer.PlayerId &&
             (HasButtonFunc?.Invoke(IsAlive) ?? true);
     }
     public bool CouldUse()

@@ -18,6 +18,7 @@ public class CustomOptionHolder
     public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
     public static string[] rates4 = new string[] { "0%", "25%", "50%", "75%", "100%" };
+    public static string[] ratesper5 = new string[] { "0%","5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%" };
     private static List<string> presetList()
     {
         var tmp = new List<string>();
@@ -1633,7 +1634,7 @@ public class CustomOptionHolder
         MadmateIsParcentageForTaskTrigger = Create(400907, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadmateIsCheckImpostor);
         MadmateParcentageForTaskTriggerSetting = Create(400908, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadmateIsParcentageForTaskTrigger);
         MadmateIsUseVent = Create(400909, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadmateOption);
-        MadmateIsImpostorLight = Create(400910, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption); ;
+        MadmateIsImpostorLight = Create(400910, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption);
 
         BlackCatOption = SetupCustomRoleOption(401000, true, RoleId.BlackCat);
         BlackCatPlayerCount = Create(401001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);

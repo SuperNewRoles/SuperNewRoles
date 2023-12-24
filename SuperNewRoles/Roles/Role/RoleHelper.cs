@@ -72,6 +72,7 @@ public static class RoleHelpers
     /// <param name="player">マッドであるか判定したいプレイヤー</param>
     /// <returns>プレイヤーがマッド役職である場合trueを返す</returns>
     public static bool IsMadRoles(this PlayerControl player) =>
+        player.GetRoleBase() is IMadmate || 
         (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
         player.GetRole() is
         // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
@@ -1733,6 +1734,8 @@ public static class RoleHelpers
     }
     public static bool IsImpostorLight(this PlayerControl player)
     {
+        if (player.GetRoleBase() is IMadmate imadmate)
+            return imadmate.IsImpostorLight;
         RoleId role = player.GetRole();
         return role == RoleId.Egoist
             ? RoleClass.Egoist.ImpostorLight

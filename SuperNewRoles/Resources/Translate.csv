@@ -412,6 +412,7 @@ FinalStatusGuesserKill,Deadshot by guess,推測射殺,赌杀,身分狙殺
 FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
 FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
+FinalStatusSantaSelf,Santa bomb!,ソリから転落
 
 # Sabotages
 SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定
@@ -1686,6 +1687,19 @@ BatButtonDurationSetting,Number of seconds to stop updating,更新を止める�
 BatIsCanUseCountSetting,Limit the number of times the ability is used.,能力の使用回数を制限する,超声波有发动次数限制,限制超音波的可使用次數
 BatCanUseCountSetting,Number of times the ability can be used,能力を使用できる回数,超声波最大发动次数,能力的使用次數上限
 BatNumTextName,Remaining {0} times,残り{0}回,剩余{0}次,剩餘{0}次
+SantaName,Santa,サンタ
+SantaTitle1,Are you a good crew?I give present to you!,良い子にはプレゼントをあげよう
+SantaDescription,You can give present(role) to crewmate，\nbut if you try to give impostor a present，you will kill himself...\nMerry Christmas!,良い子(クルーメイト)にはプレゼント(役職)を配ることが出来ます。\nただし、悪い子(インポスターや第三陣営)にプレゼントを配ろうとすると自殺してしまいます。\nメリー・クリスマス！
+SantaCanUseAbilityCount,Number of presents Santa has,プレゼントの数
+SantaPresentRoleOptionFormat,Probability of distributing {0},{0}を配れる確率,
+SantaButtonName,Present!,プレゼント！
+SantaAbilityCountFormat,Remaining {0} presents,残り{0}プレゼント
+SantaTryRoleToDeath,Can't you give a present to {0},{0}にはプレゼントを配れない
+SantaAnd, and ,と
+BlackSantaName,BlackSanta,ブラックサンタ
+BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!
+BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！
+
 
 #NewRoleTranslation
 
