@@ -1257,6 +1257,9 @@ WaveCannonName,Wave Cannon,波動砲,重炮手,重炮手
 WaveCannonTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
 WaveCannonChargeTime,Charge Time,チャージ時間,充能所需时间,充能所需時間
 WaveCannonButtonName,Wave Cannon,波動砲,开炮,開炮
+WaveCannonAnimationType,Animation Type,アニメーションタイプ,动画类型,動畫類型
+WaveCannonAnimTypeDefault,Default,通常,默认,通常
+WaveCannonAnimTypeSanta,Santa,サンタ,圣诞老人,聖誕老人
 IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！

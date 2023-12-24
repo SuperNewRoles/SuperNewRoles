@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Helpers;
@@ -33,9 +34,18 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
     public static new IntroInfo Introinfo =
         new(RoleId.WaveCannon, introSound:RoleTypes.Impostor);
     public static CustomOption IsSyncKillCoolTime;
+    public static CustomOption AnimationTypeOption;
     public static void CreateOption()
     {
         IsSyncKillCoolTime = CustomOption.Create(200004, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, Optioninfo.RoleOption);
+        string[] AnimTypeTexts = new string[WCCreateAnimHandlers.Count];
+        int index = 0;
+        foreach (string TypeName in WCCreateAnimHandlers.Keys)
+        {
+            AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType"+TypeName);
+            index++;
+        }
+        AnimationTypeOption = CustomOption.Create(200005, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts, Optioninfo.RoleOption);
     }
 
     public List<byte> CannotMurderPlayers;
@@ -97,7 +107,7 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RpcWriter;
 
-        WCAnimType AnimType = WCAnimType.Santa;
+        WCAnimType AnimType = WCCreateAnimHandlers.Keys.ToList()[AnimationTypeOption.GetSelection()]
 
         writer.Write((byte)WaveCannonObject.RpcType.Spawn);
         writer.Write((byte)0);
