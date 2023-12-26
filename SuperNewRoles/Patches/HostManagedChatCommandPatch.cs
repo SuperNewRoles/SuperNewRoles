@@ -407,7 +407,7 @@ internal static class GetChatCommands
             }
             else
             {
-                string name = $"<size=200%>{ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value, IsImpostorReturn:true))}</size>";
+                string name = $"<size=200%>{ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value, IsImpostorReturn: true))}</size>";
                 return (CustomRoles.GetRoleDescription(data.Value), name);
             }
         }
@@ -517,11 +517,12 @@ internal static class RoleinformationText
 
         PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
 
-        (string roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(command);
+        (string[] roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(command);
+
         string beforeIdChangeRoleName =
             isSuccess
-            ? roleNameKey.Replace("Name", "") // 翻訳キーの取得に成功していた場合, RoleIdと同様の名前にする為 キーから"Name"を外す.
-            : command; // 失敗していた場合入力された文字のまま
+                ? roleNameKey.FirstOrDefault(key => key.Contains("Name")).Replace("Name", "") // 翻訳キーの取得に成功した場合, 配列から"Name"を含む要素を取得し その要素"Name"を外して, RoleIdに一致する役職名を取得する.
+                : command; // 翻訳辞書からの取得に失敗した場合, 入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
 
         string roleName = "NONE", roleInfo = "";
 
