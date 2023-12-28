@@ -133,7 +133,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 SendData[PlayerId + "_PlayerName"] = PlayerName;
                 SendData[PlayerId + "_FriendCode"] = player.FriendCode;
                 SendData[PlayerId + "_ColorId"] = player.DefaultOutfit.ColorId.ToString();
-                SendData[PlayerId + "_RoleName"] = IntroData.GetIntroData(roleId, player.Object).NameKey;
+                SendData[PlayerId + "_RoleName"] = roleId.ToString();
                 var (playerCompleted, playerTotal) = TaskCount.TaskDate(player);
                 SendData[PlayerId + "_TotalTask"] = playerTotal.ToString();
                 SendData[PlayerId + "_CompletedTask"] = playerCompleted.ToString();

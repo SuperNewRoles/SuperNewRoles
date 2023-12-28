@@ -122,7 +122,7 @@ public class TheThreeLittlePigs
             {
                 if (PlayerControl.LocalPlayer.IsAlive() && TaskCheck(PlayerControl.LocalPlayer))
                 {
-                    Seer.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
+                    SeerHandler.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
                     Logger.Info($"{FlashTime / 1000}s経過して、条件が達成されていた為発光させました", "TheFirstLittlePig");
                 }
                 else

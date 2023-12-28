@@ -7,6 +7,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.RoleBases;
 using static MeetingHud;
 
 namespace SuperNewRoles.Mode.BattleRoyal
@@ -103,9 +104,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     _roleNames = new();
                     foreach (var role in Enum.GetValues(typeof(BattleRoles)))
                     {
-                        IntroData intro = IntroData.GetIntroData((RoleId)(int)(BattleRoles)role, IsImpostorReturn: true);
                         _roleNames.Add(((BattleRoles)role).ToString(), (RoleId)(int)(BattleRoles)role);
-                        _roleNames.Add(ModTranslation.GetString(intro.NameKey + "Name"), (RoleId)(int)(BattleRoles)role);
+                        _roleNames.Add(CustomRoles.GetRoleName((RoleId)(int)(BattleRoles)role, IsImpostorReturn:true), (RoleId)(int)(BattleRoles)role);
                     }
                 }
                 return _roleNames;
@@ -194,7 +194,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 else
                 {
                     source.SetRoleRPC(data.Value);
-                    string text = string.Format(ModTranslation.GetString("BattleRoyalSetRoleText"), source.GetDefaultName(), ModTranslation.GetString(IntroData.GetIntroData(data.Value, IsImpostorReturn: true).NameKey + "Name"));
+                    string text = string.Format(ModTranslation.GetString("BattleRoyalSetRoleText"), source.GetDefaultName(), CustomRoles.GetRoleName(data.Value, IsImpostorReturn: true));
                     foreach (PlayerControl teammember in BattleTeam.GetTeam(source).TeamMember)
                     {
                         if (teammember == null) continue;

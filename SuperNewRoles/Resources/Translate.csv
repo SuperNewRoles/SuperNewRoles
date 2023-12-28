@@ -119,6 +119,11 @@ LightColor,bright,明るい,亮,亮
 DarkerColor,darker,暗い,暗,暗
 
 # CustomOptions
+CanUseVentOption,Can usevent,ベントを使用できる,可以使用管道,可以使用通風管道
+CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使用破坏,可以使用破壞
+IsImpostorVisionOption,Impostor vision,インポスターの視界か
+CoolTimeOption,Cool time,クールタイム,冷却时间,冷卻時間
+DurationTimeOption,Duration time,持続時間,持续时间,持續時間
 MapCustom,Map Custom,マップ改造,地图设置,地圖設定
 SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加机密室,追加密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
@@ -255,7 +260,7 @@ ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,�
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
 ProhibitModColor,Prohibit mod color,Modカラーを禁止にする,禁止使用模组自定义颜色,禁止Mod顏色
-SendYourRoleAllTurn,,毎ターン役職情報を送信する
+SendYourRoleAllTurn,,毎ターン役職情報を送信する,,每回合皆發送職業資訊
 ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する,更改间隙室的视野遮蔽效果,修改間隙室的視野遮蔽效果
 GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼於間隙室可以從下方看到上方
 DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,僅內鬼於間隙室可以從上方看到下方
@@ -358,7 +363,6 @@ HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,�
 HASUseSaboSetting,Use Sabotage,サボタージュが使える,抓捕者可以造成紧急破坏,捉捕方可以使用緊急破壞
 HASUseVentSetting,Use Vent,ベントが使える,抓捕者可以使用管道,捉捕方可以使用通風管道
 
-
 # FinalResults
 FinalResults,Final results,最終結果,最終結果
 FinalStatusAlive,Survival,生存,存活,生存
@@ -368,8 +372,10 @@ FinalStatusSheriffKill,Executing justice,正義執行,出警,警長正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火,警長誤傷
 FinalStatusHauntedSheriffKill,Possession kill,憑依キル,出警…？,狼憑被殺
 FinalStatusHauntedSheriffMisFire,Repulsion Misfire,反発誤爆,走火…？,狼憑警長誤傷
-FinalStatusSheriffHauntedWolfKill,The possession was severed,破咒出警,狼憑警長誤殺
+FinalStatusSheriffHauntedWolfKill,The possession was severed,誤認射殺,破咒出警,狼憑警長誤殺
 FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
+FinalStatusSheriffSuicide,Killed in the line of duty.,殉職
+FinalStatusHauntedSheriffSuicide,Dying in vain of a person who is possessed,徒死(憑依誤認)
 FinalStatusIgnite,Ignite,焼殺,纵火,燒死
 FinalStatusDisconnected,Amputation,切断,断连,截肢
 FinalStatusDead,Death,死亡,死亡,死亡
@@ -406,6 +412,7 @@ FinalStatusGuesserKill,Deadshot by guess,推測射殺,赌杀,身分狙殺
 FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
 FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
+FinalStatusSantaSelf,Santa bomb!,ソリから転落
 
 # Sabotages
 SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定
@@ -501,14 +508,17 @@ SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀/招募（警察局长）恋人,可以擊殺戀人
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀/招募（警察局长）叛徒系职业,可以擊殺叛徒系職業
 SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる,可以击杀内鬼,可以擊殺內鬼
-SheriffAlwaysKills,Killing a target even when it is misfiring.,誤射した時も対象を殺す,警长误杀时选择的对象也会死亡,警長誤殺時該對象也會死亡
+SheriffExecutionMode,Behavior settings for successful execution and misfiring.,執行成功時及び誤射時の挙動設定
+SheriffDefaultExecutionMode,When misfired，suicide.,誤射時 自殺する
+SheriffAlwaysSuicideMode,Regardless of the outcome，they commit suicide.,結果に関わらず 自殺する
+SheriffAlwaysKillMode,Killing a target and himself when it is misfiring.,誤射時も 対象を殺し自殺する
 SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる,可以击杀狈系职业,可以擊殺狽系職業
 SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使,可以擊殺冤家兄弟
 SheriffYes,Yes,できる,是,是
 SheriffNo,No,できない,否,否
 CannotUse,Number of kills remaining: 0,キル残り回数:0,擊殺剩餘次數：0
 SheriffMaxKillCountSetting,Maximum number of kills,最大キル数,最大可击杀/招募（警察局长）次数,最大可擊殺次數
-SheriffKillButtonName,Kill,キル,击杀,擊殺
+SheriffKillButtonName,Execution.,執行,击杀,擊殺
 SheriffNumTextName,{0} shots remaining.,残り{0}発,还剩{0} 次,剩餘{0}次
 MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ,执法官,法警
 MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルしよう,在会议中击杀敌人,在會議中擊殺敵人
@@ -1248,6 +1258,9 @@ WaveCannonName,Wave Cannon,波動砲,重炮手,重炮手
 WaveCannonTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
 WaveCannonChargeTime,Charge Time,チャージ時間,充能所需时间,充能所需時間
 WaveCannonButtonName,Wave Cannon,波動砲,开炮,開炮
+WaveCannonAnimationType,Animation Type,アニメーションタイプ,动画类型,動畫類型
+WaveCannonAnimTypeDefault,Default,通常,默认,通常
+WaveCannonAnimTypeSanta,Santa,サンタ,圣诞老人,聖誕老人
 IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
@@ -1674,6 +1687,19 @@ BatButtonDurationSetting,Number of seconds to stop updating,更新を止める�
 BatIsCanUseCountSetting,Limit the number of times the ability is used.,能力の使用回数を制限する,超声波有发动次数限制,限制超音波的可使用次數
 BatCanUseCountSetting,Number of times the ability can be used,能力を使用できる回数,超声波最大发动次数,能力的使用次數上限
 BatNumTextName,Remaining {0} times,残り{0}回,剩余{0}次,剩餘{0}次
+SantaName,Santa,サンタ
+SantaTitle1,Are you a good crew?I give present to you!,良い子にはプレゼントをあげよう
+SantaDescription,You can give present(role) to crewmate，\nbut if you try to give impostor a present，you will kill himself...\nMerry Christmas!,良い子(クルーメイト)にはプレゼント(役職)を配ることが出来ます。\nただし、悪い子(インポスターや第三陣営)にプレゼントを配ろうとすると自殺してしまいます。\nメリー・クリスマス！
+SantaCanUseAbilityCount,Number of presents Santa has,プレゼントの数
+SantaPresentRoleOptionFormat,Probability of distributing {0},{0}を配れる確率,
+SantaButtonName,Present!,プレゼント！
+SantaAbilityCountFormat,Remaining {0} presents,残り{0}プレゼント
+SantaTryRoleToDeath,Can't you give a present to {0},{0}にはプレゼントを配れない
+SantaAnd, and ,と
+BlackSantaName,BlackSanta,ブラックサンタ
+BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!
+BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！
+
 
 #NewRoleTranslation
 
@@ -1748,56 +1774,56 @@ CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1}),破坏
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
-WelcomeMessage2,This is the room where we installed a mod called SuperNewRoles.,この部屋はSuperNewRolesというModを導入しています。
-WelcomeMessage3,This mod is not affiliated with Among Us or Innersloth LLC，and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC.,当ModはAmong UsやInnersloth LLCとは無関係であり、含まれるコンテンツはInnersloth LLCによって承認されたり、直接提供を受けているものではありません。
-WelcomeMessage4,Please contact the official SuperNewRoles Discord server for any impact，damage or bugs that may occur in this room，not Innersloth.,この部屋で発生した，影響や損害及びバグについてはInnerslothに問い合わせず，SuperNewRoles公式 Discordサーバに問い合わせてください。
+WelcomeMessage2,This is the room where we installed a mod called SuperNewRoles.,この部屋はSuperNewRolesというModを導入しています。,,已安裝了超新職業模組。
+WelcomeMessage3,This mod is not affiliated with Among Us or Innersloth LLC，and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC.,当ModはAmong UsやInnersloth LLCとは無関係であり、含まれるコンテンツはInnersloth LLCによって承認されたり、直接提供を受けているものではありません。,,此模組與Among Us或Innersloth LLC無關，其中包含的內容未經Innersloth LLC批准或贊助。
+WelcomeMessage4,Please contact the official SuperNewRoles Discord server for any impact，damage or bugs that may occur in this room，not Innersloth.,この部屋で発生した，影響や損害及びバグについてはInnerslothに問い合わせず，SuperNewRoles公式 Discordサーバに問い合わせてください。,,如果遊玩過程中發生任何問題或錯誤，請聯繫 SNR 超新職業官方Discord服務器，而非Innersloth。
 WelcomeMessage5,You can play a variety of modes and different hard on any model with SuperNewRoles!,SNRを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！,您可以在超新職業體驗各種不同的模式和職業！
 WelcomeMessage6,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！,有关模式和职业的详细描述请查看汉化组职业介绍！,有關模式和職業的詳細描述請查看SNR官方wiki的職業介紹！
-WelcomeMessage7,SuperNewRoles Official Wiki,SuperNewRoles公式Wiki :,超新职业职业介绍 :,超新職業職業介紹：,
+WelcomeMessage7,SuperNewRoles Official Wiki,SuperNewRoles公式Wiki :,超新职业职业介绍 :,超新職業職業介紹：
 WelcomeMessage8,https://github.com/SuperNewRoles/SuperNewRoles/wiki(Japanese),https://github.com/SuperNewRoles/SuperNewRoles/wiki,https://amonguscn.club（中文），https://github.com/SuperNewRoles/SuperNewRoles/wiki（日文）,https://amonguscn.club（簡體中文），https://github.com/SuperNewRoles/SuperNewRoles/wiki（日文）
 WelcomeMessage9,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。,你可以通过输入命令来获取信息。,您可以通過輸入命令來獲取訊息。
-WelcomeMessage10,To view a list of executable commands，send the command : [ /commands ] or [ /cmd ].,実行可能なコマンド一覧を表示するには\nコマンド : [ /commands ] 又は [ /cmd ] を送信してください。
-SNRWebWelcomMessage1_HostSend,Send your match results to SNRWeb.,SNRWebに試合の戦績を送信します。
-SNRWebWelcomMessage1_GestSend,,SNRWebにログインしている導入者が参加した場合，試合の戦績が送信されます。
-SNRWebWelcomMessage2,By participating in the game，you agree to submit your information to SNRWeb.,ゲームへの参加をもってSNRWebへの情報送信に同意したものとみなします。
-SNRWebWelcomMessage3,For a simplified explanation of SNRWeb，see the command : [ /getwebinfo ] or [ /gwi ].,SNRWebについての簡易説明は，\nコマンド : [ /getwebinfo ] 又は [ /gwi ]でご確認ください。
-SNRWebWelcomMessage4,For a detailed explanation，please refer to the "SNR Webについて" page on the official wiki.,又，詳細説明については公式wikiの[SNR Webについて]というページを御覧ください。
-GetWebInfo_01,Service Description Overview,サービス内容 概要
-GetWebInfo_02,This is a web service provided by SNR\nthat allows you to record and check your results，\nand to check your ranking in some modes.\n\nThe language of the web service content is basically Japanese only.\nInformation sent from mod can be displayed in languages other than Japanese，depending on the language setting at the time of transmission.,戦績の記録と確認及び，\n一部モードにおけるランキングを確認する事が可能な\nSNRが提供するwebサービスです。
-GetWebInfo_03,Information for non-registered players,登録していないプレイヤー向けの情報
-GetWebInfo_04,About the information to be sent,送信される情報について
-GetWebInfo_05_Host,If you participate in the game,ゲームに参加した場合
-GetWebInfo_05_Guest,If there is a user of the service who has installed a mod，\nwhen they joins the game，they will be able to,Modを導入している当サービス利用者がいる場合，\nゲームに参加すると
-GetWebInfo_05_Main,The following information will be transmitted to and stored，\n in the web services provided by SNR.,SNRが提供するwebサービスに，\n以下の情報が送信及び保存されます。
-GetWebInfo_06,・Friend Code\n・Match Result,・ フレンドコード\n・  試合結果
-GetWebInfo_07,Handling of Friend Codes,フレンドコードの取り扱いについて
-GetWebInfo_08,It is used to store game results\n and to link stored data to players.,試合結果の保存及び，\n保存されているデータとプレイヤーを紐づける為に使用しております。
-GetWebInfo_09,Individuals are identified on the Web service display\nby their registered IDs and player names.,Webサービスの表示上での個人の識別は，登録しているID及びプレイヤー名で行っています。
-GetWebInfo_10,The friend code will not be published\nin a way that is recognizable to the outside world if you are not a registered user of the service.\n<size=50%> (Even in the case of service registrants、the friend code will not be published unless the setting is enabled.)</size>,フレンドコードを外部が認識できる形で公開する事は，\nサービス未登録者の場合はありません。\n<size=50%>(サービス登録者の場合も設定を有効にしないと公開されません。)</size>
-GetWebInfo_11,Information for service use,サービス利用にあたる情報
-GetWebInfo_12,Terms of Use,利用規約
-GetWebInfo_13,Please refer to the following URL.(Japanese langage only),次記のURLを参照して下さい。
-GetWebInfo_15,Privacy Policy,プライバシーポリシー
+WelcomeMessage10,To view a list of executable commands，send the command : [ /commands ] or [ /cmd ].,実行可能なコマンド一覧を表示するには\nコマンド : [ /commands ] 又は [ /cmd ] を送信してください。,,查看可執行命令的列表，請發送命令：[ /commands ] 或 [ /cmd ]。
+SNRWebWelcomMessage1_HostSend,Send your match results to SNRWeb.,SNRWebに試合の戦績を送信します。,,將您的對局結果發送到SNR Web。
+SNRWebWelcomMessage1_GestSend,,SNRWebにログインしている導入者が参加した場合，試合の戦績が送信されます。,,如果有安裝SNR Web的玩家參加遊戲，則將自動發送遊戲結果。
+SNRWebWelcomMessage2,By participating in the game，you agree to submit your information to SNRWeb.,ゲームへの参加をもってSNRWebへの情報送信に同意したものとみなします。,,參加遊戲即表示您同意將您的信息提交給SNR Web。
+SNRWebWelcomMessage3,For a simplified explanation of SNRWeb，see the command : [ /getwebinfo ] or [ /gwi ].,SNR Webについての簡易説明は，\nコマンド : [ /getwebinfo ] 又は [ /gwi ]でご確認ください。,,要獲取SNRWeb的說明，請使用命令：[ /getwebinfo ] 或 [ /gwi ]。
+SNRWebWelcomMessage4,For a detailed explanation，please refer to the "SNR Webについて" page on the official wiki.,又，詳細説明については公式wikiの[SNR Webについて]というページを御覧ください。,,有關詳細說明，請參閱官方wiki上的“關於SNR Web”頁面。
+GetWebInfo_01,Service Description Overview,サービス内容 概要,,服務內容概要
+GetWebInfo_02,This is a web service provided by SNR\nthat allows you to record and check your results，\nand to check your ranking in some modes.\n\nThe language of the web service content is basically Japanese only.\nInformation sent from mod can be displayed in languages other than Japanese，depending on the language setting at the time of transmission.,戦績の記録と確認及び，\n一部モードにおけるランキングを確認する事が可能な\nSNRが提供するwebサービスです。,,SNR Web是由SNR提供的一項網路服務，\n可用於記錄和查看您的遊戲結果，\n以及查看某些模式的排名。\n\n網路服務內容的語言基本上僅限日語。\n從模組發送的信息可以顯示為日語以外的語言，具體取決於發送時的語言設置。
+GetWebInfo_03,Information for non-registered players,登録していないプレイヤー向けの情報,,未註冊玩家的信息
+GetWebInfo_04,About the information to be sent,送信される情報について,,有關要發送的信息
+GetWebInfo_05_Host,If you participate in the game,ゲームに参加した場合,,如果您參加遊戲
+GetWebInfo_05_Guest,If there is a user of the service who has installed a mod，\nwhen they joins the game，they will be able to,Modを導入している当サービス利用者がいる場合，\nゲームに参加すると,,如果有安裝模組的用戶參加遊戲，則可以
+GetWebInfo_05_Main,The following information will be transmitted to and stored，\n in the web services provided by SNR.,SNRが提供するwebサービスに，\n以下の情報が送信及び保存されます。,,以下資訊將被發送到並儲存在SNR提供的網路服務中。
+GetWebInfo_06,・Friend Code\n・Match Result,・ フレンドコード\n・  試合結果,,・好友代碼\n・對局結果
+GetWebInfo_07,Handling of Friend Codes,フレンドコードの取り扱いについて,,好友代碼處理
+GetWebInfo_08,It is used to store game results\n and to link stored data to players.,試合結果の保存及び，\n保存されているデータとプレイヤーを紐づける為に使用しております。,,用於儲存遊戲結果\n並將儲存的數據與玩家進行關聯。
+GetWebInfo_09,Individuals are identified on the Web service display\nby their registered IDs and player names.,Webサービスの表示上での個人の識別は，登録しているID及びプレイヤー名で行っています。,,在網路服務顯示上，通過其註冊的ID和玩家名稱進行識別。
+GetWebInfo_10,The friend code will not be published\nin a way that is recognizable to the outside world if you are not a registered user of the service.\n<size=50%> (Even in the case of service registrants、the friend code will not be published unless the setting is enabled.)</size>,フレンドコードを外部が認識できる形で公開する事は，\nサービス未登録者の場合はありません。\n<size=50%>(サービス登録者の場合も設定を有効にしないと公開されません。)</size>,,如果您不是服務的註冊用戶，則不會以外界可以識別的方式發布好友代碼。\n<size=50%>（即使是已註冊服務者，除非啟用設置，否則也不會發布好友代碼。）</size>
+GetWebInfo_11,Information for service use,サービス利用にあたる情報,,服務使用情報
+GetWebInfo_12,Terms of Use,利用規約,,使用條款
+GetWebInfo_13,Please refer to the following URL.(Japanese langage only),次記のURLを参照して下さい。,,請參閱以下網址。（僅限日語）
+GetWebInfo_15,Privacy Policy,プライバシーポリシー,,隱私政策
 CommandsMessage0,Commands in the command list:\n() are also possible.It is not case sensitive.,コマンド一覧:\n()の中にあるコマンドでも可能です。大文字と小文字は区別されません。,命令列表:\n也可以发送()中的命令。不区分大小写。,命令列表；\n也可以發送()中的命令。不區分大小寫。
-CommandsTitelModInfo,Command to get information about Mod,Modに関する情報を取得するコマンド
-CommandsMessageModInfo1,<color={0}><size={1}>/welcome (/wlc)</size></color> : \nResend WelcomeMessage. (When the host executes it，it is sent to everyone.),<color={0}><size={1}>/welcome (/wlc)</size></color> : \nWelcomeMessageを再送します。(ホストが実行すると全員に送信します)
+CommandsTitelModInfo,Command to get information about Mod,Modに関する情報を取得するコマンド,,獲取有關模組資訊的命令
+CommandsMessageModInfo1,<color={0}><size={1}>/welcome (/wlc)</size></color> : \nResend WelcomeMessage. (When the host executes it，it is sent to everyone.),<color={0}><size={1}>/welcome (/wlc)</size></color> : \nWelcomeMessageを再送します。(ホストが実行すると全員に送信します),,<color={0}><size={1}>/welcome (/wlc)</size></color> : \n重新發送歡迎訊息。（如果您是房主，則會發送給所有人。）
 CommandsMessageModInfo2,<color={0}><size={1}>/version (/v)</size></color> : Show SuperNewRoles Version.,<color={0}><size={1}>/version (/v)</size></color> : バージョンを表示します。,<color={0}><size={1}>/version (/v)</size></color> : \n显示模组版本号。,<color={0}><size={1}>/version (/v)</size></color> : \n顯示模組版本號。
 CommandsMessageModInfo3,<color={0}><size={1}>/commands (/cmd)</size></color> : \nDisplays a list of commands. (This command.),<color={0}><size={1}>/commands (/cmd)</size></color> : \nコマンド一覧を表示します。(このコマンドです),<color={0}><size={1}>/commands (/cmd)</size></color> : \n显示命令列表。(当前命令),<color={0}><size={1}>/commands (/cmd)</size></color> : \n 顯示命令列表。(當前命令)
-CommandsMessageModInfo4,<color={0}><size={1}>/getwebinfo (/gwi)</size></color> : \nSend a quick description about SNRwiki.(Send only to yourself even if you are the host.),<color={0}><size={1}>/getwebinfo (/gwi)</size></color> : \nSNRwikiに関する簡易説明を送信します。(ホストでも自分のみに送信します)
-CommandsTitelExternalInfo,Command to retrieve external information links,外部情報のリンクを取得するコマンド
+CommandsMessageModInfo4,<color={0}><size={1}>/getwebinfo (/gwi)</size></color> : \nSend a quick description about SNRwiki.(Send only to yourself even if you are the host.),<color={0}><size={1}>/getwebinfo (/gwi)</size></color> : \nSNRwikiに関する簡易説明を送信します。(ホストでも自分のみに送信します),,<color={0}><size={1}>/getwebinfo (/gwi)</size></color> : \n發送關於SNRwiki的簡易說明。（僅發送給自己，即使您是房主。）
+CommandsTitelExternalInfo,Command to retrieve external information links,外部情報のリンクを取得するコマンド,,獲取外部資訊連結的命令
 CommandsMessageExternalInfo1,<color={0}><size={1}>/discord (/dc)</size></color> : \nShow the link to the Official Discord.,<color={0}><size={1}>/discord (/dc)</size></color> : \n公式Discordへのリンクを表示します。,<color={0}><size={1}>/discord (/dc)</size></color> : \n显示指向官方的Discord的链接。,<color={0}><size={1}>/discord (/dc)</size></color> : \n顯示SNR官方的Discord連結。
 CommandsMessageExternalInfo2,<color={0}><size={1}>/twitter (/tw)</size></color> : \nShow the link to the Official Twitter.,<color={0}><size={1}>/twitter (/tw)</size></color> : \n公式Twitterと開発状況Twitterへのリンクを表示します。,<color={0}><size={1}>/twitter (/tw)</size></color> : \n显示指向官方Twitter和开发状态Twitter的链接。,<color={0}><size={1}>/twitter (/tw)</size></color> : \n顯示SNR官方Twitter和開方狀態Twitter的連結。
-CommandsTitelRoleInfo,Command to retrieve information related to a role,役職に関わる情報を取得するコマンド
-CommandsMessageRoleInfo1,<color={0}><size={1}>/GetInRoles (/gr)</size></color> : \nDisplays all activate roles.(Send to all player when you're hosts.),<color={0}><size={1}>/GetInRoles (/gr)</size></color> : \n入っているすべての役職を表示します。(ホストの場合は全員に送信します),<color={0}><size={1}>/GetInRoles (/gr)</size></color> : \n显示所有激活的职业。(如果你是主持人将推送给房间内所有玩家),<color={0}><size={1}>/GetInRoles (/gr)</size></color> : \n顯示所有啟用的職業。(如果你是主持人將推送給房間內的所有玩家)
+CommandsTitelRoleInfo,Command to retrieve information related to a role,役職に関わる情報を取得するコマンド,,獲取與職業相關的資訊的命令
+CommandsMessageRoleInfo1,<color={0}><size={1}>/GetInRoles (/gr)</size></color> : \nDisplays all activate roles.(Send to all player when you're hosts.),<color={0}><size={1}>/GetInRoles (/gr)</size></color> : \n入っているすべての役職を表示します。(ホストの場合は全員に送信します),<color={0}><size={1}>/GetInRoles (/gr)</size></color> : \n显示所有激活的职业。(如果你是主持人将推送给房间内所有玩家),<color={0}><size={1}>/GetInRoles (/gr)</size></color> : \n顯示所有啟用的職業。(如果你是房主將推送給房間內的所有玩家)
 CommandsMessageRoleInfo2,<color={0}><size={1}>/GetInRoles myplayer ([/gr mp] or [/gr myp])</size></color> : \nDisplays all activate roles only you.(Send only to yourself even if you are the host.),<color={0}><size={1}>/GetInRoles myplayer (/gr mp もしくは /gr myp)</size></color> : \n入っているすべての役職を表示します。(ホストでも自分のみに送信します),<color={0}><size={1}>/GetInRoles myplayer (/gr mp 或者 /gr myp)</size></color> : \n显示所有激活的职业，仅自己可见。,<color={0}><size={1}>/GetInRoles myplayer (/gr mp 或 /gr myp)</size></color> : \n顯示所有啟用的職業，僅自己可見。
-CommandsMessageRoleInfo3,<color={0}><size={1}>/AllRoles (/ar)</size></color> : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,<color={0}><size={1}>/AllRoles (/ar)</size></color> : \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。,<color={0}><size={1}>/AllRoles (/ar)</size></color> : \n显示所有激活职业的职业描述和设置。\n(如果你是主持人将推送给房间内所有玩家)\n每1.5秒发送一个。,<color={0}><size={1}>/AllRoles (/ar)</size></color> : \n顯示所有啟用職業的職業描述與設置。\n(如果你是主持人將推送給房間內的所有玩家)\n每1.5秒發送一個。
+CommandsMessageRoleInfo3,<color={0}><size={1}>/AllRoles (/ar)</size></color> : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,<color={0}><size={1}>/AllRoles (/ar)</size></color> : \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。,<color={0}><size={1}>/AllRoles (/ar)</size></color> : \n显示所有激活职业的职业描述和设置。\n(如果你是主持人将推送给房间内所有玩家)\n每1.5秒发送一个。,<color={0}><size={1}>/AllRoles (/ar)</size></color> : \n顯示所有啟用職業的職業描述與設置。\n(如果你是房主將推送給房間內的所有玩家)\n每1.5秒發送一個。
 CommandsMessageRoleInfo4,<color={0}><size={1}>/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,<color={0}><size={1}>/AllRoles [送信間隔] (/ar [送信間隔])</size></color> : \n/AllRolesに+で送信間隔を指定できます。,<color={0}><size={1}>/AllRoles [发送间隔] (/ar [发送间隔])</size></color> : \n你可以在/AllRoles后添加指定发送间隔时间,<color={0}><size={1}>/AllRoles [發送間隔] (/ar [發送間隔])</size></color> : \n妳可以在/AllRoles後添加指定發送間隔時間
 CommandsMessageRoleInfo5,<color={0}><size={1}>/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,<color={0}><size={1}>/AllRoles [送信間隔] myplayer\n(/ar [送信間隔] (mp もしくは myp))</size></color> : \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。,<color={0}><size={1}>/AllRoles [发送间隔] myplayer (/ar [发送间隔] (mp 或者 myp))</size></color> : \n你可以在/AllRoles [发送间隔]后添加指令发送，仅自己可见。,<color={0}><size={1}>/AllRoles [發送間隔] myplayer (/ar [發送間隔] (mp 或 myp))</size></color> : \n你可以在/AllRoles [發送間隔]後添加指令發送，僅自己可見。
 CommandsMessageRoleInfo6,<color={0}><size={1}>/roleinfo [Role name] (/ri [Role name])\nObtains information about the role from the role name.\nIf you use this command without entering a job title，you will see details on how to use the command.,<color={0}><size={1}>/roleinfo [役職名] (/ri [役職名])</size></color> : \n役職名から役職の情報を取得します。\n役職名を入力せずこのコマンドを使用した場合、コマンド使用方法の詳細を確認する事ができます。,<color={0}><size={1}>/roleinfo [职业名](/ri [职业名])：\n获得该职业名的职业的有关信息。\n若输入该指令时未输入职业名，将会发送关于如何使用该命令的帮助。,<color={0}><size={1}>/roleinfo [職業名] (/ri [職業名])</size></color> : \n從職業名獲取職業信息。\n如果您在不輸入職業名的情況下使用此命令，您將看到有關如何使用該命令的詳細信息。
-CommandsMessageRoleInfo7,<color={0}><size={1}>/battleroles (/btr)</size></color> : \nYou can see all the roles in the battle royal mode.,<color={0}><size={1}>/battleroles (/btr)</size></color> : \nバトルロイヤルモードの全役職を確認する事ができます。
-CommandsTitelOthers,Commands to get other information,その他の情報を取得するコマンド
-CommandsMessageOthers1,<color={0}><size={1}>/Winners (/w)</size></color> : \nResults of the last match will be sent via chat.(Send to all player when you're hosts.),<color={0}><size={1}>/Winners (/w)</size></color> : \n前回試合のリザルトをチャットで送信します。(ホストが実行すると全員に送信します)
-CommandsMessageOthers2,<color={0}><size={1}>/MatchTag (/tag)</size></color> : \nDisplays the currently set matchmaking tags.,<color={0}><size={1}>/MatchTag (/tag)</size></color> : \n現在設定されているマッチメイキングタグを表示します。
+CommandsMessageRoleInfo7,<color={0}><size={1}>/battleroles (/btr)</size></color> : \nYou can see all the roles in the battle royal mode.,<color={0}><size={1}>/battleroles (/btr)</size></color> : \nバトルロイヤルモードの全役職を確認する事ができます。,,<color={0}><size={1}>/battleroles (/btr)</size></color> : \n您可以查看大逃殺模式中的所有職業。
+CommandsTitelOthers,Commands to get other information,その他の情報を取得するコマンド,,獲取其他資訊的命令
+CommandsMessageOthers1,<color={0}><size={1}>/Winners (/w)</size></color> : \nResults of the last match will be sent via chat.(Send to all player when you're hosts.),<color={0}><size={1}>/Winners (/w)</size></color> : \n前回試合のリザルトをチャットで送信します。(ホストが実行すると全員に送信します),,<color={0}><size={1}>/Winners (/w)</size></color> : \n上一局的結果將通過聊天發送。（如果你是房主將推送给房間内所有玩家）
+CommandsMessageOthers2,<color={0}><size={1}>/MatchTag (/tag)</size></color> : \nDisplays the currently set matchmaking tags.,<color={0}><size={1}>/MatchTag (/tag)</size></color> : \n現在設定されているマッチメイキングタグを表示します。,,<color={0}><size={1}>/MatchTag (/tag)</size></color> : \n顯示當前設定的對局標籤。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,SuperNewRoles官方Discord服务器：,SuperNewRoles官方Discord伺服器：
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超新职业官方Twitter,在這裡關注超新職業官方Twitter
 TwitterOfficialLink,Official Account : https://twitter.com/SNROfficials,公式アカウント：https://twitter.com/SNROfficials,官方Twitter：https://twitter.com/SNROfficials,官方Twitter：https://twitter.com/SNROfficials
@@ -1811,7 +1837,7 @@ NotAssign,This is the mode in which no roles are assigned.,役職が選出され
 RoleInfoDescription,You can retrieve information about a role by searching in the form /ri [role name]. (e.g. : /ri Wave Cannon Jackal)\nYou can also use internal role names. (e.g. : /ri WaveCannonJackal)\nGuests can only search by the role they are currently assigned to.\nHosts are not restricted and search results are sent to all hosts. The host can also use the [ /yourrole(/yr) ] command to resend the role information assigned to each player.,/ri [役職名]の形で検索する事で、役職の情報を取得する事ができます。(例 : /ri マッドてるてる)\n内部的な役職名を使用する事もできます。(例 : /ri MadJester)\nゲストは現在配役されている役職からのみ検索する事ができます。\nホストは検索制限は無く、検索結果は全体に送信されます。又、ホストは [ /yourrole(/yr) ] コマンドを使用する事で、各プレイヤーに割り当てられた役職情報を再送信することができます。,输入/ri [职业名]来获取该职业的相关信息。（例：/ri 铁华团团长）\n非房主玩家只能获取其目前职业的相关信息。\n房主可以不受限制，且接收到的信息会发送给所有玩家。此外，房主也可以使用命令[ /yourrole(/yr) ]来给每名玩家发送各自的职业的相关信息。,輸入/ri [職業名]來獲取與該職業相關的情報。（例：\ri 鐵華團團長）\n非房主玩家僅能獲取該職業的相關訊息。\n房主可以不受限制，且接收到的訊息會發送給所有玩家。此外，房主也可以使用命令[ /yourrole(/yr) ]來給每名玩家發送各自的職業的相關訊息。
 RoleInfoError,Failed to retrieve information for role named [ {0} ].\nSuch a role may not exist. \nPlease try entering the information again.,[ {0} ] という役職の情報の取得に失敗しました。\nそのような役職は存在しません。\n再度入力して下さい。,无法获取职业名为[{0}]的职业的相关信息。\n该职业可能不存在。\n请重新输入。,無法獲取職業名為[{0}]的職業的相關訊息。\n該職業可能不存在。\n請重新輸入。
 RoleIdInfoError,Failed to retrieve information for the role [ {0} ({1}) ].\nThe role name entered was correct，but an error occurred when the mod attempted to retrieve the role information and it failed.,[ {0} ({1}) ] という役職の情報の取得に失敗しました。\n入力された役職名は正確でしたが、Mod側で役職の情報の取得を試みた際にエラーが発生し 取得に失敗しました。,无法获取职业名为[ {0} ({1}) ]的职业的相关信息。\n该职业名存在，但模组在尝试获取职业信息时出现错误导致获取失败。,[ {0} ({1}) ] 這個職業的訊息獲取失敗。\n輸入的職業名稱是存在的，但是在模組嘗試獲取職業訊息時發生錯誤並導致獲取失敗。
-GetRoleInfoErrorDisable,If you are not a host，you will not be able to retrieve information for roles that are not currently active.,ホストでない場合、現在有効でない役職の情報は取得できません。,若您不是房主，您不能获取当前未启用的职业的相关信息。,如果您不是主持人，您將無法獲取當前未啟用的職業的訊息。
+GetRoleInfoErrorDisable,If you are not a host，you will not be able to retrieve information for roles that are not currently active.,ホストでない場合、現在有効でない役職の情報は取得できません。,若您不是房主，您不能获取当前未启用的职业的相关信息。,如果您不是房主，您將無法獲取當前未啟用的職業的訊息。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】
 TeamRoleTypeMessage,【RoleType:{0}】,【{0}役職】,【{0}职业】,【{0}職業】
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。,不能在暱稱裡有「mod」時將房間狀態設置為公開。
@@ -1867,6 +1893,6 @@ SNRWebErrorReasonPrefix,An error has occurred.,エラーが発生しました。
 SNRWebErrorReasonAllMatch,I tried to generate it，but all the codes I generated were already in use.,生成しようとしましたが、生成したすべてのコードが生成済みでした。,已尝试生成，但所有已生成用户码都已被使用。,已試圖生成用戶代碼，但所有用戶代碼皆已在使用中。
 SNRWebErrorReasonUnknow,Please try again.,もう一度お試しください。,请再试一次。,請再試一次。
 SNRWebErrorReasonGenerated,code has already been generated.,このコードは生成済みです。,用户码已经生成。,用戶代碼已被生成。
-SNRWebErrorReasonRegistered,You have already registered this friend code.\nIf you do not remember registering it，please submit an unauthorized registration request through the official SuperNewRolesWeb website.,このフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。,您已经注册了该用户码。\n若您不记得自己注册过该用户码，\n请您向SuperNewRolesWeb官网提交一份非授权注册申请。,您已註冊過此代碼。\n如果您不記得註冊過，請通過SuperNewRolesWeb官方網站提交未授權註冊請求。
+SNRWebErrorReasonRegistered,You have already registered this friend code.\nIf you do not remember registering it，please submit an unauthorized registration request through the official SuperNewRolesWeb website.,このフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。,您已经注册了该用户码。\n若您不记得自己注册过该用户码，\n请您向SuperNewRolesWeb官网提交一份非授权注册申请。,此好友代碼已被註冊。\n如果您不記得註冊過，請通過SuperNewRolesWeb官方網站提交未授權註冊請求。
 SNRWebBRMultiRate,{0}x Match!\nThis match will fluctuate {0}x the normal {0}x rate!,{0}倍マッチ！\nこの試合は通常の{0}倍レートが変動します！,{0}倍速游戏！\n该局游戏将以通常速度的{0}倍进行！,{0}倍速遊戲！\n該局遊戲將對比平時的{0}倍速度進行！
-SNRWebTransmissionConditionHostDependency,Allow guests to send results when the host is not logged in to the web.,ホストがWeb未ログイン時，ゲストからの戦績の送信を許可する
+SNRWebTransmissionConditionHostDependency,Allow guests to send results when the host is not logged in to the web.,ホストがWeb未ログイン時，ゲストからの戦績の送信を許可する,,允許在房主未登入網站時，讓玩家提交戰績

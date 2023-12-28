@@ -72,7 +72,7 @@ class Celebrity
             timer = new Timer(RoleClass.Celebrity.FlashTime);
             timer.Elapsed += (source, e) =>
             {
-                Seer.ShowFlash(Color.yellow);
+                SeerHandler.ShowFlash(Color.yellow);
                 Logger.Info($"{RoleClass.Celebrity.FlashTime / 1000}s 経過した為発光しました。「走れ、光よ！」", "CelebrityFlash");
             };
             bool enabled = EnabledSetting();

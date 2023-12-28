@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
@@ -31,7 +33,6 @@ public class ReplayActionSluggerExile : ReplayAction
     public override void OnAction()
     {
         //ここに処理書く
-        RPCProcedure.SluggerExile(sourcePlayer, targets.ToList());
     }
     public override void OnReplay()
     {
