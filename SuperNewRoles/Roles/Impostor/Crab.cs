@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Impostor.Crab;
 
 // 提案者：穴熊よしはる さん
 [HarmonyPatch]
-public class Crab : RoleBase, IImpostor, ICustomButton, IMeetingHandler, IRpcHandler
+public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Crab),
@@ -38,7 +38,8 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IMeetingHandler, IRpcHan
         CrabButtonInfo = new(null, this, () => CrabButtonOnClick(),
             (isAlive) => isAlive,
             CustomButtonCouldType.CanMove,
-            null, ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.crabButton.png", 115f),
+            () => ResetAbility(),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.crabButton.png", 115f),
             () => Optioninfo.CoolTime, new(-2f, 1, 0),
             "CrabButtonName", KeyCode.F,
             DurationTime: () => Optioninfo.DurationTime,
@@ -79,11 +80,4 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IMeetingHandler, IRpcHan
         __instance.body.velocity = direction * __instance.TrueSpeed;
         return false;
     }
-
-    // 能力解除
-    public void StartMeeting()
-    {
-        ResetAbility();
-    }
-    public void CloseMeeting() { }
 }
