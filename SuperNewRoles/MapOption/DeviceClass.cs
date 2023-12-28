@@ -302,6 +302,20 @@ public static class DeviceClass
             }
         }
     }
+    [HarmonyPatch(typeof(CounterArea), nameof(CounterArea.UpdateCount))]
+    public static class CounterAreaUpdateCountPatch
+    {
+        public static void Postfix(CounterArea __instance)
+        {
+            // 会議中にアドミンが投票エリアに隠れて見えなくなるのを直す
+            // ref: MapBehaviour.GenericShow
+            foreach (var icon in __instance.myIcons)
+            {
+                var renderer = icon.GetComponent<SpriteRenderer>();
+                renderer.material.SetInt(PlayerMaterial.MaskLayer, 255);
+            }
+        }
+    }
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
     class CoVitalsOpen
     {

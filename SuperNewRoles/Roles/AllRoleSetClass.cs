@@ -1274,13 +1274,12 @@ class AllRoleSetClass
         Crewnotonepar = new();
         foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (!intro.IsGhostRole && CanRoleIdElected(intro.RoleId))
-            {
-                var option = IntroData.GetOption(intro.RoleId);
-                if (option == null) continue;
-                var selection = option.GetSelection();
-                SetChance(selection, intro.RoleId, intro.Team);
-            }
+            if (intro.IsGhostRole || !CanRoleIdElected(intro.RoleId))
+                continue;
+            var option = IntroData.GetOption(intro.RoleId);
+            if (option == null) continue;
+            var selection = option.GetSelection();
+            SetChance(selection, intro.RoleId, intro.Team);
         }
         foreach (RoleInfo roleInfo in RoleInfoManager.RoleInfos.Values)
         {

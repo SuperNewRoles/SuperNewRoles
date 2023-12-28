@@ -99,11 +99,11 @@ internal static class HostManagedChatCommandPatch
             case CommandType.Winners:
                 if (OnGameEndPatch.PlayerData != null)
                 {
-                    SendCommand(commandUser.AmOwner ? null : commandUser, ModTranslation.GetString("WinnersNoneData"), GetChatCommands.SNRCommander);
+                    SendCommand(commandUser.AmOwner ? null : commandUser, GetChatCommands.GetWinnerMessage(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
                 }
                 else
                 {
-                    SendCommand(commandUser.AmOwner ? null : commandUser, GetChatCommands.GetWinnerMessage(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
+                    SendCommand(commandUser.AmOwner ? null : commandUser, ModTranslation.GetString("WinnersNoneData"), GetChatCommands.SNRCommander);
                 }
                 break;
             case CommandType.MatchMakingTags:

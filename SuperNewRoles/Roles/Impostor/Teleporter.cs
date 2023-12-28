@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles;
 
@@ -17,17 +18,16 @@ class Teleporter
         List<PlayerControl> aliveplayers = new();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            if (p.IsAlive() && p.CanMove)
-            {
-                aliveplayers.Add(p);
-            }
+            if (p.IsDead() || !p.CanMove)
+                continue;
+            aliveplayers.Add(p);
         }
         var player = ModHelpers.GetRandom(aliveplayers);
-        RPCProcedure.TeleporterTP(player.PlayerId);
 
-        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TeleporterTP, SendOption.Reliable, -1);
+        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.TeleporterTP);
         Writer.Write(player.PlayerId);
-        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+        Writer.EndRPC();
+        RPCProcedure.TeleporterTP(player.PlayerId);
     }
     public static bool IsTeleporter(PlayerControl Player)
     {
@@ -53,7 +53,6 @@ class Teleporter
     }
     public static void EndMeeting()
     {
-        HudManagerStartPatch.SheriffKillButton.MaxTimer = CoolTime;
-        RoleClass.Teleporter.ButtonTimer = DateTime.Now;
+        ResetCooldown();
     }
 }
