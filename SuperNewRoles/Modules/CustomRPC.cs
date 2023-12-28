@@ -19,6 +19,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.Crab;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -45,6 +46,7 @@ public enum RoleId
     Cupid,
     Santa,
     BlackSanta,
+    Crab,
     //RoleId
 
     SoothSayer,
@@ -346,7 +348,7 @@ public enum CustomRPC
     SetFrankensteinMonster,
     MoveDeadBody,
     RpcSetDoorway,
-    WaveCannon
+    WaveCannon,
 }
 
 public static class RPCProcedure
