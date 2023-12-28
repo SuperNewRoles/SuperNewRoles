@@ -151,7 +151,7 @@ public static class ExilePlayerPatch
         DeadPlayer deadPlayer = new(__instance, __instance.PlayerId, DateTime.UtcNow, DeathReason.Exile, null);
         DeadPlayer.deadPlayers.Add(deadPlayer);
         ReplayActionExile.Create(__instance.PlayerId);
-        __instance.OnDeath(__instance);
+        CustomRoles.OnExild(deadPlayer);
         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
         if (ModeHandler.IsMode(ModeId.Default))
         {
@@ -245,10 +245,12 @@ class ReportDeadBodyPatch
                 target.PlayerId == __instance.PlayerId)
                 return true;
             if (__instance.IsRole(RoleId.Amnesiac) &&
+                target != null &&
                 !target.Disconnected)
             {
                 __instance.RPCSetRoleUnchecked(target.RoleWhenAlive is null ? target.Role.Role : target.RoleWhenAlive.Value);
-                __instance.SetRoleRPC(target.Object.GetRole());
+                __instance.SwapRoleRPC(target.Object);
+                target.Object.SetRoleRPC(__instance.GetRole());
             }
             if (__instance.IsRole(RoleId.DyingMessenger) &&
                 target != null &&

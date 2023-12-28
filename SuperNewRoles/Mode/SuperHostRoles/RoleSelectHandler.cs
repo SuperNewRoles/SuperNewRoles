@@ -6,6 +6,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -165,8 +166,18 @@ public static class RoleSelectHandler
         SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
-        SetVanillaRole(EvilSeer.RoleData.Player, RoleTypes.Shapeshifter, false);
         /*============シェイプシフター役職設定============*/
+
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player is ISupportSHR playerSHR)
+            {
+                if (playerSHR.IsDesync)
+                    SetRoleDesync(player, playerSHR.DesyncRole);
+                else
+                    SetVanillaRole(player, playerSHR.RealRole, playerSHR.IsRealRoleNotModOnly);
+            }
+        }
 
         foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
         {
@@ -246,30 +257,34 @@ public static class RoleSelectHandler
     {
         foreach (PlayerControl Player in player)
         {
-            Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
-            if (!Player.IsMod())
+            SetRoleDesync(Player, roleTypes);
+        }
+    }
+    public static void SetRoleDesync(PlayerControl Player, RoleTypes roleTypes)
+    {
+        Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
+        if (!Player.IsMod())
+        {
+            int PlayerCID = Player.GetClientId();
+            sender.RpcSetRole(Player, roleTypes, PlayerCID);
+            foreach (var pc in PlayerControl.AllPlayerControls)
             {
-                int PlayerCID = Player.GetClientId();
-                sender.RpcSetRole(Player, roleTypes, PlayerCID);
-                foreach (var pc in PlayerControl.AllPlayerControls)
-                {
-                    if (pc.PlayerId == Player.PlayerId) continue;
-                    sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
-                }
-                //他視点で科学者にするループ
-                foreach (var pc in PlayerControl.AllPlayerControls)
-                {
-                    if (pc.PlayerId == Player.PlayerId) continue;
-                    if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
-                    else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
-                }
+                if (pc.PlayerId == Player.PlayerId) continue;
+                sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
             }
-            else
+            //他視点で科学者にするループ
+            foreach (var pc in PlayerControl.AllPlayerControls)
             {
-                //Modクライアントは代わりに普通のクルーにする
-                Player.SetRole(RoleTypes.Crewmate); //Modクライアント視点用
-                sender.RpcSetRole(Player, RoleTypes.Crewmate);
+                if (pc.PlayerId == Player.PlayerId) continue;
+                if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
+                else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
             }
+        }
+        else
+        {
+            //Modクライアントは代わりに普通のクルーにする
+            Player.SetRole(RoleTypes.Crewmate); //Modクライアント視点用
+            sender.RpcSetRole(Player, RoleTypes.Crewmate);
         }
     }
     /// <summary>
@@ -282,14 +297,24 @@ public static class RoleSelectHandler
     {
         foreach (PlayerControl p in player)
         {
-            if (p.IsMod() && isNotModOnly)
-            {
-                Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者かつ、非導入者のみなので破棄", "SetVanillaRole");
-                return;
-            }
-            Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
-            sender.RpcSetRole(p, roleTypes);
+            SetVanillaRole(p, roleTypes, isNotModOnly);
         }
+    }
+    /// <summary>
+    /// バニラ役職をセットする
+    /// </summary>
+    /// <param name="p">ターゲット</param>
+    /// <param name="roleTypes">セットする役職</param>
+    /// <param name="isNotModOnly">非Mod導入者のみか(概定はtrue)</param>
+    public static void SetVanillaRole(PlayerControl p, RoleTypes roleTypes, bool isNotModOnly = true)
+    {
+        if (p.IsMod() && isNotModOnly)
+        {
+            Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者かつ、非導入者のみなので破棄", "SetVanillaRole");
+            return;
+        }
+        Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
+        sender.RpcSetRole(p, roleTypes);
     }
     public static void CrewOrImpostorSet()
     {

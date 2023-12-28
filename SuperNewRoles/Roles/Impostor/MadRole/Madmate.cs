@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Roles;
@@ -11,6 +13,13 @@ class Madmate
     public static bool CheckImpostor(PlayerControl p)
     {
         if (CheckedImpostor.Contains(p.PlayerId)) return true;
+        if (p.GetRoleBase() is IMadmate imadmate)
+        {
+            bool canSee = imadmate.CanSeeImpostor(p);
+            if (canSee)
+                CheckedImpostor.Add(p.PlayerId);
+            return canSee;
+        }
         int CheckTask = 0;
         switch (p.GetRole())
         {

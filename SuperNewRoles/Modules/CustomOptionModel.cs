@@ -12,6 +12,8 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using UnityEngine.Events;
 using static SuperNewRoles.Modules.CustomRegulation;
@@ -224,14 +226,14 @@ public class CustomOption
     public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1, bool isHidden = false)
     {
         if (type is CustomOptionType.Empty)
-            type = IntroData.GetIntroData(roleId).Team switch
+            type = CustomRoles.GetRoleTeam(roleId) switch
             {
                 TeamRoleType.Impostor => CustomOptionType.Impostor,
                 TeamRoleType.Neutral => CustomOptionType.Neutral,
                 TeamRoleType.Crewmate => CustomOptionType.Crewmate,
                 _ => CustomOptionType.Generic
             };
-        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max, isHidden, roleId);
+        return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", CustomRoles.GetRoleColor(roleId), max, isHidden, roleId);
     }
 
     public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag)
@@ -423,11 +425,11 @@ public class CustomRoleOption : CustomOption
         }
     }
 
-    public IntroData Intro
+    public IntroInfo Introinfo
     {
         get
         {
-            return IntroData.GetIntroData(RoleId);
+            return IntroInfo.GetIntroInfo(RoleId);
         }
     }
 
