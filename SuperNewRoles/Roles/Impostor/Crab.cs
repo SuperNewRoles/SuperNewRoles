@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -31,10 +32,11 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
     public static new IntroInfo Introinfo =
         new(RoleId.Crab, introSound: RoleTypes.Impostor);
 
-    public static bool IsUsingAbility { get; private set; }
+    public bool IsUsingAbility { get; private set; }
 
     public Crab(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
+        IsUsingAbility = false;
         CrabButtonInfo = new(null, this, () => CrabButtonOnClick(),
             (isAlive) => isAlive,
             CustomButtonCouldType.CanMove,
@@ -49,7 +51,7 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
 
     // ボタン関係
     public CustomButtonInfo[] CustomButtonInfos { get; }
-    private CustomButtonInfo CrabButtonInfo;
+    private CustomButtonInfo CrabButtonInfo { get; }
     private void CrabButtonOnClick()
     {
         MessageWriter writer = RpcWriter;
@@ -60,6 +62,7 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
     private void ResetAbility()
     {
         CrabButtonInfo.ResetCoolTime();
+
         MessageWriter writer = RpcWriter;
         writer.Write(false);
         SendRpc(writer);
@@ -75,7 +78,9 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity)), HarmonyPrefix]
     static bool SetVelocity(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
     {
-        if (!IsUsingAbility) return true;
+        bool anyoneUsingAbility = RoleBaseManager.GetRoleBases<Crab>().Any(x => x.IsUsingAbility);
+        if (!anyoneUsingAbility) return true;
+
         direction.y *= 0;
         __instance.body.velocity = direction * __instance.TrueSpeed;
         return false;
