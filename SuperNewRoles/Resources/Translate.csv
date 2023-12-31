@@ -1852,6 +1852,7 @@ SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成�
 SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,未持有
 InformationName,Information,情報,资讯,資訊
+ExiledText,{0} was the {1}!,{0} は {1} だった！
 
 # Replay
 ReplayName,Replay,リプレイ,回放,重播

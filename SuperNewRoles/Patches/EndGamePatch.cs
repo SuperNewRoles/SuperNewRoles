@@ -1513,7 +1513,7 @@ class ExileControllerMessagePatch
                 // Exile role text
                 if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                 {
-                    __result = player.Data.PlayerName + " は " + CustomRoles.GetRoleName(player) + " だった！";
+                    __result = string.Format(ModTranslation.GetString("ExiledText"), player.Data.PlayerName, CustomRoles.GetRoleName(player));
                 }
             }
         }
