@@ -63,7 +63,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string thisname;
     public static string ThisPluginModName;
     //対応しているバージョン。nullなら全て。
-    public static string[] SupportVanilaVersion = new string[] { "2023.10.24", "2023.11.28" };
+    public static string[] SupportVanilaVersion = new string[] { "2023.11.28" };
 
     public override void Load()
     {
