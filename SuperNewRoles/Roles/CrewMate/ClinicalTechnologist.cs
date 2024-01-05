@@ -14,21 +14,21 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
-public class ClinicalTechnologist : RoleBase, ICrewmate, ISupportSHR
+public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR
 {
     public static new RoleInfo Roleinfo = new(
-        typeof(ClinicalTechnologist),
-        (p) => new ClinicalTechnologist(p),
-        RoleId.ClinicalTechnologist,
-        "ClinicalTechnologist",
+        typeof(MedicalTechnologist),
+        (p) => new MedicalTechnologist(p),
+        RoleId.MedicalTechnologist,
+        "MedicalTechnologist",
         new(37, 159, 148, byte.MaxValue),
-        new(RoleId.ClinicalTechnologist, TeamTag.Crewmate, RoleTag.Information),
+        new(RoleId.MedicalTechnologist, TeamTag.Crewmate, RoleTag.Information),
         TeamRoleType.Crewmate,
         TeamType.Crewmate
         );
 
     public static new OptionInfo Optioninfo =
-        new(RoleId.ClinicalTechnologist, 406700, true,
+        new(RoleId.MedicalTechnologist, 406700, true,
             CoolTimeOption: (15f, 2.5f, 60f, 2.5f, true),
             AbilityCountOption: (1f, 1f, 15f, 1f, true),
             optionCreator: null);
@@ -37,8 +37,8 @@ public class ClinicalTechnologist : RoleBase, ICrewmate, ISupportSHR
     public RoleTypes DesyncRole => RoleTypes.Impostor;
 
     public static new IntroInfo Introinfo =
-        new(RoleId.ClinicalTechnologist, introSound: RoleTypes.Scientist);
-    public ClinicalTechnologist(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
+        new(RoleId.MedicalTechnologist, introSound: RoleTypes.Scientist);
+    public MedicalTechnologist(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
     }
 }

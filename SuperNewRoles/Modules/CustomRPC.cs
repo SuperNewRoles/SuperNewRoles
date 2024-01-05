@@ -50,7 +50,7 @@ public enum RoleId
 
     // Crewmate Roles
     NiceGuesser,
-    ClinicalTechnologist,
+    MedicalTechnologist,
 
     //RoleId
 
