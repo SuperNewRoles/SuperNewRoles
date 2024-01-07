@@ -72,6 +72,7 @@ public static class RoleHelpers
     /// <param name="player">マッドであるか判定したいプレイヤー</param>
     /// <returns>プレイヤーがマッド役職である場合trueを返す</returns>
     public static bool IsMadRoles(this PlayerControl player) =>
+        player.GetRoleBase() is IMadmate || 
         (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
         player.GetRole() is
         // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
@@ -839,9 +840,6 @@ public static class RoleHelpers
             case RoleId.Camouflager:
                 RoleClass.Camouflager.CamouflagerPlayer.Add(player);
                 break;
-            case RoleId.Cupid:
-                RoleClass.Cupid.CupidPlayer.Add(player);
-                break;
             case RoleId.HamburgerShop:
                 RoleClass.HamburgerShop.HamburgerShopPlayer.Add(player);
                 break;
@@ -1410,9 +1408,6 @@ public static class RoleHelpers
             case RoleId.Camouflager:
                 RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.Cupid:
-                RoleClass.Cupid.CupidPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.HamburgerShop:
                 RoleClass.HamburgerShop.HamburgerShopPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1739,6 +1734,8 @@ public static class RoleHelpers
     }
     public static bool IsImpostorLight(this PlayerControl player)
     {
+        if (player.GetRoleBase() is IMadmate imadmate)
+            return imadmate.IsImpostorLight;
         RoleId role = player.GetRole();
         return role == RoleId.Egoist
             ? RoleClass.Egoist.ImpostorLight
@@ -2021,7 +2018,6 @@ public static class RoleHelpers
             else if (WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
             else if (WaveCannonJackal.SidekickWaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.SidekickWaveCannon;
             else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
-            else if (RoleClass.Cupid.CupidPlayer.IsCheckListPlayerControl(player)) return RoleId.Cupid;
             else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
             else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;

@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
+using static SuperNewRoles.WaveCannonObj.WaveCannonObject;
 
 namespace SuperNewRoles.Roles.Impostor;
 public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
@@ -32,15 +34,22 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
     public static new IntroInfo Introinfo =
         new(RoleId.WaveCannon, introSound:RoleTypes.Impostor);
     public static CustomOption IsSyncKillCoolTime;
+    public static CustomOption AnimationTypeOption;
     public static void CreateOption()
     {
         IsSyncKillCoolTime = CustomOption.Create(200004, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, Optioninfo.RoleOption);
+        string[] AnimTypeTexts = new string[WCCreateAnimHandlers.Count];
+        int index = 0;
+        foreach (string TypeName in WCCreateAnimHandlers.Keys)
+        {
+            AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType"+TypeName);
+            index++;
+        }
+        AnimationTypeOption = CustomOption.Create(200005, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts, Optioninfo.RoleOption);
     }
 
-    public List<byte> CannotMurderPlayers;
     public WaveCannon(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        CannotMurderPlayers = new();
         CustomButtonInfos = new CustomButtonInfo[1]
         {
             new(null, this, ButtonOnClick, (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
@@ -58,12 +67,14 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
             Logger.Info("nullなのでreturnしました", "WaveCannonButton");
             return;
         }
+
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RpcWriter;
         writer.Write((byte)WaveCannonObject.RpcType.Shoot);
         writer.Write((byte)obj.Id);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+        writer.Write((byte)0);
         writer.Write(pos.x);
         writer.Write(pos.y);
         SendRpc(writer);
@@ -75,13 +86,14 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
         byte Id = reader.ReadByte();
         bool IsFlipX = reader.ReadBoolean();
         byte OwnerId = reader.ReadByte();
+        WCAnimType AnimType = (WCAnimType)reader.ReadByte();
         Vector3 position = new(reader.ReadSingle(), reader.ReadSingle());
         ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, position);
         Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {position} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
         switch ((WaveCannonObject.RpcType)Type)
         {
             case WaveCannonObject.RpcType.Spawn:
-                new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+                new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId), AnimType);
                 break;
             case WaveCannonObject.RpcType.Shoot:
                 WaveCannonObject.Objects[OwnerId]?.Shoot();
@@ -92,10 +104,14 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
     {
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RpcWriter;
+
+        WCAnimType AnimType = (WCAnimType)AnimationTypeOption.GetSelection();
+
         writer.Write((byte)WaveCannonObject.RpcType.Spawn);
         writer.Write((byte)0);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+        writer.Write((byte)AnimType);
         writer.Write(pos.x);
         writer.Write(pos.y);
         SendRpc(writer);

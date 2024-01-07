@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -128,6 +129,17 @@ public static class CustomRoles
         DeathInfo info = new(deadPlayer);
         RoleBaseManager.GetInterfaces<IDeathHandler>().Do(x => x.OnMurderPlayer(info));
         OnDeath(info);
+    }
+    public static bool OnCheckMurderPlayer(PlayerControl source, PlayerControl target)
+    {
+        bool resultsource = true;
+        bool resulttarget = true;
+        bool result = RoleBaseManager.GetInterfaces<ICheckMurderHandler>().All(x => x.OnCheckMurderPlayer(source, target));
+        if (source.GetRoleBase() is ICheckMurderHandler checkMurderHandlerSource)
+            resultsource = checkMurderHandlerSource.OnCheckMurderPlayerAmKiller(target);
+        if (target.GetRoleBase() is ICheckMurderHandler checkMurderHandlerTarget)
+            resulttarget = checkMurderHandlerTarget.OnCheckMurderPlayerAmTarget(source);
+        return result && resultsource && resulttarget;
     }
 
     public static void OnDeath(DeathInfo info)

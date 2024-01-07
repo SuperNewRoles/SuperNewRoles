@@ -23,6 +23,7 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
 using Object = UnityEngine.Object;
@@ -42,6 +43,9 @@ public enum RoleId
     NiceGuesser,
     EvilHacker,
     EvilSeer,
+    Cupid,
+    Santa,
+    BlackSanta,
     //RoleId
 
     SoothSayer,
@@ -184,7 +188,6 @@ public enum RoleId
     Pavlovsdogs,
     Pavlovsowner,
     Camouflager,
-    Cupid,
     HamburgerShop,
     Penguin,
     Dependents,
@@ -306,7 +309,6 @@ public enum CustomRPC
     CrackerCrack,
     Camouflage,
     ShowGuardEffect,
-    SetLoversCupid,
     PenguinHikizuri,
     SetVampireStatus,
     SyncDeathMeeting,
@@ -344,7 +346,8 @@ public enum CustomRPC
     RoleRpcHandler,
     SetFrankensteinMonster,
     MoveDeadBody,
-    RpcSetDoorway
+    RpcSetDoorway,
+    WaveCannon
 }
 
 public static class RPCProcedure
@@ -365,6 +368,20 @@ public static class RPCProcedure
         if (player == null)
             return;
         SpiderTrap.Create(player, new(x, y), id);
+    }
+    public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, Vector2 position, WaveCannonObject.WCAnimType AnimType)
+    {
+        ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, position);
+        Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {position} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
+        switch ((WaveCannonObject.RpcType)Type)
+        {
+            case WaveCannonObject.RpcType.Spawn:
+                return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId), AnimType);
+            case WaveCannonObject.RpcType.Shoot:
+                WaveCannonObject.Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                break;
+        }
+        return null;
     }
     public static void SpiderTrapCatch(ushort id, byte targetid)
     {
@@ -660,11 +677,6 @@ public static class RPCProcedure
                 DeviceClass.VitalTimer = time;
                 break;
         }
-    }
-    public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
-    {
-        RoleClass.Cupid.CupidLoverPair[sourceid] = player1;
-        SetLovers(player1, player2);
     }
 
     public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
@@ -1990,9 +2002,6 @@ public static class RPCProcedure
                     case CustomRPC.ShowGuardEffect:
                         ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
                         break;
-                    case CustomRPC.SetLoversCupid:
-                        SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
                     case CustomRPC.PenguinHikizuri:
                         PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
                         break;
@@ -2110,6 +2119,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.MoveDeadBody:
                         MoveDeadBody(reader.ReadByte(), reader.ReadSingle(), reader.ReadSingle());
+                        break;
+                    case CustomRPC.WaveCannon:
+                        WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), new(reader.ReadSingle(), reader.ReadSingle()), (WaveCannonObject.WCAnimType)reader.ReadByte());
                         break;
                 }
             }

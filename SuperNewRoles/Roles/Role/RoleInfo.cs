@@ -59,6 +59,7 @@ public enum RoleTag
     Killer, //キラー
     Bomb, //爆発系
     Hacchan, //ハッチャン役
+    Takada, //高田村役
     PlayTimeAdjustment, //試合時間調整系
     Haloween, //ハロウィン役
     CanSidekick, //サイドキック可能役

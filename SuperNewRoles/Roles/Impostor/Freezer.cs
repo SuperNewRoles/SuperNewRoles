@@ -1,9 +1,9 @@
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;

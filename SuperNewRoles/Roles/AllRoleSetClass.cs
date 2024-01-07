@@ -1140,14 +1140,12 @@ class AllRoleSetClass
             RoleId.ConnectKiller => CustomOptionHolder.ConnectKillerPlayerCount.GetFloat(),
             RoleId.Cracker => CustomOptionHolder.CrackerPlayerCount.GetFloat(),
             RoleId.NekoKabocha => NekoKabocha.NekoKabochaPlayerCount.GetFloat(),
-            RoleId.WaveCannon => CustomOptionHolder.WaveCannonPlayerCount.GetFloat(),
             RoleId.Doppelganger => CustomOptionHolder.DoppelgangerPlayerCount.GetFloat(),
             RoleId.Werewolf => CustomOptionHolder.WerewolfPlayerCount.GetFloat(),
             RoleId.Knight => Knight.KnightPlayerCount.GetFloat(),
             RoleId.Pavlovsowner => CustomOptionHolder.PavlovsownerPlayerCount.GetFloat(),
             RoleId.WaveCannonJackal => WaveCannonJackal.WaveCannonJackalPlayerCount.GetFloat(),
             RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount.GetFloat(),
-            RoleId.Cupid => CustomOptionHolder.CupidPlayerCount.GetFloat(),
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetFloat(),
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
@@ -1276,13 +1274,12 @@ class AllRoleSetClass
         Crewnotonepar = new();
         foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (!intro.IsGhostRole && CanRoleIdElected(intro.RoleId))
-            {
-                var option = IntroData.GetOption(intro.RoleId);
-                if (option == null) continue;
-                var selection = option.GetSelection();
-                SetChance(selection, intro.RoleId, intro.Team);
-            }
+            if (intro.IsGhostRole || !CanRoleIdElected(intro.RoleId))
+                continue;
+            var option = IntroData.GetOption(intro.RoleId);
+            if (option == null) continue;
+            var selection = option.GetSelection();
+            SetChance(selection, intro.RoleId, intro.Team);
         }
         foreach (RoleInfo roleInfo in RoleInfoManager.RoleInfos.Values)
         {

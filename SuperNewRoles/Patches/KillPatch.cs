@@ -365,6 +365,8 @@ static class CheckMurderPatch
         }
 
         if (!AmongUsClient.Instance.AmHost) return true;
+        if (!CustomRoles.OnCheckMurderPlayer(__instance, target))
+            return IsKillSuc = false;
         switch (ModeHandler.GetMode())
         {
             case ModeId.Zombie:
@@ -605,7 +607,7 @@ public static class MurderPlayerPatch
             {
                 case RoleId.SideKiller:
                     var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
-                    if (sideplayer == null)
+                    if (sideplayer == null || sideplayer.IsDead())
                         break;
                     if (!RoleClass.SideKiller.IsUpMadKiller)
                     {

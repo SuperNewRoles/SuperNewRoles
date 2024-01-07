@@ -21,16 +21,16 @@ public class RoleBaseTemplate : RoleBase
         (p) => new RoleBaseTemplate(p),
         RoleId.RoleBaseTemplate,
         "RoleBaseTemplate",
-        RoleClass.ImpostorRed,
+        ,
         new(RoleId.RoleBaseTemplate, TeamTag.TEAMTAG),
-        TeamRoleType.Impostor,
-        TeamType.Impostor
+        TeamRoleType.,
+        TeamType.
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.RoleBaseTemplate, 200000, ,
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
-        new(RoleId.RoleBaseTemplate, introSound: RoleTypes.Impostor);
+        new(RoleId.RoleBaseTemplate, introSound: RoleTypes.);
     private static void CreateOption()
     {
     }

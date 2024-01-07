@@ -16,6 +16,8 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
 
@@ -51,6 +53,7 @@ static class HudManagerStartPatch
     public static CustomButton FalseChargesFalseChargeButton;
     public static CustomButton MadMakerSidekickButton;
     public static CustomButton DemonButton;
+    public static CustomButton WaveCannonButton;
     public static CustomButton ArsonistDouseButton;
     public static CustomButton ArsonistIgniteButton;
     public static CustomButton SpeederButton;
@@ -91,7 +94,6 @@ static class HudManagerStartPatch
     public static CustomButton PavlovsownerCreatedogButton;
     public static CustomButton PavlovsdogKillButton;
     public static CustomButton CamouflagerButton;
-    public static CustomButton CupidButton;
     public static CustomButton PenguinButton;
     public static CustomButton VampireCreateDependentsButton;
     public static CustomButton DependentsKillButton;
@@ -257,6 +259,72 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
+        WaveCannonButton = new(
+            () =>
+            {
+                var pos = CachedPlayer.LocalPlayer.transform.position;
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
+                writer.Write((byte)WaveCannonObject.RpcType.Spawn);
+                writer.Write((byte)0);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                writer.Write(pos.x);
+                writer.Write(pos.y);
+                writer.Write((byte)WaveCannonJackal.WaveCannonJackalAnimTypeOption.GetSelection());
+                writer.EndRPC();
+                RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, (WaveCannonObject.WCAnimType)WaveCannonJackal.WaveCannonJackalAnimTypeOption.GetSelection());
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.WaveCannonJackal && (!WaveCannonJackal.IwasSidekicked.Contains(PlayerControl.LocalPlayer.PlayerId) || WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool()); },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove;
+            },
+            () =>
+            {
+                WaveCannonButton.MaxTimer = WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
+                WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
+                WaveCannonButton.effectCancellable = false;
+                WaveCannonButton.EffectDuration = WaveCannonJackal.WaveCannonJackalChargeTime.GetFloat();
+                WaveCannonButton.HasEffect = true;
+            },
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; },
+            true,
+            5f,
+            () =>
+            {
+                WaveCannonObject obj = WaveCannonObject.Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && x.Id == WaveCannonObject.Ids[CachedPlayer.LocalPlayer.PlayerId] - 1);
+                if (obj == null)
+                {
+                    Logger.Info("nullなのでreturnしました", "WaveCannonButton");
+                    return;
+                }
+                var pos = CachedPlayer.LocalPlayer.transform.position;
+                byte[] buff = new byte[sizeof(float) * 2];
+                Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
+                writer.Write((byte)WaveCannonObject.RpcType.Shoot);
+                writer.Write((byte)obj.Id);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                writer.Write(pos.x);
+                writer.Write(pos.y);
+                writer.Write((byte)0);
+                writer.EndRPC();
+                RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, WaveCannonObject.WCAnimType.Default);
+            }
+        )
+        {
+            buttonText = ModTranslation.GetString("WaveCannonButtonName"),
+            showButtonText = true
+        };
+
         MechanicButton = new(
             () =>
             {
@@ -382,7 +450,7 @@ static class HudManagerStartPatch
                         bool IsAliveLovers = false;
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(p.PlayerId))))
+                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.TryGetRoleBase<Cupid>(out Cupid cupid) & cupid.Created)))
                             {
                                 IsAliveLovers = true;
                                 break;
@@ -676,62 +744,6 @@ static class HudManagerStartPatch
             )
         {
             buttonText = ModTranslation.GetString("PhotographerButtonName"),
-            showButtonText = true
-        };
-
-        CupidButton = new(
-            () =>
-            {
-                PlayerControl target = RoleClass.Cupid.currentTarget;
-                if (target.IsLovers() || target.IsRole(RoleId.LoversBreaker)) return;
-                if (RoleClass.Cupid.currentLovers is null)
-                {
-                    RoleClass.Cupid.currentLovers = target;
-                    CupidButton.MaxTimer = CustomOptionHolder.CupidCoolTime.GetFloat();
-                    CupidButton.Timer = CupidButton.MaxTimer;
-                }
-                else
-                {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetLoversCupid);
-                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                    writer.Write(RoleClass.Cupid.currentLovers.PlayerId);
-                    writer.Write(target.PlayerId);
-                    writer.EndRPC();
-                    RPCProcedure.SetLoversCupid(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Cupid.currentLovers.PlayerId, target.PlayerId);
-                    RoleClass.Cupid.Created = true;
-                }
-                RoleClass.Cupid.currentTarget = null;
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Cupid && !RoleClass.Cupid.Created; },
-            () =>
-            {
-                if (!RoleClass.Cupid.Created && RoleClass.Cupid.currentLovers != null && RoleClass.Cupid.currentLovers.IsDead())
-                {
-                    RoleClass.Cupid.currentLovers = null;
-                }
-                if (!PlayerControl.LocalPlayer.CanMove) return false;
-                List<PlayerControl> untarget = new();
-                if (RoleClass.Cupid.currentLovers != null)
-                {
-                    untarget.Add(RoleClass.Cupid.currentLovers);
-                }
-                return RoleClass.Cupid.currentTarget = SetTarget(untarget);
-            },
-            () =>
-            {
-                CupidButton.MaxTimer = CustomOptionHolder.CupidCoolTime.GetFloat();
-                CupidButton.Timer = CupidButton.MaxTimer;
-            },
-            RoleClass.Cupid.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-            )
-        {
-            buttonText = ModTranslation.GetString("CupidButtonName"),
             showButtonText = true
         };
 
@@ -1146,7 +1158,7 @@ static class HudManagerStartPatch
                         if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
                         {
                             var sidePlayer = RoleClass.SideKiller.GetSidePlayer(target); // targetのサイドキラーを取得
-                            if (sidePlayer != null) // null(作っていない)ならば処理しない
+                            if (sidePlayer != null && sidePlayer.IsAlive()) // null(作っていない)ならば処理しない
                             {
                                 sidePlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                 RoleClass.SideKiller.IsUpMadKiller = true;
@@ -1203,7 +1215,7 @@ static class HudManagerStartPatch
                         if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
                         {
                             var sidePlayer = RoleClass.SideKiller.GetSidePlayer(target); // targetのサイドキラーを取得
-                            if (sidePlayer != null) // null(作っていない)ならば処理しない
+                            if (sidePlayer != null && sidePlayer.IsAlive()) // null(作っていない)ならば処理しない
                             {
                                 sidePlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                 RoleClass.SideKiller.IsUpMadKiller = true;

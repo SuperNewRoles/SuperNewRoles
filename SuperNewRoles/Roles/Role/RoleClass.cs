@@ -12,8 +12,10 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using SuperNewRoles.SuperNewRolesWeb;
+using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
 
@@ -47,6 +49,7 @@ public static class RoleClass
         IsFirstMeetingEnd = false;
         IsfirstResetCool = true;
         CustomSpores.ClearAndReloads();
+        RoleBaseManager.ClearAndReloads();
         DeadPlayer.ClearAndReloads();
         ReportDeadBodyPatch.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
@@ -228,7 +231,6 @@ public static class RoleClass
         //SidekickWaveCannon.Clear();
         Beacon.AllBeacons = new();
         Camouflager.ClearAndReload();
-        Cupid.ClearAndReload();
         HamburgerShop.ClearAndReload();
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
@@ -2785,26 +2787,6 @@ public static class RoleClass
             IsShooted = false;
         }
     }
-    public static class Cupid
-    {
-        public static List<PlayerControl> CupidPlayer;
-        public static Color32 color = Lovers.color;
-        public static PlayerControl currentLovers;
-        public static PlayerControl currentTarget;
-        public static bool Created;
-        public static Dictionary<byte, byte> CupidLoverPair;
-
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.cupidButton.png", 115f);
-
-        public static void ClearAndReload()
-        {
-            CupidPlayer = new();
-            currentLovers = null;
-            currentTarget = null;
-            Created = false;
-            CupidLoverPair = new();
-        }
-    }
 
     public static class HamburgerShop
     {
@@ -2828,7 +2810,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             PenguinPlayer = new();
-            PenguinData = new(needplayerlist:true);
+            PenguinData = new(needplayerlist: true);
             PenguinTimer = new();
             bool Is = ModHelpers.IsSucsessChance(4);
             _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);

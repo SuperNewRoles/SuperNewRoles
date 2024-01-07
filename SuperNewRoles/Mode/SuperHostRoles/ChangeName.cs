@@ -14,7 +14,7 @@ using UnityEngine;
 namespace SuperNewRoles.Mode.SuperHostRoles;
 public static class ChangeName
 {
-    private static string GetNowName(this PlayerData<string> pd, PlayerControl p)
+    public static string GetNowName(this PlayerData<string> pd, PlayerControl p)
     {
         if (!pd.TryGetValue(p, out string result))
             result = p.GetDefaultName();

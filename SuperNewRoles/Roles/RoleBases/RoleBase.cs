@@ -32,7 +32,7 @@ public abstract class RoleBase : IDisposable
     //Disposeを実装
     public void Dispose()
     {
-
+        Player = null;
     }
     public void SetPlayer(PlayerControl player)
     {
