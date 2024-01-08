@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles.Impostor.Crab;
 
 // 提案者：穴熊よしはる さん
 [HarmonyPatch]
-public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
+public class Crab : RoleBase, IImpostor, ICustomButton, IDeathHandler, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Crab),
@@ -57,7 +57,6 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
         MessageWriter writer = RpcWriter;
         writer.Write(true);
         SendRpc(writer);
-        IsUsingAbility = true;
     }
     private void ResetAbility()
     {
@@ -66,7 +65,6 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
         MessageWriter writer = RpcWriter;
         writer.Write(false);
         SendRpc(writer);
-        IsUsingAbility = false;
     }
 
     // 能力関係
@@ -84,5 +82,11 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IRpcHandler
         direction.y *= 0;
         __instance.body.velocity = direction * __instance.TrueSpeed;
         return false;
+    }
+    // 死んだとき強制解除
+    public void OnDeath(DeathInfo deathInfo)
+    {
+        if (deathInfo.DeathPlayer.PlayerId != Player.PlayerId) return;
+        ResetAbility();
     }
 }
