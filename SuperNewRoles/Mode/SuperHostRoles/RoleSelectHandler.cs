@@ -6,6 +6,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -340,50 +341,23 @@ public static class RoleSelectHandler
 
         foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (!intro.IsGhostRole && AllRoleSetClass.CanRoleIdElected(intro.RoleId))
-            {
-                var option = IntroData.GetOption(intro.RoleId);
-                if (option == null || !option.isSHROn) continue;
-                var selection = option.GetSelection();
-                if (selection != 0)
-                {
-                    if (selection == 10)
-                    {
-                        switch (intro.Team)
-                        {
-                            case TeamRoleType.Crewmate:
-                                Crewonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Impostor:
-                                Impoonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Neutral:
-                                Neutonepar.Add(intro.RoleId);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 1; i <= selection; i++)
-                        {
-                            switch (intro.Team)
-                            {
-                                case TeamRoleType.Crewmate:
-                                    Crewnotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Impostor:
-                                    Imponotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Neutral:
-                                    Neutnotonepar.Add(intro.RoleId);
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
+            if (intro.IsGhostRole ||
+                !AllRoleSetClass.CanRoleIdElected(intro.RoleId))
+                continue;
+            var option = IntroData.GetOption(intro.RoleId);
+            if (option == null || !option.isSHROn) continue;
+            var selection = option.GetSelection();
+            AllRoleSetClass.SetChance(selection, intro.RoleId, intro.Team);
         }
-
+        foreach (RoleInfo roleInfo in RoleInfoManager.RoleInfos.Values)
+        {
+            if (roleInfo.IsGhostRole || !AllRoleSetClass.CanRoleIdElected(roleInfo.Role))
+                continue;
+            var option = IntroData.GetOption(roleInfo.Role);
+            if (option == null || !option.isSHROn) continue;
+            var selection = option.GetSelection();
+            AllRoleSetClass.SetChance(selection, roleInfo.Role, roleInfo.Team);
+        }
         var Assassinselection = CustomOptionHolder.AssassinAndMarlinOption.GetSelection();
         SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewmatePlayerNum + "、" + AllRoleSetClass.CrewmatePlayers.Count);
         if (Assassinselection != 0 && AllRoleSetClass.CrewmatePlayerNum > 0 && AllRoleSetClass.CrewmatePlayers.Count > 0)

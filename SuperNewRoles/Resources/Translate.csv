@@ -1699,7 +1699,10 @@ SantaAnd, and ,と
 BlackSantaName,BlackSanta,ブラックサンタ
 BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!
 BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！
-
+RobberName,Robber,泥棒
+RobberTitle1,その進捗、頂戴するぜ,I'll take that progress.
+RobberDescription,a,あ
+RobberRewindTaskCount,Number of tasks to rewind,巻き戻すタスクの個数 
 
 #NewRoleTranslation
 

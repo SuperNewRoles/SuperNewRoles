@@ -1251,7 +1251,7 @@ class AllRoleSetClass
         }
         return null;
     }
-    static void SetChance(int selection, RoleId role, TeamRoleType Team)
+    public static void SetChance(int selection, RoleId role, TeamRoleType Team)
     {
         if (selection == 0)
             return;
