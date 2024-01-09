@@ -160,6 +160,7 @@ static class AdditionalTempData
         public RoleId RoleId { get; set; }
         public RoleId GhostRoleId { get; set; }
         public string AttributeRoleName { get; set; }
+        public bool isImpostor { get; set; }
     }
 }
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -221,7 +222,7 @@ public class EndGameManagerSetUpPatch
             {
                 Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                 if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId))}";
+                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: winningPlayerData2.IsImpostor))}";
             }
         }
 
@@ -408,7 +409,7 @@ public class EndGameManagerSetUpPatch
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                string roleText = CustomRoles.GetRoleNameOnColor(data.RoleId) + data.AttributeRoleName;
+                string roleText = CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: data.isImpostor) + data.AttributeRoleName;
                 if (data.GhostRoleId != RoleId.DefaultRole)
                 {
                     roleText += $" → {CustomRoles.GetRoleNameOnColor(data.GhostRoleId)}";
@@ -584,6 +585,7 @@ public static class OnGameEndPatch
                     AttributeRoleName = attributeRoleName,
                     RoleId = playerrole,
                     GhostRoleId = playerghostrole,
+                    isImpostor = p.Object.IsImpostor()
                 });
             }
         }
