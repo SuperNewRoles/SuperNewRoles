@@ -332,12 +332,12 @@ public static class RoleSelectHandler
     }
     public static void OneOrNotListSet()
     {
-        List<RoleId> Impoonepar = new();
-        List<RoleId> Imponotonepar = new();
-        List<RoleId> Neutonepar = new();
-        List<RoleId> Neutnotonepar = new();
-        List<RoleId> Crewonepar = new();
-        List<RoleId> Crewnotonepar = new();
+        AllRoleSetClass.Impoonepar = new();
+        AllRoleSetClass.Imponotonepar = new();
+        AllRoleSetClass.Neutonepar = new();
+        AllRoleSetClass.Neutnotonepar = new();
+        AllRoleSetClass.Crewonepar = new();
+        AllRoleSetClass.Crewnotonepar = new();
 
         foreach (IntroData intro in IntroData.Intros.Values)
         {
@@ -364,22 +364,15 @@ public static class RoleSelectHandler
         {
             if (Assassinselection == 10)
             {
-                Impoonepar.Add(RoleId.Assassin);
+                AllRoleSetClass.Impoonepar.Add(RoleId.Assassin);
             }
             else
             {
                 for (int i = 1; i <= Assassinselection; i++)
                 {
-                    Imponotonepar.Add(RoleId.Assassin);
+                    AllRoleSetClass.Imponotonepar.Add(RoleId.Assassin);
                 }
             }
         }
-
-        AllRoleSetClass.Impoonepar = Impoonepar;
-        AllRoleSetClass.Imponotonepar = Imponotonepar;
-        AllRoleSetClass.Neutonepar = Neutonepar;
-        AllRoleSetClass.Neutnotonepar = Neutnotonepar;
-        AllRoleSetClass.Crewonepar = Crewonepar;
-        AllRoleSetClass.Crewnotonepar = Crewnotonepar;
     }
 }
