@@ -455,6 +455,7 @@ public class CustomPlayerData
     public WinningPlayerData currentData;
     public string name;
     public bool IsWin;
+    public bool isImpostor;
     public FinalStatus finalStatus;
     public int CompleteTask;
     public int TotalTask;
@@ -468,13 +469,11 @@ public class CustomPlayerData
             (CompleteTask, TotalTask) = TaskCount.TaskDate(p);
         }
         catch { }
-        try
+        role = null;
+        if (p.Object != null)
         {
             role = p.Object.GetRole();
-        }
-        catch
-        {
-            role = null;
+            isImpostor = p.Object.IsImpostor();
         }
         var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
             p.Disconnected == true ? FinalStatus.Disconnected :

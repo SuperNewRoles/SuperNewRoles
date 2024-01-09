@@ -366,7 +366,7 @@ internal static class GetChatCommands
             if (!data.role.HasValue)
                 builder.Append(ModTranslation.GetString("WinnerGetError"));
             else
-                builder.Append(CustomRoles.GetRoleNameKey(data.role.Value));
+                builder.Append(CustomRoles.GetRoleName(data.role.Value, IsImpostorReturn: data.isImpostor));
             builder.AppendLine();
         }
         return builder.ToString();
