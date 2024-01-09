@@ -14,10 +14,11 @@ public static class HideSporeMask
     {
         public static void Postfix(Mushroom __instance)
         {
-            if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) ||
-                !MapCustom.TheFungleHideSporeMask.GetBool() &&
-                (!PlayerControl.LocalPlayer.IsRole(RoleId.Mushroomer) ||
-                !Mushroomer.HasGasMask.GetBool()))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Mushroomer) &&
+                !Mushroomer.HasGasMask.GetBool())
+                return;
+            if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle)
+                || !MapCustom.TheFungleHideSporeMask.GetBool())
                 return;
             if (MapCustom.TheFungleHideSporeMaskOnlyImpostor.GetBool() &&
                 !PlayerControl.LocalPlayer.IsImpostor())

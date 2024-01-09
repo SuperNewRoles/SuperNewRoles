@@ -30,7 +30,7 @@ public static class CustomSpores
             else
                 id = mushroomsShip.entries.Max(x => x.hashCode) + 1;
         Mushroom newmushRoom = GameObject.Instantiate(Agartha.MapLoader.FungleObject.GetComponentInChildren<Mushroom>(), ShipStatus.Instance.transform);
-        newmushRoom.transform.localPosition = position3;
+        newmushRoom.transform.position = position3;
         newmushRoom.id = id;
         newmushRoom.origPosition = position;
         if (mushrooms != null)
