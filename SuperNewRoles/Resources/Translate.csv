@@ -1511,6 +1511,8 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
+BalancerAbilityUseText,Ability activated,能力発動
+BalancerVoteText,Vote for one or the other!,どちらかに投票せよ！
 PteranodonName,Pteranodon,プテラノドン,鸟人,無齒翼龍
 PteranodonTitle1,PtePte,プテプテ,一飞冲天啊，我,翼~翼~
 PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,起飛！
