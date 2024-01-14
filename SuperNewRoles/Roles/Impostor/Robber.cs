@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles.Impostor.Robber;
 
-public class Robber : RoleBase, IImpostor, ISupportSHR, IDeathHandler, IRpcHandler
+public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Robber),
@@ -22,18 +22,16 @@ public class Robber : RoleBase, IImpostor, ISupportSHR, IDeathHandler, IRpcHandl
         TeamType.Impostor
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.Robber, 205900, true,
+        new(RoleId.Robber, 205900, false,
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.Robber, introSound: RoleTypes.Impostor);
-
-    public RoleTypes RealRole => RoleTypes.Impostor;
 
     //巻き戻すタスクの個数
     public static CustomOption RewindTaskCountOption;
     private static void CreateOption()
     {
-        RewindTaskCountOption = CustomOption.Create(Optioninfo.OptionId++, true, Optioninfo.RoleOption.type, "RobberRewindTaskCount",
+        RewindTaskCountOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, Optioninfo.RoleOption.type, "RobberRewindTaskCount",
             2, 1, 15, 1, Optioninfo.RoleOption);
     }
     public Robber(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
@@ -43,46 +41,55 @@ public class Robber : RoleBase, IImpostor, ISupportSHR, IDeathHandler, IRpcHandl
     {
         if (info.Killer == null)
             return;
-        if (info.Killer.PlayerId == Player.PlayerId)
+        if (info.Killer.PlayerId != Player.PlayerId)
             return;
         if (ModeHandler.IsMode(ModeId.Default))
         {
             MessageWriter writer = RpcWriter;
             writer.Write(info.DeathPlayer.PlayerId);
-            uint[] taskIds = AssignRobberTargetTask(info.DeathPlayer);
-            writer.Write((ushort)taskIds.Length);
+            HashSet<uint> taskIds = AssignRobberTargetTask(info.DeathPlayer);
+            writer.Write((ushort)taskIds.Count);
             foreach (uint taskId in taskIds)
             {
                 writer.Write(taskId);
             }
             SendRpc(writer);
         }
+        /*
         else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            uint[] taskIds = AssignRobberTargetTask(info.DeathPlayer);
+            HashSet<uint> taskIds = AssignRobberTargetTask(info.DeathPlayer);
             foreach (uint taskId in taskIds)
             {
-                Player.Data.FindTaskById(taskId).Complete = false;
+                info.DeathPlayer.Data.FindTaskById(taskId).Complete = false;
+            }
+            foreach (PlayerTask task in info.DeathPlayer.myTasks)
+            {
+                if (!taskIds.Contains(task.Id))
+                    continue;
+                NormalPlayerTask normalTask = task.TryCast<NormalPlayerTask>();
+                if (normalTask != null)
+                    normalTask.taskStep = 0;
             }
             RPCHelper.RpcSyncGameData();
-        }
+        }*/
         else
         {
-            throw new System.Exception("Robber.OnMurderPlayer: Invalid Mode");
+            throw new System.Exception($"Robber.OnMurderPlayer: Invalid {ModeHandler.GetMode()} Mode");
         }
     }
-    private uint[] AssignRobberTargetTask(PlayerControl target)
+    private HashSet<uint> AssignRobberTargetTask(PlayerControl target)
     {
         int RewindTaskCount = RewindTaskCountOption.GetInt();
         int CompletedTaskCount = target.Data.Tasks.FindAll((Il2CppSystem.Predicate<GameData.TaskInfo>)(x => x.Complete)).Count;
         if (RewindTaskCount > CompletedTaskCount)
             RewindTaskCount = CompletedTaskCount;
-        uint[] taskIds = new uint[RewindTaskCount];
+        HashSet<uint> taskIds = new();
         List<GameData.TaskInfo> CompletedTasks = target.Data.Tasks.FindAll((Il2CppSystem.Predicate<GameData.TaskInfo>)(x => x.Complete)).ToList();
         for (int i = 0; i < RewindTaskCount; i++)
         {
             int index = ModHelpers.GetRandomIndex(CompletedTasks);
-            taskIds[i] = CompletedTasks[index].Id;
+            taskIds.Add(CompletedTasks[index].Id);
             CompletedTasks.RemoveAt(index);
         }
         return taskIds;
@@ -92,9 +99,21 @@ public class Robber : RoleBase, IImpostor, ISupportSHR, IDeathHandler, IRpcHandl
         byte targetId = reader.ReadByte();
         PlayerControl target = ModHelpers.PlayerById(targetId);
         int TaskCount = reader.ReadUInt16();
+        List<uint> taskIds = new();
         for (int i = 0; i < TaskCount; i++)
         {
-            target.Data.FindTaskById(reader.ReadUInt32()).Complete = false;
+            taskIds.Add(reader.ReadUInt32());
+        }
+        foreach (PlayerTask task in target.myTasks)
+        {
+            if (!taskIds.Contains(task.Id))
+                continue;
+            NormalPlayerTask normalTask = task.TryCast<NormalPlayerTask>();
+            if (normalTask != null)
+                normalTask.taskStep = 0;
+            GameData.TaskInfo taskInfo = target.Data.FindTaskById(task.Id);
+            if (taskInfo != null)
+                taskInfo.Complete = false;
         }
     }
 }
