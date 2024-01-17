@@ -220,7 +220,6 @@ public class EndGameManagerSetUpPatch
 
             foreach (var data in AdditionalTempData.playerRoles)
             {
-                Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                 if (data.PlayerName != winningPlayerData2.PlayerName) continue;
                 poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: winningPlayerData2.IsImpostor))}";
             }
@@ -473,7 +472,7 @@ public class CustomPlayerData
         if (p.Object != null)
         {
             role = p.Object.GetRole();
-            isImpostor = p.Object.IsImpostor();
+            isImpostor = p.Role.IsImpostor;
         }
         var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
             p.Disconnected == true ? FinalStatus.Disconnected :
@@ -584,7 +583,7 @@ public static class OnGameEndPatch
                     AttributeRoleName = attributeRoleName,
                     RoleId = playerrole,
                     GhostRoleId = playerghostrole,
-                    isImpostor = p.Object.IsImpostor()
+                    isImpostor = p.Role.IsImpostor
                 });
             }
         }
