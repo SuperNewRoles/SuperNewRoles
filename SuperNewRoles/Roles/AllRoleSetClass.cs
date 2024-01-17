@@ -441,9 +441,9 @@ class AllRoleSetClass
     {
         int count = CustomOptionHolder.impostorRolesCountMax.GetInt();
         HashSet<RoleId> AssignedRoles = RandomSelect(
-            AssignType.Neutral,
+            AssignType.Impostor,
             ref count,
-            CrewmatePlayers);
+            ImpostorPlayers);
         //マーリンを選ぶ
         if (AssignedRoles.Contains(RoleId.Assassin) && CrewmatePlayerNum > 0)
         {
