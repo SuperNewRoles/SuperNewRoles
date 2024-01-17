@@ -38,25 +38,6 @@ class Nekomata
                                 SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
                         }
                     }
-                    // 猫カボチャで。追放道連れにする
-                    else if (__instance.Object.IsRole(RoleId.NekoKabocha) && Impostor.NekoKabocha.CanRevengeExile)
-                    {
-                        if (p1.Data != __instance && p1.IsAlive())
-                        {
-                            if (p1.IsCrew() && Impostor.NekoKabocha.CanRevengeCrew)
-                            {
-                                p.Add(p1);
-                            }
-                            else if (p1.IsNeutral() && Impostor.NekoKabocha.CanRevengeNeut)
-                            {
-                                p.Add(p1);
-                            }
-                            else if (p1.IsImpostor() && Impostor.NekoKabocha.CanRevengeImp)
-                            {
-                                p.Add(p1);
-                            }
-                        }
-                    }
                     //ナイス・設定オフ
                     else
                     {
