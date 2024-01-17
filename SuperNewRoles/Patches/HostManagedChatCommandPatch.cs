@@ -407,7 +407,7 @@ internal static class GetChatCommands
             }
             else
             {
-                string name = $"<size=200%>{ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value, IsImpostorReturn:true))}</size>";
+                string name = $"<size=200%>{ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value, IsImpostorReturn: true))}</size>";
                 return (CustomRoles.GetRoleDescription(data.Value), name);
             }
         }
@@ -544,6 +544,7 @@ internal static class RoleinformationText
         {
             if (player == null || player.IsBot()) return;
             RoleId roleId = player.GetRole();
+            if (roleId == RoleId.Bestfalsecharge && player.IsAlive()) roleId = RoleId.DefaultRole;
             RoleId ghostRoleId = player.GetGhostRole();
 
             string roleName = "NONE", roleInfo = "";
