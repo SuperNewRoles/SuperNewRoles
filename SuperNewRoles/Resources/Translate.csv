@@ -1051,6 +1051,7 @@ EvilHackerCanUseAdminDuringMeeting,Can Use Admin During Meeting,会議中にア�
 EvilHackerSabotageMapShowsAdmin,Sabotage Map Shows Admin,サボタージュマップにもアドミンを表示する,内鬼地图以管理地图的形式显示,駭客可以在破壞地圖中看到管理員地圖
 EvilHackerMapShowsDoorState,Map Shows Doors Status,マップにドアの開閉状況を表示する,地图上会显示门的开关情况,駭客可以在地圖中看到門的開關狀態
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
+CreateMadmateFastVerButton,Change of Heart,心変わりさせる
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
 PositionSwapperDescription,By using the ability，it can swap its own position with a randomly selected target.\nNeither you nor the target will be notified of who you swap with.\nUse the swap ability to mix up your routes and confuse your crew!,能力を使用する事で、ランダムに選択された対象と自身の位置を入れ換える事ができます。\n誰とスワップされたかは、自身にも対象にも通知されません。\nスワップ能力で経路をごちゃ混ぜにして、クルー達を混乱させましょう!!,念动使属于内鬼阵营，可以将自己的位置与一名随机玩家交换。\n任何玩家都不能确认与念动使交换位置的玩家。\n念动使需要使用能力混淆自己的行动来迷惑船员。,交換使可以和隨機一名玩家交換位置。\n你和目標都不會知道和誰交換了位置。\n使用交換位置能力來混淆你的路線，迷惑其他玩家！
@@ -1109,7 +1110,7 @@ NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干
 NeetDescription,Every possible button does not exist.\nYou can't do anything，because you are Neet.\nIf you survive to the end，you win alone or additionally.,ありとあらゆるボタンが存在しません。\n何も出来ません、だってニートだもの。\n最後まで生存していると単独or追加勝利します。,由于过于废柴，废柴不存在任何交互按钮，不能作任何行动。\n废柴存活到游戏结束即可获胜。,尼特沒有任何可以操作的按鈕。\n甚麼都不用做，因為你是尼特。\n根據設定，活到最後來取得獨自勝利或和他人一同勝利吧。
 FastMakerName,Fast Maker,ファストメーカー,洗脑师,洗腦師
 FastMakerTitle1,Let's make Madmate with a light heart.,軽い気持ちでマッドメイトを作ろう,让船员背叛成为你的俘虏,讓船員背叛成為你的手下
-FastMakerDescription,This role can create a Mad Mate with the first kill.,初手キルでマッドメイトを作成出来るインポスターです。,洗脑师的首次击杀不会造成死亡，而是将击杀目标变为叛徒,首次擊殺可以使船員背叛
+FastMakerDescription,This role can create a Mad Mate with the first kill.\n\nIn SHR mode，both non-introducers and non-introducers create a Madmate by using the Kill button.\nIn normal mode，a Madmate is created by using the [Change of Heart] button.\nYou cannot make a kill until you have created a Madmate.,初手キルでマッドメイトを作成出来るインポスターです。\n\nSHRモード時は非導入者・非導入者双方共，キルボタンでマッドメイトを作成します。\n通常モード時は，[心変わりさせる]ボタンを使用する事でマッドメイトを作成します。\nマッドメイトを作成するまでキルをする事が出来ません。,洗脑师的首次击杀不会造成死亡，而是将击杀目标变为叛徒,首次擊殺可以使船員背叛
 KillName,KILL,キル,击杀,擊殺
 JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる,豺狼可以将一名玩家招募为狈,豺狼可以將一名玩家招募為狽
 ToiletFanName,Toilet Fan,トイレファン,腹泻者,腹瀉者
@@ -1303,7 +1304,7 @@ PavlovsTeamWinText,Pavlov's dog and owner,パブロフの犬とオーナー,巴�
 PavlovsownerCreatedogButtonName,stenciling,刷り込み,驯化,馴服
 KnightName,Knight,騎士,骑士,騎士
 KnightTitle1,I will protect you according to my beliefs.,我が信念に沿って護衛しよう,举起正义之盾,為了吾之信仰而守護
-KnightDescription,During the conference phase，you can put up a shield to prevent one kill by using the protect button. If the protection is successful，a successful protection announcement will be played at the beginning of the next meeting phase.,会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。,會議階段,騎士可以選擇一名玩家，阻擋一次那名玩家在會議上遭受的擊殺。根據房間配置，騎士守護成功的下一輪會議上，所有玩家可以收到騎士守護成功的訊息。
+KnightDescription,During the conference phase，you can put up a shield to prevent one kill by using the protect button. If the protection is successful，a successful protection announcement will be played at the beginning of the next meeting phase.,会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。,會議階段，騎士可以選擇一名玩家，阻擋一次那名玩家在會議上遭受的擊殺。根據房間配置，騎士守護成功的下一輪會議上，所有玩家可以收到騎士守護成功的訊息。
 KnightCanAnnounceOfProtected,Play an announcement when the protection is successful?,護衛成功時にアナウンスを流すか,骑士守护成功后通知所有玩家,騎士守護成功後通知所有玩家
 KnightSetTheUpperLimitOfTheGuarding,Do you want to set a limit on the number of protections?,護衛回数に上限を設けるか,骑士守护次数有上限,騎士守護次數有上限
 KnightMaximumNumberOfTimes,Maximum number of times protection is possible.,護衛上限回数,骑士每轮游戏最大守护次数,騎士每輪遊戲最大守護次數
@@ -1315,6 +1316,7 @@ ConnectKillerName,ConnectKiller,コネクトキラー,浊化行者,穿行殺手
 ConnectKillerTitle1,Lets’ Connect!,通信サボタージュでベントを繋げよう,趁通讯破坏在管道间穿行,趁通訊破壞在通風管道間穿行
 NekoKabochaName,NekoKabocha,ネコカボチャ,复仇者,復仇者
 NekoKabochaTitle1,Let me take you on the road.,道連れを起こそう,杀人偿命,殺人償命
+NekoKabochaDescription,It has the ability to take your opponent along when you are killed and the ability to take a random crew member along when you are expelled.\n\nWhen the player is killed，the team restriction setting is reflected.\nWhen you are exiled，the "team restriction" setting is not applied.\n\nAlas，what a pity... I can't believe I'm going to die here...\nOh，you there，won't you die with me?\n\n... Well，I have more than one life，so you're the only one who will die!,自身がキルされた時に相手を道連れにする能力と，自身が追放される時にランダムでクルーを道連れにする能力を有します。\n自身がキルされた際の道連れは，設定により陣営の制限をする事ができます。\n追放時の道連れには，道連れ対象の陣営を除外する設定が反映されません。\n\n嗚呼 口惜しや... この、あたしがこんな所で死ぬなんて...\nああ そこにいるあんさん 一緒に死んでくれやしないかい?\n\n...まあ，あたしには命が複数あるから死ぬのはお前だけだけどね!!
 KillCooldown,KillCooldown,キルクールダウン,击杀冷却,擊殺冷卻
 CanRevengeCrewmate,Can take crewmates on the road,クルーメイトを道連れ可,复仇者可以连带船员阵营玩家,復仇者可以連帶船員陣營玩家
 CanRevengeImpostor,Can take Impostor on the road,インポスターを道連れ可,复仇者可以连带内鬼阵营玩家,復仇者可以連帶內鬼陣營玩家
