@@ -89,7 +89,10 @@ public class IntroData
     {
         if (RoleId is RoleId.DefaultRole)
         {
-            return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
+            if (IsImpostorReturn || p.IsImpostor())
+                return ImpostorIntro;
+            else
+                return CrewmateIntro;
         }
         else if (RoleId is RoleId.Jumbo)
         {

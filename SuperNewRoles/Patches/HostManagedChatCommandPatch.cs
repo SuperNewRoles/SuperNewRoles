@@ -366,7 +366,16 @@ internal static class GetChatCommands
             if (!data.role.HasValue)
                 builder.Append(ModTranslation.GetString("WinnerGetError"));
             else
-                builder.Append(CustomRoles.GetRoleNameKey(data.role.Value));
+            {
+                // このコメント消したら役職名に色がつく(見にくいから放置)
+                /*
+                Color RoleColor = CustomRoles.GetRoleColor(data.role.Value, IsImpostorReturn: data.isImpostor);
+                if (data.role.Value == RoleId.DefaultRole && RoleColor.r == 1 && RoleColor.g == 1 && RoleColor.b == 1)
+                    builder.Append(CustomOptionHolder.Cs(Palette.CrewmateBlue, IntroData.CrewmateIntro.NameKey+"Name"));
+                else*/
+                    builder.Append(CustomRoles.GetRoleName/*OnColor*/
+                        (data.role.Value, IsImpostorReturn: data.isImpostor));
+            }
             builder.AppendLine();
         }
         return builder.ToString();

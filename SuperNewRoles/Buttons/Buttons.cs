@@ -2510,21 +2510,22 @@ static class HudManagerStartPatch
             () =>
             {
                 var target = SetTarget();
-                //マッド作ってないなら
+                // マッド作ってないなら
                 if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadmate)
                 {
                     PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
                     RoleClass.FastMaker.CreatePlayers.Add(PlayerControl.LocalPlayer.PlayerId);
-                    Madmate.CreateMadmate(target);//くるぅにして、マッドにする
-                    RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことに
+                    Madmate.CreateMadmate(target); // くるぅにして、マッドにする
+                    RoleClass.FastMaker.IsCreatedMadmate = true; // 作ったことに
                     FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown > 0 ? RoleClass.DefaultKillCoolDown / 2f : 0.00001f;
                     FastMakerButton.Timer = FastMakerButton.MaxTimer;
+                    if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) FastMakerButton.buttonText = ModTranslation.GetString("KillName"); // ボタン名を戻す
                     Logger.Info($"守護を発動させている為、設定キルクールの半分の値である<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
                     Logger.Info($"マッドを作成しました。IsCreatedMadmate == {RoleClass.FastMaker.IsCreatedMadmate}", "FastMakerButton");
                 }
                 else
                 {
-                    //作ってたらキル
+                    // 作ってたらキル
                     ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                     FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown;
                     FastMakerButton.Timer = FastMakerButton.MaxTimer;
@@ -2551,7 +2552,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("KillName"),
+            buttonText = ModeHandler.IsMode(ModeId.SuperHostRoles) ? ModTranslation.GetString("KillName") : ModTranslation.GetString("CreateMadmateFastVerButton"),
             showButtonText = true
         };
 
