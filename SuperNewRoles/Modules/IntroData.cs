@@ -87,7 +87,7 @@ public class IntroData
     [Obsolete]
     public static IntroData GetIntrodata(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)
     {
-        if (RoleId is RoleId.DefaultRole or RoleId.Bestfalsecharge)
+        if (RoleId is RoleId.DefaultRole)
         {
             if (IsImpostorReturn || p.IsImpostor())
                 return ImpostorIntro;

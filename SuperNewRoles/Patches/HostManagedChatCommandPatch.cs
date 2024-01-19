@@ -554,6 +554,7 @@ internal static class RoleinformationText
         {
             if (player == null || player.IsBot()) return;
             RoleId roleId = player.GetRole();
+            if (roleId == RoleId.Bestfalsecharge && player.IsAlive()) roleId = RoleId.DefaultRole;
             RoleId ghostRoleId = player.GetGhostRole();
 
             string roleName = "NONE", roleInfo = "";
