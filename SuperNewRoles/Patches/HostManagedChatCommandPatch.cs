@@ -521,7 +521,7 @@ internal static class RoleinformationText
 
         string beforeIdChangeRoleName =
             isSuccess
-                ? roleNameKey.FirstOrDefault(key => key.Contains("Name")).Replace("Name", "") // 翻訳キーの取得に成功した場合, 配列から"Name"を含む要素を取得し その要素"Name"を外して, RoleIdに一致する役職名を取得する.
+                ? roleNameKey.FirstOrDefault(key => key.Contains("Name")).Replace("Name", "") ?? command // 翻訳キーの取得に成功した場合, 配列から"Name"を含む要素を取得し そのから要素"Name"を外して, RoleIdに一致する役職名を取得する.
                 : command; // 翻訳辞書からの取得に失敗した場合, 入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
 
         string roleName = "NONE", roleInfo = "";
