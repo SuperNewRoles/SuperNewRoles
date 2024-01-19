@@ -113,22 +113,22 @@ public static class PoliceSurgeon
     internal class PersonalInformationOfTheDead
     {
         /// <summary> 死亡者のPlayerId </summary>
-        internal byte VictimId { get; private set; }
+        internal byte VictimId { get; }
 
         /// <summary> 死亡したターン </summary>
-        internal int DeadTurn { get; private set; }
+        internal int DeadTurn { get; }
 
         /// <summary> 死因 </summary>
-        internal PoliceSurgeon_AddActualDeathTime.DeadTiming DeadReason { get; private set; }
+        internal PoliceSurgeon_AddActualDeathTime.DeadTiming DeadReason { get; }
 
         /// <summary> 死亡時刻 </summary>
-        internal DateTime ActualDeathTime { get; private set; }
+        internal DateTime ActualDeathTime { get; }
 
         /// <summary> 死亡推定時刻 </summary>
-        internal int EstimatedDeathTime { get; private set; }
+        internal int EstimatedDeathTime { get; }
 
         /// <summary> 個人の死体検案書 </summary>
-        internal string PostMortemCertificate { get; private set; }
+        internal string PostMortemCertificate { get; }
 
         internal PersonalInformationOfTheDead(byte id, int deadTurn, PoliceSurgeon_AddActualDeathTime.DeadTiming deadReason, DateTime actualDeathTime, int estimatedDeathTime)
         {
