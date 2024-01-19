@@ -2072,7 +2072,7 @@ public static class RPCProcedure
                         ReportDeadBodyPatch.SaveMeetingTurnNow(reader.ReadByte());
                         break;
                     case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
-                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        PoliceSurgeon_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.MoiraChangeRole:
                         MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
