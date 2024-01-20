@@ -366,7 +366,16 @@ internal static class GetChatCommands
             if (!data.role.HasValue)
                 builder.Append(ModTranslation.GetString("WinnerGetError"));
             else
-                builder.Append(CustomRoles.GetRoleNameKey(data.role.Value));
+            {
+                // このコメント消したら役職名に色がつく(見にくいから放置)
+                /*
+                Color RoleColor = CustomRoles.GetRoleColor(data.role.Value, IsImpostorReturn: data.isImpostor);
+                if (data.role.Value == RoleId.DefaultRole && RoleColor.r == 1 && RoleColor.g == 1 && RoleColor.b == 1)
+                    builder.Append(CustomOptionHolder.Cs(Palette.CrewmateBlue, IntroData.CrewmateIntro.NameKey+"Name"));
+                else*/
+                    builder.Append(CustomRoles.GetRoleName/*OnColor*/
+                        (data.role.Value, IsImpostorReturn: data.isImpostor));
+            }
             builder.AppendLine();
         }
         return builder.ToString();
@@ -407,7 +416,7 @@ internal static class GetChatCommands
             }
             else
             {
-                string name = $"<size=200%>{ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value, IsImpostorReturn:true))}</size>";
+                string name = $"<size=200%>{ModHelpers.Cs(RoleClass.ImpostorRed, CustomRoles.GetRoleName(data.Value, IsImpostorReturn: true))}</size>";
                 return (CustomRoles.GetRoleDescription(data.Value), name);
             }
         }
@@ -517,11 +526,12 @@ internal static class RoleinformationText
 
         PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
 
-        (string roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(command);
+        (string[] roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(command);
+
         string beforeIdChangeRoleName =
             isSuccess
-            ? roleNameKey.Replace("Name", "") // 翻訳キーの取得に成功していた場合, RoleIdと同様の名前にする為 キーから"Name"を外す.
-            : command; // 失敗していた場合入力された文字のまま
+                ? roleNameKey.FirstOrDefault(key => key.Contains("Name")).Replace("Name", "") ?? command // 翻訳キーの取得に成功した場合, 配列から"Name"を含む要素を取得し そのから要素"Name"を外して, RoleIdに一致する役職名を取得する.
+                : command; // 翻訳辞書からの取得に失敗した場合, 入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
 
         string roleName = "NONE", roleInfo = "";
 
@@ -544,6 +554,7 @@ internal static class RoleinformationText
         {
             if (player == null || player.IsBot()) return;
             RoleId roleId = player.GetRole();
+            if (roleId == RoleId.Bestfalsecharge && player.IsAlive()) roleId = RoleId.DefaultRole;
             RoleId ghostRoleId = player.GetGhostRole();
 
             string roleName = "NONE", roleInfo = "";

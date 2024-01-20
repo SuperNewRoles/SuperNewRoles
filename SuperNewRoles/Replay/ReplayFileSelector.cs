@@ -32,6 +32,9 @@ namespace SuperNewRoles.Replay
         {
             public static void Postfix()
             {
+                // 未完成のため封印
+                return;
+
                 if (ReplayManager.IsReplayMode)
                     return;
                 SignInScreen screen = FastDestroyableSingleton<AccountManager>.Instance.signInScreen;

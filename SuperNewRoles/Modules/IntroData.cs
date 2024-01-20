@@ -87,9 +87,12 @@ public class IntroData
     [Obsolete]
     public static IntroData GetIntrodata(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)
     {
-        if (RoleId is RoleId.DefaultRole or RoleId.Bestfalsecharge)
+        if (RoleId is RoleId.DefaultRole)
         {
-            return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
+            if (IsImpostorReturn || p.IsImpostor())
+                return ImpostorIntro;
+            else
+                return CrewmateIntro;
         }
         else if (RoleId is RoleId.Jumbo)
         {
