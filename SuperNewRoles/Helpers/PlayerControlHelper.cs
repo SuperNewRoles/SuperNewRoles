@@ -42,8 +42,12 @@ public static class PlayerControlHelper
         if (player == null) return;
 
         RoleId playerRole = player.GetRole();
-
         List<RoleId> infos = new() { player.GetRole() };
+        if (playerRole == RoleId.Bestfalsecharge && player.IsAlive())
+        {
+            playerRole = RoleId.DefaultRole;
+            infos = new() { RoleId.DefaultRole };
+        }
 
         var toRemove = new List<PlayerTask>();
         var aaa = false;

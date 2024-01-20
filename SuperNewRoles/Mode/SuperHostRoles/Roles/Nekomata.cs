@@ -52,6 +52,8 @@ class Nekomata
     }
     public static void NekomataProc(List<PlayerControl> p)
     {
+        if (p.Count <= 0) { Logger.Info("抽選リストにプレイヤーが存在しない為, 猫又の道連れ処理を終了しました。", "Nekomata Exiled (SHR)"); return; }
+
         var rdm = ModHelpers.GetRandomIndex(p);
         var random = p[rdm];
         random.RpcCheckExile();
