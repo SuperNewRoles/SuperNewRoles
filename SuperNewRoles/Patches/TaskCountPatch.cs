@@ -30,6 +30,7 @@ class TaskCount
                 __instance.Data[i] = (byte)list[index].ConsoleId;
                 list.RemoveAt(index);
             }
+            __instance.StartAt = orgList.First(console => console.ConsoleId == __instance.Data[0]).Room;
         }
     }
     [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.FixedUpdate))]
