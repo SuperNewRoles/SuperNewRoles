@@ -26,7 +26,7 @@ public static class RoleBaseManager
     }
     public static IReadOnlyList<T> GetInterfaces<T>()
     {
-        if (!AllInterfaces.TryGetValue(nameof(T), out HashSet<RoleBase> RoleBases) ||
+        if (!AllInterfaces.TryGetValue(typeof(T).Name, out HashSet<RoleBase> RoleBases) ||
             RoleBases == null)
             return new List<T>();
         return RoleBases.Cast<T>().ToList();
@@ -108,7 +108,7 @@ public static class RoleBaseManager
     }
     public static IReadOnlyList<T> GetRoleBases<T>() where T : RoleBase
     {
-        return RoleBaseTypes.TryGetValue(nameof(T), out HashSet<RoleBase> value) ? value.Cast<T>().ToList() : new();
+        return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? value.Cast<T>().ToList() : new();
     }
     public static T GetRoleBase<T>(this PlayerControl player) where T : RoleBase
     {
