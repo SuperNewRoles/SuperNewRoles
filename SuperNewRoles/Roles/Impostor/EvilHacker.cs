@@ -71,7 +71,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
         var target = EvilHackerMadmateButtonInfo.CurrentTarget;
         if (target.IsImpostor())
             return;
-        if (CanCreateMadmate)
+        if (!CanCreateMadmate)
             return;
         Madmate.CreateMadmate(target);
         CanCreateMadmate = false;
