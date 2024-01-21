@@ -127,7 +127,7 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     }
     public BlackSanta(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        bool IsFullTask = !IsSettingNumberOfUniqueTasks.GetBool();
+        bool IsFullTask = !IsParcentageForTaskTrigger.GetBool();
         int AllTask = SelectTask.GetTotalTasks(RoleId.BlackSanta);
         CheckTask = IsFullTask ? AllTask : (AllTask * ParcentageForTaskTriggerSetting.GetSelection() * 4);
         HasCheckImpostorAbility = CanCheckImpostorOption.GetBool();

@@ -72,7 +72,7 @@ public static class Worshiper
             IsImpostorLight = CustomOptionData.IsImpostorLight.GetBool();
             IsImpostorCheck = CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
 
-            bool IsFullTask = !CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionData.IsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.Worshiper);
 
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));

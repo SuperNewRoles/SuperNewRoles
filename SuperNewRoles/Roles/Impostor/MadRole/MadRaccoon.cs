@@ -67,9 +67,9 @@ public static class MadRaccoon
             IsImpostorLight = CustomOptionData.IsImpostorLight.GetBool();
             IsImpostorCheck = CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
 
-            bool IsFullTask = !CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionData.IsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MadRaccoon);
-            ImpostorCheckTask = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 0 : IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
+            ImpostorCheckTask = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 0 : IsFullTask || !CustomOptionData.IsParcentageForTaskTrigger.GetBool() ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
 
             ShapeshifterCooldown = CustomOptionData.ShapeshifterCooldown.GetFloat();
             ShapeshifterDuration = CustomOptionData.ShapeshifterDuration.GetFloat();
