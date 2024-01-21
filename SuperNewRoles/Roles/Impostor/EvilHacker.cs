@@ -45,8 +45,8 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
     private static void CreateOption()
     {
         CanMoveWhenUsesAdmin = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, Optioninfo.RoleOption);
-        MadmateSetting = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CustomOption.CreateMadmateSetting", false, Optioninfo.RoleOption);
-        ButtonCooldown = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CustomOption.CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, MadmateSetting);
+        MadmateSetting = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, Optioninfo.RoleOption);
+        ButtonCooldown = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, MadmateSetting);
         HasEnhancedAdmin = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, Optioninfo.RoleOption);
         CanSeeImpostorPositions = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, HasEnhancedAdmin);
         CanSeeDeadBodyPositions = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, HasEnhancedAdmin);
