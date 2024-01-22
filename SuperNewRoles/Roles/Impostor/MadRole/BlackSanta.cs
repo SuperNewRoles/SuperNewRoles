@@ -26,8 +26,8 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     public static new OptionInfo Optioninfo =
         new(RoleId.BlackSanta, 406600, false,
             CoolTimeOption: (30f, 2.5f, 60f, 2.5f, false),
-            VentOption:(false, false),
-            ImpostorVisionOption:(false, false),
+            VentOption: (false, false),
+            ImpostorVisionOption: (false, false),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.BlackSanta, introSound: RoleTypes.Crewmate);
@@ -129,7 +129,7 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     {
         bool IsFullTask = !IsParcentageForTaskTrigger.GetBool();
         int AllTask = SelectTask.GetTotalTasks(RoleId.BlackSanta);
-        CheckTask = IsFullTask ? AllTask : (AllTask * ParcentageForTaskTriggerSetting.GetSelection() * 4);
+        CheckTask = IsFullTask ? AllTask : (AllTask * (ParcentageForTaskTriggerSetting.GetSelection() / 4));
         HasCheckImpostorAbility = CanCheckImpostorOption.GetBool();
         IsImpostorLight = Optioninfo.IsImpostorVision;
         BlackSantaButtonInfo = Santa.CreateSantaButtonInfo(this, CanUseAbilityCount.GetInt(),
