@@ -2807,7 +2807,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             PenguinPlayer = new();
-            PenguinData = new(needplayerlist:true);
+            PenguinData = new(needplayerlist: true);
             PenguinTimer = new();
             bool Is = ModHelpers.IsSucsessChance(4);
             _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
