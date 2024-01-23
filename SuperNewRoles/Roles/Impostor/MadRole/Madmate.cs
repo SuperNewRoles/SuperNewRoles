@@ -10,6 +10,14 @@ namespace SuperNewRoles.Roles;
 class Madmate
 {
     public static HashSet<byte> CheckedImpostor;
+    public static HashSet<byte> ChangeMadmatePlayer;
+
+    public static void ClearAndReload()
+    {
+        CheckedImpostor = new();
+        ChangeMadmatePlayer = new();
+    }
+
     public static bool CheckImpostor(PlayerControl p)
     {
         if (CheckedImpostor.Contains(p.PlayerId)) return true;
@@ -81,5 +89,6 @@ class Madmate
     public static void CreateMadmate(PlayerControl target)
     {
         target.ResetAndSetRole(RoleId.Madmate);
+        if (target.IsRole(RoleId.Madmate)) ChangeMadmatePlayer.Add(target.PlayerId);
     }
 }

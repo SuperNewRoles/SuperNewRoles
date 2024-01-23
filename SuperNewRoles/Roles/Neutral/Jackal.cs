@@ -70,5 +70,6 @@ class Jackal
     public static void CreateJackalFriends(PlayerControl target)
     {
         target.ResetAndSetRole(RoleId.JackalFriends);
+        if (target.IsRole(RoleId.JackalFriends)) JackalFriends.ChangeJackalFriendsPlayer.Add(target.PlayerId);
     }
 }
