@@ -30,7 +30,7 @@ class JackalFriends
         {
             case RoleId.JackalFriends:
                 if (!RoleClass.JackalFriends.IsJackalCheck) return false;
-                bool haveTask = !(Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && ChangeJackalFriendsPlayer[p.PlayerId]);
+                bool haveTask = !(Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && !ChangeJackalFriendsPlayer[p.PlayerId]);
                 CheckTask = haveTask ? RoleClass.JackalFriends.JackalCheckTask : 0;
                 break;
             case RoleId.SeerFriends:

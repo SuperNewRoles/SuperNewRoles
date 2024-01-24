@@ -41,7 +41,7 @@ class Madmate
         {
             case RoleId.Madmate:
                 if (!RoleClass.Madmate.IsImpostorCheck) return false;
-                bool haveTask = !(Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && ChangeMadmatePlayer[p.PlayerId]);
+                bool haveTask = !(Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && !ChangeMadmatePlayer[p.PlayerId]);
                 CheckTask = haveTask ? RoleClass.Madmate.ImpostorCheckTask : 0;
                 break;
             case RoleId.MadMayor:
