@@ -56,7 +56,7 @@ class WaveCannonJackal
             AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
             index++;
         }
-        WaveCannonJackalAnimTypeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts, WaveCannonJackalOption);
+        WaveCannonJackalAnimTypeOption = Create(OptionId, false, CustomOptionType.Neutral, "WaveCannonAnimationType", AnimTypeTexts, WaveCannonJackalOption);
     }
     // CustomOption End
 
@@ -97,7 +97,7 @@ class WaveCannonJackal
                         if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
                         {
                             var sidePlayer = RoleClass.SideKiller.GetSidePlayer(target); // targetのサイドキラーを取得
-                            if (sidePlayer != null) // null(作っていない)ならば処理しない
+                            if (sidePlayer != null && sidePlayer.IsAlive()) // null(作っていない)ならば処理しない
                             {
                                 sidePlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                 RoleClass.SideKiller.IsUpMadKiller = true;
@@ -143,6 +143,8 @@ class WaveCannonJackal
     {
         HudManagerStartPatch.JackalKillButton.MaxTimer = WaveCannonJackalKillCooldown.GetFloat();
         HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
+        HudManagerStartPatch.WaveCannonButton.MaxTimer = WaveCannonJackalCoolTime.GetFloat();
+        HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
     }
 
     public static void EndMeetingResetCooldown()

@@ -380,11 +380,13 @@ class AllRoleSetClass
     }
     public static HashSet<RoleId> RandomSelect(AssignType assignType, ref int CanAssignPlayerCount, List<PlayerControl> AssignTargets)
     {
+        if (assignType.HasFlag(AssignType.TenPar) || assignType.HasFlag(AssignType.NotTenPar))
+        {
+            throw new ArgumentException("AssignType has TenPar or Not TenPar.\nAssignTypeにTenParとNotTenParは同時に指定できません");
+        }
         HashSet<RoleId> AssignedRoles = new();
         if (CanAssignPlayerCount <= 0)
             return AssignedRoles;
-        //TenParとNotTenParは混じってはいけない
-        assignType &= ~(AssignType.TenPar | AssignType.NotTenPar);
         List<RoleId> NotTenParTickets = new();
         if (!AssignTickets.TryGetValue(assignType | AssignType.TenPar, out List<RoleId> TenParTickets) &&
             !AssignTickets.TryGetValue(assignType | AssignType.NotTenPar, out NotTenParTickets))
