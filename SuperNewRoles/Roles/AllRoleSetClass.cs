@@ -387,15 +387,10 @@ class AllRoleSetClass
         HashSet<RoleId> AssignedRoles = new();
         if (CanAssignPlayerCount <= 0)
             return AssignedRoles;
-        List<RoleId> NotTenParTickets = new();
-        if (!AssignTickets.TryGetValue(assignType | AssignType.TenPar, out List<RoleId> TenParTickets) &&
-            !AssignTickets.TryGetValue(assignType | AssignType.NotTenPar, out NotTenParTickets))
-            return AssignedRoles;
+        (bool, bool) isTry = (AssignTickets.TryGetValue(assignType | AssignType.TenPar, out List<RoleId> TenParTickets), AssignTickets.TryGetValue(assignType | AssignType.NotTenPar, out List<RoleId> NotTenParTickets));
+        if (!isTry.Item1 && isTry.Item2) return AssignedRoles;
         Dictionary<RoleId, int> RemainingAssignPlayerCount = new();
-        List<RoleId>[] TargetTickets = new List<RoleId>[2]
-        {
-            TenParTickets, NotTenParTickets
-        };
+        List<RoleId>[] TargetTickets = new List<RoleId>[2] { TenParTickets, NotTenParTickets };
         foreach (List<RoleId> Ticket in TargetTickets)
         {
             while (Ticket.Count > 0 && AssignTargets.Count > 0 && CanAssignPlayerCount > 0)
