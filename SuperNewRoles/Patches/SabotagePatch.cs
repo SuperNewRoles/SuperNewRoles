@@ -58,13 +58,11 @@ public static class LifeSuppBooster
             }
             switch (MapUtilities.CachedShipStatus.Type)
             {
-                case ShipStatus.MapType.Ship:
-                    if (__instance.Countdown >= MapOption.MapOption.SkeldLifeSuppTimeLimit.GetFloat())
-                        __instance.Countdown = MapOption.MapOption.SkeldLifeSuppTimeLimit.GetFloat();
+                case ShipStatus.MapType.Ship when __instance.Countdown >= MapOption.MapOption.SkeldLifeSuppTimeLimit.GetFloat():
+                    __instance.Countdown = MapOption.MapOption.SkeldLifeSuppTimeLimit.GetFloat();
                     return;
-                case ShipStatus.MapType.Hq:
-                    if (__instance.Countdown >= MapOption.MapOption.MiraLifeSuppTimeLimit.GetFloat())
-                        __instance.Countdown = MapOption.MapOption.MiraLifeSuppTimeLimit.GetFloat();
+                case ShipStatus.MapType.Hq when __instance.Countdown >= MapOption.MapOption.MiraLifeSuppTimeLimit.GetFloat():
+                    __instance.Countdown = MapOption.MapOption.MiraLifeSuppTimeLimit.GetFloat();
                     return;
                 default:
                     return;
@@ -85,21 +83,17 @@ public static class MeltdownBooster
             }
             switch (MapUtilities.CachedShipStatus.Type)
             {
-                case ShipStatus.MapType.Ship:
-                    if (__instance.Countdown >= MapOption.MapOption.SkeldReactorTimeLimit.GetFloat())
-                        __instance.Countdown = MapOption.MapOption.SkeldReactorTimeLimit.GetFloat();
+                case ShipStatus.MapType.Ship when __instance.Countdown >= MapOption.MapOption.SkeldReactorTimeLimit.GetFloat():
+                    __instance.Countdown = MapOption.MapOption.SkeldReactorTimeLimit.GetFloat();
                     return;
-                case ShipStatus.MapType.Hq:
-                    if (__instance.Countdown >= MapOption.MapOption.MiraReactorTimeLimit.GetFloat())
-                        __instance.Countdown = MapOption.MapOption.MiraReactorTimeLimit.GetFloat();
+                case ShipStatus.MapType.Hq when __instance.Countdown >= MapOption.MapOption.MiraReactorTimeLimit.GetFloat():
+                    __instance.Countdown = MapOption.MapOption.MiraReactorTimeLimit.GetFloat();
                     return;
-                case ShipStatus.MapType.Pb:
-                    if (__instance.Countdown >= MapOption.MapOption.PolusReactorTimeLimit.GetFloat())
-                        __instance.Countdown = MapOption.MapOption.PolusReactorTimeLimit.GetFloat();
+                case ShipStatus.MapType.Pb when __instance.Countdown >= MapOption.MapOption.PolusReactorTimeLimit.GetFloat():
+                    __instance.Countdown = MapOption.MapOption.PolusReactorTimeLimit.GetFloat();
                     return;
-                case ShipStatus.MapType.Fungle:
-                    if (__instance.Countdown >= MapOption.MapOption.FungleReactorTimeLimit.GetFloat())
-                        __instance.Countdown = MapOption.MapOption.FungleReactorTimeLimit.GetFloat();
+                case ShipStatus.MapType.Fungle when __instance.Countdown >= MapOption.MapOption.FungleReactorTimeLimit.GetFloat():
+                    __instance.Countdown = MapOption.MapOption.FungleReactorTimeLimit.GetFloat();
                     return;
                 default:
                     return;
