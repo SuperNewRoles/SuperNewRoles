@@ -201,9 +201,9 @@ DeviceTimeSetting,Can use time,使用可能時間,飞船设备最大可使用时
 IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx,启用ykundesuBeplnEx,ykundesuBeplnEx
 restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい,关注B站@心音糖果_Tingo谢谢喵！
 ReactorDurationSetting,Reactor Duration Time,緊急タスク継続時間の設定,自定义核反应堆紧急破坏持续时间,核子反應爐緊急任務持續時間
-PolusReactorTime,Polus Duration Time,Polusにおける時間,波鲁斯(Polus)抗震器紧急破坏持续时间,Polus核子反應爐震盪緊急任務持續時間
-MiraReactorTime,Mira Duration Time,MiraHQにおける時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
-AirshipReactorTime,Airship Duration Time,AirShipでの時間設定,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
+PolusReactorTime,Polus : reactor Duration Time,Polus : リアクターサボタージュの時間,波鲁斯(Polus)抗震器紧急破坏持续时间,Polus核子反應爐震盪緊急任務持續時間
+MiraReactorTime,Mira : reactor Duration Time,MiraHQ : リアクターサボタージュの時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
+AirshipReactorTime,Airship : HeliSabotage Duration Time,AirShip : 衝突回避の時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
 VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化,播放管道动画,啟用通風管道動畫
 MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖改造
