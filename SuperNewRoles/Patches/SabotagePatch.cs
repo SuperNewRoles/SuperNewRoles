@@ -56,23 +56,27 @@ public static class MeltdownBooster
             {
                 return;
             }
-            if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Pb)
+            switch (MapUtilities.CachedShipStatus.Type)
             {
-                if (__instance.Countdown >= MapOption.MapOption.PolusReactorTimeLimit.GetFloat())
-                {
-                    __instance.Countdown = MapOption.MapOption.PolusReactorTimeLimit.GetFloat();
-                }
-                return;
+                case ShipStatus.MapType.Ship:
+                    if (__instance.Countdown >= MapOption.MapOption.SkeldReactorTimeLimit.GetFloat())
+                        __instance.Countdown = MapOption.MapOption.SkeldReactorTimeLimit.GetFloat();
+                    return;
+                case ShipStatus.MapType.Hq:
+                    if (__instance.Countdown >= MapOption.MapOption.MiraReactorTimeLimit.GetFloat())
+                        __instance.Countdown = MapOption.MapOption.MiraReactorTimeLimit.GetFloat();
+                    return;
+                case ShipStatus.MapType.Pb:
+                    if (__instance.Countdown >= MapOption.MapOption.PolusReactorTimeLimit.GetFloat())
+                        __instance.Countdown = MapOption.MapOption.PolusReactorTimeLimit.GetFloat();
+                    return;
+                case ShipStatus.MapType.Fungle:
+                    if (__instance.Countdown >= MapOption.MapOption.FungleReactorTimeLimit.GetFloat())
+                        __instance.Countdown = MapOption.MapOption.FungleReactorTimeLimit.GetFloat();
+                    return;
+                default:
+                    return;
             }
-            if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Hq)
-            {
-                if (__instance.Countdown >= MapOption.MapOption.MiraReactorTimeLimit.GetFloat())
-                {
-                    __instance.Countdown = MapOption.MapOption.MiraReactorTimeLimit.GetFloat();
-                }
-                return;
-            }
-            return;
         }
     }
 }

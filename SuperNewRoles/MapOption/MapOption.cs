@@ -35,9 +35,11 @@ public class MapOption
 
     // |:========== リアクター継続時間の設定 ==========:|
     public static CustomOption ReactorDurationOption;
+    public static CustomOption SkeldReactorTimeLimit;
     public static CustomOption MiraReactorTimeLimit;
     public static CustomOption PolusReactorTimeLimit;
     public static CustomOption AirshipReactorTimeLimit;
+    public static CustomOption FungleReactorTimeLimit;
 
     // |:========== ベントアニメーション有効化の設定 ==========:|
     public static CustomOption VentAnimationPlaySetting;
@@ -84,11 +86,13 @@ public class MapOption
         RestrictCamera = Create(102205, false, CustomOptionType.Generic, "RestrictCamera", false, RestrictDevicesTimeOption);
         DeviceUseCameraTime = Create(102206, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 120f, 1f, RestrictCamera);
 
-        // |:========== リアクター継続時間の設定 ==========:|
+        // |:========== 緊急タスク継続時間の設定 ==========:|
         ReactorDurationOption = Create(102300, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting, isHeader: true);
-        MiraReactorTimeLimit = Create(102301, true, CustomOptionType.Generic, "MiraReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
-        PolusReactorTimeLimit = Create(102302, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
-        AirshipReactorTimeLimit = Create(102303, true, CustomOptionType.Generic, "AirshipReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
+        SkeldReactorTimeLimit = Create(102304, true, CustomOptionType.Generic, "SkeldReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
+        MiraReactorTimeLimit = Create(102301, true, CustomOptionType.Generic, "MiraReactorTime", 45f, 0f, 100f, 1f, ReactorDurationOption);
+        PolusReactorTimeLimit = Create(102302, true, CustomOptionType.Generic, "PolusReactorTime", 60f, 0f, 100f, 1f, ReactorDurationOption);
+        AirshipReactorTimeLimit = Create(102303, true, CustomOptionType.Generic, "AirshipReactorTime", 90f, 0f, 100f, 1f, ReactorDurationOption);
+        FungleReactorTimeLimit = Create(102305, true, CustomOptionType.Generic, "FungleReactorTime", 60f, 0f, 100f, 1f, ReactorDurationOption);
 
         // |:========== ベントアニメーション有効化の設定 ==========:|
         VentAnimationPlaySetting = Create(102400, false, CustomOptionType.Generic, "VentAnimationPlaySetting", true, MapOptionSetting, isHeader: true);
@@ -174,10 +178,6 @@ public class MapOption
 
         BlockTool.OldDesyncCommsPlayers = new();
         BlockTool.CameraPlayers = new();
-
-        PolusReactorTimeLimit.GetFloat();
-        MiraReactorTimeLimit.GetFloat();
-        AirshipReactorTimeLimit.GetFloat();
 
         WireTaskNum = WireTaskNumOption.GetInt();
 
