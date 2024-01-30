@@ -36,7 +36,9 @@ public class MapOption
     // |:========== リアクター継続時間の設定 ==========:|
     public static CustomOption ReactorDurationOption;
     public static CustomOption SkeldReactorTimeLimit;
+    public static CustomOption SkeldLifeSuppTimeLimit;
     public static CustomOption MiraReactorTimeLimit;
+    public static CustomOption MiraLifeSuppTimeLimit;
     public static CustomOption PolusReactorTimeLimit;
     public static CustomOption AirshipReactorTimeLimit;
     public static CustomOption FungleReactorTimeLimit;
@@ -89,10 +91,12 @@ public class MapOption
         // |:========== 緊急タスク継続時間の設定 ==========:|
         ReactorDurationOption = Create(102300, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting, isHeader: true);
         SkeldReactorTimeLimit = Create(102304, true, CustomOptionType.Generic, "SkeldReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
+        SkeldLifeSuppTimeLimit = Create(102305, true, CustomOptionType.Generic, "SkeldLifeSuppTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
         MiraReactorTimeLimit = Create(102301, true, CustomOptionType.Generic, "MiraReactorTime", 45f, 0f, 100f, 1f, ReactorDurationOption);
+        MiraLifeSuppTimeLimit = Create(102306, true, CustomOptionType.Generic, "MiraLifeSuppTime", 45f, 0f, 100f, 1f, ReactorDurationOption);
         PolusReactorTimeLimit = Create(102302, true, CustomOptionType.Generic, "PolusReactorTime", 60f, 0f, 100f, 1f, ReactorDurationOption);
         AirshipReactorTimeLimit = Create(102303, true, CustomOptionType.Generic, "AirshipReactorTime", 90f, 0f, 100f, 1f, ReactorDurationOption);
-        FungleReactorTimeLimit = Create(102305, true, CustomOptionType.Generic, "FungleReactorTime", 60f, 0f, 100f, 1f, ReactorDurationOption);
+        FungleReactorTimeLimit = Create(102307, true, CustomOptionType.Generic, "FungleReactorTime", 60f, 0f, 100f, 1f, ReactorDurationOption);
 
         // |:========== ベントアニメーション有効化の設定 ==========:|
         VentAnimationPlaySetting = Create(102400, false, CustomOptionType.Generic, "VentAnimationPlaySetting", true, MapOptionSetting, isHeader: true);

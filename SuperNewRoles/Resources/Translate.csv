@@ -202,8 +202,10 @@ IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx,启用ykundesuBeplnEx,y
 restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい,关注B站@心音糖果_Tingo谢谢喵！
 ReactorDurationSetting,Reactor Duration Time,緊急タスク継続時間の設定,自定义核反应堆紧急破坏持续时间,核子反應爐緊急任務持續時間
 SkeldReactorTime,The Skeld : reactor Duration Time,The Skeld : リアクターサボタージュの時間
+SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,<size=45%>The Skeld : 酸素枯渇までの時間</size>
 PolusReactorTime,Polus : Reset Stabilizers Duration Time,Polus : 耐震安定装置リセットの時間,波鲁斯(Polus)抗震器紧急破坏持续时间,Polus核子反應爐震盪緊急任務持續時間
-MiraReactorTime,Mira : reactor Duration Time,MiraHQ : リアクターサボタージュの時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
+MiraReactorTime,MiraHQ : reactor Duration Time,MiraHQ : リアクターサボタージュの時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
+MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,<size=50%>MiraHQ : 酸素枯渇までの時間</size>
 AirshipReactorTime,Airship : Avert Cresh Course Duration Time,AirShip : 衝突回避の時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
 FungleReactorTime,The Fungle : reactor Duration Time,The Fungle : リアクターサボタージュの時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口

@@ -45,6 +45,33 @@ public static class ElectricPatch
         }
     }
 }
+[HarmonyPatch(typeof(LifeSuppSystemType), nameof(LifeSuppSystemType.Deteriorate))]
+public static class LifeSuppBooster
+{
+    public static void Prefix(LifeSuppSystemType __instance, float deltaTime)
+    {
+        if (MapOption.MapOption.IsReactorDurationSetting)
+        {
+            if (!__instance.IsActive)
+            {
+                return;
+            }
+            switch (MapUtilities.CachedShipStatus.Type)
+            {
+                case ShipStatus.MapType.Ship:
+                    if (__instance.Countdown >= MapOption.MapOption.SkeldLifeSuppTimeLimit.GetFloat())
+                        __instance.Countdown = MapOption.MapOption.SkeldLifeSuppTimeLimit.GetFloat();
+                    return;
+                case ShipStatus.MapType.Hq:
+                    if (__instance.Countdown >= MapOption.MapOption.MiraLifeSuppTimeLimit.GetFloat())
+                        __instance.Countdown = MapOption.MapOption.MiraLifeSuppTimeLimit.GetFloat();
+                    return;
+                default:
+                    return;
+            }
+        }
+    }
+}
 [HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Deteriorate))]
 public static class MeltdownBooster
 {
