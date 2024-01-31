@@ -7,7 +7,6 @@ public static class OutfitManager
     {
         pc.Data.Outfits[PlayerOutfitType.Shapeshifted] = outfit;
         pc.CurrentOutfitType = PlayerOutfitType.Shapeshifted;
-        SuperNewRolesPlugin.Logger.LogInfo("チェンジ");
         pc.RawSetName(outfit.PlayerName);
         pc.RawSetHat(outfit.HatId, outfit.ColorId);
         pc.RawSetVisor(outfit.VisorId, outfit.ColorId);
@@ -15,15 +14,28 @@ public static class OutfitManager
         pc.RawSetPet(outfit.PetId, outfit.ColorId);
         pc.RawSetSkin(outfit.SkinId, outfit.ColorId);
         ModHelpers.SetSkinWithAnim(pc.MyPhysics, outfit.SkinId);
+
+        var caller = new System.Diagnostics.StackFrame(1, false);
+        var callerMethod = caller.GetMethod();
+        string callerMethodName = callerMethod.Name;
+        string callerClassName = callerMethod.DeclaringType.FullName;
+        Logger.Info($"{pc.name} : CurrentOutfitType = {pc.CurrentOutfitType}, 呼び出し元 : {callerClassName}.{callerMethodName}", "OutfitManager");
     }
     public static void changeToPlayer(this PlayerControl pc, PlayerControl target)
     {
+        SuperNewRolesPlugin.Logger.LogInfo($"Change Outfit : {pc.name} => {target.name}");
         setOutfit(pc, target.Data.DefaultOutfit, target.Visible);
     }
     public static void resetChange(this PlayerControl pc)
     {
         changeToPlayer(pc, pc);
         pc.CurrentOutfitType = PlayerOutfitType.Default;
+
+        var caller = new System.Diagnostics.StackFrame(1, false);
+        var callerMethod = caller.GetMethod();
+        string callerMethodName = callerMethod.Name;
+        string callerClassName = callerMethod.DeclaringType.FullName;
+        SuperNewRolesPlugin.Logger.LogInfo($"シェイプリセット : {pc.name}, 呼び出し元 : {callerClassName}.{callerMethodName}");
     }
 
 
