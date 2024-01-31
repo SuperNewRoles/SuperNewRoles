@@ -22,6 +22,7 @@ using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
+using SuperNewRoles.MapOption;
 
 namespace SuperNewRoles.Patches;
 
@@ -770,6 +771,7 @@ class MeetingHudStartPatch
         Recorder.StartMeeting();
         ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
+        DeviceClass.OnStartMeeting();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>
