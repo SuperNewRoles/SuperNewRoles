@@ -1382,6 +1382,8 @@ PlayerControl,Player control,プレイヤー操作,玩家操作,玩家操作
 StartMeeting,Start meeting,緊急会議,召开紧急会议,召開緊急會議
 ShowRole,Show role,役職を表示,显示职业,顯示職業
 DeShowRole,Cancel show role,役職を非表示,取消显示职业,取消顯示職業
+SetSabotage,Activation of sabotage,サボタージュの発動
+RepairSabotage,Restoration of sabotage,サボタージュの修復
 Teleport,Teleport,テレポート,传送,傳送
 ReportDeadbody,Report deadbody,通報,报告,報告
 Exile,Exile,追放,放逐,放逐
