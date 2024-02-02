@@ -769,7 +769,7 @@ internal static class PostMortemCertificate_CreateAndGet
             int rand = random.Next(1, 15 + 1);
             string transRandomText = ModTranslation.GetString($"PostMortemCertificate_NoDeaths_RandomMessage_{rand}");
 
-            builder.AppendLine($"<align={"left"}>{string.Format(ModTranslation.GetString("PostMortemCertificate_NoDeaths"), RoleData.OfficialDateNotation, "{RoleData.PoliceSurgeonName}", transRandomText)}");
+            builder.AppendLine($"<align={"left"}>{string.Format(ModTranslation.GetString("PostMortemCertificate_NoDeaths"), RoleData.OfficialDateNotation, RoleData.PoliceSurgeonName, transRandomText)}");
         }
 
         // 死体検案書の文字サイズと色をchat式とCustomoverlay式に合わせて変更する
