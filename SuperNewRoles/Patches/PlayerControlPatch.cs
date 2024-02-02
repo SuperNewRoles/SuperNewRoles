@@ -83,7 +83,7 @@ static class PlayerControlCheckUseZiplinePatch
 {
     public static bool Prefix(PlayerControl target, ZiplineBehaviour ziplineBehaviour, bool fromTop)
     {
-        if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, isDefaultOnly:false))
+        if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, isDefaultOnly: false))
             return true;
         if (!MapCustom.TheFungleZiplineOption.GetBool())
             return true;
@@ -322,6 +322,8 @@ class ReportDeadBodyPatch
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SendMeetingTurnNow);
         writer.Write(MeetingTurn_Now);
         writer.EndRPC();
+
+        PoliceSurgeon_AddActualDeathTime.ReportDeadBody_Postfix();
     }
 
     public static void SaveMeetingTurnNow(byte nowTurn) => MeetingTurn_Now = nowTurn;

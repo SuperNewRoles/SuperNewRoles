@@ -59,9 +59,23 @@ namespace SuperNewRoles.SuperNewRolesWeb
         }
         public static List<MeetingHistory> MeetingHistories;
         static Dictionary<string, string> SendData;
+
+        /// <summary>
+        /// 現在の戦績は, webに送信しないテスト中の物か判別する。
+        /// </summary>
+        /// <value>true : 送信しない / false : 送信する</value>
+        private static bool IsDebugGameData => !WebConstants.IsWebDebug && IsGamePlayDebug;
+        private static bool IsGamePlayDebug => // Mod(web以外)の動作確認中か
+            ConfigRoles.DebugMode.Value || AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay;
+
         public static void OnGameEndSet(Dictionary<int, FinalStatus> FinalStatuss)
         {
             if (!WebAccountManager.IsLogined) return;
+            if (IsDebugGameData)
+            {
+                Logger.Info("テストプレイの為, 戦績を送信しません。", "GameHistoryManager");
+                return;
+            }
             if (PlayerControl.LocalPlayer == null)
             {
                 Logger.Info("LocalPlayerが存在しませんでした。", "GameHistoryManager");
