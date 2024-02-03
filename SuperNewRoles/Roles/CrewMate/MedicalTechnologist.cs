@@ -39,13 +39,24 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
 
     public static new IntroInfo Introinfo = new(RoleId.MedicalTechnologist, introSound: RoleTypes.Scientist);
 
+    // RoleClass
+
+    /// <summary>
+    /// 残りアビリティ使用可能回数
+    /// </summary>
+    public int AbilityRemainingCount;
+    /// <summary>
+    /// サンプル取得中のクルー
+    /// </summary>
+    private (PlayerControl FirstCrew, PlayerControl SecondCrew) SampleCrews;
+
     public MedicalTechnologist(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         MTButtonInfo = new(
-            Optioninfo.AbilityMaxCount,
+            null,
             this,
             () => ButtonOnClick(),
-            (isAlive) => isAlive,
+            (isAlive) => isAlive && ButtonCanUse(),
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             OnMeetingEnds: MTButtonReset,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MedicalTechnologistButton.png", 115f),
@@ -60,6 +71,8 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         ); // [x]MEMO : 残り回数表示の更新等をできるように追加する
 
         CustomButtonInfos = new CustomButtonInfo[1] { MTButtonInfo };
+
+        AbilityRemainingCount = Optioninfo.AbilityMaxCount;
     }
 
     // ISupportSHR
@@ -75,6 +88,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     private CustomButtonInfo MTButtonInfo { get; }
     private void ButtonOnClick() { }
     private void MTButtonReset() { } // [ ]MEMO : 対象のリセット, ターン中使用回数をリセット
+    private bool ButtonCanUse() => AbilityRemainingCount > 0 && (SampleCrews.FirstCrew == null || SampleCrews.SecondCrew == null);
     private string MtButtonCountString() // [ ]MEMO : 残り全体回数\n現在フェイズ残り指定回数 (SHRではシェリフと同じように名前で表示)
     {
         return $"";
