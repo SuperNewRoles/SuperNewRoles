@@ -66,7 +66,8 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             KeyCode.F,
             49,
             baseButton: HudManager.Instance.AbilityButton,
-            CouldUse: OnCouldUse,
+            CouldUse: () => OnCouldUse(),
+            SetTargetUntargetPlayer: () => SetTargetUntargetPlayer(),
             isUseSecondButtonInfo: true
         ); // [x]MEMO : 残り回数表示の更新等をできるように追加する
 
@@ -92,7 +93,14 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     {
         return $"";
     }
-    private bool OnCouldUse() =>  AbilityRemainingCount > 0 && (SampleCrews.FirstCrew == null || SampleCrews.SecondCrew == null);
+    private bool OnCouldUse() => AbilityRemainingCount > 0 && (SampleCrews.FirstCrew == null || SampleCrews.SecondCrew == null);
+    private List<PlayerControl> SetTargetUntargetPlayer()
+    {
+        List<PlayerControl> untargetPlayer = new();
+        if (SampleCrews.FirstCrew != null) untargetPlayer.Add(SampleCrews.FirstCrew);
+        if (SampleCrews.SecondCrew != null) untargetPlayer.Add(SampleCrews.SecondCrew);
+        return untargetPlayer;
+    }
 
     // IMeetingHandler
     public void StartMeeting() { }
