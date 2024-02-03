@@ -56,7 +56,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             null,
             this,
             () => ButtonOnClick(),
-            (isAlive) => isAlive && ButtonCanUse(),
+            (isAlive) => isAlive,
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             OnMeetingEnds: MTButtonReset,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MedicalTechnologistButton.png", 115f),
@@ -66,7 +66,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             KeyCode.F,
             49,
             baseButton: HudManager.Instance.AbilityButton,
-            CouldUse: () => OnCouldUse(),
+            CouldUse: OnCouldUse,
             isUseSecondButtonInfo: true
         ); // [x]MEMO : 残り回数表示の更新等をできるように追加する
 
@@ -88,15 +88,11 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     private CustomButtonInfo MTButtonInfo { get; }
     private void ButtonOnClick() { }
     private void MTButtonReset() { } // [ ]MEMO : 対象のリセット, ターン中使用回数をリセット
-    private bool ButtonCanUse() => AbilityRemainingCount > 0 && (SampleCrews.FirstCrew == null || SampleCrews.SecondCrew == null);
     private string MtButtonCountString() // [ ]MEMO : 残り全体回数\n現在フェイズ残り指定回数 (SHRではシェリフと同じように名前で表示)
     {
         return $"";
     }
-    private bool OnCouldUse()
-    {
-        return true;
-    }
+    private bool OnCouldUse() =>  AbilityRemainingCount > 0 && (SampleCrews.FirstCrew == null || SampleCrews.SecondCrew == null);
 
     // IMeetingHandler
     public void StartMeeting() { }
