@@ -45,6 +45,7 @@ public class CustomButtonInfo
     private bool showButtonText { get; }
     private Vector3 positionOffset { get; }
     private string ButtonText { get; }
+    private bool IsUseSecondButtonInfo { get; }
     public bool HasAbility { get; }
     public int AbilityCount { get; set; }
     //InfoText
@@ -69,6 +70,7 @@ public class CustomButtonInfo
     /// <param name="DurationTime">継続時間(継続時間を使わなければnull)</param>
     /// <param name="CouldUse">使用するかのAction(不必要ならnull)</param>
     /// <param name="OnEffectEnds">継続時間が終わった時の処理(なければnull)</param>
+    /// <param name="isUseSecondButtonInfo">ボタンの情報用テキストを表示するか</param>
     public CustomButtonInfo(
         int? AbilityCount,
         RoleBase roleBase,
@@ -88,7 +90,8 @@ public class CustomButtonInfo
         Func<bool> CouldUse = null,
         Action OnEffectEnds = null,
         Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
-        Func<bool> SetTargetCrewmateOnly=null)
+        Func<bool> SetTargetCrewmateOnly = null,
+        bool isUseSecondButtonInfo = false)
     {
         this.HasAbility = AbilityCount != null;
         this.AbilityCount = AbilityCount ?? 334;
@@ -104,6 +107,7 @@ public class CustomButtonInfo
         this.positionOffset = positionOffset;
         this.StopCountCoolFunc = StopCountCoolFunc;
         this.ButtonText = ModTranslation.GetString(buttonText);
+        this.IsUseSecondButtonInfo = isUseSecondButtonInfo;
         this.showButtonText = showButtonText;
         this.GetCoolTimeFunc = CoolTime;
         this.GetDurationTimeFunc = DurationTime;
@@ -111,10 +115,12 @@ public class CustomButtonInfo
         if (this.BaseButton == null)
             this.BaseButton = FastDestroyableSingleton<HudManager>.Instance.AbilityButton;
         this.HotKey = HotKey;
-        if (joystickKey.HasValue) {
+        if (joystickKey.HasValue)
+        {
             this.joystickKey = joystickKey.Value;
         }
-        else if (this.HotKey.HasValue) {
+        else if (this.HotKey.HasValue)
+        {
             this.joystickKey = JoystickKeys.TryGetValue(HotKey.Value, out int joykey) ? joykey : -1;
         }
         this.TargetCrewmateOnly = SetTargetCrewmateOnly;
@@ -137,7 +143,8 @@ public class CustomButtonInfo
             buttonSprite, positionOffset,
             FastDestroyableSingleton<HudManager>.Instance,
             BaseButton, HotKey, joystickKey, StopCountCool,
-            GetDurationTimeFunc != null, GetDurationTimeFunc?.Invoke() ?? 5f, OnEffectEnds)
+            GetDurationTimeFunc != null, GetDurationTimeFunc?.Invoke() ?? 5f, OnEffectEnds,
+            isUseSecondButtonInfo: IsUseSecondButtonInfo)
         {
             buttonText = ButtonText,
             showButtonText = showButtonText

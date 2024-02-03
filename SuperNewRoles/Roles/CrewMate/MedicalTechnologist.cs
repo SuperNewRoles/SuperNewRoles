@@ -55,8 +55,9 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             KeyCode.F,
             49,
             baseButton: HudManager.Instance.AbilityButton,
-            CouldUse: () => OnCouldUse()
-        ); // [ ]MEMO : 残り回数表示の更新等をできるように追加する
+            CouldUse: () => OnCouldUse(),
+            isUseSecondButtonInfo: true
+        ); // [x]MEMO : 残り回数表示の更新等をできるように追加する
 
         CustomButtonInfos = new CustomButtonInfo[1] { MTButtonInfo };
     }
