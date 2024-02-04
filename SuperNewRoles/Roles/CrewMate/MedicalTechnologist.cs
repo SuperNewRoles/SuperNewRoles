@@ -6,7 +6,6 @@
     5.インターフェースの内容を実装していく // [ ]
 */
 
-using System.ComponentModel;
 using System.Collections.Generic;
 using System.Text;
 using AmongUs.GameOptions;
@@ -48,7 +47,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     /// <summary>
     /// サンプル取得中のクルー
     /// </summary>
-    private (PlayerControl FirstCrew, PlayerControl SecondCrew) SampleCrews;
+    private (byte FirstCrew, byte SecondCrew) SampleCrews;
 
     public MedicalTechnologist(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
@@ -62,7 +61,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MedicalTechnologistButton.png", 115f),
             () => Optioninfo.CoolTime,
             new(-2f, 1, 0),
-            "MedicalTechnologistnName",
+            "MedicalTechnologistButtonName",
             KeyCode.F,
             49,
             baseButton: HudManager.Instance.AbilityButton,
@@ -74,6 +73,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         CustomButtonInfos = new CustomButtonInfo[1] { MTButtonInfo };
 
         AbilityRemainingCount = Optioninfo.AbilityMaxCount;
+        SampleCrews = (byte.MaxValue, byte.MaxValue);
     }
 
     // ISupportSHR
@@ -87,18 +87,52 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     // ICustomButton
     public CustomButtonInfo[] CustomButtonInfos { get; }
     private CustomButtonInfo MTButtonInfo { get; }
-    private void ButtonOnClick() { }
-    private void MTButtonReset() { } // [ ]MEMO : 対象のリセット, ターン中使用回数をリセット
-    private string MtButtonCountString() // [ ]MEMO : 残り全体回数\n現在フェイズ残り指定回数 (SHRではシェリフと同じように名前で表示)
+    private void ButtonOnClick()
     {
-        return $"";
+        if (SampleCrews.FirstCrew == byte.MaxValue) SampleCrews.FirstCrew = MTButtonInfo.CurrentTarget.PlayerId;
+        else if (SampleCrews.SecondCrew == byte.MaxValue)
+        {
+            SampleCrews.SecondCrew = MTButtonInfo.CurrentTarget.PlayerId;
+            AbilityRemainingCount--;
+        }
+        else Logger.Error("既に検体を取得済みにもかかわらず, 対象が取得されました。", "MedicalTechnologist");
+
+        MTButtonInfo.customButton.SecondButtonInfoText.text = MtButtonCountString();
     }
-    private bool OnCouldUse() => AbilityRemainingCount > 0 && (SampleCrews.FirstCrew == null || SampleCrews.SecondCrew == null);
+    private void MTButtonReset() // [x]MEMO : 対象のリセット, [ターン中使用回数をリセット => ターン中使用回数と対象は同じ変数で管理に]
+    {
+        SampleCrews = (byte.MaxValue, byte.MaxValue);
+        MTButtonInfo.customButton.SecondButtonInfoText.text = MtButtonCountString();
+    }
+    private string MtButtonCountString() // [x]MEMO : 残り全体回数\n現在フェイズ残り指定回数 => 選択対象の名前 // [ ]MEMO : SHRではシェリフと同じように名前で表示
+    {
+        string remainingCountText = "", targetText = "";
+
+        if (SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue) // 未選択
+        {
+            remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
+            targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}{ModTranslation.GetString("MedicalTechnologistUnselected")}";
+        }
+        else if (SampleCrews.FirstCrew != byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue) // 一人選択済み
+        {
+            remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
+            targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}{ModHelpers.PlayerById(SampleCrews.FirstCrew).name}";
+        }
+        else if (SampleCrews.FirstCrew != byte.MaxValue && SampleCrews.SecondCrew != byte.MaxValue) // 既に対象選択済み
+        {
+            remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
+            targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}{ModHelpers.PlayerById(SampleCrews.FirstCrew).name}, {ModHelpers.PlayerById(SampleCrews.SecondCrew).name}";
+        }
+
+        string infoText = $"{remainingCountText}\n{targetText}";
+        return infoText;
+    }
+    private bool OnCouldUse() => AbilityRemainingCount > 0 && (SampleCrews.FirstCrew == byte.MaxValue || SampleCrews.SecondCrew == byte.MaxValue);
     private List<PlayerControl> SetTargetUntargetPlayer()
     {
         List<PlayerControl> untargetPlayer = new();
-        if (SampleCrews.FirstCrew != null) untargetPlayer.Add(SampleCrews.FirstCrew);
-        if (SampleCrews.SecondCrew != null) untargetPlayer.Add(SampleCrews.SecondCrew);
+        if (SampleCrews.FirstCrew != byte.MaxValue) untargetPlayer.Add(ModHelpers.PlayerById(SampleCrews.FirstCrew));
+        if (SampleCrews.SecondCrew != byte.MaxValue) untargetPlayer.Add(ModHelpers.PlayerById(SampleCrews.SecondCrew));
         return untargetPlayer;
     }
 
