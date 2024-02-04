@@ -396,7 +396,6 @@ class AllRoleSetClass
             NotTenParTickets = new();
         Dictionary<RoleId, int> RemainingAssignPlayerCount = new();
         List<RoleId>[] TargetTickets = new List<RoleId>[2] { TenParTickets, NotTenParTickets };
-        Logger.Info("------d------");
         foreach (List<RoleId> Ticket in TargetTickets)
         {
             while (Ticket.Count > 0 && AssignTargets.Count > 0 && CanAssignPlayerCount > 0)
