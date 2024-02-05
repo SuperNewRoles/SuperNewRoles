@@ -79,7 +79,6 @@ public static class RoleHelpers
         RoleId.MadRaccoon;
     // IsMads
 
-    [Obsolete]
     public static bool IsNeutral(this PlayerControl player) =>
         player.GetRoleBase() is INeutral ||
         player.GetRole() is
