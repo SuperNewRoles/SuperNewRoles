@@ -4,6 +4,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -481,6 +482,11 @@ public static class Balancer
             currentAbilityUser = null;
             targetplayerleft = null;
             targetplayerright = null;
+        }
+        private static void SendChat(PlayerControl target, string text, string title = "")
+        {
+            if (title != null && title != "") text = $"<size=100%><color=#ff8000>【{title}】</color></size>\n{text}";
+            AddChatPatch.SendCommand(target, "", text);
         }
     }
     // ここにコードを書きこんでください
