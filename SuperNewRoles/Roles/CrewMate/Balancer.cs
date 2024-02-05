@@ -3,6 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -61,6 +62,7 @@ public static class Balancer
     static float openMADENOtimer;
     public static void Update()
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
         if (BackObject != null)
         {
             //切断したなら
@@ -237,6 +239,7 @@ public static class Balancer
     static string titletext => ModTranslation.GetString(ModHelpers.GetRandom(titletexts));
     static void SetActiveMeetingHud(bool active)
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
         MeetingHud.Instance.TitleText.gameObject.SetActive(active);
         MeetingHud.Instance.TimerText.gameObject.SetActive(active);
         if (!active)
@@ -260,6 +263,7 @@ public static class Balancer
     }
     public static void StartAbility(PlayerControl source, PlayerControl player1, PlayerControl player2)
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
         MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(AmongUs.GameOptions.Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat() - 6.5f;
         currentAbilityUser = source;
         targetplayerleft = player1;
@@ -373,6 +377,7 @@ public static class Balancer
     {
         internal static void UpdateButtonsPostfix(MeetingHud __instance)
         {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (PlayerControl.LocalPlayer.IsDead())
             {
                 __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
@@ -393,6 +398,7 @@ public static class Balancer
         private static string nameData;
         static void BalancerOnClick(int Index, MeetingHud __instance)
         {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (currentAbilityUser != null) return;
             var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             if (currentTarget == null)
@@ -412,6 +418,7 @@ public static class Balancer
         }
         static void Event(MeetingHud __instance)
         {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (PlayerControl.LocalPlayer.IsAlive() && !IsAbilityUsed)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
@@ -437,6 +444,7 @@ public static class Balancer
 
         internal static void MeetingHudStartPostfix(MeetingHud __instance)
         {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             Event(__instance);
         }
     }
