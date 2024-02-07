@@ -305,6 +305,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     private static SampleAnalysisData.ResultsType GetResultsInfo(SampleAnalysisData firstSample, SampleAnalysisData secondSample)
     {
         SampleAnalysisData.ResultsType result;
+        const SampleAnalysisData.DetailedTeamRoleType defaultNeutral = SampleAnalysisData.DetailedTeamRoleType.DefaultNeutral;
 
         switch (JudgmentSystem)
         {
@@ -315,16 +316,27 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
                 result = firstSample.RoleAndModifierTeamType == secondSample.RoleAndModifierTeamType ? SampleAnalysisData.ResultsType.Conform : SampleAnalysisData.ResultsType.Rejection;
                 break;
             case JudgmentType.None | JudgmentType.DetailedNeutral:
+
                 SampleAnalysisData.DetailedTeamRoleType firstSampleType = firstSample.AssignTeamType != TeamRoleType.Neutral // 検体 1 のデータを処理する。
                     ? (SampleAnalysisData.DetailedTeamRoleType)firstSample.AssignTeamType   // 陣営(アサイン分類)が 第三陣営でない場合, [ 陣営(アサイン分類) ] をDetailedTeamRoleTypeに変換して検査に用いる。
                     : firstSample.DetailedTeamType;                                         // 陣営(アサイン分類)が 第三陣営の場合, [ 陣営(詳細勝利陣営分類) ] を変換せず検査に用いる。
+
                 SampleAnalysisData.DetailedTeamRoleType secondSampleType = secondSample.AssignTeamType != TeamRoleType.Neutral // 検体 2 のデータを処理する。
                     ? (SampleAnalysisData.DetailedTeamRoleType)secondSample.AssignTeamType  // 陣営(アサイン分類)が 第三陣営でない場合, [ 陣営(アサイン分類) ] をDetailedTeamRoleTypeに変換して検査に用いる。
                     : secondSample.DetailedTeamType;                                        // 陣営(アサイン分類)が 第三陣営の場合, [ 陣営(詳細勝利陣営分類) ] を変換せず検査に用いる。
-                result = firstSampleType == secondSampleType ? SampleAnalysisData.ResultsType.Conform : SampleAnalysisData.ResultsType.Rejection; // 必要なデータを選択し比較する。
+
+                result = firstSampleType == defaultNeutral && secondSampleType == defaultNeutral // 第三陣営同士は, 別陣営と判定する。
+                    ? SampleAnalysisData.ResultsType.Rejection
+                    : firstSampleType == secondSampleType
+                        ? SampleAnalysisData.ResultsType.Conform
+                        : SampleAnalysisData.ResultsType.Rejection;
                 break;
             case JudgmentType.TeamType | JudgmentType.DetailedNeutral: // 詳細な陣営分類で判定
-                result = firstSample.DetailedTeamType == secondSample.DetailedTeamType ? SampleAnalysisData.ResultsType.Conform : SampleAnalysisData.ResultsType.Rejection;
+                result = firstSample.DetailedTeamType == defaultNeutral && secondSample.DetailedTeamType == defaultNeutral // 第三陣営同士は, 別陣営と判定する。
+                    ? SampleAnalysisData.ResultsType.Rejection
+                    : firstSample.DetailedTeamType == secondSample.DetailedTeamType
+                        ? SampleAnalysisData.ResultsType.Conform
+                        : SampleAnalysisData.ResultsType.Rejection;
                 break;
             default:
                 result = SampleAnalysisData.ResultsType.Error;
