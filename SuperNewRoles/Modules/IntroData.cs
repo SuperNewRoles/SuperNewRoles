@@ -34,7 +34,7 @@ public class IntroData
     public static Dictionary<RoleId, IntroData> Intros = new();
     public static Dictionary<RoleId, IntroData> IntroDataCache = new();
     public static List<IntroData> GhostRoleData = new();
-    public static List<Dictionary<RoleId, string>> IntroGroup = new()
+    public static List<Dictionary<RoleId, string>> IntroGroup = new() // [ ]MEMO : ドクター, 警察医, 臨床検査技師のコンビイントロ追加する
     {
         new() {{RoleId.Seer,"SeerCombIntro1"},{RoleId.EvilSeer,"EvilSeerCombIntro1"}},
         new() {{RoleId.NiceMechanic,"NiceMechanicCombIntro1"},{RoleId.EvilMechanic,"EvilMechanicCombIntro1"}}

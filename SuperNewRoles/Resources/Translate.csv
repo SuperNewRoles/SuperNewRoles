@@ -1706,10 +1706,21 @@ BlackSantaDescription,You can give present(role) to impostor，\nbut if you try 
 MedicalTechnologistName,Medical technologist,臨床検査技師
 MedicalTechnologistDescription,,
 MedicalTechnologistTitle1,,
+IsJudgmentTeamType,,勝利判定分類の陣営で判定するか(仮)
+IsJudgmentDetailedNeutralTeamType,,第三陣営間の判定を、それぞれの勝利条件毎で個別に判定するか(仮)
 MedicalTechnologistButtonName,Blood sampling,採取
 MedicalTechnologistAbilityRemainingCount,Remaining number of uses : ,残り使用回数 : 
 MedicalTechnologistSelectTarget,Target Selection Status :,対象選択状況 :
 MedicalTechnologistUnselected,unselected,未選択
+MedicalTechnologistSamplePresentation,Subjects tested\n<pos=10%>Sample 1 : [ {0} ]</pos>\n<pos=10%>Sample 2 : [ {1} ]</pos>,検査対象\n<pos=10%>検体 1 : [ {0} ]</pos>\n<pos=10%>検体 2 : [ {1} ]</pos>
+MedicalTechnologistJudgmentSystem,Judgment method,判定方式
+MedicalTechnologistNoneSystem,,アサイン分類の陣営(仮)
+MedicalTechnologistTeamTypeSystem,,勝利判定分類の陣営(仮)
+MedicalTechnologistDetailedNeutralSystem,,アサイン分類の陣営，\n且つ 第三陣営同士は詳細な勝利判定分類(仮)
+MedicalTechnologistDetailedNeutralBothSystem,,詳細な勝利判定分類の陣営(仮)
+MedicalTechnologistSampleResult,Inspection results,検査結果
+MedicalTechnologistMatch,<pos=10%>Specimen did not react.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in the same team</pos>,<pos=10%>検体は，反応しませんでした。</pos>\n<pos=10%>検体 1 と 検体 2 は同じ陣営の様です。</pos>
+MedicalTechnologistMismatch,<pos=10%>Specimen caused rejection.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in different teams.</pos>,<pos=10%>検体は，拒絶反応を起こしました。</pos>\n<pos=10%>検体 1 と 検体 2 は別陣営の様です。</pos>
 
 #NewRoleTranslation
 
