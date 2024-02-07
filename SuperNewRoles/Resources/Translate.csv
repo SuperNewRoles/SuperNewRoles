@@ -1708,7 +1708,7 @@ MedicalTechnologistDescription,,
 MedicalTechnologistTitle1,,
 MedicalTechnologistButtonName,Blood sampling,採取
 MedicalTechnologistAbilityRemainingCount,Remaining number of uses : ,残り使用回数 : 
-MedicalTechnologistSelectTarget,Currently selected target : ,現在選択中の対象 : 
+MedicalTechnologistSelectTarget,Target Selection Status :,対象選択状況 :
 MedicalTechnologistUnselected,unselected,未選択
 
 #NewRoleTranslation

@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
-public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IMeetingHandler, ICheckMurderHandler
+public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButton, INameHandler, IMeetingHandler, ICheckMurderHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(MedicalTechnologist),
@@ -106,25 +106,21 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     }
     private string MtButtonCountString() // [x]MEMO : 残り全体回数\n現在フェイズ残り指定回数 => 選択対象の名前 // [ ]MEMO : SHRではシェリフと同じように名前で表示
     {
-        string remainingCountText = "", targetText = "";
+        string remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
+        string targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}";
 
-        if (SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue) // 未選択
-        {
-            remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
-            targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}{ModTranslation.GetString("MedicalTechnologistUnselected")}";
-        }
-        else if (SampleCrews.FirstCrew != byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue) // 一人選択済み
-        {
-            remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
-            targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}{ModHelpers.PlayerById(SampleCrews.FirstCrew).name}";
-        }
-        else if (SampleCrews.FirstCrew != byte.MaxValue && SampleCrews.SecondCrew != byte.MaxValue) // 既に対象選択済み
-        {
-            remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
-            targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}{ModHelpers.PlayerById(SampleCrews.FirstCrew).name}, {ModHelpers.PlayerById(SampleCrews.SecondCrew).name}";
-        }
+        string mark = ModHelpers.Cs(new Color(179f / 255f, 0f, 0f), " \u00A9"); // © => 赤血球
+        string targetInfoText =
+            SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue
+                ? $"{ModTranslation.GetString("MedicalTechnologistUnselected")}" // 未選択
+                : SampleCrews.FirstCrew != byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue
+                    ? $"{mark}" // 一人選択済み
+                    : $"{mark}{mark}"; // 対象選択完了
 
-        string infoText = $"{remainingCountText}\n{targetText}";
+        string infoText = AbilityRemainingCount > 0 || !(SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue)
+            ? $"{remainingCountText}\n{targetText}{targetInfoText}"
+            : $"{remainingCountText}";
+
         return infoText;
     }
     private bool OnCouldUse() => AbilityRemainingCount > 0 && (SampleCrews.FirstCrew == byte.MaxValue || SampleCrews.SecondCrew == byte.MaxValue);
@@ -134,6 +130,23 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         if (SampleCrews.FirstCrew != byte.MaxValue) untargetPlayer.Add(ModHelpers.PlayerById(SampleCrews.FirstCrew));
         if (SampleCrews.SecondCrew != byte.MaxValue) untargetPlayer.Add(ModHelpers.PlayerById(SampleCrews.SecondCrew));
         return untargetPlayer;
+    }
+
+    // INameHandler
+    public void OnHandleName()
+    {
+        string suffix = ModHelpers.Cs(new Color(179f / 255f, 0f, 0f), " \u00A9"); // © => 赤血球
+
+        if (SampleCrews.FirstCrew != byte.MaxValue)
+        {
+            PlayerControl first = ModHelpers.PlayerById(SampleCrews.FirstCrew);
+            SetNamesClass.SetPlayerNameText(first, $"{first.NameText().text}{suffix}");
+        }
+        if (SampleCrews.SecondCrew != byte.MaxValue)
+        {
+            PlayerControl Second = ModHelpers.PlayerById(SampleCrews.SecondCrew);
+            SetNamesClass.SetPlayerNameText(Second, $"{Second.NameText().text}{suffix}");
+        }
     }
 
     // IMeetingHandler
