@@ -374,7 +374,6 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             Quarreled,
             Jackal,
             Pavlovsdogs,
-            OrientalShaman, // 式神の判定をクルーメイトに戻す為のチーム分類
             Fox,
             ThreeLittlePig,
         }
@@ -406,7 +405,10 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             TeamType roleTeamType = CustomRoles.GetRoleTeamType(Sample); // マッドはImpostor, フレンズ及び式神はこの時点ではDefaultNeutral になる
             TeamType ModifierTeamType = roleTeamType;
 
-            // Roleinfo (IntroData) では 第三陣営と判別されない役職を 第三陣営扱いに変える。
+            // TeamRoleType 及び, TeamType では, 判別できない役職の陣営を取得する。
+            if (Sample.IsRole(RoleId.ShermansServant)) { ModifierTeamType = TeamType.Crewmate; };
+
+            // moderator の陣営を取得する。
             if (Sample.IsLovers()) { ModifierTeamType = TeamType.Neutral; } // TODO : ラバーズリワークの影響を受ける。現在強制的に第三陣営判定しているリワーク後は ラバーズの設定 : [第三陣営として配役する] に従うように変更。
             if (Sample.IsQuarreled()) { ModifierTeamType = TeamType.Neutral; }
 
@@ -443,8 +445,6 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
                 RoleId.Pavlovsowner => DetailedTeamRoleType.Pavlovsdogs,
                 RoleId.Fox => DetailedTeamRoleType.Fox,
                 RoleId.FireFox => DetailedTeamRoleType.Fox,
-                RoleId.OrientalShaman => DetailedTeamRoleType.OrientalShaman,
-                RoleId.ShermansServant => DetailedTeamRoleType.OrientalShaman,
                 RoleId.TheFirstLittlePig => DetailedTeamRoleType.ThreeLittlePig,
                 RoleId.TheSecondLittlePig => DetailedTeamRoleType.ThreeLittlePig,
                 RoleId.TheThirdLittlePig => DetailedTeamRoleType.ThreeLittlePig,
