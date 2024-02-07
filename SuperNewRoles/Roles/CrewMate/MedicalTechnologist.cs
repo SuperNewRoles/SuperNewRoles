@@ -94,7 +94,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             OnMeetingEnds: MTButtonReset,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MedicalTechnologistButton.png", 115f),
-            () => Optioninfo.CoolTime, // [ ]MEMO : 使い切ったらクールを0にする
+            () => OnCouldUse() ? Optioninfo.CoolTime : 0f, // [x]MEMO : 使い切ったらクールを0にする
             new(-2f, 1, 0),
             "MedicalTechnologistButtonName",
             KeyCode.F,
