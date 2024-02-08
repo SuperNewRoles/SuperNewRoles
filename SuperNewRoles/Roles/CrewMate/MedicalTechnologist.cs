@@ -52,8 +52,8 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     public static CustomOption IsJudgmentDetailedNeutralTeamType;
     private static void CreateOption()
     {
-        IsJudgmentTeamType = CustomOption.Create(Optioninfo.OptionId++, true, CustomOptionType.Crewmate, "IsJudgmentTeamType", true, Optioninfo.RoleOption);
-        IsJudgmentDetailedNeutralTeamType = CustomOption.Create(Optioninfo.OptionId++, true, CustomOptionType.Crewmate, "IsJudgmentDetailedNeutralTeamType", true, Optioninfo.RoleOption);
+        IsJudgmentTeamType = CustomOption.Create(Optioninfo.OptionId++, true, CustomOptionType.Crewmate, "MedicalTechnologistIsJudgmentTeamType", true, Optioninfo.RoleOption);
+        IsJudgmentDetailedNeutralTeamType = CustomOption.Create(Optioninfo.OptionId++, true, CustomOptionType.Crewmate, "MedicalTechnologistIsJudgmentDetailedNeutralTeamType", true, Optioninfo.RoleOption);
     }
 
     public static new IntroInfo Introinfo = new(RoleId.MedicalTechnologist, introSound: RoleTypes.Scientist);

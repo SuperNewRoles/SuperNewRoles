@@ -34,10 +34,12 @@ public class IntroData
     public static Dictionary<RoleId, IntroData> Intros = new();
     public static Dictionary<RoleId, IntroData> IntroDataCache = new();
     public static List<IntroData> GhostRoleData = new();
-    public static List<Dictionary<RoleId, string>> IntroGroup = new() // [ ]MEMO : ドクター, 警察医, 臨床検査技師のコンビイントロ追加する
+    public static List<Dictionary<RoleId, string>> IntroGroup = new()
     {
-        new() {{RoleId.Seer,"SeerCombIntro1"},{RoleId.EvilSeer,"EvilSeerCombIntro1"}},
-        new() {{RoleId.NiceMechanic,"NiceMechanicCombIntro1"},{RoleId.EvilMechanic,"EvilMechanicCombIntro1"}}
+        new() {{RoleId.MedicalTechnologist,"MedicalTechnologistCombIntroToDoctor"}, {RoleId.Doctor,"DoctorCombIntro1"}},
+        new() {{RoleId.MedicalTechnologist,"MedicalTechnologistCombIntroToPoliceSurgeon"}, {RoleId.PoliceSurgeon,"PoliceSurgeonCombIntro1"}},
+        new() {{RoleId.Seer,"SeerCombIntro1"}, {RoleId.EvilSeer,"EvilSeerCombIntro1"}},
+        new() {{RoleId.NiceMechanic,"NiceMechanicCombIntro1"}, {RoleId.EvilMechanic,"EvilMechanicCombIntro1"}}
     };
     public string NameKey;
     public string Name;
