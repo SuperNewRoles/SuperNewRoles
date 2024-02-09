@@ -131,6 +131,11 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         ChangePlayers[this.Player.PlayerId] = $"{ChangeName.GetNowName(ChangePlayers, this.Player)}\n{MtButtonCountString()}";
     }
 
+    public void BuildSetting(IGameOptions gameOptions)
+    {
+        gameOptions.SetFloat(FloatOptionNames.KillCooldown, GetCoolTime());
+    }
+
     // ICustomButton
     public CustomButtonInfo[] CustomButtonInfos { get; }
     private CustomButtonInfo MTButtonInfo { get; }
