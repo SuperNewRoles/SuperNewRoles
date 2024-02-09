@@ -53,6 +53,9 @@ class CastVotePatch
             case RoleId.Crook:
                 IsValidVote = Crook.Ability.InHostMode.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
                 break;
+            case RoleId.Balancer:
+                IsValidVote = Balancer.InHostMode.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
+                break;
         }
 
         if (IsValidVote) // 有効票であれば,
@@ -800,6 +803,7 @@ class MeetingHudStartPatch
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Knight.ProtectedPlayer = null;
         Knight.GuardedPlayers = new();
+        Balancer.InHostMode.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
         {
             CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) =>

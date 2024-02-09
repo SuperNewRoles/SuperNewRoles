@@ -594,6 +594,73 @@ public static class Balancer
             PlayerControl.LocalPlayer.RemainingEmergencies++;
             PlayerControl.LocalPlayer.RpcStartMeeting(null);
         }
+        public static void StartMeeting()
+        {
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+            if (!AmongUsClient.Instance.AmHost) return;
+
+            Logger.Info($"StartMeeting Balancer: {currentAbilityUser?.name}", "Balancer.OnStartMeeting");
+            if (CurrentState == SHRBalancerState.BalancerMeeting)
+            {
+                StartMeetingBalancer();
+            }
+            else
+            {
+                StartMeetingNomal();
+            }
+        }
+        private static void StartMeetingNomal()
+        {
+            new LateTask(() =>
+            {
+                foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => x != null && !x.Data.IsDead && x.IsRole(RoleId.Balancer)))
+                {
+                    if (!State.TryGetValue(player.PlayerId, out var state))
+                    {
+                        State[player.PlayerId] = state = new();
+                    }
+                    if (!NumOfBalance.TryGetValue(player.PlayerId, out var numOfBalance))
+                    {
+                        NumOfBalance[player.PlayerId] = numOfBalance = OptionNumOfBalance;
+                    }
+
+                    if (numOfBalance > 0)
+                        SendChat(player, ModTranslation.GetString("BalancerForActivate"), ModTranslation.GetString("BalancerName"));
+                    else
+                        SendChat(player, ModTranslation.GetString("BalancerUsed"), ModTranslation.GetString("BalancerName"));
+                }
+            }, 3f, "StartMeeting BalancerGuide");
+        }
+        private static void StartMeetingBalancer()
+        {
+            //天秤会議
+            if (!NumOfBalance.TryGetValue(currentAbilityUser.PlayerId, out var num))
+            {
+                num = OptionNumOfBalance;
+            }
+            NumOfBalance[currentAbilityUser.PlayerId] = --num;
+            Logger.Info($"BalancerMeetingStart Balancer: {currentAbilityUser?.name}, num: {num}, target: {targetplayerleft?.name}, {targetplayerright?.name}", "Balancer.OnStartMeeting");
+            //BalancerMeeting = true;
+
+            string decoration = $"<color=#ff8000><size=80%>～~*~≢⊕～~*~≢⊕～~*~≢⊕～~*~≢⊕～</size></color>\n" +
+                                $"<color=#ff8000><size=150%>【{ModTranslation.GetString("BalancerMeeting")}】</size></color>\n" +
+                                $"<color=#ff8000><size=100%>★△☀ </size></color><color=#fff200><size=200%>{ModTranslation.GetString("BalancerAbilityUseText")}</size></color><color=#ff8000><size=100%> ◎▲☆ </size></color>\n" +
+                                $"<color=#ff8000><size=150%>{ModTranslation.GetString("BalancerVoteText")}</color>\n" +
+                                $"<color=#ff8000><size=80%>～~*~≢⊕～~*~≢⊕～~*~≢⊕～~*~≢⊕～</size></color>";
+
+            string targetText1 = $"{Palette.GetColorName(targetplayerleft.Data.DefaultOutfit.ColorId)} {targetplayerleft.name}";
+            string targetText2 = $"{Palette.GetColorName(targetplayerright.Data.DefaultOutfit.ColorId)} {targetplayerright.name}";
+
+            //string dispText = $"バランスを求めよ。\n\n" +
+            string dispText = ModHelpers.Cs(Palette.PlayerColors[targetplayerleft.Data.DefaultOutfit.ColorId], targetText1) +
+                               "\n<color=#ffffff>   vs </color>\n" +
+                              ModHelpers.Cs(Palette.PlayerColors[targetplayerright.Data.DefaultOutfit.ColorId], targetText2);
+
+            dispText = $"<size=100%>{dispText}</size>";
+            dispText = $"{decoration}\n{dispText}\n";
+
+            SendChat(null, dispText);
+        }
         private static void SendChat(PlayerControl target, string text, string title = "")
         {
             if (title != null && title != "") text = $"<size=100%><color=#ff8000>【{title}】</color></size>\n{text}";
