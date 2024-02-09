@@ -65,6 +65,11 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     /// </summary>
     public int AbilityRemainingCount;
     /// <summary>
+    /// SHRモード時, 初回のクールリセットか
+    /// </summary>
+    public bool IsSHRFirstCool;
+
+    /// <summary>
     /// サンプル取得中のクルー
     /// </summary>
     private (byte FirstCrew, byte SecondCrew) SampleCrews;
@@ -92,9 +97,9 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             () => ButtonOnClick(),
             (isAlive) => isAlive,
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
-            OnMeetingEnds: MTButtonReset,
+            OnMeetingEnds: SetButtonInfo,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MedicalTechnologistButton.png", 115f),
-            () => OnCouldUse() ? Optioninfo.CoolTime : 0f, // [x]MEMO : 使い切ったらクールを0にする
+            () => GetCoolTime(), // [x]MEMO : 使い切ったらクールを0にする
             new(-2f, 1, 0),
             "MedicalTechnologistButtonName",
             KeyCode.F,
@@ -108,6 +113,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         this.CustomButtonInfos = new CustomButtonInfo[1] { MTButtonInfo };
 
         this.AbilityRemainingCount = Optioninfo.AbilityMaxCount;
+        this.IsSHRFirstCool = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles, false);
         this.SampleCrews = (byte.MaxValue, byte.MaxValue);
 
         JudgmentType judgmentSystem = JudgmentType.None;
@@ -138,13 +144,22 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         }
         else Logger.Error("既に検体を取得済みにもかかわらず, 対象が取得されました。", Roleinfo.NameKey);
 
-        MTButtonInfo.customButton.SecondButtonInfoText.text = MtButtonCountString();
+        IsSHRFirstCool = false;
+        SetButtonInfo();
     }
-    private void MTButtonReset() // [x]MEMO : 対象のリセット, [ターン中使用回数をリセット => ターン中使用回数と対象は同じ変数で管理に]
-    {
-        SampleCrews = (byte.MaxValue, byte.MaxValue);
-        MTButtonInfo.customButton.SecondButtonInfoText.text = MtButtonCountString();
-    }
+
+    /// <summary>
+    /// クールタイムの取得を行う。
+    /// </summary>
+    /// <value>SHR時 初回のクールタイム : 10s, アビリティ使用不可時のクールタイム : 0s</value>
+    /// <returns>float => 現状のクールタイム</returns>
+    private float GetCoolTime() => IsSHRFirstCool ? 10f : OnCouldUse() ? Optioninfo.CoolTime : Player == PlayerControl.LocalPlayer ? 0f : 0.00001f;
+
+    /// <summary>
+    /// SecondButtonInfoTextをセットする。
+    /// </summary>
+    private void SetButtonInfo() => MTButtonInfo.customButton.SecondButtonInfoText.text = MtButtonCountString();
+
     private string MtButtonCountString() // [x]MEMO : 残り全体回数\n現在フェイズ残り指定回数 => 選択対象の名前 // [ ]MEMO : SHRではシェリフと同じように名前で表示
     {
         string remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
@@ -196,42 +211,62 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         string infoName = ModTranslation.GetString("MedicalTechnologistName");
         string infoContents;
 
-        if (AmongUsClient.Instance.AmHost && Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
-        {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-            {
-                if (player.IsMod()) continue; // 導入ゲストは自分で処理させる, 自分自身が臨床検査技師の時は導入ゲストと同様以下の分岐で処理をする。
+        // 自分自身のみ処理するか
+        bool isOnryMyself = !(AmongUsClient.Instance.AmHost && Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles));
 
-                MedicalTechnologist roleBase = player.GetRoleBase<MedicalTechnologist>();
-                if (roleBase == null) continue;
-                if (roleBase.SampleCrews.FirstCrew == byte.MaxValue || roleBase.SampleCrews.SecondCrew == byte.MaxValue) continue;
+        // Playerは処理を実行する対象か
+        bool IsProcessingObject = isOnryMyself
+            ? Player == PlayerControl.LocalPlayer
+            : Player.IsMod()
+                ? Player == PlayerControl.LocalPlayer // 導入者であれば, 自分自身以外は処理しない。
+                : true; // 非導入者であれば処理する。
 
-                PlayerControl firstCrew = ModHelpers.PlayerById(roleBase.SampleCrews.FirstCrew);
-                PlayerControl secondCrew = ModHelpers.PlayerById(roleBase.SampleCrews.SecondCrew);
+        if (!IsProcessingObject) return;
+        if (SampleCrews.FirstCrew == byte.MaxValue || SampleCrews.SecondCrew == byte.MaxValue) return;
 
-                infoContents = SampleTestResultsText(firstCrew, secondCrew);
-                AddChatPatch.ChatInformation(player, infoName, infoContents, "#259f94");
-            }
-        }
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.MedicalTechnologist))
-        {
-            MedicalTechnologist roleBase = PlayerControl.LocalPlayer.GetRoleBase<MedicalTechnologist>();
-            if (roleBase == null) return;
-            if (roleBase.SampleCrews.FirstCrew == byte.MaxValue || roleBase.SampleCrews.SecondCrew == byte.MaxValue) return;
+        PlayerControl firstCrew = ModHelpers.PlayerById(SampleCrews.FirstCrew);
+        PlayerControl secondCrew = ModHelpers.PlayerById(SampleCrews.SecondCrew);
 
-            PlayerControl firstCrew = ModHelpers.PlayerById(roleBase.SampleCrews.FirstCrew);
-            PlayerControl secondCrew = ModHelpers.PlayerById(roleBase.SampleCrews.SecondCrew);
-
-            infoContents = SampleTestResultsText(firstCrew, secondCrew);
-            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, infoName, infoContents, "#259f94", true);
-        }
+        infoContents = SampleTestResultsText(firstCrew, secondCrew);
+        AddChatPatch.ChatInformation(Player, infoName, infoContents, "#259f94", true);
     }
-    public void CloseMeeting() { }
+
+    public void CloseMeeting()
+    {
+        IsSHRFirstCool = false;
+        SampleCrews = (byte.MaxValue, byte.MaxValue);
+    }
 
     // ICheckMurderHandler
     public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
     {
-        return true; // [ ]MEMO : クールはリセットしたい。~> キルを守護で防ぐ事が必要?
+        if (Player == target) return false;
+        if (!OnCouldUse()) return false;
+
+        var isResetCool = false;
+
+        if (SampleCrews.FirstCrew == byte.MaxValue)
+        {
+            isResetCool = true;
+            SampleCrews.FirstCrew = target.PlayerId;
+        }
+        else if (SampleCrews.SecondCrew == byte.MaxValue)
+        {
+            if (target.PlayerId != SampleCrews.FirstCrew)
+            {
+                isResetCool = true;
+                SampleCrews.SecondCrew = target.PlayerId;
+
+                AbilityRemainingCount--;
+            }
+            else { Logger.Info($"同じ検体を取得した為, 保存しませんでした。 => target = {target.name}, FirstCrew = {ModHelpers.PlayerById(SampleCrews.FirstCrew)}", Roleinfo.NameKey); }
+        }
+        else { Logger.Info("既に検体を取得済みにもかかわらず, 対象が取得されました。", Roleinfo.NameKey); }
+
+        if (isResetCool) Player.ResetKillCool(GetCoolTime());
+
+        IsSHRFirstCool = false;
+        return false; // [x]MEMO : クールはリセットしたい。~> キルを守護で防ぐ事が必要?
     }
 
     // Custom
@@ -267,14 +302,14 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             }
             else // 呼ばれる事は無い(はずの)フレーバーテキスト
             {
-                resultText = $"<pos=10%>Please report to the SuperNewRoles developer.</pos>\n<pos=10%>ErrorCode : 0b_{Convert.ToString((int)JudgmentSystem, 2)}</pos>";
+                resultText = $"{ModTranslation.GetString("MedicalTechnologistSampleResult")}\n<pos=10%>Please report to the SuperNewRoles developer.</pos>\n<pos=10%>ErrorCode : 0b_{Convert.ToString((int)JudgmentSystem, 2)}</pos>";
                 Logger.Error($"JudgmentSystem に 不正な値が代入されています。 => JudgmentSystem = {JudgmentSystem}", Roleinfo.NameKey);
             }
         }
         else // 呼ばれる事は無い(はずの)フレーバーテキスト
         {
             samplePresentation = string.Format(ModTranslation.GetString("MedicalTechnologistSamplePresentation"), firstCrew != null ? firstCrew.name : "null", secondCrew != null ? secondCrew.name : "null");
-            resultText = "<pos=10%>検体不適正 ( 不合格検体 )</pos>\n<pos=10%>検体が適切に提出なされなかった為,</pos>\n<pos=10%>陣営の判別が行えませんでした。</pos>";
+            resultText = $"{ModTranslation.GetString("MedicalTechnologistSampleResult")}\n<pos=10%>検体不適正 ( 不合格検体 )</pos>\n<pos=10%>検体が適切に提出なされなかった為,</pos>\n<pos=10%>陣営の判別が行えませんでした。</pos>";
             Logger.Error("検体が揃っていないにも関わらず, 提出されました。", Roleinfo.NameKey);
         }
 
