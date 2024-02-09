@@ -204,6 +204,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
 
                 MedicalTechnologist roleBase = player.GetRoleBase<MedicalTechnologist>();
                 if (roleBase == null) continue;
+                if (roleBase.SampleCrews.FirstCrew == byte.MaxValue || roleBase.SampleCrews.SecondCrew == byte.MaxValue) continue;
 
                 PlayerControl firstCrew = ModHelpers.PlayerById(roleBase.SampleCrews.FirstCrew);
                 PlayerControl secondCrew = ModHelpers.PlayerById(roleBase.SampleCrews.SecondCrew);
@@ -216,6 +217,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         {
             MedicalTechnologist roleBase = PlayerControl.LocalPlayer.GetRoleBase<MedicalTechnologist>();
             if (roleBase == null) return;
+            if (roleBase.SampleCrews.FirstCrew == byte.MaxValue || roleBase.SampleCrews.SecondCrew == byte.MaxValue) return;
 
             PlayerControl firstCrew = ModHelpers.PlayerById(roleBase.SampleCrews.FirstCrew);
             PlayerControl secondCrew = ModHelpers.PlayerById(roleBase.SampleCrews.SecondCrew);
@@ -265,14 +267,14 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             }
             else // 呼ばれる事は無い(はずの)フレーバーテキスト
             {
-                resultText = $"Please report to the SuperNewRoles developer.\nErrorCode : 0b_{Convert.ToString((int)JudgmentSystem, 2)}";
+                resultText = $"<pos=10%>Please report to the SuperNewRoles developer.</pos>\n<pos=10%>ErrorCode : 0b_{Convert.ToString((int)JudgmentSystem, 2)}</pos>";
                 Logger.Error($"JudgmentSystem に 不正な値が代入されています。 => JudgmentSystem = {JudgmentSystem}", Roleinfo.NameKey);
             }
         }
         else // 呼ばれる事は無い(はずの)フレーバーテキスト
         {
             samplePresentation = string.Format(ModTranslation.GetString("MedicalTechnologistSamplePresentation"), firstCrew != null ? firstCrew.name : "null", secondCrew != null ? secondCrew.name : "null");
-            resultText = "<pos=10%>検体不適正 ( 不合格検体 )</pos>\n<pos=10%>検体が適切に提出なされなかった為, 陣営の判別が行えませんでした。</pos>";
+            resultText = "<pos=10%>検体不適正 ( 不合格検体 )</pos>\n<pos=10%>検体が適切に提出なされなかった為,</pos>\n<pos=10%>陣営の判別が行えませんでした。</pos>";
             Logger.Error("検体が揃っていないにも関わらず, 提出されました。", Roleinfo.NameKey);
         }
 
