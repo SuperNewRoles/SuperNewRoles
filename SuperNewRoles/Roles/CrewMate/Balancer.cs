@@ -483,6 +483,117 @@ public static class Balancer
             targetplayerleft = null;
             targetplayerright = null;
         }
+        /// <summary>
+        /// 投票形式による天秤の対象指定
+        /// </summary>
+        /// <param name="balancerId">投票者のplayerId</param>
+        /// <param name="targetId">投票先のplayerId</param>
+        /// <returns> true : 投票を反映する / false : 投票を反映しない </returns>
+        internal static bool MeetingHudCastVote_Prefix(byte balancerId, byte targetId)
+        {
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+            if (!AmongUsClient.Instance.AmHost) return true;
+
+            var balancer = ModHelpers.GetPlayerControl(balancerId);
+            if (balancer == null || balancer.GetRole() != RoleId.Balancer) return true;
+
+            if (CurrentState != SHRBalancerState.NotBalance) return true;
+
+            if (!NumOfBalance.TryGetValue(balancerId, out var numOfBalance))
+            {
+                NumOfBalance[balancerId] = numOfBalance = OptionNumOfBalance;
+            }
+            if (numOfBalance <= 0) return true;
+
+            if (!State.TryGetValue(balancerId, out var state))
+            {
+                State[balancerId] = state = new();
+            }
+
+            if (state.selecting)
+            {
+                if (targetId is 252 or 253)
+                {
+                    //スキップで選択モード解除
+                    state.selecting = false;
+                    state.target1 = byte.MaxValue;
+                    state.target2 = byte.MaxValue;
+                    SendChat(balancer, ModTranslation.GetString("BalancerSelectionCancelText"), ModTranslation.GetString("BalancerSelectionCancel"));
+                    return false;
+                }
+
+                if (state.target1 == byte.MaxValue || state.target1 == targetId)
+                {
+                    state.target1 = targetId;
+                    Logger.Info($"BalancerSetTarget1 target: {targetId}", "Balancer.MeetingHudCastVote_Prefix");
+                }
+                else
+                {
+                    state.target2 = targetId;
+                    Logger.Info($"BalancerSetTarget2 target: {targetId}", "Balancer.MeetingHudCastVote_Prefix");
+                }
+
+                if (state.target1 == byte.MaxValue)
+                {
+                    SendChat(balancer, $"{ModTranslation.GetString("BalancerSelectionText")}\n{ModTranslation.GetString("Balancer1st")}", ModTranslation.GetString("BalancerSelection"));
+                    return false;
+                }
+                if (state.target2 == byte.MaxValue)
+                {
+                    var pc = ModHelpers.GetPlayerControl(state.target1);
+                    SendChat(balancer, $"{ModTranslation.GetString("BalancerSelectionText")}\n{ModTranslation.GetString("Balancer1st")}：{pc?.name}\n\n{ModTranslation.GetString("Balancer2nd")}", ModTranslation.GetString("BalancerSelection"));
+                    return false;
+                }
+
+                CurrentState = SHRBalancerState.ForBalancerMeeting;
+                StartBalancerAbility(balancerId, state.target1, state.target2);
+
+                return false;
+            }
+            if (targetId == byte.MaxValue) return true;
+
+            if (balancerId == targetId)
+            {
+                //自投票で選択モード開始
+
+                state.selecting = true;
+                //Utils.SendMessage(Translator.GetString("message"), Player.PlayerId);
+                SendChat(balancer, $"{ModTranslation.GetString("BalancerSelectionText")}\n{ModTranslation.GetString("Balancer1st")}", ModTranslation.GetString("BalancerSelection"));
+                Logger.Info($"BalancerSelectStart balancer: {balancerId}", "Balancer.MeetingHudCastVote_Prefix");
+
+                return false;
+            }
+
+            return true;
+        }
+        private static void StartBalancerAbility(byte balancerId, byte target1Id, byte target2Id)
+        {
+            _ = new LateTask(() => StartBalancerMeeting(balancerId, target1Id, target2Id), 10f, "SetBalancerMeeting");
+            MeetingHud.Instance.RpcClose();
+
+            Logger.Info($"StartAbility balancer: {currentAbilityUser?.name}, target: {targetplayerleft?.name}, {targetplayerright?.name}", "Balancer.StartBalancerAbility");
+        }
+        private static void StartBalancerMeeting(byte balancerId, byte target1Id, byte target2Id)
+        {
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+
+            if (MeetingHud.Instance)
+            {
+                _ = new LateTask(() => StartBalancerMeeting(balancerId, target1Id, target2Id), 1f, "BalancerMeeting");
+                return;
+            }
+
+            currentAbilityUser = ModHelpers.GetPlayerControl(balancerId);
+            targetplayerleft = ModHelpers.GetPlayerControl(target1Id);
+            targetplayerright = ModHelpers.GetPlayerControl(target2Id);
+
+            //強制会議
+            CurrentState = SHRBalancerState.BalancerMeeting;
+            MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
+            FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+            PlayerControl.LocalPlayer.RemainingEmergencies++;
+            PlayerControl.LocalPlayer.RpcStartMeeting(null);
+        }
         private static void SendChat(PlayerControl target, string text, string title = "")
         {
             if (title != null && title != "") text = $"<size=100%><color=#ff8000>【{title}】</color></size>\n{text}";
