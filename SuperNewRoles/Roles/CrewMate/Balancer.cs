@@ -265,6 +265,10 @@ public static class Balancer
         currentAbilityUser = null;
         CurrentState = BalancerState.NotBalance;
         currentTarget = null;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            InHostMode.AfterMeetingTasks();
+        }
     }
     public static void StartAbility(PlayerControl source, PlayerControl player1, PlayerControl player2)
     {
@@ -660,6 +664,22 @@ public static class Balancer
             dispText = $"{decoration}\n{dispText}\n";
 
             SendChat(null, dispText);
+        }
+        public static void AfterMeetingTasks()
+        {
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+            if (!AmongUsClient.Instance.AmHost) return;
+
+            State.Clear();
+            Logger.Info($"AfterMeeting Clear", "Balancer.AfterMeetingTasks");
+
+            if (CurrentState != SHRBalancerState.BalancerMeeting) return;
+
+            CurrentState = SHRBalancerState.NotBalance;
+            currentAbilityUser = null;
+            targetplayerleft = null;
+            targetplayerright = null;
+            Logger.Info($"AfterBalancerMeeting Clear", "Balancer.AfterMeetingTasks");
         }
         private static void SendChat(PlayerControl target, string text, string title = "")
         {
