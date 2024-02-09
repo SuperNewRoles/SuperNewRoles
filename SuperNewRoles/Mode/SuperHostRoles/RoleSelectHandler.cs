@@ -7,6 +7,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -171,7 +172,7 @@ public static class RoleSelectHandler
 
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player is ISupportSHR playerSHR)
+            if (player.GetRoleBase() is ISupportSHR playerSHR)
             {
                 if (playerSHR.IsDesync)
                     SetRoleDesync(player, playerSHR.DesyncRole);
