@@ -29,6 +29,10 @@ public static class Balancer
     public static bool IsAbilityUsed;
     public static void ClearAndReload()
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            InHostMode.ClearAndReload();
+        }
         BalancerPlayer = new();
         currentAbilityUser = null;
         CurrentState = BalancerState.NotBalance;
@@ -468,6 +472,16 @@ public static class Balancer
             BalancerMeeting,
         }
 
+        public static void ClearAndReload()
+        {
+            State.Clear();
+            NumOfBalance.Clear();
+
+            CurrentState = SHRBalancerState.NotBalance;
+            currentAbilityUser = null;
+            targetplayerleft = null;
+            targetplayerright = null;
+        }
     }
     // ここにコードを書きこんでください
 }
