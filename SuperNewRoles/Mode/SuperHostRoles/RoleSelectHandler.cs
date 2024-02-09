@@ -6,6 +6,8 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -170,7 +172,7 @@ public static class RoleSelectHandler
 
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player is ISupportSHR playerSHR)
+            if (player.GetRoleBase() is ISupportSHR playerSHR)
             {
                 if (playerSHR.IsDesync)
                     SetRoleDesync(player, playerSHR.DesyncRole);
@@ -376,6 +378,51 @@ public static class RoleSelectHandler
                                     break;
                                 case TeamRoleType.Neutral:
                                     Neutnotonepar.Add(intro.RoleId);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        foreach (RoleInfo roleInfo in RoleInfoManager.RoleInfos.Values)
+        {
+            if (!roleInfo.IsGhostRole && AllRoleSetClass.CanRoleIdElected(roleInfo.Role))
+            {
+                var option = IntroData.GetOption(roleInfo.Role);
+                if (option == null || !option.isSHROn) continue;
+                var selection = option.GetSelection();
+                if (selection != 0)
+                {
+                    if (selection == 10)
+                    {
+                        switch (roleInfo.Team)
+                        {
+                            case TeamRoleType.Crewmate:
+                                Crewonepar.Add(roleInfo.Role);
+                                break;
+                            case TeamRoleType.Impostor:
+                                Impoonepar.Add(roleInfo.Role);
+                                break;
+                            case TeamRoleType.Neutral:
+                                Neutonepar.Add(roleInfo.Role);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= selection; i++)
+                        {
+                            switch (roleInfo.Team)
+                            {
+                                case TeamRoleType.Crewmate:
+                                    Crewnotonepar.Add(roleInfo.Role);
+                                    break;
+                                case TeamRoleType.Impostor:
+                                    Imponotonepar.Add(roleInfo.Role);
+                                    break;
+                                case TeamRoleType.Neutral:
+                                    Neutnotonepar.Add(roleInfo.Role);
                                     break;
                             }
                         }
