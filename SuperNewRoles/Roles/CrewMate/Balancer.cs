@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
@@ -685,6 +686,21 @@ public static class Balancer
         {
             if (title != null && title != "") text = $"<size=100%><color=#ff8000>【{title}】</color></size>\n{text}";
             AddChatPatch.SendCommand(target, "", text);
+        }
+        public static void SetMeetingSettings(IGameOptions optdata)
+        {
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+
+            if (CurrentState == SHRBalancerState.BalancerMeeting)
+            {
+                optdata.SetInt(Int32OptionNames.DiscussionTime, 0);
+                optdata.SetInt(Int32OptionNames.VotingTime, (int)BalancerVoteTime.GetFloat());
+            }
+            else
+            {
+                optdata.SetInt(Int32OptionNames.DiscussionTime, GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.DiscussionTime));
+                optdata.SetInt(Int32OptionNames.VotingTime, GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime));
+            }
         }
     }
     // ここにコードを書きこんでください
