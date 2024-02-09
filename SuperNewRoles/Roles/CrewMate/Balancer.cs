@@ -448,5 +448,26 @@ public static class Balancer
             Event(__instance);
         }
     }
+    public static class InHostMode
+    {
+        private static Dictionary<byte, int> NumOfBalance = new();
+        private static Dictionary<byte, BalancerState> State = new();
+        private static int OptionNumOfBalance = 1;
+        private static SHRBalancerState CurrentState = SHRBalancerState.NotBalance;
+
+        private class BalancerState
+        {
+            public bool selecting = false;
+            public byte target1 = byte.MaxValue;
+            public byte target2 = byte.MaxValue;
+        }
+        enum SHRBalancerState
+        {
+            NotBalance,
+            ForBalancerMeeting,
+            BalancerMeeting,
+        }
+
+    }
     // ここにコードを書きこんでください
 }
