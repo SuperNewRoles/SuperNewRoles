@@ -3,7 +3,7 @@
     2.必要なインターフェースを実装する // [x]
     3.Roleinfo,Optioninfo,Introinfoを設定する // [x]
     4.設定を作成する(CreateOptionが必要なければOptioninfoのoptionCreatorをnullにする) // [x]
-    5.インターフェースの内容を実装していく // [ ]
+    5.インターフェースの内容を実装していく // [x]
 */
 
 using System;
