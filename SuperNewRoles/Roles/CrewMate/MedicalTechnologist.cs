@@ -128,7 +128,20 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     public RoleTypes DesyncRole => RoleTypes.Impostor;
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
-        ChangePlayers[this.Player.PlayerId] = $"{ChangeName.GetNowName(ChangePlayers, this.Player)}\n{MtButtonCountString()}";
+        ChangePlayers[this.Player.PlayerId] = ModHelpers.Cs(Roleinfo.RoleColor, $"<size=75%>{MtButtonCountString()}</size>\n{RoleNameText}\n{ChangeName.GetNowName(ChangePlayers, this.Player)}");
+
+        string suffix = ModHelpers.Cs(new Color(179f / 255f, 0f, 0f), " \u00A9"); // © => 赤血球
+
+        if (SampleCrews.FirstCrew != byte.MaxValue)
+        {
+            PlayerControl first = ModHelpers.PlayerById(SampleCrews.FirstCrew);
+            ChangePlayers[SampleCrews.FirstCrew] = $"{first.NameText().text}{suffix}";
+        }
+        if (SampleCrews.SecondCrew != byte.MaxValue)
+        {
+            PlayerControl second = ModHelpers.PlayerById(SampleCrews.SecondCrew);
+            ChangePlayers[SampleCrews.FirstCrew] = $"{second.NameText().text}{suffix}";
+        }
     }
 
     public void BuildSetting(IGameOptions gameOptions)
@@ -178,9 +191,17 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
                     ? $"{mark}" // 一人選択済み
                     : $"{mark}{mark}"; // 対象選択完了
 
-        string infoText = AbilityRemainingCount > 0 || !(SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue)
-            ? $"{remainingCountText}\n{targetText}{targetInfoText}"
-            : $"{remainingCountText}";
+        string infoText;
+        if (Mode.ModeHandler.IsMode(Mode.ModeId.Default, Mode.ModeId.Werewolf))
+        {
+            infoText = AbilityRemainingCount > 0 || !(SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue)
+                ? $"{remainingCountText}\n{targetText}{targetInfoText}"
+                : $"{remainingCountText}";
+        }
+        else
+        {
+            infoText = $"{remainingCountText}";
+        }
 
         return infoText;
     }
@@ -240,6 +261,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     {
         IsSHRFirstCool = false;
         SampleCrews = (byte.MaxValue, byte.MaxValue);
+        ChangeName.SetRoleName(Player);
     }
 
     // ICheckMurderHandler
@@ -269,6 +291,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         else { Logger.Info("既に検体を取得済みにもかかわらず, 対象が取得されました。", Roleinfo.NameKey); }
 
         if (isResetCool) Player.ResetKillCool(GetCoolTime());
+        ChangeName.SetRoleName(Player);
 
         IsSHRFirstCool = false;
         return false; // [x]MEMO : クールはリセットしたい。~> キルを守護で防ぐ事が必要?
