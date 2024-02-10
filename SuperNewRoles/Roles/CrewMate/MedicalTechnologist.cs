@@ -47,13 +47,13 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     public static CustomOption IsJudgmentTeamType;
 
     /// <summary>
-    /// 第三陣営間の判定を, それぞれの勝利条件毎で個別に判定するか (第三陣営同士は敵と判断するか)
+    /// 第三陣営同士は同陣営と判定するか
     /// </summary>
-    public static CustomOption IsJudgmentDetailedNeutralTeamType;
+    public static CustomOption IsJudgmentAllNeutralOneTeam;
     private static void CreateOption()
     {
         IsJudgmentTeamType = CustomOption.Create(Optioninfo.OptionId++, true, CustomOptionType.Crewmate, "MedicalTechnologistIsJudgmentTeamType", true, Optioninfo.RoleOption);
-        IsJudgmentDetailedNeutralTeamType = CustomOption.Create(Optioninfo.OptionId++, true, CustomOptionType.Crewmate, "MedicalTechnologistIsJudgmentDetailedNeutralTeamType", true, Optioninfo.RoleOption);
+        IsJudgmentAllNeutralOneTeam = CustomOption.Create(Optioninfo.OptionId++, true, CustomOptionType.Crewmate, "MedicalTechnologistIsJudgmentAllNeutralOneTeam", false, Optioninfo.RoleOption);
     }
 
     public static new IntroInfo Introinfo = new(RoleId.MedicalTechnologist, introSound: RoleTypes.Scientist);
@@ -118,7 +118,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
 
         JudgmentType judgmentSystem = JudgmentType.None;
         judgmentSystem |= IsJudgmentTeamType.GetBool() ? JudgmentType.TeamType : JudgmentType.None;                         // 0b_0x
-        judgmentSystem |= IsJudgmentDetailedNeutralTeamType.GetBool() ? JudgmentType.DetailedNeutral : JudgmentType.None;   // 0b_x0
+        judgmentSystem |= IsJudgmentAllNeutralOneTeam.GetBool() ? JudgmentType.None : JudgmentType.DetailedNeutral;   // 0b_x0
 
         _JudgmentSystem = judgmentSystem; // 0b_xx
     }
@@ -351,12 +351,14 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
 
     private static string GetJudgmentSystemText()
     {
+        string templateTexxt = $"<size=60%>{ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Team")}<pos=35%>{{0}}</pos>\n<pos=10%>{ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Neutral")}</pos><pos=35%>{{1}}</pos></size>";
+
         return JudgmentSystem switch
         {
-            JudgmentType.None => ModTranslation.GetString("MedicalTechnologistNoneSystem"),
-            JudgmentType.TeamType => ModTranslation.GetString("MedicalTechnologistTeamTypeSystem"),
-            JudgmentType.DetailedNeutral => ModTranslation.GetString("MedicalTechnologistDetailedNeutralSystem"),
-            JudgmentType.TeamType | JudgmentType.DetailedNeutral => ModTranslation.GetString("MedicalTechnologistDetailedNeutralBothSystem"),
+            JudgmentType.None => string.Format(templateTexxt, ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Team_Assign"), ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Neutral_All")),
+            JudgmentType.TeamType => string.Format(templateTexxt, ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Team_Victory"), ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Neutral_All")),
+            JudgmentType.DetailedNeutral => string.Format(templateTexxt, ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Team_Assign"), ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Neutral_Detailed")),
+            JudgmentType.TeamType | JudgmentType.DetailedNeutral => string.Format(templateTexxt, ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Team_Victory"), ModTranslation.GetString("MedicalTechnologistJudgmentSystem_Neutral_Detailed")),
             _ => "System Error",
         };
     }

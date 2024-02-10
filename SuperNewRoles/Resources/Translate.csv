@@ -1710,18 +1710,20 @@ MedicalTechnologistDescription,This role is to perform a compatibility test by c
 MedicalTechnologistTitle1,This is not my job，but it is my area of expertise. Let's put these skills to use!,職務外ですが専門分野です。この技能役立ててみせましょう!
 MedicalTechnologistCombIntroToDoctor,It's also my research subject，so I'm willing to cooperate?,私の研究対象でもあるので協力は惜しみませんよ?
 MedicalTechnologistCombIntroToPoliceSurgeon,We cannot allow ourselves to judge the value of the lives and deaths of our victims!,犠牲者の命と死の価値を勝手に判断する事は赦されません!
-MedicalTechnologistIsJudgmentTeamType,,勝利判定分類の陣営で判定するか(仮)
-MedicalTechnologistIsJudgmentDetailedNeutralTeamType,,第三陣営間の判定を、それぞれの勝利条件毎で個別に判定するか(仮)
+MedicalTechnologistIsJudgmentTeamType,Discrimination of teams by classification by winning decision?,陣営の判定を勝利判定分類で行うか
+MedicalTechnologistIsJudgmentAllNeutralOneTeam,Do we identify the neutral teams as being in the same team?,第三陣営同士は同陣営と判定するか
 MedicalTechnologistButtonName,Blood sampling,採取
 MedicalTechnologistAbilityRemainingCount,Remaining number of uses : ,残り使用回数 : 
 MedicalTechnologistSelectTarget,Target Selection Status :,対象選択状況 :
 MedicalTechnologistUnselected,unselected,未選択
-MedicalTechnologistSamplePresentation,Subjects tested\n<pos=10%>Sample 1 : [ {0} ]</pos>\n<pos=10%>Sample 2 : [ {1} ]</pos>,検査対象\n<pos=10%>検体 1 : [ {0} ]</pos>\n<pos=10%>検体 2 : [ {1} ]</pos>
+MedicalTechnologistSamplePresentation,Subjects tested\n<pos=10%>Sample 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>Sample 2 :</pos><pos=35%>[ {1} ]</pos>,検査対象\n<pos=10%>検体 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>検体 2 :</pos><pos=35%>[ {1} ]</pos>
 MedicalTechnologistJudgmentSystem,Judgment method,判定方式
-MedicalTechnologistNoneSystem,,アサイン分類の陣営(仮)
-MedicalTechnologistTeamTypeSystem,,勝利判定分類の陣営(仮)
-MedicalTechnologistDetailedNeutralSystem,,アサイン分類の陣営，\n且つ 第三陣営同士は詳細な勝利判定分類(仮)
-MedicalTechnologistDetailedNeutralBothSystem,,詳細な勝利判定分類の陣営(仮)
+MedicalTechnologistJudgmentSystem_Team,Team Judgment : ,陣営判定 : 
+MedicalTechnologistJudgmentSystem_Team_Assign,Assignment Classification,アサイン分類
+MedicalTechnologistJudgmentSystem_Team_Victory,Winning decision Classification,勝利判定分類
+MedicalTechnologistJudgmentSystem_Neutral,Neutral Judgment : ,第三陣営間の判定 : 
+MedicalTechnologistJudgmentSystem_Neutral_All,Judged to be in the same team.,同陣営と判定する。
+MedicalTechnologistJudgmentSystem_Neutral_Detailed,The roles with different win conditions are considered as different teams.,勝利条件が異なる役職間は，別陣営と判定する。
 MedicalTechnologistSampleResult,Inspection results,検査結果
 MedicalTechnologistMatch,<pos=10%>Specimen did not react.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in the same team</pos>,<pos=10%>検体は，反応しませんでした。</pos>\n<pos=10%>検体 1 と 検体 2 は同じ陣営の様です。</pos>
 MedicalTechnologistMismatch,<pos=10%>Specimen caused rejection.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in different teams.</pos>,<pos=10%>検体は，拒絶反応を起こしました。</pos>\n<pos=10%>検体 1 と 検体 2 は別陣営の様です。</pos>
