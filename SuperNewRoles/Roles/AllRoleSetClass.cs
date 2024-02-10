@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -42,6 +43,27 @@ class Startgamepatch
         RPCProcedure.StartGameRPC();
 
         RoleSelectHandler.SpawnBots();
+    }
+}
+public class PairRoleDetail
+{
+    public static PairRoleDetail GetPairRoleDetail(RoleId role) {
+        return PairRoleDetails.TryGetValue(role, out PairRoleDetail value) ? value : null;
+    }
+    public static readonly Dictionary<RoleId, PairRoleDetail> PairRoleDetails = new() {
+        { RoleId.Assassin, new(RoleId.Assassin, (0,0,1), (TeamRoleType.Impostor, RoleId.Marlin)) },
+        { RoleId.Revolutionist, new(RoleId.Revolutionist, (0,0,1), (TeamRoleType.Crewmate, RoleId.Dictator)) }, 
+        { RoleId.TheFirstLittlePig, new(RoleId.TheFirstLittlePig, (0,2,0), (TeamRoleType.Neutral, RoleId.TheSecondLittlePig), (TeamRoleType.Neutral, RoleId.TheThirdLittlePig)) },
+        { RoleId.Pokerface, new(RoleId.Pokerface, (0,2,0), (TeamRoleType.Neutral, RoleId.Pokerface), (TeamRoleType.Neutral, RoleId.Pokerface)) }
+    };
+    public RoleId role { get; }
+    public (TeamRoleType team, RoleId role)[] pairRoles { get; }
+    public (int impostor, int neutral, int crewmate) needPlayerCount { get; }
+    public PairRoleDetail(RoleId role, (int impostor, int neutral, int crewmate) needPlayerCount, params (TeamRoleType team, RoleId role)[] pairRoles)
+    {
+        this.role = role;
+        this.pairRoles = pairRoles;
+        this.needPlayerCount = needPlayerCount;
     }
 }
 [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -213,9 +235,11 @@ class AllRoleSetClass
 
     public static bool Assigned;
 
+    public static int ImpostorPlayerNum;
+    public static int NeutralPlayerNum;
+    public static int CrewmatePlayerNum;
     public static int ImpostorGhostRolePlayerNum;
     public static int NeutralGhostRolePlayerNum;
-    public static int CrewmatePlayerNum;
     public static int CrewmateGhostRolePlayerNum;
 
     public static void AllRoleSet()
@@ -373,9 +397,11 @@ class AllRoleSetClass
     }
     public static void SetPlayerNum()
     {
+        ImpostorPlayerNum = CustomOptionHolder.impostorRolesCountMax.GetInt();
+        NeutralPlayerNum = CustomOptionHolder.neutralRolesCountMax.GetInt();
+        CrewmatePlayerNum = CustomOptionHolder.crewmateRolesCountMax.GetInt();
         ImpostorGhostRolePlayerNum = CustomOptionHolder.impostorGhostRolesCountMax.GetInt();
         NeutralGhostRolePlayerNum = CustomOptionHolder.neutralGhostRolesCountMax.GetInt();
-        CrewmatePlayerNum = CustomOptionHolder.crewmateRolesCountMax.GetInt();
         CrewmateGhostRolePlayerNum = CustomOptionHolder.crewmateGhostRolesCountMax.GetInt();
     }
     public static HashSet<RoleId> RandomSelect(AssignType assignType, ref int CanAssignPlayerCount, List<PlayerControl> AssignTargets)
@@ -400,26 +426,153 @@ class AllRoleSetClass
         {
             while (Ticket.Count > 0 && AssignTargets.Count > 0 && CanAssignPlayerCount > 0)
             {
-                CanAssignPlayerCount--;
-                AssignedRoles.Add(
-                    SelectAndAssignRole(Ticket, RemainingAssignPlayerCount, AssignTargets)
-                );
+                var assigneddata =
+                    SelectAndAssignRole(CanAssignPlayerCount, assignType, Ticket, RemainingAssignPlayerCount, AssignTargets);
+                CanAssignPlayerCount-= assigneddata.assignedCount;
+                foreach (var role in assigneddata.assigned)
+                {
+                    AssignedRoles.Add(role);
+                }
             }
             if (AssignTargets.Count <= 0)
                 break;
         }
         return AssignedRoles;
     }
-    private static RoleId SelectAndAssignRole(
+    public static bool CheckCanAssignCount(AssignType assignType, int nowCanAssignCount, (int impostor, int neutral, int crewmate) data)
+    {
+        int impostorcount = 0;
+        int neutralcount = CustomOptionHolder.neutralRolesCountMax.GetInt();
+        int crewmatecount = CustomOptionHolder.crewmateRolesCountMax.GetInt();
+        int impostorplayercount = ImpostorPlayers.Count;
+        int crewmateplayercount = CrewmatePlayers.Count;
+        if (assignType.HasFlag(AssignType.Impostor))
+        {
+            impostorcount = nowCanAssignCount - 1;
+        }
+        else if (assignType.HasFlag(AssignType.Neutral))
+        {
+            neutralcount = nowCanAssignCount - 1;
+        }
+        else if (assignType.HasFlag(AssignType.Crewmate))
+        {
+            neutralcount = 0;
+            crewmatecount = nowCanAssignCount - 1;
+        }
+        if (impostorcount < data.impostor)
+            return false;
+        if (neutralcount < data.neutral)
+            return false;
+        if (crewmatecount < data.crewmate)
+            return false;
+        if (impostorplayercount < data.impostor)
+            return false;
+        if (crewmateplayercount < data.neutral)
+            return false;
+        if (crewmateplayercount < data.crewmate)
+            return false;
+        return true;
+    }
+    public static AssignType ToAssignType(TeamRoleType team)
+    {
+        return team switch
+        {
+            TeamRoleType.Impostor => AssignType.Impostor,
+            TeamRoleType.Neutral => AssignType.Neutral,
+            TeamRoleType.Crewmate => AssignType.Crewmate,
+            _ => throw new ArgumentException("TeamRoleType is not Impostor, Neutral, Crewmate"),
+        };
+    }
+    public static TeamRoleType ToTeamRoleType(AssignType assignType)
+    {
+        if (assignType.HasFlag(AssignType.Impostor))
+            return TeamRoleType.Impostor;
+        if (assignType.HasFlag(AssignType.Neutral))
+            return TeamRoleType.Neutral;
+        if (assignType.HasFlag(AssignType.Crewmate))
+            return TeamRoleType.Crewmate;
+        throw new ArgumentException("AssignType is not Impostor, Neutral, Crewmate");
+    }
+    private static (HashSet<RoleId> assigned, int assignedCount) SelectAndAssignRole(
+           int CanAssignPlayerCount,
+           AssignType assignType,
            List<RoleId> Tickets,
            Dictionary<RoleId, int> RemainingAssignPlayerCount,
-           List<PlayerControl> AssignTargets
+           List<PlayerControl> AssignTargets,
+           bool onPairAssign = false
         )
     {
+        int assignedCount = 0;
         HashSet<RoleId> AssignedRoles = new();
 
         //対象役職を選出
         RoleId selectRole = ModHelpers.GetRandom(Tickets);
+
+        PairRoleDetail pairRoleDetail = PairRoleDetail.GetPairRoleDetail(selectRole);
+        if (!onPairAssign && pairRoleDetail != null)
+        {
+            bool canAssign = CheckCanAssignCount(assignType, CanAssignPlayerCount, pairRoleDetail.needPlayerCount);
+            if (!canAssign)
+            {
+                Tickets.RemoveAll(x => x == selectRole);
+                return (new(), 0);
+            }
+            Dictionary<RoleId, int> RemainingAssignPlayerCountOnPair = new();
+            // foreachで回してSelectAndAssignRoleを呼ぶ
+            foreach (var pairRole in pairRoleDetail.pairRoles)
+            {
+                List<PlayerControl> assignTargets = null;
+                if (pairRole.team == TeamRoleType.Impostor)
+                    assignTargets = ImpostorPlayers;
+                else if (pairRole.team is TeamRoleType.Neutral or TeamRoleType.Crewmate)
+                    assignTargets = CrewmatePlayers;
+                SelectAndAssignRole(1, assignType, new() { pairRole.role }, RemainingAssignPlayerCount, AssignTargets, true);
+                RemainingAssignPlayerCountOnPair[pairRole.role] = GetPlayerCount(pairRole.role) - 1;
+                if (RemainingAssignPlayerCountOnPair[pairRole.role] <= 0)
+                    RemainingAssignPlayerCountOnPair.Remove(pairRole.role);
+                AssignedRoles.Add(pairRole.role);
+            }
+            //RemainingAssignPlayerCountOnPairを元にアサイン可能であればアサインする
+            while (RemainingAssignPlayerCountOnPair.Count > 0)
+            {
+                var targetrole = ModHelpers.GetRandom(RemainingAssignPlayerCountOnPair.Keys.ToList());
+                var count = RemainingAssignPlayerCountOnPair[targetrole];
+                if (count <= 0)
+                {
+                    RemainingAssignPlayerCountOnPair.Remove(targetrole);
+                    continue;
+                }
+                //対象を選出
+                var team = pairRoleDetail.pairRoles.FirstOrDefault(x => x.role == targetrole).team;
+                if (team switch
+                {
+                    TeamRoleType.Crewmate => CrewmatePlayerNum,
+                    TeamRoleType.Neutral => NeutralPlayerNum,
+                    TeamRoleType.Impostor => ImpostorPlayerNum,
+                    _ => throw new ArgumentException("TeamRoleType is not Impostor, Neutral, Crewmate"),
+                } <= 0)
+                {
+                    RemainingAssignPlayerCountOnPair.Remove(targetrole);
+                    continue;
+                }
+                List<PlayerControl> _assignTargets = team switch
+                {
+                    TeamRoleType.Impostor => ImpostorPlayers,
+                    TeamRoleType.Neutral => CrewmatePlayers,
+                    TeamRoleType.Crewmate => CrewmatePlayers,
+                    _ => throw new ArgumentException("TeamRoleType is not Impostor, Neutral, Crewmate"),
+                };
+                int targetIndex = ModHelpers.GetRandomIndex(_assignTargets);
+                _assignTargets[targetIndex].SetRoleRPC(selectRole);
+                _assignTargets.RemoveAt(targetIndex);
+                RemainingAssignPlayerCountOnPair[targetrole]--;
+                if (RemainingAssignPlayerCountOnPair[targetrole] <= 0)
+                {
+                    RemainingAssignPlayerCountOnPair.Remove(targetrole);
+                    continue;
+                }
+            }
+        }
 
         //残り選出可能回数を取得
         if (!RemainingAssignPlayerCount.ContainsKey(selectRole))
@@ -437,50 +590,24 @@ class AllRoleSetClass
         if (RemainingAssignPlayerCount[selectRole] <= 0)
             Tickets.RemoveAll(x => x == selectRole);
 
-        return selectRole;
+        AssignedRoles.Add(selectRole);
+
+        return (AssignedRoles, assignedCount);
     }
     public static void ImpostorRandomSelect()
     {
-        int count = CustomOptionHolder.impostorRolesCountMax.GetInt();
         HashSet<RoleId> AssignedRoles = RandomSelect(
             AssignType.Impostor,
-            ref count,
+            ref ImpostorPlayerNum,
             ImpostorPlayers);
-        //マーリンを選ぶ
-        if (AssignedRoles.Contains(RoleId.Assassin) && CrewmatePlayerNum > 0)
-        {
-            Dictionary<RoleId, int> RemainingAssignPlayerCount = new();
-            List<RoleId> Ticket = new() { RoleId.Marlin };
-            while (Ticket.Count > 0 && CrewmatePlayers.Count > 0 && CrewmatePlayerNum > 0)
-            {
-                CrewmatePlayerNum--;
-                AssignedRoles.Add(
-                    SelectAndAssignRole(Ticket, RemainingAssignPlayerCount, CrewmatePlayers)
-                );
-            }
-        }
     }
     public static void NeutralRandomSelect()
     {
-        int count = CustomOptionHolder.neutralRolesCountMax.GetInt();
         HashSet<RoleId> AssignedRoles = RandomSelect(
             AssignType.Neutral,
-            ref count,
+            ref NeutralPlayerNum,
             CrewmatePlayers);
         if (AssignedRoles.Count <= 0) return;
-        //革命者を選ぶ
-        if (AssignedRoles.Contains(RoleId.Revolutionist) && CrewmatePlayerNum > 0)
-        {
-            Dictionary<RoleId, int> RemainingAssignPlayerCount = new();
-            List<RoleId> Ticket = new() { RoleId.Dictator };
-            while (Ticket.Count > 0 && CrewmatePlayers.Count > 0 && CrewmatePlayerNum > 0)
-            {
-                CrewmatePlayerNum--;
-                AssignedRoles.Add(
-                    SelectAndAssignRole(Ticket, RemainingAssignPlayerCount, CrewmatePlayers)
-                );
-            }
-        }
     }
     public static void CrewmateRandomSelect()
     {
@@ -694,7 +821,6 @@ class AllRoleSetClass
             RoleId.Sidekick or RoleId.SidekickSeer or RoleId.SidekickWaveCannon => true,
             RoleId.Pavlovsdogs => false,
             RoleId.ShermansServant => false,
-            RoleId.Revolutionist => false,
             RoleId.Assassin => false,
             RoleId.Jumbo => false,
             RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
