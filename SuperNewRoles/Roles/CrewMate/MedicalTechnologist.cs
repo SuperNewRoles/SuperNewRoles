@@ -1,11 +1,3 @@
-/* ◯作り方◯
-    1.ICrewmateかINeutralかIImpostorのどれかを継承する // [x]
-    2.必要なインターフェースを実装する // [x]
-    3.Roleinfo,Optioninfo,Introinfoを設定する // [x]
-    4.設定を作成する(CreateOptionが必要なければOptioninfoのoptionCreatorをnullにする) // [x]
-    5.インターフェースの内容を実装していく // [x]
-*/
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -99,7 +91,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             OnMeetingEnds: SetButtonInfo,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MedicalTechnologistButton.png", 115f),
-            () => GetCoolTime(), // [x]MEMO : 使い切ったらクールを0にする
+            () => GetCoolTime(),
             new(-2f, 1, 0),
             "MedicalTechnologistButtonName",
             KeyCode.F,
@@ -108,7 +100,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             CouldUse: () => OnCouldUse(),
             SetTargetUntargetPlayer: () => SetTargetUntargetPlayer(),
             isUseSecondButtonInfo: true
-        ); // [x]MEMO : 残り回数表示の更新等をできるように追加する
+        );
 
         this.CustomButtonInfos = new CustomButtonInfo[1] { MTButtonInfo };
 
@@ -178,7 +170,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     /// </summary>
     private void SetButtonInfo() => MTButtonInfo.customButton.SecondButtonInfoText.text = MtButtonCountString();
 
-    private string MtButtonCountString() // [x]MEMO : 残り全体回数\n現在フェイズ残り指定回数 => 選択対象の名前 // [ ]MEMO : SHRではシェリフと同じように名前で表示
+    private string MtButtonCountString()
     {
         string remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
         string targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}";
@@ -232,7 +224,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     }
 
     // IMeetingHandler
-    public void StartMeeting() // [x]MEMO : 後で自分のRoleBaseのみに処理を掛ける方法聞く => OK
+    public void StartMeeting()
     {
         string infoName = ModTranslation.GetString("MedicalTechnologistName");
         string infoContents;
@@ -294,7 +286,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         ChangeName.SetRoleName(Player);
 
         IsSHRFirstCool = false;
-        return false; // [x]MEMO : クールはリセットしたい。~> キルを守護で防ぐ事が必要?
+        return false;
     }
 
     // Custom
