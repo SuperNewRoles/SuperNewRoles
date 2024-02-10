@@ -282,10 +282,13 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         }
         else { Logger.Info("既に検体を取得済みにもかかわらず, 対象が取得されました。", Roleinfo.NameKey); }
 
-        if (isResetCool) Player.ResetKillCool(GetCoolTime());
+        if (isResetCool)
+        {
+            IsSHRFirstCool = false;
+            Player.ResetKillCool(GetCoolTime());
+        }
         ChangeName.SetRoleName(Player);
 
-        IsSHRFirstCool = false;
         return false;
     }
 
