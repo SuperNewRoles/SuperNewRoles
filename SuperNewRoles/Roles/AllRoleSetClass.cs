@@ -526,11 +526,12 @@ class AllRoleSetClass
                     assignTargets = ImpostorPlayers;
                 else if (pairRole.team is TeamRoleType.Neutral or TeamRoleType.Crewmate)
                     assignTargets = CrewmatePlayers;
-                SelectAndAssignRole(1, assignType, new() { pairRole.role }, RemainingAssignPlayerCount, AssignTargets, true);
+                assignedCount += SelectAndAssignRole(1, assignType, new() { pairRole.role }, RemainingAssignPlayerCount, assignTargets, true).assignedCount;
                 RemainingAssignPlayerCountOnPair[pairRole.role] = GetPlayerCount(pairRole.role) - 1;
                 if (RemainingAssignPlayerCountOnPair[pairRole.role] <= 0)
                     RemainingAssignPlayerCountOnPair.Remove(pairRole.role);
                 AssignedRoles.Add(pairRole.role);
+
             }
             //RemainingAssignPlayerCountOnPairを元にアサイン可能であればアサインする
             while (RemainingAssignPlayerCountOnPair.Count > 0)
@@ -563,9 +564,10 @@ class AllRoleSetClass
                     _ => throw new ArgumentException("TeamRoleType is not Impostor, Neutral, Crewmate"),
                 };
                 int targetIndex = ModHelpers.GetRandomIndex(_assignTargets);
-                _assignTargets[targetIndex].SetRoleRPC(selectRole);
+                _assignTargets[targetIndex].SetRoleRPC(targetrole);
                 _assignTargets.RemoveAt(targetIndex);
                 RemainingAssignPlayerCountOnPair[targetrole]--;
+                assignedCount++;
                 if (RemainingAssignPlayerCountOnPair[targetrole] <= 0)
                 {
                     RemainingAssignPlayerCountOnPair.Remove(targetrole);
@@ -591,6 +593,7 @@ class AllRoleSetClass
             Tickets.RemoveAll(x => x == selectRole);
 
         AssignedRoles.Add(selectRole);
+        assignedCount++;
 
         return (AssignedRoles, assignedCount);
     }
@@ -821,7 +824,6 @@ class AllRoleSetClass
             RoleId.Sidekick or RoleId.SidekickSeer or RoleId.SidekickWaveCannon => true,
             RoleId.Pavlovsdogs => false,
             RoleId.ShermansServant => false,
-            RoleId.Assassin => false,
             RoleId.Jumbo => false,
             RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
             RoleId.Nun or RoleId.Pteranodon => UnityEngine.Object.FindAnyObjectByType<MovingPlatformBehaviour>(), // ぬーんがあるならば選出が可能
@@ -890,6 +892,21 @@ class AllRoleSetClass
             if (option == null) continue;
             var selection = option.GetSelection();
             SetChance(selection, roledata.role, roledata.team);
+        }
+        foreach (var assigns in AssignTickets)
+        {
+            Logger.Info("----------------");
+            Logger.Info($"{assigns.Key} : {assigns.Value.Count}");
+            Logger.Info($"IsImpostor: {assigns.Key.HasFlag(AssignType.Impostor)}");
+            Logger.Info($"IsNeutral: {assigns.Key.HasFlag(AssignType.Neutral)}");
+            Logger.Info($"IsCrewmate: {assigns.Key.HasFlag(AssignType.Crewmate)}");
+            Logger.Info($"IsTenPar: {assigns.Key.HasFlag(AssignType.TenPar)}");
+            Logger.Info($"IsNotTenPar: {assigns.Key.HasFlag(AssignType.NotTenPar)}");
+            foreach (var assign in assigns.Value)
+            {
+                Logger.Info($"{assign}");
+            }
+            Logger.Info("----------------");
         }
         SetJumboTicket();
         //SetChance(selection, roleInfo.Role, roleInfo.Team);
