@@ -109,8 +109,8 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         this.SampleCrews = (byte.MaxValue, byte.MaxValue);
 
         JudgmentType judgmentSystem = JudgmentType.None;
-        judgmentSystem |= IsJudgmentTeamType.GetBool() ? JudgmentType.TeamType : JudgmentType.None;                         // 0b_0x
-        judgmentSystem |= IsJudgmentAllNeutralOneTeam.GetBool() ? JudgmentType.None : JudgmentType.DetailedNeutral;   // 0b_x0
+        judgmentSystem |= IsJudgmentTeamType.GetBool() ? JudgmentType.TeamType : JudgmentType.None;                 // 0b_0x
+        judgmentSystem |= IsJudgmentAllNeutralOneTeam.GetBool() ? JudgmentType.None : JudgmentType.DetailedNeutral; // 0b_x0
 
         _JudgmentSystem = judgmentSystem; // 0b_xx
     }
@@ -120,19 +120,19 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     public RoleTypes DesyncRole => RoleTypes.Impostor;
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
-        ChangePlayers[this.Player.PlayerId] = ModHelpers.Cs(Roleinfo.RoleColor, $"<size=75%>{MtButtonCountString()}</size>\n{RoleNameText}\n{ChangeName.GetNowName(ChangePlayers, this.Player)}");
+        ChangePlayers[this.Player.PlayerId] = ModHelpers.Cs(Roleinfo.RoleColor, $"<size=80%>{MtButtonCountString()}</size>\n{RoleNameText}\n{ChangeName.GetNowName(ChangePlayers, this.Player)}");
 
-        string suffix = ModHelpers.Cs(new Color(179f / 255f, 0f, 0f), " \u00A9"); // © => 赤血球
+        const string suffix = "<color=#b32323> \u00A9</color>"; // © => 赤血球
 
         if (SampleCrews.FirstCrew != byte.MaxValue)
         {
             PlayerControl first = ModHelpers.PlayerById(SampleCrews.FirstCrew);
-            ChangePlayers[SampleCrews.FirstCrew] = $"{first.NameText().text}{suffix}";
+            ChangePlayers[SampleCrews.FirstCrew] = $"{ChangeName.GetNowName(ChangePlayers, first)}{suffix}";
         }
         if (SampleCrews.SecondCrew != byte.MaxValue)
         {
             PlayerControl second = ModHelpers.PlayerById(SampleCrews.SecondCrew);
-            ChangePlayers[SampleCrews.FirstCrew] = $"{second.NameText().text}{suffix}";
+            ChangePlayers[SampleCrews.SecondCrew] = $"{ChangeName.GetNowName(ChangePlayers, second)}{suffix}";
         }
     }
 
@@ -172,28 +172,33 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
 
     private string MtButtonCountString()
     {
-        string remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
-        string targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}";
-
-        string mark = ModHelpers.Cs(new Color(179f / 255f, 0f, 0f), " \u00A9"); // © => 赤血球
-        string targetInfoText =
-            SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue
-                ? $"{ModTranslation.GetString("MedicalTechnologistUnselected")}" // 未選択
-                : SampleCrews.FirstCrew != byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue
-                    ? $"{mark}" // 一人選択済み
-                    : $"{mark}{mark}"; // 対象選択完了
-
         string infoText;
-        if (Mode.ModeHandler.IsMode(Mode.ModeId.Default, Mode.ModeId.Werewolf))
+
+        string remainingCountText = $"{ModTranslation.GetString("MedicalTechnologistAbilityRemainingCount")}{AbilityRemainingCount}";
+        string targetInfoText = "";
+
+        bool IsdisplayInfoText =
+            Mode.ModeHandler.IsMode(Mode.ModeId.Default, Mode.ModeId.Werewolf) &&
+            (AbilityRemainingCount > 0 || !(SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue));
+
+        const string mark = "<color=#b32323> \u00A9</color>"; // © => 赤血球
+
+        if (IsdisplayInfoText)
         {
-            infoText = AbilityRemainingCount > 0 || !(SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue)
-                ? $"{remainingCountText}\n{targetText}{targetInfoText}"
-                : $"{remainingCountText}";
+            string targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}";
+            string targetInfo =
+                SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue
+                    ? $"{ModTranslation.GetString("MedicalTechnologistUnselected")}" // 未選択
+                    : SampleCrews.FirstCrew != byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue
+                        ? $"{mark}" // 一人選択済み
+                        : $"{mark}{mark}"; // 対象選択完了
+
+            targetInfoText = $"{targetText}{targetInfo}";
         }
-        else
-        {
-            infoText = $"{remainingCountText}";
-        }
+
+        infoText = IsdisplayInfoText
+            ? $"{remainingCountText}\n{targetInfoText}"
+            : $"{remainingCountText}";
 
         return infoText;
     }
@@ -209,7 +214,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     // INameHandler
     public void OnHandleName()
     {
-        string suffix = ModHelpers.Cs(new Color(179f / 255f, 0f, 0f), " \u00A9"); // © => 赤血球
+        const string suffix = "<color=#b32323> \u00A9</color>"; // © => 赤血球
 
         if (SampleCrews.FirstCrew != byte.MaxValue)
         {
@@ -247,13 +252,15 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
 
         infoContents = SampleTestResultsText(firstCrew, secondCrew);
         AddChatPatch.ChatInformation(Player, infoName, infoContents, "#259f94", true);
+
+        if (!isOnryMyself) ChangeName.SetRoleName(Player);
     }
 
     public void CloseMeeting()
     {
         IsSHRFirstCool = false;
         SampleCrews = (byte.MaxValue, byte.MaxValue);
-        ChangeName.SetRoleName(Player);
+        if (AmongUsClient.Instance.AmHost) ChangeName.SetRoleName(Player);
     }
 
     // ICheckMurderHandler
