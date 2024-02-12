@@ -53,17 +53,25 @@ public class PairRoleDetail
     public static readonly Dictionary<RoleId, PairRoleDetail> PairRoleDetails = new() {
         { RoleId.Assassin, new(RoleId.Assassin, (0,0,1), (TeamRoleType.Impostor, RoleId.Marlin)) },
         { RoleId.Revolutionist, new(RoleId.Revolutionist, (0,0,1), (TeamRoleType.Crewmate, RoleId.Dictator)) }, 
-        { RoleId.TheFirstLittlePig, new(RoleId.TheFirstLittlePig, (0,2,0), (TeamRoleType.Neutral, RoleId.TheSecondLittlePig), (TeamRoleType.Neutral, RoleId.TheThirdLittlePig)) },
+        { RoleId.TheFirstLittlePig, new(RoleId.TheFirstLittlePig, (0,2,0), TheThreeLittlePigs.TheThreeLittlePigsOnAssigned , (TeamRoleType.Neutral, RoleId.TheSecondLittlePig), (TeamRoleType.Neutral, RoleId.TheThirdLittlePig)) },
         { RoleId.Pokerface, new(RoleId.Pokerface, (0,2,0), (TeamRoleType.Neutral, RoleId.Pokerface), (TeamRoleType.Neutral, RoleId.Pokerface)) }
     };
     public RoleId role { get; }
     public (TeamRoleType team, RoleId role)[] pairRoles { get; }
     public (int impostor, int neutral, int crewmate) needPlayerCount { get; }
+    public Action<List<(RoleId, PlayerControl)>> OnAssigned { get; } = null;
     public PairRoleDetail(RoleId role, (int impostor, int neutral, int crewmate) needPlayerCount, params (TeamRoleType team, RoleId role)[] pairRoles)
     {
         this.role = role;
         this.pairRoles = pairRoles;
         this.needPlayerCount = needPlayerCount;
+    }
+    public PairRoleDetail(RoleId role, (int impostor, int neutral, int crewmate) needPlayerCount, Action<List<(RoleId, PlayerControl)>> onAssigned, params (TeamRoleType team, RoleId role)[] pairRoles)
+    {
+        this.role = role;
+        this.pairRoles = pairRoles;
+        this.needPlayerCount = needPlayerCount;
+        this.OnAssigned = onAssigned;
     }
 }
 [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -453,11 +461,13 @@ class AllRoleSetClass
         else if (assignType.HasFlag(AssignType.Neutral))
         {
             neutralcount = nowCanAssignCount - 1;
+            crewmateplayercount--;
         }
         else if (assignType.HasFlag(AssignType.Crewmate))
         {
             neutralcount = 0;
             crewmatecount = nowCanAssignCount - 1;
+            crewmateplayercount--;
         }
         if (impostorcount < data.impostor)
             return false;
@@ -493,7 +503,7 @@ class AllRoleSetClass
             return TeamRoleType.Crewmate;
         throw new ArgumentException("AssignType is not Impostor, Neutral, Crewmate");
     }
-    private static (HashSet<RoleId> assigned, int assignedCount) SelectAndAssignRole(
+    private static (HashSet<RoleId> assigned, int assignedCount, PlayerControl assignedtarget) SelectAndAssignRole(
            int CanAssignPlayerCount,
            AssignType assignType,
            List<RoleId> Tickets,
@@ -509,13 +519,14 @@ class AllRoleSetClass
         RoleId selectRole = ModHelpers.GetRandom(Tickets);
 
         PairRoleDetail pairRoleDetail = PairRoleDetail.GetPairRoleDetail(selectRole);
+        List<(RoleId, PlayerControl)> Assigneds = new();
         if (!onPairAssign && pairRoleDetail != null)
         {
             bool canAssign = CheckCanAssignCount(assignType, CanAssignPlayerCount, pairRoleDetail.needPlayerCount);
             if (!canAssign)
             {
                 Tickets.RemoveAll(x => x == selectRole);
-                return (new(), 0);
+                return (new(), 0, null);
             }
             Dictionary<RoleId, int> RemainingAssignPlayerCountOnPair = new();
             // foreachで回してSelectAndAssignRoleを呼ぶ
@@ -526,7 +537,9 @@ class AllRoleSetClass
                     assignTargets = ImpostorPlayers;
                 else if (pairRole.team is TeamRoleType.Neutral or TeamRoleType.Crewmate)
                     assignTargets = CrewmatePlayers;
-                assignedCount += SelectAndAssignRole(1, assignType, new() { pairRole.role }, RemainingAssignPlayerCount, assignTargets, true).assignedCount;
+                var pairassigned = SelectAndAssignRole(1, assignType, new() { pairRole.role }, RemainingAssignPlayerCount, assignTargets, true);
+                Assigneds.Add((pairRole.role, pairassigned.assignedtarget));
+                assignedCount += pairassigned.assignedCount;
                 RemainingAssignPlayerCountOnPair[pairRole.role] = GetPlayerCount(pairRole.role) - 1;
                 if (RemainingAssignPlayerCountOnPair[pairRole.role] <= 0)
                     RemainingAssignPlayerCountOnPair.Remove(pairRole.role);
@@ -565,6 +578,7 @@ class AllRoleSetClass
                 };
                 int targetIndex = ModHelpers.GetRandomIndex(_assignTargets);
                 _assignTargets[targetIndex].SetRoleRPC(targetrole);
+                Assigneds.Add((targetrole, _assignTargets[targetIndex]));
                 _assignTargets.RemoveAt(targetIndex);
                 RemainingAssignPlayerCountOnPair[targetrole]--;
                 assignedCount++;
@@ -582,8 +596,15 @@ class AllRoleSetClass
 
         //対象を選出
         int TargetIndex = ModHelpers.GetRandomIndex(AssignTargets);
-        AssignTargets[TargetIndex].SetRoleRPC(selectRole);
+        var assignedtarget = AssignTargets[TargetIndex];
+        assignedtarget.SetRoleRPC(selectRole);
         AssignTargets.RemoveAt(TargetIndex);
+
+        Assigneds.Add((selectRole, assignedtarget));
+        if (!onPairAssign && pairRoleDetail != null)
+        {
+            pairRoleDetail.OnAssigned?.Invoke(Assigneds);
+        }
 
         //残り選出可能回数を減らす
         RemainingAssignPlayerCount[selectRole]--;
@@ -595,7 +616,7 @@ class AllRoleSetClass
         AssignedRoles.Add(selectRole);
         assignedCount++;
 
-        return (AssignedRoles, assignedCount);
+        return (AssignedRoles, assignedCount, assignedtarget);
     }
     public static void ImpostorRandomSelect()
     {
