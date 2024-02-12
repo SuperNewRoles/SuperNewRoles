@@ -121,7 +121,7 @@ public static class RoleSelectHandler
     /// RoleBase移行前の役職の, ISupportSHRの[DesyncRole]及び[IsDesync]の代用。
     /// FIXME : 全てRoleBaseに移行出来たら消す。
     /// </summary>
-    public static (bool IsDesync, RoleTypes RoleType) SetRoleInfo(RoleId role)
+    public static (bool IsDesync, RoleTypes RoleType) GetDesyncRole(RoleId role)
     {
         return role switch
         {
