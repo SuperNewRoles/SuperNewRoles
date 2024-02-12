@@ -241,7 +241,7 @@ TheFungleMushroomMixupCantOpenMeeting,Mushroom Mixup Can't Open Meeting,キノ�
 TheFungleMushroomMixupTime,Mushroom Mixup Seconds,キノコカオスの秒数,持续时间,迷茫香菇持續時間
 TheFungleAdditionalAdmin,Additional Admin,アドミンを追加する,追加管理地图,增加管理员
 TheFunglePowerOutageSabotage,Additonal Power Outage Sabotage,停電サボタージュを追加する,追加照明破坏,配電箱系統
-TheFungleHideSporeMask,Can see the player in the spore,胞子の中にいるプレイヤーを見れる,可以在孢子雾中看到玩家,隱藏孢子面具
+TheFungleHideSporeMask,Can see the player in the spore,胞子の中にいるプレイヤーを見れる,可以在孢子雾中看到玩家,可以在孢子霧中看到玩家
 TheFungleHideSporeMaskOnlyImpostor,Can see only Impostor,インポスターだけ見れる,仅可看到内鬼玩家,只能看到內鬼
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
@@ -752,7 +752,7 @@ JackalFriendsDescription,It is judged as Crewmate.\nbut is in the Jackal camp.\n
 JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェックできる,可以确认豺狼是谁,可以確認豺狼是誰
 DoctorName,Doctor,ドクター,医生,醫生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死,隨時查看生命跡象檢測器來確認船員的生死
-DoctorDescription,This role has mobile vitals and also allows the user to check the exact time[s] elapsed since death by checking the vitals located on the map.\nUnlike the Scientist's，the recharge of the portable vitals cannot be restored by completing the task. Also，it is not possible to recharge the battery before it runs out of charge.\nYou can recharge your mobile vitals by standing near the vitals located on the map.\n\nOh，another one slips through my hands...\nIt doesn't matter what information is sent about the dead after they're dead...\nYou can't bring a dead sailor back to life...,携帯バイタルを有し，更にマップに設置されているバイタルを確認する事で死亡してからの正確な経過時間[s]を確認する事ができる役職です。\n携帯バイタルの充電は科学者の物と異なりタスク完了によって回復はできません。又，充電が切れる前に再充電する事は出来ません。\n携帯バイタルの充電は，マップに設置されているバイタル付近に立つ事で行えます。\n\nああ、また一人この手からすり抜けていく...\n亡くなった後の情報が分かった所で意味がない...\n亡くなった船員を生き返らす事などできないのだから...,医生可以远程查看生命监测装置，并且可以通过查看飞船的生命监测装置确认那些死亡玩家的死亡时间。\n医生不可以通过完成任务来获得充能，也不能在充能耗尽之前进行充能。\n医生可以在飞船的生命监测装置旁给远程装置充能。
+DoctorDescription,This role has mobile vitals and also allows the user to check the exact time[s] elapsed since death by checking the vitals located on the map.\nUnlike the Scientist's，the recharge of the portable vitals cannot be restored by completing the task. Also，it is not possible to recharge the battery before it runs out of charge.\nYou can recharge your mobile vitals by standing near the vitals located on the map.\n\nOh，another one slips through my hands...\nIt doesn't matter what information is sent about the dead after they're dead...\nYou can't bring a dead sailor back to life...,携帯バイタルを有し，更にマップに設置されているバイタルを確認する事で死亡してからの正確な経過時間[s]を確認する事ができる役職です。\n携帯バイタルの充電は科学者の物と異なりタスク完了によって回復はできません。又，充電が切れる前に再充電する事は出来ません。\n携帯バイタルの充電は，マップに設置されているバイタル付近に立つ事で行えます。\n\nああ、また一人この手からすり抜けていく...\n亡くなった後の情報が分かった所で意味がない...\n亡くなった船員を生き返らす事などできないのだから...,医生可以远程查看生命监测装置，并且可以通过查看飞船的生命监测装置确认那些死亡玩家的死亡时间。\n医生不可以通过完成任务来获得充能，也不能在充能耗尽之前进行充能。\n医生可以在飞船的生命监测装置旁给远程装置充能。,醫生可以隨時查看攜帶式的生命跡象檢測器，並透過地圖上的生命跡象檢測器來得知具體的死亡經過時間。\n攜帶式的生命跡象檢測器不同於科學家的充電機制，僅能透過處於地圖上的生命跡象檢測器附近以進行充電。\n\n嗚呼，又一條寶貴生命從我手中離去了...\n知道過世後的情報已經毫無意義...\n既然無法讓已故的船員復活...
 DoctorVitalName,Vital,バイタル,生命监测装置,生命跡象檢測器
 DoctorChargeTime,Vital charge time,バイタルのチャージタイム,医生装置冷却时间,醫生裝置冷卻時間
 DoctorUseTime,Can use vital time,バイタルを見れる時間,医生装置最大使用时间,醫生裝置最大使用時間
@@ -1050,7 +1050,7 @@ EvilHackerCanUseAdminDuringMeeting,Can Use Admin During Meeting,会議中にア�
 EvilHackerSabotageMapShowsAdmin,Sabotage Map Shows Admin,サボタージュマップにもアドミンを表示する,内鬼地图以管理地图的形式显示,駭客可以在破壞地圖中看到管理員地圖
 EvilHackerMapShowsDoorState,Map Shows Doors Status,マップにドアの開閉状況を表示する,地图上会显示门的开关情况,駭客可以在地圖中看到門的開關狀態
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
-CreateMadmateFastVerButton,Change of Heart,心変わりさせる
+CreateMadmateFastVerButton,Change of Heart,心変わりさせる,,變心
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人,交換位置使他人迷惑
 PositionSwapperDescription,By using the ability，it can swap its own position with a randomly selected target.\nNeither you nor the target will be notified of who you swap with.\nUse the swap ability to mix up your routes and confuse your crew!,能力を使用する事で、ランダムに選択された対象と自身の位置を入れ換える事ができます。\n誰とスワップされたかは、自身にも対象にも通知されません。\nスワップ能力で経路をごちゃ混ぜにして、クルー達を混乱させましょう!!,念动使属于内鬼阵营，可以将自己的位置与一名随机玩家交换。\n任何玩家都不能确认与念动使交换位置的玩家。\n念动使需要使用能力混淆自己的行动来迷惑船员。,交換使可以和隨機一名玩家交換位置。\n你和目標都不會知道和誰交換了位置。\n使用交換位置能力來混淆你的路線，迷惑其他玩家！
@@ -1109,7 +1109,7 @@ NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干
 NeetDescription,Every possible button does not exist.\nYou can't do anything，because you are Neet.\nIf you survive to the end，you win alone or additionally.,ありとあらゆるボタンが存在しません。\n何も出来ません、だってニートだもの。\n最後まで生存していると単独or追加勝利します。,由于过于废柴，废柴不存在任何交互按钮，不能作任何行动。\n废柴存活到游戏结束即可获胜。,尼特沒有任何可以操作的按鈕。\n甚麼都不用做，因為你是尼特。\n根據設定，活到最後來取得獨自勝利或和他人一同勝利吧。
 FastMakerName,Fast Maker,ファストメーカー,洗脑师,洗腦師
 FastMakerTitle1,Let's make Madmate with a light heart.,軽い気持ちでマッドメイトを作ろう,让船员背叛成为你的俘虏,讓船員背叛成為你的手下
-FastMakerDescription,This role can create a Mad Mate with the first kill.\n\nIn SHR mode，both non-introducers and non-introducers create a Madmate by using the Kill button.\nIn normal mode，a Madmate is created by using the [Change of Heart] button.\nYou cannot make a kill until you have created a Madmate.,初手キルでマッドメイトを作成出来るインポスターです。\n\nSHRモード時は非導入者・非導入者双方共，キルボタンでマッドメイトを作成します。\n通常モード時は，[心変わりさせる]ボタンを使用する事でマッドメイトを作成します。\nマッドメイトを作成するまでキルをする事が出来ません。,洗脑师的首次击杀不会造成死亡，而是将击杀目标变为叛徒,首次擊殺可以使船員背叛
+FastMakerDescription,This role can create a Mad Mate with the first kill.\n\nIn SHR mode，both non-introducers and non-introducers create a Madmate by using the Kill button.\nIn normal mode，a Madmate is created by using the [Change of Heart] button.\nYou cannot make a kill until you have created a Madmate.,初手キルでマッドメイトを作成出来るインポスターです。\n\nSHRモード時は非導入者・非導入者双方共，キルボタンでマッドメイトを作成します。\n通常モード時は，[心変わりさせる]ボタンを使用する事でマッドメイトを作成します。\nマッドメイトを作成するまでキルをする事が出来ません。,洗脑师的首次击杀不会造成死亡，而是将击杀目标变为叛徒,洗腦師的首次擊殺可以使船員背叛。\n\n在SHR模式下，洗腦師可以使用擊殺來招募叛徒。\n在普通模式下，洗腦師可以使用[變心]按鈕來招募叛徒。\n在招募叛徒之前，洗腦師無法進行擊殺。
 KillName,KILL,キル,击杀,擊殺
 JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる,豺狼可以将一名玩家招募为狈,豺狼可以將一名玩家招募為狽
 ToiletFanName,Toilet Fan,トイレファン,腹泻者,腹瀉者
@@ -1315,7 +1315,7 @@ ConnectKillerName,ConnectKiller,コネクトキラー,浊化行者,穿行殺手
 ConnectKillerTitle1,Lets’ Connect!,通信サボタージュでベントを繋げよう,趁通讯破坏在管道间穿行,趁通訊破壞在通風管道間穿行
 NekoKabochaName,NekoKabocha,ネコカボチャ,复仇者,復仇者
 NekoKabochaTitle1,Let me take you on the road.,道連れを起こそう,杀人偿命,殺人償命
-NekoKabochaDescription,It has the ability to take your opponent along when you are killed and the ability to take a random crew member along when you are expelled.\n\nWhen the player is killed，the team restriction setting is reflected.\nWhen you are exiled，the "team restriction" setting is not applied.\n\nAlas，what a pity... I can't believe I'm going to die here...\nOh，you there，won't you die with me?\n\n... Well，I have more than one life，so you're the only one who will die!,自身がキルされた時に相手を道連れにする能力と，自身が追放される時にランダムでクルーを道連れにする能力を有します。\n自身がキルされた際の道連れは，設定により陣営の制限をする事ができます。\n追放時の道連れには，道連れ対象の陣営を除外する設定が反映されません。\n\n嗚呼 口惜しや... この、あたしがこんな所で死ぬなんて...\nああ そこにいるあんさん 一緒に死んでくれやしないかい?\n\n...まあ，あたしには命が複数あるから死ぬのはお前だけだけどね!!
+NekoKabochaDescription,It has the ability to take your opponent along when you are killed and the ability to take a random crew member along when you are expelled.\n\nWhen the player is killed，the team restriction setting is reflected.\nWhen you are exiled，the "team restriction" setting is not applied.\n\nAlas，what a pity... I can't believe I'm going to die here...\nOh，you there，won't you die with me?\n\n... Well，I have more than one life，so you're the only one who will die!,自身がキルされた時に相手を道連れにする能力と，自身が追放される時にランダムでクルーを道連れにする能力を有します。\n自身がキルされた際の道連れは，設定により陣営の制限をする事ができます。\n追放時の道連れには，道連れ対象の陣営を除外する設定が反映されません。\n\n嗚呼 口惜しや... この、あたしがこんな所で死ぬなんて...\nああ そこにいるあんさん 一緒に死んでくれやしないかい?\n\n...まあ，あたしには命が複数あるから死ぬのはお前だけだけどね!!,,復仇者具有在被擊殺時與擊殺者同歸於盡、或是在被放逐時隨機帶走一名船員的能力。\n被擊殺時同歸於盡的對象，根據設定可限制陣營。\n被放逐時帶走的對象，不受排除陣營的設定影響。\n\n唉，真可惜...我竟然要死在這裡...\n喂，你在那邊，要不要跟我一起死?\n\n...嘛，我有多條命，所以只有你會死啦！
 KillCooldown,KillCooldown,キルクールダウン,击杀冷却,擊殺冷卻
 CanRevengeCrewmate,Can take crewmates on the road,クルーメイトを道連れ可,复仇者可以连带船员阵营玩家,復仇者可以連帶船員陣營玩家
 CanRevengeImpostor,Can take Impostor on the road,インポスターを道連れ可,复仇者可以连带内鬼阵营玩家,復仇者可以連帶內鬼陣營玩家
@@ -1512,8 +1512,8 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
-BalancerAbilityUseText,Ability activated,能力発動
-BalancerVoteText,Vote for one or the other!,どちらかに投票せよ！
+BalancerAbilityUseText,Ability activated,能力発動,,能力發動
+BalancerVoteText,Vote for one or the other!,どちらかに投票せよ！,,將票投給其中一邊！
 PteranodonName,Pteranodon,プテラノドン,鸟人,無齒翼龍
 PteranodonTitle1,PtePte,プテプテ,一飞冲天啊，我,翼~翼~
 PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,起飛！
@@ -1855,7 +1855,7 @@ SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成�
 SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,未持有
 InformationName,Information,情報,资讯,資訊
-ExiledText,{0} was the {1}!,{0} は {1} だった！,{0}是{1}!
+ExiledText,{0} was the {1}!,{0} は {1} だった！,{0}是{1}!,{0} 是 {1}！
 
 # Replay
 ReplayName,Replay,リプレイ,回放,重播
