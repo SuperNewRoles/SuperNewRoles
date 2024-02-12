@@ -252,9 +252,7 @@ class ReportDeadBodyPatch
                 __instance.SwapRoleRPC(target.Object);
                 target.Object.SetRoleRPC(__instance.GetRole());
             }
-            if (__instance.IsRole(RoleId.DyingMessenger) &&
-                target != null &&
-                DeadPlayer.ActualDeathTime.Contains(target.PlayerId))
+            if (__instance.IsRole(RoleId.DyingMessenger) && target != null)
             {
                 bool isGetRole = (float)(DeadPlayer.ActualDeathTime[target.PlayerId].DeathTime + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
                 bool isGetLightAndDarker = (float)(DeadPlayer.ActualDeathTime[target.PlayerId].DeathTime + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
