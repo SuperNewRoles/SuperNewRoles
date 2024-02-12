@@ -1703,6 +1703,10 @@ BlackSantaName,BlackSanta,ブラックサンタ,,黑誕老人
 BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!,,齁齁齁，給壞孩子們帶來榮耀！
 BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！,,黑誕老人屬於內鬼陣營，可以給內鬼們送聖誕禮物（職業）。\n但是，如果給船員或中立陣營送禮物，黑誕老人將會自殺。\n聖誕快樂！
 
+PusherName,Pusher,突き落と師
+PusherTitle1,Eyes behind you.,背後には気を付けな
+PusherDescription,You can push the crew mates who are in vulnerable positions overboard.\nPushed crew members will not result in dead bodies.,落とせそうな箇所にいるクルーを突き落とすことが出来ます。\n突き落とされたクルーは死体が発生しません。
+PusherButtonName,Push!!!,突き落とす
 
 #NewRoleTranslation
 
