@@ -43,6 +43,8 @@ public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
             return;
         if (info.Killer.PlayerId != Player.PlayerId)
             return;
+        if (info.Killer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+            return;
         if (ModeHandler.IsMode(ModeId.Default))
         {
             MessageWriter writer = RpcWriter;
