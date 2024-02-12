@@ -1044,6 +1044,8 @@ GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次,剩餘{0}次
 GhostMechanicAbilityUseError,The ability cannot be activated when sabotage is not occurring.,サボタージュが発生していない時に，能力を発動する事はできません。,亡灵工程师的能力不能在紧急破坏未发生时发动。,沒有發生破壞時不能使用能力。
 EvilHackerName,EvilHacker,イビルハッカー,骇客,駭客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利,駭入飛船獲取勝利
+EvilHackerTitle2,I am the one who controls the information on this ship.,我は，此の船の情報を支配せし者
+EvilHackerDescription,This is an impostor role that allows you to view the admins wherever you are.\nThere is also a setting that allows viewing of portable admins during the meeting phase.\n\nThis allows you to view enhanced admin information over the regular admins.\nYou can also create a Madmate.\n\nI am the one who controls the information on this ship. You will not be able to escape from me.,何処にいてもアドミンを見る事ができるインポスター役職です。\n会議フェイズ中にポータブルアドミンの閲覧を可能にする設定もあります。\n\n通常のアドミンよりも強化されたアドミン情報を閲覧する事ができます。\n又，クルーを狂わせマッドメイトを作成する事もできます。\n\n我は，此の船の情報を支配せし者。我から逃れる事は叶わぬと心得よ。
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,可以把一名玩家变成叛徒,可以把一名玩家變成叛徒
 CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] ability.,[狂わせる]能力のクールタイムの設定,[洗脑]技能冷却设置,洗腦能力的冷卻時間
