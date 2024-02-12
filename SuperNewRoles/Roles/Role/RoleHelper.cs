@@ -38,17 +38,6 @@ public enum TeamType
 
 public static class RoleHelpers
 {
-    /* TODO: 蔵徒:陣営playerがうまく動いていない。SetRoleの時に``if (player.Is陣営())``がうまく動かず、リスト入りされていない。直す
-    public static List<PlayerControl> CrewmatePlayer;
-    public static List<PlayerControl> ImposterPlayer;
-    public static List<PlayerControl> NeutralPlayer;
-    public static List<PlayerControl> MadRolesPlayer;
-    public static List<PlayerControl> FriendRolesPlayer;
-    */
-
-    // FIXME:パブロフの犬オーナーのリスト入りがうまくいかなかった為、一度コメントアウト勝利条件整理の時に修正お願いします・・・
-    // public static List<PlayerControl> NeutralKillingPlayer;
-
     // |: ================陣営の分類 ================ :|
 
     public static bool IsCrew(this PlayerControl player)
@@ -72,7 +61,7 @@ public static class RoleHelpers
     /// <param name="player">マッドであるか判定したいプレイヤー</param>
     /// <returns>プレイヤーがマッド役職である場合trueを返す</returns>
     public static bool IsMadRoles(this PlayerControl player) =>
-        player.GetRoleBase() is IMadmate || 
+        player.GetRoleBase() is IMadmate ||
         (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
         player.GetRole() is
         // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
@@ -91,6 +80,7 @@ public static class RoleHelpers
     // IsMads
 
     public static bool IsNeutral(this PlayerControl player) =>
+        player.GetRoleBase() is INeutral ||
         player.GetRole() is
         RoleId.Jester or
         RoleId.Jackal or
