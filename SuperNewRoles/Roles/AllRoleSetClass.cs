@@ -51,7 +51,7 @@ public class PairRoleDetail
         return PairRoleDetails.TryGetValue(role, out PairRoleDetail value) ? value : null;
     }
     public static readonly Dictionary<RoleId, PairRoleDetail> PairRoleDetails = new() {
-        { RoleId.Assassin, new(RoleId.Assassin, (0,0,1), (TeamRoleType.Impostor, RoleId.Marlin)) },
+        { RoleId.Assassin, new(RoleId.Assassin, (0,0,1), (TeamRoleType.Crewmate, RoleId.Marlin)) },
         { RoleId.Revolutionist, new(RoleId.Revolutionist, (0,0,1), (TeamRoleType.Crewmate, RoleId.Dictator)) }, 
         { RoleId.TheFirstLittlePig, new(RoleId.TheFirstLittlePig, (0,2,0), TheThreeLittlePigs.TheThreeLittlePigsOnAssigned , (TeamRoleType.Neutral, RoleId.TheSecondLittlePig), (TeamRoleType.Neutral, RoleId.TheThirdLittlePig)) },
         { RoleId.Pokerface, new(RoleId.Pokerface, (0,2,0), Pokerface.OnAssigned, (TeamRoleType.Neutral, RoleId.Pokerface), (TeamRoleType.Neutral, RoleId.Pokerface)) }
