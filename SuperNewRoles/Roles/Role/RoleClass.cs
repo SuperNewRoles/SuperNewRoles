@@ -67,8 +67,8 @@ public static class RoleClass
         //Map.Data.ClearAndReloads();
         ElectricPatch.Reset();
         SabotageManager.ClearAndReloads();
-        Roles.Madmate.CheckedImpostor = new();
-        Roles.JackalFriends.CheckedJackal = new();
+        Roles.Madmate.ClearAndReload();
+        Roles.JackalFriends.ClearAndReload();
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
         Mode.ModeHandler.ClearAndReload();
@@ -898,8 +898,6 @@ public static class RoleClass
             bool IsFullTask = !CustomOptionHolder.JackalFriendsIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.JackalFriends);
             JackalCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
-
-            Roles.JackalFriends.CheckedJackal = new();
         }
     }
     public static class Doctor
