@@ -72,7 +72,7 @@ public static class RoleHelpers
     /// <param name="player">マッドであるか判定したいプレイヤー</param>
     /// <returns>プレイヤーがマッド役職である場合trueを返す</returns>
     public static bool IsMadRoles(this PlayerControl player) =>
-        player.GetRoleBase() is IMadmate || 
+        player.GetRoleBase() is IMadmate ||
         (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
         player.GetRole() is
         // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
@@ -350,7 +350,7 @@ public static class RoleHelpers
         {
             return ChacheManager.LoversChache.TryGetValue(player.PlayerId, out PlayerControl pair) ?
                 (pair != null ? pair : null)
-                : null
+                : null;
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
         {
@@ -1539,7 +1539,7 @@ public static class RoleHelpers
     /// </summary>
     /// <param name="player">判断対象</param>
     /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
-    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst=true)
+    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst = true)
     {
         //タスクをカウントしない役職に就いた/就いていた場合はカウントしない
         if (IsUseFirst && TaskCount.IsClearTaskPlayer != null && TaskCount.IsClearTaskPlayer[player])
