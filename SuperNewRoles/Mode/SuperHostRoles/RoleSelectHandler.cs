@@ -332,6 +332,7 @@ public static class RoleSelectHandler
     }
     public static void OneOrNotListSet()
     {
+        AllRoleSetClass.AssignTickets = new();
         foreach (IntroData intro in IntroData.Intros.Values)
         {
             if (intro.IsGhostRole || !AllRoleSetClass.CanRoleIdElected(intro.RoleId))

@@ -46,10 +46,6 @@ public class TheThreeLittlePigs
 
     public static void TheThreeLittlePigsOnAssigned(List<(RoleId,PlayerControl)> Assigned)
     {
-        Logger.Info("-----TheThreeLittlePigsOnAssigned-----");
-        foreach((RoleId,PlayerControl) assign in Assigned)
-            Logger.Info($"Role : {assign.Item1}, Player : {assign.Item2.PlayerId}");
-        Logger.Info("--------------------------------------");
         PlayerControl first = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheFirstLittlePig).Item2;
         PlayerControl second = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheSecondLittlePig).Item2;
         PlayerControl third = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheThirdLittlePig).Item2;

@@ -54,7 +54,7 @@ public class PairRoleDetail
         { RoleId.Assassin, new(RoleId.Assassin, (0,0,1), (TeamRoleType.Impostor, RoleId.Marlin)) },
         { RoleId.Revolutionist, new(RoleId.Revolutionist, (0,0,1), (TeamRoleType.Crewmate, RoleId.Dictator)) }, 
         { RoleId.TheFirstLittlePig, new(RoleId.TheFirstLittlePig, (0,2,0), TheThreeLittlePigs.TheThreeLittlePigsOnAssigned , (TeamRoleType.Neutral, RoleId.TheSecondLittlePig), (TeamRoleType.Neutral, RoleId.TheThirdLittlePig)) },
-        { RoleId.Pokerface, new(RoleId.Pokerface, (0,2,0), (TeamRoleType.Neutral, RoleId.Pokerface), (TeamRoleType.Neutral, RoleId.Pokerface)) }
+        { RoleId.Pokerface, new(RoleId.Pokerface, (0,2,0), Pokerface.OnAssigned, (TeamRoleType.Neutral, RoleId.Pokerface), (TeamRoleType.Neutral, RoleId.Pokerface)) }
     };
     public RoleId role { get; }
     public (TeamRoleType team, RoleId role)[] pairRoles { get; }
