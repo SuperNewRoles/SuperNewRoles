@@ -93,7 +93,7 @@ public class Cupid : RoleBase, INeutral, IFixedUpdaterAll, IFixedUpdaterMe, ISup
     }
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
-        if (currentPair != null)
+        if (currentPair != null || !Created)
             return;
         var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
         PlayerControl Side = currentPair.GetOneSideLovers();

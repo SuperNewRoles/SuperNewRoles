@@ -348,7 +348,9 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            return ChacheManager.LoversChache[player.PlayerId] ?? null;
+            return ChacheManager.LoversChache.TryGetValue(player.PlayerId, out PlayerControl pair) ?
+                (pair != null ? pair : null)
+                : null
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
         {
