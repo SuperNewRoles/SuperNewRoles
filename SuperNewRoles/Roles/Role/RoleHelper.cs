@@ -1020,6 +1020,9 @@ public static class RoleHelpers
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Kunoichi:
+                RoleClass.Kunoichi.KunoichiPlayer.RemoveAll(ClearRemove);
+                break;
             case RoleId.Jackal:
                 RoleClass.Jackal.JackalPlayer.RemoveAll(ClearRemove);
                 break;
