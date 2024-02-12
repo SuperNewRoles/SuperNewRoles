@@ -2156,6 +2156,8 @@ public static class RoleClass
             IsHideButton = false;
             KunoichiPlayer = new();
             KillCoolTime = CustomOptionHolder.KunoichiCoolTime.GetFloat();
+            if (KillCoolTime <= 0)
+                KillCoolTime = 0.001f;
             KillKunai = CustomOptionHolder.KunoichiKillKunai.GetInt();
             HitCount = new();
             if (Kunai != null) { GameObject.Destroy(Kunai.kunai); }
