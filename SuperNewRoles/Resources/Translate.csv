@@ -674,7 +674,7 @@ MadmateName,Madmate,マッドメイト,叛徒,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利,幫助內鬼獲得勝利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。,叛徒屬於船員陣營，但是其為內鬼的同伴。\n內鬼獲勝則叛徒一同獲勝。
 MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか,叛徒是否能确认内鬼玩家,叛徒是否能確認內鬼玩家
-IsSettingNumberOfUniqueTasks,Do you want to set a unique number of tasks required to trigger an ability?,能力発動に必要なタスク数を固有で設定するか,发动能力是否需要完成指定数量的任务,發動能力是否需要達到指定的任務量
+IsSettingNumberOfUniqueTasks,Do you want to set the number of tasks to be distributed on a specific basis?,配布するタスク数を固有で設定するか
 IsParcentageForTaskTrigger,Is the number of tasks required to trigger the capability a percentage of the total number of tasks?,能力発動に必要なタスク数を総タスク数に対する割合にするか。,发动能力需要完成的任务数是否用总任务的百分比表示,發動能力是否需要達到指定的任務數量比例
 ParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),能力が発動するタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
 TaskTriggerAbilityTaskNumber,Number of tasks required to activate fanaticism capability,能力の発動に必要なタスク数,发动能力需要完成的任务数,發動能力需要完成的任務量
