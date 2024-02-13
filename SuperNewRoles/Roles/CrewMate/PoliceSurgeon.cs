@@ -225,7 +225,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
     {
         if (!PersonalInformationOfTheDead.IsAlreadyInfoRecorded(RoleData.PersonalInformationManager, victimPlayerId))
         {
-            RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(victimPlayerId, nowTurn, (DeadTiming)deadReason, DeadPlayer.ActualDeathTime[victimPlayerId].Item1, actualDeathTime));
+            RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(victimPlayerId, nowTurn, (DeadTiming)deadReason, DeadPlayer.ActualDeathTime[victimPlayerId].DeathTime, actualDeathTime));
         }
     }
     /// <summary>
@@ -253,7 +253,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
                 case DeadTiming.TaskPhase_killed:
                     // 遺言伝達者の辞書に死亡時刻が保存されているならば、死亡(推定)時刻を取得する。
                     // そうでなければ殺された方法(死亡理由)を、(タスクターン中の)追放に変更する。
-                    if (DeadPlayer.ActualDeathTime.ContainsKey(p.PlayerId)) estimatedDeathTime = CalculateEstimatedTimeOfDeath(reportTime, p);
+                    if (DeadPlayer.ActualDeathTime.Contains(p.PlayerId)) estimatedDeathTime = CalculateEstimatedTimeOfDeath(reportTime, p);
                     else deadReason = DeadTiming.TaskPhase_Exited;
                     break;
                 case DeadTiming.TaskPhase_Exited:
@@ -264,7 +264,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
             Logger.Info($"{p.name} : 死亡推定時刻_{estimatedDeathTime}s");
 
             // 死亡情報を一元管理している辞書に保存する。(この辞書に保存するのはここでのみ)
-            RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(p.PlayerId, ReportDeadBodyPatch.MeetingTurn_Now, deadReason, DeadPlayer.ActualDeathTime[p.PlayerId].Item1, estimatedDeathTime));
+            RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(p.PlayerId, ReportDeadBodyPatch.MeetingTurn_Now, deadReason, DeadPlayer.ActualDeathTime[p.PlayerId].DeathTime, estimatedDeathTime));
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) continue; // SHRの場合RPCは送らない
 
@@ -297,7 +297,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
     /// <returns>int : 死亡推定時刻[s]</returns>
     private static int CalculateEstimatedTimeOfDeath(DateTime reportTime, PlayerControl player)
     {
-        DateTime actualDeathTime = DeadPlayer.ActualDeathTime[player.PlayerId].Item1;
+        DateTime actualDeathTime = DeadPlayer.ActualDeathTime[player.PlayerId].DeathTime;
         int seed = (int)actualDeathTime.Ticks;
         TimeSpan relativeDeathTime; // 相対死亡時刻 (ログ表記用)
         TimeSpan estimatedDeathTime; // 死亡推定時刻
@@ -769,7 +769,7 @@ internal static class PostMortemCertificate_CreateAndGet
             int rand = random.Next(1, 15 + 1);
             string transRandomText = ModTranslation.GetString($"PostMortemCertificate_NoDeaths_RandomMessage_{rand}");
 
-            builder.AppendLine($"<align={"left"}>{string.Format(ModTranslation.GetString("PostMortemCertificate_NoDeaths"), RoleData.OfficialDateNotation, "{RoleData.PoliceSurgeonName}", transRandomText)}");
+            builder.AppendLine($"<align={"left"}>{string.Format(ModTranslation.GetString("PostMortemCertificate_NoDeaths"), RoleData.OfficialDateNotation, RoleData.PoliceSurgeonName, transRandomText)}");
         }
 
         // 死体検案書の文字サイズと色をchat式とCustomoverlay式に合わせて変更する
