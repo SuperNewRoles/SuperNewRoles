@@ -40,7 +40,7 @@ public static class Worshiper
             IsImpostorLight = Create(optionId, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, Option); optionId++;
             IsCheckImpostor = Create(optionId, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, Option); optionId++;
             IsSettingNumberOfUniqueTasks = Create(optionId, false, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, IsCheckImpostor); optionId++;
-            var taskOption = SelectTask.TaskSetting(optionId, optionId + 1, optionId + 2, IsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true); optionId += 3;
+            var taskOption = SelectTask.TaskSetting(optionId, optionId + 1, optionId + 2, IsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, false); optionId += 3;
             CommonTask = taskOption.Item1;
             ShortTask = taskOption.Item2;
             LongTask = taskOption.Item3;
@@ -70,12 +70,12 @@ public static class Worshiper
 
             IsUseVent = CustomOptionData.IsUseVent.GetBool();
             IsImpostorLight = CustomOptionData.IsImpostorLight.GetBool();
-            IsImpostorCheck = CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
+            IsImpostorCheck = CustomOptionData.IsCheckImpostor.GetBool();
 
-            bool IsFullTask = !CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionData.IsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.Worshiper);
 
-            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
+            ImpostorCheckTask = ModeHandler.IsMode(ModeId.SuperHostRoles, false) ? 0 : IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
 

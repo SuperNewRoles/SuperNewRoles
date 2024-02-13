@@ -28,7 +28,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
         new(RoleId.EvilHacker, 200300, false,
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
-        new(RoleId.EvilHacker, introSound: RoleTypes.Impostor);
+        new(RoleId.EvilHacker, introNum: 2, introSound: RoleTypes.Impostor);
 
     public static CustomOption CanMoveWhenUsesAdmin;
     public static CustomOption MadmateSetting;
@@ -45,8 +45,8 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
     private static void CreateOption()
     {
         CanMoveWhenUsesAdmin = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, Optioninfo.RoleOption);
-        MadmateSetting = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CustomOption.CreateMadmateSetting", false, Optioninfo.RoleOption);
-        ButtonCooldown = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CustomOption.CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, MadmateSetting);
+        MadmateSetting = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, Optioninfo.RoleOption);
+        ButtonCooldown = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "CreateMadmateButtonCooldownSetting", 30f, 0f, 60f, 2.5f, MadmateSetting);
         HasEnhancedAdmin = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerHasEnhancedAdmin", true, Optioninfo.RoleOption);
         CanSeeImpostorPositions = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanSeeImpostorPositions", true, HasEnhancedAdmin);
         CanSeeDeadBodyPositions = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanSeeDeadBodyPositions", true, HasEnhancedAdmin);
@@ -71,7 +71,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
         var target = EvilHackerMadmateButtonInfo.CurrentTarget;
         if (target.IsImpostor())
             return;
-        if (CanCreateMadmate)
+        if (!CanCreateMadmate)
             return;
         Madmate.CreateMadmate(target);
         CanCreateMadmate = false;
@@ -98,7 +98,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
         (isAlive) => isAlive && CanCreateMadmate, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget, null,
         ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f),
         ButtonCooldown.GetFloat, new(-2.925f, -0.06f, 0), "CreateMadmateButton",
-        null, null, CouldUse:() => !Frankenstein.IsMonster(EvilHackerMadmateButtonInfo.CurrentTarget), SetTargetCrewmateOnly: () => true);
+        null, null, CouldUse: () => !Frankenstein.IsMonster(EvilHackerMadmateButtonInfo.CurrentTarget), SetTargetCrewmateOnly: () => true);
 
         CustomButtonInfos = new CustomButtonInfo[2]
         {
