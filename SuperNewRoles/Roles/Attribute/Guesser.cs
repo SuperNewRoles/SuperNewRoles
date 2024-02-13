@@ -5,6 +5,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -191,7 +192,7 @@ class Guesser
         bool canCrewShot = guesserBaseMe.CanShotCrew;
         foreach (IntroData roleInfo in IntroData.Intros.Values)
         {
-            if (roleInfo == null || 
+            if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||
                 roleInfo.RoleId == RoleId.DefaultRole ||
                 (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
@@ -231,6 +232,20 @@ class Guesser
         if (CustomOptionHolder.SideKillerOption.GetSelection() is not 0) { CreateRole(IntroData.MadKillerIntro); }
         if (CustomOptionHolder.VampireOption.GetSelection() is not 0) { CreateRole(IntroData.DependentsIntro); }
         if (OrientalShaman.OrientalShamanOption.GetSelection() is not 0) { CreateRole(IntroData.ShermansServantIntro); }
+        if (Santa.Optioninfo.RoleOption.GetSelection() is not 0)
+        {
+            var presentRoleData = Santa.PresentRoleData();
+
+            foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
+            foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
+        }
+        if (Impostor.MadRole.BlackSanta.Optioninfo.RoleOption.GetSelection() is not 0)
+        {
+            var presentRoleData = Impostor.MadRole.BlackSanta.PresentRoleData();
+
+            foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
+            foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
+        }
         void CreateRole(IntroData introInfo = null, RoleInfo roleInfo = null)
         {
             if (introInfo == null && roleInfo == null)
