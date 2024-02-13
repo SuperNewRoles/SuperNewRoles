@@ -44,17 +44,6 @@ public enum TeamType
 
 public static class RoleHelpers
 {
-    /* TODO: 蔵徒:陣営playerがうまく動いていない。SetRoleの時に``if (player.Is陣営())``がうまく動かず、リスト入りされていない。直す
-    public static List<PlayerControl> CrewmatePlayer;
-    public static List<PlayerControl> ImposterPlayer;
-    public static List<PlayerControl> NeutralPlayer;
-    public static List<PlayerControl> MadRolesPlayer;
-    public static List<PlayerControl> FriendRolesPlayer;
-    */
-
-    // FIXME:パブロフの犬オーナーのリスト入りがうまくいかなかった為、一度コメントアウト勝利条件整理の時に修正お願いします・・・
-    // public static List<PlayerControl> NeutralKillingPlayer;
-
     // |: ================陣営の分類 ================ :|
 
     public static bool IsCrew(this PlayerControl player)
@@ -78,7 +67,7 @@ public static class RoleHelpers
     /// <param name="player">マッドであるか判定したいプレイヤー</param>
     /// <returns>プレイヤーがマッド役職である場合trueを返す</returns>
     public static bool IsMadRoles(this PlayerControl player) =>
-        player.GetRoleBase() is IMadmate || 
+        player.GetRoleBase() is IMadmate ||
         (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
         player.GetRole() is
         // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
@@ -97,6 +86,7 @@ public static class RoleHelpers
     // IsMads
 
     public static bool IsNeutral(this PlayerControl player) =>
+        player.GetRoleBase() is INeutral ||
         player.GetRole() is
         RoleId.Jester or
         RoleId.Jackal or
@@ -354,7 +344,9 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            return ChacheManager.LoversChache[player.PlayerId] ?? null;
+            return ChacheManager.LoversChache.TryGetValue(player.PlayerId, out PlayerControl pair) ?
+                (pair != null ? pair : null)
+                : null;
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
         {
@@ -1036,6 +1028,9 @@ public static class RoleHelpers
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Kunoichi:
+                RoleClass.Kunoichi.KunoichiPlayer.RemoveAll(ClearRemove);
+                break;
             case RoleId.Jackal:
                 RoleClass.Jackal.JackalPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1543,7 +1538,7 @@ public static class RoleHelpers
     /// </summary>
     /// <param name="player">判断対象</param>
     /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
-    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst=true)
+    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst = true)
     {
         //タスクをカウントしない役職に就いた/就いていた場合はカウントしない
         if (IsUseFirst && TaskCount.IsClearTaskPlayer != null && TaskCount.IsClearTaskPlayer[player])
@@ -1615,9 +1610,9 @@ public static class RoleHelpers
             RoleId.Minimalist => RoleClass.Minimalist.UseVent,
             RoleId.Samurai => RoleClass.Samurai.UseVent,
             RoleId.Jester => RoleClass.Jester.IsUseVent,
-            RoleId.Madmate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.Madmate.IsUseVent,
+            RoleId.Madmate => RoleClass.Madmate.IsUseVent && !(ModeHandler.IsMode(ModeId.SuperHostRoles) && Madmate.ChangeMadmatePlayer.Contains(player.PlayerId)),
             RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
-            RoleId.JackalFriends => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.JackalFriends.IsUseVent,
+            RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent && !(ModeHandler.IsMode(ModeId.SuperHostRoles) && JackalFriends.ChangeJackalFriendsPlayer.Contains(player.PlayerId)),
             RoleId.Egoist => RoleClass.Egoist.UseVent,
             RoleId.Technician => IsSabotage(),
             RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
