@@ -77,7 +77,7 @@ class Jackal
         List<RoleTypes> CanNotHaveTaskForRoles = new() { RoleTypes.Impostor, RoleTypes.Shapeshifter, RoleTypes.ImpostorGhost };
         // マッドメイトになる前にタスクを持っていたかを取得
         var canNotHaveTask = CanNotHaveTaskForRoles.Contains(target.Data.Role.Role);
-        canNotHaveTask = CanNotHaveTaskForRoles.Contains(RoleSelectHandler.SetRoleInfo(target.GetRole()).RoleType);// Desync役職ならタスクを持っていなかったと見なす ( 個別設定 )
+        canNotHaveTask = CanNotHaveTaskForRoles.Contains(RoleSelectHandler.GetDesyncRole(target.GetRole()).RoleType);// Desync役職ならタスクを持っていなかったと見なす ( 個別設定 )
         if (target.GetRoleBase() is ISupportSHR supportSHR) { canNotHaveTask = CanNotHaveTaskForRoles.Contains(supportSHR.DesyncRole); } // Desync役職ならタスクを持っていなかったと見なす ( RoleBace )
 
         target.ResetAndSetRole(RoleId.JackalFriends);
