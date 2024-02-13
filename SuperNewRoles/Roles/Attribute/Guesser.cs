@@ -234,8 +234,10 @@ class Guesser
         if (OrientalShaman.OrientalShamanOption.GetSelection() is not 0) { CreateRole(IntroData.ShermansServantIntro); }
         if (Santa.Optioninfo.RoleOption.GetSelection() is not 0)
         {
-            foreach (var roleInfo in Santa.PresentRoleInfo) { CreateRole(roleInfo: roleInfo); }
-            foreach (var introData in Santa.PresentRoleIntroData) { CreateRole(introData); }
+            var presentRoleData = Santa.PresentRoleData();
+
+            foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
+            foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
         }
         void CreateRole(IntroData introInfo = null, RoleInfo roleInfo = null)
         {

@@ -47,17 +47,6 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
     };
     private static CustomOption[] PresetRoleOptions { get; set; }
 
-    /// <summary>
-    /// 設定で有効になっている プレゼント対象の役職のIntroDataを 保存する。
-    /// FIXME : 全て役職のRoleBase対応が終わったら削除する。
-    /// </summary>
-    public static List<IntroData> PresentRoleIntroData;
-
-    /// <summary>
-    /// 設定で有効になっている プレゼント対象の役職のRoleInfoを 保存する。
-    /// </summary>
-    public static List<RoleInfo> PresentRoleInfo;
-
     private static CustomOption TryLoversToDeath { get; set; }
     private static CustomOption TryMadFriendsToDeath { get; set; }
 
@@ -148,25 +137,11 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
         SantaButtonInfo = CreateSantaButtonInfo(this, CanUseAbilityCount.GetInt(), () => SantaOnClick(), "SantaButton", () => Optioninfo.CoolTime);
         CustomButtonInfos = new CustomButtonInfo[1] { SantaButtonInfo };
         RoleAssignTickets = new();
-        PresentRoleIntroData = new();
-        PresentRoleInfo = new();
         for (int i = 0; i < PresetRoleOptions.Length; i++)
         {
             RoleId roleId = PresetRolesParam[i];
             int ticketcount = PresetRoleOptions[i].GetSelection();
             SetTicket(roleId, ticketcount);
-
-            if (PresetRoleOptions[i].GetSelection() > 0) // 設定で有効になっている役職のみ処理
-            {
-                IntroData intro = IntroData.GetIntrodata(roleId);
-                PresentRoleIntroData.Add(intro);
-
-                if (intro == IntroData.CrewmateIntro) // FIXME : RoleBase化が終わったらIntroDataを削除し, RoleInfoのみにする。
-                {
-                    RoleInfo info = RoleInfoManager.GetRoleInfo(roleId);
-                    PresentRoleInfo.Add(info);
-                }
-            }
         }
         //もし全て0%ならすべて同じ確率で設定する
         if (RoleAssignTickets.Count <= 0)
@@ -178,6 +153,43 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
             }
         }
     }
+
+    /// <summary>
+    /// サンタのプレゼント対象役の情報
+    /// </summary>
+    /// <param name=</param>
+    /// <returns>RoleInfo : プレゼント対象役のRoleInfo, IntroData : プレゼント対象役のIntroData</returns>
+    /// FIXME : IntroDataは全ての役がRoleBase対応したら削除する
+    public static (List<RoleInfo> RoleInfo, List<IntroData> IntroData) PresentRoleData()
+    {
+        List<RoleInfo> roleInfo = new();
+        List<IntroData> introData = new();
+
+        for (int i = 0; i < PresetRoleOptions.Length; i++)
+        {
+            RoleId roleId = PresetRolesParam[i];
+            int ticketcount = PresetRoleOptions[i].GetSelection();
+
+            if (Optioninfo.RoleOption.GetSelection() is not 0 && PresetRoleOptions[i].GetSelection() > 0) // 設定で有効になっている役職のみ処理
+            {
+                IntroData intro = IntroData.GetIntrodata(roleId);
+
+                if (intro != IntroData.CrewmateIntro && intro != IntroData.ImpostorIntro) // RoleBase化が終わったらIntroDataを削除し, RoleInfoのみ(elseの中身のみ)にする。
+                {
+                    introData.Add(intro);
+                    Logger.Info($"プレゼント対象役 : {intro.RoleId}", "Santa");
+                }
+                else
+                {
+                    RoleInfo info = RoleInfoManager.GetRoleInfo(roleId);
+                    roleInfo.Add(info);
+                    Logger.Info($"プレゼント対象役 : {info.Role}", "Santa");
+                }
+            }
+        }
+        return (roleInfo, introData);
+    }
+
     public static MessageWriter ButtonOnClick(CustomButtonInfo buttonInfo, MessageWriter rpcWriter, List<RoleId> roleAssignTickets, System.Func<PlayerControl, bool> isSelfBomb)
     {
         PlayerControl target = buttonInfo.CurrentTarget;
