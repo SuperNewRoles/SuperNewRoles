@@ -1187,7 +1187,8 @@ public class CustomOptionHolder
         EvilSpeedBoosterCoolTime = Create(202802, false, CustomOptionType.Impostor, "EvilSpeedBoosterCooldownSetting", 30f, 2.5f, 60f, 2.5f, EvilSpeedBoosterOption, format: "unitSeconds");
         EvilSpeedBoosterDurationTime = Create(202803, false, CustomOptionType.Impostor, "EvilSpeedBoosterDurationSetting", 15f, 2.5f, 60f, 2.5f, EvilSpeedBoosterOption, format: "unitSeconds");
         EvilSpeedBoosterSpeed = Create(202804, false, CustomOptionType.Impostor, "EvilSpeedBoosterPlusSpeedSetting", 1.25f, 0.0f, 5f, 0.25f, EvilSpeedBoosterOption, format: "unitSeconds");
-        EvilSpeedBoosterIsNotSpeedBooster = Create(202805, false, CustomOptionType.Impostor, "EvilSpeedBoosterIsNotSpeedBooster", false, EvilSpeedBoosterOption);
+        EvilSpeedBoosterIsNotSpeedBooster = Create(202805, false, CustomOptionType.Impostor, "EvilSpeedBoosterIsNotSpeedBooster", false, EvilSpeedBoosterOption, isHidden: true);
+        EvilSpeedBoosterIsNotSpeedBooster.selection = 0;
 
         EvilScientistOption = SetupCustomRoleOption(205300, false, RoleId.EvilScientist);
         EvilScientistPlayerCount = Create(205301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilScientistOption);

@@ -338,7 +338,9 @@ public static class RoleHelpers
     {
         if (IsChache)
         {
-            return ChacheManager.LoversChache[player.PlayerId] ?? null;
+            return ChacheManager.LoversChache.TryGetValue(player.PlayerId, out PlayerControl pair) ?
+                (pair != null ? pair : null)
+                : null;
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
         {
@@ -1020,6 +1022,9 @@ public static class RoleHelpers
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Kunoichi:
+                RoleClass.Kunoichi.KunoichiPlayer.RemoveAll(ClearRemove);
+                break;
             case RoleId.Jackal:
                 RoleClass.Jackal.JackalPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1527,7 +1532,7 @@ public static class RoleHelpers
     /// </summary>
     /// <param name="player">判断対象</param>
     /// <returns>true => カウントしないプレイヤー, false => カウントされるプレイヤー</returns>
-    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst=true)
+    public static bool IsClearTask(this PlayerControl player, bool IsUseFirst = true)
     {
         //タスクをカウントしない役職に就いた/就いていた場合はカウントしない
         if (IsUseFirst && TaskCount.IsClearTaskPlayer != null && TaskCount.IsClearTaskPlayer[player])
@@ -1599,9 +1604,9 @@ public static class RoleHelpers
             RoleId.Minimalist => RoleClass.Minimalist.UseVent,
             RoleId.Samurai => RoleClass.Samurai.UseVent,
             RoleId.Jester => RoleClass.Jester.IsUseVent,
-            RoleId.Madmate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.Madmate.IsUseVent,
+            RoleId.Madmate => RoleClass.Madmate.IsUseVent && !(ModeHandler.IsMode(ModeId.SuperHostRoles) && Madmate.ChangeMadmatePlayer.Contains(player.PlayerId)),
             RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
-            RoleId.JackalFriends => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.JackalFriends.IsUseVent,
+            RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent && !(ModeHandler.IsMode(ModeId.SuperHostRoles) && JackalFriends.ChangeJackalFriendsPlayer.Contains(player.PlayerId)),
             RoleId.Egoist => RoleClass.Egoist.UseVent,
             RoleId.Technician => IsSabotage(),
             RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,

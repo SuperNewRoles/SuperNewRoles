@@ -67,8 +67,8 @@ public static class RoleClass
         //Map.Data.ClearAndReloads();
         ElectricPatch.Reset();
         SabotageManager.ClearAndReloads();
-        Roles.Madmate.CheckedImpostor = new();
-        Roles.JackalFriends.CheckedJackal = new();
+        Roles.Madmate.ClearAndReload();
+        Roles.JackalFriends.ClearAndReload();
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
         Mode.ModeHandler.ClearAndReload();
@@ -686,7 +686,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadmateIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadmateIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.MadmateIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.MadmateIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.Madmate);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadmateParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
@@ -895,11 +895,9 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.JackalFriendsIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.JackalFriendsIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.JackalFriendsIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.JackalFriendsIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.JackalFriends);
             JackalCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
-
-            Roles.JackalFriends.CheckedJackal = new();
         }
     }
     public static class Doctor
@@ -1328,7 +1326,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadMayorIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadMayorIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.MadMayorIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.MadMayorIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MadMayor);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadMayorParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
@@ -1387,7 +1385,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadStuntManIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadStuntManIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.MadStuntManIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.MadStuntManIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MadStuntMan);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadStuntManParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
@@ -1427,7 +1425,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadHawkIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadHawkIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.MadHawkIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.MadHawkIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MadHawk);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadHawkParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
@@ -1451,7 +1449,7 @@ public static class RoleClass
             IsImpostorLight = CustomOptionHolder.MadJesterIsImpostorLight.GetBool();
             IsMadJesterTaskClearWin = CustomOptionHolder.IsMadJesterTaskClearWin.GetBool();
             IsImpostorCheck = CustomOptionHolder.MadJesterIsCheckImpostor.GetBool();
-            bool IsFullTask = !CustomOptionHolder.MadJesterIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.MadJesterIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MadJester);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadJesterParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
@@ -1635,7 +1633,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadSeerIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadSeerIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.MadSeerIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.MadSeerIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MadSeer);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadSeerParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
@@ -1758,9 +1756,9 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.SeerFriendsIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.SeerFriendsIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.JackalFriendsIsSettingNumberOfUniqueTasks.GetBool();
-            int AllTask = SelectTask.GetTotalTasks(RoleId.JackalFriends);
-            JackalCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
+            bool IsFullTask = !CustomOptionHolder.SeerFriendsIsParcentageForTaskTrigger.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.SeerFriends);
+            JackalCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.SeerFriendsParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class JackalSeer
@@ -1922,7 +1920,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadCleanerIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadCleanerIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.MadCleanerIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.MadCleanerIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MadCleaner);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadCleanerParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
@@ -1966,7 +1964,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MayorFriendsIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MayorFriendsIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.MayorFriendsIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.MayorFriendsIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.MayorFriends);
             JackalCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MayorFriendsParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
 
@@ -2081,7 +2079,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.BlackCatIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.BlackCatIsImpostorLight.GetBool();
 
-            bool IsFullTask = !CustomOptionHolder.BlackCatIsSettingNumberOfUniqueTasks.GetBool();
+            bool IsFullTask = !CustomOptionHolder.BlackCatIsParcentageForTaskTrigger.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.BlackCat);
             ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.BlackCatParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
@@ -2156,6 +2154,8 @@ public static class RoleClass
             IsHideButton = false;
             KunoichiPlayer = new();
             KillCoolTime = CustomOptionHolder.KunoichiCoolTime.GetFloat();
+            if (KillCoolTime <= 0)
+                KillCoolTime = 0.001f;
             KillKunai = CustomOptionHolder.KunoichiKillKunai.GetInt();
             HitCount = new();
             if (Kunai != null) { GameObject.Destroy(Kunai.kunai); }
@@ -2809,7 +2809,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             PenguinPlayer = new();
-            PenguinData = new(needplayerlist:true);
+            PenguinData = new(needplayerlist: true);
             PenguinTimer = new();
             bool Is = ModHelpers.IsSucsessChance(4);
             _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
