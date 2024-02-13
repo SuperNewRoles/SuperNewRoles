@@ -239,6 +239,13 @@ class Guesser
             foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
             foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
         }
+        if (Impostor.MadRole.BlackSanta.Optioninfo.RoleOption.GetSelection() is not 0)
+        {
+            var presentRoleData = Impostor.MadRole.BlackSanta.PresentRoleData();
+
+            foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
+            foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
+        }
         void CreateRole(IntroData introInfo = null, RoleInfo roleInfo = null)
         {
             if (introInfo == null && roleInfo == null)
