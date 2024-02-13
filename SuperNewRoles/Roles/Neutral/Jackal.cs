@@ -1,5 +1,10 @@
+using AmongUs.GameOptions;
+using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 using static SuperNewRoles.Helpers.RPCHelper;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
@@ -69,6 +74,13 @@ class Jackal
     /// <param name="target">役職がJackalFriendsに変更される対象</param>
     public static void CreateJackalFriends(PlayerControl target)
     {
+        List<RoleTypes> CanNotHaveTaskForRoles = new() { RoleTypes.Impostor, RoleTypes.Shapeshifter, RoleTypes.ImpostorGhost };
+        // マッドメイトになる前にタスクを持っていたかを取得
+        var canNotHaveTask = CanNotHaveTaskForRoles.Contains(target.Data.Role.Role);
+        canNotHaveTask = CanNotHaveTaskForRoles.Contains(RoleSelectHandler.GetDesyncRole(target.GetRole()).RoleType);// Desync役職ならタスクを持っていなかったと見なす ( 個別設定 )
+        if (target.GetRoleBase() is ISupportSHR supportSHR) { canNotHaveTask = CanNotHaveTaskForRoles.Contains(supportSHR.DesyncRole); } // Desync役職ならタスクを持っていなかったと見なす ( RoleBace )
+
         target.ResetAndSetRole(RoleId.JackalFriends);
+        if (target.IsRole(RoleId.JackalFriends)) JackalFriends.ChangeJackalFriendsPlayer[target.PlayerId] = !canNotHaveTask;
     }
 }

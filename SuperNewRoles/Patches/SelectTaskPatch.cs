@@ -114,6 +114,7 @@ public static class SelectTask
             { RoleId.TheThirdLittlePig, true },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
             { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
+            { RoleId.BlackSanta, BlackSanta.CanCheckImpostorOption.GetBool()}
         };
 
         if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];

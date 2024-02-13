@@ -1548,6 +1548,8 @@ public static class RPCProcedure
             player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
             player.SetRole(RoleId.SidekickWaveCannon);
             WaveCannonJackal.IwasSidekicked.Add(playerid);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            ChacheManager.ResetMyRoleChache();
         }
     }
     public static void ExiledRPC(byte playerid)

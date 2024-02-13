@@ -91,6 +91,40 @@ public static class Debugger
             Minigame.Instance.Close();
         });
 
+    // サボタージュ発動
+    public static DebugPanel SetSabotage = new("SetSabotage", DebugTabs.FunctionsTab, false,
+        () =>
+        {
+            Minigame.Instance.Close(); // シェイプシフト画面を完全に閉じるまで, マップは開けない。 処理終了待ちの為に, 以下のLateTaskを使用している。
+            new LateTask(() =>
+            {
+                DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new() { Mode = MapOptions.Modes.Sabotage });
+            }, 0.5f, "DebuggerSetSabotage");
+        });
+
+    // サボタージュ修復
+    public static DebugPanel RepairSabotage = new("RepairSabotage", DebugTabs.FunctionsTab, false,
+        () =>
+        {
+            if (!PlayerControl.LocalPlayer.IsMushroomMixupActive())
+            {
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                {
+                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                    {
+                        Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(task.TaskType);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(TaskTypes.MushroomMixupSabotage);
+            }
+
+            Minigame.Instance.Close();
+        });
+
     //** プレイヤー操作 **//
     // テレポート
     public static DebugPanel Teleport = new("Teleport", DebugTabs.PlayerControlTab, false,
