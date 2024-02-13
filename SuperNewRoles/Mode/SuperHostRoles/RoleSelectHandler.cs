@@ -6,6 +6,8 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -222,7 +224,7 @@ public static class RoleSelectHandler
 
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player is ISupportSHR playerSHR)
+            if (player.GetRoleBase() is ISupportSHR playerSHR)
             {
                 if (playerSHR.IsDesync)
                     SetRoleDesync(player, playerSHR.DesyncRole);
@@ -384,81 +386,25 @@ public static class RoleSelectHandler
     }
     public static void OneOrNotListSet()
     {
-        List<RoleId> Impoonepar = new();
-        List<RoleId> Imponotonepar = new();
-        List<RoleId> Neutonepar = new();
-        List<RoleId> Neutnotonepar = new();
-        List<RoleId> Crewonepar = new();
-        List<RoleId> Crewnotonepar = new();
-
+        AllRoleSetClass.AssignTickets = new();
         foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (!intro.IsGhostRole && AllRoleSetClass.CanRoleIdElected(intro.RoleId))
-            {
-                var option = IntroData.GetOption(intro.RoleId);
-                if (option == null || !option.isSHROn) continue;
-                var selection = option.GetSelection();
-                if (selection != 0)
-                {
-                    if (selection == 10)
-                    {
-                        switch (intro.Team)
-                        {
-                            case TeamRoleType.Crewmate:
-                                Crewonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Impostor:
-                                Impoonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Neutral:
-                                Neutonepar.Add(intro.RoleId);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 1; i <= selection; i++)
-                        {
-                            switch (intro.Team)
-                            {
-                                case TeamRoleType.Crewmate:
-                                    Crewnotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Impostor:
-                                    Imponotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Neutral:
-                                    Neutnotonepar.Add(intro.RoleId);
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
+            if (intro.IsGhostRole || !AllRoleSetClass.CanRoleIdElected(intro.RoleId))
+                continue;
+            var option = IntroData.GetOption(intro.RoleId);
+            if (option == null || !option.isSHROn) continue;
+            var selection = option.GetSelection();
+            AllRoleSetClass.SetChance(selection, intro.RoleId, intro.Team);
         }
-
-        var Assassinselection = CustomOptionHolder.AssassinAndMarlinOption.GetSelection();
-        SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewmatePlayerNum + "、" + AllRoleSetClass.CrewmatePlayers.Count);
-        if (Assassinselection != 0 && AllRoleSetClass.CrewmatePlayerNum > 0 && AllRoleSetClass.CrewmatePlayers.Count > 0)
+        foreach (RoleInfo info in RoleInfoManager.RoleInfos.Values)
         {
-            if (Assassinselection == 10)
-            {
-                Impoonepar.Add(RoleId.Assassin);
-            }
-            else
-            {
-                for (int i = 1; i <= Assassinselection; i++)
-                {
-                    Imponotonepar.Add(RoleId.Assassin);
-                }
-            }
+            if (info.IsGhostRole || !AllRoleSetClass.CanRoleIdElected(info.Role))
+                continue;
+            var option = IntroData.GetOption(info.Role);
+            if (option == null || !option.isSHROn) continue;
+            var selection = option.GetSelection();
+            AllRoleSetClass.SetChance(selection, info.Role, info.Team);
         }
 
-        AllRoleSetClass.Impoonepar = Impoonepar;
-        AllRoleSetClass.Imponotonepar = Imponotonepar;
-        AllRoleSetClass.Neutonepar = Neutonepar;
-        AllRoleSetClass.Neutnotonepar = Neutnotonepar;
-        AllRoleSetClass.Crewonepar = Crewonepar;
-        AllRoleSetClass.Crewnotonepar = Crewnotonepar;
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Timers;
 using AmongUs.GameOptions;
+using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
@@ -40,6 +42,24 @@ public class TheThreeLittlePigs
         TheSecondLittlePigMaxGuardCount = CustomOption.Create(OptionId + 10, false, type, "TheSecondLittlePigManGuardMaxCountSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
         TheThirdLittlePigClearTask = CustomOption.Create(OptionId + 11, false, type, "TheThirdLittlePigClearTaskSetting", ModHelpers.CustomRates(10), TheThreeLittlePigsOption);
         TheThirdLittlePigMaxCounterCount = CustomOption.Create(OptionId + 12, false, type, "TheThirdLittlePigCounterKillSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
+    }
+
+    public static void TheThreeLittlePigsOnAssigned(List<(RoleId,PlayerControl)> Assigned)
+    {
+        PlayerControl first = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheFirstLittlePig).Item2;
+        PlayerControl second = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheSecondLittlePig).Item2;
+        PlayerControl third = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheThirdLittlePig).Item2;
+        if (first == null || second == null || third == null)
+        {
+            Logger.Error("TheThreeLittlePigsOnAssigned : 仔豚の割り当てに失敗しました", "TheThreeLittlePigsOnAssigned");
+            return;
+        }
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetTheThreeLittlePigsTeam);
+        writer.Write(first.PlayerId);
+        writer.Write(second.PlayerId);
+        writer.Write(third.PlayerId);
+        writer.EndRPC();
+        RPCProcedure.SetTheThreeLittlePigsTeam(first.PlayerId, second.PlayerId, third.PlayerId);
     }
 
     public static Color32 color = new(255, 99, 123, byte.MaxValue);
