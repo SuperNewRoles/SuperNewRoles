@@ -45,11 +45,11 @@ public enum RoleId
 
     // Neutral Roles
     Cupid,
-    Santa,
-    BlackSanta,
 
     // Crewmate Roles
     NiceGuesser,
+    Santa,
+    BlackSanta,
     MedicalTechnologist,
 
     //RoleId
