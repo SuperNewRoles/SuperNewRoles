@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -32,14 +33,16 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
 
     public static (Vector2 Position, float Radius)[] PusherPushPositions = new (Vector2 Position, float Radius)[]
     {
+        //昇降機
+        (new(7.7f, 8.75f), 2.6f),
         //ロミジュリ右
-        (new(28.15f, -1.5f), 0.5f),
+        (new(28.15f, -1.5f), 1f),
         //ロミジュリ左
-        (new(26.85f, 0.5f), 0.5f),
+        (new(26.85f, 0.5f), 1f),
         //展望右
-        (new(7.8078f, -16.9254f), 3f),
+        (new(8f, -16.9254f), 3.85f),
         //展望左
-        (new(-13.9f, -16.3494f), 0.3f)
+        (new(-13.84f, -16.3494f), 1.15f)
     };
 
     public CustomButtonInfo[] CustomButtonInfos { get; }
@@ -55,11 +58,20 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
 
     public void RpcReader(MessageReader reader)
     {
-
+        byte TargetId = reader.ReadByte();
+        PlayerControl target = ModHelpers.PlayerById(TargetId);
+        var anim = PlayerAnimation.GetPlayerAnimation(Player.PlayerId);
+        anim.RpcAnimation(RpcAnimationType.PushHand);
+        target.Exiled();
     }
     public void PushButtonOnClick()
     {
-
+        PlayerControl target = PushButtonInfo.CurrentTarget;
+        if (target == null)
+            return;
+        MessageWriter writer = RpcWriter;
+        writer.Write(target.PlayerId);
+        SendRpc(writer);
     }
     private float UpdateUntargetPlayersTimer;
     public void FixedUpdateMeDefaultAlive()
@@ -68,8 +80,8 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         if (UpdateUntargetPlayersTimer <= 0)
         {
             UpdateUntargetPlayersTimer = 0.1f;
-            _untargetPlayers.Clear();
-            float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+            _untargetPlayers = new();
+            float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)] + 1f;
             Vector2 truePosition = Player.GetTruePosition();
             foreach (PlayerControl @object in PlayerControl.AllPlayerControls)
             {
@@ -81,13 +93,16 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
                     PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask)
                     )
                     continue;
+                bool positionsuccess = false;
                 foreach (var positiondata in PusherPushPositions)
                 {
                     if (Vector2.Distance(positiondata.Position, @object.transform.position) > positiondata.Radius)
                         continue;
-                        _untargetPlayers.Add(@object);
-                        break;
+                    positionsuccess = true;
+                    break;
                 }
+                if (!positionsuccess)
+                    _untargetPlayers.Add(@object);
 
             }
         }
@@ -99,7 +114,8 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         PushButtonInfo = new(null, this, PushButtonOnClick,
             (isAlive) => isAlive, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             () => PushButtonInfo.customButton.Timer = 0f,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PusherButtonName.png",115f), () => IntervelOption.GetFloat(), new(-2f, 1, 0),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PusherPushButton.png",115f), () => IntervelOption.GetFloat(), new(-2f, 1, 0),
             "PusherButtonName", KeyCode.F, 49, SetTargetUntargetPlayer: () => UntargetPlayers, SetTargetCrewmateOnly: () => true);
+        _untargetPlayers = new();
     }
 }

@@ -1222,6 +1222,7 @@ class AllRoleSetClass
             RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
             RoleId.Nun or RoleId.Pteranodon => UnityEngine.Object.FindAnyObjectByType<MovingPlatformBehaviour>(), // ぬーんがあるならば選出が可能
             RoleId.Werewolf or RoleId.Knight => ModeHandler.IsMode(ModeId.Werewolf),
+            RoleId.Pusher => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship,
             _ => true,
         };
     }

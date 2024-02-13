@@ -11,7 +11,8 @@ public enum RpcAnimationType
 {
     Stop,
     SluggerCharge,
-    SluggerMurder
+    SluggerMurder,
+    PushHand
 }
 public class PlayerAnimation
 {
@@ -295,6 +296,11 @@ public class PlayerAnimation
                 {
                     SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Hit.raw"), false, 1.5f);
                 }
+                break;
+            case RpcAnimationType.PushHand:
+                Init(GetSprites("SuperNewRoles.Resources.Pusher.pushanim_", 8), false, 40);
+                if (PlayerControl.LocalPlayer.PlayerId == PlayerId)
+                    SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Pusher.pusher_se.raw"), false, 1.5f);
                 break;
         }
     }

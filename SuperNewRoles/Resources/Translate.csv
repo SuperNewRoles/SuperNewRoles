@@ -1705,8 +1705,8 @@ BlackSantaDescription,You can give present(role) to impostor，\nbut if you try 
 
 PusherName,Pusher,突き落と師
 PusherTitle1,Eyes behind you.,背後には気を付けな
-PusherDescription,You can push the crew mates who are in vulnerable positions overboard.\nPushed crew members will not result in dead bodies.,落とせそうな箇所にいるクルーを突き落とすことが出来ます。\n突き落とされたクルーは死体が発生しません。
-PusherButtonName,Push!!!,突き落とす
+PusherDescription,You can push off crew members who are in vulnerable positions.\nCrew members who are pushed off will not result in a dead body.PusherButtonName,Push!!!,突き落とす
+PusherIntervalOption,Push interval,突き落とし間隔
 
 #NewRoleTranslation
 
