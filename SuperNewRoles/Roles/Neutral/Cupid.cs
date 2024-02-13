@@ -92,7 +92,7 @@ public class Cupid : RoleBase, INeutral, IFixedUpdaterAll, IFixedUpdaterMe, ISup
             ChangeName.SetRoleName(target);
         }
 
-        Player.RpcShowGuardEffect(target);
+        Player.ResetKillCool(Optioninfo.CoolTime);
         return false;
     }
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
@@ -103,6 +103,10 @@ public class Cupid : RoleBase, INeutral, IFixedUpdaterAll, IFixedUpdaterMe, ISup
         PlayerControl Side = currentPair.GetOneSideLovers();
         ChangePlayers[currentPair.PlayerId] = ChangeName.GetNowName(ChangePlayers, currentPair) + suffix;
         ChangePlayers[Side.PlayerId] = ChangeName.GetNowName(ChangePlayers, Side) + suffix;
+    }
+    public void BuildSetting(IGameOptions gameOptions)
+    {
+        gameOptions.SetFloat(FloatOptionNames.KillCooldown, Optioninfo.CoolTime);
     }
     private void ButtonOnClick()
     {
