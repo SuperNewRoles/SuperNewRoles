@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Crewmate.Santa;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;

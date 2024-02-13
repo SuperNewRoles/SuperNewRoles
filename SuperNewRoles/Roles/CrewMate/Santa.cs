@@ -7,7 +7,7 @@ using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.Crewmate.Santa;
+namespace SuperNewRoles.Roles.Crewmate;
 
 public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
 {
@@ -46,6 +46,17 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
         RoleId.SuicidalIdeation
     };
     private static CustomOption[] PresetRoleOptions { get; set; }
+
+    /// <summary>
+    /// 設定で有効になっている プレゼント対象の役職のIntroDataを 保存する。
+    /// FIXME : 全て役職のRoleBase対応が終わったら削除する。
+    /// </summary>
+    public static List<IntroData> PresentRoleIntroData;
+
+    /// <summary>
+    /// 設定で有効になっている プレゼント対象の役職のRoleInfoを 保存する。
+    /// </summary>
+    public static List<RoleInfo> PresentRoleInfo;
 
     private static CustomOption TryLoversToDeath { get; set; }
     private static CustomOption TryMadFriendsToDeath { get; set; }
@@ -128,7 +139,7 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
     {
         return new(abilityCount, roleBase, OnClick,
             (isAlive) => isAlive, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget, null,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources."+ButtonPath+".png", 115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources." + ButtonPath + ".png", 115f),
             CoolTimeFunc, new(-2, 1, 0),
             "SantaButtonName", KeyCode.F);
     }
@@ -137,11 +148,25 @@ public class Santa : RoleBase, ICrewmate, ICustomButton, IRpcHandler
         SantaButtonInfo = CreateSantaButtonInfo(this, CanUseAbilityCount.GetInt(), () => SantaOnClick(), "SantaButton", () => Optioninfo.CoolTime);
         CustomButtonInfos = new CustomButtonInfo[1] { SantaButtonInfo };
         RoleAssignTickets = new();
-        for(int i = 0; i < PresetRoleOptions.Length; i++)
+        PresentRoleIntroData = new();
+        PresentRoleInfo = new();
+        for (int i = 0; i < PresetRoleOptions.Length; i++)
         {
             RoleId roleId = PresetRolesParam[i];
             int ticketcount = PresetRoleOptions[i].GetSelection();
             SetTicket(roleId, ticketcount);
+
+            if (PresetRoleOptions[i].GetSelection() > 0) // 設定で有効になっている役職のみ処理
+            {
+                IntroData intro = IntroData.GetIntrodata(roleId);
+                PresentRoleIntroData.Add(intro);
+
+                if (intro == IntroData.CrewmateIntro) // FIXME : RoleBase化が終わったらIntroDataを削除し, RoleInfoのみにする。
+                {
+                    RoleInfo info = RoleInfoManager.GetRoleInfo(roleId);
+                    PresentRoleInfo.Add(info);
+                }
+            }
         }
         //もし全て0%ならすべて同じ確率で設定する
         if (RoleAssignTickets.Count <= 0)
