@@ -20,9 +20,9 @@ public static class HamburgerShop
             {
                 PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
                 tempminigame = task.MinigamePrefab;
-                if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles) return;
+                if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles or TaskTypes.MushroomMixupSabotage) return;
                 ShipStatus ship = GameManager.Instance.LogicOptions.currentGameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : MapLoader.Airship;
-                task.MinigamePrefab = ship.NormalTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger).MinigamePrefab;
+                task.MinigamePrefab = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger).MinigamePrefab;
             }
         }
         public static void Postfix(Console __instance)
@@ -42,7 +42,7 @@ public static class HamburgerShop
     {
         var tasks = new List<byte>();
 
-        var task = MapUtilities.CachedShipStatus.NormalTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger);
+        var task = MapUtilities.CachedShipStatus.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger);
 
         for (int i = 0; i < count; i++)
         {

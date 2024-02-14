@@ -10,8 +10,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 
 class BlockTool
 {
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RepairSystem))]
-    class RepairSystemPatch
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte)})]
+    class UpdateSystemPatch
     {
         public static void Prefix(
             [HarmonyArgument(0)] SystemTypes systemType,
@@ -94,7 +94,7 @@ class BlockTool
                         {
                             if (!OldDesyncCommsPlayers.Contains(p.PlayerId))
                                 OldDesyncCommsPlayers.Add(p.PlayerId);
-                            MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
+                            MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cid);
                             SabotageWriter.Write((byte)SystemTypes.Comms);
                             MessageExtensions.WriteNetObject(SabotageWriter, p);
                             SabotageWriter.Write((byte)128);
@@ -105,7 +105,7 @@ class BlockTool
                             if (!IsCom && OldDesyncCommsPlayers.Contains(p.PlayerId))
                             {
                                 OldDesyncCommsPlayers.Remove(p.PlayerId);
-                                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
+                                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cid);
                                 SabotageFixWriter.Write((byte)SystemTypes.Comms);
                                 MessageExtensions.WriteNetObject(SabotageFixWriter, p);
                                 SabotageFixWriter.Write((byte)16);
@@ -113,7 +113,7 @@ class BlockTool
 
                                 if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
                                 {
-                                    SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
+                                    SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cid);
                                     SabotageFixWriter.Write((byte)SystemTypes.Comms);
                                     MessageExtensions.WriteNetObject(SabotageFixWriter, p);
                                     SabotageFixWriter.Write((byte)17);
@@ -161,6 +161,7 @@ class BlockTool
             1 => new Vector2(15.51107f, -2.897387f),
             2 => new Vector2(26.20935f, -16.04406f),
             4 => new Vector2(25.28237f, -8.145635f),
+            5 => new Vector2(1.535f, -0.419f),
             _ => new(1000, 1000)
         };
     }

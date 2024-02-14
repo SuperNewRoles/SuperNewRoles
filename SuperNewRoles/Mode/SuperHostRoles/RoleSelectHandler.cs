@@ -6,6 +6,9 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -28,7 +31,7 @@ public static class RoleSelectHandler
         OneOrNotListSet();
         AllRoleSetClass.AllRoleSet();
         SetCustomRoles();
-        SyncSetting.CustomSyncSettings(out var modified);
+        SyncSetting.CustomSyncSettings();
         ChacheManager.ResetChache();
         return sender;
     }
@@ -114,6 +117,58 @@ public static class RoleSelectHandler
             BattleRoyal.Main.SpawnBots();
         }
     }
+
+
+    /// <summary>
+    /// RoleBase移行前の役職の, ISupportSHRの[DesyncRole]及び[IsDesync]の代用。
+    /// FIXME : 全てRoleBaseに移行出来たら消す。
+    /// </summary>
+    public static (bool IsDesync, RoleTypes RoleType) GetDesyncRole(RoleId role)
+    {
+        return role switch
+        {
+            RoleId.Jackal => (true, RoleTypes.Impostor),
+            RoleId.Sheriff => (true, RoleTypes.Impostor),
+            RoleId.Demon => (true, RoleTypes.Impostor),
+            RoleId.truelover => (true, RoleTypes.Impostor),
+            RoleId.FalseCharges => (true, RoleTypes.Impostor),
+            RoleId.MadMaker => (true, RoleTypes.Impostor),
+            RoleId.JackalSeer => (true, RoleTypes.Impostor),
+
+            RoleId.Jester => RoleClass.Jester.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.Madmate => RoleClass.Madmate.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.MadMayor => RoleClass.MadMayor.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.MadJester => RoleClass.MadJester.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.Fox => RoleClass.Fox.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.MayorFriends => RoleClass.MayorFriends.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.Tuna => RoleClass.Tuna.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.Technician => (false, RoleTypes.Engineer),
+            RoleId.BlackCat => RoleClass.BlackCat.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.MadSeer => RoleClass.MadSeer.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.SeerFriends => RoleClass.SeerFriends.IsUseVent ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+            RoleId.Pokerface => Pokerface.CustomOptionData.CanUseVent.GetBool() ? (false, RoleTypes.Engineer) : (false, RoleTypes.Crewmate),
+
+            RoleId.PoliceSurgeon => PoliceSurgeon.RoleData.HaveVital ? (false, RoleTypes.Scientist) : (false, RoleTypes.Crewmate),
+
+            RoleId.Arsonist => (true, RoleTypes.Shapeshifter),
+            RoleId.RemoteSheriff => (true, RoleTypes.Shapeshifter),
+            RoleId.ToiletFan => (true, RoleTypes.Shapeshifter),
+            RoleId.NiceButtoner => (true, RoleTypes.Shapeshifter),
+            RoleId.Worshiper => (true, RoleTypes.Shapeshifter),
+            RoleId.MadRaccoon => (true, RoleTypes.Shapeshifter),
+
+            RoleId.SelfBomber => (false, RoleTypes.Shapeshifter),
+            RoleId.Samurai => (false, RoleTypes.Shapeshifter),
+            RoleId.EvilButtoner => (false, RoleTypes.Shapeshifter),
+            RoleId.SuicideWisher => (false, RoleTypes.Shapeshifter),
+            RoleId.Doppelganger => (false, RoleTypes.Shapeshifter),
+            RoleId.Camouflager => (false, RoleTypes.Shapeshifter),
+
+            _ => (false, RoleTypes.Crewmate)
+        };
+    }
+
     public static void SetCustomRoles()
     {
         /*============インポスターにDesync============*/
@@ -165,8 +220,18 @@ public static class RoleSelectHandler
         SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
-        SetVanillaRole(EvilSeer.RoleData.Player, RoleTypes.Shapeshifter, false);
         /*============シェイプシフター役職設定============*/
+
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.GetRoleBase() is ISupportSHR playerSHR)
+            {
+                if (playerSHR.IsDesync)
+                    SetRoleDesync(player, playerSHR.DesyncRole);
+                else
+                    SetVanillaRole(player, playerSHR.RealRole, playerSHR.IsRealRoleNotModOnly);
+            }
+        }
 
         foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
         {
@@ -237,6 +302,7 @@ public static class RoleSelectHandler
         }
         return;
     }
+
     /// <summary>
     /// Desyncで役職をセットする
     /// </summary>
@@ -246,30 +312,34 @@ public static class RoleSelectHandler
     {
         foreach (PlayerControl Player in player)
         {
-            Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
-            if (!Player.IsMod())
+            SetRoleDesync(Player, roleTypes);
+        }
+    }
+    public static void SetRoleDesync(PlayerControl Player, RoleTypes roleTypes)
+    {
+        Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
+        if (!Player.IsMod())
+        {
+            int PlayerCID = Player.GetClientId();
+            sender.RpcSetRole(Player, roleTypes, PlayerCID);
+            foreach (var pc in PlayerControl.AllPlayerControls)
             {
-                int PlayerCID = Player.GetClientId();
-                sender.RpcSetRole(Player, roleTypes, PlayerCID);
-                foreach (var pc in PlayerControl.AllPlayerControls)
-                {
-                    if (pc.PlayerId == Player.PlayerId) continue;
-                    sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
-                }
-                //他視点で科学者にするループ
-                foreach (var pc in PlayerControl.AllPlayerControls)
-                {
-                    if (pc.PlayerId == Player.PlayerId) continue;
-                    if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
-                    else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
-                }
+                if (pc.PlayerId == Player.PlayerId) continue;
+                sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
             }
-            else
+            //他視点で科学者にするループ
+            foreach (var pc in PlayerControl.AllPlayerControls)
             {
-                //Modクライアントは代わりに普通のクルーにする
-                Player.SetRole(RoleTypes.Crewmate); //Modクライアント視点用
-                sender.RpcSetRole(Player, RoleTypes.Crewmate);
+                if (pc.PlayerId == Player.PlayerId) continue;
+                if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
+                else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
             }
+        }
+        else
+        {
+            //Modクライアントは代わりに普通のクルーにする
+            Player.SetRole(RoleTypes.Crewmate); //Modクライアント視点用
+            sender.RpcSetRole(Player, RoleTypes.Crewmate);
         }
     }
     /// <summary>
@@ -282,14 +352,24 @@ public static class RoleSelectHandler
     {
         foreach (PlayerControl p in player)
         {
-            if (p.IsMod() && isNotModOnly)
-            {
-                Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者かつ、非導入者のみなので破棄", "SetVanillaRole");
-                return;
-            }
-            Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
-            sender.RpcSetRole(p, roleTypes);
+            SetVanillaRole(p, roleTypes, isNotModOnly);
         }
+    }
+    /// <summary>
+    /// バニラ役職をセットする
+    /// </summary>
+    /// <param name="p">ターゲット</param>
+    /// <param name="roleTypes">セットする役職</param>
+    /// <param name="isNotModOnly">非Mod導入者のみか(概定はtrue)</param>
+    public static void SetVanillaRole(PlayerControl p, RoleTypes roleTypes, bool isNotModOnly = true)
+    {
+        if (p.IsMod() && isNotModOnly)
+        {
+            Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者かつ、非導入者のみなので破棄", "SetVanillaRole");
+            return;
+        }
+        Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
+        sender.RpcSetRole(p, roleTypes);
     }
     public static void CrewOrImpostorSet()
     {
@@ -306,81 +386,25 @@ public static class RoleSelectHandler
     }
     public static void OneOrNotListSet()
     {
-        List<RoleId> Impoonepar = new();
-        List<RoleId> Imponotonepar = new();
-        List<RoleId> Neutonepar = new();
-        List<RoleId> Neutnotonepar = new();
-        List<RoleId> Crewonepar = new();
-        List<RoleId> Crewnotonepar = new();
-
+        AllRoleSetClass.AssignTickets = new();
         foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (!intro.IsGhostRole && AllRoleSetClass.CanRoleIdElected(intro.RoleId))
-            {
-                var option = IntroData.GetOption(intro.RoleId);
-                if (option == null || !option.isSHROn) continue;
-                var selection = option.GetSelection();
-                if (selection != 0)
-                {
-                    if (selection == 10)
-                    {
-                        switch (intro.Team)
-                        {
-                            case TeamRoleType.Crewmate:
-                                Crewonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Impostor:
-                                Impoonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Neutral:
-                                Neutonepar.Add(intro.RoleId);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 1; i <= selection; i++)
-                        {
-                            switch (intro.Team)
-                            {
-                                case TeamRoleType.Crewmate:
-                                    Crewnotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Impostor:
-                                    Imponotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Neutral:
-                                    Neutnotonepar.Add(intro.RoleId);
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
+            if (intro.IsGhostRole || !AllRoleSetClass.CanRoleIdElected(intro.RoleId))
+                continue;
+            var option = IntroData.GetOption(intro.RoleId);
+            if (option == null || !option.isSHROn) continue;
+            var selection = option.GetSelection();
+            AllRoleSetClass.SetChance(selection, intro.RoleId, intro.Team);
         }
-
-        var Assassinselection = CustomOptionHolder.AssassinAndMarlinOption.GetSelection();
-        SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewmatePlayerNum + "、" + AllRoleSetClass.CrewmatePlayers.Count);
-        if (Assassinselection != 0 && AllRoleSetClass.CrewmatePlayerNum > 0 && AllRoleSetClass.CrewmatePlayers.Count > 0)
+        foreach (RoleInfo info in RoleInfoManager.RoleInfos.Values)
         {
-            if (Assassinselection == 10)
-            {
-                Impoonepar.Add(RoleId.Assassin);
-            }
-            else
-            {
-                for (int i = 1; i <= Assassinselection; i++)
-                {
-                    Imponotonepar.Add(RoleId.Assassin);
-                }
-            }
+            if (info.IsGhostRole || !AllRoleSetClass.CanRoleIdElected(info.Role))
+                continue;
+            var option = IntroData.GetOption(info.Role);
+            if (option == null || !option.isSHROn) continue;
+            var selection = option.GetSelection();
+            AllRoleSetClass.SetChance(selection, info.Role, info.Team);
         }
 
-        AllRoleSetClass.Impoonepar = Impoonepar;
-        AllRoleSetClass.Imponotonepar = Imponotonepar;
-        AllRoleSetClass.Neutonepar = Neutonepar;
-        AllRoleSetClass.Neutnotonepar = Neutnotonepar;
-        AllRoleSetClass.Crewonepar = Crewonepar;
-        AllRoleSetClass.Crewnotonepar = Crewnotonepar;
     }
 }

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using TMPro;
 using UnityEngine;
 
@@ -79,22 +82,25 @@ public static class DeviceClass
     {
         public static void Postfix()
         {
-            if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.EvilHacker.IsMyAdmin && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
+            if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
         }
     }
+    public static bool IsChanging = false;
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Update))]
     class MapCountOverlayUpdatePatch
     {
         public static bool Prefix(MapCountOverlay __instance)
         {
-            if (IsAdminRestrict && !RoleClass.EvilHacker.IsMyAdmin && !BlackHatHacker.IsMyAdmin && AdminTimer <= 0)
+            if (IsAdminRestrict && !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) && !BlackHatHacker.IsMyAdmin && AdminTimer <= 0)
             {
                 MapBehaviour.Instance.Close();
                 return false;
             }
-            bool IsUse = (MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin;
+            bool IsUse = (MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || (PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) || BlackHatHacker.IsMyAdmin;
             if (IsUse)
             {
+                if (IsChanging)
+                    return false;
                 bool commsActive = false;
                 foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
                     if (task.TaskType == TaskTypes.FixComms) commsActive = true;
@@ -114,9 +120,10 @@ public static class DeviceClass
                     __instance.SabotageText.gameObject.SetActive(false);
                 }
 
+                bool IsMyAdmin = PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false;
                 // インポスターや死体の色が変わる役職等が増えたらここに条件を追加
-                bool canSeeImpostorIcon = RoleClass.EvilHacker.IsMyAdmin && RoleClass.EvilHacker.CanSeeImpostorPositions;
-                bool canSeeDeadIcon = RoleClass.EvilHacker.IsMyAdmin && RoleClass.EvilHacker.CanSeeDeadBodyPositions;
+                bool canSeeImpostorIcon = IsMyAdmin && EvilHacker.CanSeeImpostorPositions.GetBool();
+                bool canSeeDeadIcon = IsMyAdmin && EvilHacker.CanSeeDeadBodyPositions.GetBool();
 
                 for (int i = 0; i < __instance.CountAreas.Length; i++)
                 {
@@ -132,6 +139,11 @@ public static class DeviceClass
                             HashSet<int> hashSet = new();
                             int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
                             int count = 0;
+                            if (Roles.Impostor.Bat.RoleData.IsDeviceStop)
+                            {
+                                counterArea.UpdateCount(Roles.Impostor.Bat.RoleData.RoomAdminData.TryGetValue((int)counterArea.RoomType, out int batadmincount) ? batadmincount : 0);
+                                continue;
+                            }
                             List<int> colors = new();
                             // 死体の色で表示する数
                             int numDeadIcons = 0;
@@ -212,7 +224,7 @@ public static class DeviceClass
         }
         public static void Postfix(MapCountOverlay __instance)
         {
-            if (RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin) return;
+            if ((PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) || BlackHatHacker.IsMyAdmin) return;
             if (!IsAdminRestrict) return;
             if (CachedPlayer.LocalPlayer.IsDead())
             {
@@ -263,9 +275,14 @@ public static class DeviceClass
     {
         public static void Postfix()
         {
-            if (RoleClass.EvilHacker.IsMyAdmin || BlackHatHacker.IsMyAdmin)
+            EvilHacker evilHacker = PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>();
+            if (evilHacker?.IsMyAdmin ?? false)
             {
-                RoleClass.EvilHacker.IsMyAdmin = false;
+                evilHacker.IsMyAdmin = false;
+                return;
+            }
+            if (BlackHatHacker.IsMyAdmin)
+            {
                 BlackHatHacker.IsMyAdmin = false;
                 return;
             }
@@ -282,6 +299,20 @@ public static class DeviceClass
                 writer.Write("");
                 writer.EndRPC();
                 RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, false, "");
+            }
+        }
+    }
+    [HarmonyPatch(typeof(CounterArea), nameof(CounterArea.UpdateCount))]
+    public static class CounterAreaUpdateCountPatch
+    {
+        public static void Postfix(CounterArea __instance)
+        {
+            // 会議中にアドミンが投票エリアに隠れて見えなくなるのを直す
+            // ref: MapBehaviour.GenericShow
+            foreach (var icon in __instance.myIcons)
+            {
+                var renderer = icon.GetComponent<SpriteRenderer>();
+                renderer.material.SetInt(PlayerMaterial.MaskLayer, 255);
             }
         }
     }
@@ -326,11 +357,36 @@ public static class DeviceClass
             {
                 __instance.Close();
             }
-            if (BlackHatHacker.IsMyVutals)
+            if (Roles.Impostor.Bat.RoleData.IsDeviceStop)
             {
-                __instance.BatteryText.gameObject.SetActive(false);
                 foreach (VitalsPanel vitals in __instance.vitals)
-                    vitals.gameObject.SetActive(BlackHatHacker.InfectedPlayerId.Contains(vitals.PlayerInfo.PlayerId) || vitals.PlayerInfo.Object.AmOwner);
+                {
+                    if (Roles.Impostor.Bat.RoleData.AliveData.TryGetValue(vitals.PlayerInfo.PlayerId, out bool IsSetAlive) ? IsSetAlive : false)
+                    {
+                        vitals.IsDiscon = false;
+                        vitals.IsDead = false;
+                        vitals.Background.sprite = __instance.PanelPrefab.Background.sprite;
+                        vitals.Cardio.gameObject.SetActive(true);
+                        vitals.Cardio.SetAlive();
+                    }
+                    else if (vitals.PlayerInfo.Disconnected)
+                    {
+                        vitals.SetDisconnected();
+                    }
+                    else
+                    {
+                        vitals.SetDead();
+                    }
+                }
+            }
+            else
+            {
+                if (BlackHatHacker.IsMyVutals)
+                {
+                    __instance.BatteryText.gameObject.SetActive(false);
+                    foreach (VitalsPanel vitals in __instance.vitals)
+                        vitals.gameObject.SetActive(BlackHatHacker.InfectedPlayerId.Contains(vitals.PlayerInfo.PlayerId) || vitals.PlayerInfo.Object.AmOwner);
+                }
             }
             if (!IsVitalRestrict || RoleClass.Doctor.Vital != null || BlackHatHacker.IsMyVutals) return;
             if (CachedPlayer.LocalPlayer.IsDead())
@@ -447,7 +503,10 @@ public static class DeviceClass
             TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
             TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
             TimeRemaining.transform.position = Vector3.zero;
-            TimeRemaining.transform.localPosition = new Vector3(0.95f, 4.45f);
+            TimeRemaining.transform.localPosition =
+                GameManager.Instance.LogicOptions.currentGameOptions.MapId == 5 ?
+                new(2.3f, 4.2f, -10) :
+                new(0.95f, 4.45f, -10f);
             TimeRemaining.transform.localScale *= 1.8f;
             TimeRemaining.color = Palette.White;
         }
@@ -474,7 +533,53 @@ public static class DeviceClass
     {
         public static void Postfix() => IsCameraCloseNow = false;
     }
+    [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Begin))]
+    class FungleSurveillanceMinigameBeginPatch
+    {
+        public static void Prefix()
+        {
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) &&
+                MapCustom.TheFungleCameraOption.GetBool() &&
+                ShipStatus.Instance.TryCast<FungleShipStatus>().LastBinocularPos == Vector2.zero)
+            {
+                ShipStatus.Instance.TryCast<FungleShipStatus>().LastBinocularPos = new(-16.9f, 0.35f);
+            }
+        }
+        public static void Postfix(FungleSurveillanceMinigame __instance)
+        {
+            IsCameraCloseNow = false;
+            if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle))
+                return;
+            if (!MapCustom.TheFungleCameraOption.GetBool())
+                return;
+            float speed = MapCustom.TheFungleCameraSpeed.GetFloat() / 10f;
+            __instance.buttonMoveSpeed = speed;
+            __instance.joystickMoveSpeed = speed;
+            __instance.keyboardMoveSpeed = speed;
+            __instance.mobileJoystickMoveSpeed = speed;
+        }
+    }
+    [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Close))]
+    class FungleSurveillanceMinigameClosePatch
+    {
+        public static void Postfix() => CameraClose();
+    }
 
+    [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Update))]
+    class FungleSurveillanceMinigameUpdatePatch
+    {
+        public static void Prefix(FungleSurveillanceMinigame __instance)
+        {
+            if (!MapOption.CanUseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
+            {
+                __instance.Close();
+            }
+        }
+        public static void Postfix(FungleSurveillanceMinigame __instance)
+        {
+            CameraUpdate(__instance);
+        }
+    }
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Update))]
     class PlanetSurveillanceMinigameUpdatePatch
     {

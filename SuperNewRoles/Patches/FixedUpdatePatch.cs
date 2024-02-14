@@ -1,5 +1,6 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppSystem.Runtime.Remoting.Lifetime;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -11,6 +12,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -81,6 +83,7 @@ public class FixedUpdate
 
         SetBasePlayerOutlines();
         LadderDead.FixedUpdate();
+        CustomRoles.FixedUpdate();
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
@@ -100,13 +103,14 @@ public class FixedUpdate
                 Squid.FixedUpdate();
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
-                CustomRoles.FixedUpdate(__instance);
                 Balancer.Update();
                 Pteranodon.FixedUpdateAll();
                 BlackHatHacker.FixedUpdate();
                 JumpDancer.FixedUpdate();
+                Bat.FixedUpdate();
                 Rocket.FixedUpdate();
                 WellBehaver.FixedUpdate();
+                Frankenstein.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -199,9 +203,6 @@ public class FixedUpdate
                         case RoleId.ShiftActor:
                             ShiftActor.FixedUpdate();
                             break;
-                        case RoleId.Cupid:
-                            Cupid.FixedUpdate();
-                            break;
                         case RoleId.Dependents:
                             Vampire.FixedUpdate.DependentsOnly();
                             break;
@@ -209,7 +210,7 @@ public class FixedUpdate
                             Pteranodon.FixedUpdate();
                             break;
                         case RoleId.EvilSeer:
-                            EvilSeer.Ability.DeadBodyArrowFixedUpdate();
+                            RoleBaseManager.GetLocalRoleBase<EvilSeer>().DeadBodyArrowFixedUpdate();
                             break;
                         case RoleId.PoliceSurgeon:
                             PoliceSurgeon.FixedUpdate();
@@ -237,7 +238,7 @@ public class FixedUpdate
                             if (!RoleClass.SideKiller.IsUpMadKiller)
                             {
                                 var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
-                                if (sideplayer != null)
+                                if (sideplayer != null && sideplayer.IsAlive())
                                 {
                                     sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                     RoleClass.SideKiller.IsUpMadKiller = true;
@@ -247,6 +248,7 @@ public class FixedUpdate
                         case RoleId.Vulture:
                         case RoleId.Amnesiac:
                         case RoleId.ShermansServant:
+                        case RoleId.Frankenstein:
                             foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
                             {
                                 if (arrow.Value?.arrow != null)
@@ -255,11 +257,11 @@ public class FixedUpdate
                             }
                             break;
                         case RoleId.EvilSeer:
-                            foreach (var arrow in EvilSeer.RoleData.DeadPlayerArrows)
+                            foreach (var arrow in RoleBaseManager.GetLocalRoleBase<EvilSeer>().DeadPlayerArrows)
                             {
                                 if (arrow.Value?.arrow != null)
                                     Object.Destroy(arrow.Value.arrow);
-                                EvilSeer.RoleData.DeadPlayerArrows.Remove(arrow.Key);
+                                RoleBaseManager.GetLocalRoleBase<EvilSeer>().DeadPlayerArrows.Remove(arrow.Key);
                             };
                             break;
                     }
@@ -278,7 +280,13 @@ public class FixedUpdate
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                 }
-
+                else
+                {
+                    if (!PlayerControl.LocalPlayer.IsGhostRole(RoleId.DefaultRole) && PlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.CrewmateGhost)
+                    {
+                        NormalButtonDestroy.DisableHauntButton(); // 幽霊役職で, 自身がクルーメイトゴーストの場合憑依ボタンを非表示にする。
+                    }
+                }
                 break;
             case ModeId.NotImpostorCheck:
                 if (AmongUsClient.Instance.AmHost)

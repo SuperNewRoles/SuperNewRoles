@@ -11,6 +11,8 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
@@ -55,6 +57,7 @@ public enum CustomGameOverReason
     MoiraWin,
     SaunerWin,
     CrookWin,
+    FrankensteinWin,
 }
 public enum WinCondition
 {
@@ -95,6 +98,7 @@ public enum WinCondition
     SaunerWin,
     PokerfaceWin,
     CrookWin,
+    FrankensteinWin,
 }
 class FinalStatusPatch
 {
@@ -153,9 +157,10 @@ static class AdditionalTempData
         public int PlayerId { get; set; }
         public int ColorId { get; set; }
         public FinalStatus Status { get; internal set; }
-        public IntroData IntroData { get; set; }
-        public IntroData GhostIntroData { get; set; }
+        public RoleId RoleId { get; set; }
+        public RoleId GhostRoleId { get; set; }
         public string AttributeRoleName { get; set; }
+        public bool isImpostor { get; set; }
     }
 }
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -215,9 +220,8 @@ public class EndGameManagerSetUpPatch
 
             foreach (var data in AdditionalTempData.playerRoles)
             {
-                Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                 if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroData.color, data.IntroData.Name))}";
+                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: winningPlayerData2.IsImpostor))}";
             }
         }
 
@@ -262,7 +266,8 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.CrookWin,("CrookName",Crook.RoleData.color)},
                 {WinCondition.PantsRoyalWin,("PantsRoyalYouareWinner",Mode.PantsRoyal.main.ModeColor) },
                 {WinCondition.SaunerWin, ("SaunerRefreshing",Sauner.RoleData.color) },
-                {WinCondition.PokerfaceWin,("PokerfaceName",Pokerface.RoleData.color) }
+                {WinCondition.PokerfaceWin,("PokerfaceName",Pokerface.RoleData.color) },
+                {WinCondition.FrankensteinWin, ("FrankensteinName",Frankenstein.color) },
             };
         Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -403,10 +408,10 @@ public class EndGameManagerSetUpPatch
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                string roleText = CustomOptionHolder.Cs(data.IntroData.color, data.IntroData.NameKey + "Name") + data.AttributeRoleName;
-                if (data.GhostIntroData.RoleId != RoleId.DefaultRole)
+                string roleText = CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: data.isImpostor) + data.AttributeRoleName;
+                if (data.GhostRoleId != RoleId.DefaultRole)
                 {
-                    roleText += $" → {CustomOptionHolder.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
+                    roleText += $" → {CustomRoles.GetRoleNameOnColor(data.GhostRoleId)}";
                 }
                 //位置調整:ExR参考  by 漢方
                 string result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
@@ -449,6 +454,7 @@ public class CustomPlayerData
     public WinningPlayerData currentData;
     public string name;
     public bool IsWin;
+    public bool isImpostor;
     public FinalStatus finalStatus;
     public int CompleteTask;
     public int TotalTask;
@@ -462,13 +468,11 @@ public class CustomPlayerData
             (CompleteTask, TotalTask) = TaskCount.TaskDate(p);
         }
         catch { }
-        try
+        role = null;
+        if (p.Object != null)
         {
             role = p.Object.GetRole();
-        }
-        catch
-        {
-            role = null;
+            isImpostor = p.Role.IsImpostor;
         }
         var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
             p.Disconnected == true ? FinalStatus.Disconnected :
@@ -520,7 +524,7 @@ public static class OnGameEndPatch
     {
         if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
         {
-            GameManager.Instance.LogicOptions.SetGameOptions(SyncSetting.OptionData.DeepCopy());
+            GameManager.Instance.LogicOptions.SetGameOptions(SyncSetting.DefaultOption.DeepCopy());
             RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
         }
         var gameOverReason = AdditionalTempData.gameOverReason;
@@ -530,12 +534,12 @@ public static class OnGameEndPatch
             if (p != null && p.Object != null && !p.Object.IsBot())
             {
                 //var p = pc.Data;
-                var roles = IntroData.GetIntroData(p.Object.GetRole(), p.Object);
+                RoleId playerrole = p.Object.GetRole();
                 if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
                 {
-                    roles = IntroData.StefinderIntro1;
+                    playerrole = RoleId.Stefinder1;
                 }
-                var ghostRoles = IntroData.GetIntroData(p.Object.GetGhostRole(), p.Object);
+                RoleId playerghostrole = p.Object.GetGhostRole();
                 var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
                 if (p.Object.IsImpostor())
                 {
@@ -576,9 +580,10 @@ public static class OnGameEndPatch
                     TasksTotal = tasksTotal,
                     TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                     Status = finalStatus,
-                    IntroData = roles,
-                    GhostIntroData = ghostRoles,
-                    AttributeRoleName = attributeRoleName
+                    AttributeRoleName = attributeRoleName,
+                    RoleId = playerrole,
+                    GhostRoleId = playerghostrole,
+                    isImpostor = p.Role.IsImpostor
                 });
             }
         }
@@ -601,30 +606,6 @@ public static class OnGameEndPatch
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
         List<PlayerControl> notWinners = new();
         List<PlayerControl> peculiarNotWinners = new();
-
-        /*
-        TODO: 蔵徒:陣営Playerがうまく動かない為コメントアウトし、個別表記式に変更。いつか直す。
-
-        // Neutral,MadRoles,FriendRolesから溢れたクルー勝利から除外する必要のある役職を個別追記する
-        peculiarNotWinners.AddRanges(new[]
-            {
-                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer, // クルー陣営の時はマッド役職でない為
-                RoleClass.SideKiller.MadKillerPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
-                RoleClass.Dependents.DependentsPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
-                OrientalShaman.ShermansServantPlayer, // 第三陣営ではなく[CrewmatePlayer]に含まれている為
-                //  RoleClass.Cupid.CupidPlayer,
-                //  キューピットはNeutralPlayerだが元々記載の方法が特殊だった為コメントアウトで記載を残した。
-            });
-
-        notWinners.AddRanges(new[]
-            {
-                BotManager.AllBots,
-                RoleHelpers.NeutralPlayer,
-                RoleHelpers.MadRolesPlayer,
-                RoleHelpers.FriendRolesPlayer,
-                peculiarNotWinners, // 上記に含まれないクルー勝利除外役職
-            });
-        */
 
         notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
             RoleClass.Madmate.MadmatePlayer,
@@ -685,9 +666,14 @@ public static class OnGameEndPatch
             Sauner.RoleData.Player,
             Pokerface.RoleData.Player,
             Crook.RoleData.Player,
+            Frankenstein.FrankensteinPlayer,
             });
-        notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.IsNeutral() && !notWinners.Contains(player))
+                notWinners.Add(player);
+        }
 
         foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
         {
@@ -933,6 +919,21 @@ public static class OnGameEndPatch
         bool changeTheWinCondition = Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.IsChangeTheWinCondition.GetBool();
         bool isReset = false;
 
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.GetRoleBase() is IAdditionalWinner additionalWinner)
+            {
+                IAdditionalWinner.AdditionalWinData additionalWinData = additionalWinner.CanWin();
+                if (additionalWinData.CanWin)
+                {
+                    if (additionalWinData.winCondition != AdditionalTempData.winCondition)
+                        TempData.winners = new(1);
+                    TempData.winners.Add(new(player.Data));
+                    AdditionalTempData.winCondition = additionalWinData.winCondition;
+                }
+            }
+        }
+
         foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
         {
             if (player.IsAlive() && !RoleClass.Neet.IsAddWin)
@@ -1069,12 +1070,12 @@ public static class OnGameEndPatch
                             isReset = true;
                         }
                         TempData.winners.Add(new(player.Data));
-                        if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
+                        Cupid cupid = RoleBaseManager.GetRoleBases<Cupid>().FirstOrDefault(x => x.currentPair != null && x.currentPair.PlayerId == player.PlayerId);
+                        if (cupid != null)
                         {
-
-                            PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId));
+                            PlayerControl cPlayer = cupid.Player;
                             if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
-                                TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId)).Data));
+                                TempData.winners.Add(new(cupid.Player.Data));
                         }
                         AdditionalTempData.winCondition = WinCondition.LoversWin;
                     }
@@ -1187,6 +1188,24 @@ public static class OnGameEndPatch
                     }
                 }
             }
+        }
+        foreach (KeyValuePair<byte, int> data in Frankenstein.KillCount)
+        {
+            //勝利に必要なキル数を満たしているか
+            if (data.Value > 0)
+                continue;
+            //生存していなければ勝利できない
+            GameData.PlayerInfo FrankenPlayer = GameData.Instance.GetPlayerById(data.Key);
+            if (FrankenPlayer.IsDead())
+                continue;
+            if (!((isDleted && changeTheWinCondition) || isReset))
+            {
+                TempData.winners = new();
+                isDleted = true;
+                isReset = true;
+            }
+            TempData.winners.Add(new(FrankenPlayer));
+            AdditionalTempData.winCondition = WinCondition.FrankensteinWin;
         }
         if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
         {
@@ -1321,11 +1340,12 @@ public static class OnGameEndPatch
                     foreach (PlayerControl player in plist)
                     {
                         TempData.winners.Add(new(player.Data));
-                        if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
+                        Cupid cupid = RoleBaseManager.GetRoleBases<Cupid>().FirstOrDefault(x => x.currentPair != null && x.currentPair.PlayerId == player.PlayerId);
+                        if (cupid != null)
                         {
-                            PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId));
+                            PlayerControl cPlayer = cupid.Player;
                             if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
-                                TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId)).Data));
+                                TempData.winners.Add(new(cupid.Player.Data));
                         }
                     }
                 }
@@ -1469,7 +1489,7 @@ class ExileControllerMessagePatch
                 // Exile role text
                 if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                 {
-                    __result = player.Data.PlayerName + " は " + ModTranslation.GetString(IntroData.GetIntroData(player.GetRole(), player).NameKey + "Name") + " だった！";
+                    __result = string.Format(ModTranslation.GetString("ExiledText"), player.Data.PlayerName, CustomRoles.GetRoleName(player));
                 }
             }
         }
@@ -1576,10 +1596,14 @@ public static class CheckGameEndPatch
                 return true;
             }
         }
-        ISystemType systemType2 = __instance.Systems.ContainsKey(SystemTypes.Reactor) ? __instance.Systems[SystemTypes.Reactor] : null;
+        ISystemType systemType2 = __instance.Systems.ContainsKey(SystemTypes.HeliSabotage) ? __instance.Systems[SystemTypes.HeliSabotage] : null;
         if (systemType2 == null)
         {
             systemType2 = __instance.Systems.ContainsKey(SystemTypes.Laboratory) ? __instance.Systems[SystemTypes.Laboratory] : null;
+        }
+        if (systemType2 == null)
+        {
+            systemType2 = __instance.Systems.ContainsKey(SystemTypes.Reactor) ? __instance.Systems[SystemTypes.Reactor] : null;
         }
         if (systemType2 != null)
         {
@@ -1930,7 +1954,7 @@ public static class CheckGameEndPatch
                                 numPavlovsTeamAlive++;
                             }
                         }
-                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(playerInfo.Object.PlayerId))) numLoversAlive++;
+                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.TryGetRoleBase<Cupid>(out Cupid cupid) && cupid.Created)) numLoversAlive++;
                     }
                 }
             }

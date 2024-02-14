@@ -19,7 +19,7 @@ class MurderPlayer
             RoleClass.Finder.KillCount++;
         }
         if (!AmongUsClient.Instance.AmHost) return;
-        FixedUpdate.SetRoleNames();
+        ChangeName.SetRoleNames();
         if (__instance.IsRole(RoleId.Finder))
         {
             RoleClass.Finder.KillCounts[__instance.PlayerId]++;
@@ -66,11 +66,11 @@ class MurderPlayer
             PlayerControl Side = target.GetOneSideLovers();
             if (Side.IsAlive())
             {
-                Side.RpcMurderPlayer(Side);
+                Side.RpcMurderPlayer(Side, true);
             }
         }
         Roles.Bait.MurderPostfix(__instance, target);
-        FixedUpdate.SetRoleName(target);
-        Seer.WrapUpPatch.MurderPlayerPatch.ShowFlash_SHR(target);
+        ChangeName.SetRoleName(target);
+        SeerHandler.WrapUpPatch.MurderPlayerPatch.ShowFlash_SHR(target);
     }
 }

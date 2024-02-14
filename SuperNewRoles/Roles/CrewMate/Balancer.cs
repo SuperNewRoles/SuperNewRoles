@@ -333,9 +333,9 @@ public static class Balancer
             ChainObjects.Add((createchain(Random.Range(1.8f, -1.7f), Random.Range(-15f, 15f)), 0f, 0));
         }
         ChainObjects.Add((createchain(0, 0, -12f), 0f, 0));
-        textuseability = createtext(new(0, 2.1f, -30), "能力発動", 12);
+        textuseability = createtext(new(0, 2.1f, -30), ModTranslation.GetString("BalancerAbilityUseText"), 12);
         textuseability.enabled = false;
-        textpleasevote = createtext(new(0, -1f, -30f), "どちらかに投票せよ！", 8);
+        textpleasevote = createtext(new(0, -1f, -30f), ModTranslation.GetString("BalancerVoteText"), 8);
         textpleasevote.enabled = false;
         textpleasetimer = 0.35f;
         SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Balancer.chain.raw"), false);
@@ -375,7 +375,7 @@ public static class Balancer
         {
             if (PlayerControl.LocalPlayer.IsDead())
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+                __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
             if (currentAbilityUser != null)
             {
@@ -398,7 +398,7 @@ public static class Balancer
             if (currentTarget == null)
             {
                 currentTarget = Target;
-                __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == currentTarget.PlayerId && x.transform.FindChild("BalancerButton") != null) x.transform.FindChild("BalancerButton").gameObject.SetActive(false); });
+                __instance.playerStates.ForEach(x => { if (x.TargetPlayerId == currentTarget.PlayerId && x.transform.FindChild("BalancerButton") != null) x.transform.FindChild("BalancerButton").gameObject.SetActive(false); });
                 return;
             }
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.BalancerBalance);
@@ -408,7 +408,7 @@ public static class Balancer
             writer.EndRPC();
             RPCProcedure.BalancerBalance(PlayerControl.LocalPlayer.PlayerId, currentTarget.PlayerId, Target.PlayerId);
             IsAbilityUsed = true;
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
         }
         static void Event(MeetingHud __instance)
         {

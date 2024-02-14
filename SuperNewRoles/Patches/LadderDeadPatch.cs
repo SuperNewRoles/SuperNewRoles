@@ -22,7 +22,7 @@ public static class LadderDead
                 {
                     if (PlayerControl.LocalPlayer.moveable)
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.LadderDeath);
                     }
                 }
@@ -41,7 +41,7 @@ public static class LadderDead
                         player.Data.IsDead = true;
                         new LateTask(() =>
                         {
-                            player.RpcMurderPlayer(player);
+                            player.RpcMurderPlayer(player, true);
                             player.RpcSetFinalStatus(FinalStatus.LadderDeath);
                         }, 0.05f, "Ladder Murder");
                     }

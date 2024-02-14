@@ -31,7 +31,7 @@ public static class SelectTask
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
             {
                 var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
-                var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, commont, shortt, longt);
+                var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, (commont, shortt, longt));
                 taskTypeIds = new Il2CppStructArray<byte>(TasksList.Count);
                 for (int i = 0; i < TasksList.Count; i++)
                 {
@@ -54,7 +54,7 @@ public static class SelectTask
         }
 
         if (GetHaveTaskManageAbility(roleId)) return GetRoleTaskData(roleId);
-        else return (SyncSetting.OptionData.GetInt(Int32OptionNames.NumCommonTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumShortTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumLongTasks));
+        else return (SyncSetting.DefaultOption.GetInt(Int32OptionNames.NumCommonTasks), SyncSetting.DefaultOption.GetInt(Int32OptionNames.NumShortTasks), SyncSetting.DefaultOption.GetInt(Int32OptionNames.NumLongTasks));
     }
     public static (CustomOption, CustomOption, CustomOption) TaskSetting(int commonid, int shortid, int longid, CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic, bool IsSHROn = false)
     {
@@ -114,6 +114,7 @@ public static class SelectTask
             { RoleId.TheThirdLittlePig, true },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
             { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
+            { RoleId.BlackSanta, BlackSanta.CanCheckImpostorOption.GetBool()}
         };
 
         if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];
@@ -161,6 +162,7 @@ public static class SelectTask
             { RoleId.TheThirdLittlePig, TheThreeLittlePigs.TheThreeLittlePigsIsSettingNumberOfUniqueTasks.GetBool() ? (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanIsSettingNumberOfUniqueTasks.GetBool() ? (OrientalShaman.OrientalShamanCommonTask.GetInt(), OrientalShaman.OrientalShamanShortTask.GetInt(), OrientalShaman.OrientalShamanLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) ? (MadRaccoon.CustomOptionData.CommonTask.GetInt(),MadRaccoon.CustomOptionData.ShortTask.GetInt(), MadRaccoon.CustomOptionData.LongTask.GetInt())  : (0, 0, 0) },
+            { RoleId.BlackSanta, BlackSanta.IsSettingNumberOfUniqueTasks.GetBool() ? (BlackSanta.CommonTaskOption.GetInt(), BlackSanta.ShortTaskOption.GetInt(), BlackSanta.LongTaskOption.GetInt()) : (0, 0, 0)}
         };
 
         //テンプレート

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -35,10 +36,9 @@ public class CursedMedScanTask
         {
             if (!Main.IsCursed) return;
             __instance.ScanDuration = 60f;
-            IntroData intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
             string color = FastDestroyableSingleton<TranslationController>.Instance.GetString(Palette.ColorNames[PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId]);
             string playerIdText = $"0b{Convert.ToInt32(Convert.ToString(PlayerControl.LocalPlayer.PlayerId, 2)):000000000}";
-            string text = string.Format(ModTranslation.GetString("CursedMedScanTaskText"), color.Replace("(MOD)", ""), playerIdText, PlayerControl.LocalPlayer.Data.DefaultOutfit.PlayerName, intro.Team, PlayerControl.LocalPlayer.IsHauntedWolf() ? IntroData.GetIntroData(RoleId.DefaultRole).Name : intro.Name, color, MedScanMinigame.BloodTypes[(int)PlayerControl.LocalPlayer.BodyType]);
+            string text = string.Format(ModTranslation.GetString("CursedMedScanTaskText"), color.Replace("(MOD)", ""), playerIdText, PlayerControl.LocalPlayer.Data.DefaultOutfit.PlayerName, CustomRoles.GetRoleTeam(PlayerControl.LocalPlayer), PlayerControl.LocalPlayer.IsHauntedWolf() ? IntroData.CrewmateIntro.Name : CustomRoles.GetRoleName(PlayerControl.LocalPlayer), color, MedScanMinigame.BloodTypes[(int)PlayerControl.LocalPlayer.BodyType]);
             string errortext = "";
             int dealing = Math.DivRem(text[(int)Math.Ceiling(text.Length / (__instance.ScanDuration - 10) * (__instance.ScanDuration / 2) + 1)..].Length, (Isﾖｯｷﾝｸﾞ ? " ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲ" : " Error").Length, out int over);
             for (int i = 0; i < dealing; i++)

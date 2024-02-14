@@ -10,11 +10,11 @@ class MorePatch
     {
         public static void Postfix(PlayerControl __instance)
         {
-            FixedUpdate.SetRoleName(__instance);
+            ChangeName.SetRoleName(__instance);
         }
     }
 
-    public static bool RepairSystem
+    public static bool UpdateSystem
     (ShipStatus __instance,
             SystemTypes systemType,
             PlayerControl player,
@@ -45,10 +45,10 @@ class MorePatch
     public static void StartMeeting()
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        FixedUpdate.SetRoleNames(true);
+        ChangeName.SetRoleNames(true);
         new LateTask(() =>
         {
-            FixedUpdate.SetDefaultNames();
+            ChangeName.SetDefaultNames();
         }, 5f, "SetMeetingName");
     }
 }

@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
@@ -24,9 +27,29 @@ class WrapUpPatch
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public class ExileControllerWrapUpPatch
     {
-        public static void Prefix(ExileController __instance)
+        public static IEnumerator WrapUpCoro(ExileController __instance)
+        {
+            if (__instance.exiled != null)
+            {
+                PlayerControl @object = __instance.exiled.Object;
+                if (@object)
+                {
+                    @object.Exiled();
+                }
+                __instance.exiled.IsDead = true;
+            }
+            if (DestroyableSingleton<TutorialManager>.InstanceExists || !GameManager.Instance.LogicFlow.IsGameOverDueToDeath())
+            {
+                yield return ShipStatus.Instance.PrespawnStep();
+                __instance.ReEnableGameplay();
+            }
+            GameObject.Destroy(__instance.gameObject);
+        }
+        public static bool Prefix(ExileController __instance)
         {
             WrapUpPatch.Prefix(__instance.exiled);
+            __instance.StartCoroutine(WrapUpCoro(__instance).WrapToIl2Cpp());
+            return false;
         }
         public static void Postfix(ExileController __instance)
         {
@@ -83,7 +106,7 @@ class WrapUpPatch
             if (exiled.Object.IsRole(RoleId.SideKiller))
             {
                 var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
-                if (sideplayer != null)
+                if (sideplayer != null && sideplayer.IsAlive())
                 {
                     if (!RoleClass.SideKiller.IsUpMadKiller)
                     {
@@ -131,8 +154,7 @@ class WrapUpPatch
         Clergyman.WrapUp();
         Balancer.WrapUp(exiled == null ? null : exiled.Object);
         Speeder.WrapUp();
-        Bestfalsecharge.WrapUp();
-        CustomRoles.OnWrapUp();
+        CustomRoles.OnWrapUp(exiled?.Object);
         Rocket.WrapUp(exiled == null ? null : exiled.Object);
         if (AmongUsClient.Instance.AmHost)
         {
@@ -147,13 +169,12 @@ class WrapUpPatch
         Photographer.WrapUp();
         Cracker.WrapUp();
         RoleClass.IsMeeting = false;
-        Seer.WrapUpPatch.WrapUpPostfix();
+        SeerHandler.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
         Moira.WrapUp(exiled);
-        Conjurer.WrapUp();
         WellBehaver.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
@@ -162,6 +183,8 @@ class WrapUpPatch
         RoleClass.Doppelganger.Targets = new();
 
         Crook.WrapUp.GeneralProcess(exiled == null ? null : exiled.Object);
+
+        FixAfterMeetingVent();
 
         Logger.Info("[追放の有無問わず 会議終了時に行う処理] 通過", "WrapUp");
 
@@ -255,5 +278,17 @@ class WrapUpPatch
         Mode.SuperHostRoles.Main.RealExiled = null;
 
         Logger.Info("[追放が発生していた場合のみ 会議終了時に行う処理] 通過", "WrapUp");
+    }
+    static void FixAfterMeetingVent()
+    {
+        //ベントがなければ帰れ！！！
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out ISystemType vent))
+            return;
+        VentilationSystem ventilationSystem = vent.TryCast<VentilationSystem>();
+        // VentiSystemでなければ帰れ！！！
+        if (ventilationSystem == null)
+            return;
+        ventilationSystem.PlayersInsideVents = new();
+        ventilationSystem.IsDirty = true;
     }
 }

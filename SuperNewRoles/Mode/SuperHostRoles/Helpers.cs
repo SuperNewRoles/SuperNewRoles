@@ -52,7 +52,8 @@ public static class Helpers
     }
 
     /// <summary>
-    /// 守護ガードのエフェクトを表示する(キルクールもリセット)
+    /// 守護ガードのエフェクトを表示する。
+    /// showerのキルクール及び守護クールのリセットも行う。
     /// </summary>
     /// <param name="shower">エフェクトを見れる人</param>
     /// <param name="target">エフェクトをかける人</param>
@@ -72,18 +73,7 @@ public static class Helpers
             var crs = CustomRpcSender.Create("RpcShowGuardEffect");
             var clientId = shower.GetClientId();
             Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
-            crs.StartMessage(clientId);
-            crs.StartRpc(shower.NetId, (byte)RpcCalls.ProtectPlayer)// 守護を始める
-                .WriteNetObject(target) // targetを対象に
-                .Write(0) // ProtectPlayerの引数2の、coloridを0で実行
-                .EndRpc(); // 守護終わり
-
-            crs.StartRpc(shower.NetId, (byte)RpcCalls.MurderPlayer) // キルを始める
-                .WriteNetObject(target) // targetを対象に
-                .EndRpc(); // キル終わり
-
-            crs.EndMessage(); // RpcShowGuardEffect終わり
-            crs.SendMessage(); // ログへ出力(のはず)
+            MurderHelpers.RpcForceGuard(shower, target, shower);
         }
     }
     /// <summary>
@@ -96,12 +86,15 @@ public static class Helpers
         if (shower == null || !AmongUsClient.Instance.AmHost || shower.AmOwner) return;
         int clientId = shower.GetClientId();
 
-        byte reactorId = 3;
-        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2) reactorId = 21;
+        byte reactorId = (byte)SystemTypes.Reactor;
+        MapNames mapName = (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId;
+
+        if (mapName == MapNames.Polus) reactorId = (byte)SystemTypes.Laboratory;
+        else if (mapName == MapNames.Airship) reactorId = (byte)SystemTypes.HeliSabotage;
 
         // ReactorサボをDesyncで発動
         SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
-        MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+        MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
         SabotageWriter.Write(reactorId);
         MessageExtensions.WriteNetObject(SabotageWriter, shower);
         SabotageWriter.Write((byte)128);
@@ -109,17 +102,17 @@ public static class Helpers
 
         new LateTask(() =>
         { // Reactorサボを修理
-            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
             SabotageFixWriter.Write(reactorId);
             MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
             SabotageFixWriter.Write((byte)16);
             AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
         }, 0.1f + duration, "Fix Desync Reactor");
 
-        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4) //Airship用
+        if (mapName == MapNames.Airship) //Airship用
             new LateTask(() =>
             { // Reactorサボを修理
-                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
                 SabotageFixWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
                 SabotageFixWriter.Write((byte)17);

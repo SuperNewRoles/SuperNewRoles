@@ -12,7 +12,7 @@ namespace SuperNewRoles.Modules;
 
 public static class MatchMaker
 {
-    public static string BaseURL = "https://supermatchmaker.vercel.app/";
+    public static string BaseURL = "https://matchmaker.supernewroles.com/";
     public static Dictionary<string, string> CreateBaseData()
     {
         var data = new Dictionary<string, string>
@@ -120,9 +120,9 @@ public static class MatchMaker
                 Regex colorRegex = new(pattern);
                 tagName = colorRegex.Replace(tagName, "");
 
-                (string tagKey, bool success) = ModTranslation.GetTranslateKey(tagName);
+                (string[] tagKey, bool success) = ModTranslation.GetTranslateKey(tagName);
 
-                ActiveTags.Add($"{tagKey}");
+                ActiveTags.Add($"{tagKey[0]}");
                 Logger.Info($"タグ情報 : {tagName}({option.id}) を送信します。");
             }
         }

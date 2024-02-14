@@ -70,7 +70,7 @@ public static class NekoKabocha
             (killer.IsNeutral() && CanRevengeNeut) ||
             (killer.IsImpostor() && CanRevengeImp))
         {
-            killer.RpcMurderPlayer(killer);
+            killer.RpcMurderPlayer(killer, true);
             killer.RpcSetFinalStatus(FinalStatus.Revenge);
         }
     }

@@ -150,7 +150,7 @@ public class Safecracker
                     PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
                     Logger.Info($"タスクタイプ : {task.TaskType}, タスクID : {(int)task.TaskType}", "Task Data");
                     tempminigame = task.MinigamePrefab;
-                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles) return;
+                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles or TaskTypes.MushroomMixupSabotage) return;
                     ShipStatus ship = GameManager.Instance.LogicOptions.currentGameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : Agartha.MapLoader.Airship;
                     task.MinigamePrefab = ship.LongTasks.FirstOrDefault(x => x.TaskType == TaskTypes.UnlockSafe).MinigamePrefab;
                 }

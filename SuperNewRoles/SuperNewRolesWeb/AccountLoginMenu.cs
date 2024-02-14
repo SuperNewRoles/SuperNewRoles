@@ -14,6 +14,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
     {
         static PassiveButton LoginButton;
         static TextMeshPro LoginButtonText;
+        static PassiveButton SignupButton;
+        static TextMeshPro SignupButtonText;
         static TextMeshPro SuperNewRolesWebText;
         static TextMeshPro UserIdText;
 
@@ -22,6 +24,11 @@ namespace SuperNewRoles.SuperNewRolesWeb
         static TextMeshPro LoginPopupCurrentTitle;
         static PassiveButton LoginPopupSubmitButton;
         static PassiveButton LoginPopupBackButton;
+
+        static EditName SignupPopup;
+        static TextMeshPro SignupPopupTitle;
+        static TextMeshPro SignupPopupCurrentTitle;
+        static PassiveButton SignupPopupBackButton;
 
         static string CurrentUserId;
         static bool IsUserIdInputNow;
@@ -73,6 +80,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 var BaseButton = FastDestroyableSingleton<AccountManager>.Instance.accountTab.transform.FindChild("AccountWindow/Card/CardContents/Buttons/OfflineMode/SignIn").GetComponent<PassiveButton>();
                 LoginButton = GameObject.Instantiate(BaseButton);
                 LoginButtonText = LoginButton.GetComponentInChildren<TextMeshPro>();
+                SignupButton = GameObject.Instantiate(BaseButton);
+                SignupButtonText = SignupButton.GetComponentInChildren<TextMeshPro>();
                 SuperNewRolesWebText = GameObject.Instantiate(LoginButtonText);
                 SuperNewRolesWebText.transform.localPosition = new(0, 2.2f, 0);
                 SuperNewRolesWebText.transform.localScale = Vector3.one * 3;
@@ -105,6 +114,17 @@ namespace SuperNewRoles.SuperNewRolesWeb
                         LoginPopupSubmitButton.gameObject.SetActive(true);
                     }
                 }));
+                SignupButton.transform.localScale = Vector3.one * 0.75f;
+                SignupButton.transform.FindChild("Background").localScale = new(0.8f, 0.75f, 1);
+                SignupButton.OnClick = new();
+                SignupButton.OnClick.AddListener((Action)(() =>
+                {
+                    SignupPopup.gameObject.SetActive(true);
+                }));
+                SignupPopup = GameObject.Instantiate(FastDestroyableSingleton<AccountManager>.Instance.accountTab.editNameScreen);
+                SignupPopupTitle = SignupPopup.transform.FindChild("TitleText_TMP").GetComponent<TextMeshPro>();
+                SignupPopupTitle.GetComponent<TextTranslatorTMP>().enabled = false;
+
                 LoginPopup = GameObject.Instantiate(FastDestroyableSingleton<AccountManager>.Instance.accountTab.editNameScreen);
                 LoginPopupTitle = LoginPopup.transform.FindChild("TitleText_TMP").GetComponent<TextMeshPro>();
                 LoginPopupTitle.GetComponent<TextTranslatorTMP>().enabled = false;
@@ -129,6 +149,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
             }
             IsUserIdInputNow = true;
             LoginPopup.gameObject.SetActive(false);
+            SignupPopup.gameObject.SetActive(false);
+            SignupButton.gameObject.SetActive(false);
             LoginPopupTitle.text = ModTranslation.GetString("SNRWebLoginPopupTitle");
             LoginPopupCurrentTitle.transform.localPosition = new(-1.1f, 0.625f, 0);
             LoginPopupCurrentTitle.transform.localScale = Vector3.one;
@@ -252,11 +274,13 @@ namespace SuperNewRoles.SuperNewRolesWeb
             };
             var yStart = Vector3.up * 0.83f;
             var yOffset = Vector3.down * 1.575f;
-            var gameObjects = toMove.Select(x => GameObject.Find("NormalMenu/Buttons/" + x)).ToList();
+            var gameObjects = toMove.Select(x => GameObject.Find("NormalMenu/Buttons/" + x));
             if (gameObjects.Any(x => x == null)) return false;
-            for (var i = 0; i < gameObjects.Count; i++)
+            int index = 0;
+            foreach (GameObject obj in gameObjects)
             {
-                gameObjects[i].transform.position = yStart + (yOffset * i);
+                obj.transform.position = yStart + (yOffset * index);
+                index++;
             }
             return true;
         }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers;
@@ -61,7 +63,6 @@ class RoleSystem
         }
         */
 
-        var introData = IntroData.GetIntroData(player.GetRole(), player);
         string TaskText = "";
         if (!player.IsImpostor())
         {
@@ -76,67 +77,35 @@ class RoleSystem
             }
             catch { }
         }
-        NewName = "<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.Cs(introData.color, Name));
+        NewName = "<size=75%>" + CustomRoles.GetRoleNameOnColor(player) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.Cs(CustomRoles.GetRoleColor(player), Name));
         player.RpcSetNamePrivate(NewName);
     }
     public static void AssignRole()
     {
-        AllRoleSetClass.Impoonepar = new();
-        AllRoleSetClass.Imponotonepar = new();
-        AllRoleSetClass.Neutonepar = new();
-        AllRoleSetClass.Neutnotonepar = new();
-        AllRoleSetClass.Crewonepar = new();
-        AllRoleSetClass.Crewnotonepar = new();
         foreach (IntroData intro in IntroData.Intros.Values)
         {
-            if (intro.RoleId is
-                RoleId.Workperson or RoleId.HomeSecurityGuard or RoleId.Tuna or RoleId.ToiletFan)
-            {
-                var option = IntroData.GetOption(intro.RoleId);
-                if (option == null) continue;
-                var selection = option.GetSelection();
-                if (selection != 0)
-                {
-                    if (selection == 10)
-                    {
-                        switch (intro.Team)
-                        {
-                            case TeamRoleType.Crewmate:
-                                AllRoleSetClass.Crewonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Impostor:
-                                AllRoleSetClass.Impoonepar.Add(intro.RoleId);
-                                break;
-                            case TeamRoleType.Neutral:
-                                AllRoleSetClass.Neutonepar.Add(intro.RoleId);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 1; i <= selection; i++)
-                        {
-                            switch (intro.Team)
-                            {
-                                case TeamRoleType.Crewmate:
-                                    AllRoleSetClass.Crewnotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Impostor:
-                                    AllRoleSetClass.Imponotonepar.Add(intro.RoleId);
-                                    break;
-                                case TeamRoleType.Neutral:
-                                    AllRoleSetClass.Neutnotonepar.Add(intro.RoleId);
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
+            if (!(intro.RoleId is
+                RoleId.Workperson or RoleId.HomeSecurityGuard or RoleId.Tuna or RoleId.ToiletFan))
+                continue;
+            var option = IntroData.GetOption(intro.RoleId);
+            if (option == null) continue;
+            var selection = option.GetSelection();
+            AllRoleSetClass.SetChance(selection, intro.RoleId, intro.Team);
+        }
+        foreach (RoleInfo info in RoleInfoManager.RoleInfos.Values)
+        {
+            if (!(info.Role is
+                RoleId.Workperson or RoleId.HomeSecurityGuard or RoleId.Tuna or RoleId.ToiletFan))
+                continue;
+            var option = IntroData.GetOption(info.Role);
+            if (option == null) continue;
+            var selection = option.GetSelection();
+            AllRoleSetClass.SetChance(selection, info.Role, info.Team);
         }
         AllRoleSetClass.CrewOrImpostorSet();
         AllRoleSetClass.AllRoleSet();
         SuperHostRoles.RoleSelectHandler.SetCustomRoles();
-        SyncSetting.CustomSyncSettings(out var modified);
+        SyncSetting.CustomSyncSettings();
         ChacheManager.ResetChache();
     }
 }

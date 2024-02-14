@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -11,7 +12,7 @@ class SoothSayer_updatepatch
     {
         if (PlayerControl.LocalPlayer.IsDead())
         {
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
     }
 }
@@ -34,7 +35,7 @@ public static class SoothSayer_Patch
         }
         else
         {
-            if (introData != RoleId.ShermansServant) nameData = IntroData.GetIntroData(introData, Target).NameKey;
+            if (introData != RoleId.ShermansServant) nameData = CustomRoles.GetRoleNameKey(introData, Target);
             else nameData = "Crewmate";
         }
         var name = ModTranslation.GetString(nameData + "Name");
@@ -44,11 +45,11 @@ public static class SoothSayer_Patch
         if (!RoleClass.SoothSayer.DisplayedPlayer.Contains(Target.PlayerId))
         {
             RoleClass.SoothSayer.DisplayedPlayer.Add(Target.PlayerId);
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
         if (RoleClass.SoothSayer.Count <= 0)
         {
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
     }
     static void Event(MeetingHud __instance)
@@ -80,7 +81,7 @@ public static class SoothSayer_Patch
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
         var introData = Target.GetRole();
-        nameData = IntroData.GetIntroData(introData, Target).NameKey;
+        nameData = CustomRoles.GetRoleNameKey(introData, Target);
         var isReverseDecision = Attribute.HauntedWolf.CustomOptionData.IsReverseSheriffDecision.GetBool() && PlayerControl.LocalPlayer.IsHauntedWolf();
         if (RoleClass.SpiritMedium.DisplayMode)
         {
@@ -93,7 +94,7 @@ public static class SoothSayer_Patch
         }
         else
         {
-            if (introData != RoleId.ShermansServant) nameData = IntroData.GetIntroData(introData, Target).NameKey;
+            if (introData != RoleId.ShermansServant) nameData = CustomRoles.GetRoleNameKey(introData, Target);
             else nameData = "Crewmate";
         }
         var name = ModTranslation.GetString(nameData + "Name");
@@ -105,8 +106,8 @@ public static class SoothSayer_Patch
         }
         if (RoleClass.SpiritMedium.MaxCount <= 0)
         {
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
-            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
     }
     static void SpiritEvent(MeetingHud __instance)

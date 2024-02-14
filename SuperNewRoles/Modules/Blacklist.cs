@@ -55,7 +55,7 @@ public static class Blacklist
             Players.Add(this);
         }
     }
-    public const string BlacklistServerURL = "https://amongusbanlist-1-f7670492.deta.app/api/get_list?hash=true";
+    public const string BlacklistServerURL = "https://blacklist.supernewroles.com/api/get_list?hash=true";
     static bool downloaded = false;
     /// <summary>
     /// 起動時などで予め取得しておく

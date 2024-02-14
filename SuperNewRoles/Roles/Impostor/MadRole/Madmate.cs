@@ -1,22 +1,48 @@
+using AmongUs.GameOptions;
 using System.Collections.Generic;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Roles;
 
 class Madmate
 {
-    public static List<byte> CheckedImpostor;
+    public static HashSet<byte> CheckedImpostor;
+    /// <summary>
+    /// MKされたマッドを保存する
+    /// </summary>
+    /// <value>
+    /// true : 元がタスクをできる役職 / false : 元がタスクができない役職
+    /// </value>
+    public static PlayerData<bool> ChangeMadmatePlayer;
+
+    public static void ClearAndReload()
+    {
+        CheckedImpostor = new();
+        ChangeMadmatePlayer = new(defaultvalue: true);
+    }
+
     public static bool CheckImpostor(PlayerControl p)
     {
         if (CheckedImpostor.Contains(p.PlayerId)) return true;
+        if (p.GetRoleBase() is IMadmate imadmate)
+        {
+            bool canSee = imadmate.CanSeeImpostor(p);
+            if (canSee)
+                CheckedImpostor.Add(p.PlayerId);
+            return canSee;
+        }
         int CheckTask = 0;
         switch (p.GetRole())
         {
             case RoleId.Madmate:
                 if (!RoleClass.Madmate.IsImpostorCheck) return false;
-                CheckTask = RoleClass.Madmate.ImpostorCheckTask;
+                bool haveTask = !(Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && !ChangeMadmatePlayer[p.PlayerId]);
+                CheckTask = haveTask ? RoleClass.Madmate.ImpostorCheckTask : 0;
                 break;
             case RoleId.MadMayor:
                 if (!RoleClass.MadMayor.IsImpostorCheck) return false;
@@ -71,6 +97,13 @@ class Madmate
     /// <param name="target">役職がMadmateに変更される対象</param>
     public static void CreateMadmate(PlayerControl target)
     {
+        List<RoleTypes> CanNotHaveTaskForRoles = new() { RoleTypes.Impostor, RoleTypes.Shapeshifter, RoleTypes.ImpostorGhost };
+        // マッドメイトになる前にタスクを持っていたかを取得
+        var canNotHaveTask = CanNotHaveTaskForRoles.Contains(target.Data.Role.Role);
+        canNotHaveTask = CanNotHaveTaskForRoles.Contains(RoleSelectHandler.GetDesyncRole(target.GetRole()).RoleType);// Desync役職ならタスクを持っていなかったと見なす ( 個別設定 )
+        if (target.GetRoleBase() is ISupportSHR supportSHR) { canNotHaveTask = CanNotHaveTaskForRoles.Contains(supportSHR.DesyncRole); } // Desync役職ならタスクを持っていなかったと見なす ( RoleBace )
+
         target.ResetAndSetRole(RoleId.Madmate);
+        if (target.IsRole(RoleId.Madmate)) ChangeMadmatePlayer[target.PlayerId] = !canNotHaveTask;
     }
 }

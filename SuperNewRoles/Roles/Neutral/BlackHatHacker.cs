@@ -8,6 +8,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Impostor;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -39,7 +40,7 @@ public class BlackHatHacker
         BlackHatHackerHackCoolTime = CustomOption.Create(OptionId + 2, false, CustomOptionType.Neutral, "BlackHatHackerHackCoolTimeOption", 15f, 0f, 60f, 2.5f, BlackHatHackerOption);
         BlackHatHackerHackCountable = CustomOption.Create(OptionId + 3, false, CustomOptionType.Neutral, "BlackHatHackerHackCountableOption", 1f, 1f, 15f, 1f, BlackHatHackerOption);
         BlackHatHackerIsNotInfectionIncrease = CustomOption.Create(OptionId + 4, false, CustomOptionType.Neutral, "BlackHatHackerIsNotInfectionIncreaseOption", true, BlackHatHackerOption);
-        BlackHatHackerHackInfectiousTime = CustomOption.Create(OptionId + 5, false, CustomOptionType.Neutral, "BlackHatHackerHackInfectiousTimeOption", 300f, 25f, 600f, 25f, BlackHatHackerOption);
+        BlackHatHackerHackInfectiousTime = CustomOption.Create(OptionId + 5, false, CustomOptionType.Neutral, "BlackHatHackerHackInfectiousTimeOption", 10f, 2.5f, 60f, 2.5f, BlackHatHackerOption);
         BlackHatHackerNotInfectiousTime = CustomOption.Create(OptionId + 6, false, CustomOptionType.Neutral, "BlackHatHackerNotInfectiousTimeOption", 12.5f, 0f, 30f, 2.5f, BlackHatHackerOption);
         BlackHatHackerStartSelfPropagation = CustomOption.Create(OptionId + 7, false, CustomOptionType.Neutral, "BlackHatHackerStartSelfPropagationOption", Safecracker.CustomRates[..(Safecracker.CustomRates.Length - 1)], BlackHatHackerOption);
         BlackHatHackerInfectionScope = CustomOption.Create(OptionId + 8, false, CustomOptionType.Neutral, "BlackHatHackerInfectionScopeOption", new string[] { "Short", "Medium", "Long" }, BlackHatHackerOption);
@@ -185,7 +186,7 @@ public class BlackHatHacker
                 BlackHatHackerAdminButtoon.Timer = 0f;
                 IsMyAdmin = false;
             },
-            RoleClass.EvilHacker.GetButtonSprite(),
+            EvilHacker.GetAdminButtonSprite(),
             new(-1, 1, 0),
             __instance,
             __instance.AbilityButton,
