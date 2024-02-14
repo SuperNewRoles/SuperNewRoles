@@ -8,7 +8,8 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 ## MODのダウンロード
 ### [**最新版**](https://github.com/ykundesu/SuperNewRoles/releases/latest)
 ### [**最新版以外**](https://github.com/ykundesu/SuperNewRoles/releases/)
-### **Super New Roles を使用する際は [初めに読む場所](#初めに読む場所) で示しているページをご一読ください。**
+> [!WARNING]
+> **Super New Roles を使用する際は [初めに読む場所](#初めに読む場所) で示しているページをご一読ください。**
 
 <hr>
 
