@@ -97,11 +97,11 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 <br>
 
 ## 使用させて頂いているカスタムコスメティック
-[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)
-(SNR独自コスメティックに関連するライセンスについては此方のリポジトリに記載しています。)<br>
-<br>
-[TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(めめ村スキン)**hinakkyu**さんありがとうございます！<br>
-[TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
+- [SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)
+  - (SNR独自コスメティックに関連するライセンスについては此方のリポジトリに記載しています。)<br><br>
+- [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(めめ村スキン) **hinakkyu**さん ありがとうございます！
+- [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ) **tugaru1975**さん、**Ujet222**(Sakura_White)さん ありがとうございます！
+- [Mememura-Hats](https://github.com/catudon1276/Mememura-Hats) 及び [CatudonCostume](https://github.com/catudon1276/CatudonCostume)(Mememura Hats, Catudon Costume SEL) **catudon1276**(catudon)さんありがとうございます！
 
 ## 開発者
 - 開発者1号 : [よっキング](https://github.com/ykundesu) ([Misskey](https://misskey.io/@yoking)) ([𝕏 ( 旧Twitter )](https://twitter.com/ReYYYYoking))<br>
