@@ -982,6 +982,7 @@ EvilSeerButtonCooldownSetting,Setting the cool time for the [Go! haunt!!]] and [
 EvilSeerButtonName,Go! haunt!!,取り憑かせる,附灵,憑依他人
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长,超能警長
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法,遠距離進行執法擊殺
+RemoteSheriffDescription,,シェイプシフト選択画面で選択した対象を遠隔でキルする事の出来るクルーメイト役職です。\n\nキルテレポートが有効な時，執行が成功するとキル対象の元にワープします。失敗した場合はその場で死亡します。\n\nキルテレポートが無効な時，執行が成功した場合はその場でとどまり，失敗した場合はその場で死亡します。\n又，対象がキルされた時にキル者に発揮する能力を有している場合，それの発動を無効化できます。\n\n何処にいても，私から逃れる事はできない。\nゆめゆめ忘れるな。
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート,击杀时传送到被击杀者所在位置,擊殺時傳送到被擊殺者所在位置
 TeleportingJackalName,TeleportingJackal,テレポートジャッカル,狼族传送师,狼族傳送師
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう,传送并杀死所有人,傳送並殺死所有人
