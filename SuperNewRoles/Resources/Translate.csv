@@ -1025,6 +1025,7 @@ ArsonistIgniteButtonName,Ignite,燃やす,点燃,點燃
 ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。,纵火犯属于独立阵营。\n纵火犯给所有人涂油后按下点燃按钮则纵火犯独自获胜。,縱火犯屬於中立陣營。\n縱火犯給所有人塗油後按下點燃按鈕則縱火犯獨自獲勝。
 ChiefName,Chief,村長,警察局长,警察局長
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう,任命一位警长来帮助船员,任命一名警長來幫助船員
+ChiefDescription,This is a role that can appoint a target as the Sheriff and overwrite their role.\n\nIf the target is an Impostor，you cannot appoint them，and you will die. \nIf the target is a Madmate or a member of the Neutral，you can appoint them，and they will change to the Crewmate team.\n\nThe abilities of the Sheriff appointed by the Mayor depend on the settings of the Mayor's side. \n\nI appoint you as the Sheriff!!\nWith this ability，let's expect you to maintain order and contribute to the village.,対象をシェリフに任命し，対象の役職を上書きする事の出来る役職です。\n\n対象がインポスターだった場合任命する事ができず，そして自身は死亡します。\n対象がマッドメイト 又は 第三陣営の時は任命する事が可能で，クルーメイト陣営に変更されます。\n\n村長が任命するシェリフの能力設定は，村長側の設定に依存します。\n\n貴殿をシェリフとして任命する!!\nその能力によって，秩序を保ち 村に貢献する事を期待しよう。
 ChiefSidekickButtonName,Appointment,任命する,任命,任命
 CleanerName,Cleaner,クリーナー,清理者,清理者
 CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!,毁尸灭迹,毀屍滅跡
