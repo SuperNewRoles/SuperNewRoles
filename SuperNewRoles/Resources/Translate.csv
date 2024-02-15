@@ -506,6 +506,7 @@ EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサ
 SheriffName,Sheriff,シェリフ,警长,警長
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人,殺死敵人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利,殺死敵人帶領船員獲得勝利
+SheriffCombIntroDearJackal,I have a feeling it's not going to be straightforward.,一筋縄ではいかなさそうな予感がする
 SheriffDescription,This is a crewmate role that allows you to change the team (role) in which kills are possible. \nIf a crewmember of a team that cannot be killed is targeted for a kill，it is a misfire and the crewmember commits suicide (the setting allows you to kill the target even if it is a misfire). Take advantage of the \ncharacteristics to scrutinize the information and identify the outsider.,キルが可能な陣営(役職)を設定により変更できるクルーメイト役職です。\nキルが不可能な陣営のクルーを対象に取りキルした場合、誤射となり自殺します(設定により誤射時も対象を殺す事ができます)。\n特性を生かして、情報を精査し人外を特定しましょう。,警长可以击杀指定阵营的玩家。\n如果警长尝试击杀一名不允许击杀的阵营的玩家，他会以死谢罪（走火）。根据房间设置，那名被尝试击杀的玩家也可能死亡。\n利用自己的能力，分析情报，找出并杀死敌对玩家。,依據設定具有不同可擊殺的陣營。\n當擊殺不可擊殺陣營的對象時，警長將自殺。\n根據其他人的角色特性，調查情報並帶領船員獲得勝利吧
 SheriffCooldownSetting,Kill Cooldown,キルクールタイム,击杀冷却,擊殺冷卻
 SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀/招募（警察局长）独立阵营玩家,可以擊殺中立陣營玩家
@@ -541,6 +542,7 @@ MeetingSheriffkillChat2,{0} was killed，but it was a misfire! {1} killed himsel
 MeetingSheriffkillChat3,{0} was a misfire!,{0} は誤爆した！,{0}的枪走火了！,{0}的槍走火了！
 MeetingSheriffkillChat4,{0} succeeded!,{0} は成功した！,{0}成功了！,{0}成功了
 JackalName,Jackal,ジャッカル,豺狼,豺狼
+JackalCombIntroDearSheriff,,インポスター以外に私を殺せる者がいる…?\n関係ない そいつ含めて全員殺せばいいだけだ
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼,殺死所有船員和內鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利,殺死其他陣營的所有人獲得勝利
 JackalTitle3,Let's just kill them all.,全員ぶち殺そう,杀死所有人,殺了所有人
@@ -871,6 +873,7 @@ MadKillerTitle1,Let's promote and kill!,昇格してキルをしよう,帮助头
 MadKiller,It is an entity that has been invaded by a sidekiller.\nWhen the parent sidekiller dies，it awakens as an impostor.\nBefore awakening as an Impostor，it is judged as a Mad Mate.\nHowever，the Mad Mate setting and Mad Role common abilities are not reflected in the Mad Killer.\n\nThe Madkiller before promotion has the same abilities as the Crewmate (vanilla role) and the ability to see mutually with the Impostor.\nBy awakening to the Impostor，you gain Impostor vision，vents，sabotage，and the ability to kill.\n\nYour body will be gradually eroded，your thoughts will be eroded，and eventually even your will will be repainted.,サイドキラーに侵食された存在です。\n親であるサイドキラーが死ぬとインポスターに覚醒します。\nインポスター覚醒前は，マッドメイトとして判定されます。\nただし，マッドメイトの設定およびマッドロール共通能力はマッドキラーに反映されません。\n\n覚醒前のマッドキラーはクルーメイト(バニラロール)と同様の能力と，インポスターとの相互視認能力のみを有します。\nインポスターに覚醒する事で，インポスター視野・通気口・サボタージュ能力，そしてキル能力を獲得します。\n\nお前の体は徐々に侵食されていく，思考も侵食されていく，そして最後は意思までをも塗り替えられるのだ。
 SurvivorName,Survivor,サバイバー,苟活者,倖存者
 SurvivorTitle1,Survive and Kill!,生き残りながらキルをしよう,这是为了活下来的，我的挣扎！,這是為了活下來的，我的掙扎！
+SurvivorCombIntroDearSuicideWisher,I hate those who kill me!! That's why I will survive!,私は私を殺す者が憎い!! だからこそ生き残ってやるんだ!
 SurvivorDescription,If you do not survive you will not win even if the impostor wins.,生き残っていないとインポスターが勝利しても勝利できません。,苟活者属于内鬼阵营。\n苟活者击杀冷却有所减少。\n苟活者在游戏结束时不存活则不能获胜。,倖存者屬於內鬼陣營。\n倖存者擊殺冷卻有所減少。\n倖存者在遊戲結束時不存活則不能獲勝。
 SurvivorKillCoolTimeSetting,Kill Cool Time,キルクールタイム,苟活者击杀冷却,倖存者擊殺冷卻時間
 MadMayorName,MadMayor,マッドメイヤー,叛变的市长,叛變的市長
@@ -886,6 +889,7 @@ NiceHawkTitle1,See it all.,全てを見渡せ,将一切尽收眼底,將一切盡
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう,把犯人抓个现行,把犯人抓個現行
 BakeryName,Baker,パン屋,面包师,面包師傅
 BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？,想来一点新出炉的面包吗？,想來一點剛出爐的面包嗎？
+BakeryCombIntro1,Ours tastes better!,美味しいのはうちの方だ！
 BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。,面包师为船员烤了一些面包。,面包師傅留下了一些面包給船員。
 BakeryExileText2,Bakery baked YOKINGDELICIOUSSSSSSSSS!!!!,パン屋ｧｧﾉｫｫﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｰｴｯｸｽｵｲｼｲ,面硬加咸蔬菜加倍蒜末和油多多！（快住手，这根本不是面包）,麵包夾蛋加蔥末再加新鮮的麵包師傅！
 MadStuntManName,MadStuntman,マッドスタントマン,叛变的杂技演员,叛變的雜技演員
@@ -1113,6 +1117,8 @@ SmasherTitle1,Let's do continuous kills!,連続キルを行おう,唯快不破�
 SuicideWisherName,Suicide Wisher,スーサイドウィッシャー,抑郁者,抑鬱者
 SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう,玉玉，不响丸辣，紫砂了,遇事不決，自殺解決
 SuicideWisherTitle2,They who is caught in the impulse to die.,死への衝動に捕らわれし者,让我死吧……,下輩子會更好
+SuicideWisherCombIntroDearSuicidalIdeation,I'm not like them. I have no hope in life anymore.,私はあいつとは違う もう生などに期待が抱けないのだ
+SuicideWisherCombIntroDearSurvivor,,嗚呼 何故あいつは生にしがみつけるのか
 SuicideWisherDescription,This is an Impostor role where suicide is possible.\nIn SHR mode，you can commit suicide by performing a Shapeshift.\nTake advantage of your suicide ability to disguise information and disrupt the village!\n\nDistant memories of when we were Crewmate call to me...\nAha，my partner.\nI will be released first，but at least I left you a little something to leave behind. Good luck.,自殺が可能なインポスター役職です。\nSHRモードではシェイプシフトを行う事で自殺します。\n自殺能力により、情報を偽装し村を混乱させてみましょう!\n\nクルーメイトであった頃の遠い記憶が私を呼ぶ...\n嗚呼 相方よ。\n私は先に解放されるが、せめてもの置き土産は残してやった。頑張れよ。,抑郁者属于内鬼阵营，拥有自杀的能力。\n在SHR模式中，抑郁者可以通过按下“化形”按钮来自杀。\n利用自杀的能力来干扰船员信息。\n我回想起了遥远的记忆……\n啊，我的同伴们。\n我无法忍受自己的罪恶，只能给你们留下这最后一点帮助了。加油。,抑鬱者是擁有自殺能力的內鬼陣營職業。\n妥善利用自殺能力混淆並干擾船員陣營!\n\n來自內心深處遙遠的記憶正在呼喊著吾...\n嗚呼 吾的朋友啊。\n雖然吾先於汝輩一步離開了，但吾留下的遺產將會庇佑汝輩的。
 SuicideName,Suicide,自殺,自杀,自殺
 NeetName,Neet,ニート,废柴,尼特
@@ -1174,6 +1180,7 @@ HitmanIsTargetArrow,Display arrow to target,ターゲットへ矢印を表示す
 HitmanUpdateTargetArrowTime,Interval to update arrows,矢印を更新する間隔,职业杀手箭头更新间隔时间,專業殺手箭頭更新間隔時間
 NunName,Nun,ぬーん,捣蛋鬼,搗蛋鬼
 NunTitle1,Nun,ぬーん,让大家用不了移动平台,讓大家用不了移動平台
+NunCombIntroDearPteranodon,Nun...('・ω・`),ぬーん...('・ω・`)
 NunDescription,This role allows the lift to be moved to the opposite side.\nIf the ability is used when the crew is already on the lift，the lift is returned with the crew on it.\n\nBy imprisoning the crew on the lift or by moving the position of the lift，it can also interfere with a Crewmate's task or an emergency meeting.\nThe lift's location can create noise for information to prove the location of survivors or to guess the path of the dead. It can also be used to disguise one's own route.\n\nNun nun nun? Nuh-nuh-nuh. Nuh-nuh-nuh.,昇降機を反対側に動かす事が可能な役職です。\nクルーが既に昇降機に乗っている時に能力を使用した場合は、クルーごと昇降機を返送します。\n\n昇降機上にクルーを幽閉する事や、昇降機の位置が移動する事により、クルーメイトのタスクや、緊急招集を妨害する事も出来ます。\n昇降機の位置情報による、生存者の位置証明や死者の経路推測にノイズをもたらします。自身の経路の偽装にも使用可能です。\n\nぬーん ぬーん ぬん? ぬーんぬん ぬん,捣蛋鬼可以使间隙室的移动平台反向移动到另一侧。\n若这个技能发动时，一名玩家正在使用移动平台，那名玩家跟随移动平台一同被移动到另一侧。\n\n捣蛋鬼可以通过自己的技能妨碍船员的行动。,搗蛋鬼可以在移動平台的另一側使用平台。\n當船員位於移動平台上時，使用技能會將船員往回移動。\n\n將船員們困於移動平台上，可以干擾船員的任務或緊急會議。\n移動平台的位置可以提供訊息，證明存活者的位置或推測死者的路線。也可以用來偽裝自己的路線。\n\n搗蛋鬼立大功？
 NunButtonName,Nun,ぬーん,捣蛋,搗蛋
 PsychometristName,Psychometrist,サイコメトラー,验尸官,驗屍官
@@ -1345,6 +1352,7 @@ GMSpawnDeadBody,Spawn Deadbody,死体発生,生成尸体,生成屍體
 GMEndMeeting,End Meeting,会議終了,结束会议,結束會議
 SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生,期望自殺者
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない,找寻活着的意义,找到活下去的意義
+SuicidalIdeationCombIntroDearSuicideWisher,Unlike him，I can't take the last step.\nI still have a little faith in this world...,彼と違って最期の一歩を踏み出せない\n僕はまだこの世界を信じていたいんだ...
 SuicidalIdeationDescription,It has a self-destruct timer that extends the time to do a task.\nIt has its own fall-to-death probability.\nIf you complete the task before it self-destructs， you win alone.\nYou also win an additional victory if you survive even if you do not complete the task.,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。,绝望先生可以通过做任务延长自己的自杀倒计时。\n绝望先生持有独立的在梯子上摔死概率。\n只要绝望先生在自杀前做完了所有任务，绝望先生便可以单独获胜。\n若绝望先生没有完成所有任务，但在游戏结束时存活，绝望先生也可以获胜。,絕望先生能透過完成任務來延長自己的自殺倒數。\n當在自殺前做完了所有任務，你便可以單獨獲勝。\n若你沒有完成所有任務，但在遊戲結束時仍活著，你也可以獲勝。
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本,獨特的勝利文字
 SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間,绝望先生自杀倒计时,自殺倒數時間
@@ -1530,6 +1538,7 @@ BalancerAbilityUseText,Ability activated,能力発動,,能力發動
 BalancerVoteText,Vote for one or the other!,どちらかに投票せよ！,,將票投給其中一邊！
 PteranodonName,Pteranodon,プテラノドン,鸟人,無齒翼龍
 PteranodonTitle1,PtePte,プテプテ,一飞冲天啊，我,翼~翼~
+PteranodonCombIntroDearNun,PtePte Ptete!!(・ω・　),プテプテ プテテ!!(・ω・　)
 PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,起飛！
 BlackHatHackerName,Black Hat Hacker,ブラックハットハッカー,黑帽客,黑帽駭客
 BlackHatHackerTitle1,Do you have an antivirus?,貴方はウイルス対策ちゃんとしてる？,可要准备好防火墙哦,你有安裝防毒軟體嗎？

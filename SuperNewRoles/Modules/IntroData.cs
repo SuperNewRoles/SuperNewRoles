@@ -37,7 +37,12 @@ public class IntroData
     public static List<Dictionary<RoleId, string>> IntroGroup = new()
     {
         new() {{RoleId.Seer,"SeerCombIntro1"},{RoleId.EvilSeer,"EvilSeerCombIntro1"}},
-        new() {{RoleId.NiceMechanic,"NiceMechanicCombIntro1"},{RoleId.EvilMechanic,"EvilMechanicCombIntro1"}}
+        new() {{RoleId.NiceMechanic,"NiceMechanicCombIntro1"},{RoleId.EvilMechanic,"EvilMechanicCombIntro1"}},
+        new() {{RoleId.Bakery,"BakeryCombIntro1"},{RoleId.HamburgerShop,"BakeryCombIntro1"}},
+        new() {{RoleId.Sheriff,"SheriffCombIntroDearJackal"},{RoleId.Jackal,"JackalCombIntroDearSheriff"}},
+        new() {{RoleId.SuicidalIdeation,"SuicidalIdeationCombIntroDearSuicideWisher"},{RoleId.SuicideWisher,"SuicideWisherCombIntroDearSuicidalIdeation"}},
+        new() {{RoleId.Survivor,"SurvivorCombIntroDearSuicideWisher"},{RoleId.SuicideWisher,"SuicideWisherCombIntroSurvivor"}},
+        new() {{RoleId.Nun,"NunCombIntroDearPteranodon"},{RoleId.Pteranodon,"PteranodonCombIntroDearNun"}},
     };
     public string NameKey;
     public string Name;
