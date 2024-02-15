@@ -182,7 +182,7 @@ ErrorHostGuidMatches,The host uses a different <color=#ffa500>Super</color><colo
 ErrorClientNoVersion,You don't have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0}.,{0}に<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が導入されておりません。,{0}未安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组,{0}未安裝<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組
 ErrorClientChangeVersion,The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.,{0}が使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが異なります。,{0}安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同,{0}安裝的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組版本不同
 ErrorClientGuidMatches,{0} uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,{0}が使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。,{0}的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同,{0}的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
-ErrorClientCanNotPley,,ゲストのMod導入状態に問題がある為、開始できません。\n同verの<color=#ffa500>SNR</color>を導入してもらう、HostModeに変更する等対応をお願いします。,由于有玩家模组导入出现问题，游戏无法开始。\n请尝试重新导入该版本的模组文件、改变模式等方法。,由於有玩家模組導入出現問題，遊戲無法開始。\n請嘗試重新導入該版本的模組文件、改變模式等方法。
+ErrorClientCanNotPley,Due to issues with the guest's mod installation，the game cannot start. \nPlease have them install the <color=#ffa500>SNR</color> mod of the same version，switch to Host Mode，or take appropriate action.,ゲストのMod導入状態に問題がある為、開始できません。\n同verの<color=#ffa500>SNR</color>を導入してもらう、HostModeに変更する等対応をお願いします。,由于有玩家模组导入出现问题，游戏无法开始。\n请尝试重新导入该版本的模组文件、改变模式等方法。,由於有玩家模組導入出現問題，遊戲無法開始。\n請嘗試重新導入該版本的模組文件、改變模式等方法。
 KickReasonHostNoVersion,The host has no or a different version of <color=#ffa500>SNR</color>\nYou will be kicked in {0}s,ホストが<color=#ffa500>SNR</color>を導入していない、又はバージョンが違う為、\nあと{0}秒でキックされます。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组或模组版本不同\n您将在{0}秒内被踢出,房主沒有安裝<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組或模組版本不同\n您將在{0}秒內被踢出
 IsSpecialModeOnAndVanillaKickOff,If <color=#eebbcb>[Kick non-PCs]</color> is disabled， the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#eebbcb>[Kick non-PCs]</color>.,<color=#eebbcb>「PC以外をキックする」</color>が無効である場合、\nマップは<color=#cd5c5c>MiraHQ</color>に選択されます。\n<color=#a67646>Agartha</color>を使用したい場合は、\n<color=#eebbcb>「PC以外をキックする」</color>を有効にしてください。,如果 “<color=#eebbcb>踢出非电脑端玩家</color>”设置为否，\n地图将变为<color=#cd5c5c>米拉总部</color>。\n要启用<color=#a67646>雅各泰</color>地图，\n需要将“<color=#eebbcb>踢出非电脑端玩家</color>”选项设置为是。,如果 “<color=#2792c3>踢出非電腦端玩家</color>”設置為否，\n地圖將變為<color=#cd5c5c>米拉總部</color>。\n要啟用<color=#a67646>雅戈泰</color>地圖，\n需要將“<color=#2792c3>踢出非電腦端玩家</color>”選項設置為是。
 RamdomMapSetting,RandomMap,ランダムマップ,随机地图,隨機地圖
@@ -264,7 +264,7 @@ ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,�
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
 ProhibitModColor,Prohibit mod color,Modカラーを禁止にする,禁用模组自定义颜色,禁止Mod顏色
-SendYourRoleAllTurn,,毎ターン役職情報を送信する,每轮发送一遍职业信息,每回合皆發送職業資訊
+SendYourRoleAllTurn,Transmit role information every turn.,毎ターン役職情報を送信する,每轮发送一遍职业信息,每回合皆發送職業資訊
 ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影を変更する,更改间隙室的视野遮蔽效果,修改間隙室的視野遮蔽效果
 GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼於間隙室可以從下方看到上方
 DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,僅內鬼於間隙室可以從上方看到下方
@@ -305,8 +305,8 @@ BattleRoyalTeamAmount,Number of teams,チーム数,团队数,團隊數
 BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间,從遊戲開始到玩家可擊殺經過的時間
 BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。,该职业不存在。请输入/battleroles(/btr)来进行检查。,此職業不存在。請輸入“/battleroles”(/btr)查看職業列表。
 BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！,{0}的职业已经被设定为{1}！,{0}的職業已設定為{1}！
-BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます),若要确认职业详情，请输入/btr[职业名]（请在[职业名]括号内输入实际职业名）。\n（）中显示的是游戏内的职业ID（也可以在游戏中使用）。,如果要查看職業詳細，請輸入/btr [職業名]。([職業名]請輸入實際的職業名)\n()中的是內部Id。(在遊戲中也可以使用)
-BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!\n能力は、シェイプシフトで発動できます!,欢迎游玩大逃杀模式！在本模式的会议阶段内，只有同一阵营的玩家可以互相沟通。请在会议中与同伴交流，并选定自己的职业！\n请在和同伴协商后，输入命令/setrole[职业]选择自己的职业！\n职业一览请输入/btr确认！\n发动技能请点击化形按钮！,歡迎來到大逃殺!\n在這個會議中，只有你的隊友能看到你的聊天!在這裡和你的隊友討論，決定你的職業!\n你可以輸入/setrole [職業]來決定你的職業!和你的隊友討論後決定吧!\n你可以輸入/btr來查看職業列表!\n你可以使用變身來發動你的能力!
+BattleRoyalBattleRolesCommandText,To check the details of a role，type /btr [role name]. (Replace [role name] with the actual role name.) \nThe value in parentheses is the internal ID and can also be used in the game.,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます),若要确认职业详情，请输入/btr[职业名]（请在[职业名]括号内输入实际职业名）。\n（）中显示的是游戏内的职业ID（也可以在游戏中使用）。,如果要查看職業詳細，請輸入/btr [職業名]。([職業名]請輸入實際的職業名)\n()中的是內部Id。(在遊戲中也可以使用)
+BattleRoyalStartMeetingText,Welcome to Battle Royale!\nIn this meeting，your chat can only be heard by your allies! Discuss with your teammates here and decide on your roles!\n\nRoles can be determined with /setrole [role]! Consult with your teammates and decide! You can check the list of roles with /btr.\nAbilities can be activated with Shapeshift!,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!\n能力は、シェイプシフトで発動できます!,欢迎游玩大逃杀模式！在本模式的会议阶段内，只有同一阵营的玩家可以互相沟通。请在会议中与同伴交流，并选定自己的职业！\n请在和同伴协商后，输入命令/setrole[职业]选择自己的职业！\n职业一览请输入/btr确认！\n发动技能请点击化形按钮！,歡迎來到大逃殺!\n在這個會議中，只有你的隊友能看到你的聊天!在這裡和你的隊友討論，決定你的職業!\n你可以輸入/setrole [職業]來決定你的職業!和你的隊友討論後決定吧!\n你可以輸入/btr來查看職業列表!\n你可以使用變身來發動你的能力!
 BattleRoyalIsKillCountView,Display kill count,キル数を表示する,显示击杀数,顯示擊殺數
 BattleRoyalIsKillCountViewSelfOnly,Show only to yourself,自分のみに表示する,只显示自己的击杀数,只顯示自己的擊殺數
 ZombieZombieName,Zombie,ゾンビ,僵尸,殭屍
@@ -542,7 +542,7 @@ MeetingSheriffkillChat2,{0} was killed，but it was a misfire! {1} killed himsel
 MeetingSheriffkillChat3,{0} was a misfire!,{0} は誤爆した！,{0}的枪走火了！,{0}的槍走火了！
 MeetingSheriffkillChat4,{0} succeeded!,{0} は成功した！,{0}成功了！,{0}成功了
 JackalName,Jackal,ジャッカル,豺狼,豺狼
-JackalCombIntroDearSheriff,,インポスター以外に私を殺せる者がいる…?\n関係ない そいつ含めて全員殺せばいいだけだ
+JackalCombIntroDearSheriff,I'm told there's a crewmate who can kill me.\nBut it doesn't matter. All I have to do is kill him and everyone else.,インポスター以外に私を殺せる者がいる…?\n関係ない そいつ含めて全員殺せばいいだけだ
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼,殺死所有船員和內鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利,殺死其他陣營的所有人獲得勝利
 JackalTitle3,Let's just kill them all.,全員ぶち殺そう,杀死所有人,殺了所有人
@@ -1118,7 +1118,7 @@ SuicideWisherName,Suicide Wisher,スーサイドウィッシャー,抑郁者,抑
 SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう,玉玉，不响丸辣，紫砂了,遇事不決，自殺解決
 SuicideWisherTitle2,They who is caught in the impulse to die.,死への衝動に捕らわれし者,让我死吧……,下輩子會更好
 SuicideWisherCombIntroDearSuicidalIdeation,I'm not like them. I have no hope in life anymore.,私はあいつとは違う もう生などに期待が抱けないのだ
-SuicideWisherCombIntroDearSurvivor,,嗚呼 何故あいつは生にしがみつけるのか
+SuicideWisherCombIntroDearSurvivor,Ah，why does he cling to life?,嗚呼 何故あいつは生にしがみつけるのか
 SuicideWisherDescription,This is an Impostor role where suicide is possible.\nIn SHR mode，you can commit suicide by performing a Shapeshift.\nTake advantage of your suicide ability to disguise information and disrupt the village!\n\nDistant memories of when we were Crewmate call to me...\nAha，my partner.\nI will be released first，but at least I left you a little something to leave behind. Good luck.,自殺が可能なインポスター役職です。\nSHRモードではシェイプシフトを行う事で自殺します。\n自殺能力により、情報を偽装し村を混乱させてみましょう!\n\nクルーメイトであった頃の遠い記憶が私を呼ぶ...\n嗚呼 相方よ。\n私は先に解放されるが、せめてもの置き土産は残してやった。頑張れよ。,抑郁者属于内鬼阵营，拥有自杀的能力。\n在SHR模式中，抑郁者可以通过按下“化形”按钮来自杀。\n利用自杀的能力来干扰船员信息。\n我回想起了遥远的记忆……\n啊，我的同伴们。\n我无法忍受自己的罪恶，只能给你们留下这最后一点帮助了。加油。,抑鬱者是擁有自殺能力的內鬼陣營職業。\n妥善利用自殺能力混淆並干擾船員陣營!\n\n來自內心深處遙遠的記憶正在呼喊著吾...\n嗚呼 吾的朋友啊。\n雖然吾先於汝輩一步離開了，但吾留下的遺產將會庇佑汝輩的。
 SuicideName,Suicide,自殺,自杀,自殺
 NeetName,Neet,ニート,废柴,尼特
@@ -1508,15 +1508,15 @@ ReviverName,Reviver,リバイバー,反生者,復活天使
 ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However， everyone will be notified of their location.\n It takes 12 seconds to resurrect， and while resurrected， you cannot move and you cannot kill. Also，\n after resurrection， the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。,团队专用职业。反生者可以使用自己的能力复活一名己方玩家。在能力使用期间，所有玩家都能确认反生者的位置。\n复活一名玩家需要12秒。在玩家复活期间，反生者不可以移动或击杀。此外，\n玩家被成功复活后，有3秒的时间不能移动（但可以击杀与被击杀）。\n拯救你的队友，一同获得游戏胜利。,僅限團隊使用！復活天使使用能力可以將隊友復活，但是會將自己的所在位置暴露給其他玩家。\n復活需花費12秒，且復活途中既不能移動也不能擊殺。並且，復活的玩家在復活後三秒內不能移動，但可進行擊殺。\n協助夥伴，並取得勝利。
 ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。,反生者正在复活队友。,復活天使在某處進行復活。
 GuardrawerName,Guardrawer,ガードロワー,次元吸引者,守衛
-GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。,次元吸引者的技能发动后一定时间内，对次元吸引者的攻击会被反弹。在能力使用期间内，次元吸引者不能击杀。技能持续时间内，包括己方玩家在内的所有次元吸引者附近的玩家都会被次元吸引者吸引。,守衛使用能力來在一定時間內抵禦攻擊。但是自身不具有擊殺能力。使用期間內會吸引包含隊友在內附近的攻擊。
-GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。,{0}开始进行次元吸引。,{0}開始阻擋附近的攻擊
+GuardrawerDescription,Using the ability allows you to repel attacks for a certain period of time. \nHowever，you cannot be killed during this time.\n While using the ability，players around you，including allies，are drawn towards you.,能力を使用することで一定時間攻撃を跳ね返すことができる。\nしかしその間自分はキルできない。\n使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。,次元吸引者的技能发动后一定时间内，对次元吸引者的攻击会被反弹。在能力使用期间内，次元吸引者不能击杀。技能持续时间内，包括己方玩家在内的所有次元吸引者附近的玩家都会被次元吸引者吸引。,守衛使用能力來在一定時間內抵禦攻擊。但是自身不具有擊殺能力。使用期間內會吸引包含隊友在內附近的攻擊。
+GuardrawerAbilityStart,{0} began to draw in Guardrawers.,{0}がガードロワーで引き寄せ始めた。,{0}开始进行次元吸引。,{0}開始阻擋附近的攻擊
 KingPosterName,KingPoster,キングポスター,骑士王,國王
-KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！,技能刚发动与持续时间结束时，骑士王会陷入大幅硬直；技能持续时间内，骑士王处于无敌状态。靠近无敌状态的骑士王的玩家会自动被击杀。利用无敌的骑士之力击溃敌人吧！,國王在技能生效期間處於無敵狀態，但在最初與最後有大幅的硬直。利用無敵來擊殺敵人！
+KingPosterTitle,There is a large hardness at the beginning and end，but you are invincible during the duration of the effect.\nYou'll be automatically killed by approaching enemies!/nUse your invincibility to kill enemies all over the place!,最初と最後に大きな硬直があるが、効果時間中は無敵。\n敵に近づくことで自動でキルされるぞ!\n無敵を利用して敵をキルしまくれ！,技能刚发动与持续时间结束时，骑士王会陷入大幅硬直；技能持续时间内，骑士王处于无敌状态。靠近无敌状态的骑士王的玩家会自动被击杀。利用无敌的骑士之力击溃敌人吧！,國王在技能生效期間處於無敵狀態，但在最初與最後有大幅的硬直。利用無敵來擊殺敵人！
 KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！,骑士王开启了无敌模式！,國王正在使用無敵技能！
 LongKillerName,LongKiller,ロングキラー,长枪兵,遠程殺手
 LongKillerDescription,It has a long kill range， but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!,长枪兵拥有1.3倍的击杀范围与击杀冷却。\n用远距离的击杀创造优势吧！,遠程殺手擁有1.3倍的擊殺範圍與擊殺冷卻時間。\n利用更大的擊殺範圍來擊殺敵人吧！
 DarknightName,Darknight,闇の騎士,黑骑士,黑暗騎士
-DarknightDescription,,闇に飲まれた騎士。キルクールタイムが0。しかし、視界も0。キル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。,黑骑士的击杀冷却与视野均为0。黑骑士的击杀范围非常小，一旦黑骑士击杀成功，黑骑士周围的所有敌方玩家都会死亡。虽然黑骑士什么也看不见，但那份孤独将成为他杀敌的力量。,被黑暗吞噬的騎士。黑暗騎士沒有擊殺冷卻，但視野也為0且擊殺範圍很小，但會一同擊殺周圍所有的敵對玩家。雖然因為看不見而感到孤獨，但孤獨會成為擊殺敵人的力量。
+DarknightDescription,Knights swallowed by darkness. Zero kill time.\nHowever，it is blind.\nThe kill range is also narrow，but you can kill everyone around you (except your own friends) at once.\nBecause you can't see anything，you are lonely，but use that loneliness to your advantage and kill your enemies.,闇に飲まれた騎士。キルクールタイムが0。\nしかし、視界も0。\nキル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。\n何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。,黑骑士的击杀冷却与视野均为0。黑骑士的击杀范围非常小，一旦黑骑士击杀成功，黑骑士周围的所有敌方玩家都会死亡。虽然黑骑士什么也看不见，但那份孤独将成为他杀敌的力量。,被黑暗吞噬的騎士。黑暗騎士沒有擊殺冷卻，但視野也為0且擊殺範圍很小，但會一同擊殺周圍所有的敵對玩家。雖然因為看不見而感到孤獨，但孤獨會成為擊殺敵人的力量。
 RevengerName,Revenger,リベンジャー,复仇者,復仇者
 RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。,若击杀复仇者的敌方玩家被我方玩家击杀，复仇者将在7秒后从自己被击杀时所在的位置复活。复仇者复活后，复仇者的复活位置将被所有人确认，因此请小心不要在复活之后立刻被杀。切莫因为可以复活便贸然进攻，而是需要谋求稳固的胜利。,復仇者會在我方擊殺將殺害自己的對象後，7秒後於死亡的地點復活。但是復活的位置會被暴露給敵方，並且復活後並無法馬上獲得擊殺能力。切勿在復活後馬上展開攻勢，以尋求團隊更高的勝率。
 RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを開始した。,{0}作为复仇者从{1}归来。,{0}將對{1}展開復仇。
@@ -1524,7 +1524,7 @@ CrystalMagicianName,CrystalMagician,クリスタルマジシャン,水晶术师,
 CrystalMagicianDescription,,,,
 CrystalMagicianCrystalBot,Crystal,クリスタル,水晶,水晶
 GrimReaperName,GrimReaper,死神,死神,死神
-GrimReaperDescription,,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。ただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。さらに、エネルギーを貯めている位置も分かってしまう。注意しよう。,死神可以积蓄能量来使敌方无法动弹，造成单方面的屠杀。死神继续能量需要一定时间，且不能移动。此外，请注意敌方玩家还会知晓存储能量的位置。,死神會透過累積的能量來使敵方無法動彈來達成片面的屠殺。但是累積能量需要一定的時間，且無法移動。請小心敵對玩家也知曉累積能量的位置。
+GrimReaperDescription,By storing energy，you can immobilize enemies and unilaterally kill them. \nHowever，it takes time to store energy，and you become more immobile. \nFurthermore，the position where you are storing energy becomes known. \nBe careful.,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。\nただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。\nさらに、エネルギーを貯めている位置も分かってしまう。\n注意しよう。,死神可以积蓄能量来使敌方无法动弹，造成单方面的屠杀。死神继续能量需要一定时间，且不能移动。此外，请注意敌方玩家还会知晓存储能量的位置。,死神會透過累積的能量來使敵方無法動彈來達成片面的屠殺。但是累積能量需要一定的時間，且無法移動。請小心敵對玩家也知曉累積能量的位置。
 GrimReaperAbilityStart,GrimReaper is charging energy at {0} now...,死神が{0}でエネルギーを貯め始めた...,死神开始在{0}积蓄能量……,死神在{0}累積能量。
 BalancerName,Balancer,天秤,大神官,阿努比斯
 BalancerTitle1,(x+y)/2,(x+y)/2,审判他人罪孽的轻重,審判罪孽的輕重
@@ -1747,7 +1747,7 @@ SeriousTag,Serious Players,ガチ勢,竞技,享受勝利
 EnjoyTag,Enjoyers,エンジョイ勢,娱乐,享受過程
 
 SeriousnessTag,Seriousness Play,真剣プレイ,认真,認真局
-WelcomeBeginnerTag,,初心者歓迎,欢迎新手,歡迎新手
+WelcomeBeginnerTag,Beginners welcome,初心者歓迎,欢迎新手,歡迎新手
 
 NowRecordingTag,Now Recording,撮影中,正在录制,錄影中
 NowBeingDeliveredTag,Now Being Delivered,配信中,正在直播,直播中
@@ -1812,7 +1812,7 @@ WelcomeMessage8,https://github.com/SuperNewRoles/SuperNewRoles/wiki(Japanese),ht
 WelcomeMessage9,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。,你可以通过输入命令来获取信息。,您可以通過輸入命令來獲取訊息。
 WelcomeMessage10,To view a list of executable commands，send the command : [ /commands ] or [ /cmd ].,実行可能なコマンド一覧を表示するには\nコマンド : [ /commands ] 又は [ /cmd ] を送信してください。,要查看可执行命令列表，请发送命令：[ /commands ]或[ /cmd ],查看可執行命令的列表，請發送命令：[ /commands ] 或 [ /cmd ]。
 SNRWebWelcomMessage1_HostSend,Send your match results to SNRWeb.,SNRWebに試合の戦績を送信します。,将您的游戏结果发送到SNRWeb。,將您的對局結果發送到SNR Web。
-SNRWebWelcomMessage1_GestSend,,SNRWebにログインしている導入者が参加した場合，試合の戦績が送信されます。,若房间内有SNR模组玩家登录了SNRWeb，游戏结果会自动发送。,如果有安裝SNR Web的玩家參加遊戲，則將自動發送遊戲結果。
+SNRWebWelcomMessage1_GestSend,If an introducer who is logged in to SNRWeb participates，the game results are transmitted.,SNRWebにログインしている導入者が参加した場合，試合の戦績が送信されます。,若房间内有SNR模组玩家登录了SNRWeb，游戏结果会自动发送。,如果有安裝SNR Web的玩家參加遊戲，則將自動發送遊戲結果。
 SNRWebWelcomMessage2,By participating in the game，you agree to submit your information to SNRWeb.,ゲームへの参加をもってSNRWebへの情報送信に同意したものとみなします。,参加游戏即表示您同意将游戏信息提交给SNRWeb。,參加遊戲即表示您同意將您的信息提交給SNR Web。
 SNRWebWelcomMessage3,For a simplified explanation of SNRWeb，see the command : [ /getwebinfo ] or [ /gwi ].,SNR Webについての簡易説明は，\nコマンド : [ /getwebinfo ] 又は [ /gwi ]でご確認ください。,要查看简易SNRWeb介绍，请发送命令： [ /getwebinfo ]或[ /gwi ]。,要獲取SNRWeb的說明，請使用命令：[ /getwebinfo ] 或 [ /gwi ]。
 SNRWebWelcomMessage4,For a detailed explanation，please refer to the "SNR Webについて" page on the official wiki.,又，詳細説明については公式wikiの[SNR Webについて]というページを御覧ください。,要查看详细SNRWeb介绍，请在官方wiki页面上查阅“关于SNRWeb”。,有關詳細說明，請參閱官方wiki上的“關於SNR Web”頁面。
