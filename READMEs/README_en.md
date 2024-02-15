@@ -111,15 +111,16 @@ If the host includes this mod, the position will be available to all!<br>
 
 
 ## Developers
-- Developer #1 : [Yoking](https://github.com/ykundesu) ([Misskey](https://misskey.io/@yoking)) ([𝕏 ( Old Twitter )](https://twitter.com/ReYYYYoking))<br>
-- Developer #7 : [Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Misskey](https://misskey.io/@Kurato_SNR7)) ([𝕏 ( Old Twitter )](https://twitter.com/Kurato_SNR7))<br>
-- Developer #9 : [Kuki](https://github.com/Kuki12345)<br>
-- Developer #11 : [Glaceon](https://github.com/Glaceon-471) ([Misskey](https://misskey.io/@GlaceonSNR11)) ([𝕏 ( Old Twitter )](https://twitter.com/Glaceon_SNR11))<br>
-- Developer #4 : [~~UKON people~~](https://github.com/UKON256)<br>
-- Developer #10 : [~~Sakurander~~](https://github.com/Sakurander)<br>
+- Developer #1 : [Yoking](https://github.com/ykundesu) ([Misskey](https://misskey.io/@yoking)) ([𝕏 ( Old Twitter )](https://twitter.com/ReYYYYoking))
+- Developer #4 : [UKON people](https://github.com/UKON256)
+- Developer #7 : [Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Misskey](https://misskey.io/@Kurato_SNR7)) ([𝕏 ( Old Twitter )](https://twitter.com/Kurato_SNR7))
+- Developer #9 : [Kuki](https://github.com/Kuki12345)
+- Developer #11 : [Glaceon](https://github.com/Glaceon-471) ([Misskey](https://misskey.io/@GlaceonSNR11)) ([𝕏 ( Old Twitter )](https://twitter.com/Glaceon_SNR11))
+- Developer #12 : [Seono](https://github.com/Seono968) ([𝕏 ( Old Twitter )](https://twitter.com/Rinforzando_960))
+- Developer #10 : [~~Sakurander~~](https://github.com/Sakurander)
 
 ## Supporter
-- [Seono](https://github.com/Seono968) ([𝕏 ( Old Twitter )](https://twitter.com/Rinforzando_960))<br>
+- <br>
 
 ## Translators
 - Mx.ZeMingoh233 (SChinese)
