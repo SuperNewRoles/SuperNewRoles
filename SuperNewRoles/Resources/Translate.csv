@@ -665,6 +665,7 @@ ScientistButtonName,Hide,隠れる,隐身,隱身
 ClergymanName,Clergyman,聖職者,牧师,牧師
 ClergymanTitle1,Let's sabotage the outsider.,人外の妨害をしよう,妨碍内鬼行动,妨礙內鬼行動
 ClergymanTitle2,Let's obstruct the outsider's view.,人外の視界を妨害しよう,让内鬼们也尝尝黑暗的滋味,讓內鬼們也嘗嘗黑暗的滋味
+ClergymanDescription,This is the role of Crewmate，who has the ability to temporarily narrow the impostor's field of view with a hindering power outage ability.\nThe ability does not affect Madmate.\n\nWoe to those who wrong us!!,インポスターの視界を一定時間狭める，妨害停電能力を有するクルーメイト役職です。\n能力は，マッドメイトに影響しません。\n\n我らに仇なす者には禍を!!
 ClergymanCooldownSetting,Cool Time,クールタイム,牧师技能冷却,牧師技能冷卻時間
 ClergymanDurationTimeSetting,Duration Time,継続時間,牧师技能持续时间,牧師技能持續時間
 ClergymanDownVisionSetting,Impostor Down Vision.,実行時の視界,牧师技能持续时间内的内鬼视野,牧師技能持續時間內的內鬼視野
