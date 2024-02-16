@@ -202,13 +202,13 @@ DeviceTimeSetting,Can use time,使用可能時間,飞船设备最大可使用时
 IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx,启用ykundesuBeplnEx,ykundesuBeplnEx
 restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい,关注B站@心音糖果_Tingo谢谢喵！
 ReactorDurationSetting,Reactor Duration Time,緊急タスク継続時間の設定,自定义核反应堆紧急破坏持续时间,核子反應爐緊急任務持續時間
-SkeldReactorTime,The Skeld : reactor Duration Time,The Skeld : リアクターサボタージュの時間
-SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,<size=45%>The Skeld : 酸素枯渇までの時間</size>
+SkeldReactorTime,The Skeld : reactor Duration Time,The Skeld : リアクターサボタージュの時間,,The Skeld核子反應爐緊急任務持續時間
+SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,<size=45%>The Skeld : 酸素枯渇までの時間</size>,,The Skeld氧氣枯竭緊急任務持續時間
 PolusReactorTime,Polus : Reset Stabilizers Duration Time,Polus : 耐震安定装置リセットの時間,波鲁斯(Polus)抗震器紧急破坏持续时间,Polus核子反應爐震盪緊急任務持續時間
 MiraReactorTime,MiraHQ : reactor Duration Time,MiraHQ : リアクターサボタージュの時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
-MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,<size=50%>MiraHQ : 酸素枯渇までの時間</size>
+MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,<size=50%>MiraHQ : 酸素枯渇までの時間</size>,,MiraHQ氧氣枯竭緊急任務持續時間
 AirshipReactorTime,Airship : Avert Cresh Course Duration Time,AirShip : 衝突回避の時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
-FungleReactorTime,The Fungle : reactor Duration Time,The Fungle : リアクターサボタージュの時間
+FungleReactorTime,The Fungle : reactor Duration Time,The Fungle : リアクターサボタージュの時間,,The Fungle核子反應爐緊急任務持續時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
 VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化,播放管道动画,啟用通風管道動畫
 MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖改造
@@ -675,7 +675,7 @@ MadmateName,Madmate,マッドメイト,叛徒,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利,幫助內鬼獲得勝利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。,叛徒屬於船員陣營，但是其為內鬼的同伴。\n內鬼獲勝則叛徒一同獲勝。
 MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか,叛徒是否能确认内鬼玩家,叛徒是否能確認內鬼玩家
-IsSettingNumberOfUniqueTasks,Do you want to set the number of tasks to be distributed on a specific basis?,配布するタスク数を固有で設定するか
+IsSettingNumberOfUniqueTasks,Do you want to set the number of tasks to be distributed on a specific basis?,配布するタスク数を固有で設定するか,,發動能力是否需要達到指定的任務量
 IsParcentageForTaskTrigger,Is the number of tasks required to trigger the capability a percentage of the total number of tasks?,能力発動に必要なタスク数を総タスク数に対する割合にするか。,发动能力需要完成的任务数是否用总任务的百分比表示,發動能力是否需要達到指定的任務數量比例
 ParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),能力が発動するタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
 TaskTriggerAbilityTaskNumber,Number of tasks required to activate fanaticism capability,能力の発動に必要なタスク数,发动能力需要完成的任务数,發動能力需要完成的任務量
@@ -1046,8 +1046,8 @@ GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次,剩餘{0}次
 GhostMechanicAbilityUseError,The ability cannot be activated when sabotage is not occurring.,サボタージュが発生していない時に，能力を発動する事はできません。,亡灵工程师的能力不能在紧急破坏未发生时发动。,沒有發生破壞時不能使用能力。
 EvilHackerName,EvilHacker,イビルハッカー,骇客,駭客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利,駭入飛船獲取勝利
-EvilHackerTitle2,I am the one who controls the information on this ship.,我は，此の船の情報を支配せし者
-EvilHackerDescription,This is an impostor role that allows you to view the admins wherever you are.\nThere is also a setting that allows viewing of portable admins during the meeting phase.\n\nThis allows you to view enhanced admin information over the regular admins.\nYou can also create a Madmate.\n\nI am the one who controls the information on this ship. You will not be able to escape from me.,何処にいてもアドミンを見る事ができるインポスター役職です。\n会議フェイズ中にポータブルアドミンの閲覧を可能にする設定もあります。\n\n通常のアドミンよりも強化されたアドミン情報を閲覧する事ができます。\n又，クルーを狂わせマッドメイトを作成する事もできます。\n\n我は，此の船の情報を支配せし者。我から逃れる事は叶わぬと心得よ。
+EvilHackerTitle2,I am the one who controls the information on this ship.,我は，此の船の情報を支配せし者,,我擁有飛船上所有的祕密
+EvilHackerDescription,This is an impostor role that allows you to view the admins wherever you are.\nThere is also a setting that allows viewing of portable admins during the meeting phase.\n\nThis allows you to view enhanced admin information over the regular admins.\nYou can also create a Madmate.\n\nI am the one who controls the information on this ship. You will not be able to escape from me.,何処にいてもアドミンを見る事ができるインポスター役職です。\n会議フェイズ中にポータブルアドミンの閲覧を可能にする設定もあります。\n\n通常のアドミンよりも強化されたアドミン情報を閲覧する事ができます。\n又，クルーを狂わせマッドメイトを作成する事もできます。\n\n我は，此の船の情報を支配せし者。我から逃れる事は叶わぬと心得よ。,,駭客屬於內鬼陣營，可以在任何地方查看管理員地圖。\n根據房間設置，可在會議階段查看便攜式管理員地圖。\n\n駭客可以查看管理員地圖上的更多資訊，同時還能招募一名叛徒。\n\n我控制著這艘飛船，你們永遠無法逃脫我的掌控。
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,可以把一名玩家变成叛徒,可以把一名玩家變成叛徒
 CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] ability.,[狂わせる]能力のクールタイムの設定,[洗脑]技能冷却设置,洗腦能力的冷卻時間
@@ -1386,8 +1386,8 @@ PlayerControl,Player control,プレイヤー操作,玩家操作,玩家操作
 StartMeeting,Start meeting,緊急会議,召开紧急会议,召開緊急會議
 ShowRole,Show role,役職を表示,显示职业,顯示職業
 DeShowRole,Cancel show role,役職を非表示,取消显示职业,取消顯示職業
-SetSabotage,Activation of sabotage,サボタージュの発動
-RepairSabotage,Restoration of sabotage,サボタージュの修復
+SetSabotage,Activation of sabotage,サボタージュの発動,,啟動破壞任務
+RepairSabotage,Restoration of sabotage,サボタージュの修復,,修復破壞任務
 Teleport,Teleport,テレポート,传送,傳送
 ReportDeadbody,Report deadbody,通報,报告,報告
 Exile,Exile,追放,放逐,放逐
