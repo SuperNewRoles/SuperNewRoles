@@ -28,7 +28,7 @@ public static class AirShipRandomSpawn
             ModeHandler.GetMode(false) is ModeId.CopsRobbers or ModeId.PantsRoyal)
             return;
 
-        __instance.StopAllCoroutines();
+        //__instance.StopAllCoroutines();
 
         if (ModeHandler.IsMode(ModeId.Default, false))
             __instance.LocationButtons.Random().OnClick.Invoke();
