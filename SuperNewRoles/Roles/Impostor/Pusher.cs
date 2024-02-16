@@ -63,6 +63,8 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         var anim = PlayerAnimation.GetPlayerAnimation(Player.PlayerId);
         anim.RpcAnimation(RpcAnimationType.PushHand);
         target.Exiled();
+        if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId || PlayerControl.LocalPlayer.PlayerId == TargetId)
+            SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Pusher.pusher_se.raw"), false, 1.5f);
     }
     public void PushButtonOnClick()
     {
