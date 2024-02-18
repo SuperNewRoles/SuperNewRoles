@@ -3,138 +3,106 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SuperNewRoles.Roles.Impostor.Pusher;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;
-public class PushedPlayerDeadbody : CustomAnimation
+public class PushedPlayerDeadbody : MonoBehaviour
 {
     public PushedPlayerDeadbody(IntPtr intPtr) : base(intPtr)
     {
     }
-    public static List<PushedPlayerDeadbody> DeadBodys = new();
-    public PlayerControl Source
+    public enum PushAnimation
     {
-        get
-        {
-            if (_source == null)
-            {
-                _source = SourceId.GetPlayerControl();
-            }
-            return _source;
-        }
-        set
-        {
-            _source = value;
-            SourceId = _source.PlayerId;
-        }
+        Push,
+        Down,
+        DownAndFadeout
     }
-    private PlayerControl _source;
-    public byte SourceId;
-    public PlayerControl Player
+    public PoolablePlayer currentPoolableBehaviour { get; private set; }
+    public PlayerControl Player { get; private set; }
+    private float AnimationTimer;
+    private PushAnimation pushAnimation;
+    private Pusher.PushTarget pushTarget;
+    public void Awake()
     {
-        get
-        {
-            if (_player == null)
-            {
-                _player = PlayerId.GetPlayerControl();
-            }
-            return _player;
-        }
-        set
-        {
-            _player = value;
-            PlayerId = _player.PlayerId;
-        }
     }
-    private PlayerControl _player;
-    public byte PlayerId;
-    public float UpdateTime;
-    public const float DefaultUpdateTime = 0.03f;
-    public int SpriteType;
-    public Sprite[] GetSprites()
+    public void Init(PlayerControl player, Pusher.PushTarget pushTarget)
     {
-        //0～2はアニメーションあり(index:8)
-        //3～4はシンプル
-        var type = ModHelpers.GetRandomInt(4);
-        type = 4;
-        SpriteType = type;
-        switch (type)
-        {
-            case 0:
-            case 1:
-            case 2:
-                List<Sprite> sprites = new();
-                for (int i = 1; i <= 8; i++)
-                {
-                    sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.harisen.deadbody_{type}_{i}.PNG", 115f));
-                }
-                return sprites.ToArray();
-            case 3:
-            case 4:
-                return new Sprite[] { ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.harisen.deadbody_{type}.PNG", 115f) };
-        }
-        return null;
-    }
-    public Rigidbody2D body;
-    public Vector2 Velocity;
-    public override void Awake()
-    {
-        base.Awake();
-        body = gameObject.GetOrAddComponent<Rigidbody2D>();
-        body.gravityScale = 0;
-        spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
-        spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
-        DeadBodys.Add(this);
-    }
-    public void Init(byte SourceId, byte TargetId)
-    {
-        CustomAnimationOptions customAnimationOptions = new(GetSprites(), 10, true);
-        base.Init(customAnimationOptions);
-        this.SourceId = SourceId;
-        this.PlayerId = TargetId;
-        Velocity = Source.transform.position - Player.transform.position;
-        Velocity *= -10f;
-        body.velocity = Velocity;
+        Player = player;
         transform.position = Player.transform.position;
-        transform.localScale = new(0.1f, 0.1f, 0);
-        transform.Rotate(Source.transform.position - Player.transform.position);
-        if (SpriteType == 3)
+        if (!MapOption.MapOption.playerIcons.TryGetValue(player.PlayerId, out PoolablePlayer poolableBehaviour))
+            throw new Exception("Failed to get poolableBehavior Icon");
+        currentPoolableBehaviour = Instantiate(poolableBehaviour);
+        currentPoolableBehaviour.gameObject.layer = 8;
+        currentPoolableBehaviour.transform.SetParent(transform);
+        currentPoolableBehaviour.transform.localPosition = Vector3.zero;
+        currentPoolableBehaviour.transform.localScale = Vector3.one * 0.4f;
+        currentPoolableBehaviour.gameObject.SetActive(true);
+        AnimationTimer = 0f;
+        pushAnimation = PushAnimation.Push;
+        this.pushTarget = pushTarget;
+    }
+    public void Update()
+    {
+        if (currentPoolableBehaviour == null)
+            return;
+        switch (pushAnimation)
         {
-            transform.Rotate((Source.transform.position - Player.transform.position) * -1f);
+            case PushAnimation.Push:
+                HandlePush();
+                AnimationTimer += Time.deltaTime;
+                if (AnimationTimer > 0.03f)
+                {
+                    pushAnimation = PushAnimation.Down;
+                    AnimationTimer = 0f;
+                }
+                break;
+            case PushAnimation.Down:
+                HandleDown();
+                AnimationTimer += Time.deltaTime;
+                if (AnimationTimer >= 0.2f)
+                {
+                    pushAnimation = PushAnimation.DownAndFadeout;
+                    AnimationTimer = 0f;
+                }
+                break;
+            case PushAnimation.DownAndFadeout:
+                HandleDownAndFadeout();
+                AnimationTimer += Time.deltaTime;
+                if (AnimationTimer >= 0.75f)
+                {
+                    Destroy(gameObject);
+                }
+                break;
+            default:
+                throw new Exception("PushedPlayerDeadbody: Invalid PushAnimation");
         }
-        PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, spriteRenderer);
-        PlayerMaterial.Properties Properties = new()
+    }
+    private float rotate;
+    private void HandlePush()
+    {
+        Vector3 addposition = pushTarget switch
         {
-            MaskLayer = 0,
-            MaskType = PlayerMaterial.MaskType.None,
-            ColorId = Player.Data.DefaultOutfit.ColorId
-        };
-        spriteRenderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
+            Pusher.PushTarget.Right => new Vector3(13.5f, 0, 0),
+            Pusher.PushTarget.Left => new Vector3(-13.5f, 0, 0),
+            Pusher.PushTarget.Down => new Vector3(0, -9f, 0),
+            _ => throw new Exception("PushedPlayerDeadbody: Invalid PushTarget")
+        } * Time.deltaTime;
+        transform.position += addposition;
     }
-    public override void Play(bool IsPlayMusic = true)
+    private void HandleDown()
     {
-        base.Play(IsPlayMusic);
-        body.velocity = Velocity;
+        transform.position += new Vector3(0, -1.5f, 0) * Time.deltaTime;
+        transform.localScale -= Vector3.one * 0.001f;
+        rotate += 0.05f;
+        if (rotate >= 360)
+            rotate = 0;
+        transform.Rotate(new(0, 0, rotate + (pushTarget == Pusher.PushTarget.Left ? 0 : -360)));
     }
-    public override void Pause(bool IsStopMusic = true)
+    private void HandleDownAndFadeout()
     {
-        base.Pause(IsStopMusic);
-        body.velocity = new();
+        HandleDown();
+        transform.localScale -= Vector3.one * 0.01f;
+        currentPoolableBehaviour.cosmetics.currentBodySprite.BodySprite.color = new(1, 1, 1, (0.75f - AnimationTimer) * 1.34f);
     }
-    public override void OnPlayRewind()
-    {
-        base.OnPlayRewind();
-        body.velocity = -Velocity;
-    }
-    public override void OnDestroy()
-    {
-        base.OnDestroy();
-        DeadBodys.Remove(this);
-    }
-    public override void Update()
-    {
-        if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) > 30)
-            Destroy(this.gameObject);
-    }
-
 }

@@ -322,7 +322,7 @@ public class PlayerAnimation
                 break;
             case RpcAnimationType.PushHand:
                 SetColorMaterialActive(true);
-                Init(GetSprites("SuperNewRoles.Resources.Pusher.pushanim_", 15, start: 0), false, 20);
+                Init(GetSprites("SuperNewRoles.Resources.Pusher.pushanim_", 9, start: 6), false, 20);
                 OnAnimationEnd = new(() =>
                 {
                     new LateTask(() => SetColorMaterialActive(false), 0.035f);
