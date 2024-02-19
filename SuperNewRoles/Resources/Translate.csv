@@ -500,7 +500,7 @@ EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継�
 EvilScientistName,Evil Scientist,イビルサイエンティスト,邪恶的隐身人,邪惡的隱身人
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう,隐身并杀死其他船员,隱身並殺死其他船員
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
-EvilScientistDescription,You can become invisible by using the [Hide] button. \nUse your invisibility ability to deceive and win!!,[隠れる]ボタンを使用することで透明化することができます。\n透明化能力を用いて、視認を欺き勝利しましょう!!,邪恶的隐身人可以使用技能来隐身。\n利用隐身能力，骗过他人的眼睛来获得胜利吧！,你可以利用「隱藏」按鈕進行隱身。\n利用隱身能力欺騙船員獲得勝利！
+EvilScientistDescription,You can become invisible by using the [Hide] button. \nThe impostor role allows you to see the Evil Scientist in a semi-transparent state while he or she is activating his or her abilities.\n\nUse your invisibility ability to deceive and win!!,[隠れる]ボタンを使用することで透明化することができます。\n能力発動中 インポスター役職は， イビルサイエンティストを半透明な状態で視認する事ができます。\n\n透明化能力を用いて、視認を欺き勝利しましょう!!,邪恶的隐身人可以使用技能来隐身。\n利用隐身能力，骗过他人的眼睛来获得胜利吧！,你可以利用「隱藏」按鈕進行隱身。\n利用隱身能力欺騙船員獲得勝利！
 SheriffName,Sheriff,シェリフ,警长,警長
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人,殺死敵人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利,殺死敵人帶領船員獲得勝利
@@ -657,6 +657,7 @@ VultureButtonName,Eat,食らう,吞噬,吞食
 NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐身人,正義的隱身人
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体,透明化以找尋屍體
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
+NiceScientDescription,You can become invisible by using the [Hide] button.\nScientists in an invisible state can also be taken as targets of abilities.\nTherefore，this is not a role where it is possible to completely avoid being subject to the abilities of others，such as kills.\n\nUse invisibility to get information past the impostor's watchful eye!,[隠れる]ボタンを使用することで透明化することができます。/n透明化中のサイエンティストも能力の対象に取る事ができます。/n従って，キル等他者の能力を受ける事を完全に回避する事が可能な役職ではありません。/n/nインポスターの監視の目をかいくぐり情報を取得しましょう!
 NiceScientistCooldownSetting,Cool Time,クールタイム,技能冷却,技能冷卻時間
 NiceScientistDurationSetting,Duration Time,継続時間,技能持续时间,技能持續時間
 ScientistButtonName,Hide,隠れる,隐身,隱身
