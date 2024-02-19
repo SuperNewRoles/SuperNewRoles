@@ -45,13 +45,14 @@ public enum RoleId
     Cupid,
     Santa,
     BlackSanta,
+    NiceScientist,
+    EvilScientist,
     //RoleId
 
     SoothSayer,
     Jester,
     Lighter,
     EvilLighter,
-    EvilScientist,
     Sheriff,
     MeetingSheriff,
     Jackal,
@@ -67,7 +68,6 @@ public enum RoleId
     Speeder,
     Freezer,
     Vulture,
-    NiceScientist,
     Clergyman,
     Madmate,
     Bait,
@@ -1433,7 +1433,7 @@ public static class RPCProcedure
         FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
     }
     public static void SetScientistRPC(bool Is, byte id)
-        => RoleClass.NiceScientist.IsScientistPlayers[id] = Is;
+        => RoleClass.Kunoichi.IsScientistPlayers[id] = Is;
 
     public static void ReportDeadBody(byte sourceId, byte targetId)
     {

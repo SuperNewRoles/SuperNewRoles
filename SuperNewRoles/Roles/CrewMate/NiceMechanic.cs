@@ -112,7 +112,7 @@ public static class NiceMechanic
         {
             opacity = 1.5f;
         }
-        Scientist.SetOpacity(Target, opacity, false);
+        InvisibleRole.SetOpacity(Target, opacity, false);
     }
     public static void StartMeeting()
     {
