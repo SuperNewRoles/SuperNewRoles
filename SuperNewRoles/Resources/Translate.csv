@@ -1707,6 +1707,7 @@ PusherName,Pusher,突き落と師
 PusherTitle1,Eyes behind you.,背後には気を付けな
 PusherDescription,You can push off crew members who are in vulnerable positions.\nCrew members who are pushed off will not result in a dead body.PusherButtonName,Push!!!,突き落とす
 PusherIntervalOption,Push interval,突き落とし間隔
+PusherButtonName,Push!!!,バーン！
 
 #NewRoleTranslation
 
