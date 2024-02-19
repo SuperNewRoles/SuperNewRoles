@@ -21,7 +21,12 @@ public class NiceScientist : InvisibleRoleBase, ICrewmate, ICustomButton
         new(RoleId.NiceScientist, 404200, false,
             CoolTimeOption: (30f, 2.5f, 60f, 2.5f, false),
             DurationTimeOption: (10f, 2.5f, 20f, 2.5f, false),
-            optionCreator: null);
+            optionCreator: CreateOption);
+    public static CustomOption CanTheLighterSeeTheScientist;
+    private static void CreateOption()
+    {
+        CanTheLighterSeeTheScientist = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "ScientistCanTheLighterSeeTheScientist", true, Optioninfo.RoleOption);
+    }
     public static new IntroInfo Introinfo =
         new(RoleId.NiceScientist, introNum: 2, introSound: RoleTypes.Scientist);
     public NiceScientist(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
@@ -50,5 +55,7 @@ public class NiceScientist : InvisibleRoleBase, ICrewmate, ICustomButton
     // ICustomButton
     public CustomButtonInfo[] CustomButtonInfos { get; }
     private CustomButtonInfo ButtonInfo { get; }
-    public override bool CanSeeTranslucentState(PlayerControl invisibleTarget) => invisibleTarget == PlayerControl.LocalPlayer;
+    public override bool CanSeeTranslucentState(PlayerControl invisibleTarget) =>
+        invisibleTarget == PlayerControl.LocalPlayer ||
+        (CanTheLighterSeeTheScientist.GetBool() && PlayerControl.LocalPlayer.IsRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn);
 }

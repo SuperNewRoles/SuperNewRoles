@@ -8,6 +8,7 @@ using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using System.Collections.Generic;
+using TMPro;
 
 namespace SuperNewRoles.Roles;
 
@@ -214,12 +215,13 @@ public class InvisibleRole
 
             if (player.cosmetics.colorBlindText != null && opacity < 0.1f) // 完全に透明化している場合のみ, 色覚補助テキストを非表示にする。
                 player.cosmetics.colorBlindText.color = Palette.ClearWhite;
+            else if (player.cosmetics.colorBlindText != null)
+                player.cosmetics.colorBlindText.color = Palette.White;
 
-            if (player.cosmetics.nameText != null && opacity < 0.1f)
-                player.cosmetics.nameTextContainer.SetActive(false); // 完全に透明化している場合は, プレイヤー名を非表示にする。
+            if (player.cosmetics.nameTextContainer != null && opacity < 0.1f)
+                player.cosmetics.nameTextContainer.GetComponent<TextMeshPro>().enabled = false; // 完全に透明化している場合は, プレイヤー名を非表示にする。
             else
-                player.cosmetics.nameTextContainer.SetActive(true); // 少しでも姿を見られるなら, プレイヤー名を表示する。
-
+                player.cosmetics.nameTextContainer.GetComponent<TextMeshPro>().enabled = true; // 少しでも姿を見られるなら, プレイヤー名を表示する。
         }
         catch { }
     }

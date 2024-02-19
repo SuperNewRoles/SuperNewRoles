@@ -21,7 +21,12 @@ public class EvilScientist : InvisibleRoleBase, IImpostor, ICustomButton
         new(RoleId.EvilScientist, 205300, false,
             CoolTimeOption: (30f, 2.5f, 60f, 2.5f, false),
             DurationTimeOption: (10f, 2.5f, 20f, 2.5f, false),
-            optionCreator: null);
+            optionCreator: CreateOption);
+    public static CustomOption CanTheLighterSeeTheScientist;
+    private static void CreateOption()
+    {
+        CanTheLighterSeeTheScientist = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "ScientistCanTheLighterSeeTheScientist", true, Optioninfo.RoleOption);
+    }
     public static new IntroInfo Introinfo =
         new(RoleId.EvilScientist, introNum: 2, introSound: RoleTypes.Scientist);
     public EvilScientist(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
@@ -40,7 +45,7 @@ public class EvilScientist : InvisibleRoleBase, IImpostor, ICustomButton
             KeyCode.F,
             49,
             baseButton: HudManager.Instance.AbilityButton,
-            DurationTime: () => {Logger.Info($"Optioninfo.DurationTime = {Optioninfo.DurationTime}"); return Optioninfo.DurationTime;},
+            DurationTime: () => { Logger.Info($"Optioninfo.DurationTime = {Optioninfo.DurationTime}"); return Optioninfo.DurationTime; },
             OnEffectEnds: () => this.DisableInvisible(true)
         );
 
@@ -55,7 +60,9 @@ public class EvilScientist : InvisibleRoleBase, IImpostor, ICustomButton
         bool result =
             invisibleTarget == PlayerControl.LocalPlayer
                 ? true
-                : invisibleTarget.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor();
+                : invisibleTarget.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor()
+                    ? true
+                    : CanTheLighterSeeTheScientist.GetBool() && PlayerControl.LocalPlayer.IsRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn;
 
         return result;
     }
