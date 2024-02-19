@@ -77,25 +77,38 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         byte TargetId = reader.ReadByte();
         bool IsLadder = reader.ReadBoolean();
         int TargetPositionDetailIndex = reader.ReadInt32();
+
         Ladder targetLadder = IsLadder ? ModHelpers.LadderById((byte)TargetPositionDetailIndex) : null;
         if (IsLadder ? targetLadder == null : PusherPushPositions.Length <= TargetPositionDetailIndex)
             throw new System.Exception($"TargetPositionDetailIndex is out of range, IsLadder:{IsLadder}, Id:{TargetPositionDetailIndex}");
-        Logger.Info("RPC:TargetLadder:"+targetLadder.Id+":"+TargetPositionDetailIndex);
-        var PushPositionDetail = PusherPushPositions[TargetPositionDetailIndex];
-        Vector2 PushPosition = IsLadder ? (targetLadder.transform.position + new Vector3(0,0.15f)) : PushPositionDetail.PushPosition;
-        PushTarget PushTarget = IsLadder ? PushTarget.Down : PushPositionDetail.PushTarget;
+
+        Vector2 PushPosition = new();
+        PushTarget PushTarget = PushTarget.Down;
+
+        if (IsLadder)
+            PushPosition = (targetLadder.transform.position + new Vector3(0, 0.15f));
+        else
+        {
+            var PushPositionDetail = PusherPushPositions[TargetPositionDetailIndex];
+            PushPosition = PushPositionDetail.PushPosition;
+            PushTarget = PushPositionDetail.PushTarget;
+        }
 
         PlayerControl target = ModHelpers.PlayerById(TargetId);
         var anim = PlayerAnimation.GetPlayerAnimation(Player.PlayerId);
         anim.RpcAnimation(RpcAnimationType.PushHand);
+
         target.NetTransform.SnapTo(PushPosition);
         target.transform.position = PushPosition;
         Player.NetTransform.SnapTo(PushPosition);
         Player.transform.position = PushPosition;
+
         PushedPlayerDeadbody pushedPlayerDeadbody = new GameObject("PushedPlayerDeadBody").AddComponent<PushedPlayerDeadbody>();
         pushedPlayerDeadbody.Init(target, PushTarget);
+
         if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId || PlayerControl.LocalPlayer.PlayerId == TargetId)
             SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Pusher.pusher_se.raw"), false, 1.5f);
+
         target.Exiled();
     }
     private Ladder GetCanUseLadder(PlayerControl player)
