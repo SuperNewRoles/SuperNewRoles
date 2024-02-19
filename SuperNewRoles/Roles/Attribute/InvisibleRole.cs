@@ -12,7 +12,7 @@ using TMPro;
 
 namespace SuperNewRoles.Roles;
 
-public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler
+public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandleChangeRole
 {
     /// <summary>
     /// 透明化が発動しているか
@@ -130,6 +130,8 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler
                 break;
         }
     }
+
+    public void OnChangeRole() => DisableInvisible(true);
 
     /// <summary>
     /// 対象に, 透明化状態を反映する事ができるか。

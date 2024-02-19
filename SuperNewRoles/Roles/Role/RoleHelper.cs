@@ -424,9 +424,6 @@ public static class RoleHelpers
             WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
-        // [ ] MEMO : interface化の方が良いかも? この時既ロールベース破棄されてる　場所違うかも
-        else if (player.TryGetRoleBase<InvisibleRoleBase>(out var invisibleRoleBase)) // 透明化系役職が役職変更された場合
-            invisibleRoleBase.DisableInvisible();
 
         switch (role)
         {
@@ -990,6 +987,8 @@ public static class RoleHelpers
     private static PlayerControl ClearTarget;
     public static void ClearRole(this PlayerControl player)
     {
+        if (player.GetRoleBase() is IHandleChangeRole IHandleChangeRole) { IHandleChangeRole.OnChangeRole(); }
+
         static bool ClearRemove(PlayerControl p)
         {
             return p.PlayerId == ClearTarget.PlayerId;
