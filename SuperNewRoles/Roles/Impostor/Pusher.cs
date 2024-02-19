@@ -75,22 +75,35 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
     public void RpcReader(MessageReader reader)
     {
         byte TargetId = reader.ReadByte();
+        bool IsLadder = reader.ReadBoolean();
         int TargetPositionDetailIndex = reader.ReadInt32();
-        if (PusherPushPositions.Length <= TargetPositionDetailIndex)
-            throw new System.Exception("TargetPositionDetailIndex is out of range");
+        Ladder targetLadder = IsLadder ? ModHelpers.LadderById((byte)TargetPositionDetailIndex) : null;
+        if (IsLadder ? targetLadder == null : PusherPushPositions.Length <= TargetPositionDetailIndex)
+            throw new System.Exception($"TargetPositionDetailIndex is out of range, IsLadder:{IsLadder}, Id:{TargetPositionDetailIndex}");
+        Logger.Info("RPC:TargetLadder:"+targetLadder.Id+":"+TargetPositionDetailIndex);
         var PushPositionDetail = PusherPushPositions[TargetPositionDetailIndex];
+        Vector2 PushPosition = IsLadder ? (targetLadder.transform.position + new Vector3(0,0.15f)) : PushPositionDetail.PushPosition;
+        PushTarget PushTarget = IsLadder ? PushTarget.Down : PushPositionDetail.PushTarget;
+
         PlayerControl target = ModHelpers.PlayerById(TargetId);
         var anim = PlayerAnimation.GetPlayerAnimation(Player.PlayerId);
         anim.RpcAnimation(RpcAnimationType.PushHand);
-        target.NetTransform.SnapTo(PushPositionDetail.PushPosition);
-        target.transform.position = PushPositionDetail.PushPosition;
-        Player.NetTransform.SnapTo(PushPositionDetail.PushPosition);
-        Player.transform.position = PushPositionDetail.PushPosition;
+        target.NetTransform.SnapTo(PushPosition);
+        target.transform.position = PushPosition;
+        Player.NetTransform.SnapTo(PushPosition);
+        Player.transform.position = PushPosition;
         PushedPlayerDeadbody pushedPlayerDeadbody = new GameObject("PushedPlayerDeadBody").AddComponent<PushedPlayerDeadbody>();
-        pushedPlayerDeadbody.Init(target, PushPositionDetail.PushTarget);
+        pushedPlayerDeadbody.Init(target, PushTarget);
         if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId || PlayerControl.LocalPlayer.PlayerId == TargetId)
             SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Pusher.pusher_se.raw"), false, 1.5f);
         target.Exiled();
+    }
+    private Ladder GetCanUseLadder(PlayerControl player)
+    {
+        if (player == null)
+            return null;
+        Ladder ladder = ShipStatus.Instance.Ladders.FirstOrDefault(x => x.IsTop && Vector2.Distance(x.transform.position, player.transform.position) <= x.UsableDistance);
+        return ladder;
     }
     private int GetTargetPositionDetail(PlayerControl player)
     {
@@ -114,14 +127,23 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         PushButtonInfo.SetTarget();
         PlayerControl target = PushButtonInfo.CurrentTarget;
         var targetPositionDetail = GetTargetPositionDetail(target);
+        Ladder targetLadder = null;
         if (target == null || targetPositionDetail == -1)
         {
-            PushButtonInfo.customButton.Timer = 0f;
-            return;
+            targetLadder = GetCanUseLadder(target);
+            if (targetLadder == null)
+            {
+                PushButtonInfo.customButton.Timer = 0f;
+                return;
+            }
         }
         MessageWriter writer = RpcWriter;
         writer.Write(target.PlayerId);
-        writer.Write(targetPositionDetail);
+        writer.Write(targetLadder != null);
+        if (targetLadder != null)
+            writer.Write((int)targetLadder.Id);
+        else
+            writer.Write(targetPositionDetail);
         SendRpc(writer);
     }
     private float UpdateUntargetPlayersTimer;
@@ -140,7 +162,7 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
                 PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask)
                 )
                 continue;
-            if (GetTargetPositionDetail(@object) == -1)
+            if (GetTargetPositionDetail(@object) == -1 && !GetCanUseLadder(@object))
                 _untargetPlayers.Add(@object);
         }
     }
