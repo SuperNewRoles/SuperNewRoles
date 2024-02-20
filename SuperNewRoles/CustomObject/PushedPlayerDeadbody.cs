@@ -25,12 +25,19 @@ public class PushedPlayerDeadbody : MonoBehaviour
     private PushAnimation pushAnimation;
     private Pusher.PushTarget pushTarget;
     private SpriteRenderer HandSlot;
+    private DeadBody DeadBody;
+    private Vector3 DeadBodyPosition;
+    private float Speed = 1;
     public void Awake()
     {
     }
-    public void Init(PlayerControl player, Pusher.PushTarget pushTarget)
+    public void Init(PlayerControl player, Pusher.PushTarget pushTarget, DeadBody deadBody, Vector3 deadbodyPosition)
     {
         Player = player;
+        DeadBody = deadBody;
+        DeadBodyPosition = deadbodyPosition;
+        if (DeadBody != null)
+            Speed = 1.5f;
         transform.position = Player.transform.position;
         if (!MapOption.MapOption.playerIcons.TryGetValue(player.PlayerId, out PoolablePlayer poolableBehaviour))
             throw new Exception("Failed to get poolableBehavior Icon");
@@ -75,8 +82,17 @@ public class PushedPlayerDeadbody : MonoBehaviour
             case PushAnimation.DownAndFadeout:
                 HandleDownAndFadeout();
                 AnimationTimer += Time.deltaTime;
-                if (AnimationTimer >= 0.75f)
+                if (DeadBody != null ? Vector2.Distance(transform.position, DeadBodyPosition) <= 0.25f : AnimationTimer >= 0.75f)
                 {
+                    if (DeadBody != null)
+                    {
+                        DeadBody.enabled = false;
+                        DeadBody.enabled = true;
+                        SpriteRenderer rend = DeadBody.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+                        rend.gameObject.SetActive(false);
+                        rend.gameObject.SetActive(true);
+                        DeadBody.transform.position = DeadBodyPosition;
+                    }
                     Destroy(gameObject);
                 }
                 break;
@@ -98,7 +114,7 @@ public class PushedPlayerDeadbody : MonoBehaviour
     }
     private void HandleDown()
     {
-        transform.position += new Vector3(0, -1.5f, 0) * Time.deltaTime;
+        transform.position += new Vector3(0, -1.5f, 0) * Time.deltaTime * Speed;
         transform.localScale -= Vector3.one * 0.001f;
         rotate += 0.05f;
         if (rotate >= 360)
@@ -112,6 +128,8 @@ public class PushedPlayerDeadbody : MonoBehaviour
     {
         // 回しながら落とす
         HandleDown();
+        if (DeadBody != null)
+            return;
         transform.localScale -= Vector3.one * 0.01f;
         Color color = new(1, 1, 1, (0.75f - AnimationTimer) * 1.34f);
         // フェードアウト

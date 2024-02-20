@@ -37,6 +37,7 @@ public enum RoleId
 
     WaveCannon,
     Slugger,
+    Pusher,
     Conjurer,
     EvilGuesser,
     NiceGuesser,
@@ -45,7 +46,6 @@ public enum RoleId
     Cupid,
     Santa,
     BlackSanta,
-    Pusher,
     //RoleId
 
     SoothSayer,

@@ -102,9 +102,27 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         target.transform.position = PushPosition;
         Player.NetTransform.SnapTo(PushPosition);
         Player.transform.position = PushPosition;
+        DeadBody deadBody = null;
+        Vector3 deadBodyPosition = new();
+        if (IsLadder)
+        {
+            deadBody = Object.Instantiate(GameManager.Instance.DeadBodyPrefab);
+            deadBody.enabled = true;
+            deadBody.ParentId = target.PlayerId;
+            deadBody.bodyRenderers.ForEach(delegate (SpriteRenderer b)
+            {
+                target.SetPlayerMaterialColors(b);
+            });
+            target.SetPlayerMaterialColors(deadBody.bloodSplatter);
+            deadBody.transform.position = new(999, 999, 0);
+            deadBodyPosition = targetLadder.Destination.transform.position + new Vector3(0.15f, 0.2f, 0);
+            deadBodyPosition.z = target.transform.position.y / 1000f;
+            //Vector3 position = target.transform.position + PlayerControl.LocalPlayer.KillAnimations.FirstOrDefault().BodyOffset;
+            //position.z = position.y / 1000f;
+        }
 
         PushedPlayerDeadbody pushedPlayerDeadbody = new GameObject("PushedPlayerDeadBody").AddComponent<PushedPlayerDeadbody>();
-        pushedPlayerDeadbody.Init(target, PushTarget);
+        pushedPlayerDeadbody.Init(target, PushTarget, deadBody, deadBodyPosition);
 
         if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId || PlayerControl.LocalPlayer.PlayerId == TargetId)
             SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Pusher.pusher_se.raw"), false, 1.5f);
@@ -158,6 +176,8 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         else
             writer.Write(targetPositionDetail);
         SendRpc(writer);
+        float cooltime = RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, target);
+        PlayerControl.LocalPlayer.SetKillTimerUnchecked(cooltime, cooltime);
     }
     private float UpdateUntargetPlayersTimer;
     private void UpdateUntargetPlayers()
