@@ -19,6 +19,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.Crab;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -38,6 +39,7 @@ public enum RoleId
     WaveCannon,
     Slugger,
     Conjurer,
+    Mushroomer,
     EvilGuesser,
     NiceGuesser,
     EvilHacker,
@@ -45,6 +47,8 @@ public enum RoleId
     Cupid,
     Santa,
     BlackSanta,
+    Crab,
+    Robber,
     NiceScientist,
     EvilScientist,
     //RoleId
@@ -1719,11 +1723,11 @@ public static class RPCProcedure
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
     class RPCHandlerPatch
     {
-        static bool Prefix(PlayerControl __instance, byte callId, MessageWriter reader)
+        static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
         {
-            switch (callId)
+            switch ((RpcCalls)callId)
             {
-                case (byte)RpcCalls.UsePlatform:
+                case RpcCalls.UsePlatform:
                     if (AmongUsClient.Instance.AmHost)
                     {
                         AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
@@ -1733,6 +1737,21 @@ public static class RPCProcedure
                             __instance.SetDirtyBit(4096u);
                         }
                     }
+                    return false;
+                case RpcCalls.CheckSpore:
+                    FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
+                    if (fungleShipStatus != null)
+                        break;
+                    int mushroomId2 = reader.ReadPackedInt32();
+                    Mushroom mushroomFromId = CustomSpores.GetMushroomFromId(mushroomId2);
+                    __instance.CheckSporeTrigger(mushroomFromId);
+                    return false;
+                case RpcCalls.TriggerSpores:
+                    FungleShipStatus fungleShipStatus2 = ShipStatus.Instance.TryCast<FungleShipStatus>();
+                    if (fungleShipStatus2 != null)
+                        break;
+                    int mushroomId = reader.ReadPackedInt32();
+                    CustomSpores.TriggerSporesFromMushroom(mushroomId);
                     return false;
             }
             return true;
