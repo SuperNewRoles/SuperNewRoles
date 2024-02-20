@@ -51,6 +51,7 @@ public enum RoleId
     Robber,
     NiceScientist,
     EvilScientist,
+    Jammer,
     //RoleId
 
     SoothSayer,

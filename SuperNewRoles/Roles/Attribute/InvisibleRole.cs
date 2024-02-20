@@ -12,7 +12,7 @@ using TMPro;
 
 namespace SuperNewRoles.Roles;
 
-public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandleChangeRole
+public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandleChangeRole, IDeathHandler, IHandleDisconnect
 {
     /// <summary>
     /// 透明化が発動しているか
@@ -46,8 +46,6 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandle
     public static PlayerData<bool> IsExistsInvisiblePlayer { get; private set; }
     public static void ClearAndReload() => IsExistsInvisiblePlayer = new();
 
-    public void StartMeeting() { }
-    public void CloseMeeting() => DisableInvisible();
     public enum RpcType
     {
         Start,
@@ -131,7 +129,6 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandle
         }
     }
 
-    public void OnChangeRole() => DisableInvisible(true);
 
     /// <summary>
     /// 対象に, 透明化状態を反映する事ができるか。
@@ -152,6 +149,14 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandle
     {
         return false;
     }
+
+    // interfaceを利用した, 特定タイミングでの透明化解除処理
+
+    public void StartMeeting() { }
+    public void CloseMeeting() => DisableInvisible(); // 会議終了時
+    public void OnChangeRole() => DisableInvisible(true); // 透明化役職が役職変更を受けた時
+    public void OnMurderPlayer(DeathInfo info) { if (info.DeathPlayer == InvisiblePlayer) DisableInvisible(); } // 透明化しているプレイヤーの死亡時
+    public void OnDisconnect() => DisableInvisible(); // 透明化役職の切断時
 }
 
 [HarmonyPatch]

@@ -76,6 +76,8 @@ public class CustomButtonInfo
     /// <param name="OnEffectEnds">継続時間が終わった時の処理(なければnull)</param>
     /// <param name="HasAbilityCountText">使用可能回数のテキストを表示するか</param>
     /// <param name="AbilityCountTextFormat">使用可能回数のテキストのフォーマット文(なければ自動)</param>
+    /// <param name="SetTargetUntargetPlayer">アビリティの対象に取れないプレイヤー達</param>
+    /// <param name="SetTargetCrewmateOnly">アビリティの対象に取れるのはクルーメイト及び第三陣営のみか。 (インポスターを対象に取るのが不可能か。)</param>
     public CustomButtonInfo(
         int? AbilityCount,
         RoleBase roleBase,

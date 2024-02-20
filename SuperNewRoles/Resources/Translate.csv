@@ -500,6 +500,7 @@ EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継�
 EvilScientistName,Evil Scientist,イビルサイエンティスト,邪恶的隐身人,邪惡的隱身人
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう,隐身并杀死其他船员,隱身並殺死其他船員
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
+EvilScientistCombIntroDearJammer,Why don't you use that ability on yourself...,その能力を自分に使ったらどうだ...
 EvilScientistDescription,You can become invisible by using the [Hide] button. \nThe impostor role allows you to see the Evil Scientist in a semi-transparent state while he or she is activating his or her abilities.\n\nUse your invisibility ability to deceive and win!!,[隠れる]ボタンを使用することで透明化することができます。\n能力発動中 インポスター役職は， イビルサイエンティストを半透明な状態で視認する事ができます。\n\n透明化能力を用いて、視認を欺き勝利しましょう!!,邪恶的隐身人可以使用技能来隐身。\n利用隐身能力，骗过他人的眼睛来获得胜利吧！,你可以利用「隱藏」按鈕進行隱身。\n利用隱身能力欺騙船員獲得勝利！
 SheriffName,Sheriff,シェリフ,警长,警長
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人,殺死敵人
@@ -1732,6 +1733,12 @@ CrabName,Crab,かに
 CrabTitle1,EBI & KANI， EBI & KANI， EBI & KANI,カニッカニッカニッカニッ
 CrabDescription,a,能力を使用すると全員横方向にしか動けなくなります\nカニィィィィ！！！！！！！
 CrabButtonName,Crab magic,カニ化
+JammerName,Jammer,ジャマー
+JammerTitle1,私は他者を照らす光を妨害する!,私は他者を照らす光を妨害する!
+JammerCombIntroDearEvilScientist,Why don't you just pour that stuff on someone else?,何でその薬品他人にかけないんだ?
+JammerDescription,This is an impostor role with the ability to make the target invisible.\nThe ability to take an imposter as the target of invisibility can be changed by setting.\n\nThe invisible crew member is unaware that he or she is invisible.\nThe impostor's role is also able to see the invisible crew members through the jamming ability.\n\nThe invisible crew member will appear normal to the admins，but not to the camera.\nAnother crew member can also use the ability on the invisible crew member.\n\nI can make my target crew invisible to others!\nWhat? Why not use it on yourself?\nI like to anticipate other people's movements and play with light reflections to make them invisible!\nIt's no fun to use it on myself，who moves as expected!,対象を透明化する事が可能な能力を有するインポスター役職です。\nインポスターを透明化の対象に取る事ができるかは設定により変更できます。\n\n透明化したクルーは、自分が透明化している事を自覚できません。\n又、インポスター役職はジャミング能力により透明化されたクルーを半透明な状態で視認する事ができます。\n\n透明化しているクルーはアドミンには正常に映りますが、カメラには映りません。\n又、透明化しているクルーに対して、別のクルーが更に能力を使用する事もできます。\n\n私はクルーを対象にとり、対象を視認できないようにする事ができる!\n何? 自分に使えばいいじゃないか?\n他人の動きを予想して、違和感がないように光の反射を弄って透明化するのが好きなんだ!\n予想通りに動く、自分に使うのは面白くない!
+JammerCanUseAbilitiesAgainstImposter,Can the ability be used for impostor roles?,インポスターに対して能力を使用できるか。
+JammerButtonName,Jamming,ジャミング
 
 #NewRoleTranslation
 
