@@ -48,6 +48,7 @@ public static class RoleClass
         IsMeeting = false;
         IsFirstMeetingEnd = false;
         IsfirstResetCool = true;
+        CustomSpores.ClearAndReloads();
         RoleBaseManager.ClearAndReloads();
         DeadPlayer.ClearAndReloads();
         ReportDeadBodyPatch.ClearAndReloads();
