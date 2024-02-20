@@ -32,7 +32,6 @@ public class CustomButton
     public bool isEffectActive = false;
     public bool showButtonText = true;
     public string buttonText = null;
-    public TMPro.TMP_Text SecondButtonInfoText;
     public float EffectDuration;
     public Sprite Sprite;
     public Color? color;
@@ -41,7 +40,7 @@ public class CustomButton
     private readonly KeyCode? hotkey;
     private readonly int joystickkey;
     private readonly Func<bool> StopCountCool;
-    public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "", bool isUseSecondButtonInfo = false, Color? color = null)
+    public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "", Color? color = null)
     {
         this.hudManager = hudManager;
         this.OnClick = OnClick;
@@ -68,8 +67,6 @@ public class CustomButton
         if (actionButton.usesRemainingText != null) actionButton.usesRemainingText.transform.parent.gameObject.SetActive(false);
         button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
 
-        if (isUseSecondButtonInfo) SetUseSecondButtonInfo();
-
         LocalScale = actionButton.transform.localScale;
         if (textTemplate)
         {
@@ -79,7 +76,7 @@ public class CustomButton
         SetActive(false);
     }
     public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "", bool isUseSecondButtonInfo = false, Color? color = null)
-    : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText, isUseSecondButtonInfo, color) { }
+    : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText, color) { }
 
     void OnClickEvent()
     {
@@ -169,15 +166,6 @@ public class CustomButton
         {
             button.actionButton.graphic.transform.localPosition = button.actionButton.position;
         }
-    }
-
-    private void SetUseSecondButtonInfo()
-    {
-        this.SecondButtonInfoText = GameObject.Instantiate(actionButton.cooldownTimerText, actionButton.cooldownTimerText.transform.parent);
-        this.SecondButtonInfoText.text = "";
-        this.SecondButtonInfoText.enableWordWrapping = false;
-        this.SecondButtonInfoText.transform.localScale = Vector3.one * 0.5f;
-        this.SecondButtonInfoText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
     }
 
     private void Update(bool isAlive, RoleId role)

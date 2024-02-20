@@ -99,7 +99,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             baseButton: HudManager.Instance.AbilityButton,
             CouldUse: () => OnCouldUse(),
             SetTargetUntargetPlayer: () => SetTargetUntargetPlayer(),
-            isUseSecondButtonInfo: true
+            hasSecondButtonInfo: true
         );
 
         this.CustomButtonInfos = new CustomButtonInfo[1] { MTButtonInfo };
@@ -168,7 +168,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     /// <summary>
     /// SecondButtonInfoTextをセットする。
     /// </summary>
-    private void SetButtonInfo() => MTButtonInfo.customButton.SecondButtonInfoText.text = MtButtonCountString();
+    private void SetButtonInfo() => MTButtonInfo.SecondButtonInfoText.text = MtButtonCountString();
 
     private string MtButtonCountString()
     {
