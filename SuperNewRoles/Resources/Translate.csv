@@ -657,7 +657,7 @@ VultureButtonName,Eat,食らう,吞噬,吞食
 NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐身人,正義的隱身人
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体,透明化以找尋屍體
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
-NiceScientDescription,You can become invisible by using the [Hide] button.\nScientists in an invisible state can also be taken as targets of abilities.\nTherefore，this is not a role where it is possible to completely avoid being subject to the abilities of others，such as kills.\n\nUse invisibility to get information past the impostor's watchful eye!,[隠れる]ボタンを使用することで透明化することができます。/n透明化中のサイエンティストも能力の対象に取る事ができます。/n従って，キル等他者の能力を受ける事を完全に回避する事が可能な役職ではありません。/n/nインポスターの監視の目をかいくぐり情報を取得しましょう!
+NiceScientistDescription,You can become invisible by using the [Hide] button.\nScientists in an invisible state can also be taken as targets of abilities.\nTherefore，this is not a role where it is possible to completely avoid being subject to the abilities of others，such as kills.\n\nUse invisibility to get information past the impostor's watchful eye!,[隠れる]ボタンを使用することで透明化することができます。/n透明化中のサイエンティストも能力の対象に取る事ができます。/n従って，キル等他者の能力を受ける事を完全に回避する事が可能な役職ではありません。/n/nインポスターの監視の目をかいくぐり情報を取得しましょう!
 NiceScientistCooldownSetting,Cool Time,クールタイム,技能冷却,技能冷卻時間
 NiceScientistDurationSetting,Duration Time,継続時間,技能持续时间,技能持續時間
 ScientistButtonName,Hide,隠れる,隐身,隱身
