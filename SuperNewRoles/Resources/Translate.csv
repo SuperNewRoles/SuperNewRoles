@@ -1710,7 +1710,20 @@ SantaAnd, and ,と,和,和
 BlackSantaName,BlackSanta,ブラックサンタ,撒旦老人,黑誕老人
 BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!,哈哈哈，这是给坏孩子们的礼物！,齁齁齁，給壞孩子們帶來榮耀！
 BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！,撒旦老人属于内鬼阵营，可以给内鬼阵营玩家送礼物，让那名玩家在接下来的几轮内变成一个随机职业。\n若撒旦老人尝试将礼物赠送给内鬼阵营以外的玩家，撒旦老人自杀。\n圣诞快乐！,黑誕老人屬於內鬼陣營，可以給內鬼們送聖誕禮物（職業）。\n但是，如果給船員或中立陣營送禮物，黑誕老人將會自殺。\n聖誕快樂！
-
+MushroomerName,Mushroomer,マッシュルーマー,蘑菇精,蘑菇怪
+MushroomerTitle1,This is the power of mycelium!,これぞ菌糸の力！,这就是菌丝的力量！,這就是菌絲的力量！
+MushroomerDescription,Mushrooms can be placed anywhere you wish，and when you step on them，they become invisible except for your own image.\nOnce a set number of mushrooms have been placed，they can explode all at once.\nIn addition，the player can see other figures in the mushroom gas.,好きな場所に踏むと自身の姿以外が見えなくなるキノコを設置することができます。\nキノコを設定数設置するとキノコを一斉に爆発させられるようになります。\nまた、自身はキノコガスの中でも自分以外の姿を視認することができます。
+MushroomerHasGasMask,Has Gas Mask,ガスマスクを持っている,持有防毒面具,持有防毒面具
+MushroomerMushroomPlantCoolTime,Mushroom Plant Cool Time,キノコ栽培クールダウン
+MushroomerMushroomPlantCount,Can place mushrooms,キノコを設置できる回数
+MushroomerMushroomExplosionCoolTime,Mushroom Explosion Cool Time,キノコ爆発クールダウン
+MushroomerMushroomExplosionCount,Can explode mushrooms,キノコを爆発させられる回数
+MushroomerMushroomExplosionRange,Explosion range,爆発範囲
+MushroomerMushroomExplosionDurationTime,Mushroom gas's duration time,キノコガスの持続時間
+MushroomerPlanetButtonName,Put Mushroom!,キノコ！,种蘑菇！,種蘑菇！
+MushroomerPlanetAbilityCountText,Remaining {0} mushrooms,残り{0}キノコ,剩余{0}个蘑菇,剩餘{0}個蘑菇
+MushroomerExplosionButtonName,Explosion!,爆発！,爆炸！,爆炸！
+MushroomerExplosionAbilityCountText,Remaining {0} explosions,残り{0}爆発,剩余{0}爆炸,剩余{0}爆炸
 
 #NewRoleTranslation
 
@@ -1908,3 +1921,6 @@ SNRWebErrorReasonGenerated,code has already been generated.,このコードは�
 SNRWebErrorReasonRegistered,You have already registered this friend code.\nIf you do not remember registering it，please submit an unauthorized registration request through the official SuperNewRolesWeb website.,このフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。,您已经注册了该用户码。\n若您不记得自己注册过该用户码，\n请您向SuperNewRolesWeb官网提交一份非授权注册申请。,此好友代碼已被註冊。\n如果您不記得註冊過，請通過SuperNewRolesWeb官方網站提交未授權註冊請求。
 SNRWebBRMultiRate,{0}x Match!\nThis match will fluctuate {0}x the normal {0}x rate!,{0}倍マッチ！\nこの試合は通常の{0}倍レートが変動します！,{0}倍速游戏！\n该局游戏将以通常速度的{0}倍进行！,{0}倍速遊戲！\n該局遊戲將對比平時的{0}倍速度進行！
 SNRWebTransmissionConditionHostDependency,Allow guests to send results when the host is not logged in to the web.,ホストがWeb未ログイン時，ゲストからの戦績の送信を許可する,允许其他玩家在房主未登录网站时发送游戏结果。,允許在房主未登入網站時，讓玩家提交戰績
+
+# CustomButton
+AbilityButtonCountTextFormater,Remaining {0} times,残り{0}回,剩余{0}次,剩餘{0}次
