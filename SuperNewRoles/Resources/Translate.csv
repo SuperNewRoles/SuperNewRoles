@@ -1710,6 +1710,10 @@ SantaAnd, and ,と,和,和
 BlackSantaName,BlackSanta,ブラックサンタ,撒旦老人,黑誕老人
 BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!,哈哈哈，这是给坏孩子们的礼物！,齁齁齁，給壞孩子們帶來榮耀！
 BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！,撒旦老人属于内鬼阵营，可以给内鬼阵营玩家送礼物，让那名玩家在接下来的几轮内变成一个随机职业。\n若撒旦老人尝试将礼物赠送给内鬼阵营以外的玩家，撒旦老人自杀。\n圣诞快乐！,黑誕老人屬於內鬼陣營，可以給內鬼們送聖誕禮物（職業）。\n但是，如果給船員或中立陣營送禮物，黑誕老人將會自殺。\n聖誕快樂！
+RobberName,Robber,泥棒
+RobberTitle1,I'll take that progress.,その進捗、頂戴するぜ
+RobberDescription,Rewinds the task progress of the crewmate who made the kill by a set number.\nThe crewmembers are so quick to kick us out of a task when we're in trouble，" says the crewmember!\nI won't let them，I'm going to take that task progress away from you!",キルをしたクルーメイトのタスク進捗を設定数巻き戻します。\n「ああもう、クルーというやつらは困ったらすーぐタスクで俺たちを追い出しやがる！\nそうはさせない、そのタスクの進捗を奪い取ってやるぜ！」
+RobberRewindTaskCount,Number of tasks to rewind,巻き戻すタスクの個数
 MushroomerName,Mushroomer,マッシュルーマー,蘑菇精,蘑菇怪
 MushroomerTitle1,This is the power of mycelium!,これぞ菌糸の力！,这就是菌丝的力量！,這就是菌絲的力量！
 MushroomerDescription,Mushrooms can be placed anywhere you wish，and when you step on them，they become invisible except for your own image.\nOnce a set number of mushrooms have been placed，they can explode all at once.\nIn addition，the player can see other figures in the mushroom gas.,好きな場所に踏むと自身の姿以外が見えなくなるキノコを設置することができます。\nキノコを設定数設置するとキノコを一斉に爆発させられるようになります。\nまた、自身はキノコガスの中でも自分以外の姿を視認することができます。
