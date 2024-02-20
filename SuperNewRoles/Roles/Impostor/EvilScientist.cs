@@ -45,7 +45,7 @@ public class EvilScientist : InvisibleRoleBase, IImpostor, ICustomButton
             KeyCode.F,
             49,
             baseButton: HudManager.Instance.AbilityButton,
-            DurationTime: () => { Logger.Info($"Optioninfo.DurationTime = {Optioninfo.DurationTime}"); return Optioninfo.DurationTime; },
+            DurationTime: () => Optioninfo.DurationTime,
             OnEffectEnds: () => this.DisableInvisible(true)
         );
 
