@@ -26,7 +26,7 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IDeathHandler, IRpcHandl
         TeamType.Impostor
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.Crab, 262200, false,
+        new(RoleId.Crab, 206100, false,
             CoolTimeOption: (17.5f, 2.5f, 90f, 2.5f, false),
             DurationTimeOption: (5f, 0.5f, 30f, 0.5f, false));
     public static new IntroInfo Introinfo =

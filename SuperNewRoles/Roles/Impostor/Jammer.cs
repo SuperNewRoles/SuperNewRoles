@@ -20,7 +20,7 @@ public class Jammer : InvisibleRoleBase, IImpostor, ICustomButton
         TeamType.Impostor
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.Jammer, 206200, false,
+        new(RoleId.Jammer, 206300, false,
             CoolTimeOption: (25f, 2.5f, 60f, 2.5f, false),
             DurationTimeOption: (10f, 2.5f, 120f, 2.5f, false),
             AbilityCountOption: (3, 1, 15, 1, false),

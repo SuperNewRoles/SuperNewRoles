@@ -38,6 +38,7 @@ public enum RoleId
 
     WaveCannon,
     Slugger,
+    Pusher,
     Conjurer,
     Mushroomer,
     EvilGuesser,

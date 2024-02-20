@@ -68,7 +68,7 @@ public static class ModHelpers
     }
     public static Ladder LadderById(byte id)
     {
-        return ShipStatus.Instance.Cast<AirshipStatus>().Ladders.FirstOrDefault((Ladder f) => f.Id == id);
+        return ShipStatus.Instance.Ladders.FirstOrDefault((Ladder f) => f.Id == id);
     }
     public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
     {

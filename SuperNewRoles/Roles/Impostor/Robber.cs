@@ -22,7 +22,7 @@ public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
         TeamType.Impostor
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.Robber, 205900, false,
+        new(RoleId.Robber, 206000, false,
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.Robber, introSound: RoleTypes.Impostor);
