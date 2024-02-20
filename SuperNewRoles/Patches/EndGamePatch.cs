@@ -160,6 +160,7 @@ static class AdditionalTempData
         public RoleId RoleId { get; set; }
         public RoleId GhostRoleId { get; set; }
         public string AttributeRoleName { get; set; }
+        public bool isImpostor { get; set; }
     }
 }
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -219,9 +220,8 @@ public class EndGameManagerSetUpPatch
 
             foreach (var data in AdditionalTempData.playerRoles)
             {
-                Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                 if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId))}";
+                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: winningPlayerData2.IsImpostor))}";
             }
         }
 
@@ -408,7 +408,7 @@ public class EndGameManagerSetUpPatch
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                string roleText = CustomRoles.GetRoleNameOnColor(data.RoleId) + data.AttributeRoleName;
+                string roleText = CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: data.isImpostor) + data.AttributeRoleName;
                 if (data.GhostRoleId != RoleId.DefaultRole)
                 {
                     roleText += $" → {CustomRoles.GetRoleNameOnColor(data.GhostRoleId)}";
@@ -454,6 +454,7 @@ public class CustomPlayerData
     public WinningPlayerData currentData;
     public string name;
     public bool IsWin;
+    public bool isImpostor;
     public FinalStatus finalStatus;
     public int CompleteTask;
     public int TotalTask;
@@ -467,13 +468,11 @@ public class CustomPlayerData
             (CompleteTask, TotalTask) = TaskCount.TaskDate(p);
         }
         catch { }
-        try
+        role = null;
+        if (p.Object != null)
         {
             role = p.Object.GetRole();
-        }
-        catch
-        {
-            role = null;
+            isImpostor = p.Role.IsImpostor;
         }
         var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
             p.Disconnected == true ? FinalStatus.Disconnected :
@@ -584,6 +583,7 @@ public static class OnGameEndPatch
                     AttributeRoleName = attributeRoleName,
                     RoleId = playerrole,
                     GhostRoleId = playerghostrole,
+                    isImpostor = p.Role.IsImpostor
                 });
             }
         }
@@ -606,30 +606,6 @@ public static class OnGameEndPatch
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
         List<PlayerControl> notWinners = new();
         List<PlayerControl> peculiarNotWinners = new();
-
-        /*
-        TODO: 蔵徒:陣営Playerがうまく動かない為コメントアウトし、個別表記式に変更。いつか直す。
-
-        // Neutral,MadRoles,FriendRolesから溢れたクルー勝利から除外する必要のある役職を個別追記する
-        peculiarNotWinners.AddRanges(new[]
-            {
-                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer, // クルー陣営の時はマッド役職でない為
-                RoleClass.SideKiller.MadKillerPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
-                RoleClass.Dependents.DependentsPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
-                OrientalShaman.ShermansServantPlayer, // 第三陣営ではなく[CrewmatePlayer]に含まれている為
-                //  RoleClass.Cupid.CupidPlayer,
-                //  キューピットはNeutralPlayerだが元々記載の方法が特殊だった為コメントアウトで記載を残した。
-            });
-
-        notWinners.AddRanges(new[]
-            {
-                BotManager.AllBots,
-                RoleHelpers.NeutralPlayer,
-                RoleHelpers.MadRolesPlayer,
-                RoleHelpers.FriendRolesPlayer,
-                peculiarNotWinners, // 上記に含まれないクルー勝利除外役職
-            });
-        */
 
         notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
             RoleClass.Madmate.MadmatePlayer,
@@ -1513,7 +1489,7 @@ class ExileControllerMessagePatch
                 // Exile role text
                 if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                 {
-                    __result = player.Data.PlayerName + " は " + CustomRoles.GetRoleName(player) + " だった！";
+                    __result = string.Format(ModTranslation.GetString("ExiledText"), player.Data.PlayerName, CustomRoles.GetRoleName(player));
                 }
             }
         }

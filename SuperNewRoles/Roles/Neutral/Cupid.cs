@@ -86,20 +86,27 @@ public class Cupid : RoleBase, INeutral, IFixedUpdaterAll, IFixedUpdaterMe, ISup
             writer.Write(target.PlayerId);
             SendRpc(writer);
             Created = true;
+
+            ChangeName.SetRoleName(Player);
+            ChangeName.SetRoleName(currentPair);
+            ChangeName.SetRoleName(target);
         }
-        ChangeName.SetRoleName(Player);
-        Player.RpcShowGuardEffect(target);
+
+        Player.ResetKillCool(Optioninfo.CoolTime);
         return false;
     }
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
-        if (currentPair != null)
-            return;
+        if (currentPair == null || !Created) return;
+
         var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
         PlayerControl Side = currentPair.GetOneSideLovers();
         ChangePlayers[currentPair.PlayerId] = ChangeName.GetNowName(ChangePlayers, currentPair) + suffix;
         ChangePlayers[Side.PlayerId] = ChangeName.GetNowName(ChangePlayers, Side) + suffix;
-        Suffix.Append(suffix);
+    }
+    public void BuildSetting(IGameOptions gameOptions)
+    {
+        gameOptions.SetFloat(FloatOptionNames.KillCooldown, Optioninfo.CoolTime);
     }
     private void ButtonOnClick()
     {
@@ -167,8 +174,8 @@ public class Cupid : RoleBase, INeutral, IFixedUpdaterAll, IFixedUpdaterMe, ISup
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             null, ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.cupidButton.png", 115f),
             () => Optioninfo.CoolTime, new(-2f, 1, 0),
-            "CupidButtonName", KeyCode.F, 49,CouldUse: () => OnCouldUse(),
-            SetTargetUntargetPlayer:() => GetUntargetPlayers()
+            "CupidButtonName", KeyCode.F, 49, CouldUse: () => OnCouldUse(),
+            SetTargetUntargetPlayer: () => GetUntargetPlayers()
             );
         _cachedUntargetPlayers = null;
         CustomButtonInfos = new CustomButtonInfo[1] { CupidButtonInfo };

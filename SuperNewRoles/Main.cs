@@ -63,7 +63,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string thisname;
     public static string ThisPluginModName;
     //対応しているバージョン。nullなら全て。
-    public static string[] SupportVanilaVersion = new string[] { "2023.10.24" };
+    public static string[] SupportVanilaVersion = new string[] { "2023.11.28" };
 
     public override void Load()
     {
@@ -218,7 +218,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             popup.TextAreaTMP.text = builder.ToString();
             popup.gameObject.SetActive(true);
             popup.TextAreaTMP.transform.localScale = Vector3.one * 1.5f;
-            popup.TextAreaTMP.transform.localPosition = new(0, 0.3f, - 0.5f);
+            popup.TextAreaTMP.transform.localPosition = new(0, 0.3f, -0.5f);
             ViewdNonVersion = true;
         }
     }

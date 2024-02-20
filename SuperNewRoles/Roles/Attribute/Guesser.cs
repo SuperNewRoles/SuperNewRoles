@@ -5,6 +5,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -193,14 +194,29 @@ class Guesser
         {
             if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||
-                (roleInfo != IntroData.CrewmateIntro && roleInfo != IntroData.ImpostorIntro && IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0) ||
-                (roleInfo == IntroData.CrewmateIntro && !canCrewShot))
+                roleInfo.RoleId == RoleId.DefaultRole ||
+                (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
             {
                 Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                 continue; // Not guessable roles
             }
             CreateRole(roleInfo);
         }
+        foreach (RoleInfo roleInfo in RoleInfoManager.RoleInfos.Values)
+        {
+            if (roleInfo == null ||
+                roleInfo.Role == RoleId.Hunter ||
+                roleInfo.Role == RoleId.DefaultRole ||
+                (IntroData.GetOption(roleInfo.Role)?.GetSelection() is null or 0))
+            {
+                Logger.Info("continueになりました:" + roleInfo.Role, "Guesser");
+                continue; // Not guessable roles
+            }
+            CreateRole(roleInfo: roleInfo);
+        }
+        CreateRole(IntroData.ImpostorIntro);
+        if (canCrewShot)
+            CreateRole(IntroData.CrewmateIntro);
         if (CustomOptionHolder.JackalOption.GetSelection() is not 0 && CustomOptionHolder.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
         if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
         if (WaveCannonJackal.WaveCannonJackalOption.GetSelection() is not 0 && WaveCannonJackal.WaveCannonJackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickWaveCannonIntro);
@@ -216,9 +232,30 @@ class Guesser
         if (CustomOptionHolder.SideKillerOption.GetSelection() is not 0) { CreateRole(IntroData.MadKillerIntro); }
         if (CustomOptionHolder.VampireOption.GetSelection() is not 0) { CreateRole(IntroData.DependentsIntro); }
         if (OrientalShaman.OrientalShamanOption.GetSelection() is not 0) { CreateRole(IntroData.ShermansServantIntro); }
-        void CreateRole(IntroData roleInfo)
+        if (Santa.Optioninfo.RoleOption.GetSelection() is not 0)
         {
-            if (40 <= i[(int)roleInfo.Team]) i[(int)roleInfo.Team] = 0;
+            var presentRoleData = Santa.PresentRoleData();
+
+            foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
+            foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
+        }
+        if (Impostor.MadRole.BlackSanta.Optioninfo.RoleOption.GetSelection() is not 0)
+        {
+            var presentRoleData = Impostor.MadRole.BlackSanta.PresentRoleData();
+
+            foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
+            foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
+        }
+        void CreateRole(IntroData introInfo = null, RoleInfo roleInfo = null)
+        {
+            if (introInfo == null && roleInfo == null)
+                throw new Exception("introInfoとroleInfoがnullです");
+            TeamRoleType team = introInfo?.Team ?? roleInfo?.Team ?? TeamRoleType.Crewmate;
+            Color color = introInfo?.color ?? roleInfo?.RoleColor ?? Color.white;
+            string NameKey = introInfo?.NameKey ?? roleInfo?.NameKey ?? "Crewmate";
+            RoleId role = introInfo?.RoleId ?? roleInfo?.Role ?? RoleId.DefaultRole;
+            if (40 <= i[(int)team])
+                i[(int)team] = 0;
             Transform buttonParent = new GameObject().transform;
             buttonParent.SetParent(container);
             Transform button = UnityEngine.Object.Instantiate(buttonTemplate, buttonParent);
@@ -226,22 +263,22 @@ class Guesser
             Transform buttonMask = UnityEngine.Object.Instantiate(maskTemplate, buttonParent);
             TMPro.TextMeshPro label = UnityEngine.Object.Instantiate(textTemplate, button);
             // button.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
-            if (!RoleButtons.ContainsKey(roleInfo.Team))
+            if (!RoleButtons.ContainsKey(team))
             {
-                RoleButtons.Add(roleInfo.Team, new());
+                RoleButtons.Add(team, new());
             }
-            RoleButtons[roleInfo.Team].Add(button);
+            RoleButtons[team].Add(button);
             buttons.Add(button);
-            int row = i[(int)roleInfo.Team] / 5;
-            int col = i[(int)roleInfo.Team] % 5;
+            int row = i[(int)team] / 5;
+            int col = i[(int)team] % 5;
             buttonParent.localPosition = new Vector3(-3.47f + 1.75f * col, 1.5f - 0.45f * row, -200f);
             buttonParent.localScale = new Vector3(0.55f, 0.55f, 1f);
-            label.text = CustomOptionHolder.Cs(roleInfo.color, roleInfo.NameKey + "Name");
+            label.text = CustomOptionHolder.Cs(color, NameKey + "Name");
             label.alignment = TMPro.TextAlignmentOptions.Center;
             label.transform.localPosition = new Vector3(0, 0, label.transform.localPosition.z);
             label.transform.localScale *= 1.6f;
             label.autoSizeTextContainer = true;
-            int copiedIndex = i[(int)roleInfo.Team];
+            int copiedIndex = i[(int)team];
 
             button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
             if (PlayerControl.LocalPlayer.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
@@ -260,7 +297,7 @@ class Guesser
                     var Role = focusedTarget.GetRole();
 
                     PlayerControl dyingTarget;
-                    if (Role == roleInfo.RoleId)
+                    if (Role == role)
                     {
                         dyingTarget = focusedTarget;
                     }
@@ -288,12 +325,12 @@ class Guesser
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(dyingTarget.PlayerId);
                     writer.Write(focusedTarget.PlayerId);
-                    writer.Write((byte)roleInfo.RoleId);
+                    writer.Write((byte)role);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.GuesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.RoleId);
+                    RPCProcedure.GuesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)role);
                 }
             }));
-            i[(int)roleInfo.Team]++;
+            i[(int)team]++;
             ind++;
         }
         container.transform.localScale *= 0.75f;
