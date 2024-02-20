@@ -37,7 +37,8 @@ public class IntroData
     public static List<Dictionary<RoleId, string>> IntroGroup = new()
     {
         new() {{RoleId.Seer,"SeerCombIntro1"},{RoleId.EvilSeer,"EvilSeerCombIntro1"}},
-        new() {{RoleId.NiceMechanic,"NiceMechanicCombIntro1"},{RoleId.EvilMechanic,"EvilMechanicCombIntro1"}}
+        new() {{RoleId.NiceMechanic,"NiceMechanicCombIntro1"},{RoleId.EvilMechanic,"EvilMechanicCombIntro1"}},
+        new() {{RoleId.Jammer,"JammerCombIntroDearEvilScientist"},{RoleId.EvilScientist,"EvilScientistDearJammerCombIntro"}}
     };
     public string NameKey;
     public string Name;
@@ -329,10 +330,10 @@ public class IntroData
     public static IntroData JumpDancerIntro = new("JumpDancer", JumpDancer.color, 1, RoleId.JumpDancer, TeamRoleType.Crewmate);
     public static IntroData SaunerIntro = new("Sauner", Sauner.RoleData.color, 1, RoleId.Sauner, TeamRoleType.Neutral);
     public static IntroData BatIntro = new("Bat", Bat.RoleData.color, 1, RoleId.Bat, TeamRoleType.Impostor);
-    public static IntroData RocketIntro = new("Rocket", Rocket.RoleData.color, 2, RoleId.Rocket, TeamRoleType.Impostor, IntroSound : RoleTypes.Impostor);
+    public static IntroData RocketIntro = new("Rocket", Rocket.RoleData.color, 2, RoleId.Rocket, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData WellBehaverIntro = new("WellBehaver", WellBehaver.color, 1, RoleId.WellBehaver, TeamRoleType.Crewmate);
     public static IntroData PokerfaceIntro = new("Pokerface", Pokerface.RoleData.color, 1, RoleId.Pokerface, TeamRoleType.Neutral);
-    public static IntroData SpiderIntro = new("Spider", Spider.RoleData.color, 2, RoleId.Spider, TeamRoleType.Impostor, IntroSound : RoleTypes.Impostor);
+    public static IntroData SpiderIntro = new("Spider", Spider.RoleData.color, 2, RoleId.Spider, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData CrookIntro = new("Crook", Crook.RoleData.color, 1, RoleId.Crook, TeamRoleType.Neutral, IntroSound: RoleTypes.Impostor);
     public static IntroData FrankensteinIntro = new("Frankenstein", Frankenstein.color, 1, RoleId.Frankenstein, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     // イントロオブジェ
