@@ -56,7 +56,7 @@ public static class ModTranslation
     /// string : keyが存在 => key / keyが存在しない => 引数をそのまま返す
     /// bool : true => keyの取得に成功 / false => keyの取得に失敗
     /// </returns>
-    internal static (string, bool) GetTranslateKey(string value)
+    internal static (string[], bool) GetTranslateKey(string value)
     {
         SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
 
@@ -69,16 +69,16 @@ public static class ModTranslation
             _ => 1,
         };
 
-        string key = dictionary.FirstOrDefault(x => x.Value[index].Equals(value)).Key;
-        if (key != null)
-        {
-            Logger.Info($"{key}", "ModTranslation");
-            return (key, true);
-        }
-        else
+        string[] keys = dictionary.Where(x => x.Value[index].Equals(value)).Select(x => x.Key).ToArray(); // 指定された翻訳を有するkeyをすべて取得する。
+        if (0 == keys.Length) // 翻訳キー取得失敗
         {
             Logger.Info($"key not found:{value}", "ModTranslation");
-            return (value, false);
+            return (value.Split(""), false);
+        }
+        else // 翻訳キー取得成功
+        {
+            Logger.Info($"key could be found : ( {string.Join(", ", keys)} )", "ModTranslation");
+            return (keys, true);
         }
     }
 

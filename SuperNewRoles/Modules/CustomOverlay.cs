@@ -681,6 +681,7 @@ public class CustomOverlays
 
         // 役職を所持している時の記載
         RoleId myRole = PlayerControl.LocalPlayer.GetRole();
+        if (myRole == RoleId.Bestfalsecharge && PlayerControl.LocalPlayer.IsAlive()) myRole = RoleId.DefaultRole;
         if (PlayerControl.LocalPlayer.IsDead())
         {
             RoleId ghostRole = PlayerControl.LocalPlayer.GetGhostRole();
