@@ -129,7 +129,7 @@ public static class ChangeName
         StringBuilder MySuffix = new();
         StringBuilder RoleNameText = new(ModHelpers.Cs(CustomRoles.GetRoleColor(player), CustomRoles.GetRoleName(player)));
         PlayerData<string> ChangePlayers = new(needplayerlist:true);
-        ISupportSHR playerSHR = player as ISupportSHR;
+        ISupportSHR playerSHR = player.GetRoleBase() as ISupportSHR;
 
         // カモフラ中は処理を破棄する
         if (!RoleClass.Camouflager.IsCamouflage)

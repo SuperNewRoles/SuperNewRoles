@@ -378,9 +378,10 @@ static class HudManagerStartPatch
         DebuggerButton = new(
             () =>
             {
+                RoleTypes myrole = PlayerControl.LocalPlayer.Data.Role.Role;
                 DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                 CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, myrole);
             },
             (bool isAlive, RoleId role) => { return RoleClass.Debugger.AmDebugger; },
             () =>
