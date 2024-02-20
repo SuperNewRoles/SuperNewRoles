@@ -39,6 +39,7 @@ public enum RoleId
     // Impostor Roles
     WaveCannon,
     Slugger,
+    Pusher,
     Conjurer,
     EvilGuesser,
     EvilHacker,

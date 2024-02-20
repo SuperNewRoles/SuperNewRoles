@@ -1735,6 +1735,11 @@ CrabName,Crab,かに
 CrabTitle1,EBI & KANI， EBI & KANI， EBI & KANI,カニッカニッカニッカニッ
 CrabDescription,a,能力を使用すると全員横方向にしか動けなくなります\nカニィィィィ！！！！！！！
 CrabButtonName,Crab magic,カニ化
+PusherName,Pusher,突き落と師
+PusherTitle1,Eyes behind you.,背後には気を付けな
+PusherDescription,Crew members who are in a spot where they could be dropped can be killed by pushing them out.\n\nIf a crew member is pushed down in an area where there is no floor below，no corpse will be generated.\nIf a crew member is pushed from the top of a ladder with a floor below，a corpse will be generated at the bottom of the ladder.\nIn this case，it is treated as a "kill that does not produce a corpse" in the judgment of other roles.,落とせそうな箇所にいるクルーを突き落とすことが出来ます。\n\n下に床が無い場所で突き落とされたクルーは，死体が発生しません。\n下に床のある梯子の上からクルーを突き落とした場合は，梯子の下で死体が生成されます。\nこの時，他の役職の判定では"死体が発生しないキル"として扱われます
+PusherIntervalOption,Push interval,突き落とし間隔
+PusherButtonName,Push!!!,バーン！
 MedicalTechnologistName,Medical technologist,臨床検査技師
 MedicalTechnologistDescription,This role is to perform a compatibility test by collecting samples from two crew members during the Task Phase.\nThe compatibility test will determine whether the two crew members belong to the same team or to different teams.\n\nThe result of the test is sent via chat at the beginning of the meeting phase.\nIf two specimens are not collected during the Task Phase，the chat will not be sent.\nAlso，the target selection status is reset at the end of the Meeting Phase.\nThere are four different systems to identify the team，and which system is used is indicated in the test results.\n\nI was originally assigned as a researcher...\nHowever，this is an emergency situation. With my knowledge and skills，I will contribute to dealing with this situation!,タスクフェイズ中に2名のクルーの検体を採取する事で，組織適合検査を行う役職です。\n\n組織適合検査により，2名の検体採取対象の所属が同陣営か 又は 別陣営かを判別する事ができます。\n2名の関係が同陣営であるかの情報を得る事で，ライン精査等を行う事ができる役職です。\n\n検査結果は，会議フェイズ開始時にチャットで送信されます。\nタスクフェイズ中に2名の検体を採取できていない時は，チャットは送信されません。\n又 対象選択状況は，会議フェイズ終了時にリセットされます。\n陣営の判定方式は4種類あり，どの方式で判定しているかは検査結果に併記しています。\n\n私は本来研究員として配属されていたのですが...\nとはいえ緊急事態です。私の知識と技術をもって，この事態の対処に貢献してみせましょう!!
 MedicalTechnologistTitle1,This is not my job，but it is my area of expertise. Let's put these skills to use!,職務外ですが専門分野です。この技能役立ててみせましょう!
