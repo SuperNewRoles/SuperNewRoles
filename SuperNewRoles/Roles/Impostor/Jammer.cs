@@ -41,7 +41,7 @@ public class Jammer : InvisibleRoleBase, IImpostor, ICustomButton
             (isAlive) => isAlive,
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             OnMeetingEnds: null,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JammerButtonButton.png", 115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JammerButton.png", 115f),
             () => Optioninfo.CoolTime,
             new(-2f, 1, 0),
             "JammerButtonName",
