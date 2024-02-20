@@ -149,7 +149,7 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandle
 
 
     /// <summary>
-    /// 対象に, 透明化状態を反映する事ができるか。
+    /// 対象に, 透明化状態を反映する事ができるか。 (CanSeeTranslucentState より優先されます)
     /// </summary>
     /// <param name="invisibleTarget">透明化効果が発生している対象</param>
     /// <returns>true : 反映可能 , false : 反映不可 (対象に透明化効果が発生していても通常通り表示する)</returns>
