@@ -1734,7 +1734,7 @@ CrabDescription,a,能力を使用すると全員横方向にしか動けなく�
 CrabButtonName,Crab magic,カニ化
 PusherName,Pusher,突き落と師
 PusherTitle1,Eyes behind you.,背後には気を付けな
-PusherDescription,You can push off crew members who are in vulnerable positions.\nCrew members who are pushed off will not result in a dead body.,落とせそうな箇所にいるクルーを突き落とすことが出来ます。\n突き落とされたクルーは死体が発生しません。
+PusherDescription,Crew members who are in a spot where they could be dropped can be killed by pushing them out.\n\nIf a crew member is pushed down in an area where there is no floor below，no corpse will be generated.\nIf a crew member is pushed from the top of a ladder with a floor below，a corpse will be generated at the bottom of the ladder.\nIn this case，it is treated as a "kill that does not produce a corpse" in the judgment of other roles.,落とせそうな箇所にいるクルーを突き落とすことが出来ます。\n\n下に床が無い場所で突き落とされたクルーは，死体が発生しません。\n下に床のある梯子の上からクルーを突き落とした場合は，梯子の下で死体が生成されます。\nこの時，他の役職の判定では"死体が発生しないキル"として扱われます
 PusherIntervalOption,Push interval,突き落とし間隔
 PusherButtonName,Push!!!,バーン！
 
