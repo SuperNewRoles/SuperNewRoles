@@ -46,6 +46,7 @@ public enum RoleId
     Cupid,
     Santa,
     BlackSanta,
+    Robber,
     //RoleId
 
     SoothSayer,
