@@ -83,11 +83,29 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandle
         if (!this.IsActive) return;
         PlayerControl releaseTarget = this.InvisiblePlayer;
 
-        ReleaseOfInvisible(releaseTarget);
+        bool isItStillInvisible = false;
 
-        IsExistsInvisiblePlayer[releaseTarget.PlayerId] = false;
+        foreach (var processingPlayer in PlayerControl.AllPlayerControls)
+        {
+            if (processingPlayer.TryGetRoleBase<InvisibleRoleBase>(out var invisibleRoleBase))
+            {
+                if (invisibleRoleBase.Player == this.Player) { continue; } // 本人なら検索続行
+                else if (invisibleRoleBase.InvisiblePlayer == null || invisibleRoleBase.InvisiblePlayer != releaseTarget) { continue; } // 対象が存在しない又は別のプレイヤーを透明化しているなら検索続行
+                else // 別のプレイヤーが対象を透明化しているなら
+                {
+                    isItStillInvisible = true;
+                    break; // 1人でも見つかった時点で ループから抜け出す。
+                }
+            }
+            else break;
+        }
+
+        IsExistsInvisiblePlayer[releaseTarget.PlayerId] = isItStillInvisible;
+
         this._isActive = false;
         this.InvisiblePlayer = null;
+
+        ReleaseOfInvisible(releaseTarget);
 
         if (isRpcSend) RpcSend(RpcType.End, null);
     }
