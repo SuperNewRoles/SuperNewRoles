@@ -1712,6 +1712,7 @@ BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子に�
 BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！,撒旦老人属于内鬼阵营，可以给内鬼阵营玩家送礼物，让那名玩家在接下来的几轮内变成一个随机职业。\n若撒旦老人尝试将礼物赠送给内鬼阵营以外的玩家，撒旦老人自杀。\n圣诞快乐！,黑誕老人屬於內鬼陣營，可以給內鬼們送聖誕禮物（職業）。\n但是，如果給船員或中立陣營送禮物，黑誕老人將會自殺。\n聖誕快樂！
 MushroomerName,Mushroomer,マッシュルーマー,蘑菇精,蘑菇怪
 MushroomerTitle1,This is the power of mycelium!,これぞ菌糸の力！,这就是菌丝的力量！,這就是菌絲的力量！
+MushroomerDescription,Mushrooms can be placed anywhere you wish，and when you step on them，they become invisible except for your own image.\nOnce a set number of mushrooms have been placed，they can explode all at once.\nIn addition，the player can see other figures in the mushroom gas.,好きな場所に踏むと自身の姿以外が見えなくなるキノコを設置することができます。\nキノコを設定数設置するとキノコを一斉に爆発させられるようになります。\nまた、自身はキノコガスの中でも自分以外の姿を視認することができます。
 MushroomerHasGasMask,Has Gas Mask,ガスマスクを持っている,持有防毒面具,持有防毒面具
 MushroomerMushroomPlantCoolTime,Mushroom Plant Cool Time,キノコ栽培クールダウン
 MushroomerMushroomPlantCount,Can place mushrooms,キノコを設置できる回数
