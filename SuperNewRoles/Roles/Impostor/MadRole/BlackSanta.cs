@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Crewmate.Santa;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -26,8 +26,8 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     public static new OptionInfo Optioninfo =
         new(RoleId.BlackSanta, 406600, false,
             CoolTimeOption: (30f, 2.5f, 60f, 2.5f, false),
-            VentOption:(false, false),
-            ImpostorVisionOption:(false, false),
+            VentOption: (false, false),
+            ImpostorVisionOption: (false, false),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.BlackSanta, introSound: RoleTypes.Crewmate);
@@ -127,9 +127,9 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     }
     public BlackSanta(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        bool IsFullTask = !IsSettingNumberOfUniqueTasks.GetBool();
+        bool IsFullTask = !IsParcentageForTaskTrigger.GetBool();
         int AllTask = SelectTask.GetTotalTasks(RoleId.BlackSanta);
-        CheckTask = IsFullTask ? AllTask : (AllTask * ParcentageForTaskTriggerSetting.GetSelection() * 4);
+        CheckTask = IsFullTask ? AllTask : (AllTask * (ParcentageForTaskTriggerSetting.GetSelection() / 4));
         HasCheckImpostorAbility = CanCheckImpostorOption.GetBool();
         IsImpostorLight = Optioninfo.IsImpostorVision;
         BlackSantaButtonInfo = Santa.CreateSantaButtonInfo(this, CanUseAbilityCount.GetInt(),
@@ -151,6 +151,42 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
                 SetTicket(roleId, 1);
             }
         }
+    }
+
+    /// <summary>
+    /// ブラックサンタのプレゼント対象役の情報
+    /// </summary>
+    /// <param name=</param>
+    /// <returns>RoleInfo : プレゼント対象役のRoleInfo, IntroData : プレゼント対象役のIntroData</returns>
+    /// FIXME : IntroDataは全ての役がRoleBase対応したら削除する
+    public static (List<RoleInfo> RoleInfo, List<IntroData> IntroData) PresentRoleData()
+    {
+        List<RoleInfo> roleInfo = new();
+        List<IntroData> introData = new();
+
+        for (int i = 0; i < PresetRoleOptions.Length; i++)
+        {
+            RoleId roleId = PresetRolesParam[i];
+            int ticketcount = PresetRoleOptions[i].GetSelection();
+
+            if (Optioninfo.RoleOption.GetSelection() is not 0 && PresetRoleOptions[i].GetSelection() > 0) // 設定で有効になっている役職のみ処理
+            {
+                IntroData intro = IntroData.GetIntrodata(roleId);
+
+                if (intro != IntroData.CrewmateIntro && intro != IntroData.ImpostorIntro) // RoleBase化が終わったらIntroDataを削除し, RoleInfoのみ(elseの中身のみ)にする。
+                {
+                    introData.Add(intro);
+                    Logger.Info($"プレゼント対象役 : {intro.RoleId}", "BlackSanta");
+                }
+                else
+                {
+                    RoleInfo info = RoleInfoManager.GetRoleInfo(roleId);
+                    roleInfo.Add(info);
+                    Logger.Info($"プレゼント対象役 : {info.Role}", "BlackSanta");
+                }
+            }
+        }
+        return (roleInfo, introData);
     }
     private void SetTicket(RoleId roleId, int count)
     {

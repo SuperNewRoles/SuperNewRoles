@@ -15,9 +15,15 @@ namespace SuperNewRoles.SuperNewRolesWeb
         public static string WebUrlDebug;
         public static string WebUrl { get { return IsDebugUrl ? WebUrlDebug : WebUrlDefault; } }
         public static bool IsDebugUrl = false;
+
+        /// <summary>
+        /// SNR Webの動作確認中か
+        /// </summary>
+        public const bool IsWebDebug = false; // プルリク時にtrueなら指摘してください
+
         public static void Load()
         {
-            var url = Environment.GetEnvironmentVariable("SNRWebUrl");
+            var url = IsWebDebug ? Environment.GetEnvironmentVariable("SNRWebUrl") : null;
             IsDebugUrl = url is not null;
             WebUrlDebug = url;
         }

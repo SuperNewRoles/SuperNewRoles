@@ -11,13 +11,13 @@ namespace SuperNewRoles.Patches;
 class TaskCount
 {
     public static PlayerData<bool> IsClearTaskPlayer;
-    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.PickRandomConsoles), new Type[] { typeof(TaskTypes), typeof(Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<byte>) })]
-    class NormalPlayerTaskPickRandomConsolesPatch
+    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.Initialize))]
+    class NormalPlayerTaskInitializePatch
     {
-        static void Postfix(NormalPlayerTask __instance, TaskTypes taskType)
+        static void Postfix(NormalPlayerTask __instance)
         {
-            if (taskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.MapOption.WireTaskIsRandom) return;
-            List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(taskType)).ToList<global::Console>();
+            if (__instance.TaskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.MapOption.WireTaskIsRandom) return;
+            List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(__instance.TaskType)).ToList<global::Console>();
             List<Console> list = new(orgList);
 
             __instance.MaxStep = MapOption.MapOption.WireTaskNum;
@@ -30,6 +30,7 @@ class TaskCount
                 __instance.Data[i] = (byte)list[index].ConsoleId;
                 list.RemoveAt(index);
             }
+            __instance.StartAt = orgList.First(console => console.ConsoleId == __instance.Data[0]).Room;
         }
     }
     [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.FixedUpdate))]

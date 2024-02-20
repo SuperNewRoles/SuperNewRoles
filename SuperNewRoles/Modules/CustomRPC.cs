@@ -39,6 +39,7 @@ public enum RoleId
     WaveCannon,
     Slugger,
     Conjurer,
+    Mushroomer,
     EvilGuesser,
     NiceGuesser,
     EvilHacker,
@@ -47,6 +48,7 @@ public enum RoleId
     Santa,
     BlackSanta,
     Crab,
+    Robber,
     //RoleId
 
     SoothSayer,
@@ -234,50 +236,73 @@ public enum RoleId
 
 public enum CustomRPC
 {
-    ShareOptions = 60,
+    // 2024.1.12 現在
+    // Among Us 本体(2023.11.28) : 0 ~ 61
+    // LI : 94 ~ 99
+
+    // 2024.1.12 現在
+    // SNR : 64 ~ 93, 100 ~ 184
+    // Agartha : 無し
+
+    // Vanilla Extended RPC
+    Chat = 64,
+    UncheckedSetVanillaRole,
+    RPCMurderPlayer,
+    CustomRPCKill,
+    MeetingKill,
+    ReportDeadBody,
+    BlockReportDeadBody,
+    ExiledRPC,
+    FixLights,
+    UncheckedSetTasks,
+    RpcSetDoorway,
+    ReviveRPC,
+    RPCTeleport,
+
+    // Mod Basic RPC
+    ShareOptions = 77,
     ShareSNRVersion,
+    StartGameRPC,
     SetRole,
     SwapRole,
-    SetHauntedWolf,
+    SetLovers,
     SetQuarreled,
-    RPCClergymanLightOut,
+    SetHauntedWolf,
+    ShareWinner,
+    SetWinCond,
+    SetHaison,
+    UncheckedUsePlatform,
+
+    // Mod feature RPC
+    AutoCreateRoom = 89,
+    SetBot,
+    UncheckedSetColor,
+    SetDeviceTime,
+    ShowFlash,
+
+    // Mod Roles RPC
+    RPCClergymanLightOut = 100,
     SheriffKill,
     MeetingSheriffKill,
-    CustomRPCKill,
-    ReportDeadBody,
     UncheckedMeeting,
     CleanBody,
-    ExiledRPC,
-    RPCMurderPlayer,
-    ShareWinner,
     TeleporterTP,
     SidekickPromotes,
     CreateSidekick,
     CreateSidekickSeer,
     CreateSidekickWaveCannon,
     SetSpeedBoost,
-    AutoCreateRoom,
     CountChangerSetRPC,
     SetRoomTimerRPC,
     SetScientistRPC,
-    ReviveRPC,
-    SetHaison,
-    SetWinCond,
     SetDetective,
     UseEraserCount,
-    StartGameRPC,
-    UncheckedSetTasks,
-    SetLovers,
-    SetDeviceTime,
-    UncheckedSetColor,
-    UncheckedSetVanillaRole,
     SetMadKiller,
     SetCustomSabotage,
     UseStuntmanCount,
     UseMadStuntmanCount,
     CustomEndGame,
     UncheckedProtect,
-    SetBot,
     DemonCurse,
     ArsonistDouse,
     SetSpeedDown,
@@ -286,13 +311,10 @@ public enum CustomRPC
     SetSpeedFreeze,
     MakeVent,
     PositionSwapperTP,
-    FixLights,
     KunaiKill,
     SetSecretRoomTeleportStatus,
     ChiefSidekick,
     StartRevolutionMeeting,
-    UncheckedUsePlatform,
-    BlockReportDeadBody,
     PartTimerSet,
     SetMatryoshkaDeadbody,
     StefinderIsKilled,
@@ -301,11 +323,9 @@ public enum CustomRPC
     SharePhotograph,
     PainterSetTarget,
     SetFinalStatus,
-    MeetingKill,
     KnightProtected,
     KnightProtectClear,
     GuesserShoot,
-    ShowFlash,
     PavlovsOwnerCreateDog,
     CrackerCrack,
     Camouflage,
@@ -315,10 +335,8 @@ public enum CustomRPC
     SyncDeathMeeting,
     SetDeviceUseStatus,
     SetLoversBreakerWinner,
-    RPCTeleport,
     SafecrackerGuardCount,
     SetVigilance,
-    Chat,
     SetWiseManStatus,
     SetVentStatusMechanic,
     SetTheThreeLittlePigsTeam,
@@ -347,8 +365,7 @@ public enum CustomRPC
     RoleRpcHandler,
     SetFrankensteinMonster,
     MoveDeadBody,
-    RpcSetDoorway,
-    WaveCannon,
+    WaveCannon
 }
 
 public static class RPCProcedure
@@ -1535,6 +1552,8 @@ public static class RPCProcedure
             player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
             player.SetRole(RoleId.SidekickWaveCannon);
             WaveCannonJackal.IwasSidekicked.Add(playerid);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            ChacheManager.ResetMyRoleChache();
         }
     }
     public static void ExiledRPC(byte playerid)
@@ -1704,11 +1723,11 @@ public static class RPCProcedure
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
     class RPCHandlerPatch
     {
-        static bool Prefix(PlayerControl __instance, byte callId, MessageWriter reader)
+        static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
         {
-            switch (callId)
+            switch ((RpcCalls)callId)
             {
-                case (byte)RpcCalls.UsePlatform:
+                case RpcCalls.UsePlatform:
                     if (AmongUsClient.Instance.AmHost)
                     {
                         AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
@@ -1718,6 +1737,21 @@ public static class RPCProcedure
                             __instance.SetDirtyBit(4096u);
                         }
                     }
+                    return false;
+                case RpcCalls.CheckSpore:
+                    FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
+                    if (fungleShipStatus != null)
+                        break;
+                    int mushroomId2 = reader.ReadPackedInt32();
+                    Mushroom mushroomFromId = CustomSpores.GetMushroomFromId(mushroomId2);
+                    __instance.CheckSporeTrigger(mushroomFromId);
+                    return false;
+                case RpcCalls.TriggerSpores:
+                    FungleShipStatus fungleShipStatus2 = ShipStatus.Instance.TryCast<FungleShipStatus>();
+                    if (fungleShipStatus2 != null)
+                        break;
+                    int mushroomId = reader.ReadPackedInt32();
+                    CustomSpores.TriggerSporesFromMushroom(mushroomId);
                     return false;
             }
             return true;
@@ -2059,7 +2093,7 @@ public static class RPCProcedure
                         ReportDeadBodyPatch.SaveMeetingTurnNow(reader.ReadByte());
                         break;
                     case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
-                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        PoliceSurgeon_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.MoiraChangeRole:
                         MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
