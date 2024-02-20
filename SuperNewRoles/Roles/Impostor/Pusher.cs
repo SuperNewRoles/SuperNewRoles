@@ -31,7 +31,7 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         TeamType.Impostor
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.Pusher, 205900, false,
+        new(RoleId.Pusher, 206200, false,
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.Pusher, introSound: RoleTypes.Impostor);
