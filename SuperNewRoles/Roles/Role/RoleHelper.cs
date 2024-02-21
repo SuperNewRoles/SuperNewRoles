@@ -21,6 +21,9 @@ using UnityEngine;
 
 namespace SuperNewRoles;
 
+/// <summary>
+/// 役職陣営 (アサイン分類)
+/// </summary>
 public enum TeamRoleType
 {
     Crewmate,
@@ -28,6 +31,9 @@ public enum TeamRoleType
     Neutral,
     Error
 }
+/// <summary>
+/// 陣営 (勝利判定分類)
+/// </summary>
 public enum TeamType
 {
     Crewmate,
