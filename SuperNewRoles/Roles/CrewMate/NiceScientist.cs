@@ -1,4 +1,5 @@
 using AmongUs.GameOptions;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
