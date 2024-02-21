@@ -124,6 +124,7 @@ CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使
 IsImpostorVisionOption,Impostor vision,インポスターの視界か,拥有内鬼视野,是否啟用內鬼視野
 CoolTimeOption,Cool time,クールタイム,冷却时间,冷卻時間
 DurationTimeOption,Duration time,持続時間,持续时间,持續時間
+AbilityCountOption,Ability limit,能力最大使用回数
 MapCustom,Map Custom,マップ改造,地图设置,地圖設定
 SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加机密室,追加密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
@@ -1741,7 +1742,7 @@ PusherButtonName,Push!!!,バーン！
 JammerName,Jammer,ジャマー
 JammerTitle1,私は他者を照らす光を妨害する!,私は他者を照らす光を妨害する!
 JammerCombIntroDearEvilScientist,Why don't you just pour that stuff on someone else?,何でその薬品他人にかけないんだ?
-JammerDescription,This is an impostor role with the ability to make the target invisible.\nThe ability to take an imposter as the target of invisibility can be changed by setting.\n\nThe invisible crew member is unaware that he or she is invisible.\nThe impostor's role is also able to see the invisible crew members through the jamming ability.\n\nThe invisible crew member will appear normal to the admins，but not to the camera.\nAnother crew member can also use the ability on the invisible crew member.\n\nI can make my target crew invisible to others!\nWhat? Why not use it on yourself?\nI like to anticipate other people's movements and play with light reflections to make them invisible!\nIt's no fun to use it on myself，who moves as expected!,対象を透明化する事が可能な能力を有するインポスター役職です。\nインポスターを透明化の対象に取る事ができるかは設定により変更できます。\n\n透明化したクルーは、自分が透明化している事を自覚できません。\n又、インポスター役職はジャミング能力により透明化されたクルーを半透明な状態で視認する事ができます。\n\n透明化しているクルーはアドミンには正常に映りますが、カメラには映りません。\n又、透明化しているクルーに対して、別のクルーが更に能力を使用する事もできます。\n\n私はクルーを対象にとり、対象を視認できないようにする事ができる!\n何? 自分に使えばいいじゃないか?\n他人の動きを予想して、違和感がないように光の反射を弄って透明化するのが好きなんだ!\n予想通りに動く、自分に使うのは面白くない!
+JammerDescription,This is an impostor role with the ability to make the target invisible.\nThe ability to take an impostor as the target of invisibility can be changed by setting.\n\nThe invisible crew member is unaware that he or she is invisible.\n\nThe impostor role is able to see the invisible crew members through the jamming ability.\nWhen an Impostor role is made invisible by Jamming，the Imposter is aware that they has been made invisible because they own image is translucent.\n\nInvisible crew members will appear normal to an Admin，but not to the camera.\nAnother crew member can also use they ability on the invisible crew member.\n\nI can take a crew member and make him invisible!\nWhat? Why not use it on yourself?\nI like to anticipate other people's movements and play with light reflections to make them invisible!\nIt's no fun to use it on myself，who moves as expected!,対象を透明化する事が可能な能力を有するインポスター役職です。\nインポスターを透明化の対象に取る事ができるかは設定により変更できます。\n\n透明化したクルーは、自分が透明化している事を自覚できません。\n\nインポスター役職はジャミング能力により透明化されたクルーを半透明な状態で視認する事ができます。\nインポスター役職がジャマーによって透明化された場合は、自身の姿が半透明で見える為、自身が透明化されている事を自覚できます。\n\n透明化しているクルーはアドミンには正常に映りますが、カメラには映りません。\n又、透明化しているクルーに対して、別のクルーが更に能力を使用する事もできます。\n\n私はクルーを対象にとり、対象を視認できないようにする事ができる!\n何? 自分に使えばいいじゃないか?\n他人の動きを予想して、違和感がないように光の反射を弄って透明化するのが好きなんだ!\n予想通りに動く、自分に使うのは面白くない!
 JammerCanUseAbilitiesAgainstImposter,Can the ability be used for impostor roles?,インポスターに対して能力を使用できるか。
 JammerButtonName,Jamming,ジャミング
 

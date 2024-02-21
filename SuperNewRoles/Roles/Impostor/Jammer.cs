@@ -62,6 +62,6 @@ public class Jammer : InvisibleRoleBase, IImpostor, ICustomButton
     private CustomButtonInfo ButtonInfo { get; }
 
     // InvisibleRoleBase
-    public override bool CanTransparencyStateReflected(PlayerControl invisibleTarget) => invisibleTarget != PlayerControl.LocalPlayer; // 本人視点除外
+    public override bool CanTransparencyStateReflected(PlayerControl invisibleTarget) => invisibleTarget != PlayerControl.LocalPlayer || (CanUseAbilitiesAgainstImposter.GetBool() && PlayerControl.LocalPlayer.IsImpostor()); // 本人視点除外
     public override bool CanSeeTranslucentState(PlayerControl invisibleTarget) => PlayerControl.LocalPlayer.IsImpostor(); // インポスター視点半透明化
 }
