@@ -36,23 +36,30 @@ public enum RoleId
     None, // RoleIdの初期化用
     DefaultRole,
 
+    // Impostor Roles
     WaveCannon,
     Slugger,
     Pusher,
     Conjurer,
     Mushroomer,
     EvilGuesser,
-    NiceGuesser,
     EvilHacker,
     EvilSeer,
+    Jammer,
+    EvilScientist,
+    Robber,
+    Crab,
+
+    // Neutral Roles
     Cupid,
+
+    // Crewmate Roles
+    NiceGuesser,
     Santa,
     BlackSanta,
-    Crab,
-    Robber,
+    MedicalTechnologist,
     NiceScientist,
-    EvilScientist,
-    Jammer,
+
     //RoleId
 
     SoothSayer,

@@ -138,6 +138,9 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole, I
     /// <param name="targetId">透明化の対象</param>
     public static void SetInvisibleRPC(byte invisibleId, byte typeId, byte targetId) // RPCProcedure.SetScientistRPC (RPC 読み取り & 反映) に当たる部分
     {
+        PlayerControl invisiblePlayer = ModHelpers.PlayerById(invisibleId);
+        if (invisiblePlayer == null) return;
+
         InvisibleRoleBase invisibleRoleBase = ModHelpers.PlayerById(invisibleId).GetRoleBase<InvisibleRoleBase>();
 
         if (invisibleRoleBase == null) return;
