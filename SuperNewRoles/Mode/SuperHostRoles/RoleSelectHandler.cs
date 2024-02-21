@@ -405,6 +405,5 @@ public static class RoleSelectHandler
             var selection = option.GetSelection();
             AllRoleSetClass.SetChance(selection, info.Role, info.Team);
         }
-
     }
 }
