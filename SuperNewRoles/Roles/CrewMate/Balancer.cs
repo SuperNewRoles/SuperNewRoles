@@ -517,6 +517,8 @@ public static class Balancer
 
             if (state.selecting)
             {
+                if (BotManager.IsBot(targetId)) return false;
+
                 if (targetId is 252 or 253)
                 {
                     //スキップで選択モード解除
