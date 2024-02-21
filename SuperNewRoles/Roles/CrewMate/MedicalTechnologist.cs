@@ -11,6 +11,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
+// 提案者：Cade Mofu さん
 public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButton, INameHandler, IMeetingHandler, ICheckMurderHandler
 {
     public static new RoleInfo Roleinfo = new(
