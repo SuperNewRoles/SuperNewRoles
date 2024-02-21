@@ -10,9 +10,9 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using System.Collections.Generic;
 using TMPro;
 
-namespace SuperNewRoles.Roles;
+namespace SuperNewRoles.Roles.Attribute;
 
-public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandleChangeRole, IDeathHandler, IHandleDisconnect
+public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole, IDeathHandler, IHandleDisconnect
 {
     /// <summary>
     /// 透明化が発動しているか
@@ -70,7 +70,7 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandle
             this.InvisiblePlayer = target;
             this._startTime = DateTime.Now;
 
-            if (isRpcSend) RpcSend(RpcType.Start, target);
+            if (isRpcSend) SendInvisibleRPC(RpcType.Start, target);
         }
         else
         {
@@ -112,7 +112,7 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandle
 
         ReleaseOfInvisible(releaseTarget);
 
-        if (isRpcSend) RpcSend(RpcType.End, null);
+        if (isRpcSend) SendInvisibleRPC(RpcType.End, null);
     }
 
     /// <summary>
@@ -121,33 +121,43 @@ public class InvisibleRoleBase : RoleBase, IRpcHandler, IMeetingHandler, IHandle
     /// <param name="releaseTarget">透明化を解除する対象</param>
     private static void ReleaseOfInvisible(PlayerControl releaseTarget) => InvisibleRole.SetOpacity(releaseTarget, 1.5f, true);
 
-    public void RpcSend(RpcType type, PlayerControl target) // Start() と SetScientistEnd() を合わせた物
+    public void SendInvisibleRPC(RpcType type, PlayerControl target) // Start() と SetScientistEnd() を合わせた物
     {
-        MessageWriter writer = RpcWriter;
-
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetInvisibleRPC, SendOption.Reliable, -1);
+        writer.Write(this.Player.PlayerId);
         writer.Write((byte)type);
         writer.Write(target != null ? target.PlayerId : 255);
-
-        SendRpc(writer);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
-    public void RpcReader(MessageReader reader) // RPCProcedure.SetScientistRPC (RPC 読み取り & 反映) に当たる部分
+    /// <summary>
+    /// 透明化のRPC 記録部
+    /// </summary>
+    /// <param name="invisibleId">透明化を発動したプレイヤー</param>
+    /// <param name="typeId">送信するRpcのtype</param>
+    /// <param name="targetId">透明化の対象</param>
+    public static void SetInvisibleRPC(byte invisibleId, byte typeId, byte targetId) // RPCProcedure.SetScientistRPC (RPC 読み取り & 反映) に当たる部分
     {
-        (RpcType type, PlayerControl target) = ((RpcType)reader.ReadByte(), ModHelpers.PlayerById(reader.ReadByte()));
+        InvisibleRoleBase invisibleRoleBase = ModHelpers.PlayerById(invisibleId).GetRoleBase<InvisibleRoleBase>();
 
-        Logger.Info($"RpcType : {type}, 透明化処理を呼び出したプレイヤー : {this.Player.name} ({this.Player.GetRole()}), 透明化の対象 : {(target != null ? target.name : "null")}", "RpcSetInvisible");
+        if (invisibleRoleBase == null) return;
+
+        RpcType type = (RpcType)typeId;
+        PlayerControl target = ModHelpers.PlayerById(targetId);
+
+        Logger.Info($"RpcType : {type}, 透明化処理を呼び出したプレイヤー : {invisibleRoleBase.Player.name} ({invisibleRoleBase.Player.GetRole()}), 透明化の対象 : {(target != null ? target.name : "null")}", "RpcSetInvisible");
 
         switch (type)
         {
             case RpcType.Start:
-                EnableInvisible(target);
+                invisibleRoleBase.EnableInvisible(target);
                 break;
             case RpcType.End:
-                DisableInvisible();
+                invisibleRoleBase.DisableInvisible();
                 break;
             default:
                 Logger.Error($"RpcTypeが異常なリクエストが行われた為, 初期化します。", "TransparentRoleBase");
-                DisableInvisible();
+                invisibleRoleBase.DisableInvisible();
                 break;
         }
     }

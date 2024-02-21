@@ -297,6 +297,7 @@ public enum CustomRPC
     CountChangerSetRPC,
     SetRoomTimerRPC,
     SetScientistRPC,
+    SetInvisibleRPC,
     SetDetective,
     UseEraserCount,
     SetMadKiller,
@@ -1869,6 +1870,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetScientistRPC:
                         SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetInvisibleRPC:
+                        InvisibleRoleBase.SetInvisibleRPC(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.ReviveRPC:
                         ReviveRPC(reader.ReadByte());
