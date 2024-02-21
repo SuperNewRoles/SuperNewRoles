@@ -72,6 +72,11 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     private static JudgmentType JudgmentSystem => _JudgmentSystem;
     private static JudgmentType _JudgmentSystem { get; set; }
 
+    /// <summary>
+    /// 採取対象に表示するマーク ( © => 赤血球 )
+    /// </summary>
+    const string ErythrocyteMark = "<color=#b32323> \u00A9</color>";
+
     [Flags]
     enum JudgmentType
     {
@@ -122,17 +127,15 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     {
         ChangePlayers[this.Player.PlayerId] = ModHelpers.Cs(Roleinfo.RoleColor, $"<size=80%>{MtButtonCountString()}</size>\n{RoleNameText}\n{ChangeName.GetNowName(ChangePlayers, this.Player)}");
 
-        const string suffix = "<color=#b32323> \u00A9</color>"; // © => 赤血球
-
         if (SampleCrews.FirstCrew != byte.MaxValue)
         {
             PlayerControl first = ModHelpers.PlayerById(SampleCrews.FirstCrew);
-            ChangePlayers[SampleCrews.FirstCrew] = $"{ChangeName.GetNowName(ChangePlayers, first)}{suffix}";
+            ChangePlayers[SampleCrews.FirstCrew] = $"{ChangeName.GetNowName(ChangePlayers, first)}{ErythrocyteMark}";
         }
         if (SampleCrews.SecondCrew != byte.MaxValue)
         {
             PlayerControl second = ModHelpers.PlayerById(SampleCrews.SecondCrew);
-            ChangePlayers[SampleCrews.SecondCrew] = $"{ChangeName.GetNowName(ChangePlayers, second)}{suffix}";
+            ChangePlayers[SampleCrews.SecondCrew] = $"{ChangeName.GetNowName(ChangePlayers, second)}{ErythrocyteMark}";
         }
     }
 
@@ -181,8 +184,6 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             Mode.ModeHandler.IsMode(Mode.ModeId.Default, Mode.ModeId.Werewolf) &&
             (AbilityRemainingCount > 0 || !(SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue));
 
-        const string mark = "<color=#b32323> \u00A9</color>"; // © => 赤血球
-
         if (IsdisplayInfoText)
         {
             string targetText = $"{ModTranslation.GetString("MedicalTechnologistSelectTarget")}";
@@ -190,8 +191,8 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
                 SampleCrews.FirstCrew == byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue
                     ? $"{ModTranslation.GetString("MedicalTechnologistUnselected")}" // 未選択
                     : SampleCrews.FirstCrew != byte.MaxValue && SampleCrews.SecondCrew == byte.MaxValue
-                        ? $"{mark}" // 一人選択済み
-                        : $"{mark}{mark}"; // 対象選択完了
+                        ? $"{ErythrocyteMark}" // 一人選択済み
+                        : $"{ErythrocyteMark}{ErythrocyteMark}"; // 対象選択完了
 
             targetInfoText = $"{targetText}{targetInfo}";
         }
@@ -214,17 +215,15 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     // INameHandler
     public void OnHandleName()
     {
-        const string suffix = "<color=#b32323> \u00A9</color>"; // © => 赤血球
-
         if (SampleCrews.FirstCrew != byte.MaxValue)
         {
             PlayerControl first = ModHelpers.PlayerById(SampleCrews.FirstCrew);
-            SetNamesClass.SetPlayerNameText(first, $"{first.NameText().text}{suffix}");
+            SetNamesClass.SetPlayerNameText(first, $"{first.NameText().text}{ErythrocyteMark}");
         }
         if (SampleCrews.SecondCrew != byte.MaxValue)
         {
             PlayerControl Second = ModHelpers.PlayerById(SampleCrews.SecondCrew);
-            SetNamesClass.SetPlayerNameText(Second, $"{Second.NameText().text}{suffix}");
+            SetNamesClass.SetPlayerNameText(Second, $"{Second.NameText().text}{ErythrocyteMark}");
         }
     }
 
