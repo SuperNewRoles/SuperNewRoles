@@ -92,11 +92,6 @@ public class CustomOptionHolder
     public static CustomOption EvilLighterCoolTime;
     public static CustomOption EvilLighterDurationTime;
 
-    public static CustomRoleOption EvilScientistOption;
-    public static CustomOption EvilScientistPlayerCount;
-    public static CustomOption EvilScientistCoolTime;
-    public static CustomOption EvilScientistDurationTime;
-
     public static CustomRoleOption SheriffOption;
     public static CustomOption SheriffPlayerCount;
     public static CustomOption SheriffCoolTime;
@@ -213,11 +208,6 @@ public class CustomOptionHolder
     public static CustomOption VultureDeadBodyMaxCount;
     public static CustomOption VultureIsUseVent;
     public static CustomOption VultureShowArrows;
-
-    public static CustomRoleOption NiceScientistOption;
-    public static CustomOption NiceScientistPlayerCount;
-    public static CustomOption NiceScientistCoolTime;
-    public static CustomOption NiceScientistDurationTime;
 
     public static CustomRoleOption ClergymanOption;
     public static CustomOption ClergymanPlayerCount;
@@ -1190,11 +1180,6 @@ public class CustomOptionHolder
         EvilSpeedBoosterIsNotSpeedBooster = Create(202805, false, CustomOptionType.Impostor, "EvilSpeedBoosterIsNotSpeedBooster", false, EvilSpeedBoosterOption, isHidden: true);
         EvilSpeedBoosterIsNotSpeedBooster.selection = 0;
 
-        EvilScientistOption = SetupCustomRoleOption(205300, false, RoleId.EvilScientist);
-        EvilScientistPlayerCount = Create(205301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilScientistOption);
-        EvilScientistCoolTime = Create(205302, false, CustomOptionType.Impostor, "EvilScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, EvilScientistOption, format: "unitSeconds");
-        EvilScientistDurationTime = Create(205303, false, CustomOptionType.Impostor, "EvilScientistDurationSetting", 10f, 2.5f, 20f, 2.5f, EvilScientistOption, format: "unitSeconds");
-
         EvilDoorrOption = SetupCustomRoleOption(202900, false, RoleId.EvilDoorr);
         EvilDoorrPlayerCount = Create(202901, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilDoorrOption);
         EvilDoorrCoolTime = Create(202902, false, CustomOptionType.Impostor, "EvilDoorrCoolTimeSetting", 2.5f, 2.5f, 60f, 2.5f, EvilDoorrOption);
@@ -1884,11 +1869,6 @@ public class CustomOptionHolder
         ShielderPlayerCount = Create(404101, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ShielderOption);
         ShielderCoolTime = Create(404102, false, CustomOptionType.Crewmate, "ShielderCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, ShielderOption, format: "unitCouples");
         ShielderDurationTime = Create(404103, false, CustomOptionType.Crewmate, "ShielderDurationSetting", 10f, 2.5f, 30f, 2.5f, ShielderOption, format: "unitCouples");
-
-        NiceScientistOption = SetupCustomRoleOption(404200, false, RoleId.NiceScientist);
-        NiceScientistPlayerCount = Create(404201, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceScientistOption);
-        NiceScientistCoolTime = Create(404202, false, CustomOptionType.Crewmate, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, NiceScientistOption, format: "unitSeconds");
-        NiceScientistDurationTime = Create(404203, false, CustomOptionType.Crewmate, "NiceScientistDurationSetting", 10f, 2.5f, 20f, 2.5f, NiceScientistOption, format: "unitSeconds");
 
         ClergymanOption = SetupCustomRoleOption(404300, false, RoleId.Clergyman);
         ClergymanPlayerCount = Create(404301, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ClergymanOption);

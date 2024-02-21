@@ -99,25 +99,28 @@ If the host includes this mod, the position will be available to all!<br>
 [Cursed-Among-Us](https://github.com/Devs-Us/Cursed-Among-Us) - I have referred to the task idea and processing part of the curse mode. Thanks you **Devs-Us**!<br>
 [効果音ラボ](https://soundeffect-lab.info/) - Some sound effects are used. The audio files for these sound effects are licensed under the terms of this site.<br>
 <br>
-
-
-## Used custom cosmetics
-[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)(Licences relating to costumes held independently by SNR are listed in this repository.)<br>
-[TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(Me-Me-MuraSkins)Thanks to **hinakkyu**！<br>
-[TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)Thanks to **tugaru1975**and**Ujet222(Sakura_White)**！<br>
 [SNRGithubWiki 役職一覧#他のmodから他のmodから移植, 又は参考にした役職](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%BD%B9%E8%81%B7%E4%B8%80%E8%A6%A7#%E4%BB%96%E3%81%AEmod%E3%81%8B%E3%82%89%E7%A7%BB%E6%A4%8D-%E5%8F%88%E3%81%AF%E5%8F%82%E8%80%83%E3%81%AB%E3%81%97%E3%81%9F%E5%BD%B9%E8%81%B7) - The details of the ported Roles and the Roles of other mods that were used as references when creating SNR's original Roles are listed here.<br>
 <br>
 
+## Used custom cosmetics
+- [SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)
+  - (Licences relating to costumes held independently by SNR are listed in this repository.)<br><br>
+- [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(Me-Me-MuraSkins)Thanks to **hinakkyu**！
+- [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)Thanks to **tugaru1975**and**Ujet222**(Sakura_White)！
+- [Mememura-Hats](https://github.com/catudon1276/Mememura-Hats) and [CatudonCostume](https://github.com/catudon1276/CatudonCostume)(Mememura Hats, Catudon Costume SEL) Thanks to **catudon1276**(catudon)！
+
+
 ## Developers
-- Developer #1 : [Yoking](https://github.com/ykundesu) ([Misskey](https://misskey.io/@yoking)) ([𝕏 ( Old Twitter )](https://twitter.com/ReYYYYoking))<br>
-- Developer #7 : [Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Misskey](https://misskey.io/@Kurato_SNR7)) ([𝕏 ( Old Twitter )](https://twitter.com/Kurato_SNR7))<br>
-- Developer #9 : [Kuki](https://github.com/Kuki12345)<br>
-- Developer #11 : [Glaceon](https://github.com/Glaceon-471) ([Misskey](https://misskey.io/@GlaceonSNR11)) ([𝕏 ( Old Twitter )](https://twitter.com/Glaceon_SNR11))<br>
-- Developer #4 : [~~UKON people~~](https://github.com/UKON256)<br>
-- Developer #10 : [~~Sakurander~~](https://github.com/Sakurander)<br>
+- Developer #1 : [Yoking](https://github.com/ykundesu) ([Misskey](https://misskey.io/@yoking)) ([𝕏 ( Old Twitter )](https://twitter.com/ReYYYYoking))
+- Developer #4 : [UKON people](https://github.com/UKON256)
+- Developer #7 : [Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Misskey](https://misskey.io/@Kurato_SNR7)) ([𝕏 ( Old Twitter )](https://twitter.com/Kurato_SNR7))
+- Developer #9 : [Kuki](https://github.com/Kuki12345)
+- Developer #11 : [Glaceon](https://github.com/Glaceon-471) ([Misskey](https://misskey.io/@GlaceonSNR11)) ([𝕏 ( Old Twitter )](https://twitter.com/Glaceon_SNR11))
+- Developer #12 : [Seono](https://github.com/Seono968) ([𝕏 ( Old Twitter )](https://twitter.com/Rinforzando_960))
+- Developer #10 : [~~Sakurander~~](https://github.com/Sakurander)
 
 ## Supporter
-- [Seono](https://github.com/Seono968) ([𝕏 ( Old Twitter )](https://twitter.com/Rinforzando_960))<br>
+- <br>
 
 ## Translators
 - Mx.ZeMingoh233 (SChinese)

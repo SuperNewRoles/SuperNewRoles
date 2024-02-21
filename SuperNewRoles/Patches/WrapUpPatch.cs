@@ -8,6 +8,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
@@ -74,6 +75,13 @@ class WrapUpPatch
                     __instance.exiled.IsDead = true;
                 }
                 GameObject.Destroy(__instance.gameObject);
+
+                // 暗転をごり押しで解決
+                if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool()) {
+                    new LateTask(() => {
+                        FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(false);
+                    }, 0.3f);
+                }
                 return false;
             }
             return true;
