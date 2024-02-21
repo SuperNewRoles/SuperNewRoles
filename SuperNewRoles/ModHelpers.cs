@@ -16,6 +16,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
@@ -68,7 +69,7 @@ public static class ModHelpers
     }
     public static Ladder LadderById(byte id)
     {
-        return ShipStatus.Instance.Cast<AirshipStatus>().Ladders.FirstOrDefault((Ladder f) => f.Id == id);
+        return ShipStatus.Instance.Ladders.FirstOrDefault((Ladder f) => f.Id == id);
     }
     public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
     {
@@ -477,7 +478,7 @@ public static class ModHelpers
         ITaskHolder taskHolder = player.GetRoleBase() as ITaskHolder;
         if (taskHolder != null)
         {
-            if (taskHolder.HaveMyNumTask(out (int,int,int)? mynumtask))
+            if (taskHolder.HaveMyNumTask(out (int, int, int)? mynumtask))
                 task = mynumtask.Value;
             if (taskHolder.AssignTask(out List<byte> mytasks, task))
                 return mytasks;
@@ -517,7 +518,7 @@ public static class ModHelpers
     public static string GetStringByCount(char txt, int count)
     {
         StringBuilder builder = new();
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             builder.Append(txt);
         }
@@ -733,7 +734,7 @@ public static class ModHelpers
         foreach (T obj in list)
             func(obj);
     }
-    public static bool Any<TKey,TValue>(this Dictionary<TKey,TValue> dict, Func<KeyValuePair<TKey, TValue>, bool> func)
+    public static bool Any<TKey, TValue>(this Dictionary<TKey, TValue> dict, Func<KeyValuePair<TKey, TValue>, bool> func)
     {
         foreach (KeyValuePair<TKey, TValue> obj in dict)
             if (func(obj))
@@ -851,7 +852,8 @@ public static class ModHelpers
         else if (source.IsDead() || source.IsRole(RoleId.God)) return false;
         else if (source.PlayerId == target.PlayerId) return false; // Player sees his own name
         else if (source.IsImpostor() && target.IsImpostor()) return false;
-        else if (GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(target.PlayerId) && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
+        else if (GameData.Instance && RoleClass.Kunoichi.IsScientistPlayers.ContainsKey(target.PlayerId) && RoleClass.Kunoichi.IsScientistPlayers[target.PlayerId]) return true;
+        else if (InvisibleRoleBase.IsExistsInvisiblePlayer[target.PlayerId]) return true;
         return false;
     }
 
