@@ -12,8 +12,8 @@ using UnityEngine;
 namespace SuperNewRoles.Roles.RoleBases;
 public enum CustomButtonCouldType
 {
-    Always =    0x001, //1
-    CanMove =   0x002, //2
+    Always = 0x001, //1
+    CanMove = 0x002, //2
     SetTarget = 0x004, //4
 }
 public class CustomButtonInfo
@@ -48,6 +48,7 @@ public class CustomButtonInfo
     private string ButtonText { get; }
     private bool HasAbilityCountText { get; }
     private TextMeshPro AbilityCountText { get; set; }
+    public TextMeshPro SecondButtonInfoText { get; set; }
     private string AbilityCountTextFormat { get; }
     private int _lastAbilityCount { get; set; }
     public bool HasAbility { get; }
@@ -74,6 +75,7 @@ public class CustomButtonInfo
     /// <param name="DurationTime">継続時間(継続時間を使わなければnull)</param>
     /// <param name="CouldUse">使用するかのAction(不必要ならnull)</param>
     /// <param name="OnEffectEnds">継続時間が終わった時の処理(なければnull)</param>
+    /// <param name="hasSecondButtonInfo">ボタンの情報用テキストを表示するか</param>
     /// <param name="HasAbilityCountText">使用可能回数のテキストを表示するか</param>
     /// <param name="AbilityCountTextFormat">使用可能回数のテキストのフォーマット文(なければ自動)</param>
     public CustomButtonInfo(
@@ -97,7 +99,8 @@ public class CustomButtonInfo
         bool HasAbilityCountText = false,
         string AbilityCountTextFormat = null,
         Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
-        Func<bool> SetTargetCrewmateOnly=null)
+        Func<bool> SetTargetCrewmateOnly = null,
+        bool hasSecondButtonInfo = false)
     {
         this.HasAbility = AbilityCount != null;
         this.AbilityCount = AbilityCount ?? 334;
@@ -121,10 +124,12 @@ public class CustomButtonInfo
         if (this.BaseButton == null)
             this.BaseButton = FastDestroyableSingleton<HudManager>.Instance.AbilityButton;
         this.HotKey = HotKey;
-        if (joystickKey.HasValue) {
+        if (joystickKey.HasValue)
+        {
             this.joystickKey = joystickKey.Value;
         }
-        else if (this.HotKey.HasValue) {
+        else if (this.HotKey.HasValue)
+        {
             this.joystickKey = JoystickKeys.TryGetValue(HotKey.Value, out int joykey) ? joykey : -1;
         }
         this.TargetCrewmateOnly = SetTargetCrewmateOnly;
@@ -141,6 +146,15 @@ public class CustomButtonInfo
             AbilityCountText.enableWordWrapping = false;
             AbilityCountText.transform.localScale = Vector3.one * 0.5f;
             AbilityCountText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+        }
+        if (hasSecondButtonInfo)
+        {
+            SecondButtonInfoText = GameObject.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
+            SecondButtonInfoText.text = "";
+            SecondButtonInfoText.enableWordWrapping = false;
+            SecondButtonInfoText.transform.localScale = Vector3.one * 0.5f;
+            SecondButtonInfoText.transform.localPosition += new Vector3(-0.1f, 1.4f, 0);
+            if (HasAbilityCountText) SecondButtonInfoText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
         }
     }
     public void UpdateAbilityCountText()

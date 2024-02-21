@@ -124,6 +124,7 @@ CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使
 IsImpostorVisionOption,Impostor vision,インポスターの視界か,拥有内鬼视野,是否啟用內鬼視野
 CoolTimeOption,Cool time,クールタイム,冷却时间,冷卻時間
 DurationTimeOption,Duration time,持続時間,持续时间,持續時間
+AbilityCountOption,Ability limit,能力最大使用回数
 MapCustom,Map Custom,マップ改造,地图设置,地圖設定
 SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加机密室,追加密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
@@ -756,6 +757,7 @@ JackalFriendsDescription,It is judged as Crewmate.\nbut is in the Jackal camp.\n
 JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェックできる,可以确认豺狼是谁,可以確認豺狼是誰
 DoctorName,Doctor,ドクター,医生,醫生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死,隨時查看生命跡象檢測器來確認船員的生死
+DoctorCombIntro1,I'd like to conduct a parasitological examination，can you help me?,寄生虫学的検査を実施したいんだが協力してもらえないか?
 DoctorDescription,This role has mobile vitals and also allows the user to check the exact time[s] elapsed since death by checking the vitals located on the map.\nUnlike the Scientist's，the recharge of the portable vitals cannot be restored by completing the task. Also，it is not possible to recharge the battery before it runs out of charge.\nYou can recharge your mobile vitals by standing near the vitals located on the map.\n\nOh，another one slips through my hands...\nIt doesn't matter what information is sent about the dead after they're dead...\nYou can't bring a dead sailor back to life...,携帯バイタルを有し，更にマップに設置されているバイタルを確認する事で死亡してからの正確な経過時間[s]を確認する事ができる役職です。\n携帯バイタルの充電は科学者の物と異なりタスク完了によって回復はできません。又，充電が切れる前に再充電する事は出来ません。\n携帯バイタルの充電は，マップに設置されているバイタル付近に立つ事で行えます。\n\nああ、また一人この手からすり抜けていく...\n亡くなった後の情報が分かった所で意味がない...\n亡くなった船員を生き返らす事などできないのだから...,医生可以远程查看生命监测装置，并且可以通过查看飞船的生命监测装置确认那些死亡玩家的死亡时间。\n医生不可以通过完成任务来获得充能，也不能在充能耗尽之前进行充能。\n医生可以在飞船的生命监测装置旁给远程装置充能。,醫生可以隨時查看攜帶式的生命跡象檢測器，並透過地圖上的生命跡象檢測器來得知具體的死亡經過時間。\n攜帶式的生命跡象檢測器不同於科學家的充電機制，僅能透過處於地圖上的生命跡象檢測器附近以進行充電。\n\n嗚呼，又一條寶貴生命從我手中離去了...\n知道過世後的情報已經毫無意義...\n既然無法讓已故的船員復活...
 DoctorVitalName,Vital,バイタル,生命监测装置,生命跡象檢測器
 DoctorChargeTime,Vital charge time,バイタルのチャージタイム,医生装置冷却时间,醫生裝置冷卻時間
@@ -1549,6 +1551,7 @@ Medium,Medium,ミドル,中,中
 Long,Long,ロング,长,長
 PoliceSurgeonName,Police Surgeon,警察医,法医,法醫
 PoliceSurgeonTitle1,I just wanted to assist in helping to ensure a peaceful and happy passing，yet...,私は幸せな最期を看取る手伝いをしたかっただけなのに...,确认死者的死因与死亡时间,我只是想幫助人們平安的離開人世，卻...
+PoliceSurgeonCombIntro1,Why are you so callous to the lives lost...!,何故君は，失われる命を冷淡にみられるんだ...!
 PoliceSurgeonDescription,The role that allows you to check the time of death during meetings，and can be changed to estimate the time of death depending on the settings. \nYou can also use the portable vital monitor during task phases，depending on the settings. \nI became a doctor to save lives，to help people die peacefully，\nand to provide comfort in their final moments...\nnot to witness premature deaths like this!,会議中、死亡時刻を確認する事ができる役職です (設定により死亡推定時刻に変更可能です)。\n設定によりタスクフェイズ中に携帯バイタルを使用する事もできます。\n私が医師になったのは、命を救い、時には最期をよりよくする手助けをし、看取る為であって... この様な... 志半ばで亡くなる死を視る為ではなかったのに!!,法医属于船员阵营，可以在会议阶段确认死亡玩家的死亡时间（根据房间设置，可以改为确认推测死亡时间）。\n根据房间设置，法医也可以在行动阶段远程观看生命监测装置。\n\n我是救死扶伤的医生。我是为别人送终的医生。\n我只想让人们安详地度过人生的最后时光……而不是像现在这样！,法醫可以在會議中確認死亡時間，並且可以根據設定更改為死亡推定時間。\n根據設定，也可以在任務階段使用便攜式生命探測器。\n我成為醫生是為了拯救生命，幫助人們平安離開人世，\n並在他們最後的時刻給予安慰...\n而不是如此英年早逝...
 PoliceSurgeonHaveVitalsInTaskPhase,Do you have portable vitals in your possession during the task phase?,タスクフェイズ中に携帯バイタルを所持しているか。,法医可以远程观看生命监测装置,法醫是否持有攜帶式生命探測器？
 VitalsDisplayCooldown,Vitals Display Cooldown,バイタル画面クールダウン,观看生命监测装置冷却,生命探測器的顯示冷卻
@@ -1737,6 +1740,28 @@ PusherTitle1,Eyes behind you.,背後には気を付けな
 PusherDescription,Crew members who are in a spot where they could be dropped can be killed by pushing them out.\n\nIf a crew member is pushed down in an area where there is no floor below，no corpse will be generated.\nIf a crew member is pushed from the top of a ladder with a floor below，a corpse will be generated at the bottom of the ladder.\nIn this case，it is treated as a "kill that does not produce a corpse" in the judgment of other roles.,落とせそうな箇所にいるクルーを突き落とすことが出来ます。\n\n下に床が無い場所で突き落とされたクルーは，死体が発生しません。\n下に床のある梯子の上からクルーを突き落とした場合は，梯子の下で死体が生成されます。\nこの時，他の役職の判定では"死体が発生しないキル"として扱われます
 PusherIntervalOption,Push interval,突き落とし間隔
 PusherButtonName,Push!!!,バーン！
+MedicalTechnologistName,Medical technologist,臨床検査技師
+MedicalTechnologistDescription,This role is to perform a compatibility test by collecting samples from two crew members during the Task Phase.\nThe compatibility test will determine whether the two crew members belong to the same team or to different teams.\n\nThe result of the test is sent via chat at the beginning of the meeting phase.\nIf two specimens are not collected during the Task Phase，the chat will not be sent.\nAlso，the target selection status is reset at the end of the Meeting Phase.\nThere are four different systems to identify the team，and which system is used is indicated in the test results.\n\nI was originally assigned as a researcher...\nHowever，this is an emergency situation. With my knowledge and skills，I will contribute to dealing with this situation!,タスクフェイズ中に2名のクルーの検体を採取する事で，組織適合検査を行う役職です。\n\n組織適合検査により，2名の検体採取対象の所属が同陣営か 又は 別陣営かを判別する事ができます。\n2名の関係が同陣営であるかの情報を得る事で，ライン精査等を行う事ができる役職です。\n\n検査結果は，会議フェイズ開始時にチャットで送信されます。\nタスクフェイズ中に2名の検体を採取できていない時は，チャットは送信されません。\n又 対象選択状況は，会議フェイズ終了時にリセットされます。\n陣営の判定方式は4種類あり，どの方式で判定しているかは検査結果に併記しています。\n\n私は本来研究員として配属されていたのですが...\nとはいえ緊急事態です。私の知識と技術をもって，この事態の対処に貢献してみせましょう!!
+MedicalTechnologistTitle1,This is not my job，but it is my area of expertise. Let's put these skills to use!,職務外ですが専門分野です。この技能役立ててみせましょう!
+MedicalTechnologistCombIntroToDoctor,It's also my research subject，so I'm willing to cooperate?,私の研究対象でもあるので協力は惜しみませんよ?
+MedicalTechnologistCombIntroToPoliceSurgeon,We cannot allow ourselves to judge the value of the lives and deaths of our victims!,犠牲者の命と死の価値を勝手に判断する事は赦されません!
+MedicalTechnologistIsJudgmentTeamType,Discrimination of teams by classification by winning decision?,マッド系役職は勝利陣営で判定するか
+MedicalTechnologistIsJudgmentAllNeutralOneTeam,Mad roles are judged by the winning team?,第三陣営同士は同陣営と判定するか
+MedicalTechnologistButtonName,Blood sampling,採取
+MedicalTechnologistAbilityRemainingCount,Remaining number of uses : ,残り使用回数 : 
+MedicalTechnologistSelectTarget,Target Selection Status :,対象選択状況 :
+MedicalTechnologistUnselected,unselected,未選択
+MedicalTechnologistSamplePresentation,Subjects tested\n<pos=10%>Sample 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>Sample 2 :</pos><pos=35%>[ {1} ]</pos>,検査対象\n<pos=10%>検体 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>検体 2 :</pos><pos=35%>[ {1} ]</pos>
+MedicalTechnologistJudgmentSystem,Judgment method,判定方式
+MedicalTechnologistJudgmentSystem_Team,Team Judgment : ,陣営判定 : 
+MedicalTechnologistJudgmentSystem_Team_Assign,Assignment Classification,アサイン分類
+MedicalTechnologistJudgmentSystem_Team_Victory,Winning decision Classification,勝利判定分類
+MedicalTechnologistJudgmentSystem_Neutral,Neutral Judgment : ,第三陣営間の判定 : 
+MedicalTechnologistJudgmentSystem_Neutral_All,Judged to be in the same team.,同陣営と判定する。
+MedicalTechnologistJudgmentSystem_Neutral_Detailed,The roles with different win conditions are considered as different teams.,勝利条件が異なる役職間は，別陣営と判定する。
+MedicalTechnologistSampleResult,Inspection results,検査結果
+MedicalTechnologistMatch,<pos=10%>Specimen did not react.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in the same team</pos>,<pos=10%>検体は，反応しませんでした。</pos>\n<pos=10%>検体 1 と 検体 2 は同じ陣営の様です。</pos>
+MedicalTechnologistMismatch,<pos=10%>Specimen caused rejection.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in different teams.</pos>,<pos=10%>検体は，拒絶反応を起こしました。</pos>\n<pos=10%>検体 1 と 検体 2 は別陣営の様です。</pos>
 
 #NewRoleTranslation
 
