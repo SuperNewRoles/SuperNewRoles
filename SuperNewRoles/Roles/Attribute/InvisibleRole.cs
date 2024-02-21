@@ -12,7 +12,7 @@ using TMPro;
 
 namespace SuperNewRoles.Roles.Attribute;
 
-public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole
+public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole, IDeathHandler, IHandleDisconnect
 {
     /// <summary>
     /// 透明化が発動しているか
@@ -33,6 +33,9 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole
     /// </summary>
     public PlayerControl InvisiblePlayer { get; private set; }
 
+    public DateTime StartTime => IsActive ? _startTime : default;
+    private DateTime _startTime { get; set; }
+
     public InvisibleRoleBase(PlayerControl player, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(player, Roleinfo, Optioninfo, Introinfo)
     {
         this._isActive = false;
@@ -46,8 +49,6 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole
     public static PlayerData<bool> IsExistsInvisiblePlayer { get; private set; }
     public static void ClearAndReload() => IsExistsInvisiblePlayer = new();
 
-    public void StartMeeting() { }
-    public void CloseMeeting() => DisableInvisible();
     public enum RpcType
     {
         Start,
@@ -67,6 +68,7 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole
 
             this._isActive = true;
             this.InvisiblePlayer = target;
+            this._startTime = DateTime.Now;
 
             if (isRpcSend) SendInvisibleRPC(RpcType.Start, target);
         }
@@ -85,11 +87,30 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole
         if (!this.IsActive) return;
         PlayerControl releaseTarget = this.InvisiblePlayer;
 
-        ReleaseOfInvisible(releaseTarget);
+        bool isItStillInvisible = false;
 
-        IsExistsInvisiblePlayer[releaseTarget.PlayerId] = false;
+        foreach (var processingPlayer in PlayerControl.AllPlayerControls)
+        {
+            if (processingPlayer.TryGetRoleBase<InvisibleRoleBase>(out var invisibleRoleBase))
+            {
+                if (invisibleRoleBase.Player == this.Player) { continue; } // 本人なら検索続行
+                else if (invisibleRoleBase.InvisiblePlayer == null || invisibleRoleBase.InvisiblePlayer != releaseTarget) { continue; } // 対象が存在しない又は別のプレイヤーを透明化しているなら検索続行
+                else // 別のプレイヤーが対象を透明化しているなら
+                {
+                    isItStillInvisible = true;
+                    break; // 1人でも見つかった時点で ループから抜け出す。
+                }
+            }
+            else break;
+        }
+
+        IsExistsInvisiblePlayer[releaseTarget.PlayerId] = isItStillInvisible;
+
         this._isActive = false;
         this.InvisiblePlayer = null;
+        this._startTime = default;
+
+        ReleaseOfInvisible(releaseTarget);
 
         if (isRpcSend) SendInvisibleRPC(RpcType.End, null);
     }
@@ -143,10 +164,9 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole
         }
     }
 
-    public void OnChangeRole() => DisableInvisible(true);
 
     /// <summary>
-    /// 対象に, 透明化状態を反映する事ができるか。
+    /// 対象に, 透明化状態を反映する事ができるか。 (CanSeeTranslucentState より優先されます)
     /// </summary>
     /// <param name="invisibleTarget">透明化効果が発生している対象</param>
     /// <returns>true : 反映可能 , false : 反映不可 (対象に透明化効果が発生していても通常通り表示する)</returns>
@@ -164,6 +184,14 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole
     {
         return false;
     }
+
+    // interfaceを利用した, 特定タイミングでの透明化解除処理
+
+    public void StartMeeting() { }
+    public void CloseMeeting() => DisableInvisible(); // 会議終了時
+    public void OnChangeRole() => DisableInvisible(true); // 透明化役職が役職変更を受けた時
+    public void OnMurderPlayer(DeathInfo info) { if (info.DeathPlayer == InvisiblePlayer) DisableInvisible(); } // 透明化しているプレイヤーの死亡時
+    public void OnDisconnect() => DisableInvisible(); // 透明化役職の切断時
 }
 
 [HarmonyPatch]
@@ -178,6 +206,8 @@ public class InvisibleRole
 
         if (!InvisibleRoleBase.IsExistsInvisiblePlayer[__instance.myPlayer.PlayerId]) return; // __instance.myPlayerの透明化が有効になっていない, 又は管理されてないなら 実行しない。
 
+        InvisibleRoleBase storage = null;
+
         foreach (PlayerControl processingPlayer in PlayerControl.AllPlayerControls)
         {
             // 透明化を発動可能なプレイヤーを取得する。
@@ -186,25 +216,27 @@ public class InvisibleRole
             // __instance.myPlayer を processingPlayer が 透明化している時に 以降の処理を実行
             if (!(invisibleRoleBase.IsActive && invisibleRoleBase.InvisiblePlayer == __instance.myPlayer)) continue;
 
-            var invisibleTarget = __instance.myPlayer;
-            var isHide = invisibleRoleBase.CanTransparencyStateReflected(invisibleTarget); // 透明化を自視点で反映可能か
-            bool canSeeTranslucentState = invisibleRoleBase.CanSeeTranslucentState(invisibleTarget) && isHide; // 自視点で半透明で表示するか
-
-            // 自身が死んでいるなら, 透明化している者を無条件で半透明で見る事ができる。
-            if (PlayerControl.LocalPlayer.IsDead()) { isHide = true; canSeeTranslucentState = true; }
-
-            var opacity = canSeeTranslucentState ? 0.1f : 0.0f;
-            if (isHide) // 透明化が反映される時
-            {
-                opacity = Math.Max(opacity, 0);
-                invisibleTarget.MyRend().material.SetFloat("_Outline", 0f);
-            }
-            else // 透明化が反映できない時
-            {
-                opacity = 1.5f;
-            }
-            SetOpacity(invisibleTarget, opacity, canSeeTranslucentState);
+            storage = storage == null ? invisibleRoleBase : storage.StartTime <= invisibleRoleBase.StartTime ? invisibleRoleBase : storage;
         }
+
+        var invisibleTarget = __instance.myPlayer;
+        var isHide = storage.CanTransparencyStateReflected(invisibleTarget); // 透明化を自視点で反映可能か
+        bool canSeeTranslucentState = storage.CanSeeTranslucentState(invisibleTarget) && isHide; // 自視点で半透明で表示するか
+
+        // 自身が死んでいるなら, 透明化している者を無条件で半透明で見る事ができる。
+        if (PlayerControl.LocalPlayer.IsDead()) { isHide = true; canSeeTranslucentState = true; }
+
+        var opacity = canSeeTranslucentState ? 0.1f : 0.0f;
+        if (isHide) // 透明化が反映される時
+        {
+            opacity = Math.Max(opacity, 0);
+            invisibleTarget.MyRend().material.SetFloat("_Outline", 0f);
+        }
+        else // 透明化が反映できない時
+        {
+            opacity = 1.5f;
+        }
+        SetOpacity(invisibleTarget, opacity, canSeeTranslucentState);
     }
     public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
     {

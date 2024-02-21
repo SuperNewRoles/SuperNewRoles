@@ -41,13 +41,14 @@ public enum RoleId
     Slugger,
     Pusher,
     Conjurer,
+    Mushroomer,
     EvilGuesser,
     EvilHacker,
     EvilSeer,
-    Mushroomer,
+    Jammer,
+    EvilScientist,
     Robber,
     Crab,
-    EvilScientist,
 
     // Neutral Roles
     Cupid,
