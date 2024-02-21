@@ -21,6 +21,9 @@ using UnityEngine;
 
 namespace SuperNewRoles;
 
+/// <summary>
+/// 役職陣営 (アサイン分類)
+/// </summary>
 public enum TeamRoleType
 {
     Crewmate,
@@ -28,6 +31,9 @@ public enum TeamRoleType
     Neutral,
     Error
 }
+/// <summary>
+/// 陣営 (勝利判定分類)
+/// </summary>
 public enum TeamType
 {
     Crewmate,
@@ -424,8 +430,7 @@ public static class RoleHelpers
             WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
-        else if (player.IsRole(RoleId.EvilScientist, RoleId.NiceScientist))
-            Scientist.SetOpacity(player, 0.1f, true);
+
         switch (role)
         {
             case RoleId.SoothSayer:
@@ -439,9 +444,6 @@ public static class RoleHelpers
                 break;
             case RoleId.EvilLighter:
                 RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
-                break;
-            case RoleId.EvilScientist:
-                RoleClass.EvilScientist.EvilScientistPlayer.Add(player);
                 break;
             case RoleId.Sheriff:
                 RoleClass.Sheriff.SheriffPlayer.Add(player);
@@ -487,9 +489,6 @@ public static class RoleHelpers
                 break;
             case RoleId.Vulture:
                 RoleClass.Vulture.VulturePlayer.Add(player);
-                break;
-            case RoleId.NiceScientist:
-                RoleClass.NiceScientist.NiceScientistPlayer.Add(player);
                 break;
             case RoleId.Clergyman:
                 RoleClass.Clergyman.ClergymanPlayer.Add(player);
@@ -994,6 +993,8 @@ public static class RoleHelpers
     private static PlayerControl ClearTarget;
     public static void ClearRole(this PlayerControl player)
     {
+        if (player.GetRoleBase() is IHandleChangeRole IHandleChangeRole) { IHandleChangeRole.OnChangeRole(); }
+
         static bool ClearRemove(PlayerControl p)
         {
             return p.PlayerId == ClearTarget.PlayerId;
@@ -1012,9 +1013,6 @@ public static class RoleHelpers
                 break;
             case RoleId.EvilLighter:
                 RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.EvilScientist:
-                RoleClass.EvilScientist.EvilScientistPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Sheriff:
                 RoleClass.Sheriff.SheriffPlayer.RemoveAll(ClearRemove);
@@ -1063,9 +1061,6 @@ public static class RoleHelpers
                 break;
             case RoleId.Vulture:
                 RoleClass.Vulture.VulturePlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.NiceScientist:
-                RoleClass.NiceScientist.NiceScientistPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Clergyman:
                 RoleClass.Clergyman.ClergymanPlayer.RemoveAll(ClearRemove);
@@ -1881,7 +1876,6 @@ public static class RoleHelpers
             else if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player)) return RoleId.Jester;
             else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player)) return RoleId.Lighter;
             else if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
-            else if (RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilScientist;
             else if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.Sheriff;
             else if (RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.MeetingSheriff;
             else if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player)) return RoleId.Jackal;
@@ -1898,7 +1892,6 @@ public static class RoleHelpers
             else if (RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player)) return RoleId.Speeder;
             else if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player)) return RoleId.Freezer;
             else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
-            else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;
             else if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player)) return RoleId.Clergyman;
             else if (RoleClass.Madmate.MadmatePlayer.IsCheckListPlayerControl(player)) return RoleId.Madmate;
             else if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(player)) return RoleId.Bait;

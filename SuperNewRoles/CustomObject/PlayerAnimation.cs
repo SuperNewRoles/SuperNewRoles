@@ -11,7 +11,8 @@ public enum RpcAnimationType
 {
     Stop,
     SluggerCharge,
-    SluggerMurder
+    SluggerMurder,
+    PushHand
 }
 public class PlayerAnimation
 {
@@ -46,6 +47,7 @@ public class PlayerAnimation
         transform.SetParent(Player.cosmetics.normalBodySprite.BodySprite.transform.parent);
         transform.localScale = Vector3.one * 0.5f;
         SpriteRender = gameObject.AddComponent<SpriteRenderer>();
+        _defaultMaterial = SpriteRender.sharedMaterial;
         PlayerAnimations.Add(PlayerId, this);
         IsRewinding = false;
         IsPausing = false;
@@ -67,6 +69,7 @@ public class PlayerAnimation
     private int index;
     private bool IsRewinding;
     private bool IsPausing;
+    private static Material _defaultMaterial;
     public Sprite[] Sprites;
     public Action OnAnimationEnd;
     public Action OnFixedUpdate;
@@ -216,6 +219,27 @@ public class PlayerAnimation
         writer.EndRPC();
         HandleAnim(AnimType);
     }
+    private void SetColorMaterialActive(bool active)
+    {
+        if (active)
+        {
+            SpriteRender.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+            SpriteRender.maskInteraction = SpriteMaskInteraction.None;
+            PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(SpriteRender, false);
+
+            PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, SpriteRender);
+            PlayerMaterial.Properties Properties = new()
+            {
+                MaskLayer = 0,
+                MaskType = PlayerMaterial.MaskType.None,
+                ColorId = Player.Data.DefaultOutfit.ColorId
+            };
+        } else
+        {
+            SpriteRender.sharedMaterial = _defaultMaterial;
+            SpriteRender.maskInteraction = SpriteMaskInteraction.None;
+        }
+    }
     public void HandleAnim(RpcAnimationType AnimType)
     {
         ReplayActionPlayerAnimation.Create(PlayerId, (byte)AnimType);
@@ -295,6 +319,19 @@ public class PlayerAnimation
                 {
                     SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Hit.raw"), false, 1.5f);
                 }
+                break;
+            case RpcAnimationType.PushHand:
+                SetColorMaterialActive(true);
+                Init(GetSprites("SuperNewRoles.Resources.Pusher.pushanim_", 9, start: 6), false, 20);
+                OnAnimationEnd = new(() =>
+                {
+                    new LateTask(() => SetColorMaterialActive(false), 0.035f);
+                });
+                OnFixedUpdate = new(() =>
+                {
+                    transform.localScale = new(Physics.FlipX ? 0.6f : -0.6f, 0.6f, 0.6f);
+                    transform.localPosition = new(Physics.FlipX ? -0.4f : 0.4f, 0.05f, -1);
+                });
                 break;
         }
     }

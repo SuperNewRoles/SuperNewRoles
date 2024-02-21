@@ -205,13 +205,26 @@ internal class AddChatPatch
     /// <param name="infoName">情報タイトル(名前で表記)</param>
     /// <param name="infoContents">情報本文(チャットで表記)</param>
     /// <param name="color">文字色, 16進数のcolorコードで指定([#FFFFFF]等)</param>
-    public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white")
+    /// <param name="isSendFromGuest">ゲストが自分自身に送信可能にする</param>
+    public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white", bool isSendFromGuest = false)
     {
         string line = "|--------------------------------------------------------|";
         string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
         string contents = $"\n<align={"left"}>{infoContents}</align>\n　\n";
 
-        SendCommand(target, contents, name);
+        if (AmongUsClient.Instance.AmHost)
+        {
+            SendCommand(target, contents, name);
+        }
+        else if (isSendFromGuest && target == PlayerControl.LocalPlayer)
+        {
+            string originalName = target.Data.PlayerName;
+            contents = $"\n{contents}\n";
+
+            target.SetName(name);
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(target, contents, false);
+            target.SetName(originalName);
+        }
     }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
     {
