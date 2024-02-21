@@ -49,7 +49,7 @@ public class Jammer : InvisibleRoleBase, IImpostor, ICustomButton
             49,
             baseButton: HudManager.Instance.AbilityButton,
             DurationTime: () => Optioninfo.DurationTime,
-            OnEffectEnds: () => this.DisableInvisible(true),
+            OnEffectEnds: () => { this.DisableInvisible(true); ButtonInfo.ResetCoolTime(); },
             HasAbilityCountText: true,
             SetTargetCrewmateOnly: () => !CanUseAbilitiesAgainstImposter.GetBool()
         );

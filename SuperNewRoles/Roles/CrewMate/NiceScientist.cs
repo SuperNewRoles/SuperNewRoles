@@ -46,7 +46,7 @@ public class NiceScientist : InvisibleRoleBase, ICrewmate, ICustomButton
             49,
             baseButton: HudManager.Instance.AbilityButton,
             DurationTime: () => Optioninfo.DurationTime,
-            OnEffectEnds: () => this.DisableInvisible(true)
+            OnEffectEnds: () => { this.DisableInvisible(true); ButtonInfo.ResetCoolTime(); }
         );
 
         this.CustomButtonInfos = new CustomButtonInfo[1] { ButtonInfo };
