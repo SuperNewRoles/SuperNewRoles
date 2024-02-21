@@ -120,8 +120,7 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole
         PlayerControl invisiblePlayer = ModHelpers.PlayerById(invisibleId);
         if (invisiblePlayer == null) return;
 
-        InvisibleRoleBase invisibleRoleBase = ModHelpers.PlayerById(invisibleId).GetRoleBase<InvisibleRoleBase>();
-
+        InvisibleRoleBase invisibleRoleBase = invisiblePlayer.GetRoleBase<InvisibleRoleBase>();
         if (invisibleRoleBase == null) return;
 
         RpcType type = (RpcType)typeId;
