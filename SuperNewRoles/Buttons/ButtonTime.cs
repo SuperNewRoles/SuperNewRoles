@@ -16,44 +16,7 @@ class ButtonTime
         TeleporterButton();
         HawkDuration();
         Patches.Clairvoyant.ClairvoyantDuration();
-        ScientistButton();
         CamouflagerButton();
-    }
-    public static void ScientistButton()
-    {
-        float durationtime;
-        float cooltime;
-        if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
-        {
-            durationtime = RoleClass.EvilScientist.DurationTime;
-            cooltime = RoleClass.EvilScientist.CoolTime;
-        }
-        else
-        {
-            durationtime = RoleClass.NiceScientist.DurationTime;
-            cooltime = RoleClass.NiceScientist.CoolTime;
-        }
-        if (RoleClass.NiceScientist.IsScientist)
-        {
-            var timeSpanData = new TimeSpan(0, 0, 0, (int)durationtime);
-            HudManagerStartPatch.ScientistButton.MaxTimer = durationtime;
-            HudManagerStartPatch.ScientistButton.Timer = (float)(RoleClass.NiceScientist.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-            if (HudManagerStartPatch.ScientistButton.Timer <= 0f)
-            {
-                Scientist.ScientistEnd();
-                Scientist.ResetCooldown();
-                HudManagerStartPatch.ScientistButton.MaxTimer = cooltime;
-                RoleClass.NiceScientist.IsScientist = false;
-                HudManagerStartPatch.ScientistButton.actionButton.cooldownTimerText.color = Color.white;
-                RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
-            }
-        }
-        else
-        {
-            var timeSpanData = new TimeSpan(0, 0, 0, (int)cooltime);
-            HudManagerStartPatch.ScientistButton.Timer = (float)(RoleClass.NiceScientist.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-            if (HudManagerStartPatch.ScientistButton.Timer <= 0f) HudManagerStartPatch.ScientistButton.Timer = 0f; return;
-        }
     }
     public static void HawkDuration()
     {

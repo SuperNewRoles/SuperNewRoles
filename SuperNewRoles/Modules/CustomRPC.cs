@@ -47,6 +47,7 @@ public enum RoleId
     Mushroomer,
     Robber,
     Crab,
+    EvilScientist,
 
     // Neutral Roles
     Cupid,
@@ -56,6 +57,7 @@ public enum RoleId
     Santa,
     BlackSanta,
     MedicalTechnologist,
+    NiceScientist,
 
     //RoleId
 
@@ -63,7 +65,6 @@ public enum RoleId
     Jester,
     Lighter,
     EvilLighter,
-    EvilScientist,
     Sheriff,
     MeetingSheriff,
     Jackal,
@@ -79,7 +80,6 @@ public enum RoleId
     Speeder,
     Freezer,
     Vulture,
-    NiceScientist,
     Clergyman,
     Madmate,
     Bait,
@@ -303,6 +303,7 @@ public enum CustomRPC
     CountChangerSetRPC,
     SetRoomTimerRPC,
     SetScientistRPC,
+    SetInvisibleRPC,
     SetDetective,
     UseEraserCount,
     SetMadKiller,
@@ -1445,7 +1446,7 @@ public static class RPCProcedure
         FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
     }
     public static void SetScientistRPC(bool Is, byte id)
-        => RoleClass.NiceScientist.IsScientistPlayers[id] = Is;
+        => RoleClass.Kunoichi.IsScientistPlayers[id] = Is;
 
     public static void ReportDeadBody(byte sourceId, byte targetId)
     {
@@ -1875,6 +1876,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetScientistRPC:
                         SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetInvisibleRPC:
+                        InvisibleRoleBase.SetInvisibleRPC(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.ReviveRPC:
                         ReviveRPC(reader.ReadByte());

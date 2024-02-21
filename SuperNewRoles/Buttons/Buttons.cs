@@ -40,7 +40,6 @@ static class HudManagerStartPatch
     public static CustomButton SelfBomberButton;
     public static CustomButton DoctorVitalsButton;
     public static CustomButton CountChangerButton;
-    public static CustomButton ScientistButton;
     public static CustomButton HawkHawkEyeButton;
     public static CustomButton JackalKillButton;
     public static CustomButton JackalSidekickButton;
@@ -967,34 +966,6 @@ static class HudManagerStartPatch
         )
         {
             buttonText = ModTranslation.GetString("MagazinerAddButtonName"),
-            showButtonText = true
-        };
-
-        ScientistButton = new CustomButton(
-            () =>
-            {
-                if (!PlayerControl.LocalPlayer.CanMove) return;
-                RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
-                ScientistButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
-                Scientist.Start();
-            },
-            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.NiceScientist || role == RoleId.EvilScientist); },
-            () =>
-            {
-                if (RoleClass.NiceScientist.IsScientist) CustomButton.FillUp(ScientistButton);
-                return PlayerControl.LocalPlayer.CanMove;
-            },
-            () => { Scientist.EndMeeting(); },
-            RoleClass.NiceScientist.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("ScientistButtonName"),
             showButtonText = true
         };
 

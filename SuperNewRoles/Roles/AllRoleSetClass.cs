@@ -52,7 +52,7 @@ public class PairRoleDetail
     }
     public static readonly Dictionary<RoleId, PairRoleDetail> PairRoleDetails = new() {
         { RoleId.Assassin, new(RoleId.Assassin, (0,0,1), (TeamRoleType.Crewmate, RoleId.Marlin)) },
-        { RoleId.Revolutionist, new(RoleId.Revolutionist, (0,0,1), (TeamRoleType.Crewmate, RoleId.Dictator)) }, 
+        { RoleId.Revolutionist, new(RoleId.Revolutionist, (0,0,1), (TeamRoleType.Crewmate, RoleId.Dictator)) },
         { RoleId.TheFirstLittlePig, new(RoleId.TheFirstLittlePig, (0,2,0), TheThreeLittlePigs.TheThreeLittlePigsOnAssigned , (TeamRoleType.Neutral, RoleId.TheSecondLittlePig), (TeamRoleType.Neutral, RoleId.TheThirdLittlePig)) },
         { RoleId.Pokerface, new(RoleId.Pokerface, (0,2,0), Pokerface.OnAssigned, (TeamRoleType.Neutral, RoleId.Pokerface), (TeamRoleType.Neutral, RoleId.Pokerface)) }
     };
@@ -653,7 +653,6 @@ class AllRoleSetClass
             RoleId.Jester => CustomOptionHolder.JesterPlayerCount.GetInt(),
             RoleId.Lighter => CustomOptionHolder.LighterPlayerCount.GetInt(),
             RoleId.EvilLighter => CustomOptionHolder.EvilLighterPlayerCount.GetInt(),
-            RoleId.EvilScientist => CustomOptionHolder.EvilScientistPlayerCount.GetInt(),
             RoleId.Sheriff => CustomOptionHolder.SheriffPlayerCount.GetInt(),
             RoleId.MeetingSheriff => CustomOptionHolder.MeetingSheriffPlayerCount.GetInt(),
             RoleId.Jackal => CustomOptionHolder.JackalPlayerCount.GetInt(),
@@ -668,7 +667,6 @@ class AllRoleSetClass
             RoleId.Speeder => CustomOptionHolder.SpeederPlayerCount.GetInt(),
             RoleId.Freezer => CustomOptionHolder.FreezerPlayerCount.GetInt(),
             RoleId.Vulture => CustomOptionHolder.VulturePlayerCount.GetInt(),
-            RoleId.NiceScientist => CustomOptionHolder.NiceScientistPlayerCount.GetInt(),
             RoleId.Clergyman => CustomOptionHolder.ClergymanPlayerCount.GetInt(),
             RoleId.Madmate => CustomOptionHolder.MadmatePlayerCount.GetInt(),
             RoleId.Bait => CustomOptionHolder.BaitPlayerCount.GetInt(),

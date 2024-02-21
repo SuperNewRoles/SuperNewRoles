@@ -501,9 +501,7 @@ EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継�
 EvilScientistName,Evil Scientist,イビルサイエンティスト,邪恶的隐身人,邪惡的隱身人
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう,隐身并杀死其他船员,隱身並殺死其他船員
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
-EvilScientistDescription,You can become invisible by using the [Hide] button. \nUse your invisibility ability to deceive and win!!,[隠れる]ボタンを使用することで透明化することができます。\n透明化能力を用いて、視認を欺き勝利しましょう!!,邪恶的隐身人可以使用技能来隐身。\n利用隐身能力，骗过他人的眼睛来获得胜利吧！,你可以利用「隱藏」按鈕進行隱身。\n利用隱身能力欺騙船員獲得勝利！
-EvilScientistCooldownSetting,Evil Scientist Invisibility Cooldown,イビルサイエンティストの透明クールダウン,邪恶的隐身人技能冷却,邪惡的隱身人技能冷卻時間
-EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサイエンティストの透明継続時間,邪恶的隐身人技能持续时间,邪惡的隱身人技能持續時間
+EvilScientistDescription,You can become invisible by using the [Hide] button. \nThe impostor role allows you to see the Evil Scientist in a semi-transparent state while he or she is activating his or her abilities.\n\nUse your invisibility ability to deceive and win!!,[隠れる]ボタンを使用することで透明化することができます。\n能力発動中 インポスター役職は， イビルサイエンティストを半透明な状態で視認する事ができます。\n\n透明化能力を用いて、視認を欺き勝利しましょう!!,邪恶的隐身人可以使用技能来隐身。\n利用隐身能力，骗过他人的眼睛来获得胜利吧！,你可以利用「隱藏」按鈕進行隱身。\n利用隱身能力欺騙船員獲得勝利！
 SheriffName,Sheriff,シェリフ,警长,警長
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人,殺死敵人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利,殺死敵人帶領船員獲得勝利
@@ -660,9 +658,11 @@ VultureButtonName,Eat,食らう,吞噬,吞食
 NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐身人,正義的隱身人
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体,透明化以找尋屍體
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
+NiceScientistDescription,You can become invisible by using the [Hide] button.\nScientists in an invisible state can also be taken as targets of abilities.\nTherefore，this is not a role where it is possible to completely avoid being subject to the abilities of others，such as kills.\n\nUse invisibility to get information past the impostor's watchful eye!,[隠れる]ボタンを使用することで透明化することができます。\n透明化中のサイエンティストも能力の対象に取る事ができます。\n従って，キル等他者の能力を受ける事を完全に回避する事が可能な役職ではありません。\n\nインポスターの監視の目をかいくぐり情報を取得しましょう!
 NiceScientistCooldownSetting,Cool Time,クールタイム,技能冷却,技能冷卻時間
 NiceScientistDurationSetting,Duration Time,継続時間,技能持续时间,技能持續時間
 ScientistButtonName,Hide,隠れる,隐身,隱身
+ScientistCanTheLighterSeeTheScientist,Can the Lighter see the Scientist being transparent?,透明化中のサイエンティストをライターが見れるか
 ClergymanName,Clergyman,聖職者,牧师,牧師
 ClergymanTitle1,Let's sabotage the outsider.,人外の妨害をしよう,妨碍内鬼行动,妨礙內鬼行動
 ClergymanTitle2,Let's obstruct the outsider's view.,人外の視界を妨害しよう,让内鬼们也尝尝黑暗的滋味,讓內鬼們也嘗嘗黑暗的滋味
@@ -1203,7 +1203,7 @@ StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五�
 StefinderSoloWinSetting,SoloWin,単独勝利,二五仔可以单独获胜,二五仔可以單獨獲勝
 PartTimerName,PartTimer,フリーター,打工仔,打工仔
 PartTimerTitle1,If you want a part-time job...!,バイトするなら…！ ,打工人，打工魂，打工都是人上人！,成為打工皇帝吧！
-PartTimerDescription,You can get a job with someone specific.\nThe victory condition depends on the opponent's role， and you can win with any team.\nIf your employer dies， re-employ someone else.\nIf you are jobless， you will starve to death.,特定の誰かに就職することが出来ます。\n勝利条件は相手の役職に依存し、どんな陣営とでも勝利出来ます。\n就職先が死亡した場合、別の誰かに再就職しましょう。\n職無しでいると飢えて死ぬぞ。,打工仔可以给一名其他玩家打工。\n打工仔的胜利条件和打工对象一致。\n若打工仔的打工对象死亡，打工仔可以寻找一名其他玩家打工。\n若打工仔一段时间内没有选择玩家打工，打工仔会穷死。,打工仔可以在特定的對象底下打工。/n勝利條件將與老闆的陣營一致。\n當你的老闆死了，你將失業，必須再找一個新的老闆。\n若你在指定的回合數內沒有找到工作，你將會窮死。
+PartTimerDescription,You can get a job with someone specific.\nThe victory condition depends on the opponent's role， and you can win with any team.\nIf your employer dies， re-employ someone else.\nIf you are jobless， you will starve to death.,特定の誰かに就職することが出来ます。\n勝利条件は相手の役職に依存し、どんな陣営とでも勝利出来ます。\n就職先が死亡した場合、別の誰かに再就職しましょう。\n職無しでいると飢えて死ぬぞ。,打工仔可以给一名其他玩家打工。\n打工仔的胜利条件和打工对象一致。\n若打工仔的打工对象死亡，打工仔可以寻找一名其他玩家打工。\n若打工仔一段时间内没有选择玩家打工，打工仔会穷死。,打工仔可以在特定的對象底下打工。\n勝利條件將與老闆的陣營一致。\n當你的老闆死了，你將失業，必須再找一個新的老闆。\n若你在指定的回合數內沒有找到工作，你將會窮死。
 PartTimerDeathTurn,Number of turns to die from unbited status,未バイトの状態から死亡するターン数,无业状态下打工仔穷死经过的回合数,無業狀態下打工仔窮死經過的回合數
 PartTimerIsCheckTargetRole,I can see your part-time position.,バイト先の役職が見える,打工仔可以确认打工对象的职业,打工仔可以確認打工對象的職業
 PartTimerButtonName,PartTime,バイト,打工,打工
@@ -1244,7 +1244,7 @@ SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト
 SatsumaAndImoTitle2,Betray and betray.,手のひらをくるくる返そう,我是叛徒，还是你是叛徒？,我是叛徒，還是你是叛徒？
 SatsumaAndImoDescription,After each meeting， the impostor and crew teams will switch sides.\nThe winner is determined by the team at the time the decision is made.\nLet's Betray and betray.,会議を挟むごとにインポスター陣営とクルー陣営が入れ替わります。\n決着が付いた時の陣営で勝敗が決定します。\n手のひらくるくるしましょう。,游戏开始时人格分裂者随机加入船员或内鬼阵营。每轮会议结束后，人格分裂者会改变自己的阵营。\n游戏结束时，人格分裂者按那个时候的阵营结算胜利条件。\n上演一出谍中谍的戏码吧。,每輪會議結束後，會切換自己身為內鬼和船員的身分。\n當決定勝負時，將以當時的身分決定勝負。\n諜中諜中諜！
 ShiftActorName,Shift Actor,シフトアクター,模仿犯,模仿犯
-ShiftActorDescription,By shapeshifting，you can confirm the role of the shapeshifted object. Duplicate roles can also be confirmed by setting.\nDepending on the settings，it may fail to confirm the role. If it fails，the target role is displayed as [Crewmate].\nAfter the number of available times of the ability is used up，only the normal Shapeshift ability will be available.\n\nNow，let's imitate his life and play it out perfectly.,シェイプシフトを行う事で，シェイプした対象の役職を確認する事ができます。設定により重複役も確認する事ができます。/n設定により，役職の確認に失敗する事もあります。失敗した場合は対象の役職を[クルーメイト]と表示します。/n能力の使用可能回数を使い切った後は，通常のシェイプシフト能力のみ有します。\n\nさあ，彼の人生を模倣し，完璧に演じ切ろう。,模仿犯属于内鬼阵营。模仿犯可以通过化形为一名玩家来确认那名玩家的职业（包括附加职业）。\n根据房间设置，模仿犯有一定概率确认职业失败。失败的场合，那名玩家的职业会显示为“船员”。\n若模仿犯技能发动次数到达上限，则技能不再拥有确认职业效果，仅适用化形效果。\n\n来完美演绎他人的人生吧。,模仿犯可以透過模仿來確認模仿對象的身分。根據設定也能得知對方的附加職業。\n根據設定，模仿可能會失敗。失敗時，模仿對象的職業會以[船員]來表示。\n使用能力達到次數上限後，將僅剩模仿能力而無法判別對象身分。\n\n模仿對方的人生，完美演繹吧！
+ShiftActorDescription,By shapeshifting，you can confirm the role of the shapeshifted object. Duplicate roles can also be confirmed by setting.\nDepending on the settings，it may fail to confirm the role. If it fails，the target role is displayed as [Crewmate].\nAfter the number of available times of the ability is used up，only the normal Shapeshift ability will be available.\n\nNow，let's imitate his life and play it out perfectly.,シェイプシフトを行う事で，シェイプした対象の役職を確認する事ができます。設定により重複役も確認する事ができます。\n設定により，役職の確認に失敗する事もあります。失敗した場合は対象の役職を[クルーメイト]と表示します。\n能力の使用可能回数を使い切った後は，通常のシェイプシフト能力のみ有します。\n\nさあ，彼の人生を模倣し，完璧に演じ切ろう。,模仿犯属于内鬼阵营。模仿犯可以通过化形为一名玩家来确认那名玩家的职业（包括附加职业）。\n根据房间设置，模仿犯有一定概率确认职业失败。失败的场合，那名玩家的职业会显示为“船员”。\n若模仿犯技能发动次数到达上限，则技能不再拥有确认职业效果，仅适用化形效果。\n\n来完美演绎他人的人生吧。,模仿犯可以透過模仿來確認模仿對象的身分。根據設定也能得知對方的附加職業。\n根據設定，模仿可能會失敗。失敗時，模仿對象的職業會以[船員]來表示。\n使用能力達到次數上限後，將僅剩模仿能力而無法判別對象身分。\n\n模仿對方的人生，完美演繹吧！
 ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,我会比你更像你自己,我會比你更像你自己
 CanWatchAttribute,Can watch attribute,重複役職を見れる,模仿犯可以确认模仿对象的附加职业,模仿犯可以確認模仿對象的附加職業
 RightChance,Probability of Success,成功確率,成功概率,模仿成功的概率
@@ -1580,7 +1580,7 @@ PostMortemCertificate_DeadReason2,Cause of Death: <color=#89c3eb>Ejection</color
 PostMortemCertificate_CauseOfDeath1,<color=#89c3eb>estimated</color>,<color=#89c3eb>推定</color>,<color=#89c3eb>推测</color>,<color=#89c3eb>推定</color>
 PostMortemCertificate_CauseOfDeath2,<color=#89c3eb>confirmed</color>,<color=#89c3eb>確認</color>,<color=#89c3eb>确定</color>,<color=#89c3eb>確認</color>
 PostMortemCertificate_CauseOfDeath3,<color=#89c3eb>Approximate</color>,<color=#89c3eb>頃</color>,<color=#89c3eb>近似</color>,<color=#89c3eb>大約</color>
-PostMortemCertificate_NoDeaths,{0}/nPoliceSurgeon {1}:/ "{2}",{0}\n警察医 {1}\n「{2}」,{0}\n法医 {1}\n「{2}」,{0}\n法醫 {1}\n「{2}」
+PostMortemCertificate_NoDeaths,{0}\nPoliceSurgeon {1}:/ "{2}",{0}\n警察医 {1}\n「{2}」,{0}\n法医 {1}\n「{2}」,{0}\n法醫 {1}\n「{2}」
 PostMortemCertificate_NoDeaths_RandomMessage_1,There were no deaths during this turn.,今回ターンの死者はいなかった。,本轮未发现死者。,這個回合沒有死者。
 PostMortemCertificate_NoDeaths_RandomMessage_2,There were no deaths during this round. ...I wonder if there will be a sudden increase in deaths from now on...,今回ターンの死者はいなかった。\n...以降一気に死者が増えるのではないか...,本轮未发现死者。\n……下一次，会看到多少死者呢……,這個回合沒有死者。\n...之後會不會暴增呢...
 PostMortemCertificate_NoDeaths_RandomMessage_3,This turn，no one died.\nI have no way of saving crewmate from being killed by the Impostor...\nThe only thing I can do is to determine the estimated time of death of the body that will be called in the meeting someday，just to alleviate my regret..,今回ターンは誰も死亡していなかった。\n私にはインポスターに殺される仲間を助ける術はない...\nただ無念を晴らす為に、いつか会議に招集されるであろう死体の、死亡推定時刻を判断する事しかできない...,本轮未发现死者。\n对那些已经逝去的同伴们，我什么也做不到……\n我能做的，也只有等到会议开始，姗姗来迟地为他们做尸检……,這個回合一個死者也沒有。\n我沒有能力拯救被內鬼殺害的船員...\n我唯一能做的就是，診斷未來出現屍體的死亡時間。

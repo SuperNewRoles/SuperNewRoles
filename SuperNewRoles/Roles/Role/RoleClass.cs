@@ -98,7 +98,6 @@ public static class RoleClass
         Jester.ClearAndReload();
         Lighter.ClearAndReload();
         EvilLighter.ClearAndReload();
-        EvilScientist.ClearAndReload();
         Sheriff.ClearAndReload();
         MeetingSheriff.ClearAndReload();
         Jackal.ClearAndReload();
@@ -113,7 +112,7 @@ public static class RoleClass
         Speeder.ClearAndReload();
         Freezer.ClearAndReload();
         Vulture.ClearAndReload();
-        NiceScientist.ClearAndReload();
+        InvisibleRoleBase.ClearAndReload();
         Clergyman.ClearAndReload();
         Madmate.ClearAndReload();
         Bait.ClearAndReload();
@@ -350,20 +349,6 @@ public static class RoleClass
             EvilLighterPlayer = new();
             //CoolTime = CustomOptionHolder.EvilLighterCoolTime.GetFloat();
             //DurationTime = CustomOptionHolder.EvilLighterDurationTime.GetFloat();
-        }
-    }
-    public static class EvilScientist
-    {
-        public static List<PlayerControl> EvilScientistPlayer;
-        public static Color32 color = RoleClass.ImpostorRed;
-        public static float CoolTime;
-        public static float DurationTime;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
-        public static void ClearAndReload()
-        {
-            EvilScientistPlayer = new();
-            CoolTime = CustomOptionHolder.EvilScientistCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.EvilScientistDurationTime.GetFloat();
         }
     }
     public static class Sheriff
@@ -619,27 +604,6 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.VultureIsUseVent.GetBool();
             ShowArrows = CustomOptionHolder.VultureShowArrows.GetBool();
             DeadPlayerArrows = new();
-        }
-    }
-    public static class NiceScientist
-    {
-        public static List<PlayerControl> NiceScientistPlayer;
-        public static Color32 color = Palette.CrewmateBlue;
-        public static float CoolTime;
-        public static float DurationTime;
-        public static DateTime ButtonTimer;
-        public static bool IsScientist;
-        public static Dictionary<int, bool> IsScientistPlayers;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
-
-        public static void ClearAndReload()
-        {
-            NiceScientistPlayer = new();
-            CoolTime = CustomOptionHolder.NiceScientistCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.NiceScientistDurationTime.GetFloat();
-            ButtonTimer = DateTime.Now;
-            IsScientist = false;
-            IsScientistPlayers = new Dictionary<int, bool>();
         }
     }
     public static class Clergyman
@@ -2126,6 +2090,12 @@ public static class RoleClass
     }
     public static class Kunoichi
     {
+        // |:-------------------------------------------------------------------------------------------:|
+        // FIXME : 以下二つはKunoichiのロールベース化で, InvisibleRoleBase による制御に変更し, 削除して下さい。
+        public static bool IsScientist;
+        public static Dictionary<int, bool> IsScientistPlayers;
+        // |:-------------------------------------------------------------------------------------------:|
+
         public static List<PlayerControl> KunoichiPlayer;
         public static Color32 color = ImpostorRed;
         public static float KillCoolTime;
@@ -2147,6 +2117,9 @@ public static class RoleClass
 
         public static void ClearAndReload()
         {
+            IsScientist = false;
+            IsScientistPlayers = new Dictionary<int, bool>();
+
             HideKunai = CustomOptionHolder.KunoichiHideKunai.GetBool();
             OldPosition = new();
             StopTime = 0;
