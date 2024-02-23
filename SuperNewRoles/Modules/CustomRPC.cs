@@ -104,7 +104,7 @@ public enum RoleId
     Minimalist,
     Hawk,
     Egoist,
-    NiceRedRidingHood,
+    OldNiceRedRidingHood,
     EvilEraser,
     Workperson,
     Magaziner,

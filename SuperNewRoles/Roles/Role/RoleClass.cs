@@ -135,7 +135,7 @@ public static class RoleClass
         Minimalist.ClearAndReload();
         Hawk.ClearAndReload();
         Egoist.ClearAndReload();
-        NiceRedRidingHood.ClearAndReload();
+        OldNiceRedRidingHood.ClearAndReload();
         EvilEraser.ClearAndReload();
         Workperson.ClearAndReload();
         Magaziner.ClearAndReload();
@@ -993,7 +993,7 @@ public static class RoleClass
             UseKill = CustomOptionHolder.EgoistUseKill.GetBool();
         }
     }
-    public static class NiceRedRidingHood
+    public static class OldNiceRedRidingHood
     {
         public static List<PlayerControl> NiceRedRidingHoodPlayer;
         public static Color32 color = new(250, 128, 114, byte.MaxValue);

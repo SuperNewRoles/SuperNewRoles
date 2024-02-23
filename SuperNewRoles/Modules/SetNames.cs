@@ -395,7 +395,7 @@ public class SetNameUpdate
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
         bool CanSeeAllRole =
             (SetNamesClass.DefaultGhostSeeRoles() &&
-            LocalRole != RoleId.NiceRedRidingHood) ||
+            LocalRole != RoleId.OldNiceRedRidingHood) ||
             Debugger.canSeeRole ||
             (PlayerControl.LocalPlayer.GetRoleBase() is INameHandler nameHandler &&
             nameHandler.AmAllRoleVisible);

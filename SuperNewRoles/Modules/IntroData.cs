@@ -206,7 +206,7 @@ public class IntroData
     public static IntroData MinimalistIntro = new("Minimalist", RoleClass.Minimalist.color, 2, RoleId.Minimalist, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData HawkIntro = new("Hawk", RoleClass.Hawk.color, 1, RoleId.Hawk, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData EgoistIntro = new("Egoist", RoleClass.Egoist.color, 1, RoleId.Egoist, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData NiceRedRidingHoodIntro = new("NiceRedRidingHood", RoleClass.NiceRedRidingHood.color, 1, RoleId.NiceRedRidingHood);
+    public static IntroData NiceRedRidingHoodIntro = new("NiceRedRidingHood", RoleClass.OldNiceRedRidingHood.color, 1, RoleId.OldNiceRedRidingHood);
     public static IntroData EvilEraserIntro = new("EvilEraser", RoleClass.EvilEraser.color, 1, RoleId.EvilEraser, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData WorkpersonIntro = new("Workperson", RoleClass.Workperson.color, 1, RoleId.Workperson, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MagazinerIntro = new("Magaziner", RoleClass.Magaziner.color, 1, RoleId.Magaziner, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
