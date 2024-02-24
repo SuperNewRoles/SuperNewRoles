@@ -41,12 +41,12 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
 
     public void OnWrapUp(PlayerControl exiled)
     {
-        if (exiled == null || !(Player == PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.IsDead())) return;
+        if (exiled == null || Player == null || Player.IsAlive() || !Player.IsRole(RoleId.NiceRedRidingHood)) return;
 
         Logger.Info($"赤ずきん残り復活回数 : {RemainingCount}", Roleinfo.NameKey);
         if (RemainingCount <= 1) return;
 
-        DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId)?.FirstOrDefault();
+        DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == Player.PlayerId)?.FirstOrDefault();
         if (deadPlayer.killerIfExisting == null) return;
 
         var killer = PlayerControl.AllPlayerControls.FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
@@ -55,23 +55,19 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         if ((killer.PlayerId == exiled.PlayerId) || (NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead()))
         {
             bool IsDisabledRevive = EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer);
-            Logger.Info($"復活可否 : {!IsDisabledRevive}");
+            Logger.Info($"復活可否 : {!IsDisabledRevive}", Roleinfo.NameKey);
 
             if (IsDisabledRevive) return;
 
-            var Writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
-            Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            Writer.EndRPC();
-            RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
+            Player.Revive();
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(Player, RoleTypes.Crewmate);
+            DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == Player.PlayerId);
+            Patches.FinalStatusPatch.FinalStatusData.FinalStatuses[Player.PlayerId] = FinalStatus.Alive;
 
-            Writer = RPCHelper.StartRPC(CustomRPC.CleanBody);
-            Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            Writer.EndRPC();
-            RPCProcedure.CleanBody(CachedPlayer.LocalPlayer.PlayerId);
             RemainingCount--;
-            CachedPlayer.LocalPlayer.Data.IsDead = false;
+            Player.Data.IsDead = false;
 
-            DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId);
+            Logger.Info($"復活完了 : {!IsDisabledRevive}", Roleinfo.NameKey);
         }
     }
 }
