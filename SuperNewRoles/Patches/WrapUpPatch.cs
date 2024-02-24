@@ -77,8 +77,10 @@ class WrapUpPatch
                 GameObject.Destroy(__instance.gameObject);
 
                 // 暗転をごり押しで解決
-                if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool()) {
-                    new LateTask(() => {
+                if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())
+                {
+                    new LateTask(() =>
+                    {
                         FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(false);
                     }, 0.3f);
                 }
@@ -151,7 +153,6 @@ class WrapUpPatch
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
         ModeHandler.Wrapup(exiled);
-        RedRidingHood.WrapUp(exiled);
         Pteranodon.WrapUp();
         Revolutionist.WrapUp();
         Spelunker.WrapUp();

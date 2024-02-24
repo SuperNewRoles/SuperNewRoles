@@ -691,7 +691,6 @@ class AllRoleSetClass
             RoleId.Minimalist => CustomOptionHolder.MinimalistPlayerCount.GetInt(),
             RoleId.Hawk => CustomOptionHolder.HawkPlayerCount.GetInt(),
             RoleId.Egoist => CustomOptionHolder.EgoistPlayerCount.GetInt(),
-            RoleId.OldNiceRedRidingHood => CustomOptionHolder.NiceRedRidingHoodPlayerCount.GetInt(),
             RoleId.EvilEraser => CustomOptionHolder.EvilEraserPlayerCount.GetInt(),
             RoleId.Workperson => CustomOptionHolder.WorkpersonPlayerCount.GetInt(),
             RoleId.Magaziner => CustomOptionHolder.MagazinerPlayerCount.GetInt(),

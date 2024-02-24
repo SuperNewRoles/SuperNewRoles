@@ -556,9 +556,6 @@ public static class RoleHelpers
             case RoleId.Egoist:
                 RoleClass.Egoist.EgoistPlayer.Add(player);
                 break;
-            case RoleId.OldNiceRedRidingHood:
-                RoleClass.OldNiceRedRidingHood.NiceRedRidingHoodPlayer.Add(player);
-                break;
             case RoleId.EvilEraser:
                 RoleClass.EvilEraser.EvilEraserPlayer.Add(player);
                 break;
@@ -1127,9 +1124,6 @@ public static class RoleHelpers
                 break;
             case RoleId.Egoist:
                 RoleClass.Egoist.EgoistPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.OldNiceRedRidingHood:
-                RoleClass.OldNiceRedRidingHood.NiceRedRidingHoodPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.EvilEraser:
                 RoleClass.EvilEraser.EvilEraserPlayer.RemoveAll(ClearRemove);
@@ -1914,7 +1908,6 @@ public static class RoleHelpers
             else if (RoleClass.Minimalist.MinimalistPlayer.IsCheckListPlayerControl(player)) return RoleId.Minimalist;
             else if (RoleClass.Hawk.HawkPlayer.IsCheckListPlayerControl(player)) return RoleId.Hawk;
             else if (RoleClass.Egoist.EgoistPlayer.IsCheckListPlayerControl(player)) return RoleId.Egoist;
-            else if (RoleClass.OldNiceRedRidingHood.NiceRedRidingHoodPlayer.IsCheckListPlayerControl(player)) return RoleId.OldNiceRedRidingHood;
             else if (RoleClass.EvilEraser.EvilEraserPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilEraser;
             else if (RoleClass.Workperson.WorkpersonPlayer.IsCheckListPlayerControl(player)) return RoleId.Workperson;
             else if (RoleClass.Magaziner.MagazinerPlayer.IsCheckListPlayerControl(player)) return RoleId.Magaziner;

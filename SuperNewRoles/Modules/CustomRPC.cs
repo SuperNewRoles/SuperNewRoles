@@ -59,6 +59,7 @@ public enum RoleId
     BlackSanta,
     MedicalTechnologist,
     NiceScientist,
+    NiceRedRidingHood,
 
     //RoleId
 
@@ -104,7 +105,6 @@ public enum RoleId
     Minimalist,
     Hawk,
     Egoist,
-    OldNiceRedRidingHood,
     EvilEraser,
     Workperson,
     Magaziner,

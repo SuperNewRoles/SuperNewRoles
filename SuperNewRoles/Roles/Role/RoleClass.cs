@@ -135,7 +135,6 @@ public static class RoleClass
         Minimalist.ClearAndReload();
         Hawk.ClearAndReload();
         Egoist.ClearAndReload();
-        OldNiceRedRidingHood.ClearAndReload();
         EvilEraser.ClearAndReload();
         Workperson.ClearAndReload();
         Magaziner.ClearAndReload();
@@ -991,19 +990,6 @@ public static class RoleClass
             UseVent = CustomOptionHolder.EgoistUseVent.GetBool();
             UseSabo = CustomOptionHolder.EgoistUseSabo.GetBool();
             UseKill = CustomOptionHolder.EgoistUseKill.GetBool();
-        }
-    }
-    public static class OldNiceRedRidingHood
-    {
-        public static List<PlayerControl> NiceRedRidingHoodPlayer;
-        public static Color32 color = new(250, 128, 114, byte.MaxValue);
-        public static int Count;
-        public static Vector3? deadbodypos;
-        public static void ClearAndReload()
-        {
-            NiceRedRidingHoodPlayer = new();
-            Count = CustomOptionHolder.NiceRedRidingHoodCount.GetInt();
-            deadbodypos = null;
         }
     }
     public static class EvilEraser
