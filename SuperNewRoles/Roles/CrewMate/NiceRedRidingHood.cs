@@ -71,5 +71,10 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         }
     }
 
-    public bool CanGhostSeeRole => RemainingCount <= 0;
+    public bool CanGhostSeeRole =>
+        RemainingCount <= 0 // 復活可能回数を使い切った場合
+            ? true
+            : DeadPlayer.deadPlayers?.FirstOrDefault(x => x.player?.PlayerId == Player.PlayerId)?.killerIfExisting == null // 追放, 又はキル者が登録されていない場合
+                ? true
+                : false;
 }
