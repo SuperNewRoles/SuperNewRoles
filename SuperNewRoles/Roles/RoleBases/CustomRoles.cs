@@ -44,7 +44,7 @@ public static class CustomRoles
                 }
                 break;
         }
-        if (PlayerControl.LocalPlayer.IsDead() && roleBase is IHaveNotHauntAbility haveNotHauntAbility)
+        if (PlayerControl.LocalPlayer.IsDead() && roleBase is IHaveHauntAbility haveNotHauntAbility)
         {
             Buttons.HauntButtonControl.HauntButtonSwitch(haveNotHauntAbility);
         }

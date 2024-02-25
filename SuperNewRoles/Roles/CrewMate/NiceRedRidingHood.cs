@@ -7,7 +7,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using System.Linq;
 namespace SuperNewRoles.Roles.Crewmate.NiceRedRidingHood;
 
-public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandler, IHaveNotHauntAbility
+public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandler, IHaveHauntAbility
 {
     public static new RoleInfo Roleinfo = new(
         typeof(NiceRedRidingHood),

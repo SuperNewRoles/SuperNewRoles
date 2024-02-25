@@ -9,7 +9,7 @@ public class HauntButtonControl
     /// 憑依ボタンの有効 / 無効を制御する
     /// </summary>
     /// <param name="haveNotHauntAbility">判定する対象</param>
-    public static void HauntButtonSwitch(IHaveNotHauntAbility haveNotHauntAbility)
+    public static void HauntButtonSwitch(IHaveHauntAbility haveNotHauntAbility)
     {
         if (CanNotUseHauntAbility(haveNotHauntAbility)) DisableHauntButton(); // 憑依ボタンを非表示にする
         else EnabledHauntButton(); // 条件から外れたら再表示する
@@ -20,7 +20,7 @@ public class HauntButtonControl
     /// </summary>
     /// <param name="haveNotHauntAbility">判定する対象</param>
     /// <returns>true : 有効 / false : 無効</returns>
-    private static bool CanNotUseHauntAbility(IHaveNotHauntAbility haveNotHauntAbility) =>
+    private static bool CanNotUseHauntAbility(IHaveHauntAbility haveNotHauntAbility) =>
         haveNotHauntAbility != null &&
         PlayerControl.LocalPlayer.IsDead() &&
         !haveNotHauntAbility.CanUseHauntAbility && // 憑依能力を有さない役職で
