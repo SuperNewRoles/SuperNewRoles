@@ -9,7 +9,17 @@ class PlusGameOptions
 {
     public static CustomOption PlusGameOptionSetting;
 
+    /// <summary>
+    /// 設定 : "死亡時に他プレイヤーの役職を表示しない"
+    /// </summary>
+    /// <value>true : 表示しない / false : 表示する</value>
     public static CustomOption CanNotGhostSeeRole;
+
+    /// <summary>
+    /// 設定 : "インポスターは死亡時に他プレイヤーの役職を表示する
+    /// (CanNotGhostSeeRole が有効時 インポスターは他プレイヤーの役職を表示するか)
+    /// </summary>
+    /// <value>true : 表示する / false : 表示しない</value>
     public static CustomOption OnlyImpostorGhostSeeRole;
 
     public static CustomOption CanGhostSeeVote;

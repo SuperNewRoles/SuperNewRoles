@@ -70,4 +70,6 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
             Logger.Info($"復活完了 : {!IsDisabledRevive}", Roleinfo.NameKey);
         }
     }
+
+    public bool CanGhostSeeRole => RemainingCount <= 0;
 }
