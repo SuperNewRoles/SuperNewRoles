@@ -44,7 +44,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         if (exiled == null || Player == null || Player.IsAlive() || !Player.IsRole(RoleId.NiceRedRidingHood)) return;
 
         Logger.Info($"赤ずきん残り復活回数 : {RemainingCount}", Roleinfo.NameKey);
-        if (RemainingCount <= 1) return;
+        if (RemainingCount <= 0) return;
 
         DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == Player.PlayerId)?.FirstOrDefault();
         if (deadPlayer.killerIfExisting == null) return;
@@ -70,4 +70,6 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
             Logger.Info($"復活完了 : {!IsDisabledRevive}", Roleinfo.NameKey);
         }
     }
-}
+
+    public bool CanGhostSeeRole => _canGhostSeeRole();
+    private bool
