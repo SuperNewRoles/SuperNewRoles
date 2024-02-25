@@ -7,7 +7,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using System.Linq;
 namespace SuperNewRoles.Roles.Crewmate.NiceRedRidingHood;
 
-public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandler
+public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandler, IHaveNotHauntAbility
 {
     public static new RoleInfo Roleinfo = new(
         typeof(NiceRedRidingHood),
@@ -71,7 +71,9 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         }
     }
 
-    public bool CanGhostSeeRole =>
+    public bool CanGhostSeeRole => GhostSeeRoleStatus;
+    public bool CanUseHauntAbility => GhostSeeRoleStatus;
+    private bool GhostSeeRoleStatus =>
         RemainingCount <= 0 // 復活可能回数を使い切った場合
             ? true
             : DeadPlayer.deadPlayers?.FirstOrDefault(x => x.player?.PlayerId == Player.PlayerId)?.killerIfExisting == null // 追放, 又はキル者が登録されていない場合
