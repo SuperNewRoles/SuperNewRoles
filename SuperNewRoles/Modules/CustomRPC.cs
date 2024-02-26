@@ -358,7 +358,7 @@ public enum CustomRPC
     BalancerBalance,
     PteranodonSetStatus,
     SetInfectionTimer,
-    SendMeetingTurnNow,
+    SendMeetingCount,
     PoliceSurgeonSendActualDeathTimeManager,
     MoiraChangeRole,
     JumpDancerJump,
@@ -2102,8 +2102,8 @@ public static class RPCProcedure
                         for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
                         SetInfectionTimer(id, timer);
                         break;
-                    case CustomRPC.SendMeetingTurnNow:
-                        ReportDeadBodyPatch.SaveMeetingTurnNow(reader.ReadByte());
+                    case CustomRPC.SendMeetingCount:
+                        ReportDeadBodyPatch.SaveMeetingCount(reader.ReadByte());
                         break;
                     case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
                         PoliceSurgeon_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
