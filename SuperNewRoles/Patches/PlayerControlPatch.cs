@@ -309,10 +309,10 @@ class ReportDeadBodyPatch
         }
         return RoleClass.Assassin.TriggerPlayer == null
         && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
-        && (Mode.PlusMode.PlusGameOptions.UseMeetingButton || target != null)
+        && (Mode.PlusMode.PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting || target != null)
         && !ModeHandler.IsMode(ModeId.BattleRoyal, ModeId.PantsRoyal)
         && !ModeHandler.IsMode(ModeId.CopsRobbers)
-&& (ModeHandler.IsMode(ModeId.SuperHostRoles)
+        && (ModeHandler.IsMode(ModeId.SuperHostRoles)
             ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
             : !ModeHandler.IsMode(ModeId.Zombie)
             && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId));

@@ -355,8 +355,10 @@ SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内�
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜,船員禁用完成任務獲勝
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点,固定重生點
 MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
+ReportDeadBodySetting,Emergency meeting and report setting,緊急会議と通報の設定
+IsLimitEmergencyMeeting,Limit the number of times an emergency meeting can be used.,緊急会議を使用できる回数を制限する
+EmergencyMeetingLimitCount,Emergency meeting Overall available times,緊急会議 全体使用可能回数
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告
-NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,禁用召開緊急會議
 DeviceOptionsSetting,Information Device Options,情報機器制限の設定,飞船设备设置,情報獲取裝置限制使用設定
 CanUseDeviceSetting,<color=#00e000>On</color>/<color=#949495>Off</color> setting.,使用<color=#00e000>可能</color>/<color=#949495>不可能</color> の設定,<color=#00e000>启用</color>/<color=#949495>禁用</color>设置,<color=#00e000>可以</color>/<color=#949495>不行</color>使用設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图,可以觀看管理員地圖
@@ -418,6 +420,12 @@ FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
 FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
 FinalStatusSantaSelf,Santa bomb!,ソリから転落,送错礼物,聖誕炸彈
+
+# MeetingStatus
+MeetingStatusCanNotCallEmergencyMeeting,EMERGENCY MEETINGS CANNOT\nBE OPENED DUE TO SETTINGS,緊急会議は\n設定により開けない
+MeetingStatusPersonalEmergencyCount,CREWMEMBERS {0} HAS {1} EMERGENCY MEETINGS LEFT,クルー {0} が持つ 緊急会議残り {1} 回
+MeetingStatusAllEmergencyCount,ALL CREWMEMBERS HAS {0} EMERGENCY MEETINGS LEFT,クルー全体が持つ 緊急会議残り {0} 回
+MeetingStatusUpperLimitReached,EMERGENCY MEETINGS CANNOT\nBE UESD BECAUSE LIMIT COUNT,緊急会議は\n全体の使用可能回数に達した
 
 # Sabotages
 SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定
