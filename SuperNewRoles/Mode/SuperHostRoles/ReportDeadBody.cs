@@ -1,5 +1,7 @@
 using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.MapCustoms;
+using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -12,13 +14,16 @@ class ReportDeadBody
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         //会議ボタンでもレポートでも起こる処理
 
-        if (target == null)
+        if (target == null) //会議ボタンのみで起こる処理
         {
-            //会議ボタンのみで起こる処理
+
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle, false) &&
                 MapCustom.TheFungleMushroomMixupOption.GetBool() &&
                 MapCustom.TheFungleMushroomMixupCantOpenMeeting.GetBool() &&
                 __instance.IsMushroomMixupActive())
+                return false;
+            if (PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting && PlusGameOptions.EmergencyMeetingsCallstate.maxCount != byte.MaxValue && // 会議回数制限が有効で
+                PlusGameOptions.EmergencyMeetingsCallstate.maxCount <= Patches.ReportDeadBodyPatch.MeetingCount.emergency) // 全体回数を使い切っているなら
                 return false;
             return true;
         };
