@@ -65,7 +65,7 @@ class EmergencyMinigamePatch
         }
 
         // 以降, 会議クールが空けてない時は, バニラのステータス及び文章を優先する。
-        if (!(ShipStatus.Instance.Timer < 15f || ShipStatus.Instance.EmergencyCooldown > 0f)) return Status.Vanilla;
+        if (ShipStatus.Instance.Timer < 15f || ShipStatus.Instance.EmergencyCooldown > 0f) return Status.Vanilla;
 
         // 自分の会議回数が残っているか
         bool HaveEmergencies = PlayerControl.LocalPlayer.RemainingEmergencies > 0;

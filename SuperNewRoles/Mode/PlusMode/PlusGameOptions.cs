@@ -55,10 +55,10 @@ class PlusGameOptions
 
         NoTaskWinModeSetting = Create(104000, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusGameOptionSetting, isHeader: true);
 
-        ReportDeadBodySetting = Create(104400, true, CustomOptionType.Generic, "ReportDeadBodySetting", false, PlusGameOptionSetting, isHeader: true);
-        IsLimitEmergencyMeeting = Create(104401, true, CustomOptionType.Generic, "IsLimitEmergencyMeeting", false, ReportDeadBodySetting);
-        EmergencyMeetingLimitCount = Create(104402, true, CustomOptionType.Generic, "EmergencyMeetingLimitCount", 10, 0, 20, 1, IsLimitEmergencyMeeting);
-        NotUseReportDeadBody = Create(104403, true, CustomOptionType.Generic, "NotUseReportSetting", false, ReportDeadBodySetting);
+        ReportDeadBodySetting = Create(105100, true, CustomOptionType.Generic, "ReportDeadBodySetting", false, PlusGameOptionSetting, isHeader: true);
+        IsLimitEmergencyMeeting = Create(105101, true, CustomOptionType.Generic, "IsLimitEmergencyMeeting", false, ReportDeadBodySetting);
+        EmergencyMeetingLimitCount = Create(105102, true, CustomOptionType.Generic, "EmergencyMeetingLimitCount", 10, 0, 20, 1, IsLimitEmergencyMeeting);
+        NotUseReportDeadBody = Create(105103, true, CustomOptionType.Generic, "NotUseReportSetting", false, ReportDeadBodySetting);
 
         IsChangeTheWinCondition = Create(104100, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, PlusGameOptionSetting, isHeader: true);
 
