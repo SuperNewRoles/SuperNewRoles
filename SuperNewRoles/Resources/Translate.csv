@@ -154,7 +154,7 @@ SettingImpostorTeamRolesName,Impostor camp position setting,インポスター�
 Setting,Setting up positions in the third camp,第三陣営の役職設定,独立阵营职业设置,中立陣營職業設定
 SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加职业设置,多重職業設定
 Settingsonota,Other settings,その他の設定,其他设置,其他設定
-optionOn,<color=#00e000>On</color>,<color=#00e000>オン</b></color>,<color=#00e000>开启</color>,<color=#00e000>開</color>
+optionOn,<color=#00e000>On</color>,<color=#00e000>オン</color>,<color=#00e000>开启</color>,<color=#00e000>開</color>
 optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#949495>关闭</color>,<color=#949495>關</color>
 preset,Preset,プリセット,预设,預設
 unitSeconds,Seconds,秒,秒,秒
@@ -1924,6 +1924,7 @@ MessageSettings,Settings,設定,设置,設定
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业,當前啟用的職業
 EnableTagsMessage,Currently set matchmaking tags,現在設定されているマッチメイキングタグ,当前设置的游戏房间标签,當前房間啟用的對局標籤
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
+HideSettingsMessage,Currently，the settings are kept secret by the host.,現在ホストにより，設定が秘匿されています。
 RoleInfoDescription,You can retrieve information about a role by searching in the form /ri [role name]. (e.g. : /ri Wave Cannon Jackal)\nYou can also use internal role names. (e.g. : /ri WaveCannonJackal)\nGuests can only search by the role they are currently assigned to.\nHosts are not restricted and search results are sent to all hosts. The host can also use the [ /yourrole(/yr) ] command to resend the role information assigned to each player.,/ri [役職名]の形で検索する事で、役職の情報を取得する事ができます。(例 : /ri マッドてるてる)\n内部的な役職名を使用する事もできます。(例 : /ri MadJester)\nゲストは現在配役されている役職からのみ検索する事ができます。\nホストは検索制限は無く、検索結果は全体に送信されます。又、ホストは [ /yourrole(/yr) ] コマンドを使用する事で、各プレイヤーに割り当てられた役職情報を再送信することができます。,输入/ri [职业名]来获取该职业的相关信息。（例：/ri 铁华团团长）\n非房主玩家只能获取其目前职业的相关信息。\n房主可以不受限制，且接收到的信息会发送给所有玩家。此外，房主也可以使用命令[ /yourrole(/yr) ]来给每名玩家发送各自的职业的相关信息。,輸入/ri [職業名]來獲取與該職業相關的情報。（例：\ri 鐵華團團長）\n非房主玩家僅能獲取該職業的相關訊息。\n房主可以不受限制，且接收到的訊息會發送給所有玩家。此外，房主也可以使用命令[ /yourrole(/yr) ]來給每名玩家發送各自的職業的相關訊息。
 RoleInfoError,Failed to retrieve information for role named [ {0} ].\nSuch a role may not exist. \nPlease try entering the information again.,[ {0} ] という役職の情報の取得に失敗しました。\nそのような役職は存在しません。\n再度入力して下さい。,无法获取职业名为[{0}]的职业的相关信息。\n该职业可能不存在。\n请重新输入。,無法獲取職業名為[{0}]的職業的相關訊息。\n該職業可能不存在。\n請重新輸入。
 RoleIdInfoError,Failed to retrieve information for the role [ {0} ({1}) ].\nThe role name entered was correct，but an error occurred when the mod attempted to retrieve the role information and it failed.,[ {0} ({1}) ] という役職の情報の取得に失敗しました。\n入力された役職名は正確でしたが、Mod側で役職の情報の取得を試みた際にエラーが発生し 取得に失敗しました。,无法获取职业名为[ {0} ({1}) ]的职业的相关信息。\n该职业名存在，但模组在尝试获取职业信息时出现错误导致获取失败。,[ {0} ({1}) ] 這個職業的訊息獲取失敗。\n輸入的職業名稱是存在的，但是在模組嘗試獲取職業訊息時發生錯誤並導致獲取失敗。
