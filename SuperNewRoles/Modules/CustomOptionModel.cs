@@ -247,7 +247,7 @@ public class CustomOption
     {
         OptionSaver.WriteNowPreset();
         preset = newPreset;
-        (bool suc, int code, Dictionary<uint,byte> data) = OptionSaver.LoadPreset(preset);
+        (bool suc, int code, Dictionary<uint, byte> data) = OptionSaver.LoadPreset(preset);
         if (!suc && code == -1)
         {
             foreach (CustomOption option in options)
@@ -263,9 +263,10 @@ public class CustomOption
             CurrentValues = new();
             OptionSaver.WriteNowPreset();
             return;
-        } else if (!suc)
+        }
+        else if (!suc)
         {
-            Logger.Info("CustomOptionGetPresetError:"+code.ToString());
+            Logger.Info("CustomOptionGetPresetError:" + code.ToString());
             return;
         }
         foreach (CustomOption option in options)
@@ -397,7 +398,7 @@ public class CustomOption
                 } // Save selection to config
                 else
                 {
-                    ShareOptionSelections(this);    
+                    ShareOptionSelections(this);
                 }
             }
         }
@@ -1038,8 +1039,56 @@ static class GameOptionsMenuUpdatePatch
     }
     public static bool IsHidden(this CustomOption option)
     {
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) || ((option == JumpDancer.JumpDancerOption) && DateTime.UtcNow < new DateTime(2023, 9, 6, 11, 50, 0));
+        // 封印処理がある時は ``|| !IsAlreadyRelease(option)`` のコメントアウトを解除し, 解放日時を HaveSealingCondition に登録する。
+        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) /*|| !IsAlreadyRelease(option)*/;
     }
+
+    /// <summary>
+    /// 設定の封印の解放後, 処理が残っている事をLogに記載するか
+    /// </summary>
+    /// <value>true : Logに記載する / false : Logに記載しない</value>
+    public const bool IsHaveSealingOption = false; // 設定の封印処理の解放後, 封印処理が残っている事をlogに記載する為に使用する
+
+    /// <summary>
+    /// オプションが解放されてるか判定する。
+    /// </summary>
+    /// <param name="option">判定するオプション</param>
+    /// <returns>true : 解放されている / false : 解放されていない</returns>
+    private static bool IsAlreadyRelease(CustomOption option)
+    {
+        if (!HaveSealingCondition(option, out DateTime releaseDate)) return true;
+        if (DateTime.UtcNow >= releaseDate) return true;
+        return false;
+    }
+    /// <summary>
+    /// オプションが封印条件を有しているか判定する。
+    /// オプションの封印条件を登録する。
+    /// </summary>
+    /// <param name="option">判定するオプション</param>
+    /// <param name="releaseDate">オプションの開放日時</param>
+    /// <returns>true : 封印条件を有する / false : 封印条件を有さない</returns>
+    internal static bool HaveSealingCondition(CustomOption option, out DateTime releaseDate)
+    {
+        releaseDate = DateTime.MinValue;
+
+        // if (option == 封印対象のCustomOption) { releaseDate = GetUtcTime(年, 月, 日, 時, 分, 秒); }
+
+        if (releaseDate == DateTime.MinValue) return false;
+        else return true;
+    }
+
+    /// <summary>
+    /// 与えられた日時(JST)を UTCに変換する
+    /// </summary>
+    private static DateTime GetUtcTime(int year, int month, int day, int hour, int minute, int second)
+    {
+        DateTime jst = new(year, month, day, hour, minute, second);
+        TimeSpan timeZone = new(0, 9, 0, 0);
+
+        DateTime utc = jst - timeZone;
+        return utc;
+    }
+
     public static void Postfix(GameOptionsMenu __instance)
     {
         var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();

@@ -18,7 +18,7 @@ public class CustomOptionHolder
     public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
     public static string[] rates4 = new string[] { "0%", "25%", "50%", "75%", "100%" };
-    public static string[] ratesper5 = new string[] { "0%","5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%" };
+    public static string[] ratesper5 = new string[] { "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%" };
     private static List<string> presetList()
     {
         var tmp = new List<string>();
@@ -2004,21 +2004,8 @@ public class CustomOptionHolder
         Logger.Info($"SettingRoleIdのMax: 6 - {GetRoleSettingid(MatchingTagIdMax)}", "MatchingTag");
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
-        /*
-        string OPTIONDATA = "{";
-        foreach (CustomOption opt in CustomOption.options)
-        {
-            OPTIONDATA += "\"" + opt.id.ToString() + "\":" + "{\"name\":\"" + opt.name + "\",\"selections\":[";
-            foreach (object selection in opt.selections)
-            {
-                OPTIONDATA += "\"" + selection.ToString() + "\",";
-            }
-            OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
-            OPTIONDATA += "]},";
-        }
-        OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
-        OPTIONDATA += "}";
-        GUIUtility.systemCopyBuffer = OPTIONDATA;*/
+
+        CheckOption();
     }
 
     /// <summary>
@@ -2027,4 +2014,23 @@ public class CustomOptionHolder
     /// <param name="maxId">処理したい6桁の設定Id</param>
     /// <returns></returns>
     private static string GetRoleSettingid(int maxId) => $"{maxId / 100}"[1..];
+
+    /// <summary>
+    /// CustomOptionの状態をlogに印字する
+    /// </summary>
+    private static void CheckOption()
+    {
+        Logger.Info("----------- CustomOption Info start -----------", "CustomOption");
+
+        if (GameOptionsMenuUpdatePatch.IsHaveSealingOption)
+        {
+            foreach (CustomOption option in CustomOption.options)
+            {
+                if (!GameOptionsMenuUpdatePatch.HaveSealingCondition(option, out System.DateTime releaseDate)) continue;
+                if (System.DateTime.UtcNow >= releaseDate) { Logger.Info($"解放済の封印処理が残っています。 CustomOption Id => {option.id}", "Sealing"); }
+            }
+        }
+
+        Logger.Info("----------- CustomOption Info End -----------", "CustomOption");
+    }
 }
