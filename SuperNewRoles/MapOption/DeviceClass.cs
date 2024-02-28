@@ -35,6 +35,11 @@ public static class DeviceClass
         UsePlayers = new() { { DeviceType.Admin.ToString(), new() }, { DeviceType.Camera.ToString(), new() }, { DeviceType.Vital.ToString(), new() } };
         DeviceTypes = new();
         DeviceTimers = new();
+
+        IsAdminRestrict = MapOption.RestrictAdmin.GetBool();
+        IsCameraRestrict = MapOption.RestrictCamera.GetBool();
+        IsVitalRestrict = MapOption.RestrictVital.GetBool();
+
         if (MapOption.IsUsingRestrictDevicesTime)
         {
             if (IsAdminRestrict)
@@ -72,10 +77,11 @@ public static class DeviceClass
             if (SyncTimer <= 0)
             {
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-                writer.Write((byte)Enum.Parse(typeof(DeviceType), deviceType));
+                writer.Write(deviceType);
                 writer.Write(DeviceTimers[deviceType]);
                 writer.EndRPC();
-                RPCProcedure.SetDeviceTime((byte)Enum.Parse(typeof(DeviceType), deviceType), DeviceTimers[deviceType]);
+                RPCProcedure.SetDeviceTime(deviceType, DeviceTimers[deviceType]);
+                Logger.Info($"Sync {deviceType}:{DeviceTimers[deviceType]}");
             }
         }
         if (SyncTimer <= 0)
@@ -266,7 +272,8 @@ public static class DeviceClass
                 MapBehaviour.Instance.Close();
                 return;
             }
-            DeviceTimers[DeviceType.Admin.ToString()] -= Time.deltaTime;
+            if (!AmongUsClient.Instance.AmHost)
+                DeviceTimers[DeviceType.Admin.ToString()] -= Time.deltaTime;
             if (TimeRemaining == null)
             {
                 TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
@@ -366,10 +373,10 @@ public static class DeviceClass
         {
             UsePlayers[deviceType] = new();
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-            writer.Write((byte)Enum.Parse(typeof(DeviceType), deviceType));
+            writer.Write(deviceType);
             writer.Write(DeviceTimers[deviceType]);
             writer.EndRPC();
-            RPCProcedure.SetDeviceTime((byte)Enum.Parse(typeof(DeviceType), deviceType), DeviceTimers[deviceType]);
+            RPCProcedure.SetDeviceTime(deviceType, DeviceTimers[deviceType]);
         }
         SyncTimer = 0f;
     }
@@ -428,6 +435,8 @@ public static class DeviceClass
                 __instance.Close();
                 return;
             }
+            if (!AmongUsClient.Instance.AmHost)
+                DeviceTimers[DeviceType.Vital.ToString()] -= Time.deltaTime;
             if (TimeRemaining == null)
             {
                 TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
@@ -479,6 +488,8 @@ public static class DeviceClass
             __instance.Close();
             return;
         }
+        if (!AmongUsClient.Instance.AmHost)
+            DeviceTimers[DeviceType.Camera.ToString()] -= Time.deltaTime;
         if (TimeRemaining == null)
         {
             TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);

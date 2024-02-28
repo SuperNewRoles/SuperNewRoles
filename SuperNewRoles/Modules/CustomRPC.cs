@@ -679,11 +679,11 @@ public static class RPCProcedure
         else
             DeviceClass.UsePlayers[type.ToString()].RemoveWhere(x => x != null && x.PlayerId == player.PlayerId);
     }
-    public static void SetDeviceTime(byte devicetype, float time)
+    public static void SetDeviceTime(string devicetype, float time)
     {
-        DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
-        if (!DeviceClass.DeviceTimers.ContainsKey(type.ToString())) return;
-        DeviceClass.DeviceTimers[type.ToString()] = time;
+        if (!DeviceClass.DeviceTimers.ContainsKey(devicetype))
+            throw new Exception($"SetDeviceTime Failed: {devicetype}");
+        DeviceClass.DeviceTimers[devicetype] = time;
     }
 
     public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
@@ -2024,7 +2024,7 @@ public static class RPCProcedure
                         SyncDeathMeeting(reader.ReadByte());
                         break;
                     case CustomRPC.SetDeviceTime:
-                        SetDeviceTime(reader.ReadByte(), reader.ReadSingle());
+                        SetDeviceTime(reader.ReadString(), reader.ReadSingle());
                         break;
                     case CustomRPC.SetDeviceUseStatus:
                         SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
