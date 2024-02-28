@@ -6,6 +6,21 @@ namespace SuperNewRoles.Roles;
 class JackalFriends
 {
     public static HashSet<byte> CheckedJackal;
+
+    /// <summary>
+    /// JFSKされたジャッカルフレンズを保存する
+    /// </summary>
+    /// <value>
+    /// true : 元がタスクをできる役職 / false : 元がタスクができない役職
+    /// </value>
+    public static PlayerData<bool> ChangeJackalFriendsPlayer;
+
+    public static void ClearAndReload()
+    {
+        CheckedJackal = new();
+        ChangeJackalFriendsPlayer = new(defaultvalue: true);
+    }
+
     public static bool CheckJackal(PlayerControl p)
     {
         if (CheckedJackal.Contains(p.PlayerId)) return true;
@@ -15,7 +30,8 @@ class JackalFriends
         {
             case RoleId.JackalFriends:
                 if (!RoleClass.JackalFriends.IsJackalCheck) return false;
-                CheckTask = RoleClass.JackalFriends.JackalCheckTask;
+                bool haveTask = !(Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && !ChangeJackalFriendsPlayer[p.PlayerId]);
+                CheckTask = haveTask ? RoleClass.JackalFriends.JackalCheckTask : 0;
                 break;
             case RoleId.SeerFriends:
                 if (!RoleClass.SeerFriends.IsJackalCheck) return false;

@@ -1,13 +1,14 @@
 ﻿{
   "Devs": [
     { "number": "開発者1号", "name": "よっキング", "id": 100 },
+    { "number": "開発者4号", "name": "漢方薬の人", "id": 100 },
     { "number": "開発者7号", "name": "月城蔵徒", "id": 100 },
     { "number": "開発者9号", "name": "Kuki", "id": 100 },
-    { "number": "開発者11号", "name": "Glaceon", "id": 100}
+    { "number": "開発者11号", "name": "Glaceon", "id": 100},
+    { "number": "開発者12号",  "name": "セオノ", "id": 100 }
   ],
 
   "Supporter":[
-    { "name": "セオノ", "id": 100 }
   ],
 
   "Translate":[

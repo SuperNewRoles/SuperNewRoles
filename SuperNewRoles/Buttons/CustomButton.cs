@@ -75,7 +75,7 @@ public class CustomButton
         }
         SetActive(false);
     }
-    public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "", Color? color = null)
+    public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "", bool isUseSecondButtonInfo = false, Color? color = null)
     : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText, color) { }
 
     void OnClickEvent()
@@ -121,9 +121,8 @@ public class CustomButton
     public static void MeetingEndedUpdate()
     {
         buttons.RemoveAll(item => item.actionButton == null);
-        PlayerControl player = PlayerControl.LocalPlayer;
-        bool isAlive = player.IsAlive();
-        RoleId role = player.GetRole();
+        bool isAlive = PlayerControl.LocalPlayer.IsAlive();
+        RoleId role = PlayerControl.LocalPlayer.GetRole();
         foreach (CustomButton btn in buttons)
         {
             try
@@ -136,7 +135,6 @@ public class CustomButton
                 if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
             }
         }
-        if (player.CurrentOutfitType == PlayerOutfitType.Shapeshifted) player.RpcShapeshift(player, false);
     }
 
     public void SetActive(bool isActive)
