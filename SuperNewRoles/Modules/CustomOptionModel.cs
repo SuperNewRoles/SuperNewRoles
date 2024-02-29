@@ -247,7 +247,7 @@ public class CustomOption
     {
         OptionSaver.WriteNowPreset();
         preset = newPreset;
-        (bool suc, int code, Dictionary<uint,byte> data) = OptionSaver.LoadPreset(preset);
+        (bool suc, int code, Dictionary<uint, byte> data) = OptionSaver.LoadPreset(preset);
         if (!suc && code == -1)
         {
             foreach (CustomOption option in options)
@@ -263,9 +263,10 @@ public class CustomOption
             CurrentValues = new();
             OptionSaver.WriteNowPreset();
             return;
-        } else if (!suc)
+        }
+        else if (!suc)
         {
-            Logger.Info("CustomOptionGetPresetError:"+code.ToString());
+            Logger.Info("CustomOptionGetPresetError:" + code.ToString());
             return;
         }
         foreach (CustomOption option in options)
@@ -397,7 +398,7 @@ public class CustomOption
                 } // Save selection to config
                 else
                 {
-                    ShareOptionSelections(this);    
+                    ShareOptionSelections(this);
                 }
             }
         }
@@ -1326,10 +1327,11 @@ class GameOptionsDataPatch
 
         static void addChildren(CustomOption option, ref StringBuilder entry, bool indent = true)
         {
-            if (!option.Enabled) return;
+            if ((!option.Enabled) || (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn)) return;
 
             foreach (var child in option.children)
             {
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) continue;
                 if (!GameOptionsMenuUpdatePatch.IsHidden(option))
                     entry.AppendLine((indent ? "    " : "") + OptionToString(child));
                 addChildren(child, ref entry, indent);
@@ -1352,7 +1354,7 @@ class GameOptionsDataPatch
 
             if (option.parent == null)
             {
-                if (!option.Enabled)
+                if ((!option.Enabled) || (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn))
                 {
                     continue;
                 }
