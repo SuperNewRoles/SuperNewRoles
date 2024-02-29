@@ -30,6 +30,7 @@ internal static class HostManagedChatCommandPatch
         AllRoles,
         GetInRoles,
         RoleInfo,
+        GetSetting,
         Winners,
         MatchMakingTags,
         BattleRoles,
@@ -54,6 +55,7 @@ internal static class HostManagedChatCommandPatch
             "/allroles" or "/ar" => CommandType.AllRoles,
             "/getinroles" or "/gr" => CommandType.GetInRoles,
             "/roleinfo" or "/ri" => CommandType.RoleInfo,
+            "/getsettings" or "/gs" => CommandType.GetSetting,
             "/winners" or "/w" => CommandType.Winners,
             "/matchtag" or "/tag" => CommandType.MatchMakingTags,
             "/battleroles" or "/btr" => CommandType.BattleRoles,
@@ -95,6 +97,17 @@ internal static class HostManagedChatCommandPatch
                 break;
             case CommandType.RoleInfo:
                 GetChatCommands.ProcessRoleInfo(commandUser, Commands);
+                break;
+            case CommandType.GetSetting:
+                PlayerControl sendTarget = commandUser.AmOwner ? null : commandUser;
+                if (CustomOptionHolder.hideSettings.GetBool()) // 設定が隠されてるなら表示しない
+                {
+                    SendCommand(sendTarget, ModTranslation.GetString("HideSettingsMessage"));
+                }
+                else
+                {
+                    SendCommand(sendTarget, GetChatCommands.GetSettingDescription());
+                }
                 break;
             case CommandType.Winners:
                 if (OnGameEndPatch.PlayerData != null)
@@ -351,6 +364,84 @@ internal static class GetChatCommands
         }
     }
 
+    /// <summary>
+    /// Generic設定とModifier設定をチャットに適応する形に文章を加工して取得
+    /// </summary>
+    /// <returns>Generic設定とModifier設定</returns>
+    internal static string GetSettingDescription()
+    {
+        StringBuilder settingBuilder = new();
+        const string line = "\n<color=#4d4398><size=80%>|-----------------------------------------------------------------------------|</size></color>\n";
+
+        foreach (CustomOption option in CustomOption.options)
+        {
+            if (!(option.type == CustomOptionType.Generic || option.type == CustomOptionType.Modifier)) continue;
+            if ((option == CustomOptionHolder.presetSelection) ||
+                (option == CustomOptionHolder.crewmateRolesCountMax) ||
+                (option == CustomOptionHolder.crewmateGhostRolesCountMax) ||
+                (option == CustomOptionHolder.neutralRolesCountMax) ||
+                (option == CustomOptionHolder.neutralGhostRolesCountMax) ||
+                (option == CustomOptionHolder.impostorRolesCountMax) ||
+                (option == CustomOptionHolder.impostorGhostRolesCountMax) ||
+                (option == CustomOptionHolder.hideSettings) ||
+                (option == CustomOptionHolder.specialOptions))
+            {
+                continue;
+            }
+
+            if (option.parent == null || option == ModeHandler.ModeSetting) // ModeSetting は Mode の子であり parent が nullでない。ModeSetting を 処理したい時は親が無効になっていて処理が行えない為, 単独で判定している。
+            {
+                if ((!option.Enabled) || (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn)) continue;
+
+                StringBuilder editing = new();
+                string optionStr;
+
+                if (!(option == ModeHandler.Mode && ModeHandler.IsMode(ModeId.Default, false)))
+                {
+                    optionStr = GameOptionsDataPatch.OptionToString(option);
+                    editing.AppendLine($"<size=80%>{optionStr}</size>");
+
+                    addChildren(option, ref editing, !GameOptionsMenuUpdatePatch.IsHidden(option));
+                }
+                else // mode は 通常の方法で設定の文章を取得できない為, 個別で編集。 通常モード時出ない時は mode でなく ModeSetting で設定の文章を取得
+                {
+                    optionStr = $"{CustomOptionHolder.Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting")}:{ModTranslation.GetString("optionOff")}";
+                    editing.AppendLine($"<size=80%>{optionStr}</size>");
+
+                    // mode が off なら子設定が必要ない為, addChildren を呼ばない。
+                }
+
+                if (editing.ToString().Trim('\n', '\r') is not "\r" and not "")
+                {
+                    editing.Append(line);
+                    settingBuilder.AppendLine(editing.ToString());
+                }
+            }
+        }
+
+        string startText = $"<size=125%>{ModTranslation.GetString("SettingSuperNewRolesVerGetSettingCommand")}</size>{line}";
+        string setting = $"<align={"left"}>{startText}<size=70%>{settingBuilder}</size></align>";
+
+        return setting;
+
+        void addChildren(CustomOption option, ref StringBuilder entry, bool indent = true)
+        {
+            if (!option.Enabled || ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) return;
+
+            foreach (var child in option.children)
+            {
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) return;
+
+                if (!GameOptionsMenuUpdatePatch.IsHidden(option))
+                {
+                    if (child.isHeader == true) entry.Append("\n");
+                    entry.AppendLine((indent ? "    " : "") + GameOptionsDataPatch.OptionToString(child));
+                }
+                addChildren(child, ref entry, indent);
+            }
+        }
+    }
+
     internal static string GetWinnerMessage()
     {
         StringBuilder builder = new();
@@ -373,8 +464,8 @@ internal static class GetChatCommands
                 if (data.role.Value == RoleId.DefaultRole && RoleColor.r == 1 && RoleColor.g == 1 && RoleColor.b == 1)
                     builder.Append(CustomOptionHolder.Cs(Palette.CrewmateBlue, IntroData.CrewmateIntro.NameKey+"Name"));
                 else*/
-                    builder.Append(CustomRoles.GetRoleName/*OnColor*/
-                        (data.role.Value, IsImpostorReturn: data.isImpostor));
+                builder.Append(CustomRoles.GetRoleName/*OnColor*/
+                    (data.role.Value, IsImpostorReturn: data.isImpostor));
             }
             builder.AppendLine();
         }
