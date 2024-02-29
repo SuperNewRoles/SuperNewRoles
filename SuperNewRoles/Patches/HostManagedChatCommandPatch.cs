@@ -430,7 +430,7 @@ internal static class GetChatCommands
 
             foreach (var child in option.children)
             {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) return;
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) continue;
 
                 if (!GameOptionsMenuUpdatePatch.IsHidden(option))
                 {
