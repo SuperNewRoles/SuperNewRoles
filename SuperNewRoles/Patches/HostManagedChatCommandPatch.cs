@@ -223,7 +223,8 @@ internal static class GetChatCommands
         string OthersText =
             $"<size=100%><b>{ModTranslation.GetString("CommandsTitelOthers")}</b></size>\n" +
             $"{ModTranslation.GetString("CommandsMessageOthers1")}\n\n" +
-            $"{ModTranslation.GetString("CommandsMessageOthers2")}\n\n";
+            $"{ModTranslation.GetString("CommandsMessageOthers2")}\n\n" +
+            $"{ModTranslation.GetString("CommandsMessageOthers3")}\n\n";
 
         const string endTag = "</size></align>";
         const string line = "<color={0}><size=80%>|-----------------------------------------------------------------------------|</size></color>\n";
