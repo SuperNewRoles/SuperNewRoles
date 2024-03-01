@@ -23,7 +23,6 @@ class PlusGameOptions
     public static CustomOption ReportDeadBodySetting;
     public static CustomOption IsLimitEmergencyMeeting;
     public static CustomOption EmergencyMeetingLimitCount;
-    // public static CustomOption NotUseMeetingButton; 上に移行
     public static CustomOption NotUseReportDeadBody;
 
     public static CustomOption NoTaskWinModeSetting;

@@ -1743,7 +1743,7 @@ SantaPresentRoleOptionFormat,Probability of distributing {0},{0}を配れる確�
 SantaButtonName,Present!,プレゼント！,礼物！,聖誕禮物！
 SantaAbilityCountFormat,Remaining {0} presents,残り{0}プレゼント,剩余{0}件礼物,剩餘{0}個禮物
 SantaTryRoleToDeath,Can't you give a present to {0},{0}にはプレゼントを配れない,无法给{0}送礼物,無法給{0}送禮物
-SantaAnd，and ,と,和,和
+SantaAnd, and ,と,和,和
 BlackSantaName,BlackSanta,ブラックサンタ,撒旦老人,黑誕老人
 BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!,哈哈哈，这是给坏孩子们的礼物！,齁齁齁，給壞孩子們帶來榮耀！
 BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！,撒旦老人属于内鬼阵营，可以给内鬼阵营玩家送礼物，让那名玩家在接下来的几轮内变成一个随机职业。\n若撒旦老人尝试将礼物赠送给内鬼阵营以外的玩家，撒旦老人自杀。\n圣诞快乐！,黑誕老人屬於內鬼陣營，可以給內鬼們送聖誕禮物（職業）。\n但是，如果給船員或中立陣營送禮物，黑誕老人將會自殺。\n聖誕快樂！
