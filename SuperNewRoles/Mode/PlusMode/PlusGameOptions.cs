@@ -20,6 +20,10 @@ class PlusGameOptions
     public static CustomOption LadderDead;
     public static CustomOption LadderDeadChance;
 
+    public static CustomOption ReportDeadBodySetting;
+    public static CustomOption HaveFirstEmergencyCooldownSetting;
+    public static CustomOption FirstEmergencyCooldownSetting;
+
     public static CustomOption NoTaskWinModeSetting;
 
     public static CustomOption IsChangeTheWinCondition;
@@ -51,6 +55,10 @@ class PlusGameOptions
 
         NoTaskWinModeSetting = Create(104000, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusGameOptionSetting, isHeader: true);
 
+        ReportDeadBodySetting = Create(105100, true, CustomOptionType.Generic, "ReportDeadBodySetting", false, PlusGameOptionSetting, isHeader: true);
+        HaveFirstEmergencyCooldownSetting = Create(105104, true, CustomOptionType.Generic, "HaveFirstEmergencyCooldown", false, ReportDeadBodySetting);
+        FirstEmergencyCooldownSetting = Create(105105, true, CustomOptionType.Generic, "FirstEmergencyCooldownSetting", 30f, 2.5f, 120f, 2.5f, HaveFirstEmergencyCooldownSetting);
+
         IsChangeTheWinCondition = Create(104100, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, PlusGameOptionSetting, isHeader: true);
 
         ZoomOption = Create(104200, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, PlusGameOptionSetting, isHeader: true);
@@ -71,6 +79,10 @@ class PlusGameOptions
     public static bool IsNotGhostHaveHaunt;
     public static bool IsReleasingHauntAfterCompleteTasks;
 
+    // 会議関連
+    public static bool HaveFirstEmergencyCooldown;
+
+
     //千里眼・ズーム関連
     public static bool IsMouseZoom;
     public static bool IsClairvoyantZoom;
@@ -84,6 +96,10 @@ class PlusGameOptions
     {
         if (PlusGameOptionSetting.GetBool())
         {
+            if (ReportDeadBodySetting.GetBool())
+            {
+                HaveFirstEmergencyCooldown = HaveFirstEmergencyCooldownSetting.GetBool();
+            }
             UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
             UseMeetingButton = !NotUseMeetingButton.GetBool();
 
@@ -98,6 +114,7 @@ class PlusGameOptions
         }
         else
         {
+            HaveFirstEmergencyCooldown = false;
             UseDeadBodyReport = true;
             UseMeetingButton = true;
 
