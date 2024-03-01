@@ -321,12 +321,15 @@ class ReportDeadBodyPatch
     public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
     {
         if (!AmongUsClient.Instance.AmHost) return; // ホスト以外此処は読まないが, バニラ側の使用が変更された時に問題が起きないように ホスト以外はreturnする。
+
         var targetId = target != null ? target.Object.PlayerId : byte.MaxValue;
-        SaveMeetingCount(targetId);
 
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SendMeetingCount);
         writer.Write(targetId);
         writer.EndRPC();
+        SaveMeetingCount(targetId);
+
+        EmergencyMinigamePatch.SHRMeetingStatusAnnounce.EmergencyCount(__instance); // ReportDeadBody.ReportDeadBodyPatchで実行すると 2回読まれてしまう為ここで呼ぶ。
 
         PoliceSurgeon_AddActualDeathTime.ReportDeadBody_Postfix();
     }

@@ -552,7 +552,7 @@ internal static class RoleinformationText
     {
         foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
-            if (player == null || player.IsBot()) return;
+            if (player == null || player.IsBot()) continue;
             RoleId roleId = player.GetRole();
             if (roleId == RoleId.Bestfalsecharge && player.IsAlive()) roleId = RoleId.DefaultRole;
             RoleId ghostRoleId = player.GetGhostRole();

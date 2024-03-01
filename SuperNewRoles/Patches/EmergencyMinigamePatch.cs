@@ -97,4 +97,53 @@ class EmergencyMinigamePatch
 
         return Status.Vanilla;
     }
+
+    public static class SHRMeetingStatusAnnounce
+    {
+        public static void EmergencyCount(PlayerControl convenor)
+        {
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles) || !AmongUsClient.Instance.AmHost) return;
+            if (!(PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting && PlusGameOptions.EmergencyMeetingsCallstate.maxCount != byte.MaxValue)) return;
+
+            int count = PlusGameOptions.EmergencyMeetingsCallstate.maxCount - ReportDeadBodyPatch.MeetingCount.emergency;
+            if (count <= 0) return;
+
+            string info = $"<align={"left"}>{string.Format(ModTranslation.GetString("MeetingStatusAllEmergencyCount"), $"<color=#fe1919>{count}</color>")}\n\n{ModTranslation.GetString("SHRMeetingStatusAnnounceYourOnry")}</align>";
+            AddChatPatch.ChatInformation(convenor, ModTranslation.GetString("ReportDeadBodySetting"), info);
+        }
+
+        public static void MakeSettingKnown()
+        {
+            if (!AmongUsClient.Instance.AmHost || !ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+            if (!(PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting && PlusGameOptions.EmergencyMeetingsCallstate.maxCount != byte.MaxValue)) return;
+
+            const string line = "\n<color=#4d4398>|-----------------------------------------------------------------------------|</color>\n";
+
+            string info_Enable = ModTranslation.GetString("SHRMeetingStatusEnableLimitSetting");
+            string info_Count = string.Format(ModTranslation.GetString("SHRMeetingStatusMeetingsCallMaxCount"), $"<color=#fe1919>{PlusGameOptions.EmergencyMeetingsCallstate.maxCount}</color>");
+
+            string info_All = $"<align={"left"}><size=50%><color=#00000000>SHRMeetingStatusAnnounce</size></color><size=80%>{line}{info_Enable}\n\n{info_Count}{line}</size></align>";
+
+            AddChatPatch.SendCommand(null, info_All);
+        }
+
+        /// <summary>
+        /// 緊急会議が全体の使用可能回数に達した時に, 全体に行うアナウンス
+        /// </summary>
+        public static void LimitAnnounce()
+        {
+            if (!AmongUsClient.Instance.AmHost || !ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+            if (!(PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting && PlusGameOptions.EmergencyMeetingsCallstate.maxCount != byte.MaxValue)) return;
+
+            if (PlusGameOptions.EmergencyMeetingsCallstate.maxCount != ReportDeadBodyPatch.MeetingCount.emergency) return; // 会議残り回数が0以外ならreturn
+
+            const string line = "\n<color=#4d4398>|-----------------------------------------------------------------------------|</color>\n";
+
+            string info_Count = string.Format(ModTranslation.GetString("MeetingStatusAllEmergencyCount"), "<color=#fe1919>0</color>");
+            string info_NotUse = $"<size=70%>{ModTranslation.GetString("SHRMeetingStatusNotUseButton")}</size>";
+            string info_All = $"<align={"left"}><size=50%><color=#00000000>SHRMeetingStatusAnnounce</color></size><size=80%>{line}\n{info_Count}\n{line}\n{info_NotUse}{line}</size></align>";
+
+            AddChatPatch.SendCommand(null, info_All);
+        }
+    }
 }
