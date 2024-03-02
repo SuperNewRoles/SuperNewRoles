@@ -355,6 +355,9 @@ SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内�
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜,船員禁用完成任務獲勝
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点,固定重生點
 MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
+ReportDeadBodySetting,Emergency meeting and report setting,緊急会議と通報の設定
+HaveFirstEmergencyCooldown,Change emergency button cooldown until deaths occur?,死者が出るまで緊急ボタンクールダウンを変更する
+FirstEmergencyCooldownSetting,Emergency button cool down after change,変更後の緊急ボタンクールダウン
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告
 NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,禁用召開緊急會議
 DeviceOptionsSetting,Information Device Options,情報機器制限の設定,飞船设备设置,情報獲取裝置限制使用設定

@@ -79,10 +79,6 @@ class PlusGameOptions
     public static bool IsNotGhostHaveHaunt;
     public static bool IsReleasingHauntAfterCompleteTasks;
 
-    // 会議関連
-    public static bool HaveFirstEmergencyCooldown;
-
-
     //千里眼・ズーム関連
     public static bool IsMouseZoom;
     public static bool IsClairvoyantZoom;
@@ -96,10 +92,6 @@ class PlusGameOptions
     {
         if (PlusGameOptionSetting.GetBool())
         {
-            if (ReportDeadBodySetting.GetBool())
-            {
-                HaveFirstEmergencyCooldown = HaveFirstEmergencyCooldownSetting.GetBool();
-            }
             UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
             UseMeetingButton = !NotUseMeetingButton.GetBool();
 
@@ -114,7 +106,6 @@ class PlusGameOptions
         }
         else
         {
-            HaveFirstEmergencyCooldown = false;
             UseDeadBodyReport = true;
             UseMeetingButton = true;
 
