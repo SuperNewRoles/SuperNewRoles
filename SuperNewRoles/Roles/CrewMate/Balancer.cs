@@ -528,6 +528,15 @@ public static class Balancer
                     SendChat(balancer, ModTranslation.GetString("BalancerSelectionCancelText"), ModTranslation.GetString("BalancerSelectionCancel"));
                     return false;
                 }
+                if (targetId == balancerId)
+                {
+                    //選択モードでの自投票は通常投票（自分へ投票）として選択モード解除 & 投票完了
+                    state.selecting = false;
+                    state.target1 = byte.MaxValue;
+                    state.target2 = byte.MaxValue;
+                    SendChat(balancer, ModTranslation.GetString("BalancerSelectionSelfSelectText"), ModTranslation.GetString("BalancerSelectionCancel"));
+                    return true;
+                }
 
                 if (state.target1 == byte.MaxValue || state.target1 == targetId)
                 {
