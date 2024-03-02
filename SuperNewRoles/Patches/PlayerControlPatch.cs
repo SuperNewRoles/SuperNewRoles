@@ -221,7 +221,7 @@ class ReportDeadBodyPatch
     /// <param name="allTurn">全体会議回数</param>
     /// <param name="emergency">緊急招集による会議回数</param>
     /// <param name="report">死体通報による会議回数</param>
-    public static (byte allTurn, byte emergency, byte report) MeetingCount { get; private set; }
+    public static (byte all, byte emergency, byte report) MeetingCount { get; private set; }
     public static void ClearAndReloads()
     {
         MeetingCount = (0, 0, 0);
@@ -339,7 +339,7 @@ class ReportDeadBodyPatch
         var target = PlayerById(targetId);
         var count = MeetingCount;
 
-        count.allTurn++;
+        count.all++;
         if (target == null) count.emergency++;
         else count.report++;
 
