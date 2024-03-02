@@ -499,10 +499,11 @@ public static class Balancer
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
             if (!AmongUsClient.Instance.AmHost) return true;
 
+            if (RoleClass.Assassin.TriggerPlayer != null) return true;
+            if (CurrentState != SHRBalancerState.NotBalance) return true;
+
             var balancer = ModHelpers.GetPlayerControl(balancerId);
             if (balancer == null || balancer.GetRole() != RoleId.Balancer) return true;
-
-            if (CurrentState != SHRBalancerState.NotBalance) return true;
 
             if (!NumOfBalance.TryGetValue(balancerId, out var numOfBalance))
             {
@@ -630,6 +631,8 @@ public static class Balancer
             }
             else
             {
+                if (RoleClass.Assassin.TriggerPlayer != null) return;
+
                 StartMeetingNomal();
             }
         }
