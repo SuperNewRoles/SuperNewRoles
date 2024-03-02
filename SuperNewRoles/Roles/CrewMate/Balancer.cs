@@ -575,10 +575,18 @@ public static class Balancer
         }
         private static void StartBalancerAbility(byte balancerId, byte target1Id, byte target2Id)
         {
-            _ = new LateTask(() => StartBalancerMeeting(balancerId, target1Id, target2Id), 10f, "SetBalancerMeeting");
-            MeetingHud.Instance.RpcClose();
+            //会議終了-天秤会議開始間に見えるゲーム画面の視界範囲を0にするためにプレイヤー位置を変更（視点は固定）
+            PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsAlive()).Do(x => x.RpcSnapTo(new(-30, 30)));
+
+            _ = new LateTask(() => SwitchBalancerMeeting(balancerId, target1Id, target2Id), 0.3f, "SwitchBalancerMeeting");
 
             Logger.Info($"StartAbility balancer: {currentAbilityUser?.name}, target: {targetplayerleft?.name}, {targetplayerright?.name}", "Balancer.StartBalancerAbility");
+        }
+        private static void SwitchBalancerMeeting(byte balancerId, byte target1Id, byte target2Id)
+        {
+            MeetingHud.Instance.Despawn();
+
+            _ = new LateTask(() => StartBalancerMeeting(balancerId, target1Id, target2Id), 0.3f, "StartBalancerMeeting");
         }
         private static void StartBalancerMeeting(byte balancerId, byte target1Id, byte target2Id)
         {
@@ -586,7 +594,7 @@ public static class Balancer
 
             if (MeetingHud.Instance)
             {
-                _ = new LateTask(() => StartBalancerMeeting(balancerId, target1Id, target2Id), 1f, "BalancerMeeting");
+                _ = new LateTask(() => StartBalancerMeeting(balancerId, target1Id, target2Id), 0.5f, "BalancerMeeting");
                 return;
             }
 
