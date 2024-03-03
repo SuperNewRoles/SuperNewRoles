@@ -57,7 +57,7 @@ class PlusGameOptions
 
         ReportDeadBodySetting = Create(105100, true, CustomOptionType.Generic, "ReportDeadBodySetting", false, PlusGameOptionSetting, isHeader: true);
         HaveFirstEmergencyCooldownSetting = Create(105104, true, CustomOptionType.Generic, "HaveFirstEmergencyCooldown", false, ReportDeadBodySetting);
-        FirstEmergencyCooldownSetting = Create(105105, true, CustomOptionType.Generic, "FirstEmergencyCooldownSetting", 30, 2, 120, 5, HaveFirstEmergencyCooldownSetting);
+        FirstEmergencyCooldownSetting = Create(105105, true, CustomOptionType.Generic, "FirstEmergencyCooldownSetting", 30, 0, 120, 5, HaveFirstEmergencyCooldownSetting);
 
         IsChangeTheWinCondition = Create(104100, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, PlusGameOptionSetting, isHeader: true);
 
