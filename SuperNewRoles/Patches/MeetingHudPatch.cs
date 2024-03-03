@@ -529,11 +529,6 @@ class CheckForEndVotingPatch
         }
     }
 
-    internal static void Postfix(MeetingHud __instance)
-    {
-
-    }
-
     /// <summary>
     /// 追放メッセージを非導入ゲストに表記する為に 名前を変えた, プレイヤー又はBotの名前を元に戻す
     /// </summary>
