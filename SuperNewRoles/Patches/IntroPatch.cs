@@ -190,6 +190,7 @@ public class IntroPatch
                 }
             }
         }
+        
         public static void Postfix()
         {
             CustomRoles.OnIntroDestroy();
