@@ -209,8 +209,6 @@ public class IntroPatch
                     gapRoomShadow.enabled = false;
                 }
             }
-
-            EmergencyMinigamePatch.SetFirstEmergencyCooldown();
         }
     }
 

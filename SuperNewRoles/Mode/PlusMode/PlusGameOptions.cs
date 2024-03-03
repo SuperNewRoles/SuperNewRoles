@@ -79,6 +79,12 @@ class PlusGameOptions
     public static bool IsNotGhostHaveHaunt;
     public static bool IsReleasingHauntAfterCompleteTasks;
 
+    // 会議関連
+    /// <summary> 設定 : "死者が出るまで緊急ボタンクールダウンを変更する" が有効か</summary>
+    public static bool EnableFirstEmergencyCooldown =>
+        PlusGameOptionSetting.GetBool() &&
+        ReportDeadBodySetting.GetBool() && HaveFirstEmergencyCooldownSetting.GetBool();
+
     //千里眼・ズーム関連
     public static bool IsMouseZoom;
     public static bool IsClairvoyantZoom;

@@ -148,7 +148,7 @@ class WrapUpPatch
         CountChanger.CountChangerPatch.WrapUpPatch();
         RoleClass.IsFirstMeetingEnd = true;
         RoleClass.IsfirstResetCool = false;
-        EmergencyMinigamePatch.SetFirstEmergencyCooldown(exiled != null);
+        EmergencyMinigamePatch.FirstEmergencyCooldown.OnWrapUp(exiled != null);
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
