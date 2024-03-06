@@ -127,7 +127,7 @@ public static class Blacklist
             if (player.EndBanTime.HasValue && player.EndBanTime.Value < DateTime.UtcNow)
                 continue;
             string PlayerCode = BlacklistHash.ToHash(player.IsPUID ? clientData.ProductUserId : clientData.FriendCode);
-            if (player.Code == PlayerCode)
+            if (player.Code != PlayerCode)
                 continue;
             if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
             {
