@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
 /// <summary>
@@ -13,11 +14,16 @@ public interface ITaskHolder
     /// <summary>
     /// タスクをクルーメイト勝利にカウントするか
     /// </summary>
-    public bool CountTask => this is ICrewmate &&
-        (this is not ISupportSHR supportSHR ||
-        supportSHR.DesyncRole is
-        AmongUs.GameOptions.RoleTypes.Impostor or
-        AmongUs.GameOptions.RoleTypes.Shapeshifter);
+    public bool CountTask =>
+        this is ICrewmate && (!Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) || CountTaskWhenSHR);
+
+    /// <summary>
+    /// SHRでタスクをクルーメイト勝利にカウントするか
+    /// </summary>
+    private bool CountTaskWhenSHR =>
+        this is not ISupportSHR supportSHR ||
+        supportSHR.DesyncRole is not (RoleTypes.Impostor or RoleTypes.Shapeshifter);
+
     /// <summary>
     /// 独自のタスク数を持っているか
     /// </summary>
