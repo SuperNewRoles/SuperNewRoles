@@ -67,7 +67,7 @@ public class CustomVisorData : VisorData
             {
                 __instance.Image.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
             }
-            PlayerMaterial.SetColors(__instance.matProperties.ColorId, __instance.Image);
+
             switch (maskType)
             {
                 case PlayerMaterial.MaskType.SimpleUI:
