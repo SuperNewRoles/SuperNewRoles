@@ -23,7 +23,7 @@ public static class ObjectData
     public static ColorChip NamePlateButton;
     public static ColorChip CubeButton;
     public static HatParent HatButton_Hat;
-    public static CosmeticsLayer SkinButton_Skin; // FIXME 仮
+    public static SkinLayer SkinButton_Skin
     public static PetBehaviour PetButton_Pet;
     public static VisorLayer VisorButton_Visor;
     public static NameplateChip NamePlateButton_NamePlate;
