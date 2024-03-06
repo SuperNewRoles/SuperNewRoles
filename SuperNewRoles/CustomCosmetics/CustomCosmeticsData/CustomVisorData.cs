@@ -120,7 +120,6 @@ public class CustomVisorData : VisorData
         public static bool Prefix(VisorLayer __instance)
         {
             if (__instance.visorData == null || !__instance.visorData.ProductId.StartsWith("CustomVisors_")) return true;
-            __instance.Image.flipX = flipX;
             VisorViewData asset = getbycache(__instance.visorData.ProdId);
             __instance.Image.sprite = asset.FloorFrame ? asset.FloorFrame : asset.IdleFrame;
             return false;
