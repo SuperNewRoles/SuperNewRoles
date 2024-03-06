@@ -73,22 +73,32 @@ public class CustomHatData : HatData
             if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
 
             HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
+            PlayerMaterial.MaskType maskType = __instance.matProperties.MaskType;
+
             if (hatViewData && hatViewData.MatchPlayerColor)
             {
-                __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.MaskedPlayerMaterial;
-                if (__instance.BackLayer)
+                if (maskType == PlayerMaterial.MaskType.ComplexUI || maskType == PlayerMaterial.MaskType.ScrollingUI)
                 {
-                    __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.MaskedPlayerMaterial;
+                    __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.MaskedPlayerMaterial;
+                    if (__instance.BackLayer) __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.MaskedPlayerMaterial;
                 }
+                else
+                {
+                    __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+                    if (__instance.BackLayer) __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+                }
+            }
+            else if (maskType == PlayerMaterial.MaskType.ComplexUI || maskType == PlayerMaterial.MaskType.ScrollingUI)
+            {
+                __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.MaskedMaterial;
+                __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.MaskedMaterial;
             }
             else
             {
                 __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
-                if (__instance.BackLayer)
-                {
-                    __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
-                }
+                if (__instance.BackLayer) __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.DefaultShader;
             }
+
             int colorId = __instance.matProperties.ColorId;
             PlayerMaterial.SetColors(colorId, __instance.FrontLayer);
             if (__instance.BackLayer)
@@ -102,9 +112,9 @@ public class CustomHatData : HatData
             {
                 __instance.BackLayer.material.SetInt(PlayerMaterial.MaskLayer, __instance.matProperties.MaskLayer);
             }
-            switch (__instance.matProperties.MaskType)
+            switch (maskType)
             {
-                case PlayerMaterial.MaskType.ScrollingUI:
+                case PlayerMaterial.MaskType.SimpleUI:
                     if (__instance.FrontLayer)
                     {
                         __instance.FrontLayer.maskInteraction = (SpriteMaskInteraction)1;
