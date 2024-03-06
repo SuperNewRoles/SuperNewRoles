@@ -117,7 +117,7 @@ public class CustomVisorData : VisorData
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetFloorAnim))]
     class VisorLayerSetFloorAnimPatch
     {
-        public static bool Prefix(VisorLayer __instance, bool flipX)
+        public static bool Prefix(VisorLayer __instance)
         {
             if (__instance.visorData == null || !__instance.visorData.ProductId.StartsWith("CustomVisors_")) return true;
             __instance.Image.flipX = flipX;
