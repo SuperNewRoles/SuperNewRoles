@@ -74,7 +74,7 @@ public static class ConfigRoles
             IsUpdated = true;
         }
         IsUpdate.Value = false;
-        ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;
+        //ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;
         RegionMenuOpenPatch.defaultRegions = ServerManager.DefaultRegions;
         RegionMenuOpenPatch.UpdateRegions();
     }
