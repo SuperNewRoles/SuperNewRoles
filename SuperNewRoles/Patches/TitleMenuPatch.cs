@@ -14,7 +14,7 @@ public class MainMenuStartPatcha
     {
         //とりあえず僕の誕生日終わるまで出しとく
         if (DateTime.UtcNow < new DateTime(2023, 11, 4, 15, 0, 0) &&
-            !Constants.ShouldHorseAround())
+            !AprilFoolsMode.ShouldHorseAround())
             return;
         foreach (var item in __instance.pool.activeChildren)
         {

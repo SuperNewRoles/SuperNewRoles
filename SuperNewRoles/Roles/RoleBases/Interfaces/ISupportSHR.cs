@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
-public interface ISupportSHR
+public interface ISupportSHR : ITaskHolder
 {
     /// <summary>
     /// 判定上の役職

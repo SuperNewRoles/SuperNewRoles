@@ -18,7 +18,7 @@ public class CustomVisor
     {
         public static void Postfix(HatManager __instance)
         {
-            if (ConfigRoles.DebugMode.Value) return;
+            //if (ConfigRoles.DebugMode.Value) return;
             if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value) return;
             if (isAdded || !DownLoadClassVisor.IsEndDownload) return;
             isAdded = true;
