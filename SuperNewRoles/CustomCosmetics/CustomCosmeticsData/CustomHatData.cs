@@ -24,7 +24,7 @@ public class CustomHatData : HatData
         public Sprite BackFlipImage;
         public Sprite ClimbImage;
         public bool adaptive;
-        public Material AltShader => adaptive ? new Material(Shader.Find("Unlit/PlayerShader")) : null;
+        public bool AltShader => adaptive ? new Material(Shader.Find("Unlit/PlayerShader")) : null; // FIXME 仮
         public string name;
         public HatViewData CreateHVD
         {
@@ -37,7 +37,7 @@ public class CustomHatData : HatData
                     LeftMainImage = FlipImage,
                     LeftBackImage = BackFlipImage,
                     ClimbImage = ClimbImage,
-                    AltShader = AltShader,
+                    MatchPlayerColor = adaptive, // FIXME 仮
                     name = name
                 };
             }
@@ -73,12 +73,12 @@ public class CustomHatData : HatData
             if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
 
             HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
-            if (hatViewData && hatViewData.AltShader)
+            if (hatViewData && hatViewData.MatchPlayerColor)
             {
-                __instance.FrontLayer.sharedMaterial = hatViewData.AltShader;
+                __instance.FrontLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.MaskedPlayerMaterial;
                 if (__instance.BackLayer)
                 {
-                    __instance.BackLayer.sharedMaterial = hatViewData.AltShader;
+                    __instance.BackLayer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.MaskedPlayerMaterial;
                 }
             }
             else
@@ -211,7 +211,7 @@ public class CustomHatData : HatData
         }
     }
 
-    [HarmonyPatch(typeof(HatParent), nameof(HatParent.PopulateFromHatViewData))]
+    [HarmonyPatch(typeof(HatParent), nameof(HatParent.PopulateFromViewData))]
     class HatParentPopulateFromHatViewDataPatch
     {
         public static bool Prefix(HatParent __instance)
@@ -260,7 +260,7 @@ public class CustomHatData : HatData
             if (__instance.Hat != null && __instance.Hat.ProductId.StartsWith("MOD_"))
             {
                 HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
-                __instance.PopulateFromHatViewData();
+                __instance.PopulateFromViewData();
                 __instance.SetMaterialColor(colorId);
                 return false;
             }
@@ -276,7 +276,7 @@ public class CustomHatData : HatData
             if (__instance.Hat != null && __instance.Hat.ProductId.StartsWith("MOD_"))
             {
                 HatViewData hatViewData = getbycache(__instance.Hat.ProductId);
-                __instance.PopulateFromHatViewData();
+                __instance.PopulateFromViewData();
                 __instance.SetMaterialColor(color);
                 return false;
             }

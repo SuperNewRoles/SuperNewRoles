@@ -131,7 +131,7 @@ class AwakePatch
         ObjectData.HatButton_Hat = GameObject.Instantiate(__instance.PreviewArea.cosmetics.hat, ClosetTab);
         ObjectData.HatButton_Hat.transform.localPosition = new Vector3(4.85f, 0.6f, -1);
 
-        ObjectData.SkinButton_Skin = GameObject.Instantiate(__instance.PreviewArea.cosmetics.skin, ClosetTab);
+        ObjectData.SkinButton_Skin = GameObject.Instantiate(__instance.PreviewArea.cosmetics, ClosetTab);
         ObjectData.SkinButton_Skin.transform.localPosition = new Vector3(0.875f, 0, -1);
 
         ObjectData.VisorButton_Visor = GameObject.Instantiate(__instance.PreviewArea.cosmetics.visor, ClosetTab);

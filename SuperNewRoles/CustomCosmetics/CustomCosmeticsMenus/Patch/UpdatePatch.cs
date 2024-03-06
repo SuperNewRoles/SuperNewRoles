@@ -90,7 +90,7 @@ class UpdatePatch
                 ObjectData.HatButton_Hat.SetHat(DataManager.Player.Customization.Hat, DataManager.Player.Customization.Color);
                 ObjectData.HatButton_Hat.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
 
-                ObjectData.SkinButton_Skin.SetSkin(DataManager.Player.Customization.Skin, DataManager.Player.Customization.Color, false);
+                ObjectData.SkinButton_Skin.SetSkin(DataManager.Player.Customization.Skin, DataManager.Player.Customization.Color); // FIXME 仮
                 ObjectData.SkinButton_Skin.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
 
                 ObjectData.VisorButton_Visor.SetVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor), DataManager.Player.Customization.Color);
