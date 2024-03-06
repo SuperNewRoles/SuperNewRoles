@@ -133,7 +133,7 @@ public static class RPCHelper
             {
                 writer.WritePacked(gm.NetId);
                 writer.StartMessage((byte)4);
-                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn));
                 writer.EndMessage();
             }
             writer.EndMessage();
@@ -227,7 +227,7 @@ public static class RPCHelper
             {
                 writer.WritePacked(gm.NetId);
                 writer.StartMessage(4);
-                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
+                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn));
                 writer.EndMessage();
             }
             writer.EndMessage();
