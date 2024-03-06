@@ -125,6 +125,23 @@ public class CustomVisorData : VisorData
             return false;
         }
     }
+    [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.PopulateFromViewData))]
+    class VisorLayerPopulateFromViewDataPatch
+    {
+        public static bool Prefix(VisorLayer __instance)
+        {
+            if (__instance.visorData == null || !__instance.visorData.ProductId.StartsWith("CustomVisors_"))
+                return true;
+            __instance.UpdateMaterial();
+            if (!__instance.IsDestroyedOrNull())
+            {
+                __instance.transform.SetLocalZ(__instance.DesiredLocalZPosition);
+                __instance.SetFlipX(__instance.Image.flipX);
+            }
+            return false;
+        }
+    }
+
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetVisor), new Type[] { typeof(VisorData), typeof(int) })]
     class VisorLayerSetVisorPatch
     {
