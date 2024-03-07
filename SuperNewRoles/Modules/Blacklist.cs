@@ -37,21 +37,23 @@ public static class Blacklist
     public class BlackPlayer
     {
         public static List<BlackPlayer> Players = new();
-        public string FriendCode;
+        public string Code;
         public string AddedMod = "None";
         public string ReasonCode = "NoneCode";
         public string ReasonTitle = "";
         public string ReasonDescription = "None";
         public DateTime? EndBanTime = null;
-        public BlackPlayer(string FriendCode, string AddedMod, string ReasonCode,
-            string ReasonTitle, string ReasonDescription, DateTime? EndBanTime = null)
+        public bool IsPUID;
+        public BlackPlayer(string Code, string AddedMod, string ReasonCode,
+            string ReasonTitle, string ReasonDescription, bool IsPUID, DateTime? EndBanTime = null)
         {
-            this.FriendCode = FriendCode;
+            this.Code = Code;
             this.AddedMod = AddedMod;
             this.ReasonCode = ReasonCode;
             this.ReasonTitle = ReasonTitle;
             this.ReasonDescription = ReasonDescription;
             this.EndBanTime = EndBanTime;
+            this.IsPUID = IsPUID;
             Players.Add(this);
         }
     }
@@ -83,7 +85,14 @@ public static class Blacklist
             string endbantime = user["EndBanTime"]?.ToString();
             BlackPlayer player = new(
                 user["FriendCode"]?.ToString(), user["AddedMod"]?.ToString(), user["Reason"]?["Code"]?.ToString(),
-                user["Reason"]?["Title"]?.ToString(), user["Reason"]?["Description"]?.ToString(), endbantime == "never" ? null : (DateTime.TryParse(endbantime, out DateTime resulttime) ? (resulttime - new TimeSpan(9, 0, 0)) : null));
+                user["Reason"]?["Title"]?.ToString(), user["Reason"]?["Description"]?.ToString(), false, endbantime == "never" ? null : (DateTime.TryParse(endbantime, out DateTime resulttime) ? (resulttime - new TimeSpan(9, 0, 0)) : null));
+        }
+        for (var user = json["blockedPlayersPUID"].First; user != null; user = user.Next)
+        {
+            string endbantime = user["EndBanTime"]?.ToString();
+            BlackPlayer player = new(
+                user["PUID"]?.ToString(), user["AddedMod"]?.ToString(), user["Reason"]?["Code"]?.ToString(),
+                user["Reason"]?["Title"]?.ToString(), user["Reason"]?["Description"]?.ToString(), true, endbantime == "never" ? null : (DateTime.TryParse(endbantime, out DateTime resulttime) ? (resulttime - new TimeSpan(9, 0, 0)) : null));
         }
     }
     public static IEnumerator Check(ClientData clientData = null, int ClientId = -1)
@@ -115,17 +124,19 @@ public static class Blacklist
         }
         foreach (var player in BlackPlayer.Players)
         {
-            if ((!player.EndBanTime.HasValue || player.EndBanTime.Value >= DateTime.UtcNow) && player.FriendCode == BlacklistHash.ToHash(clientData.FriendCode))
+            if (player.EndBanTime.HasValue && player.EndBanTime.Value < DateTime.UtcNow)
+                continue;
+            string PlayerCode = BlacklistHash.ToHash(player.IsPUID ? clientData.ProductUserId : clientData.FriendCode);
+            if (player.Code != PlayerCode)
+                continue;
+            if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
             {
-                if (PlayerControl.LocalPlayer.GetClientId() == clientData.Id)
-                {
-                    AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
-                    AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle + "\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード：" + player.ReasonCode.ToString() + "\n理由：" + player.ReasonDescription + "\n期間：" + (!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss") + "まで"));
-                }
-                else
-                {
-                    AmongUsClient.Instance.KickPlayer(clientData.Id, ban: true);
-                }
+                AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
+                AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size>" + player.ReasonTitle + "\n\nMODからこのアカウントのゲームプレイに制限をかけています。\nBANコード：" + player.ReasonCode.ToString() + "\n理由：" + player.ReasonDescription + "\n期間：" + (!player.EndBanTime.HasValue ? "永久" : (player.EndBanTime.Value.ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss") + "まで"));
+            }
+            else
+            {
+                AmongUsClient.Instance.KickPlayer(clientData.Id, ban: true);
             }
         }
     }
