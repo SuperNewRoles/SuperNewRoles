@@ -28,6 +28,13 @@ public class MainMenuPatch
     private static void Prefix(MainMenuManager __instance)
     {
         var bottomTemplate = __instance.shopButton;
+
+        /*
+
+        馬、いつか会うときまで...
+        いいやつだったよ、馬。
+        いつかまた会おう。
+         
         // Horse mode stuff
         var horseModeSelectionBehavior = new ClientModOptionsPatch.SelectionBehaviour("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
 
@@ -59,6 +66,7 @@ public class MainMenuPatch
                 particles.Start();
             }
         });
+        */
 
         // Credits
 

@@ -1527,8 +1527,7 @@ public static class RoleHelpers
         if (IsUseFirst && TaskCount.IsClearTaskPlayer != null && TaskCount.IsClearTaskPlayer[player])
             return true;
         var IsTaskClear = false;
-        if (player.GetRoleBase() is ITaskHolder taskHolder)
-            IsTaskClear = !taskHolder.CountTask;
+        if (player.GetRoleBase() is ITaskHolder taskHolder) { IsTaskClear = !taskHolder.CountTask; }
         else
         {
             if (player.IsImpostor()) IsTaskClear = true;

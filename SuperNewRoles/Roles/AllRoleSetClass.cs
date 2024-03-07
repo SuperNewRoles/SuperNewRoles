@@ -235,7 +235,7 @@ class AllRoleSetClass
         //100%
         TenPar = 0x008,
         //100%以外
-        NotTenPar = 0x016,
+        NotTenPar = 0x010,
     }
     public static List<PlayerControl> impostors;
     public static Dictionary<AssignType, List<RoleId>> AssignTickets;
