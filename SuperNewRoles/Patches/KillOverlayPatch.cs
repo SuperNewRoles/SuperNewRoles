@@ -14,7 +14,7 @@ class KillOverlayA
         {
             if (kInfo.PlayerId == vInfo.PlayerId)
             {
-                if (!Constants.ShouldHorseAround())
+                if (!AprilFoolsMode.ShouldHorseAround())
                 {
                     var anim = __instance.transform;
                     anim.transform.FindChild("Impostor").gameObject.SetActive(false);
