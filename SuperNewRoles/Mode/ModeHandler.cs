@@ -136,8 +136,9 @@ public static class ModeHandler
     public static void OptionLoad()
     {
         Mode = new CustomOptionBlank(null);
-        ModeSetting = CustomOption.Create(101200, true, CustomOptionType.Generic, Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting"), false, Mode, isHeader: true);
-        ThisModeSetting = CustomOption.Create(101300, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
+        ModeSetting = CustomOption.Create(101200, true, CustomOptionType.Generic, Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting"), false, Mode, isHeader: true, isHidden: true);
+        ModeSetting.selection = 0;
+        ThisModeSetting = CustomOption.Create(101300, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting, isHidden: true);
         BattleRoyal.BROption.Load();
         Zombie.ZombieOptions.Load();
         RandomColor.RandomColorOptions.Load();
