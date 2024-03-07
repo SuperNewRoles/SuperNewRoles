@@ -62,7 +62,8 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                             if (WaveCannon.IsSyncKillCoolTime.GetBool())
                                 PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
                         }
-                        else {
+                        else
+                        {
                             if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
                                 WaveCannonJackal.ResetCooldowns();
                             WaveCannonJackal.WCResetCooldowns();

@@ -8,7 +8,7 @@ public class RocketDeadbody : CustomAnimation
     {
     }
     private Vector3 BasePos;
-    private static Vector3 movepos = new(0,0.1f,0);
+    private static Vector3 movepos = new(0, 0.1f, 0);
     private static float FireworksSize = 2;
     private bool IsFirework;
     public override void Awake()
@@ -61,7 +61,7 @@ public class RocketDeadbody : CustomAnimation
                 if ((transform.position - BasePos).y > 6f)
                 {
                     IsFirework = true;
-                    Options.SetSprites(GetSprites("SuperNewRoles.Resources.Rocket.Fireworks.fireworks_", 20,2), IsLoop:false, frameRate: 30);
+                    Options.SetSprites(GetSprites("SuperNewRoles.Resources.Rocket.Fireworks.fireworks_", 20, 2), IsLoop: false, frameRate: 30);
                     Options.SetPlayEndDestroy(true);
                     transform.localScale = Vector3.one * FireworksSize;
                     spriteRenderer.sprite = Options.Sprites.FirstOrDefault();

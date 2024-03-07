@@ -24,7 +24,8 @@ public static class SyncSetting
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
         IGameOptions optdata = DefaultOption.DeepCopy();
         bool blackout = false;
-        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)){
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
+        {
             SwitchSystem system = elec.CastFast<SwitchSystem>();
             blackout = system != null && system.IsActive;
         }
@@ -269,7 +270,8 @@ public static class SyncSetting
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
         IGameOptions optdata = OptionDatas[player].DeepCopy();
         bool blackout = false;
-        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)){
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
+        {
             SwitchSystem system = elec.CastFast<SwitchSystem>();
             blackout = system != null && system.IsActive;
         }

@@ -247,7 +247,7 @@ public class CustomOption
     {
         OptionSaver.WriteNowPreset();
         preset = newPreset;
-        (bool suc, int code, Dictionary<uint,byte> data) = OptionSaver.LoadPreset(preset);
+        (bool suc, int code, Dictionary<uint, byte> data) = OptionSaver.LoadPreset(preset);
         if (!suc && code == -1)
         {
             foreach (CustomOption option in options)
@@ -263,9 +263,10 @@ public class CustomOption
             CurrentValues = new();
             OptionSaver.WriteNowPreset();
             return;
-        } else if (!suc)
+        }
+        else if (!suc)
         {
-            Logger.Info("CustomOptionGetPresetError:"+code.ToString());
+            Logger.Info("CustomOptionGetPresetError:" + code.ToString());
             return;
         }
         foreach (CustomOption option in options)
@@ -397,7 +398,7 @@ public class CustomOption
                 } // Save selection to config
                 else
                 {
-                    ShareOptionSelections(this);    
+                    ShareOptionSelections(this);
                 }
             }
         }

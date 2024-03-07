@@ -93,7 +93,7 @@ public static class FungleSelectSpawn
             spawnInMinigame.transform.SetParent(Camera.main.transform, false);
             spawnInMinigame.transform.localPosition = new Vector3(0f, 0f, -600f);
             List<SpawnInMinigame.SpawnLocation> locations = new(Locations.Length);
-            foreach(var loc in Locations)
+            foreach (var loc in Locations)
             {
                 locations.Add(Create(spawnInMinigame, loc));
             }
