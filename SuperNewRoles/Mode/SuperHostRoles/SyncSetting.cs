@@ -366,7 +366,7 @@ public static class SyncSetting
 
     public static IGameOptions DeepCopy(this IGameOptions opt)
     {
-        var optByte = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(opt);
+        var optByte = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(opt, AprilFoolsMode.IsAprilFoolsModeToggledOn);
         return GameOptionsManager.Instance.gameOptionsFactory.FromBytes(optByte);
     }
 
