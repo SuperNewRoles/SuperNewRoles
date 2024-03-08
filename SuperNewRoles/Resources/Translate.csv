@@ -270,6 +270,14 @@ ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影
 GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼於間隙室可以從下方看到上方
 DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,僅內鬼於間隙室可以從上方看到下方
 MoveGapRoomDownload,Move GapRoom Download,昇降機のダウンロードタスクを移動する,移动间隙室的下载数据任务位置,移動間隙室的下載任務位置
+LadderCoolChangeSetting,Change the cool time of the ladder,梯子のクールタイムを変更する
+LadderCoolTimeSetting,Ladder cool time,梯子のクールタイム
+LadderImpostorCoolChangeSetting,Change the cool time of individual imposter,個別にインポスターのクールタイムを変更する
+LadderImpostorCoolTimeSetting,Cool time of the Imposter Ladder,インポスターの梯子のクールタイム
+ZiplineCoolChangeSetting,Change the cool time of the zipline,ジップラインのクールタイムを変更する
+ZiplineCoolTimeSetting,Zipline cool time,ジップラインのクールタイム
+ZiplineImpostorCoolChangeSetting,Change the cool time of individual imposter,個別にインポスターのクールタイムを変更する
+ZiplineImpostorCoolTimeSetting,Cool time of the Imposter Zipline,インポスターのジップラインのクールタイム
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置,模式設定
