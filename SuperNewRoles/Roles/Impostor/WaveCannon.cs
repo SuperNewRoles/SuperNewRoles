@@ -28,11 +28,11 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.WaveCannon, 200000, false,
-            CoolTimeOption:(20f,2.5f,180,2.5f, false),
-            DurationTimeOption:(3f, 0.5f, 15f, 0.5f, false),
-            optionCreator:CreateOption);
+            CoolTimeOption: (20f, 2.5f, 180, 2.5f, false),
+            DurationTimeOption: (3f, 0.5f, 15f, 0.5f, false),
+            optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
-        new(RoleId.WaveCannon, introSound:RoleTypes.Impostor);
+        new(RoleId.WaveCannon, introSound: RoleTypes.Impostor);
     public static CustomOption IsSyncKillCoolTime;
     public static CustomOption AnimationTypeOption;
     public static void CreateOption()
@@ -42,7 +42,7 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
         int index = 0;
         foreach (string TypeName in WCCreateAnimHandlers.Keys)
         {
-            AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType"+TypeName);
+            AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
             index++;
         }
         AnimationTypeOption = CustomOption.Create(200005, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts, Optioninfo.RoleOption);

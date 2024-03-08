@@ -33,10 +33,10 @@ public static class SabotageManager
             return false;
         if (thisSabotage != CustomSabotage.None &&
             !(thisSabotage switch
-        {
-            CustomSabotage.CognitiveDeficit => CognitiveDeficit.Main.IsLocalEnd,
-            _ => false,
-        }))
+            {
+                CustomSabotage.CognitiveDeficit => CognitiveDeficit.Main.IsLocalEnd,
+                _ => false,
+            }))
             return false;
         return true;
     }

@@ -234,7 +234,8 @@ public class PlayerAnimation
                 MaskType = PlayerMaterial.MaskType.None,
                 ColorId = Player.Data.DefaultOutfit.ColorId
             };
-        } else
+        }
+        else
         {
             SpriteRender.sharedMaterial = _defaultMaterial;
             SpriteRender.maskInteraction = SpriteMaskInteraction.None;

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Helpers;
-using InnerNet;
 using Hazel;
+using InnerNet;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Sabotage;
 

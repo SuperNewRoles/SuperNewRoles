@@ -373,8 +373,8 @@ internal static class GetChatCommands
                 if (data.role.Value == RoleId.DefaultRole && RoleColor.r == 1 && RoleColor.g == 1 && RoleColor.b == 1)
                     builder.Append(CustomOptionHolder.Cs(Palette.CrewmateBlue, IntroData.CrewmateIntro.NameKey+"Name"));
                 else*/
-                    builder.Append(CustomRoles.GetRoleName/*OnColor*/
-                        (data.role.Value, IsImpostorReturn: data.isImpostor));
+                builder.Append(CustomRoles.GetRoleName/*OnColor*/
+                    (data.role.Value, IsImpostorReturn: data.isImpostor));
             }
             builder.AppendLine();
         }
