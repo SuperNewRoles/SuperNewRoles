@@ -143,7 +143,7 @@ internal static class GetChatCommands
         string welcomeMessage;
 
         const string startText = $"<align={"left"}><size=80%>";
-        const string endText = " " + "\n." + "</size></align>";
+        const string endText = " " + "\n<size=0%>.</size>" + "</size></align>";
 
         string mainText;
         string webWarningText = null;
