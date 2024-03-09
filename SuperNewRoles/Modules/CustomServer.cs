@@ -117,7 +117,7 @@ public static class RegionMenuOpenPatch
                 new StaticHttpRegionInfo(SNRServerName, StringNames.NoTranslation,
                 "cs.supernewroles.com", new(
                     new ServerInfo[1] {
-                        new ServerInfo(SNRServerName, "http://cs.supernewroles.com",
+                        new ServerInfo(SNRServerName, "https://cs.supernewroles.com",
                         22023, false)
                     })).CastFast<IRegionInfo>(),
                 new StaticHttpRegionInfo("Custom", StringNames.NoTranslation,
