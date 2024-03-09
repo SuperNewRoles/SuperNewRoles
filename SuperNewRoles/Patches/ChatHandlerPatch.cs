@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
@@ -131,13 +133,15 @@ internal class AddChatPatch
         {
             if (target == null)
             {
-                string name = PlayerControl.LocalPlayer.GetDefaultName();
-                AmongUsClient.Instance.StartCoroutine(AllSend(GetChatCommands.SNRCommander + rolename, text, name).WrapToIl2Cpp());
+                SendAlternateChat(null, GetChatCommands.SNRCommander + rolename, text);
+                // string name = PlayerControl.LocalPlayer.GetDefaultName();
+                // AmongUsClient.Instance.StartCoroutine(AllSend(GetChatCommands.SNRCommander + rolename, text, name).WrapToIl2Cpp());
                 return;
             }
             if (target.PlayerId != 0)
             {
-                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, GetChatCommands.SNRCommander + rolename, text, time).WrapToIl2Cpp());
+                SendAlternateChat(target, GetChatCommands.SNRCommander + rolename, text);
+                // AmongUsClient.Instance.StartCoroutine(PrivateSend(target, GetChatCommands.SNRCommander + rolename, text, time).WrapToIl2Cpp());
             }
             else
             {
@@ -153,12 +157,14 @@ internal class AddChatPatch
             string name = PlayerControl.LocalPlayer.GetDefaultName();
             if (target == null)
             {
-                AmongUsClient.Instance.StartCoroutine(AllSend(GetChatCommands.SNRCommander + rolename, text, name, time).WrapToIl2Cpp());
+                SendAlternateChat(null, GetChatCommands.SNRCommander + rolename, text, time);
+                // AmongUsClient.Instance.StartCoroutine(AllSend(GetChatCommands.SNRCommander + rolename, text, name, time).WrapToIl2Cpp());
                 return;
             }
             if (target.PlayerId != 0)
             {
-                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, GetChatCommands.SNRCommander + rolename, text, time).WrapToIl2Cpp());
+                SendAlternateChat(target, GetChatCommands.SNRCommander + rolename, text, time);
+                // AmongUsClient.Instance.StartCoroutine(PrivateSend(target, GetChatCommands.SNRCommander + rolename, text, time).WrapToIl2Cpp());
             }
             else
             {
@@ -182,7 +188,8 @@ internal class AddChatPatch
         {
             string name = CachedPlayer.LocalPlayer.Data.PlayerName;
             if (name == GetChatCommands.SNRCommander) return;
-            AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
+            SendAlternateChat(null, SendName, command);
+            // AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
             return;
         }
         else if (target.PlayerId == 0)
@@ -194,7 +201,8 @@ internal class AddChatPatch
         }
         else
         {
-            AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command).WrapToIl2Cpp());
+            SendAlternateChat(target, SendName, command);
+            // AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command).WrapToIl2Cpp());
         }
     }
 
@@ -214,7 +222,8 @@ internal class AddChatPatch
 
         if (AmongUsClient.Instance.AmHost)
         {
-            SendCommand(target, contents, name);
+            SendAlternateChat(target, name, contents);
+            // SendCommand(target, contents, name);
         }
         else if (isSendFromGuest && target == PlayerControl.LocalPlayer)
         {
@@ -264,5 +273,55 @@ internal class AddChatPatch
             .Write(target.Data.PlayerName)
             .EndRpc()
             .SendMessage();
+    }
+
+    // FIXME : バニラ環境鯖では 120字以上のチャット及び3s以内の連投でKICKされる為, 暫定対応として代替RPCを使用する形にした (非導入者への送信不可)
+
+    /// <summary>
+    /// Send, AllSend, PrivateSend 使用時にBANが発生する為, 導入者限定の代用の処理 (RPC 送信部)
+    /// </summary>
+    /// <param name="target">送信対象 (nullなら全員)</param>
+    /// <param name="titelName">タイトル扱いとして変更する名前</param>
+    /// <param name="text">送信内容</param>
+    /// <param name="time">送信間隔</param>
+    public static void SendAlternateChat(PlayerControl target, string titelName, string text, float time = 0)
+    {
+        if (time <= 0)
+        {
+            if (target == null || target == PlayerControl.LocalPlayer) ReceiveAlternateChat(titelName, text);
+
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.AlternateChatSystem, target == null ? null : target);
+            writer.Write(titelName);
+            writer.Write(text);
+            writer.EndRPC();
+        }
+        else
+        {
+            new LateTask(() =>
+            {
+                if (target == null || target == PlayerControl.LocalPlayer) ReceiveAlternateChat(titelName, text);
+
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.AlternateChatSystem, target == null ? null : target);
+                writer.Write(titelName);
+                writer.Write(text);
+                writer.EndRPC();
+            }, time, "SendAlternateChat");
+        }
+    }
+
+    /// <summary>
+    /// Send, AllSend, PrivateSend 使用時にBANが発生する為, 導入者限定の代用の処理 (RPC 送信部)
+    /// </summary>
+    /// <param name="titelName">タイトル扱いとして変更する名前</param>
+    /// <param name="text">チャット内容</param>
+    public static void ReceiveAlternateChat(string titelName, string text)
+    {
+        var target = PlayerControl.LocalPlayer;
+        var originalName = target.Data.PlayerName;
+        var contents = $"<size=0%>.</size>\n{text}\n";
+
+        target.SetName(titelName);
+        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(target, contents, false);
+        target.SetName(originalName);
     }
 }

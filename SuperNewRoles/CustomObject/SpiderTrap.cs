@@ -83,13 +83,14 @@ public class SpiderTrap : MonoBehaviour
             //今回のフレームで有効になった場合
             if (Activated)
             {
-                renderer.color = new Color(1,1,1,1);
+                renderer.color = new Color(1, 1, 1, 1);
             }
         }
         else
         {
             //キャッチ済みか判定する
-            if (CatchingPlayer == null) {
+            if (CatchingPlayer == null)
+            {
                 //各視点で判定する
                 if (PlayerControl.LocalPlayer.IsAlive() && !PlayerControl.LocalPlayer.IsImpostor())
                 {

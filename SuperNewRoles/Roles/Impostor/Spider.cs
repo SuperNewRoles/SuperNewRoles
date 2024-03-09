@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using UnityEngine;
+using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using Hazel;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -23,7 +23,7 @@ public static class Spider
         {
             Option = CustomOption.SetupCustomRoleOption(optionId, false, RoleId.Spider); optionId++;
             PlayerCount = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SettingPlayerCountName", CustomOptionHolder.ImpostorPlayers[0], CustomOptionHolder.ImpostorPlayers[1], CustomOptionHolder.ImpostorPlayers[2], CustomOptionHolder.ImpostorPlayers[3], Option); optionId++;
-            SpiderButtonCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SpiderButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;
+            SpiderButtonCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SpiderButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f, Option); optionId++;
             SpiderButtonActivate = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SpiderButtonActivateSetting", 5f, 0f, 60f, 2.5f, Option); optionId++;
             SpiderSpentSetting = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SpiderSpentSetting", 10f, 2.5f, 60f, 2.5f, Option); optionId++;
             SpiderTrapKillTimeSetting = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SpiderTrapKillTimeSetting", 10f, 2.5f, 60f, 2.5f, Option); optionId++;
@@ -39,7 +39,7 @@ public static class Spider
         public static void ClearAndReload()
         {
             Player = new();
-            SpiderButtonCooldown  = CustomOptionData.SpiderButtonCooldown.GetFloat();
+            SpiderButtonCooldown = CustomOptionData.SpiderButtonCooldown.GetFloat();
             SpiderTrap.ClearAndReloads();
         }
     }
@@ -59,7 +59,7 @@ public static class Spider
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(pos.x);
                     writer.Write(pos.y);
-                    writer.Write((ushort)(SpiderTrap.MaxId+1));
+                    writer.Write((ushort)(SpiderTrap.MaxId + 1));
                     writer.EndRPC();
                     RPCProcedure.SetSpiderTrap(PlayerControl.LocalPlayer.PlayerId, pos.x, pos.y, (ushort)(SpiderTrap.MaxId + 1));
                     // ここに能力のコードを記載する

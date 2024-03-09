@@ -19,9 +19,9 @@ public static class JumpDancer
         JumpDancerPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], JumpDancerOption);
         JumpDancerCoolTime = CustomOption.Create(OptionId + 2, false, CustomOptionType.Crewmate, "NiceScientistCooldownSetting", 0f, 0f, 60f, 2.5f, JumpDancerOption);
     }
-    
+
     public static List<PlayerControl> JumpDancerPlayer;
-    public static Color32 color = new Color32(175, 225, 214, byte.MaxValue);
+    public static Color32 color = new(175, 225, 214, byte.MaxValue);
     public static CustomButton JumpDancerButton;
     public static Dictionary<byte, float> JumpingPlayerIds;
     public static List<PlayerControl> JumpingPlayers
@@ -99,7 +99,7 @@ public static class JumpDancer
                 continue;
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
-                SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.JumpDancerSe"+ (ModHelpers.IsSucsessChance(5) ? "1" : "2") + ".raw"), false,audioMixer:SoundManager.Instance.SfxChannel);
+                SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.JumpDancerSe" + (ModHelpers.IsSucsessChance(5) ? "1" : "2") + ".raw"), false, audioMixer: SoundManager.Instance.SfxChannel);
             }
             JumpingPlayerIds.Add(player.PlayerId, 0f);
             player.moveable = false;
@@ -142,7 +142,7 @@ public static class JumpDancer
                     {
                         players.Add(player);
                     }
-                    else if (Vector2.Distance(player.GetTruePosition(),localpos) <= LightRadius)
+                    else if (Vector2.Distance(player.GetTruePosition(), localpos) <= LightRadius)
                     {
                         players.Add(player);
                     }

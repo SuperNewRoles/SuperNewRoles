@@ -72,7 +72,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static (string, string) GetName(PlayerControl player)
         {
             string name = player.GetDefaultName();
-            name = "<size=75%>" + ModHelpers.Cs(CustomRoles.GetRoleColor(player.GetRole(), IsImpostorReturn:true), CustomRoles.GetRoleName(player.GetRole(), IsImpostorReturn: true)) + "</size>\n" + name + "\n\n";
+            name = "<size=75%>" + ModHelpers.Cs(CustomRoles.GetRoleColor(player.GetRole(), IsImpostorReturn: true), CustomRoles.GetRoleName(player.GetRole(), IsImpostorReturn: true)) + "</size>\n" + name + "\n\n";
             string selfname = name;
             selfname = "\n\n\n\n" + selfname + "\n\n\n\n";
             foreach (var notifi in Notifications)
