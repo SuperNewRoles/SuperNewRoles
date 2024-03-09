@@ -1,13 +1,13 @@
 using System;
+using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using UnityEngine;
-using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 

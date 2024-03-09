@@ -37,10 +37,10 @@ public static class ContentManager
                 using (var decryptor = aes.CreateDecryptor(GK(content.WebPath), aes.IV))
                 {
                     // 入力ファイルストリーム
-                    using (FileStream in_fs = new FileStream(content.file.FullName, FileMode.Open, FileAccess.Read))
+                    using (FileStream in_fs = new(content.file.FullName, FileMode.Open, FileAccess.Read))
                     {
                         // 復号して一定サイズずつ読み出し、出力ファイルストリームに書き出す
-                        using (CryptoStream cs = new CryptoStream(in_fs, decryptor, CryptoStreamMode.Read))
+                        using (CryptoStream cs = new(in_fs, decryptor, CryptoStreamMode.Read))
                         {
                             // 先頭16バイトは不要なのでまず復号して破棄
                             byte[] dummy = new byte[16];
@@ -103,7 +103,7 @@ public static class ContentManager
         return (T)content.Value;
     }
     static bool Downloading = false;
-    [HarmonyPatch(typeof(AmongUsClient),nameof(AmongUsClient.Awake))]
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
     class AmongUsClientAwakePatch
     {
         public static void Postfix(AmongUsClient __instance)
@@ -138,7 +138,7 @@ public static class ContentManager
             //万が一すでにあった場合を対策する
             if (!Contents.TryAdd(dc.WebPath, dc))
             {
-                Logger.Info(dc.WebPath+"の追加に失敗しました。");
+                Logger.Info(dc.WebPath + "の追加に失敗しました。");
             }
         }
         foreach (DownloadedContent content in Contents.Values)
@@ -149,7 +149,7 @@ public static class ContentManager
             {
                 FileStream stream = content.file.Open(FileMode.Open);
                 //ファイルが違う、やファイルの改ざんをチェック
-                content.Downloaded = content.hash == BitConverter.ToString(MD5Hash.ComputeHash(stream)).Replace("-","");
+                content.Downloaded = content.hash == BitConverter.ToString(MD5Hash.ComputeHash(stream)).Replace("-", "");
                 Logger.Info($"ファイル：{content.WebPath}が存在しました。ハッシュチェック：{content.Downloaded}");
                 //ちゃんと閉じる
                 stream.Close();
@@ -166,7 +166,7 @@ public static class ContentManager
                 if (request.isNetworkError || request.isHttpError)
                 {
                     //失敗したのでフリーズ対策に1フレーム待機して次の処理へ移る
-                    Logger.Info("Contentダウンロードに失敗しました。:"+content.WebPath);
+                    Logger.Info("Contentダウンロードに失敗しました。:" + content.WebPath);
                     yield return null;
                     continue;
                 }
@@ -181,7 +181,7 @@ public static class ContentManager
     }
     public static byte[] GK(string k)
     {
-        int l = 32;var r = new System.Random(k.GetHashCode());
+        int l = 32; var r = new System.Random(k.GetHashCode());
         var s = new StringBuilder();
         for (int i = 0; i < l; i++)
         {
@@ -193,7 +193,7 @@ public static class ContentManager
     //特定のファイルのMD5ハッシュを求める。UEからのみ使う。
     public static void ToHashFile(string Ex)
     {
-        FileStream o_stream = new FileStream(BasePath + "hashcheck." + Ex, FileMode.Open, FileAccess.Read);
+        FileStream o_stream = new(BasePath + "hashcheck." + Ex, FileMode.Open, FileAccess.Read);
         Logger.Info("HASH:" + BitConverter.ToString(MD5Hash.ComputeHash(o_stream)).Replace("-", ""));
         o_stream.Close();
     }
@@ -206,14 +206,14 @@ public static class ContentManager
             using (ICryptoTransform encryptor = aes.CreateEncryptor(GK(WebPath), aes.IV))
             {
                 // 入力ファイルストリーム
-                using (FileStream in_stream = new FileStream(BasePath + "base." + Ex, FileMode.Open, FileAccess.Read))
+                using (FileStream in_stream = new(BasePath + "base." + Ex, FileMode.Open, FileAccess.Read))
                 {
                     // 暗号化したデータを書き出すための出力ファイルストリーム
                     string out_filepath = BasePath + "ato." + Ex;
-                    using (FileStream out_fs = new FileStream(out_filepath, FileMode.Create, FileAccess.Write))
+                    using (FileStream out_fs = new(out_filepath, FileMode.Create, FileAccess.Write))
                     {
                         // 一定サイズずつ暗号化して出力ファイルストリームに書き出す
-                        using (CryptoStream cs = new CryptoStream(out_fs, encryptor, CryptoStreamMode.Write))
+                        using (CryptoStream cs = new(out_fs, encryptor, CryptoStreamMode.Write))
                         {
                             // 先頭16バイトは適当な値(いまはゼロ)で埋める
                             byte[] dummy = new byte[16];
@@ -231,7 +231,7 @@ public static class ContentManager
                 }
             }
         }
-        FileStream o_stream = new FileStream(BasePath + "ato." + Ex, FileMode.Open, FileAccess.Read);
+        FileStream o_stream = new(BasePath + "ato." + Ex, FileMode.Open, FileAccess.Read);
         Logger.Info("HASH:" + BitConverter.ToString(MD5Hash.ComputeHash(o_stream)).Replace("-", ""));
         o_stream.Close();
     }

@@ -35,6 +35,8 @@ public static class ModeHandler
     public static ModeId thisMode;
     public static void ClearAndReload()
     {
+        if (!ModHelpers.IsCustomServer()) ModeSetting.selection = 0; // FIXME : CustomServerでないなら 強制でDefaultモードに変更中
+
         PlusModeHandler.ClearAndReload();
         BattleRoyal.Main.ClearAndReload();
         if (IsMode(ModeId.BattleRoyal, false))
@@ -137,6 +139,7 @@ public static class ModeHandler
     {
         Mode = new CustomOptionBlank(null);
         ModeSetting = CustomOption.Create(101200, true, CustomOptionType.Generic, Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting"), false, Mode, isHeader: true);
+        ModeSetting.selection = 0; // FIXME : 初回は強制でDefaultモードに変更中
         ThisModeSetting = CustomOption.Create(101300, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
         BattleRoyal.BROption.Load();
         Zombie.ZombieOptions.Load();

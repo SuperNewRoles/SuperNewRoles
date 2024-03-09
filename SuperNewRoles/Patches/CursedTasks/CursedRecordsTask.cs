@@ -33,7 +33,7 @@ public class CursedRecordsTask
                 foreach (var folder in __instance.Folders) Object.Destroy(folder.gameObject);
                 __instance.transform.Find("BackgroundClose").gameObject.SetActive(false);
                 __instance.Folders = new SpriteRenderer[__instance.MyNormTask.Data.Length];
-                for (int i = 0;  i < __instance.MyNormTask.Data.Length; i++)
+                for (int i = 0; i < __instance.MyNormTask.Data.Length; i++)
                 {
                     GameObject folder = Object.Instantiate(copy, __instance.FoldersContent.transform);
                     folder.name = $"records_folder {i}";

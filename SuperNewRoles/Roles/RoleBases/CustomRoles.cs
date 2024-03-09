@@ -93,7 +93,8 @@ public static class CustomRoles
     public static void OnWrapUp(PlayerControl exiled)
     {
         RoleBaseManager.GetInterfaces<IWrapUpHandler>()
-            .Do(x => {
+            .Do(x =>
+            {
                 x.OnWrapUp();
                 if (exiled != null)
                     x.OnWrapUp(exiled);
@@ -108,7 +109,8 @@ public static class CustomRoles
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
                 RoleBaseManager.PlayerRoles.Values.Do(
-                    x => {
+                    x =>
+                    {
                         if (x is IHandleDisconnect handleDisconnect)
                             handleDisconnect.OnDisconnect();
                     }
@@ -195,7 +197,7 @@ public static class CustomRoles
             return null;
         return CustomOptionHolder.Cs(intro.color, $"{intro?.NameKey}Name");
     }
-    public static TeamRoleType GetRoleTeam(PlayerControl player, bool IsImpostorReturn=false)
+    public static TeamRoleType GetRoleTeam(PlayerControl player, bool IsImpostorReturn = false)
     {
         return GetRoleTeam(player.GetRole(), player, IsImpostorReturn);
     }
@@ -246,7 +248,7 @@ public static class CustomRoles
     {
         IReadOnlyList<T> Roles = RoleBaseManager.GetRoleBases<T>();
         PlayerControl[] Players = new PlayerControl[Roles.Count];
-        for (int i=0;i<Roles.Count;i++)
+        for (int i = 0; i < Roles.Count; i++)
         {
             Players[i] = Roles[i].Player;
         }
