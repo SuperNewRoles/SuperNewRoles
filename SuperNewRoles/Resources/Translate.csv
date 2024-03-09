@@ -1943,6 +1943,7 @@ SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,未持有
 InformationName,Information,情報,资讯,資訊
 ExiledText,{0} was the {1}!,{0} は {1} だった！,{0}是{1}!,{0} 是 {1}！
+PublicRoomError,The public rooms and matchmaking system are currently sealed.\nPlease wait for the official response.,現在公開部屋及び，マッチメイキングシステムを封印しております。\n正式対応を行うまでお待ちください。
 
 # Replay
 ReplayName,Replay,リプレイ,回放,重播

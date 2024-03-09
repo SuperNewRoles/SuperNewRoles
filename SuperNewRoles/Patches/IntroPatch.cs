@@ -87,7 +87,7 @@ public class IntroPatch
             PlayerData<bool> TaskPlayers = new(defaultvalue: false);
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                TaskPlayers[player] = player.IsClearTask(IsUseFirst:false);
+                TaskPlayers[player] = player.IsClearTask(IsUseFirst: false);
             }
             TaskCount.IsClearTaskPlayer = TaskPlayers;
             foreach (PlayerControl player in BotManager.AllBots)

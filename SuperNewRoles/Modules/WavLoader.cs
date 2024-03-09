@@ -9,7 +9,7 @@ using UnityEngine;
 namespace SuperNewRoles.Modules;
 public static class WavLoader
 {
-    public static AudioClip ToAudioClip(Stream memoryStream, string audioClipName="WavNoneClipName")
+    public static AudioClip ToAudioClip(Stream memoryStream, string audioClipName = "WavNoneClipName")
     {
         // RIFF
         var riffBytes = new byte[4];
@@ -103,12 +103,12 @@ public static class WavLoader
             32 => Create32BITAudioClipData(data),
             _ => throw new ArgumentException($"bitPerSample is not supported : bitPerSample = {bitPerSample}")
         };
-        Logger.Info(audioClipData.Length.ToString()+":Length");
+        Logger.Info(audioClipData.Length.ToString() + ":Length");
         var audioClip = AudioClip.Create(audioClipName, (audioClipData.Length / 2) - 30, channels, sampleRate, false);
         audioClip.SetData(audioClipData, 0);
         return audioClip;
     }
-    
+
     private static float[] Create8BITAudioClipData(byte[] data)
         => data.Select((x, i) => (float)data[i] / sbyte.MaxValue).ToArray();
 

@@ -15,7 +15,7 @@ class ChacheManager
     {
         MyRoleChache = new();
         MyGhostRoleChache = new();
-        HauntedWolfChache = new ();
+        HauntedWolfChache = new();
         LoversChache = new();
         FakeLoversChache = new();
         QuarreledChache = new();
