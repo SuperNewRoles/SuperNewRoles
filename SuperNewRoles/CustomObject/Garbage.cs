@@ -44,7 +44,7 @@ public class Garbage
         CircleCollider = GarbageObject.GetComponent<CircleCollider2D>();
 
         Button = GarbageObject.GetComponent<ButtonBehavior>();
-        Button.OnClick.AddListener((Action)(() => 
+        Button.OnClick.AddListener((Action)(() =>
         {
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || PlayerControl.LocalPlayer.IsDead()) return;
             if (Vector2.Distance(GarbageObject.transform.position, PlayerControl.LocalPlayer.GetTruePosition()) <= Distance)

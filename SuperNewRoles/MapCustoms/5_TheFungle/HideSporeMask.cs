@@ -9,7 +9,7 @@ using SuperNewRoles.Roles.Impostor;
 namespace SuperNewRoles.MapCustoms;
 public static class HideSporeMask
 {
-    [HarmonyPatch(typeof(Mushroom),nameof(Mushroom.FixedUpdate))]
+    [HarmonyPatch(typeof(Mushroom), nameof(Mushroom.FixedUpdate))]
     public static class MushroomFixedUpdatePatch
     {
         public static bool CanUseGasMask()

@@ -37,7 +37,7 @@ public static class FungleAdditionalElectrical
         Consoles.Add(console3);
         ShipStatus.Instance.AllConsoles = Consoles.ToArray();
     }
-    [HarmonyPatch(typeof(MapBehaviour),nameof(MapBehaviour.Awake))]
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Awake))]
     class MapBehaviourAwakePatch
     {
         public static void Postfix(MapBehaviour __instance)

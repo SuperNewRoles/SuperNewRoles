@@ -48,8 +48,8 @@ class ControllerManagerUpdatePatch
     {
         if (source != null)
         {
-            Logger.Info(source.time.ToString(),"a");
-            Logger.Info(source.timeSamples.ToString(),"b");
+            Logger.Info(source.time.ToString(), "a");
+            Logger.Info(source.timeSamples.ToString(), "b");
         }
         //解像度変更
         if (Input.GetKeyDown(KeyCode.F9))

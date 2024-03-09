@@ -13,7 +13,7 @@ namespace SuperNewRoles.MapCustoms;
 public class MapCustomHandler
 {
 
-    public static bool IsMapCustom(MapCustomId mapCustomId, bool isDefaultOnly=true)
+    public static bool IsMapCustom(MapCustomId mapCustomId, bool isDefaultOnly = true)
     {
         bool isCommonDecision = MapCustom.MapCustomOption.GetBool() && (ModeHandler.IsMode(ModeId.Default) || !isDefaultOnly);
         if (!isCommonDecision) return false; // 共通条件を満たしていなかったら, 早期リターン
@@ -75,7 +75,7 @@ class IntroCutsceneOnDestroyPatch
         //ファングルにアドミンを追加！
         FungleAdditionalAdmin.AddAdmin();
 
-        FungleShipStatus fungleShipStatus;        
+        FungleShipStatus fungleShipStatus;
         if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
         {
             GameObject gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;

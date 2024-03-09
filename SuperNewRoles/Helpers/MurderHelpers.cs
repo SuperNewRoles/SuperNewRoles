@@ -9,7 +9,7 @@ using InnerNet;
 namespace SuperNewRoles.Helpers;
 public static class MurderHelpers
 {
-    public static void RpcMurderPlayerFlags(this PlayerControl player, PlayerControl target, MurderResultFlags flags, PlayerControl SendTarget=null)
+    public static void RpcMurderPlayerFlags(this PlayerControl player, PlayerControl target, MurderResultFlags flags, PlayerControl SendTarget = null)
     {
         if (player == null || target == null) return;
         MessageWriter writer = RPCHelper.StartRPC(player.NetId, RpcCalls.MurderPlayer, SendTarget);
