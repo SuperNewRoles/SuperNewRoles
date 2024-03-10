@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -108,14 +109,44 @@ public static class RegionMenuOpenPatch
         }
     }
     public static IRegionInfo[] defaultRegions;
+    public static string SNRServerName => "<size=150%>"+SuperNewRolesPlugin.ColorModName+ "</size>\n<align=\"center\">Tokyo</align>";
     public static void UpdateRegions()
     {
         ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
-        IRegionInfo[] regions = defaultRegions;
+        var regions = new IRegionInfo[2] {
+                new StaticHttpRegionInfo(SNRServerName, StringNames.NoTranslation,
+                "cs.supernewroles.com", new(
+                    new ServerInfo[1] {
+                        new ServerInfo("http-1", "https://cs.supernewroles.com",
+                        443, false)
+                    })).CastFast<IRegionInfo>(),
+                new StaticHttpRegionInfo("Custom", StringNames.NoTranslation,
+                ConfigRoles.Ip.Value, new(
+                    new ServerInfo[1] {
+                        new ServerInfo("Custom", ConfigRoles.Ip.Value,
+                        ConfigRoles.Port.Value, false)
+                    })).CastFast<IRegionInfo>(),
+            };
 
-        var CustomRegion = new DnsRegionInfo(ConfigRoles.Ip.Value, "Custom", StringNames.NoTranslation, ConfigRoles.Ip.Value, ConfigRoles.Port.Value, false);
-        regions = regions.Concat(new IRegionInfo[] { CustomRegion.CastFast<IRegionInfo>() }).ToArray();
-        ServerManager.DefaultRegions = regions;
-        serverManager.AvailableRegions = regions;
+        IRegionInfo currentRegion = serverManager.CurrentRegion;
+        Logger.Info($"Adding {regions.Length} regions");
+        foreach (IRegionInfo region in regions)
+        {
+            if (region == null)
+                Logger.Error("Could not add region","CustomServer");
+            else
+            {
+                if (currentRegion != null && region.Name.Equals(currentRegion.Name, StringComparison.OrdinalIgnoreCase))
+                    currentRegion = region;
+                serverManager.AddOrUpdateRegion(region);
+            }
+        }
+
+        // AU remembers the previous region that was set, so we need to restore it
+        if (currentRegion != null)
+        {
+            Logger.Info("Resetting previous region");
+            serverManager.SetRegion(currentRegion);
+        }
     }
 }
