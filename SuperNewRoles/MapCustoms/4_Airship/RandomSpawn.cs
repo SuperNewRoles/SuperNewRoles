@@ -24,7 +24,7 @@ public static class AirShipRandomSpawn
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Begin)), HarmonyPostfix]
     static void BeginPrefix(SpawnInMinigame __instance)
     {
-        if (!( MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool() ) ||
+        if (!(MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool()) ||
             ModeHandler.GetMode(false) is ModeId.CopsRobbers or ModeId.PantsRoyal)
             return;
 
@@ -54,8 +54,8 @@ public static class AirShipRandomSpawn
         if (!AmongUsClient.Instance.AmHost ||
             !IsLoading ||
             AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
-            !( MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool() ))
-        return;
+            !(MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool()))
+            return;
 
         List<PlayerControl> players = new();
         bool EndLoaded = true;
@@ -100,7 +100,7 @@ public static class AirShipRandomSpawn
                     p.ResetKillCool(RoleClass.IsFirstMeetingEnd ? float.NegativeInfinity : 10f);
                 }
             }
-            new LateTask(() => ChangeName.SetRoleNames(),0.1f, "RandomSpawnSetRoleNames");
+            new LateTask(() => ChangeName.SetRoleNames(), 0.1f, "RandomSpawnSetRoleNames");
         }
     }
 }

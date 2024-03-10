@@ -117,7 +117,7 @@ public class PlayerData<T>
     public void Reset()
     {
         _data = null;
-        if (_playerdata != null) 
+        if (_playerdata != null)
             _playerdata = new();
     }
     public bool Any(Func<KeyValuePair<byte, T>, bool> func)

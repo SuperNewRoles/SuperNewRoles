@@ -10,6 +10,24 @@ class GameStartPatch
 {
     public static bool lastPublic = false;
     public static float lastTimer;
+
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
+    class MakePublicPatch
+    {
+        public static bool Prefix(GameStartManager __instance)
+        {
+            if (!AmongUsClient.Instance.AmHost) return true;
+            var HostVersion = ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[AmongUsClient.Instance.HostId].version; // HostのAmongUsVersion取得
+            var error = ModTranslation.GetString("PublicRoomError");
+            Logger.Error(error, "MakePublicPatch");
+            __instance.MakePublicButton.color = Palette.DisabledClear;
+            __instance.privatePublicText.color = Palette.DisabledClear;
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, error);
+
+            return false;
+        }
+    }
+
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
     class CoStartGamePatch
     {
