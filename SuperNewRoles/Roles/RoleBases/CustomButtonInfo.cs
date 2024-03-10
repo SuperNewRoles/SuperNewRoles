@@ -155,8 +155,9 @@ public class CustomButtonInfo
             SecondButtonInfoText.text = "";
             SecondButtonInfoText.enableWordWrapping = false;
             SecondButtonInfoText.transform.localScale = Vector3.one * 0.5f;
-            SecondButtonInfoText.transform.localPosition += new Vector3(-0.1f, 1.4f, 0);
-            if (HasAbilityCountText) SecondButtonInfoText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+            SecondButtonInfoText.transform.localPosition += !HasAbilityCountText
+                ? new Vector3(-0.05f, 0.7f, 0)
+                : new Vector3(-0.05f, 1.4f, 0);
         }
     }
     public void UpdateAbilityCountText()

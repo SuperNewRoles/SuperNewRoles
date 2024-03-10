@@ -238,7 +238,7 @@ public static class Crook
             string announce = string.Format(ModTranslation.GetString("CrookInsuredChatAnnounce"), ModHelpers.GetPlayerControl(crookId).GetDefaultName(), ModHelpers.GetPlayerControl(TargetId).GetDefaultName());
             if (AmongUsClient.Instance.AmHost)
             {
-                foreach (PlayerControl p in  PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (p.IsAlive()) continue;
                     AddChatPatch.ChatInformation(p, ModTranslation.GetString("CrookName"), announce, "#60a1bd");

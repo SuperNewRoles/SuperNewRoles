@@ -48,6 +48,8 @@ DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者,開
 Analytics,Analytics,解析,解析,解析
 AnalyticsText,In order to make SuperNewRoles an even better mod， we have created a function to send information about positions used to the server. \nThis information can be viewed by SuperNewRoles developers. See the following page for more information. \nYou can change in the settings whether you want to save the information. \nNo personally identifiable elements， such as your player name， will be sent. \n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,为了改善模组玩家的游戏体验，\n制作组尝试推出将一局游戏中的职业等信息发送给制作组服务器的功能。\n制作组将查阅这些信息来改进本模组；详细可点击最下方网址查看。\n您可以决定自己是否要保留这些信息；\n制作组承诺不会将您的游戏昵称等私人信息发送至服务器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,為了改善遊玩本模組玩家的遊戲體驗，\n製作組推出將遊戲中的職業等資訊傳送給製作組的功能。\n製作組將可查閱這些資訊來改進本模組；詳細可點擊最下方網址查看。\n您可以決定自己是否要保留這些資訊；\n製作組承諾不會將您的遊戲暱稱等個人資料傳送到伺服器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>
 AnalyticsOK,OK!,了解！,确认,確認！
+ZanteiTitle,This version is a tentative fix.,このバージョンは暫定修正版です。
+ZanteiText,A server glitch that suddenly appeared before us...\nWhy? How could this happen?\nWe have no choice，we have to get things working again...\n\nSo，we've managed to fix the vanilla server problem that has been occurring since the 2024.3.5 version.\nThis is the version that somehow made it work properly.\nHoweverthe following functions are not available on the vanilla server.\n・Public rooms (you can't make a room public)\n・Mode change including SHR mode (You can only play in the default mode.)\n・Some positions and commands that use chat.\n・Various other things (see v2.2.0.1 release notes for details)\n\nThis limitation is almost non-existent for custom servers. (Some of them are affected.)\nWe have started offering SuperNewRoles official custom servers and we recommend you to use them.\nYou can use it by selecting "SuperNewRoles Tokyo" from the Online -> lower right mark.\nHowever，we have confirmed a phenomenon where the ping is displayed at about 200 in some environments.\n(Usually it is about 10 to 30 depending on the environment.)\nWe are investigating the issue，so please play without worrying about it.\n(It seems that the lag is not that noticeable.)\n\n\nThat is all. Thank you for your understanding.\nPlease follow us on Twitter (@SNROfficials) for further updates.,私達の前に突如現れた、サーバーの不具合...\nなぜだ？なぜこんなことが？\n仕方がない、一旦正常に動作するようにしなければ...\n\nという訳で2024.3.5バージョンから発生しているバニラサーバー側の不具合を\nどうにか正常に動作するようにしたバージョンです。\nただし、以下の機能はバニラサーバーの場合使用できません。\n・公開部屋(部屋を公開にしようとしてもできません)\n・SHRモードを含むモード変更(デフォルトモードでのみプレイできます。)\n・一部のチャットを使用する役職及び一部のコマンド\n・その他様々(詳しくはv2.2.0.1のリリースノートをご確認ください。)\n\nこの制限はカスタムサーバーの場合はほとんどありません。(一部影響があるものがあります。)\nSuperNewRoles公式カスタムサーバーの提供を始めましたのでそちらを使用することを推奨します。\nオンライン→右下のマークから「SuperNewRoles Tokyo」を選択することでご利用いただけます。\nただし、一部の環境でPingが200ほどで表示される現象を確認しています。\n(通常は環境にもよりますが10～30程度です)\n調査を進めていますので、気にせずにプレイを行ってください。\n(体感そこまでのラグは感じられないようです。)\n\n以上です。ご理解をお願いします。\n続報はTwitter(@SNROfficials)で行いますのでフォローをお願いします。
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红,鮭魚紅
@@ -124,7 +126,7 @@ CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使
 IsImpostorVisionOption,Impostor vision,インポスターの視界か,拥有内鬼视野,是否啟用內鬼視野
 CoolTimeOption,Cool time,クールタイム,冷却时间,冷卻時間
 DurationTimeOption,Duration time,持続時間,持续时间,持續時間
-AbilityCountOption,Ability limit,能力最大使用回数
+AbilityCountOption,Ability limit,能力最大使用回数,能力最大使用次数,能力最大使用次数
 MapCustom,Map Custom,マップ改造,地图设置,地圖設定
 SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加机密室,追加密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
@@ -202,13 +204,13 @@ DeviceTimeSetting,Can use time,使用可能時間,飞船设备最大可使用时
 IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx,启用ykundesuBeplnEx,ykundesuBeplnEx
 restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい,关注B站@心音糖果_Tingo谢谢喵！
 ReactorDurationSetting,Reactor Duration Time,緊急タスク継続時間の設定,自定义核反应堆紧急破坏持续时间,核子反應爐緊急任務持續時間
-SkeldReactorTime,The Skeld : reactor Duration Time,The Skeld : リアクターサボタージュの時間,,The Skeld核子反應爐緊急任務持續時間
-SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,<size=45%>The Skeld : 酸素枯渇までの時間</size>,,The Skeld氧氣枯竭緊急任務持續時間
+SkeldReactorTime,The Skeld : reactor Duration Time,The Skeld : リアクターサボタージュの時間,骷髅舰(The  Skeld)核反应堆紧急破坏持续时间,The Skeld核子反應爐緊急任務持續時間
+SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,<size=45%>The Skeld : 酸素枯渇までの時間</size>,骷髅舰(The Skeld)氧气紧急破坏持续时间,The Skeld氧氣枯竭緊急任務持續時間
 PolusReactorTime,Polus : Reset Stabilizers Duration Time,Polus : 耐震安定装置リセットの時間,波鲁斯(Polus)抗震器紧急破坏持续时间,Polus核子反應爐震盪緊急任務持續時間
 MiraReactorTime,MiraHQ : reactor Duration Time,MiraHQ : リアクターサボタージュの時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
-MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,<size=50%>MiraHQ : 酸素枯渇までの時間</size>,,MiraHQ氧氣枯竭緊急任務持續時間
+MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,<size=50%>MiraHQ : 酸素枯渇までの時間</size>,米拉总部(Mira)氧气紧急破坏持续时间,MiraHQ氧氣枯竭緊急任務持續時間
 AirshipReactorTime,Airship : Avert Cresh Course Duration Time,AirShip : 衝突回避の時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
-FungleReactorTime,The Fungle : reactor Duration Time,The Fungle : リアクターサボタージュの時間,,The Fungle核子反應爐緊急任務持續時間
+FungleReactorTime,The Fungle : reactor Duration Time,The Fungle : リアクターサボタージュの時間,蘑菇岛(The Fungle)核反应堆破坏紧急持续时间,The Fungle核子反應爐緊急任務持續時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
 VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化,播放管道动画,啟用通風管道動畫
 MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖改造
@@ -238,7 +240,7 @@ TheFungleZiplineUpOrDown,Zipline Direction,ジップラインの方向,方向,�
 TheFungleZiplineAlways,Both,両方,两者,兩者
 TheFungleZiplineOnlyUp,Up Only,上昇のみ,只上升,只上升
 TheFungleZiplineOnlyDown,Down Only,下降のみ,只下降,只下降
-TheFungleCameraOption,Camera Options,カメラの設定,,監視器設定
+TheFungleCameraOption,Camera Options,カメラの設定,监控设置,監視器設定
 TheFungleCameraChangeRange,Camera Change Range,カメラの範囲切り替え,切换范围,切換範圍
 TheFungleCameraSpeed,Camera Speed,カメラの速度,速度,速度
 TheFungleMushroomMixupOption,Mushroom Mixup Options,キノコカオスの設定,迷乱蘑菇破坏设置,迷茫香菇設定
@@ -501,12 +503,12 @@ EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継�
 EvilScientistName,Evil Scientist,イビルサイエンティスト,邪恶的隐身人,邪惡的隱身人
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう,隐身并杀死其他船员,隱身並殺死其他船員
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
-EvilScientistCombIntroDearJammer,Why don't you use that ability on yourself...,その能力を自分に使ったらどうだ...
+EvilScientistCombIntroDearJammer,Why don't you use that ability on yourself...,その能力を自分に使ったらどうだ...,就让我来使用这禁忌的科学吧……,為什麼不把這個能力用在自己身上呢...
 EvilScientistDescription,You can become invisible by using the [Hide] button. \nThe impostor role allows you to see the Evil Scientist in a semi-transparent state while he or she is activating his or her abilities.\n\nUse your invisibility ability to deceive and win!!,[隠れる]ボタンを使用することで透明化することができます。\n能力発動中 インポスター役職は， イビルサイエンティストを半透明な状態で視認する事ができます。\n\n透明化能力を用いて、視認を欺き勝利しましょう!!,邪恶的隐身人可以使用技能来隐身。\n利用隐身能力，骗过他人的眼睛来获得胜利吧！,你可以利用「隱藏」按鈕進行隱身。\n利用隱身能力欺騙船員獲得勝利！
 SheriffName,Sheriff,シェリフ,警长,警長
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人,殺死敵人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利,殺死敵人帶領船員獲得勝利
-SheriffCombIntroDearJackal,I have a feeling it's not going to be straightforward.,一筋縄ではいかなさそうな予感がする
+SheriffCombIntroDearJackal,I have a feeling it's not going to be straightforward.,一筋縄ではいかなさそうな予感がする,不能一条路走到黑的预感……,我有預感不能繼續走老路了
 SheriffDescription,This is a crewmate role that allows you to change the team (role) in which kills are possible. \nIf a crewmember of a team that cannot be killed is targeted for a kill，it is a misfire and the crewmember commits suicide (the setting allows you to kill the target even if it is a misfire). Take advantage of the \ncharacteristics to scrutinize the information and identify the outsider.,キルが可能な陣営(役職)を設定により変更できるクルーメイト役職です。\nキルが不可能な陣営のクルーを対象に取りキルした場合、誤射となり自殺します(設定により誤射時も対象を殺す事ができます)。\n特性を生かして、情報を精査し人外を特定しましょう。,警长可以击杀指定阵营的玩家。\n如果警长尝试击杀一名不允许击杀的阵营的玩家，他会以死谢罪（走火）。根据房间设置，那名被尝试击杀的玩家也可能死亡。\n利用自己的能力，分析情报，找出并杀死敌对玩家。,依據設定具有不同可擊殺的陣營。\n當擊殺不可擊殺陣營的對象時，警長將自殺。\n根據其他人的角色特性，調查情報並帶領船員獲得勝利吧
 SheriffCooldownSetting,Kill Cooldown,キルクールタイム,击杀冷却,擊殺冷卻
 SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀/招募（警察局长）独立阵营玩家,可以擊殺中立陣營玩家
@@ -542,7 +544,7 @@ MeetingSheriffkillChat2,{0} was killed，but it was a misfire! {1} killed himsel
 MeetingSheriffkillChat3,{0} was a misfire!,{0} は誤爆した！,{0}的枪走火了！,{0}的槍走火了！
 MeetingSheriffkillChat4,{0} succeeded!,{0} は成功した！,{0}成功了！,{0}成功了
 JackalName,Jackal,ジャッカル,豺狼,豺狼
-JackalCombIntroDearSheriff,I'm told there's a crewmate who can kill me.\nBut it doesn't matter. All I have to do is kill him and everyone else.,インポスター以外に私を殺せる者がいる…?\n関係ない そいつ含めて全員殺せばいいだけだ
+JackalCombIntroDearSheriff,I'm told there's a crewmate who can kill me.\nBut it doesn't matter. All I have to do is kill him and everyone else.,インポスター以外に私を殺せる者がいる…?\n関係ない そいつ含めて全員殺せばいいだけだ,除了内鬼还有要杀我的人……？\n没关系。我就凭一人之力，打倒整个世界。,能殺我的不只是內鬼...?\n沒關係，只要殺了所有人就好了
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼,殺死所有船員和內鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利,殺死其他陣營的所有人獲得勝利
 JackalTitle3,Let's just kill them all.,全員ぶち殺そう,杀死所有人,殺了所有人
@@ -661,15 +663,15 @@ VultureButtonName,Eat,食らう,吞噬,吞食
 NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐身人,正義的隱身人
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体,透明化以找尋屍體
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
-NiceScientistDescription,You can become invisible by using the [Hide] button.\nScientists in an invisible state can also be taken as targets of abilities.\nTherefore，this is not a role where it is possible to completely avoid being subject to the abilities of others，such as kills.\n\nUse invisibility to get information past the impostor's watchful eye!,[隠れる]ボタンを使用することで透明化することができます。\n透明化中のサイエンティストも能力の対象に取る事ができます。\n従って，キル等他者の能力を受ける事を完全に回避する事が可能な役職ではありません。\n\nインポスターの監視の目をかいくぐり情報を取得しましょう!
+NiceScientistDescription,You can become invisible by using the [Hide] button.\nScientists in an invisible state can also be taken as targets of abilities.\nTherefore，this is not a role where it is possible to completely avoid being subject to the abilities of others，such as kills.\n\nUse invisibility to get information past the impostor's watchful eye!,[隠れる]ボタンを使用することで透明化することができます。\n透明化中のサイエンティストも能力の対象に取る事ができます。\n従って，キル等他者の能力を受ける事を完全に回避する事が可能な役職ではありません。\n\nインポスターの監視の目をかいくぐり情報を取得しましょう!,正义的隐身人可以使用技能来隐身。\n隐身状态下的隐身人仍然可以成为技能的目标。\n因此，正义的隐身人并不能完全避免其他玩家的技能，如击杀之类。\n\n利用技能骗过内鬼们的眼睛，来获取信息吧！,正義的隱身人可以透過隱身變得不可見，\n但仍可以成為擊殺或技能的目標對象。\n利用隱身來獲得情報，過關於內鬼的監視！
 NiceScientistCooldownSetting,Cool Time,クールタイム,技能冷却,技能冷卻時間
 NiceScientistDurationSetting,Duration Time,継続時間,技能持续时间,技能持續時間
 ScientistButtonName,Hide,隠れる,隐身,隱身
-ScientistCanTheLighterSeeTheScientist,Can the Lighter see the Scientist being transparent?,透明化中のサイエンティストをライターが見れるか
+ScientistCanTheLighterSeeTheScientist,Can the Lighter see the Scientist being transparent?,透明化中のサイエンティストをライターが見れるか,隐身人的技能对执灯人无效,隱身中的隱身人是否能被火炬看見
 ClergymanName,Clergyman,聖職者,牧师,牧師
 ClergymanTitle1,Let's sabotage the outsider.,人外の妨害をしよう,妨碍内鬼行动,妨礙內鬼行動
 ClergymanTitle2,Let's obstruct the outsider's view.,人外の視界を妨害しよう,让内鬼们也尝尝黑暗的滋味,讓內鬼們也嘗嘗黑暗的滋味
-ClergymanDescription,This is the role of Crewmate，who has the ability to temporarily narrow the impostor's field of view with a hindering power outage ability.\nThe ability does not affect Madmate.\n\nWoe to those who wrong us!!,インポスターの視界を一定時間狭める，妨害停電能力を有するクルーメイト役職です。\n能力は，マッドメイトに影響しません。\n\n我らに仇なす者には禍を!!
+ClergymanDescription,This is the role of Crewmate，who has the ability to temporarily narrow the impostor's field of view with a hindering power outage ability.\nThe ability does not affect Madmate.\n\nWoe to those who wrong us!!,インポスターの視界を一定時間狭める，妨害停電能力を有するクルーメイト役職です。\n能力は，マッドメイトに影響しません。\n\n我らに仇なす者には禍を!!,牧师拥有对内鬼阵营造成暂时的视野破坏、阻碍照明破坏的能力。\n叛徒阵营不会受到牧师技能的影响。\n\n以牙还牙！,牧師屬於船員陣營，能夠暫時限制內鬼陣營玩家的視野。\n能力不影響叛徒。\n\n以牙還牙，以眼還眼！！
 ClergymanCooldownSetting,Cool Time,クールタイム,牧师技能冷却,牧師技能冷卻時間
 ClergymanDurationTimeSetting,Duration Time,継続時間,牧师技能持续时间,牧師技能持續時間
 ClergymanDownVisionSetting,Impostor Down Vision.,実行時の視界,牧师技能持续时间内的内鬼视野,牧師技能持續時間內的內鬼視野
@@ -679,7 +681,7 @@ MadmateName,Madmate,マッドメイト,叛徒,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利,幫助內鬼獲得勝利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。,叛徒屬於船員陣營，但是其為內鬼的同伴。\n內鬼獲勝則叛徒一同獲勝。
 MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか,叛徒是否能确认内鬼玩家,叛徒是否能確認內鬼玩家
-IsSettingNumberOfUniqueTasks,Do you want to set the number of tasks to be distributed on a specific basis?,配布するタスク数を固有で設定するか,,發動能力是否需要達到指定的任務量
+IsSettingNumberOfUniqueTasks,Do you want to set the number of tasks to be distributed on a specific basis?,配布するタスク数を固有で設定するか,独立分配任务数量,發動能力是否需要達到指定的任務量
 IsParcentageForTaskTrigger,Is the number of tasks required to trigger the capability a percentage of the total number of tasks?,能力発動に必要なタスク数を総タスク数に対する割合にするか。,发动能力需要完成的任务数是否用总任务的百分比表示,發動能力是否需要達到指定的任務數量比例
 ParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),能力が発動するタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
 TaskTriggerAbilityTaskNumber,Number of tasks required to activate fanaticism capability,能力の発動に必要なタスク数,发动能力需要完成的任务数,發動能力需要完成的任務量
@@ -731,7 +733,7 @@ ResearcherTitle1,Let's do some research.,研究をしよう,通过调查发现�
 ResearcherOneTurnSetting,Maximum number of samples per turn,1ターンの最大サンプル数,一轮最多取样次数,一輪最多取樣次數
 SelfBomberName,Self Bomber,自爆魔,恐怖分子,恐怖分子
 SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう,我的任务 完成啦！,阿拉花瓜！
-SelfBomberDescription,This is the role of Impostor，who can perform a suicide attack kill.\n\nWhen using this ability，you can kill all crewmates around you，but you will also die. \nYou can adjust the range of the ability. The radius of the range increases by 0.5 for each crewmate.\n\nHere we go! You'll die with me!! Explosion!!!!,自爆による特攻キルを行う事ができるインポスター役職です。\n\n能力を使用すると自身の周囲にいるクルーを全員キルして自分も死にます。\n能力の範囲を設定で変更する事ができます。0.5毎にクルー1名分範囲の半径が増加します。\n\nさあ! 私と共に死んでもらうぞ!!\n爆破!!!!
+SelfBomberDescription,This is the role of Impostor，who can perform a suicide attack kill.\n\nWhen using this ability，you can kill all crewmates around you，but you will also die. \nYou can adjust the range of the ability. The radius of the range increases by 0.5 for each crewmate.\n\nHere we go! You'll die with me!! Explosion!!!!,自爆による特攻キルを行う事ができるインポスター役職です。\n\n能力を使用すると自身の周囲にいるクルーを全員キルして自分も死にます。\n能力の範囲を設定で変更する事ができます。0.5毎にクルー1名分範囲の半径が増加します。\n\nさあ! 私と共に死んでもらうぞ!!\n爆破!!!!,恐怖分子可以策划自杀式恐怖袭击。\n\n恐怖分子使用技能后，将会击杀包括自己在内的自身一定范围内的所有玩家。,可以设置恐怖分子的技能范围。每一名玩家都会使恐怖分子的技能范围增加0.5m。\n\n我的任务，完成啦！就让我们一起上路吧！,恐怖分子屬於內鬼陣營，只能夠透過自爆來進行擊殺。\n\n發動自爆後，包含自己與周圍的所有玩家一起同歸於盡。\n能力的範圍取決於對局設定。並且每多擊殺一名玩家將額外增加0.5的爆炸距離。\n\n阿拉花瓜！
 SelfBomberScopeSetting,Range (radius),範囲(半径),爆炸范围（半径）,爆炸範圍（半徑）
 SelfBomberButtonName,Self Bomb,自爆,自爆,自爆
 SelfBomberBombCoolTimeSettting,Ability of selfbomb cooldown time.,自爆能力のクールタイム,恐怖分子自爆冷却,恐怖分子自爆冷卻
@@ -753,7 +755,7 @@ NiceNekomataDescription,If you are exiled at a meeting you take one of them with
 NiceNekomataIsChainSetting,Chain Nekomata,猫又同士が連鎖する,猎人被连带死亡会继续触发连带死亡,獵人被連帶死亡會繼續觸發連帶死亡
 EvilNekomataName,Evil Nekomata,イビル猫又,邪恶的猎人,邪惡的獵人
 EvilNekomataTitle1,Let's take him on the road.,道連れにしよう,带人一起上路,帶人一起上路
-EvilNekomataDescription,When Evil Nekomata is expelled in the Meeting Phase，one person is chosen at random and taken together.\n\nBy configuration，it is also possible to exclude Impostor roles from the random target.\nMad roles cannot be excluded from the random target.,会議により自身が追放された時、ランダムで1名を道連れにします。\n設定により，ランダムの対象からインポスターを除外する事もできます。\nマッド役職をランダム対象から除外する事はできません。
+EvilNekomataDescription,When Evil Nekomata is expelled in the Meeting Phase，one person is chosen at random and taken together.\n\nBy configuration，it is also possible to exclude Impostor roles from the random target.\nMad roles cannot be excluded from the random target.,会議により自身が追放された時、ランダムで1名を道連れにします。\n設定により，ランダムの対象からインポスターを除外する事もできます。\nマッド役職をランダム対象から除外する事はできません。,若邪恶的猎人在会议阶段被放逐，则会随机连带一名玩家一同死亡。\n可以设置邪恶的猎人是否会连带内鬼阵营玩家。\n邪恶的猎人一定不会连带叛徒阵营玩家。,當邪惡的獵人在會議中被放逐時，會隨機選擇一名玩家一同死亡。\n\n根據設定，可以排除內鬼角色作為隨機目標，但叛徒無法被納入排除對象。
 JackalFriendsName,Jackal Friends,ジャッカルフレンズ,狈,狽
 JackalFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利,幫助豺狼獲得勝利
 JackalFriendsTitle2,I'll help you kill them all.,全員ぶち殺す手伝いをしよう,助豺狼一臂之力,助豺狼一臂之力
@@ -761,7 +763,7 @@ JackalFriendsDescription,It is judged as Crewmate.\nbut is in the Jackal camp.\n
 JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェックできる,可以确认豺狼是谁,可以確認豺狼是誰
 DoctorName,Doctor,ドクター,医生,醫生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死,隨時查看生命跡象檢測器來確認船員的生死
-DoctorCombIntro1,I'd like to conduct a parasitological examination，can you help me?,寄生虫学的検査を実施したいんだが協力してもらえないか?
+DoctorCombIntro1,I'd like to conduct a parasitological examination，can you help me?,寄生虫学的検査を実施したいんだが協力してもらえないか?,我要给飞船做检疫工作，能帮我搭把手吗？,我要來進行寄生蟲感染的檢查，你能幫我嗎?
 DoctorDescription,This role has mobile vitals and also allows the user to check the exact time[s] elapsed since death by checking the vitals located on the map.\nUnlike the Scientist's，the recharge of the portable vitals cannot be restored by completing the task. Also，it is not possible to recharge the battery before it runs out of charge.\nYou can recharge your mobile vitals by standing near the vitals located on the map.\n\nOh，another one slips through my hands...\nIt doesn't matter what information is sent about the dead after they're dead...\nYou can't bring a dead sailor back to life...,携帯バイタルを有し，更にマップに設置されているバイタルを確認する事で死亡してからの正確な経過時間[s]を確認する事ができる役職です。\n携帯バイタルの充電は科学者の物と異なりタスク完了によって回復はできません。又，充電が切れる前に再充電する事は出来ません。\n携帯バイタルの充電は，マップに設置されているバイタル付近に立つ事で行えます。\n\nああ、また一人この手からすり抜けていく...\n亡くなった後の情報が分かった所で意味がない...\n亡くなった船員を生き返らす事などできないのだから...,医生可以远程查看生命监测装置，并且可以通过查看飞船的生命监测装置确认那些死亡玩家的死亡时间。\n医生不可以通过完成任务来获得充能，也不能在充能耗尽之前进行充能。\n医生可以在飞船的生命监测装置旁给远程装置充能。,醫生可以隨時查看攜帶式的生命跡象檢測器，並透過地圖上的生命跡象檢測器來得知具體的死亡經過時間。\n攜帶式的生命跡象檢測器不同於科學家的充電機制，僅能透過處於地圖上的生命跡象檢測器附近以進行充電。\n\n嗚呼，又一條寶貴生命從我手中離去了...\n知道過世後的情報已經毫無意義...\n既然無法讓已故的船員復活...
 DoctorVitalName,Vital,バイタル,生命监测装置,生命跡象檢測器
 DoctorChargeTime,Vital charge time,バイタルのチャージタイム,医生装置冷却时间,醫生裝置冷卻時間
@@ -867,17 +869,17 @@ AmnesiacName,Amnesiac,忘却者,失忆者,失憶者
 AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう,努力回想你的职业,努力回想你的職業
 AmnesiacDescription,This is the Neutral role where reporting a corpse results in the role of the person of the corpse.\nWinning conditions depend on the role of the change destination.,死体をレポートするとその死体の人の役職になる第三陣営です。\n勝利条件は変化先の役職に依存します。,失忆者属于独立阵营，可以通过报告尸体来获得那名被报告的玩家的职业。\n失忆者的胜利条件与获得的职业相同。,失憶者屬於中立陣營，當舉報屍體時將成為死者的原職業。\n勝利條件取決於所成為職業而定。
 SideKillerName,SideKiller,サイドキラー,头目,頭目
-SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう,招募喽啰来获得胜利,招募喽囉來獲得勝利
-SideKillerDescription,The Crewmate can be eroded to create a mad killer that awakens as an impostor upon its own death.\n\nThe madkiller has the judgment as a madmate until before its own death.\nHowever，the mad mate setting and the mad role common ability are not reflected in the mad killer before awakening.\n\nThe Mudkiller before awakening has only the same abilities as the Crewmate (vanilla role) and the ability to see mutually with the Impostor.\nWhen the sidekiller dies，the mudkiller awakens into an impostor and gains impostor vision，vents，sabotage ability，and kill ability.\n\nYou are a lonely crew，you want to bring your former friends into the present group，you can't allow yourself to be the only one in this situation，you are such an irrepressible lonely crew.,クルーを侵食して，自身が死亡した時にインポスターとして覚醒するマッドキラーを作る事ができます。\n\nマッドキラーは自身が死亡する前までは，マッドメイトとしての判定を有します。\nただし，マッドメイトの設定およびマッドロール共通能力は覚醒前のマッドキラーには反映されません。\n\n覚醒前のマッドキラーはクルーメイト(バニラロール)と同様の能力と，インポスターとの相互視認能力のみを有します。\nマッドキラーはサイドキラーが死亡する事で，インポスターに覚醒し，インポスター視野・通気口・サボタージュ能力，そしてキル能力を獲得します。\n\n貴方は寂しがり屋だ，元仲間を現仲間に引き込みたい，自分だけがこんな境遇な事が許せない，そんなどうしようもない寂しがり屋だ。
+SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう,招募喽啰来获得胜利,招募嘍囉來獲得勝利
+SideKillerDescription,The Crewmate can be eroded to create a mad killer that awakens as an impostor upon its own death.\n\nThe madkiller has the judgment as a madmate until before its own death.\nHowever，the mad mate setting and the mad role common ability are not reflected in the mad killer before awakening.\n\nThe Mudkiller before awakening has only the same abilities as the Crewmate (vanilla role) and the ability to see mutually with the Impostor.\nWhen the sidekiller dies，the mudkiller awakens into an impostor and gains impostor vision，vents，sabotage ability，and kill ability.\n\nYou are a lonely crew，you want to bring your former friends into the present group，you can't allow yourself to be the only one in this situation，you are such an irrepressible lonely crew.,クルーを侵食して，自身が死亡した時にインポスターとして覚醒するマッドキラーを作る事ができます。\n\nマッドキラーは自身が死亡する前までは，マッドメイトとしての判定を有します。\nただし，マッドメイトの設定およびマッドロール共通能力は覚醒前のマッドキラーには反映されません。\n\n覚醒前のマッドキラーはクルーメイト(バニラロール)と同様の能力と，インポスターとの相互視認能力のみを有します。\nマッドキラーはサイドキラーが死亡する事で，インポスターに覚醒し，インポスター視野・通気口・サボタージュ能力，そしてキル能力を獲得します。\n\n貴方は寂しがり屋だ，元仲間を現仲間に引き込みたい，自分だけがこんな境遇な事が許せない，そんなどうしようもない寂しがり屋だ。,头目可以策反一名船员，将其职业变为喽啰。喽啰在头目死亡时晋升为内鬼。\n\n在头目存活时，喽啰会被判定为叛徒阵营。\n不过，喽啰不受叛徒阵营独立设置的影响，也不持有叛徒阵营的共通能力。\n\n头目存活时，喽啰只持有船员阵营的共通能力和与内鬼互认的能力。\n头目死亡后，喽啰被判定为内鬼阵营，并获得内鬼视野、使用管道、破坏与击杀的能力。\n\n看啊，这可怜的船员已经成为我们内鬼的俘虏了~\n他还一直在说着，不想孤独一人，想让你们这些朋友也一起堕落呢！\n嘻嘻嘻，真是个无可救药的俘虏啊！,頭目可以策反船員使其在死亡時覺醒為嘍囉。\n\n在自己死亡之前，嘍囉會被判定為叛徒。\n然而，覺醒前的嘍囉不會擁有叛徒的設定和叛徒的共同能力。\n\n覺醒前的嘍囉只有能和內鬼互相識別身份的能力。\n當頭目死亡時，嘍囉會覺醒為內鬼，並獲得內鬼視野、通風通風管道、破壞能力和殺人能力。\n\n我一直以來都在後悔，想要重建原本的團隊。\n要我怎麼做你們才肯回來？只要是我能做的我什麼都願意做！\n看來我滿腦子都只想到自己呢。
 SideKillerSidekickButtonName,Erosion,浸食する,策反,策反
 SideKillerKillCoolTimeSetting,SideKiller Kill Cool Time.,サイドキラーのキルクールタイム,头目击杀冷却,頭目擊殺冷卻時間
-SideKillerMadKillerKillCoolTimeSetting,MadKiller Kill Cool Time.,マッドキラーのキルクールタイム,喽啰击杀冷却,喽囉擊殺冷卻時間
-MadKillerName,MadKiller,マッドキラー,喽啰,喽囉
+SideKillerMadKillerKillCoolTimeSetting,MadKiller Kill Cool Time.,マッドキラーのキルクールタイム,喽啰击杀冷却,嘍囉擊殺冷卻時間
+MadKillerName,MadKiller,マッドキラー,喽啰,嘍囉
 MadKillerTitle1,Let's promote and kill!,昇格してキルをしよう,帮助头目完成杀戮，等待晋升机会,幫助頭目完成殺戮，等待晉升機會
-MadKiller,It is an entity that has been invaded by a sidekiller.\nWhen the parent sidekiller dies，it awakens as an impostor.\nBefore awakening as an Impostor，it is judged as a Mad Mate.\nHowever，the Mad Mate setting and Mad Role common abilities are not reflected in the Mad Killer.\n\nThe Madkiller before promotion has the same abilities as the Crewmate (vanilla role) and the ability to see mutually with the Impostor.\nBy awakening to the Impostor，you gain Impostor vision，vents，sabotage，and the ability to kill.\n\nYour body will be gradually eroded，your thoughts will be eroded，and eventually even your will will be repainted.,サイドキラーに侵食された存在です。\n親であるサイドキラーが死ぬとインポスターに覚醒します。\nインポスター覚醒前は，マッドメイトとして判定されます。\nただし，マッドメイトの設定およびマッドロール共通能力はマッドキラーに反映されません。\n\n覚醒前のマッドキラーはクルーメイト(バニラロール)と同様の能力と，インポスターとの相互視認能力のみを有します。\nインポスターに覚醒する事で，インポスター視野・通気口・サボタージュ能力，そしてキル能力を獲得します。\n\nお前の体は徐々に侵食されていく，思考も侵食されていく，そして最後は意思までをも塗り替えられるのだ。
+MadKiller,It is an entity that has been invaded by a sidekiller.\nWhen the parent sidekiller dies，it awakens as an impostor.\nBefore awakening as an Impostor，it is judged as a Mad Mate.\nHowever，the Mad Mate setting and Mad Role common abilities are not reflected in the Mad Killer.\n\nThe Madkiller before promotion has the same abilities as the Crewmate (vanilla role) and the ability to see mutually with the Impostor.\nBy awakening to the Impostor，you gain Impostor vision，vents，sabotage，and the ability to kill.\n\nYour body will be gradually eroded，your thoughts will be eroded，and eventually even your will will be repainted.,サイドキラーに侵食された存在です。\n親であるサイドキラーが死ぬとインポスターに覚醒します。\nインポスター覚醒前は，マッドメイトとして判定されます。\nただし，マッドメイトの設定およびマッドロール共通能力はマッドキラーに反映されません。\n\n覚醒前のマッドキラーはクルーメイト(バニラロール)と同様の能力と，インポスターとの相互視認能力のみを有します。\nインポスターに覚醒する事で，インポスター視野・通気口・サボタージュ能力，そしてキル能力を獲得します。\n\nお前の体は徐々に侵食されていく，思考も侵食されていく，そして最後は意思までをも塗り替えられるのだ。,这个职业不会在游戏开始时出现，只会因头目的技能而出现。\n在头目死亡时，喽啰会晋升为内鬼。\n在晋升为内鬼前，喽啰会被判定为叛徒阵营。\n不过，喽啰不受叛徒阵营的独立设置影响，也不持有叛徒阵营的共通能力。\n\n头目存活时，喽啰只持有船员阵营的共通能力和与内鬼互认的能力。\n头目死亡后，喽啰被判定为内鬼阵营，并获得内鬼视野、使用管道、破坏与击杀的能力。\n\n已经回不去了……我的身体、思想，甚至意志，都是内鬼们的东西了……,嘍囉是由頭目策反而成。\n當頭目死亡時，嘍囉會覺醒為內鬼。\n覺醒前的嘍囉會被判定為叛徒。\n然而，覺醒前的嘍囉不會擁有叛徒的設定和叛徒的共同能力。\n\n覺醒前的嘍囉只有能和內鬼互相識別身份的能力。\n當嘍囉覺醒為內鬼時，會獲得內鬼視野、通風通風管道、破壞能力和殺人能力。\n\n你有辦法背負我的人生嗎？
 SurvivorName,Survivor,サバイバー,苟活者,倖存者
 SurvivorTitle1,Survive and Kill!,生き残りながらキルをしよう,这是为了活下来的，我的挣扎！,這是為了活下來的，我的掙扎！
-SurvivorCombIntroDearSuicideWisher,I hate those who kill me!! That's why I will survive!,私は私を殺す者が憎い!! だからこそ生き残ってやるんだ!
+SurvivorCombIntroDearSuicideWisher,I hate those who kill me!! That's why I will survive!,私は私を殺す者が憎い!! だからこそ生き残ってやるんだ!,你这种轻视生命的人，真让我感到恶心！就瞧好吧，看我是怎么活下来的！,我看不起那些想樣自殺的人！所以我會活下去！
 SurvivorDescription,If you do not survive you will not win even if the impostor wins.,生き残っていないとインポスターが勝利しても勝利できません。,苟活者属于内鬼阵营。\n苟活者击杀冷却有所减少。\n苟活者在游戏结束时不存活则不能获胜。,倖存者屬於內鬼陣營。\n倖存者擊殺冷卻有所減少。\n倖存者在遊戲結束時不存活則不能獲勝。
 SurvivorKillCoolTimeSetting,Kill Cool Time,キルクールタイム,苟活者击杀冷却,倖存者擊殺冷卻時間
 MadMayorName,MadMayor,マッドメイヤー,叛变的市长,叛變的市長
@@ -893,7 +895,7 @@ NiceHawkTitle1,See it all.,全てを見渡せ,将一切尽收眼底,將一切盡
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう,把犯人抓个现行,把犯人抓個現行
 BakeryName,Baker,パン屋,面包师,面包師傅
 BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？,想来一点新出炉的面包吗？,想來一點剛出爐的面包嗎？
-BakeryCombIntro1,Ours tastes better!,美味しいのはうちの方だ！
+BakeryCombIntro1,Ours tastes better!,美味しいのはうちの方だ！,我家面包更好吃哦！,我的麵包更好吃！
 BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。,面包师为船员烤了一些面包。,面包師傅留下了一些面包給船員。
 BakeryExileText2,Bakery baked YOKINGDELICIOUSSSSSSSSS!!!!,パン屋ｧｧﾉｫｫﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｰｴｯｸｽｵｲｼｲ,面硬加咸蔬菜加倍蒜末和油多多！（快住手，这根本不是面包）,麵包夾蛋加蔥末再加新鮮的麵包師傅！
 MadStuntManName,MadStuntman,マッドスタントマン,叛变的杂技演员,叛變的雜技演員
@@ -986,7 +988,7 @@ EvilSeerButtonCooldownSetting,Setting the cool time for the [Go! haunt!!]] and [
 EvilSeerButtonName,Go! haunt!!,取り憑かせる,附灵,憑依他人
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长,超能警長
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法,遠距離進行執法擊殺
-RemoteSheriffDescription,,シェイプシフト選択画面で選択した対象を遠隔でキルする事の出来るクルーメイト役職です。\n\nキルテレポートが有効な時，執行が成功するとキル対象の元にワープします。失敗した場合はその場で死亡します。\n\nキルテレポートが無効な時，執行が成功した場合はその場でとどまり，失敗した場合はその場で死亡します。\n又，対象がキルされた時にキル者に発揮する能力を有している場合，それの発動を無効化できます。\n\n何処にいても，私から逃れる事はできない。\nゆめゆめ忘れるな。
+RemoteSheriffDescription,,シェイプシフト選択画面で選択した対象を遠隔でキルする事の出来るクルーメイト役職です。\n\nキルテレポートが有効な時，執行が成功するとキル対象の元にワープします。失敗した場合はその場で死亡します。\n\nキルテレポートが無効な時，執行が成功した場合はその場でとどまり，失敗した場合はその場で死亡します。\n又，対象がキルされた時にキル者に発揮する能力を有している場合，それの発動を無効化できます。\n\n何処にいても，私から逃れる事はできない。\nゆめゆめ忘れるな。,超能警长可以通过选择面板在行动阶段对存活玩家进行远程执法。\n若设置允许，超能警长成功执法后，可以传送到被击杀玩家的尸体处；若超能警长执法失败，超能警长死亡。\n此外，超能警长将目标击杀后，立刻结束任何正在生效的目标的持续性能力。\n\n你们无处可逃。\n千万别忘了。,超能警長屬於船員陣營，可以進行遠程擊殺。\n\n當擊殺有效時，執法成功後會傳送到擊殺目標的位置。執法失敗時會立即死亡。\n\n當擊殺無效時，執法成功後會留在原地。執法失敗時會立即死亡。\n另外，如果擊殺對象有發動的能力，可以無效化這些能力。\n\n無論你在哪裡，都無法逃脫我的追蹤。\n永遠不要忘記。
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート,击杀时传送到被击杀者所在位置,擊殺時傳送到被擊殺者所在位置
 TeleportingJackalName,TeleportingJackal,テレポートジャッカル,狼族传送师,狼族傳送師
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう,传送并杀死所有人,傳送並殺死所有人
@@ -1000,7 +1002,7 @@ DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝�
 DemonButtonName,Curse,呪う,诅咒,詛咒
 TaskManagerName,TaskManager,タスクマネージャー,代理人,代理人
 TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう,帮助他人完成所有任务,幫助他人完成所有任務
-TaskManagerDescription,This role allows for a specific number of tasks to be set.\nWhether you set less or more tasks than the vanilla number of tasks，the task manager himself will be able to complete a set number of tasks，which will be reflected in the crew's task winnings.\n\nAre you a good task manager or not?,タスクを固有で設定する事が可能な役職です。\nバニラのタスク数より少なく設定した場合も多く設定してた場合も，タスクマネージャー自身は設定回数のタスクを終わらせる事で，クルーのタスク勝利に反映されます。\n\n貴方はタスク管理ができる優秀な船員なのか，それとも...?
+TaskManagerDescription,This role allows for a specific number of tasks to be set.\nWhether you set less or more tasks than the vanilla number of tasks，the task manager himself will be able to complete a set number of tasks，which will be reflected in the crew's task winnings.\n\nAre you a good task manager or not?,タスクを固有で設定する事が可能な役職です。\nバニラのタスク数より少なく設定した場合も多く設定してた場合も，タスクマネージャー自身は設定回数のタスクを終わらせる事で，クルーのタスク勝利に反映されます。\n\n貴方はタスク管理ができる優秀な船員なのか，それとも...?,代理人拥有独立的任务分配设置。\n只要代理人完成了足够数量的任务，船员阵营获胜。\n\n成为任务管理大师吧！
 SeerFriendsName,SeerFriends,シーアフレンズ,狈族灵媒,狽族先知
 SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう,感知豺狼的行动,感知豺狼的行動
 SeerFriendsDescription,This role is responsible for information related to the dead，which can determine the time and place of death.\nUse the information obtained to create a diversion in the village.,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。,狈族灵媒为狈系职业，可以得知玩家死亡的时间与地点。\n利用自己的情报帮助豺狼建立优势吧。,狽族先知属于狼族阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狽族先知需要利用手中的情报帮助豺狼。
@@ -1028,7 +1030,7 @@ ArsonistIgniteButtonName,Ignite,燃やす,点燃,點燃
 ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。,纵火犯属于独立阵营。\n纵火犯给所有人涂油后按下点燃按钮则纵火犯独自获胜。,縱火犯屬於中立陣營。\n縱火犯給所有人塗油後按下點燃按鈕則縱火犯獨自獲勝。
 ChiefName,Chief,村長,警察局长,警察局長
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう,任命一位警长来帮助船员,任命一名警長來幫助船員
-ChiefDescription,This is a role that can appoint a target as the Sheriff and overwrite their role.\n\nIf the target is an Impostor，you cannot appoint them，and you will die. \nIf the target is a Madmate or a member of the Neutral，you can appoint them，and they will change to the Crewmate team.\n\nThe abilities of the Sheriff appointed by the Mayor depend on the settings of the Mayor's side. \n\nI appoint you as the Sheriff!!\nWith this ability，let's expect you to maintain order and contribute to the village.,対象をシェリフに任命し，対象の役職を上書きする事の出来る役職です。\n\n対象がインポスターだった場合任命する事ができず，そして自身は死亡します。\n対象がマッドメイト 又は 第三陣営の時は任命する事が可能で，クルーメイト陣営に変更されます。\n\n村長が任命するシェリフの能力設定は，村長側の設定に依存します。\n\n貴殿をシェリフとして任命する!!\nその能力によって，秩序を保ち 村に貢献する事を期待しよう。
+ChiefDescription,This is a role that can appoint a target as the Sheriff and overwrite their role.\n\nIf the target is an Impostor，you cannot appoint them，and you will die. \nIf the target is a Madmate or a member of the Neutral，you can appoint them，and they will change to the Crewmate team.\n\nThe abilities of the Sheriff appointed by the Mayor depend on the settings of the Mayor's side. \n\nI appoint you as the Sheriff!!\nWith this ability，let's expect you to maintain order and contribute to the village.,対象をシェリフに任命し，対象の役職を上書きする事の出来る役職です。\n\n対象がインポスターだった場合任命する事ができず，そして自身は死亡します。\n対象がマッドメイト 又は 第三陣営の時は任命する事が可能で，クルーメイト陣営に変更されます。\n\n村長が任命するシェリフの能力設定は，村長側の設定に依存します。\n\n貴殿をシェリフとして任命する!!\nその能力によって，秩序を保ち 村に貢献する事を期待しよう。,警察局长可以任命一名玩家，使其成为警长并覆盖其原有职业。\n\n若任命目标是一名内鬼阵营玩家，任命会失败，警察局长死亡。\n若任命目标是叛徒或独立阵营玩家，任命会成功，那名玩家会转变为船员阵营。\n\n警察局长任命的警长的能力设置在警察局长处有独立设置。\n\n从今天起，你就是光荣的警长了！\n希望你为这里的社会秩序做出贡献！,警察局長可以任命一名玩家為警長並覆蓋其原有身份。\n\n如果目標是內鬼，警察局長無法任命目標並且自己會死亡。\n如果目標是叛徒或者中立陣營的玩家，警察局長仍可以任命目標並且目標會轉換為船員陣營。\n\n警長的能力取決於警察局長的設定。\n\n我任命你為警長！！\n期許你維護秩序並為飛船做出貢獻。
 ChiefSidekickButtonName,Appointment,任命する,任命,任命
 CleanerName,Cleaner,クリーナー,清理者,清理者
 CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!,毁尸灭迹,毀屍滅跡
@@ -1039,7 +1041,7 @@ MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅
 CleanerKillCoolTimeSetting,Kill Cooldown,クリーナーのキルクールダウン,击杀冷却,擊殺冷卻
 SamuraiName,Samurai,侍,武士,武士
 SamuraiTitle1,Let's cut through the crew!,クルーを切り裂こう!,只此一刀！,一刀休矣！
-SamuraiDescription,This is the role of Impostor，where you can perform a kill with a special move once per game.\n\nWhen used，you can kill all crewmates around you. However，you cannot use vents and sabotage (although you may be able to use them depending on the settings).\nYou can adjust the range of the ability. The radius of the range increases by 0.5 for each crewmate.\n\nNo mercy for rounding down!,1試合に1度だけ必殺技によるキルが行えるインポスター役職です。\n\n使用すると自身の周囲にいるクルーを全員キルする事ができます。\n必殺技によるキルを行える代わりに，通気口とサボタージュを使用する事ができません(設定により使用できる時もあります)。\n\n能力の範囲は設定で変更する事ができます。0.5毎にクルー1名分範囲の半径が増加します。\n\n切り捨て御免!!
+SamuraiDescription,This is the role of Impostor，where you can perform a kill with a special move once per game.\n\nWhen used，you can kill all crewmates around you. However，you cannot use vents and sabotage (although you may be able to use them depending on the settings).\nYou can adjust the range of the ability. The radius of the range increases by 0.5 for each crewmate.\n\nNo mercy for rounding down!,1試合に1度だけ必殺技によるキルが行えるインポスター役職です。\n\n使用すると自身の周囲にいるクルーを全員キルする事ができます。\n必殺技によるキルを行える代わりに，通気口とサボタージュを使用する事ができません(設定により使用できる時もあります)。\n\n能力の範囲は設定で変更する事ができます。0.5毎にクルー1名分範囲の半径が増加します。\n\n切り捨て御免!!,武士可以释放每局游戏限一次的拔刀斩。\n\n拔刀斩释放后，武士周围的所有玩家都会被击杀。\n作为代价，根据房间设置武士可能会失去使用管道和破坏的能力。\n\n可以在房间设置中更改拔刀斩的释放范围。每一名玩家都会使拔刀斩的范围增加0.5m。\n\n一刀两断！,武士屬於內鬼陣營，可以使用僅有一次的拔刀斬進行擊殺。\n\n使用拔刀斬後，可以擊殺周圍所有船員。但是，武士無法使用通風管道和破壞（根據設置，可能可以使用）。\n拔刀斬的範圍取決於對局設定。每多擊殺一名船員，拔刀斬的範圍則增加0.5。\n\n不留情面！
 SamuraiKillCoolSetting,KillCoolTime,侍のキルクールダウン,武士击杀冷却,武士擊殺冷卻
 SamuraiSwordCoolSetting,AttackCoolTime,必殺技のクールダウン,武士拔刀斩冷却,武士拔刀斬冷卻
 SamuraiScopeSetting,SamuraiScope,必殺技が及ぶ範囲,武士拔刀斩范围,武士拔刀斬範圍
@@ -1048,8 +1050,8 @@ MayorFriendsName,MayorFriends,メイヤーフレンズ,狈族市长,狽族市長
 MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう,在会议上滥用票权,在會議上濫用票權
 MayorFriendsDescription,It is judged as Crewmate.\nBut is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,狈族市长属于船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则狈族市长一同获胜。,狽族市長屬於船員陣營，但是其為豺狼的同伙。\n豺狼團隊獲勝則狽族市長一同獲勝。
 VentMakerName,VentMaker,ベントメーカー,管道工,管道工
-VentMakerTitle1,Let's make a vent!,ベントを作ろう！,挖掘管道,挖掘通風管道
-VentMakerDescription,This role allows you to create a pair of vents.\nThe appearance of the vents that can be placed depends on the map.\n\nThe first vent is activated when it is placed.\nOnce activated，the vent can be seen from all viewpoints and can be used by roles that can move around using the vents of all teams.\n\nI feel at home in dark and cramped places...,2つで1組のベントを作成する事ができる役職です。\n設置できるベントの見た目はマップ依存です。\n\nベントは1つ目を設置した時点から有効になります。\n有効になると全視点で見る事ができ，更に全陣営のベント能力を有する役職が使用可能になります。\n\n暗くて狭い所が落ち着くんだ...
+VentMakerTitle1,Let's make a vent!,ベントを作ろう！,挖掘管道,挖掘
+VentMakerDescription,This role allows you to create a pair of vents.\nThe appearance of the vents that can be placed depends on the map.\n\nThe first vent is activated when it is placed.\nOnce activated，the vent can be seen from all viewpoints and can be used by roles that can move around using the vents of all teams.\n\nI feel at home in dark and cramped places...,2つで1組のベントを作成する事ができる役職です。\n設置できるベントの見た目はマップ依存です。\n\nベントは1つ目を設置した時点から有効になります。\n有効になると全視点で見る事ができ，更に全陣営のベント能力を有する役職が使用可能になります。\n\n暗くて狭い所が落ち着くんだ...,管道工可以在地图上创造一对管道。\n管道的外观根据地图而改变。\n\n管道工创造的第一个管道立即生效。\n管道生效后，其对所有人可见，所有可以使用管道的职业均可以使用该管道。\n管道里的感觉比家里面好多了！,管道工可以挖掘一對通風管道。\n可以挖掘的通風管道的外觀取決於地圖。\n通風管道會在挖掘後立即啟用。\n啟用後，所有玩家都可以看到通風管道，並且所有擁有通風管道能力的玩家都可以使用。\n\n我喜歡黑暗狹窄的地方...
 GhostMechanicName,GhostMechanic,亡霊整備士,亡灵工程师,亡靈工程師
 GhostMechanicDescription,It is a ghost role that can repair sabotage.\nThe cool time is the same as that of the vanilla role of guardian angel. (The initial coold time is 0 seconds，and the coold time is not reset in the meeting after the ability is used.)\nWhen in SHR mode，abilities become available after the conference phase has elapsed.\n\n... I left the repair of the impostor's interference to the rest of the crew and waited in front of the emergency call button.\nBut no matter how long it took，it was never fixed... And then I was killed.\nIt seems that what was there was the impostor who pretended to be repairing it.\nSo now I'm going to... I'm going to sabotage Impostor!!!,サボタージュを修復する事ができる幽霊役職です。\nクールタイムはバニラ役職の守護天使と同様です。(初回クールタイムは0秒で，アビリティ使用後は会議でクールタイムのリセットを行わない)\nSHRモード時は，会議フェイズを経過してからアビリティが使用可能になります。\n\n...私はインポスターの妨害の修復を他のクルーに任せ、緊急招集ボタンの前で待機していた。\nしかし、いつまで経っても直らず...そして殺された。\nそこにいたのは修復しているふりをしていたインポスターだったようだ。\nだから今度は私が...インポスターを妨害してやる!!!,亡灵工程师属于幽灵船员阵营职业，只在船员死后会得到，可以直接修复紧急破坏。\n亡灵工程师的技能冷却与原版游戏中守护天使的技能冷却一致。（初始冷却为0；冷却不在会议结束后重置）\n在SHR模式下，技能在会议阶段后才可使用。\n\n我指挥其他船员们去修理紧急破坏，而自己站在紧急会议按钮前。\n可是，紧急破坏再也没有修复，直到我停止呼吸。\n有内鬼假装在修理紧急破坏……\n那这次……就轮到我来给你们添乱了！,亡靈工程師可以修復破壞。\n冷卻時間與守護天使相同。(初始冷卻時間為0秒，使用能力後不會在會議中重置冷卻時間)\n在SHR模式下，能力會在會議結束後才能使用。\n\n...我把內鬼的破壞修好的事交給其他船員，自己在緊急會議召集按鈕前等待。\n但是，不管過了多久都沒有修好...然後我就被殺了。\n那裡的人似乎是假裝在修理的內鬼。\n所以現在我要...我要破壞內鬼!!!
 GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the machine.,機械を治せなかった未練を解消しよう,弥补生前未能修好飞船的遗憾,彌補生前未能修好飛船的遺憾
@@ -1059,8 +1061,8 @@ GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次,剩餘{0}次
 GhostMechanicAbilityUseError,The ability cannot be activated when sabotage is not occurring.,サボタージュが発生していない時に，能力を発動する事はできません。,亡灵工程师的能力不能在紧急破坏未发生时发动。,沒有發生破壞時不能使用能力。
 EvilHackerName,EvilHacker,イビルハッカー,骇客,駭客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利,駭入飛船獲取勝利
-EvilHackerTitle2,I am the one who controls the information on this ship.,我は，此の船の情報を支配せし者,,我擁有飛船上所有的祕密
-EvilHackerDescription,This is an impostor role that allows you to view the admins wherever you are.\nThere is also a setting that allows viewing of portable admins during the meeting phase.\n\nThis allows you to view enhanced admin information over the regular admins.\nYou can also create a Madmate.\n\nI am the one who controls the information on this ship. You will not be able to escape from me.,何処にいてもアドミンを見る事ができるインポスター役職です。\n会議フェイズ中にポータブルアドミンの閲覧を可能にする設定もあります。\n\n通常のアドミンよりも強化されたアドミン情報を閲覧する事ができます。\n又，クルーを狂わせマッドメイトを作成する事もできます。\n\n我は，此の船の情報を支配せし者。我から逃れる事は叶わぬと心得よ。,,駭客屬於內鬼陣營，可以在任何地方查看管理員地圖。\n根據房間設置，可在會議階段查看便攜式管理員地圖。\n\n駭客可以查看管理員地圖上的更多資訊，同時還能招募一名叛徒。\n\n我控制著這艘飛船，你們永遠無法逃脫我的掌控。
+EvilHackerTitle2,I am the one who controls the information on this ship.,我は，此の船の情報を支配せし者,让我看看，你们都藏哪了？,我擁有飛船上所有的祕密
+EvilHackerDescription,This is an impostor role that allows you to view the admins wherever you are.\nThere is also a setting that allows viewing of portable admins during the meeting phase.\n\nThis allows you to view enhanced admin information over the regular admins.\nYou can also create a Madmate.\n\nI am the one who controls the information on this ship. You will not be able to escape from me.,何処にいてもアドミンを見る事ができるインポスター役職です。\n会議フェイズ中にポータブルアドミンの閲覧を可能にする設定もあります。\n\n通常のアドミンよりも強化されたアドミン情報を閲覧する事ができます。\n又，クルーを狂わせマッドメイトを作成する事もできます。\n\n我は，此の船の情報を支配せし者。我から逃れる事は叶わぬと心得よ。,骇客可以远程观看管理地图。\n根据房间设置，骇客在会议阶段也可以观看管理地图。\n\n骇客可以从管理地图获得比其他玩家更多的信息。\n此外，骇客还可以将一名玩家招募为叛徒。\n\n在我的眼中，没有秘密。,駭客屬於內鬼陣營，可以在任何地方查看管理員地圖。\n根據房間設置，可在會議階段查看便攜式管理員地圖。\n\n駭客可以查看管理員地圖上的更多資訊，同時還能招募一名叛徒。\n\n我控制著這艘飛船，你們永遠無法逃脫我的掌控。
 CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,可以在观看地图时移动,可以在觀看管理員地圖時移動
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,可以把一名玩家变成叛徒,可以把一名玩家變成叛徒
 CreateMadmateButtonCooldownSetting,Setting the cooldown for the [Drive Mad] ability.,[狂わせる]能力のクールタイムの設定,[洗脑]技能冷却设置,洗腦能力的冷卻時間
@@ -1088,7 +1090,7 @@ TunaStoppingTimeSetting,Stopping Time,止まれる時間,团长允许停下的�
 TunaAddWinSetting,Add Win,追加勝利,团长的胜利作为追加胜利而非单独胜利,團長的勝利作為追加勝利而非單獨勝利
 BlackCatName,Black Cat,黒猫,叛变的猎人,叛變的獵人
 BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ,为内鬼献出生命,為內鬼獻出生命
-BlackCatDescription,It is a mad mate version of Nice Nekomata.\nThe decision is Crewmate，but it is in the Impostor's team.\n\nWhen Evil Nekomata is expelled in the Meeting Phase，one person is chosen at random and taken together.\n\nBy configuration，it is also possible to exclude Impostor roles from the random target.\nMad roles cannot be excluded from the random target.\n\nIf you kill a cat，it will haunt you for seven generations. Those who survive must be prepared.\nThe master is on his way to you.\nLook，who's behind you now...?,ナイス猫又のマッドメイト版です。\n判定はクルーメイトですが、インポスター陣営です。\n\n会議により自身が追放された時、ランダムで1名を道連れにします。\n設定により，ランダムの対象からインポスターを除外する事もできます。\nマッド役職をランダム対象から除外する事はできません。\n\n猫を殺せば七代祟る。生き残った者も覚悟してくれにゃ。\nご主人が君たちの元に向かっているからにゃ。\nほら，ご覧?\n今，後ろにいるのはだれかにゃ...?
+BlackCatDescription,It is a mad mate version of Nice Nekomata.\nThe decision is Crewmate，but it is in the Impostor's team.\n\nWhen Evil Nekomata is expelled in the Meeting Phase，one person is chosen at random and taken together.\n\nBy configuration，it is also possible to exclude Impostor roles from the random target.\nMad roles cannot be excluded from the random target.\n\nIf you kill a cat，it will haunt you for seven generations. Those who survive must be prepared.\nThe master is on his way to you.\nLook，who's behind you now...?,ナイス猫又のマッドメイト版です。\n判定はクルーメイトですが、インポスター陣営です。\n\n会議により自身が追放された時、ランダムで1名を道連れにします。\n設定により，ランダムの対象からインポスターを除外する事もできます。\nマッド役職をランダム対象から除外する事はできません。\n\n猫を殺せば七代祟る。生き残った者も覚悟してくれにゃ。\nご主人が君たちの元に向かっているからにゃ。\nほら，ご覧?\n今，後ろにいるのはだれかにゃ...?,叛变的猎人是叛徒版本的正义的猎人。\n叛变的猎人在规则上被视为船员阵营，但胜利条件与内鬼阵营一致。\n\n若叛变的猎人在会议阶段被放逐，会有一名随机玩家被连带放逐。\n可以设置叛变的猎人是否会因此连带内鬼阵营玩家。\n叛变的猎人一定不会连带叛徒阵营玩家。\n\n俗话说，生不能啖汝肉，死当追汝之魂……\n我已经感觉到了，复仇的火焰……\n回头看看吧，\n我 在 你 身 后。,叛變的獵人屬於叛徒系角色。\n在會議中被驅逐後，會隨機選擇一名玩家一同被驅逐。\n根據設置，可以排除內鬼角色作為隨機目標，但叛徒無法被納入排除對象。
 MafiaName,Mafia,マフィア,黑手党,黑手黨
 MafiaTitle1,Let's avenge our fellow impostor,仲間の敵討ちをしよう,为同伴报仇,為同伴報仇
 MafiaDescription,When all the impostors except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.,マフィア以外のインポスターが全員死亡するとキルできるようになります。\nキルが出来ない間もキルクールタイムは進みます。,黑手党属于内鬼阵营。\n除黑手党以外的内鬼阵营玩家全部死亡后，黑手党才能进行击杀。\n无法击杀时，黑手党击杀冷却也会照常减少。,黑手黨屬於內鬼陣營。\n除黑手黨以外的內鬼陣營玩家全部死亡後，黑手黨才能進行擊殺。\n無法擊殺時，黑手黨擊殺冷卻也會照常減少。
@@ -1124,8 +1126,8 @@ SmasherTitle1,Let's do continuous kills!,連続キルを行おう,唯快不破�
 SuicideWisherName,Suicide Wisher,スーサイドウィッシャー,抑郁者,抑鬱者
 SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう,玉玉，不响丸辣，紫砂了,遇事不決，自殺解決
 SuicideWisherTitle2,They who is caught in the impulse to die.,死への衝動に捕らわれし者,让我死吧……,下輩子會更好
-SuicideWisherCombIntroDearSuicidalIdeation,I'm not like them. I have no hope in life anymore.,私はあいつとは違う もう生などに期待が抱けないのだ
-SuicideWisherCombIntroDearSurvivor,Ah，why does he cling to life?,嗚呼 何故あいつは生にしがみつけるのか
+SuicideWisherCombIntroDearSuicidalIdeation,I'm not like them. I have no hope in life anymore.,私はあいつとは違う もう生などに期待が抱けないのだ,我可不像我那帮”伙计“一样……我也早就不想活着了。,我討厭那個還擁有希望的傢伙
+SuicideWisherCombIntroDearSurvivor,Ah，why does he cling to life?,嗚呼 何故あいつは生にしがみつけるのか,哎，你说他是何苦呢……,人生苦短...嗚呼哀哉...
 SuicideWisherDescription,This is an Impostor role where suicide is possible.\nIn SHR mode，you can commit suicide by performing a Shapeshift.\nTake advantage of your suicide ability to disguise information and disrupt the village!\n\nDistant memories of when we were Crewmate call to me...\nAha，my partner.\nI will be released first，but at least I left you a little something to leave behind. Good luck.,自殺が可能なインポスター役職です。\nSHRモードではシェイプシフトを行う事で自殺します。\n自殺能力により、情報を偽装し村を混乱させてみましょう!\n\nクルーメイトであった頃の遠い記憶が私を呼ぶ...\n嗚呼 相方よ。\n私は先に解放されるが、せめてもの置き土産は残してやった。頑張れよ。,抑郁者属于内鬼阵营，拥有自杀的能力。\n在SHR模式中，抑郁者可以通过按下“化形”按钮来自杀。\n利用自杀的能力来干扰船员信息。\n我回想起了遥远的记忆……\n啊，我的同伴们。\n我无法忍受自己的罪恶，只能给你们留下这最后一点帮助了。加油。,抑鬱者是擁有自殺能力的內鬼陣營職業。\n妥善利用自殺能力混淆並干擾船員陣營!\n\n來自內心深處遙遠的記憶正在呼喊著吾...\n嗚呼 吾的朋友啊。\n雖然吾先於汝輩一步離開了，但吾留下的遺產將會庇佑汝輩的。
 SuicideName,Suicide,自殺,自杀,自殺
 NeetName,Neet,ニート,废柴,尼特
@@ -1179,7 +1181,7 @@ SpelunkerLiftDeathChance,Probability of falling off the lift,昇降機リフト�
 SpelunkerDoorOpenChance,Probability of death from pinched fingers in door opening,ドア開けの指挟み死の確率,倒霉蛋开门时被门夹死的概率,倒霉鬼開門時被門夾死的機率
 HitmanName,Hitman,殺し屋,职业杀手,專業殺手
 HitmanTitle1,Kill the designated person.,指定された人をキルせよ,听着，所谓杀手……,聽著，所謂殺手...
-HitmanDescription,It is a role that wins alone by killing the set number of targets or by becoming equal to the number of crew members without kill ability. \nThis role is counted as a possible kill，so even if the impostor dies，the game continues if this role is still alive.\n\nIf you fail to kill the target，the target will be changed. \nFailure is judged when you cannot kill the target within the specified time or when you kill a crew member other than the target.\n\nIf you fail a certain number of times，you will be disposed of，and there is also a setting to die.\n\nI am faithful to the mission. \nIt is out of the question to involve personal feelings in the mission.\n\nIt is natural to be disposed of when one fails the mission. \nIt's only natural that something useless would be replaced，right?\nBecause there is a replacement for me...,ターゲットを設定数キルするか、キル能力を持たないクルーと同数になると単独勝利する役職です。\nこの役職はキル可能人外カウントのため、インポスターが死亡してもこの役職が生存している場合、試合が継続します。\n\nターゲットのキルに失敗すると，ターゲットが変更されます。\n指定時間内にターゲットをキルできなかった時及び，ターゲット以外のクルーをキルした時に，失敗と判定されます。\n\n一定回数失敗すると処分され，死亡する設定もあります。\n\n私は任務に忠実だ\n任務に私情を挟むなどもっての外\n\n任務に失敗した時に処分されるのは当然だ\n使えないモノは 交換されるのが当然だろう?\n私には代わりがいるのだから...
+HitmanDescription,It is a role that wins alone by killing the set number of targets or by becoming equal to the number of crew members without kill ability. \nThis role is counted as a possible kill，so even if the impostor dies，the game continues if this role is still alive.\n\nIf you fail to kill the target，the target will be changed. \nFailure is judged when you cannot kill the target within the specified time or when you kill a crew member other than the target.\n\nIf you fail a certain number of times，you will be disposed of，and there is also a setting to die.\n\nI am faithful to the mission. \nIt is out of the question to involve personal feelings in the mission.\n\nIt is natural to be disposed of when one fails the mission. \nIt's only natural that something useless would be replaced，right?\nBecause there is a replacement for me...,ターゲットを設定数キルするか、キル能力を持たないクルーと同数になると単独勝利する役職です。\nこの役職はキル可能人外カウントのため、インポスターが死亡してもこの役職が生存している場合、試合が継続します。\n\nターゲットのキルに失敗すると，ターゲットが変更されます。\n指定時間内にターゲットをキルできなかった時及び，ターゲット以外のクルーをキルした時に，失敗と判定されます。\n\n一定回数失敗すると処分され，死亡する設定もあります。\n\n私は任務に忠実だ\n任務に私情を挟むなどもっての外\n\n任務に失敗した時に処分されるのは当然だ\n使えないモノは 交換されるのが当然だろう?\n私には代わりがいるのだから...,职业杀手需要刺杀一定数量的系统随机指定的目标玩家、或在场上仅剩另一名没有击杀能力的船员阵营玩家时单独获得胜利。\n即便内鬼阵营玩家全部死亡，只要职业杀手存活，游戏就会继续。\n\n若职业杀手未能在一定时间内击杀目标玩家，或职业杀手击杀了目标玩家以外的玩家，则算作刺杀失败。\n刺杀目标失败后，目标会变更。\n\n根据房间设置，职业杀手刺杀失败达到一定次数后可能会死亡。\n\n听着，所谓杀手，\n就是要水泥封心，完成好自己的每一项任务。\n无法完成任务的杀手是不被需要的，\n只会剩下一具尸骨，\n而我……,專業殺手通過擊殺指定的目標或與無擊殺能力的船員數量達到相等來獨自獲勝。\n專業殺手被計算為可以進行擊殺的角色，所以即使內鬼全滅，只要專業殺手還活著，遊戲就會繼續。\n\n如果目標無法被擊殺，目標將會被更換。\n當你無法在指定時間內擊殺目標或者擊殺了目標以外的船員時，將判定為失敗。\n\n如果你失敗了一定次數後，你將被處分，根據設定可能會死亡。\n\n我忠於任務。\n在任務中涉及個人感情是不合適的。\n\n當任務失敗，被處分掉是普通的。\n沒有用的東西被替換也是理所當然的，對吧?\n因為我有替代品...
 HitmanChangeTargetTime,Time for target to reset,ターゲットがリセットされる時間,职业杀手目标切换的所需时间,專業殺手目標切換的所需時間
 HitmanIsOutMission,If the mission cannot be accomplished， it will self-destruct.,任務が遂行できないと自爆する,职业杀手在若干次击杀失败后自杀,專業殺手在若干次擊殺失敗後自殺
 HitmanOutMissionLimit,Number of possible failures,失敗可能数,职业杀手可被允许的最大失败次数,專業殺手可被允許的最大失敗次數
@@ -1188,7 +1190,7 @@ HitmanIsTargetArrow,Display arrow to target,ターゲットへ矢印を表示す
 HitmanUpdateTargetArrowTime,Interval to update arrows,矢印を更新する間隔,职业杀手箭头更新间隔时间,專業殺手箭頭更新間隔時間
 NunName,Nun,ぬーん,捣蛋鬼,搗蛋鬼
 NunTitle1,Nun,ぬーん,让大家用不了移动平台,讓大家用不了移動平台
-NunCombIntroDearPteranodon,Nun...('・ω・`),ぬーん...('・ω・`)
+NunCombIntroDearPteranodon,Nun...('・ω・`),ぬーん...('・ω・`),,嘿嘿...('・ω・`)
 NunDescription,This role allows the lift to be moved to the opposite side.\nIf the ability is used when the crew is already on the lift，the lift is returned with the crew on it.\n\nBy imprisoning the crew on the lift or by moving the position of the lift，it can also interfere with a Crewmate's task or an emergency meeting.\nThe lift's location can create noise for information to prove the location of survivors or to guess the path of the dead. It can also be used to disguise one's own route.\n\nNun nun nun? Nuh-nuh-nuh. Nuh-nuh-nuh.,昇降機を反対側に動かす事が可能な役職です。\nクルーが既に昇降機に乗っている時に能力を使用した場合は、クルーごと昇降機を返送します。\n\n昇降機上にクルーを幽閉する事や、昇降機の位置が移動する事により、クルーメイトのタスクや、緊急招集を妨害する事も出来ます。\n昇降機の位置情報による、生存者の位置証明や死者の経路推測にノイズをもたらします。自身の経路の偽装にも使用可能です。\n\nぬーん ぬーん ぬん? ぬーんぬん ぬん,捣蛋鬼可以使间隙室的移动平台反向移动到另一侧。\n若这个技能发动时，一名玩家正在使用移动平台，那名玩家跟随移动平台一同被移动到另一侧。\n\n捣蛋鬼可以通过自己的技能妨碍船员的行动。,搗蛋鬼可以在移動平台的另一側使用平台。\n當船員位於移動平台上時，使用技能會將船員往回移動。\n\n將船員們困於移動平台上，可以干擾船員的任務或緊急會議。\n移動平台的位置可以提供訊息，證明存活者的位置或推測死者的路線。也可以用來偽裝自己的路線。\n\n搗蛋鬼立大功？
 NunButtonName,Nun,ぬーん,捣蛋,搗蛋
 PsychometristName,Psychometrist,サイコメトラー,验尸官,驗屍官
@@ -1341,7 +1343,7 @@ ConnectKillerName,ConnectKiller,コネクトキラー,浊化行者,穿行殺手
 ConnectKillerTitle1,Lets’ Connect!,通信サボタージュでベントを繋げよう,趁通讯破坏在管道间穿行,趁通訊破壞在通風管道間穿行
 NekoKabochaName,NekoKabocha,ネコカボチャ,复仇者,復仇者
 NekoKabochaTitle1,Let me take you on the road.,道連れを起こそう,杀人偿命,殺人償命
-NekoKabochaDescription,It has the ability to take your opponent along when you are killed and the ability to take a random crew member along when you are expelled.\n\nWhen the player is killed，the team restriction setting is reflected.\nWhen you are exiled，the "team restriction" setting is not applied.\n\nAlas，what a pity... I can't believe I'm going to die here...\nOh，you there，won't you die with me?\n\n... Well，I have more than one life，so you're the only one who will die!,自身がキルされた時に相手を道連れにする能力と，自身が追放される時にランダムでクルーを道連れにする能力を有します。\n自身がキルされた際の道連れは，設定により陣営の制限をする事ができます。\n追放時の道連れには，道連れ対象の陣営を除外する設定が反映されません。\n\n嗚呼 口惜しや... この、あたしがこんな所で死ぬなんて...\nああ そこにいるあんさん 一緒に死んでくれやしないかい?\n\n...まあ，あたしには命が複数あるから死ぬのはお前だけだけどね!!,,復仇者具有在被擊殺時與擊殺者同歸於盡、或是在被放逐時隨機帶走一名船員的能力。\n被擊殺時同歸於盡的對象，根據設定可限制陣營。\n被放逐時帶走的對象，不受排除陣營的設定影響。\n\n唉，真可惜...我竟然要死在這裡...\n喂，你在那邊，要不要跟我一起死?\n\n...嘛，我有多條命，所以只有你會死啦！
+NekoKabochaDescription,It has the ability to take your opponent along when you are killed and the ability to take a random crew member along when you are expelled.\n\nWhen the player is killed，the team restriction setting is reflected.\nWhen you are exiled，the "team restriction" setting is not applied.\n\nAlas，what a pity... I can't believe I'm going to die here...\nOh，you there，won't you die with me?\n\n... Well，I have more than one life，so you're the only one who will die!,自身がキルされた時に相手を道連れにする能力と，自身が追放される時にランダムでクルーを道連れにする能力を有します。\n自身がキルされた際の道連れは，設定により陣営の制限をする事ができます。\n追放時の道連れには，道連れ対象の陣営を除外する設定が反映されません。\n\n嗚呼 口惜しや... この、あたしがこんな所で死ぬなんて...\nああ そこにいるあんさん 一緒に死んでくれやしないかい?\n\n...まあ，あたしには命が複数あるから死ぬのはお前だけだけどね!!,复仇者可以在被击杀时连带击杀自己的玩家一同死亡，在被放逐时随机连带一名玩家死亡。\n被击杀时连带死亡的玩家会受到设置中的阵营限制；\n被放逐时连带死亡的玩家不会受到设置中的阵营限制。\n\n咕……我要死在这里了吗……\n呵呵，就算是死，我也要带你一起上路……\n\n我的朋友会继续我们的事业，而你，就永远地沉睡吧！,復仇者具有在被擊殺時與擊殺者同歸於盡、或是在被放逐時隨機帶走一名船員的能力。\n被擊殺時同歸於盡的對象，根據設定可限制陣營。\n被放逐時帶走的對象，不受排除陣營的設定影響。\n\n唉，真可惜...我竟然要死在這裡...\n喂，你在那邊，要不要跟我一起死?\n\n...嘛，我有多條命，所以只有你會死啦！
 KillCooldown,KillCooldown,キルクールダウン,击杀冷却,擊殺冷卻
 CanRevengeCrewmate,Can take crewmates on the road,クルーメイトを道連れ可,复仇者可以连带船员阵营玩家,復仇者可以連帶船員陣營玩家
 CanRevengeImpostor,Can take Impostor on the road,インポスターを道連れ可,复仇者可以连带内鬼阵营玩家,復仇者可以連帶內鬼陣營玩家
@@ -1360,7 +1362,7 @@ GMSpawnDeadBody,Spawn Deadbody,死体発生,生成尸体,生成屍體
 GMEndMeeting,End Meeting,会議終了,结束会议,結束會議
 SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生,期望自殺者
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない,找寻活着的意义,找到活下去的意義
-SuicidalIdeationCombIntroDearSuicideWisher,Unlike him，I can't take the last step.\nI still have a little faith in this world...,彼と違って最期の一歩を踏み出せない\n僕はまだこの世界を信じていたいんだ...
+SuicidalIdeationCombIntroDearSuicideWisher,Unlike him，I can't take the last step.\nI still have a little faith in this world...,彼と違って最期の一歩を踏み出せない\n僕はまだこの世界を信じていたいんだ...,对不起，但我在这里找到了希望。\n如果换做是你，也会对这个世界多信任一些吧……,不同於他，我無法走上最後一步。\n我對這個世界還有一點希望...
 SuicidalIdeationDescription,It has a self-destruct timer that extends the time to do a task.\nIt has its own fall-to-death probability.\nIf you complete the task before it self-destructs， you win alone.\nYou also win an additional victory if you survive even if you do not complete the task.,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。,绝望先生可以通过做任务延长自己的自杀倒计时。\n绝望先生持有独立的在梯子上摔死概率。\n只要绝望先生在自杀前做完了所有任务，绝望先生便可以单独获胜。\n若绝望先生没有完成所有任务，但在游戏结束时存活，绝望先生也可以获胜。,絕望先生能透過完成任務來延長自己的自殺倒數。\n當在自殺前做完了所有任務，你便可以單獨獲勝。\n若你沒有完成所有任務，但在遊戲結束時仍活著，你也可以獲勝。
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本,獨特的勝利文字
 SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間,绝望先生自杀倒计时,自殺倒數時間
@@ -1373,7 +1375,7 @@ CupidTitle1,Let's tie the red thread of fate,運命の赤い糸を結ぼう,牵�
 CupidDescription,You can nominate Lovers. \nYou win as soon as the rubbers you have nominated achieve rubbers win.,ラバーズを指名することが出来ます。\n指名したラバーズがラバーズ勝利を達成すると同時に勝利します。,丘比特可以选择两名玩家成为恋人。\n只要丘比特指定的恋人作为恋人获胜，丘比特一同获胜。,邱比特可以指名一對戀人。\n當你指名的戀人獲得勝利時，你將與戀人一同獲勝。
 CupidButtonName,Shoot the love arrows,恋の矢,爱之箭,愛之箭
 HamburgerShopName,Hamburger Shop,ハンバーガー屋,汉堡店店主,蟹老闆
-HamburgerShopDescription,This role is to make all distributed tasks into burger tasks.\n\nThere is also a setting that replaces all distributed tasks with burger tasks.\nIn the former case，the task is completed only in the Airship kitchen.\nIn the latter case，the location of the task is as usual，but the task is replaced by a Burger Task.\n\nFinal location and route? I was in the kitchen from the time of spawn to the time of the call!\nWhat's going on around me...? I don't know，there was a lot of orders，I didn't have time to look around.,配布するタスクを全てバーガータスクにする役職です。\n配布されたタスクをバーガータスクに置き換える設定もあります。\n前者はAirship キッチンのみでタスクが完結し，後者はタスクの場所は通常通りですが，タスクがバーガータスクに置き換わっています。\n\n最終位置と経路ですか? 私はスポーン時から招集時迄ずっとキッチンにいましたよ!\n周りの様子...? 大量の注文があったんです，周りを見ている余裕なんてなかったので知りません。
+HamburgerShopDescription,This role is to make all distributed tasks into burger tasks.\n\nThere is also a setting that replaces all distributed tasks with burger tasks.\nIn the former case，the task is completed only in the Airship kitchen.\nIn the latter case，the location of the task is as usual，but the task is replaced by a Burger Task.\n\nFinal location and route? I was in the kitchen from the time of spawn to the time of the call!\nWhat's going on around me...? I don't know，there was a lot of orders，I didn't have time to look around.,配布するタスクを全てバーガータスクにする役職です。\n配布されたタスクをバーガータスクに置き換える設定もあります。\n前者はAirship キッチンのみでタスクが完結し，後者はタスクの場所は通常通りですが，タスクがバーガータスクに置き換わっています。\n\n最終位置と経路ですか? 私はスポーン時から招集時迄ずっとキッチンにいましたよ!\n周りの様子...? 大量の注文があったんです，周りを見ている余裕なんてなかったので知りません。,汉堡店店主的所有任务都会变成任务”做汉堡“。\n\n可以设置是否将所有任务替换为做汉堡任务。\n若否，则仅在飞艇地图，汉堡店店主的任务将全部被替换为厨房的任务”做汉堡“；\n若是，则在所有地图，任务所对应的位置不变，而内容变为”做汉堡“。\n\n位置和路线？从上次会议结束到这次开始为止，我可全在做汉堡啊！\n周边情况？可别问我啊，订单太多了，忙都忙不过来，哪有时间看周围啊。,蟹老闆的目標就是做出美味蟹堡!\n\n根據設定，可以將所有任務替換為做出美味蟹堡。\n若該設定未啟用，美味蟹堡只能在飛船廚房完成。\n若啟用該設定，任務的位置和路線與平常一樣，但任務被替換為做出美味蟹堡。\n\n有人被害？那可不干我的事，我一直待在廚房裡！\n我周圍發生了什麼...？我不知道，還有很多美味蟹寶等我去做!
 HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう,做出美味的汉堡,做出美味蟹堡
 HamburgerShopTitle2,Let's make lots of burgers!,ハンバーガーをたくさん作ろう,做出一大堆汉堡,做出一大堆美味蟹堡
 HamburgerShopTitle3,Hamburger is Delicious,ハンバーガー is デリシャス,汉堡能够让我们创造出奇迹，我是汉堡的忠实拥护者,美味蟹堡能產生奇蹟
@@ -1406,8 +1408,8 @@ PlayerControl,Player control,プレイヤー操作,玩家操作,玩家操作
 StartMeeting,Start meeting,緊急会議,召开紧急会议,召開緊急會議
 ShowRole,Show role,役職を表示,显示职业,顯示職業
 DeShowRole,Cancel show role,役職を非表示,取消显示职业,取消顯示職業
-SetSabotage,Activation of sabotage,サボタージュの発動,,啟動破壞任務
-RepairSabotage,Restoration of sabotage,サボタージュの修復,,修復破壞任務
+SetSabotage,Activation of sabotage,サボタージュの発動,启动破坏,啟動破壞任務
+RepairSabotage,Restoration of sabotage,サボタージュの修復,修复破坏,修復破壞任務
 Teleport,Teleport,テレポート,传送,傳送
 ReportDeadbody,Report deadbody,通報,报告,報告
 Exile,Exile,追放,放逐,放逐
@@ -1515,23 +1517,23 @@ ReviverName,Reviver,リバイバー,反生者,復活天使
 ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However， everyone will be notified of their location.\n It takes 12 seconds to resurrect， and while resurrected， you cannot move and you cannot kill. Also，\n after resurrection， the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。,团队专用职业。反生者可以使用自己的能力复活一名己方玩家。在能力使用期间，所有玩家都能确认反生者的位置。\n复活一名玩家需要12秒。在玩家复活期间，反生者不可以移动或击杀。此外，\n玩家被成功复活后，有3秒的时间不能移动（但可以击杀与被击杀）。\n拯救你的队友，一同获得游戏胜利。,僅限團隊使用！復活天使使用能力可以將隊友復活，但是會將自己的所在位置暴露給其他玩家。\n復活需花費12秒，且復活途中既不能移動也不能擊殺。並且，復活的玩家在復活後三秒內不能移動，但可進行擊殺。\n協助夥伴，並取得勝利。
 ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。,反生者正在复活队友。,復活天使在某處進行復活。
 GuardrawerName,Guardrawer,ガードロワー,次元吸引者,守衛
-GuardrawerDescription,Using the ability allows you to repel attacks for a certain period of time. \nHowever，you cannot be killed during this time.\n While using the ability，players around you，including allies，are drawn towards you.,能力を使用することで一定時間攻撃を跳ね返すことができる。\nしかしその間自分はキルできない。\n使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。,次元吸引者的技能发动后一定时间内，对次元吸引者的攻击会被反弹。在能力使用期间内，次元吸引者不能击杀。技能持续时间内，包括己方玩家在内的所有次元吸引者附近的玩家都会被次元吸引者吸引。,守衛使用能力來在一定時間內抵禦攻擊。但是自身不具有擊殺能力。使用期間內會吸引包含隊友在內附近的攻擊。
+GuardrawerDescription,Using the ability allows you to repel attacks for a certain period of time. \nHowever，you cannot be killed during this time.\n While using the ability，players around you，including allies，are drawn towards you.,能力を使用することで一定時間攻撃を跳ね返すことができる。\nしかしその間自分はキルできない。\n使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。,次元吸引者的技能发动后一定时间内，对次元吸引者的攻击会被反弹。在能力使用期间内，次元吸引者不能击杀。技能持续时间内，包括己方玩家在内的所有次元吸引者附近的玩家都会被次元吸引者吸引。,守衛使用能力來在一定時間內抵禦攻擊。\n但是自身不具有擊殺能力。\n使用期間內會吸引包含隊友在內附近的攻擊。
 GuardrawerAbilityStart,{0} began to draw in Guardrawers.,{0}がガードロワーで引き寄せ始めた。,{0}开始进行次元吸引。,{0}開始阻擋附近的攻擊
 KingPosterName,KingPoster,キングポスター,骑士王,國王
-KingPosterTitle,There is a large hardness at the beginning and end，but you are invincible during the duration of the effect.\nYou'll be automatically killed by approaching enemies!/nUse your invincibility to kill enemies all over the place!,最初と最後に大きな硬直があるが、効果時間中は無敵。\n敵に近づくことで自動でキルされるぞ!\n無敵を利用して敵をキルしまくれ！,技能刚发动与持续时间结束时，骑士王会陷入大幅硬直；技能持续时间内，骑士王处于无敌状态。靠近无敌状态的骑士王的玩家会自动被击杀。利用无敌的骑士之力击溃敌人吧！,國王在技能生效期間處於無敵狀態，但在最初與最後有大幅的硬直。利用無敵來擊殺敵人！
+KingPosterTitle,There is a large hardness at the beginning and end，but you are invincible during the duration of the effect.\nYou'll be automatically killed by approaching enemies!/nUse your invincibility to kill enemies all over the place!,最初と最後に大きな硬直があるが、効果時間中は無敵。\n敵に近づくことで自動でキルされるぞ!\n無敵を利用して敵をキルしまくれ！,技能刚发动与持续时间结束时，骑士王会陷入大幅硬直；技能持续时间内，骑士王处于无敌状态。靠近无敌状态的骑士王的玩家会自动被击杀。利用无敌的骑士之力击溃敌人吧！,國王在技能生效期間處於無敵狀態，但在最初與最後有大幅的硬直。\n利用無敵來擊殺敵人！
 KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！,骑士王开启了无敌模式！,國王正在使用無敵技能！
 LongKillerName,LongKiller,ロングキラー,长枪兵,遠程殺手
 LongKillerDescription,It has a long kill range， but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!,长枪兵拥有1.3倍的击杀范围与击杀冷却。\n用远距离的击杀创造优势吧！,遠程殺手擁有1.3倍的擊殺範圍與擊殺冷卻時間。\n利用更大的擊殺範圍來擊殺敵人吧！
 DarknightName,Darknight,闇の騎士,黑骑士,黑暗騎士
-DarknightDescription,Knights swallowed by darkness. Zero kill time.\nHowever，it is blind.\nThe kill range is also narrow，but you can kill everyone around you (except your own friends) at once.\nBecause you can't see anything，you are lonely，but use that loneliness to your advantage and kill your enemies.,闇に飲まれた騎士。キルクールタイムが0。\nしかし、視界も0。\nキル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。\n何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。,黑骑士的击杀冷却与视野均为0。黑骑士的击杀范围非常小，一旦黑骑士击杀成功，黑骑士周围的所有敌方玩家都会死亡。虽然黑骑士什么也看不见，但那份孤独将成为他杀敌的力量。,被黑暗吞噬的騎士。黑暗騎士沒有擊殺冷卻，但視野也為0且擊殺範圍很小，但會一同擊殺周圍所有的敵對玩家。雖然因為看不見而感到孤獨，但孤獨會成為擊殺敵人的力量。
+DarknightDescription,Knights swallowed by darkness. Zero kill time.\nHowever，it is blind.\nThe kill range is also narrow，but you can kill everyone around you (except your own friends) at once.\nBecause you can't see anything，you are lonely，but use that loneliness to your advantage and kill your enemies.,闇に飲まれた騎士。キルクールタイムが0。\nしかし、視界も0。\nキル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。\n何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。,黑骑士的击杀冷却与视野均为0。黑骑士的击杀范围非常小，一旦黑骑士击杀成功，黑骑士周围的所有敌方玩家都会死亡。虽然黑骑士什么也看不见，但那份孤独将成为他杀敌的力量。,被黑暗吞噬的騎士。\n黑暗騎士沒有擊殺冷卻，但視野也為0且擊殺範圍很小，但會一同擊殺周圍所有的敵對玩家。\n雖然因為看不見而感到孤獨，但孤獨會成為擊殺敵人的力量。
 RevengerName,Revenger,リベンジャー,复仇者,復仇者
-RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。,若击杀复仇者的敌方玩家被我方玩家击杀，复仇者将在7秒后从自己被击杀时所在的位置复活。复仇者复活后，复仇者的复活位置将被所有人确认，因此请小心不要在复活之后立刻被杀。切莫因为可以复活便贸然进攻，而是需要谋求稳固的胜利。,復仇者會在我方擊殺將殺害自己的對象後，7秒後於死亡的地點復活。但是復活的位置會被暴露給敵方，並且復活後並無法馬上獲得擊殺能力。切勿在復活後馬上展開攻勢，以尋求團隊更高的勝率。
+RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。,若击杀复仇者的敌方玩家被我方玩家击杀，复仇者将在7秒后从自己被击杀时所在的位置复活。复仇者复活后，复仇者的复活位置将被所有人确认，因此请小心不要在复活之后立刻被杀。切莫因为可以复活便贸然进攻，而是需要谋求稳固的胜利。,復仇者會在我方擊殺將殺害自己的對象後，7秒後於死亡的地點復活。\n但是復活的位置會被暴露給敵方，並且復活後並無法馬上獲得擊殺能力。\n切勿在復活後馬上展開攻勢，以尋求團隊更高的勝率。
 RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを開始した。,{0}作为复仇者从{1}归来。,{0}將對{1}展開復仇。
 CrystalMagicianName,CrystalMagician,クリスタルマジシャン,水晶术师,水晶魔術師
 CrystalMagicianDescription,,,,
 CrystalMagicianCrystalBot,Crystal,クリスタル,水晶,水晶
 GrimReaperName,GrimReaper,死神,死神,死神
-GrimReaperDescription,By storing energy，you can immobilize enemies and unilaterally kill them. \nHowever，it takes time to store energy，and you become more immobile. \nFurthermore，the position where you are storing energy becomes known. \nBe careful.,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。\nただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。\nさらに、エネルギーを貯めている位置も分かってしまう。\n注意しよう。,死神可以积蓄能量来使敌方无法动弹，造成单方面的屠杀。死神继续能量需要一定时间，且不能移动。此外，请注意敌方玩家还会知晓存储能量的位置。,死神會透過累積的能量來使敵方無法動彈來達成片面的屠殺。但是累積能量需要一定的時間，且無法移動。請小心敵對玩家也知曉累積能量的位置。
+GrimReaperDescription,By storing energy，you can immobilize enemies and unilaterally kill them. \nHowever，it takes time to store energy，and you become more immobile. \nFurthermore，the position where you are storing energy becomes known. \nBe careful.,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。\nただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。\nさらに、エネルギーを貯めている位置も分かってしまう。\n注意しよう。,死神可以积蓄能量来使敌方无法动弹，造成单方面的屠杀。死神继续能量需要一定时间，且不能移动。此外，请注意敌方玩家还会知晓存储能量的位置。,死神會透過累積的能量來使敵方無法動彈來達成片面的屠殺。\n但是累積能量需要一定的時間，且無法移動。\n請小心敵對玩家也知曉累積能量的位置。
 GrimReaperAbilityStart,GrimReaper is charging energy at {0} now...,死神が{0}でエネルギーを貯め始めた...,死神开始在{0}积蓄能量……,死神在{0}累積能量。
 BalancerName,Balancer,天秤,大神官,阿努比斯
 BalancerTitle1,(x+y)/2,(x+y)/2,审判他人罪孽的轻重,審判罪孽的輕重
@@ -1542,13 +1544,13 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Impostor? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
-BalancerAbilityUseText,Ability activated,能力発動,,能力發動
-BalancerVoteText,Vote for one or the other!,どちらかに投票せよ！,,將票投給其中一邊！
+BalancerAbilityUseText,Ability activated,能力発動,发动技能,能力發動
+BalancerVoteText,Vote for one or the other!,どちらかに投票せよ！,请选择一名玩家投票！,將票投給其中一邊！
 PteranodonName,Pteranodon,プテラノドン,鸟人,無齒翼龍
 PteranodonTitle1,PtePte,プテプテ,一飞冲天啊，我,翼~翼~
-PteranodonCombIntroDearNun,PtePte Ptete!!(・ω・　),プテプテ プテテ!!(・ω・　)
-PteranodonDescription,This role allows the user to move between the right and left lift without the use of a lift.\nMovement by the ability can be observed from a third-party viewpoint.\nThe position is not affected by the position of the lifts，so it can be used to escape from the gatekeeper of a killer.\nThe ability to escape from the gatekeeper of the killer and to make a report or an emergency call can be used to overcome the situation where a meeting cannot be held due to the gatekeeper.\nIt is also possible to quickly repair the emergency task，thus interfering with the timing of the kill.\n\nPte pte pte~ pte pte pte~ pte pte~ pte pte pte~ pte pte pte~ pte,昇降機を使用せずに，昇降右 と 昇降左間を移動する事が可能な役職です。\n能力による移動は第三者視点からも観測する事ができます。\n\n昇降機の位置に影響されずに移動が行える事から，\nキル役職の門番から逃れて通報及び緊急招集を行える為，門番による会議が開けない状態の打開ができます。\n又，緊急タスクを速やかに解除する事もできる為，キルタイミングを妨害する事もできます。\n\nプテプテ プテテー プテテプテ プテー
-PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,起飛！
+PteranodonCombIntroDearNun,PtePte Ptete!!(・ω・　),プテプテ プテテ!!(・ω・　),yee~(・ω・　),翼~翼~ 翼翼!!(・ω・　)
+PteranodonDescription,This role allows the user to move between the right and left lift without the use of a lift.\nMovement by the ability can be observed from a third-party viewpoint.\nThe position is not affected by the position of the lifts，so it can be used to escape from the gatekeeper of a killer.\nThe ability to escape from the gatekeeper of the killer and to make a report or an emergency call can be used to overcome the situation where a meeting cannot be held due to the gatekeeper.\nIt is also possible to quickly repair the emergency task，thus interfering with the timing of the kill.\n\nPte pte pte~ pte pte pte~ pte pte~ pte pte pte~ pte pte pte~ pte,昇降機を使用せずに，昇降右 と 昇降左間を移動する事が可能な役職です。\n能力による移動は第三者視点からも観測する事ができます。\n\n昇降機の位置に影響されずに移動が行える事から，\nキル役職の門番から逃れて通報及び緊急招集を行える為，門番による会議が開けない状態の打開ができます。\n又，緊急タスクを速やかに解除する事もできる為，キルタイミングを妨害する事もできます。\n\nプテプテ プテテー プテテプテ プテー,鸟人在飞艇地图的间隙室不需借助移动平台也可以飞越间隙。\n其他玩家可以看到鸟人使用能力移动的行为。\n由于不需要移动平台，鸟人可以利用能力躲避追杀。\n鸟人也可以利用能力修理紧急破坏，以及干扰敌对玩家能力的发动时机。\n\n我和你荡秋千~飞到那天外天~,無齒翼龍可以在不使用升降機的情況下在左右升降機之間飛躍。\n飛躍可以被第三方視角觀察。\n\n飛躍不受升降機位置的影響，可以用來逃避殺手的追擊。\n逃避殺手後召開會議，可以克服堵門而無法召開會議的情況。\n同時，也可以快速修復緊急任務，干擾對手的擊殺時機。\n\n翼~翼~翼翼~翼~翼~
+PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,飛躍！
 BlackHatHackerName,Black Hat Hacker,ブラックハットハッカー,黑帽客,黑帽駭客
 BlackHatHackerTitle1,Do you have an antivirus?,貴方はウイルス対策ちゃんとしてる？,可要准备好防火墙哦,你有安裝防毒軟體嗎？
 BlackHatHackerDescription,I need everyone's information to stay alive... So I will infect the virus...\nIf you infect everyone's phone with the virus，you win!\nIn an infected state，the virus infects surrounding non-infected persons.\nWhen the infection level is above the level at which self-propagation begins，\nThe disease progresses even if there are no infected persons around.,生きるために全員の情報が必要だ...だから僕はウイルスを感染させる...\n全員のスマホにウイルスを感染させたら勝利となります\n感染状態になると周囲の非感染者にウイルスが感染します\n自己増殖が開始される感染度以上の感染度になった場合、\n周りに感染者が居なくとも進行します,为了活下去，我要得到全船人的信息……我研发多年的病毒终于起作用了……\n\n若黑帽客用电脑病毒感染了所有玩家，黑帽客获胜。\n在感染电脑病毒的玩家一定范围内的玩家会以一定速率累积病毒感染进度。\n当病毒感染进度到达一定值时，病毒将开始自我繁殖，\n即便不处于感染病毒的玩家一定范围内，病毒感染进度也将累积。,為了生存盜取他人的資訊，讓他人感染病毒！\n若駭入了所有人的手機，則取得勝利。\n當感染者在被駭入狀態下，病毒會自動駭入周圍的非感染者。\n當感染度達到閾值時，病毒將自我繁殖，即使周圍沒有感染者病毒也會累積感染度。
@@ -1573,7 +1575,7 @@ Medium,Medium,ミドル,中,中
 Long,Long,ロング,长,長
 PoliceSurgeonName,Police Surgeon,警察医,法医,法醫
 PoliceSurgeonTitle1,I just wanted to assist in helping to ensure a peaceful and happy passing，yet...,私は幸せな最期を看取る手伝いをしたかっただけなのに...,确认死者的死因与死亡时间,我只是想幫助人們平安的離開人世，卻...
-PoliceSurgeonCombIntro1,Why are you so callous to the lives lost...!,何故君は，失われる命を冷淡にみられるんだ...!
+PoliceSurgeonCombIntro1,Why are you so callous to the lives lost...!,何故君は，失われる命を冷淡にみられるんだ...!,逝去的生命对你来说到底算什么啊……！,為什麼你對失去的生命如此冷漠...!
 PoliceSurgeonDescription,The role that allows you to check the time of death during meetings，and can be changed to estimate the time of death depending on the settings. \nYou can also use the portable vital monitor during task phases，depending on the settings. \nI became a doctor to save lives，to help people die peacefully，\nand to provide comfort in their final moments...\nnot to witness premature deaths like this!,会議中、死亡時刻を確認する事ができる役職です (設定により死亡推定時刻に変更可能です)。\n設定によりタスクフェイズ中に携帯バイタルを使用する事もできます。\n私が医師になったのは、命を救い、時には最期をよりよくする手助けをし、看取る為であって... この様な... 志半ばで亡くなる死を視る為ではなかったのに!!,法医属于船员阵营，可以在会议阶段确认死亡玩家的死亡时间（根据房间设置，可以改为确认推测死亡时间）。\n根据房间设置，法医也可以在行动阶段远程观看生命监测装置。\n\n我是救死扶伤的医生。我是为别人送终的医生。\n我只想让人们安详地度过人生的最后时光……而不是像现在这样！,法醫可以在會議中確認死亡時間，並且可以根據設定更改為死亡推定時間。\n根據設定，也可以在任務階段使用便攜式生命探測器。\n我成為醫生是為了拯救生命，幫助人們平安離開人世，\n並在他們最後的時刻給予安慰...\n而不是如此英年早逝...
 PoliceSurgeonHaveVitalsInTaskPhase,Do you have portable vitals in your possession during the task phase?,タスクフェイズ中に携帯バイタルを所持しているか。,法医可以远程观看生命监测装置,法醫是否持有攜帶式生命探測器？
 VitalsDisplayCooldown,Vitals Display Cooldown,バイタル画面クールダウン,观看生命监测装置冷却,生命探測器的顯示冷卻
@@ -1735,61 +1737,61 @@ SantaAnd, and ,と,和,和
 BlackSantaName,BlackSanta,ブラックサンタ,撒旦老人,黑誕老人
 BlackSantaTitle1,Hahaha，Glory to the bad boy!,ハッハッハ、悪い子には栄光を!,哈哈哈，这是给坏孩子们的礼物！,齁齁齁，給壞孩子們帶來榮耀！
 BlackSantaDescription,You can give present(role) to impostor，\nbut if you try to give not impostor a present，you will kill himself...\nMerry Christmas!,悪い子(インポスター)にプレゼント(役職)を渡すことが出来ます。\nただし、良い子(クルーメイト)や悪い子になりきれない子(第三陣営)に渡そうとすると自殺してしまいます。\nメリー・クリスマス！,撒旦老人属于内鬼阵营，可以给内鬼阵营玩家送礼物，让那名玩家在接下来的几轮内变成一个随机职业。\n若撒旦老人尝试将礼物赠送给内鬼阵营以外的玩家，撒旦老人自杀。\n圣诞快乐！,黑誕老人屬於內鬼陣營，可以給內鬼們送聖誕禮物（職業）。\n但是，如果給船員或中立陣營送禮物，黑誕老人將會自殺。\n聖誕快樂！
-RobberName,Robber,泥棒
-RobberTitle1,I'll take that progress.,その進捗、頂戴するぜ
-RobberDescription,Rewinds the task progress of the crewmate who made the kill by a set number.\nThe crewmembers are so quick to kick us out of a task when we're in trouble，" says the crewmember!\nI won't let them，I'm going to take that task progress away from you!",キルをしたクルーメイトのタスク進捗を設定数巻き戻します。\n「ああもう、クルーというやつらは困ったらすーぐタスクで俺たちを追い出しやがる！\nそうはさせない、そのタスクの進捗を奪い取ってやるぜ！」
-RobberRewindTaskCount,Number of tasks to rewind,巻き戻すタスクの個数
+RobberName,Robber,泥棒,小偷,小偷
+RobberTitle1,I'll take that progress.,その進捗、頂戴するぜ,把你手上的东西交出来！,這些進度條就由我收下了
+RobberDescription,Rewinds the task progress of the crewmate who made the kill by a set number.\nThe crewmembers are so quick to kick us out of a task when we're in trouble，" says the crewmember!\nI won't let them，I'm going to take that task progress away from you!",キルをしたクルーメイトのタスク進捗を設定数巻き戻します。\n「ああもう、クルーというやつらは困ったらすーぐタスクで俺たちを追い出しやがる！\nそうはさせない、そのタスクの進捗を奪い取ってやるぜ！」,被小偷击杀的玩家需要重新做若干个任务。\n该死，那帮人任务做的也太快了，这样下去我们就要没命了！\n哼，我不会让他们就这样得逞的……,小偷屬於內鬼陣營。\n當船員進行擊殺時小偷可以偷走一定數量的任務進度。\n「當遇到麻煩時，船員們總是很快地把我們逐出！」\n「我不會讓他們這麼做的，我會把這些完成的任務通通收下來！」
+RobberRewindTaskCount,Number of tasks to rewind,巻き戻すタスクの個数,回卷任务的个数,任務回溯的數量
 MushroomerName,Mushroomer,マッシュルーマー,蘑菇精,蘑菇怪
 MushroomerTitle1,This is the power of mycelium!,これぞ菌糸の力！,这就是菌丝的力量！,這就是菌絲的力量！
-MushroomerDescription,Mushrooms can be placed anywhere you wish，and when you step on them，they become invisible except for your own image.\nOnce a set number of mushrooms have been placed，they can explode all at once.\nIn addition，the player can see other figures in the mushroom gas.,好きな場所に踏むと自身の姿以外が見えなくなるキノコを設置することができます。\nキノコを設定数設置するとキノコを一斉に爆発させられるようになります。\nまた、自身はキノコガスの中でも自分以外の姿を視認することができます。
+MushroomerDescription,Mushrooms can be placed anywhere you wish，and when you step on them，they become invisible except for your own image.\nOnce a set number of mushrooms have been placed，they can explode all at once.\nIn addition，the player can see other figures in the mushroom gas.,好きな場所に踏むと自身の姿以外が見えなくなるキノコを設置することができます。\nキノコを設定数設置するとキノコを一斉に爆発させられるようになります。\nまた、自身はキノコガスの中でも自分以外の姿を視認することができます。,蘑菇精可以在地图上种蘑菇。当玩家经过蘑菇时，将无法看到除自己以外的任何玩家。\n一定量的蘑菇被种下后，蘑菇精可以同时引爆这些蘑菇。\n此外，蘑菇精不受蘑菇的效果影响。,蘑菇怪屬於內鬼陣營，可以在任何地方放置蘑菇。\n當有人踩到蘑菇時會發生爆炸，在蘑菇瓦斯中，除了自己外其他人都看不到。\n也可以手動引爆所有已放置的蘑菇。\n此外，蘑菇怪可以在蘑菇瓦斯中看到其他人。
 MushroomerHasGasMask,Has Gas Mask,ガスマスクを持っている,持有防毒面具,持有防毒面具
-MushroomerMushroomPlantCoolTime,Mushroom Plant Cool Time,キノコ栽培クールダウン
-MushroomerMushroomPlantCount,Can place mushrooms,キノコを設置できる回数
-MushroomerMushroomExplosionCoolTime,Mushroom Explosion Cool Time,キノコ爆発クールダウン
-MushroomerMushroomExplosionCount,Can explode mushrooms,キノコを爆発させられる回数
-MushroomerMushroomExplosionRange,Explosion range,爆発範囲
-MushroomerMushroomExplosionDurationTime,Mushroom gas's duration time,キノコガスの持続時間
+MushroomerMushroomPlantCoolTime,Mushroom Plant Cool Time,キノコ栽培クールダウン,种植蘑菇冷却,蘑菇種植冷卻時間
+MushroomerMushroomPlantCount,Can place mushrooms,キノコを設置できる回数,最大种植蘑菇次数,可以放置蘑菇的次數
+MushroomerMushroomExplosionCoolTime,Mushroom Explosion Cool Time,キノコ爆発クールダウン,引爆蘑菇冷却,蘑菇爆炸冷卻時間
+MushroomerMushroomExplosionCount,Can explode mushrooms,キノコを爆発させられる回数,最大引爆蘑菇次数,可以引爆蘑菇的次數
+MushroomerMushroomExplosionRange,Explosion range,爆発範囲,爆炸范围,爆炸範圍
+MushroomerMushroomExplosionDurationTime,Mushroom gas's duration time,キノコガスの持続時間,蘑菇效果持续时间,蘑菇瓦斯的持续时间
 MushroomerPlanetButtonName,Put Mushroom!,キノコ！,种蘑菇！,種蘑菇！
 MushroomerPlanetAbilityCountText,Remaining {0} mushrooms,残り{0}キノコ,剩余{0}个蘑菇,剩餘{0}個蘑菇
 MushroomerExplosionButtonName,Explosion!,爆発！,爆炸！,爆炸！
 MushroomerExplosionAbilityCountText,Remaining {0} explosions,残り{0}爆発,剩余{0}爆炸,剩余{0}爆炸
-CrabName,Crab,かに
-CrabTitle1,EBI & KANI， EBI & KANI， EBI & KANI,カニッカニッカニッカニッ
-CrabDescription,a,能力を使用すると全員横方向にしか動けなくなります\nカニィィィィ！！！！！！！
-CrabButtonName,Crab magic,カニ化
-PusherName,Pusher,突き落と師
-PusherTitle1,Eyes behind you.,背後には気を付けな
-PusherDescription,Crew members who are in a spot where they could be dropped can be killed by pushing them out.\n\nIf a crew member is pushed down in an area where there is no floor below，no corpse will be generated.\nIf a crew member is pushed from the top of a ladder with a floor below，a corpse will be generated at the bottom of the ladder.\nIn this case，it is treated as a "kill that does not produce a corpse" in the judgment of other roles.,落とせそうな箇所にいるクルーを突き落とすことが出来ます。\n\n下に床が無い場所で突き落とされたクルーは，死体が発生しません。\n下に床のある梯子の上からクルーを突き落とした場合は，梯子の下で死体が生成されます。\nこの時，他の役職の判定では"死体が発生しないキル"として扱われます
-PusherIntervalOption,Push interval,突き落とし間隔
-PusherButtonName,Push!!!,バーン！
-MedicalTechnologistName,Medical technologist,臨床検査技師
-MedicalTechnologistDescription,This role is to perform a compatibility test by collecting samples from two crew members during the Task Phase.\nThe compatibility test will determine whether the two crew members belong to the same team or to different teams.\n\nThe result of the test is sent via chat at the beginning of the meeting phase.\nIf two specimens are not collected during the Task Phase，the chat will not be sent.\nAlso，the target selection status is reset at the end of the Meeting Phase.\nThere are four different systems to identify the team，and which system is used is indicated in the test results.\n\nI was originally assigned as a researcher...\nHowever，this is an emergency situation. With my knowledge and skills，I will contribute to dealing with this situation!,タスクフェイズ中に2名のクルーの検体を採取する事で，組織適合検査を行う役職です。\n\n組織適合検査により，2名の検体採取対象の所属が同陣営か 又は 別陣営かを判別する事ができます。\n2名の関係が同陣営であるかの情報を得る事で，ライン精査等を行う事ができる役職です。\n\n検査結果は，会議フェイズ開始時にチャットで送信されます。\nタスクフェイズ中に2名の検体を採取できていない時は，チャットは送信されません。\n又 対象選択状況は，会議フェイズ終了時にリセットされます。\n陣営の判定方式は4種類あり，どの方式で判定しているかは検査結果に併記しています。\n\n私は本来研究員として配属されていたのですが...\nとはいえ緊急事態です。私の知識と技術をもって，この事態の対処に貢献してみせましょう!!
-MedicalTechnologistTitle1,This is not my job，but it is my area of expertise. Let's put these skills to use!,職務外ですが専門分野です。この技能役立ててみせましょう!
-MedicalTechnologistCombIntroToDoctor,It's also my research subject，so I'm willing to cooperate?,私の研究対象でもあるので協力は惜しみませんよ?
-MedicalTechnologistCombIntroToPoliceSurgeon,We cannot allow ourselves to judge the value of the lives and deaths of our victims!,犠牲者の命と死の価値を勝手に判断する事は赦されません!
-MedicalTechnologistIsJudgmentTeamType,Discrimination of teams by classification by winning decision?,マッド系役職は勝利陣営で判定するか
-MedicalTechnologistIsJudgmentAllNeutralOneTeam,Mad roles are judged by the winning team?,第三陣営同士は同陣営と判定するか
-MedicalTechnologistButtonName,Blood sampling,採取
-MedicalTechnologistAbilityRemainingCount,Remaining number of uses : ,残り使用回数 : 
-MedicalTechnologistSelectTarget,Target Selection Status :,対象選択状況 :
-MedicalTechnologistUnselected,unselected,未選択
-MedicalTechnologistSamplePresentation,Subjects tested\n<pos=10%>Sample 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>Sample 2 :</pos><pos=35%>[ {1} ]</pos>,検査対象\n<pos=10%>検体 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>検体 2 :</pos><pos=35%>[ {1} ]</pos>
-MedicalTechnologistJudgmentSystem,Judgment method,判定方式
-MedicalTechnologistJudgmentSystem_Team,Team Judgment : ,陣営判定 : 
-MedicalTechnologistJudgmentSystem_Team_Assign,Assignment Classification,アサイン分類
-MedicalTechnologistJudgmentSystem_Team_Victory,Winning decision Classification,勝利判定分類
-MedicalTechnologistJudgmentSystem_Neutral,Neutral Judgment : ,第三陣営間の判定 : 
-MedicalTechnologistJudgmentSystem_Neutral_All,Judged to be in the same team.,同陣営と判定する。
-MedicalTechnologistJudgmentSystem_Neutral_Detailed,The roles with different win conditions are considered as different teams.,勝利条件が異なる役職間は，別陣営と判定する。
-MedicalTechnologistSampleResult,Inspection results,検査結果
-MedicalTechnologistMatch,<pos=10%>Specimen did not react.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in the same team</pos>,<pos=10%>検体は，反応しませんでした。</pos>\n<pos=10%>検体 1 と 検体 2 は同じ陣営の様です。</pos>
-MedicalTechnologistMismatch,<pos=10%>Specimen caused rejection.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in different teams.</pos>,<pos=10%>検体は，拒絶反応を起こしました。</pos>\n<pos=10%>検体 1 と 検体 2 は別陣営の様です。</pos>
-JammerName,Jammer,ジャマー
-JammerTitle1,私は他者を照らす光を妨害する!,私は他者を照らす光を妨害する!
-JammerCombIntroDearEvilScientist,Why don't you just pour that stuff on someone else?,何でその薬品他人にかけないんだ?
-JammerDescription,This is an impostor role with the ability to make the target invisible.\nThe ability to take an impostor as the target of invisibility can be changed by setting.\n\nThe invisible crew member is unaware that he or she is invisible.\n\nThe impostor role is able to see the invisible crew members through the jamming ability.\nWhen an Impostor role is made invisible by Jamming，the Imposter is aware that they has been made invisible because they own image is translucent.\n\nInvisible crew members will appear normal to an Admin，but not to the camera.\nAnother crew member can also use they ability on the invisible crew member.\n\nI can take a crew member and make him invisible!\nWhat? Why not use it on yourself?\nI like to anticipate other people's movements and play with light reflections to make them invisible!\nIt's no fun to use it on myself，who moves as expected!,対象を透明化する事が可能な能力を有するインポスター役職です。\nインポスターを透明化の対象に取る事ができるかは設定により変更できます。\n\n透明化したクルーは、自分が透明化している事を自覚できません。\n\nインポスター役職はジャミング能力により透明化されたクルーを半透明な状態で視認する事ができます。\nインポスター役職がジャマーによって透明化された場合は、自身の姿が半透明で見える為、自身が透明化されている事を自覚できます。\n\n透明化しているクルーはアドミンには正常に映りますが、カメラには映りません。\n又、透明化しているクルーに対して、別のクルーが更に能力を使用する事もできます。\n\n私はクルーを対象にとり、対象を視認できないようにする事ができる!\n何? 自分に使えばいいじゃないか?\n他人の動きを予想して、違和感がないように光の反射を弄って透明化するのが好きなんだ!\n予想通りに動く、自分に使うのは面白くない!
-JammerCanUseAbilitiesAgainstImposter,Can the ability be used for impostor roles?,インポスターに対して能力を使用できるか。
-JammerButtonName,Jamming,ジャミング
+CrabName,Crab,かに,蟹将,螃蟹怪
+CrabTitle1,EBI & KANI， EBI & KANI， EBI & KANI,カニッカニッカニッカニッ,咔嚓咔嚓咔嚓咔嚓,轉生成為螃蟹又怎樣!
+CrabDescription,a,能力を使用すると全員横方向にしか動けなくなります\nカニィィィィ！！！！！！！,蟹将发动能力后，所有玩家都只能左右移动。\n螃蟹！！！！！！！,螃蟹怪屬於內鬼陣營，可以使用能力使所有玩家只能進行横向移動。\n螃蟹！！！！！！！
+CrabButtonName,Crab magic,カニ化,螃蟹术,螃蟹化
+PusherName,Pusher,突き落と師,推手,我推的船員
+PusherTitle1,Eyes behind you.,背後には気を付けな,我推的船员（物理）,我推的船員!
+PusherDescription,Crew members who are in a spot where they could be dropped can be killed by pushing them out.\n\nIf a crew member is pushed down in an area where there is no floor below，no corpse will be generated.\nIf a crew member is pushed from the top of a ladder with a floor below，a corpse will be generated at the bottom of the ladder.\nIn this case，it is treated as a "kill that does not produce a corpse" in the judgment of other roles.,落とせそうな箇所にいるクルーを突き落とすことが出来ます。\n\n下に床が無い場所で突き落とされたクルーは，死体が発生しません。\n下に床のある梯子の上からクルーを突き落とした場合は，梯子の下で死体が生成されます。\nこの時，他の役職の判定では"死体が発生しないキル"として扱われます,推手可以把处于”高处“的玩家推下并杀死他们。\n\n若被推下的玩家落在不能以正常方式到达的位置，则不会产生尸体。\n若被推下的玩家落在可以以正常方式到达的位置，那个位置的梯子底部会产生尸体。\n那个场合，其他职业会把这次击杀判定为未生成尸体。,我推的船員屬於內鬼陣營。\n當船員在可被推落的區域時，我推的船員可以將船員推落並造成意外(?)死亡。\n當推落處沒有地板時，將不會產生屍體；反之將生成屍體在推落處下方。\n前者的狀況，對於其他職業判定會以"屍骨無存的擊殺"顯示。
+PusherIntervalOption,Push interval,突き落とし間隔,推人冷却,推人冷卻時間
+PusherButtonName,Push!!!,バーン！,推！,我推!
+MedicalTechnologistName,Medical technologist,臨床検査技師,药理师,醫檢師
+MedicalTechnologistDescription,This role is to perform a compatibility test by collecting samples from two crew members during the Task Phase.\nThe compatibility test will determine whether the two crew members belong to the same team or to different teams.\n\nThe result of the test is sent via chat at the beginning of the meeting phase.\nIf two specimens are not collected during the Task Phase，the chat will not be sent.\nAlso，the target selection status is reset at the end of the Meeting Phase.\nThere are four different systems to identify the team，and which system is used is indicated in the test results.\n\nI was originally assigned as a researcher...\nHowever，this is an emergency situation. With my knowledge and skills，I will contribute to dealing with this situation!,タスクフェイズ中に2名のクルーの検体を採取する事で，組織適合検査を行う役職です。\n\n組織適合検査により，2名の検体採取対象の所属が同陣営か 又は 別陣営かを判別する事ができます。\n2名の関係が同陣営であるかの情報を得る事で，ライン精査等を行う事ができる役職です。\n\n検査結果は，会議フェイズ開始時にチャットで送信されます。\nタスクフェイズ中に2名の検体を採取できていない時は，チャットは送信されません。\n又 対象選択状況は，会議フェイズ終了時にリセットされます。\n陣営の判定方式は4種類あり，どの方式で判定しているかは検査結果に併記しています。\n\n私は本来研究員として配属されていたのですが...\nとはいえ緊急事態です。私の知識と技術をもって，この事態の対処に貢献してみせましょう!!,药理师可以在行动阶段对两名玩家采样，来进行特异性检测。\n特异性检测可以判别这两名玩家是否属于相同阵营。\n\n检测结果在会议阶段开始时在聊天栏中显示。\n若行动阶段药理师没有对两名玩家采样，检测结果不会发送。\n每轮会议结束时，采样重置。\n药理师共有四套检测系统，会在测试结果中表明使用了哪套系统。\n\n我只是作为一名研究员登上飞船的……\n不过，现在是紧急事态。用我的才智与技术，我一定能想办法解决危机！,醫檢師屬於船員陣營。\n醫檢師每回合可以採集兩名船員的檢體進行組織適合度評估。\n組織適合度評估可以判斷兩名船員是否屬於同一陣營或不同陣營。\n檢測結果將在緊急會議開始時通過聊天發送報告。\n如果在回合中沒有採集到兩名船員的檢體，則不會發送報告。\n同時，目標選擇狀態將在會議結束時重置。\n有四種不同的系統來識別陣營，檢測結果中會標明所使用的系統。\n例如叛徒在歸屬分類上屬船員陣營，但勝利陣營分類上屬內鬼陣營。\n\n我原本是一名研究員……\n然而，這是一個緊急情況。我將以我的知識和技能，做出貢獻！
+MedicalTechnologistTitle1,This is not my job，but it is my area of expertise. Let's put these skills to use!,職務外ですが専門分野です。この技能役立ててみせましょう!,我不是做这个的，但还在我的专业领域内。让我来帮上忙吧！,這不是我的工作，但這是我的專業領域。讓我來學以致用！
+MedicalTechnologistCombIntroToDoctor,It's also my research subject，so I'm willing to cooperate?,私の研究対象でもあるので協力は惜しみませんよ?,我也准备研究这个，怎样，合作一下？,這也是我的研究對象，所以我會願意合作？
+MedicalTechnologistCombIntroToPoliceSurgeon,We cannot allow ourselves to judge the value of the lives and deaths of our victims!,犠牲者の命と死の価値を勝手に判断する事は赦されません!,我可不会允许你们这样随意裁断受害者的生死！,我們不能隨意判斷受害者的生死價值！
+MedicalTechnologistIsJudgmentTeamType,Discrimination of teams by classification by winning decision?,マッド系役職は勝利陣営で判定するか,是否根据胜利条件判定叛徒阵营职业,叛徒系角色是根據勝利陣營來判定的嗎？
+MedicalTechnologistIsJudgmentAllNeutralOneTeam,Mad roles are judged by the winning team?,第三陣営同士は同陣営と判定するか,是否把所有独立阵营职业判定为同一阵营,中立陣營之間是判定為同一陣營的嗎？
+MedicalTechnologistButtonName,Blood sampling,採取,采样,採集檢體
+MedicalTechnologistAbilityRemainingCount,Remaining number of uses : ,残り使用回数 : ,剩余使用次数：,剩餘次数：
+MedicalTechnologistSelectTarget,Target Selection Status :,対象選択状況 :,目标选择状态：,目標選擇狀態：
+MedicalTechnologistUnselected,unselected,未選択,未选择,未選擇
+MedicalTechnologistSamplePresentation,Subjects tested\n<pos=10%>Sample 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>Sample 2 :</pos><pos=35%>[ {1} ]</pos>,検査対象\n<pos=10%>検体 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>検体 2 :</pos><pos=35%>[ {1} ]</pos>,检测样本\n<pos=10%>样本1:</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>样本2:</pos><pos=35%>[ {1} ]</pos>,檢測對象\n<pos=10%>檢體 1 :</pos><pos=35%>[ {0} ]</pos>\n<pos=10%>檢體 2 :</pos><pos=35%>[ {1} ]</pos>
+MedicalTechnologistJudgmentSystem,Judgment method,判定方式,判定方式,判定方式
+MedicalTechnologistJudgmentSystem_Team,Team Judgment : ,陣営判定 : ,阵营判定：,陣營判定：
+MedicalTechnologistJudgmentSystem_Team_Assign,Assignment Classification,アサイン分類,以规则阵营归属分类,歸屬分類
+MedicalTechnologistJudgmentSystem_Team_Victory,Winning decision Classification,勝利判定分類,以胜利条件分类,勝利陣營分類
+MedicalTechnologistJudgmentSystem_Neutral,Neutral Judgment : ,第三陣営間の判定 : ,独立阵营判定：,中立陣營判定：
+MedicalTechnologistJudgmentSystem_Neutral_All,Judged to be in the same team.,同陣営と判定する。,独立阵营职业全部判定为同一阵营。,中立陣營之間判定為同一陣營
+MedicalTechnologistJudgmentSystem_Neutral_Detailed,The roles with different win conditions are considered as different teams.,勝利条件が異なる役職間は，別陣営と判定する。,不同胜利条件的职业被判定为不同阵营。,勝利條件不同的角色被判定為不同陣營
+MedicalTechnologistSampleResult,Inspection results,検査結果,检测结果,檢測結果
+MedicalTechnologistMatch,<pos=10%>Specimen did not react.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in the same team</pos>,<pos=10%>検体は，反応しませんでした。</pos>\n<pos=10%>検体 1 と 検体 2 は同じ陣営の様です。</pos>,<pos=10%>样本间没有发生特异性反应。</pos>\n<pos=10%>样本1、样本2属于同一阵营。</pos>,<pos=10%>檢體沒有異常反應。</pos>\n<pos=10%>檢體 1 和 2 似乎屬於同一陣營。</pos>
+MedicalTechnologistMismatch,<pos=10%>Specimen caused rejection.</pos>\n<pos=10%>Specimen 1 and 2 seem to be in different teams.</pos>,<pos=10%>検体は，拒絶反応を起こしました。</pos>\n<pos=10%>検体 1 と 検体 2 は別陣営の様です。</pos>,<pos=10%>样本间发生了特异性反应。</pos>\n<pos=10%>样本1、样本2属于不同阵营。</pos>,<pos=10%>檢體產生排斥反應。</pos>\n<pos=10%>檢體 1 和 2 似乎屬於不同陣營。</pos>
+JammerName,Jammer,ジャマー,障术师,光之魔法使
+JammerTitle1,私は他者を照らす光を妨害する!,私は他者を照らす光を妨害する!,干扰光线,變得看不見吧!
+JammerCombIntroDearEvilScientist,Why don't you just pour that stuff on someone else?,何でその薬品他人にかけないんだ?,你就不能把你这个给别人用用？,這個能力我也能用魔法實現，然後再套用到任何人身上。
+JammerDescription,This is an impostor role with the ability to make the target invisible.\nThe ability to take an impostor as the target of invisibility can be changed by setting.\n\nThe invisible crew member is unaware that he or she is invisible.\n\nThe impostor role is able to see the invisible crew members through the jamming ability.\nWhen an Impostor role is made invisible by Jamming，the Imposter is aware that they has been made invisible because they own image is translucent.\n\nInvisible crew members will appear normal to an Admin，but not to the camera.\nAnother crew member can also use they ability on the invisible crew member.\n\nI can take a crew member and make him invisible!\nWhat? Why not use it on yourself?\nI like to anticipate other people's movements and play with light reflections to make them invisible!\nIt's no fun to use it on myself，who moves as expected!,対象を透明化する事が可能な能力を有するインポスター役職です。\nインポスターを透明化の対象に取る事ができるかは設定により変更できます。\n\n透明化したクルーは、自分が透明化している事を自覚できません。\n\nインポスター役職はジャミング能力により透明化されたクルーを半透明な状態で視認する事ができます。\nインポスター役職がジャマーによって透明化された場合は、自身の姿が半透明で見える為、自身が透明化されている事を自覚できます。\n\n透明化しているクルーはアドミンには正常に映りますが、カメラには映りません。\n又、透明化しているクルーに対して、別のクルーが更に能力を使用する事もできます。\n\n私はクルーを対象にとり、対象を視認できないようにする事ができる!\n何? 自分に使えばいいじゃないか?\n他人の動きを予想して、違和感がないように光の反射を弄って透明化するのが好きなんだ!\n予想通りに動く、自分に使うのは面白くない!,障术师可以使一名其他玩家隐身一段时间。\n根据房间设置，这个技能也可以对其他内鬼阵营玩家使用。\n\n技能对象不知道自己处于隐身状态。\n\n内鬼阵营玩家可以看到被障术师隐身的玩家。\n若技能对象是内鬼阵营玩家，则技能对象可以确认自己隐身。\n\n隐身的玩家在地图上仍显示为可见，但在监控中不可见。\n其他玩家可以对隐身的玩家正常使用技能。\n\n我可以改变光路，让那些人看不到他！\n什么？问我为什么不给自己用？\n呵，我更喜欢思考别人的想法，看他们隐身之后会怎么做！\n这可比让我这个知道自己怎么想的人隐身有趣多了！,光之魔法使屬於內鬼陣營。\n光之魔法使可以使用能力使目標變得透明。\n變透明的船員不知道自己無法被他人看見，但光之魔法使仍可以看到透明的船員。\n當魔法使使自己變得透明時，魔法使會知道自己變得透明，因為自己會是半透明的。\n變透明的船員在管理員地圖上會正常顯示，但無法監視器看見。\n其他船員依舊可以對透明的船員發動能力或擊殺。\n\n我可以控制光的魔法讓船員變得透明！\n什麼？為什麼不用在自己身上？\n我更喜歡看他們被透明化後的反應!
+JammerCanUseAbilitiesAgainstImposter,Can the ability be used for impostor roles?,インポスターに対して能力を使用できるか。,障术师可以对内鬼发动技能,透明魔法能否對內鬼使用？
+JammerButtonName,Jamming,ジャミング,障眼法,透明魔法
 
 #NewRoleTranslation
 
@@ -1864,9 +1866,9 @@ CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1}),破坏
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！
-WelcomeMessage2,This is the room where we installed a mod called SuperNewRoles.,この部屋はSuperNewRolesというModを導入しています。,,已安裝了超新職業模組。
-WelcomeMessage3,This mod is not affiliated with Among Us or Innersloth LLC，and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC.,当ModはAmong UsやInnersloth LLCとは無関係であり、含まれるコンテンツはInnersloth LLCによって承認されたり、直接提供を受けているものではありません。,,此模組與Among Us或Innersloth LLC無關，其中包含的內容未經Innersloth LLC批准或贊助。
-WelcomeMessage4,Please contact the official SuperNewRoles Discord server for any impact，damage or bugs that may occur in this room，not Innersloth.,この部屋で発生した，影響や損害及びバグについてはInnerslothに問い合わせず，SuperNewRoles公式 Discordサーバに問い合わせてください。,,如果遊玩過程中發生任何問題或錯誤，請聯繫 SNR 超新職業官方Discord服務器，而非Innersloth。
+WelcomeMessage2,This is the room where we installed a mod called SuperNewRoles.,この部屋はSuperNewRolesというModを導入しています。,该房间安装了名为”超新职业“的模组。,已安裝了超新職業模組。
+WelcomeMessage3,This mod is not affiliated with Among Us or Innersloth LLC，and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC.,当ModはAmong UsやInnersloth LLCとは無関係であり、含まれるコンテンツはInnersloth LLCによって承認されたり、直接提供を受けているものではありません。,该模组与Among Us或Innersloth LLC官方无关，所含内容也不受其认可或赞助。,此模組與Among Us或Innersloth LLC無關，其中包含的內容未經Innersloth LLC批准或贊助。
+WelcomeMessage4,Please contact the official SuperNewRoles Discord server for any impact，damage or bugs that may occur in this room，not Innersloth.,この部屋で発生した，影響や損害及びバグについてはInnerslothに問い合わせず，SuperNewRoles公式 Discordサーバに問い合わせてください。,若在该房间内游玩时发现任何错误，请勿联系Innersloth官方，请在SuperNewRoles官方discord联系我们。,如果遊玩過程中發生任何問題或錯誤，請聯繫 SNR 超新職業官方Discord服務器，而非Innersloth。
 WelcomeMessage5,You can play a variety of modes and different hard on any model with SuperNewRoles!,SNRを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！,您可以在超新職業體驗各種不同的模式和職業！
 WelcomeMessage6,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！,有关模式和职业的详细描述请查看汉化组职业介绍！,有關模式和職業的詳細描述請查看SNR官方wiki的職業介紹！
 WelcomeMessage7,SuperNewRoles Official Wiki,SuperNewRoles公式Wiki :,超新职业职业介绍 :,超新職業職業介紹：
@@ -1874,7 +1876,7 @@ WelcomeMessage8,https://github.com/SuperNewRoles/SuperNewRoles/wiki(Japanese),ht
 WelcomeMessage9,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。,你可以通过输入命令来获取信息。,您可以通過輸入命令來獲取訊息。
 WelcomeMessage10,To view a list of executable commands，send the command : [ /commands ] or [ /cmd ].,実行可能なコマンド一覧を表示するには\nコマンド : [ /commands ] 又は [ /cmd ] を送信してください。,要查看可执行命令列表，请发送命令：[ /commands ]或[ /cmd ],查看可執行命令的列表，請發送命令：[ /commands ] 或 [ /cmd ]。
 SNRWebWelcomMessage1_HostSend,Send your match results to SNRWeb.,SNRWebに試合の戦績を送信します。,将您的游戏结果发送到SNRWeb。,將您的對局結果發送到SNR Web。
-SNRWebWelcomMessage1_GestSend,If an introducer who is logged in to SNRWeb participates，the game results are transmitted.,SNRWebにログインしている導入者が参加した場合，試合の戦績が送信されます。,若房间内有SNR模组玩家登录了SNRWeb，游戏结果会自动发送。,如果有安裝SNR Web的玩家參加遊戲，則將自動發送遊戲結果。
+SNRWebWelcomMessage1_GestSend,If an introducer who is logged in to SNRWeb participates，the game results are transmitted.,SNRWebにログインしている導入者が参加した場合，試合の戦績が送信されます。,若房间内有SNR模组玩家登录了SNRWeb，游戏结果会自动发送。,如果有登錄SNR Web的玩家參加遊戲，則將自動發送遊戲結果。
 SNRWebWelcomMessage2,By participating in the game，you agree to submit your information to SNRWeb.,ゲームへの参加をもってSNRWebへの情報送信に同意したものとみなします。,参加游戏即表示您同意将游戏信息提交给SNRWeb。,參加遊戲即表示您同意將您的信息提交給SNR Web。
 SNRWebWelcomMessage3,For a simplified explanation of SNRWeb，see the command : [ /getwebinfo ] or [ /gwi ].,SNR Webについての簡易説明は，\nコマンド : [ /getwebinfo ] 又は [ /gwi ]でご確認ください。,要查看简易SNRWeb介绍，请发送命令： [ /getwebinfo ]或[ /gwi ]。,要獲取SNRWeb的說明，請使用命令：[ /getwebinfo ] 或 [ /gwi ]。
 SNRWebWelcomMessage4,For a detailed explanation，please refer to the "SNR Webについて" page on the official wiki.,又，詳細説明については公式wikiの[SNR Webについて]というページを御覧ください。,要查看详细SNRWeb介绍，请在官方wiki页面上查阅“关于SNRWeb”。,有關詳細說明，請參閱官方wiki上的“關於SNR Web”頁面。
@@ -1943,6 +1945,7 @@ SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,未持有
 InformationName,Information,情報,资讯,資訊
 ExiledText,{0} was the {1}!,{0} は {1} だった！,{0}是{1}!,{0} 是 {1}！
+PublicRoomError,The public rooms and matchmaking system are currently sealed.\nPlease wait for the official response.,現在公開部屋及び，マッチメイキングシステムを封印しております。\n正式対応を行うまでお待ちください。
 
 # Replay
 ReplayName,Replay,リプレイ,回放,重播

@@ -21,18 +21,18 @@ public static class LegacyOptionDataMigration
         FileInfo file = new(OptionSaver.OptionSaverFileName);
         if (!file.Exists)
         {
-            Logger.Info("Start Migration","Migration LagacyOption");
+            Logger.Info("Start Migration", "Migration LagacyOption");
             string configtext = File.ReadAllText(SuperNewRolesPlugin.Instance.Config.ConfigFilePath);
             bool IsFirstPresetUpdated = false;
             for (int i = 0; i < CustomOptionHolder.presets.Length; i++)
             {
                 //もうそのプリセットが存在していたらスキップ
-                if (new FileInfo(OptionSaver.PresetFileNameBase+i.ToString()+"."+OptionSaver.Extension).Exists)
+                if (new FileInfo(OptionSaver.PresetFileNameBase + i.ToString() + "." + OptionSaver.Extension).Exists)
                     continue;
                 //プリセットがなかったらスキップ
                 if (!configtext.Contains($"[Preset{i}]"))
                     continue;
-                Logger.Info("Start Preset"+i.ToString()+" Migration", "Migration LagacyOption");
+                Logger.Info("Start Preset" + i.ToString() + " Migration", "Migration LagacyOption");
                 Dictionary<uint, byte> SaveValues = new();
                 string presettext = $"Preset{i}";
                 foreach (CustomOption opt in CustomOption.options)
@@ -50,7 +50,7 @@ public static class LegacyOptionDataMigration
                     writer.Write(OptionSaver.Version);
                     OptionSaver.WriteCheckSum(writer);
                     writer.Write(SaveValues.Count);
-                    Logger.Info(SaveValues.Count.ToString()+":COUNT!!!!!");
+                    Logger.Info(SaveValues.Count.ToString() + ":COUNT!!!!!");
                     foreach (var data in SaveValues)
                     {
                         writer.Write(data.Key);

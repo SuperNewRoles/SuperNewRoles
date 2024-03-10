@@ -67,7 +67,7 @@ public static class ReplayFileWriter
     }
     public static void WriteGameOptionData(BinaryWriter writer)
     {
-        byte[] option = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions);
+        byte[] option = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn);
         writer.Write(option.Length);
         writer.Write(option);
     }

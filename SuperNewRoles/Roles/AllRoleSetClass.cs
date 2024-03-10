@@ -47,7 +47,8 @@ class Startgamepatch
 }
 public class PairRoleDetail
 {
-    public static PairRoleDetail GetPairRoleDetail(RoleId role) {
+    public static PairRoleDetail GetPairRoleDetail(RoleId role)
+    {
         return PairRoleDetails.TryGetValue(role, out PairRoleDetail value) ? value : null;
     }
     public static readonly Dictionary<RoleId, PairRoleDetail> PairRoleDetails = new() {
@@ -234,7 +235,7 @@ class AllRoleSetClass
         //100%
         TenPar = 0x008,
         //100%以外
-        NotTenPar = 0x016,
+        NotTenPar = 0x010,
     }
     public static List<PlayerControl> impostors;
     public static Dictionary<AssignType, List<RoleId>> AssignTickets;
@@ -436,7 +437,7 @@ class AllRoleSetClass
             {
                 var assigneddata =
                     SelectAndAssignRole(CanAssignPlayerCount, assignType, Ticket, RemainingAssignPlayerCount, AssignTargets);
-                CanAssignPlayerCount-= assigneddata.assignedCount;
+                CanAssignPlayerCount -= assigneddata.assignedCount;
                 foreach (var role in assigneddata.assigned)
                 {
                     AssignedRoles.Add(role);

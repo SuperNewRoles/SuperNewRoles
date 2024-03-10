@@ -1,5 +1,5 @@
-using SuperNewRoles.Patches;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles.Crewmate;
 public static class GhostMechanic
