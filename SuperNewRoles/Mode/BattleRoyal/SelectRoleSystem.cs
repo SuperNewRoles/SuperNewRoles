@@ -105,7 +105,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     foreach (var role in Enum.GetValues(typeof(BattleRoles)))
                     {
                         _roleNames.Add(((BattleRoles)role).ToString(), (RoleId)(int)(BattleRoles)role);
-                        _roleNames.Add(CustomRoles.GetRoleName((RoleId)(int)(BattleRoles)role, IsImpostorReturn:true), (RoleId)(int)(BattleRoles)role);
+                        _roleNames.Add(CustomRoles.GetRoleName((RoleId)(int)(BattleRoles)role, IsImpostorReturn: true), (RoleId)(int)(BattleRoles)role);
                     }
                 }
                 return _roleNames;
