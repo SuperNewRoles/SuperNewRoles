@@ -247,7 +247,7 @@ public class CustomOption
     {
         OptionSaver.WriteNowPreset();
         preset = newPreset;
-        (bool suc, int code, Dictionary<uint,byte> data) = OptionSaver.LoadPreset(preset);
+        (bool suc, int code, Dictionary<uint, byte> data) = OptionSaver.LoadPreset(preset);
         if (!suc && code == -1)
         {
             foreach (CustomOption option in options)
@@ -263,9 +263,10 @@ public class CustomOption
             CurrentValues = new();
             OptionSaver.WriteNowPreset();
             return;
-        } else if (!suc)
+        }
+        else if (!suc)
         {
-            Logger.Info("CustomOptionGetPresetError:"+code.ToString());
+            Logger.Info("CustomOptionGetPresetError:" + code.ToString());
             return;
         }
         foreach (CustomOption option in options)
@@ -397,7 +398,7 @@ public class CustomOption
                 } // Save selection to config
                 else
                 {
-                    ShareOptionSelections(this);    
+                    ShareOptionSelections(this);
                 }
             }
         }
@@ -1038,7 +1039,9 @@ static class GameOptionsMenuUpdatePatch
     }
     public static bool IsHidden(this CustomOption option)
     {
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) || ((option == JumpDancer.JumpDancerOption) && DateTime.UtcNow < new DateTime(2023, 9, 6, 11, 50, 0));
+        // FIXME : CustomServerを使用していないなら, モード設定を隠す
+        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false))
+                || ((option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting) && !ModHelpers.IsCustomServer());
     }
     public static void Postfix(GameOptionsMenu __instance)
     {
