@@ -110,6 +110,13 @@ public static class DeviceClass
     {
         public static void Postfix()
         {
+            if (!IsAdminRestrict)
+                return;
+            if (
+                (PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) ||
+                BlackHatHacker.IsMyAdmin
+               )
+                return;
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
             writer.Write((byte)DeviceType.Admin);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
@@ -334,6 +341,9 @@ public static class DeviceClass
         {
             Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
             if (!IsVitalRestrict)
+                return;
+            if (RoleClass.Doctor.Vital != null ||
+                BlackHatHacker.IsMyVutals)
                 return;
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
             writer.Write((byte)DeviceType.Vital);
