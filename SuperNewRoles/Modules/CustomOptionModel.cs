@@ -1038,14 +1038,20 @@ static class GameOptionsMenuUpdatePatch
         };
     }
 
-    /// <summary>設定の封印の解放後, 処理が残っている事をLogに記載するか</summary>
-    /// <value>true : Logに記載する / false : Logに記載しない</value>
-    public const bool IsHaveSealingOption = false; // 設定の封印処理の解放後, 封印処理が残っている事をlogに記載する為に使用する
+    /// <summary>
+    /// 現在, 封印処理のある設定を有しているか。此処をtrueにする事で封印処理が実行される。
+    /// </summary>
+    /// <value>true : 有している / false : 有していない</value>
+    public const bool IsHaveSealingOption = false;
 
     public static bool IsHidden(this CustomOption option)
     {
-        // 封印処理がある時は ``|| !IsAlreadyRelease(option)`` のコメントアウトを解除し, 解放日時を HaveSealingCondition に登録する。
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false))/* || !IsAlreadyRelease(option)*/;
+        // 時間によって解放される, 封印処理を実行する場合 上記``IsHaveSealingOption``を trueにする
+
+        return option.isHidden
+            || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) // SHRモード時, SHR未対応の設定を隠す処理。
+            || IsHaveSealingOption && !IsAlreadyRelease(option) // 解放条件が時間に依存する設定の 封印及び開放処理
+            || (ModeHandler.IsSealMoadOption && !ModHelpers.IsCustomServer() && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
 
     /// <summary>
@@ -1061,7 +1067,7 @@ static class GameOptionsMenuUpdatePatch
     }
     /// <summary>
     /// オプションが封印条件を有しているか判定する。
-    /// オプションの封印条件を登録する。
+    /// オプションの封印条件を登録する。封印処理を実行する場合は``IsHaveSealingOption``もtrueにする。
     /// </summary>
     /// <param name="option">判定するオプション</param>
     /// <param name="releaseDate">オプションの開放日時</param>
