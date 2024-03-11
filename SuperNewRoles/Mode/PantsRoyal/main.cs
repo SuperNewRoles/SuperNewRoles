@@ -37,7 +37,7 @@ public static class main
         LastUpdateTime = 7;
         CurrentTurnData = null;
     }
-    readonly static Dictionary<SystemTypes,Vector2> AirshipSpawnPositions = new()
+    readonly static Dictionary<SystemTypes, Vector2> AirshipSpawnPositions = new()
     {
         {SystemTypes.Security, new(7.0886f, -12.501f) }, //セキュ
         {SystemTypes.VaultRoom, new(-8.7701f, 12.4399f) }, //金庫
@@ -89,7 +89,8 @@ public static class main
             Logger.Info(player.Data.Role.Role.ToString(), player.GetDefaultName());
         }
         RPCHelper.RpcSyncGameData();
-        new LateTask(() => { 
+        new LateTask(() =>
+        {
             GameManager.Instance.LogicOptions.Manager.RpcEndGame(GameOverReason.HumansByTask, false);
         }, 0.1f);
     }
