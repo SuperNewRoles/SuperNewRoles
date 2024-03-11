@@ -2004,21 +2004,8 @@ public class CustomOptionHolder
         Logger.Info($"SettingRoleIdのMax: 6 - {GetRoleSettingid(MatchingTagIdMax)}", "MatchingTag");
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
-        /*
-        string OPTIONDATA = "{";
-        foreach (CustomOption opt in CustomOption.options)
-        {
-            OPTIONDATA += "\"" + opt.id.ToString() + "\":" + "{\"name\":\"" + opt.name + "\",\"selections\":[";
-            foreach (object selection in opt.selections)
-            {
-                OPTIONDATA += "\"" + selection.ToString() + "\",";
-            }
-            OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
-            OPTIONDATA += "]},";
-        }
-        OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
-        OPTIONDATA += "}";
-        GUIUtility.systemCopyBuffer = OPTIONDATA;*/
+
+        CheckOption();
     }
 
     /// <summary>
@@ -2027,4 +2014,23 @@ public class CustomOptionHolder
     /// <param name="maxId">処理したい6桁の設定Id</param>
     /// <returns></returns>
     private static string GetRoleSettingid(int maxId) => $"{maxId / 100}"[1..];
+
+    /// <summary>
+    /// CustomOptionの状態をlogに印字する
+    /// </summary>
+    private static void CheckOption()
+    {
+        Logger.Info("----------- CustomOption Info start -----------", "CustomOption");
+
+        if (GameOptionsMenuUpdatePatch.IsHaveSealingOption)
+        {
+            foreach (CustomOption option in CustomOption.options)
+            {
+                if (!GameOptionsMenuUpdatePatch.HaveSealingCondition(option, out System.DateTime releaseDate)) continue;
+                if (System.DateTime.UtcNow >= releaseDate) { Logger.Info($"解放済の封印処理が残っています。 CustomOption Id => {option.id}", "Sealing"); }
+            }
+        }
+
+        Logger.Info("----------- CustomOption Info End -----------", "CustomOption");
+    }
 }
