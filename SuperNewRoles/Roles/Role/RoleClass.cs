@@ -159,7 +159,6 @@ public static class RoleClass
         NiceTeleporter.ClearAndReload();
         Celebrity.ClearAndReload();
         Nocturnality.ClearAndReload();
-        Observer.ClearAndReload();
         Vampire.ClearAndReload();
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
@@ -1478,17 +1477,6 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             NocturnalityPlayer = new();
-        }
-    }
-    public static class Observer
-    {
-        public static List<PlayerControl> ObserverPlayer;
-        public static Color32 color = new(127, 127, 127, byte.MaxValue);
-        public static bool IsVoteView;
-        public static void ClearAndReload()
-        {
-            ObserverPlayer = new();
-            IsVoteView = true;
         }
     }
     public static class Vampire

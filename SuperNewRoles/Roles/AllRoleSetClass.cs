@@ -715,7 +715,6 @@ class AllRoleSetClass
             RoleId.NiceTeleporter => CustomOptionHolder.NiceTeleporterPlayerCount.GetInt(),
             RoleId.Celebrity => CustomOptionHolder.CelebrityPlayerCount.GetInt(),
             RoleId.Nocturnality => CustomOptionHolder.NocturnalityPlayerCount.GetInt(),
-            RoleId.Observer => CustomOptionHolder.ObserverPlayerCount.GetInt(),
             RoleId.Vampire => CustomOptionHolder.VampirePlayerCount.GetInt(),
             RoleId.DarkKiller => CustomOptionHolder.DarkKillerPlayerCount.GetInt(),
             RoleId.Seer => CustomOptionHolder.SeerPlayerCount.GetInt(),

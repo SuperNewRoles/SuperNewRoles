@@ -914,9 +914,6 @@ public static class AnonymousVotes
                 case RoleId.God:
                     isClosed = !RoleClass.God.IsVoteView;
                     break;
-                case RoleId.Observer:
-                    isClosed = !RoleClass.Observer.IsVoteView;
-                    break;
                 case RoleId.Marlin:
                     isClosed = !RoleClass.Marlin.IsVoteView;
                     break;
