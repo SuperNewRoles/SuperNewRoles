@@ -1945,7 +1945,8 @@ SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,未持有
 InformationName,Information,情報,资讯,資訊
 ExiledText,{0} was the {1}!,{0} は {1} だった！,{0}是{1}!,{0} 是 {1}！
-PublicRoomError,The public rooms and matchmaking system are currently sealed.\nPlease wait for the official response.,現在公開部屋及び，マッチメイキングシステムを封印しております。\n正式対応を行うまでお待ちください。
+PublicRoomError,<align="left">Host AmongUs Version : {0}\nHost SNR Version : {1}\n\nThe public rooms and matchmaking system are currently sealed.\n\nReason for sealed : \n{2}</align>,<align="left">Host AmongUs Version : {0}\nHost SNR Version : {1}\n\n現在公開部屋及び，マッチメイキングシステムは封印されています。\n\n封印理由 : \n{2}</align>
+CheckOfficialInformation,Please check the official SNR Discord server and external official sites such as GitHub Wiki.,SNR公式Discordサーバ 及び GitHub Wiki等\n外部公式サイトを確認して下さい。
 
 # Replay
 ReplayName,Replay,リプレイ,回放,重播
