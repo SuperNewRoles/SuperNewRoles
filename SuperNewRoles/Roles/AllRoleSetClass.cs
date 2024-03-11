@@ -423,7 +423,7 @@ class AllRoleSetClass
         if (CanAssignPlayerCount <= 0)
             return AssignedRoles;
         (bool, bool) isTry = (AssignTickets.TryGetValue(assignType | AssignType.TenPar, out List<RoleId> TenParTickets), AssignTickets.TryGetValue(assignType | AssignType.NotTenPar, out List<RoleId> NotTenParTickets));
-        if (!isTry.Item1 && isTry.Item2) return AssignedRoles;
+        if (!isTry.Item1 && !isTry.Item2) return AssignedRoles;
         if (TenParTickets == null && NotTenParTickets == null) return AssignedRoles;
         if (TenParTickets == null)
             TenParTickets = new();
