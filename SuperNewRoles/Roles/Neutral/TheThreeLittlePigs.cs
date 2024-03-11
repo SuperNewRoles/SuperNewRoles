@@ -28,7 +28,7 @@ public class TheThreeLittlePigs
     public static CustomOption TheThirdLittlePigMaxCounterCount;
     public static void SetupCustomOptions()
     {
-        TheThreeLittlePigsOption = new(OptionId, false, type, "TheThreeLittlePigsName", color, 1, role:RoleId.TheFirstLittlePig);
+        TheThreeLittlePigsOption = new(OptionId, false, type, "TheThreeLittlePigsName", color, 1, role: RoleId.TheFirstLittlePig);
         TheThreeLittlePigsTeamCount = CustomOption.Create(OptionId + 1, false, type, "QuarreledTeamCountSetting", 1f, 1f, 4f, 1f, TheThreeLittlePigsOption);
         TheThreeLittlePigsIsSettingNumberOfUniqueTasks = CustomOption.Create(OptionId + 2, false, type, "IsSettingNumberOfUniqueTasks", false, TheThreeLittlePigsOption);
         var TheThreeLittlePigsoption = SelectTask.TaskSetting(OptionId + 3, OptionId + 4, OptionId + 5, TheThreeLittlePigsIsSettingNumberOfUniqueTasks, type);
@@ -44,7 +44,7 @@ public class TheThreeLittlePigs
         TheThirdLittlePigMaxCounterCount = CustomOption.Create(OptionId + 12, false, type, "TheThirdLittlePigCounterKillSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
     }
 
-    public static void TheThreeLittlePigsOnAssigned(List<(RoleId,PlayerControl)> Assigned)
+    public static void TheThreeLittlePigsOnAssigned(List<(RoleId, PlayerControl)> Assigned)
     {
         PlayerControl first = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheFirstLittlePig).Item2;
         PlayerControl second = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheSecondLittlePig).Item2;

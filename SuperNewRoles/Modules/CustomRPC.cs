@@ -288,6 +288,7 @@ public enum CustomRPC
     UncheckedSetColor,
     SetDeviceTime,
     ShowFlash,
+    AlternateChatSystem, // FIXME : バニラ環境鯖では 120字以上のチャット及び3s以内の連投でKICKされる為, 暫定対応として代替RPCを使用する形にしている (非導入者への送信不可)
 
     // Mod Roles RPC
     RPCClergymanLightOut = 100,
@@ -2155,6 +2156,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.WaveCannon:
                         WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), new(reader.ReadSingle(), reader.ReadSingle()), (WaveCannonObject.WCAnimType)reader.ReadByte());
+                        break;
+                    case CustomRPC.AlternateChatSystem:
+                        AddChatPatch.ReceiveAlternateChat(reader.ReadString(), reader.ReadString());
                         break;
                 }
             }

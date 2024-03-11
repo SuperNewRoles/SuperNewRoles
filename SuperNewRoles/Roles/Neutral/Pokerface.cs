@@ -53,7 +53,7 @@ public static class Pokerface
     {
         public readonly PlayerControl[] TeamPlayers = new PlayerControl[3];
         public readonly byte[] TeamPlayerIds = new byte[3];
-        public PokerfaceTeam(PlayerControl player1,PlayerControl player2, PlayerControl player3)
+        public PokerfaceTeam(PlayerControl player1, PlayerControl player2, PlayerControl player3)
         {
             TeamPlayers[0] = player1;
             TeamPlayers[1] = player2;

@@ -84,7 +84,7 @@ class Vampire
             Count--;
             if (Count > 0) return;
             Count = 3;
-            foreach (KeyValuePair<PlayerControl, PlayerControl> data in (Dictionary<PlayerControl,PlayerControl>)RoleClass.Vampire.Targets)
+            foreach (KeyValuePair<PlayerControl, PlayerControl> data in (Dictionary<PlayerControl, PlayerControl>)RoleClass.Vampire.Targets)
             {
                 if (data.Key == null || data.Value == null || !data.Key.IsRole(RoleId.Vampire) || data.Key.IsDead() || data.Value.IsDead())
                 {

@@ -82,8 +82,8 @@ public static class Sauner
             case SaunerState.ObservationDeck:
                 //セキュ下展望と展望デッキ下
                 return CheckPos(new(-14.7f, -13.95f), new(11.1f, -17f), nowpos);
-                       //コックピット(ミスで追加したのでコメントアウト)
-                       //|| CheckPos(new(-25.2f, 1.7f), new(-16.3f, -3.9f), nowpos);
+            //コックピット(ミスで追加したのでコメントアウト)
+            //|| CheckPos(new(-25.2f, 1.7f), new(-16.3f, -3.9f), nowpos);
             default:
                 return false;
         }
@@ -99,7 +99,7 @@ public static class Sauner
             case SaunerState.ObservationDeck:
                 return new() { new(-13.7f, -15), new(8f, -14.6f) };
             default:
-                Logger.Info("GetSaunerPosで予期しない位置が入力されました："+RoleData.CurrentState.ToString());
+                Logger.Info("GetSaunerPosで予期しない位置が入力されました：" + RoleData.CurrentState.ToString());
                 return new();
         }
     }
