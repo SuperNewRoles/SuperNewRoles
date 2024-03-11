@@ -71,7 +71,7 @@ public class CustomAnimation : MonoBehaviour
     public int Index { get; private set; }
     public AudioSource audioSource;
     public bool IsRewinding { get; private set; }
-    public static Sprite[] GetSprites(string path, int Count, int Digits=4)
+    public static Sprite[] GetSprites(string path, int Count, int Digits = 4)
     {
         Sprite[] Sprites = new Sprite[Count];
         for (int i = 1; i < Count + 1; i++)
@@ -82,7 +82,7 @@ public class CustomAnimation : MonoBehaviour
                 Logger.Info("Digitsミスってね？直して～～～");
                 return Sprites.ToArray();
             }
-            string countdata = ModHelpers.GetStringByCount('0',zerodigts) + i.ToString();
+            string countdata = ModHelpers.GetStringByCount('0', zerodigts) + i.ToString();
             Sprites[i - 1] = ModHelpers.LoadSpriteFromResources(path + "_" + countdata + ".png", 110f);
         }
         return Sprites.ToArray();

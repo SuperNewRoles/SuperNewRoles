@@ -215,7 +215,7 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         PushButtonInfo = new(null, this, PushButtonOnClick,
             (isAlive) => isAlive, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             () => PushButtonInfo.customButton.Timer = 0f,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PusherPushButton.png",115f), () => IntervelOption.GetFloat(), new(-2f, 1, 0),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PusherPushButton.png", 115f), () => IntervelOption.GetFloat(), new(-2f, 1, 0),
             "PusherButtonName", KeyCode.F, 49, SetTargetUntargetPlayer: () => UntargetPlayers, SetTargetCrewmateOnly: () => true);
         _untargetPlayers = new();
     }

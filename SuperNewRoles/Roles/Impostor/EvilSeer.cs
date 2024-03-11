@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AmongUs.GameOptions;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
-using UnityEngine;
-using static SuperNewRoles.Modules.CustomOption;
+using SuperNewRoles.Roles.Attribute;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using SuperNewRoles.Roles.Crewmate;
-using System.Text;
-using SuperNewRoles.Roles.Attribute;
-using SuperNewRoles.Roles.Neutral;
+using UnityEngine;
+using static SuperNewRoles.Modules.CustomOption;
 
 namespace SuperNewRoles.Roles.Impostor;
 
