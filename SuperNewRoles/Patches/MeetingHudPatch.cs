@@ -19,6 +19,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
@@ -902,27 +903,32 @@ public static class AnonymousVotes
     {
         if (player == null || player.IsBot()) return GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.AnonymousVotes);
 
-        var role = player.GetRole();
         var isClosed = GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.AnonymousVotes); // 初期値をバニラ設定に
 
-        switch (role)
+        if (player.GetRoleBase() is IMeetingHandler meetingHandler) { isClosed = meetingHandler.EnableAnonymousVotes; }
+        else
         {
-            case RoleId.God:
-                isClosed = !RoleClass.God.IsVoteView;
-                break;
-            case RoleId.Observer:
-                isClosed = !RoleClass.Observer.IsVoteView;
-                break;
-            case RoleId.Marlin:
-                isClosed = !RoleClass.Marlin.IsVoteView;
-                break;
-            case RoleId.Assassin:
-                isClosed = !RoleClass.Assassin.IsVoteView;
-                break;
+            var role = player.GetRole();
+            switch (role)
+            {
+                case RoleId.God:
+                    isClosed = !RoleClass.God.IsVoteView;
+                    break;
+                case RoleId.Observer:
+                    isClosed = !RoleClass.Observer.IsVoteView;
+                    break;
+                case RoleId.Marlin:
+                    isClosed = !RoleClass.Marlin.IsVoteView;
+                    break;
+                case RoleId.Assassin:
+                    isClosed = !RoleClass.Assassin.IsVoteView;
+                    break;
+            }
         }
 
         if (player.IsDead()) isClosed = !Mode.PlusMode.PlusGameOptions.IsGhostSeeVote && isClosed; // "見られない状態" より "見られる状態" を優先する
-        if (!isClosed) Logger.Info($"公開投票 : {player.name}", "OpenVotes");
+        // 公開投票ならログを出力
+        if (!isClosed) Logger.Info($"公開投票 : {player.name}, (role = {player.GetRole()}, IsDead() = {player.IsDead()})", "OpenVotes");
 
         return isClosed;
     }
