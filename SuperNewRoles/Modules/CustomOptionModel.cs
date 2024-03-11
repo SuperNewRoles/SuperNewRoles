@@ -1039,9 +1039,7 @@ static class GameOptionsMenuUpdatePatch
     }
     public static bool IsHidden(this CustomOption option)
     {
-        // FIXME : CustomServerを使用していないなら, モード設定を隠す
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false))
-                || ((option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting) && !ModHelpers.IsCustomServer());
+        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false));
     }
     public static void Postfix(GameOptionsMenu __instance)
     {
