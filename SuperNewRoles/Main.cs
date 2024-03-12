@@ -182,6 +182,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             SuperNewRolesPlugin.Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
         }
     }
+    // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
     [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]
     public static class AuthManagerCoConnectPatch
     {
