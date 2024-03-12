@@ -231,7 +231,6 @@ public class IntroData
     public static IntroData NiceTeleporterIntro = new("NiceTeleporter", RoleClass.NiceTeleporter.color, 1, RoleId.NiceTeleporter);
     public static IntroData CelebrityIntro = new("Celebrity", RoleClass.Celebrity.color, 1, RoleId.Celebrity);
     public static IntroData NocturnalityIntro = new("Nocturnality", RoleClass.Nocturnality.color, 1, RoleId.Nocturnality);
-    public static IntroData ObserverIntro = new("Observer", RoleClass.Observer.color, 1, RoleId.Observer);
     public static IntroData VampireIntro = new("Vampire", RoleClass.Vampire.color, 1, RoleId.Vampire, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData FoxIntro = new("Fox", RoleClass.Fox.color, 1, RoleId.Fox, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData DarkKillerIntro = new("DarkKiller", RoleClass.DarkKiller.color, 1, RoleId.DarkKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
