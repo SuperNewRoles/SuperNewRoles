@@ -19,6 +19,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.Crab;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -35,23 +36,36 @@ public enum RoleId
     None, // RoleIdの初期化用
     DefaultRole,
 
+    // Impostor Roles
     WaveCannon,
     Slugger,
+    Pusher,
     Conjurer,
+    Mushroomer,
     EvilGuesser,
-    NiceGuesser,
     EvilHacker,
     EvilSeer,
+    Jammer,
+    EvilScientist,
+    Robber,
+    Crab,
+
+    // Neutral Roles
     Cupid,
+
+    // Crewmate Roles
+    NiceGuesser,
     Santa,
     BlackSanta,
+    MedicalTechnologist,
+    NiceScientist,
+
     //RoleId
 
     SoothSayer,
     Jester,
     Lighter,
     EvilLighter,
-    EvilScientist,
     Sheriff,
     MeetingSheriff,
     Jackal,
@@ -67,7 +81,6 @@ public enum RoleId
     Speeder,
     Freezer,
     Vulture,
-    NiceScientist,
     Clergyman,
     Madmate,
     Bait,
@@ -275,6 +288,7 @@ public enum CustomRPC
     UncheckedSetColor,
     SetDeviceTime,
     ShowFlash,
+    AlternateChatSystem, // FIXME : バニラ環境鯖では 120字以上のチャット及び3s以内の連投でKICKされる為, 暫定対応として代替RPCを使用する形にしている (非導入者への送信不可)
 
     // Mod Roles RPC
     RPCClergymanLightOut = 100,
@@ -291,6 +305,7 @@ public enum CustomRPC
     CountChangerSetRPC,
     SetRoomTimerRPC,
     SetScientistRPC,
+    SetInvisibleRPC,
     SetDetective,
     UseEraserCount,
     SetMadKiller,
@@ -1433,7 +1448,7 @@ public static class RPCProcedure
         FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
     }
     public static void SetScientistRPC(bool Is, byte id)
-        => RoleClass.NiceScientist.IsScientistPlayers[id] = Is;
+        => RoleClass.Kunoichi.IsScientistPlayers[id] = Is;
 
     public static void ReportDeadBody(byte sourceId, byte targetId)
     {
@@ -1548,6 +1563,8 @@ public static class RPCProcedure
             player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
             player.SetRole(RoleId.SidekickWaveCannon);
             WaveCannonJackal.IwasSidekicked.Add(playerid);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            ChacheManager.ResetMyRoleChache();
         }
     }
     public static void ExiledRPC(byte playerid)
@@ -1717,11 +1734,11 @@ public static class RPCProcedure
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
     class RPCHandlerPatch
     {
-        static bool Prefix(PlayerControl __instance, byte callId, MessageWriter reader)
+        static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
         {
-            switch (callId)
+            switch ((RpcCalls)callId)
             {
-                case (byte)RpcCalls.UsePlatform:
+                case RpcCalls.UsePlatform:
                     if (AmongUsClient.Instance.AmHost)
                     {
                         AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
@@ -1731,6 +1748,21 @@ public static class RPCProcedure
                             __instance.SetDirtyBit(4096u);
                         }
                     }
+                    return false;
+                case RpcCalls.CheckSpore:
+                    FungleShipStatus fungleShipStatus = ShipStatus.Instance.TryCast<FungleShipStatus>();
+                    if (fungleShipStatus != null)
+                        break;
+                    int mushroomId2 = reader.ReadPackedInt32();
+                    Mushroom mushroomFromId = CustomSpores.GetMushroomFromId(mushroomId2);
+                    __instance.CheckSporeTrigger(mushroomFromId);
+                    return false;
+                case RpcCalls.TriggerSpores:
+                    FungleShipStatus fungleShipStatus2 = ShipStatus.Instance.TryCast<FungleShipStatus>();
+                    if (fungleShipStatus2 != null)
+                        break;
+                    int mushroomId = reader.ReadPackedInt32();
+                    CustomSpores.TriggerSporesFromMushroom(mushroomId);
                     return false;
             }
             return true;
@@ -1846,6 +1878,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetScientistRPC:
                         SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetInvisibleRPC:
+                        InvisibleRoleBase.SetInvisibleRPC(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.ReviveRPC:
                         ReviveRPC(reader.ReadByte());
@@ -2121,6 +2156,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.WaveCannon:
                         WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), new(reader.ReadSingle(), reader.ReadSingle()), (WaveCannonObject.WCAnimType)reader.ReadByte());
+                        break;
+                    case CustomRPC.AlternateChatSystem:
+                        AddChatPatch.ReceiveAlternateChat(reader.ReadString(), reader.ReadString());
                         break;
                 }
             }

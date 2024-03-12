@@ -24,7 +24,17 @@ public static class Pokerface
             WinnerOnlyAlive = CustomOption.Create(optionId, true, CustomOptionType.Neutral, "PokerfaceWinnerOnlyAlive", false, Option); optionId++;
         }
     }
-
+    public static void OnAssigned(List<(RoleId, PlayerControl)> Assigned)
+    {
+        if (Assigned.Count != 3)
+            return;
+        PlayerControl[] players = new PlayerControl[3];
+        for (int i = 0; i < 3; i++)
+        {
+            players[i] = Assigned[i].Item2;
+        }
+        RpcSetPokerfaceTeam(players);
+    }
     public static void RpcSetPokerfaceTeam(PlayerControl[] players)
     {
         if (players.Length >= 3)
@@ -43,7 +53,7 @@ public static class Pokerface
     {
         public readonly PlayerControl[] TeamPlayers = new PlayerControl[3];
         public readonly byte[] TeamPlayerIds = new byte[3];
-        public PokerfaceTeam(PlayerControl player1,PlayerControl player2, PlayerControl player3)
+        public PokerfaceTeam(PlayerControl player1, PlayerControl player2, PlayerControl player3)
         {
             TeamPlayers[0] = player1;
             TeamPlayers[1] = player2;

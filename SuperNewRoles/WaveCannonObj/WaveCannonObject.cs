@@ -98,7 +98,7 @@ public class WaveCannonObject : CustomAnimation
     public WaveCannonObject Init(Vector3 pos, bool FlipX, PlayerControl _owner, WCAnimType animType)
     {
         CurrentAnimType = animType;
-        Logger.Info("WaveCannon Animation:"+animType.ToString());
+        Logger.Info("WaveCannon Animation:" + animType.ToString());
         CurrentAnimationHandler = CreateAnimHandler();
         if (CurrentAnimationHandler == null)
         {

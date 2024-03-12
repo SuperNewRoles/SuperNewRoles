@@ -607,30 +607,6 @@ public static class OnGameEndPatch
         List<PlayerControl> notWinners = new();
         List<PlayerControl> peculiarNotWinners = new();
 
-        /*
-        TODO: 蔵徒:陣営Playerがうまく動かない為コメントアウトし、個別表記式に変更。いつか直す。
-
-        // Neutral,MadRoles,FriendRolesから溢れたクルー勝利から除外する必要のある役職を個別追記する
-        peculiarNotWinners.AddRanges(new[]
-            {
-                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer, // クルー陣営の時はマッド役職でない為
-                RoleClass.SideKiller.MadKillerPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
-                RoleClass.Dependents.DependentsPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
-                OrientalShaman.ShermansServantPlayer, // 第三陣営ではなく[CrewmatePlayer]に含まれている為
-                //  RoleClass.Cupid.CupidPlayer,
-                //  キューピットはNeutralPlayerだが元々記載の方法が特殊だった為コメントアウトで記載を残した。
-            });
-
-        notWinners.AddRanges(new[]
-            {
-                BotManager.AllBots,
-                RoleHelpers.NeutralPlayer,
-                RoleHelpers.MadRolesPlayer,
-                RoleHelpers.FriendRolesPlayer,
-                peculiarNotWinners, // 上記に含まれないクルー勝利除外役職
-            });
-        */
-
         notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
             RoleClass.Madmate.MadmatePlayer,
             RoleClass.Jackal.JackalPlayer,

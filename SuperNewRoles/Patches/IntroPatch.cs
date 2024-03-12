@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-[HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
+/*[HarmonyPatch(typeof(AprilFoolsMode), nameof(AprilFoolsMode.ShouldHorseAround))]
 public static class ShouldAlwaysHorseAround
 {
     public static bool isHorseMode;
@@ -31,7 +31,7 @@ public static class ShouldAlwaysHorseAround
         }
         return;
     }
-}
+}*/
 [HarmonyPatch]
 public class IntroPatch
 {
@@ -87,7 +87,7 @@ public class IntroPatch
             PlayerData<bool> TaskPlayers = new(defaultvalue: false);
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                TaskPlayers[player] = player.IsClearTask(IsUseFirst:false);
+                TaskPlayers[player] = player.IsClearTask(IsUseFirst: false);
             }
             TaskCount.IsClearTaskPlayer = TaskPlayers;
             foreach (PlayerControl player in BotManager.AllBots)

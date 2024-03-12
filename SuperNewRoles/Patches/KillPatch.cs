@@ -738,9 +738,6 @@ public static class MurderPlayerPatch
         // |:===== 以下targetが生存している場合には発生させない処理 =====:|
         if (target.IsAlive()) return;
 
-        target.RpcSetPet("peet_EmptyPet");
-        Logger.Info($"{target.name}が死亡した為, Petを外しました。");
-
         Logger.Info("死亡者リストに追加");
 
         DeadPlayer.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);

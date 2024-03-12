@@ -48,8 +48,8 @@ class ControllerManagerUpdatePatch
     {
         if (source != null)
         {
-            Logger.Info(source.time.ToString(),"a");
-            Logger.Info(source.timeSamples.ToString(),"b");
+            Logger.Info(source.time.ToString(), "a");
+            Logger.Info(source.timeSamples.ToString(), "b");
         }
         //解像度変更
         if (Input.GetKeyDown(KeyCode.F9))
@@ -117,6 +117,8 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
+                CustomSpores.AddMushroom(PlayerControl.LocalPlayer.transform.position);
+                return;
                 source = SoundManager.Instance.PlaySound(ContentManager.GetContent<AudioClip>("Sauner_SaunaBGM.wav"), true);
                 return;
                 HudManager.Instance.ShowPopUp("スマソ。無理やわ。");

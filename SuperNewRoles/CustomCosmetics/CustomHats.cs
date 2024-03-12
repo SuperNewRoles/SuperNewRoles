@@ -569,6 +569,7 @@ public class CustomHatLoader
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
             { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
             { "https://raw.githubusercontent.com/catudon1276/Mememura-Hats/main", "MememuraByCatudon" },
+            { "https://raw.githubusercontent.com/catudon1276/CatudonCostume/main", "CatudonCostume" },
         };
 
     public static List<string> CachedRepos = new();

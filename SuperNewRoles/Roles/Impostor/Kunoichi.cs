@@ -40,7 +40,7 @@ internal static class Kunoichi
     public static void KillButtonClick()
     {
         if (!RoleClass.Kunoichi.Kunai.kunai.active) return;
-        if (!RoleClass.Kunoichi.HideKunai && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(CachedPlayer.LocalPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[CachedPlayer.LocalPlayer.PlayerId]) return;
+        if (!RoleClass.Kunoichi.HideKunai && RoleClass.Kunoichi.IsScientistPlayers.ContainsKey(CachedPlayer.LocalPlayer.PlayerId) && GameData.Instance && RoleClass.Kunoichi.IsScientistPlayers[CachedPlayer.LocalPlayer.PlayerId]) return;
         PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Kunoichi.KillCoolTime, RoleClass.Kunoichi.KillCoolTime);
         RoleClass.Kunoichi.SendKunai = RoleClass.Kunoichi.Kunai;
         RoleClass.Kunoichi.Kunai = new Kunai();
@@ -232,7 +232,7 @@ internal static class Kunoichi
         RoleClass.Kunoichi.StopTime = 0;
         foreach (PlayerControl p in RoleClass.Kunoichi.KunoichiPlayer)
         {
-            RoleClass.NiceScientist.IsScientistPlayers[p.PlayerId] = false;
+            RoleClass.Kunoichi.IsScientistPlayers[p.PlayerId] = false;
         }
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
@@ -246,7 +246,7 @@ internal static class Kunoichi
             {
                 var Scientist = __instance.myPlayer;
                 if (Scientist == null || Scientist.IsDead()) return;
-                var ison = RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[__instance.myPlayer.PlayerId];
+                var ison = RoleClass.Kunoichi.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.Kunoichi.IsScientistPlayers[__instance.myPlayer.PlayerId];
                 bool canSee = !ison || PlayerControl.LocalPlayer.IsDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
 
                 var opacity = canSee ? 0.1f : 0.0f;

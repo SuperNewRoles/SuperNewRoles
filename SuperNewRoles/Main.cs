@@ -13,16 +13,16 @@ using Il2CppInterop.Runtime.Injection;
 using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.MapCustoms;
-using SuperNewRoles.SuperNewRolesWeb;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.CrewMate;
-using SuperNewRoles.Roles.Attribute;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.SuperNewRolesWeb;
+using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.Role;
-using SuperNewRoles.WaveCannonObj;
 
 namespace SuperNewRoles;
 
@@ -169,6 +169,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<SpiderTrap>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
+        ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
     }
     static bool ViewdNonVersion = false;
     public static void SetNonVanilaVersionPatch()
@@ -222,7 +223,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             ViewdNonVersion = true;
         }
     }
-    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    // [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
     class GetBroadcastVersionPatch
     {
         public static void Postfix(ref int __result)
@@ -232,7 +233,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             __result += 25;
         }
     }
-    [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
+    // [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
     public static class ConstantsVersionModdedPatch
     {
         public static bool Prefix(ref bool __result)
