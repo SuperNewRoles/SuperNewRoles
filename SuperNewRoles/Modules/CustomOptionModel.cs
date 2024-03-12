@@ -1051,7 +1051,7 @@ static class GameOptionsMenuUpdatePatch
         return option.isHidden
             || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) // SHRモード時, SHR未対応の設定を隠す処理。
             || IsHaveSealingOption && !IsAlreadyRelease(option) // 解放条件が時間に依存する設定の 封印及び開放処理
-            || (ModeHandler.IsSealMoadOption && !ModHelpers.IsCustomServer() && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
+            || (ModeHandler.EnableModeSealing && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
 
     /// <summary>

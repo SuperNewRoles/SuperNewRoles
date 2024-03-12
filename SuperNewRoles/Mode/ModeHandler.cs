@@ -102,7 +102,11 @@ public static class ModeHandler
 
     /// <summary>Mode設定を封印するか</summary>
     /// <value>true : 封印する, false : 封印しない</value>
-    public const bool IsSealMoadOption = false;
+    private const bool isSealModeOption = false;
+
+    /// <summary>Modeの封印処理が有効か (外部取得 及び カスタムサーバ使用下における封印処理の除外)</summary>
+    /// <returns>true : 有効(封印する) / false : 無効(封印しない)</returns>
+    public static bool EnableModeSealing => isSealModeOption && !ModHelpers.IsCustomServer();
 
     public static CustomOptionBlank Mode;
     public static CustomOption ModeSetting;
@@ -179,7 +183,7 @@ public static class ModeHandler
     public static ModeId GetMode(bool IsChache = true)
     {
         if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
-        if (IsSealMoadOption && !ModHelpers.IsCustomServer()) return ModeId.Default; // Modeの封印処理が有効な時, 強制で通常モードにする
+        if (EnableModeSealing) return ModeId.Default; // Modeの封印処理が有効な時, 強制で通常モードにする
         if (IsChache) return thisMode;
         foreach (ModeId id in Enum.GetValues(typeof(ModeId)))
             if (IsMode(id, false)) return id;
@@ -224,7 +228,7 @@ public static class ModeHandler
             return mode is ModeId.Default;
 
         // Mod Mode
-        if (IsSealMoadOption && !ModHelpers.IsCustomServer()) // Modeの封印処理が有効な時, 強制で通常モードと判定する。
+        if (EnableModeSealing) // Modeの封印処理が有効な時, 強制で通常モードと判定する。
             return mode is ModeId.Default;
         if (mode is ModeId.HideAndSeek && IsChache)
             return IsMode(ModeId.HideAndSeek, false);
