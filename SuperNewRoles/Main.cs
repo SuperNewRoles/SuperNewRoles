@@ -9,6 +9,7 @@ using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Hazel;
 using Il2CppInterop.Runtime.Injection;
 using InnerNet;
 using SuperNewRoles.CustomObject;
@@ -181,7 +182,21 @@ public partial class SuperNewRolesPlugin : BasePlugin
             SuperNewRolesPlugin.Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
         }
     }
-
+    // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
+    [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]
+    public static class AuthManagerCoConnectPatch
+    {
+        public static bool Prefix(AuthManager __instance)
+        {
+            if (!ModHelpers.IsCustomServer() ||
+                FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Servers.Any(x => x.UseDtls))
+                return true;
+            if (__instance.connection != null)
+                __instance.connection.Dispose();
+            __instance.connection = null;
+            return false;
+        }
+    }
     public static void MainMenuVersionCheckPatch(MainMenuManager __instance)
     {
         if (SupportVanilaVersion != null && !SupportVanilaVersion.Contains(Application.version) && !ViewdNonVersion)
