@@ -360,8 +360,9 @@ MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
 ReportDeadBodySetting,Emergency meeting and report setting,緊急会議と通報の設定
 HaveFirstEmergencyCooldown,Change emergency button cooldown until deaths occur?,死者が出るまで緊急ボタンクールダウンを変更する
 FirstEmergencyCooldownSetting,Emergency button cool down after change,変更後の緊急ボタンクールダウン
+IsLimitEmergencyMeeting,Limit the number of times an emergency meeting can be used.,緊急会議を使用できる回数を制限する
+EmergencyMeetingLimitCount,Emergency meeting Overall available times,緊急会議 全体使用可能回数
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告
-NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,禁用召開緊急會議
 DeviceOptionsSetting,Information Device Options,情報機器制限の設定,飞船设备设置,情報獲取裝置限制使用設定
 CanUseDeviceSetting,<color=#00e000>On</color>/<color=#949495>Off</color> setting.,使用<color=#00e000>可能</color>/<color=#949495>不可能</color> の設定,<color=#00e000>启用</color>/<color=#949495>禁用</color>设置,<color=#00e000>可以</color>/<color=#949495>不行</color>使用設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图,可以觀看管理員地圖
@@ -423,6 +424,16 @@ FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
 FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
 FinalStatusSantaSelf,Santa bomb!,ソリから転落,送错礼物,聖誕炸彈
+
+# MeetingStatus
+MeetingStatusCanNotCallEmergencyMeeting,EMERGENCY MEETINGS CANNOT\nBE OPENED DUE TO SETTINGS,緊急会議は\n設定により開けない
+MeetingStatusPersonalEmergencyCount,CREWMEMBERS {0} HAS {1} EMERGENCY MEETINGS LEFT,クルー {0} が持つ 緊急会議残り {1} 回
+MeetingStatusAllEmergencyCount,ALL CREWMEMBERS HAS {0} EMERGENCY MEETINGS LEFT,クルー全体が持つ 緊急会議残り {0} 回
+MeetingStatusUpperLimitReached,EMERGENCY MEETINGS CANNOT\nBE UESD BECAUSE LIMIT COUNT,緊急会議は\n全体の使用可能回数に達した
+SHRMeetingStatusAnnounceYourOnry,This information is sent only to those who requested an emergency meeting.,この情報は、緊急会議を要請した者のみに送信されています。
+SHRMeetingStatusEnableLimitSetting,A setting that limits the overall number of times an emergency meeting can be held is effective.,緊急会議を行える回数を，全体で制限する設定が有効です。
+SHRMeetingStatusMeetingsCallMaxCount,Crew member can use up to {0} emergency meetings.,クルー全体で 緊急会議を最大で {0}回 使用可能です。
+SHRMeetingStatusNotUseButton,After the next turn，if the Convene button is used，\nthe message "EMERGENCY MEETING REQUESTED WAITTING FOR HOST" will be displayed\nand the transition to the meeting will not take place.\n\nThis is a normal behavior because the host has rejected the emergency conference request.\nIf this occurs，please leave the button screen.,次ターン以降に，招集ボタンを使用すると，\n「緊急会議を要請しました ホストを待っています」と表示されて，\n会議に遷移しない状態になります。\n\nこれはホストに緊急会議の要請を却下されている為に発生している状態であり，正常な挙動です。\n発生した場合は，ボタン画面から離脱して下さい。
 
 # Sabotages
 SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定

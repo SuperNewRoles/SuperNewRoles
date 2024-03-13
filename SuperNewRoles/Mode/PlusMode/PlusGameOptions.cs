@@ -23,6 +23,9 @@ class PlusGameOptions
     public static CustomOption ReportDeadBodySetting;
     public static CustomOption HaveFirstEmergencyCooldownSetting;
     public static CustomOption FirstEmergencyCooldownSetting;
+    public static CustomOption IsLimitEmergencyMeeting;
+    public static CustomOption EmergencyMeetingLimitCount;
+    public static CustomOption NotUseReportDeadBody;
 
     public static CustomOption NoTaskWinModeSetting;
 
@@ -35,8 +38,6 @@ class PlusGameOptions
     public static CustomOption ZoomDurationTime;
 
     public static CustomOption NoSabotageModeSetting;
-    public static CustomOption NotUseReportDeadBody;
-    public static CustomOption NotUseMeetingButton;
 
     public static void Load()
     {
@@ -58,6 +59,9 @@ class PlusGameOptions
         ReportDeadBodySetting = Create(105100, true, CustomOptionType.Generic, "ReportDeadBodySetting", false, PlusGameOptionSetting, isHeader: true);
         HaveFirstEmergencyCooldownSetting = Create(105104, true, CustomOptionType.Generic, "HaveFirstEmergencyCooldown", false, ReportDeadBodySetting);
         FirstEmergencyCooldownSetting = Create(105105, true, CustomOptionType.Generic, "FirstEmergencyCooldownSetting", 30, 0, 120, 5, HaveFirstEmergencyCooldownSetting);
+        IsLimitEmergencyMeeting = Create(105101, true, CustomOptionType.Generic, "IsLimitEmergencyMeeting", false, ReportDeadBodySetting);
+        EmergencyMeetingLimitCount = Create(105102, true, CustomOptionType.Generic, "EmergencyMeetingLimitCount", 10, 0, 20, 1, IsLimitEmergencyMeeting);
+        NotUseReportDeadBody = Create(105103, true, CustomOptionType.Generic, "NotUseReportSetting", false, ReportDeadBodySetting);
 
         IsChangeTheWinCondition = Create(104100, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, PlusGameOptionSetting, isHeader: true);
 
@@ -68,18 +72,20 @@ class PlusGameOptions
         ZoomDurationTime = Create(104204, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 0f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
         NoSabotageModeSetting = Create(104300, true, CustomOptionType.Generic, "SettingNoSabotageMode", false, PlusGameOptionSetting, isHeader: true);
-        NotUseReportDeadBody = Create(104301, true, CustomOptionType.Generic, "NotUseReportSetting", false, PlusGameOptionSetting);
-        NotUseMeetingButton = Create(104302, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, PlusGameOptionSetting);
     }
 
     public static bool UseDeadBodyReport;
-    public static bool UseMeetingButton;
 
     public static bool IsGhostSeeVote;
     public static bool IsNotGhostHaveHaunt;
     public static bool IsReleasingHauntAfterCompleteTasks;
 
     // 会議関連
+    /// <summary>会議回数制限</summary>
+    /// <param name="enabledSetting">緊急招集を使用可能か</param>
+    /// <param name="maxCount">最大緊急招集可能回数</param>
+    public static (bool enabledSetting, byte maxCount) EmergencyMeetingsCallstate { get; private set; }
+
     /// <summary> 設定 : "死者が出るまで緊急ボタンクールダウンを変更する" が有効か</summary>
     public static bool EnableFirstEmergencyCooldown =>
         PlusGameOptionSetting.GetBool() &&
@@ -98,9 +104,19 @@ class PlusGameOptions
     {
         if (PlusGameOptionSetting.GetBool())
         {
-            UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
-            UseMeetingButton = !NotUseMeetingButton.GetBool();
+            if (ReportDeadBodySetting.GetBool())
+            {
+                bool enabledSetting = !(IsLimitEmergencyMeeting.GetBool() && EmergencyMeetingLimitCount.GetInt() == 0);
+                byte maxCount = !enabledSetting ? byte.MinValue : !IsLimitEmergencyMeeting.GetBool() ? byte.MaxValue : (byte)EmergencyMeetingLimitCount.GetInt();
 
+                EmergencyMeetingsCallstate = (enabledSetting, maxCount);
+                UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
+            }
+            else
+            {
+                EmergencyMeetingsCallstate = (true, byte.MaxValue);
+                UseDeadBodyReport = true;
+            }
             IsGhostSeeVote = CanGhostSeeVote.GetBool();
 
             IsNotGhostHaveHaunt = CanNotGhostHaveHaunt.GetBool();
@@ -112,8 +128,8 @@ class PlusGameOptions
         }
         else
         {
+            EmergencyMeetingsCallstate = (true, byte.MaxValue);
             UseDeadBodyReport = true;
-            UseMeetingButton = true;
 
             IsGhostSeeVote = true;
 
