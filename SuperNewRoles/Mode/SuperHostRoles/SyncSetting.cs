@@ -30,6 +30,13 @@ public static class SyncSetting
             blackout = system != null && system.IsActive;
         }
 
+        if (PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
+        {
+            // 緊急会議のクールタイムの設定取得&送信は別の場所で行い, 此処では, Default設定に上書きされない様 既に設定されている緊急会議クールを再取得&送信している。
+            // (別場所で行っている理由 : SyncSettingで送信するとShipStatus.Instance.EmergencyCooldownへの代入が間に合わない & 追放による死亡が判定できない為)
+            int emergencyCooldown = OptionDatas[player].DeepCopy().GetInt(Int32OptionNames.EmergencyCooldown);
+            optdata.SetInt(Int32OptionNames.EmergencyCooldown, emergencyCooldown);
+        }
         if (player.IsCrewVision())
         {
             optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));

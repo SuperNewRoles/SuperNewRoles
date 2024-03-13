@@ -215,10 +215,16 @@ public static class ExilePlayerPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
 class ReportDeadBodyPatch
 {
-    public static byte MeetingTurn_Now { get; private set; }
+    /// <summary>
+    /// 会議が開かれた回数を記録する
+    /// </summary>
+    /// <param name="allTurn">全体会議回数</param>
+    /// <param name="emergency">緊急招集による会議回数</param>
+    /// <param name="report">死体通報による会議回数</param>
+    public static (byte all, byte emergency, byte report) MeetingCount { get; private set; }
     public static void ClearAndReloads()
     {
-        MeetingTurn_Now = 0;
+        MeetingCount = (0, 0, 0);
     }
 
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
@@ -303,28 +309,42 @@ class ReportDeadBodyPatch
         }
         return RoleClass.Assassin.TriggerPlayer == null
         && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
-        && (Mode.PlusMode.PlusGameOptions.UseMeetingButton || target != null)
+        && (Mode.PlusMode.PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting || target != null)
         && !ModeHandler.IsMode(ModeId.BattleRoyal, ModeId.PantsRoyal)
         && !ModeHandler.IsMode(ModeId.CopsRobbers)
-&& (ModeHandler.IsMode(ModeId.SuperHostRoles)
+        && (ModeHandler.IsMode(ModeId.SuperHostRoles)
             ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
             : !ModeHandler.IsMode(ModeId.Zombie)
             && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId));
     }
 
-    public static void Postfix()
+    public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
     {
         if (!AmongUsClient.Instance.AmHost) return; // ホスト以外此処は読まないが, バニラ側の使用が変更された時に問題が起きないように ホスト以外はreturnする。
-        MeetingTurn_Now++;
 
-        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SendMeetingTurnNow);
-        writer.Write(MeetingTurn_Now);
+        var targetId = target != null ? target.Object.PlayerId : byte.MaxValue;
+
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SendMeetingCount);
+        writer.Write(targetId);
         writer.EndRPC();
+        SaveMeetingCount(targetId);
+
+        EmergencyMinigamePatch.SHRMeetingStatusAnnounce.EmergencyCount(__instance); // ReportDeadBody.ReportDeadBodyPatchで実行すると 2回読まれてしまう為ここで呼ぶ。
 
         PoliceSurgeon_AddActualDeathTime.ReportDeadBody_Postfix();
     }
 
-    public static void SaveMeetingTurnNow(byte nowTurn) => MeetingTurn_Now = nowTurn;
+    public static void SaveMeetingCount(byte targetId)
+    {
+        var target = PlayerById(targetId);
+        var count = MeetingCount;
+
+        count.all++;
+        if (target == null) count.emergency++;
+        else count.report++;
+
+        MeetingCount = count;
+    }
 }
 public static class PlayerControlFixedUpdatePatch
 {
