@@ -776,7 +776,16 @@ class MeetingHudStartPatch
             {
                 SyncSetting.CustomSyncSettings();
                 SyncSetting.MeetingSyncSettings();
-                if (CustomOptionHolder.SendYourRoleAllTurn.GetBool() || !RoleClass.IsFirstMeetingEnd) RoleinformationText.YourRoleInfoSendCommand();
+                if (!RoleClass.IsFirstMeetingEnd)
+                {
+                    RoleinformationText.YourRoleInfoSendCommand();
+                    EmergencyMinigamePatch.SHRMeetingStatusAnnounce.MakeSettingKnown();
+                }
+                else
+                {
+                    if (CustomOptionHolder.SendYourRoleAllTurn.GetBool()) { RoleinformationText.YourRoleInfoSendCommand(); }
+                    EmergencyMinigamePatch.SHRMeetingStatusAnnounce.LimitAnnounce();
+                }
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         if (ModeHandler.IsMode(ModeId.Default))
