@@ -91,6 +91,13 @@ class ControllerManagerUpdatePatch
             {
                 if (MeetingHud.Instance != null)
                 {
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    {
+                        // 会議強制スキップを行うと, CheckForEndVotingを通過しない為, 此処で呼び出し
+                        if (Mode.PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
+                            EmergencyMinigamePatch.FirstEmergencyCooldown.OnCheckForEndVotingNotMod(false);
+                    }
+
                     if (ModeHandler.IsMode(ModeId.BattleRoyal))
                         SelectRoleSystem.OnEndSetRole();
                     else

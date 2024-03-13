@@ -358,6 +358,8 @@ SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船�
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点,固定重生點
 MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
 ReportDeadBodySetting,Emergency meeting and report setting,緊急会議と通報の設定
+HaveFirstEmergencyCooldown,Change emergency button cooldown until deaths occur?,死者が出るまで緊急ボタンクールダウンを変更する
+FirstEmergencyCooldownSetting,Emergency button cool down after change,変更後の緊急ボタンクールダウン
 IsLimitEmergencyMeeting,Limit the number of times an emergency meeting can be used.,緊急会議を使用できる回数を制限する
 EmergencyMeetingLimitCount,Emergency meeting Overall available times,緊急会議 全体使用可能回数
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告

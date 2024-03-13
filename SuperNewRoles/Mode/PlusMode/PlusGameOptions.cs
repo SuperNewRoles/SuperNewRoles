@@ -21,6 +21,8 @@ class PlusGameOptions
     public static CustomOption LadderDeadChance;
 
     public static CustomOption ReportDeadBodySetting;
+    public static CustomOption HaveFirstEmergencyCooldownSetting;
+    public static CustomOption FirstEmergencyCooldownSetting;
     public static CustomOption IsLimitEmergencyMeeting;
     public static CustomOption EmergencyMeetingLimitCount;
     public static CustomOption NotUseReportDeadBody;
@@ -55,6 +57,8 @@ class PlusGameOptions
         NoTaskWinModeSetting = Create(104000, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusGameOptionSetting, isHeader: true);
 
         ReportDeadBodySetting = Create(105100, true, CustomOptionType.Generic, "ReportDeadBodySetting", false, PlusGameOptionSetting, isHeader: true);
+        HaveFirstEmergencyCooldownSetting = Create(105104, true, CustomOptionType.Generic, "HaveFirstEmergencyCooldown", false, ReportDeadBodySetting);
+        FirstEmergencyCooldownSetting = Create(105105, true, CustomOptionType.Generic, "FirstEmergencyCooldownSetting", 30, 0, 120, 5, HaveFirstEmergencyCooldownSetting);
         IsLimitEmergencyMeeting = Create(105101, true, CustomOptionType.Generic, "IsLimitEmergencyMeeting", false, ReportDeadBodySetting);
         EmergencyMeetingLimitCount = Create(105102, true, CustomOptionType.Generic, "EmergencyMeetingLimitCount", 10, 0, 20, 1, IsLimitEmergencyMeeting);
         NotUseReportDeadBody = Create(105103, true, CustomOptionType.Generic, "NotUseReportSetting", false, ReportDeadBodySetting);
@@ -77,13 +81,15 @@ class PlusGameOptions
     public static bool IsReleasingHauntAfterCompleteTasks;
 
     // 会議関連
-
-    /// <summary>
-    /// 会議回数制限
-    /// </summary>
+    /// <summary>会議回数制限</summary>
     /// <param name="enabledSetting">緊急招集を使用可能か</param>
     /// <param name="maxCount">最大緊急招集可能回数</param>
     public static (bool enabledSetting, byte maxCount) EmergencyMeetingsCallstate { get; private set; }
+
+    /// <summary> 設定 : "死者が出るまで緊急ボタンクールダウンを変更する" が有効か</summary>
+    public static bool EnableFirstEmergencyCooldown =>
+        PlusGameOptionSetting.GetBool() &&
+        ReportDeadBodySetting.GetBool() && HaveFirstEmergencyCooldownSetting.GetBool();
 
     //千里眼・ズーム関連
     public static bool IsMouseZoom;
