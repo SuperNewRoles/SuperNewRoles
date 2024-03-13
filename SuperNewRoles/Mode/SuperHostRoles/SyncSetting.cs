@@ -303,6 +303,8 @@ public static class SyncSetting
         IGameOptions optdata = OptionDatas[player].DeepCopy();
 
         optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
+        Balancer.InHostMode.SetMeetingSettings(optdata);
+
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());
     }
