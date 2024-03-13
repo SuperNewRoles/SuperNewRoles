@@ -16,7 +16,8 @@ public class Observer : RoleBase, ICrewmate, ISupportSHR, IMeetingHandler
         new(127, 127, 127, byte.MaxValue),
         new(RoleId.Observer, TeamTag.Crewmate, RoleTag.Information),
         TeamRoleType.Crewmate,
-        TeamType.Crewmate
+        TeamType.Crewmate,
+        QuoteMod.TheOtherRolesGM
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.Observer, 403000, true,
