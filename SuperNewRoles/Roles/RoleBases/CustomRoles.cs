@@ -217,7 +217,10 @@ public static class CustomRoles
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
         if (roleInfo != null) return roleInfo.QuoteMod;
         else if (role == RoleId.DefaultRole) return QuoteMod.AmongUs;
-        else return IntroData.GetIntrodata(role, player)?.QuoteMod ?? QuoteMod.SuperNewRoles;
+
+        var intro = IntroData.GetIntrodata(role, player);
+        if (intro != IntroData.CrewmateIntro) return intro?.QuoteMod ?? QuoteMod.SuperNewRoles;
+        else return QuoteMod.SuperNewRoles; // 存在しないのにRoleIdがある役はSNR役扱いにする
     }
     public static bool IsGhostRole(RoleId role)
     {

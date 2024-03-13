@@ -110,5 +110,6 @@ public enum QuoteMod
     TheOtherRolesGMH,
     tomarai,
     TownOfUs,
+    TownOfUsR,
     Woodi_dev,
 }
