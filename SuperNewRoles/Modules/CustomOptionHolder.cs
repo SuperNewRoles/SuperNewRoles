@@ -2006,6 +2006,23 @@ public class CustomOptionHolder
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
 
         CheckOption();
+
+        /*
+        string OPTIONDATA = "{";
+        foreach (CustomOption opt in CustomOption.options)
+        {
+            OPTIONDATA += "\"" + opt.id.ToString() + "\":" + "{\"name\":\"" + opt.name + "\",\"selections\":[";
+            foreach (object selection in opt.selections)
+            {
+                OPTIONDATA += "\"" + selection.ToString() + "\",";
+            }
+            OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
+            OPTIONDATA += "]},";
+        }
+        OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
+        OPTIONDATA += "}";
+        GUIUtility.systemCopyBuffer = OPTIONDATA;
+        */
     }
 
     /// <summary>
@@ -2022,11 +2039,11 @@ public class CustomOptionHolder
     {
         Logger.Info("----------- CustomOption Info start -----------", "CustomOption");
 
-        if (GameOptionsMenuUpdatePatch.IsHaveSealingOption)
+        if (GameOptionsMenuUpdatePatch.HasSealingOption)
         {
             foreach (CustomOption option in CustomOption.options)
             {
-                if (!GameOptionsMenuUpdatePatch.HaveSealingCondition(option, out System.DateTime releaseDate)) continue;
+                if (!GameOptionsMenuUpdatePatch.TryGetSealingCondition(option, out System.DateTime releaseDate)) continue;
                 if (System.DateTime.UtcNow >= releaseDate) { Logger.Info($"解放済の封印処理が残っています。 CustomOption Id => {option.id}", "Sealing"); }
             }
         }
