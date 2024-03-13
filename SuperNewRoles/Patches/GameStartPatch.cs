@@ -11,19 +11,28 @@ class GameStartPatch
     public static bool lastPublic = false;
     public static float lastTimer;
 
+    /// <summary>公開部屋を封印するか</summary>
+    private const bool PublicSeal = false;
+
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
     class MakePublicPatch
     {
         public static bool Prefix(GameStartManager __instance)
         {
-            if (!AmongUsClient.Instance.AmHost) return true;
-            var HostVersion = ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[AmongUsClient.Instance.HostId].version; // HostのAmongUsVersion取得
-            var error = ModTranslation.GetString("PublicRoomError");
-            Logger.Error(error, "MakePublicPatch");
+            if (!AmongUsClient.Instance.AmHost || ModHelpers.IsCustomServer()) return true;
+            if (!PublicSeal) return true;
+
+            string HostAmongUSVer = $"{Application.version}({Constants.GetPurchasingPlatformType()})";
+            System.Version HostSNRVer = ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[AmongUsClient.Instance.HostId].version; // HostのSNRVersion取得
+
+            string reason = null; // 都度変える
+            string error = string.Format(ModTranslation.GetString("PublicRoomError"), HostAmongUSVer, HostSNRVer, reason == null ? ModTranslation.GetString("CheckOfficialInformation") : reason);
+
+            Logger.Error($"公開が無効に関わらず, 公開ボタンが押されました。", "MakePublicPatch");
             __instance.MakePublicButton.color = Palette.DisabledClear;
             __instance.privatePublicText.color = Palette.DisabledClear;
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, error);
 
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, error);
             return false;
         }
     }

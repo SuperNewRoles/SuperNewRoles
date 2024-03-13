@@ -64,7 +64,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string thisname;
     public static string ThisPluginModName;
     //対応しているバージョン。nullなら全て。
-    public static string[] SupportVanilaVersion = new string[] { "2023.11.28" };
+    public static string[] SupportVanilaVersion = new string[] { "2024.3.5" };
 
     public override void Load()
     {
@@ -238,17 +238,16 @@ public partial class SuperNewRolesPlugin : BasePlugin
             ViewdNonVersion = true;
         }
     }
-    // [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
     class GetBroadcastVersionPatch
     {
         public static void Postfix(ref int __result)
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
-            if (ModHelpers.IsCustomServer()) return;
             __result += 25;
         }
     }
-    // [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
+    [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
     public static class ConstantsVersionModdedPatch
     {
         public static bool Prefix(ref bool __result)
