@@ -8,6 +8,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
@@ -67,9 +68,10 @@ public class IntroData
     public string Description;
     public TeamRoleType Team;
     public TeamType TeamType;
+    public QuoteMod QuoteMod;
     public bool IsGhostRole;
     public RoleTypes IntroSound;
-    IntroData(string NameKey, Color color, Int16 TitleNum, RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, TeamType teamType = TeamType.Crewmate, bool IsGhostRole = false, RoleTypes IntroSound = RoleTypes.Crewmate)
+    IntroData(string NameKey, Color color, Int16 TitleNum, RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, TeamType teamType = TeamType.Crewmate,QuoteMod quoteMod = QuoteMod.SuperNewRoles, bool IsGhostRole = false, RoleTypes IntroSound = RoleTypes.Crewmate)
     {
         this.color = color;
         this.NameKey = NameKey;
@@ -82,6 +84,7 @@ public class IntroData
         if (teamType == TeamType.Crewmate && team == TeamRoleType.Crewmate) this.TeamType = TeamType.Crewmate;
         else if (teamType == TeamType.Crewmate && (int)team != (int)teamType) this.TeamType = (TeamType)team;
         else this.TeamType = teamType;
+        this.QuoteMod = quoteMod;
         this.IsGhostRole = IsGhostRole;
         this.IntroSound = IntroSound;
 

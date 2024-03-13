@@ -208,6 +208,17 @@ public static class CustomRoles
             return roleInfo.Team;
         return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.Team ?? TeamRoleType.Error;
     }
+    public static QuoteMod GetQuoteMod(PlayerControl player)
+    {
+        return GetQuoteMod(player.GetRole(), player);
+    }
+    public static QuoteMod GetQuoteMod(RoleId role, PlayerControl player = null)
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null) return roleInfo.QuoteMod;
+        else if (role == RoleId.DefaultRole) return QuoteMod.AmongUs;
+        else return IntroData.GetIntrodata(role, player)?.QuoteMod ?? QuoteMod.SuperNewRoles;
+    }
     public static bool IsGhostRole(RoleId role)
     {
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
