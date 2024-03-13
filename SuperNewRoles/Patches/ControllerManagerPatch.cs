@@ -186,7 +186,7 @@ class ControllerManagerUpdatePatch
                 foreach (RoleId role in Enum.GetValues(typeof(RoleId)))
                 {
                     Roles.Role.QuoteMod quoteMod = Roles.RoleBases.CustomRoles.GetQuoteMod(role);
-                    if (quoteMod != Roles.Role.QuoteMod.SuperNewRoles) Logger.Info($"{role}, 参考元 : {quoteMod}");
+                    if (quoteMod != Roles.Role.QuoteMod.SuperNewRoles) Logger.Info($"{role}, 参考元 : {quoteMod}", "QuoteMod Log");
                 }
             }
         }
