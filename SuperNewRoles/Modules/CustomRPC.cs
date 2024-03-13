@@ -59,6 +59,7 @@ public enum RoleId
     BlackSanta,
     MedicalTechnologist,
     NiceScientist,
+    Observer,
 
     //RoleId
 
@@ -131,7 +132,6 @@ public enum RoleId
     NiceTeleporter,
     Celebrity,
     Nocturnality,
-    Observer,
     Vampire,
     DarkKiller,
     Fox,

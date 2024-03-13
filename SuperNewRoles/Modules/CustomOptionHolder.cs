@@ -483,9 +483,6 @@ public class CustomOptionHolder
     public static CustomRoleOption NocturnalityOption;
     public static CustomOption NocturnalityPlayerCount;
 
-    public static CustomRoleOption ObserverOption;
-    public static CustomOption ObserverPlayerCount;
-
     public static CustomRoleOption VampireOption;
     public static CustomOption VampirePlayerCount;
     public static CustomOption VampireKillDelay;
@@ -1818,9 +1815,6 @@ public class CustomOptionHolder
         HamburgerShopCommonTask = HamburgerShopoption.Item1;
         HamburgerShopShortTask = HamburgerShopoption.Item2;
         HamburgerShopLongTask = HamburgerShopoption.Item3;
-
-        ObserverOption = SetupCustomRoleOption(403000, true, RoleId.Observer);
-        ObserverPlayerCount = Create(403001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ObserverOption);
 
         BaitOption = SetupCustomRoleOption(403100, true, RoleId.Bait);
         BaitPlayerCount = Create(403101, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
