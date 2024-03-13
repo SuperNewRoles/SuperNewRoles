@@ -1038,60 +1038,31 @@ static class GameOptionsMenuUpdatePatch
         };
     }
 
-    /// <summary>
-    /// 現在, 封印処理のある設定を有しているか。此処をtrueにする事で封印処理が実行される。
-    /// </summary>
-    /// <value>true : 有している / false : 有していない</value>
-    public const bool IsHaveSealingOption = false;
+    /// <summary>現在, 封印処理のある設定を有しているか ( 此処をtrueにする事で封印処理が実行される )</summary>
+    public const bool HasSealingOption = false;
 
     public static bool IsHidden(this CustomOption option)
     {
-        // 時間によって解放される, 封印処理を実行する場合 上記``IsHaveSealingOption``を trueにする
-
         return option.isHidden
             || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) // SHRモード時, SHR未対応の設定を隠す処理。
-            || IsHaveSealingOption && !IsAlreadyRelease(option) // 解放条件が時間に依存する設定の 封印及び開放処理
+            || HasSealingOption && IsSealingDatetimeControl(option) // 解放条件が時間に依存する設定の 封印及び開放処理
             || (ModeHandler.EnableModeSealing && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
 
-    /// <summary>
-    /// オプションが解放されてるか判定する。
-    /// </summary>
+    /// <summary>オプションが日時条件によって封印されているかを判定する。</summary>
     /// <param name="option">判定するオプション</param>
-    /// <returns>true : 解放されている / false : 解放されていない</returns>
-    private static bool IsAlreadyRelease(CustomOption option)
+    /// <returns>true : 封印されている / false : 封印されていない</returns>
+    private static bool IsSealingDatetimeControl(CustomOption option)
     {
-        if (!HaveSealingCondition(option, out DateTime releaseDate)) return true;
-        if (DateTime.UtcNow >= releaseDate) return true;
-        return false;
-    }
-    /// <summary>
-    /// オプションが封印条件を有しているか判定する。
-    /// オプションの封印条件を登録する。封印処理を実行する場合は``IsHaveSealingOption``もtrueにする。
-    /// </summary>
-    /// <param name="option">判定するオプション</param>
-    /// <param name="releaseDate">オプションの開放日時</param>
-    /// <returns>true : 封印条件を有する / false : 封印条件を有さない</returns>
-    internal static bool HaveSealingCondition(CustomOption option, out DateTime releaseDate)
-    {
-        releaseDate = DateTime.MinValue;
+        if (option.RoleId is RoleId.DefaultRole or RoleId.None) return false; // 役職以外はスキップ
+        if (RoleInfoManager.GetRoleInfo(option.RoleId) == null) return false; // GetOptionInfoでlogを出さない様 RoleBase未移行役は先にスキップする。
 
-        // if (option == 封印対象のCustomOption) { releaseDate = GetUtcTime(年, 月, 日, 時, 分, 秒); }
+        bool isHidden = false;
 
-        if (releaseDate == DateTime.MinValue) return false;
-        else return true;
-    }
+        OptionInfo optionInfo = OptionInfo.GetOptionInfo(option.RoleId);
+        if (optionInfo != null) { isHidden = optionInfo.IsHidden; }
 
-    /// <summary>
-    /// 与えられた日時(JST)を UTCに変換する
-    /// </summary>
-    private static DateTime GetUtcTime(int year, int month, int day, int hour, int minute, int second)
-    {
-        DateTime jst = new(year, month, day, hour, minute, second);
-        TimeSpan timeZone = new(0, 9, 0, 0);
-
-        DateTime utc = jst - timeZone;
-        return utc;
+        return isHidden;
     }
 
     public static void Postfix(GameOptionsMenu __instance)

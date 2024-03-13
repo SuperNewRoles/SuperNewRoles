@@ -2035,10 +2035,16 @@ public class CustomOptionHolder
 
         if (GameOptionsMenuUpdatePatch.HasSealingOption)
         {
-            foreach (CustomOption option in CustomOption.options)
+            foreach (CustomOption option in options)
             {
-                if (!GameOptionsMenuUpdatePatch.TryGetSealingCondition(option, out System.DateTime releaseDate)) continue;
-                if (System.DateTime.UtcNow >= releaseDate) { Logger.Info($"解放済の封印処理が残っています。 CustomOption Id => {option.id}", "Sealing"); }
+                if (option.RoleId is RoleId.DefaultRole or RoleId.None) continue; // 役職以外はスキップ
+                if (Roles.Role.RoleInfoManager.GetRoleInfo(option.RoleId) == null) continue; // GetOptionInfoでlogを出さない様 RoleBase未移行役は先にスキップする。
+
+                OptionInfo optionInfo = OptionInfo.GetOptionInfo(option.RoleId);
+                if (optionInfo == null) continue;
+                if (!optionInfo.HasSealingCondition || optionInfo.IsHidden) continue;
+
+                Logger.Info($"解放済の封印処理が残っています。 CustomOption Id => {option.id}", "Sealing");
             }
         }
 
