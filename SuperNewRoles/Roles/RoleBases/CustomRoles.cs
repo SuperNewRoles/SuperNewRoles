@@ -212,7 +212,7 @@ public static class CustomRoles
     {
         return GetQuoteMod(player.GetRole(), player);
     }
-    public static QuoteMod GetQuoteMod(RoleId role, PlayerControl player = null)
+    public static QuoteMod GetQuoteMod(RoleId role, PlayerControl player = null) // FIXME : Lovers(Woodi_dev様)は現在アイデア元を表示できていません。
     {
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
         if (roleInfo != null) return roleInfo.QuoteMod;
