@@ -54,6 +54,9 @@ class CastVotePatch
             case RoleId.Crook:
                 IsValidVote = Crook.Ability.InHostMode.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
                 break;
+            case RoleId.Balancer:
+                IsValidVote = Balancer.InHostMode.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
+                break;
         }
 
         if (IsValidVote) // 有効票であれば,
@@ -408,6 +411,10 @@ class CheckForEndVotingPatch
                             exile.RpcSetSkin("skin_None");
                         }
                     }, 5f, "Assissn Set Skin SHR");
+                }
+                if (Mode.PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
+                {
+                    EmergencyMinigamePatch.FirstEmergencyCooldown.OnCheckForEndVotingNotMod(exiledPlayer != null);
                 }
 
                 bool isBakeryAlive = Bakery.BakeryAlive(); // パン屋 生存判定
@@ -776,7 +783,17 @@ class MeetingHudStartPatch
             new LateTask(() =>
             {
                 SyncSetting.CustomSyncSettings();
-                if (CustomOptionHolder.SendYourRoleAllTurn.GetBool() || !RoleClass.IsFirstMeetingEnd) RoleinformationText.YourRoleInfoSendCommand();
+
+                if (!RoleClass.IsFirstMeetingEnd)
+                {
+                    RoleinformationText.YourRoleInfoSendCommand();
+                    EmergencyMinigamePatch.SHRMeetingStatusAnnounce.MakeSettingKnown();
+                }
+                else
+                {
+                    if (CustomOptionHolder.SendYourRoleAllTurn.GetBool()) { RoleinformationText.YourRoleInfoSendCommand(); }
+                    EmergencyMinigamePatch.SHRMeetingStatusAnnounce.LimitAnnounce();
+                }
             }, 3f, "StartMeeting CustomSyncSetting");
         }
 
@@ -795,6 +812,7 @@ class MeetingHudStartPatch
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Knight.ProtectedPlayer = null;
         Knight.GuardedPlayers = new();
+        Balancer.InHostMode.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
         {
             CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) =>

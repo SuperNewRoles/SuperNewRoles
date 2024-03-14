@@ -60,6 +60,18 @@ public class MapOption
     // |:========== 反転マップを有効化の設定 ==========:|
     public static CustomOption enableMirrorMap;
 
+    // |:========== 梯子クールダウンの設定 ==========:|
+    public static CustomOption LadderCoolChangeOption;
+    public static CustomOption LadderCoolTimeOption;
+    public static CustomOption LadderImpostorCoolChangeOption;
+    public static CustomOption LadderImpostorCoolTimeOption;
+
+    // |:========== ジップラインクールダウンの設定 ==========:|
+    public static CustomOption ZiplineCoolChangeOption;
+    public static CustomOption ZiplineCoolTimeOption;
+    public static CustomOption ZiplineImpostorCoolChangeOption;
+    public static CustomOption ZiplineImpostorCoolTimeOption;
+
     // |:========== その他 ==========:|
     public static Dictionary<byte, PoolablePlayer> playerIcons = new();
 
@@ -114,6 +126,18 @@ public class MapOption
 
         // |:========== 反転マップ有効化の設定 ==========:|
         enableMirrorMap = Create(102700, false, CustomOptionType.Generic, "enableMirrorMap", false, MapOptionSetting, isHeader: true);
+
+        // |:========== 梯子クールダウンの設定 ==========:|
+        LadderCoolChangeOption = Create(105100, false, CustomOptionType.Generic, "LadderCoolChangeSetting", false, MapOptionSetting, isHeader: true);
+        LadderCoolTimeOption = Create(105101, false, CustomOptionType.Generic, "LadderCoolTimeSetting", 2.5f, 0f, 60f, 2.5f, LadderCoolChangeOption);
+        LadderImpostorCoolChangeOption = Create(105102, false, CustomOptionType.Generic, "LadderImpostorCoolChangeSetting", false, LadderCoolChangeOption);
+        LadderImpostorCoolTimeOption = Create(105103, false, CustomOptionType.Generic, "LadderImpostorCoolTimeSetting", 2.5f, 0f, 60f, 2.5f, LadderImpostorCoolChangeOption);
+
+        // |:========== 梯子クールダウンの設定 ==========:|
+        ZiplineCoolChangeOption = Create(105200, false, CustomOptionType.Generic, "ZiplineCoolChangeSetting", false, MapOptionSetting, isHeader: true);
+        ZiplineCoolTimeOption = Create(105201, false, CustomOptionType.Generic, "ZiplineCoolTimeSetting", 7.5f, 0f, 60f, 2.5f, ZiplineCoolChangeOption);
+        ZiplineImpostorCoolChangeOption = Create(105202, false, CustomOptionType.Generic, "ZiplineImpostorCoolChangeSetting", false, ZiplineCoolChangeOption);
+        ZiplineImpostorCoolTimeOption = Create(105203, false, CustomOptionType.Generic, "ZiplineImpostorCoolTimeSetting", 7.5f, 0f, 60f, 2.5f, ZiplineImpostorCoolChangeOption);
     }
 
     #region 設定取得に使用している変数の定義
@@ -146,6 +170,18 @@ public class MapOption
     // |:========== 変数:反転マップを有効にする ==========:|
     public static bool IsenableMirrorMap;
 
+    // |:========== 梯子クールダウンの設定 ==========:|
+    public static bool IsLadderCoolChange;
+    public static float LadderCoolTime;
+    public static bool IsLadderImpostorCoolChange;
+    public static float LadderImpostorCoolTime;
+
+    // |:========== 梯子クールダウンの設定 ==========:|
+    public static bool IsZiplineCoolChange;
+    public static float ZiplineCoolTime;
+    public static bool IsZiplineImpostorCoolChange;
+    public static float ZiplineImpostorCoolTime;
+
     // |:========== 変数:その他 ==========:|
     public static float Default;
     public static float CameraDefault;
@@ -175,6 +211,16 @@ public class MapOption
         ValidationAirship = true;
 
         IsenableMirrorMap = false;
+
+        IsLadderCoolChange = false;
+        LadderCoolTime = 5f;
+        IsLadderImpostorCoolChange = false;
+        LadderImpostorCoolTime = 5f;
+
+        IsZiplineCoolChange = false;
+        ZiplineCoolTime = 7.5f;
+        IsZiplineImpostorCoolChange = false;
+        ZiplineImpostorCoolTime = 7.5f;
 
         #endregion
 
@@ -226,6 +272,16 @@ public class MapOption
             }
 
             IsenableMirrorMap = enableMirrorMap.GetBool();
+
+            IsLadderCoolChange = LadderCoolChangeOption.GetBool();
+            LadderCoolTime = LadderCoolTimeOption.GetFloat();
+            IsLadderImpostorCoolChange = LadderImpostorCoolChangeOption.GetBool();
+            LadderImpostorCoolTime = LadderImpostorCoolTimeOption.GetFloat();
+
+            IsZiplineCoolChange = ZiplineCoolChangeOption.GetBool();
+            ZiplineCoolTime = ZiplineCoolTimeOption.GetFloat();
+            IsZiplineImpostorCoolChange = ZiplineImpostorCoolChangeOption.GetBool();
+            ZiplineImpostorCoolTime = ZiplineImpostorCoolTimeOption.GetFloat();
         }
         /*
             [MapOptionSetting.GetBool()]に早期returnを使用していない理由。
