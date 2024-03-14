@@ -760,7 +760,6 @@ class AllRoleSetClass
             RoleId.Matryoshka => CustomOptionHolder.MatryoshkaPlayerCount.GetInt(),
             RoleId.Nun => CustomOptionHolder.NunPlayerCount.GetInt(),
             RoleId.PartTimer => CustomOptionHolder.PartTimerPlayerCount.GetInt(),
-            RoleId.SatsumaAndImo => CustomOptionHolder.SatsumaAndImoPlayerCount.GetInt(),
             RoleId.Painter => CustomOptionHolder.PainterPlayerCount.GetInt(),
             RoleId.Psychometrist => CustomOptionHolder.PsychometristPlayerCount.GetInt(),
             RoleId.SeeThroughPerson => CustomOptionHolder.SeeThroughPersonPlayerCount.GetInt(),

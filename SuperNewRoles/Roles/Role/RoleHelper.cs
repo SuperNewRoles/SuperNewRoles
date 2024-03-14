@@ -68,7 +68,7 @@ public static class RoleHelpers
     /// <returns>プレイヤーがマッド役職である場合trueを返す</returns>
     public static bool IsMadRoles(this PlayerControl player) =>
         player.GetRoleBase() is IMadmate ||
-        (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
+        ((player.GetRoleBase<SatsumaAndImo>()?.TeamState ?? SatsumaAndImo.SatsumaTeam.Crewmate) == SatsumaAndImo.SatsumaTeam.Madmate) ||
         player.GetRole() is
         // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
         // RoleId.Dependents or [MadRoleとしての共通能力を持たない為記載しない]
@@ -737,9 +737,6 @@ public static class RoleHelpers
             case RoleId.ToiletFan:
                 RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                 break;
-            case RoleId.SatsumaAndImo:
-                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.Add(player);
-                break;
             case RoleId.EvilButtoner:
                 RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
                 break;
@@ -1301,9 +1298,6 @@ public static class RoleHelpers
                 break;
             case RoleId.ToiletFan:
                 RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.SatsumaAndImo:
-                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.EvilButtoner:
                 RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
@@ -1968,7 +1962,6 @@ public static class RoleHelpers
             else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
             else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
             else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
-            else if (RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.IsCheckListPlayerControl(player)) return RoleId.SatsumaAndImo;
             else if (RoleClass.EvilButtoner.EvilButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilButtoner;
             else if (RoleClass.NiceButtoner.NiceButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceButtoner;
             else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
