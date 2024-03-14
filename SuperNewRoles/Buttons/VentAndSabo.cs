@@ -122,6 +122,22 @@ public static class VentAndSabo
             float num = float.MaxValue;
             PlayerControl @object = pc.Object;
 
+            if (@object == null)
+            {
+                __result = 0f;
+                canUse = couldUse = true;
+                return true;
+            }
+            if (@object.inVent && Vent.currentVent != null && __instance != null)
+            {
+                if (Vent.currentVent.Id == __instance.Id)
+                {
+                    __result = 0f;
+                    canUse = couldUse = true;
+                    return false;
+                }
+            }
+
             bool roleCouldUse = @object.IsUseVent() || @object.IsRole(RoleId.OrientalShaman);
 
             var usableDistance = __instance.UsableDistance;
@@ -157,6 +173,10 @@ public static class VentAndSabo
                 if (Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50))
                 {
                     ImpostorVentButton.DoClick();
+                }
+                if (PlayerControl.LocalPlayer.inVent)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.SetTarget(Vent.currentVent);
                 }
             }
             else

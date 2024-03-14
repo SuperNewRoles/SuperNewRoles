@@ -208,6 +208,20 @@ public static class CustomRoles
             return roleInfo.Team;
         return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.Team ?? TeamRoleType.Error;
     }
+    public static QuoteMod GetQuoteMod(PlayerControl player)
+    {
+        return GetQuoteMod(player.GetRole(), player);
+    }
+    public static QuoteMod GetQuoteMod(RoleId role, PlayerControl player = null) // FIXME : Lovers(Woodi_dev様)は現在アイデア元を表示できていません。
+    {
+        RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
+        if (roleInfo != null) return roleInfo.QuoteMod;
+        else if (role == RoleId.DefaultRole) return QuoteMod.AmongUs;
+
+        var intro = IntroData.GetIntrodata(role, player);
+        if (intro != IntroData.CrewmateIntro) return intro?.QuoteMod ?? QuoteMod.SuperNewRoles;
+        else return QuoteMod.SuperNewRoles; // 存在しないのにRoleIdがある役はSNR役扱いにする
+    }
     public static bool IsGhostRole(RoleId role)
     {
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);

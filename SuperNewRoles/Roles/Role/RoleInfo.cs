@@ -15,6 +15,7 @@ public class RoleInfo
     public Color32 RoleColor { get; }
     public TeamRoleType Team { get; }
     public TeamType TeamType { get; }
+    public QuoteMod QuoteMod { get; }
     public bool IsGhostRole { get; }
 
     private RoleTags Tags;
@@ -27,7 +28,8 @@ public class RoleInfo
         Color32 roleColor,
         RoleTags tags,
         TeamRoleType team = TeamRoleType.Crewmate,
-        TeamType teamType = TeamType.Crewmate
+        TeamType teamType = TeamType.Crewmate,
+        QuoteMod quoteMod = QuoteMod.SuperNewRoles
         )
     {
         this.RoleObjectType = roleObjectType;
@@ -40,6 +42,7 @@ public class RoleInfo
         this.RoleColor = roleColor;
         this.TeamType = teamType;
         this.Tags = tags;
+        this.QuoteMod = quoteMod;
         RoleInfoManager.RoleInfos.Add(role, this);
     }
     public RoleBase CreateInstance(PlayerControl player)
@@ -89,4 +92,24 @@ public class RoleTags
         this.Tags = tag;
         this.TeamTag = teamtag;
     }
+}
+
+/// <summary>アイデア元及び移植元Mod (一部Mod名ではなく開発者様名)</summary>
+public enum QuoteMod
+{
+    AmongUs,
+
+    // 以下アルファベット順
+    aulibhaltnet,
+    ExtremeRoles,
+    Jester, // 能力はTOR由来の為, てるてるはTOR元扱いとする。
+    NebulaOnTheShip,
+    SuperNewRoles,
+    TheOtherRoles, // TORのクレジットで, Modにリンクが飛ばない役職はTOR元扱いにする。
+    TheOtherRolesGM,
+    TheOtherRolesGMH,
+    tomarai,
+    TownOfUs,
+    TownOfUsR,
+    Woodi_dev,
 }
