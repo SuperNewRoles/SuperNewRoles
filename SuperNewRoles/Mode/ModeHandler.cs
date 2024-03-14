@@ -35,8 +35,6 @@ public static class ModeHandler
     public static ModeId thisMode;
     public static void ClearAndReload()
     {
-        if (!ModHelpers.IsCustomServer()) ModeSetting.selection = 0; // FIXME : CustomServerでないなら 強制でDefaultモードに変更中
-
         PlusModeHandler.ClearAndReload();
         BattleRoyal.Main.ClearAndReload();
         if (IsMode(ModeId.BattleRoyal, false))
@@ -101,6 +99,15 @@ public static class ModeHandler
 
     public static string PlayingOnSuperNewRoles => $"Playing on {SuperNewRolesPlugin.ColorModName}";
 
+
+    /// <summary>Mode設定を封印するか</summary>
+    /// <value>true : 封印する, false : 封印しない</value>
+    private const bool isSealModeOption = true;
+
+    /// <summary>Modeの封印処理が有効か (外部取得 及び カスタムサーバ使用下における封印処理の除外)</summary>
+    /// <returns>true : 有効(封印する) / false : 無効(封印しない)</returns>
+    public static bool EnableModeSealing => isSealModeOption && !ModHelpers.IsCustomServer();
+
     public static CustomOptionBlank Mode;
     public static CustomOption ModeSetting;
     public static CustomOption ThisModeSetting;
@@ -139,7 +146,6 @@ public static class ModeHandler
     {
         Mode = new CustomOptionBlank(null);
         ModeSetting = CustomOption.Create(101200, true, CustomOptionType.Generic, Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting"), false, Mode, isHeader: true);
-        ModeSetting.selection = 0; // FIXME : 初回は強制でDefaultモードに変更中
         ThisModeSetting = CustomOption.Create(101300, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
         BattleRoyal.BROption.Load();
         Zombie.ZombieOptions.Load();
@@ -177,6 +183,7 @@ public static class ModeHandler
     public static ModeId GetMode(bool IsChache = true)
     {
         if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
+        if (EnableModeSealing) return ModeId.Default; // Modeの封印処理が有効な時, 強制で通常モードにする
         if (IsChache) return thisMode;
         foreach (ModeId id in Enum.GetValues(typeof(ModeId)))
             if (IsMode(id, false)) return id;
@@ -214,9 +221,14 @@ public static class ModeHandler
     }
     public static bool IsMode(ModeId mode, bool IsChache = true)
     {
+        // vanilla Mode
         if (mode is ModeId.VanillaHns)
             return GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek;
         if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || !PlayerControlHelper.IsMod(AmongUsClient.Instance.HostId))
+            return mode is ModeId.Default;
+
+        // Mod Mode
+        if (EnableModeSealing) // Modeの封印処理が有効な時, 強制で通常モードと判定する。
             return mode is ModeId.Default;
         if (mode is ModeId.HideAndSeek && IsChache)
             return IsMode(ModeId.HideAndSeek, false);

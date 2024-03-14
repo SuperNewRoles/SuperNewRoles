@@ -266,6 +266,10 @@ public static class SyncSetting
         }
 
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
+        optdata.SetBool(BoolOptionNames.AnonymousVotes, AnonymousVotes.GetAnonymousVotes(player));
+
+        Balancer.InHostMode.SetMeetingSettings(optdata); // [ ]
+
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());
         OptionDatas[player] = optdata.DeepCopy();
@@ -300,16 +304,6 @@ public static class SyncSetting
                 return;
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
-        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        else optdata.RpcSyncOption(player.GetClientId());
-    }
-
-    public static void MeetingSyncSettings(this PlayerControl player)
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        IGameOptions optdata = OptionDatas[player].DeepCopy();
-
-        optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());
     }
@@ -349,18 +343,6 @@ public static class SyncSetting
             {
                 CustomSyncSettings(p);
             }
-        }
-    }
-
-    /// <summary>
-    /// 開票処理をゲストに送信する準備
-    /// </summary>
-    public static void MeetingSyncSettings()
-    {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-        {
-            if (!p.Data.Disconnected && !p.IsBot())
-                MeetingSyncSettings(p);
         }
     }
 

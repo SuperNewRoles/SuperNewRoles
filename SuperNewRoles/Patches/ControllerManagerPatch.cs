@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -186,6 +187,14 @@ class ControllerManagerUpdatePatch
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                foreach (RoleId role in Enum.GetValues(typeof(RoleId)))
+                {
+                    Roles.Role.QuoteMod quoteMod = Roles.RoleBases.CustomRoles.GetQuoteMod(role);
+                    if (quoteMod != Roles.Role.QuoteMod.SuperNewRoles) Logger.Info($"{role}, 参考元 : {quoteMod}", "QuoteMod Log");
+                }
             }
         }
         // 以下フリープレイのみ
