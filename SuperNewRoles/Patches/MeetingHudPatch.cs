@@ -19,6 +19,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
@@ -52,6 +53,9 @@ class CastVotePatch
                 break;
             case RoleId.Crook:
                 IsValidVote = Crook.Ability.InHostMode.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
+                break;
+            case RoleId.Balancer:
+                IsValidVote = Balancer.InHostMode.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
                 break;
         }
 
@@ -407,6 +411,10 @@ class CheckForEndVotingPatch
                             exile.RpcSetSkin("skin_None");
                         }
                     }, 5f, "Assissn Set Skin SHR");
+                }
+                if (Mode.PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
+                {
+                    EmergencyMinigamePatch.FirstEmergencyCooldown.OnCheckForEndVotingNotMod(exiledPlayer != null);
                 }
 
                 bool isBakeryAlive = Bakery.BakeryAlive(); // パン屋 生存判定
@@ -775,17 +783,21 @@ class MeetingHudStartPatch
             new LateTask(() =>
             {
                 SyncSetting.CustomSyncSettings();
-                SyncSetting.MeetingSyncSettings();
-                if (CustomOptionHolder.SendYourRoleAllTurn.GetBool() || !RoleClass.IsFirstMeetingEnd) RoleinformationText.YourRoleInfoSendCommand();
+
+                if (!RoleClass.IsFirstMeetingEnd)
+                {
+                    RoleinformationText.YourRoleInfoSendCommand();
+                    EmergencyMinigamePatch.SHRMeetingStatusAnnounce.MakeSettingKnown();
+                }
+                else
+                {
+                    if (CustomOptionHolder.SendYourRoleAllTurn.GetBool()) { RoleinformationText.YourRoleInfoSendCommand(); }
+                    EmergencyMinigamePatch.SHRMeetingStatusAnnounce.LimitAnnounce();
+                }
             }, 3f, "StartMeeting CustomSyncSetting");
         }
-        if (ModeHandler.IsMode(ModeId.Default))
-        {
-            new LateTask(() =>
-            {
-                SyncSetting.MeetingSyncSettings();
-            }, 3f, "StartMeeting MeetingSyncSettings SNR");
-        }
+
+        AnonymousVotes.SetLocalAnonymousVotes();
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
@@ -800,6 +812,7 @@ class MeetingHudStartPatch
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Knight.ProtectedPlayer = null;
         Knight.GuardedPlayers = new();
+        Balancer.InHostMode.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
         {
             CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) =>
@@ -898,36 +911,53 @@ class MeetingHudStartPatch
     }
 }
 
-public static class OpenVotes
+/// <summary> 設定や, 役職による匿名投票の機能を制御する </summary>
+public static class AnonymousVotes
 {
-    /// <summary>
-    /// 公開投票にします。[Anonymous votes(匿名投票) / Open votes(公開投票)]
-    /// </summary>
-    /// <param name="player">設定送信先</param>
-    /// <returns> Anonymous votes => [true : 匿名投票 / false : 公開投票]</returns>
-    public static bool VoteSyncSetting(this PlayerControl player)
+    /// <summary> 匿名投票であるか取得する </summary>
+    /// <param name="player">取得対象のプレイヤー</param>
+    /// <returns> true : 匿名投票 / false : 公開投票</returns>
+    public static bool GetAnonymousVotes(this PlayerControl player)
     {
-        var role = player.GetRole();
-        var optdata = SyncSetting.DefaultOption.DeepCopy();
+        if (player == null || player.IsBot()) return GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.AnonymousVotes);
 
-        switch (role)
+        var isClosed = GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.AnonymousVotes); // 初期値をバニラ設定に
+
+        if (player.GetRoleBase() is IMeetingHandler meetingHandler) { isClosed = meetingHandler.EnableAnonymousVotes; }
+        else
         {
-            case RoleId.God:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
-                break;
-            case RoleId.Observer:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
-                break;
-            case RoleId.Marlin:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Marlin.IsVoteView);
-                break;
-            case RoleId.Assassin:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Assassin.IsVoteView);
-                break;
+            var role = player.GetRole();
+            switch (role)
+            {
+                case RoleId.God:
+                    isClosed = !RoleClass.God.IsVoteView;
+                    break;
+                case RoleId.Marlin:
+                    isClosed = !RoleClass.Marlin.IsVoteView;
+                    break;
+                case RoleId.Assassin:
+                    isClosed = !RoleClass.Assassin.IsVoteView;
+                    break;
+            }
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !Mode.PlusMode.PlusGameOptions.IsGhostSeeVote && optdata.GetBool(BoolOptionNames.AnonymousVotes));
-        Logger.Info("開票しました。", "OpenVotes");
-        return optdata.GetBool(BoolOptionNames.AnonymousVotes);
+
+        if (player.IsDead()) isClosed = !Mode.PlusMode.PlusGameOptions.IsGhostSeeVote && isClosed; // "見られない状態" より "見られる状態" を優先する
+        // 公開投票ならログを出力
+        if (!isClosed) Logger.Info($"公開投票 : {player.name}, (role = {player.GetRole()}, IsDead() = {player.IsDead()})", "OpenVotes");
+
+        return isClosed;
+    }
+
+    /// <summary>
+    /// 導入者個人で, 匿名投票であるかを設定に従い反映する。
+    /// </summary>
+    public static void SetLocalAnonymousVotes()
+    {
+        if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf)) return; // SHRモードでは, Hostが送信する。
+
+        var optData = SyncSetting.OptionDatas.Local.DeepCopy();
+        optData.SetBool(BoolOptionNames.AnonymousVotes, GetAnonymousVotes(PlayerControl.LocalPlayer));
+        GameManager.Instance.LogicOptions.SetGameOptions(optData);
     }
 }
 

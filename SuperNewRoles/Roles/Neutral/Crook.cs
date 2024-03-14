@@ -222,9 +222,9 @@ public static class Crook
         /// <param name="TargetId">保険が掛けられたプレイヤー</param>
         internal static void SaveSignDictionary(byte crookId, byte TargetId)
         {
-            if (SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now))
+            if (SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingCount.all))
             {
-                SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now][crookId] = TargetId;
+                SignDictionary[ReportDeadBodyPatch.MeetingCount.all][crookId] = TargetId;
             }
             else
             {
@@ -232,7 +232,7 @@ public static class Crook
                 {
                     { crookId, TargetId }
                 };
-                SignDictionary.Add(ReportDeadBodyPatch.MeetingTurn_Now, dic);
+                SignDictionary.Add(ReportDeadBodyPatch.MeetingCount.all, dic);
             }
 
             string announce = string.Format(ModTranslation.GetString("CrookInsuredChatAnnounce"), ModHelpers.GetPlayerControl(crookId).GetDefaultName(), ModHelpers.GetPlayerControl(TargetId).GetDefaultName());
@@ -256,7 +256,7 @@ public static class Crook
 
             ReceivedTheInsuranceDictionary = new();
 
-            var previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1); // 前回ターンのターン数
+            var previousTurn = (byte)(ReportDeadBodyPatch.MeetingCount.all - 1); // 前回ターンのターン数
 
             if (!SignDictionary.TryGetValue(previousTurn, out var signSituationOfNowTurnDic)) return; // 前回ターンの詐欺情報が保存されていなかったら以下を読まない。
 
@@ -307,7 +307,7 @@ public static class Crook
         {
             bool IsReceivedTheInsurance = false;
             StringBuilder announceBuilder = new();
-            byte previousTurn = (byte)(ReportDeadBodyPatch.MeetingTurn_Now - 1);
+            byte previousTurn = (byte)(ReportDeadBodyPatch.MeetingCount.all - 1);
 
             foreach (KeyValuePair<byte, byte> kvp in ReceivedTheInsuranceDictionary)
             {
@@ -540,12 +540,12 @@ public static class Crook
                     IsAllladyCountdownToSecond.TryGetValue(crook.PlayerId, out bool isAllladyCountdown); // この秒数は既にカウントしているか?
 
                     // 以下順番前後変更禁止
-                    if (!isAllladyCountdown && !SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now)) // 今回の会議の保険契約情報が, 誰一人保存されていないなら
+                    if (!isAllladyCountdown && !SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingCount.all)) // 今回の会議の保険契約情報が, 誰一人保存されていないなら
                     {
                         IsAllladyCountdownToSecond[crook.PlayerId] = true;
                         AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
                     }
-                    else if (!isAllladyCountdown && !SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now].ContainsKey(crook.PlayerId)) // 特定の詐欺師の, 今回の会議の保険契約情報が保存されていないなら
+                    else if (!isAllladyCountdown && !SignDictionary[ReportDeadBodyPatch.MeetingCount.all].ContainsKey(crook.PlayerId)) // 特定の詐欺師の, 今回の会議の保険契約情報が保存されていないなら
                     {
                         IsAllladyCountdownToSecond[crook.PlayerId] = true;
                         AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
@@ -567,7 +567,7 @@ public static class Crook
             {
                 if (!(ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)) return true;
                 if (targetId is 252 or 253/*スキップ*/ or 254/*無投票*/ or 255/*未投票*/) return true; // スキップ系統なら 時間判定を行わず 有効票を返す。
-                if (SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now) && SignDictionary[ReportDeadBodyPatch.MeetingTurn_Now].ContainsKey(crookId)) return true; // 既に契約させているなら 時間判定を行わず 有効票を返す。
+                if (SignDictionary.ContainsKey(ReportDeadBodyPatch.MeetingCount.all) && SignDictionary[ReportDeadBodyPatch.MeetingCount.all].ContainsKey(crookId)) return true; // 既に契約させているなら 時間判定を行わず 有効票を返す。
 
                 if (!IsTimeToNullTheVote) // 投票無効化時間でないならば,
                 {

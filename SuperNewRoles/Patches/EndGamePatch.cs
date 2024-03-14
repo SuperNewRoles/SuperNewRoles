@@ -951,7 +951,10 @@ public static class OnGameEndPatch
         isReset = false;
         foreach (PlayerControl player in RoleClass.God.GodPlayer)
         {
-            if (player.IsAlive())
+            if (player.IsDead())
+                continue;
+            var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
+            if (!RoleClass.God.IsTaskEndWin || Complete >= all)
             {
                 if (!((isDleted && changeTheWinCondition) || isReset))
                 {
@@ -959,12 +962,8 @@ public static class OnGameEndPatch
                     isDleted = true;
                     isReset = true;
                 }
-                var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
-                if (!RoleClass.God.IsTaskEndWin || Complete >= all)
-                {
-                    TempData.winners.Add(new(player.Data));
-                    AdditionalTempData.winCondition = WinCondition.GodWin;
-                }
+                TempData.winners.Add(new(player.Data));
+                AdditionalTempData.winCondition = WinCondition.GodWin;
             }
         }
         isReset = false;
