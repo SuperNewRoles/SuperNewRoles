@@ -48,8 +48,6 @@ DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者,開
 Analytics,Analytics,解析,解析,解析
 AnalyticsText,In order to make SuperNewRoles an even better mod， we have created a function to send information about positions used to the server. \nThis information can be viewed by SuperNewRoles developers. See the following page for more information. \nYou can change in the settings whether you want to save the information. \nNo personally identifiable elements， such as your player name， will be sent. \n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,为了改善模组玩家的游戏体验，\n制作组尝试推出将一局游戏中的职业等信息发送给制作组服务器的功能。\n制作组将查阅这些信息来改进本模组；详细可点击最下方网址查看。\n您可以决定自己是否要保留这些信息；\n制作组承诺不会将您的游戏昵称等私人信息发送至服务器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,為了改善遊玩本模組玩家的遊戲體驗，\n製作組推出將遊戲中的職業等資訊傳送給製作組的功能。\n製作組將可查閱這些資訊來改進本模組；詳細可點擊最下方網址查看。\n您可以決定自己是否要保留這些資訊；\n製作組承諾不會將您的遊戲暱稱等個人資料傳送到伺服器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>
 AnalyticsOK,OK!,了解！,确认,確認！
-ZanteiTitle,This version is a tentative fix.,このバージョンは暫定修正版です。
-ZanteiText,A server glitch that suddenly appeared before us...\nWhy? How could this happen?\nWe have no choice，we have to get things working again...\n\nSo，we've managed to fix the vanilla server problem that has been occurring since the 2024.3.5 version.\nThis is the version that somehow made it work properly.\nHoweverthe following functions are not available on the vanilla server.\n・Public rooms (you can't make a room public)\n・Mode change including SHR mode (You can only play in the default mode.)\n・Some positions and commands that use chat.\n・Various other things (see v2.2.0.1 release notes for details)\n\nThis limitation is almost non-existent for custom servers. (Some of them are affected.)\nWe have started offering SuperNewRoles official custom servers and we recommend you to use them.\nYou can use it by selecting "SuperNewRoles Tokyo" from the Online -> lower right mark.\nHowever，we have confirmed a phenomenon where the ping is displayed at about 200 in some environments.\n(Usually it is about 10 to 30 depending on the environment.)\nWe are investigating the issue，so please play without worrying about it.\n(It seems that the lag is not that noticeable.)\n\n\nThat is all. Thank you for your understanding.\nPlease follow us on Twitter (@SNROfficials) for further updates.,私達の前に突如現れた、サーバーの不具合...\nなぜだ？なぜこんなことが？\n仕方がない、一旦正常に動作するようにしなければ...\n\nという訳で2024.3.5バージョンから発生しているバニラサーバー側の不具合を\nどうにか正常に動作するようにしたバージョンです。\nただし、以下の機能はバニラサーバーの場合使用できません。\n・公開部屋(部屋を公開にしようとしてもできません)\n・SHRモードを含むモード変更(デフォルトモードでのみプレイできます。)\n・一部のチャットを使用する役職及び一部のコマンド\n・その他様々(詳しくはv2.2.0.1のリリースノートをご確認ください。)\n\nこの制限はカスタムサーバーの場合はほとんどありません。(一部影響があるものがあります。)\nSuperNewRoles公式カスタムサーバーの提供を始めましたのでそちらを使用することを推奨します。\nオンライン→右下のマークから「SuperNewRoles Tokyo」を選択することでご利用いただけます。\nただし、一部の環境でPingが200ほどで表示される現象を確認しています。\n(通常は環境にもよりますが10～30程度です)\n調査を進めていますので、気にせずにプレイを行ってください。\n(体感そこまでのラグは感じられないようです。)\n\n以上です。ご理解をお願いします。\n続報はTwitter(@SNROfficials)で行いますのでフォローをお願いします。
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红,鮭魚紅
@@ -272,6 +270,14 @@ ModifyGapRoomOneWayShadow,Modify GapRoom One-Way Shadow,昇降機の上下の影
 GapRoomShadowIgnoresImpostors,Impostors Can See Through from the Lower,インポスターが下から上を見ることができる,内鬼在间隙室下部不受视野遮蔽影响,內鬼於間隙室可以從下方看到上方
 DisableGapRoomShadowForNonImpostor,Only Impostors Can See Through from the Upper,インポスター以外が上から下を見られなくする,内鬼阵营以外的玩家在间隙室上部会受视野遮蔽影响,僅內鬼於間隙室可以從上方看到下方
 MoveGapRoomDownload,Move GapRoom Download,昇降機のダウンロードタスクを移動する,移动间隙室的下载数据任务位置,移動間隙室的下載任務位置
+LadderCoolChangeSetting,Change the cool time of the ladder,梯子のクールタイムを変更する
+LadderCoolTimeSetting,Ladder cool time,梯子のクールタイム
+LadderImpostorCoolChangeSetting,Change the cool time of individual imposter,個別にインポスターのクールタイムを変更する
+LadderImpostorCoolTimeSetting,Cool time of the Imposter Ladder,インポスターの梯子のクールタイム
+ZiplineCoolChangeSetting,Change the cool time of the zipline,ジップラインのクールタイムを変更する
+ZiplineCoolTimeSetting,Zipline cool time,ジップラインのクールタイム
+ZiplineImpostorCoolChangeSetting,Change the cool time of individual imposter,個別にインポスターのクールタイムを変更する
+ZiplineImpostorCoolTimeSetting,Cool time of the Imposter Zipline,インポスターのジップラインのクールタイム
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置,模式設定
@@ -357,8 +363,12 @@ SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内�
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜,船員禁用完成任務獲勝
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点,固定重生點
 MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
+ReportDeadBodySetting,Emergency meeting and report setting,緊急会議と通報の設定
+HaveFirstEmergencyCooldown,Change emergency button cooldown until deaths occur?,死者が出るまで緊急ボタンクールダウンを変更する
+FirstEmergencyCooldownSetting,Emergency button cool down after change,変更後の緊急ボタンクールダウン
+IsLimitEmergencyMeeting,Limit the number of times an emergency meeting can be used.,緊急会議を使用できる回数を制限する
+EmergencyMeetingLimitCount,Emergency meeting Overall available times,緊急会議 全体使用可能回数
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告
-NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,禁用召開緊急會議
 DeviceOptionsSetting,Information Device Options,情報機器制限の設定,飞船设备设置,情報獲取裝置限制使用設定
 CanUseDeviceSetting,<color=#00e000>On</color>/<color=#949495>Off</color> setting.,使用<color=#00e000>可能</color>/<color=#949495>不可能</color> の設定,<color=#00e000>启用</color>/<color=#949495>禁用</color>设置,<color=#00e000>可以</color>/<color=#949495>不行</color>使用設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图,可以觀看管理員地圖
@@ -420,6 +430,16 @@ FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
 FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
 FinalStatusSantaSelf,Santa bomb!,ソリから転落,送错礼物,聖誕炸彈
+
+# MeetingStatus
+MeetingStatusCanNotCallEmergencyMeeting,EMERGENCY MEETINGS CANNOT\nBE OPENED DUE TO SETTINGS,緊急会議は\n設定により開けない
+MeetingStatusPersonalEmergencyCount,CREWMEMBERS {0} HAS {1} EMERGENCY MEETINGS LEFT,クルー {0} が持つ 緊急会議残り {1} 回
+MeetingStatusAllEmergencyCount,ALL CREWMEMBERS HAS {0} EMERGENCY MEETINGS LEFT,クルー全体が持つ 緊急会議残り {0} 回
+MeetingStatusUpperLimitReached,EMERGENCY MEETINGS CANNOT\nBE UESD BECAUSE LIMIT COUNT,緊急会議は\n全体の使用可能回数に達した
+SHRMeetingStatusAnnounceYourOnry,This information is sent only to those who requested an emergency meeting.,この情報は、緊急会議を要請した者のみに送信されています。
+SHRMeetingStatusEnableLimitSetting,A setting that limits the overall number of times an emergency meeting can be held is effective.,緊急会議を行える回数を，全体で制限する設定が有効です。
+SHRMeetingStatusMeetingsCallMaxCount,Crew member can use up to {0} emergency meetings.,クルー全体で 緊急会議を最大で {0}回 使用可能です。
+SHRMeetingStatusNotUseButton,After the next turn，if the Convene button is used，\nthe message "EMERGENCY MEETING REQUESTED WAITTING FOR HOST" will be displayed\nand the transition to the meeting will not take place.\n\nThis is a normal behavior because the host has rejected the emergency conference request.\nIf this occurs，please leave the button screen.,次ターン以降に，招集ボタンを使用すると，\n「緊急会議を要請しました ホストを待っています」と表示されて，\n会議に遷移しない状態になります。\n\nこれはホストに緊急会議の要請を却下されている為に発生している状態であり，正常な挙動です。\n発生した場合は，ボタン画面から離脱して下さい。
 
 # Sabotages
 SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定
@@ -1544,6 +1564,16 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Impostor? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
+BalancerMeeting,Balancer Meeting,天秤会議,,
+BalancerSelection,Balancer Selection,天秤選択,,
+BalancerSelectionCancel,Cancel Balancer Selection,天秤選択解除,,
+BalancerSelectionCancelText,Balancer selection mode has been canceled.,天秤選択モードが解除されました,,
+BalancerSelectionSelfSelectText,Balancer selection mode has been canceled.,自投票として投票を完了しました,,
+BalancerSelectionText,Select by voting the two crew to send to the Balancer Meeting.*Skip to cancel balancer selection mode.,天秤にかける2人を投票によって\n選択してください\n※自分は選択できません\n（自分選択は自投票として投票完了）\n※スキップで天秤選択モード解除,,
+Balancer1st,1st choice,1人目の選択,,
+Balancer2nd,2nd choice,2人目の選択,,
+BalancerForActivate,Vote yourself to activate the ability.,能力を発動するには自投票を行ってください,,
+BalancerUsed,Ability used. The ability cannot be activated.,能力使用済み 能力を発動することはできません,,
 BalancerAbilityUseText,Ability activated,能力発動,发动技能,能力發動
 BalancerVoteText,Vote for one or the other!,どちらかに投票せよ！,请选择一名玩家投票！,將票投給其中一邊！
 PteranodonName,Pteranodon,プテラノドン,鸟人,無齒翼龍
@@ -1945,7 +1975,8 @@ SNRIntroduction,introduction status,導入状況,导入情况,導入狀況
 NoFriendCode,No possession.,未所持,未持有,未持有
 InformationName,Information,情報,资讯,資訊
 ExiledText,{0} was the {1}!,{0} は {1} だった！,{0}是{1}!,{0} 是 {1}！
-PublicRoomError,The public rooms and matchmaking system are currently sealed.\nPlease wait for the official response.,現在公開部屋及び，マッチメイキングシステムを封印しております。\n正式対応を行うまでお待ちください。
+PublicRoomError,<align="left">Host AmongUs Version : {0}\nHost SNR Version : {1}\n\nThe public rooms and matchmaking system are currently sealed.\n\nReason for sealed : \n{2}</align>,<align="left">Host AmongUs Version : {0}\nHost SNR Version : {1}\n\n現在公開部屋及び，マッチメイキングシステムは封印されています。\n\n封印理由 : \n{2}</align>
+CheckOfficialInformation,Please check the official SNR Discord server and external official sites such as GitHub Wiki.,SNR公式Discordサーバ 及び GitHub Wiki等\n外部公式サイトを確認して下さい。
 
 # Replay
 ReplayName,Replay,リプレイ,回放,重播

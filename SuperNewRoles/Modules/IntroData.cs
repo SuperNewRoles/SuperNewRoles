@@ -8,6 +8,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
@@ -67,9 +68,10 @@ public class IntroData
     public string Description;
     public TeamRoleType Team;
     public TeamType TeamType;
+    public QuoteMod QuoteMod;
     public bool IsGhostRole;
     public RoleTypes IntroSound;
-    IntroData(string NameKey, Color color, Int16 TitleNum, RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, TeamType teamType = TeamType.Crewmate, bool IsGhostRole = false, RoleTypes IntroSound = RoleTypes.Crewmate)
+    IntroData(string NameKey, Color color, Int16 TitleNum, RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, TeamType teamType = TeamType.Crewmate, QuoteMod quoteMod = QuoteMod.SuperNewRoles, bool IsGhostRole = false, RoleTypes IntroSound = RoleTypes.Crewmate)
     {
         this.color = color;
         this.NameKey = NameKey;
@@ -82,6 +84,7 @@ public class IntroData
         if (teamType == TeamType.Crewmate && team == TeamRoleType.Crewmate) this.TeamType = TeamType.Crewmate;
         else if (teamType == TeamType.Crewmate && (int)team != (int)teamType) this.TeamType = (TeamType)team;
         else this.TeamType = teamType;
+        this.QuoteMod = quoteMod;
         this.IsGhostRole = IsGhostRole;
         this.IntroSound = IntroSound;
 
@@ -163,16 +166,16 @@ public class IntroData
     }
 
 
-    public static IntroData CrewmateIntro = new("Crewmate", Color.white, 1, RoleId.DefaultRole);
-    public static IntroData ImpostorIntro = new("Impostor", RoleClass.ImpostorRed, 1, RoleId.DefaultRole, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData CrewmateIntro = new("Crewmate", Color.white, 1, RoleId.DefaultRole, quoteMod: QuoteMod.AmongUs);
+    public static IntroData ImpostorIntro = new("Impostor", RoleClass.ImpostorRed, 1, RoleId.DefaultRole, TeamRoleType.Impostor, quoteMod: QuoteMod.AmongUs, IntroSound: RoleTypes.Impostor);
     public static IntroData SoothSayerIntro = new("SoothSayer", RoleClass.SoothSayer.color, 1, RoleId.SoothSayer);
-    public static IntroData JesterIntro = new("Jester", RoleClass.Jester.color, 1, RoleId.Jester, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData LighterIntro = new("Lighter", RoleClass.Lighter.color, 1, RoleId.Lighter);
+    public static IntroData JesterIntro = new("Jester", RoleClass.Jester.color, 1, RoleId.Jester, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.Jester);
+    public static IntroData LighterIntro = new("Lighter", RoleClass.Lighter.color, 1, RoleId.Lighter, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData EvilLighterIntro = new("EvilLighter", RoleClass.EvilLighter.color, 2, RoleId.EvilLighter, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData SheriffIntro = new("Sheriff", RoleClass.Sheriff.color, 2, RoleId.Sheriff, IntroSound: RoleTypes.Engineer);
+    public static IntroData SheriffIntro = new("Sheriff", RoleClass.Sheriff.color, 2, RoleId.Sheriff, IntroSound: RoleTypes.Engineer, quoteMod: QuoteMod.Woodi_dev);
     public static IntroData MeetingSheriffIntro = new("MeetingSheriff", RoleClass.MeetingSheriff.color, 4, RoleId.MeetingSheriff, IntroSound: RoleTypes.Engineer);
-    public static IntroData JackalIntro = new("Jackal", RoleClass.Jackal.color, 3, RoleId.Jackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData SidekickIntro = new("Sidekick", RoleClass.Jackal.color, 1, RoleId.Sidekick, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData JackalIntro = new("Jackal", RoleClass.Jackal.color, 3, RoleId.Jackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.TheOtherRoles);
+    public static IntroData SidekickIntro = new("Sidekick", RoleClass.Jackal.color, 1, RoleId.Sidekick, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData TeleporterIntro = new("Teleporter", RoleClass.Teleporter.color, 2, RoleId.Teleporter, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SpiritMediumIntro = new("SpiritMedium", RoleClass.SpiritMedium.color, 1, RoleId.SpiritMedium);
     public static IntroData SpeedBoosterIntro = new("SpeedBooster", RoleClass.SpeedBooster.color, 2, RoleId.SpeedBooster);
@@ -183,22 +186,22 @@ public class IntroData
     public static IntroData ShielderIntro = new("Shielder", RoleClass.Shielder.color, 3, RoleId.Shielder);
     public static IntroData FreezerIntro = new("Freezer", RoleClass.Freezer.color, 3, RoleId.Freezer, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SpeederIntro = new("Speeder", RoleClass.Speeder.color, 2, RoleId.Speeder, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData VultureIntro = new("Vulture", RoleClass.Vulture.color, 1, RoleId.Vulture, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData VultureIntro = new("Vulture", RoleClass.Vulture.color, 1, RoleId.Vulture, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData ClergymanIntro = new("Clergyman", RoleClass.Clergyman.color, 2, RoleId.Clergyman);
-    public static IntroData MadmateIntro = new("Madmate", RoleClass.Madmate.color, 1, RoleId.Madmate, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData BaitIntro = new("Bait", RoleClass.Bait.color, 1, RoleId.Bait);
+    public static IntroData MadmateIntro = new("Madmate", RoleClass.Madmate.color, 1, RoleId.Madmate, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.tomarai);
+    public static IntroData BaitIntro = new("Bait", RoleClass.Bait.color, 1, RoleId.Bait, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData HomeSecurityGuardIntro = new("HomeSecurityGuard", RoleClass.HomeSecurityGuard.color, 1, RoleId.HomeSecurityGuard);
     public static IntroData StuntManIntro = new("StuntMan", RoleClass.StuntMan.color, 1, RoleId.StuntMan);
     public static IntroData MovingIntro = new("Moving", RoleClass.Moving.color, 1, RoleId.Moving, IntroSound: RoleTypes.Engineer);
-    public static IntroData OpportunistIntro = new("Opportunist", RoleClass.Opportunist.color, 2, RoleId.Opportunist, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData OpportunistIntro = new("Opportunist", RoleClass.Opportunist.color, 2, RoleId.Opportunist, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.aulibhaltnet);
     public static IntroData NiceGamblerIntro = new("NiceGambler", RoleClass.NiceGambler.color, 1, RoleId.NiceGambler);
     public static IntroData EvilGamblerIntro = new("EvilGambler", RoleClass.EvilGambler.color, 1, RoleId.EvilGambler, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData ResearcherIntro = new("Researcher", RoleClass.Researcher.color, 1, RoleId.Researcher, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SelfBomberIntro = new("SelfBomber", RoleClass.SelfBomber.color, 1, RoleId.SelfBomber, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData GodIntro = new("God", RoleClass.God.color, 1, RoleId.God, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData AllCleanerIntro = new("AllCleaner", RoleClass.AllCleaner.color, 1, RoleId.AllCleaner, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData NiceNekomataIntro = new("NiceNekomata", RoleClass.NiceNekomata.color, 3, RoleId.NiceNekomata);
-    public static IntroData EvilNekomataIntro = new("EvilNekomata", RoleClass.EvilNekomata.color, 1, RoleId.EvilNekomata, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData NiceNekomataIntro = new("NiceNekomata", RoleClass.NiceNekomata.color, 3, RoleId.NiceNekomata, quoteMod: QuoteMod.aulibhaltnet);
+    public static IntroData EvilNekomataIntro = new("EvilNekomata", RoleClass.EvilNekomata.color, 1, RoleId.EvilNekomata, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.aulibhaltnet);
     public static IntroData JackalFriendsIntro = new("JackalFriends", RoleClass.JackalFriends.color, 2, RoleId.JackalFriends, teamType: TeamType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData DoctorIntro = new("Doctor", RoleClass.Doctor.color, 1, RoleId.Doctor, IntroSound: RoleTypes.Scientist);
     public static IntroData CountChangerIntro = new("CountChanger", RoleClass.CountChanger.color, 2, RoleId.CountChanger, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
@@ -210,20 +213,20 @@ public class IntroData
     public static IntroData EvilEraserIntro = new("EvilEraser", RoleClass.EvilEraser.color, 1, RoleId.EvilEraser, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData WorkpersonIntro = new("Workperson", RoleClass.Workperson.color, 1, RoleId.Workperson, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MagazinerIntro = new("Magaziner", RoleClass.Magaziner.color, 1, RoleId.Magaziner, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData MayorIntro = new("Mayor", RoleClass.Mayor.color, 1, RoleId.Mayor);
+    public static IntroData MayorIntro = new("Mayor", RoleClass.Mayor.color, 1, RoleId.Mayor, quoteMod: QuoteMod.TownOfUs);
     public static IntroData trueloverIntro = new("truelover", RoleClass.Truelover.color, 1, RoleId.truelover, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData TechnicianIntro = new("Technician", RoleClass.Technician.color, 1, RoleId.Technician);
-    public static IntroData SerialKillerIntro = new("SerialKiller", RoleClass.SerialKiller.color, 1, RoleId.SerialKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData SerialKillerIntro = new("SerialKiller", RoleClass.SerialKiller.color, 1, RoleId.SerialKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRolesGM);
     public static IntroData OverKillerIntro = new("OverKiller", RoleClass.OverKiller.color, 1, RoleId.OverKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData LevelingerIntro = new("Levelinger", RoleClass.Levelinger.color, 1, RoleId.Levelinger, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData EvilMovingIntro = new("EvilMoving", RoleClass.EvilMoving.color, 1, RoleId.EvilMoving, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData AmnesiacIntro = new("Amnesiac", RoleClass.Amnesiac.color, 1, RoleId.Amnesiac, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData AmnesiacIntro = new("Amnesiac", RoleClass.Amnesiac.color, 1, RoleId.Amnesiac, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.TownOfUsR);
     public static IntroData SideKillerIntro = new("SideKiller", RoleClass.SideKiller.color, 1, RoleId.SideKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData MadKillerIntro = new("MadKiller", RoleClass.SideKiller.color, 1, RoleId.MadKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SurvivorIntro = new("Survivor", RoleClass.Survivor.color, 1, RoleId.Survivor, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData MadMayorIntro = new("MadMayor", RoleClass.MadMayor.color, 1, RoleId.MadMayor, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData MadMayorIntro = new("MadMayor", RoleClass.MadMayor.color, 1, RoleId.MadMayor, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRolesGM);
     public static IntroData NiceHawkIntro = new("NiceHawk", RoleClass.NiceHawk.color, 2, RoleId.NiceHawk, IntroSound: RoleTypes.Crewmate);
-    public static IntroData BakeryIntro = new("Bakery", RoleClass.Bakery.color, 1, RoleId.Bakery);
+    public static IntroData BakeryIntro = new("Bakery", RoleClass.Bakery.color, 1, RoleId.Bakery, quoteMod: QuoteMod.ExtremeRoles);
     public static IntroData MadStuntManIntro = new("MadStuntMan", RoleClass.MadStuntMan.color, 1, RoleId.MadStuntMan, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData MadHawkIntro = new("MadHawk", RoleClass.MadHawk.color, 1, RoleId.MadHawk, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData MadJesterIntro = new("MadJester", RoleClass.MadJester.color, 3, RoleId.MadJester, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
@@ -231,12 +234,11 @@ public class IntroData
     public static IntroData NiceTeleporterIntro = new("NiceTeleporter", RoleClass.NiceTeleporter.color, 1, RoleId.NiceTeleporter);
     public static IntroData CelebrityIntro = new("Celebrity", RoleClass.Celebrity.color, 1, RoleId.Celebrity);
     public static IntroData NocturnalityIntro = new("Nocturnality", RoleClass.Nocturnality.color, 1, RoleId.Nocturnality);
-    public static IntroData ObserverIntro = new("Observer", RoleClass.Observer.color, 1, RoleId.Observer);
-    public static IntroData VampireIntro = new("Vampire", RoleClass.Vampire.color, 1, RoleId.Vampire, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData VampireIntro = new("Vampire", RoleClass.Vampire.color, 1, RoleId.Vampire, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData FoxIntro = new("Fox", RoleClass.Fox.color, 1, RoleId.Fox, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData DarkKillerIntro = new("DarkKiller", RoleClass.DarkKiller.color, 1, RoleId.DarkKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData SeerIntro = new("Seer", RoleClass.Seer.color, 1, RoleId.Seer);
-    public static IntroData MadSeerIntro = new("MadSeer", RoleClass.MadSeer.color, 1, RoleId.MadSeer, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData SeerIntro = new("Seer", RoleClass.Seer.color, 1, RoleId.Seer, quoteMod: QuoteMod.TheOtherRoles);
+    public static IntroData MadSeerIntro = new("MadSeer", RoleClass.MadSeer.color, 1, RoleId.MadSeer, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRolesGM);
     public static IntroData RemoteSheriffIntro = new("RemoteSheriff", RoleClass.RemoteSheriff.color, 1, RoleId.RemoteSheriff, IntroSound: RoleTypes.Engineer);
     public static IntroData TeleportingJackalIntro = new("TeleportingJackal", RoleClass.TeleportingJackal.color, 1, RoleId.TeleportingJackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MadMakerIntro = new("MadMaker", RoleClass.MadMaker.color, 1, RoleId.MadMaker, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
@@ -245,11 +247,11 @@ public class IntroData
     public static IntroData SeerFriendsIntro = new("SeerFriends", RoleClass.SeerFriends.color, 1, RoleId.SeerFriends, teamType: TeamType.Neutral);
     public static IntroData JackalSeerIntro = new("JackalSeer", RoleClass.JackalSeer.color, 1, RoleId.JackalSeer, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SidekickSeerIntro = new("SidekickSeer", RoleClass.JackalSeer.color, 1, RoleId.SidekickSeer, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData AssassinIntro = new("Assassin", RoleClass.Assassin.color, 1, RoleId.Assassin, TeamRoleType.Impostor, TeamType.Impostor, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData MarlinIntro = new("Marlin", RoleClass.Marlin.color, 1, RoleId.Marlin);
-    public static IntroData ArsonistIntro = new("Arsonist", RoleClass.Arsonist.color, 1, RoleId.Arsonist, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData AssassinIntro = new("Assassin", RoleClass.Assassin.color, 1, RoleId.Assassin, TeamRoleType.Impostor, TeamType.Impostor, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.ExtremeRoles);
+    public static IntroData MarlinIntro = new("Marlin", RoleClass.Marlin.color, 1, RoleId.Marlin, quoteMod: QuoteMod.ExtremeRoles);
+    public static IntroData ArsonistIntro = new("Arsonist", RoleClass.Arsonist.color, 1, RoleId.Arsonist, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.TownOfUs);
     public static IntroData ChiefIntro = new("Chief", RoleClass.Chief.color, 1, RoleId.Chief, IntroSound: RoleTypes.Engineer);
-    public static IntroData CleanerIntro = new("Cleaner", RoleClass.Cleaner.color, 1, RoleId.Cleaner, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData CleanerIntro = new("Cleaner", RoleClass.Cleaner.color, 1, RoleId.Cleaner, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData MadCleanerIntro = new("MadCleaner", RoleClass.MadCleaner.color, 1, RoleId.MadCleaner, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SamuraiIntro = new("Samurai", RoleClass.Samurai.color, 1, RoleId.Samurai, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData MayorFriendsIntro = new("MayorFriends", RoleClass.MayorFriends.color, 1, RoleId.MayorFriends, teamType: TeamType.Neutral);
@@ -258,9 +260,9 @@ public class IntroData
     public static IntroData PositionSwapperIntro = new("PositionSwapper", RoleClass.PositionSwapper.color, 1, RoleId.PositionSwapper, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData TunaIntro = new("Tuna", RoleClass.Tuna.color, 1, RoleId.Tuna, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MafiaIntro = new("Mafia", RoleClass.Mafia.color, 1, RoleId.Mafia, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData BlackCatIntro = new("BlackCat", RoleClass.BlackCat.color, 1, RoleId.BlackCat, teamType: TeamType.Impostor);
+    public static IntroData BlackCatIntro = new("BlackCat", RoleClass.BlackCat.color, 1, RoleId.BlackCat, teamType: TeamType.Impostor, quoteMod: QuoteMod.TheOtherRolesGMH);
     public static IntroData SecretlyKillerIntro = new("SecretlyKiller", RoleClass.SecretlyKiller.color, 1, RoleId.SecretlyKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData SpyIntro = new("Spy", RoleClass.Spy.color, 1, RoleId.Spy);
+    public static IntroData SpyIntro = new("Spy", RoleClass.Spy.color, 1, RoleId.Spy, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData KunoichiIntro = new("Kunoichi", RoleClass.Kunoichi.color, 1, RoleId.Kunoichi, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData DoubleKillerIntro = new("DoubleKiller", RoleClass.DoubleKiller.color, 1, RoleId.DoubleKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SmasherIntro = new("Smasher", RoleClass.Smasher.color, 1, RoleId.Smasher, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
@@ -291,7 +293,7 @@ public class IntroData
     public static IntroData ConnectKillerIntro = new("ConnectKiller", RoleClass.ConnectKiller.color, 1, RoleId.ConnectKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData GMIntro = new("GM", RoleClass.GM.color, 1, RoleId.GM, TeamRoleType.Neutral, IntroSound: RoleTypes.Engineer);
     public static IntroData CrackerIntro = new("Cracker", RoleClass.Cracker.color, 1, RoleId.Cracker, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData NekoKabochaIntro = new("NekoKabocha", NekoKabocha.color, 1, RoleId.NekoKabocha, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData NekoKabochaIntro = new("NekoKabocha", NekoKabocha.color, 1, RoleId.NekoKabocha, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRolesGM);
     public static IntroData DoppelgangerIntro = new("Doppelganger", RoleClass.Doppelganger.color, 1, RoleId.Doppelganger, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData WerewolfIntro = new("Werewolf", RoleClass.Werewolf.color, 1, RoleId.Werewolf, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData KnightIntro = new("Knight", Knight.color, 1, RoleId.Knight);
@@ -299,7 +301,7 @@ public class IntroData
     public static IntroData PavlovsownerIntro = new("Pavlovsowner", RoleClass.Pavlovsowner.color, 1, RoleId.Pavlovsowner, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData WaveCannonJackalIntro = new("WaveCannonJackal", WaveCannonJackal.color, 1, RoleId.WaveCannonJackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SidekickWaveCannonIntro = new("SidekickWaveCannon", WaveCannonJackal.color, 1, RoleId.SidekickWaveCannon, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData CamouflagerIntro = new("Camouflager", RoleClass.Camouflager.color, 1, RoleId.Camouflager, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData CamouflagerIntro = new("Camouflager", RoleClass.Camouflager.color, 1, RoleId.Camouflager, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData HamburgerShopIntro = new("HamburgerShop", RoleClass.HamburgerShop.color, 3, RoleId.HamburgerShop);
     public static IntroData PenguinIntro = new("Penguin", RoleClass.Penguin.color, 1, RoleId.Penguin, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData DependentsIntro = new("Dependents", RoleClass.Dependents.color, 1, RoleId.Dependents);

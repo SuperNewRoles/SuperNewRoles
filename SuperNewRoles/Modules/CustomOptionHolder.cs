@@ -483,9 +483,6 @@ public class CustomOptionHolder
     public static CustomRoleOption NocturnalityOption;
     public static CustomOption NocturnalityPlayerCount;
 
-    public static CustomRoleOption ObserverOption;
-    public static CustomOption ObserverPlayerCount;
-
     public static CustomRoleOption VampireOption;
     public static CustomOption VampirePlayerCount;
     public static CustomOption VampireKillDelay;
@@ -1819,9 +1816,6 @@ public class CustomOptionHolder
         HamburgerShopShortTask = HamburgerShopoption.Item2;
         HamburgerShopLongTask = HamburgerShopoption.Item3;
 
-        ObserverOption = SetupCustomRoleOption(403000, true, RoleId.Observer);
-        ObserverPlayerCount = Create(403001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ObserverOption);
-
         BaitOption = SetupCustomRoleOption(403100, true, RoleId.Bait);
         BaitPlayerCount = Create(403101, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
         BaitReportTime = Create(403102, true, CustomOptionType.Crewmate, "BaitReportTimeSetting", 2f, 1f, 4f, 0.5f, BaitOption);
@@ -2004,6 +1998,9 @@ public class CustomOptionHolder
         Logger.Info($"SettingRoleIdのMax: 6 - {GetRoleSettingid(MatchingTagIdMax)}", "MatchingTag");
 
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
+
+        CheckOption();
+
         /*
         string OPTIONDATA = "{";
         foreach (CustomOption opt in CustomOption.options)
@@ -2018,7 +2015,8 @@ public class CustomOptionHolder
         }
         OPTIONDATA = OPTIONDATA.Substring(0, OPTIONDATA.Length - 1);
         OPTIONDATA += "}";
-        GUIUtility.systemCopyBuffer = OPTIONDATA;*/
+        GUIUtility.systemCopyBuffer = OPTIONDATA;
+        */
     }
 
     /// <summary>
@@ -2027,4 +2025,29 @@ public class CustomOptionHolder
     /// <param name="maxId">処理したい6桁の設定Id</param>
     /// <returns></returns>
     private static string GetRoleSettingid(int maxId) => $"{maxId / 100}"[1..];
+
+    /// <summary>
+    /// CustomOptionの状態をlogに印字する
+    /// </summary>
+    private static void CheckOption()
+    {
+        Logger.Info("----------- CustomOption Info start -----------", "CustomOption");
+
+        if (GameOptionsMenuUpdatePatch.HasSealingOption)
+        {
+            foreach (CustomOption option in options)
+            {
+                if (option.RoleId is RoleId.DefaultRole or RoleId.None) continue; // 役職以外はスキップ
+                if (Roles.Role.RoleInfoManager.GetRoleInfo(option.RoleId) == null) continue; // GetOptionInfoでlogを出さない様 RoleBase未移行役は先にスキップする。
+
+                OptionInfo optionInfo = OptionInfo.GetOptionInfo(option.RoleId);
+                if (optionInfo == null) continue;
+                if (!optionInfo.HasSealingCondition || optionInfo.IsHidden) continue;
+
+                Logger.Info($"解放済の封印処理が残っています。 CustomOption Id => {option.id}", "Sealing");
+            }
+        }
+
+        Logger.Info("----------- CustomOption Info End -----------", "CustomOption");
+    }
 }

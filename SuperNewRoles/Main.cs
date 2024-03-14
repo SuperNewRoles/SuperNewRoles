@@ -9,6 +9,7 @@ using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Hazel;
 using Il2CppInterop.Runtime.Injection;
 using InnerNet;
 using SuperNewRoles.CustomObject;
@@ -63,7 +64,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string thisname;
     public static string ThisPluginModName;
     //対応しているバージョン。nullなら全て。
-    public static string[] SupportVanilaVersion = new string[] { "2023.11.28" };
+    public static string[] SupportVanilaVersion = new string[] { "2024.3.5" };
 
     public override void Load()
     {
@@ -181,7 +182,21 @@ public partial class SuperNewRolesPlugin : BasePlugin
             SuperNewRolesPlugin.Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
         }
     }
-
+    // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
+    [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]
+    public static class AuthManagerCoConnectPatch
+    {
+        public static bool Prefix(AuthManager __instance)
+        {
+            if (!ModHelpers.IsCustomServer() ||
+                FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Servers.Any(x => x.UseDtls))
+                return true;
+            if (__instance.connection != null)
+                __instance.connection.Dispose();
+            __instance.connection = null;
+            return false;
+        }
+    }
     public static void MainMenuVersionCheckPatch(MainMenuManager __instance)
     {
         if (SupportVanilaVersion != null && !SupportVanilaVersion.Contains(Application.version) && !ViewdNonVersion)
@@ -223,17 +238,16 @@ public partial class SuperNewRolesPlugin : BasePlugin
             ViewdNonVersion = true;
         }
     }
-    // [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
     class GetBroadcastVersionPatch
     {
         public static void Postfix(ref int __result)
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
-            if (ModHelpers.IsCustomServer()) return;
             __result += 25;
         }
     }
-    // [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
+    [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
     public static class ConstantsVersionModdedPatch
     {
         public static bool Prefix(ref bool __result)

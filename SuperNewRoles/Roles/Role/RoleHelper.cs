@@ -629,9 +629,6 @@ public static class RoleHelpers
             case RoleId.Nocturnality:
                 RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
                 break;
-            case RoleId.Observer:
-                RoleClass.Observer.ObserverPlayer.Add(player);
-                break;
             case RoleId.Vampire:
                 RoleClass.Vampire.VampirePlayer.Add(player);
                 break;
@@ -1202,9 +1199,6 @@ public static class RoleHelpers
                 break;
             case RoleId.Nocturnality:
                 RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Observer:
-                RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Vampire:
                 RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
@@ -1938,7 +1932,6 @@ public static class RoleHelpers
             else if (RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceTeleporter;
             else if (RoleClass.Celebrity.CelebrityPlayer.IsCheckListPlayerControl(player)) return RoleId.Celebrity;
             else if (RoleClass.Nocturnality.NocturnalityPlayer.IsCheckListPlayerControl(player)) return RoleId.Nocturnality;
-            else if (RoleClass.Observer.ObserverPlayer.IsCheckListPlayerControl(player)) return RoleId.Observer;
             else if (RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player)) return RoleId.Vampire;
             else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.DarkKiller;
             else if (RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player)) return RoleId.Seer;
