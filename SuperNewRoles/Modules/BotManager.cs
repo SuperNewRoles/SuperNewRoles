@@ -25,6 +25,7 @@ public static class BotManager
             return false;
         }
     }
+    public static bool IsBot(byte playerId) => AllBots.Any(p => p.PlayerId == playerId);
     public static PlayerControl SpawnBot(byte id)
     {
         var Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);

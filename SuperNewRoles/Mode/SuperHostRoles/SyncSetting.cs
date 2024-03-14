@@ -268,6 +268,8 @@ public static class SyncSetting
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         optdata.SetBool(BoolOptionNames.AnonymousVotes, AnonymousVotes.GetAnonymousVotes(player));
 
+        Balancer.InHostMode.SetMeetingSettings(optdata); // [ ]
+
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());
         OptionDatas[player] = optdata.DeepCopy();
