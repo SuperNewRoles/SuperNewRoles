@@ -720,8 +720,8 @@ public static class Balancer
             }
             else
             {
-                optdata.SetInt(Int32OptionNames.DiscussionTime, GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.DiscussionTime));
-                optdata.SetInt(Int32OptionNames.VotingTime, GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime));
+                optdata.SetInt(Int32OptionNames.DiscussionTime, optdata.GetInt(Int32OptionNames.DiscussionTime));
+                optdata.SetInt(Int32OptionNames.VotingTime, optdata.GetInt(Int32OptionNames.VotingTime));
             }
         }
     }

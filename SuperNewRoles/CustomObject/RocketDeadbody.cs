@@ -23,15 +23,10 @@ public class RocketDeadbody : CustomAnimation
     {
         CustomAnimationOptions customAnimationOptions = new(GetSprites("SuperNewRoles.Resources.Rocket.RocketPlayer", 2), 10, true);
         base.Init(customAnimationOptions);
+        PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(spriteRenderer, false);
         //カラーを変更する
         PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, spriteRenderer);
-        PlayerMaterial.Properties Properties = new()
-        {
-            MaskLayer = 0,
-            MaskType = PlayerMaterial.MaskType.None,
-            ColorId = Player.Data.DefaultOutfit.ColorId
-        };
-        spriteRenderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
+
         if (maxcount <= 1)
         {
             transform.position = new(Player.transform.position.x, Player.transform.position.y, -10);

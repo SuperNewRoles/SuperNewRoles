@@ -11,7 +11,11 @@ public class OptionInfo
     public RoleId Role { get; }
     public bool SupportSHR { get; }
     public int OptionId { get; set; }
-    public bool IsHidden => isHidden || (RoleOpenTimeUTC != null && RoleOpenTimeUTC.Value > DateTime.UtcNow);
+    /// <summary>
+    /// 役職を解放する日時
+    /// これを使用して封印する際 [ 定数 : HasSealingOption (CustomOptionHolder.cs)] をtrueにする。
+    /// </summary>
+    /// <value></value>
     public DateTime? RoleOpenTimeUTC { get; }
 
     // 外から参照する郡
@@ -23,6 +27,9 @@ public class OptionInfo
     public float CoolTime => CoolTimeOption?.GetFloat() ?? 0;
     public float DurationTime => DurationTimeOption?.GetFloat() ?? 0;
     public int AbilityMaxCount => AbilityCountOption?.GetInt() ?? -1;
+    public bool IsHidden => isHidden || (HasSealingCondition && RoleOpenTimeUTC.Value > DateTime.UtcNow);
+    /// <summary>日時による封印条件を有するか</summary>
+    public bool HasSealingCondition => RoleOpenTimeUTC != null;
 
     // 設定郡
     public CustomOption RoleOption { get; private set; }
@@ -44,6 +51,23 @@ public class OptionInfo
     private bool isHidden { get; }
     private float MaxPlayer { get; }
     private Action OptionCreater;
+
+    /// <summary>
+    /// OptionInfo
+    /// </summary>
+    /// <param name="role">作成対象のRoleId</param>
+    /// <param name="OptionId">CustomRoleOptionの設定Id (Topのオプションの設定Id)</param>
+    /// <param name="SupportSHR">役職がSHR対応しているか</param>
+    /// <param name="VentOption">通気口使用を設定可能にするか</param>
+    /// <param name="SaboOption">サボタージュのを設定可能にするか</param>
+    /// <param name="ImpostorVisionOption">インポスター視野を設定可能にするか</param>
+    /// <param name="CoolTimeOption">クールタイムの設定</param>
+    /// <param name="DurationTimeOption">効果時間の設定</param>
+    /// <param name="AbilityCountOption">アビリティ最大使用回数の設定</param>
+    /// <param name="optionCreator">その他CustomOptionを定義する関数の呼び出し(不必要ならnull)</param>
+    /// <param name="isHidden">設定を非表示にするか</param>
+    /// <param name="MaxPlayer">最大アサイン可能人数(省略時:[インポ最大15人, クルー＆第三最大15人])</param>
+    /// <param name="RoleOpenTimeUTC">役職を解放する日時 (これを使用する際は, [ 定数 : HasSealingOption (CustomOptionHolder.cs)] をtrueにして下さい。)</param>
     public OptionInfo(RoleId role, int OptionId, bool SupportSHR,
         (bool CanUseVentDefault, bool SupportSHR)? VentOption = null,
         (bool CanUseSaboDefault, bool SupportSHR)? SaboOption = null,
