@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
@@ -242,19 +243,25 @@ internal class AddChatPatch
             yield return new WaitForSeconds(time);
         }
         var crs = CustomRpcSender.Create("AllSend");
-        crs.AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
+        var sender = PlayerControl.LocalPlayer;
+        if (sender.Data.IsDead)
+        {
+            sender = PlayerControl.AllPlayerControls.ToArray().Where(x => x != null && !x.Data.Disconnected && !x.Data.IsDead).OrderBy(x => x.PlayerId).FirstOrDefault();
+            name = sender.GetDefaultName();
+        }
+        crs.AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
             .Write(SendName)
             .EndRpc()
-            .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat)
+            .AutoStartRpc(sender.NetId, (byte)RpcCalls.SendChat)
             .Write(command)
             .EndRpc()
-            .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
+            .AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
             .Write(name)
             .EndRpc()
             .SendMessage();
-        PlayerControl.LocalPlayer.SetName(SendName);
-        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, command);
-        PlayerControl.LocalPlayer.SetName(name);
+        sender.SetName(SendName);
+        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, command);
+        sender.SetName(name);
     }
     static IEnumerator PrivateSend(PlayerControl target, string SendName, string command, float time = 0)
     {

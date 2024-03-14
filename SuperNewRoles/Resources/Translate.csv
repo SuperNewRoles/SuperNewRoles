@@ -1567,6 +1567,16 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Impostor? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
+BalancerMeeting,Balancer Meeting,天秤会議,,
+BalancerSelection,Balancer Selection,天秤選択,,
+BalancerSelectionCancel,Cancel Balancer Selection,天秤選択解除,,
+BalancerSelectionCancelText,Balancer selection mode has been canceled.,天秤選択モードが解除されました,,
+BalancerSelectionSelfSelectText,Balancer selection mode has been canceled.,自投票として投票を完了しました,,
+BalancerSelectionText,Select by voting the two crew to send to the Balancer Meeting.*Skip to cancel balancer selection mode.,天秤にかける2人を投票によって\n選択してください\n※自分は選択できません\n（自分選択は自投票として投票完了）\n※スキップで天秤選択モード解除,,
+Balancer1st,1st choice,1人目の選択,,
+Balancer2nd,2nd choice,2人目の選択,,
+BalancerForActivate,Vote yourself to activate the ability.,能力を発動するには自投票を行ってください,,
+BalancerUsed,Ability used. The ability cannot be activated.,能力使用済み 能力を発動することはできません,,
 BalancerAbilityUseText,Ability activated,能力発動,发动技能,能力發動
 BalancerVoteText,Vote for one or the other!,どちらかに投票せよ！,请选择一名玩家投票！,將票投給其中一邊！
 PteranodonName,Pteranodon,プテラノドン,鸟人,無齒翼龍
