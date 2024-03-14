@@ -270,7 +270,6 @@ public class IntroData
     public static IntroData NeetIntro = new("Neet", RoleClass.Neet.color, 1, RoleId.Neet, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData FastMakerIntro = new("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData ToiletFanIntro = new("ToiletFan", RoleClass.ToiletFan.color, 1, RoleId.ToiletFan);
-    public static IntroData SatsumaAndImoIntro = new("SatsumaAndImo", RoleClass.SatsumaAndImo.color, 2, RoleId.SatsumaAndImo, teamType: TeamType.Neutral);
     public static IntroData EvilButtonerIntro = new("EvilButtoner", RoleClass.EvilButtoner.color, 1, RoleId.EvilButtoner, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData NiceButtonerIntro = new("NiceButtoner", RoleClass.NiceButtoner.color, 1, RoleId.NiceButtoner);
     public static IntroData FinderIntro = new("Finder", RoleClass.Finder.color, 1, RoleId.Finder, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
