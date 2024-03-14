@@ -1037,12 +1037,34 @@ static class GameOptionsMenuUpdatePatch
             _ => CustomOptionType.Crewmate,
         };
     }
+
+    /// <summary>現在, 封印処理のある設定を有しているか ( 此処をtrueにする事で封印処理が実行される )</summary>
+    public const bool HasSealingOption = false;
+
     public static bool IsHidden(this CustomOption option)
     {
-        // FIXME : CustomServerを使用していないなら, モード設定を隠す
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false))
-                || ((option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting) && !ModHelpers.IsCustomServer());
+        return option.isHidden
+            || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) // SHRモード時, SHR未対応の設定を隠す処理。
+            || HasSealingOption && IsSealingDatetimeControl(option) // 解放条件が時間に依存する設定の 封印及び開放処理
+            || (ModeHandler.EnableModeSealing && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
+
+    /// <summary>オプションが日時条件によって封印されているかを判定する。</summary>
+    /// <param name="option">判定するオプション</param>
+    /// <returns>true : 封印されている / false : 封印されていない</returns>
+    private static bool IsSealingDatetimeControl(CustomOption option)
+    {
+        if (option.RoleId is RoleId.DefaultRole or RoleId.None) return false; // 役職以外はスキップ
+        if (RoleInfoManager.GetRoleInfo(option.RoleId) == null) return false; // GetOptionInfoでlogを出さない様 RoleBase未移行役は先にスキップする。
+
+        bool isHidden = false;
+
+        OptionInfo optionInfo = OptionInfo.GetOptionInfo(option.RoleId);
+        if (optionInfo != null) { isHidden = optionInfo.IsHidden; }
+
+        return isHidden;
+    }
+
     public static void Postfix(GameOptionsMenu __instance)
     {
         var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();

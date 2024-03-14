@@ -228,12 +228,6 @@ public class PlayerAnimation
             PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(SpriteRender, false);
 
             PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, SpriteRender);
-            PlayerMaterial.Properties Properties = new()
-            {
-                MaskLayer = 0,
-                MaskType = PlayerMaterial.MaskType.None,
-                ColorId = Player.Data.DefaultOutfit.ColorId
-            };
         }
         else
         {
