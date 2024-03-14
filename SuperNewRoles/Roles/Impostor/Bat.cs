@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using TMPro;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -104,7 +104,7 @@ public static class Bat
         public static void ClearAndReload()
         {
             Player = new();
-            BatButtonCooldown  = CustomOptionData.BatButtonCooldown.GetFloat();
+            BatButtonCooldown = CustomOptionData.BatButtonCooldown.GetFloat();
             DeviceStopTimer = 0;
             DeviceStopTime = CustomOptionData.BatButtonDuration.GetFloat();
             AliveData = new();

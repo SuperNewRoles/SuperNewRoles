@@ -1039,7 +1039,9 @@ static class GameOptionsMenuUpdatePatch
     }
     public static bool IsHidden(this CustomOption option)
     {
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) || ((option == JumpDancer.JumpDancerOption) && DateTime.UtcNow < new DateTime(2023, 9, 6, 11, 50, 0));
+        // FIXME : CustomServerを使用していないなら, モード設定を隠す
+        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false))
+                || ((option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting) && !ModHelpers.IsCustomServer());
     }
     public static void Postfix(GameOptionsMenu __instance)
     {

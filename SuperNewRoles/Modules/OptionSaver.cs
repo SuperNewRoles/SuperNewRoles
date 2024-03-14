@@ -83,10 +83,10 @@ public static class OptionSaver
     public static void ReadAndSetOption()
     {
         Logger.Info("Start LoadOption");
-        (bool Suc,int preset) = LoadSavedOption();
+        (bool Suc, int preset) = LoadSavedOption();
         if (!Suc)
         {
-            Logger.Info("プリセットナンバー読み込みでエラーが発生しました。:"+preset.ToString());
+            Logger.Info("プリセットナンバー読み込みでエラーが発生しました。:" + preset.ToString());
             CustomOption.CurrentValues = new();
             return;
         }
@@ -99,7 +99,7 @@ public static class OptionSaver
             return;
         }
         CustomOption.CurrentValues = data;
-        Logger.Info("End LoadOption:"+data.Count.ToString());
+        Logger.Info("End LoadOption:" + data.Count.ToString());
     }
     public static (bool, int, Dictionary<uint, byte>) LoadPreset(int num)
     {
@@ -139,7 +139,7 @@ public static class OptionSaver
                 int optioncount = reader.ReadInt32();
                 uint id;
                 byte selection;
-                Logger.Info(optioncount.ToString()+":"+reader.BaseStream.Length,"OPTIONCOUNT");
+                Logger.Info(optioncount.ToString() + ":" + reader.BaseStream.Length, "OPTIONCOUNT");
                 for (int i = 0; i < optioncount; i++)
                 {
                     id = reader.ReadUInt32();
@@ -159,7 +159,7 @@ public static class OptionSaver
             return (true, 0, Options);
         }
     }
-    public static (bool,int) LoadSavedOption()
+    public static (bool, int) LoadSavedOption()
     {
         lock (FileLocker)
         {

@@ -1,7 +1,7 @@
 using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -408,6 +408,10 @@ class CheckForEndVotingPatch
                         }
                     }, 5f, "Assissn Set Skin SHR");
                 }
+                if (Mode.PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
+                {
+                    EmergencyMinigamePatch.FirstEmergencyCooldown.OnCheckForEndVotingNotMod(exiledPlayer != null);
+                }
 
                 bool isBakeryAlive = Bakery.BakeryAlive(); // パン屋 生存判定
                 (bool, string) isCrookGetInsure = Crook.Ability.GetIsReceivedTheInsuranceAndAnnounce(); // 詐欺師 保険金受給判定
@@ -776,7 +780,16 @@ class MeetingHudStartPatch
             {
                 SyncSetting.CustomSyncSettings();
                 SyncSetting.MeetingSyncSettings();
-                if (CustomOptionHolder.SendYourRoleAllTurn.GetBool() || !RoleClass.IsFirstMeetingEnd) RoleinformationText.YourRoleInfoSendCommand();
+                if (!RoleClass.IsFirstMeetingEnd)
+                {
+                    RoleinformationText.YourRoleInfoSendCommand();
+                    EmergencyMinigamePatch.SHRMeetingStatusAnnounce.MakeSettingKnown();
+                }
+                else
+                {
+                    if (CustomOptionHolder.SendYourRoleAllTurn.GetBool()) { RoleinformationText.YourRoleInfoSendCommand(); }
+                    EmergencyMinigamePatch.SHRMeetingStatusAnnounce.LimitAnnounce();
+                }
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         if (ModeHandler.IsMode(ModeId.Default))

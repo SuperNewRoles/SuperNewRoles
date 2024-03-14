@@ -77,8 +77,10 @@ class WrapUpPatch
                 GameObject.Destroy(__instance.gameObject);
 
                 // 暗転をごり押しで解決
-                if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool()) {
-                    new LateTask(() => {
+                if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())
+                {
+                    new LateTask(() =>
+                    {
                         FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(false);
                     }, 0.3f);
                 }
@@ -146,6 +148,7 @@ class WrapUpPatch
         CountChanger.CountChangerPatch.WrapUpPatch();
         RoleClass.IsFirstMeetingEnd = true;
         RoleClass.IsfirstResetCool = false;
+        EmergencyMinigamePatch.FirstEmergencyCooldown.OnWrapUp(exiled != null);
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);

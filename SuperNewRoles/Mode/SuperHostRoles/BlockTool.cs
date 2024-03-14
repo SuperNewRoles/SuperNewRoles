@@ -10,7 +10,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 
 class BlockTool
 {
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte)})]
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
     class UpdateSystemPatch
     {
         public static void Prefix(

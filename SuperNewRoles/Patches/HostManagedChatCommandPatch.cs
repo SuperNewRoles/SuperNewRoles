@@ -156,7 +156,7 @@ internal static class GetChatCommands
         string welcomeMessage;
 
         const string startText = $"<align={"left"}><size=80%>";
-        const string endText = " " + "\n." + "</size></align>";
+        const string endText = " " + "\n<size=0%>.</size>" + "</size></align>";
 
         string mainText;
         string webWarningText = null;
@@ -644,7 +644,7 @@ internal static class RoleinformationText
     {
         foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
-            if (player == null || player.IsBot()) return;
+            if (player == null || player.IsBot()) continue;
             RoleId roleId = player.GetRole();
             if (roleId == RoleId.Bestfalsecharge && player.IsAlive()) roleId = RoleId.DefaultRole;
             RoleId ghostRoleId = player.GetGhostRole();

@@ -268,7 +268,7 @@ public class CustomColors
         Palette.ColorNames = longList.ToArray();
         Palette.PlayerColors = colorList.ToArray();
         Palette.ShadowColors = shadowList.ToArray();
-        
+
     }
 
     protected internal struct CustomColor

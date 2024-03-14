@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using UnityEngine;
-using SuperNewRoles.Buttons;
 using System.Linq;
 using Hazel;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -22,7 +22,7 @@ public static class Rocket
         {
             Option = CustomOption.SetupCustomRoleOption(optionId, false, RoleId.Rocket); optionId++;
             PlayerCount = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "SettingPlayerCountName", CustomOptionHolder.ImpostorPlayers[0], CustomOptionHolder.ImpostorPlayers[1], CustomOptionHolder.ImpostorPlayers[2], CustomOptionHolder.ImpostorPlayers[3], Option); optionId++;
-            RocketButtonCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f,  Option); optionId++;
+            RocketButtonCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonCooldownSetting", 30f, 2.5f, 60f, 2.5f, Option); optionId++;
             RocketButtonAfterCooldown = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketButtonAfterCooldown", 5f, 0f, 60f, 2.5f, Option); optionId++;
             RocketChargeTime = CustomOption.Create(optionId, false, CustomOptionType.Impostor, "RocketChargeTimeSetting", 3, 0.5f, 10f, 0.5f, Option); optionId++;
         }
@@ -57,7 +57,7 @@ public static class Rocket
         //処理するデータがないならパス
         if (RoleData.RocketData.Count <= 0)
             return;
-        foreach (KeyValuePair<PlayerControl, List<PlayerControl>> data in (Dictionary<PlayerControl,List<PlayerControl>>)RoleData.RocketData)
+        foreach (KeyValuePair<PlayerControl, List<PlayerControl>> data in (Dictionary<PlayerControl, List<PlayerControl>>)RoleData.RocketData)
         {
             //削除するか判定する
             if (data.Key == null || data.Value == null || data.Value.Count <= 0 || data.Key.IsDead() || data.Value.IsAllDead() ||
@@ -93,7 +93,7 @@ public static class Rocket
         public static void ClearAndReload()
         {
             Player = new();
-            RocketButtonCooldown  = CustomOptionData.RocketButtonCooldown.GetFloat();
+            RocketButtonCooldown = CustomOptionData.RocketButtonCooldown.GetFloat();
             RocketButtonAfterCooldown = CustomOptionData.RocketButtonAfterCooldown.GetFloat();
             RocketData = new(true, new());
         }
@@ -112,7 +112,7 @@ public static class Rocket
                 () =>
                 {
                     // ここに能力のコードを記載する
-                    PlayerControl target = HudManagerStartPatch.SetTarget(RoleData.LocalData, Crewmateonly:true);
+                    PlayerControl target = HudManagerStartPatch.SetTarget(RoleData.LocalData, Crewmateonly: true);
                     if (target == null)
                         return;
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RocketSeize);
