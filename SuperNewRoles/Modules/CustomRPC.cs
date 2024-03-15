@@ -61,6 +61,7 @@ public enum RoleId
     NiceScientist,
     Observer,
 
+    DimensionWalker,
     //RoleId
 
     SoothSayer,

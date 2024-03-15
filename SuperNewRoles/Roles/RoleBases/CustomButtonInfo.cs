@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
@@ -15,6 +16,7 @@ public enum CustomButtonCouldType
     Always = 0x001, //1
     CanMove = 0x002, //2
     SetTarget = 0x004, //4
+    NotTouchingWall = 0x008 //8
 }
 public class CustomButtonInfo
 {
@@ -234,6 +236,10 @@ public class CustomButtonInfo
         //SetTargetを判定するかつSetTargetがfalseなら
         if (CouldUseType.HasFlag(CustomButtonCouldType.SetTarget) &&
             !SetTarget())
+            return false;
+        //FarFromWallを判定するかつWallDetectorがWallに触れていたら
+        if (CouldUseType.HasFlag(CustomButtonCouldType.NotTouchingWall) &&
+            WallDetector.LocalWallDetector.CollisionNow)
             return false;
         //自前の判定があるならそれを使い、falseならreturn
         if (!(CouldUseFunc?.Invoke() ?? true))
