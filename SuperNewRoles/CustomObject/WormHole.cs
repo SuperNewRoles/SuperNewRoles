@@ -103,8 +103,6 @@ class WormHole : CustomAnimation
         //設置した人が同じ有効化済みワームホールをすべて検索 & リストに入れる
         List<WormHole> myHoles = AllWormHoles.Where(x => x.Owner == Owner && x.IsActivating).ToList();
 
-        Logger.Info($"aaaaaaaaaaaaaaa{myHoles.Count()}");
-
         if (myHoles[0] != null) {
             myHoles[0]._vent.Left = myHoles[1]?._vent;
             myHoles[0]._vent.Right = myHoles[2]?._vent;
