@@ -771,7 +771,7 @@ class MeetingHudClosePatch
     public static void Postfix(MeetingHud __instance)
     {
         CustomRoles.OnMeetingClose();
-        AntiBlackOut.OnMeetingHudClose();
+        AntiBlackOut.OnMeetingHudClose(__instance.exiledPlayer);
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

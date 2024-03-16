@@ -27,13 +27,13 @@ public static class AntiBlackOut
         return ProcessNow && !IsModdedSerialize;
     }
 
-    public static void OnMeetingHudClose()
+    public static void OnMeetingHudClose(GameData.PlayerInfo exiled)
     {
         if (CantProcess)
             return;
         Logger.Info("Start OnMeetingHudClose");
         ProcessNow = true;
-        new LateTask(SetAllDontDead, 4f);
+        new LateTask(() => SetAllDontDead(exiled), 4f);
     }
     public static void OnWrapUp()
     {
@@ -50,19 +50,94 @@ public static class AntiBlackOut
             RPCHelper.RpcSyncGameData();
             IsModdedSerialize = false;
             ProcessNow = false;
-        }, 8f);
+        }, 0.5f);
         DestroySavedData();
     }
 
-    private static void SetAllDontDead()
+    private static void SetAllDontDead(GameData.PlayerInfo exiled)
     {
         InitalSavedData();
+        bool NeedDesyncSerialize = false;
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            var desyncdetail = RoleSelectHandler.GetDesyncRole(player.GetRole());
+            if (desyncdetail.IsDesync &&
+                desyncdetail.RoleType is
+                AmongUs.GameOptions.RoleTypes.Impostor or
+                AmongUs.GameOptions.RoleTypes.Shapeshifter or
+                AmongUs.GameOptions.RoleTypes.ImpostorGhost
+            )
+            {
+                NeedDesyncSerialize = true;
+                break;
+            }
+
+        }
+        if (NeedDesyncSerialize)
+            DesyncDontDead(exiled);
+        else
+            SyncDontDead(exiled);
+    }
+    private static void DesyncDontDead(GameData.PlayerInfo exiled)
+    {
+        Logger.Info("Selected DesyncDontDead");
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            PlayerDeadData[player] = player.Data.IsDead;
+            PlayerDisconnectedData[player] = player.Data.Disconnected;
+        }
+        foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
+        {
+            bool IsImpoAlived = false;
+            var desyncdetail = RoleSelectHandler.GetDesyncRole(seer.GetRole());
+            if (!desyncdetail.IsDesync || !(
+                desyncdetail.RoleType is
+                AmongUs.GameOptions.RoleTypes.Impostor or
+                AmongUs.GameOptions.RoleTypes.Shapeshifter or
+                AmongUs.GameOptions.RoleTypes.ImpostorGhost)
+            ) {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsImpostor() && !IsImpoAlived &&
+                        (exiled == null || exiled.PlayerId != player.PlayerId))
+                    {
+                        IsImpoAlived = true;
+                        player.Data.IsDead = false;
+                        player.Data.Disconnected = false;
+                        continue;
+                    }
+                    if (!player.IsImpostor())
+                    {
+                        player.Data.IsDead = false;
+                        player.Data.Disconnected = false;
+                        continue;
+                    }
+                    player.Data.Disconnected = true;
+                }
+            }
+            else
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.Data.IsDead = false;
+                    player.Data.Disconnected = false;
+                }
+            }
+            IsModdedSerialize = true;
+            RPCHelper.RpcSyncGameData(seer.GetClientId());
+            IsModdedSerialize = false;
+        }
+    }
+    private static void SyncDontDead(GameData.PlayerInfo exiled)
+    {
+        Logger.Info("Selected SyncDontDead");
         bool IsImpoAlived = false;
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             PlayerDeadData[player] = player.Data.IsDead;
             PlayerDisconnectedData[player] = player.Data.Disconnected;
-            if (player.IsImpostor() && !IsImpoAlived)
+            if (player.IsImpostor() && !IsImpoAlived &&
+                (exiled == null || exiled.PlayerId != player.PlayerId))
             {
                 IsImpoAlived = true;
                 player.Data.IsDead = false;
