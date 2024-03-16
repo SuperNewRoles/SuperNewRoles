@@ -1349,16 +1349,16 @@ class GameOptionsDataPatch
 
         entries.Add(entry.ToString().Trim('\r', '\n'));
 
-        static void addChildren(CustomOption option, ref StringBuilder entry, bool indent = true)
+        static void addChildren(CustomOption option, ref StringBuilder entry, ModeId modeId, bool indent = true)
         {
-            if ((!option.Enabled) || (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn)) return;
+            if ((!option.Enabled) || (modeId == ModeId.SuperHostRoles && !option.isSHROn)) return;
 
             foreach (var child in option.children)
             {
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) continue;
                 if (!GameOptionsMenuUpdatePatch.IsHidden(option))
                     entry.AppendLine((indent ? "    " : "") + OptionToString(child));
-                addChildren(child, ref entry, indent);
+                addChildren(child, ref entry, modeId, indent);
             }
         }
 
@@ -1376,9 +1376,10 @@ class GameOptionsDataPatch
                 continue;
             }
 
+            ModeId modeId = ModeHandler.GetMode(false);
             if (option.parent == null)
             {
-                if ((!option.Enabled) || (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn))
+                if ((!option.Enabled) || (modeId == ModeId.SuperHostRoles && !option.isSHROn))
                 {
                     continue;
                 }
@@ -1388,7 +1389,7 @@ class GameOptionsDataPatch
                 {
                     entry.AppendLine(OptionToString(option));
                 }
-                addChildren(option, ref entry, !GameOptionsMenuUpdatePatch.IsHidden(option));
+                addChildren(option, ref entry, modeId, !GameOptionsMenuUpdatePatch.IsHidden(option));
                 if (entry.ToString().Trim('\n', '\r') is not "\r" and not "")
                 {
                     entries.Add(entry.ToString().Trim('\n', '\r'));
