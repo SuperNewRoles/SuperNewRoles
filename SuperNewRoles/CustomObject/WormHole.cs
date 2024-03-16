@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,10 +59,12 @@ class WormHole : CustomAnimation
         _vent.ExitVentAnim = null;
         _vent.name = "WormHoleVent";
         _vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
-        _vent.gameObject.SetActive(false);
+        _vent.gameObject.myRend.color = TimerText.color = Palette.DisabledClear;
 
-        if (!(PlayerControl.LocalPlayer.GetRoleBase() is IImpostor || PlayerControl.LocalPlayer.IsImpostor()))
+        if (!(PlayerControl.LocalPlayer.GetRoleBase() is IImpostor || PlayerControl.LocalPlayer.IsImpostor())) {
             TimerText.gameObject.SetActive(false);
+            _vent.gameObject.SetActive(false);
+        }
 
         MapUtilities.AddVent(_vent);
         AllWormHoles.Add(this);
@@ -91,6 +94,9 @@ class WormHole : CustomAnimation
     public void Activate()
     {
         IsActivating = true;
+
+        _vent.gameObject.myRend.color = TimerText.color = Palette.EnabledColor;
+
         TimerText.gameObject.SetActive(false);
         gameObject.SetActive(true);
         _vent.gameObject.SetActive(true);
