@@ -29,11 +29,29 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static bool Is;
         public static bool Prefix(GameData __instance, ref bool __result)
         {
-            if (AmongUsClient.Instance is null || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || !ModeHandler.IsMode(ModeId.BattleRoyal) || Is || !Main.IsIntroEnded)
+            if (AmongUsClient.Instance == null ||
+                AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
             {
                 Is = false;
                 __result = true;
                 return true;
+            }
+            if (ModeHandler.IsMode(ModeId.BattleRoyal))
+            {
+                if (Is || !Main.IsIntroEnded)
+                {
+                    Is = false;
+                    __result = true;
+                    return true;
+                }
+            } else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (!AntiBlackOut.CantSendGameData())
+                {
+                    Is = false;
+                    __result = true;
+                    return true;
+                }
             }
             __instance.ClearDirtyBits();
             __result = false;

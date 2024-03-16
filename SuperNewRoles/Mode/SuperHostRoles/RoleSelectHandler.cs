@@ -37,6 +37,7 @@ public static class RoleSelectHandler
     }
     public static void SpawnBots()
     {
+        return;
         if (ReplayManager.IsReplayMode) return;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek, ModeId.VanillaHns))
         {

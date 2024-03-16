@@ -94,6 +94,10 @@ class VotingComplete
         }
         if (!AmongUsClient.Instance.AmHost) ReplayActionVotingComplete.Create(states, exiled is null ? (byte)255 : exiled.PlayerId, tie);
     }
+    public static void Postfix()
+    {
+        CustomRoles.OnMeetingClose();
+    }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
 class VotingComplatePatch
@@ -767,6 +771,7 @@ class MeetingHudClosePatch
     public static void Postfix(MeetingHud __instance)
     {
         CustomRoles.OnMeetingClose();
+        AntiBlackOut.OnMeetingHudClose();
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

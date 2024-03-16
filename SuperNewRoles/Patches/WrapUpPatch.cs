@@ -12,6 +12,7 @@ using SuperNewRoles.MapCustoms;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -100,6 +101,7 @@ class WrapUpPatch
             exiled = null;
         }
         RoleClass.IsCoolTimeSetted = false;
+        AntiBlackOut.OnWrapUp();
         FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
         if (ModeHandler.IsMode(ModeId.Default))
         {

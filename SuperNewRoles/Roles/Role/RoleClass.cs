@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.MapCustoms;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles.Attribute;
@@ -73,6 +74,7 @@ public static class RoleClass
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
         Mode.ModeHandler.ClearAndReload();
+        AntiBlackOut.ClearAndReload();
         MapCustomClearAndReload.ClearAndReload();
         AdditionalVents.ClearAndReload();
         SpecimenVital.ClearAndReload();
