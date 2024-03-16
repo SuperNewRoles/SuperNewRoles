@@ -36,8 +36,9 @@ class WormHole : CustomAnimation
 
     public WormHole Init(PlayerControl owner)
     {
-        gameObject.transform.position = owner.GetTruePosition();
+        Vector3 pos = owner.GetTruePosition();
         gameObject.transform.SetParent(ShipStatus.Instance.gameObject.transform);
+        gameObject.transform.position = new(pos.x, pos.y, pos.z + 0.1f);
         gameObject.transform.localScale = new(1f, 1f);
         gameObject.layer = 12; //ShortObjectにレイヤーを設定
         spriteRenderer.sprite = ModHelpers.LoadSpriteFromResources(string.Format(ResourcePath, "0"), 125f);
@@ -58,9 +59,7 @@ class WormHole : CustomAnimation
         _vent.ExitVentAnim = null;
         _vent.name = "WormHoleVent";
         _vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
-        var vRenderer = _vent.GetComponent<SpriteRenderer>();
-        vRenderer.sprite = null;
-        _vent.myRend = vRenderer;
+        _vent.myRend.color.SetAlpha(0f);
         _vent.gameObject.SetActive(false);
         TimerText.color = Palette.DisabledClear;
         Id = _vent.Id;
@@ -108,23 +107,21 @@ class WormHole : CustomAnimation
 
     private void ConnectVents()
     {
-        //設置した人が同じ有効化済みワームホールをすべて検索 & リストに
+        //設置した人が同じかつ、有効化済みのワームホールをすべて検索 & リストに
         List<WormHole> myHoles = AllWormHoles.Where(x => x.Owner == Owner && x.IsActivating).ToList();
 
-        if (myHoles[0] != null) {
-            myHoles[0]._vent.Left = myHoles[1]?._vent;
-            myHoles[0]._vent.Right = myHoles[2]?._vent;
+        if (myHoles is null)
+            return;
+
+        for (var i = 0; i < myHoles.Count - 1; i++) {
+            var a = myHoles[i];
+            var b = myHoles[i + 1];
+            a._vent.Right = b._vent;
+            b._vent.Left = a._vent;
         }
 
-        if (myHoles[1] != null) {
-            myHoles[1]._vent.Left = myHoles[0]?._vent;
-            myHoles[1]._vent.Right = myHoles[2]?._vent;
-        }
-
-        if (myHoles[2] != null) {
-            myHoles[2]._vent.Left = myHoles[0]?._vent;
-            myHoles[2]._vent.Right = myHoles[1]?._vent;
-        }
+        myHoles.First()._vent.Left = myHoles.Last()._vent;
+        myHoles.Last()._vent.Right = myHoles.First()._vent;
     }
 
     public static WormHole GetWormHoleById(int ventId)
