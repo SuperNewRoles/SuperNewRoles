@@ -128,6 +128,6 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
         PutWormHoleButtonInfo.ResetCoolTime();
         PutWormHoleButtonInfo.AbilityCount++;
 
-        UnityEngine.Object.Destroy(WormHole.GetWormHoleFromId(wormholeId));
+        UnityEngine.Object.Destroy(WormHole.GetWormHoleById(wormholeId).gameObject);
     }
 }

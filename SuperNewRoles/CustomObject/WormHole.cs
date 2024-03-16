@@ -21,7 +21,6 @@ namespace SuperNewRoles.CustomObject;
 class WormHole : CustomAnimation
 {
     public static List<WormHole> AllWormHoles = new();
-    private static int MaxId;
     public int Id { get; private set; }
     public PlayerControl Owner { get; private set; }
     public float ActivateTimer { get; private set; }
@@ -38,19 +37,19 @@ class WormHole : CustomAnimation
     public WormHole Init(PlayerControl owner)
     {
         gameObject.transform.position = owner.GetTruePosition();
+        gameObject.transform.SetParent(ShipStatus.Instance.gameObject.transform);
+        gameObject.transform.localScale = new(1f, 1f);
         gameObject.layer = 12; //ShortObjectにレイヤーを設定
+        spriteRenderer.sprite = ModHelpers.LoadSpriteFromResources(string.Format(ResourcePath, "0"), 125f);
 
-        Id = MaxId++;
         Owner = owner;
         ActivateTimer = DimensionWalker.ActivateWormHoleTime.GetInt();
         TimerText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.buttonLabelText, gameObject.transform);
-        //TimerText.gameObject.transform.localPosition = new();
         IsActivating = false;
 
         var tempVent = UnityEngine.Object.FindObjectOfType<Vent>();
         _vent = UnityEngine.Object.Instantiate<Vent>(tempVent, gameObject.transform);
         _vent.gameObject.transform.position = gameObject.transform.position;
-        //_vent.myRend.sprite = ModHelpers.LoadSpriteFromResources(string.Format(ResourcePath, "0"), 125f);
         _vent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1;
         _vent.Left = null;
         _vent.Right = null;
@@ -59,12 +58,15 @@ class WormHole : CustomAnimation
         _vent.ExitVentAnim = null;
         _vent.name = "WormHoleVent";
         _vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
-        _vent.gameObject.myRend.color = TimerText.color = Palette.DisabledClear;
+        var vRenderer = _vent.GetComponent<SpriteRenderer>();
+        vRenderer.sprite = null;
+        _vent.myRend = vRenderer;
+        _vent.gameObject.SetActive(false);
+        TimerText.color = Palette.DisabledClear;
+        Id = _vent.Id;
 
-        if (!(PlayerControl.LocalPlayer.GetRoleBase() is IImpostor || PlayerControl.LocalPlayer.IsImpostor())) {
+        if (!(PlayerControl.LocalPlayer.GetRoleBase() is IImpostor || PlayerControl.LocalPlayer.IsImpostor()))
             TimerText.gameObject.SetActive(false);
-            _vent.gameObject.SetActive(false);
-        }
 
         MapUtilities.AddVent(_vent);
         AllWormHoles.Add(this);
@@ -91,11 +93,11 @@ class WormHole : CustomAnimation
             ActivateTimer -= Time.deltaTime;
     }
 
-    public void Activate()
+    private void Activate()
     {
         IsActivating = true;
 
-        _vent.gameObject.myRend.color = TimerText.color = Palette.EnabledColor;
+        TimerText.color = Palette.EnabledColor;
 
         TimerText.gameObject.SetActive(false);
         gameObject.SetActive(true);
@@ -106,7 +108,7 @@ class WormHole : CustomAnimation
 
     private void ConnectVents()
     {
-        //設置した人が同じ有効化済みワームホールをすべて検索 & リストに入れる
+        //設置した人が同じ有効化済みワームホールをすべて検索 & リストに
         List<WormHole> myHoles = AllWormHoles.Where(x => x.Owner == Owner && x.IsActivating).ToList();
 
         if (myHoles[0] != null) {
@@ -125,16 +127,15 @@ class WormHole : CustomAnimation
         }
     }
 
-    public static GameObject GetWormHoleFromId(int ventId)
-    {
-        var vent = MapUtilities.CachedShipStatus.AllVents.FirstOrDefault(x => x.Id == ventId);
-        return vent.gameObject.transform.parent.gameObject;
-    }
+    public static WormHole GetWormHoleById(int ventId)
+        => AllWormHoles.FirstOrDefault(x => x.Id == ventId);
 
-    /*[HarmonyPatch(typeof(Vent), nameof(Vent.CanUse)), HarmonyPrefix]
+    [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse)), HarmonyPrefix]
     static bool canUse(Vent __instance, ref float __result, [HarmonyArgument(0)] GameData.PlayerInfo playerInfo, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
     {
         var player = playerInfo.PlayerId.GetPlayerControl();
+
+        // 対象がワームホールかつ、使用者がインポスターでない なら使えない
         if (__instance.gameObject.name == "WormHoleVent" && !(player.IsImpostor() || player.GetRoleBase() is DimensionWalker)) {
             canUse = couldUse = false;
             __result = float.MaxValue;
@@ -143,5 +144,5 @@ class WormHole : CustomAnimation
 
         canUse = couldUse = true;
         return true;
-    }*/
+    }
 }
