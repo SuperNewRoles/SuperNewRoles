@@ -18,8 +18,8 @@ public class CustomVisor
     {
         public static void Postfix(HatManager __instance)
         {
-            //if (ConfigRoles.DebugMode.Value) return;
-            if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value) return;
+            if (!DownLoadCustomCosmetics.IsLoad) return;
+
             if (isAdded || !DownLoadClassVisor.IsEndDownload) return;
             isAdded = true;
             SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理開始");

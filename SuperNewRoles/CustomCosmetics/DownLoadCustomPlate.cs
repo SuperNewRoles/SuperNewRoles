@@ -17,7 +17,7 @@ public struct CustomPlates
     public string resource { get; set; }
     public string reshasha { get; set; }
 }
-public static class DownLoadClass
+public static class DownLoadClassPlate
 {
     public static bool IsEndDownload = false;
     public static bool running = false;

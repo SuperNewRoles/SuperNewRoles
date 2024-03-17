@@ -259,9 +259,8 @@ public static class CredentialsPatch
             {
                 __instance.StartCoroutine(ShowAnnouncementPopUp(__instance).WrapToIl2Cpp());
             }
-            DownLoadCustomhat.Load();
-            DownLoadClass.Load();
-            DownLoadClassVisor.Load();
+
+            DownLoadCustomCosmetics.CosmeticsLoad();
 
             instance = __instance;
 

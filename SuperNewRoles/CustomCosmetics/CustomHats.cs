@@ -585,8 +585,8 @@ public class CustomHatLoader
 
     private static async Task LaunchHatFetcherAsync()
     {
-        if (ConfigRoles.DebugMode.Value) return;
-        if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value) return;
+        if (!DownLoadCustomCosmetics.IsLoad) return;
+
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
         hatDetails = new List<CustomHatOnline>();
