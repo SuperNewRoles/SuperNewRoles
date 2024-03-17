@@ -142,4 +142,11 @@ class WormHole : CustomAnimation
         canUse = couldUse = true;
         return true;
     }
+
+    // Useボタンのターゲットがあるときにベントに入るとそのままUseボタンが押せてしまう問題を強引に修正
+    [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
+    static void useButtonTargetReset()
+    {
+        HudManager.Instance.UseButton.currentTarget = null;
+    }
 }
