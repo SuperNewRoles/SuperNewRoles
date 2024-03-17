@@ -64,7 +64,7 @@ class WormHole : CustomAnimation
         TimerText.color = Palette.DisabledClear;
         Id = _vent.Id;
 
-        if (!(PlayerControl.LocalPlayer.GetRoleBase() is IImpostor || PlayerControl.LocalPlayer.IsImpostor()))
+        if (!PlayerControl.LocalPlayer.IsImpostor())
             TimerText.gameObject.SetActive(false);
 
         MapUtilities.AddVent(_vent);
@@ -127,26 +127,15 @@ class WormHole : CustomAnimation
     public static WormHole GetWormHoleById(int ventId)
         => AllWormHoles.FirstOrDefault(x => x.Id == ventId);
 
-    [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse)), HarmonyPrefix]
-    static bool canUse(Vent __instance, ref float __result, [HarmonyArgument(0)] GameData.PlayerInfo playerInfo, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
-    {
-        var player = playerInfo.PlayerId.GetPlayerControl();
+    public static bool IsWormHole(Vent vent)
+        => vent.gameObject.name == "WormHoleVent";
 
-        // 対象がワームホールかつ、使用者がインポスターでない なら使えない
-        if (__instance.gameObject.name == "WormHoleVent" && !(player.IsImpostor() || player.GetRoleBase() is IImpostor)) {
-            canUse = couldUse = false;
-            __result = float.MaxValue;
-            return false;
-        }
-
-        canUse = couldUse = true;
-        return true;
-    }
+    // 対象がワームホールかつ、使用者がインポスターでない なら使えない
+    /*public static bool CanUse(Vent __instance, PlayerControl player)
+        =>  && player.IsImpostor();*/
 
     // Useボタンのターゲットがあるときにベントに入るとそのままUseボタンが押せてしまう問題を強引に修正
     [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
     static void useButtonTargetReset()
-    {
-        HudManager.Instance.UseButton.currentTarget = null;
-    }
+        => HudManager.Instance.UseButton.currentTarget = null;
 }
