@@ -99,7 +99,8 @@ public class WellBehaver
     public static void FixedUpdate()
     {
         bool active = PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || WellBehaverAllPlayerCanSeeGarbage.GetBool() || PlayerControl.LocalPlayer.IsDead();
-        if (Garbage.AllGarbageObject?.activeSelf != active) Garbage.AllGarbageObject?.SetActive(active);
+        if (Garbage.AllGarbageObject != null && Garbage.AllGarbageObject.activeSelf != active)
+            Garbage.AllGarbageObject.SetActive(active);
         if (!AmongUsClient.Instance.AmHost) return;
         if (AlivePlayer.Count <= 0 || RoleClass.IsMeeting) return;
         if (Garbage.AllGarbage.Count >= WellBehaverLimitTrashCount.GetInt() * AllowableLimitCorrection.Now && WellBehaverPlayer.Any(x => x.IsAlive()))
