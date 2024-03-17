@@ -6,7 +6,7 @@ public static class DownLoadCustomCosmetics
     public static bool IsLoad => !(ConfigRoles.DebugMode.Value || ConfigRoles.IsModCosmeticsAreNotLoaded.Value) || forceLoad;
 
     /// <summary>デバッグモードの状態及びクライアントオプションの状態に影響せず, 強制的にCustomCosmeticsを読み込むか</summary>
-    private static bool forceLoad = false; // プルリク時, trueなら指摘
+    private const bool forceLoad = false; // プルリク時, trueなら指摘
 
     public static void CosmeticsLoad()
     {
