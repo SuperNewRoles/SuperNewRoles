@@ -114,10 +114,10 @@ class WormHole : CustomAnimation
             return;
 
         for (var i = 0; i < myHoles.Count - 1; i++) {
-            var a = myHoles[i];
-            var b = myHoles[i + 1];
-            a._vent.Right = b._vent;
-            b._vent.Left = a._vent;
+            var left = myHoles[i];
+            var right = myHoles[i + 1];
+            left._vent.Right = right._vent;
+            right._vent.Left = left._vent;
         }
 
         myHoles.First()._vent.Left = myHoles.Last()._vent;
@@ -133,7 +133,7 @@ class WormHole : CustomAnimation
         var player = playerInfo.PlayerId.GetPlayerControl();
 
         // 対象がワームホールかつ、使用者がインポスターでない なら使えない
-        if (__instance.gameObject.name == "WormHoleVent" && !(player.IsImpostor() || player.GetRoleBase() is DimensionWalker)) {
+        if (__instance.gameObject.name == "WormHoleVent" && !(player.IsImpostor() || player.GetRoleBase() is IImpostor)) {
             canUse = couldUse = false;
             __result = float.MaxValue;
             return false;

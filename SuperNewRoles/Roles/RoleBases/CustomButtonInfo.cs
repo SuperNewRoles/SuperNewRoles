@@ -16,7 +16,7 @@ public enum CustomButtonCouldType
     Always = 0x001, //1
     CanMove = 0x002, //2
     SetTarget = 0x004, //4
-    NotTouchingWall = 0x008 //8
+    NotNearDoor = 0x008, //8
 }
 public class CustomButtonInfo
 {
@@ -237,9 +237,9 @@ public class CustomButtonInfo
         if (CouldUseType.HasFlag(CustomButtonCouldType.SetTarget) &&
             !SetTarget())
             return false;
-        //FarFromWallを判定するかつWallDetectorがWallに触れていたら
-        if (CouldUseType.HasFlag(CustomButtonCouldType.NotTouchingWall) &&
-            WallDetector.LocalWallDetector.CollisionNow)
+        //NotNearDoorを判定するかつドアが近くにあれば
+        if (CouldUseType.HasFlag(CustomButtonCouldType.NotNearDoor) &&
+            IsNearDoor(PlayerControl.LocalPlayer))
             return false;
         //自前の判定があるならそれを使い、falseならreturn
         if (!(CouldUseFunc?.Invoke() ?? true))
@@ -255,5 +255,24 @@ public class CustomButtonInfo
         CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
         PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
         return CurrentTarget;
+    }
+
+    /// <summary>
+    /// プレイヤーがドアの近くにいるか判定する
+    /// </summary>
+    /// <returns>playerがドアの近くにいる</returns>
+    public bool IsNearDoor(PlayerControl player)
+    {
+        // ドアをすべて検索(重そう)
+        var all = UnityEngine.Object.FindObjectsOfType<DoorConsole>();
+
+        foreach (DoorConsole door in all)
+        {
+            var distance = Vector2.Distance(player.GetTruePosition(), door.gameObject.transform.position);
+            if (distance <= door.UsableDistance)
+                return true;
+        }
+
+        return false;
     }
 }

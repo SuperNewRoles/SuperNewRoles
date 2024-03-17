@@ -172,7 +172,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<SpiderTrap>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
-        ClassInjector.RegisterTypeInIl2Cpp<WallDetector>();
     }
     static bool ViewdNonVersion = false;
     public static void SetNonVanilaVersionPatch()

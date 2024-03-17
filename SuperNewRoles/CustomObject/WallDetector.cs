@@ -1,5 +1,9 @@
+/**
 
-using System.Collections.Generic;
+DimensionWalker(役職)で壁貫通対策で使う予定だったものの、そもそも壁貫通が発生しなかったので没
+
+**/
+/*using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
@@ -16,7 +20,7 @@ class WallDetector : MonoBehaviour
     public WallDetector()
     {
         Collider = this.gameObject.AddComponent<BoxCollider2D>();
-        Collider.size = new(/*0.5f, 0.3f*/20f, 20f);
+        Collider.size = new(0.5f, 0.3f);
         Collider.isTrigger = true;
         CollisionNow = false;
     }
@@ -61,4 +65,4 @@ class WallDetector : MonoBehaviour
             LocalWallDetector = detector;
         }, 1f);
     }
-}
+}*/

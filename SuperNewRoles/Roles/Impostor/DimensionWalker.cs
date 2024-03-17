@@ -50,7 +50,7 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
     {
         PutWormHoleButtonInfo = new(3, this, () => OnButtonClick_Put(),
             (isAlive) => isAlive && !CollectWormHoleButtonInfo.CouldUse(),
-            CustomButtonCouldType.CanMove,
+            CustomButtonCouldType.CanMove | CustomButtonCouldType.NotNearDoor,
             null,//FIXME:
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.aaa.png", 115f),
             () => PutWormHoleCooltime.GetFloat(), new(-2f, 1, 0),
