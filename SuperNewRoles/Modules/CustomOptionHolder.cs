@@ -2000,6 +2000,7 @@ public class CustomOptionHolder
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
 
         CheckOption();
+        CustomOption.UpdateCanShows(null);
 
         /*
         string OPTIONDATA = "{";
