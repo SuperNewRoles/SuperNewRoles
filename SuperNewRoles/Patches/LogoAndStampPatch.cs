@@ -18,7 +18,7 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch]
 public static class CredentialsPatch
 {
-    public static string baseCredentials = $@"<size=130%>{SuperNewRolesPlugin.ColorModName}</size> v{SuperNewRolesPlugin.ThisVersion}";
+    public static string baseCredentials => $@"<size=130%>{SuperNewRolesPlugin.ColorModName}</size> v{SuperNewRolesPlugin.ThisVersion}";
 
     [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
     private static class VersionShowerPatch
@@ -253,6 +253,7 @@ public static class CredentialsPatch
         }
         public static void Postfix(MainMenuManager __instance)
         {
+            AprilFoolsManager.SetRandomModMode();
             __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
             if (ConfigRoles.IsUpdated)
@@ -280,7 +281,7 @@ public static class CredentialsPatch
             }
 
             var snrLogo = new GameObject("bannerLogo");
-            snrLogo.transform.position = new(2, 0.7f, 0);
+            snrLogo.transform.position = new(2, AprilFoolsManager.getCurrentBannerYPos(), -6);
             snrLogo.transform.localScale = Vector3.one * 0.95f;
             //snrLogo.transform.localScale = Vector3.one;
             renderer = snrLogo.AddComponent<SpriteRenderer>();
@@ -304,8 +305,11 @@ public static class CredentialsPatch
         {
             get
             {
-                if (HorseModeOption.enableHorseMode) return horseBannerSprite;
-                return SuperNewRolesPlugin.IsApril() ? SuperNakanzinoBannerSprite : bannerSprite;
+                //if (HorseModeOption.enableHorseMode) return horseBannerSprite;
+                Sprite aprilBannerSprite = AprilFoolsManager.getCurrentBanner();
+                //if (AprilFoolsManager.IsApril(2023)
+                //    return SuperNakanzinoBannerSprite;
+                return aprilBannerSprite != null ? aprilBannerSprite : bannerSprite;
             }
         }
 

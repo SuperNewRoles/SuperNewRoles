@@ -182,6 +182,8 @@ public class EndGameManagerSetUpPatch
     }
     public static void Postfix(EndGameManager __instance)
     {
+        AprilFoolsManager.SetRandomModMode();
+
         foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>())
         {
             UnityEngine.Object.Destroy(pb.gameObject);
