@@ -28,7 +28,9 @@ class WormHole : CustomAnimation
     public bool IsActivating { get; private set; }
     public Vent _vent { get; private set; }
 
-    public const string ResourcePath = "WormHole_{0}.png";
+    private const string ResourcePath_Use = "SuperNewRoles.Resources.WormHoleAnimation.Use.DimensionWalkerOpen";
+    private const string ResourcePath_Idle = "SuperNewRoles.Resources.WormHoleAnimation.Idle.DimensionWalkerIdle";
+    private static CustomAnimationOptions animOption_Idle = new(GetSprites(ResourcePath_Idle, 60, 2), 30, true);
 
     public WormHole(IntPtr intPtr) : base(intPtr)
     {
@@ -41,7 +43,6 @@ class WormHole : CustomAnimation
         gameObject.transform.position = new(pos.x, pos.y, pos.z + 0.1f);
         gameObject.transform.localScale = new(1f, 1f);
         gameObject.layer = 12; //ShortObjectにレイヤーを設定
-        spriteRenderer.sprite = ModHelpers.LoadSpriteFromResources(string.Format(ResourcePath, "0"), 125f);
 
         Owner = owner;
         ActivateTimer = DimensionWalker.ActivateWormHoleTime.GetInt();
@@ -59,13 +60,16 @@ class WormHole : CustomAnimation
         _vent.ExitVentAnim = null;
         _vent.name = "WormHoleVent";
         _vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
-        _vent.myRend.color.SetAlpha(0f);
+        _vent.myRend.enabled = false;
         _vent.gameObject.SetActive(false);
         TimerText.color = Palette.DisabledClear;
+        spriteRenderer.color = Palette.DisabledClear;
         Id = _vent.Id;
 
-        if (!PlayerControl.LocalPlayer.IsImpostor())
+        if (!PlayerControl.LocalPlayer.IsImpostor()) {
             TimerText.gameObject.SetActive(false);
+            spriteRenderer.enabled = false;
+        }
 
         MapUtilities.AddVent(_vent);
         AllWormHoles.Add(this);
@@ -74,12 +78,15 @@ class WormHole : CustomAnimation
 
     public override void OnDestroy()
     {
+        base.OnDestroy();
         MapUtilities.RemoveVent(_vent);
         AllWormHoles.Remove(this);
     }
 
     public override void Update()
     {
+        base.Update();
+
         if (IsActivating)
             return;
 
@@ -97,10 +104,14 @@ class WormHole : CustomAnimation
         IsActivating = true;
 
         TimerText.color = Palette.EnabledColor;
+        spriteRenderer.color = Palette.EnabledColor;
 
-        TimerText.gameObject.SetActive(false);
-        gameObject.SetActive(true);
         _vent.gameObject.SetActive(true);
+        TimerText.gameObject.SetActive(false);
+        spriteRenderer.enabled = true;
+
+        //base.Init(new(GetSprites(ResourcePath_Use, 15, 2), 30, true));
+        Init(animOption_Idle);
 
         ConnectVents();
     }
@@ -130,12 +141,29 @@ class WormHole : CustomAnimation
     public static bool IsWormHole(Vent vent)
         => vent.gameObject.name == "WormHoleVent";
 
-    // 対象がワームホールかつ、使用者がインポスターでない なら使えない
-    /*public static bool CanUse(Vent __instance, PlayerControl player)
-        =>  && player.IsImpostor();*/
-
     // Useボタンのターゲットがあるときにベントに入るとそのままUseボタンが押せてしまう問題を強引に修正
-    [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
+    [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick)), HarmonyPostfix]
     static void useButtonTargetReset()
         => HudManager.Instance.UseButton.currentTarget = null;
+
+    [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent)), HarmonyPostfix]
+    static void enterVent(Vent __instance, [HarmonyArgument(0)] PlayerControl pc) {
+        if (!IsWormHole(__instance))
+            return;
+        GetWormHoleById(__instance.Id).playUseAnimation(pc);
+    }
+
+    [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent)), HarmonyPostfix]
+    static void exitVent(Vent __instance, [HarmonyArgument(0)] PlayerControl pc) {
+        if (!IsWormHole(__instance))
+            return;
+        GetWormHoleById(__instance.Id).playUseAnimation(pc);
+    }
+
+    private void playUseAnimation(PlayerControl user)
+    {
+        if (!DimensionWalker.DoPlayWormHoleAnimation.GetBool() && !user.AmOwner)
+            return;
+        Init(new CustomAnimationOptions(GetSprites(ResourcePath_Use, 15, 2), 30, false, OnEndAnimation:(anim, option) => base.Init(animOption_Idle)));
+    }
 }
