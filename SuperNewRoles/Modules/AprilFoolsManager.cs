@@ -50,6 +50,8 @@ public static class AprilFoolsManager
     };
     private static Dictionary<string, Sprite> ModBanners = new();
 
+    public const string DefaultModNameOnColor = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
+
     private static List<ModMode> _enums = null;
 
     public static void SetRandomModMode()
