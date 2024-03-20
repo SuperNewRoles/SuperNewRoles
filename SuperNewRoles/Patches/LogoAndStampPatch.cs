@@ -256,6 +256,7 @@ public static class CredentialsPatch
 
             AprilFoolsManager.SetRandomModMode();
             __instance.gameModeButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
+            __instance.accountButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
 
             __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
