@@ -50,10 +50,14 @@ public static class AprilFoolsManager
     };
     private static Dictionary<string, Sprite> ModBanners = new();
 
+    private static List<ModMode> _enums = null;
+
     public static void SetRandomModMode()
     {
-        Array enums = Enum.GetValues(typeof(ModMode));
-        currentModMode = (ModMode)enums.GetValue(UnityEngine.Random.Range(0, enums.Length));
+        if (_enums == null || _enums.Count <= 0)
+            _enums = ((ModMode[])Enum.GetValues(typeof(ModMode))).ToList();
+        currentModMode = _enums.GetRandom();
+        _enums.Remove(currentModMode);
     }
 
     public static float getCurrentBannerYPos()
