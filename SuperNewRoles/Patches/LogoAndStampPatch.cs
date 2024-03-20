@@ -253,7 +253,10 @@ public static class CredentialsPatch
         }
         public static void Postfix(MainMenuManager __instance)
         {
+
             AprilFoolsManager.SetRandomModMode();
+            __instance.gameModeButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
+
             __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
             if (ConfigRoles.IsUpdated)
