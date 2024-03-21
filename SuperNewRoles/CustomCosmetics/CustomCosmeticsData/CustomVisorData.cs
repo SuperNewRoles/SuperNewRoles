@@ -14,17 +14,40 @@ using static SuperNewRoles.Modules.Blacklist;
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomVisorData : VisorData
 {
-    public VisorViewData visorViewData;
-    public CustomVisorData(VisorViewData hvd)
+    public VisorTempViewData vtvd;
+
+    public class VisorTempViewData
     {
-        visorViewData = hvd;
+        public Sprite MainImage; // IdleFrame;
+        public Sprite FlipImage; // LeftIdleFrame
+        public Sprite ClimbImage; // ClimbFrame (未使用)
+        public Sprite FloorFrame; // FloorFrame (未使用)
+        public bool Adaptive; // MatchPlayerColor
+
+        public string VisorName;
+
+        public VisorViewData CreateVVD
+        {
+            get
+            {
+                return new VisorViewData
+                {
+                    IdleFrame = MainImage,
+                    LeftIdleFrame = FlipImage,
+                    ClimbFrame = ClimbImage, // (未使用)
+                    FloorFrame = FloorFrame, // (未使用)
+                    MatchPlayerColor = Adaptive,
+                    name = VisorName
+                };
+            }
+        }
     }
     static Dictionary<string, VisorViewData> cache = new();
     static VisorViewData getbycache(string id)
     {
-        if (!cache.ContainsKey(id))
+        if (!cache.ContainsKey(id) || cache[id] == null)
         {
-            cache[id] = CustomVisor.customVisorData.FirstOrDefault(x => x.ProductId == id).visorViewData;
+            cache[id] = CustomVisor.customVisorData.FirstOrDefault(x => x.ProductId == id).vtvd.CreateVVD;
         }
         return cache[id];
     }
