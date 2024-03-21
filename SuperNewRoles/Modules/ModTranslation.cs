@@ -9,14 +9,17 @@ namespace SuperNewRoles.Modules;
 public static class ModTranslation
 {
     // 一番左と一行全部
-    private static Dictionary<string, string[]> dictionary = new();
+    public static Dictionary<string, string[]> dictionary = new();
+    public static Dictionary<string, string[]> AprilDictionary = null;
     private static readonly HashSet<string> outputtedStr = new();
     public static string GetString(string key)
     {
+        Dictionary<string, string[]> currentTransDict = AprilDictionary != null ? AprilDictionary : dictionary;
+
         // アモアス側の言語読み込みが完了しているか ? 今の言語 : 最後の言語
         SupportedLangs langId = DestroyableSingleton<TranslationController>.InstanceExists ? FastDestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
 
-        if (!dictionary.TryGetValue(key, out string[] values)) return key; // keyが辞書にないならkeyのまま返す
+        if (!currentTransDict.TryGetValue(key, out string[] values)) return key; // keyが辞書にないならkeyのまま返す
 
         if (langId is SupportedLangs.SChinese or SupportedLangs.TChinese)
         {

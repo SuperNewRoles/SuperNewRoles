@@ -48,6 +48,15 @@ public static class AprilFoolsManager
     {
         { ModMode.SuperNagaiRoles.ToString(), 1.3f },
     };
+    private static Dictionary<string, Dictionary<string, string>> ModModeReplaces = new()
+    {
+        { ModMode.SuperNewRollcakes.ToString(),
+            new(){
+                { "役職", "ロールケーキ(役職)" },
+                { " Role ", " Rollcake(Role) " }
+            }
+        },
+    };
     private static Dictionary<string, Sprite> ModBanners = new();
 
     public const string DefaultModNameOnColor = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
@@ -60,6 +69,7 @@ public static class AprilFoolsManager
             _enums = ((ModMode[])Enum.GetValues(typeof(ModMode))).ToList();
         currentModMode = _enums.GetRandom();
         _enums.Remove(currentModMode);
+        UpdateAprilTranslation();
     }
 
     public static float getCurrentBannerYPos()
@@ -116,5 +126,32 @@ public static class AprilFoolsManager
                 throw new ArgumentOutOfRangeException(nameof(year), year, $"I don't have year '{year}'");
         }
         return utcNow >= startTimeUtc && utcNow <= endTimeUtc;
+    }
+
+    private static void UpdateAprilTranslation()
+    {
+        Logger.Info("Start UpdateAprilTranslation");
+        ModTranslation.AprilDictionary = new();
+        if (!ModModeReplaces.TryGetValue(currentModMode.ToString(), out Dictionary<string, string> replaces))
+            replaces = new();
+        replaces.Add("SuperNewRoles", getCurrentModName());
+        replaces.Add(DefaultModNameOnColor, getCurrentModNameOnColor());
+        int index = 0;
+        string newValue = null;
+        foreach (var trans in ModTranslation.dictionary)
+        {
+            var newValues = new string[trans.Value.Length];
+            index = 0;
+            foreach (string transvalue in trans.Value)
+            {
+                newValue = transvalue;
+                foreach (var replacedetail in replaces)
+                {
+                    newValue = newValue.Replace(replacedetail.Key, replacedetail.Value);
+                }
+                newValues[index] = transvalue;
+            }
+        }
+        Logger.Info("End UpdateAprilTranslation");
     }
 }
