@@ -195,13 +195,29 @@ public class CustomVisors
 
     public class CustomVisor
     {
-        public string author { get; set; } // 制作者名
-        public string package { get; set; } // パッケージ名
-        public string name { get; set; } // バイザー名
-        public string resource { get; set; } // 本体:IdleFrame (vtvd:MainImage) に値する画像の ファイル名
-        public string flipresource { get; set; } // 本体:LeftIdleFrame (vtvd:FlipImage) に値する画像の ファイル名
-        public bool adaptive { get; set; } // 本体:MatchPlayerColor (ボディカラー反映) を有効にするか
-        public bool IsSNR { get; set; } // バイザーが,SNR独自規格か (設定しない時は, TORと同様に画像を処理する)
+        /// <summary>制作者名</summary>
+        public string author { get; set; }
+
+        /// <summary>パッケージ名</summary>
+        public string package { get; set; }
+
+        /// <summary>バイザー名</summary>
+        public string name { get; set; }
+
+        /// <summary>本体:IdleFrame (vtvd:MainImage) に値する画像の ファイル名</summary>
+        public string resource { get; set; }
+
+        /// <summary>本体:LeftIdleFrame (vtvd:FlipImage) に値する画像の ファイル名</summary>
+        public string flipresource { get; set; }
+
+        /// <summary>本体:MatchPlayerColor (ボディカラー反映) を有効にするか</summary>
+        public bool adaptive { get; set; }
+
+        /// <summary>本体(VisorData):behindHats (バイザーをハットの裏にする) を有効にするか</summary>
+        public bool behindHats { get; set; }
+
+        /// <summary>バイザーが, SNR独自規格か (設定しない時は, TORと同様に画像を処理する)</summary>
+        public bool IsSNR { get; set; }
     }
 
     public class CustomVisorOnline : CustomVisor

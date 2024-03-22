@@ -95,6 +95,7 @@ public static class DownLoadClassVisor
                             info.flipresource = SanitizeResourcePath(current["flipresource"]?.ToString());
                             info.reshashf = current["reshashf"]?.ToString();
                             info.adaptive = current["adaptive"] != null;
+                            info.behindHats = bool.TryParse(current["behindHats"]?.ToString(), out bool behindHats) ? behindHats : false;
 
                             if (current["package"] == null) info.package = "NameNone";
                             if (info.package != null && !PackageNames.Contains(info.package))

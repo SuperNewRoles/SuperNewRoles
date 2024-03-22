@@ -176,11 +176,16 @@ public class CustomVisor
         CustomVisorData visor = new()
         {
             name = cv.name + "\nby " + cv.author,
+
+            // 本体 : CosmticData
             displayOrder = 99,
             ProductId = "CustomVisors_" + packageName + "_" + cv.name.Replace(' ', '_'),
             ChipOffset = new Vector2(0f, 0.25f),
             Free = true,
-            NotInStore = true
+            NotInStore = true,
+
+            // 本体 : VisorData
+            behindHats = cv.behindHats
         };
 
         visorViewData.VisorName = visor.ProdId;
