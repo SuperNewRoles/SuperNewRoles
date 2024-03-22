@@ -96,8 +96,6 @@ public static class DownLoadClassVisor
                             };
                             if (info.resource == null || info.name == null) continue;
 
-                            info.package = current["package"]?.ToString();
-
                             bool isSNR = repoData.Item2;
                             if (isSNR) { isSNR = bool.TryParse(current["IsSNR"]?.ToString(), out bool SNRTmpStatus) ? SNRTmpStatus : false; }
                             info.IsSNR = isSNR;
@@ -108,6 +106,7 @@ public static class DownLoadClassVisor
                             info.adaptive = current["adaptive"] != null;
                             info.behindHats = bool.TryParse(current["behindHats"]?.ToString(), out bool behindHats) ? behindHats : false;
 
+                            info.package = current["package"]?.ToString();
                             if (current["package"] == null) info.package = "NameNone";
                             if (info.package != null && !PackageNames.Contains(info.package))
                             {
@@ -215,8 +214,6 @@ public static class DownLoadClassVisor
 
                     if (info.resource == null || info.name == null) continue;
 
-                    info.package = current["package"]?.ToString();
-
                     info.reshasha = info.resource + info.name + info.author;
 
                     info.flipresource = SanitizeResourcePath(current["flipresource"]?.ToString());
@@ -228,6 +225,7 @@ public static class DownLoadClassVisor
                     if (isSNR) { isSNR = bool.TryParse(current["IsSNR"]?.ToString(), out bool SNRTmpStatus) ? SNRTmpStatus : false; }
                     info.IsSNR = isSNR;
 
+                    info.package = current["package"]?.ToString();
                     if (current["package"] == null) info.package = "NameNone";
                     if (info.package != null && !PackageNames.Contains(info.package))
                     {

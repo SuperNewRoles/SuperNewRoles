@@ -171,7 +171,6 @@ public class CustomVisor
         if (VisorShader == null && DestroyableSingleton<HatManager>.InstanceExists) VisorShader = new Material(Shader.Find("Unlit/PlayerShader"));
 
         CustomVisorData.VisorTempViewData visorViewData = new() { MainImage = GetVisorSprite(cv.resource) };
-        string packageName = cv.package ?? "Visor_SNR"; // FIXME : visorにパッケージ名を追加して, 此処は削除
 
         CustomVisorData visor = new()
         {
@@ -179,7 +178,7 @@ public class CustomVisor
 
             // 本体 : CosmticData
             displayOrder = 99,
-            ProductId = "CustomVisors_" + packageName + "_" + cv.name.Replace(' ', '_'),
+            ProductId = "CustomVisors_" + cv.package + "_" + cv.name.Replace(' ', '_'),
             ChipOffset = new Vector2(0f, 0.25f),
             Free = true,
             NotInStore = true,
@@ -195,7 +194,7 @@ public class CustomVisor
         CustomVisors.VisorExtension extend = new()
         {
             author = cv.author ?? "Unknown",
-            package = packageName
+            package = cv.package
             // package = cv.package ?? "YJ*白桜コレクション"
         };
 
