@@ -16,17 +16,26 @@ public static class DownLoadClassVisor
     public static bool IsEndDownload = false;
     public static bool running = false;
 
-    /// <summary>
-    /// バイザーをダウンロードするRepositoryURL
-    /// </summary>
+    /// <summary>バイザーをダウンロードするRepositoryURL</summary>
     /// <value>key : URL, Item1 : クローゼット名, Item2 : SNRのテンプレートで記載されているか</value>
-    public static Dictionary<string, (string, bool)> visorRepos = new()
+    public static Dictionary<string, (string, bool)> VisorRepository()
+    {
+        Dictionary<string, (string, bool)> visorRepos = new()
         {
-            { "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/mainption", ("SuperNewCosmetics", true) },
+            { DownLoadCustomCosmetics.SNCmainURL, ("SuperNewCosmetics", true) },
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", ("mememurahat", false)},
             { "https://raw.githubusercontent.com/Ujet222/TOPVisors/main", ("YJ", false) },
         };
+
+        if (!DownLoadCustomCosmetics.IsTestLoad) return visorRepos;
+        else
+        {
+            visorRepos.Add(DownLoadCustomCosmetics.TestRepoURL, ("TestRepository", true));
+            if (DownLoadCustomCosmetics.IsBlocLoadSNCmain) visorRepos.Remove(DownLoadCustomCosmetics.SNCmainURL);
+            return visorRepos;
+        }
+    }
 
     /// <summary>ダウンロード処理が済んでいない リポジトリ</summary>
     public static List<string> ReposDLProcessing = new(); // Hat Reposと同じ
@@ -49,6 +58,8 @@ public static class DownLoadClassVisor
 
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\");
+
+        var visorRepos = VisorRepository();
 
         List<string> repos = new(visorRepos.Keys);
         foreach (string repo in repos) { ReposDLProcessing.Add(repo); }
@@ -182,7 +193,7 @@ public static class DownLoadClassVisor
             string json = await response.Content.ReadAsStringAsync();
             var responsestream = await response.Content.ReadAsStreamAsync();
             string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\";
-            var repoData = visorRepos.FirstOrDefault(data => data.Key == repo).Value;
+            var repoData = VisorRepository().FirstOrDefault(data => data.Key == repo).Value;
             responsestream.CopyTo(File.Create($"{filePath}\\{repoData.Item1}.json"));
 
             JToken jobj = JObject.Parse(json)["Visors"];

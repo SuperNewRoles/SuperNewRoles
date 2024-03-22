@@ -32,7 +32,14 @@ public static class DownLoadClassPlate
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
         SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始");
-        _ = FetchHats("https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/main");
+
+        if (!DownLoadCustomCosmetics.IsTestLoad) { _ = FetchHats(DownLoadCustomCosmetics.SNCmainURL); }
+        else
+        {
+            if (!DownLoadCustomCosmetics.IsBlocLoadSNCmain) { _ = FetchHats(DownLoadCustomCosmetics.SNCmainURL); }
+            _ = FetchHats(DownLoadCustomCosmetics.TestRepoURL);
+        }
+
         running = true;
     }
     private static string SanitizeResourcePath(string res)
