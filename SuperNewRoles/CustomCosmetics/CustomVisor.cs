@@ -116,15 +116,28 @@ public class CustomVisor
             cvo.flipresource = filePath + cvo.flipresource;
         return cvo;
     }
+    private static Sprite GetVisorSprite(string path) => VisorSprites.ContainsKey(path) ? VisorSprites[path] : null;
+
+    /// <summary>
+    /// バイザー画像を読み込む
+    /// </summary>
+    /// <param name="path">読み込む画像の(ユーザストレージ内の)絶対パス</param>
+    /// <param name="isSNR">SNRの独自規格で読み込むか</param>
+    /// <param name="fromDisk">キャッシュを使用せずに読み込むか</param>
+    /// <returns>バイザー画像</returns>
     private static Sprite CreateVisorSprite(string path, bool isSNR, bool fromDisk = false)
     {
         Sprite sprite = isSNR ? SNRVisorLoadSprite(path) : ModHelpers.CreateSprite(path, fromDisk);
-        if (!VisorSprites.ContainsKey(path)) { VisorSprites.Add(path, sprite); Logger.Info($"Add : {path}, {sprite}"); }
+        if (!VisorSprites.ContainsKey(path)) VisorSprites.Add(path, sprite);
         return sprite;
     }
-    private static Sprite GetVisorSprite(string path) => VisorSprites.ContainsKey(path) ? VisorSprites[path] : null;
 
-    public static Sprite SNRVisorLoadSprite(string path)
+    /// <summary>
+    /// バイザー画像を, SNR独自規格で読み込む (画像サイズを一定(115f)に変更し読み込む)
+    /// </summary>
+    /// <param name="path">読み込む画像の(ユーザストレージ内の)絶対パス</param>
+    /// <returns>バイザー画像</returns>
+    private static Sprite SNRVisorLoadSprite(string path)
     {
         //画像サイズは150*150
         if (ModHelpers.iCall_LoadImage == null)

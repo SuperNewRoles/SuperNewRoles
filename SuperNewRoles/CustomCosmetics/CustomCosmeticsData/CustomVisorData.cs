@@ -178,3 +178,86 @@ public class CustomVisorData : VisorData
         }
     }
 }
+
+public class CustomVisors
+{
+    public static Dictionary<string, VisorExtension> CustomVisorRegistry = new();
+    public static VisorExtension TestExt = new() { IsNull = true };
+    public static List<string> PackageNames = new();
+
+    public struct VisorExtension
+    {
+        public bool IsNull;
+        public string author;
+        public string package;
+        public string condition;
+    }
+
+    public class CustomVisor
+    {
+        public string author { get; set; } // 制作者名
+        public string package { get; set; } // パッケージ名
+        public string name { get; set; } // バイザー名
+        public string resource { get; set; } // 本体:IdleFrame (vtvd:MainImage) に値する画像の ファイル名
+        public string flipresource { get; set; } // 本体:LeftIdleFrame (vtvd:FlipImage) に値する画像の ファイル名
+        public bool adaptive { get; set; } // 本体:MatchPlayerColor (ボディカラー反映) を有効にするか
+        public bool IsSNR { get; set; } // バイザーが,SNR独自規格か (設定しない時は, TORと同様に画像を処理する)
+    }
+
+    public class CustomVisorOnline : CustomVisor
+    {
+        public string reshasha { get; set; }
+        public string reshashf { get; set; }
+    }
+
+    public static List<CustomVisor> CreateCustomVisorDetails(string[] visors, bool fromDisk = false)
+    {
+        Dictionary<string, CustomVisor> fronts = new();
+        Dictionary<string, string> backs = new();
+        Dictionary<string, string> flips = new();
+        Dictionary<string, string> backflips = new();
+        Dictionary<string, string> climbs = new();
+
+        for (int i = 0; i < visors.Length; i++)
+        {
+            string s = fromDisk ? visors[i][(visors[i].LastIndexOf("\\") + 1)..].Split('.')[0] : visors[i].Split('.')[3];
+            string[] p = s.Split('_');
+
+            HashSet<string> options = new();
+            for (int j = 1; j < p.Length; j++)
+                options.Add(p[j]);
+
+            if (options.Contains("back") && options.Contains("flip"))
+                backflips.Add(p[0], visors[i]);
+            else if (options.Contains("climb"))
+                climbs.Add(p[0], visors[i]);
+            else if (options.Contains("back"))
+                backs.Add(p[0], visors[i]);
+            else if (options.Contains("flip"))
+                flips.Add(p[0], visors[i]);
+            else
+            {
+                CustomVisor custom = new()
+                {
+                    resource = visors[i],
+                    name = p[0].Replace('-', ' '),
+                    adaptive = options.Contains("adaptive"),
+                    IsSNR = options.Contains("IsSNR"),
+                };
+
+                fronts.Add(p[0], custom);
+            }
+        }
+
+        List<CustomVisor> customVisors = new();
+
+        foreach (string k in fronts.Keys)
+        {
+            CustomVisor visor = fronts[k];
+            flips.TryGetValue(k, out string fr);
+            if (fr != null) visor.flipresource = fr;
+            customVisors.Add(visor);
+        }
+        return customVisors;
+    }
+}
