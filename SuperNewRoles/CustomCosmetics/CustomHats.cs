@@ -394,12 +394,12 @@ public class CustomHats
     }
 
     private static readonly List<TMPro.TMP_Text> hatsTabCustomTexts = new();
-    public static string innerslothPackageName = "innerslothHats";
-    private static readonly float headerSize = 0.8f;
-    private static readonly float headerX = 0.8f;
+    public const string innerslothPackageName = "Innersloth Hats";
+    private const float headerSize = 0.8f;
+    private const float headerX = 0.8f;
     private static float inventoryTop = 1.5f;
     private static float inventoryBot = -2.5f;
-    private static readonly float inventoryZ = -2f;
+    private const float inventoryZ = -2f;
 
     public static void CalcItemBounds(HatsTab __instance)
     {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Il2CppInterop.Runtime;
@@ -195,7 +196,6 @@ public class CustomVisor
         {
             author = cv.author ?? "Unknown",
             package = cv.package
-            // package = cv.package ?? "YJ*白桜コレクション"
         };
 
         if (testOnly)
@@ -209,5 +209,157 @@ public class CustomVisor
         }
         visor.vtvd = visorViewData;
         return visor;
+    }
+}
+
+public class VisorTabPatch
+{
+    private static readonly List<TMPro.TMP_Text> visorsTabCustomTexts = new();
+    private const string innerslothPackageName = "Innersloth Visors";
+    private const float headerSize = 0.8f;
+    private const float headerX = 0.8f;
+    private static float inventoryTop = 1.5f;
+    private static float inventoryBot = -2.5f;
+    private const float inventoryZ = -2f;
+
+    public static void CalcItemBounds(VisorsTab __instance)
+    {
+        inventoryTop = __instance.scroller.Inner.position.y - 0.5f;
+        inventoryBot = __instance.scroller.Inner.position.y - 4.5f;
+    }
+
+    [HarmonyPatch(typeof(VisorsTab), nameof(VisorsTab.OnEnable))]
+    public class VisorsTabOnEnablePatch
+    {
+        public static TMPro.TMP_Text textTemplate;
+        public static List<ColorChip> Chips;
+
+        public static float CreateVisorPackage(List<System.Tuple<VisorData, CustomVisors.VisorExtension>> visors, string packageName, float YStart, VisorsTab __instance)
+        {
+            float offset = YStart;
+            if (textTemplate != null)
+            {
+                TMPro.TMP_Text title = UnityEngine.Object.Instantiate<TMPro.TMP_Text>(textTemplate, __instance.scroller.Inner);
+                title.transform.parent = __instance.scroller.Inner;
+                title.transform.localPosition = new Vector3(headerX, YStart, inventoryZ);
+                title.alignment = TMPro.TextAlignmentOptions.Center;
+                title.fontSize *= 1.25f;
+                title.fontWeight = TMPro.FontWeight.Thin;
+                title.enableAutoSizing = false;
+                title.autoSizeTextContainer = true;
+                title.text = ModTranslation.GetString(packageName); // 渡されたパッケージ名に翻訳があれば取得
+
+                offset -= headerSize * __instance.YOffset;
+                visorsTabCustomTexts.Add(title);
+            }
+
+            var numVisors = visors.Count;
+
+            int i2 = 0;
+            for (int i = 0; i < visors.Count; i++)
+            {
+                VisorData visor = visors[i].Item1;
+                CustomVisors.VisorExtension ext = visors[i].Item2;
+
+                float xpos = __instance.XRange.Lerp((i2 % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
+                float ypos = offset - (i2 / __instance.NumPerRow) * __instance.YOffset;
+                ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
+
+                int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color;
+
+                colorChip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
+                if (ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard)
+                {
+                    colorChip.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectVisor(visor)));
+                    colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor))));
+                    colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.ClickEquip()));
+                }
+                else
+                {
+                    colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectVisor(visor)));
+                }
+
+                colorChip.ProductId = visor.ProductId;
+                colorChip.Inner.transform.localPosition = visor.ChipOffset;
+                colorChip.Tag = visor;
+                colorChip.Button.ClickMask = __instance.scroller.Hitbox;
+                __instance.UpdateMaterials(colorChip.Inner.FrontLayer, visor);
+                __instance.visorId = DataManager.Player.Customization.Visor;
+                __instance.ColorChips.Add(colorChip);
+                visor.SetPreview(colorChip.Inner.FrontLayer, color);
+                Chips.Add(colorChip);
+                i2++;
+            }
+            return offset - ((numVisors - 1) / __instance.NumPerRow) * __instance.YOffset - headerSize;
+        }
+        public static bool Prefix(VisorsTab __instance)
+        {
+            CalcItemBounds(__instance);
+            VisorData[] unlockedVisors = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedVisors();
+            Dictionary<string, List<System.Tuple<VisorData, CustomVisors.VisorExtension>>> packages = new();
+
+            ModHelpers.DestroyList(visorsTabCustomTexts);
+            ModHelpers.DestroyList(__instance.ColorChips);
+
+            visorsTabCustomTexts.Clear();
+            __instance.ColorChips.Clear();
+
+            textTemplate = PlayerCustomizationMenu.Instance.itemName;
+
+            foreach (VisorData visorData in unlockedVisors)
+            {
+                CustomVisors.VisorExtension ext = CustomVisors.GetVisorExtension(visorData);
+
+                if (!ext.IsNull)
+                {
+                    if (!packages.ContainsKey(ext.package == null ? innerslothPackageName : ext.package))
+                        packages[ext.package == null ? innerslothPackageName : ext.package] = new();
+                    packages[ext.package == null ? innerslothPackageName : ext.package].Add(new System.Tuple<VisorData, CustomVisors.VisorExtension>(visorData, ext));
+                }
+                else
+                {
+                    if (!packages.ContainsKey(innerslothPackageName))
+                        packages[innerslothPackageName] = new List<System.Tuple<VisorData, CustomVisors.VisorExtension>>();
+                    packages[innerslothPackageName].Add(new System.Tuple<VisorData, CustomVisors.VisorExtension>(visorData, new() { IsNull = true }));
+                }
+            }
+
+            float YOffset = __instance.YStart;
+
+            var orderedKeys = packages.Keys.OrderBy((string x) =>
+            {
+                return x == innerslothPackageName
+                    ? 100003
+                    : x == "developerVisors"
+                    ? 20
+                    : x.Contains("Visor_SNR") ? 0 : 500;
+            });
+
+            foreach (string key in orderedKeys)
+            {
+                List<System.Tuple<VisorData, CustomVisors.VisorExtension>> value = packages[key];
+                YOffset = CreateVisorPackage(value, key, YOffset, __instance);
+            }
+
+            __instance.scroller.ContentYBounds.max = -(YOffset + 3.0f + headerSize);
+            return false;
+        }
+    }
+    [HarmonyPatch(typeof(VisorsTab), nameof(VisorsTab.Update))]
+    public class VisorsTabUpdatePatch
+    {
+        public static bool Prefix()
+        {
+            foreach (TMPro.TMP_Text customText in visorsTabCustomTexts)
+            {
+                if (customText != null && customText.transform != null && customText.gameObject != null)
+                {
+                    bool active = customText.transform.position.y <= inventoryTop && customText.transform.position.y >= inventoryBot;
+                    float epsilon = Mathf.Min(Mathf.Abs(customText.transform.position.y - inventoryTop), Mathf.Abs(customText.transform.position.y - inventoryBot));
+                    if (active != customText.gameObject.active && epsilon > 0.1f) customText.gameObject.SetActive(active);
+                }
+            }
+            return true;
+        }
     }
 }

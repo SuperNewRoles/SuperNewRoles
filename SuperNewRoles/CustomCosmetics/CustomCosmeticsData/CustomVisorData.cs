@@ -276,4 +276,11 @@ public class CustomVisors
         }
         return customVisors;
     }
+
+    public static VisorExtension GetVisorExtension(VisorData visor)
+    {
+        if (!TestExt.IsNull && TestExt.condition.Equals(visor.name)) { return TestExt; }
+        CustomVisorRegistry.TryGetValue(visor.name, out VisorExtension ret);
+        return ret;
+    }
 }
