@@ -144,7 +144,7 @@ public static class PoliceSurgeon
             => new(id, deadTurn, deadReason, actualDeathTime, estimatedDeathTime);
 
         internal static string GetPostMortemCertificate(PersonalInformationOfTheDead info) =>
-            info.PostMortemCertificate.Replace(RoleData.ElapsedTurn, $"{ReportDeadBodyPatch.MeetingTurn_Now - info.DeadTurn}").Replace(RoleData.PoliceSurgeonName, PlayerControl.LocalPlayer.name);
+            info.PostMortemCertificate.Replace(RoleData.ElapsedTurn, $"{ReportDeadBodyPatch.MeetingCount.all - info.DeadTurn}").Replace(RoleData.PoliceSurgeonName, PlayerControl.LocalPlayer.name);
 
         /// <summary>
         /// 死亡情報を記録しているListに既に登録されているプレイヤーか調べる
@@ -264,7 +264,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
             Logger.Info($"{p.name} : 死亡推定時刻_{estimatedDeathTime}s");
 
             // 死亡情報を一元管理している辞書に保存する。(この辞書に保存するのはここでのみ)
-            RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(p.PlayerId, ReportDeadBodyPatch.MeetingTurn_Now, deadReason, DeadPlayer.ActualDeathTime[p.PlayerId].DeathTime, estimatedDeathTime));
+            RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(p.PlayerId, ReportDeadBodyPatch.MeetingCount.all, deadReason, DeadPlayer.ActualDeathTime[p.PlayerId].DeathTime, estimatedDeathTime));
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) continue; // SHRの場合RPCは送らない
 
@@ -273,7 +273,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
             writer.Write(p.PlayerId);
             writer.Write((byte)estimatedDeathTime);
             writer.Write((byte)deadReason);
-            writer.Write((byte)ReportDeadBodyPatch.MeetingTurn_Now);
+            writer.Write((byte)ReportDeadBodyPatch.MeetingCount.all);
             writer.EndRPC();
         }
     }
@@ -425,7 +425,7 @@ internal static class PostMortemCertificate_Display
             if (playerRole is RoleId.Fox or RoleId.Vampire or RoleId.Dependents) continue;
             // 死亡ターン以外に情報を表示しない設定で、自分自身でなく、ネームプレートの対象が現在ターンに死亡した者でもないなら
             var personalInfo = PersonalInformationOfTheDead.GetPersonalInformationOfTheDead(RoleData.PersonalInformationManager, player.PlayerId);
-            if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId && personalInfo.Item1 && personalInfo.Item2.DeadTurn != ReportDeadBodyPatch.MeetingTurn_Now) continue;
+            if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId && personalInfo.Item1 && personalInfo.Item2.DeadTurn != ReportDeadBodyPatch.MeetingCount.all) continue;
 
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
@@ -609,8 +609,8 @@ internal static class PostMortemCertificate_CreateAndGet
     /// <returns>string : 死体検案書 (名前は送信先の警察医名に置き換わっている)</returns>
     internal static string GetPostMortemCertificateFullText(PlayerControl policeSurgeon)
     {
-        if (!RoleData.PostMortemCertificateFullText.ContainsKey(ReportDeadBodyPatch.MeetingTurn_Now)) RoleData.PostMortemCertificateFullText.Add(ReportDeadBodyPatch.MeetingTurn_Now, CreateBody());
-        return RoleData.PostMortemCertificateFullText[ReportDeadBodyPatch.MeetingTurn_Now].Replace(RoleData.PoliceSurgeonName, policeSurgeon.name);
+        if (!RoleData.PostMortemCertificateFullText.ContainsKey(ReportDeadBodyPatch.MeetingCount.all)) RoleData.PostMortemCertificateFullText.Add(ReportDeadBodyPatch.MeetingCount.all, CreateBody());
+        return RoleData.PostMortemCertificateFullText[ReportDeadBodyPatch.MeetingCount.all].Replace(RoleData.PoliceSurgeonName, policeSurgeon.name);
     }
 
     /// <summary>
@@ -732,7 +732,7 @@ internal static class PostMortemCertificate_CreateAndGet
             foreach (var info in RoleData.PersonalInformationManager)
             {
                 // 以降に進むのは、[全てのターンの死亡情報を出す時]の全てのプレイヤーの情報と　[現在ターンの死亡情報しか出さない時]の現在ターンに死亡したプレイヤーの情報
-                if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && info.DeadTurn != ReportDeadBodyPatch.MeetingTurn_Now) continue;
+                if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && info.DeadTurn != ReportDeadBodyPatch.MeetingCount.all) continue;
 
                 // 妖狐とヴァンパイアと眷属は検案書を作成しない
                 var victimPlayerRole = ModHelpers.PlayerById(info.VictimId).GetRole();
@@ -740,7 +740,7 @@ internal static class PostMortemCertificate_CreateAndGet
 
                 isWrite = true;
 
-                builder.Append(CreateContents(info).Replace(RoleData.ElapsedTurn, $"{ReportDeadBodyPatch.MeetingTurn_Now - info.DeadTurn}"));
+                builder.Append(CreateContents(info).Replace(RoleData.ElapsedTurn, $"{ReportDeadBodyPatch.MeetingCount.all - info.DeadTurn}"));
                 builder.AppendLine(delimiterLine);
             }
         }

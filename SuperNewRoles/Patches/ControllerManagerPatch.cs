@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -91,6 +92,13 @@ class ControllerManagerUpdatePatch
             {
                 if (MeetingHud.Instance != null)
                 {
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    {
+                        // 会議強制スキップを行うと, CheckForEndVotingを通過しない為, 此処で呼び出し
+                        if (Mode.PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
+                            EmergencyMinigamePatch.FirstEmergencyCooldown.OnCheckForEndVotingNotMod(false);
+                    }
+
                     if (ModeHandler.IsMode(ModeId.BattleRoyal))
                         SelectRoleSystem.OnEndSetRole();
                     else
@@ -179,6 +187,14 @@ class ControllerManagerUpdatePatch
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                foreach (RoleId role in Enum.GetValues(typeof(RoleId)))
+                {
+                    Roles.Role.QuoteMod quoteMod = Roles.RoleBases.CustomRoles.GetQuoteMod(role);
+                    if (quoteMod != Roles.Role.QuoteMod.SuperNewRoles) Logger.Info($"{role}, 参考元 : {quoteMod}", "QuoteMod Log");
+                }
             }
         }
         // 以下フリープレイのみ

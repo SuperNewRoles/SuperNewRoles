@@ -19,7 +19,6 @@ public static class Analytics
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate))]
     public class MainMenuManagerLateUpdatePatch
     {
-        private static bool IsShowedZanteiPopup = false;
         public static void Postfix(MainMenuManager __instance)
         {
             if (!ConfigRoles.IsSendAnalyticsPopupViewd && FastDestroyableSingleton<EOSManager>.Instance.HasFinishedLoginFlow())
@@ -37,24 +36,6 @@ public static class Analytics
                 Popup.TextAreaTMP.transform.localPosition = new(0, 0.8f, -0.5f);
                 Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.4f;
                 Popup.TextAreaTMP.text = ModTranslation.GetString("AnalyticsText");
-                Popup.destroyOnClose = true;
-            }
-            if (!IsShowedZanteiPopup)
-            {
-                IsShowedZanteiPopup = true;
-
-                GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
-                Popup.gameObject.SetActive(true);
-                Popup.transform.FindChild("Background").localScale = new(2, 2.8f, 1);
-                Popup.transform.FindChild("ExitGame").localPosition = new(0f, -2.2f, -0.5f);
-                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("AnalyticsOK");
-                TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
-                Title.text = ModTranslation.GetString("ZanteiTitle");
-                Title.transform.localPosition = new(0.15f, 2, -0.5f);
-                Title.transform.localScale = Vector3.one * 3.5f;
-                Popup.TextAreaTMP.transform.localPosition = new(0, -0.075f, -0.5f);
-                Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.18f;
-                Popup.TextAreaTMP.text = ModTranslation.GetString("ZanteiText");
                 Popup.destroyOnClose = true;
             }
         }

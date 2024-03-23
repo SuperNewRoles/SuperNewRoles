@@ -30,6 +30,13 @@ public static class SyncSetting
             blackout = system != null && system.IsActive;
         }
 
+        if (PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
+        {
+            // 緊急会議のクールタイムの設定取得&送信は別の場所で行い, 此処では, Default設定に上書きされない様 既に設定されている緊急会議クールを再取得&送信している。
+            // (別場所で行っている理由 : SyncSettingで送信するとShipStatus.Instance.EmergencyCooldownへの代入が間に合わない & 追放による死亡が判定できない為)
+            int emergencyCooldown = OptionDatas[player].DeepCopy().GetInt(Int32OptionNames.EmergencyCooldown);
+            optdata.SetInt(Int32OptionNames.EmergencyCooldown, emergencyCooldown);
+        }
         if (player.IsCrewVision())
         {
             optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
@@ -259,6 +266,10 @@ public static class SyncSetting
         }
 
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
+        optdata.SetBool(BoolOptionNames.AnonymousVotes, AnonymousVotes.GetAnonymousVotes(player));
+
+        Balancer.InHostMode.SetMeetingSettings(optdata); // [ ]
+
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());
         OptionDatas[player] = optdata.DeepCopy();
@@ -293,16 +304,6 @@ public static class SyncSetting
                 return;
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
-        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        else optdata.RpcSyncOption(player.GetClientId());
-    }
-
-    public static void MeetingSyncSettings(this PlayerControl player)
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        IGameOptions optdata = OptionDatas[player].DeepCopy();
-
-        optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(player.GetClientId());
     }
@@ -342,18 +343,6 @@ public static class SyncSetting
             {
                 CustomSyncSettings(p);
             }
-        }
-    }
-
-    /// <summary>
-    /// 開票処理をゲストに送信する準備
-    /// </summary>
-    public static void MeetingSyncSettings()
-    {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-        {
-            if (!p.Data.Disconnected && !p.IsBot())
-                MeetingSyncSettings(p);
         }
     }
 

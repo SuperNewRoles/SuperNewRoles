@@ -82,6 +82,7 @@ public class SluggerDeadbody : CustomAnimation
         body.gravityScale = 0;
         spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
         spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
+        PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(spriteRenderer, false);
         DeadBodys.Add(this);
     }
     public void Init(byte SourceId, byte TargetId)
@@ -101,13 +102,6 @@ public class SluggerDeadbody : CustomAnimation
             transform.Rotate((Source.transform.position - Player.transform.position) * -1f);
         }
         PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, spriteRenderer);
-        PlayerMaterial.Properties Properties = new()
-        {
-            MaskLayer = 0,
-            MaskType = PlayerMaterial.MaskType.None,
-            ColorId = Player.Data.DefaultOutfit.ColorId
-        };
-        spriteRenderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
     }
     public override void Play(bool IsPlayMusic = true)
     {
