@@ -24,7 +24,6 @@ public class CustomHatData : HatData
         public Sprite BackFlipImage;
         public Sprite ClimbImage;
         public bool adaptive;
-        public bool AltShader => adaptive ? new Material(Shader.Find("Unlit/PlayerShader")) : null; // FIXME 仮
         public string name;
         public HatViewData CreateHVD
         {
@@ -37,7 +36,7 @@ public class CustomHatData : HatData
                     LeftMainImage = FlipImage,
                     LeftBackImage = BackFlipImage,
                     ClimbImage = ClimbImage,
-                    MatchPlayerColor = adaptive, // FIXME 仮
+                    MatchPlayerColor = adaptive,
                     name = name
                 };
             }

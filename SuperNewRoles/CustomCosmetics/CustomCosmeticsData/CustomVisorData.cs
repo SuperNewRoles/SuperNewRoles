@@ -168,7 +168,7 @@ public class CustomVisorData : VisorData
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetVisor), new Type[] { typeof(VisorData), typeof(int) })]
     class VisorLayerSetVisorPatch
     {
-        public static bool Prefix(VisorLayer __instance, VisorData data, int color) // FIXME 仮
+        public static bool Prefix(VisorLayer __instance, VisorData data, int color)
         {
             if (!data.ProductId.StartsWith("CustomVisors_")) return true;
             __instance.visorData = data;
