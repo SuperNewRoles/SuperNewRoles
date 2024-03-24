@@ -212,6 +212,19 @@ public static class ExilePlayerPatch
         }
     }
 }
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.PetPet))]
+class PlayerPhysicsPetPetPatch
+{
+    public static bool Prefix(PlayerPhysics __instance)
+    {
+        if (!CustomRoles.OnPetPet(__instance.myPlayer))
+        {
+            _ = new LateTask(__instance.RpcCancelPet,0f);
+        }
+        return true;
+    }
+
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
 class ReportDeadBodyPatch
 {

@@ -101,6 +101,11 @@ public static class CustomRoles
             });
     }
 
+    public static bool OnPetPet(PlayerControl petter)
+    {
+        return petter.GetRoleBase() is not IPetHandler petHandler || petHandler.OnCheckPet();
+    }
+
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
     class HandleDisconnectPatch
     {
