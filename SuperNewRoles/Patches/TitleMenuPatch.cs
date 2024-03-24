@@ -33,8 +33,8 @@ public class MainMenuStartPatch
 
         var buttonDiscord = UnityEngine.Object.Instantiate(template, null);
         GameObject.Destroy(buttonDiscord.GetComponent<AspectPosition>());
-        buttonDiscord.transform.localPosition = new(1.1f, -2.04f, 0f);
-        buttonDiscord.transform.localScale = Vector3.one * 1.5f;
+        buttonDiscord.transform.localPosition = new(1f, -2.04f, 0f);
+        buttonDiscord.transform.localScale = Vector3.one * 2.3f;
         buttonDiscord.GetComponent<BoxCollider2D>().offset = new(0, 0.0377f);
 
         var textDiscord = buttonDiscord.GetComponentInChildren<TextMeshPro>();
