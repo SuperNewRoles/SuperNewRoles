@@ -45,6 +45,7 @@ public class MainMenuStartPatch
         textDiscord.enableWordWrapping = false;
         textDiscord.GetComponent<TextTranslatorTMP>().enabled = false;
         textDiscord.SetText(ModTranslation.GetString("MainMenuDiscordText"));
+        textDiscord.m_minFontSize = 1.15f;
 
         PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();
         SpriteRenderer buttonSpriteDiscord = buttonDiscord.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();

@@ -41,12 +41,13 @@ public static class AprilFoolsManager
     {
         { ModMode.SuperNagaiRoles.ToString(), 197f },
         { ModMode.SuperNyankoRoles.ToString(), 160f },
-        { ModMode.SuperNewRollcakes.ToString(), 115f },
+        { ModMode.SuperNewRollcakes.ToString(), 156f },
         { ModMode.SNRVerTOH.ToString(), 115f }
     };
     private static Dictionary<string, float> ModYPos = new()
     {
         { ModMode.SuperNagaiRoles.ToString(), 1.3f },
+        { ModMode.SuperNewRollcakes.ToString(), 1.1f }
     };
     private static Dictionary<string, Dictionary<string, string>> ModModeReplaces = new()
     {
@@ -149,8 +150,10 @@ public static class AprilFoolsManager
                 {
                     newValue = newValue.Replace(replacedetail.Key, replacedetail.Value);
                 }
-                newValues[index] = transvalue;
+                newValues[index] = newValue;
+                index++;
             }
+            ModTranslation.AprilDictionary[trans.Key] = newValues;
         }
         Logger.Info("End UpdateAprilTranslation");
     }
