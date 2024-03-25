@@ -30,7 +30,7 @@ public static class AntiBlackOut
     private static bool _cantProcess;
     private static bool ProcessNow;
     private static bool IsModdedSerialize;
-    private static GameData.PlayerInfo RealExiled;
+    public static GameData.PlayerInfo RealExiled;
 
     public static void OnDisconnect(GameData.PlayerInfo exiled)
     {
@@ -140,6 +140,7 @@ public static class AntiBlackOut
         new LateTask(() => {
             IsModdedSerialize = true;
             RPCHelper.RpcSyncGameData();
+            SendAntiBlackOutInformation(null, ABOInformationType.EndAliveCanViewDeadPlayerChat);
             IsModdedSerialize = false;
             ProcessNow = false;
         }, 0.5f);
@@ -162,6 +163,7 @@ public static class AntiBlackOut
             DesyncDontDead(exiled);
         else
             SyncDontDead(exiled);
+        SendAntiBlackOutInformation(null, ABOInformationType.AliveCanViewDeadPlayerChat);
     }
     private static void DesyncDontDead(GameData.PlayerInfo exiled)
     {

@@ -570,6 +570,7 @@ class CheckForEndVotingPatch
                             {
                                 IsDesyncMode = true;
                                 DesyncDetail = (NewExiled.Object, null, true);
+                                AntiBlackOut.SendAntiBlackOutInformation(NewExiled.Object, AntiBlackOut.ABOInformationType.OnlyDesyncImpostorDead);
                             }
                         }
                         exiledPlayer = NewExiled;
@@ -577,6 +578,7 @@ class CheckForEndVotingPatch
                     case AntiBlackOut.SupportType.DoubleVotedAfterExile:
                         exiledPlayer = null;
                         tie = true;
+                        AntiBlackOut.SendAntiBlackOutInformation(null, AntiBlackOut.ABOInformationType.FirstDead);
                         break;
                 }
                 if (IsDesyncMode)
@@ -830,6 +832,68 @@ class MeetingHudClosePatch
     {
         CustomRoles.OnMeetingClose();
         AntiBlackOut.OnMeetingHudClose(__instance.exiledPlayer);
+    }
+}
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.RpcClose))]
+class MeetingHudRpcClosePatch
+{
+    public static bool Prefix(MeetingHud __instance)
+    {
+        if (!ModeHandler.IsMode(ModeId.SuperHostRoles) ||
+            __instance.exiledPlayer == null)
+            return true;
+        if (AntiBlackOut.RealExiled == null)
+        {
+            Logger.Warn("Warning: AntiBlackOut.RealExiled is null.", "RpcClose");
+            return true;
+        }
+        if (__instance.exiledPlayer.PlayerId == AntiBlackOut.RealExiled.PlayerId ||
+            __instance.exiledPlayer.Object == null)
+            return true;
+        CustomRpcSender customRpcSender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
+
+        customRpcSender.AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetName)
+            .Write(AntiBlackOut.RealExiled.DefaultOutfit.PlayerName)
+            .EndRpc()
+            .AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetColor)
+            .Write(AntiBlackOut.RealExiled.DefaultOutfit.ColorId)
+            .EndRpc()
+            .AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetHatStr)
+            .Write(AntiBlackOut.RealExiled.DefaultOutfit.HatId)
+            .EndRpc()
+            .AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetVisorStr)
+            .Write(AntiBlackOut.RealExiled.DefaultOutfit.VisorId)
+            .EndRpc()
+            .AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetSkinStr)
+            .Write(AntiBlackOut.RealExiled.DefaultOutfit.SkinId)
+            .EndRpc()
+            .SendMessage();
+        customRpcSender
+            .AutoStartRpc(__instance.NetId, (byte)RpcCalls.CloseMeeting)
+            .EndRpc();
+
+        __instance.exiledPlayer = AntiBlackOut.RealExiled;
+        __instance.Close();
+
+        PlayerControl exiledObject = __instance.exiledPlayer.Object;
+
+        int exiledColorId = __instance.exiledPlayer.DefaultOutfit.ColorId;
+        string exiledName = __instance.exiledPlayer.DefaultOutfit.PlayerName;
+        string exiledHatId = __instance.exiledPlayer.DefaultOutfit.HatId;
+        string exiledVisorId = __instance.exiledPlayer.DefaultOutfit.VisorId;
+        string exiledSkinId = __instance.exiledPlayer.DefaultOutfit.SkinId;
+
+        new LateTask(() =>
+        {
+            exiledObject.RpcSetName(exiledName);
+            exiledObject.RpcSetColor((byte)exiledColorId);
+            exiledObject.RpcSetHat(exiledHatId);
+            exiledObject.RpcSetVisor(exiledVisorId);
+            exiledObject.RpcSetSkin(exiledSkinId);
+            Logger.Info("戻しました");
+        }, 0.5f);
+
+        return false;
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
