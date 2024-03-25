@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AmongUs.GameOptions;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 
@@ -26,6 +27,7 @@ public static class AntiBlackOut
     }
     private static PlayerData<bool> PlayerDeadData;
     private static PlayerData<bool> PlayerDisconnectedData;
+    private static HashSet<(byte, RoleTypes)> RoleChangedData;
     private static bool CantProcess { get { return _cantProcess; } }
     private static bool _cantProcess;
     private static bool ProcessNow;
@@ -84,7 +86,10 @@ public static class AntiBlackOut
     public static SupportType GetSupportType(GameData.PlayerInfo exiled)
     {
         if (exiled == null)
+        {
+            RealExiled = null;
             return SupportType.NoneExile;
+        }
         int numImpostor = 0;
         int numCrewmate = 0;
         int deadPlayers = 0;
@@ -135,15 +140,21 @@ public static class AntiBlackOut
             player.IsDead = PlayerDeadData[player.PlayerId];
             player.Disconnected = PlayerDisconnectedData[player.PlayerId];
         }
+        foreach ((byte playerId, RoleTypes role) in RoleChangedData)
+        {
+            PlayerControl player = ModHelpers.PlayerById(playerId);
+            if (player != null)
+                player.RpcSetRoleDesync(role, player);
+        }
         if (RealExiled != null)
-            new LateTask(() => RealExiled.Object.RpcInnerExiled(), 0.25f);
+            new LateTask(() => RealExiled.Object.RpcInnerExiled(), 1f);
         new LateTask(() => {
             IsModdedSerialize = true;
             RPCHelper.RpcSyncGameData();
             SendAntiBlackOutInformation(null, ABOInformationType.EndAliveCanViewDeadPlayerChat);
             IsModdedSerialize = false;
             ProcessNow = false;
-        }, 0.5f);
+        }, 1.5f);
         DestroySavedData();
     }
 
@@ -199,9 +210,19 @@ public static class AntiBlackOut
                 {
                     player.IsDead = false;
                     player.Disconnected = false;
+                    if (!player.Role.IsImpostor && player.Object != null)
+                    {
+                        RoleChangedData.Add((player.PlayerId, player.Role.Role));
+                        player.Object.RpcSetRoleDesync(RoleTypes.ImpostorGhost, player.Object);
+                    }
                 }
             }
             IsModdedSerialize = true;
+            Logger.Info($"---------SendTo {seer.Data.PlayerName}({seer.GetClientId()})---------");
+            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            {
+                Logger.Info($"{player.PlayerName}({seer.GetClientId()}) -> {player.IsDead} : {player.Disconnected}");
+            }
             RPCHelper.RpcSyncGameData(seer.GetClientId());
             IsModdedSerialize = false;
         }
@@ -251,5 +272,6 @@ public static class AntiBlackOut
     {
         PlayerDeadData = new();
         PlayerDisconnectedData = new();
+        RoleChangedData = naafxPCbHvrvWdFunUnFYqipUsg();
     }
 }
