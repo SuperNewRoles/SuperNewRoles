@@ -135,8 +135,10 @@ public static class AprilFoolsManager
         ModTranslation.AprilDictionary = new();
         if (!ModModeReplaces.TryGetValue(currentModMode.ToString(), out Dictionary<string, string> replaces))
             replaces = new();
-        replaces.Add("SuperNewRoles", getCurrentModName());
-        replaces.Add(DefaultModNameOnColor, getCurrentModNameOnColor());
+        replaces["/SuperNewRoles"] = "SNR_APRIL_TEMP_URL";
+        replaces["SuperNewRoles"] = getCurrentModName();
+        replaces[DefaultModNameOnColor] = getCurrentModNameOnColor();
+        replaces["SNR_APRIL_TEMP_URL"] = "/SuperNewRoles";
         int index = 0;
         string newValue = null;
         foreach (var trans in ModTranslation.dictionary)
