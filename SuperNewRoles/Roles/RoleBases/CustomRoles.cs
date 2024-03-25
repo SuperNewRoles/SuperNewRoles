@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
@@ -115,6 +116,7 @@ public static class CustomRoles
                             handleDisconnect.OnDisconnect();
                     }
                );
+                AntiBlackOut.OnDisconnect(player.Data);
             }
         }
     }

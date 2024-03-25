@@ -96,6 +96,29 @@ public static class RPCHelper
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
+    public static void RpcVotingCompleteDesync(VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl seer)
+    {
+        if (MeetingHud.Instance == null)
+            throw new System.Exception("MeetingHud.Instance is null");
+        if (seer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            Instance.VotingComplete(states, exiled, tie);
+        else
+        {
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(Instance.NetId, (byte)RpcCalls.VotingComplete, SendOption.Reliable, targetClientId: seer.GetClient());
+            val.WritePacked(states.Length);
+            foreach (VoterState voterState in states)
+            {
+                voterState.Serialize(val);
+            }
+            if (exiled == null)
+                val.Write(byte.MaxValue);
+            else
+                val.Write(exiled.PlayerId);
+            val.Write(tie);
+            val.EndMessage();
+        }
+    }
+
     public static void RpcSnapTo(this PlayerControl __instance, Vector2 position, PlayerControl seer = null)
     {
         var caller = new System.Diagnostics.StackFrame(1, false);
@@ -303,19 +326,6 @@ public static class RPCHelper
         MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetSkin, seePlayer);
         messageWriter.Write(skinId);
         messageWriter.EndRPC();
-    }
-
-    public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)
-    {
-        MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 23, SendOption.None, SeePlayer.GetClientId());
-        val.WritePacked(states.Length);
-        foreach (VoterState voterState in states)
-        {
-            voterState.Serialize(val);
-        }
-        val.Write(exiled?.PlayerId ?? byte.MaxValue);
-        val.Write(tie);
-        val.EndMessage();
     }
     /// <summary>
     /// 通常のRPCのExiled

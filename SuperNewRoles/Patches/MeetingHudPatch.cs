@@ -526,6 +526,64 @@ class CheckForEndVotingPatch
                 exiledPlayer = Balancer.targetplayerleft.Data;
             }
 
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                var supportType = AntiBlackOut.GetSupportType(exiledPlayer);
+                bool IsDesyncMode = false;
+                (PlayerControl player, GameData.PlayerInfo exiled, bool tie) DesyncDetail = default;
+                switch (supportType)
+                {
+                    case AntiBlackOut.SupportType.NoneExile:
+                        exiledPlayer = null;
+                        tie = false;
+                        break;
+                    case AntiBlackOut.SupportType.DeadExile:
+                        GameData.PlayerInfo NewExiled = null;
+                        GameData.PlayerInfo ExileCandidate = null;
+                        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+                        {
+                            if (player.Disconnected)
+                            {
+                                NewExiled = player;
+                                break;
+                            }
+                            if (!player.IsDead)
+                                continue;
+                            PlayerControl @object = player.Object;
+                            if (@object == null)
+                                continue;
+                            if (@object.IsMod() ||
+                                !AntiBlackOut.IsPlayerDesyncImpostorTeam(@object))
+                            {
+                                NewExiled = player;
+                                break;
+                            }
+                            else
+                                ExileCandidate = player;
+                        }
+                        if (NewExiled == null && ExileCandidate == null)
+                            throw new Exception("None DeadPlayer");
+                        if (NewExiled == null)
+                        {
+                            NewExiled = ExileCandidate;
+                            if (NewExiled.Object)
+                            {
+                                IsDesyncMode = true;
+                                DesyncDetail = (NewExiled.Object, null, true);
+                            }
+                        }
+                        exiledPlayer = NewExiled;
+                        break;
+                    case AntiBlackOut.SupportType.DoubleVotedAfterExile:
+                        exiledPlayer = null;
+                        tie = true;
+                        break;
+                }
+                if (IsDesyncMode)
+                {
+                    RPCHelper.RpcVotingCompleteDesync(states, DesyncDetail.exiled, DesyncDetail.tie, DesyncDetail.player);
+                }
+            }
             __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
             return false;
