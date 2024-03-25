@@ -49,7 +49,7 @@ public static class AntiBlackOut
         int targetClientId = target == null ? - 1 : target.GetClientId();
         if (target == null)
             target = PlayerControl.LocalPlayer;
-        string SendName = CustomOptionHolder.Cs(RoleClass.JackalBlue, "");
+        string SendName = CustomOptionHolder.Cs(RoleClass.JackalBlue, "AntiBlackOutChatTitle");
         string name = target.Data.PlayerName;
         string text = ModTranslation.GetString($"AntiBlackOut{informationType}");
         if (targetClientId == -1)
@@ -170,6 +170,8 @@ public static class AntiBlackOut
         Logger.Info("Selected DesyncDontDead");
         foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
         {
+            if (seer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                continue;
             bool IsImpoAlived = false;
             if (!IsPlayerDesyncImpostorTeam(seer)) {
                 foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
@@ -202,6 +204,16 @@ public static class AntiBlackOut
             IsModdedSerialize = true;
             RPCHelper.RpcSyncGameData(seer.GetClientId());
             IsModdedSerialize = false;
+        }
+    }
+    public static void StartMeeting()
+    {
+        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+        {
+            if (player.IsDead || player.Disconnected)
+                continue;
+            SendAntiBlackOutInformation(null, ABOInformationType.FirstDead);
+            break;
         }
     }
     private static void SyncDontDead(GameData.PlayerInfo exiled)

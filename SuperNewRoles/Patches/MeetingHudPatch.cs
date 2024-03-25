@@ -531,6 +531,7 @@ class CheckForEndVotingPatch
                 var supportType = AntiBlackOut.GetSupportType(exiledPlayer);
                 bool IsDesyncMode = false;
                 (PlayerControl player, GameData.PlayerInfo exiled, bool tie) DesyncDetail = default;
+                Logger.Info("AntiBlackOut:          Selected is "+supportType.ToString());
                 switch (supportType)
                 {
                     case AntiBlackOut.SupportType.NoneExile:
@@ -578,7 +579,6 @@ class CheckForEndVotingPatch
                     case AntiBlackOut.SupportType.DoubleVotedAfterExile:
                         exiledPlayer = null;
                         tie = true;
-                        AntiBlackOut.SendAntiBlackOutInformation(null, AntiBlackOut.ABOInformationType.FirstDead);
                         break;
                 }
                 if (IsDesyncMode)
