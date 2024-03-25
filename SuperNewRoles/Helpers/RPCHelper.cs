@@ -104,7 +104,7 @@ public static class RPCHelper
             Instance.VotingComplete(states, exiled, tie);
         else
         {
-            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(Instance.NetId, (byte)RpcCalls.VotingComplete, SendOption.Reliable, targetClientId: seer.GetClient());
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(Instance.NetId, (byte)RpcCalls.VotingComplete, SendOption.Reliable, targetClientId: seer.GetClientId());
             val.WritePacked(states.Length);
             foreach (VoterState voterState in states)
             {

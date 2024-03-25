@@ -136,7 +136,7 @@ public static class AntiBlackOut
             player.Disconnected = PlayerDisconnectedData[player.PlayerId];
         }
         if (RealExiled != null)
-            RealExiled.Object.RpcInnerExiled();
+            new LateTask(() => RealExiled.Object.RpcInnerExiled(), 0.25f);
         new LateTask(() => {
             IsModdedSerialize = true;
             RPCHelper.RpcSyncGameData();
@@ -171,13 +171,7 @@ public static class AntiBlackOut
         foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
         {
             bool IsImpoAlived = false;
-            var desyncdetail = RoleSelectHandler.GetDesyncRole(seer.GetRole());
-            if (!desyncdetail.IsDesync || !(
-                desyncdetail.RoleType is
-                AmongUs.GameOptions.RoleTypes.Impostor or
-                AmongUs.GameOptions.RoleTypes.Shapeshifter or
-                AmongUs.GameOptions.RoleTypes.ImpostorGhost)
-            ) {
+            if (!IsPlayerDesyncImpostorTeam(seer)) {
                 foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
                 {
                     if (player.Role.IsImpostor && !IsImpoAlived &&
