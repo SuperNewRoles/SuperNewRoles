@@ -13,7 +13,8 @@ public static class AprilFoolsManager
         SuperNagaiRoles,
         SuperNyankoRoles,
         SuperNewRollcakes,
-        SNRVerTOH
+        SuperNemuiRolezzz,
+        SNRVerTOH,
     }
 
     private static DateTime startTimeUtc_2023 = new(2023, 3, 31, 15, 0, 0, 0, DateTimeKind.Utc);
@@ -28,6 +29,7 @@ public static class AprilFoolsManager
         { ModMode.SuperNagaiRoles.ToString(), "SuperNagaiRoles" },
         { ModMode.SuperNyankoRoles.ToString(), "SuperNyankoRoles" },
         { ModMode.SuperNewRollcakes.ToString(), "SuperNewRollcakes" },
+        { ModMode.SuperNemuiRolezzz.ToString(), "SuperNemuiRolezzz..." },
         { ModMode.SNRVerTOH.ToString(), "SuperNewRoles" }
     };
     private static Dictionary<string, string> JokeModNameOnColors = new()
@@ -35,6 +37,7 @@ public static class AprilFoolsManager
         { ModMode.SuperNagaiRoles.ToString(), $"<color=#ffa500>Super</color><color=#ff0000>Nagai</color><color=#00ff00>Roles</color>" },
         { ModMode.SuperNyankoRoles.ToString(), $"<color=#ffa500>Super</color><color=#ff0000>Nyanko</color><color=#00ff00>Roles</color>" },
         { ModMode.SuperNewRollcakes.ToString(), $"<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Rollcakes</color>" },
+        { ModMode.SuperNemuiRolezzz.ToString(), $"<color=#ffa500>Super</color><color=#ff0000>Nemui</color><color=#00ff00>Rolezzz...</color>" },
         { ModMode.SNRVerTOH.ToString(), $"<color=#00bfff>SuperNewRoles</color>" }
     };
     private static Dictionary<string, float> ModPixels = new()
@@ -42,7 +45,8 @@ public static class AprilFoolsManager
         { ModMode.SuperNagaiRoles.ToString(), 197f },
         { ModMode.SuperNyankoRoles.ToString(), 160f },
         { ModMode.SuperNewRollcakes.ToString(), 156f },
-        { ModMode.SNRVerTOH.ToString(), 115f }
+        { ModMode.SuperNemuiRolezzz.ToString(), 156f },
+        { ModMode.SNRVerTOH.ToString(), 150f }
     };
     private static Dictionary<string, float> ModYPos = new()
     {
