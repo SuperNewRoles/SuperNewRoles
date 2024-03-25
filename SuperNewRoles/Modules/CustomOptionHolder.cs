@@ -726,9 +726,6 @@ public class CustomOptionHolder
     public static CustomOption ToiletFanPlayerCount;
     public static CustomOption ToiletFanCoolTime;
 
-    public static CustomRoleOption SatsumaAndImoOption;
-    public static CustomOption SatsumaAndImoPlayerCount;
-
     public static CustomRoleOption EvilButtonerOption;
     public static CustomOption EvilButtonerPlayerCount;
     public static CustomOption EvilButtonerCoolTime;
@@ -1720,9 +1717,6 @@ public class CustomOptionHolder
         MadStuntManParcentageForTaskTriggerSetting = Create(401808, false, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadStuntManIsParcentageForTaskTrigger);
         MadStuntManIsUseVent = Create(401809, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadStuntManOption);
         MadStuntManIsImpostorLight = Create(401810, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadStuntManOption);
-
-        SatsumaAndImoOption = SetupCustomRoleOption(401900, true, RoleId.SatsumaAndImo);
-        SatsumaAndImoPlayerCount = Create(401901, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
 
         JackalFriendsOption = SetupCustomRoleOption(402000, true, RoleId.JackalFriends);
         JackalFriendsPlayerCount = Create(402001, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);

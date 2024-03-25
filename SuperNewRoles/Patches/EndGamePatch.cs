@@ -10,6 +10,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -639,7 +640,6 @@ public static class OnGameEndPatch
             RoleClass.Tuna.TunaPlayer,
             RoleClass.BlackCat.BlackCatPlayer,
             RoleClass.Neet.NeetPlayer,
-            RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
             RoleClass.Revolutionist.RevolutionistPlayer,
             RoleClass.SuicidalIdeation.SuicidalIdeationPlayer,
             RoleClass.Spelunker.SpelunkerPlayer,
@@ -669,6 +669,10 @@ public static class OnGameEndPatch
             Frankenstein.FrankensteinPlayer,
             });
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
+        foreach (SatsumaAndImo satsuma in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
+        {
+            notWinners.Add(satsuma.Player);
+        }
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsNeutral() && !notWinners.Contains(player))
@@ -866,9 +870,11 @@ public static class OnGameEndPatch
         }
         else if (CrewmateWin)
         {
-            if (RoleClass.SatsumaAndImo.TeamNumber == 1)//クルーなら
-                foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                    TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
+            foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
+            {
+                if (satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
+                    TempData.winners.Add(new(satsumaAndImo.Player.Data));//さつまいもも勝ち
+            }
         }
         else if (TaskerWin)
         {

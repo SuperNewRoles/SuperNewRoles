@@ -168,7 +168,7 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.SatsumaAndImo:
-                if (RoleClass.SatsumaAndImo.TeamNumber != 1)//クルーじゃないとき
+                if (player.GetRoleBase<SatsumaAndImo>()?.TeamState == SatsumaAndImo.SatsumaTeam.Madmate)//クルーじゃないとき
                 {
                     optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                     if (blackout) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
