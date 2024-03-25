@@ -212,18 +212,33 @@ public static class ExilePlayerPatch
         }
     }
 }
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.PetPet))]
+//[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.PetPet))]
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleRpc))]
 class PlayerPhysicsPetPetPatch
 {
-    public static bool Prefix(PlayerPhysics __instance)
+    public static bool Prefix(PlayerPhysics __instance, byte callId)
     {
-        if (!CustomRoles.OnPetPet(__instance.myPlayer))
+        Logger.Info($"[PlayerPhysicsRpcCalled]{callId}.{(RpcCalls)callId}");
+        if (callId == (byte)RpcCalls.Pet &&
+            __instance.myPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+            !CustomRoles.OnPetPet(__instance.myPlayer))
         {
-            _ = new LateTask(__instance.RpcCancelPet,0f);
+            _ = new LateTask(__instance.RpcCancelPet, 0f);
         }
         return true;
     }
-
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.TryPet))]
+class PlayerControlTryPetPatch
+{
+    public static bool Prefix(PlayerControl __instance)
+    {
+        if (!CustomRoles.OnPetPet(__instance))
+        {
+            _ = new LateTask(__instance.MyPhysics.RpcCancelPet, 0.04f);
+        }
+        return true;
+    }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
 class ReportDeadBodyPatch

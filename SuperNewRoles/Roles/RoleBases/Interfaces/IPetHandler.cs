@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
 public interface IPetHandler
 {
-    public bool OnCheckPet();
+    public bool OnCheckPet(bool IsDefault);
 }

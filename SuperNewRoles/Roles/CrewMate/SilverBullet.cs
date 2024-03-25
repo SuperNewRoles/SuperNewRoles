@@ -7,13 +7,14 @@ using Hazel;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
-public class SilverBullet : RoleBase, IImpostor, ISupportSHR, ICustomButton, IRpcHandler, IVentAvailable, IMeetingHandler, IPetHandler
+public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRpcHandler, IVentAvailable, IMeetingHandler, IPetHandler, INameHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(SilverBullet),
@@ -57,29 +58,27 @@ public class SilverBullet : RoleBase, IImpostor, ISupportSHR, ICustomButton, IRp
 
     public RoleTypes RealRole => RoleTypes.Engineer;
 
-    public bool CanUseVent => ModeHandler.IsMode(ModeId.SuperHostRoles) ? RoleHelpers.IsComms() : true;
+    public bool CanUseVent => ModeHandler.IsMode(ModeId.SuperHostRoles) ? !RoleHelpers.IsComms() : true;
 
     public SilverBullet(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         AnalysisCount = AnalysisCountOption.GetInt();
         CanRepairCount = RepairCountOption.GetInt();
+        LastUsedVentData = new();
 
         AnalyzeButtonInfo = new(AnalysisCount, this, AnalyzeOnClick,
             (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SilverBulletAnalyzeButton.png",115f),
-            () => 0f, new(), "SilverBulletAnalyzeButtonName",
-            UnityEngine.KeyCode.F, 49, CouldUse:AnalyzeCouldUse,
-            HasAbilityCountText:true);
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SilverBulletAnalyzeButton.png", 115f),
+            () => Optioninfo.CoolTime, new(), "SilverBulletAnalyzeButtonName",
+            UnityEngine.KeyCode.F, 49, CouldUse: AnalyzeCouldUse,
+            HasAbilityCountText: true);
         RepairButtonInfo = new(CanRepairCount, this, RepairOnClick,
             (isAlive) => CanUseRepairOption.GetBool() && isAlive, CustomButtonCouldType.CanMove, null,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SilverBulletRepairButton.png",115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SilverBulletRepairButton.png", 115f),
             () => 0f, new(), "SilverBulletRepairButtonName",
-            UnityEngine.KeyCode.R, 50, CouldUse:() => RoleHelpers.IsSabotage(),
-            HasAbilityCountText:true);
-
+            UnityEngine.KeyCode.R, 50, CouldUse: () => RoleHelpers.IsSabotage(),
+            HasAbilityCountText: true);
         CustomButtonInfos = [AnalyzeButtonInfo, RepairButtonInfo];
-
-        LastUsedVentData = new();
     }
 
     /*
@@ -91,6 +90,8 @@ public class SilverBullet : RoleBase, IImpostor, ISupportSHR, ICustomButton, IRp
         if (reader.ReadBoolean())
         {
             CanRepairCount--;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost)
+                return;
             if (Player.IsMushroomMixupActive())
             {
                 Sabotage.FixSabotage.RepairProcsee.ReceiptOfSabotageFixing(TaskTypes.MushroomMixupSabotage);
@@ -109,16 +110,16 @@ public class SilverBullet : RoleBase, IImpostor, ISupportSHR, ICustomButton, IRp
 
     public void StartMeeting()
     {
-        if (Player.PlayerId == PlayerControl.LocalPlayer.PlayerId || AmongUsClient.Instance.AmHost)
+        if (Player.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+            !AmongUsClient.Instance.AmHost)
+            return;
+        AddAnalyzeChats();
+        if (LastUsedVentData == null)
+            return;
+        LastUsedVentData = new();
+        foreach (VentInfo ventInfo in VentInfo.VentInfos.Values)
         {
-            AddAnalyzeChats();
-            if (LastUsedVentData == null)
-                return;
-            LastUsedVentData = new();
-            foreach (VentInfo ventInfo in VentInfo.VentInfos.Values)
-            {
-                LastUsedVentData[ventInfo.VentId] = [.. ventInfo.UsedPlayersCurrentTurn];
-            }
+            LastUsedVentData[ventInfo.VentId] = [.. ventInfo.UsedPlayersCurrentTurn];
         }
     }
 
@@ -132,6 +133,9 @@ public class SilverBullet : RoleBase, IImpostor, ISupportSHR, ICustomButton, IRp
         MessageWriter writer = RpcWriter;
         writer.Write(true);
         SendRpc(writer);
+        RepairButtonInfo.AbilityCount = CanRepairCount;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            ChangeName.SetRoleName(Player);
     }
     private void AnalyzeOnClick()
     {
@@ -141,6 +145,9 @@ public class SilverBullet : RoleBase, IImpostor, ISupportSHR, ICustomButton, IRp
         MessageWriter writer = RpcWriter;
         writer.Write(false);
         SendRpc(writer);
+        AnalyzeButtonInfo.AbilityCount = AnalysisCount;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            ChangeName.SetRoleName(Player);
     }
     private bool AnalyzeCouldUse()
     {
@@ -197,7 +204,19 @@ public class SilverBullet : RoleBase, IImpostor, ISupportSHR, ICustomButton, IRp
                 );
             }
             else
-                Player.RPCSendChatPrivate(text.ToString(), Player);
+            {
+                text.Append("\n\n<size=0%>.</size>");
+                CustomRpcSender customRpcSender = CustomRpcSender.Create(sendOption: SendOption.None);
+                string playerName = Player.Data.PlayerName;
+                customRpcSender.AutoStartRpc(Player.NetId, (byte)RpcCalls.SetName)
+                    .Write("\n\n\n<size=0%>.</size>")
+                    .EndRpc();
+                Player.RPCSendChatPrivate(text.ToString(), Player, sender: customRpcSender);
+                customRpcSender.AutoStartRpc(Player.NetId, (byte)RpcCalls.SetName)
+                    .Write(playerName)
+                    .EndRpc()
+                    .SendMessage();
+            }
         }
         if (AnalysisCount <= 0)
         {
@@ -206,20 +225,34 @@ public class SilverBullet : RoleBase, IImpostor, ISupportSHR, ICustomButton, IRp
         }
     }
 
-    public bool OnCheckPet()
+    public bool OnCheckPet(bool IsDefault)
     {
-        if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
+        if (IsDefault || !AmongUsClient.Instance.AmHost)
             return true;
-        if (ModHelpers.SetTargetVent(targetingPlayer: Player) && AnalysisCount > 0)
+        if ((AnalyzeTargetVent = ModHelpers.SetTargetVent(targetingPlayer: Player)) != null && AnalysisCount > 0)
         {
+            Logger.Info("Analyze Petting");
             AnalyzeOnClick();
             return false;
         }
         else if (RoleHelpers.IsSabotage() && CanRepairCount > 0)
         {
+            Logger.Info("Repair Petting");
             RepairOnClick();
             return false;
         }
         return true;
+    }
+    void ISupportSHR.BuildSetting(IGameOptions gameOptions)
+    {
+        gameOptions.SetFloat(FloatOptionNames.EngineerCooldown, 0f);
+        gameOptions.SetFloat(FloatOptionNames.EngineerInVentMaxTime, 999999f);
+    }
+    void ISupportSHR.BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
+    {
+        RoleNameText.Append(ModHelpers.Cs(Roleinfo.RoleColor, $"({AnalysisCount})"));
+        if (CanUseRepairOption.GetBool()) {
+            RoleNameText.Append(ModHelpers.Cs(RoleClass.ImpostorRed, $"({CanRepairCount})"));
+        }
     }
 }
