@@ -118,9 +118,9 @@ public static class AntiBlackOut
         var desyncdetail = RoleSelectHandler.GetDesyncRole(player.GetRole());
         return desyncdetail.IsDesync &&
             desyncdetail.RoleType is
-            AmongUs.GameOptions.RoleTypes.Impostor or
-            AmongUs.GameOptions.RoleTypes.Shapeshifter or
-            AmongUs.GameOptions.RoleTypes.ImpostorGhost;
+            RoleTypes.Impostor or
+            RoleTypes.Shapeshifter or
+            RoleTypes.ImpostorGhost;
     }
 
     public static void OnMeetingHudClose(GameData.PlayerInfo exiled)
@@ -140,21 +140,21 @@ public static class AntiBlackOut
             player.IsDead = PlayerDeadData[player.PlayerId];
             player.Disconnected = PlayerDisconnectedData[player.PlayerId];
         }
-        foreach ((byte playerId, RoleTypes role) in RoleChangedData)
-        {
-            PlayerControl player = ModHelpers.PlayerById(playerId);
-            if (player != null)
-                player.RpcSetRoleDesync(role, player);
-        }
         if (RealExiled != null)
-            new LateTask(() => RealExiled.Object.RpcInnerExiled(), 1f);
+            new LateTask(() => RealExiled.Object.RpcInnerExiled(), 0.5f);
         new LateTask(() => {
             IsModdedSerialize = true;
             RPCHelper.RpcSyncGameData();
             SendAntiBlackOutInformation(null, ABOInformationType.EndAliveCanViewDeadPlayerChat);
+            foreach ((byte playerId, RoleTypes role) in RoleChangedData)
+            {
+                PlayerControl player = ModHelpers.PlayerById(playerId);
+                if (player != null)
+                    player.RpcSetRoleDesync(role, player);
+            }
             IsModdedSerialize = false;
             ProcessNow = false;
-        }, 1.5f);
+        }, 0.5f);
         DestroySavedData();
     }
 
@@ -210,11 +210,6 @@ public static class AntiBlackOut
                 {
                     player.IsDead = false;
                     player.Disconnected = false;
-                    if (!player.Role.IsImpostor && player.Object != null)
-                    {
-                        RoleChangedData.Add((player.PlayerId, player.Role.Role));
-                        player.Object.RpcSetRoleDesync(RoleTypes.ImpostorGhost, player.Object);
-                    }
                 }
             }
             IsModdedSerialize = true;
@@ -222,6 +217,11 @@ public static class AntiBlackOut
             foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
             {
                 Logger.Info($"{player.PlayerName}({seer.GetClientId()}) -> {player.IsDead} : {player.Disconnected}");
+            }
+            if (PlayerDeadData[seer] && !PlayerDisconnectedData[seer] && !seer.Data.Role.IsImpostor)
+            {
+                RoleChangedData.Add((seer.PlayerId, seer.Data.Role.Role));
+                seer.RpcSetRoleDesync(RoleTypes.ImpostorGhost, seer);
             }
             RPCHelper.RpcSyncGameData(seer.GetClientId());
             IsModdedSerialize = false;
@@ -272,6 +272,6 @@ public static class AntiBlackOut
     {
         PlayerDeadData = new();
         PlayerDisconnectedData = new();
-        RoleChangedData = naafxPCbHvrvWdFunUnFYqipUsg();
+        RoleChangedData = new();
     }
 }

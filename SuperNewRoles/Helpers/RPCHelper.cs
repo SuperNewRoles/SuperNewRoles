@@ -104,6 +104,7 @@ public static class RPCHelper
             Instance.VotingComplete(states, exiled, tie);
         else
         {
+            Logger.Info("Desync Send Now ->"+seer.GetClientId().ToString());
             MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(Instance.NetId, (byte)RpcCalls.VotingComplete, SendOption.Reliable, targetClientId: seer.GetClientId());
             val.WritePacked(states.Length);
             foreach (VoterState voterState in states)
@@ -115,7 +116,7 @@ public static class RPCHelper
             else
                 val.Write(exiled.PlayerId);
             val.Write(tie);
-            val.EndMessage();
+            AmongUsClient.Instance.FinishRpcImmediately(val);
         }
     }
 
