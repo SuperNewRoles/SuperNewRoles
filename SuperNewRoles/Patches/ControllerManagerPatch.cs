@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -125,6 +126,60 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
+                PlayerControl player = GameData.Instance.GetPlayerById(1).Object;
+                player.PlayerId = 19;
+                MessageWriter writer = Hazel.MessageWriter.Get(Hazel.SendOption.Reliable);
+                writer.StartMessage(5);
+                writer.Write(AmongUsClient.Instance.GameId);
+                writer.StartMessage(1); //0x01 Data
+                {
+                    writer.WritePacked(player.NetId);
+                    player.Serialize(writer, false);
+
+                }
+                writer.EndMessage();
+                writer.EndMessage();
+                AmongUsClient.Instance.SendOrDisconnect(writer);
+                writer.Recycle();
+                new LateTask(() =>
+                {
+                    GameData.PlayerInfo info = new GameData.PlayerInfo(19);
+                    info.RoleType = AmongUs.GameOptions.RoleTypes.Impostor;
+                    info.Outfits = new();
+                    info.Role = new();
+                    info.Role.Role = RoleTypes.Impostor;
+                    GameData.Instance.AllPlayers.Add(info);
+                    MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+                    writer.StartMessage(5);
+                    writer.Write(AmongUsClient.Instance.GameId);
+                    writer.StartMessage(1); //0x01 Data
+                    {
+                        writer.WritePacked(GameData.Instance.NetId);
+                        GameData.Instance.Serialize(writer, true);
+
+                    }
+                    writer.EndMessage();
+                    writer.EndMessage();
+
+                    AmongUsClient.Instance.SendOrDisconnect(writer);
+                    writer.Recycle();
+                    info.Role = null;
+                    player.PlayerId = 1;
+                    writer = Hazel.MessageWriter.Get(Hazel.SendOption.Reliable);
+                    writer.StartMessage(5);
+                    writer.Write(AmongUsClient.Instance.GameId);
+                    writer.StartMessage(1); //0x01 Data
+                    {
+                        writer.WritePacked(player.NetId);
+                        player.Serialize(writer, false);
+
+                    }
+                    writer.EndMessage();
+                    writer.EndMessage();
+                    AmongUsClient.Instance.SendOrDisconnect(writer);
+                    writer.Recycle();
+                }, 0.5f);
+                return;
                 CustomSpores.AddMushroom(PlayerControl.LocalPlayer.transform.position);
                 return;
                 source = SoundManager.Instance.PlaySound(ContentManager.GetContent<AudioClip>("Sauner_SaunaBGM.wav"), true);

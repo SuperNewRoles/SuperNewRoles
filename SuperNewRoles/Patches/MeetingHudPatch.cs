@@ -571,9 +571,55 @@ class CheckForEndVotingPatch
                             {
                                 IsDesyncMode = true;
                                 DesyncDetail = (NewExiled.Object, null, true);
-                                AntiBlackOut.SendAntiBlackOutInformation(NewExiled.Object, AntiBlackOut.ABOInformationType.OnlyDesyncImpostorDead);
+                                AntiBlackOut.SendAntiBlackOutInformation(NewExiled.Object, AntiBlackOut.ABOInformationType.OnlyDesyncImpostorDead, exiledPlayer?.PlayerName);
                             }
                         }
+                        new LateTask(() =>
+                        {
+                            PlayerControl exiledObject = NewExiled.Object;
+
+                            int exiledColorId = NewExiled.DefaultOutfit.ColorId;
+                            string exiledName = NewExiled.DefaultOutfit.PlayerName;
+                            string exiledHatId = NewExiled.DefaultOutfit.HatId;
+                            string exiledVisorId = NewExiled.DefaultOutfit.VisorId;
+                            string exiledSkinId = NewExiled.DefaultOutfit.SkinId;
+
+                            Logger.Info("AAA");
+
+                            new LateTask(() =>
+                            {
+                                if (exiledObject == null)
+                                    return;
+                                Logger.Info("CCC");
+                                exiledObject.RpcSetName(exiledName);
+                                exiledObject.RpcSetColor((byte)exiledColorId);
+                                exiledObject.RpcSetHat(exiledHatId);
+                                exiledObject.RpcSetVisor(exiledVisorId);
+                                exiledObject.RpcSetSkin(exiledSkinId);
+                                Logger.Info("戻しました");
+                            }, 5f);
+
+                            Logger.Info("BBB");
+                            
+                            CustomRpcSender customRpcSender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
+                            
+                            customRpcSender.AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetName)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.PlayerName)
+                                .EndRpc()
+                                .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetColor)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.ColorId)
+                                .EndRpc()
+                                .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetHatStr)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.HatId)
+                                .EndRpc()
+                                .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetVisorStr)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.VisorId)
+                                .EndRpc()
+                                .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetSkinStr)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.SkinId)
+                                .EndRpc()
+                                .SendMessage();
+                        }, AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame ? 4.5f : 0.1f);
                         exiledPlayer = NewExiled;
                         break;
                     case AntiBlackOut.SupportType.DoubleVotedAfterExile:
@@ -584,10 +630,10 @@ class CheckForEndVotingPatch
                 if (IsDesyncMode)
                 {
                     RPCHelper.RpcVotingCompleteDesync(states, DesyncDetail.exiled, DesyncDetail.tie, DesyncDetail.player);
-                    new LateTask(() => __instance.RpcVotingComplete(states, exiledPlayer, tie), 0.1f); //RPC
-                    __instance.VotingComplete(states, exiledPlayer, tie);
-                    return false;
                 }
+                new LateTask(() => __instance.RpcVotingComplete(states, exiledPlayer, tie), 0.1f); //RPC
+                __instance.VotingComplete(states, exiledPlayer, tie);
+                return false;
             }
             __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
             return false;
@@ -830,72 +876,25 @@ public static class MeetingHudPopulateVotesPatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
 class MeetingHudClosePatch
 {
+    public static void Prefix(MeetingHud __instance)
+    {
+        if (!ModeHandler.IsMode(ModeId.SuperHostRoles) ||
+            __instance.exiledPlayer == null)
+            return;
+        if (AntiBlackOut.RealExiled == null)
+        {
+            Logger.Warn("Warning: AntiBlackOut.RealExiled is null.", "RpcClose");
+            return;
+        }
+        if (__instance.exiledPlayer.PlayerId == AntiBlackOut.RealExiled.PlayerId ||
+            __instance.exiledPlayer.Object == null)
+            return;
+        __instance.exiledPlayer = AntiBlackOut.RealExiled;
+    }
     public static void Postfix(MeetingHud __instance)
     {
         CustomRoles.OnMeetingClose();
         AntiBlackOut.OnMeetingHudClose(AntiBlackOut.RealExiled);
-    }
-}
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.RpcClose))]
-class MeetingHudRpcClosePatch
-{
-    public static bool Prefix(MeetingHud __instance)
-    {
-        if (!ModeHandler.IsMode(ModeId.SuperHostRoles) ||
-            __instance.exiledPlayer == null)
-            return true;
-        if (AntiBlackOut.RealExiled == null)
-        {
-            Logger.Warn("Warning: AntiBlackOut.RealExiled is null.", "RpcClose");
-            return true;
-        }
-        if (__instance.exiledPlayer.PlayerId == AntiBlackOut.RealExiled.PlayerId ||
-            __instance.exiledPlayer.Object == null)
-            return true;
-
-        PlayerControl exiledObject = __instance.exiledPlayer.Object;
-
-        int exiledColorId = __instance.exiledPlayer.DefaultOutfit.ColorId;
-        string exiledName = __instance.exiledPlayer.DefaultOutfit.PlayerName;
-        string exiledHatId = __instance.exiledPlayer.DefaultOutfit.HatId;
-        string exiledVisorId = __instance.exiledPlayer.DefaultOutfit.VisorId;
-        string exiledSkinId = __instance.exiledPlayer.DefaultOutfit.SkinId;
-
-        new LateTask(() =>
-        {
-            exiledObject.RpcSetName(exiledName);
-            exiledObject.RpcSetColor((byte)exiledColorId);
-            exiledObject.RpcSetHat(exiledHatId);
-            exiledObject.RpcSetVisor(exiledVisorId);
-            exiledObject.RpcSetSkin(exiledSkinId);
-            Logger.Info("戻しました");
-        }, 0.5f);
-
-        CustomRpcSender customRpcSender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
-
-        customRpcSender.AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetName)
-            .Write(AntiBlackOut.RealExiled.DefaultOutfit.PlayerName)
-            .EndRpc()
-            .AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetColor)
-            .Write(AntiBlackOut.RealExiled.DefaultOutfit.ColorId)
-            .EndRpc()
-            .AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetHatStr)
-            .Write(AntiBlackOut.RealExiled.DefaultOutfit.HatId)
-            .EndRpc()
-            .AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetVisorStr)
-            .Write(AntiBlackOut.RealExiled.DefaultOutfit.VisorId)
-            .EndRpc()
-            .AutoStartRpc(__instance.exiledPlayer.Object.NetId, (byte)RpcCalls.SetSkinStr)
-            .Write(AntiBlackOut.RealExiled.DefaultOutfit.SkinId)
-            .EndRpc()
-            .AutoStartRpc(__instance.NetId, (byte)RpcCalls.CloseMeeting)
-            .EndRpc()
-            .SendMessage();
-
-        __instance.exiledPlayer = AntiBlackOut.RealExiled;
-        __instance.Close();
-
-        return false;
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

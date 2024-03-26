@@ -45,7 +45,7 @@ public static class AntiBlackOut
         }
         SetAllDontDead(exiled);
     }
-    public static void SendAntiBlackOutInformation(PlayerControl target, ABOInformationType informationType)
+    public static void SendAntiBlackOutInformation(PlayerControl target, ABOInformationType informationType, params string[] formatstrings)
     {
         CustomRpcSender crs = CustomRpcSender.Create();
         int targetClientId = target == null ? - 1 : target.GetClientId();
@@ -53,7 +53,7 @@ public static class AntiBlackOut
             target = PlayerControl.LocalPlayer;
         string SendName = CustomOptionHolder.Cs(RoleClass.JackalBlue, "AntiBlackOutChatTitle");
         string name = target.Data.PlayerName;
-        string text = ModTranslation.GetString($"AntiBlackOut{informationType}");
+        string text = string.Format(ModTranslation.GetString($"AntiBlackOut{informationType}"), formatstrings);
         if (targetClientId == -1)
         {
             target.SetName(SendName);
@@ -140,9 +140,9 @@ public static class AntiBlackOut
             player.IsDead = PlayerDeadData[player.PlayerId];
             player.Disconnected = PlayerDisconnectedData[player.PlayerId];
         }
-        if (RealExiled != null)
-            new LateTask(() => RealExiled.Object.RpcInnerExiled(), 0.5f);
         new LateTask(() => {
+            if (RealExiled != null && RealExiled.Object != null)
+                RealExiled.Object.RpcInnerExiled();
             IsModdedSerialize = true;
             RPCHelper.RpcSyncGameData();
             SendAntiBlackOutInformation(null, ABOInformationType.EndAliveCanViewDeadPlayerChat);
@@ -154,7 +154,7 @@ public static class AntiBlackOut
             }
             IsModdedSerialize = false;
             ProcessNow = false;
-        }, 0.5f);
+        }, 2f);
         DestroySavedData();
     }
 
@@ -187,16 +187,10 @@ public static class AntiBlackOut
             if (!IsPlayerDesyncImpostorTeam(seer)) {
                 foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
                 {
-                    if (player.Role.IsImpostor && !IsImpoAlived &&
-                        (exiled == null || exiled.PlayerId != player.PlayerId))
+                    if (!player.Role.IsImpostor || !IsImpoAlived || exiled == player)
                     {
-                        IsImpoAlived = true;
-                        player.IsDead = false;
-                        player.Disconnected = false;
-                        continue;
-                    }
-                    if (!player.Role.IsImpostor)
-                    {
+                        if (player.Role.IsImpostor && !IsImpoAlived && (exiled == null || exiled.PlayerId != player.PlayerId))
+                            IsImpoAlived = true;
                         player.IsDead = false;
                         player.Disconnected = false;
                         continue;
@@ -216,9 +210,9 @@ public static class AntiBlackOut
             Logger.Info($"---------SendTo {seer.Data.PlayerName}({seer.GetClientId()})---------");
             foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
             {
-                Logger.Info($"{player.PlayerName}({seer.GetClientId()}) -> {player.IsDead} : {player.Disconnected}");
+                Logger.Info($"{player.PlayerName}({player.Object.GetClientId()}) -> {player.IsDead} : {player.Disconnected}");
             }
-            if (PlayerDeadData[seer] && !PlayerDisconnectedData[seer] && !seer.Data.Role.IsImpostor)
+            if (PlayerDeadData[seer] && !PlayerDisconnectedData[seer] && !seer.Data.Role.IsImpostor && IsPlayerDesyncImpostorTeam(seer))
             {
                 RoleChangedData.Add((seer.PlayerId, seer.Data.Role.Role));
                 seer.RpcSetRoleDesync(RoleTypes.ImpostorGhost, seer);
