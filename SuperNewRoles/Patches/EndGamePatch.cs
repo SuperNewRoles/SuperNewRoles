@@ -563,6 +563,10 @@ public static class OnGameEndPatch
                 finalStatus = FinalStatus.Sabotage;
             FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] = finalStatus;
 
+            // サボタージュ死
+            if (finalStatus == FinalStatus.Sabotage && !p.IsDead && !p.Role.IsImpostor)
+                p.IsDead = true;
+          
             string namesuffix = "";
             if (p.Object.IsLovers())
                 namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
