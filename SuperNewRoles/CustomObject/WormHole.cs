@@ -51,6 +51,7 @@ class WormHole : CustomAnimation
 
         var tempVent = UnityEngine.Object.FindObjectOfType<Vent>();
         _vent = UnityEngine.Object.Instantiate<Vent>(tempVent, gameObject.transform);
+        //_vent.transform.localScale = Vector3.Scale(ShipStatus.Instance.transform.lossyScale, tempVent.transform.lossyScale);
         _vent.gameObject.transform.position = gameObject.transform.position;
         _vent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1;
         _vent.Left = null;
@@ -61,9 +62,9 @@ class WormHole : CustomAnimation
         _vent.name = "WormHoleVent";
         _vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
         _vent.myRend.enabled = false;
-        _vent.gameObject.transform.localScale = Vector3.Scale(ShipStatus.Instance.gameObject.transform.localScale, _vent.gameObject.transform.localScale);
         _vent.gameObject.SetActive(false);
         TimerText.color = Palette.DisabledClear;
+        TimerText.transform.position = gameObject.transform.position;
         spriteRenderer.color = Palette.DisabledClear;
         Id = _vent.Id;
 
