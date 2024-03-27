@@ -62,6 +62,9 @@ public static class AprilFoolsManager
             }
         },
     };
+
+    private static bool IsForceApril2024 = false;
+
     private static Dictionary<string, Sprite> ModBanners = new();
 
     public const string DefaultModNameOnColor = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
@@ -123,9 +126,10 @@ public static class AprilFoolsManager
                 endTimeUtc = endTimeUtc_2023;
                 break;
             case 2024:
+                if (IsForceApril2024)
+                    return true;
                 startTimeUtc = startTimeUtc_2024;
                 endTimeUtc = endTimeUtc_2024;
-                return true;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(year), year, $"I don't have year '{year}'");
