@@ -430,7 +430,7 @@ FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆,误赌,狙擊炸膛
 FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
 FinalStatusSantaSelf,Santa bomb!,ソリから転落,送错礼物,聖誕炸彈
-FinalStatusByWave,By wave,波動死
+FinalStatusEvaporation,Evaporation,蒸発
 
 # MeetingStatus
 MeetingStatusCanNotCallEmergencyMeeting,EMERGENCY MEETINGS CANNOT\nBE OPENED DUE TO SETTINGS,緊急会議は\n設定により開けない
