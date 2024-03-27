@@ -21,13 +21,14 @@ public static class AntiBlackOut
     public enum ABOInformationType
     {
         FirstDead,
+        AllExileWillDobuleVoted,
         OnlyDesyncImpostorDead,
         AliveCanViewDeadPlayerChat,
         EndAliveCanViewDeadPlayerChat
     }
     private static PlayerData<bool> PlayerDeadData;
     private static PlayerData<bool> PlayerDisconnectedData;
-    private static HashSet<(byte, RoleTypes)> RoleChangedData;
+    private static HashSet<(byte, HashSet<(byte, RoleTypes)>)> RoleChangedData;
     private static bool CantProcess { get { return _cantProcess; } }
     private static bool _cantProcess;
     private static bool ProcessNow;
@@ -109,9 +110,9 @@ public static class AntiBlackOut
             }
         }
         RealExiled = exiled;
-        if (deadPlayers <= 0)
-            return SupportType.DoubleVotedAfterExile;
-        return SupportType.DeadExile;
+        //if (deadPlayers <= 0)
+        return SupportType.DoubleVotedAfterExile;
+        //return SupportType.DeadExile;
     }
     public static bool IsPlayerDesyncImpostorTeam(PlayerControl player)
     {
@@ -145,16 +146,27 @@ public static class AntiBlackOut
                 RealExiled.Object.RpcInnerExiled();
             IsModdedSerialize = true;
             RPCHelper.RpcSyncGameData();
-            SendAntiBlackOutInformation(null, ABOInformationType.EndAliveCanViewDeadPlayerChat);
-            foreach ((byte playerId, RoleTypes role) in RoleChangedData)
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                PlayerControl player = ModHelpers.PlayerById(playerId);
-                if (player != null)
-                    player.RpcSetRoleDesync(role, player);
+                if (player.IsAlive())
+                    continue;
+                SendAntiBlackOutInformation(player, ABOInformationType.EndAliveCanViewDeadPlayerChat);
+            }
+            foreach ((byte seerId, HashSet<(byte playerId, RoleTypes role)> players) in RoleChangedData)
+            {
+                PlayerControl seer = ModHelpers.PlayerById(seerId);
+                if (seer == null)
+                    continue;
+                foreach ((byte playerId, RoleTypes role) playerdetail in players)
+                {
+                    PlayerControl player = ModHelpers.PlayerById(playerdetail.playerId);
+                    if (player != null)
+                        player.RpcSetRoleDesync(playerdetail.role, seer);
+                }
             }
             IsModdedSerialize = false;
             ProcessNow = false;
-        }, 2f);
+        }, 0.75f);
         DestroySavedData();
     }
 
@@ -170,11 +182,16 @@ public static class AntiBlackOut
                 NeedDesyncSerialize = true;
 
         }
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.IsAlive())
+                continue;
+            SendAntiBlackOutInformation(player, ABOInformationType.AliveCanViewDeadPlayerChat);
+        }
         if (NeedDesyncSerialize)
             DesyncDontDead(exiled);
         else
             SyncDontDead(exiled);
-        SendAntiBlackOutInformation(null, ABOInformationType.AliveCanViewDeadPlayerChat);
     }
     private static void DesyncDontDead(GameData.PlayerInfo exiled)
     {
@@ -214,8 +231,18 @@ public static class AntiBlackOut
             }
             if (PlayerDeadData[seer] && !PlayerDisconnectedData[seer] && !seer.Data.Role.IsImpostor && IsPlayerDesyncImpostorTeam(seer))
             {
-                RoleChangedData.Add((seer.PlayerId, seer.Data.Role.Role));
+                HashSet<(byte, RoleTypes)> seerchanges = [
+                    (seer.PlayerId, seer.Data.Role.Role)
+                ];
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (!player.Data.Role.IsImpostor)
+                        continue;
+                    seerchanges.Add((player.PlayerId, player.Data.Role.Role));
+                    player.RpcSetRoleDesync(RoleTypes.CrewmateGhost, seer);
+                }
                 seer.RpcSetRoleDesync(RoleTypes.ImpostorGhost, seer);
+                RoleChangedData.Add((seer.PlayerId, seerchanges));
             }
             RPCHelper.RpcSyncGameData(seer.GetClientId());
             IsModdedSerialize = false;
@@ -223,13 +250,7 @@ public static class AntiBlackOut
     }
     public static void StartMeeting()
     {
-        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
-        {
-            if (player.IsDead || player.Disconnected)
-                continue;
-            SendAntiBlackOutInformation(null, ABOInformationType.FirstDead);
-            break;
-        }
+        SendAntiBlackOutInformation(null, ABOInformationType.AllExileWillDobuleVoted);
     }
     private static void SyncDontDead(GameData.PlayerInfo exiled)
     {

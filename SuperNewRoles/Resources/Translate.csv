@@ -1897,6 +1897,7 @@ CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1}),破坏
 # AntiBlackOutMessages
 AntiBlackOutChatTitle,[Blackout Information],【暗転対策情報】
 AntiBlackOutFirstDead,o avoid triggering a screen blackout， if a player is exiled before death， no one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、死亡者が発生するまでに追放された場合は表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。
+AllExileWillDobuleVoted,To avoid triggering a screen blackout， not one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、追放はは表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。
 AntiBlackOutOnlyDesyncImpostorDead,You were the "DesyncImpostor" role， a type of Mod role. This means that even if there were impostors ejected， it would still say "No Impostors Remain." However， they would still be ejected from the game.Real exiled player is {0}.,あなたは「DesyncImpostor」というタイプのMod役職だったため、追放者がいる場合でも追放者がいないと表示されます。なお、実際には追放されます。\n実際に追放されたプレイヤー：{0}
 AntiBlackOutAliveCanViewDeadPlayerChat,Due to the effects of the screen blackout countermeasure， if you chat， your chat will also be displayed to the survivors.\nPlease refrain from chatting.,今からは、画面の暗転の対策の影響によりあなたがチャットを行った場合に生存者にも表示されてしまいます。\nチャットしないようにしてください。
 AntiBlackOutEndAliveCanViewDeadPlayerChat,Chat is no longer shown to alive players.\nYou can chat with them!,チャットは生存者に表示されなくなりました。\nチャットしても大丈夫！
