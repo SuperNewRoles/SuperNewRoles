@@ -558,6 +558,10 @@ public static class OnGameEndPatch
                                 ? FinalStatus.Sabotage
                                 : FinalStatus.Alive;
 
+                // サボタージュ死
+                if (finalStatus == FinalStatus.Sabotage && !p.IsDead && !p.Role.IsImpostor)
+                    p.IsDead = true;
+
                 string namesuffix = "";
                 if (p.Object.IsLovers())
                 {
