@@ -52,7 +52,7 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
             (isAlive) => isAlive && !CollectWormHoleButtonInfo.CouldUse(),
             CustomButtonCouldType.CanMove | CustomButtonCouldType.NotNearDoor,
             null,//FIXME:
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.aaa.png", 115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DimensionWalker.PutButton.png", 115f),
             () => PutWormHoleCooltime.GetFloat(), new(-2f, 1, 0),
             "PutWormHoleButtonName", KeyCode.F
         );
@@ -60,7 +60,7 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
             (isAlive) => isAlive && CollectWormHoleButtonInfo.CouldUse(),
             CustomButtonCouldType.CanMove,
             null,//FIXME:
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.aaa.png", 115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DimensionWalker.CollectButton.png", 115f),
             () => 0f, new(-2f, 1, 0),
             "CollectWormHoleButtonName", KeyCode.F,
             CouldUse: () => CanCollectWormHole()

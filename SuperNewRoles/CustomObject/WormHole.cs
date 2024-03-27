@@ -28,8 +28,8 @@ class WormHole : CustomAnimation
     public bool IsActivating { get; private set; }
     public Vent _vent { get; private set; }
 
-    private const string ResourcePath_Use = "SuperNewRoles.Resources.WormHoleAnimation.Use.DimensionWalkerOpen";
-    private const string ResourcePath_Idle = "SuperNewRoles.Resources.WormHoleAnimation.Idle.DimensionWalkerIdle";
+    private const string ResourcePath_Use = "SuperNewRoles.Resources.DimensionWalker.Animation.Use.DimensionWalkerOpen";
+    private const string ResourcePath_Idle = "SuperNewRoles.Resources.DimensionWalker.Animation.Idle.DimensionWalkerIdle";
     private static CustomAnimationOptions animOption_Idle = new(GetSprites(ResourcePath_Idle, 60, 2), 30, true);
 
     public WormHole(IntPtr intPtr) : base(intPtr)
@@ -39,7 +39,7 @@ class WormHole : CustomAnimation
     public WormHole Init(PlayerControl owner)
     {
         Vector3 pos = owner.GetTruePosition();
-        gameObject.transform.SetParent(ShipStatus.Instance.gameObject.transform);
+        //gameObject.transform.SetParent(ShipStatus.Instance.gameObject.transform);
         gameObject.transform.position = new(pos.x, pos.y, pos.z + 0.1f);
         gameObject.transform.localScale = new(1f, 1f);
         gameObject.layer = 12; //ShortObjectにレイヤーを設定
@@ -61,6 +61,7 @@ class WormHole : CustomAnimation
         _vent.name = "WormHoleVent";
         _vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
         _vent.myRend.enabled = false;
+        _vent.gameObject.transform.localScale = Vector3.Scale(ShipStatus.Instance.gameObject.transform.localScale, _vent.gameObject.transform.localScale);
         _vent.gameObject.SetActive(false);
         TimerText.color = Palette.DisabledClear;
         spriteRenderer.color = Palette.DisabledClear;
