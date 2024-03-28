@@ -80,9 +80,13 @@ public static class DeviceClass
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
     class MapCountOverlayAwakePatch
     {
-        public static void Postfix()
+        public static void Postfix(MapCountOverlay __instance)
         {
             if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
+            if (ShouldCountOverlayIgnoreComms())
+            {
+                __instance.BackgroundColor.SetColor(Color.green);
+            }
         }
     }
     public static bool IsChanging = false;
