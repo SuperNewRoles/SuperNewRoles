@@ -102,8 +102,13 @@ public static class DeviceClass
                 if (IsChanging)
                     return false;
                 bool commsActive = false;
-                foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
-                    if (task.TaskType == TaskTypes.FixComms) commsActive = true;
+                if (!ShouldCountOverlayIgnoreComms())
+                {
+                    foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
+                    {
+                        if (task.TaskType == TaskTypes.FixComms) commsActive = true;
+                    }
+                }
 
                 if (!__instance.isSab && commsActive)
                 {
