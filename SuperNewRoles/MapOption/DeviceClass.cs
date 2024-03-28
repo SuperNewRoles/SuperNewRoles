@@ -302,6 +302,10 @@ public static class DeviceClass
             }
         }
     }
+    private static bool ShouldCountOverlayIgnoreComms()
+    {
+        return PlayerControl.LocalPlayer.IsRole(RoleId.EvilHacker) && EvilHacker.CanUseAdminDuringCommsSabotaged.GetBool();
+    }
     [HarmonyPatch(typeof(CounterArea), nameof(CounterArea.UpdateCount))]
     public static class CounterAreaUpdateCountPatch
     {
