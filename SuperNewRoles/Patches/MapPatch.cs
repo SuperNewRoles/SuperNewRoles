@@ -96,7 +96,7 @@ public static class MapBehaviourPatch
             __instance.taskOverlay.Hide();
             __instance.HerePoint.enabled = true;
             PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
-            __instance.ColorControl.SetColor(Palette.ImpostorRed);
+            __instance.ColorControl.SetColor(new(0f, 0.73f, 1f));
             // アドミンがサボタージュとドア閉めのボタンに隠れないようにする
             // ボタンより手前
             __instance.countOverlay.transform.SetLocalZ(-3f);
