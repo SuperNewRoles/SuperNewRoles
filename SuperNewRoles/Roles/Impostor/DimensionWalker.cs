@@ -1,4 +1,5 @@
 
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -26,17 +27,16 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.DimensionWalker, 250000, false,
+            CoolTimeOption: (15f, 2.5f, 60f, 2.5f, false),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.DimensionWalker, introSound: RoleTypes.Impostor);
 
-    public static CustomOption PutWormHoleCooltime;
     public static CustomOption ActivateWormHoleTime;
     public static CustomOption DoPlayWormHoleAnimation;
 
     private static void CreateOption()
     {
-        PutWormHoleCooltime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "PutWormHoleCooltimeOption", 15f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption);
         ActivateWormHoleTime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "ActivateWormHoleTimeOption", 195f, 0f, 600f, 15f, Optioninfo.RoleOption);
         DoPlayWormHoleAnimation = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "DoPlayWormHoleAnimationOption", false, Optioninfo.RoleOption);
     }
@@ -51,15 +51,16 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
         PutWormHoleButtonInfo = new(3, this, () => OnButtonClick_Put(),
             (isAlive) => isAlive && !CollectWormHoleButtonInfo.CouldUse(),
             CustomButtonCouldType.CanMove | CustomButtonCouldType.NotNearDoor,
-            null,//FIXME:
+            null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DimensionWalker.PutButton.png", 115f),
-            () => PutWormHoleCooltime.GetFloat(), new(-2f, 1, 0),
-            "PutWormHoleButtonName", KeyCode.F
+            () => Optioninfo.CoolTime, new(-2f, 1, 0),
+            "PutWormHoleButtonName", KeyCode.F,
+            HasAbilityCountText: true
         );
         CollectWormHoleButtonInfo = new(null, this, () => OnButtonClick_Collect(),
             (isAlive) => isAlive && CollectWormHoleButtonInfo.CouldUse(),
             CustomButtonCouldType.CanMove,
-            null,//FIXME:
+            null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DimensionWalker.CollectButton.png", 115f),
             () => 0f, new(-2f, 1, 0),
             "CollectWormHoleButtonName", KeyCode.F,
@@ -72,8 +73,9 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
     private bool CanCollectWormHole()
     {
         var target = HudManager.Instance.ImpostorVentButton.currentTarget;
-        if (target != null && WormHole.IsWormHole(target)
-            && target.gameObject.transform.parent.gameObject.GetComponent<WormHole>().Owner.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        if (target != null
+            && WormHole.IsWormHole(target)
+            && WormHole.AllWormHoles.Select(x => x.Owner.PlayerId == PlayerControl.LocalPlayer.PlayerId && x._vent).Contains(target))
         {
             currentTargetWormHole = target;
             return true;

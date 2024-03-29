@@ -263,13 +263,12 @@ public class CustomButtonInfo
     /// <returns>playerがドアの近くにいる</returns>
     public bool IsNearDoor(PlayerControl player)
     {
-        // ドアをすべて検索(重そう)
-        var all = UnityEngine.Object.FindObjectsOfType<DoorConsole>();
+        var all = ShipStatus.Instance.AllDoors;
 
-        foreach (DoorConsole door in all)
+        foreach (OpenableDoor door in all)
         {
             var distance = Vector2.Distance(player.GetTruePosition(), door.gameObject.transform.position);
-            if (distance <= door.UsableDistance)
+            if (distance <= 1f)
                 return true;
         }
 

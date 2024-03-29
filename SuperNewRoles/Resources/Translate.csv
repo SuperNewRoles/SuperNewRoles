@@ -1825,7 +1825,6 @@ JammerButtonName,Jamming,ジャミング,障眼法,透明魔法
 DimensionWalkerName,Dimension walker,ディメンションウォーカー
 DimensionWalkerTitle1,For me，distance does not exist,私の前では距離など無いに等しい
 DimensionWalkerDescription,You can set up vents that can only be used by the Imposter camp.\nAfter a certain amount of time，the vent will be activated and visible to all.\nThe vent can also be collected.,インポスターのみが使用出来る専用のベントを設置することができます。\nベントは一定時間経過後に有効化し全員に見えるようになります。\nまた、ベントは回収することも出来ます。
-PutWormHoleCooltimeOption,Putting cooltime,設置のクールタイム
 ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有効化まで
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する
 PutWormHoleButtonName,Put wormhole,設置
