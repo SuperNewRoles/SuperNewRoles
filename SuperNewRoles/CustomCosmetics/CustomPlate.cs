@@ -19,9 +19,9 @@ public class CustomPlate
     {
         public static void Postfix(HatManager __instance)
         {
-            if (ConfigRoles.DebugMode.Value) return;
-            if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value) return;
-            if (isAdded || !DownLoadClass.IsEndDownload) return;
+            if (!DownLoadCustomCosmetics.IsLoad) return;
+
+            if (isAdded || !DownLoadClassPlate.IsEndDownload) return;
             isAdded = true;
             SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み処理開始");
             var AllPlates = __instance.allNamePlates.ToList();
@@ -36,7 +36,7 @@ public class CustomPlate
                 try
                 {
                     var FileName = file.Name[0..^4];
-                    var Data = DownLoadClass.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
+                    var Data = DownLoadClassPlate.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
                     TempPlateViewData tpvd = new()
                     {
                         Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource)
