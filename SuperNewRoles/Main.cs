@@ -1,22 +1,16 @@
 global using SuperNewRoles.Modules;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
-using InnerNet;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.MapCustoms;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Attribute;
-using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
@@ -41,10 +35,13 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public const bool IsSecretBranch = false; // プルリク時にtrueなら指摘してください
     public const bool IsHideText = false; // プルリク時にtrueなら指摘してください
 
+    public static Assembly assembly => _assembly != null ? _assembly : (_assembly = Assembly.GetExecutingAssembly());
+    private static Assembly _assembly = null;
+
     public const string ModUrl = "SuperNewRoles/SuperNewRoles";
     public const string MasterBranch = "master";
-    public static string ModName => IsApril() ? "SuperNakanzinoRoles" : "SuperNewRoles";
-    public static string ColorModName => $"<color=#ffa500>Super</color><color=#ff0000>{(IsApril() ? "Nakanzino" : "New")}</color><color=#00ff00>Roles</color>";
+    public static string ModName { get { return AprilFoolsManager.getCurrentModName(); } }
+    public static string ColorModName { get { return AprilFoolsManager.getCurrentModNameOnColor(); } }
     public const string DiscordServer = "https://discord.gg/Cqfwx82ynN";
     public const string Twitter1 = "https://twitter.com/SNRDevs";
     public const string Twitter2 = "https://twitter.com/SNROfficials";
@@ -57,18 +54,24 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static int optionsMaxPage = 0;
     public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
     public static SuperNewRolesPlugin Instance;
-    public static Dictionary<string, Dictionary<int, string>> StringDATA;
     public static bool IsUpdate = false;
     public static string NewVersion = "";
     public static string thisname;
     public static string ThisPluginModName;
     //対応しているバージョン。nullなら全て。
-    public static string[] SupportVanilaVersion = new string[] { "2023.11.28" };
+    public static string[] SupportVanilaVersion = new string[] { "2024.3.5" };
 
     public override void Load()
     {
         Logger = Log;
         Instance = this;
+
+        Task LoadHarmonyPatchTask = Task.Run(() =>
+        {
+            Logger.LogInfo("Start Patch Harmony");
+            Harmony.PatchAll();
+            Logger.LogInfo("End Patch Harmony");
+        });
         ModTranslation.LoadCsv();
         bool CreatedVersionPatch = false;
 
@@ -95,6 +98,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         // All Load() Start
         OptionSaver.Load();
         ConfigRoles.Load();
+        UpdateCPUProcessorAffinity();
         WebAccountManager.Load();
         ContentManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
@@ -153,13 +157,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
-        StringDATA = new Dictionary<string, Dictionary<int, string>>();
-        Harmony.PatchAll();
-        var assembly = Assembly.GetExecutingAssembly();
-        string[] resourceNames = assembly.GetManifestResourceNames();
-        foreach (string resourceName in resourceNames)
-            if (resourceName.EndsWith(".png"))
-                ModHelpers.LoadSpriteFromResources(resourceName, 115f);
         ThisPluginModName = IL2CPPChainloader.Instance.Plugins.FirstOrDefault(x => x.Key == "jp.ykundesu.supernewroles").Value.Metadata.Name;
 
         //Register Il2cpp
@@ -170,6 +167,21 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<SpiderTrap>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
+
+        Logger.LogInfo("Start Load Resource");
+        string[] resourceNames = assembly.GetManifestResourceNames();
+        foreach (string resourceName in resourceNames)
+        {
+            if (resourceName.EndsWith(".png") && resourceName.Contains("_"))
+            {
+                ModHelpers.LoadSpriteFromResources(resourceName, 115f);
+            }
+        }
+        Logger.LogInfo("Resource Loaded");
+
+        Logger.LogInfo("Start WaitLoad");
+        // ロードが終わってないなら待つ
+        LoadHarmonyPatchTask.Wait();
     }
     static bool ViewdNonVersion = false;
     public static void SetNonVanilaVersionPatch()
@@ -181,7 +193,40 @@ public partial class SuperNewRolesPlugin : BasePlugin
             SuperNewRolesPlugin.Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
         }
     }
-
+    // CPUの割当を0と1にする
+    public static void UpdateCPUProcessorAffinity()
+    {
+        if (!ConfigRoles._isCPUProcessorAffinity.Value){
+            Logger.LogWarning("UpdateCPUProcessorAffinity: IsCPUProcessorAffinity is false");
+            return;
+        }
+        Logger.LogInfo("Start UpdateCPUProcessorAffinity");
+        if (Environment.ProcessorCount > 1)
+        {
+            int affinity = 1;
+            for (int i = 1; i < 2; i++)
+            {
+                affinity |= 1 << i;
+            }
+            System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)affinity;
+        }
+        Logger.LogInfo("End UpdateCPUProcessorAffinity");
+    }
+    // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
+    [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]
+    public static class AuthManagerCoConnectPatch
+    {
+        public static bool Prefix(AuthManager __instance)
+        {
+            if (!ModHelpers.IsCustomServer() ||
+                FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Servers.Any(x => x.UseDtls))
+                return true;
+            if (__instance.connection != null)
+                __instance.connection.Dispose();
+            __instance.connection = null;
+            return false;
+        }
+    }
     public static void MainMenuVersionCheckPatch(MainMenuManager __instance)
     {
         if (SupportVanilaVersion != null && !SupportVanilaVersion.Contains(Application.version) && !ViewdNonVersion)
@@ -223,17 +268,16 @@ public partial class SuperNewRolesPlugin : BasePlugin
             ViewdNonVersion = true;
         }
     }
-    // [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
     class GetBroadcastVersionPatch
     {
         public static void Postfix(ref int __result)
         {
             if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
-            if (ModHelpers.IsCustomServer()) return;
             __result += 25;
         }
     }
-    // [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
+    [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
     public static class ConstantsVersionModdedPatch
     {
         public static bool Prefix(ref bool __result)
@@ -241,13 +285,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
             __result = true;
             return false;
         }
-    }
-    public static bool IsApril()
-    {
-        DateTime utcNow = DateTime.UtcNow;
-        DateTime dateTime = new(utcNow.Year, 3, 31, 15, 0, 0, 0, DateTimeKind.Utc);
-        DateTime dateTime2 = dateTime.AddDays(1.0);
-        return utcNow >= dateTime && utcNow <= dateTime2;
     }
 
     [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]

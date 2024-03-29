@@ -158,7 +158,6 @@ public static class RoleClass
         NiceTeleporter.ClearAndReload();
         Celebrity.ClearAndReload();
         Nocturnality.ClearAndReload();
-        Observer.ClearAndReload();
         Vampire.ClearAndReload();
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
@@ -197,7 +196,6 @@ public static class RoleClass
         Neet.ClearAndReload();
         FastMaker.ClearAndReload();
         ToiletFan.ClearAndReload();
-        SatsumaAndImo.ClearAndReload();
         EvilButtoner.ClearAndReload();
         NiceButtoner.ClearAndReload();
         Finder.ClearAndReload();
@@ -1466,17 +1464,6 @@ public static class RoleClass
             NocturnalityPlayer = new();
         }
     }
-    public static class Observer
-    {
-        public static List<PlayerControl> ObserverPlayer;
-        public static Color32 color = new(127, 127, 127, byte.MaxValue);
-        public static bool IsVoteView;
-        public static void ClearAndReload()
-        {
-            ObserverPlayer = new();
-            IsVoteView = true;
-        }
-    }
     public static class Vampire
     {
         public static List<PlayerControl> VampirePlayer;
@@ -2439,20 +2426,6 @@ public static class RoleClass
             PartTimerPlayer = new();
             DeathTurn = DeathDefaultTurn = CustomOptionHolder.PartTimerDeathTurn.GetInt();
             Data = new(defaultvalue: 255);
-        }
-    }
-
-    public static class SatsumaAndImo
-    {
-        public static List<PlayerControl> SatsumaAndImoPlayer;
-        public static Color32 color = new(153, 0, 68, byte.MaxValue);
-        public static int TeamNumber;
-        public static void ClearAndReload()
-        {
-            SatsumaAndImoPlayer = new();
-            TeamNumber = 1;
-            //1=クルー
-            //2=マッド
         }
     }
     public static class Painter

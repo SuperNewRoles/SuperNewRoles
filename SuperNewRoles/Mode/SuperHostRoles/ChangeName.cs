@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -221,11 +222,10 @@ public static class ChangeName
                     }
                     break;
                 case RoleId.SatsumaAndImo:
-                    MySuffix.Append(
-                        RoleClass.SatsumaAndImo.TeamNumber == 1 ?
-                            ModHelpers.Cs(Palette.White, " (C)") :
-                            ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")
-                        );
+                    SatsumaAndImo imo = player.GetRoleBase<SatsumaAndImo>();
+                    if (imo == null)
+                        break;
+                    MySuffix.Append(imo.GetSuffixText());
                     break;
                 case RoleId.Finder:
                     //マッドを表示させられる場合

@@ -423,7 +423,7 @@ class AllRoleSetClass
         if (CanAssignPlayerCount <= 0)
             return AssignedRoles;
         (bool, bool) isTry = (AssignTickets.TryGetValue(assignType | AssignType.TenPar, out List<RoleId> TenParTickets), AssignTickets.TryGetValue(assignType | AssignType.NotTenPar, out List<RoleId> NotTenParTickets));
-        if (!isTry.Item1 && isTry.Item2) return AssignedRoles;
+        if (!isTry.Item1 && !isTry.Item2) return AssignedRoles;
         if (TenParTickets == null && NotTenParTickets == null) return AssignedRoles;
         if (TenParTickets == null)
             TenParTickets = new();
@@ -714,7 +714,6 @@ class AllRoleSetClass
             RoleId.NiceTeleporter => CustomOptionHolder.NiceTeleporterPlayerCount.GetInt(),
             RoleId.Celebrity => CustomOptionHolder.CelebrityPlayerCount.GetInt(),
             RoleId.Nocturnality => CustomOptionHolder.NocturnalityPlayerCount.GetInt(),
-            RoleId.Observer => CustomOptionHolder.ObserverPlayerCount.GetInt(),
             RoleId.Vampire => CustomOptionHolder.VampirePlayerCount.GetInt(),
             RoleId.DarkKiller => CustomOptionHolder.DarkKillerPlayerCount.GetInt(),
             RoleId.Seer => CustomOptionHolder.SeerPlayerCount.GetInt(),
@@ -760,7 +759,6 @@ class AllRoleSetClass
             RoleId.Matryoshka => CustomOptionHolder.MatryoshkaPlayerCount.GetInt(),
             RoleId.Nun => CustomOptionHolder.NunPlayerCount.GetInt(),
             RoleId.PartTimer => CustomOptionHolder.PartTimerPlayerCount.GetInt(),
-            RoleId.SatsumaAndImo => CustomOptionHolder.SatsumaAndImoPlayerCount.GetInt(),
             RoleId.Painter => CustomOptionHolder.PainterPlayerCount.GetInt(),
             RoleId.Psychometrist => CustomOptionHolder.PsychometristPlayerCount.GetInt(),
             RoleId.SeeThroughPerson => CustomOptionHolder.SeeThroughPersonPlayerCount.GetInt(),

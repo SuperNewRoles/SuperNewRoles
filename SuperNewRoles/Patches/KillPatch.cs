@@ -800,20 +800,6 @@ public static class MurderPlayerPatch
                     case RoleId.Clergyman:
                         RPCProcedure.RPCClergymanLightOut(false);
                         break;
-                    case RoleId.OverKiller:
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.OverKillerOverKill;
-                        DeadBody deadBodyPrefab = GameManager.Instance.DeadBodyPrefab;
-                        Vector3 BodyOffset = target.KillAnimations[0].BodyOffset;
-                        for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
-                        {
-                            DeadBody deadBody = GameObject.Instantiate(deadBodyPrefab);
-                            deadBody.enabled = false;
-                            deadBody.ParentId = target.PlayerId;
-                            Vector3 position = target.transform.position + BodyOffset;
-                            position.z = position.y / 1000f;
-                            deadBody.transform.position = position;
-                        }
-                        break;
                     case RoleId.Jumbo:
                         if (!RoleClass.Jumbo.JumboSize.ContainsKey(target.PlayerId))
                             break;
@@ -883,6 +869,21 @@ public static class MurderPlayerPatch
                     }
                     if (__instance.AmOwner)
                         Frankenstein.OnMurderMonster(__instance);
+                }
+                if (__instance.IsRole(RoleId.OverKiller))
+                {
+                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.OverKillerOverKill;
+                    DeadBody deadBodyPrefab = GameManager.Instance.DeadBodyPrefab;
+                    Vector3 BodyOffset = target.KillAnimations[0].BodyOffset;
+                    for (int i = 0; i <= RoleClass.OverKiller.KillCount; i++)
+                    {
+                        DeadBody deadBody = GameObject.Instantiate(deadBodyPrefab);
+                        deadBody.enabled = false;
+                        deadBody.ParentId = target.PlayerId;
+                        Vector3 position = target.transform.position + BodyOffset;
+                        position.z = position.y / 1000f;
+                        deadBody.transform.position = position;
+                    }
                 }
                 if (RoleClass.Lovers.SameDie &&
                     target.IsLovers() &&

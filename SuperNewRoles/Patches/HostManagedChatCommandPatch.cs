@@ -124,7 +124,7 @@ internal static class HostManagedChatCommandPatch
                 GetChatCommands.CreateGenerateCode(commandUser);
                 break;
             case CommandType.WebInfo:
-                SendCommand(commandUser, GetChatCommands.GetWebInfo(), $"<size={(SuperNewRolesPlugin.IsApril() ? "130%" : "150%")}>About {SuperNewRolesPlugin.ColorModName}Web</size>");
+                SendCommand(commandUser, GetChatCommands.GetWebInfo(), $"<size={(AprilFoolsManager.IsApril(2024) ? "120%" : "150%")}>About {SuperNewRolesPlugin.ColorModName}Web</size>");
                 break;
         }
     }
@@ -135,8 +135,8 @@ internal static class HostManagedChatCommandPatch
 /// </summary>
 internal static class GetChatCommands
 {
-    internal static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
-    internal static string WelcomeToSuperNewRoles => $"<size={(SuperNewRolesPlugin.IsApril() ? "130%" : "150%")}>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
+    internal static string SNRCommander => $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
+    internal static string WelcomeToSuperNewRoles => $"<size={(AprilFoolsManager.IsApril(2024) ? "120%" : "150%")}>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
 
     internal static string GetWelcomeMessage()
     {
@@ -552,7 +552,7 @@ internal static class RoleinformationText
     {
         foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
-            if (player == null || player.IsBot()) return;
+            if (player == null || player.IsBot()) continue;
             RoleId roleId = player.GetRole();
             if (roleId == RoleId.Bestfalsecharge && player.IsAlive()) roleId = RoleId.DefaultRole;
             RoleId ghostRoleId = player.GetGhostRole();
