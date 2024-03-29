@@ -27,6 +27,7 @@ public static class ConfigRoles
     public static ConfigEntry<bool> IsDeleted { get; set; }
     public static ConfigEntry<bool> IsSendAnalytics { get; set; }
     public static ConfigEntry<bool> IsLightAndDarker { get; set; }
+    public static ConfigEntry<bool> IsViewdApril2024Popup { get; set; }
     public static ConfigEntry<bool> _isCPUProcessorAffinity { get; set; }
     //リプレイ
     public static ConfigEntry<bool> ReplayEnable { get; set; }
@@ -75,6 +76,7 @@ public static class ConfigRoles
             IsUpdated = true;
         }
         IsUpdate.Value = false;
+        IsViewdApril2024Popup = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsViewdApril2024Popup", false);
         _isCPUProcessorAffinity = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "CPUProcessorAffinity", true);
         //ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;
         RegionMenuOpenPatch.defaultRegions = ServerManager.DefaultRegions;

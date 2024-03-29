@@ -40,8 +40,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public const string ModUrl = "SuperNewRoles/SuperNewRoles";
     public const string MasterBranch = "master";
-    public static string ModName => IsApril() ? "SuperNakanzinoRoles" : "SuperNewRoles";
-    public static string ColorModName => $"<color=#ffa500>Super</color><color=#ff0000>{(IsApril() ? "Nakanzino" : "New")}</color><color=#00ff00>Roles</color>";
+    public static string ModName { get { return AprilFoolsManager.getCurrentModName(); } }
+    public static string ColorModName { get { return AprilFoolsManager.getCurrentModNameOnColor(); } }
     public const string DiscordServer = "https://discord.gg/Cqfwx82ynN";
     public const string Twitter1 = "https://twitter.com/SNRDevs";
     public const string Twitter2 = "https://twitter.com/SNROfficials";
@@ -285,13 +285,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
             __result = true;
             return false;
         }
-    }
-    public static bool IsApril()
-    {
-        DateTime utcNow = DateTime.UtcNow;
-        DateTime dateTime = new(utcNow.Year, 3, 31, 15, 0, 0, 0, DateTimeKind.Utc);
-        DateTime dateTime2 = dateTime.AddDays(1.0);
-        return utcNow >= dateTime && utcNow <= dateTime2;
     }
 
     [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
