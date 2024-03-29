@@ -40,7 +40,7 @@ public class CustomVisor
                 if (!LOADED)
                 {
                     Assembly assembly = Assembly.GetExecutingAssembly();
-                    string visorres = $"{assembly.GetName().Name}.Resources.Customvisors";
+                    string visorres = $"{assembly.GetName().Name}.Resources.CustomVisors";
                     string[] visors = (from r in assembly.GetManifestResourceNames()
                                        where r.StartsWith(visorres) && r.EndsWith(".png")
                                        select r).ToArray<string>();
