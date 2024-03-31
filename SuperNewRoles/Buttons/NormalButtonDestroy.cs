@@ -63,13 +63,4 @@ public class NormalButtonDestroy
                 break;
         }
     }
-
-    /// <summary>
-    /// 憑依ボタンを非表示にする。
-    /// </summary>
-    public static void DisableHauntButton()
-    {
-        var hm = FastDestroyableSingleton<HudManager>.Instance;
-        if (hm.AbilityButton.gameObject.active) hm.AbilityButton.gameObject.SetActive(false);
-    }
 }

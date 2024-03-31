@@ -63,6 +63,7 @@ public static class RoleClass
         RoleinformationText.RoleInfo.ClearAndReload();
         GameHistoryManager.ClearAndReloads();
         Agartha.MapData.ClearAndReloads();
+        Mode.SuperHostRoles.SuperHostRolesOptions.SettingClass.ClearAndReload();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();
         //Map.Data.ClearAndReloads();
@@ -135,7 +136,6 @@ public static class RoleClass
         Minimalist.ClearAndReload();
         Hawk.ClearAndReload();
         Egoist.ClearAndReload();
-        NiceRedRidingHood.ClearAndReload();
         EvilEraser.ClearAndReload();
         Workperson.ClearAndReload();
         Magaziner.ClearAndReload();
@@ -197,7 +197,6 @@ public static class RoleClass
         Neet.ClearAndReload();
         FastMaker.ClearAndReload();
         ToiletFan.ClearAndReload();
-        SatsumaAndImo.ClearAndReload();
         EvilButtoner.ClearAndReload();
         NiceButtoner.ClearAndReload();
         Finder.ClearAndReload();
@@ -990,19 +989,6 @@ public static class RoleClass
             UseVent = CustomOptionHolder.EgoistUseVent.GetBool();
             UseSabo = CustomOptionHolder.EgoistUseSabo.GetBool();
             UseKill = CustomOptionHolder.EgoistUseKill.GetBool();
-        }
-    }
-    public static class NiceRedRidingHood
-    {
-        public static List<PlayerControl> NiceRedRidingHoodPlayer;
-        public static Color32 color = new(250, 128, 114, byte.MaxValue);
-        public static int Count;
-        public static Vector3? deadbodypos;
-        public static void ClearAndReload()
-        {
-            NiceRedRidingHoodPlayer = new();
-            Count = CustomOptionHolder.NiceRedRidingHoodCount.GetInt();
-            deadbodypos = null;
         }
     }
     public static class EvilEraser
@@ -2441,20 +2427,6 @@ public static class RoleClass
             PartTimerPlayer = new();
             DeathTurn = DeathDefaultTurn = CustomOptionHolder.PartTimerDeathTurn.GetInt();
             Data = new(defaultvalue: 255);
-        }
-    }
-
-    public static class SatsumaAndImo
-    {
-        public static List<PlayerControl> SatsumaAndImoPlayer;
-        public static Color32 color = new(153, 0, 68, byte.MaxValue);
-        public static int TeamNumber;
-        public static void ClearAndReload()
-        {
-            SatsumaAndImoPlayer = new();
-            TeamNumber = 1;
-            //1=クルー
-            //2=マッド
         }
     }
     public static class Painter

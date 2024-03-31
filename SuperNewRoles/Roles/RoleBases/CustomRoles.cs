@@ -44,6 +44,10 @@ public static class CustomRoles
                 }
                 break;
         }
+        if (PlayerControl.LocalPlayer.IsDead() && roleBase is IHaveHauntAbility haveNotHauntAbility)
+        {
+            Buttons.HauntButtonControl.HauntButtonSwitch(haveNotHauntAbility);
+        }
     }
     public static void OnIntroStart()
     {
@@ -99,6 +103,11 @@ public static class CustomRoles
                 if (exiled != null)
                     x.OnWrapUp(exiled);
             });
+    }
+
+    public static bool OnPetPet(PlayerControl petter)
+    {
+        return !(petter.GetRoleBase() is IPetHandler petHandler) || petHandler.OnCheckPet(ModeHandler.IsMode(ModeId.Default));
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]

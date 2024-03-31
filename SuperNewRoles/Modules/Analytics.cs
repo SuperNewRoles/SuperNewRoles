@@ -19,9 +19,14 @@ public static class Analytics
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate))]
     public class MainMenuManagerLateUpdatePatch
     {
+        private static GenericPopup currentPopup;
         public static void Postfix(MainMenuManager __instance)
         {
-            if (!ConfigRoles.IsSendAnalyticsPopupViewd && FastDestroyableSingleton<EOSManager>.Instance.HasFinishedLoginFlow())
+            if (!FastDestroyableSingleton<EOSManager>.Instance.HasFinishedLoginFlow())
+                return;
+            if (currentPopup == null)
+                currentPopup = null;
+            if (!ConfigRoles.IsSendAnalyticsPopupViewd)
             {
                 ConfigRoles.IsSendAnalyticsPopupViewd = true;
                 GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
@@ -37,6 +42,33 @@ public static class Analytics
                 Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.4f;
                 Popup.TextAreaTMP.text = ModTranslation.GetString("AnalyticsText");
                 Popup.destroyOnClose = true;
+                currentPopup = Popup;
+                return;
+            }
+            if (currentPopup == null && !ConfigRoles.IsViewdApril2024Popup.Value && AprilFoolsManager.IsApril(2024))
+            {
+                ConfigRoles.IsViewdApril2024Popup.Value = true;
+                GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
+                Popup.gameObject.SetActive(true);
+                Popup.transform.FindChild("Background").localScale = new(2, 2f, 1);
+                Popup.transform.FindChild("ExitGame").localPosition = new(0f, -1.5f, -0.5f);
+                GameObject.Destroy(Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextTranslatorTMP>());
+                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("AprilFool2024HackedByEvilHackerPopupOK");
+                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0.04f,0,0);
+                TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
+                Title.text = ModTranslation.GetString("AprilFool2024HackedByEvilHackerPopupTitle");
+                Title.transform.localPosition = new(0.07f, 1.285f, -0.5f);
+                Title.transform.localScale = Vector3.one * 2.8f;
+                Popup.TextAreaTMP.transform.localPosition = new(0.05f, -0.05f, -0.5f);
+                Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.5f;
+                Popup.TextAreaTMP.text = ModTranslation.GetString("AprilFool2024HackedByEvilHackerPopupText");
+                Popup.destroyOnClose = true;
+                currentPopup = Popup;
+                if (!AprilFoolsManager.isLastAprilFool)
+                {
+                    AprilFoolsManager._enums = null;
+                    AprilFoolsManager.SetRandomModMode();
+                }
             }
         }
     }

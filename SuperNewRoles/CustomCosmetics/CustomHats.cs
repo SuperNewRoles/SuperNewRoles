@@ -394,12 +394,12 @@ public class CustomHats
     }
 
     private static readonly List<TMPro.TMP_Text> hatsTabCustomTexts = new();
-    public static string innerslothPackageName = "innerslothHats";
-    private static readonly float headerSize = 0.8f;
-    private static readonly float headerX = 0.8f;
+    public const string innerslothPackageName = "Innersloth Hats";
+    private const float headerSize = 0.8f;
+    private const float headerX = 0.8f;
     private static float inventoryTop = 1.5f;
     private static float inventoryBot = -2.5f;
-    private static readonly float inventoryZ = -2f;
+    private const float inventoryZ = -2f;
 
     public static void CalcItemBounds(HatsTab __instance)
     {
@@ -560,17 +560,28 @@ public class CustomHatLoader
 {
     public static bool running = false;
 
-    //レポURL、レポ
-    public static Dictionary<string, string> hatRepos = new()
+    /// <summary>ハットをダウンロードするRepositoryURL</summary>
+    /// <value>key : URL, value : クローゼット名</value>
+    public static Dictionary<string, string> HatRepository()
+    {
+        Dictionary<string, string> hatRepos = new()
         {
-
-            { "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/master", "SuperNewCosmetics" },
+            { DownLoadCustomCosmetics.SNCmainURL, "SuperNewCosmetics" },
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
             { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
             { "https://raw.githubusercontent.com/catudon1276/Mememura-Hats/main", "MememuraByCatudon" },
             { "https://raw.githubusercontent.com/catudon1276/CatudonCostume/main", "CatudonCostume" },
         };
+
+        if (!DownLoadCustomCosmetics.IsTestLoad) return hatRepos;
+        else
+        {
+            hatRepos.Add(DownLoadCustomCosmetics.TestRepoURL, "TestRepository");
+            if (DownLoadCustomCosmetics.IsBlocLoadSNCmain) hatRepos.Remove(DownLoadCustomCosmetics.SNCmainURL);
+            return hatRepos;
+        }
+    }
 
     public static List<string> CachedRepos = new();
     public static List<CustomHatOnline> hatDetails = new();
@@ -585,11 +596,12 @@ public class CustomHatLoader
 
     private static async Task LaunchHatFetcherAsync()
     {
-        if (ConfigRoles.DebugMode.Value) return;
-        if (ConfigRoles.IsModCosmeticsAreNotLoaded.Value) return;
+        if (!DownLoadCustomCosmetics.IsLoad) return;
+
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
         hatDetails = new List<CustomHatOnline>();
+        var hatRepos = HatRepository();
         List<string> repos = new(hatRepos.Keys);
         SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] フェチ");
         foreach (string repo in repos)
@@ -721,7 +733,7 @@ public class CustomHatLoader
             string json = await response.Content.ReadAsStringAsync();
             var responsestream = await response.Content.ReadAsStreamAsync();
             string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
-            responsestream.CopyTo(File.Create($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json"));
+            responsestream.CopyTo(File.Create($"{filePath}\\{HatRepository().FirstOrDefault(data => data.Key == repo).Value}.json"));
             JToken jobj = JObject.Parse(json)["hats"];
             if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
 
