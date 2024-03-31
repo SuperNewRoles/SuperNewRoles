@@ -1092,6 +1092,7 @@ EvilHackerCanSeeDeadBodyPositions,Can See Dead-Body Positions,死体の位置が
 EvilHackerCanUseAdminDuringMeeting,Can Use Admin During Meeting,会議中にアドミンを使用できる,可以在会议中查看管理地图,駭客可以在會議中使用管理員地圖
 EvilHackerSabotageMapShowsAdmin,Sabotage Map Shows Admin,サボタージュマップにもアドミンを表示する,内鬼地图以管理地图的形式显示,駭客可以在破壞地圖中看到管理員地圖
 EvilHackerMapShowsDoorState,Map Shows Doors Status,マップにドアの開閉状況を表示する,地图上会显示门的开关情况,駭客可以在地圖中看到門的開關狀態
+EvilHackerCanUseAdminDuringCommsSabotaged,Can Use Admin During Comms Sabotaged,通信サボタージュ中にアドミンを使用できる
 CreateMadmateButton,Drive Mad,狂わせる,洗脑,洗腦
 CreateMadmateFastVerButton,Change of Heart,心変わりさせる,,變心
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使,交換使

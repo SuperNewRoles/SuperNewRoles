@@ -80,9 +80,13 @@ public static class DeviceClass
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
     class MapCountOverlayAwakePatch
     {
-        public static void Postfix()
+        public static void Postfix(MapCountOverlay __instance)
         {
             if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
+            if (ShouldCountOverlayIgnoreComms())
+            {
+                __instance.BackgroundColor.SetColor(Color.green);
+            }
         }
     }
     public static bool IsChanging = false;
@@ -102,8 +106,13 @@ public static class DeviceClass
                 if (IsChanging)
                     return false;
                 bool commsActive = false;
-                foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
-                    if (task.TaskType == TaskTypes.FixComms) commsActive = true;
+                if (!ShouldCountOverlayIgnoreComms())
+                {
+                    foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
+                    {
+                        if (task.TaskType == TaskTypes.FixComms) commsActive = true;
+                    }
+                }
 
                 if (!__instance.isSab && commsActive)
                 {
@@ -301,6 +310,10 @@ public static class DeviceClass
                 RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, false, "");
             }
         }
+    }
+    private static bool ShouldCountOverlayIgnoreComms()
+    {
+        return PlayerControl.LocalPlayer.IsRole(RoleId.EvilHacker) && EvilHacker.CanUseAdminDuringCommsSabotaged.GetBool();
     }
     [HarmonyPatch(typeof(CounterArea), nameof(CounterArea.UpdateCount))]
     public static class CounterAreaUpdateCountPatch
