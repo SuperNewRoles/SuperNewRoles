@@ -49,6 +49,7 @@ public enum RoleId
     EvilScientist,
     Robber,
     Crab,
+    DimensionWalker,
 
     // Neutral Roles
     Cupid,
@@ -60,6 +61,7 @@ public enum RoleId
     MedicalTechnologist,
     NiceScientist,
     Observer,
+    SilverBullet,
 
     //RoleId
 

@@ -12,6 +12,7 @@ class OptimizeMapPatch
     public static void Postfix()
     {
         AddWireTasks();
+        VentInfo.ShipStatusAwake();
     }
     public static void AddWireTasks()
     {
