@@ -17,7 +17,7 @@ public struct CustomPlates
     public string resource { get; set; }
     public string reshasha { get; set; }
 }
-public static class DownLoadClass
+public static class DownLoadClassPlate
 {
     public static bool IsEndDownload = false;
     public static bool running = false;
@@ -32,7 +32,14 @@ public static class DownLoadClass
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
         SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始");
-        _ = FetchHats("https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/main");
+
+        if (!DownLoadCustomCosmetics.IsTestLoad) { _ = FetchHats(DownLoadCustomCosmetics.SNCmainURL); }
+        else
+        {
+            if (!DownLoadCustomCosmetics.IsBlocLoadSNCmain) { _ = FetchHats(DownLoadCustomCosmetics.SNCmainURL); }
+            _ = FetchHats(DownLoadCustomCosmetics.TestRepoURL);
+        }
+
         running = true;
     }
     private static string SanitizeResourcePath(string res)

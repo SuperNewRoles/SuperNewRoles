@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -113,7 +114,7 @@ public static class ChangeName
                 !p.IsBot())
             {
                 //神、もしくは死亡していてかつ役職が見れる場合
-                if (SetNamesClass.DefaultGhostSeeRoles(p) || p.IsRole(RoleId.God))
+                if (SetNamesClass.CanGhostSeeRoles(p) || p.IsRole(RoleId.God))
                     CanAllRolePlayers.Add(p);
                 else
                     AlivePlayers.Add(p);
@@ -221,11 +222,10 @@ public static class ChangeName
                     }
                     break;
                 case RoleId.SatsumaAndImo:
-                    MySuffix.Append(
-                        RoleClass.SatsumaAndImo.TeamNumber == 1 ?
-                            ModHelpers.Cs(Palette.White, " (C)") :
-                            ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")
-                        );
+                    SatsumaAndImo imo = player.GetRoleBase<SatsumaAndImo>();
+                    if (imo == null)
+                        break;
+                    MySuffix.Append(imo.GetSuffixText());
                     break;
                 case RoleId.Finder:
                     //マッドを表示させられる場合
@@ -320,7 +320,7 @@ public static class ChangeName
         bool IsGhostMechanicVIew = false; // 幽霊役職が1つしかない為, 単独処理
         StringBuilder attributeRoleName = new();
 
-        if ((SetNamesClass.DefaultGhostSeeRoles(player) || player.IsRole(RoleId.God)) && !IsUnchecked)
+        if ((SetNamesClass.CanGhostSeeRoles(player) || player.IsRole(RoleId.God)) && !IsUnchecked)
         {
             if (Demon.IsViewIcon(player))
             {
@@ -354,7 +354,7 @@ public static class ChangeName
         }
         else if (player.IsAlive() || IsUnchecked)
         {
-            if (SetNamesClass.DefaultGhostSeeRoles(player) || player.IsRole(RoleId.God))
+            if (SetNamesClass.CanGhostSeeRoles(player) || player.IsRole(RoleId.God))
             {
                 if (Demon.IsViewIcon(player))
                 {
