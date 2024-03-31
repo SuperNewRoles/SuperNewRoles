@@ -177,6 +177,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
             }
         }
+        AssetManager.Load();
+
         Logger.LogInfo("Resource Loaded");
 
         Logger.LogInfo("Start WaitLoad");

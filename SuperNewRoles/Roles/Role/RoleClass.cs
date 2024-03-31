@@ -359,7 +359,7 @@ public static class RoleClass
         public static Dictionary<int, int> KillCount;
         public static DateTime ButtonTimer;
 
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+        public static Sprite GetButtonSprite() => AssetManager.GetAsset<Sprite>("SheriffKillButton.png");
 
         public static void ClearAndReload()
         {
