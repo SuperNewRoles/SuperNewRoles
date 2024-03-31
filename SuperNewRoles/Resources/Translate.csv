@@ -1837,6 +1837,13 @@ SilverBulletVentNotUsed,No one seems to have used this vent.,誰もこのベン�
 SilverBulletVentUsed,This vent seems to have been used {0} times.,このベントは{0}回使われたようだ,這個通風口似乎被使用了{0}次,這個通風口似乎被使用了{0}次
 SilverBulletVentUsedColorLight,The first user of this vent seems to be light-colored.,このベントの{0}人目の利用者は明るい色のようだ
 SilverBulletVentUsedColorDark,The first user of this vent seems to be dark-colored.,このベントの{0}人目の利用者は暗い色のようだ
+DimensionWalkerName,Dimension walker,ディメンションウォーカー
+DimensionWalkerTitle1,For me，distance does not exist,私の前では距離など無いに等しい
+DimensionWalkerDescription,You can set up vents that can only be used by the Imposter camp.\nAfter a certain amount of time，the vent will be activated and visible to all.\nThe vent can also be collected.,インポスターのみが使用出来る専用のベントを設置することができます。\nベントは一定時間経過後に有効化し全員に見えるようになります。\nまた、ベントは回収することも出来ます。
+ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有効化まで
+DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する
+PutWormHoleButtonName,Put wormhole,設置
+CollectWormHoleButtonName,Collect wormhole,回収
 
 #NewRoleTranslation
 

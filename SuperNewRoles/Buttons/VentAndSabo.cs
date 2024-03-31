@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.MapOption;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
@@ -144,7 +145,9 @@ public static class VentAndSabo
 
             couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
             canUse = couldUse;
+            if (WormHole.IsWormHole(__instance) && !pc.Object.IsImpostor()) return true;
             if (pc.Object.IsRole(RoleTypes.Engineer)) return true;
+
             if (NiceMechanic.TargetVent.Values.FirstOrDefault(x => x is not null && x.Id == __instance.Id) is not null) canUse = false;
             if (canUse)
             {
