@@ -54,7 +54,6 @@ public class CustomOptionHolder
     public static CustomOption SNRWebSendConditionHostDependency;
 
     public static CustomOption ProhibitModColor;
-    public static CustomOption SendYourRoleAllTurn;
 
     public static CustomOption IsOldMode;
 
@@ -998,7 +997,6 @@ public class CustomOptionHolder
         SNRWebSendConditionHostDependency = Create(104901, true, CustomOptionType.Generic, Cs(roomSetting, "SNRWebTransmissionConditionHostDependency"), true, null, isHeader: true);
 
         ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(roomSetting, "ProhibitModColor"), false, null, isHeader: true);
-        SendYourRoleAllTurn = Create(105000, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "SendYourRoleAllTurn"), false, null);
 
         enableAgartha = Create(101000, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 

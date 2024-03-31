@@ -786,12 +786,12 @@ class MeetingHudStartPatch
 
                 if (!RoleClass.IsFirstMeetingEnd)
                 {
-                    RoleinformationText.YourRoleInfoSendCommand();
+                    if (SuperHostRolesOptions.SettingClass.IsSendYourRoleFirstTurn) { RoleinformationText.YourRoleInfoSendCommand(); }
                     EmergencyMinigamePatch.SHRMeetingStatusAnnounce.MakeSettingKnown();
                 }
                 else
                 {
-                    if (CustomOptionHolder.SendYourRoleAllTurn.GetBool()) { RoleinformationText.YourRoleInfoSendCommand(); }
+                    if (SuperHostRolesOptions.SettingClass.IsSendYourRoleAllTurn) { RoleinformationText.YourRoleInfoSendCommand(); }
                     EmergencyMinigamePatch.SHRMeetingStatusAnnounce.LimitAnnounce();
                 }
             }, 3f, "StartMeeting CustomSyncSetting");
