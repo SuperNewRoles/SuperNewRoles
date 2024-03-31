@@ -30,7 +30,7 @@ class WormHole : CustomAnimation
 
     private const string ResourcePath_Use = "SuperNewRoles.Resources.DimensionWalker.Animation.Use.DimensionWalkerOpen";
     private const string ResourcePath_Idle = "SuperNewRoles.Resources.DimensionWalker.Animation.Idle.DimensionWalkerIdle";
-    private static CustomAnimationOptions animOption_Idle = new(GetSprites(ResourcePath_Idle, 60, 2), 30, true);
+    private static CustomAnimationOptions animOption_Idle = new(GetSprites(ResourcePath_Idle, 60, 2), 30, true, IsMeetingDestroy: false);
 
     public WormHole(IntPtr intPtr) : base(intPtr)
     {
@@ -166,6 +166,6 @@ class WormHole : CustomAnimation
     {
         if (!DimensionWalker.DoPlayWormHoleAnimation.GetBool() && !user.AmOwner)
             return;
-        Init(new CustomAnimationOptions(GetSprites(ResourcePath_Use, 15, 2), 30, false, OnEndAnimation:(anim, option) => base.Init(animOption_Idle)));
+        Init(new CustomAnimationOptions(GetSprites(ResourcePath_Use, 15, 2), 30, false, OnEndAnimation:(anim, option) => base.Init(animOption_Idle), IsMeetingDestroy: false));
     }
 }
