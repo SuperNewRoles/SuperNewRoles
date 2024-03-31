@@ -4,6 +4,7 @@ using Il2CppSystem.Runtime.Remoting.Lifetime;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
@@ -87,6 +88,7 @@ public class FixedUpdate
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
+                DeviceClass.FixedUpdate();
                 SabotageManager.Update();
                 SetNameUpdate.Postfix(__instance);
                 NiceMechanic.FixedUpdate();
@@ -284,7 +286,7 @@ public class FixedUpdate
                 {
                     if (!PlayerControl.LocalPlayer.IsGhostRole(RoleId.DefaultRole) && PlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.CrewmateGhost)
                     {
-                        NormalButtonDestroy.DisableHauntButton(); // 幽霊役職で, 自身がクルーメイトゴーストの場合憑依ボタンを非表示にする。
+                        HauntButtonControl.DisableHauntButton(); // 幽霊役職で, 自身がクルーメイトゴーストの場合憑依ボタンを非表示にする。
                     }
                 }
                 break;

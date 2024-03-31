@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
@@ -15,6 +16,7 @@ public enum CustomButtonCouldType
     Always = 0x001, //1
     CanMove = 0x002, //2
     SetTarget = 0x004, //4
+    NotNearDoor = 0x008, //8
 }
 public class CustomButtonInfo
 {
@@ -235,6 +237,10 @@ public class CustomButtonInfo
         if (CouldUseType.HasFlag(CustomButtonCouldType.SetTarget) &&
             !SetTarget())
             return false;
+        //NotNearDoorを判定するかつドアが近くにあれば
+        if (CouldUseType.HasFlag(CustomButtonCouldType.NotNearDoor) &&
+            IsNearDoor(PlayerControl.LocalPlayer))
+            return false;
         //自前の判定があるならそれを使い、falseならreturn
         if (!(CouldUseFunc?.Invoke() ?? true))
             return false;
@@ -249,5 +255,23 @@ public class CustomButtonInfo
         CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
         PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
         return CurrentTarget;
+    }
+
+    /// <summary>
+    /// プレイヤーがドアの近くにいるか判定する
+    /// </summary>
+    /// <returns>playerがドアの近くにいる</returns>
+    public bool IsNearDoor(PlayerControl player)
+    {
+        var all = ShipStatus.Instance.AllDoors;
+
+        foreach (OpenableDoor door in all)
+        {
+            var distance = Vector2.Distance(player.GetTruePosition(), door.gameObject.transform.position);
+            if (distance <= 1f)
+                return true;
+        }
+
+        return false;
     }
 }

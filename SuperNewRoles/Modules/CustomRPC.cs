@@ -49,6 +49,7 @@ public enum RoleId
     EvilScientist,
     Robber,
     Crab,
+    DimensionWalker,
 
     // Neutral Roles
     Cupid,
@@ -58,8 +59,10 @@ public enum RoleId
     Santa,
     BlackSanta,
     MedicalTechnologist,
-    NiceScientist,
     Observer,
+    SilverBullet,
+    NiceScientist,
+    NiceRedRidingHood,
 
     //RoleId
 
@@ -105,7 +108,6 @@ public enum RoleId
     Minimalist,
     Hawk,
     Egoist,
-    NiceRedRidingHood,
     EvilEraser,
     Workperson,
     Magaziner,
@@ -668,43 +670,22 @@ public static class RPCProcedure
             else Safecracker.ExiledGuardCount[id] = Safecracker.SafecrackerMaxExiledGuardCount.GetInt() - 1;
         }
     }
-    public static void SetDeviceUseStatus(byte devicetype, byte playerId, bool Is, string time)
+    public static void SetDeviceUseStatus(byte devicetype, byte playerId, bool Is)
     {
         DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
         PlayerControl player = ModHelpers.PlayerById(playerId);
         if (player == null) return;
-        if (!DeviceClass.DeviceUsePlayer.ContainsKey(type)) return;
+        if (!DeviceClass.UsePlayers.ContainsKey(type.ToString())) return;
         if (Is)
-        {
-            DateTime dateTime;
-
-            if (!DateTime.TryParse(time, out dateTime)) return;
-            if (DeviceClass.DeviceUserUseTime[type] < dateTime && DeviceClass.DeviceUsePlayer[type] != null) return;
-            DeviceClass.DeviceUsePlayer[type] = player;
-            DeviceClass.DeviceUserUseTime[type] = dateTime;
-        }
+            DeviceClass.UsePlayers[type.ToString()].Add(player);
         else
-        {
-            if (DeviceClass.DeviceUsePlayer[type] != null && DeviceClass.DeviceUsePlayer[type].PlayerId != playerId) return;
-            DeviceClass.DeviceUsePlayer[type] = null;
-            DeviceClass.DeviceUserUseTime[type] = DateTime.UtcNow;
-        }
+            DeviceClass.UsePlayers[type.ToString()].RemoveWhere(x => x != null && x.PlayerId == player.PlayerId);
     }
-    public static void SetDeviceTime(byte devicetype, float time)
+    public static void SetDeviceTime(string devicetype, float time)
     {
-        DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
-        switch (type)
-        {
-            case DeviceClass.DeviceType.Admin:
-                DeviceClass.AdminTimer = time;
-                break;
-            case DeviceClass.DeviceType.Camera:
-                DeviceClass.CameraTimer = time;
-                break;
-            case DeviceClass.DeviceType.Vital:
-                DeviceClass.VitalTimer = time;
-                break;
-        }
+        if (!DeviceClass.DeviceTimers.ContainsKey(devicetype))
+            throw new Exception($"SetDeviceTime Failed: {devicetype}");
+        DeviceClass.DeviceTimers[devicetype] = time;
     }
 
     public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
@@ -2045,10 +2026,10 @@ public static class RPCProcedure
                         SyncDeathMeeting(reader.ReadByte());
                         break;
                     case CustomRPC.SetDeviceTime:
-                        SetDeviceTime(reader.ReadByte(), reader.ReadSingle());
+                        SetDeviceTime(reader.ReadString(), reader.ReadSingle());
                         break;
                     case CustomRPC.SetDeviceUseStatus:
-                        SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadString());
+                        SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.SetLoversBreakerWinner:
                         SetLoversBreakerWinner(reader.ReadByte());

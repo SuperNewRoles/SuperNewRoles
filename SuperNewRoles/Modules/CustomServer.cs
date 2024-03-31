@@ -109,7 +109,7 @@ public static class RegionMenuOpenPatch
         }
     }
     public static IRegionInfo[] defaultRegions;
-    public static string SNRServerName => "<size=150%>"+SuperNewRolesPlugin.ColorModName+ "</size>\n<align=\"center\">Tokyo</align>";
+    public static string SNRServerName => "<size=150%>" + AprilFoolsManager.DefaultModNameOnColor + "</size>\n<align=\"center\">Tokyo</align>";
     public static void UpdateRegions()
     {
         ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
