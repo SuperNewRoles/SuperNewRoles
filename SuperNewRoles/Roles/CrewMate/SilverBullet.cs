@@ -28,7 +28,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         TeamType.Crewmate
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.SilverBullet, 206800, true,
+        new(RoleId.SilverBullet, 406800, true,
             CoolTimeOption: (30,2.5f,60,2.5f, true),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =

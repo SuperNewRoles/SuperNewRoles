@@ -26,7 +26,7 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
         TeamType.Impostor
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.DimensionWalker, 250000, false,
+        new(RoleId.DimensionWalker, 206400, false,
             CoolTimeOption: (15f, 2.5f, 60f, 2.5f, false),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
