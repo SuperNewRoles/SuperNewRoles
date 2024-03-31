@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
@@ -875,6 +876,22 @@ public static class ModHelpers
         }
         return null;
     }
+    public static async Task<Sprite> LoadSpriteFromResourcesAsync(string path, float pixelsPerUnit)
+    {
+        try
+        {
+            if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
+            Texture2D texture = await LoadTextureFromResourcesAsync(path);
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+            sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+            return CachedSprites[path + pixelsPerUnit] = sprite;
+        }
+        catch
+        {
+            System.Console.WriteLine("Error loading sprite from path: " + path);
+        }
+        return null;
+    }
 
     public static bool IsCustomServer()
     {
@@ -899,6 +916,28 @@ public static class ModHelpers
             Stream stream = assembly.GetManifestResourceStream(path);
             var byteTexture = new byte[stream.Length];
             var read = stream.Read(byteTexture, 0, (int)stream.Length);
+            LoadImage(texture, byteTexture, false);
+            texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+            return CachedTexture[path] = texture;
+        }
+        catch
+        {
+            System.Console.WriteLine("Error loading texture from resources: " + path);
+        }
+        return null;
+    }
+
+
+
+    public static async Task<Texture2D> LoadTextureFromResourcesAsync(string path)
+    {
+        try
+        {
+            if (CachedTexture.TryGetValue(path, out Texture2D texture)) return texture;
+            texture = new(2, 2, TextureFormat.ARGB32, true);
+            Stream stream = SuperNewRolesPlugin.assembly.GetManifestResourceStream(path);
+            var byteTexture = new byte[stream.Length];
+            var read = (await stream.ReadAsync(byteTexture, 0, (int)stream.Length));
             LoadImage(texture, byteTexture, false);
             texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
             return CachedTexture[path] = texture;

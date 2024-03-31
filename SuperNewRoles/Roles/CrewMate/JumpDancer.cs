@@ -148,6 +148,8 @@ public static class JumpDancer
                     }
                 }
                 RpcJump(PlayerControl.LocalPlayer, players);
+                JumpDancerButton.MaxTimer = JumpDancerCoolTime.GetFloat();
+                JumpDancerButton.Timer = JumpDancerButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JumpDancer; },
             () =>
@@ -172,5 +174,4 @@ public static class JumpDancer
             showButtonText = true
         };
     }
-    // ここにコードを書きこんでください
 }
