@@ -66,7 +66,7 @@ class KillButtonDoClickPatch
             Kunoichi.KillButtonClick();
             return false;
         }
-        if (!(__instance.currentTarget.IsRole(RoleId.Bait) || __instance.currentTarget.IsRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
+        if (!__instance.currentTarget.IsRole(RoleId.Bait) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
         {
             PlayerControl.LocalPlayer.killTimer =
                 RoleHelpers.GetCoolTime(

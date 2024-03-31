@@ -154,7 +154,6 @@ class WrapUpPatch
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
         ModeHandler.Wrapup(exiled);
-        RedRidingHood.WrapUp(exiled);
         Pteranodon.WrapUp();
         Revolutionist.WrapUp();
         Spelunker.WrapUp();

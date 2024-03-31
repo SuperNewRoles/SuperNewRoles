@@ -331,11 +331,6 @@ public class CustomOptionHolder
     public static CustomOption EgoistImpostorLight;
     public static CustomOption EgoistUseKill;
 
-    public static CustomRoleOption NiceRedRidingHoodOption;
-    public static CustomOption NiceRedRidingHoodPlayerCount;
-    public static CustomOption NiceRedRidingHoodCount;
-    public static CustomOption NiceRedRidinIsKillerDeathRevive;
-
     public static CustomRoleOption EvilEraserOption;
     public static CustomOption EvilEraserPlayerCount;
     public static CustomOption EvilEraserMaxCount;
@@ -1813,11 +1808,6 @@ public class CustomOptionHolder
         BaitReportTime = Create(403102, true, CustomOptionType.Crewmate, "BaitReportTimeSetting", 2f, 1f, 4f, 0.5f, BaitOption);
 
         NiceMechanic.SetupCustomOptions();
-
-        NiceRedRidingHoodOption = SetupCustomRoleOption(403400, false, RoleId.NiceRedRidingHood);
-        NiceRedRidingHoodPlayerCount = Create(403401, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
-        NiceRedRidingHoodCount = Create(403402, false, CustomOptionType.Crewmate, "NiceRedRidingHoodCount", 1f, 1f, 15f, 1f, NiceRedRidingHoodOption);
-        NiceRedRidinIsKillerDeathRevive = Create(403403, false, CustomOptionType.Crewmate, "NiceRedRidinIsKillerDeathRevive", true, NiceRedRidingHoodOption);
 
         NiceNekomataOption = SetupCustomRoleOption(403500, true, RoleId.NiceNekomata);
         NiceNekomataPlayerCount = Create(403501, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceNekomataOption);

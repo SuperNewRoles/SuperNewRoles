@@ -60,6 +60,7 @@ public enum RoleId
     MedicalTechnologist,
     NiceScientist,
     Observer,
+    NiceRedRidingHood,
 
     //RoleId
 
@@ -105,7 +106,6 @@ public enum RoleId
     Minimalist,
     Hawk,
     Egoist,
-    NiceRedRidingHood,
     EvilEraser,
     Workperson,
     Magaziner,
