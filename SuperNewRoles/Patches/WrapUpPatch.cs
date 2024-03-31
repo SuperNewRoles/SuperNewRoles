@@ -141,6 +141,8 @@ class WrapUpPatch
         // |:========== 追放の有無問わず 会議終了時に行う処理 開始 ==========:|
         SelectRoleSystem.OnWrapUp();
 
+        VentInfo.OnWrapUp();
+
         Shielder.WrapUp();
         Kunoichi.WrapUp();
         SerialKiller.WrapUp();
