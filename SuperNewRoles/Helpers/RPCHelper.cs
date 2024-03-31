@@ -261,15 +261,23 @@ public static class RPCHelper
             .EndMessage();
     }
 
-    public static void RPCSendChatPrivate(this PlayerControl TargetPlayer, string Chat, PlayerControl SeePlayer = null)
+    public static void RPCSendChatPrivate(this PlayerControl TargetPlayer, string Chat, PlayerControl SeePlayer = null, CustomRpcSender sender = null)
     {
         if (TargetPlayer == null || Chat == null) return;
         if (SeePlayer == null) SeePlayer = TargetPlayer;
         var clientId = SeePlayer.GetClientId();
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.None, clientId);
-        writer.Write(Chat);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        if (sender == null)
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.None, clientId);
+            writer.Write(Chat);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            return;
+        }
+        sender.AutoStartRpc(TargetPlayer.NetId, (byte)RpcCalls.SendChat, clientId);
+        sender.Write(Chat);
+        sender.EndRpc();
     }
+
 
     public static void RpcSetHatUnchecked(this PlayerControl player, string hatId, PlayerControl seePlayer = null)
     {

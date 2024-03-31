@@ -61,6 +61,7 @@ public enum RoleId
     NiceScientist,
     Observer,
 
+    SilverBullet,
     //RoleId
 
     SoothSayer,
