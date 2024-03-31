@@ -4,6 +4,7 @@ using Il2CppSystem.Runtime.Remoting.Lifetime;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
@@ -87,6 +88,7 @@ public class FixedUpdate
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
+                DeviceClass.FixedUpdate();
                 SabotageManager.Update();
                 SetNameUpdate.Postfix(__instance);
                 NiceMechanic.FixedUpdate();
