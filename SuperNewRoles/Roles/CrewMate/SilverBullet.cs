@@ -174,9 +174,9 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
             else
             {
                 text.Append(string.Format(ModTranslation.GetString("SilverBulletVentUsed"), usedPlayers.Count)+"\n\n");
-                text.AppendLine("|-----------------------");
                 if (AnalysisLightOption.GetBool())
                 {
+                    text.AppendLine("|-----------------------");
                     int index = 1;
                     foreach (byte playerId in usedPlayers)
                     {
@@ -192,8 +192,8 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                         );
                         index++;
                     }
+                    text.AppendLine("|-----------------------");
                 }
-                text.AppendLine("|-----------------------");
             }
             if (Player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
@@ -218,6 +218,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                     .SendMessage();
             }
         }
+        WillSendChat = new();
         if (AnalysisCount <= 0)
         {
             LastUsedVentData = null;
