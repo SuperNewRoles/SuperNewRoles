@@ -216,10 +216,10 @@ public static class ExilePlayerPatch
 public static class LongBoiPlayerBodySetHeightFromColorPatch
 {
     private static Dictionary<int, float> PlayerLongColorSizes = new();
-    public static void Postfix(LongBoiPlayerBody __instance, int colorIndex)
+    public static bool Prefix(LongBoiPlayerBody __instance, int colorIndex)
     {
         if (__instance.isPoolablePlayer)
-            return;
+            return true;
         if (!GameManager.Instance.IsHideAndSeek() ||
             AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started ||
             !(__instance.myPlayerControl.Data.Role != null || __instance.myPlayerControl.Data.Role.TeamType != RoleTeamTypes.Impostor))
@@ -245,6 +245,7 @@ public static class LongBoiPlayerBodySetHeightFromColorPatch
                 __instance.SetupNeckGrowth(snapNeck: true, resetNeck: false);
 			}
 		}
+        return false;
     }
 }
 //[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.PetPet))]
