@@ -312,6 +312,7 @@ public class WaveCannonObject : CustomAnimation
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         float Timer = PlayerControl.LocalPlayer.killTimer;
                         RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
+                        player.RpcSetFinalStatus(FinalStatus.Evaporation);
                         if (PlayerControl.LocalPlayer.IsImpostor())
                         {
                             PlayerControl.LocalPlayer.killTimer = Timer;

@@ -37,8 +37,5 @@ public class Bestfalsecharge : RoleBase, IWrapUpHandler, ICrewmate
         Player.RpcSetFinalStatus(FinalStatus.BestFalseChargesFalseCharge);
 
         IsOnMeeting = true;
-
-        //===========以下さつまいも===========//
-        RoleClass.SatsumaAndImo.TeamNumber = RoleClass.SatsumaAndImo.TeamNumber == 1 ? 2 : 1;
     }
 }
