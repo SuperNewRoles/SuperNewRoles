@@ -23,6 +23,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
+using SuperNewRoles.MapOption;
 
 namespace SuperNewRoles.Patches;
 
@@ -778,6 +779,7 @@ class MeetingHudStartPatch
         Recorder.StartMeeting();
         ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
+        DeviceClass.OnStartMeeting();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>
@@ -786,12 +788,12 @@ class MeetingHudStartPatch
 
                 if (!RoleClass.IsFirstMeetingEnd)
                 {
-                    RoleinformationText.YourRoleInfoSendCommand();
+                    if (SuperHostRolesOptions.SettingClass.IsSendYourRoleFirstTurn) { RoleinformationText.YourRoleInfoSendCommand(); }
                     EmergencyMinigamePatch.SHRMeetingStatusAnnounce.MakeSettingKnown();
                 }
                 else
                 {
-                    if (CustomOptionHolder.SendYourRoleAllTurn.GetBool()) { RoleinformationText.YourRoleInfoSendCommand(); }
+                    if (SuperHostRolesOptions.SettingClass.IsSendYourRoleAllTurn) { RoleinformationText.YourRoleInfoSendCommand(); }
                     EmergencyMinigamePatch.SHRMeetingStatusAnnounce.LimitAnnounce();
                 }
             }, 3f, "StartMeeting CustomSyncSetting");

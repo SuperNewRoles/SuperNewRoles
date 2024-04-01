@@ -1,6 +1,7 @@
 // https://github.com/Eisbison/TheOtherRoles/blob/main/TheOtherRoles/Utilities/MapUtilities.cs
 
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using Il2CppSystem;
 
@@ -38,6 +39,19 @@ public static class MapUtilities
             if (!systems.ContainsKey(systemTypes)) continue;
             _systems[systemTypes] = systems[systemTypes].TryCast<Object>();
         }
+    }
+
+    public static void AddVent(Vent vent)
+    {
+        var allVents = CachedShipStatus.AllVents.ToList();
+        allVents.Add(vent);
+        CachedShipStatus.AllVents = allVents.ToArray();
+    }
+    public static void RemoveVent(Vent vent)
+    {
+        var allVents = CachedShipStatus.AllVents.ToList();
+        allVents.Remove(vent);
+        CachedShipStatus.AllVents = allVents.ToArray();
     }
 }
 

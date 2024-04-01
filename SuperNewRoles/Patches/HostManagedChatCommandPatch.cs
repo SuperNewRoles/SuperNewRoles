@@ -30,6 +30,7 @@ internal static class HostManagedChatCommandPatch
         AllRoles,
         GetInRoles,
         RoleInfo,
+        GetSetting,
         Winners,
         MatchMakingTags,
         BattleRoles,
@@ -54,6 +55,7 @@ internal static class HostManagedChatCommandPatch
             "/allroles" or "/ar" => CommandType.AllRoles,
             "/getinroles" or "/gr" => CommandType.GetInRoles,
             "/roleinfo" or "/ri" => CommandType.RoleInfo,
+            "/getsettings" or "/gs" => CommandType.GetSetting,
             "/winners" or "/w" => CommandType.Winners,
             "/matchtag" or "/tag" => CommandType.MatchMakingTags,
             "/battleroles" or "/btr" => CommandType.BattleRoles,
@@ -96,6 +98,17 @@ internal static class HostManagedChatCommandPatch
             case CommandType.RoleInfo:
                 GetChatCommands.ProcessRoleInfo(commandUser, Commands);
                 break;
+            case CommandType.GetSetting:
+                PlayerControl sendTarget = commandUser.AmOwner ? null : commandUser;
+                if (CustomOptionHolder.hideSettings.GetBool()) // 設定が隠されてるなら表示しない
+                {
+                    SendCommand(sendTarget, ModTranslation.GetString("HideSettingsMessage"));
+                }
+                else
+                {
+                    SendCommand(sendTarget, GetChatCommands.GetSettingDescription());
+                }
+                break;
             case CommandType.Winners:
                 if (OnGameEndPatch.PlayerData != null)
                 {
@@ -124,7 +137,7 @@ internal static class HostManagedChatCommandPatch
                 GetChatCommands.CreateGenerateCode(commandUser);
                 break;
             case CommandType.WebInfo:
-                SendCommand(commandUser, GetChatCommands.GetWebInfo(), $"<size={(SuperNewRolesPlugin.IsApril() ? "130%" : "150%")}>About {SuperNewRolesPlugin.ColorModName}Web</size>");
+                SendCommand(commandUser, GetChatCommands.GetWebInfo(), $"<size={(AprilFoolsManager.IsApril(2024) ? "120%" : "150%")}>About {SuperNewRolesPlugin.ColorModName}Web</size>");
                 break;
         }
     }
@@ -135,8 +148,8 @@ internal static class HostManagedChatCommandPatch
 /// </summary>
 internal static class GetChatCommands
 {
-    internal static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
-    internal static string WelcomeToSuperNewRoles => $"<size={(SuperNewRolesPlugin.IsApril() ? "130%" : "150%")}>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
+    internal static string SNRCommander => $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
+    internal static string WelcomeToSuperNewRoles => $"<size={(AprilFoolsManager.IsApril(2024) ? "120%" : "150%")}>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
 
     internal static string GetWelcomeMessage()
     {
@@ -210,7 +223,8 @@ internal static class GetChatCommands
         string OthersText =
             $"<size=100%><b>{ModTranslation.GetString("CommandsTitelOthers")}</b></size>\n" +
             $"{ModTranslation.GetString("CommandsMessageOthers1")}\n\n" +
-            $"{ModTranslation.GetString("CommandsMessageOthers2")}\n\n";
+            $"{ModTranslation.GetString("CommandsMessageOthers2")}\n\n" +
+            $"{ModTranslation.GetString("CommandsMessageOthers3")}\n\n";
 
         const string endTag = "</size></align>";
         const string line = "<color={0}><size=80%>|-----------------------------------------------------------------------------|</size></color>\n";
@@ -348,6 +362,84 @@ internal static class GetChatCommands
             for (int i = 2; i <= Commands.Length; i++) { roleName += Commands[i - 1] + " "; }
 
             RoleinformationText.RoleInfoSendCommand(commandUser, roleName.TrimEnd());
+        }
+    }
+
+    /// <summary>
+    /// Generic設定とModifier設定をチャットに適応する形に文章を加工して取得
+    /// </summary>
+    /// <returns>Generic設定とModifier設定</returns>
+    internal static string GetSettingDescription()
+    {
+        StringBuilder settingBuilder = new();
+        const string line = "\n<color=#4d4398><size=80%>|-----------------------------------------------------------------------------|</size></color>\n";
+
+        foreach (CustomOption option in CustomOption.options)
+        {
+            if (!(option.type == CustomOptionType.Generic || option.type == CustomOptionType.Modifier)) continue;
+            if ((option == CustomOptionHolder.presetSelection) ||
+                (option == CustomOptionHolder.crewmateRolesCountMax) ||
+                (option == CustomOptionHolder.crewmateGhostRolesCountMax) ||
+                (option == CustomOptionHolder.neutralRolesCountMax) ||
+                (option == CustomOptionHolder.neutralGhostRolesCountMax) ||
+                (option == CustomOptionHolder.impostorRolesCountMax) ||
+                (option == CustomOptionHolder.impostorGhostRolesCountMax) ||
+                (option == CustomOptionHolder.hideSettings) ||
+                (option == CustomOptionHolder.specialOptions))
+            {
+                continue;
+            }
+
+            if (option.parent == null || option == ModeHandler.ModeSetting) // ModeSetting は Mode の子であり parent が nullでない。ModeSetting を 処理したい時は親が無効になっていて処理が行えない為, 単独で判定している。
+            {
+                if ((!option.Enabled) || (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn)) continue;
+
+                StringBuilder editing = new();
+                string optionStr;
+
+                if (!(option == ModeHandler.Mode && ModeHandler.IsMode(ModeId.Default, false)))
+                {
+                    optionStr = GameOptionsDataPatch.OptionToString(option);
+                    editing.AppendLine($"<size=80%>{optionStr}</size>");
+
+                    addChildren(option, ref editing, !GameOptionsMenuUpdatePatch.IsHidden(option));
+                }
+                else // mode は 通常の方法で設定の文章を取得できない為, 個別で編集。 通常モード時出ない時は mode でなく ModeSetting で設定の文章を取得
+                {
+                    optionStr = $"{CustomOptionHolder.Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting")}:{ModTranslation.GetString("optionOff")}";
+                    editing.AppendLine($"<size=80%>{optionStr}</size>");
+
+                    // mode が off なら子設定が必要ない為, addChildren を呼ばない。
+                }
+
+                if (editing.ToString().Trim('\n', '\r') is not "\r" and not "")
+                {
+                    editing.Append(line);
+                    settingBuilder.AppendLine(editing.ToString());
+                }
+            }
+        }
+
+        string startText = $"<size=125%>{ModTranslation.GetString("SettingSuperNewRolesVerGetSettingCommand")}</size>{line}";
+        string setting = $"<align={"left"}>{startText}<size=70%>{settingBuilder}</size></align>";
+
+        return setting;
+
+        void addChildren(CustomOption option, ref StringBuilder entry, bool indent = true)
+        {
+            if (!option.Enabled || ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) return;
+
+            foreach (var child in option.children)
+            {
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) continue;
+
+                if (!GameOptionsMenuUpdatePatch.IsHidden(option))
+                {
+                    if (child.isHeader == true) entry.Append("\n");
+                    entry.AppendLine((indent ? "    " : "") + GameOptionsDataPatch.OptionToString(child));
+                }
+                addChildren(child, ref entry, indent);
+            }
         }
     }
 

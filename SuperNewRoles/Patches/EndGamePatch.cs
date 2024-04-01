@@ -10,6 +10,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -181,6 +182,8 @@ public class EndGameManagerSetUpPatch
     }
     public static void Postfix(EndGameManager __instance)
     {
+        AprilFoolsManager.SetRandomModMode();
+
         foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>())
         {
             UnityEngine.Object.Destroy(pb.gameObject);
@@ -474,13 +477,15 @@ public class CustomPlayerData
             role = p.Object.GetRole();
             isImpostor = p.Role.IsImpostor;
         }
-        var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
-            p.Disconnected == true ? FinalStatus.Disconnected :
-            FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
-            p.IsDead == true ? FinalStatus.Exiled :
-            gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
-            FinalStatus.Alive;
-        this.finalStatus = finalStatus;
+        finalStatus = FinalStatus.Alive;
+        if (p.Disconnected)
+            finalStatus = FinalStatus.Disconnected;
+        else if (p.IsDead && FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId))
+            finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId];
+        else if (p.IsDead)
+            finalStatus = FinalStatus.Exiled;
+        else if (gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor)
+            finalStatus = FinalStatus.Sabotage;
     }
 }
 
@@ -531,61 +536,65 @@ public static class OnGameEndPatch
         AdditionalTempData.Clear();
         foreach (var p in GameData.Instance.AllPlayers)
         {
-            if (p != null && p.Object != null && !p.Object.IsBot())
+            if (p == null ||
+                p.Object == null ||
+                p.Object.IsBot())
+                continue;
+            //var p = pc.Data;
+            RoleId playerrole = p.Object.GetRole();
+            if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
             {
-                //var p = pc.Data;
-                RoleId playerrole = p.Object.GetRole();
-                if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
-                {
-                    playerrole = RoleId.Stefinder1;
-                }
-                RoleId playerghostrole = p.Object.GetGhostRole();
-                var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
-                if (p.Object.IsImpostor())
-                {
-                    tasksCompleted = 0;
-                    tasksTotal = 0;
-                }
-                var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
-                    p.Disconnected == true
-                    ? FinalStatus.Disconnected
-                    : FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId)
-                        ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId]
-                        : p.IsDead == true
-                            ? FinalStatus.Exiled
-                            : gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor
-                                ? FinalStatus.Sabotage
-                                : FinalStatus.Alive;
-
-                string namesuffix = "";
-                if (p.Object.IsLovers())
-                {
-                    namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
-                }
-                Dictionary<string, (Color, bool)> attributeRoles = new(SetNamesClass.AttributeRoleNameSet(p.Object));
-                string attributeRoleName = "";
-                if (attributeRoles.Count != 0)
-                {
-                    foreach (var kvp in attributeRoles)
-                    {
-                        attributeRoleName += $" + {CustomOptionHolder.Cs(kvp.Value.Item1, kvp.Key)}";
-                    }
-                }
-                AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
-                {
-                    PlayerName = p.DefaultOutfit.PlayerName,
-                    NameSuffix = namesuffix,
-                    PlayerId = p.PlayerId,
-                    ColorId = p.DefaultOutfit.ColorId,
-                    TasksTotal = tasksTotal,
-                    TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
-                    Status = finalStatus,
-                    AttributeRoleName = attributeRoleName,
-                    RoleId = playerrole,
-                    GhostRoleId = playerghostrole,
-                    isImpostor = p.Role.IsImpostor
-                });
+                playerrole = RoleId.Stefinder1;
             }
+            RoleId playerghostrole = p.Object.GetGhostRole();
+            var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
+            if (p.Object.IsImpostor())
+            {
+                tasksCompleted = 0;
+                tasksTotal = 0;
+            }
+            var finalStatus = FinalStatus.Alive;
+
+            if (p.Disconnected)
+                finalStatus = FinalStatus.Disconnected;
+            else if (p.IsDead && FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId))
+                finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId];
+            else if (p.IsDead)
+                finalStatus = FinalStatus.Exiled;
+            else if (gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor)
+                finalStatus = FinalStatus.Sabotage;
+            FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] = finalStatus;
+
+            // サボタージュ死
+            if (finalStatus == FinalStatus.Sabotage && !p.IsDead && !p.Role.IsImpostor)
+                p.IsDead = true;
+          
+            string namesuffix = "";
+            if (p.Object.IsLovers())
+                namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
+            Dictionary<string, (Color, bool)> attributeRoles = new(SetNamesClass.AttributeRoleNameSet(p.Object));
+            string attributeRoleName = "";
+            if (attributeRoles.Count != 0)
+            {
+                foreach (var kvp in attributeRoles)
+                {
+                    attributeRoleName += $" + {CustomOptionHolder.Cs(kvp.Value.Item1, kvp.Key)}";
+                }
+            }
+            AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
+            {
+                PlayerName = p.DefaultOutfit.PlayerName,
+                NameSuffix = namesuffix,
+                PlayerId = p.PlayerId,
+                ColorId = p.DefaultOutfit.ColorId,
+                TasksTotal = tasksTotal,
+                TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
+                Status = finalStatus,
+                AttributeRoleName = attributeRoleName,
+                RoleId = playerrole,
+                GhostRoleId = playerghostrole,
+                isImpostor = p.Role.IsImpostor
+            });
         }
 
         if (ReplayManager.IsReplayMode)
@@ -639,7 +648,6 @@ public static class OnGameEndPatch
             RoleClass.Tuna.TunaPlayer,
             RoleClass.BlackCat.BlackCatPlayer,
             RoleClass.Neet.NeetPlayer,
-            RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
             RoleClass.Revolutionist.RevolutionistPlayer,
             RoleClass.SuicidalIdeation.SuicidalIdeationPlayer,
             RoleClass.Spelunker.SpelunkerPlayer,
@@ -669,6 +677,10 @@ public static class OnGameEndPatch
             Frankenstein.FrankensteinPlayer,
             });
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
+        foreach (SatsumaAndImo satsuma in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
+        {
+            notWinners.Add(satsuma.Player);
+        }
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsNeutral() && !notWinners.Contains(player))
@@ -866,9 +878,11 @@ public static class OnGameEndPatch
         }
         else if (CrewmateWin)
         {
-            if (RoleClass.SatsumaAndImo.TeamNumber == 1)//クルーなら
-                foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                    TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
+            foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
+            {
+                if (satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
+                    TempData.winners.Add(new(satsumaAndImo.Player.Data));//さつまいもも勝ち
+            }
         }
         else if (TaskerWin)
         {

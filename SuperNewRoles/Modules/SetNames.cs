@@ -5,6 +5,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -225,23 +226,31 @@ public class SetNamesClass
     }
 
     /// <summary>
-    /// 死亡後役職が見えるかの基本的な条件を取得する　(全員が役職を見られるか/Impostorのみ役職が見られるか)
+    /// 死亡後, 全員の役職が見る事ができるか判定する。
+    /// 見る事ができない状態は, 見る事ができる状態より優先して反映する。
     /// </summary>
+    /// <param name="target">役職を見ようとしているプレイヤー (nullなら処理者本人)</param>
     /// <returns> true:見られる / false:見られない </returns>
-    public static bool DefaultGhostSeeRoles(PlayerControl target = null)
+    public static bool CanGhostSeeRoles(PlayerControl target = null)
     {
         if (target == null) target = PlayerControl.LocalPlayer;
         if (target.IsDead())
         {
-            if (!Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool()) return true;
+            if (target.GetRoleBase() is INameHandler INameHandler) // 役職の個別判定
+            {
+                if (!INameHandler.CanGhostSeeRole) return false;  // 死後 役職をみえない役職の場合, 最優先で判定する。
+            }
+
+            // ゲーム設定による, 基本的な判定
+            // (役職の個別判定で死後役職が見られる場合は, ゲーム設定による判定を優先する)
+            if (!Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool()) return true; // 上位設定 "ゲームオプション" が有効か
             else
             {
-                if (!Mode.PlusMode.PlusGameOptions.CanNotGhostSeeRole.GetBool()) return true; // 「死亡時に他プレイヤーの役職を表示しない」設定が無効な時
-                // この設定は、上記bool判定の子Optionである為、上記true時（親Option無効時）取得しない設定。
+                if (!Mode.PlusMode.PlusGameOptions.CanNotGhostSeeRole.GetBool()) return true;
                 else if (Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool()) return target.IsImpostor();
             }
         }
-        return false; // 上記[役職が確認できる]条件を満たさなかった場合falseを返す。
+        return false;
     }
 
     public static void SetPlayerNameColors(PlayerControl player)
@@ -266,7 +275,7 @@ public class SetNamesClass
                 SetPlayerNameText(side, side.NameText().text + suffix);
             }
         }
-        if (DefaultGhostSeeRoles() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
+        if (CanGhostSeeRoles() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
         {
             foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer)
             {
@@ -300,7 +309,7 @@ public class SetNamesClass
             if (!side.Data.Disconnected)
                 SetPlayerNameText(side, side.NameText().text + suffix);
         }
-        else if ((DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+        else if ((CanGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
         {
             foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
             {
@@ -314,7 +323,7 @@ public class SetNamesClass
     }
     public static void DemonSet()
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon, RoleId.God) || DefaultGhostSeeRoles())
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon, RoleId.God) || CanGhostSeeRoles())
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -328,7 +337,7 @@ public class SetNamesClass
     }
     public static void ArsonistSet()
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist, RoleId.God) || DefaultGhostSeeRoles())
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist, RoleId.God) || CanGhostSeeRoles())
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -358,29 +367,32 @@ public class SetNamesClass
     }
     public static void SatsumaimoSet()
     {
-        if (DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+        if (CanGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
         {
-            foreach (PlayerControl player in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
+            foreach (SatsumaAndImo player in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
             {
                 //クルーなら
-                if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                if (!player.Player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && player.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
                 {//名前に(C)をつける
-                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                    SetNamesClass.SetPlayerNameText(player.Player, player.Player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
                 }
-                if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                if (!player.Player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && player.TeamState == SatsumaAndImo.SatsumaTeam.Madmate)
                 {
-                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                    SetNamesClass.SetPlayerNameText(player.Player, player.Player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
                 }
             }
         }
         else if (PlayerControl.LocalPlayer.IsRole(RoleId.SatsumaAndImo))
         {
             PlayerControl player = PlayerControl.LocalPlayer;
-            if (!player.NameText().text.Contains(ModHelpers.Cs(Palette.White, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+            SatsumaAndImo satsumaAndImo = RoleBaseManager.GetLocalRoleBase<SatsumaAndImo>();
+            if (satsumaAndImo == null)
+                return;
+            if (!player.NameText().text.Contains(ModHelpers.Cs(Palette.White, " (C)")) && satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
             {//名前に(C)をつける
                 SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
             }
-            else if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+            else if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Madmate)
             {
                 SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
             }
@@ -394,8 +406,7 @@ public class SetNameUpdate
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
         bool CanSeeAllRole =
-            (SetNamesClass.DefaultGhostSeeRoles() &&
-            LocalRole != RoleId.NiceRedRidingHood) ||
+            SetNamesClass.CanGhostSeeRoles() ||
             Debugger.canSeeRole ||
             (PlayerControl.LocalPlayer.GetRoleBase() is INameHandler nameHandler &&
             nameHandler.AmAllRoleVisible);
