@@ -7,36 +7,150 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using static SuperNewRoles.CustomCosmetics.CustomCosmeticsData.CustomVisors;
 
 namespace SuperNewRoles.CustomCosmetics;
 
-public struct CustomVisors
-{
-    public string author { get; set; }
-    public string name { get; set; }
-    public string resource { get; set; }
-    public string reshasha { get; set; }
-    public bool IsTOP { get; set; }
-}
 public static class DownLoadClassVisor
 {
     public static bool IsEndDownload = false;
     public static bool running = false;
-    public static List<string> fetchs = new();
-    public static List<CustomVisors> Visordetails = new();
+
+    /// <summary>バイザーをダウンロードするRepositoryURL</summary>
+    /// <value>key : URL, Item1 : クローゼット名, Item2 : SNRのテンプレートで記載されているか</value>
+    public static Dictionary<string, (string, bool)> VisorRepository()
+    {
+        Dictionary<string, (string, bool)> visorRepos = new()
+        {
+            { DownLoadCustomCosmetics.SNCmainURL, ("SuperNewCosmetics", true) },
+
+            { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", ("mememurahat", false)},
+            { "https://raw.githubusercontent.com/Ujet222/TOPVisors/main", ("YJ", false) },
+        };
+
+        if (!DownLoadCustomCosmetics.IsTestLoad) return visorRepos;
+        else
+        {
+            visorRepos.Add(DownLoadCustomCosmetics.TestRepoURL, ("TestRepository", true));
+            if (DownLoadCustomCosmetics.IsBlocLoadSNCmain) visorRepos.Remove(DownLoadCustomCosmetics.SNCmainURL);
+            return visorRepos;
+        }
+    }
+
+    /// <summary>ダウンロード処理が済んでいない リポジトリ</summary>
+    public static List<string> ReposDLProcessing = new(); // Hat Reposと同じ
+    /// <summary>ダウンロード済みリポジトリ</summary>
+    public static List<string> CachedRepos = new();
+    public static List<CustomVisorOnline> VisorDetails = new();
+    private static Task hatFetchTask = null;
+
     public static void Load()
     {
-        if (running)
-            return;
-        IsEndDownload = false;
+        if (running) return;
+        running = true;
+        SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor:Download] バイザーダウンロード開始");
+        hatFetchTask = LaunchVisorFetcherAsync();
+    }
+
+    private static async Task LaunchVisorFetcherAsync()
+    {
+        if (!DownLoadCustomCosmetics.IsLoad) return;
+
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\");
-        SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor:Download] バイザーダウンロード開始");
-        _ = FetchHats("https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/main");
-        _ = FetchHats("https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master");
-        _ = FetchHats("https://raw.githubusercontent.com/Ujet222/TOPVisors/main", true);
-        running = true;
+
+        var visorRepos = VisorRepository();
+
+        List<string> repos = new(visorRepos.Keys);
+        foreach (string repo in repos) { ReposDLProcessing.Add(repo); }
+
+        string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\";
+
+        foreach (string repo in repos)
+        {
+            var repoData = visorRepos.FirstOrDefault(data => data.Key == repo).Value;
+
+            if (File.Exists($"{filePath}\\{repoData.Item1}.json"))
+            {
+                IsEndDownload = true;
+                StreamReader sr = new($"{filePath}\\{repoData.Item1}.json");
+
+                string json = sr.ReadToEnd();
+                sr.Close();
+
+                JToken jobj = JObject.Parse(json)["Visors"];
+                if (jobj == null || !jobj.HasValues) jobj = JObject.Parse(json)["visors"];
+                if (jobj != null && jobj.HasValues)
+                {
+                    List<CustomVisorOnline> visorData = new();
+
+                    for (JToken current = jobj.First; current != null; current = current.Next)
+                    {
+                        if (current.HasValues)
+                        {
+                            CustomVisorOnline info = new()
+                            {
+                                name = current["name"]?.ToString(),
+                                author = current["author"]?.ToString(),
+                                resource = SanitizeResourcePath(current["resource"]?.ToString())
+                            };
+                            if (info.resource == null || info.name == null) continue;
+
+                            bool isSNR = repoData.Item2;
+                            if (isSNR) { isSNR = bool.TryParse(current["IsSNR"]?.ToString(), out bool SNRTmpStatus) ? SNRTmpStatus : false; }
+                            info.IsSNR = isSNR;
+
+                            info.reshasha = info.resource + info.name + info.author;
+                            info.flipresource = SanitizeResourcePath(current["flipresource"]?.ToString());
+                            info.reshashf = current["reshashf"]?.ToString();
+                            info.adaptive = current["adaptive"] != null;
+                            info.behindHats = bool.TryParse(current["behindHats"]?.ToString(), out bool behindHats) ? behindHats : false;
+
+                            info.package = current["package"]?.ToString();
+                            if (current["package"] == null) info.package = "NameNone";
+                            if (info.package != null && !PackageNames.Contains(info.package))
+                            {
+                                PackageNames.Add(info.package);
+                            }
+
+                            if (info.package == "Developer Visors")
+                                info.package = "developerVisorts";
+
+                            if (info.package == "Community Visors")
+                                info.package = "communityVisors";
+
+                            visorData.Add(info);
+                        }
+                    }
+                    if (!PackageNames.Contains("InnerSloth")) PackageNames.Add("InnerSloth");
+
+                    VisorDetails.AddRange(visorData);
+                    CachedRepos.Add(repo);
+                    ReposDLProcessing.Remove(repo);
+                }
+            }
+        }
+        IsEndDownload = true;
+        foreach (var repo in visorRepos)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("[CustomVisors] バイザースタート:" + repo.Key);
+
+            try
+            {
+                HttpStatusCode status = await FetchVisors(repo.Key);
+                if (status != HttpStatusCode.OK)
+                    System.Console.WriteLine($"Custom visors could not be loaded from repo: {repo.Key}\n");
+                else
+                    SuperNewRolesPlugin.Logger.LogInfo("バイザー終了:" + repo.Key);
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine($"Unable to fetch visors from repo: {repo.Key}\n" + e.Message);
+            }
+        }
+        running = false;
     }
+
     private static string SanitizeResourcePath(string res)
     {
         if (res == null || !res.EndsWith(".png"))
@@ -57,93 +171,108 @@ public static class DownLoadClassVisor
         var hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
         return !reshash.Equals(hash);
     }
-    public static async Task<HttpStatusCode> FetchHats(string repo, bool IsTOP = false)
+    public static async Task<HttpStatusCode> FetchVisors(string repo)
     {
-        fetchs.Add(repo);
         SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor:Download] バイザーダウンロード開始:" + repo);
+
         HttpClient http = new();
         http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
         var response = await http.GetAsync(new System.Uri($"{repo}/CustomVisors.json"), HttpCompletionOption.ResponseContentRead);
+        if (response.StatusCode == HttpStatusCode.NotFound) response = await http.GetAsync(new System.Uri($"{repo}/CustomHats.json"), HttpCompletionOption.ResponseContentRead);
+
         try
         {
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                response = await http.GetAsync(new System.Uri($"{repo}/CustomHats.json"), HttpCompletionOption.ResponseContentRead);
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    return response.StatusCode;
-                }
-            }
+            if (response.StatusCode != HttpStatusCode.OK) return response.StatusCode;
             if (response.Content == null)
             {
                 System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
                 return HttpStatusCode.ExpectationFailed;
             }
-            string json = await response.Content.ReadAsStringAsync();
-            string visortext = "Visors";
-            JToken jobj = JObject.Parse(json)["Visors"];
-            if (jobj == null || !jobj.HasValues)
-            {
-                visortext = "visors";
-                jobj = JObject.Parse(json)["visors"];
-                if (jobj == null || !jobj.HasValues)
-                {
-                    return HttpStatusCode.ExpectationFailed;
-                }
-            };
 
-            List<CustomVisors> visorData = new();
+            string json = await response.Content.ReadAsStringAsync();
+            var responsestream = await response.Content.ReadAsStreamAsync();
+            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\";
+            var repoData = VisorRepository().FirstOrDefault(data => data.Key == repo).Value;
+            responsestream.CopyTo(File.Create($"{filePath}\\{repoData.Item1}.json"));
+
+            JToken jobj = JObject.Parse(json)["Visors"];
+            if (jobj == null || !jobj.HasValues) jobj = JObject.Parse(json)["visors"]; //  ``"Visors"``が無い場合, ``"visors"``を再検索して取得
+            if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
+
+            List<CustomVisorOnline> visorData = new();
 
             for (JToken current = jobj.First; current != null; current = current.Next)
             {
                 if (current != null && current.HasValues)
                 {
-                    CustomVisors info = new()
+                    CustomVisorOnline info = new()
                     {
                         name = current["name"]?.ToString(),
+                        author = current["author"]?.ToString(),
                         resource = SanitizeResourcePath(current["resource"]?.ToString())
                     };
-                    if (info.resource == null || info.name == null) // required
-                        continue;
-                    info.IsTOP = IsTOP;
-                    info.author = current["author"]?.ToString();
-                    info.reshasha = current["name"]?.ToString();
+
+                    if (info.resource == null || info.name == null) continue;
+
+                    info.reshasha = info.resource + info.name + info.author;
+
+                    info.flipresource = SanitizeResourcePath(current["flipresource"]?.ToString());
+                    info.reshashf = current["reshashf"]?.ToString();
+
+                    info.adaptive = current["adaptive"] != null;
+
+                    bool isSNR = repoData.Item2;
+                    if (isSNR) { isSNR = bool.TryParse(current["IsSNR"]?.ToString(), out bool SNRTmpStatus) ? SNRTmpStatus : false; }
+                    info.IsSNR = isSNR;
+
+                    info.package = current["package"]?.ToString();
+                    if (current["package"] == null) info.package = "NameNone";
+                    if (info.package != null && !PackageNames.Contains(info.package))
+                    {
+                        PackageNames.Add(info.package);
+                    }
+
                     visorData.Add(info);
                 }
             }
+            PackageNames.Add("InnerSloth");
 
             List<string> markedfordownload = new();
 
-            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\";
             MD5 md5 = MD5.Create();
-            foreach (CustomVisors data in visorData)
+            foreach (CustomVisorOnline data in visorData)
             {
                 if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                     markedfordownload.Add(data.resource);
+                if (data.flipresource != null && DoesResourceRequireDownload(filePath + data.flipresource, data.reshashf, md5))
+                    markedfordownload.Add(data.flipresource);
             }
 
             foreach (var file in markedfordownload)
             {
-                var hatFileResponse = await http.GetAsync($"{repo}/{visortext}/{file}", HttpCompletionOption.ResponseContentRead);
-                if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
+                var visorFileResponse = await http.GetAsync($"{repo}/Visors/{file}", HttpCompletionOption.ResponseContentRead);
+                if (visorFileResponse.StatusCode == HttpStatusCode.NotFound) visorFileResponse = await http.GetAsync($"{repo}/visors/{file}", HttpCompletionOption.ResponseContentRead);
 
-                using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
+                if (visorFileResponse.StatusCode != HttpStatusCode.OK) continue;
+
+                using var responseStream = await visorFileResponse.Content.ReadAsStreamAsync();
                 using var fileStream = File.Create($"{filePath}\\{file}");
                 responseStream.CopyTo(fileStream);
             }
 
-            Visordetails.AddRange(visorData);
+            if (!CachedRepos.Contains(repo))
+            {
+                VisorDetails.AddRange(visorData);
+                ReposDLProcessing.Remove(repo);
+                if (ReposDLProcessing.Count < 1)
+                {
+                    IsEndDownload = true;
+                }
+            }
         }
         catch (System.Exception ex)
         {
-            SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
-            System.Console.WriteLine(ex);
-        }
-        SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor:Download] バイザーダウンロード終了:" + repo);
-        fetchs.Remove(repo);
-        if (fetchs.Count <= 0)
-        {
-            IsEndDownload = true;
+            SuperNewRolesPlugin.Instance.Log.LogError("VisorsError: " + ex.ToString());
         }
         return HttpStatusCode.OK;
     }

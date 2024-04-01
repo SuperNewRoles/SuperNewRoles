@@ -170,13 +170,13 @@ public class BlackHatHacker
         BlackHatHackerAdminButtoon = new(
             () =>
             {
+                IsMyAdmin = true;
                 __instance.ToggleMapVisible(new()
                 {
                     Mode = MapOptions.Modes.CountOverlay,
                     AllowMovementWhileMapOpen = BlackHatHackerCanMoveWhenUsesAdmin.GetBool(),
                 });
                 PlayerControl.LocalPlayer.NetTransform.Halt();
-                IsMyAdmin = true;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.BlackHatHacker && BlackHatHackerCanInfectedAdmin.GetBool(); },
             () => { return PlayerControl.LocalPlayer.CanMove; },
@@ -202,11 +202,11 @@ public class BlackHatHacker
         BlackHatHackerVitalsButtoon = new(
             () =>
             {
+                IsMyVutals = true;
                 RoleTypes role = PlayerControl.LocalPlayer.Data.Role.Role;
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
                 CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, role);
-                IsMyVutals = true;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.BlackHatHacker && BlackHatHackerCanInfectedVitals.GetBool(); },
             () => { return PlayerControl.LocalPlayer.CanMove; },
