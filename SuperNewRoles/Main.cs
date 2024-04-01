@@ -161,6 +161,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         //Register Il2cpp
         ClassInjector.RegisterTypeInIl2Cpp<CustomAnimation>();
+        ClassInjector.RegisterTypeInIl2Cpp<WormHole>();
         ClassInjector.RegisterTypeInIl2Cpp<SluggerDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonObject>();
         ClassInjector.RegisterTypeInIl2Cpp<RocketDeadbody>();
