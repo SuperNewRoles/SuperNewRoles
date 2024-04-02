@@ -253,10 +253,13 @@ public static class CredentialsPatch
         }
         public static void Postfix(MainMenuManager __instance)
         {
-
             AprilFoolsManager.SetRandomModMode();
+
             __instance.gameModeButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
-            __instance.accountButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
+            if (AprilFoolsManager.IsApril(2024))
+            {
+                __instance.accountButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
+            }
 
             __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
@@ -285,7 +288,7 @@ public static class CredentialsPatch
             }
 
             var snrLogo = new GameObject("bannerLogo");
-            snrLogo.transform.position = new(2, AprilFoolsManager.getCurrentBannerYPos(), -6);
+            snrLogo.transform.position = new(2, AprilFoolsManager.getCurrentBannerYPos(), AprilFoolsManager.IsApril(2024) ? -6 : 0);
             snrLogo.transform.localScale = Vector3.one * 0.95f;
             //snrLogo.transform.localScale = Vector3.one;
             renderer = snrLogo.AddComponent<SpriteRenderer>();

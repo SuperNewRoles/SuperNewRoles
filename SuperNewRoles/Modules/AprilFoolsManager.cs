@@ -19,8 +19,10 @@ public static class AprilFoolsManager
 
     private static DateTime startTimeUtc_2023 = new(2023, 3, 31, 15, 0, 0, 0, DateTimeKind.Utc);
     private static DateTime endTimeUtc_2023 = new(2023, 4, 1, 15, 0, 0, 0, DateTimeKind.Utc);
-    private static DateTime startTimeUtc_2024 = new(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+    private static DateTime startTimeUtc_2024 = new(2024, 3, 31, 22, 0, 0, 0, DateTimeKind.Utc);
     private static DateTime endTimeUtc_2024 = new(2024, 4, 8, 7, 0, 0, 0, DateTimeKind.Utc);
+
+    public static bool isLastAprilFool = false;
 
     public static ModMode currentModMode { get; private set; } = ModMode.SuperNagaiRoles;
 
@@ -69,10 +71,12 @@ public static class AprilFoolsManager
 
     public const string DefaultModNameOnColor = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
 
-    private static List<ModMode> _enums = null;
+    public static List<ModMode> _enums = null;
 
     public static void SetRandomModMode()
     {
+        if (!IsApril(2024))
+            return;
         if (_enums == null || _enums.Count <= 0)
             _enums = ((ModMode[])Enum.GetValues(typeof(ModMode))).ToList();
         currentModMode = _enums.GetRandom();
@@ -82,7 +86,7 @@ public static class AprilFoolsManager
 
     public static float getCurrentBannerYPos()
     {
-        if (ModYPos.TryGetValue(currentModMode.ToString(), out float yPos))
+        if (IsApril(2024) && ModYPos.TryGetValue(currentModMode.ToString(), out float yPos))
             return yPos;
         return 0.7f;
     }
@@ -166,5 +170,9 @@ public static class AprilFoolsManager
             ModTranslation.AprilDictionary[trans.Key] = newValues;
         }
         Logger.Info("End UpdateAprilTranslation");
+    }
+    public static void OnLoad()
+    {
+        isLastAprilFool = IsApril(2024);
     }
 }
