@@ -232,7 +232,7 @@ public static class LongBoiPlayerBodySetHeightFromColorPatch
                     __instance.targetHeight = value;
                 else
                 {
-                    __instance.targetHeight = (new System.Random(colorIndex).Next(9, 46) / 5f);
+                    __instance.targetHeight = (new System.Random(colorIndex).Next(9, 92) / 10f);
                     PlayerLongColorSizes[colorIndex] = __instance.targetHeight;
                 }
             }
