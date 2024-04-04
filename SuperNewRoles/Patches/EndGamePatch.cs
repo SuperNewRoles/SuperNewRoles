@@ -653,6 +653,8 @@ public static class OnGameEndPatch
             return (winners, WinCondition.HAISON, WillRevivePlayers);
         }
 
+        bool IsProcessReplaceWin = true;
+
         bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
         bool ImpostorWin = gameOverReason is GameOverReason.ImpostorByKill or GameOverReason.ImpostorBySabotage or GameOverReason.ImpostorByVote;
         bool TaskerWin = gameOverReason == (GameOverReason)CustomGameOverReason.TaskerWin;
@@ -697,6 +699,7 @@ public static class OnGameEndPatch
             WillRevivePlayers.Add(WinnerPlayer.Data);
             winners = [WinnerPlayer.Data];
             winCondition = condition;
+            IsProcessReplaceWin = false;
         }
         else if (JackalWin)
         {
@@ -730,6 +733,7 @@ public static class OnGameEndPatch
                 winners.Add(WinnerPlayer.Data);
             }
             winCondition = WinCondition.DemonWin;
+            IsProcessReplaceWin = false;
         }
         else if (ArsonistWin)
         {
@@ -742,6 +746,7 @@ public static class OnGameEndPatch
                 winners.Add(WinnerPlayer.Data);
             }
             winCondition = WinCondition.ArsonistWin;
+            IsProcessReplaceWin = false;
         }
         else if (HitmanWin)
         {
@@ -758,6 +763,7 @@ public static class OnGameEndPatch
             }
             winners = [WinnerPlayer.Data];
             winCondition = WinCondition.HitmanWin;
+            IsProcessReplaceWin = false;
         }
         else if (PavlovsTeamWin)
         {
@@ -819,6 +825,7 @@ public static class OnGameEndPatch
                 }
             }
             winCondition = WinCondition.LoversBreakerWin;
+            IsProcessReplaceWin = false;
         }
         if (ImpostorWin)
         {
@@ -841,7 +848,8 @@ public static class OnGameEndPatch
 
         //単独勝利系統
         //下に行くほど優先度が高い
-        ProcessReplaceWin(ref winners, gameOverReason, ref winCondition);
+        if (IsProcessReplaceWin)
+            ProcessReplaceWin(ref winners, gameOverReason, ref winCondition);
 
         //追加勝利系
         ProcessAdditionalWin(ref winners, gameOverReason, ref winCondition);
