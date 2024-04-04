@@ -212,10 +212,11 @@ public static class ExilePlayerPatch
         }
     }
 }
-[HarmonyPatch(typeof(LongBoiPlayerBody),nameof(LongBoiPlayerBody.SetHeightFromColor))]
+[HarmonyPatch(typeof(LongBoiPlayerBody), nameof(LongBoiPlayerBody.SetHeightFromColor))]
 public static class LongBoiPlayerBodySetHeightFromColorPatch
 {
-    private static Dictionary<int, float> PlayerLongColorSizes = new();
+    // 真っ黄色を最大に設定
+    private static Dictionary<int, float> PlayerLongColorSizes = new() { { 28, 9.2f } };
     public static bool Prefix(LongBoiPlayerBody __instance, int colorIndex)
     {
         if (__instance.isPoolablePlayer)
@@ -223,7 +224,7 @@ public static class LongBoiPlayerBodySetHeightFromColorPatch
         if (!GameManager.Instance.IsHideAndSeek() ||
             AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started ||
             !(__instance.myPlayerControl.Data.Role != null || __instance.myPlayerControl.Data.Role.TeamType != RoleTeamTypes.Impostor))
-		{
+        {
             if (colorIndex < __instance.heightsPerColor.Length)
                 __instance.targetHeight = __instance.heightsPerColor[colorIndex];
             else
@@ -232,19 +233,19 @@ public static class LongBoiPlayerBodySetHeightFromColorPatch
                     __instance.targetHeight = value;
                 else
                 {
-                    __instance.targetHeight = (new System.Random(colorIndex).Next(9, 46) / 10f);
+                    __instance.targetHeight = new System.Random(colorIndex).Next(9, 92) / 10f;
                     PlayerLongColorSizes[colorIndex] = __instance.targetHeight;
                 }
             }
-			if (LobbyBehaviour.Instance != null)
-			{
+            if (LobbyBehaviour.Instance != null)
+            {
                 __instance.SetupNeckGrowth(snapNeck: false, resetNeck: false);
-			}
-			else
-			{
+            }
+            else
+            {
                 __instance.SetupNeckGrowth(snapNeck: true, resetNeck: false);
-			}
-		}
+            }
+        }
         return false;
     }
 }

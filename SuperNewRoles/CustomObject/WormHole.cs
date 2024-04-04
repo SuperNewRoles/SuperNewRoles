@@ -87,6 +87,9 @@ class WormHole : CustomAnimation
 
     public override void Update()
     {
+        if (!gameObject.active)
+            return;
+
         base.Update();
 
         if (IsActivating)
@@ -114,6 +117,15 @@ class WormHole : CustomAnimation
 
         //base.Init(new(GetSprites(ResourcePath_Use, 15, 2), 30, true));
         Init(animOption_Idle);
+
+        ConnectVents();
+    }
+
+    public void InActivate()
+    {
+        IsActivating = false;
+        gameObject.SetActive(false);
+        AllWormHoles.Remove(this);
 
         ConnectVents();
     }
