@@ -75,7 +75,7 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
         var target = HudManager.Instance.ImpostorVentButton.currentTarget;
         if (target != null
             && WormHole.IsWormHole(target)
-            && WormHole.AllWormHoles.Select(x => x.Owner.PlayerId == PlayerControl.LocalPlayer.PlayerId && x._vent).Contains(target))
+            && WormHole.AllWormHoles.Select(x => x.Owner.PlayerId == PlayerControl.LocalPlayer.PlayerId).Contains(target))
         {
             currentTargetWormHole = target;
             return true;
@@ -130,6 +130,7 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
         PutWormHoleButtonInfo.ResetCoolTime();
         PutWormHoleButtonInfo.AbilityCount++;
 
-        UnityEngine.Object.Destroy(WormHole.GetWormHoleById(wormholeId).gameObject);
+        WormHole.GetWormHoleById(wormholeId).InActivate();
+        //UnityEngine.Object.Destroy(WormHole.GetWormHoleById(wormholeId).gameObject);
     }
 }
