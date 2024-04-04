@@ -75,7 +75,7 @@ public class DimensionWalker : RoleBase, IImpostor, ICustomButton, IRpcHandler
         var target = HudManager.Instance.ImpostorVentButton.currentTarget;
         if (target != null
             && WormHole.IsWormHole(target)
-            && WormHole.AllWormHoles.Select(x => x.Owner.AmOwner).Contains(target))
+            && WormHole.AllWormHoles.Select(x => x.Owner.PlayerId == PlayerControl.LocalPlayer.PlayerId).Contains(target))
         {
             currentTargetWormHole = target;
             return true;
