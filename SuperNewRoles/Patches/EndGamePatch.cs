@@ -890,7 +890,7 @@ public static class OnGameEndPatch
                 break;
             i++;
         }
-        if (NoWinner || winners <= 0)
+        if (NoWinner || winners.Count <= 0)
         {
             winners = new();
             winCondition = WinCondition.NoWinner;
