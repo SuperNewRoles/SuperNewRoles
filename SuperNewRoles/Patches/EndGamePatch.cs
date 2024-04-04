@@ -641,12 +641,23 @@ public static class OnGameEndPatch
         HashSet<GameData.PlayerInfo> WillRevivePlayers = new();
         WinCondition winCondition = WinCondition.BugEnd;
 
+        if (EndGameManagerSetUpPatch.IsHaison)
+        {
+            winners = new();
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            {
+                if (p.IsBot())
+                    continue;
+                winners.Add(p.Data);
+            }
+            return (winners, WinCondition.HAISON, WillRevivePlayers);
+        }
+
         bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
         bool ImpostorWin = gameOverReason is GameOverReason.ImpostorByKill or GameOverReason.ImpostorBySabotage or GameOverReason.ImpostorByVote;
         bool TaskerWin = gameOverReason == (GameOverReason)CustomGameOverReason.TaskerWin;
         bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
         bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
-        bool HAISON = EndGameManagerSetUpPatch.IsHaison;
         bool EgoistWin = gameOverReason == (GameOverReason)CustomGameOverReason.EgoistWin;
         bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
         bool DemonWin = gameOverReason == (GameOverReason)CustomGameOverReason.DemonWin;
@@ -662,15 +673,19 @@ public static class OnGameEndPatch
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
         {
             gameOverReason = (GameOverReason)EndData;
+            JackalWin = EndData == CustomGameOverReason.JackalWin;
+            EgoistWin = EndData == CustomGameOverReason.EgoistWin;
+            DemonWin = EndData == CustomGameOverReason.DemonWin;
+            ArsonistWin = EndData == CustomGameOverReason.ArsonistWin;
+            QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
+
             /*
             JesterWin = EndData == CustomGameOverReason.JesterWin;
             MadJesterWin = EndData == CustomGameOverReason.MadJesterWin;
             EgoistWin = EndData == CustomGameOverReason.EgoistWin;
             WorkpersonWin = EndData == CustomGameOverReason.WorkpersonWin;
             FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
-            QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
             FoxWin = EndData == CustomGameOverReason.FoxWin;
-            JackalWin = EndData == CustomGameOverReason.JackalWin;
             DemonWin = EndData == CustomGameOverReason.DemonWin;
             ArsonistWin = EndData == CustomGameOverReason.ArsonistWin;
             VultureWin = EndData == CustomGameOverReason.VultureWin;
@@ -875,7 +890,7 @@ public static class OnGameEndPatch
                 break;
             i++;
         }
-        if (NoWinner || i == CachedPlayer.AllPlayers.Count)
+        if (NoWinner || winners <= 0)
         {
             winners = new();
             winCondition = WinCondition.NoWinner;
@@ -884,8 +899,7 @@ public static class OnGameEndPatch
         {
             if (WinnerPlayer != null)
             {
-                winners = new();
-                winners.Add(WinnerPlayer.Data);
+                winners = [WinnerPlayer.Data];
                 winCondition = WinCondition.PantsRoyalWin;
             }
             else
@@ -909,17 +923,6 @@ public static class OnGameEndPatch
                     winCondition = WinCondition.NoWinner;
                 }
             }
-        }
-        if (HAISON)
-        {
-            winners = new();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                if (p.IsBot())
-                    continue;
-                winners.Add(p.Data);
-            }
-            winCondition = WinCondition.HAISON;
         }
         return (winners, winCondition, WillRevivePlayers);
     }
