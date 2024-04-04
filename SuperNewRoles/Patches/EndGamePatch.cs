@@ -524,6 +524,744 @@ public static class OnGameEndPatch
         }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
     }
+    private static List<GameData.PlayerInfo> ProcessGetWinnersToRemove()
+    {
+        // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
+
+        List<PlayerControl> notWinners = new();
+        List<PlayerControl> peculiarNotWinners = new();
+
+        notWinners.AddRanges([RoleClass.Jester.JesterPlayer,
+            RoleClass.Madmate.MadmatePlayer,
+            RoleClass.Jackal.JackalPlayer,
+            RoleClass.Jackal.SidekickPlayer,
+            RoleClass.JackalFriends.JackalFriendsPlayer,
+            RoleClass.God.GodPlayer,
+            RoleClass.Opportunist.OpportunistPlayer,
+            RoleClass.Truelover.trueloverPlayer,
+            RoleClass.Egoist.EgoistPlayer,
+            RoleClass.Workperson.WorkpersonPlayer,
+            RoleClass.Amnesiac.AmnesiacPlayer,
+            RoleClass.SideKiller.MadKillerPlayer,
+            RoleClass.MadMayor.MadMayorPlayer,
+            RoleClass.MadStuntMan.MadStuntManPlayer,
+            RoleClass.MadHawk.MadHawkPlayer,
+            RoleClass.MadJester.MadJesterPlayer,
+            RoleClass.MadSeer.MadSeerPlayer,
+            RoleClass.FalseCharges.FalseChargesPlayer,
+            RoleClass.Fox.FoxPlayer,
+            BotManager.AllBots,
+            RoleClass.MadMaker.MadMakerPlayer,
+            RoleClass.Demon.DemonPlayer,
+            RoleClass.SeerFriends.SeerFriendsPlayer,
+            RoleClass.JackalSeer.JackalSeerPlayer,
+            RoleClass.JackalSeer.SidekickSeerPlayer,
+            RoleClass.Arsonist.ArsonistPlayer,
+            RoleClass.Vulture.VulturePlayer,
+            RoleClass.MadCleaner.MadCleanerPlayer,
+            RoleClass.MayorFriends.MayorFriendsPlayer,
+            RoleClass.Tuna.TunaPlayer,
+            RoleClass.BlackCat.BlackCatPlayer,
+            RoleClass.Neet.NeetPlayer,
+            RoleClass.Revolutionist.RevolutionistPlayer,
+            RoleClass.SuicidalIdeation.SuicidalIdeationPlayer,
+            RoleClass.Spelunker.SpelunkerPlayer,
+            RoleClass.Hitman.HitmanPlayer,
+            RoleClass.PartTimer.PartTimerPlayer,
+            RoleClass.Photographer.PhotographerPlayer,
+            RoleClass.Stefinder.StefinderPlayer,
+            RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
+            RoleClass.Pavlovsowner.PavlovsownerPlayer,
+            RoleClass.LoversBreaker.LoversBreakerPlayer,
+            Roles.Impostor.MadRole.Worshiper.RoleData.Player,
+            Safecracker.SafecrackerPlayer,
+            FireFox.FireFoxPlayer,
+            OrientalShaman.OrientalShamanPlayer,
+            OrientalShaman.ShermansServantPlayer,
+            TheThreeLittlePigs.TheFirstLittlePig.Player,
+            TheThreeLittlePigs.TheSecondLittlePig.Player,
+            TheThreeLittlePigs.TheThirdLittlePig.Player,
+            WaveCannonJackal.WaveCannonJackalPlayer,
+            WaveCannonJackal.SidekickWaveCannonPlayer,
+            BlackHatHacker.BlackHatHackerPlayer,
+            Moira.MoiraPlayer,
+            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
+            Sauner.RoleData.Player,
+            Pokerface.RoleData.Player,
+            Crook.RoleData.Player,
+            Frankenstein.FrankensteinPlayer,
+            RoleClass.Dependents.DependentsPlayer,
+            ]);
+        foreach (SatsumaAndImo satsuma in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
+            notWinners.Add(satsuma.Player);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (!player.IsNeutral() || notWinners.Contains(player))
+                continue;
+            notWinners.Add(player);
+        }
+
+        foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
+        {
+            if (p.IsAlive())
+                continue;
+            notWinners.Add(p);
+        }
+
+        List<GameData.PlayerInfo> winnersToRemove = new();
+        foreach (GameData.PlayerInfo winner in GameData.Instance.AllPlayers)
+        {
+            if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
+        }
+        return winnersToRemove;
+    }
+    private static Dictionary<string, WinCondition> WinnerisWinnerPlayers = new()
+    {
+        { CustomGameOverReason.JesterWin.ToString(), WinCondition.JesterWin },
+        { CustomGameOverReason.MadJesterWin.ToString(), WinCondition.MadJesterWin },
+        { CustomGameOverReason.WorkpersonWin.ToString(), WinCondition.WorkpersonWin },
+        { CustomGameOverReason.FalseChargesWin.ToString(), WinCondition.FalseChargesWin },
+        { CustomGameOverReason.VultureWin.ToString(), WinCondition.VultureWin },
+        { CustomGameOverReason.RevolutionistWin.ToString(), WinCondition.RevolutionistWin },
+        { CustomGameOverReason.SuicidalIdeationWin.ToString(), WinCondition.SuicidalIdeationWin },
+        { CustomGameOverReason.PhotographerWin.ToString(), WinCondition.PhotographerWin },
+        { CustomGameOverReason.SafecrackerWin.ToString(), WinCondition.SafecrackerWin },
+        { CustomGameOverReason.BlackHatHackerWin.ToString(), WinCondition.BlackHatHackerWin },
+        { CustomGameOverReason.SaunerWin.ToString(), WinCondition.SaunerWin },
+    };
+
+    #region ProcessEndgames
+    /// <summary>
+    /// ゲーム終了の処理を行う
+    /// </summary>
+    /// <returns>勝利情報</returns>
+    public static (HashSet<GameData.PlayerInfo> Winners, WinCondition winCondition, HashSet<GameData.PlayerInfo> WillRevivePlayers) HandleEndGameProcess(GameOverReason gameOverReason)
+    {
+        HashSet<GameData.PlayerInfo> winners = new();
+        HashSet<GameData.PlayerInfo> WillRevivePlayers = new();
+        WinCondition winCondition = WinCondition.BugEnd;
+
+        if (EndGameManagerSetUpPatch.IsHaison)
+        {
+            winners = new();
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            {
+                if (p.IsBot())
+                    continue;
+                winners.Add(p.Data);
+            }
+            return (winners, WinCondition.HAISON, WillRevivePlayers);
+        }
+
+        bool IsProcessReplaceWin = true;
+
+        bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
+        bool ImpostorWin = gameOverReason is GameOverReason.ImpostorByKill or GameOverReason.ImpostorBySabotage or GameOverReason.ImpostorByVote;
+        bool TaskerWin = gameOverReason == (GameOverReason)CustomGameOverReason.TaskerWin;
+        bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
+        bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
+        bool EgoistWin = gameOverReason == (GameOverReason)CustomGameOverReason.EgoistWin;
+        bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
+        bool DemonWin = gameOverReason == (GameOverReason)CustomGameOverReason.DemonWin;
+        bool ArsonistWin = gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
+        bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
+        bool HitmanWin = gameOverReason == (GameOverReason)CustomGameOverReason.HitmanWin;
+        bool PavlovsTeamWin = gameOverReason == (GameOverReason)CustomGameOverReason.PavlovsTeamWin;
+        bool LoversBreakerWin = gameOverReason == (GameOverReason)CustomGameOverReason.LoversBreakerWin;
+        bool NoWinner = gameOverReason == (GameOverReason)CustomGameOverReason.NoWinner;
+        bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
+        bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
+        bool CrookWin = gameOverReason == (GameOverReason)CustomGameOverReason.CrookWin;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
+        {
+            gameOverReason = (GameOverReason)EndData;
+            JackalWin = EndData == CustomGameOverReason.JackalWin;
+            EgoistWin = EndData == CustomGameOverReason.EgoistWin;
+            DemonWin = EndData == CustomGameOverReason.DemonWin;
+            ArsonistWin = EndData == CustomGameOverReason.ArsonistWin;
+            QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
+
+            /*
+            JesterWin = EndData == CustomGameOverReason.JesterWin;
+            MadJesterWin = EndData == CustomGameOverReason.MadJesterWin;
+            EgoistWin = EndData == CustomGameOverReason.EgoistWin;
+            WorkpersonWin = EndData == CustomGameOverReason.WorkpersonWin;
+            FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
+            FoxWin = EndData == CustomGameOverReason.FoxWin;
+            DemonWin = EndData == CustomGameOverReason.DemonWin;
+            ArsonistWin = EndData == CustomGameOverReason.ArsonistWin;
+            VultureWin = EndData == CustomGameOverReason.VultureWin;
+            NeetWin = EndData == CustomGameOverReason.NeetWin;
+            CrookWin = EndData == CustomGameOverReason.CrookWin;*/
+        }
+        if (WinnerisWinnerPlayers.TryGetValue(((CustomGameOverReason)gameOverReason).ToString(), out WinCondition condition))
+        {
+            WillRevivePlayers.Add(WinnerPlayer.Data);
+            winners = [WinnerPlayer.Data];
+            winCondition = condition;
+            IsProcessReplaceWin = false;
+        }
+        else if (JackalWin)
+        {
+            winners = new();
+            foreach (var cp in PlayerControl.AllPlayerControls)
+            {
+                if (!cp.IsJackalTeam())
+                    continue;
+                winners.Add(cp.Data);
+            }
+            winCondition = WinCondition.JackalWin;
+        }
+        else if (EgoistWin)
+        {
+            winners = new();
+            foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
+            {
+                if (p.IsDead())
+                    continue;
+                winners.Add(WinnerPlayer.Data);
+            }
+            winCondition = WinCondition.EgoistWin;
+        }
+        else if (DemonWin)
+        {
+            winners = new();
+            foreach (PlayerControl player in RoleClass.Demon.DemonPlayer)
+            {
+                if (!Demon.IsWin(player))
+                    continue;
+                winners.Add(WinnerPlayer.Data);
+            }
+            winCondition = WinCondition.DemonWin;
+            IsProcessReplaceWin = false;
+        }
+        else if (ArsonistWin)
+        {
+            winners = new();
+            foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                if (!Arsonist.IsArsonistWinFlag())
+                    continue;
+                SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
+                winners.Add(WinnerPlayer.Data);
+            }
+            winCondition = WinCondition.ArsonistWin;
+            IsProcessReplaceWin = false;
+        }
+        else if (HitmanWin)
+        {
+            if (WinnerPlayer == null)
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    if (p.IsRole(RoleId.Hitman))
+                        WinnerPlayer = p;
+                if (WinnerPlayer == null)
+                {
+                    Logger.Error("エラー:殺し屋が生存していませんでした", "HitmanWin");
+                    WinnerPlayer = PlayerControl.LocalPlayer;
+                }
+            }
+            winners = [WinnerPlayer.Data];
+            winCondition = WinCondition.HitmanWin;
+            IsProcessReplaceWin = false;
+        }
+        else if (PavlovsTeamWin)
+        {
+            winners = new();
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p.IsPavlovsTeam())
+                    winners.Add(p.Data);
+            }
+            winCondition = WinCondition.PavlovsTeamWin;
+        }
+        else if (QuarreledWin)
+        {
+            winners = new();
+            List<PlayerControl> winplays = new()
+                {
+                    WinnerPlayer,
+                    WinnerPlayer.GetOneSideQuarreled()
+                };
+            foreach (PlayerControl player in winplays)
+            {
+                WillRevivePlayers.Add(player.Data);
+                winners.Add(player.Data);
+            }
+            winCondition = WinCondition.QuarreledWin;
+        }
+        else if (CrewmateWin)
+        {
+            foreach(GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            {
+                if (player.Object != null && !player.Object.IsCrew())
+                    continue;
+                if (player.Role.IsImpostor)
+                    continue;
+                winners.Add(player);
+            }
+            foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
+            {
+                if (satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
+                    winners.Add(satsumaAndImo.Player.Data);//さつまいもも勝ち
+            }
+        }
+        else if (TaskerWin)
+        {
+            winCondition = WinCondition.TaskerWin;
+        }
+        else if (LoversBreakerWin)
+        {
+            if (WinnerPlayer != null)
+            {
+                winners = [WinnerPlayer.Data];
+            }
+            else
+            {
+                winners = new();
+                foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers)
+                {
+                    winners.Add(GameData.Instance.GetPlayerById(playerId));
+                }
+            }
+            winCondition = WinCondition.LoversBreakerWin;
+            IsProcessReplaceWin = false;
+        }
+        if (ImpostorWin)
+        {
+            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            {
+                if (player.Role.IsImpostor)
+                    winners.Add(player);
+            }
+        }
+
+        if (winners.Any(x => x.Role.IsImpostor))
+        {
+            foreach (PlayerControl cp in CachedPlayer.AllPlayers)
+                if (cp.IsMadRoles() ||
+                    cp.IsRole(RoleId.MadKiller, RoleId.Dependents)
+                )
+                    winners.Add(cp.Data);
+        }
+
+
+        //単独勝利系統
+        //下に行くほど優先度が高い
+        if (IsProcessReplaceWin)
+            ProcessReplaceWin(ref winners, gameOverReason, ref winCondition);
+
+        //追加勝利系
+        ProcessAdditionalWin(ref winners, gameOverReason, ref winCondition);
+
+        if (ModeHandler.IsMode(ModeId.BattleRoyal))
+        {
+            winners = [];
+            if (Mode.BattleRoyal.Main.IsTeamBattle)
+            {
+                foreach (PlayerControl p in Mode.BattleRoyal.Main.Winners)
+                    winners.Add(p.Data);
+            }
+            else
+            {
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.IsDead())
+                        continue;
+                    winners.Add(p.Data);
+                }
+            }
+            winCondition = WinCondition.Default;
+        }
+        if (ModeHandler.IsMode(ModeId.Zombie))
+        {
+            winners = new();
+            if (gameOverReason == GameOverReason.ImpostorByKill)
+            {
+                winCondition = WinCondition.Default;
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.CurrentOutfit.ColorId != 2)
+                        continue;
+                    winners.Add(p.Data);
+                }
+            }
+            else
+            {
+                winCondition = WinCondition.WorkpersonWin;
+            }
+        }
+        int i = 0;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (p.IsAlive())
+                break;
+            i++;
+        }
+        if (NoWinner || winners.Count <= 0)
+        {
+            winners = new();
+            winCondition = WinCondition.NoWinner;
+        }
+        if (ModeHandler.IsMode(ModeId.PantsRoyal))
+        {
+            if (WinnerPlayer != null)
+            {
+                winners = [WinnerPlayer.Data];
+                winCondition = WinCondition.PantsRoyalWin;
+            }
+            else
+            {
+                winners = new();
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.Data.Role.Role is AmongUs.GameOptions.RoleTypes.CrewmateGhost or
+                        AmongUs.GameOptions.RoleTypes.Crewmate)
+                    {
+                        winners.Add(player.Data);
+                        break;
+                    }
+                }
+                if (winners.Count > 0)
+                {
+                    winCondition = WinCondition.PantsRoyalWin;
+                }
+                else
+                {
+                    winCondition = WinCondition.NoWinner;
+                }
+            }
+        }
+        return (winners, winCondition, WillRevivePlayers);
+    }
+    private static void ProcessReplaceWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
+    {
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.GetRoleBase() is IAdditionalWinner additionalWinner)
+            {
+                IAdditionalWinner.AdditionalWinData additionalWinData = additionalWinner.CanWin();
+                if (additionalWinData.CanWin)
+                {
+                    if (additionalWinData.winCondition != AdditionalTempData.winCondition)
+                        winners = new(1);
+                    winners.Add(player.Data);
+                    winCondition = additionalWinData.winCondition;
+                }
+            }
+        }
+
+        foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
+        {
+            if (player.IsDead() || RoleClass.Neet.IsAddWin)
+                continue;
+            winners = [player.Data];
+            winCondition = WinCondition.NeetWin;
+        }
+        foreach (PlayerControl player in RoleClass.God.GodPlayer)
+        {
+            if (player.IsDead())
+                continue;
+            var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
+            if (!RoleClass.God.IsTaskEndWin || Complete >= all)
+            {
+                winners = [player.Data];
+                winCondition = WinCondition.GodWin;
+            }
+        }
+        foreach (PlayerControl player in OrientalShaman.OrientalShamanPlayer)
+        {
+            if (!OrientalShaman.OrientalShamanCrewTaskWinHijack.GetBool() &&
+                AdditionalTempData.gameOverReason == GameOverReason.HumansByTask) break;
+            if (OrientalShaman.OrientalShamanWinTask.GetBool())
+            {
+                var (completed, total) = TaskCount.TaskDate(player.Data);
+                if (completed < total) continue;
+            }
+            if (player.IsDead())
+                continue;
+            winners = [player.Data];
+            if (OrientalShaman.OrientalShamanCausative.ContainsKey(player.PlayerId))
+            {
+                PlayerControl causativePlayer = ModHelpers.PlayerById(OrientalShaman.OrientalShamanCausative[player.PlayerId]);
+                if (causativePlayer) winners.Add(causativePlayer.Data);
+            }
+            winCondition = WinCondition.OrientalShamanWin;
+        }
+        foreach (PlayerControl player in RoleClass.Tuna.TunaPlayer)
+        {
+            if (player.IsDead() || RoleClass.Tuna.IsTunaAddWin)
+                continue;
+            winners = [player.Data];
+            AdditionalTempData.winCondition = WinCondition.TunaWin;
+        }
+        foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
+        {
+            if (player.IsDead() || !CustomOptionHolder.StefinderSoloWin.GetBool())
+                continue;
+            if (RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId))
+            {
+                if (!(
+                    gameOverReason is GameOverReason.ImpostorByKill or
+                    GameOverReason.ImpostorBySabotage or
+                    GameOverReason.ImpostorByVote or
+                    GameOverReason.ImpostorDisconnect))
+                    continue;
+            }
+            else if (!(
+                gameOverReason is GameOverReason.HumansByTask or
+                GameOverReason.HumansByVote or
+                GameOverReason.HumansDisconnect)
+            )
+                continue;
+            winners = [player.Data];
+            winCondition = WinCondition.StefinderWin;
+        }
+        foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
+        {
+            if (!RoleClass.Lovers.IsSingleTeam)
+                break;
+            bool IsWinLovers = false;
+            foreach (PlayerControl player in plist)
+            {
+                if (player.IsDead())
+                    continue;
+                IsWinLovers = true;
+            }
+            if (!IsWinLovers)
+                continue;
+            winners = [];
+            foreach (PlayerControl player in plist)
+            {
+                winners.Add(player.Data);
+                Cupid cupid = RoleBaseManager.GetRoleBases<Cupid>().FirstOrDefault(x => x.currentPair != null && x.currentPair.PlayerId == player.PlayerId);
+                if (cupid != null)
+                {
+                    PlayerControl cPlayer = cupid.Player;
+                    if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
+                        winners.Add(cupid.Player.Data);
+                }
+                winCondition = WinCondition.LoversWin;
+            }
+        }
+        //ポーカーフェイス勝利判定
+        foreach (Pokerface.PokerfaceTeam team in Pokerface.RoleData.PokerfaceTeams)
+        {
+            if (!team.CanWin())
+                continue;
+            winners = [];
+            foreach (PlayerControl teammember in team.TeamPlayers)
+                //ポーカーフェイスじゃない場合を考慮する
+                if (teammember.IsRole(RoleId.Pokerface))
+                    //生存者のみ勝利の設定が無効もしくは対象が生存している場合は追加する
+                    if (!Pokerface.CustomOptionData.WinnerOnlyAlive.GetBool() ||
+                        teammember.IsAlive())
+                        winners.Add(teammember.Data);
+            winCondition = WinCondition.PokerfaceWin;
+        }
+        bool spereseted = false;
+        foreach (PlayerControl player in RoleClass.Spelunker.SpelunkerPlayer)
+        {
+            if (player.IsDead())
+                continue;
+            if (!spereseted)
+                winners = [];
+            winners.Add(player.Data);
+            winCondition = WinCondition.SpelunkerWin;
+            spereseted = true;
+        }
+        foreach (List<PlayerControl> plist in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+        {
+            if (AdditionalTempData.winCondition is WinCondition.LoversBreakerWin or WinCondition.SafecrackerWin or WinCondition.JesterWin or
+                                                   WinCondition.VultureWin or WinCondition.WorkpersonWin or WinCondition.FalseChargesWin or
+                                                   WinCondition.DemonWin or WinCondition.SuicidalIdeationWin or WinCondition.PhotographerWin or
+                                                   WinCondition.RevolutionistWin or WinCondition.QuarreledWin or WinCondition.BlackHatHackerWin) break;
+            if (!TheThreeLittlePigs.IsTheThreeLittlePigs(plist) ||
+                plist.IsAllDead())
+                continue;
+            bool isAllAlive = true;
+            if (plist.Count >= 3)
+            {
+                foreach (PlayerControl player in plist)
+                {
+                    if (player.IsDead() || !TheThreeLittlePigs.IsTheThreeLittlePigs(player))
+                    {
+                        isAllAlive = false;
+                        break;
+                    }
+                }
+            }
+            if (isAllAlive)
+            {
+                winners = [];
+                foreach (PlayerControl player in plist)
+                {
+                    if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player))
+                        continue;
+                    winners.Add(player.Data);
+                    winCondition = WinCondition.TheThreeLittlePigsWin;
+                }
+            }
+            else
+            {
+                bool isAllKillerDead = true;
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsDead()) continue;
+                    if (player.IsImpostor() || player.IsKiller())
+                    {
+                        isAllKillerDead = false;
+                        break;
+                    }
+                }
+                if (isAllKillerDead)
+                {
+                    winners = [];
+                    foreach (PlayerControl player in plist)
+                    {
+                        if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player)) continue;
+                        winners.Add(player.Data);
+                        winCondition = WinCondition.TheThreeLittlePigsWin;
+                    }
+                }
+            }
+        }
+        foreach (KeyValuePair<byte, int> data in Frankenstein.KillCount)
+        {
+            //勝利に必要なキル数を満たしているか
+            if (data.Value > 0)
+                continue;
+            //生存していなければ勝利できない
+            GameData.PlayerInfo FrankenPlayer = GameData.Instance.GetPlayerById(data.Key);
+            if (FrankenPlayer.IsDead())
+                continue;
+            winners = [FrankenPlayer];
+            winCondition = WinCondition.FrankensteinWin;
+        }
+        if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
+        {
+            winners = [Moira.Player.Data];
+            winCondition = WinCondition.MoiraWin;
+        }
+        // 詐欺師は, 勝利判定が実行される前に既に勝利条件を満たしている為, 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)
+        if (Crook.RoleData.FirstWinFlag)
+        {
+            (bool crookFinalWinFlag, List<PlayerControl> crookWinners) = Crook.DecisionOfVictory.GetTheLastDecisionAndWinners();
+            if (crookFinalWinFlag) // 最終的な勝利条件(受給回数, 生存, 最終の保管金の受領場所(追放処理)にたどり着いた) を 満たしている詐欺師がいたら
+            {
+                winners = [];
+                foreach (var winner in crookWinners)
+                {
+                    Logger.Info($"{winner.name}は勝利リストに入った", "EndGame CrookWin");
+                    winners.Add(winner.Data);
+                }
+                winCondition = WinCondition.CrookWin;
+            }
+        }
+        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+        foxPlayers.AddRange(FireFox.FireFoxPlayer);
+        bool foxReseted = false;
+        foreach (PlayerControl player in foxPlayers)
+        {
+            if (player.IsDead())
+                continue;
+            if (!foxReseted)
+                winners = [];
+            winners.Add(player.Data);
+            winCondition = WinCondition.FoxWin;
+            foxReseted = true;
+        }
+    }
+    private static void ProcessAdditionalWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
+    {
+        foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
+        {
+            if (p.IsDead() || !RoleClass.Tuna.IsTunaAddWin)
+                    continue;
+            winners.Add(p.Data);
+        }
+        foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
+        {
+            if (p.IsDead() || !RoleClass.Neet.IsAddWin)
+                continue;
+            winners.Add(p.Data);
+        }
+        foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
+        {
+            var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+            if (p.IsAlive() && playerTotal > playerCompleted)
+            {
+                winners.Add(p.Data);
+            }
+        }
+        foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
+        {
+            if (player.IsDead())
+                continue;
+            winners.Add(player.Data);
+        }
+        foreach (PlayerControl player in RoleClass.Revolutionist.RevolutionistPlayer)
+        {
+            if (RoleClass.Revolutionist.IsAddWin && (!RoleClass.Revolutionist.IsAddWinAlive || player.IsAlive()) && !TempData.winners.Contains(new(player.Data)))
+            {
+                winners.Add(player.Data);
+            }
+        }
+        foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
+        {
+            if (player.IsDead() || CustomOptionHolder.StefinderSoloWin.GetBool())
+                continue;
+            if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
+               (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
+                AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
+                AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
+            {
+                winners.Add(player.Data);
+            }
+            if (RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
+               (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill ||
+                AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage ||
+                AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
+                AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
+            {
+                winners.Add(player.Data);
+            }
+        }
+        foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
+        {
+            if (RoleClass.Lovers.IsSingleTeam)
+                break;
+            bool IsWinLovers = false;
+            foreach (PlayerControl player in plist)
+            {
+                if (player.IsDead())
+                    continue;
+                IsWinLovers = true;
+            }
+            if (!IsWinLovers)
+                continue;
+            foreach (PlayerControl player in plist)
+            {
+                winners.Add(player.Data);
+                Cupid cupid = RoleBaseManager.GetRoleBases<Cupid>().FirstOrDefault(x => x.currentPair != null && x.currentPair.PlayerId == player.PlayerId);
+                if (cupid != null)
+                {
+                    PlayerControl cPlayer = cupid.Player;
+                    if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
+                        winners.Add(cupid.Player.Data);
+                }
+            }
+        }
+        foreach (KeyValuePair<PlayerControl, byte> PartTimerData in (Dictionary<PlayerControl, byte>)RoleClass.PartTimer.Data) //フリーター
+        {
+            PlayerControl PartTimerValue = ModHelpers.PlayerById(PartTimerData.Value);
+            if (winners.Any(x => x.PlayerName == PartTimerValue.Data.PlayerName))
+            {
+                winners.Add(PartTimerData.Key.Data);
+            }
+        }
+    }
+    #endregion
 
     public static void Postfix()
     {
@@ -612,867 +1350,21 @@ public static class OnGameEndPatch
             AdditionalTempData.winCondition = ReplayEndGameData.WinCond;
             return;
         }
-        // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
-        List<PlayerControl> notWinners = new();
-        List<PlayerControl> peculiarNotWinners = new();
 
-        notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
-            RoleClass.Madmate.MadmatePlayer,
-            RoleClass.Jackal.JackalPlayer,
-            RoleClass.Jackal.SidekickPlayer,
-            RoleClass.JackalFriends.JackalFriendsPlayer,
-            RoleClass.God.GodPlayer,
-            RoleClass.Opportunist.OpportunistPlayer,
-            RoleClass.Truelover.trueloverPlayer,
-            RoleClass.Egoist.EgoistPlayer,
-            RoleClass.Workperson.WorkpersonPlayer,
-            RoleClass.Amnesiac.AmnesiacPlayer,
-            RoleClass.SideKiller.MadKillerPlayer,
-            RoleClass.MadMayor.MadMayorPlayer,
-            RoleClass.MadStuntMan.MadStuntManPlayer,
-            RoleClass.MadHawk.MadHawkPlayer,
-            RoleClass.MadJester.MadJesterPlayer,
-            RoleClass.MadSeer.MadSeerPlayer,
-            RoleClass.FalseCharges.FalseChargesPlayer,
-            RoleClass.Fox.FoxPlayer,
-            BotManager.AllBots,
-            RoleClass.MadMaker.MadMakerPlayer,
-            RoleClass.Demon.DemonPlayer,
-            RoleClass.SeerFriends.SeerFriendsPlayer,
-            RoleClass.JackalSeer.JackalSeerPlayer,
-            RoleClass.JackalSeer.SidekickSeerPlayer,
-            RoleClass.Arsonist.ArsonistPlayer,
-            RoleClass.Vulture.VulturePlayer,
-            RoleClass.MadCleaner.MadCleanerPlayer,
-            RoleClass.MayorFriends.MayorFriendsPlayer,
-            RoleClass.Tuna.TunaPlayer,
-            RoleClass.BlackCat.BlackCatPlayer,
-            RoleClass.Neet.NeetPlayer,
-            RoleClass.Revolutionist.RevolutionistPlayer,
-            RoleClass.SuicidalIdeation.SuicidalIdeationPlayer,
-            RoleClass.Spelunker.SpelunkerPlayer,
-            RoleClass.Hitman.HitmanPlayer,
-            RoleClass.PartTimer.PartTimerPlayer,
-            RoleClass.Photographer.PhotographerPlayer,
-            RoleClass.Stefinder.StefinderPlayer,
-            RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
-            RoleClass.Pavlovsowner.PavlovsownerPlayer,
-            RoleClass.LoversBreaker.LoversBreakerPlayer,
-            Roles.Impostor.MadRole.Worshiper.RoleData.Player,
-            Safecracker.SafecrackerPlayer,
-            FireFox.FireFoxPlayer,
-            OrientalShaman.OrientalShamanPlayer,
-            OrientalShaman.ShermansServantPlayer,
-            TheThreeLittlePigs.TheFirstLittlePig.Player,
-            TheThreeLittlePigs.TheSecondLittlePig.Player,
-            TheThreeLittlePigs.TheThirdLittlePig.Player,
-            WaveCannonJackal.WaveCannonJackalPlayer,
-            WaveCannonJackal.SidekickWaveCannonPlayer,
-            BlackHatHacker.BlackHatHackerPlayer,
-            Moira.MoiraPlayer,
-            Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
-            Sauner.RoleData.Player,
-            Pokerface.RoleData.Player,
-            Crook.RoleData.Player,
-            Frankenstein.FrankensteinPlayer,
-            });
-        notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
-        foreach (SatsumaAndImo satsuma in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
-        {
-            notWinners.Add(satsuma.Player);
-        }
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-        {
-            if (player.IsNeutral() && !notWinners.Contains(player))
-                notWinners.Add(player);
-        }
+        var (winners, winCondition, WillRevivePlayers) = HandleEndGameProcess(gameOverReason);
 
-        foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
-        {
-            if (p.IsDead())
-            {
-                notWinners.Add(p);
-            }
-        }
+        // 勝者を処理
+        TempData.winners = new();
+        foreach (var winner in winners)
+            TempData.winners.Add(new(winner));
 
-        List<WinningPlayerData> winnersToRemove = new();
-        foreach (WinningPlayerData winner in TempData.winners)
-        {
-            if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
-        }
-        foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
-        // Neutral shifter can't win
+        // 蘇生する
+        foreach (GameData.PlayerInfo player in WillRevivePlayers)
+            player.IsDead = false;
 
-        bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
-        bool TaskerWin = gameOverReason == (GameOverReason)CustomGameOverReason.TaskerWin;
-        bool JesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
-        bool MadJesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.ImpostorWin;
-        bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
-        bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
-        bool HAISON = EndGameManagerSetUpPatch.IsHaison;
-        bool EgoistWin = gameOverReason == (GameOverReason)CustomGameOverReason.EgoistWin;
-        bool WorkpersonWin = gameOverReason == (GameOverReason)CustomGameOverReason.WorkpersonWin;
-        bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
-        bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
-        bool DemonWin = gameOverReason == (GameOverReason)CustomGameOverReason.DemonWin;
-        bool ArsonistWin = gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
-        bool VultureWin = gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
-        bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
-        bool RevolutionistWin = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
-        bool SuicidalIdeationWin = gameOverReason == (GameOverReason)CustomGameOverReason.SuicidalIdeationWin;
-        bool HitmanWin = gameOverReason == (GameOverReason)CustomGameOverReason.HitmanWin;
-        bool PhotographerWin = gameOverReason == (GameOverReason)CustomGameOverReason.PhotographerWin;
-        bool PavlovsTeamWin = gameOverReason == (GameOverReason)CustomGameOverReason.PavlovsTeamWin;
-        bool LoversBreakerWin = gameOverReason == (GameOverReason)CustomGameOverReason.LoversBreakerWin;
-        bool NoWinner = gameOverReason == (GameOverReason)CustomGameOverReason.NoWinner;
-        bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
-        bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
-        bool SafecrackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SafecrackerWin;
-        bool BlackHatHackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.BlackHatHackerWin;
-        bool SaunerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SaunerWin;
-        bool CrookWin = gameOverReason == (GameOverReason)CustomGameOverReason.CrookWin;
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
-        {
-            JesterWin = EndData == CustomGameOverReason.JesterWin;
-            MadJesterWin = EndData == CustomGameOverReason.MadJesterWin;
-            EgoistWin = EndData == CustomGameOverReason.EgoistWin;
-            WorkpersonWin = EndData == CustomGameOverReason.WorkpersonWin;
-            FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
-            QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
-            FoxWin = EndData == CustomGameOverReason.FoxWin;
-            JackalWin = EndData == CustomGameOverReason.JackalWin;
-            DemonWin = EndData == CustomGameOverReason.DemonWin;
-            ArsonistWin = EndData == CustomGameOverReason.ArsonistWin;
-            VultureWin = EndData == CustomGameOverReason.VultureWin;
-            NeetWin = EndData == CustomGameOverReason.NeetWin;
-            CrookWin = EndData == CustomGameOverReason.CrookWin;
-        }
-        if (JesterWin)
-        {
-            WinnerPlayer.Data.IsDead = false;
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.JesterWin;
-        }
-        else if (MadJesterWin)
-        {
-            WinnerPlayer.Data.IsDead = false;
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.MadJesterWin;
-        }
-        else if (JackalWin)
-        {
-            TempData.winners = new();
-            foreach (var cp in CachedPlayer.AllPlayers)
-            {
-                if (cp.PlayerControl.IsJackalTeam())
-                {
-                    TempData.winners.Add(new(cp.Data));
-                }
-            }
-            AdditionalTempData.winCondition = WinCondition.JackalWin;
-        }
-        else if (EgoistWin)
-        {
-            TempData.winners = new();
-            foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
-            {
-                if (p.IsAlive())
-                {
-                    TempData.winners.Add(new(WinnerPlayer.Data));
-                }
-            }
-            AdditionalTempData.winCondition = WinCondition.EgoistWin;
-        }
-        else if (WorkpersonWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
-        }
-        else if (FalseChargesWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.FalseChargesWin;
-        }
-        else if (DemonWin)
-        {
-            TempData.winners = new();
-            foreach (PlayerControl player in RoleClass.Demon.DemonPlayer)
-            {
-                if (Demon.IsWin(player))
-                {
-                    TempData.winners.Add(new(WinnerPlayer.Data));
-                }
-            }
-            AdditionalTempData.winCondition = WinCondition.DemonWin;
-        }
-        else if (ArsonistWin)
-        {
-            TempData.winners = new();
-            foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
-            {
-                if (Arsonist.IsArsonistWinFlag())
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
-                    TempData.winners.Add(new(WinnerPlayer.Data));
-                }
-            }
-            AdditionalTempData.winCondition = WinCondition.ArsonistWin;
-        }
-        else if (VultureWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.VultureWin;
-        }
-        else if (RevolutionistWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.RevolutionistWin;
-        }
-        else if (SuicidalIdeationWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.SuicidalIdeationWin;
-        }
-        else if (HitmanWin)
-        {
-            if (WinnerPlayer == null)
-            {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
-                if (WinnerPlayer == null)
-                {
-                    Logger.Error("エラー:殺し屋が生存していませんでした", "HitmanWin");
-                    WinnerPlayer = PlayerControl.LocalPlayer;
-                }
-            }
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.HitmanWin;
-        }
-        else if (PhotographerWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.PhotographerWin;
-        }
-        else if (PavlovsTeamWin)
-        {
-            TempData.winners = new();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                if (p.IsPavlovsTeam()) TempData.winners.Add(new(p.Data));
-            }
-            AdditionalTempData.winCondition = WinCondition.PavlovsTeamWin;
-        }
-        else if (QuarreledWin)
-        {
-            TempData.winners = new();
-            List<PlayerControl> winplays = new()
-                {
-                    WinnerPlayer,
-                    WinnerPlayer.GetOneSideQuarreled()
-                };
-            foreach (PlayerControl player in winplays)
-            {
-                player.Data.IsDead = false;
-                TempData.winners.Add(new(player.Data));
-            }
-            AdditionalTempData.winCondition = WinCondition.QuarreledWin;
-        }
-        else if (CrewmateWin)
-        {
-            foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
-            {
-                if (satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
-                    TempData.winners.Add(new(satsumaAndImo.Player.Data));//さつまいもも勝ち
-            }
-        }
-        else if (TaskerWin)
-        {
-            AdditionalTempData.winCondition = WinCondition.TaskerWin;
-        }
-        else if (LoversBreakerWin)
-        {
-            if (WinnerPlayer is not null)
-            {
-                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            }
-            else
-            {
-                TempData.winners = new();
-                foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers)
-                {
-                    TempData.winners.Add(new(ModHelpers.PlayerById(playerId).Data));
-                }
-            }
-            AdditionalTempData.winCondition = WinCondition.LoversBreakerWin;
-        }
-        else if (SafecrackerWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.SafecrackerWin;
-        }
-        else if (BlackHatHackerWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.BlackHatHackerWin;
-        }
-        else if (SaunerWin)
-        {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
-            AdditionalTempData.winCondition = WinCondition.SaunerWin;
-        }
+        // WinConditionを設定
+        AdditionalTempData.winCondition = winCondition;
 
-        if (TempData.winners.ToArray().Any(x => x.IsImpostor))
-        {
-            foreach (var cp in CachedPlayer.AllPlayers)
-                if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller, RoleId.Dependents)) TempData.winners.Add(new(cp.Data));
-        }
-
-
-        //単独勝利系統
-        //下に行くほど優先度が高い
-        bool isDleted = false;
-        bool changeTheWinCondition = Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.IsChangeTheWinCondition.GetBool();
-        bool isReset = false;
-
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-        {
-            if (player.GetRoleBase() is IAdditionalWinner additionalWinner)
-            {
-                IAdditionalWinner.AdditionalWinData additionalWinData = additionalWinner.CanWin();
-                if (additionalWinData.CanWin)
-                {
-                    if (additionalWinData.winCondition != AdditionalTempData.winCondition)
-                        TempData.winners = new(1);
-                    TempData.winners.Add(new(player.Data));
-                    AdditionalTempData.winCondition = additionalWinData.winCondition;
-                }
-            }
-        }
-
-        foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
-        {
-            if (player.IsAlive() && !RoleClass.Neet.IsAddWin)
-            {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-                TempData.winners.Add(new(player.Data));
-                AdditionalTempData.winCondition = WinCondition.NeetWin;
-            }
-        }
-        isReset = false;
-        foreach (PlayerControl player in RoleClass.God.GodPlayer)
-        {
-            if (player.IsDead())
-                continue;
-            var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
-            if (!RoleClass.God.IsTaskEndWin || Complete >= all)
-            {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-                TempData.winners.Add(new(player.Data));
-                AdditionalTempData.winCondition = WinCondition.GodWin;
-            }
-        }
-        isReset = false;
-        foreach (PlayerControl player in OrientalShaman.OrientalShamanPlayer)
-        {
-            if (!OrientalShaman.OrientalShamanCrewTaskWinHijack.GetBool() &&
-                AdditionalTempData.gameOverReason == GameOverReason.HumansByTask) break;
-            if (OrientalShaman.OrientalShamanWinTask.GetBool())
-            {
-                var (completed, total) = TaskCount.TaskDate(player.Data);
-                if (completed < total) continue;
-            }
-            if (player.IsAlive())
-            {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-                TempData.winners.Add(new(player.Data));
-                if (OrientalShaman.OrientalShamanCausative.ContainsKey(player.PlayerId))
-                {
-                    PlayerControl causativePlayer = ModHelpers.PlayerById(OrientalShaman.OrientalShamanCausative[player.PlayerId]);
-                    if (causativePlayer) TempData.winners.Add(new(causativePlayer.Data));
-                }
-                AdditionalTempData.winCondition = WinCondition.OrientalShamanWin;
-            }
-        }
-        isReset = false;
-        foreach (PlayerControl player in RoleClass.Tuna.TunaPlayer)
-        {
-            if (player.IsAlive() && !RoleClass.Tuna.IsTunaAddWin)
-            {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-                TempData.winners.Add(new(player.Data));
-                AdditionalTempData.winCondition = WinCondition.TunaWin;
-
-            }
-        }
-        isReset = false;
-        foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
-        {
-            if (player.IsAlive() && CustomOptionHolder.StefinderSoloWin.GetBool())
-            {
-                if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
-                   (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
-                    AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
-                    AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
-                {
-                    if (!((isDleted && changeTheWinCondition) || isReset))
-                    {
-                        TempData.winners = new();
-                        isDleted = true;
-                        isReset = true;
-                    }
-                    TempData.winners.Add(new(player.Data));
-                    AdditionalTempData.winCondition = WinCondition.StefinderWin;
-                }
-                if (RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
-                   (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill ||
-                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage ||
-                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
-                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
-                {
-                    if (!((isDleted && changeTheWinCondition) || isReset))
-                    {
-                        TempData.winners = new();
-                        isDleted = true;
-                        isReset = true;
-                    }
-                    TempData.winners.Add(new(player.Data));
-                    AdditionalTempData.winCondition = WinCondition.StefinderWin;
-                }
-            }
-        }
-        isReset = false;
-        foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
-        {
-            if (RoleClass.Lovers.IsSingleTeam)
-            {
-                bool IsWinLovers = false;
-                foreach (PlayerControl player in plist)
-                {
-                    if (player.IsAlive())
-                    {
-                        IsWinLovers = true;
-                    }
-                }
-                if (IsWinLovers)
-                {
-                    foreach (PlayerControl player in plist)
-                    {
-                        if (!((isDleted && changeTheWinCondition) || isReset))
-                        {
-                            TempData.winners = new();
-                            isDleted = true;
-                            isReset = true;
-                        }
-                        TempData.winners.Add(new(player.Data));
-                        Cupid cupid = RoleBaseManager.GetRoleBases<Cupid>().FirstOrDefault(x => x.currentPair != null && x.currentPair.PlayerId == player.PlayerId);
-                        if (cupid != null)
-                        {
-                            PlayerControl cPlayer = cupid.Player;
-                            if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
-                                TempData.winners.Add(new(cupid.Player.Data));
-                        }
-                        AdditionalTempData.winCondition = WinCondition.LoversWin;
-                    }
-                }
-            }
-        }
-        //ポーカーフェイス勝利判定
-        isReset = false;
-        foreach (Pokerface.PokerfaceTeam team in Pokerface.RoleData.PokerfaceTeams)
-        {
-            if (team.CanWin())
-            {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-                foreach (PlayerControl teammember in team.TeamPlayers)
-                    //ポーカーフェイスじゃない場合を考慮する
-                    if (teammember.IsRole(RoleId.Pokerface))
-                        //生存者のみ勝利の設定が無効もしくは対象が生存している場合は追加する
-                        if (!Pokerface.CustomOptionData.WinnerOnlyAlive.GetBool() ||
-                            teammember.IsAlive())
-                            TempData.winners.Add(new(teammember.Data));
-                AdditionalTempData.winCondition = WinCondition.PokerfaceWin;
-            }
-        }
-        isReset = false;
-        foreach (PlayerControl player in RoleClass.Spelunker.SpelunkerPlayer)
-        {
-            bool isreset = false;
-            if (player.IsAlive())
-            {
-                if (!isreset)
-                {
-                    if (!((isDleted && changeTheWinCondition) || isReset))
-                    {
-                        TempData.winners = new();
-                        isDleted = true;
-                        isReset = true;
-                    }
-                    TempData.winners.Add(new(player.Data));
-                    AdditionalTempData.winCondition = WinCondition.SpelunkerWin;
-                }
-                isreset = true;
-            }
-        }
-        isReset = false;
-        foreach (List<PlayerControl> plist in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
-        {
-            if (AdditionalTempData.winCondition is WinCondition.LoversBreakerWin or WinCondition.SafecrackerWin or WinCondition.JesterWin or
-                                                   WinCondition.VultureWin or WinCondition.WorkpersonWin or WinCondition.FalseChargesWin or
-                                                   WinCondition.DemonWin or WinCondition.SuicidalIdeationWin or WinCondition.PhotographerWin or
-                                                   WinCondition.RevolutionistWin or WinCondition.QuarreledWin or WinCondition.BlackHatHackerWin) break;
-            if (!TheThreeLittlePigs.IsTheThreeLittlePigs(plist) || plist.IsAllDead()) continue;
-            bool isAllAlive = true;
-            if (plist.Count >= 3)
-            {
-                foreach (PlayerControl player in plist)
-                {
-                    if (player.IsDead() || !TheThreeLittlePigs.IsTheThreeLittlePigs(player))
-                    {
-                        isAllAlive = false;
-                        break;
-                    }
-                }
-            }
-            else isAllAlive = false;
-            if (isAllAlive)
-            {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-                foreach (PlayerControl player in plist)
-                {
-                    if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player)) continue;
-                    TempData.winners.Add(new(player.Data));
-                    AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
-                }
-            }
-            else
-            {
-                bool isAllKillerDead = true;
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                {
-                    if (player.IsDead()) continue;
-                    if (player.IsImpostor() || player.IsKiller())
-                    {
-                        isAllKillerDead = false;
-                        break;
-                    }
-                }
-                if (isAllKillerDead)
-                {
-                    if (!((isDleted && changeTheWinCondition) || isReset))
-                    {
-                        TempData.winners = new();
-                        isDleted = true;
-                        isReset = true;
-                    }
-                    foreach (PlayerControl player in plist)
-                    {
-                        if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player)) continue;
-                        TempData.winners.Add(new(player.Data));
-                        AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
-                    }
-                }
-            }
-        }
-        foreach (KeyValuePair<byte, int> data in Frankenstein.KillCount)
-        {
-            //勝利に必要なキル数を満たしているか
-            if (data.Value > 0)
-                continue;
-            //生存していなければ勝利できない
-            GameData.PlayerInfo FrankenPlayer = GameData.Instance.GetPlayerById(data.Key);
-            if (FrankenPlayer.IsDead())
-                continue;
-            if (!((isDleted && changeTheWinCondition) || isReset))
-            {
-                TempData.winners = new();
-                isDleted = true;
-                isReset = true;
-            }
-            TempData.winners.Add(new(FrankenPlayer));
-            AdditionalTempData.winCondition = WinCondition.FrankensteinWin;
-        }
-        if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
-        {
-            if (!((isDleted && changeTheWinCondition) || isReset))
-            {
-                TempData.winners = new();
-                isDleted = true;
-                isReset = true;
-            }
-            TempData.winners.Add(new(Moira.Player.Data));
-            AdditionalTempData.winCondition = WinCondition.MoiraWin;
-        }
-        isReset = false;
-        // 詐欺師は, 勝利判定が実行される前に既に勝利条件を満たしている為, 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)
-        if (Crook.RoleData.FirstWinFlag)
-        {
-            (bool crookFinalWinFlag, List<PlayerControl> crookWinners) = Crook.DecisionOfVictory.GetTheLastDecisionAndWinners();
-            if (crookFinalWinFlag) // 最終的な勝利条件(受給回数, 生存, 最終の保管金の受領場所(追放処理)にたどり着いた) を 満たしている詐欺師がいたら
-            {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-
-                foreach (var winner in crookWinners)
-                {
-                    Logger.Info($"{winner.name}は勝利リストに入った", "EndGame CrookWin");
-                    TempData.winners.Add(new(winner.Data));
-                }
-                AdditionalTempData.winCondition = WinCondition.CrookWin;
-            }
-        }
-        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
-        foxPlayers.AddRange(FireFox.FireFoxPlayer);
-        isReset = false;
-        foreach (PlayerControl player in foxPlayers)
-        {
-            if (player.IsAlive())
-            {
-                if (!((isDleted && changeTheWinCondition) || isReset))
-                {
-                    TempData.winners = new();
-                    isDleted = true;
-                    isReset = true;
-                }
-                TempData.winners.Add(new(player.Data));
-                AdditionalTempData.winCondition = WinCondition.FoxWin;
-            }
-        }
-
-        //追加勝利系
-        foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
-        {
-            if (p.IsAlive() && RoleClass.Tuna.IsTunaAddWin)
-            {
-                TempData.winners.Add(new(p.Data));
-            }
-        }
-        foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
-        {
-            if (p.IsAlive() && RoleClass.Neet.IsAddWin)
-            {
-                TempData.winners.Add(new(p.Data));
-            }
-        }
-        foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
-        {
-            var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
-            if (p.IsAlive() && playerTotal > playerCompleted)
-            {
-                TempData.winners.Add(new(p.Data));
-            }
-        }
-        foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
-        {
-            if (player.IsAlive())
-            {
-                TempData.winners.Add(new(player.Data));
-            }
-        }
-        foreach (PlayerControl player in RoleClass.Revolutionist.RevolutionistPlayer)
-        {
-            if (RoleClass.Revolutionist.IsAddWin && (!RoleClass.Revolutionist.IsAddWinAlive || player.IsAlive()) && !TempData.winners.Contains(new(player.Data)))
-            {
-                TempData.winners.Add(new(player.Data));
-            }
-        }
-        foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
-        {
-            if (player.IsAlive())
-            {
-                TempData.winners.Add(new(player.Data));
-            }
-        }
-        foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
-        {
-            if (player.IsAlive() && !CustomOptionHolder.StefinderSoloWin.GetBool())
-            {
-                if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
-                   (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
-                    AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
-                    AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
-                {
-                    TempData.winners.Add(new(player.Data));
-                }
-                if (RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
-                   (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill ||
-                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage ||
-                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
-                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
-                {
-                    TempData.winners.Add(new(player.Data));
-                }
-            }
-        }
-        foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
-        {
-            if (!RoleClass.Lovers.IsSingleTeam)
-            {
-                bool IsWinLovers = false;
-                foreach (PlayerControl player in plist)
-                {
-                    if (player.IsAlive())
-                    {
-                        IsWinLovers = true;
-                    }
-                }
-                if (IsWinLovers)
-                {
-                    foreach (PlayerControl player in plist)
-                    {
-                        TempData.winners.Add(new(player.Data));
-                        Cupid cupid = RoleBaseManager.GetRoleBases<Cupid>().FirstOrDefault(x => x.currentPair != null && x.currentPair.PlayerId == player.PlayerId);
-                        if (cupid != null)
-                        {
-                            PlayerControl cPlayer = cupid.Player;
-                            if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
-                                TempData.winners.Add(new(cupid.Player.Data));
-                        }
-                    }
-                }
-            }
-        }
-        foreach (KeyValuePair<PlayerControl, byte> PartTimerData in (Dictionary<PlayerControl, byte>)RoleClass.PartTimer.Data) //フリーター
-        {
-            PlayerControl PartTimerValue = ModHelpers.PlayerById(PartTimerData.Value);
-            if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerValue.Data.PlayerName))
-            {
-                WinningPlayerData wpd = new(PartTimerData.Key.Data);
-                TempData.winners.Add(wpd);
-            }
-        }
-
-
-        if (ModeHandler.IsMode(ModeId.BattleRoyal))
-        {
-            TempData.winners = new();
-            if (Mode.BattleRoyal.Main.IsTeamBattle)
-            {
-                foreach (PlayerControl p in Mode.BattleRoyal.Main.Winners)
-                    TempData.winners.Add(new(p.Data));
-            }
-            else
-            {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                {
-                    if (p.IsAlive())
-                        TempData.winners.Add(new(p.Data));
-                }
-            }
-            AdditionalTempData.winCondition = WinCondition.Default;
-        }
-        if (ModeHandler.IsMode(ModeId.Zombie))
-        {
-            TempData.winners = new();
-            if (gameOverReason == GameOverReason.ImpostorByKill)
-            {
-                AdditionalTempData.winCondition = WinCondition.Default;
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                {
-                    if (p.CurrentOutfit.ColorId == 2)
-                    {
-                        WinningPlayerData wpd = new(p.Data);
-                        TempData.winners.Add(wpd);
-                    }
-                }
-            }
-            else
-            {
-                AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
-            }
-        }
-        int i = 0;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-        {
-            if (p.IsAlive()) break;
-            i++;
-        }
-        if (NoWinner || i == CachedPlayer.AllPlayers.Count)
-        {
-            TempData.winners = new();
-            AdditionalTempData.winCondition = WinCondition.NoWinner;
-        }
-        Logger.Info("WELCOME!!!");
-        if (ModeHandler.IsMode(ModeId.PantsRoyal))
-        {
-            Logger.Info("Pants!!!!:" + (WinnerPlayer != null).ToString());
-            if (WinnerPlayer != null)
-            {
-                TempData.winners = new();
-                TempData.winners.Add(new WinningPlayerData(WinnerPlayer.Data));
-                AdditionalTempData.winCondition = WinCondition.PantsRoyalWin;
-            }
-            else
-            {
-                TempData.winners = new();
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                {
-                    Logger.Info(player.Data.Role.Role + ":" + player.PlayerId.ToString() + ":" + player.Data.PlayerName);
-                    if (player.Data.Role.Role == AmongUs.GameOptions.RoleTypes.CrewmateGhost || player.Data.Role.Role == AmongUs.GameOptions.RoleTypes.Crewmate)
-                    {
-                        TempData.winners.Add(new WinningPlayerData(player.Data));
-                        Logger.Info("PASS!!!!!:" + player.Data.PlayerName + ":" + player.PlayerId.ToString());
-                        break;
-                    }
-                }
-                if (TempData.winners.Count > 0)
-                {
-                    AdditionalTempData.winCondition = WinCondition.PantsRoyalWin;
-                    Logger.Info("ToPantsRoyalWin");
-                }
-                else
-                {
-                    AdditionalTempData.winCondition = WinCondition.NoWinner;
-                    Logger.Info("ToNoWinner");
-                }
-                Logger.Info(AdditionalTempData.winCondition.ToString() + ":WINCONDITION");
-            }
-        }
-        if (HAISON)
-        {
-            TempData.winners = new();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                if (!p.IsBot())
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-            }
-            AdditionalTempData.winCondition = WinCondition.HAISON;
-        }
         foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
         {
             if (player.Object != null && player.Object.IsBot()) continue;
