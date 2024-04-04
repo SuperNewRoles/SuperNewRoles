@@ -235,6 +235,8 @@ static class HudManagerStartPatch
                 WiseManButton.effectCancellable = false;
                 WiseManButton.EffectDuration = WiseMan.WiseManDurationTime.GetFloat();
                 WiseManButton.HasEffect = true;
+                WiseManButton.isEffectActive = false;
+                WiseManButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
             },
             WiseMan.GetButtonSprite(), new Vector3(-2f, 1, 0),
             __instance,

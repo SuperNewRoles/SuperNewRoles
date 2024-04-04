@@ -6,6 +6,8 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
+using UnityEngine;
+using static Il2CppSystem.Globalization.CultureInfo;
 
 namespace SuperNewRoles.Roles.Impostor.Robber;
 
@@ -106,16 +108,23 @@ public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
         {
             taskIds.Add(reader.ReadUInt32());
         }
-        foreach (PlayerTask task in target.myTasks)
+        foreach (PlayerTask task in target.myTasks.ToArray())
         {
             if (!taskIds.Contains(task.Id))
                 continue;
-            NormalPlayerTask normalTask = task.TryCast<NormalPlayerTask>();
-            if (normalTask != null)
-                normalTask.taskStep = 0;
             GameData.TaskInfo taskInfo = target.Data.FindTaskById(task.Id);
             if (taskInfo != null)
                 taskInfo.Complete = false;
+            target.myTasks.Remove(task);
+            GameObject.Destroy(task.gameObject);
+            NormalPlayerTask taskById = ShipStatus.Instance.GetTaskById(taskInfo.TypeId);
+            NormalPlayerTask normalPlayerTask = Object.Instantiate(taskById, target.transform);
+            normalPlayerTask.Id = taskInfo.Id;
+            normalPlayerTask.Index = taskById.Index;
+            normalPlayerTask.Owner = target;
+            normalPlayerTask.Initialize();
+            target.logger.Info($"Assigned task {normalPlayerTask.name} to {target.PlayerId}");
+            target.myTasks.Add(normalPlayerTask);
         }
     }
 }
