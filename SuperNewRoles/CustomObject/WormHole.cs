@@ -87,6 +87,9 @@ class WormHole : CustomAnimation
 
     public override void Update()
     {
+        if (!gameObject.active)
+            return;
+
         base.Update();
 
         if (IsActivating)
