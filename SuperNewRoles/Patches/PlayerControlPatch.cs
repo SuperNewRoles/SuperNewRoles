@@ -215,7 +215,8 @@ public static class ExilePlayerPatch
 [HarmonyPatch(typeof(LongBoiPlayerBody), nameof(LongBoiPlayerBody.SetHeightFromColor))]
 public static class LongBoiPlayerBodySetHeightFromColorPatch
 {
-    private static Dictionary<int, float> PlayerLongColorSizes = new();
+    // 真っ黄色を最大に設定
+    private static Dictionary<int, float> PlayerLongColorSizes = new() { { 28, 9.2f } };
     public static bool Prefix(LongBoiPlayerBody __instance, int colorIndex)
     {
         if (__instance.isPoolablePlayer)
@@ -232,7 +233,7 @@ public static class LongBoiPlayerBodySetHeightFromColorPatch
                     __instance.targetHeight = value;
                 else
                 {
-                    __instance.targetHeight = (new System.Random(colorIndex).Next(9, 92) / 10f);
+                    __instance.targetHeight = new System.Random(colorIndex).Next(9, 92) / 10f;
                     PlayerLongColorSizes[colorIndex] = __instance.targetHeight;
                 }
             }
