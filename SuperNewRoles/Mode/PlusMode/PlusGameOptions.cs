@@ -39,8 +39,6 @@ class PlusGameOptions
 
     public static CustomOption NoTaskWinModeSetting;
 
-    public static CustomOption IsChangeTheWinCondition;
-
     public static CustomOption ZoomOption;
     public static CustomOption ClairvoyantZoom;
     public static CustomOption MouseZoom;
@@ -72,8 +70,6 @@ class PlusGameOptions
         IsLimitEmergencyMeeting = Create(105301, true, CustomOptionType.Generic, "IsLimitEmergencyMeeting", false, ReportDeadBodySetting);
         EmergencyMeetingLimitCount = Create(105302, true, CustomOptionType.Generic, "EmergencyMeetingLimitCount", 10, 0, 20, 1, IsLimitEmergencyMeeting);
         NotUseReportDeadBody = Create(105303, true, CustomOptionType.Generic, "NotUseReportSetting", false, ReportDeadBodySetting);
-
-        IsChangeTheWinCondition = Create(104100, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, PlusGameOptionSetting, isHeader: true);
 
         ZoomOption = Create(104200, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, PlusGameOptionSetting, isHeader: true);
         MouseZoom = Create(104201, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
