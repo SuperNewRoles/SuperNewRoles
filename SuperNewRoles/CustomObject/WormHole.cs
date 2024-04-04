@@ -118,6 +118,15 @@ class WormHole : CustomAnimation
         ConnectVents();
     }
 
+    public void InActivate()
+    {
+        IsActivating = false;
+        gameObject.SetActive(false);
+        AllWormHoles.Remove(this);
+
+        ConnectVents();
+    }
+
     private void ConnectVents()
     {
         //設置した人が同じかつ、有効化済みのワームホールをすべて検索 & リストに
