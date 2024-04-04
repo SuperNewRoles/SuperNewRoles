@@ -841,10 +841,10 @@ public static class OnGameEndPatch
 
         //単独勝利系統
         //下に行くほど優先度が高い
-        ProcessReplaceWin(winners, gameOverReason, ref winCondition);
+        ProcessReplaceWin(ref winners, gameOverReason, ref winCondition);
 
         //追加勝利系
-        ProcessAdditionalWin(winners, gameOverReason, ref winCondition);
+        ProcessAdditionalWin(ref winners, gameOverReason, ref winCondition);
 
         if (ModeHandler.IsMode(ModeId.BattleRoyal))
         {
@@ -926,7 +926,7 @@ public static class OnGameEndPatch
         }
         return (winners, winCondition, WillRevivePlayers);
     }
-    private static void ProcessReplaceWin(HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
+    private static void ProcessReplaceWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
     {
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
@@ -1164,7 +1164,7 @@ public static class OnGameEndPatch
             foxReseted = true;
         }
     }
-    private static void ProcessAdditionalWin(HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
+    private static void ProcessAdditionalWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
     {
         foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
         {
