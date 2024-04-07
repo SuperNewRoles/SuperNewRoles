@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
+
 /// <summary>
 /// 追加勝利の場合に勝利できるかなどを返すインターフェース
 /// </summary>
