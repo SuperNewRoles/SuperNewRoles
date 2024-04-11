@@ -314,9 +314,9 @@ static class HudManagerStartPatch
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 writer.Write(pos.x);
                 writer.Write(pos.y);
-                writer.Write((byte)0);
+                writer.Write((byte)WaveCannonObject.WCAnimType.Tank);
                 writer.EndRPC();
-                RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, WaveCannonObject.WCAnimType.Default);
+                RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, WaveCannonObject.WCAnimType.Tank);
             }
         )
         {

@@ -26,34 +26,27 @@ public class WaveCannonObject : CustomAnimation
     }
     public enum WCAnimType
     {
-        Default,
-        Santa
+        Tank, //戦車
+        Cannon, //大砲
+        Santa, //サンタ
     }
     public enum RpcType
     {
         Spawn,
         Shoot
     }
+
+    // static系
+    public static PlayerData<WaveCannonObject> Objects = new();
     public static readonly IReadOnlyDictionary<string, Func<WaveCannonObject, IWaveCannonAnimationHandler>> WCCreateAnimHandlers =
         new Dictionary<string, Func<WaveCannonObject, IWaveCannonAnimationHandler>>()
     {
-        { WCAnimType.Default.ToString(), (waveCannon) => new WCDefaultAnimHandler(waveCannon) },
+        { WCAnimType.Tank.ToString(), (waveCannon) => new WCDefaultAnimHandler(waveCannon) },
         { WCAnimType.Santa.ToString(), (waveCannon) => new WCSantaAnimHandler(waveCannon) }
     };
-    public static PlayerData<WaveCannonObject> Objects = new();
-
-    public Transform effectGameObjectsParent;
-    public List<GameObject> effectGameObjects;
-
-    public WCAnimType CurrentAnimType { get; private set; }
-    public IWaveCannonAnimationHandler CurrentAnimationHandler { get; private set; }
-
-    public PlayerControl Owner;
-    public int Id;
-
-    public List<SpriteRenderer> effectrenders { get; private set; }
-    public byte OwnerPlayerId { get; private set; }
+    public static List<(float, Vector2)> RotateSet = new() { (90, new(-3.05f, 25.5f)), (270, new(-4f, -26.5f)), (45, new(14.3f, 17.75f)), (45, new(14.3f, -17.75f)), (180, new(-30.7f, -0.8f)) };
     public static Dictionary<byte, int> Ids;
+    public static Dictionary<int, WaveCannonEffect> EffectPrefabs = new();
     private static GameObject _waveCannonObjectPrefab;
     public static GameObject WaveCannonObjectPrefab
     {
@@ -68,24 +61,51 @@ public class WaveCannonObject : CustomAnimation
             return _waveCannonObjectPrefab;
         }
     }
+
+    // Animation系
+    public WCAnimType CurrentAnimType { get; private set; }
+    public IWaveCannonAnimationHandler CurrentAnimationHandler { get; private set; }
+
+    // Effect系
+    public Transform effectGameObjectsParent;
+    public List<WaveCannonEffect> WaveCannonEffects;
+    public List<SpriteRenderer> effectrenders { get; private set; }
+    public HashSet<Collider2D> WaveColliders;
+
+    // 持ち主系
+    public PlayerControl Owner;
+    public byte OwnerPlayerId { get; private set; }
+
+    // 波動砲詳細系
+    public int Id;
+
+    // 賢者系
     public Dictionary<PlayerControl, (RoleEffectAnimation, float, Vector3)> WiseManData;
+    public List<byte> CannotMurderPlayers;
+
     public bool IsShootNow;
     public bool IsFlipX;
     public int DestroyIndex { get; set; } = 0;
     static Vector3 OwnerPos;
-    public List<PolygonCollider2D> colliders;
     public bool IsShootFirst;
-    public List<byte> CannotMurderPlayers;
-    public static List<(float, Vector2)> RotateSet = new() { (90, new(-3.05f, 25.5f)), (270, new(-4f, -26.5f)), (45, new(14.3f, 17.75f)), (45, new(14.3f, -17.75f)), (180, new(-30.7f, -0.8f)) };
 
     public override void Awake()
     {
         base.Awake();
-        colliders = new();
         WiseManData = new();
-        effectGameObjects = new();
+        WaveColliders = new();
+        WaveCannonEffects = new();
         effectrenders = new();
         CannotMurderPlayers = new();
+    }
+    private WaveCannonEffect GetPrefab()
+    {
+        Logger.Info($"WAVECANNNNNNNNNNNNNNNNNON:WaveCannon{CurrentAnimType.ToString()}.prefab");
+        if (!EffectPrefabs.TryGetValue((int)CurrentAnimType, out WaveCannonEffect prefab))
+        {
+            EffectPrefabs[(int)CurrentAnimType] = prefab = AssetManager.GetAsset<GameObject>($"WaveCannon{CurrentAnimType.ToString()}.prefab", AssetManager.AssetBundleType.Wavecannon).TryCast<WaveCannonEffect>();
+        }
+        return prefab;
     }
     private IWaveCannonAnimationHandler CreateAnimHandler(WCAnimType? animType = null)
     {
@@ -107,8 +127,10 @@ public class WaveCannonObject : CustomAnimation
                                  $"{animType}のHandlerの生成に失敗しました。\n" +
                                  "修正方法: WaveCannonObject.csのWCCreateAnimHandlersにHandlerを追加してください。");
         }
+        // AnimationHandlerを元にCustomAnimationを初期化
         CustomAnimationOptions customAnimationOptions = CurrentAnimationHandler.Init();
         base.Init(customAnimationOptions);
+
         //使用者を設定
         OwnerPlayerId = _owner.PlayerId;
         //移動ロック
@@ -132,7 +154,7 @@ public class WaveCannonObject : CustomAnimation
         effectGameObjectsParent.localPosition = new(31.25f, -1.45f, 2.39f);
         effectGameObjectsParent.localScale = new(1, 1, 1);
         //当たり判定の部分を作成
-        CreateCollider(CreateEffect());
+        CreateEffect();
         //Id
         if (!Ids.ContainsKey(OwnerPlayerId))
             Ids[OwnerPlayerId] = 0;
@@ -150,13 +172,10 @@ public class WaveCannonObject : CustomAnimation
         if (posvalue < 0)
             posvalue *= -1;
         effectrenders[0].transform.parent.localScale = new(posvalue * 0.0145f, 1, 1);
-        SpriteRenderer effectrender = CreateEffect();
+        WaveCannonEffect effectrender = CreateEffect();
         GameObject effect = effectrender.transform.parent.gameObject;
         effect.transform.position = new(PlayerPosition.x, effect.transform.position.y, effect.transform.position.z + 0.1f);
         effect.transform.Rotate(new(0, 0, Angle));
-        CreateCollider(effectrender);
-        colliders.RemoveAt(0);
-        CreateCollider(effectrenders[0]);
         return effect;
         //Position = new(effect.transform.position.x - PlayerPosition.x, effect.transform.position.y, effect.transform.position.z);
         //Position.x += RotateSet[index].Item2.x - 3;
@@ -171,17 +190,29 @@ public class WaveCannonObject : CustomAnimation
         //pos.x -= 19f;
         //effectGameObjects[0].transform.localPosition = pos;
     }
-    public SpriteRenderer CreateEffect()
+    public WaveCannonEffect CreateEffect()
     {
-        GameObject NewEffect = Instantiate(WaveCannonObjectPrefab, effectGameObjectsParent);
+        // Prefabを取得
+        WaveCannonEffect Prefab = GetPrefab();
+
+        // FIXME: どうにかする
+        //if (Prefab == null)
+        //    Prefab = WaveCannonObjectPrefab;
+
+        // 生成して位置を調整
+        WaveCannonEffect NewEffect = Instantiate(Prefab, effectGameObjectsParent);
         Vector3 pos = NewEffect.transform.localPosition;
         pos.z += 0.1f;
         NewEffect.transform.localPosition = pos;
+        /*
         SpriteRenderer render = NewEffect.GetComponentInChildren<SpriteRenderer>();
-        effectrenders.Add(render);
-        effectGameObjects.Add(render.gameObject);
-        return render;
-    }
+        effectrenders.Add(render);*/
+        NewEffect.SetChargeState(!IsShootNow);
+        WaveCannonEffects.Add(NewEffect);
+        foreach (Collider2D collider in NewEffect.WaveColliders)
+            WaveColliders.Add(collider);
+        return NewEffect;
+    }/*
     public PolygonCollider2D CreateCollider(SpriteRenderer render)
     {
         Sprite oldSprite = render.sprite;
@@ -191,25 +222,40 @@ public class WaveCannonObject : CustomAnimation
         render.sprite = oldSprite;
         colliders.Add(collider);
         return collider;
-    }
+    }*/
     public void Shoot()
     {
-        IsShootFirst = true;
+        IsShootNow = IsShootNow = true;
         Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
-        IsShootNow = true;
+
+        foreach(WaveCannonEffect effect in WaveCannonEffects)
+            effect.SetChargeState(false);
 
         CurrentAnimationHandler.OnShot();
 
         //
         foreach (var data in WiseMan.WiseManData.ToArray())
         {
-            if (data.Value is null) continue;
+            if (data.Value == null) continue;
             PlayerControl player = ModHelpers.PlayerById(data.Key);
-            if (player is null) continue;
-            if (!player.Collider.IsTouching(colliders[0])) continue;
+            if (player == null) continue;
+
+            // 賢者が波動砲に触れているかを判定
+            bool touching = false;
+            foreach(Collider2D collider in WaveColliders)
+            {
+                if (!player.Collider.IsTouching(collider))
+                    continue;
+                touching = true;
+            }
+            if (!touching)
+                continue;
+
+            // 方向を変えた波動を生成
             CreateRotationEffect(player.GetTruePosition(), data.Value.Value);
             WiseMan.WiseManData[player.PlayerId] = null;
             WiseMan.WiseManPosData[player] = null;
+            // 賢者のバリアエフェクトを生成
             RoleEffectAnimation anim = Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, player.gameObject.transform);
             anim.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
             WiseManData[player] = (anim, 0.75f, player.transform.position);
@@ -291,7 +337,7 @@ public class WaveCannonObject : CustomAnimation
                     //if (posdata is > 1 or < (-1)) continue;
                     //posdata = transform.position.x - (IsFlipX ? -2 : 2);
                     //if ((IsFlipX && player.transform.position.x > posdata) || (!IsFlipX && player.transform.position.x < posdata)) continue;
-                    foreach (Collider2D col in colliders)
+                    foreach (Collider2D col in WaveColliders)
                     {
                         if (!player.Collider.IsTouching(col)) continue;
                         if (player.IsRole(RoleId.Shielder) && RoleClass.Shielder.IsShield.ContainsKey(player.PlayerId) && RoleClass.Shielder.IsShield[player.PlayerId])

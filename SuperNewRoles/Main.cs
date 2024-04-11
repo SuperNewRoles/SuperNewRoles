@@ -167,6 +167,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<SpiderTrap>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
+        ClassInjector.RegisterTypeInIl2Cpp<WaveCannonEffect>();
 
         Logger.LogInfo("Start Load Resource");
         string[] resourceNames = assembly.GetManifestResourceNames();
