@@ -103,7 +103,7 @@ public class WaveCannonObject : CustomAnimation
         Logger.Info($"WAVECANNNNNNNNNNNNNNNNNON:WaveCannon{CurrentAnimType.ToString()}.prefab");
         if (!EffectPrefabs.TryGetValue((int)CurrentAnimType, out WaveCannonEffect prefab))
         {
-            EffectPrefabs[(int)CurrentAnimType] = prefab = AssetManager.GetAsset<GameObject>($"WaveCannon{CurrentAnimType.ToString()}.prefab", AssetManager.AssetBundleType.Wavecannon).TryCast<WaveCannonEffect>();
+            EffectPrefabs[(int)CurrentAnimType] = prefab = AssetManager.GetAsset<GameObject>($"WaveCannon{CurrentAnimType.ToString()}.prefab", AssetManager.AssetBundleType.Wavecannon).GetComponent<WaveCannonEffect>();
         }
         return prefab;
     }
