@@ -63,6 +63,7 @@ public enum RoleId
     SilverBullet,
     NiceScientist,
     NiceRedRidingHood,
+    BodyBuilder,
 
     //RoleId
 

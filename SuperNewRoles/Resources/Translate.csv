@@ -1853,6 +1853,9 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
+BodyBuilderName,BodyBuilder,
+BodyBuilderTitle1,,
+BodyBuilderDescription,,
 
 #NewRoleTranslation
 
