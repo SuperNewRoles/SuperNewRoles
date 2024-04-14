@@ -42,6 +42,8 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton, IRpcHandler
         int index = 0;
         foreach (string TypeName in WCCreateAnimHandlers.Keys)
         {
+            if (TypeName == WCAnimType.None.ToString())
+                break;
             AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
             index++;
         }

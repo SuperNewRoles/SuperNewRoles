@@ -44,6 +44,9 @@ public static class AssetManager
                 Bundles[(byte)data.Item1] = assetBundle;
                 //キャッシュ用のDictionaryを作成
                 _cachedAssets[(byte)data.Item1] = new();
+
+                assetBundle.DontUnload();
+
                 BundleStream.Dispose();
                 Logger.Info($"Loaded AssetBundle:" + data.Item1.ToString());
             } catch (Exception e)

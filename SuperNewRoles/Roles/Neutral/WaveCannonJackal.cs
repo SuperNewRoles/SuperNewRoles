@@ -11,6 +11,7 @@ using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
+using static SuperNewRoles.WaveCannonObj.WaveCannonObject;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -53,6 +54,8 @@ class WaveCannonJackal
         int index = 0;
         foreach (string TypeName in WaveCannonObject.WCCreateAnimHandlers.Keys)
         {
+            if (TypeName == WCAnimType.None.ToString())
+                break;
             AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
             index++;
         }

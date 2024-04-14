@@ -12,11 +12,11 @@ public static class AssetLoader
         input.CopyTo(ms);
         return ms.ToArray();
     }
-
+    
 #nullable enable
     public static T? LoadAsset<T>(this AssetBundle assetBundle, string name) where T : UnityEngine.Object
     {
-        return assetBundle.LoadAsset(name, Il2CppType.Of<T>())?.Cast<T>();
+        return assetBundle.LoadAsset(name, Il2CppType.Of<T>())?.TryCast<T>();
     }
 #nullable disable
     public static T DontUnload<T>(this T obj) where T : UnityEngine.Object

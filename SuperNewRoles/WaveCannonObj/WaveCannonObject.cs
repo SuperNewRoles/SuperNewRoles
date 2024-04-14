@@ -29,6 +29,10 @@ public class WaveCannonObject : CustomAnimation
         Tank, //戦車
         Cannon, //大砲
         Santa, //サンタ
+
+        None,
+        // 以下表示しない
+        Bullet, //弾
     }
     public enum RpcType
     {
@@ -41,8 +45,10 @@ public class WaveCannonObject : CustomAnimation
     public static readonly IReadOnlyDictionary<string, Func<WaveCannonObject, IWaveCannonAnimationHandler>> WCCreateAnimHandlers =
         new Dictionary<string, Func<WaveCannonObject, IWaveCannonAnimationHandler>>()
     {
-        { WCAnimType.Tank.ToString(), (waveCannon) => new WCDefaultAnimHandler(waveCannon) },
-        { WCAnimType.Santa.ToString(), (waveCannon) => new WCSantaAnimHandler(waveCannon) }
+        { WCAnimType.Tank.ToString(), (waveCannon) => new WCTankAnimHandler(waveCannon) },
+        { WCAnimType.Bullet.ToString(), (waveCannon) => new WCTankAnimHandler(waveCannon) },
+        { WCAnimType.Cannon.ToString(), (waveCannon) => new WCDefaultAnimHandler(waveCannon) },
+        { WCAnimType.Santa.ToString(), (waveCannon) => new WCSantaAnimHandler(waveCannon) },
     };
     public static List<(float, Vector2)> RotateSet = new() { (90, new(-3.05f, 25.5f)), (270, new(-4f, -26.5f)), (45, new(14.3f, 17.75f)), (45, new(14.3f, -17.75f)), (180, new(-30.7f, -0.8f)) };
     public static Dictionary<byte, int> Ids;
@@ -117,6 +123,20 @@ public class WaveCannonObject : CustomAnimation
     }
     public WaveCannonObject Init(Vector3 pos, bool FlipX, PlayerControl _owner, WCAnimType animType)
     {
+        // デバッグ用コード
+        if (animType == WCAnimType.Tank)
+            animType = WCAnimType.Bullet;
+
+        // 保存
+        OwnerPos = _owner.transform.position;
+        IsFlipX = FlipX;
+        Owner = _owner;
+        // 使用者よりも前に描画
+        pos.z -= 0.5f;
+        // 波動砲の位置を調整
+        transform.position = pos;
+        transform.localScale = new(FlipX ? -1 : 1, 1, 1);
+
         CurrentAnimType = animType;
         Logger.Info("WaveCannon Animation:" + animType.ToString());
         CurrentAnimationHandler = CreateAnimHandler();
@@ -139,20 +159,11 @@ public class WaveCannonObject : CustomAnimation
             CachedPlayer.LocalPlayer.PlayerControl.moveable = false;
             Camera.main.GetComponent<FollowerCamera>().Locked = true;
         }
-        //保存
-        OwnerPos = _owner.transform.position;
-        IsFlipX = FlipX;
-        Owner = _owner;
-        //使用者よりも前に描画
-        pos.z -= 0.0003f;
-        //波動砲の位置を調整
-        transform.position = pos + new Vector3(FlipX ? -4 : 4, 0, 0);
-        transform.localScale = new(FlipX ? -1 : 1, 1, 1);
         //当たり判定の親を作成
         effectGameObjectsParent = new GameObject("WaveCannonEffects").transform;
         effectGameObjectsParent.SetParent(transform);
-        effectGameObjectsParent.localPosition = new(31.25f, -1.45f, 2.39f);
-        effectGameObjectsParent.localScale = new(1, 1, 1);
+        effectGameObjectsParent.localPosition = new(0.75f,0,0);
+        effectGameObjectsParent.localScale = Vector3.one;
         //当たり判定の部分を作成
         CreateEffect();
         //Id
