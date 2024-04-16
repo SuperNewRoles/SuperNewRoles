@@ -406,7 +406,7 @@ public static class RPCProcedure
             case WaveCannonObject.RpcType.Spawn:
                 return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId), AnimType);
             case WaveCannonObject.RpcType.Shoot:
-                WaveCannonObject.Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                WaveCannonObject.Objects[OwnerId]?.Shoot();
                 break;
         }
         return null;

@@ -130,7 +130,9 @@ public class WaveCannonObject : CustomAnimation
         // 保存
         OwnerPos = _owner.transform.position;
         IsFlipX = FlipX;
+        //使用者を設定
         Owner = _owner;
+        OwnerPlayerId = _owner.PlayerId;
         // 使用者よりも前に描画
         pos.z -= 0.5f;
         // 波動砲の位置を調整
@@ -151,8 +153,6 @@ public class WaveCannonObject : CustomAnimation
         CustomAnimationOptions customAnimationOptions = CurrentAnimationHandler.Init();
         base.Init(customAnimationOptions);
 
-        //使用者を設定
-        OwnerPlayerId = _owner.PlayerId;
         //移動ロック
         if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
@@ -338,6 +338,7 @@ public class WaveCannonObject : CustomAnimation
             //Owner.transform.position = OwnerPos;
 
             if (IsShootNow)
+            {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (player.IsDead()) continue;
@@ -377,6 +378,6 @@ public class WaveCannonObject : CustomAnimation
                         }
                     }
                 }
-
+            }
     }
 }
