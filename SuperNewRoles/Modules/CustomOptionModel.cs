@@ -1355,7 +1355,7 @@ class GameOptionsDataPatch
 
             foreach (var child in option.children)
             {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) continue;
+                if (modeId == ModeId.SuperHostRoles && !child.isSHROn) continue;
                 if (!GameOptionsMenuUpdatePatch.IsHidden(option))
                     entry.AppendLine((indent ? "    " : "") + OptionToString(child));
                 addChildren(child, ref entry, modeId, indent);
