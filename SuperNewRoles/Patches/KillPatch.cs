@@ -66,7 +66,7 @@ class KillButtonDoClickPatch
             Kunoichi.KillButtonClick();
             return false;
         }
-        if (!(__instance.currentTarget.IsRole(RoleId.Bait) || __instance.currentTarget.IsRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
+        if (!__instance.currentTarget.IsRole(RoleId.Bait) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
         {
             PlayerControl.LocalPlayer.killTimer =
                 RoleHelpers.GetCoolTime(
@@ -632,11 +632,6 @@ public static class MurderPlayerPatch
             switch (__instance.GetRole())
             {
                 case RoleId.EvilGambler:
-                    PlayerControl.LocalPlayer.SetKillTimer(
-                        RoleClass.EvilGambler.GetSuc() ?
-                        RoleClass.EvilGambler.SucCool :
-                        RoleClass.EvilGambler.NotSucCool
-                    );
                     break;
             }
         }
@@ -719,7 +714,7 @@ public static class MurderPlayerPatch
                     }
                 }
 
-                EvilGambler.MurderPlayerPostfix(__instance); // キルクリセット処理
+                EvilGambler.MurderPlayerPostfix(__instance, target); // キルクリセット処理
 
                 Doppelganger.KillCoolSetting.MurderPlayer(__instance, target); // キルクリセット処理
 

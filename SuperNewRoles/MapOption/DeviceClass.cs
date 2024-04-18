@@ -18,15 +18,11 @@ public static class DeviceClass
     public static bool IsAdminRestrict;
     public static bool IsVitalRestrict;
     public static bool IsCameraRestrict;
-    public static float AdminTimer;
-    public static float VitalTimer;
-    public static float CameraTimer;
-    public static DateTime AdminStartTime;
-    public static DateTime VitalStartTime;
-    public static DateTime CameraStartTime;
-    public static Dictionary<DeviceType, PlayerControl> DeviceUsePlayer;
-    public static Dictionary<DeviceType, DateTime> DeviceUserUseTime;
     public static TextMeshPro TimeRemaining;
+    static HashSet<string> DeviceTypes = new();
+    public static Dictionary<string, HashSet<PlayerControl>> UsePlayers = new();
+    public static Dictionary<string, float> DeviceTimers = new();
+    public static float SyncTimer;
     public enum DeviceType
     {
         Admin,
@@ -36,30 +32,62 @@ public static class DeviceClass
 
     public static void ClearAndReload()
     {
-        /*
-        IsAdminLimit = MapOption.Admin&& MapOption.IsAdminLimit.GetBool();
-        AdminTimer = MapOption.AdminTimerOption.GetFloat();
-        */
+        UsePlayers = new() { { DeviceType.Admin.ToString(), new() }, { DeviceType.Camera.ToString(), new() }, { DeviceType.Vital.ToString(), new() } };
+        DeviceTypes = new();
+        DeviceTimers = new();
+
+        IsAdminRestrict = MapOption.RestrictAdmin.GetBool();
+        IsCameraRestrict = MapOption.RestrictCamera.GetBool();
+        IsVitalRestrict = MapOption.RestrictVital.GetBool();
+
         if (MapOption.IsUsingRestrictDevicesTime)
         {
-            IsAdminRestrict = MapOption.RestrictAdmin.GetBool();
-            AdminTimer = IsAdminRestrict ? MapOption.DeviceUseAdminTime.GetFloat() : 0;
-            IsCameraRestrict = MapOption.RestrictCamera.GetBool();
-            CameraTimer = IsCameraRestrict ? MapOption.DeviceUseCameraTime.GetFloat() : 0;
-            IsVitalRestrict = MapOption.RestrictVital.GetBool();
-            VitalTimer = IsVitalRestrict ? MapOption.DeviceUseVitalOrDoorLogTime.GetFloat() : 0;
+            if (IsAdminRestrict)
+            {
+                DeviceTypes.Add(DeviceType.Admin.ToString());
+                DeviceTimers[DeviceType.Admin.ToString()] = MapOption.DeviceUseAdminTime.GetFloat();
+            }
+            if (IsCameraRestrict)
+            {
+                DeviceTypes.Add(DeviceType.Camera.ToString());
+                DeviceTimers[DeviceType.Camera.ToString()] = MapOption.DeviceUseCameraTime.GetFloat();
+            }
+            if (IsVitalRestrict)
+            {
+                DeviceTypes.Add(DeviceType.Vital.ToString());
+                DeviceTimers[DeviceType.Vital.ToString()] = MapOption.DeviceUseVitalOrDoorLogTime.GetFloat();
+            }
         }
-        else
+        SyncTimer = 0f;
+    }
+    public static void FixedUpdate()
+    {
+        if (!AmongUsClient.Instance.AmHost)
+            return;
+        foreach (var deviceType in DeviceTypes)
         {
-            IsAdminRestrict = false;
-            AdminTimer = 0;
-            IsCameraRestrict = false;
-            CameraTimer = 0;
-            IsVitalRestrict = false;
-            VitalTimer = 0;
+            if (!DeviceTimers.TryGetValue(deviceType, out float timer))
+                continue;
+            if (timer <= 0)
+                continue;
+            UsePlayers[deviceType].RemoveWhere(player => player == null || player.Data == null || player.Data.Disconnected || player.Data.IsDead);
+            if (UsePlayers[deviceType].Count <= 0)
+                continue;
+            DeviceTimers[deviceType] -= Time.fixedDeltaTime;
+            if (SyncTimer <= 0)
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
+                writer.Write(deviceType);
+                writer.Write(DeviceTimers[deviceType]);
+                writer.EndRPC();
+                RPCProcedure.SetDeviceTime(deviceType, DeviceTimers[deviceType]);
+                Logger.Info($"Sync {deviceType}:{DeviceTimers[deviceType]}");
+            }
         }
-        DeviceUsePlayer = new() { { DeviceType.Admin, null }, { DeviceType.Camera, null }, { DeviceType.Vital, null } };
-        DeviceUserUseTime = new() { { DeviceType.Admin, new() }, { DeviceType.Camera, new() }, { DeviceType.Vital, new() } };
+        if (SyncTimer <= 0)
+            SyncTimer = 0.2f;
+        else
+            SyncTimer -= Time.fixedDeltaTime;
     }
     [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.Use))]
     public static class MapConsoleUsePatch
@@ -80,9 +108,25 @@ public static class DeviceClass
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
     class MapCountOverlayAwakePatch
     {
-        public static void Postfix()
+        public static void Postfix(MapCountOverlay __instance)
         {
-            if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) && !BlackHatHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
+            if (ShouldCountOverlayIgnoreComms())
+            {
+                __instance.BackgroundColor.SetColor(Color.green);
+            }
+            if (!IsAdminRestrict)
+                return;
+            if (
+                (PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) ||
+                BlackHatHacker.IsMyAdmin
+               )
+                return;
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+            writer.Write((byte)DeviceType.Admin);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+            writer.Write(true);
+            writer.EndRPC();
+            RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, true);
         }
     }
     public static bool IsChanging = false;
@@ -91,7 +135,10 @@ public static class DeviceClass
     {
         public static bool Prefix(MapCountOverlay __instance)
         {
-            if (IsAdminRestrict && !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) && !BlackHatHacker.IsMyAdmin && AdminTimer <= 0)
+            if (IsAdminRestrict &&
+                !(PlayerControl.LocalPlayer.GetRoleBase<EvilHacker>()?.IsMyAdmin ?? false) &&
+                !BlackHatHacker.IsMyAdmin &&
+                DeviceTimers[DeviceType.Admin.ToString()] <= 0)
             {
                 MapBehaviour.Instance.Close();
                 return false;
@@ -102,8 +149,13 @@ public static class DeviceClass
                 if (IsChanging)
                     return false;
                 bool commsActive = false;
-                foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
-                    if (task.TaskType == TaskTypes.FixComms) commsActive = true;
+                if (!ShouldCountOverlayIgnoreComms())
+                {
+                    foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
+                    {
+                        if (task.TaskType == TaskTypes.FixComms) commsActive = true;
+                    }
+                }
 
                 if (!__instance.isSab && commsActive)
                 {
@@ -231,32 +283,13 @@ public static class DeviceClass
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
                 return;
             }
-            if (AdminTimer <= 0)
+            if (DeviceTimers[DeviceType.Admin.ToString()] <= 0)
             {
                 MapBehaviour.Instance.Close();
                 return;
             }
-            MessageWriter writer;
-            if (DeviceUsePlayer[DeviceType.Admin] == null)
-            {
-                string dateTimeString = AdminStartTime.ToString("yyyy/MM/dd HH:mm:ss");
-                writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
-                writer.Write((byte)DeviceType.Admin);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(true);
-                writer.Write(dateTimeString);
-                writer.EndRPC();
-                RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, true, dateTimeString);
-            }
-            if (DeviceUsePlayer[DeviceType.Admin].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-            {
-                AdminTimer -= Time.deltaTime;
-                writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-                writer.Write((byte)DeviceType.Admin);
-                writer.Write(AdminTimer);
-                writer.EndRPC();
-                RPCProcedure.SetDeviceTime((byte)DeviceType.Admin, AdminTimer);
-            }
+            if (!AmongUsClient.Instance.AmHost)
+                DeviceTimers[DeviceType.Admin.ToString()] -= Time.deltaTime;
             if (TimeRemaining == null)
             {
                 TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
@@ -266,7 +299,7 @@ public static class DeviceClass
                 TimeRemaining.transform.localScale *= 2f;
                 TimeRemaining.color = Palette.White;
             }
-            TimeRemaining.text = TimeSpan.FromSeconds(AdminTimer).ToString(@"mm\:ss\.ff");
+            TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Admin.ToString()]).ToString(@"mm\:ss\.ff");
             TimeRemaining.gameObject.SetActive(true);
         }
     }
@@ -288,19 +321,17 @@ public static class DeviceClass
             }
             if (!IsAdminRestrict) return;
             if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
-            if (CachedPlayer.LocalPlayer.IsDead()) return;
-            if (AdminTimer <= 0) return;
-            if (DeviceUsePlayer[DeviceType.Admin] != null && DeviceUsePlayer[DeviceType.Admin].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-            {
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
-                writer.Write((byte)DeviceType.Admin);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(false);
-                writer.Write("");
-                writer.EndRPC();
-                RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, false, "");
-            }
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+            writer.Write((byte)DeviceType.Admin);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+            writer.Write(false);
+            writer.EndRPC();
+            RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, false);
         }
+    }
+    private static bool ShouldCountOverlayIgnoreComms()
+    {
+        return PlayerControl.LocalPlayer.IsRole(RoleId.EvilHacker) && EvilHacker.CanUseAdminDuringCommsSabotaged.GetBool();
     }
     [HarmonyPatch(typeof(CounterArea), nameof(CounterArea.UpdateCount))]
     public static class CounterAreaUpdateCountPatch
@@ -321,8 +352,18 @@ public static class DeviceClass
     {
         static void Postfix(VitalsMinigame __instance)
         {
-            if (IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null && !BlackHatHacker.IsMyVutals) VitalStartTime = DateTime.UtcNow;
             Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
+            if (!IsVitalRestrict)
+                return;
+            if (RoleClass.Doctor.Vital != null ||
+                BlackHatHacker.IsMyVutals)
+                return;
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+            writer.Write((byte)DeviceType.Vital);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+            writer.Write(true);
+            writer.EndRPC();
+            RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Vital, CachedPlayer.LocalPlayer.PlayerId, true);
         }
     }
     [HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new Type[] { })]
@@ -330,23 +371,37 @@ public static class DeviceClass
     {
         static void Postfix(Minigame __instance)
         {
-            if (__instance is VitalsMinigame && IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null && !BlackHatHacker.IsMyVutals)
-            {
-                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
-                if (VitalTimer <= 0) return;
-                if (DeviceUsePlayer[DeviceType.Vital] != null && DeviceUsePlayer[DeviceType.Vital].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-                {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
-                    writer.Write((byte)DeviceType.Vital);
-                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                    writer.Write(false);
-                    writer.Write("");
-                    writer.EndRPC();
-                    RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Vital, CachedPlayer.LocalPlayer.PlayerId, false, "");
-                }
-            }
             BlackHatHacker.IsMyVutals = false;
+            if (!IsVitalRestrict)
+                return;
+            if (__instance.TryCast<VitalsMinigame>() == null)
+                return;
+            if (RoleClass.Doctor.Vital != null ||
+                BlackHatHacker.IsMyVutals)
+                return;
+            if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+            writer.Write((byte)DeviceType.Vital);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+            writer.Write(false);
+            writer.EndRPC();
+            RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Vital, CachedPlayer.LocalPlayer.PlayerId, false);
         }
+    }
+    public static void OnStartMeeting()
+    {
+        if (DeviceTypes.Count <= 0)
+            return;
+        foreach (var deviceType in DeviceTypes)
+        {
+            UsePlayers[deviceType] = new();
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
+            writer.Write(deviceType);
+            writer.Write(DeviceTimers[deviceType]);
+            writer.EndRPC();
+            RPCProcedure.SetDeviceTime(deviceType, DeviceTimers[deviceType]);
+        }
+        SyncTimer = 0f;
     }
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]
     class VitalsDevice
@@ -356,12 +411,13 @@ public static class DeviceClass
             if ((!MapOption.CanUseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) && !BlackHatHacker.IsMyVutals)
             {
                 __instance.Close();
+                return;
             }
-            if (Roles.Impostor.Bat.RoleData.IsDeviceStop)
+            if (Bat.RoleData.IsDeviceStop)
             {
                 foreach (VitalsPanel vitals in __instance.vitals)
                 {
-                    if (Roles.Impostor.Bat.RoleData.AliveData.TryGetValue(vitals.PlayerInfo.PlayerId, out bool IsSetAlive) ? IsSetAlive : false)
+                    if (Bat.RoleData.AliveData.TryGetValue(vitals.PlayerInfo.PlayerId, out bool IsSetAlive) ? IsSetAlive : false)
                     {
                         vitals.IsDiscon = false;
                         vitals.IsDead = false;
@@ -388,38 +444,22 @@ public static class DeviceClass
                         vitals.gameObject.SetActive(BlackHatHacker.InfectedPlayerId.Contains(vitals.PlayerInfo.PlayerId) || vitals.PlayerInfo.Object.AmOwner);
                 }
             }
-            if (!IsVitalRestrict || RoleClass.Doctor.Vital != null || BlackHatHacker.IsMyVutals) return;
+            if (!IsVitalRestrict ||
+                RoleClass.Doctor.Vital != null ||
+                BlackHatHacker.IsMyVutals)
+                return;
             if (CachedPlayer.LocalPlayer.IsDead())
             {
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
                 return;
             }
-            if (VitalTimer <= 0)
+            if (DeviceTimers[DeviceType.Vital.ToString()] <= 0)
             {
                 __instance.Close();
                 return;
             }
-            MessageWriter writer;
-            if (DeviceUsePlayer[DeviceType.Vital] == null)
-            {
-                string dateTimeString = VitalStartTime.ToString("yyyy/MM/dd HH:mm:ss");
-                writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
-                writer.Write((byte)DeviceType.Vital);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(true);
-                writer.Write(dateTimeString);
-                writer.EndRPC();
-                RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Vital, CachedPlayer.LocalPlayer.PlayerId, true, dateTimeString);
-            }
-            if (DeviceUsePlayer[DeviceType.Vital].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-            {
-                VitalTimer -= Time.deltaTime;
-                writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-                writer.Write((byte)DeviceType.Vital);
-                writer.Write(VitalTimer);
-                writer.EndRPC();
-                RPCProcedure.SetDeviceTime((byte)DeviceType.Vital, VitalTimer);
-            }
+            if (!AmongUsClient.Instance.AmHost)
+                DeviceTimers[DeviceType.Vital.ToString()] -= Time.deltaTime;
             if (TimeRemaining == null)
             {
                 TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
@@ -429,7 +469,7 @@ public static class DeviceClass
                 TimeRemaining.transform.localScale *= 1.8f;
                 TimeRemaining.color = Palette.White;
             }
-            TimeRemaining.text = TimeSpan.FromSeconds(VitalTimer).ToString(@"mm\:ss\.ff");
+            TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Vital.ToString()]).ToString(@"mm\:ss\.ff");
             TimeRemaining.gameObject.SetActive(true);
         }
     }
@@ -448,20 +488,14 @@ public static class DeviceClass
     static bool IsCameraCloseNow;
     static void CameraClose()
     {
-        if (!IsCameraRestrict || CachedPlayer.LocalPlayer.IsDead()) return;
-        IsCameraCloseNow = true;
-        if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
-        if (CameraTimer <= 0) return;
-        if (DeviceUsePlayer[DeviceType.Camera] != null && DeviceUsePlayer[DeviceType.Camera].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-        {
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
-            writer.Write((byte)DeviceType.Camera);
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            writer.Write(false);
-            writer.Write("");
-            writer.EndRPC();
-            RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Camera, CachedPlayer.LocalPlayer.PlayerId, false, "");
-        }
+        if (!IsCameraRestrict)
+            return;
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+        writer.Write((byte)DeviceType.Camera);
+        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+        writer.Write(false);
+        writer.EndRPC();
+        RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Camera, CachedPlayer.LocalPlayer.PlayerId, false);
     }
     static void CameraUpdate(Minigame __instance)
     {
@@ -472,32 +506,13 @@ public static class DeviceClass
             return;
         }
         if (IsCameraCloseNow) return;
-        if (CameraTimer <= 0)
+        if (DeviceTimers[DeviceType.Camera.ToString()] <= 0)
         {
             __instance.Close();
             return;
         }
-        MessageWriter writer;
-        if (DeviceUsePlayer[DeviceType.Camera] == null)
-        {
-            string dateTimeString = CameraStartTime.ToString("yyyy/MM/dd HH:mm:ss");
-            writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
-            writer.Write((byte)DeviceType.Camera);
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            writer.Write(true);
-            writer.Write(dateTimeString);
-            writer.EndRPC();
-            RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Camera, CachedPlayer.LocalPlayer.PlayerId, true, dateTimeString);
-        }
-        if (DeviceUsePlayer[DeviceType.Camera].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-        {
-            CameraTimer -= Time.deltaTime;
-            writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-            writer.Write((byte)DeviceType.Camera);
-            writer.Write(CameraTimer);
-            writer.EndRPC();
-            RPCProcedure.SetDeviceTime((byte)DeviceType.Camera, CameraTimer);
-        }
+        if (!AmongUsClient.Instance.AmHost)
+            DeviceTimers[DeviceType.Camera.ToString()] -= Time.deltaTime;
         if (TimeRemaining == null)
         {
             TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
@@ -510,8 +525,20 @@ public static class DeviceClass
             TimeRemaining.transform.localScale *= 1.8f;
             TimeRemaining.color = Palette.White;
         }
-        TimeRemaining.text = TimeSpan.FromSeconds(CameraTimer).ToString(@"mm\:ss\.ff");
+        TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Camera.ToString()]).ToString(@"mm\:ss\.ff");
         TimeRemaining.gameObject.SetActive(true);
+    }
+    static void CameraOpen()
+    {
+        IsCameraCloseNow = false;
+        if (!IsCameraRestrict)
+            return;
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+        writer.Write((byte)DeviceType.Camera);
+        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+        writer.Write(true);
+        writer.EndRPC();
+        RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Camera, CachedPlayer.LocalPlayer.PlayerId, true);
     }
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Close))]
     class PlanetSurveillanceMinigameClosePatch
@@ -526,12 +553,12 @@ public static class DeviceClass
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Begin))]
     class PlanetSurveillanceMinigameBeginPatch
     {
-        public static void Postfix() => IsCameraCloseNow = false;
+        public static void Postfix() => CameraOpen();
     }
     [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Begin))]
     class SurveillanceMinigameBeginPatch
     {
-        public static void Postfix() => IsCameraCloseNow = false;
+        public static void Postfix() => CameraOpen();
     }
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Begin))]
     class FungleSurveillanceMinigameBeginPatch
@@ -547,7 +574,7 @@ public static class DeviceClass
         }
         public static void Postfix(FungleSurveillanceMinigame __instance)
         {
-            IsCameraCloseNow = false;
+            CameraOpen();
             if (!MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle))
                 return;
             if (!MapCustom.TheFungleCameraOption.GetBool())

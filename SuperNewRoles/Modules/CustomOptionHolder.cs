@@ -54,7 +54,6 @@ public class CustomOptionHolder
     public static CustomOption SNRWebSendConditionHostDependency;
 
     public static CustomOption ProhibitModColor;
-    public static CustomOption SendYourRoleAllTurn;
 
     public static CustomOption IsOldMode;
 
@@ -331,11 +330,6 @@ public class CustomOptionHolder
     public static CustomOption EgoistUseSabo;
     public static CustomOption EgoistImpostorLight;
     public static CustomOption EgoistUseKill;
-
-    public static CustomRoleOption NiceRedRidingHoodOption;
-    public static CustomOption NiceRedRidingHoodPlayerCount;
-    public static CustomOption NiceRedRidingHoodCount;
-    public static CustomOption NiceRedRidinIsKillerDeathRevive;
 
     public static CustomRoleOption EvilEraserOption;
     public static CustomOption EvilEraserPlayerCount;
@@ -998,7 +992,6 @@ public class CustomOptionHolder
         SNRWebSendConditionHostDependency = Create(104901, true, CustomOptionType.Generic, Cs(roomSetting, "SNRWebTransmissionConditionHostDependency"), true, null, isHeader: true);
 
         ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(roomSetting, "ProhibitModColor"), false, null, isHeader: true);
-        SendYourRoleAllTurn = Create(105000, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "SendYourRoleAllTurn"), false, null);
 
         enableAgartha = Create(101000, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
@@ -1765,7 +1758,7 @@ public class CustomOptionHolder
         LighterPlayerCount = Create(402302, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
         LighterCoolTime = Create(402303, false, CustomOptionType.Crewmate, "LigtherCooldownSetting", 30f, 2.5f, 60f, 2.5f, LighterOption, format: "unitSeconds");
         LighterDurationTime = Create(402304, false, CustomOptionType.Crewmate, "LigtherDurationSetting", 10f, 0f, 180f, 5f, LighterOption, format: "unitSeconds");
-        LighterUpVision = Create(402305, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 0.25f, 0f, 5f, 0.25f, LighterOption);
+        LighterUpVision = Create(402305, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 2f, 0f, 5f, 0.25f, LighterOption);
 
         CelebrityOption = SetupCustomRoleOption(402400, true, RoleId.Celebrity);
         CelebrityPlayerCount = Create(402401, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);
@@ -1815,11 +1808,6 @@ public class CustomOptionHolder
         BaitReportTime = Create(403102, true, CustomOptionType.Crewmate, "BaitReportTimeSetting", 2f, 1f, 4f, 0.5f, BaitOption);
 
         NiceMechanic.SetupCustomOptions();
-
-        NiceRedRidingHoodOption = SetupCustomRoleOption(403400, false, RoleId.NiceRedRidingHood);
-        NiceRedRidingHoodPlayerCount = Create(403401, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
-        NiceRedRidingHoodCount = Create(403402, false, CustomOptionType.Crewmate, "NiceRedRidingHoodCount", 1f, 1f, 15f, 1f, NiceRedRidingHoodOption);
-        NiceRedRidinIsKillerDeathRevive = Create(403403, false, CustomOptionType.Crewmate, "NiceRedRidinIsKillerDeathRevive", true, NiceRedRidingHoodOption);
 
         NiceNekomataOption = SetupCustomRoleOption(403500, true, RoleId.NiceNekomata);
         NiceNekomataPlayerCount = Create(403501, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceNekomataOption);

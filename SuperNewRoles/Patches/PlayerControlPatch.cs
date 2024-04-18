@@ -212,6 +212,71 @@ public static class ExilePlayerPatch
         }
     }
 }
+[HarmonyPatch(typeof(LongBoiPlayerBody), nameof(LongBoiPlayerBody.SetHeightFromColor))]
+public static class LongBoiPlayerBodySetHeightFromColorPatch
+{
+    // 真っ黄色を最大に設定
+    private static Dictionary<int, float> PlayerLongColorSizes = new() { { 28, 9.2f } };
+    public static bool Prefix(LongBoiPlayerBody __instance, int colorIndex)
+    {
+        if (__instance.isPoolablePlayer)
+            return true;
+        if (!GameManager.Instance.IsHideAndSeek() ||
+            AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started ||
+            !(__instance.myPlayerControl.Data.Role != null || __instance.myPlayerControl.Data.Role.TeamType != RoleTeamTypes.Impostor))
+        {
+            if (colorIndex < __instance.heightsPerColor.Length)
+                __instance.targetHeight = __instance.heightsPerColor[colorIndex];
+            else
+            {
+                if (PlayerLongColorSizes.TryGetValue(colorIndex, out float value))
+                    __instance.targetHeight = value;
+                else
+                {
+                    __instance.targetHeight = new System.Random(colorIndex).Next(9, 92) / 10f;
+                    PlayerLongColorSizes[colorIndex] = __instance.targetHeight;
+                }
+            }
+            if (LobbyBehaviour.Instance != null)
+            {
+                __instance.SetupNeckGrowth(snapNeck: false, resetNeck: false);
+            }
+            else
+            {
+                __instance.SetupNeckGrowth(snapNeck: true, resetNeck: false);
+            }
+        }
+        return false;
+    }
+}
+//[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.PetPet))]
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleRpc))]
+class PlayerPhysicsPetPetPatch
+{
+    public static bool Prefix(PlayerPhysics __instance, byte callId)
+    {
+        Logger.Info($"[PlayerPhysicsRpcCalled]{callId}.{(RpcCalls)callId}");
+        if (callId == (byte)RpcCalls.Pet &&
+            __instance.myPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+            !CustomRoles.OnPetPet(__instance.myPlayer))
+        {
+            _ = new LateTask(__instance.RpcCancelPet, 0f);
+        }
+        return true;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.TryPet))]
+class PlayerControlTryPetPatch
+{
+    public static bool Prefix(PlayerControl __instance)
+    {
+        if (!CustomRoles.OnPetPet(__instance))
+        {
+            _ = new LateTask(__instance.MyPhysics.RpcCancelPet, 0.04f);
+        }
+        return true;
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
 class ReportDeadBodyPatch
 {

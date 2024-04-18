@@ -16,12 +16,14 @@ class EvilGambler
             }
         }
     }
-    public static void MurderPlayerPostfix(PlayerControl __instance)
+    public static void MurderPlayerPostfix(PlayerControl __instance, PlayerControl target)
     {
         if (!__instance.IsRole(RoleId.EvilGambler)) return;
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles) && __instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-        { // 成功 : 失敗
+        {   // 成功 : 失敗
             RoleClass.EvilGambler.currentCool = RoleClass.EvilGambler.GetSuc() ? RoleClass.EvilGambler.SucCool : RoleClass.EvilGambler.NotSucCool;
+            float cooltime = RoleHelpers.GetCoolTime(__instance, target);
+            PlayerControl.LocalPlayer.SetKillTimerUnchecked(cooltime, cooltime);
         }
     }
 }
