@@ -5,6 +5,7 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
@@ -15,50 +16,149 @@ using static SuperNewRoles.WaveCannonObj.WaveCannonObject;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-class WaveCannonJackal
+public enum WCJackalSidekickType
 {
-    // CustomOption Start
-    private static int OptionId = 300100;
-    public static CustomRoleOption WaveCannonJackalOption;
-    public static CustomOption WaveCannonJackalPlayerCount;
-    public static CustomOption WaveCannonJackalCoolTime;
-    public static CustomOption WaveCannonJackalChargeTime;
-    public static CustomOption WaveCannonJackalKillCooldown;
-    public static CustomOption WaveCannonJackalUseVent;
-    public static CustomOption WaveCannonJackalUseSabo;
-    public static CustomOption WaveCannonJackalIsImpostorLight;
-    public static CustomOption WaveCannonJackalIsSyncKillCoolTime;
-    public static CustomOption WaveCannonJackalCreateSidekick;
-    public static CustomOption WaveCannonJackalCreateFriend;
-    public static CustomOption WaveCannonJackalSKCooldown;
-    public static CustomOption WaveCannonJackalNewJackalCreateSidekick;
-    public static CustomOption WaveCannonJackalNewJackalHaveWaveCannon;
-    public static CustomOption WaveCannonJackalAnimTypeOption;
-    public static void SetupCustomOptions()
+    Sidekick,
+    JackalFriends,
+    WaveCannonSidekick,
+    BulletSidekick,
+}
+public class WaveCannonJackal : RoleBase
+{
+    public static new RoleInfo Roleinfo = new(
+        typeof(WaveCannonJackal),
+        (p) => new WaveCannonJackal(p),
+        RoleId.WaveCannonJackal,
+        "WaveCannonJackal",
+        RoleClass.JackalBlue,
+        new(RoleId.WaveCannonJackal, TeamTag.Jackal,
+            RoleTag.Killer, RoleTag.CanSidekick, RoleTag.SpecialKiller),
+        TeamRoleType.Neutral,
+        TeamType.Neutral
+        );
+    public static new OptionInfo Optioninfo =
+        new(RoleId.WaveCannonJackal, 300120, false,
+            CoolTimeOption: (20f, 2.5f, 180, 2.5f, false),
+            VentOption: (true, false),
+            SaboOption: (false, false),
+            ImpostorVisionOption: (true, false),
+            optionCreator: CreateOption);
+    public static new IntroInfo Introinfo =
+        new(RoleId.WaveCannonJackal, introSound: RoleTypes.Shapeshifter);
+
+    public static CustomOption ChargeTime;
+    public static CustomOption KillCooldown;
+    public static CustomOption IsSyncKillCoolTime;
+    /*サイドキックオプションが煩雑になってきたので一回整理します
+
+    サイドキックを出来る
+        初期値:OFF (ON/OFF)
+
+以下は「サイドキックを出来る」が有効なときのみ出現
+
+    サイドキックのクールタイム
+        初期値:30秒, 最低値:2.5, 最大値:60, 間隔:2.5
+    サイドキックのタイプ　サイドキック系オプションが増えたので設定をリスト系に変更してほしい
+        初期値:通常, 通常/ジャッカルフレンズ/波動砲/弾
+
+以下はサイドキックのタイプが「通常or弾」のときのみ出現
+
+    サイドキックがジャッカルに昇格出来る
+        初期値:ON (ON/OFF)
+
+以下はサイドキックのタイプが「弾」かつ「サイドキックがジャッカルに昇格出来る」がONのときのみ出現
+
+    昇格時、波動砲を引き継ぐ
+        初期値:ON (ON/OFF)
+
+以下はサイドキックのタイプが「弾」のときのみ出現
+
+    「装填」のクールタイム
+        初期値:30秒, 最低値:0, 最大値:60, 間隔:2.5
+    「装填」時の波動砲のチャージ時間
+        初期値:10秒, 最低値:1, 最大値:30, 間隔:1
+*/
+    // サイドキック系の設定
+    public static CustomOption CanCreateSidekick;
+    public static CustomOption CanCreateSidekickNewByNewJackal;
+    public static CustomOption CreateSidekickCoolTime;
+    public static CustomOption CreateSidekickType;
+
+    // 弾の設定
+    public static CustomOption CreateBulletToJackal;
+    public static CustomOption CreatedSidekickHasWaveCannon;
+
+    // 弾装填設定
+    public static CustomOption BulletLoadBulletCooltime;
+    public static CustomOption BulletLoadedChargeTime;
+
+
+    public static CustomOption AnimationOptionType;
+
+    private static void CreateOption()
     {
-        WaveCannonJackalOption = SetupCustomRoleOption(OptionId, false, RoleId.WaveCannonJackal, CustomOptionType.Neutral); OptionId++;
-        WaveCannonJackalPlayerCount = Create(OptionId, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WaveCannonJackalOption); OptionId++;
-        WaveCannonJackalCoolTime = Create(OptionId, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonJackalOption); OptionId++;
-        WaveCannonJackalChargeTime = Create(OptionId, false, CustomOptionType.Neutral, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonJackalOption); OptionId++;
-        WaveCannonJackalKillCooldown = Create(OptionId, false, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalOption, format: "unitSeconds"); OptionId++;
-        WaveCannonJackalUseVent = Create(OptionId, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, WaveCannonJackalOption); OptionId++;
-        WaveCannonJackalIsImpostorLight = Create(OptionId, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, WaveCannonJackalOption); OptionId++;
-        WaveCannonJackalUseSabo = Create(OptionId, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption); OptionId++;
-        WaveCannonJackalIsSyncKillCoolTime = Create(OptionId, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, WaveCannonJackalOption); OptionId++;
-        WaveCannonJackalCreateSidekick = Create(OptionId, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, WaveCannonJackalOption); OptionId++;
-        WaveCannonJackalSKCooldown = Create(OptionId, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalCreateSidekick, format: "unitSeconds"); OptionId++;
-        WaveCannonJackalNewJackalCreateSidekick = Create(OptionId, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, WaveCannonJackalCreateSidekick); OptionId++;
-        WaveCannonJackalNewJackalHaveWaveCannon = Create(OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalNewJackalHaveWaveCannon", false, WaveCannonJackalCreateSidekick); OptionId++;
-        WaveCannonJackalCreateFriend = Create(OptionId, false, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, WaveCannonJackalOption); OptionId++;
-        string[] AnimTypeTexts = new string[WaveCannonObject.WCCreateAnimHandlers.Count];
+        ChargeTime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, Optioninfo.RoleOption); Optioninfo.OptionId++;
+        KillCooldown = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption, format: "unitSeconds"); Optioninfo.OptionId++;
+        IsSyncKillCoolTime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, Optioninfo.RoleOption); Optioninfo.OptionId++;
+        // サイドキック系の設定
+        CanCreateSidekick = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, Optioninfo.RoleOption); Optioninfo.OptionId++;
+        CanCreateSidekickNewByNewJackal = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, CanCreateSidekick); Optioninfo.OptionId++;
+        CreateSidekickCoolTime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, CanCreateSidekick, format: "unitSeconds"); Optioninfo.OptionId++;
+
+        List<string> SidekickTypeTexts = [];
+        foreach (WCJackalSidekickType type in System.Enum.GetValues(typeof(WCJackalSidekickType)))
+        {
+            SidekickTypeTexts.Add(ModTranslation.GetString("WaveCannonJackalSidekickType" + type));
+        }
+        CreateSidekickType = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalSidekickType", SidekickTypeTexts.ToArray(), CanCreateSidekick); Optioninfo.OptionId++;
+
+        // Bullet
+        CreateBulletToJackal = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalCreateBulletToJackal", false, CreateSidekickType, ); Optioninfo.OptionId++;
+        CreatedSidekickHasWaveCannon = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalNewJackalHaveWaveCannon", false, CreateSidekickType); Optioninfo.OptionId++;
+
+        BulletLoadBulletCooltime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalLoadBulletCoolTime", 30f, 2.5f, 60f, 2.5f, CreateSidekickType, format: "unitSeconds"); Optioninfo.OptionId++;
+        BulletLoadedChargeTime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalBulletLoadedChargeTime", 10f, 1f, 30f, 1f, CreateSidekickType); Optioninfo.OptionId++;
+        
+        // AnimTypes
+        string[] AnimTypeTexts = new string[WCCreateAnimHandlers.Count];
         int index = 0;
-        foreach (string TypeName in WaveCannonObject.WCCreateAnimHandlers.Keys)
+        foreach (string TypeName in WCCreateAnimHandlers.Keys)
         {
             if (TypeName == WCAnimType.None.ToString())
                 break;
             AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
             index++;
         }
+        AnimationOptionType = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonAnimationType", AnimTypeTexts, Optioninfo.RoleOption); Optioninfo.OptionId++;
+    }
+    public WaveCannonJackal(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
+    {
+    }
+}
+
+class WaveCannonJackal
+{
+    // CustomOption Start
+    private static int OptionId = 300100;
+    public static CustomOption WaveCannonJackalChargeTime;
+    public static CustomOption WaveCannonJackalKillCooldown;
+    public static CustomOption WaveCannonJackalIsSyncKillCoolTime;
+    public static CustomOption WaveCannonJackalCreateSidekick;
+    public static CustomOption WaveCannonJackalCreateFriend;
+    public static CustomOption WaveCannonJackalSKCooldown;
+    public static CustomOption WaveCannonJackalNewJackalCreateSidekick;
+    public static CustomOption WaveCannonJackalNewJackalHaveWaveCannon;
+    public static void SetupCustomOptions()
+    {
+        WaveCannonJackalChargeTime = Create(OptionId, false, CustomOptionType.Neutral, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonJackalOption); OptionId++;
+        WaveCannonJackalKillCooldown = Create(OptionId, false, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalOption, format: "unitSeconds"); OptionId++;
+        WaveCannonJackalIsSyncKillCoolTime = Create(OptionId, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, WaveCannonJackalOption); OptionId++;
+        WaveCannonJackalCreateSidekick = Create(OptionId, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, WaveCannonJackalOption); OptionId++;
+        WaveCannonJackalSKCooldown = Create(OptionId, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalCreateSidekick, format: "unitSeconds"); OptionId++;
+        WaveCannonJackalNewJackalCreateSidekick = Create(OptionId, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, WaveCannonJackalCreateSidekick); OptionId++;
+        WaveCannonJackalNewJackalHaveWaveCannon = Create(OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalNewJackalHaveWaveCannon", false, WaveCannonJackalCreateSidekick); OptionId++;
+        WaveCannonJackalCreateFriend = Create(OptionId, false, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, WaveCannonJackalOption); OptionId++;
+        
         WaveCannonJackalAnimTypeOption = Create(OptionId, false, CustomOptionType.Neutral, "WaveCannonAnimationType", AnimTypeTexts, WaveCannonJackalOption);
     }
     // CustomOption End
@@ -69,7 +169,6 @@ class WaveCannonJackal
     public static List<PlayerControl> SidekickWaveCannonPlayer;
     public static Color32 color = RoleClass.JackalBlue;
     public static List<int> CreatePlayers;
-    public static bool CanCreateSidekick;
     public static bool CanCreateFriend;
     public static List<byte> IwasSidekicked;
     public static void ClearAndReload()
