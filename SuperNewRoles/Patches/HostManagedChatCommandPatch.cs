@@ -402,7 +402,7 @@ internal static class GetChatCommands
                     optionStr = GameOptionsDataPatch.OptionToString(option);
                     editing.AppendLine($"<size=80%>{optionStr}</size>");
 
-                    addChildren(option, ref editing, !GameOptionsMenuUpdatePatch.IsHidden(option));
+                    addChildren(option, ref editing, !GameOptionsMenuUpdatePatch.IsHidden(option, ModeHandler.GetMode(false)));
                 }
                 else // mode は 通常の方法で設定の文章を取得できない為, 個別で編集。 通常モード時出ない時は mode でなく ModeSetting で設定の文章を取得
                 {
@@ -425,20 +425,20 @@ internal static class GetChatCommands
 
         return setting;
 
-        void addChildren(CustomOption option, ref StringBuilder entry, bool indent = true)
+        void addChildren(CustomOption option, ref StringBuilder entry, ModeId modeId, bool indent = true)
         {
-            if (!option.Enabled || ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) return;
+            if (!option.Enabled || (modeId == ModeId.SuperHostRoles && !option.isSHROn)) return;
 
             foreach (var child in option.children)
             {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) continue;
+                if (modeId == ModeId.SuperHostRoles && !child.isSHROn) continue;
 
-                if (!GameOptionsMenuUpdatePatch.IsHidden(option))
+                if (!GameOptionsMenuUpdatePatch.IsHidden(option, modeId))
                 {
                     if (child.isHeader == true) entry.Append("\n");
                     entry.AppendLine((indent ? "    " : "") + GameOptionsDataPatch.OptionToString(child));
                 }
-                addChildren(child, ref entry, indent);
+                addChildren(child, ref entry, modeId, indent);
             }
         }
     }
@@ -478,12 +478,14 @@ internal static class GetChatCommands
         StringBuilder EnableTags = new();
         EnableTags.AppendLine(ModTranslation.GetString("EnableTagsMessage") + "\n");
 
+        ModeId modeId = ModeHandler.GetMode(false);
+
         foreach (CustomOption option in CustomOption.options)
         {
             if (option.GetSelection() == 0) continue;
             if (option.type != CustomOptionType.MatchTag) continue;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
-            if (option.IsHidden()) continue;
+            if (option.IsHidden(modeId)) continue;
 
             string name = option.name;
             string pattern = @"<color=#\w+>|</color>";

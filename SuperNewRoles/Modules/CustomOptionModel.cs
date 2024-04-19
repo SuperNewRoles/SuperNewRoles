@@ -1041,10 +1041,10 @@ static class GameOptionsMenuUpdatePatch
     /// <summary>現在, 封印処理のある設定を有しているか ( 此処をtrueにする事で封印処理が実行される )</summary>
     public const bool HasSealingOption = false;
 
-    public static bool IsHidden(this CustomOption option)
+    public static bool IsHidden(this CustomOption option, ModeId currentModeId)
     {
         return option.isHidden
-            || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) // SHRモード時, SHR未対応の設定を隠す処理。
+            || (!option.isSHROn && currentModeId == ModeId.SuperHostRoles) // SHRモード時, SHR未対応の設定を隠す処理。
             || HasSealingOption && IsSealingDatetimeControl(option) // 解放条件が時間に依存する設定の 封印及び開放処理
             || (ModeHandler.EnableModeSealing && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
@@ -1107,6 +1107,7 @@ static class GameOptionsMenuUpdatePatch
         }
 
         CustomOptionType type = GetCustomOptionType(__instance.name);
+        ModeId currentMode = ModeHandler.GetMode(false);
 
         foreach (CustomOption option in CustomOption.options)
         {
@@ -1120,11 +1121,8 @@ static class GameOptionsMenuUpdatePatch
                 {
                     enabled = false;
                 }
-
-                if (option.IsHidden())
-                {
+                else if (option.IsHidden(currentMode))
                     enabled = false;
-                }
 
                 while (parent != null && enabled)
                 {
@@ -1268,22 +1266,6 @@ class GameOptionsDataPatch
         GetTaskTriggerAbilityTaskNumber,
     }
 
-    public static string OptionsToString(CustomOption option, bool skipFirst = false)
-    {
-        if (option == null) return "";
-
-        List<string> options = new();
-        if (!GameOptionsMenuUpdatePatch.IsHidden(option) && !skipFirst) options.Add(OptionToString(option));
-        if (option.Enabled)
-        {
-            foreach (CustomOption op in option.children)
-            {
-                string str = OptionsToString(op);
-                if (str != "") options.Add(str);
-            }
-        }
-        return string.Join("\n", options);
-    }
     public static string DefaultResult = "";
     public static string ResultData()
     {
@@ -1356,7 +1338,7 @@ class GameOptionsDataPatch
             foreach (var child in option.children)
             {
                 if (modeId == ModeId.SuperHostRoles && !child.isSHROn) continue;
-                if (!GameOptionsMenuUpdatePatch.IsHidden(option))
+                if (!GameOptionsMenuUpdatePatch.IsHidden(option, modeId))
                     entry.AppendLine((indent ? "    " : "") + OptionToString(child));
                 addChildren(child, ref entry, modeId, indent);
             }
@@ -1385,7 +1367,7 @@ class GameOptionsDataPatch
                 }
 
                 entry = new StringBuilder();
-                if (!(GameOptionsMenuUpdatePatch.IsHidden(option) || option.type == CustomOptionType.MatchTag))
+                if (!(GameOptionsMenuUpdatePatch.IsHidden(option, modeId) || option.type == CustomOptionType.MatchTag))
                 {
                     entry.AppendLine(OptionToString(option));
                 }
