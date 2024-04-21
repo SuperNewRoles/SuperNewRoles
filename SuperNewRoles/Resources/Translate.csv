@@ -1853,9 +1853,11 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
-BodyBuilderName,BodyBuilder,
-BodyBuilderTitle1,,
-BodyBuilderDescription,,
+BodyBuilderName,Bodybuilder,ボディビルダー
+BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！
+BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！
+BodyBuilderButtonName,Posing,ポージング
+BodyBuilderChangeAllTaskLiftWeights,Make all tasks lift weights task,全タスクを筋トレタスクにする
 
 #NewRoleTranslation
 
