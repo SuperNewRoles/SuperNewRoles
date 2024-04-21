@@ -171,9 +171,11 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IRpcHand
         cancelPosing();
         Player.NetTransform.Halt();
 
+        var distance = Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, Player.NetTransform.transform.position);
+        var volume = 1 / distance <= 0.25f ? 0f : 1 / distance;
         ShipStatus ship = GameManager.Instance.LogicOptions.MapId == (int)MapNames.Fungle ? ShipStatus.Instance : MapLoader.Fungle;
         AudioClip clip = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.LiftWeights).MinigamePrefab.TryCast<LiftWeightsMinigame>().completeAllRepsSound;
-        ModHelpers.PlaySound(Player.NetTransform.transform, clip, false);
+        ModHelpers.PlaySound(Player.NetTransform.transform, clip, false, volume);
 
         var prefab = getPrefab(id);
         var pose = UnityEngine.Object.Instantiate(prefab, Player.NetTransform.transform);
