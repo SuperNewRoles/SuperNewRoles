@@ -1481,12 +1481,17 @@ public static class RPCProcedure
         }
         else if (jackalRoleId == RoleId.WaveCannonJackal)
         {
-            foreach (PlayerControl p in WaveCannonJackal.SidekickWaveCannonPlayer.ToArray())
+            foreach (WaveCannonJackal WCJackal in RoleBaseManager.GetRoleBases<WaveCannonJackal>())
             {
-                p.ClearRole();
-                p.SetRole(jackalRoleId);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                WaveCannonJackal.CanCreateSidekick = WaveCannonJackal.WaveCannonJackalNewJackalCreateSidekick.GetBool();
+                ISidekick sidekick = WCJackal.CreatedSidekick;
+                if (sidekick is not RoleBase sidekickBase)
+                    continue;
+                PlayerControl sidekickPlayer = sidekickBase.Player;
+                sidekickPlayer.ClearRole();
+                sidekickPlayer.SetRole(sidekick.TargetRole);
+                if (sidekickPlayer.GetRoleBase() is not IJackal changedRole)
+                    continue;
+                changedRole.SetAmSidekicked();
             }
         }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -1534,15 +1539,15 @@ public static class RPCProcedure
     /// <param name="IsFake">見せかけのSKか(TORでインポスターSK時ジャッカル視点のみSKできた様になる状態SNRでは使われていない)</param>
     public static void CreateSidekickWaveCannon(byte playerid, bool IsFake)
     {
+        // FIXME: RpcHandlerに後で移動させる
         var player = ModHelpers.PlayerById(playerid);
         if (player == null) return;
-        if (IsFake) WaveCannonJackal.FakeSidekickWaveCannonPlayer.Add(player);
-        else
+        //if (IsFake) WaveCannonJackal.FakeSidekickWaveCannonPlayer.Add(player);
+        //else
         {
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
-            player.SetRole(RoleId.SidekickWaveCannon);
-            WaveCannonJackal.IwasSidekicked.Add(playerid);
+            player.SetRole(RoleId.SidekickWaveCannon);//
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }

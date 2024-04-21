@@ -772,7 +772,6 @@ class AllRoleSetClass
             RoleId.Werewolf => CustomOptionHolder.WerewolfPlayerCount.GetInt(),
             RoleId.Knight => Knight.KnightPlayerCount.GetInt(),
             RoleId.Pavlovsowner => CustomOptionHolder.PavlovsownerPlayerCount.GetInt(),
-            RoleId.WaveCannonJackal => WaveCannonJackal.WaveCannonJackalPlayerCount.GetInt(),
             RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount.GetInt(),
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetInt(),
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetInt(),

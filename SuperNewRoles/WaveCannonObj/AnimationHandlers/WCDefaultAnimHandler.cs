@@ -111,9 +111,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                         }
                         else
                         {
-                            if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                                WaveCannonJackal.ResetCooldowns();
-                            WaveCannonJackal.WCResetCooldowns();
+                            WaveCannonJackal.ResetCooldowns();
                         }
                         CannonObject.Owner.GetRoleBase<WaveCannon>()?
                         .CustomButtonInfos?

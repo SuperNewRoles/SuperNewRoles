@@ -581,8 +581,6 @@ public static class OnGameEndPatch
             TheThreeLittlePigs.TheFirstLittlePig.Player,
             TheThreeLittlePigs.TheSecondLittlePig.Player,
             TheThreeLittlePigs.TheThirdLittlePig.Player,
-            WaveCannonJackal.WaveCannonJackalPlayer,
-            WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
             Moira.MoiraPlayer,
             Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,

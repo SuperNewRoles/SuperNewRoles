@@ -12,6 +12,5 @@ class PlayerControl_MurderPlayer
         var MyRole = PlayerControl.LocalPlayer.GetRole();
         Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
         JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
-        Roles.Neutral.WaveCannonJackal.WaveCannonJackalFixedPatch.Postfix(__instance, MyRole);
     }
 }

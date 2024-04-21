@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
-public interface IJackal : IKiller, IVentAvailable
+public interface ISaboAvailable
 {
-    public bool CanSidekick { get; }
-    public void SetAmSidekicked();
+    public bool CanUseSabo => true;
 }

@@ -402,7 +402,7 @@ internal static class GetChatCommands
                     optionStr = GameOptionsDataPatch.OptionToString(option);
                     editing.AppendLine($"<size=80%>{optionStr}</size>");
 
-                    addChildren(option, ref editing, !GameOptionsMenuUpdatePatch.IsHidden(option, ModeHandler.GetMode(false)));
+                    addChildren(option, ref editing, ModeHandler.GetMode(false), !GameOptionsMenuUpdatePatch.IsHidden(option, ModeHandler.GetMode(false)));
                 }
                 else // mode は 通常の方法で設定の文章を取得できない為, 個別で編集。 通常モード時出ない時は mode でなく ModeSetting で設定の文章を取得
                 {

@@ -224,7 +224,6 @@ public static class RoleClass
         Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
-        WaveCannonJackal.ClearAndReload();
         //SidekickWaveCannon.Clear();
         Beacon.AllBeacons = new();
         Camouflager.ClearAndReload();

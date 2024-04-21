@@ -18,6 +18,7 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace SuperNewRoles;
 
@@ -813,12 +814,6 @@ public static class RoleHelpers
             case RoleId.Pavlovsowner:
                 RoleClass.Pavlovsowner.PavlovsownerPlayer.Add(player);
                 break;
-            case RoleId.WaveCannonJackal:
-                WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
-                break;
-            case RoleId.SidekickWaveCannon:
-                WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
-                break;
             case RoleId.Camouflager:
                 RoleClass.Camouflager.CamouflagerPlayer.Add(player);
                 break;
@@ -1371,12 +1366,6 @@ public static class RoleHelpers
             case RoleId.Pavlovsowner:
                 RoleClass.Pavlovsowner.PavlovsownerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.WaveCannonJackal:
-                WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.SidekickWaveCannon:
-                WaveCannonJackal.SidekickWaveCannonPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Camouflager:
                 RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1573,7 +1562,7 @@ public static class RoleHelpers
         RoleBase roleBase = player.GetRoleBase();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
         if (ModeHandler.IsMode(ModeId.VanillaHns)) return false;
-        if (roleBase != null && roleBase is IVentAvailable ventAvailable) return ventAvailable.CanUseVent;
+        if (roleBase is IVentAvailable ventAvailable) return ventAvailable.CanUseVent;
         return role switch
         {
             RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
@@ -1604,7 +1593,6 @@ public static class RoleHelpers
             RoleId.Spy => RoleClass.Spy.CanUseVent,
             RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogCanVent.GetBool(),
             RoleId.Stefinder => CustomOptionHolder.StefinderVent.GetBool(),
-            RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalUseVent.GetBool(),
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
             RoleId.Worshiper => Worshiper.RoleData.IsUseVent,
@@ -1686,6 +1674,7 @@ public static class RoleHelpers
     public static bool IsUseSabo(this PlayerControl player)
     {
         if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
+        if (player.GetRoleBase() is ISaboAvailable saboAvailable) return saboAvailable.CanUseSabo;
         RoleId role = player.GetRole();
         return role switch
         {
@@ -1695,7 +1684,6 @@ public static class RoleHelpers
             RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
             RoleId.Egoist => RoleClass.Egoist.UseSabo,
             RoleId.Stefinder => CustomOptionHolder.StefinderSabo.GetBool(),
-            RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalUseSabo.GetBool(),
             RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerSabo.GetBool(),
             RoleId.Samurai => RoleClass.Samurai.UseSabo,
@@ -1705,8 +1693,8 @@ public static class RoleHelpers
     }
     public static bool IsImpostorLight(this PlayerControl player)
     {
-        if (player.GetRoleBase() is IMadmate imadmate)
-            return imadmate.IsImpostorLight;
+        if (player.GetRoleBase() is IImpostorVision impostorVision)
+            return impostorVision.IsImpostorVision;
         RoleId role = player.GetRole();
         return role == RoleId.Egoist
             ? RoleClass.Egoist.ImpostorLight
@@ -1731,7 +1719,6 @@ public static class RoleHelpers
                 RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
                 RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
-                RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalIsImpostorLight.GetBool(),
                 RoleId.Worshiper => Worshiper.RoleData.IsImpostorLight,
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
@@ -1981,8 +1968,6 @@ public static class RoleHelpers
             else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;
             else if (RoleClass.Pavlovsdogs.PavlovsdogsPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsdogs;
             else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
-            else if (WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
-            else if (WaveCannonJackal.SidekickWaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.SidekickWaveCannon;
             else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
             else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
             else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
