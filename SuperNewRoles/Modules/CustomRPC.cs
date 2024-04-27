@@ -53,6 +53,7 @@ public enum RoleId
 
     // Neutral Roles
     Cupid,
+    Owl,
 
     // Crewmate Roles
     NiceGuesser,
@@ -1757,6 +1758,7 @@ public static class RPCProcedure
             {CustomRPC.SetRoomTimerRPC,false},
             {CustomRPC.SetDeviceTime,false},
             {CustomRPC.SetInfectionTimer,false},
+            {CustomRPC.MoveDeadBody,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)

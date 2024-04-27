@@ -54,6 +54,14 @@ public class FixedUpdate
         }
     }
 
+    static void SetBaseVentMaterial()
+    {
+        if (PlayerControl.LocalPlayer.IsUseVent()) return;
+        if (!ShipStatus.Instance) return;
+        foreach (Vent vent in ShipStatus.Instance.AllVents)
+            vent.SetOutline(false, false);
+    }
+
     static void ReduceKillCooldown(PlayerControl __instance)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
@@ -83,6 +91,7 @@ public class FixedUpdate
         }
 
         SetBasePlayerOutlines();
+        SetBaseVentMaterial();
         LadderDead.FixedUpdate();
         CustomRoles.FixedUpdate();
         switch (ModeHandler.GetMode())

@@ -1738,6 +1738,7 @@ public static class RoleHelpers
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
                 RoleId.MadRaccoon => MadRaccoon.RoleData.IsImpostorLight,
                 RoleId.Frankenstein => Frankenstein.IsMonster(PlayerControl.LocalPlayer) && Frankenstein.FrankensteinMonsterImpostorLight.GetBool(),
+                RoleId.Owl => Owl.ImposterVisibilityDuringBlackout.GetBool() && ModHelpers.IsBlackout(),
                 // インポの視界
                 _ => false,
             };

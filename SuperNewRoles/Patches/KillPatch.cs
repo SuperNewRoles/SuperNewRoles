@@ -637,14 +637,8 @@ public static class MurderPlayerPatch
         }
 
         //ダークキラーがキルできるか判定
-        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem))
-        {
-            var ma = elecsystem.CastFast<SwitchSystem>();
-            if (__instance.IsRole(RoleId.DarkKiller) &&
-                ma != null &&
-                !ma.IsActive)
-                return false;
-        }
+        if (__instance.IsRole(RoleId.DarkKiller) && !IsBlackout()) return false;
+        
         if (!AmongUsClient.Instance.AmHost ||
             __instance.PlayerId == target.PlayerId)
             return true;
