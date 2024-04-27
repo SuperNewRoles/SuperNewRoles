@@ -1855,6 +1855,7 @@ PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
 OwlName,Owl,フクロウ
 OwlTitle1,The one who flapped his wings in the dark,暗闇に羽ばたきし者
+OwlDescription,First， let’s choose a burrow.\nThen， let’s hide the killed body in that burrow.\nHowever， both killing and concealing can only be done in the darkness....\n\nI am apparently called the Night Hunter.\nLet’s live up to that name and go hunting.\nBut beware of the darkness....\nI might be there.,まずは巣穴を決めましょう。\nそしたらキルした死体をその巣穴に隠してしまいましょう。\nただし、キルも隠すのも出来るのは暗闇の中だけ....\n\n私は夜の狩人と呼ばれているらしい。\nその名に恥じない、狩りをしようじゃないか。\n暗闇にはお気をつけて....\n私がいるかもしれないからね....
 OwlImposterVisibilityDuringBlackout,Imposter visibility during blackout,停電時インポスターの視野になる
 OwlCanSpecialBlackoutDeaebodyCount,Number of bodies that will be able to use special blackout,特殊停電を使えるようになる死体数
 SpecialBlackoutCool,Cool time for special power outages,特殊停電のクールタイム
