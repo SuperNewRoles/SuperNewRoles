@@ -162,6 +162,10 @@ public class Moira
         if (player2.IsAlive()) player2.RPCSetRoleUnchecked(player1RoleType);
         RoleTypeData[player2Id] = player1RoleType;
 
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SwapRole);
+        writer.Write(player1Id);
+        writer.Write(player2Id);
+        writer.EndRPC();
         RPCProcedure.SwapRole(player1Id, player2Id);
     }
 
