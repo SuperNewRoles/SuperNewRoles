@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -98,6 +99,7 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     public void RpcReader(MessageReader reader)
     {
         RpcTypes type = (RpcTypes)reader.ReadByte();
+        List<Lantern> lanterns = Lantern.GetLanternsByPlayer(Player);
 
         switch (type)
         {
@@ -105,13 +107,13 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
                 new GameObject("Lantern").AddComponent<Lantern>().Init(Player);
                 break;
             case RpcTypes.Activate:
-                Lantern.AllLanterns?.DoIf(x => x.Owner.AmOwner, x => x.Activate());
+                lanterns?.Do(x => x.Activate());
                 break;
             case RpcTypes.LightingOn:
-                Lantern.AllLanterns?.DoIf(x => x.Owner.AmOwner, x => x.LightingOn());
+                lanterns?.Do(x => x.LightingOn());
                 break;
             case RpcTypes.LightingOff:
-                Lantern.AllLanterns?.DoIf(x => x.Owner.AmOwner, x => x.LightingOff());
+                lanterns?.Do(x => x.LightingOff());
                 break;
         }
     }

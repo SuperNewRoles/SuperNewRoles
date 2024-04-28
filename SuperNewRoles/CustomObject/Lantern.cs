@@ -59,4 +59,17 @@ public class Lantern : MonoBehaviour
     {
 
     }
+
+    public static List<Lantern> GetLanternsByPlayer(PlayerControl player)
+    {
+        List<Lantern> lanterns = new();
+        foreach (Lantern lantern in AllLanterns)
+        {
+            if (lantern.Owner != player)
+                continue;
+
+            lanterns.Add(lantern);
+        }
+        return lanterns;
+    }
 }
