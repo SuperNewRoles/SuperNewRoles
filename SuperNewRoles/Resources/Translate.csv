@@ -1857,7 +1857,7 @@ BodyBuilderName,Bodybuilder,ボディビルダー
 BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！
 BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！
 BodyBuilderButtonName,Posing,ポージング
-BodyBuilderChangeAllTaskLiftWeights,Make all tasks lift weights task,全タスクを筋トレタスクにする
+BodyBuilderChangeAllTaskLiftWeights,Make all tasks lift weights task,全タスクを筋トレタスクに置き換える
 
 #NewRoleTranslation
 
