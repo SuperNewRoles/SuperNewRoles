@@ -94,7 +94,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IRpcHand
         private static Minigame preMinigame;
         static void Prefix(Console __instance)
         {
-            if (ChangeAllTaskLiftWeights.GetBool() || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
+            if (!ChangeAllTaskLiftWeights.GetBool() || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
                 return;
 
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
@@ -111,7 +111,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IRpcHand
         }
         static void Postfix(Console __instance)
         {
-            if (ChangeAllTaskLiftWeights.GetBool() || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
+            if (!ChangeAllTaskLiftWeights.GetBool() || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
                 return;
 
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
@@ -136,7 +136,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IRpcHand
     }
     public bool AssignTask(out List<byte> tasks, (int numCommon, int numShort, int numLong) TaskData)
     {
-        if (!ChangeAllTaskLiftWeights.GetBool())
+        if (ChangeAllTaskLiftWeights.GetBool())
         {
             tasks = null;
             return false;
