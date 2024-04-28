@@ -1,5 +1,7 @@
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -43,20 +45,20 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
 
     public Phosphorus(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        PutButtonInfo = new(Optioninfo.AbilityMaxCount, this, () => Put(),
+        PutButtonInfo = new(Optioninfo.AbilityMaxCount, this, () => SendRpcPut(),
             (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Phosphorus.PutButton.png", 115f),
             () => Optioninfo.CoolTime, Vector3.zero,
             "PhosphorusPutButtonName", KeyCode.F,
             HasAbilityCountText: true
         );
-        LightingButtonInfo = new(null, this, () => Lighting(),
+        LightingButtonInfo = new(null, this, () => SendRpcLighting(),
             (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Phosphorus.LightingButton.png", 115f),
             () => LightingCooltime.GetFloat(), Vector3.zero,
             "PhosphorusLightingButtonName", KeyCode.Q,
             DurationTime: () => Optioninfo.DurationTime,
-            OnEffectEnds: () => Lighting(false)
+            OnEffectEnds: () => SendRpcLighting(false)
         );
 
         CustomButtonInfos = new CustomButtonInfo[2] { PutButtonInfo, LightingButtonInfo };
@@ -65,33 +67,52 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     private enum RpcTypes
     {
         Put,
+        Activate,
         LightingOn,
         LightingOff,
     }
 
-    private void Put()
+    private void SendRpcPut()
     {
         MessageWriter writer = RpcWriter;
         writer.Write((byte)RpcTypes.Put);
         SendRpc(writer);
     }
-    private void Lighting(bool active = true)
+    private void SendRpcLighting(bool active = true)
     {
+        RpcTypes type = active ? RpcTypes.LightingOn : RpcTypes.LightingOff;
+
         MessageWriter writer = RpcWriter;
-        writer.Write((byte)RpcTypes.LightingOn);
+        writer.Write((byte)type);
         SendRpc(writer);
     }
 
-    public void StartMeeting() { }
-    public void CloseMeeting()
+    public void StartMeeting()
     {
         MessageWriter writer = RpcWriter;
-        writer.Write((byte)RpcTypes.LightingOff);
+        writer.Write((byte)RpcTypes.Activate);
         SendRpc(writer);
     }
+    public void CloseMeeting() { }
 
     public void RpcReader(MessageReader reader)
     {
-        throw new System.NotImplementedException();
+        RpcTypes type = (RpcTypes)reader.ReadByte();
+
+        switch (type)
+        {
+            case RpcTypes.Put:
+                new GameObject("Lantern").AddComponent<Lantern>().Init(Player);
+                break;
+            case RpcTypes.Activate:
+                Lantern.AllLanterns?.DoIf(x => x.Owner.AmOwner, x => x.Activate());
+                break;
+            case RpcTypes.LightingOn:
+                Lantern.AllLanterns?.DoIf(x => x.Owner.AmOwner, x => x.LightingOn());
+                break;
+            case RpcTypes.LightingOff:
+                Lantern.AllLanterns?.DoIf(x => x.Owner.AmOwner, x => x.LightingOff());
+                break;
+        }
     }
 }

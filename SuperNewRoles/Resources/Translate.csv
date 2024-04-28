@@ -1853,6 +1853,13 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
+PhosphorusName,Phosphorus,ホスフォラス
+PhosphorusTitle1,A ray of light in the darkness,この暗闇に一筋の光明を
+PhosphorusDescription,You can put lanterns.\nLanterns are activated next turn.\nLanterns are lighted when you use ability,マップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、使えるようになります。\n能力を使用すると、一定時間の間ランタンを中心に明るく照らされ、視界外であっても見えるようになります。
+PhosphorusLightingCooltime,Lighting cooltime,点灯のクールタイム
+PhosphorusLightRange,Light range,ランタンの範囲
+PhosphorusPutButtonName,Put,設置
+PhosphorusLightingButtonName,Lighting,点灯
 
 #NewRoleTranslation
 
