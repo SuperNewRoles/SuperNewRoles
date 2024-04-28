@@ -181,11 +181,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
         SpecialBlackoutButton.ResetCoolTime();
     }
 
-    public bool SpecialBlackoutButtonCouldUse()
-    {
-        if (NestDeadBodyCount >= CanSpecialBlackoutDeadBodyCount.GetInt()) return true;
-        return false;
-    }
+    public bool SpecialBlackoutButtonCouldUse() => NestDeadBodyCount >= CanSpecialBlackoutDeadBodyCount.GetInt();
 
     public void OwlKillButtonClick()
     {

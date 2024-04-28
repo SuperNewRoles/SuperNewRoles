@@ -30,7 +30,7 @@ public class CustomButtonInfo
     };
 
     public PlayerControl CurrentTarget { get; private set; }
-    public Vent CurrentVentTarage { get; private set; }
+    public Vent CurrentVentTarget { get; private set; }
     public CustomButton customButton { get; private set; }
     private Action OnClickFunc { get; }
     private Func<bool, bool> HasButtonFunc { get; }
@@ -285,9 +285,9 @@ public class CustomButtonInfo
     
     public Vent SetTargetVent(bool highlight = true)
     {
-        CurrentVentTarage = HudManagerStartPatch.SetTargetVent();
-        if (CurrentVentTarage == null) return CurrentVentTarage;
-        if (highlight) CurrentVentTarage.SetOutline(true, true);
-        return CurrentVentTarage;
+        CurrentVentTarget = HudManagerStartPatch.SetTargetVent();
+        if (CurrentVentTarget == null) return CurrentVentTarget;
+        if (highlight) CurrentVentTarget.SetOutline(true, true);
+        return CurrentVentTarget;
     }
 }

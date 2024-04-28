@@ -175,7 +175,7 @@ class LightPatch
     public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor, float? timer = null)
     {
         if (Clergyman.IsLightOutVision()) return shipStatus.MinLightRadius * RoleClass.Clergyman.DownImpoVision;
-        if (isImpostor) return shipStatus.MinLightRadius * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
+        if (isImpostor) return shipStatus.MaxLightRadius * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
 
         float lerpValue = 1;
         if (shipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)) lerpValue = elec.TryCast<SwitchSystem>().Value / 255f;

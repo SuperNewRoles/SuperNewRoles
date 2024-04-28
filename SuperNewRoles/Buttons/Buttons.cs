@@ -2351,7 +2351,7 @@ static class HudManagerStartPatch
             __instance.KillButton,
             KeyCode.F,
             49,
-            () => { return (ModHelpers.IsBlackout() && !RoleClass.SecretlyKiller.IsBlackOutKillCharge) || !PlayerControl.LocalPlayer.CanMove; }
+            () => { return !PlayerControl.LocalPlayer.CanMove || (!RoleClass.SecretlyKiller.IsBlackOutKillCharge && ModHelpers.IsBlackout()); }
         );
         {
             SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);
