@@ -61,9 +61,10 @@ public class Lantern : MonoBehaviour
     public static readonly Sprite LightMask = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Phosphorus.LightMask.png", 115f);
     public static SpriteRenderer CreateCustomLight(Vector2 pos, float range, bool enabled = true, Sprite maskSprite = null)
     {
+        var trueRange = ShipStatus.Instance.MaxLightRadius * range * 6;
         var light = new GameObject("Light");
         light.transform.position = (Vector3)pos + new Vector3(0f, 0f, -50f);
-        light.transform.localScale *= 15 * range;
+        light.transform.localScale = new(trueRange, trueRange, 1f);
         light.layer = LayerMask.NameToLayer("Shadow");
 
         var lightRenderer = light.AddComponent<SpriteRenderer>();
