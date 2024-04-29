@@ -30,8 +30,6 @@ public class Lantern : MonoBehaviour
         light = CreateCustomLight(gameObject.transform.position, Phosphorus.LightRange.GetFloat(), false);
         light.gameObject.transform.parent = transform;
 
-        Activate();//FIXME:
-
         AllLanterns.Add(this);
     }
 
@@ -61,7 +59,7 @@ public class Lantern : MonoBehaviour
     }
 
     public static readonly Sprite LightMask = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Phosphorus.LightMask.png", 115f);
-    public static SpriteRenderer CreateCustomLight(Vector2 pos, float range, bool enabled = true, Sprite sprite = null)
+    public static SpriteRenderer CreateCustomLight(Vector2 pos, float range, bool enabled = true, Sprite maskSprite = null)
     {
         var light = new GameObject("Light");
         light.transform.position = (Vector3)pos + new Vector3(0f, 0f, -50f);
@@ -69,7 +67,7 @@ public class Lantern : MonoBehaviour
         light.layer = LayerMask.NameToLayer("Shadow");
 
         var lightRenderer = light.AddComponent<SpriteRenderer>();
-        lightRenderer.sprite = sprite == null ? LightMask : sprite;
+        lightRenderer.sprite = maskSprite == null ? LightMask : maskSprite;
         lightRenderer.material = PlayerControl.LocalPlayer.LightPrefab.LightCutawayMaterial;
         lightRenderer.enabled = enabled;
         return lightRenderer;

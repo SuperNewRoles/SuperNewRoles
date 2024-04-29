@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate.Phosphorus;
 
+// アイデア元：NoS。ありがとうございます！
 public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
@@ -20,7 +21,8 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         new(249, 188, 81, byte.MaxValue),
         new(RoleId.Phosphorus, TeamTag.Crewmate),
         TeamRoleType.Crewmate,
-        TeamType.Crewmate
+        TeamType.Crewmate,
+        QuoteMod.NebulaOnTheShip
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.Phosphorus, 436500, false,
