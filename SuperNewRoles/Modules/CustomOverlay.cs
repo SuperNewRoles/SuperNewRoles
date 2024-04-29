@@ -22,12 +22,7 @@ public class CustomOverlays
     private static Dictionary<byte, string> playerDataDictionary = new();
     internal static Dictionary<byte, string> ActivateRolesDictionary = new();
 
-    /// <summary>
-    /// オーバーレイの開閉をブロックするか
-    /// </summary>
-    private static bool IsOpenBlocked;
-
-    public static void ResetOverlays(bool isStartGame)
+    public static void ResetOverlays()
     {
         HideBlackBG();
         HideInfoOverlay();
@@ -40,13 +35,6 @@ public class CustomOverlays
         infoOverlayLeft = infoOverlayCenter = infoOverlayRight = null;
 
         overlayShown = false;
-        if (isStartGame && !ModHelpers.IsDebugMode()) // ゲーム開始時のリセットでデバッグモードでない場合
-        { // ゲーム開始時に全てのオーバーレイの表示を封じ, 10s後解放する。イントロ中に表示不可にする。
-            IsOpenBlocked = true;
-            new LateTask(() => { IsOpenBlocked = false; }, 10f, "Unblock the overlay display.");
-        }
-        else IsOpenBlocked = false;
-
         nowPattern = CustomOverlayPattern.None;
     }
 
@@ -283,6 +271,11 @@ public class CustomOverlays
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
     public static class CustomOverlayKeybinds
     {
+        /// <summary> オーバーレイの開閉をブロックするか </summary>
+        static bool IsOpenBlocked =>
+            FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening ||
+            (!ModHelpers.IsDebugMode() && (IntroCutscene.Instance || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed));
+
         public static void Postfix(KeyboardJoystick __instance)
         {
             // Overlayを閉じる動作
@@ -292,7 +285,11 @@ public class CustomOverlays
                 if (Input.GetKeyDown(KeyCode.Escape)) HideInfoOverlay(); // ユーザの意志による動作
             }
 
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening || IsOpenBlocked) return;
+            if (IsOpenBlocked)
+            {
+                if (overlayShown) HideInfoOverlay();
+                return;
+            }
 
             if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay(CustomOverlayPattern.PlayerDataInfo); // 参加プレイヤーの情報を表示
             else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay(CustomOverlayPattern.ActivateRoles); // 「現在配役されている役職」を表示
