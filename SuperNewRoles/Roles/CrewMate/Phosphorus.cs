@@ -85,6 +85,8 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     {
         RpcTypes type = active ? RpcTypes.LightingOn : RpcTypes.LightingOff;
 
+        LightingButtonInfo.ResetCoolTime();
+
         MessageWriter writer = RpcWriter;
         writer.Write((byte)type);
         SendRpc(writer);

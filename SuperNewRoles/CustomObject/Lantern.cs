@@ -63,12 +63,12 @@ public class Lantern : MonoBehaviour
     {
         var light = new GameObject("Light");
         light.transform.position = (Vector3)pos + new Vector3(0f, 0f, -50f);
-        light.transform.localScale *= range;
+        light.transform.localScale *= 15 * range;
         light.layer = LayerMask.NameToLayer("Shadow");
 
         var lightRenderer = light.AddComponent<SpriteRenderer>();
         lightRenderer.sprite = maskSprite == null ? LightMask : maskSprite;
-        lightRenderer.material = PlayerControl.LocalPlayer.LightPrefab.LightCutawayMaterial;
+        lightRenderer.material.shader = PlayerControl.LocalPlayer.LightPrefab.LightCutawayMaterial.shader;
         lightRenderer.enabled = enabled;
         return lightRenderer;
     }
