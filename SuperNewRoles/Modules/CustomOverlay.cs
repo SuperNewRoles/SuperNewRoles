@@ -18,11 +18,16 @@ public class CustomOverlays
     private static TMPro.TextMeshPro infoOverlayLeft;
     private static TMPro.TextMeshPro infoOverlayCenter;
     private static TMPro.TextMeshPro infoOverlayRight;
-    private static bool overlayShown = false;
+    private static bool overlayShown;
     private static Dictionary<byte, string> playerDataDictionary = new();
     internal static Dictionary<byte, string> ActivateRolesDictionary = new();
 
-    public static void ResetOverlays()
+    /// <summary>
+    /// オーバーレイの開閉をブロックするか
+    /// </summary>
+    private static bool IsOpenBlocked;
+
+    public static void ResetOverlays(bool isStartGame)
     {
         HideBlackBG();
         HideInfoOverlay();
@@ -33,7 +38,15 @@ public class CustomOverlays
         UnityEngine.Object.Destroy(infoOverlayRight);
         meetingUnderlay = infoUnderlay = null;
         infoOverlayLeft = infoOverlayCenter = infoOverlayRight = null;
+
         overlayShown = false;
+        if (isStartGame) // ゲーム開始時のリセット
+        { // ゲーム開始時に全てのオーバーレイの表示を封じ, 10s後解放する。イントロ中に表示不可にする。
+            IsOpenBlocked = true;
+            if (!ConfigRoles.DebugMode.Value) new LateTask(() => { IsOpenBlocked = false; }, 10f, "Unblock the overlay display.");
+        }
+        else IsOpenBlocked = false;
+
         nowPattern = CustomOverlayPattern.None;
     }
 
@@ -272,11 +285,16 @@ public class CustomOverlays
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening && overlayShown) HideInfoOverlay();
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening) return;
+            // Overlayを閉じる動作
+            if (overlayShown)
+            {
+                if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening) HideInfoOverlay(); // チャットが開かれた場合は閉じる
+                if (Input.GetKeyDown(KeyCode.Escape)) HideInfoOverlay(); // ユーザの意志による動作
+            }
 
-            if (Input.GetKeyDown(KeyCode.Escape) && overlayShown) HideInfoOverlay(); // overlayを閉じる
-            else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay(CustomOverlayPattern.PlayerDataInfo); // 参加プレイヤーの情報を表示
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening || IsOpenBlocked) return;
+
+            if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay(CustomOverlayPattern.PlayerDataInfo); // 参加プレイヤーの情報を表示
             else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay(CustomOverlayPattern.ActivateRoles); // 「現在配役されている役職」を表示
             else if (Input.GetKeyDown(KeyCode.T)) YoggleInfoOverlay(CustomOverlayPattern.MatchTag); // 「現在設定されているタグ」を表示
             else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay(nowPattern, true); // 全てのoverlayの文章の更新 & GとIはページ送り

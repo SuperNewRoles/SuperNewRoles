@@ -39,7 +39,7 @@ public static class RoleClass
     public static List<byte> BlockPlayers;
     public static float DefaultKillCoolDown;
 
-    public static void ClearAndReloadRoles()
+    public static void ClearAndReloadRoles(bool IsCallTimingStartGame = false)
     {
         ModHelpers.IdControlDic = new();
         ModHelpers.VentIdControlDic = new();
@@ -56,7 +56,7 @@ public static class RoleClass
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
-        CustomOverlays.ResetOverlays();
+        CustomOverlays.ResetOverlays(IsCallTimingStartGame);
         IsCoolTimeSetted = false;
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;

@@ -1116,7 +1116,7 @@ public static class RPCProcedure
         GameData.Instance.SetTasks(playerId, taskTypeIds);
     }
     public static void StartGameRPC()
-        => RoleClass.ClearAndReloadRoles();
+        => RoleClass.ClearAndReloadRoles(true);
 
     public static void UseEraserCount(byte playerid)
     {
