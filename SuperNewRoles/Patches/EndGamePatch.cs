@@ -221,6 +221,8 @@ public class EndGameManagerSetUpPatch
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
             poolablePlayer.cosmetics.nameText.text = winningPlayerData2.PlayerName;
 
+            RoleBaseManager.GetInterfaces<IEndGameVisualHandler>().Do(x => x.OnEndGame(poolablePlayer));
+
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 if (data.PlayerName != winningPlayerData2.PlayerName) continue;
@@ -1306,7 +1308,7 @@ public static class OnGameEndPatch
             // サボタージュ死
             if (finalStatus == FinalStatus.Sabotage && !p.IsDead && !p.Role.IsImpostor)
                 p.IsDead = true;
-          
+
             string namesuffix = "";
             if (p.Object.IsLovers())
                 namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");

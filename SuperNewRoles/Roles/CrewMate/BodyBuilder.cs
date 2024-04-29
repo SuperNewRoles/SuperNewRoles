@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles.Crewmate.BodyBuilder;
 
 // 提案者：Cade Mofu さん。ありがとうございます！
 [HarmonyPatch]
-public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IRpcHandler
+public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHandler, IEndGameVisualHandler, IRpcHandler, IHandleChangeRole
 {
     public static new RoleInfo Roleinfo = new(
         typeof(BodyBuilder),
@@ -67,24 +67,39 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IRpcHand
         CustomButtonInfos = new CustomButtonInfo[1] { bodyBuilderButton };
     }
 
-    private bool IsPosing = false;
     private void useAbility(bool active = true)
     {
-        if (IsPosing == false && active == false)
-            return;
-
+        RpcTypes type = active ? RpcTypes.Posing : RpcTypes.CancelPosing;
         MessageWriter writer = RpcWriter;
-        writer.Write(active);
+        writer.Write((byte)type);
         writer.Write(UnityEngine.Random.Range(1, 5));
         SendRpc(writer);
     }
 
+    private enum RpcTypes
+    {
+        Posing,
+        CancelPosing,
+        EndGame,
+    }
+
     public void RpcReader(MessageReader reader)
     {
-        bool active = reader.ReadBoolean();
+        RpcTypes type = (RpcTypes)reader.ReadByte();
         byte id = reader.ReadByte();
-        if (active) playPosing(id);
-        else cancelPosing();
+
+        switch (type)
+        {
+            case RpcTypes.Posing:
+                playPosing(id);
+                break;
+            case RpcTypes.CancelPosing:
+                cancelPosing();
+                break;
+            case RpcTypes.EndGame:
+                endGamePosing();
+                break;
+        }
     }
 
     // タスク関係
@@ -192,12 +207,9 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IRpcHand
         PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, spriteRenderer);
 
         myObject = pose;
-        IsPosing = true;
     }
     private void cancelPosing()
     {
-        IsPosing = false;
-
         SetInvisibleRPC(Player.PlayerId, (byte)RpcType.End, Player.PlayerId);
 
         if (myObject != null)
@@ -211,5 +223,22 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IRpcHand
             return;
 
         player.GetRoleBase<BodyBuilder>().useAbility(false);
+    }
+    public void OnChangeRole()
+        => useAbility(false);
+    public void OnAmDeath(DeathInfo deathInfo)
+        => useAbility(false);
+
+    // ゲーム終了画面でポージングさせる
+    public void OnEndGame(PoolablePlayer poolablePlayer)
+    {
+        if (!Player.AllTasksCompleted())
+            return;
+
+        useAbility(true);
+    }
+    private void endGamePosing()
+    {
+
     }
 }

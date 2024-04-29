@@ -16,6 +16,15 @@ public interface IDeathHandler
     /// <param name="deathInfo">死亡情報</param>
     public void OnDeath(DeathInfo deathInfo)
     {
+
+    }
+    /// <summary>
+    /// 自分が死んだ時の処理
+    /// </summary>
+    /// <param name="deathInfo">死亡情報</param>
+    public void OnAmDeath(DeathInfo deathInfo)
+    {
+
     }
     /// <summary>
     /// MurderPlayer時の処理(自分が関係してなくても発生)

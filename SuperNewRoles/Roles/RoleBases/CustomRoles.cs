@@ -157,6 +157,8 @@ public static class CustomRoles
     {
         RoleBaseManager.
             GetInterfaces<IDeathHandler>().Do(x => x.OnDeath(info));
+        if (info.DeathPlayer.AmOwner)
+            RoleBaseManager.GetInterfaces<IDeathHandler>().Do(x => x.OnAmDeath(info));
     }
 
     public static Color GetRoleColor(PlayerControl player, bool IsImpostorReturn = false)
