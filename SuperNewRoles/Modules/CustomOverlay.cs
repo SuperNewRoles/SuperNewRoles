@@ -40,10 +40,10 @@ public class CustomOverlays
         infoOverlayLeft = infoOverlayCenter = infoOverlayRight = null;
 
         overlayShown = false;
-        if (isStartGame) // ゲーム開始時のリセット
+        if (isStartGame && !ModHelpers.IsDebugMode()) // ゲーム開始時のリセットでデバッグモードでない場合
         { // ゲーム開始時に全てのオーバーレイの表示を封じ, 10s後解放する。イントロ中に表示不可にする。
             IsOpenBlocked = true;
-            if (!ConfigRoles.DebugMode.Value) new LateTask(() => { IsOpenBlocked = false; }, 10f, "Unblock the overlay display.");
+            new LateTask(() => { IsOpenBlocked = false; }, 10f, "Unblock the overlay display.");
         }
         else IsOpenBlocked = false;
 
