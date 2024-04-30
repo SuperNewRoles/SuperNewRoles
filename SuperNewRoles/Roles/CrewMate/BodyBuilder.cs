@@ -58,7 +58,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
     public BodyBuilder(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         bodyBuilderButton = new(null, this, () => useAbility(),
-            (isAlive) => isAlive && Player.AllTasksCompleted(),
+            (isAlive) => Player.AllTasksCompleted(),
             CustomButtonCouldType.CanMove | CustomButtonCouldType.NotMoving,
             null, ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BodyBuilder.BodyBuilderButton.png", 115f),
             null, new(-2f, 1, 0),
@@ -180,6 +180,10 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
     }
     private void playPosing(byte id)
     {
+        //使用者が霊界かつ自身が霊界でないならreturn
+        if (Player.IsDead() && PlayerControl.LocalPlayer.IsAlive())
+            return;
+
         cancelPosing();
         Player.NetTransform.Halt();
 
@@ -202,6 +206,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
         spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
         PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(spriteRenderer, false);
         PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, spriteRenderer);
+        spriteRenderer.color = new(1f, 1f, 1f, 1f / (Convert.ToInt32(Player.IsDead()) * 2));
 
         myObject = pose;
     }

@@ -222,8 +222,6 @@ public class EndGameManagerSetUpPatch
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
             poolablePlayer.cosmetics.nameText.text = winningPlayerData2.PlayerName;
 
-
-
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 if (data.PlayerName != winningPlayerData2.PlayerName) continue;
@@ -245,6 +243,7 @@ public class EndGameManagerSetUpPatch
                 spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
                 PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(spriteRenderer, false);
                 PlayerMaterial.SetColors(poolablePlayer.ColorId, spriteRenderer);
+                spriteRenderer.color = new(1f, 1f, 1f, 1f / (Convert.ToInt32(data.Status != FinalStatus.Alive) * 2));
             }
         }
 
