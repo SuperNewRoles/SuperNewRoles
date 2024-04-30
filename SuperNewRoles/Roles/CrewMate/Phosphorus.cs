@@ -43,7 +43,7 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     private static void CreateOption()
     {
         LightingCooltime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightingCooltime", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption);
-        LightRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightRange", 0.5f, 0.25f, 5f, 0.25f, Optioninfo.RoleOption);
+        LightRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightRange", 0.5f, 0.1f, 5f, 0.05f, Optioninfo.RoleOption);
     }
 
     public Phosphorus(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
