@@ -206,7 +206,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
         spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
         PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(spriteRenderer, false);
         PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, spriteRenderer);
-        spriteRenderer.color = new(1f, 1f, 1f, 1f / (Convert.ToInt32(Player.IsDead()) * 2));
+        spriteRenderer.color = new(1f, 1f, 1f, Player.IsDead() ? 0.5f : 1f);
 
         myObject = pose;
     }
@@ -230,4 +230,21 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
         => useAbility(false);
     public void OnAmDeath(DeathInfo deathInfo)
         => useAbility(false);
+
+    //2回バーベルを上げた状態でキャンセルすると幻の3ステップ目が発生するバグの修正
+    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.NextStep))]
+    static bool nextStep(NormalPlayerTask __instance)
+    {
+        if (__instance.TaskType != TaskTypes.LiftWeights || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
+            return true;
+
+        if (__instance.Data.Length <= 0) __instance.Data = new byte[] { 0 };
+        if (__instance.Data[0]++ >= __instance.MaxStep)
+        {
+            __instance.taskStep = __instance.MaxStep - 1;
+            return true;
+        }
+
+        return false;
+    }
 }

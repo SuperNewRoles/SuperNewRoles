@@ -243,7 +243,7 @@ public class EndGameManagerSetUpPatch
                 spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
                 PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(spriteRenderer, false);
                 PlayerMaterial.SetColors(poolablePlayer.ColorId, spriteRenderer);
-                spriteRenderer.color = new(1f, 1f, 1f, 1f / (Convert.ToInt32(data.Status != FinalStatus.Alive) * 2));
+                spriteRenderer.color = new(1f, 1f, 1f, data.Status != FinalStatus.Alive ? 0.5f : 1f);
             }
         }
 
