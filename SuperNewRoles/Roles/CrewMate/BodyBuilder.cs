@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles.Crewmate.BodyBuilder;
 
 // 提案者：Cade Mofu さん。ありがとうございます！
 [HarmonyPatch]
-public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHandler, IEndGameVisualHandler, IRpcHandler, IHandleChangeRole
+public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHandler, IRpcHandler, IHandleChangeRole
 {
     public static new RoleInfo Roleinfo = new(
         typeof(BodyBuilder),
@@ -95,9 +95,6 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
                 break;
             case RpcTypes.CancelPosing:
                 cancelPosing();
-                break;
-            case RpcTypes.EndGame:
-                endGamePosing();
                 break;
         }
     }
@@ -174,7 +171,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
     private GameObject myObject;
     private static Stream resourceAudioAssetBundleStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.BodyBuilder.BodyBuilderPoses.bundle");
     private static AssetBundle assetBundleBundle = AssetBundle.LoadFromMemory(resourceAudioAssetBundleStream.ReadFully());
-    private static GameObject getPrefab(byte id)
+    public static GameObject getPrefab(byte id)
     {
         if (!Prefabs.TryGetValue(id, out GameObject prefab))
             Prefabs[id] = prefab = assetBundleBundle.LoadAsset<GameObject>($"BodyBuilderAnim0{id}.prefab").DontUnload();
@@ -228,17 +225,4 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
         => useAbility(false);
     public void OnAmDeath(DeathInfo deathInfo)
         => useAbility(false);
-
-    // ゲーム終了画面でポージングさせる
-    public void OnEndGame(PoolablePlayer poolablePlayer)
-    {
-        if (!Player.AllTasksCompleted())
-            return;
-
-        useAbility(true);
-    }
-    private void endGamePosing()
-    {
-
-    }
 }

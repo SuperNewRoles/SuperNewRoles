@@ -11,6 +11,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Crewmate.BodyBuilder;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -221,12 +222,29 @@ public class EndGameManagerSetUpPatch
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
             poolablePlayer.cosmetics.nameText.text = winningPlayerData2.PlayerName;
 
-            RoleBaseManager.GetInterfaces<IEndGameVisualHandler>().Do(x => x.OnEndGame(poolablePlayer));
+
 
             foreach (var data in AdditionalTempData.playerRoles)
             {
                 if (data.PlayerName != winningPlayerData2.PlayerName) continue;
                 poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: winningPlayerData2.IsImpostor))}";
+
+                if (data.RoleId != RoleId.BodyBuilder || data.TasksCompleted != data.TasksTotal)
+                    continue;
+
+                var prefab = BodyBuilder.getPrefab((byte)UnityEngine.Random.Range(1, 5));
+                var pose = UnityEngine.Object.Instantiate(prefab, poolablePlayer.transform);
+                pose.gameObject.transform.position = poolablePlayer.transform.position;
+                pose.transform.localPosition = new(0f, 1f, 0f);
+                pose.transform.localScale *= 1.5f;
+                poolablePlayer.gameObject.transform.FindChild("Cosmetics").gameObject.SetActive(false);
+                poolablePlayer.gameObject.transform.FindChild("BodyForms").gameObject.SetActive(false);
+
+                var spriteRenderer = pose.GetComponent<SpriteRenderer>();
+                spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+                spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
+                PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(spriteRenderer, false);
+                PlayerMaterial.SetColors(poolablePlayer.ColorId, spriteRenderer);
             }
         }
 
