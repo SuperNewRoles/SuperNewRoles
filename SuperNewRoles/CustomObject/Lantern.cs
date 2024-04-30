@@ -24,7 +24,7 @@ public class Lantern : MonoBehaviour
         transform.localScale = Vector3.one * 0.25f;
 
         myRend = gameObject.GetOrAddComponent<SpriteRenderer>();
-        myRend.color = new(1f, 1f, 1f, 0.5f * Convert.ToInt32(Owner.AmOwner));
+        myRend.color = new(1f, 1f, 1f, Owner.AmOwner ? 0.5f : 0f);
         myRend.sprite = InactiveSprite;
 
         light = CreateCustomLight(gameObject.transform.position, Phosphorus.LightRange.GetFloat(), false);
