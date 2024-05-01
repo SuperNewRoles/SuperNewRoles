@@ -21,6 +21,7 @@ public class OptionInfo
     // 外から参照する郡
     public int AssignSelection => RoleOption?.GetSelection() ?? 0;
     public int PlayerCount => PlayerCountOption?.GetInt() ?? 0;
+    public float KillCoolTime => KillCoolTimeOption?.GetFloat() ?? 0;
     public bool CanUseVent => CanUseVentOption != null && CanUseVentOption.GetBool();
     public bool CanUseSabo => CanUseSaboOption != null && CanUseSaboOption.GetBool();
     public bool IsImpostorVision => IsImpostorVisionOption != null && IsImpostorVisionOption.GetBool();
@@ -34,6 +35,7 @@ public class OptionInfo
     // 設定郡
     public CustomOption RoleOption { get; private set; }
     private CustomOption PlayerCountOption;
+    private CustomOption KillCoolTimeOption;
     private CustomOption CanUseVentOption;
     private CustomOption CanUseSaboOption;
     private CustomOption IsImpostorVisionOption;
@@ -42,6 +44,7 @@ public class OptionInfo
     private CustomOption AbilityCountOption;
 
     // 設定生成のために保存しておくやつ
+    private (float CoolTimeDefault, float CoolTimeMin, float CoolTimeMax, float CoolTimeStep, bool SupportSHR)? KillCoolTimeOpt { get; }
     private (bool CanUseVentDefault, bool SupportSHR)? VentOption { get; }
     private (bool CanUseSaboDefault, bool SupportSHR)? SaboOption { get; }
     private (bool IsImpostorVisionDefault, bool SupportSHR)? ImpostorVisionOption { get; }
@@ -69,6 +72,7 @@ public class OptionInfo
     /// <param name="MaxPlayer">最大アサイン可能人数(省略時:[インポ最大15人, クルー＆第三最大15人])</param>
     /// <param name="RoleOpenTimeUTC">役職を解放する日時 (これを使用する際は, [ 定数 : HasSealingOption (CustomOptionHolder.cs)] をtrueにして下さい。)</param>
     public OptionInfo(RoleId role, int OptionId, bool SupportSHR,
+        (float CoolTimeDefault, float CoolTimeMin, float CoolTimeMax, float CoolTimeStep, bool SupportSHR)? KillCoolTimeOption = null,
         (bool CanUseVentDefault, bool SupportSHR)? VentOption = null,
         (bool CanUseSaboDefault, bool SupportSHR)? SaboOption = null,
         (bool IsImpostorVisionDefault, bool SupportSHR)? ImpostorVisionOption = null,
@@ -83,6 +87,7 @@ public class OptionInfo
     {
         this.Role = role;
         this.SupportSHR = SupportSHR;
+        this.KillCoolTimeOpt = KillCoolTimeOption;
         this.VentOption = VentOption;
         this.SaboOption = SaboOption;
         this.ImpostorVisionOption = ImpostorVisionOption;
@@ -115,6 +120,8 @@ public class OptionInfo
             "SettingPlayerCountName",
             PlayerCount[0], PlayerCount[1], PlayerCount[2],
             PlayerCount[3], RoleOption);
+        if (KillCoolTimeOpt.HasValue)
+            KillCoolTimeOption = CustomOption.Create(OptionId++, KillCoolTimeOpt.Value.SupportSHR, RoleOption.type, "KillCoolTimeOption", KillCoolTimeOpt.Value.CoolTimeDefault, KillCoolTimeOpt.Value.CoolTimeMin, KillCoolTimeOpt.Value.CoolTimeMax, KillCoolTimeOpt.Value.CoolTimeStep, RoleOption, isHidden: isHidden);
         if (VentOption.HasValue)
             CanUseVentOption = CustomOption.Create(OptionId++, VentOption.Value.SupportSHR, RoleOption.type, "CanUseVentOption", VentOption.Value.CanUseVentDefault, RoleOption, isHidden: isHidden);
         if (SaboOption.HasValue)

@@ -23,7 +23,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
         TeamRoleType.Neutral,
         TeamType.Neutral
     );
-    public static new OptionInfo Optioninfo = new(RoleId.Owl, 303800, false, CoolTimeOption: (30f, 2.5f, 60f, 2.5f, false), VentOption: (true, false), optionCreator: CreateOption);
+    public static new OptionInfo Optioninfo = new(RoleId.Owl, 303800, false, KillCoolTimeOption: (30f, 2.5f, 60f, 2.5f, false), VentOption: (true, false), optionCreator: CreateOption);
     public static new IntroInfo Introinfo = new(RoleId.Owl, introSound: RoleTypes.Shapeshifter);
 
     public static CustomOption ImposterVisibilityDuringBlackout;
@@ -67,18 +67,18 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
         IsSpecialBlackout = false;
         BlackOutTimer = 0f;
         NestBuildingButtom = new(1, this, NestBuildingButtomClick, (isAlive) => isAlive && NestBuildingButtom.AbilityCount > 0, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetVent, null,
-                                 ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpiderButton.png", 110f),
-                                 () => 0f, new(0f, 1f, 0f), "OwlNestBuildingButtom", KeyCode.F, 49);
+                                 ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.OwlNestBuildingButton.png", 110f),
+                                 () => 0f, new(0f, 1f, 0f), "OwlNestBuildingButton", KeyCode.F, 49);
         TransportButton = new(null, this, TransportButtonClick, (isAlive) => isAlive && NestBuildingButtom.AbilityCount <= 0, CustomButtonCouldType.CanMove, TransportButtonMeetingEnd,
-                              ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PenguinButton_1.png", 110f),
-                              () => 0f, new(-1f, 1f, 0f), "OwlTransportButtom", KeyCode.F, 49, CouldUse: TransportButtonCouldUse);
+                              ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.OwlTransportButton.png", 110f),
+                              () => 0f, new(-1f, 1f, 0f), "OwlTransportButton", KeyCode.F, 49, CouldUse: TransportButtonCouldUse);
         SpecialBlackoutButton = new(null, this, SpecialBlackoutButtonClick, (isAlive) => isAlive && NestBuildingButtom.AbilityCount <= 0, CustomButtonCouldType.CanMove, SpecialBlackoutButtonMeetingEnd,
-                                    ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 110f),
+                                    ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.OwlSpecialBlackoutButton.png", 110f),
                                     SpecialBlackoutCool.GetFloat, new(-2f, 1f, 0f), "OwlSpecialBlackoutButton", null, null, CouldUse: SpecialBlackoutButtonCouldUse,
                                     DurationTime: SpecialBlackoutTime.GetFloat, OnEffectEnds: SpecialBlackoutButtonEffectEnds);
         OwlKillButton = new(null, this, OwlKillButtonClick, (isAlive) => isAlive && NestBuildingButtom.AbilityCount <= 0, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget, null,
                             HudManager.Instance.KillButton.graphic.sprite,
-                            () => Optioninfo.CoolTime, new(0f, 1f, 0f), "Kill", KeyCode.Q, baseButton: HudManager.Instance.KillButton, CouldUse: OwlKillButtonCouldUse);
+                            () => Optioninfo.KillCoolTime, new(0f, 1f, 0f), "Kill", KeyCode.Q, baseButton: HudManager.Instance.KillButton, CouldUse: OwlKillButtonCouldUse);
         CustomButtonInfos = new CustomButtonInfo[4]
         {
             NestBuildingButtom,
@@ -88,7 +88,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
         };
     }
 
-    public bool CanUseKill => false;
+    public bool CanUseKill => ModHelpers.IsBlackout();
 
     public bool CanUseVent => Optioninfo.CanUseVent;
 
@@ -108,6 +108,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
     {
         if (TransportBody)
         {
+            TransportButtonReset();
             Vent vent = TransportButton.SetTargetVent();
             if (vent && vent.Id == NestVentId)
             {
@@ -134,19 +135,30 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
         }
     }
 
-    public void TransportButtonMeetingEnd() => TransportBody = null;
+    public void TransportButtonMeetingEnd()
+    {
+        TransportBody = null;
+        TransportButtonReset();
+    }
 
     public bool TransportButtonCouldUse()
     {
         if (!ModHelpers.IsBlackout())
         {
             TransportBody = null;
+            TransportButtonReset();
             return false;
         }
         if (TransportBody)
         {
             Vent vent = TransportButton.SetTargetVent(false);
-            if (vent && vent.Id == NestVentId) vent.SetOutline(true, true);
+            if (vent && vent.Id == NestVentId)
+            {
+                vent.SetOutline(true, true);
+                TransportButton.customButton.Sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.OwlHideDeadBodyButton.png", 110f);
+                TransportButton.customButton.buttonText = ModTranslation.GetString("OwlHideDeadBodyButton");
+            }
+            else TransportButtonReset();
             return true;
         }
         foreach (Collider2D collider in Physics2D.OverlapCircleAll(Player.GetTruePosition(), Player.MaxReportDistance, Constants.PlayersOnlyMask))
@@ -160,6 +172,12 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
             return true;
         }
         return false;
+    }
+
+    public void TransportButtonReset()
+    {
+        TransportButton.customButton.Sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.OwlTransportButton.png", 110f);
+        TransportButton.customButton.buttonText = ModTranslation.GetString("OwlTransportButton");
     }
 
     public void SpecialBlackoutButtonClick()

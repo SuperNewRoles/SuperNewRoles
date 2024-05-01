@@ -124,6 +124,7 @@ LightColor,bright,明るい,亮,亮
 DarkerColor,darker,暗い,暗,暗
 
 # CustomOptions
+KillCoolTimeOption,Kill Cooldown,キルクールタイム,击杀冷却,擊殺冷卻
 CanUseVentOption,Can usevent,ベントを使用できる,可以使用管道,可以使用通風管道
 CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使用破坏,可以使用破壞
 IsImpostorVisionOption,Impostor vision,インポスターの視界か,拥有内鬼视野,是否啟用內鬼視野
@@ -1860,8 +1861,9 @@ OwlImposterVisibilityDuringBlackout,Imposter visibility during blackout,停電�
 OwlCanSpecialBlackoutDeaebodyCount,Number of bodies that will be able to use special blackout,特殊停電を使えるようになる死体数
 SpecialBlackoutCool,Cool time for special power outages,特殊停電のクールタイム
 SpecialBlackoutTime,Effect duration of special power outages,特殊停電の効果時間
-OwlNestBuildingButtom,Nest-building,巣作り
-OwlTransportButtom,Transport,運搬
+OwlNestBuildingButton,Nest-building,巣作り
+OwlTransportButton,Transport,運搬
+OwlHideDeadBodyButton,Hide,隠す
 OwlSpecialBlackoutButton,Special Blackout,特殊停電
 Kill,Kill,キル
 
