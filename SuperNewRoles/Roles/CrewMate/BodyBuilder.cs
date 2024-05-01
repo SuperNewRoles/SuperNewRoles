@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles.Crewmate.BodyBuilder;
 
 // 提案者：Cade Mofu さん。ありがとうございます！
 [HarmonyPatch]
-public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IRpcHandler, IHandleChangeRole
+public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IHandleChangeRole, IMeetingHandler, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(BodyBuilder),
@@ -230,6 +230,9 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IR
         => useAbility(false);
     public void OnAmDeath(DeathInfo deathInfo)
         => useAbility(false);
+    public void StartMeeting()
+        => useAbility(false);
+    public void CloseMeeting() { }
 
     //2回バーベルを上げた状態でキャンセルすると幻の3ステップ目が発生するバグの修正
     [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.NextStep)), HarmonyPrefix]
