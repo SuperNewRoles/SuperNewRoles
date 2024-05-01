@@ -221,7 +221,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
     static void onMovePlayer(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
     {
         PlayerControl player = __instance.myPlayer;
-        if (!player.IsRole(RoleId.BodyBuilder) || direction == Vector2.zero)
+        if (!player.IsRole(RoleId.BodyBuilder) || direction == Vector2.zero || player.GetRoleBase<BodyBuilder>().myObject == null)
             return;
 
         player.GetRoleBase<BodyBuilder>().useAbility(false);
@@ -232,10 +232,10 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
         => useAbility(false);
 
     //2回バーベルを上げた状態でキャンセルすると幻の3ステップ目が発生するバグの修正
-    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.NextStep))]
+    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.NextStep)), HarmonyPrefix]
     static bool nextStep(NormalPlayerTask __instance)
     {
-        if (__instance.TaskType != TaskTypes.LiftWeights || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
+        if (!PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder) || __instance.taskStep >= __instance.MaxStep)
             return true;
 
         if (__instance.Data.Length <= 0) __instance.Data = new byte[] { 0 };
