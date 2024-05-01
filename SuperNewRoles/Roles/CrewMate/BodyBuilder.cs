@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles.Crewmate.BodyBuilder;
 
 // 提案者：Cade Mofu さん。ありがとうございます！
 [HarmonyPatch]
-public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHandler, IRpcHandler, IHandleChangeRole
+public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IRpcHandler, IHandleChangeRole
 {
     public static new RoleInfo Roleinfo = new(
         typeof(BodyBuilder),
@@ -184,7 +184,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
         if (Player.IsDead() && PlayerControl.LocalPlayer.IsAlive())
             return;
 
-        cancelPosing();
+        cancelPosing(true);
         Player.NetTransform.Halt();
 
         var distance = Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, Player.NetTransform.transform.position);
@@ -195,7 +195,7 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
 
         var prefab = getPrefab(id);
         var pose = UnityEngine.Object.Instantiate(prefab, Player.NetTransform.transform);
-        SetInvisibleRPC(Player.PlayerId, (byte)RpcType.Start, Player.PlayerId);
+        Player.gameObject.GetComponentsInChildren<SpriteRenderer>().ForEach(x => x.color = new(1f, 1f, 1f, 0f));
 
         var pos = pose.gameObject.transform.position;
         pos.z -= 0.5f;
@@ -210,9 +210,9 @@ public class BodyBuilder : InvisibleRoleBase, ICrewmate, ICustomButton, IDeathHa
 
         myObject = pose;
     }
-    private void cancelPosing()
+    private void cancelPosing(bool wasPosing = false)
     {
-        SetInvisibleRPC(Player.PlayerId, (byte)RpcType.End, Player.PlayerId);
+        Player.gameObject.GetComponentsInChildren<SpriteRenderer>().ForEach(x => x.color = new(1f, 1f, 1f, wasPosing ? 0f : 1f));
 
         if (myObject != null)
             GameObject.Destroy(myObject);
