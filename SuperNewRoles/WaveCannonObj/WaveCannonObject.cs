@@ -123,10 +123,6 @@ public class WaveCannonObject : CustomAnimation
     }
     public WaveCannonObject Init(Vector3 pos, bool FlipX, PlayerControl _owner, WCAnimType animType)
     {
-        // デバッグ用コード
-        if (animType == WCAnimType.Tank)
-            animType = WCAnimType.Bullet;
-
         // 保存
         OwnerPos = _owner.transform.position;
         IsFlipX = FlipX;

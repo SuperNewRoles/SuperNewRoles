@@ -79,10 +79,15 @@ public class WCTankAnimHandler : IWaveCannonAnimationHandler
                 CannonObject.DestroyIndex++;
                 if (CannonObject.DestroyIndex <= 3)
                     return;
+                CannonObject?.Owner?.GetRoleBase<WaveCannonJackal>()?.SetDidntLoadBullet();
                 if (CannonObject.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
                     {
+                        CannonObject.Owner.GetRoleBase<WaveCannon>()?
+                        .CustomButtonInfos?
+                        .FirstOrDefault()?
+                        .ResetCoolTime();
                         if (WaveCannon.IsSyncKillCoolTime.GetBool())
                             PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
                     }
@@ -90,10 +95,6 @@ public class WCTankAnimHandler : IWaveCannonAnimationHandler
                     {
                         WaveCannonJackal.ResetCooldowns();
                     }
-                    CannonObject.Owner.GetRoleBase<WaveCannon>()?
-                    .CustomButtonInfos?
-                    .FirstOrDefault()?
-                    .ResetCoolTime();
                 }
                 GameObject.Destroy(CannonObject.gameObject);
             });

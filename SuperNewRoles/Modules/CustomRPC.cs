@@ -53,6 +53,9 @@ public enum RoleId
 
     // Neutral Roles
     Cupid,
+    WaveCannonJackal,
+    Bullet,
+    SidekickWaveCannon,
 
     // Crewmate Roles
     NiceGuesser,
@@ -193,8 +196,6 @@ public enum RoleId
     ConnectKiller,
     GM,
     Cracker,
-    WaveCannonJackal,
-    SidekickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -301,7 +302,6 @@ public enum CustomRPC
     SidekickPromotes,
     CreateSidekick,
     CreateSidekickSeer,
-    CreateSidekickWaveCannon,
     SetSpeedBoost,
     CountChangerSetRPC,
     SetRoomTimerRPC,
@@ -1531,27 +1531,6 @@ public static class RPCProcedure
             ChacheManager.ResetMyRoleChache();
         }
     }
-
-    /// <summary>
-    /// サイドキック(波動砲)の作成
-    /// </summary>
-    /// <param name="playerid">SK対象者のplayerid</param>
-    /// <param name="IsFake">見せかけのSKか(TORでインポスターSK時ジャッカル視点のみSKできた様になる状態SNRでは使われていない)</param>
-    public static void CreateSidekickWaveCannon(byte playerid, bool IsFake)
-    {
-        // FIXME: RpcHandlerに後で移動させる
-        var player = ModHelpers.PlayerById(playerid);
-        if (player == null) return;
-        //if (IsFake) WaveCannonJackal.FakeSidekickWaveCannonPlayer.Add(player);
-        //else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
-            player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
-            player.SetRole(RoleId.SidekickWaveCannon);//
-            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
-        }
-    }
     public static void ExiledRPC(byte playerid)
     {
         var player = ModHelpers.PlayerById(playerid);
@@ -1921,9 +1900,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CreateSidekickSeer:
                         CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.CreateSidekickWaveCannon:
-                        CreateSidekickWaveCannon(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.ArsonistDouse:
                         ArsonistDouse(reader.ReadByte(), reader.ReadByte());

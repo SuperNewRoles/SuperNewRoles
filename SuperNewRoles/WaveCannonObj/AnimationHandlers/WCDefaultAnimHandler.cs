@@ -102,6 +102,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                 CannonObject.DestroyIndex++;
                 if (CannonObject.DestroyIndex > 3)
                 {
+                    CannonObject?.Owner?.GetRoleBase<WaveCannonJackal>()?.SetDidntLoadBullet();
                     if (CannonObject.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
                         if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))

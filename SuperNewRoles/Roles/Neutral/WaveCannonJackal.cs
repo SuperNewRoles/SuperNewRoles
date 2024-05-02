@@ -25,7 +25,7 @@ public enum WCJackalSidekickType
     WaveCannonSidekick,
     BulletSidekick,
 }
-public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailable, IImpostorVision, IJackal
+public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailable, IImpostorVision, IJackal, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(WaveCannonJackal),
@@ -113,7 +113,10 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
     public bool IwasSidekicked { get; private set; }
 
     public CustomButtonInfo WaveCannonButtonInfo;
+    public CustomButtonInfo WaveCannonSidekickButtonInfo;
     public CustomButtonInfo[] CustomButtonInfos { get; }
+
+    public bool IsLoadedBullet { get; private set; }
 
     public bool CanSidekick { get; private set; }
 
@@ -123,15 +126,16 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
     {
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
+        WCAnimType AnimationType = IsLoadedBullet ? WCAnimType.Bullet : (WCAnimType)AnimationOptionType.GetSelection();
         writer.Write((byte)WaveCannonObject.RpcType.Spawn);
         writer.Write((byte)0);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
         writer.Write(pos.x);
         writer.Write(pos.y);
-        writer.Write((byte)WaveCannonJackal.AnimationOptionType.GetSelection());
+        writer.Write((byte)AnimationType);
         writer.EndRPC();
-        RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, (WaveCannonObject.WCAnimType)WaveCannonJackal.AnimationOptionType.GetSelection());
+        RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, AnimationType);
     }
     private void OnEffectEnds()
     {
@@ -145,6 +149,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         byte[] buff = new byte[sizeof(float) * 2];
         Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
         Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+        WCAnimType AnimationType = IsLoadedBullet ? WCAnimType.Bullet : (WCAnimType)AnimationOptionType.GetSelection();
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
         writer.Write((byte)RpcType.Shoot);
         writer.Write((byte)obj.Id);
@@ -152,9 +157,12 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
         writer.Write(pos.x);
         writer.Write(pos.y);
-        writer.Write((byte)AnimationOptionType.GetSelection());
+        writer.Write((byte)AnimationType);
         writer.EndRPC();
-        RPCProcedure.WaveCannon((byte)RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, (WCAnimType)AnimationOptionType.GetSelection());
+        RPCProcedure.WaveCannon((byte)RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, AnimationType);
+        if (IsLoadedBullet && CreatedSidekick is Bullet BulletRole)
+            BulletRole?.Player?.RpcExiledUnchecked();
+        IsLoadedBullet = false;
     }
 
 
@@ -168,18 +176,64 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f),
             () => Optioninfo.CoolTime, new Vector3(-2f, 1, 0),
             ModTranslation.GetString("WaveCannonButtonName"), KeyCode.F,
-            DurationTime: () => ChargeTime.GetFloat(), OnEffectEnds: OnEffectEnds);
+            DurationTime: () => IsLoadedBullet ? BulletLoadedChargeTime.GetFloat() : ChargeTime.GetFloat(),
+            OnEffectEnds: OnEffectEnds);
+
+        WaveCannonSidekickButtonInfo = new(null, this, SidekickButtonOnClick,
+            (isAlive) => isAlive && CanSidekick, CustomButtonCouldType.CanMove, null,
+            RoleClass.Jackal.GetButtonSprite(),
+            CreateSidekickCoolTime.GetFloat, new Vector3(-2f, 1, 0),
+            ModTranslation.GetString("WaveCannonSidekickButtonName"),
+            CouldUse: () => WaveCannonSidekickButtonInfo.SetCurrentTarget(JackalSetTarget()) != null
+        );
         CustomButtonInfos = [WaveCannonButtonInfo];
     }
+
+    private void SidekickButtonOnClick()
+    {
+        PlayerControl target = WaveCannonSidekickButtonInfo.CurrentTarget;
+        if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
+        {
+            if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
+            {
+                var sidePlayer = RoleClass.SideKiller.GetSidePlayer(target); // targetのサイドキラーを取得
+                if (sidePlayer != null && sidePlayer.IsAlive()) // null(作っていない)ならば処理しない
+                {
+                    sidePlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                    RoleClass.SideKiller.IsUpMadKiller = true;
+                }
+            }
+        }
+        MessageWriter writer = RpcWriter;
+        writer.Write(target.PlayerId);
+        writer.Write(false);
+        SendRpc(writer);
+    }
+
+    public void LoadedBullet()
+    {
+        IsLoadedBullet = true;
+        CustomButton cbn = WaveCannonButtonInfo.GetOrCreateButton();
+        cbn.Sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonLoadedBulletButton.png", 115f);
+        cbn.Timer = 0f;
+    }
+    public void SetDidntLoadBullet()
+    {
+        IsLoadedBullet = false;
+        WaveCannonButtonInfo.GetOrCreateButton().Sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
+    }
+
     public static void ResetCooldowns()
     {
         HudManagerStartPatch.JackalKillButton.MaxTimer = KillCooldown.GetFloat();
         HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
         if (!IsSyncKillCoolTime.GetBool())
             return;
-        WaveCannonJackal wcjackal = RoleBaseManager.GetLocalRoleBase<WaveCannonJackal>();
-        if (wcjackal != null)
-            wcjackal.WaveCannonButtonInfo.ResetCoolTime();
+        WaveCannonJackal wcjackal = PlayerControl.LocalPlayer.GetRoleBase<WaveCannonJackal>();
+        if (wcjackal == null)
+            return;
+        wcjackal.WaveCannonButtonInfo.ResetCoolTime();
+        wcjackal.WaveCannonSidekickButtonInfo.ResetCoolTime();
     }
     public static void EndMeeting() => ResetCooldowns();
 
@@ -187,6 +241,51 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
     {
         CanSidekick = CanCreateSidekickNewByNewJackal.GetBool();
         IwasSidekicked = true;
+    }
+
+    public void RpcReader(MessageReader reader)
+    {
+        HandleRpcCreateSidekickWaveCannon(reader.ReadByte(), reader.ReadBoolean());
+    }
+
+    private static RoleId GetCurrentTargetSidekickType()
+    {
+        return (WCJackalSidekickType)CreateSidekickType.GetSelection() switch
+        {
+            WCJackalSidekickType.Sidekick => RoleId.Sidekick,
+            WCJackalSidekickType.JackalFriends => RoleId.JackalFriends,
+            WCJackalSidekickType.WaveCannonSidekick => RoleId.SidekickWaveCannon,
+            WCJackalSidekickType.BulletSidekick => RoleId.Bullet,
+            _ => RoleId.WiseMan,
+        };
+    }
+
+    /// <summary>
+    /// サイドキック(波動砲)の作成
+    /// </summary>
+    /// <param name="playerid">SK対象者のplayerid</param>
+    /// <param name="IsFake">見せかけのSKか(TORでインポスターSK時ジャッカル視点のみSKできた様になる状態SNRでは使われていない)</param>
+    public void HandleRpcCreateSidekickWaveCannon(byte playerid, bool IsFake)
+    {
+        var player = ModHelpers.PlayerById(playerid);
+        if (player == null) return;
+        CanSidekick = false;
+
+        // FIXME: AttributeBaseを作る
+        //if (IsFake) WaveCannonJackal.FakeSidekickWaveCannonPlayer.Add(player);
+        //else
+        {
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+            player.ClearRole();
+            player.SetRole(GetCurrentTargetSidekickType());
+            if (player.GetRoleBase() is ISidekick sidekick)
+            {
+                sidekick.SetParent(Player);
+                CreatedSidekick = sidekick;
+            }
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            ChacheManager.ResetMyRoleChache();
+        }
     }
 }
 /*
