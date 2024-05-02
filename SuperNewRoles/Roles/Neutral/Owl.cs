@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SuperNewRoles.Roles.Neutral;
 
 // 提案者 : はるかさん, 提案代行者 : まっすーさん
-public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, ISpecialWinner, ISpecialBlackout, IRpcHandler, IFixedUpdaterAll, IFixedUpdaterMe
+public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, ISpecialWinner, ISpecialBlackout, IRpcHandler, IFixedUpdaterAll
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Owl),
@@ -110,17 +110,21 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
         {
             TransportButtonReset();
             Vent vent = TransportButton.SetTargetVent();
+            byte id = TransportBody.ParentId;
+            MessageWriter writer1 = RpcWriter;
+            writer1.Write(false);
+            writer1.Write(byte.MaxValue);
+            SendRpc(writer1);
             if (vent && vent.Id == NestVentId)
             {
-                RPCProcedure.MoveDeadBody(TransportBody.ParentId, 9999f, 9999f);
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MoveDeadBody);
-                writer.Write(TransportBody.ParentId);
-                writer.Write(9999f);
-                writer.Write(9999f);
-                writer.EndRPC();
+                RPCProcedure.MoveDeadBody(id, 9999f, 9999f);
+                MessageWriter writer2 = RPCHelper.StartRPC(CustomRPC.MoveDeadBody);
+                writer2.Write(id);
+                writer2.Write(9999f);
+                writer2.Write(9999f);
+                writer2.EndRPC();
                 NestDeadBodyCount++;
             }
-            TransportBody = null;
             return;
         }
         foreach (Collider2D collider in Physics2D.OverlapCircleAll(Player.GetTruePosition(), Player.MaxReportDistance, Constants.PlayersOnlyMask))
@@ -131,13 +135,19 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
             Vector2 player_pos = Player.GetTruePosition();
             Vector2 body_pos = component.TruePosition;
             if (PhysicsHelpers.AnythingBetween(player_pos, body_pos, Constants.ShipAndObjectsMask, false)) continue;
-            TransportBody = component;
+            MessageWriter writer = RpcWriter;
+            writer.Write(false);
+            writer.Write(component.ParentId);
+            SendRpc(writer);
         }
     }
 
     public void TransportButtonMeetingEnd()
     {
-        TransportBody = null;
+        MessageWriter writer = RpcWriter;
+        writer.Write(false);
+        writer.Write(byte.MaxValue);
+        SendRpc(writer);
         TransportButtonReset();
     }
 
@@ -145,7 +155,10 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
     {
         if (!ModHelpers.IsBlackout())
         {
-            TransportBody = null;
+            MessageWriter writer = RpcWriter;
+            writer.Write(false);
+            writer.Write(byte.MaxValue);
+            SendRpc(writer);
             TransportButtonReset();
             return false;
         }
@@ -184,6 +197,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
     {
         MessageWriter writer = RpcWriter;
         writer.Write(true);
+        writer.Write(true);
         writer.Write(SpecialBlackoutTime.GetFloat());
         SendRpc(writer);
     }
@@ -193,6 +207,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
     public void SpecialBlackoutButtonEffectEnds()
     {
         MessageWriter writer = RpcWriter;
+        writer.Write(true);
         writer.Write(false);
         writer.Write(0f);
         SendRpc(writer);
@@ -236,25 +251,31 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
 
     public void FixedUpdateAllDefault()
     {
-        if (!IsSpecialBlackout) return;
-        BlackOutTimer -= Time.fixedDeltaTime;
-    }
-
-    public void FixedUpdateMeDefaultAlive()
-    {
-        if (!TransportBody) return;
-        Vector3 pos = Player.transform.position;
-        RPCProcedure.MoveDeadBody(TransportBody.ParentId, pos.x, pos.y);
-        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MoveDeadBody);
-        writer.Write(TransportBody.ParentId);
-        writer.Write(pos.x);
-        writer.Write(pos.y);
-        writer.EndRPC();
+        if (IsSpecialBlackout) BlackOutTimer -= Time.fixedDeltaTime;
+        if (TransportBody) TransportBody.transform.position = Player.transform.position;
     }
 
     public void RpcReader(MessageReader reader)
     {
-        IsSpecialBlackout = reader.ReadBoolean();
-        BlackOutTimer = reader.ReadSingle();
+        if (reader.ReadBoolean())
+        {
+            IsSpecialBlackout = reader.ReadBoolean();
+            BlackOutTimer = reader.ReadSingle();
+        }
+        else
+        {
+            byte id = reader.ReadByte();
+            if (id == byte.MaxValue)
+            {
+                TransportBody = null;
+                return;
+            }
+            foreach (DeadBody dead in Object.FindObjectsOfType<DeadBody>())
+            {
+                if (dead.ParentId != id) continue;
+                TransportBody = dead;
+                break;
+            }
+        }
     }
 }
