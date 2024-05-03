@@ -22,7 +22,8 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
         new(RoleId.EvilHacker, TeamTag.Impostor,
             RoleTag.Information, RoleTag.Killer),
         TeamRoleType.Impostor,
-        TeamType.Impostor
+        TeamType.Impostor,
+        QuoteMod.TheOtherRolesGMH
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.EvilHacker, 200300, false,
