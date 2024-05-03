@@ -153,17 +153,18 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
 
     public bool TransportButtonCouldUse()
     {
-        if (!ModHelpers.IsBlackout())
-        {
-            MessageWriter writer = RpcWriter;
-            writer.Write(false);
-            writer.Write(byte.MaxValue);
-            SendRpc(writer);
-            TransportButtonReset();
-            return false;
-        }
         if (TransportBody)
         {
+            if (!ModHelpers.IsBlackout())
+            {
+                MessageWriter writer = RpcWriter;
+                writer.Write(false);
+                writer.Write(byte.MaxValue);
+                SendRpc(writer);
+                TransportButtonReset();
+                return false;
+            }
+
             Vent vent = TransportButton.SetTargetVent(false);
             if (vent && vent.Id == NestVentId)
             {
