@@ -179,25 +179,29 @@ public class WaveCannonObject : CustomAnimation
         // 計算
         float PlayerPositionX = PlayerPosition.x;
         float MyLocalPositionX = transform.localPosition.x;
-        if (PlayerPositionX < 0)
+        if (IsFlipX)
             PlayerPositionX *= -1;
-        if (MyLocalPositionX < 0)
+        if (IsFlipX)
             MyLocalPositionX *= -1;
-        Vector3 newroopPosition = new(((MyLocalPositionX + PlayerPositionX) / 2) - 1,
+        Vector3 newroopPosition = new(MyLocalPositionX + PlayerPositionX,
             renderer.transform.localPosition.y, renderer.transform.localPosition.z);
 
-        renderer.transform.localPosition = newroopPosition;
-        renderer.size = new(((MyLocalPositionX + PlayerPositionX) / 2) - 0.5f,
+        //renderer.transform.localPosition = newroopPosition;
+        //renderer.size = new(((MyLocalPositionX + PlayerPositionX) / 2) - 0.5f,
+        //    renderer.size.y);
+        renderer.transform.localPosition = new(MyLocalPositionX + PlayerPositionX + 2.54f,0);
+        renderer.size = new(((MyLocalPositionX + PlayerPositionX) * 2),
             renderer.size.y);
 
-        GameObject RotationEmptyParent = new GameObject("RotationEmptyParent");
+        GameObject RotationEmptyParent = new("RotationEmptyParent");
         RotationEmptyParent.transform.SetParent(effectGameObjectsParent);
-        RotationEmptyParent.transform.Rotate(new(0, 0, Angle));
 
         WaveCannonEffect newEffect = CreateEffect();
         newEffect.transform.SetParent(RotationEmptyParent.transform, true);
-        RotationEmptyParent.transform.localPosition += new Vector3(PlayerPosition.x + newEffect.transform.localPosition.x, 0);
+        RotationEmptyParent.transform.localPosition = new Vector3(PlayerPositionX - MyLocalPositionX - 0.8f, 0f, newEffect.transform.localPosition.z); //newEffect.transform.localPosition.x - 1.5f, 0.5f);
         newEffect.transform.localPosition = Vector3.zero;
+        
+        RotationEmptyParent.transform.Rotate(new(0, 0, Angle));
 
         newEffect.SetChargeState(false);
         return null;
