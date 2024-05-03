@@ -174,6 +174,34 @@ public class WaveCannonObject : CustomAnimation
     }
     public GameObject CreateRotationEffect(Vector3 PlayerPosition, float Angle)
     {
+        // 最後の描画のループを取得
+        SpriteRenderer renderer = WaveCannonEffects[WaveCannonEffects.Count - 1].roopanimator.GetComponent<SpriteRenderer>();
+        // 計算
+        float PlayerPositionX = PlayerPosition.x;
+        float MyLocalPositionX = transform.localPosition.x;
+        if (PlayerPositionX < 0)
+            PlayerPositionX *= -1;
+        if (MyLocalPositionX < 0)
+            MyLocalPositionX *= -1;
+        Vector3 newroopPosition = new(((MyLocalPositionX + PlayerPositionX) / 2) - 1,
+            renderer.transform.localPosition.y, renderer.transform.localPosition.z);
+
+        renderer.transform.localPosition = newroopPosition;
+        renderer.size = new(((MyLocalPositionX + PlayerPositionX) / 2) - 0.5f,
+            renderer.size.y);
+
+        GameObject RotationEmptyParent = new GameObject("RotationEmptyParent");
+        RotationEmptyParent.transform.SetParent(effectGameObjectsParent);
+        RotationEmptyParent.transform.Rotate(new(0, 0, Angle));
+
+        WaveCannonEffect newEffect = CreateEffect();
+        newEffect.transform.SetParent(RotationEmptyParent.transform, true);
+        RotationEmptyParent.transform.localPosition += new Vector3(PlayerPosition.x + newEffect.transform.localPosition.x, 0);
+        newEffect.transform.localPosition = Vector3.zero;
+
+        newEffect.SetChargeState(false);
+        return null;
+        /*
         //PlayerPosition.x -= 13;
         float posvalue = PlayerPosition.x - effectrenders[0].transform.parent.position.x;
         if (posvalue < 0)
@@ -183,7 +211,7 @@ public class WaveCannonObject : CustomAnimation
         GameObject effect = effectrender.transform.parent.gameObject;
         effect.transform.position = new(PlayerPosition.x, effect.transform.position.y, effect.transform.position.z + 0.1f);
         effect.transform.Rotate(new(0, 0, Angle));
-        return effect;
+        return effect;*/
         //Position = new(effect.transform.position.x - PlayerPosition.x, effect.transform.position.y, effect.transform.position.z);
         //Position.x += RotateSet[index].Item2.x - 3;
         //Position.y += RotateSet[index].Item2.y;

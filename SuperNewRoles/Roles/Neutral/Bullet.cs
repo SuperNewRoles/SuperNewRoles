@@ -39,7 +39,7 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
             (isAlive) => isAlive && SidekickedParent?.IsLoadedBullet == false, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BulletLoadBulletButton.png", 115f),
             WaveCannonJackal.BulletLoadBulletCooltime.GetFloat, new(1,2), "BulletLoadBulletButtonName",
-            KeyCode.F, 49, CouldUse: () => !IsNearParent());
+            KeyCode.F, 49, CouldUse: IsNearParent);
         CustomButtonInfos = [LoadBulletButtonInfo];
     }
 
