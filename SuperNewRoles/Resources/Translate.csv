@@ -2057,3 +2057,14 @@ SNRWebTransmissionConditionHostDependency,Allow guests to send results when the 
 
 # CustomButton
 AbilityButtonCountTextFormater,Remaining {0} times,残り{0}回,剩余{0}次,剩餘{0}次
+
+# QuoteMod
+QuoteModName,Reference source,参考元
+QuoteModaulibhaltnet,au.libhalt.net,au.libhalt.net
+QuoteModExtremeRoles,Extreme Roles,Extreme Roles
+QuoteModNebulaOnTheShip,<color=#9579ce>Nebula On The Ship</color>,<color=#9579ce>Nebula On The Ship</color>
+QuoteModSuperNewRoles,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>
+QuoteModTheOtherRoles,<color=#ff351f>The Other Roles</color>,<color=#ff351f>The Other Roles</color>
+QuoteModTheOtherRolesGM,<color=#ff351f>The Other Roles GM</color>,<color=#ff351f>The Other Roles GM</color>
+QuoteModTheOtherRolesGMH,<color=#ff351f>The Other Roles GM H</color>,<color=#ff351f>The Other Roles GM H</color>
+QuoteModTownOfUsR,<color=#00ff00>Town Of UsR</color>,<color=#00ff00>Town Of UsR</color>
