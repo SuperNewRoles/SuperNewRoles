@@ -1853,6 +1853,13 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
+BuskerName,Busker,バスカー
+BuskerTitle1,Did you think I was dead?　It was a magic trick!,死んだと思った？　手品でした～！
+BuskerDescription,Using the ability turns you into a corpse， allowing you to move around as a ghost.\nYou can't peek at roles， but you might be able to see things that are normally hidden?\nHowever，if the corpse is discovered or a meeting is called during the feigned death， you'll truly die， so be careful.\nLet's return to the living world before that happens.\nWhen you return， you'll revive at the place where you were moving as a ghost.\nOh， and don't forget to have fun and not lose sight of doing your tasks， okay?,能力を使用すると死体となり、幽霊となって移動することが出来るようになります。\n役職を盗み見ることは出来ませんが、普通だったら見られないものが見れるかも？\nただし、その死体を発見されたり、偽装死中に会議が呼ばれてしまうと本当に死んでしまうのでご注意を。\nそうなる前に現世に戻りましょう。\n戻った際は幽霊のときに移動していた先で復活します。\nそうそう、楽しくなってタスクをするのを忘れないようにね。
+BuskerPseudocideDurationOption,Duration of feigned death,死を偽装できる時間
+BuskerPseudocideButtonName,Feign death,偽装死
+BuskerRebornButtonName,Reborn,復活
+BuskerReallyDeadTimeText,Remain until really dead...,本当に死ぬまで残り...
 
 #NewRoleTranslation
 
