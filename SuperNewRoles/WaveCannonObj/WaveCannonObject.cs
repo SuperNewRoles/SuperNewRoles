@@ -189,8 +189,13 @@ public class WaveCannonObject : CustomAnimation
         //renderer.transform.localPosition = newroopPosition;
         //renderer.size = new(((MyLocalPositionX + PlayerPositionX) / 2) - 0.5f,
         //    renderer.size.y);
+        /*
         renderer.transform.localPosition = new(MyLocalPositionX + PlayerPositionX + 2.54f,0);
         renderer.size = new(((MyLocalPositionX + PlayerPositionX) * 2),
+            renderer.size.y);*/
+        float distanceX = Vector2.Distance(new(PlayerPosition.x * 0.75f, 0f), new(transform.position.x, 0f));
+        renderer.transform.localPosition = new((distanceX - 0.9f) / 2f,0);
+        renderer.size = new((distanceX - 0.9f) / 2f,
             renderer.size.y);
 
         GameObject RotationEmptyParent = new("RotationEmptyParent");
