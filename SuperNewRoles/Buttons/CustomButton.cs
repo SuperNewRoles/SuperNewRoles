@@ -35,6 +35,7 @@ public class CustomButton
     public float EffectDuration;
     public Sprite Sprite;
     public Color? color;
+    public bool wantEffectCouldUse;
     private readonly HudManager hudManager;
     private readonly bool mirror;
     private readonly KeyCode? hotkey;
@@ -80,7 +81,7 @@ public class CustomButton
 
     public void OnClickEvent()
     {
-        if ((this.Timer <= 0f && CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
+        if ((this.Timer <= 0f && CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable && (!wantEffectCouldUse || CouldUse())))
         {
             actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
             this.OnClick();

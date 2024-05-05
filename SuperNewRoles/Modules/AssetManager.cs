@@ -78,7 +78,9 @@ public static class AssetManager
             return result.TryCast<T>();
         //読み込む
         T rs = Bundles[(byte)assetBundleType]
-              .LoadAsset<T>(path).DontUnload();
+              .LoadAsset<T>(path);
+        if (rs != null)
+            rs.DontUnload();
         //キャッシュに保存
         _data[path + il2CppType.ToString()] = rs;
         return rs;

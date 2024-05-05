@@ -115,7 +115,7 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
             () => Optioninfo.CoolTime, new(1, 2, 0), "BuskerPseudocideButtonName",
             KeyCode.F, 49);
         RebornButtonInfo = new(null, this, BuskerRebornOnClick,
-            (isAlive) => HasButtonReborn(), CustomButtonCouldType.Always, () => RebornButtonInfo.GetOrCreateButton().effectCancellable = true,
+            (isAlive) => HasButtonReborn(), CustomButtonCouldType.Always, () => RebornButtonInfo.GetOrCreateButton().wantEffectCouldUse = RebornButtonInfo.GetOrCreateButton().effectCancellable = true,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BuskerRebornButton.png", 115f),
             () => 0f, new(1, 2, 0), "BuskerRebornButtonName",
             KeyCode.F, 49, DurationTime: PseudocideDurationOption.GetFloat,
@@ -142,7 +142,11 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
         new LateTask(() =>
         {
             if (!RebornButtonInfo.customButton.isEffectActive)
-                RebornButtonInfo.customButton.OnClickEvent();
+            {
+                RebornButtonInfo.customButton.Timer = RebornButtonInfo.customButton.EffectDuration;
+                RebornButtonInfo.customButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                RebornButtonInfo.customButton.isEffectActive = true;
+            }
         }, 0f);
     }
     private void BuskerRebornOnClick()
