@@ -87,17 +87,6 @@ public static class RoleBaseManager
         if (!RoleBaseTypes.TryGetValue(info.RoleObjectTypeName, out HashSet<RoleBase> bases))
             RoleBaseTypes[info.RoleObjectTypeName] = bases = new(1);
         RoleBaseTypes[info.RoleObjectTypeName].Add(role);
-        //全てのインターフェイスを取得
-        Type roleType = info.RoleObjectType;
-        Type[] Interfaces = roleType.GetInterfaces();
-        foreach (Type Interface in Interfaces)
-        {
-            if (!AllInterfaces.TryGetValue(Interface.Name, out HashSet<RoleBase> IRoleBases))
-                AllInterfaces[Interface.Name] = IRoleBases = new(1);
-            IRoleBases.Add(role);
-        }
-        if (role is IFixedUpdaterAll fixedUpdaterAll)
-            fixedUpdaterAlls.Add(fixedUpdaterAll);
         return before;
     }
     public static RoleBase GetLocalRoleBase()
