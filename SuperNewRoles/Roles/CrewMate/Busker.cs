@@ -41,14 +41,10 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
     public void FixedUpdateMeDefaultDead() => FixedUpdateMeDefaultAlive();
     public void FixedUpdateMeDefaultAlive()
     {
-        foreach (PlainShipRoom room in ShipStatus.Instance.AllRooms)
-        {
-            if (!room.roomArea.IsTouching(Player.Collider))
-                continue;
-            Logger.Info("Touching!");
-            return;
-        }
-        Logger.Info("Not Touching!");
+        bool enabled = Player.Collider.enabled;
+        Player.Collider.enabled = true;
+        Logger.Info("ColliderCheck: "+MapInsideManager.CheckInside(Player.Collider));
+        Player.Collider.enabled = enabled;
     }
 
     private static void CreateOption()
@@ -123,11 +119,20 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BuskerRebornButton.png", 115f),
             () => 0f, new(1, 2, 0), "BuskerRebornButtonName",
             KeyCode.F, 49, DurationTime: PseudocideDurationOption.GetFloat,
-            OnEffectEnds: () => AmPseudocide = false, hasSecondButtonInfo: true);
+            OnEffectEnds: () => AmPseudocide = false, hasSecondButtonInfo: true,
+            CouldUse: RebornCouldUse);
         RebornButtonInfo.GetOrCreateButton().effectCancellable = true;
         RebornButtonInfo.SecondButtonInfoText.text = ModTranslation.GetString("BuskerReallyDeadTimeText");
 
         CustomButtonInfos = [PseudocideButtonInfo, RebornButtonInfo];
+    }
+    private bool RebornCouldUse()
+    {
+        bool enabled = Player.Collider.enabled;
+        Player.Collider.enabled = true;
+        bool couldUse =  MapInsideManager.CheckInside(Player.Collider);
+        Player.Collider.enabled = enabled;
+        return couldUse;
     }
     private void BuskerPseudocideOnClick()
     {

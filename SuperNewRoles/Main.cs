@@ -109,6 +109,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomOptionHolder.Load();
         LegacyOptionDataMigration.Load();
         AccountLoginMenu.Initialize();
+        AssetManager.Load();
         // All Load() End
 
 
