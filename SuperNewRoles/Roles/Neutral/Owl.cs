@@ -153,6 +153,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
 
     public bool TransportButtonCouldUse()
     {
+        if (!ModHelpers.IsBlackout()) return false;
         if (TransportBody)
         {
             if (!ModHelpers.IsBlackout())
