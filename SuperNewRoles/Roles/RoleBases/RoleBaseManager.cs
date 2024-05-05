@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Epic.OnlineServices.Presence;
+using Epic.OnlineServices.UI;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
@@ -38,8 +40,8 @@ public static class RoleBaseManager
             return null;
         RoleBase roleBase = roleInfo.CreateInstance(player);
         PlayerRoles[player] = roleBase;
-        if (!RoleBaseTypes.ContainsKey(roleInfo.RoleObjectTypeName))
-            RoleBaseTypes.Add(roleInfo.RoleObjectTypeName, new());
+        if (!RoleBaseTypes.TryGetValue(roleInfo.RoleObjectTypeName, out HashSet<RoleBase> bases))
+            RoleBaseTypes[roleInfo.RoleObjectTypeName] = bases = new(1);
         RoleBaseTypes[roleInfo.RoleObjectTypeName].Add(roleBase);
         //全てのインターフェイスを取得
         Type roleType = roleInfo.RoleObjectType;
@@ -69,6 +71,34 @@ public static class RoleBaseManager
         }
         if (roleBase is IFixedUpdaterAll fixedUpdaterAll)
             fixedUpdaterAlls.Remove(fixedUpdaterAll);
+    }
+    /// <summary>
+    /// 指定したプレイヤーの役職を変更する
+    /// </summary>
+    /// <param name="player">変更するプレイヤー</param>
+    /// <param name="role">変更する役職ベース</param>
+    /// <returns>変更前の役職ベース</returns>
+    public static RoleBase ChangeRole(PlayerControl player, RoleBase role)
+    {
+        if (player.TryGetRoleBase(out RoleBase before)) ClearRole(player, before);
+
+        PlayerRoles[player] = role;
+        RoleInfo info = role.Roleinfo;
+        if (!RoleBaseTypes.TryGetValue(info.RoleObjectTypeName, out HashSet<RoleBase> bases))
+            RoleBaseTypes[info.RoleObjectTypeName] = bases = new(1);
+        RoleBaseTypes[info.RoleObjectTypeName].Add(role);
+        //全てのインターフェイスを取得
+        Type roleType = info.RoleObjectType;
+        Type[] Interfaces = roleType.GetInterfaces();
+        foreach (Type Interface in Interfaces)
+        {
+            if (!AllInterfaces.TryGetValue(Interface.Name, out HashSet<RoleBase> IRoleBases))
+                AllInterfaces[Interface.Name] = IRoleBases = new(1);
+            IRoleBases.Add(role);
+        }
+        if (role is IFixedUpdaterAll fixedUpdaterAll)
+            fixedUpdaterAlls.Add(fixedUpdaterAll);
+        return before;
     }
     public static RoleBase GetLocalRoleBase()
     {

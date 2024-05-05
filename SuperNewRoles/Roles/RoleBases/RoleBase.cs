@@ -36,7 +36,9 @@ public abstract class RoleBase : IDisposable
     }
     public void SetPlayer(PlayerControl player)
     {
+        RoleBaseManager.ChangeRole(player, this);
         Player = player;
+        Logger.Info($"SetPlayer({player.PlayerId})", "RoleBase");
     }
     public AudioClip GetIntroAudioClip()
     {
