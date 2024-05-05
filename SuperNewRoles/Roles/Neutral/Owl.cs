@@ -153,7 +153,6 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
 
     public bool TransportButtonCouldUse()
     {
-        if (!ModHelpers.IsBlackout()) return false;
         if (TransportBody)
         {
             if (!ModHelpers.IsBlackout())
@@ -176,6 +175,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
             else TransportButtonReset();
             return true;
         }
+        if (!ModHelpers.IsBlackout()) return false;
         foreach (Collider2D collider in Physics2D.OverlapCircleAll(Player.GetTruePosition(), Player.MaxReportDistance, Constants.PlayersOnlyMask))
         {
             if (collider.tag != "DeadBody") continue;
