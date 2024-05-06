@@ -254,7 +254,11 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
     public void FixedUpdateAllDefault()
     {
         if (IsSpecialBlackout) BlackOutTimer -= Time.fixedDeltaTime;
-        if (TransportBody) TransportBody.transform.position = Player.transform.position;
+        if (TransportBody)
+        {
+            TransportBody.transform.position = Player.transform.position;
+            if (Player.IsDead()) TransportBody = null;
+        }
     }
 
     public void RpcReader(MessageReader reader)
@@ -277,6 +281,12 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
                 if (dead.ParentId != id) continue;
                 TransportBody = dead;
                 break;
+            }
+            foreach (Owl owl in RoleBaseManager.GetRoleBases<Owl>())
+            {
+                if (owl.Player.PlayerId == Player.PlayerId) continue;
+                if (owl.TransportBody.ParentId != id) continue;
+                owl.TransportBody = null;
             }
         }
     }
