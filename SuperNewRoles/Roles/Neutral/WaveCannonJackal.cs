@@ -98,7 +98,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         int index = 0;
         foreach (string TypeName in WCCreateAnimHandlers.Keys)
         {
-            if (TypeName == WCAnimType.None.ToString())
+            if (!Enum.TryParse(TypeName, out WCAnimType animType) || animType >= WCAnimType.None)
                 break;
             AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
             index++;
