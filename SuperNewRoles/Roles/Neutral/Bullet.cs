@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvailable, IImpostorVision, ICustomButton, IRpcHandler, IFixedUpdaterAll, IWrapUpHandler
+public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvailable, IImpostorVision, ICustomButton, IRpcHandler, IFixedUpdaterAll, IMeetingHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Bullet),
@@ -41,13 +41,6 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
             WaveCannonJackal.BulletLoadBulletCooltime.GetFloat, new(1,2), "BulletLoadBulletButtonName",
             KeyCode.F, 49, CouldUse: IsNearParent);
         CustomButtonInfos = [LoadBulletButtonInfo];
-    }
-
-    public void OnWrapUp()
-    {
-        if (SidekickedParent == null)
-            return;
-        SidekickedParent.SetDidntLoadBullet();
     }
 
     private bool IsNearParent()
@@ -95,7 +88,19 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
             return;
         if (SidekickedParent?.IsLoadedBullet != true)
             return;
+        Player.MyPhysics.body.velocity = new();
         Player.NetTransform.RpcSnapTo(SidekickedParent.Player.transform.position);
         Player.transform.position = SidekickedParent.Player.transform.position;
+    }
+
+    public void StartMeeting()
+    {
+        if (SidekickedParent == null)
+            return;
+        SidekickedParent.SetDidntLoadBullet();
+    }
+
+    public void CloseMeeting()
+    {
     }
 }

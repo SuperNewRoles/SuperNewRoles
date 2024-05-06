@@ -106,7 +106,6 @@ public class WaveCannonObject : CustomAnimation
     }
     private WaveCannonEffect GetPrefab()
     {
-        Logger.Info($"WAVECANNNNNNNNNNNNNNNNNON:WaveCannon{CurrentAnimType.ToString()}.prefab");
         if (!EffectPrefabs.TryGetValue((int)CurrentAnimType, out WaveCannonEffect prefab))
         {
             EffectPrefabs[(int)CurrentAnimType] = prefab = AssetManager.GetAsset<GameObject>($"WaveCannon{CurrentAnimType.ToString()}.prefab", AssetManager.AssetBundleType.Wavecannon).GetComponent<WaveCannonEffect>();
@@ -193,9 +192,11 @@ public class WaveCannonObject : CustomAnimation
         renderer.transform.localPosition = new(MyLocalPositionX + PlayerPositionX + 2.54f,0);
         renderer.size = new(((MyLocalPositionX + PlayerPositionX) * 2),
             renderer.size.y);*/
-        float distanceX = Vector2.Distance(new(PlayerPosition.x * 0.75f, 0f), new(transform.position.x, 0f));
-        renderer.transform.localPosition = new((distanceX - 0.9f) / 2f,0);
-        renderer.size = new((distanceX - 0.9f) / 2f,
+        // プレイヤーの位置と波動の距離を計算し、先頭の部分補正を入れる
+        float distanceX = Vector2.Distance(new(PlayerPosition.x, 0f), new(renderer.transform.parent.position.x + transform.localScale.x * 2.45f, 0f));
+        // なんやかんやで計算する。
+        renderer.transform.localPosition = new(distanceX / 3f + 2.53f - 0.5f, 0);
+        renderer.size = new(distanceX / (1.5f * transform.localScale.y) - 1f,
             renderer.size.y);
 
         GameObject RotationEmptyParent = new("RotationEmptyParent");
@@ -270,14 +271,17 @@ public class WaveCannonObject : CustomAnimation
     public void Shoot()
     {
         IsShootNow = IsShootNow = true;
-        Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
+        if (CurrentAnimType == WCAnimType.Bullet)
+            Options.SetEffectSound(AssetManager.GetAsset<AudioClip>("BulletShootSound.ogg", AssetManager.AssetBundleType.Wavecannon), false);
+        else
+            Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
 
         foreach(WaveCannonEffect effect in WaveCannonEffects)
             effect.SetChargeState(false);
 
         CurrentAnimationHandler.OnShot();
 
-        //
+        // 賢者の判定
         foreach (var data in WiseMan.WiseManData.ToArray())
         {
             if (data.Value == null) continue;
@@ -295,15 +299,9 @@ public class WaveCannonObject : CustomAnimation
             if (!touching)
                 continue;
 
-            // 方向を変えた波動を生成
-            CreateRotationEffect(player.GetTruePosition(), data.Value.Value);
+            // 賢者ガード判定を削除
             WiseMan.WiseManData[player.PlayerId] = null;
             WiseMan.WiseManPosData[player] = null;
-            // 賢者のバリアエフェクトを生成
-            RoleEffectAnimation anim = Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, player.gameObject.transform);
-            anim.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
-            WiseManData[player] = (anim, 0.75f, player.transform.position);
-            anim.Renderer.transform.localScale = new(1.1f, 1.6f, 1);
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
                 HudManagerStartPatch.WiseManButton.isEffectActive = false;
@@ -311,6 +309,16 @@ public class WaveCannonObject : CustomAnimation
                 HudManagerStartPatch.WiseManButton.Timer = HudManagerStartPatch.WiseManButton.MaxTimer;
                 PlayerControl.LocalPlayer.moveable = true;
             }
+            // 弾の場合、貫通させるためそのまま次へ
+            if (CurrentAnimType == WCAnimType.Bullet)
+                continue;
+            // 方向を変えた波動を生成
+            CreateRotationEffect(player.GetTruePosition(), data.Value.Value);
+            // 賢者のバリアエフェクトを生成
+            RoleEffectAnimation anim = Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, player.gameObject.transform);
+            anim.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
+            WiseManData[player] = (anim, 0.75f, player.transform.position);
+            anim.Renderer.transform.localScale = new(1.1f, 1.6f, 1);
         }
     }
 

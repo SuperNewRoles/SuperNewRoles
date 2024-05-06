@@ -52,14 +52,13 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton
 
     public WaveCannon(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        CustomButtonInfos = new CustomButtonInfo[1]
-        {
+        CustomButtonInfos = [
             new(null, this, ButtonOnClick, (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f),
             () => Optioninfo.CoolTime, new Vector3(-2f, 1, 0),
             ModTranslation.GetString("WaveCannonButtonName"), KeyCode.F,
             DurationTime:() => Optioninfo.DurationTime, OnEffectEnds:OnEffectEnds)
-        };
+        ];
     }
 
     public void OnEffectEnds()
@@ -73,14 +72,14 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
         writer.Write((byte)WaveCannonObject.RpcType.Shoot);
-        writer.Write((byte)0);
+        writer.Write((byte)obj.Id);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
         writer.Write(pos.x);
         writer.Write(pos.y);
         writer.Write((byte)AnimationTypeOption.GetSelection());
         writer.EndRPC();
-        RPCProcedure.WaveCannon((byte)RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, (WCAnimType)AnimationTypeOption.GetSelection());
+        RPCProcedure.WaveCannon((byte)RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, (WCAnimType)AnimationTypeOption.GetSelection());
     }
     public CustomButtonInfo[] CustomButtonInfos { get; }
     public void ButtonOnClick()

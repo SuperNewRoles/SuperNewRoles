@@ -25,7 +25,7 @@ public enum WCJackalSidekickType
     WaveCannonSidekick,
     BulletSidekick,
 }
-public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailable, IImpostorVision, IJackal, IRpcHandler
+public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailable, IImpostorVision, IJackal, IRpcHandler, IFixedUpdaterAll
 {
     public static new RoleInfo Roleinfo = new(
         typeof(WaveCannonJackal),
@@ -146,9 +146,6 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
             return;
         }
         var pos = CachedPlayer.LocalPlayer.transform.position;
-        byte[] buff = new byte[sizeof(float) * 2];
-        Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-        Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
         WCAnimType AnimationType = IsLoadedBullet ? WCAnimType.Bullet : (WCAnimType)AnimationOptionType.GetSelection();
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
         writer.Write((byte)RpcType.Shoot);
@@ -216,26 +213,34 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         CustomButton cbn = WaveCannonButtonInfo.GetOrCreateButton();
         cbn.Sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonLoadedBulletButton.png", 115f);
         cbn.Timer = 0f;
+        if (CreatedSidekick is Bullet BulletRole && BulletRole != null)
+            BulletRole.Player.moveable = false;
     }
     public void SetDidntLoadBullet()
     {
+        if (IsLoadedBullet && CreatedSidekick is Bullet BulletRole && BulletRole != null)
+            BulletRole.Player.moveable = true;
         IsLoadedBullet = false;
         WaveCannonButtonInfo.GetOrCreateButton().Sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
     }
 
-    public static void ResetCooldowns()
+    public static void ResetCooldowns(bool isKilled, bool isCannon)
     {
-        HudManagerStartPatch.JackalKillButton.MaxTimer = KillCooldown.GetFloat();
-        HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
-        if (!IsSyncKillCoolTime.GetBool())
-            return;
         WaveCannonJackal wcjackal = PlayerControl.LocalPlayer.GetRoleBase<WaveCannonJackal>();
         if (wcjackal == null)
             return;
-        wcjackal.WaveCannonButtonInfo.ResetCoolTime();
-        wcjackal.WaveCannonSidekickButtonInfo.ResetCoolTime();
+        if (isKilled || IsSyncKillCoolTime.GetBool() || !isCannon)
+        {
+            HudManagerStartPatch.JackalKillButton.MaxTimer = KillCooldown.GetFloat();
+            HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
+        }
+        if (isCannon || IsSyncKillCoolTime.GetBool() || !isKilled)
+        {
+            wcjackal.WaveCannonButtonInfo.ResetCoolTime();
+            wcjackal.WaveCannonSidekickButtonInfo.ResetCoolTime();
+        }
     }
-    public static void EndMeeting() => ResetCooldowns();
+    public static void EndMeeting() => ResetCooldowns(false, false);
 
     public void SetAmSidekicked()
     {
@@ -286,6 +291,16 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
+    }
+
+    public void FixedUpdateAllDefault()
+    {
+        if (IsLoadedBullet)
+            return;
+        if (CreatedSidekick is Bullet BulletRole && BulletRole != null &&
+            BulletRole.Player.IsAlive())
+            return;
+        SetDidntLoadBullet();
     }
 }
 /*

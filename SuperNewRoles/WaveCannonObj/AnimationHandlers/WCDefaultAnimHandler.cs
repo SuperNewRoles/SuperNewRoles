@@ -112,7 +112,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                         }
                         else
                         {
-                            WaveCannonJackal.ResetCooldowns();
+                            WaveCannonJackal.ResetCooldowns(false, true);
                         }
                         CannonObject.Owner.GetRoleBase<WaveCannon>()?
                         .CustomButtonInfos?

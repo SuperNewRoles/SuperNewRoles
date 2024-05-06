@@ -1339,6 +1339,8 @@ BulletName,Bullet,弾
 BulletTitle1,Alright， boss， let's do this!,さあ、やっちまってくだせぇ親分！
 BulletDescription,At the cost of your own life， you can power up Jackal's Wave Cannon once.\nBurn bright.,自身が死亡する代わりに波動砲ジャッカルの波動砲を一度だけ強化することが出来ます。\n命を燃やせ。
 BulletLoadBulletButtonName,Load Bullet,装填,装填,裝填
+BulletMeetingDisabledForBulletCharging,I think will come big wave...\nI can't open meeting for frightening...,大きな波動が飛んできそうで\n怖くて会議が開けない...
+BulletMeetingDisabledForBulletShooting,Big wave is coming...\nI can't open meeting for frightening...,大きな波動の音が響き渡っている...\n怖くて会議が開けない...
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
 CrackerDescription,By using the ability called "Crack"， you can remove the opponent from both Admin and Vital.\nOn Vital， the time of death is shifted， and with Admin alone， you won't be able to locate the body.\nHowever， if you fail to kill the target you used it on， you might get exposed.,「クラック」という能力を使うことで、相手をアドミンやバイタルから消すことが出来ます。\nバイタル上では死亡タイミングがズレ、アドミンだけでは死体位置が分からなくなります。\nただし、使った相手をキルしそこなうと、バレてしまうかもしれません。,神隐者属于内鬼阵营，可以让一名玩家在管理地图与生命监测装置上消失一段时间。\n对于那名玩家：生命监测装置上会显示错乱的死亡时间，管理地图上无法定位该玩家的位置。\n需要注意：若该玩家没有被击杀，神隐者有可能会暴露。,神隱者可以透過使用技能「神隱」來讓對方無法在管理員地圖與生命跡象檢測器上被觀測到。\n在生命跡象檢測器上，死亡時間將會被改變，同時在管理員地圖上，屍體位置將會消失。\n但是，如果神隱者沒有成功擊殺使用技能的對象，神隱者可能會被發現。

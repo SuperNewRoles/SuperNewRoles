@@ -1187,7 +1187,7 @@ static class HudManagerStartPatch
                             TeleportingJackal.ResetCooldowns();
                             break;
                         case RoleId.WaveCannonJackal:
-                            WaveCannonJackal.ResetCooldowns();
+                            WaveCannonJackal.ResetCooldowns(true, false);
                             break;
                     }
                 }

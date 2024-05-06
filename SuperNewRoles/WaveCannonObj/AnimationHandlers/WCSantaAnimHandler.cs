@@ -66,7 +66,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                         else
                         {
                             if (WaveCannonJackal.IsSyncKillCoolTime.GetBool())
-                                WaveCannonJackal.ResetCooldowns();
+                                WaveCannonJackal.ResetCooldowns(false, true);
                         }
                         CannonObject.Owner.GetRoleBase<WaveCannon>()?
                         .CustomButtonInfos?

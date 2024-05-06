@@ -52,7 +52,12 @@ public class WCTankAnimHandler : IWaveCannonAnimationHandler
     }
     public CustomAnimationOptions Init()
     {
-        return new CustomAnimationOptions([TankSprite], 25, true, EffectSound: ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), IsEffectSoundLoop: true);
+        AudioClip ChargeSound;
+        if (CannonObject.CurrentAnimType == WaveCannonObject.WCAnimType.Tank)
+            ChargeSound = ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw");
+        else
+            ChargeSound = AssetManager.GetAsset<AudioClip>("BulletChargeSound.ogg", AssetManager.AssetBundleType.Wavecannon);
+        return new CustomAnimationOptions([TankSprite], 25, true, EffectSound: ChargeSound, IsEffectSoundLoop: true);
     }
 
     public void OnShot()
@@ -82,19 +87,13 @@ public class WCTankAnimHandler : IWaveCannonAnimationHandler
                 CannonObject?.Owner?.GetRoleBase<WaveCannonJackal>()?.SetDidntLoadBullet();
                 if (CannonObject.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
-                    {
-                        CannonObject.Owner.GetRoleBase<WaveCannon>()?
-                        .CustomButtonInfos?
-                        .FirstOrDefault()?
-                        .ResetCoolTime();
-                        if (WaveCannon.IsSyncKillCoolTime.GetBool())
-                            PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
-                    }
-                    else
-                    {
-                        WaveCannonJackal.ResetCooldowns();
-                    }
+                    CannonObject.Owner.GetRoleBase<WaveCannon>()?
+                    .CustomButtonInfos?
+                    .FirstOrDefault()?
+                    .ResetCoolTime();
+                    if (CannonObject.Owner.GetRoleBase<WaveCannon>() != null && WaveCannon.IsSyncKillCoolTime.GetBool())
+                        PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
+                    WaveCannonJackal.ResetCooldowns(false, true);
                 }
                 GameObject.Destroy(CannonObject.gameObject);
             });

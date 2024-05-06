@@ -6,6 +6,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.WaveCannonObj;
 
 namespace SuperNewRoles.Patches;
 
@@ -64,6 +65,14 @@ class EmergencyMinigamePatch
         if (!Sabotage.SabotageManager.IsOKMeeting())
         {
             statusText = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.EmergencyDuringCrisis);
+            numberText = string.Empty;
+            return Status.DisabledForMod;
+        }
+
+        if (WaveCannonObject.Objects.Any(x => x.Value.CurrentAnimType == WaveCannonObject.WCAnimType.Bullet))
+        {
+            statusText = ModTranslation.GetString("BulletMeetingDisabledForBullet" + 
+                (WaveCannonObject.Objects.Any(x => x.Value.IsShootNow) ? "Shooting" : "Charging"));
             numberText = string.Empty;
             return Status.DisabledForMod;
         }
