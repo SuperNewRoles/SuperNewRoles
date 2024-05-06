@@ -228,7 +228,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
 
     public bool CheckAndEndGame(ShipStatus __instance, CheckGameEndPatch.PlayerStatistics statistics)
     {
-        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 1 && !statistics.IsGuardPavlovs)
+        if (1 >= statistics.TotalAlive - 1 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 1 && !statistics.IsGuardPavlovs)
         {
             foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
                 if (!p.IsImpostor() && !p.Data.Disconnected) return false;
