@@ -38,16 +38,14 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton
     public static void CreateOption()
     {
         IsSyncKillCoolTime = CustomOption.Create(200004, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, Optioninfo.RoleOption);
-        string[] AnimTypeTexts = new string[WCCreateAnimHandlers.Count];
-        int index = 0;
+        List<string> AnimTypeTexts = [];
         foreach (string TypeName in WCCreateAnimHandlers.Keys)
         {
             if (!Enum.TryParse(TypeName, out WCAnimType animType) || animType >= WCAnimType.None)
-                break;
-            AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
-            index++;
+                continue;
+            AnimTypeTexts.Add(ModTranslation.GetString("WaveCannonAnimType" + TypeName));
         }
-        AnimationTypeOption = CustomOption.Create(200005, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts, Optioninfo.RoleOption);
+        AnimationTypeOption = CustomOption.Create(200005, false, CustomOptionType.Impostor, "WaveCannonAnimationType", AnimTypeTexts.ToArray(), Optioninfo.RoleOption);
     }
 
     public WaveCannon(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)

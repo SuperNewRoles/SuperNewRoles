@@ -175,6 +175,7 @@ public class WaveCannonObject : CustomAnimation
     {
         // 最後の描画のループを取得
         SpriteRenderer renderer = WaveCannonEffects[WaveCannonEffects.Count - 1].roopanimator.GetComponent<SpriteRenderer>();
+        PolygonCollider2D polygonCollider2D = WaveCannonEffects[WaveCannonEffects.Count - 1].WaveColliders.FirstOrDefault().TryCast<PolygonCollider2D>();
         // 計算
         float PlayerPositionX = PlayerPosition.x;
         float MyLocalPositionX = transform.localPosition.x;
@@ -196,8 +197,52 @@ public class WaveCannonObject : CustomAnimation
         float distanceX = Vector2.Distance(new(PlayerPosition.x, 0f), new(renderer.transform.parent.position.x + transform.localScale.x * 2.45f, 0f));
         // なんやかんやで計算する。
         renderer.transform.localPosition = new(distanceX / 3f + 2.53f - 0.5f, 0);
-        renderer.size = new(distanceX / (1.5f * transform.localScale.y) - 1f,
+        float sizeX = distanceX / (1.5f * transform.localScale.y) - 1f;
+        renderer.size = new(sizeX,
             renderer.size.y);
+
+        float maxPositionX = -1;
+        List<int> maxPositions = [];
+        int index = -1;
+        Logger.Info("--------- PolygonCollider2D ----------");
+        foreach (Vector2 point in polygonCollider2D.points)
+        {
+            index++;
+            Logger.Info($"ProcessStart: {index} {point.x} : {maxPositionX}");
+            if (point.x < maxPositionX)
+                continue;
+            Logger.Info($"ProcessSSSSSSSSSSSSSSSSSSSS: {index} {point.x} : {maxPositionX}");
+            if (point.x != maxPositionX)
+            {
+                Logger.Info($"reseted");
+                maxPositions = [];
+                maxPositionX = point.x;
+            }
+            maxPositions.Add(index);
+            Logger.Info($"added");
+        }
+
+        Logger.Info($"mPCount: {maxPositions.Count}");
+
+        var newpoints = polygonCollider2D.points.ToList();
+        // コライダーの判定を調整
+        foreach (int posIndex in maxPositions)
+        {
+            Logger.Info($"posIndex: {posIndex} : {sizeX}");
+            newpoints[posIndex] = new(sizeX + 2.54724f, polygonCollider2D.points[posIndex].y);
+        }
+
+        polygonCollider2D.enabled = false;
+        polygonCollider2D.points = newpoints.ToArray();
+        polygonCollider2D.enabled = true;
+
+        Logger.Info("------ NewPolygonCollider -----");
+        foreach (Vector2 point in polygonCollider2D.points)
+        {
+            Logger.Info($"{point}");
+        }
+        Logger.Info("----- EndPolygonCollider -----");
+
 
         GameObject RotationEmptyParent = new("RotationEmptyParent");
         RotationEmptyParent.transform.SetParent(effectGameObjectsParent);

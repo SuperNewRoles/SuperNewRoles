@@ -94,16 +94,14 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         BulletLoadedChargeTime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalBulletLoadedChargeTime", 10f, 1f, 30f, 1f, CreateSidekickType, openSelection: 3); Optioninfo.OptionId++;
         
         // AnimTypes
-        string[] AnimTypeTexts = new string[WCCreateAnimHandlers.Count];
-        int index = 0;
+        List<string> AnimTypeTexts = [];
         foreach (string TypeName in WCCreateAnimHandlers.Keys)
         {
             if (!Enum.TryParse(TypeName, out WCAnimType animType) || animType >= WCAnimType.None)
-                break;
-            AnimTypeTexts[index] = ModTranslation.GetString("WaveCannonAnimType" + TypeName);
-            index++;
+                continue;
+            AnimTypeTexts.Add(ModTranslation.GetString("WaveCannonAnimType" + TypeName));
         }
-        AnimationOptionType = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonAnimationType", AnimTypeTexts, Optioninfo.RoleOption); Optioninfo.OptionId++;
+        AnimationOptionType = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonAnimationType", AnimTypeTexts.ToArray(), Optioninfo.RoleOption); Optioninfo.OptionId++;
     }
 
     public bool CanUseSabo => Optioninfo.CanUseSabo;
@@ -293,8 +291,20 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         }
     }
 
+    private bool Promoted;
+
     public void FixedUpdateAllDefault()
     {
+        if (AmongUsClient.Instance.AmHost && CreatedSidekick != null && Player.IsDead() && !Promoted)
+        {
+            byte jackalId = (byte)RoleId.WaveCannonJackal;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes
+                    , SendOption.Reliable, -1);
+            writer.Write(jackalId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.SidekickPromotes(jackalId);
+            Promoted = true;
+        }
         if (IsLoadedBullet)
             return;
         if (CreatedSidekick is Bullet BulletRole && BulletRole != null &&

@@ -1486,6 +1486,8 @@ public static class RPCProcedure
                 ISidekick sidekick = WCJackal.CreatedSidekick;
                 if (sidekick is not RoleBase sidekickBase)
                     continue;
+                if (sidekick == null)
+                    continue;
                 PlayerControl sidekickPlayer = sidekickBase.Player;
                 sidekickPlayer.ClearRole();
                 sidekickPlayer.SetRole(sidekick.TargetRole);
