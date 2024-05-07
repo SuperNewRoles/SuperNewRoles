@@ -5,7 +5,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class SidekickWaveCannon : RoleBase, ISidekick, INeutral, IVentAvailable
+public class SidekickWaveCannon : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvailable, IImpostorVision
 {
     public static new RoleInfo Roleinfo = new(
         typeof(SidekickWaveCannon),
@@ -18,7 +18,10 @@ public class SidekickWaveCannon : RoleBase, ISidekick, INeutral, IVentAvailable
         TeamType.Neutral
         );
 
+    public bool CanUseSabo => WaveCannonJackal.Optioninfo.CanUseSabo;
     public bool CanUseVent => WaveCannonJackal.Optioninfo.CanUseVent;
+    public bool IsImpostorVision => WaveCannonJackal.Optioninfo.IsImpostorVision;
+
     public RoleId TargetRole => RoleId.WaveCannonJackal;
     public WaveCannonJackal SidekickedParent;
 

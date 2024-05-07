@@ -173,8 +173,8 @@ public static class RoleHelpers
             RoleId.SidekickSeer or
             RoleId.MayorFriends or
             RoleId.WaveCannonJackal or
-            RoleId.SidekickWaveCannon or
-            RoleId.Bullet;
+            RoleId.SidekickWaveCannon ||
+        player.IsRole(RoleId.Bullet) && WaveCannonJackal.CreateBulletToJackal.GetBool();
 
     public static bool IsJackalTeamJackal(this PlayerControl player)
         => player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
@@ -187,7 +187,8 @@ public static class RoleHelpers
         player.GetRole() is
         RoleId.JackalFriends or
         RoleId.SeerFriends or
-        RoleId.MayorFriends;
+        RoleId.MayorFriends ||
+        player.IsRole(RoleId.Bullet) && !WaveCannonJackal.CreateBulletToJackal.GetBool();
     // IsFriends
 
     public static bool IsHauntedWolf(this PlayerControl player, bool IsChache = true)

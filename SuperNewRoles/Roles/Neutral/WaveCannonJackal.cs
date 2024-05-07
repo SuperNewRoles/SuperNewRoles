@@ -200,6 +200,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
             }
         }
         MessageWriter writer = RpcWriter;
+        writer.Write(true);
         writer.Write(target.PlayerId);
         writer.Write(false);
         SendRpc(writer);
@@ -235,7 +236,6 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         if (isCannon || IsSyncKillCoolTime.GetBool() || !isKilled)
         {
             wcjackal.WaveCannonButtonInfo.ResetCoolTime();
-            wcjackal.WaveCannonSidekickButtonInfo.ResetCoolTime();
         }
     }
     public static void EndMeeting() => ResetCooldowns(false, false);
@@ -248,7 +248,10 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
 
     public void RpcReader(MessageReader reader)
     {
-        HandleRpcCreateSidekickWaveCannon(reader.ReadByte(), reader.ReadBoolean());
+        if (reader.ReadBoolean())
+            HandleRpcCreateSidekickWaveCannon(reader.ReadByte(), reader.ReadBoolean());
+        else
+            HandleRpcPromoteSidekick();
     }
 
     private static RoleId GetCurrentTargetSidekickType()
@@ -290,6 +293,25 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
             ChacheManager.ResetMyRoleChache();
         }
     }
+    private void HandleRpcPromoteSidekick()
+    {
+        ISidekick sidekick = CreatedSidekick;
+        if (sidekick is not RoleBase sidekickBase)
+            return;
+        if (sidekick == null)
+            return;
+        // 昇格できない設定の弾を昇格させない
+        if (sidekick is Bullet bullet && !WaveCannonJackal.CreateBulletToJackal.GetBool())
+            return;
+        PlayerControl sidekickPlayer = sidekickBase.Player;
+        sidekickPlayer.ClearRole();
+        sidekickPlayer.SetRole(sidekick.TargetRole);
+        if (sidekickPlayer.GetRoleBase() is not IJackal changedRole)
+            return;
+        changedRole.SetAmSidekicked();
+        PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        ChacheManager.ResetMyRoleChache();
+    }
 
     private bool Promoted;
 
@@ -297,12 +319,9 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
     {
         if (AmongUsClient.Instance.AmHost && CreatedSidekick != null && Player.IsDead() && !Promoted)
         {
-            byte jackalId = (byte)RoleId.WaveCannonJackal;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes
-                    , SendOption.Reliable, -1);
-            writer.Write(jackalId);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.SidekickPromotes(jackalId);
+            MessageWriter writer = RpcWriter;
+            writer.Write(false);
+            SendRpc(writer);
             Promoted = true;
         }
         if (IsLoadedBullet)

@@ -1479,23 +1479,6 @@ public static class RPCProcedure
                 RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
             }
         }
-        else if (jackalRoleId == RoleId.WaveCannonJackal)
-        {
-            foreach (WaveCannonJackal WCJackal in RoleBaseManager.GetRoleBases<WaveCannonJackal>())
-            {
-                ISidekick sidekick = WCJackal.CreatedSidekick;
-                if (sidekick is not RoleBase sidekickBase)
-                    continue;
-                if (sidekick == null)
-                    continue;
-                PlayerControl sidekickPlayer = sidekickBase.Player;
-                sidekickPlayer.ClearRole();
-                sidekickPlayer.SetRole(sidekick.TargetRole);
-                if (sidekickPlayer.GetRoleBase() is not IJackal changedRole)
-                    continue;
-                changedRole.SetAmSidekicked();
-            }
-        }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         ChacheManager.ResetMyRoleChache();
     }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvailable, IImpostorVision, ICustomButton, IRpcHandler, IFixedUpdaterAll, IMeetingHandler
+public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvailable, IImpostorVision, ICustomButton, IRpcHandler, IFixedUpdaterAll, IMeetingHandler, INameHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Bullet),
@@ -24,7 +24,8 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
     public bool CanUseVent => WaveCannonJackal.Optioninfo.CanUseVent;
     public bool IsImpostorVision => WaveCannonJackal.Optioninfo.IsImpostorVision;
 
-    public RoleId TargetRole => RoleId.WaveCannonJackal;
+    private bool willHasWaveCannon => WaveCannonJackal.CreatedSidekickHasWaveCannon.GetBool();
+    public RoleId TargetRole => willHasWaveCannon ? RoleId.WaveCannonJackal : RoleId.Jackal;
     public WaveCannonJackal SidekickedParent;
 
     public CustomButtonInfo[] CustomButtonInfos { get; }
@@ -42,7 +43,12 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
             KeyCode.F, 49, CouldUse: IsNearParent);
         CustomButtonInfos = [LoadBulletButtonInfo];
     }
-
+    public void OnHandleName()
+    {
+        if (SidekickedParent == null)
+            return;
+        SetNamesClass.SetPlayerNameText(SidekickedParent.Player, SidekickedParent.Player.NameText() + ModHelpers.Cs(WaveCannonJackal.Roleinfo.RoleColor, "☆"));
+    }
     private bool IsNearParent()
     {
         if (Player == null)
