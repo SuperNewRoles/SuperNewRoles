@@ -135,6 +135,15 @@ public class WaveCannonObject : CustomAnimation
         transform.localScale = new(FlipX ? -1 : 1, 1, 1);
 
         CurrentAnimType = animType;
+
+        //当たり判定の親を作成
+        effectGameObjectsParent = new GameObject("WaveCannonEffects").transform;
+        effectGameObjectsParent.SetParent(transform);
+        effectGameObjectsParent.localPosition = new(0.75f, 0, 0);
+        effectGameObjectsParent.localScale = Vector3.one;
+        //当たり判定の部分を作成
+        CreateEffect();
+
         Logger.Info("WaveCannon Animation:" + animType.ToString());
         CurrentAnimationHandler = CreateAnimHandler();
         if (CurrentAnimationHandler == null)
@@ -144,6 +153,7 @@ public class WaveCannonObject : CustomAnimation
                                  $"{animType}のHandlerの生成に失敗しました。\n" +
                                  "修正方法: WaveCannonObject.csのWCCreateAnimHandlersにHandlerを追加してください。");
         }
+
         // AnimationHandlerを元にCustomAnimationを初期化
         CustomAnimationOptions customAnimationOptions = CurrentAnimationHandler.Init();
         base.Init(customAnimationOptions);
@@ -154,13 +164,6 @@ public class WaveCannonObject : CustomAnimation
             CachedPlayer.LocalPlayer.PlayerControl.moveable = false;
             Camera.main.GetComponent<FollowerCamera>().Locked = true;
         }
-        //当たり判定の親を作成
-        effectGameObjectsParent = new GameObject("WaveCannonEffects").transform;
-        effectGameObjectsParent.SetParent(transform);
-        effectGameObjectsParent.localPosition = new(0.75f,0,0);
-        effectGameObjectsParent.localScale = Vector3.one;
-        //当たり判定の部分を作成
-        CreateEffect();
         //Id
         if (!Ids.ContainsKey(OwnerPlayerId))
             Ids[OwnerPlayerId] = 0;
@@ -173,112 +176,83 @@ public class WaveCannonObject : CustomAnimation
     }
     public GameObject CreateRotationEffect(Vector3 PlayerPosition, float Angle)
     {
-        // 最後の描画のループを取得
-        SpriteRenderer renderer = WaveCannonEffects[WaveCannonEffects.Count - 1].roopanimator.GetComponent<SpriteRenderer>();
-        PolygonCollider2D polygonCollider2D = WaveCannonEffects[WaveCannonEffects.Count - 1].WaveColliders.FirstOrDefault().TryCast<PolygonCollider2D>();
-        // 計算
-        float PlayerPositionX = PlayerPosition.x;
-        float MyLocalPositionX = transform.localPosition.x;
-        if (IsFlipX)
-            PlayerPositionX *= -1;
-        if (IsFlipX)
-            MyLocalPositionX *= -1;
-        Vector3 newroopPosition = new(MyLocalPositionX + PlayerPositionX,
-            renderer.transform.localPosition.y, renderer.transform.localPosition.z);
-
-        //renderer.transform.localPosition = newroopPosition;
-        //renderer.size = new(((MyLocalPositionX + PlayerPositionX) / 2) - 0.5f,
-        //    renderer.size.y);
-        /*
-        renderer.transform.localPosition = new(MyLocalPositionX + PlayerPositionX + 2.54f,0);
-        renderer.size = new(((MyLocalPositionX + PlayerPositionX) * 2),
-            renderer.size.y);*/
-        // プレイヤーの位置と波動の距離を計算し、先頭の部分補正を入れる
-        float distanceX = Vector2.Distance(new(PlayerPosition.x, 0f), new(renderer.transform.parent.position.x + transform.localScale.x * 2.45f, 0f));
-        // なんやかんやで計算する。
-        renderer.transform.localPosition = new(distanceX / 3f + 2.53f - 0.5f, 0);
-        float sizeX = distanceX / (1.5f * transform.localScale.y) - 1f;
-        renderer.size = new(sizeX,
-            renderer.size.y);
-
-        float maxPositionX = -1;
-        List<int> maxPositions = [];
-        int index = -1;
-        Logger.Info("--------- PolygonCollider2D ----------");
-        foreach (Vector2 point in polygonCollider2D.points)
+        if (CurrentAnimType == WCAnimType.Cannon)
         {
-            index++;
-            Logger.Info($"ProcessStart: {index} {point.x} : {maxPositionX}");
-            if (point.x < maxPositionX)
-                continue;
-            Logger.Info($"ProcessSSSSSSSSSSSSSSSSSSSS: {index} {point.x} : {maxPositionX}");
-            if (point.x != maxPositionX)
+            //PlayerPosition.x -= 13;
+            float posvalue = PlayerPosition.x - WaveCannonEffects.FirstOrDefault().roopanimator.transform.position.x;
+            if (posvalue < 0)
+                posvalue *= -1;
+            WaveCannonEffects.FirstOrDefault().transform.localScale = new(posvalue * 0.0145f, 1, 1);
+            WaveCannonEffect effect = CreateEffect();
+            effect.transform.position = new(PlayerPosition.x - 5.5f, effect.transform.position.y, effect.transform.position.z + 0.1f);
+            effect.transform.Rotate(new(0, 0, Angle));
+            effect.roopanimator.transform.localPosition += new Vector3(4, 0);
+            return effect.gameObject;
+        }
+        else
+        {
+            // 最後の描画のループを取得
+            SpriteRenderer renderer = WaveCannonEffects[WaveCannonEffects.Count - 1].roopanimator.GetComponent<SpriteRenderer>();
+            PolygonCollider2D polygonCollider2D = WaveCannonEffects[WaveCannonEffects.Count - 1].WaveColliders.FirstOrDefault().TryCast<PolygonCollider2D>();
+            // 計算
+            float PlayerPositionX = PlayerPosition.x;
+            float MyLocalPositionX = transform.localPosition.x;
+            if (IsFlipX)
+                PlayerPositionX *= -1;
+            if (IsFlipX)
+                MyLocalPositionX *= -1;
+            Vector3 newroopPosition = new(MyLocalPositionX + PlayerPositionX,
+                renderer.transform.localPosition.y, renderer.transform.localPosition.z);
+
+            // プレイヤーの位置と波動の距離を計算し、先頭の部分補正を入れる
+            float distanceX = Vector2.Distance(new(PlayerPosition.x, 0f), new(renderer.transform.parent.position.x + transform.localScale.x * 2.45f, 0f));
+            // なんやかんやで計算する。
+            renderer.transform.localPosition = new(distanceX / 3f + 2.53f - 0.5f, 0);
+            float sizeX = distanceX / (1.5f * transform.localScale.y) - 1f;
+            renderer.size = new(sizeX,
+                renderer.size.y);
+
+            float maxPositionX = -1;
+            List<int> maxPositions = [];
+            int index = -1;
+            foreach (Vector2 point in polygonCollider2D.points)
             {
-                Logger.Info($"reseted");
-                maxPositions = [];
-                maxPositionX = point.x;
+                index++;
+                if (point.x < maxPositionX)
+                    continue;
+                if (point.x != maxPositionX)
+                {
+                    maxPositions = [];
+                    maxPositionX = point.x;
+                }
+                maxPositions.Add(index);
             }
-            maxPositions.Add(index);
-            Logger.Info($"added");
+
+
+            var newpoints = polygonCollider2D.points.ToList();
+            // コライダーの判定を調整
+            foreach (int posIndex in maxPositions)
+            {
+                newpoints[posIndex] = new(sizeX + 2.54724f, polygonCollider2D.points[posIndex].y);
+            }
+
+            polygonCollider2D.enabled = false;
+            polygonCollider2D.points = newpoints.ToArray();
+            polygonCollider2D.enabled = true;
+
+            GameObject RotationEmptyParent = new("RotationEmptyParent");
+            RotationEmptyParent.transform.SetParent(effectGameObjectsParent);
+
+            WaveCannonEffect newEffect = CreateEffect();
+            newEffect.transform.SetParent(RotationEmptyParent.transform, true);
+            RotationEmptyParent.transform.localPosition = new Vector3(PlayerPositionX - MyLocalPositionX - 0.8f, 0f, newEffect.transform.localPosition.z); //newEffect.transform.localPosition.x - 1.5f, 0.5f);
+            newEffect.transform.localPosition = Vector3.zero;
+
+            RotationEmptyParent.transform.Rotate(new(0, 0, Angle));
+
+            newEffect.SetChargeState(false);
+            return newEffect.gameObject;
         }
-
-        Logger.Info($"mPCount: {maxPositions.Count}");
-
-        var newpoints = polygonCollider2D.points.ToList();
-        // コライダーの判定を調整
-        foreach (int posIndex in maxPositions)
-        {
-            Logger.Info($"posIndex: {posIndex} : {sizeX}");
-            newpoints[posIndex] = new(sizeX + 2.54724f, polygonCollider2D.points[posIndex].y);
-        }
-
-        polygonCollider2D.enabled = false;
-        polygonCollider2D.points = newpoints.ToArray();
-        polygonCollider2D.enabled = true;
-
-        Logger.Info("------ NewPolygonCollider -----");
-        foreach (Vector2 point in polygonCollider2D.points)
-        {
-            Logger.Info($"{point}");
-        }
-        Logger.Info("----- EndPolygonCollider -----");
-
-
-        GameObject RotationEmptyParent = new("RotationEmptyParent");
-        RotationEmptyParent.transform.SetParent(effectGameObjectsParent);
-
-        WaveCannonEffect newEffect = CreateEffect();
-        newEffect.transform.SetParent(RotationEmptyParent.transform, true);
-        RotationEmptyParent.transform.localPosition = new Vector3(PlayerPositionX - MyLocalPositionX - 0.8f, 0f, newEffect.transform.localPosition.z); //newEffect.transform.localPosition.x - 1.5f, 0.5f);
-        newEffect.transform.localPosition = Vector3.zero;
-        
-        RotationEmptyParent.transform.Rotate(new(0, 0, Angle));
-
-        newEffect.SetChargeState(false);
-        return null;
-        /*
-        //PlayerPosition.x -= 13;
-        float posvalue = PlayerPosition.x - effectrenders[0].transform.parent.position.x;
-        if (posvalue < 0)
-            posvalue *= -1;
-        effectrenders[0].transform.parent.localScale = new(posvalue * 0.0145f, 1, 1);
-        WaveCannonEffect effectrender = CreateEffect();
-        GameObject effect = effectrender.transform.parent.gameObject;
-        effect.transform.position = new(PlayerPosition.x, effect.transform.position.y, effect.transform.position.z + 0.1f);
-        effect.transform.Rotate(new(0, 0, Angle));
-        return effect;*/
-        //Position = new(effect.transform.position.x - PlayerPosition.x, effect.transform.position.y, effect.transform.position.z);
-        //Position.x += RotateSet[index].Item2.x - 3;
-        //Position.y += RotateSet[index].Item2.y;
-        //Position.y -= PlayerPosition.y;
-        //effect.transform.localPosition = Position;
-        //effect.transform.Rotate(new(0,0, RotateSet[index].Item1));
-        //Vector3 pos = effectGameObjects[0].transform.localScale;
-        //pos.x = Position.x / 7.06997959f;
-        //effectGameObjects[0].transform.localScale = pos;
-        //pos = effectGameObjects[0].transform.localPosition;
-        //pos.x -= 19f;
-        //effectGameObjects[0].transform.localPosition = pos;
     }
     public WaveCannonEffect CreateEffect()
     {
@@ -317,7 +291,7 @@ public class WaveCannonObject : CustomAnimation
     {
         IsShootNow = IsShootNow = true;
         if (CurrentAnimType == WCAnimType.Bullet)
-            Options.SetEffectSound(AssetManager.GetAsset<AudioClip>("BulletShootSound.ogg", AssetManager.AssetBundleType.Wavecannon), false);
+            Options.SetEffectSound(AssetManager.GetAsset<AudioClip>("BulletShootSound.ogg", AssetManager.AssetBundleType.Wavecannon), false, false);
         else
             Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
 
