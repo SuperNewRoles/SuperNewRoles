@@ -80,8 +80,7 @@ public static class RoleBaseManager
     /// <returns>変更前の役職ベース</returns>
     public static RoleBase ChangeRole(PlayerControl player, RoleBase role)
     {
-        if (player.TryGetRoleBase(out RoleBase before)) ClearRole(player, before);
-
+        RoleBase before = player.GetRoleBase();
         PlayerRoles[player] = role;
         RoleInfo info = role.Roleinfo;
         if (!RoleBaseTypes.TryGetValue(info.RoleObjectTypeName, out HashSet<RoleBase> bases))
