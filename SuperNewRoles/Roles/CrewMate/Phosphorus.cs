@@ -43,7 +43,7 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IMe
     private static void CreateOption()
     {
         LightingCooltime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightingCooltime", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption);
-        LightRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightRange", 0.5f, 0.1f, 5f, 0.05f, Optioninfo.RoleOption);
+        LightRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightRange", 0.5f, 0.1f, 0.5f, 0.1f, Optioninfo.RoleOption);
     }
 
     public Phosphorus(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
@@ -109,9 +109,14 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IMe
         writer.Write((byte)RpcTypes.LightingOff);
         SendRpc(writer);
     }
-    public void OnAmDeath(DeathInfo deathInfo)
+    public void OnDeath(DeathInfo deathInfo)
     {
+        if (deathInfo.DeathPlayer.PlayerId != Player.PlayerId)
+            return;
 
+        MessageWriter writer = RpcWriter;
+        writer.Write((byte)RpcTypes.LightingOff);
+        SendRpc(writer);
     }
 
     public void RpcReader(MessageReader reader)
