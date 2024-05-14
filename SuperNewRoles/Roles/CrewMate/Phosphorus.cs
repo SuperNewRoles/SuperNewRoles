@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SuperNewRoles.Roles.Crewmate.Phosphorus;
 
 // アイデア元：NoS。ありがとうございます！
-public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IMeetingHandler, IHandleChangeRole, IRpcHandler
+public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Phosphorus),
@@ -97,25 +97,6 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IMe
     {
         MessageWriter writer = RpcWriter;
         writer.Write((byte)RpcTypes.Activate);
-        SendRpc(writer);
-        MessageWriter writer2 = RpcWriter;
-        writer2.Write((byte)RpcTypes.LightingOff);
-        SendRpc(writer);
-    }
-    public void CloseMeeting() { }
-    public void OnChangeRole()
-    {
-        MessageWriter writer = RpcWriter;
-        writer.Write((byte)RpcTypes.LightingOff);
-        SendRpc(writer);
-    }
-    public void OnDeath(DeathInfo deathInfo)
-    {
-        if (deathInfo.DeathPlayer.PlayerId != Player.PlayerId)
-            return;
-
-        MessageWriter writer = RpcWriter;
-        writer.Write((byte)RpcTypes.LightingOff);
         SendRpc(writer);
     }
 

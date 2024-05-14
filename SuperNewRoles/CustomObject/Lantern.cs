@@ -48,6 +48,11 @@ public class Lantern : MonoBehaviour
 
         myRend.sprite = ActiveSprite;
         light.enabled = true;
+
+        new LateTask(() =>
+        {
+            LightingOff();
+        }, Phosphorus.Optioninfo.DurationTime);
     }
     public void LightingOff()
     {
