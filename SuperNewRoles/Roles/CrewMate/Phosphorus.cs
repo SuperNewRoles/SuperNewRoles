@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SuperNewRoles.Roles.Crewmate.Phosphorus;
 
 // アイデア元：NoS。ありがとうございます！
-public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IRpcHandler
+public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Phosphorus),
@@ -61,8 +61,8 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IRpcHandler
             () => LightingCooltime.GetFloat(), Vector3.zero,
             "PhosphorusLightingButtonName", KeyCode.Q,
             DurationTime: () => Optioninfo.DurationTime,
-            CouldUse: () => PutButtonInfo.AbilityCount != Optioninfo.AbilityMaxCount,
-            OnEffectEnds: () => SendRpcLighting(false)
+            CouldUse: () => Lantern.AllLanterns.Any(x => x.Owner.AmOwner && x.IsActivating)
+            //OnEffectEnds: () => SendRpcLighting(false)
         );
 
         CustomButtonInfos = new CustomButtonInfo[2] { PutButtonInfo, LightingButtonInfo };
@@ -99,6 +99,7 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IRpcHandler
         writer.Write((byte)RpcTypes.Activate);
         SendRpc(writer);
     }
+    public void CloseMeeting() { }
 
     public void RpcReader(MessageReader reader)
     {
