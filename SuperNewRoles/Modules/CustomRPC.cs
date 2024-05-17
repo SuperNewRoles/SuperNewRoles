@@ -377,7 +377,7 @@ public enum CustomRPC
     RoleRpcHandler,
     SetFrankensteinMonster,
     MoveDeadBody,
-    WaveCannon
+    WaveCannon,
 }
 
 public static class RPCProcedure
@@ -1232,6 +1232,14 @@ public static class RPCProcedure
             player1.SetRole(player2id);
         }
         ChacheManager.ResetMyRoleChache();
+        RoleHelpers.ClearTaskUpdate();
+        if (AmongUsClient.Instance.AmHost)
+        {
+            byte[] player1task = Array.ConvertAll(Array.FindAll<GameData.TaskInfo>(player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            byte[] player2task = Array.ConvertAll(Array.FindAll<GameData.TaskInfo>(player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            player2.SetTask(player1task);
+            player1.SetTask(player2task);
+        }
     }
 
     public static void SetHauntedWolf(byte playerid)
