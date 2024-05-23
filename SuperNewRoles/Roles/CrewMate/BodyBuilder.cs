@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +14,8 @@ using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using IEnumerator = Il2CppSystem.Collections.IEnumerator;
 
 namespace SuperNewRoles.Roles.Crewmate.BodyBuilder;
 
@@ -106,7 +107,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         private static Minigame preMinigame;
         static void Prefix(Console __instance)
         {
-            if (!ChangeAllTaskLiftWeights.GetBool() || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
+            if ((!ChangeAllTaskLiftWeights.GetBool() && GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Fungle) || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
                 return;
 
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
@@ -121,9 +122,10 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
             ShipStatus ship = GameManager.Instance.LogicOptions.MapId == (int)MapNames.Fungle ? ShipStatus.Instance : MapLoader.Fungle;
             task.MinigamePrefab = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.LiftWeights).MinigamePrefab;
         }
+        
         static void Postfix(Console __instance)
         {
-            if (!ChangeAllTaskLiftWeights.GetBool() || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
+            if ((!ChangeAllTaskLiftWeights.GetBool() && GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Fungle) || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
                 return;
 
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
@@ -148,7 +150,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
     }
     public bool AssignTask(out List<byte> tasks, (int numCommon, int numShort, int numLong) TaskData)
     {
-        if (ChangeAllTaskLiftWeights.GetBool())
+        if (ChangeAllTaskLiftWeights.GetBool() || GameManager.Instance.LogicOptions.currentGameOptions.MapId != (byte)MapNames.Fungle)
         {
             tasks = null;
             return false;
@@ -194,7 +196,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         ModHelpers.PlaySound(Player.NetTransform.transform, clip, false, volume);
 
         var prefab = getPrefab(id);
-        var pose = UnityEngine.Object.Instantiate(prefab, Player.NetTransform.transform);
+        var pose = Object.Instantiate(prefab, Player.NetTransform.transform);
         Player.gameObject.GetComponentsInChildren<SpriteRenderer>().ForEach(x => x.color = new(1f, 1f, 1f, 0f));
 
         var pos = pose.gameObject.transform.position;
@@ -214,8 +216,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
     {
         Player.gameObject.GetComponentsInChildren<SpriteRenderer>().ForEach(x => x.color = new(1f, 1f, 1f, wasPosing ? 0f : 1f));
 
-        if (myObject != null)
-            GameObject.Destroy(myObject);
+        if (myObject != null) Object.Destroy(myObject);
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity)), HarmonyPostfix]
     static void onMovePlayer(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
@@ -234,20 +235,81 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         => useAbility(false);
     public void CloseMeeting() { }
 
-    //2回バーベルを上げた状態でキャンセルすると幻の3ステップ目が発生するバグの修正
-    [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.NextStep)), HarmonyPrefix]
-    static bool nextStep(NormalPlayerTask __instance)
+    [HarmonyPatch(typeof(LiftWeightsMinigame))]
+    public static class LiftWeightsMinigamePatch
     {
-        if (!PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder) || __instance.taskStep >= __instance.MaxStep)
-            return true;
-
-        if (__instance.Data.Length <= 0) __instance.Data = new byte[] { 0 };
-        if (__instance.Data[0]++ >= __instance.MaxStep)
+        [HarmonyPatch(nameof(LiftWeightsMinigame.Begin)), HarmonyPrefix]
+        public static void BeginPrefix(PlayerTask task, ref int __state)
         {
-            __instance.taskStep = __instance.MaxStep - 1;
-            return true;
+            if (task.TaskType is TaskTypes.LiftWeights) __state = 3;
+            else __state = task.Cast<NormalPlayerTask>().MaxStep;
         }
 
-        return false;
+        [HarmonyPatch(nameof(LiftWeightsMinigame.Begin)), HarmonyPostfix]
+        public static void BeginPostfix(LiftWeightsMinigame __instance, ref int __state)
+        {
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder)) return;
+            __instance.MyNormTask.MaxStep = __state;
+            Logger.Info($"__instance.MyNormTask.MaxStep : {__instance.MyNormTask.MaxStep}", "LiftWeightsMinigame");
+            List<SpriteRenderer> sprites = new(__instance.counters);
+            while (__instance.MyNormTask.MaxStep > sprites.Count)
+            {
+                SpriteRenderer sprite = Object.Instantiate(sprites[0], sprites[0].transform.parent);
+                sprite.name = $"Counter {sprites.Count + 1}";
+                sprites.Add(sprite);
+            }
+            while (__instance.MyNormTask.MaxStep < sprites.Count)
+            {
+                SpriteRenderer sprite = sprites.Last();
+                sprites.RemoveAt(sprites.Count - 1);
+                Object.Destroy(sprite.gameObject);
+            }
+            __instance.counters = sprites.ToArray();
+            for (int i = 0; i < __instance.counters.Length; i++)
+            {
+                Vector3 pos = new(0.282f * (i / 5), 0.564f - 0.282f * (i % 5));
+                __instance.counters[i].transform.localPosition = pos;
+                __instance.counters[i].color = __instance.MyNormTask.TaskStep > i ? Color.green : new(0.5849f, 0.5849f, 0.5849f);
+            }
+            __instance.OnValidate();
+            return;
+        }
+        
+
+        [HarmonyPatch(nameof(LiftWeightsMinigame.EndLifting)), HarmonyPrefix]
+        public static bool EndLiftingPrefix(LiftWeightsMinigame __instance)
+        {
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder)) return true;
+            if (__instance.state != LiftWeightsMinigame.State.Lifting) return false;
+            if (__instance.validFillPercentRange.Contains(__instance.currentBarFillPercent))
+            {
+                __instance.counters[__instance.MyNormTask.taskStep].color = Color.green;
+                if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.completeRepSound, false, 1f, null);
+                __instance.StartCoroutine(Effects.Bloop(0f, __instance.counters[__instance.MyNormTask.taskStep].transform, __instance.counters[__instance.MyNormTask.taskStep].transform.localScale.x, 0.5f));
+                __instance.MyNormTask.NextStep();
+                VibrationManager.Vibrate(0.7f, 0.7f, 0.2f, VibrationManager.VibrationFalloff.None, null, false, "");
+                if (__instance.MyNormTask.IsComplete)
+                {
+                    if (Constants.ShouldPlaySfx())
+                    {
+                        __instance.StartCoroutine(Effects.Sequence(new IEnumerator[]
+                        {
+                            Effects.Wait(0.1f),
+                            Effects.Action((Action)(() => SoundManager.Instance.PlaySound(__instance.completeAllRepsSound, false, 1f, null)))
+                        }));
+                    }
+                }
+                __instance.StartCoroutine(__instance.CoStartClose(0.75f));
+            }
+            else
+            {
+                __instance.fillBar.color = Color.red;
+                if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.failRepSound, false, 1f, null);
+            }
+            __instance.barfillAudioSource.Stop();
+            __instance.barfillAudioSource.volume = 0f;
+            __instance.state = LiftWeightsMinigame.State.Dropping;
+            return false;
+        }
     }
 }
