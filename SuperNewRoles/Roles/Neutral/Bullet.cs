@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvailable, IImpostorVision, ICustomButton, IRpcHandler, IFixedUpdaterAll, IMeetingHandler, INameHandler
+public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvailable, IImpostorVision, ICustomButton, IRpcHandler, IFixedUpdaterAll, IMeetingHandler, INameHandler, IHandleChangeRole
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Bullet),
@@ -108,5 +108,12 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
 
     public void CloseMeeting()
     {
+    }
+
+    public void OnChangeRole()
+    {
+        if (SidekickedParent == null)
+            return;
+        SidekickedParent.SetDidntLoadBullet();
     }
 }

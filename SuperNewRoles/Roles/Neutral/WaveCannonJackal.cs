@@ -25,7 +25,7 @@ public enum WCJackalSidekickType
     WaveCannonSidekick,
     BulletSidekick,
 }
-public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailable, IImpostorVision, IJackal, IRpcHandler, IFixedUpdaterAll
+public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailable, IImpostorVision, IJackal, IRpcHandler, IFixedUpdaterAll, IHandleChangeRole
 {
     public static new RoleInfo Roleinfo = new(
         typeof(WaveCannonJackal),
@@ -298,10 +298,10 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         ISidekick sidekick = CreatedSidekick;
         if (sidekick is not RoleBase sidekickBase)
             return;
-        if (sidekick == null)
+        if (sidekickBase == null)
             return;
         // 昇格できない設定の弾を昇格させない
-        if (sidekick is Bullet bullet && !WaveCannonJackal.CreateBulletToJackal.GetBool())
+        if (sidekick is Bullet bullet && !CreateBulletToJackal.GetBool())
             return;
         PlayerControl sidekickPlayer = sidekickBase.Player;
         sidekickPlayer.ClearRole();
@@ -315,21 +315,36 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
 
     private bool Promoted;
 
+    private void CheckPromote(bool RoleChanged = false)
+    {
+        if (CreatedSidekick != null && (RoleChanged || Player == null || Player.IsDead()) && !Promoted)
+        {
+            Promoted = true;
+            if (RoleChanged)
+                HandleRpcPromoteSidekick();
+            else
+            {
+                MessageWriter writer = RpcWriter;
+                writer.Write(false);
+                SendRpc(writer);
+            }
+        }
+    }
+
     public void FixedUpdateAllDefault()
     {
-        if (AmongUsClient.Instance.AmHost && CreatedSidekick != null && Player.IsDead() && !Promoted)
-        {
-            MessageWriter writer = RpcWriter;
-            writer.Write(false);
-            SendRpc(writer);
-            Promoted = true;
-        }
+        CheckPromote();
         if (IsLoadedBullet)
             return;
         if (CreatedSidekick is Bullet BulletRole && BulletRole != null &&
             BulletRole.Player.IsAlive())
             return;
         SetDidntLoadBullet();
+    }
+
+    public void OnChangeRole()
+    {
+        CheckPromote(true);
     }
 }
 /*
