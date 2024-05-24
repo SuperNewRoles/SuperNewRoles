@@ -1175,6 +1175,11 @@ public static class ModHelpers
             optdata.RpcSyncOption(player.GetClientId(), SendOption.None);
         }
     }
+    public static bool Il2CppIs<T1, T2>(this T1 before, out T2 after) where T1 : Il2CppObjectBase where T2 : Il2CppObjectBase
+    {
+        after = before.TryCast<T2>();
+        return after != null;
+    }
 }
 public static class CreateFlag
 {

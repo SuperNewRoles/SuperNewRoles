@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,15 +6,13 @@ using Agartha;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
-using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
-using Object = UnityEngine.Object;
+using Action = System.Action;
 using IEnumerator = Il2CppSystem.Collections.IEnumerator;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Crewmate.BodyBuilder;
 
@@ -214,7 +211,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
     }
     private void cancelPosing(bool wasPosing = false)
     {
-        Player.gameObject.GetComponentsInChildren<SpriteRenderer>().ForEach(x => x.color = new(1f, 1f, 1f, wasPosing ? 0f : 1f));
+        if (Player != null) Player.gameObject.GetComponentsInChildren<SpriteRenderer>().ForEach(x => x.color = new(1f, 1f, 1f, wasPosing ? 0f : 1f));
 
         if (myObject != null) Object.Destroy(myObject);
     }
@@ -241,8 +238,8 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         [HarmonyPatch(nameof(LiftWeightsMinigame.Begin)), HarmonyPrefix]
         public static void BeginPrefix(PlayerTask task, ref int __state)
         {
-            if (task.TaskType is TaskTypes.LiftWeights) __state = 3;
-            else __state = task.Cast<NormalPlayerTask>().MaxStep;
+            if (task.Il2CppIs(out NormalPlayerTask normal)) __state = normal.MaxStep;
+            else __state = 1;
         }
 
         [HarmonyPatch(nameof(LiftWeightsMinigame.Begin)), HarmonyPostfix]
@@ -250,7 +247,6 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         {
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder)) return;
             __instance.MyNormTask.MaxStep = __state;
-            Logger.Info($"__instance.MyNormTask.MaxStep : {__instance.MyNormTask.MaxStep}", "LiftWeightsMinigame");
             List<SpriteRenderer> sprites = new(__instance.counters);
             while (__instance.MyNormTask.MaxStep > sprites.Count)
             {
@@ -298,8 +294,28 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
                             Effects.Action((Action)(() => SoundManager.Instance.PlaySound(__instance.completeAllRepsSound, false, 1f, null)))
                         }));
                     }
+                    __instance.StartCoroutine(__instance.CoStartClose(0.75f));
                 }
-                __instance.StartCoroutine(__instance.CoStartClose(0.75f));
+                else
+                {
+                    PlayerControl player = __instance.MyTask.Owner;
+                    Console console = __instance.Console;
+                    Vector2 truePosition = player.GetTruePosition();
+                    Vector3 position = console.transform.position;
+                    bool use = false;
+                    if (console.Il2CppIs(out IUsable usable))
+                    {
+                        use = player.Data.Role.CanUse(usable) && (!console.onlySameRoom || console.InRoom(truePosition)) && (!console.onlyFromBelow || truePosition.y < position.y) && console.FindTask(player);
+                        float num = float.MaxValue;
+                        if (use)
+                        {
+                            num = Vector2.Distance(truePosition, console.transform.position);
+                            use &= num <= console.UsableDistance;
+                            if (console.checkWalls) use &= !PhysicsHelpers.AnythingBetween(truePosition, position, Constants.ShadowMask, false);
+                        }
+                    }
+                    if (!use) __instance.StartCoroutine(__instance.CoStartClose(0.75f));
+                }
             }
             else
             {
@@ -310,6 +326,17 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
             __instance.barfillAudioSource.volume = 0f;
             __instance.state = LiftWeightsMinigame.State.Dropping;
             return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(NormalPlayerTask))]
+    public static class NormalPlayerTaskPatch
+    {
+        [HarmonyPatch(nameof(NormalPlayerTask.Initialize)), HarmonyPostfix]
+        public static void InitializePostfix(NormalPlayerTask __instance)
+        {
+            if (__instance.TaskType != TaskTypes.LiftWeights) return;
+            __instance.MaxStep = 3;
         }
     }
 }
