@@ -2294,14 +2294,14 @@ static class HudManagerStartPatch
             () =>
             {
                 //クールでブロック
-                RoleClass.SecretlyKiller.MainCool = HudManagerStartPatch.SecretlyKillerMainButton.Timer;
+                /*RoleClass.SecretlyKiller.MainCool = HudManagerStartPatch.SecretlyKillerMainButton.Timer;
                 RoleClass.SecretlyKiller.SecretlyCool = HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer;
                 if (RoleClass.SecretlyKiller.SecretlyCool > 0f && RoleClass.SecretlyKiller.IsKillCoolChange) return false;
-                if (RoleClass.SecretlyKiller.MainCool > 0f) return false;
+                if (RoleClass.SecretlyKiller.MainCool > 0f) return false;*/
 
                 RoleClass.SecretlyKiller.target = SetTarget();
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(RoleClass.SecretlyKiller.target, RoleClass.SecretlyKiller.color);
-                return RoleClass.SecretlyKiller.target != null
+                return RoleClass.SecretlyKiller.target
                         && !RoleClass.SecretlyKiller.target.IsImpostor() && PlayerControl.LocalPlayer.CanMove;
             },
             () => { SecretlyKiller.EndMeeting(); },
