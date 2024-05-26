@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppSystem.Runtime.Remoting.Lifetime;
@@ -58,8 +59,12 @@ public class FixedUpdate
     {
         if (PlayerControl.LocalPlayer.IsUseVent()) return;
         if (!ShipStatus.Instance) return;
+        List<NormalPlayerTask> tasks = PlayerControl.LocalPlayer.myTasks.ToList().FindAll(x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning).ConvertAll(x => x.Cast<NormalPlayerTask>());
         foreach (Vent vent in ShipStatus.Instance.AllVents)
+        {
+            if (tasks.Exists(x => x.Data[0] == vent.Id)) continue;
             vent.SetOutline(false, false);
+        }
     }
 
     static void ReduceKillCooldown(PlayerControl __instance)
