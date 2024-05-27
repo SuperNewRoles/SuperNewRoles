@@ -23,7 +23,8 @@ class GameManagerSerializeFix
         for (int index = 0; index < __instance.LogicComponents.Count; ++index)
         {
             GameLogicComponent logicComponent = __instance.LogicComponents[index];
-            if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+            if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
+                logicComponent.TryCast<LogicOptions>() == null)
             {
                 flag = true;
                 writer.StartMessage((byte)index);
