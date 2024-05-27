@@ -17,6 +17,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
@@ -117,7 +118,6 @@ static class HudManagerStartPatch
         Sheriff.ResetKillCooldown();
         Clergyman.ResetCooldown();
         Teleporter.ResetCooldown();
-        Jackal.ResetCooldown();
         //クールダウンリセット
     }
 
@@ -1059,7 +1059,7 @@ static class HudManagerStartPatch
             () =>
             {
                 var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
-                if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
+                if (target && PlayerControl.LocalPlayer.CanMove)
                 {
                     if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
                     {
@@ -1073,23 +1073,16 @@ static class HudManagerStartPatch
                             }
                         }
                     }
-                    if (RoleClass.Jackal.CanCreateFriend)
+                    IJackal jackal = PlayerControl.LocalPlayer.GetRoleBase() as IJackal;
+                    if (jackal != null && jackal.isShowSidekickButton)
                     {
-                        Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
+                        jackal.OnClickSidekickButton(target);
+                        JackalSidekickButton.MaxTimer = jackal.SidekickCoolTime;
+                        JackalSidekickButton.Timer = JackalSidekickButton.MaxTimer;
                     }
-                    else
-                    {
-                        bool isFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
-                        writer.Write(target.PlayerId);
-                        writer.Write(isFakeSidekick);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.CreateSidekick(target.PlayerId, isFakeSidekick);
-                    }
-                    RoleClass.Jackal.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
+            (bool isAlive, RoleId role) => { return isAlive && PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal && jackal.isShowSidekickButton; },
             () =>
             {
                 PlayerControl target = PlayerControlFixedUpdatePatch.JackalSetTarget();
@@ -1097,7 +1090,11 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
+                if (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal)
+                {
+                    JackalSidekickButton.MaxTimer = jackal.SidekickCoolTime;
+                    JackalSidekickButton.Timer = JackalSidekickButton.MaxTimer;
+                }
             },
             RoleClass.Jackal.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
@@ -1177,9 +1174,6 @@ static class HudManagerStartPatch
                     ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.JackalSetTarget());
                     switch (PlayerControl.LocalPlayer.GetRole())
                     {
-                        case RoleId.Jackal:
-                            Jackal.ResetCooldown();
-                            break;
                         case RoleId.JackalSeer:
                             JackalSeer.ResetCooldown();
                             break;
@@ -1189,19 +1183,29 @@ static class HudManagerStartPatch
                         case RoleId.WaveCannonJackal:
                             WaveCannonJackal.ResetCooldowns(true, false);
                             break;
+                        default:
+                            if (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal)
+                            {
+                                JackalKillButton.MaxTimer = jackal.JackalKillCoolTime;
+                                JackalKillButton.Timer = JackalKillButton.MaxTimer;
+                            }
+                            break;
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Jackal || role == RoleId.TeleportingJackal || role == RoleId.JackalSeer || role == RoleId.WaveCannonJackal) && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.TeleportingJackal or RoleId.JackalSeer || (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal && jackal.CanUseKill)) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.EndMeeting(); }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
+                else if (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal)
+                {
+                    JackalKillButton.MaxTimer = jackal.JackalKillCoolTime;
+                    JackalKillButton.Timer = JackalKillButton.MaxTimer;
+                }
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),

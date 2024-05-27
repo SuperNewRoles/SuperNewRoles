@@ -439,6 +439,7 @@ FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
 FinalStatusSantaSelf,Santa bomb!,ソリから転落,送错礼物,聖誕炸彈
 FinalStatusEvaporation,Evaporation,蒸発,,蒸發
+FinalStatusSacrifice,Sacrifice,殉死,
 
 # MeetingStatus
 MeetingStatusCanNotCallEmergencyMeeting,EMERGENCY MEETINGS CANNOT\nBE OPENED DUE TO SETTINGS,緊急会議は\n設定により開けない,,根據設定\n緊急會議無法召開

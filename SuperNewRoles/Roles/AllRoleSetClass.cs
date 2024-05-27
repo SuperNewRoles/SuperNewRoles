@@ -656,7 +656,6 @@ class AllRoleSetClass
             RoleId.EvilLighter => CustomOptionHolder.EvilLighterPlayerCount.GetInt(),
             RoleId.Sheriff => CustomOptionHolder.SheriffPlayerCount.GetInt(),
             RoleId.MeetingSheriff => CustomOptionHolder.MeetingSheriffPlayerCount.GetInt(),
-            RoleId.Jackal => CustomOptionHolder.JackalPlayerCount.GetInt(),
             RoleId.Teleporter => CustomOptionHolder.TeleporterPlayerCount.GetInt(),
             RoleId.SpiritMedium => CustomOptionHolder.SpiritMediumPlayerCount.GetInt(),
             RoleId.SpeedBooster => CustomOptionHolder.SpeedBoosterPlayerCount.GetInt(),

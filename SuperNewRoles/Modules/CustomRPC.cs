@@ -300,7 +300,6 @@ public enum CustomRPC
     CleanBody,
     TeleporterTP,
     SidekickPromotes,
-    CreateSidekick,
     CreateSidekickSeer,
     SetSpeedBoost,
     CountChangerSetRPC,
@@ -1459,17 +1458,7 @@ public static class RPCProcedure
     public static void SidekickPromotes(byte jackalId)
     {
         RoleId jackalRoleId = (RoleId)jackalId;
-        if (jackalRoleId == RoleId.Jackal)
-        {
-            foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
-            {
-                p.ClearRole();
-                p.SetRole(jackalRoleId);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
-            }
-        }
-        else if (jackalRoleId == RoleId.JackalSeer)
+        if (jackalRoleId == RoleId.JackalSeer)
         {
             foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
             {
@@ -1481,23 +1470,6 @@ public static class RPCProcedure
         }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         ChacheManager.ResetMyRoleChache();
-    }
-    public static void CreateSidekick(byte playerid, bool IsFake)
-    {
-        var player = ModHelpers.PlayerById(playerid);
-        if (player == null) return;
-        if (IsFake)
-        {
-            RoleClass.Jackal.FakeSidekickPlayer.Add(player);
-        }
-        else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
-            player.ClearRole();
-            RoleClass.Jackal.SidekickPlayer.Add(player);
-            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
-        }
     }
     public static void CreateSidekickSeer(byte playerid, bool IsFake)
     {
@@ -1809,9 +1781,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SidekickPromotes:
                         SidekickPromotes(reader.ReadByte());
-                        break;
-                    case CustomRPC.CreateSidekick:
-                        CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.SetSpeedBoost:
                         SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());

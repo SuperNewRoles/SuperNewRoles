@@ -217,7 +217,7 @@ class Guesser
         CreateRole(IntroData.ImpostorIntro);
         if (canCrewShot)
             CreateRole(IntroData.CrewmateIntro);
-        if (CustomOptionHolder.JackalOption.GetSelection() is not 0 && CustomOptionHolder.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
+        if (Jackal.Optioninfo.RoleOption.GetSelection() is not 0 && Jackal.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
         if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
         if (WaveCannonJackal.Optioninfo.RoleOption.GetBool() && WaveCannonJackal.CanCreateSidekick.GetBool())
         {

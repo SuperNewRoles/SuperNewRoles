@@ -89,13 +89,17 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
 
     public void FixedUpdateAllDefault()
     {
+        if (RoleClass.IsMeeting)
+            return;
         if (SidekickedParent == null ||
             SidekickedParent.Player.IsDead())
             return;
         if (SidekickedParent?.IsLoadedBullet != true)
             return;
+        if (Player == null || Player.transform == null)
+            return;
         Player.MyPhysics.body.velocity = new();
-        Player.NetTransform.RpcSnapTo(SidekickedParent.Player.transform.position);
+        Player.NetTransform.SnapTo(SidekickedParent.Player.transform.position);
         Player.transform.position = SidekickedParent.Player.transform.position;
     }
 

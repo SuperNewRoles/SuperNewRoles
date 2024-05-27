@@ -533,8 +533,6 @@ public static class OnGameEndPatch
 
         notWinners.AddRanges([RoleClass.Jester.JesterPlayer,
             RoleClass.Madmate.MadmatePlayer,
-            RoleClass.Jackal.JackalPlayer,
-            RoleClass.Jackal.SidekickPlayer,
             RoleClass.JackalFriends.JackalFriendsPlayer,
             RoleClass.God.GodPlayer,
             RoleClass.Opportunist.OpportunistPlayer,

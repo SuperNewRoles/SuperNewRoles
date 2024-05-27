@@ -109,14 +109,17 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
     public bool IsImpostorVision => Optioninfo.IsImpostorVision;
 
     public bool IwasSidekicked { get; private set; }
-
-    public CustomButtonInfo WaveCannonButtonInfo;
-    public CustomButtonInfo WaveCannonSidekickButtonInfo;
-    public CustomButtonInfo[] CustomButtonInfos { get; }
+    public float SidekickCoolTime => CreateSidekickCoolTime.GetFloat();
+    public float JackalKillCoolTime => KillCooldown.GetFloat();
 
     public bool IsLoadedBullet { get; private set; }
 
     public bool CanSidekick { get; private set; }
+
+    public bool isShowSidekickButton => CanSidekick;
+
+    public CustomButtonInfo WaveCannonButtonInfo;
+    public CustomButtonInfo[] CustomButtonInfos { get; }
 
     public ISidekick CreatedSidekick;
 
@@ -174,19 +177,11 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
             DurationTime: () => IsLoadedBullet ? BulletLoadedChargeTime.GetFloat() : ChargeTime.GetFloat(),
             OnEffectEnds: OnEffectEnds);
 
-        WaveCannonSidekickButtonInfo = new(null, this, SidekickButtonOnClick,
-            (isAlive) => isAlive && CanSidekick, CustomButtonCouldType.CanMove, null,
-            RoleClass.Jackal.GetButtonSprite(),
-            CreateSidekickCoolTime.GetFloat, new Vector3(-2f, 1, 0),
-            ModTranslation.GetString("WaveCannonSidekickButtonName"),
-            CouldUse: () => WaveCannonSidekickButtonInfo.SetCurrentTarget(JackalSetTarget()) != null
-        );
         CustomButtonInfos = [WaveCannonButtonInfo];
     }
 
-    private void SidekickButtonOnClick()
+    public void OnClickSidekickButton(PlayerControl target)
     {
-        PlayerControl target = WaveCannonSidekickButtonInfo.CurrentTarget;
         if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
         {
             if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
@@ -298,7 +293,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         ISidekick sidekick = CreatedSidekick;
         if (sidekick is not RoleBase sidekickBase)
             return;
-        if (sidekickBase == null)
+        if (sidekickBase == null || sidekickBase.Player == null)
             return;
         // 昇格できない設定の弾を昇格させない
         if (sidekick is Bullet bullet && !CreateBulletToJackal.GetBool())
@@ -333,7 +328,8 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
 
     public void FixedUpdateAllDefault()
     {
-        CheckPromote();
+        if (AmongUsClient.Instance.AmHost)
+            CheckPromote();
         if (IsLoadedBullet)
             return;
         if (CreatedSidekick is Bullet BulletRole && BulletRole != null &&
