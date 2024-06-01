@@ -680,6 +680,7 @@ EvilGuesserDescription,During the meeting，you can kill the target by guessing 
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测,邪惡的賭怪能否在一次會議中多次猜測
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数,邪惡的賭怪最大可猜測次數
 EvilGuesserCanCrewShotSetting,You Can hit Crewmates,クルーメイトを打てる,邪恶的赌怪可以猜测“船员”,邪惡的賭怪可以猜測船員陣營職業
+EvilGuesserCanCelebrityShotSetting,You Can hit Celebrity,スターを打てる
 NextPage,Next Page,次のページへ,下一页,下一頁
 PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲

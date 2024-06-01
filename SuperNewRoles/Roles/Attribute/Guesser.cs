@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Generator.Passes;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -17,11 +18,13 @@ public class GuesserBase : RoleBase
     public int Count { get; private set; }
     public bool CanShotOneMeeting { get; }
     public bool CanShotCrew { get; }
-    public GuesserBase(int ShotMaxCount, bool CanShotOneMeeting, bool CanShotCrew, PlayerControl p, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(p, Roleinfo, Optioninfo, Introinfo)
+    public bool CanShotCelebrity { get; }
+    public GuesserBase(int ShotMaxCount, bool CanShotOneMeeting, bool CanShotCrew, bool CanShotCelebrity, PlayerControl p, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         Count = ShotMaxCount;
         this.CanShotOneMeeting = CanShotOneMeeting;
         this.CanShotCrew = CanShotCrew;
+        this.CanShotCelebrity = CanShotCelebrity;
     }
     public void UseCount()
     {
@@ -190,12 +193,14 @@ class Guesser
 
         int ind = 0;
         bool canCrewShot = guesserBaseMe.CanShotCrew;
+        bool canShotCelebrity = guesserBaseMe.CanShotCelebrity;
         foreach (IntroData roleInfo in IntroData.Intros.Values)
         {
             if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||
                 roleInfo.RoleId == RoleId.DefaultRole ||
-                (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
+                (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0)||
+                (!canShotCelebrity && roleInfo.RoleId == RoleId.Celebrity))
             {
                 Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                 continue; // Not guessable roles
@@ -207,7 +212,8 @@ class Guesser
             if (roleInfo == null ||
                 roleInfo.Role == RoleId.Hunter ||
                 roleInfo.Role == RoleId.DefaultRole ||
-                (IntroData.GetOption(roleInfo.Role)?.GetSelection() is null or 0))
+                (IntroData.GetOption(roleInfo.Role)?.GetSelection() is null or 0)||
+                (!canShotCelebrity && roleInfo.Role == RoleId.Celebrity))
             {
                 Logger.Info("continueになりました:" + roleInfo.Role, "Guesser");
                 continue; // Not guessable roles

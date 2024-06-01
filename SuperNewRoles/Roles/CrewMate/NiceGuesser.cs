@@ -29,13 +29,15 @@ public class NiceGuesser : GuesserBase, ICrewmate
     public static CustomOption ShotOneMeetingCount;
     public static CustomOption ShotMaxCount;
     public static CustomOption CanShotCrewOption;
+    public static CustomOption CanShotCelebrityOption;
     private static void CreateOption()
     {
         ShotMaxCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, Optioninfo.RoleOption);
         ShotOneMeetingCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, Optioninfo.RoleOption);
         CanShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserCanCrewShotSetting", true, Optioninfo.RoleOption);
+        CanShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserCanCelebrityShotSetting", true, Optioninfo.RoleOption);
     }
-    public NiceGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CanShotCrewOption.GetBool(), p, Roleinfo, Optioninfo, Introinfo)
+    public NiceGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CanShotCrewOption.GetBool(),CanShotCelebrityOption.GetBool(), p, Roleinfo, Optioninfo, Introinfo)
     {
     }
 }

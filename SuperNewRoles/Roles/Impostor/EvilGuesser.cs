@@ -28,13 +28,15 @@ public class EvilGuesser : GuesserBase, IImpostor
     public static CustomOption ShotOneMeetingCount;
     public static CustomOption ShotMaxCount;
     public static CustomOption CanShotCrewOption;
+    public static CustomOption CanShotCelebrityOption;
     private static void CreateOption()
     {
         ShotMaxCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, Optioninfo.RoleOption);
         ShotOneMeetingCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, Optioninfo.RoleOption);
         CanShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, Optioninfo.RoleOption);
+        CanShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserCanCelebrityShotSetting", true, Optioninfo.RoleOption);
     }
-    public EvilGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CanShotCrewOption.GetBool(), p, Roleinfo, Optioninfo, Introinfo)
+    public EvilGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CanShotCrewOption.GetBool(),CanShotCelebrityOption.GetBool(), p, Roleinfo, Optioninfo, Introinfo)
     {
     }
 }
