@@ -27,16 +27,16 @@ public class EvilGuesser : GuesserBase, IImpostor
 
     public static CustomOption ShotOneMeetingCount;
     public static CustomOption ShotMaxCount;
-    public static CustomOption CanShotCrewOption;
-    public static CustomOption CanShotCelebrityOption;
+    public static CustomOption CannotShotCrewOption;
+    public static CustomOption CannotShotCelebrityOption;
     private static void CreateOption()
     {
         ShotMaxCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, Optioninfo.RoleOption);
         ShotOneMeetingCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, Optioninfo.RoleOption);
-        CanShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, Optioninfo.RoleOption);
-        CanShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserCanCelebrityShotSetting", true, Optioninfo.RoleOption);
+        CannotShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserCannotCrewShotSetting", false, Optioninfo.RoleOption);
+        CannotShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilGuesserCannotCelebrityShotSetting", false, Optioninfo.RoleOption);
     }
-    public EvilGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CanShotCrewOption.GetBool(),CanShotCelebrityOption.GetBool(), p, Roleinfo, Optioninfo, Introinfo)
+    public EvilGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CannotShotCrewOption.GetBool(),CannotShotCelebrityOption.GetBool(), p, Roleinfo, Optioninfo, Introinfo)
     {
     }
 }

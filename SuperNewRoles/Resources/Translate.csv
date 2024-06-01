@@ -679,8 +679,8 @@ EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗れば
 EvilGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nSuppress the crew from declaring role. Sometimes，you can prevent your crewmates from giving out information by killing them.\nDead men do not have mouths to feed.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\nクルーメイトの役職カミングアウトを抑制しましょう。時には討って情報を出される事を阻止しましょう。\n死人に口なし。,邪恶的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，邪恶的赌怪自杀。\n邪恶的赌怪可以击杀身份亮明的好人，并及时封锁他们的信息。\n只有死人能保守秘密。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n削減已暴露的強力船員陣營或中立陣營的數量，並在必要時，阻止情報遭洩漏。\n「只有死人不會開口。」
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测,邪惡的賭怪能否在一次會議中多次猜測
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数,邪惡的賭怪最大可猜測次數
-EvilGuesserCanCrewShotSetting,You Can hit Crewmates,クルーメイトを打てる,邪恶的赌怪可以猜测“船员”,邪惡的賭怪可以猜測船員陣營職業
-EvilGuesserCanCelebrityShotSetting,You Can hit Celebrity,スターを打てる
+EvilGuesserCannotCrewShotSetting,You Cannot hit Crewmates,クルーメイトを打てない
+EvilGuesserCannotCelebrityShotSetting,You Cannot hit Celebrity,スターを打てない
 NextPage,Next Page,次のページへ,下一页,下一頁
 PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲
