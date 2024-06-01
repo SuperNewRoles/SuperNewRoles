@@ -230,7 +230,7 @@ class Guesser
         CreateRole(IntroData.ImpostorIntro);
         if (!cannotCrewShot)
             CreateRole(IntroData.CrewmateIntro);
-        if (guesserBaseMe.CanShotCelebrity())
+        if (guesserBaseMe.CanShotCelebrity() && (IntroData.GetOption(IntroData.CelebrityIntro.RoleId)?.GetSelection() is not null and not 0))
             CreateRole(IntroData.CelebrityIntro);
         if (CustomOptionHolder.JackalOption.GetSelection() is not 0 && CustomOptionHolder.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
         if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
