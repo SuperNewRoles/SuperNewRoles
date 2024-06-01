@@ -681,6 +681,8 @@ EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数�
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数,邪惡的賭怪最大可猜測次數
 EvilGuesserCannotCrewShotSetting,You Cannot hit Crewmates,クルーメイトを打てない
 EvilGuesserCannotCelebrityShotSetting,You Cannot hit Celebrity,スターを打てない
+EvilGuesserBecomeShotCelebritySetting,Limit the number of turns you can't hit a Celebrity,スターを打てないターンを制限する
+EvilGuesserBecomeShotCelebrityTurnSetting,Number of meetings required be able to hit a Celebrity,スターを打てるようになるまでに必要な会議数
 NextPage,Next Page,次のページへ,下一页,下一頁
 PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲

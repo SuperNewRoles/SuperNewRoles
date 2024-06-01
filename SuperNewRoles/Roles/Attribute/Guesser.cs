@@ -19,16 +19,23 @@ public class GuesserBase : RoleBase
     public bool CanShotOneMeeting { get; }
     public bool CannotShotCrew { get; }
     public bool CannotShotCelebrity { get; }
-    public GuesserBase(int ShotMaxCount, bool CanShotOneMeeting, bool CannotShotCrew, bool CannotShotCelebrity, PlayerControl p, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(p, Roleinfo, Optioninfo, Introinfo)
+    public int RemainingTurn { get; private set; }
+    public GuesserBase(int ShotMaxCount, bool CanShotOneMeeting, bool CannotShotCrew, bool CannotShotCelebrity, bool BecomeShotCelebrity, int BecomeShotCelebrityTurn, PlayerControl p, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         Count = ShotMaxCount;
         this.CanShotOneMeeting = CanShotOneMeeting;
         this.CannotShotCrew = CannotShotCrew;
         this.CannotShotCelebrity = CannotShotCelebrity;
+        RemainingTurn = BecomeShotCelebrity && CannotShotCelebrity ? BecomeShotCelebrityTurn : 0;
     }
     public void UseCount()
     {
         Count--;
+    }
+    public bool CanShotCelebrity()
+    {
+        RemainingTurn--;
+        return RemainingTurn < 0;
     }
 }
 class Guesser
@@ -200,7 +207,7 @@ class Guesser
                 roleInfo.RoleId == RoleId.Hunter ||
                 roleInfo.RoleId == RoleId.DefaultRole ||
                 (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0)||
-                (cannotShotCelebrity && roleInfo.RoleId == RoleId.Celebrity))
+                roleInfo.RoleId == RoleId.Celebrity)
             {
                 Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                 continue; // Not guessable roles
@@ -213,7 +220,7 @@ class Guesser
                 roleInfo.Role == RoleId.Hunter ||
                 roleInfo.Role == RoleId.DefaultRole ||
                 (IntroData.GetOption(roleInfo.Role)?.GetSelection() is null or 0)||
-                (cannotShotCelebrity && roleInfo.Role == RoleId.Celebrity))
+                roleInfo.Role == RoleId.Celebrity)
             {
                 Logger.Info("continueになりました:" + roleInfo.Role, "Guesser");
                 continue; // Not guessable roles
@@ -223,6 +230,8 @@ class Guesser
         CreateRole(IntroData.ImpostorIntro);
         if (!cannotCrewShot)
             CreateRole(IntroData.CrewmateIntro);
+        if (guesserBaseMe.CanShotCelebrity())
+            CreateRole(IntroData.CelebrityIntro);
         if (CustomOptionHolder.JackalOption.GetSelection() is not 0 && CustomOptionHolder.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
         if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
         if (WaveCannonJackal.WaveCannonJackalOption.GetSelection() is not 0 && WaveCannonJackal.WaveCannonJackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickWaveCannonIntro);
