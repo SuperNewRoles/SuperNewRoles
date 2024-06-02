@@ -34,9 +34,9 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             ImpostorVisionOption: (true, true),
             optionCreator: CreateOption);
 
-    public bool CanUseSabo => WaveCannonJackal.Optioninfo.CanUseSabo;
-    public bool CanUseVent => WaveCannonJackal.Optioninfo.CanUseVent;
-    public bool IsImpostorVision => WaveCannonJackal.Optioninfo.IsImpostorVision;
+    public bool CanUseSabo => Optioninfo.CanUseSabo;
+    public bool CanUseVent => Optioninfo.CanUseVent;
+    public bool IsImpostorVision => Optioninfo.IsImpostorVision;
 
     public static CustomOption JackalKillCooldown;
     public static CustomOption JackalCreateFriend;
