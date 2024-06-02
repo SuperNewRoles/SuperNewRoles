@@ -1758,7 +1758,7 @@ public class CustomOptionHolder
         LighterPlayerCount = Create(402302, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
         LighterCoolTime = Create(402303, false, CustomOptionType.Crewmate, "LigtherCooldownSetting", 30f, 2.5f, 60f, 2.5f, LighterOption, format: "unitSeconds");
         LighterDurationTime = Create(402304, false, CustomOptionType.Crewmate, "LigtherDurationSetting", 10f, 0f, 180f, 5f, LighterOption, format: "unitSeconds");
-        LighterUpVision = Create(402305, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 0.25f, 0f, 5f, 0.25f, LighterOption);
+        LighterUpVision = Create(402305, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 2f, 0f, 5f, 0.25f, LighterOption);
 
         CelebrityOption = SetupCustomRoleOption(402400, true, RoleId.Celebrity);
         CelebrityPlayerCount = Create(402401, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);

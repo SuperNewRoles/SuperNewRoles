@@ -377,7 +377,7 @@ public enum CustomRPC
     RoleRpcHandler,
     SetFrankensteinMonster,
     MoveDeadBody,
-    WaveCannon
+    WaveCannon,
 }
 
 public static class RPCProcedure
@@ -555,10 +555,10 @@ public static class RPCProcedure
         ReplayActionBalancer.Create(sourceId, player1Id, player2Id);
         Balancer.StartAbility(source, player1, player2);
     }
-    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
+    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is, Vector3 position)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceId);
-        WiseMan.SetWiseManStatus(source, rotate, Is);
+        WiseMan.SetWiseManStatus(source, rotate, Is, position);
     }
     public static void SetVentStatusMechanic(byte sourceplayer, byte targetvent, bool Is, byte[] buff)
     {
@@ -1219,21 +1219,27 @@ public static class RPCProcedure
         RoleBase player2role = player2.GetRoleBase();
         RoleId player1id = player1.GetRole();
         RoleId player2id = player2.GetRole();
-        if (player1role != null)
-            player1role.SetPlayer(player2);
-        if (player2role != null)
-            player2role.SetPlayer(player1);
-        if (player1role == null)
+        if (player1role != null) player1role.SetPlayer(player2);
+        else
         {
             player2.ClearRole();
             player2.SetRole(player1id);
         }
-        if (player2role == null)
+        if (player2role != null) player2role.SetPlayer(player1);
+        else
         {
             player1.ClearRole();
             player1.SetRole(player2id);
         }
         ChacheManager.ResetMyRoleChache();
+        RoleHelpers.ClearTaskUpdate();
+        if (AmongUsClient.Instance.AmHost)
+        {
+            byte[] player1task = Array.ConvertAll(Array.FindAll<GameData.TaskInfo>(player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            byte[] player2task = Array.ConvertAll(Array.FindAll<GameData.TaskInfo>(player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            player2.SetTask(player1task);
+            player1.SetTask(player2task);
+        }
     }
 
     public static void SetHauntedWolf(byte playerid)
@@ -2047,7 +2053,8 @@ public static class RPCProcedure
                         Chat(reader.ReadByte(), reader.ReadString());
                         break;
                     case CustomRPC.SetWiseManStatus:
-                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean());
+                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean(),
+                            new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()));
                         break;
                     case CustomRPC.SetVentStatusMechanic:
                         SetVentStatusMechanic(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBytesAndSize());

@@ -608,6 +608,19 @@ internal static class RoleinformationText
     }
 
     /// <summary>
+    /// 役職の参考元Mod及び, 参考元Modのカラーコードも含むMod名を取得する。
+    /// </summary>
+    /// <param name="role">参考元を確認したい役職</param>
+    /// <param name="quoteModText">役職参考元のMod名(Modカラーは, 参考元のModのゲーム上での色に準拠する)</param>
+    /// <returns>参考元役職</returns>
+    internal static Roles.Role.QuoteMod QuoteModName(RoleId role, out string quoteModText)
+    {
+        Roles.Role.QuoteMod quoteMod = CustomRoles.GetQuoteMod(role);
+        quoteModText = ModTranslation.GetString($"QuoteMod{quoteMod}");
+        return quoteMod;
+    }
+
+    /// <summary>
     /// コマンドで指定した役職の説明を取得する
     /// </summary>
     /// <param name="sourcePlayer">送信先(Hostだった場合全体送信)</param>

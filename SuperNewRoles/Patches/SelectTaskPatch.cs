@@ -1,45 +1,128 @@
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
-
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
+using IEnumerator = System.Collections.IEnumerator;
 
 namespace SuperNewRoles.Patches;
 
 public static class SelectTask
 {
-    [HarmonyPatch(typeof(GameData), nameof(GameData.RpcSetTasks))]
-    class RpcSetTasksPatch
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
+    public static class ShipStatusBegin
     {
-        public static void Prefix(
-            GameData __instance,
-            [HarmonyArgument(0)] byte playerId,
-            [HarmonyArgument(1)] ref Il2CppStructArray<byte> taskTypeIds)
+        public static bool Prefix(ShipStatus __instance)
         {
-            if (GameData.Instance.GetPlayerById(playerId).Object.IsBot() || taskTypeIds.Length == 0)
+            __instance.numScans = 0;
+            __instance.AssignTaskIndexes();
+
+            List<NormalPlayerTask> _common = __instance.CommonTasks.ToList();
+            _common.ForEach(t => t.Length = NormalPlayerTask.TaskLength.Common);
+            _common.Shuffle(0);
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> CommonTasks = _common.ToIl2CppList();
+
+            List<NormalPlayerTask> _long = __instance.LongTasks.ToList();
+            _long.ForEach(t => t.Length = NormalPlayerTask.TaskLength.Long);
+            _long.Shuffle(0);
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> LongTasks = _long.ToIl2CppList();
+
+            List<NormalPlayerTask> _short = __instance.ShortTasks.ToList();
+            _short.ForEach(t => t.Length = NormalPlayerTask.TaskLength.Short);
+            _short.Shuffle(0);
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> ShortTasks = _short.ToIl2CppList();
+
+            IGameOptions currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
+            int numShort = currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+            int numCommon = currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+            int numLong = currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+
+            Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
+            Il2CppSystem.Collections.Generic.List<byte> list = new();
+            int num1 = 0;
+            int num2 = 0;
+            int num3 = 0;
+
+            __instance.AddTasksFromList(ref num1, numCommon, list, types, CommonTasks);
+            for (int i = 0; i < numCommon; i++)
             {
-                taskTypeIds = new byte[0];
-                return;
-            }
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
-            {
-                var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
-                var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, (commont, shortt, longt));
-                taskTypeIds = new Il2CppStructArray<byte>(TasksList.Count);
-                for (int i = 0; i < TasksList.Count; i++)
+                if (list.Count == 0)
                 {
-                    taskTypeIds[i] = TasksList[i];
+                    Debug.LogWarning("Not enough common tasks");
+                    break;
+                }
+                list.Add((byte)CommonTasks.GetRandom().Index);
+            }
+            if (numCommon + numLong + numShort == 0) numShort = 1;
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                if (player.IsBot())
+                {
+                    GameData.Instance.RpcSetTasks(player.PlayerId, new(0));
+                    continue;
+                }
+                if (GetHaveTaskManageAbility(player.GetRole()) && ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
+                    GameData.Instance.RpcSetTasks(player.PlayerId, new(ModHelpers.GenerateTasks(player, player.GetTaskCount()).ToArray()));
+                else
+                {
+                    types.Clear();
+                    list.RemoveRange(numCommon, list.Count - numCommon);
+                    __instance.AddTasksFromList(ref num2, numLong, list, types, LongTasks);
+                    __instance.AddTasksFromList(ref num3, numShort, list, types, ShortTasks);
+                    if (player && !player.GetComponent<DummyBehaviour>().enabled)
+                        GameData.Instance.RpcSetTasks(player.PlayerId, new(list.ToArray()));
                 }
             }
+            PlayerControl.LocalPlayer.cosmetics.SetAsLocalPlayer();
+            return false;
         }
     }
+
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CoSetTasks))]
+    public static class PlayerControlCoSetTasks
+    {
+        public static bool Prefix(PlayerControl __instance, Il2CppSystem.Collections.Generic.List<GameData.TaskInfo> tasks, ref Il2CppSystem.Collections.IEnumerator __result)
+        {
+            __result = CoSetTasks(__instance, tasks).WrapToIl2Cpp();
+            return false;
+        }
+
+        public static IEnumerator CoSetTasks(PlayerControl __instance, Il2CppSystem.Collections.Generic.List<GameData.TaskInfo> tasks)
+        {
+            while (!ShipStatus.Instance) yield return null;
+            if (__instance.AmOwner)
+            {
+                DestroyableSingleton<HudManager>.Instance.TaskStuff.SetActive(true);
+                StatsManager.Instance.IncrementStat(StringNames.StatsGamesStarted);
+                if (!DestroyableSingleton<TutorialManager>.InstanceExists) DestroyableSingleton<AchievementManager>.Instance.OnMatchStart(__instance.Data.Role.Role);
+            }
+            ModHelpers.DestroyList(__instance.myTasks);
+            __instance.Data.Role.SpawnTaskHeader(__instance);
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                GameData.TaskInfo taskInfo = tasks[i];
+                NormalPlayerTask taskById = ShipStatus.Instance.GetTaskById(taskInfo.TypeId);
+                NormalPlayerTask normalPlayerTask = Object.Instantiate(taskById, __instance.transform);
+                normalPlayerTask.Id = taskInfo.Id;
+                normalPlayerTask.Index = taskById.Index;
+                normalPlayerTask.Owner = __instance;
+                normalPlayerTask.Initialize();
+                __instance.logger.Info(string.Format("Assigned task {0} to {1}", normalPlayerTask.name, __instance.PlayerId), null);
+                __instance.myTasks.Add(normalPlayerTask);
+            }
+            PlayerControlHelper.RefreshRoleDescription(__instance);
+            yield break;
+        }
+    }
+
     public static (int, int, int) GetTaskCount(this PlayerControl p)
     {
         RoleId roleId = p.GetRole();
@@ -81,10 +164,13 @@ public static class SelectTask
     /// <summary>
     /// タスクで管理する能力を有すか判定する。
     /// </summary>
-    /// <param name="id">判定したい役職のRoleId</param>
+    /// /// <param name="id">判定したい役職のRoleId</param>
     /// <returns> true : 有する, false : 有さない</returns>
     internal static bool GetHaveTaskManageAbility(RoleId id)
     {
+        ITaskHolder holder = RoleBaseManager.GetInterfaces<ITaskHolder>().FirstOrDefault(x => (x as RoleBase).Role == id);
+        if (holder != null && holder.HaveMyNumTask(out var _)) return true;
+
         // RoleIdと タスクで管理する能力を有すか
         // RoleIdが重複するとタスクが配布されず, 非導入者の画面でもTaskInfoが開けなくなる。
         Dictionary<RoleId, bool> taskTriggerAbilityData = new()
@@ -113,8 +199,8 @@ public static class SelectTask
             { RoleId.TheSecondLittlePig, true },
             { RoleId.TheThirdLittlePig, true },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
-            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
-            { RoleId.BlackSanta, BlackSanta.CanCheckImpostorOption.GetBool()}
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) },
+            { RoleId.BlackSanta, BlackSanta.CanCheckImpostorOption.GetBool() },
         };
 
         if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];

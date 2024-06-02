@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patches;
@@ -89,6 +88,33 @@ class TaskCount
             }
         }
         return Tuple.Create(CompletedTasks, TotalTasks);
+    }
+    public static (int, int, int) RemainingTaskData(GameData.PlayerInfo player)
+    {
+        (int numCommon, int numShort, int numLong) = (0, 0, 0);
+        if (!player.Disconnected && player.Tasks != null && player.Object)
+        {
+            foreach (PlayerTask task in player.Object.myTasks)
+            {
+                GameData.TaskInfo info = player.FindTaskById(task.Id);
+                if (info.Complete) continue;
+                switch (ShipStatus.Instance.GetTaskById(info.TypeId).Length)
+                {
+                    case NormalPlayerTask.TaskLength.Common:
+                        numCommon++;
+                        break;
+                    case NormalPlayerTask.TaskLength.Short:
+                        numShort++;
+                        break;
+                    case NormalPlayerTask.TaskLength.Long:
+                        numLong++;
+                        break;
+                }
+            }
+
+            Logger.Info($"numCommon : {numCommon}, numShort : {numShort}, numLong : {numLong}", "RemainingTaskData");
+        }
+        return (numCommon, numShort, numLong);
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]

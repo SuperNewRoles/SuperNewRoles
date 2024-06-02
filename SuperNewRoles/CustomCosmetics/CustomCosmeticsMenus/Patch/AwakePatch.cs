@@ -1,25 +1,32 @@
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
+using System;
+using Object = UnityEngine.Object;
+using Agartha;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch;
 
-[HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Start))]
-class AwakePatch
+[HarmonyPatch(typeof(PlayerCustomizationMenu))]
+public static class PlayerCustomizationMenuPatch
 {
-    public static void Prefix()
+    public static bool IsFirst = false;
+
+    [HarmonyPatch(nameof(PlayerCustomizationMenu.Start)), HarmonyPrefix]
+    public static void StartPrefix() => IsFirst = true;
+
+    [HarmonyPatch(nameof(PlayerCustomizationMenu.Start)), HarmonyPostfix]
+    public static void StartPostfix(PlayerCustomizationMenu __instance)
     {
-        TabSelectPatch.IsFirst = true;
-    }
-    public static void Postfix(PlayerCustomizationMenu __instance)
-    {
+        if (AgarthaPlugin.IsLevelImposter && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined) return;
+
         CustomHats.HatsTabOnEnablePatch.Chips = new();
         VisorTabPatch.VisorsTabOnEnablePatch.Chips = new();
-        ObjectData.Presets = new Transform[] { };
-        ObjectData.hats = new HatParent[] { };
+        ObjectData.Presets = Array.Empty<Transform>();
+        ObjectData.hats = Array.Empty<HatParent>();
         ObjectData.Selected = "";
-        ObjectData.HatTabButtons = new Transform[] { };
-        TabSelectPatch.IsFirst = false;
+        ObjectData.HatTabButtons = Array.Empty<Transform>();
+        IsFirst = false;
         var ClosetTabButton = __instance.Tabs[0].Button.transform.parent;
         var PresetTabButton = __instance.Tabs[1].Button.transform.parent;
         var ClosetTab = __instance.Tabs[0].Tab.transform;
@@ -36,7 +43,7 @@ class AwakePatch
             i++;
         }
 
-        var ColorButton = GameObject.Instantiate(GameObject.FindObjectOfType<PlayerTab>().ColorChips[0], ClosetTab);
+        var ColorButton = Object.Instantiate(Object.FindObjectOfType<PlayerTab>().ColorChips[0], ClosetTab);
         var ColorButton_Passive = ColorButton.Button;
         ColorButton_Passive.OnClick = new();
         ColorButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.ColorShow()));
@@ -45,7 +52,7 @@ class AwakePatch
 
         ColorButton.GetComponent<SpriteRenderer>().color = new Color32(0xA8, 0xDF, 0xFF, byte.MaxValue);
         ColorButton.SelectionHighlight.color = Color.white;
-        var HatButton = GameObject.Instantiate(ColorButton, ClosetTab);
+        var HatButton = Object.Instantiate(ColorButton, ClosetTab);
         var HatButton_Passive = HatButton.Button;
         HatButton_Passive.OnClick = new();
         HatButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.HatShow()));
@@ -54,35 +61,35 @@ class AwakePatch
         HatButton.transform.localScale *= 2.75f;
         HatButton.SelectionHighlight.color = Color.white;
 
-        var SkinButton = GameObject.Instantiate(HatButton, ClosetTab);
+        var SkinButton = Object.Instantiate(HatButton, ClosetTab);
         var SkinButton_Passive = SkinButton.Button;
         SkinButton_Passive.OnClick = new();
         SkinButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("SkinGroup")));
         ObjectData.SkinButton = SkinButton;
         SkinButton.name = "SkinButton";
 
-        var PetButton = GameObject.Instantiate(HatButton, ClosetTab);
+        var PetButton = Object.Instantiate(HatButton, ClosetTab);
         var PetButton_Passive = PetButton.Button;
         PetButton_Passive.OnClick = new();
         PetButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("PetsGroup")));
         ObjectData.PetButton = PetButton;
         PetButton.name = "PetButton";
 
-        var VisorButton = GameObject.Instantiate(HatButton, ClosetTab);
+        var VisorButton = Object.Instantiate(HatButton, ClosetTab);
         var VisorButton_Passive = VisorButton.Button;
         VisorButton_Passive.OnClick = new();
         VisorButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("VisorGroup")));
         ObjectData.VisorButton = VisorButton;
         VisorButton.name = "VisorButton";
 
-        var NamePlateButton = GameObject.Instantiate(HatButton, ClosetTab);
+        var NamePlateButton = Object.Instantiate(HatButton, ClosetTab);
         var NamePlateButton_Passive = NamePlateButton.Button;
         NamePlateButton_Passive.OnClick = new();
         NamePlateButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("NameplateGroup")));
         ObjectData.NamePlateButton = NamePlateButton;
         NamePlateButton.name = "NamePlateButton";
 
-        var CubeButton = GameObject.Instantiate(HatButton, ClosetTab);
+        var CubeButton = Object.Instantiate(HatButton, ClosetTab);
         var CubeButton_Passive = CubeButton.Button;
         CubeButton_Passive.OnClick = new();
         CubeButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CubeShow()));
@@ -92,13 +99,13 @@ class AwakePatch
         UpdatePatch.area = __instance.transform.FindChild("Background/RightPanel/PlayerVoteArea").GetComponent<PlayerVoteArea>();
 
         ObjectData.ColorText = __instance.transform.FindChild("ColorGroup/Text").GetComponent<TextMeshPro>();
-        ObjectData.HatText = GameObject.Instantiate(ObjectData.ColorText, ClosetTab);
-        GameObject.Destroy(ObjectData.HatText.GetComponent<TextTranslatorTMP>());
-        ObjectData.VisorText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
-        ObjectData.SkinText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
-        ObjectData.NamePlateText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
-        ObjectData.PetText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
-        ObjectData.CubeText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
+        ObjectData.HatText = Object.Instantiate(ObjectData.ColorText, ClosetTab);
+        Object.Destroy(ObjectData.HatText.GetComponent<TextTranslatorTMP>());
+        ObjectData.VisorText = Object.Instantiate(ObjectData.HatText, ClosetTab);
+        ObjectData.SkinText = Object.Instantiate(ObjectData.HatText, ClosetTab);
+        ObjectData.NamePlateText = Object.Instantiate(ObjectData.HatText, ClosetTab);
+        ObjectData.PetText = Object.Instantiate(ObjectData.HatText, ClosetTab);
+        ObjectData.CubeText = Object.Instantiate(ObjectData.HatText, ClosetTab);
 
         ObjectData.ColorText.name = "ColorText";
         ObjectData.HatText.name = "HatText";
@@ -129,25 +136,22 @@ class AwakePatch
         __instance.transform.FindChild("SkinGroup").gameObject.SetActive(true);
         __instance.transform.FindChild("SkinGroup").gameObject.SetActive(false);
 
-        ObjectData.HatButton_Hat = GameObject.Instantiate(__instance.PreviewArea.cosmetics.hat, ClosetTab);
+        ObjectData.HatButton_Hat = Object.Instantiate(__instance.PreviewArea.cosmetics.hat, ClosetTab);
         ObjectData.HatButton_Hat.transform.localPosition = new Vector3(4.85f, 0.6f, -1);
 
-        ObjectData.SkinButton_Skin = GameObject.Instantiate(__instance.PreviewArea.cosmetics.skin, ClosetTab);
+        ObjectData.SkinButton_Skin = Object.Instantiate(__instance.PreviewArea.cosmetics.skin, ClosetTab);
         ObjectData.SkinButton_Skin.transform.localPosition = new Vector3(0.875f, 0, -1);
 
-        ObjectData.VisorButton_Visor = GameObject.Instantiate(__instance.PreviewArea.cosmetics.visor, ClosetTab);
+        ObjectData.VisorButton_Visor = Object.Instantiate(__instance.PreviewArea.cosmetics.visor, ClosetTab);
         ObjectData.VisorButton_Visor.transform.localPosition = new Vector3(0.78f, 1.55f, -10);
 
         ObjectData.CosmicubeMenuHolderTint = __instance.transform.FindChild("CosmicubeMenuHolder/Tint").GetComponent<SpriteRenderer>();
 
         ObjectData.ClosetShow();
     }
-}
-[HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.OpenTab))]
-class TabSelectPatch
-{
-    public static bool IsFirst = false;
-    public static bool Prefix(PlayerCustomizationMenu __instance, InventoryTab tab)
+
+    [HarmonyPatch(nameof(PlayerCustomizationMenu.OpenTab)), HarmonyPrefix]
+    public static bool OpenTabPrefix(InventoryTab tab)
     {
         if (IsFirst)
         {
@@ -155,14 +159,8 @@ class TabSelectPatch
             return true;
         }
         SuperNewRolesPlugin.Logger.LogInfo(tab.name);
-        if (tab.name == "ColorGroup")
-        {
-            ObjectData.ClosetShow();
-        }
-        else if (tab.name == "HatsGroup")
-        {
-            ObjectData.PresetShow();
-        }
+        if (tab.name == "ColorGroup") ObjectData.ClosetShow();
+        else if (tab.name == "HatsGroup") ObjectData.PresetShow();
         return false;
     }
 }
