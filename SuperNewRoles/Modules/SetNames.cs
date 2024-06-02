@@ -545,7 +545,7 @@ public class SetNameUpdate
                         continue;
                     if (!p.IsJackalTeam())
                         continue;
-                    if (p.IsFriendRoles())
+                    if (p.IsFriendRoles() && !p.IsRole(RoleId.Bullet))
                         continue;
                     SetNamesClass.SetPlayerRoleNames(p);
                     SetNamesClass.SetPlayerNameColors(p);
