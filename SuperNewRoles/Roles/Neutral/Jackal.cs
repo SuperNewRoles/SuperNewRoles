@@ -14,7 +14,7 @@ using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable
+public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole
 {
     public static new RoleInfo Roleinfo = new(
                typeof(Jackal),
@@ -165,13 +165,21 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
 
     public void FixedUpdateAllDefault()
     {
-        if (AmongUsClient.Instance.AmHost && CreatedSidekick != null && Player.IsDead() && !Promoted)
-        {
-            MessageWriter writer = RpcWriter;
-            writer.Write(false);
-            SendRpc(writer);
-            Promoted = true;
-        }
+        if (AmongUsClient.Instance.AmHost)
+            PromoteCheck(false);
+    }
+    public void PromoteCheck(bool isRoleChanged)
+    {
+        if (Promoted)
+            return;
+        if (CreatedSidekick == null)
+            return;
+        if (!isRoleChanged && Player.IsDead())
+            return;
+        Promoted = true;
+        MessageWriter writer = RpcWriter;
+        writer.Write(false);
+        SendRpc(writer);
     }
 
     public RoleTypes RealRole => RoleTypes.Crewmate;
@@ -182,5 +190,11 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
     public void BuildSetting(IGameOptions gameOptions)
     {
         gameOptions.SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(JackalKillCoolTime));
+    }
+
+    public void OnChangeRole()
+    {
+        if (AmongUsClient.Instance.AmHost)
+            PromoteCheck(true);
     }
 }
