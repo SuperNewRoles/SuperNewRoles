@@ -43,7 +43,6 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
     {
         bool enabled = Player.Collider.enabled;
         Player.Collider.enabled = true;
-        Logger.Info("ColliderCheck: "+MapInsideManager.CheckInside(Player.Collider));
         Player.Collider.enabled = enabled;
     }
 
@@ -130,9 +129,8 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
     {
         bool enabled = Player.Collider.enabled;
         Player.Collider.enabled = true;
-        bool couldUse =  MapInsideManager.CheckInside(Player.Collider);
         Player.Collider.enabled = enabled;
-        return couldUse;
+        return MapDatabase.MapDatabase.GetCurrentMapData().CheckMapArea(Player.GetTruePosition());
     }
     private void BuskerPseudocideOnClick()
     {
@@ -152,6 +150,8 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
     private void BuskerRebornOnClick()
     {
         if (!RebornButtonInfo.customButton.isEffectActive)
+            return;
+        if (!MapDatabase.MapDatabase.GetCurrentMapData().CheckMapArea(Player.GetTruePosition()))
             return;
         MessageWriter writer = RpcWriter;
         writer.Write(false);

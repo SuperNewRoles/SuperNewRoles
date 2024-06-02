@@ -11,6 +11,7 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.MapDatabase;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;

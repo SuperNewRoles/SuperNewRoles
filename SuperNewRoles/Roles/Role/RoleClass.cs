@@ -63,7 +63,6 @@ public static class RoleClass
         RoleinformationText.RoleInfo.ClearAndReload();
         GameHistoryManager.ClearAndReloads();
         Agartha.MapData.ClearAndReloads();
-        MapInsideManager.ClearAndReloads();
         Mode.SuperHostRoles.SuperHostRolesOptions.SettingClass.ClearAndReload();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();

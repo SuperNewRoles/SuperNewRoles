@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Agartha;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -125,6 +126,9 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
+                Vector2 center = ShipStatus.Instance.MapPrefab.HerePoint.transform.parent.localPosition * -1f * ShipStatus.Instance.MapScale;
+                File.WriteAllBytes("SpawnableMap.png", MapDatabase.MapDatabase.GetCurrentMapData().OutputMap(center, new Vector2(10f, 7f) * ShipStatus.Instance.MapScale, 40f).EncodeToPNG());
+                return;
                 CustomSpores.AddMushroom(PlayerControl.LocalPlayer.transform.position);
                 return;
                 source = SoundManager.Instance.PlaySound(ContentManager.GetContent<AudioClip>("Sauner_SaunaBGM.wav"), true);
