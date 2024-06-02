@@ -19,14 +19,14 @@ public class GuesserBase : RoleBase
     public bool CanShotOneMeeting { get; }
     public bool CannotShotCrew { get; }
     public bool CannotShotCelebrity { get; }
-    public int RemainingTurn { get; private set; }
+    public int CanShotCelebrityRemainingTurn { get; private set; }
     public GuesserBase(int ShotMaxCount, bool CanShotOneMeeting, bool CannotShotCrew, bool CannotShotCelebrity, bool BecomeShotCelebrity, int BecomeShotCelebrityTurn, PlayerControl p, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         Count = ShotMaxCount;
         this.CanShotOneMeeting = CanShotOneMeeting;
         this.CannotShotCrew = CannotShotCrew;
         this.CannotShotCelebrity = CannotShotCelebrity;
-        RemainingTurn = BecomeShotCelebrity && CannotShotCelebrity ? BecomeShotCelebrityTurn : 0;
+        CanShotCelebrityRemainingTurn = BecomeShotCelebrity && CannotShotCelebrity ? BecomeShotCelebrityTurn : 0;
     }
     public void UseCount()
     {
@@ -34,7 +34,7 @@ public class GuesserBase : RoleBase
     }
     public void OnStartMeeting()
     {
-        RemainingTurn--;
+        CanShotCelebrityRemainingTurn--;
     }
 }
 class Guesser
@@ -205,7 +205,7 @@ class Guesser
             if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||
                 roleInfo.RoleId == RoleId.DefaultRole ||
-                (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0)||
+                (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0) ||
                 roleInfo.RoleId == RoleId.Celebrity)
             {
                 Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
@@ -218,7 +218,7 @@ class Guesser
             if (roleInfo == null ||
                 roleInfo.Role == RoleId.Hunter ||
                 roleInfo.Role == RoleId.DefaultRole ||
-                (IntroData.GetOption(roleInfo.Role)?.GetSelection() is null or 0)||
+                (IntroData.GetOption(roleInfo.Role)?.GetSelection() is null or 0) ||
                 roleInfo.Role == RoleId.Celebrity)
             {
                 Logger.Info("continueになりました:" + roleInfo.Role, "Guesser");
@@ -229,7 +229,7 @@ class Guesser
         CreateRole(IntroData.ImpostorIntro);
         if (!cannotCrewShot)
             CreateRole(IntroData.CrewmateIntro);
-        if (guesserBaseMe.RemainingTurn < 0 && !guesserBaseMe.CannotShotCelebrity && (IntroData.GetOption(IntroData.CelebrityIntro.RoleId)?.GetSelection() is not null and not 0))
+        if (guesserBaseMe.CanShotCelebrityRemainingTurn < 0 && !guesserBaseMe.CannotShotCelebrity && (IntroData.GetOption(IntroData.CelebrityIntro.RoleId)?.GetSelection() is not null and not 0))
             CreateRole(IntroData.CelebrityIntro);
         if (CustomOptionHolder.JackalOption.GetSelection() is not 0 && CustomOptionHolder.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
         if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
