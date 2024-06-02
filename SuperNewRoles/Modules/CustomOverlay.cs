@@ -708,7 +708,13 @@ public class CustomOverlays
         // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
         foreach (CustomRoleOption roleOption in myRoleOptions)
         {
-            left += $"<size=200%>\n{CustomRoles.GetRoleNameOnColor(roleOption.RoleId)}</size> <size=95%>: {AddChatPatch.GetTeamText(CustomRoles.GetRoleTeamType(roleOption.RoleId))}</size>";
+            left += $"<size=200%>\n{CustomRoles.GetRoleNameOnColor(roleOption.RoleId)}</size>";
+            left += $"<size=95%> : {AddChatPatch.GetTeamText(CustomRoles.GetRoleTeamType(roleOption.RoleId))}</size>";
+            // 元がSNRでないなら, 参考元を記載する。
+            if (RoleinformationText.QuoteModName(roleOption.RoleId, out string quoteModText) != Roles.Role.QuoteMod.SuperNewRoles)
+            {
+                left += $"<size=95%> ( {ModTranslation.GetString("QuoteModName")} : {quoteModText} )</size>";
+            }
             option.AppendLine("\n");
 
             option.AppendLine($"<size=125%>「{CustomOptionHolder.Cs(CustomRoles.GetRoleColor(roleOption.RoleId), CustomRoles.GetRoleIntro(roleOption.RoleId))}」</size>\n");
