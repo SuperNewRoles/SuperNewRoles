@@ -92,7 +92,7 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
     public bool HasCheckImpostorAbility { get; }
     public int CheckTask { get; }
 
-    public bool IsImpostorLight { get; }
+    public bool IsImpostorVision { get; }
 
     public CustomButtonInfo[] CustomButtonInfos { get; }
     private CustomButtonInfo BlackSantaButtonInfo;
@@ -131,7 +131,7 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
         int AllTask = SelectTask.GetTotalTasks(RoleId.BlackSanta);
         CheckTask = IsFullTask ? AllTask : (AllTask * (ParcentageForTaskTriggerSetting.GetSelection() / 4));
         HasCheckImpostorAbility = CanCheckImpostorOption.GetBool();
-        IsImpostorLight = Optioninfo.IsImpostorVision;
+        IsImpostorVision = Optioninfo.IsImpostorVision;
         BlackSantaButtonInfo = Santa.CreateSantaButtonInfo(this, CanUseAbilityCount.GetInt(),
             () => BlackSantaOnClick(), "BlackSantaButton", () => Optioninfo.CoolTime);
         CustomButtonInfos = new CustomButtonInfo[1] { BlackSantaButtonInfo };

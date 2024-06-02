@@ -302,9 +302,9 @@ public static class CredentialsPatch
 
         public static void LoadSprites()
         {
-            if (bannerSprite == null) bannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
-            if (SuperNakanzinoBannerSprite == null) SuperNakanzinoBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner_April.png", 150f);
-            if (horseBannerSprite == null) horseBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuperHorseRoles.png", 150f);
+            if (bannerSprite == null) bannerSprite = AssetManager.GetAsset<Sprite>("banner.png");
+            if (SuperNakanzinoBannerSprite == null) SuperNakanzinoBannerSprite = AssetManager.GetAsset<Sprite>("banner_April.png");
+            if (horseBannerSprite == null) horseBannerSprite = AssetManager.GetAsset<Sprite>("SuperHorseRoles.png");
         }
 
         public static Sprite bannerRendSprite

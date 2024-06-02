@@ -64,5 +64,6 @@ public enum FinalStatus
     LoversBreakerKill,
     MadJesterExiled,
     SantaSelf,
-    Evaporation
+    Evaporation,
+    Sacrifice
 }

@@ -470,7 +470,8 @@ public static class PlayerControlFixedUpdatePatch
             if (playerInfo.Object.IsDead() ||
                 playerInfo.PlayerId == targetingPlayer.PlayerId ||
                 playerInfo.Object.IsJackalTeamJackal() ||
-                playerInfo.Object.IsJackalTeamSidekick()
+                playerInfo.Object.IsJackalTeamSidekick() ||
+                playerInfo.Object.IsRole(RoleId.Bullet)
                )
                 continue;
             PlayerControl @object = playerInfo.Object;

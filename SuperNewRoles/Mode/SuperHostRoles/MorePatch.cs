@@ -22,7 +22,7 @@ class MorePatch
     {
         if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
         {
-            if ((player.IsRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.IsRole(RoleId.Demon, RoleId.Arsonist, RoleId.RemoteSheriff, RoleId.Sheriff,
+            if ((!player.IsUseSabo()) || player.IsRole(RoleId.Demon, RoleId.Arsonist, RoleId.RemoteSheriff, RoleId.Sheriff,
                 RoleId.truelover, RoleId.FalseCharges, RoleId.MadMaker, RoleId.ToiletFan, RoleId.NiceButtoner, RoleId.Worshiper)
                 || (!RoleClass.Minimalist.UseSabo && player.IsRole(RoleId.Minimalist))
                 || (!RoleClass.Samurai.UseSabo && player.IsRole(RoleId.Samurai))
