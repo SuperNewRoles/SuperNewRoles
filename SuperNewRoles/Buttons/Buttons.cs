@@ -1193,7 +1193,7 @@ static class HudManagerStartPatch
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.TeleportingJackal or RoleId.JackalSeer || (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal && jackal.CanUseKill)) && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.TeleportingJackal or RoleId.JackalSeer || (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal && jackal.CanUseKill && jackal.isShowKillButton)) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
