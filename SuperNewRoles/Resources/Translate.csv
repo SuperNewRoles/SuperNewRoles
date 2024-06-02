@@ -1501,6 +1501,7 @@ DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}
 WiseManName,WiseMan,賢者,贤者,賢者
 WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを守ろう,用神圣之盾保护船员,用神聖之盾保護船員
 WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
+WiseManEnableWiseManWalk,Enable WiseMan walk,賢者ステップを有効にする,启用贤者步行,啟用賢者步行
 NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工,正義的機械師
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道,改造飛船上的管道
 NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？,什么人在给飞船搞破坏？,誰在搗亂這艘飛船？

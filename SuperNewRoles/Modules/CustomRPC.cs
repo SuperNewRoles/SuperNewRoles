@@ -555,10 +555,10 @@ public static class RPCProcedure
         ReplayActionBalancer.Create(sourceId, player1Id, player2Id);
         Balancer.StartAbility(source, player1, player2);
     }
-    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
+    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is, Vector3 position)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceId);
-        WiseMan.SetWiseManStatus(source, rotate, Is);
+        WiseMan.SetWiseManStatus(source, rotate, Is, position);
     }
     public static void SetVentStatusMechanic(byte sourceplayer, byte targetvent, bool Is, byte[] buff)
     {
@@ -2047,7 +2047,8 @@ public static class RPCProcedure
                         Chat(reader.ReadByte(), reader.ReadString());
                         break;
                     case CustomRPC.SetWiseManStatus:
-                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean());
+                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean(),
+                            new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()));
                         break;
                     case CustomRPC.SetVentStatusMechanic:
                         SetVentStatusMechanic(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBytesAndSize());
