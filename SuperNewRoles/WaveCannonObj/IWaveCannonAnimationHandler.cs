@@ -10,7 +10,6 @@ namespace SuperNewRoles.WaveCannonObj;
 public interface IWaveCannonAnimationHandler
 {
     public WaveCannonObject CannonObject { get; }
-    public Sprite ColliderSprite { get; }
     public CustomAnimationOptions Init();
     public void OnShot();
     public void RendererUpdate();

@@ -297,8 +297,6 @@ public class IntroData
     public static IntroData KnightIntro = new("Knight", Knight.color, 1, RoleId.Knight);
     public static IntroData PavlovsdogsIntro = new("Pavlovsdogs", RoleClass.Pavlovsdogs.color, 1, RoleId.Pavlovsdogs, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData PavlovsownerIntro = new("Pavlovsowner", RoleClass.Pavlovsowner.color, 1, RoleId.Pavlovsowner, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData WaveCannonJackalIntro = new("WaveCannonJackal", WaveCannonJackal.color, 1, RoleId.WaveCannonJackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData SidekickWaveCannonIntro = new("SidekickWaveCannon", WaveCannonJackal.color, 1, RoleId.SidekickWaveCannon, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData CamouflagerIntro = new("Camouflager", RoleClass.Camouflager.color, 1, RoleId.Camouflager, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData HamburgerShopIntro = new("HamburgerShop", RoleClass.HamburgerShop.color, 3, RoleId.HamburgerShop);
     public static IntroData PenguinIntro = new("Penguin", RoleClass.Penguin.color, 1, RoleId.Penguin, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
