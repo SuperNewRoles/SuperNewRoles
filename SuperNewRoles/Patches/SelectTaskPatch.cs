@@ -7,6 +7,8 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 using IEnumerator = System.Collections.IEnumerator;
@@ -162,10 +164,13 @@ public static class SelectTask
     /// <summary>
     /// タスクで管理する能力を有すか判定する。
     /// </summary>
-    /// <param name="id">判定したい役職のRoleId</param>
+    /// /// <param name="id">判定したい役職のRoleId</param>
     /// <returns> true : 有する, false : 有さない</returns>
     internal static bool GetHaveTaskManageAbility(RoleId id)
     {
+        ITaskHolder holder = RoleBaseManager.GetInterfaces<ITaskHolder>().FirstOrDefault(x => (x as RoleBase).Role == id);
+        if (holder != null && holder.HaveMyNumTask(out var _)) return true;
+
         // RoleIdと タスクで管理する能力を有すか
         // RoleIdが重複するとタスクが配布されず, 非導入者の画面でもTaskInfoが開けなくなる。
         Dictionary<RoleId, bool> taskTriggerAbilityData = new()
@@ -194,8 +199,8 @@ public static class SelectTask
             { RoleId.TheSecondLittlePig, true },
             { RoleId.TheThirdLittlePig, true },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
-            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)},
-            { RoleId.BlackSanta, BlackSanta.CanCheckImpostorOption.GetBool()}
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) },
+            { RoleId.BlackSanta, BlackSanta.CanCheckImpostorOption.GetBool() },
         };
 
         if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];
