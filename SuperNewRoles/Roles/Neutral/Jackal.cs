@@ -14,7 +14,7 @@ using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR
+public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable
 {
     public static new RoleInfo Roleinfo = new(
                typeof(Jackal),
@@ -33,6 +33,10 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             SaboOption: (false, true),
             ImpostorVisionOption: (true, true),
             optionCreator: CreateOption);
+
+    public bool CanUseSabo => WaveCannonJackal.Optioninfo.CanUseSabo;
+    public bool CanUseVent => WaveCannonJackal.Optioninfo.CanUseVent;
+    public bool IsImpostorVision => WaveCannonJackal.Optioninfo.IsImpostorVision;
 
     public static CustomOption JackalKillCooldown;
     public static CustomOption JackalCreateFriend;

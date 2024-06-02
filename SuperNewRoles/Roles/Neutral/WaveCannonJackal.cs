@@ -158,8 +158,11 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         writer.Write((byte)AnimationType);
         writer.EndRPC();
         RPCProcedure.WaveCannon((byte)RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, AnimationType);
-        if (IsLoadedBullet && CreatedSidekick is Bullet BulletRole)
-            BulletRole?.Player?.RpcExiledUnchecked();
+        if (IsLoadedBullet && CreatedSidekick is Bullet BulletRole && BulletRole?.Player != null)
+        {
+            BulletRole.Player.RpcExiledUnchecked();
+            BulletRole.Player.RpcSetFinalStatus(FinalStatus.Sacrifice);
+        }
         IsLoadedBullet = false;
     }
 

@@ -12,7 +12,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAvailable
+public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAvailable, ISaboAvailable
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Sidekick),

@@ -536,17 +536,19 @@ public class SetNameUpdate
                     SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                 }
             }
-            if (PlayerControl.LocalPlayer.IsJackalTeam() ||
+            if ((PlayerControl.LocalPlayer.IsJackalTeam() && !PlayerControl.LocalPlayer.IsFriendRoles()) ||
                 JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    RoleId role = p.GetRole();
-                    if ((p.IsJackalTeamJackal() || p.IsJackalTeamSidekick()) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
-                    {
-                        SetNamesClass.SetPlayerRoleNames(p);
-                        SetNamesClass.SetPlayerNameColors(p);
-                    }
+                    if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                        continue;
+                    if (!p.IsJackalTeam())
+                        continue;
+                    if (p.IsFriendRoles())
+                        continue;
+                    SetNamesClass.SetPlayerRoleNames(p);
+                    SetNamesClass.SetPlayerNameColors(p);
                 }
             }
             SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
