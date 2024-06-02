@@ -182,6 +182,6 @@ public class Safecracker
             tasks.Add((byte)task.Index);
         }
 
-        return tasks.ToArray().ToList();
+        return tasks;
     }
 }
