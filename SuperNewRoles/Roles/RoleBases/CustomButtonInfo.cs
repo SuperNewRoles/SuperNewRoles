@@ -162,6 +162,8 @@ public class CustomButtonInfo
                 : new Vector3(-0.05f, 1.4f, 0);
         }
     }
+    public PlayerControl SetCurrentTarget(PlayerControl target)
+        => CurrentTarget = target;
     public void UpdateAbilityCountText()
     {
         if (AbilityCountText == null)
@@ -181,7 +183,7 @@ public class CustomButtonInfo
     {
         if (customButton != null)
             return customButton;
-        return customButton = new
+        customButton = new
             (OnClick, HasButton, CouldUse, OnMeetingEnds,
             buttonSprite, positionOffset,
             FastDestroyableSingleton<HudManager>.Instance,
@@ -191,6 +193,8 @@ public class CustomButtonInfo
             buttonText = ButtonText,
             showButtonText = showButtonText
         };
+        ResetCoolTime();
+        return customButton;
     }
     public void OnEffectEnds()
     {
@@ -252,7 +256,7 @@ public class CustomButtonInfo
     /// <returns></returns>
     public PlayerControl SetTarget()
     {
-        CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
+        SetCurrentTarget(HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false));
         PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
         return CurrentTarget;
     }

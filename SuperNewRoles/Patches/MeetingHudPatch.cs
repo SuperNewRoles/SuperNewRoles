@@ -14,6 +14,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -790,6 +791,8 @@ class MeetingHudStartPatch
         ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
         DeviceClass.OnStartMeeting();
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilGuesser) || PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser))
+            PlayerControl.LocalPlayer.GetRoleBase<GuesserBase>().OnStartMeeting();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>

@@ -48,10 +48,11 @@ public static class MatchMaker
         data["type"] = "updateoption";
         string ActiveRole = "";
         List<string> ActivateRoles = new();
+        ModeId modeId = ModeHandler.GetMode(false);
         foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
         {
             if (opt.GetSelection() == 0) continue;
-            if (opt.IsHidden()) continue;
+            if (opt.IsHidden(modeId)) continue;
             CustomOption countopt = options.FirstOrDefault(x => x.id == (opt.id + 1));
             for (int i = 0; i < (countopt.GetSelection() + 1); i++)
             {
@@ -69,7 +70,7 @@ public static class MatchMaker
                 enabled = false;
             }
 
-            if (option.IsHidden())
+            if (option.IsHidden(modeId))
             {
                 enabled = false;
             }
@@ -100,10 +101,11 @@ public static class MatchMaker
     private static string GetTagData()
     {
         List<string> ActiveTags = new();
+        ModeId modeId = ModeHandler.GetMode(false);
         foreach (CustomOption option in options)
         {
             if (option.GetSelection() == 0) continue;
-            if (option.IsHidden()) continue;
+            if (option.IsHidden(modeId)) continue;
             if (option.type != CustomOptionType.MatchTag) continue;
 
             bool enabled = true;
@@ -134,10 +136,11 @@ public static class MatchMaker
         var data = CreateBaseData();
         string ActiveRole = "";
         List<string> ActivateRoles = new();
+        ModeId modeId = ModeHandler.GetMode(false);
         foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
         {
             if (opt.GetSelection() == 0) continue;
-            if (opt.IsHidden()) continue;
+            if (opt.IsHidden(modeId)) continue;
             if (opt.type == CustomOptionType.MatchTag) continue;
             ActivateRoles.Add(opt.RoleId.ToString());
         }
@@ -151,7 +154,7 @@ public static class MatchMaker
                 enabled = false;
             }
 
-            if (option.IsHidden())
+            if (option.IsHidden(modeId))
             {
                 enabled = false;
             }

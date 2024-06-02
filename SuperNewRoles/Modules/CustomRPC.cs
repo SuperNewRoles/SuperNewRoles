@@ -53,6 +53,9 @@ public enum RoleId
 
     // Neutral Roles
     Cupid,
+    WaveCannonJackal,
+    Bullet,
+    SidekickWaveCannon,
 
     // Crewmate Roles
     NiceGuesser,
@@ -193,8 +196,6 @@ public enum RoleId
     ConnectKiller,
     GM,
     Cracker,
-    WaveCannonJackal,
-    SidekickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -299,9 +300,7 @@ public enum CustomRPC
     CleanBody,
     TeleporterTP,
     SidekickPromotes,
-    CreateSidekick,
     CreateSidekickSeer,
-    CreateSidekickWaveCannon,
     SetSpeedBoost,
     CountChangerSetRPC,
     SetRoomTimerRPC,
@@ -408,7 +407,7 @@ public static class RPCProcedure
             case WaveCannonObject.RpcType.Spawn:
                 return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId), AnimType);
             case WaveCannonObject.RpcType.Shoot:
-                WaveCannonObject.Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                WaveCannonObject.Objects[OwnerId]?.Shoot();
                 break;
         }
         return null;
@@ -1465,17 +1464,7 @@ public static class RPCProcedure
     public static void SidekickPromotes(byte jackalId)
     {
         RoleId jackalRoleId = (RoleId)jackalId;
-        if (jackalRoleId == RoleId.Jackal)
-        {
-            foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
-            {
-                p.ClearRole();
-                p.SetRole(jackalRoleId);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
-            }
-        }
-        else if (jackalRoleId == RoleId.JackalSeer)
+        if (jackalRoleId == RoleId.JackalSeer)
         {
             foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
             {
@@ -1485,35 +1474,8 @@ public static class RPCProcedure
                 RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
             }
         }
-        else if (jackalRoleId == RoleId.WaveCannonJackal)
-        {
-            foreach (PlayerControl p in WaveCannonJackal.SidekickWaveCannonPlayer.ToArray())
-            {
-                p.ClearRole();
-                p.SetRole(jackalRoleId);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                WaveCannonJackal.CanCreateSidekick = WaveCannonJackal.WaveCannonJackalNewJackalCreateSidekick.GetBool();
-            }
-        }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         ChacheManager.ResetMyRoleChache();
-    }
-    public static void CreateSidekick(byte playerid, bool IsFake)
-    {
-        var player = ModHelpers.PlayerById(playerid);
-        if (player == null) return;
-        if (IsFake)
-        {
-            RoleClass.Jackal.FakeSidekickPlayer.Add(player);
-        }
-        else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
-            player.ClearRole();
-            RoleClass.Jackal.SidekickPlayer.Add(player);
-            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
-        }
     }
     public static void CreateSidekickSeer(byte playerid, bool IsFake)
     {
@@ -1528,27 +1490,6 @@ public static class RPCProcedure
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
-            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
-        }
-    }
-
-    /// <summary>
-    /// サイドキック(波動砲)の作成
-    /// </summary>
-    /// <param name="playerid">SK対象者のplayerid</param>
-    /// <param name="IsFake">見せかけのSKか(TORでインポスターSK時ジャッカル視点のみSKできた様になる状態SNRでは使われていない)</param>
-    public static void CreateSidekickWaveCannon(byte playerid, bool IsFake)
-    {
-        var player = ModHelpers.PlayerById(playerid);
-        if (player == null) return;
-        if (IsFake) WaveCannonJackal.FakeSidekickWaveCannonPlayer.Add(player);
-        else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
-            player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
-            player.SetRole(RoleId.SidekickWaveCannon);
-            WaveCannonJackal.IwasSidekicked.Add(playerid);
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
@@ -1847,9 +1788,6 @@ public static class RPCProcedure
                     case CustomRPC.SidekickPromotes:
                         SidekickPromotes(reader.ReadByte());
                         break;
-                    case CustomRPC.CreateSidekick:
-                        CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
-                        break;
                     case CustomRPC.SetSpeedBoost:
                         SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());
                         break;
@@ -1922,9 +1860,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CreateSidekickSeer:
                         CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.CreateSidekickWaveCannon:
-                        CreateSidekickWaveCannon(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.ArsonistDouse:
                         ArsonistDouse(reader.ReadByte(), reader.ReadByte());

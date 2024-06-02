@@ -80,4 +80,14 @@ public abstract class RoleBase : IDisposable
         rpcHandler.RpcReader(reader);
         writer.EndRPC();
     }
+    public static bool operator !=(RoleBase rb, bool rhs)
+    {
+        bool isNull = rb == null || rb.Player == null;
+        return isNull == rhs;
+    }
+    public static bool operator ==(RoleBase rb, bool rhs)
+    {
+        bool isNull = rb == null || rb.Player == null;
+        return !isNull == rhs;
+    }
 }

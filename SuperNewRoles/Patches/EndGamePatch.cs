@@ -532,8 +532,6 @@ public static class OnGameEndPatch
 
         notWinners.AddRanges([RoleClass.Jester.JesterPlayer,
             RoleClass.Madmate.MadmatePlayer,
-            RoleClass.Jackal.JackalPlayer,
-            RoleClass.Jackal.SidekickPlayer,
             RoleClass.JackalFriends.JackalFriendsPlayer,
             RoleClass.God.GodPlayer,
             RoleClass.Opportunist.OpportunistPlayer,
@@ -580,8 +578,6 @@ public static class OnGameEndPatch
             TheThreeLittlePigs.TheFirstLittlePig.Player,
             TheThreeLittlePigs.TheSecondLittlePig.Player,
             TheThreeLittlePigs.TheThirdLittlePig.Player,
-            WaveCannonJackal.WaveCannonJackalPlayer,
-            WaveCannonJackal.SidekickWaveCannonPlayer,
             BlackHatHacker.BlackHatHackerPlayer,
             Moira.MoiraPlayer,
             Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
