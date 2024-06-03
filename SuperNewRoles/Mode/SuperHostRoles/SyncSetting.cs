@@ -122,25 +122,6 @@ public static class SyncSetting
             case RoleId.Survivor:
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Survivor.KillCoolTime));
                 break;
-            case RoleId.Jackal:
-                if (!player.IsMod())
-                {
-                    if (!RoleClass.Jackal.IsImpostorLight)
-                    {
-                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
-                        if (blackout) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
-                    }
-                }
-                else
-                {
-                    if (RoleClass.Jackal.IsImpostorLight)
-                    {
-                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
-                        if (blackout) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
-                    }
-                }
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Jackal.KillCooldown));
-                break;
             case RoleId.JackalSeer:
                 if (!player.IsMod())
                 {

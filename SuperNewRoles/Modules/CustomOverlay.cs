@@ -768,13 +768,13 @@ public class CustomOverlays
 
         Dictionary<int, string> EnableTags = new();
         int index = 0;
+        ModeId modeId = ModeHandler.GetMode(false);
 
         foreach (CustomOption option in CustomOption.options)
         {
             if (option.GetSelection() == 0) continue;
             if (option.type != CustomOptionType.MatchTag) continue;
-            if (option.IsHidden()) continue;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+            if (option.IsHidden(modeId)) continue;
 
             string name = option.name;
             EnableTags[index] = name;
