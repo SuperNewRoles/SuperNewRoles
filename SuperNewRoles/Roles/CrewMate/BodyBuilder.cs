@@ -36,6 +36,8 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
     public static new IntroInfo Introinfo =
         new(RoleId.BodyBuilder, introSound: RoleTypes.Crewmate);
 
+    public static readonly IntRange PosingIdRange = new(1, 5);
+
     public static CustomOption ChangeAllTaskLiftWeights;
     public static CustomOption CustomTaskNumAvailable;
     public static CustomOption CustomCommonTaskNum;
@@ -70,7 +72,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         RpcTypes type = active ? RpcTypes.Posing : RpcTypes.CancelPosing;
         MessageWriter writer = RpcWriter;
         writer.Write((byte)type);
-        writer.Write(UnityEngine.Random.Range(1, 5));
+        writer.Write(PosingIdRange.Next());
         SendRpc(writer);
     }
 
@@ -119,7 +121,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
             ShipStatus ship = GameManager.Instance.LogicOptions.MapId == (int)MapNames.Fungle ? ShipStatus.Instance : MapLoader.Fungle;
             task.MinigamePrefab = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.LiftWeights).MinigamePrefab;
         }
-        
+
         static void Postfix(Console __instance)
         {
             if ((!ChangeAllTaskLiftWeights.GetBool() && GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Fungle) || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
@@ -183,7 +185,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         if (Player.IsDead() && PlayerControl.LocalPlayer.IsAlive())
             return;
 
-        cancelPosing(true);
+        cancelPosing(myObject);
         Player.NetTransform.Halt();
 
         var distance = Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, Player.NetTransform.transform.position);
@@ -211,9 +213,12 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
     }
     private void cancelPosing(bool wasPosing = false)
     {
-        if (Player != null) Player.gameObject.GetComponentsInChildren<SpriteRenderer>().ForEach(x => x.color = new(1f, 1f, 1f, wasPosing ? 0f : 1f));
+        if (Player != null)
+            Player.gameObject.GetComponentsInChildren<SpriteRenderer>().ForEach(x => x.color = new(1f, 1f, 1f, wasPosing ? 0f : 1f));
 
-        if (myObject != null) Object.Destroy(myObject);
+        if (myObject != null)
+            Object.Destroy(myObject);
+        myObject = null;
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity)), HarmonyPostfix]
     static void onMovePlayer(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
@@ -270,7 +275,6 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
             __instance.OnValidate();
             return;
         }
-        
 
         [HarmonyPatch(nameof(LiftWeightsMinigame.EndLifting)), HarmonyPrefix]
         public static bool EndLiftingPrefix(LiftWeightsMinigame __instance)

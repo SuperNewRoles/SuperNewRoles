@@ -230,13 +230,12 @@ public class EndGameManagerSetUpPatch
                 if (data.RoleId != RoleId.BodyBuilder || data.TasksCompleted != data.TasksTotal)
                     continue;
 
-                var prefab = BodyBuilder.getPrefab((byte)UnityEngine.Random.Range(1, 5));
+                var prefab = BodyBuilder.getPrefab((byte)BodyBuilder.PosingIdRange.Next());
                 var pose = UnityEngine.Object.Instantiate(prefab, poolablePlayer.transform);
                 pose.gameObject.transform.position = poolablePlayer.transform.position;
                 pose.transform.localPosition = new(0f, 1f, 0f);
                 pose.transform.localScale *= 1.5f;
-                poolablePlayer.gameObject.transform.FindChild("Cosmetics").gameObject.SetActive(false);
-                poolablePlayer.gameObject.transform.FindChild("BodyForms").gameObject.SetActive(false);
+                poolablePlayer.cosmetics.gameObject.SetActive(false);
 
                 var spriteRenderer = pose.GetComponent<SpriteRenderer>();
                 spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
