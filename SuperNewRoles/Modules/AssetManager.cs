@@ -14,15 +14,17 @@ public static class AssetManager
     {
         Sprite,
         Sound,
-        Wavecannon
+        Wavecannon,
+        BodyBuilder
     }
     private static Dictionary<byte, Dictionary<string, UnityEngine.Object>> _cachedAssets { get; } = new();
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
-    private static Tuple<AssetBundleType, string>[] AssetPathes = new Tuple<AssetBundleType, string>[3]
+    private static Tuple<AssetBundleType, string>[] AssetPathes = new Tuple<AssetBundleType, string>[4]
     {
         new(AssetBundleType.Sprite, "snrsprites"),
         new(AssetBundleType.Sound, "SNRSounds"),
-        new(AssetBundleType.Wavecannon, "WaveCannon.WaveCannonEffects")
+        new(AssetBundleType.Wavecannon, "WaveCannon.WaveCannonEffects"),
+        new(AssetBundleType.BodyBuilder, "BodyBuilder.BodyBuilderPoses")
     };
     public static void Load()
     {
