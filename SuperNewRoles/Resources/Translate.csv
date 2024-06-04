@@ -124,6 +124,7 @@ LightColor,bright,明るい,亮,亮
 DarkerColor,darker,暗い,暗,暗
 
 # CustomOptions
+KillCoolTimeOption,Kill Cooldown,キルクールタイム,击杀冷却,擊殺冷卻
 CanUseVentOption,Can usevent,ベントを使用できる,可以使用管道,可以使用通風管道
 CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使用破坏,可以使用破壞
 IsImpostorVisionOption,Impostor vision,インポスターの視界か,拥有内鬼视野,是否啟用內鬼視野
@@ -1874,6 +1875,23 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
+BodyBuilderName,Bodybuilder,ボディビルダー
+BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！
+BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！
+BodyBuilderButtonName,Posing,ポージング
+BodyBuilderChangeAllTaskLiftWeights,Make all tasks lift weights task,全タスクを筋トレタスクに置き換える
+OwlName,Owl,フクロウ
+OwlTitle1,The one who flapped his wings in the dark,暗闇に羽ばたきし者
+OwlDescription,First， let’s choose a burrow.\nThen， let’s hide the killed body in that burrow.\nHowever， both killing and concealing can only be done in the darkness....\n\nI am apparently called the Night Hunter.\nLet’s live up to that name and go hunting.\nBut beware of the darkness....\nI might be there.,まずは巣穴を決めましょう。\nそしたらキルした死体をその巣穴に隠してしまいましょう。\nただし、キルも隠すのも出来るのは暗闇の中だけ....\n\n私は夜の狩人と呼ばれているらしい。\nその名に恥じない、狩りをしようじゃないか。\n暗闇にはお気をつけて....\n私がいるかもしれないからね....
+OwlImposterVisibilityDuringBlackout,Imposter visibility during blackout,停電時インポスターの視野になる
+OwlCanSpecialBlackoutDeaebodyCount,Number of bodies that will be able to use special blackout,特殊停電を使えるようになる死体数
+SpecialBlackoutCool,Cool time for special power outages,特殊停電のクールタイム
+SpecialBlackoutTime,Effect duration of special power outages,特殊停電の効果時間
+OwlNestBuildingButton,Nest-building,巣作り
+OwlTransportButton,Transport,運搬
+OwlHideDeadBodyButton,Hide,隠す
+OwlSpecialBlackoutButton,Special Blackout,特殊停電
+Kill,Kill,キル
 
 #NewRoleTranslation
 

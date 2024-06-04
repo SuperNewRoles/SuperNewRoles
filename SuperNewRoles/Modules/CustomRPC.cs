@@ -56,6 +56,7 @@ public enum RoleId
     WaveCannonJackal,
     Bullet,
     SidekickWaveCannon,
+    Owl,
 
     // Crewmate Roles
     NiceGuesser,
@@ -66,6 +67,7 @@ public enum RoleId
     SilverBullet,
     NiceScientist,
     NiceRedRidingHood,
+    BodyBuilder,
 
     //RoleId
 
@@ -1704,6 +1706,7 @@ public static class RPCProcedure
             {CustomRPC.SetRoomTimerRPC,false},
             {CustomRPC.SetDeviceTime,false},
             {CustomRPC.SetInfectionTimer,false},
+            {CustomRPC.MoveDeadBody,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
