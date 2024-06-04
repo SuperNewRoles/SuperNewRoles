@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using BepInEx.Configuration;
 using HarmonyLib;
@@ -34,6 +35,7 @@ public enum CustomOptionType
 public class CustomOption
 {
     public static List<CustomOption> options = new();
+    public static List<CustomOption> SpecialHiddenRuleOptions { get; } = new();
     private static Dictionary<int, CustomOption> optionids = new();
     public static int preset = 0;
     public static Dictionary<uint, byte> CurrentValues;
@@ -79,6 +81,7 @@ public class CustomOption
             {
                 HostSelection = value;
             }
+            UpdateCanShows(this);
         }
     }
     public OptionBehaviour optionBehaviour;
@@ -87,6 +90,28 @@ public class CustomOption
     public bool isHeader;
     public bool isHidden;
     public RoleId RoleId;
+    public int openSelection { get; }
+    public Func<bool> CanShowFunc { get; }
+    public bool HasCanShowAction { get; }
+    public bool CanShowByFunc;
+
+    public static void UpdateCanShows(CustomOption opt)
+    {
+        Task.Run(() =>
+        {
+            ModeId modeId = ModeHandler.GetMode(false);
+            foreach (CustomOption option in SpecialHiddenRuleOptions)
+            {
+                if (option == opt)
+                    continue;
+                if (!option.Enabled)
+                    continue;
+                if (option.IsHidden(modeId))
+                    continue;
+                option.CanShowByFunc = option.CanShowFunc();
+            }
+        });
+    }
 
     public virtual bool Enabled
     {
@@ -106,7 +131,7 @@ public class CustomOption
         return optionids.TryGetValue(id, out CustomOption opt) ? opt : null;
     }
 
-    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId? roleId = null)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null)
     {
         this.id = Id;
         this.isSHROn = IsSHROn;
@@ -120,6 +145,16 @@ public class CustomOption
         this.isHeader = isHeader;
         this.isHidden = isHidden;
         this.RoleId = roleId.HasValue ? roleId.Value : RoleId.DefaultRole;
+        this.openSelection = openSelection;
+
+        this.CanShowFunc = canShow;
+        this.HasCanShowAction = canShow != null;
+        this.CanShowByFunc = false;
+        if (HasCanShowAction)
+        {
+            SpecialHiddenRuleOptions.Add(this);
+        }
+
         if (parent != null)
         {
             this.RoleId = parent.RoleId;
@@ -205,22 +240,22 @@ public class CustomOption
         ModifierId = 500000,
         MatchingTagId = 600000,
     }
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format);
+        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format, openSelection, canShow: canShow);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
     {
         List<float> selections = new();
         for (float s = min; s <= max; s += step)
             selections.Add(s);
-        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format);
+        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, openSelection, canShow: canShow);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, openSelection, canShow: canShow);
     }
 
     public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1, bool isHidden = false)
@@ -1041,10 +1076,10 @@ static class GameOptionsMenuUpdatePatch
     /// <summary>現在, 封印処理のある設定を有しているか ( 此処をtrueにする事で封印処理が実行される )</summary>
     public const bool HasSealingOption = false;
 
-    public static bool IsHidden(this CustomOption option)
+    public static bool IsHidden(this CustomOption option, ModeId currentModeId)
     {
         return option.isHidden
-            || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) // SHRモード時, SHR未対応の設定を隠す処理。
+            || (!option.isSHROn && currentModeId == ModeId.SuperHostRoles) // SHRモード時, SHR未対応の設定を隠す処理。
             || HasSealingOption && IsSealingDatetimeControl(option) // 解放条件が時間に依存する設定の 封印及び開放処理
             || (ModeHandler.EnableModeSealing && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
@@ -1107,6 +1142,7 @@ static class GameOptionsMenuUpdatePatch
         }
 
         CustomOptionType type = GetCustomOptionType(__instance.name);
+        ModeId currentMode = ModeHandler.GetMode(false);
 
         foreach (CustomOption option in CustomOption.options)
         {
@@ -1117,14 +1153,13 @@ static class GameOptionsMenuUpdatePatch
                 var parent = option.parent;
 
                 if (AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool())
-                {
                     enabled = false;
-                }
-
-                if (option.IsHidden())
-                {
+                else if (option.openSelection != -1 && option.openSelection != parent?.selection)
                     enabled = false;
-                }
+                else if (option.HasCanShowAction && !option.CanShowByFunc)
+                    enabled = false;
+                else if (option.IsHidden(currentMode))
+                    enabled = false;
 
                 while (parent != null && enabled)
                 {
@@ -1268,22 +1303,6 @@ class GameOptionsDataPatch
         GetTaskTriggerAbilityTaskNumber,
     }
 
-    public static string OptionsToString(CustomOption option, bool skipFirst = false)
-    {
-        if (option == null) return "";
-
-        List<string> options = new();
-        if (!GameOptionsMenuUpdatePatch.IsHidden(option) && !skipFirst) options.Add(OptionToString(option));
-        if (option.Enabled)
-        {
-            foreach (CustomOption op in option.children)
-            {
-                string str = OptionsToString(op);
-                if (str != "") options.Add(str);
-            }
-        }
-        return string.Join("\n", options);
-    }
     public static string DefaultResult = "";
     public static string ResultData()
     {
@@ -1351,13 +1370,21 @@ class GameOptionsDataPatch
 
         static void addChildren(CustomOption option, ref StringBuilder entry, ModeId modeId, bool indent = true)
         {
-            if ((!option.Enabled) || (modeId == ModeId.SuperHostRoles && !option.isSHROn)) return;
+            if ((!option.Enabled) ||
+                (modeId == ModeId.SuperHostRoles && !option.isSHROn)
+            ) return;
+
+            int openSelection = option.GetSelection();
 
             foreach (var child in option.children)
             {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !child.isSHROn) continue;
-                if (!GameOptionsMenuUpdatePatch.IsHidden(option))
-                    entry.AppendLine((indent ? "    " : "") + OptionToString(child));
+                if (child.openSelection != -1 && child.openSelection != openSelection)
+                    continue;
+                if (child.HasCanShowAction && !child.CanShowByFunc)
+                    continue;
+                if (GameOptionsMenuUpdatePatch.IsHidden(option, modeId))
+                    continue;
+                entry.AppendLine((indent ? "    " : "") + OptionToString(child));
                 addChildren(child, ref entry, modeId, indent);
             }
         }
@@ -1385,11 +1412,11 @@ class GameOptionsDataPatch
                 }
 
                 entry = new StringBuilder();
-                if (!(GameOptionsMenuUpdatePatch.IsHidden(option) || option.type == CustomOptionType.MatchTag))
+                if (!(GameOptionsMenuUpdatePatch.IsHidden(option, modeId) || option.type == CustomOptionType.MatchTag))
                 {
                     entry.AppendLine(OptionToString(option));
                 }
-                addChildren(option, ref entry, modeId, !GameOptionsMenuUpdatePatch.IsHidden(option));
+                addChildren(option, ref entry, modeId, !GameOptionsMenuUpdatePatch.IsHidden(option, modeId));
                 if (entry.ToString().Trim('\n', '\r') is not "\r" and not "")
                 {
                     entries.Add(entry.ToString().Trim('\n', '\r'));

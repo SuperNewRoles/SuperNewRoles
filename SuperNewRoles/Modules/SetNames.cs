@@ -173,22 +173,6 @@ public class SetNamesClass
             roleNames = introData.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
             roleColors = RoleClass.Pavlovsdogs.color;
         }
-        else if (WaveCannonJackal.IwasSidekicked.Contains(p.PlayerId) &&
-                !WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool())
-        {
-            if (p.IsRole(RoleId.WaveCannonJackal))
-            {
-                var introData = IntroData.JackalIntro;
-                roleNames = introData.Name;
-                roleColors = introData.color;
-            }
-            else
-            {
-                var introData = IntroData.SidekickIntro;
-                roleNames = introData.Name;
-                roleColors = introData.color;
-            }
-        }
         else
         {
             roleNames = CustomRoles.GetRoleName(role, p);
@@ -552,17 +536,19 @@ public class SetNameUpdate
                     SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                 }
             }
-            if (PlayerControl.LocalPlayer.IsJackalTeam() ||
+            if ((PlayerControl.LocalPlayer.IsJackalTeam() && !PlayerControl.LocalPlayer.IsFriendRoles()) ||
                 JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    RoleId role = p.GetRole();
-                    if ((p.IsJackalTeamJackal() || p.IsJackalTeamSidekick()) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
-                    {
-                        SetNamesClass.SetPlayerRoleNames(p);
-                        SetNamesClass.SetPlayerNameColors(p);
-                    }
+                    if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                        continue;
+                    if (!p.IsJackalTeam())
+                        continue;
+                    if (p.IsFriendRoles() && !p.IsRole(RoleId.Bullet))
+                        continue;
+                    SetNamesClass.SetPlayerRoleNames(p);
+                    SetNamesClass.SetPlayerNameColors(p);
                 }
             }
             SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);

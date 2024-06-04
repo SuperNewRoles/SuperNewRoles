@@ -259,13 +259,15 @@ public static class VentAndSabo
     [HarmonyPatch(typeof(Vent), nameof(Vent.SetOutline))]
     class VentSetOutlinePatch
     {
-        static void Postfix(Vent __instance)
+        static bool Prefix(Vent __instance, bool on, bool mainTarget)
         {
             // Vent outline set role color
             var color = CustomRoles.GetRoleColor(PlayerControl.LocalPlayer);
-            string[] outlines = new[] { "_OutlineColor", "_AddColor" };
-            foreach (var name in outlines)
-                __instance.myRend.material.SetColor(name, color);
+            Material material = __instance.myRend.material;
+            material.SetColor("_AddColor", mainTarget ? color : Color.clear);
+            material.SetColor("_OutlineColor", color);
+            material.SetFloat("_Outline", on ? 1f : 0f);
+            return false;
         }
     }
 }

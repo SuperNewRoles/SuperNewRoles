@@ -19,8 +19,9 @@ public static class CustomRoles
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
-                foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
-                    all.FixedUpdateAllDefault();
+                if (IFixedUpdaterAlls != null)
+                    foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
+                        all.FixedUpdateAllDefault();
 
                 if (ifum != null)
                 {
