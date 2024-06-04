@@ -19,7 +19,8 @@ public enum CustomButtonCouldType
     CanMove = 0x002, //2
     SetTarget = 0x004, //4
     NotNearDoor = 0x008, //8
-    SetVent = 0x010, // 16
+    NotMoving = 0x010, //16
+    SetVent = 0x020, // 32
 }
 public class CustomButtonInfo
 {
@@ -249,6 +250,9 @@ public class CustomButtonInfo
         if (CouldUseType.HasFlag(CustomButtonCouldType.NotNearDoor) &&
             IsNearDoor(PlayerControl.LocalPlayer))
             return false;
+        if (CouldUseType.HasFlag(CustomButtonCouldType.NotMoving) &&
+            IsMoving(PlayerControl.LocalPlayer))
+            return false;
         //SetVentを判定するかつSetTargetVentがfalseなら
         if (CouldUseType.HasFlag(CustomButtonCouldType.SetVent) &&
             !SetTargetVent())
@@ -286,7 +290,23 @@ public class CustomButtonInfo
 
         return false;
     }
-    
+
+    private Vector2 oldPosition;
+    /// <summary>
+    /// プレイヤーが動いているか判定する
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
+    public bool IsMoving(PlayerControl player)
+    {
+        bool moving = true;
+        if (oldPosition == player.GetTruePosition())
+            moving = false;
+
+        oldPosition = player.GetTruePosition();
+        return moving;
+    }
+
     public Vent SetTargetVent(bool highlight = true)
     {
         CurrentVentTarget = HudManagerStartPatch.SetTargetVent();
