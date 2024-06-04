@@ -19,8 +19,8 @@ public enum CustomButtonCouldType
     CanMove = 0x002, //2
     SetTarget = 0x004, //4
     NotNearDoor = 0x008, //8
-    NotMoving = 0x0010 //16
-    SetVent = 0x010, // 16
+    NotMoving = 0x010, //16
+    SetVent = 0x020, // 32
 }
 public class CustomButtonInfo
 {
