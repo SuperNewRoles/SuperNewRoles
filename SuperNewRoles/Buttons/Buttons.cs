@@ -2287,13 +2287,7 @@ static class HudManagerStartPatch
             __instance.KillButton,
             KeyCode.F,
             49,
-            () =>
-            {
-                SwitchSystem ma = null;
-                if (MapUtilities.CachedShipStatus.Systems.ContainsKey(SystemTypes.Electrical))
-                    ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove);
-            }
+            () => { return !PlayerControl.LocalPlayer.CanMove || (!RoleClass.SecretlyKiller.IsBlackOutKillCharge && ModHelpers.IsBlackout()); }
         );
         {
             SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);

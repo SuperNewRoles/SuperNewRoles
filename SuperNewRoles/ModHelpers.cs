@@ -1175,6 +1175,16 @@ public static class ModHelpers
             optdata.RpcSyncOption(player.GetClientId(), SendOption.None);
         }
     }
+    public static bool IsBlackout()
+    {
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem))
+        {
+            var ma = elecsystem.CastFast<SwitchSystem>();
+            if (ma != null && ma.IsActive)
+                return true;
+        }
+        return RoleBaseManager.GetInterfaces<ISpecialBlackout>().Any(x => x.IsBlackout());
+    }
 }
 public static class CreateFlag
 {
