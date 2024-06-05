@@ -21,7 +21,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
             {
                 CachedSpritesCharge = new Sprite[5];
                 for (int i = 1; i <= 5; i++)
-                    CachedSpritesCharge[i - 1] = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Charge_000{i}.png", 115f);
+                    CachedSpritesCharge[i - 1] = null;// ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Charge_000{i}.png", 115f);
             }
             return CachedSpritesCharge;
         }
@@ -71,6 +71,8 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
     public WCDefaultAnimHandler(WaveCannonObject waveCannonObject)
     {
         CannonObject = waveCannonObject;
+        WaveCannonEffect WCEffect = CannonObject.WaveCannonEffects.FirstOrDefault();
+        WCEffect.transform.localPosition = new(3.3f, 0, 0.1f);
     }
     public CustomAnimationOptions Init()
     {
@@ -79,6 +81,9 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
 
     public void OnShot()
     {
+        WaveCannonEffect WCEffect = CannonObject.WaveCannonEffects.FirstOrDefault();
+        WCEffect.transform.localPosition = new(0f, 0, 0.1f);
+        CannonObject.transform.localPosition += new Vector3(CannonObject.IsFlipX ? -4.05f : 4.05f,0);
         foreach (var obj in CannonObject.effectrenders) obj.sprite = ShootSprites[0];
         Sprite[] sprites = new Sprite[12];
         for (int i = 0; i < 12; i++)
@@ -102,6 +107,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                 CannonObject.DestroyIndex++;
                 if (CannonObject.DestroyIndex > 3)
                 {
+                    CannonObject?.Owner?.GetRoleBase<WaveCannonJackal>()?.SetDidntLoadBullet();
                     if (CannonObject.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
                         if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
@@ -111,9 +117,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                         }
                         else
                         {
-                            if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                                WaveCannonJackal.ResetCooldowns();
-                            WaveCannonJackal.WCResetCooldowns();
+                            WaveCannonJackal.ResetCooldowns(false, true);
                         }
                         CannonObject.Owner.GetRoleBase<WaveCannon>()?
                         .CustomButtonInfos?

@@ -15,6 +15,7 @@ using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles;
 
@@ -656,7 +657,6 @@ class AllRoleSetClass
             RoleId.EvilLighter => CustomOptionHolder.EvilLighterPlayerCount.GetInt(),
             RoleId.Sheriff => CustomOptionHolder.SheriffPlayerCount.GetInt(),
             RoleId.MeetingSheriff => CustomOptionHolder.MeetingSheriffPlayerCount.GetInt(),
-            RoleId.Jackal => CustomOptionHolder.JackalPlayerCount.GetInt(),
             RoleId.Teleporter => CustomOptionHolder.TeleporterPlayerCount.GetInt(),
             RoleId.SpiritMedium => CustomOptionHolder.SpiritMediumPlayerCount.GetInt(),
             RoleId.SpeedBooster => CustomOptionHolder.SpeedBoosterPlayerCount.GetInt(),
@@ -772,7 +772,6 @@ class AllRoleSetClass
             RoleId.Werewolf => CustomOptionHolder.WerewolfPlayerCount.GetInt(),
             RoleId.Knight => Knight.KnightPlayerCount.GetInt(),
             RoleId.Pavlovsowner => CustomOptionHolder.PavlovsownerPlayerCount.GetInt(),
-            RoleId.WaveCannonJackal => WaveCannonJackal.WaveCannonJackalPlayerCount.GetInt(),
             RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount.GetInt(),
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetInt(),
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetInt(),
@@ -838,12 +837,12 @@ class AllRoleSetClass
             RoleId.DefaultRole => false,
             RoleId.GM => false,
             RoleId.HauntedWolf => false,
-            RoleId.Sidekick or RoleId.SidekickSeer or RoleId.SidekickWaveCannon => true,
+            RoleId.Sidekick or RoleId.SidekickSeer or RoleId.SidekickWaveCannon => false,
             RoleId.Pavlovsdogs => false,
             RoleId.ShermansServant => false,
             RoleId.Jumbo => false,
             RoleId.Sauner => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship, // エアシップならば選出が可能
-            RoleId.Nun or RoleId.Pteranodon => UnityEngine.Object.FindAnyObjectByType<MovingPlatformBehaviour>(), // ぬーんがあるならば選出が可能
+            RoleId.Nun or RoleId.Pteranodon => Object.FindAnyObjectByType<MovingPlatformBehaviour>(), // ぬーんがあるならば選出が可能
             RoleId.Werewolf or RoleId.Knight => ModeHandler.IsMode(ModeId.Werewolf),
             RoleId.Pusher => (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship,
             _ => true,

@@ -23,7 +23,8 @@ class GameManagerSerializeFix
         for (int index = 0; index < __instance.LogicComponents.Count; ++index)
         {
             GameLogicComponent logicComponent = __instance.LogicComponents[index];
-            if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+            if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
+                logicComponent.TryCast<LogicOptions>() == null)
             {
                 flag = true;
                 writer.StartMessage((byte)index);
@@ -186,7 +187,7 @@ class ControllerManagerUpdatePatch
             }
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+                SuperNewRolesPlugin.Logger.LogInfo("new(" + (PlayerControl.LocalPlayer.transform.position.x - 13.2f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y - 16f) + "f), ");
             }
             if (Input.GetKeyDown(KeyCode.C))
             {

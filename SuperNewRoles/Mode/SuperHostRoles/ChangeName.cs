@@ -164,12 +164,11 @@ public static class ChangeName
             // カモフラ中は処理を破棄する
             if (!RoleClass.Camouflager.IsCamouflage)
             {
-                foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
+                foreach (PlayerControl Jackal in PlayerControl.AllPlayerControls)
                 {
-                    if (!Jackal.Data.Disconnected)
-                    {
-                        ChangePlayers[Jackal.PlayerId] = ModHelpers.Cs(RoleClass.Jackal.color, ChangePlayers.GetNowName(Jackal));
-                    }
+                    if (!Jackal.IsJackalTeam() || Jackal.IsDead())
+                        continue;
+                    ChangePlayers[Jackal.PlayerId] = ModHelpers.Cs(RoleClass.Jackal.color, ChangePlayers.GetNowName(Jackal));
                 }
             }
         }

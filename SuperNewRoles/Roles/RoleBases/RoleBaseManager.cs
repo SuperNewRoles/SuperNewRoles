@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Epic.OnlineServices.Presence;
+using Epic.OnlineServices.UI;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
@@ -38,8 +40,8 @@ public static class RoleBaseManager
             return null;
         RoleBase roleBase = roleInfo.CreateInstance(player);
         PlayerRoles[player] = roleBase;
-        if (!RoleBaseTypes.ContainsKey(roleInfo.RoleObjectTypeName))
-            RoleBaseTypes.Add(roleInfo.RoleObjectTypeName, new());
+        if (!RoleBaseTypes.TryGetValue(roleInfo.RoleObjectTypeName, out HashSet<RoleBase> bases))
+            RoleBaseTypes[roleInfo.RoleObjectTypeName] = bases = new(1);
         RoleBaseTypes[roleInfo.RoleObjectTypeName].Add(roleBase);
         //全てのインターフェイスを取得
         Type roleType = roleInfo.RoleObjectType;
@@ -69,6 +71,22 @@ public static class RoleBaseManager
         }
         if (roleBase is IFixedUpdaterAll fixedUpdaterAll)
             fixedUpdaterAlls.Remove(fixedUpdaterAll);
+    }
+    /// <summary>
+    /// 指定したプレイヤーの役職を変更する
+    /// </summary>
+    /// <param name="player">変更するプレイヤー</param>
+    /// <param name="role">変更する役職ベース</param>
+    /// <returns>変更前の役職ベース</returns>
+    public static RoleBase ChangeRole(PlayerControl player, RoleBase role)
+    {
+        RoleBase before = player.GetRoleBase();
+        PlayerRoles[player] = role;
+        RoleInfo info = role.Roleinfo;
+        if (!RoleBaseTypes.TryGetValue(info.RoleObjectTypeName, out HashSet<RoleBase> bases))
+            RoleBaseTypes[info.RoleObjectTypeName] = bases = new(1);
+        RoleBaseTypes[info.RoleObjectTypeName].Add(role);
+        return before;
     }
     public static RoleBase GetLocalRoleBase()
     {

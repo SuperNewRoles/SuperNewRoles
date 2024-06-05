@@ -16,13 +16,14 @@ public struct CustomAnimationOptions
     public bool IsMeetingDestroy { get; private set; }
     public AudioClip EffectSound { get; private set; }
     public bool IsEffectSoundLoop { get; private set; }
+    public bool IsEffectStopOnDestroy { get; private set; }
     public float UpdateTime { get; private set; }
     public Action<CustomAnimation, CustomAnimationOptions> OnEndAnimation { get; private set; }
     public CustomAnimationOptions()
     {
         Sprites = new Sprite[] { };
     }
-    public CustomAnimationOptions(Sprite[] sprites, int framerate, bool loop = false, bool playenddestroy = false, Action<CustomAnimation, CustomAnimationOptions> OnEndAnimation = null, bool IsMeetingDestroy = true, AudioClip EffectSound = null, bool IsEffectSoundLoop = false)
+    public CustomAnimationOptions(Sprite[] sprites, int framerate, bool loop = false, bool playenddestroy = false, Action<CustomAnimation, CustomAnimationOptions> OnEndAnimation = null, bool IsMeetingDestroy = true, AudioClip EffectSound = null, bool IsEffectSoundLoop = false, bool IsEffectStopOnDestroy = true)
     {
         Sprites = sprites;
         frameRate = framerate;
@@ -31,6 +32,8 @@ public struct CustomAnimationOptions
         this.OnEndAnimation = OnEndAnimation;
         this.IsMeetingDestroy = IsMeetingDestroy;
         this.EffectSound = EffectSound;
+        this.IsEffectSoundLoop = IsEffectSoundLoop;
+        this.IsEffectStopOnDestroy = IsEffectStopOnDestroy;
         UpdateTime = 1.0f / frameRate;
     }
     public void SetPlayEndDestroy(bool Is)
@@ -48,10 +51,11 @@ public struct CustomAnimationOptions
             UpdateTime = 1.0f / this.frameRate;
         }
     }
-    public void SetEffectSound(AudioClip clip, bool IsLoop)
+    public void SetEffectSound(AudioClip clip, bool IsLoop, bool IsStopOnDestroy = true)
     {
         EffectSound = clip;
         IsEffectSoundLoop = IsLoop;
+        IsEffectStopOnDestroy = IsStopOnDestroy;
     }
     public void SetOnEndAnimation(Action<CustomAnimation, CustomAnimationOptions> newAnim)
     {
@@ -191,7 +195,7 @@ public class CustomAnimation : MonoBehaviour
     public virtual void OnDestroy()
     {
         CustomAnimations.Remove(this);
-        if (audioSource != null)
+        if (audioSource != null && Options.IsEffectStopOnDestroy)
             audioSource.Stop();
     }
     public virtual void OnRenderUpdate()
