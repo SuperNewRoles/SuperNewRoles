@@ -36,6 +36,7 @@ public abstract class RoleBase : IDisposable
     }
     public void SetPlayer(PlayerControl player)
     {
+        RoleBaseManager.ChangeRole(player, this);
         Player = player;
     }
     public AudioClip GetIntroAudioClip()
@@ -78,5 +79,15 @@ public abstract class RoleBase : IDisposable
         reader.ReadByte();
         rpcHandler.RpcReader(reader);
         writer.EndRPC();
+    }
+    public static bool operator !=(RoleBase rb, bool rhs)
+    {
+        bool isNull = rb == null || rb.Player == null;
+        return isNull == rhs;
+    }
+    public static bool operator ==(RoleBase rb, bool rhs)
+    {
+        bool isNull = rb == null || rb.Player == null;
+        return !isNull == rhs;
     }
 }

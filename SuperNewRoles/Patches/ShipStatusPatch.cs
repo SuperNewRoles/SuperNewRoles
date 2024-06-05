@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -8,6 +9,9 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -149,37 +153,41 @@ class LightPatch
         if (__instance.Systems.ContainsKey(SystemTypes.Electrical))
         {
             SwitchSystem switchSystem = __instance.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
-            if (switchSystem != null)
-                num = switchSystem.Value / 255f;
+            if (switchSystem != null) num = switchSystem.Value / 255f;
         }
-
 
         __result = player == null || player.IsDead
             ? __instance.MaxLightRadius
-            : player.Object.IsRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate
-            ? GetNeutralLightRadius(__instance, false)
             : Squid.Abilitys.IsObstruction
             ? Mathf.Lerp(__instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), __instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), num)
+            : player.Object.IsRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate
+            ? GetNeutralLightRadius(__instance, false)
             : player.Object.IsImpostor() || RoleHelpers.IsImpostorLight(player.Object)
             ? GetNeutralLightRadius(__instance, true)
             : player.Object.IsRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn
             ? Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num)
+            : RoleBaseManager.GetRoleBases<Owl>().Any(x => x.IsSpecialBlackout)
+            ? GetNeutralLightRadius(__instance, false, timer: 1 - Owl.BlackoutValue)
             : GetNeutralLightRadius(__instance, false);
         return false;
     }
-    public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor)
+    
+    public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor, float? timer = null)
     {
-        if (Clergyman.IsLightOutVision()) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
+        if (Clergyman.IsLightOutVision()) return shipStatus.MinLightRadius * RoleClass.Clergyman.DownImpoVision;
         if (isImpostor) return shipStatus.MaxLightRadius * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
 
         float lerpValue = 1;
-        if (shipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
-        {
-            lerpValue = elec.TryCast<SwitchSystem>().Value / 255f;
-        }
+        if (shipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)) lerpValue = elec.TryCast<SwitchSystem>().Value / 255f;
+        if (timer.HasValue) lerpValue = timer.Value;
         var LocalPlayer = PlayerControl.LocalPlayer;
-        if (LocalPlayer.IsRole(RoleId.Dependents) ||
-            (LocalPlayer.IsRole(RoleId.Nocturnality) && !ModeHandler.IsMode(ModeId.SuperHostRoles)))
+        if (LocalPlayer.GetRole() switch
+        {
+            RoleId.Dependents => true,
+            RoleId.Nocturnality => !ModeHandler.IsMode(ModeId.SuperHostRoles),
+            RoleId.Owl => !RoleHelpers.IsImpostorLight(LocalPlayer),
+            _ => false
+        })
             lerpValue = 1 - lerpValue;
         return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.CrewLightMod);
     }

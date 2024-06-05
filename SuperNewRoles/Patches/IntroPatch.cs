@@ -503,6 +503,12 @@ public class IntroPatch
                     Flag = false;
                     break;
                 default:
+                    if (ModeHandler.IsMode(ModeId.VanillaHns))
+                    {
+                        SetTime = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                        Flag = true;
+                        break;
+                    }
                     Flag = false;
                     break;
             }
