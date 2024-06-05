@@ -238,6 +238,7 @@ public class EndGameManagerSetUpPatch
                 pose.transform.localPosition = new(0f, 1f, 0f);
                 pose.transform.localScale *= 1.5f;
                 poolablePlayer.cosmetics.gameObject.SetActive(false);
+                poolablePlayer.cosmetics.currentBodySprite.BodySprite.gameObject.SetActive(false);
 
                 var spriteRenderer = pose.GetComponent<SpriteRenderer>();
                 spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
