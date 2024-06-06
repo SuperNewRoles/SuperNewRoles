@@ -20,8 +20,9 @@ public static class CustomRoles
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
-                foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
-                    all.FixedUpdateAllDefault();
+                if (IFixedUpdaterAlls != null)
+                    foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
+                        all.FixedUpdateAllDefault();
 
                 if (ifum != null)
                 {
@@ -44,6 +45,10 @@ public static class CustomRoles
                         ifum.FixedUpdateMeSHRDead();
                 }
                 break;
+        }
+        if (PlayerControl.LocalPlayer.IsDead() && roleBase is IHaveHauntAbility haveNotHauntAbility)
+        {
+            Buttons.HauntButtonControl.HauntButtonSwitch(haveNotHauntAbility);
         }
     }
     public static void OnIntroStart()
@@ -102,6 +107,11 @@ public static class CustomRoles
             });
     }
 
+    public static bool OnPetPet(PlayerControl petter)
+    {
+        return !(petter.GetRoleBase() is IPetHandler petHandler) || petHandler.OnCheckPet(ModeHandler.IsMode(ModeId.Default));
+    }
+
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
     class HandleDisconnectPatch
     {
@@ -150,6 +160,8 @@ public static class CustomRoles
     {
         RoleBaseManager.
             GetInterfaces<IDeathHandler>().Do(x => x.OnDeath(info));
+        if (info.DeathPlayer.AmOwner)
+            RoleBaseManager.GetInterfaces<IDeathHandler>().Do(x => x.OnAmDeath(info));
     }
 
     public static Color GetRoleColor(PlayerControl player, bool IsImpostorReturn = false)

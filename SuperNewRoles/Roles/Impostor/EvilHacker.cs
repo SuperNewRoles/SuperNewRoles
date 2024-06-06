@@ -22,7 +22,8 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
         new(RoleId.EvilHacker, TeamTag.Impostor,
             RoleTag.Information, RoleTag.Killer),
         TeamRoleType.Impostor,
-        TeamType.Impostor
+        TeamType.Impostor,
+        QuoteMod.TheOtherRolesGMH
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.EvilHacker, 200300, false,
@@ -39,6 +40,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
     public static CustomOption CanUseAdminDuringMeeting;
     public static CustomOption SabotageMapShowsAdmin;
     public static CustomOption MapShowsDoorState;
+    public static CustomOption CanUseAdminDuringCommsSabotaged;
 
     public CustomButtonInfo[] CustomButtonInfos { get; }
 
@@ -53,7 +55,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
         CanUseAdminDuringMeeting = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringMeeting", true, Optioninfo.RoleOption);
         SabotageMapShowsAdmin = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerSabotageMapShowsAdmin", true, Optioninfo.RoleOption);
         MapShowsDoorState = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerMapShowsDoorState", true, Optioninfo.RoleOption);
-
+        CanUseAdminDuringCommsSabotaged = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "EvilHackerCanUseAdminDuringCommsSabotaged", true, Optioninfo.RoleOption);
     }
     public bool IsMyAdmin { get; set; }
     public bool CanCreateMadmate { get; private set; }

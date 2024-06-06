@@ -18,7 +18,7 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch]
 public static class CredentialsPatch
 {
-    public static string baseCredentials = $@"<size=130%>{SuperNewRolesPlugin.ColorModName}</size> v{SuperNewRolesPlugin.ThisVersion}";
+    public static string baseCredentials => $@"<size=130%>{SuperNewRolesPlugin.ColorModName}</size> v{SuperNewRolesPlugin.ThisVersion}";
 
     [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
     private static class VersionShowerPatch
@@ -84,7 +84,10 @@ public static class CredentialsPatch
                 __instance.transform.localPosition = CachedPlayer.LocalPlayer.Data.IsDead
                     ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
                     : new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
-                __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(1.2f, 0.1f, 0.5f);
+
+                float xAspectPosition = !DestroyableSingleton<ChatController>.Instance.chatButton.activeInHierarchy ? 1.2f : 1.79f; // チャットボタンが表示されているなら左にずらす
+
+                __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(xAspectPosition, 0.1f, 0.5f);
             }
             else
             {
@@ -253,15 +256,22 @@ public static class CredentialsPatch
         }
         public static void Postfix(MainMenuManager __instance)
         {
+            AprilFoolsManager.SetRandomModMode();
+
+            __instance.gameModeButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
+            if (AprilFoolsManager.IsApril(2024))
+            {
+                __instance.accountButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
+            }
+
             __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
             if (ConfigRoles.IsUpdated)
             {
                 __instance.StartCoroutine(ShowAnnouncementPopUp(__instance).WrapToIl2Cpp());
             }
-            DownLoadCustomhat.Load();
-            DownLoadClass.Load();
-            DownLoadClassVisor.Load();
+
+            DownLoadCustomCosmetics.CosmeticsLoad();
 
             instance = __instance;
 
@@ -280,7 +290,7 @@ public static class CredentialsPatch
             }
 
             var snrLogo = new GameObject("bannerLogo");
-            snrLogo.transform.position = new(2, 0.7f, 0);
+            snrLogo.transform.position = new(2, AprilFoolsManager.getCurrentBannerYPos(), AprilFoolsManager.IsApril(2024) ? -6 : 0);
             snrLogo.transform.localScale = Vector3.one * 0.95f;
             //snrLogo.transform.localScale = Vector3.one;
             renderer = snrLogo.AddComponent<SpriteRenderer>();
@@ -295,17 +305,20 @@ public static class CredentialsPatch
 
         public static void LoadSprites()
         {
-            if (bannerSprite == null) bannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
-            if (SuperNakanzinoBannerSprite == null) SuperNakanzinoBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner_April.png", 150f);
-            if (horseBannerSprite == null) horseBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuperHorseRoles.png", 150f);
+            if (bannerSprite == null) bannerSprite = AssetManager.GetAsset<Sprite>("banner.png");
+            if (SuperNakanzinoBannerSprite == null) SuperNakanzinoBannerSprite = AssetManager.GetAsset<Sprite>("banner_April.png");
+            if (horseBannerSprite == null) horseBannerSprite = AssetManager.GetAsset<Sprite>("SuperHorseRoles.png");
         }
 
         public static Sprite bannerRendSprite
         {
             get
             {
-                if (HorseModeOption.enableHorseMode) return horseBannerSprite;
-                return SuperNewRolesPlugin.IsApril() ? SuperNakanzinoBannerSprite : bannerSprite;
+                //if (HorseModeOption.enableHorseMode) return horseBannerSprite;
+                Sprite aprilBannerSprite = AprilFoolsManager.getCurrentBanner();
+                //if (AprilFoolsManager.IsApril(2023)
+                //    return SuperNakanzinoBannerSprite;
+                return aprilBannerSprite != null ? aprilBannerSprite : bannerSprite;
             }
         }
 

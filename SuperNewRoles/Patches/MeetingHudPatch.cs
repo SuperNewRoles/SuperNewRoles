@@ -14,6 +14,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -23,10 +24,21 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
+using SuperNewRoles.MapOption;
 
 namespace SuperNewRoles.Patches;
 
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Awake))] class AwakeMeetingPatch { public static void Postfix() => RoleClass.IsMeeting = true; }
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Awake))]
+class AwakeMeetingPatch
+{
+    public static void Prefix(MeetingHud __instance) => BatteryIconDestroy(__instance);
+    public static void Postfix() => RoleClass.IsMeeting = true;
+
+    private static void BatteryIconDestroy(MeetingHud __instance)
+    {
+        UnityEngine.Object.Destroy(__instance.meetingContents.FindChild("PhoneUI").FindChild("UI_Icon_Battery").gameObject);
+    }
+}
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote))]
 class CastVotePatch
 {
@@ -906,6 +918,9 @@ class MeetingHudStartPatch
         Recorder.StartMeeting();
         ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
+        DeviceClass.OnStartMeeting();
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilGuesser) || PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser))
+            PlayerControl.LocalPlayer.GetRoleBase<GuesserBase>().OnStartMeeting();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>
@@ -914,12 +929,12 @@ class MeetingHudStartPatch
 
                 if (!RoleClass.IsFirstMeetingEnd)
                 {
-                    RoleinformationText.YourRoleInfoSendCommand();
+                    if (SuperHostRolesOptions.SettingClass.IsSendYourRoleFirstTurn) { RoleinformationText.YourRoleInfoSendCommand(); }
                     EmergencyMinigamePatch.SHRMeetingStatusAnnounce.MakeSettingKnown();
                 }
                 else
                 {
-                    if (CustomOptionHolder.SendYourRoleAllTurn.GetBool()) { RoleinformationText.YourRoleInfoSendCommand(); }
+                    if (SuperHostRolesOptions.SettingClass.IsSendYourRoleAllTurn) { RoleinformationText.YourRoleInfoSendCommand(); }
                     EmergencyMinigamePatch.SHRMeetingStatusAnnounce.LimitAnnounce();
                 }
             }, 3f, "StartMeeting CustomSyncSetting");

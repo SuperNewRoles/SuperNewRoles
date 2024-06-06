@@ -64,6 +64,7 @@ public static class RoleClass
         RoleinformationText.RoleInfo.ClearAndReload();
         GameHistoryManager.ClearAndReloads();
         Agartha.MapData.ClearAndReloads();
+        Mode.SuperHostRoles.SuperHostRolesOptions.SettingClass.ClearAndReload();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();
         //Map.Data.ClearAndReloads();
@@ -102,7 +103,6 @@ public static class RoleClass
         EvilLighter.ClearAndReload();
         Sheriff.ClearAndReload();
         MeetingSheriff.ClearAndReload();
-        Jackal.ClearAndReload();
         Teleporter.ClearAndReload();
         SpiritMedium.ClearAndReload();
         SpeedBooster.ClearAndReload();
@@ -137,7 +137,6 @@ public static class RoleClass
         Minimalist.ClearAndReload();
         Hawk.ClearAndReload();
         Egoist.ClearAndReload();
-        NiceRedRidingHood.ClearAndReload();
         EvilEraser.ClearAndReload();
         Workperson.ClearAndReload();
         Magaziner.ClearAndReload();
@@ -226,7 +225,6 @@ public static class RoleClass
         Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
-        WaveCannonJackal.ClearAndReload();
         //SidekickWaveCannon.Clear();
         Beacon.AllBeacons = new();
         Camouflager.ClearAndReload();
@@ -361,7 +359,7 @@ public static class RoleClass
         public static Dictionary<int, int> KillCount;
         public static DateTime ButtonTimer;
 
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+        public static Sprite GetButtonSprite() => AssetManager.GetAsset<Sprite>("SheriffKillButton.png");
 
         public static void ClearAndReload()
         {
@@ -388,10 +386,9 @@ public static class RoleClass
     }
     public static class Jackal
     {
-        public static List<PlayerControl> JackalPlayer;
-        public static List<PlayerControl> SidekickPlayer;
         public static List<PlayerControl> FakeSidekickPlayer;
         public static Color32 color = JackalBlue;
+        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);/*
         public static float KillCooldown;
         public static bool IsUseVent;
         public static bool IsUseSabo;
@@ -401,7 +398,6 @@ public static class RoleClass
         public static List<int> CreatePlayers;
         public static bool IsCreatedFriend;
         public static bool CanCreateFriend;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
         public static void ClearAndReload()
         {
             JackalPlayer = new();
@@ -416,7 +412,7 @@ public static class RoleClass
             IsCreatedFriend = false;
             CreatePlayers = new();
             CanCreateFriend = CustomOptionHolder.JackalCreateFriend.GetBool();
-        }
+        }*/
     }
     public static class Teleporter
     {
@@ -991,19 +987,6 @@ public static class RoleClass
             UseVent = CustomOptionHolder.EgoistUseVent.GetBool();
             UseSabo = CustomOptionHolder.EgoistUseSabo.GetBool();
             UseKill = CustomOptionHolder.EgoistUseKill.GetBool();
-        }
-    }
-    public static class NiceRedRidingHood
-    {
-        public static List<PlayerControl> NiceRedRidingHoodPlayer;
-        public static Color32 color = new(250, 128, 114, byte.MaxValue);
-        public static int Count;
-        public static Vector3? deadbodypos;
-        public static void ClearAndReload()
-        {
-            NiceRedRidingHoodPlayer = new();
-            Count = CustomOptionHolder.NiceRedRidingHoodCount.GetInt();
-            deadbodypos = null;
         }
     }
     public static class EvilEraser

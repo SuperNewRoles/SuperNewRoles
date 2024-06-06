@@ -152,6 +152,7 @@ class Main
         {
             VentData[__instance.myPlayer.PlayerId] = null;
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.ExitVent);
+            VentInfo.OnExitVent(__instance.myPlayer, id);
             return true;
         }
     }
@@ -185,15 +186,14 @@ class Main
                 else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     bool data = CoEnterVent.Prefix(__instance, id);
-                    if (data)
-                    {
-                        VentData[__instance.myPlayer.PlayerId] = id;
-                    }
-                    return data;
+                    if (!data)
+                        return false;
+                    VentData[__instance.myPlayer.PlayerId] = id;
                 }
             }
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.InVent);
             VentData[__instance.myPlayer.PlayerId] = id;
+            VentInfo.OnEnterVent(__instance.myPlayer, id);
             return true;
         }
     }

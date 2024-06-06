@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.MapOption;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
@@ -144,7 +145,9 @@ public static class VentAndSabo
 
             couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
             canUse = couldUse;
+            if (WormHole.IsWormHole(__instance) && !pc.Object.IsImpostor()) return true;
             if (pc.Object.IsRole(RoleTypes.Engineer)) return true;
+
             if (NiceMechanic.TargetVent.Values.FirstOrDefault(x => x is not null && x.Id == __instance.Id) is not null) canUse = false;
             if (canUse)
             {
@@ -256,13 +259,15 @@ public static class VentAndSabo
     [HarmonyPatch(typeof(Vent), nameof(Vent.SetOutline))]
     class VentSetOutlinePatch
     {
-        static void Postfix(Vent __instance)
+        static bool Prefix(Vent __instance, bool on, bool mainTarget)
         {
             // Vent outline set role color
             var color = CustomRoles.GetRoleColor(PlayerControl.LocalPlayer);
-            string[] outlines = new[] { "_OutlineColor", "_AddColor" };
-            foreach (var name in outlines)
-                __instance.myRend.material.SetColor(name, color);
+            Material material = __instance.myRend.material;
+            material.SetColor("_AddColor", mainTarget ? color : Color.clear);
+            material.SetColor("_OutlineColor", color);
+            material.SetFloat("_Outline", on ? 1f : 0f);
+            return false;
         }
     }
 }

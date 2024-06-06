@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppSystem.Runtime.Remoting.Lifetime;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
@@ -53,6 +55,18 @@ public class FixedUpdate
         }
     }
 
+    static void SetBaseVentMaterial()
+    {
+        if (PlayerControl.LocalPlayer.IsUseVent()) return;
+        if (!ShipStatus.Instance) return;
+        List<NormalPlayerTask> tasks = PlayerControl.LocalPlayer.myTasks.ToList().FindAll(x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning).ConvertAll(x => x.Cast<NormalPlayerTask>());
+        foreach (Vent vent in ShipStatus.Instance.AllVents)
+        {
+            if (tasks.Exists(x => x.Data[0] == vent.Id)) continue;
+            vent.SetOutline(false, false);
+        }
+    }
+
     static void ReduceKillCooldown(PlayerControl __instance)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
@@ -82,17 +96,17 @@ public class FixedUpdate
         }
 
         SetBasePlayerOutlines();
+        SetBaseVentMaterial();
         LadderDead.FixedUpdate();
         CustomRoles.FixedUpdate();
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
+                DeviceClass.FixedUpdate();
                 SabotageManager.Update();
                 SetNameUpdate.Postfix(__instance);
                 NiceMechanic.FixedUpdate();
-                Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
-                WaveCannonJackal.WaveCannonJackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 Psychometrist.FixedUpdate();
                 Matryoshka.FixedUpdate();
                 PartTimer.FixedUpdate();
@@ -284,7 +298,7 @@ public class FixedUpdate
                 {
                     if (!PlayerControl.LocalPlayer.IsGhostRole(RoleId.DefaultRole) && PlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.CrewmateGhost)
                     {
-                        NormalButtonDestroy.DisableHauntButton(); // 幽霊役職で, 自身がクルーメイトゴーストの場合憑依ボタンを非表示にする。
+                        HauntButtonControl.DisableHauntButton(); // 幽霊役職で, 自身がクルーメイトゴーストの場合憑依ボタンを非表示にする。
                     }
                 }
                 break;

@@ -66,7 +66,7 @@ class KillButtonDoClickPatch
             Kunoichi.KillButtonClick();
             return false;
         }
-        if (!(__instance.currentTarget.IsRole(RoleId.Bait) || __instance.currentTarget.IsRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
+        if (!__instance.currentTarget.IsRole(RoleId.Bait) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
         {
             PlayerControl.LocalPlayer.killTimer =
                 RoleHelpers.GetCoolTime(
@@ -251,20 +251,19 @@ static class CheckMurderPatch
                 Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
                 return false;
             case RoleId.Jackal:
+                Jackal jackal = __instance.GetRoleBase<Jackal>();
+                if (jackal == null)
+                    return false;
                 //まだ作ってなくて、設定が有効の時
-                if (RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId) ||
-                    !RoleClass.Jackal.CanCreateFriend)
+                if (jackal.CanSidekick)
                 {
-                    // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                    if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSHR");
-                    else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
-                    else Logger.Info("不正なキル", "JackalSHR");
+                    Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
                     break;
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
-                if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                if (target == null || jackal.CanSidekick) return false;
                 __instance.RpcShowGuardEffect(target);
-                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                jackal.CanSidekick = false;
                 if (!target.IsImpostor())
                 {
                     Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
@@ -632,24 +631,13 @@ public static class MurderPlayerPatch
             switch (__instance.GetRole())
             {
                 case RoleId.EvilGambler:
-                    PlayerControl.LocalPlayer.SetKillTimer(
-                        RoleClass.EvilGambler.GetSuc() ?
-                        RoleClass.EvilGambler.SucCool :
-                        RoleClass.EvilGambler.NotSucCool
-                    );
                     break;
             }
         }
 
         //ダークキラーがキルできるか判定
-        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem))
-        {
-            var ma = elecsystem.CastFast<SwitchSystem>();
-            if (__instance.IsRole(RoleId.DarkKiller) &&
-                ma != null &&
-                !ma.IsActive)
-                return false;
-        }
+        if (__instance.IsRole(RoleId.DarkKiller) && !IsBlackout()) return false;
+        
         if (!AmongUsClient.Instance.AmHost ||
             __instance.PlayerId == target.PlayerId)
             return true;
@@ -719,7 +707,7 @@ public static class MurderPlayerPatch
                     }
                 }
 
-                EvilGambler.MurderPlayerPostfix(__instance); // キルクリセット処理
+                EvilGambler.MurderPlayerPostfix(__instance, target); // キルクリセット処理
 
                 Doppelganger.KillCoolSetting.MurderPlayer(__instance, target); // キルクリセット処理
 
