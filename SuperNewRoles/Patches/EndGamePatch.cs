@@ -238,6 +238,7 @@ public class EndGameManagerSetUpPatch
                 pose.transform.localPosition = new(0f, 1f, 0f);
                 pose.transform.localScale *= 1.5f;
                 poolablePlayer.cosmetics.gameObject.SetActive(false);
+                poolablePlayer.cosmetics.currentBodySprite.BodySprite.gameObject.SetActive(false);
 
                 var spriteRenderer = pose.GetComponent<SpriteRenderer>();
                 spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
@@ -550,7 +551,6 @@ public static class OnGameEndPatch
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
 
         List<PlayerControl> notWinners = new();
-        List<PlayerControl> peculiarNotWinners = new();
 
         notWinners.AddRanges([RoleClass.Jester.JesterPlayer,
             RoleClass.Madmate.MadmatePlayer,
@@ -660,7 +660,6 @@ public static class OnGameEndPatch
 
         if (EndGameManagerSetUpPatch.IsHaison)
         {
-            winners = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.IsBot())
@@ -721,7 +720,6 @@ public static class OnGameEndPatch
         }
         else if (JackalWin)
         {
-            winners = new();
             foreach (var cp in PlayerControl.AllPlayerControls)
             {
                 if (!cp.IsJackalTeam())
@@ -732,7 +730,6 @@ public static class OnGameEndPatch
         }
         else if (EgoistWin)
         {
-            winners = new();
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
                 if (p.IsDead())
@@ -743,7 +740,6 @@ public static class OnGameEndPatch
         }
         else if (DemonWin)
         {
-            winners = new();
             foreach (PlayerControl player in RoleClass.Demon.DemonPlayer)
             {
                 if (!Demon.IsWin(player))
@@ -755,7 +751,6 @@ public static class OnGameEndPatch
         }
         else if (ArsonistWin)
         {
-            winners = new();
             foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
             {
                 if (!Arsonist.IsArsonistWinFlag())
@@ -785,7 +780,6 @@ public static class OnGameEndPatch
         }
         else if (PavlovsTeamWin)
         {
-            winners = new();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p.IsPavlovsTeam())
@@ -810,11 +804,14 @@ public static class OnGameEndPatch
         }
         else if (CrewmateWin)
         {
-            foreach(GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            var d = ProcessGetWinnersToRemove();
+            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
             {
                 if (player.Object != null && !player.Object.IsCrew())
                     continue;
                 if (player.Role.IsImpostor)
+                    continue;
+                if (d.Any(x => x.PlayerId == player.PlayerId))
                     continue;
                 winners.Add(player);
             }
@@ -836,7 +833,6 @@ public static class OnGameEndPatch
             }
             else
             {
-                winners = new();
                 foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers)
                 {
                     winners.Add(GameData.Instance.GetPlayerById(playerId));
@@ -872,11 +868,12 @@ public static class OnGameEndPatch
 
         //単独勝利系統
         //下に行くほど優先度が高い
+        bool allowAdditionalWins = true;
         if (IsProcessReplaceWin)
-            ProcessReplaceWin(ref winners, gameOverReason, ref winCondition);
+            ProcessReplaceWin(ref winners, gameOverReason, ref winCondition, out allowAdditionalWins);
 
         //追加勝利系
-        ProcessAdditionalWin(ref winners, gameOverReason, ref winCondition);
+        if (allowAdditionalWins) ProcessAdditionalWin(ref winners, gameOverReason, ref winCondition);
 
         if (ModeHandler.IsMode(ModeId.BattleRoyal))
         {
@@ -958,30 +955,39 @@ public static class OnGameEndPatch
         }
         return (winners, winCondition, WillRevivePlayers);
     }
-    private static void ProcessReplaceWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
+    private static void ProcessReplaceWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition, out bool allowAdditionalWins)
     {
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        allowAdditionalWins = true;
+        bool spereseted = false;
+        IHijackingWinner.Rank last = IHijackingWinner.Rank.Rank1;
+        foreach (IHijackingWinner hijacking in RoleBaseManager.GetInterfaces<IHijackingWinner>().OrderBy(x => x.Priority))
         {
-            if (player.GetRoleBase() is IAdditionalWinner additionalWinner)
+            if (!hijacking.CanWin(gameOverReason, winCondition)) continue;
+            if (!spereseted || last < hijacking.Priority)
             {
-                IAdditionalWinner.AdditionalWinData additionalWinData = additionalWinner.CanWin();
-                if (additionalWinData.CanWin)
-                {
-                    if (additionalWinData.winCondition != AdditionalTempData.winCondition)
-                        winners = new(1);
-                    winners.Add(player.Data);
-                    winCondition = additionalWinData.winCondition;
-                }
+                winners = [];
+                allowAdditionalWins = true;
             }
+            spereseted = true;
+            last = hijacking.Priority;
+            winners.Add((hijacking as RoleBase).Player.Data);
+            winCondition = hijacking.Condition;
+            allowAdditionalWins &= hijacking.AllowAdditionalWins;
         }
 
+        spereseted = false;
         foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
         {
             if (player.IsDead() || RoleClass.Neet.IsAddWin)
                 continue;
-            winners = [player.Data];
+            if (!spereseted)
+                winners = [];
+            spereseted = true;
+            allowAdditionalWins = true;
+            winners.Add(player.Data);
             winCondition = WinCondition.NeetWin;
         }
+        spereseted = false;
         foreach (PlayerControl player in RoleClass.God.GodPlayer)
         {
             if (player.IsDead())
@@ -989,22 +995,31 @@ public static class OnGameEndPatch
             var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
             if (!RoleClass.God.IsTaskEndWin || Complete >= all)
             {
-                winners = [player.Data];
+                if (!spereseted)
+                    winners = [];
+                spereseted = true;
+                allowAdditionalWins = true;
+                winners.Add(player.Data);
                 winCondition = WinCondition.GodWin;
             }
         }
+        spereseted = false;
         foreach (PlayerControl player in OrientalShaman.OrientalShamanPlayer)
         {
             if (!OrientalShaman.OrientalShamanCrewTaskWinHijack.GetBool() &&
                 AdditionalTempData.gameOverReason == GameOverReason.HumansByTask) break;
+            if (player.IsDead())
+                continue;
             if (OrientalShaman.OrientalShamanWinTask.GetBool())
             {
                 var (completed, total) = TaskCount.TaskDate(player.Data);
                 if (completed < total) continue;
             }
-            if (player.IsDead())
-                continue;
-            winners = [player.Data];
+            if (!spereseted)
+                winners = [];
+            spereseted = true;
+            allowAdditionalWins = true;
+            winners.Add(player.Data);
             if (OrientalShaman.OrientalShamanCausative.ContainsKey(player.PlayerId))
             {
                 PlayerControl causativePlayer = ModHelpers.PlayerById(OrientalShaman.OrientalShamanCausative[player.PlayerId]);
@@ -1012,35 +1027,42 @@ public static class OnGameEndPatch
             }
             winCondition = WinCondition.OrientalShamanWin;
         }
+        spereseted = false;
         foreach (PlayerControl player in RoleClass.Tuna.TunaPlayer)
         {
             if (player.IsDead() || RoleClass.Tuna.IsTunaAddWin)
                 continue;
-            winners = [player.Data];
+            if (!spereseted)
+                winners = [];
+            spereseted = true;
+            winners.Add(player.Data);
             AdditionalTempData.winCondition = WinCondition.TunaWin;
         }
+        spereseted = false;
         foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
         {
             if (player.IsDead() || !CustomOptionHolder.StefinderSoloWin.GetBool())
                 continue;
             if (RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId))
             {
-                if (!(
-                    gameOverReason is GameOverReason.ImpostorByKill or
+                if (gameOverReason is not (GameOverReason.ImpostorByKill or
                     GameOverReason.ImpostorBySabotage or
                     GameOverReason.ImpostorByVote or
                     GameOverReason.ImpostorDisconnect))
                     continue;
             }
-            else if (!(
-                gameOverReason is GameOverReason.HumansByTask or
+            else if (gameOverReason is not (GameOverReason.HumansByTask or
                 GameOverReason.HumansByVote or
-                GameOverReason.HumansDisconnect)
-            )
+                GameOverReason.HumansDisconnect))
                 continue;
-            winners = [player.Data];
+            if (!spereseted)
+                winners = [];
+            spereseted = true;
+            allowAdditionalWins = true;
+            winners.Add(player.Data);
             winCondition = WinCondition.StefinderWin;
         }
+        spereseted = false;
         foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
         {
             if (!RoleClass.Lovers.IsSingleTeam)
@@ -1054,7 +1076,10 @@ public static class OnGameEndPatch
             }
             if (!IsWinLovers)
                 continue;
-            winners = [];
+            if (!spereseted)
+                winners = [];
+            spereseted = true;
+            allowAdditionalWins = true;
             foreach (PlayerControl player in plist)
             {
                 winners.Add(player.Data);
@@ -1068,12 +1093,16 @@ public static class OnGameEndPatch
                 winCondition = WinCondition.LoversWin;
             }
         }
+        spereseted = false;
         //ポーカーフェイス勝利判定
         foreach (Pokerface.PokerfaceTeam team in Pokerface.RoleData.PokerfaceTeams)
         {
             if (!team.CanWin())
                 continue;
-            winners = [];
+            if (!spereseted)
+                winners = [];
+            spereseted = true;
+            allowAdditionalWins = false;
             foreach (PlayerControl teammember in team.TeamPlayers)
                 //ポーカーフェイスじゃない場合を考慮する
                 if (teammember.IsRole(RoleId.Pokerface))
@@ -1083,26 +1112,27 @@ public static class OnGameEndPatch
                         winners.Add(teammember.Data);
             winCondition = WinCondition.PokerfaceWin;
         }
-        bool spereseted = false;
+        spereseted = false;
         foreach (PlayerControl player in RoleClass.Spelunker.SpelunkerPlayer)
         {
             if (player.IsDead())
                 continue;
             if (!spereseted)
                 winners = [];
+            spereseted = true;
+            allowAdditionalWins = true;
             winners.Add(player.Data);
             winCondition = WinCondition.SpelunkerWin;
-            spereseted = true;
         }
+        spereseted = false;
         foreach (List<PlayerControl> plist in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
         {
-            if (AdditionalTempData.winCondition is WinCondition.LoversBreakerWin or WinCondition.SafecrackerWin or WinCondition.JesterWin or
-                                                   WinCondition.VultureWin or WinCondition.WorkpersonWin or WinCondition.FalseChargesWin or
-                                                   WinCondition.DemonWin or WinCondition.SuicidalIdeationWin or WinCondition.PhotographerWin or
-                                                   WinCondition.RevolutionistWin or WinCondition.QuarreledWin or WinCondition.BlackHatHackerWin or
-                                                   WinCondition.OwlWin) break;
-            if (!TheThreeLittlePigs.IsTheThreeLittlePigs(plist) ||
-                plist.IsAllDead())
+            if (winCondition is WinCondition.LoversBreakerWin or WinCondition.SafecrackerWin or WinCondition.JesterWin or
+                                WinCondition.VultureWin or WinCondition.WorkpersonWin or WinCondition.FalseChargesWin or
+                                WinCondition.DemonWin or WinCondition.SuicidalIdeationWin or WinCondition.PhotographerWin or
+                                WinCondition.RevolutionistWin or WinCondition.QuarreledWin or WinCondition.BlackHatHackerWin or
+                                WinCondition.OwlWin) break;
+            if (!TheThreeLittlePigs.IsTheThreeLittlePigs(plist) || plist.IsAllDead())
                 continue;
             bool isAllAlive = true;
             if (plist.Count >= 3)
@@ -1118,7 +1148,10 @@ public static class OnGameEndPatch
             }
             if (isAllAlive)
             {
-                winners = [];
+                if (!spereseted)
+                    winners = [];
+                spereseted = true;
+                allowAdditionalWins = false;
                 foreach (PlayerControl player in plist)
                 {
                     if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player))
@@ -1141,7 +1174,10 @@ public static class OnGameEndPatch
                 }
                 if (isAllKillerDead)
                 {
-                    winners = [];
+                    if (!spereseted)
+                        winners = [];
+                    spereseted = true;
+                    allowAdditionalWins = false;
                     foreach (PlayerControl player in plist)
                     {
                         if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player)) continue;
@@ -1151,6 +1187,7 @@ public static class OnGameEndPatch
                 }
             }
         }
+        spereseted = false;
         foreach (KeyValuePair<byte, int> data in Frankenstein.KillCount)
         {
             //勝利に必要なキル数を満たしているか
@@ -1160,21 +1197,29 @@ public static class OnGameEndPatch
             GameData.PlayerInfo FrankenPlayer = GameData.Instance.GetPlayerById(data.Key);
             if (FrankenPlayer.IsDead())
                 continue;
-            winners = [FrankenPlayer];
+            if (!spereseted)
+                winners = [];
+            spereseted = true;
+            allowAdditionalWins = false;
+            winners.Add(FrankenPlayer);
             winCondition = WinCondition.FrankensteinWin;
         }
         if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
         {
+            allowAdditionalWins = false;
             winners = [Moira.Player.Data];
             winCondition = WinCondition.MoiraWin;
         }
+        spereseted = false;
         // 詐欺師は, 勝利判定が実行される前に既に勝利条件を満たしている為, 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)
         if (Crook.RoleData.FirstWinFlag)
         {
             (bool crookFinalWinFlag, List<PlayerControl> crookWinners) = Crook.DecisionOfVictory.GetTheLastDecisionAndWinners();
             if (crookFinalWinFlag) // 最終的な勝利条件(受給回数, 生存, 最終の保管金の受領場所(追放処理)にたどり着いた) を 満たしている詐欺師がいたら
             {
-                winners = [];
+                if (!spereseted)
+                    winners = [];
+                spereseted = true;
                 foreach (var winner in crookWinners)
                 {
                     Logger.Info($"{winner.name}は勝利リストに入った", "EndGame CrookWin");
@@ -1183,22 +1228,34 @@ public static class OnGameEndPatch
                 winCondition = WinCondition.CrookWin;
             }
         }
+        spereseted = false;
         List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
         foxPlayers.AddRange(FireFox.FireFoxPlayer);
-        bool foxReseted = false;
         foreach (PlayerControl player in foxPlayers)
         {
             if (player.IsDead())
                 continue;
-            if (!foxReseted)
+            if (!spereseted)
                 winners = [];
             winners.Add(player.Data);
             winCondition = WinCondition.FoxWin;
-            foxReseted = true;
+            spereseted = true;
         }
     }
     private static void ProcessAdditionalWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
     {
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.GetRoleBase() is IAdditionalWinner additionalWinner)
+            {
+                IAdditionalWinner.AdditionalWinData additionalWinData = additionalWinner.CanWin();
+                if (additionalWinData.CanWin)
+                {
+                    winners.Add(player.Data);
+                    winCondition = additionalWinData.winCondition;
+                }
+            }
+        }
         foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
         {
             if (p.IsDead() || !RoleClass.Tuna.IsTunaAddWin)

@@ -30,7 +30,7 @@ public static class PlayerControlHelper
         {
             PlayerTask playerTask = player.myTasks[i];
             playerTask.OnRemove();
-            UnityEngine.Object.Destroy(playerTask.gameObject);
+            Object.Destroy(playerTask.gameObject);
         }
         player.myTasks.Clear();
 
@@ -40,6 +40,7 @@ public static class PlayerControlHelper
     public static void RefreshRoleDescription(PlayerControl player)
     {
         if (player == null) return;
+        Logger.Info($"Set Role Description. player : {player.name}", "RefreshRoleDescription");
 
         RoleId playerRole = player.GetRole();
         List<RoleId> infos = new() { player.GetRole() };
@@ -50,31 +51,23 @@ public static class PlayerControlHelper
         }
 
         var toRemove = new List<PlayerTask>();
-        var aaa = false;
-        var mytxt = "";
         foreach (PlayerTask t in player.myTasks)
         {
             var textTask = t.gameObject.GetComponent<ImportantTextTask>();
-            if (textTask != null)
-            {
-                if (aaa == false)
-                {
-                    mytxt = textTask.Text;
-                }
-                if (textTask.Text.StartsWith(CustomRoles.GetRoleName(player)))
-                    infos.Remove(playerRole); // TextTask for this RoleInfo does not have to be added, as it already exists
-                else
-                    toRemove.Add(t); // TextTask does not have a corresponding RoleInfo and will hence be deleted
-            }
+            if (textTask == null) continue;
+            if (textTask.Text.StartsWith(CustomRoles.GetRoleName(player)))
+                infos.Remove(playerRole); // TextTask for this RoleInfo does not have to be added, as it already exists
+            else toRemove.Add(t); // TextTask does not have a corresponding RoleInfo and will hence be deleted
         }
 
         foreach (PlayerTask t in toRemove)
         {
             t.OnRemove();
             player.myTasks.Remove(t);
-            UnityEngine.Object.Destroy(t.gameObject);
+            Object.Destroy(t.gameObject);
         }
 
+        Logger.Info($"Set Role Description. infos : {string.Join(", ", infos)}", "RefreshRoleDescription");
         // Add TextTask for remaining RoleInfos
         foreach (RoleId roleId in infos)
         {

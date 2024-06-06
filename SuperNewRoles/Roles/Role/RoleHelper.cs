@@ -1554,6 +1554,36 @@ public static class RoleHelpers
     internal static bool IsUseTaskTrigger(this PlayerControl player)
         => !player.IsClearTask() || Patches.SelectTask.GetHaveTaskManageAbility(player.GetRole());
 
+    public static void ClearTaskUpdate()
+    {
+        PlayerData<bool> TaskPlayers = new(defaultvalue: false);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            TaskPlayers[player] = player.IsClearTask(false);
+        TaskCount.IsClearTaskPlayer = TaskPlayers;
+    }
+
+    public static void SetTask(this PlayerControl player, (int numCommon, int numShort, int numLong) task)
+    {
+        if (!player) return;
+        ShipStatus ship = ShipStatus.Instance;
+        if (!ship) return;
+        Il2CppSystem.Collections.Generic.List<byte> tasks = new();
+        Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
+        int start = 0;
+        ship.AddTasksFromList(ref start, task.numCommon, tasks, types, ship.CommonTasks.ListToIl2Cpp());
+        start = 0;
+        ship.AddTasksFromList(ref start, task.numShort, tasks, types, ship.ShortTasks.ListToIl2Cpp());
+        start = 0;
+        ship.AddTasksFromList(ref start, task.numShort, tasks, types, ship.LongTasks.ListToIl2Cpp());
+        player.SetTask(tasks.ToArray());
+    }
+
+    public static void SetTask(this PlayerControl player, byte[] tasks)
+    {
+        if (!player) return;
+        GameData.Instance.RpcSetTasks(player.PlayerId, tasks);
+    }
+
     public static bool IsUseVent(this PlayerControl player)
     {
         RoleId role = player.GetRole();

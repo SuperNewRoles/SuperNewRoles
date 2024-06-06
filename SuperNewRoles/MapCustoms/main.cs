@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Agartha;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -15,6 +15,9 @@ public class MapCustomHandler
 
     public static bool IsMapCustom(MapCustomId mapCustomId, bool isDefaultOnly = true)
     {
+        // マップがLevelImposterならリターン
+        if (MapData.IsMap(CustomMapNames.LevelImposter)) return false;
+
         bool isCommonDecision = MapCustom.MapCustomOption.GetBool() && (ModeHandler.IsMode(ModeId.Default) || !isDefaultOnly);
         if (!isCommonDecision) return false; // 共通条件を満たしていなかったら, 早期リターン
 

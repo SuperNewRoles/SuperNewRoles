@@ -162,7 +162,7 @@ public class Moira
         if (player2.IsAlive()) player2.RPCSetRoleUnchecked(player1RoleType);
         RoleTypeData[player2Id] = player1RoleType;
 
-        RPCProcedure.SwapRole(player1Id, player2Id);
+        player1.SwapRoleRPC(player2);
     }
 
     public static void WrapUp(GameData.PlayerInfo exiled)

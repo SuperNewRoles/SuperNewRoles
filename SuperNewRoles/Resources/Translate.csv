@@ -1521,6 +1521,7 @@ DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}
 WiseManName,WiseMan,賢者,贤者,賢者
 WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを守ろう,用神圣之盾保护船员,用神聖之盾保護船員
 WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
+WiseManEnableWiseManWalk,Enable WiseMan walk,賢者ステップを有効にする,启用贤者步行,啟用賢者步行
 NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工,正義的機械師
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道,改造飛船上的管道
 NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？,什么人在给飞船搞破坏？,誰在搗亂這艘飛船？
@@ -1614,6 +1615,7 @@ PteranodonDescription,This role allows the user to move between the right and le
 PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,飛躍！
 BlackHatHackerName,Black Hat Hacker,ブラックハットハッカー,黑帽客,黑帽駭客
 BlackHatHackerTitle1,Do you have an antivirus?,貴方はウイルス対策ちゃんとしてる？,可要准备好防火墙哦,你有安裝防毒軟體嗎？
+BlackHatHackerTitle2,It's my job to exploit vulnverabilities,きじゃくせいを突くのが仕事
 BlackHatHackerDescription,I need everyone's information to stay alive... So I will infect the virus...\nIf you infect everyone's phone with the virus，you win!\nIn an infected state，the virus infects surrounding non-infected persons.\nWhen the infection level is above the level at which self-propagation begins，\nThe disease progresses even if there are no infected persons around.,生きるために全員の情報が必要だ...だから僕はウイルスを感染させる...\n全員のスマホにウイルスを感染させたら勝利となります\n感染状態になると周囲の非感染者にウイルスが感染します\n自己増殖が開始される感染度以上の感染度になった場合、\n周りに感染者が居なくとも進行します,为了活下去，我要得到全船人的信息……我研发多年的病毒终于起作用了……\n\n若黑帽客用电脑病毒感染了所有玩家，黑帽客获胜。\n在感染电脑病毒的玩家一定范围内的玩家会以一定速率累积病毒感染进度。\n当病毒感染进度到达一定值时，病毒将开始自我繁殖，\n即便不处于感染病毒的玩家一定范围内，病毒感染进度也将累积。,為了生存盜取他人的資訊，讓他人感染病毒！\n若駭入了所有人的手機，則取得勝利。\n當感染者在被駭入狀態下，病毒會自動駭入周圍的非感染者。\n當感染度達到閾值時，病毒將自我繁殖，即使周圍沒有感染者病毒也會累積感染度。
 BlackHatHackerHackCoolTimeOption,Hack Cool Time,ハックのクールタイム,植入病毒冷却,駭入的冷卻時間
 BlackHatHackerHackCountableOption,Number of hacks possible,ハック可能回数,最大植入病毒次数,駭入的使用次數
@@ -2094,3 +2096,14 @@ SNRWebTransmissionConditionHostDependency,Allow guests to send results when the 
 
 # CustomButton
 AbilityButtonCountTextFormater,Remaining {0} times,残り{0}回,剩余{0}次,剩餘{0}次
+
+# QuoteMod
+QuoteModName,Reference source,参考元
+QuoteModaulibhaltnet,au.libhalt.net,au.libhalt.net
+QuoteModExtremeRoles,Extreme Roles,Extreme Roles
+QuoteModNebulaOnTheShip,<color=#9579ce>Nebula On The Ship</color>,<color=#9579ce>Nebula On The Ship</color>
+QuoteModSuperNewRoles,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>
+QuoteModTheOtherRoles,<color=#ff351f>The Other Roles</color>,<color=#ff351f>The Other Roles</color>
+QuoteModTheOtherRolesGM,<color=#ff351f>The Other Roles GM</color>,<color=#ff351f>The Other Roles GM</color>
+QuoteModTheOtherRolesGMH,<color=#ff351f>The Other Roles GM H</color>,<color=#ff351f>The Other Roles GM H</color>
+QuoteModTownOfUsR,<color=#00ff00>Town Of UsR</color>,<color=#00ff00>Town Of UsR</color>

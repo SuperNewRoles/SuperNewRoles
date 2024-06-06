@@ -84,7 +84,10 @@ public static class CredentialsPatch
                 __instance.transform.localPosition = CachedPlayer.LocalPlayer.Data.IsDead
                     ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
                     : new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
-                __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(1.2f, 0.1f, 0.5f);
+
+                float xAspectPosition = !DestroyableSingleton<ChatController>.Instance.chatButton.activeInHierarchy ? 1.2f : 1.79f; // チャットボタンが表示されているなら左にずらす
+
+                __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(xAspectPosition, 0.1f, 0.5f);
             }
             else
             {
