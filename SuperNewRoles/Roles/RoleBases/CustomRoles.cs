@@ -19,8 +19,9 @@ public static class CustomRoles
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
-                foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
-                    all.FixedUpdateAllDefault();
+                if (IFixedUpdaterAlls != null)
+                    foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
+                        all.FixedUpdateAllDefault();
 
                 if (ifum != null)
                 {
@@ -157,6 +158,8 @@ public static class CustomRoles
     {
         RoleBaseManager.
             GetInterfaces<IDeathHandler>().Do(x => x.OnDeath(info));
+        if (info.DeathPlayer.AmOwner)
+            RoleBaseManager.GetInterfaces<IDeathHandler>().Do(x => x.OnAmDeath(info));
     }
 
     public static Color GetRoleColor(PlayerControl player, bool IsImpostorReturn = false)
