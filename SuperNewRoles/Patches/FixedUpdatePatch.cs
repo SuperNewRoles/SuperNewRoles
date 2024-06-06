@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppSystem.Runtime.Remoting.Lifetime;
@@ -54,6 +55,18 @@ public class FixedUpdate
         }
     }
 
+    static void SetBaseVentMaterial()
+    {
+        if (PlayerControl.LocalPlayer.IsUseVent()) return;
+        if (!ShipStatus.Instance) return;
+        List<NormalPlayerTask> tasks = PlayerControl.LocalPlayer.myTasks.ToList().FindAll(x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning).ConvertAll(x => x.Cast<NormalPlayerTask>());
+        foreach (Vent vent in ShipStatus.Instance.AllVents)
+        {
+            if (tasks.Exists(x => x.Data[0] == vent.Id)) continue;
+            vent.SetOutline(false, false);
+        }
+    }
+
     static void ReduceKillCooldown(PlayerControl __instance)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
@@ -83,6 +96,7 @@ public class FixedUpdate
         }
 
         SetBasePlayerOutlines();
+        SetBaseVentMaterial();
         LadderDead.FixedUpdate();
         CustomRoles.FixedUpdate();
         switch (ModeHandler.GetMode())
@@ -92,9 +106,7 @@ public class FixedUpdate
                 SabotageManager.Update();
                 SetNameUpdate.Postfix(__instance);
                 NiceMechanic.FixedUpdate();
-                Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
-                WaveCannonJackal.WaveCannonJackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 Psychometrist.FixedUpdate();
                 Matryoshka.FixedUpdate();
                 PartTimer.FixedUpdate();

@@ -84,7 +84,10 @@ public static class CredentialsPatch
                 __instance.transform.localPosition = CachedPlayer.LocalPlayer.Data.IsDead
                     ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
                     : new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
-                __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(1.2f, 0.1f, 0.5f);
+
+                float xAspectPosition = !DestroyableSingleton<ChatController>.Instance.chatButton.activeInHierarchy ? 1.2f : 1.79f; // チャットボタンが表示されているなら左にずらす
+
+                __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(xAspectPosition, 0.1f, 0.5f);
             }
             else
             {
@@ -302,9 +305,9 @@ public static class CredentialsPatch
 
         public static void LoadSprites()
         {
-            if (bannerSprite == null) bannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
-            if (SuperNakanzinoBannerSprite == null) SuperNakanzinoBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner_April.png", 150f);
-            if (horseBannerSprite == null) horseBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuperHorseRoles.png", 150f);
+            if (bannerSprite == null) bannerSprite = AssetManager.GetAsset<Sprite>("banner.png");
+            if (SuperNakanzinoBannerSprite == null) SuperNakanzinoBannerSprite = AssetManager.GetAsset<Sprite>("banner_April.png");
+            if (horseBannerSprite == null) horseBannerSprite = AssetManager.GetAsset<Sprite>("SuperHorseRoles.png");
         }
 
         public static Sprite bannerRendSprite

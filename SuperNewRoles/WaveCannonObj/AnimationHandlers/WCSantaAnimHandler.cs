@@ -55,6 +55,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                 CannonObject.DestroyIndex++;
                 if (CannonObject.DestroyIndex > 3)
                 {
+                    CannonObject?.Owner?.GetRoleBase<WaveCannonJackal>()?.SetDidntLoadBullet();
                     if (CannonObject.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
                         if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
@@ -64,11 +65,9 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                         }
                         else
                         {
-                            if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                                WaveCannonJackal.ResetCooldowns();
-                            WaveCannonJackal.WCResetCooldowns();
+                            if (WaveCannonJackal.IsSyncKillCoolTime.GetBool())
+                                WaveCannonJackal.ResetCooldowns(false, true);
                         }
-                        Logger.Info("FFF");
                         CannonObject.Owner.GetRoleBase<WaveCannon>()?
                         .CustomButtonInfos?
                         .FirstOrDefault()?

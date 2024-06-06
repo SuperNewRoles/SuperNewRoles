@@ -17,6 +17,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
@@ -117,7 +118,6 @@ static class HudManagerStartPatch
         Sheriff.ResetKillCooldown();
         Clergyman.ResetCooldown();
         Teleporter.ResetCooldown();
-        Jackal.ResetCooldown();
         //クールダウンリセット
     }
 
@@ -257,72 +257,6 @@ static class HudManagerStartPatch
         )
         {
             buttonText = ModTranslation.GetString("WiseManButtonName"),
-            showButtonText = true
-        };
-
-        WaveCannonButton = new(
-            () =>
-            {
-                var pos = CachedPlayer.LocalPlayer.transform.position;
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
-                writer.Write((byte)WaveCannonObject.RpcType.Spawn);
-                writer.Write((byte)0);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(pos.x);
-                writer.Write(pos.y);
-                writer.Write((byte)WaveCannonJackal.WaveCannonJackalAnimTypeOption.GetSelection());
-                writer.EndRPC();
-                RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, (WaveCannonObject.WCAnimType)WaveCannonJackal.WaveCannonJackalAnimTypeOption.GetSelection());
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.WaveCannonJackal && (!WaveCannonJackal.IwasSidekicked.Contains(PlayerControl.LocalPlayer.PlayerId) || WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool()); },
-            () =>
-            {
-                return PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                WaveCannonButton.MaxTimer = WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
-                WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
-                WaveCannonButton.effectCancellable = false;
-                WaveCannonButton.EffectDuration = WaveCannonJackal.WaveCannonJackalChargeTime.GetFloat();
-                WaveCannonButton.HasEffect = true;
-            },
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; },
-            true,
-            5f,
-            () =>
-            {
-                WaveCannonObject obj = WaveCannonObject.Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && x.Id == WaveCannonObject.Ids[CachedPlayer.LocalPlayer.PlayerId] - 1);
-                if (obj == null)
-                {
-                    Logger.Info("nullなのでreturnしました", "WaveCannonButton");
-                    return;
-                }
-                var pos = CachedPlayer.LocalPlayer.transform.position;
-                byte[] buff = new byte[sizeof(float) * 2];
-                Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
-                writer.Write((byte)WaveCannonObject.RpcType.Shoot);
-                writer.Write((byte)obj.Id);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(pos.x);
-                writer.Write(pos.y);
-                writer.Write((byte)0);
-                writer.EndRPC();
-                RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, WaveCannonObject.WCAnimType.Default);
-            }
-        )
-        {
-            buttonText = ModTranslation.GetString("WaveCannonButtonName"),
             showButtonText = true
         };
 
@@ -1125,7 +1059,7 @@ static class HudManagerStartPatch
             () =>
             {
                 var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
-                if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
+                if (target && PlayerControl.LocalPlayer.CanMove)
                 {
                     if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
                     {
@@ -1139,23 +1073,16 @@ static class HudManagerStartPatch
                             }
                         }
                     }
-                    if (RoleClass.Jackal.CanCreateFriend)
+                    IJackal jackal = PlayerControl.LocalPlayer.GetRoleBase() as IJackal;
+                    if (jackal != null && jackal.isShowSidekickButton)
                     {
-                        Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
+                        jackal.OnClickSidekickButton(target);
+                        JackalSidekickButton.MaxTimer = jackal.SidekickCoolTime;
+                        JackalSidekickButton.Timer = JackalSidekickButton.MaxTimer;
                     }
-                    else
-                    {
-                        bool isFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
-                        writer.Write(target.PlayerId);
-                        writer.Write(isFakeSidekick);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.CreateSidekick(target.PlayerId, isFakeSidekick);
-                    }
-                    RoleClass.Jackal.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
+            (bool isAlive, RoleId role) => { return isAlive && PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal && jackal.isShowSidekickButton; },
             () =>
             {
                 PlayerControl target = PlayerControlFixedUpdatePatch.JackalSetTarget();
@@ -1163,7 +1090,11 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
+                if (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal)
+                {
+                    JackalSidekickButton.MaxTimer = jackal.SidekickCoolTime;
+                    JackalSidekickButton.Timer = JackalSidekickButton.MaxTimer;
+                }
             },
             RoleClass.Jackal.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
@@ -1235,8 +1166,6 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        WaveCannonJackal.MakeButtons(__instance);
-
         JackalKillButton = new(
             () =>
             {
@@ -1245,9 +1174,6 @@ static class HudManagerStartPatch
                     ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.JackalSetTarget());
                     switch (PlayerControl.LocalPlayer.GetRole())
                     {
-                        case RoleId.Jackal:
-                            Jackal.ResetCooldown();
-                            break;
                         case RoleId.JackalSeer:
                             JackalSeer.ResetCooldown();
                             break;
@@ -1255,21 +1181,31 @@ static class HudManagerStartPatch
                             TeleportingJackal.ResetCooldowns();
                             break;
                         case RoleId.WaveCannonJackal:
-                            WaveCannonJackal.ResetCooldowns();
+                            WaveCannonJackal.ResetCooldowns(true, false);
+                            break;
+                        default:
+                            if (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal)
+                            {
+                                JackalKillButton.MaxTimer = jackal.JackalKillCoolTime;
+                                JackalKillButton.Timer = JackalKillButton.MaxTimer;
+                            }
                             break;
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Jackal || role == RoleId.TeleportingJackal || role == RoleId.JackalSeer || role == RoleId.WaveCannonJackal) && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.TeleportingJackal or RoleId.JackalSeer || (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal && jackal.CanUseKill && jackal.isShowKillButton)) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.EndMeeting(); }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
+                else if (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal)
+                {
+                    JackalKillButton.MaxTimer = jackal.JackalKillCoolTime;
+                    JackalKillButton.Timer = JackalKillButton.MaxTimer;
+                }
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),
@@ -2294,14 +2230,14 @@ static class HudManagerStartPatch
             () =>
             {
                 //クールでブロック
-                RoleClass.SecretlyKiller.MainCool = HudManagerStartPatch.SecretlyKillerMainButton.Timer;
+                /*RoleClass.SecretlyKiller.MainCool = HudManagerStartPatch.SecretlyKillerMainButton.Timer;
                 RoleClass.SecretlyKiller.SecretlyCool = HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer;
                 if (RoleClass.SecretlyKiller.SecretlyCool > 0f && RoleClass.SecretlyKiller.IsKillCoolChange) return false;
-                if (RoleClass.SecretlyKiller.MainCool > 0f) return false;
+                if (RoleClass.SecretlyKiller.MainCool > 0f) return false;*/
 
                 RoleClass.SecretlyKiller.target = SetTarget();
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(RoleClass.SecretlyKiller.target, RoleClass.SecretlyKiller.color);
-                return RoleClass.SecretlyKiller.target != null
+                return RoleClass.SecretlyKiller.target
                         && !RoleClass.SecretlyKiller.target.IsImpostor() && PlayerControl.LocalPlayer.CanMove;
             },
             () => { SecretlyKiller.EndMeeting(); },
@@ -2351,13 +2287,7 @@ static class HudManagerStartPatch
             __instance.KillButton,
             KeyCode.F,
             49,
-            () =>
-            {
-                SwitchSystem ma = null;
-                if (MapUtilities.CachedShipStatus.Systems.ContainsKey(SystemTypes.Electrical))
-                    ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove);
-            }
+            () => { return !PlayerControl.LocalPlayer.CanMove || (!RoleClass.SecretlyKiller.IsBlackOutKillCharge && ModHelpers.IsBlackout()); }
         );
         {
             SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);

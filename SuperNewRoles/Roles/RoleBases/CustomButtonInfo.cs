@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Roles.RoleBases;
 public enum CustomButtonCouldType
@@ -17,6 +19,8 @@ public enum CustomButtonCouldType
     CanMove = 0x002, //2
     SetTarget = 0x004, //4
     NotNearDoor = 0x008, //8
+    NotMoving = 0x010, //16
+    SetVent = 0x020, // 32
 }
 public class CustomButtonInfo
 {
@@ -27,6 +31,7 @@ public class CustomButtonInfo
     };
 
     public PlayerControl CurrentTarget { get; private set; }
+    public Vent CurrentVentTarget { get; private set; }
     public CustomButton customButton { get; private set; }
     private Action OnClickFunc { get; }
     private Func<bool, bool> HasButtonFunc { get; }
@@ -116,7 +121,7 @@ public class CustomButtonInfo
         this.CouldUseType = CouldUseType;
         this.OnMeetingEndsFunc = OnMeetingEnds;
         this.buttonSprite = Sprite;
-        this.BaseButton = BaseButton;
+        this.BaseButton = baseButton;
         this.positionOffset = positionOffset;
         this.StopCountCoolFunc = StopCountCoolFunc;
         this.ButtonText = ModTranslation.GetString(buttonText);
@@ -162,6 +167,8 @@ public class CustomButtonInfo
                 : new Vector3(-0.05f, 1.4f, 0);
         }
     }
+    public PlayerControl SetCurrentTarget(PlayerControl target)
+        => CurrentTarget = target;
     public void UpdateAbilityCountText()
     {
         if (AbilityCountText == null)
@@ -181,7 +188,7 @@ public class CustomButtonInfo
     {
         if (customButton != null)
             return customButton;
-        return customButton = new
+        customButton = new
             (OnClick, HasButton, CouldUse, OnMeetingEnds,
             buttonSprite, positionOffset,
             FastDestroyableSingleton<HudManager>.Instance,
@@ -191,6 +198,8 @@ public class CustomButtonInfo
             buttonText = ButtonText,
             showButtonText = showButtonText
         };
+        ResetCoolTime();
+        return customButton;
     }
     public void OnEffectEnds()
     {
@@ -241,6 +250,13 @@ public class CustomButtonInfo
         if (CouldUseType.HasFlag(CustomButtonCouldType.NotNearDoor) &&
             IsNearDoor(PlayerControl.LocalPlayer))
             return false;
+        if (CouldUseType.HasFlag(CustomButtonCouldType.NotMoving) &&
+            IsMoving(PlayerControl.LocalPlayer))
+            return false;
+        //SetVentを判定するかつSetTargetVentがfalseなら
+        if (CouldUseType.HasFlag(CustomButtonCouldType.SetVent) &&
+            !SetTargetVent())
+            return false;
         //自前の判定があるならそれを使い、falseならreturn
         if (!(CouldUseFunc?.Invoke() ?? true))
             return false;
@@ -252,7 +268,7 @@ public class CustomButtonInfo
     /// <returns></returns>
     public PlayerControl SetTarget()
     {
-        CurrentTarget = HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false);
+        SetCurrentTarget(HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false));
         PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
         return CurrentTarget;
     }
@@ -273,5 +289,29 @@ public class CustomButtonInfo
         }
 
         return false;
+    }
+
+    private Vector2 oldPosition;
+    /// <summary>
+    /// プレイヤーが動いているか判定する
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
+    public bool IsMoving(PlayerControl player)
+    {
+        bool moving = true;
+        if (oldPosition == player.GetTruePosition())
+            moving = false;
+
+        oldPosition = player.GetTruePosition();
+        return moving;
+    }
+
+    public Vent SetTargetVent(bool highlight = true)
+    {
+        CurrentVentTarget = HudManagerStartPatch.SetTargetVent();
+        if (CurrentVentTarget == null) return CurrentVentTarget;
+        if (highlight) CurrentVentTarget.SetOutline(true, true);
+        return CurrentVentTarget;
     }
 }

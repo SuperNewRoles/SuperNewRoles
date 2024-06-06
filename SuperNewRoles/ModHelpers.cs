@@ -472,48 +472,26 @@ public static class ModHelpers
     }
     public static List<byte> GenerateTasks(this PlayerControl player, (int numCommon, int numShort, int numLong) task)
     {
-        if (task.numCommon + task.numShort + task.numLong <= 0)
+        if (task.numCommon + task.numShort + task.numLong <= 0) task.numShort = 1;
+        if (player.GetRoleBase() is ITaskHolder taskHolder)
         {
-            task.numShort = 1;
-        }
-        ITaskHolder taskHolder = player.GetRoleBase() as ITaskHolder;
-        if (taskHolder != null)
-        {
-            if (taskHolder.HaveMyNumTask(out (int, int, int)? mynumtask))
-                task = mynumtask.Value;
-            if (taskHolder.AssignTask(out List<byte> mytasks, task))
-                return mytasks;
+            if (taskHolder.HaveMyNumTask(out (int, int, int)? mynumtask)) task = mynumtask.Value;
+            if (taskHolder.AssignTask(out List<byte> mytasks, task)) return mytasks;
         }
         if (player.IsRole(RoleId.HamburgerShop) && (ModeHandler.IsMode(ModeId.SuperHostRoles) || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()))
-        {
             return Roles.CrewMate.HamburgerShop.GenerateTasks(task.numCommon + task.numShort + task.numLong);
-        }
         else if (player.IsRole(RoleId.Safecracker) && !(Safecracker.SafecrackerChangeTaskPrefab.GetBool() || GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship))
-        {
             return Safecracker.GenerateTasks(task.numCommon + task.numShort + task.numLong);
-        }
-        var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
-        var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
-        var commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-        foreach (var ct in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(ct);
-
-        var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-        foreach (var st in MapUtilities.CachedShipStatus.ShortTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(st);
-
-        var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-        foreach (var lt in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(lt);
-
+        Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
+        Il2CppSystem.Collections.Generic.List<byte> list = new();
         int start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numCommon, tasks, hashSet, commonTasks);
-
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numCommon, list, types, MapUtilities.CachedShipStatus.CommonTasks.ListToIl2Cpp());
         start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numShort, tasks, hashSet, shortTasks);
-
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numShort, list, types, MapUtilities.CachedShipStatus.ShortTasks.ListToIl2Cpp());
         start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numLong, tasks, hashSet, longTasks);
-
-        return tasks.ToList();
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numLong, list, types, MapUtilities.CachedShipStatus.LongTasks.ListToIl2Cpp());
+        return list.ToList();
     }
     static float tien;
     public static string GetStringByCount(char txt, int count)
@@ -1161,6 +1139,7 @@ public static class ModHelpers
         return GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)Map;
     }
     public static Il2CppSystem.Collections.Generic.IEnumerable<T> IEnumerableToIl2Cpp<T>(this IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
+    public static Il2CppSystem.Collections.Generic.List<T> ListToIl2Cpp<T>(this Il2CppReferenceArray<T> values) where T : Il2CppObjectBase => values.ToList().ToIl2CppList();
     public static void ResetKillCool(this PlayerControl player, float timer = float.NegativeInfinity)
     {
         IGameOptions optdata = SyncSetting.OptionDatas[player].DeepCopy();
@@ -1174,6 +1153,21 @@ public static class ModHelpers
             player.RpcShowGuardEffect(player);
             optdata.RpcSyncOption(player.GetClientId(), SendOption.None);
         }
+    }
+    public static bool IsBlackout()
+    {
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elecsystem))
+        {
+            var ma = elecsystem.CastFast<SwitchSystem>();
+            if (ma != null && ma.IsActive)
+                return true;
+        }
+        return RoleBaseManager.GetInterfaces<ISpecialBlackout>().Any(x => x.IsBlackout());
+    }
+    public static bool Il2CppIs<T1, T2>(this T1 before, out T2 after) where T1 : Il2CppObjectBase where T2 : Il2CppObjectBase
+    {
+        after = before.TryCast<T2>();
+        return after != null;
     }
 }
 public static class CreateFlag
