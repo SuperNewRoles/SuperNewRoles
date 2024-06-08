@@ -15,6 +15,7 @@ class WrapUpClass
     public static void WrapUp(GameData.PlayerInfo exiled)
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        OneClickShapeshift.OnStartTurn();
         ChangeName.SetRoleNames();
         foreach (PlayerControl p in BotManager.AllBots)
         {
