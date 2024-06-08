@@ -214,7 +214,7 @@ public class CustomRpcSender
     public CustomRpcSender WriteNetObject(InnerNetObject obj) => Write(w => w.WriteNetObject(obj));
     #endregion
 
-    private CustomRpcSender Write(Action<MessageWriter> action)
+    public CustomRpcSender Write(Action<MessageWriter> action)
     {
         if (currentState != State.InRpc)
         {
