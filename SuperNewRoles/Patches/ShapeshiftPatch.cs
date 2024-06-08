@@ -10,6 +10,8 @@ using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -45,10 +47,10 @@ class CheckShapeshiftPatch
             return false;
         }
         //ここからMod側のチェック
-        if (!HandleShapeshiftCheck(__instance, target, shouldAnimate))
+        if (!HandleShapeshiftCheck(__instance, target, shouldAnimate, out bool reject))
         {
             //まあでも解除する場合はそのまま解除で通した方がいいよね
-            if (__instance.PlayerId == target.PlayerId)
+            if (__instance.PlayerId == target.PlayerId && !reject)
                 __instance.RpcShapeshift(__instance, shouldAnimate);
             else
                 __instance.RpcRejectShapeshift();
@@ -57,27 +59,45 @@ class CheckShapeshiftPatch
         __instance.RpcShapeshift(target, shouldAnimate);
         return false;
     }
-    static bool HandleSHRShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
+    static bool HandleSHRShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate, out bool reject)
     {
-        //以下解除なら処理しない
-        if (__instance == target) return true;
+        reject = false;
+        //以下解除ならワンクリックボタンor処理しない
+        if (__instance == target)
+        {
+            if (__instance.GetRoleBase() is ISHROneClickShape oneClickShape)
+            {
+                oneClickShape.OnOneClickShape();
+                return !(reject = true);
+            }
+            else
+            {
+                switch (__instance.GetRole())
+                {
+                    case RoleId.SelfBomber:
+                        reject = true;
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                        {
+                            if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                            {
+                                if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SelfBomberScope.GetFloat()))
+                                {
+                                    __instance.RpcMurderPlayerCheck(p);
+                                    p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
+                                }
+                            }
+                        }
+                        __instance.RpcMurderPlayer(__instance, true);
+                        __instance.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
+                        return false;
+                    default:
+                        break;
+                }
+            }
+            return true;
+        }
         switch (__instance.GetRole())
         {
-            case RoleId.SelfBomber:
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                {
-                    if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
-                    {
-                        if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SelfBomberScope.GetFloat()))
-                        {
-                            __instance.RpcMurderPlayerCheck(p);
-                            p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
-                        }
-                    }
-                }
-                __instance.RpcMurderPlayer(__instance, true);
-                __instance.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
-                return false;
             case RoleId.Samurai:
                 if (RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId)) return false;
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -149,8 +169,9 @@ class CheckShapeshiftPatch
         }
         return true;
     }
-    static bool HandleShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
+    static bool HandleShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate, out bool reject)
     {
+        reject = false;
         if (RoleClass.Assassin.TriggerPlayer != null)
             return false;
         if (target.IsBot())
@@ -170,7 +191,7 @@ class CheckShapeshiftPatch
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            bool ShapeshiftResultSHR = HandleSHRShapeshiftCheck(__instance, target, shouldAnimate);
+            bool ShapeshiftResultSHR = HandleSHRShapeshiftCheck(__instance, target, shouldAnimate, out reject);
             //falseが返ってきたらシェイプシフトできない
             if (!ShapeshiftResultSHR)
                 return false;

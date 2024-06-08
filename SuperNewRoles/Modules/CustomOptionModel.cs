@@ -90,7 +90,7 @@ public class CustomOption
     public bool isHeader;
     public bool isHidden;
     public RoleId RoleId;
-    public int openSelection { get; }
+    public int openSelection { get; } = -1;
     public Func<bool> CanShowFunc { get; }
     public bool HasCanShowAction { get; }
     public bool CanShowByFunc;
@@ -124,7 +124,7 @@ public class CustomOption
     // Option creation
     public CustomOption()
     {
-
+        openSelection = -1;
     }
     public static CustomOption GetOption(int id)
     {
@@ -530,7 +530,7 @@ public class GameSettingsScale
 }
 public class CustomOptionBlank : CustomOption
 {
-    public CustomOptionBlank(CustomOption parent)
+    public CustomOptionBlank(CustomOption parent, bool isSHROn = false) : base()
     {
         this.parent = parent;
         this.id = -1;
@@ -538,6 +538,8 @@ public class CustomOptionBlank : CustomOption
         this.isHeader = false;
         this.isHidden = true;
         this.children = new List<CustomOption>();
+        this.isSHROn = isSHROn;
+        this.CanShowByFunc = false;
         this.selections = new string[] { "" };
         options.Add(this);
     }
@@ -1080,7 +1082,7 @@ static class GameOptionsMenuUpdatePatch
     {
         return option.isHidden
             || (!option.isSHROn && currentModeId == ModeId.SuperHostRoles) // SHRモード時, SHR未対応の設定を隠す処理。
-            || HasSealingOption && IsSealingDatetimeControl(option) // 解放条件が時間に依存する設定の 封印及び開放処理
+            || (HasSealingOption && IsSealingDatetimeControl(option)) // 解放条件が時間に依存する設定の 封印及び開放処理
             || (ModeHandler.EnableModeSealing && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
 

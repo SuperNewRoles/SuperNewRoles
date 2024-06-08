@@ -20,6 +20,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
             if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
                 SelectRoleSystem.OnEndIntro(); Logger.Info("StartOnEndIntro");
+            } else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                OneClickShapeshift.OnStartTurn();
             }
         }
     }
