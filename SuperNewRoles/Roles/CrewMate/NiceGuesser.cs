@@ -26,6 +26,8 @@ public class NiceGuesser : GuesserBase, ICrewmate
     public static new IntroInfo Introinfo =
         new(RoleId.NiceGuesser, introSound: RoleTypes.Impostor);
 
+    public override RoleTypes RealRole => RoleTypes.Crewmate;
+
     public static CustomOption ShotOneMeetingCount;
     public static CustomOption ShotMaxCount;
     public static CustomOption CannotShotCrewOption;
