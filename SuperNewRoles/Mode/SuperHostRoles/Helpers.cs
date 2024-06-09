@@ -119,4 +119,46 @@ public static class Helpers
                 AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
             }, 0.1f + duration, "Fix Desync Reactor 2");
     }
+    /// <summary>
+    /// リアクターのフラッシュを全員に見せる
+    /// </summary>
+    /// <param name="shower">見る人</param>
+    /// <param name="duration">継続時間</param>
+    public static void ShowReactorFlash(float duration = 0f)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        byte reactorId = (byte)SystemTypes.Reactor;
+        MapNames mapName = (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId;
+
+        if (mapName == MapNames.Polus) reactorId = (byte)SystemTypes.Laboratory;
+        else if (mapName == MapNames.Airship) reactorId = (byte)SystemTypes.HeliSabotage;
+
+        // ReactorサボをDesyncで発動
+        SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
+        MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable);
+        SabotageWriter.Write(reactorId);
+        MessageExtensions.WriteNetObject(SabotageWriter, PlayerControl.LocalPlayer);
+        SabotageWriter.Write((byte)128);
+        AmongUsClient.Instance.FinishRpcImmediately(SabotageWriter);
+
+        new LateTask(() =>
+        { // Reactorサボを修理
+            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable);
+            SabotageFixWriter.Write(reactorId);
+            MessageExtensions.WriteNetObject(SabotageFixWriter, PlayerControl.LocalPlayer);
+            SabotageFixWriter.Write((byte)16);
+            AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
+        }, 0.1f + duration, "Fix Desync Reactor");
+
+        if (mapName == MapNames.Airship) //Airship用
+            new LateTask(() =>
+            { // Reactorサボを修理
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable);
+                SabotageFixWriter.Write(reactorId);
+                MessageExtensions.WriteNetObject(SabotageFixWriter, PlayerControl.LocalPlayer);
+                SabotageFixWriter.Write((byte)17);
+                AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
+            }, 0.1f + duration, "Fix Desync Reactor 2");
+    }
 }

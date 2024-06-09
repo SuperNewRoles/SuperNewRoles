@@ -49,7 +49,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
             } else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
-                if (!AntiBlackOut.CantSendGameData() && HideChat.CanSerializeGameData)
+                if (HideChat.CanSerializeGameData || !AntiBlackOut.CantSendGameData())
                 {
                     Is = false;
                     __result = true;

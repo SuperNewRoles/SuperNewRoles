@@ -12,6 +12,10 @@ public static class ModTranslation
     public static Dictionary<string, string[]> dictionary = new();
     public static Dictionary<string, string[]> AprilDictionary = null;
     private static readonly HashSet<string> outputtedStr = new();
+    public static string GetString(string key, params object?[] args)
+    {
+        return string.Format(GetString(key), args);
+    }
     public static string GetString(string key)
     {
         Dictionary<string, string[]> currentTransDict = AprilDictionary != null ? AprilDictionary : dictionary;

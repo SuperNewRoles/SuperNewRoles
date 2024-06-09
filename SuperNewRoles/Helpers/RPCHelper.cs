@@ -236,6 +236,7 @@ public static class RPCHelper
             return;
         }
         sender.StartMessage(TargetClientId);
+
         sender.Write((writer) =>
         {
             // 書き込み {}は読みやすさのためです。
@@ -246,7 +247,6 @@ public static class RPCHelper
                 GameData.Instance.Serialize(writer, true);
 
             }
-            writer.EndMessage();
             writer.EndMessage();
         });
         sender.EndMessage();

@@ -15,6 +15,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using static System.String;
 using static SuperNewRoles.Patches.AddChatPatch;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 
@@ -632,7 +633,7 @@ internal static class RoleinformationText
         if (!AmongUsClient.Instance.AmHost) return;
 
         PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
-
+        /*
         (string[] roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(command);
 
         string beforeIdChangeRoleName =
@@ -651,9 +652,32 @@ internal static class RoleinformationText
             if (roleName == "NONE") roleInfo = Format(roleInfo, command); // RoleIdからの役職情報の取得に失敗していた場合, 入力した役職名を追加する。
             SendCommand(target, roleInfo, roleName);
             return;
+        }*/
+        string roleName = "NONE";
+        RoleId? roleId = GetRoleIdByName(command);
+        if (roleId.HasValue)
+        {
+            (roleName, string roleInfo) = RoleInfo.GetRoleInfo(roleId.Value, AmongUsClient.Instance.AmHost);
+            if (roleName == "NONE") roleInfo = Format(roleInfo, command); // RoleIdからの役職情報の取得に失敗していた場合, 入力した役職名を追加する。
+            SendCommand(target, roleInfo, roleName);
+            return;
         }
 
         SendCommand(target, Format(ModTranslation.GetString("RoleInfoError"), command));
+    }
+    public static RoleId? GetRoleIdByName(string Name)
+    {
+        (string[] roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(Name);
+
+        string beforeIdChangeRoleName =
+            isSuccess
+                ? roleNameKey.FirstOrDefault(key => key.Contains("Name")).Replace("Name", "") ?? Name // 翻訳キーの取得に成功した場合, 配列から"Name"を含む要素を取得し そのから要素"Name"を外して, RoleIdに一致する役職名を取得する.
+                : Name; // 翻訳辞書からの取得に失敗した場合, 入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
+
+        // 参考 => https://qiita.com/masaru/items/a44dc30bfc18aac95015#fnref1
+        // 取得した役職名(string)からRoleIdを取得する。
+        var roleIdChange = Enum.TryParse(beforeIdChangeRoleName, out RoleId roleId) && Enum.IsDefined(typeof(RoleId), roleId);
+        return roleIdChange ? roleId : null;
     }
     internal static void YourRoleInfoSendCommand()
     {
