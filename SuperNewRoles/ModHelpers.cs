@@ -485,12 +485,13 @@ public static class ModHelpers
 
         Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
         Il2CppSystem.Collections.Generic.List<byte> list = new();
+
         int start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numCommon, list, types, MapUtilities.CachedShipStatus.CommonTasks.ListToIl2Cpp());
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numCommon, list, types, MapUtilities.CachedShipStatus.CommonTasks.GetShuffle().ToIl2CppList());
         start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numShort, list, types, MapUtilities.CachedShipStatus.ShortTasks.ListToIl2Cpp());
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numShort, list, types, MapUtilities.CachedShipStatus.ShortTasks.GetShuffle().ToIl2CppList());
         start = 0;
-        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numLong, list, types, MapUtilities.CachedShipStatus.LongTasks.ListToIl2Cpp());
+        MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numLong, list, types, MapUtilities.CachedShipStatus.LongTasks.GetShuffle().ToIl2CppList());
         return list.ToList();
     }
     static float tien;
@@ -751,9 +752,9 @@ public static class ModHelpers
         }
         return newList;
     }
-    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
+    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this IEnumerable<T> list)
     {
-        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count);
+        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count());
         foreach (T item in list)
         {
             newList.Add(item);
@@ -1168,6 +1169,12 @@ public static class ModHelpers
     {
         after = before.TryCast<T2>();
         return after != null;
+    }
+    public static T[] GetShuffle<T>(this IEnumerable<T> values)
+    {
+        T[] data = values.ToArray();
+        data.Shuffle();
+        return data;
     }
 }
 public static class CreateFlag
