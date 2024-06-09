@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -140,7 +141,7 @@ public class SetNamesClass
         playerInfo.gameObject.SetActive(p.Visible);
         if (meetingInfo != null) meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText; p.NameText().color = roleColors;
     }
-    public static void SetPlayerRoleInfo(PlayerControl p)
+    public static void SetPlayerRoleInfo(PlayerControl p,bool CanSeeImpostorFake = true)
     {
         if (p.IsBot()) return;
         string roleNames;
@@ -149,9 +150,10 @@ public class SetNamesClass
         Color? GhostroleColors = null;
 
         var role = p.GetRole();
-        if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.IsAlive()))
+        if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.IsAlive()) ||
+            (!CanSeeImpostorFake && (role == RoleId.Spy || role == RoleId.Egoist)))
         {
-            if (p.IsImpostor())
+            if (p.IsImpostor() || role == RoleId.Spy || role == RoleId.Egoist)
             {
                 roleNames = "ImpostorName";
                 roleColors = RoleClass.ImpostorRed;
@@ -243,9 +245,9 @@ public class SetNamesClass
         if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
         SetPlayerNameColor(player, CustomRoles.GetRoleColor(player));
     }
-    public static void SetPlayerRoleNames(PlayerControl player)
+    public static void SetPlayerRoleNames(PlayerControl player,bool CanSeeImpostorFake = true)
     {
-        SetPlayerRoleInfo(player);
+        SetPlayerRoleInfo(player,CanSeeImpostorFake);
     }
     public static void QuarreledSet()
     {
@@ -427,6 +429,19 @@ public class SetNameUpdate
                     if (p.IsImpostorAddedFake())
                     {
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
+                    }
+                }
+            }
+            if (PlayerControl.LocalPlayer.IsImpostor() &&
+                (PlusGameOptions.CanSeeImpostorRoleTurnRemaining < 0 ||
+                (PlusGameOptions.CanSeeImpostorRoleTurnRemaining == 0 && !RoleClass.IsMeeting)))
+                //会議開始時に1減らすので会議が終わってから見えるように
+            {
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.IsImpostorAddedFake())
+                    {
+                        SetNamesClass.SetPlayerRoleNames(p,false);
                     }
                 }
             }

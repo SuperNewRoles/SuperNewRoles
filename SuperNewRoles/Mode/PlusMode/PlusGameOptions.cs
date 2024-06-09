@@ -1,4 +1,5 @@
 using System;
+using Epic.OnlineServices.Achievements;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
@@ -23,6 +24,9 @@ class PlusGameOptions
     public static CustomOption OnlyImpostorGhostSeeRole;
 
     public static CustomOption CanGhostSeeVote;
+
+    public static CustomOption CanSeeImpostorRole;
+    public static CustomOption CanSeeImpostorRoleTurn;
 
     public static CustomOption CanNotGhostHaveHaunt;
     public static CustomOption ReleaseHauntAfterCompleteTasks;
@@ -56,6 +60,9 @@ class PlusGameOptions
 
         CanGhostSeeVote = Create(103700, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
 
+        CanSeeImpostorRole = Create(105306, false, CustomOptionType.Generic, "CanSeeImpostorRole", false, PlusGameOptionSetting, isHeader: true);
+        CanSeeImpostorRoleTurn = Create(105307, false, CustomOptionType.Generic, "CanSeeImpostorRoleTurn", 5, 1, 15, 1, PlusGameOptionSetting, isHeader: true);
+
         CanNotGhostHaveHaunt = Create(104700, true, CustomOptionType.Generic, "CanNotGhostHaveHaunt", false, PlusGameOptionSetting, isHeader: true);
         ReleaseHauntAfterCompleteTasks = Create(104701, true, CustomOptionType.Generic, "ReleaseHauntAfterCompleteTasks", false, CanNotGhostHaveHaunt);
 
@@ -83,6 +90,7 @@ class PlusGameOptions
     public static bool UseDeadBodyReport;
 
     public static bool IsGhostSeeVote;
+    public static int CanSeeImpostorRoleTurnRemaining;
     public static bool IsNotGhostHaveHaunt;
     public static bool IsReleasingHauntAfterCompleteTasks;
 
@@ -125,6 +133,8 @@ class PlusGameOptions
             }
             IsGhostSeeVote = CanGhostSeeVote.GetBool();
 
+            CanSeeImpostorRoleTurnRemaining = CanSeeImpostorRoleTurn.GetInt();
+
             IsNotGhostHaveHaunt = CanNotGhostHaveHaunt.GetBool();
             IsReleasingHauntAfterCompleteTasks = IsNotGhostHaveHaunt && ReleaseHauntAfterCompleteTasks.GetBool();
 
@@ -152,5 +162,10 @@ class PlusGameOptions
         IsZoomOn = false;
         Timer = 0;
         ButtonTimer = DateTime.Now;
+    }
+
+    public static void OnStartMeeting()
+    {
+        CanSeeImpostorRoleTurnRemaining--;
     }
 }
