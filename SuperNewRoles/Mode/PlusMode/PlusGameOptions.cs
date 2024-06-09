@@ -61,7 +61,7 @@ class PlusGameOptions
         CanGhostSeeVote = Create(103700, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
 
         CanSeeImpostorRole = Create(105306, false, CustomOptionType.Generic, "CanSeeImpostorRole", false, PlusGameOptionSetting, isHeader: true);
-        CanSeeImpostorRoleTurn = Create(105307, false, CustomOptionType.Generic, "CanSeeImpostorRoleTurn", 5, 1, 15, 1, PlusGameOptionSetting, isHeader: true);
+        CanSeeImpostorRoleTurn = Create(105307, false, CustomOptionType.Generic, "CanSeeImpostorRoleTurn", 5, 1, 15, 1, CanSeeImpostorRole, isHeader: true);
 
         CanNotGhostHaveHaunt = Create(104700, true, CustomOptionType.Generic, "CanNotGhostHaveHaunt", false, PlusGameOptionSetting, isHeader: true);
         ReleaseHauntAfterCompleteTasks = Create(104701, true, CustomOptionType.Generic, "ReleaseHauntAfterCompleteTasks", false, CanNotGhostHaveHaunt);
