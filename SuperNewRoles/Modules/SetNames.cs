@@ -141,7 +141,7 @@ public class SetNamesClass
         playerInfo.gameObject.SetActive(p.Visible);
         if (meetingInfo != null) meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText; p.NameText().color = roleColors;
     }
-    public static void SetPlayerRoleInfo(PlayerControl p,bool CanSeeImpostorFake = true)
+    public static void SetPlayerRoleInfo(PlayerControl p)
     {
         if (p.IsBot()) return;
         string roleNames;
@@ -150,10 +150,9 @@ public class SetNamesClass
         Color? GhostroleColors = null;
 
         var role = p.GetRole();
-        if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.IsAlive()) ||
-            (!CanSeeImpostorFake && (role == RoleId.Spy || role == RoleId.Egoist)))
+        if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.IsAlive()))
         {
-            if (p.IsImpostor() || role == RoleId.Spy || role == RoleId.Egoist)
+            if (p.IsImpostor())
             {
                 roleNames = "ImpostorName";
                 roleColors = RoleClass.ImpostorRed;
@@ -245,9 +244,9 @@ public class SetNamesClass
         if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
         SetPlayerNameColor(player, CustomRoles.GetRoleColor(player));
     }
-    public static void SetPlayerRoleNames(PlayerControl player,bool CanSeeImpostorFake = true)
+    public static void SetPlayerRoleNames(PlayerControl player)
     {
-        SetPlayerRoleInfo(player,CanSeeImpostorFake);
+        SetPlayerRoleInfo(player);
     }
     public static void QuarreledSet()
     {
@@ -433,6 +432,7 @@ public class SetNameUpdate
                 }
             }
             if (PlayerControl.LocalPlayer.IsImpostor() &&
+                CustomOptionHolder.EgoistOption.GetSelection() is 0 && CustomOptionHolder.SpyOption.GetSelection() is 0 &&
                 (PlusGameOptions.CanSeeImpostorRoleTurnRemaining < 0 ||
                 (PlusGameOptions.CanSeeImpostorRoleTurnRemaining == 0 && !RoleClass.IsMeeting)))
                 //会議開始時に1減らすので会議が終わってから見えるように
@@ -441,7 +441,7 @@ public class SetNameUpdate
                 {
                     if (p.IsImpostorAddedFake())
                     {
-                        SetNamesClass.SetPlayerRoleNames(p,false);
+                        SetNamesClass.SetPlayerRoleNames(p);
                     }
                 }
             }
