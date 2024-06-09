@@ -792,7 +792,6 @@ class MeetingHudStartPatch
         ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
         DeviceClass.OnStartMeeting();
-        PlusGameOptions.OnStartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilGuesser) || PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser))
             PlayerControl.LocalPlayer.GetRoleBase<GuesserBase>().OnStartMeeting();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))

@@ -90,7 +90,6 @@ class PlusGameOptions
     public static bool UseDeadBodyReport;
 
     public static bool IsGhostSeeVote;
-    public static int CanSeeImpostorRoleTurnRemaining;
     public static bool IsNotGhostHaveHaunt;
     public static bool IsReleasingHauntAfterCompleteTasks;
 
@@ -133,8 +132,6 @@ class PlusGameOptions
             }
             IsGhostSeeVote = CanGhostSeeVote.GetBool();
 
-            CanSeeImpostorRoleTurnRemaining = CanSeeImpostorRoleTurn.GetInt();
-
             IsNotGhostHaveHaunt = CanNotGhostHaveHaunt.GetBool();
             IsReleasingHauntAfterCompleteTasks = IsNotGhostHaveHaunt && ReleaseHauntAfterCompleteTasks.GetBool();
 
@@ -162,10 +159,5 @@ class PlusGameOptions
         IsZoomOn = false;
         Timer = 0;
         ButtonTimer = DateTime.Now;
-    }
-
-    public static void OnStartMeeting()
-    {
-        CanSeeImpostorRoleTurnRemaining--;
     }
 }
