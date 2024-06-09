@@ -11,6 +11,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 > [!WARNING]
 > **Super New Roles を使用する際は [初めに読む場所](#初めに読む場所) で示しているページをご一読ください。**
 
+- 現在の状況(特にホストモードの状態)につきましては[現在のMODの状況](https://github.com/SuperNewRoles/SuperNewRoles/wiki#%E7%8F%BE%E5%9C%A8%E3%81%AEmod%E3%81%AE%E7%8A%B6%E6%B3%81)をご覧ください。
+
+
 <hr>
 
 ## README
