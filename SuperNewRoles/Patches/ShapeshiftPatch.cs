@@ -65,6 +65,8 @@ class CheckShapeshiftPatch
         //以下解除ならワンクリックボタンor処理しない
         if (__instance == target)
         {
+            if (MeetingHud.Instance != null)
+                return true;
             if (__instance.GetRoleBase() is ISHROneClickShape oneClickShape)
             {
                 oneClickShape.OnOneClickShape();
