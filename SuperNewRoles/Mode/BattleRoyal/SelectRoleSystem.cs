@@ -49,7 +49,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
             } else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
-                if (!AntiBlackOut.CantSendGameData())
+                if (!AntiBlackOut.CantSendGameData() && HideChat.CanSerializeGameData)
                 {
                     Is = false;
                     __result = true;
@@ -138,6 +138,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
             public static void Postfix()
             {
                 if (!AmongUsClient.Instance.AmHost) return;
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    HideChat.OnStartMeeting();
                 if (!ModeHandler.IsMode(ModeId.BattleRoyal)) return;
                 if (Main.IsRoleSetted) return;
                 new LateTask(() =>

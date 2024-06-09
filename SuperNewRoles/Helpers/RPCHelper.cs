@@ -228,6 +228,29 @@ public static class RPCHelper
         AmongUsClient.Instance.SendOrDisconnect(writer);
         writer.Recycle();
     }
+    public static void RpcSyncGameData(CustomRpcSender sender, int TargetClientId = -1)
+    {
+        if (sender == null)
+        {
+            RpcSyncGameData(TargetClientId);
+            return;
+        }
+        sender.StartMessage(TargetClientId);
+        sender.Write((writer) =>
+        {
+            // 書き込み {}は読みやすさのためです。
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(GameData.Instance.NetId);
+                GameDataSerializePatch.Is = true;
+                GameData.Instance.Serialize(writer, true);
+
+            }
+            writer.EndMessage();
+            writer.EndMessage();
+        });
+        sender.EndMessage();
+    }
     public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1, SendOption sendOption = SendOption.Reliable)
     {
         GameManager gm = NormalGameManager.Instance;

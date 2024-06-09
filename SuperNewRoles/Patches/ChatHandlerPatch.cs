@@ -6,6 +6,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
@@ -70,6 +71,7 @@ internal class AddChatPatch
             return false;
         }
 
+        HideChat.OnAddChat(sourcePlayer, chatText);
         // ここまで到達したらチャットが表示できる
         return true;
     }
