@@ -56,7 +56,7 @@ class MurderPlayer
                                 target
                         };
                         RoleClass.Quarreled.IsQuarreledWin = true;
-                        EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
+                        EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, CustomGameOverReason.QuarreledWin, false);
                     }, 0.15f, "Quarreled Murder EndGame");
                 }
             }

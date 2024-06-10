@@ -81,7 +81,7 @@ class ControllerManagerUpdatePatch
                 Logger.Info("===================== 廃村 ======================", "End Game");
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
-                    EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+                    EndGameCheck.CustomEndGame(ShipStatus.Instance, CustomGameOverReason.HAISON, false);
                 }
                 else
                 {

@@ -255,13 +255,13 @@ static class CheckMurderPatch
                 if (jackal == null)
                     return false;
                 //まだ作ってなくて、設定が有効の時
-                if (jackal.CanSidekick)
+                if (!jackal.CanSidekick)
                 {
                     Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
                     break;
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
-                if (target == null || jackal.CanSidekick) return false;
+                if (target == null || !jackal.CanSidekick) return false;
                 __instance.RpcShowGuardEffect(target);
                 jackal.CanSidekick = false;
                 if (!target.IsImpostor())
