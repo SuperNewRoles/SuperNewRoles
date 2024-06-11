@@ -66,6 +66,7 @@ public static class HideChat
             if (target.IsMod())
                 continue;
             player.RPCSendChatPrivate(message, target, sender);
+            sender.EndMessage();
         }
         DesyncSetDead(sender);
         sender.SendMessage();

@@ -45,7 +45,7 @@ public class CustomRpcSender
     #region Start/End Message
     public CustomRpcSender StartMessage(int tarGetClientId = -1)
     {
-        if (currentState != State.Ready)
+        if (currentState != State.Ready && currentState != State.InRootMessage)
         {
             string errorMsg = $"Messageを開始しようとしましたが、StateがReadyではありません (in: \"{name}\") (State: \"{currentState}\")";
             if (isUnsafe)
@@ -216,7 +216,7 @@ public class CustomRpcSender
 
     public CustomRpcSender Write(Action<MessageWriter> action)
     {
-        if (currentState != State.InRpc)
+        if (currentState != State.InRpc && currentState != State.InRootMessage)
         {
             string errorMsg = $"RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません (in: \"{name}\")";
             if (isUnsafe)

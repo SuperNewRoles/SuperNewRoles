@@ -9,6 +9,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static System.String;
@@ -67,8 +68,48 @@ internal class AddChatPatch
         HostManagedChatCommandPatch.CommandType commandType = HostManagedChatCommandPatch.CheckChatCommand(Commands[0]);
         if (commandType != HostManagedChatCommandPatch.CommandType.None)
         {
-            if (AmongUsClient.Instance.AmHost) HostManagedChatCommandPatch.ChatCommandExecution(sourcePlayer, commandType, Commands);
+            if (AmongUsClient.Instance.AmHost)
+                HostManagedChatCommandPatch.ChatCommandExecution(sourcePlayer, commandType, Commands);
             return false;
+        }
+
+        if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            string lcmd = Commands[0].ToLower();
+            if (sourcePlayer.GetRoleBase() is ISHRChatCommand shrcmd &&
+                    ("/" + shrcmd.CommandName == lcmd ||
+                    (
+                       (shrcmd.Alias != null) &&
+                       ("/" + shrcmd.Alias == lcmd)
+                    ))
+                )
+            {
+                bool isCancelChat;
+                if (Commands.Length > 1)
+                    isCancelChat = shrcmd.OnChatCommand(Commands[1..]);
+                else
+                    isCancelChat = shrcmd.OnChatCommand([]);
+                if (isCancelChat)
+                    return false;
+            }
+            else
+            {
+                foreach (ISHRChatCommand shrChatCommand in RoleBaseManager.GetInterfaces<ISHRChatCommand>())
+                {
+                    if (
+                         ("/" + shrChatCommand.CommandName == lcmd ||
+                           (
+                              (shrChatCommand.Alias != null) &&
+                              ("/" + shrChatCommand.Alias == lcmd)
+                           )
+                         )
+                        )
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("CommandNotFound"), GetChatCommands.SNRCommander);
+                        return false;
+                    }
+                }
+            }
         }
 
         HideChat.OnAddChat(sourcePlayer, chatText);
