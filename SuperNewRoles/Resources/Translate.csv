@@ -675,6 +675,8 @@ NiceGuesserTitle3,Guess and kill the Impostor!,推察し、人外を撃ち抜け
 NiceGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nCheck if the target's coming out is true，for example，"I am a crewmate.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\n「自分はクルーメイトです」等 対象のカミングアウトが真であるか精査してみましょう。,正义的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，正义的赌怪自杀。\n正义的赌怪可以确认目标是否在对船员说谎。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n查明那些說「我是好人！」的人的身分！
 GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,正义的赌怪能否在一次会议中多次猜测,正義的賭怪能否在一次會議中多次猜測
 GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,正义的赌怪最大可猜测次数,正義的賭怪最大可猜測次數
+GuesserOnStartMeetingInfoCanShot,I have {0} rounds of ammunition left...,残りの弾薬は{0}発だ...
+GuesserOnStartMeetingInfoCannotShot,Alright, let's make a guess. Oh dear, it seems we're out of ammo..,さて、推測を。おや、弾切れのようだ...。
 GuesserCommandUsage,Usage: /bt [Target color name] [Role name],使い方: /bt [対象の色名] [役職名]
 GuesserErrorNoneTarget,Target did not exist.,対象が存在しませんでした。
 GuesserErrorNoneRole,Role did not exist.,役職が存在しませんでした。

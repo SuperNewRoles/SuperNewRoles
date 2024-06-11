@@ -20,7 +20,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Attribute;
 
-public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand
+public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandler
 {
     public int Count { get; private set; }
     public bool CanShotOneMeeting { get; }
@@ -50,18 +50,28 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand
         Count--;
         ShotOnThisMeeting = true;
     }
-    public void OnStartMeeting()
+    public void StartMeeting()
     {
         CanShotCelebrityRemainingTurn--;
         ShotOnThisMeeting = false;
+        if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
+            return;
+        if (Player.IsMod())
+            return;
+        AddChatPatch.SendCommand(Player, ModTranslation.GetString($"GuesserOnStartMeetingInfo{(Count > 0 ? "Can" : "Cannot")}Shot", Count) + "\n" + ModTranslation.GetString("GuesserCommandUsage"), GuesserInfoTitle);
     }
 
     public bool OnChatCommand(string[] args)
     {
         if (Player == null)
             return true;
-        if (args.Length < 2)
+        if (args.Length < 2){
+            AddChatPatch.SendCommand(Player,
+                ModTranslation.GetString("GuesserCommandUsage"),
+                GuesserInfoTitle
+            );
             return true;
+        }
         if (Count is not (-1) and <= 0)
         {
             AddChatPatch.SendCommand(Player,
@@ -147,12 +157,17 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand
         if (target.GetRole() == role)
         {
             if (role == RoleId.DefaultRole)
+            {
                 if ((target.IsCrew() && isCrewmate) ||
                     (target.IsImpostor() && !isCrewmate))
+                {
                     isSuccess = true;
+                }
+            }
             else
                 isSuccess = true;
         }
+        Logger.Info($"Guesser: {Player.Data.PlayerName} guessed {target.Data.PlayerName} as {role} and {target.GetRole()} and {(isSuccess ? "success" : "failed")}");
         PlayerControl targetPlayer = PlayerControl.LocalPlayer;
         if (isSuccess)
             targetPlayer = target;
@@ -181,6 +196,10 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand
     {
         return ModTranslation.GetString("GuesserError" + ErrorId) + "\n" +
             ModTranslation.GetString("GuesserCommandUsage");
+    }
+
+    public void CloseMeeting()
+    {
     }
 }
 class Guesser

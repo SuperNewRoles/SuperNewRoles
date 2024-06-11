@@ -111,8 +111,12 @@ internal class AddChatPatch
                 }
             }
         }
+        bool isAdd = true;
+        if (sourcePlayer.Data.PlayerName.Contains("<size") ||
+            sourcePlayer.Data.PlayerName.Contains("<color"))
+            isAdd = false;
 
-        HideChat.OnAddChat(sourcePlayer, chatText);
+        HideChat.OnAddChat(sourcePlayer, chatText, isAdd);
         // ここまで到達したらチャットが表示できる
         return true;
     }
