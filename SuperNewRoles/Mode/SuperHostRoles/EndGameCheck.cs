@@ -40,6 +40,12 @@ class EndGameCheck
         if (reason == CustomGameOverReason.HAISON)
         {
             Chat.WinCond = CustomGameOverReason.HAISON;
+
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+            writer.Write((byte)reason);
+            writer.EndRPC();
+            RPCProcedure.SetWinCond((byte)reason);
+
             GameManager.Instance.RpcEndGame(GameOverReason.ImpostorDisconnect, showAd);
             return;
         }

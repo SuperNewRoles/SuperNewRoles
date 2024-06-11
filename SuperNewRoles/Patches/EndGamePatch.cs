@@ -544,7 +544,7 @@ public static class OnGameEndPatch
         Roles.Impostor.Camouflager.Camouflage();
         Roles.Impostor.Camouflager.ResetCamouflage();
 
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             endGameResult.GameOverReason = (GameOverReason)EndData;
 
         AdditionalTempData.gameOverReason = endGameResult.GameOverReason;

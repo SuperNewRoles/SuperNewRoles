@@ -48,25 +48,28 @@ public static class HideChat
             player.Data.Disconnected = AliveStates[player.PlayerId].Disconnected;
         }
     }
-    public static void OnAddChat(PlayerControl player, string message)
+    public static void OnAddChat(PlayerControl player, string message, bool isAdd)
     {
         if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead())
             return;
-        player.Data.IsDead = false;
-        SerializeByHideChat = true;
         CustomRpcSender sender = new("HideChatSender", sendOption: Hazel.SendOption.Reliable, false);
-        RPCHelper.RpcSyncGameData(sender: sender);
-        SerializeByHideChat = false;
-        foreach (PlayerControl target in PlayerControl.AllPlayerControls)
+        if (isAdd)
         {
-            if (player == target || target.IsDead())
-                continue;
-            if (target.PlayerId == 0)
-                continue;
-            if (target.IsMod())
-                continue;
-            player.RPCSendChatPrivate(message, target, sender);
-            sender.EndMessage();
+            player.Data.IsDead = false;
+            SerializeByHideChat = true;
+            RPCHelper.RpcSyncGameData(sender: sender);
+            SerializeByHideChat = false;
+            foreach (PlayerControl target in PlayerControl.AllPlayerControls)
+            {
+                if (player == target || target.IsDead())
+                    continue;
+                if (target.PlayerId == 0)
+                    continue;
+                if (target.IsMod())
+                    continue;
+                player.RPCSendChatPrivate(message, target, sender);
+                sender.EndMessage();
+            }
         }
         DesyncSetDead(sender);
         sender.SendMessage();
