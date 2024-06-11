@@ -62,7 +62,7 @@ public static class ChangeName
             p.RpcSetName(p.GetDefaultName());
         }
     }
-    public static void SetRoleNames(bool IsUnchecked = false)
+    public static void SetRoleNames(bool IsUnchecked = false, bool OnEndGame = false)
     {
         //SHRではない場合は処理しない
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -78,10 +78,10 @@ public static class ChangeName
         bool commsActive = RoleHelpers.IsComms();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            SetRoleName(p, commsActive, IsUnchecked);
+            SetRoleName(p, commsActive, IsUnchecked, OnEndGame);
         }
     }
-    public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
+    public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false, bool OnEndGame = false)
     {
         //SHRではない場合は処理しない
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -114,7 +114,7 @@ public static class ChangeName
                 !p.IsBot())
             {
                 //神、もしくは死亡していてかつ役職が見れる場合
-                if (SetNamesClass.CanGhostSeeRoles(p) || p.IsRole(RoleId.God))
+                if (SetNamesClass.CanGhostSeeRoles(p) || p.IsRole(RoleId.God) || OnEndGame)
                     CanAllRolePlayers.Add(p);
                 else
                     AlivePlayers.Add(p);
@@ -281,7 +281,7 @@ public static class ChangeName
             case RoleId.Sheriff:
                 if (RoleClass.Sheriff.KillCount.TryGetValue(player.PlayerId, out int svalue))
                 {
-                    RoleNameText.Append(ModHelpers.Cs(IntroData.SheriffIntro.color, svalue.ToString()));
+                    RoleNameText.Append(ModHelpers.Cs(IntroData.SheriffIntro.color, $" ({svalue.ToString()})"));
                 }
                 break;
             case RoleId.RemoteSheriff:
@@ -342,13 +342,14 @@ public static class ChangeName
                 IsGhostMechanicVIew = true;
             }
             NewName.Append($"(<size=75%>{ModHelpers.Cs(CustomRoles.GetRoleColor(player), CustomRoles.GetRoleName(player))}{attributeRoleName}{TaskText}</size>)");
+            Color32 namecolor = OnEndGame ? Color.white : CustomRoles.GetRoleColor(player);
             if (!RoleClass.Camouflager.IsCamouflage)
             {
-                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), $"{player.GetDefaultName()}{MySuffix}"));
+                NewName.Append(ModHelpers.Cs(namecolor, $"{player.GetDefaultName()}{MySuffix}"));
             }
             else
             {
-                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), MySuffix.ToString()));
+                NewName.Append(ModHelpers.Cs(namecolor, MySuffix.ToString()));
             }
         }
         else if (player.IsAlive() || IsUnchecked)
@@ -374,7 +375,12 @@ public static class ChangeName
         }
         if (!player.IsMod())
         {
-            player.RpcSetNamePrivate(NewName.ToString());
+            string SelfText = NewName.ToString();
+            if (OnEndGame && player.IsAlive())
+            {
+                SelfText = AddEndGameText(SelfText);
+            }
+            player.RpcSetNamePrivate(SelfText);
             if (player.IsAlive())
             {
                 foreach (var ChangePlayerData in (Dictionary<PlayerControl, string>)ChangePlayers)
@@ -409,5 +415,16 @@ public static class ChangeName
                 !DiePlayer.Data.Disconnected)
                 player.RpcSetNamePrivate(NewNameString, DiePlayer);
         }
+        foreach (var targets in EndGameDetail.ShowTargets)
+        {
+            if (targets.Key == null || targets.Key.PlayerId == targets.Value)
+                continue;
+            if (targets.Value == player.PlayerId)
+                player.RpcSetNamePrivate(AddEndGameText(NewNameString), targets.Key);
+        }
+    }
+    private static string AddEndGameText(string text)
+    {
+        return $"\n\n<size=265%>{EndGameDetail.EndGameTitle}</size>\n\n\n\n\n\n\n\n\n\n{text}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
     }
 }

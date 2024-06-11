@@ -84,7 +84,7 @@ class WrapUpClass
                             exiled.Object
                         };
                     RoleClass.Quarreled.IsQuarreledWin = true;
-                    EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
+                    EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, CustomGameOverReason.QuarreledWin, false);
                 }
             }
         }

@@ -41,7 +41,7 @@ class Jester
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[SHR:Error] Jester WrapUp Error:" + e);
                 }
-                EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByVote, false);
+                EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, CustomGameOverReason.JesterWin, false);
             }
         }
         else if (exiled.Object.IsRole(RoleId.MadJester))
@@ -75,7 +75,7 @@ class Jester
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[SHR:Error] Mad Jester WrapUp Error:" + e);
                 }
-                EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.ImpostorByVote, false);
+                EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, (CustomGameOverReason)GameOverReason.ImpostorByVote, false);
             }
         }
     }
