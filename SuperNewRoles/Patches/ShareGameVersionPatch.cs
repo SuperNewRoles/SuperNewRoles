@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Agartha;
 using HarmonyLib;
@@ -28,24 +29,28 @@ class ShareGameVersion
     public static float RPCTimer = 1f;
     private static float kickingTimer = 0f;
     private static bool notcreateroom;
+    private static byte[] ModuleVersion = Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
+    private static byte ModuleRevision = (byte)(SuperNewRolesPlugin.ThisVersion.Revision < 0 ? 0xFF : SuperNewRolesPlugin.ThisVersion.Revision);
+
+    public static void SendVersionRPC()
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
+        writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
+        writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);
+        writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Build);
+        writer.WritePacked(AmongUsClient.Instance.ClientId);
+        writer.Write(ModuleRevision);
+        writer.Write(ModuleVersion);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.ThisVersion.Major, SuperNewRolesPlugin.ThisVersion.Minor, SuperNewRolesPlugin.ThisVersion.Build, SuperNewRolesPlugin.ThisVersion.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+    }
+
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     public class AmongUsClientOnPlayerJoinedPatch
     {
         public static void Postfix()
         {
-            if (PlayerControl.LocalPlayer != null)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("[VersionShare]Version Shared!");
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Build);
-                writer.WritePacked(AmongUsClient.Instance.ClientId);
-                writer.Write((byte)(SuperNewRolesPlugin.ThisVersion.Revision < 0 ? 0xFF : SuperNewRolesPlugin.ThisVersion.Revision));
-                writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.ThisVersion.Major, SuperNewRolesPlugin.ThisVersion.Minor, SuperNewRolesPlugin.ThisVersion.Build, SuperNewRolesPlugin.ThisVersion.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
-            }
+            if (PlayerControl.LocalPlayer != null) SendVersionRPC();
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
@@ -94,17 +99,9 @@ class ShareGameVersion
                 }
             }
             Proce++;
-            if (Proce >= 10)
+            if (Proce >= 20)
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Build);
-                writer.WritePacked(AmongUsClient.Instance.ClientId);
-                writer.Write((byte)(SuperNewRolesPlugin.ThisVersion.Revision < 0 ? 0xFF : SuperNewRolesPlugin.ThisVersion.Revision));
-                writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.ThisVersion.Major, SuperNewRolesPlugin.ThisVersion.Minor, SuperNewRolesPlugin.ThisVersion.Build, SuperNewRolesPlugin.ThisVersion.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+                SendVersionRPC();
                 Proce = 0;
             }
             string message = "";
@@ -287,7 +284,7 @@ public struct PlayerVersion
     public readonly Version version;
     public readonly Guid guid;
 
-    public PlayerVersion(Version version, Guid guid)
+    public PlayerVersion(in Version version, in Guid guid)
     {
         this.version = version;
         this.guid = guid;
@@ -296,5 +293,28 @@ public struct PlayerVersion
     public bool GuidMatches()
     {
         return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(guid);
+    }
+
+    public override bool Equals([NotNullWhen(true)] object obj)
+    {
+        if (obj == null) return false;
+        PlayerVersion other = (PlayerVersion)obj;
+        return Equals(other.version, other.guid);
+    }
+
+    public bool Equals(Version version, Guid guid)
+    {
+        if (!this.version.Equals(version)) return false;
+        if (!this.guid.Equals(guid)) return false;
+        return true;
+    }
+    public static bool operator ==(PlayerVersion left, PlayerVersion right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(PlayerVersion left, PlayerVersion right)
+    {
+        return !(left == right);
     }
 }
