@@ -1178,6 +1178,7 @@ public static class ModHelpers
     }
     public static int CountLine(this string str)
     {
+        if (str == null) return 0;
         int n = 0;
         foreach (var c in str)
         {

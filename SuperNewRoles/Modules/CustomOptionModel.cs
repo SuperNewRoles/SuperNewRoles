@@ -1449,7 +1449,8 @@ class GameOptionsDataPatch
     public static string getHudString(int pagenum)
     {
         if (ResultPages == null) UpdateData();
-        if (pagenum <= 0 || pagenum > ResultPages.Count) return DefaultResult;
+        if (pagenum <= 0) return DefaultResult;
+        if (pagenum > ResultPages.Count) return "";
         return ResultPages[pagenum - 1];
     }
 }

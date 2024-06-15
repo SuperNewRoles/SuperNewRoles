@@ -772,18 +772,11 @@ public class CustomOverlays
         left = center = right = null;
 
         // 左の列が必ず奇数ページになるようにする
-        switch (SuperNewRolesPlugin.optionsPage % 2)
-        {
-            case 0:
-                break;
-            case 1:
-                SuperNewRolesPlugin.optionsPage -= 1;
-                break;
-        }
+        int page = SuperNewRolesPlugin.optionsPage;
+        page -= page % 2;
 
-        int firstPage = SuperNewRolesPlugin.optionsPage;
-        left = GameOptionsDataPatch.getHudString(firstPage);
-        right = GameOptionsDataPatch.getHudString(firstPage + 1);
+        left = GameOptionsDataPatch.getHudString(page);
+        right = GameOptionsDataPatch.getHudString(page + 1);
     }
 
     // マッチメイキングタグの設定を表示する
