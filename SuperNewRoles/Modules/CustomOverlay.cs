@@ -21,6 +21,7 @@ public class CustomOverlays
     private static bool overlayShown;
     private static Dictionary<byte, string> playerDataDictionary = new();
     internal static Dictionary<byte, string> ActivateRolesDictionary = new();
+    private static float defaultfontSize = 1.15f;
 
     public static void ResetOverlays()
     {
@@ -72,7 +73,7 @@ public class CustomOverlays
         if (infoOverlayLeft == null)
         {
             infoOverlayLeft = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
-            infoOverlayLeft.fontSize = infoOverlayLeft.fontSizeMin = infoOverlayLeft.fontSizeMax = 1.15f;
+            infoOverlayLeft.SetStaticfontSizes(defaultfontSize);
             infoOverlayLeft.autoSizeTextContainer = false;
             infoOverlayLeft.enableWordWrapping = false;
             infoOverlayLeft.alignment = TMPro.TextAlignmentOptions.TopLeft;
@@ -87,7 +88,7 @@ public class CustomOverlays
         {
             infoOverlayCenter = UnityEngine.Object.Instantiate(infoOverlayLeft, hudManager.transform);
             infoOverlayCenter.maxVisibleLines = 30;
-            infoOverlayCenter.fontSize = infoOverlayCenter.fontSizeMin = infoOverlayCenter.fontSizeMax = 1.15f;
+            infoOverlayCenter.SetStaticfontSizes(defaultfontSize);
             infoOverlayCenter.outlineWidth += 0.02f;
             infoOverlayCenter.autoSizeTextContainer = false;
             infoOverlayCenter.enableWordWrapping = false;
@@ -103,7 +104,7 @@ public class CustomOverlays
         {
             infoOverlayRight = UnityEngine.Object.Instantiate(infoOverlayCenter, hudManager.transform);
             infoOverlayRight.maxVisibleLines = 30;
-            infoOverlayRight.fontSize = infoOverlayRight.fontSizeMin = infoOverlayRight.fontSizeMax = 1.15f;
+            infoOverlayRight.SetStaticfontSizes(defaultfontSize);
             infoOverlayRight.outlineWidth += 0.02f;
             infoOverlayRight.autoSizeTextContainer = false;
             infoOverlayRight.enableWordWrapping = false;
@@ -200,13 +201,23 @@ public class CustomOverlays
                 break;
         }
 
+        //横幅が問題にならないならテキストサイズ調整のみで解決
         infoOverlayLeft.text = leftText;
+        int line = leftText.CountLine();
+        float fsize = line > 28 ? defaultfontSize * 28 / line : defaultfontSize;
+        infoOverlayLeft.SetStaticfontSizes(fsize);
         infoOverlayLeft.enabled = true;
 
         infoOverlayCenter.text = centerText;
+        line = centerText.CountLine();
+        fsize = line > 28 ? defaultfontSize * 28 / line : defaultfontSize;
+        infoOverlayCenter.SetStaticfontSizes(fsize);
         infoOverlayCenter.enabled = true;
 
         infoOverlayRight.text = rightText;
+        line = rightText.CountLine();
+        fsize = line > 28 ? defaultfontSize * 28 / line : defaultfontSize;
+        infoOverlayRight.SetStaticfontSizes(fsize);
         infoOverlayRight.enabled = true;
 
         var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
@@ -771,15 +782,8 @@ public class CustomOverlays
         }
 
         int firstPage = SuperNewRolesPlugin.optionsPage;
-        int page = firstPage;
-
-        left = GameOptionsDataPatch.ResultData();
-        SuperNewRolesPlugin.optionsPage = page + 1;
-
-        if (SuperNewRolesPlugin.optionsPage <= SuperNewRolesPlugin.optionsMaxPage)
-            right = GameOptionsDataPatch.ResultData();
-
-        SuperNewRolesPlugin.optionsPage = firstPage; // 現在のページを左の列に表示しているページに戻す
+        left = GameOptionsDataPatch.getHudString(firstPage);
+        right = GameOptionsDataPatch.getHudString(firstPage + 1);
     }
 
     // マッチメイキングタグの設定を表示する

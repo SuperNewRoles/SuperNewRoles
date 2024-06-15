@@ -1176,6 +1176,19 @@ public static class ModHelpers
         data.Shuffle();
         return data;
     }
+    public static int CountLine(this string str)
+    {
+        int n = 0;
+        foreach (var c in str)
+        {
+            if (c == '\n') n++;
+        }
+        return n+1;
+    }
+    public static void SetStaticfontSizes(this TextMeshPro tmp, float size)
+    {
+        tmp.fontSize = tmp.fontSizeMax = tmp.fontSizeMin = size;
+    }
 }
 public static class CreateFlag
 {
