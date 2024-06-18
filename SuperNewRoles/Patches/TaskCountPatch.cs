@@ -96,7 +96,7 @@ class TaskCount
         {
             foreach (PlayerTask task in player.Object.myTasks)
             {
-                GameData.TaskInfo info = player.FindTaskById(task.Id);
+                NetworkedPlayerInfo.TaskInfo info = player.FindTaskById(task.Id);
                 if (info.Complete) continue;
                 switch (ShipStatus.Instance.GetTaskById(info.TypeId).Length)
                 {
