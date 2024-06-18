@@ -98,7 +98,7 @@ public static class CachedPlayerPatches
         CachedPlayer.PlayerPtrs.Remove(__instance.Pointer);
     }
 
-    [HarmonyPatch(typeof(GameData), nameof(GameData.Deserialize))]
+    [HarmonyPatch(typeof(NetworkedPlayerInfo), nameof(NetworkedPlayerInfo.Deserialize))]
     [HarmonyPostfix]
     public static void AddCachedDataOnDeserialize()
     {

@@ -19,7 +19,7 @@ using Object = UnityEngine.Object;
 
 namespace SuperNewRoles;
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetRole))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CoSetRole))]
 class SetRoleLogger
 {
     public static void Postfix(PlayerControl __instance, RoleTypes role)
