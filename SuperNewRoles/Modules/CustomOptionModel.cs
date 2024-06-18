@@ -525,7 +525,7 @@ public class GameSettingsScale
 {
     public static void GameSettingsScalePatch(HudManager __instance)
     {
-        if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
+        // if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
     }
 }
 public class CustomOptionBlank : CustomOption
@@ -603,12 +603,12 @@ class GameSettingMenuStartPatch2
 {
     public static void Postfix(GameSettingMenu __instance)
     {
-        __instance.Tabs.SetActive(true);
+        // __instance.Tabs.SetActive(true);
 
     }
 }
 
-[HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start))]
+[HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.CreateSettings))]
 class GameOptionsMenuStartPatch
 {
     public static void Postfix(GameOptionsMenu __instance)
@@ -746,9 +746,8 @@ class GameOptionsMenuStartPatch
             button.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
             button.OnClick.AddListener((UnityAction)(() =>
             {
-                gameSettingMenu.RegularGameSettings.SetActive(false);
-                gameSettingMenu.RolesSettings.gameObject.SetActive(false);
-                gameSettingMenu.HideNSeekSettings.gameObject.SetActive(false);
+                gameSettingMenu.GameSettingsTab.gameObject.SetActive(false);
+                gameSettingMenu.RoleSettingsTab.gameObject.SetActive(false);
                 snrSettings.gameObject.SetActive(false);
                 impostorSettings.gameObject.SetActive(false);
                 neutralSettings.gameObject.SetActive(false);
@@ -756,8 +755,8 @@ class GameOptionsMenuStartPatch
                 modifierSettings.gameObject.SetActive(false);
                 matchTagSettings.gameObject.SetActive(false);
                 RegulationSettings.gameObject.SetActive(false);
-                gameSettingMenu.GameSettingsHightlight.enabled = false;
-                gameSettingMenu.RolesSettingsHightlight.enabled = false;
+                // gameSettingMenu.GameSettingsHightlight.enabled = false;
+                // gameSettingMenu.RolesSettingsHightlight.enabled = false;
                 snrTabHighlight.enabled = false;
                 impostorTabHighlight.enabled = false;
                 neutralTabHighlight.enabled = false;
@@ -767,16 +766,13 @@ class GameOptionsMenuStartPatch
                 RegulationTabHighlight.enabled = false;
                 if (copiedIndex == 0)
                 {
-                    if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek)
-                        gameSettingMenu.HideNSeekSettings.gameObject.SetActive(true);
-                    else
-                        gameSettingMenu.RegularGameSettings.SetActive(true);
-                    gameSettingMenu.GameSettingsHightlight.enabled = true;
+                    gameSettingMenu.GameSettingsTab.gameObject.SetActive(true);
+                    // gameSettingMenu.GameSettingsHightlight.enabled = true;
                 }
                 else if (copiedIndex == 1)
                 {
-                    gameSettingMenu.RolesSettings.gameObject.SetActive(true);
-                    gameSettingMenu.RolesSettingsHightlight.enabled = true;
+                    gameSettingMenu.RoleSettingsTab.gameObject.SetActive(true);
+                    // gameSettingMenu.RolesSettingsHightlight.enabled = true;
                 }
                 else if (copiedIndex == 2)
                 {
@@ -874,19 +870,19 @@ class GameOptionsMenuStartPatch
         }
         Logger.Info("RegulationOption通過");
 
-        snrMenu.Children = snrOptions.ToArray();
+        snrMenu.Children = snrOptions.ToIl2CppList();
         snrSettings.gameObject.SetActive(false);
 
-        impostorMenu.Children = impostorOptions.ToArray();
+        impostorMenu.Children = impostorOptions.ToIl2CppList();
         impostorSettings.gameObject.SetActive(false);
 
-        neutralMenu.Children = neutralOptions.ToArray();
+        neutralMenu.Children = neutralOptions.ToIl2CppList();
         neutralSettings.gameObject.SetActive(false);
 
-        crewmateMenu.Children = crewmateOptions.ToArray();
+        crewmateMenu.Children = crewmateOptions.ToIl2CppList();
         crewmateSettings.gameObject.SetActive(false);
 
-        modifierMenu.Children = modifierOptions.ToArray();
+        modifierMenu.Children = modifierOptions.ToIl2CppList();
         modifierSettings.gameObject.SetActive(false);
 
         matchTagSettings.gameObject.SetActive(false);
@@ -913,25 +909,7 @@ class GameOptionsMenuStartPatch
     }
 }
 
-[HarmonyPatch(typeof(KeyValueOption), nameof(KeyValueOption.OnEnable))]
-public class KeyValueOptionEnablePatch
-{
-    public static void Postfix(KeyValueOption __instance)
-    {
-        IGameOptions gameOptions = GameManager.Instance.LogicOptions.currentGameOptions;
-        if (__instance.Title == StringNames.GameMapName)
-        {
-            __instance.Selected = gameOptions.MapId;
-        }
-        try
-        {
-            __instance.ValueText.text = __instance.Values[Mathf.Clamp(__instance.Selected, 0, __instance.Values.Count - 1)].Key;
-        }
-        catch { }
-    }
-}
-
-[HarmonyPatch(typeof(StringOption), nameof(StringOption.OnEnable))]
+[HarmonyPatch(typeof(StringOption), nameof(StringOption.UpdateValue))]
 class StringOptionEnablePatch
 {
     static bool Prefix(StringOption __instance)
@@ -946,7 +924,6 @@ class StringOptionEnablePatch
                 __instance.TitleText.text = Regulation.title;
                 __instance.Value = __instance.oldValue = 0;
                 __instance.ValueText.text = RegulationData.Selected == Regulation.id ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
-
                 return false;
             }
             return true;
@@ -1103,13 +1080,13 @@ static class GameOptionsMenuUpdatePatch
     public static void Postfix(GameOptionsMenu __instance)
     {
         var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
-        if (gameSettingMenu.RegularGameSettings.active || gameSettingMenu.RolesSettings.gameObject.active || gameSettingMenu.HideNSeekSettings.gameObject.active) return;
+        if (gameSettingMenu.GameSettingsTab.gameObject.active || gameSettingMenu.RoleSettingsTab.gameObject.active) return;
 
         timer += Time.deltaTime;
         if (timer < 0.1f) return;
         timer = 0f;
 
-        float numItems = __instance.Children.Length;
+        float numItems = __instance.Children.Count;
 
         float offset = 2.75f;
         if (__instance.name == "RegulationSetting")
@@ -1193,20 +1170,20 @@ class GameSettingMenuStartPatch
 {
     public static void Prefix(GameSettingMenu __instance)
     {
-        __instance.HideForOnline = new Transform[] { };
+        __instance.GameSettingsTab.HideForOnline = new Transform[] { };
     }
 
     public static void Postfix(GameSettingMenu __instance)
     {
         // Setup mapNameTransform
-        foreach (Transform i in __instance.AllItems.ToList())
+        foreach (OptionBehaviour i in __instance.GameSettingsTab.Children)
         {
             float num = -0.5f;
             if (i.name.Equals("NumImpostors", StringComparison.OrdinalIgnoreCase)) num = -0.5f;
             if (i.name.Equals("ResetToDefault", StringComparison.OrdinalIgnoreCase)) num = 0f;
-            i.position += new Vector3(0, num, 0);
+            i.transform.position += new Vector3(0, num, 0);
         }
-        __instance.Scroller.ContentYBounds.max += 0.5F;
+        __instance.GameSettingsTab.scrollBar.ContentYBounds.max += 0.5F;
     }
 }
 
