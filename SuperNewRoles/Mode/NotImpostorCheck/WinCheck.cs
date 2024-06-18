@@ -104,7 +104,7 @@ class WinCheck
 
             for (int i = 0; i < GameData.Instance.PlayerCount; i++)
             {
-                GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
+                NetworkedPlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                 if (!playerInfo.Disconnected)
                 {
                     if (playerInfo.Object.IsAlive())

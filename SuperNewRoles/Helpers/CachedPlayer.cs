@@ -19,7 +19,7 @@ public class CachedPlayer
     public PlayerControl PlayerControl;
     public PlayerPhysics PlayerPhysics;
     public CustomNetworkTransform NetTransform;
-    public GameData.PlayerInfo Data;
+    public NetworkedPlayerInfo Data;
     public byte PlayerId;
     public uint NetId;
 

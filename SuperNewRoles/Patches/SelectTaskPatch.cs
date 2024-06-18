@@ -66,11 +66,11 @@ public static class SelectTask
             {
                 if (player.IsBot())
                 {
-                    GameData.Instance.RpcSetTasks(player.PlayerId, new(0));
+                    player.Data.RpcSetTasks(new(0));
                     continue;
                 }
                 if (GetHaveTaskManageAbility(player.GetRole()) && ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
-                    GameData.Instance.RpcSetTasks(player.PlayerId, new(ModHelpers.GenerateTasks(player, player.GetTaskCount()).ToArray()));
+                    player.Data.RpcSetTasks(new(ModHelpers.GenerateTasks(player, player.GetTaskCount()).ToArray()));
                 else
                 {
                     types.Clear();
@@ -78,7 +78,7 @@ public static class SelectTask
                     __instance.AddTasksFromList(ref num2, numLong, list, types, LongTasks);
                     __instance.AddTasksFromList(ref num3, numShort, list, types, ShortTasks);
                     if (player && !player.GetComponent<DummyBehaviour>().enabled)
-                        GameData.Instance.RpcSetTasks(player.PlayerId, new(list.ToArray()));
+                        player.Data.RpcSetTasks(new(list.ToArray()));
                 }
             }
             PlayerControl.LocalPlayer.cosmetics.SetAsLocalPlayer();
@@ -89,13 +89,13 @@ public static class SelectTask
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CoSetTasks))]
     public static class PlayerControlCoSetTasks
     {
-        public static bool Prefix(PlayerControl __instance, Il2CppSystem.Collections.Generic.List<GameData.TaskInfo> tasks, ref Il2CppSystem.Collections.IEnumerator __result)
+        public static bool Prefix(PlayerControl __instance, Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo.TaskInfo> tasks, ref Il2CppSystem.Collections.IEnumerator __result)
         {
             __result = CoSetTasks(__instance, tasks).WrapToIl2Cpp();
             return false;
         }
 
-        public static IEnumerator CoSetTasks(PlayerControl __instance, Il2CppSystem.Collections.Generic.List<GameData.TaskInfo> tasks)
+        public static IEnumerator CoSetTasks(PlayerControl __instance, Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo.TaskInfo> tasks)
         {
             while (!ShipStatus.Instance) yield return null;
             if (__instance.AmOwner)
@@ -108,7 +108,7 @@ public static class SelectTask
             __instance.Data.Role.SpawnTaskHeader(__instance);
             for (int i = 0; i < tasks.Count; i++)
             {
-                GameData.TaskInfo taskInfo = tasks[i];
+                NetworkedPlayerInfo.TaskInfo taskInfo = tasks[i];
                 NormalPlayerTask taskById = ShipStatus.Instance.GetTaskById(taskInfo.TypeId);
                 NormalPlayerTask normalPlayerTask = Object.Instantiate(taskById, __instance.transform);
                 normalPlayerTask.Id = taskInfo.Id;

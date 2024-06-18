@@ -590,7 +590,7 @@ public static class RPCProcedure
     {
         PlayerControl player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        GameData.PlayerOutfit outfit = new()
+        NetworkedPlayerInfo.PlayerOutfit outfit = new()
         {
             ColorId = color,
             HatId = hat,
@@ -1114,7 +1114,7 @@ public static class RPCProcedure
     {
         var player = ModHelpers.PlayerById(playerId);
         player.ClearAllTasks();
-        GameData.Instance.SetTasks(playerId, taskTypeIds);
+        player.Data.SetTasks(taskTypeIds);
     }
     public static void StartGameRPC()
         => RoleClass.ClearAndReloadRoles();
@@ -1236,8 +1236,8 @@ public static class RPCProcedure
         RoleHelpers.ClearTaskUpdate();
         if (AmongUsClient.Instance.AmHost)
         {
-            byte[] player1task = Array.ConvertAll(Array.FindAll<GameData.TaskInfo>(player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
-            byte[] player2task = Array.ConvertAll(Array.FindAll<GameData.TaskInfo>(player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            byte[] player1task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            byte[] player2task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
             player2.SetTask(player1task);
             player1.SetTask(player2task);
         }

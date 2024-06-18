@@ -30,7 +30,7 @@ public class ReplayActionReportDeadBody : ReplayAction
         Logger.Info("a");
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         Logger.Info("b");
-        GameData.PlayerInfo target = GameData.Instance.GetPlayerById(targetPlayer);
+        NetworkedPlayerInfo target = GameData.Instance.GetPlayerById(targetPlayer);
         Logger.Info("c");
         if (source == null)
         {

@@ -177,7 +177,7 @@ public static class ModeHandler
         else if (IsMode(ModeId.RandomColor)) RandomColor.FixedUpdate.Update();
 
     }
-    public static void Wrapup(GameData.PlayerInfo exiled)
+    public static void Wrapup(NetworkedPlayerInfo exiled)
     {
         if (IsMode(ModeId.Default)) return;
     }

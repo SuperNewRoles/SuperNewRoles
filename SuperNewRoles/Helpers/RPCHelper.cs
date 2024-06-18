@@ -313,7 +313,7 @@ public static class RPCHelper
         messageWriter.EndRPC();
     }
 
-    public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)
+    public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, NetworkedPlayerInfo exiled, bool tie, PlayerControl SeePlayer)
     {
         MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 23, SendOption.None, SeePlayer.GetClientId());
         val.WritePacked(states.Length);
