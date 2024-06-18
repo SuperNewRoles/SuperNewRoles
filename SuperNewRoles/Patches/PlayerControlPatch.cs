@@ -292,7 +292,7 @@ class ReportDeadBodyPatch
         MeetingCount = (0, 0, 0);
     }
 
-    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
+    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo target)
     {
         if (__instance.IsRole(RoleId.GM))
         {
@@ -383,7 +383,7 @@ class ReportDeadBodyPatch
             && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId));
     }
 
-    public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
+    public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo target)
     {
         if (!AmongUsClient.Instance.AmHost) return; // ホスト以外此処は読まないが, バニラ側の使用が変更された時に問題が起きないように ホスト以外はreturnする。
 
@@ -422,10 +422,10 @@ public static class PlayerControlFixedUpdatePatch
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
-            PlayerInfo playerInfo = allPlayers[i];
+            NetworkedPlayerInfo playerInfo = allPlayers[i];
             if (playerInfo.Disconnected ||
                 playerInfo.PlayerId == targetingPlayer.PlayerId ||
                 playerInfo.IsDead ||
@@ -462,10 +462,10 @@ public static class PlayerControlFixedUpdatePatch
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
-            PlayerInfo playerInfo = allPlayers[i];
+            NetworkedPlayerInfo playerInfo = allPlayers[i];
             //下記Jackalがbuttonのターゲットにできない役職の設定
             if (playerInfo.Object.IsDead() ||
                 playerInfo.PlayerId == targetingPlayer.PlayerId ||
@@ -510,10 +510,10 @@ public static class PlayerControlFixedUpdatePatch
         }
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<PlayerInfo> allPlayers = Instance.AllPlayers;
+        Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
-            PlayerInfo playerInfo = allPlayers[i]; // ボタンの対象判定
+            NetworkedPlayerInfo playerInfo = allPlayers[i]; // ボタンの対象判定
             if (playerInfo.Disconnected ||
                 playerInfo.PlayerId == targetingPlayer.PlayerId ||
                 playerInfo.IsDead ||

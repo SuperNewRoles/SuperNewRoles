@@ -26,10 +26,10 @@ public static class Pavlovsdogs
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
-            GameData.PlayerInfo playerInfo = allPlayers[i];
+            NetworkedPlayerInfo playerInfo = allPlayers[i];
             if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.IsDead && ((IsPavlovsTeamTarget && playerInfo.Object.IsPavlovsTeam()) || (!IsPavlovsTeamTarget && !playerInfo.Object.IsPavlovsTeam())))
             {
                 PlayerControl @object = playerInfo.Object;

@@ -79,8 +79,8 @@ public static class Analytics
         data.Add("Mode", ModeHandler.GetMode().ToString());
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
         data.Add("Version", SuperNewRolesPlugin.ThisVersion.ToString());
-        GameData.PlayerInfo Host = null;
-        foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers) if (p.PlayerId == 0) Host = p;
+        NetworkedPlayerInfo Host = null;
+        foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers) if (p.PlayerId == 0) Host = p;
         data.Add("HostFriendCode", Host.FriendCode);
         data.Add("PlayerCount", GameData.Instance.AllPlayers.Count.ToString());
         string json = data.GetString();
@@ -93,7 +93,7 @@ public static class Analytics
         string ActivateRole = "";
         string RealActivateRole = "";
         List<RoleId> RealActivateRoleList = new();
-        foreach (GameData.PlayerInfo player in GameData.Instance is null ? new() : GameData.Instance.AllPlayers)
+        foreach (NetworkedPlayerInfo player in GameData.Instance is null ? new() : GameData.Instance.AllPlayers)
         {
             if (player.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) continue;
             PlayerDatas += $"{player.FriendCode},";

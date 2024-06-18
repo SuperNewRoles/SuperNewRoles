@@ -1581,7 +1581,7 @@ public static class RoleHelpers
     public static void SetTask(this PlayerControl player, byte[] tasks)
     {
         if (!player) return;
-        GameData.Instance.RpcSetTasks(player.PlayerId, tasks);
+        player.Data.RpcSetTasks(tasks);
     }
 
     public static bool IsUseVent(this PlayerControl player)
@@ -2046,11 +2046,11 @@ public static class RoleHelpers
     {
         return player == null || player.Data.Disconnected || player.Data.IsDead;
     }
-    public static bool IsDead(this GameData.PlayerInfo player)
+    public static bool IsDead(this NetworkedPlayerInfo player)
     {
         return player == null || player.Disconnected || player.IsDead;
     }
-    public static bool IsAlive(this GameData.PlayerInfo player)
+    public static bool IsAlive(this NetworkedPlayerInfo player)
     {
         return player != null && !player.Disconnected && !player.IsDead;
     }

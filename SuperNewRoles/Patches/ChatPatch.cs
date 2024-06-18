@@ -9,7 +9,7 @@ class Chat
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChatNote))]
     class ChatControllerAddChatNote
     {
-        public static void Postfix(ChatController __instance, GameData.PlayerInfo srcPlayer, ChatNoteTypes noteType)
+        public static void Postfix(ChatController __instance, NetworkedPlayerInfo srcPlayer, ChatNoteTypes noteType)
         {
             if (noteType == ChatNoteTypes.DidVote) Recorder.OnVoteChat(srcPlayer);
         }

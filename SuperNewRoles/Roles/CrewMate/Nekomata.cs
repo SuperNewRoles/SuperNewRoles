@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles;
 
 class Nekomata
 {
-    public static void NekomataEnd(GameData.PlayerInfo __instance)
+    public static void NekomataEnd(NetworkedPlayerInfo __instance)
     {
         if (!ModeHandler.IsMode(ModeId.Default)) return;
         if (__instance == null) return;
