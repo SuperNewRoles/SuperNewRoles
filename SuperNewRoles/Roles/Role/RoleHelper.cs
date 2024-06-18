@@ -406,7 +406,10 @@ public static class RoleHelpers
         }
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, myrole);
     }
-
+    public static void SetRole(this PlayerControl player, RoleTypes role)
+    {
+        player.StartCoroutine(player.CoSetRole(role, false));
+    }
     public static void SetRole(this PlayerControl player, RoleId role)
     {
         ReplayActionSetRole.Create(player.PlayerId, role);
