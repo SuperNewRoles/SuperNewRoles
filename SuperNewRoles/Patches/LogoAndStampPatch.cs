@@ -85,7 +85,7 @@ public static class CredentialsPatch
                     ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
                     : new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
 
-                float xAspectPosition = !DestroyableSingleton<ChatController>.Instance.chatButton.activeInHierarchy ? 1.2f : 1.79f; // チャットボタンが表示されているなら左にずらす
+                float xAspectPosition = !DestroyableSingleton<ChatController>.Instance.chatButton.gameObject.active ? 1.2f : 1.79f; // チャットボタンが表示されているなら左にずらす
 
                 __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(xAspectPosition, 0.1f, 0.5f);
             }
