@@ -1152,10 +1152,11 @@ public static class GameSettingMenuPatch
         __instance.RoleSettingsButton.transform.position += new Vector3(0, 0.637f);
         __instance.GameSettingsTab.scrollBar.ContentYBounds.max += 0.5f;
 
-        ModSettingsTab = new GameObject("MOD Tab").AddComponent<ModSettingsMenu>();
+        ModSettingsTab = new GameObject("MOD TAB").AddComponent<ModSettingsMenu>();
         ModSettingsTab.transform.SetParent(__instance.RoleSettingsTab.transform.parent);
         ModSettingsTab.transform.localPosition = new(0f, 0.16f, -4f);
         ModSettingsTab.gameObject.layer = 5;
+        ModSettingsTab.gameObject.SetActive(false);
 
         GameObject mod_settings_button = Object.Instantiate(__instance.RoleSettingsButton.gameObject, __instance.RoleSettingsButton.transform.parent);
         mod_settings_button.name = "ModSttingsButton";
