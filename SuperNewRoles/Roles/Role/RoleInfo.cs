@@ -102,14 +102,10 @@ public enum QuoteMod
     // 以下アルファベット順
     aulibhaltnet,
     ExtremeRoles,
-    Jester, // 能力はTOR由来の為, てるてるはTOR元扱いとする。
     NebulaOnTheShip,
     SuperNewRoles,
     TheOtherRoles, // TORのクレジットで, Modにリンクが飛ばない役職はTOR元扱いにする。
     TheOtherRolesGM,
     TheOtherRolesGMH,
-    tomarai,
-    TownOfUs,
     TownOfUsR,
-    Woodi_dev,
 }

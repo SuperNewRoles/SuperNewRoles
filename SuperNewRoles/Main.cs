@@ -169,6 +169,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<Lantern>();
+        ClassInjector.RegisterTypeInIl2Cpp<WaveCannonEffect>();
 
         Logger.LogInfo("Start Load Resource");
         string[] resourceNames = assembly.GetManifestResourceNames();
@@ -179,6 +180,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
             }
         }
+        AssetManager.Load();
+
         Logger.LogInfo("Resource Loaded");
 
         Logger.LogInfo("Start WaitLoad");

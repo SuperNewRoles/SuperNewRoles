@@ -28,14 +28,20 @@ public class NiceGuesser : GuesserBase, ICrewmate
 
     public static CustomOption ShotOneMeetingCount;
     public static CustomOption ShotMaxCount;
-    public static CustomOption CanShotCrewOption;
+    public static CustomOption CannotShotCrewOption;
+    public static CustomOption CannotShotCelebrityOption;
+    public static CustomOption BecomeShotCelebrityOption;
+    public static CustomOption BecomeShotCelebrityTurn;
     private static void CreateOption()
     {
         ShotMaxCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, Optioninfo.RoleOption);
         ShotOneMeetingCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, Optioninfo.RoleOption);
-        CanShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserCanCrewShotSetting", true, Optioninfo.RoleOption);
+        CannotShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserCannotCrewShotSetting", false, Optioninfo.RoleOption);
+        CannotShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserCannotCelebrityShotSetting", false, Optioninfo.RoleOption);
+        BecomeShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserBecomeShotCelebritySetting", true, CannotShotCelebrityOption);
+        BecomeShotCelebrityTurn = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserBecomeShotCelebrityTurnSetting", 3f, 1f, 15f, 1f, BecomeShotCelebrityOption);
     }
-    public NiceGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CanShotCrewOption.GetBool(), p, Roleinfo, Optioninfo, Introinfo)
+    public NiceGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CannotShotCrewOption.GetBool(), CannotShotCelebrityOption.GetBool(), BecomeShotCelebrityOption.GetBool(), BecomeShotCelebrityTurn.GetInt(), p, Roleinfo, Optioninfo, Introinfo)
     {
     }
 }

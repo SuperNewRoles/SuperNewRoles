@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Generator.Passes;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -16,16 +17,24 @@ public class GuesserBase : RoleBase
 {
     public int Count { get; private set; }
     public bool CanShotOneMeeting { get; }
-    public bool CanShotCrew { get; }
-    public GuesserBase(int ShotMaxCount, bool CanShotOneMeeting, bool CanShotCrew, PlayerControl p, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(p, Roleinfo, Optioninfo, Introinfo)
+    public bool CannotShotCrew { get; }
+    public bool CannotShotCelebrity { get; }
+    public int CanShotCelebrityRemainingTurn { get; private set; }
+    public GuesserBase(int ShotMaxCount, bool CanShotOneMeeting, bool CannotShotCrew, bool CannotShotCelebrity, bool BecomeShotCelebrity, int BecomeShotCelebrityTurn, PlayerControl p, RoleInfo Roleinfo, OptionInfo Optioninfo, IntroInfo Introinfo) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         Count = ShotMaxCount;
         this.CanShotOneMeeting = CanShotOneMeeting;
-        this.CanShotCrew = CanShotCrew;
+        this.CannotShotCrew = CannotShotCrew;
+        this.CannotShotCelebrity = CannotShotCelebrity;
+        CanShotCelebrityRemainingTurn = BecomeShotCelebrity && CannotShotCelebrity ? BecomeShotCelebrityTurn : 0;
     }
     public void UseCount()
     {
         Count--;
+    }
+    public void OnStartMeeting()
+    {
+        CanShotCelebrityRemainingTurn--;
     }
 }
 class Guesser
@@ -189,13 +198,15 @@ class Guesser
         }
 
         int ind = 0;
-        bool canCrewShot = guesserBaseMe.CanShotCrew;
+        bool cannotCrewShot = guesserBaseMe.CannotShotCrew;
+        bool cannotShotCelebrity = guesserBaseMe.CannotShotCelebrity;
         foreach (IntroData roleInfo in IntroData.Intros.Values)
         {
             if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||
                 roleInfo.RoleId == RoleId.DefaultRole ||
-                (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
+                (IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0) ||
+                roleInfo.RoleId == RoleId.Celebrity)
             {
                 Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                 continue; // Not guessable roles
@@ -207,7 +218,8 @@ class Guesser
             if (roleInfo == null ||
                 roleInfo.Role == RoleId.Hunter ||
                 roleInfo.Role == RoleId.DefaultRole ||
-                (IntroData.GetOption(roleInfo.Role)?.GetSelection() is null or 0))
+                (IntroData.GetOption(roleInfo.Role)?.GetSelection() is null or 0) ||
+                roleInfo.Role == RoleId.Celebrity)
             {
                 Logger.Info("continueになりました:" + roleInfo.Role, "Guesser");
                 continue; // Not guessable roles
@@ -215,11 +227,19 @@ class Guesser
             CreateRole(roleInfo: roleInfo);
         }
         CreateRole(IntroData.ImpostorIntro);
-        if (canCrewShot)
+        if (!cannotCrewShot)
             CreateRole(IntroData.CrewmateIntro);
-        if (CustomOptionHolder.JackalOption.GetSelection() is not 0 && CustomOptionHolder.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
+        if (guesserBaseMe.CanShotCelebrityRemainingTurn < 0 && !guesserBaseMe.CannotShotCelebrity && (IntroData.GetOption(IntroData.CelebrityIntro.RoleId)?.GetSelection() is not null and not 0))
+            CreateRole(IntroData.CelebrityIntro);
+        if (Jackal.Optioninfo.RoleOption.GetSelection() is not 0 && Jackal.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
         if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
-        if (WaveCannonJackal.WaveCannonJackalOption.GetSelection() is not 0 && WaveCannonJackal.WaveCannonJackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickWaveCannonIntro);
+        if (WaveCannonJackal.Optioninfo.RoleOption.GetBool() && WaveCannonJackal.CanCreateSidekick.GetBool())
+        {
+            CreateRole(roleInfo: SidekickWaveCannon.Roleinfo);
+            CreateRole(roleInfo: Bullet.Roleinfo);
+            CreateRole(IntroData.JackalFriendsIntro);
+            CreateRole(IntroData.JackalIntro);
+        }
         if (CustomOptionHolder.PavlovsownerOption.GetSelection() is not 0) CreateRole(IntroData.PavlovsdogsIntro);
         if (CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection() is not 0) { CreateRole(IntroData.DictatorIntro); CreateRole(IntroData.RevolutionistIntro); }
         if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() is not 0) { CreateRole(IntroData.AssassinIntro); CreateRole(IntroData.MarlinIntro); }

@@ -124,6 +124,7 @@ LightColor,bright,明るい,亮,亮
 DarkerColor,darker,暗い,暗,暗
 
 # CustomOptions
+KillCoolTimeOption,Kill Cooldown,キルクールタイム,击杀冷却,擊殺冷卻
 CanUseVentOption,Can usevent,ベントを使用できる,可以使用管道,可以使用通風管道
 CanUseSaboOption,Can use sabotage,サボタージュを使用できる,可以使用破坏,可以使用破壞
 IsImpostorVisionOption,Impostor vision,インポスターの視界か,拥有内鬼视野,是否啟用內鬼視野
@@ -439,6 +440,7 @@ FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
 FinalStatusSantaSelf,Santa bomb!,ソリから転落,送错礼物,聖誕炸彈
 FinalStatusEvaporation,Evaporation,蒸発,,蒸發
+FinalStatusSacrifice,Sacrifice,殉死,,犧牲
 
 # MeetingStatus
 MeetingStatusCanNotCallEmergencyMeeting,EMERGENCY MEETINGS CANNOT\nBE OPENED DUE TO SETTINGS,緊急会議は\n設定により開けない,,根據設定\n緊急會議無法召開
@@ -679,7 +681,10 @@ EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗れば
 EvilGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nSuppress the crew from declaring role. Sometimes，you can prevent your crewmates from giving out information by killing them.\nDead men do not have mouths to feed.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\nクルーメイトの役職カミングアウトを抑制しましょう。時には討って情報を出される事を阻止しましょう。\n死人に口なし。,邪恶的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，邪恶的赌怪自杀。\n邪恶的赌怪可以击杀身份亮明的好人，并及时封锁他们的信息。\n只有死人能保守秘密。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n削減已暴露的強力船員陣營或中立陣營的數量，並在必要時，阻止情報遭洩漏。\n「只有死人不會開口。」
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测,邪惡的賭怪能否在一次會議中多次猜測
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数,邪惡的賭怪最大可猜測次數
-EvilGuesserCanCrewShotSetting,You Can hit Crewmates,クルーメイトを打てる,邪恶的赌怪可以猜测“船员”,邪惡的賭怪可以猜測船員陣營職業
+EvilGuesserCannotCrewShotSetting,You Cannot hit Crewmates,クルーメイトを打てない,,無法刺殺船員
+EvilGuesserCannotCelebrityShotSetting,You Cannot hit Celebrity,スターを打てない,,無法刺殺網紅
+EvilGuesserBecomeShotCelebritySetting,Limit the number of turns you can't hit a Celebrity,スターを打てないターンを制限する,,限制刺殺網紅所需回合數
+EvilGuesserBecomeShotCelebrityTurnSetting,Number of meetings required be able to hit a Celebrity,スターを打てるようになるまでに必要な会議数,,刺殺網紅所需會議數
 NextPage,Next Page,次のページへ,下一页,下一頁
 PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲
@@ -1318,14 +1323,29 @@ WaveCannonTitle1,Use the cannon and get the kill!,大砲を使用し、キルし
 WaveCannonChargeTime,Charge Time,チャージ時間,充能所需时间,充能所需時間
 WaveCannonButtonName,Wave Cannon,波動砲,开炮,開炮
 WaveCannonAnimationType,Animation Type,アニメーションタイプ,动画类型,動畫類型
-WaveCannonAnimTypeDefault,Default,通常,默认,通常
+WaveCannonAnimTypeTank,Tank,戦車,坦克,坦克
+WaveCannonAnimTypeCannon,Cannon,砲台,炮台,炮台
 WaveCannonAnimTypeSanta,Santa,サンタ,圣诞老人,聖誕老人
 IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
-WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班晉升時繼承重炮之力
+WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,昇格時、波動砲を受け継ぐ,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班晉升時繼承重炮之力
+WaveCannonJackalSidekickType,Sidekick Type,サイドキックの種類,跟班类型,跟班類型
+WaveCannonJackalSidekickTypeSidekick,Sidekick,サイドキック,跟班,跟班
+WaveCannonJackalSidekickTypeJackalFriends,Jackal Friends,ジャッカルフレンズ,狼族朋友,狼族朋友
+WaveCannonJackalSidekickTypeWaveCannonSidekick,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
+WaveCannonJackalSidekickTypeBulletSidekick,Bullet,弾,子弹,子彈
+WaveCannonJackalCreateBulletToJackal,When a jackal dies，will bullet promote to jackal?,弾が昇格できる,子弹是否可以晋升为狼族,子彈是否可以晉升為狼族
+WaveCannonJackalLoadBulletCoolTime,Bullet Load Cool Time,「装填」のクールタイム,子弹装填冷却时间,子彈裝填冷卻時間
+WaveCannonJackalBulletLoadedChargeTime,Charge Time at Bullet loaded,装填済みのチャージ時間,子弹装填后的充能时间,子彈裝填後的充能時間
 SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
 SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者,重炮之力的继承者,繼承重炮意志之人
+BulletName,Bullet,弾,,子彈
+BulletTitle1,Alright， boss， let's do this!,さあ、やっちまってくだせぇ親分！,,是的老大，我們來開幹吧！
+BulletDescription,At the cost of your own life， you can power up Jackal's Wave Cannon once.\nBurn bright.,自身が死亡する代わりに波動砲ジャッカルの波動砲を一度だけ強化することが出来ます。\n命を燃やせ。,,以自己的生命為代價，一次性強化狼族重炮手的重炮。\n燃燒生命吧。
+BulletLoadBulletButtonName,Load Bullet,装填,装填,裝填
+BulletMeetingDisabledForBulletCharging,I think will come big wave...\nI can't open meeting for frightening...,大きな波動が飛んできそうで\n怖くて会議が開けない...,,巨大的波動即將襲來...\n我的雙手情不自禁地顫抖著...
+BulletMeetingDisabledForBulletShooting,Big wave is coming...\nI can't open meeting for frightening...,大きな波動の音が響き渡っている...\n怖くて会議が開けない...,,巨大的波動即將襲來...\n我還需要開會嗎...
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
 CrackerDescription,By using the ability called "Crack"， you can remove the opponent from both Admin and Vital.\nOn Vital， the time of death is shifted， and with Admin alone， you won't be able to locate the body.\nHowever， if you fail to kill the target you used it on， you might get exposed.,「クラック」という能力を使うことで、相手をアドミンやバイタルから消すことが出来ます。\nバイタル上では死亡タイミングがズレ、アドミンだけでは死体位置が分からなくなります。\nただし、使った相手をキルしそこなうと、バレてしまうかもしれません。,神隐者属于内鬼阵营，可以让一名玩家在管理地图与生命监测装置上消失一段时间。\n对于那名玩家：生命监测装置上会显示错乱的死亡时间，管理地图上无法定位该玩家的位置。\n需要注意：若该玩家没有被击杀，神隐者有可能会暴露。,神隱者可以透過使用技能「神隱」來讓對方無法在管理員地圖與生命跡象檢測器上被觀測到。\n在生命跡象檢測器上，死亡時間將會被改變，同時在管理員地圖上，屍體位置將會消失。\n但是，如果神隱者沒有成功擊殺使用技能的對象，神隱者可能會被發現。
@@ -1501,6 +1521,7 @@ DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}
 WiseManName,WiseMan,賢者,贤者,賢者
 WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを守ろう,用神圣之盾保护船员,用神聖之盾保護船員
 WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
+WiseManEnableWiseManWalk,Enable WiseMan walk,賢者ステップを有効にする,启用贤者步行,啟用賢者步行
 NiceMechanicName,NiceMechanic,ナイスメカニック,正义的迁管工,正義的機械師
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！,改造飞船上的管道,改造飛船上的管道
 NiceMechanicCombIntro1,Who is disturbing this ship?,この船を乱すのは誰だ？,什么人在给飞船搞破坏？,誰在搗亂這艘飛船？
@@ -1594,6 +1615,7 @@ PteranodonDescription,This role allows the user to move between the right and le
 PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,飛躍！
 BlackHatHackerName,Black Hat Hacker,ブラックハットハッカー,黑帽客,黑帽駭客
 BlackHatHackerTitle1,Do you have an antivirus?,貴方はウイルス対策ちゃんとしてる？,可要准备好防火墙哦,你有安裝防毒軟體嗎？
+BlackHatHackerTitle2,It's my job to exploit vulnverabilities,きじゃくせいを突くのが仕事,,利用漏洞就是我的工作
 BlackHatHackerDescription,I need everyone's information to stay alive... So I will infect the virus...\nIf you infect everyone's phone with the virus，you win!\nIn an infected state，the virus infects surrounding non-infected persons.\nWhen the infection level is above the level at which self-propagation begins，\nThe disease progresses even if there are no infected persons around.,生きるために全員の情報が必要だ...だから僕はウイルスを感染させる...\n全員のスマホにウイルスを感染させたら勝利となります\n感染状態になると周囲の非感染者にウイルスが感染します\n自己増殖が開始される感染度以上の感染度になった場合、\n周りに感染者が居なくとも進行します,为了活下去，我要得到全船人的信息……我研发多年的病毒终于起作用了……\n\n若黑帽客用电脑病毒感染了所有玩家，黑帽客获胜。\n在感染电脑病毒的玩家一定范围内的玩家会以一定速率累积病毒感染进度。\n当病毒感染进度到达一定值时，病毒将开始自我繁殖，\n即便不处于感染病毒的玩家一定范围内，病毒感染进度也将累积。,為了生存盜取他人的資訊，讓他人感染病毒！\n若駭入了所有人的手機，則取得勝利。\n當感染者在被駭入狀態下，病毒會自動駭入周圍的非感染者。\n當感染度達到閾值時，病毒將自我繁殖，即使周圍沒有感染者病毒也會累積感染度。
 BlackHatHackerHackCoolTimeOption,Hack Cool Time,ハックのクールタイム,植入病毒冷却,駭入的冷卻時間
 BlackHatHackerHackCountableOption,Number of hacks possible,ハック可能回数,最大植入病毒次数,駭入的使用次數
@@ -1860,6 +1882,23 @@ PhosphorusLightingCooltime,Lighting cooltime,点灯のクールタイム
 PhosphorusLightRange,Light range,ランタンの範囲
 PhosphorusPutButtonName,Put,設置
 PhosphorusLightingButtonName,Lighting,点灯
+BodyBuilderName,Bodybuilder,ボディビルダー,,健美達人
+BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！,,看看我美麗的曲線！
+BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！,,健美達人屬於船員陣營。\n健美達人的所有任務都是舉重任務。\n完成任務後，可以進行肌肉展示。\n肌肉秀對其他玩家可見。
+BodyBuilderButtonName,Posing,ポージング,,秀肌肉
+BodyBuilderChangeAllTaskLiftWeights,Make all tasks lift weights task,全タスクを筋トレタスクに置き換える,,將所有任務更改為舉重任務
+OwlName,Owl,フクロウ,,夜梟
+OwlTitle1,The one who flapped his wings in the dark,暗闇に羽ばたきし者,,在黑暗中鼓動翅膀的人
+OwlDescription,First， let’s choose a burrow.\nThen， let’s hide the killed body in that burrow.\nHowever， both killing and concealing can only be done in the darkness....\n\nI am apparently called the Night Hunter.\nLet’s live up to that name and go hunting.\nBut beware of the darkness....\nI might be there.,まずは巣穴を決めましょう。\nそしたらキルした死体をその巣穴に隠してしまいましょう。\nただし、キルも隠すのも出来るのは暗闇の中だけ....\n\n私は夜の狩人と呼ばれているらしい。\nその名に恥じない、狩りをしようじゃないか。\n暗闇にはお気をつけて....\n私がいるかもしれないからね....,,夜梟屬於中立陣營。\n找到一個巢穴，並將屍體藏於其中。\n然而，無論是殺人和隱藏都只能在黑暗中進行....\n\n我的外號是夜晚的殺手。\n為了配上這個名字而去狩獵吧。\n但請小心，黑暗中不只有你能看見...
+OwlImposterVisibilityDuringBlackout,Imposter visibility during blackout,停電時インポスターの視野になる,,停電時擁有內鬼的視野
+OwlCanSpecialBlackoutDeaebodyCount,Number of bodies that will be able to use special blackout,特殊停電を使えるようになる死体数,,啟用黑幕降臨所需的屍體數
+SpecialBlackoutCool,Cool time for special power outages,特殊停電のクールタイム,,黑幕降臨的冷卻時間
+SpecialBlackoutTime,Effect duration of special power outages,特殊停電の効果時間,,黑幕降臨的持續時間
+OwlNestBuildingButton,Nest-building,巣作り,,築巢
+OwlTransportButton,Transport,運搬,,搬運
+OwlHideDeadBodyButton,Hide,隠す,,隱藏
+OwlSpecialBlackoutButton,Special Blackout,特殊停電,,黑幕降臨
+Kill,Kill,キル,,擊殺
 
 #NewRoleTranslation
 
@@ -2064,3 +2103,14 @@ SNRWebTransmissionConditionHostDependency,Allow guests to send results when the 
 
 # CustomButton
 AbilityButtonCountTextFormater,Remaining {0} times,残り{0}回,剩余{0}次,剩餘{0}次
+
+# QuoteMod
+QuoteModName,Reference source,参考元,,引用來源
+QuoteModaulibhaltnet,au.libhalt.net,au.libhalt.net,,au.libhalt.net
+QuoteModExtremeRoles,Extreme Roles,Extreme Roles,,Extreme Roles
+QuoteModNebulaOnTheShip,<color=#9579ce>Nebula On The Ship</color>,<color=#9579ce>Nebula On The Ship</color>,,<color=#9579ce>Nebula On The Ship</color>
+QuoteModSuperNewRoles,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>,,<color=#ffa500>超</color><color=#ff0000>新</color><color=#00ff00>職業</color>
+QuoteModTheOtherRoles,<color=#ff351f>The Other Roles</color>,<color=#ff351f>The Other Roles</color>,,<color=#ff351f>The Other Roles</color>
+QuoteModTheOtherRolesGM,<color=#ff351f>The Other Roles GM</color>,<color=#ff351f>The Other Roles GM</color>,,<color=#ff351f>The Other Roles GM</color>
+QuoteModTheOtherRolesGMH,<color=#ff351f>The Other Roles GM H</color>,<color=#ff351f>The Other Roles GM H</color>,,<color=#ff351f>The Other Roles GM H</color>
+QuoteModTownOfUsR,<color=#00ff00>Town Of UsR</color>,<color=#00ff00>Town Of UsR</color>,,<color=#00ff00>Town Of UsR</color>
