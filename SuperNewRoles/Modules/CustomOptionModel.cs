@@ -9,15 +9,18 @@ using AmongUs.GameOptions;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using static SuperNewRoles.Modules.CustomRegulation;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Modules;
 
@@ -91,6 +94,7 @@ public class CustomOption
     public bool isHidden;
     public RoleId RoleId;
     public int openSelection { get; }
+    public bool IsToggle { get; }
     public Func<bool> CanShowFunc { get; }
     public bool HasCanShowAction { get; }
     public bool CanShowByFunc;
@@ -131,7 +135,7 @@ public class CustomOption
         return optionids.TryGetValue(id, out CustomOption opt) ? opt : null;
     }
 
-    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null, bool isToggle = false)
     {
         this.id = Id;
         this.isSHROn = IsSHROn;
@@ -146,6 +150,7 @@ public class CustomOption
         this.isHidden = isHidden;
         this.RoleId = roleId.HasValue ? roleId.Value : RoleId.DefaultRole;
         this.openSelection = openSelection;
+        this.IsToggle = isToggle;
 
         this.CanShowFunc = canShow;
         this.HasCanShowAction = canShow != null;
@@ -255,7 +260,7 @@ public class CustomOption
 
     public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, openSelection, canShow: canShow);
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, openSelection, canShow: canShow, isToggle: true);
     }
 
     public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1, bool isHidden = false)
@@ -569,19 +574,6 @@ public class CustomOptionBlank : CustomOption
 
 }
 
-[HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Close))]
-public static class GameSettingMenuClosePatch
-{
-    public static void Postfix()
-    {
-        if (CustomOption.IsValuesUpdated)
-        {
-            OptionSaver.WriteNowOptions();
-            CustomOption.IsValuesUpdated = false;
-        }
-    }
-}
-
 [HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
 class RoleOptionsDataGetNumPerGamePatch
 {
@@ -595,317 +587,6 @@ class RoleOptionsDataGetNumPerGamePatch
 
         if (Mode.ModeHandler.IsBlockGuardianAngelRole()) __result = 0;
 
-    }
-}
-
-[HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
-class GameSettingMenuStartPatch2
-{
-    public static void Postfix(GameSettingMenu __instance)
-    {
-        // __instance.Tabs.SetActive(true);
-
-    }
-}
-
-[HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.CreateSettings))]
-class GameOptionsMenuStartPatch
-{
-    public static void Postfix(GameOptionsMenu __instance)
-    {
-        if (GameObject.Find("SNRSettings") != null)
-        { // Settings setup has already been performed, fixing the title of the tab and returning
-            GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingSuperNewRoles"));
-            return;
-        }
-        if (GameObject.Find("ImpostorSettings") != null)
-        {
-            GameObject.Find("ImpostorSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingImpostor"));
-            return;
-        }
-        if (GameObject.Find("NeutralSettings") != null)
-        {
-            GameObject.Find("NeutralSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingNeutral"));
-            return;
-        }
-        if (GameObject.Find("CrewmateSettings") != null)
-        {
-            GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingCrewmate"));
-            return;
-        }
-        if (GameObject.Find("modifierSettings") != null)
-        {
-            GameObject.Find("modifierSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("modifierSettings"));
-            return;
-        }
-        if (GameObject.Find("matchTagSettings") != null)
-        {
-            GameObject.Find("matchTagSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingMatchTag"));
-            return;
-        }
-        if (GameObject.Find("RegulationSettings") != null)
-        {
-            GameObject.Find("RegulationSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingRegulation"));
-            return;
-        }
-        // Setup TOR tab
-        StringOption template = GameObject.Find("Main Camera/PlayerOptionsMenu(Clone)/Game Settings/GameGroup/SliderInner/KillDistance").GetComponent<StringOption>();
-        Logger.Info($"{template == null}", "nullチェック");
-        if (template == null) return;
-        var gameSettings = GameObject.Find("Main Camera/PlayerOptionsMenu(Clone)/Game Settings/");
-        var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
-
-        var snrSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var snrMenu = snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        snrSettings.name = "SNRSettings";
-        snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "GenericSetting";
-
-        var impostorSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var impostorMenu = impostorSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        impostorSettings.name = "ImpostorSettings";
-        impostorSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "ImpostorSetting";
-
-        var neutralSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var neutralMenu = neutralSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        neutralSettings.name = "NeutralSettings";
-        neutralSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "NeutralSetting";
-
-        var crewmateSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var crewmateMenu = crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        crewmateSettings.name = "CrewmateSettings";
-        crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "CrewmateSetting";
-
-        var modifierSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var modifierMenu = modifierSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        modifierSettings.name = "modifierSettings";
-        modifierSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "modifierSetting";
-
-        var matchTagSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var matchTagMenu = matchTagSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        matchTagSettings.name = "matchTagSettings";
-        matchTagSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "matchTagSetting";
-
-        var RegulationSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var RegulationMenu = RegulationSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        RegulationSettings.name = "RegulationSettings";
-        RegulationSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "RegulationSetting";
-
-        var roleTab = GameObject.Find("RoleTab");
-        var gameTab = GameObject.Find("GameTab");
-
-        var snrTab = UnityEngine.Object.Instantiate(roleTab, roleTab.transform.parent);
-        var snrTabHighlight = snrTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        snrTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
-
-        var impostorTab = UnityEngine.Object.Instantiate(roleTab, snrTab.transform);
-        var impostorTabHighlight = impostorTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        impostorTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Impostor.png", 100f);
-        impostorTab.name = "ImpostorTab";
-
-        var neutralTab = UnityEngine.Object.Instantiate(roleTab, impostorTab.transform);
-        var neutralTabHighlight = neutralTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        neutralTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Neutral.png", 100f);
-        neutralTab.name = "NeutralTab";
-
-        var crewmateTab = UnityEngine.Object.Instantiate(roleTab, neutralTab.transform);
-        var crewmateTabHighlight = crewmateTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
-        crewmateTab.name = "CrewmateTab";
-
-        var modifierTab = UnityEngine.Object.Instantiate(roleTab, crewmateTab.transform);
-        var modifierTabHighlight = modifierTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        modifierTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Modifier.png", 100f);
-        modifierTab.name = "modifierTab";
-
-        var matchTagTab = UnityEngine.Object.Instantiate(roleTab, modifierTab.transform);
-        var matchTagTabHighlight = matchTagTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        matchTagTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
-        matchTagTab.name = "matchTagTab";
-
-        var RegulationTab = UnityEngine.Object.Instantiate(roleTab, matchTagTab.transform);
-        var RegulationTabHighlight = RegulationTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        RegulationTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
-        RegulationTab.name = "RegulationTab";
-
-        // Position of Tab Icons
-        gameTab.transform.position += Vector3.left * 3.5f;
-        roleTab.transform.position += Vector3.left * 3.75f;
-        snrTab.transform.position += Vector3.left * 2.75f;
-        impostorTab.transform.localPosition = Vector3.right * 0.95f;
-        neutralTab.transform.localPosition = Vector3.right * 0.825f;
-        crewmateTab.transform.localPosition = Vector3.right * 0.825f;
-        modifierTab.transform.localPosition = Vector3.right * 0.825f;
-        matchTagTab.transform.localPosition = Vector3.right * 0.95f;
-        RegulationTab.transform.localPosition = Vector3.right * 0.825f;
-
-        var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, modifierTab, matchTagTab, RegulationTab };
-        for (int i = 0; i < tabs.Length; i++)
-        {
-            var button = tabs[i].GetComponentInChildren<PassiveButton>();
-            int copiedIndex = i;
-            button.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-            button.OnClick.AddListener((UnityAction)(() =>
-            {
-                gameSettingMenu.GameSettingsTab.gameObject.SetActive(false);
-                gameSettingMenu.RoleSettingsTab.gameObject.SetActive(false);
-                snrSettings.gameObject.SetActive(false);
-                impostorSettings.gameObject.SetActive(false);
-                neutralSettings.gameObject.SetActive(false);
-                crewmateSettings.gameObject.SetActive(false);
-                modifierSettings.gameObject.SetActive(false);
-                matchTagSettings.gameObject.SetActive(false);
-                RegulationSettings.gameObject.SetActive(false);
-                // gameSettingMenu.GameSettingsHightlight.enabled = false;
-                // gameSettingMenu.RolesSettingsHightlight.enabled = false;
-                snrTabHighlight.enabled = false;
-                impostorTabHighlight.enabled = false;
-                neutralTabHighlight.enabled = false;
-                crewmateTabHighlight.enabled = false;
-                modifierTabHighlight.enabled = false;
-                matchTagTabHighlight.enabled = false;
-                RegulationTabHighlight.enabled = false;
-                if (copiedIndex == 0)
-                {
-                    gameSettingMenu.GameSettingsTab.gameObject.SetActive(true);
-                    // gameSettingMenu.GameSettingsHightlight.enabled = true;
-                }
-                else if (copiedIndex == 1)
-                {
-                    gameSettingMenu.RoleSettingsTab.gameObject.SetActive(true);
-                    // gameSettingMenu.RolesSettingsHightlight.enabled = true;
-                }
-                else if (copiedIndex == 2)
-                {
-                    snrSettings.gameObject.SetActive(true);
-                    snrTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 3)
-                {
-                    impostorSettings.gameObject.SetActive(true);
-                    impostorTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 4)
-                {
-                    neutralSettings.gameObject.SetActive(true);
-                    neutralTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 5)
-                {
-                    crewmateSettings.gameObject.SetActive(true);
-                    crewmateTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 6)
-                {
-                    modifierSettings.gameObject.SetActive(true);
-                    modifierTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 7)
-                {
-                    matchTagSettings.gameObject.SetActive(true);
-                    matchTagTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 8)
-                {
-                    RegulationSettings.gameObject.SetActive(true);
-                    RegulationTabHighlight.enabled = true;
-                }
-            }));
-        }
-
-        foreach (OptionBehaviour option in snrMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in impostorMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in neutralMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in crewmateMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in modifierMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in matchTagMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in RegulationMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        List<OptionBehaviour> snrOptions = new();
-        List<OptionBehaviour> impostorOptions = new();
-        List<OptionBehaviour> neutralOptions = new();
-        List<OptionBehaviour> crewmateOptions = new();
-        List<OptionBehaviour> modifierOptions = new();
-        List<OptionBehaviour> matchTagOptions = new();
-
-        List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, modifierMenu.transform, matchTagMenu.transform, RegulationMenu.transform };
-        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions, modifierOptions, matchTagOptions };
-
-        for (int i = 0; i < CustomOption.options.Count; i++)
-        {
-            CustomOption option = CustomOption.options[i];
-            if (option.optionBehaviour == null)
-            {
-                StringOption stringOption = UnityEngine.Object.Instantiate(template, menus[(int)option.type]);
-                optionBehaviours[(int)option.type].Add(stringOption);
-                stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                stringOption.TitleText.text = option.name;
-                stringOption.Value = stringOption.oldValue = option.selection;
-                stringOption.ValueText.text = option.selections[option.selection].ToString();
-
-                option.optionBehaviour = stringOption;
-            }
-            option.optionBehaviour.gameObject.SetActive(true);
-        }
-        Logger.Info("SNROption - matchTagOption通過");
-
-        foreach (var Regulation in CustomRegulation.RegulationData.Regulations)
-        {
-            if (Regulation.optionBehaviour == null)
-            {
-                StringOption stringOption = UnityEngine.Object.Instantiate(template, RegulationMenu.transform);
-                stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                stringOption.TitleText.text = Regulation.title;
-                stringOption.Value = stringOption.oldValue = 0;
-                stringOption.ValueText.text = ModTranslation.GetString("optionOff");
-
-                Regulation.optionBehaviour = stringOption;
-            }
-            Regulation.optionBehaviour.gameObject.SetActive(true);
-        }
-        Logger.Info("RegulationOption通過");
-
-        snrMenu.Children = snrOptions.ToIl2CppList();
-        snrSettings.gameObject.SetActive(false);
-
-        impostorMenu.Children = impostorOptions.ToIl2CppList();
-        impostorSettings.gameObject.SetActive(false);
-
-        neutralMenu.Children = neutralOptions.ToIl2CppList();
-        neutralSettings.gameObject.SetActive(false);
-
-        crewmateMenu.Children = crewmateOptions.ToIl2CppList();
-        crewmateSettings.gameObject.SetActive(false);
-
-        modifierMenu.Children = modifierOptions.ToIl2CppList();
-        modifierSettings.gameObject.SetActive(false);
-
-        matchTagSettings.gameObject.SetActive(false);
-
-        RegulationSettings.gameObject.SetActive(false);
-
-        var numImpostorsOption = __instance.Children.FirstOrDefault(x => x.name == "NumImpostors").TryCast<NumberOption>();
-        if (numImpostorsOption != null) numImpostorsOption.ValidRange = new FloatRange(0f, 15f);
-
-        var PlayerSpeedModOption = __instance.Children.FirstOrDefault(x => x.name == "PlayerSpeed").TryCast<NumberOption>();
-        if (PlayerSpeedModOption != null) PlayerSpeedModOption.ValidRange = new FloatRange(-5.5f, 5.5f);
-
-        var killCoolOption = __instance.Children.FirstOrDefault(x => x.name == "KillCooldown").TryCast<NumberOption>();
-        if (killCoolOption != null) killCoolOption.ValidRange = new FloatRange(2.5f, 60f);
-
-        var commonTasksOption = __instance.Children.FirstOrDefault(x => x.name == "NumCommonTasks").TryCast<NumberOption>();
-        if (commonTasksOption != null) commonTasksOption.ValidRange = new FloatRange(0f, 4f);
-
-        var shortTasksOption = __instance.Children.FirstOrDefault(x => x.name == "NumShortTasks").TryCast<NumberOption>();
-        if (shortTasksOption != null) shortTasksOption.ValidRange = new FloatRange(0f, 23f);
-
-        var longTasksOption = __instance.Children.FirstOrDefault(x => x.name == "NumLongTasks").TryCast<NumberOption>();
-        if (longTasksOption != null) longTasksOption.ValidRange = new FloatRange(0f, 15f);
     }
 }
 
@@ -1162,28 +843,6 @@ static class GameOptionsMenuUpdatePatch
             }
         }
         __instance.GetComponentInParent<Scroller>().ContentYBounds.max = -4.0f + numItems * 0.5f;
-    }
-}
-
-[HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
-class GameSettingMenuStartPatch
-{
-    public static void Prefix(GameSettingMenu __instance)
-    {
-        __instance.GameSettingsTab.HideForOnline = new Transform[] { };
-    }
-
-    public static void Postfix(GameSettingMenu __instance)
-    {
-        // Setup mapNameTransform
-        foreach (OptionBehaviour i in __instance.GameSettingsTab.Children)
-        {
-            float num = -0.5f;
-            if (i.name.Equals("NumImpostors", StringComparison.OrdinalIgnoreCase)) num = -0.5f;
-            if (i.name.Equals("ResetToDefault", StringComparison.OrdinalIgnoreCase)) num = 0f;
-            i.transform.position += new Vector3(0, num, 0);
-        }
-        __instance.GameSettingsTab.scrollBar.ContentYBounds.max += 0.5F;
     }
 }
 
@@ -1471,6 +1130,76 @@ public static class GameOptionsNextPagePatch
             // ページが最大ページを超えたら, ページを0に戻す
             if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage)
                 SuperNewRolesPlugin.optionsPage = 0;
+        }
+    }
+}
+
+[HarmonyPatch(typeof(GameSettingMenu))]
+public static class GameSettingMenuPatch
+{
+    public static ModSettingsMenu ModSettingsTab;
+    public static PassiveButton ModSttingsButton;
+
+    [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPrefix]
+    public static void StartPrefix(GameSettingMenu __instance) => __instance.GameSettingsTab.HideForOnline = new Transform[] { };
+
+    [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPostfix]
+    public static void Postfix(GameSettingMenu __instance)
+    {
+        __instance.MenuDescriptionText.transform.parent.gameObject.SetActive(false);
+        __instance.GamePresetsButton.transform.position += new Vector3(0, 0.637f);
+        __instance.GameSettingsButton.transform.position += new Vector3(0, 0.637f);
+        __instance.RoleSettingsButton.transform.position += new Vector3(0, 0.637f);
+        __instance.GameSettingsTab.scrollBar.ContentYBounds.max += 0.5f;
+
+        ModSettingsTab = new GameObject("MOD Tab").AddComponent<ModSettingsMenu>();
+        ModSettingsTab.transform.SetParent(__instance.RoleSettingsTab.transform.parent);
+        ModSettingsTab.transform.localPosition = new(0f, 0.16f, -4f);
+        ModSettingsTab.gameObject.layer = 5;
+
+        GameObject mod_settings_button = Object.Instantiate(__instance.RoleSettingsButton.gameObject, __instance.RoleSettingsButton.transform.parent);
+        mod_settings_button.name = "ModSttingsButton";
+        mod_settings_button.transform.position -= new Vector3(0, 0.637f);
+        new LateTask(() => mod_settings_button.transform.Find("FontPlacer/Text_TMP").GetComponent<TextMeshPro>().text = ModTranslation.GetString("ModSttingsButtonText"), 0f, "GameSettingMenu");
+        ModSttingsButton = mod_settings_button.GetComponent<PassiveButton>();
+        (ModSttingsButton.OnClick = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: false); });
+        (ModSttingsButton.OnMouseOver = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: true); });
+    }
+
+    [HarmonyPatch(nameof(GameSettingMenu.Close)), HarmonyPostfix]
+    public static void ClosePostfix()
+    {
+        if (CustomOption.IsValuesUpdated)
+        {
+            OptionSaver.WriteNowOptions();
+            CustomOption.IsValuesUpdated = false;
+        }
+    }
+
+    [HarmonyPatch(nameof(GameSettingMenu.ChangeTab)), HarmonyPostfix]
+    public static void ChangeTabPostfix(int tabNum, bool previewOnly)
+    {
+        if ((previewOnly && Controller.currentTouchType == Controller.TouchType.Joystick) || !previewOnly)
+        {
+            ModSettingsTab.gameObject.SetActive(false);
+            ModSttingsButton.SelectButton(false);
+
+            switch (tabNum)
+            {
+                case 3:
+                    ModSettingsTab.gameObject.SetActive(true);
+                    break;
+            }
+        }
+        if (!previewOnly)
+        {
+            switch (tabNum)
+            {
+                case 3:
+                    ModSettingsTab.OpenMenu();
+                    ModSttingsButton.SelectButton(true);
+                    break;
+            }
         }
     }
 }

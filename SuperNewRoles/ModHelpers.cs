@@ -1176,6 +1176,7 @@ public static class ModHelpers
         data.Shuffle();
         return data;
     }
+    public static void AddListener(this UnityEngine.Events.UnityEvent @event, Action action) => @event.AddListener(action);
 }
 public static class CreateFlag
 {
