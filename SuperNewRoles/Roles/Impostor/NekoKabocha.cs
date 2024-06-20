@@ -20,7 +20,7 @@ public static class NekoKabocha
     private static CustomOption CanRevengeExiled;
     public static void SetupCustomOptions()
     {
-        NekoKabochaOption = new(OptionId, true, CustomOptionType.Impostor, "NekoKabochaName", color, 1);
+        NekoKabochaOption = SetupCustomRoleOption(OptionId, true, RoleId.NekoKabocha, CustomOptionType.Impostor);
         NekoKabochaPlayerCount = Create(OptionId + 1, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NekoKabochaOption);
         KillCooldown = Create(OptionId + 2, true, CustomOptionType.Impostor, "KillCooldown", 40f, 0f, 120f, 2.5f, NekoKabochaOption, format: "unitSeconds");
         CanRevengeCrewmate = Create(OptionId + 3, true, CustomOptionType.Impostor, "CanRevengeCrewmate", true, NekoKabochaOption);

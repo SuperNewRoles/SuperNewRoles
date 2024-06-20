@@ -497,7 +497,7 @@ public class CustomRoleOption : CustomOption
         {
             try
             {
-                IntroData? intro = IntroData.Intros.Values.FirstOrDefault((_) =>
+                IntroData intro = IntroData.Intros.Values.FirstOrDefault((_) =>
                 {
                     return _.NameKey + "Name" == name;
                 });
@@ -522,8 +522,7 @@ public class CustomRoleOption : CustomOption
         if (!RoleOptions.TryAdd(RoleId, this))
             Logger.Info(RoleId.ToString() + "を追加できんかったー：" + name);
         this.isHidden = isHidden;
-        if (max > 1)
-            countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
+        if (max > 1) countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
     }
 }
 public class GameSettingsScale

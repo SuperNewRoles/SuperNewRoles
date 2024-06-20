@@ -1275,7 +1275,7 @@ public class CustomOptionHolder
         SmasherPlayerCount = Create(205101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
         SmasherKillCoolTime = Create(205102, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
 
-        WerewolfOption = new(205200, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
+        WerewolfOption = SetupCustomRoleOption(205200, false, RoleId.Werewolf, CustomOptionType.Impostor);
         WerewolfPlayerCount = Create(205201, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
         // SetupImpostorCustomOptions
