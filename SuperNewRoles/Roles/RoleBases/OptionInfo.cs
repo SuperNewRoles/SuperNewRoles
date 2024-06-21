@@ -140,12 +140,12 @@ public class OptionInfo
             OptionCreater.Invoke();
     }
     //RoleIdからOptionInfoを取得する
-    public static OptionInfo GetOptionInfo(RoleId role)
+    public static OptionInfo GetOptionInfo(RoleId role, bool error = true)
     {
         // TryGetValutを使う
         if (!OptionInfos.TryGetValue(role, out var optionInfo))
         {
-            Logger.Error($"OptionInfoが見つかりませんでした。Role:{role}", "GetOptionInfo");
+            if (error) Logger.Error($"OptionInfoが見つかりませんでした。Role:{role}", "GetOptionInfo");
             return null;
         }
         return optionInfo;

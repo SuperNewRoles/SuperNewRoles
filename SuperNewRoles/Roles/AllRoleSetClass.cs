@@ -644,11 +644,11 @@ class AllRoleSetClass
     }
 
     #region GetPlayerCount
-    public static int GetPlayerCount(RoleId roleData) => GetPlayerCountOption(roleData)?.GetInt() ?? 0;
+    public static int GetPlayerCount(RoleId roleData, bool error = false) => GetPlayerCountOption(roleData, error)?.GetInt() ?? 0;
 
-    public static CustomOption GetPlayerCountOption(RoleId roleData)
+    public static CustomOption GetPlayerCountOption(RoleId roleData, bool error = true)
     {
-        OptionInfo optionInfo = OptionInfo.GetOptionInfo(roleData);
+        OptionInfo optionInfo = OptionInfo.GetOptionInfo(roleData, error);
         if (optionInfo != null) return optionInfo.GetPlayerCountOption;
         return roleData switch
         {
@@ -806,6 +806,7 @@ class AllRoleSetClass
             RoleId.Spider => Spider.CustomOptionData.PlayerCount,
             RoleId.Crook => Crook.CustomOptionData.PlayerCount,
             RoleId.Frankenstein => Frankenstein.FrankensteinPlayerCount,
+            RoleId.FastMaker => CustomOptionHolder.FastMakerPlayerCount,
             // プレイヤーカウント
             _ => null,
         };
