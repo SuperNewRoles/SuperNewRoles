@@ -196,12 +196,12 @@ public class ModSettingsMenu : MonoBehaviour
         RoleChancesSettings.transform.localPosition = new(0f, 0f, -5f);
         SetY = FirstY;
         List<CustomRoleOption> role_options = CustomRoleOption.RoleOptions.Values.ToList();
+        CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
         CreateCategoryHeaderEditRole(
             RoleChancesSettings.transform,
             FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.CrewmateRolesHeader),
             (Palette.CrewmateRoleHeaderTextBlue, Palette.CrewmateRoleHeaderBlue, Palette.CrewmateRoleHeaderVeryDarkBlue, Palette.CrewmateRoleHeaderDarkBlue)
         );
-        CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
         SetY -= 0.092f;
         foreach (CustomRoleOption role in role_options.FindAll(x => x.type == CustomOptionType.Crewmate))
         {
@@ -288,7 +288,8 @@ public class ModSettingsMenu : MonoBehaviour
         ModStringOption mod = obj.gameObject.AddComponent<ModStringOption>();
         mod.TitleText = obj.TitleText;
         mod.ValueText = obj.ValueText;
-        obj.transform.localPosition = new(-0.15f, SetY -= 0.43f, -2f);
+        mod.TitleText.alignment = TextAlignmentOptions.Center;
+        obj.transform.localPosition = new(1f, SetY -= 0.5f, -2f);
         GameObject.Destroy(obj);
         mod.InitializeByMod(option);
         return mod;
