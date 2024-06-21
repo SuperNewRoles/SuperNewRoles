@@ -28,16 +28,16 @@ public class ModSettingsMenu : MonoBehaviour
     public Scroller ScrollBar;
     public UiElement BackButton;
     public UiElement DefaultButtonSelected = null;
-    public UiElement[] ControllerSelectable = new UiElement[0];
-    public UiElement[] RoleChancesTabSelectables = new UiElement[0];
-    public UiElement[] GenericTabSelectables;
-    public UiElement[] ImpostorTabSelectables;
-    public UiElement[] NeutralTabSelectables;
-    public UiElement[] CrewmateTabSelectables;
-    public UiElement[] ModifierTabSelectables;
-    public UiElement[] MatchTagSelectables;
+    public List<UiElement> ControllerSelectable;
+    public List<UiElement> RoleChancesTabSelectables;
+    public List<UiElement> GenericTabSelectables;
+    public List<UiElement> ImpostorTabSelectables;
+    public List<UiElement> NeutralTabSelectables;
+    public List<UiElement> CrewmateTabSelectables;
+    public List<UiElement> ModifierTabSelectables;
+    public List<UiElement> MatchTagSelectables;
 
-    public RoleOptionSetting[] RoleChances;
+    public List<RoleOptionSetting> RoleChances;
 
     public readonly float FirstY = 1.312f;
     public float SetY;
@@ -48,10 +48,18 @@ public class ModSettingsMenu : MonoBehaviour
     public NumberOption NumberOptionOrigin;
     public StringOption StringOptionOrigin;
 
-    public Color CrewColor = new(0.4706f, 0.8f, 0.9255f, 1f);
-
     public void Start()
     {
+        ControllerSelectable = new();
+        RoleChancesTabSelectables = new();
+        GenericTabSelectables = new();
+        ImpostorTabSelectables = new();
+        NeutralTabSelectables = new();
+        CrewmateTabSelectables = new();
+        ModifierTabSelectables = new();
+        MatchTagSelectables = new();
+        RoleChances = new();
+
         GameSettingMenu menu = GameSettingMenu.Instance;
         RolesSettingsMenu roles = menu.RoleSettingsTab;
         CategoryHeaderEditRoleOrigin = roles.categoryHeaderEditRoleOrigin;
@@ -193,31 +201,43 @@ public class ModSettingsMenu : MonoBehaviour
             FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.CrewmateRolesHeader),
             (Palette.CrewmateRoleHeaderTextBlue, Palette.CrewmateRoleHeaderBlue, Palette.CrewmateRoleHeaderVeryDarkBlue, Palette.CrewmateRoleHeaderDarkBlue)
         );
-        /*
         SetY -= 0.092f;
         foreach (CustomRoleOption role in role_options.FindAll(x => x.type == CustomOptionType.Crewmate))
-            if (!role.IsToggle) CreateRoleOptionSetting(RoleChancesSettings.transform, role, Palette.CrewmateRoleHeaderBlue);
-        //*/
+        {
+            if (role.IsToggle) continue;
+            RoleOptionSetting option = CreateRoleOptionSetting(RoleChancesSettings.transform, role, Palette.CrewmateRoleHeaderBlue);
+            RoleChances.Add(option);
+            foreach (UiElement element in option.ControllerSelectable)
+                RoleChancesTabSelectables.Add(element);
+        }
         CreateCategoryHeaderEditRole(
             RoleChancesSettings.transform,
             FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.ImpostorRolesHeader),
             (Palette.ImpostorRoleHeaderTextRed, Palette.ImpostorRoleHeaderRed, Palette.ImpostorRoleHeaderVeryDarkRed, Palette.ImpostorRoleHeaderDarkRed)
         );
-        /*
         SetY -= 0.092f;
         foreach (CustomRoleOption role in role_options.FindAll(x => x.type == CustomOptionType.Impostor))
-            if (!role.IsToggle) CreateRoleOptionSetting(RoleChancesSettings.transform, role, Palette.ImpostorRoleHeaderRed);
-        //*/
+        {
+            if (role.IsToggle) continue;
+            RoleOptionSetting option = CreateRoleOptionSetting(RoleChancesSettings.transform, role, Palette.ImpostorRoleHeaderRed);
+            RoleChances.Add(option);
+            foreach (UiElement element in option.ControllerSelectable)
+                RoleChancesTabSelectables.Add(element);
+        }
         CreateCategoryHeaderEditRole(
             RoleChancesSettings.transform,
             ModTranslation.GetString("NeutralRolesHeader"),
             (new(0.306f, 0.306f, 0.306f), new(0.502f, 0.502f, 0.502f), new(0.2f, 0.2f, 0.2f, 0.498f), new(0.2f, 0.2f, 0.2f))
         );
-        /*
         SetY -= 0.092f;
-        foreach (CustomRoleOption role in role_options.FindAll(x => x.type == CustomOptionType.Crewmate))
-            if (!role.IsToggle) CreateRoleOptionSetting(RoleChancesSettings.transform, role, new(0.502f, 0.502f, 0.502f)); // new(0.4f, 0.4f, 0.4f)
-        */
+        foreach (CustomRoleOption role in role_options.FindAll(x => x.type == CustomOptionType.Neutral))
+        {
+            if (role.IsToggle) continue;
+            RoleOptionSetting option = CreateRoleOptionSetting(RoleChancesSettings.transform, role, new(0.502f, 0.502f, 0.502f)); // new(0.4f, 0.4f, 0.4f)
+            RoleChances.Add(option);
+            foreach (UiElement element in option.ControllerSelectable)
+                RoleChancesTabSelectables.Add(element);
+        }
 
         GenericSettings = new("Generic Tab");
         GenericSettings.transform.SetParent(ScrollBar.Inner);
@@ -258,7 +278,7 @@ public class ModSettingsMenu : MonoBehaviour
         return category;
     }
 
-    public CustomRoleOptionSetting CreateRoleOptionSetting(Transform transform, CustomRoleOption role, Color color)
+    public RoleOptionSetting CreateRoleOptionSetting(Transform transform, CustomRoleOption role, Color color)
     {
         RoleOptionSetting option = Object.Instantiate(RoleOptionSettingOrigin, transform);
         CustomRoleOptionSetting custom = option.gameObject.AddComponent<CustomRoleOptionSetting>();
@@ -266,29 +286,37 @@ public class ModSettingsMenu : MonoBehaviour
         custom.RoleOption = role;
         custom.Parent = option;
         option.titleText.text = role.GetName();
+        option.titleText.SetOutlineThickness(0.05f);
+        option.titleText.materialForRendering.SetFloat("_FaceDilate", 0.05f);
+        option.titleText.UpdateFontAsset();
+        option.titleText.SetOutlineColor(new(0, 0, 0, 127));
         option.labelSprite.color = color;
         custom.UpdateValuesAndText();
-        option.ControllerSelectable[0].OnClick.AddListener(() =>
+        (option.ControllerSelectable[0].OnClick = new()).AddListener(() =>
         {
-            custom.PlayerCountOption.UpdateSelection(custom.PlayerCountOption.selection - 1);
+            int length = custom.PlayerCountOption.selections.Length;
+            custom.PlayerCountOption.selection = Mathf.Clamp((custom.PlayerCountOption.selection - 1 + length) % length, 0, length - 1);
             custom.UpdateValuesAndText();
         });
-        option.ControllerSelectable[1].OnClick.AddListener(() =>
+        (option.ControllerSelectable[1].OnClick = new()).AddListener(() =>
         {
-            custom.PlayerCountOption.UpdateSelection(custom.PlayerCountOption.selection + 1);
+            int length = custom.PlayerCountOption.selections.Length;
+            custom.PlayerCountOption.selection = Mathf.Clamp((custom.PlayerCountOption.selection + 1 + length) % length, 0, length - 1);
             custom.UpdateValuesAndText();
         });
-        option.ControllerSelectable[2].OnClick.AddListener(() =>
+        (option.ControllerSelectable[2].OnClick = new()).AddListener(() =>
         {
-            custom.RoleOption.UpdateSelection(custom.PlayerCountOption.selection + 1);
+            int length = custom.RoleOption.selections.Length;
+            custom.RoleOption.selection = Mathf.Clamp((custom.RoleOption.selection + 1 + length) % length, 0, length - 1);
             custom.UpdateValuesAndText();
         });
-        option.ControllerSelectable[3].OnClick.AddListener(() =>
+        (option.ControllerSelectable[3].OnClick = new()).AddListener(() =>
         {
-            custom.RoleOption.UpdateSelection(custom.PlayerCountOption.selection - 1);
+            int length = custom.RoleOption.selections.Length;
+            custom.RoleOption.selection = Mathf.Clamp((custom.RoleOption.selection - 1 + length) % length, 0, length - 1);
             custom.UpdateValuesAndText();
         });
-        return custom;
+        return option;
     }
 
     private void OnDisable() => CloseMenu();
@@ -308,9 +336,9 @@ public class ModSettingsMenu : MonoBehaviour
             case 0:
                 RoleChancesSettings.SetActive(true);
                 CategoryHeader.Title.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleQuotaLabel);
-                // ControllerSelectable.AddRange(RoleChancesTabSelectables);
-                ScrollBar.CalculateAndSetYBounds(CustomRoleOption.RoleOptions.Count + 4, 1f, 6f, 0.43f);
-                // ControllerManager.Instance.SetDefaultSelection(RoleChances[0].ControllerSelectable[0]);
+                ControllerSelectable.AddRange(RoleChancesTabSelectables);
+                ScrollBar.CalculateAndSetYBounds(CustomRoleOption.RoleOptions.Count + 3, 1f, 6f, 0.43f);
+                ControllerManager.Instance.SetDefaultSelection(RoleChances[0].ControllerSelectable[0]);
                 break;
             case 1:
                 GenericSettings.SetActive(true);
@@ -365,7 +393,7 @@ public class ModSettingsMenu : MonoBehaviour
         ModifierButton.ReceiveMouseOut();
         MatchTagButton.ReceiveMouseOut();
 
-        ControllerSelectable = new UiElement[0];
+        ControllerSelectable.Clear();
         
     }
 }
