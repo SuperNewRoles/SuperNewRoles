@@ -278,6 +278,9 @@ public class ModSettingsMenu : MonoBehaviour
         return category;
     }
 
+    public static float RoleTextOutlineWidth = 0.07f;
+    public static Color RoleTextOutlineColor = Color.white;
+
     public RoleOptionSetting CreateRoleOptionSetting(Transform transform, CustomRoleOption role, Color color)
     {
         RoleOptionSetting option = Object.Instantiate(RoleOptionSettingOrigin, transform);
@@ -286,10 +289,12 @@ public class ModSettingsMenu : MonoBehaviour
         custom.RoleOption = role;
         custom.Parent = option;
         option.titleText.text = role.GetName();
+
         option.titleText.SetOutlineThickness(0.05f);
         option.titleText.materialForRendering.SetFloat("_FaceDilate", 0.05f);
         option.titleText.UpdateFontAsset();
-        option.titleText.SetOutlineColor(new(0, 0, 0, 127));
+        option.titleText.SetOutlineColor(RoleTextOutlineColor);//new(0, 0, 0, 127));
+        option.titleText.outlineWidth = RoleTextOutlineWidth;
         option.labelSprite.color = color;
         custom.UpdateValuesAndText();
         (option.ControllerSelectable[0].OnClick = new()).AddListener(() =>
