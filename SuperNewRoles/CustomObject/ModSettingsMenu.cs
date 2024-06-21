@@ -197,6 +197,11 @@ public class ModSettingsMenu : MonoBehaviour
         SetY = FirstY;
         List<CustomRoleOption> role_options = CustomRoleOption.RoleOptions.Values.ToList();
         CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
+        CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
+        CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
+        CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
+        CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
+        CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
         CreateCategoryHeaderEditRole(
             RoleChancesSettings.transform,
             FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.CrewmateRolesHeader),
@@ -289,7 +294,7 @@ public class ModSettingsMenu : MonoBehaviour
         mod.TitleText = obj.TitleText;
         mod.ValueText = obj.ValueText;
         mod.TitleText.alignment = TextAlignmentOptions.Center;
-        obj.transform.localPosition = new(1f, SetY -= 0.5f, -2f);
+        obj.transform.localPosition = new(1f, SetY -= 0.44f, -2f);
         GameObject.Destroy(obj);
         mod.InitializeByMod(option);
         return mod;
