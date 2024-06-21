@@ -171,6 +171,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonEffect>();
         ClassInjector.RegisterTypeInIl2Cpp<ModSettingsMenu>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomRoleOptionSetting>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModStringOption>();
 
         Logger.LogInfo("Start Load Resource");
         string[] resourceNames = assembly.GetManifestResourceNames();

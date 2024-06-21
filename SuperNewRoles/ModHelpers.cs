@@ -663,6 +663,12 @@ public static class ModHelpers
                 return obj;
         return default;
     }
+    public static T FirstOrDefault<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+    {
+        if (list.Count > 0)
+            return list[0];
+        return default;
+    }
     public static T FirstOrDefault<T>(this List<T> list, Func<T, bool> func)
     {
         foreach (T obj in list)

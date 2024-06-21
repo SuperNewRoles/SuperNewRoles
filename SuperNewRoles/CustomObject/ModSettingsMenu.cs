@@ -201,6 +201,7 @@ public class ModSettingsMenu : MonoBehaviour
             FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.CrewmateRolesHeader),
             (Palette.CrewmateRoleHeaderTextBlue, Palette.CrewmateRoleHeaderBlue, Palette.CrewmateRoleHeaderVeryDarkBlue, Palette.CrewmateRoleHeaderDarkBlue)
         );
+        CreateModStringOption(RoleChancesSettings.transform, CustomOptionHolder.BaitReportTime);
         SetY -= 0.092f;
         foreach (CustomRoleOption role in role_options.FindAll(x => x.type == CustomOptionType.Crewmate))
         {
@@ -279,7 +280,19 @@ public class ModSettingsMenu : MonoBehaviour
     }
 
     public static float RoleTextOutlineWidth = 0.07f;
-    public static Color RoleTextOutlineColor = Color.white;
+    public static Color RoleTextOutlineColor = Color.black;
+
+    public ModStringOption CreateModStringOption(Transform transform, CustomOption option)
+    {
+        StringOption obj = GameObject.Instantiate(StringOptionOrigin, transform);
+        ModStringOption mod = obj.gameObject.AddComponent<ModStringOption>();
+        mod.TitleText = obj.TitleText;
+        mod.ValueText = obj.ValueText;
+        obj.transform.localPosition = new(-0.15f, SetY -= 0.43f, -2f);
+        GameObject.Destroy(obj);
+        mod.InitializeByMod(option);
+        return mod;
+    }
 
     public RoleOptionSetting CreateRoleOptionSetting(Transform transform, CustomRoleOption role, Color color)
     {
