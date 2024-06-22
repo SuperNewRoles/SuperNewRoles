@@ -98,6 +98,8 @@ public class CustomOption
     public Func<bool> CanShowFunc { get; }
     public bool HasCanShowAction { get; }
     public bool CanShowByFunc;
+    public bool WithHeader;
+    public string HeaderText;
 
     public static void UpdateCanShows(CustomOption opt)
     {
@@ -135,7 +137,7 @@ public class CustomOption
         return optionids.TryGetValue(id, out CustomOption opt) ? opt : null;
     }
 
-    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null, bool isToggle = false)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null, bool isToggle = false, bool withHeader = false, string headerText = null)
     {
         this.id = Id;
         this.isSHROn = IsSHROn;
@@ -151,6 +153,8 @@ public class CustomOption
         this.RoleId = roleId.HasValue ? roleId.Value : RoleId.DefaultRole;
         this.openSelection = openSelection;
         this.IsToggle = isToggle;
+        this.WithHeader = withHeader;
+        this.HeaderText = headerText;
 
         this.CanShowFunc = canShow;
         this.HasCanShowAction = canShow != null;
@@ -245,22 +249,22 @@ public class CustomOption
         ModifierId = 500000,
         MatchingTagId = 600000,
     }
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null, bool withHeader = false, string headerText = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format, openSelection, canShow: canShow);
+        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format, openSelection, canShow: canShow, withHeader: withHeader, headerText: headerText);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null, bool withHeader = false, string headerText = null)
     {
         List<float> selections = new();
         for (float s = min; s <= max; s += step)
             selections.Add(s);
-        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, openSelection, canShow: canShow);
+        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, openSelection, canShow: canShow, withHeader: withHeader, headerText: headerText);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null, bool withHeader = false, string headerText = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, openSelection, canShow: canShow, isToggle: true);
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, openSelection, canShow: canShow, isToggle: true, withHeader: withHeader, headerText: headerText);
     }
 
     public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1, bool isHidden = false)
@@ -276,9 +280,9 @@ public class CustomOption
         return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", CustomRoles.GetRoleColor(roleId), max, isHidden, roleId);
     }
 
-    public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag)
+    public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag, bool withHeader = false, string headerText = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, isToggle: true);
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, isToggle: true, withHeader: withHeader, headerText: headerText);
     }
 
     // Static behaviour
@@ -443,6 +447,12 @@ public class CustomOption
             }
         }
     }
+
+    public virtual void Set(int set) => selection = (set + selections.Length) % selections.Length;
+    public virtual void Set(bool set) => selection = set ? 1 : 0;
+
+    public virtual void Addition(int addition) => selection = (selection + addition + selections.Length) % selections.Length;
+
 }
 public class CustomRoleOption : CustomOption
 {
@@ -543,6 +553,7 @@ public class CustomOptionBlank : CustomOption
         this.isHidden = true;
         this.children = new List<CustomOption>();
         this.selections = new string[] { "" };
+        this.RoleId = RoleId.DefaultRole;
         options.Add(this);
     }
 
@@ -571,6 +582,15 @@ public class CustomOptionBlank : CustomOption
         return;
     }
 
+    public override void Set(int set)
+    {
+        return;
+    }
+
+    public override void Addition(int addition)
+    {
+        return;
+    }
 }
 
 [HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
@@ -737,7 +757,7 @@ static class GameOptionsMenuUpdatePatch
     {
         return option.isHidden
             || (!option.isSHROn && currentModeId == ModeId.SuperHostRoles) // SHRモード時, SHR未対応の設定を隠す処理。
-            || HasSealingOption && IsSealingDatetimeControl(option) // 解放条件が時間に依存する設定の 封印及び開放処理
+            || (HasSealingOption && IsSealingDatetimeControl(option)) // 解放条件が時間に依存する設定の 封印及び開放処理
             || (ModeHandler.EnableModeSealing && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
 
@@ -1094,7 +1114,7 @@ class GameOptionsDataPatch
     }
 }
 
-[HarmonyPatch(typeof(IGameOptionsExtensions), "ToHudString")]
+[HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.ToHudString))]
 public static class IGameOptionsExtensionsToHudStringPatch
 {
     public static void Prefix(ref int numPlayers)
@@ -1103,7 +1123,7 @@ public static class IGameOptionsExtensionsToHudStringPatch
     }
 }
 
-[HarmonyPatch(typeof(IGameOptionsExtensions), "GetAdjustedNumImpostors")]
+[HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
 public static class GameOptionsGetAdjustedNumImpostorsPatch
 {
     public static bool Prefix(ref int __result)

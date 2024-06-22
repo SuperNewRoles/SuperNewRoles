@@ -1,52 +1,26 @@
-using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 
 namespace SuperNewRoles.CustomObject;
 
-public class ModStringOption : OptionBehaviour
+public class ModStringOption : ModOptionBehaviour
 {
     public TextMeshPro TitleText;
 
     public TextMeshPro ValueText;
 
-    public CustomOption CurrentCustomOption;
-
-    public List<PassiveButton> ControllerSelectable;
-
-    public object[] Values;
-
-    public int CurrentSelection;
-
-    private int OldValue = -1;
-
-    public void FixedUpdate()
-    {
-        if (OldValue != CurrentSelection)
-        {
-            OldValue = CurrentSelection;
-            ValueText.text = Values[CurrentSelection].ToString();
-        }
-    }
-
     public void Increase()
     {
-        CurrentSelection = (CurrentSelection + 1 + Values.Length) % Values.Length;
-        UpdateValue();
+        ParentCustomOption.Addition(1);
+        SettingsMenu.OptionUpdate();
     }
 
     public void Decrease()
     {
-        CurrentSelection = (CurrentSelection - 1 + Values.Length) % Values.Length;
-        UpdateValue();
+        ParentCustomOption.Addition(-1);
+        SettingsMenu.OptionUpdate();
     }
 
-    public override int GetInt() => CurrentSelection;
+    public override int GetInt() => ParentCustomOption.GetSelection();
 
-    private void UpdateValue()
-    {
-        // TODO:ここに値を変えた際の処理を書く
-        ValueText.text = Values[CurrentSelection].ToString();
-        CurrentCustomOption.UpdateSelection(CurrentSelection);
-    }
+    public override void UpdateValue() => ValueText.text = ParentCustomOption.GetString();
 }

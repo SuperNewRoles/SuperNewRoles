@@ -170,6 +170,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonEffect>();
         ClassInjector.RegisterTypeInIl2Cpp<ModSettingsMenu>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModOptionBehaviour>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModCategoryHeaderEditRole>();
         ClassInjector.RegisterTypeInIl2Cpp<ModRoleOptionSetting>();
         ClassInjector.RegisterTypeInIl2Cpp<ModStringOption>();
         ClassInjector.RegisterTypeInIl2Cpp<ModToggleOption>();
