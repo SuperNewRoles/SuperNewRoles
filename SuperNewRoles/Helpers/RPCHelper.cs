@@ -92,7 +92,7 @@ public static class RPCHelper
         }
         var clientId = SeePlayer.GetClientId();
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SetName, SendOption.Reliable, clientId);
-        writer.Write(0u);
+        writer.Write(TargetPlayer.Data.NetId);
         writer.Write(NewName);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }

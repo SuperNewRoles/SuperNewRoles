@@ -12,6 +12,7 @@ using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static System.String;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 
@@ -244,14 +245,14 @@ internal class AddChatPatch
             name = sender.GetDefaultName();
         }
         crs.AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
-            .Write(0u)
+            .Write(sender.Data.NetId)
             .Write(SendName)
             .EndRpc()
             .AutoStartRpc(sender.NetId, (byte)RpcCalls.SendChat)
             .Write(command)
             .EndRpc()
             .AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
-            .Write(0u)
+            .Write(sender.Data.NetId)
             .Write(name)
             .EndRpc()
             .SendMessage();
@@ -267,14 +268,14 @@ internal class AddChatPatch
         }
         var crs = CustomRpcSender.Create("PrivateSend");
         crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
-            .Write(0u)
+            .Write(target.Data.NetId)
             .Write(SendName)
             .EndRpc()
             .AutoStartRpc(target.NetId, (byte)RpcCalls.SendChat, target.GetClientId())
             .Write(command)
             .EndRpc()
             .AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
-            .Write(0u)
+            .Write(target.Data.NetId)
             .Write(target.Data.PlayerName)
             .EndRpc()
             .SendMessage();
