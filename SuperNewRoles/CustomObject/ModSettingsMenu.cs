@@ -118,8 +118,8 @@ public class ModSettingsMenu : MonoBehaviour
         instance_collider.size = Vector2.one * 0.75f;
         PassiveButton instance_button = instance.AddComponent<PassiveButton>();
         instance_button.Colliders = new Collider2D[] { instance_collider };
-        instance_button.OnMouseOut = roles.AllButton.OnMouseOut;
-        instance_button.OnMouseOver = roles.AllButton.OnMouseOver;
+        instance_button.OnMouseOut = new();
+        instance_button.OnMouseOver = new();
         instance_button.ClickSound = roles.AllButton.ClickSound;
         instance_button.HoverSound = roles.AllButton.HoverSound;
 
@@ -130,7 +130,7 @@ public class ModSettingsMenu : MonoBehaviour
         generic_renderer.size = Vector2.one * 0.75f;
         GenericButton = generic.GetComponent<PassiveButton>();
         GenericButton.OnClick.AddListener(() => OpenTab(0));
-        GenericButton.OnMouseOut.AddListener(() => generic_renderer.color = Color.gray);
+        GenericButton.OnMouseOut.AddListener(() => { if (NowTabId != 0) generic_renderer.color = Color.gray; });
         GenericButton.OnMouseOver.AddListener(() => generic_renderer.color = Color.white);
 
         GameObject impostor = Object.Instantiate(instance, header.transform);
@@ -141,7 +141,7 @@ public class ModSettingsMenu : MonoBehaviour
         impostor_renderer.size = Vector2.one * 0.75f;
         ImpostorButton = impostor.GetComponent<PassiveButton>();
         ImpostorButton.OnClick.AddListener(() => OpenTab(1));
-        ImpostorButton.OnMouseOut.AddListener(() => impostor_renderer.color = Color.gray);
+        ImpostorButton.OnMouseOut.AddListener(() => { if (NowTabId != 1) impostor_renderer.color = Color.gray; });
         ImpostorButton.OnMouseOver.AddListener(() => impostor_renderer.color = Color.white);
 
         GameObject neutral = Object.Instantiate(instance, header.transform);
@@ -152,7 +152,7 @@ public class ModSettingsMenu : MonoBehaviour
         neutral_renderer.size = Vector2.one * 0.75f;
         NeutralButton = neutral.GetComponent<PassiveButton>();
         NeutralButton.OnClick.AddListener(() => OpenTab(2));
-        NeutralButton.OnMouseOut.AddListener(() => neutral_renderer.color = Color.gray);
+        NeutralButton.OnMouseOut.AddListener(() => { if (NowTabId != 2) neutral_renderer.color = Color.gray; });
         NeutralButton.OnMouseOver.AddListener(() => neutral_renderer.color = Color.white);
 
         GameObject crewmate = Object.Instantiate(instance, header.transform);
@@ -163,7 +163,7 @@ public class ModSettingsMenu : MonoBehaviour
         crewmate_renderer.size = Vector2.one * 0.75f;
         CrewmateButton = crewmate.GetComponent<PassiveButton>();
         CrewmateButton.OnClick.AddListener(() => OpenTab(3));
-        CrewmateButton.OnMouseOut.AddListener(() => crewmate_renderer.color = Color.gray);
+        CrewmateButton.OnMouseOut.AddListener(() => { if (NowTabId != 3) crewmate_renderer.color = Color.gray; });
         CrewmateButton.OnMouseOver.AddListener(() => crewmate_renderer.color = Color.white);
 
         GameObject modifier = Object.Instantiate(instance, header.transform);
@@ -174,7 +174,7 @@ public class ModSettingsMenu : MonoBehaviour
         modifier_renderer.size = Vector2.one * 0.75f;
         ModifierButton = modifier.GetComponent<PassiveButton>();
         ModifierButton.OnClick.AddListener(() => OpenTab(4));
-        ModifierButton.OnMouseOut.AddListener(() => modifier_renderer.color = Color.gray);
+        ModifierButton.OnMouseOut.AddListener(() => { if (NowTabId != 4) modifier_renderer.color = Color.gray; });
         ModifierButton.OnMouseOver.AddListener(() => modifier_renderer.color = Color.white);
 
         GameObject match_tag = Object.Instantiate(instance, header.transform);
@@ -185,7 +185,7 @@ public class ModSettingsMenu : MonoBehaviour
         match_tag_renderer.size = Vector2.one * 0.75f;
         MatchTagButton = match_tag.GetComponent<PassiveButton>();
         MatchTagButton.OnClick.AddListener(() => OpenTab(5));
-        MatchTagButton.OnMouseOut.AddListener(() => match_tag_renderer.color = Color.gray);
+        MatchTagButton.OnMouseOut.AddListener(() => { if (NowTabId != 5) match_tag_renderer.color = Color.gray; });
         MatchTagButton.OnMouseOver.AddListener(() => match_tag_renderer.color = Color.white);
 
         Object.Destroy(instance);
@@ -266,8 +266,6 @@ public class ModSettingsMenu : MonoBehaviour
         close_button.OnClick = new();
         close_button.OnClick.AddListener(() => OpenTab(OldTabId));
         #endregion
-
-
     }
 
     public void OptionUpdate()
@@ -314,10 +312,13 @@ public class ModSettingsMenu : MonoBehaviour
 
                     while (parent != null && enabled)
                     {
+                        if (parent is CustomRoleOption)
+                        {
+                            enabled = true;
+                            break;
+                        }
                         enabled = parent.Enabled;
                         parent = parent.parent;
-                        if (parent is CustomRoleOption)
-                            enabled = false;
                     }
 
                     option.gameObject.SetActive(enabled);
@@ -332,6 +333,7 @@ public class ModSettingsMenu : MonoBehaviour
                             Vector3 pos1 = option.HeaderMasked.transform.localPosition;
                             pos1.y = YPosition -= CategoryHeaderMaskedSpan;
                             option.HeaderMasked.transform.localPosition = pos1;
+                            YPosition -= CategoryHeaderMaskedSpan;
                         }
                         float span = OptionSpan;
                         if (isRoleOption) span = RoleOptionSettingSpan;
@@ -356,7 +358,7 @@ public class ModSettingsMenu : MonoBehaviour
         {
             if (option is CustomOptionBlank) continue;
             ModOptionBehaviour mod = option.IsToggle ? CreateModToggleOption(transform, option) : CreateModStringOption(transform, option);
-            if (option.WithHeader) mod.HeaderMasked = CreateCategoryHeaderMasked(transform, option.HeaderText ?? option.GetName());
+            if (option.WithHeader) mod.HeaderMasked = CreateCategoryHeaderMasked(transform, option.HeaderText == null ? option.GetName() : ModTranslation.GetString(option.HeaderText));
             (type switch
             {
                 CustomOptionType.Generic => GenericOptions,
@@ -412,7 +414,7 @@ public class ModSettingsMenu : MonoBehaviour
     {
         CategoryHeaderMasked masked = Object.Instantiate(CategoryHeader, transform);
         masked.transform.localPosition = new(-0.44f, 0f, 5f);
-        masked.Title.text = text;
+        new LateTask(() => masked.Title.text = text, 0f, "ModSettingsMenu");
         return masked;
     }
 
@@ -528,6 +530,7 @@ public class ModSettingsMenu : MonoBehaviour
         {
             ControllerManager.Instance.OpenOverlayMenu(name, BackButton, DefaultButtonSelected, ControllerSelectable.ToIl2CppList());
             OpenTab(0);
+            GenericButton.ReceiveMouseOver();
         }, 0f, "ModSettingsMenu");
     }
     public void CloseMenu() => ControllerManager.Instance.CloseOverlayMenu(name);
@@ -575,6 +578,7 @@ public class ModSettingsMenu : MonoBehaviour
         }
         ScrollBar.CalculateAndSetYBounds(3.5f, 1f, 6f, 0.43f);
         NowTabId = id;
+        TabButtonAllMouseOut();
         OptionUpdate();
         ScrollBar.ScrollToTop();
         ControllerManager.Instance.CurrentUiState.SelectableUiElements = ControllerSelectable.ToIl2CppList();
@@ -595,6 +599,19 @@ public class ModSettingsMenu : MonoBehaviour
             Object.Destroy(obj);
         }
 
+        RoleDetailsOptions.Clear();
+        RoleDetailsTabSelectables.Clear();
+
         ControllerSelectable.Clear();
+    }
+
+    public void TabButtonAllMouseOut()
+    {
+        GenericButton.ReceiveMouseOut();
+        ImpostorButton.ReceiveMouseOut();
+        NeutralButton.ReceiveMouseOut();
+        CrewmateButton.ReceiveMouseOut();
+        ModifierButton.ReceiveMouseOut();
+        MatchTagButton.ReceiveMouseOut();
     }
 }

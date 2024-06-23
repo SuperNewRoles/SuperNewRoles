@@ -1185,7 +1185,7 @@ public static class RPCProcedure
                 uint optionId = reader.ReadPackedUInt32();
                 uint selection = reader.ReadPackedUInt32();
                 CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
-                option.UpdateSelection((int)selection);
+                option.Set((int)selection);
             }
         }
         catch (Exception e)

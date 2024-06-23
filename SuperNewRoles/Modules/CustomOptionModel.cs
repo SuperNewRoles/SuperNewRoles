@@ -1,24 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AmongUs.GameOptions;
-using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using static SuperNewRoles.Modules.CustomRegulation;
 using Object = UnityEngine.Object;
 
@@ -87,7 +82,6 @@ public class CustomOption
             UpdateCanShows(this);
         }
     }
-    public OptionBehaviour optionBehaviour;
     public CustomOption parent;
     public List<CustomOption> children;
     public bool isHeader;
@@ -298,11 +292,6 @@ public class CustomOption
             {
                 if (option.id <= 0) continue;
                 option.selection = option.defaultSelection;
-                if (option.optionBehaviour is not null and StringOption stringOption)
-                {
-                    stringOption.oldValue = stringOption.Value = option.selection;
-                    stringOption.ValueText.text = option.GetString();
-                }
             }
             CurrentValues = new();
             OptionSaver.WriteNowPreset();
@@ -318,11 +307,6 @@ public class CustomOption
             if (option.id <= 0) continue;
 
             option.selection = Mathf.Clamp(data.TryGetValue((uint)option.id, out byte value) ? value : option.defaultSelection, 0, option.selections.Length - 1);
-            if (option.optionBehaviour is not null and StringOption stringOption)
-            {
-                stringOption.oldValue = stringOption.Value = option.selection;
-                stringOption.ValueText.text = option.GetString();
-            }
         }
         CurrentValues = data;
     }
@@ -419,39 +403,39 @@ public class CustomOption
 
     // Option changes
 
-    public virtual void UpdateSelection(int newSelection)
+    public virtual void Set(int set)
     {
-        selection = Mathf.Clamp((newSelection + selections.Length) % selections.Length, 0, selections.Length - 1);
-        if (optionBehaviour is not null and StringOption stringOption)
-        {
-            stringOption.oldValue = stringOption.Value = selection;
-            stringOption.ValueText.text = GetString();
-
-            if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
-            {
-                if (id == 0)
-                {
-                    SwitchPreset(selection);
-                    ShareOptionSelections();
-                } // Switch presets
-                else if (AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
-                {
-                    CurrentValues[(uint)id] = (byte)selection;
-                    IsValuesUpdated = true;
-                    ShareOptionSelections(this);// Share all selections
-                } // Save selection to config
-                else
-                {
-                    ShareOptionSelections(this);
-                }
-            }
-        }
+        selection = (set + selections.Length) % selections.Length;
+        ShareOption();
+    }
+    public virtual void Set(bool set)
+    {
+        selection = set ? 1 : 0;
+        ShareOption();
     }
 
-    public virtual void Set(int set) => selection = (set + selections.Length) % selections.Length;
-    public virtual void Set(bool set) => selection = set ? 1 : 0;
+    public virtual void Addition(int addition)
+    {
+        selection = (selection + addition + selections.Length) % selections.Length;
+        ShareOption();
+    }
 
-    public virtual void Addition(int addition) => selection = (selection + addition + selections.Length) % selections.Length;
+    public virtual void ShareOption()
+    {
+        if ((AmongUsClient.Instance?.AmHost) != true || !PlayerControl.LocalPlayer) return;
+        if (id == 0)
+        {
+            SwitchPreset(selection);
+            ShareOptionSelections();
+        }
+        else if (AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+        {
+            CurrentValues[(uint)id] = (byte)selection;
+            IsValuesUpdated = true;
+            ShareOptionSelections(this);
+        }
+        else ShareOptionSelections(this);
+    }
 
 }
 public class CustomRoleOption : CustomOption
@@ -535,13 +519,7 @@ public class CustomRoleOption : CustomOption
         if (max > 1) countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
     }
 }
-public class GameSettingsScale
-{
-    public static void GameSettingsScalePatch(HudManager __instance)
-    {
-        // if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
-    }
-}
+
 public class CustomOptionBlank : CustomOption
 {
     public CustomOptionBlank(CustomOption parent)
@@ -577,17 +555,17 @@ public class CustomOptionBlank : CustomOption
         return "";
     }
 
-    public override void UpdateSelection(int newSelection)
-    {
-        return;
-    }
-
     public override void Set(int set)
     {
         return;
     }
 
     public override void Addition(int addition)
+    {
+        return;
+    }
+
+    public override void ShareOption()
     {
         return;
     }
@@ -609,120 +587,6 @@ class RoleOptionsDataGetNumPerGamePatch
     }
 }
 
-[HarmonyPatch(typeof(StringOption), nameof(StringOption.UpdateValue))]
-class StringOptionEnablePatch
-{
-    static bool Prefix(StringOption __instance)
-    {
-        CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-        if (option == null)
-        {
-            RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
-            if (Regulation != null)
-            {
-                __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                __instance.TitleText.text = Regulation.title;
-                __instance.Value = __instance.oldValue = 0;
-                __instance.ValueText.text = RegulationData.Selected == Regulation.id ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
-                return false;
-            }
-            return true;
-        }
-
-        __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-        __instance.TitleText.text = option.GetName();
-        __instance.Value = __instance.oldValue = option.selection;
-        __instance.ValueText.text = option.GetString();
-
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(StringOption), nameof(StringOption.Increase))]
-public class StringOptionIncreasePatch
-{
-    public static bool Prefix(StringOption __instance)
-    {
-        CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-        if (option == null)
-        {
-            RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
-            if (Regulation != null)
-            {
-                foreach (var regulation in RegulationData.Regulations)
-                {
-                    if (regulation.optionBehaviour is not null and StringOption stringOption)
-                    {
-                        stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                        stringOption.TitleText.text = regulation.title;
-                        stringOption.oldValue = __instance.Value = 0;
-                        stringOption.ValueText.text = ModTranslation.GetString("optionOff");
-                    }
-                }
-                Select(Regulation.id);
-                __instance.oldValue = __instance.Value = 1;
-                __instance.ValueText.text = ModTranslation.GetString("optionOn");
-                return false;
-            }
-            return true;
-        }
-        option.UpdateSelection(option.selection + 1);
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(StringOption), nameof(StringOption.Decrease))]
-public class StringOptionDecreasePatch
-{
-    public static bool Prefix(StringOption __instance)
-    {
-        CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-        if (option == null)
-        {
-            RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
-            if (Regulation != null)
-            {
-                bool isReset = true;
-                bool IsFirst = true;
-                if (Regulation.optionBehaviour is not null and StringOption stringOptiona)
-                {
-                    if (stringOptiona.Value == 0) return false;
-                }
-                foreach (var regulation in RegulationData.Regulations)
-                {
-                    if (regulation.optionBehaviour is not null and StringOption stringOption)
-                    {
-                        if (stringOption.ValueText.text == ModTranslation.GetString("optionOn"))
-                        {
-                            if (!IsFirst)
-                            {
-                                isReset = false;
-                            }
-                            IsFirst = false;
-                        }
-                    }
-                }
-                __instance.oldValue = __instance.Value = 0;
-                __instance.ValueText.text = ModTranslation.GetString("optionOff");
-                if (isReset)
-                {
-                    Select(0);
-                    if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0)
-                    {
-                        stringOption0.oldValue = __instance.Value = 1;
-                        stringOption0.ValueText.text = ModTranslation.GetString("optionOn");
-                    }
-                }
-                Logger.Info(isReset.ToString());
-                return false;
-            }
-            return true;
-        }
-        option.UpdateSelection(option.selection - 1);
-        return false;
-    }
-}
-
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Awake))]
 public class AmongUsClientOnPlayerJoinedPatch
 {
@@ -732,24 +596,8 @@ public class AmongUsClientOnPlayerJoinedPatch
     }
 }
 
-[HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Update))]
 static class GameOptionsMenuUpdatePatch
 {
-    private static float timer = 1f;
-    public static CustomOptionType GetCustomOptionType(string name)
-    {
-        return name switch
-        {
-            "GenericSetting" => CustomOptionType.Generic,
-            "ImpostorSetting" => CustomOptionType.Impostor,
-            "NeutralSetting" => CustomOptionType.Neutral,
-            "CrewmateSetting" => CustomOptionType.Crewmate,
-            "modifierSetting" => CustomOptionType.Modifier,
-            "matchTagSetting" => CustomOptionType.MatchTag,
-            _ => CustomOptionType.Crewmate,
-        };
-    }
-
     /// <summary>現在, 封印処理のある設定を有しているか ( 此処をtrueにする事で封印処理が実行される )</summary>
     public const bool HasSealingOption = false;
 
@@ -776,106 +624,13 @@ static class GameOptionsMenuUpdatePatch
 
         return isHidden;
     }
-
-    public static void Postfix(GameOptionsMenu __instance)
-    {
-        var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
-        if (gameSettingMenu.GameSettingsTab.gameObject.active || gameSettingMenu.RoleSettingsTab.gameObject.active) return;
-
-        timer += Time.deltaTime;
-        if (timer < 0.1f) return;
-        timer = 0f;
-
-        float numItems = __instance.Children.Count;
-
-        float offset = 2.75f;
-        if (__instance.name == "RegulationSetting")
-        {
-            foreach (var Regulation in RegulationData.Regulations)
-            {
-                if (Regulation?.optionBehaviour != null && Regulation.optionBehaviour.gameObject != null)
-                {
-                    if (Regulation.optionBehaviour is not null and StringOption stringOption)
-                    {
-                        stringOption.ValueText.text = Regulation.id == RegulationData.Selected ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
-                    }
-
-                    bool enabled = true;
-
-                    Regulation.optionBehaviour.gameObject.SetActive(enabled);
-                    if (enabled)
-                    {
-                        offset -= false ? 0.75f : 0.5f;
-                        Regulation.optionBehaviour.transform.localPosition = new Vector3(Regulation.optionBehaviour.transform.localPosition.x, offset, Regulation.optionBehaviour.transform.localPosition.z);
-                    }
-                    else
-                    {
-                        numItems--;
-                    }
-                }
-            }
-            __instance.GetComponentInParent<Scroller>().ContentYBounds.max = -4.0f + numItems * 0.5f;
-            return;
-        }
-
-        CustomOptionType type = GetCustomOptionType(__instance.name);
-        ModeId currentMode = ModeHandler.GetMode(false);
-
-        foreach (CustomOption option in CustomOption.options)
-        {
-            if (option.type != type) continue;
-            if (option?.optionBehaviour != null && option.optionBehaviour.gameObject != null)
-            {
-                bool enabled = true;
-                var parent = option.parent;
-
-                if (AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool())
-                    enabled = false;
-                else if (option.openSelection != -1 && option.openSelection != parent?.selection)
-                    enabled = false;
-                else if (option.HasCanShowAction && !option.CanShowByFunc)
-                    enabled = false;
-                else if (option.IsHidden(currentMode))
-                    enabled = false;
-
-                while (parent != null && enabled)
-                {
-                    enabled = parent.Enabled;
-                    parent = parent.parent;
-                }
-
-                option.optionBehaviour.gameObject.SetActive(enabled);
-                if (enabled)
-                {
-                    offset -= option.isHeader ? 0.75f : 0.5f;
-                    option.optionBehaviour.transform.localPosition = new Vector3(option.optionBehaviour.transform.localPosition.x, offset, option.optionBehaviour.transform.localPosition.z);
-
-                    if (option.isHeader)
-                    {
-                        numItems += 0.5f;
-                    }
-                }
-                else
-                {
-                    numItems--;
-                }
-            }
-        }
-        __instance.GetComponentInParent<Scroller>().ContentYBounds.max = -4.0f + numItems * 0.5f;
-    }
 }
 
-[HarmonyPatch]
 class GameOptionsDataPatch
 {
     public static string Tl(string key)
     {
         return ModTranslation.GetString(key);
-    }
-
-    private static IEnumerable<MethodBase> TargetMethods()
-    {
-        return typeof(IGameOptionsExtensions).GetMethods().Where(x => x.ReturnType == typeof(string) && x.GetParameters().Length == 2 && x.GetParameters()[1].ParameterType == typeof(int));
     }
 
     public static string OptionToString(CustomOption option)
@@ -958,19 +713,15 @@ class GameOptionsDataPatch
         GetTaskTriggerAbilityTaskNumber,
     }
 
-    public static string DefaultResult = "";
     public static string ResultData()
     {
         bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool();
-        if (hideSettings)
-        {
-            return DefaultResult;
-        }
+        if (hideSettings) return GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count);
 
         List<string> pages = new()
-            {
-                DefaultResult
-            };
+        {
+            GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count)
+        };
 
         StringBuilder entry = new();
         List<string> entries = new()
@@ -1107,11 +858,6 @@ class GameOptionsDataPatch
         int counter = SuperNewRolesPlugin.optionsPage %= numPages;
         return pages[counter].Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
     }
-    public static void Postfix(ref string __result)
-    {
-        DefaultResult = __result;
-        __result = ResultData();
-    }
 }
 
 [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.ToHudString))]
@@ -1140,11 +886,8 @@ public static class GameOptionsNextPagePatch
     {
         if (Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7))
         {
-            // 試合開始前はTabキーが押されたら常に, 1ページ単位でページを送る
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
-                SuperNewRolesPlugin.optionsPage++;
-            // 試合中はRegulationのoverlayを表示している時のみ, 2ページ単位でページを送る
-            else if (CustomOverlays.nowPattern == CustomOverlays.CustomOverlayPattern.Regulation) SuperNewRolesPlugin.optionsPage += 2;
+            // Regulationのoverlayを表示している時, 2ページ単位でページを送る
+            if (CustomOverlays.nowPattern == CustomOverlays.CustomOverlayPattern.Regulation) SuperNewRolesPlugin.optionsPage += 2;
 
             // ページが最大ページを超えたら, ページを0に戻す
             if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage)
@@ -1156,6 +899,8 @@ public static class GameOptionsNextPagePatch
 [HarmonyPatch(typeof(GameSettingMenu))]
 public static class GameSettingMenuPatch
 {
+
+
     public static ModSettingsMenu ModSettingsTab;
     public static PassiveButton ModSttingsButton;
 

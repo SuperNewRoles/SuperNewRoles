@@ -51,18 +51,12 @@ public class ModRoleOptionSetting : ModOptionBehaviour
     public void CreateRoleDetailsOption()
     {
         SettingsMenu.OldTabId = SettingsMenu.NowTabId;
-        foreach (GameObject obj in SettingsMenu.RoleDetailsSettings.GetChildren())
-        {
-            if (obj.name == "Close Button") continue;
-            Object.Destroy(obj);
-        }
-        SettingsMenu.RoleDetailsOptions = new();
-        SettingsMenu.RoleDetailsTabSelectables = new();
+        SettingsMenu.CategoryHeader.Title.text = ModTranslation.GetString("SettingOf", ParentCustomOption.GetName());
         foreach (CustomOption option in CustomOption.options.FindAll(x => x.RoleId == ParentCustomOption.RoleId))
         {
             if (option is CustomOptionBlank) continue;
             ModOptionBehaviour mod = option.IsToggle ? SettingsMenu.CreateModToggleOption(SettingsMenu.RoleDetailsSettings.transform, option) : SettingsMenu.CreateModStringOption(SettingsMenu.RoleDetailsSettings.transform, option);
-            if (option.WithHeader) mod.HeaderMasked = SettingsMenu.CreateCategoryHeaderMasked(SettingsMenu.RoleDetailsSettings.transform, option.HeaderText ?? option.GetName());
+            if (option.WithHeader) mod.HeaderMasked = SettingsMenu.CreateCategoryHeaderMasked(SettingsMenu.RoleDetailsSettings.transform, option.HeaderText == null ? option.GetName() : ModTranslation.GetString(option.HeaderText));
             SettingsMenu.RoleDetailsOptions.Add(mod);
             SettingsMenu.RoleDetailsTabSelectables.AddRange(mod.ControllerSelectable);
         }
