@@ -144,7 +144,7 @@ SettingSuperNewRolesVerGetSettingCommand,<color=#ffa500>Super</color><color=#ff0
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>内鬼阵营</color>设置,<color=#ff0000>內鬼陣營</color>設定
 SettingNeutral,<color=#808080>Neutral</color> Settings,<color=#808080>第三陣営</color>の設定,<color=#808080>独立阵营</color>设置,<color=#808080>中立陣營</color>設定
 SettingCrewmate,<color=#a9ceec>Crewmate</color> Settings,<color=#00ffff>クルーメイト</color>の設定,<color=#00ffff>船员阵营</color>设置,<color=#00ffff>船員陣營</color>設定
-modifierSettings,<color=#ff8cc5>Add-on</color> Settings,<color=#ff8cc5>アドオン</color>の設定,<color=#ff8cc5>附加</color>设置,<color=#ff8cc5>附加</color>設定
+ModifierSettings,<color=#ff8cc5>Modifier</color> Settings,<color=#ff8cc5>モディファイア</color>の設定,<color=#ff8cc5>附加</color>设置,<color=#ff8cc5>附加</color>設定
 SettingRegulation,Regulation Settings,レギュレーション設定,常规设置,通常設定
 SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数,船员阵营最小职业数,船員陣營職業數最少值
 SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数,船员阵营最大职业数,船員陣營職業數最大值

@@ -256,13 +256,10 @@ public class ModSettingsMenu : MonoBehaviour
         RoleDetailsSettings = new("Role Details Tab");
         RoleDetailsSettings.transform.SetParent(ScrollBar.Inner);
         RoleDetailsSettings.transform.localPosition = new(0f, 0f, -5f);
-        GameObject close = new("Close Button");
-        close.transform.SetParent(header.transform);
-        close.transform.localPosition = new(-2.8f, 2.3f, -2f);
-        close.layer = 5;
         PassiveButton close_button = Object.Instantiate(GameSettingMenu.Instance.transform.Find("CloseButton").GetComponent<PassiveButton>(), RoleDetailsSettings.transform);
         close_button.gameObject.name = "Close Button";
-        close_button.transform.localPosition = new(4.18f, 0.4f, -25f);
+        close_button.gameObject.layer = 5;
+        close_button.transform.localPosition = new(4.18f, 0.4f, -2f);
         close_button.OnClick = new();
         close_button.OnClick.AddListener(() => OpenTab(OldTabId));
         #endregion
@@ -289,6 +286,7 @@ public class ModSettingsMenu : MonoBehaviour
             };
 
             YPosition = FirstYPosition;
+            if (i == 6) YPosition -= OptionSpan;
             foreach (ModOptionBehaviour option in options)
             {
                 if (option is ModCategoryHeaderEditRole header)
@@ -312,11 +310,7 @@ public class ModSettingsMenu : MonoBehaviour
 
                     while (parent != null && enabled)
                     {
-                        if (parent is CustomRoleOption)
-                        {
-                            enabled = true;
-                            break;
-                        }
+                        if (parent is CustomRoleOption) break;
                         enabled = parent.Enabled;
                         parent = parent.parent;
                     }
@@ -562,7 +556,7 @@ public class ModSettingsMenu : MonoBehaviour
                 break;
             case 4:
                 ModifierSettings.SetActive(true);
-                CategoryHeader.Title.text = ModTranslation.GetString("modifierSettings");
+                CategoryHeader.Title.text = ModTranslation.GetString("ModifierSettings");
                 ControllerSelectable.AddRange(ModifierTabSelectables);
                 break;
             case 5:
