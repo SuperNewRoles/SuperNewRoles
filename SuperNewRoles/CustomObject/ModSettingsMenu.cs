@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Mode;
@@ -15,6 +16,7 @@ public class ModSettingsMenu : MonoBehaviour
     public GameObject CrewmateSettings;
     public GameObject ModifierSettings;
     public GameObject MatchTagSettings;
+    public GameObject RoleDetailsSettings;
 
     public PassiveButton GenericButton;
     public PassiveButton ImpostorButton;
@@ -26,6 +28,8 @@ public class ModSettingsMenu : MonoBehaviour
     public Scroller ScrollBar;
     public UiElement BackButton;
     public UiElement DefaultButtonSelected = null;
+    public int NowTabId;
+    public int OldTabId;
     public List<UiElement> ControllerSelectable;
     public List<UiElement> GenericTabSelectables;
     public List<UiElement> ImpostorTabSelectables;
@@ -33,6 +37,7 @@ public class ModSettingsMenu : MonoBehaviour
     public List<UiElement> CrewmateTabSelectables;
     public List<UiElement> ModifierTabSelectables;
     public List<UiElement> MatchTagTabSelectables;
+    public List<UiElement> RoleDetailsTabSelectables;
 
     public List<ModOptionBehaviour> GenericOptions;
     public List<ModOptionBehaviour> ImpostorOptions;
@@ -40,6 +45,7 @@ public class ModSettingsMenu : MonoBehaviour
     public List<ModOptionBehaviour> CrewmateOptions;
     public List<ModOptionBehaviour> ModifierOptions;
     public List<ModOptionBehaviour> MatchTagOptions;
+    public List<ModOptionBehaviour> RoleDetailsOptions;
 
     public static readonly float FirstYPosition = 1.312f;
     public static readonly float CategoryHeaderMaskedSpan = 0.45f;
@@ -62,15 +68,18 @@ public class ModSettingsMenu : MonoBehaviour
         CrewmateTabSelectables = new();
         ModifierTabSelectables = new();
         MatchTagTabSelectables = new();
+        RoleDetailsTabSelectables = new();
         GenericOptions = new();
         ImpostorOptions = new();
         NeutralOptions = new();
         CrewmateOptions = new();
         ModifierOptions = new();
         MatchTagOptions = new();
+        RoleDetailsOptions = new();
+        NowTabId = 0;
+        OldTabId = 0;
 
-        GameSettingMenu menu = GameSettingMenu.Instance;
-        RolesSettingsMenu roles = menu.RoleSettingsTab;
+        RolesSettingsMenu roles = GameSettingMenu.Instance.RoleSettingsTab;
         CategoryHeaderEditRoleOrigin = roles.categoryHeaderEditRoleOrigin;
         RoleOptionSettingOrigin = roles.roleOptionSettingOrigin;
         CheckboxOrigin = roles.checkboxOrigin;
@@ -99,7 +108,6 @@ public class ModSettingsMenu : MonoBehaviour
         GameObject instance = new("Instance");
         instance.transform.SetParent(header.transform);
         instance.transform.localPosition = new(-2.8f, 2.3f, -2f);
-        instance.transform.localScale = Vector3.one;
         instance.layer = 5;
         SpriteRenderer instance_renderer = instance.AddComponent<SpriteRenderer>();
         instance_renderer.drawMode = SpriteDrawMode.Sliced;
@@ -244,7 +252,22 @@ public class ModSettingsMenu : MonoBehaviour
         MatchTagSettings.transform.SetParent(ScrollBar.Inner);
         MatchTagSettings.transform.localPosition = new(0f, 0f, -5f);
         CteateNotRoleOptions(MatchTagSettings.transform, CustomOptionType.MatchTag);
+
+        RoleDetailsSettings = new("Role Details Tab");
+        RoleDetailsSettings.transform.SetParent(ScrollBar.Inner);
+        RoleDetailsSettings.transform.localPosition = new(0f, 0f, -5f);
+        GameObject close = new("Close Button");
+        close.transform.SetParent(header.transform);
+        close.transform.localPosition = new(-2.8f, 2.3f, -2f);
+        close.layer = 5;
+        PassiveButton close_button = Object.Instantiate(GameSettingMenu.Instance.transform.Find("CloseButton").GetComponent<PassiveButton>(), RoleDetailsSettings.transform);
+        close_button.gameObject.name = "Close Button";
+        close_button.transform.localPosition = new(4.18f, 0.4f, -25f);
+        close_button.OnClick = new();
+        close_button.OnClick.AddListener(() => OpenTab(OldTabId));
         #endregion
+
+
     }
 
     public void OptionUpdate()
@@ -253,8 +276,20 @@ public class ModSettingsMenu : MonoBehaviour
             return;
 
         ModeId mode = ModeHandler.GetMode(false);
-        foreach (List<ModOptionBehaviour> options in new List<ModOptionBehaviour>[] { GenericOptions, ImpostorOptions, NeutralOptions, CrewmateOptions, ModifierOptions, MatchTagOptions })
+        for (int i = 0; i < 7; i++)
         {
+            List<ModOptionBehaviour> options = i switch
+            {
+                0 => GenericOptions,
+                1 => ImpostorOptions,
+                2 => NeutralOptions,
+                3 => CrewmateOptions,
+                4 => ModifierOptions,
+                5 => MatchTagOptions,
+                6 => RoleDetailsOptions,
+                _ => GenericOptions
+            };
+
             YPosition = FirstYPosition;
             foreach (ModOptionBehaviour option in options)
             {
@@ -306,6 +341,11 @@ public class ModSettingsMenu : MonoBehaviour
                     }
                     option.UpdateValue();
                 }
+            }
+            if (i == NowTabId)
+            {
+                ScrollBar.ContentYBounds.max = Mathf.Abs(YPosition - FirstYPosition) - 2.98f;
+                ScrollBar.UpdateScrollBars();
             }
         }
     }
@@ -407,7 +447,20 @@ public class ModSettingsMenu : MonoBehaviour
         mod.CountText = obj.countText;
         mod.ChanceText = obj.chanceText;
         mod.LabelSprite = obj.labelSprite;
-        mod.ControllerSelectable = obj.ControllerSelectable.ToList();
+        BoxCollider2D collider = mod.LabelSprite.gameObject.AddComponent<BoxCollider2D>();
+        collider.offset = Vector2.zero;
+        collider.size = mod.LabelSprite.size;
+        PassiveButton button = mod.LabelSprite.gameObject.AddComponent<PassiveButton>();
+        button.Colliders = new Collider2D[] { collider };
+        (button.OnMouseOut = new()).AddListener(() => mod.LabelSprite.color = color);
+        (button.OnMouseOver = new()).AddListener(() =>
+        {
+            Color.RGBToHSV(color, out float h, out float s, out float v);
+            mod.LabelSprite.color = Color.HSVToRGB(h, s, v / 2f);
+        });
+        RolesSettingsMenu roles = GameSettingMenu.Instance.RoleSettingsTab;
+        button.ClickSound = roles.AllButton.ClickSound;
+        button.HoverSound = roles.AllButton.HoverSound;
         mod.ParentCustomOption = role;
         mod.SettingsMenu = this;
         mod.TitleText.text = role.GetName();
@@ -417,10 +470,12 @@ public class ModSettingsMenu : MonoBehaviour
         mod.TitleText.SetOutlineColor(RoleTextOutlineColor);
         mod.UpdateValue();
         mod.LabelSprite.color = color;
+        mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.DecreaseCount);
         mod.ControllerSelectable[1].OnClick.AddListener(mod.IncreaseCount);
-        mod.ControllerSelectable[2].OnClick.AddListener(mod.IncreaseChance);
-        mod.ControllerSelectable[3].OnClick.AddListener(mod.DecreaseChance);
+        mod.ControllerSelectable[2].OnClick.AddListener(mod.DecreaseChance);
+        mod.ControllerSelectable[3].OnClick.AddListener(mod.IncreaseChance);
+        mod.ControllerSelectable[4].OnClick.AddListener(() => OpenTab(6, mod.CreateRoleDetailsOption));
         GameObject.Destroy(obj);
         return mod;
     }
@@ -437,7 +492,7 @@ public class ModSettingsMenu : MonoBehaviour
         mod.TitleText.text = option.GetName();
         mod.TitleText.alignment = TextAlignmentOptions.Center;
         mod.UpdateValue();
-        mod.ControllerSelectable = mod.transform.GetComponentsInChildren<PassiveButton>(true).ToList();
+        mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Decrease);
         mod.ControllerSelectable[1].OnClick.AddListener(mod.Increase);
         GameObject.Destroy(obj);
@@ -459,7 +514,7 @@ public class ModSettingsMenu : MonoBehaviour
         mod.TitleText.fontSize = 2f;
         mod.TitleText.alignment = TextAlignmentOptions.Center;
         mod.UpdateValue();
-        mod.ControllerSelectable = mod.transform.GetComponentsInChildren<PassiveButton>(true).ToList();
+        mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Toggle);
         GameObject.Destroy(obj);
         return mod;
@@ -477,7 +532,7 @@ public class ModSettingsMenu : MonoBehaviour
     }
     public void CloseMenu() => ControllerManager.Instance.CloseOverlayMenu(name);
 
-    public void OpenTab(int id)
+    public void OpenTab(int id, Action details = null)
     {
         CloseAllTab();
         switch (id)
@@ -486,41 +541,42 @@ public class ModSettingsMenu : MonoBehaviour
                 GenericSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingSuperNewRoles");
                 ControllerSelectable.AddRange(GenericTabSelectables);
-                ScrollBar.CalculateAndSetYBounds(GenericOptions.Count + CustomOption.options.Count(x => x.type == CustomOptionType.Generic && x.isHeader) + 3.5f, 1f, 6f, 0.43f);
                 break;
             case 1:
                 ImpostorSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingImpostor");
                 ControllerSelectable.AddRange(ImpostorTabSelectables);
-                ScrollBar.CalculateAndSetYBounds(ImpostorOptions.Count + CustomOption.options.Count(x => x.type == CustomOptionType.Impostor && x.isHeader) + 3.5f, 1f, 6f, 0.43f);
                 break;
             case 2:
                 NeutralSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingNeutral");
                 ControllerSelectable.AddRange(NeutralTabSelectables);
-                ScrollBar.CalculateAndSetYBounds(NeutralOptions.Count + CustomOption.options.Count(x => x.type == CustomOptionType.Neutral && x.isHeader) + 3.5f, 1f, 6f, 0.43f);
                 break;
             case 3:
                 CrewmateSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingCrewmate");
                 ControllerSelectable.AddRange(CrewmateTabSelectables);
-                ScrollBar.CalculateAndSetYBounds(CrewmateOptions.Count + CustomOption.options.Count(x => x.type == CustomOptionType.Crewmate && x.isHeader) + 3.5f, 1f, 6f, 0.43f);
                 break;
             case 4:
                 ModifierSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("modifierSettings");
                 ControllerSelectable.AddRange(ModifierTabSelectables);
-                ScrollBar.CalculateAndSetYBounds(ModifierOptions.Count + CustomOption.options.Count(x => x.type == CustomOptionType.Modifier && x.isHeader) + 3.5f, 1f, 6f, 0.43f);
                 break;
             case 5:
                 MatchTagSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingRegulation");
                 ControllerSelectable.AddRange(MatchTagTabSelectables);
-                ScrollBar.CalculateAndSetYBounds(MatchTagOptions.Count + CustomOption.options.Count(x => x.type == CustomOptionType.MatchTag && x.isHeader) + 3.5f, 1f, 6f, 0.43f);
+                break;
+            case 6:
+                RoleDetailsSettings.SetActive(true);
+                details?.Invoke();
+                ControllerSelectable.AddRange(RoleDetailsTabSelectables);
                 break;
         }
-        ScrollBar.ScrollToTop();
+        ScrollBar.CalculateAndSetYBounds(3.5f, 1f, 6f, 0.43f);
+        NowTabId = id;
         OptionUpdate();
+        ScrollBar.ScrollToTop();
         ControllerManager.Instance.CurrentUiState.SelectableUiElements = ControllerSelectable.ToIl2CppList();
     }
 
@@ -532,15 +588,13 @@ public class ModSettingsMenu : MonoBehaviour
         CrewmateSettings.SetActive(false);
         ModifierSettings.SetActive(false);
         MatchTagSettings.SetActive(false);
-
-        GenericButton.ReceiveMouseOut();
-        ImpostorButton.ReceiveMouseOut();
-        NeutralButton.ReceiveMouseOut();
-        CrewmateButton.ReceiveMouseOut();
-        ModifierButton.ReceiveMouseOut();
-        MatchTagButton.ReceiveMouseOut();
+        RoleDetailsSettings.SetActive(false);
+        foreach (GameObject obj in RoleDetailsSettings.GetChildren())
+        {
+            if (obj.name == "Close Button") continue;
+            Object.Destroy(obj);
+        }
 
         ControllerSelectable.Clear();
-        
     }
 }

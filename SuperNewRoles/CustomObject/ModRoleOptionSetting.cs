@@ -1,3 +1,4 @@
+using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
 
@@ -45,6 +46,26 @@ public class ModRoleOptionSetting : ModOptionBehaviour
     {
         ParentCustomOption.Addition(-1);
         SettingsMenu.OptionUpdate();
+    }
+
+    public void CreateRoleDetailsOption()
+    {
+        SettingsMenu.OldTabId = SettingsMenu.NowTabId;
+        foreach (GameObject obj in SettingsMenu.RoleDetailsSettings.GetChildren())
+        {
+            if (obj.name == "Close Button") continue;
+            Object.Destroy(obj);
+        }
+        SettingsMenu.RoleDetailsOptions = new();
+        SettingsMenu.RoleDetailsTabSelectables = new();
+        foreach (CustomOption option in CustomOption.options.FindAll(x => x.RoleId == ParentCustomOption.RoleId))
+        {
+            if (option is CustomOptionBlank) continue;
+            ModOptionBehaviour mod = option.IsToggle ? SettingsMenu.CreateModToggleOption(SettingsMenu.RoleDetailsSettings.transform, option) : SettingsMenu.CreateModStringOption(SettingsMenu.RoleDetailsSettings.transform, option);
+            if (option.WithHeader) mod.HeaderMasked = SettingsMenu.CreateCategoryHeaderMasked(SettingsMenu.RoleDetailsSettings.transform, option.HeaderText ?? option.GetName());
+            SettingsMenu.RoleDetailsOptions.Add(mod);
+            SettingsMenu.RoleDetailsTabSelectables.AddRange(mod.ControllerSelectable);
+        }
     }
 
     public override void UpdateValue()
