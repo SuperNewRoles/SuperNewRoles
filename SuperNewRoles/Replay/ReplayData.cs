@@ -87,8 +87,8 @@ namespace SuperNewRoles.Replay
             {
                 var selection = CustomOptionSelections.FirstOrDefault(x => x.Key == opt.id);
                 //nullチェック
-                if (selection.Equals(default(KeyValuePair<int, int>))) opt.Set(0);
-                else opt.Set(selection.Value);
+                if (selection.Equals(default(KeyValuePair<int, int>))) opt.SetSelection(0);
+                else opt.SetSelection(selection.Value);
             }
         }
     }

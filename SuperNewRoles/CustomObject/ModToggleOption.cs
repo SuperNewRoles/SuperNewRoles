@@ -11,7 +11,7 @@ public class ModToggleOption : ModOptionBehaviour
 
     public void Toggle()
     {
-        ParentCustomOption.Set(!ParentCustomOption.GetBool());
+        ParentCustomOption.SetSelection(!ParentCustomOption.GetBool());
         SettingsMenu.OptionUpdate();
     }
 

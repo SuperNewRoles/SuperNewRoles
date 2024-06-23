@@ -403,18 +403,18 @@ public class CustomOption
 
     // Option changes
 
-    public virtual void Set(int set)
+    public virtual void SetSelection(int set)
     {
         selection = (set + selections.Length) % selections.Length;
         ShareOption();
     }
-    public virtual void Set(bool set)
+    public virtual void SetSelection(bool set)
     {
         selection = set ? 1 : 0;
         ShareOption();
     }
 
-    public virtual void Addition(int addition)
+    public virtual void SelectionAddition(int addition)
     {
         selection = (selection + addition + selections.Length) % selections.Length;
         ShareOption();
@@ -555,12 +555,12 @@ public class CustomOptionBlank : CustomOption
         return "";
     }
 
-    public override void Set(int set)
+    public override void SetSelection(int set)
     {
         return;
     }
 
-    public override void Addition(int addition)
+    public override void SelectionAddition(int addition)
     {
         return;
     }

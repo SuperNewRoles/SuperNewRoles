@@ -26,25 +26,25 @@ public class ModRoleOptionSetting : ModOptionBehaviour
 
     public void IncreaseCount()
     {
-        PlayerCountOption?.Addition(1);
+        PlayerCountOption?.SelectionAddition(1);
         SettingsMenu.OptionUpdate();
     }
 
     public void DecreaseCount()
     {
-        PlayerCountOption?.Addition(-1);
+        PlayerCountOption?.SelectionAddition(-1);
         SettingsMenu.OptionUpdate();
     }
 
     public void IncreaseChance()
     {
-        ParentCustomOption.Addition(1);
+        ParentCustomOption.SelectionAddition(1);
         SettingsMenu.OptionUpdate();
     }
 
     public void DecreaseChance()
     {
-        ParentCustomOption.Addition(-1);
+        ParentCustomOption.SelectionAddition(-1);
         SettingsMenu.OptionUpdate();
     }
 

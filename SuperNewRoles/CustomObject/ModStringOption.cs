@@ -10,13 +10,13 @@ public class ModStringOption : ModOptionBehaviour
 
     public void Increase()
     {
-        ParentCustomOption.Addition(1);
+        ParentCustomOption.SelectionAddition(1);
         SettingsMenu.OptionUpdate();
     }
 
     public void Decrease()
     {
-        ParentCustomOption.Addition(-1);
+        ParentCustomOption.SelectionAddition(-1);
         SettingsMenu.OptionUpdate();
     }
 
