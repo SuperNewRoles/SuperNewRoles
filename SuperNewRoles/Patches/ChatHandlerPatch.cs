@@ -4,6 +4,7 @@ using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Generator.Extensions;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
@@ -243,12 +244,14 @@ internal class AddChatPatch
             name = sender.GetDefaultName();
         }
         crs.AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
+            .Write(0u)
             .Write(SendName)
             .EndRpc()
             .AutoStartRpc(sender.NetId, (byte)RpcCalls.SendChat)
             .Write(command)
             .EndRpc()
             .AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
+            .Write(0u)
             .Write(name)
             .EndRpc()
             .SendMessage();
@@ -264,12 +267,14 @@ internal class AddChatPatch
         }
         var crs = CustomRpcSender.Create("PrivateSend");
         crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
+            .Write(0u)
             .Write(SendName)
             .EndRpc()
             .AutoStartRpc(target.NetId, (byte)RpcCalls.SendChat, target.GetClientId())
             .Write(command)
             .EndRpc()
             .AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
+            .Write(0u)
             .Write(target.Data.PlayerName)
             .EndRpc()
             .SendMessage();
