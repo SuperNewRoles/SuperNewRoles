@@ -14,6 +14,7 @@ public class ModRoleOptionSetting : ModOptionBehaviour
 
     public SpriteRenderer LabelSprite;
 
+    public int DefaultCountSelection;
     private CustomOption _PlayerCountOption;
     public CustomOption PlayerCountOption
     {
@@ -26,25 +27,31 @@ public class ModRoleOptionSetting : ModOptionBehaviour
 
     public void IncreaseCount()
     {
-        PlayerCountOption?.SelectionAddition(1);
+        PlayerCountOption.SelectionAddition(1);
+        if (!(PlayerCountOption?.GetBool() ?? false)) ParentCustomOption.SetSelection(0);
+        if (DefaultCountSelection == 0 && (PlayerCountOption?.GetBool() ?? false)) ParentCustomOption.SetSelection(10);
         SettingsMenu.OptionUpdate();
     }
 
     public void DecreaseCount()
     {
-        PlayerCountOption?.SelectionAddition(-1);
+        PlayerCountOption.SelectionAddition(-1);
+        if (!(PlayerCountOption?.GetBool() ?? false)) ParentCustomOption.SetSelection(0);
+        if (DefaultCountSelection == 0 && (PlayerCountOption?.GetBool() ?? false)) ParentCustomOption.SetSelection(10);
         SettingsMenu.OptionUpdate();
     }
 
     public void IncreaseChance()
     {
         ParentCustomOption.SelectionAddition(1);
+        if (!ParentCustomOption.GetBool()) PlayerCountOption?.SetSelection(0);
         SettingsMenu.OptionUpdate();
     }
 
     public void DecreaseChance()
     {
         ParentCustomOption.SelectionAddition(-1);
+        if (!ParentCustomOption.GetBool()) PlayerCountOption?.SetSelection(0);
         SettingsMenu.OptionUpdate();
     }
 
@@ -66,5 +73,6 @@ public class ModRoleOptionSetting : ModOptionBehaviour
     {
         CountText.text = PlayerCountOption?.GetString() ?? "0";
         ChanceText.text = (int.TryParse(ParentCustomOption.GetString().Replace("%", ""), out int percent) ? percent : 0).ToString();
+        DefaultCountSelection = PlayerCountOption?.GetSelection() ?? 0;
     }
 }

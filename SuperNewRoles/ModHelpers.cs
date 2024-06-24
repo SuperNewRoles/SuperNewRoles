@@ -1183,6 +1183,7 @@ public static class ModHelpers
         return data;
     }
     public static void AddListener(this UnityEngine.Events.UnityEvent @event, Action action) => @event.AddListener(action);
+    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.ToList().Find(match);
 }
 public static class CreateFlag
 {

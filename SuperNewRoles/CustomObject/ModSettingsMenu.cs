@@ -263,6 +263,9 @@ public class ModSettingsMenu : MonoBehaviour
         close_button.OnClick = new();
         close_button.OnClick.AddListener(() => OpenTab(OldTabId));
         #endregion
+
+        foreach (PassiveButton button in ScrollBar.Inner.GetComponentsInChildren<PassiveButton>(true))
+            button.ClickMask = ScrollBar.Hitbox;
     }
 
     public void OptionUpdate()

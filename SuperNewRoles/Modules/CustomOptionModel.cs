@@ -899,9 +899,7 @@ public static class GameOptionsNextPagePatch
 [HarmonyPatch(typeof(GameSettingMenu))]
 public static class GameSettingMenuPatch
 {
-
-
-    public static ModSettingsMenu ModSettingsTab;
+    public static ModSettingsMenu ModSettingsMenu;
     public static PassiveButton ModSttingsButton;
 
     [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPrefix]
@@ -916,11 +914,11 @@ public static class GameSettingMenuPatch
         __instance.RoleSettingsButton.transform.position += new Vector3(0, 0.637f);
         __instance.GameSettingsTab.scrollBar.ContentYBounds.max += 0.5f;
 
-        ModSettingsTab = new GameObject("MOD TAB").AddComponent<ModSettingsMenu>();
-        ModSettingsTab.transform.SetParent(__instance.RoleSettingsTab.transform.parent);
-        ModSettingsTab.transform.localPosition = new(0f, 0.16f, -4f);
-        ModSettingsTab.gameObject.layer = 5;
-        ModSettingsTab.gameObject.SetActive(false);
+        ModSettingsMenu = new GameObject("MOD TAB").AddComponent<ModSettingsMenu>();
+        ModSettingsMenu.transform.SetParent(__instance.RoleSettingsTab.transform.parent);
+        ModSettingsMenu.transform.localPosition = new(0f, 0.16f, -4f);
+        ModSettingsMenu.gameObject.layer = 5;
+        ModSettingsMenu.gameObject.SetActive(false);
 
         GameObject mod_settings_button = Object.Instantiate(__instance.RoleSettingsButton.gameObject, __instance.RoleSettingsButton.transform.parent);
         mod_settings_button.name = "ModSttingsButton";
@@ -942,17 +940,25 @@ public static class GameSettingMenuPatch
     }
 
     [HarmonyPatch(nameof(GameSettingMenu.ChangeTab)), HarmonyPostfix]
-    public static void ChangeTabPostfix(int tabNum, bool previewOnly)
+    public static void ChangeTabPostfix(GameSettingMenu __instance, int tabNum, bool previewOnly)
     {
         if ((previewOnly && Controller.currentTouchType == Controller.TouchType.Joystick) || !previewOnly)
         {
-            ModSettingsTab.gameObject.SetActive(false);
-            ModSttingsButton.SelectButton(false);
+            ModSettingsMenu?.gameObject.SetActive(false);
+            ModSttingsButton?.SelectButton(false);
 
             switch (tabNum)
             {
+                case 1:
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameNumImpostors).Cast<NumberOption>().ValidRange = new(0f, 15f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameKillCooldown).Cast<NumberOption>().ValidRange = new(2.5f, 60f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GamePlayerSpeed).Cast<NumberOption>().ValidRange = new(-5f, 5f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameCommonTasks).Cast<NumberOption>().ValidRange = new(0f, 12f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameLongTasks).Cast<NumberOption>().ValidRange = new(0f, 69f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameShortTasks).Cast<NumberOption>().ValidRange = new(0f, 45f);
+                    break;
                 case 3:
-                    ModSettingsTab.gameObject.SetActive(true);
+                    ModSettingsMenu.gameObject.SetActive(true);
                     break;
             }
         }
@@ -961,7 +967,7 @@ public static class GameSettingMenuPatch
             switch (tabNum)
             {
                 case 3:
-                    ModSettingsTab.OpenMenu();
+                    ModSettingsMenu.OpenMenu();
                     ModSttingsButton.SelectButton(true);
                     break;
             }

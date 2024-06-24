@@ -6,7 +6,7 @@ public class ModOptionBehaviour : OptionBehaviour
 {
     public ModSettingsMenu SettingsMenu;
 
-    public List<PassiveButton> ControllerSelectable;
+    public List<PassiveButton> ControllerSelectable = new();
 
     public CustomOption ParentCustomOption;
 
