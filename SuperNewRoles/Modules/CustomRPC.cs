@@ -250,16 +250,15 @@ public enum RoleId
 
 public enum CustomRPC
 {
-    // 2024.1.12 現在
-    // Among Us 本体(2023.11.28) : 0 ~ 61
-    // LI : 94 ~ 99
+    // Among Us 本体(2023.6.18) : 0 ~ 65
+    // LI : 94 ~ 99 (2024.1.12 現在)
 
-    // 2024.1.12 現在
-    // SNR : 64 ~ 93, 100 ~ 184
+    // 2024.6.25 現在
+    // SNR : 64 ~ 95, 100 ~ 185
     // Agartha : 無し
 
     // Vanilla Extended RPC
-    Chat = 64,
+    Chat = 66,
     UncheckedSetVanillaRole,
     RPCMurderPlayer,
     CustomRPCKill,
@@ -274,7 +273,7 @@ public enum CustomRPC
     RPCTeleport,
 
     // Mod Basic RPC
-    ShareOptions = 77,
+    ShareOptions = 79,
     ShareSNRVersion,
     StartGameRPC,
     SetRole,
@@ -288,14 +287,14 @@ public enum CustomRPC
     UncheckedUsePlatform,
 
     // Mod feature RPC
-    AutoCreateRoom = 89,
+    AutoCreateRoom = 91,
     SetBot,
     UncheckedSetColor,
-    SetDeviceTime,
+    SetDeviceTime = 100,
     ShowFlash,
 
     // Mod Roles RPC
-    RPCClergymanLightOut = 100,
+    RPCClergymanLightOut,
     SheriffKill,
     MeetingSheriffKill,
     UncheckedMeeting,
