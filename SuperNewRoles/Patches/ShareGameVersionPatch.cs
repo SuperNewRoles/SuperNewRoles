@@ -7,6 +7,7 @@ using Hazel;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -271,14 +272,9 @@ class ShareGameVersion
             int minutes = (int)timer / 60;
             int seconds = (int)timer % 60;
             string suffix = $" ({minutes:00}:{seconds:00})";
-
-            __instance.PlayerCounter.text = currentText.Replace("\n", "") + suffix.Replace("\n", "")
-            ;
-            __instance.PlayerCounter.autoSizeTextContainer = true;
-            if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value)
-            {
-                notcreateroom = true;
-            }
+            __instance.StartButton.transform.Find("FontPlacer/Text_TMP").GetComponent<TextMeshPro>().text = $"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.StartLabel)} {suffix}";
+            __instance.StartButtonClient.transform.Find("Text_TMP").GetComponent<TextMeshPro>().text = $"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.WaitingForHost)} {suffix}";
+            if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value) notcreateroom = true;
         }
     }
 }
