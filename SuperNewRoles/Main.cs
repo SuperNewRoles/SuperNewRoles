@@ -206,7 +206,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
     // CPUの割当を0と1にする
     public static void UpdateCPUProcessorAffinity()
     {
-        if (!ConfigRoles._isCPUProcessorAffinity.Value){
+        if (!ConfigRoles._isCPUProcessorAffinity.Value)
+        {
             Logger.LogWarning("UpdateCPUProcessorAffinity: IsCPUProcessorAffinity is false");
             return;
         }

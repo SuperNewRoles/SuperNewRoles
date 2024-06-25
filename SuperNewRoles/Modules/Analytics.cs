@@ -45,23 +45,23 @@ public static class Analytics
                 currentPopup = Popup;
                 return;
             }
-            if (currentPopup == null && !ConfigRoles.IsViewdApril2024Popup.Value && AprilFoolsManager.IsApril(2024))
+            if (currentPopup == null &&!ConfigRoles.IsViewd20240618ServerInfo.Value)
             {
-                ConfigRoles.IsViewdApril2024Popup.Value = true;
+                ConfigRoles.IsViewd20240618ServerInfo.Value = true;
                 GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
                 Popup.gameObject.SetActive(true);
                 Popup.transform.FindChild("Background").localScale = new(2, 2f, 1);
                 Popup.transform.FindChild("ExitGame").localPosition = new(0f, -1.5f, -0.5f);
                 GameObject.Destroy(Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextTranslatorTMP>());
-                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("AprilFool2024HackedByEvilHackerPopupOK");
+                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("20240618_25SaverInfo_PopupOK");
                 Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0.04f,0,0);
                 TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
-                Title.text = ModTranslation.GetString("AprilFool2024HackedByEvilHackerPopupTitle");
+                Title.text = ModTranslation.GetString("20240618_25SaverInfo_PopupTitle");
                 Title.transform.localPosition = new(0.07f, 1.285f, -0.5f);
                 Title.transform.localScale = Vector3.one * 2.8f;
                 Popup.TextAreaTMP.transform.localPosition = new(0.05f, -0.05f, -0.5f);
                 Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.5f;
-                Popup.TextAreaTMP.text = ModTranslation.GetString("AprilFool2024HackedByEvilHackerPopupText");
+                Popup.TextAreaTMP.text = ModTranslation.GetString("20240618_25SaverInfo_PopupText");
                 Popup.destroyOnClose = true;
                 currentPopup = Popup;
                 if (!AprilFoolsManager.isLastAprilFool)
