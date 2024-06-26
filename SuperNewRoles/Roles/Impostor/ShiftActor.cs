@@ -18,7 +18,7 @@ public static class ShiftActor
     public static CustomOption ShiftActorCanWatchAttribute;
     public static void SetupCustomOptions()
     {
-        ShiftActorOption = new(OptionId, false, CustomOptionType.Impostor, "ShiftActorName", color, 1);
+        ShiftActorOption = CustomOption.SetupCustomRoleOption(OptionId, false, RoleId.ShiftActor, CustomOptionType.Impostor);
         ShiftActorPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ShiftActorOption);
         ShiftActorKillCool = CustomOption.Create(OptionId + 2, false, CustomOptionType.Impostor, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ShiftActorOption, format: "unitSeconds");
         ShiftActorShiftLimit = CustomOption.Create(OptionId + 3, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 5f, 1f, ShiftActorOption);

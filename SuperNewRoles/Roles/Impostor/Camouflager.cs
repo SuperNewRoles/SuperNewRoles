@@ -73,7 +73,7 @@ public class Camouflager
     {
         RoleClass.Camouflager.IsCamouflage = true;
         RoleClass.Camouflager.ButtonTimer = DateTime.Now;
-        PlayerOutfit outfit = new()
+        NetworkedPlayerInfo.PlayerOutfit outfit = new()
         {
             PlayerName = "　",
             ColorId = RoleClass.Camouflager.Color,

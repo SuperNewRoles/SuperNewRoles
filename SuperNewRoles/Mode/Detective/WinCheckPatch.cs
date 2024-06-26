@@ -70,7 +70,7 @@ class WinCheckPatch
     {
         if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamImpostorsAlive != 0)
         {
-            var endReason = TempData.LastDeathReason switch
+            var endReason = GameData.LastDeathReason switch
             {
                 DeathReason.Exile => GameOverReason.ImpostorByVote,
                 DeathReason.Kill => GameOverReason.ImpostorByKill,
@@ -114,7 +114,7 @@ class WinCheckPatch
 
             for (int i = 0; i < GameData.Instance.PlayerCount; i++)
             {
-                GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
+                NetworkedPlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                 if (!playerInfo.Disconnected && (!Main.IsNotDetectiveWin || playerInfo.Object.PlayerId != Main.DetectivePlayer.PlayerId))
                 {
                     if (playerInfo.Object.IsAlive())
