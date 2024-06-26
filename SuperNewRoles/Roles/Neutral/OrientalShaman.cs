@@ -263,7 +263,7 @@ public static class OrientalShaman
                             break;
                         }
                     }
-                    GameData.PlayerOutfit outfit = target?.Data.DefaultOutfit;
+                    NetworkedPlayerInfo.PlayerOutfit outfit = target?.Data.DefaultOutfit;
                     SetOutfit(PlayerControl.LocalPlayer, outfit);
                     IsTransformation = true;
                 }
@@ -403,7 +403,7 @@ public static class OrientalShaman
         if (target.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff)) return true;
         return false;
     }
-    public static void SetOutfit(PlayerControl target, GameData.PlayerOutfit outfit)
+    public static void SetOutfit(PlayerControl target, NetworkedPlayerInfo.PlayerOutfit outfit)
     {
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetOutfit);
         writer.Write(target.PlayerId);

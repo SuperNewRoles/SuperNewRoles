@@ -6,7 +6,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
 
 class Nekomata
 {
-    public static void WrapUp(GameData.PlayerInfo exiled)
+    public static void WrapUp(NetworkedPlayerInfo exiled)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         //もし 追放された役職が猫であるならば
@@ -15,7 +15,7 @@ class Nekomata
             NekomataEnd(exiled);//道連れにするプレイヤーの抽選リストを作成するクラスに移動する
         }
     }
-    public static void NekomataEnd(GameData.PlayerInfo exiled)
+    public static void NekomataEnd(NetworkedPlayerInfo exiled)
     {
         List<PlayerControl> p = new();
         foreach (PlayerControl p1 in CachedPlayer.AllPlayers)

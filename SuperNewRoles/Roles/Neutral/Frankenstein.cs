@@ -49,7 +49,7 @@ public class Frankenstein
         FrankensteinCreateMonsterButton = new(
             () =>
             {
-                GameData.PlayerInfo player = null;
+                NetworkedPlayerInfo player = null;
                 Vector2 pos = PlayerControl.LocalPlayer.GetTruePosition();
                 foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(pos, PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
                 {

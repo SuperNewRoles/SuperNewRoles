@@ -33,9 +33,9 @@ namespace SuperNewRoles.Replay
                 ReplayManager.IsRecording = ConfigRoles.ReplayEnable.Value;
         }
 
-        static GameData.PlayerOutfit CopyOutfit(GameData.PlayerOutfit outfit)
+        static NetworkedPlayerInfo.PlayerOutfit CopyOutfit(NetworkedPlayerInfo.PlayerOutfit outfit)
         {
-            GameData.PlayerOutfit result = new()
+            NetworkedPlayerInfo.PlayerOutfit result = new()
             {
                 PlayerName = string.Copy(outfit.PlayerName),
                 ColorId = outfit.ColorId,
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Replay
 
         public static void CoIntroDestroy()
         {
-            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
                 FirstOutfits.Add(player.PlayerId, CopyOutfit(player.DefaultOutfit));
                 RoleId role = RoleId.DefaultRole;
@@ -69,7 +69,7 @@ namespace SuperNewRoles.Replay
             ReplayActionTime = 0;
         }
         static float currenttime;
-        public static Dictionary<byte, GameData.PlayerOutfit> FirstOutfits;
+        public static Dictionary<byte, NetworkedPlayerInfo.PlayerOutfit> FirstOutfits;
         public static Dictionary<byte, RoleId> FirstRoles;
         static Dictionary<byte, List<Vector2>> PlayerPositions;
         static List<(byte, byte, float)> MeetingVoteData;
@@ -88,7 +88,7 @@ namespace SuperNewRoles.Replay
                 currenttime = RecordRate;
             }
         }
-        public static void OnVoteChat(GameData.PlayerInfo srcPlayer)
+        public static void OnVoteChat(NetworkedPlayerInfo srcPlayer)
         {
         }
         public static void StartMeeting()
@@ -200,15 +200,15 @@ namespace SuperNewRoles.Replay
             ReplayActionTime = 0f;
             //ゲーム終了かのフラグ
             writer.Write(true);
-            List<GameData.PlayerInfo> winners = new();
-            foreach (WinningPlayerData winningPlayer in TempData.winners)
+            List<NetworkedPlayerInfo> winners = new();
+            foreach (CachedPlayerData winningPlayer in EndGameResult.CachedWinners)
             {
-                GameData.PlayerInfo target = GameData.Instance.AllPlayers.Find((Il2CppSystem.Predicate<GameData.PlayerInfo>)(x => x.PlayerName == winningPlayer.PlayerName));
+                NetworkedPlayerInfo target = GameData.Instance.AllPlayers.Find((Il2CppSystem.Predicate<NetworkedPlayerInfo>)(x => x.PlayerName == winningPlayer.PlayerName));
                 if (target == null) continue;
                 winners.Add(target);
             }
             writer.Write(winners.Count);
-            foreach (GameData.PlayerInfo player in winners)
+            foreach (NetworkedPlayerInfo player in winners)
             {
                 writer.Write(player.PlayerId);
             }

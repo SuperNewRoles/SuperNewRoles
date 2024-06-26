@@ -66,7 +66,7 @@ class Main
     {
         if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0)
         {
-            var endReason = TempData.LastDeathReason switch
+            var endReason = GameData.LastDeathReason switch
             {
                 DeathReason.Exile => GameOverReason.ImpostorByVote,
                 DeathReason.Kill => GameOverReason.ImpostorByKill,

@@ -81,15 +81,15 @@ public static class ReplayFileWriter
             writer.Write(option.GetSelection());
         }
     }
-    public static void WritePlayerData(BinaryWriter writer, Dictionary<byte, GameData.PlayerOutfit> FirstOutfits, Dictionary<byte, RoleId> FirstRoleIds)
+    public static void WritePlayerData(BinaryWriter writer, Dictionary<byte, NetworkedPlayerInfo.PlayerOutfit> FirstOutfits, Dictionary<byte, RoleId> FirstRoleIds)
     {
-        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
             writer.Write(player.PlayerId);
             var outfitdata = FirstOutfits.FirstOrDefault(x => x.Key == player.PlayerId);
             var roledata = FirstRoleIds.FirstOrDefault(x => x.Key == player.PlayerId);
             //nullチェック
-            if (outfitdata.Equals(default(Dictionary<byte, GameData.PlayerOutfit>)) ||
+            if (outfitdata.Equals(default(Dictionary<byte, NetworkedPlayerInfo.PlayerOutfit>)) ||
                 roledata.Equals(default(Dictionary<byte, RoleId>)))
             {
                 writer.Write(false);
@@ -100,7 +100,7 @@ public static class ReplayFileWriter
                 writer.Write(true);
             else
                 writer.Write(false);
-            GameData.PlayerOutfit outfit = outfitdata.Value;
+            NetworkedPlayerInfo.PlayerOutfit outfit = outfitdata.Value;
             writer.Write(outfit.PlayerName);
             writer.Write(outfit.ColorId);
             writer.Write(outfit.HatId);
@@ -109,7 +109,7 @@ public static class ReplayFileWriter
             writer.Write(outfit.NamePlateId);
             writer.Write(outfit.SkinId);
             writer.Write(player.Tasks.Count);
-            foreach (GameData.TaskInfo task in player.Tasks)
+            foreach (NetworkedPlayerInfo.TaskInfo task in player.Tasks)
             {
                 writer.Write(task.Id);
                 writer.Write(task.TypeId);

@@ -50,6 +50,8 @@ public static class ModTranslation
         };
     }
 
+    public static string GetString(string key, params object[] args) => string.Format(GetString(key), args);
+
     /// <summary>
     /// 翻訳語の文章から翻訳キーを取得する。
     /// CustomOptionで追加しているカラータグは先に外してください。

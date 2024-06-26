@@ -13,13 +13,15 @@ class GameSettingMenuChangePatch
     {
         public static void Prefix(GameSettingMenu __instance)
         {
-            __instance.HideForOnline = new Transform[] { };
+            __instance.GameSettingsTab.HideForOnline = new Transform[] { };
         }
 
         public static void Postfix(GameSettingMenu __instance)
         {
+            // とりあえず封印
+            /*
             // Setup mapNameTransform
-            var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.gameObject.activeSelf && x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
+            var mapNameTransform = __instance.GameSettingsTab.Children.FirstOrDefault(x => x.gameObject.activeSelf && x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
             if (mapNameTransform == null) return;
 
             var options = new List<KeyValuePair<string, int>>();
@@ -32,7 +34,7 @@ class GameSettingMenuChangePatch
                 };
                 options.Add(kvp);
             }
-            mapNameTransform.GetComponent<KeyValueOption>().Values = options;
+            mapNameTransform.GetComponent<StringOption>().Values = options;*/
         }
     }
 }

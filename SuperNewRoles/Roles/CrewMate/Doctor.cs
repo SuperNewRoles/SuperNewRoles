@@ -81,7 +81,7 @@ class Doctor
                     for (int k = 0; k < __instance.vitals.Length; k++)
                     {
                         VitalsPanel vitalsPanel = __instance.vitals[k];
-                        GameData.PlayerInfo player = GameData.Instance.AllPlayers[k];
+                        NetworkedPlayerInfo player = GameData.Instance.AllPlayers[k];
                         if (vitalsPanel.IsDead)
                         {
                             DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.FirstOrDefault(x => x.playerId == player?.PlayerId);
