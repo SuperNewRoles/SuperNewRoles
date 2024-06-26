@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Helpers;
+using UnityEngine;
 using static System.Int32;
 
 namespace SuperNewRoles.Patches;
@@ -91,6 +93,55 @@ public static class DynamicLobbies
             {
                 return $"プレイヤー最小人数は {LobbyLimit}です。";
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendInitialData))]
+    public static class SendInitialDataPatch
+    {
+        public static bool Prefix(InnerNetClient __instance, int clientId)
+        {
+            SendData(__instance, clientId);
+            return false;
+        }
+
+        public static void SendData(InnerNetClient __instance, int clientId, int start = 0)
+        {
+            int index = start;
+            MessageWriter messageWriter = MessageWriter.Get(SendOption.Reliable);
+            messageWriter.StartMessage(6);
+            messageWriter.Write(__instance.GameId);
+            messageWriter.WritePacked(clientId);
+            Il2CppSystem.Collections.Generic.List<InnerNetObject> obj = __instance.allObjects;
+            lock (obj)
+            {
+                HashSet<GameObject> hashSet = new();
+                for (; index < __instance.allObjects.Count; index++)
+                {
+                    //本来はSerialize後のサイズ確認してダメそうならbreakするべきだが、そのためのコストがかなり大きいのである程度余裕を持ったサイズで適当に区切ることにする
+                    //(Serializeすると500byte程度になるような巨大なObjectがない限りは大丈夫なはず)
+                    if (messageWriter.Length > 1000) break;
+
+                    InnerNetObject innerNetObject = __instance.allObjects[index];
+                    if (innerNetObject && (innerNetObject.OwnerId != -4 || __instance.AmModdedHost) && hashSet.Add(innerNetObject.gameObject))
+                    {
+                        GameManager gameManager = innerNetObject as GameManager;
+                        if (gameManager != null)
+                        {
+                            __instance.SendGameManager(clientId, gameManager);
+                        }
+                        else
+                        {
+                            __instance.WriteSpawnMessage(innerNetObject, innerNetObject.OwnerId, innerNetObject.SpawnFlags, messageWriter);
+                        }
+                    }
+                }
+            }
+            messageWriter.EndMessage();
+            __instance.SendOrDisconnect(messageWriter);
+            messageWriter.Recycle();
+
+            if (index < __instance.allObjects.Count) SendData(__instance, clientId, index);
         }
     }
 }
