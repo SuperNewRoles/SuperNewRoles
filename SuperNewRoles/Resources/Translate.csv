@@ -50,9 +50,9 @@ Analytics,Analytics,解析,解析,解析
 AnalyticsText,In order to make SuperNewRoles an even better mod， we have created a function to send information about positions used to the server. \nThis information can be viewed by SuperNewRoles developers. See the following page for more information. \nYou can change in the settings whether you want to save the information. \nNo personally identifiable elements， such as your player name， will be sent. \n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,为了改善模组玩家的游戏体验，\n制作组尝试推出将一局游戏中的职业等信息发送给制作组服务器的功能。\n制作组将查阅这些信息来改进本模组；详细可点击最下方网址查看。\n您可以决定自己是否要保留这些信息；\n制作组承诺不会将您的游戏昵称等私人信息发送至服务器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,為了改善遊玩本模組玩家的遊戲體驗，\n製作組推出將遊戲中的職業等資訊傳送給製作組的功能。\n製作組將可查閱這些資訊來改進本模組；詳細可點擊最下方網址查看。\n您可以決定自己是否要保留這些資訊；\n製作組承諾不會將您的遊戲暱稱等個人資料傳送到伺服器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>
 AnalyticsOK,OK!,了解！,确认,確認！
 MainMenuDiscordText,<size=90%>Bug report or Question or Request</size>\n<size=90%>I wish everyone who uses it would join.(it's Discord server)</size>,<size=90%>バグ報告・質問・要望はこちら</size>\n<size=70%>使ってる人は全員入ってほしい(願望)</size>\n<size=140%>(Discord)</size>,,<size=90%>Bug回報、問題、請求請至</size>\n<size=70%>希望所有人都能加入</size>\n<size=140%>(Discord伺服器)</size>
-20240618_25SaverInfo_PopupTitle,About the current state of the connection.,現在の接続の状態について
-20240618_25SaverInfo_PopupText,,
-20240618_25SaverInfo_PopupOK,Confirmed,確認済
+20240618_25SaverInfo_PopupTitle,Server Notice,サーバーに関するお知らせ
+20240618_25SaverInfo_PopupText,,<size=70%>こんにちは！\n実は、SNRを含めた一部MODの場合、バニラサーバーで何故か「9人以上」入るとロビーが開始画面で切断される人が出てくるようなんだ。\n(必ず切断されるわけてはないよ!)\n\nだから、落ちちゃう人がいたらそれはこの問題だよ！\nロビーが開始画面で落ちなければほとんど問題ないと思うからまずは確認してね。\n\nカスタムサーバーではこの影響は受けないから、カスタムサーバーが使えるならカスタムサーバーを使うのもいいと思うよ。\n(少なくともリリース時点ではカスタムサーバーがまだ対応してないから使えないけど。)\n\nこんな感じかな。最新情報はDiscordかTwitterを見てね！\n(メインメニューの右下にリンクがあるよ！これを閉じたら見れると思う。)\n\nじゃあね！ </size>
+20240618_25SaverInfo_PopupOK,OK,オッケー！
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红,鮭魚紅
