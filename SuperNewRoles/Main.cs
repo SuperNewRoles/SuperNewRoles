@@ -169,6 +169,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonEffect>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModSettingsMenu>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModOptionBehaviour>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModCategoryHeaderEditRole>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModRoleOptionSetting>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModStringOption>();
+        ClassInjector.RegisterTypeInIl2Cpp<ModToggleOption>();
 
         Logger.LogInfo("Start Load Resource");
         string[] resourceNames = assembly.GetManifestResourceNames();
@@ -200,7 +206,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
     // CPUの割当を0と1にする
     public static void UpdateCPUProcessorAffinity()
     {
-        if (!ConfigRoles._isCPUProcessorAffinity.Value){
+        if (!ConfigRoles._isCPUProcessorAffinity.Value)
+        {
             Logger.LogWarning("UpdateCPUProcessorAffinity: IsCPUProcessorAffinity is false");
             return;
         }

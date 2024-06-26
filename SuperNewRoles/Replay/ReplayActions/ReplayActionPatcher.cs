@@ -90,11 +90,11 @@ namespace SuperNewRoles.Replay.ReplayActions
             {
                 ReplayActionSetCosmetics.Create(__instance.PlayerId, ReplayCosmeticsType.Skin, skinId, color);
             }
-            [HarmonyPatch(nameof(PlayerControl.SetName))]
+            [HarmonyPatch(nameof(PlayerControl.SetName), new Type[] { typeof(string) })]
             [HarmonyPostfix]
-            public static void SetNamePatch(PlayerControl __instance, string name, bool dontCensor)
+            public static void SetNamePatch(PlayerControl __instance, string playerName)
             {
-                ReplayActionSetCosmetics.Create(__instance.PlayerId, ReplayCosmeticsType.Name, name, dontCensor: dontCensor);
+                ReplayActionSetCosmetics.Create(__instance.PlayerId, ReplayCosmeticsType.Name, playerName, dontCensor: true);
             }
             [HarmonyPatch(nameof(PlayerControl.CompleteTask))]
             [HarmonyPostfix]

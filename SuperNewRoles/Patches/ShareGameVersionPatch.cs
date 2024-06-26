@@ -7,6 +7,7 @@ using Hazel;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -27,6 +28,8 @@ class ShareGameVersion
     public static float timer = 600;
     public static float RPCTimer = 1f;
     private static float kickingTimer = 0f;
+    /// <summary> 導入状態のエラーを表示する場所 </summary>
+    public static TextMeshPro VersionErrorInfo;
     private static bool notcreateroom;
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     public class AmongUsClientOnPlayerJoinedPatch
@@ -57,10 +60,26 @@ class ShareGameVersion
             RPCTimer = 1f;
             notcreateroom = false;
             kickingTimer = 0f;
+            ClearVersionErrorInfo();
+
             RoleClass.ClearAndReloadRoles();
             GameStartManagerUpdatePatch.Proce = 0;
             GameStartManagerUpdatePatch.LastBlockStart = false;
             GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
+        }
+
+        static void ClearVersionErrorInfo()
+        {
+            VersionErrorInfo = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, FastDestroyableSingleton<HudManager>.Instance.transform);
+            VersionErrorInfo.fontSize = VersionErrorInfo.fontSizeMin = VersionErrorInfo.fontSizeMax = 3f;
+            VersionErrorInfo.autoSizeTextContainer = false;
+            VersionErrorInfo.enableWordWrapping = false;
+            VersionErrorInfo.alignment = TMPro.TextAlignmentOptions.Center;
+            VersionErrorInfo.transform.position = Vector3.zero;
+            VersionErrorInfo.transform.localPosition = new Vector3(0f, 0f, -40f);
+            VersionErrorInfo.transform.localScale = Vector3.one;
+            VersionErrorInfo.color = Palette.White;
+            VersionErrorInfo.enabled = false;
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
@@ -222,7 +241,7 @@ class ShareGameVersion
                 if (!blockStart)
                 {
                     // 参加者の導入状況に問題が無い時、開始ボタンと開始のテキストを表示する。(アップデート処理の負荷を下げる為、ifを使用)
-                    if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
+                    if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.GameStartText.enabled = true;
                 }
                 else
                 {
@@ -231,19 +250,21 @@ class ShareGameVersion
                     __instance.ResetStartState();
 
                     // 参加者の導入状況に問題がある時、開始ボタンと開始のテキストを非表示にする。(アップデート処理の負荷を下げる為、ifを使用)
-                    if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
+                    if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.GameStartText.enabled = false;
                 }
             }
             if (blockStart || hostModeInVanilla)
             {
-                __instance.GameStartText.text = message;
+                VersionErrorInfo.text = message;
+                VersionErrorInfo.enabled = true;
                 __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
             }
             else
             {
                 if (LastBlockStart)
                 {
-                    __instance.GameStartText.text = "";
+                    VersionErrorInfo.text = "";
+                    VersionErrorInfo.enabled = false;
                 }
                 __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
             }
@@ -271,14 +292,9 @@ class ShareGameVersion
             int minutes = (int)timer / 60;
             int seconds = (int)timer % 60;
             string suffix = $" ({minutes:00}:{seconds:00})";
-
-            __instance.PlayerCounter.text = currentText.Replace("\n", "") + suffix.Replace("\n", "")
-            ;
-            __instance.PlayerCounter.autoSizeTextContainer = true;
-            if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value)
-            {
-                notcreateroom = true;
-            }
+            __instance.StartButton.transform.Find("FontPlacer/Text_TMP").GetComponent<TextMeshPro>().text = $"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.StartLabel)} {suffix}";
+            __instance.StartButtonClient.transform.Find("Text_TMP").GetComponent<TextMeshPro>().text = $"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.WaitingForHost)} {suffix}";
+            if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value) notcreateroom = true;
         }
     }
 }

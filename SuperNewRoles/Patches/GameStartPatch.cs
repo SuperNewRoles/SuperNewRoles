@@ -29,8 +29,7 @@ class GameStartPatch
             string error = string.Format(ModTranslation.GetString("PublicRoomError"), HostAmongUSVer, HostSNRVer, reason == null ? ModTranslation.GetString("CheckOfficialInformation") : reason);
 
             Logger.Error($"公開が無効に関わらず, 公開ボタンが押されました。", "MakePublicPatch");
-            __instance.MakePublicButton.color = Palette.DisabledClear;
-            __instance.privatePublicText.color = Palette.DisabledClear;
+            __instance.HostPublicButton.HeldButtonSprite.color = Palette.DisabledClear;
 
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, error);
             return false;
