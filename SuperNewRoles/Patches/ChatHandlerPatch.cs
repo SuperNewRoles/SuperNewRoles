@@ -4,6 +4,7 @@ using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Generator.Extensions;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
@@ -11,6 +12,7 @@ using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static System.String;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 
@@ -19,24 +21,24 @@ public class AmongUsClientOnPlayerJoinedPatch
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-        if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
+        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || __instance.myPlayer.IsBot()) return;
+        var isSelfSending = __instance.myPlayer.AmOwner && AmongUsClient.Instance.AmHost || ModHelpers.PlayerById(0).IsMod();
+        var isOtherSending = AmongUsClient.Instance.AmHost && !__instance.myPlayer.IsMod();
+
+        if (isSelfSending || isOtherSending)
         {
             new LateTask(() =>
             {
-                if (!__instance.myPlayer.IsBot())
-                {
-                    AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetWelcomeMessage(), GetChatCommands.WelcomeToSuperNewRoles);
-                }
+                if (isSelfSending) AddChatPatch.SelfSend(GetChatCommands.WelcomeToSuperNewRoles, GetChatCommands.GetWelcomeMessage());
+                if (isOtherSending) AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetWelcomeMessage(), GetChatCommands.WelcomeToSuperNewRoles);
             }, 1f, "Welcome Message");
 
             if (SuperNewRolesPlugin.IsBeta)
             {
                 new LateTask(() =>
                 {
-                    if (!__instance.myPlayer.IsBot())
-                    {
-                        AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetVersionMessage());
-                    }
+                    if (isSelfSending) AddChatPatch.SelfSend(GetChatCommands.SNRCommander, GetChatCommands.GetVersionMessage());
+                    if (isOtherSending) AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetVersionMessage());
                 }, 2f, "Welcome Beta Message");
             }
         }
@@ -215,19 +217,25 @@ internal class AddChatPatch
         string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
         string contents = $"\n<align={"left"}>{infoContents}</align>\n　\n";
 
-        if (AmongUsClient.Instance.AmHost)
-        {
-            SendCommand(target, contents, name);
-        }
-        else if (isSendFromGuest && target == PlayerControl.LocalPlayer)
-        {
-            string originalName = target.Data.PlayerName;
-            contents = $"\n{contents}\n";
+        if (target == PlayerControl.LocalPlayer && AmongUsClient.Instance.AmHost || isSendFromGuest) SelfSend(name, contents);
+        else if (AmongUsClient.Instance.AmHost) SendCommand(target, contents, name);
+    }
 
-            target.SetName(name);
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(target, contents, false);
-            target.SetName(originalName);
-        }
+    /// <summary>
+    /// 自分自身にチャットを送信する (或いは, +25解除時の代替RPCの受信部)
+    /// </summary>
+    /// <param name="titelName">名前に表示する部分</param>
+    /// <param name="text">チャットの内容</param>
+    public static void SelfSend(string titelName, string text)
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        var originalName = localPlayer.Data.PlayerName;
+        const string blank = "<color=#00000000>.</color>\n";
+        var contents = $"{blank}{blank}{text}{blank}";
+
+        localPlayer.SetName(titelName);
+        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(localPlayer, contents, false);
+        localPlayer.SetName(originalName);
     }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
     {
@@ -243,12 +251,14 @@ internal class AddChatPatch
             name = sender.GetDefaultName();
         }
         crs.AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
+            .Write(sender.Data.NetId)
             .Write(SendName)
             .EndRpc()
             .AutoStartRpc(sender.NetId, (byte)RpcCalls.SendChat)
             .Write(command)
             .EndRpc()
             .AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
+            .Write(sender.Data.NetId)
             .Write(name)
             .EndRpc()
             .SendMessage();
@@ -264,12 +274,14 @@ internal class AddChatPatch
         }
         var crs = CustomRpcSender.Create("PrivateSend");
         crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
+            .Write(target.Data.NetId)
             .Write(SendName)
             .EndRpc()
             .AutoStartRpc(target.NetId, (byte)RpcCalls.SendChat, target.GetClientId())
             .Write(command)
             .EndRpc()
             .AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
+            .Write(target.Data.NetId)
             .Write(target.Data.PlayerName)
             .EndRpc()
             .SendMessage();

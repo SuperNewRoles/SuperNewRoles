@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 
 class WrapUpClass
 {
-    public static void WrapUp(GameData.PlayerInfo exiled)
+    public static void WrapUp(NetworkedPlayerInfo exiled)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         ChangeName.SetRoleNames();

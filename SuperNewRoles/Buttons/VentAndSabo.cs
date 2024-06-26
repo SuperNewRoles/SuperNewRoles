@@ -118,7 +118,7 @@ public static class VentAndSabo
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
     public static class VentCanUsePatch
     {
-        public static bool Prefix(Vent __instance, ref float __result, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
+        public static bool Prefix(Vent __instance, ref float __result, [HarmonyArgument(0)] NetworkedPlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
         {
             float num = float.MaxValue;
             PlayerControl @object = pc.Object;

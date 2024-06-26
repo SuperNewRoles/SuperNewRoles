@@ -145,7 +145,7 @@ public static class ModeHandler
     public static void OptionLoad()
     {
         Mode = new CustomOptionBlank(null);
-        ModeSetting = CustomOption.Create(101200, true, CustomOptionType.Generic, Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting"), false, Mode, isHeader: true);
+        ModeSetting = CustomOption.Create(101200, true, CustomOptionType.Generic, Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting"), false, Mode, isHeader: true, withHeader: true);
         ThisModeSetting = CustomOption.Create(101300, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
         SuperHostRolesOptions.Load();
         BattleRoyal.BROption.Load();
@@ -177,7 +177,7 @@ public static class ModeHandler
         else if (IsMode(ModeId.RandomColor)) RandomColor.FixedUpdate.Update();
 
     }
-    public static void Wrapup(GameData.PlayerInfo exiled)
+    public static void Wrapup(NetworkedPlayerInfo exiled)
     {
         if (IsMode(ModeId.Default)) return;
     }

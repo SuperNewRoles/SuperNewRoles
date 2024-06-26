@@ -9,7 +9,7 @@ public static class Main
     public static CustomOption CursedTask;
     public static void SetupCustomOptions()
     {
-        CursedTask = CustomOption.Create(OptionId, false, CustomOptionType.Generic, "CursedTaskOption", false, null, isHeader: true);
+        CursedTask = CustomOption.Create(OptionId, false, CustomOptionType.Generic, "CursedTaskOption", false, null, isHeader: true, withHeader: true);
     }
 
     public static bool IsCursed;
