@@ -46,7 +46,7 @@ public class ReplayActionVotingComplete : ReplayAction
     public override void OnAction()
     {
         //ここに処理書く
-        GameData.PlayerInfo exile = GameData.Instance.GetPlayerById(exilePlayer);
+        NetworkedPlayerInfo exile = GameData.Instance.GetPlayerById(exilePlayer);
         MeetingHud.Instance.VotingComplete(States, exile, tie);
     }
     //試合内でアクションがあったら実行するやつ

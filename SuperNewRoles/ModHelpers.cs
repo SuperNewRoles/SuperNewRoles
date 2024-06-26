@@ -663,6 +663,12 @@ public static class ModHelpers
                 return obj;
         return default;
     }
+    public static T FirstOrDefault<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+    {
+        if (list.Count > 0)
+            return list[0];
+        return default;
+    }
     public static T FirstOrDefault<T>(this List<T> list, Func<T, bool> func)
     {
         foreach (T obj in list)
@@ -1176,6 +1182,8 @@ public static class ModHelpers
         data.Shuffle();
         return data;
     }
+    public static void AddListener(this UnityEngine.Events.UnityEvent @event, Action action) => @event.AddListener(action);
+    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.ToList().Find(match);
 }
 public static class CreateFlag
 {

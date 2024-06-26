@@ -8,7 +8,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
 
 class Jester
 {
-    public static void WrapUp(GameData.PlayerInfo exiled)
+    public static void WrapUp(NetworkedPlayerInfo exiled)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (exiled.Object.IsRole(RoleId.Jester))

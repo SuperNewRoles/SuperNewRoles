@@ -21,7 +21,7 @@ public static class Knight
     private static Sprite buttonSprite;
     public static void SetupCustomOptions()
     {
-        KnightOption = new(OptionId, false, CustomOptionType.Crewmate, "KnightName", color, 1);
+        KnightOption = CustomOption.SetupCustomRoleOption(OptionId, false, RoleId.Knight, CustomOptionType.Crewmate);
         KnightPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], KnightOption);
         KnightCanAnnounceOfProtected = CustomOption.Create(OptionId + 2, false, CustomOptionType.Crewmate, "KnightCanAnnounceOfProtected", true, KnightOption);
         KnightSetTheUpperLimitOfTheGuarding = CustomOption.Create(OptionId + 3, false, CustomOptionType.Crewmate, "KnightSetTheUpperLimitOfTheGuarding", false, KnightOption);
