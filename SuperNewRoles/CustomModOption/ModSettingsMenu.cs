@@ -66,7 +66,9 @@ public class ModSettingsMenu : MonoBehaviour
     public RoleOptionSetting RoleOptionSettingOrigin;
     public ToggleOption CheckboxOrigin;
     public StringOption StringOptionOrigin;
-    private static bool IsActivateRoleHeader = false;
+    private bool IsActivateRoleHeader = false;
+    private bool isOnlySelectedRole = false;
+    private ToggleOption OnlySelectedRoleToggle;
 
     public void Start()
     {
@@ -90,6 +92,8 @@ public class ModSettingsMenu : MonoBehaviour
         NowTabId = 0;
         OldTabId = 0;
         IsActivateRoleHeader = false;
+        isOnlySelectedRole = false;
+
 
         RolesSettingsMenu roles = GameSettingMenu.Instance.RoleSettingsTab;
         CategoryHeaderEditRoleOrigin = roles.categoryHeaderEditRoleOrigin;
@@ -98,7 +102,7 @@ public class ModSettingsMenu : MonoBehaviour
         StringOptionOrigin = roles.stringOptionOrigin;
 
         GameObject roles_menu_object = Instantiate(roles.gameObject, transform.parent);
-        roles_menu_object.transform.Find("Gradient").SetParent(transform);
+        roles_menu_object.transform.Find("Gradient").gameObject.SetActive(false);//.SetParent(transform);
         Transform scroller_transform = roles_menu_object.transform.Find("Scroller");
         scroller_transform.SetParent(transform);
         ScrollBar = scroller_transform.GetComponent<Scroller>();
@@ -109,6 +113,7 @@ public class ModSettingsMenu : MonoBehaviour
         BackButton = close_button_transform.GetComponent<PassiveButton>();
         roles_menu_object.transform.Find("UI_ScrollbarTrack").SetParent(transform);
         roles_menu_object.transform.Find("UI_Scrollbar").SetParent(transform);
+
         Destroy(roles_menu_object);
 
         #region タブ変更ボタン
@@ -205,6 +210,21 @@ public class ModSettingsMenu : MonoBehaviour
         MatchTagButton.OnMouseOver.AddListener(() => match_tag_renderer.color = Color.white);
 
         Destroy(instance);
+        #endregion
+
+        #region 有効な役職のみボタン生成
+        OnlySelectedRoleToggle = Instantiate(CheckboxOrigin, ScrollBar.Inner);
+        OnlySelectedRoleToggle.transform.localPosition = new(1.9f, 0.82f, 0);
+        OnlySelectedRoleToggle.LabelBackground.enabled = false;
+        OnlySelectedRoleToggle.TitleText.transform.localPosition = new(2.7f, - 0.02f, 0f);
+        OnlySelectedRoleToggle.boolOptionName = AmongUs.GameOptions.BoolOptionNames.Invalid;
+        OnlySelectedRoleToggle.OnValueChanged = (Il2CppSystem.Action<OptionBehaviour>)((x) =>
+        {
+            isOnlySelectedRole = x.GetBool();
+            OptionUpdate();
+        });
+        OnlySelectedRoleToggle.CheckMark.enabled = false;
+        OnlySelectedRoleToggle.gameObject.SetActive(false);
         #endregion
 
         #region タブ生成
@@ -314,6 +334,7 @@ public class ModSettingsMenu : MonoBehaviour
         close_button.transform.localPosition = new(4.18f, 0.4f, -2f);
         close_button.OnClick = new();
         close_button.OnClick.AddListener(() => OpenTab(OldTabId));
+        RoleDetailsSettings.gameObject.SetActive(false);
         #endregion
 
         foreach (PassiveButton button in ScrollBar.Inner.GetComponentsInChildren<PassiveButton>(true))
@@ -356,7 +377,9 @@ public class ModSettingsMenu : MonoBehaviour
                 CustomOption parent = option.ParentCustomOption.parent;
                 bool enabled = true;
 
-                if (option.ParentCustomOption.openSelection != -1 && option.ParentCustomOption.openSelection != parent?.selection)
+                if (isOnlySelectedRole && option is ModRoleOptionSetting && !option.ParentCustomOption.Enabled)
+                    enabled = false;
+                else if (option.ParentCustomOption.openSelection != -1 && option.ParentCustomOption.openSelection != parent?.selection)
                     enabled = false;
                 else if (option.ParentCustomOption.HasCanShowAction && !option.ParentCustomOption.CanShowByFunc)
                     enabled = false;
@@ -581,6 +604,7 @@ public class ModSettingsMenu : MonoBehaviour
         mod.TitleText.fontSize = 2f;
         mod.TitleText.alignment = TextAlignmentOptions.Center;
         mod.UpdateValue();
+        mod.CheckMark.transform.parent.transform.localPosition = new(1.15f, -0.042f);
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Toggle);
         Destroy(obj);
@@ -614,16 +638,19 @@ public class ModSettingsMenu : MonoBehaviour
                 ImpostorSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingImpostor");
                 ControllerSelectable.AddRange(ImpostorTabSelectables);
+                OnlySelectedRoleToggle.gameObject.SetActive(true);
                 break;
             case OptionTabId.Neutral:
                 NeutralSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingNeutral");
                 ControllerSelectable.AddRange(NeutralTabSelectables);
+                OnlySelectedRoleToggle.gameObject.SetActive(true);
                 break;
             case OptionTabId.Crewmate:
                 CrewmateSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingCrewmate");
                 ControllerSelectable.AddRange(CrewmateTabSelectables);
+                OnlySelectedRoleToggle.gameObject.SetActive(true);
                 break;
             case OptionTabId.Modifier:
                 ModifierSettings.SetActive(true);
@@ -641,6 +668,8 @@ public class ModSettingsMenu : MonoBehaviour
                 ControllerSelectable.AddRange(RoleDetailsTabSelectables);
                 break;
         }
+        if (OnlySelectedRoleToggle.gameObject.active)
+            new LateTask(() => OnlySelectedRoleToggle.TitleText.text = ModTranslation.GetString("SettingOnlySelectedRole"), 0f, "OnlySelectedRoleToggle");
         if (OnTabOpen.TryGetValue(id, out Action action))
             action();
         ScrollBar.CalculateAndSetYBounds(3.5f, 1f, 6f, 0.43f);
@@ -660,6 +689,7 @@ public class ModSettingsMenu : MonoBehaviour
         ModifierSettings.SetActive(false);
         MatchTagSettings.SetActive(false);
         RoleDetailsSettings.SetActive(false);
+        OnlySelectedRoleToggle.gameObject.SetActive(false);
         foreach (GameObject obj in RoleDetailsSettings.GetChildren())
         {
             if (obj.name == "Close Button") continue;
