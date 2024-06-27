@@ -29,8 +29,10 @@ public class ModSettingsMenu : MonoBehaviour
     public Scroller ScrollBar;
     public UiElement BackButton;
     public UiElement DefaultButtonSelected = null;
-    public int NowTabId;
-    public int OldTabId;
+
+    public OptionTabId NowTabId;
+    public OptionTabId OldTabId;
+
     public List<UiElement> ControllerSelectable;
     public List<UiElement> GenericTabSelectables;
     public List<UiElement> ImpostorTabSelectables;
@@ -48,11 +50,15 @@ public class ModSettingsMenu : MonoBehaviour
     public List<ModOptionBehaviour> MatchTagOptions;
     public List<ModOptionBehaviour> RoleDetailsOptions;
 
-    public static readonly float FirstYPosition = 1.312f;
-    public static readonly float CategoryHeaderMaskedSpan = 0.45f;
-    public static readonly float CategoryHeaderEditRoleSpan = 0.65f;
-    public static readonly float RoleOptionSettingSpan = 0.43f;
-    public static readonly float OptionSpan = 0.44f;
+    public const int TabLength = 7;
+
+    public static Dictionary<int, Action> OnTabOpen;
+
+    public const float FirstYPosition = 1.312f;
+    public const float CategoryHeaderMaskedSpan = 0.45f;
+    public const float CategoryHeaderEditRoleSpan = 0.65f;
+    public const float RoleOptionSettingSpan = 0.43f;
+    public const float OptionSpan = 0.44f;
     public float YPosition;
     public CategoryHeaderMasked CategoryHeader;
     public CategoryHeaderEditRole CategoryHeaderEditRoleOrigin;
@@ -77,6 +83,7 @@ public class ModSettingsMenu : MonoBehaviour
         ModifierOptions = new();
         MatchTagOptions = new();
         RoleDetailsOptions = new();
+        OnTabOpen = new();
         NowTabId = 0;
         OldTabId = 0;
 
@@ -141,10 +148,10 @@ public class ModSettingsMenu : MonoBehaviour
         impostor_renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Impostor.png", 100f);
         impostor_renderer.size = Vector2.one * 0.75f;
         ImpostorButton = impostor.GetComponent<PassiveButton>();
-        ImpostorButton.OnClick.AddListener(() => OpenTab(1));
-        ImpostorButton.OnMouseOut.AddListener(() => { if (NowTabId != 1) impostor_renderer.color = Color.gray; });
+        ImpostorButton.OnClick.AddListener(() => OpenTab(OptionTabId.Impostor));
+        ImpostorButton.OnMouseOut.AddListener(() => { if (NowTabId != OptionTabId.Impostor) impostor_renderer.color = Color.gray; });
         ImpostorButton.OnMouseOver.AddListener(() => impostor_renderer.color = Color.white);
-
+        
         GameObject neutral = Instantiate(instance, header.transform);
         neutral.name = "NeutralButton";
         neutral.transform.localPosition += new Vector3(0.75f, 0f) * 2;
@@ -152,8 +159,8 @@ public class ModSettingsMenu : MonoBehaviour
         neutral_renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Neutral.png", 100f);
         neutral_renderer.size = Vector2.one * 0.75f;
         NeutralButton = neutral.GetComponent<PassiveButton>();
-        NeutralButton.OnClick.AddListener(() => OpenTab(2));
-        NeutralButton.OnMouseOut.AddListener(() => { if (NowTabId != 2) neutral_renderer.color = Color.gray; });
+        NeutralButton.OnClick.AddListener(() => OpenTab(OptionTabId.Neutral));
+        NeutralButton.OnMouseOut.AddListener(() => { if (NowTabId != OptionTabId.Neutral) neutral_renderer.color = Color.gray; });
         NeutralButton.OnMouseOver.AddListener(() => neutral_renderer.color = Color.white);
 
         GameObject crewmate = Instantiate(instance, header.transform);
@@ -163,8 +170,8 @@ public class ModSettingsMenu : MonoBehaviour
         crewmate_renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
         crewmate_renderer.size = Vector2.one * 0.75f;
         CrewmateButton = crewmate.GetComponent<PassiveButton>();
-        CrewmateButton.OnClick.AddListener(() => OpenTab(3));
-        CrewmateButton.OnMouseOut.AddListener(() => { if (NowTabId != 3) crewmate_renderer.color = Color.gray; });
+        CrewmateButton.OnClick.AddListener(() => OpenTab(OptionTabId.Crewmate));
+        CrewmateButton.OnMouseOut.AddListener(() => { if (NowTabId != OptionTabId.Crewmate) crewmate_renderer.color = Color.gray; });
         CrewmateButton.OnMouseOver.AddListener(() => crewmate_renderer.color = Color.white);
 
         GameObject modifier = Instantiate(instance, header.transform);
@@ -174,8 +181,8 @@ public class ModSettingsMenu : MonoBehaviour
         modifier_renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Modifier.png", 100f);
         modifier_renderer.size = Vector2.one * 0.75f;
         ModifierButton = modifier.GetComponent<PassiveButton>();
-        ModifierButton.OnClick.AddListener(() => OpenTab(4));
-        ModifierButton.OnMouseOut.AddListener(() => { if (NowTabId != 4) modifier_renderer.color = Color.gray; });
+        ModifierButton.OnClick.AddListener(() => OpenTab(OptionTabId.Modifier));
+        ModifierButton.OnMouseOut.AddListener(() => { if (NowTabId != OptionTabId.Modifier) modifier_renderer.color = Color.gray; });
         ModifierButton.OnMouseOver.AddListener(() => modifier_renderer.color = Color.white);
 
         GameObject match_tag = Instantiate(instance, header.transform);
@@ -185,8 +192,8 @@ public class ModSettingsMenu : MonoBehaviour
         match_tag_renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
         match_tag_renderer.size = Vector2.one * 0.75f;
         MatchTagButton = match_tag.GetComponent<PassiveButton>();
-        MatchTagButton.OnClick.AddListener(() => OpenTab(5));
-        MatchTagButton.OnMouseOut.AddListener(() => { if (NowTabId != 5) match_tag_renderer.color = Color.gray; });
+        MatchTagButton.OnClick.AddListener(() => OpenTab(OptionTabId.MatchTag));
+        MatchTagButton.OnMouseOut.AddListener(() => { if (NowTabId != OptionTabId.MatchTag) match_tag_renderer.color = Color.gray; });
         MatchTagButton.OnMouseOver.AddListener(() => match_tag_renderer.color = Color.white);
 
         Destroy(instance);
@@ -208,24 +215,30 @@ public class ModSettingsMenu : MonoBehaviour
         ImpostorSettings = new("Impostor Tab");
         ImpostorSettings.transform.SetParent(ScrollBar.Inner);
         ImpostorSettings.transform.localPosition = new(0f, 0f, -5f);
-        CteateNotRoleOptions(ImpostorSettings.transform, CustomOptionType.Impostor);
         ImpostorOptions.Add(CreateCategoryHeaderEditRole(
             ImpostorSettings.transform,
             FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.ImpostorRolesHeader),
             (Palette.ImpostorRoleHeaderTextRed, Palette.ImpostorRoleHeaderRed, Palette.ImpostorRoleHeaderVeryDarkRed, Palette.ImpostorRoleHeaderDarkRed)
         ));
-        CreateRoleOnlyOptions(ImpostorSettings.transform, CustomOptionType.Impostor, Palette.ImpostorRoleHeaderRed);
+        OnTabOpen[1] = () =>
+        {
+            CteateNotRoleOptions(ImpostorSettings.transform, CustomOptionType.Impostor);
+            CreateRoleOnlyOptions(ImpostorSettings.transform, CustomOptionType.Impostor, Palette.ImpostorRoleHeaderRed);
+        };
 
         NeutralSettings = new("Neutral Tab");
         NeutralSettings.transform.SetParent(ScrollBar.Inner);
         NeutralSettings.transform.localPosition = new(0f, 0f, -5f);
-        CteateNotRoleOptions(NeutralSettings.transform, CustomOptionType.Neutral);
         NeutralOptions.Add(CreateCategoryHeaderEditRole(
             NeutralSettings.transform,
             ModTranslation.GetString("NeutralRolesHeader"),
             (new(78, 78, 78, byte.MaxValue), new(128, 128, 128, byte.MaxValue), new(51, 51, 51, 127), new(51, 51, 51, byte.MaxValue))
         ));
-        CreateRoleOnlyOptions(NeutralSettings.transform, CustomOptionType.Neutral, new(128, 128, 128, byte.MaxValue));
+        OnTabOpen[2] = () =>
+        {
+            CteateNotRoleOptions(NeutralSettings.transform, CustomOptionType.Neutral);
+            CreateRoleOnlyOptions(NeutralSettings.transform, CustomOptionType.Neutral, new(128, 128, 128, byte.MaxValue));
+        };
 
         CrewmateSettings = new("Crewmate Tab");
         CrewmateSettings.transform.SetParent(ScrollBar.Inner);
@@ -275,7 +288,7 @@ public class ModSettingsMenu : MonoBehaviour
             return;
 
         ModeId mode = ModeHandler.GetMode(false);
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < TabLength; i++)
         {
             List<ModOptionBehaviour> options = i switch
             {
@@ -292,6 +305,7 @@ public class ModSettingsMenu : MonoBehaviour
             YPosition = FirstYPosition;
             if (i == 6) YPosition -= OptionSpan;
             foreach (ModOptionBehaviour option in options)
+            {
                 if (option is ModCategoryHeaderEditRole header)
                 {
                     Vector3 pos = option.transform.localPosition;
@@ -340,7 +354,8 @@ public class ModSettingsMenu : MonoBehaviour
                     }
                     option.UpdateValue();
                 }
-            if (i == NowTabId)
+            }
+            if ((OptionTabId)i == NowTabId)
             {
                 ScrollBar.ContentYBounds.max = Mathf.Abs(YPosition - FirstYPosition) - 2.98f;
                 ScrollBar.UpdateScrollBars();
@@ -473,7 +488,7 @@ public class ModSettingsMenu : MonoBehaviour
         mod.ControllerSelectable[1].OnClick.AddListener(mod.IncreaseCount);
         mod.ControllerSelectable[2].OnClick.AddListener(mod.DecreaseChance);
         mod.ControllerSelectable[3].OnClick.AddListener(mod.IncreaseChance);
-        mod.ControllerSelectable[4].OnClick.AddListener(() => OpenTab(6, mod.CreateRoleDetailsOption));
+        mod.ControllerSelectable[4].OnClick.AddListener(() => OpenTab(OptionTabId.RoleDetails, mod.CreateRoleDetailsOption));
         Destroy(obj);
         return mod;
     }
@@ -531,42 +546,42 @@ public class ModSettingsMenu : MonoBehaviour
     }
     public void CloseMenu() => ControllerManager.Instance.CloseOverlayMenu(name);
 
-    public void OpenTab(int id, Action details = null)
+    public void OpenTab(OptionTabId id, Action details = null)
     {
         CloseAllTab();
         switch (id)
         {
-            case 0:
+            case OptionTabId.Generic:
                 GenericSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingSuperNewRoles");
                 ControllerSelectable.AddRange(GenericTabSelectables);
                 break;
-            case 1:
+            case OptionTabId.Impostor:
                 ImpostorSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingImpostor");
                 ControllerSelectable.AddRange(ImpostorTabSelectables);
                 break;
-            case 2:
+            case OptionTabId.Neutral:
                 NeutralSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingNeutral");
                 ControllerSelectable.AddRange(NeutralTabSelectables);
                 break;
-            case 3:
+            case OptionTabId.Crewmate:
                 CrewmateSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingCrewmate");
                 ControllerSelectable.AddRange(CrewmateTabSelectables);
                 break;
-            case 4:
+            case OptionTabId.Modifier:
                 ModifierSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("ModifierSettings");
                 ControllerSelectable.AddRange(ModifierTabSelectables);
                 break;
-            case 5:
+            case OptionTabId.MatchTag:
                 MatchTagSettings.SetActive(true);
                 CategoryHeader.Title.text = ModTranslation.GetString("SettingRegulation");
                 ControllerSelectable.AddRange(MatchTagTabSelectables);
                 break;
-            case 6:
+            case OptionTabId.RoleDetails:
                 RoleDetailsSettings.SetActive(true);
                 details?.Invoke();
                 ControllerSelectable.AddRange(RoleDetailsTabSelectables);
