@@ -125,10 +125,9 @@ public static class DynamicLobbies
                     InnerNetObject innerNetObject = __instance.allObjects[index];
                     if (innerNetObject && (innerNetObject.OwnerId != -4 || __instance.AmModdedHost) && hashSet.Add(innerNetObject.gameObject))
                     {
-                        GameManager gameManager = innerNetObject as GameManager;
-                        if (gameManager != null)
+                        if (innerNetObject.Pointer == GameManager.Instance.Pointer)
                         {
-                            __instance.SendGameManager(clientId, gameManager);
+                            __instance.SendGameManager(clientId, innerNetObject.CastFast<GameManager>());
                         }
                         else
                         {
