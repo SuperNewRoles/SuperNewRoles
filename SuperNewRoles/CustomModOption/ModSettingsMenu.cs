@@ -566,25 +566,48 @@ public class ModSettingsMenu : MonoBehaviour
         mod.ControllerSelectable[2].OnClick.AddListener(mod.DecreaseChance);
         mod.ControllerSelectable[3].OnClick.AddListener(mod.IncreaseChance);
         mod.ControllerSelectable[4].OnClick.AddListener(() => OpenTab(OptionTabId.RoleDetails, mod.CreateRoleDetailsOption));
+        
         Destroy(obj);
         return mod;
     }
+
+    private static Vector3 childOffset = new(1.37f, 0);
+    private static Vector2 additionalSizeDelta = new(0.6f, 0);
+    private static Vector3 TitleTextMinusPositionAdditional = new(0.01f, 0);
+    private static Vector3 OptionLocalPosition = new(0.85f, 0f, -2f);
 
     public ModStringOption CreateModStringOption(Transform transform, CustomOption option)
     {
         StringOption obj = Instantiate(StringOptionOrigin, transform);
         ModStringOption mod = obj.gameObject.AddComponent<ModStringOption>();
-        mod.transform.localPosition = new(1f, 0f, -2f);
+        mod.transform.localPosition = OptionLocalPosition;
         mod.TitleText = obj.TitleText;
         mod.ValueText = obj.ValueText;
         mod.ParentCustomOption = option;
         mod.SettingsMenu = this;
         mod.TitleText.text = option.GetName();
         mod.TitleText.alignment = TextAlignmentOptions.Center;
+        mod.TitleText.fontSizeMax = 2.7f;
+        mod.TitleText.fontSizeMin = 1.5f;
+        mod.TitleText.fontSize = 2.25f;
+        mod.TitleText.transform.localScale *= 1.5f;
+        mod.TitleText.transform.localPosition -= TitleTextMinusPositionAdditional;
         mod.UpdateValue();
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Decrease);
         mod.ControllerSelectable[1].OnClick.AddListener(mod.Increase);
+
+        mod.TitleText.rectTransform.sizeDelta += additionalSizeDelta;
+        mod.LabelBackground = obj.LabelBackground;
+        mod.LabelBackground.transform.localScale = new(1.9f, 1f, 0.9984f);
+        foreach (GameObject child in mod.gameObject.GetChildren())
+        {
+            if (child == mod.LabelBackground.gameObject ||
+                child == mod.TitleText.gameObject)
+                continue;
+            child.transform.localPosition += childOffset;
+        }
+
         Destroy(obj);
         return mod;
     }
@@ -593,20 +616,34 @@ public class ModSettingsMenu : MonoBehaviour
     {
         ToggleOption obj = Instantiate(CheckboxOrigin, transform);
         ModToggleOption mod = obj.gameObject.AddComponent<ModToggleOption>();
-        mod.transform.localPosition = new(1f, 0f, -2f);
+        mod.transform.localPosition = OptionLocalPosition;
         mod.TitleText = obj.TitleText;
         mod.CheckMark = obj.CheckMark;
         mod.ParentCustomOption = option;
         mod.SettingsMenu = this;
         mod.TitleText.text = option.GetName();
-        mod.TitleText.fontSizeMax = 2.5f;
+        mod.TitleText.fontSizeMax = 2.7f;
         mod.TitleText.fontSizeMin = 1.5f;
-        mod.TitleText.fontSize = 2f;
+        mod.TitleText.fontSize = 2.25f;
         mod.TitleText.alignment = TextAlignmentOptions.Center;
+        mod.TitleText.transform.localScale *= 1.5f;
+        mod.TitleText.transform.localPosition -= TitleTextMinusPositionAdditional;
         mod.UpdateValue();
-        mod.CheckMark.transform.parent.transform.localPosition = new(1.15f, -0.042f);
+        mod.CheckMark.transform.parent.transform.localPosition = new(1.17f, -0.042f);
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Toggle);
+
+        mod.TitleText.rectTransform.sizeDelta += additionalSizeDelta;
+        mod.LabelBackground = obj.LabelBackground;
+        mod.LabelBackground.transform.localScale = new(1.9f, 1f, 0.9984f);
+        foreach (GameObject child in mod.gameObject.GetChildren())
+        {
+            if (child == mod.LabelBackground.gameObject ||
+                child == mod.TitleText.gameObject)
+                continue;
+            child.transform.localPosition += childOffset;
+        }
+
         Destroy(obj);
         return mod;
     }
