@@ -12,7 +12,7 @@ public static class Task
         {
             try
             {
-                GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+                NetworkedPlayerInfo playerInfo = __instance.AllPlayers[i];
                 if (!playerInfo.Disconnected && playerInfo.Object.IsCrew() && (playerInfo.Object.PlayerId != Main.DetectivePlayer.PlayerId || !Main.IsDetectiveNotTask))
                 {
                     var (playerCompleted, playerTotal) = Patches.TaskCount.TaskDate(playerInfo);

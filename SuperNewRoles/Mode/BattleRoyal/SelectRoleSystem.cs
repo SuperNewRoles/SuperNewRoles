@@ -23,11 +23,11 @@ namespace SuperNewRoles.Mode.BattleRoyal
             }
         }
     }
-    [HarmonyPatch(typeof(GameData), nameof(GameData.Serialize))]
+    [HarmonyPatch(typeof(NetworkedPlayerInfo), nameof(NetworkedPlayerInfo.Serialize))]
     class GameDataSerializePatch
     {
         public static bool Is;
-        public static bool Prefix(GameData __instance, ref bool __result)
+        public static bool Prefix(NetworkedPlayerInfo __instance, ref bool __result)
         {
             if (AmongUsClient.Instance is null || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || !ModeHandler.IsMode(ModeId.BattleRoyal) || Is || !Main.IsIntroEnded)
             {

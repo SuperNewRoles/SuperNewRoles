@@ -21,6 +21,7 @@ public class OptionInfo
     // 外から参照する郡
     public int AssignSelection => RoleOption?.GetSelection() ?? 0;
     public int PlayerCount => PlayerCountOption?.GetInt() ?? 0;
+    public CustomOption GetPlayerCountOption => PlayerCountOption;
     public float KillCoolTime => KillCoolTimeOption?.GetFloat() ?? 0;
     public bool CanUseVent => CanUseVentOption != null && CanUseVentOption.GetBool();
     public bool CanUseSabo => CanUseSaboOption != null && CanUseSaboOption.GetBool();
@@ -139,12 +140,12 @@ public class OptionInfo
             OptionCreater.Invoke();
     }
     //RoleIdからOptionInfoを取得する
-    public static OptionInfo GetOptionInfo(RoleId role)
+    public static OptionInfo GetOptionInfo(RoleId role, bool error = true)
     {
         // TryGetValutを使う
         if (!OptionInfos.TryGetValue(role, out var optionInfo))
         {
-            Logger.Error($"OptionInfoが見つかりませんでした。Role:{role}", "GetOptionInfo");
+            if (error) Logger.Error($"OptionInfoが見つかりませんでした。Role:{role}", "GetOptionInfo");
             return null;
         }
         return optionInfo;

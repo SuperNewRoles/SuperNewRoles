@@ -65,7 +65,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 if (p.IsBot()) continue;
                 fc += p.Data.FriendCode + ",";
                 data.Add(p.Data.FriendCode + "_kc", Main.KillCount.ContainsKey(p.PlayerId) ? Mode.BattleRoyal.Main.KillCount[p.PlayerId].ToString() : "0");
-                data.Add(p.Data.FriendCode + "_IsWin", TempData.winners.Find((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == p.Data.DefaultOutfit.PlayerName)) is null ? "b" : "a");
+                data.Add(p.Data.FriendCode + "_IsWin", EndGameResult.CachedWinners.Find((Il2CppSystem.Predicate<CachedPlayerData>)(x => x.PlayerName == p.Data.DefaultOutfit.PlayerName)) is null ? "b" : "a");
             }
             fc = fc[..(fc.Length - 1)];
             data.Add("friendcode", fc);

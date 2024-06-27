@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using SuperNewRoles.Patches;
-using static GameData;
+using static NetworkedPlayerInfo;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionCompleteTask : ReplayAction

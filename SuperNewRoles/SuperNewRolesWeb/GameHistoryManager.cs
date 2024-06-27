@@ -28,9 +28,9 @@ namespace SuperNewRoles.SuperNewRolesWeb
             public List<byte> DeadPlayers = new();
             public byte reporter = 255;
             public byte reportedbody = 255;
-            public MeetingHistory(Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled)
+            public MeetingHistory(Il2CppStructArray<VoterState> states, NetworkedPlayerInfo exiled)
             {
-                foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+                foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
                 {
                     bool IsDead = player.IsDead || player.Disconnected;
                     if (player.Object != null)
@@ -131,7 +131,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
             SendData["MePlayerId"] = PlayerControl.LocalPlayer.PlayerId.ToString();
             //プレイヤー情報
             string PlayerIds = "";
-            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
                 string PlayerName = player.PlayerName;
                 RoleId roleId = RoleId.DefaultRole;
@@ -152,7 +152,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 SendData[PlayerId + "_TotalTask"] = playerTotal.ToString();
                 SendData[PlayerId + "_CompletedTask"] = playerCompleted.ToString();
                 SendData[PlayerId + "_FinalStatus"] = FinalStatuss.ContainsKey(player.PlayerId) ? FinalStatus.Alive.ToString() : FinalStatuss[player.PlayerId].ToString();
-                SendData[PlayerId + "_IsWin"] = TempData.winners.ToList().Exists(x => x.PlayerName == player.DefaultOutfit.PlayerName) ? "a" : "b";
+                SendData[PlayerId + "_IsWin"] = EndGameResult.CachedWinners.ToList().Exists(x => x.PlayerName == player.DefaultOutfit.PlayerName) ? "a" : "b";
             }
             SendData["PlayerIds"] = PlayerIds;
             //設定情報

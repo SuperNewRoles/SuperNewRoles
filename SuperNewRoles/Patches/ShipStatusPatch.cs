@@ -147,7 +147,7 @@ public static class ShipStatus_OnDestroy_Patch
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
 class LightPatch
 {
-    public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player, ref float __result)
+    public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] NetworkedPlayerInfo player, ref float __result)
     {
         float num = 1f;
         if (__instance.Systems.ContainsKey(SystemTypes.Electrical))

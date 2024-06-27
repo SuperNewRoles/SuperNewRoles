@@ -15,7 +15,7 @@ public static class Revolutionist
     static SpriteRenderer tempBodySprite;
     static Sprite[] FSprites;
     static Sprite[] BSprites;
-    public static void MeetingInit(MeetingCalledAnimation __instance, GameData.PlayerInfo reporter)
+    public static void MeetingInit(MeetingCalledAnimation __instance, NetworkedPlayerInfo reporter)
     {
         if (FSprites == null)
         {
