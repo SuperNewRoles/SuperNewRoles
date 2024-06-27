@@ -27,7 +27,7 @@ static class Main
         __instance.CompletedTasks = 0;
         for (int i = 0; i < __instance.AllPlayers.Count; i++)
         {
-            GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+            NetworkedPlayerInfo playerInfo = __instance.AllPlayers[i];
             if (!playerInfo.Object.IsZombie())
             {
                 var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);

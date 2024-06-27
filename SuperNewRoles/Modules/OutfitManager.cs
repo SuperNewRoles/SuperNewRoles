@@ -3,7 +3,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public static class OutfitManager
 {
-    public static void setOutfit(this PlayerControl pc, GameData.PlayerOutfit outfit, bool visible = true)
+    public static void setOutfit(this PlayerControl pc, NetworkedPlayerInfo.PlayerOutfit outfit, bool visible = true)
     {
         pc.Data.Outfits[PlayerOutfitType.Shapeshifted] = outfit;
         if (IsSameOutfit(pc.Data.DefaultOutfit, outfit)) pc.CurrentOutfitType = PlayerOutfitType.Shapeshifted;
@@ -50,7 +50,7 @@ public static class OutfitManager
     /// <param name="shifterOutfit">シェイプ元の姿</param>
     /// <param name="targetOutfit">シェイプ先の姿</param>
     /// <returns>true : シェイプ / false : シェイプ解除</returns>
-    private static bool IsSameOutfit(GameData.PlayerOutfit shifterOutfit, GameData.PlayerOutfit targetOutfit) =>
+    private static bool IsSameOutfit(NetworkedPlayerInfo.PlayerOutfit shifterOutfit, NetworkedPlayerInfo.PlayerOutfit targetOutfit) =>
         !(shifterOutfit.ColorId == targetOutfit.ColorId
         && shifterOutfit.HatId == targetOutfit.HatId
         && shifterOutfit.PetId == targetOutfit.PetId

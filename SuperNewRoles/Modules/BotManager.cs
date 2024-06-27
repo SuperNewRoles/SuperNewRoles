@@ -31,7 +31,7 @@ public static class BotManager
         var Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
 
         Bot.PlayerId = id;
-        GameData.Instance.AddPlayer(Bot);
+        GameData.Instance.AddPlayer(Bot, null);
         AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
         //Bot.transform.position = new Vector3(9999f, 9999f, 0);
         Bot.NetTransform.enabled = true;
@@ -58,7 +58,7 @@ public static class BotManager
         Bot.RpcSetVisor("visor_EmptyVisor");
         Bot.RpcSetNamePlate("nameplate_NoPlate");
         Bot.RpcSetSkin("skin_None");
-        GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
+        Bot.Data.RpcSetTasks(new byte[0]);
         SuperNewRolesPlugin.Logger.LogInfo("botスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
 
         if (IsSetBot) SetBot(Bot);
