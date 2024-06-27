@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SuperNewRoles;
 using SuperNewRoles.Mode;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace SuperNewRoles.CustomObject;
+namespace SuperNewRoles.CustomModOption;
 
 public class ModSettingsMenu : MonoBehaviour
 {
@@ -85,7 +86,7 @@ public class ModSettingsMenu : MonoBehaviour
         CheckboxOrigin = roles.checkboxOrigin;
         StringOptionOrigin = roles.stringOptionOrigin;
 
-        GameObject roles_menu_object = Object.Instantiate(roles.gameObject, transform.parent);
+        GameObject roles_menu_object = Instantiate(roles.gameObject, transform.parent);
         roles_menu_object.transform.Find("Gradient").SetParent(transform);
         Transform scroller_transform = roles_menu_object.transform.Find("Scroller");
         scroller_transform.SetParent(transform);
@@ -97,13 +98,13 @@ public class ModSettingsMenu : MonoBehaviour
         BackButton = close_button_transform.GetComponent<PassiveButton>();
         roles_menu_object.transform.Find("UI_ScrollbarTrack").SetParent(transform);
         roles_menu_object.transform.Find("UI_Scrollbar").SetParent(transform);
-        Object.Destroy(roles_menu_object);
+        Destroy(roles_menu_object);
 
         #region タブ変更ボタン
         GameObject header = new("HeaderButtons");
         header.transform.SetParent(transform);
         new LateTask(() => header.transform.localPosition = Vector3.zero, 0f, "ModSettingsMenu");
-        Object.Instantiate(roles.transform.Find("HeaderButtons/DividerImage").gameObject, header.transform).name = "DividerImage";
+        Instantiate(roles.transform.Find("HeaderButtons/DividerImage").gameObject, header.transform).name = "DividerImage";
 
         GameObject instance = new("Instance");
         instance.transform.SetParent(header.transform);
@@ -123,7 +124,7 @@ public class ModSettingsMenu : MonoBehaviour
         instance_button.ClickSound = roles.AllButton.ClickSound;
         instance_button.HoverSound = roles.AllButton.HoverSound;
 
-        GameObject generic = Object.Instantiate(instance, header.transform);
+        GameObject generic = Instantiate(instance, header.transform);
         generic.name = "GenericButton";
         SpriteRenderer generic_renderer = generic.GetComponent<SpriteRenderer>();
         generic_renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Custom.png", 100f);
@@ -133,7 +134,7 @@ public class ModSettingsMenu : MonoBehaviour
         GenericButton.OnMouseOut.AddListener(() => { if (NowTabId != 0) generic_renderer.color = Color.gray; });
         GenericButton.OnMouseOver.AddListener(() => generic_renderer.color = Color.white);
 
-        GameObject impostor = Object.Instantiate(instance, header.transform);
+        GameObject impostor = Instantiate(instance, header.transform);
         impostor.name = "ImpostorButton";
         impostor.transform.localPosition += new Vector3(0.75f, 0f);
         SpriteRenderer impostor_renderer = impostor.GetComponent<SpriteRenderer>();
@@ -144,7 +145,7 @@ public class ModSettingsMenu : MonoBehaviour
         ImpostorButton.OnMouseOut.AddListener(() => { if (NowTabId != 1) impostor_renderer.color = Color.gray; });
         ImpostorButton.OnMouseOver.AddListener(() => impostor_renderer.color = Color.white);
 
-        GameObject neutral = Object.Instantiate(instance, header.transform);
+        GameObject neutral = Instantiate(instance, header.transform);
         neutral.name = "NeutralButton";
         neutral.transform.localPosition += new Vector3(0.75f, 0f) * 2;
         SpriteRenderer neutral_renderer = neutral.GetComponent<SpriteRenderer>();
@@ -155,7 +156,7 @@ public class ModSettingsMenu : MonoBehaviour
         NeutralButton.OnMouseOut.AddListener(() => { if (NowTabId != 2) neutral_renderer.color = Color.gray; });
         NeutralButton.OnMouseOver.AddListener(() => neutral_renderer.color = Color.white);
 
-        GameObject crewmate = Object.Instantiate(instance, header.transform);
+        GameObject crewmate = Instantiate(instance, header.transform);
         crewmate.name = "CrewmateButton";
         crewmate.transform.localPosition += new Vector3(0.75f, 0f) * 3;
         SpriteRenderer crewmate_renderer = crewmate.GetComponent<SpriteRenderer>();
@@ -166,7 +167,7 @@ public class ModSettingsMenu : MonoBehaviour
         CrewmateButton.OnMouseOut.AddListener(() => { if (NowTabId != 3) crewmate_renderer.color = Color.gray; });
         CrewmateButton.OnMouseOver.AddListener(() => crewmate_renderer.color = Color.white);
 
-        GameObject modifier = Object.Instantiate(instance, header.transform);
+        GameObject modifier = Instantiate(instance, header.transform);
         modifier.name = "ModifierButton";
         modifier.transform.localPosition += new Vector3(0.75f, 0f) * 4;
         SpriteRenderer modifier_renderer = modifier.GetComponent<SpriteRenderer>();
@@ -177,7 +178,7 @@ public class ModSettingsMenu : MonoBehaviour
         ModifierButton.OnMouseOut.AddListener(() => { if (NowTabId != 4) modifier_renderer.color = Color.gray; });
         ModifierButton.OnMouseOver.AddListener(() => modifier_renderer.color = Color.white);
 
-        GameObject match_tag = Object.Instantiate(instance, header.transform);
+        GameObject match_tag = Instantiate(instance, header.transform);
         match_tag.name = "MatchTagButton";
         match_tag.transform.localPosition += new Vector3(0.75f, 0f) * 5;
         SpriteRenderer match_tag_renderer = match_tag.GetComponent<SpriteRenderer>();
@@ -188,11 +189,11 @@ public class ModSettingsMenu : MonoBehaviour
         MatchTagButton.OnMouseOut.AddListener(() => { if (NowTabId != 5) match_tag_renderer.color = Color.gray; });
         MatchTagButton.OnMouseOver.AddListener(() => match_tag_renderer.color = Color.white);
 
-        Object.Destroy(instance);
+        Destroy(instance);
         #endregion
 
         #region タブ生成
-        CategoryHeader = Object.Instantiate(roles.advHeader, ScrollBar.Inner);
+        CategoryHeader = Instantiate(roles.advHeader, ScrollBar.Inner);
         CategoryHeader.gameObject.name = "CategoryHeaderMasked";
         CategoryHeader.Title.text = "";
 
@@ -256,7 +257,7 @@ public class ModSettingsMenu : MonoBehaviour
         RoleDetailsSettings = new("Role Details Tab");
         RoleDetailsSettings.transform.SetParent(ScrollBar.Inner);
         RoleDetailsSettings.transform.localPosition = new(0f, 0f, -5f);
-        PassiveButton close_button = Object.Instantiate(GameSettingMenu.Instance.transform.Find("CloseButton").GetComponent<PassiveButton>(), RoleDetailsSettings.transform);
+        PassiveButton close_button = Instantiate(GameSettingMenu.Instance.transform.Find("CloseButton").GetComponent<PassiveButton>(), RoleDetailsSettings.transform);
         close_button.gameObject.name = "Close Button";
         close_button.gameObject.layer = 5;
         close_button.transform.localPosition = new(4.18f, 0.4f, -2f);
@@ -291,7 +292,6 @@ public class ModSettingsMenu : MonoBehaviour
             YPosition = FirstYPosition;
             if (i == 6) YPosition -= OptionSpan;
             foreach (ModOptionBehaviour option in options)
-            {
                 if (option is ModCategoryHeaderEditRole header)
                 {
                     Vector3 pos = option.transform.localPosition;
@@ -340,7 +340,6 @@ public class ModSettingsMenu : MonoBehaviour
                     }
                     option.UpdateValue();
                 }
-            }
             if (i == NowTabId)
             {
                 ScrollBar.ContentYBounds.max = Mathf.Abs(YPosition - FirstYPosition) - 2.98f;
@@ -409,7 +408,7 @@ public class ModSettingsMenu : MonoBehaviour
 
     public CategoryHeaderMasked CreateCategoryHeaderMasked(Transform transform, string text)
     {
-        CategoryHeaderMasked masked = Object.Instantiate(CategoryHeader, transform);
+        CategoryHeaderMasked masked = Instantiate(CategoryHeader, transform);
         masked.transform.localPosition = new(-0.44f, 0f, 5f);
         new LateTask(() => masked.Title.text = text, 0f, "ModSettingsMenu");
         return masked;
@@ -417,7 +416,7 @@ public class ModSettingsMenu : MonoBehaviour
 
     public ModCategoryHeaderEditRole CreateCategoryHeaderEditRole(Transform transform, string text, (Color32 Text, Color32 Label, Color32 Blank, Color32 Header) colors)
     {
-        CategoryHeaderEditRole obj = Object.Instantiate(CategoryHeaderEditRoleOrigin, transform);
+        CategoryHeaderEditRole obj = Instantiate(CategoryHeaderEditRoleOrigin, transform);
         ModCategoryHeaderEditRole mod = obj.gameObject.AddComponent<ModCategoryHeaderEditRole>();
         mod.transform.localPosition = new(4.986f, 0, -2f);
         mod.Title = obj.Title;
@@ -439,7 +438,7 @@ public class ModSettingsMenu : MonoBehaviour
     public static Color RoleTextOutlineColor = Color.black;
     public ModRoleOptionSetting CreateRoleOptionSetting(Transform transform, CustomRoleOption role, Color color)
     {
-        RoleOptionSetting obj = Object.Instantiate(RoleOptionSettingOrigin, transform);
+        RoleOptionSetting obj = Instantiate(RoleOptionSettingOrigin, transform);
         ModRoleOptionSetting mod = obj.gameObject.AddComponent<ModRoleOptionSetting>();
         mod.transform.localPosition = new(-0.15f, 0f, -2f);
         mod.TitleText = obj.titleText;
@@ -475,13 +474,13 @@ public class ModSettingsMenu : MonoBehaviour
         mod.ControllerSelectable[2].OnClick.AddListener(mod.DecreaseChance);
         mod.ControllerSelectable[3].OnClick.AddListener(mod.IncreaseChance);
         mod.ControllerSelectable[4].OnClick.AddListener(() => OpenTab(6, mod.CreateRoleDetailsOption));
-        GameObject.Destroy(obj);
+        Destroy(obj);
         return mod;
     }
 
     public ModStringOption CreateModStringOption(Transform transform, CustomOption option)
     {
-        StringOption obj = GameObject.Instantiate(StringOptionOrigin, transform);
+        StringOption obj = Instantiate(StringOptionOrigin, transform);
         ModStringOption mod = obj.gameObject.AddComponent<ModStringOption>();
         mod.transform.localPosition = new(1f, 0f, -2f);
         mod.TitleText = obj.TitleText;
@@ -494,16 +493,16 @@ public class ModSettingsMenu : MonoBehaviour
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Decrease);
         mod.ControllerSelectable[1].OnClick.AddListener(mod.Increase);
-        GameObject.Destroy(obj);
+        Destroy(obj);
         return mod;
     }
 
     public ModToggleOption CreateModToggleOption(Transform transform, CustomOption option)
     {
-        ToggleOption obj = GameObject.Instantiate(CheckboxOrigin, transform);
+        ToggleOption obj = Instantiate(CheckboxOrigin, transform);
         ModToggleOption mod = obj.gameObject.AddComponent<ModToggleOption>();
         mod.transform.localPosition = new(1f, 0f, -2f);
-        mod.TitleText= obj.TitleText;
+        mod.TitleText = obj.TitleText;
         mod.CheckMark = obj.CheckMark;
         mod.ParentCustomOption = option;
         mod.SettingsMenu = this;
@@ -515,7 +514,7 @@ public class ModSettingsMenu : MonoBehaviour
         mod.UpdateValue();
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Toggle);
-        GameObject.Destroy(obj);
+        Destroy(obj);
         return mod;
     }
 
@@ -593,7 +592,7 @@ public class ModSettingsMenu : MonoBehaviour
         foreach (GameObject obj in RoleDetailsSettings.GetChildren())
         {
             if (obj.name == "Close Button") continue;
-            Object.Destroy(obj);
+            Destroy(obj);
         }
 
         RoleDetailsOptions.Clear();
