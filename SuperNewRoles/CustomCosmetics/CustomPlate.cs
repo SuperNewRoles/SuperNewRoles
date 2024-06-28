@@ -13,7 +13,7 @@ public class CustomPlate
 {
     public static bool isAdded = false;
     static readonly List<NamePlateData> namePlateData = new();
-    public static readonly List<CustomPlateData> customPlateData = new();/*
+    public static readonly List<CustomPlateData> customPlateData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
     class UnlockedNamePlatesPatch
     {
@@ -68,5 +68,5 @@ public class CustomPlate
             AllPlates.AddRange(namePlateData);
             __instance.allNamePlates = AllPlates.ToArray();
         }
-    }*/
+    }
 }

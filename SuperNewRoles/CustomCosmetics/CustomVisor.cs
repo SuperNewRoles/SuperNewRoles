@@ -31,7 +31,6 @@ public class CustomVisor
 
         static void Prefix(HatManager __instance)
         {
-            return;
             if (RUNNING) return;
             if (IsLoadingnow) return;
             if (SPRITELOADED)
@@ -183,7 +182,7 @@ public class CustomVisor
             ProductId = "CustomVisors_" + cv.package + "_" + cv.name.Replace(' ', '_'),
             ChipOffset = new Vector2(0f, 0.25f),
             Free = true,
-            // SpritePreview = visorViewData.MainImage,
+            SpritePreview = visorViewData.MainImage,
             NotInStore = true,
 
             // 本体 : VisorData
