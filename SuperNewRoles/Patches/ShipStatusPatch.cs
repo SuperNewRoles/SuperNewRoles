@@ -158,6 +158,8 @@ class LightPatch
 
         __result = player == null || player.IsDead
             ? __instance.MaxLightRadius
+            : player.Object.TryGetRoleBase(out Ubiquitous ubiquitous) && ubiquitous.UnderOperation
+            ? 0f
             : Squid.Abilitys.IsObstruction
             ? Mathf.Lerp(__instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), __instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), num)
             : player.Object.IsRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate

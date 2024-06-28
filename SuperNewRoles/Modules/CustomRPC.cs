@@ -68,6 +68,7 @@ public enum RoleId
     NiceScientist,
     NiceRedRidingHood,
     BodyBuilder,
+    Ubiquitous,
 
     //RoleId
 

@@ -175,6 +175,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<ModRoleOptionSetting>();
         ClassInjector.RegisterTypeInIl2Cpp<ModStringOption>();
         ClassInjector.RegisterTypeInIl2Cpp<ModToggleOption>();
+        ClassInjector.RegisterTypeInIl2Cpp<Drone>();
 
         Logger.LogInfo("Start Load Resource");
         string[] resourceNames = assembly.GetManifestResourceNames();
