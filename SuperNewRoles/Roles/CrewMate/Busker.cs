@@ -72,7 +72,8 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
             return false;
         if (CurrentDeadbody != null &&
             CurrentDeadbody.enabled &&
-            CurrentDeadbody.gameObject.active)
+            CurrentDeadbody.gameObject.active &&
+            !DeadBodyManager.IsDeadbodyUsed(CurrentDeadbody))
             return true;
         return AmPseudocide = false;
     }
