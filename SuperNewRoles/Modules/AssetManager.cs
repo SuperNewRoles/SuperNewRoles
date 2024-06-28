@@ -15,16 +15,16 @@ public static class AssetManager
         Sprite,
         Sound,
         Wavecannon,
-        Insidecollider
+        BodyBuilder
     }
     private static Dictionary<byte, Dictionary<string, UnityEngine.Object>> _cachedAssets { get; } = new();
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
-    private static Tuple<AssetBundleType, string>[] AssetPathes = 
+    private static Tuple<AssetBundleType, string>[] AssetPathes = new Tuple<AssetBundleType, string>[4]
     {
         new(AssetBundleType.Sprite, "snrsprites"),
         new(AssetBundleType.Sound, "SNRSounds"),
         new(AssetBundleType.Wavecannon, "WaveCannon.WaveCannonEffects"),
-        new(AssetBundleType.Insidecollider, "snrinsidecolliders"),
+        new(AssetBundleType.BodyBuilder, "BodyBuilder.BodyBuilderPoses")
     };
     public static void Load()
     {
@@ -78,9 +78,7 @@ public static class AssetManager
             return result.TryCast<T>();
         //読み込む
         T rs = Bundles[(byte)assetBundleType]
-              .LoadAsset<T>(path);
-        if (rs != null)
-            rs.DontUnload();
+              .LoadAsset<T>(path).DontUnload();
         //キャッシュに保存
         _data[path + il2CppType.ToString()] = rs;
         return rs;
