@@ -58,7 +58,7 @@ public class ReplayActionSetCosmetics : ReplayAction
         switch (CosType)
         {
             case ReplayCosmeticsType.Name:
-                target.SetName(ChangeTarget, dontCensor);
+                target.SetName(ChangeTarget);
                 break;
             case ReplayCosmeticsType.Color:
                 target.SetColor(colorId);
@@ -97,7 +97,7 @@ public class ReplayActionSetCosmetics : ReplayAction
             switch (CosType)
             {
                 case ReplayCosmeticsType.Name:
-                    target.SetName(ChangeTarget, dontCensor);
+                    target.SetName(ChangeTarget);
                     break;
                 case ReplayCosmeticsType.Color:
                     target.SetColor(colorId);
@@ -128,7 +128,7 @@ public class ReplayActionSetCosmetics : ReplayAction
             switch (rasc.CosType)
             {
                 case ReplayCosmeticsType.Name:
-                    target.SetName(rasc.ChangeTarget, rasc.dontCensor);
+                    target.SetName(rasc.ChangeTarget);
                     break;
                 case ReplayCosmeticsType.Color:
                     target.SetColor(rasc.colorId);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patches;
@@ -54,7 +53,7 @@ class TaskCount
                 __instance.Arrows?.DoIf(x => x != null && x.isActiveAndEnabled, x => x.gameObject?.SetActive(false));
         }
     }
-    public static Tuple<int, int> TaskDateNoClearCheck(GameData.PlayerInfo playerInfo)
+    public static Tuple<int, int> TaskDateNoClearCheck(NetworkedPlayerInfo playerInfo)
     {
         int TotalTasks = 0;
         int CompletedTasks = 0;
@@ -69,7 +68,7 @@ class TaskCount
         }
         return Tuple.Create(CompletedTasks, TotalTasks);
     }
-    public static Tuple<int, int> TaskDate(GameData.PlayerInfo playerInfo)
+    public static Tuple<int, int> TaskDate(NetworkedPlayerInfo playerInfo)
     {
         int TotalTasks = 0;
         int CompletedTasks = 0;
@@ -89,6 +88,33 @@ class TaskCount
             }
         }
         return Tuple.Create(CompletedTasks, TotalTasks);
+    }
+    public static (int, int, int) RemainingTaskData(NetworkedPlayerInfo player)
+    {
+        (int numCommon, int numShort, int numLong) = (0, 0, 0);
+        if (!player.Disconnected && player.Tasks != null && player.Object)
+        {
+            foreach (PlayerTask task in player.Object.myTasks)
+            {
+                NetworkedPlayerInfo.TaskInfo info = player.FindTaskById(task.Id);
+                if (info.Complete) continue;
+                switch (ShipStatus.Instance.GetTaskById(info.TypeId).Length)
+                {
+                    case NormalPlayerTask.TaskLength.Common:
+                        numCommon++;
+                        break;
+                    case NormalPlayerTask.TaskLength.Short:
+                        numShort++;
+                        break;
+                    case NormalPlayerTask.TaskLength.Long:
+                        numLong++;
+                        break;
+                }
+            }
+
+            Logger.Info($"numCommon : {numCommon}, numShort : {numShort}, numLong : {numLong}", "RemainingTaskData");
+        }
+        return (numCommon, numShort, numLong);
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
@@ -125,7 +151,7 @@ class TaskCount
         __instance.CompletedTasks = 0;
         for (int i = 0; i < __instance.AllPlayers.Count; i++)
         {
-            GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+            NetworkedPlayerInfo playerInfo = __instance.AllPlayers[i];
             if (!RoleHelpers.IsClearTask(playerInfo.Object) && !playerInfo.Object.IsBot())
             {
                 var (playerCompleted, playerTotal) = TaskDate(playerInfo);
@@ -147,7 +173,7 @@ class TaskCount
 
         for (int i = 0; i < __instance.AllPlayers.Count; i++)
         {
-            GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+            NetworkedPlayerInfo playerInfo = __instance.AllPlayers[i];
             PlayerControl player = playerInfo.Object;
 
             if (player == null || player.IsBot()) continue;

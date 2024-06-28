@@ -85,11 +85,11 @@ public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
     private HashSet<uint> AssignRobberTargetTask(PlayerControl target)
     {
         int RewindTaskCount = RewindTaskCountOption.GetInt();
-        int CompletedTaskCount = target.Data.Tasks.FindAll((Il2CppSystem.Predicate<GameData.TaskInfo>)(x => x.Complete)).Count;
+        int CompletedTaskCount = target.Data.Tasks.FindAll((Il2CppSystem.Predicate<NetworkedPlayerInfo.TaskInfo>)(x => x.Complete)).Count;
         if (RewindTaskCount > CompletedTaskCount)
             RewindTaskCount = CompletedTaskCount;
         HashSet<uint> taskIds = new();
-        List<GameData.TaskInfo> CompletedTasks = target.Data.Tasks.FindAll((Il2CppSystem.Predicate<GameData.TaskInfo>)(x => x.Complete)).ToList();
+        List<NetworkedPlayerInfo.TaskInfo> CompletedTasks = target.Data.Tasks.FindAll((Il2CppSystem.Predicate<NetworkedPlayerInfo.TaskInfo>)(x => x.Complete)).ToList();
         for (int i = 0; i < RewindTaskCount; i++)
         {
             int index = ModHelpers.GetRandomIndex(CompletedTasks);
@@ -112,7 +112,7 @@ public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
         {
             if (!taskIds.Contains(task.Id))
                 continue;
-            GameData.TaskInfo taskInfo = target.Data.FindTaskById(task.Id);
+            NetworkedPlayerInfo.TaskInfo taskInfo = target.Data.FindTaskById(task.Id);
             if (taskInfo != null)
                 taskInfo.Complete = false;
             target.myTasks.Remove(task);

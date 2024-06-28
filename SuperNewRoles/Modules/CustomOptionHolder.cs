@@ -134,17 +134,6 @@ public class CustomOptionHolder
     public static CustomOption MeetingSheriffKillMaxCount;
     public static CustomOption MeetingSheriffOneMeetingMultiKill;
 
-    public static CustomRoleOption JackalOption;
-    public static CustomOption JackalPlayerCount;
-    public static CustomOption JackalKillCooldown;
-    public static CustomOption JackalUseVent;
-    public static CustomOption JackalUseSabo;
-    public static CustomOption JackalIsImpostorLight;
-    public static CustomOption JackalCreateFriend;
-    public static CustomOption JackalCreateSidekick;
-    public static CustomOption JackalSKCooldown;
-    public static CustomOption JackalNewJackalCreateSidekick;
-
     public static CustomRoleOption TeleporterOption;
     public static CustomOption TeleporterPlayerCount;
     public static CustomOption TeleporterCoolTime;
@@ -933,10 +922,10 @@ public class CustomOptionHolder
     public static CustomOption LoversShortTask;
 
     public static string[] LevelingerTexts = new string[] { };
-    public static List<float> CrewPlayers = new() { 1f, 1f, 15f, 1f };
-    public static List<float> AlonePlayers = new() { 1f, 1f, 1f, 1f };
-    public static List<float> ImpostorPlayers = new() { 1f, 1f, 15f, 1f };
-    public static List<float> QuarreledPlayers = new() { 1f, 1f, 7f, 1f };
+    public static List<float> CrewPlayers = new() { 0f, 0f, 15f, 1f };
+    public static List<float> AlonePlayers = new() { 0f, 0f, 1f, 1f };
+    public static List<float> ImpostorPlayers = new() { 0f, 0f, 15f, 1f };
+    public static List<float> QuarreledPlayers = new() { 0f, 0f, 7f, 1f };
     // public static CustomOption ;
 
     internal static Dictionary<byte, byte[]> blockedRolePairings = new();
@@ -1286,26 +1275,14 @@ public class CustomOptionHolder
         SmasherPlayerCount = Create(205101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
         SmasherKillCoolTime = Create(205102, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
 
-        WerewolfOption = new(205200, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
+        WerewolfOption = SetupCustomRoleOption(205200, false, RoleId.Werewolf, CustomOptionType.Impostor);
         WerewolfPlayerCount = Create(205201, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
         // SetupImpostorCustomOptions
 
         /* |: ========================= Neutral Settings ========================== :| */
 
-        JackalOption = SetupCustomRoleOption(300000, true, RoleId.Jackal);
-        JackalPlayerCount = Create(300001, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
-        JackalKillCooldown = Create(300002, true, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
-        JackalUseVent = Create(300003, true, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalOption);
-        JackalUseSabo = Create(300004, true, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalOption);
-        JackalIsImpostorLight = Create(300005, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalOption);
-        JackalCreateFriend = Create(300006, true, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalOption);
-        JackalCreateSidekick = Create(300007, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
-        JackalSKCooldown = Create(300008, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
-        JackalNewJackalCreateSidekick = Create(300009, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
-
-        WaveCannonJackal.SetupCustomOptions();
-
+        
         JackalSeerOption = SetupCustomRoleOption(300200, true, RoleId.JackalSeer);
         JackalSeerPlayerCount = Create(300201, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
         JackalSeerMode = Create(300202, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
@@ -1982,6 +1959,7 @@ public class CustomOptionHolder
         Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
 
         CheckOption();
+        CustomOption.UpdateCanShows(null);
 
         /*
         string OPTIONDATA = "{";

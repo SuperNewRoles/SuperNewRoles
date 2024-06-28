@@ -11,10 +11,6 @@ class HudManagerPatch
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class HudManagerUpdatePatch
     {
-        public static void Prefix(HudManager __instance)
-        {
-            GameSettingsScale.GameSettingsScalePatch(__instance);
-        }
         public static void Postfix(HudManager __instance)
         {
             WallHack.WallHackUpdate();

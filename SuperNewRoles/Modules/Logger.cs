@@ -26,7 +26,7 @@ class Logger
     public static void SendInGame(string text, bool isAlways = false)
     {
         if (!isEnable) return;
-        if (DestroyableSingleton<HudManager>._instance) FastDestroyableSingleton<HudManager>.Instance.Notifier.AddItem(text);
+        if (DestroyableSingleton<HudManager>._instance) FastDestroyableSingleton<HudManager>.Instance.Notifier.AddDisconnectMessage(text);
     }
     private static void SendToFile(string text, string callerMember = "", LogLevel level = LogLevel.Info, string tag = "", int lineNumber = 0, string fileName = "")
     {

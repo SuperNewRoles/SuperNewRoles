@@ -39,6 +39,7 @@ class SeerHandler
         FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         Renderer = FastDestroyableSingleton<HudManager>.Instance;
         FlashCoroutine = null;
+        FullScreenRenderer.gameObject.SetActive(false);
     }
     /** <summary>
         画面を光らせる

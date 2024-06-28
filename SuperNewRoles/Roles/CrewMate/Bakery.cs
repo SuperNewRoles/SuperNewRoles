@@ -13,18 +13,11 @@ public class Bakery
     private static TMPro.TextMeshPro confirmImpostorSecondText;
     public static bool Prefix(
         ExileController __instance,
-        [HarmonyArgument(0)] ref GameData.PlayerInfo exiled,
+        [HarmonyArgument(0)] ref NetworkedPlayerInfo exiled,
         bool tie)
     {
         if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger == null && (Balancer.currentAbilityUser == null || !Balancer.IsDoubleExile)) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
-        if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
-        {
-            Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, exiled, tie);
-            if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger == null && (Balancer.currentAbilityUser == null || !Balancer.IsDoubleExile))
-            {
-                return false;
-            }
-        };
+        
         string printStr = "";
 
         if (RoleClass.Assassin.TriggerPlayer != null)
@@ -129,6 +122,10 @@ public class Bakery
                 return true;
             }
         }
+        if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
+        {
+            return Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, exiled, tie);
+        };
         return false;
     }
     static bool IsSec;

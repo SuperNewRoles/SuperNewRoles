@@ -1,3 +1,4 @@
+using System;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 //TOHより!
 namespace SuperNewRoles.Patches;
 
-[HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.SetRecommendations))]
+[HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.SetRecommendations), new Type[] { typeof(int), typeof(bool) })]
 public static class ChangeRecommendedSettingPatch
 {
     public static bool Prefix(GameOptionsData __instance, int numPlayers, bool isOnline)

@@ -41,6 +41,8 @@ class JackalFriends
                 if (!RoleClass.MayorFriends.IsJackalCheck) return false;
                 CheckTask = RoleClass.MayorFriends.JackalCheckTask;
                 break;
+            case RoleId.Bullet:
+                return true;
             default:
                 return false;
         }

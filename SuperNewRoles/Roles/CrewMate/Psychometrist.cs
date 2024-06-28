@@ -19,7 +19,7 @@ public static class Psychometrist
             string newtext = "";
             if (CustomOptionHolder.PsychometristIsCheckDeathReason.GetBool())
             {
-                GameData.PlayerInfo p = ModHelpers.PlayerById(DeathTimeTextData.Item1.ParentId)?.Data;
+                NetworkedPlayerInfo p = ModHelpers.PlayerById(DeathTimeTextData.Item1.ParentId)?.Data;
                 var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
                     p.Disconnected == true ? FinalStatus.Disconnected :
                     FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :

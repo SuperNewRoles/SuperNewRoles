@@ -53,6 +53,10 @@ public enum RoleId
 
     // Neutral Roles
     Cupid,
+    WaveCannonJackal,
+    Bullet,
+    SidekickWaveCannon,
+    Owl,
 
     // Crewmate Roles
     NiceGuesser,
@@ -64,6 +68,7 @@ public enum RoleId
     NiceScientist,
     NiceRedRidingHood,
     Busker,
+    BodyBuilder,
 
     //RoleId
 
@@ -194,8 +199,6 @@ public enum RoleId
     ConnectKiller,
     GM,
     Cracker,
-    WaveCannonJackal,
-    SidekickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -248,16 +251,15 @@ public enum RoleId
 
 public enum CustomRPC
 {
-    // 2024.1.12 現在
-    // Among Us 本体(2023.11.28) : 0 ~ 61
-    // LI : 94 ~ 99
+    // Among Us 本体(2023.6.18) : 0 ~ 65
+    // LI : 94 ~ 99 (2024.1.12 現在)
 
-    // 2024.1.12 現在
-    // SNR : 64 ~ 93, 100 ~ 184
+    // 2024.6.25 現在
+    // SNR : 64 ~ 95, 100 ~ 185
     // Agartha : 無し
 
     // Vanilla Extended RPC
-    Chat = 64,
+    Chat = 66,
     UncheckedSetVanillaRole,
     RPCMurderPlayer,
     CustomRPCKill,
@@ -272,7 +274,7 @@ public enum CustomRPC
     RPCTeleport,
 
     // Mod Basic RPC
-    ShareOptions = 77,
+    ShareOptions = 79,
     ShareSNRVersion,
     StartGameRPC,
     SetRole,
@@ -286,23 +288,21 @@ public enum CustomRPC
     UncheckedUsePlatform,
 
     // Mod feature RPC
-    AutoCreateRoom = 89,
+    AutoCreateRoom = 91,
     SetBot,
     UncheckedSetColor,
-    SetDeviceTime,
+    SetDeviceTime = 100,
     ShowFlash,
 
     // Mod Roles RPC
-    RPCClergymanLightOut = 100,
+    RPCClergymanLightOut,
     SheriffKill,
     MeetingSheriffKill,
     UncheckedMeeting,
     CleanBody,
     TeleporterTP,
     SidekickPromotes,
-    CreateSidekick,
     CreateSidekickSeer,
-    CreateSidekickWaveCannon,
     SetSpeedBoost,
     CountChangerSetRPC,
     SetRoomTimerRPC,
@@ -378,7 +378,7 @@ public enum CustomRPC
     RoleRpcHandler,
     SetFrankensteinMonster,
     MoveDeadBody,
-    WaveCannon
+    WaveCannon,
 }
 
 public static class RPCProcedure
@@ -409,7 +409,7 @@ public static class RPCProcedure
             case WaveCannonObject.RpcType.Spawn:
                 return new GameObject("WaveCannon Object").AddComponent<WaveCannonObject>().Init(position, IsFlipX, ModHelpers.PlayerById(OwnerId), AnimType);
             case WaveCannonObject.RpcType.Shoot:
-                WaveCannonObject.Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                WaveCannonObject.Objects[OwnerId]?.Shoot();
                 break;
         }
         return null;
@@ -556,10 +556,10 @@ public static class RPCProcedure
         ReplayActionBalancer.Create(sourceId, player1Id, player2Id);
         Balancer.StartAbility(source, player1, player2);
     }
-    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
+    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is, Vector3 position)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceId);
-        WiseMan.SetWiseManStatus(source, rotate, Is);
+        WiseMan.SetWiseManStatus(source, rotate, Is, position);
     }
     public static void SetVentStatusMechanic(byte sourceplayer, byte targetvent, bool Is, byte[] buff)
     {
@@ -590,7 +590,7 @@ public static class RPCProcedure
     {
         PlayerControl player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        GameData.PlayerOutfit outfit = new()
+        NetworkedPlayerInfo.PlayerOutfit outfit = new()
         {
             ColorId = color,
             HatId = hat,
@@ -1114,7 +1114,7 @@ public static class RPCProcedure
     {
         var player = ModHelpers.PlayerById(playerId);
         player.ClearAllTasks();
-        GameData.Instance.SetTasks(playerId, taskTypeIds);
+        player.Data.SetTasks(taskTypeIds);
     }
     public static void StartGameRPC()
         => RoleClass.ClearAndReloadRoles();
@@ -1185,7 +1185,7 @@ public static class RPCProcedure
                 uint optionId = reader.ReadPackedUInt32();
                 uint selection = reader.ReadPackedUInt32();
                 CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
-                option.UpdateSelection((int)selection);
+                option.SetSelection((int)selection);
             }
         }
         catch (Exception e)
@@ -1220,21 +1220,27 @@ public static class RPCProcedure
         RoleBase player2role = player2.GetRoleBase();
         RoleId player1id = player1.GetRole();
         RoleId player2id = player2.GetRole();
-        if (player1role != null)
-            player1role.SetPlayer(player2);
-        if (player2role != null)
-            player2role.SetPlayer(player1);
-        if (player1role == null)
+        if (player1role != null) player1role.SetPlayer(player2);
+        else
         {
             player2.ClearRole();
             player2.SetRole(player1id);
         }
-        if (player2role == null)
+        if (player2role != null) player2role.SetPlayer(player1);
+        else
         {
             player1.ClearRole();
             player1.SetRole(player2id);
         }
         ChacheManager.ResetMyRoleChache();
+        RoleHelpers.ClearTaskUpdate();
+        if (AmongUsClient.Instance.AmHost)
+        {
+            byte[] player1task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            byte[] player2task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            player2.SetTask(player1task);
+            player1.SetTask(player2task);
+        }
     }
 
     public static void SetHauntedWolf(byte playerid)
@@ -1460,17 +1466,7 @@ public static class RPCProcedure
     public static void SidekickPromotes(byte jackalId)
     {
         RoleId jackalRoleId = (RoleId)jackalId;
-        if (jackalRoleId == RoleId.Jackal)
-        {
-            foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
-            {
-                p.ClearRole();
-                p.SetRole(jackalRoleId);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
-            }
-        }
-        else if (jackalRoleId == RoleId.JackalSeer)
+        if (jackalRoleId == RoleId.JackalSeer)
         {
             foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
             {
@@ -1480,35 +1476,8 @@ public static class RPCProcedure
                 RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
             }
         }
-        else if (jackalRoleId == RoleId.WaveCannonJackal)
-        {
-            foreach (PlayerControl p in WaveCannonJackal.SidekickWaveCannonPlayer.ToArray())
-            {
-                p.ClearRole();
-                p.SetRole(jackalRoleId);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                WaveCannonJackal.CanCreateSidekick = WaveCannonJackal.WaveCannonJackalNewJackalCreateSidekick.GetBool();
-            }
-        }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         ChacheManager.ResetMyRoleChache();
-    }
-    public static void CreateSidekick(byte playerid, bool IsFake)
-    {
-        var player = ModHelpers.PlayerById(playerid);
-        if (player == null) return;
-        if (IsFake)
-        {
-            RoleClass.Jackal.FakeSidekickPlayer.Add(player);
-        }
-        else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
-            player.ClearRole();
-            RoleClass.Jackal.SidekickPlayer.Add(player);
-            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
-        }
     }
     public static void CreateSidekickSeer(byte playerid, bool IsFake)
     {
@@ -1523,27 +1492,6 @@ public static class RPCProcedure
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
-            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
-        }
-    }
-
-    /// <summary>
-    /// サイドキック(波動砲)の作成
-    /// </summary>
-    /// <param name="playerid">SK対象者のplayerid</param>
-    /// <param name="IsFake">見せかけのSKか(TORでインポスターSK時ジャッカル視点のみSKできた様になる状態SNRでは使われていない)</param>
-    public static void CreateSidekickWaveCannon(byte playerid, bool IsFake)
-    {
-        var player = ModHelpers.PlayerById(playerid);
-        if (player == null) return;
-        if (IsFake) WaveCannonJackal.FakeSidekickWaveCannonPlayer.Add(player);
-        else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
-            player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
-            player.SetRole(RoleId.SidekickWaveCannon);
-            WaveCannonJackal.IwasSidekicked.Add(playerid);
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
@@ -1758,6 +1706,7 @@ public static class RPCProcedure
             {CustomRPC.SetRoomTimerRPC,false},
             {CustomRPC.SetDeviceTime,false},
             {CustomRPC.SetInfectionTimer,false},
+            {CustomRPC.MoveDeadBody,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
@@ -1842,9 +1791,6 @@ public static class RPCProcedure
                     case CustomRPC.SidekickPromotes:
                         SidekickPromotes(reader.ReadByte());
                         break;
-                    case CustomRPC.CreateSidekick:
-                        CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
-                        break;
                     case CustomRPC.SetSpeedBoost:
                         SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());
                         break;
@@ -1917,9 +1863,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CreateSidekickSeer:
                         CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.CreateSidekickWaveCannon:
-                        CreateSidekickWaveCannon(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.ArsonistDouse:
                         ArsonistDouse(reader.ReadByte(), reader.ReadByte());
@@ -2048,7 +1991,8 @@ public static class RPCProcedure
                         Chat(reader.ReadByte(), reader.ReadString());
                         break;
                     case CustomRPC.SetWiseManStatus:
-                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean());
+                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean(),
+                            new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()));
                         break;
                     case CustomRPC.SetVentStatusMechanic:
                         SetVentStatusMechanic(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBytesAndSize());
