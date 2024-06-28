@@ -1298,6 +1298,7 @@ SluggerName,Slugger,スラッガー,击球手,擊球手
 SluggerTitle1,Lets’ Harisen Kill!,ハリセンでキルしよう,用全垒打把其他人击飞,用全壘打把其他人擊飛
 SluggerChargeTime,Charge Time,チャージ時間,击球手充能时间,擊球手充能時間
 SluggerIsMultiKill,Range kill possible,範囲キル可能,击球手可以大范围击杀,擊球手可以大範圍擊殺
+SluggerIsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 SluggerButtonName,Harisen,ハリセン,挥棒,揮棒
 SatsumaAndImoName,SatsumaAndImo,さつまといも,人格分裂者,人格分裂者
 SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト,是我疯了，还是大家都疯了？,是我瘋了，還是大家都瘋了？
