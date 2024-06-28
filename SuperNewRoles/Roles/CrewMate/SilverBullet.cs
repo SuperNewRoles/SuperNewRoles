@@ -209,10 +209,12 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                 CustomRpcSender customRpcSender = CustomRpcSender.Create(sendOption: SendOption.None);
                 string playerName = Player.Data.PlayerName;
                 customRpcSender.AutoStartRpc(Player.NetId, (byte)RpcCalls.SetName)
+                    .Write(Player.Data.NetId)
                     .Write("\n\n\n<size=0%>.</size>")
                     .EndRpc();
                 Player.RPCSendChatPrivate(text.ToString(), Player, sender: customRpcSender);
                 customRpcSender.AutoStartRpc(Player.NetId, (byte)RpcCalls.SetName)
+                    .Write(Player.Data.NetId)
                     .Write(playerName)
                     .EndRpc()
                     .SendMessage();

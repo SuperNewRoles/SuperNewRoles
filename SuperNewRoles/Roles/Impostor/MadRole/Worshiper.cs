@@ -32,7 +32,7 @@ public static class Worshiper
 
         public static void SetupCustomOptions()
         {
-            Option = new(optionId, true, CustomOptionType.Crewmate, "WorshiperName", RoleData.color, 1); optionId++;
+            Option = SetupCustomRoleOption(optionId, true, RoleId.Worshiper, CustomOptionType.Crewmate); optionId++;
             PlayerCount = Create(optionId, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option); optionId++;
             AbilitySuicideCoolTime = Create(optionId, false, CustomOptionType.Crewmate, "WorshiperAbilitySuicideCoolTime", 30f, 0f, 60f, 2.5f, Option, format: "unitSeconds"); optionId++;
             KillSuicideCoolTime = Create(optionId, true, CustomOptionType.Crewmate, "WorshiperKillSuicideCoolTime", 30f, 2.5f, 60f, 2.5f, Option, format: "unitSeconds"); optionId++;

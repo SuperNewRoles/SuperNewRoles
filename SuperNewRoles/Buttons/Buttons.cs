@@ -2654,7 +2654,7 @@ static class HudManagerStartPatch
                                     return data == null || data.ParentId != component.ParentId;
                                 }))
                                 {
-                                    GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+                                    NetworkedPlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
                                     Matryoshka.RpcSet(playerInfo.Object, true);
                                     RoleClass.Matryoshka.MyKillCoolTime += CustomOptionHolder.MatryoshkaAddKillCoolTime.GetFloat();
                                     break;

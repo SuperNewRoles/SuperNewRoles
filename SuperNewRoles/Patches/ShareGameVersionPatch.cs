@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Agartha;
 using HarmonyLib;
@@ -7,6 +8,7 @@ using Hazel;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -27,25 +29,31 @@ class ShareGameVersion
     public static float timer = 600;
     public static float RPCTimer = 1f;
     private static float kickingTimer = 0f;
+    /// <summary> 導入状態のエラーを表示する場所 </summary>
+    public static TextMeshPro VersionErrorInfo;
     private static bool notcreateroom;
+    private static byte[] ModuleVersion = Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
+    private static byte ModuleRevision = (byte)(SuperNewRolesPlugin.ThisVersion.Revision < 0 ? 0xFF : SuperNewRolesPlugin.ThisVersion.Revision);
+
+    public static void SendVersionRPC()
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
+        writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
+        writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);
+        writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Build);
+        writer.WritePacked(AmongUsClient.Instance.ClientId);
+        writer.Write(ModuleRevision);
+        writer.Write(ModuleVersion);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.ThisVersion.Major, SuperNewRolesPlugin.ThisVersion.Minor, SuperNewRolesPlugin.ThisVersion.Build, SuperNewRolesPlugin.ThisVersion.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+    }
+
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     public class AmongUsClientOnPlayerJoinedPatch
     {
         public static void Postfix()
         {
-            if (PlayerControl.LocalPlayer != null)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("[VersionShare]Version Shared!");
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Build);
-                writer.WritePacked(AmongUsClient.Instance.ClientId);
-                writer.Write((byte)(SuperNewRolesPlugin.ThisVersion.Revision < 0 ? 0xFF : SuperNewRolesPlugin.ThisVersion.Revision));
-                writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.ThisVersion.Major, SuperNewRolesPlugin.ThisVersion.Minor, SuperNewRolesPlugin.ThisVersion.Build, SuperNewRolesPlugin.ThisVersion.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
-            }
+            if (PlayerControl.LocalPlayer != null) SendVersionRPC();
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
@@ -57,10 +65,26 @@ class ShareGameVersion
             RPCTimer = 1f;
             notcreateroom = false;
             kickingTimer = 0f;
+            ClearVersionErrorInfo();
+
             RoleClass.ClearAndReloadRoles();
             GameStartManagerUpdatePatch.Proce = 0;
             GameStartManagerUpdatePatch.LastBlockStart = false;
             GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
+        }
+
+        static void ClearVersionErrorInfo()
+        {
+            VersionErrorInfo = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, FastDestroyableSingleton<HudManager>.Instance.transform);
+            VersionErrorInfo.fontSize = VersionErrorInfo.fontSizeMin = VersionErrorInfo.fontSizeMax = 3f;
+            VersionErrorInfo.autoSizeTextContainer = false;
+            VersionErrorInfo.enableWordWrapping = false;
+            VersionErrorInfo.alignment = TMPro.TextAlignmentOptions.Center;
+            VersionErrorInfo.transform.position = Vector3.zero;
+            VersionErrorInfo.transform.localPosition = new Vector3(0f, 0f, -40f);
+            VersionErrorInfo.transform.localScale = Vector3.one;
+            VersionErrorInfo.color = Palette.White;
+            VersionErrorInfo.enabled = false;
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
@@ -94,17 +118,9 @@ class ShareGameVersion
                 }
             }
             Proce++;
-            if (Proce >= 10)
+            if (Proce >= 20)
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);
-                writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Build);
-                writer.WritePacked(AmongUsClient.Instance.ClientId);
-                writer.Write((byte)(SuperNewRolesPlugin.ThisVersion.Revision < 0 ? 0xFF : SuperNewRolesPlugin.ThisVersion.Revision));
-                writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.ThisVersion.Major, SuperNewRolesPlugin.ThisVersion.Minor, SuperNewRolesPlugin.ThisVersion.Build, SuperNewRolesPlugin.ThisVersion.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+                SendVersionRPC();
                 Proce = 0;
             }
             string message = "";
@@ -222,7 +238,7 @@ class ShareGameVersion
                 if (!blockStart)
                 {
                     // 参加者の導入状況に問題が無い時、開始ボタンと開始のテキストを表示する。(アップデート処理の負荷を下げる為、ifを使用)
-                    if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
+                    if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.GameStartText.enabled = true;
                 }
                 else
                 {
@@ -231,19 +247,21 @@ class ShareGameVersion
                     __instance.ResetStartState();
 
                     // 参加者の導入状況に問題がある時、開始ボタンと開始のテキストを非表示にする。(アップデート処理の負荷を下げる為、ifを使用)
-                    if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
+                    if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.GameStartText.enabled = false;
                 }
             }
             if (blockStart || hostModeInVanilla)
             {
-                __instance.GameStartText.text = message;
+                VersionErrorInfo.text = message;
+                VersionErrorInfo.enabled = true;
                 __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
             }
             else
             {
                 if (LastBlockStart)
                 {
-                    __instance.GameStartText.text = "";
+                    VersionErrorInfo.text = "";
+                    VersionErrorInfo.enabled = false;
                 }
                 __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
             }
@@ -271,14 +289,9 @@ class ShareGameVersion
             int minutes = (int)timer / 60;
             int seconds = (int)timer % 60;
             string suffix = $" ({minutes:00}:{seconds:00})";
-
-            __instance.PlayerCounter.text = currentText.Replace("\n", "") + suffix.Replace("\n", "")
-            ;
-            __instance.PlayerCounter.autoSizeTextContainer = true;
-            if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value)
-            {
-                notcreateroom = true;
-            }
+            __instance.StartButton.transform.Find("FontPlacer/Text_TMP").GetComponent<TextMeshPro>().text = $"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.StartLabel)} {suffix}";
+            __instance.StartButtonClient.transform.Find("Text_TMP").GetComponent<TextMeshPro>().text = $"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.WaitingForHost)} {suffix}";
+            if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value) notcreateroom = true;
         }
     }
 }
@@ -287,7 +300,7 @@ public struct PlayerVersion
     public readonly Version version;
     public readonly Guid guid;
 
-    public PlayerVersion(Version version, Guid guid)
+    public PlayerVersion(in Version version, in Guid guid)
     {
         this.version = version;
         this.guid = guid;
@@ -296,5 +309,28 @@ public struct PlayerVersion
     public bool GuidMatches()
     {
         return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(guid);
+    }
+
+    public override bool Equals([NotNullWhen(true)] object obj)
+    {
+        if (obj == null) return false;
+        PlayerVersion other = (PlayerVersion)obj;
+        return Equals(other.version, other.guid);
+    }
+
+    public bool Equals(Version version, Guid guid)
+    {
+        if (!this.version.Equals(version)) return false;
+        if (!this.guid.Equals(guid)) return false;
+        return true;
+    }
+    public static bool operator ==(PlayerVersion left, PlayerVersion right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(PlayerVersion left, PlayerVersion right)
+    {
+        return !(left == right);
     }
 }

@@ -74,7 +74,7 @@ class MapCustom
 
     public static void CreateOption()
     {
-        MapCustomOption = Create(102800, true, CustomOptionType.Generic, Cs(new Color(132f / 187f, 162f / 255f, 212f / 255f, 1f), "MapCustom"), false, null, true);
+        MapCustomOption = Create(102800, true, CustomOptionType.Generic, Cs(new Color(132f / 187f, 162f / 255f, 212f / 255f, 1f), "MapCustom"), false, null, true, withHeader: true);
 
         /*===============スケルド===============*/
         SkeldSetting = Create(102900, true, CustomOptionType.Generic, "<color=#8fbc8f>The Skeld</color>", false, MapCustomOption);
@@ -159,9 +159,9 @@ public class MapCustomClearAndReload
         else
         {
             AirshipSetting = MapCustom.AirshipSetting.GetBool();
+            FungleSetting = MapCustom.TheFungleSetting.GetBool();
             AgarthaSetting = MapCustom.AgarthaSetting.GetBool();
         }
-        FungleSetting = MapCustom.TheFungleSetting.GetBool();
 
         /*===============エアーシップ===============*/
         AirshipRandomSpawn = AirshipSetting && MapCustom.AirshipRandomSpawn.GetBool();

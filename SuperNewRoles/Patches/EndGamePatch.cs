@@ -192,13 +192,13 @@ public class EndGameManagerSetUpPatch
             UnityEngine.Object.Destroy(pb.gameObject);
         }
         int num = Mathf.CeilToInt(7.5f);
-        List<WinningPlayerData> list = TempData.winners.ToList().OrderBy(delegate (WinningPlayerData b)
+        List<CachedPlayerData> list = EndGameResult.CachedWinners.ToList().OrderBy(delegate (CachedPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
         }).ToList();
         for (int i = 0; i < list.Count; i++)
         {
-            WinningPlayerData winningPlayerData2 = list[i];
+            CachedPlayerData CachedPlayerData2 = list[i];
             int num2 = (i % 2 == 0) ? -1 : 1;
             int num3 = (i + 1) / 2;
             float num4 = (float)num3 / (float)num;
@@ -209,7 +209,7 @@ public class EndGameManagerSetUpPatch
             float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
             Vector3 vector = new(num7, num7, 1f);
             poolablePlayer.transform.localScale = vector;
-            if (winningPlayerData2.IsDead)
+            if (CachedPlayerData2.IsDead)
             {
                 poolablePlayer.SetBodyAsGhost();
                 poolablePlayer.SetDeadFlipX(i % 2 == 0);
@@ -218,16 +218,16 @@ public class EndGameManagerSetUpPatch
             {
                 poolablePlayer.SetFlipX(i % 2 == 0);
             }
-            poolablePlayer.UpdateFromPlayerOutfit((GameData.PlayerOutfit)winningPlayerData2, PlayerMaterial.MaskType.None, winningPlayerData2.IsDead, true);
+            poolablePlayer.UpdateFromPlayerOutfit(CachedPlayerData2.Outfit, PlayerMaterial.MaskType.None, CachedPlayerData2.IsDead, true);
             poolablePlayer.cosmetics.nameText.color = Color.white;
             poolablePlayer.cosmetics.nameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
-            poolablePlayer.cosmetics.nameText.text = winningPlayerData2.PlayerName;
+            poolablePlayer.cosmetics.nameText.text = CachedPlayerData2.PlayerName;
 
             foreach (var data in AdditionalTempData.playerRoles)
             {
-                if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: winningPlayerData2.IsImpostor))}";
+                if (data.PlayerName != CachedPlayerData2.PlayerName) continue;
+                poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: CachedPlayerData2.IsImpostor))}";
 
                 if (data.RoleId != RoleId.BodyBuilder || data.TasksCompleted != data.TasksTotal)
                     continue;
@@ -476,7 +476,7 @@ public class EndGameManagerSetUpPatch
 
 public class CustomPlayerData
 {
-    public WinningPlayerData currentData;
+    public CachedPlayerData currentData;
     public string name;
     public bool IsWin;
     public bool isImpostor;
@@ -484,7 +484,7 @@ public class CustomPlayerData
     public int CompleteTask;
     public int TotalTask;
     public RoleId? role;
-    public CustomPlayerData(GameData.PlayerInfo p, GameOverReason gameOverReason)
+    public CustomPlayerData(NetworkedPlayerInfo p, GameOverReason gameOverReason)
     {
         currentData = new(p);
         name = p.PlayerName;
@@ -546,7 +546,7 @@ public static class OnGameEndPatch
         }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
     }
-    private static List<GameData.PlayerInfo> ProcessGetWinnersToRemove()
+    private static List<NetworkedPlayerInfo> ProcessGetWinnersToRemove()
     {
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
 
@@ -625,8 +625,8 @@ public static class OnGameEndPatch
             notWinners.Add(p);
         }
 
-        List<GameData.PlayerInfo> winnersToRemove = new();
-        foreach (GameData.PlayerInfo winner in GameData.Instance.AllPlayers)
+        List<NetworkedPlayerInfo> winnersToRemove = new();
+        foreach (NetworkedPlayerInfo winner in GameData.Instance.AllPlayers)
         {
             if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
         }
@@ -652,10 +652,10 @@ public static class OnGameEndPatch
     /// ゲーム終了の処理を行う
     /// </summary>
     /// <returns>勝利情報</returns>
-    public static (HashSet<GameData.PlayerInfo> Winners, WinCondition winCondition, HashSet<GameData.PlayerInfo> WillRevivePlayers) HandleEndGameProcess(GameOverReason gameOverReason)
+    public static (HashSet<NetworkedPlayerInfo> Winners, WinCondition winCondition, HashSet<NetworkedPlayerInfo> WillRevivePlayers) HandleEndGameProcess(GameOverReason gameOverReason)
     {
-        HashSet<GameData.PlayerInfo> winners = new();
-        HashSet<GameData.PlayerInfo> WillRevivePlayers = new();
+        HashSet<NetworkedPlayerInfo> winners = new();
+        HashSet<NetworkedPlayerInfo> WillRevivePlayers = new();
         WinCondition winCondition = WinCondition.BugEnd;
 
         if (EndGameManagerSetUpPatch.IsHaison)
@@ -805,7 +805,7 @@ public static class OnGameEndPatch
         else if (CrewmateWin)
         {
             var d = ProcessGetWinnersToRemove();
-            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
                 if (player.Object != null && !player.Object.IsCrew())
                     continue;
@@ -849,7 +849,7 @@ public static class OnGameEndPatch
         }
         if (ImpostorWin)
         {
-            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
                 if (player.Role.IsImpostor)
                     winners.Add(player);
@@ -955,7 +955,7 @@ public static class OnGameEndPatch
         }
         return (winners, winCondition, WillRevivePlayers);
     }
-    private static void ProcessReplaceWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition, out bool allowAdditionalWins)
+    private static void ProcessReplaceWin(ref HashSet<NetworkedPlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition, out bool allowAdditionalWins)
     {
         allowAdditionalWins = true;
         bool spereseted = false;
@@ -1194,7 +1194,7 @@ public static class OnGameEndPatch
             if (data.Value > 0)
                 continue;
             //生存していなければ勝利できない
-            GameData.PlayerInfo FrankenPlayer = GameData.Instance.GetPlayerById(data.Key);
+            NetworkedPlayerInfo FrankenPlayer = GameData.Instance.GetPlayerById(data.Key);
             if (FrankenPlayer.IsDead())
                 continue;
             if (!spereseted)
@@ -1242,7 +1242,7 @@ public static class OnGameEndPatch
             spereseted = true;
         }
     }
-    private static void ProcessAdditionalWin(ref HashSet<GameData.PlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
+    private static void ProcessAdditionalWin(ref HashSet<NetworkedPlayerInfo> winners, GameOverReason gameOverReason, ref WinCondition winCondition)
     {
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
@@ -1284,7 +1284,7 @@ public static class OnGameEndPatch
         }
         foreach (PlayerControl player in RoleClass.Revolutionist.RevolutionistPlayer)
         {
-            if (RoleClass.Revolutionist.IsAddWin && (!RoleClass.Revolutionist.IsAddWinAlive || player.IsAlive()) && !TempData.winners.Contains(new(player.Data)))
+            if (RoleClass.Revolutionist.IsAddWin && (!RoleClass.Revolutionist.IsAddWinAlive || player.IsAlive()) && !winners.Contains(player.Data))
             {
                 winners.Add(player.Data);
             }
@@ -1423,12 +1423,12 @@ public static class OnGameEndPatch
             var ReplayEndGameData = ReplayLoader.ReplayTurns[ReplayLoader.CurrentTurn].CurrentEndGameData;
             if (ReplayEndGameData == null) return;
             Logger.Info("EndNullReplay");
-            Il2CppSystem.Collections.Generic.List<WinningPlayerData> WinningPlayers = new();
+            Il2CppSystem.Collections.Generic.List<CachedPlayerData> WinningPlayers = new();
             foreach (byte winnerid in ReplayEndGameData.WinnerPlayers)
             {
                 WinningPlayers.Add(new(GameData.Instance.GetPlayerById(winnerid)));
             }
-            TempData.winners = WinningPlayers;
+            EndGameResult.CachedWinners = WinningPlayers;
             AdditionalTempData.winCondition = ReplayEndGameData.WinCond;
             return;
         }
@@ -1436,23 +1436,23 @@ public static class OnGameEndPatch
         var (winners, winCondition, WillRevivePlayers) = HandleEndGameProcess(gameOverReason);
 
         // 勝者を処理
-        TempData.winners = new();
+        EndGameResult.CachedWinners = new();
         foreach (var winner in winners)
-            TempData.winners.Add(new(winner));
+            EndGameResult.CachedWinners.Add(new(winner));
 
         // 蘇生する
-        foreach (GameData.PlayerInfo player in WillRevivePlayers)
+        foreach (NetworkedPlayerInfo player in WillRevivePlayers)
             player.IsDead = false;
 
         // WinConditionを設定
         AdditionalTempData.winCondition = winCondition;
 
-        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
             if (player.Object != null && player.Object.IsBot()) continue;
             CustomPlayerData data = new(player, gameOverReason)
             {
-                IsWin = TempData.winners.ToArray().Any(x => x.PlayerName == player.PlayerName)
+                IsWin = EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == player.PlayerName)
             };
             PlayerData.Add(data);
         }
@@ -1677,7 +1677,7 @@ public static class CheckGameEndPatch
         if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 0 && !statistics.IsGuardPavlovs && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
         {
             __instance.enabled = false;
-            var endReason = TempData.LastDeathReason switch
+            var endReason = GameData.LastDeathReason switch
             {
                 DeathReason.Exile => GameOverReason.ImpostorByVote,
                 DeathReason.Kill => GameOverReason.ImpostorByKill,
@@ -1926,7 +1926,7 @@ public static class CheckGameEndPatch
 
             for (int i = 0; i < GameData.Instance.PlayerCount; i++)
             {
-                GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
+                NetworkedPlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                 if (!playerInfo.Disconnected && !playerInfo.Object.IsBot())
                 {
                     if (playerInfo.Object.IsAlive())
