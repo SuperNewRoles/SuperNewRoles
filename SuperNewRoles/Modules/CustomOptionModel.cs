@@ -1,23 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AmongUs.GameOptions;
-using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using static SuperNewRoles.Modules.CustomRegulation;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Modules;
 
@@ -84,16 +82,18 @@ public class CustomOption
             UpdateCanShows(this);
         }
     }
-    public OptionBehaviour optionBehaviour;
     public CustomOption parent;
     public List<CustomOption> children;
     public bool isHeader;
     public bool isHidden;
     public RoleId RoleId;
     public int openSelection { get; }
+    public bool IsToggle { get; }
     public Func<bool> CanShowFunc { get; }
     public bool HasCanShowAction { get; }
     public bool CanShowByFunc;
+    public bool WithHeader;
+    public string HeaderText;
 
     public static void UpdateCanShows(CustomOption opt)
     {
@@ -131,7 +131,7 @@ public class CustomOption
         return optionids.TryGetValue(id, out CustomOption opt) ? opt : null;
     }
 
-    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null, bool isToggle = false, bool withHeader = false, string headerText = null)
     {
         this.id = Id;
         this.isSHROn = IsSHROn;
@@ -146,6 +146,9 @@ public class CustomOption
         this.isHidden = isHidden;
         this.RoleId = roleId.HasValue ? roleId.Value : RoleId.DefaultRole;
         this.openSelection = openSelection;
+        this.IsToggle = isToggle;
+        this.WithHeader = withHeader;
+        this.HeaderText = headerText;
 
         this.CanShowFunc = canShow;
         this.HasCanShowAction = canShow != null;
@@ -240,22 +243,22 @@ public class CustomOption
         ModifierId = 500000,
         MatchingTagId = 600000,
     }
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null, bool withHeader = false, string headerText = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format, openSelection, canShow: canShow);
+        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format, openSelection, canShow: canShow, withHeader: withHeader, headerText: headerText);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null, bool withHeader = false, string headerText = null)
     {
         List<float> selections = new();
         for (float s = min; s <= max; s += step)
             selections.Add(s);
-        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, openSelection, canShow: canShow);
+        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, openSelection, canShow: canShow, withHeader: withHeader, headerText: headerText);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", int openSelection = -1, Func<bool> canShow = null, bool withHeader = false, string headerText = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, openSelection, canShow: canShow);
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, openSelection, canShow: canShow, isToggle: true, withHeader: withHeader, headerText: headerText);
     }
 
     public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1, bool isHidden = false)
@@ -271,9 +274,9 @@ public class CustomOption
         return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", CustomRoles.GetRoleColor(roleId), max, isHidden, roleId);
     }
 
-    public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag)
+    public static CustomOption CreateMatchMakeTag(int id, bool IsSHROn, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", CustomOptionType type = CustomOptionType.MatchTag, bool withHeader = false, string headerText = null)
     {
-        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, isToggle: true, withHeader: withHeader, headerText: headerText);
     }
 
     // Static behaviour
@@ -289,11 +292,6 @@ public class CustomOption
             {
                 if (option.id <= 0) continue;
                 option.selection = option.defaultSelection;
-                if (option.optionBehaviour is not null and StringOption stringOption)
-                {
-                    stringOption.oldValue = stringOption.Value = option.selection;
-                    stringOption.ValueText.text = option.GetString();
-                }
             }
             CurrentValues = new();
             OptionSaver.WriteNowPreset();
@@ -309,11 +307,6 @@ public class CustomOption
             if (option.id <= 0) continue;
 
             option.selection = Mathf.Clamp(data.TryGetValue((uint)option.id, out byte value) ? value : option.defaultSelection, 0, option.selections.Length - 1);
-            if (option.optionBehaviour is not null and StringOption stringOption)
-            {
-                stringOption.oldValue = stringOption.Value = option.selection;
-                stringOption.ValueText.text = option.GetString();
-            }
         }
         CurrentValues = data;
     }
@@ -410,34 +403,40 @@ public class CustomOption
 
     // Option changes
 
-    public virtual void UpdateSelection(int newSelection)
+    public virtual void SetSelection(int set)
     {
-        selection = Mathf.Clamp((newSelection + selections.Length) % selections.Length, 0, selections.Length - 1);
-        if (optionBehaviour is not null and StringOption stringOption)
-        {
-            stringOption.oldValue = stringOption.Value = selection;
-            stringOption.ValueText.text = GetString();
-
-            if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
-            {
-                if (id == 0)
-                {
-                    SwitchPreset(selection);
-                    ShareOptionSelections();
-                } // Switch presets
-                else if (AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
-                {
-                    CurrentValues[(uint)id] = (byte)selection;
-                    IsValuesUpdated = true;
-                    ShareOptionSelections(this);// Share all selections
-                } // Save selection to config
-                else
-                {
-                    ShareOptionSelections(this);
-                }
-            }
-        }
+        selection = (set + selections.Length) % selections.Length;
+        ShareOption();
     }
+    public virtual void SetSelection(bool set)
+    {
+        selection = set ? 1 : 0;
+        ShareOption();
+    }
+
+    public virtual void SelectionAddition(int addition)
+    {
+        selection = (selection + addition + selections.Length) % selections.Length;
+        ShareOption();
+    }
+
+    public virtual void ShareOption()
+    {
+        if ((AmongUsClient.Instance?.AmHost) != true || !PlayerControl.LocalPlayer) return;
+        if (id == 0)
+        {
+            SwitchPreset(selection);
+            ShareOptionSelections();
+        }
+        else if (AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+        {
+            CurrentValues[(uint)id] = (byte)selection;
+            IsValuesUpdated = true;
+            ShareOptionSelections(this);
+        }
+        else ShareOptionSelections(this);
+    }
+
 }
 public class CustomRoleOption : CustomOption
 {
@@ -492,7 +491,7 @@ public class CustomRoleOption : CustomOption
         {
             try
             {
-                IntroData? intro = IntroData.Intros.Values.FirstOrDefault((_) =>
+                IntroData intro = IntroData.Intros.Values.FirstOrDefault((_) =>
                 {
                     return _.NameKey + "Name" == name;
                 });
@@ -517,17 +516,10 @@ public class CustomRoleOption : CustomOption
         if (!RoleOptions.TryAdd(RoleId, this))
             Logger.Info(RoleId.ToString() + "を追加できんかったー：" + name);
         this.isHidden = isHidden;
-        if (max > 1)
-            countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
+        if (max > 1) countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
     }
 }
-public class GameSettingsScale
-{
-    public static void GameSettingsScalePatch(HudManager __instance)
-    {
-        if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
-    }
-}
+
 public class CustomOptionBlank : CustomOption
 {
     public CustomOptionBlank(CustomOption parent)
@@ -539,6 +531,7 @@ public class CustomOptionBlank : CustomOption
         this.isHidden = true;
         this.children = new List<CustomOption>();
         this.selections = new string[] { "" };
+        this.RoleId = RoleId.DefaultRole;
         options.Add(this);
     }
 
@@ -562,11 +555,20 @@ public class CustomOptionBlank : CustomOption
         return "";
     }
 
-    public override void UpdateSelection(int newSelection)
+    public override void SetSelection(int set)
     {
         return;
     }
 
+    public override void SelectionAddition(int addition)
+    {
+        return;
+    }
+
+    public override void ShareOption()
+    {
+        return;
+    }
 }
 
 [HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
@@ -585,139 +587,6 @@ class RoleOptionsDataGetNumPerGamePatch
     }
 }
 
-[HarmonyPatch(typeof(KeyValueOption), nameof(KeyValueOption.OnEnable))]
-public class KeyValueOptionEnablePatch
-{
-    public static void Postfix(KeyValueOption __instance)
-    {
-        IGameOptions gameOptions = GameManager.Instance.LogicOptions.currentGameOptions;
-        if (__instance.Title == StringNames.GameMapName)
-        {
-            __instance.Selected = gameOptions.MapId;
-        }
-        try
-        {
-            __instance.ValueText.text = __instance.Values[Mathf.Clamp(__instance.Selected, 0, __instance.Values.Count - 1)].Key;
-        }
-        catch { }
-    }
-}
-
-[HarmonyPatch(typeof(StringOption), nameof(StringOption.OnEnable))]
-class StringOptionEnablePatch
-{
-    static bool Prefix(StringOption __instance)
-    {
-        CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-        if (option == null)
-        {
-            RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
-            if (Regulation != null)
-            {
-                __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                __instance.TitleText.text = Regulation.title;
-                __instance.Value = __instance.oldValue = 0;
-                __instance.ValueText.text = RegulationData.Selected == Regulation.id ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
-
-                return false;
-            }
-            return true;
-        }
-
-        __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-        __instance.TitleText.text = option.GetName();
-        __instance.Value = __instance.oldValue = option.selection;
-        __instance.ValueText.text = option.GetString();
-
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(StringOption), nameof(StringOption.Increase))]
-public class StringOptionIncreasePatch
-{
-    public static bool Prefix(StringOption __instance)
-    {
-        CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-        if (option == null)
-        {
-            RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
-            if (Regulation != null)
-            {
-                foreach (var regulation in RegulationData.Regulations)
-                {
-                    if (regulation.optionBehaviour is not null and StringOption stringOption)
-                    {
-                        stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                        stringOption.TitleText.text = regulation.title;
-                        stringOption.oldValue = __instance.Value = 0;
-                        stringOption.ValueText.text = ModTranslation.GetString("optionOff");
-                    }
-                }
-                Select(Regulation.id);
-                __instance.oldValue = __instance.Value = 1;
-                __instance.ValueText.text = ModTranslation.GetString("optionOn");
-                return false;
-            }
-            return true;
-        }
-        option.UpdateSelection(option.selection + 1);
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(StringOption), nameof(StringOption.Decrease))]
-public class StringOptionDecreasePatch
-{
-    public static bool Prefix(StringOption __instance)
-    {
-        CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-        if (option == null)
-        {
-            RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
-            if (Regulation != null)
-            {
-                bool isReset = true;
-                bool IsFirst = true;
-                if (Regulation.optionBehaviour is not null and StringOption stringOptiona)
-                {
-                    if (stringOptiona.Value == 0) return false;
-                }
-                foreach (var regulation in RegulationData.Regulations)
-                {
-                    if (regulation.optionBehaviour is not null and StringOption stringOption)
-                    {
-                        if (stringOption.ValueText.text == ModTranslation.GetString("optionOn"))
-                        {
-                            if (!IsFirst)
-                            {
-                                isReset = false;
-                            }
-                            IsFirst = false;
-                        }
-                    }
-                }
-                __instance.oldValue = __instance.Value = 0;
-                __instance.ValueText.text = ModTranslation.GetString("optionOff");
-                if (isReset)
-                {
-                    Select(0);
-                    if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0)
-                    {
-                        stringOption0.oldValue = __instance.Value = 1;
-                        stringOption0.ValueText.text = ModTranslation.GetString("optionOn");
-                    }
-                }
-                Logger.Info(isReset.ToString());
-                return false;
-            }
-            return true;
-        }
-        option.UpdateSelection(option.selection - 1);
-        return false;
-    }
-}
-
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Awake))]
 public class AmongUsClientOnPlayerJoinedPatch
 {
@@ -727,329 +596,8 @@ public class AmongUsClientOnPlayerJoinedPatch
     }
 }
 
-[HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start))]
-class GameOptionsMenuStartPatch
-{
-    public static void Postfix(GameOptionsMenu __instance)
-    {
-        if (GameObject.Find("SNRSettings") != null)
-        { // Settings setup has already been performed, fixing the title of the tab and returning
-            GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingSuperNewRoles"));
-            return;
-        }
-        if (GameObject.Find("ImpostorSettings") != null)
-        {
-            GameObject.Find("ImpostorSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingImpostor"));
-            return;
-        }
-        if (GameObject.Find("NeutralSettings") != null)
-        {
-            GameObject.Find("NeutralSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingNeutral"));
-            return;
-        }
-        if (GameObject.Find("CrewmateSettings") != null)
-        {
-            GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingCrewmate"));
-            return;
-        }
-        if (GameObject.Find("modifierSettings") != null)
-        {
-            GameObject.Find("modifierSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("modifierSettings"));
-            return;
-        }
-        if (GameObject.Find("matchTagSettings") != null)
-        {
-            GameObject.Find("matchTagSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingMatchTag"));
-            return;
-        }
-        if (GameObject.Find("RegulationSettings") != null)
-        {
-            GameObject.Find("RegulationSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingRegulation"));
-            return;
-        }
-        // Setup TOR tab
-        StringOption template = GameObject.Find("Main Camera/PlayerOptionsMenu(Clone)/Game Settings/GameGroup/SliderInner/KillDistance").GetComponent<StringOption>();
-        Logger.Info($"{template == null}", "nullチェック");
-        if (template == null) return;
-        var gameSettings = GameObject.Find("Main Camera/PlayerOptionsMenu(Clone)/Game Settings/");
-        var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
-
-        var snrSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var snrMenu = snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        snrSettings.name = "SNRSettings";
-        snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "GenericSetting";
-
-        var impostorSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var impostorMenu = impostorSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        impostorSettings.name = "ImpostorSettings";
-        impostorSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "ImpostorSetting";
-
-        var neutralSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var neutralMenu = neutralSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        neutralSettings.name = "NeutralSettings";
-        neutralSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "NeutralSetting";
-
-        var crewmateSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var crewmateMenu = crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        crewmateSettings.name = "CrewmateSettings";
-        crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "CrewmateSetting";
-
-        var modifierSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var modifierMenu = modifierSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        modifierSettings.name = "modifierSettings";
-        modifierSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "modifierSetting";
-
-        var matchTagSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var matchTagMenu = matchTagSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        matchTagSettings.name = "matchTagSettings";
-        matchTagSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "matchTagSetting";
-
-        var RegulationSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-        var RegulationMenu = RegulationSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-        RegulationSettings.name = "RegulationSettings";
-        RegulationSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "RegulationSetting";
-
-        var roleTab = GameObject.Find("RoleTab");
-        var gameTab = GameObject.Find("GameTab");
-
-        var snrTab = UnityEngine.Object.Instantiate(roleTab, roleTab.transform.parent);
-        var snrTabHighlight = snrTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        snrTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
-
-        var impostorTab = UnityEngine.Object.Instantiate(roleTab, snrTab.transform);
-        var impostorTabHighlight = impostorTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        impostorTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Impostor.png", 100f);
-        impostorTab.name = "ImpostorTab";
-
-        var neutralTab = UnityEngine.Object.Instantiate(roleTab, impostorTab.transform);
-        var neutralTabHighlight = neutralTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        neutralTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Neutral.png", 100f);
-        neutralTab.name = "NeutralTab";
-
-        var crewmateTab = UnityEngine.Object.Instantiate(roleTab, neutralTab.transform);
-        var crewmateTabHighlight = crewmateTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
-        crewmateTab.name = "CrewmateTab";
-
-        var modifierTab = UnityEngine.Object.Instantiate(roleTab, crewmateTab.transform);
-        var modifierTabHighlight = modifierTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        modifierTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Modifier.png", 100f);
-        modifierTab.name = "modifierTab";
-
-        var matchTagTab = UnityEngine.Object.Instantiate(roleTab, modifierTab.transform);
-        var matchTagTabHighlight = matchTagTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        matchTagTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
-        matchTagTab.name = "matchTagTab";
-
-        var RegulationTab = UnityEngine.Object.Instantiate(roleTab, matchTagTab.transform);
-        var RegulationTabHighlight = RegulationTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-        RegulationTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
-        RegulationTab.name = "RegulationTab";
-
-        // Position of Tab Icons
-        gameTab.transform.position += Vector3.left * 3.5f;
-        roleTab.transform.position += Vector3.left * 3.75f;
-        snrTab.transform.position += Vector3.left * 2.75f;
-        impostorTab.transform.localPosition = Vector3.right * 0.95f;
-        neutralTab.transform.localPosition = Vector3.right * 0.825f;
-        crewmateTab.transform.localPosition = Vector3.right * 0.825f;
-        modifierTab.transform.localPosition = Vector3.right * 0.825f;
-        matchTagTab.transform.localPosition = Vector3.right * 0.95f;
-        RegulationTab.transform.localPosition = Vector3.right * 0.825f;
-
-        var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, modifierTab, matchTagTab, RegulationTab };
-        for (int i = 0; i < tabs.Length; i++)
-        {
-            var button = tabs[i].GetComponentInChildren<PassiveButton>();
-            int copiedIndex = i;
-            button.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-            button.OnClick.AddListener((UnityAction)(() =>
-            {
-                gameSettingMenu.RegularGameSettings.SetActive(false);
-                gameSettingMenu.RolesSettings.gameObject.SetActive(false);
-                gameSettingMenu.HideNSeekSettings.gameObject.SetActive(false);
-                snrSettings.gameObject.SetActive(false);
-                impostorSettings.gameObject.SetActive(false);
-                neutralSettings.gameObject.SetActive(false);
-                crewmateSettings.gameObject.SetActive(false);
-                modifierSettings.gameObject.SetActive(false);
-                matchTagSettings.gameObject.SetActive(false);
-                RegulationSettings.gameObject.SetActive(false);
-                gameSettingMenu.GameSettingsHightlight.enabled = false;
-                gameSettingMenu.RolesSettingsHightlight.enabled = false;
-                snrTabHighlight.enabled = false;
-                impostorTabHighlight.enabled = false;
-                neutralTabHighlight.enabled = false;
-                crewmateTabHighlight.enabled = false;
-                modifierTabHighlight.enabled = false;
-                matchTagTabHighlight.enabled = false;
-                RegulationTabHighlight.enabled = false;
-                if (copiedIndex == 0)
-                {
-                    if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek)
-                        gameSettingMenu.HideNSeekSettings.gameObject.SetActive(true);
-                    else
-                        gameSettingMenu.RegularGameSettings.SetActive(true);
-                    gameSettingMenu.GameSettingsHightlight.enabled = true;
-                }
-                else if (copiedIndex == 1)
-                {
-                    gameSettingMenu.RolesSettings.gameObject.SetActive(true);
-                    gameSettingMenu.RolesSettingsHightlight.enabled = true;
-                }
-                else if (copiedIndex == 2)
-                {
-                    snrSettings.gameObject.SetActive(true);
-                    snrTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 3)
-                {
-                    impostorSettings.gameObject.SetActive(true);
-                    impostorTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 4)
-                {
-                    neutralSettings.gameObject.SetActive(true);
-                    neutralTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 5)
-                {
-                    crewmateSettings.gameObject.SetActive(true);
-                    crewmateTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 6)
-                {
-                    modifierSettings.gameObject.SetActive(true);
-                    modifierTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 7)
-                {
-                    matchTagSettings.gameObject.SetActive(true);
-                    matchTagTabHighlight.enabled = true;
-                }
-                else if (copiedIndex == 8)
-                {
-                    RegulationSettings.gameObject.SetActive(true);
-                    RegulationTabHighlight.enabled = true;
-                }
-            }));
-        }
-
-        foreach (OptionBehaviour option in snrMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in impostorMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in neutralMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in crewmateMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in modifierMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in matchTagMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        foreach (OptionBehaviour option in RegulationMenu.GetComponentsInChildren<OptionBehaviour>())
-            UnityEngine.Object.Destroy(option.gameObject);
-        List<OptionBehaviour> snrOptions = new();
-        List<OptionBehaviour> impostorOptions = new();
-        List<OptionBehaviour> neutralOptions = new();
-        List<OptionBehaviour> crewmateOptions = new();
-        List<OptionBehaviour> modifierOptions = new();
-        List<OptionBehaviour> matchTagOptions = new();
-
-        List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, modifierMenu.transform, matchTagMenu.transform, RegulationMenu.transform };
-        List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions, modifierOptions, matchTagOptions };
-
-        for (int i = 0; i < CustomOption.options.Count; i++)
-        {
-            CustomOption option = CustomOption.options[i];
-            if (option.optionBehaviour == null)
-            {
-                StringOption stringOption = UnityEngine.Object.Instantiate(template, menus[(int)option.type]);
-                optionBehaviours[(int)option.type].Add(stringOption);
-                stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                stringOption.TitleText.text = option.name;
-                stringOption.Value = stringOption.oldValue = option.selection;
-                stringOption.ValueText.text = option.selections[option.selection].ToString();
-
-                option.optionBehaviour = stringOption;
-            }
-            option.optionBehaviour.gameObject.SetActive(true);
-        }
-        Logger.Info("SNROption - matchTagOption通過");
-
-        foreach (var Regulation in CustomRegulation.RegulationData.Regulations)
-        {
-            if (Regulation.optionBehaviour == null)
-            {
-                StringOption stringOption = UnityEngine.Object.Instantiate(template, RegulationMenu.transform);
-                stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                stringOption.TitleText.text = Regulation.title;
-                stringOption.Value = stringOption.oldValue = 0;
-                stringOption.ValueText.text = ModTranslation.GetString("optionOff");
-
-                Regulation.optionBehaviour = stringOption;
-            }
-            Regulation.optionBehaviour.gameObject.SetActive(true);
-        }
-        Logger.Info("RegulationOption通過");
-
-        snrMenu.Children = snrOptions.ToArray();
-        snrSettings.gameObject.SetActive(false);
-
-        impostorMenu.Children = impostorOptions.ToArray();
-        impostorSettings.gameObject.SetActive(false);
-
-        neutralMenu.Children = neutralOptions.ToArray();
-        neutralSettings.gameObject.SetActive(false);
-
-        crewmateMenu.Children = crewmateOptions.ToArray();
-        crewmateSettings.gameObject.SetActive(false);
-
-        modifierMenu.Children = modifierOptions.ToArray();
-        modifierSettings.gameObject.SetActive(false);
-
-        matchTagSettings.gameObject.SetActive(false);
-
-        RegulationSettings.gameObject.SetActive(false);
-
-        var numImpostorsOption = __instance.Children.FirstOrDefault(x => x.name == "NumImpostors").TryCast<NumberOption>();
-        if (numImpostorsOption != null) numImpostorsOption.ValidRange = new FloatRange(0f, 15f);
-
-        var PlayerSpeedModOption = __instance.Children.FirstOrDefault(x => x.name == "PlayerSpeed").TryCast<NumberOption>();
-        if (PlayerSpeedModOption != null) PlayerSpeedModOption.ValidRange = new FloatRange(-5.5f, 5.5f);
-
-        var killCoolOption = __instance.Children.FirstOrDefault(x => x.name == "KillCooldown").TryCast<NumberOption>();
-        if (killCoolOption != null) killCoolOption.ValidRange = new FloatRange(2.5f, 60f);
-
-        var commonTasksOption = __instance.Children.FirstOrDefault(x => x.name == "NumCommonTasks").TryCast<NumberOption>();
-        if (commonTasksOption != null) commonTasksOption.ValidRange = new FloatRange(0f, 4f);
-
-        var shortTasksOption = __instance.Children.FirstOrDefault(x => x.name == "NumShortTasks").TryCast<NumberOption>();
-        if (shortTasksOption != null) shortTasksOption.ValidRange = new FloatRange(0f, 23f);
-
-        var longTasksOption = __instance.Children.FirstOrDefault(x => x.name == "NumLongTasks").TryCast<NumberOption>();
-        if (longTasksOption != null) longTasksOption.ValidRange = new FloatRange(0f, 15f);
-    }
-}
-
-[HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Update))]
 static class GameOptionsMenuUpdatePatch
 {
-    private static float timer = 1f;
-    public static CustomOptionType GetCustomOptionType(string name)
-    {
-        return name switch
-        {
-            "GenericSetting" => CustomOptionType.Generic,
-            "ImpostorSetting" => CustomOptionType.Impostor,
-            "NeutralSetting" => CustomOptionType.Neutral,
-            "CrewmateSetting" => CustomOptionType.Crewmate,
-            "modifierSetting" => CustomOptionType.Modifier,
-            "matchTagSetting" => CustomOptionType.MatchTag,
-            _ => CustomOptionType.Crewmate,
-        };
-    }
-
     /// <summary>現在, 封印処理のある設定を有しているか ( 此処をtrueにする事で封印処理が実行される )</summary>
     public const bool HasSealingOption = false;
 
@@ -1057,7 +605,7 @@ static class GameOptionsMenuUpdatePatch
     {
         return option.isHidden
             || (!option.isSHROn && currentModeId == ModeId.SuperHostRoles) // SHRモード時, SHR未対応の設定を隠す処理。
-            || HasSealingOption && IsSealingDatetimeControl(option) // 解放条件が時間に依存する設定の 封印及び開放処理
+            || (HasSealingOption && IsSealingDatetimeControl(option)) // 解放条件が時間に依存する設定の 封印及び開放処理
             || (ModeHandler.EnableModeSealing && (option == ModeHandler.ModeSetting || option == ModeHandler.ThisModeSetting)); // モード設定封印処理
     }
 
@@ -1075,130 +623,6 @@ static class GameOptionsMenuUpdatePatch
         if (optionInfo != null) { isHidden = optionInfo.IsHidden; }
 
         return isHidden;
-    }
-
-    public static void Postfix(GameOptionsMenu __instance)
-    {
-        var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
-        if (gameSettingMenu.RegularGameSettings.active || gameSettingMenu.RolesSettings.gameObject.active || gameSettingMenu.HideNSeekSettings.gameObject.active) return;
-
-        timer += Time.deltaTime;
-        if (timer < 0.1f) return;
-        timer = 0f;
-
-        float numItems = __instance.Children.Length;
-
-        float offset = 2.75f;
-        if (__instance.name == "RegulationSetting")
-        {
-            foreach (var Regulation in RegulationData.Regulations)
-            {
-                if (Regulation?.optionBehaviour != null && Regulation.optionBehaviour.gameObject != null)
-                {
-                    if (Regulation.optionBehaviour is not null and StringOption stringOption)
-                    {
-                        stringOption.ValueText.text = Regulation.id == RegulationData.Selected ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
-                    }
-
-                    bool enabled = true;
-
-                    Regulation.optionBehaviour.gameObject.SetActive(enabled);
-                    if (enabled)
-                    {
-                        offset -= false ? 0.75f : 0.5f;
-                        Regulation.optionBehaviour.transform.localPosition = new Vector3(Regulation.optionBehaviour.transform.localPosition.x, offset, Regulation.optionBehaviour.transform.localPosition.z);
-                    }
-                    else
-                    {
-                        numItems--;
-                    }
-                }
-            }
-            __instance.GetComponentInParent<Scroller>().ContentYBounds.max = -4.0f + numItems * 0.5f;
-            return;
-        }
-
-        CustomOptionType type = GetCustomOptionType(__instance.name);
-        ModeId currentMode = ModeHandler.GetMode(false);
-
-        foreach (CustomOption option in CustomOption.options)
-        {
-            if (option.type != type) continue;
-            if (option?.optionBehaviour != null && option.optionBehaviour.gameObject != null)
-            {
-                bool enabled = true;
-                var parent = option.parent;
-
-                if (AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool())
-                    enabled = false;
-                else if (option.openSelection != -1 && option.openSelection != parent?.selection)
-                    enabled = false;
-                else if (option.HasCanShowAction && !option.CanShowByFunc)
-                    enabled = false;
-                else if (option.IsHidden(currentMode))
-                    enabled = false;
-
-                while (parent != null && enabled)
-                {
-                    enabled = parent.Enabled;
-                    parent = parent.parent;
-                }
-
-                option.optionBehaviour.gameObject.SetActive(enabled);
-                if (enabled)
-                {
-                    offset -= option.isHeader ? 0.75f : 0.5f;
-                    option.optionBehaviour.transform.localPosition = new Vector3(option.optionBehaviour.transform.localPosition.x, offset, option.optionBehaviour.transform.localPosition.z);
-
-                    if (option.isHeader)
-                    {
-                        numItems += 0.5f;
-                    }
-                }
-                else
-                {
-                    numItems--;
-                }
-            }
-        }
-        __instance.GetComponentInParent<Scroller>().ContentYBounds.max = -4.0f + numItems * 0.5f;
-    }
-}
-
-[HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
-class GameSettingMenuStartPatch
-{
-    public static void Prefix(GameSettingMenu __instance)
-    {
-        __instance.HideForOnline = new Transform[] { };
-        __instance.Tabs.SetActive(true);
-    }
-
-    public static void Postfix(GameSettingMenu __instance)
-    {
-        // Setup mapNameTransform
-        foreach (Transform i in __instance.AllItems.ToList())
-        {
-            float num = -0.5f;
-            if (i.name.Equals("NumImpostors", StringComparison.OrdinalIgnoreCase)) num = -0.5f;
-            if (i.name.Equals("ResetToDefault", StringComparison.OrdinalIgnoreCase)) num = 0f;
-            i.position += new Vector3(0, num, 0);
-        }
-        __instance.Scroller.ContentYBounds.max += 0.5F;
-    }
-}
-
-[HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Close))]
-public static class GameSettingMenuClosePatch
-{
-    public static void Postfix()
-    {
-        if (CustomOption.IsValuesUpdated)
-        {
-            OptionSaver.WriteNowOptions();
-            CustomOption.IsValuesUpdated = false;
-        }
-        GameOptionsDataPatch.UpdateData(true);
     }
 }
 
@@ -1288,18 +712,17 @@ class GameOptionsDataPatch
         None,
         GetTaskTriggerAbilityTaskNumber,
     }
-
     private static string DefaultResult = "";
     private static List<string> ResultPages = null;
-    public static void UpdateData(bool doUpdate = false)
+    public static string ResultData()
     {
-        List<string> pages = new();
-
         bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool();
-        if (hideSettings)
+        if (hideSettings) return GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count);
+
+        List<string> pages = new()
         {
-            return;
-        }
+            GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count)
+        };
 
         StringBuilder entry = new();
         List<string> entries = new()
@@ -1442,76 +865,12 @@ class GameOptionsDataPatch
             .Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" (1/{numPages})";
 
         SuperNewRolesPlugin.optionsMaxPage = numPages - 1;
-
-        if (doUpdate) LobbyBehaviourFixedUpdatePatch.setHudText(SuperNewRolesPlugin.optionsMaxPage);
-    }
-
-    public static string getHudString(int pagenum)
-    {
-        if (ResultPages == null) UpdateData();
-        if (pagenum <= 0) return DefaultResult;
-        if (pagenum > ResultPages.Count) return "";
-        return ResultPages[pagenum - 1];
+        int counter = SuperNewRolesPlugin.optionsPage %= numPages;
+        return pages[counter].Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
     }
 }
 
-[HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
-public static class LobbyBehaviourStartPatch
-{
-    public static void Postfix()
-    {
-        GameOptionsDataPatch.UpdateData();
-        DestroyableSingleton<HudManager>.Instance.GameSettings.enableAutoSizing = false;
-    }
-}
-
-[HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.FixedUpdate))]
-public static class LobbyBehaviourFixedUpdatePatch
-{
-    //このフラグ処理がないとロビー入室時にpreferredWidth・Heightが変な値になる
-    private static bool first = false;
-    public static bool Prefix()
-    {
-        if (first)
-        {
-            setHudText(SuperNewRolesPlugin.optionsPage);
-            first = false;
-        }
-        if (!DestroyableSingleton<HudManager>.Instance.GameSettings.gameObject.active)
-        {
-            DestroyableSingleton<HudManager>.Instance.GameSettings.SetText("");
-            DestroyableSingleton<HudManager>.Instance.GameSettings.gameObject.SetActive(true);
-            first = true;
-        }
-        return false;
-    }
-    public static void HudUpdate(HudManager __instance)
-    {
-        if (!__instance.GameSettings.gameObject.active)
-        {
-            setHudText(SuperNewRolesPlugin.optionsPage);
-            __instance.GameSettings.gameObject.SetActive(true);
-        }
-    }
-    public static void setHudText(int page)
-    {
-        TMPro.TextMeshPro gameSettings = DestroyableSingleton<HudManager>.Instance.GameSettings;
-        gameSettings.SetText(GameOptionsDataPatch.getHudString(page));
-
-        float scaleX = Mathf.Clamp(gameSettings.rectTransform.rect.width / gameSettings.GetPreferredWidth(), 0f, 1f);
-        float scaleY = Mathf.Clamp(gameSettings.rectTransform.rect.height / gameSettings.GetPreferredHeight(), 0f, 1f);
-        if (scaleX < scaleY)
-        {
-            gameSettings.rectTransform.localScale = new Vector3(scaleX, scaleX, scaleX);
-        }
-        else
-        {
-            gameSettings.rectTransform.localScale = new Vector3(scaleY, scaleY, scaleY);
-        }
-    }
-}
-
-[HarmonyPatch(typeof(IGameOptionsExtensions), "ToHudString")]
+[HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.ToHudString))]
 public static class IGameOptionsExtensionsToHudStringPatch
 {
     public static void Prefix(ref int numPlayers)
@@ -1520,7 +879,7 @@ public static class IGameOptionsExtensionsToHudStringPatch
     }
 }
 
-[HarmonyPatch(typeof(IGameOptionsExtensions), "GetAdjustedNumImpostors")]
+[HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
 public static class GameOptionsGetAdjustedNumImpostorsPatch
 {
     public static bool Prefix(ref int __result)
@@ -1537,17 +896,91 @@ public static class GameOptionsNextPagePatch
     {
         if (Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7))
         {
-            // 試合開始前はTabキーが押されたら常に, 1ページ単位でページを送る
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
-                SuperNewRolesPlugin.optionsPage++;
-            // 試合中はRegulationのoverlayを表示している時のみ, 2ページ単位でページを送る
-            else if (CustomOverlays.nowPattern == CustomOverlays.CustomOverlayPattern.Regulation) SuperNewRolesPlugin.optionsPage += 2;
+            // Regulationのoverlayを表示している時, 2ページ単位でページを送る
+            if (CustomOverlays.nowPattern == CustomOverlays.CustomOverlayPattern.Regulation) SuperNewRolesPlugin.optionsPage += 2;
 
             // ページが最大ページを超えたら, ページを0に戻す
             if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage)
                 SuperNewRolesPlugin.optionsPage = 0;
+        }
+    }
+}
 
-            LobbyBehaviourFixedUpdatePatch.setHudText(SuperNewRolesPlugin.optionsPage);
+[HarmonyPatch(typeof(GameSettingMenu))]
+public static class GameSettingMenuPatch
+{
+    public static ModSettingsMenu ModSettingsMenu;
+    public static PassiveButton ModSttingsButton;
+
+    [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPrefix]
+    public static void StartPrefix(GameSettingMenu __instance) => __instance.GameSettingsTab.HideForOnline = new Transform[] { };
+
+    [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPostfix]
+    public static void Postfix(GameSettingMenu __instance)
+    {
+        __instance.MenuDescriptionText.transform.parent.gameObject.SetActive(false);
+        __instance.GamePresetsButton.transform.position += new Vector3(0, 0.637f);
+        __instance.GameSettingsButton.transform.position += new Vector3(0, 0.637f);
+        __instance.RoleSettingsButton.transform.position += new Vector3(0, 0.637f);
+        __instance.GameSettingsTab.scrollBar.ContentYBounds.max += 0.5f;
+
+        ModSettingsMenu = new GameObject("MOD TAB").AddComponent<ModSettingsMenu>();
+        ModSettingsMenu.transform.SetParent(__instance.RoleSettingsTab.transform.parent);
+        ModSettingsMenu.transform.localPosition = new(0f, 0.16f, -4f);
+        ModSettingsMenu.gameObject.layer = 5;
+        ModSettingsMenu.gameObject.SetActive(false);
+
+        GameObject mod_settings_button = Object.Instantiate(__instance.RoleSettingsButton.gameObject, __instance.RoleSettingsButton.transform.parent);
+        mod_settings_button.name = "ModSttingsButton";
+        mod_settings_button.transform.position -= new Vector3(0, 0.637f);
+        new LateTask(() => mod_settings_button.transform.Find("FontPlacer/Text_TMP").GetComponent<TextMeshPro>().text = ModTranslation.GetString("ModSttingsButtonText"), 0f, "GameSettingMenu");
+        ModSttingsButton = mod_settings_button.GetComponent<PassiveButton>();
+        (ModSttingsButton.OnClick = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: false); });
+        (ModSttingsButton.OnMouseOver = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: true); });
+    }
+
+    [HarmonyPatch(nameof(GameSettingMenu.Close)), HarmonyPostfix]
+    public static void ClosePostfix()
+    {
+        if (CustomOption.IsValuesUpdated)
+        {
+            OptionSaver.WriteNowOptions();
+            CustomOption.IsValuesUpdated = false;
+        }
+    }
+
+    [HarmonyPatch(nameof(GameSettingMenu.ChangeTab)), HarmonyPostfix]
+    public static void ChangeTabPostfix(GameSettingMenu __instance, int tabNum, bool previewOnly)
+    {
+        if ((previewOnly && Controller.currentTouchType == Controller.TouchType.Joystick) || !previewOnly)
+        {
+            ModSettingsMenu?.gameObject.SetActive(false);
+            ModSttingsButton?.SelectButton(false);
+
+            switch (tabNum)
+            {
+                case 1:
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameNumImpostors).Cast<NumberOption>().ValidRange = new(0f, 15f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameKillCooldown).Cast<NumberOption>().ValidRange = new(2.5f, 60f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GamePlayerSpeed).Cast<NumberOption>().ValidRange = new(-5f, 5f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameCommonTasks).Cast<NumberOption>().ValidRange = new(0f, 12f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameLongTasks).Cast<NumberOption>().ValidRange = new(0f, 69f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameShortTasks).Cast<NumberOption>().ValidRange = new(0f, 45f);
+                    break;
+                case 3:
+                    ModSettingsMenu.gameObject.SetActive(true);
+                    break;
+            }
+        }
+        if (!previewOnly)
+        {
+            switch (tabNum)
+            {
+                case 3:
+                    ModSettingsMenu.OpenMenu();
+                    ModSttingsButton.SelectButton(true);
+                    break;
+            }
         }
     }
 }

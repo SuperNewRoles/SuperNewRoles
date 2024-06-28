@@ -106,7 +106,7 @@ public class IntroPatch
                 int index = -1;
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    GameData.PlayerInfo data = p.Data;
+                    NetworkedPlayerInfo data = p.Data;
                     Logger.Info($"生成:{p.Data.PlayerName}");
                     PoolablePlayer player = Object.Instantiate(__instance.PlayerPrefab, FastDestroyableSingleton<HudManager>.Instance.transform);
                     playerPrefab = __instance.PlayerPrefab;

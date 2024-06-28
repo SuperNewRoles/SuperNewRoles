@@ -8,7 +8,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 
 class ReportDeadBody
 {
-    public static bool ReportDeadBodyPatch(PlayerControl __instance, GameData.PlayerInfo target)
+    public static bool ReportDeadBodyPatch(PlayerControl __instance, NetworkedPlayerInfo target)
     {
         if (!AmongUsClient.Instance.AmHost) return true;
         if (RoleClass.Assassin.TriggerPlayer != null) return false;

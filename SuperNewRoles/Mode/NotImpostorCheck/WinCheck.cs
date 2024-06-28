@@ -61,7 +61,7 @@ class WinCheck
     {
         if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive)
         {
-            var endReason = TempData.LastDeathReason switch
+            var endReason = GameData.LastDeathReason switch
             {
                 DeathReason.Exile => GameOverReason.ImpostorByVote,
                 DeathReason.Kill => GameOverReason.ImpostorByKill,
@@ -104,7 +104,7 @@ class WinCheck
 
             for (int i = 0; i < GameData.Instance.PlayerCount; i++)
             {
-                GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
+                NetworkedPlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                 if (!playerInfo.Disconnected)
                 {
                     if (playerInfo.Object.IsAlive())

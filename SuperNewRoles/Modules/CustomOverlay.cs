@@ -306,10 +306,10 @@ public class CustomOverlays
             else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay(CustomOverlayPattern.ActivateRoles); // 「現在配役されている役職」を表示
             else if (Input.GetKeyDown(KeyCode.T)) YoggleInfoOverlay(CustomOverlayPattern.MatchTag); // 「現在設定されているタグ」を表示
             else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay(nowPattern, true); // 全てのoverlayの文章の更新 & GとIはページ送り
+            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay(CustomOverlayPattern.Regulation); // レギュレーション(バニラ設定 & SNRの設定)を表示
 
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay(CustomOverlayPattern.MyRole); // 自分の役職の説明を表示
-            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay(CustomOverlayPattern.Regulation); // レギュレーション(バニラ設定 & SNRの設定)を表示
         }
     }
 

@@ -54,55 +54,69 @@ public static class CredentialsPatch
             //            version.transform.SetParent(amongUsLogo.transform);
         }
     }
-    [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
-    private static class PingTrackerPatch
+
+    [HarmonyPatch(typeof(HudManager))]
+    public static class HudManagerPatch
     {
-        static void Postfix(PingTracker __instance)
+        public static GameObject TextObject;
+
+        [HarmonyPatch(nameof(HudManager.Start)), HarmonyPostfix]
+        public static void StartPostfix(HudManager __instance)
         {
-            __instance.text.alignment = TextAlignmentOptions.TopRight;
+            TextObject = GameObject.Instantiate(__instance.roomTracker.gameObject, __instance.transform);
+            TextObject.name = "Version Text";
+            TextObject.layer = 5;
+            GameObject.Destroy(TextObject.GetComponent<RoomTracker>());
+            AspectPosition position = TextObject.AddComponent<AspectPosition>();
+            position.Alignment = AspectPosition.EdgeAlignments.LeftTop;
+            position.DistanceFromEdge = new(1.85f, 0.35f);
+            position.parentCam = Camera.main;
+            position.updateAlways = true;
+            position.useGUILayout = true;
+            TextMeshPro text = TextObject.GetComponent<TextMeshPro>();
+            text.fontSizeMax = 2;
+            text.fontSizeMin = 2;
+            text.alignment = TextAlignmentOptions.TopLeft;
+            text.autoSizeTextContainer = true;
+            text.enableWordWrapping = false;
+        }
+
+        [HarmonyPatch(nameof(HudManager.Update)), HarmonyPostfix]
+        public static void UpdatePostfix()
+        {
+            AspectPosition position = TextObject.GetComponent<AspectPosition>();
+            TextMeshPro text = TextObject.GetComponent<TextMeshPro>();
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
-                __instance.text.text = $"{baseCredentials}\n{__instance.text.text}";
+                text.text = $"{baseCredentials}";
                 try
                 {
-                    if (ModHelpers.IsDebugMode())
-                    {
-                        __instance.text.text += "\n" + ModTranslation.GetString("DebugModeOn");
-                    }
+                    if (ModHelpers.IsDebugMode()) text.text += $"\n{ModTranslation.GetString("DebugModeOn")}";
                     if (!ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.HideAndSeek))
-                    {
-                        __instance.text.text += "\n" + ModTranslation.GetString("SettingMode") + ":" + ModeHandler.GetThisModeIntro();
-                    }
+                        text.text += $"\n{ModTranslation.GetString("SettingMode")}:{ModeHandler.GetThisModeIntro()}";
                 }
                 catch { }
                 //ブランチ名表示
                 if (SuperNewRolesPlugin.IsBeta)//masterビルド以外の時
                 {
                     //改行+Branch名+コミット番号
-                    __instance.text.text += "\n" + $"{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})";
+                    text.text += $"\n{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})";
                 }
-                __instance.transform.localPosition = CachedPlayer.LocalPlayer.Data.IsDead
-                    ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
-                    : new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
 
-                float xAspectPosition = !DestroyableSingleton<ChatController>.Instance.chatButton.activeInHierarchy ? 1.2f : 1.79f; // チャットボタンが表示されているなら左にずらす
-
-                __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(xAspectPosition, 0.1f, 0.5f);
+                position.Alignment = AspectPosition.EdgeAlignments.RightTop;
+                position.DistanceFromEdge = new(4.2f, 0.35f);
+                text.alignment = TextAlignmentOptions.TopRight;
             }
             else
             {
-                __instance.text.text = $"{baseCredentials}\n{ModTranslation.GetString("creditsFull")}\n{__instance.text.text}";
-                __instance.transform.localPosition = new Vector3(4f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
+                text.text = $"{baseCredentials}\n{ModTranslation.GetString("creditsFull")}";
+
+                position.Alignment = AspectPosition.EdgeAlignments.LeftTop;
+                position.DistanceFromEdge = new(1.85f, 0.35f);
+                text.alignment = TextAlignmentOptions.TopLeft;
             }
-            /*
-            if (CustomHats.HatManagerPatch.IsLoadingnow)
-            {
-                __instance.text.text += $"\n{ModTranslation.GetString("LoadHat")}";
-            }
-            */
         }
     }
-    public static GenericPopup popup;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public static class LogoPatch

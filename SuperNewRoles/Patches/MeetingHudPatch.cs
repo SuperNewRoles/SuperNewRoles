@@ -86,7 +86,7 @@ class CastVotePatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.RpcVotingComplete))]
 class RpcVotingComplete
 {
-    public static void Postfix(MeetingHud __instance, [HarmonyArgument(0)] Il2CppStructArray<VoterState> states, [HarmonyArgument(1)] ref GameData.PlayerInfo exiled, [HarmonyArgument(2)] bool tie)
+    public static void Postfix(MeetingHud __instance, [HarmonyArgument(0)] Il2CppStructArray<VoterState> states, [HarmonyArgument(1)] ref NetworkedPlayerInfo exiled, [HarmonyArgument(2)] bool tie)
     {
         if (AmongUsClient.Instance.AmHost) ReplayActionVotingComplete.Create(states, exiled is null ? (byte)255 : exiled.PlayerId, tie);
     }
@@ -94,7 +94,7 @@ class RpcVotingComplete
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
 class VotingComplete
 {
-    public static void Prefix(MeetingHud __instance, [HarmonyArgument(0)] Il2CppStructArray<VoterState> states, [HarmonyArgument(1)] ref GameData.PlayerInfo exiled, [HarmonyArgument(2)] bool tie)
+    public static void Prefix(MeetingHud __instance, [HarmonyArgument(0)] Il2CppStructArray<VoterState> states, [HarmonyArgument(1)] ref NetworkedPlayerInfo exiled, [HarmonyArgument(2)] bool tie)
     {
         if (exiled != null && exiled.Object.IsBot() && RoleClass.Assassin.TriggerPlayer == null && Main.RealExiled == null)
         {
@@ -110,7 +110,7 @@ class VotingComplete
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
 class VotingComplatePatch
 {
-    public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled, bool tie)
+    public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, NetworkedPlayerInfo exiled, bool tie)
     {
         new GameHistoryManager.MeetingHistory(states, exiled);
     }
@@ -145,7 +145,7 @@ class CheckForEndVotingPatch
                     else if (ps.TargetPlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId && ps.DidVote)
                     {
                         VoterState[] statesdetective;
-                        GameData.PlayerInfo exiledPlayerdetective = CachedPlayer.LocalPlayer.Data;
+                        NetworkedPlayerInfo exiledPlayerdetective = CachedPlayer.LocalPlayer.Data;
                         bool tiedetective = false;
 
                         List<VoterState> statesListdetective = new();
@@ -200,7 +200,7 @@ class CheckForEndVotingPatch
                 SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd + "、" + voteFor);
                 if (isVoteEnd)
                 {
-                    //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
+                    //NetworkedPlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
                     Il2CppStructArray<MeetingHud.VoterState> array =
                         new(
                             __instance.playerStates.Length);
@@ -217,8 +217,8 @@ class CheckForEndVotingPatch
                             VotedForId = playerVoteArea.VotedFor
                         };
                     }
-                    GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
-                    GameData.PlayerInfo exileplayer = null;
+                    NetworkedPlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
+                    NetworkedPlayerInfo exileplayer = null;
                     if (target != null && target.Object.PlayerId != RoleClass.Assassin.TriggerPlayer.PlayerId && !target.Object.IsBot())
                     {
                         var outfit = target.DefaultOutfit;
@@ -276,7 +276,7 @@ class CheckForEndVotingPatch
                 SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd + "、" + voteFor);
                 if (isVoteEnd)
                 {
-                    //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
+                    //NetworkedPlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
                     Il2CppStructArray<MeetingHud.VoterState> array =
                         new(
                             __instance.playerStates.Length);
@@ -293,8 +293,8 @@ class CheckForEndVotingPatch
                             VotedForId = playerVoteArea.VotedFor
                         };
                     }
-                    GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
-                    GameData.PlayerInfo exileplayer = null;
+                    NetworkedPlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
+                    NetworkedPlayerInfo exileplayer = null;
                     if (target != null && target.Object.PlayerId != RoleClass.Revolutionist.MeetingTrigger.PlayerId && !target.Object.IsBot())
                     {
                         var outfit = target.DefaultOutfit;
@@ -315,7 +315,7 @@ class CheckForEndVotingPatch
                 }
             }
             VoterState[] states;
-            GameData.PlayerInfo exiledPlayer = CachedPlayer.LocalPlayer.Data;
+            NetworkedPlayerInfo exiledPlayer = CachedPlayer.LocalPlayer.Data;
             bool tie = false;
 
             List<VoterState> statesList = new();
@@ -658,7 +658,7 @@ class MeetingHudUpdateButtonsPatch
             for (int i = 0; i < __instance.playerStates.Length; i++)
             {
                 PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                GameData.PlayerInfo PlayerById = GameData.Instance.GetPlayerById(
+                NetworkedPlayerInfo PlayerById = GameData.Instance.GetPlayerById(
                     playerVoteArea.TargetPlayerId);
                 if (PlayerById == null)
                 {
@@ -733,7 +733,7 @@ public static class MeetingHudPopulateVotesPatch
             int num2 = 0;
             foreach (VoterState voterState in states)
             {
-                GameData.PlayerInfo playerById = GameData.Instance.GetPlayerById(voterState.VoterId);
+                NetworkedPlayerInfo playerById = GameData.Instance.GetPlayerById(voterState.VoterId);
                 if (playerById == null)
                 {
                     __instance.logger.Error(string.Format("Couldn't find player info for voter: {0}", voterState.VoterId), null);
