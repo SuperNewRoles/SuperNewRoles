@@ -50,7 +50,7 @@ public class CustomPlate
                         displayOrder = 99,
                         ChipOffset = new Vector2(0f, 0.2f),
                         Free = true,
-                        SpritePreview = tpvd.Image
+                        // SpritePreview = tpvd.Image
                     };
                     //CustomPlates.Add(plate);
                     //AllPlates.Add(plate);
