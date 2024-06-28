@@ -29,6 +29,7 @@ public static class ConfigRoles
     public static ConfigEntry<bool> IsLightAndDarker { get; set; }
     public static ConfigEntry<bool> IsViewd20240618ServerInfo { get; set; }
     public static ConfigEntry<bool> _isCPUProcessorAffinity { get; set; }
+    public static ConfigEntry<ulong> _ProcessorAffinityMask { get; set; }
     //リプレイ
     public static ConfigEntry<bool> ReplayEnable { get; set; }
     public static ConfigEntry<float> ReplayQualityTime { get; set; }
@@ -78,6 +79,7 @@ public static class ConfigRoles
         IsUpdate.Value = false;
         IsViewd20240618ServerInfo = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IIsViewd20240618ServerInfo", false);
         _isCPUProcessorAffinity = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "CPUProcessorAffinity", true);
+        _ProcessorAffinityMask = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "ProcessorAffinityMask", (ulong)3);
         //ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;
         RegionMenuOpenPatch.defaultRegions = ServerManager.DefaultRegions;
         RegionMenuOpenPatch.UpdateRegions();
