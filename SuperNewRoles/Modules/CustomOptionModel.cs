@@ -712,17 +712,18 @@ class GameOptionsDataPatch
         None,
         GetTaskTriggerAbilityTaskNumber,
     }
-    private static string DefaultResult = "";
     private static List<string> ResultPages = null;
-    public static string ResultData()
+    public static void UpdateData()
     {
         bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool();
-        if (hideSettings) return GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count);
+        if (hideSettings) {
+            ResultPages = new()
+            {
+                GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count)
+            };
+        }
 
-        List<string> pages = new()
-        {
-            GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count)
-        };
+        List<string> pages = new();
 
         StringBuilder entry = new();
         List<string> entries = new()
@@ -824,9 +825,10 @@ class GameOptionsDataPatch
                     entry.AppendLine(OptionToString(option));
                 }
                 addChildren(option, ref entry, modeId, !GameOptionsMenuUpdatePatch.IsHidden(option, modeId));
-                if (entry.ToString().Trim('\n', '\r') is not "\r" and not "")
+                string line = entry.ToString().Trim('\r', '\n');
+                if (line is not "\r" and not "")
                 {
-                    entries.Add(entry.ToString().Trim('\n', '\r'));
+                    entries.Add(line);
                 }
             }
         }
@@ -849,24 +851,29 @@ class GameOptionsDataPatch
         }
 
         string lastpage = page.ToString().Trim('\r', '\n');
-        if (lastpage != "")
+        if (lastpage != String.Empty)
         {
             pages.Add(lastpage);
         }
 
         ResultPages = new();
         int numPages = pages.Count + 1;
+        ResultPages.Add($"{GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count).Trim('\r', '\n')}\n\n{Tl("SettingPressTabForMore")} (1/{numPages})");
         for (int i = 1; i < numPages; i++)
         {
-            ResultPages.Add(pages[i - 1].Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" ({i + 1}/{numPages})");
+            ResultPages.Add($"{pages[i - 1].Trim('\r', '\n')}\n\n{Tl("SettingPressTabForMore")} ({i + 1}/{numPages})");
         }
 
-        DefaultResult = GameOptionsManager.Instance.CurrentGameOptions.ToHudString(GameData.Instance ? GameData.Instance.PlayerCount : 10)
-            .Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" (1/{numPages})";
-
         SuperNewRolesPlugin.optionsMaxPage = numPages - 1;
-        int counter = SuperNewRolesPlugin.optionsPage %= numPages;
-        return pages[counter].Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
+        SuperNewRolesPlugin.optionsPage %= numPages;
+
+        if (CustomOverlays.overlayShown && CustomOverlays.nowPattern == CustomOverlays.CustomOverlayPattern.Regulation) CustomOverlays.YoggleInfoOverlay(CustomOverlays.nowPattern, true);
+    }
+    public static string getHudString(int pagenum)
+    {
+        if (ResultPages == null) UpdateData();
+        if (pagenum >= ResultPages.Count) return String.Empty;
+        return ResultPages[pagenum];
     }
 }
 
@@ -942,6 +949,7 @@ public static class GameSettingMenuPatch
     [HarmonyPatch(nameof(GameSettingMenu.Close)), HarmonyPostfix]
     public static void ClosePostfix()
     {
+        GameOptionsDataPatch.UpdateData();
         if (CustomOption.IsValuesUpdated)
         {
             OptionSaver.WriteNowOptions();

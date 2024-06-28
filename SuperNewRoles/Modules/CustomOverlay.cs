@@ -18,7 +18,7 @@ public class CustomOverlays
     private static TMPro.TextMeshPro infoOverlayLeft;
     private static TMPro.TextMeshPro infoOverlayCenter;
     private static TMPro.TextMeshPro infoOverlayRight;
-    private static bool overlayShown;
+    public static bool overlayShown;
     private static Dictionary<byte, string> playerDataDictionary = new();
     internal static Dictionary<byte, string> ActivateRolesDictionary = new();
     private static float defaultfontSize = 1.15f;
@@ -87,9 +87,7 @@ public class CustomOverlays
         if (infoOverlayCenter == null)
         {
             infoOverlayCenter = UnityEngine.Object.Instantiate(infoOverlayLeft, hudManager.transform);
-            infoOverlayCenter.maxVisibleLines = 30;
             infoOverlayCenter.SetStaticfontSizes(defaultfontSize);
-            infoOverlayCenter.outlineWidth += 0.02f;
             infoOverlayCenter.autoSizeTextContainer = false;
             infoOverlayCenter.enableWordWrapping = false;
             infoOverlayCenter.alignment = TMPro.TextAlignmentOptions.TopLeft;
@@ -103,9 +101,7 @@ public class CustomOverlays
         if (infoOverlayRight == null)
         {
             infoOverlayRight = UnityEngine.Object.Instantiate(infoOverlayCenter, hudManager.transform);
-            infoOverlayRight.maxVisibleLines = 30;
             infoOverlayRight.SetStaticfontSizes(defaultfontSize);
-            infoOverlayRight.outlineWidth += 0.02f;
             infoOverlayRight.autoSizeTextContainer = false;
             infoOverlayRight.enableWordWrapping = false;
             infoOverlayRight.alignment = TMPro.TextAlignmentOptions.TopLeft;
