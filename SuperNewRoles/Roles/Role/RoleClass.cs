@@ -85,6 +85,8 @@ public static class RoleClass
         FixSabotage.ClearAndReload();
         Patches.CursedTasks.Main.ClearAndReload();
 
+        DeadBodyManager.ClearAndReloads();
+
         /* 陣営playerがうまく動かず使われてない為コメントアウト。
         RoleHelpers.CrewmatePlayer = new();
         RoleHelpers.ImposterPlayer = new();

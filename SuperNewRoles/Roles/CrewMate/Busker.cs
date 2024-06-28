@@ -1,5 +1,7 @@
+using System.Collections;
 using Agartha.CustomAnimation;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
@@ -64,7 +66,15 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
         Player.Revive();
         CleanDeadbody();
         // ベントから出るモーションを出す
-        Player.MyPhysics.StartCoroutine(Player.MyPhysics.Animations.CoPlayExitVentAnimation());
+        Player.MyPhysics.StartCoroutine(PlayExitVent(Player).WrapToIl2Cpp());
+    }
+    private static IEnumerator PlayExitVent(PlayerControl player)
+    {
+        PlayerAnimations anim = player.MyPhysics.Animations;
+        yield return anim.CoPlayExitVentAnimation();
+        if (anim.Animator.GetCurrentAnimation() != anim.group.ExitVentAnim)
+            yield break;
+        anim.PlayIdleAnimation();
     }
     private bool HasButtonReborn()
     {
