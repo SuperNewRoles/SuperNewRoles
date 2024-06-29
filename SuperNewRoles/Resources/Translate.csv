@@ -164,6 +164,7 @@ SettingCrewmateTeamRolesName,Position setting of crewmate camp,クルーメイ�
 SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置,內鬼陣營職業設定
 Setting,Setting up positions in the third camp,第三陣営の役職設定,独立阵营职业设置,中立陣營職業設定
 SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加职业设置,多重職業設定
+SettingOnlySelectedRole,Show only selected roles,選択した役職のみを表示する,只显示选中的职业,僅顯示選擇的職業
 Settingsonota,Other settings,その他の設定,其他设置,其他設定
 optionOn,<color=#00e000>On</color>,<color=#00e000>オン</color>,<color=#00e000>开启</color>,<color=#00e000>開</color>
 optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#949495>关闭</color>,<color=#949495>關</color>
@@ -1903,6 +1904,7 @@ Kill,Kill,キル,,擊殺
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
+IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート
 
 #SettingMatchTag
 SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,<color=#a9ceec>游戏房间标签</color>设置,<color=#93b69c>房間對局標籤</color>設定
