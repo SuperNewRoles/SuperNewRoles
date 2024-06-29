@@ -28,11 +28,11 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         new(RoleId.Phosphorus, 436500, false,
             CoolTimeOption: (30f, 2.5f, 60f, 2.5f, false),
             DurationTimeOption: (10f, 2.5f, 120f, 2.5f, false),
-            AbilityCountOption: (1, 1, 10, 1, false),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.Phosphorus, introSound: RoleTypes.Crewmate);
 
+    public static CustomOption PuttingLimit;
     public static CustomOption LightingCooltime;
     public static CustomOption LightRange;
 
@@ -42,13 +42,14 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
 
     private static void CreateOption()
     {
+        PuttingLimit = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusPuttingLimit", 1, 1, 10, 1, Optioninfo.RoleOption);
         LightingCooltime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightingCooltime", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption);
-        LightRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightRange", 0.5f, 0.1f, 0.5f, 0.1f, Optioninfo.RoleOption);
+        LightRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightRange", 5f, 0.1f, 0.5f, 0.1f, Optioninfo.RoleOption);
     }
 
     public Phosphorus(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
-        PutButtonInfo = new(Optioninfo.AbilityMaxCount, this, () => SendRpcPut(),
+        PutButtonInfo = new(PuttingLimit.GetInt(), this, () => SendRpcPut(),
             (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Phosphorus.PutButton.png", 115f),
             () => Optioninfo.CoolTime, Vector3.zero,
@@ -104,7 +105,7 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     public void RpcReader(MessageReader reader)
     {
         RpcTypes type = (RpcTypes)reader.ReadByte();
-        List<Lantern> lanterns = Lantern.GetLanterns(Player);
+        List<Lantern> lanterns = Lantern.GetLanternsByOwner(Player);
 
         switch (type)
         {

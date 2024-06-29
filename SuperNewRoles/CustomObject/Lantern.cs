@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SuperNewRoles.Roles.Crewmate.Phosphorus;
 using UnityEngine;
 
@@ -79,16 +80,6 @@ public class Lantern : MonoBehaviour
         return lightRenderer;
     }
 
-    public static List<Lantern> GetLanterns(PlayerControl player)
-    {
-        List<Lantern> lanterns = new();
-        foreach (Lantern lantern in AllLanterns)
-        {
-            if (lantern.Owner != player || lantern == null)
-                continue;
-
-            lanterns.Add(lantern);
-        }
-        return lanterns;
-    }
+    public static List<Lantern> GetLanternsByOwner(PlayerControl player)
+        => AllLanterns.Where(x => x.Owner == player && x != null).ToList();
 }
