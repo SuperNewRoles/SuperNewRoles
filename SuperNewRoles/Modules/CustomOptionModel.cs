@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomObject;
+using SuperNewRoles.CustomModOption;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
