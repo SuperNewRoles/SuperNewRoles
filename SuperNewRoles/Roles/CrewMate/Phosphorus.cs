@@ -44,7 +44,7 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     {
         PuttingLimit = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusPuttingLimit", 1, 1, 10, 1, Optioninfo.RoleOption);
         LightingCooltime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightingCooltime", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption);
-        LightRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightRange", 5f, 0.1f, 0.5f, 0.1f, Optioninfo.RoleOption);
+        LightRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "PhosphorusLightRange", 0.5f, 0.1f, 5f, 0.25f, Optioninfo.RoleOption);
     }
 
     public Phosphorus(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
@@ -62,8 +62,8 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
             () => LightingCooltime.GetFloat(), Vector3.zero,
             "PhosphorusLightingButtonName", KeyCode.Q,
             DurationTime: () => Optioninfo.DurationTime,
-            CouldUse: () => Lantern.AllLanterns.Any(x => x.Owner.AmOwner && x.IsActivating)
-            //OnEffectEnds: () => SendRpcLighting(false)
+            CouldUse: () => Lantern.AllLanterns.Any(x => x.Owner.AmOwner && x.IsActivating),
+            OnEffectEnds: () => LightingButtonInfo.ResetCoolTime()
         );
 
         CustomButtonInfos = new CustomButtonInfo[2] { PutButtonInfo, LightingButtonInfo };

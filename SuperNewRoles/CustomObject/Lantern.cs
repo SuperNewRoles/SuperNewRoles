@@ -23,6 +23,7 @@ public class Lantern : MonoBehaviour
         Owner = owner;
         transform.position = owner.GetTruePosition();
         transform.localScale = Vector3.one * 0.25f;
+        gameObject.layer = 9; //レイヤーをShipに
 
         myRend = gameObject.GetOrAddComponent<SpriteRenderer>();
         myRend.color = new(1f, 1f, 1f, Owner.AmOwner ? 0.5f : 0f);
