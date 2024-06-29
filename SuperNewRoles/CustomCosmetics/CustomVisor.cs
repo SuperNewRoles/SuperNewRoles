@@ -11,6 +11,7 @@ using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 namespace SuperNewRoles.CustomCosmetics;
 
 public class CustomVisor
@@ -31,7 +32,6 @@ public class CustomVisor
 
         static void Prefix(HatManager __instance)
         {
-            return;
             if (RUNNING) return;
             if (IsLoadingnow) return;
             if (SPRITELOADED)
@@ -173,6 +173,11 @@ public class CustomVisor
         if (VisorShader == null && DestroyableSingleton<HatManager>.InstanceExists) VisorShader = new Material(Shader.Find("Unlit/PlayerShader"));
 
         CustomVisorData.VisorTempViewData visorViewData = new() { MainImage = GetVisorSprite(cv.resource) };
+        var assetRef = new AssetReference(visorViewData.CreateVVD.Pointer);
+
+        PreviewViewData previewData = new() { PreviewSprite = visorViewData.MainImage };
+
+        var previewDataRef = new AssetReference(previewData.Pointer);
 
         CustomVisorData visor = new()
         {
@@ -187,8 +192,11 @@ public class CustomVisor
             NotInStore = true,
 
             // 本体 : VisorData
-            behindHats = cv.behindHats
+            behindHats = cv.behindHats,
+            ViewDataRef = assetRef,
+            PreviewData = previewDataRef,
         };
+        visor.CreateAddressableAsset();
 
         visorViewData.VisorName = visor.ProdId;
         if (cv.adaptive) visorViewData.Adaptive = true;
@@ -207,7 +215,7 @@ public class CustomVisor
         }
         else
         {
-            CustomVisors.CustomVisorRegistry.Add(visor.name, extend);
+            CustomVisors.CustomVisorRegistry[visor.name] = extend;
         }
         visor.vtvd = visorViewData;
         return visor;

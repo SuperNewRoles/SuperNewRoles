@@ -6,8 +6,8 @@ public static class DownLoadCustomCosmetics
     internal const string SNCmainURL = "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/main";
 
     /// <summary>CustomCosmeticの読み込みを行うか</summary>
-    public static bool IsLoad => !(ConfigRoles.DebugMode.Value || ConfigRoles.IsModCosmeticsAreNotLoaded.Value) || forceLoad;
-
+    public static bool IsLoad => true || !(ConfigRoles.DebugMode.Value || ConfigRoles.IsModCosmeticsAreNotLoaded.Value) || forceLoad;
+    
     public static void CosmeticsLoad()
     {
         DownLoadCustomhat.Load();
