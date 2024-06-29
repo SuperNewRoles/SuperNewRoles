@@ -2,7 +2,7 @@ using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
 
-namespace SuperNewRoles.CustomObject;
+namespace SuperNewRoles.CustomModOption;
 
 public class ModRoleOptionSetting : ModOptionBehaviour
 {

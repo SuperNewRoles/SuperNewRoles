@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SuperNewRoles.CustomObject;
+namespace SuperNewRoles.CustomModOption;
 
 public class ModOptionBehaviour : OptionBehaviour
 {
