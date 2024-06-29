@@ -1186,6 +1186,7 @@ public static class RPCProcedure
                 CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
                 option.SetSelection((int)selection);
             }
+            GameOptionsDataPatch.UpdateData();
         }
         catch (Exception e)
         {
