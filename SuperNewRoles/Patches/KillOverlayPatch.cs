@@ -10,7 +10,7 @@ class KillOverlayA
     [HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.Initialize))]
     public static class OverlayKillAnimationInitializePatch
     {
-        public static void Postfix(OverlayKillAnimation __instance, GameData.PlayerInfo kInfo, GameData.PlayerInfo vInfo)
+        public static void Postfix(OverlayKillAnimation __instance, NetworkedPlayerInfo kInfo, NetworkedPlayerInfo vInfo)
         {
             if (kInfo.PlayerId == vInfo.PlayerId)
             {
@@ -43,10 +43,10 @@ class KillOverlayA
             }
         }
     }
-    [HarmonyPatch(typeof(KillOverlay), "ShowKillAnimation", new Type[] { typeof(OverlayKillAnimation), typeof(GameData.PlayerInfo), typeof(GameData.PlayerInfo) })]
+    [HarmonyPatch(typeof(KillOverlay), "ShowKillAnimation", new Type[] { typeof(OverlayKillAnimation), typeof(NetworkedPlayerInfo), typeof(NetworkedPlayerInfo) })]
     public static class KillOverlayShowKillAnimationPatch
     {
-        public static void Prefix(KillOverlay __instance, ref OverlayKillAnimation killAnimation, GameData.PlayerInfo killer, GameData.PlayerInfo victim)
+        public static void Prefix(KillOverlay __instance, ref OverlayKillAnimation killAnimation, NetworkedPlayerInfo killer, NetworkedPlayerInfo victim)
         {
             Logger.Info("Cohkoejhgmm\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ned!");
             if (killer.PlayerId == victim.PlayerId)

@@ -42,8 +42,8 @@ public static class Assassin
                     VotedForId = playerVoteArea.VotedFor
                 };
             }
-            GameData.PlayerInfo target = player.Data;
-            GameData.PlayerInfo exileplayer = null;
+            NetworkedPlayerInfo target = player.Data;
+            NetworkedPlayerInfo exileplayer = null;
             if (target != null)
             {
                 var outfit = target.DefaultOutfit;

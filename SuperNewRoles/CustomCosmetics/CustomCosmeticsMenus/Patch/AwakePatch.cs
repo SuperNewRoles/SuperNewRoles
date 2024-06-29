@@ -14,7 +14,7 @@ public static class PlayerCustomizationMenuPatch
 
     [HarmonyPatch(nameof(PlayerCustomizationMenu.Start)), HarmonyPrefix]
     public static void StartPrefix() => IsFirst = true;
-
+    
     [HarmonyPatch(nameof(PlayerCustomizationMenu.Start)), HarmonyPostfix]
     public static void StartPostfix(PlayerCustomizationMenu __instance)
     {
