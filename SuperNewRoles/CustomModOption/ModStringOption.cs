@@ -1,6 +1,6 @@
 using TMPro;
 
-namespace SuperNewRoles.CustomObject;
+namespace SuperNewRoles.CustomModOption;
 
 public class ModStringOption : ModOptionBehaviour
 {

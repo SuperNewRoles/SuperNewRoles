@@ -31,7 +31,6 @@ public class CustomVisor
 
         static void Prefix(HatManager __instance)
         {
-            return;
             if (RUNNING) return;
             if (IsLoadingnow) return;
             if (SPRITELOADED)
