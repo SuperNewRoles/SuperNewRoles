@@ -145,7 +145,7 @@ public static class AntiBlackOut
             if (RealExiled != null && RealExiled.Object != null)
                 RealExiled.Object.RpcInnerExiled();
             IsModdedSerialize = true;
-            RPCHelper.RpcSyncGameData();
+            RPCHelper.RpcSyncAllNetworkedPlayer();
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player.IsAlive())
@@ -244,7 +244,7 @@ public static class AntiBlackOut
                 seer.RpcSetRoleDesync(RoleTypes.ImpostorGhost, seer);
                 RoleChangedData.Add((seer.PlayerId, seerchanges));
             }
-            RPCHelper.RpcSyncGameData(seer.GetClientId());
+            RPCHelper.RpcSyncAllNetworkedPlayer(seer.GetClientId());
             IsModdedSerialize = false;
         }
     }
@@ -275,7 +275,7 @@ public static class AntiBlackOut
             player.Disconnected = true;
         }
         IsModdedSerialize = true;
-        RPCHelper.RpcSyncGameData();
+        RPCHelper.RpcSyncAllNetworkedPlayer();
         IsModdedSerialize = false;
     }
     private static void DestroySavedData()

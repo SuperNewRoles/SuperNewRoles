@@ -156,7 +156,7 @@ class EndGameCheck
 
         (string text, Color color, _) = EndGameManagerSetUpPatch.ProcessWinText((GameOverReason)reason, winCondition);
         EndGameDetail.SetEndGameDetail(ModHelpers.Cs(color, text), ShowTargets);
-        _ = new LateTask(() => RPCHelper.RpcSyncGameData(), 0.2f);
+        _ = new LateTask(() => RPCHelper.RpcSyncAllNetworkedPlayer(), 0.2f);
         _ = new LateTask(() => ChangeName.SetRoleNames(true, true), 0.25f);
         _ = new LateTask(() => GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByVote, showAd), 0.4f);
     }

@@ -127,7 +127,7 @@ class Main
         {
             source.RpcSnapTo(target.transform.position);
             GameDataSerializePatch.Is = true;
-            RPCHelper.RpcSyncGameData();
+            RPCHelper.RpcSyncNetworkedPlayer(target.Data);
         }
         else
         {
@@ -470,7 +470,7 @@ class Main
                 {
                     p.Data.RoleType = RoleTypes.Shapeshifter;
                 }
-                RPCHelper.RpcSyncGameData();
+                RPCHelper.RpcSyncAllNetworkedPlayer();
                 new LateTask(() =>
                 {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)

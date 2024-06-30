@@ -82,7 +82,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 foreach (PlayerControl player in team.TeamMember)
                 {
                     if (player is null) continue;
-                    RPCHelper.RpcSyncGameData(player.GetClientId());
+                    RPCHelper.RpcSyncAllNetworkedPlayer(player.GetClientId());
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 p.Data.IsDead = false;
             }
-            RPCHelper.RpcSyncGameData();
+            RPCHelper.RpcSyncAllNetworkedPlayer();
             MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
             //if (AmongUsClient.Instance.AmHost)
             {
@@ -186,7 +186,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 if (!p.IsBot()) continue;
                 p.RpcSnapTo(new(999, 999));
             }
-            RPCHelper.RpcSyncGameData();
+            RPCHelper.RpcSyncAllNetworkedPlayer();
             SyncBattleOptions.CustomSyncOptions();
             ChangeName.UpdateName();
         }
@@ -249,7 +249,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 p.Data.IsDead = false;
             }
-            RPCHelper.RpcSyncGameData();
+            RPCHelper.RpcSyncAllNetworkedPlayer();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 p.MyPhysics.RpcExitVentUnchecked(0);

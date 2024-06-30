@@ -88,7 +88,7 @@ public static class main
             }
             Logger.Info(player.Data.Role.Role.ToString(), player.GetDefaultName());
         }
-        RPCHelper.RpcSyncGameData();
+        RPCHelper.RpcSyncAllNetworkedPlayer();
         new LateTask(() =>
         {
             GameManager.Instance.LogicOptions.Manager.RpcEndGame(GameOverReason.HumansByTask, false);

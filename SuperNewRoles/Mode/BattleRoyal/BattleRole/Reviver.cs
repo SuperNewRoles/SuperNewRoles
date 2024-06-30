@@ -58,7 +58,7 @@ public class Reviver : BattleRoyalRole
                     targetability.CanMove = false;
                     currentTarget.Data.IsDead = false;
                     currentTarget.RpcSnapTo(CurrentPlayer.transform.position);
-                    RPCHelper.RpcSyncGameData();
+                    RPCHelper.RpcSyncAllNetworkedPlayer();
                     SyncBattleOptions.CustomSyncOptions(CurrentPlayer);
                     IsReviverTime = true;
                     AbilityTime = RoleParameter.ReviverRevivePlayerStuckTime;

@@ -1,6 +1,7 @@
 using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
+using Il2CppInterop.Generator.Extensions;
 using InnerNet;
 using Steamworks;
 using SuperNewRoles.Mode;
@@ -198,10 +199,8 @@ public static class RPCHelper
         AmongUsClient.Instance.SendOrDisconnect(writer);
         writer.Recycle();
     }
-    public static void RpcSyncGameData(int TargetClientId = -1)
+    public static void RpcSyncNetworkedPlayer(NetworkedPlayerInfo playerInfo, int TargetClientId = -1)
     {
-        throw new System.NotImplementedException("RpcSyncGameData is FIXME");
-        /*
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
@@ -220,24 +219,24 @@ public static class RPCHelper
         }
         writer.StartMessage(1); //0x01 Data
         {
-            writer.WritePacked(GameData.Instance.NetId);
+            writer.WritePacked(playerInfo.NetId);
             GameDataSerializePatch.Is = true;
-            GameData.Instance.Serialize(writer, true);
+            playerInfo.Serialize(writer, true);
+            GameDataSerializePatch.Is = false;
 
         }
         writer.EndMessage();
         writer.EndMessage();
 
         AmongUsClient.Instance.SendOrDisconnect(writer);
-        writer.Recycle();*/
+        writer.Recycle();
     }
-    public static void RpcSyncGameData(CustomRpcSender sender, int TargetClientId = -1)
+    public static void RpcSyncNetworkedPlayer(CustomRpcSender sender, NetworkedPlayerInfo playerInfo, int TargetClientId = -1)
     {
-        throw new System.NotImplementedException("RpcSyncGameData is FIXME");
-        /*
+        
         if (sender == null)
         {
-            RpcSyncGameData(TargetClientId);
+            RpcSyncNetworkedPlayer(playerInfo, TargetClientId);
             return;
         }
         sender.StartMessage(TargetClientId);
@@ -247,14 +246,81 @@ public static class RPCHelper
             // 書き込み {}は読みやすさのためです。
             writer.StartMessage(1); //0x01 Data
             {
-                writer.WritePacked(GameData.Instance.NetId);
+                writer.WritePacked(playerInfo.NetId);
                 GameDataSerializePatch.Is = true;
-                GameData.Instance.Serialize(writer, true);
+                playerInfo.Serialize(writer, true);
+                GameDataSerializePatch.Is = false;
 
             }
             writer.EndMessage();
         });
-        sender.EndMessage();*/
+        sender.EndMessage();
+    }
+    public static void RpcSyncAllNetworkedPlayer(CustomRpcSender sender, int TargetClientId = -1)
+    {
+        if (sender == null)
+        {
+            RpcSyncAllNetworkedPlayer(TargetClientId);
+            return;
+        }
+        sender.StartMessage(TargetClientId);
+        sender.Write((writer) =>
+        {
+            if (TargetClientId < 0)
+            {
+                writer.StartMessage(5);
+                writer.Write(AmongUsClient.Instance.GameId);
+            }
+            else
+            {
+                writer.StartMessage(6);
+                writer.Write(AmongUsClient.Instance.GameId);
+                if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+                writer.WritePacked(TargetClientId);
+            }
+            GameDataSerializePatch.Is = true;
+            writer.StartMessage(1); //0x01 Data
+            {
+                foreach (var player in GameData.Instance.AllPlayers)
+                {
+                    writer.WritePacked(player.NetId);
+                    player.Serialize(writer, true);
+                }
+            }
+            GameDataSerializePatch.Is = false;
+            writer.EndMessage();
+        });
+    }
+    public static void RpcSyncAllNetworkedPlayer(int TargetClientId = -1)
+    {
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        if (TargetClientId < 0)
+        {
+            writer.StartMessage(5);
+            writer.Write(AmongUsClient.Instance.GameId);
+        }
+        else
+        {
+            writer.StartMessage(6);
+            writer.Write(AmongUsClient.Instance.GameId);
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            writer.WritePacked(TargetClientId);
+        }
+        GameDataSerializePatch.Is = true;
+        writer.StartMessage(1); //0x01 Data
+        {
+            foreach (var player in GameData.Instance.AllPlayers)
+            {
+                writer.WritePacked(player.NetId);
+                player.Serialize(writer, true);
+            }
+        }
+        GameDataSerializePatch.Is = false;
+        writer.EndMessage();
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
     }
     public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1, SendOption sendOption = SendOption.Reliable)
     {

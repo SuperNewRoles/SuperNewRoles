@@ -39,7 +39,7 @@ public static class HideChat
 
             // シリアライズ
             SerializeByHideChat = true;
-            RPCHelper.RpcSyncGameData(sender, player.GetClientId());
+            RPCHelper.RpcSyncAllNetworkedPlayer(sender, player.GetClientId());
             SerializeByHideChat = false;
         }
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -57,7 +57,7 @@ public static class HideChat
         {
             player.Data.IsDead = false;
             SerializeByHideChat = true;
-            RPCHelper.RpcSyncGameData(sender: sender);
+            RPCHelper.RpcSyncNetworkedPlayer(sender, player.Data);
             SerializeByHideChat = false;
             foreach (PlayerControl target in PlayerControl.AllPlayerControls)
             {
