@@ -47,9 +47,13 @@ public class CustomVisorData : VisorData
     {
         if (!cache.ContainsKey(id) || cache[id] == null)
         {
-            cache[id] = CustomVisor.customVisorData.FirstOrDefault(x => x.ProductId == id).vtvd.CreateVVD;
+            cache[id] = CustomVisor.customVisorData.TryGetValue(id, out CustomVisorData data) ? data.vtvd.CreateVVD : null;
         }
         return cache[id];
+    }
+    static VisorViewData GetEmptyVisor(CosmeticsCache __instance)
+    {
+        return __instance.visors["visor_EmptyVisor"].GetAsset();
     }
     [HarmonyPatch(typeof(CosmeticsCache), nameof(CosmeticsCache.GetVisor))]
     class CosmeticsCacheGetVisorPatch
@@ -59,7 +63,7 @@ public class CustomVisorData : VisorData
             if (!id.StartsWith("CustomVisors_")) return true;
             __result = getbycache(id);
             if (__result == null)
-                __result = __instance.visors["visor_EmptyVisor"].GetAsset();
+                __result = GetEmptyVisor(__instance);
             return false;
         }
     }
@@ -118,6 +122,21 @@ public class CustomVisorData : VisorData
             return false;
         }
     }
+    [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetClimbAnim))]
+    class VisorLayerSetClimbAnimPatch
+    {
+        public static bool Prefix(VisorLayer __instance, PlayerBodyTypes bodyType)
+        {
+            if (__instance.visorData == null || !__instance.visorData.ProductId.StartsWith("CustomVisors_")) return true;
+            if (!__instance.options.HideDuringClimb && bodyType != PlayerBodyTypes.Horse)
+            {
+                __instance.transform.localPosition = new Vector3(__instance.transform.localPosition.x, __instance.transform.localPosition.y, 0f);
+                VisorViewData asset = getbycache(__instance.visorData.ProdId);
+                __instance.Image.sprite = asset.ClimbFrame ? asset.ClimbFrame : asset.IdleFrame;
+            }
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetFlipX))]
     class VisorLayerSetFlipXPatch
     {
@@ -126,6 +145,9 @@ public class CustomVisorData : VisorData
             if (__instance.visorData == null || !__instance.visorData.ProductId.StartsWith("CustomVisors_")) return true;
             __instance.Image.flipX = flipX;
             VisorViewData asset = getbycache(__instance.visorData.ProdId);
+            if (!asset)
+                return true;
+            
             if (flipX && asset.LeftIdleFrame)
             {
                 __instance.Image.sprite = asset.LeftIdleFrame;
