@@ -17,6 +17,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomPlateData : NamePlateData
 {
     public TempPlateViewData tpvd;
+    // public Sprite SpritePreview;
     public class TempPlateViewData
     {
         public Sprite Image;
