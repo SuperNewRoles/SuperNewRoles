@@ -50,9 +50,9 @@ Analytics,Analytics,解析,解析,解析
 AnalyticsText,In order to make SuperNewRoles an even better mod， we have created a function to send information about positions used to the server. \nThis information can be viewed by SuperNewRoles developers. See the following page for more information. \nYou can change in the settings whether you want to save the information. \nNo personally identifiable elements， such as your player name， will be sent. \n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,为了改善模组玩家的游戏体验，\n制作组尝试推出将一局游戏中的职业等信息发送给制作组服务器的功能。\n制作组将查阅这些信息来改进本模组；详细可点击最下方网址查看。\n您可以决定自己是否要保留这些信息；\n制作组承诺不会将您的游戏昵称等私人信息发送至服务器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,為了改善遊玩本模組玩家的遊戲體驗，\n製作組推出將遊戲中的職業等資訊傳送給製作組的功能。\n製作組將可查閱這些資訊來改進本模組；詳細可點擊最下方網址查看。\n您可以決定自己是否要保留這些資訊；\n製作組承諾不會將您的遊戲暱稱等個人資料傳送到伺服器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>
 AnalyticsOK,OK!,了解！,确认,確認！
 MainMenuDiscordText,<size=90%>Bug report or Question or Request</size>\n<size=90%>I wish everyone who uses it would join.(it's Discord server)</size>,<size=90%>バグ報告・質問・要望はこちら</size>\n<size=70%>使ってる人は全員入ってほしい(願望)</size>\n<size=140%>(Discord)</size>,,<size=90%>Bug回報、問題、請求請至</size>\n<size=70%>希望所有人都能加入</size>\n<size=140%>(Discord伺服器)</size>
-AprilFool2024HackedByEvilHackerPopupTitle,Hacked by EvilHacker!!!,イビルハッカーにハッキングされちゃった！,被邪恶黑客黑了！！！,被邪惡駭客黑了！！！
-AprilFool2024HackedByEvilHackerPopupText,An EvilHacker has hacked SuperNewRoles!\nThe EvilHacker has sent the following message to the SuperNewRoles developer:\n"Hahaha! I am a very clever EvilHacker! I have hacked SuperNewRoles! I have changed the logo and the names of the mods to all sorts of things! You will have to work hard to get it back!"\nThis EvilHacker is quite strong， and it will probably take until 7:00 AM on April 8th (UTC time) to get it back.\nWe will do our best to fix it! Sorry for the inconvenience!,イビルハッカーがSuperNewRolesをハッキングしちゃった！\nそして、SuperNewRolesの開発者へ\nイビルハッカーからこんなメッセージが届いたよ！\n「ハッハッハ！僕はとーっても賢いイビルハッカー！\nSuperNewRolesをハッキングしちゃったぜ！\nそして、ロゴやModの名前をいろーんなのに変更したぞ！頑張って戻すんだな！」\nこのイビルハッカー、結構強くて\n戻すのは4月8日の16時くらい(日本時間)になっちゃいそう！\n頑張って直すよ！ごめんね！,,邪惡駭客已經黑了SuperNewRoles！\n並向SuperNewRoles的開發者們發送了訊息：\n“哈哈哈！我是一個非常聰明的邪惡駭客！我已經黑了SuperNewRoles！Logo和模組名已經被我改成各種各樣的東西！你們將不得不努力才能恢復！”\n這個邪惡駭客相當強大，可能要到UTC 4月8日07:00才能恢復。\n我們將盡力修復！對於給您帶來的不便，我們深感抱歉！
-AprilFool2024HackedByEvilHackerPopupOK,That's tough!,そりゃあ大変だ！,真是太糟糕了！,真是太糟糕了！
+20240618_25SaverInfo_PopupTitle,Server Notice,サーバーに関するお知らせ
+20240618_25SaverInfo_PopupText,<size=70%>Hello!\n\nActually，in some mods including SNR，if there are more than "9 people" on a vanilla server，some people get disconnected at the lobby start screen. \n(Not everyone gets disconnected though!)\nSo，if someone gets disconnected，it's probably due to this issue! \nIf no one gets disconnected at the lobby start screen，there shouldn't be much of a problem，so please check that first.\n\nCustom servers are not affected by this issue，so if you can use a custom server，that might be a good option. \n(At least as of the release，custom servers are not supported yet，so you can't use them.)\n\nThat's about it. \nFor the latest information，check Discord or Twitter! \n(There are links at the bottom right of the main menu! You should be able to see them after closing this.)\n\nSee you!</size>,<size=70%>こんにちは！\n実は、SNRを含めた一部MODの場合、バニラサーバーで何故か「9人以上」入るとロビーが開始画面で切断される人が出てくるようなんだ。\n(必ず切断されるわけてはないよ!)\n\nだから、落ちちゃう人がいたらそれはこの問題だよ！\nロビーが開始画面で落ちなければほとんど問題ないと思うからまずは確認してね。\n\nカスタムサーバーではこの影響は受けないから、カスタムサーバーが使えるならカスタムサーバーを使うのもいいと思うよ。\n(少なくともリリース時点ではカスタムサーバーがまだ対応してないから使えないけど。)\n\nこんな感じかな。最新情報はDiscordかTwitterを見てね！\n(メインメニューの右下にリンクがあるよ！これを閉じたら見れると思う。)\n\nじゃあね！ </size>
+20240618_25SaverInfo_PopupOK,OK,オッケー！
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红,鮭魚紅
@@ -135,12 +135,16 @@ MapCustom,Map Custom,マップ改造,地图设置,地圖設定
 SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加机密室,追加密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
 SettingpresetSelection,Preset,プリセット,预设,預設
+ModSttingsButtonText,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color> Settings,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>の設定,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>设置,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>設定
+NeutralRolesHeader,Neutral Roles,第三陣営のロール
+ModifierHeader,Modifier Roles,モディファイア
+SettingOf,{0} Setting,{0}の設定
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>设置,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>設定
 SettingSuperNewRolesVerGetSettingCommand,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> & <color=#ff8cc5>Add-on</color>Settings,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> & <color=#ff8cc5>アドオン</color>の設定,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> & <color=#ff8cc5>附加</color>设置,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> & <color=#ff8cc5>附加</color>設定
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>内鬼阵营</color>设置,<color=#ff0000>內鬼陣營</color>設定
 SettingNeutral,<color=#808080>Neutral</color> Settings,<color=#808080>第三陣営</color>の設定,<color=#808080>独立阵营</color>设置,<color=#808080>中立陣營</color>設定
 SettingCrewmate,<color=#a9ceec>Crewmate</color> Settings,<color=#00ffff>クルーメイト</color>の設定,<color=#00ffff>船员阵营</color>设置,<color=#00ffff>船員陣營</color>設定
-modifierSettings,<color=#ff8cc5>Add-on</color> Settings,<color=#ff8cc5>アドオン</color>の設定,<color=#ff8cc5>附加</color>设置,<color=#ff8cc5>附加</color>設定
+ModifierSettings,<color=#ff8cc5>Modifier</color> Settings,<color=#ff8cc5>モディファイア</color>の設定,<color=#ff8cc5>附加</color>设置,<color=#ff8cc5>附加</color>設定
 SettingRegulation,Regulation Settings,レギュレーション設定,常规设置,通常設定
 SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数,船员阵营最小职业数,船員陣營職業數最少值
 SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数,船员阵营最大职业数,船員陣營職業數最大值
@@ -160,6 +164,7 @@ SettingCrewmateTeamRolesName,Position setting of crewmate camp,クルーメイ�
 SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置,內鬼陣營職業設定
 Setting,Setting up positions in the third camp,第三陣営の役職設定,独立阵营职业设置,中立陣營職業設定
 SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加职业设置,多重職業設定
+SettingOnlySelectedRole,Show only selected roles,選択した役職のみを表示する,只显示选中的职业,僅顯示選擇的職業
 Settingsonota,Other settings,その他の設定,其他设置,其他設定
 optionOn,<color=#00e000>On</color>,<color=#00e000>オン</color>,<color=#00e000>开启</color>,<color=#00e000>開</color>
 optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#949495>关闭</color>,<color=#949495>關</color>
@@ -210,10 +215,10 @@ IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx,启用ykundesuBeplnEx,y
 restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい,关注B站@心音糖果_Tingo谢谢喵！
 ReactorDurationSetting,Reactor Duration Time,緊急タスク継続時間の設定,自定义核反应堆紧急破坏持续时间,核子反應爐緊急任務持續時間
 SkeldReactorTime,The Skeld : reactor Duration Time,The Skeld : リアクターサボタージュの時間,骷髅舰(The  Skeld)核反应堆紧急破坏持续时间,The Skeld核子反應爐緊急任務持續時間
-SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,<size=45%>The Skeld : 酸素枯渇までの時間</size>,骷髅舰(The Skeld)氧气紧急破坏持续时间,The Skeld氧氣枯竭緊急任務持續時間
+SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,The Skeld : 酸素枯渇までの時間,骷髅舰(The Skeld)氧气紧急破坏持续时间,The Skeld氧氣枯竭緊急任務持續時間
 PolusReactorTime,Polus : Reset Stabilizers Duration Time,Polus : 耐震安定装置リセットの時間,波鲁斯(Polus)抗震器紧急破坏持续时间,Polus核子反應爐震盪緊急任務持續時間
 MiraReactorTime,MiraHQ : reactor Duration Time,MiraHQ : リアクターサボタージュの時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
-MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,<size=50%>MiraHQ : 酸素枯渇までの時間</size>,米拉总部(Mira)氧气紧急破坏持续时间,MiraHQ氧氣枯竭緊急任務持續時間
+MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,MiraHQ : 酸素枯渇までの時間,米拉总部(Mira)氧气紧急破坏持续时间,MiraHQ氧氣枯竭緊急任務持續時間
 AirshipReactorTime,Airship : Avert Cresh Course Duration Time,AirShip : 衝突回避の時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
 FungleReactorTime,The Fungle : reactor Duration Time,The Fungle : リアクターサボタージュの時間,蘑菇岛(The Fungle)核反应堆破坏紧急持续时间,The Fungle核子反應爐緊急任務持續時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
@@ -440,7 +445,7 @@ FinalStatusLoversBreakerKill,explosion,爆破,FFFFFF,被爆破
 FinalStatusMadJesterExiled,Death liberates,解放,“我再无束缚了”,自由解放
 FinalStatusSantaSelf,Santa bomb!,ソリから転落,送错礼物,聖誕炸彈
 FinalStatusEvaporation,Evaporation,蒸発,,蒸發
-FinalStatusSacrifice,Sacrifice,殉死,
+FinalStatusSacrifice,Sacrifice,殉死,,犧牲
 
 # MeetingStatus
 MeetingStatusCanNotCallEmergencyMeeting,EMERGENCY MEETINGS CANNOT\nBE OPENED DUE TO SETTINGS,緊急会議は\n設定により開けない,,根據設定\n緊急會議無法召開
@@ -693,10 +698,10 @@ EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗れば
 EvilGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nSuppress the crew from declaring role. Sometimes，you can prevent your crewmates from giving out information by killing them.\nDead men do not have mouths to feed.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\nクルーメイトの役職カミングアウトを抑制しましょう。時には討って情報を出される事を阻止しましょう。\n死人に口なし。,邪恶的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，邪恶的赌怪自杀。\n邪恶的赌怪可以击杀身份亮明的好人，并及时封锁他们的信息。\n只有死人能保守秘密。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n削減已暴露的強力船員陣營或中立陣營的數量，並在必要時，阻止情報遭洩漏。\n「只有死人不會開口。」
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测,邪惡的賭怪能否在一次會議中多次猜測
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数,邪惡的賭怪最大可猜測次數
-EvilGuesserCannotCrewShotSetting,You Cannot hit Crewmates,クルーメイトを打てない
-EvilGuesserCannotCelebrityShotSetting,You Cannot hit Celebrity,スターを打てない
-EvilGuesserBecomeShotCelebritySetting,Limit the number of turns you can't hit a Celebrity,スターを打てないターンを制限する
-EvilGuesserBecomeShotCelebrityTurnSetting,Number of meetings required be able to hit a Celebrity,スターを打てるようになるまでに必要な会議数
+EvilGuesserCannotCrewShotSetting,You Cannot hit Crewmates,クルーメイトを打てない,,無法刺殺船員
+EvilGuesserCannotCelebrityShotSetting,You Cannot hit Celebrity,スターを打てない,,無法刺殺網紅
+EvilGuesserBecomeShotCelebritySetting,Limit the number of turns you can't hit a Celebrity,スターを打てないターンを制限する,,限制刺殺網紅所需回合數
+EvilGuesserBecomeShotCelebrityTurnSetting,Number of meetings required be able to hit a Celebrity,スターを打てるようになるまでに必要な会議数,,刺殺網紅所需會議數
 NextPage,Next Page,次のページへ,下一页,下一頁
 PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲
@@ -1306,6 +1311,7 @@ SluggerName,Slugger,スラッガー,击球手,擊球手
 SluggerTitle1,Lets’ Harisen Kill!,ハリセンでキルしよう,用全垒打把其他人击飞,用全壘打把其他人擊飛
 SluggerChargeTime,Charge Time,チャージ時間,击球手充能时间,擊球手充能時間
 SluggerIsMultiKill,Range kill possible,範囲キル可能,击球手可以大范围击杀,擊球手可以大範圍擊殺
+SluggerIsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 SluggerButtonName,Harisen,ハリセン,挥棒,揮棒
 SatsumaAndImoName,SatsumaAndImo,さつまといも,人格分裂者,人格分裂者
 SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト,是我疯了，还是大家都疯了？,是我瘋了，還是大家都瘋了？
@@ -1352,12 +1358,12 @@ WaveCannonJackalLoadBulletCoolTime,Bullet Load Cool Time,「装填」のクー�
 WaveCannonJackalBulletLoadedChargeTime,Charge Time at Bullet loaded,装填済みのチャージ時間,子弹装填后的充能时间,子彈裝填後的充能時間
 SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
 SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者,重炮之力的继承者,繼承重炮意志之人
-BulletName,Bullet,弾
-BulletTitle1,Alright， boss， let's do this!,さあ、やっちまってくだせぇ親分！
-BulletDescription,At the cost of your own life， you can power up Jackal's Wave Cannon once.\nBurn bright.,自身が死亡する代わりに波動砲ジャッカルの波動砲を一度だけ強化することが出来ます。\n命を燃やせ。
+BulletName,Bullet,弾,,子彈
+BulletTitle1,Alright， boss， let's do this!,さあ、やっちまってくだせぇ親分！,,是的老大，我們來開幹吧！
+BulletDescription,At the cost of your own life， you can power up Jackal's Wave Cannon once.\nBurn bright.,自身が死亡する代わりに波動砲ジャッカルの波動砲を一度だけ強化することが出来ます。\n命を燃やせ。,,以自己的生命為代價，一次性強化狼族重炮手的重炮。\n燃燒生命吧。
 BulletLoadBulletButtonName,Load Bullet,装填,装填,裝填
-BulletMeetingDisabledForBulletCharging,I think will come big wave...\nI can't open meeting for frightening...,大きな波動が飛んできそうで\n怖くて会議が開けない...
-BulletMeetingDisabledForBulletShooting,Big wave is coming...\nI can't open meeting for frightening...,大きな波動の音が響き渡っている...\n怖くて会議が開けない...
+BulletMeetingDisabledForBulletCharging,I think will come big wave...\nI can't open meeting for frightening...,大きな波動が飛んできそうで\n怖くて会議が開けない...,,巨大的波動即將襲來...\n我的雙手情不自禁地顫抖著...
+BulletMeetingDisabledForBulletShooting,Big wave is coming...\nI can't open meeting for frightening...,大きな波動の音が響き渡っている...\n怖くて会議が開けない...,,巨大的波動即將襲來...\n我還需要開會嗎...
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
 CrackerDescription,By using the ability called "Crack"， you can remove the opponent from both Admin and Vital.\nOn Vital， the time of death is shifted， and with Admin alone， you won't be able to locate the body.\nHowever， if you fail to kill the target you used it on， you might get exposed.,「クラック」という能力を使うことで、相手をアドミンやバイタルから消すことが出来ます。\nバイタル上では死亡タイミングがズレ、アドミンだけでは死体位置が分からなくなります。\nただし、使った相手をキルしそこなうと、バレてしまうかもしれません。,神隐者属于内鬼阵营，可以让一名玩家在管理地图与生命监测装置上消失一段时间。\n对于那名玩家：生命监测装置上会显示错乱的死亡时间，管理地图上无法定位该玩家的位置。\n需要注意：若该玩家没有被击杀，神隐者有可能会暴露。,神隱者可以透過使用技能「神隱」來讓對方無法在管理員地圖與生命跡象檢測器上被觀測到。\n在生命跡象檢測器上，死亡時間將會被改變，同時在管理員地圖上，屍體位置將會消失。\n但是，如果神隱者沒有成功擊殺使用技能的對象，神隱者可能會被發現。
@@ -1627,7 +1633,7 @@ PteranodonDescription,This role allows the user to move between the right and le
 PteranodonButtonName,Juump!!,ジャーンプ！,飞跃,飛躍！
 BlackHatHackerName,Black Hat Hacker,ブラックハットハッカー,黑帽客,黑帽駭客
 BlackHatHackerTitle1,Do you have an antivirus?,貴方はウイルス対策ちゃんとしてる？,可要准备好防火墙哦,你有安裝防毒軟體嗎？
-BlackHatHackerTitle2,It's my job to exploit vulnverabilities,きじゃくせいを突くのが仕事
+BlackHatHackerTitle2,It's my job to exploit vulnverabilities,きじゃくせいを突くのが仕事,,利用漏洞就是我的工作
 BlackHatHackerDescription,I need everyone's information to stay alive... So I will infect the virus...\nIf you infect everyone's phone with the virus，you win!\nIn an infected state，the virus infects surrounding non-infected persons.\nWhen the infection level is above the level at which self-propagation begins，\nThe disease progresses even if there are no infected persons around.,生きるために全員の情報が必要だ...だから僕はウイルスを感染させる...\n全員のスマホにウイルスを感染させたら勝利となります\n感染状態になると周囲の非感染者にウイルスが感染します\n自己増殖が開始される感染度以上の感染度になった場合、\n周りに感染者が居なくとも進行します,为了活下去，我要得到全船人的信息……我研发多年的病毒终于起作用了……\n\n若黑帽客用电脑病毒感染了所有玩家，黑帽客获胜。\n在感染电脑病毒的玩家一定范围内的玩家会以一定速率累积病毒感染进度。\n当病毒感染进度到达一定值时，病毒将开始自我繁殖，\n即便不处于感染病毒的玩家一定范围内，病毒感染进度也将累积。,為了生存盜取他人的資訊，讓他人感染病毒！\n若駭入了所有人的手機，則取得勝利。\n當感染者在被駭入狀態下，病毒會自動駭入周圍的非感染者。\n當感染度達到閾值時，病毒將自我繁殖，即使周圍沒有感染者病毒也會累積感染度。
 BlackHatHackerHackCoolTimeOption,Hack Cool Time,ハックのクールタイム,植入病毒冷却,駭入的冷卻時間
 BlackHatHackerHackCountableOption,Number of hacks possible,ハック可能回数,最大植入病毒次数,駭入的使用次數
@@ -1887,29 +1893,30 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
-BodyBuilderName,Bodybuilder,ボディビルダー
-BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！
-BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！
-BodyBuilderButtonName,Posing,ポージング
-BodyBuilderChangeAllTaskLiftWeights,Make all tasks lift weights task,全タスクを筋トレタスクに置き換える
-OwlName,Owl,フクロウ
-OwlTitle1,The one who flapped his wings in the dark,暗闇に羽ばたきし者
-OwlDescription,First， let’s choose a burrow.\nThen， let’s hide the killed body in that burrow.\nHowever， both killing and concealing can only be done in the darkness....\n\nI am apparently called the Night Hunter.\nLet’s live up to that name and go hunting.\nBut beware of the darkness....\nI might be there.,まずは巣穴を決めましょう。\nそしたらキルした死体をその巣穴に隠してしまいましょう。\nただし、キルも隠すのも出来るのは暗闇の中だけ....\n\n私は夜の狩人と呼ばれているらしい。\nその名に恥じない、狩りをしようじゃないか。\n暗闇にはお気をつけて....\n私がいるかもしれないからね....
-OwlImposterVisibilityDuringBlackout,Imposter visibility during blackout,停電時インポスターの視野になる
-OwlCanSpecialBlackoutDeaebodyCount,Number of bodies that will be able to use special blackout,特殊停電を使えるようになる死体数
-SpecialBlackoutCool,Cool time for special power outages,特殊停電のクールタイム
-SpecialBlackoutTime,Effect duration of special power outages,特殊停電の効果時間
-OwlNestBuildingButton,Nest-building,巣作り
-OwlTransportButton,Transport,運搬
-OwlHideDeadBodyButton,Hide,隠す
-OwlSpecialBlackoutButton,Special Blackout,特殊停電
-Kill,Kill,キル
+BodyBuilderName,Bodybuilder,ボディビルダー,,健美達人
+BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！,,看看我美麗的曲線！
+BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！,,健美達人屬於船員陣營。\n健美達人的所有任務都是舉重任務。\n完成任務後，可以進行肌肉展示。\n肌肉秀對其他玩家可見。
+BodyBuilderButtonName,Posing,ポージング,,秀肌肉
+BodyBuilderChangeAllTaskLiftWeights,Make all tasks lift weights task,全タスクを筋トレタスクに置き換える,,將所有任務更改為舉重任務
+OwlName,Owl,フクロウ,,夜梟
+OwlTitle1,The one who flapped his wings in the dark,暗闇に羽ばたきし者,,在黑暗中鼓動翅膀的人
+OwlDescription,First， let’s choose a burrow.\nThen， let’s hide the killed body in that burrow.\nHowever， both killing and concealing can only be done in the darkness....\n\nI am apparently called the Night Hunter.\nLet’s live up to that name and go hunting.\nBut beware of the darkness....\nI might be there.,まずは巣穴を決めましょう。\nそしたらキルした死体をその巣穴に隠してしまいましょう。\nただし、キルも隠すのも出来るのは暗闇の中だけ....\n\n私は夜の狩人と呼ばれているらしい。\nその名に恥じない、狩りをしようじゃないか。\n暗闇にはお気をつけて....\n私がいるかもしれないからね....,,夜梟屬於中立陣營。\n找到一個巢穴，並將屍體藏於其中。\n然而，無論是殺人和隱藏都只能在黑暗中進行....\n\n我的外號是夜晚的殺手。\n為了配上這個名字而去狩獵吧。\n但請小心，黑暗中不只有你能看見...
+OwlImposterVisibilityDuringBlackout,Imposter visibility during blackout,停電時インポスターの視野になる,,停電時擁有內鬼的視野
+OwlCanSpecialBlackoutDeaebodyCount,Number of bodies that will be able to use special blackout,特殊停電を使えるようになる死体数,,啟用黑幕降臨所需的屍體數
+SpecialBlackoutCool,Cool time for special power outages,特殊停電のクールタイム,,黑幕降臨的冷卻時間
+SpecialBlackoutTime,Effect duration of special power outages,特殊停電の効果時間,,黑幕降臨的持續時間
+OwlNestBuildingButton,Nest-building,巣作り,,築巢
+OwlTransportButton,Transport,運搬,,搬運
+OwlHideDeadBodyButton,Hide,隠す,,隱藏
+OwlSpecialBlackoutButton,Special Blackout,特殊停電,,黑幕降臨
+Kill,Kill,キル,,擊殺
 
 #NewRoleTranslation
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
+IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート
 
 #SettingMatchTag
 SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,<color=#a9ceec>游戏房间标签</color>设置,<color=#93b69c>房間對局標籤</color>設定
@@ -2118,12 +2125,12 @@ SNRWebTransmissionConditionHostDependency,Allow guests to send results when the 
 AbilityButtonCountTextFormater,Remaining {0} times,残り{0}回,剩余{0}次,剩餘{0}次
 
 # QuoteMod
-QuoteModName,Reference source,参考元
-QuoteModaulibhaltnet,au.libhalt.net,au.libhalt.net
-QuoteModExtremeRoles,Extreme Roles,Extreme Roles
-QuoteModNebulaOnTheShip,<color=#9579ce>Nebula On The Ship</color>,<color=#9579ce>Nebula On The Ship</color>
-QuoteModSuperNewRoles,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>
-QuoteModTheOtherRoles,<color=#ff351f>The Other Roles</color>,<color=#ff351f>The Other Roles</color>
-QuoteModTheOtherRolesGM,<color=#ff351f>The Other Roles GM</color>,<color=#ff351f>The Other Roles GM</color>
-QuoteModTheOtherRolesGMH,<color=#ff351f>The Other Roles GM H</color>,<color=#ff351f>The Other Roles GM H</color>
-QuoteModTownOfUsR,<color=#00ff00>Town Of UsR</color>,<color=#00ff00>Town Of UsR</color>
+QuoteModName,Reference source,参考元,,引用來源
+QuoteModaulibhaltnet,au.libhalt.net,au.libhalt.net,,au.libhalt.net
+QuoteModExtremeRoles,Extreme Roles,Extreme Roles,,Extreme Roles
+QuoteModNebulaOnTheShip,<color=#9579ce>Nebula On The Ship</color>,<color=#9579ce>Nebula On The Ship</color>,,<color=#9579ce>Nebula On The Ship</color>
+QuoteModSuperNewRoles,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>,,<color=#ffa500>超</color><color=#ff0000>新</color><color=#00ff00>職業</color>
+QuoteModTheOtherRoles,<color=#ff351f>The Other Roles</color>,<color=#ff351f>The Other Roles</color>,,<color=#ff351f>The Other Roles</color>
+QuoteModTheOtherRolesGM,<color=#ff351f>The Other Roles GM</color>,<color=#ff351f>The Other Roles GM</color>,,<color=#ff351f>The Other Roles GM</color>
+QuoteModTheOtherRolesGMH,<color=#ff351f>The Other Roles GM H</color>,<color=#ff351f>The Other Roles GM H</color>,,<color=#ff351f>The Other Roles GM H</color>
+QuoteModTownOfUsR,<color=#00ff00>Town Of UsR</color>,<color=#00ff00>Town Of UsR</color>,,<color=#00ff00>Town Of UsR</color>

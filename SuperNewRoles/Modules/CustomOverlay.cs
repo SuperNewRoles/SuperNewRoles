@@ -18,9 +18,10 @@ public class CustomOverlays
     private static TMPro.TextMeshPro infoOverlayLeft;
     private static TMPro.TextMeshPro infoOverlayCenter;
     private static TMPro.TextMeshPro infoOverlayRight;
-    private static bool overlayShown;
+    public static bool overlayShown;
     private static Dictionary<byte, string> playerDataDictionary = new();
     internal static Dictionary<byte, string> ActivateRolesDictionary = new();
+    private static float defaultfontSize = 1.15f;
 
     public static void ResetOverlays()
     {
@@ -72,7 +73,7 @@ public class CustomOverlays
         if (infoOverlayLeft == null)
         {
             infoOverlayLeft = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
-            infoOverlayLeft.fontSize = infoOverlayLeft.fontSizeMin = infoOverlayLeft.fontSizeMax = 1.15f;
+            infoOverlayLeft.SetStaticfontSizes(defaultfontSize);
             infoOverlayLeft.autoSizeTextContainer = false;
             infoOverlayLeft.enableWordWrapping = false;
             infoOverlayLeft.alignment = TMPro.TextAlignmentOptions.TopLeft;
@@ -86,9 +87,7 @@ public class CustomOverlays
         if (infoOverlayCenter == null)
         {
             infoOverlayCenter = UnityEngine.Object.Instantiate(infoOverlayLeft, hudManager.transform);
-            infoOverlayCenter.maxVisibleLines = 30;
-            infoOverlayCenter.fontSize = infoOverlayCenter.fontSizeMin = infoOverlayCenter.fontSizeMax = 1.15f;
-            infoOverlayCenter.outlineWidth += 0.02f;
+            infoOverlayCenter.SetStaticfontSizes(defaultfontSize);
             infoOverlayCenter.autoSizeTextContainer = false;
             infoOverlayCenter.enableWordWrapping = false;
             infoOverlayCenter.alignment = TMPro.TextAlignmentOptions.TopLeft;
@@ -102,9 +101,7 @@ public class CustomOverlays
         if (infoOverlayRight == null)
         {
             infoOverlayRight = UnityEngine.Object.Instantiate(infoOverlayCenter, hudManager.transform);
-            infoOverlayRight.maxVisibleLines = 30;
-            infoOverlayRight.fontSize = infoOverlayRight.fontSizeMin = infoOverlayRight.fontSizeMax = 1.15f;
-            infoOverlayRight.outlineWidth += 0.02f;
+            infoOverlayRight.SetStaticfontSizes(defaultfontSize);
             infoOverlayRight.autoSizeTextContainer = false;
             infoOverlayRight.enableWordWrapping = false;
             infoOverlayRight.alignment = TMPro.TextAlignmentOptions.TopLeft;
@@ -200,13 +197,23 @@ public class CustomOverlays
                 break;
         }
 
+        //横幅が問題にならないならテキストサイズ調整のみで解決
         infoOverlayLeft.text = leftText;
+        int line = leftText.CountLine();
+        float fsize = line > 28 ? defaultfontSize * 28 / line : defaultfontSize;
+        infoOverlayLeft.SetStaticfontSizes(fsize);
         infoOverlayLeft.enabled = true;
 
         infoOverlayCenter.text = centerText;
+        line = centerText.CountLine();
+        fsize = line > 28 ? defaultfontSize * 28 / line : defaultfontSize;
+        infoOverlayCenter.SetStaticfontSizes(fsize);
         infoOverlayCenter.enabled = true;
 
         infoOverlayRight.text = rightText;
+        line = rightText.CountLine();
+        fsize = line > 28 ? defaultfontSize * 28 / line : defaultfontSize;
+        infoOverlayRight.SetStaticfontSizes(fsize);
         infoOverlayRight.enabled = true;
 
         var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
@@ -295,10 +302,10 @@ public class CustomOverlays
             else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay(CustomOverlayPattern.ActivateRoles); // 「現在配役されている役職」を表示
             else if (Input.GetKeyDown(KeyCode.T)) YoggleInfoOverlay(CustomOverlayPattern.MatchTag); // 「現在設定されているタグ」を表示
             else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay(nowPattern, true); // 全てのoverlayの文章の更新 & GとIはページ送り
+            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay(CustomOverlayPattern.Regulation); // レギュレーション(バニラ設定 & SNRの設定)を表示
 
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay(CustomOverlayPattern.MyRole); // 自分の役職の説明を表示
-            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay(CustomOverlayPattern.Regulation); // レギュレーション(バニラ設定 & SNRの設定)を表示
         }
     }
 
@@ -761,25 +768,11 @@ public class CustomOverlays
         left = center = right = null;
 
         // 左の列が必ず奇数ページになるようにする
-        switch (SuperNewRolesPlugin.optionsPage % 2)
-        {
-            case 0:
-                break;
-            case 1:
-                SuperNewRolesPlugin.optionsPage -= 1;
-                break;
-        }
+        int page = SuperNewRolesPlugin.optionsPage;
+        page -= page % 2;
 
-        int firstPage = SuperNewRolesPlugin.optionsPage;
-        int page = firstPage;
-
-        left = GameOptionsDataPatch.ResultData();
-        SuperNewRolesPlugin.optionsPage = page + 1;
-
-        if (SuperNewRolesPlugin.optionsPage <= SuperNewRolesPlugin.optionsMaxPage)
-            right = GameOptionsDataPatch.ResultData();
-
-        SuperNewRolesPlugin.optionsPage = firstPage; // 現在のページを左の列に表示しているページに戻す
+        left = GameOptionsDataPatch.getHudString(page);
+        right = GameOptionsDataPatch.getHudString(page + 1);
     }
 
     // マッチメイキングタグの設定を表示する

@@ -19,7 +19,14 @@ public class LateTask
         timer -= deltaTime;
         if (timer <= 0)
         {
-            action();
+            try {
+                action();
+            }
+            catch (Exception e) {
+                Logger.Error("Error in LateTask", "LateTask");
+                System.Console.Error.WriteLine(e);
+                System.Console.Error.WriteLine(e.StackTrace);
+            }
             return true;
         }
         return false;

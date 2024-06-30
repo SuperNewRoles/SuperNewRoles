@@ -92,6 +92,7 @@ public static class RPCHelper
         }
         var clientId = SeePlayer.GetClientId();
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SetName, SendOption.Reliable, clientId);
+        writer.Write(TargetPlayer.Data.NetId);
         writer.Write(NewName);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
@@ -199,6 +200,8 @@ public static class RPCHelper
     }
     public static void RpcSyncGameData(int TargetClientId = -1)
     {
+        throw new System.NotImplementedException("RpcSyncGameData is FIXME");
+        /*
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
@@ -226,7 +229,7 @@ public static class RPCHelper
         writer.EndMessage();
 
         AmongUsClient.Instance.SendOrDisconnect(writer);
-        writer.Recycle();
+        writer.Recycle();*/
     }
     public static void RpcSyncGameData(CustomRpcSender sender, int TargetClientId = -1)
     {
@@ -358,6 +361,18 @@ public static class RPCHelper
         MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetSkin, seePlayer);
         messageWriter.Write(skinId);
         messageWriter.EndRPC();
+    }
+    public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, NetworkedPlayerInfo exiled, bool tie, PlayerControl SeePlayer)
+    {
+        MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 23, SendOption.None, SeePlayer.GetClientId());
+        val.WritePacked(states.Length);
+        foreach (VoterState voterState in states)
+        {
+            voterState.Serialize(val);
+        }
+        val.Write(exiled?.PlayerId ?? byte.MaxValue);
+        val.Write(tie);
+        val.EndMessage();
     }
     /// <summary>
     /// 通常のRPCのExiled

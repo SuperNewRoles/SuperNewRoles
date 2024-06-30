@@ -165,7 +165,7 @@ public class Moira
         player1.SwapRoleRPC(player2);
     }
 
-    public static void WrapUp(GameData.PlayerInfo exiled)
+    public static void WrapUp(NetworkedPlayerInfo exiled)
     {
         AbilityUsedThisMeeting = false;
         if (!AmongUsClient.Instance.AmHost)

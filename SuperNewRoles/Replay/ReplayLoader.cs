@@ -12,7 +12,7 @@ using SuperNewRoles.Roles.Impostor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using static GameData;
+using static NetworkedPlayerInfo;
 using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Replay;

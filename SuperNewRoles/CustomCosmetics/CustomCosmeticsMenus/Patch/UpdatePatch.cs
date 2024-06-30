@@ -109,7 +109,7 @@ class UpdatePatch
             __instance.itemName.text = "プリセット" + (ObjectData.SelectedPreset.Value + 1);
             foreach (PoolablePlayer player in ObjectData.PresetAreas)
             {
-                var outfit = new GameData.PlayerOutfit();
+                var outfit = new NetworkedPlayerInfo.PlayerOutfit();
                 var data = SelectPatch.GetData(i);
                 outfit.ColorId = data.BodyColor.Value;
                 outfit.HatId = data.Hat.Value;

@@ -21,7 +21,7 @@ using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
-using static GameData;
+using static NetworkedPlayerInfo;
 using static SuperNewRoles.ModHelpers;
 
 namespace SuperNewRoles.Patches;

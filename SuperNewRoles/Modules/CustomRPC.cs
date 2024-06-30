@@ -250,16 +250,15 @@ public enum RoleId
 
 public enum CustomRPC
 {
-    // 2024.1.12 現在
-    // Among Us 本体(2023.11.28) : 0 ~ 61
-    // LI : 94 ~ 99
+    // Among Us 本体(2023.6.18) : 0 ~ 65
+    // LI : 94 ~ 99 (2024.1.12 現在)
 
-    // 2024.1.12 現在
-    // SNR : 64 ~ 93, 100 ~ 184
+    // 2024.6.25 現在
+    // SNR : 64 ~ 95, 100 ~ 185
     // Agartha : 無し
 
     // Vanilla Extended RPC
-    Chat = 64,
+    Chat = 66,
     UncheckedSetVanillaRole,
     RPCMurderPlayer,
     CustomRPCKill,
@@ -274,7 +273,7 @@ public enum CustomRPC
     RPCTeleport,
 
     // Mod Basic RPC
-    ShareOptions = 77,
+    ShareOptions = 79,
     ShareSNRVersion,
     StartGameRPC,
     SetRole,
@@ -288,14 +287,14 @@ public enum CustomRPC
     UncheckedUsePlatform,
 
     // Mod feature RPC
-    AutoCreateRoom = 89,
+    AutoCreateRoom = 91,
     SetBot,
     UncheckedSetColor,
-    SetDeviceTime,
+    SetDeviceTime = 100,
     ShowFlash,
 
     // Mod Roles RPC
-    RPCClergymanLightOut = 100,
+    RPCClergymanLightOut,
     SheriffKill,
     MeetingSheriffKill,
     UncheckedMeeting,
@@ -590,7 +589,7 @@ public static class RPCProcedure
     {
         PlayerControl player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        GameData.PlayerOutfit outfit = new()
+        NetworkedPlayerInfo.PlayerOutfit outfit = new()
         {
             ColorId = color,
             HatId = hat,
@@ -1114,7 +1113,7 @@ public static class RPCProcedure
     {
         var player = ModHelpers.PlayerById(playerId);
         player.ClearAllTasks();
-        GameData.Instance.SetTasks(playerId, taskTypeIds);
+        player.Data.SetTasks(taskTypeIds);
     }
     public static void StartGameRPC()
         => RoleClass.ClearAndReloadRoles();
@@ -1185,8 +1184,9 @@ public static class RPCProcedure
                 uint optionId = reader.ReadPackedUInt32();
                 uint selection = reader.ReadPackedUInt32();
                 CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
-                option.UpdateSelection((int)selection);
+                option.SetSelection((int)selection);
             }
+            GameOptionsDataPatch.UpdateData();
         }
         catch (Exception e)
         {
@@ -1200,7 +1200,9 @@ public static class RPCProcedure
             ver = new(major, minor, build);
         else
             ver = new(major, minor, build, revision);
-        ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[clientId] = new PlayerVersion(ver, guid);
+
+        if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.TryGetValue(clientId, out PlayerVersion value) || !value.Equals(ver, guid))
+            ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[clientId] = new PlayerVersion(ver, guid);
     }
     public static void SetRole(byte playerid, byte RPCRoleId)
     {
@@ -1236,8 +1238,8 @@ public static class RPCProcedure
         RoleHelpers.ClearTaskUpdate();
         if (AmongUsClient.Instance.AmHost)
         {
-            byte[] player1task = Array.ConvertAll(Array.FindAll<GameData.TaskInfo>(player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
-            byte[] player2task = Array.ConvertAll(Array.FindAll<GameData.TaskInfo>(player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            byte[] player1task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+            byte[] player2task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
             player2.SetTask(player1task);
             player1.SetTask(player2task);
         }

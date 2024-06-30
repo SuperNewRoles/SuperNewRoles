@@ -922,10 +922,10 @@ public class CustomOptionHolder
     public static CustomOption LoversShortTask;
 
     public static string[] LevelingerTexts = new string[] { };
-    public static List<float> CrewPlayers = new() { 1f, 1f, 15f, 1f };
-    public static List<float> AlonePlayers = new() { 1f, 1f, 1f, 1f };
-    public static List<float> ImpostorPlayers = new() { 1f, 1f, 15f, 1f };
-    public static List<float> QuarreledPlayers = new() { 1f, 1f, 7f, 1f };
+    public static List<float> CrewPlayers = new() { 0f, 0f, 15f, 1f };
+    public static List<float> AlonePlayers = new() { 0f, 0f, 1f, 1f };
+    public static List<float> ImpostorPlayers = new() { 0f, 0f, 15f, 1f };
+    public static List<float> QuarreledPlayers = new() { 0f, 0f, 7f, 1f };
     // public static CustomOption ;
 
     internal static Dictionary<byte, byte[]> blockedRolePairings = new();
@@ -1275,7 +1275,7 @@ public class CustomOptionHolder
         SmasherPlayerCount = Create(205101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
         SmasherKillCoolTime = Create(205102, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
 
-        WerewolfOption = new(205200, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
+        WerewolfOption = SetupCustomRoleOption(205200, false, RoleId.Werewolf, CustomOptionType.Impostor);
         WerewolfPlayerCount = Create(205201, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
         // SetupImpostorCustomOptions

@@ -365,7 +365,7 @@ public class CustomColors
             }
             private static bool IsTaken(PlayerControl player, uint color)
             {
-                foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
+                foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
                 {
                     //Logger.Info($"{!p.Disconnected} は {p.PlayerId != player.PlayerId} は {p.DefaultOutfit.ColorId == color}", "isTaken");
                     if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)

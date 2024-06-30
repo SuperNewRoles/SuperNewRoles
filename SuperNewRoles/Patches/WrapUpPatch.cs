@@ -94,7 +94,7 @@ class WrapUpPatch
             WrapUpPatch.Postfix(__instance.exiled);
         }
     }
-    public static void Prefix(GameData.PlayerInfo exiled)
+    public static void Prefix(NetworkedPlayerInfo exiled)
     {
         if (exiled != null && exiled.Object == null)
         {
@@ -129,7 +129,7 @@ class WrapUpPatch
             }
         }
     }
-    public static void Postfix(GameData.PlayerInfo exiled)
+    public static void Postfix(NetworkedPlayerInfo exiled)
     {
         if (exiled != null && exiled.Object == null)
         {
