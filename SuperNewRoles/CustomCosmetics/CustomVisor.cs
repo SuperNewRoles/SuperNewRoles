@@ -11,6 +11,7 @@ using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 namespace SuperNewRoles.CustomCosmetics;
 
 public class CustomVisor
@@ -19,7 +20,7 @@ public class CustomVisor
 
     public static bool isAdded = false;
     static readonly List<VisorData> visorData = new();
-    public static readonly List<CustomVisorData> customVisorData = new();
+    public static readonly Dictionary<string, CustomVisorData> customVisorData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetVisorById))]
     class UnlockedVisorPatch
     {
@@ -48,18 +49,19 @@ public class CustomVisor
                     List<CustomVisors.CustomVisor> customvisors = CustomVisors.CreateCustomVisorDetails(visors);
                     foreach (CustomVisors.CustomVisor cv in customvisors)
                     {
-                        customVisorData.Add(CreateVisorData(cv));
+                        CustomVisorData visorData = CreateVisorData(cv);
+                        customVisorData.Add(visorData.ProductId, visorData);
                     }
                 }
                 while (DownLoadClassVisor.VisorDetails.Count > 0)
                 {
                     CustomVisorData chdata = CreateVisorData(DownLoadClassVisor.VisorDetails[0]);
-                    customVisorData.Add(chdata);
+                    customVisorData.Add(chdata.ProductId, chdata);
                     DownLoadClassVisor.VisorDetails.RemoveAt(0);
                 }
                 LOADED = true;
                 var data = __instance.allVisors.ToList();
-                data.AddRange(customVisorData);
+                data.AddRange(customVisorData.Values);
                 visordata = data;
                 __instance.allVisors = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<VisorData>(data.ToArray());
                 IsLoadingnow = false;
@@ -172,6 +174,11 @@ public class CustomVisor
         if (VisorShader == null && DestroyableSingleton<HatManager>.InstanceExists) VisorShader = new Material(Shader.Find("Unlit/PlayerShader"));
 
         CustomVisorData.VisorTempViewData visorViewData = new() { MainImage = GetVisorSprite(cv.resource) };
+        var assetRef = new AssetReference(visorViewData.CreateVVD.Pointer);
+
+        // PreviewViewData previewData = new() { PreviewSprite = visorViewData.MainImage };
+
+        // var previewDataRef = new AssetReference(previewData.Pointer);
 
         CustomVisorData visor = new()
         {
@@ -186,8 +193,11 @@ public class CustomVisor
             NotInStore = true,
 
             // 本体 : VisorData
-            behindHats = cv.behindHats
+            behindHats = cv.behindHats,
+            ViewDataRef = assetRef,
+            // PreviewData = previewDataRef,
         };
+        visor.CreateAddressableAsset();
 
         visorViewData.VisorName = visor.ProdId;
         if (cv.adaptive) visorViewData.Adaptive = true;
@@ -206,7 +216,7 @@ public class CustomVisor
         }
         else
         {
-            CustomVisors.CustomVisorRegistry.Add(visor.name, extend);
+            CustomVisors.CustomVisorRegistry[visor.name] = extend;
         }
         visor.vtvd = visorViewData;
         return visor;
@@ -287,7 +297,22 @@ public class VisorTabPatch
                 __instance.UpdateMaterials(colorChip.Inner.FrontLayer, visor);
                 __instance.visorId = DataManager.Player.Customization.Visor;
                 __instance.ColorChips.Add(colorChip);
-                visor.SetPreview(colorChip.Inner.FrontLayer, color);
+                //Modバイザーか判定
+                if (CustomVisor.customVisorData.TryGetValue(visor.ProductId, out CustomVisorData cvd))
+                {
+                    colorChip.Inner.FrontLayer.sprite = cvd.vtvd.MainImage;
+                    PlayerMaterial.SetColors(color, colorChip.Inner.FrontLayer);
+                }
+                else if (visor.ProductId.StartsWith("CustomVisors_"))
+                {
+                    colorChip.Inner.FrontLayer.sprite = null;
+                    PlayerMaterial.SetColors(color, colorChip.Inner.FrontLayer);
+                }
+                else
+                {
+                    visor.SetPreview(colorChip.Inner.FrontLayer, color);
+                }
+                // visor.SetPreview(colorChip.Inner.FrontLayer, color);
                 Chips.Add(colorChip);
                 i2++;
             }
