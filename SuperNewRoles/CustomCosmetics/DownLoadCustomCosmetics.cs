@@ -7,7 +7,7 @@ public static class DownLoadCustomCosmetics
 
     /// <summary>CustomCosmeticの読み込みを行うか</summary>
     public static bool IsLoad => !(ConfigRoles.DebugMode.Value || ConfigRoles.IsModCosmeticsAreNotLoaded.Value) || forceLoad;
-
+    
     public static void CosmeticsLoad()
     {
         DownLoadCustomhat.Load();

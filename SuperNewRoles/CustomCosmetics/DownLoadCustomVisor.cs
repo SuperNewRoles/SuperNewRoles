@@ -54,6 +54,7 @@ public static class DownLoadClassVisor
 
     private static async Task LaunchVisorFetcherAsync()
     {
+        Logger.Info("[CustomVisor:Download] ISDOWNLOAD:"+DownLoadCustomCosmetics.IsLoad);
         if (!DownLoadCustomCosmetics.IsLoad) return;
 
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
