@@ -114,14 +114,14 @@ class RoleManagerSelectRolesPatch
 
             foreach (PlayerControl player in AllRoleSetClass.impostors)
             {
-                sender.RpcSetRole(player, RoleTypes.Impostor);
+                sender.RpcSetRole(player, RoleTypes.Impostor, true);
             }
             RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanillaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (!player.Data.Disconnected && !player.IsImpostor())
                 {
-                    sender.RpcSetRole(player, CrewRoleTypes);
+                    sender.RpcSetRole(player, CrewRoleTypes, true);
                 }
             }
 
@@ -130,6 +130,7 @@ class RoleManagerSelectRolesPatch
             {
                 sender.AutoStartRpc(pc.NetId, (byte)RpcCalls.SetRole)
                     .Write((ushort)RoleTypes.Shapeshifter)
+                    .Write(true)
                     .EndRpc();
             }
             //RpcSetRoleReplacerの送信処理
