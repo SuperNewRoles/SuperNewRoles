@@ -249,7 +249,7 @@ class EndGameCheck
                 DeathReason.Exile => GameOverReason.ImpostorByVote,
                 DeathReason.Kill => GameOverReason.ImpostorByKill,
                 _ => GameOverReason.ImpostorByVote,
-            });
+            };
             if (Demon.IsDemonWinFlag())
             {
                 MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
@@ -258,7 +258,7 @@ class EndGameCheck
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.DemonWin);
             }
 
-            CustomEndGame(__instance, endReason, false);
+            CustomEndGame(__instance, (CustomGameOverReason)endReason, false);
             return true;
         }
         return false;

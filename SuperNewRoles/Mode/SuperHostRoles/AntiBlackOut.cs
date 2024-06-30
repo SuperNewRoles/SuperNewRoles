@@ -33,9 +33,9 @@ public static class AntiBlackOut
     private static bool _cantProcess;
     private static bool ProcessNow;
     private static bool IsModdedSerialize;
-    public static GameData.PlayerInfo RealExiled;
+    public static NetworkedPlayerInfo RealExiled;
 
-    public static void OnDisconnect(GameData.PlayerInfo exiled)
+    public static void OnDisconnect(NetworkedPlayerInfo exiled)
     {
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             return;
@@ -84,7 +84,7 @@ public static class AntiBlackOut
         return ProcessNow && !IsModdedSerialize;
     }
 
-    public static SupportType GetSupportType(GameData.PlayerInfo exiled)
+    public static SupportType GetSupportType(NetworkedPlayerInfo exiled)
     {
         if (exiled == null)
         {
@@ -95,7 +95,7 @@ public static class AntiBlackOut
         int numCrewmate = 0;
         int deadPlayers = 0;
         int deadImpostorsOnDesync = 0;
-        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
             if (player.Role.IsImpostor)
                 numImpostor++;
@@ -124,7 +124,7 @@ public static class AntiBlackOut
             RoleTypes.ImpostorGhost;
     }
 
-    public static void OnMeetingHudClose(GameData.PlayerInfo exiled)
+    public static void OnMeetingHudClose(NetworkedPlayerInfo exiled)
     {
         if (CantProcess)
             return;
@@ -136,7 +136,7 @@ public static class AntiBlackOut
     {
         if (CantProcess)
             return;
-        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
             player.IsDead = PlayerDeadData[player.PlayerId];
             player.Disconnected = PlayerDisconnectedData[player.PlayerId];
@@ -170,11 +170,11 @@ public static class AntiBlackOut
         DestroySavedData();
     }
 
-    private static void SetAllDontDead(GameData.PlayerInfo exiled)
+    private static void SetAllDontDead(NetworkedPlayerInfo exiled)
     {
         InitalSavedData();
         bool NeedDesyncSerialize = false;
-        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
             PlayerDeadData[player.PlayerId] = player.IsDead;
             PlayerDisconnectedData[player.PlayerId] = player.Disconnected;
@@ -193,7 +193,7 @@ public static class AntiBlackOut
         else
             SyncDontDead(exiled);
     }
-    private static void DesyncDontDead(GameData.PlayerInfo exiled)
+    private static void DesyncDontDead(NetworkedPlayerInfo exiled)
     {
         Logger.Info("Selected DesyncDontDead");
         foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
@@ -202,7 +202,7 @@ public static class AntiBlackOut
                 continue;
             bool IsImpoAlived = false;
             if (!IsPlayerDesyncImpostorTeam(seer)) {
-                foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+                foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
                 {
                     if (!player.Role.IsImpostor || !IsImpoAlived || exiled == player)
                     {
@@ -217,7 +217,7 @@ public static class AntiBlackOut
             }
             else
             {
-                foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+                foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
                 {
                     player.IsDead = false;
                     player.Disconnected = false;
@@ -225,7 +225,7 @@ public static class AntiBlackOut
             }
             IsModdedSerialize = true;
             Logger.Info($"---------SendTo {seer.Data.PlayerName}({seer.GetClientId()})---------");
-            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
                 Logger.Info($"{player.PlayerName}({player.Object.GetClientId()}) -> {player.IsDead} : {player.Disconnected}");
             }
@@ -252,11 +252,11 @@ public static class AntiBlackOut
     {
         SendAntiBlackOutInformation(null, ABOInformationType.AllExileWillDobuleVoted);
     }
-    private static void SyncDontDead(GameData.PlayerInfo exiled)
+    private static void SyncDontDead(NetworkedPlayerInfo exiled)
     {
         Logger.Info("Selected SyncDontDead");
         bool IsImpoAlived = false;
-        foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
             if (player.Role.IsImpostor && !IsImpoAlived &&
                 (exiled == null || exiled.PlayerId != player.PlayerId))

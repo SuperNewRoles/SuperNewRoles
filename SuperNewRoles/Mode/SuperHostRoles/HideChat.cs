@@ -79,7 +79,7 @@ public class AliveState
 {
     public bool IsDead { get; }
     public bool Disconnected { get;}
-    public AliveState(GameData.PlayerInfo player)
+    public AliveState(NetworkedPlayerInfo player)
     {
         IsDead = player.IsDead;
         Disconnected = player.Disconnected;

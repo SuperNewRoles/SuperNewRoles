@@ -143,8 +143,8 @@ class ControllerManagerUpdatePatch
                 AmongUsClient.Instance.SendOrDisconnect(writer);
                 writer.Recycle();
                 new LateTask(() =>
-                {
-                    GameData.PlayerInfo info = new GameData.PlayerInfo(19);
+                {/*
+                    NetworkedPlayerInfo info = new NetworkedPlayerInfo(19);
                     info.RoleType = AmongUs.GameOptions.RoleTypes.Impostor;
                     info.Outfits = new();
                     info.Role = new();
@@ -178,7 +178,7 @@ class ControllerManagerUpdatePatch
                     writer.EndMessage();
                     writer.EndMessage();
                     AmongUsClient.Instance.SendOrDisconnect(writer);
-                    writer.Recycle();
+                    writer.Recycle();*/
                 }, 0.5f);
                 return;
                 CustomSpores.AddMushroom(PlayerControl.LocalPlayer.transform.position);

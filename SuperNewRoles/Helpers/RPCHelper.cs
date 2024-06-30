@@ -97,7 +97,7 @@ public static class RPCHelper
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
-    public static void RpcVotingCompleteDesync(VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl seer)
+    public static void RpcVotingCompleteDesync(VoterState[] states, NetworkedPlayerInfo exiled, bool tie, PlayerControl seer)
     {
         if (MeetingHud.Instance == null)
             throw new System.Exception("MeetingHud.Instance is null");
@@ -233,6 +233,8 @@ public static class RPCHelper
     }
     public static void RpcSyncGameData(CustomRpcSender sender, int TargetClientId = -1)
     {
+        throw new System.NotImplementedException("RpcSyncGameData is FIXME");
+        /*
         if (sender == null)
         {
             RpcSyncGameData(TargetClientId);
@@ -252,7 +254,7 @@ public static class RPCHelper
             }
             writer.EndMessage();
         });
-        sender.EndMessage();
+        sender.EndMessage();*/
     }
     public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1, SendOption sendOption = SendOption.Reliable)
     {
