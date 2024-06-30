@@ -270,6 +270,7 @@ public static class CredentialsPatch
         }
         public static void Postfix(MainMenuManager __instance)
         {
+            DownLoadCustomCosmetics.CosmeticsLoad();
             AprilFoolsManager.SetRandomModMode();
 
             __instance.gameModeButtons.GetComponent<AspectPosition>().DistanceFromEdge = new(0, 0, -5);
@@ -285,7 +286,6 @@ public static class CredentialsPatch
                 __instance.StartCoroutine(ShowAnnouncementPopUp(__instance).WrapToIl2Cpp());
             }
 
-            DownLoadCustomCosmetics.CosmeticsLoad();
 
             instance = __instance;
 
