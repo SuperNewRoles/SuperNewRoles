@@ -131,6 +131,7 @@ class RoleManagerSelectRolesPatch
             }*/
             //RpcSetRoleReplacerの送信処理
             sender.SendMessage();
+            // RoleSelectHandler.DEBUGOnlySender.SendMessage();
 
             try
             {

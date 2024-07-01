@@ -24,6 +24,8 @@ public static class RoleSelectHandler
     /// <value>現在はパン屋Bot 又は 詐欺師Botのみ</value>
     public static PlayerControl ConfirmImpostorSecondTextBot = null;
 
+    public static CustomRpcSender DEBUGOnlySender;
+
     public static CustomRpcSender RoleSelect(CustomRpcSender send)
     {
         sender = send;
@@ -268,8 +270,6 @@ public static class RoleSelectHandler
                 continue;
             if (player.IsImpostor())
                 sender.RpcSetRole(player, RoleTypes.Impostor, true);
-            else
-                sender.RpcSetRole(player, RoleTypes.Crewmate, true);
         }
 
         /*============シェイプシフター役職設定============*/
@@ -320,22 +320,23 @@ public static class RoleSelectHandler
             throw new System.NotImplementedException("Crewmates is all desync role.");
 
         //new LateTask(() => {
-            CustomRpcSender inSender = new("SetRole Disconnected", SendOption.Reliable, false);
+        Logger.Info($"RoleSelectHandler: {NotDesyncTarget.PlayerId}");
+        DEBUGOnlySender = CustomRpcSender.Create(sendOption:SendOption.Reliable);
+        DEBUGOnlySender = sender;
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 player.Data.Disconnected = true;
             }
-            RPCHelper.RpcSyncAllNetworkedPlayer(inSender);
+            RPCHelper.RpcSyncAllNetworkedPlayer(sender);
 
-            inSender.RpcSetRole(NotDesyncTarget, NotDesyncTargetRole.Value, true);
+        sender.RpcSetRole(NotDesyncTarget, NotDesyncTargetRole.Value, true);
 
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 player.Data.Disconnected = false;
             }
 
-            RPCHelper.RpcSyncAllNetworkedPlayer(inSender);
-        new LateTask(inSender.SendMessage, 0f);
+            RPCHelper.RpcSyncAllNetworkedPlayer(sender);
         //}, 0.15f, "SetRole Disconnected Task");
 
         if (RoleClass.Egoist.EgoistPlayer.Count + RoleClass.Spy.SpyPlayer.Count > 0)
@@ -447,7 +448,7 @@ public static class RoleSelectHandler
         else
         {
             //Modクライアントは代わりに普通のクルーにする
-            Player.SetRole(RoleTypes.Crewmate); //Modクライアント視点用
+            Player.SetRole(RoleTypes.Crewmate, true); //Modクライアント視点用
             sender.RpcSetRole(Player, RoleTypes.Crewmate, true);
         }
     }
