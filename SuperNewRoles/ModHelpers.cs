@@ -944,7 +944,12 @@ public static class ModHelpers
 
     public static string Cs(Color c, string s)
     {
-        return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
+        return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.b):X2}>{s}</color>";
+    }
+    public static byte ToByte(float f)
+    {
+        f = Mathf.Clamp01(f);
+        return (byte)(f * 255);
     }
     public static T GetRandom<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
