@@ -932,14 +932,7 @@ public class CustomOptionHolder
 
     public static string Cs(Color c, string s)
     {
-        return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), ModTranslation.GetString(s));
-    }
-
-
-    public static byte ToByte(float f)
-    {
-        f = Mathf.Clamp01(f);
-        return (byte)(f * 255);
+        return ModHelpers.Cs(c, ModTranslation.GetString(s));
     }
 
     public static void Load()
