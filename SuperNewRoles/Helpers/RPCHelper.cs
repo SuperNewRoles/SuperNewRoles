@@ -190,7 +190,7 @@ public static class RPCHelper
         writer.StartMessage(1); //0x01 Data
         {
             writer.WritePacked(Instance.NetId);
-            Instance.Serialize(writer, true);
+            Instance.Serialize(writer, false);
 
         }
         writer.EndMessage();
@@ -221,7 +221,7 @@ public static class RPCHelper
         {
             writer.WritePacked(playerInfo.NetId);
             GameDataSerializePatch.Is = true;
-            playerInfo.Serialize(writer, true);
+            playerInfo.Serialize(writer, false);
             GameDataSerializePatch.Is = false;
 
         }
@@ -233,7 +233,6 @@ public static class RPCHelper
     }
     public static void RpcSyncNetworkedPlayer(CustomRpcSender sender, NetworkedPlayerInfo playerInfo, int TargetClientId = -1)
     {
-        
         if (sender == null)
         {
             RpcSyncNetworkedPlayer(playerInfo, TargetClientId);
@@ -243,14 +242,10 @@ public static class RPCHelper
 
         sender.Write((writer) =>
         {
-            // 書き込み {}は読みやすさのためです。
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(playerInfo.NetId);
-                GameDataSerializePatch.Is = true;
-                playerInfo.Serialize(writer, true);
-                GameDataSerializePatch.Is = false;
-
+                playerInfo.Serialize(writer, false);
             }
             writer.EndMessage();
         });
@@ -266,30 +261,19 @@ public static class RPCHelper
         sender.StartMessage(TargetClientId);
         sender.Write((writer) =>
         {
-            if (TargetClientId < 0)
-            {
-                writer.StartMessage(5);
-                writer.Write(AmongUsClient.Instance.GameId);
-            }
-            else
-            {
-                writer.StartMessage(6);
-                writer.Write(AmongUsClient.Instance.GameId);
-                if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
-                writer.WritePacked(TargetClientId);
-            }
             GameDataSerializePatch.Is = true;
-            writer.StartMessage(1); //0x01 Data
+            foreach (var player in GameData.Instance.AllPlayers)
             {
-                foreach (var player in GameData.Instance.AllPlayers)
+                writer.StartMessage(1); //0x01 Data
                 {
                     writer.WritePacked(player.NetId);
-                    player.Serialize(writer, true);
+                    player.Serialize(writer, false);
                 }
+                writer.EndMessage();
             }
             GameDataSerializePatch.Is = false;
-            writer.EndMessage();
         });
+        sender.EndMessage();
     }
     public static void RpcSyncAllNetworkedPlayer(int TargetClientId = -1)
     {
@@ -307,16 +291,16 @@ public static class RPCHelper
             writer.WritePacked(TargetClientId);
         }
         GameDataSerializePatch.Is = true;
-        writer.StartMessage(1); //0x01 Data
+        foreach (var player in GameData.Instance.AllPlayers)
         {
-            foreach (var player in GameData.Instance.AllPlayers)
+            writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(player.NetId);
-                player.Serialize(writer, true);
+                player.Serialize(writer, false);
             }
+            writer.EndMessage();
         }
         GameDataSerializePatch.Is = false;
-        writer.EndMessage();
         writer.EndMessage();
 
         AmongUsClient.Instance.SendOrDisconnect(writer);

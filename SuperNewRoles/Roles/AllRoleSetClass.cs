@@ -110,12 +110,6 @@ class RoleManagerSelectRolesPatch
                     SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                 }
             }
-            sender = RoleSelectHandler.RoleSelect(sender);
-
-            foreach (PlayerControl player in AllRoleSetClass.impostors)
-            {
-                sender.RpcSetRole(player, RoleTypes.Impostor, true);
-            }
             RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanillaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -124,7 +118,9 @@ class RoleManagerSelectRolesPatch
                     sender.RpcSetRole(player, CrewRoleTypes, true);
                 }
             }
+            sender = RoleSelectHandler.RoleSelect(sender);
 
+            /*
             //サーバーの役職判定をだます
             foreach (var pc in PlayerControl.AllPlayerControls)
             {
@@ -132,7 +128,7 @@ class RoleManagerSelectRolesPatch
                     .Write((ushort)RoleTypes.Shapeshifter)
                     .Write(true)
                     .EndRpc();
-            }
+            }*/
             //RpcSetRoleReplacerの送信処理
             sender.SendMessage();
 

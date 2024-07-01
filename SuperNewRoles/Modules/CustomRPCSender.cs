@@ -253,7 +253,7 @@ public static class CustomRpcSenderExtensions
           .EndRpc();
         if (tarGetClientId == -1)
         {
-            player.SetRole(role);
+            player.SetRole(role, canOverRide);
         }
     }
     public static void RpcMurderPlayer(this CustomRpcSender sender, PlayerControl player, PlayerControl target, int tarGetClientId = -1)
