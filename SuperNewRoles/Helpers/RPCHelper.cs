@@ -251,6 +251,18 @@ public static class RPCHelper
         });
         sender.EndMessage();
     }
+    public static void RpcSetTasks(CustomRpcSender sender, NetworkedPlayerInfo player, byte[] tasks, int TargetClientId = -1)
+    {
+        if (sender == null)
+        {
+            throw new System.NotImplementedException("RpcSetTask sender");
+        }
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetTasks, TargetClientId);
+        sender.WriteBytesAndSize(tasks);
+        sender.EndRpc();
+        if (TargetClientId < 0)
+            player.SetTasks(tasks);
+    }
     public static void RpcSyncAllNetworkedPlayer(CustomRpcSender sender, int TargetClientId = -1)
     {
         if (sender == null)

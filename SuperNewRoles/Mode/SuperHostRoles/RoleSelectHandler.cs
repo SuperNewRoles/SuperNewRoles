@@ -18,6 +18,7 @@ public static class RoleSelectHandler
 {
     public static CustomRpcSender sender = null;
     public static bool IsStartingSerialize = false;
+    public static Dictionary<byte, byte[]> SetTasksBuffer = new();
     /// <summary>
     /// 追放メッセージを表記する為のBot
     /// </summary>
@@ -39,7 +40,6 @@ public static class RoleSelectHandler
         SetCustomRoles();
         SyncSetting.CustomSyncSettings();
         ChacheManager.ResetChache();
-        IsStartingSerialize = false;
         return sender;
     }
     public static void SpawnBots()
@@ -321,22 +321,6 @@ public static class RoleSelectHandler
 
         //new LateTask(() => {
         Logger.Info($"RoleSelectHandler: {NotDesyncTarget.PlayerId}");
-        DEBUGOnlySender = CustomRpcSender.Create(sendOption:SendOption.Reliable);
-        DEBUGOnlySender = sender;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-            {
-                player.Data.Disconnected = true;
-            }
-            RPCHelper.RpcSyncAllNetworkedPlayer(sender);
-
-        sender.RpcSetRole(NotDesyncTarget, NotDesyncTargetRole.Value, true);
-
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-            {
-                player.Data.Disconnected = false;
-            }
-
-            RPCHelper.RpcSyncAllNetworkedPlayer(sender);
         //}, 0.15f, "SetRole Disconnected Task");
 
         if (RoleClass.Egoist.EgoistPlayer.Count + RoleClass.Spy.SpyPlayer.Count > 0)
