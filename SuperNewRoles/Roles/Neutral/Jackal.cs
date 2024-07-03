@@ -224,7 +224,8 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
 
     public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
     {
-        //まだ作ってなくて、設定が有効の時
+        if (target.IsJackalTeam())
+            return false;
         if (!CanSidekick)
         {
             Logger.Info("サイドキック作成済みの為 普通のキル", "JackalSHR");
@@ -253,7 +254,11 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 targetRole = RoleTypes.Impostor;
             else if (CanUseVent)
                 targetRole = RoleTypes.Engineer;
-            target.RpcSetRole(targetRole, true);
+            if (!target.IsMod())
+                target.RpcSetRoleDesync(targetRole, true);
+            // キルできなくする
+            if (!Player.IsMod())
+                target.RpcSetRoleDesync(RoleTypes.Impostor, true, Player);
         }
         else
         {

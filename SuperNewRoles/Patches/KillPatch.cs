@@ -129,6 +129,7 @@ static class CheckMurderPatch
             case RoleId.JackalFriends:
             case RoleId.MadRaccoon:
             case RoleId.Egoist when !RoleClass.Egoist.UseKill:
+            case RoleId.Sidekick:
                 return false;
             case RoleId.FalseCharges:
                 target.RpcMurderPlayer(__instance, true);

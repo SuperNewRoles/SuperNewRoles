@@ -12,7 +12,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAvailable, ISaboAvailable
+public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAvailable, ISaboAvailable, ISupportSHR
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Sidekick),
@@ -37,8 +37,16 @@ public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAva
 
     public RoleId TargetRole => RoleId.Jackal;
 
+    public RoleTypes RealRole => CanUseVent ? RoleTypes.Engineer : RoleTypes.Crewmate;
+
     public void SetParent(PlayerControl player)
     {
 
+    }
+
+    public void BuildSetting(IGameOptions gameOptions)
+    {
+        gameOptions.SetFloat(FloatOptionNames.EngineerCooldown, 0f);
+        gameOptions.SetFloat(FloatOptionNames.EngineerInVentMaxTime, 0f);
     }
 }

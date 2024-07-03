@@ -15,7 +15,7 @@ public static class Helpers
         }
     }
     //TownOfHostより！！
-    public static void RpcSetRoleDesync(this PlayerControl player, RoleTypes role, PlayerControl seer = null)
+    public static void RpcSetRoleDesync(this PlayerControl player, RoleTypes role, bool canOverride, PlayerControl seer = null)
     {
         //player: 名前の変更対象
         //seer: 上の変更を確認することができるプレイヤー
@@ -25,6 +25,7 @@ public static class Helpers
         var clientId = seer.GetClientId();
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable, clientId);
         writer.Write((ushort)role);
+        writer.Write(canOverride);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void RpcSetRoleDesync(this PlayerControl player, CustomRpcSender sender, RoleTypes role, PlayerControl seer = null)

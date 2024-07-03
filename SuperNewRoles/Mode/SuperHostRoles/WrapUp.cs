@@ -44,7 +44,7 @@ class WrapUpClass
         if (exiled == null) return;
         if (exiled.Object.IsRole(RoleId.Sheriff) || exiled.Object.IsRole(RoleId.truelover) || exiled.Object.IsRole(RoleId.MadMaker))
         {
-            exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+            exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel, true);
         }
         if (RoleClass.Lovers.SameDie && exiled.Object.IsLovers())
         {

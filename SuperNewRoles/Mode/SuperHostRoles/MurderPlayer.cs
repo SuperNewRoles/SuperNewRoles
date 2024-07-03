@@ -26,7 +26,7 @@ class MurderPlayer
         }
         if (target.IsRole(RoleId.Sheriff) || target.IsRole(RoleId.truelover) || target.IsRole(RoleId.MadMaker))
         {
-            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+            target.RpcSetRoleDesync(RoleTypes.GuardianAngel, true);
         }
         if (target.IsQuarreled())
         {

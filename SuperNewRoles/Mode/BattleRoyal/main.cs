@@ -442,7 +442,7 @@ class Main
                         if (p1.PlayerId != 0)
                         {
                             FastDestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
-                            p1.RpcSetRoleDesync(RoleTypes.Shapeshifter);
+                            p1.RpcSetRoleDesync(RoleTypes.Shapeshifter, false);
                             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                             {
                                 if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
