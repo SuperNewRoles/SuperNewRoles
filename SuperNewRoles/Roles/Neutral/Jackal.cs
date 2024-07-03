@@ -118,7 +118,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         canNotHaveTask = CanNotHaveTaskForRoles.Contains(RoleSelectHandler.GetDesyncRole(target.GetRole()).RoleType);// Desync役職ならタスクを持っていなかったと見なす ( 個別設定 )
         if (target.GetRoleBase() is ISupportSHR supportSHR) { canNotHaveTask = CanNotHaveTaskForRoles.Contains(supportSHR.DesyncRole); } // Desync役職ならタスクを持っていなかったと見なす ( RoleBace )
 
-        target.ResetAndSetRole(RoleId.Sidekick);
+        target.ResetAndSetRole(RoleId.JackalFriends);
         if (target.IsRole(RoleId.JackalFriends)) JackalFriends.ChangeJackalFriendsPlayer[target.PlayerId] = !canNotHaveTask;
     }
 

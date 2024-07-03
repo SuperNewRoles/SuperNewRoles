@@ -267,7 +267,6 @@ static class CheckMurderPatch
                 if (!target.IsImpostor())
                 {
                     Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
-                    target.RpcSetRole(RoleTypes.Impostor, true);
                 }
                 Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
                 Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
