@@ -1416,9 +1416,9 @@ public class CustomOptionHolder
 
         FireFox.SetupCustomOptions();
 
-        AmnesiacOption = SetupCustomRoleOption(301600, false, RoleId.Amnesiac);
-        AmnesiacPlayerCount = Create(301601, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);
-        AmnesiacShowArrows = Create(301602, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, AmnesiacOption);
+        AmnesiacOption = SetupCustomRoleOption(301600, true, RoleId.Amnesiac);
+        AmnesiacPlayerCount = Create(301601, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);
+        AmnesiacShowArrows = Create(301602, true, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, AmnesiacOption);
 
         TheThreeLittlePigs.SetupCustomOptions();
 
