@@ -62,12 +62,14 @@ public static class AntiBlackOut
             target.SetName(name);
         }
         crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, tarGetClientId: targetClientId)
+            .Write(target.Data.NetId)
             .Write(SendName)
             .EndRpc()
             .AutoStartRpc(target.NetId, (byte)RpcCalls.SendChat, tarGetClientId: targetClientId)
             .Write(text)
             .EndRpc()
             .AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, tarGetClientId: targetClientId)
+            .Write(target.Data.NetId)
             .Write(name)
             .EndRpc()
             .SendMessage();

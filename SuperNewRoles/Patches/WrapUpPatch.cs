@@ -102,6 +102,8 @@ class WrapUpPatch
         }
         RoleClass.IsCoolTimeSetted = false;
         AntiBlackOut.OnWrapUp();
+        if (AntiBlackOut.RealExiled != null)
+            exiled = AntiBlackOut.RealExiled;
         FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
         if (ModeHandler.IsMode(ModeId.Default))
         {
@@ -139,6 +141,9 @@ class WrapUpPatch
         {
             ReplayLoader.OnWrapUp();
         }
+
+        if (AntiBlackOut.RealExiled != null)
+            exiled = AntiBlackOut.RealExiled;
 
         // |:========== 追放の有無問わず 会議終了時に行う処理 開始 ==========:|
         SelectRoleSystem.OnWrapUp();

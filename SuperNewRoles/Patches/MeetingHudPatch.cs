@@ -616,19 +616,24 @@ class CheckForEndVotingPatch
                             CustomRpcSender customRpcSender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
                             
                             customRpcSender.AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetName)
+                                .Write(exiledObject.Data.NetId)
                                 .Write(AntiBlackOut.RealExiled.DefaultOutfit.PlayerName)
                                 .EndRpc()
                                 .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetColor)
                                 .Write(AntiBlackOut.RealExiled.DefaultOutfit.ColorId)
+                                .Write(exiledObject.GetNextRpcSequenceId(RpcCalls.SetColor))
                                 .EndRpc()
                                 .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetHatStr)
                                 .Write(AntiBlackOut.RealExiled.DefaultOutfit.HatId)
+                                .Write(exiledObject.GetNextRpcSequenceId(RpcCalls.SetHatStr))
                                 .EndRpc()
                                 .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetVisorStr)
                                 .Write(AntiBlackOut.RealExiled.DefaultOutfit.VisorId)
+                                .Write(exiledObject.GetNextRpcSequenceId(RpcCalls.SetVisorStr))
                                 .EndRpc()
                                 .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetSkinStr)
                                 .Write(AntiBlackOut.RealExiled.DefaultOutfit.SkinId)
+                                .Write(exiledObject.GetNextRpcSequenceId(RpcCalls.SetSkinStr))
                                 .EndRpc()
                                 .SendMessage();
                         }, AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame ? 4.5f : 0.1f);
