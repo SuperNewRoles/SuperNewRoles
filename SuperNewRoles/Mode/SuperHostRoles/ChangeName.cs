@@ -22,7 +22,7 @@ public static class ChangeName
         return result;
     }
 
-    public static void SetRoleName(PlayerControl player, bool IsUnchecked = false)
+    public static void SetRoleName(PlayerControl player, bool IsUnchecked = false, CustomRpcSender sender = null)
     {
         //SHRではない場合は処理しない
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -36,7 +36,7 @@ public static class ChangeName
             Logger.Info("[SHR:ChangeName]" + player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
         }
         //コミュ情報を取得して呼ぶ
-        SetRoleName(player, RoleHelpers.IsComms(), IsUnchecked);
+        SetRoleName(player, RoleHelpers.IsComms(), IsUnchecked, sender: sender);
     }
     private static string GetPlayerName(this PlayerControl player)
     {
@@ -81,7 +81,7 @@ public static class ChangeName
             SetRoleName(p, commsActive, IsUnchecked, OnEndGame);
         }
     }
-    public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false, bool OnEndGame = false)
+    public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false, bool OnEndGame = false, CustomRpcSender sender = null)
     {
         //SHRではない場合は処理しない
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -296,6 +296,14 @@ public static class ChangeName
                     RoleNameText.Append(" (OK)");
                 }
                 break;
+            case RoleId.Jackal:
+            case RoleId.Sidekick:
+                foreach (PlayerControl playerControl in PlayerControl.AllPlayerControls)
+                {
+                    if (playerControl.IsJackalTeam() && player.PlayerId != playerControl.PlayerId)
+                        ChangePlayers[playerControl] = ModHelpers.Cs(RoleClass.Jackal.color, ChangePlayers.GetNowName(playerControl));
+                }
+                break;
         }
         string TaskText = string.Empty;
         if (player.IsUseTaskTrigger())
@@ -380,12 +388,14 @@ public static class ChangeName
             {
                 SelfText = AddEndGameText(SelfText);
             }
-            player.RpcSetNamePrivate(SelfText);
+            player.RpcSetNamePrivate(sender, SelfText);
             if (player.IsAlive())
             {
                 foreach (var ChangePlayerData in (Dictionary<PlayerControl, string>)ChangePlayers)
                 {
-                    ChangePlayerData.Key.RpcSetNamePrivate(ChangePlayerData.Value, player);
+                    if (ChangePlayerData.Key.PlayerId == player.PlayerId)
+                        continue;
+                    ChangePlayerData.Key.RpcSetNamePrivate(sender, ChangePlayerData.Value, player);
                 }
             }
         }
@@ -394,7 +404,7 @@ public static class ChangeName
             foreach (PlayerControl AlivePlayer in AlivePlayers)
             {
                 if (AlivePlayer.IsMod()) continue;
-                player.RpcSetNamePrivate(ModHelpers.Cs(RoleClass.ImpostorRed, player.GetDefaultName()), AlivePlayer);
+                player.RpcSetNamePrivate(sender, ModHelpers.Cs(RoleClass.ImpostorRed, player.GetDefaultName()), AlivePlayer);
             }
         }
         StringBuilder DieSuffix = new();
@@ -413,14 +423,14 @@ public static class ChangeName
         {
             if (player.PlayerId != DiePlayer.PlayerId &&
                 !DiePlayer.Data.Disconnected)
-                player.RpcSetNamePrivate(NewNameString, DiePlayer);
+                player.RpcSetNamePrivate(sender, NewNameString, DiePlayer);
         }
         foreach (var targets in EndGameDetail.ShowTargets)
         {
             if (targets.Key == null || targets.Key.PlayerId == targets.Value)
                 continue;
             if (targets.Value == player.PlayerId)
-                player.RpcSetNamePrivate(AddEndGameText(NewNameString), targets.Key);
+                player.RpcSetNamePrivate(sender, AddEndGameText(NewNameString), targets.Key);
         }
     }
     private static string AddEndGameText(string text)

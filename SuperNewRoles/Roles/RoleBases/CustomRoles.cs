@@ -34,8 +34,9 @@ public static class CustomRoles
                 }
                 break;
             case ModeId.SuperHostRoles:
-                foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
-                    all.FixedUpdateAllSHR();
+                if (IFixedUpdaterAlls != null)
+                    foreach (IFixedUpdaterAll all in IFixedUpdaterAlls)
+                        all.FixedUpdateAllSHR();
                 if (ifum != null)
                 {
                     ifum.FixedUpdateMeSHR();
@@ -143,6 +144,18 @@ public static class CustomRoles
         DeathInfo info = new(deadPlayer);
         RoleBaseManager.GetInterfaces<IDeathHandler>().Do(x => x.OnMurderPlayer(info));
         OnDeath(info);
+    }
+    public static bool OnCheckVanish(PlayerControl player)
+    {
+        return player.GetRoleBase() is ICheckPhantom checkPhantom
+            ? checkPhantom.CheckVanish()
+            : true;
+    }
+    public static bool OnCheckAppear(PlayerControl player, bool shouldAnimate)
+    {
+        return player.GetRoleBase() is ICheckPhantom checkPhantom
+            ? checkPhantom.CheckAppear(shouldAnimate)
+            : true;
     }
     public static bool OnCheckMurderPlayer(PlayerControl source, PlayerControl target)
     {

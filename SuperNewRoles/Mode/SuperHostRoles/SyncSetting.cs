@@ -249,6 +249,9 @@ public static class SyncSetting
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         optdata.SetBool(BoolOptionNames.AnonymousVotes, AnonymousVotes.GetAnonymousVotes(player));
 
+        if (player.GetRoleBase() is ISHROneClickShape oneClickShapeShift)
+            optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+
         Balancer.InHostMode.SetMeetingSettings(optdata);
 
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);

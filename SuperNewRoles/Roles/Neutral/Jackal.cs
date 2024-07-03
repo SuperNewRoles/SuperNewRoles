@@ -3,6 +3,7 @@ using System.Text;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
@@ -14,7 +15,7 @@ using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole
+public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole, ICheckMurderHandler, ISHROneClickShape
 {
     public static new RoleInfo Roleinfo = new(
                typeof(Jackal),
@@ -77,16 +78,30 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
     {
         CanSidekick = JackalCreateFriend.GetBool() || JackalCreateSidekick.GetBool();
         Promoted = false;
+        SHR_IsSidekickMode = false;
+    }
+
+    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
+    {
+        if (!CanSidekick)
+            return;
+        string ModeText = SHR_IsSidekickMode ? "SK" : "Kill";
+        RoleNameText.Append(ModHelpers.Cs(Roleinfo.RoleColor, $" (Mode:{ModeText})"));
     }
 
     public Sidekick CreatedSidekick { get; private set; }
 
+    public bool SHR_IsSidekickMode = false;
     public bool isShowKillButton => true;
     public float SidekickCoolTime => JackalSKCooldown.GetFloat();
     public float JackalKillCoolTime => JackalKillCooldown.GetFloat();
 
     public void OnClickSidekickButton(PlayerControl target)
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+
+        }
         if (JackalCreateFriend.GetBool())
         {
             CreateJackalFriends(target); //クルーにして フレンズにする
@@ -168,22 +183,37 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         if (AmongUsClient.Instance.AmHost)
             PromoteCheck(false);
     }
+
     public void PromoteCheck(bool isRoleChanged)
     {
+        // Logger.Info($"Checking Jackal Promote: {Promoted} : {CreatedSidekick == null} : {isRoleChanged} : {Player.IsAlive()} : {AmongUsClient.Instance.AmHost} : {ModeHandler.IsMode(ModeId.SuperHostRoles)}");
         if (Promoted)
             return;
         if (CreatedSidekick == null)
             return;
-        if (!isRoleChanged && Player.IsDead())
+        if (!isRoleChanged && Player.IsAlive())
             return;
         Promoted = true;
+        PlayerControl CreatedSidekickControl = CreatedSidekick.Player;
         MessageWriter writer = RpcWriter;
         writer.Write(false);
         SendRpc(writer);
+        if (!AmongUsClient.Instance.AmHost ||
+            !ModeHandler.IsMode(ModeId.SuperHostRoles))
+            return;
+        Logger.Info($"TryGetRoleBase: {CreatedSidekickControl.GetRoleBase().Roleinfo.Role}");
+        if (!CreatedSidekickControl.TryGetRoleBase(out Jackal jackal))
+            return;
+        CreatedSidekickControl.RpcSetRole(
+            jackal.DesyncRole, true
+        );
+        if (jackal.DesyncRole == RoleTypes.Shapeshifter)
+            OneClickShapeshift.OneClickShaped(CreatedSidekickControl);
+        ChangeName.SetRoleName(CreatedSidekickControl);
     }
 
     public RoleTypes RealRole => RoleTypes.Crewmate;
-    public RoleTypes DesyncRole => RoleTypes.Impostor;
+    public RoleTypes DesyncRole => CanSidekick ? RoleTypes.Shapeshifter : RoleTypes.Impostor;
 
     public bool? IsImpostorLight => Optioninfo.IsImpostorVision;
 
@@ -192,9 +222,72 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         gameOptions.SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(JackalKillCoolTime));
     }
 
+    public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
+    {
+        //まだ作ってなくて、設定が有効の時
+        if (!CanSidekick)
+        {
+            Logger.Info("サイドキック作成済みの為 普通のキル", "JackalSHR");
+            return true;
+        }
+        if (!SHR_IsSidekickMode)
+        {
+            Logger.Info("キルモードの為 普通のキル", "JackalSHR");
+            return true;
+        }
+        SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでサイドキック作成");
+        if (target == null) return false;
+        Player.RpcShowGuardEffect(target);
+        CanSidekick = false;
+
+        if (JackalCreateFriend.GetBool())
+        {
+            if (!target.IsImpostor())
+                CreateJackalFriends(target);//クルーにして フレンズにする
+        }
+        else if (JackalCreateSidekick.GetBool())
+        {
+            target.SetRoleRPC(RoleId.Sidekick);
+            RoleTypes targetRole = RoleTypes.Crewmate;
+            if (CanUseSabo)
+                targetRole = RoleTypes.Impostor;
+            else if (CanUseVent)
+                targetRole = RoleTypes.Engineer;
+            target.RpcSetRole(targetRole, true);
+        }
+        else
+        {
+            throw new System.NotImplementedException("Sidekick targetrole is not defined.");
+        }
+        bool isFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
+        MessageWriter writer = RpcWriter;
+        writer.Write(true);
+        writer.Write(target.PlayerId);
+        writer.Write(isFakeSidekick);
+        SendRpc(writer);
+        ChangeName.SetRoleName(target);//名前も変える
+        ChangeName.SetRoleName(Player);//名前も変える
+        Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
+        return false;
+    }
+    public void FixedUpdateAllSHR()
+    {
+        if (AmongUsClient.Instance.AmHost)
+            PromoteCheck(false);
+    }
+
     public void OnChangeRole()
     {
         if (AmongUsClient.Instance.AmHost)
             PromoteCheck(true);
+    }
+
+    public void OnOneClickShape()
+    {
+        if (!CanSidekick)
+            return;
+        SHR_IsSidekickMode = !SHR_IsSidekickMode;
+        ChangeName.SetRoleName(Player);
+        return;
     }
 }

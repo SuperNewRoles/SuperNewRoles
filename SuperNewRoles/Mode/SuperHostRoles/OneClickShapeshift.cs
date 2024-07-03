@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
@@ -14,7 +15,7 @@ public static class OneClickShapeshift
         bool isOneClickShapeshiftProcessed = false;
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player.Data.Role.Role != AmongUs.GameOptions.RoleTypes.Shapeshifter)//.GetRoleBase() is not ISHROneClickShape oneClickShape)
+            if (player.GetRoleBase() is not ISHROneClickShape oneClickShape)
                 continue;
             FakeShape(player);
             isOneClickShapeshiftProcessed = true;
@@ -22,22 +23,22 @@ public static class OneClickShapeshift
         if (!isOneClickShapeshiftProcessed)
             return;
     }
+    public static void OneClickShaped(PlayerControl player)
+    {
+        FakeShape(player);
+    }
     private static void FakeShape(PlayerControl player)
     {
+        CustomRpcSender sender = CustomRpcSender.Create("OneClickShapeshiftSender", Hazel.SendOption.Reliable, false);
         // シェイプシフト状態にする
-        player.RpcShapeshift(PlayerControl.LocalPlayer, false);
-
-        player.RpcSetColor((byte)player.Data.DefaultOutfit.ColorId);
-        player.RpcSetHat(player.Data.DefaultOutfit.HatId);
-        player.RpcSetSkin(player.Data.DefaultOutfit.SkinId);
-        player.RpcSetPet(player.Data.DefaultOutfit.PetId);
-        player.RpcSetHat(player.Data.DefaultOutfit.HatId);
-        player.RpcSetName(player.Data.PlayerName);
-        _ = new LateTask(() =>
-        {
-            player.RpcSetHat(player.Data.DefaultOutfit.HatId);
-            player.RpcSetSkin(player.Data.DefaultOutfit.SkinId);
-            player.RpcSetVisor(player.Data.DefaultOutfit.HatId);
-        }, 0.3f);
+        sender
+            .RpcShapeshift(player, PlayerControl.LocalPlayer, false)
+            .RpcSetColor(player, (byte)player.Data.DefaultOutfit.ColorId)
+            .RpcSetHat(player, player.Data.DefaultOutfit.HatId)
+            .RpcSetSkin(player, player.Data.DefaultOutfit.SkinId)
+            .RpcSetPet(player, player.Data.DefaultOutfit.PetId)
+            .RpcSetVisor(player, player.Data.DefaultOutfit.HatId);
+        ChangeName.SetRoleName(player, sender: sender);
+        sender.SendMessage();
     }
 }
