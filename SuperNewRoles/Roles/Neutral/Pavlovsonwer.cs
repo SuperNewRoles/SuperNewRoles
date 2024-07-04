@@ -127,7 +127,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
         DogArrow = new(Roleinfo.RoleColor);
         DogArrow.arrow.SetActive(false);
         CreateDogButtonInfo = new(CreateCountLimit, this, CreateDogOnClick,
-            (isAlive) => isAlive, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
+            (isAlive) => isAlive && AliveCreatedDog == null, CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             null, ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PavlovsownerCreatedogButton.png", 115f),
             () => Optioninfo.CoolTime, new(), "PavlovsownerCreatedogButtonName",
             UnityEngine.KeyCode.F, 49, SetTargetFunc: () => PavlovsDogs.SetTarget());

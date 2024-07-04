@@ -23,7 +23,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
         TeamType.Neutral
         );
     public static new IntroInfo Introinfo =
-        new(RoleId.Pavlovsowner, introSound: RoleTypes.Phantom);
+        new(RoleId.Pavlovsdogs, introSound: RoleTypes.Phantom);
 
     public bool OwnerDead => CurrentOwner?.Player?.Data.IsDead ?? true;
 
