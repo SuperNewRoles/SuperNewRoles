@@ -31,11 +31,9 @@ public static class PlayerCustomizationMenuPatch
         var PresetTabButton = __instance.Tabs[1].Button.transform.parent;
         var ClosetTab = __instance.Tabs[0].Tab.transform;
         var PresetTab = __instance.Tabs[1].Tab.transform;
-        SuperNewRolesPlugin.Logger.LogInfo(ClosetTabButton.name + ":" + PresetTabButton.name);
         int i = 0;
         foreach (TabButton button in __instance.Tabs)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(button.Button.transform.parent.parent.name);
             if (i > 1)
             {
                 button.Button.transform.parent.parent.gameObject.SetActive(false);
@@ -158,7 +156,6 @@ public static class PlayerCustomizationMenuPatch
             ObjectData.IsShow = false;
             return true;
         }
-        SuperNewRolesPlugin.Logger.LogInfo(tab.name);
         if (tab.name == "ColorGroup") ObjectData.ClosetShow();
         else if (tab.name == "HatsGroup") ObjectData.PresetShow();
         return false;
