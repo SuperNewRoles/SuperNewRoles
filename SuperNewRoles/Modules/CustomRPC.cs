@@ -1543,8 +1543,9 @@ public static class RPCProcedure
     }
     public static void TeleporterTP(byte playerid)
     {
-        var p = ModHelpers.PlayerById(playerid);
-        CachedPlayer.LocalPlayer.transform.position = p.transform.position;
+        Vector2 teleportTo = ModHelpers.PlayerById(playerid)?.GetTruePosition() ?? new(9999,9999);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            player.NetTransform.SnapTo(teleportTo);
         new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), p.NameText().text), 3);
     }
     public static void SetWinCond(byte Cond)
