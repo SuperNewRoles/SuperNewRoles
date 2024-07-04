@@ -1,22 +1,80 @@
+using System.Collections.Generic;
 using AmongUs.GameOptions;
+using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
+using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public static class Pavlovsdogs
+public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, IKiller, ICustomButton, IFixedUpdaterMe, INameHandler
 {
-    //ここにコードを書きこんでください
-    public static void OwnerFixedUpdate()
+    public static Color32 PavlovsColor = new(244, 169, 106, byte.MaxValue);
+
+    public static new RoleInfo Roleinfo = new(
+        typeof(PavlovsDogs),
+        (p) => new PavlovsDogs(p),
+        RoleId.Pavlovsdogs,
+        "Pavlovsdogs",
+        PavlovsColor,
+        new(RoleId.Pavlovsdogs, TeamTag.Neutral),
+        TeamRoleType.Neutral,
+        TeamType.Neutral
+        );
+    public static new IntroInfo Introinfo =
+        new(RoleId.Pavlovsowner, introSound: RoleTypes.Phantom);
+
+    public bool OwnerDead => CurrentOwner?.Player?.Data.IsDead ?? true;
+
+    public bool CanUseVent => PavlovsOwner.CanVent.GetBool();
+    public bool IsImpostorVision => PavlovsOwner.IsImpostorView.GetBool();
+
+    public PavlovsOwner CurrentOwner { get; private set; }
+
+    public CustomButtonInfo PavlovsKillButton;
+    public CustomButtonInfo[] CustomButtonInfos { get; }
+
+    public PavlovsDogs(PlayerControl p) : base(p, Roleinfo, null, Introinfo)
     {
-        if (RoleClass.Pavlovsowner.CurrentChildPlayer)
-        {
-            if (!RoleClass.Pavlovsowner.CurrentChildPlayer.IsRole(RoleId.Pavlovsdogs))
-                RoleClass.Pavlovsowner.CurrentChildPlayer = null;
-            else
-                RoleClass.Pavlovsowner.DogArrow.Update(RoleClass.Pavlovsowner.CurrentChildPlayer.transform.position);
-        }
-        RoleClass.Pavlovsowner.DogArrow.arrow.gameObject.SetActive(RoleClass.Pavlovsowner.CurrentChildPlayer);
+        PavlovsKillButton = new(null,this,KillOnClick,(isAlive) => isAlive,
+            CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
+            null, FastDestroyableSingleton<HudManager>.Instance.KillButton.graphic.sprite,
+            () => OwnerDead ?
+            PavlovsOwner.RunAwayKillCoolTime.GetFloat() :
+            PavlovsOwner.KillCoolTime.GetFloat(),
+            new(), FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+            KeyCode.Q, 8, baseButton: FastDestroyableSingleton<HudManager>.Instance.KillButton,
+            SetTargetFunc: () => SetTarget(), hasSecondButtonInfo: true);
     }
+
+    public float RunAwayTime = PavlovsOwner.RunAwayDeathTime.GetFloat();
+
+    public void UpdateOwner(PavlovsOwner owner)
+        => CurrentOwner = owner;
+
+    public void OnHandleName()
+        => SeePavlovsTeam();
+
+    public static void SeePavlovsTeam()
+    {
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (!player.IsPavlovsTeam())
+                continue;
+            SetNamesClass.SetPlayerRoleInfo(player);
+            SetNamesClass.SetPlayerNameColors(player);
+        }
+    }
+
+    public void KillOnClick()
+    {
+        PlayerControl target = PavlovsKillButton.CurrentTarget;
+        ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+        if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.Contains(PlayerControl.LocalPlayer.PlayerId)) return;
+        RunAwayTime = PavlovsOwner.RunAwayDeathTime.GetFloat();
+    }
+
     public static PlayerControl SetTarget(bool IsPavlovsTeamTarget = false)
     {
         PlayerControl result = null;
@@ -47,18 +105,21 @@ public static class Pavlovsdogs
         }
         return result == null ? null : result.IsDead() ? null : result;
     }
-    public static void SetNameUpdate()
+
+    public void FixedUpdateMeDefaultAlive()
     {
-        if (PlayerControl.LocalPlayer.IsPavlovsTeam())
+        if (!OwnerDead || Player.IsDead() || RoleClass.IsMeeting)
         {
-            foreach (PlayerControl p in RoleClass.Pavlovsdogs.PavlovsdogsPlayer)
-            {
-                SetNamesClass.SetPlayerRoleInfo(p);
-            }
-            foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
-            {
-                SetNamesClass.SetPlayerRoleInfo(p);
-            }
+            PavlovsKillButton.SecondButtonInfoText.text = string.Empty;
+            return;
         }
+        RunAwayTime -= Time.fixedDeltaTime;
+        PavlovsKillButton.SecondButtonInfoText.text =
+            RunAwayTime > 0
+            ? ModTranslation.GetString("SerialKillerSuicideText", (int)RunAwayTime + 1)
+            : string.Empty;
+
+        if (RunAwayTime <= 0)
+            Player.RpcMurderPlayer(Player, true);
     }
 }

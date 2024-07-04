@@ -847,18 +847,6 @@ public class CustomOptionHolder
     public static CustomRoleOption WerewolfOption;
     public static CustomOption WerewolfPlayerCount;
 
-    public static CustomRoleOption PavlovsownerOption;
-    public static CustomOption PavlovsownerPlayerCount;
-    public static CustomOption PavlovsownerCreateCoolTime;
-    public static CustomOption PavlovsownerCreateDogLimit;
-    public static CustomOption PavlovsownerIsTargetImpostorDeath;
-    public static CustomOption PavlovsdogIsImpostorView;
-    public static CustomOption PavlovsdogKillCoolTime;
-    public static CustomOption PavlovsdogCanVent;
-    public static CustomOption PavlovsdogRunAwayKillCoolTime;
-    public static CustomOption PavlovsdogRunAwayDeathTime;
-    public static CustomOption PavlovsdogRunAwayDeathTimeIsMeetingReset;
-
     public static CustomRoleOption CamouflagerOption;
     public static CustomOption CamouflagerPlayerCount;
     public static CustomOption CamouflagerCoolTime;
@@ -1305,18 +1293,6 @@ public class CustomOptionHolder
         TeleportingJackalUseSabo = Create(300305, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
         TeleportingJackalCoolTime = Create(300306, false, CustomOptionType.Neutral, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
         TeleportingJackalDurationTime = Create(300307, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
-
-        PavlovsownerOption = new(300400, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1, role: RoleId.Pavlovsowner);
-        PavlovsownerPlayerCount = Create(300401, false, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], PavlovsownerOption);
-        PavlovsownerCreateCoolTime = Create(300402, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, PavlovsownerOption);
-        PavlovsownerCreateDogLimit = Create(300403, false, CustomOptionType.Neutral, "PavlovsownerCreateDogLimit", 1f, 1f, 15f, 1f, PavlovsownerOption);
-        PavlovsownerIsTargetImpostorDeath = Create(300404, false, CustomOptionType.Neutral, "PavlovsownerIsTargetImpostorDeath", true, PavlovsownerOption);
-        PavlovsdogIsImpostorView = Create(300405, false, CustomOptionType.Neutral, "PavlovsdogIsImpostorView", true, PavlovsownerOption);
-        PavlovsdogKillCoolTime = Create(300406, false, CustomOptionType.Neutral, "SheriffCooldownSetting", 30f, 2.5f, 120f, 2.5f, PavlovsownerOption);
-        PavlovsdogCanVent = Create(300407, false, CustomOptionType.Neutral, "MadmateUseVentSetting", true, PavlovsownerOption);
-        PavlovsdogRunAwayKillCoolTime = Create(300408, false, CustomOptionType.Neutral, "PavlovsdogRunAwayKillCoolTime", 20f, 2.5f, 60f, 2.5f, PavlovsownerOption);
-        PavlovsdogRunAwayDeathTime = Create(300409, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTime", 60f, 2.5f, 180f, 2.5f, PavlovsownerOption);
-        PavlovsdogRunAwayDeathTimeIsMeetingReset = Create(300410, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTimeIsMeetingReset", true, PavlovsownerOption);
 
         HitmanOption = SetupCustomRoleOption(303200, false, RoleId.Hitman);
         HitmanPlayerCount = Create(303201, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);

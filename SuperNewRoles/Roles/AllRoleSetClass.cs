@@ -816,7 +816,6 @@ class AllRoleSetClass
             RoleId.Doppelganger => CustomOptionHolder.DoppelgangerPlayerCount,
             RoleId.Werewolf => CustomOptionHolder.WerewolfPlayerCount,
             RoleId.Knight => Knight.KnightPlayerCount,
-            RoleId.Pavlovsowner => CustomOptionHolder.PavlovsownerPlayerCount,
             RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount,
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount,
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount,

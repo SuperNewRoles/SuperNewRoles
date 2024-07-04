@@ -295,8 +295,6 @@ public class IntroData
     public static IntroData DoppelgangerIntro = new("Doppelganger", RoleClass.Doppelganger.color, 1, RoleId.Doppelganger, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData WerewolfIntro = new("Werewolf", RoleClass.Werewolf.color, 1, RoleId.Werewolf, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData KnightIntro = new("Knight", Knight.color, 1, RoleId.Knight);
-    public static IntroData PavlovsdogsIntro = new("Pavlovsdogs", RoleClass.Pavlovsdogs.color, 1, RoleId.Pavlovsdogs, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData PavlovsownerIntro = new("Pavlovsowner", RoleClass.Pavlovsowner.color, 1, RoleId.Pavlovsowner, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData CamouflagerIntro = new("Camouflager", RoleClass.Camouflager.color, 1, RoleId.Camouflager, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData HamburgerShopIntro = new("HamburgerShop", RoleClass.HamburgerShop.color, 3, RoleId.HamburgerShop);
     public static IntroData PenguinIntro = new("Penguin", RoleClass.Penguin.color, 1, RoleId.Penguin, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);

@@ -169,9 +169,8 @@ public class SetNamesClass
         }
         else if (p.IsPavlovsTeam())
         {
-            var introData = IntroData.PavlovsdogsIntro;
-            roleNames = introData.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
-            roleColors = RoleClass.Pavlovsdogs.color;
+            roleNames = ModTranslation.GetString($"{PavlovsDogs.Roleinfo.NameKey}Name") + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
+            roleColors = PavlovsDogs.PavlovsColor;
         }
         else
         {
@@ -569,7 +568,6 @@ public class SetNameUpdate
         }
         else
         {
-            Pavlovsdogs.SetNameUpdate();
             SetNamesClass.ArsonistSet();
             SetNamesClass.DemonSet();
             SetNamesClass.CelebritySet();

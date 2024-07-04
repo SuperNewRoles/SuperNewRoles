@@ -60,6 +60,7 @@ public class CustomButtonInfo
     private int _lastAbilityCount { get; set; }
     public bool HasAbility { get; }
     public int AbilityCount { get; set; }
+    public Func<PlayerControl>? SetTargetFunc;
     //InfoText
     /// <summary>
     /// CustomButtonInfo
@@ -109,6 +110,7 @@ public class CustomButtonInfo
         string AbilityCountTextFormat = null,
         Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
         Func<bool> SetTargetCrewmateOnly = null,
+        Func<PlayerControl> SetTargetFunc = null,
         bool hasSecondButtonInfo = false)
     {
         this.HasAbility = AbilityCount != null;
@@ -129,6 +131,7 @@ public class CustomButtonInfo
         this.GetCoolTimeFunc = CoolTime;
         this.GetDurationTimeFunc = DurationTime;
         this.OnEffectEndsFunc = OnEffectEnds;
+        this.SetTargetFunc = SetTargetFunc;
         this.HasAbilityCountText = HasAbilityCountText;
         if (this.BaseButton == null)
             this.BaseButton = FastDestroyableSingleton<HudManager>.Instance.AbilityButton;
@@ -268,7 +271,10 @@ public class CustomButtonInfo
     /// <returns></returns>
     public PlayerControl SetTarget()
     {
-        SetCurrentTarget(HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false));
+        if (SetTargetFunc == null)
+            SetCurrentTarget(HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false));
+        else
+            SetCurrentTarget(SetTargetFunc());
         PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
         return CurrentTarget;
     }

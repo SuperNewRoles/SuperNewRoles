@@ -338,7 +338,6 @@ public enum CustomRPC
     KnightProtected,
     KnightProtectClear,
     GuesserShoot,
-    PavlovsOwnerCreateDog,
     CrackerCrack,
     Camouflage,
     ShowGuardEffect,
@@ -802,26 +801,6 @@ public static class RPCProcedure
         }
     }
 
-    public static void PavlovsOwnerCreateDog(byte sourceid, byte targetid, bool IsSelfDeath)
-    {
-        PlayerControl source = ModHelpers.PlayerById(sourceid);
-        PlayerControl target = ModHelpers.PlayerById(targetid);
-        if (source == null || target == null) return;
-        if (IsSelfDeath)
-        {
-            source.MurderPlayer(source, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-        }
-        else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
-            SetRole(targetid, (byte)RoleId.Pavlovsdogs);
-            if (!RoleClass.Pavlovsowner.CountData.ContainsKey(sourceid))
-            {
-                RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptionHolder.PavlovsownerCreateDogLimit.GetInt();
-            }
-            RoleClass.Pavlovsowner.CountData[sourceid]--;
-        }
-    }
     public static void Camouflage(bool Is)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -1949,9 +1928,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetFinalStatus:
                         SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
-                        break;
-                    case CustomRPC.PavlovsOwnerCreateDog:
-                        PavlovsOwnerCreateDog(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.Camouflage:
                         Camouflage(reader.ReadBoolean());

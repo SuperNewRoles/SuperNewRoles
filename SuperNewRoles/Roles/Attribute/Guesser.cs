@@ -405,7 +405,7 @@ class Guesser
             CreateRole(IntroData.JackalFriendsIntro);
             CreateRole(IntroData.JackalIntro);
         }
-        if (CustomOptionHolder.PavlovsownerOption.GetSelection() is not 0) CreateRole(IntroData.PavlovsdogsIntro);
+        if (PavlovsOwner.Optioninfo.RoleOption.GetSelection() is not 0) CreateRole(roleInfo: PavlovsDogs.Roleinfo);
         if (CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection() is not 0) { CreateRole(IntroData.DictatorIntro); CreateRole(IntroData.RevolutionistIntro); }
         if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() is not 0) { CreateRole(IntroData.AssassinIntro); CreateRole(IntroData.MarlinIntro); }
         if (CustomOptionHolder.ChiefOption.GetSelection() is not 0) { CreateRole(IntroData.SheriffIntro); }

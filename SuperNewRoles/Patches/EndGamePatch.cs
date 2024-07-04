@@ -207,7 +207,7 @@ public class EndGameManagerSetUpPatch
             { WinCondition.HitmanWin, ("HitmanName", RoleClass.Hitman.color) },
             { WinCondition.PhotographerWin, ("PhotographerName", RoleClass.Photographer.color) },
             { WinCondition.StefinderWin, ("StefinderName", RoleClass.Stefinder.color) },
-            { WinCondition.PavlovsTeamWin, ("PavlovsTeamWinText", RoleClass.Pavlovsdogs.color) },
+            { WinCondition.PavlovsTeamWin, ("PavlovsTeamWinText", PavlovsDogs.PavlovsColor) },
             { WinCondition.LoversBreakerWin, ("LoversBreakerName", RoleClass.LoversBreaker.color) },
             { WinCondition.NoWinner, ("NoWinner", Color.white) },
             { WinCondition.SafecrackerWin, ("SafecrackerName", Safecracker.color) },
@@ -615,8 +615,6 @@ public static class OnGameEndPatch
             RoleClass.PartTimer.PartTimerPlayer,
             RoleClass.Photographer.PhotographerPlayer,
             RoleClass.Stefinder.StefinderPlayer,
-            RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
-            RoleClass.Pavlovsowner.PavlovsownerPlayer,
             RoleClass.LoversBreaker.LoversBreakerPlayer,
             Roles.Impostor.MadRole.Worshiper.RoleData.Player,
             Safecracker.SafecrackerPlayer,
@@ -2016,16 +2014,12 @@ public static class CheckGameEndPatch
             LoversAlive = numLoversAlive;
             if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
             {
-                foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
+                foreach (RoleBase rolebase in RoleBaseManager.GetRoleBaseOrigins<PavlovsOwner>())
                 {
-                    if (p == null) continue;
-                    if (p.IsDead()) continue;
-                    if (!RoleClass.Pavlovsowner.CountData.ContainsKey(p.PlayerId)
-                        || RoleClass.Pavlovsowner.CountData[p.PlayerId] > 0)
-                    {
-                        IsGuardPavlovs = true;
-                        break;
-                    }
+                    if ((rolebase as PavlovsOwner).CreateCountLimit == 0)
+                        continue;
+                    IsGuardPavlovs = true;
+                    break;
                 }
             }
         }

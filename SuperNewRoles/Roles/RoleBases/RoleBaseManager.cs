@@ -128,6 +128,15 @@ public static class RoleBaseManager
     {
         return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? value.Cast<T>().ToList() : new();
     }
+    public static IReadOnlySet<RoleBase> GetRoleBaseOrigins<T>() where T : RoleBase
+    {
+        if (RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value))
+            return value;
+        if (RoleBaseEmpty.Count != 0)
+            RoleBaseEmpty = new();
+        return RoleBaseEmpty;
+    }
+    private static HashSet<RoleBase> RoleBaseEmpty = new();
     public static T GetRoleBase<T>(this PlayerControl player) where T : RoleBase
     {
         return PlayerRoles[player] as T;
