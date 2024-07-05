@@ -200,10 +200,8 @@ public static class ObjectData
         ResetShow();
         PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/HatsTab/Hat Button/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
         //PlayerCustomizationMenu.Instance.itemName.text = "プリセット" + (SelectedPreset.Value + 1);
-        Logger.Info("PresetShow!", "");
         if (Presets.Length > 0)
         {
-            Logger.Info("0以上", "");
             foreach (Transform trf in Presets)
             {
                 if (trf != null)
@@ -292,6 +290,6 @@ public static class ObjectData
             PlayerControl.LocalPlayer.RpcSetNamePlate(DataManager.Player.Customization.NamePlate);
             PlayerControl.LocalPlayer.RpcSetPet(DataManager.Player.Customization.Pet);
         }
-        PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.ComplexUI);
+        PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.None);
     }
 }
