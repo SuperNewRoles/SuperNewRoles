@@ -1492,8 +1492,6 @@ public class CustomOptionHolder
 
         BlackHatHacker.SetupCustomOptions();
 
-        Moira.SetupCustomOptions();
-
         Frankenstein.SetupCustomOptions();
 
         // SetupNeutralCustomOptions

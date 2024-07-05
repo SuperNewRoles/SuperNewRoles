@@ -333,12 +333,6 @@ public class SetNamesClass
             }
         }
     }
-    public static void MoiraSet()
-    {
-        if (!Moira.AbilityUsedUp || Moira.AbilityUsedThisMeeting) return;
-        if (Moira.Player is null) return;
-        SetPlayerNameText(Moira.Player, Moira.Player.NameText().text += " (→←)");
-    }
     public static void CelebritySet()
     {
         foreach (PlayerControl p in
@@ -575,7 +569,6 @@ public class SetNameUpdate
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
-            SetNamesClass.MoiraSet();
         }
         SetNamesClass.SatsumaimoSet();
         SetNamesClass.JumboSet();

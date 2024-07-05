@@ -920,9 +920,6 @@ public static class RoleHelpers
             case RoleId.MadRaccoon:
                 MadRaccoon.RoleData.Player.Add(player);
                 break;
-            case RoleId.Moira:
-                Moira.MoiraPlayer.Add(player);
-                break;
             case RoleId.JumpDancer:
                 JumpDancer.JumpDancerPlayer.Add(player);
                 break;
@@ -1430,9 +1427,6 @@ public static class RoleHelpers
             case RoleId.MadRaccoon:
                 MadRaccoon.RoleData.Player.RemoveAll(ClearRemove);
                 break;
-            case RoleId.Moira:
-                Moira.MoiraPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.JumpDancer:
                 JumpDancer.JumpDancerPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1491,7 +1485,35 @@ public static class RoleHelpers
         writer.Write(Player1.PlayerId);
         writer.Write(Player2.PlayerId);
         writer.EndRPC();
-        RPCProcedure.SwapRole(Player1.PlayerId, Player2.PlayerId);
+        if (ModeHandler.IsMode(ModeId.Default)) RPCProcedure.SwapRole(Player1.PlayerId, Player2.PlayerId);
+        else
+        {
+            RoleBase player1role = Player1.GetRoleBase();
+            RoleBase player2role = Player2.GetRoleBase();
+            RoleId player1id = Player1.GetRole();
+            RoleId player2id = Player2.GetRole();
+            if (player1role != null) player1role.SetPlayer(Player2);
+            else
+            {
+                Player2.ClearRole();
+                Player2.SetRoleRPC(player1id);
+            }
+            if (player2role != null) player2role.SetPlayer(Player1);
+            else
+            {
+                Player1.ClearRole();
+                Player1.SetRoleRPC(player2id);
+            }
+            ChacheManager.ResetMyRoleChache();
+            // ClearTaskUpdate();
+            if (AmongUsClient.Instance.AmHost)
+            {
+                byte[] player1task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(Player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+                byte[] player2task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(Player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
+                Player2.SetTask(player1task);
+                Player1.SetTask(player2task);
+            }
+        }
     }
 
     /// <summary>
@@ -2027,7 +2049,6 @@ public static class RoleHelpers
             else if (BlackHatHacker.BlackHatHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.BlackHatHacker;
             else if (PoliceSurgeon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.PoliceSurgeon;
             else if (MadRaccoon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.MadRaccoon;
-            else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             else if (JumpDancer.JumpDancerPlayer.IsCheckListPlayerControl(player)) return RoleId.JumpDancer;
             else if (Sauner.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Sauner;
             else if (Bat.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.Bat;

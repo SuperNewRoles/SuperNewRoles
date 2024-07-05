@@ -250,6 +250,12 @@ internal class AddChatPatch
         }
     }
 
+    public static void SendChat(PlayerControl target, string text, string title = "")
+    {
+        if (title != null && title != "") text = $"<size=100%><color=#ff8000>【{title}】</color></size>\n{text}";
+        SendCommand(target, "", text);
+    }
+
     /// <summary>
     /// システムメッセージ等を送信する。
     /// </summary>

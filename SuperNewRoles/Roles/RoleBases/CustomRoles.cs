@@ -72,6 +72,7 @@ public static class CustomRoles
     }
     public static void NameHandler(bool CanSeeAllRole = false)
     {
+        RoleBaseManager.GetInterfaces<INameHandler>().Do(x => x.OnHandleAllPlayer());
         if (CanSeeAllRole)
         {
             RoleBaseManager.GetInterfaces<INameHandler>()

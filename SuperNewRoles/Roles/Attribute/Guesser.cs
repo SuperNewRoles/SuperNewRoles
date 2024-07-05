@@ -88,20 +88,8 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
             );
             return true;
         }
-        string targetColorName = args[0];
-        PlayerControl target = null;
-        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
-        {
-            if (player.PlayerId == Player.PlayerId)
-                continue;
-            // 色名
-            if (targetColorName == player.Data.GetPlayerColorString())
-            {
-                target = player;
-                break;
-            }
-        }
-        if (target == null)
+        PlayerControl target = ModHelpers.PlayerByColor(args[0]);
+        if (target == null || target == Player)
         {
             AddChatPatch.SendCommand(Player,
                 GetErrorText("NoneTarget"),

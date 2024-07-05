@@ -1711,6 +1711,20 @@ MoiraDescription,This is a position for enjoyable tables that messes up the boar
 MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！,掌控命运！,命運掌握在我手中！
 MoiraAbilityLimit,Number of ability usage,能力使用数,技能最大使用次数,能力最大使用次數
 MoiraChangeVote,I'll switch my vote as well,投票も入れ替える,技能同时交换得票,同時交換得票
+MoiraSelection,Swap Selection,スワップ選択
+MoiraSelectionText,Swap two people by voting.\nPlease select two people to swap by voting.\n*You cannot select yourself.\n(You can select yourself by completing the vote as your own vote)\n*Skip to cancel the swap selection mode.\n*After selecting one person， you can also vote for yourself to cancel the swap selection mode.,交換する2人を投票によって\n選択してください\n※自分は選択できません\n（自分選択は自投票として投票完了）\n※スキップまたは1人を選択後、自投票で\n※スワップ選択モード解除
+MoiraSelectionCancel,Cancel Swap Selection,スワップ選択解除
+MoiraSelectionCancelText,Swap Selection mode has been canceled.,スワップ選択モードが解除されました
+MoiraSelectionBack,Release of swap target,スワップ対象解除
+MoiraSelectionBackText,The first person eligible for the swap has been removed.,スワップの対象1人目を解除しました
+MoiraSelectionEnd,Swap selection complete,スワップ選択完了
+MoiraSelectionEndText,Swap target selection is over.\nFate is twisting....\nIf fate is like this....What happens now?,スワップ対象の選択が終わりました\n運命が捻じ曲がる....\nこんな運命なら....どうなる?
+MoiraCommandUsage,Usage : /swap [color name of target 1] [color name of target 2],使い方 : /swap [対象1の色名] [対象2の色名]
+MoiraErrorVoteLimitOver,Not Swappable,スワップ不可
+MoiraErrorVoteLimitOverText,Swap has been used up and the ability cannot be activated.\nIf you vote for yourself， please go again.,スワップを使い切ったため、能力を発動できません\n自投票の場合は、もう1度行ってください
+MoiraErrorLimitOver,The swap has been used up and the ability cannot be activated.,スワップを使い切ったため、能力を発動できません
+MoiraErrorSamePerson,Because target 1 and target 2 are the same player，\nFailed to activate.,対象1と対象2が同じプレイヤーの為、\n発動できませんでした
+MoiraSwapText,,突然が体が歪む感覚が....\n\n何も起こらない....\nいや、何かは起きている\nそんな感覚を覚える\n\n対象1 : {0}\n対象2 : {1}
 ConjurerName,Conjurer,魔術師,大法师,魔導師
 ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ,用法术围歼敌人,包圍、然後消滅他們
 ConjurerDescription,By setting up and activating three magic circles，\nthis impostor can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。,大法师属于内鬼阵营，可以在地图上放置并激活三个魔法阵。\n大法师可以击杀处于魔法阵形成的三角形范围内的所有玩家。,魔導師能通過設置並啟動三個魔法陣，\n殺死所有在三角形範圍內的玩家。

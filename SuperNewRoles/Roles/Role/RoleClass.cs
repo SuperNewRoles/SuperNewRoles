@@ -43,6 +43,7 @@ public static class RoleClass
     public static void ClearAndReloadRoles()
     {
         ModHelpers.IdControlDic = new();
+        ModHelpers.ColorControlDic = new();
         ModHelpers.VentIdControlDic = new();
         ReplayManager.ClearAndReloads();
         BlockPlayers = new();
@@ -248,7 +249,6 @@ public static class RoleClass
         BlackHatHacker.ClearAndReload();
         PoliceSurgeon.RoleData.ClearAndReload();
         MadRaccoon.RoleData.ClearAndReload();
-        Moira.ClearAndReload();
         JumpDancer.ClearAndReload();
         Sauner.RoleData.ClearAndReload();
         Bat.RoleData.ClearAndReload();

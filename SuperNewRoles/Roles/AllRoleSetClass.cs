@@ -840,7 +840,6 @@ class AllRoleSetClass
             RoleId.BlackHatHacker => BlackHatHacker.BlackHatHackerPlayerCount,
             RoleId.PoliceSurgeon => PoliceSurgeon.CustomOptionData.PlayerCount,
             RoleId.MadRaccoon => MadRaccoon.CustomOptionData.PlayerCount,
-            RoleId.Moira => Moira.MoiraPlayerCount,
             RoleId.JumpDancer => JumpDancer.JumpDancerPlayerCount,
             RoleId.Sauner => Sauner.CustomOptionData.PlayerCount,
             RoleId.Bat => Bat.CustomOptionData.PlayerCount,

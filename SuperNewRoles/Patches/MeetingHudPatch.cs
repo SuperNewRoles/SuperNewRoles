@@ -25,6 +25,7 @@ using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
 using SuperNewRoles.MapOption;
+using static Il2CppSystem.Xml.XmlWellFormedWriter.AttributeValueCache;
 
 namespace SuperNewRoles.Patches;
 
@@ -70,6 +71,9 @@ class CastVotePatch
                 IsValidVote = Balancer.InHostMode.MeetingHudCastVote_Prefix(srcPlayerId, suspectPlayerId);
                 break;
         }
+
+        if (srcPlayer.GetRoleBase() is IMeetingHandler handler)
+            IsValidVote = handler.CastVote(suspectPlayerId);
 
         if (IsValidVote) // 有効票であれば,
         {
@@ -370,6 +374,18 @@ class CheckForEndVotingPatch
                     }
                 }
             }
+
+            Moira moira = RoleBaseManager.GetRoleBases<Moira>().FirstOrDefault();
+            if (Moira.ChangeVote.GetBool() && moira != null & moira.AbilityUsedThisMeeting)
+            {
+                for (int i = 0; i < statesList.Count; i++)
+                {
+                    VoterState state = statesList[i];
+                    if (state.VotedForId == moira.SwapVoteData.Item1) state.VotedForId = moira.SwapVoteData.Item2;
+                    else if (state.VotedForId == moira.SwapVoteData.Item2) state.VotedForId = moira.SwapVoteData.Item1;
+                }
+            }
+
             states = statesList.ToArray();
 
             var VotingData = __instance.CustomCalculateVotes();
@@ -731,25 +747,7 @@ static class ExtendedMeetingHud
                 dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
             }
         }
-        if (Moira.AbilityUsedThisMeeting && Moira.MoiraChangeVote.GetBool())
-        {
-            if (Moira.Player.IsAlive())
-            {
-                PlayerVoteArea swapped1 = null;
-                PlayerVoteArea swapped2 = null;
-                foreach (PlayerVoteArea playerVoteArea in __instance.playerStates)
-                {
-                    if (playerVoteArea.TargetPlayerId == Moira.SwapVoteData.Item1) swapped1 = playerVoteArea;
-                    if (playerVoteArea.TargetPlayerId == Moira.SwapVoteData.Item2) swapped2 = playerVoteArea;
-                }
-                if (swapped1 != null && swapped2 != null)
-                {
-                    if (!dic.ContainsKey(swapped1.TargetPlayerId)) dic[swapped1.TargetPlayerId] = 0;
-                    if (!dic.ContainsKey(swapped2.TargetPlayerId)) dic[swapped2.TargetPlayerId] = 0;
-                    (dic[swapped1.TargetPlayerId], dic[swapped2.TargetPlayerId]) = (dic[swapped2.TargetPlayerId], dic[swapped1.TargetPlayerId]);
-                }
-            }
-        }
+        RoleBaseManager.GetInterfaces<IMeetingHandler>().Do(x => x.CalculateVotes(dic));
         return dic;
     }
 }
@@ -829,64 +827,8 @@ class MeetingHudPopulateButtonsPatch
                 if (area.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId)
                     areas.Add(area);
             }
-            __instance.playerStates = areas.ToArray(); ;
+            __instance.playerStates = areas.ToArray();
         }
-    }
-}
-
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
-public static class MeetingHudPopulateVotesPatch
-{
-    public static bool Prefix(MeetingHud __instance, Il2CppStructArray<VoterState> states)
-    {
-        Moira.SwapVoteArea(__instance);
-
-        __instance.TitleText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.MeetingVotingResults);
-        int num = 0;
-        for (int i = 0; i < __instance.playerStates.Length; i++)
-        {
-            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-            playerVoteArea.ClearForResults();
-            int num2 = 0;
-            foreach (VoterState voterState in states)
-            {
-                NetworkedPlayerInfo playerById = GameData.Instance.GetPlayerById(voterState.VoterId);
-                if (playerById == null)
-                {
-                    __instance.logger.Error(string.Format("Couldn't find player info for voter: {0}", voterState.VoterId), null);
-                }
-                else if (i == 0 && voterState.SkippedVote)
-                {
-                    __instance.BloopAVoteIcon(playerById, num, __instance.SkippedVoting.transform);
-                    num++;
-                }
-                else if (Moira.AbilityUsedThisMeeting && Moira.MoiraChangeVote.GetBool())
-                {
-                    if (voterState.VotedForId == Moira.SwapVoteData.Item1)
-                    {
-                        if (Moira.SwapVoteData.Item1 == playerVoteArea.TargetPlayerId)
-                        {
-                            __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
-                            num2++;
-                        }
-                    }
-                    else if (voterState.VotedForId == Moira.SwapVoteData.Item2)
-                    {
-                        if (Moira.SwapVoteData.Item2 == playerVoteArea.TargetPlayerId)
-                        {
-                            __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
-                            num2++;
-                        }
-                    }
-                }
-                else if (voterState.VotedForId == playerVoteArea.TargetPlayerId)
-                {
-                    __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
-                    num2++;
-                }
-            }
-        }
-        return false;
     }
 }
 
@@ -999,10 +941,6 @@ class MeetingHudStartPatch
         {
             switch (PlayerControl.LocalPlayer.GetRole())
             {
-                case RoleId.Moira:
-                    Moira.StartMeeting(__instance);
-                    break;
-
                 // 以下ネームプレート上の ボタン表示
                 case RoleId.SoothSayer:
                 case RoleId.SpiritMedium:

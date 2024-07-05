@@ -5,6 +5,7 @@ using System.Text;
 using HarmonyLib;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppSystem.CodeDom;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -214,7 +215,7 @@ public class EndGameManagerSetUpPatch
             { WinCondition.TheThreeLittlePigsWin, ("TheThreeLittlePigsName", TheThreeLittlePigs.color) },
             { WinCondition.OrientalShamanWin, ("OrientalShamanName", OrientalShaman.color) },
             { WinCondition.BlackHatHackerWin, ("BlackHatHackerName", BlackHatHacker.color) },
-            { WinCondition.MoiraWin, ("MoiraName", Moira.color) },
+            { WinCondition.MoiraWin, ("MoiraName", Moira.Roleinfo.RoleColor) },
             { WinCondition.CrookWin, ("CrookName", Crook.RoleData.color) },
             { WinCondition.PantsRoyalWin, ("PantsRoyalYouareWinner" ,Mode.PantsRoyal.main.ModeColor) },
             { WinCondition.SaunerWin, ("SaunerRefreshing", Sauner.RoleData.color) },
@@ -627,7 +628,6 @@ public static class OnGameEndPatch
             TheThreeLittlePigs.TheSecondLittlePig.Player,
             TheThreeLittlePigs.TheThirdLittlePig.Player,
             BlackHatHacker.BlackHatHackerPlayer,
-            Moira.MoiraPlayer,
             Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
             Sauner.RoleData.Player,
             Pokerface.RoleData.Player,
@@ -895,8 +895,7 @@ public static class OnGameEndPatch
         //単独勝利系統
         //下に行くほど優先度が高い
         bool allowAdditionalWins = true;
-        if (IsProcessReplaceWin)
-            ProcessReplaceWin(ref winners, gameOverReason, ref winCondition, out allowAdditionalWins);
+        if (IsProcessReplaceWin) ProcessReplaceWin(ref winners, gameOverReason, ref winCondition, out allowAdditionalWins);
 
         //追加勝利系
         if (allowAdditionalWins) ProcessAdditionalWin(ref winners, gameOverReason, ref winCondition);
@@ -1229,12 +1228,6 @@ public static class OnGameEndPatch
             allowAdditionalWins = false;
             winners.Add(FrankenPlayer);
             winCondition = WinCondition.FrankensteinWin;
-        }
-        if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
-        {
-            allowAdditionalWins = false;
-            winners = [Moira.Player.Data];
-            winCondition = WinCondition.MoiraWin;
         }
         spereseted = false;
         // 詐欺師は, 勝利判定が実行される前に既に勝利条件を満たしている為, 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)

@@ -30,4 +30,8 @@ public interface INameHandler
     {
 
     }
+    /// <summary>
+    /// 全員に見える物を表示する用に
+    /// </summary>
+    public void OnHandleAllPlayer() { }
 }
