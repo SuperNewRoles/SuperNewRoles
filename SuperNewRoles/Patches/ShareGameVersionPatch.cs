@@ -237,7 +237,7 @@ class ShareGameVersion
                 if (!blockStart)
                 {
                     // 参加者の導入状況に問題が無い時、開始ボタンと開始のテキストを表示する。(アップデート処理の負荷を下げる為、ifを使用)
-                    if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.GameStartText.enabled = true;
+                    if (__instance.StartButton.enabled != true) __instance.StartButton.SetButtonEnableState(true);
                 }
                 else
                 {
@@ -246,7 +246,7 @@ class ShareGameVersion
                     __instance.ResetStartState();
 
                     // 参加者の導入状況に問題がある時、開始ボタンと開始のテキストを非表示にする。(アップデート処理の負荷を下げる為、ifを使用)
-                    if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.GameStartText.enabled = false;
+                    if (__instance.StartButton.enabled != false) __instance.StartButton.SetButtonEnableState(false);
                 }
             }
             if (blockStart || hostModeInVanilla)
