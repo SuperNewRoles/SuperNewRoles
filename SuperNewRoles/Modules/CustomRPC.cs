@@ -1543,9 +1543,12 @@ public static class RPCProcedure
     }
     public static void TeleporterTP(byte playerid)
     {
-        var p = ModHelpers.PlayerById(playerid);
-        CachedPlayer.LocalPlayer.transform.position = p.transform.position;
-        new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), p.NameText().text), 3);
+        var teleportTarget = ModHelpers.PlayerById(playerid);
+
+        Vector2 teleportTo = teleportTarget?.GetTruePosition() ?? new(9999, 9999);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            player.NetTransform.SnapTo(teleportTo);
+        new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), teleportTarget != null ? ModHelpers.PlayerById(playerid).NameText().text : "???"), 3);
     }
     public static void SetWinCond(byte Cond)
         => OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
