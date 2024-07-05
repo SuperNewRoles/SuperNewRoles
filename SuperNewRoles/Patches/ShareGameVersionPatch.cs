@@ -254,6 +254,7 @@ class ShareGameVersion
                 VersionErrorInfo.text = message;
                 VersionErrorInfo.enabled = true;
 
+                // ゲーム開始後はエラー表記を非表示にする
                 if ((__instance.startState == GameStartManager.StartingStates.Countdown && Mathf.CeilToInt(__instance.countDownTimer) <= 0) || __instance.startState == GameStartManager.StartingStates.Starting)
                     VersionErrorInfo.enabled = false;
             }
