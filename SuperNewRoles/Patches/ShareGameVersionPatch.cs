@@ -190,7 +190,6 @@ class ShareGameVersion
                     }
 
                     message += $"\n{String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer))}\n";
-                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                 }
             }
             if (ConfigRoles.IsVersionErrorView.Value || AmongUsClient.Instance.AmHost)
@@ -254,7 +253,6 @@ class ShareGameVersion
             {
                 VersionErrorInfo.text = message;
                 VersionErrorInfo.enabled = true;
-                __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
 
                 if ((__instance.startState == GameStartManager.StartingStates.Countdown && Mathf.CeilToInt(__instance.countDownTimer) <= 0) || __instance.startState == GameStartManager.StartingStates.Starting)
                     VersionErrorInfo.enabled = false;
@@ -266,7 +264,6 @@ class ShareGameVersion
                     VersionErrorInfo.text = "";
                     VersionErrorInfo.enabled = false;
                 }
-                __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
             }
             LastBlockStart = blockStart;
             if (update) currentText = __instance.PlayerCounter.text;
