@@ -18,6 +18,23 @@ public static class MurderHelpers
         writer.EndRPC();
         player.MurderPlayer(target, flags);
     }
+    public static void RpcMurderPlayerFlags(this PlayerControl player, CustomRpcSender sender, PlayerControl target, MurderResultFlags flags, PlayerControl SendTarget = null)
+    {
+        if (sender == null)
+        {
+            RpcMurderPlayerFlags(player, target, flags, SendTarget);
+            return;
+        }
+        if (player == null || target == null) return;
+
+        sender
+            .AutoStartRpc(player.NetId, (byte)RpcCalls.MurderPlayer, SendTarget?.GetClientId() ?? -1)
+            .WriteNetObject(target)
+            .Write((int)flags)
+            .EndRpc();
+
+        player.MurderPlayer(target, flags);
+    }
     public static void RpcMurderPlayerForce(this PlayerControl player, PlayerControl target)
     {
         RpcMurderPlayerFlags(player, target,
@@ -30,8 +47,11 @@ public static class MurderHelpers
     }
     public static void RpcForceGuard(this PlayerControl shower, PlayerControl target, PlayerControl SendTarget = null)
     {
-        RpcMurderPlayerFlags(shower, target,
-            MurderResultFlags.FailedProtected, SendTarget);
+        CustomRpcSender sender = CustomRpcSender.Create("ForceGuard", sendOption:SendOption.Reliable);
+        sender.RpcProtectPlayer(shower, target, SendTarget?.GetClientId() ?? -1);
+        RpcMurderPlayerFlags(shower, sender, target,
+           MurderResultFlags.FailedProtected, SendTarget);
+        sender.SendMessage();
     }
     public static void RpcMurderPlayerOnCheck(this PlayerControl player, PlayerControl target)
     {

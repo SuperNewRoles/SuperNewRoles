@@ -263,6 +263,19 @@ public static class CustomRpcSenderExtensions
           .WriteNetObject(target)
           .EndRpc();
     }
+    public static void RpcProtectPlayer(this CustomRpcSender sender, PlayerControl source, PlayerControl target, int colorId, int targetClientId = -1)
+    {
+        /*
+		MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(NetId, 45, (SendOption)1);
+		val.WriteNetObject(target);
+		val.Write(colorId);
+		AmongUsClient.Instance.FinishRpcImmediately(val);*/
+        sender.AutoStartRpc(source.NetId, (byte)RpcCalls.ProtectPlayer, targetClientId)
+          .WriteNetObject(target)
+          .Write(colorId)
+          .EndRpc();
+
+    }
     public static void RpcEndGame(this CustomRpcSender sender, GameOverReason endReason, bool showAd)
     {
         GameManager.Instance.ShouldCheckForGameEnd = false;

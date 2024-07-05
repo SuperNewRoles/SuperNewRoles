@@ -1,15 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixedUpdaterMe, ICustomButton
+public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixedUpdaterMe, ICustomButton, ISupportSHR, ICheckMurderHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(PavlovsOwner),
@@ -95,6 +98,9 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
     private CustomButtonInfo CreateDogButtonInfo;
     public CustomButtonInfo[] CustomButtonInfos { get; }
 
+    public RoleTypes RealRole => RoleTypes.Crewmate;
+    public RoleTypes DesyncRole =>  RoleTypes.Impostor;
+
     public int CreateCountLimit = OwnerDogLimit.GetInt();
 
     public void OnHandleName()
@@ -105,8 +111,43 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
         PlayerControl source = Player;
         PlayerControl target = ModHelpers.PlayerById(reader.ReadByte());
         if (source == null || target == null) return;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            if (reader.ReadBoolean())
+            {
+                if (!AmongUsClient.Instance.AmHost)
+                    return;
+                source.RpcMurderPlayer(source, true);
+            }
+            else
+            {
+                CreateCountLimit--;
+                CreateDogButtonInfo.AbilityCount = CreateCountLimit;
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (!target.IsMod())
+                    {
+                        target.RpcSetRoleDesync(RoleTypes.Impostor, true);
+                        Player.RpcSetRoleDesync(RoleTypes.Phantom, true, target);
+                    }
+                    if (!Player.IsMod())
+                        Player.RpcSetRoleDesync(RoleTypes.Crewmate, true);
+                }
+                RPCProcedure.SetRole(target.PlayerId, (byte)RoleId.Pavlovsdogs);
+                if (!target.TryGetRoleBase(out PavlovsDogs dog))
+                    throw new System.NotImplementedException("Target is not PavlovsDogs. Why!?");
+                CreatedDogs.Add(dog);
+                dog.UpdateOwner(this);
+                ChangeName.SetRoleName(target);
+                ChangeName.SetRoleName(Player);
+            }
+            return;
+        }
+
         if (reader.ReadBoolean())
+        {
             source.MurderPlayer(source, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
+        }
         else
         {
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
@@ -118,6 +159,19 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
             CreatedDogs.Add(dog);
             dog.UpdateOwner(this);
         }
+    }
+
+    public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
+    {
+        Logger.Info("Pavlovs Checking");
+        if (AliveCreatedDog != null)
+            return false;
+        bool isSelfDeath = target.IsImpostor() && IsTargetImpostorDeath.GetBool();
+        MessageWriter writer = RpcWriter;
+        writer.Write(target.PlayerId);
+        writer.Write(isSelfDeath);
+        SendRpc(writer);
+        return false;
     }
 
     public void FixedUpdateMeDefaultAlive()
@@ -151,5 +205,18 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
         writer.Write(target.PlayerId);
         writer.Write(isSelfDeath);
         SendRpc(writer);
+    }
+    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
+    {
+        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.PlayerId == Player.PlayerId || !Player.IsPavlovsTeam())
+                continue;
+            ChangePlayers[player.PlayerId] = ModHelpers.Cs(PavlovsDogs.PavlovsColor, ChangeName.GetNowName(ChangePlayers, player));
+        }
+    }
+    public void BuildSetting(IGameOptions gameOptions)
+    {
+        gameOptions.SetFloat(FloatOptionNames.KillCooldown, Optioninfo.CoolTime);
     }
 }

@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+using System.Text;
 using AmongUs.GameOptions;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -8,7 +12,7 @@ using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, IKiller, ICustomButton, IFixedUpdaterMe, INameHandler
+public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, IKiller, ICustomButton, IFixedUpdaterMe, INameHandler, ISupportSHR, IFixedUpdaterAll, ICheckMurderHandler, IDeathHandler
 {
     public static Color32 PavlovsColor = new(244, 169, 106, byte.MaxValue);
 
@@ -35,8 +39,12 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     public CustomButtonInfo PavlovsKillButton;
     public CustomButtonInfo[] CustomButtonInfos { get; }
 
+    public RoleTypes RealRole => RoleTypes.Crewmate;
+    public RoleTypes DesyncRole => OwnerDead ? RoleTypes.Shapeshifter : RoleTypes.Impostor;
+
     public PavlovsDogs(PlayerControl p) : base(p, Roleinfo, null, Introinfo)
     {
+        UpdatedToOwnerDead = false;
         PavlovsKillButton = new(null,this,KillOnClick,(isAlive) => isAlive,
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             null, FastDestroyableSingleton<HudManager>.Instance.KillButton.graphic.sprite,
@@ -46,9 +54,12 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
             new(), FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             KeyCode.Q, 8, baseButton: FastDestroyableSingleton<HudManager>.Instance.KillButton,
             SetTargetFunc: () => SetTarget(), hasSecondButtonInfo: true);
+        CustomButtonInfos = [PavlovsKillButton];
     }
 
     public float RunAwayTime = PavlovsOwner.RunAwayDeathTime.GetFloat();
+
+    private bool UpdatedToOwnerDead;
 
     public void UpdateOwner(PavlovsOwner owner)
         => CurrentOwner = owner;
@@ -67,10 +78,23 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
         }
     }
 
+    public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
+    {
+        if (target.IsPavlovsTeam())
+            return false;
+        RunAwayTime = PavlovsOwner.RunAwayDeathTime.GetFloat();
+        if (OwnerDead)
+            Player.RpcResetAbilityCooldown();
+        return true;
+    }
+
     public void KillOnClick()
     {
         PlayerControl target = PavlovsKillButton.CurrentTarget;
-        ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+        if (ModeHandler.IsMode(ModeId.Default))
+            ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+        else
+            Player.RpcMurderPlayer(target, true);
         if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.Contains(PlayerControl.LocalPlayer.PlayerId)) return;
         RunAwayTime = PavlovsOwner.RunAwayDeathTime.GetFloat();
     }
@@ -106,9 +130,11 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
         return result == null ? null : result.IsDead() ? null : result;
     }
 
+    public void FixedUpdateMeSHRAlive()
+        => FixedUpdateMeDefaultAlive();
     public void FixedUpdateMeDefaultAlive()
     {
-        if (!OwnerDead || Player.IsDead() || RoleClass.IsMeeting)
+        if (!OwnerDead || Player.IsDead() || IsMeeting)
         {
             PavlovsKillButton.SecondButtonInfoText.text = string.Empty;
             return;
@@ -119,7 +145,50 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
             ? ModTranslation.GetString("SerialKillerSuicideText", (int)RunAwayTime + 1)
             : string.Empty;
 
+        if (RunAwayTime <= 0 && ModeHandler.IsMode(ModeId.Default))
+            Player.RpcMurderPlayer(Player, true);
+    }
+    public void FixedUpdateAllSHR()
+    {
+        if (!AmongUsClient.Instance.AmHost)
+            return;
+        if (!UpdatedToOwnerDead && OwnerDead)
+        {
+            UpdatedToOwnerDead = true;
+            Player.RpcSetRole(RoleTypes.Shapeshifter, true);
+            Player.RpcResetAbilityCooldown();
+        }
+        else if (UpdatedToOwnerDead && !OwnerDead)
+        {
+            UpdatedToOwnerDead = false;
+            Player.RpcSetRole(RoleTypes.Impostor, true);
+        }
+        if (!OwnerDead || Player.IsDead() || IsMeeting)
+            return;
+        RunAwayTime -= Time.fixedDeltaTime;
+        PavlovsKillButton.SecondButtonInfoText.text =
+            RunAwayTime > 0
+            ? ModTranslation.GetString("SerialKillerSuicideText", (int)RunAwayTime + 1)
+            : string.Empty;
+
         if (RunAwayTime <= 0)
             Player.RpcMurderPlayer(Player, true);
+    }
+    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
+    {
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.PlayerId == Player.PlayerId || !Player.IsPavlovsTeam())
+                continue;
+            ChangePlayers[player.PlayerId] = ModHelpers.Cs(PavlovsColor, ChangeName.GetNowName(ChangePlayers, player));
+        }
+    }
+    public void BuildSetting(IGameOptions gameOptions)
+    {
+        gameOptions.SetFloat(FloatOptionNames.ShapeshifterCooldown, PavlovsOwner.RunAwayDeathTime.GetFloat());
+    }
+
+    public void FixedUpdateAllDefault()
+    {
     }
 }

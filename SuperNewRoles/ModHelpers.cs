@@ -1083,6 +1083,17 @@ public static class ModHelpers
         return null;
     }
 
+    private static Dictionary<ushort, bool> IsImpostorRoleCached = new();
+    public static bool IsImpostorRole(this RoleTypes roleTypes)
+    {
+        if (IsImpostorRoleCached.TryGetValue((ushort)roleTypes, out bool value))
+            return value;
+        RoleBehaviour role = FastDestroyableSingleton<RoleManager>.Instance.GetRole(roleTypes);
+        if (role == null)
+            throw new NotImplementedException($"Not found roletypes: {roleTypes}");
+        return IsImpostorRoleCached[(ushort)roleTypes] = role.IsImpostor;
+    }
+
     public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
     {
         foreach (PlayerControl Player in listData)
