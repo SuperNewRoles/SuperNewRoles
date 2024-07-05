@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
@@ -69,15 +70,19 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
         {
             // 生きている犬がいないかつ、生存確認済みかつ、前回の犬の数と現在の犬の数が同じ場合はスキップ
             // でない場合、生存しているCached犬がいないか死んでいる場合に処理する
-            if (
-                !(_aliveCreatedDog == null && aliveChecked && lastCreatedDogs == CreatedDogs.Count)
-                && (_aliveCreatedDog?.Player == null || _aliveCreatedDog.Player.IsDead()))
+            if (_aliveCreatedDog == null && aliveChecked && lastCreatedDogs == CreatedDogs.Count)
+                return null;
+            if (_aliveCreatedDog?.Player == null || _aliveCreatedDog.Player.IsDead())
             {
                 aliveChecked = true;
                 if (CreatedDogs.Count == 0)
                     return null;
-                if (CreatedDogs.Count == 1 && (_aliveCreatedDog?.Player == null || _aliveCreatedDog.Player.IsDead()))
-                    return null;
+                if (CreatedDogs.Count == 1)
+                {
+                    PavlovsDogs firstDog = CreatedDogs.First();
+                    if (firstDog?.Player == null || firstDog.Player.IsDead())
+                        return null;
+                }
                 _aliveCreatedDog = CreatedDogs.FirstOrDefault(d => d.Player.IsAlive());
                 lastCreatedDogs = CreatedDogs.Count;
                 if (_aliveCreatedDog != null)
@@ -108,7 +113,10 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
             RPCProcedure.SetRole(target.PlayerId, (byte)RoleId.Pavlovsdogs);
             CreateCountLimit--;
             CreateDogButtonInfo.AbilityCount = CreateCountLimit;
-            CreatedDogs.Add(target.GetRoleBase<PavlovsDogs>());
+            if (!target.TryGetRoleBase(out PavlovsDogs dog))
+                throw new System.NotImplementedException("Target is not PavlovsDogs. Why!?");
+            CreatedDogs.Add(dog);
+            dog.UpdateOwner(this);
         }
     }
 
