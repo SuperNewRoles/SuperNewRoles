@@ -272,6 +272,8 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
 OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
+CanSeeImpostorRole,Imposters can check each other's rolls.,インポスターが互いに役職を確認できる
+CanSeeImpostorRoleTurn,Number of turns to confirm,わかるようになる会議数
 CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない,玩家死亡后不再受到灵咒影响,死者不具有憑依能力
 ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,タスク完了後に憑依能力を開放する。,完成任务后才会释放灵咒,任務完成後啟用憑依能力
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
