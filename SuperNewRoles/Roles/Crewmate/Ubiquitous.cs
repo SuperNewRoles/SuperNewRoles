@@ -75,7 +75,7 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         );
         DoorHackButton = new(
             null, this, DoorHackButtonClick, (alive) => alive, CustomButtonCouldType.Always, null,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Ubiquitous.UbiquitousDoorHack.png", 115f),
             DoorHackCoolTime.GetFloat, new(-2, 1), "UbiquitousDoorHackButton", KeyCode.V, CouldUse: () => DoorHackButtonCould() && CustomCanMoveCouldUse()
         );
         CustomButtonInfos = new CustomButtonInfo[3] {
