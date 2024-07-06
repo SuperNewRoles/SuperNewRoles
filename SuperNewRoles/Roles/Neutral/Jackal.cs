@@ -254,6 +254,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 targetRole = RoleTypes.Impostor;
             else if (CanUseVent)
                 targetRole = RoleTypes.Engineer;
+            target.RpcSetRole(RoleTypes.Tracker, true);
             if (!target.IsMod())
                 target.RpcSetRoleDesync(targetRole, true);
             // キルできなくする

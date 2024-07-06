@@ -197,6 +197,32 @@ public static class RoleSelectHandler
             desyncDictionary.Add(player.PlayerId, roleTypes);
     }
 
+    public static readonly Dictionary<int, RoleTypes> DesyncTable = new()
+    {
+        { (int)RoleId.Sheriff, RoleTypes.Impostor },
+        { (int)RoleId.Demon, RoleTypes.Impostor },
+        { (int)RoleId.truelover, RoleTypes.Impostor },
+        { (int)RoleId.FalseCharges, RoleTypes.Impostor },
+        { (int)RoleId.MadMaker, RoleTypes.Impostor },
+        { (int)RoleId.JackalSeer, RoleTypes.Impostor },
+        { (int)RoleId.Arsonist, RoleTypes.Shapeshifter },
+        { (int)RoleId.RemoteSheriff, RoleTypes.Shapeshifter },
+        { (int)RoleId.ToiletFan, RoleTypes.Shapeshifter },
+        { (int)RoleId.NiceButtoner, RoleTypes.Shapeshifter },
+        { (int)RoleId.Worshiper, RoleTypes.Shapeshifter },
+        { (int)RoleId.MadRaccoon, RoleTypes.Shapeshifter }
+    };
+
+    public static RoleTypes? GetDesyncRole(PlayerControl player)
+    {
+        if (player.GetRoleBase() is ISupportSHR playerSHR
+            && playerSHR.IsDesync)
+            return playerSHR.DesyncRole;
+        if (DesyncTable.TryGetValue((int)player.GetRole(), out RoleTypes targetRole))
+            return targetRole;
+        return null;
+    }
+
     public static void SetCustomRoles()
     {
         Dictionary<byte, (RoleTypes role, bool isNotModOnly)> CrewmateSyncRoles = new();
@@ -254,7 +280,7 @@ public static class RoleSelectHandler
                 SetRoleDesync(player, playerSHR.DesyncRole);
                 continue;
             }
-            if (!isImpostorRole(playerSHR.RealRole))
+            if (!playerSHR.RealRole.IsImpostorRole())
             {
                 CrewmateSyncRoles.AddToSyncRoles(player, playerSHR.RealRole, playerSHR.IsRealRoleNotModOnly);
             }
@@ -464,17 +490,6 @@ public static class RoleSelectHandler
         }
         Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
         sender.RpcSetRole(p, roleTypes, true);
-    }
-    private static Dictionary<int, bool> isImpostorChached = new();
-    public static bool isImpostorRole(RoleTypes roleType)
-    {
-        // FastDestroyableSingleton<RoleManager>.Instance.GetRole(roleTypes).IsImpostor
-        if (isImpostorChached.TryGetValue((int)roleType, out bool result))
-            return result;
-        var role = FastDestroyableSingleton<RoleManager>.Instance.GetRole(roleType);
-        if (role == null)
-            return isImpostorChached[(int)roleType] = false;
-        return isImpostorChached[(int)roleType] = role.IsImpostor;
     }
     public static void CrewOrImpostorSet()
     {

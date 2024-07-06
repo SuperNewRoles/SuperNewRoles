@@ -1083,6 +1083,18 @@ public static class ModHelpers
         return null;
     }
 
+    private static Dictionary<int, bool> isImpostorChached = new();
+    public static bool IsImpostorRole(this RoleTypes roleType)
+    {
+        // FastDestroyableSingleton<RoleManager>.Instance.GetRole(roleTypes).IsImpostor
+        if (isImpostorChached.TryGetValue((int)roleType, out bool result))
+            return result;
+        var role = FastDestroyableSingleton<RoleManager>.Instance.GetRole(roleType);
+        if (role == null)
+            return isImpostorChached[(int)roleType] = false;
+        return isImpostorChached[(int)roleType] = role.IsImpostor;
+    }
+
     public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
     {
         foreach (PlayerControl Player in listData)

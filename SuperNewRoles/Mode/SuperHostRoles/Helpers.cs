@@ -14,6 +14,19 @@ public static class Helpers
             player.RpcSetRoleDesync(role, p);
         }
     }
+    public static void ResetToCrewAndSetRole(this PlayerControl player, RoleTypes role, bool isNotModOnly = true)
+    {
+        CustomRpcSender sender = CustomRpcSender.Create("ResetToCrewAndSetRole", sendOption:SendOption.Reliable);
+        sender.RpcSetRole(player, RoleTypes.Tracker, true);
+        if (!(player.IsMod() && isNotModOnly))
+        {
+            if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                sender.RpcSetRole(player, role, true, player.GetClientId());
+            else
+                player.SetRole(role, true);
+        }
+        sender.SendMessage();
+    }
     //TownOfHostより！！
     public static void RpcSetRoleDesync(this PlayerControl player, RoleTypes role, bool canOverride, PlayerControl seer = null)
     {
@@ -28,7 +41,7 @@ public static class Helpers
         writer.Write(canOverride);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
-    public static void RpcSetRoleDesync(this PlayerControl player, CustomRpcSender sender, RoleTypes role, PlayerControl seer = null)
+    public static void RpcSetRoleDesync(this PlayerControl player, CustomRpcSender sender, RoleTypes role, bool canOverride, PlayerControl seer = null)
     {
         //player: 名前の変更対象
         //seer: 上の変更を確認することができるプレイヤー
@@ -36,11 +49,10 @@ public static class Helpers
         if (seer == null) seer = player;
         var clientId = seer.GetClientId();
         SuperNewRolesPlugin.Logger.LogInfo("(Desync => " + seer.Data.PlayerName + " ) " + player.Data.PlayerName + " => " + role);
-        sender.StartMessage(clientId)
-            .StartRpc(player.NetId, RpcCalls.SetRole)
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetRole)
             .Write((ushort)role)
-            .EndRpc()
-            .EndMessage();
+            .Write(canOverride)
+            .EndRpc();
     }
     public static void RpcSetRole(this PlayerControl player, CustomRpcSender sender, RoleTypes role)
     {
