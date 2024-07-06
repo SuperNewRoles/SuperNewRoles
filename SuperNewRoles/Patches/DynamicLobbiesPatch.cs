@@ -105,9 +105,9 @@ public static class DynamicLobbies
             return false;
         }
 
-        public static void SendData(InnerNetClient __instance, int clientId, int start = 0)
+        public static void SendData(InnerNetClient __instance, int clientId)
         {
-            int index = start;
+            Logger.Info("Start partial data message from index 0", "SendInitialData");
             MessageWriter messageWriter = MessageWriter.Get(SendOption.Reliable);
             messageWriter.StartMessage(6);
             messageWriter.Write(__instance.GameId);
@@ -116,18 +116,33 @@ public static class DynamicLobbies
             lock (obj)
             {
                 HashSet<GameObject> hashSet = new();
-                for (; index < __instance.allObjects.Count; index++)
+                for (int index = 0; index < obj.Count; index++)
                 {
                     //本来はSerialize後のサイズ確認してダメそうならbreakするべきだが、そのためのコストがかなり大きいのである程度余裕を持ったサイズで適当に区切ることにする
                     //(Serializeすると500byte程度になるような巨大なObjectがない限りは大丈夫なはず)
-                    if (messageWriter.Length > 1000) break;
+                    if (messageWriter.Length > 1000)
+                    {
+                        //一旦message送信
+                        Logger.Info($"Send partial data message to index {index}", "SendInitialData");
+                        messageWriter.EndMessage();
+                        __instance.SendOrDisconnect(messageWriter);
+                        messageWriter.Recycle();
 
-                    InnerNetObject innerNetObject = __instance.allObjects[index];
+                        //そして新しいmessageを作成
+                        Logger.Info($"Start partial data message from index {index}", "SendInitialData");
+                        messageWriter = MessageWriter.Get(SendOption.Reliable);
+                        messageWriter.StartMessage(6);
+                        messageWriter.Write(__instance.GameId);
+                        messageWriter.WritePacked(clientId);
+                    }
+
+                    InnerNetObject innerNetObject = obj[index];
                     if (innerNetObject && (innerNetObject.OwnerId != -4 || __instance.AmModdedHost) && hashSet.Add(innerNetObject.gameObject))
                     {
                         if (innerNetObject.Pointer == GameManager.Instance.Pointer)
                         {
-                            __instance.SendGameManager(clientId, innerNetObject.CastFast<GameManager>());
+                            Logger.Info("Send GameManager", "SendInitialData");
+                            __instance.SendGameManager(clientId, GameManager.Instance);
                         }
                         else
                         {
@@ -139,8 +154,7 @@ public static class DynamicLobbies
             messageWriter.EndMessage();
             __instance.SendOrDisconnect(messageWriter);
             messageWriter.Recycle();
-
-            if (index < __instance.allObjects.Count) SendData(__instance, clientId, index);
+            Logger.Info("Send all data message", "SendInitialData");
         }
     }
 }
