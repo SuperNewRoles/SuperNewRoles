@@ -261,7 +261,7 @@ public static class RoleClass
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
-        ChacheManager.Load();
+        CacheManager.Load();
         DebugModeManager.ClearAndReloads();
     }
 

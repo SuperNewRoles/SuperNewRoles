@@ -288,7 +288,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
                 CreatedSidekick = sidekick;
             }
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
+            CacheManager.ResetMyRoleCache();
         }
     }
     private void HandleRpcPromoteSidekick()
@@ -308,7 +308,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
             return;
         changedRole.SetAmSidekicked();
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
     }
 
     private bool Promoted;

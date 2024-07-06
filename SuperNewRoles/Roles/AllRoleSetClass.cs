@@ -337,7 +337,7 @@ class AllRoleSetClass
                 RoleHelpers.SetQuarreledRPC(listData[0], listData[1]);
             }
         }
-        ChacheManager.ResetQuarreledChache();
+        CacheManager.ResetQuarreledCache();
     }
 
     public static void LoversRandomSelect()
@@ -403,7 +403,7 @@ class AllRoleSetClass
                 RoleHelpers.SetLoversRPC(listData[0], listData[1]);
             }
         }
-        ChacheManager.ResetLoversChache();
+        CacheManager.ResetLoversCache();
     }
     public static void SetPlayerNum()
     {

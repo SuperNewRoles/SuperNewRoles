@@ -106,6 +106,6 @@ class RoleSystem
         AllRoleSetClass.AllRoleSet();
         SuperHostRoles.RoleSelectHandler.SetCustomRoles();
         SyncSetting.CustomSyncSettings();
-        ChacheManager.ResetChache();
+        CacheManager.ResetCache();
     }
 }
