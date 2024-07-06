@@ -58,7 +58,7 @@ public static class RoleHelpers
     }
     public static bool IsImpostor(this PlayerControl player)
     {
-        return player != null && !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player.Data.Role.IsImpostor;
+        return player != null && !player.IsRole(RoleId.Sheriff) && player.Data.Role.IsImpostor;
     }
 
     /// <summary>
