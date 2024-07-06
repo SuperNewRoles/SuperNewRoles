@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AmongUs.GameOptions;
+using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -55,6 +56,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
             KeyCode.Q, 8, baseButton: FastDestroyableSingleton<HudManager>.Instance.KillButton,
             SetTargetFunc: () => SetTarget(), hasSecondButtonInfo: true);
         CustomButtonInfos = [PavlovsKillButton];
+        SyncSetting.CustomSyncSettings(Player);
     }
 
     public float RunAwayTime = PavlovsOwner.RunAwayDeathTime.GetFloat();
@@ -155,7 +157,10 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
         if (!UpdatedToOwnerDead && OwnerDead)
         {
             UpdatedToOwnerDead = true;
-            Player.RpcSetRole(RoleTypes.Shapeshifter, true);
+            CustomRpcSender sender = CustomRpcSender.Create("PavlovsDogsUpdateOwner", sendOption: SendOption.Reliable);
+            SyncSetting.CustomSyncSettings(Player, sender);
+            sender.RpcSetRole(Player, RoleTypes.Shapeshifter, true);
+            sender.SendMessage();
             Player.RpcResetAbilityCooldown();
         }
         else if (UpdatedToOwnerDead && !OwnerDead)
@@ -185,7 +190,9 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     }
     public void BuildSetting(IGameOptions gameOptions)
     {
+        Logger.Info("PavlovsDogsRunAwayTime: "+ PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.ShapeshifterCooldown, PavlovsOwner.RunAwayDeathTime.GetFloat());
+        gameOptions.SetFloat(FloatOptionNames.ShapeshifterDuration, PavlovsOwner.RunAwayDeathTime.GetFloat());
     }
 
     public void FixedUpdateAllDefault()

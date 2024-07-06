@@ -45,13 +45,16 @@ public static class MurderHelpers
         RpcMurderPlayerFlags(player, target,
             MurderResultFlags.FailedError);
     }
-    public static void RpcForceGuard(this PlayerControl shower, PlayerControl target, PlayerControl SendTarget = null)
+    public static void RpcForceGuard(this PlayerControl shower, PlayerControl target, PlayerControl SendTarget = null, CustomRpcSender sender = null)
     {
-        CustomRpcSender sender = CustomRpcSender.Create("ForceGuard", sendOption:SendOption.Reliable);
-        sender.RpcProtectPlayer(shower, target, SendTarget?.GetClientId() ?? -1);
-        RpcMurderPlayerFlags(shower, sender, target,
-           MurderResultFlags.FailedProtected, SendTarget);
-        sender.SendMessage();
+        if (sender != null)
+            sender.RpcProtectPlayer(shower, target, 0, SendTarget?.GetClientId() ?? -1);
+        else if (SendTarget != null)
+            shower.RpcProtectPlayerPrivate(target, 0, SendTarget);
+        else
+            shower.RpcProtectPlayer(target, 0);
+        // RpcMurderPlayerFlags(shower, sender, target,
+        //   MurderResultFlags.FailedProtected, SendTarget);
     }
     public static void RpcMurderPlayerOnCheck(this PlayerControl player, PlayerControl target)
     {

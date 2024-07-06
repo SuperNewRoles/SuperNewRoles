@@ -169,6 +169,8 @@ class CheckShapeshiftPatch
                     RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] <= 0)
                     return false;
                 break;
+            case RoleId.Pavlovsdogs:
+                return false;
         }
         return true;
     }

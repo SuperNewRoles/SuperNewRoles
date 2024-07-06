@@ -25,7 +25,7 @@ class GameManagerSerializeFix
         {
             GameLogicComponent logicComponent = __instance.LogicComponents[index];
             if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
-                logicComponent.TryCast<LogicOptions>() == null)
+                logicComponent.Pointer != __instance.LogicOptions.Pointer)
             {
                 flag = true;
                 writer.StartMessage((byte)index);
@@ -34,6 +34,11 @@ class GameManagerSerializeFix
                 else writer.CancelMessage();
                 logicComponent.ClearDirtyFlag();
             }
+            else
+            {
+                Logger.Info($"LogicComponent:{logicComponent.GetType().Name}, Pointer:{logicComponent.Pointer} Skiped.");
+            }
+            Logger.Info($"LogicComponent:{logicComponent.GetType().Name}, Pointer:{logicComponent.Pointer}");
         }
         __instance.ClearDirtyBits();
         __result = flag;

@@ -218,5 +218,6 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
     public void BuildSetting(IGameOptions gameOptions)
     {
         gameOptions.SetFloat(FloatOptionNames.KillCooldown, Optioninfo.CoolTime);
+        gameOptions.SetFloat(FloatOptionNames.ProtectionDurationSeconds, 0.1f);
     }
 }
