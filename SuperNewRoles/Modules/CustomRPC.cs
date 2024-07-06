@@ -1612,23 +1612,16 @@ public static class RPCProcedure
         var SwapperPosition = SwapperPlayer.transform.position;
         //Text
         var rand = new System.Random();
-        if (SwapperID == PlayerControl.LocalPlayer.PlayerId)
-        {
-            CachedPlayer.LocalPlayer.transform.position = SwapPosition;
-            SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
-        }
-        else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
+        SwapperPlayer.NetTransform.SnapTo(SwapPosition);
+        SwapPlayer.NetTransform.SnapTo(SwapperPosition);
+        if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
         {
             CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
             SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
             if (rand.Next(1, 20) == 1)
-            {
-                new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText2")), 3);
-            }
+                new CustomMessage(ModTranslation.GetString("PositionSwapperSwapText2"), 3);
             else
-            {
-                new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText")), 3);
-            }
+                new CustomMessage(ModTranslation.GetString("PositionSwapperSwapText"), 3);
         }
     }
 
