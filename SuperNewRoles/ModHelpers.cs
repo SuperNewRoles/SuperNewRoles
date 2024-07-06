@@ -814,13 +814,13 @@ public static class ModHelpers
         var client = player.GetClient();
         return client == null ? -1 : client.Id;
     }
-    public static bool IsSucsessChance(int SucsessChance, int MaxChance = 10)
+    public static bool IsSuccessChance(int SuccessChance, int MaxChance = 10)
     {
         //成功確率が0%ならfalseを返す
-        if (SucsessChance == 0) return false;
+        if (SuccessChance == 0) return false;
         //成功確率が最大と一緒かそれ以上ならtrueを返す
-        if (SucsessChance >= MaxChance) return true;
-        return UnityEngine.Random.Range(0, MaxChance) <= SucsessChance;
+        if (SuccessChance >= MaxChance) return true;
+        return UnityEngine.Random.Range(0, MaxChance) <= SuccessChance;
     }
     /// <summary>
     /// ランダムを取得します。max = 10だと0～10まで取得できます

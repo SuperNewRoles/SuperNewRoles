@@ -105,7 +105,7 @@ public class KingPoster : BattleRoyalRole
                     Hat = CurrentPlayer.Data.DefaultOutfit.HatId;
                     Skin = CurrentPlayer.Data.DefaultOutfit.SkinId;
                     Visor = CurrentPlayer.Data.DefaultOutfit.VisorId;
-                    bool IsSpecialHat = ModHelpers.IsSucsessChance(1);
+                    bool IsSpecialHat = ModHelpers.IsSuccessChance(1);
                     CurrentPlayer.RpcSetHatUnchecked(IsSpecialHat ? ModHelpers.GetRandom(RoleParameter.KingPosterAbilityCosmeticSpecialHats) : RoleParameter.KingPosterAbilityCosmeticHat);
                     CurrentPlayer.RpcSetVisorUnchecked(RoleParameter.KingPosterAbilityCosmeticVisor);
                     CurrentPlayer.RpcSetSkinUnchecked(ModHelpers.GetRandom(RoleParameter.KingPosterAbilityCosmeticSkins));

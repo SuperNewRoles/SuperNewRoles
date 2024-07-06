@@ -962,7 +962,7 @@ class AllRoleSetClass
     public static void SetJumboTicket()
     {
         int JumboSelection = CustomOptionHolder.JumboOption.GetSelection();
-        bool IsCrewmate = ModHelpers.IsSucsessChance(CustomOptionHolder.JumboCrewmateChance.GetSelection());
+        bool IsCrewmate = ModHelpers.IsSuccessChance(CustomOptionHolder.JumboCrewmateChance.GetSelection());
         SetChance(JumboSelection, RoleId.Jumbo, IsCrewmate ? TeamRoleType.Crewmate : TeamRoleType.Impostor);
     }
 }
