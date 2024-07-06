@@ -57,7 +57,6 @@ static class HudManagerStartPatch
     public static CustomButton ArsonistDouseButton;
     public static CustomButton ArsonistIgniteButton;
     public static CustomButton SpeederButton;
-    public static CustomButton ChiefSidekickButton;
     public static CustomButton VultureButton;
     public static CustomButton ShielderButton;
     public static CustomButton CleanerButton;
@@ -1757,49 +1756,6 @@ static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("SpeederButtonName"),
             showButtonText = true,
             HasEffect = true
-        };
-
-        ChiefSidekickButton = new(
-            () =>
-            {
-                var target = SetTarget();
-                if (target && !RoleClass.Chief.IsCreateSheriff)
-                {
-                    if (!target.IsImpostor())
-                    {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ChiefSidekick);
-                        writer.Write(target.PlayerId);
-                        writer.Write(target.IsClearTask());
-                        RPCHelper.EndRPC(writer);
-                        RPCProcedure.ChiefSidekick(target.PlayerId, target.IsClearTask());
-                        RoleClass.Chief.IsCreateSheriff = true;
-                    }
-                    else
-                    {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-                        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
-                    }
-                }
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Chief && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Chief.IsCreateSheriff; },
-            () =>
-            {
-                var target = SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Chief.color);
-                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
-            },
-            () => { },
-            RoleClass.Chief.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("ChiefSidekickButtonName"),
-            showButtonText = true
         };
 
         VultureButton = new(

@@ -680,9 +680,6 @@ public static class RoleHelpers
             case RoleId.Arsonist:
                 RoleClass.Arsonist.ArsonistPlayer.Add(player);
                 break;
-            case RoleId.Chief:
-                RoleClass.Chief.ChiefPlayer.Add(player);
-                break;
             case RoleId.Cleaner:
                 RoleClass.Cleaner.CleanerPlayer.Add(player);
                 break;
@@ -1227,9 +1224,6 @@ public static class RoleHelpers
             case RoleId.Arsonist:
                 RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.Chief:
-                RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Cleaner:
                 RoleClass.Cleaner.CleanerPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1510,7 +1504,7 @@ public static class RoleHelpers
                     // タスククリアか 個別表記
                     IsTaskClear = true;
                     break;
-                case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
+                case RoleId.Sheriff when Chief.IsSheriffCreatedByChief(player.PlayerId):
                     IsTaskClear = true;
                     break;
                 case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
@@ -1934,7 +1928,6 @@ public static class RoleHelpers
             else if (RoleClass.Marlin.MarlinPlayer.IsCheckListPlayerControl(player)) return RoleId.Marlin;
             else if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.SeerFriends;
             else if (RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player)) return RoleId.Arsonist;
-            else if (RoleClass.Chief.ChiefPlayer.IsCheckListPlayerControl(player)) return RoleId.Chief;
             else if (RoleClass.Cleaner.CleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.Cleaner;
             else if (RoleClass.Samurai.SamuraiPlayer.IsCheckListPlayerControl(player)) return RoleId.Samurai;
             else if (RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadCleaner;

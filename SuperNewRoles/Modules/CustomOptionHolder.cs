@@ -603,17 +603,6 @@ public class CustomOptionHolder
     public static CustomOption MarlinPlayerCount;
     public static CustomOption MarlinViewVote;
 
-    public static CustomRoleOption ChiefOption;
-    public static CustomOption ChiefPlayerCount;
-    public static CustomOption ChiefSheriffCoolTime;
-    public static CustomOption ChiefSheriffExecutionMode;
-    public static CustomOption ChiefSheriffCanKillImpostor;
-    public static CustomOption ChiefSheriffCanKillNeutral;
-    public static CustomOption ChiefSheriffCanKillLovers;
-    public static CustomOption ChiefSheriffCanKillMadRole;
-    public static CustomOption ChiefSheriffFriendsRoleKill;
-    public static CustomOption ChiefSheriffQuarreledKill;
-
     public static CustomOption ChiefSheriffKillLimit;
 
     public static CustomRoleOption CleanerOption;
@@ -1510,18 +1499,6 @@ public class CustomOptionHolder
         MeetingSheriffFriendsRoleKill = Create(400208, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, MeetingSheriffOption);
         MeetingSheriffLoversKill = Create(400209, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, MeetingSheriffOption);
         MeetingSheriffQuarreledKill = Create(400210, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, MeetingSheriffOption);
-
-        ChiefOption = SetupCustomRoleOption(400301, false, RoleId.Chief);
-        ChiefPlayerCount = Create(400302, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
-        ChiefSheriffCoolTime = Create(400303, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
-        ChiefSheriffKillLimit = Create(400304, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
-        ChiefSheriffExecutionMode = Create(400312, true, CustomOptionType.Crewmate, "SheriffExecutionMode", new string[] { "SheriffDefaultExecutionMode", "SheriffAlwaysSuicideMode", "SheriffAlwaysKillMode" }, ChiefOption);
-        ChiefSheriffCanKillImpostor = Create(400306, false, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, ChiefOption);
-        ChiefSheriffCanKillMadRole = Create(400307, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
-        ChiefSheriffCanKillNeutral = Create(400308, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
-        ChiefSheriffFriendsRoleKill = Create(400309, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, ChiefOption);
-        ChiefSheriffCanKillLovers = Create(400310, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
-        ChiefSheriffQuarreledKill = Create(400311, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, ChiefOption);
 
         WiseMan.SetupCustomOptions();
 

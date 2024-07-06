@@ -774,7 +774,6 @@ class AllRoleSetClass
             RoleId.Assassin => CustomOptionHolder.AssassinPlayerCount,
             RoleId.Marlin => CustomOptionHolder.MarlinPlayerCount,
             RoleId.Arsonist => CustomOptionHolder.ArsonistPlayerCount,
-            RoleId.Chief => CustomOptionHolder.ChiefPlayerCount,
             RoleId.Cleaner => CustomOptionHolder.CleanerPlayerCount,
             RoleId.MadCleaner => CustomOptionHolder.MadCleanerPlayerCount,
             RoleId.Samurai => CustomOptionHolder.SamuraiPlayerCount,

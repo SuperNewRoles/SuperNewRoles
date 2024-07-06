@@ -249,7 +249,6 @@ public class IntroData
     public static IntroData AssassinIntro = new("Assassin", RoleClass.Assassin.color, 1, RoleId.Assassin, TeamRoleType.Impostor, TeamType.Impostor, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.ExtremeRoles);
     public static IntroData MarlinIntro = new("Marlin", RoleClass.Marlin.color, 1, RoleId.Marlin, quoteMod: QuoteMod.ExtremeRoles);
     public static IntroData ArsonistIntro = new("Arsonist", RoleClass.Arsonist.color, 1, RoleId.Arsonist, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter, quoteMod: QuoteMod.TheOtherRoles);
-    public static IntroData ChiefIntro = new("Chief", RoleClass.Chief.color, 1, RoleId.Chief, IntroSound: RoleTypes.Engineer);
     public static IntroData CleanerIntro = new("Cleaner", RoleClass.Cleaner.color, 1, RoleId.Cleaner, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor, quoteMod: QuoteMod.TheOtherRoles);
     public static IntroData MadCleanerIntro = new("MadCleaner", RoleClass.MadCleaner.color, 1, RoleId.MadCleaner, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SamuraiIntro = new("Samurai", RoleClass.Samurai.color, 1, RoleId.Samurai, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);

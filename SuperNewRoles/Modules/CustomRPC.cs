@@ -325,7 +325,6 @@ public enum CustomRPC
     PositionSwapperTP,
     KunaiKill,
     SetSecretRoomTeleportStatus,
-    ChiefSidekick,
     StartRevolutionMeeting,
     PartTimerSet,
     SetMatryoshkaDeadbody,
@@ -973,21 +972,6 @@ public static class RPCProcedure
         }
     }
 
-    public static void ChiefSidekick(byte targetid, bool IsTaskClear)
-    {
-        RoleClass.Chief.SheriffPlayer.Add(targetid);
-        if (IsTaskClear)
-        {
-            RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
-        }
-        SetRole(targetid, (byte)RoleId.Sheriff);
-        if (targetid == CachedPlayer.LocalPlayer.PlayerId)
-        {
-            Sheriff.ResetKillCooldown();
-            RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
-        }
-        UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
-    }
     public static void FixLights()
     {
         if (!MapUtilities.Systems.ContainsKey(SystemTypes.Electrical))
@@ -1874,9 +1858,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetSecretRoomTeleportStatus:
                         MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.ChiefSidekick:
-                        ChiefSidekick(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.RpcSetDoorway:
                         RPCHelper.SetDoorway(reader.ReadByte(), reader.ReadBoolean());
