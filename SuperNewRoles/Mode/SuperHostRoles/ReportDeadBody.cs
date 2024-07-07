@@ -70,10 +70,10 @@ class ReportDeadBody
             }
             else
                 __instance.RpcSetRole(target.RoleWhenAlive == null ? target.Role.Role : target.RoleWhenAlive.Value, true);
-
             __instance.SwapRoleRPC(target.Object);
             target.Object.SetRoleRPC(__instance.GetRole());
-            ChangeName.SetRoleName(__instance);
+            ChangeName.SetRoleName(__instance, sender:sender);
+            sender.SendMessage();
         }
         //if (target.Object.IsRole(RoleId.Bait) && (!deadPlayer.killerIfExisting.IsRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }
 
