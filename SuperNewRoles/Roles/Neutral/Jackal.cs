@@ -136,7 +136,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 return;
             changedRole.SetAmSidekicked();
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
+            CacheManager.ResetMyRoleCache();
             return;
         }
         byte playerId = reader.ReadByte();
@@ -158,7 +158,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 CreatedSidekick = sidekick;
             }
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
+            CacheManager.ResetMyRoleCache();
         }
         CanSidekick = false;
     }

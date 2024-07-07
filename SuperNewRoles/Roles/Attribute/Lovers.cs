@@ -18,12 +18,12 @@ class Lovers
                 if (player.IsLovers())
                 {
                     RoleClass.Lovers.LoversPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
-                    ChacheManager.ResetLoversChache();
+                    CacheManager.ResetLoversCache();
                 }
                 if (player.IsQuarreled() && player.IsAlive())
                 {
                     RoleClass.Quarreled.QuarreledPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
-                    ChacheManager.ResetQuarreledChache();
+                    CacheManager.ResetQuarreledCache();
                 }
                 if (ModeHandler.IsMode(ModeId.Default))
                 {

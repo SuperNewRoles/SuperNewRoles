@@ -88,14 +88,14 @@ class HauntedWolf
                     SetHauntedWolfRPC(playerControl);
                 }
             }
-            ChacheManager.ResetHauntedWolfChache();
+            CacheManager.ResetHauntedWolfCache();
         }
 
         internal static void SetHauntedWolf(PlayerControl player)
         {
             Logger.Info($"{player.name} を 狼憑きにします。");
             RoleData.Player.Add(player);
-            ChacheManager.ResetHauntedWolfChache();
+            CacheManager.ResetHauntedWolfCache();
         }
 
         internal static void SetHauntedWolfRPC(PlayerControl player)

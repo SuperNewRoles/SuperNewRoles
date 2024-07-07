@@ -103,7 +103,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         WebAccountManager.Load();
         ContentManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
-        ChacheManager.Load();
+        CacheManager.Load();
         WebConstants.Load();
         CustomCosmetics.CustomColors.Load();
         ModDownloader.Load();
