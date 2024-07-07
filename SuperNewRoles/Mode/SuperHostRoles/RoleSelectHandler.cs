@@ -255,9 +255,7 @@ public static class RoleSelectHandler
                 continue;
             }
             if (!isImpostorRole(playerSHR.RealRole))
-            {
                 CrewmateSyncRoles.AddToSyncRoles(player, playerSHR.RealRole, playerSHR.IsRealRoleNotModOnly);
-            }
             else
                 SetVanillaRole(player, playerSHR.RealRole, playerSHR.IsRealRoleNotModOnly);
         }
