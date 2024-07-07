@@ -135,6 +135,7 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
                 }
             }
             ChangeName.SetRoleName(target, sender: sender);
+            SyncSetting.CustomSyncSettings(target, sender);
             sender.SendMessage();
         }
         RPCProcedure.UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
