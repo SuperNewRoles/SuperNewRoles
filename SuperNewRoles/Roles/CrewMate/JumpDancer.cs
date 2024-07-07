@@ -99,7 +99,7 @@ public static class JumpDancer
                 continue;
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
-                SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.JumpDancerSe" + (ModHelpers.IsSucsessChance(5) ? "1" : "2") + ".raw"), false, audioMixer: SoundManager.Instance.SfxChannel);
+                SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.JumpDancerSe" + (ModHelpers.IsSuccessChance(5) ? "1" : "2") + ".raw"), false, audioMixer: SoundManager.Instance.SfxChannel);
             }
             JumpingPlayerIds.Add(player.PlayerId, 0f);
             player.moveable = false;

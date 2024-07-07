@@ -236,7 +236,7 @@ class CheckForEndVotingPatch
                                     p.RpcSetColor((byte)outfit.ColorId);
                                     p.RpcSetName(target.Object.GetDefaultName() +
                                         ModTranslation.GetString(target.Object.IsRole(RoleId.Marlin) ?
-                                        "AssassinSucsess" :
+                                        "AssassinSuccess" :
                                         "AssassinFail")
                                         + "<size=0%>");
                                     p.RpcSetHat(outfit.HatId);

@@ -59,7 +59,7 @@ public static class LegacyOptionDataMigration
                     writer.Close();
                     if (i == 0)
                         IsFirstPresetUpdated = true;
-                    Logger.Info("Sucsess Preset" + i.ToString() + " Migration", "Migration LagacyOption");
+                    Logger.Info("Success Preset" + i.ToString() + " Migration", "Migration LagacyOption");
                 }
             }
             OptionSaver.WriteOptionData();
@@ -72,7 +72,7 @@ public static class LegacyOptionDataMigration
                 }
                 DeleteOptionConfig();
             }
-            Logger.Info("Sucsess Migration", "Migration LagacyOption");
+            Logger.Info("Success Migration", "Migration LagacyOption");
         }
     }
     public static void DeleteOptionConfig()
