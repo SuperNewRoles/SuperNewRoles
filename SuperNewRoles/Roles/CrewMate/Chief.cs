@@ -2,6 +2,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -133,6 +134,7 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
                     sender.RpcSetRole(player, RoleTypes.Scientist, true, clientId);
                 }
             }
+            ChangeName.SetRoleName(target, sender: sender);
             sender.SendMessage();
         }
         RPCProcedure.UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
