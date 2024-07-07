@@ -6,13 +6,14 @@
 // 5.インターフェースの内容を実装していく
 
 using AmongUs.GameOptions;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAvailable, ISaboAvailable, ISupportSHR
+public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAvailable, ISaboAvailable, ISupportSHR, ISHRAntiBlackout
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Sidekick),
@@ -39,14 +40,26 @@ public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAva
 
     public RoleTypes RealRole => CanUseVent ? RoleTypes.Engineer : RoleTypes.Crewmate;
 
-    public void SetParent(PlayerControl player)
-    {
+    private Jackal CurrentParent;
 
-    }
+    public void SetParent(PlayerControl player)
+        => CurrentParent = player.GetRoleBase<Jackal>();
 
     public void BuildSetting(IGameOptions gameOptions)
     {
         gameOptions.SetFloat(FloatOptionNames.EngineerCooldown, 0f);
         gameOptions.SetFloat(FloatOptionNames.EngineerInVentMaxTime, 0f);
+    }
+
+    public void StartAntiBlackout()
+    {
+        if (CurrentParent != null && !Player.IsMod())
+            CurrentParent.Player.RpcSetRoleDesync(CurrentParent.Player.IsDead() ? RoleTypes.CrewmateGhost : RoleTypes.Crewmate, Player);
+    }
+
+    public void EndAntiBlackout()
+    {
+        if (CurrentParent != null && !Player.IsMod() && CurrentParent.Player.IsAlive())
+            CurrentParent.Player.RpcSetRoleDesync(RoleTypes.Impostor, Player);
     }
 }

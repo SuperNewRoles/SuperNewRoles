@@ -13,7 +13,7 @@ using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, IKiller, ICustomButton, IFixedUpdaterMe, INameHandler, ISupportSHR, IFixedUpdaterAll, ICheckMurderHandler, IDeathHandler
+public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, IKiller, ICustomButton, IFixedUpdaterMe, INameHandler, ISupportSHR, IFixedUpdaterAll, ICheckMurderHandler, IDeathHandler, ISHRAntiBlackout
 {
     public static Color32 PavlovsColor = new(244, 169, 106, byte.MaxValue);
 
@@ -206,5 +206,17 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
 
     public void FixedUpdateAllDefault()
     {
+    }
+
+    public void StartAntiBlackout()
+    {
+        if (CurrentOwner != null && !Player.IsMod())
+            CurrentOwner.Player.RpcSetRoleDesync(CurrentOwner.Player.IsDead() ? RoleTypes.CrewmateGhost : RoleTypes.Crewmate, Player);
+    }
+
+    public void EndAntiBlackout()
+    {
+        if (CurrentOwner != null && !Player.IsMod() && CurrentOwner.Player.IsAlive())
+            CurrentOwner.Player.RpcSetRoleDesync(RoleTypes.Impostor, Player);
     }
 }

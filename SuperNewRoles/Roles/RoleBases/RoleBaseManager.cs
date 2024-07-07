@@ -33,6 +33,17 @@ public static class RoleBaseManager
             return new List<T>();
         return RoleBases.Cast<T>().ToList();
     }
+    public static void DoInterfaces<T>(Action<T> action)
+    {
+        if (!AllInterfaces.TryGetValue(typeof(T).Name, out HashSet<RoleBase> RoleBases) ||
+            RoleBases == null)
+            return;
+        foreach (RoleBase roleBase in RoleBases)
+        {
+            if (roleBase is T t)
+                action(t);
+        }
+    }
     public static RoleBase SetRole(PlayerControl player, RoleId role)
     {
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);

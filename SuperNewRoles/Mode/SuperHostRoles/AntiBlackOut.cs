@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -132,7 +134,11 @@ public static class AntiBlackOut
             return;
         Logger.Info("Start OnMeetingHudClose");
         ProcessNow = true;
-        new LateTask(() => SetAllDontDead(exiled), 4f);
+        new LateTask(() =>
+        {
+            RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.StartAntiBlackout());
+            SetAllDontDead(exiled);
+        }, 4f);
     }
     public static void OnWrapUp()
     {
@@ -168,6 +174,7 @@ public static class AntiBlackOut
             }
             IsModdedSerialize = false;
             ProcessNow = false;
+            RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
         }, 0.75f);
         DestroySavedData();
     }
@@ -184,6 +191,8 @@ public static class AntiBlackOut
                 NeedDesyncSerialize = true;
 
         }
+        SyncDontDead(exiled);
+        return;
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsAlive())
@@ -260,6 +269,8 @@ public static class AntiBlackOut
         bool IsImpoAlived = false;
         foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
+            player.IsDead = player.Disconnected = false;
+            /*
             if (player.Role.IsImpostor && !IsImpoAlived &&
                 (exiled == null || exiled.PlayerId != player.PlayerId))
             {
@@ -274,7 +285,7 @@ public static class AntiBlackOut
                 player.Disconnected = false;
                 continue;
             }
-            player.Disconnected = true;
+            player.Disconnected = true;*/
         }
         IsModdedSerialize = true;
         RPCHelper.RpcSyncAllNetworkedPlayer();

@@ -15,7 +15,7 @@ using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole, ICheckMurderHandler, ISHROneClickShape
+public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole, ICheckMurderHandler, ISHROneClickShape, ISHRAntiBlackout
 {
     public static new RoleInfo Roleinfo = new(
                typeof(Jackal),
@@ -98,10 +98,6 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
 
     public void OnClickSidekickButton(PlayerControl target)
     {
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-        {
-
-        }
         if (JackalCreateFriend.GetBool())
         {
             CreateJackalFriends(target); //クルーにして フレンズにする
@@ -311,5 +307,15 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         SHR_IsSidekickMode = !SHR_IsSidekickMode;
         ChangeName.SetRoleName(Player);
         return;
+    }
+
+    public void StartAntiBlackout()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void EndAntiBlackout()
+    {
+        throw new System.NotImplementedException();
     }
 }
