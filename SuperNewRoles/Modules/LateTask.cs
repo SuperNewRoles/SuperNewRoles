@@ -24,8 +24,8 @@ public class LateTask
             }
             catch (Exception e) {
                 Logger.Error("Error in LateTask", "LateTask");
-                System.Console.Error.WriteLine(e);
-                System.Console.Error.WriteLine(e.StackTrace);
+                Logger.Error(e.ToString(), "LateTask");
+                Logger.Error(e.StackTrace, "LateTask");
             }
             return true;
         }

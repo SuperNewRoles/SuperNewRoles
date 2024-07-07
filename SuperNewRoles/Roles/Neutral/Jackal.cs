@@ -15,7 +15,7 @@ using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole, ICheckMurderHandler, ISHROneClickShape, ISHRAntiBlackout
+public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole, ICheckMurderHandler, ISHROneClickShape
 {
     public static new RoleInfo Roleinfo = new(
                typeof(Jackal),
@@ -83,6 +83,15 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
 
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
+        if (CreatedSidekick is not null)
+        {
+            if (CreatedSidekick.Player != null)
+                ChangePlayers[CreatedSidekick.Player] = ModHelpers.Cs(RoleClass.JackalBlue, ChangePlayers.GetNowName(CreatedSidekick.Player));
+            else if (Player.IsAlive())
+                ChangePlayers[CreatedSidekick.Player] = ModHelpers.Cs(RoleClass.CrewmateWhite, ChangePlayers.GetNowName(CreatedSidekick.Player));
+        }
+        if (Player.IsDead())
+            return;
         if (!CanSidekick)
             return;
         string ModeText = SHR_IsSidekickMode ? "SK" : "Kill";
@@ -95,6 +104,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
     public bool isShowKillButton => true;
     public float SidekickCoolTime => JackalSKCooldown.GetFloat();
     public float JackalKillCoolTime => JackalKillCooldown.GetFloat();
+    public PlayerControl OldSidekick;
 
     public void OnClickSidekickButton(PlayerControl target)
     {
@@ -307,15 +317,5 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         SHR_IsSidekickMode = !SHR_IsSidekickMode;
         ChangeName.SetRoleName(Player);
         return;
-    }
-
-    public void StartAntiBlackout()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void EndAntiBlackout()
-    {
-        throw new System.NotImplementedException();
     }
 }

@@ -5,6 +5,7 @@
 // 4.設定を作成する(CreateOptionが必要なければOptioninfoのoptionCreatorをnullにする)
 // 5.インターフェースの内容を実装していく
 
+using System.Text;
 using AmongUs.GameOptions;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
@@ -49,6 +50,16 @@ public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAva
     {
         gameOptions.SetFloat(FloatOptionNames.EngineerCooldown, 0f);
         gameOptions.SetFloat(FloatOptionNames.EngineerInVentMaxTime, 0f);
+    }
+
+    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
+    {
+        if (CurrentParent is null)
+            return;
+        if (CurrentParent.Player != null)
+            ChangePlayers[CurrentParent.Player] = ModHelpers.Cs(RoleClass.JackalBlue, ChangePlayers.GetNowName(CurrentParent.Player));
+        else if (Player.IsAlive())
+            ChangePlayers[CurrentParent.Player] = ModHelpers.Cs(RoleClass.CrewmateWhite, ChangePlayers.GetNowName(CurrentParent.Player));
     }
 
     public void StartAntiBlackout()

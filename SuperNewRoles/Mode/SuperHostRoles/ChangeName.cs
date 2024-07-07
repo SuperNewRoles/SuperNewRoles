@@ -296,14 +296,6 @@ public static class ChangeName
                     RoleNameText.Append(" (OK)");
                 }
                 break;
-            case RoleId.Jackal:
-            case RoleId.Sidekick:
-                foreach (PlayerControl playerControl in PlayerControl.AllPlayerControls)
-                {
-                    if (playerControl.IsJackalTeam() && player.PlayerId != playerControl.PlayerId)
-                        ChangePlayers[playerControl] = ModHelpers.Cs(RoleClass.Jackal.color, ChangePlayers.GetNowName(playerControl));
-                }
-                break;
         }
         string TaskText = string.Empty;
         if (player.IsUseTaskTrigger())
