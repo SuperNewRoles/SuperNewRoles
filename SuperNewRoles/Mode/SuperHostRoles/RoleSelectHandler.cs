@@ -251,7 +251,7 @@ public static class RoleSelectHandler
                 continue;
             if (playerSHR.IsDesync)
             {
-                SetRoleDesync(player, playerSHR.DesyncRole);
+                DesyncRoles.AddToDesyncRoles([player], playerSHR.DesyncRole);
                 continue;
             }
             if (!isImpostorRole(playerSHR.RealRole))

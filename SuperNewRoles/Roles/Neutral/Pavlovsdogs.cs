@@ -43,6 +43,8 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     public RoleTypes RealRole => RoleTypes.Crewmate;
     public RoleTypes DesyncRole => OwnerDead ? RoleTypes.Shapeshifter : RoleTypes.Impostor;
 
+    public bool? IsImpostorLight => IsImpostorVision;
+
     public PavlovsDogs(PlayerControl p) : base(p, Roleinfo, null, Introinfo)
     {
         UpdatedToOwnerDead = false;
@@ -159,14 +161,16 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
             UpdatedToOwnerDead = true;
             CustomRpcSender sender = CustomRpcSender.Create("PavlovsDogsUpdateOwner", sendOption: SendOption.Reliable);
             SyncSetting.CustomSyncSettings(Player, sender);
-            sender.RpcSetRole(Player, RoleTypes.Shapeshifter, true);
+            if (!Player.IsMod())
+                sender.RpcSetRole(Player, RoleTypes.Shapeshifter, true);
             sender.SendMessage();
             Player.RpcResetAbilityCooldown();
         }
         else if (UpdatedToOwnerDead && !OwnerDead)
         {
             UpdatedToOwnerDead = false;
-            Player.RpcSetRole(RoleTypes.Impostor, true);
+            if (!Player.IsMod())
+                Player.RpcSetRole(RoleTypes.Impostor, true);
         }
         if (!OwnerDead || Player.IsDead() || IsMeeting)
             return;
@@ -183,7 +187,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     {
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player.PlayerId == Player.PlayerId || !Player.IsPavlovsTeam())
+            if (player.PlayerId == Player.PlayerId || !player.IsPavlovsTeam())
                 continue;
             ChangePlayers[player.PlayerId] = ModHelpers.Cs(PavlovsColor, ChangeName.GetNowName(ChangePlayers, player));
         }
@@ -193,6 +197,11 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
         Logger.Info("PavlovsDogsRunAwayTime: "+ PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.ShapeshifterCooldown, PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.ShapeshifterDuration, PavlovsOwner.RunAwayDeathTime.GetFloat());
+        gameOptions.SetFloat(FloatOptionNames.KillCooldown,
+            OwnerDead
+            ? PavlovsOwner.RunAwayKillCoolTime.GetFloat()
+            : PavlovsOwner.KillCoolTime.GetFloat()
+        );
     }
 
     public void FixedUpdateAllDefault()

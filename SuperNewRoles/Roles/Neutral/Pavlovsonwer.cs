@@ -12,7 +12,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixedUpdaterMe, ICustomButton, ISupportSHR, ICheckMurderHandler
+public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixedUpdaterMe, ICustomButton, ISupportSHR, ICheckMurderHandler, IFixedUpdaterAll
 {
     public static new RoleInfo Roleinfo = new(
         typeof(PavlovsOwner),
@@ -94,6 +94,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
             return _aliveCreatedDog;
         }
     }
+    private bool CanCreateDog = false;
 
     private CustomButtonInfo CreateDogButtonInfo;
     public CustomButtonInfo[] CustomButtonInfos { get; }
@@ -108,6 +109,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
 
     public void RpcReader(MessageReader reader)
     {
+        CanCreateDog = false;
         PlayerControl source = Player;
         PlayerControl target = ModHelpers.PlayerById(reader.ReadByte());
         if (source == null || target == null) return;
@@ -129,6 +131,13 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
                     {
                         target.RpcSetRoleDesync(RoleTypes.Impostor, true);
                         Player.RpcSetRoleDesync(RoleTypes.Phantom, true, target);
+                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        {
+                            if (player.PlayerId == target.PlayerId
+                                || player.PlayerId == Player.PlayerId)
+                                continue;
+                            player.RpcSetRoleDesync(RoleTypes.Engineer, true, target);
+                        }
                     }
                     if (!Player.IsMod())
                         Player.RpcSetRoleDesync(RoleTypes.Crewmate, true);
@@ -194,6 +203,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
             () => Optioninfo.CoolTime, new(), "PavlovsownerCreatedogButtonName",
             UnityEngine.KeyCode.F, 49, SetTargetFunc: () => PavlovsDogs.SetTarget());
         CustomButtonInfos = [CreateDogButtonInfo];
+        CanCreateDog = true;
     }
     private void CreateDogOnClick()
     {
@@ -210,7 +220,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
     {
         foreach(PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player.PlayerId == Player.PlayerId || !Player.IsPavlovsTeam())
+            if (player.PlayerId == Player.PlayerId || !player.IsPavlovsTeam())
                 continue;
             ChangePlayers[player.PlayerId] = ModHelpers.Cs(PavlovsDogs.PavlovsColor, ChangeName.GetNowName(ChangePlayers, player));
         }
@@ -219,5 +229,21 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
     {
         gameOptions.SetFloat(FloatOptionNames.KillCooldown, Optioninfo.CoolTime);
         gameOptions.SetFloat(FloatOptionNames.ProtectionDurationSeconds, 0.1f);
+    }
+
+    public void FixedUpdateAllSHR()
+    {
+        if (!AmongUsClient.Instance.AmHost)
+            return;
+        if (!CanCreateDog && AliveCreatedDog == null)
+        {
+            if (!Player.IsMod())
+                Player.RpcSetRoleDesync(RoleTypes.Impostor, true);
+            CanCreateDog = true;
+        }
+    }
+
+    public void FixedUpdateAllDefault()
+    {
     }
 }
