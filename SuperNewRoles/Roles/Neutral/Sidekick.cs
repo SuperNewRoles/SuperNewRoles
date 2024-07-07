@@ -53,13 +53,13 @@ public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAva
 
     public void StartAntiBlackout()
     {
-        if (CurrentParent != null && !Player.IsMod())
+        if (CurrentParent?.Player != null && !Player.IsMod())
             CurrentParent.Player.RpcSetRoleDesync(CurrentParent.Player.IsDead() ? RoleTypes.CrewmateGhost : RoleTypes.Crewmate, Player);
     }
 
     public void EndAntiBlackout()
     {
-        if (CurrentParent != null && !Player.IsMod() && CurrentParent.Player.IsAlive())
+        if (CurrentParent?.Player != null && !Player.IsMod() && CurrentParent.Player.IsAlive())
             CurrentParent.Player.RpcSetRoleDesync(RoleTypes.Impostor, Player);
     }
 }

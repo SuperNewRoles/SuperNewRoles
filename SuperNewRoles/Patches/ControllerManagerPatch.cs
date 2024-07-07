@@ -34,11 +34,6 @@ class GameManagerSerializeFix
                 else writer.CancelMessage();
                 logicComponent.ClearDirtyFlag();
             }
-            else
-            {
-                Logger.Info($"LogicComponent:{logicComponent.GetType().Name}, Pointer:{logicComponent.Pointer} Skiped.");
-            }
-            Logger.Info($"LogicComponent:{logicComponent.GetType().Name}, Pointer:{logicComponent.Pointer}");
         }
         __instance.ClearDirtyBits();
         __result = flag;

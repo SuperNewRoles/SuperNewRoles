@@ -144,8 +144,14 @@ public static class AntiBlackOut
     {
         if (CantProcess)
             return;
+        if (PlayerDeadData == null)
+            throw new System.NotImplementedException("PlayerDeadData is null");
+        if (PlayerDisconnectedData == null)
+            throw new System.NotImplementedException("PlayerDisconnectedData is null");
         foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
+            if (player == null)
+                continue;
             player.IsDead = PlayerDeadData[player.PlayerId];
             player.Disconnected = PlayerDisconnectedData[player.PlayerId];
         }
@@ -169,7 +175,7 @@ public static class AntiBlackOut
                 {
                     PlayerControl player = ModHelpers.PlayerById(playerdetail.playerId);
                     if (player != null)
-                        player.RpcSetRoleDesync(playerdetail.role, seer);
+                        player.RpcSetRoleDesync(playerdetail.role, true, seer);
                 }
             }
             IsModdedSerialize = false;
