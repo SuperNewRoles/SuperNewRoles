@@ -406,7 +406,7 @@ class ReportDeadBodyPatch
                 OrientalShaman.IsTransformation = false;
             }
         }
-        if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
+        /* if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -419,7 +419,7 @@ class ReportDeadBodyPatch
                     SyncSetting.CustomSyncSettings(player);
                 }
             }
-        }
+        }*/
         return RoleClass.Assassin.TriggerPlayer == null
         && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
         && (Mode.PlusMode.PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting || target != null)
