@@ -158,6 +158,48 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         bool isFakeSidekick = reader.ReadBoolean();
         var player = ModHelpers.PlayerById(playerId);
         if (player == null) return;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
+        {
+            if (JackalCreateFriend.GetBool())
+            {
+                if (!player.IsImpostor())
+                    CreateJackalFriends(player);//クルーにして フレンズにする
+            }
+            else if (JackalCreateSidekick.GetBool())
+            {
+                bool isOldImpostor = player.IsImpostor();
+                player.SetRoleRPC(RoleId.Sidekick);
+                RoleTypes targetRole = RoleTypes.Crewmate;
+                if (CanUseSabo)
+                    targetRole = RoleTypes.Impostor;
+                else if (CanUseVent)
+                    targetRole = RoleTypes.Engineer;
+                if (!player.IsMod())
+                    player.RpcSetRoleDesync(targetRole, true);
+                // キルできなくする
+                if (!Player.IsMod())
+                    player.RpcSetRoleDesync(RoleTypes.Impostor, true, Player);
+                if (isOldImpostor)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p == player)
+                            continue;
+                        if (!p.IsImpostor())
+                            continue;
+                        if (p.IsMod())
+                            continue;
+                        player.RpcSetRoleDesync(RoleTypes.Crewmate, true, p);
+                    }
+                }
+            }
+            else
+            {
+                throw new System.NotImplementedException("Sidekick targetrole is not defined.");
+            }
+            ChangeName.SetRoleName(player);//名前も変える
+            ChangeName.SetRoleName(Player);//名前も変える
+        }
         if (isFakeSidekick)
         {
             RoleClass.Jackal.FakeSidekickPlayer.Add(player);
@@ -241,37 +283,12 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         Player.RpcShowGuardEffect(target);
         CanSidekick = false;
 
-        if (JackalCreateFriend.GetBool())
-        {
-            if (!target.IsImpostor())
-                CreateJackalFriends(target);//クルーにして フレンズにする
-        }
-        else if (JackalCreateSidekick.GetBool())
-        {
-            target.SetRoleRPC(RoleId.Sidekick);
-            RoleTypes targetRole = RoleTypes.Crewmate;
-            if (CanUseSabo)
-                targetRole = RoleTypes.Impostor;
-            else if (CanUseVent)
-                targetRole = RoleTypes.Engineer;
-            if (!target.IsMod())
-                target.RpcSetRoleDesync(targetRole, true);
-            // キルできなくする
-            if (!Player.IsMod())
-                target.RpcSetRoleDesync(RoleTypes.Impostor, true, Player);
-        }
-        else
-        {
-            throw new System.NotImplementedException("Sidekick targetrole is not defined.");
-        }
         bool isFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
         MessageWriter writer = RpcWriter;
         writer.Write(true);
         writer.Write(target.PlayerId);
         writer.Write(isFakeSidekick);
         SendRpc(writer);
-        ChangeName.SetRoleName(target);//名前も変える
-        ChangeName.SetRoleName(Player);//名前も変える
         Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
         return false;
     }
