@@ -144,6 +144,7 @@ public static class AntiBlackOut
     {
         if (CantProcess)
             return;
+        Logger.Info("Running AntiBlackOut.");
         if (PlayerDeadData == null)
             throw new System.NotImplementedException("PlayerDeadData is null");
         if (PlayerDisconnectedData == null)
@@ -182,7 +183,6 @@ public static class AntiBlackOut
             ProcessNow = false;
             RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
         }, 0.75f);
-        DestroySavedData();
     }
 
     private static void SetAllDontDead(NetworkedPlayerInfo exiled)
