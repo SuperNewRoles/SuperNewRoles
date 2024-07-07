@@ -21,6 +21,7 @@ class EndGameCheck
         if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
         if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
         if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
+        if (CheckAndEndGameForPavlovsWin(__instance, statistics)) return false;
         if (CheckAndEndGameForSabotageWin(__instance)) return false;
         if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
         if (CustomOptionHolder.FoxCanHouwaWin.GetBool() && CheckAndEndGameForFoxHouwaWin(__instance)) return false;
@@ -241,7 +242,7 @@ class EndGameCheck
 
     public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
+        if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !statistics.IsGuardPavlovs && !EvilEraser.IsNeetWinGuard())
         {
             __instance.enabled = false;
             var endReason = GameData.LastDeathReason switch
@@ -259,6 +260,16 @@ class EndGameCheck
             }
 
             CustomEndGame(__instance, (CustomGameOverReason)endReason, false);
+            return true;
+        }
+        return false;
+    }
+    public static bool CheckAndEndGameForPavlovsWin(ShipStatus __instance, PlayerStatistics statistics)
+    {
+        if (statistics.PavlovsTeamAlive >= statistics.TotalAlive - statistics.PavlovsTeamAlive && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+        {
+            __instance.enabled = false;
+            CustomEndGame(__instance, CustomGameOverReason.PavlovsTeamWin, false);
             return true;
         }
         return false;

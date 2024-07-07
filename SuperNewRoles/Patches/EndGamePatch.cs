@@ -2018,6 +2018,8 @@ public static class CheckGameEndPatch
                 {
                     if ((rolebase as PavlovsOwner).CreateCountLimit == 0)
                         continue;
+                    if (rolebase.Player.IsDead())
+                        continue;
                     IsGuardPavlovs = true;
                     break;
                 }
