@@ -814,13 +814,13 @@ public static class ModHelpers
         var client = player.GetClient();
         return client == null ? -1 : client.Id;
     }
-    public static bool IsSucsessChance(int SucsessChance, int MaxChance = 10)
+    public static bool IsSuccessChance(int SuccessChance, int MaxChance = 10)
     {
         //成功確率が0%ならfalseを返す
-        if (SucsessChance == 0) return false;
+        if (SuccessChance == 0) return false;
         //成功確率が最大と一緒かそれ以上ならtrueを返す
-        if (SucsessChance >= MaxChance) return true;
-        return UnityEngine.Random.Range(0, MaxChance) <= SucsessChance;
+        if (SuccessChance >= MaxChance) return true;
+        return UnityEngine.Random.Range(0, MaxChance) <= SuccessChance;
     }
     /// <summary>
     /// ランダムを取得します。max = 10だと0～10まで取得できます
@@ -944,7 +944,12 @@ public static class ModHelpers
 
     public static string Cs(Color c, string s)
     {
-        return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
+        return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.b):X2}>{s}</color>";
+    }
+    public static byte ToByte(float f)
+    {
+        f = Mathf.Clamp01(f);
+        return (byte)(f * 255);
     }
     public static T GetRandom<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
