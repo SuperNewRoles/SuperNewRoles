@@ -5,6 +5,7 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using static SuperNewRoles.CustomCosmetics.CustomCosmeticsData.CustomPlateData;
 
 namespace SuperNewRoles.CustomCosmetics;
@@ -13,7 +14,7 @@ public class CustomPlate
 {
     public static bool isAdded = false;
     static readonly List<NamePlateData> namePlateData = new();
-    public static readonly List<CustomPlateData> customPlateData = new();/*
+    public static readonly List<CustomPlateData> customPlateData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
     class UnlockedNamePlatesPatch
     {
@@ -41,6 +42,9 @@ public class CustomPlate
                     {
                         Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource)
                     };
+
+                    var assetRef = new AssetReference(tpvd.Create.Pointer);
+
                     var plate = new CustomPlateData
                     {
                         tpvd = tpvd,
@@ -50,8 +54,9 @@ public class CustomPlate
                         displayOrder = 99,
                         ChipOffset = new Vector2(0f, 0.2f),
                         Free = true,
-                        SpritePreview = tpvd.Image
+                        ViewDataRef = assetRef,
                     };
+                    plate.CreateAddressableAsset();
                     //CustomPlates.Add(plate);
                     //AllPlates.Add(plate);
                     namePlateData.Add(plate);
@@ -68,5 +73,5 @@ public class CustomPlate
             AllPlates.AddRange(namePlateData);
             __instance.allNamePlates = AllPlates.ToArray();
         }
-    }*/
+    }
 }
