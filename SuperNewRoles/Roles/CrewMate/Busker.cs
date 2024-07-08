@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
-public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHandler, IFixedUpdaterMe
+public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHandler, IFixedUpdaterMe, INameHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Busker),
@@ -39,6 +39,8 @@ public class Busker : RoleBase, ICrewmate, IRpcHandler, ICustomButton, IWrapUpHa
 
     private bool AmPseudocide;
     private DeadBody CurrentDeadbody;
+
+    public bool CanGhostSeeRole => !HasButtonReborn();
 
     public void FixedUpdateMeDefaultDead() => FixedUpdateMeDefaultAlive();
     public void FixedUpdateMeDefaultAlive()
