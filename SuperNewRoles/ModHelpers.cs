@@ -1057,15 +1057,12 @@ public static class ModHelpers
     public static PlayerControl PlayerById(byte id)
     {
         if (!IdControlDic.ContainsKey(id))
-        { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
-            foreach (PlayerControl pc in CachedPlayer.AllPlayers)
-            {
-                if (!IdControlDic.ContainsKey(pc.PlayerId)) // Key重複対策
-                    IdControlDic.Add(pc.PlayerId, pc);
-            }
+        { // idが辞書にない場合、プレイヤー情報を辞書に追加する
+            PlayerControl cachedPlayer = CachedPlayer.AllPlayers.Find(x => x.PlayerId == id);
+            if (cachedPlayer != null) IdControlDic.Add(id, cachedPlayer);
         }
         if (IdControlDic.ContainsKey(id)) return IdControlDic[id];
-        Logger.Error($"idと合致するPlayerIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
+        Logger.Info($"idと合致するPlayerIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
     }
     public static Vent VentById(byte id)
