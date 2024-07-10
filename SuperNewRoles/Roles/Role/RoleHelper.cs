@@ -7,6 +7,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
@@ -18,7 +19,6 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace SuperNewRoles;
 
@@ -1479,41 +1479,21 @@ public static class RoleHelpers
         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
         RPCProcedure.SetRole(Player.PlayerId, (byte)selectRoleData);
     }
-    public static void SwapRoleRPC(this PlayerControl Player1, PlayerControl Player2)
+    public static void SwapRoleRPC(this PlayerControl player1, PlayerControl player2)
     {
-        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SwapRole);
-        writer.Write(Player1.PlayerId);
-        writer.Write(Player2.PlayerId);
+        RoleBase player1role = player1.GetRoleBase();
+        RoleBase player2role = player2.GetRoleBase();
+        RoleId player1id = player1.GetRole();
+        RoleId player2id = player2.GetRole();
+
+        if (player1role == null) player2.SetRoleRPC(player1id);
+        if (player2role == null) player1.SetRoleRPC(player2id);
+
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SwapRoleBase);
+        writer.Write(player1.PlayerId);
+        writer.Write(player2.PlayerId);
         writer.EndRPC();
-        if (ModeHandler.IsMode(ModeId.Default)) RPCProcedure.SwapRole(Player1.PlayerId, Player2.PlayerId);
-        else
-        {
-            RoleBase player1role = Player1.GetRoleBase();
-            RoleBase player2role = Player2.GetRoleBase();
-            RoleId player1id = Player1.GetRole();
-            RoleId player2id = Player2.GetRole();
-            if (player1role != null) player1role.SetPlayer(Player2);
-            else
-            {
-                Player2.ClearRole();
-                Player2.SetRoleRPC(player1id);
-            }
-            if (player2role != null) player2role.SetPlayer(Player1);
-            else
-            {
-                Player1.ClearRole();
-                Player1.SetRoleRPC(player2id);
-            }
-            ChacheManager.ResetMyRoleChache();
-            // ClearTaskUpdate();
-            if (AmongUsClient.Instance.AmHost)
-            {
-                byte[] player1task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(Player1.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
-                byte[] player2task = Array.ConvertAll(Array.FindAll<NetworkedPlayerInfo.TaskInfo>(Player2.Data.Tasks.ToArray(), x => !x.Complete), x => x.TypeId);
-                Player2.SetTask(player1task);
-                Player1.SetTask(player2task);
-            }
-        }
+        RPCProcedure.SwapRoleBase(player1.PlayerId, player2.PlayerId);
     }
 
     /// <summary>

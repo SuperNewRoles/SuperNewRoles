@@ -409,7 +409,8 @@ public static class RoleSelectHandler
             SetRoleDesync(Player, roleTypes);
         }
     }
-    public static void SetRoleDesync(PlayerControl Player, RoleTypes roleTypes)
+    public static void SetRoleDesync(PlayerControl Player, RoleTypes roleTypes) => SetRoleDesync(sender, Player, roleTypes);
+    public static void SetRoleDesync(this CustomRpcSender sender, PlayerControl Player, RoleTypes roleTypes)
     {
         Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
         if (!Player.IsMod())
@@ -455,7 +456,8 @@ public static class RoleSelectHandler
     /// <param name="p">ターゲット</param>
     /// <param name="roleTypes">セットする役職</param>
     /// <param name="isNotModOnly">非Mod導入者のみか(概定はtrue)</param>
-    public static void SetVanillaRole(PlayerControl p, RoleTypes roleTypes, bool isNotModOnly = true)
+    public static void SetVanillaRole(PlayerControl p, RoleTypes roleTypes, bool isNotModOnly = true) => SetVanillaRole(sender, p, roleTypes, isNotModOnly);
+    public static void SetVanillaRole(this CustomRpcSender sender, PlayerControl p, RoleTypes roleTypes, bool isNotModOnly = true)
     {
         if (p.IsMod() && isNotModOnly)
         {

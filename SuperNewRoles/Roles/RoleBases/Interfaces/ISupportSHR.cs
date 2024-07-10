@@ -31,6 +31,14 @@ public interface ISupportSHR : ITaskHolder
     {
 
     }
+    /// <summary>
+    /// 全てのプレイヤーに見える名前
+    /// </summary>
+    public bool BuildAllName(out string text)
+    {
+        text = "";
+        return false;
+    }
     public void BuildSetting(IGameOptions gameOptions)
     {
 

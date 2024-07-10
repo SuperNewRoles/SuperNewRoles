@@ -1,10 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
@@ -38,6 +39,8 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     }
 
     public int Limit;
+    public int OldLimit;
+    public bool IsLimitOver => Limit <= 0;
     public List<(byte, byte)> ChangeData;
     public (byte, byte) SwapVoteData;
     public bool AbilityUsedThisMeeting;
@@ -46,6 +49,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     public Moira(PlayerControl player) : base(player, Roleinfo, Optioninfo, Introinfo)
     {
         Limit = AbilityLimit.GetInt();
+        OldLimit = Limit;
         ChangeData = new();
         SwapVoteData = (byte.MaxValue, byte.MaxValue);
         AbilityUsedThisMeeting = false;
@@ -66,7 +70,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
             DestroyClickButton();
             return;
         }
-        if (Limit <= 0) return;
+        if (IsLimitOver) return;
         Transform transform = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == target.PlayerId)?.transform.FindChild("MoiraButton");
         if (!transform) return;
         SpriteRenderer sprite = transform.GetComponent<SpriteRenderer>();
@@ -91,9 +95,10 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     public void UseAbility(PlayerControl target1, PlayerControl target2)
     {
         if (AbilityUsedThisMeeting) return;
-        if (Limit <= 0) return;
+        if (IsLimitOver) return;
         Limit--;
         MessageWriter writer = RpcWriter;
+        writer.Write(Limit);
         writer.Write(target1.PlayerId);
         writer.Write(target2.PlayerId);
         SendRpc(writer);
@@ -113,25 +118,60 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     {
         PlayerControl target1 = ModHelpers.PlayerById(target1Id);
         PlayerControl target2 = ModHelpers.PlayerById(target2Id);
-        if (target1 is null || target2 is null) return;
-        RoleTypes player1RoleType = !target1.Data.RoleWhenAlive.HasValue ? target1.Data.Role.Role : target1.Data.RoleWhenAlive.Value;
-        RoleTypes player2RoleType = !target2.Data.RoleWhenAlive.HasValue ? target2.Data.Role.Role : target2.Data.RoleWhenAlive.Value;
+        if (!target1 || !target2) return;
 
-        if (target1.IsAlive()) 
+        RoleTypes player1_role_type = !target1.Data.RoleWhenAlive.HasValue ? target1.Data.Role.Role : target1.Data.RoleWhenAlive.Value;
+        RoleTypes player2_role_type = !target2.Data.RoleWhenAlive.HasValue ? target2.Data.Role.Role : target2.Data.RoleWhenAlive.Value;
+
+        switch (ModeHandler.GetMode())
         {
-            if (ModeHandler.IsMode(ModeId.Default)) target1.RPCSetRoleUnchecked(player2RoleType);
-            else target1.RpcSetRole(player2RoleType, true);
-        }
-        target1.Data.RoleWhenAlive.value = player2RoleType;
+            case ModeId.Default:
+                if (target1.IsAlive()) target1.RPCSetRoleUnchecked(player2_role_type);
+                if ((bool)target1.Data.RoleWhenAlive?.HasValue) target1.Data.RoleWhenAlive.value = player2_role_type;
 
-        if (target2.IsAlive())
-        {
-            if (ModeHandler.IsMode(ModeId.Default)) target2.RPCSetRoleUnchecked(player1RoleType);
-            else target2.RpcSetRole(player1RoleType, true);
-        }
-        target2.Data.RoleWhenAlive.value = player1RoleType;
+                if (target2.IsAlive()) target2.RPCSetRoleUnchecked(player1_role_type);
+                if ((bool)target2.Data.RoleWhenAlive?.HasValue) target2.Data.RoleWhenAlive.value = player1_role_type;
 
-        target1.SwapRoleRPC(target2);
+                target1.SwapRoleRPC(target2);
+                break;
+            case ModeId.SuperHostRoles:
+                CustomRpcSender sender = CustomRpcSender.Create("RoleChenge");
+                if (target1.IsAlive())
+                {
+                    if (target2.GetRoleBase() is ISupportSHR shr)
+                    {
+                        if (shr.IsDesync) sender.SetRoleDesync(target1, shr.DesyncRole);
+                        else sender.SetVanillaRole(target1, shr.RealRole, shr.IsRealRoleNotModOnly);
+                    }
+                    else
+                    {
+                        RoleId role = target2.GetRole();
+                        var data = RoleSelectHandler.GetDesyncRole(role);
+                        if (data.IsDesync) sender.SetRoleDesync(target1, data.RoleType);
+                        else sender.SetVanillaRole(target1, data.RoleType, role is not RoleId.PoliceSurgeon);
+                    }
+                }
+                if (target2.IsAlive())
+                {
+                    if (target1.GetRoleBase() is ISupportSHR shr)
+                    {
+                        if (shr.IsDesync) sender.SetRoleDesync(target2, shr.DesyncRole);
+                        else sender.SetVanillaRole(target2, shr.RealRole, shr.IsRealRoleNotModOnly);
+                    }
+                    else
+                    {
+                        RoleId role = target1.GetRole();
+                        var data = RoleSelectHandler.GetDesyncRole(role);
+                        if (data.IsDesync) sender.SetRoleDesync(target2, data.RoleType);
+                        else sender.SetVanillaRole(target2, data.RoleType, role is not RoleId.PoliceSurgeon);
+                    }
+                }
+                sender.EndMessage();
+
+                target1.SwapRoleRPC(target2);
+                new LateTask(() => ChangeName.SetRoleNames(), 0f);
+                break;
+        }
     }
 
     public void StartMeeting()
@@ -142,7 +182,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
-                if (!Player.AmOwner || Limit <= 0) break;
+                if (!Player.AmOwner || IsLimitOver) break;
                 foreach (PlayerVoteArea data in MeetingHud.Instance.playerStates)
                 {
                     PlayerControl player = ModHelpers.PlayerById(data.TargetPlayerId);
@@ -160,7 +200,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
                 break;
             case ModeId.SuperHostRoles:
                 if (!AmongUsClient.Instance.AmHost) return;
-                if (Limit > 0) AddChatPatch.SendChat(Player, ModTranslation.GetString("BalancerForActivate"), ModTranslation.GetString("MoiraName"));
+                if (!IsLimitOver) AddChatPatch.SendChat(Player, ModTranslation.GetString("BalancerForActivate"), ModTranslation.GetString("MoiraName"));
                 else AddChatPatch.SendChat(Player, ModTranslation.GetString("BalancerUsed"), ModTranslation.GetString("MoiraName"));
                 break;
         }
@@ -199,14 +239,14 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     {
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
         if (!AmongUsClient.Instance.AmHost) return true;
-        if (RoleClass.Assassin.TriggerPlayer == null) return true;
+        if (RoleClass.Assassin.TriggerPlayer != null) return true;
         PlayerControl target = target_id.GetPlayerControl();
         if (BotManager.IsBot(target_id)) return false;
         switch (Status)
         {
             case Mode.Standby:
                 if (target != Player) return true;
-                if (Limit <= 0)
+                if (IsLimitOver)
                 {
                     AddChatPatch.SendCommand(Player, ModTranslation.GetString("MoiraErrorVoteLimitOverText"), ModTranslation.GetString("MoiraErrorVoteLimitOver"));
                     Status = Mode.AbilityEnd;
@@ -252,8 +292,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
                         return false;
                     }
                     Status = Mode.AbilityEnd;
-                    AbilityUsedThisMeeting = true;
-                    SwapVoteData = (Selected.PlayerId, target.PlayerId);
+                    UseAbility(Selected, target);
                     AddChatPatch.SendChat(Player, $"{ModTranslation.GetString("MoiraSelectionEndText")}\n\n{ModTranslation.GetString("Balancer1st")} : {Selected?.Data.PlayerName}\n{ModTranslation.GetString("Balancer2nd")} : {target?.Data.PlayerName}", ModTranslation.GetString("MoiraSelectionEnd"));
                     Logger.Info($"Swap fixed. {SwapVoteData.Item1}, {SwapVoteData.Item2}", "Moira");
                 }
@@ -286,9 +325,9 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
         }
     }
 
-    public void OnWrapUp(PlayerControl exiled)
+    public void OnWrapUp()
     {
-        AbilityUsedThisMeeting = false;
+        OldLimit = Limit;
         if (!AmongUsClient.Instance.AmHost)
         {
             SwapVoteData = new(byte.MaxValue, byte.MaxValue);
@@ -296,28 +335,45 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
         }
         SwapRole(SwapVoteData.Item1, SwapVoteData.Item2);
         SwapVoteData = new(byte.MaxValue, byte.MaxValue);
-        if (exiled == Player)
-        {
-            ChangeData.Reverse();
-            foreach (var data in ChangeData)
-                SwapRole(data.Item1, data.Item2);
-        }
+    }
+
+    public void OnWrapUp(PlayerControl exiled)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (exiled != Player) return;
+        ChangeData.Reverse();
+        foreach (var data in ChangeData)
+            SwapRole(data.Item1, data.Item2);
     }
 
     public void OnHandleAllPlayer()
     {
-        if (Limit > 0) return;
-        SetNamesClass.SetPlayerNameText(Player, $"{Player.NameText().text} (⇔)");
+        if (OldLimit > 0) return;
+        SetNamesClass.SetPlayerNameText(Player, $"{Player.NameText().text} {"(⇔)".Color(Roleinfo.RoleColor)}");
     }
 
     public void RpcReader(MessageReader reader)
     {
+        Limit = reader.ReadInt32();
         SwapVoteData = (reader.ReadByte(), reader.ReadByte());
         ChangeData.Add(SwapVoteData);
         AbilityUsedThisMeeting = true;
     }
 
-    public bool CanWin(GameOverReason gameOverReason, WinCondition winCondition) => Player.IsAlive() && Limit <= 0;
+    public bool CanWin(GameOverReason gameOverReason, WinCondition winCondition) => Player.IsAlive() && IsLimitOver;
+
+    public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers) => RoleNameText.Append($" ({Limit})");
+
+    public bool BuildAllName(out string text)
+    {
+        if (OldLimit > 0)
+        {
+            text = "";
+            return false;
+        }
+        text = $" {"(⇔)".Color(Roleinfo.RoleColor)}";
+        return true;
+    }
 
     public string CommandName => "swap";
 
@@ -326,7 +382,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
 
     public bool OnChatCommand(string[] args)
     {
-        if (Limit <= 0)
+        if (IsLimitOver)
         {
             AddChatPatch.SendCommand(Player, ModTranslation.GetString("MoiraErrorLimitOver"), MoiraInfoTitle);
             return true;
@@ -349,8 +405,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
             return true;
         }
         Status = Mode.AbilityEnd;
-        AbilityUsedThisMeeting = true;
-        SwapVoteData = (target1.PlayerId, target2.PlayerId);
+        UseAbility(target1, target2);
         AddChatPatch.SendChat(Player, $"{ModTranslation.GetString("MoiraSelectionEndText")}\n\n{ModTranslation.GetString("Balancer1st")} : {target1.Data.PlayerName}\n{ModTranslation.GetString("Balancer2nd")} : {target2.Data.PlayerName}", ModTranslation.GetString("MoiraSelectionEnd"));
         return true;
     }

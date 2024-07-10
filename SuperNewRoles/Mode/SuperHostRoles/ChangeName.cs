@@ -391,6 +391,11 @@ public static class ChangeName
             player.RpcSetNamePrivate(sender, SelfText);
             if (player.IsAlive())
             {
+                foreach (var data in RoleBaseManager.GetInterfaces<ISupportSHR>())
+                {
+                    if (data.BuildAllName(out string text))
+                        ChangePlayers[(data as RoleBase).Player] += text;
+                }
                 foreach (var ChangePlayerData in (Dictionary<PlayerControl, string>)ChangePlayers)
                 {
                     if (ChangePlayerData.Key.PlayerId == player.PlayerId)
