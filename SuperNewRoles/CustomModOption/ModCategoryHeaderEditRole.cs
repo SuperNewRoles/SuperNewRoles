@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace SuperNewRoles.CustomObject;
+namespace SuperNewRoles.CustomModOption;
 
 public class ModCategoryHeaderEditRole : ModOptionBehaviour
 {

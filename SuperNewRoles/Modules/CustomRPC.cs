@@ -1099,7 +1099,7 @@ public static class RPCProcedure
         RoleClass.SideKiller.MadKillerPlayer.Add(target);
         RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
     }
     public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
@@ -1187,6 +1187,7 @@ public static class RPCProcedure
                 CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
                 option.SetSelection((int)selection);
             }
+            GameOptionsDataPatch.UpdateData();
         }
         catch (Exception e)
         {
@@ -1200,7 +1201,9 @@ public static class RPCProcedure
             ver = new(major, minor, build);
         else
             ver = new(major, minor, build, revision);
-        ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[clientId] = new PlayerVersion(ver, guid);
+
+        if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.TryGetValue(clientId, out PlayerVersion value) || !value.Equals(ver, guid))
+            ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[clientId] = new PlayerVersion(ver, guid);
     }
     public static void SetRole(byte playerid, byte RPCRoleId)
     {
@@ -1232,7 +1235,7 @@ public static class RPCProcedure
             player1.ClearRole();
             player1.SetRole(player2id);
         }
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
         RoleHelpers.ClearTaskUpdate();
         if (AmongUsClient.Instance.AmHost)
         {
@@ -1477,7 +1480,7 @@ public static class RPCProcedure
             }
         }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
     }
     public static void CreateSidekickSeer(byte playerid, bool IsFake)
     {
@@ -1493,7 +1496,7 @@ public static class RPCProcedure
             player.ClearRole();
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
+            CacheManager.ResetMyRoleCache();
         }
     }
     public static void ExiledRPC(byte playerid)

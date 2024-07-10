@@ -164,6 +164,7 @@ SettingCrewmateTeamRolesName,Position setting of crewmate camp,クルーメイ�
 SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置,內鬼陣營職業設定
 Setting,Setting up positions in the third camp,第三陣営の役職設定,独立阵营职业设置,中立陣營職業設定
 SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加职业设置,多重職業設定
+SettingOnlySelectedRole,Show only selected roles,選択した役職のみを表示する,只显示选中的职业,僅顯示選擇的職業
 Settingsonota,Other settings,その他の設定,其他设置,其他設定
 optionOn,<color=#00e000>On</color>,<color=#00e000>オン</color>,<color=#00e000>开启</color>,<color=#00e000>開</color>
 optionOff,<color=#949495>Off</color>,<color=#949495>オフ</color>,<color=#949495>关闭</color>,<color=#949495>關</color>
@@ -214,10 +215,10 @@ IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx,启用ykundesuBeplnEx,y
 restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい,关注B站@心音糖果_Tingo谢谢喵！
 ReactorDurationSetting,Reactor Duration Time,緊急タスク継続時間の設定,自定义核反应堆紧急破坏持续时间,核子反應爐緊急任務持續時間
 SkeldReactorTime,The Skeld : reactor Duration Time,The Skeld : リアクターサボタージュの時間,骷髅舰(The  Skeld)核反应堆紧急破坏持续时间,The Skeld核子反應爐緊急任務持續時間
-SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,<size=45%>The Skeld : 酸素枯渇までの時間</size>,骷髅舰(The Skeld)氧气紧急破坏持续时间,The Skeld氧氣枯竭緊急任務持續時間
+SkeldLifeSuppTime,The Skeld : Oxygen Depleted Duration Time,The Skeld : 酸素枯渇までの時間,骷髅舰(The Skeld)氧气紧急破坏持续时间,The Skeld氧氣枯竭緊急任務持續時間
 PolusReactorTime,Polus : Reset Stabilizers Duration Time,Polus : 耐震安定装置リセットの時間,波鲁斯(Polus)抗震器紧急破坏持续时间,Polus核子反應爐震盪緊急任務持續時間
 MiraReactorTime,MiraHQ : reactor Duration Time,MiraHQ : リアクターサボタージュの時間,米拉总部(Mira)核反应堆紧急破坏持续时间,MiraHQ核子反應爐緊急任務持續時間
-MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,<size=50%>MiraHQ : 酸素枯渇までの時間</size>,米拉总部(Mira)氧气紧急破坏持续时间,MiraHQ氧氣枯竭緊急任務持續時間
+MiraLifeSuppTime,MiraHQ : Oxygen Depleted Duration Time,MiraHQ : 酸素枯渇までの時間,米拉总部(Mira)氧气紧急破坏持续时间,MiraHQ氧氣枯竭緊急任務持續時間
 AirshipReactorTime,Airship : Avert Cresh Course Duration Time,AirShip : 衝突回避の時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
 FungleReactorTime,The Fungle : reactor Duration Time,The Fungle : リアクターサボタージュの時間,蘑菇岛(The Fungle)核反应堆破坏紧急持续时间,The Fungle核子反應爐緊急任務持續時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
@@ -271,6 +272,8 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
 OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
+CanSeeImpostorRole,Imposters can check each other's rolls.,インポスターが互いに役職を確認できる
+CanSeeImpostorRoleTurn,Number of turns to confirm,わかるようになる会議数
 CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない,玩家死亡后不再受到灵咒影响,死者不具有憑依能力
 ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,タスク完了後に憑依能力を開放する。,完成任务后才会释放灵咒,任務完成後啟用憑依能力
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
@@ -1056,7 +1059,7 @@ AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=
 MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数,<color=#AFDFE4>梅林</color>的人數
 AssassinName,Assassin,アサシン,刺客,刺客
 AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利,找出<color=#AFDFE4>梅林</color>來獲得勝利
-AssassinSucsess,was Marlin.,はマーリンだった,是梅林,是梅林
+AssassinSuccess,was Marlin.,はマーリンだった,是梅林,是梅林
 AssassinFail,was not Marlin.,はマーリンではなかった,不是梅林,不是梅林
 MarlinName,Merine,マーリン,梅林,梅林
 MarlinTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。,不要被<color=#ff0000>刺客</color>發現。
@@ -1298,6 +1301,7 @@ SluggerName,Slugger,スラッガー,击球手,擊球手
 SluggerTitle1,Lets’ Harisen Kill!,ハリセンでキルしよう,用全垒打把其他人击飞,用全壘打把其他人擊飛
 SluggerChargeTime,Charge Time,チャージ時間,击球手充能时间,擊球手充能時間
 SluggerIsMultiKill,Range kill possible,範囲キル可能,击球手可以大范围击杀,擊球手可以大範圍擊殺
+SluggerIsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 SluggerButtonName,Harisen,ハリセン,挥棒,揮棒
 SatsumaAndImoName,SatsumaAndImo,さつまといも,人格分裂者,人格分裂者
 SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト,是我疯了，还是大家都疯了？,是我瘋了，還是大家都瘋了？
@@ -1918,6 +1922,7 @@ UbiquitousDoorHackButton,Door Hack,ドアハック
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
+IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート
 
 #SettingMatchTag
 SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,<color=#a9ceec>游戏房间标签</color>设置,<color=#93b69c>房間對局標籤</color>設定

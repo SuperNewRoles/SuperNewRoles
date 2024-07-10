@@ -10,6 +10,7 @@ using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
+using SuperNewRoles.CustomModOption;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
@@ -102,7 +103,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         WebAccountManager.Load();
         ContentManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
-        ChacheManager.Load();
+        CacheManager.Load();
         WebConstants.Load();
         CustomCosmetics.CustomColors.Load();
         ModDownloader.Load();
@@ -204,21 +205,28 @@ public partial class SuperNewRolesPlugin : BasePlugin
             SuperNewRolesPlugin.Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
         }
     }
-    // CPUの割当を0と1にする
+    // CPUの割当を変更する
     public static void UpdateCPUProcessorAffinity()
     {
-        if (!ConfigRoles._isCPUProcessorAffinity.Value)
+        if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux()) return;
+
+        ulong affinity = ConfigRoles._ProcessorAffinityMask.Value;
+        if (!ConfigRoles._isCPUProcessorAffinity.Value || affinity == 0)
         {
             Logger.LogWarning("UpdateCPUProcessorAffinity: IsCPUProcessorAffinity is false");
             return;
         }
+
         Logger.LogInfo("Start UpdateCPUProcessorAffinity");
         if (Environment.ProcessorCount > 1)
         {
-            int affinity = 1;
-            for (int i = 1; i < 2; i++)
+            if (Environment.ProcessorCount < System.Numerics.BitOperations.Log2(affinity))
             {
-                affinity |= 1 << i;
+                affinity = 1;
+                for (int i = 1; i < Environment.ProcessorCount; i++)
+                {
+                    affinity |= (ulong)1 << i;
+                }
             }
             System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)affinity;
         }

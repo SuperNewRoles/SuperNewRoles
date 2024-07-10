@@ -11,6 +11,7 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
@@ -237,7 +238,7 @@ class CheckForEndVotingPatch
                                     p.RpcSetColor((byte)outfit.ColorId);
                                     p.RpcSetName(target.Object.GetDefaultName() +
                                         ModTranslation.GetString(target.Object.IsRole(RoleId.Marlin) ?
-                                        "AssassinSucsess" :
+                                        "AssassinSuccess" :
                                         "AssassinFail")
                                         + "<size=0%>");
                                     p.RpcSetHat(outfit.HatId);
