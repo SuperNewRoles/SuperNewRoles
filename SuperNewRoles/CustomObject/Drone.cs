@@ -68,6 +68,8 @@ public class Drone : MonoBehaviour
             if (Body.velocity.x > 0.1f) Renderer.flipX = true;
             else if (Body.velocity.x < -0.1f) Renderer.flipX = false;
 
+            Renderer.color = UnderOperation ? Color.white : new(1f, 1f, 1f, 0.5f);
+
             float size = UnderOperation ? ShipStatus.Instance.MaxLightRadius * Ubiquitous.DroneVisibilityRange.GetFloat() * 5.25f : 0f;
             LightChild.transform.localScale = new(size, size, 1f);
         }
