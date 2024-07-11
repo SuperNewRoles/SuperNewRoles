@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
@@ -65,18 +65,18 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         OperationButton = new(
             null, this, OperationButtonClick, (alive) => alive, CustomButtonCouldType.Always, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Ubiquitous.UbiquitousOperationButton.png", 115f),
-            OperationCoolTime.GetFloat, new(-2, 0), "UbiquitousOperationButton", KeyCode.F, CouldUse: () => MyDrone && CustomCanMoveCouldUse(),
+            OperationCoolTime.GetFloat, new(-2, 0), "UbiquitousOperationButton", KeyCode.F, CouldUse: () => MyDrone,
             DurationTime: OperableTime.GetFloat, IsEffectDurationInfinity: !IsLimitOperableTime.GetBool(), OnEffectEnds: OperationButtonEffectEnds
         );
         OperationButton.GetOrCreateButton().effectCancellable = true;
         CallAndHomeButton = new(
             null, this, CallAndHomeButtonClick, (alive) => alive, CustomButtonCouldType.Always, CallAndHomeButtonMeetingEnd,
-            CallButtonSprite, () => MyDrone ? CallCoolTime.GetFloat() : 2.5f, new(-1, 1), "UbiquitousCallButton", KeyCode.Q, CouldUse: () => !UnderOperation && CustomCanMoveCouldUse()
+            CallButtonSprite, () => MyDrone ? CallCoolTime.GetFloat() : 2.5f, new(-1, 1), "UbiquitousCallButton", KeyCode.Q, CouldUse: () => !UnderOperation
         );
         DoorHackButton = new(
             null, this, DoorHackButtonClick, (alive) => alive, CustomButtonCouldType.Always, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Ubiquitous.UbiquitousDoorHack.png", 115f),
-            DoorHackCoolTime.GetFloat, new(-2, 1), "UbiquitousDoorHackButton", KeyCode.V, CouldUse: () => DoorHackButtonCould() && CustomCanMoveCouldUse()
+            DoorHackCoolTime.GetFloat, new(-2, 1), "UbiquitousDoorHackButton", KeyCode.V, CouldUse: DoorHackButtonCould
         );
         CustomButtonInfos = new CustomButtonInfo[3] {
             OperationButton,
@@ -90,14 +90,9 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     {
         if (!MyDrone) return;
         AmongUsUtil.SetCamTarget(!UnderOperation ? MyDrone : null);
-        Player.moveable = !UnderOperation;
     }
 
-    public void OperationButtonEffectEnds()
-    {
-        AmongUsUtil.SetCamTarget(null);
-        Player.moveable = true;
-    }
+    public void OperationButtonEffectEnds() => AmongUsUtil.SetCamTarget(null);
 
     public void CallAndHomeButtonClick()
     {
@@ -114,7 +109,7 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         }
     }
 
-    public void CallAndHomeButtonMeetingEnd() => AmongUsUtil.SetCamTarget(null);
+    public void CallAndHomeButtonMeetingEnd() => OperationButtonEffectEnds();
 
     public void CallAndHomeButtonChangeMode(bool is_call)
     {
@@ -130,7 +125,7 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         {
             if (door.IsOpen) continue;
             if (door.TryCast<AutoCloseDoor>()) continue;
-            if (Vector2.Distance(MyDrone.transform.position, door.transform.position) > DoorHackScope.GetFloat()) continue;
+            if (Vector2.Distance(MyDrone.transform.position, door.transform.position) > DoorHackScope.GetFloat() * 3) continue;
             if (door.TryCast<AutoOpenDoor>())
             {
                 doors.AllRun(x => { if (door.Room == x.Room) x.RpcSetDoorway(true); });
@@ -143,10 +138,8 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     public bool DoorHackButtonCould()
     {
         if (!MyDrone) return false;
-        return ShipStatus.Instance.AllDoors.Any(x => Vector2.Distance(MyDrone.transform.position, x.transform.position) <= DoorHackScope.GetFloat() && !x.TryCast<AutoCloseDoor>());
+        return ShipStatus.Instance.AllDoors.Any(x => Vector2.Distance(MyDrone.transform.position, x.transform.position) <= DoorHackScope.GetFloat() * 3 && !x.IsOpen && !x.TryCast<AutoCloseDoor>());
     }
-
-    public bool CustomCanMoveCouldUse() => Player.CanMove || UnderOperation;
 
     public void StartMeeting()
     {
@@ -207,4 +200,16 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     }
 
     public void RpcReader(MessageReader reader) => Drone.CreateIdleDrone($"Idle {Player.PlayerId}", new(reader.ReadSingle(), reader.ReadSingle()), Player);
+
+    [HarmonyPatch(typeof(PlayerControl))]
+    public static class PlayerControlPatch
+    {
+        [HarmonyPatch(nameof(PlayerControl.CanMove), MethodType.Getter), HarmonyPostfix]
+        public static void CanMoveGetterPostfix(PlayerControl __instance, ref bool __result)
+        {
+            if (!__result) return;
+            if (!__instance.TryGetRoleBase(out Ubiquitous ubiquitous)) return;
+            __result = !ubiquitous.UnderOperation;
+        }
+    }
 }

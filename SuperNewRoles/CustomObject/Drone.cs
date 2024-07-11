@@ -170,7 +170,8 @@ public class Drone : MonoBehaviour
             body.sleepMode = RigidbodySleepMode2D.NeverSleep;
             body.interpolation = RigidbodyInterpolation2D.Interpolate;
             CircleCollider2D collider = InstantiateDrone.AddComponent<CircleCollider2D>();
-            collider.radius = 0.25f;
+            collider.offset = new(0f, -0.2f);
+            collider.radius = 0.2234f;
             collider.isTrigger = false;
 
             GameObject drone_renderer = new("Renderer") { layer = LayerExpansion.GetObjectsLayer() };
