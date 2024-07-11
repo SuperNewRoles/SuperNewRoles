@@ -1,7 +1,9 @@
 using System.Linq;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Hazel;
 using Il2CppInterop.Generator.Extensions;
+using Il2CppSystem;
 using InnerNet;
 using Steamworks;
 using SuperNewRoles.Mode;
@@ -250,7 +252,7 @@ public static class RPCHelper
     }
     public static void RpcSyncMeetingHud(int TargetClientId = -1)
     {
-        if (Instance is null) return;
+        if (Instance == null) return;
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
 
         // 書き込み {}は読みやすさのためです。
@@ -473,6 +475,84 @@ public static class RPCHelper
             .Write(colorId)
             .EndRpc()
             .EndMessage();
+    }
+    // InnerNetClient.StartRpcImmediately Log
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartRpcImmediately))]
+    public static class StartRpcImmediatelyPatch
+    {
+        public static void Prefix(uint targetNetId, byte callId, SendOption option, int targetClientId)
+        {
+            Logger.Info($"[StartRpcImmediately] netId:{targetNetId} callId:{(RpcCalls)callId} sendOption:{option} targetClientId:{targetClientId}");
+        }
+    }
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartRpc))]
+    public static class StartRpcPatch
+    {
+        public static void Prefix(uint targetNetId, byte callId, SendOption option)
+        {
+            Logger.Info($"[StartRpcImmediately] netId:{targetNetId} callId:{(RpcCalls)callId} sendOption:{option}");
+        }
+    }
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendAllStreamedObjects))]
+    public static class SendAllStreamedObjectsPatch
+    {
+        public static bool Prefix(InnerNetClient __instance, ref bool __result)
+        {
+            Logger.Info("---Start SendAllStreamedObject---");
+            Logger.Info($"[SendAllStreamedObject] Count: {__instance.allClients.Count}");
+            bool result = false;
+            lock (__instance.allObjects)
+            {
+                for (int i = 0; i < __instance.allObjects.Count; i++)
+                {
+                    InnerNetObject innerNetObject = __instance.allObjects[i];
+                    if (!innerNetObject || !innerNetObject.IsDirty || (!innerNetObject.AmOwner && (innerNetObject.OwnerId != -2 || !__instance.AmHost)))
+                    {
+                        continue;
+                    }
+                    MessageWriter val = __instance.Streams[(int)innerNetObject.sendMode];
+                    val.StartMessage((byte)1);
+                    val.WritePacked(innerNetObject.NetId);
+                    try
+                    {
+                        if (innerNetObject.Serialize(val, initialState: false))
+                        {
+                            Logger.Info($"[SendAllStreamedObject] {innerNetObject.GetIl2CppType().FullName} {innerNetObject.name} {innerNetObject.AmOwner} {innerNetObject.OwnerId} NetId:{innerNetObject.NetId} Serialize Success");
+                            val.EndMessage();
+                        }
+                        else
+                        {
+                            val.CancelMessage();
+                        }
+                        if (innerNetObject.Chunked && innerNetObject.IsDirty)
+                        {
+                            result = true;
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Debug.LogException(new(ex.ToString()));
+                        val.CancelMessage();
+                    }
+                }
+            }
+            for (int j = 0; j < __instance.Streams.Length; j++)
+            {
+                MessageWriter val2 = __instance.Streams[j];
+                if (val2.HasBytes(7))
+                {
+                    Logger.Info($"Send {(SendOption)j}({val2.Buffer.Length})");
+                    val2.EndMessage();
+                    __instance.SendOrDisconnect(val2);
+                    val2.Clear((SendOption)(byte)j);
+                    val2.StartMessage((byte)5);
+                    val2.Write(__instance.GameId);
+                }
+            }
+            Logger.Info("Sent Message");
+            __result = result;
+            return false;
+        }
     }
 
     public static void RPCSendChatPrivate(this PlayerControl TargetPlayer, string Chat, PlayerControl SeePlayer = null, CustomRpcSender sender = null)

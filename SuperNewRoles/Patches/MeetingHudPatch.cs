@@ -914,6 +914,16 @@ class MeetingHudClosePatch
         AntiBlackOut.OnMeetingHudClose(AntiBlackOut.RealExiled);
     }
 }
+// log Meetinghud.serialize
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Serialize))]
+class MeetingHudSerializePatch
+{
+    public static void Postfix(MeetingHud __instance)
+    {
+        Logger.Info("MeetingHud.Serialize", "MeetingHudSerializePatch");
+    }
+}
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 class MeetingHudStartPatch
 {

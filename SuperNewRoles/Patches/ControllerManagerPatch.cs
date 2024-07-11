@@ -27,11 +27,16 @@ class GameManagerSerializeFix
             if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
                 logicComponent.Pointer != __instance.LogicOptions.Pointer)
             {
-                flag = true;
                 writer.StartMessage((byte)index);
                 var hasBody = logicComponent.Serialize(writer, initialState);
-                if (hasBody) writer.EndMessage();
-                else writer.CancelMessage();
+                if (hasBody)
+                {
+                    flag = true;
+                    writer.EndMessage();
+                    Logger.Info($"Serialize {logicComponent.GetType().Name}");
+                }
+                else
+                    writer.CancelMessage();
                 logicComponent.ClearDirtyFlag();
             }
         }
