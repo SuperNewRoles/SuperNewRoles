@@ -19,7 +19,6 @@ public class LateTask
         timer -= deltaTime;
         if (timer <= 0)
         {
-            Logger.Info("LateTask \"" + name + "\" is running", "LateTask");
             try {
                 action();
             }
