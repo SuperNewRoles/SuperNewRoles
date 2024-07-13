@@ -254,9 +254,18 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         Logger.Info($"TryGetRoleBase: {CreatedSidekickControl.GetRoleBase().Roleinfo.Role}");
         if (!CreatedSidekickControl.TryGetRoleBase(out Jackal jackal))
             return;
-        CreatedSidekickControl.RpcSetRole(
+        CreatedSidekickControl.RpcSetRoleDesync(
             jackal.DesyncRole, true
         );
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (!player.IsJackalTeamJackal() && !player.IsJackalTeamSidekick())
+                continue;
+            if (!player.IsMod())
+                CreatedSidekickControl.RpcSetRoleDesync(RoleTypes.Crewmate, true, player);
+            if (!CreatedSidekickControl.IsMod())
+                player.RpcSetRoleDesync(player.IsImpostor() ? RoleTypes.Crewmate, player.Data.Role.Role, true, CreatedSidekickControl);
+        }
         if (jackal.DesyncRole == RoleTypes.Shapeshifter)
             OneClickShapeshift.OneClickShaped(CreatedSidekickControl);
         ChangeName.SetRoleName(CreatedSidekickControl);
