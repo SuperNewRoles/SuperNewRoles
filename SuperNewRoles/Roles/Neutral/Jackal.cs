@@ -15,7 +15,7 @@ using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole, ICheckMurderHandler, ISHROneClickShape
+public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll, ISupportSHR, IImpostorVision, IVentAvailable, ISaboAvailable, IHandleChangeRole, ICheckMurderHandler, ISHROneClickShape, ISHRAntiBlackout
 {
     public static new RoleInfo Roleinfo = new(
                typeof(Jackal),
@@ -203,8 +203,10 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             {
                 throw new System.NotImplementedException("Sidekick targetrole is not defined.");
             }
-            ChangeName.SetRoleName(player);//名前も変える
+            if (!Player.IsMod())
+                Player.RpcSetRoleDesync(RoleTypes.Impostor, true);
             ChangeName.SetRoleName(Player);//名前も変える
+            ChangeName.SetRoleName(player);//名前も変える
         }
         if (isFakeSidekick)
         {
@@ -317,5 +319,16 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         SHR_IsSidekickMode = !SHR_IsSidekickMode;
         ChangeName.SetRoleName(Player);
         return;
+    }
+    public void StartAntiBlackout()
+    {
+        if (CreatedSidekick?.Player != null && !Player.IsMod())
+            CreatedSidekick.Player.RpcSetRoleDesync(CreatedSidekick.Player.IsDead() ? RoleTypes.CrewmateGhost : RoleTypes.Crewmate, Player);
+    }
+
+    public void EndAntiBlackout()
+    {
+        if (CreatedSidekick?.Player != null && !Player.IsMod() && CreatedSidekick.Player.IsAlive())
+            CreatedSidekick.Player.RpcSetRoleDesync(RoleTypes.Impostor, Player);
     }
 }

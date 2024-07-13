@@ -182,7 +182,7 @@ public static class AntiBlackOut
             IsModdedSerialize = false;
             ProcessNow = false;
             RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
-        }, 0.75f);
+        }, 3f);
     }
 
     private static void SetAllDontDead(NetworkedPlayerInfo exiled)
@@ -197,8 +197,6 @@ public static class AntiBlackOut
                 NeedDesyncSerialize = true;
 
         }
-        SyncDontDead(exiled);
-        return;
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsAlive())
@@ -256,9 +254,9 @@ public static class AntiBlackOut
                     if (!player.Data.Role.IsImpostor)
                         continue;
                     seerchanges.Add((player.PlayerId, player.Data.Role.Role));
-                    player.RpcSetRoleDesync(RoleTypes.CrewmateGhost, seer);
+                    player.RpcSetRoleDesync(RoleTypes.CrewmateGhost, true, seer);
                 }
-                seer.RpcSetRoleDesync(RoleTypes.ImpostorGhost, seer);
+                seer.RpcSetRoleDesync(RoleTypes.ImpostorGhost, true, seer);
                 RoleChangedData.Add((seer.PlayerId, seerchanges));
             }
             RPCHelper.RpcSyncAllNetworkedPlayer(seer.GetClientId());
