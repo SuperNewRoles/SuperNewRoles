@@ -55,7 +55,7 @@ public static class SyncSetting
         switch (player.GetRole())
         {
             case RoleId.Sheriff:
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(CustomOptionHolder.SheriffCoolTime.GetFloat()));
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Sheriff.CoolTime));
                 break;
             case RoleId.Minimalist:
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Minimalist.KillCoolTime));
