@@ -3,6 +3,7 @@ using System.Text;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
@@ -268,6 +269,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         }
         if (jackal.DesyncRole == RoleTypes.Shapeshifter)
             OneClickShapeshift.OneClickShaped(CreatedSidekickControl);
+        CreatedSidekickControl.RpcShowGuardEffect(CreatedSidekickControl);
         ChangeName.SetRoleName(CreatedSidekickControl);
     }
 
@@ -297,7 +299,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         }
         SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでサイドキック作成");
         if (target == null) return false;
-        Player.RpcShowGuardEffect(target);
+        Player.RpcForceGuard(target);
         CanSidekick = false;
 
         bool isFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);

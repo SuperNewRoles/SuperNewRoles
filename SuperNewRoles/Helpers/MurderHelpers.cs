@@ -56,6 +56,11 @@ public static class MurderHelpers
         // RpcMurderPlayerFlags(shower, sender, target,
         //   MurderResultFlags.FailedProtected, SendTarget);
     }
+    public static void RpcForceMurderAndGuard(this PlayerControl shower, PlayerControl target, PlayerControl SendTarget = null)
+    {
+        RpcMurderPlayerFlags(shower, target,
+            MurderResultFlags.FailedProtected, SendTarget);
+    }
     public static void RpcMurderPlayerOnCheck(this PlayerControl player, PlayerControl target)
     {
         MurderResultFlags flags = MurderResultFlags.Succeeded;

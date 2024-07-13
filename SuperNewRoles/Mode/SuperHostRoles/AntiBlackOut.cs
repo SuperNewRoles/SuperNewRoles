@@ -182,7 +182,7 @@ public static class AntiBlackOut
             IsModdedSerialize = false;
             ProcessNow = false;
             RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
-        }, 3f);
+        }, 0.75f);
     }
 
     private static void SetAllDontDead(NetworkedPlayerInfo exiled)

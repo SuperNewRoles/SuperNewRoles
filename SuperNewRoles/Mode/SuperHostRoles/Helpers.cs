@@ -54,7 +54,7 @@ public static class Helpers
 
     /// <summary>
     /// 守護ガードのエフェクトを表示する。
-    /// showerのキルクール及び守護クールのリセットも行う。
+    /// showerのキルクール及びアビリティクールのリセットも行う。
     /// </summary>
     /// <param name="shower">エフェクトを見れる人</param>
     /// <param name="target">エフェクトをかける人</param>
@@ -74,6 +74,7 @@ public static class Helpers
             var crs = CustomRpcSender.Create("RpcShowGuardEffect");
             var clientId = shower.GetClientId();
             Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
+            MurderHelpers.RpcForceMurderAndGuard(shower, target, shower);
             MurderHelpers.RpcForceGuard(shower, target, shower);
         }
     }

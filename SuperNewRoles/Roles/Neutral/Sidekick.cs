@@ -30,6 +30,7 @@ public class Sidekick : RoleBase, ISidekick, INeutral, IImpostorVision, IVentAva
     public bool CanUseSabo => Jackal.Optioninfo.CanUseSabo;
     public bool CanUseVent => Jackal.Optioninfo.CanUseVent;
     public bool IsImpostorVision => Jackal.Optioninfo.IsImpostorVision;
+    public bool? IsImpostorLight => IsImpostorVision;
 
     public static new IntroInfo Introinfo =
         new(RoleId.Sidekick, introSound: RoleTypes.Crewmate);
