@@ -265,7 +265,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             if (!player.IsMod())
                 CreatedSidekickControl.RpcSetRoleDesync(RoleTypes.Crewmate, true, player);
             if (!CreatedSidekickControl.IsMod())
-                player.RpcSetRoleDesync(player.IsImpostor() ? RoleTypes.Crewmate, player.Data.Role.Role, true, CreatedSidekickControl);
+                player.RpcSetRoleDesync(player.IsImpostor() ? RoleTypes.Crewmate : player.Data.Role.Role, true, CreatedSidekickControl);
         }
         if (jackal.DesyncRole == RoleTypes.Shapeshifter)
             OneClickShapeshift.OneClickShaped(CreatedSidekickControl);
