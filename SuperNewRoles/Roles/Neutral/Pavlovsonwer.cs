@@ -127,17 +127,21 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
                 CreateDogButtonInfo.AbilityCount = CreateCountLimit;
                 if (AmongUsClient.Instance.AmHost)
                 {
+                    target.RpcSetRole(target.IsMod() ? RoleTypes.Crewmate : RoleTypes.Engineer, true);
                     if (!target.IsMod())
                     {
-                        target.RpcSetRoleDesync(RoleTypes.Impostor, true);
-                        Player.RpcSetRoleDesync(RoleTypes.Phantom, true, target);
-                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        new LateTask(() =>
                         {
-                            if (player.PlayerId == target.PlayerId
-                                || player.PlayerId == Player.PlayerId)
-                                continue;
-                            player.RpcSetRoleDesync(RoleTypes.Engineer, true, target);
-                        }
+                            target.RpcSetRoleDesync(RoleTypes.Impostor, true);
+                            Player.RpcSetRoleDesync(RoleTypes.Phantom, true, target);
+                            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                            {
+                                if (player.PlayerId == target.PlayerId
+                                    || player.PlayerId == Player.PlayerId)
+                                    continue;
+                                player.RpcSetRoleDesync(RoleTypes.Engineer, true, target);
+                            }
+                        }, 0.15f);
                     }
                     if (!Player.IsMod())
                         Player.RpcSetRoleDesync(RoleTypes.Crewmate, true);
