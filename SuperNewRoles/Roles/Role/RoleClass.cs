@@ -34,7 +34,7 @@ public static class RoleClass
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
     public static Color FoxPurple = Palette.Purple;
-    private static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
+    public static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
     public static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
     public static bool IsStart;
     public static List<byte> BlockPlayers;
@@ -178,7 +178,6 @@ public static class RoleClass
         Assassin.ClearAndReload();
         Marlin.ClearAndReload();
         Arsonist.ClearAndReload();
-        Chief.ClearAndReload();
         Cleaner.ClearAndReload();
         MadCleaner.ClearAndReload();
         Samurai.ClearAndReload();
@@ -224,8 +223,6 @@ public static class RoleClass
         Doppelganger.ClearAndReload();
         Werewolf.ClearAndReload();
         Knight.ClearAndReload();
-        Pavlovsdogs.ClearAndReload();
-        Pavlovsowner.ClearAndReload();
         //SidekickWaveCannon.Clear();
         Beacon.AllBeacons = new();
         Camouflager.ClearAndReload();
@@ -1797,7 +1794,7 @@ public static class RoleClass
             IsDouse = false;
             DouseTarget = null;
         }
-    }
+    }/*
     public static class Chief
     {
         public static List<PlayerControl> ChiefPlayer;
@@ -1818,7 +1815,7 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.ChiefSheriffCoolTime.GetFloat();
             KillLimit = CustomOptionHolder.ChiefSheriffKillLimit.GetInt();
         }
-    }
+    }*/
     public static class Cleaner
     {
         public static List<PlayerControl> CleanerPlayer;
@@ -2626,45 +2623,6 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             gm = null;
-        }
-    }
-    public static class Pavlovsdogs
-    {
-        public static List<PlayerControl> PavlovsdogsPlayer;
-        public static Color32 color = new(244, 169, 106, byte.MaxValue);
-        public static bool IsOwnerDead
-        {
-            get
-            {
-                return Pavlovsowner.PavlovsownerPlayer.All(x => x.IsDead());
-            }
-        }
-        public static float DeathTime;
-        public static void ClearAndReload()
-        {
-            PavlovsdogsPlayer = new();
-            DeathTime = CustomOptionHolder.PavlovsdogRunAwayDeathTime.GetFloat();
-        }
-    }
-    public static class Pavlovsowner
-    {
-        public static List<PlayerControl> PavlovsownerPlayer;
-        public static Color32 color = Pavlovsdogs.color;
-        public static bool CanCreateDog => (CurrentChildPlayer == null || CurrentChildPlayer.IsDead()) && CreateLimit > 0;
-        public static PlayerControl CurrentChildPlayer;
-        public static Arrow DogArrow;
-        public static int CreateLimit;
-        public static Dictionary<byte, int> CountData;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PavlovsownerCreatedogButton.png", 115f);
-        public static void ClearAndReload()
-        {
-            PavlovsownerPlayer = new();
-            CurrentChildPlayer = null;
-            if (DogArrow != null) GameObject.Destroy(DogArrow.arrow);
-            DogArrow = new(color);
-            DogArrow.arrow.SetActive(false);
-            CreateLimit = CustomOptionHolder.PavlovsownerCreateDogLimit.GetInt();
-            CountData = new();
         }
     }
     public static class Camouflager

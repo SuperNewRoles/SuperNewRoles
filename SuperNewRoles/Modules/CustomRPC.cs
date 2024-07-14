@@ -326,7 +326,6 @@ public enum CustomRPC
     PositionSwapperTP,
     KunaiKill,
     SetSecretRoomTeleportStatus,
-    ChiefSidekick,
     StartRevolutionMeeting,
     PartTimerSet,
     SetMatryoshkaDeadbody,
@@ -339,7 +338,6 @@ public enum CustomRPC
     KnightProtected,
     KnightProtectClear,
     GuesserShoot,
-    PavlovsOwnerCreateDog,
     CrackerCrack,
     Camouflage,
     ShowGuardEffect,
@@ -794,26 +792,6 @@ public static class RPCProcedure
         }
     }
 
-    public static void PavlovsOwnerCreateDog(byte sourceid, byte targetid, bool IsSelfDeath)
-    {
-        PlayerControl source = ModHelpers.PlayerById(sourceid);
-        PlayerControl target = ModHelpers.PlayerById(targetid);
-        if (source == null || target == null) return;
-        if (IsSelfDeath)
-        {
-            source.MurderPlayer(source, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-        }
-        else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
-            SetRole(targetid, (byte)RoleId.Pavlovsdogs);
-            if (!RoleClass.Pavlovsowner.CountData.ContainsKey(sourceid))
-            {
-                RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptionHolder.PavlovsownerCreateDogLimit.GetInt();
-            }
-            RoleClass.Pavlovsowner.CountData[sourceid]--;
-        }
-    }
     public static void Camouflage(bool Is)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -986,21 +964,6 @@ public static class RPCProcedure
         }
     }
 
-    public static void ChiefSidekick(byte targetid, bool IsTaskClear)
-    {
-        RoleClass.Chief.SheriffPlayer.Add(targetid);
-        if (IsTaskClear)
-        {
-            RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
-        }
-        SetRole(targetid, (byte)RoleId.Sheriff);
-        if (targetid == CachedPlayer.LocalPlayer.PlayerId)
-        {
-            Sheriff.ResetKillCooldown();
-            RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
-        }
-        UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
-    }
     public static void FixLights()
     {
         if (!MapUtilities.Systems.ContainsKey(SystemTypes.Electrical))
@@ -1881,9 +1844,6 @@ public static class RPCProcedure
                     case CustomRPC.SetSecretRoomTeleportStatus:
                         MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
-                    case CustomRPC.ChiefSidekick:
-                        ChiefSidekick(reader.ReadByte(), reader.ReadBoolean());
-                        break;
                     case CustomRPC.RpcSetDoorway:
                         RPCHelper.SetDoorway(reader.ReadByte(), reader.ReadBoolean());
                         break;
@@ -1934,9 +1894,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetFinalStatus:
                         SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
-                        break;
-                    case CustomRPC.PavlovsOwnerCreateDog:
-                        PavlovsOwnerCreateDog(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.Camouflage:
                         Camouflage(reader.ReadBoolean());

@@ -15,6 +15,7 @@ using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using Object = UnityEngine.Object;
 
 namespace SuperNewRoles;
@@ -142,7 +143,23 @@ class RoleManagerSelectRolesPatch
             }
             RPCHelper.RpcSyncAllNetworkedPlayer(DEBUGOnlySender);
 
-            DEBUGOnlySender.RpcSetRole(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.IsImpostor() ? RoleTypes.Phantom : RoleTypes.Tracker, true);
+            PlayerControl RoleTargetPlayer = null;
+            RoleTypes RoleTargetRole = RoleTypes.Crewmate;
+            foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                if (!player.IsCrew())
+                    continue;
+                if (player.GetRoleBase() is ISupportSHR supportSHR && supportSHR.IsDesync && supportSHR.DesyncRole.IsImpostorRole())
+                    continue;
+                var desyncData = RoleSelectHandler.GetDesyncRole(player.GetRole());
+                if (desyncData.IsDesync && desyncData.RoleType.IsImpostorRole())
+                    continue;
+                RoleTargetPlayer = player;
+                RoleTargetRole = player.Data.Role.Role;
+            }
+            if (RoleTargetPlayer == null)
+                throw new NotImplementedException("RoleTargetPlayer is null");
+            DEBUGOnlySender.RpcSetRole(RoleTargetPlayer, RoleTargetRole, true);
             /*
                         RPCHelper.RpcSyncAllNetworkedPlayer(DEBUGOnlySender);
                        */
@@ -774,7 +791,6 @@ class AllRoleSetClass
             RoleId.Assassin => CustomOptionHolder.AssassinPlayerCount,
             RoleId.Marlin => CustomOptionHolder.MarlinPlayerCount,
             RoleId.Arsonist => CustomOptionHolder.ArsonistPlayerCount,
-            RoleId.Chief => CustomOptionHolder.ChiefPlayerCount,
             RoleId.Cleaner => CustomOptionHolder.CleanerPlayerCount,
             RoleId.MadCleaner => CustomOptionHolder.MadCleanerPlayerCount,
             RoleId.Samurai => CustomOptionHolder.SamuraiPlayerCount,
@@ -816,7 +832,6 @@ class AllRoleSetClass
             RoleId.Doppelganger => CustomOptionHolder.DoppelgangerPlayerCount,
             RoleId.Werewolf => CustomOptionHolder.WerewolfPlayerCount,
             RoleId.Knight => Knight.KnightPlayerCount,
-            RoleId.Pavlovsowner => CustomOptionHolder.PavlovsownerPlayerCount,
             RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount,
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount,
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount,

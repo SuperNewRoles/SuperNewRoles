@@ -25,7 +25,7 @@ class GameManagerSerializeFix
         {
             GameLogicComponent logicComponent = __instance.LogicComponents[index];
             if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
-                logicComponent.TryCast<LogicOptions>() == null)
+                logicComponent.Pointer != __instance.LogicOptions.Pointer)
             {
                 flag = true;
                 writer.StartMessage((byte)index);

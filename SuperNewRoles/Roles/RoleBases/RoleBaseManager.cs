@@ -29,6 +29,17 @@ public static class RoleBaseManager
             return new List<T>();
         return RoleBases.Cast<T>().ToList();
     }
+    public static void DoInterfaces<T>(Action<T> action)
+    {
+        if (!AllInterfaces.TryGetValue(typeof(T).Name, out HashSet<RoleBase> RoleBases) ||
+            RoleBases == null)
+            return;
+        foreach (RoleBase roleBase in RoleBases)
+        {
+            if (roleBase is T t)
+                action(t);
+        }
+    }
     public static RoleBase SetRole(PlayerControl player, RoleId role)
     {
         RoleInfo roleInfo = RoleInfoManager.GetRoleInfo(role);
@@ -124,6 +135,15 @@ public static class RoleBaseManager
     {
         return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? value.Cast<T>().ToList() : new();
     }
+    public static IReadOnlySet<RoleBase> GetRoleBaseOrigins<T>() where T : RoleBase
+    {
+        if (RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value))
+            return value;
+        if (RoleBaseEmpty.Count != 0)
+            RoleBaseEmpty = new();
+        return RoleBaseEmpty;
+    }
+    private static HashSet<RoleBase> RoleBaseEmpty = new();
     public static T GetRoleBase<T>(this PlayerControl player) where T : RoleBase
     {
         return PlayerRoles[player] as T;

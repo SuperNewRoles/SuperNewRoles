@@ -118,7 +118,8 @@ internal class AddChatPatch
             sourcePlayer.Data.PlayerName.Contains("<color"))
             isAdd = false;
 
-        HideChat.OnAddChat(sourcePlayer, chatText, isAdd);
+        if(AmongUsClient.Instance.AmHost)
+            HideChat.OnAddChat(sourcePlayer, chatText, isAdd);
         // ここまで到達したらチャットが表示できる
         return true;
     }

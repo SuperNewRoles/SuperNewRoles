@@ -430,6 +430,27 @@ public static class RPCHelper
         AmongUsClient.Instance.SendOrDisconnect(writer);
         writer.Recycle();
     }
+    public static void RpcSyncOption(this IGameOptions gameOptions, CustomRpcSender sender, int TargetClientId = -1)
+    {
+        if (sender == null)
+        {
+            RpcSyncOption(gameOptions, TargetClientId);
+            return;
+        }
+        sender.StartMessage(TargetClientId);
+        sender.Write((writer) =>
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(NormalGameManager.Instance.NetId);
+                writer.StartMessage(4);
+                writer.WriteBytesAndSize(NormalGameManager.Instance.LogicOptions.gameOptionsFactory.ToBytes(gameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn));
+                writer.EndMessage();
+            }
+            writer.EndMessage();
+        });
+        sender.EndMessage();
+    }
     public static void RpcProtectPlayerPrivate(this PlayerControl SourcePlayer, PlayerControl target, int colorId, PlayerControl SeePlayer = null)
     {
         if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
@@ -570,7 +591,7 @@ public static class RPCHelper
             player.Shapeshift(target, shouldAnimate);
         return sender;
     }
-    public static void RpcResetAbilityCooldown(this PlayerControl target)
+    public static void RpcResetAbilityCooldown(this PlayerControl target, CustomRpcSender sender = null)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (PlayerControl.LocalPlayer.PlayerId == target.PlayerId)
@@ -579,7 +600,7 @@ public static class RPCHelper
         }
         else
         {
-            MurderHelpers.RpcForceGuard(target, target, target);
+            MurderHelpers.RpcForceGuard(target, target, target, sender);
         }
     }
 

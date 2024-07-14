@@ -247,7 +247,7 @@ public static class CustomRpcSenderExtensions
 {
     public static void RpcSetRole(this CustomRpcSender sender, PlayerControl player, RoleTypes role, bool canOverRide, int tarGetClientId = -1)
     {
-        Logger.Info($"[SENDER] {role}({canOverRide}) => {player.PlayerId}");
+        Logger.Info($"[SENDER] {role}({canOverRide}) => {player.PlayerId} (targetClientId:{tarGetClientId})");
         sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetRole, tarGetClientId)
           .Write((ushort)role)
           .Write(canOverRide)
@@ -262,6 +262,19 @@ public static class CustomRpcSenderExtensions
         sender.AutoStartRpc(player.NetId, (byte)RpcCalls.MurderPlayer, tarGetClientId)
           .WriteNetObject(target)
           .EndRpc();
+    }
+    public static void RpcProtectPlayer(this CustomRpcSender sender, PlayerControl source, PlayerControl target, int colorId, int targetClientId = -1)
+    {
+        /*
+		MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(NetId, 45, (SendOption)1);
+		val.WriteNetObject(target);
+		val.Write(colorId);
+		AmongUsClient.Instance.FinishRpcImmediately(val);*/
+        sender.AutoStartRpc(source.NetId, (byte)RpcCalls.ProtectPlayer, targetClientId)
+          .WriteNetObject(target)
+          .Write(colorId)
+          .EndRpc();
+
     }
     public static void RpcEndGame(this CustomRpcSender sender, GameOverReason endReason, bool showAd)
     {

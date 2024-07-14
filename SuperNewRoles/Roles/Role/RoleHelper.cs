@@ -140,10 +140,6 @@ public static class RoleHelpers
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
-        (player.GetRole() == RoleId.Pavlovsowner &&
-        (!RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId) ||
-        RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0))
-        ||
         player.GetRole() is
         RoleId.Pavlovsdogs or
         RoleId.Jackal or
@@ -155,7 +151,9 @@ public static class RoleHelpers
         RoleId.SidekickWaveCannon or
         RoleId.Hitman or
         RoleId.Egoist or
-        RoleId.FireFox;
+        RoleId.FireFox ||
+        (player.TryGetRoleBase(out PavlovsOwner owner) &&
+        owner.CreateCountLimit > 0);
     // 第三キル人外か
 
     public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
@@ -682,9 +680,6 @@ public static class RoleHelpers
             case RoleId.Arsonist:
                 RoleClass.Arsonist.ArsonistPlayer.Add(player);
                 break;
-            case RoleId.Chief:
-                RoleClass.Chief.ChiefPlayer.Add(player);
-                break;
             case RoleId.Cleaner:
                 RoleClass.Cleaner.CleanerPlayer.Add(player);
                 break;
@@ -814,12 +809,6 @@ public static class RoleHelpers
                 break;
             case RoleId.Knight:
                 Knight.Player.Add(player);
-                break;
-            case RoleId.Pavlovsdogs:
-                RoleClass.Pavlovsdogs.PavlovsdogsPlayer.Add(player);
-                break;
-            case RoleId.Pavlovsowner:
-                RoleClass.Pavlovsowner.PavlovsownerPlayer.Add(player);
                 break;
             case RoleId.Camouflager:
                 RoleClass.Camouflager.CamouflagerPlayer.Add(player);
@@ -1232,9 +1221,6 @@ public static class RoleHelpers
             case RoleId.Arsonist:
                 RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.Chief:
-                RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Cleaner:
                 RoleClass.Cleaner.CleanerPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1357,12 +1343,6 @@ public static class RoleHelpers
                 break;
             case RoleId.Knight:
                 Knight.Player.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Pavlovsdogs:
-                RoleClass.Pavlovsdogs.PavlovsdogsPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Pavlovsowner:
-                RoleClass.Pavlovsowner.PavlovsownerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Camouflager:
                 RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
@@ -1526,7 +1506,7 @@ public static class RoleHelpers
                     // タスククリアか 個別表記
                     IsTaskClear = true;
                     break;
-                case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
+                case RoleId.Sheriff when Chief.IsSheriffCreatedByChief(player.PlayerId):
                     IsTaskClear = true;
                     break;
                 case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
@@ -1623,7 +1603,6 @@ public static class RoleHelpers
             RoleId.Tuna => RoleClass.Tuna.IsUseVent,
             RoleId.BlackCat => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.BlackCat.IsUseVent,
             RoleId.Spy => RoleClass.Spy.CanUseVent,
-            RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogCanVent.GetBool(),
             RoleId.Stefinder => CustomOptionHolder.StefinderVent.GetBool(),
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
@@ -1747,7 +1726,6 @@ public static class RoleHelpers
                 RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                 RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                 RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
-                RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
                 RoleId.Worshiper => Worshiper.RoleData.IsImpostorLight,
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
@@ -1952,7 +1930,6 @@ public static class RoleHelpers
             else if (RoleClass.Marlin.MarlinPlayer.IsCheckListPlayerControl(player)) return RoleId.Marlin;
             else if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.SeerFriends;
             else if (RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player)) return RoleId.Arsonist;
-            else if (RoleClass.Chief.ChiefPlayer.IsCheckListPlayerControl(player)) return RoleId.Chief;
             else if (RoleClass.Cleaner.CleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.Cleaner;
             else if (RoleClass.Samurai.SamuraiPlayer.IsCheckListPlayerControl(player)) return RoleId.Samurai;
             else if (RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadCleaner;
@@ -1995,8 +1972,6 @@ public static class RoleHelpers
             else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
             else if (RoleClass.Werewolf.WerewolfPlayer.IsCheckListPlayerControl(player)) return RoleId.Werewolf;
             else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;
-            else if (RoleClass.Pavlovsdogs.PavlovsdogsPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsdogs;
-            else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
             else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
             else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
             else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
