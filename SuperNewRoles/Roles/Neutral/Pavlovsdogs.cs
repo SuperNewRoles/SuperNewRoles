@@ -51,11 +51,11 @@ public static class Pavlovsdogs
     {
         if (PlayerControl.LocalPlayer.IsPavlovsTeam())
         {
-            foreach (PlayerControl p in RoleClass.Pavlovsdogs.PavlovsdogsPlayer)
+            foreach (PlayerControl p in RoleClass.Pavlovsdogs.PavlovsdogsPlayer.AsSpan())
             {
                 SetNamesClass.SetPlayerRoleInfo(p);
             }
-            foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
+            foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer.AsSpan())
             {
                 SetNamesClass.SetPlayerRoleInfo(p);
             }

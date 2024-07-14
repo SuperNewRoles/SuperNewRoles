@@ -66,7 +66,7 @@ class Meetingsheriff_updatepatch
         else
             MeetingSheriff_Patch.Left.SetActive(true);
         int i = 0;
-        foreach (PlayerVoteArea area in PlayerVoteAreas)
+        foreach (PlayerVoteArea area in PlayerVoteAreas.AsSpan())
         {
             try
             {
@@ -171,7 +171,7 @@ class MeetingSheriff_Patch
                     deadareas.Add(area);
                 }
             }
-            foreach (PlayerVoteArea area in deadareas)
+            foreach (PlayerVoteArea area in deadareas.AsSpan())
             {
                 Meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
             }
@@ -194,12 +194,12 @@ class MeetingSheriff_Patch
                 else
                     area.gameObject.SetActive(false);
             }
-            foreach (PlayerVoteArea area in deadareas)
+            foreach (PlayerVoteArea area in deadareas.AsSpan())
             {
                 newareas.Add(area);
             }
             int i = 0;
-            foreach (PlayerVoteArea area in newareas)
+            foreach (PlayerVoteArea area in newareas.AsSpan())
             {
                 area.transform.localPosition = Meetingsheriff_updatepatch.Positions[i];
                 i++;
@@ -222,12 +222,12 @@ class MeetingSheriff_Patch
                 else
                     area.gameObject.SetActive(false);
             }
-            foreach (PlayerVoteArea area in deadareas)
+            foreach (PlayerVoteArea area in deadareas.AsSpan())
             {
                 newareas.Add(area);
             }
             int i = 0;
-            foreach (PlayerVoteArea area in newareas)
+            foreach (PlayerVoteArea area in newareas.AsSpan())
             {
                 area.transform.localPosition = Meetingsheriff_updatepatch.Positions[i];
                 i++;

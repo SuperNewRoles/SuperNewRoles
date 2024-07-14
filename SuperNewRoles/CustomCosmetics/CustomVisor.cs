@@ -47,7 +47,7 @@ public class CustomVisor
                                        select r).ToArray<string>();
 
                     List<CustomVisors.CustomVisor> customvisors = CustomVisors.CreateCustomVisorDetails(visors);
-                    foreach (CustomVisors.CustomVisor cv in customvisors)
+                    foreach (CustomVisors.CustomVisor cv in customvisors.AsSpan())
                     {
                         CustomVisorData visorData = CreateVisorData(cv);
                         customVisorData.Add(visorData.ProductId, visorData);
@@ -376,7 +376,7 @@ public class VisorTabPatch
     {
         public static bool Prefix()
         {
-            foreach (TMPro.TMP_Text customText in visorsTabCustomTexts)
+            foreach (TMPro.TMP_Text customText in visorsTabCustomTexts.AsSpan())
             {
                 if (customText != null && customText.transform != null && customText.gameObject != null)
                 {

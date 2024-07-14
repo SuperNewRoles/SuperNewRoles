@@ -35,7 +35,7 @@ class EndGameCheck
         SuperNewRoles.Roles.Impostor.Camouflager.ResetCamouflageSHR();
         Chat.IsOldSHR = true;
         List<PlayerControl> WinGods = null;
-        foreach (PlayerControl p in RoleClass.God.GodPlayer)
+        foreach (PlayerControl p in RoleClass.God.GodPlayer.AsSpan())
         {
             if (p.IsAlive())
             {
@@ -64,14 +64,14 @@ class EndGameCheck
         SetDeadGuardianAngel.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
         SetDeadGuardianAngel.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
         /*============死亡時守護天使============*/
-        foreach (PlayerControl p in SetDeadGuardianAngel)
+        foreach (PlayerControl p in SetDeadGuardianAngel.AsSpan())
         {
             p.RpcSetRole(RoleTypes.GuardianAngel);
         }
 
         if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
         {
-            foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
+            foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer.AsSpan())
             {
                 if (p.IsDead())
                 {
@@ -81,7 +81,7 @@ class EndGameCheck
         }
         else if (OnGameEndPatch.EndData == CustomGameOverReason.JackalWin)
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.IsRole(RoleId.Jackal))
                 {
@@ -158,7 +158,7 @@ class EndGameCheck
     {
         if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
         {
-            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
+            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer.AsSpan())
             {
                 if (!p.IsImpostor() && !p.Data.Disconnected)
                 {
@@ -208,7 +208,7 @@ class EndGameCheck
     }
     public static bool CheckAndEndGameForWorkpersonWin(ShipStatus __instance)
     {
-        foreach (PlayerControl p in RoleClass.Workperson.WorkpersonPlayer)
+        foreach (PlayerControl p in RoleClass.Workperson.WorkpersonPlayer.AsSpan())
         {
             if (!p.Data.Disconnected)
             {
@@ -240,7 +240,7 @@ class EndGameCheck
         int impostorNum = 0;
         int crewNum = 0;
         bool foxAlive = false;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p.IsDead() || p.Data.Disconnected || p == null) continue;
 
@@ -253,7 +253,7 @@ class EndGameCheck
         {
             List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
             foxPlayers.AddRange(FireFox.FireFoxPlayer);
-            foreach (PlayerControl p in foxPlayers)
+            foreach (PlayerControl p in foxPlayers.AsSpan())
             {
                 if (p.IsDead()) continue;
                 MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);

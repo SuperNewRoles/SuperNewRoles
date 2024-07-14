@@ -111,15 +111,11 @@ public class TheThreeLittlePigs
 
     public static void FixedUpdate()
     {
-        foreach (List<PlayerControl> plist in TheThreeLittlePigsPlayer)
+        foreach (List<PlayerControl> plist in TheThreeLittlePigsPlayer.AsSpan())
         {
-            List<PlayerControl> removes = new();
-            foreach (PlayerControl player in plist)
-                if (!IsTheThreeLittlePigs(player)) removes.Add(player);
-            if (removes.Count > 0)
+            for (int i = plist.Count - 1; i >= 0; i--)
             {
-                foreach (PlayerControl id in removes)
-                    plist.Remove(id);
+                if (!IsTheThreeLittlePigs(plist[i])) plist.RemoveAt(i);
             }
         }
     }
@@ -202,7 +198,7 @@ public class TheThreeLittlePigs
         player.IsRole(RoleId.TheFirstLittlePig, RoleId.TheSecondLittlePig, RoleId.TheThirdLittlePig);
     public static bool IsTheThreeLittlePigs(List<PlayerControl> players)
     {
-        foreach (PlayerControl player in players)
+        foreach (PlayerControl player in players.AsSpan())
             if (IsTheThreeLittlePigs(player)) return true;
         return false;
     }

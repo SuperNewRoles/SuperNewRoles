@@ -53,7 +53,7 @@ public static class Pteranodon
     }
     public static void FixedUpdateAll()
     {
-        foreach (var data in UsingPlayers.ToArray())
+        foreach (var data in UsingPlayers)
         {
             PlayerControl target = ModHelpers.PlayerById(data.Key);
             if (target.IsDead())

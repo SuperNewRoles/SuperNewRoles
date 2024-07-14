@@ -25,7 +25,7 @@ class Main
     {
         DetectivePlayer = PlayerControl.LocalPlayer;
         List<PlayerControl> selectplayers = new();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p.IsCrew())
             {

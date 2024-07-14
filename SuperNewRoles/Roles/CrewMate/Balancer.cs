@@ -197,7 +197,7 @@ public static class Balancer
                         if (BackPictureObject != null) BackPictureObject.color = new Color32(255, 255, 255, alpha);
                     }
                     Vector3 speed = new(0.6f, 0, 0);
-                    foreach (var objs in ChainObjects)
+                    foreach (var objs in ChainObjects.AsSpan())
                     {
                         objs.Item1.transform.localPosition -= speed;
                     }
@@ -640,7 +640,7 @@ public static class Balancer
         {
             new LateTask(() =>
             {
-                foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => x != null && !x.Data.IsDead && x.IsRole(RoleId.Balancer)))
+                foreach (var player in CachedPlayer.AllPlayers.Where(x => x != null && !x.Data.IsDead && ((PlayerControl)x).IsRole(RoleId.Balancer)))
                 {
                     if (!State.TryGetValue(player.PlayerId, out var state))
                     {

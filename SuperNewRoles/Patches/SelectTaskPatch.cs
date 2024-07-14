@@ -62,7 +62,7 @@ public static class SelectTask
                 list.Add((byte)CommonTasks.GetRandom().Index);
             }
             if (numCommon + numLong + numShort == 0) numShort = 1;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.IsBot())
                 {

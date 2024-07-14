@@ -227,7 +227,7 @@ class CheckForEndVotingPatch
                         Main.RealExiled = target.Object;
                         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                         {
-                            foreach (PlayerControl p in BotManager.AllBots)
+                            foreach (PlayerControl p in BotManager.AllBots.AsSpan())
                             {
                                 if (p.IsDead())
                                 {
@@ -396,7 +396,7 @@ class CheckForEndVotingPatch
                     PlayerControl exile = null;
                     PlayerControl defaultexile = exiledPlayer.Object;
                     var outfit = defaultexile.Data.DefaultOutfit;
-                    foreach (PlayerControl p in BotManager.AllBots)
+                    foreach (PlayerControl p in BotManager.AllBots.AsSpan())
                     {
                         if (p.IsDead())
                         {
@@ -458,7 +458,7 @@ class CheckForEndVotingPatch
 
                         exiledPlayer = RoleSelectHandler.ConfirmImpostorSecondTextBot.Data;
                         ChangeNameExiledPlayer = RoleSelectHandler.ConfirmImpostorSecondTextBot;
-                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                             {
@@ -471,7 +471,7 @@ class CheckForEndVotingPatch
                         ChangeNameExiledPlayer = exiledPlayer.Object;
                         bool isConfirmImpostor = GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor);
 
-                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                             {
@@ -987,7 +987,7 @@ public class MeetingHudUpdatePatch
             foreach (PlayerVoteArea player in Instance.playerStates)
             {
                 PlayerControl target = null;
-                foreach (PlayerControl x in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl x in CachedPlayer.AllPlayers.AsSpan())
                 {
                     string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
                     if (name == x.Data.PlayerName) target = x;

@@ -144,7 +144,7 @@ public class Squid
                 0.75f => new(random.Next(-325, 325) / 100f, random.Next(-225, 265) / 100f, 0f),
                 _ => new(random.Next(-425, 425) / 100f, random.Next(-265, 245) / 100f, 0f)
             };
-            foreach (var pos in allDefaultPosition)
+            foreach (var pos in allDefaultPosition.AsSpan())
             {
                 if (pos == null) break;
                 if (Vector3.Distance(position, pos) <= SquidDownVision.GetFloat() switch
@@ -183,7 +183,7 @@ public class Squid
     }
     public static void SetKillTimer(float killCool)
     {
-        foreach (var button in CustomButton.CurrentButtons)
+        foreach (var button in CustomButton.CurrentButtons.AsSpan())
         {
             if (button.actionButton.name == "KillButton(Clone)")
             {
@@ -195,7 +195,7 @@ public class Squid
         }
         new LateTask(() =>
         {
-            foreach (var button in CustomButton.CurrentButtons)
+            foreach (var button in CustomButton.CurrentButtons.AsSpan())
             {
                 if (button.actionButton.name == "KillButton(Clone)")
                 {

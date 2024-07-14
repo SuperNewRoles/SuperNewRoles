@@ -18,7 +18,7 @@ class FixedUpdate
             }
             else if (NameChangeTimer != -10)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     p.HideName();
                     if (p.IsImpostor())
@@ -26,7 +26,7 @@ class FixedUpdate
                         Main.SetZombie(p);
                     }
                 }
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (!p.IsZombie())
                     {
@@ -47,17 +47,17 @@ class FixedUpdate
             FixedUpdateTimer = 15;
             if (NameChangeTimer >= 0f)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     p.RpcSetNamePrivate(string.Format(ModTranslation.GetString("ZombieTimerText"), (int)NameChangeTimer + 1));
                 }
             }
             else
             {
-                foreach (int pint in Main.ZombiePlayers)
+                foreach (int pint in Main.ZombiePlayers.AsSpan())
                 {
                     var p1 = ModHelpers.PlayerById((byte)pint);
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (!p.IsZombie())
                         {

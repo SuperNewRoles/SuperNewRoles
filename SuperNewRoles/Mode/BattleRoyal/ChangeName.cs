@@ -17,7 +17,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void FixedUpdate()
         {
-            foreach (var notification in Notifications.ToArray())
+            foreach (var notification in Notifications.AsSpan())
             {
                 int index = Notifications.IndexOf(notification);
                 float timer = notification.Item2 - Time.fixedDeltaTime;
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 BattleTeam team = BattleTeam.GetTeam(player);
                 if (team is null) return;
-                foreach (PlayerControl seeplayer in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl seeplayer in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (seeplayer.IsBot()) continue;
                     if (seeplayer.PlayerId == player.PlayerId) continue;
@@ -60,11 +60,11 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void UpdateName(bool SelfOnly = false)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 Logger.Info(player.GetDefaultName());
             }
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 UpdateName(player, SelfOnly);
             }
@@ -75,7 +75,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             name = "<size=75%>" + ModHelpers.Cs(CustomRoles.GetRoleColor(player.GetRole(), IsImpostorReturn: true), CustomRoles.GetRoleName(player.GetRole(), IsImpostorReturn: true)) + "</size>\n" + name + "\n\n";
             string selfname = name;
             selfname = "\n\n\n\n" + selfname + "\n\n\n\n";
-            foreach (var notifi in Notifications)
+            foreach (var notifi in Notifications.AsSpan())
             {
                 Logger.Info("SETNOTIF:" + notifi.Item1);
                 selfname = "<size=200%>" + notifi.Item1 + "</size>" + selfname + "\n";
