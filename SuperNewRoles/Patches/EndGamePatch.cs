@@ -633,7 +633,7 @@ public static class OnGameEndPatch
             Frankenstein.FrankensteinPlayer,
             RoleClass.Dependents.DependentsPlayer,
             ]);
-        foreach (SatsumaAndImo satsuma in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
+        foreach (SatsumaAndImo satsuma in RoleBaseManager.GetRoleBases<SatsumaAndImo>().AsSpan())
             notWinners.Add(satsuma.Player);
         foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
@@ -839,7 +839,7 @@ public static class OnGameEndPatch
                     continue;
                 winners.Add(player.Data);
             }
-            foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
+            foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>().AsSpan())
             {
                 if (satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
                     winners.Add(satsumaAndImo.Player.Data);//さつまいもも勝ち
@@ -1528,7 +1528,7 @@ public static class CheckGameEndHnSPatch
         }
         else
         {
-            foreach (ISpecialWinner winner in RoleBaseManager.GetInterfaces<ISpecialWinner>())
+            foreach (ISpecialWinner winner in RoleBaseManager.GetInterfaces<ISpecialWinner>().AsSpan())
                 if (winner.CheckAndEndGame(__instance, statistics)) return false;
             if (CheckAndEndGameForLoversBreakerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForPavlovsWin(__instance, statistics)) return false;
@@ -1565,7 +1565,7 @@ public static class CheckGameEndPatch
         }
         else
         {
-            foreach (ISpecialWinner winner in RoleBaseManager.GetInterfaces<ISpecialWinner>())
+            foreach (ISpecialWinner winner in RoleBaseManager.GetInterfaces<ISpecialWinner>().AsSpan())
                 if (winner.CheckAndEndGame(__instance, statistics)) return false;
             if (CheckAndEndGameForLoversBreakerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
@@ -1887,7 +1887,7 @@ public static class CheckGameEndPatch
         {
             foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer.AsSpan())
                 if (!p.IsImpostor() && !p.Data.Disconnected) return false;
-            foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>())
+            foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>().AsSpan())
             {
                 PlayerControl player = role.Player;
                 if (player == null) continue;
