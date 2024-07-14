@@ -676,9 +676,10 @@ public static class RPCHelper
         messageWriter.EndMessage();
     }
 
+    private static readonly byte[] ToiletDoors = { 79, 80, 81, 82 };
     public static void RpcOpenToilet()
     {
-        foreach (byte i in new[] { 79, 80, 81, 82 })
+        foreach (byte i in ToiletDoors)
         {
             Logger.Info($"amount:{i}", "RpcOpenToilet");
             MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Doors, i);

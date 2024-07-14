@@ -374,7 +374,7 @@ namespace SuperNewRoles.Replay
                 {
                     CreatePageButton(page);
                 }
-                foreach (JoinGameButton jgb in Buttons)
+                foreach (JoinGameButton jgb in Buttons.AsSpan())
                 {
                     jgb.gameObject.SetActive(false);
                 }

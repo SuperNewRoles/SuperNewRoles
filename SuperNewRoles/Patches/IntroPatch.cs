@@ -52,11 +52,11 @@ public class IntroPatch
             Logger.Info("=================Player Data=================", "Player Info");
             {
                 Logger.Info($"プレイヤー数：{CachedPlayer.AllPlayers.Count}人", "All Player Count");
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 { Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}(cid:{p.GetClientId()})(pid:{p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info"); }
             }
             Logger.Info("=================Role Data=================", "Player Info");
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
             }
@@ -91,12 +91,12 @@ public class IntroPatch
         {
             TaskCount.IsClearTaskPlayer = null;
             PlayerData<bool> TaskPlayers = new(defaultvalue: false);
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 TaskPlayers[player] = player.IsClearTask(IsUseFirst: false);
             }
             TaskCount.IsClearTaskPlayer = TaskPlayers;
-            foreach (PlayerControl player in BotManager.AllBots)
+            foreach (PlayerControl player in BotManager.AllBots.AsSpan())
             {
                 GameData.Instance.RemovePlayer(player.PlayerId);
             }
@@ -150,7 +150,7 @@ public class IntroPatch
                             {
                                 Roles.Neutral.GM.target = target;
                                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-                                foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                                foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
                                 {
                                     p.Data.Role.NameColor = Color.white;
                                 }
@@ -158,7 +158,7 @@ public class IntroPatch
                                 CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
                                 CachedPlayer.LocalPlayer.Data.IsDead = true;
                                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.CrewmateGhost);
-                                foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                                foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
                                 {
                                     if (p.PlayerControl.IsImpostor())
                                     {
@@ -223,7 +223,7 @@ public class IntroPatch
         if (ReplayManager.IsReplayMode)
         {
             var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (p != PlayerControl.LocalPlayer)
                     newTeam.Add(p);
@@ -240,7 +240,7 @@ public class IntroPatch
             {
                 var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 newTeam.Add(PlayerControl.LocalPlayer);
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
@@ -263,7 +263,7 @@ public class IntroPatch
                         ImpostorIntroTeam:
                         Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
                         ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if ((player.IsImpostor() || player.IsRole(RoleId.Spy, RoleId.Egoist)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                             {
@@ -283,7 +283,7 @@ public class IntroPatch
                         JackalIntroTeam:
                         Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
                         JackalTeams.Add(PlayerControl.LocalPlayer);
-                        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (player.IsJackalTeamJackal() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                             {
@@ -295,7 +295,7 @@ public class IntroPatch
                     case RoleId.Fox:
                         Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new();
                         int FoxNum = 0;
-                        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (player.IsRole(RoleId.Fox) || (player.IsRole(RoleId.FireFox) && FireFox.FireFoxIsCheckFox.GetBool()))
                             {
@@ -308,7 +308,7 @@ public class IntroPatch
                     case RoleId.FireFox:
                         Il2CppSystem.Collections.Generic.List<PlayerControl> FireFoxTeams = new();
                         int FireFoxNum = 0;
-                        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (player.IsRole(RoleId.FireFox) || (player.IsRole(RoleId.Fox) && FireFox.FireFoxIsCheckFox.GetBool()))
                             {
@@ -323,10 +323,10 @@ public class IntroPatch
                     case RoleId.TheThirdLittlePig:
                         Il2CppSystem.Collections.Generic.List<PlayerControl> TheThreeLittlePigsTeams = new();
                         int TheThreeLittlePigsNum = 0;
-                        foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+                        foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer.AsSpan())
                         {
                             if (players.TrueForAll(x => x.PlayerId != PlayerControl.LocalPlayer.PlayerId)) continue;
-                            foreach (PlayerControl player in players)
+                            foreach (PlayerControl player in players.AsSpan())
                             {
                                 TheThreeLittlePigsNum++;
                                 TheThreeLittlePigsTeams.Add(player);
@@ -340,7 +340,7 @@ public class IntroPatch
                         Pokerface.PokerfaceTeam team = Pokerface.GetPokerfaceTeam(PlayerControl.LocalPlayer.PlayerId);
                         if (team != null)
                         {
-                            foreach (var player in team.TeamPlayers)
+                            foreach (var player in team.TeamPlayers.AsSpan())
                             {
                                 PokerfaceTeams.Add(player);
                             }
@@ -376,7 +376,7 @@ public class IntroPatch
         }
         if (PlayerControl.LocalPlayer.IsImpostor())
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.IsImpostorAddedFake())
                     player.Data.Role.NameColor = Color.red;
@@ -424,7 +424,7 @@ public class IntroPatch
                         ImpostorText = "";
                         break;
                 }
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (player.IsRole(RoleId.Egoist))
                     {

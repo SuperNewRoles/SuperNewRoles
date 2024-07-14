@@ -68,10 +68,10 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void TeamOnlyChat()
         {
-            foreach (BattleTeam team in BattleTeam.BattleTeams)
+            foreach (BattleTeam team in BattleTeam.BattleTeams.AsSpan())
             {
                 Logger.Info("ーー終了ーー");
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (player.IsBot()) continue;
                     if (player is null) continue;
@@ -79,7 +79,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     Logger.Info($"{player.GetDefaultName()} : {player.Data.IsDead} : {!team.IsTeam(player)}");
                 }
                 Logger.Info("ーー開始ーー");
-                foreach (PlayerControl player in team.TeamMember)
+                foreach (PlayerControl player in team.TeamMember.AsSpan())
                 {
                     if (player is null) continue;
                     RPCHelper.RpcSyncAllNetworkedPlayer(player.GetClientId());
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         {
             Main.IsIntroEnded = true;
             if (!AmongUsClient.Instance.AmHost) return;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 p.Data.IsDead = false;
             }
@@ -146,7 +146,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     TeamOnlyChat();
                     BattleTeam team = BattleTeam.GetTeam(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (player.IsBot()) continue;
                         if (player is null) continue;
@@ -164,17 +164,17 @@ namespace SuperNewRoles.Mode.BattleRoyal
             if (Main.IsRoleSetted) return;
             Main.IsRoleSetted = true;
             SyncBattleOptions.CustomSyncOptions();
-            foreach (BattleTeam team in BattleTeam.BattleTeams)
+            foreach (BattleTeam team in BattleTeam.BattleTeams.AsSpan())
             {
                 bool CanRevive = false;
-                foreach (PlayerControl player in team.TeamMember)
+                foreach (PlayerControl player in team.TeamMember.AsSpan())
                 {
                     if (Reviver.IsReviver(player))
                         CanRevive = true;
                 }
                 if (CanRevive)
                 {
-                    foreach (PlayerControl player in team.TeamMember)
+                    foreach (PlayerControl player in team.TeamMember.AsSpan())
                     {
                         PlayerAbility.GetPlayerAbility(player).CanRevive = true;
                     }
@@ -218,14 +218,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     source.SetRoleRPC(data.Value);
                     string text = string.Format(ModTranslation.GetString("BattleRoyalSetRoleText"), source.GetDefaultName(), CustomRoles.GetRoleName(data.Value, IsImpostorReturn: true));
-                    foreach (PlayerControl teammember in BattleTeam.GetTeam(source).TeamMember)
+                    foreach (PlayerControl teammember in BattleTeam.GetTeam(source).TeamMember.AsSpan())
                     {
                         if (teammember == null) continue;
                         AddChatPatch.SendCommand(teammember, text, BattleRoyalCommander);
                     }
                     Main.RoleSettedPlayers.Add(source);
                     bool IsEnd = true;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (p.IsBot()) continue;
                         if (!Main.RoleSettedPlayers.IsCheckListPlayerControl(p))
@@ -245,12 +245,12 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void OnEndSetRole()
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 p.Data.IsDead = false;
             }
             RPCHelper.RpcSyncAllNetworkedPlayer();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 p.MyPhysics.RpcExitVentUnchecked(0);
             }

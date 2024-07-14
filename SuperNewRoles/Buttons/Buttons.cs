@@ -381,7 +381,7 @@ static class HudManagerStartPatch
                     if (RoleClass.LoversBreaker.BreakCount <= 0)
                     {
                         bool IsAliveLovers = false;
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.TryGetRoleBase<Cupid>(out Cupid cupid) & cupid.Created)))
                             {

@@ -5,7 +5,7 @@ public static class CheckEndGame
     public static bool EndGameCheck(ShipStatus __instance)
     {
         bool impostorwin = true;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!p.Data.Disconnected)
             {

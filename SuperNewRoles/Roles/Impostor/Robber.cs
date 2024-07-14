@@ -108,14 +108,15 @@ public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
         {
             taskIds.Add(reader.ReadUInt32());
         }
-        foreach (PlayerTask task in target.myTasks.ToArray())
+        for (int i = target.myTasks.Count - 1; i >= 0; i--)
         {
+            PlayerTask task = target.myTasks[i];
             if (!taskIds.Contains(task.Id))
                 continue;
             NetworkedPlayerInfo.TaskInfo taskInfo = target.Data.FindTaskById(task.Id);
             if (taskInfo != null)
                 taskInfo.Complete = false;
-            target.myTasks.Remove(task);
+            target.myTasks.RemoveAt(i);
             GameObject.Destroy(task.gameObject);
             NormalPlayerTask taskById = ShipStatus.Instance.GetTaskById(taskInfo.TypeId);
             NormalPlayerTask normalPlayerTask = Object.Instantiate(taskById, target.transform);

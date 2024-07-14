@@ -8,7 +8,7 @@ class Intro
     {
         Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
         Teams.Add(PlayerControl.LocalPlayer);
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p.IsImpostor() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
             {

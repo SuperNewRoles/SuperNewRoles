@@ -267,8 +267,8 @@ public class BlackHatHacker
         NotInfectiousTimer -= Time.fixedDeltaTime;
         if (NotInfectiousTimer > 0) return;
         if (RoleClass.IsMeeting) return;
-        foreach (byte id in SelfPropagationPlayerId) InfectionTimer[PlayerControl.LocalPlayer.PlayerId][id] += Time.fixedDeltaTime / 5;
-        foreach (byte id in InfectedPlayerId)
+        foreach (byte id in SelfPropagationPlayerId.AsSpan()) InfectionTimer[PlayerControl.LocalPlayer.PlayerId][id] += Time.fixedDeltaTime / 5;
+        foreach (byte id in InfectedPlayerId.AsSpan())
         {
             PlayerControl player = ModHelpers.PlayerById(id);
             if (!player) continue;
@@ -276,7 +276,7 @@ public class BlackHatHacker
             float scope = GameOptionsData.KillDistances[Mathf.Clamp(BlackHatHackerInfectionScope.GetSelection(), 0, 2)];
             List<PlayerControl> infection = PlayerControl.AllPlayerControls.ToList().
                                             FindAll(x => !x.AmOwner && Vector3.Distance(player.transform.position, x.transform.position) <= scope);
-            foreach (PlayerControl target in infection) InfectionTimer[PlayerControl.LocalPlayer.PlayerId][target.PlayerId] += Time.fixedDeltaTime;
+            foreach (PlayerControl target in infection.AsSpan()) InfectionTimer[PlayerControl.LocalPlayer.PlayerId][target.PlayerId] += Time.fixedDeltaTime;
         }
     }
 
@@ -297,7 +297,7 @@ public class BlackHatHacker
         {
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.BlackHatHacker)) return;
             InfectionTimer[PlayerControl.LocalPlayer.PlayerId] = new();
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.AmOwner || player.IsBot()) continue;
                 InfectionTimer[PlayerControl.LocalPlayer.PlayerId][player.PlayerId] = 0f;

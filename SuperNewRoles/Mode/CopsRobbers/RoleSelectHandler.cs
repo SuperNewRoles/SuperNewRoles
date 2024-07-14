@@ -10,7 +10,7 @@ public class RoleSelectHandler
     {
         List<PlayerControl> SelectPlayers = new();
         List<PlayerControl> impostors = new();
-        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!player.Data.Disconnected && !player.IsBot())
             {
@@ -26,10 +26,10 @@ public class RoleSelectHandler
                 SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
             }
         }
-        foreach (PlayerControl player in impostors)
+        foreach (PlayerControl player in impostors.AsSpan())
         {
             player.RpcSetRole(RoleTypes.Impostor);
-            foreach (PlayerControl player2 in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player2 in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!player2.Data.Disconnected)
                 {
@@ -40,7 +40,7 @@ public class RoleSelectHandler
                 }
             }
         }
-        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!player.Data.Disconnected)
             {

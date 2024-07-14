@@ -15,7 +15,7 @@ class Intro
         else
         {
             Teams.Add(PlayerControl.LocalPlayer);
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {

@@ -372,7 +372,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     public void OnHandleAllPlayer()
     {
         if (OldLimit > 0) return;
-        SetNamesClass.SetPlayerNameText(Player, $"{Player.NameText().text} {"(⇔)".Color(Roleinfo.RoleColor)}");
+        SetNamesClass.SetPlayerNameText(Player, $"{Player.NameText().text} {"(��)".Color(Roleinfo.RoleColor)}");
     }
 
     public void RpcReader(MessageReader reader)
@@ -394,7 +394,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
             text = "";
             return false;
         }
-        text = $" {"(⇔)".Color(Roleinfo.RoleColor)}";
+        text = $" {"(��)".Color(Roleinfo.RoleColor)}";
         return true;
     }
 

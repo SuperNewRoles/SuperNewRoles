@@ -54,7 +54,7 @@ static class Main
     public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
     {
         bool IsZombieWin = true;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!ZombiePlayers.Contains(p.PlayerId) && p.IsAlive())
             {
@@ -77,7 +77,7 @@ static class Main
     }
     public static void ClearAndReload()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             p.SetHat("", 0);
         }
@@ -92,7 +92,7 @@ static class Main
         if (AmongUsClient.Instance.AmHost)
         {
             FixedUpdate.IsStart = false;
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 p.GetDefaultName();
             }
@@ -102,9 +102,9 @@ static class Main
     public static void SetTimer()
     {
         FixedUpdate.IsStart = true;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
-            foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p2 in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (p2.PlayerId != p.PlayerId)
                 {

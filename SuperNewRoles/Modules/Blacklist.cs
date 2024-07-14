@@ -122,7 +122,7 @@ public static class Blacklist
             }
             // 実装してるなら消す所ここまで
         }
-        foreach (var player in BlackPlayer.Players)
+        foreach (var player in BlackPlayer.Players.AsSpan())
         {
             if (player.EndBanTime.HasValue && player.EndBanTime.Value < DateTime.UtcNow)
                 continue;

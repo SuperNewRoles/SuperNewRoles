@@ -20,7 +20,7 @@ public class TurnData
     public TurnData(bool IsStart = true)
     {
         StartPlayerCount = 0;
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsAlive()) StartPlayerCount++;
         }
@@ -53,7 +53,7 @@ public class TurnData
     }
     public void EndTurn()
     {
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsBot()) continue;
             if (player.IsDead()) continue;

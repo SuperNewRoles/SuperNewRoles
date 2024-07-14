@@ -9,7 +9,7 @@ public class Shielder
 {
     public static void WrapUp()
     {
-        foreach (var data in RoleClass.Shielder.IsShield.ToArray())
+        foreach (var data in RoleClass.Shielder.IsShield)
         {
             RoleClass.Shielder.IsShield[data.Key] = false;
         }

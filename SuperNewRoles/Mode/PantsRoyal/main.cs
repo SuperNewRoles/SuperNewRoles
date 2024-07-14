@@ -70,7 +70,7 @@ public static class main
     public static void GameEnd()
     {
         main.CurrentTurnData = null;
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsAlive())
             {
@@ -98,7 +98,7 @@ public static class main
     {
         int AlivePlayerCount = 0;
         List<PlayerControl> targets = new();
-        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             if (p.IsAlive())
             {
                 targets.Add(p);
@@ -112,7 +112,7 @@ public static class main
             SetHavePants(targets[targetindex], false);
             targets.RemoveAt(targetindex);
         }
-        foreach (PlayerControl target in targets)
+        foreach (PlayerControl target in targets.AsSpan())
             SetDontHavePants(target, false);
         UpdatePantsHaverCache();
     }
@@ -129,13 +129,13 @@ public static class main
     }
     public static void AssignRole()
     {
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.PlayerId == 0)
                 player.SetRole(AmongUs.GameOptions.RoleTypes.Impostor);
             else
                 player.RpcSetRoleDesync(AmongUs.GameOptions.RoleTypes.Impostor, false);
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 if (player.PlayerId != p.PlayerId)
                 {
                     if (p.PlayerId == 0)
@@ -152,7 +152,7 @@ public static class main
     {
         UpdatePantsHaverCache();
         List<SkinData> targetSkins = FastDestroyableSingleton<HatManager>.Instance.allSkins.ToList();
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             player.RpcSetHat("");
             player.RpcSetPet("");
@@ -172,7 +172,7 @@ public static class main
     public static Il2CppSystem.Collections.Generic.List<PlayerControl> IntroHandler(IntroCutscene __instance)
     {
         Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             Teams.Add(player);
         }
@@ -209,7 +209,7 @@ public static class main
     public static void UpdatePantsHaverCache()
     {
         List<PlayerControl> newList = new();
-        foreach (byte playerId in PantsHaversId)
+        foreach (byte playerId in PantsHaversId.AsSpan())
         {
             newList.Add(ModHelpers.PlayerById(playerId));
         }
