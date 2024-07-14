@@ -44,7 +44,6 @@ public class IntroPatch
         {
             Logger.Info($"=================Game Info (Count : {++GameCount})=================", "Intro Begin");
             {
-                Logger.Info($"ゲーム回数 : {++GameCount}回目", "Game Info");
                 Logger.Info($"機体情報 : {(AmongUsClient.Instance.AmHost ? "ホスト機体" : "ゲスト機体")}", "Game Info");
                 Logger.Info($"MapId : {GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Game Info");
                 Logger.Info($"Mode : {ModeHandler.GetMode()}", "Game Info");
