@@ -11,7 +11,7 @@ set LOGFILENAME=LogOutput.log
 rem Among Usが起動済みかを判定
 tasklist /FI "IMAGENAME eq Among Us.exe" | find "Among Us.exe" > NUL
 
-rem 軌道台数のカウント
+rem 起動台数のカウント
 
 if not %errorlevel% == 0 (
     echo "このウィンドウは [ %LOGFILENAME% ] を出力している Among Us.exe の起動状態を監視しています。"
@@ -32,7 +32,7 @@ rem ----------------------------------------------------------------------------
 rem 使用するフォルダおよびファイルパス関連の変数を作成 (カレントディレクトリ 使用 Ver.)
 rem -------------------------------------------------------------------------------------
 
-rem 軌道対象のAmong Us.exeが存在するフォルダを指定する。
+rem 起動対象のAmong Us.exeが存在するフォルダを指定する。
 set AMONGUSFOLDER=%~dp0
 
 rem 以下の様な形で Among Us.exe が存在するフォルダを指定する形に変更すると、当バッチファイルがAmong Us.exeと別階層に存在しても、使用可能になる
@@ -45,7 +45,7 @@ rem ----------------------------------------------------------------------------
 
 
 rem -------------------------------------------------------------------------------------
-rem Among Us 軌道 & 終了待機
+rem Among Us 起動 & 終了待機
 rem -------------------------------------------------------------------------------------
 
 start "" /wait "%AMONGUSFOLDER%\Among Us"
@@ -92,7 +92,7 @@ rem ### プロセスの状態の取得
 rem - https://note.com/good_lilac166/n/n0b13bb383737
 rem - https://wa3.i-3-i.info/word12514.html
 
-rem ### 指定プロセスの軌道台数の確認
+rem ### 指定プロセスの起動台数の確認
 rem - https://note.com/good_lilac166/n/n0b13bb383737
 rem - https://qiita.com/plcherrim/items/9cba5a42273e10915c8f
 
