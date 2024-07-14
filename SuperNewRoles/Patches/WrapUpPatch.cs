@@ -188,7 +188,7 @@ class WrapUpPatch
         BlackHatHacker.WrapUp();
         Moira.WrapUp(exiled);
         WellBehaver.WrapUp();
-        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             p.resetChange();
         }

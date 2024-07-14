@@ -52,7 +52,7 @@ public static class Assassin
                 Main.RealExiled = target.Object;
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
-                    foreach (PlayerControl p in BotManager.AllBots)
+                    foreach (PlayerControl p in BotManager.AllBots.AsSpan())
                     {
                         if (p.IsDead())
                         {

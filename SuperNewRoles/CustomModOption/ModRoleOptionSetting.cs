@@ -1,3 +1,4 @@
+using System.Linq;
 using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
@@ -61,7 +62,7 @@ public class ModRoleOptionSetting : ModOptionBehaviour
     {
         SettingsMenu.OldTabId = SettingsMenu.NowTabId;
         SettingsMenu.CategoryHeader.Title.text = ModTranslation.GetString("SettingOf", ParentCustomOption.GetName());
-        foreach (CustomOption option in CustomOption.options.FindAll(x => x.RoleId == ParentCustomOption.RoleId && x != ParentCustomOption && x != PlayerCountOption))
+        foreach (CustomOption option in CustomOption.options.Where(x => x.RoleId == ParentCustomOption.RoleId && x != ParentCustomOption && x != PlayerCountOption))
         {
             if (option is CustomOptionBlank) continue;
             ModOptionBehaviour mod = option.IsToggle ? SettingsMenu.CreateModToggleOption(SettingsMenu.RoleDetailsSettings.transform, option) : SettingsMenu.CreateModStringOption(SettingsMenu.RoleDetailsSettings.transform, option);

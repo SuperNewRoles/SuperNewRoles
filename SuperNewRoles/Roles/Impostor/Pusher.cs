@@ -185,7 +185,7 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         _untargetPlayers = new();
         float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)] + 1f;
         Vector2 truePosition = Player.GetTruePosition();
-        foreach (PlayerControl @object in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl @object in CachedPlayer.AllPlayers.AsSpan())
         {
             if (@object == null)
                 continue;

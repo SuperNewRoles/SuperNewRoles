@@ -61,7 +61,7 @@ public class SetNamesClass
         {
             pro.Value.text = "";
         }
-        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
             player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
@@ -309,7 +309,7 @@ public class SetNamesClass
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon, RoleId.God) || CanGhostSeeRoles())
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (Demon.IsViewIcon(player))
                 {
@@ -323,7 +323,7 @@ public class SetNamesClass
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist, RoleId.God) || CanGhostSeeRoles())
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (Arsonist.IsViewIcon(player))
                 {
@@ -405,7 +405,7 @@ public class SetNameUpdate
         //TODO:神移行時にINameHandlerに移行する
         else if (LocalRole == RoleId.God)
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (RoleClass.IsMeeting || player.IsAlive())
                 {
@@ -422,7 +422,7 @@ public class SetNameUpdate
                 (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon) ||
                 (LocalRole == RoleId.Safecracker && Safecracker.CheckTask(__instance, Safecracker.CheckTasks.CheckImpostor)))
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (p.IsImpostorAddedFake())
                     {
@@ -539,7 +539,7 @@ public class SetNameUpdate
             if ((PlayerControl.LocalPlayer.IsJackalTeam() && !PlayerControl.LocalPlayer.IsFriendRoles()) ||
                 JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                         continue;
@@ -594,7 +594,7 @@ public class SetNameUpdate
         {
             if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)
             {
-                foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p3 in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (p3.IsAlive() && !Sabotage.CognitiveDeficit.Main.OKPlayers.IsCheckListPlayerControl(p3))
                     {

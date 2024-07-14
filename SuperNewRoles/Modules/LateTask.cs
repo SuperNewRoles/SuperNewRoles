@@ -37,7 +37,7 @@ public class LateTask
         timer = time;
         this.name = name;
         AddTasks.Add(this);
-        Logger.Info("New LateTask \"" + name + "\" is created", "LateTask");
+        Logger.Info($"New LateTask \"{name}\" is created", "LateTask");
     }
     public static void Update(float deltaTime)
     {
@@ -47,12 +47,12 @@ public class LateTask
             //Logger.Info("LateTask \"" + task.name + "\" Start","LateTask");
             if (task.Run(deltaTime))
             {
-                Logger.Info("LateTask \"" + task.name + "\" is finished", "LateTask");
+                Logger.Info($"LateTask \"{task.name}\" is finished", "LateTask");
                 TasksToRemove.Add(task);
             }
         });
         TasksToRemove.ForEach(task => Tasks.Remove(task));
-        foreach (LateTask task in AddTasks)
+        foreach (LateTask task in AddTasks.AsSpan())
         {
             Tasks.Add(task);
         }

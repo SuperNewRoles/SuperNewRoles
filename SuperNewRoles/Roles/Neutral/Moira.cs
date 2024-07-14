@@ -179,7 +179,7 @@ public class Moira
         if (exiled.Object.IsRole(RoleId.Moira))
         {
             ChangeData.Reverse();
-            foreach (var data in ChangeData)
+            foreach (var data in ChangeData.AsSpan())
                 SwapRole(data.Item1, data.Item2);
         }
     }

@@ -14,7 +14,7 @@ public static class BotManager
         {
             if (player == null) return false;
             if (player.Data.Disconnected) return false;
-            foreach (PlayerControl p in AllBots)
+            foreach (PlayerControl p in AllBots.AsSpan())
             {
                 if (p.PlayerId == player.PlayerId) return true;
             }
@@ -40,7 +40,7 @@ public static class BotManager
     public static PlayerControl Spawn(string name = "Bot", bool IsSetBot = true)
     {
         byte id = 0;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p.PlayerId > id)
             {
@@ -82,7 +82,7 @@ public static class BotManager
     }
     public static void AllBotDespawn()
     {
-        foreach (PlayerControl Bots in AllBots)
+        foreach (PlayerControl Bots in AllBots.AsSpan())
         {
             SuperNewRolesPlugin.Logger.LogInfo("botデスポーン!\nID:" + Bots.PlayerId + "\nBotName:" + Bots.name);
             GameData.Instance.RemovePlayer(Bots.PlayerId);

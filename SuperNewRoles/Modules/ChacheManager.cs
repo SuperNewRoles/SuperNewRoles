@@ -30,21 +30,21 @@ class ChacheManager
     }
     public static void ResetQuarreledChache()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             QuarreledChache[p.PlayerId] = p.IsQuarreled(false) ? p.GetOneSideQuarreled(false) : null;
         }
     }
     public static void ResetHauntedWolfChache()
     {
-        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsHauntedWolf(false)) HauntedWolfChache[player.PlayerId] = player;
         }
     }
     public static void ResetLoversChache()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             LoversChache[p.PlayerId] = p.IsLovers(false) ? p.GetOneSideLovers(false) : null;
             FakeLoversChache[p.PlayerId] = p.IsFakeLovers(false) ? p.GetOneSideFakeLovers(false) : null;
@@ -52,14 +52,14 @@ class ChacheManager
     }
     public static void ResetMyRoleChache()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             MyRoleChache[p.PlayerId] = p.GetRole(false);
         }
     }
     public static void ResetMyGhostRoleChache()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             MyGhostRoleChache[p.PlayerId] = p.GetGhostRole(false);
         }

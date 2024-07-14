@@ -84,7 +84,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
         WaveCannonEffect WCEffect = CannonObject.WaveCannonEffects.FirstOrDefault();
         WCEffect.transform.localPosition = new(0f, 0, 0.1f);
         CannonObject.transform.localPosition += new Vector3(CannonObject.IsFlipX ? -4.05f : 4.05f,0);
-        foreach (var obj in CannonObject.effectrenders) obj.sprite = ShootSprites[0];
+        foreach (var obj in CannonObject.effectrenders.AsSpan()) obj.sprite = ShootSprites[0];
         Sprite[] sprites = new Sprite[12];
         for (int i = 0; i < 12; i++)
             sprites[i] = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
@@ -101,7 +101,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
             option.SetSprites(sprites, IsLoop: true, frameRate: 15);
             CannonObject.Stop(IsStopMusic: false);
             CannonObject.Play(IsPlayMusic: false);
-            foreach (var obj in CannonObject.effectrenders) obj.sprite = sprites[0];
+            foreach (var obj in CannonObject.effectrenders.AsSpan()) obj.sprite = sprites[0];
             CannonObject.Options.SetOnEndAnimation((anim, option) =>
             {
                 CannonObject.DestroyIndex++;
@@ -131,7 +131,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
     }
     public void RendererUpdate()
     {
-        foreach (var obj in CannonObject.effectrenders)
+        foreach (var obj in CannonObject.effectrenders.AsSpan())
         {
             if (CannonObject.IsShootFirst)
             {

@@ -218,7 +218,7 @@ public static class ModDownloader
                 Transform TextTemplate = Popup.transform.FindChild("StatsText_TMP(Clone)");
                 PassiveButton ButtonTemplate = AccountManager.Instance.transform.FindChild("InfoTextBox/Button1").GetComponent<PassiveButton>();
                 int index = -1;
-                foreach (ModObject modobj in ModObjects)
+                foreach (ModObject modobj in ModObjects.AsSpan())
                 {
                     index++;
                     if (modobj.ButtonInited) continue;

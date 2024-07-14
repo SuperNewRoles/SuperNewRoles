@@ -92,7 +92,7 @@ class RoleManagerSelectRolesPatch
             CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
             List<PlayerControl> SelectPlayers = new();
             AllRoleSetClass.impostors = new();
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!player.Data.Disconnected && !player.IsBot())
                 {
@@ -112,12 +112,12 @@ class RoleManagerSelectRolesPatch
             }
             sender = RoleSelectHandler.RoleSelect(sender);
 
-            foreach (PlayerControl player in AllRoleSetClass.impostors)
+            foreach (PlayerControl player in AllRoleSetClass.impostors.AsSpan())
             {
                 sender.RpcSetRole(player, RoleTypes.Impostor);
             }
             RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanillaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!player.Data.Disconnected && !player.IsImpostor())
                 {
@@ -126,7 +126,7 @@ class RoleManagerSelectRolesPatch
             }
 
             //サーバーの役職判定をだます
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 sender.AutoStartRpc(pc.NetId, (byte)RpcCalls.SetRole)
                     .Write((ushort)RoleTypes.Shapeshifter)
@@ -205,7 +205,7 @@ class RoleManagerSelectRolesPatch
             case ModeId.SuperHostRoles:
                 break;
             default:
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
@@ -218,7 +218,7 @@ class RoleManagerSelectRolesPatch
         {
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
                 return;
-            foreach (var pc in CachedPlayer.AllPlayers)
+            foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
             }
@@ -304,7 +304,7 @@ class AllRoleSetClass
         List<PlayerControl> SelectPlayers = new();
         if (CustomOptionHolder.QuarreledOnlyCrewmate.GetBool())
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.IsImpostor() && !p.IsNeutral() && !p.IsBot())
                 {
@@ -314,7 +314,7 @@ class AllRoleSetClass
         }
         else
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.IsBot())
                 {
@@ -364,7 +364,7 @@ class AllRoleSetClass
         bool IsQuarreledDup = CustomOptionHolder.LoversDuplicationQuarreled.GetBool();
         if (CustomOptionHolder.LoversOnlyCrewmate.GetBool())
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover, RoleId.LoversBreaker) && !p.IsBot())
                 {
@@ -377,7 +377,7 @@ class AllRoleSetClass
         }
         else
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!IsQuarreledDup || (!p.IsQuarreled() && !p.IsBot()))
                 {
@@ -817,7 +817,7 @@ class AllRoleSetClass
     {
         CrewmatePlayers = new();
         ImpostorPlayers = new();
-        foreach (PlayerControl Player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl Player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!Player.Data.Role.IsSimpleRole || Player.IsRole(RoleId.GM))
                 continue;
@@ -905,7 +905,7 @@ class AllRoleSetClass
                 continue;
             TargetRoles.Add((roleInfo.Role, roleInfo.Team));
         }
-        foreach ((RoleId role, TeamRoleType team) roledata in TargetRoles)
+        foreach ((RoleId role, TeamRoleType team) roledata in TargetRoles.AsSpan())
         {
             var option = IntroData.GetOption(roledata.role);
             if (option == null) continue;

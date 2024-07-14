@@ -221,7 +221,7 @@ public static class RoleSelectHandler
         SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
         /*============シェイプシフター役職設定============*/
 
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.GetRoleBase() is ISupportSHR playerSHR)
             {
@@ -232,7 +232,7 @@ public static class RoleSelectHandler
             }
         }
 
-        foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
+        foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer.AsSpan())
         {
             if (!Player.IsMod())
             {
@@ -240,7 +240,7 @@ public static class RoleSelectHandler
                 //ただしホスト、お前はDesyncするな。
                 sender.RpcSetRole(Player, RoleTypes.Impostor);
                 //役職者で他プレイヤーを科学者にするループ
-                foreach (var pc in PlayerControl.AllPlayerControls)
+                foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
                     sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
@@ -261,14 +261,14 @@ public static class RoleSelectHandler
             }
             //p.Data.IsDead = true;
         }
-        foreach (PlayerControl Player in RoleClass.Spy.SpyPlayer)
+        foreach (PlayerControl Player in RoleClass.Spy.SpyPlayer.AsSpan())
         {
             if (!Player.IsMod())
             {
                 int PlayerCID = Player.GetClientId();
                 if (RoleClass.Spy.CanUseVent) sender.RpcSetRole(Player, RoleTypes.Engineer, PlayerCID);
                 else sender.RpcSetRole(Player, RoleTypes.Crewmate, PlayerCID);
-                foreach (var pc in PlayerControl.AllPlayerControls)
+                foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
                     sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
@@ -282,7 +282,7 @@ public static class RoleSelectHandler
             if (ModeHandler.GetMode() == ModeId.SuperHostRoles)
             {
                 //他視点で科学者にするループ
-                foreach (var pc in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
                     if (!pc.IsMod())
@@ -309,7 +309,7 @@ public static class RoleSelectHandler
     /// <param name="roleTypes">Desyncしたい役職(他視点は科学者固定)</param>
     public static void SetRoleDesync(List<PlayerControl> player, RoleTypes roleTypes)
     {
-        foreach (PlayerControl Player in player)
+        foreach (PlayerControl Player in player.AsSpan())
         {
             SetRoleDesync(Player, roleTypes);
         }
@@ -321,13 +321,13 @@ public static class RoleSelectHandler
         {
             int PlayerCID = Player.GetClientId();
             sender.RpcSetRole(Player, roleTypes, PlayerCID);
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (pc.PlayerId == Player.PlayerId) continue;
                 sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
             }
             //他視点で科学者にするループ
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (pc.PlayerId == Player.PlayerId) continue;
                 if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
@@ -349,7 +349,7 @@ public static class RoleSelectHandler
     /// <param name="isNotModOnly">非Mod導入者のみか(概定はtrue)</param>
     public static void SetVanillaRole(List<PlayerControl> player, RoleTypes roleTypes, bool isNotModOnly = true)
     {
-        foreach (PlayerControl p in player)
+        foreach (PlayerControl p in player.AsSpan())
         {
             SetVanillaRole(p, roleTypes, isNotModOnly);
         }
@@ -374,7 +374,7 @@ public static class RoleSelectHandler
     {
         AllRoleSetClass.CrewmatePlayers = new();
         AllRoleSetClass.ImpostorPlayers = new();
-        foreach (PlayerControl Player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl Player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!Player.IsBot())
             {

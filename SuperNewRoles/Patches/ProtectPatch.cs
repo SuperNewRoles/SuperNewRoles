@@ -155,7 +155,7 @@ public static class ReleaseGhostAbility
     /// </summary>
     public static void MeetingHudStartPostfix()
     {
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player == null || player.IsBot()) continue;
             if (player.IsDead()) FarstTurnHasAlreadyElapsed[player.PlayerId] = true;

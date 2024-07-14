@@ -23,7 +23,7 @@ class Chat
                     var players = "";
                     try
                     {
-                        foreach (PlayerControl p in Winner)
+                        foreach (PlayerControl p in Winner.AsSpan())
                         {
                             if (players == "") players += p.NameText().text;
                             else players += "," + p.NameText().text;

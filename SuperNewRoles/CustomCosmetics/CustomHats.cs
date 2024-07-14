@@ -239,7 +239,7 @@ public class CustomHats
                                      select r).ToArray<string>();
 
                     List<CustomHat> customhats = CreateCustomHatDetails(hats);
-                    foreach (CustomHat ch in customhats)
+                    foreach (CustomHat ch in customhats.AsSpan())
                     {
                         addHatData.Add(CreateHatData(ch));
                     }
@@ -278,7 +278,7 @@ public class CustomHats
                                  select r).ToArray<string>();
 
                 List<CustomHat> customhats = CreateCustomHatDetails(hats);
-                foreach (CustomHat ch in customhats)
+                foreach (CustomHat ch in customhats.AsSpan())
                 {
                     CreateHatSprite(ch.resource);
                     yield return new WaitForSeconds(0.0005f);
@@ -299,7 +299,7 @@ public class CustomHats
                     }
                 }
             }
-            foreach (var data in CustomHatLoader.hatDetails)
+            foreach (var data in CustomHatLoader.hatDetails.AsSpan())
             {
                 var hat = GenereteHatData(data);
                 CreateHatSprite(hat.resource, true);
@@ -374,7 +374,7 @@ public class CustomHats
                         CreateHatSprite(hats[0].flipresource, true);
                     if (hats[0].backflipresource != null)
                         CreateHatSprite(hats[0].backflipresource, true);
-                    foreach (PlayerControl pc in CachedPlayer.AllPlayers)
+                    foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
                     {
                         var color = pc.CurrentOutfit.ColorId;
                         pc.SetHat("hat_dusk", color);
@@ -542,7 +542,7 @@ public class CustomHats
     {
         public static bool Prefix(HatsTab __instance)
         {
-            foreach (TMPro.TMP_Text customText in hatsTabCustomTexts)
+            foreach (TMPro.TMP_Text customText in hatsTabCustomTexts.AsSpan())
             {
                 if (customText != null && customText.transform != null && customText.gameObject != null)
                 {

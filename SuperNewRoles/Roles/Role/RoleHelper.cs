@@ -207,7 +207,7 @@ public static class RoleHelpers
             try { return ChacheManager.HauntedWolfChache[player.PlayerId] != null; }
             catch { return false; }
         }
-        foreach (PlayerControl p in HauntedWolf.RoleData.Player)
+        foreach (PlayerControl p in HauntedWolf.RoleData.Player.AsSpan())
         {
             if (p == player) return true;
         }
@@ -222,9 +222,9 @@ public static class RoleHelpers
             try { return ChacheManager.QuarreledChache[player.PlayerId] != null; }
             catch { return false; }
         }
-        foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
+        foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer.AsSpan())
         {
-            foreach (PlayerControl p in players)
+            foreach (PlayerControl p in players.AsSpan())
             {
                 if (p == player)
                 {
@@ -242,9 +242,9 @@ public static class RoleHelpers
             try { return ChacheManager.LoversChache[player.PlayerId] != null; }
             catch { return false; }
         }
-        foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+        foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer.AsSpan())
         {
-            foreach (PlayerControl p in players)
+            foreach (PlayerControl p in players.AsSpan())
             {
                 if (p == player)
                 {
@@ -268,9 +268,9 @@ public static class RoleHelpers
             try { return ChacheManager.FakeLoversChache[player.PlayerId] != null; }
             catch { return false; }
         }
-        foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers)
+        foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers.AsSpan())
         {
-            foreach (PlayerControl p in players)
+            foreach (PlayerControl p in players.AsSpan())
             {
                 if (p == player)
                 {
@@ -321,9 +321,9 @@ public static class RoleHelpers
     }
     public static void RemoveQuarreled(this PlayerControl player)
     {
-        foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
+        foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer.AsSpan())
         {
-            foreach (PlayerControl p in players)
+            foreach (PlayerControl p in players.AsSpan())
             {
                 if (p == player)
                 {
@@ -339,9 +339,9 @@ public static class RoleHelpers
         {
             return ChacheManager.QuarreledChache[player.PlayerId] ?? null;
         }
-        foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
+        foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer.AsSpan())
         {
-            foreach (PlayerControl p in players)
+            foreach (PlayerControl p in players.AsSpan())
             {
                 if (p == player)
                 {
@@ -359,9 +359,9 @@ public static class RoleHelpers
                 (pair != null ? pair : null)
                 : null;
         }
-        foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+        foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer.AsSpan())
         {
-            foreach (PlayerControl p in players)
+            foreach (PlayerControl p in players.AsSpan())
             {
                 if (p == player)
                 {
@@ -377,9 +377,9 @@ public static class RoleHelpers
         {
             return ChacheManager.FakeLoversChache[player.PlayerId] ?? null;
         }
-        foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers)
+        foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers.AsSpan())
         {
-            foreach (PlayerControl p in players)
+            foreach (PlayerControl p in players.AsSpan())
             {
                 if (p == player)
                 {
@@ -394,12 +394,12 @@ public static class RoleHelpers
     {
         RoleTypes myrole = PlayerControl.LocalPlayer.Data.Role.Role;
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
         {
             p.Data.Role.NameColor = Color.white;
         }
         CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p.PlayerControl.IsImpostorAddedFake() || Madmate.CheckImpostor(PlayerControl.LocalPlayer))
                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
@@ -1560,7 +1560,7 @@ public static class RoleHelpers
     public static void ClearTaskUpdate()
     {
         PlayerData<bool> TaskPlayers = new(defaultvalue: false);
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             TaskPlayers[player] = player.IsClearTask(false);
         TaskCount.IsClearTaskPlayer = TaskPlayers;
     }
@@ -2071,7 +2071,7 @@ public static class RoleHelpers
     }
     public static bool IsAllDead(this List<PlayerControl> lest)
     {
-        foreach (PlayerControl player in lest)
+        foreach (PlayerControl player in lest.AsSpan())
             if (player.IsAlive()) return false;
         return true;
     }
