@@ -42,7 +42,7 @@ public class IntroPatch
 
         static void Postfix()
         {
-            Logger.Info("=================Game Info=================", "Intro Begin");
+            Logger.Info($"=================Game Info (Count : {++GameCount})=================", "Intro Begin");
             {
                 Logger.Info($"ゲーム回数 : {++GameCount}回目", "Game Info");
                 Logger.Info($"機体情報 : {(AmongUsClient.Instance.AmHost ? "ホスト機体" : "ゲスト機体")}", "Game Info");
