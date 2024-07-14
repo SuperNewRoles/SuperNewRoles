@@ -247,7 +247,7 @@ public static class CustomRpcSenderExtensions
 {
     public static void RpcSetRole(this CustomRpcSender sender, PlayerControl player, RoleTypes role, bool canOverRide, int tarGetClientId = -1)
     {
-        Logger.Info($"[SENDER] {role}({canOverRide}) => {player.PlayerId}");
+        Logger.Info($"[SENDER] {role}({canOverRide}) => {player.PlayerId} (targetClientId:{tarGetClientId})");
         sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetRole, tarGetClientId)
           .Write((ushort)role)
           .Write(canOverRide)

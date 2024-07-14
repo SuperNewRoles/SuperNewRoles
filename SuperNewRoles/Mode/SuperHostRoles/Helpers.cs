@@ -83,7 +83,6 @@ public static class Helpers
         }
         else
         {
-            var crs = CustomRpcSender.Create("RpcShowGuardEffect");
             var clientId = shower.GetClientId();
             Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
             MurderHelpers.RpcForceMurderAndGuard(shower, target, shower);

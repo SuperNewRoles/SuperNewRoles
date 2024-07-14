@@ -121,22 +121,25 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
         if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             PlayerControl target = ModHelpers.PlayerById(targetid);
-            CustomRpcSender sender = CustomRpcSender.Create("CreateSheriffByChief", SendOption.Reliable);
-            sender.RpcSetRole(target, target.IsMod() ? RoleTypes.Crewmate : RoleTypes.Tracker, true);
-            if (!target.IsMod())
+            target.RpcSetRole(target.IsMod() ? RoleTypes.Crewmate : RoleTypes.Tracker, true);
+            new LateTask(() =>
             {
-                int clientId = target.GetClientId();
-                sender.RpcSetRole(target, RoleTypes.Impostor, true, clientId);
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                CustomRpcSender sender = CustomRpcSender.Create("CreateSheriffByChief", SendOption.Reliable);
+                if (!target.IsMod())
                 {
-                    if (player.PlayerId == target.PlayerId)
-                        continue;
-                    sender.RpcSetRole(player, RoleTypes.Scientist, true, clientId);
+                    Logger.Info("Target is not Modded.");
+                    int clientId = target.GetClientId();
+                    target.RpcSetRoleDesync(RoleTypes.Impostor, true);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.PlayerId == target.PlayerId)
+                            continue;
+                        player.RpcSetRoleDesync(RoleTypes.Scientist, true, target);
+                    }
                 }
-            }
-            ChangeName.SetRoleName(target, sender: sender);
-            SyncSetting.CustomSyncSettings(target, sender);
-            sender.SendMessage();
+                ChangeName.SetRoleName(target);
+                SyncSetting.CustomSyncSettings(target);
+            }, 0.15f);
         }
         RPCProcedure.UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
     }
