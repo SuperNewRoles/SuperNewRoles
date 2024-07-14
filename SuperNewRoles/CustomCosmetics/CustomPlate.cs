@@ -32,7 +32,7 @@ public class CustomPlate
             var Files = plateDir.GetFiles("*.png").ToList();
             Files.AddRange(plateDir.GetFiles("*.jpg"));
             var CustomPlates = new List<NamePlateData>();
-            foreach (var file in Files)
+            foreach (var file in Files.AsSpan())
             {
                 try
                 {

@@ -193,7 +193,7 @@ public class FixSabotage
 
             if (!IsfixingSaboHere) return;
 
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player == null || player.IsBot()) continue;
                 ClientData cd = player.GetClient();
@@ -229,7 +229,7 @@ public class FixSabotage
                     amounts.Add(b); // Listに保存する
                 }
             }
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player == null || player.IsBot()) continue;
                 ClientData cd = player.GetClient();

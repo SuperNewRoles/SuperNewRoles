@@ -61,7 +61,7 @@ public static class MatchMaker
         }
         string ActiveOptions = "";
         List<string> ActivateOptions = new();
-        foreach (CustomOption option in options)
+        foreach (CustomOption option in options.AsSpan())
         {
             bool enabled = true;
             if (option.type == CustomOptionType.MatchTag) continue;
@@ -102,7 +102,7 @@ public static class MatchMaker
     {
         List<string> ActiveTags = new();
         ModeId modeId = ModeHandler.GetMode(false);
-        foreach (CustomOption option in options)
+        foreach (CustomOption option in options.AsSpan())
         {
             if (option.GetSelection() == 0) continue;
             if (option.IsHidden(modeId)) continue;
@@ -146,7 +146,7 @@ public static class MatchMaker
         }
         string ActiveOptions = "";
         List<string> ActivateOptions = new();
-        foreach (CustomOption option in CustomOption.options)
+        foreach (CustomOption option in CustomOption.options.AsSpan())
         {
             bool enabled = true;
             if (AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool())
@@ -167,7 +167,7 @@ public static class MatchMaker
             }
             if (enabled)
             {
-                ActivateOptions.Add(option.id + ":" + option.GetSelection());
+                ActivateOptions.Add($"{option.id}:{option.GetSelection()}");
             }
         }
         data["Roles"] = string.Join(',', ActivateRoles);

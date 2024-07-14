@@ -364,7 +364,7 @@ public class ModSettingsMenu : MonoBehaviour
             YPosition = FirstYPosition;
             if (i == 6)
                 YPosition -= OptionSpan;
-            foreach (ModOptionBehaviour option in options)
+            foreach (ModOptionBehaviour option in options.AsSpan())
             {
                 if (option is ModCategoryHeaderEditRole header)
                 {
@@ -438,7 +438,7 @@ public class ModSettingsMenu : MonoBehaviour
         List<List<PassiveButton>> AddedSelectablesLists = new();
         # endregion
 
-        foreach (CustomOption option in CustomOption.options)
+        foreach (CustomOption option in CustomOption.options.AsSpan())
         {
             if (option.type != type || option.RoleId != RoleId.DefaultRole) continue;
             if (option is CustomOptionBlank) continue;
@@ -469,7 +469,7 @@ public class ModSettingsMenu : MonoBehaviour
 
     public void CreateRoleOnlyOptions(Transform transform, CustomOptionType type, Color32 color)
     {
-        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions.Values.ToList().FindAll(x => x.type == type))
+        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions.Values.Where(x => x.type == type))
         {
             ModOptionBehaviour mod = CreateRoleOptionSetting(transform, option, color);
             (option.type switch

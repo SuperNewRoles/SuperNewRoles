@@ -82,7 +82,7 @@ public class Camouflager
             VisorId = "",
             PetId = "",
         };
-        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p == null) continue;
             if (p.Data.Disconnected) continue;
@@ -93,7 +93,7 @@ public class Camouflager
     public static void ResetCamouflage()
     {
         RoleClass.Camouflager.IsCamouflage = false;
-        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p == null) continue;
             if (p.Data.Disconnected) continue;
@@ -107,7 +107,7 @@ public class Camouflager
         RoleClass.Camouflager.ButtonTimer = DateTime.Now;
         RoleClass.Camouflager.IsCamouflage = true;
         Attire = new();
-        foreach (CachedPlayer player in CachedPlayer.AllPlayers)
+        foreach (CachedPlayer player in CachedPlayer.AllPlayers.AsSpan())
         {
             AttireData data = new()
             {
@@ -122,7 +122,7 @@ public class Camouflager
             Attire.Add(player.PlayerId, data);
         }
         //全プレイヤーのスキンを変更する部分
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
 
             player.RpcSetName("<color=#00000000>" + player.GetDefaultName());
@@ -157,7 +157,7 @@ public class Camouflager
 
     public static void ResetCamouflageSHR()
     {
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             ResetCamouflageSHR(player);
         }

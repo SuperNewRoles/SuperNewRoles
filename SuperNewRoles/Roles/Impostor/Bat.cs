@@ -37,7 +37,7 @@ public static class Bat
     {
         RoleData.DeviceStopTimer = RoleData.DeviceStopTime;
         RoleData.AliveData = new();
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             RoleData.AliveData[player.PlayerId] = player.IsAlive();
         }

@@ -136,7 +136,7 @@ internal class AddChatPatch
     static string GetChildText(List<CustomOption> options, string indent)
     {
         string text = "";
-        foreach (CustomOption option in options)
+        foreach (CustomOption option in options.AsSpan())
         {
             if (!option.parent.Enabled && option.parent != null) continue;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;

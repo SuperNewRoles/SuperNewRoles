@@ -46,7 +46,7 @@ public class FixedUpdate
 {
     static void SetBasePlayerOutlines()
     {
-        foreach (PlayerControl target in CachedPlayer.AllPlayers)
+        foreach (PlayerControl target in CachedPlayer.AllPlayers.AsSpan())
         {
             var rend = target.MyRend();
             if (target == null || rend == null) continue;

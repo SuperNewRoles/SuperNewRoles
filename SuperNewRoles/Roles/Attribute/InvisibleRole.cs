@@ -89,7 +89,7 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole, I
 
         bool isItStillInvisible = false;
 
-        foreach (var processingPlayer in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl processingPlayer in CachedPlayer.AllPlayers.AsSpan())
         {
             if (processingPlayer.TryGetRoleBase<InvisibleRoleBase>(out var invisibleRoleBase))
             {
@@ -208,7 +208,7 @@ public class InvisibleRole
 
         InvisibleRoleBase storage = null;
 
-        foreach (PlayerControl processingPlayer in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl processingPlayer in CachedPlayer.AllPlayers.AsSpan())
         {
             // 透明化を発動可能なプレイヤーを取得する。
             if (!processingPlayer.TryGetRoleBase<InvisibleRoleBase>(out var invisibleRoleBase)) continue;

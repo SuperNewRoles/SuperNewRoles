@@ -95,7 +95,7 @@ public class HandleGhostRole
         var Team = TeamRoleType.Error;
         Team = player.IsCrew() ? TeamRoleType.Crewmate : player.IsNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
         List<IntroData> GhostRoles = new();
-        foreach (IntroData intro in IntroData.GhostRoleData)
+        foreach (IntroData intro in IntroData.GhostRoleData.AsSpan())
         {
             if (intro.Team != Team) continue;
             GhostRoles.Add(intro);
@@ -135,7 +135,7 @@ public class HandleGhostRole
         List<RoleId> Assigns = new();
         List<RoleId> Assignnos = new();
         ModeId mode = ModeHandler.GetMode();
-        foreach (IntroData data in introData)
+        foreach (IntroData data in introData.AsSpan())
         {
             //その役職のプレイヤー数を取得
             var count = AllRoleSetClass.GetPlayerCount(data.RoleId);

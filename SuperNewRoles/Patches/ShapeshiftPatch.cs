@@ -103,7 +103,7 @@ class CheckShapeshiftPatch
         {
             case RoleId.Samurai:
                 if (RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId)) return false;
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (p.IsDead() ||
                         p.PlayerId == __instance.PlayerId ||
@@ -115,7 +115,7 @@ class CheckShapeshiftPatch
                 RoleClass.Samurai.SwordedPlayer.Add(__instance.PlayerId);
                 return false;
             case RoleId.Arsonist:
-                foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+                foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer.AsSpan())
                 {
                     if (!Arsonist.IsWin(p)) continue;
                     RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);

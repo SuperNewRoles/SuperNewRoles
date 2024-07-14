@@ -238,9 +238,9 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
     {
         if (1 >= statistics.TotalAlive - 1 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 1 && !statistics.IsGuardPavlovs)
         {
-            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
+            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer.AsSpan())
                 if (!p.IsImpostor() && !p.Data.Disconnected) return false;
-            foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>())
+            foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>().AsSpan())
             {
                 PlayerControl player = role.Player;
                 if (player == null) continue;
@@ -290,7 +290,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
                 TransportBody = dead;
                 break;
             }
-            foreach (Owl owl in RoleBaseManager.GetRoleBases<Owl>())
+            foreach (Owl owl in RoleBaseManager.GetRoleBases<Owl>().AsSpan())
             {
                 if (owl.Player.PlayerId == Player.PlayerId) continue;
                 if (owl.TransportBody.ParentId != id) continue;

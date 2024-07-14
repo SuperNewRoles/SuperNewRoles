@@ -17,20 +17,20 @@ class WrapUpClass
         if (!AmongUsClient.Instance.AmHost) return;
         OneClickShapeshift.OnStartTurn();
         ChangeName.SetRoleNames();
-        foreach (PlayerControl p in BotManager.AllBots)
+        foreach (PlayerControl p in BotManager.AllBots.AsSpan())
         {
             p.RpcSetName(p.GetDefaultName());
         }
 
-        foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
+        foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer.AsSpan())
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
-        foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+        foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer.AsSpan())
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
-        foreach (PlayerControl p in SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.Player)
+        foreach (PlayerControl p in SuperNewRoles.Roles.Impostor.MadRole.Worshiper.RoleData.Player.AsSpan())
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }

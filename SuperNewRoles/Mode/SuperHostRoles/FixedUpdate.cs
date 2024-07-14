@@ -67,7 +67,7 @@ public static class FixedUpdate
         {
             PoliceSurgeon.FixedUpdate();
         }
-        foreach (PlayerControl p in BotManager.AllBots)
+        foreach (PlayerControl p in BotManager.AllBots.AsSpan())
         {
             p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
         }

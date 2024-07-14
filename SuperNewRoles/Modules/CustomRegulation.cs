@@ -120,7 +120,7 @@ public static class CustomRegulation
         RegulationData.Selected = id;
         if (id == 0)
         {
-            foreach (CustomOption options in CustomOption.options)
+            foreach (CustomOption options in CustomOption.options.AsSpan())
             {
                 options.selection = options.ClientSelection;
             }
@@ -143,7 +143,7 @@ public static class CustomRegulation
         GameManager.Instance.LogicOptions.currentGameOptions.SetBool(BoolOptionNames.VisualTasks, data.VisualTasks);
         GameManager.Instance.LogicOptions.currentGameOptions.SetBool(BoolOptionNames.ConfirmImpostor, data.ConfirmImpostor);
         GameManager.Instance.LogicOptions.currentGameOptions.SetBool(BoolOptionNames.AnonymousVotes, data.AnonymousVotes);
-        foreach (CustomOption options in CustomOption.options)
+        foreach (CustomOption options in CustomOption.options.AsSpan())
         {
             options.selection = options.defaultSelection;
         }
