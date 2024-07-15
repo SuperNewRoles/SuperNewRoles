@@ -60,7 +60,7 @@ public static class Arsonist
         if (player == null) return false;
         foreach (KeyValuePair<byte, List<PlayerControl>> data in RoleClass.Arsonist.DouseData)
         {
-            foreach (PlayerControl Player in data.Value)
+            foreach (PlayerControl Player in data.Value.AsSpan())
             {
                 if (player.PlayerId == Player.PlayerId)
                 {
