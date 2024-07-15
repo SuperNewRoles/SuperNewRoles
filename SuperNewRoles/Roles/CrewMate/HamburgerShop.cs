@@ -49,6 +49,6 @@ public static class HamburgerShop
             tasks.Add((byte)task.Index);
         }
 
-        return tasks.ToArray().ToList();
+        return tasks;
     }
 }
