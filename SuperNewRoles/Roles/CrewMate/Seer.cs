@@ -272,7 +272,7 @@ class SeerHandler
             {
                 List<List<PlayerControl>> seers = new() {
                     RoleClass.Seer.SeerPlayer,
-                    CustomRoles.GetRolePlayers<EvilSeer>().ToList(),
+                    CustomRoles.GetRolePlayers<EvilSeer>(),
                     RoleClass.MadSeer.MadSeerPlayer,
                     RoleClass.JackalSeer.JackalSeerPlayer,
                     RoleClass.SeerFriends.SeerFriendsPlayer

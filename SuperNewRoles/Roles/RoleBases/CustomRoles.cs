@@ -296,13 +296,12 @@ public static class CustomRoles
             return roleInfo.TeamType;
         return IntroData.GetIntrodata(role, player, IsImpostorReturn)?.TeamType ?? TeamType.Error;
     }
-    public static PlayerControl[] GetRolePlayers<T>() where T : RoleBase
+    public static List<PlayerControl> GetRolePlayers<T>() where T : RoleBase
     {
-        IReadOnlyList<T> Roles = RoleBaseManager.GetRoleBases<T>();
-        PlayerControl[] Players = new PlayerControl[Roles.Count];
-        for (int i = 0; i < Roles.Count; i++)
+        List<PlayerControl> Players = new();
+        foreach (T Role in RoleBaseManager.GetRoleBases<T>())
         {
-            Players[i] = Roles[i].Player;
+            Players.Add(Role.Player);
         }
         return Players;
     }
