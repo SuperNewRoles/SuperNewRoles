@@ -69,7 +69,7 @@ public class BlackHatHacker
         {
             if (!InfectionTimer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return new();
             List<byte> add = new Dictionary<byte, float>(InfectionTimer[PlayerControl.LocalPlayer.PlayerId]).
-                             Where(x => !_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value)).ToDictionary(x => x.Key, y => y.Value).Keys.ToList();
+                             Where(x => !_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value)).Select(x => x.Key).ToList();
             _SelfPropagationPlayerId.AddRange(add);
             return _SelfPropagationPlayerId;
         }
@@ -81,7 +81,7 @@ public class BlackHatHacker
         {
             if (!InfectionTimer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return new();
             List<byte> check = new Dictionary<byte, float>(InfectionTimer[PlayerControl.LocalPlayer.PlayerId]).
-                               Where(x => !_InfectedPlayerId.Contains(x.Key) && x.Value >= BlackHatHackerHackInfectiousTime.GetFloat()).ToDictionary(x => x.Key, y => y.Value).Keys.ToList();
+                               Where(x => !_InfectedPlayerId.Contains(x.Key) && x.Value >= BlackHatHackerHackInfectiousTime.GetFloat()).Select(x => x.Key).ToList();
             _InfectedPlayerId.AddRange(check);
             return _InfectedPlayerId;
         }
@@ -274,8 +274,8 @@ public class BlackHatHacker
             if (!player) continue;
             if (player.IsDead()) continue;
             float scope = GameOptionsData.KillDistances[Mathf.Clamp(BlackHatHackerInfectionScope.GetSelection(), 0, 2)];
-            List<PlayerControl> infection = PlayerControl.AllPlayerControls.ToList().
-                                            FindAll(x => !x.AmOwner && Vector3.Distance(player.transform.position, x.transform.position) <= scope);
+            List<PlayerControl> infection = CachedPlayer.AllPlayers.
+                                            Where(x => !x.Data.AmOwner && Vector3.Distance(player.transform.position, x.transform.position) <= scope).Select(x => (PlayerControl)x).ToList();
             foreach (PlayerControl target in infection.AsSpan()) InfectionTimer[PlayerControl.LocalPlayer.PlayerId][target.PlayerId] += Time.fixedDeltaTime;
         }
     }
@@ -283,7 +283,7 @@ public class BlackHatHacker
     public static void WrapUp()
     {
         NotInfectiousTimer = BlackHatHackerNotInfectiousTime.GetFloat();
-        DeadPlayers = PlayerControl.AllPlayerControls.ToList().FindAll(x => x.IsDead()).ConvertAll(x => x.PlayerId);
+        DeadPlayers = CachedPlayer.AllPlayers.Where(x => x.IsDead()).Select(x => x.PlayerId).ToList();
         if (!InfectionTimer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return;
         if (HackCount <= 0 && InfectionTimer[PlayerControl.LocalPlayer.PlayerId].All(x => x.Value <= 0 || ModHelpers.PlayerById(x.Key).IsDead()) && BlackHatHackerIsNotInfectionIncrease.GetBool())
             HackCount = 1;
@@ -390,7 +390,7 @@ public class BlackHatHacker
             else if (PlayerControl.LocalPlayer.IsDead())
             {
                 if (Page >= InfectionTimer.Count) Page = 0;
-                byte key = InfectionTimer.Keys.ToList()[Page];
+                byte key = InfectionTimer.ElementAt(Page).Key;
                 StringBuilder text = new();
                 text.AppendLine(PlayerControl.LocalPlayer.transform.Find("RoleTask").GetComponent<ImportantTextTask>().Text);
                 text.AppendLine();

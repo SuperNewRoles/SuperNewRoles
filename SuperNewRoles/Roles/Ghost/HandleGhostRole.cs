@@ -146,7 +146,7 @@ public class HandleGhostRole
 
             //確率が0%ではないかつ、
             //もう割り当てきられてないか(最大人数まで割り当てられていないか)
-            if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > CachedPlayer.AllPlayers.ToArray().ToList().Count((CachedPlayer pc) => pc.PlayerControl.IsGhostRole(data.RoleId)))
+            if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > CachedPlayer.AllPlayers.Count((CachedPlayer pc) => pc.PlayerControl.IsGhostRole(data.RoleId)))
             {
                 //100%なら100%アサインListに入れる
                 if (selection == 10)

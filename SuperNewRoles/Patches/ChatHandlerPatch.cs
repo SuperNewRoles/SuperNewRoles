@@ -331,7 +331,7 @@ internal class AddChatPatch
         var sender = PlayerControl.LocalPlayer;
         if (sender.Data.IsDead)
         {
-            sender = PlayerControl.AllPlayerControls.ToArray().Where(x => x != null && !x.Data.Disconnected && !x.Data.IsDead).OrderBy(x => x.PlayerId).FirstOrDefault();
+            sender = CachedPlayer.AllPlayers.Where(x => x != null && !x.Data.Disconnected && !x.Data.IsDead).OrderBy(x => x.PlayerId).FirstOrDefault();
             name = sender.GetDefaultName();
         }
         crs.AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)

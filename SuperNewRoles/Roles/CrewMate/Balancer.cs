@@ -586,7 +586,7 @@ public static class Balancer
         private static void StartBalancerAbility(byte balancerId, byte target1Id, byte target2Id)
         {
             //会議終了-天秤会議開始間に見えるゲーム画面の視界範囲を0にするためにプレイヤー位置を変更（視点は固定）
-            PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsAlive()).Do(x => x.RpcSnapTo(new(-30, 30)));
+            CachedPlayer.AllPlayers.Where(x => x.IsAlive()).Do(x => ((PlayerControl)x).RpcSnapTo(new(-30, 30)));
 
             _ = new LateTask(() => SwitchBalancerMeeting(balancerId, target1Id, target2Id), 0.3f, "SwitchBalancerMeeting");
 
