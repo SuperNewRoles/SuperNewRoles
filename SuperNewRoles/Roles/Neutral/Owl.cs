@@ -240,7 +240,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
         {
             foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer.AsSpan())
                 if (!p.IsImpostor() && !p.Data.Disconnected) return false;
-            foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>().AsSpan())
+            foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>())
             {
                 PlayerControl player = role.Player;
                 if (player == null) continue;
@@ -290,7 +290,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
                 TransportBody = dead;
                 break;
             }
-            foreach (Owl owl in RoleBaseManager.GetRoleBases<Owl>().AsSpan())
+            foreach (Owl owl in RoleBaseManager.GetRoleBases<Owl>())
             {
                 if (owl.Player.PlayerId == Player.PlayerId) continue;
                 if (owl.TransportBody.ParentId != id) continue;
