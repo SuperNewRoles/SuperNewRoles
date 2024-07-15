@@ -56,7 +56,10 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
         ShotOnThisMeeting = false;
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             return;
-        if (Player.IsMod())
+        if (!AmongUsClient.Instance.AmHost ||
+            Player.PlayerId != PlayerControl.LocalPlayer.PlayerId ||
+            (AmongUsClient.Instance.AmHost && Player.IsMod())
+            )
             return;
         AddChatPatch.SendCommand(Player, ModTranslation.GetString($"GuesserOnStartMeetingInfo{(Count > 0 ? "Can" : "Cannot")}Shot", Count) + "\n" + ModTranslation.GetString("GuesserCommandUsage"), GuesserInfoTitle);
     }

@@ -238,7 +238,7 @@ internal class AddChatPatch
             AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
             return;
         }
-        else if (target.PlayerId == 0)
+        else if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
         {
             string name = target.Data.PlayerName;
             target.SetName(SendName);
