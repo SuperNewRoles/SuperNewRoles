@@ -759,10 +759,19 @@ public static class ModHelpers
         }
         return newList;
     }
-    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this IEnumerable<T> list)
+    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
     {
-        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count());
-        foreach (T item in list)
+        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count);
+        foreach (T item in list.AsSpan())
+        {
+            newList.Add(item);
+        }
+        return newList;
+    }
+    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this T[] array)
+    {
+        Il2CppSystem.Collections.Generic.List<T> newList = new(array.Length);
+        foreach (T item in array)
         {
             newList.Add(item);
         }

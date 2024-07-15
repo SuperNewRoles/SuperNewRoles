@@ -104,7 +104,6 @@ public static class Blacklist
                 yield return null;
                 clientData = AmongUsClient.Instance
                                         .allClients
-                                        .ToArray()
                                         .FirstOrDefault(client => client.Id == ClientId);
             } while (clientData == null);
         }
@@ -122,7 +121,7 @@ public static class Blacklist
             }
             // 実装してるなら消す所ここまで
         }
-        foreach (var player in BlackPlayer.Players.AsSpan())
+        foreach (var player in BlackPlayer.Players)
         {
             if (player.EndBanTime.HasValue && player.EndBanTime.Value < DateTime.UtcNow)
                 continue;
