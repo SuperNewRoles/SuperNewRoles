@@ -214,8 +214,11 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
                 break;
             case ModeId.SuperHostRoles:
                 if (!AmongUsClient.Instance.AmHost) return;
-                if (!IsLimitOver) AddChatPatch.SendChat(Player, ModTranslation.GetString("BalancerForActivate"), ModTranslation.GetString("MoiraName"));
-                else AddChatPatch.SendChat(Player, ModTranslation.GetString("BalancerUsed"), ModTranslation.GetString("MoiraName"));
+                new LateTask(() =>
+                {
+                    if (!IsLimitOver) AddChatPatch.SendChat(Player, ModTranslation.GetString("BalancerForActivate"), ModTranslation.GetString("MoiraName"));
+                    else AddChatPatch.SendChat(Player, ModTranslation.GetString("BalancerUsed"), ModTranslation.GetString("MoiraName"));
+                }, 0.5f);
                 break;
         }
     }
@@ -228,11 +231,14 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
         {
-            AddChatPatch.SendCommand(
-                null,
-                $"{ModTranslation.GetString("MoiraSwapText", SwapVoteData.Item1.GetPlayerControl().Data.PlayerName, SwapVoteData.Item2.GetPlayerControl().Data.PlayerName)}",
-                ModTranslation.GetString("GuesserBigNewsTitle")
-            );
+            new LateTask(() =>
+            {
+                AddChatPatch.SendCommand(
+                    null,
+                    $"{ModTranslation.GetString("MoiraSwapText", SwapVoteData.Item1.GetPlayerControl().Data.PlayerName, SwapVoteData.Item2.GetPlayerControl().Data.PlayerName)}",
+                    ModTranslation.GetString("GuesserBigNewsTitle")
+                );
+            }, 0.2f);
         }
 
         PlayerVoteArea swapped1 = null;
@@ -347,8 +353,11 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
             SwapVoteData = new(byte.MaxValue, byte.MaxValue);
             return;
         }
-        SwapRole(SwapVoteData.Item1, SwapVoteData.Item2);
-        SwapVoteData = new(byte.MaxValue, byte.MaxValue);
+        new LateTask(() =>
+        {
+            SwapRole(SwapVoteData.Item1, SwapVoteData.Item2);
+            SwapVoteData = new(byte.MaxValue, byte.MaxValue);
+        }, 0.2f);
     }
 
     public void OnWrapUp(PlayerControl exiled)
@@ -356,8 +365,11 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
         if (!AmongUsClient.Instance.AmHost) return;
         if (exiled != Player) return;
         ChangeData.Reverse();
-        foreach (var data in ChangeData)
-            SwapRole(data.Item1, data.Item2);
+        new LateTask(() =>
+        {
+            foreach (var data in ChangeData)
+                SwapRole(data.Item1, data.Item2);
+        }, 0.2f);
     }
 
     public void OnHandleAllPlayer()
