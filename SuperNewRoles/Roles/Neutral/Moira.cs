@@ -123,6 +123,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
         RoleTypes player1_role_type = !target1.Data.RoleWhenAlive.HasValue ? target1.Data.Role.Role : target1.Data.RoleWhenAlive.Value;
         RoleTypes player2_role_type = !target2.Data.RoleWhenAlive.HasValue ? target2.Data.Role.Role : target2.Data.RoleWhenAlive.Value;
 
+
         switch (ModeHandler.GetMode())
         {
             case ModeId.Default:
@@ -136,41 +137,54 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
                 break;
             case ModeId.SuperHostRoles:
                 CustomRpcSender sender = CustomRpcSender.Create("RoleChenge");
-                if (target1.IsAlive())
-                {
-                    if (target2.GetRoleBase() is ISupportSHR shr)
-                    {
-                        if (shr.IsDesync) sender.SetRoleDesync(target1, shr.DesyncRole);
-                        else sender.SetVanillaRole(target1, shr.RealRole, shr.IsRealRoleNotModOnly);
-                    }
-                    else
-                    {
-                        RoleId role = target2.GetRole();
-                        var data = RoleSelectHandler.GetDesyncRole(role);
-                        if (data.IsDesync) sender.SetRoleDesync(target1, data.RoleType);
-                        else sender.SetVanillaRole(target1, data.RoleType, role is not RoleId.PoliceSurgeon);
-                    }
-                }
-                if (target2.IsAlive())
-                {
-                    if (target1.GetRoleBase() is ISupportSHR shr)
-                    {
-                        if (shr.IsDesync) sender.SetRoleDesync(target2, shr.DesyncRole);
-                        else sender.SetVanillaRole(target2, shr.RealRole, shr.IsRealRoleNotModOnly);
-                    }
-                    else
-                    {
-                        RoleId role = target1.GetRole();
-                        var data = RoleSelectHandler.GetDesyncRole(role);
-                        if (data.IsDesync) sender.SetRoleDesync(target2, data.RoleType);
-                        else sender.SetVanillaRole(target2, data.RoleType, role is not RoleId.PoliceSurgeon);
-                    }
-                }
-                sender.EndMessage();
+
+                SHRSwapTo(sender, target1, target2, player2_role_type);
+                SHRSwapTo(sender, target2, target1, player1_role_type);
 
                 target1.SwapRoleRPC(target2);
-                new LateTask(() => ChangeName.SetRoleNames(), 0f);
+
+                ChangeName.SetRoleNames(sender: sender);
+                sender.SendMessage();
+
                 break;
+        }
+    }
+    private void SHRSwapTo(CustomRpcSender sender, PlayerControl player1, PlayerControl player2, RoleTypes player2RoleTypes)
+    {
+        if (player2.GetRoleBase() is ISupportSHR shr && shr.IsDesync)
+        {
+            sender.SetRoleDesync(player1, shr.DesyncRole);
+        }
+        else
+        {
+            RoleId role = player2.GetRole();
+            var data = RoleSelectHandler.GetDesyncRole(role);
+            if (data.IsDesync)
+                sender.SetRoleDesync(player1, data.RoleType);
+            else
+            {
+                RoleTypes targetRoleTypes = player2RoleTypes;
+                if (targetRoleTypes.IsImpostorRole())
+                {
+                    sender.RpcSetRole(player1, targetRoleTypes, true);
+                    foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.PlayerId == player1.PlayerId)
+                            continue;
+                        if (!player.IsMod() &&
+                            (player is ISupportSHR supportSHR && supportSHR.IsDesync)||
+                            RoleSelectHandler.GetDesyncRole(player.GetRole()).IsDesync)
+                        {
+                            sender.RpcSetRole(player, RoleTypes.Scientist, true, player.GetClientId());
+                        }
+                        if (!player.IsImpostor())
+                            continue;
+                        sender.RpcSetRole(player, player.Data.Role.Role, true, player1.GetClientId());
+                    }
+                }
+                else
+                    sender.RpcSetRole(player1, targetRoleTypes, true);
+            }
         }
     }
 

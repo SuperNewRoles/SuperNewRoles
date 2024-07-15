@@ -62,7 +62,7 @@ public static class ChangeName
             p.RpcSetName(p.GetDefaultName());
         }
     }
-    public static void SetRoleNames(bool IsUnchecked = false, bool OnEndGame = false)
+    public static void SetRoleNames(bool IsUnchecked = false, bool OnEndGame = false, CustomRpcSender sender = null)
     {
         //SHRではない場合は処理しない
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -78,7 +78,7 @@ public static class ChangeName
         bool commsActive = RoleHelpers.IsComms();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            SetRoleName(p, commsActive, IsUnchecked, OnEndGame);
+            SetRoleName(p, commsActive, IsUnchecked, OnEndGame, sender);
         }
     }
     public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false, bool OnEndGame = false, CustomRpcSender sender = null)
