@@ -207,9 +207,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             SHRUpdatedToImpostor = Player.IsMod();
         }
         if (isFakeSidekick)
-        {
             RoleClass.Jackal.FakeSidekickPlayer.Add(player);
-        }
         else
         {
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
@@ -257,9 +255,12 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         Logger.Info($"TryGetRoleBase: {CreatedSidekickControl.GetRoleBase().Roleinfo.Role}");
         if (!CreatedSidekickControl.TryGetRoleBase(out Jackal jackal))
             return;
-        CreatedSidekickControl.RpcSetRoleDesync(
-            jackal.DesyncRole, true
-        );
+        if (!CreatedSidekickControl.IsMod())
+        {
+            CreatedSidekickControl.RpcSetRoleDesync(
+                jackal.DesyncRole, true
+            );
+        }
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.PlayerId == CreatedSidekickControl.PlayerId ||
