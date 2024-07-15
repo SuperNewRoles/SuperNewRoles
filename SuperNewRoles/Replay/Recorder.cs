@@ -166,7 +166,7 @@ namespace SuperNewRoles.Replay
             {
                 writer.Write(data.Key);
                 writer.Write(data.Value.Count);
-                foreach (Vector3 pos in data.Value)
+                foreach (Vector3 pos in data.Value.AsSpan())
                 {
                     if (IsPosFloat)
                     {

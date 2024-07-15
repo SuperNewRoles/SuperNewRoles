@@ -54,7 +54,7 @@ class Guesser
         foreach (var RoleButton in RoleButtons)
         {
             int index = 0;
-            foreach (var RoleBtn in RoleButton.Value)
+            foreach (var RoleBtn in RoleButton.Value.AsSpan())
             {
                 if (RoleBtn == null) continue;
                 index++;
