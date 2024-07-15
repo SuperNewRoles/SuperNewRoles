@@ -1528,7 +1528,7 @@ public static class CheckGameEndHnSPatch
         }
         else
         {
-            foreach (ISpecialWinner winner in RoleBaseManager.GetInterfaces<ISpecialWinner>().AsSpan())
+            foreach (ISpecialWinner winner in RoleBaseManager.GetInterfaces<ISpecialWinner>())
                 if (winner.CheckAndEndGame(__instance, statistics)) return false;
             if (CheckAndEndGameForLoversBreakerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForPavlovsWin(__instance, statistics)) return false;
@@ -1565,7 +1565,7 @@ public static class CheckGameEndPatch
         }
         else
         {
-            foreach (ISpecialWinner winner in RoleBaseManager.GetInterfaces<ISpecialWinner>().AsSpan())
+            foreach (ISpecialWinner winner in RoleBaseManager.GetInterfaces<ISpecialWinner>())
                 if (winner.CheckAndEndGame(__instance, statistics)) return false;
             if (CheckAndEndGameForLoversBreakerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
@@ -1887,7 +1887,7 @@ public static class CheckGameEndPatch
         {
             foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer.AsSpan())
                 if (!p.IsImpostor() && !p.Data.Disconnected) return false;
-            foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>().AsSpan())
+            foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>())
             {
                 PlayerControl player = role.Player;
                 if (player == null) continue;
