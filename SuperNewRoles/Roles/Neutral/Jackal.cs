@@ -176,6 +176,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             else if (JackalCreateSidekick.GetBool())
             {
                 bool isOldImpostor = player.IsImpostor();
+                player.ClearRole();
                 player.SetRoleRPC(RoleId.Sidekick);
                 RoleTypes targetRole = RoleTypes.Crewmate;
                 if (CanUseSabo)
@@ -202,12 +203,8 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 }
             }
             else
-            {
                 throw new System.NotImplementedException("Sidekick targetrole is not defined.");
-            }
             SHRUpdatedToImpostor = Player.IsMod();
-            ChangeName.SetRoleName(Player);//名前も変える
-            ChangeName.SetRoleName(player);//名前も変える
         }
         if (isFakeSidekick)
         {
@@ -227,6 +224,11 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             ChacheManager.ResetMyRoleChache();
         }
         CanSidekick = false;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
+        {
+            ChangeName.SetRoleName(Player);//名前も変える
+            ChangeName.SetRoleName(player);//名前も変える
+        }
     }
 
     public void FixedUpdateAllDefault()
