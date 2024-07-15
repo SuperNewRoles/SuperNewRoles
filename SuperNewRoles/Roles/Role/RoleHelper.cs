@@ -1461,19 +1461,11 @@ public static class RoleHelpers
     }
     public static void SwapRoleRPC(this PlayerControl player1, PlayerControl player2)
     {
-        RoleBase player1role = player1.GetRoleBase();
-        RoleBase player2role = player2.GetRoleBase();
-        RoleId player1id = player1.GetRole();
-        RoleId player2id = player2.GetRole();
-
-        if (player1role == null) player2.SetRoleRPC(player1id);
-        if (player2role == null) player1.SetRoleRPC(player2id);
-
-        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SwapRoleBase);
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SwapRole);
         writer.Write(player1.PlayerId);
         writer.Write(player2.PlayerId);
         writer.EndRPC();
-        RPCProcedure.SwapRoleBase(player1.PlayerId, player2.PlayerId);
+        RPCProcedure.SwapRole(player1.PlayerId, player2.PlayerId);
     }
 
     /// <summary>

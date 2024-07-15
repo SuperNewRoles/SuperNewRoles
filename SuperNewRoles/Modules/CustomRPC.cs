@@ -278,7 +278,7 @@ public enum CustomRPC
     ShareSNRVersion,
     StartGameRPC,
     SetRole,
-    SwapRoleBase,
+    SwapRole,
     SetLovers,
     SetQuarreled,
     SetHauntedWolf,
@@ -1169,19 +1169,26 @@ public static class RPCProcedure
         }
         player.SetRole(roleId);
     }
-    /// <summary>
-    /// このメソッドは使用せず、<see cref="RoleHelpers.SwapRoleRPC"/>を使用してください
-    /// </summary>
-    [Obsolete("一部役職が交換されない可能性があります")]
-    public static void SwapRoleBase(byte playerid1, byte playerid2)
+    public static void SwapRole(byte playerid1, byte playerid2)
     {
         var player1 = ModHelpers.PlayerById(playerid1);
         var player2 = ModHelpers.PlayerById(playerid2);
         RoleBase player1role = player1.GetRoleBase();
         RoleBase player2role = player2.GetRoleBase();
+        RoleId player1id = player1.GetRole();
+        RoleId player2id = player2.GetRole();
         if (player1role != null) player1role.SetPlayer(player2);
+        else
+        {
+            player2.ClearRole();
+            player2.SetRole(player1id);
+        }
         if (player2role != null) player2role.SetPlayer(player1);
-        
+        else
+        {
+            player1.ClearRole();
+            player1.SetRole(player2id);
+        }
         ChacheManager.ResetMyRoleChache();
         RoleHelpers.ClearTaskUpdate();
         if (AmongUsClient.Instance.AmHost)
@@ -1693,8 +1700,8 @@ public static class RPCProcedure
                     case CustomRPC.SetRole:
                         SetRole(reader.ReadByte(), reader.ReadByte());
                         break;
-                    case CustomRPC.SwapRoleBase:
-                        SwapRoleBase(reader.ReadByte(), reader.ReadByte());
+                    case CustomRPC.SwapRole:
+                        SwapRole(reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.SheriffKill:
                         SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
