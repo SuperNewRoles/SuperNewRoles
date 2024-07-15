@@ -1201,7 +1201,7 @@ public static class ModHelpers
     {
         if (str == null) return 0;
         int n = 0;
-        foreach (var c in str)
+        foreach (var c in str.AsSpan())
         {
             if (c == '\n') n++;
         }
