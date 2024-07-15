@@ -1445,12 +1445,13 @@ public static class OnGameEndPatch
         // WinConditionを設定
         AdditionalTempData.winCondition = winCondition;
 
+        Il2CppArrayBase<CachedPlayerData> Winners = EndGameResult.CachedWinners.ToArray();
         foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player != null && player.IsBot()) continue;
             CustomPlayerData data = new(player.Data, gameOverReason)
             {
-                IsWin = EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == player.Data.PlayerName)
+                IsWin = Winners.Any(x => x.PlayerName == player.Data.PlayerName)
             };
             PlayerData.Add(data);
         }

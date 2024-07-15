@@ -103,15 +103,12 @@ public class CustomButton
     {
         bool isAlive = PlayerControl.LocalPlayer.IsAlive();
         RoleId role = PlayerControl.LocalPlayer.GetRole();
-        List<int> removes = null;
-        int index = 0;
-        foreach (CustomButton btn in buttons)
+        for (int i = buttons.Count - 1; i >= 0; i--)
         {
+            CustomButton btn = buttons[i];
             if (btn == null || btn.actionButton == null)
             {
-                if (removes == null)
-                    removes = new();
-                removes.Add(index);
+                buttons.RemoveAt(i);
                 continue;
             }
             try
@@ -122,14 +119,6 @@ public class CustomButton
             {
                 System.Console.WriteLine("ButtonError:" + e);
             }
-            index++;
-        }
-        if (removes != null)
-        {
-            foreach (int i in removes)
-            {
-                buttons.RemoveAt(i);
-            }
         }
     }
 
@@ -137,15 +126,12 @@ public class CustomButton
     {
         bool isAlive = PlayerControl.LocalPlayer.IsAlive();
         RoleId role = PlayerControl.LocalPlayer.GetRole();
-        List<int> removes = null;
-        int index = 0;
-        foreach (CustomButton btn in buttons)
+        for (int i = buttons.Count - 1; i >= 0; i--)
         {
+            CustomButton btn = buttons[i];
             if (btn == null || btn.actionButton == null)
             {
-                if (removes == null)
-                    removes = new();
-                removes.Add(index);
+                buttons.RemoveAt(i);
                 continue;
             }
             try
@@ -156,14 +142,6 @@ public class CustomButton
             catch (Exception e)
             {
                 if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
-            }
-            index++;
-        }
-        if (removes != null)
-        {
-            foreach (int i in removes)
-            {
-                buttons.RemoveAt(i);
             }
         }
     }
