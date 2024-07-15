@@ -295,7 +295,7 @@ public class WaveCannonObject : CustomAnimation
         else
             Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
 
-        foreach(WaveCannonEffect effect in WaveCannonEffects.AsSpan())
+        foreach (WaveCannonEffect effect in WaveCannonEffects.AsSpan())
             effect.SetChargeState(false);
 
         CurrentAnimationHandler.OnShot();
@@ -309,7 +309,7 @@ public class WaveCannonObject : CustomAnimation
 
             // 賢者が波動砲に触れているかを判定
             bool touching = false;
-            foreach(Collider2D collider in WaveColliders)
+            foreach (Collider2D collider in WaveColliders)
             {
                 if (!player.Collider.IsTouching(collider))
                     continue;

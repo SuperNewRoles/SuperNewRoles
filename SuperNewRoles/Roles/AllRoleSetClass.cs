@@ -998,7 +998,7 @@ class AllRoleSetClass
             Logger.Info($"IsCrewmate: {assigns.Key.HasFlag(AssignType.Crewmate)}");
             Logger.Info($"IsTenPar: {assigns.Key.HasFlag(AssignType.TenPar)}");
             Logger.Info($"IsNotTenPar: {assigns.Key.HasFlag(AssignType.NotTenPar)}");
-            foreach (var assign in assigns.Value)
+            foreach (var assign in assigns.Value.AsSpan())
             {
                 Logger.Info($"{assign}");
             }
