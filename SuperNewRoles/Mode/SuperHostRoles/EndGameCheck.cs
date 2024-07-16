@@ -137,8 +137,6 @@ class EndGameCheck
             {
                 if (player.PlayerId == seeTarget.PlayerId)
                     continue;
-                if (seeTarget.IsDead())
-                    continue;
                 if (!winnersByte.Contains(seeTarget.PlayerId))
                     continue;
                 SeeTarget = seeTarget;

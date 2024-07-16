@@ -235,7 +235,24 @@ internal class AddChatPatch
         {
             string name = CachedPlayer.LocalPlayer.Data.PlayerName;
             if (name == GetChatCommands.SNRCommander) return;
-            AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
+            if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles) && HideChat.HideChatEnabled)
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        AmongUsClient.Instance.StartCoroutine(PrivateSend(player, SendName, command).WrapToIl2Cpp());
+                        continue;
+                    }
+                    string tname = player.Data.PlayerName;
+                    player.SetName(SendName);
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, command);
+                    player.SetName(tname);
+                }
+            } else
+            {
+                AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
+            }
             return;
         }
         else if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
@@ -308,8 +325,8 @@ internal class AddChatPatch
             .AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
             .Write(sender.Data.NetId)
             .Write(name)
-            .EndRpc()
-            .SendMessage();
+            .EndRpc();
+        crs.SendMessage();
         sender.SetName(SendName);
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, command);
         sender.SetName(name);

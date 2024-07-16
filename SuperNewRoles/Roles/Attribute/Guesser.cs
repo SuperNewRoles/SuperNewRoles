@@ -56,12 +56,10 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
         ShotOnThisMeeting = false;
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             return;
-        if (!AmongUsClient.Instance.AmHost ||
-            Player.PlayerId != PlayerControl.LocalPlayer.PlayerId ||
-            (AmongUsClient.Instance.AmHost && Player.IsMod())
-            )
+        if (Player.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+            (!AmongUsClient.Instance.AmHost || Player.IsMod()))
             return;
-        AddChatPatch.SendCommand(Player, ModTranslation.GetString($"GuesserOnStartMeetingInfo{(Count > 0 ? "Can" : "Cannot")}Shot", Count) + "\n" + ModTranslation.GetString("GuesserCommandUsage"), GuesserInfoTitle);
+        new LateTask(() => AddChatPatch.SendCommand(Player, ModTranslation.GetString($"GuesserOnStartMeetingInfo{(Count > 0 ? "Can" : "Cannot")}Shot", Count) + "\n" + ModTranslation.GetString("GuesserCommandUsage"), GuesserInfoTitle), 1.75f);
     }
 
     public bool OnChatCommand(string[] args)
@@ -178,10 +176,10 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
             targetPlayer = Player;
         UseCount();
         targetPlayer.RpcInnerExiled();
-        AddChatPatch.SendCommand(null,
-            ModTranslation.GetString("GuesserPlayerWasDead", targetPlayer.Data.DefaultOutfit.PlayerName),
-            ModTranslation.GetString("GuesserBigNewsTitle")
-        );
+            AddChatPatch.SendCommand(null,
+               ModTranslation.GetString("GuesserPlayerWasDead", targetPlayer.Data.DefaultOutfit.PlayerName) + "\n",
+               ModTranslation.GetString("GuesserBigNewsTitle")
+            );
         Mode.SuperHostRoles.Helpers.ShowReactorFlash(0.75f);
 
         // Shoot player and send chat info if activated

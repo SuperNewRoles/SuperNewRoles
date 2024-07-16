@@ -15,6 +15,31 @@ public static class HideChat
     public static void OnStartMeeting()
     {
         _ = new LateTask(() => DesyncSetDead(null), 1.5f);
+        _ = new LateTask(() => DesyncSetDead(null), 6.5f);
+    }
+    public static void DesyncSetDead(CustomRpcSender? sender, NetworkedPlayerInfo target)
+    {
+        AliveState State = new(target);
+        target.IsDead = true;
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null ||
+                player.Data.IsDead ||
+                player.Data.Disconnected)
+                continue;
+            if (player.PlayerId == target.PlayerId)
+                continue;
+            if (player.IsMod()) continue;
+
+            Logger.Info($"HideChat:SetDead: {target.PlayerId} => {player.PlayerId}");
+
+            // シリアライズ
+            SerializeByHideChat = true;
+            RPCHelper.RpcSyncNetworkedPlayer(sender, target, player.GetClientId());
+            SerializeByHideChat = false;
+        }
+        target.IsDead = State.IsDead;
+        target.Disconnected = State.Disconnected;
     }
     private static void DesyncSetDead(CustomRpcSender? sender)
     {
@@ -53,8 +78,16 @@ public static class HideChat
         if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead())
             return;
         CustomRpcSender sender = new("HideChatSender", sendOption: Hazel.SendOption.Reliable, false);
+        OnAddChat(sender, player, message, isAdd);
+        sender.SendMessage();
+    }
+    public static void OnAddChat(CustomRpcSender sender, PlayerControl player, string message, bool isAdd)
+    {
+        if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead())
+            return;
         if (isAdd)
         {
+            bool playerIsDead = player.Data.IsDead;
             player.Data.IsDead = false;
             SerializeByHideChat = true;
             RPCHelper.RpcSyncNetworkedPlayer(sender, player.Data);
@@ -70,9 +103,9 @@ public static class HideChat
                 player.RPCSendChatPrivate(message, target, sender);
                 sender.EndMessage();
             }
+            player.Data.IsDead = playerIsDead;
         }
-        DesyncSetDead(sender);
-        sender.SendMessage();
+        DesyncSetDead(sender, player?.Data);
     }
 }
 public class AliveState

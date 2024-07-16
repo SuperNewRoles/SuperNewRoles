@@ -443,7 +443,7 @@ public static class RoleSelectHandler
             foreach (var pc in PlayerControl.AllPlayerControls)
             {
                 if (pc.PlayerId == Player.PlayerId) continue;
-                sender.RpcSetRole(pc, RoleTypes.Scientist, true, PlayerCID);
+                sender.RpcSetRole(pc, pc.Data.Role.Role.IsImpostorRole() ? RoleTypes.Scientist : pc.Data.Role.Role, true, PlayerCID);
             }
             //他視点で科学者にするループ
             foreach (var pc in PlayerControl.AllPlayerControls)
