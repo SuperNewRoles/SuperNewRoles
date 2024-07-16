@@ -278,7 +278,7 @@ public class CustomHats
                                  select r).ToArray<string>();
 
                 List<CustomHat> customhats = CreateCustomHatDetails(hats);
-                foreach (CustomHat ch in customhats.AsSpan())
+                foreach (CustomHat ch in customhats)
                 {
                     CreateHatSprite(ch.resource);
                     yield return new WaitForSeconds(0.0005f);
@@ -299,7 +299,7 @@ public class CustomHats
                     }
                 }
             }
-            foreach (var data in CustomHatLoader.hatDetails.AsSpan())
+            foreach (var data in CustomHatLoader.hatDetails)
             {
                 var hat = GenereteHatData(data);
                 CreateHatSprite(hat.resource, true);
