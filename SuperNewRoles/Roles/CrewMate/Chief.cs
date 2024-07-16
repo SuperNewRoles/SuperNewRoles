@@ -66,6 +66,19 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
 
     public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
     {
+        if (target.IsImpostor())
+        {
+            Player.RpcMurderPlayer(Player, true);
+            Player.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
+            Player.RpcSetRole(RoleTypes.Crewmate, true);
+            // 暗転対策のために、インポスターをちゃんとインポスター二変更する
+            foreach (PlayerControl seetarget in PlayerControl.AllPlayerControls)
+            {
+                if (seetarget.IsImpostor())
+                    seetarget.RpcSetRoleDesync(seetarget.Data.Role.Role, true, Player);
+            }
+            return false;
+        }
         if (!IsCreatedSheriff)
         {
             MessageWriter writer = RpcWriter;
@@ -73,7 +86,6 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
             writer.Write(target.IsClearTask());
             SendRpc(writer);
         }
-        Player.RpcSetRole(RoleTypes.Crewmate, true);
         return false;
     }
 
@@ -143,7 +155,7 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
 
             // もうキルボタンを持たないように
             Player.RpcSetRole(RoleTypes.Crewmate, true);
-            // 暗転対策のために、インポスターをちゃんとインポスター二変更する
+            // 暗転対策のために、インポスターをちゃんとインポスターに変更する
             foreach(PlayerControl seetarget in PlayerControl.AllPlayerControls)
             {
                 if (seetarget.IsImpostor())

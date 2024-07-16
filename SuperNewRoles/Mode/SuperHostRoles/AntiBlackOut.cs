@@ -13,6 +13,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 
 public static class AntiBlackOut
 {
+    public class GamePlayerData
+    {
+        public byte PlayerId { get; }
+        public RoleTypes roleTypes { get; }
+        public bool IsDead { get; }
+        public bool Disconnected { get; }
+        public GamePlayerData(NetworkedPlayerInfo playerInfo)
+        {
+            if (playerInfo == null)
+                throw new NotImplementedException("PlayerInfo is null");
+            PlayerId = playerInfo.PlayerId;
+            roleTypes = playerInfo.Role.Role;
+            IsDead = playerInfo.IsDead;
+            Disconnected = playerInfo.Disconnected;
+        }
+    }
     public enum SupportType
     {
         NoneExile,
@@ -28,9 +44,7 @@ public static class AntiBlackOut
         AliveCanViewDeadPlayerChat,
         EndAliveCanViewDeadPlayerChat
     }
-    private static PlayerData<bool> PlayerDeadData;
-    private static PlayerData<bool> PlayerDisconnectedData;
-    private static HashSet<(byte, HashSet<(byte, RoleTypes)>)> RoleChangedData;
+    private static PlayerData<GamePlayerData> GamePlayers;
     private static bool CantProcess { get { return _cantProcess; } }
     private static bool _cantProcess;
     private static bool ProcessNow;
@@ -41,12 +55,7 @@ public static class AntiBlackOut
     {
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             return;
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-        {
-            player.Data.IsDead = PlayerDeadData[player];
-            player.Data.Disconnected = PlayerDisconnectedData[player];
-        }
-        SetAllDontDead(exiled);
+        // う～ん、ここどうしようね。なくても問題なさそうだけど...
     }
     public static void SendAntiBlackOutInformation(PlayerControl target, ABOInformationType informationType, params string[] formatstrings)
     {
@@ -137,54 +146,100 @@ public static class AntiBlackOut
         new LateTask(() =>
         {
             RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.StartAntiBlackout());
-            SetAllDontDead(exiled);
+            StartAntiBlackOutProcess(exiled);
         }, 4f);
+    }
+    // 最低限ここまで未切断車がいれば正常に追放者を表示できるっていう人数大丈夫
+    private const int BlackOutSafetyShowExiledPlayer = 4;
+    public static void StartAntiBlackOutProcess(NetworkedPlayerInfo exiled)
+    {
+        InitalSavedData();
+        bool CanShowExiledPlayer = PlayerControl.AllPlayerControls.Count >= BlackOutSafetyShowExiledPlayer;
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            GamePlayers[player] = new(player.Data);
+        foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
+        {
+            if (seer.IsMod())
+                continue;
+            CustomRpcSender sender = CustomRpcSender.Create($"StartAntiBlackOut_To:{seer.PlayerId}", sendOption:Hazel.SendOption.Reliable);
+            sender.RpcSetRole(seer, RoleTypes.Impostor, true, seer.GetClientId());
+            foreach (PlayerControl target in PlayerControl.AllPlayerControls)
+            {
+                if (seer == target)
+                    continue;
+                sender.RpcSetRole(target, RoleTypes.Crewmate, true, seer.GetClientId());
+            }
+            sender.SendMessage();
+        }
     }
     public static void OnWrapUp()
     {
         if (CantProcess)
             return;
         Logger.Info("Running AntiBlackOut.");
-        if (PlayerDeadData == null)
-            throw new System.NotImplementedException("PlayerDeadData is null");
-        if (PlayerDisconnectedData == null)
-            throw new System.NotImplementedException("PlayerDisconnectedData is null");
-        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
-        {
-            if (player == null)
-                continue;
-            player.IsDead = PlayerDeadData[player.PlayerId];
-            player.Disconnected = PlayerDisconnectedData[player.PlayerId];
-        }
+        if (GamePlayers == null)
+            throw new NotImplementedException("GamePlayers is null");
         new LateTask(() => {
             if (RealExiled != null && RealExiled.Object != null)
-                RealExiled.Object.RpcInnerExiled();
-            IsModdedSerialize = true;
-            RPCHelper.RpcSyncAllNetworkedPlayer();
+                RealExiled.Object.Exiled();
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player.IsAlive())
                     continue;
                 SendAntiBlackOutInformation(player, ABOInformationType.EndAliveCanViewDeadPlayerChat);
             }
-            foreach ((byte seerId, HashSet<(byte playerId, RoleTypes role)> players) in RoleChangedData)
+            List<(PlayerControl player, RoleTypes role)> DesyncPlayers = new();
+            foreach(GamePlayerData gamePlayerData in GamePlayers.Values)
             {
-                PlayerControl seer = ModHelpers.PlayerById(seerId);
-                if (seer == null)
-                    continue;
-                foreach ((byte playerId, RoleTypes role) playerdetail in players)
+                PlayerControl player = ModHelpers.PlayerById(gamePlayerData.PlayerId);
+                if (player == null)
                 {
-                    PlayerControl player = ModHelpers.PlayerById(playerdetail.playerId);
-                    if (player != null)
-                        player.RpcSetRoleDesync(playerdetail.role, true, seer);
+                    Logger.Error($"GamePlayerData({gamePlayerData.PlayerId}) is null.","AntiBlackOutWrapUp");
+                    continue;
                 }
+                RoleTypes ToRoleTypes = (player.IsDead() && !gamePlayerData.IsDead) ?
+                         (gamePlayerData.roleTypes.IsImpostorRole() ?
+                               RoleTypes.ImpostorGhost :
+                               RoleTypes.CrewmateGhost) :
+                         gamePlayerData.roleTypes;
+                player.RpcSetRole(ToRoleTypes, true);
+                var desyncRole = RoleSelectHandler.GetDesyncRole(player.GetRole());
+                if (desyncRole.IsDesync && desyncRole.RoleType.IsImpostorRole())
+                    DesyncPlayers.Add((player, desyncRole.RoleType));
+                else if (player is ISupportSHR supportSHR && supportSHR.IsDesync)
+                    DesyncPlayers.Add((player, supportSHR.DesyncRole));
             }
-            IsModdedSerialize = false;
+            new LateTask(() =>
+            {
+                foreach (var desyncDetail in DesyncPlayers)
+                {
+                    if (desyncDetail.player.IsMod() || desyncDetail.player.IsDead())
+                        continue;
+                    desyncDetail.player.RpcSetRoleDesync(desyncDetail.role, true);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player == desyncDetail.player)
+                            continue;
+                        player.RpcSetRoleDesync(
+                            player.IsImpostor() ?
+                               (player.IsDead() ?
+                                RoleTypes.CrewmateGhost :
+                                RoleTypes.Crewmate) :
+                            player.Data.Role.Role, canOverride: true,
+                            desyncDetail.player
+                        );
+                    }
+                }
+                IsModdedSerialize = true;
+                RPCHelper.RpcSyncAllNetworkedPlayer();
+                IsModdedSerialize = false;
+                ChangeName.SetRoleNames();
+            }, 0.2f);
             ProcessNow = false;
             RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
         }, 0.75f);
     }
-
+    /*
     private static void SetAllDontDead(NetworkedPlayerInfo exiled)
     {
         InitalSavedData();
@@ -262,7 +317,7 @@ public static class AntiBlackOut
             RPCHelper.RpcSyncAllNetworkedPlayer(seer.GetClientId());
             IsModdedSerialize = false;
         }
-    }
+    }*/
     public static void StartMeeting()
     {
         SendAntiBlackOutInformation(null, ABOInformationType.AllExileWillDobuleVoted);
@@ -297,13 +352,10 @@ public static class AntiBlackOut
     }
     private static void DestroySavedData()
     {
-        PlayerDeadData = null;
-        PlayerDisconnectedData = null;
+        GamePlayers = null;
     }
     private static void InitalSavedData()
     {
-        PlayerDeadData = new();
-        PlayerDisconnectedData = new();
-        RoleChangedData = new();
+        GamePlayers = new();
     }
 }
