@@ -609,7 +609,7 @@ public static class OnGameEndPatch
             Frankenstein.FrankensteinPlayer,
             RoleClass.Dependents.DependentsPlayer,
             ]);
-        foreach (SatsumaAndImo satsuma in RoleBaseManager.GetRoleBases<SatsumaAndImo>().AsSpan())
+        foreach (SatsumaAndImo satsuma in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
             notWinners.Add(satsuma.Player);
         foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
@@ -815,7 +815,7 @@ public static class OnGameEndPatch
                     continue;
                 winners.Add(player.Data);
             }
-            foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>().AsSpan())
+            foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
             {
                 if (satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
                     winners.Add(satsumaAndImo.Player.Data);//さつまいもも勝ち
