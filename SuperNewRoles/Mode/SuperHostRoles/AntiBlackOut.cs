@@ -175,7 +175,7 @@ public static class AntiBlackOut
             return;
         if (Chat.IsOldSHR)
         {
-            Logger.Info("AntiBlackOut Passed. Reason:Chat.IsOldSHR is true.")
+            Logger.Info("AntiBlackOut Passed. Reason:Chat.IsOldSHR is true.");
             return;
         }
         Logger.Info("Running AntiBlackOut.");
@@ -204,13 +204,14 @@ public static class AntiBlackOut
                                RoleTypes.ImpostorGhost :
                                RoleTypes.CrewmateGhost) :
                          gamePlayerData.roleTypes;
-                if (player.IsAlive() && player.GetRoleBase() is ISupportSHR supportSHR && !supportSHR.IsDesync && !supportSHR.RealRole.IsImpostorRole())
+                ISupportSHR supportSHR = player.GetRoleBase() as ISupportSHR;
+                if (player.IsAlive() && !supportSHR.IsDesync && !supportSHR.RealRole.IsImpostorRole())
                     ToRoleTypes = supportSHR.RealRole;
                 player.RpcSetRole(ToRoleTypes, true);
                 var desyncRole = RoleSelectHandler.GetDesyncRole(player.GetRole());
                 if (desyncRole.IsDesync && desyncRole.RoleType.IsImpostorRole())
                     DesyncPlayers.Add((player, desyncRole.RoleType));
-                else if (player is ISupportSHR supportSHR && supportSHR.IsDesync)
+                else if (supportSHR.IsDesync)
                     DesyncPlayers.Add((player, supportSHR.DesyncRole));
             }
             new LateTask(() =>
