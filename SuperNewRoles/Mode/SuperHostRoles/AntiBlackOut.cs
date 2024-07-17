@@ -204,14 +204,14 @@ public static class AntiBlackOut
                                RoleTypes.ImpostorGhost :
                                RoleTypes.CrewmateGhost) :
                          gamePlayerData.roleTypes;
-                ISupportSHR supportSHR = player.GetRoleBase() as ISupportSHR;
-                if (player.IsAlive() && !supportSHR.IsDesync && !supportSHR.RealRole.IsImpostorRole())
+                ISupportSHR supportSHR = (ISupportSHR)player.GetRoleBase();
+                if (supportSHR != null && player.IsAlive() && !supportSHR.IsDesync && !supportSHR.RealRole.IsImpostorRole())
                     ToRoleTypes = supportSHR.RealRole;
                 player.RpcSetRole(ToRoleTypes, true);
                 var desyncRole = RoleSelectHandler.GetDesyncRole(player.GetRole());
                 if (desyncRole.IsDesync && desyncRole.RoleType.IsImpostorRole())
                     DesyncPlayers.Add((player, desyncRole.RoleType));
-                else if (supportSHR.IsDesync)
+                else if (supportSHR != null && supportSHR.IsDesync)
                     DesyncPlayers.Add((player, supportSHR.DesyncRole));
             }
             new LateTask(() =>
