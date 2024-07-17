@@ -154,7 +154,7 @@ class RoleManagerSelectRolesPatch
                 {
                     player.Data.Disconnected = false;
                 }
-            }, 0.5f);
+            }, 0.25f);
             new LateTask(() => {
 
                 PlayerControl RoleTargetPlayer = null;
@@ -182,22 +182,27 @@ class RoleManagerSelectRolesPatch
                 {
                     player.Data.Disconnected = false;
                 }
-            }, 1f);
+            }, 0.5f);
             new LateTask(() =>
             {
-                CustomRpcSender sender2 = CustomRpcSender.Create(sendOption: SendOption.Reliable);
-                RPCHelper.RpcSyncAllNetworkedPlayer(sender2);
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.Data.Disconnected = false;
+                }
+                RPCHelper.RpcSyncAllNetworkedPlayer();
+            }, 0.75f);
+            new LateTask(() =>
+            {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     // RoleSelectHandler.SetTasksBuffer
                     if (!RoleSelectHandler.SetTasksBuffer.TryGetValue(player.PlayerId, out var tasks))
                         continue;
-                    RPCHelper.RpcSetTasks(sender2, player.Data, tasks);
+                    player.Data.RpcSetTasks(tasks);
                 }
-                sender2.SendMessage();
                 RoleSelectHandler.SetTasksBuffer = null;
                 RoleSelectHandler.IsStartingSerialize = false;
-            }, 1.3f);
+            }, 1f);
 
             /*foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
