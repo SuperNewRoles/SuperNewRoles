@@ -70,13 +70,6 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
         {
             Player.RpcMurderPlayer(Player, true);
             Player.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
-            Player.RpcSetRole(RoleTypes.Crewmate, true);
-            // 暗転対策のために、インポスターをちゃんとインポスター二変更する
-            foreach (PlayerControl seetarget in PlayerControl.AllPlayerControls)
-            {
-                if (seetarget.IsImpostor())
-                    seetarget.RpcSetRoleDesync(seetarget.Data.Role.Role, true, Player);
-            }
             return false;
         }
         if (!IsCreatedSheriff)
@@ -151,7 +144,8 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
                 }
                 ChangeName.SetRoleName(target);
                 SyncSetting.CustomSyncSettings(target);
-            }, 0.1f);
+                target.RpcShowGuardEffect(target);
+            }, 0.25f);
 
             // もうキルボタンを持たないように
             Player.RpcSetRole(RoleTypes.Crewmate, true);

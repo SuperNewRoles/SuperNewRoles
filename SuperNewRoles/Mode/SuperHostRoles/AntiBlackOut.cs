@@ -234,9 +234,9 @@ public static class AntiBlackOut
                 RPCHelper.RpcSyncAllNetworkedPlayer();
                 IsModdedSerialize = false;
                 ChangeName.SetRoleNames();
+                RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
             }, 0.2f);
             ProcessNow = false;
-            RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
         }, 0.75f);
     }
     /*
