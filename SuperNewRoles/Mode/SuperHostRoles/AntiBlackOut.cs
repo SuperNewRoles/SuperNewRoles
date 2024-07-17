@@ -45,7 +45,7 @@ public static class AntiBlackOut
         AliveCanViewDeadPlayerChat,
         EndAliveCanViewDeadPlayerChat
     }
-    private static PlayerData<GamePlayerData> GamePlayers;
+    public static PlayerData<GamePlayerData> GamePlayers;
     private static bool CantProcess { get { return _cantProcess; } }
     private static bool _cantProcess;
     private static bool ProcessNow;
@@ -240,6 +240,7 @@ public static class AntiBlackOut
                 IsModdedSerialize = false;
                 ChangeName.SetRoleNames();
                 RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
+                DestroySavedData();
             }, 0.2f);
             ProcessNow = false;
         }, 0.75f);

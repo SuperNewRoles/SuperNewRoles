@@ -17,6 +17,8 @@ class EndGameCheck
 {
     public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
     {
+        // 暗転対策の途中にゲーム終了処理が入ると終了されるかもしれないからパス。
+        if (AntiBlackOut.GamePlayers != null) return false;
         if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
         if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
         if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
