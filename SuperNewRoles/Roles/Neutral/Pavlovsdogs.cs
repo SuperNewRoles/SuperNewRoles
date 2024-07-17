@@ -27,6 +27,9 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
         TeamRoleType.Neutral,
         TeamType.Neutral
         );
+
+    public bool HasKillButtonClient => false;
+
     public static new IntroInfo Introinfo =
         new(RoleId.Pavlovsdogs, introSound: RoleTypes.Phantom);
 

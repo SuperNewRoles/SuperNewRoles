@@ -40,7 +40,7 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
     public CustomButtonInfo[] CustomButtonInfos { get; }
 
     public RoleTypes RealRole => RoleTypes.Crewmate;
-    public RoleTypes DesyncRole => RoleTypes.Impostor;
+    public RoleTypes DesyncRole => IsCreatedSheriff ? RealRole : RoleTypes.Impostor;
 
     private CustomButtonInfo SidekickButton;
 
@@ -66,6 +66,12 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
 
     public bool OnCheckMurderPlayerAmKiller(PlayerControl target)
     {
+        if (target.IsImpostor())
+        {
+            Player.RpcMurderPlayer(Player, true);
+            Player.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
+            return false;
+        }
         if (!IsCreatedSheriff)
         {
             MessageWriter writer = RpcWriter;
@@ -73,7 +79,6 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
             writer.Write(target.IsClearTask());
             SendRpc(writer);
         }
-        Player.RpcSetRole(RoleTypes.Crewmate, true);
         return false;
     }
 
@@ -139,7 +144,17 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
                 }
                 ChangeName.SetRoleName(target);
                 SyncSetting.CustomSyncSettings(target);
-            }, 0.15f);
+                target.RpcShowGuardEffect(target);
+            }, 0.25f);
+
+            // もうキルボタンを持たないように
+            Player.RpcSetRole(RoleTypes.Crewmate, true);
+            // 暗転対策のために、インポスターをちゃんとインポスターに変更する
+            foreach(PlayerControl seetarget in PlayerControl.AllPlayerControls)
+            {
+                if (seetarget.IsImpostor())
+                    seetarget.RpcSetRoleDesync(seetarget.Data.Role.Role, true, Player);
+            }
         }
         RPCProcedure.UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
     }

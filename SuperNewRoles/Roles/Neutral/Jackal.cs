@@ -176,6 +176,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             else if (JackalCreateSidekick.GetBool())
             {
                 bool isOldImpostor = player.IsImpostor();
+                player.ClearRole();
                 player.SetRoleRPC(RoleId.Sidekick);
                 RoleTypes targetRole = RoleTypes.Crewmate;
                 if (CanUseSabo)
@@ -202,17 +203,11 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 }
             }
             else
-            {
                 throw new System.NotImplementedException("Sidekick targetrole is not defined.");
-            }
             SHRUpdatedToImpostor = Player.IsMod();
-            ChangeName.SetRoleName(Player);//名前も変える
-            ChangeName.SetRoleName(player);//名前も変える
         }
         if (isFakeSidekick)
-        {
             RoleClass.Jackal.FakeSidekickPlayer.Add(player);
-        }
         else
         {
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
@@ -227,6 +222,12 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             ChacheManager.ResetMyRoleChache();
         }
         CanSidekick = false;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
+        {
+            ChangeName.SetRoleName(Player);//名前も変える
+            ChangeName.SetRoleName(player);//名前も変える
+            SyncSetting.CustomSyncSettings(player);
+        }
     }
 
     public void FixedUpdateAllDefault()
@@ -255,15 +256,18 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         Logger.Info($"TryGetRoleBase: {CreatedSidekickControl.GetRoleBase().Roleinfo.Role}");
         if (!CreatedSidekickControl.TryGetRoleBase(out Jackal jackal))
             return;
-        CreatedSidekickControl.RpcSetRoleDesync(
-            jackal.DesyncRole, true
-        );
+        if (!CreatedSidekickControl.IsMod())
+        {
+            CreatedSidekickControl.RpcSetRoleDesync(
+                jackal.DesyncRole, true
+            );
+        }
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.PlayerId == CreatedSidekickControl.PlayerId ||
                 player.PlayerId == Player.PlayerId)
                 continue;
-            if (!player.IsJackalTeamJackal() && !player.IsJackalTeamSidekick())
+            if (player.IsJackalTeamJackal() || player.IsJackalTeamSidekick())
                 continue;
             if (!player.IsMod())
                 CreatedSidekickControl.RpcSetRoleDesync(RoleTypes.Crewmate, true, player);
@@ -274,6 +278,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             OneClickShapeshift.OneClickShaped(CreatedSidekickControl);
         CreatedSidekickControl.RpcShowGuardEffect(CreatedSidekickControl);
         ChangeName.SetRoleName(CreatedSidekickControl);
+        SyncSetting.CustomSyncSettings(CreatedSidekickControl);
     }
 
     public RoleTypes RealRole => RoleTypes.Crewmate;
