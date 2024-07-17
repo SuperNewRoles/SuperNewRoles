@@ -15,7 +15,7 @@ using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameHandler, IRpcHandler, IHijackingWinner, ISupportSHR, ISHRChatCommand
+public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameHandler, IRpcHandler, IHijackingWinner, ISupportSHR, ISHRChatCommand, ISHRAntiBlackout
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Moira),
@@ -353,11 +353,10 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
             SwapVoteData = new(byte.MaxValue, byte.MaxValue);
             return;
         }
-        new LateTask(() =>
-        {
-            SwapRole(SwapVoteData.Item1, SwapVoteData.Item2);
-            SwapVoteData = new(byte.MaxValue, byte.MaxValue);
-        }, 0.2f);
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            return;
+        SwapRole(SwapVoteData.Item1, SwapVoteData.Item2);
+        SwapVoteData = new(byte.MaxValue, byte.MaxValue);
     }
 
     public void OnWrapUp(PlayerControl exiled)
@@ -434,6 +433,16 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
         UseAbility(target1, target2);
         AddChatPatch.SendChat(Player, $"{ModTranslation.GetString("MoiraSelectionEndText")}\n\n{ModTranslation.GetString("Balancer1st")} : {target1.Data.PlayerName}\n{ModTranslation.GetString("Balancer2nd")} : {target2.Data.PlayerName}", ModTranslation.GetString("MoiraSelectionEnd"));
         return true;
+    }
+
+    public void StartAntiBlackout()
+    {
+    }
+
+    public void EndAntiBlackout()
+    {
+        SwapRole(SwapVoteData.Item1, SwapVoteData.Item2);
+        SwapVoteData = new(byte.MaxValue, byte.MaxValue);
     }
 
     public enum Mode
