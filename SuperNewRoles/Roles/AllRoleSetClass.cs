@@ -175,7 +175,7 @@ class RoleManagerSelectRolesPatch
                 {
                     player.Data.Disconnected = false;
                 }
-            }, 1f);
+            }, 2f);
             new LateTask(() =>
             {
                 CustomRpcSender sender2 = CustomRpcSender.Create(sendOption: SendOption.Reliable);
@@ -190,7 +190,7 @@ class RoleManagerSelectRolesPatch
                 sender2.SendMessage();
                 RoleSelectHandler.IsStartingSerialize = false;
                 RoleSelectHandler.SetTasksBuffer = null;
-            }, 2f);
+            }, 1f);
 
             /*foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
