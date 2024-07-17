@@ -226,6 +226,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         {
             ChangeName.SetRoleName(Player);//名前も変える
             ChangeName.SetRoleName(player);//名前も変える
+            SyncSetting.CustomSyncSettings(player);
         }
     }
 
@@ -266,7 +267,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             if (player.PlayerId == CreatedSidekickControl.PlayerId ||
                 player.PlayerId == Player.PlayerId)
                 continue;
-            if (!player.IsJackalTeamJackal() && !player.IsJackalTeamSidekick())
+            if (player.IsJackalTeamJackal() || player.IsJackalTeamSidekick())
                 continue;
             if (!player.IsMod())
                 CreatedSidekickControl.RpcSetRoleDesync(RoleTypes.Crewmate, true, player);
@@ -277,6 +278,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             OneClickShapeshift.OneClickShaped(CreatedSidekickControl);
         CreatedSidekickControl.RpcShowGuardEffect(CreatedSidekickControl);
         ChangeName.SetRoleName(CreatedSidekickControl);
+        SyncSetting.CustomSyncSettings(CreatedSidekickControl);
     }
 
     public RoleTypes RealRole => RoleTypes.Crewmate;
