@@ -143,15 +143,19 @@ class RoleManagerSelectRolesPatch
                 player.Data.Disconnected = false;
             }
             RoleSelectHandler.SetTasksBuffer = new();
-            new LateTask(() => {
-
-                var DEBUGOnlySender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
-
+            new LateTask(() =>
+            {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     player.Data.Disconnected = true;
                 }
-                RPCHelper.RpcSyncAllNetworkedPlayer(DEBUGOnlySender);
+                RPCHelper.RpcSyncAllNetworkedPlayer();
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.Data.Disconnected = false;
+                }
+            }, 0.5f);
+            new LateTask(() => {
 
                 PlayerControl RoleTargetPlayer = null;
                 RoleTypes RoleTargetRole = RoleTypes.Crewmate;
@@ -169,14 +173,8 @@ class RoleManagerSelectRolesPatch
                 }
                 if (RoleTargetPlayer == null)
                     throw new NotImplementedException("RoleTargetPlayer is null");
-                DEBUGOnlySender.RpcSetRole(RoleTargetPlayer, RoleTargetRole, true);
-                DEBUGOnlySender.SendMessage();
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                {
-                    player.Data.Disconnected = false;
-                }
-                RoleSelectHandler.IsStartingSerialize = false;
-            }, 2f);
+                RoleTargetPlayer.RpcSetRole(RoleTargetRole, true);
+            }, 1f);
             new LateTask(() =>
             {
                 CustomRpcSender sender2 = CustomRpcSender.Create(sendOption: SendOption.Reliable);
@@ -190,7 +188,8 @@ class RoleManagerSelectRolesPatch
                 }
                 sender2.SendMessage();
                 RoleSelectHandler.SetTasksBuffer = null;
-            }, 1f);
+                RoleSelectHandler.IsStartingSerialize = false;
+            }, 1.3f);
 
             /*foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
