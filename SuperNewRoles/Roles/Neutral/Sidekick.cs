@@ -1,10 +1,3 @@
-//◯作り方◯
-// 1.ICrewmateかINeutralかIImpostorのどれかを継承する
-// 2.必要なインターフェースを実装する
-// 3.Roleinfo,Optioninfo,Introinfoを設定する
-// 4.設定を作成する(CreateOptionが必要なければOptioninfoのoptionCreatorをnullにする)
-// 5.インターフェースの内容を実装していく
-
 using System.Text;
 using AmongUs.GameOptions;
 using SuperNewRoles.Mode.SuperHostRoles;

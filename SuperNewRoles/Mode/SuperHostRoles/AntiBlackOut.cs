@@ -8,6 +8,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
+using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -104,28 +105,11 @@ public static class AntiBlackOut
             RealExiled = null;
             return SupportType.NoneExile;
         }
-        int numImpostor = 0;
-        int numCrewmate = 0;
-        int deadPlayers = 0;
-        int deadImpostorsOnDesync = 0;
-        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
-        {
-            if (player.Role.IsImpostor)
-                numImpostor++;
-            else
-                numCrewmate++;
-            if (player.IsDead)
-            {
-                deadPlayers++;
-                PlayerControl deadPlayer = player.Object;
-                if (deadPlayer != null && IsPlayerDesyncImpostorTeam(deadPlayer))
-                    deadImpostorsOnDesync++;
-            }
-        }
         RealExiled = exiled;
-        //if (deadPlayers <= 0)
-        return SupportType.DoubleVotedAfterExile;
-        //return SupportType.DeadExile;
+        return
+            PlayerControl.AllPlayerControls.Count >= BlackOutSafetyShowExiledPlayer
+            ? SupportType.DefaultExile
+            : SupportType.NoneExile;
     }
     public static bool IsPlayerDesyncImpostorTeam(PlayerControl player)
     {
@@ -149,7 +133,7 @@ public static class AntiBlackOut
             StartAntiBlackOutProcess(exiled);
         }, 4f);
     }
-    // 最低限ここまで未切断車がいれば正常に追放者を表示できるっていう人数大丈夫
+    // 最低限ここまで未切断者がいれば正常に追放者を表示できるっていう人数大丈夫
     private const int BlackOutSafetyShowExiledPlayer = 4;
     public static void StartAntiBlackOutProcess(NetworkedPlayerInfo exiled)
     {
@@ -157,25 +141,43 @@ public static class AntiBlackOut
         bool CanShowExiledPlayer = PlayerControl.AllPlayerControls.Count >= BlackOutSafetyShowExiledPlayer;
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             GamePlayers[player] = new(player.Data);
-        foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
+        if (exiled?.PlayerId != PlayerControl.LocalPlayer.PlayerId)
         {
-            if (seer.IsMod())
-                continue;
-            CustomRpcSender sender = CustomRpcSender.Create($"StartAntiBlackOut_To:{seer.PlayerId}", sendOption:Hazel.SendOption.Reliable);
-            sender.RpcSetRole(seer, RoleTypes.Impostor, true, seer.GetClientId());
-            foreach (PlayerControl target in PlayerControl.AllPlayerControls)
-            {
-                if (seer == target)
-                    continue;
-                sender.RpcSetRole(target, RoleTypes.Crewmate, true, seer.GetClientId());
-            }
-            sender.SendMessage();
+            SendOtherCrewmate(null);
         }
+        else
+        {
+            foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
+            {
+                if (seer.IsMod())
+                    continue;
+                SendOtherCrewmate(seer);
+            }
+        }
+    }
+    private static void SendOtherCrewmate(PlayerControl seer)
+    {
+        CustomRpcSender sender = CustomRpcSender.Create($"StartAntiBlackOut_To:{(seer?.PlayerId.ToString() ?? "All")}", sendOption: Hazel.SendOption.Reliable);
+        int seerClientId = seer?.GetClientId() ?? -1;
+        PlayerControl impostorPlayer = seer ?? PlayerControl.LocalPlayer;
+        sender.RpcSetRole(impostorPlayer, RoleTypes.Impostor, true, seerClientId);
+        foreach (PlayerControl target in PlayerControl.AllPlayerControls)
+        {
+            if (target == impostorPlayer)
+                continue;
+            sender.RpcSetRole(target, RoleTypes.Crewmate, true, seerClientId);
+        }
+        sender.SendMessage();
     }
     public static void OnWrapUp()
     {
         if (CantProcess)
             return;
+        if (Chat.IsOldSHR)
+        {
+            Logger.Info("AntiBlackOut Passed. Reason:Chat.IsOldSHR is true.")
+            return;
+        }
         Logger.Info("Running AntiBlackOut.");
         if (GamePlayers == null)
             throw new NotImplementedException("GamePlayers is null");
