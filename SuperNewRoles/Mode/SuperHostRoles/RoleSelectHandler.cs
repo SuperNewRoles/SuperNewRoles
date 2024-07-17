@@ -449,7 +449,7 @@ public static class RoleSelectHandler
             foreach (var pc in PlayerControl.AllPlayerControls)
             {
                 if (pc.PlayerId == Player.PlayerId) continue;
-                if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist, true); //ホスト視点用
+                if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Crewmate, true); //ホスト視点用
                 else sender.RpcSetRole(Player, RoleTypes.Scientist, true, pc.GetClientId());
             }
         }

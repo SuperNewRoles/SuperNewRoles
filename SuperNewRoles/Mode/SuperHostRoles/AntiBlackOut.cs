@@ -204,6 +204,8 @@ public static class AntiBlackOut
                                RoleTypes.ImpostorGhost :
                                RoleTypes.CrewmateGhost) :
                          gamePlayerData.roleTypes;
+                if (player.IsAlive() && player.GetRoleBase() is ISupportSHR supportSHR && !supportSHR.IsDesync && !supportSHR.RealRole.IsImpostorRole())
+                    ToRoleTypes = supportSHR.RealRole;
                 player.RpcSetRole(ToRoleTypes, true);
                 var desyncRole = RoleSelectHandler.GetDesyncRole(player.GetRole());
                 if (desyncRole.IsDesync && desyncRole.RoleType.IsImpostorRole())
