@@ -168,7 +168,7 @@ class RoleManagerSelectRolesPatch
                 player.Data.Disconnected = false;
             }
             RoleSelectHandler.SetTasksBuffer = new();
-            new LateTask(() => DEBUGOnlySender.SendMessage(), 0.2f);
+            new LateTask(() => DEBUGOnlySender.SendMessage(), 0.5f);
             new LateTask(() =>
             {
                 CustomRpcSender sender2 = CustomRpcSender.Create(sendOption: SendOption.Reliable);
@@ -183,7 +183,7 @@ class RoleManagerSelectRolesPatch
                 sender2.SendMessage();
                 RoleSelectHandler.IsStartingSerialize = false;
                 RoleSelectHandler.SetTasksBuffer = null;
-            }, 0.5f);
+            }, 1.0f);
 
             /*foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
