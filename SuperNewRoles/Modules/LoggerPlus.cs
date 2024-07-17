@@ -1,10 +1,24 @@
 using System;
+using System.Diagnostics;
 using System.IO;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Modules;
 
 class LoggerPlus
 {
+    /// <summary> ログ出力先(推定)のファイル名(起動時の既存起動数に依存) </summary>
+    private static string LogName;
+    /// <summary> ログ出力先(推定)のファイル名取得する </summary>
+    public static void SetLogName()
+    {
+        // 呼び出し時のAmong Usの起動台数に従い、ログのファイル名を取得する。
+        // "3台起動 => 2台目終了 => Among Us起動(*1)" 時 *1のログは"LogOutput.1.log"だが、記録されるファイル名は "LogOutput.2.log"になる
+
+        int logCount = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length - 1;
+        LogName = $"LogOutput{(logCount == 0 ? "" : $".{logCount}")}.log";
+    }
+
     /// <summary>
     /// SaveLogFolderにその時点までのlogを名前を付けて保存する
     /// </summary>
@@ -28,15 +42,25 @@ class LoggerPlus
         Directory.CreateDirectory(folderPath);
         string filePath = @$"{folderPath}" + @$"{fileName}";
 
-        // logを出力した旨のlogを印字 及びチャットが存在するときはチャットを表示
-        Logger.Info($"この時点までのログを [ {fileName} ] に保存しました。", via);
-        if (PlayerControl.LocalPlayer != null)
-            FastDestroyableSingleton<HudManager>.Instance?.Chat?.AddChat(PlayerControl.LocalPlayer, $"この時点までのログを [ {fileName} ] に保存しました。");
 
         // 出力
-        string sourceLogFile = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @"\BepInEx\LogOutput.log";
-        FileInfo sourceLogPath = new(@sourceLogFile);
-        sourceLogPath.CopyTo(@filePath, true);
+        string sourceLogFile = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @$"\BepInEx\{LogName}";
+        if (File.Exists(sourceLogFile))
+        {
+            // logを出力した旨のlogを印字 及びチャットが存在するときはチャットを表示
+            var message = $"この時点までのログを [ {fileName} ] に保存しました。";
+            Logger.Info($"[{LogName}] message", via);
+            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", message, isSendFromGuest: true);
+
+            FileInfo sourceLogPath = new(@sourceLogFile);
+            sourceLogPath.CopyTo(@filePath, true);
+        }
+        else
+        {
+            var errorMessage = $"印字元のパスが正常に設定されていなかった為、保存の実行を中止しました。 [指定ログファイル] : {LogName}";
+            Logger.Error(errorMessage, via);
+            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", errorMessage, isSendFromGuest: true);
+        }
     }
 
     /// <summary>
