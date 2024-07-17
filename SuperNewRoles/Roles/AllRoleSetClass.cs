@@ -173,7 +173,15 @@ class RoleManagerSelectRolesPatch
                 }
                 if (RoleTargetPlayer == null)
                     throw new NotImplementedException("RoleTargetPlayer is null");
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.Data.Disconnected = true;
+                }
                 RoleTargetPlayer.RpcSetRole(RoleTargetRole, true);
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.Data.Disconnected = false;
+                }
             }, 1f);
             new LateTask(() =>
             {
