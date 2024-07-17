@@ -135,31 +135,6 @@ class RoleManagerSelectRolesPatch
             //RpcSetRoleReplacerの送信処理
 
             sender.SendMessage();
-            var DEBUGOnlySender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
-
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-            {
-                player.Data.Disconnected = true;
-            }
-            RPCHelper.RpcSyncAllNetworkedPlayer(DEBUGOnlySender);
-
-            PlayerControl RoleTargetPlayer = null;
-            RoleTypes RoleTargetRole = RoleTypes.Crewmate;
-            foreach(PlayerControl player in PlayerControl.AllPlayerControls)
-            {
-                if (!player.IsCrew())
-                    continue;
-                if (player.GetRoleBase() is ISupportSHR supportSHR && supportSHR.IsDesync && supportSHR.DesyncRole.IsImpostorRole())
-                    continue;
-                var desyncData = RoleSelectHandler.GetDesyncRole(player.GetRole());
-                if (desyncData.IsDesync && desyncData.RoleType.IsImpostorRole())
-                    continue;
-                RoleTargetPlayer = player;
-                RoleTargetRole = player.Data.Role.Role;
-            }
-            if (RoleTargetPlayer == null)
-                throw new NotImplementedException("RoleTargetPlayer is null");
-            DEBUGOnlySender.RpcSetRole(RoleTargetPlayer, RoleTargetRole, true);
             /*
                         RPCHelper.RpcSyncAllNetworkedPlayer(DEBUGOnlySender);
                        */
@@ -168,7 +143,39 @@ class RoleManagerSelectRolesPatch
                 player.Data.Disconnected = false;
             }
             RoleSelectHandler.SetTasksBuffer = new();
-            new LateTask(() => DEBUGOnlySender.SendMessage(), 0.5f);
+            new LateTask(() => {
+
+                var DEBUGOnlySender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
+
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.Data.Disconnected = true;
+                }
+                RPCHelper.RpcSyncAllNetworkedPlayer(DEBUGOnlySender);
+
+                PlayerControl RoleTargetPlayer = null;
+                RoleTypes RoleTargetRole = RoleTypes.Crewmate;
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (!player.IsCrew())
+                        continue;
+                    if (player.GetRoleBase() is ISupportSHR supportSHR && supportSHR.IsDesync && supportSHR.DesyncRole.IsImpostorRole())
+                        continue;
+                    var desyncData = RoleSelectHandler.GetDesyncRole(player.GetRole());
+                    if (desyncData.IsDesync && desyncData.RoleType.IsImpostorRole())
+                        continue;
+                    RoleTargetPlayer = player;
+                    RoleTargetRole = player.Data.Role.Role;
+                }
+                if (RoleTargetPlayer == null)
+                    throw new NotImplementedException("RoleTargetPlayer is null");
+                DEBUGOnlySender.RpcSetRole(RoleTargetPlayer, RoleTargetRole, true);
+                DEBUGOnlySender.SendMessage();
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.Data.Disconnected = false;
+                }
+            }, 1f);
             new LateTask(() =>
             {
                 CustomRpcSender sender2 = CustomRpcSender.Create(sendOption: SendOption.Reliable);
@@ -183,7 +190,7 @@ class RoleManagerSelectRolesPatch
                 sender2.SendMessage();
                 RoleSelectHandler.IsStartingSerialize = false;
                 RoleSelectHandler.SetTasksBuffer = null;
-            }, 1.0f);
+            }, 2f);
 
             /*foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {

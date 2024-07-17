@@ -945,7 +945,7 @@ public static class ModHelpers
 
     public static string Cs(Color c, string s)
     {
-        return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.b):X2}>{s}</color>";
+        return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
     }
     public static byte ToByte(float f)
     {
