@@ -32,10 +32,11 @@ class LoggerPlus
         string splicingBranch = ReplaceUnusableStringsAsFileNames(ThisAssembly.Git.Branch);
         string version = SuperNewRolesPlugin.VersionString.Replace(".", "");
         version = ReplaceUnusableStringsAsFileNames(version);
+        string userType = AmongUsClient.Instance.AmHost || AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined ? "Host" : "Client";
         string splicingMemo = ReplaceUnusableStringsAsFileNames(memo);
 
         // ファイル名作成
-        string fileName = $"{date}_SNR_v{version}_{splicingBranch}_{splicingMemo}.log";
+        string fileName = $"{date}_SNR_v{version}_{userType}_{splicingBranch}_{splicingMemo}.log";
 
         // 出力先のパス作成
         string folderPath = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @"\SuperNewRoles\SaveLogFolder\";
@@ -49,7 +50,7 @@ class LoggerPlus
         {
             // logを出力した旨のlogを印字 及びチャットが存在するときはチャットを表示
             var message = $"この時点までのログを [ {fileName} ] に保存しました。";
-            Logger.Info($"[{LogName}] message", via);
+            Logger.Info($"[{LogName}] {message}", via);
             AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", message, isSendFromGuest: true);
 
             FileInfo sourceLogPath = new(@sourceLogFile);
