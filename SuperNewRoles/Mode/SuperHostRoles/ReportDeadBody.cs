@@ -63,8 +63,8 @@ class ReportDeadBody
                 sender.RpcSetRole(__instance, RoleTypes.Tracker, true);
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId && ( player.IsImpostor() || player.PlayerId == __instance.PlayerId))
-                        __instance.RpcSetRoleDesync(sender, SyncRoleTypes, true);
+                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId && (player.IsImpostor() || player.PlayerId == __instance.PlayerId))
+                        sender.RpcSetRole(__instance, SyncRoleTypes, true);
                 }
                 __instance.SetRole(SyncRoleTypes, true);
             }

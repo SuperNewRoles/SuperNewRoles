@@ -188,6 +188,8 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     }
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
+        if (Player == null)
+            return;
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.PlayerId == Player.PlayerId || !player.IsPavlovsTeam())
