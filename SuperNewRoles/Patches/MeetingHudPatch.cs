@@ -376,7 +376,7 @@ class CheckForEndVotingPatch
             }
 
             Moira moira = RoleBaseManager.GetRoleBases<Moira>().FirstOrDefault();
-            if (Moira.ChangeVote.GetBool() && moira != null & moira.AbilityUsedThisMeeting)
+            if (Moira.ChangeVote.GetBool() && moira != null && moira.AbilityUsedThisMeeting)
             {
                 for (int i = 0; i < statesList.Count; i++)
                 {
