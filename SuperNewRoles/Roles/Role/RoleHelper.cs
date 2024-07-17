@@ -58,7 +58,7 @@ public static class RoleHelpers
     }
     public static bool IsImpostor(this PlayerControl player)
     {
-        return player != null && !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player.Data.Role.IsImpostor;
+        return player != null && !player.IsRole(RoleId.Sheriff) && player.Data.Role.IsImpostor;
     }
 
     /// <summary>
@@ -197,12 +197,12 @@ public static class RoleHelpers
         player.IsRole(RoleId.Bullet) && !WaveCannonJackal.CreateBulletToJackal.GetBool();
     // IsFriends
 
-    public static bool IsHauntedWolf(this PlayerControl player, bool IsChache = true)
+    public static bool IsHauntedWolf(this PlayerControl player, bool IsCache = true)
     {
         if (player.IsBot() || player == null) return false;
-        if (IsChache)
+        if (IsCache)
         {
-            try { return ChacheManager.HauntedWolfChache[player.PlayerId] != null; }
+            try { return CacheManager.HauntedWolfCache[player.PlayerId] != null; }
             catch { return false; }
         }
         foreach (PlayerControl p in HauntedWolf.RoleData.Player)
@@ -212,12 +212,12 @@ public static class RoleHelpers
         return false;
     }
 
-    public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
+    public static bool IsQuarreled(this PlayerControl player, bool IsCache = true)
     {
         if (player.IsBot()) return false;
-        if (IsChache)
+        if (IsCache)
         {
-            try { return ChacheManager.QuarreledChache[player.PlayerId] != null; }
+            try { return CacheManager.QuarreledCache[player.PlayerId] != null; }
             catch { return false; }
         }
         foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
@@ -232,12 +232,12 @@ public static class RoleHelpers
         }
         return false;
     }
-    public static bool IsLovers(this PlayerControl player, bool IsChache = true)
+    public static bool IsLovers(this PlayerControl player, bool IsCache = true)
     {
         if (player.IsBot()) return false;
-        if (IsChache)
+        if (IsCache)
         {
-            try { return ChacheManager.LoversChache[player.PlayerId] != null; }
+            try { return CacheManager.LoversCache[player.PlayerId] != null; }
             catch { return false; }
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
@@ -258,12 +258,12 @@ public static class RoleHelpers
         if (player == null) return false;
         return RoleClass.Lovers.FakeLovers.Contains(player.PlayerId);
     }
-    public static bool IsFakeLovers(this PlayerControl player, bool IsChache = true)
+    public static bool IsFakeLovers(this PlayerControl player, bool IsCache = true)
     {
         if (player.IsBot()) return false;
-        if (IsChache)
+        if (IsCache)
         {
-            try { return ChacheManager.FakeLoversChache[player.PlayerId] != null; }
+            try { return CacheManager.FakeLoversCache[player.PlayerId] != null; }
             catch { return false; }
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers)
@@ -285,7 +285,7 @@ public static class RoleHelpers
     {
         List<PlayerControl> sets = new() { player1, player2 };
         RoleClass.Quarreled.QuarreledPlayer.Add(sets);
-        ChacheManager.ResetQuarreledChache();
+        CacheManager.ResetQuarreledCache();
     }
     public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
     {
@@ -308,7 +308,7 @@ public static class RoleHelpers
         {
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
-        ChacheManager.ResetLoversChache();
+        CacheManager.ResetLoversCache();
     }
     public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
     {
@@ -331,11 +331,11 @@ public static class RoleHelpers
             }
         }
     }
-    public static PlayerControl GetOneSideQuarreled(this PlayerControl player, bool IsChache = true)
+    public static PlayerControl GetOneSideQuarreled(this PlayerControl player, bool IsCache = true)
     {
-        if (IsChache)
+        if (IsCache)
         {
-            return ChacheManager.QuarreledChache[player.PlayerId] ?? null;
+            return CacheManager.QuarreledCache[player.PlayerId] ?? null;
         }
         foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
         {
@@ -349,11 +349,11 @@ public static class RoleHelpers
         }
         return null;
     }
-    public static PlayerControl GetOneSideLovers(this PlayerControl player, bool IsChache = true)
+    public static PlayerControl GetOneSideLovers(this PlayerControl player, bool IsCache = true)
     {
-        if (IsChache)
+        if (IsCache)
         {
-            return ChacheManager.LoversChache.TryGetValue(player.PlayerId, out PlayerControl pair) ?
+            return CacheManager.LoversCache.TryGetValue(player.PlayerId, out PlayerControl pair) ?
                 (pair != null ? pair : null)
                 : null;
         }
@@ -369,11 +369,11 @@ public static class RoleHelpers
         }
         return null;
     }
-    public static PlayerControl GetOneSideFakeLovers(this PlayerControl player, bool IsChache = true)
+    public static PlayerControl GetOneSideFakeLovers(this PlayerControl player, bool IsCache = true)
     {
-        if (IsChache)
+        if (IsCache)
         {
-            return ChacheManager.FakeLoversChache[player.PlayerId] ?? null;
+            return CacheManager.FakeLoversCache[player.PlayerId] ?? null;
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers)
         {
@@ -955,11 +955,11 @@ public static class RoleHelpers
         bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
         if (role.IsGhostRole())
         {
-            ChacheManager.ResetMyGhostRoleChache();
+            CacheManager.ResetMyGhostRoleCache();
         }
         else
         {
-            ChacheManager.ResetMyRoleChache();
+            CacheManager.ResetMyRoleCache();
         }
         if (flag)
         {
@@ -1449,7 +1449,7 @@ public static class RoleHelpers
         else CrewmatePlayer.RemoveAll(ClearRemove); // 眷族等クルーではない役職も此処に含まれる
         if (player.IsKiller()) NeutralKillingPlayer.RemoveAll(ClearRemove);
         */
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
     }
     public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
     {
@@ -1730,12 +1730,12 @@ public static class RoleHelpers
                 _ => false,
             };
     }
-    public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
+    public static bool IsRole(this PlayerControl p, RoleId role, bool IsCache = true)
     {
         RoleId MyRole = RoleId.DefaultRole;
-        if (IsChache)
+        if (IsCache)
         {
-            if (p == null || ChacheManager.MyRoleChache == null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+            if (p == null || CacheManager.MyRoleCache == null || !CacheManager.MyRoleCache.TryGetValue(p.PlayerId, out MyRole))
                 MyRole = RoleId.DefaultRole;
         }
         else
@@ -1747,7 +1747,7 @@ public static class RoleHelpers
     public static bool IsRole(this PlayerControl p, params RoleId[] roles)
     {
         RoleId MyRole;
-        if (p == null || ChacheManager.MyRoleChache == null || !ChacheManager.MyRoleChache.TryGetValue(p.PlayerId, out MyRole))
+        if (p == null || CacheManager.MyRoleCache == null || !CacheManager.MyRoleCache.TryGetValue(p.PlayerId, out MyRole))
             MyRole = RoleId.DefaultRole;
         return roles.Contains(MyRole);
     }
@@ -1797,11 +1797,11 @@ public static class RoleHelpers
         if (p.IsRole(RoleId.EvilGambler, RoleId.Doppelganger)) return GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         return GetCoolTime(p, null);
     }
-    public static RoleId GetGhostRole(this PlayerControl player, bool IsChache = true)
+    public static RoleId GetGhostRole(this PlayerControl player, bool IsCache = true)
     {
-        if (IsChache)
+        if (IsCache)
         {
-            try { return ChacheManager.MyGhostRoleChache[player.PlayerId]; }
+            try { return CacheManager.MyGhostRoleCache[player.PlayerId]; }
             catch { return RoleId.DefaultRole; }
         }
         try
@@ -1815,12 +1815,12 @@ public static class RoleHelpers
     public static bool IsGhostRole(this RoleId role) =>
         CustomRoles.IsGhostRole(role);
 
-    public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
+    public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsCache = true)
     {
         RoleId MyRole;
-        if (IsChache)
+        if (IsCache)
         {
-            try { MyRole = ChacheManager.MyGhostRoleChache[p.PlayerId]; }
+            try { MyRole = CacheManager.MyGhostRoleCache[p.PlayerId]; }
             catch { MyRole = RoleId.DefaultRole; }
         }
         else
@@ -1829,11 +1829,11 @@ public static class RoleHelpers
         }
         return MyRole == role;
     }
-    public static RoleId GetRole(this PlayerControl player, bool IsChache = true)
+    public static RoleId GetRole(this PlayerControl player, bool IsCache = true)
     {
-        if (IsChache)
+        if (IsCache)
         {
-            return ChacheManager.MyRoleChache != null && player != null && ChacheManager.MyRoleChache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
+            return CacheManager.MyRoleCache != null && player != null && CacheManager.MyRoleCache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
         }
         //ロルベの場合はロルベのロールを返す
         RoleBase roleBase = player.GetRoleBase();

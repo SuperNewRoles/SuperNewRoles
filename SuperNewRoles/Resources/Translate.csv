@@ -1069,7 +1069,7 @@ AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=
 MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数,<color=#AFDFE4>梅林</color>的人數
 AssassinName,Assassin,アサシン,刺客,刺客
 AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利,找出<color=#AFDFE4>梅林</color>來獲得勝利
-AssassinSucsess,was Marlin.,はマーリンだった,是梅林,是梅林
+AssassinSuccess,was Marlin.,はマーリンだった,是梅林,是梅林
 AssassinFail,was not Marlin.,はマーリンではなかった,不是梅林,不是梅林
 MarlinName,Merine,マーリン,梅林,梅林
 MarlinTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。,不要被<color=#ff0000>刺客</color>發現。

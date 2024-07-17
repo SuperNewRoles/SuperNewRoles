@@ -61,9 +61,9 @@ public static class LadderDead
             if (sourcepos.y > targetpos.y)
             {
                 if (ModeHandler.IsMode(ModeId.VanillaHns) && __instance.myPlayer.IsImpostor()) return;
-                if (!((Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && ModHelpers.IsSucsessChance(Mode.PlusMode.PlusGameOptions.LadderDeadChance.GetSelection() + 1) && Mode.PlusMode.PlusGameOptions.LadderDead.GetBool()) ||
-                    (__instance.myPlayer.IsRole(RoleId.SuicidalIdeation) && ModHelpers.IsSucsessChance(CustomOptionHolder.SuicidalIdeationFallProbability.GetSelection() + 1)) ||
-                    (__instance.myPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.LadderDeathChance))
+                if (!((Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && ModHelpers.IsSuccessChance(Mode.PlusMode.PlusGameOptions.LadderDeadChance.GetSelection() + 1) && Mode.PlusMode.PlusGameOptions.LadderDead.GetBool()) ||
+                    (__instance.myPlayer.IsRole(RoleId.SuicidalIdeation) && ModHelpers.IsSuccessChance(CustomOptionHolder.SuicidalIdeationFallProbability.GetSelection() + 1)) ||
+                    (__instance.myPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSuccessChance(RoleClass.Spelunker.LadderDeathChance))
                     ))
                 {
                     return;

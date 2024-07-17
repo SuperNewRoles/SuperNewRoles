@@ -39,7 +39,7 @@ public static class RoleSelectHandler
         AllRoleSetClass.AllRoleSet();
         SetCustomRoles();
         SyncSetting.CustomSyncSettings();
-        ChacheManager.ResetChache();
+        CacheManager.ResetCache();
         return sender;
     }
     public static void SpawnBots()

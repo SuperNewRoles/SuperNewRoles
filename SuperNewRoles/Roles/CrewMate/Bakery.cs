@@ -34,7 +34,7 @@ public class Bakery
             var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
             if (exile != null && exile.IsRole(RoleId.Marlin))
             {
-                printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSucsess");
+                printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSuccess");
                 RoleClass.Assassin.IsImpostorWin = true;
             }
             else
@@ -64,7 +64,7 @@ public class Bakery
             var exile = exiled.Object;
             if (exile != null && exile.IsRole(RoleId.Dictator))
             {
-                printStr = exiled.PlayerName + ModTranslation.GetString("RevolutionistSucsess");
+                printStr = exiled.PlayerName + ModTranslation.GetString("RevolutionistSuccess");
             }
             else
             {

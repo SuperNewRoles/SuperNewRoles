@@ -43,7 +43,7 @@ public static class Spelunker
                 if (!RoleClass.Spelunker.IsVentChecked)
                 {
                     RoleClass.Spelunker.IsVentChecked = true;
-                    if (ModHelpers.IsSucsessChance(RoleClass.Spelunker.VentDeathChance))
+                    if (ModHelpers.IsSuccessChance(RoleClass.Spelunker.VentDeathChance))
                     {
                         PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerVentDeath);
@@ -103,7 +103,7 @@ public static class Spelunker
             if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId &&
                 target.IsRole(RoleId.Spelunker))
             {
-                bool isok = ModHelpers.IsSucsessChance(RoleClass.Spelunker.LiftDeathChance);
+                bool isok = ModHelpers.IsSuccessChance(RoleClass.Spelunker.LiftDeathChance);
                 Logger.Info($"{target.Data.PlayerName}のぬーん転落死の結果は{isok}でした ", "ぬーん転落死");
                 if (isok)
                 {
@@ -121,7 +121,7 @@ public static class Spelunker
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
             if (canUse)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.DoorOpenChance))
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSuccessChance(RoleClass.Spelunker.DoorOpenChance))
                 {
                     PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
                     PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerOpenDoor);
