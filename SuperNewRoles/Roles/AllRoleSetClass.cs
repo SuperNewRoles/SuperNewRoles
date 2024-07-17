@@ -175,6 +175,7 @@ class RoleManagerSelectRolesPatch
                 {
                     player.Data.Disconnected = false;
                 }
+                RoleSelectHandler.IsStartingSerialize = false;
             }, 2f);
             new LateTask(() =>
             {
@@ -188,7 +189,6 @@ class RoleManagerSelectRolesPatch
                     RPCHelper.RpcSetTasks(sender2, player.Data, tasks);
                 }
                 sender2.SendMessage();
-                RoleSelectHandler.IsStartingSerialize = false;
                 RoleSelectHandler.SetTasksBuffer = null;
             }, 1f);
 
