@@ -138,8 +138,11 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
             case ModeId.SuperHostRoles:
                 CustomRpcSender sender = CustomRpcSender.Create("RoleChenge");
 
-                SHRSwapTo(sender, target1, target2, player2_role_type);
-                SHRSwapTo(sender, target2, target1, player1_role_type);
+                if (target1.IsAlive()) SHRSwapTo(sender, target1, target2, player2_role_type);
+                if ((bool)target1.Data.RoleWhenAlive?.HasValue) target1.Data.RoleWhenAlive.value = player2_role_type;
+                
+                if (target2.IsAlive()) SHRSwapTo(sender, target2, target1, player1_role_type);
+                if ((bool)target2.Data.RoleWhenAlive?.HasValue) target2.Data.RoleWhenAlive.value = player1_role_type;
 
                 target1.SwapRoleRPC(target2);
 
@@ -151,16 +154,12 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     }
     private void SHRSwapTo(CustomRpcSender sender, PlayerControl player1, PlayerControl player2, RoleTypes player2RoleTypes)
     {
-        if (player2.GetRoleBase() is ISupportSHR shr && shr.IsDesync)
-        {
-            sender.SetRoleDesync(player1, shr.DesyncRole);
-        }
+        if (player2.GetRoleBase() is ISupportSHR shr && shr.IsDesync) sender.SetRoleDesync(player1, shr.DesyncRole);
         else
         {
             RoleId role = player2.GetRole();
             var data = RoleSelectHandler.GetDesyncRole(role);
-            if (data.IsDesync)
-                sender.SetRoleDesync(player1, data.RoleType);
+            if (data.IsDesync) sender.SetRoleDesync(player1, data.RoleType);
             else
             {
                 RoleTypes targetRoleTypes = player2RoleTypes;
@@ -171,8 +170,8 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
                     {
                         if (player.PlayerId == player1.PlayerId)
                             continue;
-                        if (!player.IsMod() &&
-                            (player is ISupportSHR supportSHR && supportSHR.IsDesync)||
+                        if ((!player.IsMod() &&
+                            player is ISupportSHR supportSHR && supportSHR.IsDesync) ||
                             RoleSelectHandler.GetDesyncRole(player.GetRole()).IsDesync)
                         {
                             sender.RpcSetRole(player, RoleTypes.Scientist, true, player.GetClientId());
@@ -182,8 +181,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
                         sender.RpcSetRole(player, player.Data.Role.Role, true, player1.GetClientId());
                     }
                 }
-                else
-                    sender.RpcSetRole(player1, targetRoleTypes, true);
+                else sender.RpcSetRole(player1, targetRoleTypes, true);
             }
         }
     }
