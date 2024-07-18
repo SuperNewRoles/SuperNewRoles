@@ -242,6 +242,8 @@ public static class AntiBlackOut
                 RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
+                    if (player.IsMod() || player.IsDead())
+                        continue;
                     player.RpcShowGuardEffect(player);
                 }
                 DestroySavedData();
