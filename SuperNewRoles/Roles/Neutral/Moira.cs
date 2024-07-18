@@ -11,7 +11,6 @@ using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -97,16 +96,11 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     {
         if (AbilityUsedThisMeeting) return;
         if (IsLimitOver) return;
+        Limit--;
         MessageWriter writer = RpcWriter;
-        writer.Write((byte)RpcType.SetLimit);
-        writer.Write(--Limit);
-        SendRpc(writer);
-
-        writer = RpcWriter;
-        writer.Write((byte)RpcType.AddChangeData);
+        writer.Write(Limit);
         writer.Write(target1.PlayerId);
         writer.Write(target2.PlayerId);
-        writer.Write(true);
         SendRpc(writer);
         AbilityUsedThisMeeting = true;
     }
@@ -383,24 +377,12 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
         SetNamesClass.SetPlayerNameText(Player, $"{Player.NameText().text} {"(⇔)".Color(Roleinfo.RoleColor)}");
     }
 
-    public enum RpcType : byte
-    {
-        SetLimit,
-        AddChangeData
-    }
     public void RpcReader(MessageReader reader)
     {
-        switch ((RpcType)reader.ReadByte())
-        {
-            case RpcType.SetLimit:
-                Limit = reader.ReadInt32();
-                break;
-            case RpcType.AddChangeData:
-                SwapVoteData = (reader.ReadByte(), reader.ReadByte());
-                ChangeData.Add(SwapVoteData);
-                AbilityUsedThisMeeting = true;
-                break;
-        }
+        Limit = reader.ReadInt32();
+        SwapVoteData = (reader.ReadByte(), reader.ReadByte());
+        ChangeData.Add(SwapVoteData);
+        AbilityUsedThisMeeting = true;
     }
 
     public bool CanWin(GameOverReason gameOverReason, WinCondition winCondition) => Player.IsAlive() && IsLimitOver;
@@ -459,15 +441,8 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
 
     public void EndAntiBlackout()
     {
-        if (SwapVoteData.Item1.GetPlayerControl().IsDead() || SwapVoteData.Item2.GetPlayerControl().IsDead())
-        {
-            MessageWriter writer = RpcWriter;
-            writer.Write((byte)RpcType.SetLimit);
-            writer.Write(++Limit);
-            SendRpc(writer);
-            return;
-        }
         SwapRole(SwapVoteData.Item1, SwapVoteData.Item2);
+        SwapVoteData = new(byte.MaxValue, byte.MaxValue);
     }
 
     public enum Mode
