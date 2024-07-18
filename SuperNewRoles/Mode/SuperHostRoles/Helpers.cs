@@ -85,7 +85,6 @@ public static class Helpers
         {
             var clientId = shower.GetClientId();
             Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
-            bool senderCreated = false;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 SyncSetting.CustomSyncSettings(target, isCooldownTwice: true);
@@ -95,7 +94,7 @@ public static class Helpers
                 MurderHelpers.RpcForceMurderAndGuard(shower, target, shower);
                 MurderHelpers.RpcForceGuard(shower, target, shower);
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                    new LateTask(() => SyncSetting.CustomSyncSettings(target), 0.05f);
+                    new LateTask(() => SyncSetting.CustomSyncSettings(target), 0.1f);
             }, 0.1f);
         }
     }

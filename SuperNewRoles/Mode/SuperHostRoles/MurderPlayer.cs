@@ -24,10 +24,6 @@ class MurderPlayer
         {
             RoleClass.Finder.KillCounts[__instance.PlayerId]++;
         }
-        if (target.IsRole(RoleId.Sheriff) || target.IsRole(RoleId.truelover) || target.IsRole(RoleId.MadMaker))
-        {
-            target.RpcSetRoleDesync(RoleTypes.GuardianAngel, true);
-        }
         if (target.IsQuarreled())
         {
             if (AmongUsClient.Instance.AmHost)
