@@ -53,6 +53,7 @@ MainMenuDiscordText,<size=90%>Bug report or Question or Request</size>\n<size=90
 20240618_25SaverInfo_PopupTitle,Server Notice,サーバーに関するお知らせ
 20240618_25SaverInfo_PopupText,<size=70%>Hello!\n\nActually，in some mods including SNR，if there are more than "9 people" on a vanilla server，some people get disconnected at the lobby start screen. \n(Not everyone gets disconnected though!)\nSo，if someone gets disconnected，it's probably due to this issue! \nIf no one gets disconnected at the lobby start screen，there shouldn't be much of a problem，so please check that first.\n\nCustom servers are not affected by this issue，so if you can use a custom server，that might be a good option. \n(At least as of the release，custom servers are not supported yet，so you can't use them.)\n\nThat's about it. \nFor the latest information，check Discord or Twitter! \n(There are links at the bottom right of the main menu! You should be able to see them after closing this.)\n\nSee you!</size>,<size=70%>こんにちは！\n実は、SNRを含めた一部MODの場合、バニラサーバーで何故か「9人以上」入るとロビーが開始画面で切断される人が出てくるようなんだ。\n(必ず切断されるわけてはないよ!)\n\nだから、落ちちゃう人がいたらそれはこの問題だよ！\nロビーが開始画面で落ちなければほとんど問題ないと思うからまずは確認してね。\n\nカスタムサーバーではこの影響は受けないから、カスタムサーバーが使えるならカスタムサーバーを使うのもいいと思うよ。\n(少なくともリリース時点ではカスタムサーバーがまだ対応してないから使えないけど。)\n\nこんな感じかな。最新情報はDiscordかTwitterを見てね！\n(メインメニューの右下にリンクがあるよ！これを閉じたら見れると思う。)\n\nじゃあね！ </size>
 20240618_25SaverInfo_PopupOK,OK,オッケー！
+CommandNotFound,Where is the command?\nThis command is not found.,このコマンドはどこ?\nこのコマンドが見つかりませんでした。
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红,鮭魚紅

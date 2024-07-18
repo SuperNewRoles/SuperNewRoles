@@ -18,7 +18,7 @@ public static class SyncSetting
 {
     public static IGameOptions DefaultOption;
     public static PlayerData<IGameOptions> OptionDatas;
-    public static void CustomSyncSettings(this PlayerControl player, CustomRpcSender sender = null)
+    public static void CustomSyncSettings(this PlayerControl player, CustomRpcSender sender = null, bool isCooldownTwice = false)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
@@ -253,6 +253,9 @@ public static class SyncSetting
             optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
 
         Balancer.InHostMode.SetMeetingSettings(optdata);
+
+        if (isCooldownTwice)
+            optdata.SetFloat(FloatOptionNames.KillCooldown, optdata.GetFloat(FloatOptionNames.KillCooldown) * 2f);
 
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         else optdata.RpcSyncOption(sender, player.GetClientId());

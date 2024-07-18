@@ -240,6 +240,10 @@ public static class AntiBlackOut
                 IsModdedSerialize = false;
                 ChangeName.SetRoleNames();
                 RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    player.RpcShowGuardEffect(player);
+                }
                 DestroySavedData();
             }, 0.2f);
             ProcessNow = false;

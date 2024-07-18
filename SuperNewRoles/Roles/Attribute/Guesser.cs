@@ -172,8 +172,8 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
 
         // Shoot player and send chat info if activated
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.GuesserShoot);
-        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
         writer.Write(Player.PlayerId);
+        writer.Write(targetPlayer.PlayerId);
         writer.Write(targetPlayer.PlayerId);
         writer.Write((byte)role);
         AmongUsClient.Instance.FinishRpcImmediately(writer);

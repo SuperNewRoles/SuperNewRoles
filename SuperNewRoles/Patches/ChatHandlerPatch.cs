@@ -75,7 +75,7 @@ internal class AddChatPatch
             return false;
         }
 
-        if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles))
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             string lcmd = Commands[0].ToLower();
             if (sourcePlayer.GetRoleBase() is ISHRChatCommand shrcmd &&
@@ -87,10 +87,20 @@ internal class AddChatPatch
                 )
             {
                 bool isCancelChat;
-                if (Commands.Length > 1)
-                    isCancelChat = shrcmd.OnChatCommand(Commands[1..]);
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (Commands.Length > 1)
+                        isCancelChat = shrcmd.OnChatCommand(Commands[1..]);
+                    else
+                        isCancelChat = shrcmd.OnChatCommand([]);
+                }
                 else
-                    isCancelChat = shrcmd.OnChatCommand([]);
+                {
+                    if (Commands.Length > 1)
+                        isCancelChat = shrcmd.OnChatCommandClient(Commands[1..]);
+                    else
+                        isCancelChat = shrcmd.OnChatCommandClient([]);
+                }
                 if (isCancelChat)
                     return false;
             }
@@ -99,13 +109,12 @@ internal class AddChatPatch
                 foreach (ISHRChatCommand shrChatCommand in RoleBaseManager.GetInterfaces<ISHRChatCommand>())
                 {
                     if (
-                         ("/" + shrChatCommand.CommandName == lcmd ||
+                         "/" + shrChatCommand.CommandName == lcmd ||
                            (
                               (shrChatCommand.Alias != null) &&
                               ("/" + shrChatCommand.Alias == lcmd)
                            )
-                         )
-                        )
+                       )
                     {
                         SendCommand(sourcePlayer, ModTranslation.GetString("CommandNotFound"), GetChatCommands.SNRCommander);
                         return false;

@@ -819,6 +819,7 @@ public static class RPCProcedure
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
         if (MeetingHud.Instance)
         {
+            bool isSHR = ModeHandler.IsMode(ModeId.SuperHostRoles);
             foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
             {
                 if (pva.TargetPlayerId == dyingTargetId)
@@ -828,6 +829,12 @@ public static class RPCProcedure
                 }
                 if (pva.VotedFor != dyingTargetId) continue;
                 pva.UnsetVote();
+                if (isSHR)
+                {
+                    PlayerControl player = pva.TargetPlayerId.GetPlayerControl();
+                    if (player != null && !player.IsMod())
+                        MeetingHud.Instance.RpcClearVote(player.GetClientId());
+                }
                 var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
                 if (!voteAreaPlayer.AmOwner) continue;
                 MeetingHud.Instance.ClearVote();
@@ -840,7 +847,7 @@ public static class RPCProcedure
             if (CachedPlayer.LocalPlayer.PlayerControl == dyingTarget)
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
-                if (Roles.Attribute.Guesser.guesserUI != null) Roles.Attribute.Guesser.ExitButton.OnClick.Invoke();
+                if (Guesser.guesserUI != null) Guesser.ExitButton.OnClick.Invoke();
             }
     }
 
