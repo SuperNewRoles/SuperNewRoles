@@ -129,6 +129,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         // Old Delete End
 
+        LoggerPlus.SetLogName();
+
         SuperNewRoles.Logger.Info(DateTime.Now.ToString("D"), "DateTime Now"); // 2022年11月24日
         SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
         SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
