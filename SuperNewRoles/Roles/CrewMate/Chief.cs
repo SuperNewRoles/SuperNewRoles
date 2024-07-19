@@ -45,7 +45,7 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
     private CustomButtonInfo SidekickButton;
 
     private bool IsCreatedSheriff;
-    public byte CreatedSheriff;
+    public byte CreatedSheriff = byte.MaxValue;
 
     private static void CreateOption()
     {
