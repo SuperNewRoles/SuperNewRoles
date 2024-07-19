@@ -135,7 +135,6 @@ public static class RoleSelectHandler
     {
         return role switch
         {
-            RoleId.Jackal => (true, RoleTypes.Impostor),
             RoleId.Sheriff => (true, RoleTypes.Impostor),
             RoleId.Demon => (true, RoleTypes.Impostor),
             RoleId.truelover => (true, RoleTypes.Impostor),
