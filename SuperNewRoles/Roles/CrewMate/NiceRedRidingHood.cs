@@ -21,7 +21,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         TeamType.Crewmate
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.NiceRedRidingHood, 403400, true,
+        new(RoleId.NiceRedRidingHood, 403400, false,
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.NiceRedRidingHood, introSound: RoleTypes.Crewmate);

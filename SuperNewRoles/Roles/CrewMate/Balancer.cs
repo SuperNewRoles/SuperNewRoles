@@ -21,9 +21,9 @@ public static class Balancer
     public static CustomOption BalancerVoteTime;
     public static void SetupCustomOptions()
     {
-        BalancerOption = CustomOption.SetupCustomRoleOption(OptionId, true, RoleId.Balancer);
-        BalancerPlayerCount = CustomOption.Create(OptionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], BalancerOption);
-        BalancerVoteTime = CustomOption.Create(OptionId + 2, true, CustomOptionType.Crewmate, "BalancerVoteTime", 30f, 0f, 180f, 2.5f, BalancerOption);
+        BalancerOption = CustomOption.SetupCustomRoleOption(OptionId, false, RoleId.Balancer);
+        BalancerPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], BalancerOption);
+        BalancerVoteTime = CustomOption.Create(OptionId + 2, false, CustomOptionType.Crewmate, "BalancerVoteTime", 30f, 0f, 180f, 2.5f, BalancerOption);
     }
 
     public static List<PlayerControl> BalancerPlayer;
