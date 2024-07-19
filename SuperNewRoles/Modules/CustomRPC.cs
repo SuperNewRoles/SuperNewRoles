@@ -1187,24 +1187,24 @@ public static class RPCProcedure
         if (player1role != null)
         {
             player1role.SetPlayer(player2);
-            Logger.Info($"{player2.name}を{player1role.Role}に変更しました", "RPC.SwapRole");
+            Logger.Info($"{player2.name}を{player1role.Role}に変更しました", "RPC.SwapRole.RoleBase");
         }
         else
         {
             player2.ClearRole();
             player2.SetRole(player1id);
-            Logger.Info($"{player2.name}を{player1id}に変更しました", "RPC.SwapRole");
+            Logger.Info($"{player2.name}を{player1id}に変更しました", "RPC.SwapRole.RoleId");
         }
         if (player2role != null)
         {
             player2role.SetPlayer(player1);
-            Logger.Info($"{player1.name}を{player2role.Role}に変更しました", "RPC.SwapRole");
+            Logger.Info($"{player1.name}を{player2role.Role}に変更しました", "RPC.SwapRole.RoleBase");
         }
         else
         {
             player1.ClearRole();
             player1.SetRole(player2id);
-            Logger.Info($"{player1.name}を{player2id}に変更しました", "RPC.SwapRole");
+            Logger.Info($"{player1.name}を{player2id}に変更しました", "RPC.SwapRole.RoleId");
         }
         CacheManager.ResetMyRoleCache();
         RoleHelpers.ClearTaskUpdate();
