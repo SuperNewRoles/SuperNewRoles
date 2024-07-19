@@ -1,3 +1,4 @@
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Helpers;
@@ -55,7 +56,10 @@ public static class SyncSetting
         switch (player.GetRole())
         {
             case RoleId.Sheriff:
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Sheriff.CoolTime));
+                float SheriffCoolTime = RoleClass.Sheriff.CoolTime;
+                if (RoleBaseManager.GetRoleBaseOrigins<Chief>().Any(x => (x as Chief).CreatedSheriff == player.PlayerId))
+                    SheriffCoolTime = Chief.ChiefSheriffCoolTime.GetFloat();
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SheriffCoolTime));
                 break;
             case RoleId.Minimalist:
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Minimalist.KillCoolTime));

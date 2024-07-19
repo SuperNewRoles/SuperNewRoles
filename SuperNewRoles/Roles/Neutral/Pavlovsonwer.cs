@@ -141,10 +141,12 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
                                     continue;
                                 player.RpcSetRoleDesync(RoleTypes.Engineer, true, target);
                             }
+                            target.SetRole(RoleTypes.Crewmate);
                         }, 0.15f);
                     }
                     if (!Player.IsMod())
                         Player.RpcSetRoleDesync(RoleTypes.Crewmate, true);
+                    target.SetRole(RoleTypes.Crewmate);
                 }
                 RPCProcedure.SetRole(target.PlayerId, (byte)RoleId.Pavlovsdogs);
                 if (!target.TryGetRoleBase(out PavlovsDogs dog))

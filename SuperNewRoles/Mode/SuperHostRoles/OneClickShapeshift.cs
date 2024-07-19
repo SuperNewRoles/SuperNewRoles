@@ -38,6 +38,7 @@ public static class OneClickShapeshift
             .RpcSetSkin(player, player.Data.DefaultOutfit.SkinId)
             .RpcSetPet(player, player.Data.DefaultOutfit.PetId)
             .RpcSetVisor(player, player.Data.DefaultOutfit.HatId);
+        player.SetName(player.GetDefaultName());
         ChangeName.SetRoleName(player, sender: sender);
         sender.SendMessage();
     }

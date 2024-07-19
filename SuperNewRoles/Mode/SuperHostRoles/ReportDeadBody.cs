@@ -53,18 +53,26 @@ class ReportDeadBody
             CustomRpcSender sender = CustomRpcSender.Create("ReportDeadBodyPatch", SendOption.Reliable);
             if (DesyncRoleTypes.HasValue)
             {
-                sender.RpcSetRole(__instance, RoleTypes.Engineer, true);
-                if (__instance.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                sender.RpcSetRole(__instance, __instance.IsMod() ? RoleTypes.Crewmate : RoleTypes.Engineer, true);
+                if (!__instance.IsMod())
+                {
                     __instance.RpcSetRoleDesync(sender, DesyncRoleTypes.Value, true);
-                __instance.SetRole(DesyncRoleTypes.Value, true);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.PlayerId != __instance.PlayerId)
+                            sender.RpcSetRole(player, RoleTypes.Scientist, true, __instance.GetClientId());
+                    }
+                }
+                __instance.SetRole(RoleTypes.Crewmate, true);
             }
             else if (SyncRoleTypes.IsImpostorRole())
             {
                 sender.RpcSetRole(__instance, RoleTypes.Tracker, true);
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId && (player.IsImpostor() || player.PlayerId == __instance.PlayerId))
-                        sender.RpcSetRole(__instance, SyncRoleTypes, true);
+                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+                        (player.IsImpostor() || player.PlayerId == __instance.PlayerId))
+                        sender.RpcSetRole(__instance, SyncRoleTypes, true, player.GetClientId());
                 }
                 __instance.SetRole(SyncRoleTypes, true);
             }

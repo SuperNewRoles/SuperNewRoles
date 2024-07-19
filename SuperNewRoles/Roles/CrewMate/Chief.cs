@@ -143,7 +143,6 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
                     }
                 }
                 ChangeName.SetRoleName(target);
-                SyncSetting.CustomSyncSettings(target);
                 target.RpcShowGuardEffect(target);
             }, 0.25f);
 
