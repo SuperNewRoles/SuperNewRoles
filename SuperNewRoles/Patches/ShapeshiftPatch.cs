@@ -79,7 +79,7 @@ class CheckShapeshiftPatch
                 {
                     case RoleId.SelfBomber:
                         reject = true;
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                             {

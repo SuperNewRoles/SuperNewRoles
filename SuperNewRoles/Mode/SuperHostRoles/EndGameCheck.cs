@@ -113,8 +113,8 @@ class EndGameCheck
         }*/
 
         var (winners, winCondition, WillRevivePlayers) = OnGameEndPatch.HandleEndGameProcess((GameOverReason)reason);
-        var winnersByte = winners.Select((p) => p?.PlayerId ?? byte.MaxValue).ToArray();
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        var winnersByte = winners.Select((p) => p?.PlayerId ?? byte.MaxValue);
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             bool IsDead = player.Data.IsDead;
             RoleTypes RealRole = player.Data.Role.Role;
@@ -128,14 +128,14 @@ class EndGameCheck
                 player.Revive();
         }
         Dictionary<PlayerControl, byte> ShowTargets = new();
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsMod())
                 continue;
             if (winnersByte.Contains(player.PlayerId) && player.IsAlive())
                 continue;
             PlayerControl SeeTarget = null;
-            foreach (PlayerControl seeTarget in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl seeTarget in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.PlayerId == seeTarget.PlayerId)
                     continue;

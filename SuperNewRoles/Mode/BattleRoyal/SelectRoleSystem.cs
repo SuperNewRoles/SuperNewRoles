@@ -101,7 +101,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                 PlayerControl.LocalPlayer.RpcStartMeeting(null);
             }
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 p.RpcSetName(p.GetDefaultName());
             }
@@ -180,7 +180,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }
                 }
             }
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 p.Data.IsDead = false;
                 if (!p.IsBot()) continue;
@@ -200,15 +200,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 Commandsb.AddRange(com.Split("　"));
             }
-            var Commands = Commandsb.ToArray();
-            if (Commands[0].Equals("/SetRole", StringComparison.OrdinalIgnoreCase))
+            if (Commandsb[0].Equals("/SetRole", StringComparison.OrdinalIgnoreCase))
             {
-                if (Commands.Length <= 1)
+                if (Commandsb.Count <= 1)
                 {
                     AddChatPatch.SendCommand(source, ModTranslation.GetString("BattleRoyalRoleNoneText"), BattleRoyalCommander);
                     return false;
                 }
-                var data = RoleNames.FirstOrDefault(x => x.Key.Equals(Commands[1], StringComparison.OrdinalIgnoreCase));
+                var data = RoleNames.FirstOrDefault(x => x.Key.Equals(Commandsb[1], StringComparison.OrdinalIgnoreCase));
                 //nullチェック
                 if (data.Equals(default(KeyValuePair<string, RoleId>)))
                 {

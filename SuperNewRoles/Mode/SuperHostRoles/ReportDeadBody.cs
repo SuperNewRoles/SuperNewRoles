@@ -57,7 +57,7 @@ class ReportDeadBody
                 if (!__instance.IsMod())
                 {
                     __instance.RpcSetRoleDesync(sender, DesyncRoleTypes.Value, true);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (player.PlayerId != __instance.PlayerId)
                             sender.RpcSetRole(player, RoleTypes.Scientist, true, __instance.GetClientId());
@@ -68,7 +68,7 @@ class ReportDeadBody
             else if (SyncRoleTypes.IsImpostorRole())
             {
                 sender.RpcSetRole(__instance, RoleTypes.Tracker, true);
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
                         (player.IsImpostor() || player.PlayerId == __instance.PlayerId))

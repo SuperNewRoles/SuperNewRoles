@@ -109,10 +109,7 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
             deadBody = Object.Instantiate(GameManager.Instance.DeadBodyPrefab);
             deadBody.enabled = true;
             deadBody.ParentId = target.PlayerId;
-            deadBody.bodyRenderers.ForEach(delegate (SpriteRenderer b)
-            {
-                target.SetPlayerMaterialColors(b);
-            });
+            deadBody.bodyRenderers.ForEach(target.SetPlayerMaterialColors);
             target.SetPlayerMaterialColors(deadBody.bloodSplatter);
             deadBody.transform.position = new(999, 999, 0);
             deadBodyPosition = targetLadder.Destination.transform.position + new Vector3(0.15f, 0.2f, 0);

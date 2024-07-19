@@ -115,7 +115,7 @@ class RoleManagerSelectRolesPatch
 
 
             RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanillaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.Data.Disconnected || player.IsImpostor())
                     continue;
@@ -138,19 +138,19 @@ class RoleManagerSelectRolesPatch
             /*
                         RPCHelper.RpcSyncAllNetworkedPlayer(DEBUGOnlySender);
                        */
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 player.Data.Disconnected = false;
             }
             RoleSelectHandler.SetTasksBuffer = new();
             new LateTask(() =>
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = true;
                 }
                 RPCHelper.RpcSyncAllNetworkedPlayer();
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = false;
                 }
@@ -159,7 +159,7 @@ class RoleManagerSelectRolesPatch
 
                 PlayerControl RoleTargetPlayer = null;
                 RoleTypes RoleTargetRole = RoleTypes.Crewmate;
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (!player.IsCrew())
                         continue;
@@ -173,19 +173,19 @@ class RoleManagerSelectRolesPatch
                 }
                 if (RoleTargetPlayer == null)
                     throw new NotImplementedException("RoleTargetPlayer is null");
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = true;
                 }
                 RoleTargetPlayer.RpcSetRole(RoleTargetRole, true);
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = false;
                 }
             }, 0.5f);
             new LateTask(() =>
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = false;
                 }
@@ -193,7 +193,7 @@ class RoleManagerSelectRolesPatch
             }, 0.75f);
             new LateTask(() =>
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     // RoleSelectHandler.SetTasksBuffer
                     if (!RoleSelectHandler.SetTasksBuffer.TryGetValue(player.PlayerId, out var tasks))
@@ -204,7 +204,7 @@ class RoleManagerSelectRolesPatch
                 RoleSelectHandler.IsStartingSerialize = false;
             }, 1f);
 
-            /*foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            /*foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                     continue;

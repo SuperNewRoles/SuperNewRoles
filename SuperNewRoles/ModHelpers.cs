@@ -261,7 +261,7 @@ public static class ModHelpers
     public static Dictionary<byte, PlayerControl> AllPlayersById()
     {
         Dictionary<byte, PlayerControl> res = new();
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             res.Add(player.PlayerId, player);
         return res;
     }
@@ -760,11 +760,7 @@ public static class ModHelpers
     }
     public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
-        List<T> newList = new(list.Count);
-        foreach (T item in list)
-        {
-            newList.Add(item);
-        }
+        List<T> newList = [.. list];
         return newList;
     }
     public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
@@ -1096,7 +1092,7 @@ public static class ModHelpers
     public static PlayerControl PlayerByColor(string color_name)
     {
         if (ColorControlDic.TryGetValue(color_name, out PlayerControl player)) return player;
-        foreach (PlayerControl check in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl check in CachedPlayer.AllPlayers.AsSpan())
         {
             if (color_name == check.Data.GetPlayerColorString())
             {

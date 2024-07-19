@@ -110,7 +110,7 @@ public class IntroPatch
                 Vector3 bottomLeft = new(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z);
 
                 int index = -1;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     NetworkedPlayerInfo data = p.Data;
                     Logger.Info($"生成:{p.Data.PlayerName}");

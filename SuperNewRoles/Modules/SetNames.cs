@@ -391,7 +391,7 @@ public class SetNameUpdate
             nameHandler.AmAllRoleVisible);
         if (CanSeeAllRole)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 SetNamesClass.SetPlayerNameColors(player);
                 SetNamesClass.SetPlayerRoleNames(player);
@@ -445,7 +445,7 @@ public class SetNameUpdate
                 case RoleId.Finder:
                     if (RoleClass.Finder.IsCheck)
                     {
-                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (player.IsMadRoles())
                             {
@@ -514,7 +514,7 @@ public class SetNameUpdate
                         SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Value));
                         SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Value));
                     }
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (OrientalShaman.IsKiller(player))
                             SetNamesClass.SetPlayerNameColors(player);

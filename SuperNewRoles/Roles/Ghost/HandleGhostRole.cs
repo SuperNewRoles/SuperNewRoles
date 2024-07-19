@@ -23,7 +23,7 @@ public class HandleGhostRole
                 {
                     // TryAssignSpecialGhostRoles
                     RoleTypes roleTypes = RoleTypes.GuardianAngel;
-                    int num = PlayerControl.AllPlayerControls.ToArray().Count((PlayerControl pc) => pc.Data.IsDead && !pc.Data.Role.IsImpostor);
+                    int num = CachedPlayer.AllPlayers.Count((CachedPlayer player) => player.Data.IsDead && !player.Data.Role.IsImpostor);
                     IRoleOptionsCollection roleOptions = GameOptionsManager.Instance.CurrentGameOptions.RoleOptions;
                     if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
                     {

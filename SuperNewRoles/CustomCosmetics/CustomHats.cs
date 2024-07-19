@@ -57,7 +57,7 @@ public class CustomHats
         public bool behind { get; set; }
     }
 
-    private static List<CustomHat> CreateCustomHatDetails(string[] hats, bool fromDisk = false)
+    private static List<CustomHat> CreateCustomHatDetails(IEnumerable<string> hats, bool fromDisk = false)
     {
         Dictionary<string, CustomHat> fronts = new();
         Dictionary<string, string> backs = new();
@@ -65,9 +65,9 @@ public class CustomHats
         Dictionary<string, string> backflips = new();
         Dictionary<string, string> climbs = new();
 
-        for (int i = 0; i < hats.Length; i++)
+        foreach (string hat in hats)
         {
-            string s = fromDisk ? hats[i][(hats[i].LastIndexOf("\\") + 1)..].Split('.')[0] : hats[i].Split('.')[3];
+            string s = fromDisk ? hat[(hat.LastIndexOf("\\") + 1)..].Split('.')[0] : hat.Split('.')[3];
             string[] p = s.Split('_');
 
             HashSet<string> options = new();
@@ -75,18 +75,18 @@ public class CustomHats
                 options.Add(p[j]);
 
             if (options.Contains("back") && options.Contains("flip"))
-                backflips.Add(p[0], hats[i]);
+                backflips.Add(p[0], hat);
             else if (options.Contains("climb"))
-                climbs.Add(p[0], hats[i]);
+                climbs.Add(p[0], hat);
             else if (options.Contains("back"))
-                backs.Add(p[0], hats[i]);
+                backs.Add(p[0], hat);
             else if (options.Contains("flip"))
-                flips.Add(p[0], hats[i]);
+                flips.Add(p[0], hat);
             else
             {
                 CustomHat custom = new()
                 {
-                    resource = hats[i],
+                    resource = hat,
                     name = p[0].Replace('-', ' '),
                     bounce = options.Contains("bounce"),
                     adaptive = options.Contains("adaptive"),
@@ -234,9 +234,9 @@ public class CustomHats
                 {
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
-                    string[] hats = (from r in assembly.GetManifestResourceNames()
+                    var hats = from r in assembly.GetManifestResourceNames()
                                      where r.StartsWith(hatres) && r.EndsWith(".png")
-                                     select r).ToArray<string>();
+                                     select r;
 
                     List<CustomHat> customhats = CreateCustomHatDetails(hats);
                     foreach (CustomHat ch in customhats.AsSpan())
@@ -273,9 +273,9 @@ public class CustomHats
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
-                string[] hats = (from r in assembly.GetManifestResourceNames()
+                var hats = from r in assembly.GetManifestResourceNames()
                                  where r.StartsWith(hatres) && r.EndsWith(".png")
-                                 select r).ToArray<string>();
+                                 select r;
 
                 List<CustomHat> customhats = CreateCustomHatDetails(hats);
                 foreach (CustomHat ch in customhats)
@@ -361,7 +361,7 @@ public class CustomHats
             {
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\Test";
                 DirectoryInfo d = new(filePath);
-                string[] filePaths = d.GetFiles("*.png").Select(x => x.FullName).ToArray(); // Getting Text files
+                var filePaths = d.GetFiles("*.png").Select(x => x.FullName); // Getting Text files
                 List<CustomHat> hats = CreateCustomHatDetails(filePaths, true);
                 if (hats.Count > 0)
                 {

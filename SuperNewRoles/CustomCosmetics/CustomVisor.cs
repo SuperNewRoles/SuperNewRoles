@@ -42,9 +42,9 @@ public class CustomVisor
                 {
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     string visorres = $"{assembly.GetName().Name}.Resources.CustomVisors";
-                    string[] visors = (from r in assembly.GetManifestResourceNames()
+                    var visors = from r in assembly.GetManifestResourceNames()
                                        where r.StartsWith(visorres) && r.EndsWith(".png")
-                                       select r).ToArray<string>();
+                                       select r;
 
                     List<CustomVisors.CustomVisor> customvisors = CustomVisors.CreateCustomVisorDetails(visors);
                     foreach (CustomVisors.CustomVisor cv in customvisors.AsSpan())
@@ -80,9 +80,9 @@ public class CustomVisor
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string visorres = $"{assembly.GetName().Name}.Resources.CustomVisors";
-                string[] visors = (from r in assembly.GetManifestResourceNames()
+                var visors = from r in assembly.GetManifestResourceNames()
                                    where r.StartsWith(visorres) && r.EndsWith(".png")
-                                   select r).ToArray<string>();
+                                   select r;
 
                 List<CustomVisors.CustomVisor> customvisors = CustomVisors.CreateCustomVisorDetails(visors);
                 foreach (CustomVisors.CustomVisor cv in customvisors)

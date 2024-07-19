@@ -133,7 +133,7 @@ public static class RoleBaseManager
     }
     public static IEnumerable<T> GetRoleBases<T>() where T : RoleBase
     {
-        return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? (value?.Cast<T>()?.ToList() ?? new()) : new();
+        return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? value.Cast<T>() : new List<T>();
     }
     public static IReadOnlySet<RoleBase> GetRoleBaseOrigins<T>() where T : RoleBase
     {
