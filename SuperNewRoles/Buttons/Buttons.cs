@@ -2304,7 +2304,7 @@ static class HudManagerStartPatch
         DoubleKillerMainKillButton = new(
             () =>
             {
-                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true));
                 switch (PlayerControl.LocalPlayer.GetRole())
                 {
                     case RoleId.DoubleKiller:
