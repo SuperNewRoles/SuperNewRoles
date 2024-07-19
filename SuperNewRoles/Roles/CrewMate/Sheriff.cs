@@ -155,7 +155,7 @@ class Sheriff
     {
         ResetKillCooldown();
     }
-    class SheriffRoleExecutionData
+    public class SheriffRoleExecutionData
     {
         /// <summary>執行挙動のモード</summary>
         public ExecutionMode Mode;

@@ -293,6 +293,8 @@ internal class AddChatPatch
     /// <param name="isSendFromGuest">ゲストが自分自身に送信可能にする</param>
     public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white", bool isSendFromGuest = false)
     {
+        if (target == null) return;
+
         string line = "|--------------------------------------------------------|";
         string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
         string contents = $"\n<align={"left"}>{infoContents}</align>\n　\n";
@@ -308,6 +310,8 @@ internal class AddChatPatch
     /// <param name="text">チャットの内容</param>
     public static void SelfSend(string titelName, string text)
     {
+        if (PlayerControl.LocalPlayer == null) return;
+
         var localPlayer = PlayerControl.LocalPlayer;
         var originalName = localPlayer.Data.PlayerName;
         const string blank = "<color=#00000000>.</color>\n";

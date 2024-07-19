@@ -130,6 +130,26 @@ public static class VentDataModules
                     ventMap["ShowersVent"].Vent.Center = connect ? ventMap["AdditionalVent_17"] : new Vent();
                 }
                 break;
+            case 5:
+                // Fungle
+                ventMap["RecRoomVent"].Vent.Center = connect ? ventMap["KitchenVent"].Vent : new Vent();
+                ventMap["KitchenVent"].Vent.Center = connect ? ventMap["RecRoomVent"].Vent : new Vent();
+
+                ventMap["SouthWestJungleVent"].Vent.Center = connect ? ventMap["NorthWestJungleVent"].Vent : new Vent();
+                ventMap["NorthWestJungleVent"].Vent.Center = connect ? ventMap["SouthWestJungleVent"].Vent : new Vent();
+
+                ventMap["LookoutVent"].Vent.Center = connect ? ventMap["StorageVent"].Vent : new Vent();
+                ventMap["StorageVent"].Vent.Center = connect ? ventMap["LookoutVent"].Vent : new Vent();
+
+                ventMap["NorthEastJungleVent"].Vent.Center = connect ? ventMap["SouthEastJungleVent"].Vent : new Vent();
+                ventMap["SouthEastJungleVent"].Vent.Center = connect ? ventMap["NorthEastJungleVent"].Vent : new Vent();
+
+                ventMap["CommunicationsVent"].Vent.Center = connect ? ventMap["MeetingRoomVent"].Vent : new Vent();
+                ventMap["MeetingRoomVent"].Vent.Center = connect ? ventMap["CommunicationsVent"].Vent : new Vent();
+
+                ventMap["KitchenVent"].Vent.Right = connect ? ventMap["SouthEastJungleVent"].Vent : new Vent();
+                ventMap["SouthEastJungleVent"].Vent.Right = connect ? ventMap["KitchenVent"].Vent : new Vent();
+                break;
         }
     }
 }

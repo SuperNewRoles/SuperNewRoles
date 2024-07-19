@@ -106,9 +106,9 @@ public static class SendChatPatch
                 .Replace("　", "");
 
             // memoが空なら ファイル名をChatCommandViaにする。
-            if (memo == "") Logger.SaveLog(via, via);
+            if (memo == "") LoggerPlus.SaveLog(via, via);
             // memoの中身があるなら ファイル名を任意の文字列にする。
-            else Logger.SaveLog(memo, via);
+            else LoggerPlus.SaveLog(memo, via);
         }
         else if (text.ToLower().StartsWith("/lp"))
         {

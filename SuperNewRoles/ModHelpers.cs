@@ -517,6 +517,13 @@ public static class ModHelpers
             r.color = new Color(r.color.r, r.color.g, r.color.b, alpha);
         player.cosmetics.nameText.color = new Color(player.cosmetics.nameText.color.r, player.cosmetics.nameText.color.g, player.cosmetics.nameText.color.b, alpha);
     }
+    public static void HideChildren(Transform transform)
+    {
+        if (transform == null)
+            return;
+        for (int i = 0; i < transform.childCount; i++)
+            transform.GetChild(i).gameObject.SetActive(false);
+    }
 
     public static Console ActivateConsole(Transform trf) => ActivateConsole(trf.gameObject);
 

@@ -67,7 +67,7 @@ class ControllerManagerUpdatePatch
         if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
         {
             string via = "KeyCommandVia";
-            Logger.SaveLog(via, via);
+            LoggerPlus.SaveLog(via, via);
         }
 
 
