@@ -15,11 +15,12 @@ using static UnityEngine.GraphicsBuffer;
 namespace SuperNewRoles.Roles.RoleBases;
 public enum CustomButtonCouldType
 {
-    Always = 0x001, //1
-    CanMove = 0x002, //2
-    SetTarget = 0x004, //4
-    NotNearDoor = 0x008, //8
-    NotMoving = 0x010, //16
+    None = 0, // 0
+    Always = 0x001, // 1
+    CanMove = 0x002, // 2
+    SetTarget = 0x004, // 4
+    NotNearDoor = 0x008, // 8
+    NotMoving = 0x010, // 16
     SetVent = 0x020, // 32
 }
 public class CustomButtonInfo
@@ -43,6 +44,7 @@ public class CustomButtonInfo
     private Func<bool> StopCountCoolFunc { get; }
     private Func<float> GetCoolTimeFunc { get; }
     private Func<float> GetDurationTimeFunc { get; }
+    private bool IsEffectDurationInfinity { get; }
     private Action OnEffectEndsFunc { get; }
     private ActionButton BaseButton { get; }
     private ICustomButton icustomButton { get; set; }
@@ -60,6 +62,7 @@ public class CustomButtonInfo
     private int _lastAbilityCount { get; set; }
     public bool HasAbility { get; }
     public int AbilityCount { get; set; }
+    public Func<PlayerControl>? SetTargetFunc;
     //InfoText
     /// <summary>
     /// CustomButtonInfo
@@ -80,6 +83,7 @@ public class CustomButtonInfo
     /// <param name="StopCountCoolFunc">クールタイムを止めるか(なければnull)</param>
     /// <param name="baseButton">もとにするActionButton(キルボなど、なければAbilityButton)</param>
     /// <param name="DurationTime">継続時間(継続時間を使わなければnull)</param>
+    /// <param name="IsEffectDurationInfinity">持続時間が無限か</param>
     /// <param name="CouldUse">使用するかのAction(不必要ならnull)</param>
     /// <param name="OnEffectEnds">継続時間が終わった時の処理(なければnull)</param>
     /// <param name="hasSecondButtonInfo">ボタンの情報用テキストを表示するか</param>
@@ -103,12 +107,14 @@ public class CustomButtonInfo
         Func<bool> StopCountCoolFunc = null,
         ActionButton baseButton = null,
         Func<float> DurationTime = null,
+        bool IsEffectDurationInfinity = false,
         Func<bool> CouldUse = null,
         Action OnEffectEnds = null,
         bool HasAbilityCountText = false,
         string AbilityCountTextFormat = null,
         Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
         Func<bool> SetTargetCrewmateOnly = null,
+        Func<PlayerControl> SetTargetFunc = null,
         bool hasSecondButtonInfo = false)
     {
         this.HasAbility = AbilityCount != null;
@@ -128,7 +134,9 @@ public class CustomButtonInfo
         this.showButtonText = showButtonText;
         this.GetCoolTimeFunc = CoolTime;
         this.GetDurationTimeFunc = DurationTime;
+        this.IsEffectDurationInfinity = IsEffectDurationInfinity;
         this.OnEffectEndsFunc = OnEffectEnds;
+        this.SetTargetFunc = SetTargetFunc;
         this.HasAbilityCountText = HasAbilityCountText;
         if (this.BaseButton == null)
             this.BaseButton = FastDestroyableSingleton<HudManager>.Instance.AbilityButton;
@@ -193,7 +201,7 @@ public class CustomButtonInfo
             buttonSprite, positionOffset,
             FastDestroyableSingleton<HudManager>.Instance,
             BaseButton, HotKey, joystickKey, StopCountCool,
-            GetDurationTimeFunc != null, GetDurationTimeFunc?.Invoke() ?? 5f, OnEffectEnds)
+            GetDurationTimeFunc != null, GetDurationTimeFunc?.Invoke() ?? 5f, OnEffectEnds, IsEffectDurationInfinity)
         {
             buttonText = ButtonText,
             showButtonText = showButtonText
@@ -204,6 +212,7 @@ public class CustomButtonInfo
     public void OnEffectEnds()
     {
         OnEffectEndsFunc?.Invoke();
+        ResetCoolTime();
     }
     public bool StopCountCool()
     {
@@ -214,6 +223,7 @@ public class CustomButtonInfo
         float CoolTime = GetCoolTimeFunc?.Invoke() ?? 0;
         customButton.MaxTimer = CoolTime;
         customButton.Timer = CoolTime;
+        customButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
         if (GetDurationTimeFunc != null)
         {
             customButton.EffectDuration = GetDurationTimeFunc?.Invoke() ?? 0;
@@ -268,7 +278,10 @@ public class CustomButtonInfo
     /// <returns></returns>
     public PlayerControl SetTarget()
     {
-        SetCurrentTarget(HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false));
+        if (SetTargetFunc == null)
+            SetCurrentTarget(HudManagerStartPatch.SetTarget(UntargetPlayer?.Invoke(), TargetCrewmateOnly?.Invoke() ?? false));
+        else
+            SetCurrentTarget(SetTargetFunc());
         PlayerControlFixedUpdatePatch.SetPlayerOutline(CurrentTarget, roleBase.Roleinfo.RoleColor);
         return CurrentTarget;
     }

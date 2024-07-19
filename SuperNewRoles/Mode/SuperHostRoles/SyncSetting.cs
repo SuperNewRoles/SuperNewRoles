@@ -1,3 +1,4 @@
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Helpers;
@@ -18,7 +19,7 @@ public static class SyncSetting
 {
     public static IGameOptions DefaultOption;
     public static PlayerData<IGameOptions> OptionDatas;
-    public static void CustomSyncSettings(this PlayerControl player)
+    public static void CustomSyncSettings(this PlayerControl player, CustomRpcSender sender = null, bool isCooldownTwice = false)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
@@ -55,7 +56,10 @@ public static class SyncSetting
         switch (player.GetRole())
         {
             case RoleId.Sheriff:
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(CustomOptionHolder.SheriffCoolTime.GetFloat()));
+                float SheriffCoolTime = RoleClass.Sheriff.CoolTime;
+                if (RoleBaseManager.GetRoleBaseOrigins<Chief>().Any(x => (x as Chief).CreatedSheriff == player.PlayerId))
+                    SheriffCoolTime = Chief.ChiefSheriffCoolTime.GetFloat();
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SheriffCoolTime));
                 break;
             case RoleId.Minimalist:
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Minimalist.KillCoolTime));
@@ -249,10 +253,16 @@ public static class SyncSetting
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         optdata.SetBool(BoolOptionNames.AnonymousVotes, AnonymousVotes.GetAnonymousVotes(player));
 
+        if (player.GetRoleBase() is ISHROneClickShape oneClickShapeShift)
+            optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+
         Balancer.InHostMode.SetMeetingSettings(optdata);
 
+        if (isCooldownTwice)
+            optdata.SetFloat(FloatOptionNames.KillCooldown, optdata.GetFloat(FloatOptionNames.KillCooldown) * 2f);
+
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        else optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(sender, player.GetClientId());
         OptionDatas[player] = optdata.DeepCopy();
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }

@@ -603,17 +603,6 @@ public class CustomOptionHolder
     public static CustomOption MarlinPlayerCount;
     public static CustomOption MarlinViewVote;
 
-    public static CustomRoleOption ChiefOption;
-    public static CustomOption ChiefPlayerCount;
-    public static CustomOption ChiefSheriffCoolTime;
-    public static CustomOption ChiefSheriffExecutionMode;
-    public static CustomOption ChiefSheriffCanKillImpostor;
-    public static CustomOption ChiefSheriffCanKillNeutral;
-    public static CustomOption ChiefSheriffCanKillLovers;
-    public static CustomOption ChiefSheriffCanKillMadRole;
-    public static CustomOption ChiefSheriffFriendsRoleKill;
-    public static CustomOption ChiefSheriffQuarreledKill;
-
     public static CustomOption ChiefSheriffKillLimit;
 
     public static CustomRoleOption CleanerOption;
@@ -847,18 +836,6 @@ public class CustomOptionHolder
     public static CustomRoleOption WerewolfOption;
     public static CustomOption WerewolfPlayerCount;
 
-    public static CustomRoleOption PavlovsownerOption;
-    public static CustomOption PavlovsownerPlayerCount;
-    public static CustomOption PavlovsownerCreateCoolTime;
-    public static CustomOption PavlovsownerCreateDogLimit;
-    public static CustomOption PavlovsownerIsTargetImpostorDeath;
-    public static CustomOption PavlovsdogIsImpostorView;
-    public static CustomOption PavlovsdogKillCoolTime;
-    public static CustomOption PavlovsdogCanVent;
-    public static CustomOption PavlovsdogRunAwayKillCoolTime;
-    public static CustomOption PavlovsdogRunAwayDeathTime;
-    public static CustomOption PavlovsdogRunAwayDeathTimeIsMeetingReset;
-
     public static CustomRoleOption CamouflagerOption;
     public static CustomOption CamouflagerPlayerCount;
     public static CustomOption CamouflagerCoolTime;
@@ -932,14 +909,7 @@ public class CustomOptionHolder
 
     public static string Cs(Color c, string s)
     {
-        return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), ModTranslation.GetString(s));
-    }
-
-
-    public static byte ToByte(float f)
-    {
-        f = Mathf.Clamp01(f);
-        return (byte)(f * 255);
+        return ModHelpers.Cs(c, ModTranslation.GetString(s));
     }
 
     public static void Load()
@@ -1306,18 +1276,6 @@ public class CustomOptionHolder
         TeleportingJackalCoolTime = Create(300306, false, CustomOptionType.Neutral, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
         TeleportingJackalDurationTime = Create(300307, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
 
-        PavlovsownerOption = new(300400, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1, role: RoleId.Pavlovsowner);
-        PavlovsownerPlayerCount = Create(300401, false, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], PavlovsownerOption);
-        PavlovsownerCreateCoolTime = Create(300402, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, PavlovsownerOption);
-        PavlovsownerCreateDogLimit = Create(300403, false, CustomOptionType.Neutral, "PavlovsownerCreateDogLimit", 1f, 1f, 15f, 1f, PavlovsownerOption);
-        PavlovsownerIsTargetImpostorDeath = Create(300404, false, CustomOptionType.Neutral, "PavlovsownerIsTargetImpostorDeath", true, PavlovsownerOption);
-        PavlovsdogIsImpostorView = Create(300405, false, CustomOptionType.Neutral, "PavlovsdogIsImpostorView", true, PavlovsownerOption);
-        PavlovsdogKillCoolTime = Create(300406, false, CustomOptionType.Neutral, "SheriffCooldownSetting", 30f, 2.5f, 120f, 2.5f, PavlovsownerOption);
-        PavlovsdogCanVent = Create(300407, false, CustomOptionType.Neutral, "MadmateUseVentSetting", true, PavlovsownerOption);
-        PavlovsdogRunAwayKillCoolTime = Create(300408, false, CustomOptionType.Neutral, "PavlovsdogRunAwayKillCoolTime", 20f, 2.5f, 60f, 2.5f, PavlovsownerOption);
-        PavlovsdogRunAwayDeathTime = Create(300409, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTime", 60f, 2.5f, 180f, 2.5f, PavlovsownerOption);
-        PavlovsdogRunAwayDeathTimeIsMeetingReset = Create(300410, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTimeIsMeetingReset", true, PavlovsownerOption);
-
         HitmanOption = SetupCustomRoleOption(303200, false, RoleId.Hitman);
         HitmanPlayerCount = Create(303201, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);
         HitmanKillCoolTime = Create(303202, false, CustomOptionType.Neutral, "SheriffCooldownSetting", 20f, 0f, 120f, 2.5f, HitmanOption);
@@ -1416,9 +1374,9 @@ public class CustomOptionHolder
 
         FireFox.SetupCustomOptions();
 
-        AmnesiacOption = SetupCustomRoleOption(301600, false, RoleId.Amnesiac);
-        AmnesiacPlayerCount = Create(301601, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);
-        AmnesiacShowArrows = Create(301602, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, AmnesiacOption);
+        AmnesiacOption = SetupCustomRoleOption(301600, true, RoleId.Amnesiac);
+        AmnesiacPlayerCount = Create(301601, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);
+        AmnesiacShowArrows = Create(301602, true, CustomOptionType.Neutral, "VultureShowArrowsSetting", true, AmnesiacOption);
 
         TheThreeLittlePigs.SetupCustomOptions();
 
@@ -1492,8 +1450,6 @@ public class CustomOptionHolder
 
         BlackHatHacker.SetupCustomOptions();
 
-        Moira.SetupCustomOptions();
-
         Frankenstein.SetupCustomOptions();
 
         // SetupNeutralCustomOptions
@@ -1534,18 +1490,6 @@ public class CustomOptionHolder
         MeetingSheriffFriendsRoleKill = Create(400208, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, MeetingSheriffOption);
         MeetingSheriffLoversKill = Create(400209, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, MeetingSheriffOption);
         MeetingSheriffQuarreledKill = Create(400210, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, MeetingSheriffOption);
-
-        ChiefOption = SetupCustomRoleOption(400301, false, RoleId.Chief);
-        ChiefPlayerCount = Create(400302, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
-        ChiefSheriffCoolTime = Create(400303, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
-        ChiefSheriffKillLimit = Create(400304, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
-        ChiefSheriffExecutionMode = Create(400312, true, CustomOptionType.Crewmate, "SheriffExecutionMode", new string[] { "SheriffDefaultExecutionMode", "SheriffAlwaysSuicideMode", "SheriffAlwaysKillMode" }, ChiefOption);
-        ChiefSheriffCanKillImpostor = Create(400306, false, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, ChiefOption);
-        ChiefSheriffCanKillMadRole = Create(400307, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
-        ChiefSheriffCanKillNeutral = Create(400308, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
-        ChiefSheriffFriendsRoleKill = Create(400309, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, ChiefOption);
-        ChiefSheriffCanKillLovers = Create(400310, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
-        ChiefSheriffQuarreledKill = Create(400311, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, ChiefOption);
 
         WiseMan.SetupCustomOptions();
 

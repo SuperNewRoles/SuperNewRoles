@@ -70,7 +70,13 @@ public static class SelectTask
                     continue;
                 }
                 if (GetHaveTaskManageAbility(player.GetRole()) && ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
-                    player.Data.RpcSetTasks(new(ModHelpers.GenerateTasks(player, player.GetTaskCount()).ToArray()));
+                {
+                    ModdedSetTasks(player,
+                        ModHelpers.GenerateTasks(
+                            player, player.GetTaskCount()
+                        ).ToArray()
+                    );
+                }
                 else
                 {
                     types.Clear();
@@ -78,14 +84,23 @@ public static class SelectTask
                     __instance.AddTasksFromList(ref num2, numLong, list, types, LongTasks);
                     __instance.AddTasksFromList(ref num3, numShort, list, types, ShortTasks);
                     if (player && !player.GetComponent<DummyBehaviour>().enabled)
-                        player.Data.RpcSetTasks(new(list.ToArray()));
+                        ModdedSetTasks(player, list.ToArray());
                 }
             }
             PlayerControl.LocalPlayer.cosmetics.SetAsLocalPlayer();
             return false;
         }
     }
-
+    private static void ModdedSetTasks(PlayerControl player, byte[] list)
+    {
+        if (RoleSelectHandler.SetTasksBuffer != null &&
+            ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            RoleSelectHandler.SetTasksBuffer.Add(player.PlayerId, list);
+            return;
+        }
+        player.Data.RpcSetTasks(list);
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CoSetTasks))]
     public static class PlayerControlCoSetTasks
     {

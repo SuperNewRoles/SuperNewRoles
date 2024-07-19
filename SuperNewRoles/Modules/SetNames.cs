@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.PlusMode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -169,9 +171,8 @@ public class SetNamesClass
         }
         else if (p.IsPavlovsTeam())
         {
-            var introData = IntroData.PavlovsdogsIntro;
-            roleNames = introData.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
-            roleColors = RoleClass.Pavlovsdogs.color;
+            roleNames = ModTranslation.GetString($"{PavlovsDogs.Roleinfo.NameKey}Name") + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
+            roleColors = PavlovsDogs.PavlovsColor;
         }
         else
         {
@@ -333,12 +334,6 @@ public class SetNamesClass
             }
         }
     }
-    public static void MoiraSet()
-    {
-        if (!Moira.AbilityUsedUp || Moira.AbilityUsedThisMeeting) return;
-        if (Moira.Player is null) return;
-        SetPlayerNameText(Moira.Player, Moira.Player.NameText().text += " (→←)");
-    }
     public static void CelebritySet()
     {
         foreach (PlayerControl p in
@@ -427,6 +422,21 @@ public class SetNameUpdate
                     if (p.IsImpostorAddedFake())
                     {
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
+                    }
+                }
+            }
+            int canSeeImpostorRoleTurnRemaining = PlusGameOptions.CanSeeImpostorRoleTurn.GetInt() - ReportDeadBodyPatch.MeetingCount.all;
+            if (PlayerControl.LocalPlayer.IsImpostor() &&
+                CustomOptionHolder.EgoistOption.GetSelection() is 0 && CustomOptionHolder.SpyOption.GetSelection() is 0 &&
+                (canSeeImpostorRoleTurnRemaining < 0 ||
+                (canSeeImpostorRoleTurnRemaining == 0 && !RoleClass.IsMeeting)))
+                //会議開始時に1減らすので会議が終わってから見えるように
+            {
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.IsImpostorAddedFake())
+                    {
+                        SetNamesClass.SetPlayerRoleNames(p);
                     }
                 }
             }
@@ -569,13 +579,11 @@ public class SetNameUpdate
         }
         else
         {
-            Pavlovsdogs.SetNameUpdate();
             SetNamesClass.ArsonistSet();
             SetNamesClass.DemonSet();
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
-            SetNamesClass.MoiraSet();
         }
         SetNamesClass.SatsumaimoSet();
         SetNamesClass.JumboSet();

@@ -127,7 +127,7 @@ class Main
         {
             source.RpcSnapTo(target.transform.position);
             GameDataSerializePatch.Is = true;
-            RPCHelper.RpcSyncGameData();
+            RPCHelper.RpcSyncNetworkedPlayer(target.Data);
         }
         else
         {
@@ -442,7 +442,7 @@ class Main
                         if (p1.PlayerId != 0)
                         {
                             FastDestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
-                            p1.RpcSetRoleDesync(RoleTypes.Shapeshifter);
+                            p1.RpcSetRoleDesync(RoleTypes.Shapeshifter, false);
                             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                             {
                                 if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
@@ -470,7 +470,7 @@ class Main
                 {
                     p.Data.RoleType = RoleTypes.Shapeshifter;
                 }
-                RPCHelper.RpcSyncGameData();
+                RPCHelper.RpcSyncAllNetworkedPlayer();
                 new LateTask(() =>
                 {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
