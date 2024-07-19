@@ -2304,24 +2304,21 @@ static class HudManagerStartPatch
         DoubleKillerMainKillButton = new(
             () =>
             {
-                if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true));
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
-                    switch (PlayerControl.LocalPlayer.GetRole())
-                    {
-                        case RoleId.DoubleKiller:
-                            DoubleKiller.ResetMainCooldown();
-                            break;
-                        case RoleId.Smasher:
-                            Smasher.ResetCooldown();
-                            break;
-                    }
+                    case RoleId.DoubleKiller:
+                        DoubleKiller.ResetMainCooldown();
+                        break;
+                    case RoleId.Smasher:
+                        Smasher.ResetCooldown();
+                        break;
                 }
             },
-            (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default)); },
+            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.DoubleKiller or RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
-                var target = PlayerControlFixedUpdatePatch.SetTarget();
+                var target = PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true);
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.DoubleKiller.color);
                 return target && PlayerControl.LocalPlayer.CanMove;
             },
@@ -2345,29 +2342,23 @@ static class HudManagerStartPatch
         DoubleKillerSubKillButton = new(
             () =>
             {
-                if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true));
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
-                    switch (PlayerControl.LocalPlayer.GetRole())
-                    {
-                        case RoleId.DoubleKiller:
-                            DoubleKiller.ResetSubCooldown();
-                            break;
-                        case RoleId.Smasher:
-                            Smasher.ResetSmashCooldown();
-                            break;
-                    }
+                    case RoleId.DoubleKiller:
+                        DoubleKiller.ResetSubCooldown();
+                        break;
+                    case RoleId.Smasher:
+                        Smasher.ResetSmashCooldown();
+                        break;
                 }
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Smasher))
                 {
                     RoleClass.Smasher.SmashOn = true;
                 }
             },
-            (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Smasher.SmashOn); },
-            () =>
-            {
-                return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
-            },
+            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.DoubleKiller or RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default); },
+            () => PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true) && PlayerControl.LocalPlayer.CanMove,
             () =>
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
