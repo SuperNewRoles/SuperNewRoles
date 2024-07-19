@@ -190,7 +190,6 @@ class ShareGameVersion
                     }
 
                     message += $"\n{String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer))}\n";
-                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                 }
             }
             if (ConfigRoles.IsVersionErrorView.Value || AmongUsClient.Instance.AmHost)
@@ -238,7 +237,7 @@ class ShareGameVersion
                 if (!blockStart)
                 {
                     // 参加者の導入状況に問題が無い時、開始ボタンと開始のテキストを表示する。(アップデート処理の負荷を下げる為、ifを使用)
-                    if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.GameStartText.enabled = true;
+                    if (__instance.StartButton.enabled != true) __instance.StartButton.SetButtonEnableState(true);
                 }
                 else
                 {
@@ -247,14 +246,17 @@ class ShareGameVersion
                     __instance.ResetStartState();
 
                     // 参加者の導入状況に問題がある時、開始ボタンと開始のテキストを非表示にする。(アップデート処理の負荷を下げる為、ifを使用)
-                    if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.GameStartText.enabled = false;
+                    if (__instance.StartButton.enabled != false) __instance.StartButton.SetButtonEnableState(false);
                 }
             }
             if (blockStart || hostModeInVanilla)
             {
                 VersionErrorInfo.text = message;
                 VersionErrorInfo.enabled = true;
-                __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
+
+                // ゲーム開始後はエラー表記を非表示にする
+                if ((__instance.startState == GameStartManager.StartingStates.Countdown && Mathf.CeilToInt(__instance.countDownTimer) <= 0) || __instance.startState == GameStartManager.StartingStates.Starting)
+                    VersionErrorInfo.enabled = false;
             }
             else
             {
@@ -263,7 +265,6 @@ class ShareGameVersion
                     VersionErrorInfo.text = "";
                     VersionErrorInfo.enabled = false;
                 }
-                __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
             }
             LastBlockStart = blockStart;
             if (update) currentText = __instance.PlayerCounter.text;
