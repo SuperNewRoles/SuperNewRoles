@@ -15,7 +15,7 @@ public static class RoleHelper
         {
             if (supportSHR.IsImpostorLight.HasValue)
                 IsCrewVision = !supportSHR.IsImpostorLight.Value;
-            else if (supportSHR.IsDesync && supportSHR.RealRole is RoleTypes.Crewmate or RoleTypes.Engineer or RoleTypes.Scientist)
+            else if (supportSHR.IsDesync && !supportSHR.RealRole.IsImpostorRole() && supportSHR.DesyncRole.IsImpostorRole())
                 IsCrewVision = true;
         }
         if (!IsCrewVision)

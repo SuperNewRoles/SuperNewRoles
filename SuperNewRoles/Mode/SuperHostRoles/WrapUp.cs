@@ -15,6 +15,7 @@ class WrapUpClass
     public static void WrapUp(NetworkedPlayerInfo exiled)
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        OneClickShapeshift.OnStartTurn();
         ChangeName.SetRoleNames();
         foreach (PlayerControl p in BotManager.AllBots)
         {
@@ -43,7 +44,7 @@ class WrapUpClass
         if (exiled == null) return;
         if (exiled.Object.IsRole(RoleId.Sheriff) || exiled.Object.IsRole(RoleId.truelover) || exiled.Object.IsRole(RoleId.MadMaker))
         {
-            exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+            exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel, true);
         }
         if (RoleClass.Lovers.SameDie && exiled.Object.IsLovers())
         {
@@ -83,7 +84,7 @@ class WrapUpClass
                             exiled.Object
                         };
                     RoleClass.Quarreled.IsQuarreledWin = true;
-                    EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
+                    EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, CustomGameOverReason.QuarreledWin, false);
                 }
             }
         }

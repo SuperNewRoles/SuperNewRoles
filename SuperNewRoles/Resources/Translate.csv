@@ -53,6 +53,7 @@ MainMenuDiscordText,<size=90%>Bug report or Question or Request</size>\n<size=90
 20240618_25SaverInfo_PopupTitle,Server Notice,サーバーに関するお知らせ
 20240618_25SaverInfo_PopupText,<size=70%>Hello!\n\nActually，in some mods including SNR，if there are more than "9 people" on a vanilla server，some people get disconnected at the lobby start screen. \n(Not everyone gets disconnected though!)\nSo，if someone gets disconnected，it's probably due to this issue! \nIf no one gets disconnected at the lobby start screen，there shouldn't be much of a problem，so please check that first.\n\nCustom servers are not affected by this issue，so if you can use a custom server，that might be a good option. \n(At least as of the release，custom servers are not supported yet，so you can't use them.)\n\nThat's about it. \nFor the latest information，check Discord or Twitter! \n(There are links at the bottom right of the main menu! You should be able to see them after closing this.)\n\nSee you!</size>,<size=70%>こんにちは！\n実は、SNRを含めた一部MODの場合、バニラサーバーで何故か「9人以上」入るとロビーが開始画面で切断される人が出てくるようなんだ。\n(必ず切断されるわけてはないよ!)\n\nだから、落ちちゃう人がいたらそれはこの問題だよ！\nロビーが開始画面で落ちなければほとんど問題ないと思うからまずは確認してね。\n\nカスタムサーバーではこの影響は受けないから、カスタムサーバーが使えるならカスタムサーバーを使うのもいいと思うよ。\n(少なくともリリース時点ではカスタムサーバーがまだ対応してないから使えないけど。)\n\nこんな感じかな。最新情報はDiscordかTwitterを見てね！\n(メインメニューの右下にリンクがあるよ！これを閉じたら見れると思う。)\n\nじゃあね！ </size>
 20240618_25SaverInfo_PopupOK,OK,オッケー！
+CommandNotFound,Where is the command?\nThis command is not found.,このコマンドはどこ?\nこのコマンドが見つかりませんでした。
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红,鮭魚紅
@@ -300,14 +301,14 @@ ModeSetting,Mode Setting,モード設定,模式设置,模式設定
 SettingMode,Mode,モード,游戏模式,遊戲模式
 SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置,躲貓貓模式設定
 SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,大逃杀模式设置,大逃殺模式設定
-SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHostRoles设置,SuperHostRoles設定
+SettingSuperHostRolesMode,Super Host Roles Beta Mode,SuperHostRolesβの設定,SuperHostRolesβ设置,SuperHostRolesβ設定
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置,殭屍模式設定
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置,隨機顏色模式設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置,偵探模式設定
 DefaultModeName,Defalut Mode,通常モード,末日模式,預設模式
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫,躲貓貓
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
-SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
+SuperHostRolesModeName,Super Host Roles Beta,SuperHostRolesβ,Super Host Rolesβ,SuperHostRolesβ
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机,殭屍模式
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式,隨機顏色
 PantsRoyalModeName,Pants Royal,パンツ大騒動,裤头大逃杀,搶褲大逃殺
@@ -682,6 +683,18 @@ NiceGuesserTitle3,Guess and kill the Impostor!,推察し、人外を撃ち抜け
 NiceGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nCheck if the target's coming out is true，for example，"I am a crewmate.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\n「自分はクルーメイトです」等 対象のカミングアウトが真であるか精査してみましょう。,正义的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，正义的赌怪自杀。\n正义的赌怪可以确认目标是否在对船员说谎。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n查明那些說「我是好人！」的人的身分！
 GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,正义的赌怪能否在一次会议中多次猜测,正義的賭怪能否在一次會議中多次猜測
 GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,正义的赌怪最大可猜测次数,正義的賭怪最大可猜測次數
+GuesserOnStartMeetingInfoCanShot,I have {0} rounds of ammunition left...,残りの弾薬は{0}発だ...
+GuesserOnStartMeetingInfoCannotShot,Alright, let's make a guess. Oh dear, it seems we're out of ammo..,さて、推測を。おや、弾切れのようだ...。
+GuesserCommandUsage,Usage: /bt [Target color name] [Role name],使い方: /bt [対象の色名] [役職名]
+GuesserErrorNoneTarget,Target did not exist.,対象が存在しませんでした。
+GuesserErrorNoneRole,Role did not exist.,役職が存在しませんでした。
+GuesserErrorCannotShotCrew,You can't guess Crewmate role.,クルーメイト役職を打つことができません。
+GuesserErrorCannotShotCelebrity,Now You can't guess a Celebrity.,今はスターを打つことができません。
+GuesserErrorNoCount,There are no more guess count left!,もう回数が残っていません。
+GuesserErrorShotOnThisMeeting,You can't guess at this meeting.,もうこの会議では打つことができません。
+GuesserErrorTargetIsDead,The target is already dead.,対象は既に死亡しています。
+GuesserBigNewsTitle,<size=160%>Big News</size>,<size=160%>ビッグニュース</size>
+GuesserPlayerWasDead,{0} suddenly fainted...,{0}が突然倒れたようだ...,
 EvilGuesserName,Evil Guesser,イビルゲッサー,邪恶的赌怪,邪惡的賭怪
 EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポスター以外の陣営の役職を当てよう,刺杀其他玩家,刺殺其他玩家
 EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗ればあの世行き,赌博的本质就是疯狂,太過高調將會死於他人之手
@@ -1701,6 +1714,20 @@ MoiraDescription,This is a position for enjoyable tables that messes up the boar
 MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！,掌控命运！,命運掌握在我手中！
 MoiraAbilityLimit,Number of ability usage,能力使用数,技能最大使用次数,能力最大使用次數
 MoiraChangeVote,I'll switch my vote as well,投票も入れ替える,技能同时交换得票,同時交換得票
+MoiraSelection,Swap Selection,スワップ選択
+MoiraSelectionText,Swap two people by voting.\nPlease select two people to swap by voting.\n*You cannot select yourself.\n(You can select yourself by completing the vote as your own vote)\n*Skip to cancel the swap selection mode.\n*After selecting one person， you can also vote for yourself to cancel the swap selection mode.,交換する2人を投票によって\n選択してください\n※自分は選択できません\n（自分選択は自投票として投票完了）\n※スキップまたは1人を選択後、自投票で\n※スワップ選択モード解除
+MoiraSelectionCancel,Cancel Swap Selection,スワップ選択解除
+MoiraSelectionCancelText,Swap Selection mode has been canceled.,スワップ選択モードが解除されました
+MoiraSelectionBack,Release of swap target,スワップ対象解除
+MoiraSelectionBackText,The first person eligible for the swap has been removed.,スワップの対象1人目を解除しました
+MoiraSelectionEnd,Swap selection complete,スワップ選択完了
+MoiraSelectionEndText,Swap target selection is over.\nFate is twisting....\nIf fate is like this....What happens now?,スワップ対象の選択が終わりました\n運命が捻じ曲がる....\nこんな運命なら....どうなる?
+MoiraCommandUsage,Usage : /swap [color name of target 1] [color name of target 2],使い方 : /swap [対象1の色名] [対象2の色名]
+MoiraErrorVoteLimitOver,Not Swappable,スワップ不可
+MoiraErrorVoteLimitOverText,Swap has been used up and the ability cannot be activated.\nIf you vote for yourself， please go again.,スワップを使い切ったため、能力を発動できません\n自投票の場合は、もう1度行ってください
+MoiraErrorLimitOver,The swap has been used up and the ability cannot be activated.,スワップを使い切ったため、能力を発動できません
+MoiraErrorSamePerson,Because target 1 and target 2 are the same player，\nFailed to activate.,対象1と対象2が同じプレイヤーの為、\n発動できませんでした
+MoiraSwapText,,突然が体が歪む感覚が....\n\n何も起こらない....\nいや、何かは起きている\nそんな感覚を覚える\n\n対象1 : {0}\n対象2 : {1}
 ConjurerName,Conjurer,魔術師,大法师,魔導師
 ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ,用法术围歼敌人,包圍、然後消滅他們
 ConjurerDescription,By setting up and activating three magic circles，\nthis impostor can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。,大法师属于内鬼阵营，可以在地图上放置并激活三个魔法阵。\n大法师可以击杀处于魔法阵形成的三角形范围内的所有玩家。,魔導師能通過設置並啟動三個魔法陣，\n殺死所有在三角形範圍內的玩家。
@@ -2003,6 +2030,14 @@ CursedMedScanTaskText,Id : {0}Player{1}        Stature : 0b11Feet 0b110Inch\nPla
 CursedSampleTaskUpperText1,Samples are beginning to deteriorate,サンプルが劣化し始めています,样品开始变质,樣本開始劣化
 CursedSampleTaskUpperText2,The sample has completely deteriorated,サンプルが完全劣化してしましました,样品完全变质,樣本完全劣化
 CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1}),破坏 : ({0}/{1}),已破壞 : ({0}/{1})
+
+# AntiBlackOutMessages
+AntiBlackOutChatTitle,[Blackout Information],【暗転対策情報】
+AntiBlackOutFirstDead,o avoid triggering a screen blackout， if a player is exiled before death， no one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、死亡者が発生するまでに追放された場合は表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。
+AllExileWillDobuleVoted,To avoid triggering a screen blackout， not one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、追放はは表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。
+AntiBlackOutOnlyDesyncImpostorDead,You were the "DesyncImpostor" role， a type of Mod role. This means that even if there were impostors ejected， it would still say "No Impostors Remain." However， they would still be ejected from the game.Real exiled player is {0}.,あなたは「DesyncImpostor」というタイプのMod役職だったため、追放者がいる場合でも追放者がいないと表示されます。なお、実際には追放されます。\n実際に追放されたプレイヤー：{0}
+AntiBlackOutAliveCanViewDeadPlayerChat,Due to the effects of the screen blackout countermeasure， if you chat， your chat will also be displayed to the survivors.\nPlease refrain from chatting.,今からは、画面の暗転の対策の影響によりあなたがチャットを行った場合に生存者にも表示されてしまいます。\nチャットしないようにしてください。
+AntiBlackOutEndAliveCanViewDeadPlayerChat,Chat is no longer shown to alive players.\nYou can chat with them!,チャットは生存者に表示されなくなりました。\nチャットしても大丈夫！
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！

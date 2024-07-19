@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -70,6 +71,7 @@ public enum RoleId
     Busker,
     Phosphorus,
     BodyBuilder,
+    Moira,
     Ubiquitous,
 
     //RoleId
@@ -239,7 +241,6 @@ public enum RoleId
     GrimReaper,
     PoliceSurgeon,
     MadRaccoon,
-    Moira,
     JumpDancer,
     Sauner,
     Bat,
@@ -328,7 +329,6 @@ public enum CustomRPC
     PositionSwapperTP,
     KunaiKill,
     SetSecretRoomTeleportStatus,
-    ChiefSidekick,
     StartRevolutionMeeting,
     PartTimerSet,
     SetMatryoshkaDeadbody,
@@ -341,7 +341,6 @@ public enum CustomRPC
     KnightProtected,
     KnightProtectClear,
     GuesserShoot,
-    PavlovsOwnerCreateDog,
     CrackerCrack,
     Camouflage,
     ShowGuardEffect,
@@ -365,7 +364,6 @@ public enum CustomRPC
     SetInfectionTimer,
     SendMeetingCount,
     PoliceSurgeonSendActualDeathTimeManager,
-    MoiraChangeRole,
     JumpDancerJump,
     BatSetDeviceStop,
     RocketSeize,
@@ -529,14 +527,6 @@ public static class RPCProcedure
     }
     public static void DestroyGarbage(string name) => Garbage.AllGarbage.Find(x => x.GarbageObject.name == name)?.Clear();
     public static void CreateGarbage(float x, float y) => new Garbage(new(x, y));
-    public static void MoiraChangeRole(byte player1, byte player2, bool IsUseEnd)
-    {
-        (byte, byte) data = (player1, player2);
-        Moira.ChangeData.Add(data);
-        Moira.SwapVoteData = data;
-        if (IsUseEnd) Moira.AbilityUsedUp = true;
-        Moira.AbilityUsedThisMeeting = true;
-    }
     public static void SetInfectionTimer(byte id, Dictionary<byte, float> infectionTimer)
     {
         if (!ModHelpers.PlayerById(id)) return;
@@ -809,26 +799,6 @@ public static class RPCProcedure
         }
     }
 
-    public static void PavlovsOwnerCreateDog(byte sourceid, byte targetid, bool IsSelfDeath)
-    {
-        PlayerControl source = ModHelpers.PlayerById(sourceid);
-        PlayerControl target = ModHelpers.PlayerById(targetid);
-        if (source == null || target == null) return;
-        if (IsSelfDeath)
-        {
-            source.MurderPlayer(source, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
-        }
-        else
-        {
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
-            SetRole(targetid, (byte)RoleId.Pavlovsdogs);
-            if (!RoleClass.Pavlovsowner.CountData.ContainsKey(sourceid))
-            {
-                RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptionHolder.PavlovsownerCreateDogLimit.GetInt();
-            }
-            RoleClass.Pavlovsowner.CountData[sourceid]--;
-        }
-    }
     public static void Camouflage(bool Is)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -856,6 +826,7 @@ public static class RPCProcedure
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
         if (MeetingHud.Instance)
         {
+            bool isSHR = ModeHandler.IsMode(ModeId.SuperHostRoles);
             foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
             {
                 if (pva.TargetPlayerId == dyingTargetId)
@@ -865,6 +836,12 @@ public static class RPCProcedure
                 }
                 if (pva.VotedFor != dyingTargetId) continue;
                 pva.UnsetVote();
+                if (isSHR)
+                {
+                    PlayerControl player = pva.TargetPlayerId.GetPlayerControl();
+                    if (player != null && !player.IsMod())
+                        MeetingHud.Instance.RpcClearVote(player.GetClientId());
+                }
                 var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
                 if (!voteAreaPlayer.AmOwner) continue;
                 MeetingHud.Instance.ClearVote();
@@ -877,7 +854,7 @@ public static class RPCProcedure
             if (CachedPlayer.LocalPlayer.PlayerControl == dyingTarget)
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
-                if (Roles.Attribute.Guesser.guesserUI != null) Roles.Attribute.Guesser.ExitButton.OnClick.Invoke();
+                if (Guesser.guesserUI != null) Guesser.ExitButton.OnClick.Invoke();
             }
     }
 
@@ -1001,21 +978,6 @@ public static class RPCProcedure
         }
     }
 
-    public static void ChiefSidekick(byte targetid, bool IsTaskClear)
-    {
-        RoleClass.Chief.SheriffPlayer.Add(targetid);
-        if (IsTaskClear)
-        {
-            RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
-        }
-        SetRole(targetid, (byte)RoleId.Sheriff);
-        if (targetid == CachedPlayer.LocalPlayer.PlayerId)
-        {
-            Sheriff.ResetKillCooldown();
-            RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
-        }
-        UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
-    }
     public static void FixLights()
     {
         if (!MapUtilities.Systems.ContainsKey(SystemTypes.Electrical))
@@ -1229,17 +1191,27 @@ public static class RPCProcedure
         RoleBase player2role = player2.GetRoleBase();
         RoleId player1id = player1.GetRole();
         RoleId player2id = player2.GetRole();
-        if (player1role != null) player1role.SetPlayer(player2);
+        if (player1role != null)
+        {
+            player1role.SetPlayer(player2);
+            Logger.Info($"{player2.name}を{player1role.Role}に変更しました", "RPC.SwapRole.RoleBase");
+        }
         else
         {
             player2.ClearRole();
             player2.SetRole(player1id);
+            Logger.Info($"{player2.name}を{player1id}に変更しました", "RPC.SwapRole.RoleId");
         }
-        if (player2role != null) player2role.SetPlayer(player1);
+        if (player2role != null)
+        {
+            player2role.SetPlayer(player1);
+            Logger.Info($"{player1.name}を{player2role.Role}に変更しました", "RPC.SwapRole.RoleBase");
+        }
         else
         {
             player1.ClearRole();
             player1.SetRole(player2id);
+            Logger.Info($"{player1.name}を{player2id}に変更しました", "RPC.SwapRole.RoleId");
         }
         CacheManager.ResetMyRoleCache();
         RoleHelpers.ClearTaskUpdate();
@@ -1903,9 +1875,6 @@ public static class RPCProcedure
                     case CustomRPC.SetSecretRoomTeleportStatus:
                         MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
-                    case CustomRPC.ChiefSidekick:
-                        ChiefSidekick(reader.ReadByte(), reader.ReadBoolean());
-                        break;
                     case CustomRPC.RpcSetDoorway:
                         RPCHelper.SetDoorway(reader.ReadByte(), reader.ReadBoolean());
                         break;
@@ -1956,9 +1925,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetFinalStatus:
                         SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
-                        break;
-                    case CustomRPC.PavlovsOwnerCreateDog:
-                        PavlovsOwnerCreateDog(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.Camouflage:
                         Camouflage(reader.ReadBoolean());
@@ -2042,9 +2008,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
                         PoliceSurgeon_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.MoiraChangeRole:
-                        MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.JumpDancerJump:
                         JumpDancerJump(reader);

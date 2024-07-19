@@ -12,6 +12,10 @@ public static class ModTranslation
     public static Dictionary<string, string[]> dictionary = new();
     public static Dictionary<string, string[]> AprilDictionary = null;
     private static readonly HashSet<string> outputtedStr = new();
+    public static string GetString(string key, params object?[] args)
+    {
+        return string.Format(GetString(key), args);
+    }
     public static string GetString(string key)
     {
         Dictionary<string, string[]> currentTransDict = AprilDictionary != null ? AprilDictionary : dictionary;
@@ -49,8 +53,6 @@ public static class ModTranslation
             _ => values[1] // それ以外は英語
         };
     }
-
-    public static string GetString(string key, params object[] args) => string.Format(GetString(key), args);
 
     /// <summary>
     /// 翻訳語の文章から翻訳キーを取得する。

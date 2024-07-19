@@ -27,9 +27,18 @@ public interface ISupportSHR : ITaskHolder
     /// </summary>
     public bool? IsImpostorLight => null;
     public bool IsZeroCoolEngineer => false;
+    public bool HasKillButtonClient => this is IKiller killer && killer.CanUseKill;
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
 
+    }
+    /// <summary>
+    /// 全てのプレイヤーに見える名前
+    /// </summary>
+    public bool BuildAllName(out string text)
+    {
+        text = "";
+        return false;
     }
     public void BuildSetting(IGameOptions gameOptions)
     {

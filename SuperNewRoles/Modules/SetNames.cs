@@ -171,9 +171,8 @@ public class SetNamesClass
         }
         else if (p.IsPavlovsTeam())
         {
-            var introData = IntroData.PavlovsdogsIntro;
-            roleNames = introData.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
-            roleColors = RoleClass.Pavlovsdogs.color;
+            roleNames = ModTranslation.GetString($"{PavlovsDogs.Roleinfo.NameKey}Name") + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
+            roleColors = PavlovsDogs.PavlovsColor;
         }
         else
         {
@@ -334,12 +333,6 @@ public class SetNamesClass
                 }
             }
         }
-    }
-    public static void MoiraSet()
-    {
-        if (!Moira.AbilityUsedUp || Moira.AbilityUsedThisMeeting) return;
-        if (Moira.Player is null) return;
-        SetPlayerNameText(Moira.Player, Moira.Player.NameText().text += " (→←)");
     }
     public static void CelebritySet()
     {
@@ -586,13 +579,11 @@ public class SetNameUpdate
         }
         else
         {
-            Pavlovsdogs.SetNameUpdate();
             SetNamesClass.ArsonistSet();
             SetNamesClass.DemonSet();
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
-            SetNamesClass.MoiraSet();
         }
         SetNamesClass.SatsumaimoSet();
         SetNamesClass.JumboSet();

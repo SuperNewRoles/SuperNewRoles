@@ -24,10 +24,6 @@ class MurderPlayer
         {
             RoleClass.Finder.KillCounts[__instance.PlayerId]++;
         }
-        if (target.IsRole(RoleId.Sheriff) || target.IsRole(RoleId.truelover) || target.IsRole(RoleId.MadMaker))
-        {
-            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-        }
         if (target.IsQuarreled())
         {
             if (AmongUsClient.Instance.AmHost)
@@ -56,7 +52,7 @@ class MurderPlayer
                                 target
                         };
                         RoleClass.Quarreled.IsQuarreledWin = true;
-                        EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
+                        EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, CustomGameOverReason.QuarreledWin, false);
                     }, 0.15f, "Quarreled Murder EndGame");
                 }
             }

@@ -39,7 +39,7 @@ public class Revenger : BattleRoyalRole
                 CurrentPlayer.RpcSnapTo(DeathPosition);
                 CurrentPlayer.MyPhysics.RpcExitVentUnchecked(0);
                 ChangeName.UpdateName();
-                RPCHelper.RpcSyncGameData();
+                RPCHelper.RpcSyncAllNetworkedPlayer();
                 IsAbilityUsingNow = false;
             }
         }

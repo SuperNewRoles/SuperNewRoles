@@ -102,12 +102,12 @@ public static class ModeHandler
 
     /// <summary>Mode設定を封印するか</summary>
     /// <value>true : 封印する, false : 封印しない</value>
-    private const bool isSealModeOption = true;
+    private const bool isSealModeOption = false;
 
     /// <summary>Modeの封印処理が有効か (外部取得 及び カスタムサーバ使用下における封印処理の除外)</summary>
     /// <returns>true : 有効(封印する) / false : 無効(封印しない)</returns>
     public static bool EnableModeSealing => isSealModeOption && !ModHelpers.IsCustomServer();
-
+    
     public static CustomOptionBlank Mode;
     public static CustomOption ModeSetting;
     public static CustomOption ThisModeSetting;
@@ -144,7 +144,7 @@ public static class ModeHandler
     }
     public static void OptionLoad()
     {
-        Mode = new CustomOptionBlank(null);
+        Mode = new CustomOptionBlank(null, true);
         ModeSetting = CustomOption.Create(101200, true, CustomOptionType.Generic, Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting"), false, Mode, isHeader: true, withHeader: true);
         ThisModeSetting = CustomOption.Create(101300, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
         SuperHostRolesOptions.Load();
