@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Agartha;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -127,78 +128,9 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                PlayerControl player = GameData.Instance.GetPlayerById(1).Object;
-                player.PlayerId = 19;
-                MessageWriter writer = Hazel.MessageWriter.Get(Hazel.SendOption.Reliable);
-                writer.StartMessage(5);
-                writer.Write(AmongUsClient.Instance.GameId);
-                writer.StartMessage(1); //0x01 Data
-                {
-                    writer.WritePacked(player.NetId);
-                    player.Serialize(writer, false);
-
-                }
-                writer.EndMessage();
-                writer.EndMessage();
-                AmongUsClient.Instance.SendOrDisconnect(writer);
-                writer.Recycle();
-                new LateTask(() =>
-                {/*
-                    NetworkedPlayerInfo info = new NetworkedPlayerInfo(19);
-                    info.RoleType = AmongUs.GameOptions.RoleTypes.Impostor;
-                    info.Outfits = new();
-                    info.Role = new();
-                    info.Role.Role = RoleTypes.Impostor;
-                    GameData.Instance.AllPlayers.Add(info);
-                    MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
-                    writer.StartMessage(5);
-                    writer.Write(AmongUsClient.Instance.GameId);
-                    writer.StartMessage(1); //0x01 Data
-                    {
-                        writer.WritePacked(GameData.Instance.NetId);
-                        GameData.Instance.Serialize(writer, true);
-
-                    }
-                    writer.EndMessage();
-                    writer.EndMessage();
-
-                    AmongUsClient.Instance.SendOrDisconnect(writer);
-                    writer.Recycle();
-                    info.Role = null;
-                    player.PlayerId = 1;
-                    writer = Hazel.MessageWriter.Get(Hazel.SendOption.Reliable);
-                    writer.StartMessage(5);
-                    writer.Write(AmongUsClient.Instance.GameId);
-                    writer.StartMessage(1); //0x01 Data
-                    {
-                        writer.WritePacked(player.NetId);
-                        player.Serialize(writer, false);
-
-                    }
-                    writer.EndMessage();
-                    writer.EndMessage();
-                    AmongUsClient.Instance.SendOrDisconnect(writer);
-                    writer.Recycle();*/
-                }, 0.5f);
-                return;
-                CustomSpores.AddMushroom(PlayerControl.LocalPlayer.transform.position);
-                return;
-                source = SoundManager.Instance.PlaySound(ContentManager.GetContent<AudioClip>("Sauner_SaunaBGM.wav"), true);
-                return;
-                HudManager.Instance.ShowPopUp("スマソ。無理やわ。");
-                return;
-                string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
-                DirectoryInfo d = new(filePath);
-                Logger.Info("FileName:" + d.GetFiles()[0].Name);
-                (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[0].Name);
-                ReplayManager.IsReplayMode = true;
-                Logger.Info($"IsSuc:{IsSuc}");
-                if (IsSuc)
-                {
-                    Logger.Info($"PlayerCount:{replay.AllPlayersCount}");
-                    Logger.Info($"Mode:{replay.CustomMode}");
-                    Logger.Info($"Time:{replay.RecordTime.ToString()}");
-                }
+                Vector2 center = ShipStatus.Instance.MapPrefab.HerePoint.transform.parent.localPosition * -1f * ShipStatus.Instance.MapScale;
+                File.WriteAllBytes("SpawnableMap.png", MapDatabase.MapDatabase.GetCurrentMapData().OutputMap(center, new Vector2(10f, 7f) * ShipStatus.Instance.MapScale, 40f).EncodeToPNG());
+               return;
             }
             if (Input.GetKeyDown(KeyCode.P))
             {

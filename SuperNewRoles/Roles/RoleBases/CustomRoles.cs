@@ -133,6 +133,16 @@ public static class CustomRoles
         }
     }
 
+    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
+    public static class PlayerPhysicsSpeedPatch
+    {
+        public static void Postfix(PlayerPhysics __instance)
+        {
+            RoleBase roleBase = __instance.myPlayer.GetRoleBase();
+            if (roleBase is IPlayerPhysics physics) physics.FixedUpdate(__instance);
+        }
+    }
+
     public static void OnExild(DeadPlayer deadPlayer)
     {
         DeathInfo info = new(deadPlayer);

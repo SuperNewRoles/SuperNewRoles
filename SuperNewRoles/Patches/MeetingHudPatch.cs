@@ -11,6 +11,7 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
@@ -26,6 +27,7 @@ using UnityEngine;
 using static MeetingHud;
 using SuperNewRoles.MapOption;
 using static Il2CppSystem.Xml.XmlWellFormedWriter.AttributeValueCache;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Patches;
 
@@ -854,6 +856,7 @@ class MeetingHudClosePatch
     {
         CustomRoles.OnMeetingClose();
         AntiBlackOut.OnMeetingHudClose(AntiBlackOut.RealExiled);
+        Drone.CloseMeeting();
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
