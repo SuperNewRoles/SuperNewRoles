@@ -1486,7 +1486,7 @@ public static class RPCProcedure
         var teleportTarget = ModHelpers.PlayerById(playerid);
 
         Vector2 teleportTo = teleportTarget?.GetTruePosition() ?? new(9999, 9999);
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             player.NetTransform.SnapTo(teleportTo);
         new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), teleportTarget != null ? ModHelpers.PlayerById(playerid).NameText().text : "???"), 3);
     }

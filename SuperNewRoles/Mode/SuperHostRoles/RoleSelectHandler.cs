@@ -178,7 +178,7 @@ public static class RoleSelectHandler
 
     private static void AddToSyncRoles(this Dictionary<byte, (RoleTypes role, bool isNotModOnly)> syncDictionary, List<PlayerControl> players, RoleTypes roleTypes, bool isNotOnlyMod = false)
     {
-        foreach (PlayerControl player in players)
+        foreach (PlayerControl player in players.AsSpan())
             syncDictionary.AddToSyncRoles(player, roleTypes, isNotOnlyMod);
     }
     private static void AddToSyncRoles(this Dictionary<byte, (RoleTypes role, bool isNotModOnly)> syncDictionary, PlayerControl player, RoleTypes roleTypes, bool isNotOnlyMod = false)
@@ -192,7 +192,7 @@ public static class RoleSelectHandler
     }
     private static void AddToDesyncRoles(this Dictionary<byte, RoleTypes> desyncDictionary, List<PlayerControl> players, RoleTypes roleTypes)
     {
-        foreach (PlayerControl player in players)
+        foreach (PlayerControl player in players.AsSpan())
             desyncDictionary.Add(player.PlayerId, roleTypes);
     }
 
@@ -270,7 +270,7 @@ public static class RoleSelectHandler
         DesyncRoles.AddToDesyncRoles(MadRaccoon.RoleData.Player, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.GetRoleBase() is not ISupportSHR playerSHR)
                 continue;
@@ -287,7 +287,7 @@ public static class RoleSelectHandler
 
         // インポスター系の通常設定は一番最初にやる
 
-        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (CrewmateSyncRoles.ContainsKey(player.PlayerId) || DesyncRoles.ContainsKey(player.PlayerId))
                 continue;
@@ -326,7 +326,7 @@ public static class RoleSelectHandler
             SetVanillaRole(player, syncdata.Value.role, syncdata.Value.isNotModOnly);
         }
 
-        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach(PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsImpostor())
                 continue;
@@ -349,7 +349,7 @@ public static class RoleSelectHandler
         if (RoleClass.Egoist.EgoistPlayer.Count + RoleClass.Spy.SpyPlayer.Count > 0)
             throw new System.NotImplementedException("Egoist and Spy is not working.");
         /*
-        foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
+        foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer.AsSpan())
         {
             if (!Player.IsMod())
             {
@@ -385,7 +385,7 @@ public static class RoleSelectHandler
                 int PlayerCID = Player.GetClientId();
                 if (RoleClass.Spy.CanUseVent) sender.RpcSetRole(Player, RoleTypes.Engineer, true, PlayerCID);
                 else sender.RpcSetRole(Player, RoleTypes.Crewmate, true, PlayerCID);
-                foreach (var pc in PlayerControl.AllPlayerControls)
+                foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
                     sender.RpcSetRole(pc, RoleTypes.Scientist, true, PlayerCID);
@@ -440,7 +440,7 @@ public static class RoleSelectHandler
         {
             int PlayerCID = Player.GetClientId();
             sender.RpcSetRole(Player, roleTypes, true, PlayerCID);
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (pc.PlayerId == Player.PlayerId) continue;
                 sender.RpcSetRole(pc, pc.Data.Role.Role.IsImpostorRole() ? RoleTypes.Scientist : pc.Data.Role.Role, true, PlayerCID);

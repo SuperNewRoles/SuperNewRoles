@@ -571,26 +571,26 @@ class CheckForEndVotingPatch
                     case AntiBlackOut.SupportType.DeadExile:
                         NetworkedPlayerInfo NewExiled = null;
                         NetworkedPlayerInfo ExileCandidate = null;
-                        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
+                        foreach (var player in CachedPlayer.AllPlayers.AsSpan())
                         {
-                            if (player.Disconnected)
+                            if (player.Data.Disconnected)
                             {
-                                NewExiled = player;
+                                NewExiled = player.Data;
                                 break;
                             }
-                            if (!player.IsDead)
+                            if (!player.Data.IsDead)
                                 continue;
-                            PlayerControl @object = player.Object;
+                            PlayerControl @object = player.Data.Object;
                             if (@object == null)
                                 continue;
                             if (@object.IsMod() ||
                                 !AntiBlackOut.IsPlayerDesyncImpostorTeam(@object))
                             {
-                                NewExiled = player;
+                                NewExiled = player.Data;
                                 break;
                             }
                             else
-                                ExileCandidate = player;
+                                ExileCandidate = player.Data;
                         }
                         if (NewExiled == null && ExileCandidate == null)
                             throw new Exception("None DeadPlayer");

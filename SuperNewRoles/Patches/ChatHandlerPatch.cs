@@ -246,7 +246,7 @@ internal class AddChatPatch
             if (name == GetChatCommands.SNRCommander) return;
             if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles) && HideChat.HideChatEnabled)
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {

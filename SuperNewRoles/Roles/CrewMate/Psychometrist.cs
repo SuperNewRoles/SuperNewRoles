@@ -44,7 +44,7 @@ public static class Psychometrist
         if (RoleClass.Psychometrist.FootprintsPosition.Count != 0)
         {
             RoleClass.Psychometrist.UpdateTime -= Time.fixedDeltaTime;
-            foreach (var data in RoleClass.Psychometrist.FootprintsPosition.ToArray())
+            foreach (var data in RoleClass.Psychometrist.FootprintsPosition)
             {
                 if (data.Value.Item2)
                 {

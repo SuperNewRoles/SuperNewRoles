@@ -368,7 +368,7 @@ public class EndGameManagerSetUpPatch
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
             poolablePlayer.cosmetics.nameText.text = CachedPlayerData2.PlayerName;
 
-            foreach (var data in AdditionalTempData.playerRoles)
+            foreach (var data in AdditionalTempData.playerRoles.AsSpan())
             {
                 if (data.PlayerName != CachedPlayerData2.PlayerName) continue;
                 poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", CustomRoles.GetRoleNameOnColor(data.RoleId, IsImpostorReturn: CachedPlayerData2.IsImpostor))}";

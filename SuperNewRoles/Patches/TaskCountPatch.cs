@@ -16,7 +16,7 @@ class TaskCount
         static void Postfix(NormalPlayerTask __instance)
         {
             if (__instance.TaskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.MapOption.WireTaskIsRandom) return;
-            List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(__instance.TaskType)).ToList<global::Console>();
+            var orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((Console t) => t.TaskTypes.Contains(__instance.TaskType));
             List<Console> list = new(orgList);
 
             __instance.MaxStep = MapOption.MapOption.WireTaskNum;

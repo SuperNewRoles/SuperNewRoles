@@ -166,7 +166,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
                 if (targetRoleTypes.IsImpostorRole())
                 {
                     sender.RpcSetRole(player1, targetRoleTypes, true);
-                    foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach(PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (player.PlayerId == player1.PlayerId)
                             continue;
@@ -364,7 +364,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
         ChangeData.Reverse();
         new LateTask(() =>
         {
-            foreach (var data in ChangeData)
+            foreach (var data in ChangeData.AsSpan())
                 SwapRole(data.Item1, data.Item2);
         }, 0.2f);
     }

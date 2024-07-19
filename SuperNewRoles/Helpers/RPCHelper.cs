@@ -363,12 +363,12 @@ public static class RPCHelper
         sender.Write((writer) =>
         {
             GameDataSerializePatch.Is = true;
-            foreach (var player in GameData.Instance.AllPlayers)
+            foreach (var player in CachedPlayer.AllPlayers.AsSpan())
             {
                 writer.StartMessage(1); //0x01 Data
                 {
                     writer.WritePacked(player.NetId);
-                    player.Serialize(writer, false);
+                    player.Data.Serialize(writer, false);
                 }
                 writer.EndMessage();
             }
@@ -392,7 +392,7 @@ public static class RPCHelper
             writer.WritePacked(TargetClientId);
         }
         GameDataSerializePatch.Is = true;
-        foreach (var player in GameData.Instance.AllPlayers)
+        foreach (var player in CachedPlayer.AllPlayers.AsSpan())
         {
             // データを分割して送信
             if (writer.Length > 1000)
@@ -418,7 +418,7 @@ public static class RPCHelper
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(player.NetId);
-                player.Serialize(writer, false);
+                player.Data.Serialize(writer, false);
             }
             writer.EndMessage();
         }
