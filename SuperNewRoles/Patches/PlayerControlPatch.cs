@@ -116,6 +116,54 @@ static class PlayerControlSetCooldownPatch
     }
 }
 
+#region ファントム
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckVanish))]
+public static class PlayerControlCheckVanishPatch
+{
+    public static bool Prefix(PlayerControl __instance)
+    {
+        bool result = CustomRoles.OnCheckVanish(__instance);
+        if (result)
+            return true;
+            __instance.RpcAppear(true);
+            new LateTask(() => __instance.HandleServerAppear(true),0f);
+        return true;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CheckAppear))]
+public static class PlayerControlCheckAppearPatch
+{
+    public static bool Prefix(PlayerControl __instance, bool shouldAnimate)
+        => CustomRoles.OnCheckAppear(__instance, shouldAnimate);
+}
+[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CmdCheckVanish))]
+public static class PlayerControlCmdCheckVanishPatch
+{
+    public static bool Prefix(PlayerControl __instance)
+    {
+        if (AmongUsClient.Instance.AmModdedHost || AmongUsClient.Instance.AmLocalHost)
+        {
+            __instance.CheckVanish();
+            return false;
+        }
+        return true;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CmdCheckAppear))]
+public static class PlayerControlCmdCheckAppearPatch
+{
+    public static bool Prefix(PlayerControl __instance, bool shouldAnimate)
+    {
+        if (AmongUsClient.Instance.AmModdedHost || AmongUsClient.Instance.AmLocalHost)
+        {
+            __instance.CheckAppear(shouldAnimate);
+            return false;
+        }
+        return true;
+    }
+}
+#endregion
+
 [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
 public static class SwitchMinigameBeginPatch
 {
@@ -358,7 +406,7 @@ class ReportDeadBodyPatch
                 OrientalShaman.IsTransformation = false;
             }
         }
-        if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
+        /* if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -371,7 +419,7 @@ class ReportDeadBodyPatch
                     SyncSetting.CustomSyncSettings(player);
                 }
             }
-        }
+        }*/
         return RoleClass.Assassin.TriggerPlayer == null
         && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
         && (Mode.PlusMode.PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting || target != null)

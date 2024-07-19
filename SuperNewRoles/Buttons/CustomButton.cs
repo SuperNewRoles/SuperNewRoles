@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,14 +34,16 @@ public class CustomButton
     public bool showButtonText = true;
     public string buttonText = null;
     public float EffectDuration;
+    public bool IsEffectDurationInfinity;
     public Sprite Sprite;
     public Color? color;
+    public bool wantEffectCouldUse;
     private readonly HudManager hudManager;
     private readonly bool mirror;
     private readonly KeyCode? hotkey;
     private readonly int joystickkey;
     private readonly Func<bool> StopCountCool;
-    public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "", Color? color = null)
+    public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool IsEffectDurationInfinity = false, bool mirror = false, string buttonText = "", Color? color = null)
     {
         this.hudManager = hudManager;
         this.OnClick = OnClick;
@@ -50,6 +53,7 @@ public class CustomButton
         this.OnMeetingEnds = OnMeetingEnds;
         this.HasEffect = HasEffect;
         this.EffectDuration = EffectDuration;
+        this.IsEffectDurationInfinity = IsEffectDurationInfinity;
         this.OnEffectEnds = OnEffectEnds;
         this.Sprite = Sprite;
         this.mirror = mirror;
@@ -76,11 +80,11 @@ public class CustomButton
         SetActive(false);
     }
     public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "", bool isUseSecondButtonInfo = false, Color? color = null)
-    : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText, color) { }
+    : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, false, mirror, buttonText, color) { }
 
-    void OnClickEvent()
+    public void OnClickEvent()
     {
-        if ((this.Timer <= 0f && CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
+        if ((this.Timer <= 0f && CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable && (!wantEffectCouldUse || CouldUse())))
         {
             actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
             this.OnClick();
@@ -92,7 +96,7 @@ public class CustomButton
             }
             if (this.HasEffect && !this.isEffectActive)
             {
-                this.Timer = this.EffectDuration;
+                this.Timer = IsEffectDurationInfinity ? 0f : EffectDuration;
                 actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                 this.isEffectActive = true;
             }
@@ -304,12 +308,15 @@ public class CustomButton
 
         if (Timer <= 0 && HasEffect && isEffectActive)
         {
-            isEffectActive = false;
             actionButton.cooldownTimerText.color = Palette.EnabledColor;
-            OnEffectEnds();
+            if (!IsEffectDurationInfinity || !effectCancellable)
+            {
+                isEffectActive = false;
+                OnEffectEnds();
+            }
         }
 
-        actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
+        actionButton.SetCoolDown(Timer, SyncSetting.KillCoolSet((HasEffect && isEffectActive) ? (IsEffectDurationInfinity ? 0f : EffectDuration) : MaxTimer));
         // Trigger OnClickEvent if the hotkey is being pressed down
         if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
     }

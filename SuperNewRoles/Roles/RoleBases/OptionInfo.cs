@@ -112,7 +112,7 @@ public class OptionInfo
             OptionId++, SupportSHR, Role, isHidden: isHidden);
         List<float> PlayerCount = CustomOptionHolder.CrewPlayers;
         if (MaxPlayer != -1f)
-            PlayerCount = new(4) { 1, 1, MaxPlayer, 1 };
+            PlayerCount = new(4) { 1, 0, MaxPlayer, 1 };
         else if (RoleOption.type == CustomOptionType.Impostor)
             PlayerCount = CustomOptionHolder.ImpostorPlayers;
         PlayerCountOption = CustomOption.Create(

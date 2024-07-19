@@ -10,6 +10,7 @@ class Main
         Chat.WinCond = null;
         // FixedUpdate.UpdateTime = new Dictionary<byte, float>();
         Patches.OnGameEndPatch.EndData = null;
+        EndGameDetail.Reset();
     }
     public static PlayerControl RealExiled;
 }

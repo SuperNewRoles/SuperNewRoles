@@ -129,6 +129,7 @@ static class CheckMurderPatch
             case RoleId.JackalFriends:
             case RoleId.MadRaccoon:
             case RoleId.Egoist when !RoleClass.Egoist.UseKill:
+            case RoleId.Sidekick:
                 return false;
             case RoleId.FalseCharges:
                 target.RpcMurderPlayer(__instance, true);
@@ -251,26 +252,7 @@ static class CheckMurderPatch
                 Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
                 return false;
             case RoleId.Jackal:
-                Jackal jackal = __instance.GetRoleBase<Jackal>();
-                if (jackal == null)
-                    return false;
-                //まだ作ってなくて、設定が有効の時
-                if (jackal.CanSidekick)
-                {
-                    Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
-                    break;
-                }
-                SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
-                if (target == null || jackal.CanSidekick) return false;
-                __instance.RpcShowGuardEffect(target);
-                jackal.CanSidekick = false;
-                if (!target.IsImpostor())
-                {
-                    Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
-                }
-                Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
-                Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
-                return false;
+                break;
             case RoleId.JackalSeer:
                 if (RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.JackalSeer.CanCreateFriend)//まだ作ってなくて、設定が有効の時
                 {
