@@ -59,7 +59,7 @@ public static class ShiftActor
         var TargetRoleText = "";
 
         // 役職名
-        if (!ModHelpers.IsSucsessChance(ShiftActorRightChance.GetSelection() + 1))
+        if (!ModHelpers.IsSuccessChance(ShiftActorRightChance.GetSelection() + 1))
         { // 確率を判定し、失敗なら「クルーメイト」のみ表示。
             Logger.Info("失敗", "ShiftActor");
             TargetRoleText = ModTranslation.GetString("CrewmateName");

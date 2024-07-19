@@ -84,6 +84,7 @@ public static class RoleClass
         ReleaseGhostAbility.ClearAndReload();
         FixSabotage.ClearAndReload();
         Patches.CursedTasks.Main.ClearAndReload();
+        Drone.ClearAndReload();
 
         DeadBodyManager.ClearAndReloads();
 
@@ -164,7 +165,7 @@ public static class RoleClass
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
         Seer.ClearAndReload();
-        Crewmate.SeerHandler.ShowFlash_ClearAndReload();
+        SeerHandler.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
         EvilSeer.CreateMode = -1;
         RemoteSheriff.ClearAndReload();
@@ -263,7 +264,7 @@ public static class RoleClass
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
-        ChacheManager.Load();
+        CacheManager.Load();
         DebugModeManager.ClearAndReloads();
     }
 
@@ -2743,7 +2744,7 @@ public static class RoleClass
             PenguinPlayer = new();
             PenguinData = new(needplayerlist: true);
             PenguinTimer = new();
-            bool Is = ModHelpers.IsSucsessChance(4);
+            bool Is = ModHelpers.IsSuccessChance(4);
             _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
         }
     }

@@ -1,17 +1,15 @@
 using System;
-using System.Collections.Generic;
-
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public class EvilHacker : RoleBase, IImpostor, ICustomButton
+public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMap
 {
     public static new RoleInfo Roleinfo = new(
         typeof(EvilHacker),
@@ -104,8 +102,91 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton
 
         CustomButtonInfos = new CustomButtonInfo[2]
         {
-            EvilHackerButtonInfo, EvilHackerMadmateButtonInfo
+            EvilHackerButtonInfo,
+            EvilHackerMadmateButtonInfo,
         };
         CanCreateMadmate = MadmateSetting.GetBool();
+    }
+
+    private static SpriteRenderer DoorClosedRendererPrefab;
+    /// <summary>マップ上のドア閉まってるよマークの配列<br/>インデックスで<see cref="ShipStatus.AllDoors"/>と対応する</summary>
+    public SpriteRenderer[] DoorClosedMarks;
+
+    private static SpriteRenderer CreatePrefab()
+    {
+        var prefabObject = new GameObject("SNR_DoorClosed");
+        var renderer = prefabObject.AddComponent<SpriteRenderer>();
+        renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorClosed.png", 115f);
+        // シーン切替時に破棄されないようにする これで1回生成すればずっと使える
+        Object.DontDestroyOnLoad(prefabObject);
+        prefabObject.SetActive(false);
+        prefabObject.layer = 5;  // UIレイヤ
+        return renderer;
+    }
+
+    public void AwakePostfix(MapBehaviour __instance)
+    {
+        if (!MapShowsDoorState.GetBool()) return;
+        if (!DoorClosedRendererPrefab) DoorClosedRendererPrefab = CreatePrefab();
+        var allDoors = ShipStatus.Instance.AllDoors;
+        var mapScale = ShipStatus.Instance.MapScale;
+        DoorClosedMarks = new SpriteRenderer[allDoors.Length];
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            var door = allDoors[i];
+            var mark = DoorClosedMarks[i] = Object.Instantiate(DoorClosedRendererPrefab, __instance.taskOverlay.transform.parent);
+            var localPosition = door.transform.position / mapScale;
+            localPosition.z = -3f;
+            mark.transform.localPosition = localPosition;
+            mark.gameObject.SetActive(true);
+            mark.enabled = false;
+        }
+    }
+
+    public void ShowPrefix(MapBehaviour __instance, MapOptions opts, ref bool __state)
+    {
+        if (!CanUseAdminDuringMeeting.GetBool() || !MeetingHud.Instance || opts.Mode != MapOptions.Modes.Normal) return;
+        IsMyAdmin = true;
+        opts.Mode = MapOptions.Modes.CountOverlay;
+        __state = true;
+    }
+
+    public void ShowPostfix(MapBehaviour __instance, MapOptions opts)
+    {
+        if (!SabotageMapShowsAdmin.GetBool() || MeetingHud.Instance || opts.Mode != MapOptions.Modes.Sabotage) return;
+        IsMyAdmin = true;
+        __instance.countOverlay.gameObject.SetActive(true);
+        __instance.countOverlay.SetOptions(true, true);
+        __instance.countOverlayAllowsMovement = true;
+        __instance.taskOverlay.Hide();
+        __instance.HerePoint.enabled = true;
+        PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
+        __instance.ColorControl.SetColor(new(0f, 0.73f, 1f));
+        // アドミンがサボタージュとドア閉めのボタンに隠れないようにする
+        // ボタンより手前
+        __instance.countOverlay.transform.SetLocalZ(-3f);
+    }
+
+    public void FixedUpdatePostfix(MapBehaviour __instance)
+    {
+        if (!MapShowsDoorState.GetBool()) return;
+        var allDoors = ShipStatus.Instance.AllDoors;
+        for (int i = 0; i < allDoors.Length; i++)
+        {
+            var door = allDoors[i];
+            var mark = DoorClosedMarks[i];
+            if (door == null || mark == null)
+            {
+                continue;
+            }
+            mark.enabled = !door.IsOpen;
+        }
+    }
+
+    public void IsOpenStoppedPostfix(MapBehaviour __instance, ref bool __result)
+    {
+        // イビルハッカーがアドミン中も動けるように
+        if (__result && CanMoveWhenUsesAdmin.GetBool())
+            __result = false;
     }
 }

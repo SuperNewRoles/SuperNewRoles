@@ -272,6 +272,8 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
 OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
+CanSeeImpostorRole,Imposters can check each other's rolls.,インポスターが互いに役職を確認できる
+CanSeeImpostorRoleTurn,Number of turns to confirm,わかるようになる会議数
 CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない,玩家死亡后不再受到灵咒影响,死者不具有憑依能力
 ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,タスク完了後に憑依能力を開放する。,完成任务后才会释放灵咒,任務完成後啟用憑依能力
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
@@ -1057,7 +1059,7 @@ AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=
 MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数,<color=#AFDFE4>梅林</color>的人數
 AssassinName,Assassin,アサシン,刺客,刺客
 AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利,找出<color=#AFDFE4>梅林</color>來獲得勝利
-AssassinSucsess,was Marlin.,はマーリンだった,是梅林,是梅林
+AssassinSuccess,was Marlin.,はマーリンだった,是梅林,是梅林
 AssassinFail,was not Marlin.,はマーリンではなかった,不是梅林,不是梅林
 MarlinName,Merine,マーリン,梅林,梅林
 MarlinTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。,不要被<color=#ff0000>刺客</color>發現。
@@ -1881,6 +1883,14 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
+PhosphorusName,Phosphorus,ホスフォラス
+PhosphorusTitle1,A ray of light in the darkness,この暗闇に一筋の光明を
+PhosphorusDescription,You can put lanterns.\nLanterns are activated next turn.\nLanterns are lighted when you use ability,マップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、使えるようになります。\n能力を使用すると、一定時間の間ランタンを中心に明るく照らされ、視界外であっても見えるようになります。
+PhosphorusPuttingLimit,Putting lantern limit,ランタンの設置可能数
+PhosphorusLightingCooltime,Lighting cooltime,点灯のクールタイム
+PhosphorusLightRange,Light range,ランタンの範囲
+PhosphorusPutButtonName,Put,設置
+PhosphorusLightingButtonName,Lighting,点灯
 BodyBuilderName,Bodybuilder,ボディビルダー,,健美達人
 BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！,,看看我美麗的曲線！
 BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！,,健美達人屬於船員陣營。\n健美達人的所有任務都是舉重任務。\n完成任務後，可以進行肌肉展示。\n肌肉秀對其他玩家可見。
@@ -1905,6 +1915,22 @@ BuskerPseudocideDurationOption,Duration of feigned death,死を偽装できる�
 BuskerPseudocideButtonName,Feign death,偽装死
 BuskerRebornButtonName,Reborn,復活
 BuskerReallyDeadTimeText,Remain until really dead...,本当に死ぬまで残り...
+UbiquitousName,Ubiquitous,ユビキタス
+UbiquitousTitle1,My eyes exist everywhere.,私の目はどこにでも存在する
+UbiquitousDescription,You can call up a drone and control it.\nYou can switch between the drone and your own view and fly freely around the map.\nIt can also hack into nearby doors and open them.\nIn addition， the drone called on the map can land on the map after a turn， providing ubiquitous information about its surroundings.\nHowever， while operating the drone， you are defenseless. You cannot even perform tasks.\nDo not be caught off guard.,ドローンを呼び出し、操作することが出来ます。\nドローンと自身の視界を切り替え、自由にマップ内を飛び回ることが出来ます。\nまた、近くのドアをハッキングし、開けることも出来ます。\n更に、マップ上に呼び出したドローンは、ターンを挟むとマップ上に着陸し、周囲の情報をユビキタスに伝えます。\nただし、ドローンを操作している間、あなたは無防備です。タスクも出来ません。\nゆめゆめ油断することなかれ。
+UbiquitousCallCoolTimeOption,"Call" Cool Time,「呼び出す」のクールタイム
+UbiquitousOperationCoolTimeOption,"Operation" Cool Time,「操作」のクールタイム
+UbiquitousIsLimitOperableTimeOption,Limit the operable time,操作可能時間を制限するか
+UbiquitousOperableTimeOption,Operable time,操作可能時間
+UbiquitousDroneStayTurnOption,Number of turns the drone stays,ドローンが滞在するターン数
+UbiquitousFlyingSpeedOption,Flying speed,飛行速度
+UbiquitousDoorHackCoolTimeOption,"Door Hack" Cool Time,「ドアハック」のクールタイム
+UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲
+UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲
+UbiquitousOperationButton,Operation,操作
+UbiquitousCallButton,Call,呼び出す
+UbiquitousCallHomeButton,Call Home,呼び戻す
+UbiquitousDoorHackButton,Door Hack,ドアハック
 
 #NewRoleTranslation
 

@@ -11,6 +11,7 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
@@ -25,6 +26,7 @@ using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
 using SuperNewRoles.MapOption;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Patches;
 
@@ -236,7 +238,7 @@ class CheckForEndVotingPatch
                                     p.RpcSetColor((byte)outfit.ColorId);
                                     p.RpcSetName(target.Object.GetDefaultName() +
                                         ModTranslation.GetString(target.Object.IsRole(RoleId.Marlin) ?
-                                        "AssassinSucsess" :
+                                        "AssassinSuccess" :
                                         "AssassinFail")
                                         + "<size=0%>");
                                     p.RpcSetHat(outfit.HatId);
@@ -779,6 +781,7 @@ class MeetingHudClosePatch
     public static void Postfix(MeetingHud __instance)
     {
         CustomRoles.OnMeetingClose();
+        Drone.CloseMeeting();
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

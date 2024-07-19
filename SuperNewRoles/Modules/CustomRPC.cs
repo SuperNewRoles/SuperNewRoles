@@ -68,7 +68,9 @@ public enum RoleId
     NiceScientist,
     NiceRedRidingHood,
     Busker,
+    Phosphorus,
     BodyBuilder,
+    Ubiquitous,
 
     //RoleId
 
@@ -1103,7 +1105,7 @@ public static class RPCProcedure
         RoleClass.SideKiller.MadKillerPlayer.Add(target);
         RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
     }
     public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
@@ -1239,7 +1241,7 @@ public static class RPCProcedure
             player1.ClearRole();
             player1.SetRole(player2id);
         }
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
         RoleHelpers.ClearTaskUpdate();
         if (AmongUsClient.Instance.AmHost)
         {
@@ -1484,7 +1486,7 @@ public static class RPCProcedure
             }
         }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
     }
     public static void CreateSidekickSeer(byte playerid, bool IsFake)
     {
@@ -1500,7 +1502,7 @@ public static class RPCProcedure
             player.ClearRole();
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
+            CacheManager.ResetMyRoleCache();
         }
     }
     public static void ExiledRPC(byte playerid)
