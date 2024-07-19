@@ -299,14 +299,14 @@ ModeSetting,Mode Setting,モード設定,模式设置,模式設定
 SettingMode,Mode,モード,游戏模式,遊戲模式
 SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置,躲貓貓模式設定
 SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,大逃杀模式设置,大逃殺模式設定
-SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHostRoles设置,SuperHostRoles設定
+SettingSuperHostRolesMode,Super Host Roles Beta Mode,SuperHostRolesβの設定,SuperHostRolesβ设置,SuperHostRolesβ設定
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置,殭屍模式設定
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置,隨機顏色模式設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置,偵探模式設定
 DefaultModeName,Defalut Mode,通常モード,末日模式,預設模式
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫,躲貓貓
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
-SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
+SuperHostRolesModeName,Super Host Roles Beta,SuperHostRolesβ,Super Host Rolesβ,SuperHostRolesβ
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机,殭屍模式
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式,隨機顏色
 PantsRoyalModeName,Pants Royal,パンツ大騒動,裤头大逃杀,搶褲大逃殺
