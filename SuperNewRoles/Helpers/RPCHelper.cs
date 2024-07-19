@@ -376,14 +376,35 @@ public static class RPCHelper
         }
         else
         {
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
             writer.StartMessage(6);
             writer.Write(AmongUsClient.Instance.GameId);
-            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
             writer.WritePacked(TargetClientId);
         }
         GameDataSerializePatch.Is = true;
         foreach (var player in GameData.Instance.AllPlayers)
         {
+            // データを分割して送信
+            if (writer.Length > 1000)
+            {
+                writer.EndMessage();
+                AmongUsClient.Instance.SendOrDisconnect(writer);
+                writer.Recycle();
+
+                writer = MessageWriter.Get(SendOption.Reliable);
+                if (TargetClientId < 0)
+                {
+                    writer.StartMessage(5);
+                    writer.Write(AmongUsClient.Instance.GameId);
+                }
+                else
+                {
+                    writer.StartMessage(6);
+                    writer.Write(AmongUsClient.Instance.GameId);
+                    writer.WritePacked(TargetClientId);
+                }
+            }
+
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(player.NetId);
