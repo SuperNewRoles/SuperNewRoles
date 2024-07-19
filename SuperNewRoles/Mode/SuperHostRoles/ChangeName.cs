@@ -386,7 +386,10 @@ public static class ChangeName
                 foreach (var data in RoleBaseManager.GetInterfaces<ISupportSHR>())
                 {
                     if (data.BuildAllName(out string text))
-                        ChangePlayers[(data as RoleBase).Player] += text;
+                    {
+                        PlayerControl control = (data as RoleBase).Player;
+                        ChangePlayers[control] = ChangePlayers.GetNowName(control) + text;
+                    }
                 }
                 foreach (var ChangePlayerData in (Dictionary<PlayerControl, string>)ChangePlayers)
                 {
