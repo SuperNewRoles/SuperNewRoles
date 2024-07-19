@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -13,6 +9,10 @@ public interface IMeetingHandler
 {
     public void StartMeeting();
     public void CloseMeeting();
+
+    public virtual bool CastVote(byte target_id) => true;
+
+    public virtual void CalculateVotes(Dictionary<byte, int> dic) { }
 
     /// <summary> 匿名投票か </summary>
     /// <returns> true : 匿名投票 / false : 公開投票</returns>

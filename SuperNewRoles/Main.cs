@@ -12,6 +12,7 @@ using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using SuperNewRoles.CustomModOption;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.MapDatabase;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
@@ -128,6 +129,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         // Old Delete End
 
+        LoggerPlus.SetLogName();
+
         SuperNewRoles.Logger.Info(DateTime.Now.ToString("D"), "DateTime Now"); // 2022年11月24日
         SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
         SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
@@ -169,6 +172,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<SpiderTrap>();
         ClassInjector.RegisterTypeInIl2Cpp<WCSantaHandler>();
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
+        ClassInjector.RegisterTypeInIl2Cpp<Lantern>();
         ClassInjector.RegisterTypeInIl2Cpp<WaveCannonEffect>();
         ClassInjector.RegisterTypeInIl2Cpp<ModSettingsMenu>();
         ClassInjector.RegisterTypeInIl2Cpp<ModOptionBehaviour>();
@@ -176,6 +180,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<ModRoleOptionSetting>();
         ClassInjector.RegisterTypeInIl2Cpp<ModStringOption>();
         ClassInjector.RegisterTypeInIl2Cpp<ModToggleOption>();
+        ClassInjector.RegisterTypeInIl2Cpp<Drone>();
 
         Logger.LogInfo("Start Load Resource");
         string[] resourceNames = assembly.GetManifestResourceNames();

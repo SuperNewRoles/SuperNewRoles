@@ -27,36 +27,35 @@ public static class Matryoshka
     }
     public static void Set(PlayerControl source, PlayerControl target, bool Is)
     {
-        if (Is)
-        {
-            source.setOutfit(target.Data.DefaultOutfit);
-        }
-        else
-        {
-            source.setOutfit(source.Data.DefaultOutfit);
-        }
         if (!Is)
         {
-            if (RoleClass.Matryoshka.Data.Contains(source.PlayerId))
-            {
-                if (RoleClass.Matryoshka.Data[source.PlayerId] != null)
-                {
-                    RoleClass.Matryoshka.Data[source.PlayerId].Reported = false;
-                    foreach (SpriteRenderer render in RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderers) render.enabled = true;
-                }
-                RoleClass.Matryoshka.Data.Remove(source.PlayerId);
-            }
+            source.setOutfit(source.Data.DefaultOutfit);
+            if (!RoleClass.Matryoshka.Data.TryGetValue(source.PlayerId, out DeadBody deadBody))
+                return;
+            RoleClass.Matryoshka.Data.Remove(source.PlayerId);
+            if (deadBody == null)
+                return; ;
+            deadBody.Reported = false;
+            foreach (SpriteRenderer render in deadBody.bodyRenderers)
+                render.enabled = true;
+            DeadBodyManager.EndedUseDeadbody(deadBody, DeadBodyUser.Matryoshka);
         }
         else
         {
+            DeadBody targetDeadBody = null;
             DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
-            for (int i = 0; i < array.Length; i++)
+            foreach (DeadBody deadBody in array)
             {
-                if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == target.PlayerId)
-                {
-                    RoleClass.Matryoshka.Data[source.PlayerId] = array[i];
-                }
+                if (deadBody.ParentId != target.PlayerId)
+                    continue;
+                targetDeadBody = deadBody;
+                break;
             }
+            if (targetDeadBody == null || DeadBodyManager.IsDeadbodyUsed(targetDeadBody))
+                return;
+            RoleClass.Matryoshka.Data[source.PlayerId] = targetDeadBody;
+            source.setOutfit(target.Data.DefaultOutfit);
+            DeadBodyManager.UseDeadbody(targetDeadBody, DeadBodyUser.Matryoshka);
         }
     }
     public static void RpcSet(PlayerControl target, bool Is)

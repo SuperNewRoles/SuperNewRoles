@@ -1,13 +1,14 @@
 
 using AmongUs.GameOptions;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using System.Linq;
 namespace SuperNewRoles.Roles.Crewmate.NiceRedRidingHood;
 
-public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandler, IHaveHauntAbility
+public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandler, IHaveHauntAbility, ISupportSHR
 {
     public static new RoleInfo Roleinfo = new(
         typeof(NiceRedRidingHood),
@@ -24,6 +25,8 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.NiceRedRidingHood, introSound: RoleTypes.Crewmate);
+
+    public RoleTypes RealRole => RoleTypes.Crewmate;
 
     public static CustomOption NiceRedRidingHoodCount;
     public static CustomOption NiceRedRidinIsKillerDeathRevive;
@@ -60,6 +63,14 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
             if (IsDisabledRevive) return;
 
             Player.Revive();
+            if (AmongUsClient.Instance.AmHost
+                && ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                CustomRpcSender sender = CustomRpcSender.Create("Nice RedRidingHood", sendOption:Hazel.SendOption.Reliable);
+                Player.Data.IsDead = true;
+                RPCHelper.RpcSyncNetworkedPlayer(sender, Player.Data);
+                sender.RpcSetRole(Player, RoleTypes.Crewmate, true);
+            }
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(Player, RoleTypes.Crewmate);
             DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == Player.PlayerId);
             Patches.FinalStatusPatch.FinalStatusData.FinalStatuses[Player.PlayerId] = FinalStatus.Alive;

@@ -1,4 +1,5 @@
 using System;
+using Epic.OnlineServices.Achievements;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
@@ -23,6 +24,9 @@ class PlusGameOptions
     public static CustomOption OnlyImpostorGhostSeeRole;
 
     public static CustomOption CanGhostSeeVote;
+
+    public static CustomOption CanSeeImpostorRole;
+    public static CustomOption CanSeeImpostorRoleTurn;
 
     public static CustomOption CanNotGhostHaveHaunt;
     public static CustomOption ReleaseHauntAfterCompleteTasks;
@@ -55,6 +59,9 @@ class PlusGameOptions
         OnlyImpostorGhostSeeRole = Create(103601, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanNotGhostSeeRole);
 
         CanGhostSeeVote = Create(103700, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
+
+        CanSeeImpostorRole = Create(105306, false, CustomOptionType.Generic, "CanSeeImpostorRole", false, PlusGameOptionSetting, isHeader: true);
+        CanSeeImpostorRoleTurn = Create(105307, false, CustomOptionType.Generic, "CanSeeImpostorRoleTurn", 5, 1, 15, 1, CanSeeImpostorRole, isHeader: true);
 
         CanNotGhostHaveHaunt = Create(104700, true, CustomOptionType.Generic, "CanNotGhostHaveHaunt", false, PlusGameOptionSetting, isHeader: true);
         ReleaseHauntAfterCompleteTasks = Create(104701, true, CustomOptionType.Generic, "ReleaseHauntAfterCompleteTasks", false, CanNotGhostHaveHaunt);

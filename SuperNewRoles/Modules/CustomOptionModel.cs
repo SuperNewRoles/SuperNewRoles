@@ -87,7 +87,7 @@ public class CustomOption
     public bool isHeader;
     public bool isHidden;
     public RoleId RoleId;
-    public int openSelection { get; }
+    public int openSelection { get; } = -1;
     public bool IsToggle { get; }
     public Func<bool> CanShowFunc { get; }
     public bool HasCanShowAction { get; }
@@ -124,7 +124,7 @@ public class CustomOption
     // Option creation
     public CustomOption()
     {
-
+        openSelection = -1;
     }
     public static CustomOption GetOption(int id)
     {
@@ -522,7 +522,7 @@ public class CustomRoleOption : CustomOption
 
 public class CustomOptionBlank : CustomOption
 {
-    public CustomOptionBlank(CustomOption parent)
+    public CustomOptionBlank(CustomOption parent, bool isSHROn = false) : base()
     {
         this.parent = parent;
         this.id = -1;
@@ -530,6 +530,8 @@ public class CustomOptionBlank : CustomOption
         this.isHeader = false;
         this.isHidden = true;
         this.children = new List<CustomOption>();
+        this.isSHROn = isSHROn;
+        this.CanShowByFunc = false;
         this.selections = new string[] { "" };
         this.RoleId = RoleId.DefaultRole;
         options.Add(this);

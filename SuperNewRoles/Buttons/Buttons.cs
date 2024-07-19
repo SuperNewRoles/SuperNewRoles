@@ -57,7 +57,6 @@ static class HudManagerStartPatch
     public static CustomButton ArsonistDouseButton;
     public static CustomButton ArsonistIgniteButton;
     public static CustomButton SpeederButton;
-    public static CustomButton ChiefSidekickButton;
     public static CustomButton VultureButton;
     public static CustomButton ShielderButton;
     public static CustomButton CleanerButton;
@@ -91,8 +90,6 @@ static class HudManagerStartPatch
     public static CustomButton StefinderKillButton;
     public static CustomButton CrackerButton;
     public static CustomButton DoppelgangerButton;
-    public static CustomButton PavlovsownerCreatedogButton;
-    public static CustomButton PavlovsdogKillButton;
     public static CustomButton CamouflagerButton;
     public static CustomButton PenguinButton;
     public static CustomButton VampireCreateDependentsButton;
@@ -509,97 +506,6 @@ static class HudManagerStartPatch
         )
         {
             buttonText = ModTranslation.GetString("VampireDependentsButtonName"),
-            showButtonText = true
-        };
-
-        PavlovsdogKillButton = new(
-            () =>
-            {
-                PlayerControl target = Pavlovsdogs.SetTarget(false);
-                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
-                PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptionHolder.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptionHolder.PavlovsdogKillCoolTime.GetFloat();
-                PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
-                if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.Contains(PlayerControl.LocalPlayer.PlayerId)) return;
-                RoleClass.Pavlovsdogs.DeathTime = CustomOptionHolder.PavlovsdogRunAwayDeathTime.GetFloat();
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsdogs; },
-            () =>
-            {
-                if (RoleClass.Pavlovsdogs.IsOwnerDead && CachedPlayer.LocalPlayer.IsAlive())
-                {
-                    RoleClass.Pavlovsdogs.DeathTime -= Time.deltaTime;
-                    PavlovsdogKillSelfText.text = RoleClass.Pavlovsdogs.DeathTime > 0 ? string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.Pavlovsdogs.DeathTime) + 1) : "";
-                    if (RoleClass.Pavlovsdogs.DeathTime <= 0)
-                    {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-                    }
-                }
-                var Target = SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Pavlovsdogs.color);
-                return Pavlovsdogs.SetTarget(false) && PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                if (CustomOptionHolder.PavlovsdogRunAwayDeathTimeIsMeetingReset.GetBool()) RoleClass.Pavlovsdogs.DeathTime = CustomOptionHolder.PavlovsdogRunAwayDeathTime.GetFloat();
-                PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptionHolder.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptionHolder.PavlovsdogKillCoolTime.GetFloat();
-                PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
-            },
-            __instance.KillButton.graphic.sprite,
-            new Vector3(0, 1, 0),
-            __instance,
-            __instance.KillButton,
-            KeyCode.Q,
-            8,
-            () => { return RoleClass.IsMeeting; }
-        )
-        {
-            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
-            showButtonText = true
-        };
-
-        PavlovsdogKillSelfText = GameObject.Instantiate(PavlovsdogKillButton.actionButton.cooldownTimerText, PavlovsdogKillButton.actionButton.cooldownTimerText.transform.parent);
-        PavlovsdogKillSelfText.text = "";
-        PavlovsdogKillSelfText.enableWordWrapping = false;
-        PavlovsdogKillSelfText.transform.localScale = Vector3.one * 0.5f;
-        PavlovsdogKillSelfText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
-
-        PavlovsownerCreatedogButton = new(
-            () =>
-            {
-                PlayerControl target = Pavlovsdogs.SetTarget();
-                RoleClass.Pavlovsowner.CreateLimit--;
-                bool isSelfDeath = target.IsImpostor() && CustomOptionHolder.PavlovsownerIsTargetImpostorDeath.GetBool();
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PavlovsOwnerCreateDog);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(target.PlayerId);
-                writer.Write(isSelfDeath);
-                writer.EndRPC();
-                RPCProcedure.PavlovsOwnerCreateDog(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId, isSelfDeath);
-                RoleClass.Pavlovsowner.CurrentChildPlayer = target;
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
-            () =>
-            {
-                var target = SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Pavlovsdogs.color);
-                target = Pavlovsdogs.SetTarget();
-                return PlayerControl.LocalPlayer.CanMove && target && !Frankenstein.IsMonster(target);
-            },
-            () =>
-            {
-                PavlovsownerCreatedogButton.MaxTimer = CustomOptionHolder.PavlovsownerCreateCoolTime.GetFloat();
-                PavlovsownerCreatedogButton.Timer = PavlovsownerCreatedogButton.MaxTimer;
-            },
-            RoleClass.Pavlovsowner.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("PavlovsownerCreatedogButtonName"),
             showButtonText = true
         };
 
@@ -1852,49 +1758,6 @@ static class HudManagerStartPatch
             HasEffect = true
         };
 
-        ChiefSidekickButton = new(
-            () =>
-            {
-                var target = SetTarget();
-                if (target && !RoleClass.Chief.IsCreateSheriff)
-                {
-                    if (!target.IsImpostor())
-                    {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ChiefSidekick);
-                        writer.Write(target.PlayerId);
-                        writer.Write(target.IsClearTask());
-                        RPCHelper.EndRPC(writer);
-                        RPCProcedure.ChiefSidekick(target.PlayerId, target.IsClearTask());
-                        RoleClass.Chief.IsCreateSheriff = true;
-                    }
-                    else
-                    {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-                        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
-                    }
-                }
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Chief && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Chief.IsCreateSheriff; },
-            () =>
-            {
-                var target = SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Chief.color);
-                return target && !Frankenstein.IsMonster(target) && PlayerControl.LocalPlayer.CanMove;
-            },
-            () => { },
-            RoleClass.Chief.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("ChiefSidekickButtonName"),
-            showButtonText = true
-        };
-
         VultureButton = new(
             () =>
             {
@@ -2304,24 +2167,21 @@ static class HudManagerStartPatch
         DoubleKillerMainKillButton = new(
             () =>
             {
-                if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true));
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
-                    switch (PlayerControl.LocalPlayer.GetRole())
-                    {
-                        case RoleId.DoubleKiller:
-                            DoubleKiller.ResetMainCooldown();
-                            break;
-                        case RoleId.Smasher:
-                            Smasher.ResetCooldown();
-                            break;
-                    }
+                    case RoleId.DoubleKiller:
+                        DoubleKiller.ResetMainCooldown();
+                        break;
+                    case RoleId.Smasher:
+                        Smasher.ResetCooldown();
+                        break;
                 }
             },
-            (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default)); },
+            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.DoubleKiller or RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
-                var target = PlayerControlFixedUpdatePatch.SetTarget();
+                var target = PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true);
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.DoubleKiller.color);
                 return target && PlayerControl.LocalPlayer.CanMove;
             },
@@ -2345,29 +2205,23 @@ static class HudManagerStartPatch
         DoubleKillerSubKillButton = new(
             () =>
             {
-                if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true));
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
-                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
-                    switch (PlayerControl.LocalPlayer.GetRole())
-                    {
-                        case RoleId.DoubleKiller:
-                            DoubleKiller.ResetSubCooldown();
-                            break;
-                        case RoleId.Smasher:
-                            Smasher.ResetSmashCooldown();
-                            break;
-                    }
+                    case RoleId.DoubleKiller:
+                        DoubleKiller.ResetSubCooldown();
+                        break;
+                    case RoleId.Smasher:
+                        Smasher.ResetSmashCooldown();
+                        break;
                 }
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Smasher))
                 {
                     RoleClass.Smasher.SmashOn = true;
                 }
             },
-            (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Smasher.SmashOn); },
-            () =>
-            {
-                return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
-            },
+            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.DoubleKiller or RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default); },
+            () => PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true) && PlayerControl.LocalPlayer.CanMove,
             () =>
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }

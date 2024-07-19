@@ -19,15 +19,13 @@ public interface INameHandler
     /// <summary>
     /// 自分視点で他の人の名前や役職名を表示等する時に
     /// </summary>
-    public void OnHandleName()
-    {
-
-    }
+    public void OnHandleName() { }
     /// <summary>
     /// 全員の役職を見れる人が実行するやつ
     /// </summary>
-    public void OnHandleDeadPlayer()
-    {
-
-    }
+    public void OnHandleDeadPlayer() { }
+    /// <summary>
+    /// 全員に見えるやつ
+    /// </summary>
+    public void OnHandleAllPlayer() { }
 }

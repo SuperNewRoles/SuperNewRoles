@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
@@ -11,13 +12,38 @@ public class HandleGhostRole
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.AssignRoleOnDeath))]
     public class AssignRole
     {
-        public static bool Prefix([HarmonyArgument(0)] PlayerControl player)
+        public static bool Prefix([HarmonyArgument(0)] PlayerControl player, bool specialRolesAllowed)
         {
             if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf, ModeId.SuperHostRoles)) return true; // クラシック以外は弾く
             if (player.IsAlive()) return false; //生存者は弾く
 
-            if (GetReleaseHauntAbility(player)) return true; // 憑依可能な設定なら
-            else return false; // 憑依不可能な設定なら
+            if (GetReleaseHauntAbility(player))
+            {
+                if (!player.Data.Role.IsImpostor && specialRolesAllowed)
+                {
+                    // TryAssignSpecialGhostRoles
+                    RoleTypes roleTypes = RoleTypes.GuardianAngel;
+                    int num = PlayerControl.AllPlayerControls.ToArray().Count((PlayerControl pc) => pc.Data.IsDead && !pc.Data.Role.IsImpostor);
+                    IRoleOptionsCollection roleOptions = GameOptionsManager.Instance.CurrentGameOptions.RoleOptions;
+                    if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
+                    {
+                        player.RpcSetRole(roleTypes, true);
+                    }
+                    else if (num <= roleOptions.GetNumPerGame(roleTypes))
+                    {
+                        int chancePerGame = roleOptions.GetChancePerGame(roleTypes);
+                        if (HashRandom.Next(101) < chancePerGame)
+                        {
+                            player.RpcSetRole(roleTypes, true);
+                        }
+                    }
+                }
+                if (!RoleManager.IsGhostRole(player.Data.Role.Role))
+                    player.RpcSetRole(player.Data.Role.DefaultGhostRole, true);
+                return false; // 憑依可能な設定なら
+            }
+            else
+                return false; // 憑依不可能な設定なら
         }
 
         public static void Postfix([HarmonyArgument(0)] PlayerControl player)
@@ -30,7 +56,7 @@ public class HandleGhostRole
             bool isAssign = HandleAssign(player);
             if (isAssign && ModeHandler.IsMode(ModeId.SuperHostRoles)) // 幽霊役職が配布された非導入者の役職を守護天使に変更する
             {
-                if (!player.IsMod()) player.RpcSetRole(AmongUs.GameOptions.RoleTypes.GuardianAngel);
+                if (!player.IsMod()) player.RpcSetRole(AmongUs.GameOptions.RoleTypes.GuardianAngel, true);
             }
         }
 
@@ -98,7 +124,7 @@ public class HandleGhostRole
 
         player.SetRoleRPC(assignrole);
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !player.IsMod())
-            player.RpcSetRole(AmongUs.GameOptions.RoleTypes.GuardianAngel);
+            player.RpcSetRole(AmongUs.GameOptions.RoleTypes.GuardianAngel, true);
 
         return true;
     }

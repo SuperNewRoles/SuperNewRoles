@@ -59,7 +59,9 @@ public class Frankenstein
                     if (!component || component.Reported) continue;
 
                     Vector2 dead = component.TruePosition;
-                    if (Vector2.Distance(pos, dead) <= PlayerControl.LocalPlayer.MaxReportDistance && !PhysicsHelpers.AnythingBetween(pos, dead, Constants.ShipAndObjectsMask, false))
+                    if (Vector2.Distance(pos, dead) <= PlayerControl.LocalPlayer.MaxReportDistance
+                       && !PhysicsHelpers.AnythingBetween(pos, dead, Constants.ShipAndObjectsMask, false)
+                       && !DeadBodyManager.IsDeadbodyUsed(component))
                     {
                         player = GameData.Instance.GetPlayerById(component.ParentId);
                         break;

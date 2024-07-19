@@ -1,6 +1,7 @@
 using System;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles.Roles;
 
@@ -19,9 +20,7 @@ class Sheriff
             else
             {
                 if (HudManagerStartPatch.SheriffKillButton != null)
-                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId)
-                        ? RoleClass.Chief.CoolTime
-                        : RoleClass.Sheriff.CoolTime;
+                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
                 HudManagerStartPatch.SheriffKillButton.Timer = HudManagerStartPatch.SheriffKillButton.MaxTimer;
             }
         }
@@ -156,7 +155,7 @@ class Sheriff
     {
         ResetKillCooldown();
     }
-    class SheriffRoleExecutionData
+    public class SheriffRoleExecutionData
     {
         /// <summary>執行挙動のモード</summary>
         public ExecutionMode Mode;
@@ -196,7 +195,7 @@ class Sheriff
             {
                 case RoleId.Sheriff:
                     // 通常Sheriffの場合
-                    if (!RoleClass.Chief.SheriffPlayer.Contains(sheriff.PlayerId))
+                    if (!Chief.IsSheriffCreatedByChief(sheriff.PlayerId))
                     {
                         mode = (ExecutionMode)CustomOptionHolder.SheriffExecutionMode.GetSelection();
                         isImpostorKill = CustomOptionHolder.SheriffCanKillImpostor.GetBool();
@@ -208,13 +207,13 @@ class Sheriff
                     }
                     else // 村長シェリフの場合
                     {
-                        mode = (ExecutionMode)CustomOptionHolder.ChiefSheriffExecutionMode.GetSelection();
-                        isImpostorKill = CustomOptionHolder.ChiefSheriffCanKillImpostor.GetBool();
-                        isMadRolesKill = CustomOptionHolder.ChiefSheriffCanKillMadRole.GetBool();
-                        isNeutralKill = CustomOptionHolder.ChiefSheriffCanKillNeutral.GetBool();
-                        isFriendRolesKill = CustomOptionHolder.ChiefSheriffFriendsRoleKill.GetBool();
-                        isLoversKill = CustomOptionHolder.ChiefSheriffCanKillLovers.GetBool();
-                        isQuarreledKill = CustomOptionHolder.ChiefSheriffQuarreledKill.GetBool();
+                        mode = (ExecutionMode)Chief.ChiefSheriffExecutionMode.GetSelection();
+                        isImpostorKill = Chief.ChiefSheriffCanKillImpostor.GetBool();
+                        isMadRolesKill = Chief.ChiefSheriffCanKillMadRole.GetBool();
+                        isNeutralKill = Chief.ChiefSheriffCanKillNeutral.GetBool();
+                        isFriendRolesKill = Chief.ChiefSheriffFriendsRoleKill.GetBool();
+                        isLoversKill = Chief.ChiefSheriffCanKillLovers.GetBool();
+                        isQuarreledKill = Chief.ChiefSheriffQuarreledKill.GetBool();
                     }
                     break;
                 case RoleId.RemoteSheriff:

@@ -5,6 +5,7 @@ using System.Text;
 using HarmonyLib;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppSystem.CodeDom;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -183,6 +184,149 @@ public class EndGameManagerSetUpPatch
             }
         }
     }
+    #region ProcessWinText
+    static Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
+    static Dictionary<WinCondition, (string, Color32)> WinConditionDictionary = new() {
+            { WinCondition.HAISON, ("HAISON", HaisonColor) },
+            { WinCondition.LoversWin, ("LoversName", RoleClass.Lovers.color) },
+            { WinCondition.GodWin, ("GodName", RoleClass.God.color) },
+            { WinCondition.JesterWin, ("JesterName", RoleClass.Jester.color) },
+            { WinCondition.JackalWin, ("JackalName", RoleClass.Jackal.color) },
+            { WinCondition.QuarreledWin, ("QuarreledName", RoleClass.Quarreled.color) },
+            { WinCondition.EgoistWin, ("EgoistName", RoleClass.Egoist.color) },
+            { WinCondition.WorkpersonWin, ("WorkpersonName", RoleClass.Workperson.color) },
+            { WinCondition.FalseChargesWin, ("FalseChargesName", RoleClass.FalseCharges.color) },
+            { WinCondition.FoxWin, ("FoxName", RoleClass.Fox.color) },
+            { WinCondition.DemonWin, ("DemonName", RoleClass.Demon.color) },
+            { WinCondition.ArsonistWin, ("ArsonistName", RoleClass.Arsonist.color) },
+            { WinCondition.VultureWin, ("VultureName", RoleClass.Vulture.color) },
+            { WinCondition.TunaWin, ("TunaName", RoleClass.Tuna.color) },
+            { WinCondition.NeetWin, ("NeetName", RoleClass.Neet.color) },
+            { WinCondition.RevolutionistWin, ("RevolutionistName", RoleClass.Revolutionist.color) },
+            { WinCondition.SpelunkerWin, ("SpelunkerName", RoleClass.Spelunker.color) },
+            { WinCondition.SuicidalIdeationWin, (CustomOptionHolder.SuicidalIdeationWinText.GetBool() ? "SuicidalIdeationWinText" : "SuicidalIdeationName", RoleClass.SuicidalIdeation.color) },
+            { WinCondition.HitmanWin, ("HitmanName", RoleClass.Hitman.color) },
+            { WinCondition.PhotographerWin, ("PhotographerName", RoleClass.Photographer.color) },
+            { WinCondition.StefinderWin, ("StefinderName", RoleClass.Stefinder.color) },
+            { WinCondition.PavlovsTeamWin, ("PavlovsTeamWinText", PavlovsDogs.PavlovsColor) },
+            { WinCondition.LoversBreakerWin, ("LoversBreakerName", RoleClass.LoversBreaker.color) },
+            { WinCondition.NoWinner, ("NoWinner", Color.white) },
+            { WinCondition.SafecrackerWin, ("SafecrackerName", Safecracker.color) },
+            { WinCondition.TheThreeLittlePigsWin, ("TheThreeLittlePigsName", TheThreeLittlePigs.color) },
+            { WinCondition.OrientalShamanWin, ("OrientalShamanName", OrientalShaman.color) },
+            { WinCondition.BlackHatHackerWin, ("BlackHatHackerName", BlackHatHacker.color) },
+            { WinCondition.MoiraWin, ("MoiraName", Moira.Roleinfo.RoleColor) },
+            { WinCondition.CrookWin, ("CrookName", Crook.RoleData.color) },
+            { WinCondition.PantsRoyalWin, ("PantsRoyalYouareWinner" ,Mode.PantsRoyal.main.ModeColor) },
+            { WinCondition.SaunerWin, ("SaunerRefreshing", Sauner.RoleData.color) },
+            { WinCondition.PokerfaceWin, ("PokerfaceName", Pokerface.RoleData.color) },
+            { WinCondition.FrankensteinWin, ("FrankensteinName",Frankenstein.color) },
+            { WinCondition.OwlWin, ("OwlName", Owl.Roleinfo.RoleColor) },
+        };
+    public static (string text, Color color, bool Haison) ProcessWinText(GameOverReason gameOverReason, WinCondition winCondition)
+    {
+        string text = "";
+        Color RoleColor = Color.white;
+        if (WinConditionDictionary.ContainsKey(winCondition))
+        {
+            text = WinConditionDictionary[winCondition].Item1;
+            RoleColor = WinConditionDictionary[winCondition].Item2;
+        }
+        else
+        {
+            switch (gameOverReason)
+            {
+                case GameOverReason.HumansByTask:
+                case GameOverReason.HumansByVote:
+                case GameOverReason.HumansDisconnect:
+                    text = "CrewmateName";
+                    RoleColor = Palette.White;
+                    break;
+                case GameOverReason.ImpostorByKill:
+                case GameOverReason.ImpostorBySabotage:
+                case GameOverReason.ImpostorByVote:
+                case GameOverReason.ImpostorDisconnect:
+                //MadJester勝利をインポスター勝利とみなす
+                case (GameOverReason)CustomGameOverReason.MadJesterWin:
+                    text = "ImpostorName";
+                    RoleColor = RoleClass.ImpostorRed;
+                    break;
+                case (GameOverReason)CustomGameOverReason.TaskerWin:
+                    text = "TaskerWinText";
+                    RoleColor = RoleClass.ImpostorRed;
+                    break;
+            }
+        }
+
+        if (winCondition == WinCondition.HAISON)
+        {
+            text = ModTranslation.GetString("HaisonName");
+            RoleColor = HaisonColor;
+        }
+        else if (winCondition == WinCondition.NoWinner)
+        {
+            text = ModTranslation.GetString("NoWinner");
+            RoleColor = Color.white;
+        }
+
+        bool haison = false;
+        if (text == "HAISON")
+        {
+            haison = true;
+            text = ModTranslation.GetString("HaisonName");
+        }
+        else if (text is "NoWinner")
+        {
+            haison = true;
+            text = ModTranslation.GetString("NoWinner");
+        }
+        else
+        {
+            text = ModTranslation.GetString(text);
+        }
+
+        bool IsOpptexton = false;
+        foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
+        {
+            if (player.IsDead())
+                continue;
+            if (IsOpptexton || haison)
+                continue;
+            IsOpptexton = true;
+            text = text + "&" + ModHelpers.Cs(RoleClass.Opportunist.color, ModTranslation.GetString("OpportunistName"));
+        }
+        bool IsLovetexton = false;
+        bool Temp1;
+        if (!CustomOptionHolder.LoversSingleTeam.GetBool())
+        {
+            foreach (List<PlayerControl> PlayerList in RoleClass.Lovers.LoversPlayer)
+            {
+                Temp1 = false;
+                foreach (PlayerControl player in PlayerList)
+                {
+                    if (player.IsAlive())
+                    {
+                        Temp1 = true;
+                    }
+                    if (!Temp1)
+                        continue;
+                    if (IsLovetexton || haison)
+                        continue;
+                    IsLovetexton = true;
+                    text = text + "&" + CustomOptionHolder.Cs(RoleClass.Lovers.color, "LoversName");
+                }
+            }
+        }
+
+        if (haison || winCondition is WinCondition.PantsRoyalWin or WinCondition.SaunerWin) textRenderer.text = text;
+        else if (text == ModTranslation.GetString("NoWinner")) text = ModTranslation.GetString("NoWinnerText");
+        else if (text == ModTranslation.GetString("GodName")) text += " " + ModTranslation.GetString("GodWinText");
+        else text = string.Format(text + " " + ModTranslation.GetString("WinName"));
+
+        return (text, RoleColor, haison);
+    }
+    #endregion
+
     public static void Postfix(EndGameManager __instance)
     {
         AprilFoolsManager.SetRandomModMode();
@@ -254,77 +398,12 @@ public class EndGameManagerSetUpPatch
         bonusTextObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
         textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
         textRenderer.text = "";
-        var text = "";
-        var RoleColor = Color.white;
-        Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
-        Dictionary<WinCondition, (string, Color32)> WinConditionDictionary = new() {
-            { WinCondition.HAISON, ("HAISON", HaisonColor) },
-            { WinCondition.LoversWin, ("LoversName", RoleClass.Lovers.color) },
-            { WinCondition.GodWin, ("GodName", RoleClass.God.color) },
-            { WinCondition.JesterWin, ("JesterName", RoleClass.Jester.color) },
-            { WinCondition.JackalWin, ("JackalName", RoleClass.Jackal.color) },
-            { WinCondition.QuarreledWin, ("QuarreledName", RoleClass.Quarreled.color) },
-            { WinCondition.EgoistWin, ("EgoistName", RoleClass.Egoist.color) },
-            { WinCondition.WorkpersonWin, ("WorkpersonName", RoleClass.Workperson.color) },
-            { WinCondition.FalseChargesWin, ("FalseChargesName", RoleClass.FalseCharges.color) },
-            { WinCondition.FoxWin, ("FoxName", RoleClass.Fox.color) },
-            { WinCondition.DemonWin, ("DemonName", RoleClass.Demon.color) },
-            { WinCondition.ArsonistWin, ("ArsonistName", RoleClass.Arsonist.color) },
-            { WinCondition.VultureWin, ("VultureName", RoleClass.Vulture.color) },
-            { WinCondition.TunaWin, ("TunaName", RoleClass.Tuna.color) },
-            { WinCondition.NeetWin, ("NeetName", RoleClass.Neet.color) },
-            { WinCondition.RevolutionistWin, ("RevolutionistName", RoleClass.Revolutionist.color) },
-            { WinCondition.SpelunkerWin, ("SpelunkerName", RoleClass.Spelunker.color) },
-            { WinCondition.SuicidalIdeationWin, (CustomOptionHolder.SuicidalIdeationWinText.GetBool() ? "SuicidalIdeationWinText" : "SuicidalIdeationName", RoleClass.SuicidalIdeation.color) },
-            { WinCondition.HitmanWin, ("HitmanName", RoleClass.Hitman.color) },
-            { WinCondition.PhotographerWin, ("PhotographerName", RoleClass.Photographer.color) },
-            { WinCondition.StefinderWin, ("StefinderName", RoleClass.Stefinder.color) },
-            { WinCondition.PavlovsTeamWin, ("PavlovsTeamWinText", RoleClass.Pavlovsdogs.color) },
-            { WinCondition.LoversBreakerWin, ("LoversBreakerName", RoleClass.LoversBreaker.color) },
-            { WinCondition.NoWinner, ("NoWinner", Color.white) },
-            { WinCondition.SafecrackerWin, ("SafecrackerName", Safecracker.color) },
-            { WinCondition.TheThreeLittlePigsWin, ("TheThreeLittlePigsName", TheThreeLittlePigs.color) },
-            { WinCondition.OrientalShamanWin, ("OrientalShamanName", OrientalShaman.color) },
-            { WinCondition.BlackHatHackerWin, ("BlackHatHackerName", BlackHatHacker.color) },
-            { WinCondition.MoiraWin, ("MoiraName", Moira.color) },
-            { WinCondition.CrookWin, ("CrookName", Crook.RoleData.color) },
-            { WinCondition.PantsRoyalWin, ("PantsRoyalYouareWinner" ,Mode.PantsRoyal.main.ModeColor) },
-            { WinCondition.SaunerWin, ("SaunerRefreshing", Sauner.RoleData.color) },
-            { WinCondition.PokerfaceWin, ("PokerfaceName", Pokerface.RoleData.color) },
-            { WinCondition.FrankensteinWin, ("FrankensteinName",Frankenstein.color) },
-            { WinCondition.OwlWin, ("OwlName", Owl.Roleinfo.RoleColor) },
-        };
-        Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
-        if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
-        {
-            text = WinConditionDictionary[AdditionalTempData.winCondition].Item1;
-            RoleColor = WinConditionDictionary[AdditionalTempData.winCondition].Item2;
-        }
-        else
-        {
-            switch (AdditionalTempData.gameOverReason)
-            {
-                case GameOverReason.HumansByTask:
-                case GameOverReason.HumansByVote:
-                case GameOverReason.HumansDisconnect:
-                    text = "CrewmateName";
-                    RoleColor = Palette.White;
-                    break;
-                case GameOverReason.ImpostorByKill:
-                case GameOverReason.ImpostorBySabotage:
-                case GameOverReason.ImpostorByVote:
-                case GameOverReason.ImpostorDisconnect:
-                //MadJester勝利をインポスター勝利とみなす
-                case (GameOverReason)CustomGameOverReason.MadJesterWin:
-                    text = "ImpostorName";
-                    RoleColor = RoleClass.ImpostorRed;
-                    break;
-                case (GameOverReason)CustomGameOverReason.TaskerWin:
-                    text = "TaskerWinText";
-                    RoleColor = RoleClass.ImpostorRed;
-                    break;
-            }
-        }
+        (string text, Color RoleColor, bool haison) = ProcessWinText(AdditionalTempData.gameOverReason, AdditionalTempData.winCondition);
+
+        textRenderer.color = AdditionalTempData.winCondition is WinCondition.HAISON ? Color.clear : RoleColor;
+
+        __instance.BackgroundBar.material.SetColor("_Color", RoleColor);
+
         if (AdditionalTempData.winCondition == WinCondition.HAISON)
         {
             __instance.WinText.text = ModTranslation.GetString("HaisonName");
@@ -337,60 +416,6 @@ public class EndGameManagerSetUpPatch
             RoleColor = Color.white;
         }
 
-        textRenderer.color = AdditionalTempData.winCondition is WinCondition.HAISON ? Color.clear : RoleColor;
-
-        __instance.BackgroundBar.material.SetColor("_Color", RoleColor);
-        var haison = false;
-        if (text == "HAISON")
-        {
-            haison = true;
-            text = ModTranslation.GetString("HaisonName");
-        }
-        else if (text is "NoWinner")
-        {
-            haison = true;
-            text = ModTranslation.GetString("NoWinner");
-        }
-        else
-        {
-            text = ModTranslation.GetString(text);
-        }
-        bool IsOpptexton = false;
-        foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
-        {
-            if (player.IsAlive())
-            {
-                if (!IsOpptexton && !haison)
-                {
-                    IsOpptexton = true;
-                    text = text + "&" + ModHelpers.Cs(RoleClass.Opportunist.color, ModTranslation.GetString("OpportunistName"));
-                }
-            }
-        }
-        bool IsLovetexton = false;
-        bool Temp1;
-        if (!CustomOptionHolder.LoversSingleTeam.GetBool())
-        {
-            foreach (List<PlayerControl> PlayerList in RoleClass.Lovers.LoversPlayer)
-            {
-                Temp1 = false;
-                foreach (PlayerControl player in PlayerList)
-                {
-                    if (player.IsAlive())
-                    {
-                        Temp1 = true;
-                    }
-                    if (Temp1)
-                    {
-                        if (!IsLovetexton && !haison)
-                        {
-                            IsLovetexton = true;
-                            text = text + "&" + CustomOptionHolder.Cs(RoleClass.Lovers.color, "LoversName");
-                        }
-                    }
-                }
-            }
-        }
         if (ModeHandler.IsMode(ModeId.Zombie))
         {
             if (AdditionalTempData.winCondition == WinCondition.Default)
@@ -416,10 +441,7 @@ public class EndGameManagerSetUpPatch
             }
         }
         Logger.Info("WINCOND:" + AdditionalTempData.winCondition.ToString());
-        if (haison || AdditionalTempData.winCondition is WinCondition.PantsRoyalWin or WinCondition.SaunerWin) textRenderer.text = text;
-        else if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
-        else if (text == ModTranslation.GetString("GodName")) textRenderer.text = text + " " + ModTranslation.GetString("GodWinText");
-        else textRenderer.text = string.Format(text + " " + ModTranslation.GetString("WinName"));
+        textRenderer.text = text;
         try
         {
             var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
@@ -522,6 +544,10 @@ public static class OnGameEndPatch
     {
         Roles.Impostor.Camouflager.Camouflage();
         Roles.Impostor.Camouflager.ResetCamouflage();
+
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
+            endGameResult.GameOverReason = (GameOverReason)EndData;
+
         AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
@@ -545,6 +571,7 @@ public static class OnGameEndPatch
             }
         }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
+        
     }
     private static List<NetworkedPlayerInfo> ProcessGetWinnersToRemove()
     {
@@ -589,8 +616,6 @@ public static class OnGameEndPatch
             RoleClass.PartTimer.PartTimerPlayer,
             RoleClass.Photographer.PhotographerPlayer,
             RoleClass.Stefinder.StefinderPlayer,
-            RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
-            RoleClass.Pavlovsowner.PavlovsownerPlayer,
             RoleClass.LoversBreaker.LoversBreakerPlayer,
             Roles.Impostor.MadRole.Worshiper.RoleData.Player,
             Safecracker.SafecrackerPlayer,
@@ -601,7 +626,6 @@ public static class OnGameEndPatch
             TheThreeLittlePigs.TheSecondLittlePig.Player,
             TheThreeLittlePigs.TheThirdLittlePig.Player,
             BlackHatHacker.BlackHatHackerPlayer,
-            Moira.MoiraPlayer,
             Roles.Impostor.MadRole.MadRaccoon.RoleData.Player,
             Sauner.RoleData.Player,
             Pokerface.RoleData.Player,
@@ -869,8 +893,7 @@ public static class OnGameEndPatch
         //単独勝利系統
         //下に行くほど優先度が高い
         bool allowAdditionalWins = true;
-        if (IsProcessReplaceWin)
-            ProcessReplaceWin(ref winners, gameOverReason, ref winCondition, out allowAdditionalWins);
+        if (IsProcessReplaceWin) ProcessReplaceWin(ref winners, gameOverReason, ref winCondition, out allowAdditionalWins);
 
         //追加勝利系
         if (allowAdditionalWins) ProcessAdditionalWin(ref winners, gameOverReason, ref winCondition);
@@ -1203,12 +1226,6 @@ public static class OnGameEndPatch
             allowAdditionalWins = false;
             winners.Add(FrankenPlayer);
             winCondition = WinCondition.FrankensteinWin;
-        }
-        if (Moira.AbilityUsedUp && Moira.Player.IsAlive())
-        {
-            allowAdditionalWins = false;
-            winners = [Moira.Player.Data];
-            winCondition = WinCondition.MoiraWin;
         }
         spereseted = false;
         // 詐欺師は, 勝利判定が実行される前に既に勝利条件を満たしている為, 狐の次の勝利順位 (勝利条件を満たす : MeetingHud.Start, 勝利判定 : SpawnInMinigame.Begin)
@@ -1990,16 +2007,14 @@ public static class CheckGameEndPatch
             LoversAlive = numLoversAlive;
             if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
             {
-                foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
+                foreach (RoleBase rolebase in RoleBaseManager.GetRoleBaseOrigins<PavlovsOwner>())
                 {
-                    if (p == null) continue;
-                    if (p.IsDead()) continue;
-                    if (!RoleClass.Pavlovsowner.CountData.ContainsKey(p.PlayerId)
-                        || RoleClass.Pavlovsowner.CountData[p.PlayerId] > 0)
-                    {
-                        IsGuardPavlovs = true;
-                        break;
-                    }
+                    if ((rolebase as PavlovsOwner).CreateCountLimit == 0)
+                        continue;
+                    if (rolebase.Player.IsDead())
+                        continue;
+                    IsGuardPavlovs = true;
+                    break;
                 }
             }
         }

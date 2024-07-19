@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using Agartha;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -24,7 +26,7 @@ class GameManagerSerializeFix
         {
             GameLogicComponent logicComponent = __instance.LogicComponents[index];
             if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
-                logicComponent.TryCast<LogicOptions>() == null)
+                logicComponent.Pointer != __instance.LogicOptions.Pointer)
             {
                 flag = true;
                 writer.StartMessage((byte)index);
@@ -65,7 +67,7 @@ class ControllerManagerUpdatePatch
         if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
         {
             string via = "KeyCommandVia";
-            Logger.SaveLog(via, via);
+            LoggerPlus.SaveLog(via, via);
         }
 
 
@@ -80,7 +82,7 @@ class ControllerManagerUpdatePatch
                 Logger.Info("===================== 廃村 ======================", "End Game");
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
-                    EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+                    EndGameCheck.CustomEndGame(ShipStatus.Instance, CustomGameOverReason.HAISON, false);
                 }
                 else
                 {
@@ -126,24 +128,9 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                CustomSpores.AddMushroom(PlayerControl.LocalPlayer.transform.position);
-                return;
-                source = SoundManager.Instance.PlaySound(ContentManager.GetContent<AudioClip>("Sauner_SaunaBGM.wav"), true);
-                return;
-                HudManager.Instance.ShowPopUp("スマソ。無理やわ。");
-                return;
-                string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
-                DirectoryInfo d = new(filePath);
-                Logger.Info("FileName:" + d.GetFiles()[0].Name);
-                (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[0].Name);
-                ReplayManager.IsReplayMode = true;
-                Logger.Info($"IsSuc:{IsSuc}");
-                if (IsSuc)
-                {
-                    Logger.Info($"PlayerCount:{replay.AllPlayersCount}");
-                    Logger.Info($"Mode:{replay.CustomMode}");
-                    Logger.Info($"Time:{replay.RecordTime.ToString()}");
-                }
+                Vector2 center = ShipStatus.Instance.MapPrefab.HerePoint.transform.parent.localPosition * -1f * ShipStatus.Instance.MapScale;
+                File.WriteAllBytes("SpawnableMap.png", MapDatabase.MapDatabase.GetCurrentMapData().OutputMap(center, new Vector2(10f, 7f) * ShipStatus.Instance.MapScale, 40f).EncodeToPNG());
+               return;
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
