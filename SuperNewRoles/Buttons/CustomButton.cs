@@ -37,6 +37,7 @@ public class CustomButton
     public bool IsEffectDurationInfinity;
     public Sprite Sprite;
     public Color? color;
+    public bool wantEffectCouldUse;
     private readonly HudManager hudManager;
     private readonly bool mirror;
     private readonly KeyCode? hotkey;
@@ -81,9 +82,9 @@ public class CustomButton
     public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "", bool isUseSecondButtonInfo = false, Color? color = null)
     : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, false, mirror, buttonText, color) { }
 
-    void OnClickEvent()
+    public void OnClickEvent()
     {
-        if ((this.Timer <= 0f && CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
+        if ((this.Timer <= 0f && CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable && (!wantEffectCouldUse || CouldUse())))
         {
             actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
             this.OnClick();

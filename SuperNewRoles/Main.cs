@@ -12,6 +12,7 @@ using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using SuperNewRoles.CustomModOption;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.MapDatabase;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;

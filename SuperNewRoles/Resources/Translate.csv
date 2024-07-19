@@ -1908,6 +1908,13 @@ OwlTransportButton,Transport,運搬,,搬運
 OwlHideDeadBodyButton,Hide,隠す,,隱藏
 OwlSpecialBlackoutButton,Special Blackout,特殊停電,,黑幕降臨
 Kill,Kill,キル,,擊殺
+BuskerName,Busker,バスカー
+BuskerTitle1,Did you think I was dead?　It was a magic trick!,死んだと思った？　手品でした～！
+BuskerDescription,Using the ability turns you into a corpse， allowing you to move around as a ghost.\nYou can't peek at roles， but you might be able to see things that are normally hidden?\nHowever，if the corpse is discovered or a meeting is called during the feigned death， you'll truly die， so be careful.\nLet's return to the living world before that happens.\nWhen you return， you'll revive at the place where you were moving as a ghost.\nOh， and don't forget to have fun and not lose sight of doing your tasks， okay?,能力を使用すると死体となり、幽霊となって移動することが出来るようになります。\n役職を盗み見ることは出来ませんが、普通だったら見られないものが見れるかも？\nただし、その死体を発見されたり、偽装死中に会議が呼ばれてしまうと本当に死んでしまうのでご注意を。\nそうなる前に現世に戻りましょう。\n戻った際は幽霊のときに移動していた先で復活します。\nそうそう、楽しくなってタスクをするのを忘れないようにね。
+BuskerPseudocideDurationOption,Duration of feigned death,死を偽装できる時間
+BuskerPseudocideButtonName,Feign death,偽装死
+BuskerRebornButtonName,Reborn,復活
+BuskerReallyDeadTimeText,Remain until really dead...,本当に死ぬまで残り...
 UbiquitousName,Ubiquitous,ユビキタス
 UbiquitousTitle1,My eyes exist everywhere.,私の目はどこにでも存在する
 UbiquitousDescription,You can call up a drone and control it.\nYou can switch between the drone and your own view and fly freely around the map.\nIt can also hack into nearby doors and open them.\nIn addition， the drone called on the map can land on the map after a turn， providing ubiquitous information about its surroundings.\nHowever， while operating the drone， you are defenseless. You cannot even perform tasks.\nDo not be caught off guard.,ドローンを呼び出し、操作することが出来ます。\nドローンと自身の視界を切り替え、自由にマップ内を飛び回ることが出来ます。\nまた、近くのドアをハッキングし、開けることも出来ます。\n更に、マップ上に呼び出したドローンは、ターンを挟むとマップ上に着陸し、周囲の情報をユビキタスに伝えます。\nただし、ドローンを操作している間、あなたは無防備です。タスクも出来ません。\nゆめゆめ油断することなかれ。

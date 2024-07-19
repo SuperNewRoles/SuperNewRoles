@@ -67,6 +67,7 @@ public enum RoleId
     SilverBullet,
     NiceScientist,
     NiceRedRidingHood,
+    Busker,
     Phosphorus,
     BodyBuilder,
     Ubiquitous,
@@ -466,15 +467,19 @@ public static class RPCProcedure
         if (!player) return;
         foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
         {
-            if (dead.ParentId == body)
-            {
-                Frankenstein.MonsterPlayer[id] = dead;
-                player.setOutfit(GameData.Instance.GetPlayerById(body).DefaultOutfit);
-                return;
-            }
+            if (dead.ParentId != body)
+                continue;
+            Frankenstein.MonsterPlayer[id] = dead;
+            player.setOutfit(GameData.Instance.GetPlayerById(body).DefaultOutfit);
+            if (!kill)
+                DeadBodyManager.UseDeadbody(dead, DeadBodyUser.Frankenstein);
+            else
+                DeadBodyManager.EndedUseDeadbody(dead, DeadBodyUser.Frankenstein);
+            return;
         }
         Frankenstein.MonsterPlayer[id] = null;
-        if (kill) Frankenstein.KillCount[id]--;
+        if (kill)
+            Frankenstein.KillCount[id]--;
         //遅延させて戻す
         new LateTask(() =>
         {
