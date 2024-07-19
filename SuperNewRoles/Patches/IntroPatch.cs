@@ -38,8 +38,16 @@ public class IntroPatch
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
     class IntroCutsceneCoBeginPatch
     {
+        static int GameCount = 0;
+
         static void Postfix()
         {
+            Logger.Info($"=================Game Info (Count : {++GameCount})=================", "Intro Begin");
+            {
+                Logger.Info($"機体情報 : {(AmongUsClient.Instance.AmHost ? "ホスト機体" : "ゲスト機体")}", "Game Info");
+                Logger.Info($"MapId : {GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Game Info");
+                Logger.Info($"Mode : {ModeHandler.GetMode()}", "Game Info");
+            }
             Logger.Info("=================Player Info=================", "Intro Begin");
             Logger.Info("=================Player Data=================", "Player Info");
             {
@@ -54,8 +62,6 @@ public class IntroPatch
             }
             Logger.Info("=================Other Data=================", "Intro Begin");
             {
-                Logger.Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
-                Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
                 foreach (IntroData data in IntroData.Intros.Values) { data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum); }
                 foreach (IntroInfo info in IntroInfo.IntroInfos.Values) { info.UpdateIntroDesc(); }
             }
