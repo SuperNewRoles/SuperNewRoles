@@ -26,6 +26,7 @@ using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
 using SuperNewRoles.MapOption;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Patches;
 
@@ -780,6 +781,7 @@ class MeetingHudClosePatch
     public static void Postfix(MeetingHud __instance)
     {
         CustomRoles.OnMeetingClose();
+        Drone.CloseMeeting();
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

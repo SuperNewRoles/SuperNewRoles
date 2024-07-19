@@ -84,6 +84,7 @@ public static class RoleClass
         ReleaseGhostAbility.ClearAndReload();
         FixSabotage.ClearAndReload();
         Patches.CursedTasks.Main.ClearAndReload();
+        Drone.ClearAndReload();
 
         /* 陣営playerがうまく動かず使われてない為コメントアウト。
         RoleHelpers.CrewmatePlayer = new();
@@ -162,7 +163,7 @@ public static class RoleClass
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
         Seer.ClearAndReload();
-        Crewmate.SeerHandler.ShowFlash_ClearAndReload();
+        SeerHandler.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
         EvilSeer.CreateMode = -1;
         RemoteSheriff.ClearAndReload();

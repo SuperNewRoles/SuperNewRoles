@@ -1900,6 +1900,22 @@ OwlTransportButton,Transport,運搬,,搬運
 OwlHideDeadBodyButton,Hide,隠す,,隱藏
 OwlSpecialBlackoutButton,Special Blackout,特殊停電,,黑幕降臨
 Kill,Kill,キル,,擊殺
+UbiquitousName,Ubiquitous,ユビキタス
+UbiquitousTitle1,My eyes exist everywhere.,私の目はどこにでも存在する
+UbiquitousDescription,You can call up a drone and control it.\nYou can switch between the drone and your own view and fly freely around the map.\nIt can also hack into nearby doors and open them.\nIn addition， the drone called on the map can land on the map after a turn， providing ubiquitous information about its surroundings.\nHowever， while operating the drone， you are defenseless. You cannot even perform tasks.\nDo not be caught off guard.,ドローンを呼び出し、操作することが出来ます。\nドローンと自身の視界を切り替え、自由にマップ内を飛び回ることが出来ます。\nまた、近くのドアをハッキングし、開けることも出来ます。\n更に、マップ上に呼び出したドローンは、ターンを挟むとマップ上に着陸し、周囲の情報をユビキタスに伝えます。\nただし、ドローンを操作している間、あなたは無防備です。タスクも出来ません。\nゆめゆめ油断することなかれ。
+UbiquitousCallCoolTimeOption,"Call" Cool Time,「呼び出す」のクールタイム
+UbiquitousOperationCoolTimeOption,"Operation" Cool Time,「操作」のクールタイム
+UbiquitousIsLimitOperableTimeOption,Limit the operable time,操作可能時間を制限するか
+UbiquitousOperableTimeOption,Operable time,操作可能時間
+UbiquitousDroneStayTurnOption,Number of turns the drone stays,ドローンが滞在するターン数
+UbiquitousFlyingSpeedOption,Flying speed,飛行速度
+UbiquitousDoorHackCoolTimeOption,"Door Hack" Cool Time,「ドアハック」のクールタイム
+UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲
+UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲
+UbiquitousOperationButton,Operation,操作
+UbiquitousCallButton,Call,呼び出す
+UbiquitousCallHomeButton,Call Home,呼び戻す
+UbiquitousDoorHackButton,Door Hack,ドアハック
 
 #NewRoleTranslation
 
