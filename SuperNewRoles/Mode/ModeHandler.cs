@@ -181,11 +181,11 @@ public static class ModeHandler
     {
         if (IsMode(ModeId.Default)) return;
     }
-    public static ModeId GetMode(bool IsChache = true)
+    public static ModeId GetMode(bool IsCache = true)
     {
         if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
         if (EnableModeSealing) return ModeId.Default; // Modeの封印処理が有効な時, 強制で通常モードにする
-        if (IsChache) return thisMode;
+        if (IsCache) return thisMode;
         foreach (ModeId id in Enum.GetValues(typeof(ModeId)))
             if (IsMode(id, false)) return id;
         return ModeId.No;
@@ -220,7 +220,7 @@ public static class ModeHandler
         }
         return false;
     }
-    public static bool IsMode(ModeId mode, bool IsChache = true)
+    public static bool IsMode(ModeId mode, bool IsCache = true)
     {
         // vanilla Mode
         if (mode is ModeId.VanillaHns)
@@ -231,11 +231,11 @@ public static class ModeHandler
         // Mod Mode
         if (EnableModeSealing) // Modeの封印処理が有効な時, 強制で通常モードと判定する。
             return mode is ModeId.Default;
-        if (mode is ModeId.HideAndSeek && IsChache)
+        if (mode is ModeId.HideAndSeek && IsCache)
             return IsMode(ModeId.HideAndSeek, false);
         if (mode is ModeId.Werewolf)
             return ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[8];
-        if (IsChache)
+        if (IsCache)
             return mode == thisMode;
         if (mode is ModeId.Default)
             return !ModeSetting.GetBool();

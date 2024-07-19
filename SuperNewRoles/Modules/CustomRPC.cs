@@ -1098,7 +1098,7 @@ public static class RPCProcedure
         RoleClass.SideKiller.MadKillerPlayer.Add(target);
         RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
     }
     public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
@@ -1234,7 +1234,7 @@ public static class RPCProcedure
             player1.ClearRole();
             player1.SetRole(player2id);
         }
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
         RoleHelpers.ClearTaskUpdate();
         if (AmongUsClient.Instance.AmHost)
         {
@@ -1297,83 +1297,43 @@ public static class RPCProcedure
     /// </summary>
     /// <param name="SheriffId">SheriffのPlayerId</param>
     /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
-    /// <param name="MissFire">誤爆したか</param>
-    /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
-    public static void MeetingSheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
+    /// <param name="isTargetKill">対象をキル可能か</param>
+    /// <param name="isSuicide">シェリフは自殺するか(誤爆 & 自殺)</param>
+    public static void MeetingSheriffKill(byte SheriffId, byte TargetId, bool isTargetKill, bool isSuicide)
     {
         PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
         PlayerControl target = ModHelpers.PlayerById(TargetId);
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
         if (sheriff == null || target == null) return;
-        if (!PlayerControl.LocalPlayer.IsAlive())
-        {
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat1"), target.name, sheriff.name));
-            if (alwaysKill)
-            {
-                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat2"), target.name, sheriff.name));
-            }
-            if (MissFire)
-            {
-                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat3"), sheriff.name));
-            }
-            else
-            {
-                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat4"), sheriff.name));
-            }
-        }
-        if (alwaysKill)
+
+        // キル(追放)処理
+        if (isTargetKill)
         {
             target.Exiled();
-            if (PlayerControl.LocalPlayer == target)
-            {
-                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, target.Data);
-            }
-            sheriff.Exiled();
-            if (PlayerControl.LocalPlayer == sheriff)
-            {
-                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
-            }
+            if (PlayerControl.LocalPlayer == target) FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, target.Data);
         }
-        else if (MissFire)
+        if (isSuicide)
         {
             sheriff.Exiled();
-            if (PlayerControl.LocalPlayer == sheriff)
-            {
-                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
-            }
+            if (PlayerControl.LocalPlayer == sheriff) FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
         }
-        else
-        {
-            target.Exiled();
-            if (PlayerControl.LocalPlayer == target)
-            {
-                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, target.Data);
-            }
-        }
+
+        // 投票権 返却処理
         if (MeetingHud.Instance)
         {
             foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
             {
-                if (pva.TargetPlayerId == SheriffId && MissFire)
-                {
-                    pva.SetDead(pva.DidReport, true);
-                    pva.Overlay.gameObject.SetActive(true);
-                }
-                else if (pva.TargetPlayerId == TargetId && alwaysKill)
-                {
-                    pva.SetDead(pva.DidReport, true);
-                    pva.Overlay.gameObject.SetActive(true);
-                }
-                else if (pva.TargetPlayerId == TargetId && !MissFire)
+                if ((isTargetKill && pva.TargetPlayerId == TargetId) || (isSuicide && pva.TargetPlayerId == SheriffId))
                 {
                     pva.SetDead(pva.DidReport, true);
                     pva.Overlay.gameObject.SetActive(true);
                 }
             }
-            if (AmongUsClient.Instance.AmHost)
-                MeetingHud.Instance.CheckForEndVoting();
+            if (AmongUsClient.Instance.AmHost) MeetingHud.Instance.CheckForEndVoting();
         }
 
+        // 結果送信処理
+        if (PlayerControl.LocalPlayer.IsDead()) MeetingSheriff_Patch.MeetingSheriffKillChatAnnounce(sheriff, target, isTargetKill, isSuicide);
     }
 
     public static void KnightProtected(byte KnightId, byte TargetId)
@@ -1479,7 +1439,7 @@ public static class RPCProcedure
             }
         }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-        ChacheManager.ResetMyRoleChache();
+        CacheManager.ResetMyRoleCache();
     }
     public static void CreateSidekickSeer(byte playerid, bool IsFake)
     {
@@ -1495,7 +1455,7 @@ public static class RPCProcedure
             player.ClearRole();
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
+            CacheManager.ResetMyRoleCache();
         }
     }
     public static void ExiledRPC(byte playerid)
@@ -1612,23 +1572,16 @@ public static class RPCProcedure
         var SwapperPosition = SwapperPlayer.transform.position;
         //Text
         var rand = new System.Random();
-        if (SwapperID == PlayerControl.LocalPlayer.PlayerId)
-        {
-            CachedPlayer.LocalPlayer.transform.position = SwapPosition;
-            SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
-        }
-        else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
+        SwapperPlayer.NetTransform.SnapTo(SwapPosition);
+        SwapPlayer.NetTransform.SnapTo(SwapperPosition);
+        if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
         {
             CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
             SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
             if (rand.Next(1, 20) == 1)
-            {
-                new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText2")), 3);
-            }
+                new CustomMessage(ModTranslation.GetString("PositionSwapperSwapText2"), 3);
             else
-            {
-                new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText")), 3);
-            }
+                new CustomMessage(ModTranslation.GetString("PositionSwapperSwapText"), 3);
         }
     }
 

@@ -575,10 +575,11 @@ MeetingSheriffYes,Yes,できる,是,是
 MeetingSheriffNo,No,できない,否,否
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数,执法官最大可击杀次数,法警最大可擊殺次數
 MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeting?,一会議中に複数キルできるか,执法官可以在一次会议中多次击杀,法警可以在一次會議中多次擊殺
-MeetingSheriffkillChat1,{0} has sheriffkilled {1}!,{0} は {1} をシェリフキルした！,{0}被{1}出警了！,{0}被{1}在會議中被正義執行了！
-MeetingSheriffkillChat2,{0} was killed，but it was a misfire! {1} killed himself in remorse!,{0} をキルしたが誤射だった! {1} は自責の念で自害した!,{0}被杀害了，但他是被冤枉的！{1}以死谢罪了！,{0}被殺害了，但他是被冤枉的！{1}以死謝罪了！
-MeetingSheriffkillChat3,{0} was a misfire!,{0} は誤爆した！,{0}的枪走火了！,{0}的槍走火了！
-MeetingSheriffkillChat4,{0} succeeded!,{0} は成功した！,{0}成功了！,{0}成功了
+MeetingSheriffkillChat_KillTarget,{0} has sheriffkilled {1}!,{0} は {1} をシェリフキルした！,{0}被{1}出警了！,{0}被{1}在會議中被正義執行了！
+MeetingSheriffkillChat_Success,{0} succeeded!,{0} による 正義執行は成功だ！,{0}成功了！,{0}成功了
+MeetingSheriffkillChat_MissFire,{0} was a misfire!,{0} は 誤爆した！,{0}的枪走火了！,{0}的槍走火了！
+MeetingSheriffkillChat_AlwaysSuicideSuccess,Execution against {0} is a success!\n{1} died in the line of duty!,{0} への 正義執行は成功だ!\n{1} は殉職した!
+MeetingSheriffkillChat_AlwaysKillMissFire,{0} was killed，but it was a misfire! {1} killed himself in remorse!,{0} をキルしたが誤射だった!\n{1} は自責の念で自害した!,{0}被杀害了，但他是被冤枉的！{1}以死谢罪了！,{0}被殺害了，但他是被冤枉的！{1}以死謝罪了！
 JackalName,Jackal,ジャッカル,豺狼,豺狼
 JackalCombIntroDearSheriff,I'm told there's a crewmate who can kill me.\nBut it doesn't matter. All I have to do is kill him and everyone else.,インポスター以外に私を殺せる者がいる…?\n関係ない そいつ含めて全員殺せばいいだけだ,除了内鬼还有要杀我的人……？\n没关系。我就凭一人之力，打倒整个世界。,能殺我的不只是內鬼...?\n沒關係，只要殺了所有人就好了
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼,殺死所有船員和內鬼
@@ -1057,7 +1058,7 @@ AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=
 MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数,<color=#AFDFE4>梅林</color>的人數
 AssassinName,Assassin,アサシン,刺客,刺客
 AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利,找出<color=#AFDFE4>梅林</color>來獲得勝利
-AssassinSucsess,was Marlin.,はマーリンだった,是梅林,是梅林
+AssassinSuccess,was Marlin.,はマーリンだった,是梅林,是梅林
 AssassinFail,was not Marlin.,はマーリンではなかった,不是梅林,不是梅林
 MarlinName,Merine,マーリン,梅林,梅林
 MarlinTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。,不要被<color=#ff0000>刺客</color>發現。

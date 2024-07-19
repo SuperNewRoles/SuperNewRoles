@@ -103,7 +103,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         WebAccountManager.Load();
         ContentManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
-        ChacheManager.Load();
+        CacheManager.Load();
         WebConstants.Load();
         CustomCosmetics.CustomColors.Load();
         ModDownloader.Load();
@@ -127,6 +127,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         }
 
         // Old Delete End
+
+        LoggerPlus.SetLogName();
 
         SuperNewRoles.Logger.Info(DateTime.Now.ToString("D"), "DateTime Now"); // 2022年11月24日
         SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");

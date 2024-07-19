@@ -281,7 +281,7 @@ class PlayerControlTryPetPatch
 class ReportDeadBodyPatch
 {
     /// <summary>
-    /// 会議が開かれた回数を記録する
+    /// 会議が開かれた回数を記録する(ReportDeadBodyでカウントしているが, RPCを飛ばしている為 ゲストに共有されている)
     /// </summary>
     /// <param name="allTurn">全体会議回数</param>
     /// <param name="emergency">緊急招集による会議回数</param>
@@ -327,7 +327,7 @@ class ReportDeadBodyPatch
             {
                 bool isGetRole = (float)(DeadPlayer.ActualDeathTime[target.PlayerId].DeathTime + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
                 bool isGetLightAndDarker = (float)(DeadPlayer.ActualDeathTime[target.PlayerId].DeathTime + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
-                string firstPerson = IsSucsessChance(9) ? ModTranslation.GetString("DyingMessengerFirstPerson1") : ModTranslation.GetString("DyingMessengerFirstPerson2");
+                string firstPerson = IsSuccessChance(9) ? ModTranslation.GetString("DyingMessengerFirstPerson1") : ModTranslation.GetString("DyingMessengerFirstPerson2");
                 if (isGetRole)
                 {
                     string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), firstPerson, ModTranslation.GetString($"{DeadPlayer.ActualDeathTime[target.PlayerId].Killer.GetRole()}Name"));
@@ -389,6 +389,7 @@ class ReportDeadBodyPatch
 
         var targetId = target != null ? target.Object.PlayerId : byte.MaxValue;
 
+        // ゲストに通報対象を送信し, ターン情報を共有する
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SendMeetingCount);
         writer.Write(targetId);
         writer.EndRPC();
@@ -399,14 +400,16 @@ class ReportDeadBodyPatch
         PoliceSurgeon_AddActualDeathTime.ReportDeadBody_Postfix();
     }
 
+    /// <summary>通報対象の情報を元に, 会議情報を記録する</summary>
+    /// <param name="targetId">通報対象のプレイヤーId</param>
     public static void SaveMeetingCount(byte targetId)
     {
         var target = PlayerById(targetId);
         var count = MeetingCount;
 
         count.all++;
-        if (target == null) count.emergency++;
-        else count.report++;
+        if (target == null) count.emergency++; // 通報対象がnullなら緊急招集として記録する
+        else count.report++; // 通報対象が存在するなら通報として記録する
 
         MeetingCount = count;
     }

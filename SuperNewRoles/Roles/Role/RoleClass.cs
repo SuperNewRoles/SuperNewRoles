@@ -33,7 +33,7 @@ public static class RoleClass
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
     public static Color FoxPurple = Palette.Purple;
-    private static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
+    public static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
     public static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
     public static bool IsStart;
     public static List<byte> BlockPlayers;
@@ -261,7 +261,7 @@ public static class RoleClass
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
-        ChacheManager.Load();
+        CacheManager.Load();
         DebugModeManager.ClearAndReloads();
     }
 
@@ -2741,7 +2741,7 @@ public static class RoleClass
             PenguinPlayer = new();
             PenguinData = new(needplayerlist: true);
             PenguinTimer = new();
-            bool Is = ModHelpers.IsSucsessChance(4);
+            bool Is = ModHelpers.IsSuccessChance(4);
             _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
         }
     }

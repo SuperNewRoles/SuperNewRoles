@@ -114,7 +114,6 @@ class MeetingSheriff_Patch
         {
             __instance.playerStates.ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
         }
-
     }
     static void Event(MeetingHud __instance)
     {
@@ -289,5 +288,46 @@ class MeetingSheriff_Patch
         {
             Meetingsheriff_updatepatch.index--;
         }
+    }
+
+    public static void MeetingSheriffKillChatAnnounce(PlayerControl sheriff, PlayerControl target, bool isTargetKill, bool isSuicide)
+    {
+        Sheriff.SheriffRoleExecutionData.ExecutionMode mode = (Sheriff.SheriffRoleExecutionData.ExecutionMode)CustomOptionHolder.MeetingSheriffExecutionMode.GetSelection();
+        var targetText = string.Format(ModTranslation.GetString("MeetingSheriffkillChat_KillTarget"), sheriff.name, target.name);
+
+        string mainText = null;
+        switch (mode)
+        {
+            case Sheriff.SheriffRoleExecutionData.ExecutionMode.Default:
+                if (isTargetKill)
+                    mainText = string.Format(ModTranslation.GetString("MeetingSheriffkillChat_Success"), sheriff.name);
+                else
+                    mainText = string.Format(ModTranslation.GetString("MeetingSheriffkillChat_MissFire"), sheriff.name);
+                break;
+            case Sheriff.SheriffRoleExecutionData.ExecutionMode.AlwaysSuicide:
+                if (isTargetKill) // 「結果に関わらず 自殺する」設定で、対象が死亡している場合は シェリフも死亡している
+                    mainText = string.Format(ModTranslation.GetString("MeetingSheriffkillChat_AlwaysSuicideSuccess"), target.name, sheriff.name);
+                else // 対象が死亡していない場合は シェリフの通常キル(誤射) と同じ扱い。
+                    mainText = string.Format(ModTranslation.GetString("MeetingSheriffkillChat_MissFire"), sheriff.name);
+                break;
+            case Sheriff.SheriffRoleExecutionData.ExecutionMode.AlwaysKill:
+                if (!isSuicide) // 「誤射時も 対象を殺し自殺する」設定で、シェリフが死んでいない時は シェリフの通常キル(成功) と同じ扱い。
+                    mainText = string.Format(ModTranslation.GetString("MeetingSheriffkillChat_Success"), sheriff.name);
+                else // 自殺している場合は、誤射の為 対象も死亡している。
+                    mainText = string.Format(ModTranslation.GetString("MeetingSheriffkillChat_AlwaysKillMissFire"), target.name, sheriff.name);
+                break;
+        }
+
+        var originalName = sheriff.Data.PlayerName;
+
+        const string line = "|--------------------------------------------------------|";
+        var titelName = ModHelpers.Cs(RoleClass.SheriffYellow, $"<size=90%>{line}\n{ModTranslation.GetString("MeetingSheriffName")} {ModTranslation.GetString("KillName")} {ModTranslation.GetString("InformationName")}\n{line}</size>");
+
+        const string blank = "<color=#00000000>.</color>\n";
+        var contents = $"{blank}{blank}{targetText}{(mainText != null ? $"\n\n{mainText}" : "")}{blank}";
+
+        sheriff.SetName(titelName);
+        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, contents, false);
+        sheriff.SetName(originalName);
     }
 }
