@@ -224,7 +224,7 @@ class EndGameCheck
 
     public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && !statistics.IsGuardPavlovs)
         {
             foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
             {
