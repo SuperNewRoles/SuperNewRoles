@@ -162,7 +162,7 @@ public static class Rocket
                 () => { return false; }
             )
             {
-                buttonText = ModHelpers.IsSucsessChance(5) ? ModTranslation.GetString("RocketLetsButtonName") : ModTranslation.GetString("RocketLetsButtonName2"),
+                buttonText = ModHelpers.IsSuccessChance(5) ? ModTranslation.GetString("RocketLetsButtonName") : ModTranslation.GetString("RocketLetsButtonName2"),
                 showButtonText = true
             };
         }

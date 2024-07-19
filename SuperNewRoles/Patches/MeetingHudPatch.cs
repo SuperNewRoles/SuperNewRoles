@@ -11,6 +11,7 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
@@ -25,6 +26,8 @@ using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
 using SuperNewRoles.MapOption;
+using static Il2CppSystem.Xml.XmlWellFormedWriter.AttributeValueCache;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Patches;
 
@@ -71,6 +74,9 @@ class CastVotePatch
                 break;
         }
 
+        if (srcPlayer.GetRoleBase() is IMeetingHandler handler)
+            IsValidVote = handler.CastVote(suspectPlayerId);
+
         if (IsValidVote) // 有効票であれば,
         {
             return true; // そのまま通す。
@@ -105,6 +111,10 @@ class VotingComplete
             Balancer.IsDoubleExile = true;
         }
         if (!AmongUsClient.Instance.AmHost) ReplayActionVotingComplete.Create(states, exiled is null ? (byte)255 : exiled.PlayerId, tie);
+    }
+    public static void Postfix()
+    {
+        CustomRoles.OnMeetingClose();
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
@@ -236,7 +246,7 @@ class CheckForEndVotingPatch
                                     p.RpcSetColor((byte)outfit.ColorId);
                                     p.RpcSetName(target.Object.GetDefaultName() +
                                         ModTranslation.GetString(target.Object.IsRole(RoleId.Marlin) ?
-                                        "AssassinSucsess" :
+                                        "AssassinSuccess" :
                                         "AssassinFail")
                                         + "<size=0%>");
                                     p.RpcSetHat(outfit.HatId);
@@ -366,6 +376,18 @@ class CheckForEndVotingPatch
                     }
                 }
             }
+
+            Moira moira = RoleBaseManager.GetRoleBases<Moira>().FirstOrDefault();
+            if (Moira.ChangeVote.GetBool() && moira != null && moira.AbilityUsedThisMeeting)
+            {
+                for (int i = 0; i < statesList.Count; i++)
+                {
+                    VoterState state = statesList[i];
+                    if (state.VotedForId == moira.SwapVoteData.Item1) state.VotedForId = moira.SwapVoteData.Item2;
+                    else if (state.VotedForId == moira.SwapVoteData.Item2) state.VotedForId = moira.SwapVoteData.Item1;
+                }
+            }
+
             states = statesList.ToArray();
 
             var VotingData = __instance.CustomCalculateVotes();
@@ -534,8 +556,121 @@ class CheckForEndVotingPatch
                 exiledPlayer = Balancer.targetplayerleft.Data;
             }
 
-            __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                var supportType = AntiBlackOut.GetSupportType(exiledPlayer);
+                bool IsDesyncMode = false;
+                (PlayerControl player, NetworkedPlayerInfo exiled, bool tie) DesyncDetail = default;
+                Logger.Info("AntiBlackOut:          Selected is "+supportType.ToString());
+                switch (supportType)
+                {
+                    case AntiBlackOut.SupportType.NoneExile:
+                        exiledPlayer = null;
+                        tie = false;
+                        break;
+                    case AntiBlackOut.SupportType.DeadExile:
+                        NetworkedPlayerInfo NewExiled = null;
+                        NetworkedPlayerInfo ExileCandidate = null;
+                        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
+                        {
+                            if (player.Disconnected)
+                            {
+                                NewExiled = player;
+                                break;
+                            }
+                            if (!player.IsDead)
+                                continue;
+                            PlayerControl @object = player.Object;
+                            if (@object == null)
+                                continue;
+                            if (@object.IsMod() ||
+                                !AntiBlackOut.IsPlayerDesyncImpostorTeam(@object))
+                            {
+                                NewExiled = player;
+                                break;
+                            }
+                            else
+                                ExileCandidate = player;
+                        }
+                        if (NewExiled == null && ExileCandidate == null)
+                            throw new Exception("None DeadPlayer");
+                        if (NewExiled == null)
+                        {
+                            NewExiled = ExileCandidate;
+                            if (NewExiled.Object)
+                            {
+                                IsDesyncMode = true;
+                                DesyncDetail = (NewExiled.Object, null, true);
+                                AntiBlackOut.SendAntiBlackOutInformation(NewExiled.Object, AntiBlackOut.ABOInformationType.OnlyDesyncImpostorDead, exiledPlayer?.PlayerName);
+                            }
+                        }
+                        new LateTask(() =>
+                        {
+                            PlayerControl exiledObject = NewExiled.Object;
 
+                            int exiledColorId = NewExiled.DefaultOutfit.ColorId;
+                            string exiledName = NewExiled.DefaultOutfit.PlayerName;
+                            string exiledHatId = NewExiled.DefaultOutfit.HatId;
+                            string exiledVisorId = NewExiled.DefaultOutfit.VisorId;
+                            string exiledSkinId = NewExiled.DefaultOutfit.SkinId;
+
+                            Logger.Info("AAA");
+
+                            new LateTask(() =>
+                            {
+                                if (exiledObject == null)
+                                    return;
+                                Logger.Info("CCC");
+                                exiledObject.RpcSetName(exiledName);
+                                exiledObject.RpcSetColor((byte)exiledColorId);
+                                exiledObject.RpcSetHat(exiledHatId);
+                                exiledObject.RpcSetVisor(exiledVisorId);
+                                exiledObject.RpcSetSkin(exiledSkinId);
+                                Logger.Info("戻しました");
+                            }, 5f);
+
+                            Logger.Info("BBB");
+                            
+                            CustomRpcSender customRpcSender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
+                            
+                            customRpcSender.AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetName)
+                                .Write(exiledObject.Data.NetId)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.PlayerName)
+                                .EndRpc()
+                                .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetColor)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.ColorId)
+                                .Write(exiledObject.GetNextRpcSequenceId(RpcCalls.SetColor))
+                                .EndRpc()
+                                .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetHatStr)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.HatId)
+                                .Write(exiledObject.GetNextRpcSequenceId(RpcCalls.SetHatStr))
+                                .EndRpc()
+                                .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetVisorStr)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.VisorId)
+                                .Write(exiledObject.GetNextRpcSequenceId(RpcCalls.SetVisorStr))
+                                .EndRpc()
+                                .AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetSkinStr)
+                                .Write(AntiBlackOut.RealExiled.DefaultOutfit.SkinId)
+                                .Write(exiledObject.GetNextRpcSequenceId(RpcCalls.SetSkinStr))
+                                .EndRpc()
+                                .SendMessage();
+                        }, AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame ? 4.5f : 0.1f);
+                        exiledPlayer = NewExiled;
+                        break;
+                    case AntiBlackOut.SupportType.DoubleVotedAfterExile:
+                        exiledPlayer = null;
+                        tie = true;
+                        break;
+                }
+                if (IsDesyncMode)
+                {
+                    RPCHelper.RpcVotingCompleteDesync(states, DesyncDetail.exiled, DesyncDetail.tie, DesyncDetail.player);
+                }
+                new LateTask(() => __instance.RpcVotingComplete(states, exiledPlayer, tie), 0.1f); //RPC
+                __instance.VotingComplete(states, exiledPlayer, tie);
+                return false;
+            }
+            __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
             return false;
         }
         catch (Exception ex)
@@ -614,25 +749,7 @@ static class ExtendedMeetingHud
                 dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
             }
         }
-        if (Moira.AbilityUsedThisMeeting && Moira.MoiraChangeVote.GetBool())
-        {
-            if (Moira.Player.IsAlive())
-            {
-                PlayerVoteArea swapped1 = null;
-                PlayerVoteArea swapped2 = null;
-                foreach (PlayerVoteArea playerVoteArea in __instance.playerStates)
-                {
-                    if (playerVoteArea.TargetPlayerId == Moira.SwapVoteData.Item1) swapped1 = playerVoteArea;
-                    if (playerVoteArea.TargetPlayerId == Moira.SwapVoteData.Item2) swapped2 = playerVoteArea;
-                }
-                if (swapped1 != null && swapped2 != null)
-                {
-                    if (!dic.ContainsKey(swapped1.TargetPlayerId)) dic[swapped1.TargetPlayerId] = 0;
-                    if (!dic.ContainsKey(swapped2.TargetPlayerId)) dic[swapped2.TargetPlayerId] = 0;
-                    (dic[swapped1.TargetPlayerId], dic[swapped2.TargetPlayerId]) = (dic[swapped2.TargetPlayerId], dic[swapped1.TargetPlayerId]);
-                }
-            }
-        }
+        RoleBaseManager.GetInterfaces<IMeetingHandler>().Do(x => x.CalculateVotes(dic));
         return dic;
     }
 }
@@ -712,73 +829,34 @@ class MeetingHudPopulateButtonsPatch
                 if (area.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId)
                     areas.Add(area);
             }
-            __instance.playerStates = areas.ToArray(); ;
+            __instance.playerStates = areas.ToArray();
         }
-    }
-}
-
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
-public static class MeetingHudPopulateVotesPatch
-{
-    public static bool Prefix(MeetingHud __instance, Il2CppStructArray<VoterState> states)
-    {
-        Moira.SwapVoteArea(__instance);
-
-        __instance.TitleText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.MeetingVotingResults);
-        int num = 0;
-        for (int i = 0; i < __instance.playerStates.Length; i++)
-        {
-            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-            playerVoteArea.ClearForResults();
-            int num2 = 0;
-            foreach (VoterState voterState in states)
-            {
-                NetworkedPlayerInfo playerById = GameData.Instance.GetPlayerById(voterState.VoterId);
-                if (playerById == null)
-                {
-                    __instance.logger.Error(string.Format("Couldn't find player info for voter: {0}", voterState.VoterId), null);
-                }
-                else if (i == 0 && voterState.SkippedVote)
-                {
-                    __instance.BloopAVoteIcon(playerById, num, __instance.SkippedVoting.transform);
-                    num++;
-                }
-                else if (Moira.AbilityUsedThisMeeting && Moira.MoiraChangeVote.GetBool())
-                {
-                    if (voterState.VotedForId == Moira.SwapVoteData.Item1)
-                    {
-                        if (Moira.SwapVoteData.Item1 == playerVoteArea.TargetPlayerId)
-                        {
-                            __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
-                            num2++;
-                        }
-                    }
-                    else if (voterState.VotedForId == Moira.SwapVoteData.Item2)
-                    {
-                        if (Moira.SwapVoteData.Item2 == playerVoteArea.TargetPlayerId)
-                        {
-                            __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
-                            num2++;
-                        }
-                    }
-                }
-                else if (voterState.VotedForId == playerVoteArea.TargetPlayerId)
-                {
-                    __instance.BloopAVoteIcon(playerById, num2, playerVoteArea.transform);
-                    num2++;
-                }
-            }
-        }
-        return false;
     }
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
 class MeetingHudClosePatch
 {
+    public static void Prefix(MeetingHud __instance)
+    {
+        if (!ModeHandler.IsMode(ModeId.SuperHostRoles) ||
+            __instance.exiledPlayer == null)
+            return;
+        if (AntiBlackOut.RealExiled == null)
+        {
+            Logger.Warn("Warning: AntiBlackOut.RealExiled is null.", "RpcClose");
+            return;
+        }
+        if (__instance.exiledPlayer.PlayerId == AntiBlackOut.RealExiled.PlayerId ||
+            __instance.exiledPlayer.Object == null)
+            return;
+        __instance.exiledPlayer = AntiBlackOut.RealExiled;
+    }
     public static void Postfix(MeetingHud __instance)
     {
         CustomRoles.OnMeetingClose();
+        AntiBlackOut.OnMeetingHudClose(AntiBlackOut.RealExiled);
+        Drone.CloseMeeting();
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
@@ -791,8 +869,6 @@ class MeetingHudStartPatch
         ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
         DeviceClass.OnStartMeeting();
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilGuesser) || PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser))
-            PlayerControl.LocalPlayer.GetRoleBase<GuesserBase>().OnStartMeeting();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>
@@ -868,10 +944,6 @@ class MeetingHudStartPatch
         {
             switch (PlayerControl.LocalPlayer.GetRole())
             {
-                case RoleId.Moira:
-                    Moira.StartMeeting(__instance);
-                    break;
-
                 // 以下ネームプレート上の ボタン表示
                 case RoleId.SoothSayer:
                 case RoleId.SpiritMedium:

@@ -117,11 +117,20 @@ class UpdatePatch
                 outfit.SkinId = data.Skin.Value;
                 outfit.NamePlateId = data.NamePlate.Value;
                 outfit.PetId = data.Pet.Value;
-                Logger.Info(outfit.PetId, "");
-                player.UpdateFromPlayerOutfit(outfit, PlayerMaterial.MaskType.ComplexUI, false, data.Pet.Value == "");
+                player.UpdateFromPlayerOutfit(outfit, PlayerMaterial.MaskType.None, false, data.Pet.Value == "");
                 player.cosmetics.petParent.gameObject.SetActive(data.Pet.Value != "");
                 i++;
-            }
+            }/*
+            NetworkedPlayerInfo.PlayerOutfit selectedOutfit = new();
+            ObjectData.ClosetPresetData selected = SelectPatch.GetData();
+            selectedOutfit.ColorId = selected.BodyColor.Value;
+            selectedOutfit.HatId = selected.Hat.Value;
+            selectedOutfit.VisorId = selected.Visor.Value;
+            selectedOutfit.SkinId = selected.Skin.Value;
+            selectedOutfit.NamePlateId = selected.NamePlate.Value;
+            selectedOutfit.PetId = selected.Pet.Value;
+            __instance.PreviewArea.UpdateFromPlayerOutfit(selectedOutfit, PlayerMaterial.MaskType.ComplexUI, false, selected.Pet.Value == "");
+            __instance.PreviewArea.cosmetics.petParent.gameObject.SetActive(selected.Pet.Value != "");*/
         }
     }
 }

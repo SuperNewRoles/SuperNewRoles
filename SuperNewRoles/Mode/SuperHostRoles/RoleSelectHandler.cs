@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
+using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -15,28 +17,34 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 public static class RoleSelectHandler
 {
     public static CustomRpcSender sender = null;
+    public static bool IsStartingSerialize = false;
+    public static Dictionary<byte, byte[]> SetTasksBuffer = new();
     /// <summary>
     /// 追放メッセージを表記する為のBot
     /// </summary>
     /// <value>現在はパン屋Bot 又は 詐欺師Botのみ</value>
     public static PlayerControl ConfirmImpostorSecondTextBot = null;
 
+    public static CustomRpcSender DEBUGOnlySender;
+
     public static CustomRpcSender RoleSelect(CustomRpcSender send)
     {
         sender = send;
         SuperNewRolesPlugin.Logger.LogInfo("[SHR] ROLESELECT");
         if (!AmongUsClient.Instance.AmHost) return null;
+        IsStartingSerialize = true;
         SuperNewRolesPlugin.Logger.LogInfo("[SHR] つうか");
         CrewOrImpostorSet();
         OneOrNotListSet();
         AllRoleSetClass.AllRoleSet();
         SetCustomRoles();
         SyncSetting.CustomSyncSettings();
-        ChacheManager.ResetChache();
+        CacheManager.ResetCache();
         return sender;
     }
     public static void SpawnBots()
     {
+        return;
         if (ReplayManager.IsReplayMode) return;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek, ModeId.VanillaHns))
         {
@@ -127,7 +135,6 @@ public static class RoleSelectHandler
     {
         return role switch
         {
-            RoleId.Jackal => (true, RoleTypes.Impostor),
             RoleId.Sheriff => (true, RoleTypes.Impostor),
             RoleId.Demon => (true, RoleTypes.Impostor),
             RoleId.truelover => (true, RoleTypes.Impostor),
@@ -169,48 +176,124 @@ public static class RoleSelectHandler
         };
     }
 
+    private static void AddToSyncRoles(this Dictionary<byte, (RoleTypes role, bool isNotModOnly)> syncDictionary, List<PlayerControl> players, RoleTypes roleTypes, bool isNotOnlyMod = false)
+    {
+        foreach (PlayerControl player in players)
+            syncDictionary.AddToSyncRoles(player, roleTypes, isNotOnlyMod);
+    }
+    private static void AddToSyncRoles(this Dictionary<byte, (RoleTypes role, bool isNotModOnly)> syncDictionary, PlayerControl player, RoleTypes roleTypes, bool isNotOnlyMod = false)
+    {
+        syncDictionary[player.PlayerId] = (roleTypes, isNotOnlyMod);
+    }
+    private static void CheckAndAddToSyncRoles(this Dictionary<byte, (RoleTypes role, bool isNotModOnly)> syncDictionary, bool isAdd, List<PlayerControl> players, RoleTypes roleTypes, bool isNotModOnly = false)
+    {
+        if (isAdd)
+            AddToSyncRoles(syncDictionary, players, roleTypes, isNotModOnly);
+    }
+    private static void AddToDesyncRoles(this Dictionary<byte, RoleTypes> desyncDictionary, List<PlayerControl> players, RoleTypes roleTypes)
+    {
+        foreach (PlayerControl player in players)
+            desyncDictionary.Add(player.PlayerId, roleTypes);
+    }
+
+    public static readonly Dictionary<int, RoleTypes> DesyncTable = new()
+    {
+        { (int)RoleId.Sheriff, RoleTypes.Impostor },
+        { (int)RoleId.Demon, RoleTypes.Impostor },
+        { (int)RoleId.truelover, RoleTypes.Impostor },
+        { (int)RoleId.FalseCharges, RoleTypes.Impostor },
+        { (int)RoleId.MadMaker, RoleTypes.Impostor },
+        { (int)RoleId.JackalSeer, RoleTypes.Impostor },
+        { (int)RoleId.Arsonist, RoleTypes.Shapeshifter },
+        { (int)RoleId.RemoteSheriff, RoleTypes.Shapeshifter },
+        { (int)RoleId.ToiletFan, RoleTypes.Shapeshifter },
+        { (int)RoleId.NiceButtoner, RoleTypes.Shapeshifter },
+        { (int)RoleId.Worshiper, RoleTypes.Shapeshifter },
+        { (int)RoleId.MadRaccoon, RoleTypes.Shapeshifter }
+    };
+
+    public static RoleTypes? GetDesyncRole(PlayerControl player)
+    {
+        if (player.GetRoleBase() is ISupportSHR playerSHR
+            && playerSHR.IsDesync)
+            return playerSHR.DesyncRole;
+        if (DesyncTable.TryGetValue((int)player.GetRole(), out RoleTypes targetRole))
+            return targetRole;
+        return null;
+    }
+
     public static void SetCustomRoles()
     {
+        Dictionary<byte, (RoleTypes role, bool isNotModOnly)> CrewmateSyncRoles = new();
+        Dictionary<byte, RoleTypes> DesyncRoles = new();
+        // 役職設定時に最適な方法を使用する
+        PlayerControl NotDesyncTarget = null;
+        RoleTypes? NotDesyncTargetRole = null;
+
         /*============インポスターにDesync============*/
-        SetRoleDesync(RoleClass.Sheriff.SheriffPlayer, RoleTypes.Impostor);
-        SetRoleDesync(RoleClass.Demon.DemonPlayer, RoleTypes.Impostor);
-        SetRoleDesync(RoleClass.Truelover.trueloverPlayer, RoleTypes.Impostor);
-        SetRoleDesync(RoleClass.FalseCharges.FalseChargesPlayer, RoleTypes.Impostor);
-        SetRoleDesync(RoleClass.MadMaker.MadMakerPlayer, RoleTypes.Impostor);
-        SetRoleDesync(RoleClass.JackalSeer.JackalSeerPlayer, RoleTypes.Impostor);
+        DesyncRoles.AddToDesyncRoles(RoleClass.Sheriff.SheriffPlayer, RoleTypes.Impostor);
+        DesyncRoles.AddToDesyncRoles(RoleClass.Demon.DemonPlayer, RoleTypes.Impostor);
+        DesyncRoles.AddToDesyncRoles(RoleClass.Truelover.trueloverPlayer, RoleTypes.Impostor);
+        DesyncRoles.AddToDesyncRoles(RoleClass.FalseCharges.FalseChargesPlayer, RoleTypes.Impostor);
+        DesyncRoles.AddToDesyncRoles(RoleClass.MadMaker.MadMakerPlayer, RoleTypes.Impostor);
+        DesyncRoles.AddToDesyncRoles(RoleClass.JackalSeer.JackalSeerPlayer, RoleTypes.Impostor);
         /*============インポスターにDesync============*/
 
 
         /*============エンジニアに役職設定============*/
-        if (RoleClass.Jester.IsUseVent) SetVanillaRole(RoleClass.Jester.JesterPlayer, RoleTypes.Engineer);
-        if (RoleClass.JackalFriends.IsUseVent) SetVanillaRole(RoleClass.JackalFriends.JackalFriendsPlayer, RoleTypes.Engineer);
-        if (RoleClass.Madmate.IsUseVent) SetVanillaRole(RoleClass.Madmate.MadmatePlayer, RoleTypes.Engineer);
-        if (RoleClass.MadMayor.IsUseVent) SetVanillaRole(RoleClass.MadMayor.MadMayorPlayer, RoleTypes.Engineer);
-        if (RoleClass.MadStuntMan.IsUseVent) SetVanillaRole(RoleClass.MadStuntMan.MadStuntManPlayer, RoleTypes.Engineer);
-        if (RoleClass.MadJester.IsUseVent) SetVanillaRole(RoleClass.MadJester.MadJesterPlayer, RoleTypes.Engineer);
-        if (RoleClass.Fox.IsUseVent) SetVanillaRole(RoleClass.Fox.FoxPlayer, RoleTypes.Engineer);
-        if (RoleClass.MayorFriends.IsUseVent) SetVanillaRole(RoleClass.MayorFriends.MayorFriendsPlayer, RoleTypes.Engineer);
-        if (RoleClass.Tuna.IsUseVent) SetVanillaRole(RoleClass.Tuna.TunaPlayer, RoleTypes.Engineer);
-        SetVanillaRole(RoleClass.Technician.TechnicianPlayer, RoleTypes.Engineer);
-        if (RoleClass.BlackCat.IsUseVent) SetVanillaRole(RoleClass.BlackCat.BlackCatPlayer, RoleTypes.Engineer);
-        if (RoleClass.MadSeer.IsUseVent) SetVanillaRole(RoleClass.MadSeer.MadSeerPlayer, RoleTypes.Engineer);
-        if (RoleClass.SeerFriends.IsUseVent) SetVanillaRole(RoleClass.SeerFriends.SeerFriendsPlayer, RoleTypes.Engineer);
-        if (Pokerface.CustomOptionData.CanUseVent.GetBool()) SetVanillaRole(Pokerface.RoleData.Player, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.Jester.IsUseVent, RoleClass.Jester.JesterPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.JackalFriends.IsUseVent, RoleClass.JackalFriends.JackalFriendsPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.Madmate.IsUseVent, RoleClass.Madmate.MadmatePlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.MadMayor.IsUseVent, RoleClass.MadMayor.MadMayorPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.MadStuntMan.IsUseVent, RoleClass.MadStuntMan.MadStuntManPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.MadJester.IsUseVent, RoleClass.MadJester.MadJesterPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.Fox.IsUseVent, RoleClass.Fox.FoxPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.MayorFriends.IsUseVent, RoleClass.MayorFriends.MayorFriendsPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.Tuna.IsUseVent, RoleClass.Tuna.TunaPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.AddToSyncRoles(RoleClass.Technician.TechnicianPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.BlackCat.IsUseVent, RoleClass.BlackCat.BlackCatPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.MadSeer.IsUseVent, RoleClass.MadSeer.MadSeerPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(RoleClass.SeerFriends.IsUseVent, RoleClass.SeerFriends.SeerFriendsPlayer, RoleTypes.Engineer);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(Pokerface.CustomOptionData.CanUseVent.GetBool(), Pokerface.RoleData.Player, RoleTypes.Engineer);
         /*============エンジニアに役職設定============*/
 
         /*============科学者に役職設定============*/
-        if (PoliceSurgeon.RoleData.HaveVital) SetVanillaRole(PoliceSurgeon.RoleData.Player, RoleTypes.Scientist, false);
+        CrewmateSyncRoles.CheckAndAddToSyncRoles(PoliceSurgeon.RoleData.HaveVital, PoliceSurgeon.RoleData.Player, RoleTypes.Scientist, false);
         /*============科学者に役職設定============*/
 
         /*============シェイプシフターDesync============*/
-        SetRoleDesync(RoleClass.Arsonist.ArsonistPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(Worshiper.RoleData.Player, RoleTypes.Shapeshifter);
-        SetRoleDesync(MadRaccoon.RoleData.Player, RoleTypes.Shapeshifter);
+        DesyncRoles.AddToDesyncRoles(RoleClass.Arsonist.ArsonistPlayer, RoleTypes.Shapeshifter);
+        DesyncRoles.AddToDesyncRoles(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
+        DesyncRoles.AddToDesyncRoles(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
+        DesyncRoles.AddToDesyncRoles(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
+        DesyncRoles.AddToDesyncRoles(Worshiper.RoleData.Player, RoleTypes.Shapeshifter);
+        DesyncRoles.AddToDesyncRoles(MadRaccoon.RoleData.Player, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.GetRoleBase() is not ISupportSHR playerSHR)
+                continue;
+            if (playerSHR.IsDesync)
+            {
+                DesyncRoles.AddToDesyncRoles([player], playerSHR.DesyncRole);
+                continue;
+            }
+            if (!playerSHR.RealRole.IsImpostorRole())
+                CrewmateSyncRoles.AddToSyncRoles(player, playerSHR.RealRole, playerSHR.IsRealRoleNotModOnly);
+            else
+                SetVanillaRole(player, playerSHR.RealRole, playerSHR.IsRealRoleNotModOnly);
+        }
+
+        // インポスター系の通常設定は一番最初にやる
+
+        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (CrewmateSyncRoles.ContainsKey(player.PlayerId) || DesyncRoles.ContainsKey(player.PlayerId))
+                continue;
+            if (player.IsImpostor())
+                sender.RpcSetRole(player, RoleTypes.Impostor, true);
+        }
 
         /*============シェイプシフター役職設定============*/
         SetVanillaRole(RoleClass.SelfBomber.SelfBomberPlayer, RoleTypes.Shapeshifter, false);
@@ -221,29 +304,63 @@ public static class RoleSelectHandler
         SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
         /*============シェイプシフター役職設定============*/
 
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (var desyncdata in DesyncRoles)
         {
-            if (player.GetRoleBase() is ISupportSHR playerSHR)
+            PlayerControl player = ModHelpers.PlayerById(desyncdata.Key);
+            if (player == null)
             {
-                if (playerSHR.IsDesync)
-                    SetRoleDesync(player, playerSHR.DesyncRole);
-                else
-                    SetVanillaRole(player, playerSHR.RealRole, playerSHR.IsRealRoleNotModOnly);
+                Logger.Error("player is null.", "SHR RoleSelectHandler");
+                continue;
             }
+            SetRoleDesync(player, desyncdata.Value);
+        }
+        // CrewmateSyncRole
+        foreach (var syncdata in CrewmateSyncRoles)
+        {
+            PlayerControl player = ModHelpers.PlayerById(syncdata.Key);
+            if (player == null)
+            {
+                Logger.Error("player is null on CrewmateSyncRoles.", "SHR RoleSelectHandler");
+                continue;
+            }
+            SetVanillaRole(player, syncdata.Value.role, syncdata.Value.isNotModOnly);
         }
 
+        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.IsImpostor())
+                continue;
+            if (player.Data.Disconnected)
+                continue;
+            NotDesyncTarget = player;
+            NotDesyncTargetRole = player.Data.Role.Role;
+            break;
+        }
+
+        
+        // 暫定対処、通常は起こり得ないが起こり得た場合にはエラーを出す
+        if (NotDesyncTarget == null)
+            throw new System.NotImplementedException("Crewmates is all desync role.");
+
+        //new LateTask(() => {
+        Logger.Info($"RoleSelectHandler: {NotDesyncTarget.PlayerId}");
+        //}, 0.15f, "SetRole Disconnected Task");
+
+        if (RoleClass.Egoist.EgoistPlayer.Count + RoleClass.Spy.SpyPlayer.Count > 0)
+            throw new System.NotImplementedException("Egoist and Spy is not working.");
+        /*
         foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
         {
             if (!Player.IsMod())
             {
                 int PlayerCID = Player.GetClientId();
                 //ただしホスト、お前はDesyncするな。
-                sender.RpcSetRole(Player, RoleTypes.Impostor);
+                sender.RpcSetRole(Player, RoleTypes.Impostor, true);
                 //役職者で他プレイヤーを科学者にするループ
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
-                    sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
+                    sender.RpcSetRole(pc, RoleTypes.Scientist, true, PlayerCID);
                 }
             }
             else
@@ -251,13 +368,13 @@ public static class RoleSelectHandler
                 //ホストは代わりに普通のクルーにする
                 if (Player.PlayerId != 0)
                 {
-                    sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.GetClientId());
+                    sender.RpcSetRole(Player, RoleTypes.Crewmate, true, Player.GetClientId());
                 }
                 else
                 {
                     Player.SetRole(RoleTypes.Crewmate); //ホスト視点用
                 }
-                sender.RpcSetRole(Player, RoleTypes.Impostor);
+                sender.RpcSetRole(Player, RoleTypes.Impostor, true);
             }
             //p.Data.IsDead = true;
         }
@@ -266,17 +383,17 @@ public static class RoleSelectHandler
             if (!Player.IsMod())
             {
                 int PlayerCID = Player.GetClientId();
-                if (RoleClass.Spy.CanUseVent) sender.RpcSetRole(Player, RoleTypes.Engineer, PlayerCID);
-                else sender.RpcSetRole(Player, RoleTypes.Crewmate, PlayerCID);
+                if (RoleClass.Spy.CanUseVent) sender.RpcSetRole(Player, RoleTypes.Engineer, true, PlayerCID);
+                else sender.RpcSetRole(Player, RoleTypes.Crewmate, true, PlayerCID);
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
-                    sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
+                    sender.RpcSetRole(pc, RoleTypes.Scientist, true, PlayerCID);
                 }
             }
             else
             {
-                if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.GetClientId());
+                if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, true, Player.GetClientId());
                 else Player.SetRole(RoleTypes.Crewmate);
             }
             if (ModeHandler.GetMode() == ModeId.SuperHostRoles)
@@ -289,16 +406,17 @@ public static class RoleSelectHandler
                     {
                         if (pc.IsImpostor() || pc.IsRole(RoleId.Spy))
                         {
-                            sender.RpcSetRole(Player, RoleTypes.Impostor, pc.GetClientId());
+                            sender.RpcSetRole(Player, RoleTypes.Impostor, true, pc.GetClientId());
                         }
                         else
                         {
-                            sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
+                            sender.RpcSetRole(Player, RoleTypes.Scientist, true, pc.GetClientId());
                         }
                     }
                 }
             }
         }
+        */
         return;
     }
 
@@ -314,31 +432,32 @@ public static class RoleSelectHandler
             SetRoleDesync(Player, roleTypes);
         }
     }
-    public static void SetRoleDesync(PlayerControl Player, RoleTypes roleTypes)
+    public static void SetRoleDesync(PlayerControl Player, RoleTypes roleTypes) => SetRoleDesync(sender, Player, roleTypes);
+    public static void SetRoleDesync(this CustomRpcSender sender, PlayerControl Player, RoleTypes roleTypes)
     {
         Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
         if (!Player.IsMod())
         {
             int PlayerCID = Player.GetClientId();
-            sender.RpcSetRole(Player, roleTypes, PlayerCID);
+            sender.RpcSetRole(Player, roleTypes, true, PlayerCID);
             foreach (var pc in PlayerControl.AllPlayerControls)
             {
                 if (pc.PlayerId == Player.PlayerId) continue;
-                sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
+                sender.RpcSetRole(pc, pc.Data.Role.Role.IsImpostorRole() ? RoleTypes.Scientist : pc.Data.Role.Role, true, PlayerCID);
             }
             //他視点で科学者にするループ
             foreach (var pc in PlayerControl.AllPlayerControls)
             {
                 if (pc.PlayerId == Player.PlayerId) continue;
-                if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
-                else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
+                if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Crewmate, true); //ホスト視点用
+                else sender.RpcSetRole(Player, RoleTypes.Scientist, true, pc.GetClientId());
             }
         }
         else
         {
             //Modクライアントは代わりに普通のクルーにする
-            Player.SetRole(RoleTypes.Crewmate); //Modクライアント視点用
-            sender.RpcSetRole(Player, RoleTypes.Crewmate);
+            Player.SetRole(RoleTypes.Crewmate, true); //Modクライアント視点用
+            sender.RpcSetRole(Player, RoleTypes.Crewmate, true);
         }
     }
     /// <summary>
@@ -360,7 +479,8 @@ public static class RoleSelectHandler
     /// <param name="p">ターゲット</param>
     /// <param name="roleTypes">セットする役職</param>
     /// <param name="isNotModOnly">非Mod導入者のみか(概定はtrue)</param>
-    public static void SetVanillaRole(PlayerControl p, RoleTypes roleTypes, bool isNotModOnly = true)
+    public static void SetVanillaRole(PlayerControl p, RoleTypes roleTypes, bool isNotModOnly = true) => SetVanillaRole(sender, p, roleTypes, isNotModOnly);
+    public static void SetVanillaRole(this CustomRpcSender sender, PlayerControl p, RoleTypes roleTypes, bool isNotModOnly = true)
     {
         if (p.IsMod() && isNotModOnly)
         {
@@ -368,7 +488,7 @@ public static class RoleSelectHandler
             return;
         }
         Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
-        sender.RpcSetRole(p, roleTypes);
+        sender.RpcSetRole(p, roleTypes, true);
     }
     public static void CrewOrImpostorSet()
     {

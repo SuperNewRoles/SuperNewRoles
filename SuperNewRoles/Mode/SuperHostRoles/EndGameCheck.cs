@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
+using Il2CppInterop.Generator.Extensions;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -14,10 +17,13 @@ class EndGameCheck
 {
     public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
     {
+        // 暗転対策の途中にゲーム終了処理が入ると終了されるかもしれないからパス。
+        if (AntiBlackOut.GamePlayers != null) return false;
         if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
         if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
         if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
         if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
+        if (CheckAndEndGameForPavlovsWin(__instance, statistics)) return false;
         if (CheckAndEndGameForSabotageWin(__instance)) return false;
         if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
         if (CustomOptionHolder.FoxCanHouwaWin.GetBool() && CheckAndEndGameForFoxHouwaWin(__instance)) return false;
@@ -30,8 +36,22 @@ class EndGameCheck
         return false;
     }
 
-    public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
+    public static void CustomEndGame(ShipStatus __instance, CustomGameOverReason reason, bool showAd)
     {
+        if (Chat.IsOldSHR)
+            return;
+        if (reason == CustomGameOverReason.HAISON)
+        {
+            Chat.WinCond = CustomGameOverReason.HAISON;
+
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+            writer.Write((byte)reason);
+            writer.EndRPC();
+            RPCProcedure.SetWinCond((byte)reason);
+
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorDisconnect, showAd);
+            return;
+        }
         SuperNewRoles.Roles.Impostor.Camouflager.ResetCamouflageSHR();
         Chat.IsOldSHR = true;
         List<PlayerControl> WinGods = null;
@@ -64,6 +84,8 @@ class EndGameCheck
         SetDeadGuardianAngel.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
         SetDeadGuardianAngel.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
         /*============死亡時守護天使============*/
+
+        /*
         foreach (PlayerControl p in SetDeadGuardianAngel)
         {
             p.RpcSetRole(RoleTypes.GuardianAngel);
@@ -88,10 +110,56 @@ class EndGameCheck
                     p.RpcSetRole(RoleTypes.GuardianAngel);
                 }
             }
+        }*/
+
+        var (winners, winCondition, WillRevivePlayers) = OnGameEndPatch.HandleEndGameProcess((GameOverReason)reason);
+        var winnersByte = winners.Select((p) => p?.PlayerId ?? byte.MaxValue).ToArray();
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            bool IsDead = player.Data.IsDead;
+            RoleTypes RealRole = player.Data.Role.Role;
+            if (winnersByte.Contains(player.PlayerId))
+                player.RpcSetRole(RoleTypes.ImpostorGhost);
+            else
+                player.RpcSetRole(RoleTypes.CrewmateGhost);
+            player.Data.IsDead = IsDead;
+            _ = new LateTask(() => player.RPCSetRoleUnchecked(RealRole), 0.1f);
+            if (!IsDead)
+                player.Revive();
         }
-        ChangeName.SetRoleNames(true);
-        __instance.enabled = false;
-        GameManager.Instance.RpcEndGame(reason, showAd);
+        Dictionary<PlayerControl, byte> ShowTargets = new();
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.IsMod())
+                continue;
+            if (winnersByte.Contains(player.PlayerId) && player.IsAlive())
+                continue;
+            PlayerControl SeeTarget = null;
+            foreach (PlayerControl seeTarget in PlayerControl.AllPlayerControls)
+            {
+                if (player.PlayerId == seeTarget.PlayerId)
+                    continue;
+                if (!winnersByte.Contains(seeTarget.PlayerId))
+                    continue;
+                SeeTarget = seeTarget;
+                break;
+            }
+            if (SeeTarget != null)
+                ShowTargets.Add(player, SeeTarget.PlayerId);
+            else
+                Logger.Error($"No winner to show. {player.PlayerId}", "EndGameCheck.CustomEndGame");
+        }
+
+        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+        Writer.Write((byte)reason);
+        Writer.EndRPC();
+        RPCProcedure.SetWinCond((byte)reason);
+
+        (string text, Color color, _) = EndGameManagerSetUpPatch.ProcessWinText((GameOverReason)reason, winCondition);
+        EndGameDetail.SetEndGameDetail(ModHelpers.Cs(color, text), ShowTargets);
+        _ = new LateTask(() => RPCHelper.RpcSyncAllNetworkedPlayer(), 0.2f);
+        _ = new LateTask(() => ChangeName.SetRoleNames(true, true), 0.25f);
+        _ = new LateTask(() => GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByVote, showAd), 0.4f);
     }
     public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
     {
@@ -134,7 +202,7 @@ class EndGameCheck
         if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)//&& Chat.WinCond == null)
         {
             Chat.WinCond = CustomGameOverReason.CrewmateWin;
-            CustomEndGame(__instance, GameOverReason.HumansByTask, false);
+            CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.HumansByTask, false);
             return true;
         }
         return false;
@@ -148,7 +216,7 @@ class EndGameCheck
             Writer.EndRPC();
             RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
             __instance.enabled = false;
-            CustomEndGame(__instance, GameOverReason.ImpostorByKill, false);
+            CustomEndGame(__instance, CustomGameOverReason.JackalWin, false);
             return true;
         }
         return false;
@@ -156,7 +224,7 @@ class EndGameCheck
 
     public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && !statistics.IsGuardPavlovs)
         {
             foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
             {
@@ -166,7 +234,7 @@ class EndGameCheck
                 }
             }
             __instance.enabled = false;
-            CustomEndGame(__instance, GameOverReason.HumansByVote, false);
+            CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.HumansByVote, false);
             return true;
         }
         return false;
@@ -174,7 +242,7 @@ class EndGameCheck
 
     public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
+        if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !statistics.IsGuardPavlovs && !EvilEraser.IsNeetWinGuard())
         {
             __instance.enabled = false;
             var endReason = GameData.LastDeathReason switch
@@ -191,7 +259,17 @@ class EndGameCheck
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.DemonWin);
             }
 
-            CustomEndGame(__instance, endReason, false);
+            CustomEndGame(__instance, (CustomGameOverReason)endReason, false);
+            return true;
+        }
+        return false;
+    }
+    public static bool CheckAndEndGameForPavlovsWin(ShipStatus __instance, PlayerStatistics statistics)
+    {
+        if (statistics.PavlovsTeamAlive >= statistics.TotalAlive - statistics.PavlovsTeamAlive && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+        {
+            __instance.enabled = false;
+            CustomEndGame(__instance, CustomGameOverReason.PavlovsTeamWin, false);
             return true;
         }
         return false;
@@ -227,7 +305,7 @@ class EndGameCheck
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.WorkpersonWin);
                         Chat.WinCond = CustomGameOverReason.WorkpersonWin;
                         __instance.enabled = false;
-                        CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.CrewmateWin, false);
+                        CustomEndGame(__instance, CustomGameOverReason.WorkpersonWin, false);
                         return true;
                     }
                 }
@@ -267,7 +345,7 @@ class EndGameCheck
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.FoxWin);
 
                 __instance.enabled = false;
-                CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.FoxWin, false);
+                CustomEndGame(__instance, CustomGameOverReason.FoxWin, false);
             }
             return true;
         };
@@ -276,6 +354,21 @@ class EndGameCheck
     public static void EndGameForSabotage(ShipStatus __instance)
     {
         Chat.WinCond = CustomGameOverReason.ImpostorWin;
-        CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
+        CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.ImpostorBySabotage, false);
+    }
+}
+public static class EndGameDetail
+{
+    public static string EndGameTitle { get; private set; }
+    public static Dictionary<PlayerControl, byte> ShowTargets { get; private set; }
+    public static void SetEndGameDetail(string title, Dictionary<PlayerControl, byte> targets)
+    {
+        EndGameTitle = title;
+        ShowTargets = targets;
+    }
+    public static void Reset()
+    {
+        EndGameTitle = "None Detail.";
+        ShowTargets = new();
     }
 }

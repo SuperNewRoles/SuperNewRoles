@@ -7,8 +7,10 @@ using Hazel;
 using Il2CppInterop.Generator.Extensions;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static System.String;
@@ -68,10 +70,65 @@ internal class AddChatPatch
         HostManagedChatCommandPatch.CommandType commandType = HostManagedChatCommandPatch.CheckChatCommand(Commands[0]);
         if (commandType != HostManagedChatCommandPatch.CommandType.None)
         {
-            if (AmongUsClient.Instance.AmHost) HostManagedChatCommandPatch.ChatCommandExecution(sourcePlayer, commandType, Commands);
+            if (AmongUsClient.Instance.AmHost)
+                HostManagedChatCommandPatch.ChatCommandExecution(sourcePlayer, commandType, Commands);
             return false;
         }
 
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            string lcmd = Commands[0].ToLower();
+            if (sourcePlayer.GetRoleBase() is ISHRChatCommand shrcmd &&
+                    ("/" + shrcmd.CommandName == lcmd ||
+                    (
+                       (shrcmd.Alias != null) &&
+                       ("/" + shrcmd.Alias == lcmd)
+                    ))
+                )
+            {
+                bool isCancelChat;
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (Commands.Length > 1)
+                        isCancelChat = shrcmd.OnChatCommand(Commands[1..]);
+                    else
+                        isCancelChat = shrcmd.OnChatCommand([]);
+                }
+                else
+                {
+                    if (Commands.Length > 1)
+                        isCancelChat = shrcmd.OnChatCommandClient(Commands[1..]);
+                    else
+                        isCancelChat = shrcmd.OnChatCommandClient([]);
+                }
+                if (isCancelChat)
+                    return false;
+            }
+            else
+            {
+                foreach (ISHRChatCommand shrChatCommand in RoleBaseManager.GetInterfaces<ISHRChatCommand>())
+                {
+                    if (
+                         "/" + shrChatCommand.CommandName == lcmd ||
+                           (
+                              (shrChatCommand.Alias != null) &&
+                              ("/" + shrChatCommand.Alias == lcmd)
+                           )
+                       )
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("CommandNotFound"), GetChatCommands.SNRCommander);
+                        return false;
+                    }
+                }
+            }
+        }
+        bool isAdd = true;
+        if (sourcePlayer.Data.PlayerName.Contains("<size") ||
+            sourcePlayer.Data.PlayerName.Contains("<color"))
+            isAdd = false;
+
+        if(AmongUsClient.Instance.AmHost)
+            HideChat.OnAddChat(sourcePlayer, chatText, isAdd);
         // ここまで到達したらチャットが表示できる
         return true;
     }
@@ -187,10 +244,27 @@ internal class AddChatPatch
         {
             string name = CachedPlayer.LocalPlayer.Data.PlayerName;
             if (name == GetChatCommands.SNRCommander) return;
-            AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
+            if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles) && HideChat.HideChatEnabled)
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        AmongUsClient.Instance.StartCoroutine(PrivateSend(player, SendName, command).WrapToIl2Cpp());
+                        continue;
+                    }
+                    string tname = player.Data.PlayerName;
+                    player.SetName(SendName);
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, command);
+                    player.SetName(tname);
+                }
+            } else
+            {
+                AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
+            }
             return;
         }
-        else if (target.PlayerId == 0)
+        else if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
         {
             string name = target.Data.PlayerName;
             target.SetName(SendName);
@@ -203,6 +277,12 @@ internal class AddChatPatch
         }
     }
 
+    public static void SendChat(PlayerControl target, string text, string title = "")
+    {
+        if (title != null && title != "") text = $"<size=100%><color=#ff8000>【{title}】</color></size>\n{text}";
+        SendCommand(target, "", text);
+    }
+
     /// <summary>
     /// システムメッセージ等を送信する。
     /// </summary>
@@ -213,6 +293,8 @@ internal class AddChatPatch
     /// <param name="isSendFromGuest">ゲストが自分自身に送信可能にする</param>
     public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white", bool isSendFromGuest = false)
     {
+        if (target == null) return;
+
         string line = "|--------------------------------------------------------|";
         string name = $"<size=90%><color={color}><align={"left"}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</align></color></size>";
         string contents = $"\n<align={"left"}>{infoContents}</align>\n　\n";
@@ -228,6 +310,8 @@ internal class AddChatPatch
     /// <param name="text">チャットの内容</param>
     public static void SelfSend(string titelName, string text)
     {
+        if (PlayerControl.LocalPlayer == null) return;
+
         var localPlayer = PlayerControl.LocalPlayer;
         var originalName = localPlayer.Data.PlayerName;
         const string blank = "<color=#00000000>.</color>\n";
@@ -260,8 +344,8 @@ internal class AddChatPatch
             .AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)
             .Write(sender.Data.NetId)
             .Write(name)
-            .EndRpc()
-            .SendMessage();
+            .EndRpc();
+        crs.SendMessage();
         sender.SetName(SendName);
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, command);
         sender.SetName(name);

@@ -53,6 +53,7 @@ MainMenuDiscordText,<size=90%>Bug report or Question or Request</size>\n<size=90
 20240618_25SaverInfo_PopupTitle,Server Notice,サーバーに関するお知らせ
 20240618_25SaverInfo_PopupText,<size=70%>Hello!\n\nActually，in some mods including SNR，if there are more than "9 people" on a vanilla server，some people get disconnected at the lobby start screen. \n(Not everyone gets disconnected though!)\nSo，if someone gets disconnected，it's probably due to this issue! \nIf no one gets disconnected at the lobby start screen，there shouldn't be much of a problem，so please check that first.\n\nCustom servers are not affected by this issue，so if you can use a custom server，that might be a good option. \n(At least as of the release，custom servers are not supported yet，so you can't use them.)\n\nThat's about it. \nFor the latest information，check Discord or Twitter! \n(There are links at the bottom right of the main menu! You should be able to see them after closing this.)\n\nSee you!</size>,<size=70%>こんにちは！\n実は、SNRを含めた一部MODの場合、バニラサーバーで何故か「9人以上」入るとロビーが開始画面で切断される人が出てくるようなんだ。\n(必ず切断されるわけてはないよ!)\n\nだから、落ちちゃう人がいたらそれはこの問題だよ！\nロビーが開始画面で落ちなければほとんど問題ないと思うからまずは確認してね。\n\nカスタムサーバーではこの影響は受けないから、カスタムサーバーが使えるならカスタムサーバーを使うのもいいと思うよ。\n(少なくともリリース時点ではカスタムサーバーがまだ対応してないから使えないけど。)\n\nこんな感じかな。最新情報はDiscordかTwitterを見てね！\n(メインメニューの右下にリンクがあるよ！これを閉じたら見れると思う。)\n\nじゃあね！ </size>
 20240618_25SaverInfo_PopupOK,OK,オッケー！
+CommandNotFound,Where is the command?\nThis command is not found.,このコマンドはどこ?\nこのコマンドが見つかりませんでした。
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红,鮭魚紅
@@ -272,6 +273,8 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
 OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
+CanSeeImpostorRole,Imposters can check each other's rolls.,インポスターが互いに役職を確認できる
+CanSeeImpostorRoleTurn,Number of turns to confirm,わかるようになる会議数
 CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない,玩家死亡后不再受到灵咒影响,死者不具有憑依能力
 ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,タスク完了後に憑依能力を開放する。,完成任务后才会释放灵咒,任務完成後啟用憑依能力
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
@@ -298,14 +301,14 @@ ModeSetting,Mode Setting,モード設定,模式设置,模式設定
 SettingMode,Mode,モード,游戏模式,遊戲模式
 SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置,躲貓貓模式設定
 SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,大逃杀模式设置,大逃殺模式設定
-SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHostRoles设置,SuperHostRoles設定
+SettingSuperHostRolesMode,Super Host Roles Beta Mode,SuperHostRolesβの設定,SuperHostRolesβ设置,SuperHostRolesβ設定
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置,殭屍模式設定
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置,隨機顏色模式設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置,偵探模式設定
 DefaultModeName,Defalut Mode,通常モード,末日模式,預設模式
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫,躲貓貓
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
-SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
+SuperHostRolesModeName,Super Host Roles Beta,SuperHostRolesβ,Super Host Rolesβ,SuperHostRolesβ
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机,殭屍模式
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式,隨機顏色
 PantsRoyalModeName,Pants Royal,パンツ大騒動,裤头大逃杀,搶褲大逃殺
@@ -575,10 +578,11 @@ MeetingSheriffYes,Yes,できる,是,是
 MeetingSheriffNo,No,できない,否,否
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数,执法官最大可击杀次数,法警最大可擊殺次數
 MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeting?,一会議中に複数キルできるか,执法官可以在一次会议中多次击杀,法警可以在一次會議中多次擊殺
-MeetingSheriffkillChat1,{0} has sheriffkilled {1}!,{0} は {1} をシェリフキルした！,{0}被{1}出警了！,{0}被{1}在會議中被正義執行了！
-MeetingSheriffkillChat2,{0} was killed，but it was a misfire! {1} killed himself in remorse!,{0} をキルしたが誤射だった! {1} は自責の念で自害した!,{0}被杀害了，但他是被冤枉的！{1}以死谢罪了！,{0}被殺害了，但他是被冤枉的！{1}以死謝罪了！
-MeetingSheriffkillChat3,{0} was a misfire!,{0} は誤爆した！,{0}的枪走火了！,{0}的槍走火了！
-MeetingSheriffkillChat4,{0} succeeded!,{0} は成功した！,{0}成功了！,{0}成功了
+MeetingSheriffkillChat_KillTarget,{0} has sheriffkilled {1}!,{0} は {1} をシェリフキルした！,{0}被{1}出警了！,{0}被{1}在會議中被正義執行了！
+MeetingSheriffkillChat_Success,{0} succeeded!,{0} による 正義執行は成功だ！,{0}成功了！,{0}成功了
+MeetingSheriffkillChat_MissFire,{0} was a misfire!,{0} は 誤爆した！,{0}的枪走火了！,{0}的槍走火了！
+MeetingSheriffkillChat_AlwaysSuicideSuccess,Execution against {0} is a success!\n{1} died in the line of duty!,{0} への 正義執行は成功だ!\n{1} は殉職した!
+MeetingSheriffkillChat_AlwaysKillMissFire,{0} was killed，but it was a misfire! {1} killed himself in remorse!,{0} をキルしたが誤射だった!\n{1} は自責の念で自害した!,{0}被杀害了，但他是被冤枉的！{1}以死谢罪了！,{0}被殺害了，但他是被冤枉的！{1}以死謝罪了！
 JackalName,Jackal,ジャッカル,豺狼,豺狼
 JackalCombIntroDearSheriff,I'm told there's a crewmate who can kill me.\nBut it doesn't matter. All I have to do is kill him and everyone else.,インポスター以外に私を殺せる者がいる…?\n関係ない そいつ含めて全員殺せばいいだけだ,除了内鬼还有要杀我的人……？\n没关系。我就凭一人之力，打倒整个世界。,能殺我的不只是內鬼...?\n沒關係，只要殺了所有人就好了
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼,殺死所有船員和內鬼
@@ -680,6 +684,18 @@ NiceGuesserTitle3,Guess and kill the Impostor!,推察し、人外を撃ち抜け
 NiceGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nCheck if the target's coming out is true，for example，"I am a crewmate.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\n「自分はクルーメイトです」等 対象のカミングアウトが真であるか精査してみましょう。,正义的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，正义的赌怪自杀。\n正义的赌怪可以确认目标是否在对船员说谎。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n查明那些說「我是好人！」的人的身分！
 GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,正义的赌怪能否在一次会议中多次猜测,正義的賭怪能否在一次會議中多次猜測
 GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,正义的赌怪最大可猜测次数,正義的賭怪最大可猜測次數
+GuesserOnStartMeetingInfoCanShot,I have {0} rounds of ammunition left...,残りの弾薬は{0}発だ...
+GuesserOnStartMeetingInfoCannotShot,Alright, let's make a guess. Oh dear, it seems we're out of ammo..,さて、推測を。おや、弾切れのようだ...。
+GuesserCommandUsage,Usage: /bt [Target color name] [Role name],使い方: /bt [対象の色名] [役職名]
+GuesserErrorNoneTarget,Target did not exist.,対象が存在しませんでした。
+GuesserErrorNoneRole,Role did not exist.,役職が存在しませんでした。
+GuesserErrorCannotShotCrew,You can't guess Crewmate role.,クルーメイト役職を打つことができません。
+GuesserErrorCannotShotCelebrity,Now You can't guess a Celebrity.,今はスターを打つことができません。
+GuesserErrorNoCount,There are no more guess count left!,もう回数が残っていません。
+GuesserErrorShotOnThisMeeting,You can't guess at this meeting.,もうこの会議では打つことができません。
+GuesserErrorTargetIsDead,The target is already dead.,対象は既に死亡しています。
+GuesserBigNewsTitle,<size=160%>Big News</size>,<size=160%>ビッグニュース</size>
+GuesserPlayerWasDead,{0} suddenly fainted...,{0}が突然倒れたようだ...,
 EvilGuesserName,Evil Guesser,イビルゲッサー,邪恶的赌怪,邪惡的賭怪
 EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポスター以外の陣営の役職を当てよう,刺杀其他玩家,刺殺其他玩家
 EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗ればあの世行き,赌博的本质就是疯狂,太過高調將會死於他人之手
@@ -1057,7 +1073,7 @@ AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=
 MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数,<color=#AFDFE4>梅林</color>的人數
 AssassinName,Assassin,アサシン,刺客,刺客
 AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利,找出<color=#AFDFE4>梅林</color>來獲得勝利
-AssassinSucsess,was Marlin.,はマーリンだった,是梅林,是梅林
+AssassinSuccess,was Marlin.,はマーリンだった,是梅林,是梅林
 AssassinFail,was not Marlin.,はマーリンではなかった,不是梅林,不是梅林
 MarlinName,Merine,マーリン,梅林,梅林
 MarlinTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。,不要被<color=#ff0000>刺客</color>發現。
@@ -1699,6 +1715,20 @@ MoiraDescription,This is a position for enjoyable tables that messes up the boar
 MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！,掌控命运！,命運掌握在我手中！
 MoiraAbilityLimit,Number of ability usage,能力使用数,技能最大使用次数,能力最大使用次數
 MoiraChangeVote,I'll switch my vote as well,投票も入れ替える,技能同时交换得票,同時交換得票
+MoiraSelection,Swap Selection,スワップ選択
+MoiraSelectionText,Swap two people by voting.\nPlease select two people to swap by voting.\n*You cannot select yourself.\n(You can select yourself by completing the vote as your own vote)\n*Skip to cancel the swap selection mode.\n*After selecting one person， you can also vote for yourself to cancel the swap selection mode.,交換する2人を投票によって\n選択してください\n※自分は選択できません\n（自分選択は自投票として投票完了）\n※スキップまたは1人を選択後、自投票で\n※スワップ選択モード解除
+MoiraSelectionCancel,Cancel Swap Selection,スワップ選択解除
+MoiraSelectionCancelText,Swap Selection mode has been canceled.,スワップ選択モードが解除されました
+MoiraSelectionBack,Release of swap target,スワップ対象解除
+MoiraSelectionBackText,The first person eligible for the swap has been removed.,スワップの対象1人目を解除しました
+MoiraSelectionEnd,Swap selection complete,スワップ選択完了
+MoiraSelectionEndText,Swap target selection is over.\nFate is twisting....\nIf fate is like this....What happens now?,スワップ対象の選択が終わりました\n運命が捻じ曲がる....\nこんな運命なら....どうなる?
+MoiraCommandUsage,Usage : /swap [color name of target 1] [color name of target 2],使い方 : /swap [対象1の色名] [対象2の色名]
+MoiraErrorVoteLimitOver,Not Swappable,スワップ不可
+MoiraErrorVoteLimitOverText,Swap has been used up and the ability cannot be activated.\nIf you vote for yourself， please go again.,スワップを使い切ったため、能力を発動できません\n自投票の場合は、もう1度行ってください
+MoiraErrorLimitOver,The swap has been used up and the ability cannot be activated.,スワップを使い切ったため、能力を発動できません
+MoiraErrorSamePerson,Because target 1 and target 2 are the same player，\nFailed to activate.,対象1と対象2が同じプレイヤーの為、\n発動できませんでした
+MoiraSwapText,,突然が体が歪む感覚が....\n\n何も起こらない....\nいや、何かは起きている\nそんな感覚を覚える\n\n対象1 : {0}\n対象2 : {1}
 ConjurerName,Conjurer,魔術師,大法师,魔導師
 ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ,用法术围歼敌人,包圍、然後消滅他們
 ConjurerDescription,By setting up and activating three magic circles，\nthis impostor can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。,大法师属于内鬼阵营，可以在地图上放置并激活三个魔法阵。\n大法师可以击杀处于魔法阵形成的三角形范围内的所有玩家。,魔導師能通過設置並啟動三個魔法陣，\n殺死所有在三角形範圍內的玩家。
@@ -1881,6 +1911,14 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
+PhosphorusName,Phosphorus,ホスフォラス
+PhosphorusTitle1,A ray of light in the darkness,この暗闇に一筋の光明を
+PhosphorusDescription,You can put lanterns.\nLanterns are activated next turn.\nLanterns are lighted when you use ability,マップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、使えるようになります。\n能力を使用すると、一定時間の間ランタンを中心に明るく照らされ、視界外であっても見えるようになります。
+PhosphorusPuttingLimit,Putting lantern limit,ランタンの設置可能数
+PhosphorusLightingCooltime,Lighting cooltime,点灯のクールタイム
+PhosphorusLightRange,Light range,ランタンの範囲
+PhosphorusPutButtonName,Put,設置
+PhosphorusLightingButtonName,Lighting,点灯
 BodyBuilderName,Bodybuilder,ボディビルダー,,健美達人
 BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！,,看看我美麗的曲線！
 BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！,,健美達人屬於船員陣營。\n健美達人的所有任務都是舉重任務。\n完成任務後，可以進行肌肉展示。\n肌肉秀對其他玩家可見。
@@ -1898,6 +1936,29 @@ OwlTransportButton,Transport,運搬,,搬運
 OwlHideDeadBodyButton,Hide,隠す,,隱藏
 OwlSpecialBlackoutButton,Special Blackout,特殊停電,,黑幕降臨
 Kill,Kill,キル,,擊殺
+BuskerName,Busker,バスカー
+BuskerTitle1,Did you think I was dead?　It was a magic trick!,死んだと思った？　手品でした～！
+BuskerDescription,Using the ability turns you into a corpse， allowing you to move around as a ghost.\nYou can't peek at roles， but you might be able to see things that are normally hidden?\nHowever，if the corpse is discovered or a meeting is called during the feigned death， you'll truly die， so be careful.\nLet's return to the living world before that happens.\nWhen you return， you'll revive at the place where you were moving as a ghost.\nOh， and don't forget to have fun and not lose sight of doing your tasks， okay?,能力を使用すると死体となり、幽霊となって移動することが出来るようになります。\n役職を盗み見ることは出来ませんが、普通だったら見られないものが見れるかも？\nただし、その死体を発見されたり、偽装死中に会議が呼ばれてしまうと本当に死んでしまうのでご注意を。\nそうなる前に現世に戻りましょう。\n戻った際は幽霊のときに移動していた先で復活します。\nそうそう、楽しくなってタスクをするのを忘れないようにね。
+BuskerPseudocideDurationOption,Duration of feigned death,死を偽装できる時間
+BuskerPseudocideButtonName,Feign death,偽装死
+BuskerRebornButtonName,Reborn,復活
+BuskerReallyDeadTimeText,Remain until really dead...,本当に死ぬまで残り...
+UbiquitousName,Ubiquitous,ユビキタス
+UbiquitousTitle1,My eyes exist everywhere.,私の目はどこにでも存在する
+UbiquitousDescription,You can call up a drone and control it.\nYou can switch between the drone and your own view and fly freely around the map.\nIt can also hack into nearby doors and open them.\nIn addition， the drone called on the map can land on the map after a turn， providing ubiquitous information about its surroundings.\nHowever， while operating the drone， you are defenseless. You cannot even perform tasks.\nDo not be caught off guard.,ドローンを呼び出し、操作することが出来ます。\nドローンと自身の視界を切り替え、自由にマップ内を飛び回ることが出来ます。\nまた、近くのドアをハッキングし、開けることも出来ます。\n更に、マップ上に呼び出したドローンは、ターンを挟むとマップ上に着陸し、周囲の情報をユビキタスに伝えます。\nただし、ドローンを操作している間、あなたは無防備です。タスクも出来ません。\nゆめゆめ油断することなかれ。
+UbiquitousCallCoolTimeOption,"Call" Cool Time,「呼び出す」のクールタイム
+UbiquitousOperationCoolTimeOption,"Operation" Cool Time,「操作」のクールタイム
+UbiquitousIsLimitOperableTimeOption,Limit the operable time,操作可能時間を制限するか
+UbiquitousOperableTimeOption,Operable time,操作可能時間
+UbiquitousDroneStayTurnOption,Number of turns the drone stays,ドローンが滞在するターン数
+UbiquitousFlyingSpeedOption,Flying speed,飛行速度
+UbiquitousDoorHackCoolTimeOption,"Door Hack" Cool Time,「ドアハック」のクールタイム
+UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲
+UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲
+UbiquitousOperationButton,Operation,操作
+UbiquitousCallButton,Call,呼び出す
+UbiquitousCallHomeButton,Call Home,呼び戻す
+UbiquitousDoorHackButton,Door Hack,ドアハック
 
 #NewRoleTranslation
 
@@ -1970,6 +2031,14 @@ CursedMedScanTaskText,Id : {0}Player{1}        Stature : 0b11Feet 0b110Inch\nPla
 CursedSampleTaskUpperText1,Samples are beginning to deteriorate,サンプルが劣化し始めています,样品开始变质,樣本開始劣化
 CursedSampleTaskUpperText2,The sample has completely deteriorated,サンプルが完全劣化してしましました,样品完全变质,樣本完全劣化
 CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1}),破坏 : ({0}/{1}),已破壞 : ({0}/{1})
+
+# AntiBlackOutMessages
+AntiBlackOutChatTitle,[Blackout Information],【暗転対策情報】
+AntiBlackOutFirstDead,o avoid triggering a screen blackout， if a player is exiled before death， no one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、死亡者が発生するまでに追放された場合は表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。
+AllExileWillDobuleVoted,To avoid triggering a screen blackout， not one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、追放はは表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。
+AntiBlackOutOnlyDesyncImpostorDead,You were the "DesyncImpostor" role， a type of Mod role. This means that even if there were impostors ejected， it would still say "No Impostors Remain." However， they would still be ejected from the game.Real exiled player is {0}.,あなたは「DesyncImpostor」というタイプのMod役職だったため、追放者がいる場合でも追放者がいないと表示されます。なお、実際には追放されます。\n実際に追放されたプレイヤー：{0}
+AntiBlackOutAliveCanViewDeadPlayerChat,Due to the effects of the screen blackout countermeasure， if you chat， your chat will also be displayed to the survivors.\nPlease refrain from chatting.,今からは、画面の暗転の対策の影響によりあなたがチャットを行った場合に生存者にも表示されてしまいます。\nチャットしないようにしてください。
+AntiBlackOutEndAliveCanViewDeadPlayerChat,Chat is no longer shown to alive players.\nYou can chat with them!,チャットは生存者に表示されなくなりました。\nチャットしても大丈夫！
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！

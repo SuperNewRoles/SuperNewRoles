@@ -1,6 +1,7 @@
 using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
+using Il2CppInterop.Generator.Extensions;
 using InnerNet;
 using Steamworks;
 using SuperNewRoles.Mode;
@@ -75,6 +76,26 @@ public static class RPCHelper
         writer.Write(Open);
         writer.EndRPC();
     }
+    public static void RpcSetNamePrivate(this PlayerControl TargetPlayer, CustomRpcSender sender, string NewName, PlayerControl SeePlayer = null)
+    {
+        if (sender == null)
+        {
+            TargetPlayer.RpcSetNamePrivate(NewName, SeePlayer);
+            return;
+        }
+        if (TargetPlayer == null || NewName == null || !AmongUsClient.Instance.AmHost) return;
+        if (SeePlayer == null) SeePlayer = TargetPlayer;
+        if (SeePlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        {
+            TargetPlayer.SetName(NewName);
+            return;
+        }
+        var clientId = SeePlayer.GetClientId();
+        sender.AutoStartRpc(TargetPlayer.NetId, (byte)RpcCalls.SetName, clientId)
+            .Write(TargetPlayer.Data.NetId)
+            .Write(NewName)
+            .EndRpc();
+    }
     /// <summary>
     /// 特定のプレイヤーから見て、特定のプレイヤーの名前を変更する関数
     /// </summary>
@@ -95,6 +116,89 @@ public static class RPCHelper
         writer.Write(TargetPlayer.Data.NetId);
         writer.Write(NewName);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static CustomRpcSender RpcSetColor(this CustomRpcSender sender, PlayerControl target, byte color, int seer = -1)
+    {
+        sender.AutoStartRpc(target.NetId, (byte)RpcCalls.SetColor, seer)
+            .Write(target.Data.NetId)
+            .Write(color)
+            .EndRpc();
+        if (seer < 0)
+            target.SetColor(color);
+        return sender;
+    }
+    public static CustomRpcSender RpcSetHat(this CustomRpcSender sender, PlayerControl player, string hatId, int seer = -1)
+    {
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetHatStr, seer)
+            .Write(hatId)
+            .Write(player.GetNextRpcSequenceId(RpcCalls.SetHatStr))
+            .EndRpc();
+        if (seer < 0)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetHat(hatId, valueOrDefault);
+        }
+        return sender;
+    }
+    public static CustomRpcSender RpcSetVisor(this CustomRpcSender sender, PlayerControl player, string visorId, int seer = -1)
+    {
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetVisorStr, seer)
+            .Write(visorId)
+            .Write(player.GetNextRpcSequenceId(RpcCalls.SetVisorStr))
+            .EndRpc();
+        if (seer < 0)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetVisor(visorId, valueOrDefault);
+        }
+        return sender;
+    }
+    public static CustomRpcSender RpcSetSkin(this CustomRpcSender sender, PlayerControl player, string skinId, int seer = -1)
+    {
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetSkinStr, seer)
+            .Write(skinId)
+            .Write(player.GetNextRpcSequenceId(RpcCalls.SetSkinStr))
+            .EndRpc();
+        if (seer < 0)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetSkin(skinId, valueOrDefault);
+        }
+        return sender;
+    }
+    public static CustomRpcSender RpcSetPet(this CustomRpcSender sender, PlayerControl player, string petId, int seer = -1)
+    {
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetPetStr, seer)
+            .Write(petId)
+            .Write(player.GetNextRpcSequenceId(RpcCalls.SetPetStr))
+            .EndRpc();
+        if (seer < 0)
+            player.SetPet(petId);
+        return sender;
+    }
+
+    public static void RpcVotingCompleteDesync(VoterState[] states, NetworkedPlayerInfo exiled, bool tie, PlayerControl seer)
+    {
+        if (MeetingHud.Instance == null)
+            throw new System.Exception("MeetingHud.Instance is null");
+        if (seer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            Instance.VotingComplete(states, exiled, tie);
+        else
+        {
+            Logger.Info("Desync Send Now ->"+seer.GetClientId().ToString());
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(Instance.NetId, (byte)RpcCalls.VotingComplete, SendOption.Reliable, targetClientId: seer.GetClientId());
+            val.WritePacked(states.Length);
+            foreach (VoterState voterState in states)
+            {
+                voterState.Serialize(val);
+            }
+            if (exiled == null)
+                val.Write(byte.MaxValue);
+            else
+                val.Write(exiled.PlayerId);
+            val.Write(tie);
+            AmongUsClient.Instance.FinishRpcImmediately(val);
+        }
     }
 
     public static void RpcSnapTo(this PlayerControl __instance, Vector2 position, PlayerControl seer = null)
@@ -165,7 +269,7 @@ public static class RPCHelper
         writer.StartMessage(1); //0x01 Data
         {
             writer.WritePacked(Instance.NetId);
-            Instance.Serialize(writer, true);
+            Instance.Serialize(writer, false);
 
         }
         writer.EndMessage();
@@ -174,10 +278,8 @@ public static class RPCHelper
         AmongUsClient.Instance.SendOrDisconnect(writer);
         writer.Recycle();
     }
-    public static void RpcSyncGameData(int TargetClientId = -1)
+    public static void RpcSyncNetworkedPlayer(NetworkedPlayerInfo playerInfo, int TargetClientId = -1)
     {
-        throw new System.NotImplementedException("RpcSyncGameData is FIXME");
-        /*
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
@@ -196,16 +298,104 @@ public static class RPCHelper
         }
         writer.StartMessage(1); //0x01 Data
         {
-            writer.WritePacked(GameData.Instance.NetId);
+            writer.WritePacked(playerInfo.NetId);
             GameDataSerializePatch.Is = true;
-            GameData.Instance.Serialize(writer, true);
+            playerInfo.Serialize(writer, false);
+            GameDataSerializePatch.Is = false;
 
         }
         writer.EndMessage();
         writer.EndMessage();
 
         AmongUsClient.Instance.SendOrDisconnect(writer);
-        writer.Recycle();*/
+        writer.Recycle();
+    }
+    public static void RpcSyncNetworkedPlayer(CustomRpcSender sender, NetworkedPlayerInfo playerInfo, int TargetClientId = -1)
+    {
+        if (sender == null)
+        {
+            RpcSyncNetworkedPlayer(playerInfo, TargetClientId);
+            return;
+        }
+        sender.StartMessage(TargetClientId);
+
+        sender.Write((writer) =>
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(playerInfo.NetId);
+                playerInfo.Serialize(writer, false);
+            }
+            writer.EndMessage();
+        });
+        sender.EndMessage();
+    }
+    public static void RpcSetTasks(CustomRpcSender sender, NetworkedPlayerInfo player, byte[] tasks, int TargetClientId = -1)
+    {
+        if (sender == null)
+        {
+            throw new System.NotImplementedException("RpcSetTask sender");
+        }
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetTasks, TargetClientId);
+        sender.WriteBytesAndSize(tasks);
+        sender.EndRpc();
+        if (TargetClientId < 0)
+            player.SetTasks(tasks);
+    }
+    public static void RpcSyncAllNetworkedPlayer(CustomRpcSender sender, int TargetClientId = -1)
+    {
+        if (sender == null)
+        {
+            RpcSyncAllNetworkedPlayer(TargetClientId);
+            return;
+        }
+        sender.StartMessage(TargetClientId);
+        sender.Write((writer) =>
+        {
+            GameDataSerializePatch.Is = true;
+            foreach (var player in GameData.Instance.AllPlayers)
+            {
+                writer.StartMessage(1); //0x01 Data
+                {
+                    writer.WritePacked(player.NetId);
+                    player.Serialize(writer, false);
+                }
+                writer.EndMessage();
+            }
+            GameDataSerializePatch.Is = false;
+        });
+        sender.EndMessage();
+    }
+    public static void RpcSyncAllNetworkedPlayer(int TargetClientId = -1)
+    {
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        if (TargetClientId < 0)
+        {
+            writer.StartMessage(5);
+            writer.Write(AmongUsClient.Instance.GameId);
+        }
+        else
+        {
+            writer.StartMessage(6);
+            writer.Write(AmongUsClient.Instance.GameId);
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            writer.WritePacked(TargetClientId);
+        }
+        GameDataSerializePatch.Is = true;
+        foreach (var player in GameData.Instance.AllPlayers)
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(player.NetId);
+                player.Serialize(writer, false);
+            }
+            writer.EndMessage();
+        }
+        GameDataSerializePatch.Is = false;
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
     }
     public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1, SendOption sendOption = SendOption.Reliable)
     {
@@ -239,6 +429,27 @@ public static class RPCHelper
 
         AmongUsClient.Instance.SendOrDisconnect(writer);
         writer.Recycle();
+    }
+    public static void RpcSyncOption(this IGameOptions gameOptions, CustomRpcSender sender, int TargetClientId = -1)
+    {
+        if (sender == null)
+        {
+            RpcSyncOption(gameOptions, TargetClientId);
+            return;
+        }
+        sender.StartMessage(TargetClientId);
+        sender.Write((writer) =>
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(NormalGameManager.Instance.NetId);
+                writer.StartMessage(4);
+                writer.WriteBytesAndSize(NormalGameManager.Instance.LogicOptions.gameOptionsFactory.ToBytes(gameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn));
+                writer.EndMessage();
+            }
+            writer.EndMessage();
+        });
+        sender.EndMessage();
     }
     public static void RpcProtectPlayerPrivate(this PlayerControl SourcePlayer, PlayerControl target, int colorId, PlayerControl SeePlayer = null)
     {
@@ -315,7 +526,6 @@ public static class RPCHelper
         messageWriter.Write(skinId);
         messageWriter.EndRPC();
     }
-
     public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, NetworkedPlayerInfo exiled, bool tie, PlayerControl SeePlayer)
     {
         MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 23, SendOption.None, SeePlayer.GetClientId());
@@ -371,7 +581,17 @@ public static class RPCHelper
         target.SetRoleRPC(Id);
         Logger.Info($"[{target.GetDefaultName()}] の役職を [{Id}] に変更しました。");
     }
-    public static void RpcResetAbilityCooldown(this PlayerControl target)
+    public static CustomRpcSender RpcShapeshift(this CustomRpcSender sender, PlayerControl player, PlayerControl target, bool shouldAnimate, int seer = -1)
+    {
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.Shapeshift, seer)
+            .WriteNetObject(target)
+            .Write(shouldAnimate)
+            .EndRpc();
+        if (seer < 0)
+            player.Shapeshift(target, shouldAnimate);
+        return sender;
+    }
+    public static void RpcResetAbilityCooldown(this PlayerControl target, CustomRpcSender sender = null)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (PlayerControl.LocalPlayer.PlayerId == target.PlayerId)
@@ -380,7 +600,7 @@ public static class RPCHelper
         }
         else
         {
-            MurderHelpers.RpcForceGuard(target, target, target);
+            MurderHelpers.RpcForceGuard(target, target, target, sender);
         }
     }
 

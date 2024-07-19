@@ -116,6 +116,54 @@ static class PlayerControlSetCooldownPatch
     }
 }
 
+#region ファントム
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckVanish))]
+public static class PlayerControlCheckVanishPatch
+{
+    public static bool Prefix(PlayerControl __instance)
+    {
+        bool result = CustomRoles.OnCheckVanish(__instance);
+        if (result)
+            return true;
+            __instance.RpcAppear(true);
+            new LateTask(() => __instance.HandleServerAppear(true),0f);
+        return true;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CheckAppear))]
+public static class PlayerControlCheckAppearPatch
+{
+    public static bool Prefix(PlayerControl __instance, bool shouldAnimate)
+        => CustomRoles.OnCheckAppear(__instance, shouldAnimate);
+}
+[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CmdCheckVanish))]
+public static class PlayerControlCmdCheckVanishPatch
+{
+    public static bool Prefix(PlayerControl __instance)
+    {
+        if (AmongUsClient.Instance.AmModdedHost || AmongUsClient.Instance.AmLocalHost)
+        {
+            __instance.CheckVanish();
+            return false;
+        }
+        return true;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CmdCheckAppear))]
+public static class PlayerControlCmdCheckAppearPatch
+{
+    public static bool Prefix(PlayerControl __instance, bool shouldAnimate)
+    {
+        if (AmongUsClient.Instance.AmModdedHost || AmongUsClient.Instance.AmLocalHost)
+        {
+            __instance.CheckAppear(shouldAnimate);
+            return false;
+        }
+        return true;
+    }
+}
+#endregion
+
 [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
 public static class SwitchMinigameBeginPatch
 {
@@ -281,7 +329,7 @@ class PlayerControlTryPetPatch
 class ReportDeadBodyPatch
 {
     /// <summary>
-    /// 会議が開かれた回数を記録する
+    /// 会議が開かれた回数を記録する(ReportDeadBodyでカウントしているが, RPCを飛ばしている為 ゲストに共有されている)
     /// </summary>
     /// <param name="allTurn">全体会議回数</param>
     /// <param name="emergency">緊急招集による会議回数</param>
@@ -327,7 +375,7 @@ class ReportDeadBodyPatch
             {
                 bool isGetRole = (float)(DeadPlayer.ActualDeathTime[target.PlayerId].DeathTime + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
                 bool isGetLightAndDarker = (float)(DeadPlayer.ActualDeathTime[target.PlayerId].DeathTime + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
-                string firstPerson = IsSucsessChance(9) ? ModTranslation.GetString("DyingMessengerFirstPerson1") : ModTranslation.GetString("DyingMessengerFirstPerson2");
+                string firstPerson = IsSuccessChance(9) ? ModTranslation.GetString("DyingMessengerFirstPerson1") : ModTranslation.GetString("DyingMessengerFirstPerson2");
                 if (isGetRole)
                 {
                     string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), firstPerson, ModTranslation.GetString($"{DeadPlayer.ActualDeathTime[target.PlayerId].Killer.GetRole()}Name"));
@@ -358,7 +406,7 @@ class ReportDeadBodyPatch
                 OrientalShaman.IsTransformation = false;
             }
         }
-        if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
+        /* if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -371,7 +419,7 @@ class ReportDeadBodyPatch
                     SyncSetting.CustomSyncSettings(player);
                 }
             }
-        }
+        }*/
         return RoleClass.Assassin.TriggerPlayer == null
         && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
         && (Mode.PlusMode.PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting || target != null)
@@ -389,6 +437,7 @@ class ReportDeadBodyPatch
 
         var targetId = target != null ? target.Object.PlayerId : byte.MaxValue;
 
+        // ゲストに通報対象を送信し, ターン情報を共有する
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SendMeetingCount);
         writer.Write(targetId);
         writer.EndRPC();
@@ -399,14 +448,16 @@ class ReportDeadBodyPatch
         PoliceSurgeon_AddActualDeathTime.ReportDeadBody_Postfix();
     }
 
+    /// <summary>通報対象の情報を元に, 会議情報を記録する</summary>
+    /// <param name="targetId">通報対象のプレイヤーId</param>
     public static void SaveMeetingCount(byte targetId)
     {
         var target = PlayerById(targetId);
         var count = MeetingCount;
 
         count.all++;
-        if (target == null) count.emergency++;
-        else count.report++;
+        if (target == null) count.emergency++; // 通報対象がnullなら緊急招集として記録する
+        else count.report++; // 通報対象が存在するなら通報として記録する
 
         MeetingCount = count;
     }

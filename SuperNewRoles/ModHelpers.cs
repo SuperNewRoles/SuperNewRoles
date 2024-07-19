@@ -25,6 +25,7 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles;
 
@@ -516,6 +517,13 @@ public static class ModHelpers
             r.color = new Color(r.color.r, r.color.g, r.color.b, alpha);
         player.cosmetics.nameText.color = new Color(player.cosmetics.nameText.color.r, player.cosmetics.nameText.color.g, player.cosmetics.nameText.color.b, alpha);
     }
+    public static void HideChildren(Transform transform)
+    {
+        if (transform == null)
+            return;
+        for (int i = 0; i < transform.childCount; i++)
+            transform.GetChild(i).gameObject.SetActive(false);
+    }
 
     public static Console ActivateConsole(Transform trf) => ActivateConsole(trf.gameObject);
 
@@ -814,13 +822,13 @@ public static class ModHelpers
         var client = player.GetClient();
         return client == null ? -1 : client.Id;
     }
-    public static bool IsSucsessChance(int SucsessChance, int MaxChance = 10)
+    public static bool IsSuccessChance(int SuccessChance, int MaxChance = 10)
     {
         //成功確率が0%ならfalseを返す
-        if (SucsessChance == 0) return false;
+        if (SuccessChance == 0) return false;
         //成功確率が最大と一緒かそれ以上ならtrueを返す
-        if (SucsessChance >= MaxChance) return true;
-        return UnityEngine.Random.Range(0, MaxChance) <= SucsessChance;
+        if (SuccessChance >= MaxChance) return true;
+        return UnityEngine.Random.Range(0, MaxChance) <= SuccessChance;
     }
     /// <summary>
     /// ランダムを取得します。max = 10だと0～10まで取得できます
@@ -944,7 +952,12 @@ public static class ModHelpers
 
     public static string Cs(Color c, string s)
     {
-        return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
+        return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
+    }
+    public static byte ToByte(float f)
+    {
+        f = Mathf.Clamp01(f);
+        return (byte)(f * 255);
     }
     public static T GetRandom<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
@@ -1052,6 +1065,7 @@ public static class ModHelpers
         return component != null ? component : obj.AddComponent<T>();
     }
     internal static Dictionary<byte, PlayerControl> IdControlDic = new(); // ClearAndReloadで初期化されます
+    internal static Dictionary<string, PlayerControl> ColorControlDic = new(); // ClearAndReloadで初期化されます
     internal static Dictionary<int, Vent> VentIdControlDic = new(); // ClearAndReloadで初期化されます
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
     public static PlayerControl PlayerById(byte id)
@@ -1068,6 +1082,21 @@ public static class ModHelpers
         Logger.Error($"idと合致するPlayerIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
     }
+    public static PlayerControl GetPlayerControl(this string id) => PlayerByColor(id);
+    public static PlayerControl PlayerByColor(string color_name)
+    {
+        if (ColorControlDic.TryGetValue(color_name, out PlayerControl player)) return player;
+        foreach (PlayerControl check in PlayerControl.AllPlayerControls)
+        {
+            if (color_name == check.Data.GetPlayerColorString())
+            {
+                ColorControlDic[color_name] = check;
+                return check;
+            }
+        }
+        Logger.Error($"カラーと合致するPlayerが見つかりませんでした。nullを返却します。color:{color_name}", "ModHelpers");
+        return null;
+    }
     public static Vent VentById(byte id)
     {
         if (!VentIdControlDic.ContainsKey(id))
@@ -1081,6 +1110,17 @@ public static class ModHelpers
         if (VentIdControlDic.ContainsKey(id)) return VentIdControlDic[id];
         Logger.Error($"idと合致するVentIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
+    }
+
+    private static Dictionary<ushort, bool> IsImpostorRoleCached = new();
+    public static bool IsImpostorRole(this RoleTypes roleTypes)
+    {
+        if (IsImpostorRoleCached.TryGetValue((ushort)roleTypes, out bool value))
+            return value;
+        RoleBehaviour role = FastDestroyableSingleton<RoleManager>.Instance.GetRole(roleTypes);
+        if (role == null)
+            throw new NotImplementedException($"Not found roletypes: {roleTypes}");
+        return IsImpostorRoleCached[(ushort)roleTypes] = role.IsImpostor;
     }
 
     public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)

@@ -1,5 +1,8 @@
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Roles;
@@ -34,13 +37,51 @@ class ReportDeadBody
         //if (RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) return true;
         if (__instance.IsRole(RoleId.Minimalist))
         {
-            var a = RoleClass.Minimalist.UseReport;
-            return a;
+            return RoleClass.Minimalist.UseReport;
         }
         if (__instance.IsRole(RoleId.Fox))
         {
-            var a = RoleClass.Fox.UseReport;
-            return a;
+            return RoleClass.Fox.UseReport;
+        }
+        if (__instance.IsRole(RoleId.Amnesiac) &&
+            target != null &&
+            !target.Disconnected &&
+            target.Object)
+        {
+            RoleTypes? DesyncRoleTypes = RoleSelectHandler.GetDesyncRole(target.Object);
+            RoleTypes SyncRoleTypes = target.RoleWhenAlive == null ? target.Role.Role : target.RoleWhenAlive.Value;
+            CustomRpcSender sender = CustomRpcSender.Create("ReportDeadBodyPatch", SendOption.Reliable);
+            if (DesyncRoleTypes.HasValue)
+            {
+                sender.RpcSetRole(__instance, __instance.IsMod() ? RoleTypes.Crewmate : RoleTypes.Engineer, true);
+                if (!__instance.IsMod())
+                {
+                    __instance.RpcSetRoleDesync(sender, DesyncRoleTypes.Value, true);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.PlayerId != __instance.PlayerId)
+                            sender.RpcSetRole(player, RoleTypes.Scientist, true, __instance.GetClientId());
+                    }
+                }
+                __instance.SetRole(RoleTypes.Crewmate, true);
+            }
+            else if (SyncRoleTypes.IsImpostorRole())
+            {
+                sender.RpcSetRole(__instance, RoleTypes.Tracker, true);
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+                        (player.IsImpostor() || player.PlayerId == __instance.PlayerId))
+                        sender.RpcSetRole(__instance, SyncRoleTypes, true, player.GetClientId());
+                }
+                __instance.SetRole(SyncRoleTypes, true);
+            }
+            else
+                __instance.RpcSetRole(target.RoleWhenAlive == null ? target.Role.Role : target.RoleWhenAlive.Value, true);
+            __instance.SwapRoleRPC(target.Object);
+            target.Object.SetRoleRPC(__instance.GetRole());
+            ChangeName.SetRoleName(__instance, sender:sender);
+            sender.SendMessage();
         }
         //if (target.Object.IsRole(RoleId.Bait) && (!deadPlayer.killerIfExisting.IsRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }
 

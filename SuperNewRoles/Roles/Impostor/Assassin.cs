@@ -59,7 +59,7 @@ public static class Assassin
                             exileplayer = p.Data;
                             exile = p;
                             p.RpcSetColor((byte)outfit.ColorId);
-                            p.RpcSetName(target.Object.GetDefaultName() + (target.Object.IsRole(RoleId.Marlin) ? ModTranslation.GetString("AssassinSucsess") : ModTranslation.GetString("AssassinFail")) + "<size=0%>");
+                            p.RpcSetName(target.Object.GetDefaultName() + (target.Object.IsRole(RoleId.Marlin) ? ModTranslation.GetString("AssassinSuccess") : ModTranslation.GetString("AssassinFail")) + "<size=0%>");
                             p.RpcSetHat(outfit.HatId);
                             p.RpcSetVisor(outfit.VisorId);
                             p.RpcSetSkin(outfit.SkinId);
