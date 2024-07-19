@@ -150,18 +150,12 @@ public class CustomButton
         }
     }
 
-    public void SetActive(bool isActive)
+    private void SetActive(bool isActive)
     {
-        if (isActive)
-        {
-            actionButton.gameObject.SetActive(true);
-            actionButton.graphic.enabled = true;
-        }
-        else
-        {
-            actionButton.gameObject.SetActive(false);
-            actionButton.graphic.enabled = false;
-        }
+        if (isActive == actionButton.gameObject.active) return;
+        
+        actionButton.gameObject.SetActive(isActive);
+        actionButton.graphic.enabled = isActive;
     }
 
     /// <summary>
