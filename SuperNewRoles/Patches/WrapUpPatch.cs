@@ -12,6 +12,7 @@ using SuperNewRoles.MapCustoms;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -100,6 +101,9 @@ class WrapUpPatch
             exiled = null;
         }
         RoleClass.IsCoolTimeSetted = false;
+        AntiBlackOut.OnWrapUp();
+        if (AntiBlackOut.RealExiled != null)
+            exiled = AntiBlackOut.RealExiled;
         FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
         if (ModeHandler.IsMode(ModeId.Default))
         {
@@ -137,6 +141,9 @@ class WrapUpPatch
         {
             ReplayLoader.OnWrapUp();
         }
+
+        if (AntiBlackOut.RealExiled != null)
+            exiled = AntiBlackOut.RealExiled;
 
         // |:========== 追放の有無問わず 会議終了時に行う処理 開始 ==========:|
         SelectRoleSystem.OnWrapUp();
@@ -186,7 +193,6 @@ class WrapUpPatch
         Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
-        Moira.WrapUp(exiled);
         WellBehaver.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {

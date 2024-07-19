@@ -39,7 +39,7 @@ public static class FixedUpdate
             }
         }
         else if
-            ((playerSHR is IKiller &&
+            ((playerSHR != null && playerSHR.HasKillButtonClient &&
             !PlayerControl.LocalPlayer.IsImpostor())
             ||
             PlayerControl.LocalPlayer.IsRole

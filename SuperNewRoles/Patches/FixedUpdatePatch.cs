@@ -205,9 +205,6 @@ public class FixedUpdate
                         case RoleId.Doppelganger:
                             Doppelganger.FixedUpdate();
                             break;
-                        case RoleId.Pavlovsowner:
-                            Pavlovsdogs.OwnerFixedUpdate();
-                            break;
                         case RoleId.WaveCannonJackal:
                             JackalSeer.JackalSeerFixedPatch.JackalSeerPlayerOutLineTarget();
                             break;

@@ -14,8 +14,21 @@ public static class Helpers
             player.RpcSetRoleDesync(role, p);
         }
     }
+    public static void ResetToCrewAndSetRole(this PlayerControl player, RoleTypes role, bool isNotModOnly = true)
+    {
+        CustomRpcSender sender = CustomRpcSender.Create("ResetToCrewAndSetRole", sendOption:SendOption.Reliable);
+        sender.RpcSetRole(player, RoleTypes.Tracker, true);
+        if (!(player.IsMod() && isNotModOnly))
+        {
+            if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                sender.RpcSetRole(player, role, true, player.GetClientId());
+            else
+                player.SetRole(role, true);
+        }
+        sender.SendMessage();
+    }
     //TownOfHostより！！
-    public static void RpcSetRoleDesync(this PlayerControl player, RoleTypes role, PlayerControl seer = null)
+    public static void RpcSetRoleDesync(this PlayerControl player, RoleTypes role, bool canOverride, PlayerControl seer = null)
     {
         //player: 名前の変更対象
         //seer: 上の変更を確認することができるプレイヤー
@@ -25,9 +38,10 @@ public static class Helpers
         var clientId = seer.GetClientId();
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable, clientId);
         writer.Write((ushort)role);
+        writer.Write(canOverride);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
-    public static void RpcSetRoleDesync(this PlayerControl player, CustomRpcSender sender, RoleTypes role, PlayerControl seer = null)
+    public static void RpcSetRoleDesync(this PlayerControl player, CustomRpcSender sender, RoleTypes role, bool canOverride, PlayerControl seer = null)
     {
         //player: 名前の変更対象
         //seer: 上の変更を確認することができるプレイヤー
@@ -35,11 +49,10 @@ public static class Helpers
         if (seer == null) seer = player;
         var clientId = seer.GetClientId();
         SuperNewRolesPlugin.Logger.LogInfo("(Desync => " + seer.Data.PlayerName + " ) " + player.Data.PlayerName + " => " + role);
-        sender.StartMessage(clientId)
-            .StartRpc(player.NetId, RpcCalls.SetRole)
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetRole)
             .Write((ushort)role)
-            .EndRpc()
-            .EndMessage();
+            .Write(canOverride)
+            .EndRpc();
     }
     public static void RpcSetRole(this PlayerControl player, CustomRpcSender sender, RoleTypes role)
     {
@@ -53,7 +66,7 @@ public static class Helpers
 
     /// <summary>
     /// 守護ガードのエフェクトを表示する。
-    /// showerのキルクール及び守護クールのリセットも行う。
+    /// showerのキルクール及びアビリティクールのリセットも行う。
     /// </summary>
     /// <param name="shower">エフェクトを見れる人</param>
     /// <param name="target">エフェクトをかける人</param>
@@ -70,10 +83,19 @@ public static class Helpers
         }
         else
         {
-            var crs = CustomRpcSender.Create("RpcShowGuardEffect");
             var clientId = shower.GetClientId();
             Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
-            MurderHelpers.RpcForceGuard(shower, target, shower);
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                SyncSetting.CustomSyncSettings(target, isCooldownTwice: true);
+            }
+            new LateTask(() =>
+            {
+                MurderHelpers.RpcForceMurderAndGuard(shower, target, shower);
+                MurderHelpers.RpcForceGuard(shower, target, shower);
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    new LateTask(() => SyncSetting.CustomSyncSettings(target), 0.1f);
+            }, 0.1f);
         }
     }
     /// <summary>
@@ -115,6 +137,48 @@ public static class Helpers
                 MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
                 SabotageFixWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
+                SabotageFixWriter.Write((byte)17);
+                AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
+            }, 0.1f + duration, "Fix Desync Reactor 2");
+    }
+    /// <summary>
+    /// リアクターのフラッシュを全員に見せる
+    /// </summary>
+    /// <param name="shower">見る人</param>
+    /// <param name="duration">継続時間</param>
+    public static void ShowReactorFlash(float duration = 0f)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        byte reactorId = (byte)SystemTypes.Reactor;
+        MapNames mapName = (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId;
+
+        if (mapName == MapNames.Polus) reactorId = (byte)SystemTypes.Laboratory;
+        else if (mapName == MapNames.Airship) reactorId = (byte)SystemTypes.HeliSabotage;
+
+        // ReactorサボをDesyncで発動
+        SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
+        MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable);
+        SabotageWriter.Write(reactorId);
+        MessageExtensions.WriteNetObject(SabotageWriter, PlayerControl.LocalPlayer);
+        SabotageWriter.Write((byte)128);
+        AmongUsClient.Instance.FinishRpcImmediately(SabotageWriter);
+
+        new LateTask(() =>
+        { // Reactorサボを修理
+            MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable);
+            SabotageFixWriter.Write(reactorId);
+            MessageExtensions.WriteNetObject(SabotageFixWriter, PlayerControl.LocalPlayer);
+            SabotageFixWriter.Write((byte)16);
+            AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
+        }, 0.1f + duration, "Fix Desync Reactor");
+
+        if (mapName == MapNames.Airship) //Airship用
+            new LateTask(() =>
+            { // Reactorサボを修理
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable);
+                SabotageFixWriter.Write(reactorId);
+                MessageExtensions.WriteNetObject(SabotageFixWriter, PlayerControl.LocalPlayer);
                 SabotageFixWriter.Write((byte)17);
                 AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
             }, 0.1f + duration, "Fix Desync Reactor 2");

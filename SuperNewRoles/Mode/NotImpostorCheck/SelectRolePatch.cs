@@ -21,7 +21,7 @@ class SelectRolePatch
             {
                 if (p.PlayerId != 0)
                 {
-                    p.RpcSetRoleDesync(RoleTypes.Impostor);//p.Data.Role.Role);
+                    p.RpcSetRoleDesync(RoleTypes.Impostor, false);//p.Data.Role.Role);
                     foreach (var pc in CachedPlayer.AllPlayers)
                     {
                         if (Main.Impostors.Contains(pc.PlayerId))

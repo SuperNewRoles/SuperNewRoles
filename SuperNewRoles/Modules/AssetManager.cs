@@ -51,10 +51,11 @@ public static class AssetManager
 
                 BundleStream.Dispose();
                 Logger.Info($"Loaded AssetBundle:" + data.Item1.ToString());
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
-                Logger.Error($"Failed to load AssetBundle:" + data.Item1.ToString(),"LoadAssetBundle");
-                Logger.Error(e.ToString(),"LoadAssetBundle");
+                Logger.Error($"Failed to load AssetBundle:" + data.Item1.ToString(), "LoadAssetBundle");
+                Logger.Error(e.ToString(), "LoadAssetBundle");
             }
         }
         Logger.Info("-------End LoadAssetBundle-------");
@@ -73,7 +74,7 @@ public static class AssetManager
             return null;
         //キャッシュにあるならそれを返す
         Il2CppSystem.Type il2CppType = Il2CppType.Of<T>();
-        if (_data.TryGetValue(path+il2CppType.ToString(), out UnityEngine.Object result))
+        if (_data.TryGetValue(path + il2CppType.ToString(), out UnityEngine.Object result))
             return result.TryCast<T>();
         //読み込む
         T rs = Bundles[(byte)assetBundleType]

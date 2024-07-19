@@ -21,10 +21,12 @@ public class NiceGuesser : GuesserBase, ICrewmate
         TeamType.Crewmate
         );
     public static new OptionInfo Optioninfo =
-        new(RoleId.NiceGuesser, 400400, false,
+        new(RoleId.NiceGuesser, 400400, true,
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.NiceGuesser, introSound: RoleTypes.Impostor);
+
+    public override RoleTypes RealRole => RoleTypes.Crewmate;
 
     public static CustomOption ShotOneMeetingCount;
     public static CustomOption ShotMaxCount;
@@ -34,12 +36,12 @@ public class NiceGuesser : GuesserBase, ICrewmate
     public static CustomOption BecomeShotCelebrityTurn;
     private static void CreateOption()
     {
-        ShotMaxCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, Optioninfo.RoleOption);
-        ShotOneMeetingCount = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, Optioninfo.RoleOption);
-        CannotShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserCannotCrewShotSetting", false, Optioninfo.RoleOption);
-        CannotShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserCannotCelebrityShotSetting", false, Optioninfo.RoleOption);
-        BecomeShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserBecomeShotCelebritySetting", true, CannotShotCelebrityOption);
-        BecomeShotCelebrityTurn = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "EvilGuesserBecomeShotCelebrityTurnSetting", 3f, 1f, 15f, 1f, BecomeShotCelebrityOption);
+        ShotMaxCount = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, Optioninfo.RoleOption);
+        ShotOneMeetingCount = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, Optioninfo.RoleOption);
+        CannotShotCrewOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserCannotCrewShotSetting", false, Optioninfo.RoleOption);
+        CannotShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserCannotCelebrityShotSetting", false, Optioninfo.RoleOption);
+        BecomeShotCelebrityOption = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserBecomeShotCelebritySetting", true, CannotShotCelebrityOption);
+        BecomeShotCelebrityTurn = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, CustomOptionType.Crewmate, "EvilGuesserBecomeShotCelebrityTurnSetting", 3f, 1f, 15f, 1f, BecomeShotCelebrityOption);
     }
     public NiceGuesser(PlayerControl p) : base(ShotMaxCount.GetInt(), ShotOneMeetingCount.GetBool(), CannotShotCrewOption.GetBool(), CannotShotCelebrityOption.GetBool(), BecomeShotCelebrityOption.GetBool(), BecomeShotCelebrityTurn.GetInt(), p, Roleinfo, Optioninfo, Introinfo)
     {
