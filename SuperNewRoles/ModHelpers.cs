@@ -1248,6 +1248,10 @@ public static class ModHelpers
     public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.ToList().Find(match);
     public static ReadOnlySpan<T> AsSpan<T>(this List<T> list) => CollectionsMarshal.AsSpan(list);
     public static ReadOnlySpan<T> AsSpan<T>(this IReadOnlyList<T> list) => (list as List<T>).AsSpan();
+    public static void SetActiveEx(this GameObject obj, bool value)
+    {
+        if (obj.active != value) obj.SetActive(value);
+    }
 }
 public static class CreateFlag
 {
