@@ -67,6 +67,7 @@ public enum RoleId
     SilverBullet,
     NiceScientist,
     NiceRedRidingHood,
+    Phosphorus,
     BodyBuilder,
     Ubiquitous,
 
