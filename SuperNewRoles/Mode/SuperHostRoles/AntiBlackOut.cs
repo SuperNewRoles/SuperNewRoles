@@ -200,7 +200,8 @@ public static class AntiBlackOut
                     continue;
                 }
                 RoleTypes ToRoleTypes = (player.IsDead() && !gamePlayerData.IsDead) ?
-                         (player.Data.Role.DefaultGhostRole) :
+                         (gamePlayerData.roleTypes.IsImpostorRole() ?
+                          RoleTypes.ImpostorGhost : RoleTypes.CrewmateGhost) :
                          gamePlayerData.roleTypes;
                 ISupportSHR supportSHR = (ISupportSHR)player.GetRoleBase();
                 if (supportSHR != null && player.IsAlive() && !supportSHR.IsDesync && !supportSHR.RealRole.IsImpostorRole())
