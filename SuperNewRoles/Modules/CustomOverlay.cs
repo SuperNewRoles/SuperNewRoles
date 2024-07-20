@@ -679,10 +679,16 @@ public class CustomOverlays
         else friendCode = ModTranslation.GetString("NoFriendCode"); // クライアントデータやフレンドコードがない場合, フレンドコードがブランクだった場合
         if (DataManager.Settings.Gameplay.StreamerMode) friendCode = "**********#****"; // バニラ設定[配信者モード]が有効時フレンドコードを伏字風にする
 
+        // クルーカラーを取得
+        var canUse = Palette.PlayerColors.Length > p.Data.DefaultOutfit.ColorId; // 配列の範囲の確認
+        var bodyColor = canUse ? Palette.PlayerColors[p.Data.DefaultOutfit.ColorId] : Palette.PlayerColors[(int)CustomCosmetics.CustomColors.ColorType.Sunrise]; // Errorはサンライズ扱いに
+        var bodyColorName = canUse ? OutfitManager.GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId]) : "Load Error";
+
         // プレイヤー名とクルーカラーを■で表記
-        data += $"<size=150%>{p.PlayerId + 1}. {p.name}{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")}</size>\n";
+        data += $"<size=150%>{p.PlayerId + 1}. {p.name}{ModHelpers.Cs(bodyColor, "■")}</size>\n";
+
         // クルーカラーとカラー名を表記
-        data += $"<pos=10%>{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")} : {OutfitManager.GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId])}\n";
+        data += $"<pos=10%>{ModHelpers.Cs(bodyColor, "■")} : {bodyColorName}\n";
         data += $"<size=90%><pos=10%>{ModTranslation.GetString("SNRIntroduction")} : {(p.IsMod() ? "〇" : "×")}\n"; // Mod導入状態
         data += $"<pos=10%>FriendCode : {friendCode}\n"; // フレンドコード
         data += $"<pos=10%>Platform : {p.GetClient()?.PlatformData?.Platform}</size>\n"; // プラットフォーム
