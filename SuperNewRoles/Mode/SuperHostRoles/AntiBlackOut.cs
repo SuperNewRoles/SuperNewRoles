@@ -207,7 +207,7 @@ public static class AntiBlackOut
                     ToRoleTypes = supportSHR.RealRole;
                 if (player.IsDead() && !RoleManager.IsGhostRole(ToRoleTypes))
                     Logger.Info($"What's this!? {ToRoleTypes} {player.PlayerId}");
-                    player.RpcSetRole(ToRoleTypes, true);
+                player.RpcSetRole(ToRoleTypes, true);
                 var desyncRole = RoleSelectHandler.GetDesyncRole(player.GetRole());
                 if (desyncRole.IsDesync && desyncRole.RoleType.IsImpostorRole())
                     DesyncPlayers.Add((player, desyncRole.RoleType));
@@ -246,7 +246,9 @@ public static class AntiBlackOut
                     {
                         if (player.IsMod() || player.IsDead())
                             continue;
-                        player.RpcShowGuardEffect(player);
+                        RoleTypes? DesyncRole = RoleSelectHandler.GetDesyncRole(player);
+                        if (player.IsImpostor() || (DesyncRole.HasValue && DesyncRole.Value.IsImpostorRole()))
+                            player.RpcShowGuardEffect(player);
                     }
                 }, 0.5f);
                 DestroySavedData();
