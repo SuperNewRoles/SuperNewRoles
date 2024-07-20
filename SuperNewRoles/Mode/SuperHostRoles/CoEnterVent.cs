@@ -9,6 +9,8 @@ class CoEnterVent
     public static bool Prefix(PlayerPhysics __instance, int id)
     {
         if (!AmongUsClient.Instance.AmHost || !ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+        if (__instance.myPlayer.IsMod())
+            return true;
         if (__instance.myPlayer.IsUseVent())
             return true;
 

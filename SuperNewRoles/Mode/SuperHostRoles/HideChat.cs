@@ -14,8 +14,8 @@ public static class HideChat
     public static bool CanSerializeGameData => !HideChatEnabled || SerializeByHideChat || !RoleClass.IsMeeting;
     public static void OnStartMeeting()
     {
-        _ = new LateTask(() => DesyncSetDead(null), 1.5f);
-        _ = new LateTask(() => DesyncSetDead(null), 6.5f);
+        _ = new LateTask(() => DesyncSetDead(), 1.5f);
+        _ = new LateTask(() => DesyncSetDead(), 6.5f);
     }
     public static void DesyncSetDead(CustomRpcSender? sender, NetworkedPlayerInfo target)
     {
@@ -41,7 +41,7 @@ public static class HideChat
         target.IsDead = State.IsDead;
         target.Disconnected = State.Disconnected;
     }
-    private static void DesyncSetDead(CustomRpcSender? sender)
+    private static void DesyncSetDead()
     {
         PlayerData<AliveState> AliveStates = new();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -64,7 +64,7 @@ public static class HideChat
 
             // シリアライズ
             SerializeByHideChat = true;
-            RPCHelper.RpcSyncAllNetworkedPlayer(sender, player.GetClientId());
+            RPCHelper.RpcSyncAllNetworkedPlayer(player.GetClientId());
             SerializeByHideChat = false;
         }
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
