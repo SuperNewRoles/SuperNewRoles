@@ -153,6 +153,16 @@ public static class RPCHelper
         }
         return sender;
     }
+    public static CustomRpcSender RpcSetName(this CustomRpcSender sender, PlayerControl player, string name, int seer = -1)
+    {
+        sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetName, seer)
+            .Write(player.Data.NetId)
+            .Write(name)
+            .EndRpc();
+        if (seer < 0)
+            player.SetName(name);
+        return sender;
+    }
     public static CustomRpcSender RpcSetSkin(this CustomRpcSender sender, PlayerControl player, string skinId, int seer = -1)
     {
         sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetSkinStr, seer)

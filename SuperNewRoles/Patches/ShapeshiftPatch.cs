@@ -81,13 +81,10 @@ class CheckShapeshiftPatch
                         reject = true;
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
-                            if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                            if (p.IsAlive() && p.PlayerId != __instance.PlayerId && SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SelfBomberScope.GetFloat()))
                             {
-                                if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SelfBomberScope.GetFloat()))
-                                {
-                                    __instance.RpcMurderPlayerCheck(p);
-                                    p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
-                                }
+                                __instance.RpcMurderPlayerCheck(p);
+                                p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
                             }
                         }
                         __instance.RpcMurderPlayer(__instance, true);
@@ -102,12 +99,13 @@ class CheckShapeshiftPatch
         switch (__instance.GetRole())
         {
             case RoleId.Samurai:
-                if (RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId)) return false;
+                if (RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId))
+                    return false;
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsDead() ||
                         p.PlayerId == __instance.PlayerId ||
-                        SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SamuraiScope.GetFloat()))
+                        !SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SamuraiScope.GetFloat()))
                         continue;
                     p.RpcSetFinalStatus(FinalStatus.SamuraiKill);
                     __instance.RpcMurderPlayerCheck(p);
