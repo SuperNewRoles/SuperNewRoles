@@ -340,27 +340,38 @@ public class EndGameManagerSetUpPatch
         {
             return !b.IsYou ? 0 : -1;
         }).ToList();
-        for (int i = 0; i < list.Count; i++)
+        var size = EndGameResult.CachedWinners.Count;
+        bool yourflg = false;
+        for (int i = 0, index = 0; i < size; i++)
         {
             CachedPlayerData CachedPlayerData2 = list[i];
-            int num2 = (i % 2 == 0) ? -1 : 1;
-            int num3 = (i + 1) / 2;
-            float num4 = (float)num3 / (float)num;
+            if (CachedPlayerData2.IsYou)
+            {
+                index = 0;
+                yourflg = true;
+            }
+            else
+            {
+                index = yourflg ? i : i + 1;
+            }
+            int num2 = (index % 2 == 0) ? -1 : 1;
+            int num3 = (index + 1) / 2;
+            float num4 = num3 / (float)num;
             float num5 = Mathf.Lerp(1f, 0.75f, num4);
-            float num6 = (float)((i == 0) ? -8 : -1);
+            float num6 = (index == 0) ? -8 : -1;
             PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, __instance.transform);
-            poolablePlayer.transform.localPosition = new Vector3(1f * (float)num2 * (float)num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + (float)num3 * 0.01f) * 0.9f;
+            poolablePlayer.transform.localPosition = new Vector3(1f * num2 * num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + num3 * 0.01f) * 0.9f;
             float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
             Vector3 vector = new(num7, num7, 1f);
             poolablePlayer.transform.localScale = vector;
             if (CachedPlayerData2.IsDead)
             {
                 poolablePlayer.SetBodyAsGhost();
-                poolablePlayer.SetDeadFlipX(i % 2 == 0);
+                poolablePlayer.SetDeadFlipX(index % 2 == 0);
             }
             else
             {
-                poolablePlayer.SetFlipX(i % 2 == 0);
+                poolablePlayer.SetFlipX(index % 2 == 0);
             }
             poolablePlayer.UpdateFromPlayerOutfit(CachedPlayerData2.Outfit, PlayerMaterial.MaskType.None, CachedPlayerData2.IsDead, true);
             poolablePlayer.cosmetics.nameText.color = Color.white;

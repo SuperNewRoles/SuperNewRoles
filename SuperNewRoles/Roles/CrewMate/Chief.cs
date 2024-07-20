@@ -149,7 +149,7 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
             // もうキルボタンを持たないように
             Player.RpcSetRole(RoleTypes.Crewmate, true);
             // 暗転対策のために、インポスターをちゃんとインポスターに変更する
-            foreach(PlayerControl seetarget in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl seetarget in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (seetarget.IsImpostor())
                     seetarget.RpcSetRoleDesync(seetarget.Data.Role.Role, true, Player);

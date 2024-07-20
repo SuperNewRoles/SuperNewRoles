@@ -54,15 +54,15 @@ public class FixedUpdate
             rend.material.SetFloat("_Outline", 0f);
         }
     }
-
+    private static System.Func<PlayerTask, bool> FindVentTask = x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning;
     static void SetBaseVentMaterial()
     {
         if (PlayerControl.LocalPlayer.IsUseVent()) return;
         if (!ShipStatus.Instance) return;
-        List<NormalPlayerTask> tasks = PlayerControl.LocalPlayer.myTasks.ToList().FindAll(x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning).ConvertAll(x => x.Cast<NormalPlayerTask>());
+        var tasks = PlayerControl.LocalPlayer.myTasks.FindAll(FindVentTask);
         foreach (Vent vent in ShipStatus.Instance.AllVents)
         {
-            if (tasks.Exists(x => x.Data[0] == vent.Id)) continue;
+            if (tasks.FindIndex((System.Func<PlayerTask, bool>)(x => x.Cast<NormalPlayerTask>().Data[0] == vent.Id)) >= 0) continue;
             vent.SetOutline(false, false);
         }
     }
