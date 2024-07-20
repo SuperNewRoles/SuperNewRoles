@@ -571,7 +571,6 @@ public static class OnGameEndPatch
             }
         }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
-        
     }
     private static List<NetworkedPlayerInfo> ProcessGetWinnersToRemove()
     {
