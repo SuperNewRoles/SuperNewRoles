@@ -61,15 +61,15 @@ public class BlackHatHacker
     public static bool IsMyVutals;
     public static bool TaskTab;
     public static int Page;
-    public static List<byte> DeadPlayers;
+    public static HashSet<byte> DeadPlayers;
     public static List<byte> _SelfPropagationPlayerId;
     public static List<byte> SelfPropagationPlayerId
     {
         get
         {
             if (!InfectionTimer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return new();
-            List<byte> add = new Dictionary<byte, float>(InfectionTimer[PlayerControl.LocalPlayer.PlayerId]).
-                             Where(x => !_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value)).Select(x => x.Key).ToList();
+            IEnumerable<byte> add = InfectionTimer[PlayerControl.LocalPlayer.PlayerId].
+                             Where(x => !_SelfPropagationPlayerId.Contains(x.Key) && IsSelfPropagation(x.Value)).Select(x => x.Key);
             _SelfPropagationPlayerId.AddRange(add);
             return _SelfPropagationPlayerId;
         }
@@ -80,8 +80,8 @@ public class BlackHatHacker
         get
         {
             if (!InfectionTimer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return new();
-            List<byte> check = new Dictionary<byte, float>(InfectionTimer[PlayerControl.LocalPlayer.PlayerId]).
-                               Where(x => !_InfectedPlayerId.Contains(x.Key) && x.Value >= BlackHatHackerHackInfectiousTime.GetFloat()).Select(x => x.Key).ToList();
+            IEnumerable<byte> check = InfectionTimer[PlayerControl.LocalPlayer.PlayerId].
+                               Where(x => !_InfectedPlayerId.Contains(x.Key) && x.Value >= BlackHatHackerHackInfectiousTime.GetFloat()).Select(x => x.Key);
             _InfectedPlayerId.AddRange(check);
             return _InfectedPlayerId;
         }
@@ -274,16 +274,16 @@ public class BlackHatHacker
             if (!player) continue;
             if (player.IsDead()) continue;
             float scope = GameOptionsData.KillDistances[Mathf.Clamp(BlackHatHackerInfectionScope.GetSelection(), 0, 2)];
-            List<PlayerControl> infection = CachedPlayer.AllPlayers.
-                                            Where(x => !x.Data.AmOwner && Vector3.Distance(player.transform.position, x.transform.position) <= scope).Select(x => (PlayerControl)x).ToList();
-            foreach (PlayerControl target in infection.AsSpan()) InfectionTimer[PlayerControl.LocalPlayer.PlayerId][target.PlayerId] += Time.fixedDeltaTime;
+            IEnumerable<PlayerControl> infection = CachedPlayer.AllPlayers.
+                                            Where(x => !x.Data.AmOwner && Vector3.Distance(player.transform.position, x.transform.position) <= scope).Select(x => (PlayerControl)x);
+            foreach (PlayerControl target in infection) InfectionTimer[PlayerControl.LocalPlayer.PlayerId][target.PlayerId] += Time.fixedDeltaTime;
         }
     }
 
     public static void WrapUp()
     {
         NotInfectiousTimer = BlackHatHackerNotInfectiousTime.GetFloat();
-        DeadPlayers = CachedPlayer.AllPlayers.Where(x => x.IsDead()).Select(x => x.PlayerId).ToList();
+        DeadPlayers = CachedPlayer.AllPlayers.Where(x => x.IsDead()).Select(x => x.PlayerId).ToHashSet();
         if (!InfectionTimer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return;
         if (HackCount <= 0 && InfectionTimer[PlayerControl.LocalPlayer.PlayerId].All(x => x.Value <= 0 || ModHelpers.PlayerById(x.Key).IsDead()) && BlackHatHackerIsNotInfectionIncrease.GetBool())
             HackCount = 1;
