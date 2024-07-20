@@ -95,6 +95,71 @@ public static class DynamicLobbies
             }
         }
     }
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendAllStreamedObjects))]
+    public static class InnerNetClientSendAllStreamedObjectsPatch
+    {
+        public static bool Prefix(InnerNetClient __instance, ref bool __result)
+        {
+            bool result = false;
+            lock (__instance.allObjects)
+            {
+                for (int i = 0; i < __instance.allObjects.Count; i++)
+                {
+                    InnerNetObject innerNetObject = __instance.allObjects[i];
+                    if (!innerNetObject || !innerNetObject.IsDirty || (!innerNetObject.AmOwner && (innerNetObject.OwnerId != -2 || !__instance.AmHost)))
+                    {
+                        continue;
+                    }
+                    MessageWriter val = __instance.Streams[(int)innerNetObject.sendMode];
+                    if (val.Length > 1000)
+                    {
+                        //一旦message送信
+                        Logger.Info($"Send partial data message to");
+                        val.EndMessage();
+                        __instance.SendOrDisconnect(val);
+                        val.Clear(innerNetObject.sendMode);
+                        val.StartMessage((byte)5);
+                        val.Write(__instance.GameId);
+                    }
+                    val.StartMessage((byte)1);
+                    val.WritePacked(innerNetObject.NetId);
+                    try
+                    {
+                        if (innerNetObject.Serialize(val, initialState: false))
+                        {
+                            val.EndMessage();
+                        }
+                        else
+                        {
+                            val.CancelMessage();
+                        }
+                        if (innerNetObject.Chunked && innerNetObject.IsDirty)
+                        {
+                            result = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(new(ex.ToString()));
+                        val.CancelMessage();
+                    }
+                }
+            }
+            for (int j = 0; j < __instance.Streams.Length; j++)
+            {
+                MessageWriter val2 = __instance.Streams[j];
+                if (val2.HasBytes(7))
+                {
+                    val2.EndMessage();
+                    __instance.SendOrDisconnect(val2);
+                    val2.Clear((SendOption)(byte)j);
+                    val2.StartMessage((byte)5);
+                    val2.Write(__instance.GameId);
+                }
+            }
+            return result;
+        }
+    }
 
     [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendInitialData))]
     public static class SendInitialDataPatch

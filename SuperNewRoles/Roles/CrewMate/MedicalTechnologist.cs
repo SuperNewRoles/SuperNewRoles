@@ -251,7 +251,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         PlayerControl secondCrew = ModHelpers.PlayerById(SampleCrews.SecondCrew);
 
         infoContents = SampleTestResultsText(firstCrew, secondCrew);
-        AddChatPatch.ChatInformation(Player, infoName, infoContents, "#259f94", true);
+        new LateTask(() => AddChatPatch.ChatInformation(Player, infoName, infoContents, "#259f94", true), 1f);
 
         if (!isOnryMyself) ChangeName.SetRoleName(Player);
     }
