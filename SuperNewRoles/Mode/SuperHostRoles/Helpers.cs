@@ -27,6 +27,14 @@ public static class Helpers
         }
         sender.SendMessage();
     }
+    public static void RpcSetRoleImmediately(this PlayerControl player, RoleTypes role, bool canOverride = true)
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable);
+        writer.Write((ushort)role);
+        writer.Write(canOverride);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        player.SetRole(role, canOverride);
+    }
     //TownOfHostより！！
     public static void RpcSetRoleDesync(this PlayerControl player, RoleTypes role, bool canOverride, PlayerControl seer = null)
     {
