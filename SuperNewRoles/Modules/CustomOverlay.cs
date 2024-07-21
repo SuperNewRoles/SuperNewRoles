@@ -685,10 +685,11 @@ public class CustomOverlays
         var bodyColorName = canUse ? OutfitManager.GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId]) : "Load Error";
 
         // プレイヤー名とクルーカラーを■で表記
-        data += $"<size=150%>{p.PlayerId + 1}. {p.name}{ModHelpers.Cs(bodyColor, "■")}</size>\n";
+        var quadrangle = ModHelpers.Cs(bodyColor, "■");
+        data += $"<size=150%>{p.PlayerId + 1}. {p.name}{quadrangle}</size>\n";
 
         // クルーカラーとカラー名を表記
-        data += $"<pos=10%>{ModHelpers.Cs(bodyColor, "■")} : {bodyColorName}\n";
+        data += $"<pos=10%>{quadrangle} : {bodyColorName}\n";
         data += $"<size=90%><pos=10%>{ModTranslation.GetString("SNRIntroduction")} : {(p.IsMod() ? "〇" : "×")}\n"; // Mod導入状態
         data += $"<pos=10%>FriendCode : {friendCode}\n"; // フレンドコード
         data += $"<pos=10%>Platform : {p.GetClient()?.PlatformData?.Platform}</size>\n"; // プラットフォーム
