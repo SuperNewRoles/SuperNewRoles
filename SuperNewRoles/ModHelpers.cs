@@ -1245,7 +1245,8 @@ public static class ModHelpers
         tmp.fontSize = tmp.fontSizeMax = tmp.fontSizeMin = size;
     }
     public static void AddListener(this UnityEngine.Events.UnityEvent @event, Action action) => @event.AddListener(action);
-    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.Find(match);
+    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Func<T, bool> match) => data[data.FindIndex(match)];
+    public static bool Exist<T>(this Il2CppSystem.Collections.Generic.List<T> data, Func<T, bool> match) => data.FindIndex(match) >= 0;
     public static ReadOnlySpan<T> AsSpan<T>(this List<T> list) => CollectionsMarshal.AsSpan(list);
     public static ReadOnlySpan<T> AsSpan<T>(this IReadOnlyList<T> list) => (list as List<T>).AsSpan();
     public static void SetActiveEx(this GameObject obj, bool value)
