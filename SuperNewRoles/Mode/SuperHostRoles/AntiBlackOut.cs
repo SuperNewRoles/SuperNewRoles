@@ -191,7 +191,7 @@ public static class AntiBlackOut
                 SendAntiBlackOutInformation(player, ABOInformationType.EndAliveCanViewDeadPlayerChat);
             }
             List<(PlayerControl player, RoleTypes role)> DesyncPlayers = new();
-            foreach(GamePlayerData gamePlayerData in GamePlayers.Values)
+            foreach (GamePlayerData gamePlayerData in GamePlayers.Values)
             {
                 PlayerControl player = ModHelpers.PlayerById(gamePlayerData.PlayerId);
                 if (player == null)
@@ -199,7 +199,8 @@ public static class AntiBlackOut
                     Logger.Error($"GamePlayerData({gamePlayerData.PlayerId}) is null.","AntiBlackOutWrapUp");
                     continue;
                 }
-                RoleTypes ToRoleTypes = (player.IsDead() && !gamePlayerData.IsDead) ?
+                Logger.Info($"Processing => {gamePlayerData.PlayerId}", "AntiBlackOutWrapUpProcessing");
+                RoleTypes ToRoleTypes = (player.IsDead() || gamePlayerData.IsDead) ?
                          (gamePlayerData.roleTypes.IsImpostorRole() ?
                           RoleTypes.ImpostorGhost : RoleTypes.CrewmateGhost) :
                          gamePlayerData.roleTypes;
@@ -236,6 +237,14 @@ public static class AntiBlackOut
                         );
                     }
                 }
+                foreach (GamePlayerData gamePlayerData in GamePlayers.Values)
+                {
+                    PlayerControl player = ModHelpers.PlayerById(gamePlayerData.PlayerId);
+                    if (player == null)
+                        continue;
+                    if (gamePlayerData.IsDead)
+                        player.Data.IsDead = true;
+                }
                 IsModdedSerialize = true;
                 RPCHelper.RpcSyncAllNetworkedPlayer();
                 IsModdedSerialize = false;
@@ -252,6 +261,10 @@ public static class AntiBlackOut
                             player.RpcShowGuardEffect(player);
                     }
                 }, 0.5f);
+                foreach ()
+                {
+
+                }
                 DestroySavedData();
             }, 0.2f);
             ProcessNow = false;
