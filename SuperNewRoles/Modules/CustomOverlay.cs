@@ -680,9 +680,9 @@ public class CustomOverlays
         if (DataManager.Settings.Gameplay.StreamerMode) friendCode = "**********#****"; // バニラ設定[配信者モード]が有効時フレンドコードを伏字風にする
 
         // クルーカラーを取得
-        var canUse = Palette.PlayerColors.Length > p.Data.DefaultOutfit.ColorId && p.Data.DefaultOutfit.ColorId >= 0; // 配列の範囲の確認
-        var bodyColor = canUse ? Palette.PlayerColors[p.Data.DefaultOutfit.ColorId] : Palette.PlayerColors[(int)CustomCosmetics.CustomColors.ColorType.Sunrise]; // Errorはサンライズ扱いに
-        var bodyColorName = canUse ? OutfitManager.GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId]) : "Load Error";
+        var canUseIndex = Palette.PlayerColors.Length > p.Data.DefaultOutfit.ColorId && p.Data.DefaultOutfit.ColorId >= 0; // 配列の範囲の確認
+        var bodyColor = canUseIndex ? Palette.PlayerColors[p.Data.DefaultOutfit.ColorId] : Palette.PlayerColors[(int)CustomCosmetics.CustomColors.ColorType.Sunrise]; // Errorはサンライズ扱いに
+        var bodyColorName = canUseIndex ? OutfitManager.GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId]) : "Load Error";
 
         // プレイヤー名とクルーカラーを■で表記
         var quadrangle = ModHelpers.Cs(bodyColor, "■");
