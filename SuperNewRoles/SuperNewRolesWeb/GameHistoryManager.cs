@@ -30,11 +30,11 @@ namespace SuperNewRoles.SuperNewRolesWeb
             public byte reportedbody = 255;
             public MeetingHistory(Il2CppStructArray<VoterState> states, NetworkedPlayerInfo exiled)
             {
-                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                foreach (var player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     bool IsDead = player.Data.IsDead || player.Data.Disconnected;
                     if (player != null)
-                        if (player.IsBot()) continue;
+                        if (((PlayerControl)player).IsBot()) continue;
                     if (IsDead)
                     {
                         DeadPlayers.Add(player.PlayerId);
