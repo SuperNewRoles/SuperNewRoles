@@ -13,7 +13,7 @@ public class LobbyBehaviourPatch
     {
         if (--Frame <= 0)
         {
-            bool MapThemeSound = SoundManager.Instance.soundPlayers.Exist(x => x.Name.Equals("MapTheme"));
+            bool MapThemeSound = SoundManager.Instance.soundPlayers.Any(x => x.Name.Equals("MapTheme"));
             if (ConfigRoles.IsMuteLobbyBGM.Value)
             {
                 if (!MapThemeSound) return;
