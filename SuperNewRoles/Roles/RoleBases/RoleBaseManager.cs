@@ -26,7 +26,7 @@ public static class RoleBaseManager
     {
         if (!AllInterfaces.TryGetValue(typeof(T).Name, out HashSet<RoleBase> RoleBases) ||
             RoleBases == null)
-            return new List<T>();
+            return Enumerable.Empty<T>();
         return RoleBases.Cast<T>();
     }
     public static void DoInterfaces<T>(Action<T> action)
@@ -133,7 +133,7 @@ public static class RoleBaseManager
     }
     public static IEnumerable<T> GetRoleBases<T>() where T : RoleBase
     {
-        return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? value.Cast<T>() : new List<T>();
+        return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? value.Cast<T>() : Enumerable.Empty<T>();
     }
     public static IReadOnlySet<RoleBase> GetRoleBaseOrigins<T>() where T : RoleBase
     {
