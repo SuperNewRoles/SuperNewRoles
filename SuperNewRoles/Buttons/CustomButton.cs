@@ -107,9 +107,10 @@ public class CustomButton
     {
         bool isAlive = PlayerControl.LocalPlayer.IsAlive();
         RoleId role = PlayerControl.LocalPlayer.GetRole();
+        CustomButton btn;
         for (int i = buttons.Count - 1; i >= 0; i--)
         {
-            CustomButton btn = buttons[i];
+            btn = buttons[i];
             if (btn == null || btn.actionButton == null)
             {
                 buttons.RemoveAt(i);
@@ -130,9 +131,10 @@ public class CustomButton
     {
         bool isAlive = PlayerControl.LocalPlayer.IsAlive();
         RoleId role = PlayerControl.LocalPlayer.GetRole();
+        CustomButton btn;
         for (int i = buttons.Count - 1; i >= 0; i--)
         {
-            CustomButton btn = buttons[i];
+            btn = buttons[i];
             if (btn == null || btn.actionButton == null)
             {
                 buttons.RemoveAt(i);
