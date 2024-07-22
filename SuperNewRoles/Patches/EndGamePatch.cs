@@ -336,23 +336,25 @@ public class EndGameManagerSetUpPatch
             UnityEngine.Object.Destroy(pb.gameObject);
         }
         int num = Mathf.CeilToInt(7.5f);
-        List<CachedPlayerData> list = EndGameResult.CachedWinners.ToList().OrderBy(delegate (CachedPlayerData b)
-        {
-            return !b.IsYou ? 0 : -1;
-        }).ToList();
+        var list = EndGameResult.CachedWinners.ToList();
         var size = EndGameResult.CachedWinners.Count;
-        bool yourflg = false;
+        bool youExist = list.Exists(x => x.IsYou);
+        bool youLoaded = false;
         for (int i = 0, index = 0; i < size; i++)
         {
             CachedPlayerData CachedPlayerData2 = list[i];
             if (CachedPlayerData2.IsYou)
             {
                 index = 0;
-                yourflg = true;
+                youLoaded = true;
+            }
+            else if (youExist)
+            {
+                index = youLoaded ? i : i + 1;
             }
             else
             {
-                index = yourflg ? i : i + 1;
+                index = i;
             }
             int num2 = (index % 2 == 0) ? -1 : 1;
             int num3 = (index + 1) / 2;
@@ -1473,9 +1475,9 @@ public static class OnGameEndPatch
         AdditionalTempData.winCondition = winCondition;
 
         Il2CppArrayBase<CachedPlayerData> Winners = EndGameResult.CachedWinners.ToArray();
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (var player in CachedPlayer.AllPlayers.AsSpan())
         {
-            if (player != null && player.IsBot()) continue;
+            if (((PlayerControl)player).IsBot()) continue;
             CustomPlayerData data = new(player.Data, gameOverReason)
             {
                 IsWin = Winners.Any(x => x.PlayerName == player.Data.PlayerName)
