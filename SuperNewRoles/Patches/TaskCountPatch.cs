@@ -18,6 +18,7 @@ class TaskCount
             if (__instance.TaskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.MapOption.WireTaskIsRandom) return;
             var orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((Console t) => t.TaskTypes.Contains(__instance.TaskType));
             List<Console> list = new(orgList);
+            int ConsoleNum = list.Count;
 
             __instance.MaxStep = MapOption.MapOption.WireTaskNum;
             __instance.Data = new byte[MapOption.MapOption.WireTaskNum];
@@ -26,6 +27,10 @@ class TaskCount
                 if (list.Count == 0)
                     list = new List<Console>(orgList);
                 int index = ModHelpers.GetRandomIndex(list);
+
+                //listのつなぎ目で、Consoleが被ることを防ぐ
+                if (i >= ConsoleNum && i % ConsoleNum == 0 && __instance.Data[i-1] == (byte)list[index].ConsoleId)
+                    index = index == 0 ? index + 1 : index - 1;
                 __instance.Data[i] = (byte)list[index].ConsoleId;
                 list.RemoveAt(index);
             }
