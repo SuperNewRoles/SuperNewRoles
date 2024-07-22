@@ -340,7 +340,7 @@ public class IntroPatch
                         Pokerface.PokerfaceTeam team = Pokerface.GetPokerfaceTeam(PlayerControl.LocalPlayer.PlayerId);
                         if (team != null)
                         {
-                            foreach (var player in team.TeamPlayers.AsSpan())
+                            foreach (var player in team.TeamPlayers)
                             {
                                 PokerfaceTeams.Add(player);
                             }

@@ -243,7 +243,7 @@ public static class ChangeName
                     Pokerface.PokerfaceTeam pokerfaceTeam = Pokerface.GetPokerfaceTeam(player);
                     if (pokerfaceTeam != null)
                     {
-                        foreach (PlayerControl pokerplayer in pokerfaceTeam.TeamPlayers.AsSpan())
+                        foreach (PlayerControl pokerplayer in pokerfaceTeam.TeamPlayers)
                         {
                             if (pokerplayer.PlayerId == player.PlayerId)
                                 continue;
