@@ -71,12 +71,19 @@ public static class PlayerControlHelper
         //TODO:逆順処理でも問題ないか？
         for (int i = player.myTasks.Count - 1; i >= 0; i--)
         {
-            var textTask = player.myTasks[i].gameObject.GetComponent<ImportantTextTask>();
+            var Task = player.myTasks[i];
+            var textTask = Task.gameObject.GetComponent<ImportantTextTask>();
             if (textTask == null) continue;
             if (textTask.Text.StartsWith(CustomRoles.GetRoleName(player)))
                 playerRole = RoleId.None; // TextTask for this RoleInfo does not have to be added, as it already exists
-            else player.myTasks.RemoveAt(i); // TextTask does not have a corresponding RoleInfo and will hence be deleted
+            else
+            {
+                player.myTasks.RemoveAt(i); // TextTask does not have a corresponding RoleInfo and will hence be deleted
+                Object.Destroy(Task.gameObject);
+            }
         }
+
+        if (playerRole == RoleId.None) return;
 
         Logger.Info($"Set Role Description. infos : {playerRole}", "RefreshRoleDescription");
         // Add TextTask for remaining RoleInfos
