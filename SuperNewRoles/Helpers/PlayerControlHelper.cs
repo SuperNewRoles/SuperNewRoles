@@ -49,26 +49,6 @@ public static class PlayerControlHelper
             playerRole = RoleId.DefaultRole;
         }
 
-        /*
-        var toRemove = new List<PlayerTask>();
-        foreach (PlayerTask t in player.myTasks)
-        {
-            var textTask = t.gameObject.GetComponent<ImportantTextTask>();
-            if (textTask == null) continue;
-            if (textTask.Text.StartsWith(CustomRoles.GetRoleName(player)))
-                playerRole = RoleId.None; // TextTask for this RoleInfo does not have to be added, as it already exists
-            else toRemove.Add(t); // TextTask does not have a corresponding RoleInfo and will hence be deleted
-        }
-
-        foreach (PlayerTask t in toRemove)
-        {
-            t.OnRemove();
-            player.myTasks.Remove(t);
-            Object.Destroy(t.gameObject);
-        }
-        */
-
-        //TODO:逆順処理でも問題ないか？
         for (int i = player.myTasks.Count - 1; i >= 0; i--)
         {
             var Task = player.myTasks[i];

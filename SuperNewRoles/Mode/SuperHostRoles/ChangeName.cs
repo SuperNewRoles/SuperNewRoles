@@ -33,7 +33,7 @@ public static class ChangeName
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            Logger.Info("[SHR:ChangeName]" + player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            Logger.Info($"[SHR: ChangeName] {player.name}への(IsCommsなしの)SetRoleNameが{callerClassName}.{callerMethodName}から呼び出されました。");
         }
         //コミュ情報を取得して呼ぶ
         SetRoleName(player, RoleHelpers.IsComms(), IsUnchecked, sender: sender);
@@ -55,7 +55,7 @@ public static class ChangeName
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo($"SetDefaultNamesが{callerClassName}.{callerMethodName}から呼び出されました。");
+            SuperNewRolesPlugin.Logger.LogInfo($"[SHR: ChangeName] SetDefaultNamesが{callerClassName}.{callerMethodName}から呼び出されました。");
         }
         foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
@@ -95,7 +95,7 @@ public static class ChangeName
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo($"[SHR: ChangeName]{player.name}へのSetRoleNameが{callerClassName}.{callerMethodName}から呼び出されました。");
+            SuperNewRolesPlugin.Logger.LogInfo($"[SHR: ChangeName] {player.name}へのSetRoleNameが{callerClassName}.{callerMethodName}から呼び出されました。");
         }
 
         //if (UpdateTime.ContainsKey(player.PlayerId) && UpdateTime[player.PlayerId] > 0) return;

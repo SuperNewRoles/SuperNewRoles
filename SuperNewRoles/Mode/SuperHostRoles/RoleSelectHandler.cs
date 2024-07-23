@@ -446,11 +446,11 @@ public static class RoleSelectHandler
                 sender.RpcSetRole(pc, pc.Data.Role.Role.IsImpostorRole() ? RoleTypes.Scientist : pc.Data.Role.Role, true, PlayerCID);
             }
             //他視点で科学者にするループ
-            foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
+            foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (pc.PlayerId == Player.PlayerId) continue;
                 if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Crewmate, true); //ホスト視点用
-                else sender.RpcSetRole(Player, RoleTypes.Scientist, true, pc.GetClientId());
+                else sender.RpcSetRole(Player, RoleTypes.Scientist, true, ((PlayerControl)pc).GetClientId());
             }
         }
         else

@@ -514,7 +514,7 @@ public class CustomRoleOption : CustomOption
             RoleId = role.Value;
         }
         if (!RoleOptions.TryAdd(RoleId, this))
-            Logger.Info($"{RoleId.ToString()}を追加できんかったー：{name}");
+            Logger.Info($"{RoleId}を追加できんかったー：{name}");
         this.isHidden = isHidden;
         if (max > 1) countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
     }

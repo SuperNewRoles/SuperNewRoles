@@ -97,7 +97,7 @@ public static class Analytics
         {
             foreach (var player in CachedPlayer.AllPlayers.AsSpan())
             {
-                if (player.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) continue;
+                if (player == CachedPlayer.LocalPlayer) continue;
                 PlayerDatas += $"{player.Data.FriendCode},";
             }
             if (PlayerDatas.Length > 1)

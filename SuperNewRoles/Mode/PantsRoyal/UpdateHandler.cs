@@ -76,7 +76,11 @@ public static class UpdateHandler
             main.LastUpdateTime = main.ShowRoleTime;
             foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
-                string targetnametext = $"\n\n\n\n\n<size=300%><color=white>{(main.IsPantsHaver(p) ? ModTranslation.GetString("PantsRoyalPantsHaverIntroName") : ModTranslation.GetString("PantsRoyalPantsDontHaverIntroName"))}</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>{ModTranslation.GetString("PantsRoyalStartAt")}{(int)(main.LastUpdateTime + 1)}{ModTranslation.GetString("second")}</size>";
+                string targetnametext = $"\n\n\n\n\n<size=300%><color=white>{
+                    (main.IsPantsHaver(p) ? ModTranslation.GetString("PantsRoyalPantsHaverIntroName") : ModTranslation.GetString("PantsRoyalPantsDontHaverIntroName"))
+                    }</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>{
+                    ModTranslation.GetString("PantsRoyalStartAt")}{(int)(main.LastUpdateTime + 1)}{ModTranslation.GetString("second")
+                    }</size>";
                 if (!p.AmOwner)
                 {
                     p.RpcSetNamePrivate(targetnametext);
