@@ -270,10 +270,6 @@ public static class AntiBlackOut
                             player.RpcShowGuardEffect(player);
                     }
                 }, 0.5f);
-                foreach ()
-                {
-
-                }
                 DestroySavedData();
             }, 0.2f);
             ProcessNow = false;
