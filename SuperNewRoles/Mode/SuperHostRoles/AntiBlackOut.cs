@@ -20,10 +20,12 @@ public static class AntiBlackOut
         public RoleTypes roleTypes { get; }
         public bool IsDead { get; }
         public bool Disconnected { get; }
+        public NetworkedPlayerInfo PlayerInfo { get; }
         public GamePlayerData(NetworkedPlayerInfo playerInfo)
         {
             if (playerInfo == null)
                 throw new NotImplementedException("PlayerInfo is null");
+            PlayerInfo = playerInfo;
             PlayerId = playerInfo.PlayerId;
             roleTypes = playerInfo.Role.Role;
             IsDead = playerInfo.IsDead;
@@ -181,6 +183,13 @@ public static class AntiBlackOut
         Logger.Info("Running AntiBlackOut.");
         if (GamePlayers == null)
             throw new NotImplementedException("GamePlayers is null");
+
+        foreach (GamePlayerData playerData in GamePlayers.Values)
+        {
+            if (playerData?.PlayerInfo != null)
+                playerData.PlayerInfo.IsDead = playerData.IsDead;
+        }
+
         new LateTask(() => {
             if (RealExiled != null && RealExiled.Object != null)
                 RealExiled.Object.Exiled();
@@ -193,7 +202,7 @@ public static class AntiBlackOut
             List<(PlayerControl player, RoleTypes role)> DesyncPlayers = new();
             foreach (GamePlayerData gamePlayerData in GamePlayers.Values)
             {
-                PlayerControl player = ModHelpers.PlayerById(gamePlayerData.PlayerId);
+                PlayerControl player = gamePlayerData?.PlayerInfo?.Object;
                 if (player == null)
                 {
                     Logger.Error($"GamePlayerData({gamePlayerData.PlayerId}) is null.","AntiBlackOutWrapUp");
@@ -239,7 +248,7 @@ public static class AntiBlackOut
                 }
                 foreach (GamePlayerData gamePlayerData in GamePlayers.Values)
                 {
-                    PlayerControl player = ModHelpers.PlayerById(gamePlayerData.PlayerId);
+                    PlayerControl player = gamePlayerData?.PlayerInfo?.Object;
                     if (player == null)
                         continue;
                     if (gamePlayerData.IsDead)
