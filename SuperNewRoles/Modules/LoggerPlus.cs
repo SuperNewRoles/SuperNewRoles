@@ -24,7 +24,6 @@ class LoggerPlus
     /// </summary>
     /// <param name="memo">ファイル名につける為に取得したメモ(文字列)</param>
     /// <param name="via">どこからこのメソッドが呼び出されたかlogに表記する為の文字列</param>
-
     public static void SaveLog(string memo, string via)
     {
         // ファイル名に使用する変数作成
@@ -35,23 +34,51 @@ class LoggerPlus
         string userType = AmongUsClient.Instance.AmHost || AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined ? "Host" : "Client";
         string splicingMemo = ReplaceUnusableStringsAsFileNames(memo);
 
-        // ファイル名作成
+        // ファイル名 & パス作成
         string fileName = $"{date}_SNR_v{version}_{userType}_{splicingBranch}_{splicingMemo}.log";
-
-        // 出力先のパス作成
-        string folderPath = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @"\SuperNewRoles\SaveLogFolder\";
-        Directory.CreateDirectory(folderPath);
-        string filePath = @$"{folderPath}" + @$"{fileName}";
-
+        string filePath = GetFilePathAndCheckDirectory("SaveLogFolder", fileName);
 
         // 出力
         string sourceLogFile = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @$"\BepInEx\{LogName}";
         if (File.Exists(sourceLogFile))
         {
             // logを出力した旨のlogを印字 及びチャットが存在するときはチャットを表示
-            var message = $"この時点までのログを [ {fileName} ] に保存しました。";
-            Logger.Info($"[{LogName}] {message}", via);
-            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", message, isSendFromGuest: true);
+            Logger.Info($"[{LogName}] Save success : {fileName}", via);
+
+            FileInfo sourceLogPath = new(@sourceLogFile);
+            sourceLogPath.CopyTo(@filePath, true);
+
+            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", $"この時点までのログを [ {fileName} ] に保存しました。", isSendFromGuest: true);
+        }
+        else
+        {
+            var errorMessage = $"印字元のパスが正常に設定されていなかった為、保存の実行を中止しました。 [指定ログファイル] : {LogName}";
+            Logger.Error(errorMessage, via);
+            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", errorMessage, isSendFromGuest: true);
+        }
+    }
+
+    /// <summary>AutoSaveLogFolderにその地点までのログを保存する</summary>
+    public static void EndGameAutoSave()
+    {
+        if (!ConfigRoles.IsSaveLogWhenEndGame.Value) return;
+
+        // ファイル名に使用する変数作成
+        string date = DateTime.Now.ToString("yyyyMMdd_HHmm");
+        string version = ReplaceUnusableStringsAsFileNames(SuperNewRolesPlugin.VersionString.Replace(".", ""));
+        string userType = AmongUsClient.Instance.AmHost || AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined ? "Host" : "Client";
+        string splicingBranch = ReplaceUnusableStringsAsFileNames(ThisAssembly.Git.Branch);
+
+
+        // ファイル名 & パス作成
+        string fileName = $"{date}_SNR_v{version}_{userType}_GameCount_{IntroPatch.GameCount}_{splicingBranch}_{LogName}";
+        string filePath = GetFilePathAndCheckDirectory("AutoSaveLogFolder", fileName);
+
+        // 出力
+        string sourceLogFile = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @$"\BepInEx\{LogName}";
+        if (File.Exists(sourceLogFile))
+        {
+            Logger.Info($"[{LogName}] Save success.", "EndGameAutoSave");
 
             FileInfo sourceLogPath = new(@sourceLogFile);
             sourceLogPath.CopyTo(@filePath, true);
@@ -59,8 +86,7 @@ class LoggerPlus
         else
         {
             var errorMessage = $"印字元のパスが正常に設定されていなかった為、保存の実行を中止しました。 [指定ログファイル] : {LogName}";
-            Logger.Error(errorMessage, via);
-            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", errorMessage, isSendFromGuest: true);
+            Logger.Error(errorMessage, "EndGameAutoSave");
         }
     }
 
@@ -77,5 +103,21 @@ class LoggerPlus
             fileName = fileName.Replace($"{invalid}", "_");
         fileName = fileName.Replace($".", "_");
         return fileName;
+    }
+
+    /// <summary>
+    /// 保存先のパスの取得と, 保存先のフォルダの存在確認及び作成
+    /// </summary>
+    /// <param name="folderName">SuperNewRolesフォルダ以下のパス</param>
+    /// <param name="fileName">保存ファイル名</param>
+    /// <returns></returns>
+    private static string GetFilePathAndCheckDirectory(string folderName, string fileName)
+    {
+        string folderPath = Path.GetDirectoryName(UnityEngine.Application.dataPath) + $@"\SuperNewRoles\{folderName}\";
+
+        if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+        string filePath = @$"{folderPath}" + @$"{fileName}";
+
+        return filePath;
     }
 }
