@@ -20,10 +20,12 @@ public static class AntiBlackOut
         public RoleTypes roleTypes { get; }
         public bool IsDead { get; }
         public bool Disconnected { get; }
+        public NetworkedPlayerInfo PlayerInfo { get; }
         public GamePlayerData(NetworkedPlayerInfo playerInfo)
         {
             if (playerInfo == null)
                 throw new NotImplementedException("PlayerInfo is null");
+            PlayerInfo = playerInfo;
             PlayerId = playerInfo.PlayerId;
             roleTypes = playerInfo.Role.Role;
             IsDead = playerInfo.IsDead;
@@ -181,6 +183,13 @@ public static class AntiBlackOut
         Logger.Info("Running AntiBlackOut.");
         if (GamePlayers == null)
             throw new NotImplementedException("GamePlayers is null");
+
+        foreach (GamePlayerData playerData in GamePlayers.Values)
+        {
+            if (playerData?.PlayerInfo != null)
+                playerData.PlayerInfo.IsDead = playerData.IsDead;
+        }
+
         new LateTask(() => {
             if (RealExiled != null && RealExiled.Object != null)
                 RealExiled.Object.Exiled();
@@ -191,15 +200,16 @@ public static class AntiBlackOut
                 SendAntiBlackOutInformation(player, ABOInformationType.EndAliveCanViewDeadPlayerChat);
             }
             List<(PlayerControl player, RoleTypes role)> DesyncPlayers = new();
-            foreach(GamePlayerData gamePlayerData in GamePlayers.Values)
+            foreach (GamePlayerData gamePlayerData in GamePlayers.Values)
             {
-                PlayerControl player = ModHelpers.PlayerById(gamePlayerData.PlayerId);
+                PlayerControl player = gamePlayerData?.PlayerInfo?.Object;
                 if (player == null)
                 {
                     Logger.Error($"GamePlayerData({gamePlayerData.PlayerId}) is null.","AntiBlackOutWrapUp");
                     continue;
                 }
-                RoleTypes ToRoleTypes = (player.IsDead() && !gamePlayerData.IsDead) ?
+                Logger.Info($"Processing => {gamePlayerData.PlayerId}", "AntiBlackOutWrapUpProcessing");
+                RoleTypes ToRoleTypes = (player.IsDead() || gamePlayerData.IsDead) ?
                          (gamePlayerData.roleTypes.IsImpostorRole() ?
                           RoleTypes.ImpostorGhost : RoleTypes.CrewmateGhost) :
                          gamePlayerData.roleTypes;
@@ -235,6 +245,14 @@ public static class AntiBlackOut
                             desyncDetail.player
                         );
                     }
+                }
+                foreach (GamePlayerData gamePlayerData in GamePlayers.Values)
+                {
+                    PlayerControl player = gamePlayerData?.PlayerInfo?.Object;
+                    if (player == null)
+                        continue;
+                    if (gamePlayerData.IsDead)
+                        player.Data.IsDead = true;
                 }
                 IsModdedSerialize = true;
                 RPCHelper.RpcSyncAllNetworkedPlayer();
