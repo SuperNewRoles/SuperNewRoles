@@ -46,6 +46,16 @@ public class UsePlatformPlayerControlPatch
         return false;
     }
 }
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
+public static class PlayerControlStartMeetingPatch
+{
+    public static void Postfix(PlayerControl __instance, NetworkedPlayerInfo target)
+    {
+        Logger.Info($"StartMeeting AmOwner:{__instance.AmOwner} {target == null}");
+        if (!__instance.AmOwner && target == null)
+            __instance.RemainingEmergencies--;
+    }
+}
 // Allow movement interpolation to use velocities greater than the local player's
 /*
 [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]

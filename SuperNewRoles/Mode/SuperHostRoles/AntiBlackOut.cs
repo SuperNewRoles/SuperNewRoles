@@ -160,12 +160,18 @@ public static class AntiBlackOut
         CustomRpcSender sender = CustomRpcSender.Create($"StartAntiBlackOut_To:{(seer?.PlayerId.ToString() ?? "All")}", sendOption: Hazel.SendOption.Reliable);
         int seerClientId = seer?.GetClientId() ?? -1;
         PlayerControl impostorPlayer = seer ?? PlayerControl.LocalPlayer;
+
+        int numMeeting = impostorPlayer.RemainingEmergencies;
         sender.RpcSetRole(impostorPlayer, RoleTypes.Impostor, true, seerClientId);
+        impostorPlayer.RemainingEmergencies = numMeeting;
+
         foreach (PlayerControl target in PlayerControl.AllPlayerControls)
         {
             if (target == impostorPlayer)
                 continue;
+            numMeeting = target.RemainingEmergencies;
             sender.RpcSetRole(target, RoleTypes.Crewmate, true, seerClientId);
+            target.RemainingEmergencies = numMeeting;
         }
         sender.SendMessage();
     }
@@ -208,7 +214,10 @@ public static class AntiBlackOut
                     ToRoleTypes = supportSHR.RealRole;
                 if (player.IsDead() && !RoleManager.IsGhostRole(ToRoleTypes))
                     Logger.Info($"What's this!? {ToRoleTypes} {player.PlayerId}");
+                int numMeeting = player.RemainingEmergencies;
+                SyncSetting.CustomSyncSettings(player);
                 player.RpcSetRole(ToRoleTypes, true);
+                new LateTask(() => player.RemainingEmergencies = numMeeting, 0.5f);
                 var desyncRole = RoleSelectHandler.GetDesyncRole(player.GetRole());
                 if (desyncRole.IsDesync && desyncRole.RoleType.IsImpostorRole())
                     DesyncPlayers.Add((player, desyncRole.RoleType));
