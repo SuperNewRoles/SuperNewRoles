@@ -1965,6 +1965,7 @@ UbiquitousDoorHackButton,Door Hack,ドアハック,,駭入門
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
+IsSaveLogWhenEndGame,Copy the log at the end of the match.,試合終了時ログをコピーする
 IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート,,禁音大廳BGM
 
 #SettingMatchTag

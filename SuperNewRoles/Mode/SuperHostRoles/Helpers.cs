@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -26,6 +27,14 @@ public static class Helpers
                 player.SetRole(role, true);
         }
         sender.SendMessage();
+    }
+    public static void RpcSetRoleImmediately(this PlayerControl player, RoleTypes role, bool canOverride = true)
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable);
+        writer.Write((ushort)role);
+        writer.Write(canOverride);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        player.SetRole(role, canOverride);
     }
     //TownOfHostより！！
     public static void RpcSetRoleDesync(this PlayerControl player, RoleTypes role, bool canOverride, PlayerControl seer = null)
@@ -85,16 +94,20 @@ public static class Helpers
         {
             var clientId = shower.GetClientId();
             Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            {
-                SyncSetting.CustomSyncSettings(target, isCooldownTwice: true);
-            }
-            new LateTask(() =>
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 MurderHelpers.RpcForceMurderAndGuard(shower, target, shower);
                 MurderHelpers.RpcForceGuard(shower, target, shower);
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                    new LateTask(() => SyncSetting.CustomSyncSettings(target), 0.1f);
+                return;
+            }
+            SyncSetting.CustomSyncSettings(target, isCooldownTwice: true);
+            new LateTask(() =>
+            {
+                SyncSetting.CustomSyncSettings(target, isCooldownTwice: true);
+                MurderHelpers.RpcMurderPlayerFlags(shower, target,
+                    MurderResultFlags.FailedProtected, shower);
+                MurderHelpers.RpcForceGuard(shower, target, shower);
+                new LateTask(() => SyncSetting.CustomSyncSettings(target), 0.1f);
             }, 0.1f);
         }
     }

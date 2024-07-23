@@ -70,7 +70,7 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         );
         OperationButton.GetOrCreateButton().effectCancellable = true;
         CallAndHomeButton = new(
-            null, this, CallAndHomeButtonClick, (alive) => alive, CustomButtonCouldType.Always, CallAndHomeButtonMeetingEnd,
+            null, this, CallAndHomeButtonClick, (alive) => alive, CustomButtonCouldType.CanMove, CallAndHomeButtonMeetingEnd,
             CallButtonSprite, () => MyDrone ? CallCoolTime.GetFloat() : 2.5f, new(-1, 1), "UbiquitousCallButton", KeyCode.Q, CouldUse: () => !UnderOperation
         );
         DoorHackButton = new(
