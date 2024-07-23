@@ -692,7 +692,7 @@ class CheckForEndVotingPatch
         ChangeNameExiledPlayer.RpcSetName(ChangeNameExiledPlayer.GetDefaultName());
     }
 
-    private static Tuple<bool, byte, PlayerVoteArea> AssassinVoteState(MeetingHud __instance)
+    private static (bool, byte, PlayerVoteArea) AssassinVoteState(MeetingHud __instance)
     {
         bool isVoteEnd = false;
         byte voteFor = byte.MaxValue;
@@ -709,9 +709,9 @@ class CheckForEndVotingPatch
                 break;
             }
         }
-        return Tuple.Create(isVoteEnd, voteFor, area);
+        return (isVoteEnd, voteFor, area);
     }
-    private static Tuple<bool, byte, PlayerVoteArea> RevolutionistVoteState(MeetingHud __instance)
+    private static (bool, byte, PlayerVoteArea) RevolutionistVoteState(MeetingHud __instance)
     {
         bool isVoteEnd = false;
         byte voteFor = byte.MaxValue;
@@ -728,7 +728,7 @@ class CheckForEndVotingPatch
                 break;
             }
         }
-        return Tuple.Create(isVoteEnd, voteFor, area);
+        return (isVoteEnd, voteFor, area);
     }
 }
 

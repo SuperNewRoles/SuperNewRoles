@@ -412,7 +412,7 @@ public class CustomHats
     {
         public static TMPro.TMP_Text textTemplate;
 
-        public static float CreateHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
+        public static float CreateHatPackage(List<(HatData, HatExtension)> hats, string packageName, float YStart, HatsTab __instance)
         {
             float offset = YStart;
             if (textTemplate != null)
@@ -486,7 +486,7 @@ public class CustomHats
         {
             CalcItemBounds(__instance);
             HatData[] unlockedHats = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
-            Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
+            Dictionary<string, List<(HatData, HatExtension)>> packages = new();
 
             ModHelpers.DestroyList(hatsTabCustomTexts);
             ModHelpers.DestroyList(__instance.ColorChips);
@@ -504,13 +504,13 @@ public class CustomHats
                 {
                     if (!packages.ContainsKey(ext.package == null ? innerslothPackageName : ext.package))
                         packages[ext.package == null ? innerslothPackageName : ext.package] = new();
-                    packages[ext.package == null ? innerslothPackageName : ext.package].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
+                    packages[ext.package == null ? innerslothPackageName : ext.package].Add((hatData, ext));
                 }
                 else
                 {
                     if (!packages.ContainsKey(innerslothPackageName))
-                        packages[innerslothPackageName] = new List<System.Tuple<HatData, HatExtension>>();
-                    packages[innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, new() { IsNull = true }));
+                        packages[innerslothPackageName] = new();
+                    packages[innerslothPackageName].Add((hatData, new() { IsNull = true }));
                 }
             }
 
@@ -527,7 +527,7 @@ public class CustomHats
 
             foreach (string key in orderedKeys)
             {
-                List<System.Tuple<HatData, HatExtension>> value = packages[key];
+                List<(HatData, HatExtension)> value = packages[key];
                 YOffset = CreateHatPackage(value, key, YOffset, __instance);
             }
 

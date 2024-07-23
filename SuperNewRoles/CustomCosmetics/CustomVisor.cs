@@ -245,12 +245,12 @@ public class VisorTabPatch
         public static TMPro.TMP_Text textTemplate;
         public static List<ColorChip> Chips;
 
-        public static float CreateVisorPackage(List<System.Tuple<VisorData, CustomVisors.VisorExtension>> visors, string packageName, float YStart, VisorsTab __instance)
+        public static float CreateVisorPackage(List<(VisorData, CustomVisors.VisorExtension)> visors, string packageName, float YStart, VisorsTab __instance)
         {
             float offset = YStart;
             if (textTemplate != null)
             {
-                TMPro.TMP_Text title = UnityEngine.Object.Instantiate<TMPro.TMP_Text>(textTemplate, __instance.scroller.Inner);
+                TMPro.TMP_Text title = UnityEngine.Object.Instantiate(textTemplate, __instance.scroller.Inner);
                 title.transform.parent = __instance.scroller.Inner;
                 title.transform.localPosition = new Vector3(headerX, YStart, inventoryZ);
                 title.alignment = TMPro.TextAlignmentOptions.Center;
@@ -322,7 +322,7 @@ public class VisorTabPatch
         {
             CalcItemBounds(__instance);
             VisorData[] unlockedVisors = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedVisors();
-            Dictionary<string, List<System.Tuple<VisorData, CustomVisors.VisorExtension>>> packages = new();
+            Dictionary<string, List<(VisorData, CustomVisors.VisorExtension)>> packages = new();
 
             ModHelpers.DestroyList(visorsTabCustomTexts);
             ModHelpers.DestroyList(__instance.ColorChips);
@@ -340,13 +340,13 @@ public class VisorTabPatch
                 {
                     if (!packages.ContainsKey(ext.package == null ? innerslothPackageName : ext.package))
                         packages[ext.package == null ? innerslothPackageName : ext.package] = new();
-                    packages[ext.package == null ? innerslothPackageName : ext.package].Add(new System.Tuple<VisorData, CustomVisors.VisorExtension>(visorData, ext));
+                    packages[ext.package == null ? innerslothPackageName : ext.package].Add((visorData, ext));
                 }
                 else
                 {
                     if (!packages.ContainsKey(innerslothPackageName))
-                        packages[innerslothPackageName] = new List<System.Tuple<VisorData, CustomVisors.VisorExtension>>();
-                    packages[innerslothPackageName].Add(new System.Tuple<VisorData, CustomVisors.VisorExtension>(visorData, new() { IsNull = true }));
+                        packages[innerslothPackageName] = new();
+                    packages[innerslothPackageName].Add((visorData, new() { IsNull = true }));
                 }
             }
 
@@ -363,7 +363,7 @@ public class VisorTabPatch
 
             foreach (string key in orderedKeys)
             {
-                List<System.Tuple<VisorData, CustomVisors.VisorExtension>> value = packages[key];
+                List<(VisorData, CustomVisors.VisorExtension)> value = packages[key];
                 YOffset = CreateVisorPackage(value, key, YOffset, __instance);
             }
 
