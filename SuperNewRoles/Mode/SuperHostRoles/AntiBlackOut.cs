@@ -241,11 +241,14 @@ public static class AntiBlackOut
                 IsModdedSerialize = false;
                 ChangeName.SetRoleNames();
                 RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
+
+                PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
+
                 new LateTask(() =>
                 {
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
-                        if (player.IsMod() || player.IsDead())
+                        if (player.IsDead())
                             continue;
                         RoleTypes? DesyncRole = RoleSelectHandler.GetDesyncRole(player);
                         if (player.IsImpostor() || (DesyncRole.HasValue && DesyncRole.Value.IsImpostorRole()))
