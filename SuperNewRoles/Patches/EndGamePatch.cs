@@ -493,6 +493,8 @@ public class EndGameManagerSetUpPatch
         OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
         IsHaison = false;
         GameHistoryManager.Send(textRenderer.text, RoleColor);
+
+        LoggerPlus.EndGameAutoSave();
     }
 }
 
@@ -571,7 +573,7 @@ public static class OnGameEndPatch
             }
         }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
-        
+
     }
     private static List<NetworkedPlayerInfo> ProcessGetWinnersToRemove()
     {

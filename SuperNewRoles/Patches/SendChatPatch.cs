@@ -96,7 +96,7 @@ public static class SendChatPatch
 
             handled = true;
             string memo;
-            string via = "ChatCommandVia";
+            string via = "ChatCmdVia";
 
             // textからコマンドを削除し、ファイル名につける文字列を抜き出す
             memo = text.ToLower()

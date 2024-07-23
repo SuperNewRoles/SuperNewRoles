@@ -24,6 +24,7 @@ public static class ClientModOptionsPatch
             new("IsLightAndDarker", () => ConfigRoles.IsLightAndDarker.Value = !ConfigRoles.IsLightAndDarker.Value, ConfigRoles.IsLightAndDarker.Value),
             new("ReplayOptions", OpenReplayWindow, true),
             new("IsMuteLobbyBGM", () => ConfigRoles.IsMuteLobbyBGM.Value = !ConfigRoles.IsMuteLobbyBGM.Value, ConfigRoles.IsMuteLobbyBGM.Value),
+            new("IsSaveLogWhenEndGame", () => ConfigRoles.IsSaveLogWhenEndGame.Value = !ConfigRoles.IsSaveLogWhenEndGame.Value, ConfigRoles.IsSaveLogWhenEndGame.Value),
     };
     private static GameObject popUp;
     private static TextMeshPro titleText;
