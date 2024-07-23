@@ -110,7 +110,7 @@ class UpdateSystemPatch
         [HarmonyArgument(2)] byte amount)
     {
         ReplayActionUpdateSystem.Create(systemType, player.PlayerId, amount);
-        if (!RoleHelpers.IsSabotage())
+        if (!RoleHelpers.IsSabotage() && RoleClass.Technician.TechnicianPlayer.Count != 0)
         {
             new LateTask(() =>
             {
