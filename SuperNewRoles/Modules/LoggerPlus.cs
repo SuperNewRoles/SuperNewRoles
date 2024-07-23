@@ -43,12 +43,12 @@ class LoggerPlus
         if (File.Exists(sourceLogFile))
         {
             // logを出力した旨のlogを印字 及びチャットが存在するときはチャットを表示
-            var message = $"この時点までのログを [ {fileName} ] に保存しました。";
-            Logger.Info($"[{LogName}] {message}", via);
-            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", message, isSendFromGuest: true);
+            Logger.Info($"[{LogName}] Save success : {fileName}", via);
 
             FileInfo sourceLogPath = new(@sourceLogFile);
             sourceLogPath.CopyTo(@filePath, true);
+
+            AddChatPatch.ChatInformation(PlayerControl.LocalPlayer, "システム", $"この時点までのログを [ {fileName} ] に保存しました。", isSendFromGuest: true);
         }
         else
         {
