@@ -66,7 +66,7 @@ class ControllerManagerUpdatePatch
         // その時点までのlogを切り出す
         if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
         {
-            string via = "KeyCommandVia";
+            string via = "KeyCmdVia";
             LoggerPlus.SaveLog(via, via);
         }
 
