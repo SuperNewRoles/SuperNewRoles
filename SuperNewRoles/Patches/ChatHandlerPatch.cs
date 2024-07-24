@@ -24,26 +24,30 @@ public class AmongUsClientOnPlayerJoinedPatch
     public static void Postfix(PlayerPhysics __instance)
     {
         if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || __instance.myPlayer.IsBot()) return;
-        var isSelfSending = __instance.myPlayer.AmOwner && AmongUsClient.Instance.AmHost || ModHelpers.PlayerById(0).IsMod();
-        var isOtherSending = AmongUsClient.Instance.AmHost && !__instance.myPlayer.IsMod();
-
-        if (isSelfSending || isOtherSending)
-        {
             new LateTask(() =>
             {
-                if (isSelfSending) AddChatPatch.SelfSend(GetChatCommands.WelcomeToSuperNewRoles, GetChatCommands.GetWelcomeMessage());
-                if (isOtherSending) AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetWelcomeMessage(), GetChatCommands.WelcomeToSuperNewRoles);
+                // 自分相手に送信するか。
+                var isSelfSend = __instance.myPlayer.AmOwner && PlayerControlHelper.IsMod(AmongUsClient.Instance.HostId);
+                // 他のプレイヤーに送信するか。
+                var isOtherSend = AmongUsClient.Instance.AmHost && !__instance.myPlayer.IsMod();
+
+                if (isSelfSend)
+                    AddChatPatch.SelfSend(GetChatCommands.WelcomeToSuperNewRoles, GetChatCommands.GetWelcomeMessage());
+                else if (isOtherSend)
+                    AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetWelcomeMessage(), GetChatCommands.WelcomeToSuperNewRoles);
+
+                if (SuperNewRolesPlugin.IsBeta)
+                {
+                    new LateTask(() =>
+                    {
+                        if (isSelfSend)
+                            AddChatPatch.SelfSend(GetChatCommands.SNRCommander, GetChatCommands.GetVersionMessage());
+                        else if (isOtherSend)
+                            AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetVersionMessage());
+                    }, 1f, "Welcome Beta Message");
+                }
             }, 1f, "Welcome Message");
 
-            if (SuperNewRolesPlugin.IsBeta)
-            {
-                new LateTask(() =>
-                {
-                    if (isSelfSending) AddChatPatch.SelfSend(GetChatCommands.SNRCommander, GetChatCommands.GetVersionMessage());
-                    if (isOtherSending) AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetVersionMessage());
-                }, 2f, "Welcome Beta Message");
-            }
-        }
     }
 }
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
@@ -244,7 +248,7 @@ internal class AddChatPatch
         {
             string name = CachedPlayer.LocalPlayer.Data.PlayerName;
             if (name == GetChatCommands.SNRCommander) return;
-            if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles) && HideChat.HideChatEnabled)
+            if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles) && HideChat.HideChatEnabled && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
