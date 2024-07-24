@@ -493,7 +493,7 @@ public class EndGameManagerSetUpPatch
         }
         Recorder.OnEndGame(AdditionalTempData.gameOverReason);
         AdditionalTempData.Clear();
-        OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text));
+        OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, text);
         IsHaison = false;
         GameHistoryManager.Send(textRenderer.text, RoleColor);
 
