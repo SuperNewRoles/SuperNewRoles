@@ -37,7 +37,16 @@ public static class OneClickShapeshift
         player.RpcSetVisor(player.Data.DefaultOutfit.HatId);
         player.RpcSetName(player.GetDefaultName());
         player.SetName(player.GetDefaultName());
-        player.Shapeshift(player, false);
+
+        NetworkedPlayerInfo.PlayerOutfit defaultOutfit = player.Data.DefaultOutfit;
+        player.RawSetName(defaultOutfit.PlayerName);
+        player.RawSetColor(defaultOutfit.ColorId);
+        player.RawSetHat(defaultOutfit.HatId, defaultOutfit.ColorId);
+        player.RawSetSkin(defaultOutfit.SkinId, defaultOutfit.ColorId);
+        player.RawSetVisor(defaultOutfit.VisorId, defaultOutfit.ColorId);
+        player.RawSetPet(defaultOutfit.PetId, defaultOutfit.ColorId);
+        player.CurrentOutfitType = PlayerOutfitType.Default;
+
         ChangeName.SetRoleName(player);
         new LateTask(() =>
         {

@@ -75,7 +75,7 @@ public static class HideChat
     }
     public static void OnAddChat(PlayerControl player, string message, bool isAdd)
     {
-        if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead())
+        if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead() || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
             return;
         CustomRpcSender sender = new("HideChatSender", sendOption: Hazel.SendOption.Reliable, false);
         OnAddChat(sender, player, message, isAdd);

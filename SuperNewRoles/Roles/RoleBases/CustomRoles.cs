@@ -128,6 +128,8 @@ public static class CustomRoles
                             handleDisconnect.OnDisconnect();
                     }
                );
+                if (player.TryGetRoleBase(out RoleBase roleBase))
+                    RoleBaseManager.ClearRole(player, roleBase);
                 AntiBlackOut.OnDisconnect(player.Data);
             }
         }
