@@ -1061,7 +1061,7 @@ public static class OnGameEndPatch
                 winners = [];
             spereseted = true;
             winners.Add(player.Data);
-            AdditionalTempData.winCondition = WinCondition.TunaWin;
+            winCondition = WinCondition.TunaWin;
         }
         spereseted = false;
         foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
