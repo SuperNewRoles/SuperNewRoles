@@ -274,7 +274,7 @@ public class EndGameManagerSetUpPatch
         {
             haison = true;
             text = ModTranslation.GetString("HaisonName");
-            RoleColor = HasionColor;
+            RoleColor = HaisonColor;
         }
         else if (text is "NoWinner")
         {
