@@ -59,6 +59,7 @@ public static class RoleClass
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
         CustomOverlays.ResetOverlays();
+        EndGameManagerSetUpPatch.IsHaison = false;
         IsCoolTimeSetted = false;
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
