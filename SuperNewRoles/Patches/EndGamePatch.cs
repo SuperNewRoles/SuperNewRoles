@@ -506,6 +506,8 @@ public class EndGameManagerSetUpPatch
         OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
         IsHaison = false;
         GameHistoryManager.Send(textRenderer.text, RoleColor);
+
+        LoggerPlus.EndGameAutoSave();
     }
 }
 

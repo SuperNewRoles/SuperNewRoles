@@ -35,11 +35,11 @@ public static class ShouldAlwaysHorseAround
 [HarmonyPatch]
 public class IntroPatch
 {
+    public static int GameCount { get; private set; }
+
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
     class IntroCutsceneCoBeginPatch
     {
-        static int GameCount = 0;
-
         static void Postfix()
         {
             Logger.Info($"=================Game Info (Count : {++GameCount})=================", "Intro Begin");

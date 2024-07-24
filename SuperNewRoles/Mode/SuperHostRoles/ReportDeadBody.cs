@@ -53,31 +53,37 @@ class ReportDeadBody
             CustomRpcSender sender = CustomRpcSender.Create("ReportDeadBodyPatch", SendOption.Reliable);
             if (DesyncRoleTypes.HasValue)
             {
-                sender.RpcSetRole(__instance, __instance.IsMod() ? RoleTypes.Crewmate : RoleTypes.Engineer, true);
-                if (!__instance.IsMod())
+                __instance.RpcSetRoleImmediately(__instance.IsMod() ? RoleTypes.Crewmate : RoleTypes.Engineer, true);
+                new LateTask(() =>
                 {
-                    __instance.RpcSetRoleDesync(sender, DesyncRoleTypes.Value, true);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                    if (!__instance.IsMod())
                     {
-                        if (player.PlayerId != __instance.PlayerId)
-                            sender.RpcSetRole(player, RoleTypes.Scientist, true, __instance.GetClientId());
+                        __instance.RpcSetRoleDesync(DesyncRoleTypes.Value, true);
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                        {
+                            if (player.PlayerId != __instance.PlayerId)
+                                player.RpcSetRoleDesync(RoleTypes.Scientist, true, __instance);
+                        }
                     }
-                }
-                __instance.SetRole(RoleTypes.Crewmate, true);
+                    __instance.SetRole(RoleTypes.Crewmate, true);
+                }, 0.1f);
             }
             else if (SyncRoleTypes.IsImpostorRole())
             {
-                sender.RpcSetRole(__instance, RoleTypes.Tracker, true);
-                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                __instance.RpcSetRoleImmediately(RoleTypes.Tracker, true);
+                new LateTask(() =>
                 {
-                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
-                        (player.IsImpostor() || player.PlayerId == __instance.PlayerId))
-                        sender.RpcSetRole(__instance, SyncRoleTypes, true, player.GetClientId());
-                }
-                __instance.SetRole(SyncRoleTypes, true);
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                    {
+                        if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+                            (player.IsImpostor() || player.PlayerId == __instance.PlayerId))
+                            __instance.RpcSetRoleDesync(SyncRoleTypes, true, player);
+                    }
+                    __instance.SetRole(SyncRoleTypes, true);
+                }, 0.1f);
             }
             else
-                __instance.RpcSetRole(target.RoleWhenAlive == null ? target.Role.Role : target.RoleWhenAlive.Value, true);
+                __instance.RpcSetRoleImmediately(SyncRoleTypes, true);
             __instance.SwapRoleRPC(target.Object);
             target.Object.SetRoleRPC(__instance.GetRole());
             ChangeName.SetRoleName(__instance, sender:sender);

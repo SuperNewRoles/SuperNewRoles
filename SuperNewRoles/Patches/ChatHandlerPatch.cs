@@ -318,7 +318,7 @@ internal class AddChatPatch
         var contents = $"{blank}{blank}{text}{blank}";
 
         localPlayer.SetName(titelName);
-        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(localPlayer, contents, false);
+        FastDestroyableSingleton<HudManager>.Instance?.Chat?.AddChat(localPlayer, contents, false);
         localPlayer.SetName(originalName);
     }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)

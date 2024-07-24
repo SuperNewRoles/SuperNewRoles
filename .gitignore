@@ -1,6 +1,7 @@
 SuperNewRoles/SuperNewRoles.csproj.user
 SuperNewRoles/obj/
 SuperNewRoles/bin/
+SuperNewRoles/Roles/Crewmate/
 *.v2
 *.dll
 .vs/

@@ -70,7 +70,6 @@ class CheckShapeshiftPatch
             if (__instance.GetRoleBase() is ISHROneClickShape oneClickShape)
             {
                 oneClickShape.OnOneClickShape();
-                OneClickShapeshift.OneClickShaped(__instance);
                 return !(reject = true);
             }
             else
