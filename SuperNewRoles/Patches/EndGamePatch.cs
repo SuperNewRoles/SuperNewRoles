@@ -274,6 +274,7 @@ public class EndGameManagerSetUpPatch
         {
             haison = true;
             text = ModTranslation.GetString("HaisonName");
+            RoleColor = HasionColor;
         }
         else if (text is "NoWinner")
         {
@@ -318,7 +319,8 @@ public class EndGameManagerSetUpPatch
             }
         }
 
-        if (haison || winCondition is WinCondition.PantsRoyalWin or WinCondition.SaunerWin) textRenderer.text = text;
+        if (haison) text = ModTranslation.GetString("HaisonName");
+        else if (winCondition is WinCondition.PantsRoyalWin or WinCondition.SaunerWin) { }
         else if (text == ModTranslation.GetString("NoWinner")) text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) text += " " + ModTranslation.GetString("GodWinText");
         else text = string.Format(text + " " + ModTranslation.GetString("WinName"));
@@ -440,8 +442,9 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
-        Logger.Info("WINCOND:" + AdditionalTempData.winCondition.ToString());
-        textRenderer.text = text;
+        Logger.Info("WinCondition:" + AdditionalTempData.winCondition.ToString());
+        if (AdditionalTempData.winCondition != WinCondition.HAISON)
+            textRenderer.text = text;
         try
         {
             var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
@@ -490,7 +493,7 @@ public class EndGameManagerSetUpPatch
         }
         Recorder.OnEndGame(AdditionalTempData.gameOverReason);
         AdditionalTempData.Clear();
-        OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
+        OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, text);
         IsHaison = false;
         GameHistoryManager.Send(textRenderer.text, RoleColor);
 
@@ -500,7 +503,6 @@ public class EndGameManagerSetUpPatch
 
 public class CustomPlayerData
 {
-    public CachedPlayerData currentData;
     public string name;
     public bool IsWin;
     public bool isImpostor;
@@ -510,7 +512,6 @@ public class CustomPlayerData
     public RoleId? role;
     public CustomPlayerData(NetworkedPlayerInfo p, GameOverReason gameOverReason)
     {
-        currentData = new(p);
         name = p.PlayerName;
         try
         {
@@ -1061,7 +1062,7 @@ public static class OnGameEndPatch
                 winners = [];
             spereseted = true;
             winners.Add(player.Data);
-            AdditionalTempData.winCondition = WinCondition.TunaWin;
+            winCondition = WinCondition.TunaWin;
         }
         spereseted = false;
         foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)

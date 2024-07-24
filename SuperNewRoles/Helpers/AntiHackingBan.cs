@@ -42,30 +42,4 @@ class AntiHackingBan
             return true;
         }
     }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-    class RpcSendChatPatch
-    {
-        public static bool Prefix(PlayerControl __instance, ref bool __result, [HarmonyArgument(0)] string chatText)
-        {
-            //chatText = Regex.Replace(chatText, "<.*?>", string.Empty);
-            if (string.IsNullOrWhiteSpace(chatText))
-            {
-                __result = false;
-                return false;
-            }
-            if (AmongUsClient.Instance.AmClient && FastDestroyableSingleton<HudManager>.Instance)
-            {
-                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(__instance, chatText);
-            }
-            if (chatText.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                FastDestroyableSingleton<UnityTelemetry>.Instance.SendWho();
-            }
-            MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 13, SendOption.None);
-            obj.Write(chatText);
-            obj.EndMessage();
-            __result = true;
-            return false;
-        }
-    }
 }
