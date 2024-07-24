@@ -46,6 +46,16 @@ public class UsePlatformPlayerControlPatch
         return false;
     }
 }
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
+public static class PlayerControlStartMeetingPatch
+{
+    public static void Postfix(PlayerControl __instance, NetworkedPlayerInfo target)
+    {
+        Logger.Info($"StartMeeting AmOwner:{__instance.AmOwner} {target == null}");
+        if (!__instance.AmOwner && target == null)
+            __instance.RemainingEmergencies--;
+    }
+}
 // Allow movement interpolation to use velocities greater than the local player's
 /*
 [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
@@ -406,29 +416,29 @@ class ReportDeadBodyPatch
                 OrientalShaman.IsTransformation = false;
             }
         }
-        /* if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
-        {
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                if (player.IsRole(RoleId.Doppelganger))
-                {
-                    new LateTask(() =>
-                    {
-                        player.RpcShapeshift(player, false);
-                    }, 0.5f);
-                    SyncSetting.CustomSyncSettings(player);
-                }
-            }
-        }*/
-        return RoleClass.Assassin.TriggerPlayer == null
-        && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
-        && (Mode.PlusMode.PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting || target != null)
-        && !ModeHandler.IsMode(ModeId.BattleRoyal, ModeId.PantsRoyal)
-        && !ModeHandler.IsMode(ModeId.CopsRobbers)
-        && (ModeHandler.IsMode(ModeId.SuperHostRoles)
-            ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
-            : !ModeHandler.IsMode(ModeId.Zombie)
-            && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId));
+
+        if (RoleClass.Assassin.TriggerPlayer != null)
+            return false;
+        // 死体通報できないかつ、死体通報の場合
+        if (!Mode.PlusMode.PlusGameOptions.UseDeadBodyReport && target != null)
+            return false;
+        // 緊急招集が無効かつ、通報対象がいない場合
+        if (!Mode.PlusMode.PlusGameOptions.EmergencyMeetingsCallstate.enabledSetting && target == null)
+            return false;
+        // 会議を開けないモードを防ぐ
+        if (ModeHandler.IsMode(ModeId.BattleRoyal, ModeId.PantsRoyal, ModeId.CopsRobbers, ModeId.Zombie))
+            return false;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) &&
+            !ReportDeadBody.ReportDeadBodyPatch(__instance, target))
+            return false;
+        // 探偵以外が会議を開けないときの処理
+        if (ModeHandler.IsMode(ModeId.Detective)
+            && target == null
+            && Mode.Detective.Main.IsNotDetectiveMeetingButton
+            && __instance.PlayerId != Mode.Detective.Main.DetectivePlayer.PlayerId)
+            return false;
+
+        return true;
     }
 
     public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo target)

@@ -50,10 +50,10 @@ Analytics,Analytics,解析,解析,解析
 AnalyticsText,In order to make SuperNewRoles an even better mod， we have created a function to send information about positions used to the server. \nThis information can be viewed by SuperNewRoles developers. See the following page for more information. \nYou can change in the settings whether you want to save the information. \nNo personally identifiable elements， such as your player name， will be sent. \n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,为了改善模组玩家的游戏体验，\n制作组尝试推出将一局游戏中的职业等信息发送给制作组服务器的功能。\n制作组将查阅这些信息来改进本模组；详细可点击最下方网址查看。\n您可以决定自己是否要保留这些信息；\n制作组承诺不会将您的游戏昵称等私人信息发送至服务器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>,為了改善遊玩本模組玩家的遊戲體驗，\n製作組推出將遊戲中的職業等資訊傳送給製作組的功能。\n製作組將可查閱這些資訊來改進本模組；詳細可點擊最下方網址查看。\n您可以決定自己是否要保留這些資訊；\n製作組承諾不會將您的遊戲暱稱等個人資料傳送到伺服器。\n<link href="https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について">https://github.com/SuperNewRoles/SuperNewRoles/wiki/解析について</link>
 AnalyticsOK,OK!,了解！,确认,確認！
 MainMenuDiscordText,<size=90%>Bug report or Question or Request</size>\n<size=90%>I wish everyone who uses it would join.(it's Discord server)</size>,<size=90%>バグ報告・質問・要望はこちら</size>\n<size=70%>使ってる人は全員入ってほしい(願望)</size>\n<size=140%>(Discord)</size>,,<size=90%>Bug回報、問題、請求請至</size>\n<size=70%>希望所有人都能加入</size>\n<size=140%>(Discord伺服器)</size>
-20240618_25SaverInfo_PopupTitle,Server Notice,サーバーに関するお知らせ
-20240618_25SaverInfo_PopupText,<size=70%>Hello!\n\nActually，in some mods including SNR，if there are more than "9 people" on a vanilla server，some people get disconnected at the lobby start screen. \n(Not everyone gets disconnected though!)\nSo，if someone gets disconnected，it's probably due to this issue! \nIf no one gets disconnected at the lobby start screen，there shouldn't be much of a problem，so please check that first.\n\nCustom servers are not affected by this issue，so if you can use a custom server，that might be a good option. \n(At least as of the release，custom servers are not supported yet，so you can't use them.)\n\nThat's about it. \nFor the latest information，check Discord or Twitter! \n(There are links at the bottom right of the main menu! You should be able to see them after closing this.)\n\nSee you!</size>,<size=70%>こんにちは！\n実は、SNRを含めた一部MODの場合、バニラサーバーで何故か「9人以上」入るとロビーが開始画面で切断される人が出てくるようなんだ。\n(必ず切断されるわけてはないよ!)\n\nだから、落ちちゃう人がいたらそれはこの問題だよ！\nロビーが開始画面で落ちなければほとんど問題ないと思うからまずは確認してね。\n\nカスタムサーバーではこの影響は受けないから、カスタムサーバーが使えるならカスタムサーバーを使うのもいいと思うよ。\n(少なくともリリース時点ではカスタムサーバーがまだ対応してないから使えないけど。)\n\nこんな感じかな。最新情報はDiscordかTwitterを見てね！\n(メインメニューの右下にリンクがあるよ！これを閉じたら見れると思う。)\n\nじゃあね！ </size>
-20240618_25SaverInfo_PopupOK,OK,オッケー！
-CommandNotFound,Where is the command?\nThis command is not found.,このコマンドはどこ?\nこのコマンドが見つかりませんでした。
+20240618_25SaverInfo_PopupTitle,Server Notice,サーバーに関するお知らせ,,伺服器公告
+20240618_25SaverInfo_PopupText,<size=70%>Hello!\n\nActually，in some mods including SNR，if there are more than "9 people" on a vanilla server，some people get disconnected at the lobby start screen. \n(Not everyone gets disconnected though!)\nSo，if someone gets disconnected，it's probably due to this issue! \nIf no one gets disconnected at the lobby start screen，there shouldn't be much of a problem，so please check that first.\n\nCustom servers are not affected by this issue，so if you can use a custom server，that might be a good option. \n(At least as of the release，custom servers are not supported yet，so you can't use them.)\n\nThat's about it. \nFor the latest information，check Discord or Twitter! \n(There are links at the bottom right of the main menu! You should be able to see them after closing this.)\n\nSee you!</size>,<size=70%>こんにちは！\n実は、SNRを含めた一部MODの場合、バニラサーバーで何故か「9人以上」入るとロビーが開始画面で切断される人が出てくるようなんだ。\n(必ず切断されるわけてはないよ!)\n\nだから、落ちちゃう人がいたらそれはこの問題だよ！\nロビーが開始画面で落ちなければほとんど問題ないと思うからまずは確認してね。\n\nカスタムサーバーではこの影響は受けないから、カスタムサーバーが使えるならカスタムサーバーを使うのもいいと思うよ。\n(少なくともリリース時点ではカスタムサーバーがまだ対応してないから使えないけど。)\n\nこんな感じかな。最新情報はDiscordかTwitterを見てね！\n(メインメニューの右下にリンクがあるよ！これを閉じたら見れると思う。)\n\nじゃあね！ </size>,,<size=70%>您好！\n\n目前，包括SNR在內的一些模組，如果在原版伺服器上有超過「9人」，有些人在大廳開始畫面時會被中斷連線。\n(當然不是每個人都會被中斷連線！)\n\n因此，若有人被中斷連線，那可能是這個問題！\n如果在大廳開始畫面時沒有人被中斷連線，那應該不會有太大問題，所以請先檢查一下。\n\n自訂伺服器不受此問題影響，所以如果可以使用自訂伺服器，那可能是一個不錯的選擇。\n(至少在發布時，自訂伺服器尚未支援，因此無法使用。)\n\n有關最新消息，請查看SNR Discord或Twitter！\n(主選單右下角有鏈接！)\n\n謝謝！</size>
+20240618_25SaverInfo_PopupOK,OK,オッケー！,,OK
+CommandNotFound,Where is the command?\nThis command is not found.,このコマンドはどこ?\nこのコマンドが見つかりませんでした。,,找不到指令。
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红,鮭魚紅
@@ -137,9 +137,9 @@ SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加�
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
 SettingpresetSelection,Preset,プリセット,预设,預設
 ModSttingsButtonText,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color> Settings,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>の設定,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>设置,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>設定
-NeutralRolesHeader,Neutral Roles,第三陣営のロール
-ModifierHeader,Modifier Roles,モディファイア
-SettingOf,{0} Setting,{0}の設定
+NeutralRolesHeader,Neutral Roles,第三陣営のロール,,中立角色
+ModifierHeader,Modifier Roles,モディファイア,,附加角色
+SettingOf,{0} Setting,{0}の設定,,{0}設定
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>设置,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>設定
 SettingSuperNewRolesVerGetSettingCommand,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> & <color=#ff8cc5>Add-on</color>Settings,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> & <color=#ff8cc5>アドオン</color>の設定,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> & <color=#ff8cc5>附加</color>设置,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> & <color=#ff8cc5>附加</color>設定
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>内鬼阵营</color>设置,<color=#ff0000>內鬼陣營</color>設定
@@ -273,8 +273,8 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
 OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
-CanSeeImpostorRole,Imposters can check each other's rolls.,インポスターが互いに役職を確認できる
-CanSeeImpostorRoleTurn,Number of turns to confirm,わかるようになる会議数
+CanSeeImpostorRole,Imposters can check each other's rolls.,インポスターが互いに役職を確認できる,,內鬼可以查看其他內鬼的職業
+CanSeeImpostorRoleTurn,Number of turns to confirm,わかるようになる会議数,,查看所需回合數
 CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない,玩家死亡后不再受到灵咒影响,死者不具有憑依能力
 ReleaseHauntAfterCompleteTasks,After task completion，release haunt ability.,タスク完了後に憑依能力を開放する。,完成任务后才会释放灵咒,任務完成後啟用憑依能力
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
@@ -581,7 +581,7 @@ MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeti
 MeetingSheriffkillChat_KillTarget,{0} has sheriffkilled {1}!,{0} は {1} をシェリフキルした！,{0}被{1}出警了！,{0}被{1}在會議中被正義執行了！
 MeetingSheriffkillChat_Success,{0} succeeded!,{0} による 正義執行は成功だ！,{0}成功了！,{0}成功了
 MeetingSheriffkillChat_MissFire,{0} was a misfire!,{0} は 誤爆した！,{0}的枪走火了！,{0}的槍走火了！
-MeetingSheriffkillChat_AlwaysSuicideSuccess,Execution against {0} is a success!\n{1} died in the line of duty!,{0} への 正義執行は成功だ!\n{1} は殉職した!
+MeetingSheriffkillChat_AlwaysSuicideSuccess,Execution against {0} is a success!\n{1} died in the line of duty!,{0} への 正義執行は成功だ!\n{1} は殉職した!,,{0}被處決了！\n{1}在過程中殉職了！
 MeetingSheriffkillChat_AlwaysKillMissFire,{0} was killed，but it was a misfire! {1} killed himself in remorse!,{0} をキルしたが誤射だった!\n{1} は自責の念で自害した!,{0}被杀害了，但他是被冤枉的！{1}以死谢罪了！,{0}被殺害了，但他是被冤枉的！{1}以死謝罪了！
 JackalName,Jackal,ジャッカル,豺狼,豺狼
 JackalCombIntroDearSheriff,I'm told there's a crewmate who can kill me.\nBut it doesn't matter. All I have to do is kill him and everyone else.,インポスター以外に私を殺せる者がいる…?\n関係ない そいつ含めて全員殺せばいいだけだ,除了内鬼还有要杀我的人……？\n没关系。我就凭一人之力，打倒整个世界。,能殺我的不只是內鬼...?\n沒關係，只要殺了所有人就好了
@@ -682,20 +682,20 @@ NiceGuesserTitle1,Let's punch out the outsider.,人外を打ち抜こう,生命�
 NiceGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份,在會議上猜測他人的身份
 NiceGuesserTitle3,Guess and kill the Impostor!,推察し、人外を撃ち抜け！,推测身份并击杀内鬼,推測並擊殺敵人！
 NiceGuesserDescription,During the meeting，you can kill the target by guessing the target's role and then designating the target to be killed.\nIf you misfire，you commit suicide.\nCheck if the target's coming out is true，for example，"I am a crewmate.,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\n「自分はクルーメイトです」等 対象のカミングアウトが真であるか精査してみましょう。,正义的赌怪可以在会议阶段通过正确猜测一名玩家的职业来击杀那名玩家。\n若猜测错误，正义的赌怪自杀。\n正义的赌怪可以确认目标是否在对船员说谎。,在會議中猜測目標職業，當職業猜中時對象遭狙殺，反之則自殺。\n查明那些說「我是好人！」的人的身分！
-GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,正义的赌怪能否在一次会议中多次猜测,正義的賭怪能否在一次會議中多次猜測
-GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,正义的赌怪最大可猜测次数,正義的賭怪最大可猜測次數
-GuesserOnStartMeetingInfoCanShot,I have {0} rounds of ammunition left...,残りの弾薬は{0}発だ...
-GuesserOnStartMeetingInfoCannotShot,Alright, let's make a guess. Oh dear, it seems we're out of ammo..,さて、推測を。おや、弾切れのようだ...。
-GuesserCommandUsage,Usage: /bt [Target color name] [Role name],使い方: /bt [対象の色名] [役職名]
-GuesserErrorNoneTarget,Target did not exist.,対象が存在しませんでした。
-GuesserErrorNoneRole,Role did not exist.,役職が存在しませんでした。
-GuesserErrorCannotShotCrew,You can't guess Crewmate role.,クルーメイト役職を打つことができません。
-GuesserErrorCannotShotCelebrity,Now You can't guess a Celebrity.,今はスターを打つことができません。
-GuesserErrorNoCount,There are no more guess count left!,もう回数が残っていません。
-GuesserErrorShotOnThisMeeting,You can't guess at this meeting.,もうこの会議では打つことができません。
-GuesserErrorTargetIsDead,The target is already dead.,対象は既に死亡しています。
-GuesserBigNewsTitle,<size=160%>Big News</size>,<size=160%>ビッグニュース</size>
-GuesserPlayerWasDead,{0} suddenly fainted...,{0}が突然倒れたようだ...,
+GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,正义的赌怪能否在一次会议中多次猜测,正義的賭怪能否在一次會議中多次刺殺
+GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,正义的赌怪最大可猜测次数,正義的賭怪最大可刺殺機會
+GuesserOnStartMeetingInfoCanShot,I have {0} rounds of ammunition left...,残りの弾薬は{0}発だ...,,剩餘{0}次刺殺機會
+GuesserOnStartMeetingInfoCannotShot,Alright, let's make a guess. Oh dear, it seems we're out of ammo..,さて、推測を。おや、弾切れのようだ...。,,來賭吧。喔不，沒子彈了...
+GuesserCommandUsage,Usage: /bt [Target color name] [Role name],使い方: /bt [対象の色名] [役職名],,使用方法：/bt [對象顏色名] [職業名]
+GuesserErrorNoneTarget,Target did not exist.,対象が存在しませんでした。,,對象不存在。
+GuesserErrorNoneRole,Role did not exist.,役職が存在しませんでした。,,職業不存在。
+GuesserErrorCannotShotCrew,You can't guess Crewmate role.,クルーメイト役職を打つことができません。,,無法刺殺船員職業。
+GuesserErrorCannotShotCelebrity,Now You can't guess a Celebrity.,今はスターを打つことができません。,,無法刺殺網紅。
+GuesserErrorNoCount,There are no more guess count left!,もう回数が残っていません。,,刺殺次數已達上限。
+GuesserErrorShotOnThisMeeting,You can't guess at this meeting.,もうこの会議では打つことができません。,,這輪會議已無法再刺殺。
+GuesserErrorTargetIsDead,The target is already dead.,対象は既に死亡しています。,,目標對象已死亡。
+GuesserBigNewsTitle,<size=160%>Big News</size>,<size=160%>ビッグニュース</size>,,<size=160%>大新聞</size>
+GuesserPlayerWasDead,{0} suddenly fainted...,{0}が突然倒れたようだ...,,{0}突然倒下...
 EvilGuesserName,Evil Guesser,イビルゲッサー,邪恶的赌怪,邪惡的賭怪
 EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポスター以外の陣営の役職を当てよう,刺杀其他玩家,刺殺其他玩家
 EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗ればあの世行き,赌博的本质就是疯狂,太過高調將會死於他人之手
@@ -1711,24 +1711,24 @@ MadRaccoonTitle2,If my abilities can be of service to my master，then let us ut
 MadRaccoonDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nI possess the ability to Shapeshift. I can disguise myself as the master to create an alibi，impersonate the master's enemies to frame them，or sow confusion in discussions!\n\nI only have the power of transformation...\nBut if this ability can be of use to the master... if I am needed...\nThen let us utilize this ability and see what we can achieve!!\nPlease note that the translation may slightly vary depending on the context and intended meaning.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nシェイプシフト能力を有します。\nご主人に化けてアリバイを作ったり、ご主人の敵に化けて罪をなすりつけたり、議論を錯乱させてみましょう!\n\n私は変化の能力しか持たない...\nただこれだけの能力が ご主人の為になるというならば...必要とされるのであれば...\nこの能力 活用してみませしょう!!,规则上狸法师属于船员阵营，但是其为内鬼的同伙。\n狸法师拥有化形的能力。\n狸法师可以通过化形制造内鬼的不在场证明、陷害他人或在讨论中制造混乱。\n\n吾乃修炼千年的狸妖，有千变万化之术……\n吾将为唤醒我之人使用我的能力……\n汝等愚蠢凡人，能识破吾之妖术吗？,判定是船員陣營，但是是內鬼的同伴。\n擁有變身的能力。\n可以變成內鬼來製造不在場證明，也可以變成內鬼的敵人來嫁禍，或者在討論中製造混亂！\n\n我只有變身的能力...\n但如果這個能力能為內鬼服務...\n那就讓我活用這個能力吧！
 MadRaccoonButtonName,Change radically,化ける,化形,變身
 MoiraName,Moira,モイラ,命运女神,莫伊拉
-MoiraDescription,This is a position for enjoyable tables that messes up the board.\nAt the whim of the Goddess.\nPlay as you like， make use of outsiders， hang the crew with roles， replace them as you like， etc.,盤面をぐちゃぐちゃにするエンジョイ卓向け役職です\n女神様のきまぐーれ\n人外を活かしたり、役持ちクルーを吊ったり、適当に入れ替えたり、好きに遊びましょう,命运女神属于独立阵营，是一个娱乐向职业，可以让局面变得十分混乱。\n会议阶段，命运女神可以选择两名玩家，在会议结束后交换他们的职业。\n根据房间设置，命运女神也可以交换那两名玩家的得票。,將對局化為手中的棋盤。\n隨著女神的心情。\n隨心所欲地玩，利用外人，吊死有職業的船員，隨意更換等等。
+MoiraDescription,This is a position for enjoyable tables that messes up the board.\nAt the whim of the Goddess.\nPlay as you like， make use of outsiders， hang the crew with roles， replace them as you like， etc.,盤面をぐちゃぐちゃにするエンジョイ卓向け役職です\n女神様のきまぐーれ\n人外を活かしたり、役持ちクルーを吊ったり、適当に入れ替えたり、好きに遊びましょう,命运女神属于独立阵营，是一个娱乐向职业，可以让局面变得十分混乱。\n会议阶段，命运女神可以选择两名玩家，在会议结束后交换他们的职业。\n根据房间设置，命运女神也可以交换那两名玩家的得票。,莫伊拉屬於中立陣營。\n將對局化為手中的棋盤。\n隨著女神的心情。\n隨心所欲地玩，利用外人，吊死有職業的船員，隨意更換等等。
 MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！,掌控命运！,命運掌握在我手中！
 MoiraAbilityLimit,Number of ability usage,能力使用数,技能最大使用次数,能力最大使用次數
 MoiraChangeVote,I'll switch my vote as well,投票も入れ替える,技能同时交换得票,同時交換得票
-MoiraSelection,Swap Selection,スワップ選択
-MoiraSelectionText,Swap two people by voting.\nPlease select two people to swap by voting.\n*You cannot select yourself.\n(You can select yourself by completing the vote as your own vote)\n*Skip to cancel the swap selection mode.\n*After selecting one person， you can also vote for yourself to cancel the swap selection mode.,交換する2人を投票によって\n選択してください\n※自分は選択できません\n（自分選択は自投票として投票完了）\n※スキップまたは1人を選択後、自投票で\n※スワップ選択モード解除
-MoiraSelectionCancel,Cancel Swap Selection,スワップ選択解除
-MoiraSelectionCancelText,Swap Selection mode has been canceled.,スワップ選択モードが解除されました
-MoiraSelectionBack,Release of swap target,スワップ対象解除
-MoiraSelectionBackText,The first person eligible for the swap has been removed.,スワップの対象1人目を解除しました
-MoiraSelectionEnd,Swap selection complete,スワップ選択完了
-MoiraSelectionEndText,Swap target selection is over.\nFate is twisting....\nIf fate is like this....What happens now?,スワップ対象の選択が終わりました\n運命が捻じ曲がる....\nこんな運命なら....どうなる?
-MoiraCommandUsage,Usage : /swap [color name of target 1] [color name of target 2],使い方 : /swap [対象1の色名] [対象2の色名]
-MoiraErrorVoteLimitOver,Not Swappable,スワップ不可
-MoiraErrorVoteLimitOverText,Swap has been used up and the ability cannot be activated.\nIf you vote for yourself， please go again.,スワップを使い切ったため、能力を発動できません\n自投票の場合は、もう1度行ってください
-MoiraErrorLimitOver,The swap has been used up and the ability cannot be activated.,スワップを使い切ったため、能力を発動できません
-MoiraErrorSamePerson,Because target 1 and target 2 are the same player，\nFailed to activate.,対象1と対象2が同じプレイヤーの為、\n発動できませんでした
-MoiraSwapText,,突然が体が歪む感覚が....\n\n何も起こらない....\nいや、何かは起きている\nそんな感覚を覚える\n\n対象1 : {0}\n対象2 : {1}
+MoiraSelection,Swap Selection,スワップ選択,,交換選擇
+MoiraSelectionText,Swap two people by voting.\nPlease select two people to swap by voting.\n*You cannot select yourself.\n(You can select yourself by completing the vote as your own vote)\n*Skip to cancel the swap selection mode.\n*After selecting one person， you can also vote for yourself to cancel the swap selection mode.,交換する2人を投票によって\n選択してください\n※自分は選択できません\n（自分選択は自投票として投票完了）\n※スキップまたは1人を選択後、自投票で\n※スワップ選択モード解除,,請選擇兩人投票來交換兩者的得票。\n※請注意無法選擇自己，選擇自己將會對自己投票。\n當選擇一人後，對自己投票會取消交換模式。
+MoiraSelectionCancel,Cancel Swap Selection,スワップ選択解除,,取消交換選擇
+MoiraSelectionCancelText,Swap Selection mode has been canceled.,スワップ選択モードが解除されました,,交換選擇模式已取消
+MoiraSelectionBack,Release of swap target,スワップ対象解除,,解除交換對象
+MoiraSelectionBackText,The first person eligible for the swap has been removed.,スワップの対象1人目を解除しました,,第一個選擇對象已被取消
+MoiraSelectionEnd,Swap selection complete,スワップ選択完了,,交換已完成
+MoiraSelectionEndText,Swap target selection is over.\nFate is twisting....\nIf fate is like this....What happens now?,スワップ対象の選択が終わりました\n運命が捻じ曲がる....\nこんな運命なら....どうなる?,,對象已被交換。\n命運正被扭轉...\n這樣的命運如何呢？
+MoiraCommandUsage,Usage : /swap [color name of target 1] [color name of target 2],使い方 : /swap [対象1の色名] [対象2の色名],,使用方法：/swap [對象1顏色名] [對象2顏色名]
+MoiraErrorVoteLimitOver,Not Swappable,スワップ不可,,無法交換
+MoiraErrorVoteLimitOverText,Swap has been used up and the ability cannot be activated.\nIf you vote for yourself， please go again.,スワップを使い切ったため、能力を発動できません\n自投票の場合は、もう1度行ってください,,交換次數已用完，無法使用能力。\n如果是對自己投票，請再試一次。
+MoiraErrorLimitOver,The swap has been used up and the ability cannot be activated.,スワップを使い切ったため、能力を発動できません,,交換次數已用完，無法使用能力。
+MoiraErrorSamePerson,Because target 1 and target 2 are the same player，\nFailed to activate.,対象1と対象2が同じプレイヤーの為、\n発動できませんでした,,因為對象1和對象2是同一玩家，\n無法使用能力。
+MoiraSwapText,,突然が体が歪む感覚が....\n\n何も起こらない....\nいや、何かは起きている\nそんな感覚を覚える\n\n対象1 : {0}\n対象2 : {1},,突然感到身體被扭曲...了嗎\n\n好像甚麼都沒發生...\n不對，到底發生了甚麼？\n好像記得這樣的感覺\n\n對象1：{0}\n對象2：{1}
 ConjurerName,Conjurer,魔術師,大法师,魔導師
 ConjurerTitle1,Surround them and exterminate them,囲え、そして殲滅せよ,用法术围歼敌人,包圍、然後消滅他們
 ConjurerDescription,By setting up and activating three magic circles，\nthis impostor can kill all crew members within the area of those triangles.,3つの魔法陣を設置し発動することで、\nその三角形の範囲内にいるクルーを全てキルすることが出来るインポスターです。,大法师属于内鬼阵营，可以在地图上放置并激活三个魔法阵。\n大法师可以击杀处于魔法阵形成的三角形范围内的所有玩家。,魔導師能通過設置並啟動三個魔法陣，\n殺死所有在三角形範圍內的玩家。
@@ -1911,14 +1911,14 @@ ActivateWormHoleTimeOption,Time to activation wormhole,ワームホールの有�
 DoPlayWormHoleAnimationOption,Play vent animation from other,ベントアニメーションを他視点で再生する,,對其他人可見通風管道動畫
 PutWormHoleButtonName,Put wormhole,設置,,設置蟲洞
 CollectWormHoleButtonName,Collect wormhole,回収,,回收
-PhosphorusName,Phosphorus,ホスフォラス
-PhosphorusTitle1,A ray of light in the darkness,この暗闇に一筋の光明を
-PhosphorusDescription,You can put lanterns.\nLanterns are activated next turn.\nLanterns are lighted when you use ability,マップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、使えるようになります。\n能力を使用すると、一定時間の間ランタンを中心に明るく照らされ、視界外であっても見えるようになります。
-PhosphorusPuttingLimit,Putting lantern limit,ランタンの設置可能数
-PhosphorusLightingCooltime,Lighting cooltime,点灯のクールタイム
-PhosphorusLightRange,Light range,ランタンの範囲
-PhosphorusPutButtonName,Put,設置
-PhosphorusLightingButtonName,Lighting,点灯
+PhosphorusName,Phosphorus,ホスフォラス,,執燈者
+PhosphorusTitle1,A ray of light in the darkness,この暗闇に一筋の光明を,,暗夜中的一道明光
+PhosphorusDescription,You can put lanterns.\nLanterns are activated next turn.\nLanterns are lighted when you use ability,マップに設定個数のランタンを設置することが出来ます。\nランタンは次のターン以降に実体化し、使えるようになります。\n能力を使用すると、一定時間の間ランタンを中心に明るく照らされ、視界外であっても見えるようになります。,,執燈者屬於船員陣營。\n可以在地圖上放置若干個燈籠。\n燈籠放置後會在下一回合之後具象化。\n當能力啟用時，在一定時間內將以燈籠為中心照亮一定視野內的區域。
+PhosphorusPuttingLimit,Putting lantern limit,ランタンの設置可能数,,可放置的燈籠數
+PhosphorusLightingCooltime,Lighting cooltime,点灯のクールタイム,,點燈冷卻時間
+PhosphorusLightRange,Light range,ランタンの範囲,,照明範圍
+PhosphorusPutButtonName,Put,設置,,放置燈籠
+PhosphorusLightingButtonName,Lighting,点灯,,點燈
 BodyBuilderName,Bodybuilder,ボディビルダー,,健美達人
 BodyBuilderTitle1,Behold the beauty of these muscles!,この筋肉の美しさを見よ！,,看看我美麗的曲線！
 BodyBuilderDescription,All tasks in this position are lift weights task.\nPosing will be available upon completion of the task.\nPosing is visible to others.\nYes! Muscle!!!!!!!!,この役職はすべてのタスクが筋トレタスクになっています。\nタスクを完了するとポージングを決めることができるようになります。\nそれだけです。\nポージングは他者からも見えます。\nムキッ！！！！！！！,,健美達人屬於船員陣營。\n健美達人的所有任務都是舉重任務。\n完成任務後，可以進行肌肉展示。\n肌肉秀對其他玩家可見。
@@ -1936,36 +1936,37 @@ OwlTransportButton,Transport,運搬,,搬運
 OwlHideDeadBodyButton,Hide,隠す,,隱藏
 OwlSpecialBlackoutButton,Special Blackout,特殊停電,,黑幕降臨
 Kill,Kill,キル,,擊殺
-BuskerName,Busker,バスカー
-BuskerTitle1,Did you think I was dead?　It was a magic trick!,死んだと思った？　手品でした～！
-BuskerDescription,Using the ability turns you into a corpse， allowing you to move around as a ghost.\nYou can't peek at roles， but you might be able to see things that are normally hidden?\nHowever，if the corpse is discovered or a meeting is called during the feigned death， you'll truly die， so be careful.\nLet's return to the living world before that happens.\nWhen you return， you'll revive at the place where you were moving as a ghost.\nOh， and don't forget to have fun and not lose sight of doing your tasks， okay?,能力を使用すると死体となり、幽霊となって移動することが出来るようになります。\n役職を盗み見ることは出来ませんが、普通だったら見られないものが見れるかも？\nただし、その死体を発見されたり、偽装死中に会議が呼ばれてしまうと本当に死んでしまうのでご注意を。\nそうなる前に現世に戻りましょう。\n戻った際は幽霊のときに移動していた先で復活します。\nそうそう、楽しくなってタスクをするのを忘れないようにね。
-BuskerPseudocideDurationOption,Duration of feigned death,死を偽装できる時間
-BuskerPseudocideButtonName,Feign death,偽装死
-BuskerRebornButtonName,Reborn,復活
-BuskerReallyDeadTimeText,Remain until really dead...,本当に死ぬまで残り...
-UbiquitousName,Ubiquitous,ユビキタス
-UbiquitousTitle1,My eyes exist everywhere.,私の目はどこにでも存在する
-UbiquitousDescription,You can call up a drone and control it.\nYou can switch between the drone and your own view and fly freely around the map.\nIt can also hack into nearby doors and open them.\nIn addition， the drone called on the map can land on the map after a turn， providing ubiquitous information about its surroundings.\nHowever， while operating the drone， you are defenseless. You cannot even perform tasks.\nDo not be caught off guard.,ドローンを呼び出し、操作することが出来ます。\nドローンと自身の視界を切り替え、自由にマップ内を飛び回ることが出来ます。\nまた、近くのドアをハッキングし、開けることも出来ます。\n更に、マップ上に呼び出したドローンは、ターンを挟むとマップ上に着陸し、周囲の情報をユビキタスに伝えます。\nただし、ドローンを操作している間、あなたは無防備です。タスクも出来ません。\nゆめゆめ油断することなかれ。
-UbiquitousCallCoolTimeOption,"Call" Cool Time,「呼び出す」のクールタイム
-UbiquitousOperationCoolTimeOption,"Operation" Cool Time,「操作」のクールタイム
-UbiquitousIsLimitOperableTimeOption,Limit the operable time,操作可能時間を制限するか
-UbiquitousOperableTimeOption,Operable time,操作可能時間
-UbiquitousDroneStayTurnOption,Number of turns the drone stays,ドローンが滞在するターン数
-UbiquitousFlyingSpeedOption,Flying speed,飛行速度
-UbiquitousDoorHackCoolTimeOption,"Door Hack" Cool Time,「ドアハック」のクールタイム
-UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲
-UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲
-UbiquitousOperationButton,Operation,操作
-UbiquitousCallButton,Call,呼び出す
-UbiquitousCallHomeButton,Call Home,呼び戻す
-UbiquitousDoorHackButton,Door Hack,ドアハック
+BuskerName,Busker,バスカー,,接頭藝人
+BuskerTitle1,Did you think I was dead?　It was a magic trick!,死んだと思った？　手品でした～！,,你覺得我死了？這是魔術啦！
+BuskerDescription,Using the ability turns you into a corpse， allowing you to move around as a ghost.\nYou can't peek at roles， but you might be able to see things that are normally hidden?\nHowever，if the corpse is discovered or a meeting is called during the feigned death， you'll truly die， so be careful.\nLet's return to the living world before that happens.\nWhen you return， you'll revive at the place where you were moving as a ghost.\nOh， and don't forget to have fun and not lose sight of doing your tasks， okay?,能力を使用すると死体となり、幽霊となって移動することが出来るようになります。\n役職を盗み見ることは出来ませんが、普通だったら見られないものが見れるかも？\nただし、その死体を発見されたり、偽装死中に会議が呼ばれてしまうと本当に死んでしまうのでご注意を。\nそうなる前に現世に戻りましょう。\n戻った際は幽霊のときに移動していた先で復活します。\nそうそう、楽しくなってタスクをするのを忘れないようにね。,,接頭藝人屬於船員陣營。\n當使用能力時，將會變成屍體並以幽靈的方式來進行移動，但無法窺視他人的職業。\n不過請注意，一旦在假死狀態中進入會議，將會立即死亡。\n\n有些人說表演斷頭沒啥用，但他們不知道的是，我還能以靈魂的方式四處遊走。\n欸等等，在我把頭接回去前，請不要報警。
+BuskerPseudocideDurationOption,Duration of feigned death,死を偽装できる時間,,偽裝死亡的時間
+BuskerPseudocideButtonName,Feign death,偽装死,,斷頭
+BuskerRebornButtonName,Reborn,復活,,接頭
+BuskerReallyDeadTimeText,Remain until really dead...,本当に死ぬまで残り...,,距離真正的死亡還剩...
+UbiquitousName,Ubiquitous,ユビキタス,,天眼
+UbiquitousTitle1,My eyes exist everywhere.,私の目はどこにでも存在する,,我能看到任何地方
+UbiquitousDescription,You can call up a drone and control it.\nYou can switch between the drone and your own view and fly freely around the map.\nIt can also hack into nearby doors and open them.\nIn addition， the drone called on the map can land on the map after a turn， providing ubiquitous information about its surroundings.\nHowever， while operating the drone， you are defenseless. You cannot even perform tasks.\nDo not be caught off guard.,ドローンを呼び出し、操作することが出来ます。\nドローンと自身の視界を切り替え、自由にマップ内を飛び回ることが出来ます。\nまた、近くのドアをハッキングし、開けることも出来ます。\n更に、マップ上に呼び出したドローンは、ターンを挟むとマップ上に着陸し、周囲の情報をユビキタスに伝えます。\nただし、ドローンを操作している間、あなたは無防備です。タスクも出来ません。\nゆめゆめ油断することなかれ。,,天眼屬於船員陣營。\n可以放出並操作無人機開往地圖上的任何地方，並且可以將視野在自己與無人機之間自由切換。\n並且可以駭入無人機周圍的門並將其開啟。\n也可以將無人機停在某處，為天眼提供更多情報。\n但小心，操作無人機時，將會失去任何防備，不要忘了保持警戒。
+UbiquitousCallCoolTimeOption,"Call" Cool Time,「呼び出す」のクールタイム,,「召喚」冷卻時間
+UbiquitousOperationCoolTimeOption,"Operation" Cool Time,「操作」のクールタイム,,「操作」冷卻時間
+UbiquitousIsLimitOperableTimeOption,Limit the operable time,操作可能時間を制限するか,,限制操作時間
+UbiquitousOperableTimeOption,Operable time,操作可能時間,,操作時間
+UbiquitousDroneStayTurnOption,Number of turns the drone stays,ドローンが滞在するターン数,,無人機持續回合數
+UbiquitousFlyingSpeedOption,Flying speed,飛行速度,,飛行數度
+UbiquitousDoorHackCoolTimeOption,"Door Hack" Cool Time,「ドアハック」のクールタイム,,「駭入門」冷卻時間
+UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲,,「駭入門」範圍
+UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲,,無人機可視範圍
+UbiquitousOperationButton,Operation,操作,,操作
+UbiquitousCallButton,Call,呼び出す,,召喚
+UbiquitousCallHomeButton,Call Home,呼び戻す,,喚回
+UbiquitousDoorHackButton,Door Hack,ドアハック,,駭入門
 
 #NewRoleTranslation
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
-IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート
+IsSaveLogWhenEndGame,Copy the log at the end of the match.,試合終了時ログをコピーする
+IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート,,禁音大廳BGM
 
 #SettingMatchTag
 SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,<color=#a9ceec>游戏房间标签</color>设置,<color=#93b69c>房間對局標籤</color>設定

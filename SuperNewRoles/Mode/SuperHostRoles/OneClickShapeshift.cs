@@ -29,31 +29,36 @@ public static class OneClickShapeshift
     }
     private static void FakeShape(PlayerControl player)
     {
-        CustomRpcSender sender = CustomRpcSender.Create("OneClickShapeshiftSender", Hazel.SendOption.Reliable, false);
-        // シェイプシフト状態にする
-        sender
-            .RpcShapeshift(player, PlayerControl.LocalPlayer, false)
-            .RpcSetColor(player, (byte)player.Data.DefaultOutfit.ColorId)
-            .RpcSetHat(player, player.Data.DefaultOutfit.HatId)
-            .RpcSetSkin(player, player.Data.DefaultOutfit.SkinId)
-            .RpcSetPet(player, player.Data.DefaultOutfit.PetId)
-            .RpcSetVisor(player, player.Data.DefaultOutfit.HatId)
-            .RpcSetName(player, player.GetDefaultName());
-        ChangeName.SetRoleName(player, sender: sender);
-        sender.SendMessage();
+        player.RpcShapeshift(PlayerControl.LocalPlayer, false);
+        player.RpcSetColor((byte)player.Data.DefaultOutfit.ColorId);
+        player.RpcSetHat(player.Data.DefaultOutfit.HatId);
+        player.RpcSetSkin(player.Data.DefaultOutfit.SkinId);
+        player.RpcSetPet(player.Data.DefaultOutfit.PetId);
+        player.RpcSetVisor(player.Data.DefaultOutfit.HatId);
+        player.RpcSetName(player.GetDefaultName());
+        player.SetName(player.GetDefaultName());
+
+        NetworkedPlayerInfo.PlayerOutfit defaultOutfit = player.Data.DefaultOutfit;
+        player.RawSetName(defaultOutfit.PlayerName);
+        player.RawSetColor(defaultOutfit.ColorId);
+        player.RawSetHat(defaultOutfit.HatId, defaultOutfit.ColorId);
+        player.RawSetSkin(defaultOutfit.SkinId, defaultOutfit.ColorId);
+        player.RawSetVisor(defaultOutfit.VisorId, defaultOutfit.ColorId);
+        player.RawSetPet(defaultOutfit.PetId, defaultOutfit.ColorId);
+        player.CurrentOutfitType = PlayerOutfitType.Default;
+
+        ChangeName.SetRoleName(player);
         new LateTask(() =>
         {
-            sender = CustomRpcSender.Create("OneClickShapeshiftSender", Hazel.SendOption.Reliable, false);
-            // シェイプシフト状態にする
-            sender
-                .RpcSetColor(player, (byte)player.Data.DefaultOutfit.ColorId)
-                .RpcSetHat(player, player.Data.DefaultOutfit.HatId)
-                .RpcSetSkin(player, player.Data.DefaultOutfit.SkinId)
-                .RpcSetPet(player, player.Data.DefaultOutfit.PetId)
-                .RpcSetVisor(player, player.Data.DefaultOutfit.HatId)
-                .RpcSetName(player, player.GetDefaultName());
-            ChangeName.SetRoleName(player, sender: sender);
-            sender.SendMessage();
-        }, 0.15f);
+            ChangeName.SetRoleName(player);
+            player.RpcSetColor((byte)player.Data.DefaultOutfit.ColorId);
+            player.RpcSetHat(player.Data.DefaultOutfit.HatId);
+            player.RpcSetSkin(player.Data.DefaultOutfit.SkinId);
+            player.RpcSetPet(player.Data.DefaultOutfit.PetId);
+            player.RpcSetVisor(player.Data.DefaultOutfit.HatId);
+            player.RpcSetName(player.GetDefaultName());
+            player.SetName(player.GetDefaultName());
+            new LateTask(() => ChangeName.SetRoleName(player), 0.15f);
+        }, 0.2f);
     }
 }

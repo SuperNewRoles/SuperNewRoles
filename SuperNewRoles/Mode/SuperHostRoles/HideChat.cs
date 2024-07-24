@@ -14,7 +14,7 @@ public static class HideChat
     public static bool CanSerializeGameData => !HideChatEnabled || SerializeByHideChat || !RoleClass.IsMeeting;
     public static void OnStartMeeting()
     {
-        _ = new LateTask(() => DesyncSetDead(), 1.5f);
+        _ = new LateTask(() => DesyncSetDead(), 4.5f);
         _ = new LateTask(() => DesyncSetDead(), 6.5f);
     }
     public static void DesyncSetDead(CustomRpcSender? sender, NetworkedPlayerInfo target)
@@ -75,7 +75,7 @@ public static class HideChat
     }
     public static void OnAddChat(PlayerControl player, string message, bool isAdd)
     {
-        if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead())
+        if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead() || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
             return;
         CustomRpcSender sender = new("HideChatSender", sendOption: Hazel.SendOption.Reliable, false);
         OnAddChat(sender, player, message, isAdd);
