@@ -14,6 +14,7 @@ class ReportDeadBody
     public static bool ReportDeadBodyPatch(PlayerControl __instance, NetworkedPlayerInfo target)
     {
         if (!AmongUsClient.Instance.AmHost) return true;
+        if (__instance.Data.IsDead) return false;
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         //会議ボタンでもレポートでも起こる処理
 
