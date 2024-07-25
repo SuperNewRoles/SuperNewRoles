@@ -257,11 +257,12 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         Logger.Info($"TryGetRoleBase: {CreatedSidekickControl.GetRoleBase().Roleinfo.Role}");
         if (!CreatedSidekickControl.TryGetRoleBase(out Jackal jackal))
             return;
+        CreatedSidekickControl.RpcSetRole(RoleTypes.Crewmate);
         if (!CreatedSidekickControl.IsMod())
         {
-            CreatedSidekickControl.RpcSetRoleDesync(
+            new LateTask(() => CreatedSidekickControl.RpcSetRoleDesync(
                 jackal.DesyncRole, true
-            );
+            ), 0.2f);
         }
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
@@ -270,8 +271,6 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 continue;
             if (player.IsJackalTeamJackal() || player.IsJackalTeamSidekick())
                 continue;
-            if (!player.IsMod())
-                CreatedSidekickControl.RpcSetRoleDesync(RoleTypes.Crewmate, true, player);
             if (!CreatedSidekickControl.IsMod())
                 player.RpcSetRoleDesync(player.IsImpostor() ? RoleTypes.Crewmate : player.Data.Role.Role, true, CreatedSidekickControl);
         }
@@ -327,7 +326,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
     }
     public void FixedUpdateAllSHR()
     {
-        if (AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance.AmHost && AntiBlackOut.GamePlayers == null)
             PromoteCheck(false);
     }
 
