@@ -63,7 +63,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         JackalSKCooldown = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, Optioninfo.RoleOption.type,
             "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
         JackalNewJackalCreateSidekick = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, Optioninfo.RoleOption.type,
-            "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);           
+            "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
     }
 
     public CustomButtonInfo JackalKillButton;
@@ -257,12 +257,11 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         Logger.Info($"TryGetRoleBase: {CreatedSidekickControl.GetRoleBase().Roleinfo.Role}");
         if (!CreatedSidekickControl.TryGetRoleBase(out Jackal jackal))
             return;
-        CreatedSidekickControl.RpcSetRole(RoleTypes.Crewmate);
         if (!CreatedSidekickControl.IsMod())
         {
-            new LateTask(() => CreatedSidekickControl.RpcSetRoleDesync(
+            CreatedSidekickControl.RpcSetRoleDesync(
                 jackal.DesyncRole, true
-            ), 0.2f);
+            );
         }
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
@@ -271,6 +270,8 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 continue;
             if (player.IsJackalTeamJackal() || player.IsJackalTeamSidekick())
                 continue;
+            if (!player.IsMod())
+                CreatedSidekickControl.RpcSetRoleDesync(RoleTypes.Crewmate, true, player);
             if (!CreatedSidekickControl.IsMod())
                 player.RpcSetRoleDesync(player.IsImpostor() ? RoleTypes.Crewmate : player.Data.Role.Role, true, CreatedSidekickControl);
         }
