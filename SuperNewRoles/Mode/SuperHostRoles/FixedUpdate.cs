@@ -39,19 +39,17 @@ public static class FixedUpdate
             }
         }
         else if
-            ((playerSHR != null && playerSHR.HasKillButtonClient &&
-            !PlayerControl.LocalPlayer.IsImpostor())
-            ||
+            (!PlayerControl.LocalPlayer.IsImpostor() &&(
+            (playerSHR != null && playerSHR.HasKillButtonClient) ||
             PlayerControl.LocalPlayer.IsRole
                 (
-                    RoleId.Jackal,
                     RoleId.JackalSeer,
                     RoleId.MadMaker,
                     RoleId.Egoist,
                     RoleId.Demon,
                     RoleId.Arsonist
                 )
-            )
+            ))
         {
             FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
             CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
