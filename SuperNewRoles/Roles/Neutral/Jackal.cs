@@ -39,6 +39,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
     public bool CanUseSabo => Optioninfo.CanUseSabo;
     public bool CanUseVent => Optioninfo.CanUseVent;
     public bool IsImpostorVision => Optioninfo.IsImpostorVision;
+    public bool HasKillButtonClient => false;
 
     public static CustomOption JackalKillCooldown;
     public static CustomOption JackalCreateFriend;
