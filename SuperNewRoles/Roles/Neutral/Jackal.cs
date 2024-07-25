@@ -63,7 +63,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         JackalSKCooldown = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, Optioninfo.RoleOption.type,
             "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
         JackalNewJackalCreateSidekick = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, Optioninfo.RoleOption.type,
-            "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);           
+            "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
     }
 
     public CustomButtonInfo JackalKillButton;
@@ -327,7 +327,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
     }
     public void FixedUpdateAllSHR()
     {
-        if (AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance.AmHost && AntiBlackOut.GamePlayers == null)
             PromoteCheck(false);
     }
 
