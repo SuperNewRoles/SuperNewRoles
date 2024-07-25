@@ -725,7 +725,7 @@ public static class RPCProcedure
         PlayerControl target = ModHelpers.PlayerById(targetid);
         if (target == null) return;
         PlayerControl.LocalPlayer.MurderPlayer(target, MurderResultFlags.FailedProtected | MurderResultFlags.DecisionByHost);
-        PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null))
+        PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
     }
     public static void KnightProtectClear(byte Target)
     {
