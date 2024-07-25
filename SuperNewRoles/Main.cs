@@ -225,6 +225,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("Start UpdateCPUProcessorAffinity");
         if (Environment.ProcessorCount > 1)
         {
+            // コア数上限突破の場合は全てのコアを使う
             if (Environment.ProcessorCount < System.Numerics.BitOperations.Log2(affinity))
             {
                 affinity = 1;
@@ -235,7 +236,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
             }
             System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)affinity;
         }
-        Logger.LogInfo("End UpdateCPUProcessorAffinity");
+        Logger.LogInfo($"UpdatedCPUProcessorAffinity To: {affinity}");
     }
     // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
     [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]

@@ -1749,7 +1749,13 @@ public static class RoleHelpers
     }
     public static bool IsRole(this PlayerControl player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
     public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
-    public static float GetCoolTime(PlayerControl __instance, PlayerControl target)
+    /// <summary>
+    /// 対象のプレイヤーのキルクールタイムを取得する
+    /// </summary>
+    /// <param name="__instance">対象のプレイヤー</param>
+    /// <param name="target">キル対象(null可)</param>
+    /// <returns>キルクールタイム</returns>
+    public static float GetCoolTime(PlayerControl __instance, PlayerControl? target)
     {
         float addition = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         if (ModeHandler.IsMode(ModeId.Default))
