@@ -1967,6 +1967,8 @@ IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
 IsSaveLogWhenEndGame,Copy the log at the end of the match.,試合終了時ログをコピーする
 IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート,,禁音大廳BGM
+ProcessorAffinityMask,Number of cores used by CPU<size=50%>(Switch according to load)</size>:,<size=100%>CPUの使用コア数</size>\n<size=39%>(負荷によって切り替えてください)</size><size=75%>:,CPU使用核心數(根據負載切換):,CPU使用核心數(根據負載切換):
+ProcessorAffinityMaskCoreName,Core,コア,
 
 #SettingMatchTag
 SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,<color=#a9ceec>游戏房间标签</color>设置,<color=#93b69c>房間對局標籤</color>設定

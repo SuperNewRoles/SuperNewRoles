@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Epic.OnlineServices.Presence;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
@@ -21,10 +22,42 @@ public static class ClientModOptionsPatch
             new("IsNotUsingBlood", () => ConfigRoles.IsNotUsingBlood.Value = !ConfigRoles.IsNotUsingBlood.Value, ConfigRoles.IsNotUsingBlood.Value),
             new("IsSendAnalytics", () => ConfigRoles.IsSendAnalytics.Value = !ConfigRoles.IsSendAnalytics.Value, ConfigRoles.IsSendAnalytics.Value),
             new("IsLightAndDarker", () => ConfigRoles.IsLightAndDarker.Value = !ConfigRoles.IsLightAndDarker.Value, ConfigRoles.IsLightAndDarker.Value),
-            new("ReplayOptions", OpenReplayWindow, true),
+            // new("ReplayOptions", OpenReplayWindow, true),
             new("IsMuteLobbyBGM", () => ConfigRoles.IsMuteLobbyBGM.Value = !ConfigRoles.IsMuteLobbyBGM.Value, ConfigRoles.IsMuteLobbyBGM.Value),
             new("IsSaveLogWhenEndGame", () => ConfigRoles.IsSaveLogWhenEndGame.Value = !ConfigRoles.IsSaveLogWhenEndGame.Value, ConfigRoles.IsSaveLogWhenEndGame.Value),
+            new(ProcessorAffinityMaskTitle, OnProcessorAffinityMaskClick, ConfigRoles._ProcessorAffinityMask.Value == 3),
     };
+    private static SelectionBehaviour ProcessorAffinityMaskButton
+    {
+        get
+        {
+            if (AllOptions.Length < 12)
+                throw new NotImplementedException("ProcessorAffinityMaskButton is not implemented1");
+            return AllOptions[11];
+        }
+    }
+    private static bool OnProcessorAffinityMaskClick()
+    {
+        ConfigRoles._ProcessorAffinityMask.Value = ConfigRoles._ProcessorAffinityMask.Value == (ulong)3 ? (ulong)1 : (ulong)3;
+        SuperNewRolesPlugin.UpdateCPUProcessorAffinity();
+        ProcessorAffinityMaskButton.Title = ProcessorAffinityMaskTitle;
+        return ConfigRoles._ProcessorAffinityMask.Value == (ulong)3;
+    }
+    private static string ProcessorAffinityMaskTitle
+    {
+        get
+        {
+            ulong mask = ConfigRoles._ProcessorAffinityMask.Value;
+            string showCore = "1";
+            if (mask == (ulong)1)
+                showCore = "1";
+            else if (mask == (ulong)3)
+                showCore = "2";
+            else
+                showCore = "?";
+            return $"{ModTranslation.GetString("ProcessorAffinityMask")} {showCore} {ModTranslation.GetString("ProcessorAffinityMaskCoreName")}";
+        }
+    }
     private static GameObject popUp;
     private static TextMeshPro titleText;
 
@@ -218,6 +251,7 @@ public static class ClientModOptionsPatch
             {
                 button.onState = info.OnClick();
                 button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+                button.Text.text = ModTranslation.GetString(info.Title);
             }));
 
             passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
@@ -312,6 +346,7 @@ public static class ClientModOptionsPatch
             passiveButton.OnClick.AddListener((Action)(() =>
             {
                 UpdateState(button, info.OnClick());
+                button.Text.text = ModTranslation.GetString(info.Title);
             }));
 
             passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
