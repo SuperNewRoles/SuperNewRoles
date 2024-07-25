@@ -1077,7 +1077,10 @@ static class HudManagerStartPatch
             {
                 if (PlayerControlFixedUpdatePatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                 {
-                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.JackalSetTarget());
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                        PlayerControl.LocalPlayer.CmdCheckMurder(PlayerControlFixedUpdatePatch.JackalSetTarget());
+                    else
+                        ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.JackalSetTarget());
                     switch (PlayerControl.LocalPlayer.GetRole())
                     {
                         case RoleId.JackalSeer:
@@ -1099,7 +1102,7 @@ static class HudManagerStartPatch
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.TeleportingJackal or RoleId.JackalSeer || (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal && jackal.CanUseKill && jackal.isShowKillButton)) && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && (role is RoleId.TeleportingJackal or RoleId.JackalSeer || (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal && jackal.CanUseKill && jackal.isShowKillButton)); },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
