@@ -69,7 +69,7 @@ public static class Painter
         foreach (var data in RoleClass.Painter.ActionData)
         {
             Logger.Info($"{data.Key}の数は{data.Value.Count}です");
-            foreach (var pos in data.Value)
+            foreach (var pos in data.Value.AsSpan())
             {
                 Footprint print = new(-1f, false, RoleClass.Painter.CurrentTarget, new(pos.x, pos.y, 0.01f));
                 print.footprint.transform.localScale *= 2;

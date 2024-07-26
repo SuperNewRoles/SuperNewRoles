@@ -21,7 +21,7 @@ public static class ReplayLoader
     public static void SpawnBots()
     {
         if (!ReplayManager.IsReplayMode) return;
-        foreach (ReplayPlayer player in ReplayManager.CurrentReplay.ReplayPlayers)
+        foreach (ReplayPlayer player in ReplayManager.CurrentReplay.ReplayPlayers.AsSpan())
         {
             PlayerControl Bot = BotManager.SpawnBot(player.PlayerId);
 
@@ -54,10 +54,10 @@ public static class ReplayLoader
     public static void UpdateLocalPlayerEnd()
     {
         byte id = 0;
-        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p == PlayerControl.LocalPlayer) continue;
-            Logger.Info(p.Data.PlayerName + ":" + p.PlayerId.ToString());
+            Logger.Info($"{p.Data.PlayerName}:{p.PlayerId}");
             if (p.PlayerId > id)
             {
                 id = p.PlayerId;
@@ -180,7 +180,7 @@ public static class ReplayLoader
                         mpb.Target.MyPhysics.body.velocity = Vector2.zero;
                         mpb.StopAllCoroutines();
                     }
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (player.onLadder)
                         {
@@ -201,7 +201,7 @@ public static class ReplayLoader
                         mpb.IsLeft = !mpb.IsLeft;
                         mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target, ReplayActionMovingPlatform.currentAction).WrapToIl2Cpp());
                     }
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (player.onLadder)
                         {
@@ -215,7 +215,7 @@ public static class ReplayLoader
         if ((ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind && state != ReplayState.PlayRewind) ||
             (ReplayManager.CurrentReplay.CurrentPlayState != ReplayState.PlayRewind && state == ReplayState.PlayRewind))
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 player.transform.localScale = new(-player.transform.localScale.x, player.transform.localScale.y, player.transform.localScale.z);
             }
@@ -231,7 +231,7 @@ public static class ReplayLoader
                     mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
                 }
 
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (player.onLadder)
                     {
@@ -241,7 +241,7 @@ public static class ReplayLoader
                     }
                 }
                 //アニメーションの巻き戻し処理
-                foreach (var anim in CustomAnimation.CustomAnimations)
+                foreach (var anim in CustomAnimation.CustomAnimations.AsSpan())
                     anim.OnPlayRewind();
                 foreach (var anim in PlayerAnimation.PlayerAnimations)
                     anim.Value.OnPlayRewind();
@@ -257,7 +257,7 @@ public static class ReplayLoader
                     //mpb.IsLeft = !mpb.IsLeft;
                     mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, mpb.Target).WrapToIl2Cpp());
                 }
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (player.onLadder)
                     {
@@ -267,7 +267,7 @@ public static class ReplayLoader
                     }
                 }
                 //アニメーションのプレイ処理
-                foreach (var anim in CustomAnimation.CustomAnimations)
+                foreach (var anim in CustomAnimation.CustomAnimations.AsSpan())
                     anim.Play();
                 foreach (var anim in PlayerAnimation.PlayerAnimations)
                     anim.Value.Play();
@@ -306,7 +306,7 @@ public static class ReplayLoader
         else
         {
             //会議のReplayActionを実行
-            foreach (ReplayAction action in ReplayTurns[CurrentTurn].Actions)
+            foreach (ReplayAction action in ReplayTurns[CurrentTurn].Actions.AsSpan())
             {
                 if (action.GetActionId() == ReplayActionId.ReportDeadBody)
                 {
@@ -401,7 +401,7 @@ public static class ReplayLoader
         btn.OnClick.AddListener(action);
         btn.OnMouseOut = new();
         btn.OnMouseOver = new();
-        itemrender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUI" + Id + ".png", 110f);
+        itemrender.sprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.Replay.ReplayGUI{Id}.png", 110f);
         return itemrender;
     }
     public static GameObject GUIObject;
@@ -410,7 +410,7 @@ public static class ReplayLoader
     {
         if (ReplayManager.IsReplayMode)
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 RoleTypes role = RoleTypes.Crewmate;
                 RoleId roleid = RoleId.DefaultRole;
@@ -423,7 +423,7 @@ public static class ReplayLoader
                         roleid = rp.RoleId;
                     }
                     else
-                        Logger.Info(p.PlayerId + "の役職が参照できませんでした。");
+                        Logger.Info($"{p.PlayerId}の役職が参照できませんでした。");
                 }
                 p.SetRole(role);
                 p.SetRole(roleid);
@@ -433,10 +433,10 @@ public static class ReplayLoader
     }
     public static void ShowIntro()
     {
-        PlayerControl.AllPlayerControls.ForEach((Il2CppSystem.Action<PlayerControl>)((PlayerControl pc) =>
+        foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
         {
             PlayerNameColor.Set(pc);
-        }));
+        }
         ((MonoBehaviour)PlayerControl.LocalPlayer).StopAllCoroutines();
         ((MonoBehaviour)DestroyableSingleton<HudManager>.Instance).StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoShowIntro());
         FastDestroyableSingleton<HudManager>.Instance.HideGameLoader();
@@ -456,7 +456,7 @@ public static class ReplayLoader
         var callerMethod = caller.GetMethod();
         string callerMethodName = callerMethod.Name;
         string callerClassName = callerMethod.DeclaringType.FullName;
-        SuperNewRolesPlugin.Logger.LogInfo("[Replay:FixedUpdate]" + callerClassName + "." + callerMethodName + " Called.");
+        SuperNewRolesPlugin.Logger.LogInfo($"[Replay:FixedUpdate]{callerClassName}.{callerMethodName} Called.");
         ReplayTurn turn = new()
         {
             Positions = new(),
@@ -488,23 +488,23 @@ public static class ReplayLoader
             }
         }
         int actioncount = reader.ReadInt32();
-        Logger.Info("アクション数:" + actioncount.ToString());
+        Logger.Info($"アクション数:{actioncount}");
         for (int i = 0; i < actioncount; i++)
         {
             ReplayActionId replayActionId = (ReplayActionId)reader.ReadByte();
-            Logger.Info(i.ToString() + ":" + actioncount.ToString(), "今の数");
+            Logger.Info($"{i}:{actioncount}", "今の数");
             if (replayActionId != ReplayActionId.None)
             {
-                Logger.Info(replayActionId + "追加:" + reader.BaseStream.Position.ToString());
+                Logger.Info($"{replayActionId}追加:{reader.BaseStream.Position}");
                 ReplayAction action = ReplayAction.CreateReplayAction(replayActionId);
                 action.Init();
                 action.ReadReplayFile(reader);
                 turn.Actions.Add(action);
-                Logger.Info(replayActionId + "終わり:" + reader.BaseStream.Position.ToString());
+                Logger.Info($"{replayActionId}終わり:{reader.BaseStream.Position}");
             }
             else
             {
-                Logger.Info(replayActionId + "だったのでパス");
+                Logger.Info($"{replayActionId}だったのでパス");
             }
         }
         turn.IsGameEnd = reader.ReadBoolean();
@@ -672,7 +672,7 @@ public static class ReplayLoader
         if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind ? ReplayManager.CurrentReplay.RecordRate <= postime : postime <= 0)
         {
             int targetindex = posindex + (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Play ? 1 : -1);
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
                 try
@@ -741,7 +741,7 @@ public static class ReplayLoader
             {
                 if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 {
-                    Logger.Info("アクション！:" + ReplayTurns[CurrentTurn].Actions[actionindex - 1].GetActionId());
+                    Logger.Info($"アクション！:{ReplayTurns[CurrentTurn].Actions[actionindex - 1].GetActionId()}");
                     ReplayTurns[CurrentTurn].Actions[actionindex - 1].OnReplay();
                     actionindex--;
                     if (ReplayTurns[CurrentTurn].Actions.Count > actionindex && actionindex >= 0) actiontime = 0;//ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
@@ -754,7 +754,7 @@ public static class ReplayLoader
             {
                 if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 {
-                    Logger.Info("アクション！:" + ReplayTurns[CurrentTurn].Actions[actionindex].GetActionId());
+                    Logger.Info($"アクション！:{ReplayTurns[CurrentTurn].Actions[actionindex].GetActionId()}");
                     ReplayTurns[CurrentTurn].Actions[actionindex].OnAction();
                     actionindex++;
                     if (ReplayTurns[CurrentTurn].Actions.Count > actionindex) actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
@@ -822,12 +822,12 @@ class MeetingHudPopulateButtons
         Logger.Info("Commed pop");
         if (ReplayManager.IsReplayMode)
         {
-            Logger.Info("Commed popRep:" + __instance.playerStates.Count.ToString());
+            Logger.Info($"Commed popRep:{__instance.playerStates.Count}");
             var states = __instance.playerStates.ToList();
             GameObject.Destroy(states.FirstOrDefault(x => x.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId)?.gameObject);
             states.RemoveAll(x => x.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId);
             __instance.playerStates = states.ToArray();
-            Logger.Info("Commed popRepens:" + __instance.playerStates.Count.ToString());
+            Logger.Info($"Commed popRepens:{__instance.playerStates.Count}");
             __instance.SortButtons();
         }
     }

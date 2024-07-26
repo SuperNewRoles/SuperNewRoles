@@ -54,7 +54,7 @@ public static class Main
     {
         bool impostorwin = true;
         int ImpostorCount = 0;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!p.Data.Disconnected)
             {
@@ -92,7 +92,7 @@ public static class Main
     }
     public static void ChangeCosmetics()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             p.RpcSetPet("");
             p.RpcSetVisor("");
@@ -213,7 +213,7 @@ public static class Main
             int NotLoadedCount = 0;
             if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
             {
-                foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6), 0.5f) ||
                         ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-25, 40), 0.5f) ||
@@ -233,14 +233,14 @@ public static class Main
             {
                 LastCount = players.Count;
                 string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>" + string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     p.RpcSetNamePrivate(name);
                 }
             }
 
             int i = 0;
-            foreach (PlayerControl p in players)
+            foreach (PlayerControl p in players.AsSpan())
             {
                 if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
                 {
@@ -253,7 +253,7 @@ public static class Main
                 IsMove = true;
                 ImpostorMoveTime = 5;
                 LastUpdate = 6;
-                foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (!p.PlayerControl.IsImpostor())
                     {
@@ -274,7 +274,7 @@ public static class Main
                 //PlayerControl.LocalPlayer.RpcSetName(name);
                 LastUpdate = ImpostorMoveTime;
                 string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.GetString("CopsImpostorCome") + ((int)(LastUpdate + 1)).ToString() + ModTranslation.GetString("second") + "</size>";
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (!p.AmOwner)
                     {
@@ -287,7 +287,7 @@ public static class Main
                 }
             }
             int i = 0;
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && p.PlayerControl.IsImpostor())
                 {
@@ -297,7 +297,7 @@ public static class Main
             }
             if (ImpostorMoveTime <= 0)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     p.RpcSetName(p.GetDefaultName());
                     if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
@@ -317,11 +317,11 @@ public static class Main
             UpdateTime = 0.5f;
             RoleSystem.RoleSetName();
         }
-        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsImpostor())
             {
-                foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     PlayerControl pc = p.PlayerControl;
                     if (!pc.IsImpostor() && !pc.IsBot())
@@ -354,7 +354,7 @@ public static class Main
             }
             else if (!player.IsArrest())
             {
-                foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     PlayerControl pc = p.PlayerControl;
                     if (pc.IsArrest())

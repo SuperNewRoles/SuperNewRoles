@@ -10,7 +10,7 @@ public static class Helpers
 {
     public static void UnCheckedRpcSetRole(this PlayerControl player, RoleTypes role)
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             player.RpcSetRoleDesync(role, p);
         }

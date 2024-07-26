@@ -134,7 +134,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
                         {
                             target.RpcSetRoleDesync(RoleTypes.Impostor, true);
                             Player.RpcSetRoleDesync(RoleTypes.Phantom, true, target);
-                            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                             {
                                 if (player.PlayerId == target.PlayerId
                                     || player.PlayerId == Player.PlayerId)
@@ -224,7 +224,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
     }
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
-        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach(PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.PlayerId == Player.PlayerId || !player.IsPavlovsTeam())
                 continue;

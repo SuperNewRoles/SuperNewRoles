@@ -30,7 +30,7 @@ class Celebrity
         private static bool EnabledSetting()
         {
             // スターが存在し、生きている時
-            foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
+            foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer.AsSpan())
             {
                 if (p.IsAlive()) return true;
             }
@@ -38,7 +38,7 @@ class Celebrity
             // スターがSKされてもスターの能力を失わない設定の時
             if (RoleClass.Celebrity.ChangeRoleView)
             {// SKスターが生存している時
-                foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
+                foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer.AsSpan())
                     if (p.IsAlive()) return true;
             }
 
@@ -51,7 +51,7 @@ class Celebrity
                 else
                 {
                     // 「スター」が死んでいる時 (「スターが生きている」からの漏れを拾う)
-                    foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
+                    foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer.AsSpan())
                         if (p.IsDead()) return true;
                 }
             }

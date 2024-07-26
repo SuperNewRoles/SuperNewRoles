@@ -105,7 +105,7 @@ public class Phosphorus : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     public void RpcReader(MessageReader reader)
     {
         RpcTypes type = (RpcTypes)reader.ReadByte();
-        List<Lantern> lanterns = Lantern.GetLanternsByOwner(Player);
+        IEnumerable<Lantern> lanterns = Lantern.GetLanternsByOwner(Player);
 
         switch (type)
         {

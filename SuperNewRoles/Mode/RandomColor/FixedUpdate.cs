@@ -20,7 +20,7 @@ public static class FixedUpdate
             IsHideNameSet = true;
             if (IsHideName)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (!p.Data.Disconnected)
                     {
@@ -33,7 +33,7 @@ public static class FixedUpdate
         if (UpdateTime <= 0)
         {
             UpdateTime = 0.1f;
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.Data.Disconnected)
                 {

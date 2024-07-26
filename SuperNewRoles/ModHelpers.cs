@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ public static class ModHelpers
     public static int GetAlivePlayerCount()
     {
         int count = 0;
-        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             if (p.IsAlive()) count++;
         return count;
     }
@@ -212,7 +213,7 @@ public static class ModHelpers
         get
         {
             List<PlayerControl> ps = new();
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.Data.Disconnected) ps.Add(p.PlayerControl);
             }
@@ -260,7 +261,7 @@ public static class ModHelpers
     public static Dictionary<byte, PlayerControl> AllPlayersById()
     {
         Dictionary<byte, PlayerControl> res = new();
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             res.Add(player.PlayerId, player);
         return res;
     }
@@ -276,7 +277,7 @@ public static class ModHelpers
     public static void DestroyList<T>(List<T> items) where T : UnityEngine.Object
     {
         if (items == null) return;
-        foreach (T item in items)
+        foreach (T item in items.AsSpan())
         {
             UnityEngine.Object.Destroy(item);
         }
@@ -451,7 +452,7 @@ public static class ModHelpers
     }
     public static void AllRun<T>(this List<T> list, Action<T> act)
     {
-        foreach (T obj in list)
+        foreach (T obj in list.AsSpan())
             act(obj);
     }
     public static void AllRun<T>(this T[] array, Action<T> act)
@@ -681,7 +682,7 @@ public static class ModHelpers
     }
     public static T FirstOrDefault<T>(this List<T> list, Func<T, bool> func)
     {
-        foreach (T obj in list)
+        foreach (T obj in list.AsSpan())
             if (func(obj))
                 return obj;
         return default;
@@ -741,7 +742,7 @@ public static class ModHelpers
     {
         if (list == null)
             return false;
-        foreach (T obj in list)
+        foreach (T obj in list.AsSpan())
             if (func(obj))
                 return true;
         return false;
@@ -761,17 +762,22 @@ public static class ModHelpers
     }
     public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
-        List<T> newList = new(list.Count);
-        foreach (T item in list)
+        List<T> newList = [.. list];
+        return newList;
+    }
+    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
+    {
+        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count);
+        foreach (T item in list.AsSpan())
         {
             newList.Add(item);
         }
         return newList;
     }
-    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this IEnumerable<T> list)
+    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this T[] array)
     {
-        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count());
-        foreach (T item in list)
+        Il2CppSystem.Collections.Generic.List<T> newList = new(array.Length);
+        foreach (T item in array)
         {
             newList.Add(item);
         }
@@ -1074,7 +1080,7 @@ public static class ModHelpers
     {
         if (!IdControlDic.ContainsKey(id))
         { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
-            foreach (PlayerControl pc in CachedPlayer.AllPlayers)
+            foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!IdControlDic.ContainsKey(pc.PlayerId)) // Key重複対策
                     IdControlDic.Add(pc.PlayerId, pc);
@@ -1088,7 +1094,7 @@ public static class ModHelpers
     public static PlayerControl PlayerByColor(string color_name)
     {
         if (ColorControlDic.TryGetValue(color_name, out PlayerControl player)) return player;
-        foreach (PlayerControl check in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl check in CachedPlayer.AllPlayers.AsSpan())
         {
             if (color_name == check.Data.GetPlayerColorString())
             {
@@ -1127,7 +1133,7 @@ public static class ModHelpers
 
     public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
     {
-        foreach (PlayerControl Player in listData)
+        foreach (PlayerControl Player in listData.AsSpan())
         {
             if (Player is null) continue;
             if (Player.PlayerId == CheckPlayer.PlayerId)
@@ -1228,7 +1234,7 @@ public static class ModHelpers
     {
         if (str == null) return 0;
         int n = 0;
-        foreach (var c in str)
+        foreach (var c in str.AsSpan())
         {
             if (c == '\n') n++;
         }
@@ -1239,7 +1245,13 @@ public static class ModHelpers
         tmp.fontSize = tmp.fontSizeMax = tmp.fontSizeMin = size;
     }
     public static void AddListener(this UnityEngine.Events.UnityEvent @event, Action action) => @event.AddListener(action);
-    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.ToList().Find(match);
+    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Func<T, bool> match) => data.Find(match);
+    public static bool Any<T>(this Il2CppSystem.Collections.Generic.List<T> data, Func<T, bool> match) => data.FindIndex(match) >= 0;
+    public static ReadOnlySpan<T> AsSpan<T>(this List<T> list) => CollectionsMarshal.AsSpan(list);
+    public static void SetActiveEx(this GameObject obj, bool value)
+    {
+        if (obj.active != value) obj.SetActive(value);
+    }
 }
 public static class CreateFlag
 {

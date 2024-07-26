@@ -20,7 +20,7 @@ class RoleSystem
         SuperNewRolesPlugin.Logger.LogInfo("[CopsRobbers:FixedUpdate] SetRoleNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
 
         bool commsActive = RoleHelpers.IsComms();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             SetRoleName(p, commsActive);
         }

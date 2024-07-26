@@ -76,7 +76,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
 
     public static void SeePavlovsTeam()
     {
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!player.IsPavlovsTeam())
                 continue;
@@ -190,7 +190,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     {
         if (Player == null)
             return;
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.PlayerId == Player.PlayerId || !player.IsPavlovsTeam())
                 continue;

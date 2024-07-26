@@ -33,7 +33,7 @@ public class Darknight : BattleRoyalRole
     {
         IsKillingNow = true;
         BattleTeam team = BattleTeam.GetTeam(CurrentPlayer);
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsBot()) continue;
             if (player.IsDead()) continue;

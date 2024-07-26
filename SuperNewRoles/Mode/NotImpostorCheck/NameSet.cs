@@ -9,7 +9,7 @@ class NameSet
         int LocalId = CachedPlayer.LocalPlayer.PlayerId;
         if (Main.Impostors.Contains(LocalId))
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (p.IsAlive() && p.PlayerId != LocalId)
                 {

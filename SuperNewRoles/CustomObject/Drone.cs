@@ -128,7 +128,7 @@ public class Drone : MonoBehaviour
 
     public static void CloseMeeting()
     {
-        foreach (Drone drone in AllDrone)
+        foreach (Drone drone in AllDrone.AsSpan())
         {
             if (drone.IsActive) continue;
             if (drone.RemainingTurn-- > 0) return;
@@ -142,7 +142,7 @@ public class Drone : MonoBehaviour
         List<PlayerControl> vicinity = new();
         if (!PlayerDrone.Contains(owner)) return vicinity;
         List<Drone> idle = PlayerDrone[owner].FindAll(x => !x.IsActive);
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.PlayerId == owner.PlayerId) continue;
             if (idle.Any(x => Vector2.Distance(x.transform.position, player.GetTruePosition()) <= ShipStatus.Instance.MaxLightRadius * Ubiquitous.DroneVisibilityRange.GetFloat()))
