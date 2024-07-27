@@ -173,11 +173,14 @@ public class CustomHatData : HatData
         public static bool Prefix(HatParent __instance)
         {
             if (__instance.Hat == null || !__instance.Hat.ProductId.StartsWith("MOD_")) return true;
-            if (__instance.options.ShowForClimb)
+            if (!SuperNewRolesPlugin.IsEpic)
             {
-                __instance.BackLayer.enabled = false;
-                __instance.enabled = true;
-                __instance.FrontLayer.sprite = getbycache(__instance.Hat.ProductId).ClimbImage;
+                if (__instance.options.ShowForClimb)
+                {
+                    __instance.BackLayer.enabled = false;
+                    __instance.enabled = true;
+                    __instance.FrontLayer.sprite = getbycache(__instance.Hat.ProductId).ClimbImage;
+                }
             }
             return false;
         }
@@ -253,10 +256,13 @@ public class CustomHatData : HatData
                 __instance.FrontLayer.sprite = null;
                 __instance.BackLayer.sprite = asset.MainImage;
             }
-            if (__instance.options.Initialized && __instance.HideHat())
+            if (!SuperNewRolesPlugin.IsEpic)
             {
-                __instance.FrontLayer.enabled = false;
-                __instance.BackLayer.enabled = false;
+                if (__instance.options.Initialized && __instance.HideHat())
+                {
+                    __instance.FrontLayer.enabled = false;
+                    __instance.BackLayer.enabled = false;
+                }
             }
             return false;
         }
