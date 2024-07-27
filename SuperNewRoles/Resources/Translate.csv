@@ -1354,10 +1354,10 @@ WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キ
 WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,昇格時、波動砲を受け継ぐ,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班晉升時繼承重炮之力
 WaveCannonJackalSidekickType,Sidekick Type,サイドキックの種類,跟班类型,跟班類型
 WaveCannonJackalSidekickTypeSidekick,Sidekick,サイドキック,跟班,跟班
-WaveCannonJackalSidekickTypeJackalFriends,Jackal Friends,ジャッカルフレンズ,狼族朋友,狼族朋友
+WaveCannonJackalSidekickTypeJackalFriends,Jackal Friends,ジャッカルフレンズ,狈,狼族朋友
 WaveCannonJackalSidekickTypeWaveCannonSidekick,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
 WaveCannonJackalSidekickTypeBulletSidekick,Bullet,弾,人间大炮,子彈
-WaveCannonJackalCreateBulletToJackal,When a jackal dies，will bullet promote to jackal?,弾が昇格できる,人间大炮是否可以晋升为狼族,子彈是否可以晉升為狼族
+WaveCannonJackalCreateBulletToJackal,When a jackal dies，will bullet promote to jackal?,弾が昇格できる,人间大炮是否可以晋升为豺狼,子彈是否可以晉升為狼族
 WaveCannonJackalLoadBulletCoolTime,Bullet Load Cool Time,「装填」のクールタイム,人间大炮装填冷却时间,子彈裝填冷卻時間
 WaveCannonJackalBulletLoadedChargeTime,Charge Time at Bullet loaded,装填済みのチャージ時間,人间大炮装填后的充能时间,子彈裝填後的充能時間
 SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
@@ -1943,7 +1943,7 @@ BuskerPseudocideDurationOption,Duration of feigned death,死を偽装できる�
 BuskerPseudocideButtonName,Feign death,偽装死,假死,斷頭
 BuskerRebornButtonName,Reborn,復活,复活,接頭
 BuskerReallyDeadTimeText,Remain until really dead...,本当に死ぬまで残り...,距离真正死亡还剩……,距離真正的死亡還剩...
-UbiquitousName,Ubiquitous,ユビキタス,,天眼
+UbiquitousName,Ubiquitous,ユビキタス,天眼,天眼
 UbiquitousTitle1,My eyes exist everywhere.,私の目はどこにでも存在する,我无处不在,我能看到任何地方
 UbiquitousDescription,You can call up a drone and control it.\nYou can switch between the drone and your own view and fly freely around the map.\nIt can also hack into nearby doors and open them.\nIn addition， the drone called on the map can land on the map after a turn， providing ubiquitous information about its surroundings.\nHowever， while operating the drone， you are defenseless. You cannot even perform tasks.\nDo not be caught off guard.,ドローンを呼び出し、操作することが出来ます。\nドローンと自身の視界を切り替え、自由にマップ内を飛び回ることが出来ます。\nまた、近くのドアをハッキングし、開けることも出来ます。\n更に、マップ上に呼び出したドローンは、ターンを挟むとマップ上に着陸し、周囲の情報をユビキタスに伝えます。\nただし、ドローンを操作している間、あなたは無防備です。タスクも出来ません。\nゆめゆめ油断することなかれ。,天眼可以在行动阶段呼叫一台无人机进行操控。\n天眼可以自由切换视角为自己或无人机，并在地图上自由移动。\n无人机也可以黑入附近关闭的门并将其打开。\n此外，呼叫无人机的行动阶段结束后，无人机将降落在地图上，为天眼提供该处的视野。\n当天眼操纵无人机时，天眼本身没有防御手段，且不能做任务。\n在自己毫无防备时应当小心。,天眼屬於船員陣營。\n可以放出並操作無人機開往地圖上的任何地方，並且可以將視野在自己與無人機之間自由切換。\n並且可以駭入無人機周圍的門並將其開啟。\n也可以將無人機停在某處，為天眼提供更多情報。\n但小心，操作無人機時，將會失去任何防備，不要忘了保持警戒。
 UbiquitousCallCoolTimeOption,Call Cool Time,「呼び出す」のクールタイム,呼叫无人机冷却时间,「召喚」冷卻時間
