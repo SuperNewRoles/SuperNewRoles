@@ -72,7 +72,7 @@ public static class OptionSaver
             WriteCheckSum(writer);
             List<CustomOption> options = CustomOption.options.FindAll(x => x.selection != x.defaultSelection);
             writer.Write(options.Count);
-            foreach (CustomOption option in options)
+            foreach (CustomOption option in options.AsSpan())
             {
                 writer.Write((uint)option.id);
                 writer.Write((byte)option.selection);

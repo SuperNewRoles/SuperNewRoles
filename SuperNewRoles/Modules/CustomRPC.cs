@@ -507,7 +507,7 @@ public static class RPCProcedure
             return;
         }
         int count = 0;
-        foreach (PlayerControl player in players)
+        foreach (PlayerControl player in players.AsSpan())
         {
             if (player == null) continue;
             player.Exiled();
@@ -1410,8 +1410,9 @@ public static class RPCProcedure
         RoleId jackalRoleId = (RoleId)jackalId;
         if (jackalRoleId == RoleId.JackalSeer)
         {
-            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
+            for (int i = RoleClass.JackalSeer.SidekickSeerPlayer.Count - 1; i >= 0; i--)
             {
+                PlayerControl p = RoleClass.JackalSeer.SidekickSeerPlayer[i];
                 p.ClearRole();
                 p.SetRole(jackalRoleId);
                 //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
@@ -1486,7 +1487,7 @@ public static class RPCProcedure
         var teleportTarget = ModHelpers.PlayerById(playerid);
 
         Vector2 teleportTo = teleportTarget?.GetTruePosition() ?? new(9999, 9999);
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             player.NetTransform.SnapTo(teleportTo);
         new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), teleportTarget != null ? ModHelpers.PlayerById(playerid).NameText().text : "???"), 3);
     }

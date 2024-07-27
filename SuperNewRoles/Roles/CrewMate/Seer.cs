@@ -144,7 +144,7 @@ class SeerHandler
                         if (RoleClass.JackalSeer.mode is not 0 and not 2) return;
                         break;
                 }
-                foreach ((Vector3, int) posAndColor in DeadBodyPositions)
+                foreach ((Vector3, int) posAndColor in DeadBodyPositions.AsSpan())
                 {
                     GameObject soul = new();
                     (Vector3 pos, int soulColorId) = posAndColor;
@@ -272,15 +272,15 @@ class SeerHandler
             {
                 List<List<PlayerControl>> seers = new() {
                     RoleClass.Seer.SeerPlayer,
-                    CustomRoles.GetRolePlayers<EvilSeer>().ToList(),
+                    CustomRoles.GetRolePlayers<EvilSeer>(),
                     RoleClass.MadSeer.MadSeerPlayer,
                     RoleClass.JackalSeer.JackalSeerPlayer,
                     RoleClass.SeerFriends.SeerFriendsPlayer
                 };
-                foreach (var p in seers)
+                foreach (var p in seers.AsSpan())
                 {
                     if (p == null) continue;
-                    foreach (var p2 in p)
+                    foreach (var p2 in p.AsSpan())
                     {
                         if (p2 == null) continue;
                         if (!p2.IsMod())

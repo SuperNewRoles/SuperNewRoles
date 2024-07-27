@@ -197,7 +197,7 @@ public static class Balancer
                         if (BackPictureObject != null) BackPictureObject.color = new Color32(255, 255, 255, alpha);
                     }
                     Vector3 speed = new(0.6f, 0, 0);
-                    foreach (var objs in ChainObjects)
+                    foreach (var objs in ChainObjects.AsSpan())
                     {
                         objs.Item1.transform.localPosition -= speed;
                     }
@@ -586,7 +586,7 @@ public static class Balancer
         private static void StartBalancerAbility(byte balancerId, byte target1Id, byte target2Id)
         {
             //会議終了-天秤会議開始間に見えるゲーム画面の視界範囲を0にするためにプレイヤー位置を変更（視点は固定）
-            PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsAlive()).Do(x => x.RpcSnapTo(new(-30, 30)));
+            CachedPlayer.AllPlayers.Where(x => x.IsAlive()).Do(x => ((PlayerControl)x).RpcSnapTo(new(-30, 30)));
 
             _ = new LateTask(() => SwitchBalancerMeeting(balancerId, target1Id, target2Id), 0.3f, "SwitchBalancerMeeting");
 
@@ -640,7 +640,7 @@ public static class Balancer
         {
             new LateTask(() =>
             {
-                foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => x != null && !x.Data.IsDead && x.IsRole(RoleId.Balancer)))
+                foreach (var player in CachedPlayer.AllPlayers.Where(x => x != null && !x.Data.IsDead && ((PlayerControl)x).IsRole(RoleId.Balancer)))
                 {
                     if (!State.TryGetValue(player.PlayerId, out var state))
                     {

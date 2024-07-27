@@ -14,7 +14,7 @@ public static class Psychometrist
 {
     public static void FixedUpdate()
     {
-        foreach (var DeathTimeTextData in RoleClass.Psychometrist.DeathTimeTexts)
+        foreach (var DeathTimeTextData in RoleClass.Psychometrist.DeathTimeTexts.AsSpan())
         {
             string newtext = "";
             if (CustomOptionHolder.PsychometristIsCheckDeathReason.GetBool())
@@ -44,7 +44,7 @@ public static class Psychometrist
         if (RoleClass.Psychometrist.FootprintsPosition.Count != 0)
         {
             RoleClass.Psychometrist.UpdateTime -= Time.fixedDeltaTime;
-            foreach (var data in RoleClass.Psychometrist.FootprintsPosition.ToArray())
+            foreach (var data in RoleClass.Psychometrist.FootprintsPosition)
             {
                 if (data.Value.Item2)
                 {
@@ -95,7 +95,7 @@ public static class Psychometrist
             var index = (deadPlayer.killerIfExisting.PlayerId, deadPlayer.player.PlayerId);
             var Lists = RoleClass.Psychometrist.FootprintsPosition[index].Item1;
             Color color = Palette.PlayerColors[deadPlayer.killerIfExisting.Data.DefaultOutfit.ColorId];
-            foreach (var data in Lists)
+            foreach (var data in Lists.AsSpan())
             {
                 RoleClass.Psychometrist.FootprintObjects[index].Add(new Footprint(-1, true, data));
             }

@@ -78,7 +78,7 @@ public class WCTankAnimHandler : IWaveCannonAnimationHandler
             option.SetSprites(sprites, IsLoop: true, frameRate: 15);
             CannonObject.Stop(IsStopMusic: false);
             CannonObject.Play(IsPlayMusic: false);
-            foreach (var obj in CannonObject.effectrenders) obj.sprite = sprites[0];
+            foreach (var obj in CannonObject.effectrenders.AsSpan()) obj.sprite = sprites[0];
             CannonObject.Options.SetOnEndAnimation((anim, option) =>
             {
                 CannonObject.DestroyIndex++;

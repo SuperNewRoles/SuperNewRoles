@@ -15,7 +15,7 @@ public static class UpdateHandler
         int NotLoadedCount = 0;
         if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
         {
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6), 0.5f) ||
                     ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-25, 40), 0.5f) ||
@@ -34,8 +34,8 @@ public static class UpdateHandler
         if (main.LastCount != players.Count)
         {
             main.LastCount = players.Count;
-            string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>" + string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            string name = $"\n\n\n\n\n\n\n\n<size=300%><color=white>{ModeHandler.PlayingOnSuperNewRoles}</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>{string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount)}";
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.AmOwner)
                 {
@@ -49,7 +49,7 @@ public static class UpdateHandler
         }
 
         int i = 0;
-        foreach (PlayerControl p in players)
+        foreach (PlayerControl p in players.AsSpan())
         {
             if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
             {
@@ -74,15 +74,13 @@ public static class UpdateHandler
             //string name = "\n\n\n\n\n<size=300%><color=white>" + SuperNewRoles.Mode.ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り5秒</size>";
             //PlayerControl.LocalPlayer.RpcSetName(name);
             main.LastUpdateTime = main.ShowRoleTime;
-            string RoleText = "";
-            string name = "\n\n\n\n\n<size=300%><color=white>{ROLETEXT}</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.GetString("PantsRoyalStartAt") + ((int)(main.LastUpdateTime + 1)).ToString() + ModTranslation.GetString("second") + "</size>";
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
-                if (main.IsPantsHaver(p))
-                    RoleText = ModTranslation.GetString("PantsRoyalPantsHaverIntroName");
-                else
-                    RoleText = ModTranslation.GetString("PantsRoyalPantsDontHaverIntroName");
-                string targetnametext = name.Replace("{ROLETEXT}", RoleText);
+                string targetnametext = $"\n\n\n\n\n<size=300%><color=white>{
+                    (main.IsPantsHaver(p) ? ModTranslation.GetString("PantsRoyalPantsHaverIntroName") : ModTranslation.GetString("PantsRoyalPantsDontHaverIntroName"))
+                    }</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>{
+                    ModTranslation.GetString("PantsRoyalStartAt")}{(int)(main.LastUpdateTime + 1)}{ModTranslation.GetString("second")
+                    }</size>";
                 if (!p.AmOwner)
                 {
                     p.RpcSetNamePrivate(targetnametext);
@@ -94,7 +92,7 @@ public static class UpdateHandler
             }
         }
         int i = 0;
-        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
             {
@@ -106,10 +104,10 @@ public static class UpdateHandler
         {
             string RoleNameText = ModHelpers.Cs(IntroData.CrewmateIntro.color, IntroData.CrewmateIntro.Name);
             string TaskText = ModHelpers.Cs(Color.yellow, "(334/802)");
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 CopsRobbers.Main.ClearAndReloads();
-                p.RpcSetName("<size=75%>" + RoleNameText + TaskText + "</size>\n" + p.GetDefaultName());
+                p.RpcSetName($"<size=75%>{RoleNameText}{TaskText}</size>\n{p.GetDefaultName()}");
                 //if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
                 if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Airship)
                 {
@@ -149,10 +147,10 @@ public static class UpdateHandler
                     if (main.CurrentTurnData.TurnTimer != time)
                         time++;
                     string timetext = string.Format(ModTranslation.GetString("PantsRoyalTimeRemainingText"), time);
-                    string prefix = "<size=125%>" + ModHelpers.Cs(IntroData.CrewmateIntro.color, timetext) + "</size>\n<size=75%>" + RoleNameText + TaskText + "</size>\n";
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    string prefix = $"<size=125%>{ModHelpers.Cs(IntroData.CrewmateIntro.color, timetext)}</size>\n<size=75%>{RoleNameText}{TaskText}</size>\n";
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                     {
-                        string nametext = prefix + p.GetDefaultName() + "\n\n";
+                        string nametext = $"{prefix}{p.GetDefaultName()}\n\n";
                         if (!p.AmOwner)
                         {
                             p.RpcSetNamePrivate(nametext);
@@ -176,10 +174,10 @@ public static class UpdateHandler
                 if (main.CurrentTurnData.TurnTimer != time)
                     time++;
                 string timetext = string.Format(ModTranslation.GetString("PantsRoyalTimeRemainingText"), time);
-                string prefix = "<size=125%>" + ModHelpers.Cs(IntroData.CrewmateIntro.color, timetext) + "</size>\n<size=75%>" + RoleNameText + TaskText + "</size>\n";
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                string prefix = $"<size=125%>{ModHelpers.Cs(IntroData.CrewmateIntro.color, timetext)}</size>\n<size=75%>{RoleNameText}{TaskText}</size>\n";
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
-                    string nametext = prefix + p.GetDefaultName() + "\n\n";
+                    string nametext = $"{prefix}{p.GetDefaultName()}\n\n";
                     if (!p.AmOwner)
                     {
                         p.RpcSetNamePrivate(nametext);
@@ -194,9 +192,9 @@ public static class UpdateHandler
             }
             else if (1 <= main.CurrentTurnData.LastUpdateCountdownTime && !main.CurrentTurnData.CooldowntextReseted)
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
-                    string nametext = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + p.GetDefaultName();
+                    string nametext = $"<size=75%>{RoleNameText}{TaskText}</size>\n{p.GetDefaultName()}";
                     if (!p.AmOwner)
                     {
                         p.RpcSetNamePrivate(nametext);
@@ -217,7 +215,7 @@ public static class UpdateHandler
     public static void TurnStartWait()
     {
         main.CurrentTurnData.StartTimer -= Time.deltaTime;
-        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             p.RpcSnapTo(new Vector2(-30, 30));
         }
@@ -225,8 +223,7 @@ public static class UpdateHandler
         {
             main.CurrentTurnData.StartTimer -= Time.deltaTime;
             string RoleText = "";
-            string name = "\n\n\n\n\n<size=300%><color=white>{ROLETEXT}</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.GetString("PantsRoyalStartAt") + ((int)(main.CurrentTurnData.LastUpdateStartTimer + 1)).ToString() + ModTranslation.GetString("second") + "</size>";
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (p.IsDead())
                     RoleText = ModTranslation.GetString("PantsRoyalDeadName");
@@ -234,7 +231,7 @@ public static class UpdateHandler
                     RoleText = ModTranslation.GetString("PantsRoyalPantsHaverIntroName");
                 else
                     RoleText = ModTranslation.GetString("PantsRoyalPantsDontHaverIntroName");
-                string targetnametext = name.Replace("{ROLETEXT}", RoleText);
+                string targetnametext = $"\n\n\n\n\n<size=300%><color=white>{RoleText}</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>{ModTranslation.GetString("PantsRoyalStartAt")}{(int)(main.CurrentTurnData.LastUpdateStartTimer + 1)}{ModTranslation.GetString("second")}</size>";
                 if (!p.AmOwner)
                 {
                     p.RpcSetNamePrivate(targetnametext);
@@ -250,9 +247,9 @@ public static class UpdateHandler
         {
             string RoleNameText = ModHelpers.Cs(IntroData.CrewmateIntro.color, IntroData.CrewmateIntro.Name);
             string TaskText = ModHelpers.Cs(Color.yellow, "(334/802)");
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
-                p.RpcSetName("<size=75%>" + RoleNameText + TaskText + "</size>\n" + p.GetDefaultName());
+                p.RpcSetName($"<size=75%>{RoleNameText}{TaskText}</size>\n{p.GetDefaultName()}");
                 //if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
                 if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Airship)
                 {

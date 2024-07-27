@@ -141,7 +141,7 @@ public static class Revolutionist
         if (!RoleClass.Revolutionist.IsEndMeeting)
         {
             bool IsFlag = true;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != player.PlayerId && !RoleClass.Revolutionist.RevolutionedPlayerId.Contains(player.PlayerId))
                 {

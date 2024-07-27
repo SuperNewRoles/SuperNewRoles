@@ -23,7 +23,7 @@ public class HandleGhostRole
                 {
                     // TryAssignSpecialGhostRoles
                     RoleTypes roleTypes = RoleTypes.GuardianAngel;
-                    int num = PlayerControl.AllPlayerControls.ToArray().Count((PlayerControl pc) => pc.Data.IsDead && !pc.Data.Role.IsImpostor);
+                    int num = CachedPlayer.AllPlayers.Count((CachedPlayer player) => player.Data.IsDead && !player.Data.Role.IsImpostor);
                     IRoleOptionsCollection roleOptions = GameOptionsManager.Instance.CurrentGameOptions.RoleOptions;
                     if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
                     {
@@ -95,7 +95,7 @@ public class HandleGhostRole
         var Team = TeamRoleType.Error;
         Team = player.IsCrew() ? TeamRoleType.Crewmate : player.IsNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
         List<IntroData> GhostRoles = new();
-        foreach (IntroData intro in IntroData.GhostRoleData)
+        foreach (IntroData intro in IntroData.GhostRoleData.AsSpan())
         {
             if (intro.Team != Team) continue;
             GhostRoles.Add(intro);
@@ -135,7 +135,7 @@ public class HandleGhostRole
         List<RoleId> Assigns = new();
         List<RoleId> Assignnos = new();
         ModeId mode = ModeHandler.GetMode();
-        foreach (IntroData data in introData)
+        foreach (IntroData data in introData.AsSpan())
         {
             //その役職のプレイヤー数を取得
             var count = AllRoleSetClass.GetPlayerCount(data.RoleId);
@@ -146,7 +146,7 @@ public class HandleGhostRole
 
             //確率が0%ではないかつ、
             //もう割り当てきられてないか(最大人数まで割り当てられていないか)
-            if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > CachedPlayer.AllPlayers.ToArray().ToList().Count((CachedPlayer pc) => pc.PlayerControl.IsGhostRole(data.RoleId)))
+            if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > CachedPlayer.AllPlayers.Count((CachedPlayer pc) => pc.PlayerControl.IsGhostRole(data.RoleId)))
             {
                 //100%なら100%アサインListに入れる
                 if (selection == 10)

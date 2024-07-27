@@ -114,7 +114,7 @@ class UpdateSystemPatch
         {
             new LateTask(() =>
             {
-                foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
+                foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer.AsSpan())
                 {
                     if (p.inVent && p.IsAlive() && Mode.BattleRoyal.Main.VentData.ContainsKey(p.PlayerId) && Mode.BattleRoyal.Main.VentData[p.PlayerId] != null)
                     {

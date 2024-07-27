@@ -375,7 +375,7 @@ internal static class GetChatCommands
         StringBuilder settingBuilder = new();
         const string line = "\n<color=#4d4398><size=80%>|-----------------------------------------------------------------------------|</size></color>\n";
 
-        foreach (CustomOption option in CustomOption.options)
+        foreach (CustomOption option in CustomOption.options.AsSpan())
         {
             if (!(option.type == CustomOptionType.Generic || option.type == CustomOptionType.Modifier)) continue;
             if ((option == CustomOptionHolder.presetSelection) ||
@@ -430,7 +430,7 @@ internal static class GetChatCommands
         {
             if (!option.Enabled || (modeId == ModeId.SuperHostRoles && !option.isSHROn)) return;
 
-            foreach (var child in option.children)
+            foreach (var child in option.children.AsSpan())
             {
                 if (modeId == ModeId.SuperHostRoles && !child.isSHROn) continue;
 
@@ -447,7 +447,7 @@ internal static class GetChatCommands
     internal static string GetWinnerMessage()
     {
         StringBuilder builder = new();
-        foreach (var data in OnGameEndPatch.PlayerData)
+        foreach (var data in OnGameEndPatch.PlayerData.AsSpan())
         {
             if (data.IsWin) builder.Append("★");
             else builder.Append("　");
@@ -481,7 +481,7 @@ internal static class GetChatCommands
 
         ModeId modeId = ModeHandler.GetMode(false);
 
-        foreach (CustomOption option in CustomOption.options)
+        foreach (CustomOption option in CustomOption.options.AsSpan())
         {
             if (option.GetSelection() == 0) continue;
             if (option.type != CustomOptionType.MatchTag) continue;
@@ -574,7 +574,7 @@ internal static class RoleinformationText
             EnableOptions.Add(option);
         }
         float time = 0;
-        foreach (CustomRoleOption option in EnableOptions)
+        foreach (CustomRoleOption option in EnableOptions.AsSpan())
         {
             (string rolename, string text) = RoleInfo.GetRoleInfo(option.RoleId, isGetAllRole: isCommanderHost);
             rolename = $"<align={"left"}><size=115%>\n" + CustomRoles.GetRoleNameOnColor(option.RoleId) + "</size></align>";
@@ -681,7 +681,7 @@ internal static class RoleinformationText
     }
     internal static void YourRoleInfoSendCommand()
     {
-        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player == null || player.IsBot()) continue;
             RoleId roleId = player.GetRole();
@@ -726,7 +726,7 @@ internal static class RoleinformationText
             }
 
             // 現在有効な役職の説明を保存
-            foreach (CustomRoleOption roleOption in EnableOptions)
+            foreach (CustomRoleOption roleOption in EnableOptions.AsSpan())
             {
                 RoleId roleId = roleOption.RoleId;
                 string roleName, info;

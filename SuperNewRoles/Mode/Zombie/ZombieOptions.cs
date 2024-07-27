@@ -32,7 +32,7 @@ public class ZombieOptions
         var optdata = SyncSetting.DefaultOption.DeepCopy();
         optdata.SetFloat(FloatOptionNames.CrewLightMod, GetSpeed(ZombieCommingLightOption.GetFloat()));
         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, GetSpeed(ZombieCommingSpeedOption.GetFloat()));
-        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
             optdata.RpcSyncOption(player.GetClientId());

@@ -110,7 +110,7 @@ class Doctor
                 }
                 else
                 {
-                    foreach (TMPro.TextMeshPro text in hackerTexts)
+                    foreach (TMPro.TextMeshPro text in hackerTexts.AsSpan())
                         if (text != null && text.gameObject != null)
                             text.gameObject.SetActive(false);
                 }

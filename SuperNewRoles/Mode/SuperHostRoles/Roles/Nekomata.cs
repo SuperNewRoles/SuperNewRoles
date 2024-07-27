@@ -18,7 +18,7 @@ class Nekomata
     public static void NekomataEnd(NetworkedPlayerInfo exiled)
     {
         List<PlayerControl> p = new();
-        foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p1 in CachedPlayer.AllPlayers.AsSpan())
         {
             //もし イビル猫又・黒猫が追放され、Impostorを道連れしないがオンなら
             if ((exiled.Object.IsRole(RoleId.EvilNekomata) && RoleClass.EvilNekomata.NotImpostorExiled) || (exiled.Object.IsRole(RoleId.BlackCat) && RoleClass.BlackCat.NotImpostorExiled))

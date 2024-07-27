@@ -17,20 +17,24 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void FixedUpdate()
         {
-            foreach (var notification in Notifications.ToArray())
+            bool needNotificationUpdate = false;
+            for (int i = Notifications.Count - 1; i >= 0; i--)
             {
-                int index = Notifications.IndexOf(notification);
+                var notification = Notifications[i];
                 float timer = notification.Item2 - Time.fixedDeltaTime;
                 Logger.Info(timer.ToString());
                 if (timer <= 0)
                 {
                     Logger.Info("REMOVE");
-                    Notifications.RemoveAt(index);
-                    OnNotificationUpdate();
-                    continue;
+                    Notifications.RemoveAt(i);
+                    needNotificationUpdate = true;
                 }
-                Notifications[index] = (notification.Item1, timer);
+                else
+                {
+                    Notifications[i] = (notification.Item1, timer);
+                }
             }
+            if (needNotificationUpdate) OnNotificationUpdate();
         }
         public static void OnNotificationUpdate()
         {
@@ -48,7 +52,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 BattleTeam team = BattleTeam.GetTeam(player);
                 if (team is null) return;
-                foreach (PlayerControl seeplayer in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl seeplayer in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (seeplayer.IsBot()) continue;
                     if (seeplayer.PlayerId == player.PlayerId) continue;
@@ -60,25 +64,20 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void UpdateName(bool SelfOnly = false)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 Logger.Info(player.GetDefaultName());
-            }
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-            {
                 UpdateName(player, SelfOnly);
             }
         }
         public static (string, string) GetName(PlayerControl player)
         {
-            string name = player.GetDefaultName();
-            name = "<size=75%>" + ModHelpers.Cs(CustomRoles.GetRoleColor(player.GetRole(), IsImpostorReturn: true), CustomRoles.GetRoleName(player.GetRole(), IsImpostorReturn: true)) + "</size>\n" + name + "\n\n";
-            string selfname = name;
-            selfname = "\n\n\n\n" + selfname + "\n\n\n\n";
-            foreach (var notifi in Notifications)
+            string name = $"<size=75%>{ModHelpers.Cs(CustomRoles.GetRoleColor(player.GetRole(), IsImpostorReturn: true), CustomRoles.GetRoleName(player.GetRole(), IsImpostorReturn: true))}</size>\n{player.GetDefaultName()}\n\n";
+            string selfname = $"\n\n\n\n{name}\n\n\n\n";
+            foreach (var notifi in Notifications.AsSpan())
             {
                 Logger.Info("SETNOTIF:" + notifi.Item1);
-                selfname = "<size=200%>" + notifi.Item1 + "</size>" + selfname + "\n";
+                selfname = $"<size=200%>{notifi.Item1}</size>{selfname}\n";
             }
             return (name, selfname);
         }

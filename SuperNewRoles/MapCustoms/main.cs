@@ -4,6 +4,7 @@ using System.Linq;
 using Agartha;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using static SuperNewRoles.MapCustoms.MapCustomHandler;
@@ -86,7 +87,8 @@ class IntroCutsceneOnDestroyPatch
             if (MapCustom.AirshipDisableMovingPlatform.GetBool())
             {
                 gapRoom.GetComponentInChildren<MovingPlatformBehaviour>().gameObject.SetActive(false);
-                gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
+                Il2CppArrayBase<PlatformConsole> list = gapRoom.GetComponentsInChildren<PlatformConsole>();
+                for (int i = 0; i < list.Count; i++) list[i].gameObject.SetActive(false);
             }
             // 昇降機右のダウンロードを下に移動
             if (MapCustom.MoveGapRoomDownload.GetBool())

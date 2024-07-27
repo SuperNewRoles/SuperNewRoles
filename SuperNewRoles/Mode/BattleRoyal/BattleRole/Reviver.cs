@@ -73,7 +73,7 @@ public class Reviver : BattleRoyalRole
         if (IsAbilityUsingNow) return;
         BattleTeam team = BattleTeam.GetTeam(CurrentPlayer);
         List<PlayerControl> targets = new();
-        foreach (PlayerControl p in team.TeamMember)
+        foreach (PlayerControl p in team.TeamMember.AsSpan())
         {
             if (p.IsDead()) targets.Add(p);
         }
