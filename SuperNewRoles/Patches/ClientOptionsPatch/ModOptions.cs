@@ -27,20 +27,11 @@ public static class ClientModOptionsPatch
             new("IsSaveLogWhenEndGame", () => ConfigRoles.IsSaveLogWhenEndGame.Value = !ConfigRoles.IsSaveLogWhenEndGame.Value, ConfigRoles.IsSaveLogWhenEndGame.Value),
             new(ProcessorAffinityMaskTitle, OnProcessorAffinityMaskClick, ConfigRoles._ProcessorAffinityMask.Value == 3),
     };
-    private static SelectionBehaviour ProcessorAffinityMaskButton
-    {
-        get
-        {
-            if (AllOptions.Length < 12)
-                throw new NotImplementedException("ProcessorAffinityMaskButton is not implemented1");
-            return AllOptions[11];
-        }
-    }
-    private static bool OnProcessorAffinityMaskClick()
+    private static bool OnProcessorAffinityMaskClick(SelectionBehaviour button)
     {
         ConfigRoles._ProcessorAffinityMask.Value = ConfigRoles._ProcessorAffinityMask.Value == (ulong)3 ? (ulong)1 : (ulong)3;
         SuperNewRolesPlugin.UpdateCPUProcessorAffinity();
-        ProcessorAffinityMaskButton.Title = ProcessorAffinityMaskTitle;
+        button.Title = ProcessorAffinityMaskTitle;
         return ConfigRoles._ProcessorAffinityMask.Value == (ulong)3;
     }
     private static string ProcessorAffinityMaskTitle
@@ -400,6 +391,14 @@ public static class ClientModOptionsPatch
         {
             Title = title;
             OnClick = onClick;
+            DefaultValue = defaultValue;
+            this.pos = pos;
+            this.scale = scale;
+        }
+        public SelectionBehaviour(string title, Func<SelectionBehaviour, bool> onClick, bool defaultValue, Vector3? pos = null, Vector3? scale = null)
+        {
+            Title = title;
+            OnClick = () => onClick(this);
             DefaultValue = defaultValue;
             this.pos = pos;
             this.scale = scale;

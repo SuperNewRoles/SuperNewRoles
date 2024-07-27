@@ -62,6 +62,8 @@ public static class AirShipRandomSpawn
         int NotLoadedCount = 0;
         foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
+            if (p.IsDead())
+                continue;
             if (ModHelpers.IsPositionDistance(p.transform.position, new(3, 6), 0.5f) ||
                 ModHelpers.IsPositionDistance(p.transform.position, new(-25, 40), 0.5f) ||
                 ModHelpers.IsPositionDistance(p.transform.position, new(-1.4f, 2.3f), 0.5f))
