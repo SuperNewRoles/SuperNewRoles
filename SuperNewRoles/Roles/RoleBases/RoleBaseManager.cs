@@ -22,12 +22,12 @@ public static class RoleBaseManager
     {
         return fixedUpdaterAlls;
     }
-    public static IReadOnlyList<T> GetInterfaces<T>()
+    public static IEnumerable<T> GetInterfaces<T>()
     {
         if (!AllInterfaces.TryGetValue(typeof(T).Name, out HashSet<RoleBase> RoleBases) ||
             RoleBases == null)
-            return new List<T>();
-        return RoleBases.Cast<T>().ToList();
+            return Enumerable.Empty<T>();
+        return RoleBases.Cast<T>();
     }
     public static void DoInterfaces<T>(Action<T> action)
     {
@@ -131,9 +131,9 @@ public static class RoleBaseManager
         result = PlayerRoles[player];
         return result != null;
     }
-    public static IReadOnlyList<T> GetRoleBases<T>() where T : RoleBase
+    public static IEnumerable<T> GetRoleBases<T>() where T : RoleBase
     {
-        return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? (value?.Cast<T>()?.ToList() ?? new()) : new();
+        return RoleBaseTypes.TryGetValue(typeof(T).Name, out HashSet<RoleBase> value) ? value.Cast<T>() : Enumerable.Empty<T>();
     }
     public static IReadOnlySet<RoleBase> GetRoleBaseOrigins<T>() where T : RoleBase
     {

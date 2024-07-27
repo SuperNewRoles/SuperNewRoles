@@ -65,7 +65,7 @@ class HauntedWolf
             List<PlayerControl> SelectPlayers = new();
             var isNotDuplication = CustomOptionData.IsNotDuplication.GetBool();
             var isAssignMadAndFriendRoles = CustomOptionData.IsAssignMadAndFriendRoles.GetBool();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.IsCrew() || p.IsBot()) continue;
                 if (isNotDuplication) // 重複して配布しない時

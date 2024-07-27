@@ -44,11 +44,11 @@ public class CrystalMagician : BattleRoyalRole
                 //クリスタルが終わったら
                 if (IsCrystalTime)
                 {
-                    foreach (PlayerControl member in BattleTeam.GetTeam(CurrentPlayer).TeamMember)
+                    foreach (PlayerControl member in BattleTeam.GetTeam(CurrentPlayer).TeamMember.AsSpan())
                     {
                         Bot.RpcSnapTo(new(999, 999), member);
                     }
-                    foreach (PlayerControl player in Players)
+                    foreach (PlayerControl player in Players.AsSpan())
                     {
                         if (player is null) continue;
                         PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
@@ -64,7 +64,7 @@ public class CrystalMagician : BattleRoyalRole
                 //視界低下が終わったら
                 else
                 {
-                    foreach (PlayerControl player in Players)
+                    foreach (PlayerControl player in Players.AsSpan())
                     {
                         if (player is null) continue;
                         PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
@@ -79,7 +79,7 @@ public class CrystalMagician : BattleRoyalRole
     }
     public static void UseWater(PlayerControl target)
     {
-        foreach (PlayerControl player in BattleTeam.GetTeam(target).TeamMember)
+        foreach (PlayerControl player in BattleTeam.GetTeam(target).TeamMember.AsSpan())
         {
             CrystalMagician cm = GetCrystalMagician(player);
             if (cm is not null && cm.IsAbilityUsingNow)
@@ -103,7 +103,7 @@ public class CrystalMagician : BattleRoyalRole
     public bool CanUseAbility()
     {
         BattleTeam team = BattleTeam.GetTeam(CurrentPlayer);
-        foreach (CrystalMagician cm in crystalMagicians) if (team.IsTeam(cm.CurrentPlayer) && cm.IsAbilityUsingNow) return false;
+        foreach (CrystalMagician cm in crystalMagicians.AsSpan()) if (team.IsTeam(cm.CurrentPlayer) && cm.IsAbilityUsingNow) return false;
         return true;
     }
     public override void UseAbility(PlayerControl target)
@@ -113,7 +113,7 @@ public class CrystalMagician : BattleRoyalRole
         IsAbilityUsingNow = true;
         IsCrystalTime = true;
         AbilityTime = RoleParameter.CrystalMagicianCrystalTime;
-        foreach (PlayerControl player in BattleTeam.GetTeam(CurrentPlayer).TeamMember)
+        foreach (PlayerControl player in BattleTeam.GetTeam(CurrentPlayer).TeamMember.AsSpan())
         {
             Bot.RpcSnapTo(CurrentPlayer.transform.position, player);
         }

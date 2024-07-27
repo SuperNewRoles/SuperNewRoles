@@ -240,7 +240,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
 
         var reportTime = DateTime.Now;
 
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (PersonalInformationOfTheDead.IsAlreadyInfoRecorded(RoleData.PersonalInformationManager, p.PlayerId)) continue;
             if (p.IsAlive() && p != playerWhoPlansToDie) continue;
@@ -351,10 +351,11 @@ internal static class PostMortemCertificate_Display
             if (!AmongUsClient.Instance.AmHost) return;
 
             bool canResend = CustomOptionData.CanResend.GetBool();
-            foreach (var pl in RoleData.Player)
+            foreach (var pl in RoleData.Player.AsSpan())
             {
-                Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl), "#89c3eb");
-                if (canResend) Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb");
+                new LateTask(() => Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl), "#89c3eb"), 3f);
+                if (canResend)
+                    new LateTask(() => Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb"), 3f);
             }
         }
 
@@ -729,7 +730,7 @@ internal static class PostMortemCertificate_CreateAndGet
         builder.AppendLine(delimiterLine);
         if (victimInfo == null) // 特定のプレイヤー指定ではない時、全員の死体検案書を取得する。
         {
-            foreach (var info in RoleData.PersonalInformationManager)
+            foreach (var info in RoleData.PersonalInformationManager.AsSpan())
             {
                 // 以降に進むのは、[全てのターンの死亡情報を出す時]の全てのプレイヤーの情報と　[現在ターンの死亡情報しか出さない時]の現在ターンに死亡したプレイヤーの情報
                 if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && info.DeadTurn != ReportDeadBodyPatch.MeetingCount.all) continue;

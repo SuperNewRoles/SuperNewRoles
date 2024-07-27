@@ -16,17 +16,19 @@ class Vampire
     /// </summary>
     public static void SetActiveBloodStaiWrapUpPatch()
     {
-        foreach (var data in RoleClass.Vampire.NoActiveTurnWait.ToArray())
+        foreach (var data in RoleClass.Vampire.NoActiveTurnWait)
         {
             RoleClass.Vampire.NoActiveTurnWait[data.Key]--;
             if (data.Value - 1 <= 0)
             {
-                foreach (var bloodstain in data.Key) GameObject.Destroy(bloodstain.BloodStainObject);
+                foreach (var bloodstain in data.Key.AsSpan()) GameObject.Destroy(bloodstain.BloodStainObject);
                 RoleClass.Vampire.NoActiveTurnWait.Remove(data.Key);
             }
         }
-        foreach (var data in RoleClass.Vampire.WaitActiveBloodStains)
-            data.BloodStainObject.SetActive(true);
+        foreach (var data in RoleClass.Vampire.WaitActiveBloodStains.AsSpan())
+        {
+            if (!data.BloodStainObject.active) data.BloodStainObject.SetActive(true);
+        }
         RoleClass.Vampire.NoActiveTurnWait.Add(RoleClass.Vampire.WaitActiveBloodStains, CustomOptionHolder.VampireViewBloodStainsTurn.GetInt());
         RoleClass.Vampire.WaitActiveBloodStains = new();
     }
@@ -39,7 +41,7 @@ class Vampire
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsAlive())
         {
             bool Is = true;
-            foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive() && (exiled == null || exiled.PlayerId != p.PlayerId)) Is = false;
+            foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer.AsSpan()) if (p.IsAlive() && (exiled == null || exiled.PlayerId != p.PlayerId)) Is = false;
             if (Is)
             {
                 PlayerControl.LocalPlayer.RpcExiledUnchecked();
@@ -76,7 +78,7 @@ class Vampire
         public static void DependentsOnly()
         {
             if (RoleClass.IsMeeting) return;
-            foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive()) return;
+            foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer.AsSpan()) if (p.IsAlive()) return;
             PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
         }
         public static void AllClient()
