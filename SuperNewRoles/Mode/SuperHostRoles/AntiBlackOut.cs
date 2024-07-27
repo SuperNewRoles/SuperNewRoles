@@ -159,12 +159,12 @@ public static class AntiBlackOut
     }
     private static void SendOtherCrewmate(PlayerControl seer)
     {
-        CustomRpcSender sender = CustomRpcSender.Create($"StartAntiBlackOut_To:{(seer?.PlayerId.ToString() ?? "All")}", sendOption: Hazel.SendOption.Reliable);
+        Logger.Info($"StartAntiBlackOut_To:{(seer?.PlayerId.ToString() ?? "All")}");
         int seerClientId = seer?.GetClientId() ?? -1;
         PlayerControl impostorPlayer = seer ?? PlayerControl.LocalPlayer;
 
         int numMeeting = impostorPlayer.RemainingEmergencies;
-        sender.RpcSetRole(impostorPlayer, RoleTypes.Impostor, true, seerClientId);
+        impostorPlayer.RpcSetRoleImmediately(RoleTypes.Impostor, true, seerClientId);
         impostorPlayer.RemainingEmergencies = numMeeting;
 
         foreach (PlayerControl target in PlayerControl.AllPlayerControls)
@@ -172,10 +172,9 @@ public static class AntiBlackOut
             if (target == impostorPlayer)
                 continue;
             numMeeting = target.RemainingEmergencies;
-            sender.RpcSetRole(target, RoleTypes.Crewmate, true, seerClientId);
+            target.RpcSetRoleImmediately(RoleTypes.Crewmate, true, seerClientId);
             target.RemainingEmergencies = numMeeting;
         }
-        sender.SendMessage();
     }
     public static void OnWrapUp()
     {

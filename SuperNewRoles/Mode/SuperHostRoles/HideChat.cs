@@ -83,7 +83,7 @@ public static class HideChat
     }
     public static void OnAddChat(CustomRpcSender sender, PlayerControl player, string message, bool isAdd)
     {
-        if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead())
+        if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead() || AntiBlackOut.GamePlayers != null)
             return;
         if (isAdd)
         {
