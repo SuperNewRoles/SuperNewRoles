@@ -7,7 +7,7 @@ internal class Mafia
     public static bool IsKillFlag()
     {
         if (RoleClass.Mafia.CachedIs) return true;
-        foreach (CachedPlayer player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (CachedPlayer player in CachedPlayer.AllPlayers)
         {
             if (!player.PlayerControl.IsBot() && player.PlayerControl.IsAlive() && player.PlayerControl.IsImpostor() && !player.PlayerControl.IsRole(RoleId.Mafia) && !player.PlayerControl.IsRole(RoleId.Egoist))
             {

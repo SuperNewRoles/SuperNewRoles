@@ -191,7 +191,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                     player.RpcSetRoleDesync(RoleTypes.Impostor, true, Player);
                 if (isOldImpostor)
                 {
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p == player)
                             continue;
@@ -263,7 +263,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
                 jackal.DesyncRole, true
             );
         }
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.PlayerId == CreatedSidekickControl.PlayerId ||
                 player.PlayerId == Player.PlayerId)

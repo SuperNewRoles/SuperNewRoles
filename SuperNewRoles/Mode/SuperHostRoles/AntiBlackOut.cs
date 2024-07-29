@@ -141,7 +141,7 @@ public static class AntiBlackOut
     {
         InitalSavedData();
         bool CanShowExiledPlayer = PlayerControl.AllPlayerControls.Count >= BlackOutSafetyShowExiledPlayer;
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             GamePlayers[player] = new(player.Data);
         if (exiled?.PlayerId != PlayerControl.LocalPlayer.PlayerId)
         {
@@ -149,7 +149,7 @@ public static class AntiBlackOut
         }
         else
         {
-            foreach (PlayerControl seer in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
             {
                 if (seer.IsMod())
                     continue;
@@ -166,7 +166,8 @@ public static class AntiBlackOut
         int numMeeting = impostorPlayer.RemainingEmergencies;
         impostorPlayer.RpcSetRoleImmediately(RoleTypes.Impostor, true, seerClientId);
         impostorPlayer.RemainingEmergencies = numMeeting;
-        foreach (PlayerControl target in CachedPlayer.AllPlayers.AsSpan())
+
+        foreach (PlayerControl target in PlayerControl.AllPlayerControls)
         {
             if (target == impostorPlayer)
                 continue;
@@ -198,7 +199,7 @@ public static class AntiBlackOut
         new LateTask(() => {
             if (RealExiled != null && RealExiled.Object != null)
                 RealExiled.Object.Exiled();
-            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player.IsAlive())
                     continue;
@@ -240,7 +241,7 @@ public static class AntiBlackOut
             }
             new LateTask(() =>
             {
-                foreach (var desyncDetail in DesyncPlayers.AsSpan())
+                foreach (var desyncDetail in DesyncPlayers)
                 {
                     if (desyncDetail.player.IsMod() || desyncDetail.player.IsDead())
                         continue;
@@ -248,7 +249,7 @@ public static class AntiBlackOut
                     SyncSetting.CustomSyncSettings(desyncDetail.player);
                     desyncDetail.player.RpcSetRoleDesync(desyncDetail.role, true);
                     new LateTask(() => desyncDetail.player.RemainingEmergencies = numMeeting, 0.5f);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         if (player == desyncDetail.player)
                             continue;
@@ -280,7 +281,7 @@ public static class AntiBlackOut
 
                 new LateTask(() =>
                 {
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         if (player.IsDead())
                             continue;
@@ -307,7 +308,7 @@ public static class AntiBlackOut
                 NeedDesyncSerialize = true;
 
         }
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsAlive())
                 continue;
@@ -321,7 +322,7 @@ public static class AntiBlackOut
     private static void DesyncDontDead(NetworkedPlayerInfo exiled)
     {
         Logger.Info("Selected DesyncDontDead");
-        foreach (PlayerControl seer in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl seer in PlayerControl.AllPlayerControls)
         {
             if (seer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                 continue;
@@ -359,7 +360,7 @@ public static class AntiBlackOut
                 HashSet<(byte, RoleTypes)> seerchanges = [
                     (seer.PlayerId, seer.Data.Role.Role)
                 ];
-                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (!player.Data.Role.IsImpostor)
                         continue;
@@ -381,9 +382,9 @@ public static class AntiBlackOut
     {
         Logger.Info("Selected SyncDontDead");
         bool IsImpoAlived = false;
-        foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
-            player.Data.IsDead = player.Data.Disconnected = false;
+            player.IsDead = player.Disconnected = false;
             /*
             if (player.Role.IsImpostor && !IsImpoAlived &&
                 (exiled == null || exiled.PlayerId != player.PlayerId))

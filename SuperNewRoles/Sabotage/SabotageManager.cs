@@ -79,7 +79,7 @@ public static class SabotageManager
             if (InfectedOverlayInstance != null)
             {
                 float specialActive = (InfectedOverlayInstance.doors != null && InfectedOverlayInstance.doors.IsActive) ? 1f : InfectedOverlayInstance.sabSystem.PercentCool;
-                foreach (ButtonBehavior button in CustomButtons.AsSpan())
+                foreach (ButtonBehavior button in CustomButtons)
                 {
                     button.spriteRenderer.material.SetFloat("_Percent", specialActive);
                 }

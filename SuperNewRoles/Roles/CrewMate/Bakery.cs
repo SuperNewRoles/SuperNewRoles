@@ -134,7 +134,7 @@ public class Bakery
     {
         if (RoleClass.Bakery.BakeryPlayer.Count <= 0) return false;
 
-        foreach (PlayerControl p in RoleClass.Bakery.BakeryPlayer.AsSpan())
+        foreach (PlayerControl p in RoleClass.Bakery.BakeryPlayer)
         {
             if (p.IsAlive())
             {

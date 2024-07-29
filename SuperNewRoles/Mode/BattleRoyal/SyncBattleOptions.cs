@@ -19,7 +19,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
             SuperNewRolesPlugin.Logger.LogInfo("[BR:SyncSettings] CustomSyncOptionsが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (!p.Data.Disconnected && !p.IsBot())
                 {

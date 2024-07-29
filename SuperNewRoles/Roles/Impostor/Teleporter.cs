@@ -16,7 +16,7 @@ class Teleporter
     public static void TeleportStart()
     {
         List<PlayerControl> aliveplayers = new();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             if (p.IsDead() || !p.CanMove)
                 continue;

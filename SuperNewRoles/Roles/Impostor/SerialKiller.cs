@@ -12,7 +12,7 @@ public static class SerialKiller
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer.AsSpan())
+                foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
                 {
                     if (p.IsAlive())
                     {
@@ -104,7 +104,7 @@ public static class SerialKiller
         if (RoleClass.SerialKiller.IsMeetingReset)
         {
             RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;
-            foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer.AsSpan())
+            foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
             {
                 if (RoleClass.SerialKiller.SuicideTimers.ContainsKey(p.PlayerId))
                 {

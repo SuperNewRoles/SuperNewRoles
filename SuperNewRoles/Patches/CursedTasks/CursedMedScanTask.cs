@@ -70,7 +70,7 @@ public class CursedMedScanTask
             else
             {
                 __instance.charStats.color = Color.white;
-                foreach (var blood in Bloods.AsSpan())
+                foreach (var blood in Bloods)
                     Object.Destroy(blood.BloodStainObject);
                 Bloods.Clear();
             }
@@ -80,7 +80,7 @@ public class CursedMedScanTask
         public static void ClosePrefix()
         {
             if (!Main.IsCursed) return;
-            foreach (var blood in Bloods.AsSpan())
+            foreach (var blood in Bloods)
                 Object.Destroy(blood.BloodStainObject);
             Bloods.Clear();
         }

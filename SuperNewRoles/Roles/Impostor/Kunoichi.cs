@@ -5,7 +5,6 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using UnityEngine;
-using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Roles;
 
@@ -19,7 +18,7 @@ internal static class Kunoichi
         Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
         var mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
 
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             //自分自身は撃ち抜かれない
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
@@ -78,18 +77,17 @@ internal static class Kunoichi
 
         if (PlayerControl.LocalPlayer.inVent)
             RoleClass.Kunoichi.Kunai.kunai.active = false;
-        for (int i = RoleClass.Kunoichi.Kunais.Count - 1; i >= 0; i--)
+        foreach (Kunai kunai in RoleClass.Kunoichi.Kunais.ToArray())
         {
-            Kunai kunai = RoleClass.Kunoichi.Kunais[i];
             if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, kunai.kunai.transform.position) > 6f)
             {
                 GameObject.Destroy(kunai.kunai);
-                RoleClass.Kunoichi.Kunais.RemoveAt(i);
+                RoleClass.Kunoichi.Kunais.Remove(kunai);
             }
             else
             {
                 var kunaipos = kunai.kunai.transform.position;
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsDead()) continue;
                     if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
@@ -103,7 +101,7 @@ internal static class Kunoichi
                             ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
                             RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                         }
-                        RoleClass.Kunoichi.Kunais.RemoveAt(i);
+                        RoleClass.Kunoichi.Kunais.Remove(kunai);
                         GameObject.Destroy(kunai.kunai);
                         break;
                     }
@@ -232,7 +230,7 @@ internal static class Kunoichi
     public static void WrapUp()
     {
         RoleClass.Kunoichi.StopTime = 0;
-        foreach (PlayerControl p in RoleClass.Kunoichi.KunoichiPlayer.AsSpan())
+        foreach (PlayerControl p in RoleClass.Kunoichi.KunoichiPlayer)
         {
             RoleClass.Kunoichi.IsScientistPlayers[p.PlayerId] = false;
         }

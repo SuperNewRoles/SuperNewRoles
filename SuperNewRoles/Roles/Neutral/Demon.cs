@@ -53,7 +53,7 @@ public static class Demon
         if (player == null) return false;
         foreach (KeyValuePair<byte, List<PlayerControl>> data in RoleClass.Demon.CurseData)
         {
-            foreach (PlayerControl Player in data.Value.AsSpan())
+            foreach (PlayerControl Player in data.Value)
             {
                 if (player.PlayerId == Player.PlayerId)
                 {
@@ -71,7 +71,7 @@ public static class Demon
 
     public static bool IsWin(PlayerControl Demon)
     {
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
             if (player.PlayerId != Demon.PlayerId && !IsCursed(Demon, player))
             {
@@ -83,7 +83,7 @@ public static class Demon
 
     public static bool IsDemonWinFlag()
     {
-        foreach (PlayerControl player in RoleClass.Demon.DemonPlayer.AsSpan())
+        foreach (PlayerControl player in RoleClass.Demon.DemonPlayer)
         {
             if (IsWin(player))
             {

@@ -48,7 +48,7 @@ public class Beacon
     public static void ClearBeacons()
     {
         //int[] num = { -1, -2, -3 };
-        foreach (var beacon in AllBeacons.AsSpan())
+        foreach (var beacon in AllBeacons)
         {
             if (beacon.GameObject == null)
                 continue;

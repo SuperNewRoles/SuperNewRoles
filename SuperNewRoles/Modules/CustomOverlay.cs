@@ -333,7 +333,7 @@ public class CustomOverlays
     private static void PlayerDataDictionaryAdd_CoBeginPostfix()
     {
         playerDataDictionary = new();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
             if (!p.IsBot() || SuperNewRolesPlugin.IsBeta || ConfigRoles.DebugMode.Value)
                 playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
 
@@ -580,7 +580,7 @@ public class CustomOverlays
             int percentInt = option.Rate * 10; // 10をかけている理由 => [0.10,20...90,100]というstring[]で表された確率をGetSelectionで取得している為。
             string percent = percentInt < 100 ? $"  {percentInt}" : $"{percentInt}"; // 配役確率の文字数調整
 
-            foreach (CustomOption opt in option.children.AsSpan())
+            foreach (CustomOption opt in option.children)
             {
                 if (opt.GetName() == CustomOptionHolder.SheriffPlayerCount.GetName())
                 {
@@ -652,7 +652,7 @@ public class CustomOverlays
         }
         else // ゲーム開始前は表示時に情報を取得する。
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.IsBot() && !(SuperNewRolesPlugin.IsBeta || ConfigRoles.DebugMode.Value)) continue;
                 string data = GetPlayerData(p);
@@ -791,7 +791,7 @@ public class CustomOverlays
         int index = 0;
         ModeId modeId = ModeHandler.GetMode(false);
 
-        foreach (CustomOption option in CustomOption.options.AsSpan())
+        foreach (CustomOption option in CustomOption.options)
         {
             if (option.GetSelection() == 0) continue;
             if (option.type != CustomOptionType.MatchTag) continue;

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using AsmResolver.PE.DotNet.Metadata;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
@@ -54,7 +53,7 @@ public class WellBehaver
                 Garbage garbage = null;
                 float min_distance = float.MaxValue;
                 Vector2 truepos = PlayerControl.LocalPlayer.GetTruePosition();
-                foreach (Garbage data in Garbage.AllGarbage.AsSpan())
+                foreach (Garbage data in Garbage.AllGarbage)
                 {
                     Vector2 pos = data.GarbageObject.transform.position;
                     if (PhysicsHelpers.AnythingBetween(truepos, pos, Constants.ShadowMask, false)) continue;
@@ -106,7 +105,7 @@ public class WellBehaver
         if (AlivePlayer.Count <= 0 || RoleClass.IsMeeting) return;
         if (Garbage.AllGarbage.Count >= WellBehaverLimitTrashCount.GetInt() * AllowableLimitCorrection.Now && WellBehaverPlayer.Any(x => x.IsAlive()))
         {
-            foreach (PlayerControl player in WellBehaverPlayer.AsSpan())
+            foreach (PlayerControl player in WellBehaverPlayer)
             {
                 if (player.IsDead()) continue;
                 player.RpcMurderPlayer(player, true);
@@ -114,12 +113,17 @@ public class WellBehaver
             }
         }
 
-        foreach (var data in GarbageDumpingTimer)
+        List<byte> keys = new();
+        foreach (byte key in GarbageDumpingTimer.Keys)
         {
-            byte id = data.Key;
-            PlayerControl player = ModHelpers.PlayerById(id);
+            PlayerControl player = ModHelpers.PlayerById(key);
             if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Airship && IsWaitSpawn(player)) continue;
             if (player.inMovingPlat || player.onLadder) continue;
+            keys.Add(key);
+        }
+        foreach (byte id in keys)
+        {
+            PlayerControl player = ModHelpers.PlayerById(id);
             if (player.IsDead()) continue;
             GarbageDumpingTimer[id] += Time.fixedDeltaTime;
             if (GarbageDumpingTimer[id] >= WellBehaverFrequencyGarbageDumping.GetFloat())
@@ -141,7 +145,7 @@ public class WellBehaver
         // 誰もいないなら処理しない
         if (WellBehaverPlayer.Count <= 0) return;
         GarbageDumpingTimer.Clear();
-        foreach (PlayerControl player in AlivePlayer.AsSpan())
+        foreach (PlayerControl player in AlivePlayer)
         {
             if (player.IsAlive()) continue;
             AllowableLimitCorrection = (AllowableLimitCorrection.Now, AllowableLimitCorrection.Next - 1, AllowableLimitCorrection.NexNex - 1);
@@ -150,8 +154,8 @@ public class WellBehaver
         int count = AlivePlayer.Count;
 
         // Capacityを指定してメモリにやさしく
-        List<PlayerControl> players = new(CachedPlayer.AllPlayers.Count / 2);
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        List<PlayerControl> players = new(PlayerControl.AllPlayerControls.Count / 2);
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             if (player.IsAlive() && (!player.IsRole(RoleId.WellBehaver) || count > 1))
                 players.Add(player);
 
@@ -185,7 +189,7 @@ public class WellBehaver
         {
             if (!AmongUsClient.Instance.AmHost) return;
             AllowableLimitCorrection = (AllowableLimitCorrection.Next, AllowableLimitCorrection.NexNex, AllowableLimitCorrection.NexNex);
-            foreach (PlayerControl player in AlivePlayer.AsSpan())
+            foreach (PlayerControl player in AlivePlayer)
             {
                 if (player.IsAlive()) continue;
                 AllowableLimitCorrection = (AllowableLimitCorrection.Now, AllowableLimitCorrection.Next - 1, AllowableLimitCorrection.NexNex - 1);

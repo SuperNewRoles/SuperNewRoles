@@ -83,7 +83,7 @@ namespace SuperNewRoles.Replay
 
         public void UpdateCustomOptionByData()
         {
-            foreach (CustomOption opt in CustomOption.options.AsSpan())
+            foreach (CustomOption opt in CustomOption.options)
             {
                 var selection = CustomOptionSelections.FirstOrDefault(x => x.Key == opt.id);
                 //nullチェック
