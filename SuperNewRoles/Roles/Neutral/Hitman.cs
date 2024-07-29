@@ -110,11 +110,7 @@ public static class Hitman
     }
     public static void SetTarget()
     {
-        List<CachedPlayer> targets = CachedPlayer.AllPlayers;
-        targets.RemoveAll(player =>
-        {
-            return player.IsDead() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
-        });
+        List<CachedPlayer> targets = CachedPlayer.AllPlayers.Where(player => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId).ToList();
         if (targets.Count > 0)
         {
             RoleClass.Hitman.Target = ModHelpers.GetRandom(targets);
