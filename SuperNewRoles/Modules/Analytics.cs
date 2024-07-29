@@ -80,7 +80,7 @@ public static class Analytics
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
         data.Add("Version", SuperNewRolesPlugin.ThisVersion.ToString());
         NetworkedPlayerInfo Host = null;
-        foreach (var p in CachedPlayer.AllPlayers.AsSpan()) if (p.PlayerId == 0) Host = p.Data;
+        foreach (var p in GameData.Instance.AllPlayers) if (p.PlayerId == 0) Host = p;
         data.Add("HostFriendCode", Host.FriendCode);
         data.Add("PlayerCount", GameData.Instance.AllPlayers.Count.ToString());
         string json = data.GetString();
