@@ -20,6 +20,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 using static NetworkedPlayerInfo;
 using static SuperNewRoles.ModHelpers;
@@ -28,10 +29,12 @@ namespace SuperNewRoles.Patches;
 
 #region KillButtonDoClickPatch
 
+
 [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
-class KillButtonDoClickPatch
+public static class KillButtonPatch
 {
-    public static bool Prefix(KillButton __instance)
+    [HarmonyPatch(nameof(KillButton.DoClick)), HarmonyPrefix]
+    public static bool DoClickPrefix(KillButton __instance)
     {
         if (!ModeHandler.IsMode(ModeId.Default))
         {
@@ -59,6 +62,7 @@ class KillButtonDoClickPatch
             }
             return false;
         }
+        if (PlayerControl.LocalPlayer.GetRoleBase() is IKillButtonEvent @event && !@event.KillButtonDoClick(__instance)) return false;
         if (!(__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove))
             return false;
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Kunoichi))
@@ -104,6 +108,20 @@ class KillButtonDoClickPatch
         }
         __instance.SetTarget(null);
         return false;
+    }
+
+    [HarmonyPatch(nameof(KillButton.CheckClick)), HarmonyPrefix]
+    public static bool CheckClickPrefix(KillButton __instance, PlayerControl target)
+    {
+        if (PlayerControl.LocalPlayer.GetRoleBase() is IKillButtonEvent @event && !@event.KillButtonCheckClick(__instance, target)) return false;
+        return true;
+    }
+
+    [HarmonyPatch(nameof(KillButton.SetTarget)), HarmonyPrefix]
+    public static bool SetTargetPrefix(KillButton __instance, PlayerControl target)
+    {
+        if (PlayerControl.LocalPlayer.GetRoleBase() is IKillButtonEvent @event && !@event.KillButtonSetTarget(__instance, target)) return false;
+        return true;
     }
 }
 #endregion

@@ -1959,6 +1959,14 @@ UbiquitousOperationButton,Operation,操作,操纵,操作
 UbiquitousCallButton,Call,呼び出す,呼叫,召喚
 UbiquitousCallHomeButton,Call Home,呼び戻す,唤回,喚回
 UbiquitousDoorHackButton,Door Hack,ドアハック,黑入,駭入門
+RemoteControllerName,Remote Controller,リモコン
+RemoteControllerTitle1,Beep-beep-beep!,ピコピコピコッ！
+RemoteControllerTitle2,The hatchlings move the subject as they wish,仔分が対象を思いのままに動かしてくれる
+RemoteControllerMarkingCoolTimeOption,Marking Cool Time,マーキングのクールタイム
+RemoteControllerOperationCoolTimeOption,Operation Cool Time,操作のクールタイム
+RemoteControllerMarkingButtonName,Marking,マーキング
+RemoteControllerOperationButtonName,Operation!,操作!
+RemoteControllerTarget,Objects of Interference,干渉対象
 
 #NewRoleTranslation
 

@@ -45,6 +45,7 @@ public class FixSabotage
         public static bool Prefix(UseButton __instance, [HarmonyArgument(0)] IUsable target)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+            if (target == null) return true;
             if (IsBlocked(target))
             {
                 __instance.currentTarget = null;

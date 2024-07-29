@@ -51,6 +51,7 @@ public enum RoleId
     Robber,
     Crab,
     DimensionWalker,
+    RemoteController,
 
     // Neutral Roles
     Cupid,
@@ -1649,12 +1650,19 @@ public static class RPCProcedure
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
-            if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId))
-                Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
+            CustomRPC rpc = (CustomRPC)callId;
+            bool log = !IsWritingRPCLog.TryGetValue(rpc, out bool value) && value;
+            if (log && rpc is CustomRPC.RoleRpcHandler)
+            {
+                RoleBase role = RoleBaseManager.GetRoleBaseById(reader.ReadByte());
+                if (role.Role is RoleId.RemoteController) log = reader.ReadByte() != (byte)RemoteController.RpcType.SetNormalizedVelocity;
+                reader.Offset = 0;
+                reader.Position = 0;
+            }
+            if (log) Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
-                byte packetId = callId;
-                switch ((CustomRPC)packetId)
+                switch (rpc)
                 {
                     case CustomRPC.ShareOptions:
                         ShareOptions((int)reader.ReadPackedUInt32(), reader);

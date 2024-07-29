@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Buttons;
 
@@ -36,6 +38,25 @@ public class NormalButtonDestroy
         // ニートの使用ボタン
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Neet) && hm.UseButton.gameObject.active)
             hm.UseButton.gameObject.SetActive(false);// 使用ボタンを無効化
+
+        if (PlayerControl.LocalPlayer.GetRoleBase() is IButtonDestroy bd)
+        {
+            if (!bd.CanKillButton && hm.KillButton.gameObject.active)
+                hm.KillButton.gameObject.SetActive(false);
+            if (!bd.CanReportButton && hm.ReportButton.gameObject.active)
+            {
+                hm.ReportButton.SetActive(false);//通報
+                hm.ReportButton.gameObject.SetActiveRecursively(false);
+                hm.ReportButton.graphic.enabled = false;
+                hm.ReportButton.enabled = false;
+                hm.ReportButton.graphic.sprite = null;
+                hm.ReportButton.buttonLabelText.enabled = false;
+                hm.ReportButton.buttonLabelText.SetText("");
+            }
+            if (!bd.CanUseButton && hm.UseButton.gameObject.active)
+                hm.UseButton.gameObject.SetActive(false);
+            return;
+        }
 
         if (!SetActiveDictionary.ContainsKey(PlayerControl.LocalPlayer.GetRole())) return;
         if (!SetActiveDictionary[PlayerControl.LocalPlayer.GetRole()].Item2) return;
