@@ -432,7 +432,7 @@ public class SetNameUpdate
                 (canSeeImpostorRoleTurnRemaining == 0 && !RoleClass.IsMeeting)))
                 //会議開始時に1減らすので会議が終わってから見えるように
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (p.IsImpostorAddedFake())
                     {
