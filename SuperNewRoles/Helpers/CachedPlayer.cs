@@ -79,12 +79,14 @@ public static class CachedPlayerPatches
         CachedPlayer.AllPlayers.Add(player);
         CachedPlayer.PlayerPtrs[__instance.Pointer] = player;
 
-        foreach (var cachedPlayer in CachedPlayer.AllPlayers.AsSpan())
+        CachedPlayer cachedPlayer;
+        for (int i = CachedPlayer.AllPlayers.Count - 1; i >= 0; i--)
         {
+            cachedPlayer = CachedPlayer.AllPlayers[i];
             if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
             {
                 SuperNewRolesPlugin.Logger.LogError($"CachedPlayer {cachedPlayer.PlayerControl?.name} has null fields");
-                CachedPlayer.AllPlayers.Remove(cachedPlayer);
+                CachedPlayer.AllPlayers.RemoveAt(i);
             }
         }
     }
