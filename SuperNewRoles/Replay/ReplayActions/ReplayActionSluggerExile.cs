@@ -36,9 +36,9 @@ public class ReplayActionSluggerExile : ReplayAction
     }
     public override void OnReplay()
     {
-        foreach (SluggerDeadbody db in SluggerDeadbody.DeadBodys.FindAll(x => x.PlayerId == sourcePlayer).AsSpan())
+        foreach (SluggerDeadbody db in SluggerDeadbody.DeadBodys.AsSpan())
         {
-            GameObject.Destroy(db.gameObject);
+            if (db.PlayerId == sourcePlayer) GameObject.Destroy(db.gameObject);
         }
     }
     //試合内でアクションがあったら実行するやつ

@@ -299,7 +299,7 @@ public class CustomOption
         }
         else if (!suc)
         {
-            Logger.Info($"CustomOptionGetPresetError:{code.ToString()}");
+            Logger.Info($"CustomOptionGetPresetError:{code}");
             return;
         }
         foreach (CustomOption option in options.AsSpan())

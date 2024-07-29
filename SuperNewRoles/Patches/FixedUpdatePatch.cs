@@ -61,7 +61,7 @@ public class FixedUpdate
         var tasks = PlayerControl.LocalPlayer.myTasks.ToList().FindAll(x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning).ConvertAll(x => x.Cast<NormalPlayerTask>().Data[0]);
         foreach (Vent vent in ShipStatus.Instance.AllVents)
         {
-            if (tasks.Exists(x => x == vent.Id)) continue;
+            if (tasks.Contains((byte)vent.Id)) continue;
             vent.SetOutline(false, false);
         }
     }
