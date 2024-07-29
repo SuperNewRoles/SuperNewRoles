@@ -167,7 +167,7 @@ public static class AntiBlackOut
         impostorPlayer.RpcSetRoleImmediately(RoleTypes.Impostor, true, seerClientId);
         impostorPlayer.RemainingEmergencies = numMeeting;
 
-        foreach (PlayerControl target in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl target in CachedPlayer.AllPlayers.AsSpan())
         {
             if (target == impostorPlayer)
                 continue;
