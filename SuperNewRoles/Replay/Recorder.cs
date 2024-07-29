@@ -50,18 +50,18 @@ namespace SuperNewRoles.Replay
 
         public static void CoIntroDestroy()
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
-                FirstOutfits.Add(player.PlayerId, CopyOutfit(player.Data.DefaultOutfit));
+                FirstOutfits.Add(player.PlayerId, CopyOutfit(player.DefaultOutfit));
                 RoleId role = RoleId.DefaultRole;
-                if (player != null)
-                    role = player.GetRole();
+                if (player.Object != null)
+                    role = player.Object.GetRole();
                 FirstRoles.Add(player.PlayerId, role);
             }
             WriteReplayDataFirst();
             ReplayActions = new();
             PlayerPositions = new();
-            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 PlayerPositions.TryAdd(player.PlayerId, new());
             }
@@ -81,7 +81,7 @@ namespace SuperNewRoles.Replay
             ReplayActionTime += Time.deltaTime;
             if (currenttime <= 0)
             {
-                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     PlayerPositions[player.PlayerId].Add(player.transform.localPosition);
                 }
@@ -111,7 +111,7 @@ namespace SuperNewRoles.Replay
             writer.Write(PlayerPositions.Count);
             Dictionary<byte, List<Vector2>> playerpositions = new(PlayerPositions);
             PlayerPositions = new();
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 PlayerPositions.TryAdd(player.PlayerId, new());
             }
@@ -166,7 +166,7 @@ namespace SuperNewRoles.Replay
             {
                 writer.Write(data.Key);
                 writer.Write(data.Value.Count);
-                foreach (Vector3 pos in data.Value.AsSpan())
+                foreach (Vector3 pos in data.Value)
                 {
                     if (IsPosFloat)
                     {
@@ -186,12 +186,12 @@ namespace SuperNewRoles.Replay
             int index = 0;
             List<ReplayAction> replayactions = new(ReplayActions);
             ReplayActions = new();
-            foreach (ReplayAction action in replayactions.AsSpan())
+            foreach (ReplayAction action in replayactions)
             {
                 writer.Write((byte)action.GetActionId());
-                Logger.Info($"{index}開始:{action.GetActionId()}:{writer.BaseStream.Position}");
+                Logger.Info(index.ToString() + "開始:" + action.GetActionId().ToString() + ":" + writer.BaseStream.Position.ToString());
                 action.WriteReplayFile(writer);
-                Logger.Info($"{index}終了:{action.GetActionId()}:{writer.BaseStream.Position}");
+                Logger.Info(index.ToString() + "終了:" + action.GetActionId().ToString() + ":" + writer.BaseStream.Position.ToString());
                 index++;
             }
             Logger.Info(writer.BaseStream.Length.ToString());
@@ -208,7 +208,7 @@ namespace SuperNewRoles.Replay
                 winners.Add(target);
             }
             writer.Write(winners.Count);
-            foreach (NetworkedPlayerInfo player in winners.AsSpan())
+            foreach (NetworkedPlayerInfo player in winners)
             {
                 writer.Write(player.PlayerId);
             }

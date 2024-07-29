@@ -363,12 +363,12 @@ public static class RPCHelper
         sender.Write((writer) =>
         {
             GameDataSerializePatch.Is = true;
-            foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (var player in GameData.Instance.AllPlayers)
             {
                 writer.StartMessage(1); //0x01 Data
                 {
                     writer.WritePacked(player.NetId);
-                    player.Data.Serialize(writer, false);
+                    player.Serialize(writer, false);
                 }
                 writer.EndMessage();
             }
@@ -392,7 +392,7 @@ public static class RPCHelper
             writer.WritePacked(TargetClientId);
         }
         GameDataSerializePatch.Is = true;
-        foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (var player in GameData.Instance.AllPlayers)
         {
             // データを分割して送信
             if (writer.Length > 1000)
@@ -418,7 +418,7 @@ public static class RPCHelper
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(player.NetId);
-                player.Data.Serialize(writer, false);
+                player.Serialize(writer, false);
             }
             writer.EndMessage();
         }
@@ -676,10 +676,9 @@ public static class RPCHelper
         messageWriter.EndMessage();
     }
 
-    private static readonly byte[] ToiletDoors = { 79, 80, 81, 82 };
     public static void RpcOpenToilet()
     {
-        foreach (byte i in ToiletDoors)
+        foreach (byte i in new[] { 79, 80, 81, 82 })
         {
             Logger.Info($"amount:{i}", "RpcOpenToilet");
             MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Doors, i);

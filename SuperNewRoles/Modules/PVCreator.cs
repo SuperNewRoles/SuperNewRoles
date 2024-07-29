@@ -102,7 +102,7 @@ public static class PVCreator
     {
         Is = false;
         var text = "\nnew(){";
-        foreach (Vector2 pos in poss.AsSpan())
+        foreach (Vector2 pos in poss)
         {
             text += $"new({pos.x}f,{pos.y}f),";
         }
@@ -112,7 +112,7 @@ public static class PVCreator
         Logger.Info("");
         Logger.Info("");
         text = "new(){";
-        foreach (var data in ventData.AsSpan())
+        foreach (var data in ventData)
         {
             text += $"({data.Item1}f,{data.Item2}),";
         }

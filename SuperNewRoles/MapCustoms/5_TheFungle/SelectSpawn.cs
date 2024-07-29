@@ -42,14 +42,22 @@ public static class FungleSelectSpawn
             __result = SelectSpawn().WrapToIl2Cpp();
             return false;
         }
-        static (StringNames, Vector3, string, Func<AudioClip>)[] Locations =
+        static Tuple<StringNames, Vector3, string, Func<AudioClip>>[] Locations =
+            new Tuple<StringNames, Vector3, string, Func<AudioClip>>[]
             {
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
                 ((StringNames)50999, new Vector3(-9.81f, 0.6f),"Campfire", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
                 (StringNames.Dropship, new Vector3(-8f, 10.5f), "Dropship", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
                 (StringNames.Cafeteria, new Vector3(-16.16f, 7.25f), "Cafeteria", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
                 (StringNames.Kitchen, new Vector3(-15.5f, -7.5f), "Kitchen", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
                 (StringNames.Greenhouse, new Vector3(9.25f, -12f), "Hotroom", GetGreenHouseSound),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
                 (StringNames.UpperEngine, new Vector3(14.75f, 0f), "UpperEngine", null),
+                Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
                 (StringNames.Comms, new Vector3(21.65f, 13.75f), "Comms", null)
             };
         static Dictionary<SystemTypes, AudioClip> _cachedSounds = new();
@@ -67,7 +75,7 @@ public static class FungleSelectSpawn
             clip.hideFlags |= HideFlags.DontUnloadUnusedAsset;
             return _cachedSounds[SystemTypes.Greenhouse] = clip;
         }
-        static SpawnInMinigame.SpawnLocation Create(SpawnInMinigame miniGame, (StringNames, Vector3, string, Func<AudioClip>) obj)
+        static SpawnInMinigame.SpawnLocation Create(SpawnInMinigame miniGame, Tuple<StringNames, Vector3, string, Func<AudioClip>> obj)
         {
             SpawnInMinigame.SpawnLocation baseL = miniGame.Locations.FirstOrDefault();
             return new()

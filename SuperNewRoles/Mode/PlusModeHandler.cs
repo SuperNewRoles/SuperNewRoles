@@ -15,7 +15,7 @@ class PlusModeHandler
     public static void ClearAndReload()
     {
         thisPlusModes = new List<PlusModeId>();
-        foreach (PlusModeId mode in PlusModeIds.AsSpan())
+        foreach (PlusModeId mode in PlusModeIds)
         {
             if (IsMode(mode))
             {

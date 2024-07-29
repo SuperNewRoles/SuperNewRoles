@@ -19,12 +19,12 @@ public static class AssetManager
     }
     private static Dictionary<byte, Dictionary<string, UnityEngine.Object>> _cachedAssets { get; } = new();
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
-    private static (AssetBundleType, string)[] AssetPathes =
+    private static Tuple<AssetBundleType, string>[] AssetPathes = new Tuple<AssetBundleType, string>[4]
     {
-        (AssetBundleType.Sprite, "snrsprites"),
-        (AssetBundleType.Sound, "SNRSounds"),
-        (AssetBundleType.Wavecannon, "WaveCannon.WaveCannonEffects"),
-        (AssetBundleType.BodyBuilder, "BodyBuilder.BodyBuilderPoses")
+        new(AssetBundleType.Sprite, "snrsprites"),
+        new(AssetBundleType.Sound, "SNRSounds"),
+        new(AssetBundleType.Wavecannon, "WaveCannon.WaveCannonEffects"),
+        new(AssetBundleType.BodyBuilder, "BodyBuilder.BodyBuilderPoses")
     };
     public static void Load()
     {

@@ -121,7 +121,7 @@ class ControllerManagerUpdatePatch
 
                 bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
                 //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
-                //new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers.AsSpan()) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
+                //new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
                 //new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
             }
 

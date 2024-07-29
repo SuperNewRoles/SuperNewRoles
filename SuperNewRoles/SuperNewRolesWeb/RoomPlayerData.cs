@@ -29,7 +29,7 @@ public class RoomPlayerData
         _instance = this;
         Local = PlayerControl.LocalPlayer;
         WebPlayers = new();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             WebPlayers.Add(WebPlayer.Create(p));
         }

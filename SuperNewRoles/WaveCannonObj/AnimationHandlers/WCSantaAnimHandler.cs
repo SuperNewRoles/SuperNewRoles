@@ -73,10 +73,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                         .FirstOrDefault()?
                         .ResetCoolTime();
                     }
-                    foreach (var santa in Santas.AsSpan())
-                    {
-                        if (santa != null) santa.transform.SetParent(null, true);
-                    }
+                    Santas.ForEach(santa => { if (santa != null) santa.transform.SetParent(null, true); });
                     GameObject.Destroy(CannonObject.gameObject);
                 }
             });

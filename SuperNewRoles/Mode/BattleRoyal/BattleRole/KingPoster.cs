@@ -53,7 +53,7 @@ public class KingPoster : BattleRoyalRole
             AbilityTime -= Time.fixedDeltaTime;
             if (IsAbilityTime)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (p.IsBot()) continue;
                     if (p.PlayerId == CurrentPlayer.PlayerId) continue;

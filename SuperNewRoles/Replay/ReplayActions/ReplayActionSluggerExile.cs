@@ -36,7 +36,7 @@ public class ReplayActionSluggerExile : ReplayAction
     }
     public override void OnReplay()
     {
-        foreach (SluggerDeadbody db in SluggerDeadbody.DeadBodys.FindAll(x => x.PlayerId == sourcePlayer).AsSpan())
+        foreach (SluggerDeadbody db in SluggerDeadbody.DeadBodys.FindAll(x => x.PlayerId == sourcePlayer))
         {
             GameObject.Destroy(db.gameObject);
         }

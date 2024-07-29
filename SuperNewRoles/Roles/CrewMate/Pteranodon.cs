@@ -53,7 +53,7 @@ public static class Pteranodon
     }
     public static void FixedUpdateAll()
     {
-        foreach (var data in UsingPlayers)
+        foreach (var data in UsingPlayers.ToArray())
         {
             PlayerControl target = ModHelpers.PlayerById(data.Key);
             if (target.IsDead())
@@ -87,7 +87,7 @@ public static class Pteranodon
     {
         private static void Postfix(PlayerPhysics __instance)
         {
-            if ((IsPteranodonNow && __instance.myPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId) ||
+            if ((__instance.myPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId && IsPteranodonNow) ||
                 UsingPlayers.ContainsKey(__instance.myPlayer.PlayerId))
             {
                 __instance.GetSkin().SetIdle(__instance.FlipX);

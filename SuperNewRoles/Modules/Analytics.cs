@@ -80,7 +80,7 @@ public static class Analytics
         data.Add("GameId", AmongUsClient.Instance.GameId.ToString());
         data.Add("Version", SuperNewRolesPlugin.ThisVersion.ToString());
         NetworkedPlayerInfo Host = null;
-        foreach (var p in CachedPlayer.AllPlayers.AsSpan()) if (p.PlayerId == 0) Host = p.Data;
+        foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers) if (p.PlayerId == 0) Host = p;
         data.Add("HostFriendCode", Host.FriendCode);
         data.Add("PlayerCount", GameData.Instance.AllPlayers.Count.ToString());
         string json = data.GetString();
@@ -93,20 +93,17 @@ public static class Analytics
         string ActivateRole = "";
         string RealActivateRole = "";
         List<RoleId> RealActivateRoleList = new();
-        if (GameData.Instance is not null)
+        foreach (NetworkedPlayerInfo player in GameData.Instance is null ? new() : GameData.Instance.AllPlayers)
         {
-            foreach (var player in CachedPlayer.AllPlayers.AsSpan())
-            {
-                if (player == CachedPlayer.LocalPlayer) continue;
-                PlayerDatas += $"{player.Data.FriendCode},";
-            }
-            if (PlayerDatas.Length > 1)
-            {
-                PlayerDatas = PlayerDatas.Substring(0, PlayerDatas.Length - 1);
-            }
+            if (player.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) continue;
+            PlayerDatas += $"{player.FriendCode},";
+        }
+        if (PlayerDatas.Length > 1)
+        {
+            PlayerDatas = PlayerDatas.Substring(0, PlayerDatas.Length - 1);
         }
 
-        foreach (CustomOption opt in CustomOption.options.AsSpan())
+        foreach (CustomOption opt in CustomOption.options)
         {
             if (opt.GetSelection() == 0) continue;
             Options += $"{opt.id}:{opt.GetSelection()},";
@@ -125,12 +122,12 @@ public static class Analytics
         {
             ActivateRole = ActivateRole.Substring(0, ActivateRole.Length - 1);
         }
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             if (RealActivateRoleList.Contains(p.GetRole())) continue;
             RealActivateRoleList.Add(p.GetRole());
         }
-        foreach (RoleId role in RealActivateRoleList.AsSpan())
+        foreach (RoleId role in RealActivateRoleList)
         {
             RealActivateRole += role + ",";
         }

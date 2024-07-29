@@ -13,7 +13,7 @@ public static class OneClickShapeshift
     public static void OnStartTurn()
     {
         bool isOneClickShapeshiftProcessed = false;
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.GetRoleBase() is not ISHROneClickShape oneClickShape)
                 continue;

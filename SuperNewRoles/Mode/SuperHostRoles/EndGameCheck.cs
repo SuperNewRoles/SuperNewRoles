@@ -55,7 +55,7 @@ class EndGameCheck
         SuperNewRoles.Roles.Impostor.Camouflager.ResetCamouflageSHR();
         Chat.IsOldSHR = true;
         List<PlayerControl> WinGods = null;
-        foreach (PlayerControl p in RoleClass.God.GodPlayer.AsSpan())
+        foreach (PlayerControl p in RoleClass.God.GodPlayer)
         {
             if (p.IsAlive())
             {
@@ -93,7 +93,7 @@ class EndGameCheck
 
         if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
         {
-            foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer.AsSpan())
+            foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
                 if (p.IsDead())
                 {
@@ -103,7 +103,7 @@ class EndGameCheck
         }
         else if (OnGameEndPatch.EndData == CustomGameOverReason.JackalWin)
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (!p.IsRole(RoleId.Jackal))
                 {
@@ -113,8 +113,8 @@ class EndGameCheck
         }*/
 
         var (winners, winCondition, WillRevivePlayers) = OnGameEndPatch.HandleEndGameProcess((GameOverReason)reason);
-        var winnersByte = winners.Select((p) => p?.PlayerId ?? byte.MaxValue);
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        var winnersByte = winners.Select((p) => p?.PlayerId ?? byte.MaxValue).ToArray();
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             bool IsDead = player.Data.IsDead;
             RoleTypes RealRole = player.Data.Role.Role;
@@ -128,14 +128,14 @@ class EndGameCheck
                 player.Revive();
         }
         Dictionary<PlayerControl, byte> ShowTargets = new();
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsMod())
                 continue;
             if (winnersByte.Contains(player.PlayerId) && player.IsAlive())
                 continue;
             PlayerControl SeeTarget = null;
-            foreach (PlayerControl seeTarget in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl seeTarget in PlayerControl.AllPlayerControls)
             {
                 if (player.PlayerId == seeTarget.PlayerId)
                     continue;
@@ -226,7 +226,7 @@ class EndGameCheck
     {
         if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && !statistics.IsGuardPavlovs)
         {
-            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer.AsSpan())
+            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
             {
                 if (!p.IsImpostor() && !p.Data.Disconnected)
                 {
@@ -286,7 +286,7 @@ class EndGameCheck
     }
     public static bool CheckAndEndGameForWorkpersonWin(ShipStatus __instance)
     {
-        foreach (PlayerControl p in RoleClass.Workperson.WorkpersonPlayer.AsSpan())
+        foreach (PlayerControl p in RoleClass.Workperson.WorkpersonPlayer)
         {
             if (!p.Data.Disconnected)
             {
@@ -318,7 +318,7 @@ class EndGameCheck
         int impostorNum = 0;
         int crewNum = 0;
         bool foxAlive = false;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             if (p.IsDead() || p.Data.Disconnected || p == null) continue;
 
@@ -331,7 +331,7 @@ class EndGameCheck
         {
             List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
             foxPlayers.AddRange(FireFox.FireFoxPlayer);
-            foreach (PlayerControl p in foxPlayers.AsSpan())
+            foreach (PlayerControl p in foxPlayers)
             {
                 if (p.IsDead()) continue;
                 MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);

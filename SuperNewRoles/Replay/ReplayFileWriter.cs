@@ -75,7 +75,7 @@ public static class ReplayFileWriter
     {
         List<CustomOption> Options = CustomOption.options.FindAll(x => x.GetSelection() != 0);
         writer.Write(Options.Count);
-        foreach (CustomOption option in Options.AsSpan())
+        foreach (CustomOption option in Options)
         {
             writer.Write(option.id);
             writer.Write(option.GetSelection());
@@ -83,7 +83,7 @@ public static class ReplayFileWriter
     }
     public static void WritePlayerData(BinaryWriter writer, Dictionary<byte, NetworkedPlayerInfo.PlayerOutfit> FirstOutfits, Dictionary<byte, RoleId> FirstRoleIds)
     {
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
             writer.Write(player.PlayerId);
             var outfitdata = FirstOutfits.FirstOrDefault(x => x.Key == player.PlayerId);
@@ -96,7 +96,7 @@ public static class ReplayFileWriter
                 continue;
             }
             writer.Write(true);
-            if (player != null && player.IsBot())
+            if (player.Object != null && player.Object.IsBot())
                 writer.Write(true);
             else
                 writer.Write(false);
@@ -108,14 +108,14 @@ public static class ReplayFileWriter
             writer.Write(outfit.VisorId);
             writer.Write(outfit.NamePlateId);
             writer.Write(outfit.SkinId);
-            writer.Write(player.Data.Tasks.Count);
-            foreach (NetworkedPlayerInfo.TaskInfo task in player.Data.Tasks)
+            writer.Write(player.Tasks.Count);
+            foreach (NetworkedPlayerInfo.TaskInfo task in player.Tasks)
             {
                 writer.Write(task.Id);
                 writer.Write(task.TypeId);
             }
             writer.Write((byte)roledata.Value);
-            writer.Write((byte)player.Data.Role.Role);
+            writer.Write((byte)player.Role.Role);
         }
     }
 }

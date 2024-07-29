@@ -21,7 +21,7 @@ public static class HideChat
     {
         AliveState State = new(target);
         target.IsDead = true;
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player == null ||
                 player.Data.IsDead ||
@@ -44,11 +44,11 @@ public static class HideChat
     private static void DesyncSetDead()
     {
         PlayerData<AliveState> AliveStates = new();
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             AliveStates[player.PlayerId] = new(player.Data);
         }
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (AliveStates[player] == null ||
                 AliveStates[player].IsDead ||
@@ -56,7 +56,7 @@ public static class HideChat
                 continue;
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
             if (player.IsMod()) continue;
-            foreach (PlayerControl player2 in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl player2 in PlayerControl.AllPlayerControls)
             {
                 player2.Data.IsDead = true;
             }
@@ -67,7 +67,7 @@ public static class HideChat
             RPCHelper.RpcSyncAllNetworkedPlayer(player.GetClientId());
             SerializeByHideChat = false;
         }
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             player.Data.IsDead = AliveStates[player.PlayerId].IsDead;
             player.Data.Disconnected = AliveStates[player.PlayerId].Disconnected;
@@ -92,7 +92,7 @@ public static class HideChat
             SerializeByHideChat = true;
             RPCHelper.RpcSyncNetworkedPlayer(sender, player.Data);
             SerializeByHideChat = false;
-            foreach (PlayerControl target in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl target in PlayerControl.AllPlayerControls)
             {
                 if (player == target || target.IsDead())
                     continue;

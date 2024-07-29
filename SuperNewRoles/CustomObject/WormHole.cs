@@ -133,27 +133,20 @@ class WormHole : CustomAnimation
     private void ConnectVents()
     {
         //設置した人が同じかつ、有効化済みのワームホールをすべて検索 & リストに
-        IEnumerable<WormHole> myHoles = AllWormHoles.Where(x => x.Owner == Owner && x.IsActivating);
+        List<WormHole> myHoles = AllWormHoles.Where(x => x.Owner == Owner && x.IsActivating).ToList();
 
-        int count = 0;
-        WormHole left = null;
-        WormHole right = null;
-        WormHole first = null;
-        foreach (WormHole myhole in myHoles)
-        {
-            count++;
+        if (myHoles is null)
+            return;
 
-            if (first == null) first = myhole;
-            left = right;
-            right = myhole;
-            if (left == null) continue;
-
+        for (var i = 0; i < myHoles.Count - 1; i++) {
+            var left = myHoles[i];
+            var right = myHoles[i + 1];
             left._vent.Right = right._vent;
             right._vent.Left = left._vent;
         }
 
-        first._vent.Left = right._vent;
-        right._vent.Right = first._vent;
+        myHoles.First()._vent.Left = myHoles.Last()._vent;
+        myHoles.Last()._vent.Right = myHoles.First()._vent;
     }
 
     public static WormHole GetWormHoleById(int ventId)

@@ -125,7 +125,7 @@ class GameStartPatch
 
             if (CustomOptionHolder.ProhibitModColor.GetBool() || ModeHandler.IsMode(ModeId.SuperHostRoles, false))
             {
-                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (!player) continue;
                     if (player.Data.DefaultOutfit.ColorId < CustomColors.DefaultPickAbleColors) continue;

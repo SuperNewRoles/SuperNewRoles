@@ -60,7 +60,7 @@ public static class Arsonist
         if (player == null) return false;
         foreach (KeyValuePair<byte, List<PlayerControl>> data in RoleClass.Arsonist.DouseData)
         {
-            foreach (PlayerControl Player in data.Value.AsSpan())
+            foreach (PlayerControl Player in data.Value)
             {
                 if (player.PlayerId == Player.PlayerId)
                 {
@@ -84,7 +84,7 @@ public static class Arsonist
 
     public static bool IsWin(PlayerControl Arsonist)
     {
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
             if (player.PlayerId != Arsonist.PlayerId && !IsDoused(Arsonist, player))
             {
@@ -124,7 +124,7 @@ public static class Arsonist
 
     public static bool IsArsonistWinFlag()
     {
-        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer.AsSpan())
+        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
         {
             if (IsWin(player))
             {
@@ -151,7 +151,7 @@ public static class Arsonist
     {
         foreach (KeyValuePair<byte, List<PlayerControl>> data in RoleClass.Arsonist.DouseData)
         {
-            foreach (PlayerControl player in data.Value.AsSpan())
+            foreach (PlayerControl player in data.Value)
             {
                 if (player == null) continue;
                 if (player.IsDead()) continue;

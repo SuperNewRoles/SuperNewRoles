@@ -81,6 +81,6 @@ public class Lantern : MonoBehaviour
         return lightRenderer;
     }
 
-    public static IEnumerable<Lantern> GetLanternsByOwner(PlayerControl player)
-        => AllLanterns.Where(x => x.Owner == player && x != null);
+    public static List<Lantern> GetLanternsByOwner(PlayerControl player)
+        => AllLanterns.Where(x => x.Owner == player && x != null).ToList();
 }

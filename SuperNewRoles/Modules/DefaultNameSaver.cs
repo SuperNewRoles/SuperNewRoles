@@ -19,7 +19,7 @@ public static class DefaultNameSaver
             //初期化
             DefaultNames = new();
             //全員分設定していく
-            foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl pc in CachedPlayer.AllPlayers)
             {
                 //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.NameText().text}");
                 DefaultNames[pc.PlayerId] = pc.Data.PlayerName;

@@ -12,7 +12,7 @@ public class Pursuer
             float min_target_distance = float.MaxValue;
             PlayerControl target = null;
 
-            foreach (var p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (var p in CachedPlayer.AllPlayers)
             {
                 if (p.PlayerControl.IsAlive() && !p.PlayerControl.IsImpostor())
                 {

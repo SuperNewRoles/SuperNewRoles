@@ -1,6 +1,5 @@
 global using SuperNewRoles.Modules;
 using System;
-using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -123,7 +122,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         try
         {
             DirectoryInfo d = new(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
-            var files = d.GetFiles("*.dll.old").Select(x => x.FullName); // Getting old versions
+            string[] files = d.GetFiles("*.dll.old").Select(x => x.FullName).ToArray(); // Getting old versions
             foreach (string f in files)
                 File.Delete(f);
         }

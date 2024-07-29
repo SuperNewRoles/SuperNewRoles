@@ -194,7 +194,7 @@ class WrapUpPatch
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
         WellBehaver.WrapUp();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();
         }
