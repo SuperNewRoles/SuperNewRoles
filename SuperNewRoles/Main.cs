@@ -61,6 +61,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string NewVersion = "";
     public static string thisname;
     public static string ThisPluginModName;
+    public const string SteamName = "steam";
+    public const string EpicGamesStoreName = "egs";
+    public static bool IsEpic => Constants.GetPurchasingPlatformType() == EpicGamesStoreName;
     //対応しているバージョン。nullなら全て。
     public static string[] SupportVanilaVersion = new string[] { "2024.3.5" };
 
