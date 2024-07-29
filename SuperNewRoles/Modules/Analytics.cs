@@ -95,10 +95,10 @@ public static class Analytics
         List<RoleId> RealActivateRoleList = new();
         if (GameData.Instance is not null)
         {
-            foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
-                if (player == CachedPlayer.LocalPlayer) continue;
-                PlayerDatas += $"{player.Data.FriendCode},";
+                if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                PlayerDatas += $"{player.FriendCode},";
             }
             if (PlayerDatas.Length > 1)
             {

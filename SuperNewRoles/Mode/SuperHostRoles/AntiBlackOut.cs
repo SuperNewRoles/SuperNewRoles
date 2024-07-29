@@ -382,9 +382,9 @@ public static class AntiBlackOut
     {
         Logger.Info("Selected SyncDontDead");
         bool IsImpoAlived = false;
-        foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
-            player.Data.IsDead = player.Data.Disconnected = false;
+            player.IsDead = player.Disconnected = false;
             /*
             if (player.Role.IsImpostor && !IsImpoAlived &&
                 (exiled == null || exiled.PlayerId != player.PlayerId))

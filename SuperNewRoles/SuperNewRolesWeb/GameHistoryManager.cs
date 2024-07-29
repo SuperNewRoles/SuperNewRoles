@@ -30,11 +30,11 @@ namespace SuperNewRoles.SuperNewRolesWeb
             public byte reportedbody = 255;
             public MeetingHistory(Il2CppStructArray<VoterState> states, NetworkedPlayerInfo exiled)
             {
-                foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+                foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
                 {
-                    bool IsDead = player.Data.IsDead || player.Data.Disconnected;
-                    if (player != null)
-                        if (((PlayerControl)player).IsBot()) continue;
+                    bool IsDead = player.IsDead || player.Disconnected;
+                    if (player.Object != null)
+                        if (player.Object.IsBot()) continue;
                     if (IsDead)
                     {
                         DeadPlayers.Add(player.PlayerId);
@@ -131,28 +131,28 @@ namespace SuperNewRoles.SuperNewRolesWeb
             SendData["MePlayerId"] = PlayerControl.LocalPlayer.PlayerId.ToString();
             //プレイヤー情報
             string PlayerIds = "";
-            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
-                string PlayerName = player.Data.PlayerName;
+                string PlayerName = player.PlayerName;
                 RoleId roleId = RoleId.DefaultRole;
-                if (player != null)
+                if (player.Object != null)
                 {
-                    if (player.IsBot()) continue;
-                    PlayerName = player.GetDefaultName();
-                    roleId = player.GetRole();
+                    if (player.Object.IsBot()) continue;
+                    PlayerName = player.Object.GetDefaultName();
+                    roleId = player.Object.GetRole();
                 }
                 if (PlayerIds.Contains(player.PlayerId.ToString() + ",")) continue;
                 PlayerIds += player.PlayerId.ToString() + ",";
                 string PlayerId = player.PlayerId.ToString();
                 SendData[PlayerId + "_PlayerName"] = PlayerName;
                 SendData[PlayerId + "_FriendCode"] = player.FriendCode;
-                SendData[PlayerId + "_ColorId"] = player.Data.DefaultOutfit.ColorId.ToString();
+                SendData[PlayerId + "_ColorId"] = player.DefaultOutfit.ColorId.ToString();
                 SendData[PlayerId + "_RoleName"] = roleId.ToString();
-                var (playerCompleted, playerTotal) = TaskCount.TaskDate(player.Data);
+                var (playerCompleted, playerTotal) = TaskCount.TaskDate(player);
                 SendData[PlayerId + "_TotalTask"] = playerTotal.ToString();
                 SendData[PlayerId + "_CompletedTask"] = playerCompleted.ToString();
                 SendData[PlayerId + "_FinalStatus"] = FinalStatuss.ContainsKey(player.PlayerId) ? FinalStatus.Alive.ToString() : FinalStatuss[player.PlayerId].ToString();
-                SendData[PlayerId + "_IsWin"] = EndGameResult.CachedWinners.ToList().Exists(x => x.PlayerName == player.Data.DefaultOutfit.PlayerName) ? "a" : "b";
+                SendData[PlayerId + "_IsWin"] = EndGameResult.CachedWinners.ToList().Exists(x => x.PlayerName == player.DefaultOutfit.PlayerName) ? "a" : "b";
             }
             SendData["PlayerIds"] = PlayerIds;
             //設定情報

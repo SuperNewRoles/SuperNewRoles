@@ -665,9 +665,9 @@ public static class OnGameEndPatch
         }
 
         List<NetworkedPlayerInfo> winnersToRemove = new();
-        foreach (var winner in CachedPlayer.AllPlayers.AsSpan())
+        foreach (NetworkedPlayerInfo winner in GameData.Instance.AllPlayers)
         {
-            if (notWinners.Any(x => x.Data.PlayerName == winner.Data.PlayerName)) winnersToRemove.Add(winner.Data);
+            if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
         }
         return winnersToRemove;
     }
@@ -844,15 +844,15 @@ public static class OnGameEndPatch
         else if (CrewmateWin)
         {
             var d = ProcessGetWinnersToRemove();
-            foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
-                if (((PlayerControl)player) != null && !((PlayerControl)player).IsCrew())
+                if (player.Object != null && !player.Object.IsCrew())
                     continue;
-                if (player.Data.Role.IsImpostor)
+                if (player.Role.IsImpostor)
                     continue;
                 if (d.Any(x => x.PlayerId == player.PlayerId))
                     continue;
-                winners.Add(player.Data);
+                winners.Add(player);
             }
             foreach (SatsumaAndImo satsumaAndImo in RoleBaseManager.GetRoleBases<SatsumaAndImo>())
             {
@@ -888,10 +888,10 @@ public static class OnGameEndPatch
         }
         if (ImpostorWin)
         {
-            foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
-                if (player.Data.Role.IsImpostor)
-                    winners.Add(player.Data);
+                if (player.Role.IsImpostor)
+                    winners.Add(player);
             }
         }
 
@@ -1386,43 +1386,43 @@ public static class OnGameEndPatch
         }
         var gameOverReason = AdditionalTempData.gameOverReason;
         AdditionalTempData.Clear();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (var p in GameData.Instance.AllPlayers)
         {
-            if (p == null || p.IsBot())
+            if (p.Object == null || p.Object.IsBot())
                 continue;
             //var p = pc.Data;
-            RoleId playerrole = p.GetRole();
+            RoleId playerrole = p.Object.GetRole();
             if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
             {
                 playerrole = RoleId.Stefinder1;
             }
-            RoleId playerghostrole = p.GetGhostRole();
-            var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p.Data);
-            if (p.IsImpostor())
+            RoleId playerghostrole = p.Object.GetGhostRole();
+            var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
+            if (p.Object.IsImpostor())
             {
                 tasksCompleted = 0;
                 tasksTotal = 0;
             }
             var finalStatus = FinalStatus.Alive;
 
-            if (p.Data.Disconnected)
+            if (p.Disconnected)
                 finalStatus = FinalStatus.Disconnected;
-            else if (p.Data.IsDead && FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId))
+            else if (p.IsDead && FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId))
                 finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId];
-            else if (p.Data.IsDead)
+            else if (p.IsDead)
                 finalStatus = FinalStatus.Exiled;
-            else if (gameOverReason == GameOverReason.ImpostorBySabotage && !p.Data.Role.IsImpostor)
+            else if (gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor)
                 finalStatus = FinalStatus.Sabotage;
             FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] = finalStatus;
 
             // サボタージュ死
-            if (finalStatus == FinalStatus.Sabotage && !p.Data.IsDead && !p.Data.Role.IsImpostor)
-                p.Data.IsDead = true;
+            if (finalStatus == FinalStatus.Sabotage && !p.IsDead && !p.Role.IsImpostor)
+                p.IsDead = true;
 
             string namesuffix = "";
-            if (p.IsLovers())
+            if (p.Object.IsLovers())
                 namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
-            Dictionary<string, (Color, bool)> attributeRoles = new(SetNamesClass.AttributeRoleNameSet(p));
+            Dictionary<string, (Color, bool)> attributeRoles = new(SetNamesClass.AttributeRoleNameSet(p.Object));
             string attributeRoleName = "";
             if (attributeRoles.Count != 0)
             {
@@ -1433,17 +1433,17 @@ public static class OnGameEndPatch
             }
             AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
             {
-                PlayerName = p.Data.DefaultOutfit.PlayerName,
+                PlayerName = p.DefaultOutfit.PlayerName,
                 NameSuffix = namesuffix,
                 PlayerId = p.PlayerId,
-                ColorId = p.Data.DefaultOutfit.ColorId,
+                ColorId = p.DefaultOutfit.ColorId,
                 TasksTotal = tasksTotal,
                 TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                 Status = finalStatus,
                 AttributeRoleName = attributeRoleName,
                 RoleId = playerrole,
                 GhostRoleId = playerghostrole,
-                isImpostor = p.Data.Role.IsImpostor
+                isImpostor = p.Role.IsImpostor
             });
         }
 
@@ -1478,12 +1478,12 @@ public static class OnGameEndPatch
         AdditionalTempData.winCondition = winCondition;
 
         Il2CppArrayBase<CachedPlayerData> Winners = EndGameResult.CachedWinners.ToArray();
-        foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
-            if (((PlayerControl)player).IsBot()) continue;
-            CustomPlayerData data = new(player.Data, gameOverReason)
+            if (player.Object.IsBot()) continue;
+            CustomPlayerData data = new(player, gameOverReason)
             {
-                IsWin = Winners.Any(x => x.PlayerName == player.Data.PlayerName)
+                IsWin = Winners.Any(x => x.PlayerName == player.PlayerName)
             };
             PlayerData.Add(data);
         }

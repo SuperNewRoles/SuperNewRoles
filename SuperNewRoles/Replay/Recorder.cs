@@ -50,12 +50,12 @@ namespace SuperNewRoles.Replay
 
         public static void CoIntroDestroy()
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
-                FirstOutfits.Add(player.PlayerId, CopyOutfit(player.Data.DefaultOutfit));
+                FirstOutfits.Add(player.PlayerId, CopyOutfit(player.DefaultOutfit));
                 RoleId role = RoleId.DefaultRole;
-                if (player != null)
-                    role = player.GetRole();
+                if (player.Object != null)
+                    role = player.Object.GetRole();
                 FirstRoles.Add(player.PlayerId, role);
             }
             WriteReplayDataFirst();
