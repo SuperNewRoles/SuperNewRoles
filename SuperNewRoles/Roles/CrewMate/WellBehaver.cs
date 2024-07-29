@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using AsmResolver.PE.DotNet.Metadata;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;

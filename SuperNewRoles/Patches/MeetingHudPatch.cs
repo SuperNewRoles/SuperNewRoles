@@ -573,25 +573,24 @@ class CheckForEndVotingPatch
                         NetworkedPlayerInfo ExileCandidate = null;
                         foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
                         {
-                            NetworkedPlayerInfo playerinfo = player;
-                            if (playerinfo.Disconnected)
+                            if (player.Disconnected)
                             {
-                                NewExiled = playerinfo;
+                                NewExiled = player;
                                 break;
                             }
-                            if (!playerinfo.IsDead)
+                            if (!player.IsDead)
                                 continue;
-                            PlayerControl @object = playerinfo.Object;
+                            PlayerControl @object = player.Object;
                             if (@object == null)
                                 continue;
                             if (@object.IsMod() ||
                                 !AntiBlackOut.IsPlayerDesyncImpostorTeam(@object))
                             {
-                                NewExiled = playerinfo;
+                                NewExiled = player;
                                 break;
                             }
                             else
-                                ExileCandidate = playerinfo;
+                                ExileCandidate = player;
                         }
                         if (NewExiled == null && ExileCandidate == null)
                             throw new Exception("None DeadPlayer");

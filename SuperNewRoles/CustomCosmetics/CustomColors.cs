@@ -368,7 +368,8 @@ public class CustomColors
                 foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
                 {
                     //Logger.Info($"{!p.Data.Disconnected} は {p.PlayerId != player.PlayerId} は {p.Data.DefaultOutfit.ColorId == color}", "isTaken");
-                    if (p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color) return true;
+                    if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
+                        return true;
                 }
                 return false;
             }

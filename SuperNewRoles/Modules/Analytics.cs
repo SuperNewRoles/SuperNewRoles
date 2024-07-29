@@ -97,7 +97,7 @@ public static class Analytics
         {
             foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
             {
-                if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
                 PlayerDatas += $"{player.FriendCode},";
             }
             if (PlayerDatas.Length > 1)

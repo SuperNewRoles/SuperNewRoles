@@ -1388,7 +1388,7 @@ public static class OnGameEndPatch
         AdditionalTempData.Clear();
         foreach (var p in GameData.Instance.AllPlayers)
         {
-            if (p.Object == null || p.Object.IsBot())
+            if (p == null || p.Object == null || p.Object.IsBot())
                 continue;
             //var p = pc.Data;
             RoleId playerrole = p.Object.GetRole();
@@ -1480,7 +1480,7 @@ public static class OnGameEndPatch
         Il2CppArrayBase<CachedPlayerData> Winners = EndGameResult.CachedWinners.ToArray();
         foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
         {
-            if (player.Object.IsBot()) continue;
+            if (player.Object != null && player.Object.IsBot()) continue;
             CustomPlayerData data = new(player, gameOverReason)
             {
                 IsWin = Winners.Any(x => x.PlayerName == player.PlayerName)
@@ -1648,7 +1648,7 @@ public static class CheckGameEndPatch
                 byte playerId = RoleClass.LoversBreaker.CanEndGamePlayers[i];
                 if (ModHelpers.PlayerById(playerId).IsDead())
                 {
-                    RoleClass.LoversBreaker.CanEndGamePlayers.Remove(playerId);
+                    RoleClass.LoversBreaker.CanEndGamePlayers.RemoveAt(i);
                 }
             }
         }
