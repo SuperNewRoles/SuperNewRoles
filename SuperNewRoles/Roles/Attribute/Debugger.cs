@@ -242,7 +242,7 @@ public static class Debugger
     public static void CreateTab()
     {
         int index = 0;
-        foreach (var data in DebugPanel.panels.AsSpan())
+        foreach (var data in DebugPanel.panels)
         {
             if (!data.isTab || data.tabType != TabType.Normal) continue;
 
@@ -275,7 +275,7 @@ public static class Debugger
     public static void CreateAllPanels()
     {
         int index = 0;
-        foreach (var data in DebugPanel.panels.AsSpan())
+        foreach (var data in DebugPanel.panels)
         {
             if ((data.tab != currentTab && data.tab != DebugTabs.Always) || data.isTab) continue;
 
@@ -309,7 +309,7 @@ public static class Debugger
         if (currentTab != DebugTabs.PlayersTab) return;
 
         int index = 0;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             int num = index % 3;
             int num2 = index / 3;
@@ -334,7 +334,7 @@ public static class Debugger
         if (currentTab is not (DebugTabs.SetRole_Crewmate or DebugTabs.SetRole_Impostor or DebugTabs.SetRole_Neutral)) return;
 
         int index = 0;
-        foreach (var data in DebugPanel.panels.AsSpan())
+        foreach (var data in DebugPanel.panels)
         {
             if (!data.isTab || data.tabType != TabType.Role) continue;
 

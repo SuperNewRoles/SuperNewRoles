@@ -107,13 +107,15 @@ public class CustomButton
     {
         bool isAlive = PlayerControl.LocalPlayer.IsAlive();
         RoleId role = PlayerControl.LocalPlayer.GetRole();
-        CustomButton btn;
-        for (int i = buttons.Count - 1; i >= 0; i--)
+        List<int> removes = null;
+        int index = 0;
+        foreach (CustomButton btn in buttons)
         {
-            btn = buttons[i];
             if (btn == null || btn.actionButton == null)
             {
-                buttons.RemoveAt(i);
+                if (removes == null)
+                    removes = new();
+                removes.Add(index);
                 continue;
             }
             try
@@ -124,6 +126,14 @@ public class CustomButton
             {
                 System.Console.WriteLine("ButtonError:" + e);
             }
+            index++;
+        }
+        if (removes != null)
+        {
+            foreach (int i in removes)
+            {
+                buttons.RemoveAt(i);
+            }
         }
     }
 
@@ -131,13 +141,15 @@ public class CustomButton
     {
         bool isAlive = PlayerControl.LocalPlayer.IsAlive();
         RoleId role = PlayerControl.LocalPlayer.GetRole();
-        CustomButton btn;
-        for (int i = buttons.Count - 1; i >= 0; i--)
+        List<int> removes = null;
+        int index = 0;
+        foreach (CustomButton btn in buttons)
         {
-            btn = buttons[i];
             if (btn == null || btn.actionButton == null)
             {
-                buttons.RemoveAt(i);
+                if (removes == null)
+                    removes = new();
+                removes.Add(index);
                 continue;
             }
             try
@@ -149,15 +161,29 @@ public class CustomButton
             {
                 if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
             }
+            index++;
+        }
+        if (removes != null)
+        {
+            foreach (int i in removes)
+            {
+                buttons.RemoveAt(i);
+            }
         }
     }
 
-    private void SetActive(bool isActive)
+    public void SetActive(bool isActive)
     {
-        if (isActive == actionButton.gameObject.active) return;
-        
-        actionButton.gameObject.SetActive(isActive);
-        actionButton.graphic.enabled = isActive;
+        if (isActive)
+        {
+            actionButton.gameObject.SetActive(true);
+            actionButton.graphic.enabled = true;
+        }
+        else
+        {
+            actionButton.gameObject.SetActive(false);
+            actionButton.graphic.enabled = false;
+        }
     }
 
     /// <summary>

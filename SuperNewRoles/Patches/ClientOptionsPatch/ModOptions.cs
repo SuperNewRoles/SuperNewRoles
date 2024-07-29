@@ -262,7 +262,7 @@ public static class ClientModOptionsPatch
         button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
     }
     public static List<SelectionBehaviour> ReplayOptions = new() { new SelectionBehaviour("リプレイを収録する",()=>{
-        foreach (GameObject obj in ReplayEnableObjects.AsSpan())
+        foreach (GameObject obj in ReplayEnableObjects)
         {
             obj.SetActive(!ConfigRoles.ReplayEnable.Value);
         }
@@ -350,7 +350,7 @@ public static class ClientModOptionsPatch
             if (i > 0)
                 ReplayEnableObjects.Add(button.gameObject);
         }
-        foreach (GameObject obj in ReplayEnableObjects.AsSpan())
+        foreach (GameObject obj in ReplayEnableObjects)
         {
             obj.SetActive(ConfigRoles.ReplayEnable.Value);
         }

@@ -27,7 +27,7 @@ class Main
         //SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
         ChangeName.FixedUpdate();
         BattleRoyalRole.BattleRoyalRoles.RemoveAll(x => x.CurrentPlayer == null);
-        foreach (BattleRoyalRole role in BattleRoyalRole.BattleRoyalRoles.AsSpan())
+        foreach (BattleRoyalRole role in BattleRoyalRole.BattleRoyalRoles)
         {
             role.FixedUpdate();
         }
@@ -40,7 +40,7 @@ class Main
             }
             int alives = 0;
             int allplayer = 0;
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 allplayer++;
                 if (p.IsAlive())
@@ -50,7 +50,7 @@ class Main
             }
             if ((AlivePlayer != alives || AllPlayer != allplayer) && BROption.IsViewAlivePlayer.GetBool())
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected)
                     {
@@ -62,7 +62,7 @@ class Main
 
                             if (!BROption.IsKillCountViewSelfOnly.GetBool())
                             {
-                                foreach (PlayerControl p2 in CachedPlayer.AllPlayers.AsSpan())
+                                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                                 {
                                     if (p2.PlayerId == p.PlayerId) continue;
                                     p.RpcSetNamePrivate(EndText, p2);
@@ -85,7 +85,7 @@ class Main
             UpdateTime -= Time.fixedDeltaTime;
             if (UpdateTime <= 0)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected)
                     {
@@ -99,11 +99,11 @@ class Main
             {
                 IsStart = true;
                 //ModeHandler.HideName();
-                foreach (BattleTeam team in BattleTeam.BattleTeams.AsSpan())
+                foreach (BattleTeam team in BattleTeam.BattleTeams)
                 {
                     if (team.IsTeam(PlayerControl.LocalPlayer))
                     {
-                        foreach (PlayerControl p in team.TeamMember.AsSpan())
+                        foreach (PlayerControl p in team.TeamMember)
                         {
                             if (p.PlayerId != 0)
                             {
@@ -138,7 +138,7 @@ class Main
         {
             Darknight.GetDarknightPlayer(source).OnKill(target);
         }
-        foreach (Revenger revenger in Revenger.revengers.AsSpan())
+        foreach (Revenger revenger in Revenger.revengers)
         {
             revenger.OnKill(source, target);
         }
@@ -207,7 +207,7 @@ class Main
         {
             if (!IsSeted) return false;
             List<PlayerControl> players = new();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p.IsBot()) continue;
                 if (p.IsAlive())
@@ -222,9 +222,9 @@ class Main
                 return true;
             }
             bool Flag = false;
-            foreach (BattleTeam team in BattleTeam.BattleTeams.AsSpan())
+            foreach (BattleTeam team in BattleTeam.BattleTeams)
             {
-                foreach (PlayerControl player in team.TeamMember.AsSpan())
+                foreach (PlayerControl player in team.TeamMember)
                 {
                     if (player.IsDead()) continue;
                     if (Flag)
@@ -238,11 +238,11 @@ class Main
             Winners = new();
             try
             {
-                foreach (BattleTeam teams in BattleTeam.BattleTeams.AsSpan())
+                foreach (BattleTeam teams in BattleTeam.BattleTeams)
                 {
                     if (teams.IsTeam(players[0]))
                     {
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             p.RpcSetRole(RoleTypes.GuardianAngel);
                             if (teams.IsTeam(p))
@@ -266,7 +266,7 @@ class Main
         {
             var alives = 0;
             FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.IsBot()) continue;
                 if (p.IsAlive())
@@ -277,7 +277,7 @@ class Main
             if (alives == 1)
             {
                 __instance.enabled = false;
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsAlive())
                     {
@@ -344,7 +344,7 @@ class Main
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (!p.IsBot()) continue;
                     p.RpcSetRole(RoleTypes.Scientist);
@@ -353,7 +353,7 @@ class Main
                 {
                     float count = BROption.TeamAmount.GetFloat();
                     List<PlayerControl> target = new();
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.IsBot()) continue;
                         target.Add(p);
@@ -393,13 +393,13 @@ class Main
                         SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
                     }
                     SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Team Count:" + BattleTeam.BattleTeams.Count);
-                    foreach (BattleTeam teamlist in BattleTeam.BattleTeams.AsSpan())
+                    foreach (BattleTeam teamlist in BattleTeam.BattleTeams)
                     {
-                        foreach (PlayerControl p in teamlist.TeamMember.AsSpan())
+                        foreach (PlayerControl p in teamlist.TeamMember)
                         {
                             if (p.PlayerId != 0)
                             {
-                                foreach (PlayerControl p2 in teamlist.TeamMember.AsSpan())
+                                foreach (PlayerControl p2 in teamlist.TeamMember)
                                 {
                                     if (p2.PlayerId != 0)
                                     {
@@ -411,7 +411,7 @@ class Main
                                         p.SetRole(RoleTypes.Shapeshifter);
                                     }
                                 }
-                                foreach (PlayerControl p2 in CachedPlayer.AllPlayers.AsSpan())
+                                foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                 {
                                     if (!teamlist.IsTeam(p2))
                                     {
@@ -432,7 +432,7 @@ class Main
                 }
                 else
                 {
-                    foreach (PlayerControl p1 in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
                     {
                         if (p1.IsBot()) continue;
                         new BattleTeam()
@@ -443,7 +443,7 @@ class Main
                         {
                             FastDestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
                             p1.RpcSetRoleDesync(RoleTypes.Shapeshifter, false);
-                            foreach (PlayerControl p2 in CachedPlayer.AllPlayers.AsSpan())
+                            foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                             {
                                 if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
                                 {
@@ -460,13 +460,13 @@ class Main
                     FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                     CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Shapeshifter;
                 }
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsBot()) continue;
                     p.GetDefaultName();
                     new PlayerAbility(p);
                 }
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     p.Data.RoleType = RoleTypes.Shapeshifter;
                 }
@@ -475,7 +475,7 @@ class Main
                 {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                     {
-                        foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
+                        foreach (var pc in CachedPlayer.AllPlayers)
                         {
                             pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
                         }

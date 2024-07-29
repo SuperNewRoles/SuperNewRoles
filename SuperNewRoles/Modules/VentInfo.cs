@@ -37,7 +37,7 @@ public class VentInfo
     public static void ShipStatusAwake()
     {
         VentInfos = new();
-        foreach (Vent vent in ShipStatus.Instance.AllVents)
+        foreach(Vent vent in ShipStatus.Instance.AllVents)
         {
             _ = new VentInfo(vent);
         }

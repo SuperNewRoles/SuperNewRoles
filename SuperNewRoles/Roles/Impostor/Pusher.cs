@@ -109,7 +109,10 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
             deadBody = Object.Instantiate(GameManager.Instance.DeadBodyPrefab);
             deadBody.enabled = true;
             deadBody.ParentId = target.PlayerId;
-            deadBody.bodyRenderers.ForEach(target.SetPlayerMaterialColors);
+            deadBody.bodyRenderers.ForEach(delegate (SpriteRenderer b)
+            {
+                target.SetPlayerMaterialColors(b);
+            });
             target.SetPlayerMaterialColors(deadBody.bloodSplatter);
             deadBody.transform.position = new(999, 999, 0);
             deadBodyPosition = targetLadder.Destination.transform.position + new Vector3(0.15f, 0.2f, 0);
@@ -182,7 +185,7 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
         _untargetPlayers = new();
         float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)] + 1f;
         Vector2 truePosition = Player.GetTruePosition();
-        foreach (PlayerControl @object in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl @object in PlayerControl.AllPlayerControls)
         {
             if (@object == null)
                 continue;

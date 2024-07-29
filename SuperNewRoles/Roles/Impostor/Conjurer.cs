@@ -69,7 +69,7 @@ public class Conjurer : RoleBase, IImpostor, IWrapUpHandler, ICustomButton
     public void StartButtonOnClick()
     {
         //Logger.Info($"Beacon{Round}{Count}", "Beacons");
-        foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl pc in CachedPlayer.AllPlayers)
         {
             // プレイヤーがPositionsで形成された三角形の中にいる
             if (!PointInPolygon(pc.transform.position, Positions))

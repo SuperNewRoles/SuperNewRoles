@@ -57,7 +57,7 @@ public class CustomHats
         public bool behind { get; set; }
     }
 
-    private static List<CustomHat> CreateCustomHatDetails(IEnumerable<string> hats, bool fromDisk = false)
+    private static List<CustomHat> CreateCustomHatDetails(string[] hats, bool fromDisk = false)
     {
         Dictionary<string, CustomHat> fronts = new();
         Dictionary<string, string> backs = new();
@@ -65,9 +65,9 @@ public class CustomHats
         Dictionary<string, string> backflips = new();
         Dictionary<string, string> climbs = new();
 
-        foreach (string hat in hats)
+        for (int i = 0; i < hats.Length; i++)
         {
-            string s = fromDisk ? hat[(hat.LastIndexOf("\\") + 1)..].Split('.')[0] : hat.Split('.')[3];
+            string s = fromDisk ? hats[i][(hats[i].LastIndexOf("\\") + 1)..].Split('.')[0] : hats[i].Split('.')[3];
             string[] p = s.Split('_');
 
             HashSet<string> options = new();
@@ -75,18 +75,18 @@ public class CustomHats
                 options.Add(p[j]);
 
             if (options.Contains("back") && options.Contains("flip"))
-                backflips.Add(p[0], hat);
+                backflips.Add(p[0], hats[i]);
             else if (options.Contains("climb"))
-                climbs.Add(p[0], hat);
+                climbs.Add(p[0], hats[i]);
             else if (options.Contains("back"))
-                backs.Add(p[0], hat);
+                backs.Add(p[0], hats[i]);
             else if (options.Contains("flip"))
-                flips.Add(p[0], hat);
+                flips.Add(p[0], hats[i]);
             else
             {
                 CustomHat custom = new()
                 {
-                    resource = hat,
+                    resource = hats[i],
                     name = p[0].Replace('-', ' '),
                     bounce = options.Contains("bounce"),
                     adaptive = options.Contains("adaptive"),
@@ -234,12 +234,12 @@ public class CustomHats
                 {
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
-                    var hats = from r in assembly.GetManifestResourceNames()
+                    string[] hats = (from r in assembly.GetManifestResourceNames()
                                      where r.StartsWith(hatres) && r.EndsWith(".png")
-                                     select r;
+                                     select r).ToArray<string>();
 
                     List<CustomHat> customhats = CreateCustomHatDetails(hats);
-                    foreach (CustomHat ch in customhats.AsSpan())
+                    foreach (CustomHat ch in customhats)
                     {
                         addHatData.Add(CreateHatData(ch));
                     }
@@ -273,9 +273,9 @@ public class CustomHats
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
-                var hats = from r in assembly.GetManifestResourceNames()
+                string[] hats = (from r in assembly.GetManifestResourceNames()
                                  where r.StartsWith(hatres) && r.EndsWith(".png")
-                                 select r;
+                                 select r).ToArray<string>();
 
                 List<CustomHat> customhats = CreateCustomHatDetails(hats);
                 foreach (CustomHat ch in customhats)
@@ -361,7 +361,7 @@ public class CustomHats
             {
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\Test";
                 DirectoryInfo d = new(filePath);
-                var filePaths = d.GetFiles("*.png").Select(x => x.FullName); // Getting Text files
+                string[] filePaths = d.GetFiles("*.png").Select(x => x.FullName).ToArray(); // Getting Text files
                 List<CustomHat> hats = CreateCustomHatDetails(filePaths, true);
                 if (hats.Count > 0)
                 {
@@ -374,7 +374,7 @@ public class CustomHats
                         CreateHatSprite(hats[0].flipresource, true);
                     if (hats[0].backflipresource != null)
                         CreateHatSprite(hats[0].backflipresource, true);
-                    foreach (PlayerControl pc in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                     {
                         var color = pc.CurrentOutfit.ColorId;
                         pc.SetHat("hat_dusk", color);
@@ -412,7 +412,7 @@ public class CustomHats
     {
         public static TMPro.TMP_Text textTemplate;
 
-        public static float CreateHatPackage(List<(HatData, HatExtension)> hats, string packageName, float YStart, HatsTab __instance)
+        public static float CreateHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
         {
             float offset = YStart;
             if (textTemplate != null)
@@ -486,7 +486,7 @@ public class CustomHats
         {
             CalcItemBounds(__instance);
             HatData[] unlockedHats = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
-            Dictionary<string, List<(HatData, HatExtension)>> packages = new();
+            Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
 
             ModHelpers.DestroyList(hatsTabCustomTexts);
             ModHelpers.DestroyList(__instance.ColorChips);
@@ -504,13 +504,13 @@ public class CustomHats
                 {
                     if (!packages.ContainsKey(ext.package == null ? innerslothPackageName : ext.package))
                         packages[ext.package == null ? innerslothPackageName : ext.package] = new();
-                    packages[ext.package == null ? innerslothPackageName : ext.package].Add((hatData, ext));
+                    packages[ext.package == null ? innerslothPackageName : ext.package].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
                 }
                 else
                 {
                     if (!packages.ContainsKey(innerslothPackageName))
-                        packages[innerslothPackageName] = new();
-                    packages[innerslothPackageName].Add((hatData, new() { IsNull = true }));
+                        packages[innerslothPackageName] = new List<System.Tuple<HatData, HatExtension>>();
+                    packages[innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, new() { IsNull = true }));
                 }
             }
 
@@ -527,7 +527,7 @@ public class CustomHats
 
             foreach (string key in orderedKeys)
             {
-                List<(HatData, HatExtension)> value = packages[key];
+                List<System.Tuple<HatData, HatExtension>> value = packages[key];
                 YOffset = CreateHatPackage(value, key, YOffset, __instance);
             }
 
@@ -542,7 +542,7 @@ public class CustomHats
     {
         public static bool Prefix(HatsTab __instance)
         {
-            foreach (TMPro.TMP_Text customText in hatsTabCustomTexts.AsSpan())
+            foreach (TMPro.TMP_Text customText in hatsTabCustomTexts)
             {
                 if (customText != null && customText.transform != null && customText.gameObject != null)
                 {

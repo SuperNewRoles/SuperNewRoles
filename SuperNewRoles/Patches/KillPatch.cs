@@ -42,12 +42,12 @@ class KillButtonDoClickPatch
             if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
             {
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.Data.Role.NameColor = Color.white;
                 }
                 CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsImpostor())
                     {
@@ -199,7 +199,7 @@ static class CheckMurderPatch
             case RoleId.OverKiller:
                 __instance.RpcMurderPlayerCheck(target);
                 target.RpcSetFinalStatus(FinalStatus.OverKillerOverKill);
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.Data.Disconnected ||
                         p.PlayerId == target.PlayerId ||
@@ -360,7 +360,7 @@ static class CheckMurderPatch
                     return IsKillSuc = false;
                 if (Mode.BattleRoyal.Main.IsTeamBattle)
                 {
-                    foreach (BattleTeam teams in BattleTeam.BattleTeams.AsSpan())
+                    foreach (BattleTeam teams in BattleTeam.BattleTeams)
                     {
                         if (teams.IsTeam(__instance) && teams.IsTeam(target))
                             return IsKillSuc = false;

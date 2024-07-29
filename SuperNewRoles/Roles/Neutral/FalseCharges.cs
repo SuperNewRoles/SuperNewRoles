@@ -53,7 +53,7 @@ public static class FalseCharges
                         {
                             try
                             {
-                                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                 {
                                     if (!p.Data.Disconnected && p.PlayerId != data.Key)
                                     {

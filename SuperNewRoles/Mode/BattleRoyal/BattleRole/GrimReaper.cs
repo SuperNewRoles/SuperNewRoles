@@ -38,7 +38,7 @@ public class GrimReaper : BattleRoyalRole
                 if (IsGrimReaperEndStuckTime)
                 {
                     IsAbilityUsingNow = false;
-                    foreach (PlayerControl player in BattleTeam.GetTeam(CurrentPlayer).TeamMember.AsSpan())
+                    foreach (PlayerControl player in BattleTeam.GetTeam(CurrentPlayer).TeamMember)
                     {
                         PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
                         if (ability is null) continue;
@@ -50,7 +50,7 @@ public class GrimReaper : BattleRoyalRole
                 else if (IsGrimReaperTime)
                 {
                     BattleTeam team = BattleTeam.GetTeam(CurrentPlayer);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
                         if (ability is null) continue;
@@ -71,7 +71,7 @@ public class GrimReaper : BattleRoyalRole
                 else
                 {
                     BattleTeam team = BattleTeam.GetTeam(CurrentPlayer);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
                         if (ability is null) continue;
@@ -95,7 +95,7 @@ public class GrimReaper : BattleRoyalRole
     }
     public static bool CanUseAbility()
     {
-        foreach (GrimReaper gr in GrimReaper.grimReapers.AsSpan()) if (gr.IsAbilityUsingNow) return false;
+        foreach (GrimReaper gr in GrimReaper.grimReapers) if (gr.IsAbilityUsingNow) return false;
         return true;
     }
     public override void UseAbility(PlayerControl target)

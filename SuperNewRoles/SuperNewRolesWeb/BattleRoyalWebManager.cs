@@ -28,7 +28,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
             target = new();
             Dictionary<string, string> data = new();
             string fc = "";
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p.IsBot()) continue;
                 fc += p.Data.FriendCode + ",";
@@ -60,7 +60,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
             if (!WebAccountManager.IsLogined) return;
             Dictionary<string, string> data = new();
             string fc = "";
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p.IsBot()) continue;
                 fc += p.Data.FriendCode + ",";
@@ -74,11 +74,11 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 StringBuilder result = new();
                 string[] teams = new string[BattleTeam.BattleTeams.Count];
                 int teamindex = 0;
-                foreach (BattleTeam team in BattleTeam.BattleTeams.AsSpan())
+                foreach (BattleTeam team in BattleTeam.BattleTeams)
                 {
                     string[] fcs = new string[team.TeamMember.Count];
                     int index = 0;
-                    foreach (PlayerControl member in team.TeamMember.AsSpan())
+                    foreach (PlayerControl member in team.TeamMember)
                     {
                         fcs[index] = member.Data.FriendCode;
                         index++;

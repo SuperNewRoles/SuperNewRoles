@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static BattleTeam GetTeam(PlayerControl Player)
         {
             if (Player is null) Player = PlayerControl.LocalPlayer;
-            foreach (BattleTeam team in BattleTeams.AsSpan())
+            foreach (BattleTeam team in BattleTeams)
             {
                 if (team.TeamMember.IsCheckListPlayerControl(Player))
                 {

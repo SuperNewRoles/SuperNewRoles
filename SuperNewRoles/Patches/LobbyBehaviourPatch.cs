@@ -1,4 +1,3 @@
-using System;
 using HarmonyLib;
 
 namespace SuperNewRoles.Patches;
@@ -13,15 +12,15 @@ public class LobbyBehaviourPatch
     {
         if (--Frame <= 0)
         {
-            bool MapThemeSound = SoundManager.Instance.soundPlayers.Any(x => x.Name.Equals("MapTheme"));
+            ISoundPlayer MapThemeSound = SoundManager.Instance.soundPlayers.Find(x => x.Name.Equals("MapTheme"));
             if (ConfigRoles.IsMuteLobbyBGM.Value)
             {
-                if (!MapThemeSound) return;
+                if (MapThemeSound == null) return;
                 SoundManager.Instance.StopNamedSound("MapTheme");
             }
             else
             {
-                if (MapThemeSound) return;
+                if (MapThemeSound != null) return;
                 SoundManager.Instance.CrossFadeSound("MapTheme", __instance.MapTheme, 0.5f);
             }
             Frame = 15;

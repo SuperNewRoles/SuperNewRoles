@@ -543,7 +543,7 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.ShielderCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.ShielderDurationTime.GetFloat();
             IsShield = new Dictionary<byte, bool>();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan()) RoleClass.Shielder.IsShield[p.PlayerId] = false;
+            foreach (PlayerControl p in CachedPlayer.AllPlayers) RoleClass.Shielder.IsShield[p.PlayerId] = false;
         }
     }
     public static class Freezer
@@ -1977,7 +1977,7 @@ public static class RoleClass
         {
             TunaPlayer = new();
             Position = new();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan()) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
+            foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
             StoppingTime = CustomOptionHolder.TunaStoppingTime.GetFloat();
             if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
             IsUseVent = CustomOptionHolder.TunaIsUseVent.GetBool();
@@ -1985,7 +1985,7 @@ public static class RoleClass
             if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
             {
                 Timers = new();
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan()) Timers[p.PlayerId] = StoppingTime;
+                foreach (PlayerControl p in CachedPlayer.AllPlayers) Timers[p.PlayerId] = StoppingTime;
             }
         }
     }
@@ -2109,7 +2109,7 @@ public static class RoleClass
             if (SendKunai != null) { GameObject.Destroy(SendKunai.kunai); }
             if (Kunais.Count > 0)
             {
-                foreach (Kunai kunai in Kunais.AsSpan())
+                foreach (Kunai kunai in Kunais)
                 {
                     if (kunai != null)
                     {
@@ -2262,7 +2262,7 @@ public static class RoleClass
                 if (_revolutionedPlayer.Length != RevolutionedPlayerId.Count)
                 {
                     List<PlayerControl> newList = new();
-                    foreach (byte playerid in RevolutionedPlayerId.AsSpan())
+                    foreach (byte playerid in RevolutionedPlayerId)
                     {
                         PlayerControl player = ModHelpers.PlayerById(playerid);
                         if (player == null) continue;
@@ -2514,7 +2514,7 @@ public static class RoleClass
                 if (PhotedPlayerIds.Count != _photedPlayer.Count)
                 {
                     List<PlayerControl> NewList = new();
-                    foreach (byte playerid in PhotedPlayerIds.AsSpan())
+                    foreach (byte playerid in PhotedPlayerIds)
                     {
                         PlayerControl player = ModHelpers.PlayerById(playerid);
                         if (player) NewList.Add(player);
@@ -2577,7 +2577,7 @@ public static class RoleClass
                 if (currentCrackedPlayerControls.Count != currentCrackedPlayers.Count)
                 {
                     List<PlayerControl> newList = new();
-                    foreach (byte p in currentCrackedPlayers.AsSpan()) newList.Add(ModHelpers.PlayerById(p));
+                    foreach (byte p in currentCrackedPlayers) newList.Add(ModHelpers.PlayerById(p));
                     currentCrackedPlayerControls = newList;
                 }
                 return currentCrackedPlayerControls;

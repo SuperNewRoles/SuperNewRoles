@@ -185,7 +185,7 @@ public static class Crook
                 float second = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - RoleData.TimeForAbilityUse + 7f;
                 string announce = string.Format(ModTranslation.GetString("CrookSHRMeetingStartAnnounce"), "#FF4B00", second, second - 10f);
 
-                foreach (var crook in RoleData.Player.AsSpan())
+                foreach (var crook in RoleData.Player)
                 {
                     if (crook.IsDead()) continue;
                     AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), announce, "#60a1bd"); // 初ターンは役職説明の上に表示される為, このアナウンスに気づかない事があるがそれは仕様とする。
@@ -238,7 +238,7 @@ public static class Crook
             string announce = string.Format(ModTranslation.GetString("CrookInsuredChatAnnounce"), ModHelpers.GetPlayerControl(crookId).GetDefaultName(), ModHelpers.GetPlayerControl(TargetId).GetDefaultName());
             if (AmongUsClient.Instance.AmHost)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (p.IsAlive()) continue;
                     AddChatPatch.ChatInformation(p, ModTranslation.GetString("CrookName"), announce, "#60a1bd");
@@ -533,7 +533,7 @@ public static class Crook
 
                 string warningStr = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), AbilityCountDown);
 
-                foreach (var crook in RoleData.Player.AsSpan())
+                foreach (var crook in RoleData.Player)
                 {
                     if (crook.IsDead()) continue;
 

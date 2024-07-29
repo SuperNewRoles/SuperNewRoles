@@ -11,10 +11,10 @@ public static class Jumbo
 {
     public static void FixedUpdate()
     {
-        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer.AsSpan())
+        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer)
             if (!RoleClass.Jumbo.BigPlayer.IsCheckListPlayerControl(p))
                 RoleClass.Jumbo.BigPlayer.Add(p);
-        foreach (PlayerControl p in RoleClass.Jumbo.BigPlayer.AsSpan())
+        foreach (PlayerControl p in RoleClass.Jumbo.BigPlayer)
         {
             if (p == null) continue;
             if (!RoleClass.Jumbo.JumboSize.ContainsKey(p.PlayerId)) RoleClass.Jumbo.JumboSize.Add(p.PlayerId, 0f);
