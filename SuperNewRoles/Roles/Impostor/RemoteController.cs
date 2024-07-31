@@ -264,7 +264,6 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
     {
         SetTarget,
         SetUnderOperation,
-        SetNormalizedVelocity,
     }
     public void RpcReader(MessageReader reader)
     {
@@ -275,9 +274,6 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
                 break;
             case RpcType.SetUnderOperation:
                 _UnderOperation = reader.ReadBoolean();
-                break;
-            case RpcType.SetNormalizedVelocity:
-                TargetPlayer.MyPhysics.SetNormalizedVelocity(NetHelpers.ReadVector2(reader));
                 break;
         }
     }
@@ -343,10 +339,11 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
             role.Timer -= Time.fixedDeltaTime;
             if (role.Timer <= 0)
             {
+                Logger.Info("てれぽーと", "RemoteController");
                 role.Timer += 2.5f;
-                MessageWriter writer = RPCHelper.StartRPC(RpcCalls.SnapTo, role.TargetPlayer);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomSnapTo, role.TargetPlayer);
+                writer.Write(role.TargetPlayer.PlayerId);
                 NetHelpers.WriteVector2(role.TargetPlayer.transform.position, writer);
-                writer.Write((ushort)(role.TargetPlayer.NetTransform.lastSequenceId + 2));
                 writer.EndRPC();
             }
 
@@ -354,9 +351,8 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
             {
                 role.TargetPlayer.NetTransform.incomingPosQueue.Clear();
                 role.TargetPlayer.MyPhysics.SetNormalizedVelocity(DestroyableSingleton<HudManager>.Instance.joystick.DeltaL);
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RoleRpcHandler, role.TargetPlayer);
-                writer.Write(__instance?.PlayerId ?? 255);
-                writer.Write((byte)RpcType.SetNormalizedVelocity);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetNormalizedVelocity, role.TargetPlayer);
+                writer.Write(role.TargetPlayer.PlayerId);
                 NetHelpers.WriteVector2(DestroyableSingleton<HudManager>.Instance.joystick.DeltaL, writer);
                 writer.EndRPC();
             }
@@ -387,26 +383,15 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
         }
     }
 
-    //*
     [HarmonyPatch(typeof(LightSource))]
     public static class LightSourcePatch
     {
         [HarmonyPatch(nameof(LightSource.Update)), HarmonyPrefix]
-        public static bool UpdatePrefix(LightSource __instance)
+        public static void UpdatePrefix(LightSource __instance)
         {
-            if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role) || !role.UnderOperation) return true;
-            Vector3 position = role.TargetPlayer.transform.position;
-            position.z -= 7f;
-            __instance.UpdateFlashlightAngle();
-            __instance.LightCutawayMaterial.SetFloat("_PlayerRadius", __instance.PlayerRadius);
-            __instance.LightCutawayMaterial.SetFloat("_LightRadius", __instance.ViewDistance);
-            __instance.LightCutawayMaterial.SetVector("_LightOffset", __instance.LightOffset);
-            __instance.LightCutawayMaterial.SetFloat("_FlashlightSize", __instance.FlashlightSize);
-            __instance.LightCutawayMaterial.SetFloat("_FlashlightAngle", PlayerControl.LocalPlayer.FlashlightAngle);
-            __instance.lightChild.transform.position = position;
-            __instance.renderer.Render(position);
-            return false;
+            if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role)) return;
+            if (!role.UnderOperation) __instance.transform.localPosition = Vector3.zero;
+            else __instance.transform.position = role.TargetPlayer.transform.position;
         }
     }
-    //*/
 }

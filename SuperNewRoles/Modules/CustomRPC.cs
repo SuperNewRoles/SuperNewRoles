@@ -380,6 +380,8 @@ public enum CustomRPC
     SetFrankensteinMonster,
     MoveDeadBody,
     WaveCannon,
+    SetNormalizedVelocity,
+    CustomSnapTo,
 }
 
 public static class RPCProcedure
@@ -393,6 +395,18 @@ public static class RPCProcedure
         if (role is not IRpcHandler)
             return;
         (role as IRpcHandler).RpcReader(reader);
+    }
+    public static void CustomSnapTo(byte id, Vector2 pos)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        player.NetTransform.SnapTo(pos);
+    }
+    public static void SetNormalizedVelocity(byte id, Vector2 vector)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        player.MyPhysics.SetNormalizedVelocity(vector);
     }
     public static void SetSpiderTrap(byte source, float x, float y, ushort id)
     {
@@ -1646,20 +1660,14 @@ public static class RPCProcedure
             {CustomRPC.SetDeviceTime,false},
             {CustomRPC.SetInfectionTimer,false},
             {CustomRPC.MoveDeadBody,false},
+            {CustomRPC.SetNormalizedVelocity,false},
+            {CustomRPC.CustomSnapTo,false}
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
             CustomRPC rpc = (CustomRPC)callId;
-            bool log = !IsWritingRPCLog.TryGetValue(rpc, out bool value) && value;
-            if (log && rpc is CustomRPC.RoleRpcHandler)
-            {
-                RoleBase role = RoleBaseManager.GetRoleBaseById(reader.ReadByte());
-                if (role.Role is RoleId.RemoteController) log = reader.ReadByte() != (byte)RemoteController.RpcType.SetNormalizedVelocity;
-                reader.Offset = 0;
-                reader.Position = 0;
-            }
-            if (log) Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
+            if (IsWritingRPCLog.TryGetValue(rpc, out bool value) && !value) Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
                 switch (rpc)
@@ -2018,6 +2026,12 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.WaveCannon:
                         WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), new(reader.ReadSingle(), reader.ReadSingle()), (WaveCannonObject.WCAnimType)reader.ReadByte());
+                        break;
+                    case CustomRPC.SetNormalizedVelocity:
+                        SetNormalizedVelocity(reader.ReadByte(), NetHelpers.ReadVector2(reader));
+                        break;
+                    case CustomRPC.CustomSnapTo:
+                        CustomSnapTo(reader.ReadByte(), NetHelpers.ReadVector2(reader));
                         break;
                 }
             }
