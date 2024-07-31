@@ -332,6 +332,9 @@ public class ModSettingsMenu : MonoBehaviour
         close_button.gameObject.name = "Close Button";
         close_button.gameObject.layer = 5;
         close_button.transform.localPosition = new(4.18f, 0.4f, -2f);
+        close_button.ClickMask = ScrollBar.Hitbox;
+        foreach (SpriteRenderer sprite in close_button.GetComponentsInChildren<SpriteRenderer>(true))
+            sprite.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         close_button.OnClick = new();
         close_button.OnClick.AddListener(() => OpenTab(OldTabId));
         RoleDetailsSettings.gameObject.SetActive(false);
@@ -562,11 +565,16 @@ public class ModSettingsMenu : MonoBehaviour
         mod.LabelSprite.color = color;
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.DecreaseCount);
+        mod.ControllerSelectable[0].ClickMask = ScrollBar.Hitbox;
         mod.ControllerSelectable[1].OnClick.AddListener(mod.IncreaseCount);
+        mod.ControllerSelectable[1].ClickMask = ScrollBar.Hitbox;
         mod.ControllerSelectable[2].OnClick.AddListener(mod.DecreaseChance);
+        mod.ControllerSelectable[2].ClickMask = ScrollBar.Hitbox;
         mod.ControllerSelectable[3].OnClick.AddListener(mod.IncreaseChance);
+        mod.ControllerSelectable[3].ClickMask = ScrollBar.Hitbox;
         mod.ControllerSelectable[4].OnClick.AddListener(() => OpenTab(OptionTabId.RoleDetails, mod.CreateRoleDetailsOption));
-        
+        mod.ControllerSelectable[4].ClickMask = ScrollBar.Hitbox;
+
         Destroy(obj);
         return mod;
     }
@@ -595,7 +603,9 @@ public class ModSettingsMenu : MonoBehaviour
         mod.UpdateValue();
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Decrease);
+        mod.ControllerSelectable[0].ClickMask = ScrollBar.Hitbox;
         mod.ControllerSelectable[1].OnClick.AddListener(mod.Increase);
+        mod.ControllerSelectable[1].ClickMask = ScrollBar.Hitbox;
 
         mod.TitleText.rectTransform.sizeDelta += additionalSizeDelta;
         mod.LabelBackground = obj.LabelBackground;
@@ -632,6 +642,7 @@ public class ModSettingsMenu : MonoBehaviour
         mod.CheckMark.transform.parent.transform.localPosition = new(1.17f, -0.042f);
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Toggle);
+        mod.ControllerSelectable[0].ClickMask = ScrollBar.Hitbox;
 
         mod.TitleText.rectTransform.sizeDelta += additionalSizeDelta;
         mod.LabelBackground = obj.LabelBackground;
