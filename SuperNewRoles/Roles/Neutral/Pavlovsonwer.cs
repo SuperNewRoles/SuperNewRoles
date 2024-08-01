@@ -153,8 +153,8 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
                     throw new System.NotImplementedException("Target is not PavlovsDogs. Why!?");
                 CreatedDogs.Add(dog);
                 dog.UpdateOwner(this);
-                ChangeName.SetRoleName(target);
-                ChangeName.SetRoleName(Player);
+                ChangeName.UpdateRoleName(target, ChangeNameType.AllPlayers);
+                ChangeName.UpdateRoleName(Player, ChangeNameType.AllPlayers);
             }
             return;
         }

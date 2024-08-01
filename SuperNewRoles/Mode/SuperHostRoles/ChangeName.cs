@@ -13,16 +13,26 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
+public enum ChangeNameType
+{
+    SelfOnly,
+    MeetingForce,
+    AllPlayers,
+    EndGame
+}
 public static class ChangeName
 {
+    public static Dictionary<PlayerControl, ChangeNameType> ChangeNameBuffers = new();
     public static string GetNowName(this PlayerData<string> pd, PlayerControl p)
     {
         if (!pd.TryGetValue(p, out string result))
             result = p.GetDefaultName();
         return result;
     }
+    private static float UpdateTimer;
+    private const float UpdateTimerMax = 0.2f;
 
-    public static void SetRoleName(PlayerControl player, bool IsUnchecked = false, CustomRpcSender sender = null)
+    private static void SetRoleName(PlayerControl player, ChangeNameType changeNameType)
     {
         //SHRではない場合は処理しない
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -36,7 +46,36 @@ public static class ChangeName
             Logger.Info("[SHR:ChangeName]" + player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
         }
         //コミュ情報を取得して呼ぶ
-        SetRoleName(player, RoleHelpers.IsComms(), IsUnchecked, sender: sender);
+        SetRoleName(player, RoleHelpers.IsComms(), changeNameType);
+    }
+    public static void UpdateRoleName(PlayerControl player, ChangeNameType changeNameType)
+    {
+        if (ChangeNameBuffers.TryGetValue(player, out var type))
+        {
+            if (type is ChangeNameType.AllPlayers or ChangeNameType.MeetingForce or ChangeNameType.EndGame)
+                return;
+        }
+        ChangeNameBuffers[player] = changeNameType;
+    }
+    public static void UpdateRoleNames(ChangeNameType changeNameType)
+    {
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            UpdateRoleName(player, changeNameType);
+    }
+    public static void UpdateRoleNamesImmediately(ChangeNameType changeNameType)
+    {
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            UpdateRoleName(player, changeNameType);
+    }
+    public static void UpdateRoleNameImmediately(PlayerControl player, ChangeNameType changeNameType)
+    {
+        if (ChangeNameBuffers.TryGetValue(player, out ChangeNameType type))
+        {
+            if (changeNameType == ChangeNameType.SelfOnly)
+                changeNameType = type;
+            ChangeNameBuffers.Remove(player);
+        }
+        SetRoleName(player, changeNameType);
     }
     private static string GetPlayerName(this PlayerControl player)
     {
@@ -46,6 +85,20 @@ public static class ChangeName
                 return ModHelpers.Cs(RoleClass.ImpostorRed, player.GetDefaultName());
         }
         return player.GetDefaultName();
+    }
+    public static void FixedUpdate()
+    {
+        if (ChangeNameBuffers.Count == 0)
+            return;
+        UpdateTimer -= Time.fixedDeltaTime;
+        if (UpdateTimer > 0 && UpdateTimer < 1f)
+            return;
+        foreach (var (player, changeNameType) in ChangeNameBuffers)
+        {
+            SetRoleName(player, changeNameType);
+        }
+        ChangeNameBuffers = new();
+        UpdateTimer = UpdateTimerMax;
     }
     public static void SetDefaultNames()
     {
@@ -62,7 +115,7 @@ public static class ChangeName
             p.RpcSetName(p.GetDefaultName());
         }
     }
-    public static void SetRoleNames(bool IsUnchecked = false, bool OnEndGame = false, CustomRpcSender sender = null)
+    private static void SetRoleNames(ChangeNameType changeNameType)
     {
         //SHRではない場合は処理しない
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -78,10 +131,10 @@ public static class ChangeName
         bool commsActive = RoleHelpers.IsComms();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            SetRoleName(p, commsActive, IsUnchecked, OnEndGame, sender);
+            SetRoleName(p, commsActive, changeNameType);
         }
     }
-    public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false, bool OnEndGame = false, CustomRpcSender sender = null)
+    private static void SetRoleName(PlayerControl player, bool commsActive, ChangeNameType changeNameType)
     {
         //SHRではない場合は処理しない
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -97,11 +150,6 @@ public static class ChangeName
             string callerClassName = callerMethod.DeclaringType.FullName;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR: ChangeName]" + player.name + "へのSetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
         }
-
-        //if (UpdateTime.ContainsKey(player.PlayerId) && UpdateTime[player.PlayerId] > 0) return;
-
-        //UpdateTime[player.PlayerId] = UpdateDefaultTime;
-
         HashSet<PlayerControl> CanAllRolePlayers = new();
         HashSet<PlayerControl> AlivePlayers = new();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -114,7 +162,7 @@ public static class ChangeName
                 !p.IsBot())
             {
                 //神、もしくは死亡していてかつ役職が見れる場合
-                if (SetNamesClass.CanGhostSeeRoles(p) || p.IsRole(RoleId.God) || OnEndGame)
+                if (SetNamesClass.CanGhostSeeRoles(p) || p.IsRole(RoleId.God) || changeNameType == ChangeNameType.EndGame)
                     CanAllRolePlayers.Add(p);
                 else
                     AlivePlayers.Add(p);
@@ -126,12 +174,204 @@ public static class ChangeName
 
         RoleId PlayerRole = player.GetRole();
 
+        bool processOtherPlayer = changeNameType != ChangeNameType.SelfOnly;
+
         StringBuilder NewName = new();
         StringBuilder MySuffix = new();
         StringBuilder RoleNameText = new(ModHelpers.Cs(CustomRoles.GetRoleColor(player), CustomRoles.GetRoleName(player)));
         PlayerData<string> ChangePlayers = new(needplayerlist: true);
         ISupportSHR playerSHR = player.GetRoleBase() as ISupportSHR;
 
+        // 他人の名前を変える
+        if (processOtherPlayer)
+            SetOtherName(player, PlayerRole, ChangePlayers);
+
+        // ロルベのやつを処理
+        if (playerSHR != null)
+            playerSHR.BuildName(MySuffix, RoleNameText, ChangePlayers);
+
+        //プレイヤーがラバーズかつ
+        if (player.IsLovers() &&
+            //カモフラ中じゃない、もしくはラバーズマークがカモフラ中でも見える場合
+            (!RoleClass.Camouflager.IsCamouflage || RoleClass.Camouflager.LoversMark))
+        {
+            var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
+            if (processOtherPlayer)
+            {
+                PlayerControl Side = player.GetOneSideLovers();
+                string name = Side.GetDefaultName();
+                ChangePlayers[Side.PlayerId] = ChangePlayers.GetNowName(Side) + suffix;
+            }
+            MySuffix.Append(suffix);
+        }
+        //プレイヤーがクラードかつ
+        if (player.IsQuarreled() &&
+            //カモフラ中じゃない、もしくはクラードマークがカモフラ中でも見える場合
+            !RoleClass.Camouflager.IsCamouflage || RoleClass.Camouflager.QuarreledMark)
+        {
+            var suffix = ModHelpers.Cs(RoleClass.Quarreled.color, "○");
+            if (processOtherPlayer)
+            {
+                PlayerControl Side = player.GetOneSideQuarreled();
+                string name = Side.GetDefaultName();
+                ChangePlayers[Side.PlayerId] = ChangePlayers.GetNowName(Side) + suffix;
+            }
+            MySuffix.Append(suffix);
+        }
+        //ここで役職名の部分を変える
+        switch (PlayerRole)
+        {
+            case RoleId.Sheriff:
+                if (RoleClass.Sheriff.KillCount.TryGetValue(player.PlayerId, out int svalue))
+                    RoleNameText.Append(ModHelpers.Cs(IntroData.SheriffIntro.color, $" ({svalue.ToString()})"));
+                break;
+            case RoleId.RemoteSheriff:
+                if (RoleClass.RemoteSheriff.KillCount.TryGetValue(player.PlayerId, out int rsvalue))
+                    RoleNameText.Append(ModHelpers.Cs(IntroData.RemoteSheriffIntro.color, rsvalue.ToString()));
+                break;
+            case RoleId.Mafia:
+                if (Mafia.IsKillFlag())
+                    RoleNameText.Append(" (OK)");
+                break;
+            case RoleId.SatsumaAndImo:
+                SatsumaAndImo imo = player.GetRoleBase<SatsumaAndImo>();
+                if (imo != null)
+                    MySuffix.Append(imo.GetSuffixText());
+                break;
+        }
+
+        string TaskText = string.Empty;
+        if (player.IsUseTaskTrigger())
+        {
+            var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
+            if (commsActive)
+                TaskText = ModHelpers.Cs(Color.yellow, $"(?/{all})");
+            else
+                TaskText = ModHelpers.Cs(Color.yellow, $"({Complete}/{all})");
+        }
+
+        bool Unchecked = changeNameType is ChangeNameType.MeetingForce or ChangeNameType.EndGame;
+        bool IsDemonVIew = false;
+        bool IsArsonistVIew = false;
+        bool IsHauntedWolfVIew = false;
+        bool IsGhostMechanicVIew = false; // 幽霊役職が1つしかない為, 単独処理
+        StringBuilder attributeRoleName = new();
+
+        if ((SetNamesClass.CanGhostSeeRoles(player) || player.IsRole(RoleId.God)) && Unchecked)
+        {
+            if (Demon.IsViewIcon(player))
+            {
+                MySuffix.Append(ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
+                IsDemonVIew = true;
+            }
+            if (Arsonist.IsViewIcon(player))
+            {
+                MySuffix.Append(ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
+                IsArsonistVIew = true;
+            }
+            if (player.IsHauntedWolf())
+            {
+                attributeRoleName.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
+                IsHauntedWolfVIew = true;
+            }
+            if (player.IsGhostRole(RoleId.GhostMechanic))
+            {
+                attributeRoleName.Append($" + {ModHelpers.Cs(RoleClass.GhostMechanic.color, ModTranslation.GetString("GhostMechanicName"))}");
+                IsGhostMechanicVIew = true;
+            }
+            NewName.Append($"(<size=75%>{ModHelpers.Cs(CustomRoles.GetRoleColor(player), CustomRoles.GetRoleName(player))}{attributeRoleName}{TaskText}</size>)");
+            Color32 namecolor = changeNameType == ChangeNameType.EndGame ? Color.white : CustomRoles.GetRoleColor(player);
+            if (!RoleClass.Camouflager.IsCamouflage)
+                NewName.Append(ModHelpers.Cs(namecolor, $"{player.GetDefaultName()}{MySuffix}"));
+            else
+                NewName.Append(ModHelpers.Cs(namecolor, MySuffix.ToString()));
+        }
+        else if (player.IsAlive() || Unchecked)
+        {
+            if (SetNamesClass.CanGhostSeeRoles(player) || player.IsRole(RoleId.God))
+            {
+                if (Demon.IsViewIcon(player))
+                {
+                    MySuffix.Append(ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
+                    IsDemonVIew = true;
+                }
+                if (Arsonist.IsViewIcon(player))
+                {
+                    MySuffix.Append(ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
+                    IsArsonistVIew = true;
+                }
+            }
+            NewName.Append($"<size=75%>{RoleNameText}{attributeRoleName}{TaskText}</size>\n");
+            if (!RoleClass.Camouflager.IsCamouflage)
+                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), player.GetDefaultName() + MySuffix));
+            else
+                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), MySuffix.ToString()));
+        }
+        if (!player.IsMod())
+        {
+            string SelfText = NewName.ToString();
+            if (changeNameType == ChangeNameType.EndGame && player.IsAlive())
+            {
+                SelfText = AddEndGameText(SelfText);
+            }
+            player.RpcSetNamePrivate(SelfText);
+            if (player.IsAlive() && changeNameType != ChangeNameType.SelfOnly)
+            {
+                foreach (var data in RoleBaseManager.GetInterfaces<ISupportSHR>())
+                {
+                    if (data.BuildAllName(out string text))
+                    {
+                        PlayerControl control = (data as RoleBase).Player;
+                        ChangePlayers[control] = ChangePlayers.GetNowName(control) + text;
+                    }
+                }
+                foreach (var ChangePlayerData in (Dictionary<PlayerControl, string>)ChangePlayers)
+                {
+                    if (ChangePlayerData.Key.PlayerId == player.PlayerId)
+                        continue;
+                    ChangePlayerData.Key.RpcSetNamePrivate(ChangePlayerData.Value, player);
+                }
+            }
+        }
+        if (player.IsImpostor() && IsHideAndSeek)
+        {
+            foreach (PlayerControl AlivePlayer in AlivePlayers)
+            {
+                if (AlivePlayer.IsMod()) continue;
+                player.RpcSetNamePrivate(ModHelpers.Cs(RoleClass.ImpostorRed, player.GetDefaultName()), AlivePlayer);
+            }
+        }
+        StringBuilder DieSuffix = new();
+        // FIXME : SHRにおいて重複役の名前変更の共通処理が完成していない。
+        if (!IsDemonVIew && Demon.IsViewIcon(player))
+            DieSuffix.Append(ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
+        if (!IsArsonistVIew && Arsonist.IsViewIcon(player))
+            DieSuffix.Append(ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
+        if (!IsHauntedWolfVIew && player.IsHauntedWolf())
+            DieSuffix.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
+        if (!IsGhostMechanicVIew && player.IsGhostRole(RoleId.GhostMechanic))
+            DieSuffix.Append($" + {ModHelpers.Cs(RoleClass.GhostMechanic.color, ModTranslation.GetString("GhostMechanicName"))}");
+        NewName.Append(DieSuffix);
+        string NewNameString = NewName.ToString();
+        foreach (PlayerControl DiePlayer in CanAllRolePlayers)
+        {
+            if (player.PlayerId != DiePlayer.PlayerId &&
+                !DiePlayer.Data.Disconnected)
+                player.RpcSetNamePrivate(NewNameString, DiePlayer);
+        }
+        if (changeNameType == ChangeNameType.EndGame)
+        {
+            foreach (var targets in EndGameDetail.ShowTargets)
+            {
+                if (targets.Key == null || targets.Key.PlayerId == targets.Value)
+                    continue;
+                if (targets.Value == player.PlayerId)
+                    player.RpcSetNamePrivate(AddEndGameText(NewNameString), targets.Key);
+            }
+        }
+    }
+    private static void SetOtherName(PlayerControl player, RoleId PlayerRole, PlayerData<string> ChangePlayers)
+    {
         // カモフラ中は処理を破棄する
         if (!RoleClass.Camouflager.IsCamouflage)
         {
@@ -174,10 +414,6 @@ public static class ChangeName
         }
         else
         {
-            if (playerSHR != null)
-            {
-                playerSHR.BuildName(MySuffix, RoleNameText, ChangePlayers);
-            }
             switch (PlayerRole)
             {
                 case RoleId.Demon:
@@ -220,12 +456,6 @@ public static class ChangeName
                         }
                     }
                     break;
-                case RoleId.SatsumaAndImo:
-                    SatsumaAndImo imo = player.GetRoleBase<SatsumaAndImo>();
-                    if (imo == null)
-                        break;
-                    MySuffix.Append(imo.GetSuffixText());
-                    break;
                 case RoleId.Finder:
                     //マッドを表示させられる場合
                     if (RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
@@ -253,185 +483,7 @@ public static class ChangeName
                     break;
             }
         }
-        //プレイヤーがラバーズかつ
-        if (player.IsLovers() &&
-            //カモフラ中じゃない、もしくはラバーズマークがカモフラ中でも見える場合
-            !RoleClass.Camouflager.IsCamouflage || RoleClass.Camouflager.LoversMark)
-        {
-            var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
-            PlayerControl Side = player.GetOneSideLovers();
-            string name = Side.GetDefaultName();
-            ChangePlayers[Side.PlayerId] = ChangePlayers.GetNowName(Side) + suffix;
-            MySuffix.Append(suffix);
-        }
-        //プレイヤーがクラードかつ
-        if (player.IsQuarreled() &&
-            //カモフラ中じゃない、もしくはクラードマークがカモフラ中でも見える場合
-            !RoleClass.Camouflager.IsCamouflage || RoleClass.Camouflager.QuarreledMark)
-        {
-            var suffix = ModHelpers.Cs(RoleClass.Quarreled.color, "○");
-            PlayerControl Side = player.GetOneSideQuarreled();
-            string name = Side.GetDefaultName();
-            ChangePlayers[Side.PlayerId] = ChangePlayers.GetNowName(Side) + suffix;
-            MySuffix.Append(suffix);
-        }
-        //ここで役職名の部分を変える
-        switch (PlayerRole)
-        {
-            case RoleId.Sheriff:
-                if (RoleClass.Sheriff.KillCount.TryGetValue(player.PlayerId, out int svalue))
-                {
-                    RoleNameText.Append(ModHelpers.Cs(IntroData.SheriffIntro.color, $" ({svalue.ToString()})"));
-                }
-                break;
-            case RoleId.RemoteSheriff:
-                if (RoleClass.RemoteSheriff.KillCount.TryGetValue(player.PlayerId, out int rsvalue))
-                {
-                    RoleNameText.Append(ModHelpers.Cs(IntroData.RemoteSheriffIntro.color, rsvalue.ToString()));
-                }
-                break;
-            case RoleId.Mafia:
-                if (Mafia.IsKillFlag())
-                {
-                    RoleNameText.Append(" (OK)");
-                }
-                break;
-        }
-        string TaskText = string.Empty;
-        if (player.IsUseTaskTrigger())
-        {
-            try
-            {
-                var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
-                if (commsActive)
-                    TaskText = ModHelpers.Cs(Color.yellow, $"(?/{all})");
-                else
-                    TaskText = ModHelpers.Cs(Color.yellow, $"({Complete}/{all})");
-            }
-            catch
-            {
-            }
-        }
 
-        bool IsDemonVIew = false;
-        bool IsArsonistVIew = false;
-        bool IsHauntedWolfVIew = false;
-        bool IsGhostMechanicVIew = false; // 幽霊役職が1つしかない為, 単独処理
-        StringBuilder attributeRoleName = new();
-
-        if ((SetNamesClass.CanGhostSeeRoles(player) || player.IsRole(RoleId.God)) && !IsUnchecked)
-        {
-            if (Demon.IsViewIcon(player))
-            {
-                MySuffix.Append(ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
-                IsDemonVIew = true;
-            }
-            if (Arsonist.IsViewIcon(player))
-            {
-                MySuffix.Append(ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
-                IsArsonistVIew = true;
-            }
-            if (player.IsHauntedWolf())
-            {
-                attributeRoleName.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
-                IsHauntedWolfVIew = true;
-            }
-            if (player.IsGhostRole(RoleId.GhostMechanic))
-            {
-                attributeRoleName.Append($" + {ModHelpers.Cs(RoleClass.GhostMechanic.color, ModTranslation.GetString("GhostMechanicName"))}");
-                IsGhostMechanicVIew = true;
-            }
-            NewName.Append($"(<size=75%>{ModHelpers.Cs(CustomRoles.GetRoleColor(player), CustomRoles.GetRoleName(player))}{attributeRoleName}{TaskText}</size>)");
-            Color32 namecolor = OnEndGame ? Color.white : CustomRoles.GetRoleColor(player);
-            if (!RoleClass.Camouflager.IsCamouflage)
-            {
-                NewName.Append(ModHelpers.Cs(namecolor, $"{player.GetDefaultName()}{MySuffix}"));
-            }
-            else
-            {
-                NewName.Append(ModHelpers.Cs(namecolor, MySuffix.ToString()));
-            }
-        }
-        else if (player.IsAlive() || IsUnchecked)
-        {
-            if (SetNamesClass.CanGhostSeeRoles(player) || player.IsRole(RoleId.God))
-            {
-                if (Demon.IsViewIcon(player))
-                {
-                    MySuffix.Append(ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
-                    IsDemonVIew = true;
-                }
-                if (Arsonist.IsViewIcon(player))
-                {
-                    MySuffix.Append(ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
-                    IsArsonistVIew = true;
-                }
-            }
-            NewName.Append($"<size=75%>{RoleNameText}{attributeRoleName}{TaskText}</size>\n");
-            if (!RoleClass.Camouflager.IsCamouflage)
-                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), player.GetDefaultName() + MySuffix));
-            else
-                NewName.Append(ModHelpers.Cs(CustomRoles.GetRoleColor(player), MySuffix.ToString()));
-        }
-        if (!player.IsMod())
-        {
-            string SelfText = NewName.ToString();
-            if (OnEndGame && player.IsAlive())
-            {
-                SelfText = AddEndGameText(SelfText);
-            }
-            player.RpcSetNamePrivate(sender, SelfText);
-            if (player.IsAlive())
-            {
-                foreach (var data in RoleBaseManager.GetInterfaces<ISupportSHR>())
-                {
-                    if (data.BuildAllName(out string text))
-                    {
-                        PlayerControl control = (data as RoleBase).Player;
-                        ChangePlayers[control] = ChangePlayers.GetNowName(control) + text;
-                    }
-                }
-                foreach (var ChangePlayerData in (Dictionary<PlayerControl, string>)ChangePlayers)
-                {
-                    if (ChangePlayerData.Key.PlayerId == player.PlayerId)
-                        continue;
-                    ChangePlayerData.Key.RpcSetNamePrivate(sender, ChangePlayerData.Value, player);
-                }
-            }
-        }
-        if (player.IsImpostor() && IsHideAndSeek)
-        {
-            foreach (PlayerControl AlivePlayer in AlivePlayers)
-            {
-                if (AlivePlayer.IsMod()) continue;
-                player.RpcSetNamePrivate(sender, ModHelpers.Cs(RoleClass.ImpostorRed, player.GetDefaultName()), AlivePlayer);
-            }
-        }
-        StringBuilder DieSuffix = new();
-        // FIXME : SHRにおいて重複役の名前変更の共通処理が完成していない。
-        if (!IsDemonVIew && Demon.IsViewIcon(player))
-            DieSuffix.Append(ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
-        if (!IsArsonistVIew && Arsonist.IsViewIcon(player))
-            DieSuffix.Append(ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
-        if (!IsHauntedWolfVIew && player.IsHauntedWolf())
-            DieSuffix.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
-        if (!IsGhostMechanicVIew && player.IsGhostRole(RoleId.GhostMechanic))
-            DieSuffix.Append($" + {ModHelpers.Cs(RoleClass.GhostMechanic.color, ModTranslation.GetString("GhostMechanicName"))}");
-        NewName.Append(DieSuffix);
-        string NewNameString = NewName.ToString();
-        foreach (PlayerControl DiePlayer in CanAllRolePlayers)
-        {
-            if (player.PlayerId != DiePlayer.PlayerId &&
-                !DiePlayer.Data.Disconnected)
-                player.RpcSetNamePrivate(sender, NewNameString, DiePlayer);
-        }
-        foreach (var targets in EndGameDetail.ShowTargets)
-        {
-            if (targets.Key == null || targets.Key.PlayerId == targets.Value)
-                continue;
-            if (targets.Value == player.PlayerId)
-                player.RpcSetNamePrivate(sender, AddEndGameText(NewNameString), targets.Key);
-        }
     }
     private static string AddEndGameText(string text)
     {

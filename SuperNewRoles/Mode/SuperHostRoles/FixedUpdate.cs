@@ -61,6 +61,7 @@ public static class FixedUpdate
         }
         SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
         if (!AmongUsClient.Instance.AmHost) return;
+        ChangeName.FixedUpdate();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon))
         {
             PoliceSurgeon.FixedUpdate();

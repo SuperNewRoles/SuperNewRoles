@@ -274,7 +274,7 @@ public static class AntiBlackOut
                 IsModdedSerialize = true;
                 RPCHelper.RpcSyncAllNetworkedPlayer();
                 IsModdedSerialize = false;
-                ChangeName.SetRoleNames();
+                ChangeName.UpdateRoleNames(ChangeNameType.AllPlayers);
                 RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
 
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
