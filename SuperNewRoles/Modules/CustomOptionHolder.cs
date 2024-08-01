@@ -916,7 +916,7 @@ public class CustomOptionHolder
     {
         List<string> leveData = new() { "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
         List<string> LeveTransed = new();
-        foreach (string data in leveData)
+        foreach (string data in leveData.AsSpan())
         {
             LeveTransed.Add(ModTranslation.GetString(data));
         }
@@ -1939,7 +1939,7 @@ public class CustomOptionHolder
 
         if (GameOptionsMenuUpdatePatch.HasSealingOption)
         {
-            foreach (CustomOption option in options)
+            foreach (CustomOption option in options.AsSpan())
             {
                 if (option.RoleId is RoleId.DefaultRole or RoleId.None) continue; // 役職以外はスキップ
                 if (Roles.Role.RoleInfoManager.GetRoleInfo(option.RoleId) == null) continue; // GetOptionInfoでlogを出さない様 RoleBase未移行役は先にスキップする。

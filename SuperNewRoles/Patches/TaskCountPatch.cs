@@ -16,8 +16,9 @@ class TaskCount
         static void Postfix(NormalPlayerTask __instance)
         {
             if (__instance.TaskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.MapOption.WireTaskIsRandom) return;
-            List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(__instance.TaskType)).ToList<global::Console>();
+            var orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((Console t) => t.TaskTypes.Contains(__instance.TaskType));
             List<Console> list = new(orgList);
+            int ConsoleNum = list.Count;
 
             __instance.MaxStep = MapOption.MapOption.WireTaskNum;
             __instance.Data = new byte[MapOption.MapOption.WireTaskNum];
@@ -26,6 +27,10 @@ class TaskCount
                 if (list.Count == 0)
                     list = new List<Console>(orgList);
                 int index = ModHelpers.GetRandomIndex(list);
+
+                //listのつなぎ目で、Consoleが被ることを防ぐ
+                if (i >= ConsoleNum && i % ConsoleNum == 0 && __instance.Data[i-1] == (byte)list[index].ConsoleId)
+                    index = index == 0 ? index + 1 : index - 1;
                 __instance.Data[i] = (byte)list[index].ConsoleId;
                 list.RemoveAt(index);
             }
@@ -53,7 +58,7 @@ class TaskCount
                 __instance.Arrows?.DoIf(x => x != null && x.isActiveAndEnabled, x => x.gameObject?.SetActive(false));
         }
     }
-    public static Tuple<int, int> TaskDateNoClearCheck(NetworkedPlayerInfo playerInfo)
+    public static (int, int) TaskDateNoClearCheck(NetworkedPlayerInfo playerInfo)
     {
         int TotalTasks = 0;
         int CompletedTasks = 0;
@@ -66,9 +71,9 @@ class TaskCount
                 CompletedTasks++;
             }
         }
-        return Tuple.Create(CompletedTasks, TotalTasks);
+        return (CompletedTasks, TotalTasks);
     }
-    public static Tuple<int, int> TaskDate(NetworkedPlayerInfo playerInfo)
+    public static (int, int) TaskDate(NetworkedPlayerInfo playerInfo)
     {
         int TotalTasks = 0;
         int CompletedTasks = 0;
@@ -87,7 +92,7 @@ class TaskCount
                 }
             }
         }
-        return Tuple.Create(CompletedTasks, TotalTasks);
+        return (CompletedTasks, TotalTasks);
     }
     public static (int, int, int) RemainingTaskData(NetworkedPlayerInfo player)
     {

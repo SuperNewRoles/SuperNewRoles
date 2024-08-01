@@ -40,7 +40,7 @@ public static class PolusRandomSpawn
                 HudManager.Instance.StartCoroutine(Spawn(PlayerControl.LocalPlayer).WrapToIl2Cpp());
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (player.IsMod()) continue;
                         HudManager.Instance.StartCoroutine(Spawn(player).WrapToIl2Cpp());
@@ -61,7 +61,7 @@ public static class PolusRandomSpawn
                 HudManager.Instance.StartCoroutine(Spawn(PlayerControl.LocalPlayer).WrapToIl2Cpp());
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                     {
                         if (player.IsMod()) continue;
                         HudManager.Instance.StartCoroutine(Spawn(player).WrapToIl2Cpp());

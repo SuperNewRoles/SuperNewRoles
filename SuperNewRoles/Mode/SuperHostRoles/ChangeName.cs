@@ -33,7 +33,7 @@ public static class ChangeName
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            Logger.Info("[SHR:ChangeName]" + player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            Logger.Info($"[SHR: ChangeName] {player.name}への(IsCommsなしの)SetRoleNameが{callerClassName}.{callerMethodName}から呼び出されました。");
         }
         //コミュ情報を取得して呼ぶ
         SetRoleName(player, RoleHelpers.IsComms(), IsUnchecked, sender: sender);
@@ -55,9 +55,9 @@ public static class ChangeName
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo("SetDefaultNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            SuperNewRolesPlugin.Logger.LogInfo($"[SHR: ChangeName] SetDefaultNamesが{callerClassName}.{callerMethodName}から呼び出されました。");
         }
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             p.RpcSetName(p.GetDefaultName());
         }
@@ -72,11 +72,11 @@ public static class ChangeName
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR:ChangeName] SetRoleNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            SuperNewRolesPlugin.Logger.LogInfo($"[SHR: ChangeName] SetRoleNamesが{callerClassName}.{callerMethodName}から呼び出されました。");
         }
 
         bool commsActive = RoleHelpers.IsComms();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             SetRoleName(p, commsActive, IsUnchecked, OnEndGame, sender);
         }
@@ -95,7 +95,7 @@ public static class ChangeName
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR: ChangeName]" + player.name + "へのSetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            SuperNewRolesPlugin.Logger.LogInfo($"[SHR: ChangeName] {player.name}へのSetRoleNameが{callerClassName}.{callerMethodName}から呼び出されました。");
         }
 
         //if (UpdateTime.ContainsKey(player.PlayerId) && UpdateTime[player.PlayerId] > 0) return;
@@ -104,7 +104,7 @@ public static class ChangeName
 
         HashSet<PlayerControl> CanAllRolePlayers = new();
         HashSet<PlayerControl> AlivePlayers = new();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             //導入者ではないかつ
             if (!p.IsMod() &&
@@ -139,7 +139,7 @@ public static class ChangeName
             List<PlayerControl> CelebrityViewPlayers = RoleClass.Celebrity.ChangeRoleView ?
             RoleClass.Celebrity.ViewPlayers : RoleClass.Celebrity.CelebrityPlayer;
 
-            foreach (PlayerControl viewPlayer in CelebrityViewPlayers)
+            foreach (PlayerControl viewPlayer in CelebrityViewPlayers.AsSpan())
             {
                 if (viewPlayer == player) continue;
                 ChangePlayers[viewPlayer.PlayerId] = ModHelpers.Cs(RoleClass.Celebrity.color, viewPlayer.GetDefaultName());
@@ -150,7 +150,7 @@ public static class ChangeName
             // カモフラ中は処理を破棄する
             if (!RoleClass.Camouflager.IsCamouflage)
             {
-                foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
+                foreach (PlayerControl Impostor in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (Impostor.IsImpostor() && !Impostor.IsBot())
                     {
@@ -164,7 +164,7 @@ public static class ChangeName
             // カモフラ中は処理を破棄する
             if (!RoleClass.Camouflager.IsCamouflage)
             {
-                foreach (PlayerControl Jackal in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl Jackal in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (!Jackal.IsJackalTeam() || Jackal.IsDead())
                         continue;
@@ -183,7 +183,7 @@ public static class ChangeName
                 case RoleId.Demon:
                     if (RoleClass.Demon.IsCheckImpostor && !RoleClass.Camouflager.IsCamouflage)
                     {
-                        foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl Impostor in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (Impostor.IsImpostor() && !Impostor.IsBot())
                             {
@@ -191,7 +191,7 @@ public static class ChangeName
                             }
                         }
                     }
-                    foreach (PlayerControl CursePlayer in Demon.GetIconPlayers(player))
+                    foreach (PlayerControl CursePlayer in Demon.GetIconPlayers(player).AsSpan())
                     {
                         if (CursePlayer.IsBot()) continue;
                         if (!RoleClass.Camouflager.IsCamouflage)
@@ -206,7 +206,7 @@ public static class ChangeName
                     }
                     break;
                 case RoleId.Arsonist:
-                    foreach (PlayerControl DousePlayer in Arsonist.GetIconPlayers(player))
+                    foreach (PlayerControl DousePlayer in Arsonist.GetIconPlayers(player).AsSpan())
                     {
                         if (DousePlayer.IsBot()) continue;
                         if (!RoleClass.Camouflager.IsCamouflage)
@@ -230,7 +230,7 @@ public static class ChangeName
                     //マッドを表示させられる場合
                     if (RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
                     {
-                        foreach (PlayerControl Player in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl Player in CachedPlayer.AllPlayers.AsSpan())
                         {
                             if (!Player.IsBot() && Player.IsMadRoles())
                             {

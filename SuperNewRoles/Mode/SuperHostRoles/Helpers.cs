@@ -10,7 +10,7 @@ public static class Helpers
 {
     public static void UnCheckedRpcSetRole(this PlayerControl player, RoleTypes role)
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             player.RpcSetRoleDesync(role, p);
         }
@@ -28,9 +28,9 @@ public static class Helpers
         }
         sender.SendMessage();
     }
-    public static void RpcSetRoleImmediately(this PlayerControl player, RoleTypes role, bool canOverride = true)
+    public static void RpcSetRoleImmediately(this PlayerControl player, RoleTypes role, bool canOverride = true, int targetClientId = -1)
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable, targetClientId);
         writer.Write((ushort)role);
         writer.Write(canOverride);
         AmongUsClient.Instance.FinishRpcImmediately(writer);

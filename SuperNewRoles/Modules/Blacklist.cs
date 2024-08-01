@@ -104,7 +104,6 @@ public static class Blacklist
                 yield return null;
                 clientData = AmongUsClient.Instance
                                         .allClients
-                                        .ToArray()
                                         .FirstOrDefault(client => client.Id == ClientId);
             } while (clientData == null);
         }

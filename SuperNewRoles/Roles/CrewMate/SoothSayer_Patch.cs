@@ -152,8 +152,8 @@ public static class SoothSayer_Patch
             RoleClass.SoothSayer.CanFirstWhite = false;
             List<PlayerControl> WhitePlayers =
                 isReverseDecision
-                    ? PlayerControl.AllPlayerControls.ToArray().ToList().FindAll(x => x.IsAlive() && !x.IsCrew() && x.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
-                    : PlayerControl.AllPlayerControls.ToArray().ToList().FindAll(x => x.IsAlive() && x.IsCrew() && x.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
+                    ? CachedPlayer.AllPlayers.Where(x => x.IsAlive() && !((PlayerControl)x).IsCrew() && x.PlayerId != CachedPlayer.LocalPlayer.PlayerId).Select(x => (PlayerControl)x).ToList()
+                    : CachedPlayer.AllPlayers.Where(x => x.IsAlive() && ((PlayerControl)x).IsCrew() && x.PlayerId != CachedPlayer.LocalPlayer.PlayerId).Select(x => (PlayerControl)x).ToList();
             if (WhitePlayers.Count <= 0) { FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer, ModTranslation.GetString("SoothSayerNoneTarget")); return; }
             PlayerControl Target = WhitePlayers.GetRandom();
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer, Target.Data.PlayerName + ModTranslation.GetString("SoothSayerCrewmateText"));

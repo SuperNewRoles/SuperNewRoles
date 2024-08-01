@@ -11,7 +11,7 @@ public class Samurai
     }
     public static void SamuraiKill()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
             {

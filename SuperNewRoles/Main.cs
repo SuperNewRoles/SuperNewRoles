@@ -1,5 +1,6 @@
 global using SuperNewRoles.Modules;
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -60,6 +61,11 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static string NewVersion = "";
     public static string thisname;
     public static string ThisPluginModName;
+
+    public const string SteamName = "steam";
+    public const string EpicGamesStoreName = "egs";
+    public static bool IsEpic => Constants.GetPurchasingPlatformType() == EpicGamesStoreName;
+
     //対応しているバージョン。nullなら全て。
     public static string[] SupportVanilaVersion = new string[] { "2024.3.5" };
 
@@ -67,7 +73,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         Logger = Log;
         Instance = this;
-
         Task LoadHarmonyPatchTask = Task.Run(() =>
         {
             Logger.LogInfo("Start Patch Harmony");
@@ -118,7 +123,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         try
         {
             DirectoryInfo d = new(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
-            string[] files = d.GetFiles("*.dll.old").Select(x => x.FullName).ToArray(); // Getting old versions
+            var files = d.GetFiles("*.dll.old").Select(x => x.FullName); // Getting old versions
             foreach (string f in files)
                 File.Delete(f);
         }

@@ -166,7 +166,7 @@ internal class AddChatPatch
     static string GetChildText(List<CustomOption> options, string indent)
     {
         string text = "";
-        foreach (CustomOption option in options)
+        foreach (CustomOption option in options.AsSpan())
         {
             if (!option.parent.Enabled && option.parent != null) continue;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
@@ -276,7 +276,7 @@ internal class AddChatPatch
             if (name == GetChatCommands.SNRCommander) return;
             if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles) && HideChat.HideChatEnabled && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
@@ -361,7 +361,7 @@ internal class AddChatPatch
         var sender = PlayerControl.LocalPlayer;
         if (sender.Data.IsDead)
         {
-            sender = PlayerControl.AllPlayerControls.ToArray().Where(x => x != null && !x.Data.Disconnected && !x.Data.IsDead).OrderBy(x => x.PlayerId).FirstOrDefault();
+            sender = CachedPlayer.AllPlayers.Where(x => x != null && !x.Data.Disconnected && !x.Data.IsDead).OrderBy(x => x.PlayerId).FirstOrDefault();
             name = sender.GetDefaultName();
         }
         crs.AutoStartRpc(sender.NetId, (byte)RpcCalls.SetName)

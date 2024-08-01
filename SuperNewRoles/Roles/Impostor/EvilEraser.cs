@@ -66,7 +66,7 @@ public static class EvilEraser
     public static bool IsGodWinGuard()
     {
         bool IsAlive = false;
-        foreach (PlayerControl p in RoleClass.God.GodPlayer)
+        foreach (PlayerControl p in RoleClass.God.GodPlayer.AsSpan())
         {
             if (p.IsAlive())
             {
@@ -100,7 +100,7 @@ public static class EvilEraser
         bool IsAlive = false;
         List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
         foxPlayers.AddRange(FireFox.FireFoxPlayer);
-        foreach (PlayerControl p in foxPlayers)
+        foreach (PlayerControl p in foxPlayers.AsSpan())
         {
             if (p.IsAlive())
             {
@@ -131,7 +131,7 @@ public static class EvilEraser
     public static bool IsNeetWinGuard()
     {
         bool IsAlive = false;
-        foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
+        foreach (PlayerControl p in RoleClass.Neet.NeetPlayer.AsSpan())
         {
             if (p.IsAlive())
             {
@@ -160,7 +160,7 @@ public static class EvilEraser
     }
     public static PlayerControl GetOnCount()
     {
-        foreach (PlayerControl player in RoleClass.EvilEraser.EvilEraserPlayer)
+        foreach (PlayerControl player in RoleClass.EvilEraser.EvilEraserPlayer.AsSpan())
         {
             if (!(RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) && RoleClass.EvilEraser.Counts[player.PlayerId] <= 0))
             {

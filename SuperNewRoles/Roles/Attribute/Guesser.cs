@@ -208,7 +208,7 @@ class Guesser
         foreach (var RoleButton in RoleButtons)
         {
             int index = 0;
-            foreach (var RoleBtn in RoleButton.Value)
+            foreach (var RoleBtn in RoleButton.Value.AsSpan())
             {
                 if (RoleBtn == null) continue;
                 index++;
@@ -410,15 +410,15 @@ class Guesser
         {
             var presentRoleData = Santa.PresentRoleData();
 
-            foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
-            foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
+            foreach (var roleInfo in presentRoleData.RoleInfo.AsSpan()) { CreateRole(roleInfo: roleInfo); }
+            foreach (var introData in presentRoleData.IntroData.AsSpan()) { CreateRole(introData); }
         }
         if (Impostor.MadRole.BlackSanta.Optioninfo.RoleOption.GetSelection() is not 0)
         {
             var presentRoleData = Impostor.MadRole.BlackSanta.PresentRoleData();
 
-            foreach (var roleInfo in presentRoleData.RoleInfo) { CreateRole(roleInfo: roleInfo); }
-            foreach (var introData in presentRoleData.IntroData) { CreateRole(introData); }
+            foreach (var roleInfo in presentRoleData.RoleInfo.AsSpan()) { CreateRole(roleInfo: roleInfo); }
+            foreach (var introData in presentRoleData.IntroData.AsSpan()) { CreateRole(introData); }
         }
         void CreateRole(IntroData introInfo = null, RoleInfo roleInfo = null)
         {
@@ -460,7 +460,10 @@ class Guesser
                 if (selectedButton != button)
                 {
                     selectedButton = button;
-                    buttons.ForEach(x => x.GetComponent<SpriteRenderer>().color = x == selectedButton ? Color.red : Color.white);
+                    foreach (var x in buttons.AsSpan())
+                    {
+                        x.GetComponent<SpriteRenderer>().color = x == selectedButton ? Color.red : Color.white;
+                    }
                 }
                 else
                 {

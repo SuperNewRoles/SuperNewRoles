@@ -94,7 +94,7 @@ class RoleManagerSelectRolesPatch
             CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
             List<PlayerControl> SelectPlayers = new();
             AllRoleSetClass.impostors = new();
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!player.Data.Disconnected && !player.IsBot())
                 {
@@ -115,7 +115,7 @@ class RoleManagerSelectRolesPatch
 
 
             RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanillaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.Data.Disconnected || player.IsImpostor())
                     continue;
@@ -125,7 +125,7 @@ class RoleManagerSelectRolesPatch
 
             /*
             //サーバーの役職判定をだます
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 sender.AutoStartRpc(pc.NetId, (byte)RpcCalls.SetRole)
                     .Write((ushort)RoleTypes.Shapeshifter)
@@ -138,19 +138,19 @@ class RoleManagerSelectRolesPatch
             /*
                         RPCHelper.RpcSyncAllNetworkedPlayer(DEBUGOnlySender);
                        */
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 player.Data.Disconnected = false;
             }
             RoleSelectHandler.SetTasksBuffer = new();
             new LateTask(() =>
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = true;
                 }
                 RPCHelper.RpcSyncAllNetworkedPlayer();
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = false;
                 }
@@ -159,7 +159,7 @@ class RoleManagerSelectRolesPatch
 
                 PlayerControl RoleTargetPlayer = null;
                 RoleTypes RoleTargetRole = RoleTypes.Crewmate;
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     if (!player.IsCrew())
                         continue;
@@ -173,19 +173,19 @@ class RoleManagerSelectRolesPatch
                 }
                 if (RoleTargetPlayer == null)
                     throw new NotImplementedException("RoleTargetPlayer is null");
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = true;
                 }
                 RoleTargetPlayer.RpcSetRole(RoleTargetRole, true);
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = false;
                 }
             }, 0.5f);
             new LateTask(() =>
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     player.Data.Disconnected = false;
                 }
@@ -193,7 +193,7 @@ class RoleManagerSelectRolesPatch
             }, 0.75f);
             new LateTask(() =>
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
                 {
                     // RoleSelectHandler.SetTasksBuffer
                     if (!RoleSelectHandler.SetTasksBuffer.TryGetValue(player.PlayerId, out var tasks))
@@ -204,7 +204,7 @@ class RoleManagerSelectRolesPatch
                 RoleSelectHandler.IsStartingSerialize = false;
             }, 1f);
 
-            /*foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            /*foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                     continue;
@@ -285,7 +285,7 @@ class RoleManagerSelectRolesPatch
             case ModeId.SuperHostRoles:
                 break;
             default:
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
@@ -298,7 +298,7 @@ class RoleManagerSelectRolesPatch
         {
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
                 return;
-            foreach (var pc in CachedPlayer.AllPlayers)
+            foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
             {
                 pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
             }
@@ -384,7 +384,7 @@ class AllRoleSetClass
         List<PlayerControl> SelectPlayers = new();
         if (CustomOptionHolder.QuarreledOnlyCrewmate.GetBool())
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.IsImpostor() && !p.IsNeutral() && !p.IsBot())
                 {
@@ -394,7 +394,7 @@ class AllRoleSetClass
         }
         else
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.IsBot())
                 {
@@ -444,7 +444,7 @@ class AllRoleSetClass
         bool IsQuarreledDup = CustomOptionHolder.LoversDuplicationQuarreled.GetBool();
         if (CustomOptionHolder.LoversOnlyCrewmate.GetBool())
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover, RoleId.LoversBreaker) && !p.IsBot())
                 {
@@ -457,7 +457,7 @@ class AllRoleSetClass
         }
         else
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (!IsQuarreledDup || (!p.IsQuarreled() && !p.IsBot()))
                 {
@@ -894,7 +894,7 @@ class AllRoleSetClass
     {
         CrewmatePlayers = new();
         ImpostorPlayers = new();
-        foreach (PlayerControl Player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl Player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (!Player.Data.Role.IsSimpleRole || Player.IsRole(RoleId.GM))
                 continue;
@@ -982,7 +982,7 @@ class AllRoleSetClass
                 continue;
             TargetRoles.Add((roleInfo.Role, roleInfo.Team));
         }
-        foreach ((RoleId role, TeamRoleType team) roledata in TargetRoles)
+        foreach ((RoleId role, TeamRoleType team) roledata in TargetRoles.AsSpan())
         {
             var option = IntroData.GetOption(roledata.role);
             if (option == null) continue;
@@ -998,7 +998,7 @@ class AllRoleSetClass
             Logger.Info($"IsCrewmate: {assigns.Key.HasFlag(AssignType.Crewmate)}");
             Logger.Info($"IsTenPar: {assigns.Key.HasFlag(AssignType.TenPar)}");
             Logger.Info($"IsNotTenPar: {assigns.Key.HasFlag(AssignType.NotTenPar)}");
-            foreach (var assign in assigns.Value)
+            foreach (var assign in assigns.Value.AsSpan())
             {
                 Logger.Info($"{assign}");
             }

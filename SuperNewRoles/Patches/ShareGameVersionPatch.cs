@@ -194,7 +194,7 @@ class ShareGameVersion
             }
             if (ConfigRoles.IsVersionErrorView.Value || AmongUsClient.Instance.AmHost)
             {
-                foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
+                foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients)
                 {
                     if (client.Id != AmongUsClient.Instance.HostId)
                     {

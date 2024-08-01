@@ -29,21 +29,21 @@ class CacheManager
     }
     public static void ResetQuarreledCache()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             QuarreledCache[p.PlayerId] = p.IsQuarreled(false) ? p.GetOneSideQuarreled(false) : null;
         }
     }
     public static void ResetHauntedWolfCache()
     {
-        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
         {
             if (player.IsHauntedWolf(false)) HauntedWolfCache[player.PlayerId] = player;
         }
     }
     public static void ResetLoversCache()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             LoversCache[p.PlayerId] = p.IsLovers(false) ? p.GetOneSideLovers(false) : null;
             FakeLoversCache[p.PlayerId] = p.IsFakeLovers(false) ? p.GetOneSideFakeLovers(false) : null;
@@ -51,14 +51,14 @@ class CacheManager
     }
     public static void ResetMyRoleCache()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             MyRoleCache[p.PlayerId] = p.GetRole(false);
         }
     }
     public static void ResetMyGhostRoleCache()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
         {
             MyGhostRoleCache[p.PlayerId] = p.GetGhostRole(false);
         }

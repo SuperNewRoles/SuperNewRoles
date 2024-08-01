@@ -49,7 +49,7 @@ public static class NekoKabocha
         if (AmongUsClient.Instance.AmHost && CanRevengeExile && exiled.IsRole(RoleId.NekoKabocha))
         {
             List<PlayerControl> targets = new();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
             {
                 if (p.IsDead()) continue;
                 if (p.PlayerId == exiled.PlayerId) continue;
