@@ -976,7 +976,7 @@ public static class GameSettingMenuPatch
     }
 
     [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.ChangeTab)), HarmonyPrefix]
-    public static bool ChangeTabPostfix(GameSettingMenu __instance, int tabNum, bool previewOnly)
+    public static bool ChangeTabPrefix(GameSettingMenu __instance, int tabNum, bool previewOnly)
     {
         if ((previewOnly && Controller.currentTouchType == Controller.TouchType.Joystick) || !previewOnly)
         {
