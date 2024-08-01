@@ -959,6 +959,7 @@ public static class GameSettingMenuPatch
         (ModSettingsButton.OnClick = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: false); });
         (ModSettingsButton.OnMouseOver = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: true); });
 
+        //Start後、ModSettingsTabの表示前にRoleSettingsTabを経由すると表示バグが起こるので、あらかじめModSettingsTabを一度開くことで回避する
         __instance.ChangeTab(3, previewOnly: false);
         new LateTask(() => __instance.ChangeTab(1, previewOnly: false), 0f, "ChangeTab");
     }
