@@ -560,7 +560,7 @@ public static class OnGameEndPatch
             }
             catch { }
         }
-        if (!ReplayManager.IsReplayMode && ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !ConfigRoles.DebugMode.Value)
+        if (!ReplayManager.IsReplayMode && ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !DebugModeManager.IsDebugMode)
         {
             try
             {
