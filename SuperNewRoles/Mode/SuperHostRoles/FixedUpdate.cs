@@ -18,7 +18,7 @@ public static class FixedUpdate
     public static void RoleFixedUpdate() { }
     public static void Update()
     {
-        ISupportSHR playerSHR = PlayerControl.LocalPlayer.GetRoleBase() as ISupportSHR;
+        ISupportSHR playerSHR = RoleBaseManager.GetLocalRoleBase() as ISupportSHR;
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
         {
             if (RoleClass.Sheriff.KillMaxCount >= 1)

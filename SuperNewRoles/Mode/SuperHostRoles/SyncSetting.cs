@@ -19,17 +19,21 @@ public static class SyncSetting
 {
     public static IGameOptions DefaultOption;
     public static PlayerData<IGameOptions> OptionDatas;
-    public static void CustomSyncSettings(this PlayerControl player, CustomRpcSender sender = null, bool isCooldownTwice = false)
+    public static void CustomSyncSettings(this PlayerControl player, CustomRpcSender sender = null, bool isCooldownTwice = false, bool? isBlackOut = null)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
         IGameOptions optdata = DefaultOption.DeepCopy();
         bool blackout = false;
-        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
+
+        if (!isBlackOut.HasValue &&
+            MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
         {
             SwitchSystem system = elec.CastFast<SwitchSystem>();
             blackout = system != null && system.IsActive;
         }
+        else
+            blackout = isBlackOut.Value;
 
         if (PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
         {
@@ -187,7 +191,8 @@ public static class SyncSetting
                     if (!Worshiper.RoleData.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
-                        if (blackout) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
+                        if (blackout)
+                            optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
                     }
                 }
                 else
@@ -334,12 +339,17 @@ public static class SyncSetting
             string callerClassName = callerMethod.DeclaringType.FullName;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR:SyncSettings] CustomSyncSettingsが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
         }
+        bool isBlackOut = false;
+        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
+        {
+            SwitchSystem system = elec.CastFast<SwitchSystem>();
+            isBlackOut = system != null && system.IsActive;
+        }
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            if (!p.Data.Disconnected && !p.IsBot())
-            {
-                CustomSyncSettings(p);
-            }
+            if (p.Data.Disconnected || p.IsBot())
+                continue;
+            CustomSyncSettings(p, isBlackOut: isBlackOut);
         }
     }
 
