@@ -326,7 +326,7 @@ public static class SyncSetting
     }
     public static void CustomSyncSettings()
     {
-        if (ConfigRoles.IsDebugMode)
+        if (DebugModeManager.IsDebugMode)
         {
             var caller = new System.Diagnostics.StackFrame(1, false);
             var callerMethod = caller.GetMethod();
