@@ -10,7 +10,8 @@ class MorePatch
     {
         public static void Postfix(PlayerControl __instance)
         {
-            ChangeName.UpdateRoleName(__instance, ChangeNameType.SelfOnly);
+            if (!RoleHelpers.IsComms())
+                ChangeName.UpdateRoleName(__instance, ChangeNameType.SelfOnly);
         }
     }
 

@@ -21,7 +21,6 @@ class MurderPlayer
         if (!AmongUsClient.Instance.AmHost) return;
 
         ChangeName.UpdateRoleName(__instance, ChangeNameType.SelfOnly);
-        ChangeName.UpdateRoleName(target, ChangeNameType.SelfOnly);
 
         if (__instance.IsRole(RoleId.Finder))
         {
