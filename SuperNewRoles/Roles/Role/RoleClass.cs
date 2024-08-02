@@ -46,6 +46,7 @@ public static class RoleClass
         ModHelpers.ColorControlDic = new();
         ModHelpers.VentIdControlDic = new();
         ReplayManager.ClearAndReloads();
+        ModHelpers.DestoryClientCache();
         BlockPlayers = new();
         IsMeeting = false;
         IsFirstMeetingEnd = false;
