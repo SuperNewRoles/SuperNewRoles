@@ -117,7 +117,7 @@ public static class ShiftActor
     }
     public static void ShapeshifterSet()
     {
-        foreach (PlayerControl p in Player.AsSpan())
+        foreach (PlayerControl p in Player)
         {
             Logger.Info("シェイプシフター割り当て", "ShiftActor");
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(p, RoleTypes.Shapeshifter);

@@ -7,7 +7,7 @@ class SelectRolePatch
 {
     public static void SetDesync()
     {
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             if (p.IsImpostor())
             {
@@ -15,14 +15,14 @@ class SelectRolePatch
                 Main.Impostors.Add(p.PlayerId);
             }
         }
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             if (Main.Impostors.Contains(p.PlayerId))
             {
                 if (p.PlayerId != 0)
                 {
                     p.RpcSetRoleDesync(RoleTypes.Impostor, false);//p.Data.Role.Role);
-                    foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (var pc in CachedPlayer.AllPlayers)
                     {
                         if (Main.Impostors.Contains(pc.PlayerId))
                         {
@@ -39,7 +39,7 @@ class SelectRolePatch
                 else
                 {
                     FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);//p.Data.Role.Role);
-                    foreach (var pc in CachedPlayer.AllPlayers.AsSpan())
+                    foreach (var pc in CachedPlayer.AllPlayers)
                     {
                         if (pc.PlayerId != 0)
                         {

@@ -248,7 +248,7 @@ public class CustomVisors
         public string reshashf { get; set; }
     }
 
-    public static List<CustomVisor> CreateCustomVisorDetails(IEnumerable<string> visors, bool fromDisk = false)
+    public static List<CustomVisor> CreateCustomVisorDetails(string[] visors, bool fromDisk = false)
     {
         Dictionary<string, CustomVisor> fronts = new();
         Dictionary<string, string> backs = new();
@@ -256,9 +256,9 @@ public class CustomVisors
         Dictionary<string, string> backflips = new();
         Dictionary<string, string> climbs = new();
 
-        foreach (string visor in visors)
+        for (int i = 0; i < visors.Length; i++)
         {
-            string s = fromDisk ? visor[(visor.LastIndexOf("\\") + 1)..].Split('.')[0] : visor.Split('.')[3];
+            string s = fromDisk ? visors[i][(visors[i].LastIndexOf("\\") + 1)..].Split('.')[0] : visors[i].Split('.')[3];
             string[] p = s.Split('_');
 
             HashSet<string> options = new();
@@ -266,18 +266,18 @@ public class CustomVisors
                 options.Add(p[j]);
 
             if (options.Contains("back") && options.Contains("flip"))
-                backflips.Add(p[0], visor);
+                backflips.Add(p[0], visors[i]);
             else if (options.Contains("climb"))
-                climbs.Add(p[0], visor);
+                climbs.Add(p[0], visors[i]);
             else if (options.Contains("back"))
-                backs.Add(p[0], visor);
+                backs.Add(p[0], visors[i]);
             else if (options.Contains("flip"))
-                flips.Add(p[0], visor);
+                flips.Add(p[0], visors[i]);
             else
             {
                 CustomVisor custom = new()
                 {
-                    resource = visor,
+                    resource = visors[i],
                     name = p[0].Replace('-', ' '),
                     adaptive = options.Contains("adaptive"),
                     IsSNR = options.Contains("IsSNR"),

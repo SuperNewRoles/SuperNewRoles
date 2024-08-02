@@ -79,7 +79,7 @@ public static class CachedPlayerPatches
         CachedPlayer.AllPlayers.Add(player);
         CachedPlayer.PlayerPtrs[__instance.Pointer] = player;
 
-        foreach (var cachedPlayer in CachedPlayer.AllPlayers.AsSpan())
+        foreach (var cachedPlayer in CachedPlayer.AllPlayers.ToArray())
         {
             if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
             {
@@ -102,7 +102,7 @@ public static class CachedPlayerPatches
     [HarmonyPostfix]
     public static void AddCachedDataOnDeserialize()
     {
-        foreach (CachedPlayer cachedPlayer in CachedPlayer.AllPlayers.AsSpan())
+        foreach (CachedPlayer cachedPlayer in CachedPlayer.AllPlayers)
         {
             cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
             cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;
@@ -114,7 +114,7 @@ public static class CachedPlayerPatches
     [HarmonyPostfix]
     public static void AddCachedDataOnAddPlayer()
     {
-        foreach (CachedPlayer cachedPlayer in CachedPlayer.AllPlayers.AsSpan())
+        foreach (CachedPlayer cachedPlayer in CachedPlayer.AllPlayers)
         {
             cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
             cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;

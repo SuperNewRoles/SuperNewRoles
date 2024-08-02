@@ -108,7 +108,7 @@ public class Mushroomer : RoleBase, IImpostor, ICustomButton, IRpcHandler, IWrap
     }
     public void OnWrapUp()
     {
-        foreach (Mushroom mushRoom in NextturnActivateMushrooms.AsSpan())
+        foreach (Mushroom mushRoom in NextturnActivateMushrooms)
         {
             SetActiveMushroom(mushRoom, true);
         }

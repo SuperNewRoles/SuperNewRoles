@@ -209,7 +209,7 @@ class EmergencyMinigamePatch
             if (!PlusGameOptions.EnableFirstEmergencyCooldown) return;
             if (!(AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles))) return;
 
-            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (player.IsMod() || player.IsBot()) continue;
 

@@ -53,7 +53,7 @@ public static class JumpDancer
     {
         if (JumpingPlayerIds.Count <= 0)
             return;
-        foreach (var data in JumpingPlayerIds)
+        foreach (var data in JumpingPlayerIds.ToArray())
         {
             PlayerControl player = ModHelpers.PlayerById(data.Key);
             if (data.Value > 0.9f || player.inMovingPlat || player.onLadder)
@@ -93,7 +93,7 @@ public static class JumpDancer
     }
     public static void SetJump(PlayerControl source, List<PlayerControl> players)
     {
-        foreach (PlayerControl player in players.AsSpan())
+        foreach (PlayerControl player in players)
         {
             if (JumpingPlayerIds.ContainsKey(player.PlayerId) || player.inMovingPlat || player.onLadder)
                 continue;
@@ -112,7 +112,7 @@ public static class JumpDancer
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.JumpDancerJump);
         writer.Write(source.PlayerId);
         writer.Write(players.Count);
-        foreach (PlayerControl player in players.AsSpan())
+        foreach (PlayerControl player in players)
         {
             writer.Write(player.PlayerId);
         }
@@ -135,7 +135,7 @@ public static class JumpDancer
                 List<PlayerControl> players = new();
                 Vector2 localpos = PlayerControl.LocalPlayer.GetTruePosition();
                 float LightRadius = ShipStatus.Instance.CalculateLightRadius(PlayerControl.LocalPlayer.Data);
-                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (CheckCan(player)) continue;
                     if (PlayerControl.LocalPlayer.PlayerId == player.PlayerId)

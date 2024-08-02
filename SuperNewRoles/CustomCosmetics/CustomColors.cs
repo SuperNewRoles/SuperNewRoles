@@ -224,7 +224,7 @@ public class CustomColors
                 isLighterColor = true
             });
         }
-        foreach (var dic in noLighterColorTemp.AsSpan())
+        foreach (var dic in noLighterColorTemp)
         {
             colors.Add(new CustomColor
             {
@@ -239,7 +239,7 @@ public class CustomColors
 
         /** Add Colors **/
         int id = 50000;
-        foreach (CustomColor cc in colors.AsSpan())
+        foreach (CustomColor cc in colors)
         {
             longList.Add((StringNames)id);
             ColorStrings[id++] = cc.longName;
@@ -365,10 +365,11 @@ public class CustomColors
             }
             private static bool IsTaken(PlayerControl player, uint color)
             {
-                foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
                 {
-                    //Logger.Info($"{!p.Data.Disconnected} は {p.PlayerId != player.PlayerId} は {p.Data.DefaultOutfit.ColorId == color}", "isTaken");
-                    if (p.Data.Disconnected && p.PlayerId != player.PlayerId && p.Data.DefaultOutfit.ColorId == color) return true;
+                    //Logger.Info($"{!p.Disconnected} は {p.PlayerId != player.PlayerId} は {p.DefaultOutfit.ColorId == color}", "isTaken");
+                    if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
+                        return true;
                 }
                 return false;
             }

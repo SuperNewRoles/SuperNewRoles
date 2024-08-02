@@ -10,7 +10,7 @@ class Patch
     {
         public static void Prefix(HudManager __instance)
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 p.resetChange();
             }

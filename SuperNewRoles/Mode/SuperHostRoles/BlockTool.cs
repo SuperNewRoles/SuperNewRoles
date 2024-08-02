@@ -53,7 +53,7 @@ class BlockTool
             !MapOption.MapOption.CanUseCamera)
             && !ModeHandler.IsMode(ModeId.Default))
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 try
                 {

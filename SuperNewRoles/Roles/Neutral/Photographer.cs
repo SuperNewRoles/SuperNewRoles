@@ -14,7 +14,7 @@ public static class Photographer
     public static List<byte> SetTarget()
     {
         List<byte> players = new();
-        foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
         {
             if (p.Data.IsDead) continue;
             if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
@@ -35,7 +35,7 @@ public static class Photographer
     }
     public static void SetOutlines()
     {
-        foreach (CachedPlayer p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
         {
             if (p.Data.IsDead) continue;
             if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
@@ -56,7 +56,7 @@ public static class Photographer
     }
     public static void CheckWin()
     {
-        foreach (CachedPlayer player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (CachedPlayer player in CachedPlayer.AllPlayers)
         {
             if (player.Data.IsDead) continue;
             if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;

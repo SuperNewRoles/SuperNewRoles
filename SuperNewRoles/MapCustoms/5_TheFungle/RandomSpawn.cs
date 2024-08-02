@@ -43,7 +43,7 @@ public static class FungleRandomSpawn
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles) ||
                 !AmongUsClient.Instance.AmHost)
                 return;
-            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player.IsMod()) continue;
                 HudManager.Instance.StartCoroutine(Spawn(player).WrapToIl2Cpp());
@@ -64,7 +64,7 @@ public static class FungleRandomSpawn
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles) ||
                 !AmongUsClient.Instance.AmHost)
                 return;
-            foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player.IsMod()) continue;
                 HudManager.Instance.StartCoroutine(Spawn(player).WrapToIl2Cpp());

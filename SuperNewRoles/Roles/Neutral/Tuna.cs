@@ -30,7 +30,7 @@ public class Tuna
         }
         else
         {
-            foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer.AsSpan())
+            foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
             {
                 if (p.IsAlive() && RoleClass.IsFirstMeetingEnd)
                 {
