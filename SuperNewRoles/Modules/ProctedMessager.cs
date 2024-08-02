@@ -13,7 +13,7 @@ class ProctedMessager
         SoundManager.Instance.StopSound(__instance.ProtectedRecentlySound);
         //このターンで誰か守った？
         bool AnythingPlayerProcted = false;
-        foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
             if (player.protectedByGuardianThisRound)
             {

@@ -288,7 +288,7 @@ public static class ModeHandler
     {
         if (AmongUsClient.Instance.AmHost)
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 p.HideName();
                 SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");

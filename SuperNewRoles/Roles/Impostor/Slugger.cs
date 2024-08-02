@@ -92,7 +92,7 @@ public class Slugger : RoleBase, IWrapUpHandler, IImpostor, ICustomButton, IRpcH
         MessageWriter writer = RpcWriter;
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
         writer.Write((byte)targets.Count);
-        foreach (PlayerControl Target in targets.AsSpan())
+        foreach (PlayerControl Target in targets)
         {
             writer.Write(Target.PlayerId);
             Target.RpcSetFinalStatus(FinalStatus.SluggerHarisen);
@@ -124,7 +124,7 @@ public class Slugger : RoleBase, IWrapUpHandler, IImpostor, ICustomButton, IRpcH
     public List<PlayerControl> SetTarget()
     {
         List<PlayerControl> Targets = new();
-        foreach (CachedPlayer player in CachedPlayer.AllPlayers.AsSpan())
+        foreach (CachedPlayer player in CachedPlayer.AllPlayers)
         {
             if (player.IsDead()) continue;
             if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;

@@ -100,7 +100,7 @@ public class CustomOption
         Task.Run(() =>
         {
             ModeId modeId = ModeHandler.GetMode(false);
-            foreach (CustomOption option in SpecialHiddenRuleOptions.AsSpan())
+            foreach (CustomOption option in SpecialHiddenRuleOptions)
             {
                 if (option == opt)
                     continue;
@@ -288,7 +288,7 @@ public class CustomOption
         (bool suc, int code, Dictionary<uint, byte> data) = OptionSaver.LoadPreset(preset);
         if (!suc && code == -1)
         {
-            foreach (CustomOption option in options.AsSpan())
+            foreach (CustomOption option in options)
             {
                 if (option.id <= 0) continue;
                 option.selection = option.defaultSelection;
@@ -299,10 +299,10 @@ public class CustomOption
         }
         else if (!suc)
         {
-            Logger.Info($"CustomOptionGetPresetError:{code.ToString()}");
+            Logger.Info("CustomOptionGetPresetError:" + code.ToString());
             return;
         }
-        foreach (CustomOption option in options.AsSpan())
+        foreach (CustomOption option in options)
         {
             if (option.id <= 0) continue;
 
@@ -501,12 +501,12 @@ public class CustomRoleOption : CustomOption
                 }
                 else
                 {
-                    Logger.Info($"RoleId取得できませんでした:{name}", "CustomRoleOption");
+                    Logger.Info("RoleId取得できませんでした:" + name, "CustomRoleOption");
                 }
             }
             catch
             {
-                Logger.Info($"RoleId取得でエラーが発生しました:{name}", "CustomRoleOption");
+                Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
             }
         }
         else
@@ -514,7 +514,7 @@ public class CustomRoleOption : CustomOption
             RoleId = role.Value;
         }
         if (!RoleOptions.TryAdd(RoleId, this))
-            Logger.Info($"{RoleId}を追加できんかったー：{name}");
+            Logger.Info(RoleId.ToString() + "を追加できんかったー：" + name);
         this.isHidden = isHidden;
         if (max > 1) countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
     }
@@ -639,7 +639,7 @@ class GameOptionsDataPatch
     {
         if (option == null) return "";
 
-        string text = $"{option.GetName()}:{option.GetString()}";
+        string text = option.GetName() + ":" + option.GetString();
         var (isProcessingRequired, pattern) = ProcessingOptionCheck(option);
 
         if (isProcessingRequired)
@@ -667,7 +667,7 @@ class GameOptionsDataPatch
             float rate = percent / 100f;
             int activeTaskNum = (int)(AllTask * rate);
 
-            text += $"\n{indent}  ({ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
+            text += "\n" + indent + "  " + "(" + $"{ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
 
             if (AllTask != 0)
                 text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")}" + ")";
@@ -786,7 +786,7 @@ class GameOptionsDataPatch
 
             int openSelection = option.GetSelection();
 
-            foreach (var child in option.children.AsSpan())
+            foreach (var child in option.children)
             {
                 if (child.openSelection != -1 && child.openSelection != openSelection)
                     continue;
@@ -799,7 +799,7 @@ class GameOptionsDataPatch
             }
         }
 
-        foreach (CustomOption option in CustomOption.options.AsSpan())
+        foreach (CustomOption option in CustomOption.options)
         {
             if ((option == CustomOptionHolder.presetSelection) ||
                 (option == CustomOptionHolder.crewmateRolesCountMax) ||
@@ -837,7 +837,7 @@ class GameOptionsDataPatch
         int maxLines = 28;
         int lineCount = 0;
         StringBuilder page = new();
-        foreach (var e in entries.AsSpan())
+        foreach (var e in entries)
         {
             int lines = e.Count(c => c == '\n') + 1;
 

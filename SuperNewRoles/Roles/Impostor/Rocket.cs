@@ -40,7 +40,7 @@ public static class Rocket
             {
                 continue;
             }
-            foreach (PlayerControl player in data.Value.AsSpan())
+            foreach (PlayerControl player in data.Value)
             {
                 if (player == null || player.IsDead())
                     continue;
@@ -67,7 +67,7 @@ public static class Rocket
                 return;
             }
             int index = -1;
-            foreach (PlayerControl player in data.Value.AsSpan())
+            foreach (PlayerControl player in data.Value)
             {
                 index++;
                 if (player == null || player.IsDead())

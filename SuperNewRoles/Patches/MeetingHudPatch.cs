@@ -237,7 +237,7 @@ class CheckForEndVotingPatch
                         Main.RealExiled = target.Object;
                         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                         {
-                            foreach (PlayerControl p in BotManager.AllBots.AsSpan())
+                            foreach (PlayerControl p in BotManager.AllBots)
                             {
                                 if (p.IsDead())
                                 {
@@ -418,7 +418,7 @@ class CheckForEndVotingPatch
                     PlayerControl exile = null;
                     PlayerControl defaultexile = exiledPlayer.Object;
                     var outfit = defaultexile.Data.DefaultOutfit;
-                    foreach (PlayerControl p in BotManager.AllBots.AsSpan())
+                    foreach (PlayerControl p in BotManager.AllBots)
                     {
                         if (p.IsDead())
                         {
@@ -480,7 +480,7 @@ class CheckForEndVotingPatch
 
                         exiledPlayer = RoleSelectHandler.ConfirmImpostorSecondTextBot.Data;
                         ChangeNameExiledPlayer = RoleSelectHandler.ConfirmImpostorSecondTextBot;
-                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers.AsSpan())
+                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                         {
                             if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                             {
@@ -493,7 +493,7 @@ class CheckForEndVotingPatch
                         ChangeNameExiledPlayer = exiledPlayer.Object;
                         bool isConfirmImpostor = GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor);
 
-                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers.AsSpan())
+                        foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                         {
                             if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                             {
@@ -571,27 +571,26 @@ class CheckForEndVotingPatch
                     case AntiBlackOut.SupportType.DeadExile:
                         NetworkedPlayerInfo NewExiled = null;
                         NetworkedPlayerInfo ExileCandidate = null;
-                        foreach (var player in CachedPlayer.AllPlayers.AsSpan())
+                        foreach (NetworkedPlayerInfo player in GameData.Instance.AllPlayers)
                         {
-                            NetworkedPlayerInfo playerinfo = player.Data;
-                            if (playerinfo.Disconnected)
+                            if (player.Disconnected)
                             {
-                                NewExiled = playerinfo;
+                                NewExiled = player;
                                 break;
                             }
-                            if (!playerinfo.IsDead)
+                            if (!player.IsDead)
                                 continue;
-                            PlayerControl @object = playerinfo.Object;
+                            PlayerControl @object = player.Object;
                             if (@object == null)
                                 continue;
                             if (@object.IsMod() ||
                                 !AntiBlackOut.IsPlayerDesyncImpostorTeam(@object))
                             {
-                                NewExiled = playerinfo;
+                                NewExiled = player;
                                 break;
                             }
                             else
-                                ExileCandidate = playerinfo;
+                                ExileCandidate = player;
                         }
                         if (NewExiled == null && ExileCandidate == null)
                             throw new Exception("None DeadPlayer");
@@ -692,7 +691,7 @@ class CheckForEndVotingPatch
         ChangeNameExiledPlayer.RpcSetName(ChangeNameExiledPlayer.GetDefaultName());
     }
 
-    private static (bool, byte, PlayerVoteArea) AssassinVoteState(MeetingHud __instance)
+    private static Tuple<bool, byte, PlayerVoteArea> AssassinVoteState(MeetingHud __instance)
     {
         bool isVoteEnd = false;
         byte voteFor = byte.MaxValue;
@@ -709,9 +708,9 @@ class CheckForEndVotingPatch
                 break;
             }
         }
-        return (isVoteEnd, voteFor, area);
+        return Tuple.Create(isVoteEnd, voteFor, area);
     }
-    private static (bool, byte, PlayerVoteArea) RevolutionistVoteState(MeetingHud __instance)
+    private static Tuple<bool, byte, PlayerVoteArea> RevolutionistVoteState(MeetingHud __instance)
     {
         bool isVoteEnd = false;
         byte voteFor = byte.MaxValue;
@@ -728,7 +727,7 @@ class CheckForEndVotingPatch
                 break;
             }
         }
-        return (isVoteEnd, voteFor, area);
+        return Tuple.Create(isVoteEnd, voteFor, area);
     }
 }
 
@@ -1060,7 +1059,7 @@ public class MeetingHudUpdatePatch
             foreach (PlayerVoteArea player in Instance.playerStates)
             {
                 PlayerControl target = null;
-                foreach (PlayerControl x in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl x in PlayerControl.AllPlayerControls)
                 {
                     string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
                     if (name == x.Data.PlayerName) target = x;

@@ -40,7 +40,7 @@ class JackalSeer
                 if (RoleClass.JackalSeer.SidekickSeerPlayer.Count > 0)
                 {
                     var upflag = true;
-                    foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer.AsSpan())
+                    foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
                     {
                         if (p.IsAlive())
                         {

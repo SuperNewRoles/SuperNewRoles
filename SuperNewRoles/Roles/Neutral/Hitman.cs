@@ -110,7 +110,7 @@ public static class Hitman
     }
     public static void SetTarget()
     {
-        List<CachedPlayer> targets = CachedPlayer.AllPlayers;
+        List<PlayerControl> targets = PlayerControl.AllPlayerControls.ToArray().ToList();
         targets.RemoveAll(player =>
         {
             return player.IsDead() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;

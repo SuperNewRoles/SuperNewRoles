@@ -15,7 +15,7 @@ class Intro
         {
             if (PlayerControl.LocalPlayer.IsCrew())
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
                     {
@@ -25,7 +25,7 @@ class Intro
             }
             else if (PlayerControl.LocalPlayer.IsImpostor())
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
                     {

@@ -39,7 +39,7 @@ public static class AirShipRandomSpawn
             LastCount = -1;
             if (AmongUsClient.Instance.AmHost)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     if (RoleClass.IsFirstMeetingEnd && !p.IsBot())
                         p.RpcSnapTo(new(3, 6));
             }
@@ -57,10 +57,10 @@ public static class AirShipRandomSpawn
             !(MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool()))
             return;
 
-        int playersCount = 0;
+        List<PlayerControl> players = new();
         bool EndLoaded = true;
         int NotLoadedCount = 0;
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             if (p.IsDead())
                 continue;
@@ -73,16 +73,16 @@ public static class AirShipRandomSpawn
             }
             else
             {
-                playersCount++;
+                players.Add(p);
                 p.RpcSnapTo(new(-30, 30));
             }
         }
 
-        if (LastCount != playersCount)
+        if (LastCount != players.Count)
         {
-            LastCount = playersCount;
-            string name = $"\n\n\n\n\n\n\n\n<size=300%><color=white>{ModeHandler.PlayingOnSuperNewRoles}</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>{string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount)}";
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            LastCount = players.Count;
+            string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>" + string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (!p.AmOwner) p.RpcSetNamePrivate(name);
                 else p.SetName(name);
@@ -92,7 +92,7 @@ public static class AirShipRandomSpawn
         {
             IsLoading = false;
             LastCount = -1;
-            foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 string name = p.GetDefaultName();
                 p.RpcSetNamePrivate(name);

@@ -20,7 +20,7 @@ class Nekomata
                 __instance.Object.IsRole(RoleId.BlackCat))
             {
                 List<PlayerControl> p = new();//道連れにするプレイヤーの抽選リスト
-                foreach (PlayerControl p1 in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
                 {
                     //もし 黒猫・イビル猫又が追放Impostorを道連れしないがオンにゃら
                     if ((__instance.Object.IsRole(RoleId.EvilNekomata) && RoleClass.EvilNekomata.NotImpostorExiled) || (__instance.Object.IsRole(RoleId.BlackCat) && RoleClass.BlackCat.NotImpostorExiled))

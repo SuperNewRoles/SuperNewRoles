@@ -231,7 +231,7 @@ public class WaveCannonObject : CustomAnimation
 
             var newpoints = polygonCollider2D.points.ToList();
             // コライダーの判定を調整
-            foreach (int posIndex in maxPositions.AsSpan())
+            foreach (int posIndex in maxPositions)
             {
                 newpoints[posIndex] = new(sizeX + 2.54724f, polygonCollider2D.points[posIndex].y);
             }
@@ -295,13 +295,13 @@ public class WaveCannonObject : CustomAnimation
         else
             Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
 
-        foreach (WaveCannonEffect effect in WaveCannonEffects.AsSpan())
+        foreach(WaveCannonEffect effect in WaveCannonEffects)
             effect.SetChargeState(false);
 
         CurrentAnimationHandler.OnShot();
 
         // 賢者の判定
-        foreach (var data in WiseMan.WiseManData)
+        foreach (var data in WiseMan.WiseManData.ToArray())
         {
             if (data.Value == null) continue;
             PlayerControl player = ModHelpers.PlayerById(data.Key);
@@ -309,7 +309,7 @@ public class WaveCannonObject : CustomAnimation
 
             // 賢者が波動砲に触れているかを判定
             bool touching = false;
-            foreach (Collider2D collider in WaveColliders)
+            foreach(Collider2D collider in WaveColliders)
             {
                 if (!player.Collider.IsTouching(collider))
                     continue;
@@ -345,7 +345,7 @@ public class WaveCannonObject : CustomAnimation
     {
         base.OnDestroy();
         Objects.Remove(OwnerPlayerId);
-        foreach (var data in WiseManData)
+        foreach (var data in WiseManData.ToArray())
         {
             if (data.Key is null) continue;
             if (data.Value.Item1 is null) continue;
@@ -378,7 +378,7 @@ public class WaveCannonObject : CustomAnimation
             return;
         }
         CurrentAnimationHandler.OnUpdate();
-        foreach (var data in WiseManData)
+        foreach (var data in WiseManData.ToArray())
         {
             if (data.Key is null) continue;
             if (data.Value.Item1 is null) continue;
@@ -399,7 +399,7 @@ public class WaveCannonObject : CustomAnimation
 
             if (IsShootNow)
             {
-                foreach (PlayerControl player in CachedPlayer.AllPlayers.AsSpan())
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (player.IsDead()) continue;
                     if (WiseManData.ContainsKey(player)) continue;

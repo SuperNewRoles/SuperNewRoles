@@ -165,7 +165,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         string BaseText = ModHelpers.Cs(Roleinfo.RoleColor, TextLine + "\n" +
             $"|{ModTranslation.GetString(Roleinfo.NameKey + "Name")}|\n" +
             TextLine) + "\n\n";
-        foreach (int ventId in WillSendChat.AsSpan())
+        foreach (int ventId in WillSendChat)
         {
             StringBuilder text = new(BaseText);
             if (!LastUsedVentData.TryGetValue(ventId, out List<byte> usedPlayers) ||
@@ -178,7 +178,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                 {
                     text.AppendLine("|-----------------------");
                     int index = 1;
-                    foreach (byte playerId in usedPlayers.AsSpan())
+                    foreach (byte playerId in usedPlayers)
                     {
                         PlayerControl player = ModHelpers.PlayerById(playerId);
                         text.AppendLine(string.Format(

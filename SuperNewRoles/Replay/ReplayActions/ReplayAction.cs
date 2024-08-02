@@ -37,7 +37,7 @@ public abstract class ReplayAction
     public static ReplayAction GetLastAction(ReplayAction action, Func<ReplayAction, bool> check = null)
     {
         ReplayAction currentaction = null;
-        foreach (ReplayAction act in ReplayLoader.ReplayTurns[ReplayLoader.CurrentTurn].Actions.AsSpan())
+        foreach (ReplayAction act in ReplayLoader.ReplayTurns[ReplayLoader.CurrentTurn].Actions)
         {
             if (act.GetActionId() == action.GetActionId() && (currentaction == null || (act.ReplayId > currentaction.ReplayId && action.ReplayId > currentaction.ReplayId)) && (check == null || check(act)))
                 currentaction = act;

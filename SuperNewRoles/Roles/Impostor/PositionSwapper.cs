@@ -21,7 +21,7 @@ class PositionSwapper
     {
         List<PlayerControl> AlivePlayer = new();
         AlivePlayer.Clear();
-        foreach (PlayerControl p in CachedPlayer.AllPlayers.AsSpan())
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             if (p.IsAlive() && p.CanMove && !p.IsImpostor())
             {
