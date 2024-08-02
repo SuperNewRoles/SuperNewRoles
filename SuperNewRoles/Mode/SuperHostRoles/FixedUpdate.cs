@@ -21,7 +21,13 @@ public static class FixedUpdate
         ISupportSHR playerSHR = RoleBaseManager.GetLocalRoleBase() as ISupportSHR;
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
         {
-            if (RoleClass.Sheriff.KillMaxCount >= 1)
+            if (RoleClass.Sheriff.KillMaxCount == 0)
+            {
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = false;
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+            }
+            else
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
                 CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
@@ -30,12 +36,6 @@ public static class FixedUpdate
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                 }
-            }
-            else
-            {
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
-                CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = false;
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
             }
         }
         else if

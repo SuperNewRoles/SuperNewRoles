@@ -67,14 +67,14 @@ public class SetNamesClass
         {
             bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
             player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
-            if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy, RoleId.Egoist))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
-            {
+            if (
+                (PlayerControl.LocalPlayer.IsImpostor() && (
+                  ModeHandler.IsMode(ModeId.HideAndSeek) ||
+                  player.IsImpostorAddedFake())
+                )
                 SetPlayerNameColor(player, RoleClass.ImpostorRed);
-            }
             else
-            {
                 SetPlayerNameColor(player, Color.white);
-            }
         }
     }
     public static Dictionary<byte, TextMeshPro> PlayerInfos = new();
@@ -594,27 +594,24 @@ public class SetNameUpdate
             SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
             SetNamesClass.SetPlayerNameColors(PartTimerTarget);
         }
+
         if (RoleClass.Stefinder.IsKill)
         {
             SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, Color.red);
         }
-        if (ModeHandler.IsMode(ModeId.Default))
+        // インポスターのプレイヤーから認識障害サボを直していない人を識別できるようにする
+        if (ModeHandler.IsMode(ModeId.Default) &&
+            Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)
         {
-            if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)
+            foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
             {
-                foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
-                {
-                    if (p3.IsAlive() && !Sabotage.CognitiveDeficit.Main.OKPlayers.IsCheckListPlayerControl(p3))
-                    {
-                        if (PlayerControl.LocalPlayer.IsImpostor())
-                        {
-                            if (!(p3.IsImpostor() || p3.IsRole(RoleId.MadKiller)))
-                            {
-                                SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
-                            }
-                        }
-                    }
-                }
+                if (p3.IsDead() || Sabotage.CognitiveDeficit.Main.OKPlayers.IsCheckListPlayerControl(p3))
+                    continue;
+                if (!PlayerControl.LocalPlayer.IsImpostor())
+                    continue;
+                if (!p3.IsImpostorAddedFake() && !p3.IsRole(RoleId.MadKiller))
+                    continue;
+                SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
             }
         }
     }
