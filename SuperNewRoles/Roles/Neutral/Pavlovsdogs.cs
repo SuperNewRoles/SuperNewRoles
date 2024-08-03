@@ -138,7 +138,10 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     }
 
     public void FixedUpdateMeSHRAlive()
-        => FixedUpdateMeDefaultAlive();
+    {
+        if (!AmongUsClient.Instance.AmHost)
+            FixedUpdateMeDefaultAlive();
+    }
     public void FixedUpdateMeDefaultAlive()
     {
         if (!OwnerDead || Player.IsDead() || IsMeeting)
