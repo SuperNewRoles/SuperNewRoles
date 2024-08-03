@@ -31,10 +31,9 @@ namespace SuperNewRoles.Patches;
 
 
 [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
-public static class KillButtonPatch
+public static class KillButtonDoClickPatch
 {
-    [HarmonyPatch(nameof(KillButton.DoClick)), HarmonyPrefix]
-    public static bool DoClickPrefix(KillButton __instance)
+    public static bool Prefix(KillButton __instance)
     {
         if (!ModeHandler.IsMode(ModeId.Default))
         {
@@ -62,7 +61,6 @@ public static class KillButtonPatch
             }
             return false;
         }
-        if (PlayerControl.LocalPlayer.GetRoleBase() is IKillButtonEvent @event && !@event.KillButtonDoClick(__instance)) return false;
         if (!(__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove))
             return false;
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Kunoichi))
@@ -108,20 +106,6 @@ public static class KillButtonPatch
         }
         __instance.SetTarget(null);
         return false;
-    }
-
-    [HarmonyPatch(nameof(KillButton.CheckClick)), HarmonyPrefix]
-    public static bool CheckClickPrefix(KillButton __instance, PlayerControl target)
-    {
-        if (PlayerControl.LocalPlayer.GetRoleBase() is IKillButtonEvent @event && !@event.KillButtonCheckClick(__instance, target)) return false;
-        return true;
-    }
-
-    [HarmonyPatch(nameof(KillButton.SetTarget)), HarmonyPrefix]
-    public static bool SetTargetPrefix(KillButton __instance, PlayerControl target)
-    {
-        if (PlayerControl.LocalPlayer.GetRoleBase() is IKillButtonEvent @event && !@event.KillButtonSetTarget(__instance, target)) return false;
-        return true;
     }
 }
 #endregion

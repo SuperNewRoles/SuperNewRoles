@@ -1963,7 +1963,6 @@ RemoteControllerName,Remote Controller,リモコン
 RemoteControllerTitle1,Beep-beep-beep!,ピコピコピコッ！
 RemoteControllerDescription,The receiver can be attached to any crew member\nThe attached crew can operate the receiver at any time they wish.\nThe crew member can also kill the receiver while it is in operation.\nThe crew member cannot see at a glance whether or not he/she is operating the receiver.\nHowever, you yourself are very defenseless.\nBe careful not to get too absorbed in the operation.,任意のクルーに受信機を取り付けることが出来ます。\n取り付けたクルーは好きなタイミングで操作することが出来ます。\nまた、操作したままそのクルーにキルさせることも出来ます。\n操作されているかどうかは、他者目線ではパッとはわかりません。\nただし、操作している自身はとっても無防備。\n操作に夢中になりすぎないよう、気をつけましょう。
 RemoteControllerMarkingCoolTimeOption,Marking Cool Time,マーキングのクールタイム
-RemoteControllerOperationCoolTimeOption,Operation Cool Time,操作のクールタイム
 RemoteControllerDurationOperation,Duration of operation,操作の持続時間
 RemoteControllerMarkingButtonName,Marking,マーキング
 RemoteControllerOperationButtonName,Operation!,操作!

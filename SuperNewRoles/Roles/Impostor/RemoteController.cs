@@ -1,17 +1,22 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.Data;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButtonEvent, ICustomButton, IIntroHandler, IMeetingHandler, IDeathHandler, IHandleChangeRole, IRpcHandler
+public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICustomButton, IIntroHandler, IMeetingHandler, IDeathHandler, IHandleChangeRole, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(RemoteController),
@@ -27,7 +32,6 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
     public static new IntroInfo Introinfo = new(RoleId.RemoteController, 1, AmongUs.GameOptions.RoleTypes.Impostor);
 
     public static CustomOption MarkingCoolTime;
-    public static CustomOption OperationCoolTime;
     public static CustomOption DurationOperation;
     public static string[] DurationOperationText
     {
@@ -42,7 +46,6 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
     private static void CreateOption()
     {
         MarkingCoolTime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "RemoteControllerMarkingCoolTimeOption", 20f, 0f, 60f, 2.5f, Optioninfo.RoleOption);
-        OperationCoolTime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "RemoteControllerOperationCoolTimeOption", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption);
         DurationOperation = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "RemoteControllerDurationOperation", DurationOperationText, Optioninfo.RoleOption);
     }
 
@@ -54,12 +57,22 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
     public bool _UnderOperation;
     public bool UnderOperation => (Player.AmOwner && AmongUsUtil.CurrentCamTarget == TargetPlayer) || (_UnderOperation && TargetPlayer);
     public float Timer;
+    public GameObject LightChild;
     public RemoteController(PlayerControl player) : base(player, Roleinfo, Optioninfo, Introinfo)
     {
         TargetPlayer = null;
         TargetIcon = null;
         _UnderOperation = false;
         Timer = 2.5f;
+        if (player.AmOwner)
+        {
+            LightChild = new("RemoteLightChild") { layer = LayerExpansion.GetShadowLayer() };
+            LightChild.transform.position = new();
+            LightChild.transform.localScale = Vector3.one;
+            LightSource source = PlayerControl.LocalPlayer.LightPrefab;
+            LightChild.AddComponent<MeshFilter>().mesh = source.lightChildMesh;
+            LightChild.AddComponent<MeshRenderer>().material.shader = source.LightCutawayMaterial.shader;
+        }
         MarkingButton = new(
             null, this, MarkingButtonOnClick, alive => alive, CustomButtonCouldType.SetTarget | CustomButtonCouldType.CanMove, MarkingButtonOnMeetingEnd,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RemoteControllerOperationButton.png", 115f),
@@ -70,10 +83,10 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
         OperationButton = new(
             null, this, OperationButtonOnClick, alive => alive, CustomButtonCouldType.Always, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RemoteControllerOperationButton.png", 115f),
-            OperationCoolTime.GetFloat, new(-2, 1), "RemoteControllerOperationButtonName", KeyCode.F,
+            () => 0, new(-2, 1), "RemoteControllerOperationButtonName", KeyCode.F,
             DurationTime: () => DurationOperation.GetSelection() == 0 ? 0 : DurationOperation.GetFloat(),
             IsEffectDurationInfinity: DurationOperation.GetSelection() == 0,
-            OnEffectEnds: OperationButtonOnEffectEnds, CouldUse: () => TargetPlayer && !TargetPlayer.inVent && (UnderOperation || Player.CanMove)
+            OnEffectEnds: OperationButtonOnEffectEnds, CouldUse: () => TargetPlayer && (UnderOperation || Player.CanMove)
         );
         OperationButton.GetOrCreateButton().effectCancellable = true;
         CustomButtonInfos = new CustomButtonInfo[]
@@ -172,6 +185,26 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
         return false;
     }
 
+    public bool VentButtonDoClick(VentButton button)
+    {
+        if (!UnderOperation) return true;
+        if (button.currentTarget == null) return false;
+        button.currentTarget.CanUse(TargetPlayer.Data, out var canUse, out var _);
+        if (!canUse) return false;
+        FastDestroyableSingleton<AchievementManager>.Instance.OnConsoleUse(button.currentTarget.Cast<IUsable>());
+        if (TargetPlayer.inVent && !TargetPlayer.walkingToVent)
+        {
+            TargetPlayer.MyPhysics.RpcExitVent(button.currentTarget.Id);
+            button.currentTarget.SetButtons(enabled: false);
+        }
+        else if (!TargetPlayer.walkingToVent)
+        {
+            TargetPlayer.MyPhysics.RpcEnterVent(button.currentTarget.Id);
+            button.currentTarget.SetButtons(enabled: true);
+        }
+        return false;
+    }
+
     public void MarkingButtonOnClick()
     {
         PlayerControl target = MarkingButton.SetTarget();
@@ -198,6 +231,18 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
             writer.Write((byte)RpcType.SetUnderOperation);
             writer.Write(true);
             SendRpc(writer);
+            if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out ISystemType value) && value.Il2CppIs(out VentilationSystem vent))
+            {
+                if (!vent.PlayersInsideVents.TryGetValue(TargetPlayer.PlayerId, out byte id)) return;
+                TargetPlayer.MyPhysics.RpcExitVent(id);
+            }
+            if (Constants.ShouldPlaySfx())
+            {
+                SoundManager.Instance.PlaySound(
+                    ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.RemoteControllerStart.raw", "RemoteControllerStartSound"),
+                    false, DataManager.Settings.Audio.SfxVolume
+                ).pitch = FloatRange.Next(0.8f, 1.2f);
+            }
         }
         else OperationButtonOnEffectEnds();
     }
@@ -206,7 +251,9 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
     {
         if (!Player.AmOwner) return;
         AmongUsUtil.SetCamTarget(null);
-        
+        if (TargetPlayer.inVent && ShipStatus.Instance.Systems[SystemTypes.Ventilation].Il2CppIs(out VentilationSystem ventilation))
+            TargetPlayer.MyPhysics.RpcExitVent(ventilation.PlayersInsideVents.TryGetValue(TargetPlayer.PlayerId, out byte value) ? value : 0);
+
         MessageWriter writer = RpcWriter;
         writer.Write((byte)RpcType.SetUnderOperation);
         writer.Write(false);
@@ -250,11 +297,12 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
 
     private void SetIconOutfit()
     {
+        if (!Player.AmOwner) return;
         if (TargetPlayer != null)
         {
             var outfit = TargetPlayer.CurrentOutfit;
 
-            TargetIcon.SetFlipX(true);
+            TargetIcon.SetFlipX(false);
 
             TargetIcon.SetBodyColor(outfit.ColorId);
             TargetIcon.SetSkin(outfit.SkinId, outfit.ColorId);
@@ -292,7 +340,11 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
 
     public void OnChangeRole()
     {
-        if (Player.AmOwner) AmongUsUtil.SetCamTarget(null);
+        if (Player.AmOwner)
+        {
+            AmongUsUtil.SetCamTarget(null);
+            Object.Destroy(LightChild);
+        }
         TargetPlayer = null;
         _UnderOperation = false;
     }
@@ -342,69 +394,79 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
             if (!__instance.AmOwner || __instance.IsDead()) return true;
             if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role) || !role.UnderOperation) return true;
             if (!GameData.Instance) return false;
-            if (ShipStatus.Instance && __instance.lightSource)
-            {
-                float num1 = ShipStatus.Instance.CalculateLightRadius(role.TargetPlayer.Data);
-                if (!Mathf.Approximately(num1, __instance.lightSource.ViewDistance)) __instance.AdjustLighting();
-                __instance.lightSource.SetViewDistance(num1);
-            }
 
-            __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
+            if (role.TargetPlayer.CanMove) __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
 
-            __instance.newItemsInRange.Clear();
-            float distance = float.MaxValue;
-            IUsable target = null;
-            foreach (Collider2D collider in Physics2D.OverlapCircleAll(role.TargetPlayer.GetTruePosition(), __instance.MaxReportDistance, Constants.Usables))
+            if (role.TargetPlayer.CanMove || role.TargetPlayer.inVent)
             {
-                if (!__instance.cache.TryGetValue(collider, out var value))
+                __instance.newItemsInRange.Clear();
+                float distance = float.MaxValue;
+                float vent_distance = float.MaxValue;
+                IUsable target = null;
+                Vent vent_target = null;
+                foreach (Collider2D collider in Physics2D.OverlapCircleAll(role.TargetPlayer.GetTruePosition(), __instance.MaxReportDistance, Constants.Usables))
                 {
-                    __instance.cache[collider] = collider.GetComponents<IUsable>().ToArray();
-                    value = __instance.cache[collider];
-                }
-                if (value == null) continue;
-                foreach (IUsable usable in value)
-                {
-                    if (usable.TryCast<Console>()) continue;
-                    float d = usable.CanUse(role.TargetPlayer.Data, out bool can, out bool could);
-                    if (can || could) __instance.newItemsInRange.Add(usable);
-                    if (can && d < distance)
+                    if (!__instance.cache.TryGetValue(collider, out var value))
                     {
-                        if (usable.TryCast<Vent>()) continue;
-                        distance = d;
-                        target = usable;
+                        __instance.cache[collider] = collider.GetComponents<IUsable>().ToArray();
+                        value = __instance.cache[collider];
+                    }
+                    if (value == null) continue;
+                    foreach (IUsable usable in value)
+                    {
+                        if (usable.TryCast<Console>()) continue;
+                        float d = usable.CanUse(role.TargetPlayer.Data, out bool can, out bool could);
+                        if (can || could) __instance.newItemsInRange.Add(usable);
+                        if (!can) continue;
+                        if (usable.Il2CppIs(out Vent vent) && d < vent_distance)
+                        {
+                            vent_distance = d;
+                            vent_target = vent;
+                        }
+                        else if (d < distance)
+                        {
+                            distance = d;
+                            target = usable;
+                        }
                     }
                 }
-            }
 
-            role.Timer -= Time.fixedDeltaTime;
-            if (role.Timer <= 0)
+                role.Timer -= Time.fixedDeltaTime;
+                if (role.Timer <= 0)
+                {
+                    role.Timer += 2.5f;
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomSnapTo, role.TargetPlayer);
+                    writer.Write(role.TargetPlayer.PlayerId);
+                    NetHelpers.WriteVector2(role.TargetPlayer.transform.position, writer);
+                    writer.EndRPC();
+                }
+
+                if (!Minigame.Instance)
+                {
+                    role.TargetPlayer.NetTransform.incomingPosQueue.Clear();
+                    role.TargetPlayer.MyPhysics.SetNormalizedVelocity(FastDestroyableSingleton<HudManager>.Instance.joystick.DeltaL);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetNormalizedVelocity, role.TargetPlayer);
+                    writer.Write(role.TargetPlayer.PlayerId);
+                    NetHelpers.WriteVector2(FastDestroyableSingleton<HudManager>.Instance.joystick.DeltaL, writer);
+                    writer.EndRPC();
+                }
+
+                __instance.closest = target;
+                FastDestroyableSingleton<HudManager>.Instance.ToggleUseAndPetButton(target, false, false);
+                FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.SetTarget(vent_target);
+                __instance.Data.Role.SetUsableTarget(vent_target.Il2CppIs(out IUsable v) ? v : null);
+            }
+            else
             {
-                Logger.Info("てれぽーと", "RemoteController");
-                role.Timer += 2.5f;
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomSnapTo, role.TargetPlayer);
-                writer.Write(role.TargetPlayer.PlayerId);
-                NetHelpers.WriteVector2(role.TargetPlayer.transform.position, writer);
-                writer.EndRPC();
+                __instance.closest = null;
+                FastDestroyableSingleton<HudManager>.Instance.UseButton.SetTarget(null);
+                FastDestroyableSingleton<HudManager>.Instance.PetButton.SetDisabled();
+                FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.SetTarget(Vent.currentVent);
+                __instance.Data.Role.SetUsableTarget(Vent.currentVent.Cast<IUsable>());
+                if (PlayerCustomizationMenu.Instance) FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);
             }
-
-            if (!Minigame.Instance && role.TargetPlayer.CanMove)
-            {
-                role.TargetPlayer.NetTransform.incomingPosQueue.Clear();
-                role.TargetPlayer.MyPhysics.SetNormalizedVelocity(DestroyableSingleton<HudManager>.Instance.joystick.DeltaL);
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetNormalizedVelocity, role.TargetPlayer);
-                writer.Write(role.TargetPlayer.PlayerId);
-                NetHelpers.WriteVector2(DestroyableSingleton<HudManager>.Instance.joystick.DeltaL, writer);
-                writer.EndRPC();
-            }
-
-            __instance.closest = target;
-            FastDestroyableSingleton<HudManager>.Instance.UseButton.Show();
-            FastDestroyableSingleton<HudManager>.Instance.PetButton.Hide();
-            FastDestroyableSingleton<HudManager>.Instance.UseButton.SetTarget(target);
-            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
-            FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.SetTarget(null);
-            __instance.Data.Role.SetUsableTarget(null);
-
             FastDestroyableSingleton<HudManager>.Instance.SabotageButton.Refresh();
             FastDestroyableSingleton<HudManager>.Instance.AdminButton.Refresh();
             return false;
@@ -426,12 +488,76 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
     [HarmonyPatch(typeof(LightSource))]
     public static class LightSourcePatch
     {
-        [HarmonyPatch(nameof(LightSource.Update)), HarmonyPrefix]
-        public static void UpdatePrefix(LightSource __instance)
+        [HarmonyPatch(nameof(LightSource.Update)), HarmonyPostfix]
+        public static void UpdatePrefix()
         {
             if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role)) return;
-            if (!role.UnderOperation) __instance.transform.localPosition = Vector3.zero;
-            else __instance.transform.position = role.TargetPlayer.transform.position;
+            if (role.UnderOperation)
+            {
+                Vector3 position = role.TargetPlayer.transform.position;
+                position.z -= 7f;
+                role.LightChild.transform.position = position;
+                float size = role.UnderOperation ? (ShipStatus.Instance.MaxLightRadius * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.ImpostorLightMod) * 5.25f) : 0f;
+                role.LightChild.transform.localScale = new(size, size, 1f);
+            }
+            else role.LightChild.transform.localScale = Vector3.zero;
+        }
+    }
+
+    [HarmonyPatch(typeof(Vent))]
+    public static class VentPatch
+    {
+        [HarmonyPatch(nameof(Vent.TryMoveToVent)), HarmonyPrefix]
+        public static bool TryMoveToVentPrefix(Vent __instance, ref bool __result, Vent otherVent, ref string error)
+        {
+            if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role) || !role.UnderOperation) return true;
+            if (otherVent == null)
+            {
+                error = "Vent does not exist";
+                __result = false;
+                return false;
+            }
+            if (!role.TargetPlayer.inVent)
+            {
+                error = "Player is not currently inside a vent";
+                __result = false;
+                return false;
+            }
+            if (role.TargetPlayer.walkingToVent || role.TargetPlayer.Visible)
+            {
+                error = "Player was still in the middle of animating into current vent; not allowed to move vents that fast";
+                __result = false;
+                return false;
+            }
+            Vector3 position = otherVent.transform.position;
+            position -= (Vector3)role.TargetPlayer.Collider.offset;
+
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomSnapTo);
+            writer.Write(role.TargetPlayer.PlayerId);
+            NetHelpers.WriteVector2(position, writer);
+            writer.EndRPC();
+            role.TargetPlayer.NetTransform.SnapTo(position);
+
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(ShipStatus.Instance.VentMoveSounds.Random(), loop: false).pitch = FloatRange.Next(0.8f, 1.2f);
+            __instance.SetButtons(enabled: false);
+            otherVent.SetButtons(enabled: true);
+            Vent.currentVent = otherVent;
+            if (ShipStatus.Instance.Systems[SystemTypes.Ventilation].Il2CppIs(out VentilationSystem ventilationSystem))
+            {
+                byte playerId = PlayerControl.LocalPlayer.PlayerId;
+                SequenceBuffer<VentilationSystem.VentMoveInfo> valueOrSetDefault = ventilationSystem.SeqBuffers.GetValueOrSetDefault(playerId, (Func<SequenceBuffer<VentilationSystem.VentMoveInfo>>)(() => new SequenceBuffer<VentilationSystem.VentMoveInfo>(0)));
+                ushort num = (ushort)(valueOrSetDefault.LastSid + 1);
+                MessageWriter val = MessageWriter.Get((SendOption)1);
+                val.Write(num);
+                val.Write((byte)VentilationSystem.Operation.Move);
+                val.Write((byte)otherVent.Id);
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Ventilation, val);
+                val.Recycle();
+                valueOrSetDefault.LastSid = num;
+            }
+            error = string.Empty;
+            __result = true;
+            return false;
         }
     }
 }

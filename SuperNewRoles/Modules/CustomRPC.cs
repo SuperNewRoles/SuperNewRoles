@@ -1655,19 +1655,20 @@ public static class RPCProcedure
         /// </summary>
         /// <returns>falseで記載するとRPCをlogに記載しなくなる。</returns>
         private static readonly Dictionary<CustomRPC, bool> IsWritingRPCLog = new() {
-            {CustomRPC.ShareSNRVersion,false},
-            {CustomRPC.SetRoomTimerRPC,false},
-            {CustomRPC.SetDeviceTime,false},
-            {CustomRPC.SetInfectionTimer,false},
-            {CustomRPC.MoveDeadBody,false},
-            {CustomRPC.SetNormalizedVelocity,false},
-            {CustomRPC.CustomSnapTo,false}
+            { CustomRPC.ShareSNRVersion, false },
+            { CustomRPC.SetRoomTimerRPC, false },
+            { CustomRPC.SetDeviceTime, false },
+            { CustomRPC.SetInfectionTimer, false },
+            { CustomRPC.MoveDeadBody, false },
+            { CustomRPC.SetNormalizedVelocity, false },
+            { CustomRPC.CustomSnapTo, false },
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
             CustomRPC rpc = (CustomRPC)callId;
-            if (IsWritingRPCLog.TryGetValue(rpc, out bool value) && !value) Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
+            if (IsWritingRPCLog.TryGetValue(rpc, out bool value) && value)
+                Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
                 switch (rpc)
