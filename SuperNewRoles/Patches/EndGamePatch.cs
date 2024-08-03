@@ -338,13 +338,14 @@ public class EndGameManagerSetUpPatch
             UnityEngine.Object.Destroy(pb.gameObject);
         }
         int num = Mathf.CeilToInt(7.5f);
-        List<CachedPlayerData> list = EndGameResult.CachedWinners.ToList().OrderBy(delegate (CachedPlayerData b)
+        IEnumerable<CachedPlayerData> list = EndGameResult.CachedWinners.ToList().OrderBy(delegate (CachedPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
-        }).ToList();
-        for (int i = 0; i < list.Count; i++)
+        });
+        int i = -1;
+        foreach (CachedPlayerData CachedPlayerData2 in list)
         {
-            CachedPlayerData CachedPlayerData2 = list[i];
+            i++;
             int num2 = (i % 2 == 0) ? -1 : 1;
             int num3 = (i + 1) / 2;
             float num4 = (float)num3 / (float)num;
