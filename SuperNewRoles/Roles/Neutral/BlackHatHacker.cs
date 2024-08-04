@@ -358,17 +358,15 @@ public class BlackHatHacker
         public static void UpdatePostfix(HudManager __instance)
         {
             if (PageTab == null)
-                PageTab = __instance.TaskPanel.transform.Find("PageTab").gameObject;
+                PageTab = __instance.TaskPanel?.transform?.Find("PageTab").gameObject;
             if (ChangeTab == null)
-                ChangeTab = __instance.TaskPanel?.transform.Find("ChangeTab")?.gameObject;
+                ChangeTab = __instance.TaskPanel?.transform?.Find("ChangeTab")?.gameObject;
             if (ChangeTabTextTMP == null)
-                ChangeTabTextTMP = ChangeTab.transform.Find("ChangeTabText_TMP").GetComponent<TextMeshPro>();
+                ChangeTabTextTMP = ChangeTab.transform?.Find("ChangeTabText_TMP").GetComponent<TextMeshPro>();
             if (PageTabTextTMP == null)
-                PageTabTextTMP = PageTab.transform.Find("PageTabText_TMP").GetComponent<TextMeshPro>();
+                PageTabTextTMP = PageTab.transform?.Find("PageTabText_TMP").GetComponent<TextMeshPro>();
             if (TabTextTMP == null)
-                TabTextTMP = __instance.TaskPanel.tab.transform.Find("TabText_TMP").GetComponent<TextMeshPro>();
-            if (RoleTaskTMP == null)
-                RoleTaskTMP = PlayerControl.LocalPlayer.transform.Find("RoleTask").GetComponent<ImportantTextTask>();
+                TabTextTMP = __instance.TaskPanel?.tab?.transform?.Find("TabText_TMP").GetComponent<TextMeshPro>();
 
             ChangeTab.SetActive(PlayerControl.LocalPlayer.IsRole(RoleId.BlackHatHacker) || (PlayerControl.LocalPlayer.IsDead() && BlackHatHackerPlayerCount.GetSelection() != 0));
             Vector3 pos = ChangeTab.transform.localPosition;
@@ -385,6 +383,10 @@ public class BlackHatHacker
             PageTabTextTMP.text = ModTranslation.GetString("BlackHatHackerPageChange");
 
             if (TaskTab) return;
+
+            if (RoleTaskTMP == null)
+                RoleTaskTMP = PlayerControl.LocalPlayer.transform?.Find("RoleTask").GetComponent<ImportantTextTask>();
+
             StringBuilder text = new(RoleTaskTMP.Text);
             text.AppendLine();
             if (PlayerControl.LocalPlayer.IsAlive())

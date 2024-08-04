@@ -77,14 +77,22 @@ public class Clairvoyant
         };
     }
 
+    private static TimeSpan? ClairvoyantDurationSpanCached;
+    private static float lastDurationTime;
+
     public static void ClairvoyantDuration()
     {
         if (Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && IsClairvoyantZoom) return;
         IsZoomOn = true;
-        var timeSpanData = new TimeSpan(0, 0, 0, (int)DurationTime);
-        timeSpanData = new TimeSpan(0, 0, 0, (int)DurationTime);
-        Timer = (float)(ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-        if (Timer <= 0f) Timer = 0f; IsZoomOn = false;
-        return;
+        if (!ClairvoyantDurationSpanCached.HasValue || lastDurationTime != DurationTime)
+        {
+            ClairvoyantDurationSpanCached = new(0, 0, 0, (int)DurationTime);
+            lastDurationTime = DurationTime;
+        }
+        Timer = (float)(ButtonTimer + ClairvoyantDurationSpanCached.Value - DateTime.Now).TotalSeconds;
+        if (Timer <= 0f)
+            Timer = 0f;
+        IsZoomOn = false;
+
     }
 }
