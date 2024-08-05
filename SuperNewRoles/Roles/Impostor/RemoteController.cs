@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AmongUs.Data;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -84,7 +84,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
             null, this, OperationButtonOnClick, alive => alive, CustomButtonCouldType.Always, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RemoteControllerOperationButton.png", 115f),
             () => 0, new(-2, 1), "RemoteControllerOperationButtonName", KeyCode.F,
-            DurationTime: () => DurationOperation.GetSelection() == 0 ? 0 : DurationOperation.GetFloat(),
+            DurationTime: () => float.TryParse(DurationOperation.GetString(), out float value) ? value : 0f,
             IsEffectDurationInfinity: DurationOperation.GetSelection() == 0,
             OnEffectEnds: OperationButtonOnEffectEnds, CouldUse: () => TargetPlayer && (UnderOperation || Player.CanMove)
         );
@@ -221,25 +221,22 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
 
     public void MarkingButtonOnMeetingEnd() => OperationButtonOnEffectEnds();
 
+    private static AssetBundle ResourceAudioAssetBundle = AssetBundle.LoadFromMemory(Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.snrsounds.bundle").ReadFully());
     public void OperationButtonOnClick()
     {
         if (TargetPlayer == null) return;
-        if (!OperationButton.GetOrCreateButton().isEffectActive)
+        if (!OperationButton.customButton.isEffectActive)
         {
             AmongUsUtil.SetCamTarget(TargetPlayer);
             MessageWriter writer = RpcWriter;
             writer.Write((byte)RpcType.SetUnderOperation);
             writer.Write(true);
             SendRpc(writer);
-            if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out ISystemType value) && value.Il2CppIs(out VentilationSystem vent))
-            {
-                if (!vent.PlayersInsideVents.TryGetValue(TargetPlayer.PlayerId, out byte id)) return;
-                TargetPlayer.MyPhysics.RpcExitVent(id);
-            }
+            
             if (Constants.ShouldPlaySfx())
             {
                 SoundManager.Instance.PlaySound(
-                    ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.RemoteControllerStart.raw", "RemoteControllerStartSound"),
+                    ResourceAudioAssetBundle.LoadAsset<AudioClip>("OperationSound.mp3"),
                     false, DataManager.Settings.Audio.SfxVolume
                 ).pitch = FloatRange.Next(0.8f, 1.2f);
             }
@@ -265,7 +262,6 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         SendRpc(writer);
 
         ResetCoolTime();
-        OperationButton.GetOrCreateButton().isEffectActive = false;
         float time = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.KillCooldown);
         HudManager.Instance.KillButton.SetCoolDown(time, time);
         new LateTask(SetIconOutfit, 0f, "RemoteControllerIcon");
@@ -353,6 +349,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
     {
         SetTarget,
         SetUnderOperation,
+        MoveVent,
     }
     public void RpcReader(MessageReader reader)
     {
@@ -364,6 +361,10 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
                 break;
             case RpcType.SetUnderOperation:
                 _UnderOperation = reader.ReadBoolean();
+                break;
+            case RpcType.MoveVent:
+                if (!TargetPlayer.AmOwner || !TargetPlayer.inVent) return;
+                VentilationSystem.Update(VentilationSystem.Operation.Move, reader.ReadInt32());
                 break;
         }
     }
@@ -394,8 +395,6 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
             if (!__instance.AmOwner || __instance.IsDead()) return true;
             if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role) || !role.UnderOperation) return true;
             if (!GameData.Instance) return false;
-
-            if (role.TargetPlayer.CanMove) __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
 
             if (role.TargetPlayer.CanMove || role.TargetPlayer.inVent)
             {
@@ -441,16 +440,6 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
                     writer.EndRPC();
                 }
 
-                if (!Minigame.Instance)
-                {
-                    role.TargetPlayer.NetTransform.incomingPosQueue.Clear();
-                    role.TargetPlayer.MyPhysics.SetNormalizedVelocity(FastDestroyableSingleton<HudManager>.Instance.joystick.DeltaL);
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetNormalizedVelocity, role.TargetPlayer);
-                    writer.Write(role.TargetPlayer.PlayerId);
-                    NetHelpers.WriteVector2(FastDestroyableSingleton<HudManager>.Instance.joystick.DeltaL, writer);
-                    writer.EndRPC();
-                }
-
                 __instance.closest = target;
                 FastDestroyableSingleton<HudManager>.Instance.ToggleUseAndPetButton(target, false, false);
                 FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
@@ -464,9 +453,25 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
                 FastDestroyableSingleton<HudManager>.Instance.PetButton.SetDisabled();
                 FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                 FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.SetTarget(Vent.currentVent);
-                __instance.Data.Role.SetUsableTarget(Vent.currentVent.Cast<IUsable>());
+                __instance.Data.Role.SetUsableTarget(Vent.currentVent.Il2CppIs(out IUsable v) ? v : null);
                 if (PlayerCustomizationMenu.Instance) FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);
             }
+
+            if (role.TargetPlayer.CanMove)
+            {
+                __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
+
+                if (!Minigame.Instance)
+                {
+                    role.TargetPlayer.NetTransform.incomingPosQueue.Clear();
+                    role.TargetPlayer.MyPhysics.SetNormalizedVelocity(FastDestroyableSingleton<HudManager>.Instance.joystick.DeltaL);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetNormalizedVelocity, role.TargetPlayer);
+                    writer.Write(role.TargetPlayer.PlayerId);
+                    NetHelpers.WriteVector2(FastDestroyableSingleton<HudManager>.Instance.joystick.DeltaL, writer);
+                    writer.EndRPC();
+                }
+            }
+
             FastDestroyableSingleton<HudManager>.Instance.SabotageButton.Refresh();
             FastDestroyableSingleton<HudManager>.Instance.AdminButton.Refresh();
             return false;
@@ -542,19 +547,12 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
             __instance.SetButtons(enabled: false);
             otherVent.SetButtons(enabled: true);
             Vent.currentVent = otherVent;
-            if (ShipStatus.Instance.Systems[SystemTypes.Ventilation].Il2CppIs(out VentilationSystem ventilationSystem))
-            {
-                byte playerId = PlayerControl.LocalPlayer.PlayerId;
-                SequenceBuffer<VentilationSystem.VentMoveInfo> valueOrSetDefault = ventilationSystem.SeqBuffers.GetValueOrSetDefault(playerId, (Func<SequenceBuffer<VentilationSystem.VentMoveInfo>>)(() => new SequenceBuffer<VentilationSystem.VentMoveInfo>(0)));
-                ushort num = (ushort)(valueOrSetDefault.LastSid + 1);
-                MessageWriter val = MessageWriter.Get((SendOption)1);
-                val.Write(num);
-                val.Write((byte)VentilationSystem.Operation.Move);
-                val.Write((byte)otherVent.Id);
-                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Ventilation, val);
-                val.Recycle();
-                valueOrSetDefault.LastSid = num;
-            }
+
+            writer = RPCHelper.StartRPC(CustomRPC.RoleRpcHandler);
+            writer.Write(role.Player.PlayerId);
+            writer.Write(otherVent.Id);
+            writer.EndRPC();
+
             error = string.Empty;
             __result = true;
             return false;
