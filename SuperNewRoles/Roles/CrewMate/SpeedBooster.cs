@@ -39,19 +39,11 @@ class SpeedBooster
         RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
         ResetSpeed();
     }
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
-    public static class PlayerPhysicsSpeedPatch
+    public static void PlayerPhysicsSpeedPatchPostfix(PlayerPhysics __instance)
     {
-        public static void Postfix(PlayerPhysics __instance)
-        {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (ModeHandler.IsMode(ModeId.Default))
-            {
-                if (__instance.AmOwner && __instance.myPlayer.IsRole(RoleId.SpeedBooster) && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
-                    __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
-                else if (__instance.AmOwner && RoleClass.EvilSpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
-                    __instance.body.velocity = __instance.body.velocity * RoleClass.EvilSpeedBooster.Speed;
-            }
-        }
-    }
+        if (RoleClass.SpeedBooster.IsBoostPlayers.TryGetValue(__instance.myPlayer.PlayerId, out bool result) && result)
+            __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
+        else if (RoleClass.EvilSpeedBooster.IsBoostPlayers.TryGetValue(__instance.myPlayer.PlayerId, out bool result2) && result2)
+            __instance.body.velocity = __instance.body.velocity * RoleClass.EvilSpeedBooster.Speed;
+    }   
 }
