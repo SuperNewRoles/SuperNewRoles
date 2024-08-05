@@ -144,8 +144,8 @@ static class CheckMurderPatch
                 RoleClass.Truelover.CreatePlayers.Add(__instance.PlayerId);
                 RoleHelpers.SetLovers(__instance, target);
                 RoleHelpers.SetLoversRPC(__instance, target);
-                Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
-                Mode.SuperHostRoles.ChangeName.SetRoleName(target);
+                Mode.SuperHostRoles.ChangeName.UpdateRoleName(__instance, ChangeNameType.AllPlayers);
+                Mode.SuperHostRoles.ChangeName.UpdateRoleName(target, ChangeNameType.AllPlayers);
                 return false;
             case RoleId.Sheriff:
                 //もうキルできる回数がないならreturn
@@ -162,7 +162,7 @@ static class CheckMurderPatch
                     if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
                         RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.SheriffKillMaxCount.GetInt();
                     RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
-                    Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                    Mode.SuperHostRoles.ChangeName.UpdateRoleName(__instance, ChangeNameType.SelfOnly);
                 }
 
                 if (suicideResult.Item1)
@@ -181,7 +181,7 @@ static class CheckMurderPatch
                     __instance.RpcShowGuardEffect(target);
                     RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
                     Madmate.CreateMadmate(target);
-                    Mode.SuperHostRoles.ChangeName.SetRoleName(target);
+                    Mode.SuperHostRoles.ChangeName.UpdateRoleName(target, ChangeNameType.AllPlayers);
                 }
                 else
                 {
@@ -194,7 +194,7 @@ static class CheckMurderPatch
                     return false;
                 Demon.DemonCurse(target, __instance);
                 __instance.RpcShowGuardEffect(target);
-                Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                Mode.SuperHostRoles.ChangeName.UpdateRoleName(__instance, ChangeNameType.AllPlayers);
                 return false;
             case RoleId.OverKiller:
                 __instance.RpcMurderPlayerCheck(target);
@@ -225,7 +225,7 @@ static class CheckMurderPatch
                     {
                         Arsonist.ArsonistDouse(target, __instance);
                         __instance.RpcShowGuardEffect(target);// もう一度エフェクト
-                        Mode.SuperHostRoles.ChangeName.SetRoleName(__instance);
+                        Mode.SuperHostRoles.ChangeName.UpdateRoleName(__instance, ChangeNameType.AllPlayers);
                     }
                     else
                     {//塗れなかったらキルクールリセット
@@ -247,7 +247,7 @@ static class CheckMurderPatch
                 __instance.RpcShowGuardEffect(target);
                 RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
                 Madmate.CreateMadmate(target);//クルーにして、マッドにする
-                Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
+                Mode.SuperHostRoles.ChangeName.UpdateRoleName(target, ChangeNameType.SelfOnly);//名前も変える
                 RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
                 Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
                 return false;
@@ -270,7 +270,7 @@ static class CheckMurderPatch
                 {
                     Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                 }
-                Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
+                Mode.SuperHostRoles.ChangeName.UpdateRoleName(target, ChangeNameType.SelfOnly);//名前も変える
                 Logger.Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
                 return false;
             case RoleId.DarkKiller:

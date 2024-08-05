@@ -10,7 +10,8 @@ class MorePatch
     {
         public static void Postfix(PlayerControl __instance)
         {
-            ChangeName.SetRoleName(__instance);
+            if (!RoleHelpers.IsComms())
+                ChangeName.UpdateRoleName(__instance, ChangeNameType.SelfOnly);
         }
     }
 
@@ -45,7 +46,7 @@ class MorePatch
     public static void StartMeeting()
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        ChangeName.SetRoleNames(true);
+        ChangeName.UpdateRoleNamesImmediately(ChangeNameType.MeetingForce);
         new LateTask(() =>
         {
             ChangeName.SetDefaultNames();

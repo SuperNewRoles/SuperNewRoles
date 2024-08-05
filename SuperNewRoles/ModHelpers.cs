@@ -1160,7 +1160,7 @@ public static class ModHelpers
         Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
             Enum.GetName(typeof(CustomRPC), callId) :
         $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}:{__instance.Data.PlayerName}";
-    public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
+    public static bool IsDebugMode() => DebugModeManager.IsDebugMode && CustomOptionHolder.IsDebugMode.GetBool();
     /// <summary>
     /// 文字列が半角かどうかを判定します
     /// </summary>

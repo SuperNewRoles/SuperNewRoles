@@ -87,9 +87,9 @@ public class Cupid : RoleBase, INeutral, IFixedUpdaterAll, IFixedUpdaterMe, ISup
             SendRpc(writer);
             Created = true;
 
-            ChangeName.SetRoleName(Player);
-            ChangeName.SetRoleName(currentPair);
-            ChangeName.SetRoleName(target);
+            ChangeName.UpdateRoleName(Player, ChangeNameType.SelfOnly);
+            ChangeName.UpdateRoleName(currentPair, ChangeNameType.SelfOnly);
+            ChangeName.UpdateRoleName(target, ChangeNameType.SelfOnly);
         }
 
         Player.ResetKillCool(Optioninfo.CoolTime);

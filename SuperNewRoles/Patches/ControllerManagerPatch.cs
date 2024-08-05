@@ -111,7 +111,7 @@ class ControllerManagerUpdatePatch
         }
 
         // デバッグモード　かつ　左コントロール
-        if (ConfigRoles.DebugMode.Value && Input.GetKey(KeyCode.LeftControl))
+        if (DebugModeManager.IsDebugMode && Input.GetKey(KeyCode.LeftControl))
         {
             // Spawn dummys
             if (Input.GetKeyDown(KeyCode.G))
