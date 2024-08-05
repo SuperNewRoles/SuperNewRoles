@@ -1519,8 +1519,16 @@ class ExileControllerReEnableGameplayPatch
 [HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
 public static class CheckGameEndHnSPatch
 {
+    private static float Timer;
+    private const float EndGameTimerMax = 0.15f;
+
     public static bool Prefix()
     {
+        Timer -= Time.fixedDeltaTime;
+        if (Timer > 0 && Timer < 0.5f)
+            return false;
+        Timer = EndGameTimerMax;
+
         if (!GameData.Instance) return false;
         if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
         if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
@@ -1553,8 +1561,16 @@ public static class CheckGameEndHnSPatch
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class CheckGameEndPatch
 {
+    private static float Timer;
+    private const float EndGameTimerMax = 0.15f;
+
     public static bool Prefix()
     {
+        Timer -= Time.fixedDeltaTime;
+        if (Timer > 0 && Timer < 0.5f)
+            return false;
+        Timer = EndGameTimerMax;
+
         if (!GameData.Instance) return false;
         if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
         if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
