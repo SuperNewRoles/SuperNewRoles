@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
@@ -10,7 +11,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButtonEvent, ICustomButton, IIntroHandler, IDeathHandler, IHandleChangeRole, IRpcHandler
+public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButtonEvent, ICustomButton, IIntroHandler, IMeetingHandler, IDeathHandler, IHandleChangeRole, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(RemoteController),
@@ -23,14 +24,26 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
         TeamType.Impostor
     );
     public static new OptionInfo Optioninfo = new(RoleId.RemoteController, 206500, false, optionCreator: CreateOption);
-    public static new IntroInfo Introinfo = new(RoleId.RemoteController, 2, AmongUs.GameOptions.RoleTypes.Impostor);
+    public static new IntroInfo Introinfo = new(RoleId.RemoteController, 1, AmongUs.GameOptions.RoleTypes.Impostor);
 
     public static CustomOption MarkingCoolTime;
     public static CustomOption OperationCoolTime;
+    public static CustomOption DurationOperation;
+    public static string[] DurationOperationText
+    {
+        get
+        {
+            List<string> selections = ["Permanence"];
+            for (float s = 2.5f; s <= 120f; s += 2.5f)
+                selections.Add(s.ToString());
+            return selections.ToArray();
+        }
+    }
     private static void CreateOption()
     {
         MarkingCoolTime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "RemoteControllerMarkingCoolTimeOption", 20f, 0f, 60f, 2.5f, Optioninfo.RoleOption);
         OperationCoolTime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "RemoteControllerOperationCoolTimeOption", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption);
+        DurationOperation = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Impostor, "RemoteControllerDurationOperation", DurationOperationText, Optioninfo.RoleOption);
     }
 
     public CustomButtonInfo[] CustomButtonInfos { get; }
@@ -51,13 +64,16 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
             null, this, MarkingButtonOnClick, alive => alive, CustomButtonCouldType.SetTarget | CustomButtonCouldType.CanMove, MarkingButtonOnMeetingEnd,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RemoteControllerOperationButton.png", 115f),
             MarkingCoolTime.GetFloat, new(-1, 1), "RemoteControllerMarkingButtonName", KeyCode.F, CouldUse: () => !TargetPlayer,
-            SetTargetUntargetPlayer: () => RoleBaseManager.GetRoleBases<RemoteController>().FindAll(x => x.TargetPlayer).ConvertAll(x => x.TargetPlayer)
+            SetTargetUntargetPlayer: () => RoleBaseManager.GetRoleBases<RemoteController>().FindAll(x => x.TargetPlayer).ConvertAll(x => x.TargetPlayer),
+            SetTargetCrewmateOnly: () => true
         );
         OperationButton = new(
             null, this, OperationButtonOnClick, alive => alive, CustomButtonCouldType.Always, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RemoteControllerOperationButton.png", 115f),
             OperationCoolTime.GetFloat, new(-2, 1), "RemoteControllerOperationButtonName", KeyCode.F,
-            DurationTime: () => 0f, IsEffectDurationInfinity: true, OnEffectEnds: OperationButtonOnEffectEnds, CouldUse: () => TargetPlayer && (UnderOperation || Player.CanMove)
+            DurationTime: () => DurationOperation.GetSelection() == 0 ? 0 : DurationOperation.GetFloat(),
+            IsEffectDurationInfinity: DurationOperation.GetSelection() == 0,
+            OnEffectEnds: OperationButtonOnEffectEnds, CouldUse: () => TargetPlayer && !TargetPlayer.inVent && (UnderOperation || Player.CanMove)
         );
         OperationButton.GetOrCreateButton().effectCancellable = true;
         CustomButtonInfos = new CustomButtonInfo[]
@@ -202,6 +218,7 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
         SendRpc(writer);
 
         ResetCoolTime();
+        OperationButton.GetOrCreateButton().isEffectActive = false;
         float time = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.KillCooldown);
         HudManager.Instance.KillButton.SetCoolDown(time, time);
         new LateTask(SetIconOutfit, 0f, "RemoteControllerIcon");
@@ -251,7 +268,27 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
         else TargetIcon.gameObject.SetActive(false);
     }
 
+    public void StartMeeting() { TargetIcon?.gameObject.SetActive(false); }
+
+    public void CloseMeeting() { }
+
     public void OnAmDeath(DeathInfo death) => OperationButtonOnEffectEnds();
+
+    public void OnDeath(DeathInfo death)
+    {
+        if (Player.AmOwner && death.DeathPlayer != TargetPlayer) return;
+        MessageWriter writer = RpcWriter;
+        writer.Write((byte)RpcType.SetUnderOperation);
+        writer.Write(false);
+        SendRpc(writer);
+
+        writer = RpcWriter;
+        writer.Write((byte)RpcType.SetTarget);
+        writer.Write(byte.MaxValue);
+        SendRpc(writer);
+
+        OperationButtonOnEffectEnds();
+    }
 
     public void OnChangeRole()
     {
@@ -271,6 +308,7 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
         {
             case RpcType.SetTarget:
                 TargetPlayer = reader.ReadByte().GetPlayerControl();
+                SetIconOutfit();
                 break;
             case RpcType.SetUnderOperation:
                 _UnderOperation = reader.ReadBoolean();
@@ -310,6 +348,8 @@ public class RemoteController : RoleBase, IImpostor, IKillButtonEvent, IUseButto
                 if (!Mathf.Approximately(num1, __instance.lightSource.ViewDistance)) __instance.AdjustLighting();
                 __instance.lightSource.SetViewDistance(num1);
             }
+
+            __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
 
             __instance.newItemsInRange.Clear();
             float distance = float.MaxValue;

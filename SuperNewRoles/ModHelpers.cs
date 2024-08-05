@@ -25,7 +25,6 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles;
 
