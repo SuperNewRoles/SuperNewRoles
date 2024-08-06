@@ -5,6 +5,7 @@ using System.Reflection;
 using AmongUs.Data;
 using HarmonyLib;
 using Hazel;
+using Il2CppSystem;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patches;
@@ -189,7 +190,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
     {
         if (!UnderOperation) return true;
         if (button.currentTarget == null) return false;
-        button.currentTarget.CanUse(TargetPlayer.Data, out var canUse, out var _);
+        VentCanUse(button.currentTarget, out var canUse, out var _);
         if (!canUse) return false;
         FastDestroyableSingleton<AchievementManager>.Instance.OnConsoleUse(button.currentTarget.Cast<IUsable>());
         if (TargetPlayer.inVent && !TargetPlayer.walkingToVent)
@@ -240,6 +241,12 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
                     false, DataManager.Settings.Audio.SfxVolume
                 ).pitch = FloatRange.Next(0.8f, 1.2f);
             }
+
+            if (TargetPlayer.inVent && ShipStatus.Instance.Systems[SystemTypes.Ventilation].Il2CppIs(out VentilationSystem ventilation))
+            {
+                if (!ventilation.PlayersInsideVents.TryGetValue(TargetPlayer.PlayerId, out byte value)) return;
+                ModHelpers.VentById(value).SetButtons(true);
+            }
         }
         else OperationButtonOnEffectEnds();
     }
@@ -249,7 +256,10 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         if (!Player.AmOwner) return;
         AmongUsUtil.SetCamTarget(null);
         if (TargetPlayer.inVent && ShipStatus.Instance.Systems[SystemTypes.Ventilation].Il2CppIs(out VentilationSystem ventilation))
+        {
             TargetPlayer.MyPhysics.RpcExitVent(ventilation.PlayersInsideVents.TryGetValue(TargetPlayer.PlayerId, out byte value) ? value : 0);
+            ModHelpers.VentById(value).SetButtons(false);
+        }
 
         MessageWriter writer = RpcWriter;
         writer.Write((byte)RpcType.SetUnderOperation);
@@ -262,8 +272,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         SendRpc(writer);
 
         ResetCoolTime();
-        float time = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.KillCooldown);
-        HudManager.Instance.KillButton.SetCoolDown(time, time);
+        Player.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.KillCooldown));
         new LateTask(SetIconOutfit, 0f, "RemoteControllerIcon");
     }
 
@@ -369,6 +378,26 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         }
     }
 
+    public float VentCanUse(Vent vent, out bool can, out bool could)
+    {
+        can = could = false;
+        if (!TargetPlayer) return float.MaxValue;
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out var system) ||
+            !system.Il2CppIs(out VentilationSystem ventilation) ||
+            !ventilation.IsVentCurrentlyBeingCleaned(vent.Id))
+            could = true;
+        if (could)
+        {
+            Bounds bounds = TargetPlayer.Collider.bounds;
+            Vector3 center = bounds.center;
+            Vector3 position = vent.transform.position;
+            float distance = Vector2.Distance(center, position);
+            can = distance <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(TargetPlayer.Collider, center, position, Constants.ShipOnlyMask, false);
+            return distance;
+        }
+        return float.MaxValue;
+    }
+
     [HarmonyPatch(typeof(PlayerControl))]
     public static class PlayerControlPatch
     {
@@ -414,18 +443,27 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
                     foreach (IUsable usable in value)
                     {
                         if (usable.TryCast<Console>()) continue;
-                        float d = usable.CanUse(role.TargetPlayer.Data, out bool can, out bool could);
-                        if (can || could) __instance.newItemsInRange.Add(usable);
-                        if (!can) continue;
-                        if (usable.Il2CppIs(out Vent vent) && d < vent_distance)
+                        if (usable.Il2CppIs(out Vent vent))
                         {
-                            vent_distance = d;
-                            vent_target = vent;
+                            float d = role.VentCanUse(vent, out bool can, out bool could);
+                            if (can || could) __instance.newItemsInRange.Add(usable);
+                            if (!can) continue;
+                            else if (d < vent_distance)
+                            {
+                                vent_distance = d;
+                                vent_target = vent;
+                            }
                         }
-                        else if (d < distance)
+                        else
                         {
-                            distance = d;
-                            target = usable;
+                            float d = usable.CanUse(role.TargetPlayer.Data, out bool can, out bool could);
+                            if (can || could) __instance.newItemsInRange.Add(usable);
+                            if (!can) continue;
+                            else if (d < distance)
+                            {
+                                distance = d;
+                                target = usable;
+                            }
                         }
                     }
                 }
@@ -515,7 +553,15 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         [HarmonyPatch(nameof(Vent.TryMoveToVent)), HarmonyPrefix]
         public static bool TryMoveToVentPrefix(Vent __instance, ref bool __result, Vent otherVent, ref string error)
         {
-            if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role) || !role.UnderOperation) return true;
+            if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role) || !role.UnderOperation)
+            {
+                if (RoleBaseManager.GetRoleBases<RemoteController>().Any(role => role.TargetPlayer == __instance && role.UnderOperation))
+                {
+                    __instance.SetButtons(false);
+                    return false;
+                }
+                return true;
+            }
             if (otherVent == null)
             {
                 error = "Vent does not exist";
@@ -550,6 +596,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
 
             writer = RPCHelper.StartRPC(CustomRPC.RoleRpcHandler);
             writer.Write(role.Player.PlayerId);
+            writer.Write((byte)RpcType.MoveVent);
             writer.Write(otherVent.Id);
             writer.EndRPC();
 
