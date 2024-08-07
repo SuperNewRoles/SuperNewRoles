@@ -66,6 +66,8 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
     {
         if (Player == null)
             return true;
+        if (Player.IsDead())
+            return true;
         if (args.Length < 2){
             AddChatPatch.SendCommand(Player,
                 ModTranslation.GetString("GuesserCommandUsage"),
