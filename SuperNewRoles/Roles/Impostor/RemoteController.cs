@@ -103,6 +103,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         if (!UnderOperation) return true;
         if (!button.isActiveAndEnabled || !button.currentTarget || button.isCoolingDown) return true;
         TargetPlayer.CmdCheckMurder(button.currentTarget);
+        ModHelpers.CheckMurderAttemptAndKill(TargetPlayer, button.currentTarget, showAnimation: true);
         button.SetTarget(null);
         OperationButtonOnEffectEnds();
         return false;
@@ -222,7 +223,6 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
 
     public void MarkingButtonOnMeetingEnd() => OperationButtonOnEffectEnds();
 
-    private static AssetBundle ResourceAudioAssetBundle = AssetBundle.LoadFromMemory(Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.snrsounds.bundle").ReadFully());
     public void OperationButtonOnClick()
     {
         if (TargetPlayer == null) return;
@@ -237,7 +237,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
             if (Constants.ShouldPlaySfx())
             {
                 SoundManager.Instance.PlaySound(
-                    ResourceAudioAssetBundle.LoadAsset<AudioClip>("OperationSound.mp3"),
+                    AssetManager.GetAsset<AudioClip>("OperationSound.mp3", AssetManager.AssetBundleType.Sound),
                     false, DataManager.Settings.Audio.SfxVolume
                 ).pitch = FloatRange.Next(0.8f, 1.2f);
             }
