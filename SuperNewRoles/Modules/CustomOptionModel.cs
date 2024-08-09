@@ -915,11 +915,23 @@ public static class GameOptionsNextPagePatch
     }
 }
 
+[HarmonyPatch(typeof(RolesSettingsMenu))]
+public static class RolesSettingsMenuPatch
+{
+    [HarmonyPatch(nameof(RolesSettingsMenu.Awake)), HarmonyPostfix]
+    public static void SetAwakePostfix(RolesSettingsMenu __instance)
+    {
+        __instance.QuotaTabSelectables = new();
+        __instance.advancedSettingChildren = new();
+        __instance.roleChances = new();
+    }
+}
+
 [HarmonyPatch(typeof(GameSettingMenu))]
 public static class GameSettingMenuPatch
 {
     public static ModSettingsMenu ModSettingsMenu;
-    public static PassiveButton ModSttingsButton;
+    public static PassiveButton ModSettingsButton;
 
     [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPrefix]
     public static void StartPrefix(GameSettingMenu __instance) => __instance.GameSettingsTab.HideForOnline = new Transform[] { };
@@ -940,12 +952,16 @@ public static class GameSettingMenuPatch
         ModSettingsMenu.gameObject.SetActive(false);
 
         GameObject mod_settings_button = Object.Instantiate(__instance.RoleSettingsButton.gameObject, __instance.RoleSettingsButton.transform.parent);
-        mod_settings_button.name = "ModSttingsButton";
+        mod_settings_button.name = "ModSettingsButton";
         mod_settings_button.transform.position -= new Vector3(0, 0.637f);
-        new LateTask(() => mod_settings_button.transform.Find("FontPlacer/Text_TMP").GetComponent<TextMeshPro>().text = ModTranslation.GetString("ModSttingsButtonText"), 0f, "GameSettingMenu");
-        ModSttingsButton = mod_settings_button.GetComponent<PassiveButton>();
-        (ModSttingsButton.OnClick = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: false); });
-        (ModSttingsButton.OnMouseOver = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: true); });
+        new LateTask(() => mod_settings_button.transform.Find("FontPlacer/Text_TMP").GetComponent<TextMeshPro>().text = ModTranslation.GetString("ModSettingsButtonText"), 0f, "GameSettingMenu");
+        ModSettingsButton = mod_settings_button.GetComponent<PassiveButton>();
+        (ModSettingsButton.OnClick = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: false); });
+        (ModSettingsButton.OnMouseOver = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: true); });
+
+        //Start後、ModSettingsTabの表示前にRoleSettingsTabを経由すると表示バグが起こるので、あらかじめModSettingsTabを一度開くことで回避する
+        __instance.ChangeTab(3, previewOnly: false);
+        new LateTask(() => __instance.ChangeTab(1, previewOnly: false), 0f, "ChangeTab");
     }
 
     [HarmonyPatch(nameof(GameSettingMenu.Close)), HarmonyPostfix]
@@ -959,17 +975,29 @@ public static class GameSettingMenuPatch
         }
     }
 
-    [HarmonyPatch(nameof(GameSettingMenu.ChangeTab)), HarmonyPostfix]
-    public static void ChangeTabPostfix(GameSettingMenu __instance, int tabNum, bool previewOnly)
+    [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.ChangeTab)), HarmonyPrefix]
+    public static bool ChangeTabPrefix(GameSettingMenu __instance, int tabNum, bool previewOnly)
     {
         if ((previewOnly && Controller.currentTouchType == Controller.TouchType.Joystick) || !previewOnly)
         {
+            __instance.PresetsTab.gameObject.SetActive(false);
+            __instance.GameSettingsTab.gameObject.SetActive(false);
+            __instance.RoleSettingsTab.gameObject.SetActive(false);
             ModSettingsMenu?.gameObject.SetActive(false);
-            ModSttingsButton?.SelectButton(false);
+            __instance.GamePresetsButton.SelectButton(false);
+            __instance.GameSettingsButton.SelectButton(false);
+            __instance.RoleSettingsButton.SelectButton(false);
+            ModSettingsButton?.SelectButton(false);
 
             switch (tabNum)
             {
+                case 0:
+                    __instance.PresetsTab.gameObject.SetActive(true);
+                    //__instance.MenuDescriptionText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GamePresetsDescription, Array.Empty<Il2CppSystem.Object>());
+                    break;
                 case 1:
+                    __instance.GameSettingsTab.gameObject.SetActive(true);
+                    //__instance.MenuDescriptionText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSettingsDescription, Array.Empty<Il2CppSystem.Object>());
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameNumImpostors).Cast<NumberOption>().ValidRange = new(0f, 15f);
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameKillCooldown).Cast<NumberOption>().ValidRange = new(2.5f, 60f);
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GamePlayerSpeed).Cast<NumberOption>().ValidRange = new(-5f, 5f);
@@ -977,20 +1005,44 @@ public static class GameSettingMenuPatch
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameLongTasks).Cast<NumberOption>().ValidRange = new(0f, 69f);
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameShortTasks).Cast<NumberOption>().ValidRange = new(0f, 45f);
                     break;
+                case 2:
+                    __instance.RoleSettingsTab.gameObject.SetActive(true);
+                    //__instance.MenuDescriptionText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleSettingsDescription, Array.Empty<Il2CppSystem.Object>());
+                    break;
                 case 3:
                     ModSettingsMenu.gameObject.SetActive(true);
                     break;
             }
         }
-        if (!previewOnly)
+        if (previewOnly)
         {
+            __instance.ToggleLeftSideDarkener(false);
+            __instance.ToggleRightSideDarkener(true);
+        }
+        else
+        {
+            __instance.ToggleLeftSideDarkener(true);
+            __instance.ToggleRightSideDarkener(false);
             switch (tabNum)
             {
+                case 0:
+                    __instance.GamePresetsButton.SelectButton(true);
+                    __instance.PresetsTab.OpenMenu();
+                    break;
+                case 1:
+                    __instance.GameSettingsButton.SelectButton(true);
+                    __instance.GameSettingsTab.OpenMenu();
+                    break;
+                case 2:
+                    __instance.RoleSettingsButton.SelectButton(true);
+                    __instance.RoleSettingsTab.OpenMenu();
+                    break;
                 case 3:
+                    ModSettingsButton.SelectButton(true);
                     ModSettingsMenu.OpenMenu();
-                    ModSttingsButton.SelectButton(true);
                     break;
             }
         }
+        return false;
     }
 }

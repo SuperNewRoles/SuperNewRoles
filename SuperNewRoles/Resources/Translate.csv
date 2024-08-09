@@ -136,7 +136,7 @@ MapCustom,Map Custom,マップ改造,地图设置,地圖設定
 SecretRoom,Add a Secret Room.,シークレットルームを追加する,追加机密室,追加密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
 SettingpresetSelection,Preset,プリセット,预设,預設
-ModSttingsButtonText,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color> Settings,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>の設定,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>设置,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>設定
+ModSettingsButtonText,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color> Settings,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>の設定,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>设置,<color=#ffa500>Super</color> <color=#ff0000>New</color> <color=#00ff00>Roles</color>設定
 NeutralRolesHeader,Neutral Roles,第三陣営のロール,独立阵营职业,中立角色
 ModifierHeader,Modifier Roles,モディファイア,附加职业,附加角色
 SettingOf,{0} Setting,{0}の設定,{0}设置,{0}設定

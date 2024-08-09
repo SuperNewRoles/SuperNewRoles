@@ -332,8 +332,11 @@ public class ModSettingsMenu : MonoBehaviour
         close_button.gameObject.name = "Close Button";
         close_button.gameObject.layer = 5;
         close_button.transform.localPosition = new(4.18f, 0.4f, -2f);
+        close_button.ClickMask = ScrollBar.Hitbox;
         close_button.OnClick = new();
         close_button.OnClick.AddListener(() => OpenTab(OldTabId));
+        foreach (SpriteRenderer sprite in close_button.GetComponentsInChildren<SpriteRenderer>(true))
+            sprite.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         RoleDetailsSettings.gameObject.SetActive(false);
         #endregion
 
@@ -566,7 +569,9 @@ public class ModSettingsMenu : MonoBehaviour
         mod.ControllerSelectable[2].OnClick.AddListener(mod.DecreaseChance);
         mod.ControllerSelectable[3].OnClick.AddListener(mod.IncreaseChance);
         mod.ControllerSelectable[4].OnClick.AddListener(() => OpenTab(OptionTabId.RoleDetails, mod.CreateRoleDetailsOption));
-        
+        foreach (var item in mod.ControllerSelectable)
+            item.ClickMask = ScrollBar.Hitbox;
+
         Destroy(obj);
         return mod;
     }
@@ -596,6 +601,8 @@ public class ModSettingsMenu : MonoBehaviour
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Decrease);
         mod.ControllerSelectable[1].OnClick.AddListener(mod.Increase);
+        foreach (var item in mod.ControllerSelectable)
+            item.ClickMask = ScrollBar.Hitbox;
 
         mod.TitleText.rectTransform.sizeDelta += additionalSizeDelta;
         mod.LabelBackground = obj.LabelBackground;
@@ -632,6 +639,8 @@ public class ModSettingsMenu : MonoBehaviour
         mod.CheckMark.transform.parent.transform.localPosition = new(1.17f, -0.042f);
         mod.ControllerSelectable = mod.GetComponentsInChildren<PassiveButton>(true).ToList();
         mod.ControllerSelectable[0].OnClick.AddListener(mod.Toggle);
+        foreach (var item in mod.ControllerSelectable)
+            item.ClickMask = ScrollBar.Hitbox;
 
         mod.TitleText.rectTransform.sizeDelta += additionalSizeDelta;
         mod.LabelBackground = obj.LabelBackground;
