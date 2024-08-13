@@ -13,6 +13,7 @@ using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
+using UnityEngine.Audio;
 using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Impostor;
@@ -76,14 +77,14 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         }
         MarkingButton = new(
             null, this, MarkingButtonOnClick, alive => alive, CustomButtonCouldType.SetTarget | CustomButtonCouldType.CanMove, MarkingButtonOnMeetingEnd,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RemoteControllerOperationButton.png", 115f),
+            AssetManager.GetAsset<Sprite>("RemoteControllerOperationButton.png", AssetManager.AssetBundleType.Sprite),
             MarkingCoolTime.GetFloat, new(-1, 1), "RemoteControllerMarkingButtonName", KeyCode.F, CouldUse: () => !TargetPlayer,
             SetTargetUntargetPlayer: () => RoleBaseManager.GetRoleBases<RemoteController>().FindAll(x => x.TargetPlayer).ConvertAll(x => x.TargetPlayer),
             SetTargetCrewmateOnly: () => true
         );
         OperationButton = new(
             null, this, OperationButtonOnClick, alive => alive, CustomButtonCouldType.Always, null,
-            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RemoteControllerOperationButton.png", 115f),
+            AssetManager.GetAsset<Sprite>("RemoteControllerOperationButton.png", AssetManager.AssetBundleType.Sprite),
             () => 0, new(-2, 1), "RemoteControllerOperationButtonName", KeyCode.F,
             DurationTime: () => float.TryParse(DurationOperation.GetString(), out float value) ? value : 0f,
             IsEffectDurationInfinity: DurationOperation.GetSelection() == 0,
@@ -102,7 +103,6 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         ResetCoolTime();
         if (!UnderOperation) return true;
         if (!button.isActiveAndEnabled || !button.currentTarget || button.isCoolingDown) return true;
-        TargetPlayer.CmdCheckMurder(button.currentTarget);
         ModHelpers.CheckMurderAttemptAndKill(TargetPlayer, button.currentTarget, showAnimation: true);
         button.SetTarget(null);
         OperationButtonOnEffectEnds();
@@ -238,7 +238,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
             {
                 SoundManager.Instance.PlaySound(
                     AssetManager.GetAsset<AudioClip>("OperationSound.mp3", AssetManager.AssetBundleType.Sound),
-                    false, DataManager.Settings.Audio.SfxVolume
+                    false, audioMixer: SoundManager.Instance.sfxMixer
                 ).pitch = FloatRange.Next(0.8f, 1.2f);
             }
 
