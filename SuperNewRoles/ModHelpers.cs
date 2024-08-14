@@ -1079,7 +1079,7 @@ public static class ModHelpers
     internal static Dictionary<int, Vent> VentIdControlDic = new(); // ClearAndReloadで初期化されます
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
 
-    public static ExileController.InitProperties GenerateExlieInitProperties(NetworkedPlayerInfo player, bool voteTie)
+    public static ExileController.InitProperties GenerateExileInitProperties(NetworkedPlayerInfo player, bool voteTie)
     {
         ExileController.InitProperties initProperties = new();
         if (player != null)
@@ -1265,7 +1265,13 @@ public static class ModHelpers
         tmp.fontSize = tmp.fontSizeMax = tmp.fontSizeMin = size;
     }
     public static void AddListener(this UnityEngine.Events.UnityEvent @event, Action action) => @event.AddListener(action);
-    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.Find(match);
+    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match)
+    {
+        foreach (var d in data)
+            if (match(d))
+                return d;
+        return default;
+    }
 }
 public static class CreateFlag
 {

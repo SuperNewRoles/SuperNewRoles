@@ -55,7 +55,7 @@ class WrapUpPatch
         }
         public static void Postfix(ExileController __instance)
         {
-            WrapUpPatch.Postfix(__instance.initData?.networkedPlayer);
+            WrapUpPatch.Postfix(__instance, __instance.initData?.networkedPlayer);
         }
     }
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
@@ -91,7 +91,7 @@ class WrapUpPatch
         }
         public static void Postfix(AirshipExileController __instance)
         {
-            WrapUpPatch.Postfix(__instance.initData?.networkedPlayer);
+            WrapUpPatch.Postfix(__instance, __instance.initData?.networkedPlayer);
         }
     }
     public static void Prefix(NetworkedPlayerInfo exiled)
@@ -131,7 +131,7 @@ class WrapUpPatch
             }
         }
     }
-    public static void Postfix(NetworkedPlayerInfo exiled)
+    public static void Postfix(ExileController __instance, NetworkedPlayerInfo exiled)
     {
         if (exiled != null && exiled.Object == null)
         {

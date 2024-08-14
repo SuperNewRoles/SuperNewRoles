@@ -13,7 +13,7 @@ public class Bakery
     private static TMPro.TextMeshPro confirmImpostorSecondText;
     public static bool Prefix(
         ExileController __instance,
-        ExileController.InitProperties init)
+        ref ExileController.InitProperties init)
     {
         if (RoleClass.Assassin.TriggerPlayer == null &&
             RoleClass.Revolutionist.MeetingTrigger == null &&
@@ -49,7 +49,7 @@ public class Bakery
                 RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
             }
             RoleClass.Assassin.TriggerPlayer = null;
-            __instance.initData = ModHelpers.GenerateExlieInitProperties(null, false);
+            __instance.initData = ModHelpers.GenerateExileInitProperties(null, false);
             __instance.Player.gameObject.SetActive(false);
             __instance.completeString = printStr;
             __instance.ImpostorText.text = string.Empty;
@@ -76,7 +76,7 @@ public class Bakery
                 printStr = init?.networkedPlayer?.PlayerName + ModTranslation.GetString(
                     "RevolutionistFail");
             }
-            __instance.initData = ModHelpers.GenerateExlieInitProperties(null, false);
+            init = ModHelpers.GenerateExileInitProperties(null, false);
             __instance.Player.gameObject.SetActive(false);
             __instance.completeString = printStr;
             __instance.ImpostorText.text = string.Empty;
@@ -90,15 +90,14 @@ public class Bakery
                 IsSec = true;
                 __instance.initData.networkedPlayer = null;
                 ExileController controller = GameObject.Instantiate(__instance, __instance.transform.parent);
-                controller.initData = ModHelpers.GenerateExlieInitProperties(Balancer.targetplayerright.Data, false);
-                controller.Begin(controller.initData);
+                controller.Begin(ModHelpers.GenerateExileInitProperties(Balancer.targetplayerright.Data, false));
                 IsSec = false;
                 controller.completeString = string.Empty;
 
                 controller.Text.gameObject.SetActive(false);
                 controller.Player.UpdateFromEitherPlayerDataOrCache(controller.initData.networkedPlayer, PlayerOutfitType.Default, PlayerMaterial.MaskType.Exile, includePet: false);
                 controller.Player.ToggleName(active: false);
-                SkinViewData skin = ShipStatus.Instance.CosmeticsCache.GetSkin(controller.initData.networkedPlayer.Outfits[PlayerOutfitType.Default].SkinId);
+                SkinViewData skin = ShipStatus.Instance.CosmeticsCache.GetSkin(controller.initData.outfit.SkinId);
                 controller.Player.FixSkinSprite(skin.EjectFrame);
                 AudioClip sound = null;
                 if (controller.EjectSound != null)
@@ -117,7 +116,7 @@ public class Bakery
                 }
                 new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f);
                 ExileController.Instance = __instance;
-                __instance.initData = ModHelpers.GenerateExlieInitProperties(Balancer.targetplayerleft.Data, false);
+                init = ModHelpers.GenerateExileInitProperties(Balancer.targetplayerleft.Data, false);
                 if (ModHelpers.IsMap(MapNames.Fungle))
                 {
                     ModHelpers.SetActiveAllObject(controller.gameObject.GetChildren(), "RaftAnimation", false);
