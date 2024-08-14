@@ -96,29 +96,29 @@ public static class Arsonist
 
     public static void HudUpdate()
     {
-        if (RoleClass.Arsonist.DouseTarget is null) return;
-        if (RoleClass.Arsonist.IsDouse)
+        if (RoleClass.Arsonist.DouseTarget == null)
+            return;
+        if (!RoleClass.Arsonist.IsDouse)
+            return;
+        Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        Vector2 vector = RoleClass.Arsonist.DouseTarget.GetTruePosition() - truePosition;
+        float magnitude = vector.magnitude;
+        if (magnitude > num || PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
         {
-            Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
-            float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
-            Vector2 vector = RoleClass.Arsonist.DouseTarget.GetTruePosition() - truePosition;
-            float magnitude = vector.magnitude;
-            if (magnitude > num || PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
-            {
-                RoleClass.Arsonist.IsDouse = false;
-                HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
-                SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
-                return;
-            }
-            if (HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
-            {
-                HudManagerStartPatch.ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
-                HudManagerStartPatch.ArsonistDouseButton.Timer = HudManagerStartPatch.ArsonistDouseButton.MaxTimer;
-                HudManagerStartPatch.ArsonistDouseButton.actionButton.cooldownTimerText.color = Color.white;
-                RoleClass.Arsonist.DouseTarget.ArsonistDouse();
-                SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
-                RoleClass.Arsonist.DouseTarget = null;
-            }
+            RoleClass.Arsonist.IsDouse = false;
+            HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
+            SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
+            return;
+        }
+        if (HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
+        {
+            HudManagerStartPatch.ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
+            HudManagerStartPatch.ArsonistDouseButton.Timer = HudManagerStartPatch.ArsonistDouseButton.MaxTimer;
+            HudManagerStartPatch.ArsonistDouseButton.actionButton.cooldownTimerText.color = Color.white;
+            RoleClass.Arsonist.DouseTarget.ArsonistDouse();
+            SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
+            RoleClass.Arsonist.DouseTarget = null;
         }
     }
 

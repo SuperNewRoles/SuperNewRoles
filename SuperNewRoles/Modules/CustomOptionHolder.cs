@@ -935,7 +935,7 @@ public class CustomOptionHolder
         neutralGhostRolesCountMax = Create(100600, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
         crewmateGhostRolesCountMax = Create(100700, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
 
-        if (ConfigRoles.DebugMode.Value)
+        if (DebugModeManager.IsDebugMode)
         {
             Color debugColor = (Color)RoleClass.Debugger.color;
             IsDebugMode = Create(100800, true, CustomOptionType.Generic, Cs(debugColor, "デバッグモード"), false, null, isHeader: true);
@@ -955,7 +955,7 @@ public class CustomOptionHolder
         enableAgartha = Create(101000, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
         GMOption = Create(101100, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
-        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(101101, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }
+        if (DebugModeManager.IsDebugMode) { DebuggerOption = Create(101101, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }
 
         /* |: ========================= Mod Normal Settings ========================== :| */
 

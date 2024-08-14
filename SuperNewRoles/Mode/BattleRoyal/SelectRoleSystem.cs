@@ -17,6 +17,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
     {
         public static void Postfix(IntroCutscene __instance)
         {
+            ModHelpers.InitClientCache();
             if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
                 SelectRoleSystem.OnEndIntro(); Logger.Info("StartOnEndIntro");

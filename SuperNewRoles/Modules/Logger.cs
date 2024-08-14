@@ -35,7 +35,7 @@ class Logger
         if (sendToGameList.Contains(tag) || isAlsoInGame) SendInGame($"[{tag}]{text}");
         text = text.Replace("\r", "\\r").Replace("\n", "\\n");
         string log_text = $"[{t}][{callerMember}][{tag}]{text}";
-        if (isDetail && ConfigRoles.DebugMode.Value)
+        if (isDetail && DebugModeManager.IsDebugMode)
         {
             StackFrame stack = new(2);
             string className = stack.GetMethod().ReflectedType.Name;

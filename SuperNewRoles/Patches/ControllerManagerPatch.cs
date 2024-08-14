@@ -48,13 +48,14 @@ class ControllerManagerUpdatePatch
     static readonly (int, int)[] resolutions = { (480, 270), (640, 360), (800, 450), (1280, 720), (1600, 900), (1920, 1080) };
     static int resolutionIndex = 0;
     static AudioSource source;
+
+    static KeyCode[] HaisonKeyCodes = [KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift];
+    static KeyCode[] ForceEndMeetingKeyCodes = [KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift];
+    static KeyCode[] LogKeyCodes = [KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift];
+
+
     public static void Postfix()
     {
-        if (source != null)
-        {
-            Logger.Info(source.time.ToString(), "a");
-            Logger.Info(source.timeSamples.ToString(), "b");
-        }
         //解像度変更
         if (Input.GetKeyDown(KeyCode.F9))
         {
@@ -64,7 +65,7 @@ class ControllerManagerUpdatePatch
         }
 
         // その時点までのlogを切り出す
-        if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
+        if (ModHelpers.GetManyKeyDown(LogKeyCodes))
         {
             string via = "KeyCmdVia";
             LoggerPlus.SaveLog(via, via);
@@ -75,7 +76,7 @@ class ControllerManagerUpdatePatch
         if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && AmongUsClient.Instance.AmHost)
         {
             // 廃村
-            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
+            if (ModHelpers.GetManyKeyDown(HaisonKeyCodes))
             {
                 RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                 RPCProcedure.SetHaison();
@@ -91,27 +92,24 @@ class ControllerManagerUpdatePatch
                 }
             }
             // 会議を強制終了
-            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
+            if (RoleClass.IsMeeting && MeetingHud.Instance != null && ModHelpers.GetManyKeyDown(ForceEndMeetingKeyCodes))
             {
-                if (MeetingHud.Instance != null)
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
-                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                    {
-                        // 会議強制スキップを行うと, CheckForEndVotingを通過しない為, 此処で呼び出し
-                        if (Mode.PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
-                            EmergencyMinigamePatch.FirstEmergencyCooldown.OnCheckForEndVotingNotMod(false);
-                    }
-
-                    if (ModeHandler.IsMode(ModeId.BattleRoyal))
-                        SelectRoleSystem.OnEndSetRole();
-                    else
-                        MeetingHud.Instance.RpcClose();
+                    // 会議強制スキップを行うと, CheckForEndVotingを通過しない為, 此処で呼び出し
+                    if (Mode.PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
+                        EmergencyMinigamePatch.FirstEmergencyCooldown.OnCheckForEndVotingNotMod(false);
                 }
+
+                if (ModeHandler.IsMode(ModeId.BattleRoyal))
+                    SelectRoleSystem.OnEndSetRole();
+                else
+                    MeetingHud.Instance.RpcClose();
             }
         }
 
         // デバッグモード　かつ　左コントロール
-        if (ConfigRoles.DebugMode.Value && Input.GetKey(KeyCode.LeftControl))
+        if (DebugModeManager.IsDebugMode && Input.GetKey(KeyCode.LeftControl))
         {
             // Spawn dummys
             if (Input.GetKeyDown(KeyCode.G))

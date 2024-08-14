@@ -9,9 +9,9 @@ public class MeetingCalledAnimationPatch
     [HarmonyPatch(typeof(MeetingCalledAnimation), nameof(MeetingCalledAnimation.Initialize))]
     public static class InitPatch
     {
-        public static void Postfix(MeetingCalledAnimation __instance, NetworkedPlayerInfo reportInfo)
+        public static void Postfix()
         {
-            if (RoleClass.Revolutionist.MeetingTrigger is not null) Revolutionist.MeetingInit(__instance, reportInfo);
+            if (RoleClass.Revolutionist.MeetingTrigger is not null) Revolutionist.MeetingInit();
         }
     }
 

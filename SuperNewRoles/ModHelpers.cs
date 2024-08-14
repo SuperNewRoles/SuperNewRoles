@@ -658,12 +658,31 @@ public static class ModHelpers
         writer.Write((ushort)role);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
+    public static void InitClientCache()
+    {
+        PlayerClients = new();
+        PlayerClientIds = new(defaultvalue: -1);
+        foreach (InnerNet.ClientData clientData in AmongUsClient.Instance.allClients)
+        {
+            PlayerClients[clientData.Character] = clientData;
+            PlayerClientIds[clientData.Character] = clientData.Id;
+        }
+    }
+    public static void DestoryClientCache()
+    {
+        PlayerClients = null;
+        PlayerClientIds = null;
+    }
+    private static PlayerData<InnerNet.ClientData> PlayerClients;
+    private static PlayerData<int> PlayerClientIds;
     public static InnerNet.ClientData GetClient(this PlayerControl player)
     {
         if (AmongUsClient.Instance?.allClients == null)
             return null;
-        var client = AmongUsClient.Instance.allClients.FirstOrDefault(cd => cd.Character != null && cd.Character.PlayerId == player.PlayerId);
-        return client;
+        if (PlayerClients == null)
+            return AmongUsClient.Instance.allClients.FirstOrDefault(cd => cd.Character != null && cd.Character.PlayerId == player.PlayerId);
+        else
+            return PlayerClients[player];
     }
     public static T FirstOrDefault<T>(this Il2CppSystem.Collections.Generic.List<T> list, Func<T, bool> func)
     {
@@ -717,6 +736,14 @@ public static class ModHelpers
                 return obj;
         return default;
     }
+    public static int Count<T>(this Il2CppSystem.Collections.Generic.List<T> list, Func<T, bool> func = null)
+    {
+        int count = 0;
+        foreach (T obj in list)
+            if (func == null || func(obj))
+                count++;
+        return count;
+    }
     public static KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> list, Func<KeyValuePair<TKey, TValue>, bool> func)
     {
         foreach (KeyValuePair<TKey, TValue> obj in list)
@@ -760,20 +787,14 @@ public static class ModHelpers
     }
     public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
-        List<T> newList = new(list.Count);
-        foreach (T item in list)
-        {
-            newList.Add(item);
-        }
+        List<T> newList = [.. list];
         return newList;
     }
     public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this IEnumerable<T> list)
     {
-        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count());
+        Il2CppSystem.Collections.Generic.List<T> newList = new();
         foreach (T item in list)
-        {
             newList.Add(item);
-        }
         return newList;
     }
     public static AudioClip loadAudioClipFromWavResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
@@ -820,8 +841,15 @@ public static class ModHelpers
     }
     public static int GetClientId(this PlayerControl player)
     {
-        var client = player.GetClient();
-        return client == null ? -1 : client.Id;
+        if (PlayerClientIds == null)
+        {
+            var client = player.GetClient();
+            return client == null ? -1 : client.Id;
+        }
+        else
+        {
+            return PlayerClientIds[player];
+        }
     }
     public static bool IsSuccessChance(int SuccessChance, int MaxChance = 10)
     {
@@ -1069,6 +1097,24 @@ public static class ModHelpers
     internal static Dictionary<string, PlayerControl> ColorControlDic = new(); // ClearAndReloadで初期化されます
     internal static Dictionary<int, Vent> VentIdControlDic = new(); // ClearAndReloadで初期化されます
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
+
+    public static ExileController.InitProperties GenerateExileInitProperties(NetworkedPlayerInfo player, bool voteTie)
+    {
+        ExileController.InitProperties initProperties = new();
+        if (player != null)
+        {
+            initProperties.outfit = player.Outfits[PlayerOutfitType.Default];
+            initProperties.networkedPlayer = player;
+            initProperties.isImpostor = player.Role.IsImpostor;
+        }
+        initProperties.voteTie = voteTie;
+        initProperties.confirmImpostor = GameManager.Instance.LogicOptions.GetConfirmImpostor();
+        initProperties.totalImpostorCount = GameData.Instance.AllPlayers.Count((NetworkedPlayerInfo p) => p.Role.IsImpostor);
+        initProperties.remainingImpostorCount = GameData.Instance.AllPlayers.Count((NetworkedPlayerInfo p) => p.Role.IsImpostor && !p.IsDead && !p.Disconnected);
+        if (player != null && player.Role.IsImpostor && !player.Disconnected)
+            initProperties.remainingImpostorCount--;
+        return initProperties;
+    }
     public static PlayerControl PlayerById(byte id)
     {
         if (!IdControlDic.ContainsKey(id))
@@ -1159,7 +1205,7 @@ public static class ModHelpers
         Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
             Enum.GetName(typeof(CustomRPC), callId) :
         $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}:{__instance.Data.PlayerName}";
-    public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
+    public static bool IsDebugMode() => DebugModeManager.IsDebugMode && CustomOptionHolder.IsDebugMode.GetBool();
     /// <summary>
     /// 文字列が半角かどうかを判定します
     /// </summary>
@@ -1238,7 +1284,13 @@ public static class ModHelpers
         tmp.fontSize = tmp.fontSizeMax = tmp.fontSizeMin = size;
     }
     public static void AddListener(this UnityEngine.Events.UnityEvent @event, Action action) => @event.AddListener(action);
-    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.ToList().Find(match);
+    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match)
+    {
+        foreach (var d in data)
+            if (match(d))
+                return d;
+        return default;
+    }
     public static IEnumerable<T> FindAll<T>(this IEnumerable<T> sources, Predicate<T> match)
     {
         foreach (T data in sources)

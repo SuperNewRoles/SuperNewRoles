@@ -19,9 +19,11 @@ class Chat
     {
         public static void Postfix(ChatBubble __instance, [HarmonyArgument(0)] string playerName)
         {
+            if (!PlayerControl.LocalPlayer.IsImpostor())
+                return;
             //チャット欄でImpostor陣営から見たSpyがばれないように
             PlayerControl sourcePlayer = PlayerControl.AllPlayerControls.FirstOrDefault(x => x.Data.PlayerName == playerName);
-            if (sourcePlayer != null && PlayerControl.LocalPlayer.IsImpostor() && sourcePlayer.IsRole(RoleId.Egoist, RoleId.Spy))
+            if (sourcePlayer != null &&  sourcePlayer.IsRole(RoleId.Egoist, RoleId.Spy))
             {
                 __instance.NameText.color = Palette.ImpostorRed;
             }
