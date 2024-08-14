@@ -718,6 +718,14 @@ public static class ModHelpers
                 return obj;
         return default;
     }
+    public static int Count<T>(this Il2CppSystem.Collections.Generic.List<T> list, Func<T, bool> func = null)
+    {
+        int count = 0;
+        foreach (T obj in list)
+            if (func == null || func(obj))
+                count++;
+        return count;
+    }
     public static KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> list, Func<KeyValuePair<TKey, TValue>, bool> func)
     {
         foreach (KeyValuePair<TKey, TValue> obj in list)
@@ -1070,6 +1078,24 @@ public static class ModHelpers
     internal static Dictionary<string, PlayerControl> ColorControlDic = new(); // ClearAndReloadで初期化されます
     internal static Dictionary<int, Vent> VentIdControlDic = new(); // ClearAndReloadで初期化されます
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
+
+    public static ExileController.InitProperties GenerateExlieInitProperties(NetworkedPlayerInfo player, bool voteTie)
+    {
+        ExileController.InitProperties initProperties = new();
+        if (player != null)
+        {
+            initProperties.outfit = player.Outfits[PlayerOutfitType.Default];
+            initProperties.networkedPlayer = player;
+            initProperties.isImpostor = player.Role.IsImpostor;
+        }
+        initProperties.voteTie = voteTie;
+        initProperties.confirmImpostor = GameManager.Instance.LogicOptions.GetConfirmImpostor();
+        initProperties.totalImpostorCount = GameData.Instance.AllPlayers.Count((NetworkedPlayerInfo p) => p.Role.IsImpostor);
+        initProperties.remainingImpostorCount = GameData.Instance.AllPlayers.Count((NetworkedPlayerInfo p) => p.Role.IsImpostor && !p.IsDead && !p.Disconnected);
+        if (player != null && player.Role.IsImpostor && !player.Disconnected)
+            initProperties.remainingImpostorCount--;
+        return initProperties;
+    }
     public static PlayerControl PlayerById(byte id)
     {
         if (!IdControlDic.ContainsKey(id))
@@ -1239,7 +1265,7 @@ public static class ModHelpers
         tmp.fontSize = tmp.fontSizeMax = tmp.fontSizeMin = size;
     }
     public static void AddListener(this UnityEngine.Events.UnityEvent @event, Action action) => @event.AddListener(action);
-    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.ToList().Find(match);
+    public static T Find<T>(this Il2CppSystem.Collections.Generic.List<T> data, Predicate<T> match) => data.Find(match);
 }
 public static class CreateFlag
 {

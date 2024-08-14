@@ -1488,9 +1488,9 @@ class ExileControllerMessagePatch
         if (id is StringNames.GameDiscussTime && ModeHandler.IsMode(ModeId.Werewolf, false)) __result = ModTranslation.GetString("WerewolfAbilityTimeSetting");
         try
         {
-            if (ExileController.Instance != null && ExileController.Instance.exiled != null && ModeHandler.IsMode(ModeId.Default))
+            if (ExileController.Instance!= null && ExileController.Instance.initData?.networkedPlayer != null && ModeHandler.IsMode(ModeId.Default))
             {
-                PlayerControl player = ModHelpers.PlayerById(ExileController.Instance.exiled.Object.PlayerId);
+                PlayerControl player = ExileController.Instance.initData?.networkedPlayer?.Object;
                 if (player == null) return;
                 FinalStatusPatch.FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Exiled;
                 // Exile role text
