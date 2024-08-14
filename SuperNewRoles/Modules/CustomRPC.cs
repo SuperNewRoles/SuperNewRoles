@@ -51,6 +51,7 @@ public enum RoleId
     Robber,
     Crab,
     DimensionWalker,
+    RemoteController,
 
     // Neutral Roles
     Cupid,
@@ -379,6 +380,8 @@ public enum CustomRPC
     SetFrankensteinMonster,
     MoveDeadBody,
     WaveCannon,
+    SetNormalizedVelocity,
+    CustomSnapTo,
 }
 
 public static class RPCProcedure
@@ -392,6 +395,18 @@ public static class RPCProcedure
         if (role is not IRpcHandler)
             return;
         (role as IRpcHandler).RpcReader(reader);
+    }
+    public static void CustomSnapTo(byte id, Vector2 pos)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        player.NetTransform.SnapTo(pos);
+    }
+    public static void SetNormalizedVelocity(byte id, Vector2 vector)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        player.MyPhysics.SetNormalizedVelocity(vector);
     }
     public static void SetSpiderTrap(byte source, float x, float y, ushort id)
     {
@@ -1640,21 +1655,23 @@ public static class RPCProcedure
         /// </summary>
         /// <returns>falseで記載するとRPCをlogに記載しなくなる。</returns>
         private static readonly Dictionary<CustomRPC, bool> IsWritingRPCLog = new() {
-            {CustomRPC.ShareSNRVersion,false},
-            {CustomRPC.SetRoomTimerRPC,false},
-            {CustomRPC.SetDeviceTime,false},
-            {CustomRPC.SetInfectionTimer,false},
-            {CustomRPC.MoveDeadBody,false},
+            { CustomRPC.ShareSNRVersion, false },
+            { CustomRPC.SetRoomTimerRPC, false },
+            { CustomRPC.SetDeviceTime, false },
+            { CustomRPC.SetInfectionTimer, false },
+            { CustomRPC.MoveDeadBody, false },
+            { CustomRPC.SetNormalizedVelocity, false },
+            { CustomRPC.CustomSnapTo, false },
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
-            if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId))
+            CustomRPC rpc = (CustomRPC)callId;
+            if (IsWritingRPCLog.TryGetValue(rpc, out bool value) && value)
                 Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
-                byte packetId = callId;
-                switch ((CustomRPC)packetId)
+                switch (rpc)
                 {
                     case CustomRPC.ShareOptions:
                         ShareOptions((int)reader.ReadPackedUInt32(), reader);
@@ -2010,6 +2027,12 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.WaveCannon:
                         WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), new(reader.ReadSingle(), reader.ReadSingle()), (WaveCannonObject.WCAnimType)reader.ReadByte());
+                        break;
+                    case CustomRPC.SetNormalizedVelocity:
+                        SetNormalizedVelocity(reader.ReadByte(), NetHelpers.ReadVector2(reader));
+                        break;
+                    case CustomRPC.CustomSnapTo:
+                        CustomSnapTo(reader.ReadByte(), NetHelpers.ReadVector2(reader));
                         break;
                 }
             }
