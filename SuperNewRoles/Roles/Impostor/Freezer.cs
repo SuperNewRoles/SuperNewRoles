@@ -49,19 +49,3 @@ public class Freezer
         ResetSpeed();
     }
 }
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
-public static class PlayerPhysicsSpeedPatch2
-{
-    public static void Postfix(PlayerPhysics __instance)
-    {
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-        if (ModeHandler.IsMode(ModeId.Default))
-        {
-            if (RoleClass.Freezer.IsSpeedDown ||
-                WaveCannonObject.Objects.Contains(__instance.myPlayer) || JumpDancer.JumpingPlayerIds.ContainsKey(__instance.myPlayer.PlayerId))
-            {
-                __instance.body.velocity = new Vector2(0f, 0f);
-            }
-        }
-    }
-}

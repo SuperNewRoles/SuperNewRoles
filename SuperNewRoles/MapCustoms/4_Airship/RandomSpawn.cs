@@ -102,7 +102,7 @@ public static class AirShipRandomSpawn
                     p.ResetKillCool(RoleClass.IsFirstMeetingEnd ? float.NegativeInfinity : 10f);
                 }
             }
-            new LateTask(() => ChangeName.SetRoleNames(), 0.1f, "RandomSpawnSetRoleNames");
+            new LateTask(() => ChangeName.UpdateRoleNames(ChangeNameType.AllPlayers), 0.1f, "RandomSpawnSetRoleNames");
         }
     }
 }

@@ -338,13 +338,14 @@ public class EndGameManagerSetUpPatch
             UnityEngine.Object.Destroy(pb.gameObject);
         }
         int num = Mathf.CeilToInt(7.5f);
-        List<CachedPlayerData> list = EndGameResult.CachedWinners.ToList().OrderBy(delegate (CachedPlayerData b)
+        IEnumerable<CachedPlayerData> list = EndGameResult.CachedWinners.ToList().OrderBy(delegate (CachedPlayerData b)
         {
             return !b.IsYou ? 0 : -1;
-        }).ToList();
-        for (int i = 0; i < list.Count; i++)
+        });
+        int i = -1;
+        foreach (CachedPlayerData CachedPlayerData2 in list)
         {
-            CachedPlayerData CachedPlayerData2 = list[i];
+            i++;
             int num2 = (i % 2 == 0) ? -1 : 1;
             int num3 = (i + 1) / 2;
             float num4 = (float)num3 / (float)num;
@@ -560,7 +561,7 @@ public static class OnGameEndPatch
             }
             catch { }
         }
-        if (!ReplayManager.IsReplayMode && ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !ConfigRoles.DebugMode.Value)
+        if (!ReplayManager.IsReplayMode && ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !DebugModeManager.IsDebugMode)
         {
             try
             {
@@ -1488,9 +1489,9 @@ class ExileControllerMessagePatch
         if (id is StringNames.GameDiscussTime && ModeHandler.IsMode(ModeId.Werewolf, false)) __result = ModTranslation.GetString("WerewolfAbilityTimeSetting");
         try
         {
-            if (ExileController.Instance != null && ExileController.Instance.exiled != null && ModeHandler.IsMode(ModeId.Default))
+            if (ExileController.Instance!= null && ExileController.Instance.initData?.networkedPlayer != null && ModeHandler.IsMode(ModeId.Default))
             {
-                PlayerControl player = ModHelpers.PlayerById(ExileController.Instance.exiled.Object.PlayerId);
+                PlayerControl player = ExileController.Instance.initData?.networkedPlayer?.Object;
                 if (player == null) return;
                 FinalStatusPatch.FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Exiled;
                 // Exile role text
@@ -1518,8 +1519,16 @@ class ExileControllerReEnableGameplayPatch
 [HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
 public static class CheckGameEndHnSPatch
 {
+    private static float Timer;
+    private const float EndGameTimerMax = 0.15f;
+
     public static bool Prefix()
     {
+        Timer -= Time.fixedDeltaTime;
+        if (Timer > 0 && Timer < 0.5f)
+            return false;
+        Timer = EndGameTimerMax;
+
         if (!GameData.Instance) return false;
         if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
         if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
@@ -1552,8 +1561,16 @@ public static class CheckGameEndHnSPatch
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class CheckGameEndPatch
 {
+    private static float Timer;
+    private const float EndGameTimerMax = 0.15f;
+
     public static bool Prefix()
     {
+        Timer -= Time.fixedDeltaTime;
+        if (Timer > 0 && Timer < 0.5f)
+            return false;
+        Timer = EndGameTimerMax;
+
         if (!GameData.Instance) return false;
         if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
         if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;

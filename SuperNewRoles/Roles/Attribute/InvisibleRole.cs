@@ -194,14 +194,11 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole, I
     public void OnDisconnect() => DisableInvisible(); // 透明化役職の切断時
 }
 
-[HarmonyPatch]
 public class InvisibleRole
 {
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate)), HarmonyPostfix]
     public static void PlayerPhysics_Postfix(PlayerPhysics __instance)
     {
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started || !GameData.Instance) return;
-        if (!ModeHandler.IsMode(ModeId.Default)) return;
+        if (!GameData.Instance) return;
         if (__instance.myPlayer == null || __instance.myPlayer.IsDead()) return;
 
         if (!InvisibleRoleBase.IsExistsInvisiblePlayer[__instance.myPlayer.PlayerId]) return; // __instance.myPlayerの透明化が有効になっていない, 又は管理されてないなら 実行しない。

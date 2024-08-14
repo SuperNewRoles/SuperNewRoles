@@ -144,9 +144,10 @@ public class CursedFixShowerTask
         }
     }
 
-    [HarmonyPatch(typeof(UseButton))]
     public static class UseButtonPatch
     {
+        // VanillaButtonEventsPatch.csに移行
+        /*
         [HarmonyPatch(nameof(UseButton.SetTarget)), HarmonyPrefix]
         public static bool SetTargetPrefix(UseButton __instance, IUsable target)
         {
@@ -162,6 +163,7 @@ public class CursedFixShowerTask
             __instance.currentTarget = target;
             return true;
         }
+        */
 
         public static bool IsBlocked(IUsable target)
         {

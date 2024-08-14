@@ -15,23 +15,6 @@ namespace SuperNewRoles.Roles.Impostor;
 [HarmonyPatch]
 public static class Penguin
 {
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
-    public static class PlayerPhysicsSpeedPatch
-    {
-        public static void Postfix(PlayerPhysics __instance)
-        {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (ModeHandler.IsMode(ModeId.Default))
-            {
-                if (SpiderTrap.CatchingPlayers.ContainsKey(__instance.myPlayer.PlayerId) ||
-                    RoleClass.Penguin.PenguinData.Any(x => x.Value != null && x.Value.PlayerId == __instance.myPlayer.PlayerId) ||
-                    Rocket.RoleData.RocketData.Any(x => x.Value.Any(y => y.PlayerId == __instance.myPlayer.PlayerId)))
-                {
-                    __instance.body.velocity = new(0f, 0f);
-                }
-            }
-        }
-    }
     public static void FixedUpdate()
     {
         if (RoleClass.Penguin.PenguinData.Count <= 0) return;
