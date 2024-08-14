@@ -124,7 +124,6 @@ public class FixedUpdate
                 Bat.FixedUpdate();
                 Rocket.FixedUpdate();
                 WellBehaver.FixedUpdate();
-                Frankenstein.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -163,11 +162,9 @@ public class FixedUpdate
                         case RoleId.Vampire:
                             Vampire.FixedUpdate.VampireOnly();
                             break;
-                        case RoleId.Vulture:
-                            if (RoleClass.Vulture.ShowArrows) Vulture.FixedUpdate.Postfix();
-                            break;
-                        case RoleId.Amnesiac:
-                            if (RoleClass.Amnesiac.ShowArrows) Vulture.FixedUpdate.Postfix();
+                        case RoleId.Vulture when RoleClass.Vulture.ShowArrows:
+                        case RoleId.Amnesiac when RoleClass.Amnesiac.ShowArrows:
+                            Vulture.FixedUpdate.Postfix();
                             break;
                         case RoleId.Mafia:
                             Mafia.FixedUpdate();
@@ -228,6 +225,9 @@ public class FixedUpdate
                             break;
                         case RoleId.Sauner:
                             Sauner.FixedUpdate();
+                            break;
+                        case RoleId.Frankenstein:
+                            Frankenstein.FixedUpdate();
                             break;
                     }
                 }

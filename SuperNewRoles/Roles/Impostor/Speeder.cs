@@ -48,18 +48,3 @@ public class Speeder
         ResetSpeed();
     }
 }
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
-public static class PlayerPhysicsSpeedPatch
-{
-    public static void Postfix(PlayerPhysics __instance)
-    {
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-        if (ModeHandler.IsMode(ModeId.Default))
-        {
-            if (RoleClass.Speeder.IsSpeedDown)
-            {
-                __instance.body.velocity /= 10f;
-            }
-        }
-    }
-}

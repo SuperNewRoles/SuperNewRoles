@@ -16,7 +16,7 @@ class WrapUpClass
     {
         if (!AmongUsClient.Instance.AmHost) return;
         OneClickShapeshift.OnStartTurn();
-        ChangeName.SetRoleNames();
+        ChangeName.UpdateRoleNames(ChangeNameType.AllPlayers);
         foreach (PlayerControl p in BotManager.AllBots)
         {
             p.RpcSetName(p.GetDefaultName());
@@ -34,13 +34,7 @@ class WrapUpClass
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
-        AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
-
-        static IEnumerator ResetName()
-        {
-            yield return new WaitForSeconds(1);
-            ChangeName.SetRoleNames();
-        }
+        new LateTask(() => ChangeName.UpdateRoleNames(ChangeNameType.AllPlayers), 1f);
         if (exiled == null) return;
         if (exiled.Object.IsRole(RoleId.Sheriff) || exiled.Object.IsRole(RoleId.truelover) || exiled.Object.IsRole(RoleId.MadMaker))
         {

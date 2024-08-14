@@ -64,7 +64,7 @@ class LateUpdate
 {
     public static void Postfix()
     {
-        LoversBreaker.LateUpdate();
+        // LoversBreaker.LateUpdate();
         LateTask.Update(Time.deltaTime);
     }
 }

@@ -253,14 +253,16 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         infoContents = SampleTestResultsText(firstCrew, secondCrew);
         new LateTask(() => AddChatPatch.ChatInformation(Player, infoName, infoContents, "#259f94", true), 1f);
 
-        if (!isOnryMyself) ChangeName.SetRoleName(Player);
+        if (!isOnryMyself)
+            ChangeName.UpdateRoleName(Player, ChangeNameType.SelfOnly);
     }
 
     public void CloseMeeting()
     {
         IsSHRFirstCool = false;
         SampleCrews = (byte.MaxValue, byte.MaxValue);
-        if (AmongUsClient.Instance.AmHost) ChangeName.SetRoleName(Player);
+        if (AmongUsClient.Instance.AmHost)
+            ChangeName.UpdateRoleName(Player, ChangeNameType.SelfOnly);
     }
 
     // ICheckMurderHandler
@@ -294,7 +296,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             IsSHRFirstCool = false;
             Player.ResetKillCool(GetCoolTime());
         }
-        ChangeName.SetRoleName(Player);
+        ChangeName.UpdateRoleName(Player, ChangeNameType.SelfOnly);
 
         return false;
     }

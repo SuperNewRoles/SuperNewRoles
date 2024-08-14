@@ -47,10 +47,10 @@ public static class OneClickShapeshift
         player.RawSetPet(defaultOutfit.PetId, defaultOutfit.ColorId);
         player.CurrentOutfitType = PlayerOutfitType.Default;
 
-        ChangeName.SetRoleName(player);
+        ChangeName.UpdateRoleName(player, ChangeNameType.SelfOnly);
         new LateTask(() =>
         {
-            ChangeName.SetRoleName(player);
+            ChangeName.UpdateRoleName(player, ChangeNameType.SelfOnly);
             player.RpcSetColor((byte)player.Data.DefaultOutfit.ColorId);
             player.RpcSetHat(player.Data.DefaultOutfit.HatId);
             player.RpcSetSkin(player.Data.DefaultOutfit.SkinId);
@@ -58,7 +58,7 @@ public static class OneClickShapeshift
             player.RpcSetVisor(player.Data.DefaultOutfit.HatId);
             player.RpcSetName(player.GetDefaultName());
             player.SetName(player.GetDefaultName());
-            new LateTask(() => ChangeName.SetRoleName(player), 0.15f);
+            new LateTask(() => ChangeName.UpdateRoleName(player, ChangeNameType.SelfOnly), 0.15f);
         }, 0.2f);
     }
 }

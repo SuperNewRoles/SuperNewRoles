@@ -11,6 +11,7 @@ class Main
         // FixedUpdate.UpdateTime = new Dictionary<byte, float>();
         Patches.OnGameEndPatch.EndData = null;
         EndGameDetail.Reset();
+        ChangeName.ChangeNameBuffers = new();
     }
     public static PlayerControl RealExiled;
 }
