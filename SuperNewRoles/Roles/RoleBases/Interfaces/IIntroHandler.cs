@@ -27,14 +27,14 @@ public interface IIntroHandler
     /// <summary>
     /// IntroCutsceneが破棄された時に呼ばれる(全視点で)
     /// </summary>
-    public void OnIntroDestory()
+    public void OnIntroDestory(IntroCutscene __instance)
     {
 
     }
     /// <summary>
     /// IntroCutsceneが破棄された時に呼ばれる(自分視点で)
     /// </summary>
-    public void OnIntroDestoryMe()
+    public void OnIntroDestoryMe(IntroCutscene __instance)
     {
 
     }

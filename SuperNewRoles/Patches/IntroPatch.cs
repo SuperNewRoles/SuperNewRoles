@@ -196,9 +196,9 @@ public class IntroPatch
                 }
             }
         }
-        public static void Postfix()
+        public static void Postfix(IntroCutscene __instance)
         {
-            CustomRoles.OnIntroDestroy();
+            CustomRoles.OnIntroDestroy(__instance);
             // 昇降右の影
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.ModifyGapRoomOneWayShadow.GetBool() && ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.GapRoom, out var gapRoom))
             {

@@ -25,7 +25,6 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles;
 
@@ -1261,7 +1260,7 @@ public static class ModHelpers
     }
     public static bool Il2CppIs<T1, T2>(this T1 before, out T2 after) where T1 : Il2CppObjectBase where T2 : Il2CppObjectBase
     {
-        after = before.TryCast<T2>();
+        after = before?.TryCast<T2>();
         return after != null;
     }
     public static T[] GetShuffle<T>(this IEnumerable<T> values)
@@ -1292,6 +1291,16 @@ public static class ModHelpers
                 return d;
         return default;
     }
+    public static IEnumerable<T> FindAll<T>(this IEnumerable<T> sources, Predicate<T> match)
+    {
+        foreach (T data in sources)
+        {
+            if (!match(data)) continue;
+            yield return data;
+        }
+    }
+    public static IEnumerable<T2> ConvertAll<T1, T2>(this IEnumerable<T1> sources, Func<T1, T2> func)
+    { foreach (T1 data in sources) yield return func(data); }
 }
 public static class CreateFlag
 {
