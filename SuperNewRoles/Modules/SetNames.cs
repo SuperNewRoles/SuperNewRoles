@@ -68,7 +68,7 @@ public class SetNamesClass
             bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
             player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
             if (
-                (PlayerControl.LocalPlayer.IsImpostor() && (
+                PlayerControl.LocalPlayer.IsImpostor() && (
                   ModeHandler.IsMode(ModeId.HideAndSeek) ||
                   player.IsImpostorAddedFake())
                 )

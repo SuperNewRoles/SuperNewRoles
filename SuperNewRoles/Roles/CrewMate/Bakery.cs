@@ -13,11 +13,16 @@ public class Bakery
     private static TMPro.TextMeshPro confirmImpostorSecondText;
     public static bool Prefix(
         ExileController __instance,
-        [HarmonyArgument(0)] ref NetworkedPlayerInfo exiled,
-        bool tie)
+        ref ExileController.InitProperties init)
     {
-        if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger == null && (Balancer.currentAbilityUser == null || !Balancer.IsDoubleExile)) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
-        
+        if (RoleClass.Assassin.TriggerPlayer == null &&
+            RoleClass.Revolutionist.MeetingTrigger == null &&
+            (Balancer.currentAbilityUser == null || !Balancer.IsDoubleExile) &&
+            !Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
+            return true;
+
+        __instance.initData = init;
+
         string printStr = "";
 
         if (RoleClass.Assassin.TriggerPlayer != null)
@@ -31,7 +36,7 @@ public class Bakery
 
             PlayerControl player = RoleClass.Assassin.TriggerPlayer;
 
-            var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
+            var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : init?.networkedPlayer?.Object;
             if (exile != null && exile.IsRole(RoleId.Marlin))
             {
                 printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSuccess");
@@ -44,7 +49,7 @@ public class Bakery
                 RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
             }
             RoleClass.Assassin.TriggerPlayer = null;
-            __instance.exiled = null;
+            __instance.initData = ModHelpers.GenerateExileInitProperties(null, false);
             __instance.Player.gameObject.SetActive(false);
             __instance.completeString = printStr;
             __instance.ImpostorText.text = string.Empty;
@@ -61,17 +66,17 @@ public class Bakery
             __instance.Text.text = string.Empty;
 
 
-            var exile = exiled.Object;
+            var exile = init?.networkedPlayer?.Object;
             if (exile != null && exile.IsRole(RoleId.Dictator))
             {
-                printStr = exiled.PlayerName + ModTranslation.GetString("RevolutionistSuccess");
+                printStr = init?.networkedPlayer?.PlayerName + ModTranslation.GetString("RevolutionistSuccess");
             }
             else
             {
-                printStr = exiled.PlayerName + ModTranslation.GetString(
+                printStr = init?.networkedPlayer?.PlayerName + ModTranslation.GetString(
                     "RevolutionistFail");
             }
-            __instance.exiled = null;
+            init = ModHelpers.GenerateExileInitProperties(null, false);
             __instance.Player.gameObject.SetActive(false);
             __instance.completeString = printStr;
             __instance.ImpostorText.text = string.Empty;
@@ -83,17 +88,16 @@ public class Bakery
             if (!IsSec)
             {
                 IsSec = true;
-                __instance.exiled = null;
+                __instance.initData.networkedPlayer = null;
                 ExileController controller = GameObject.Instantiate(__instance, __instance.transform.parent);
-                controller.exiled = Balancer.targetplayerright.Data;
-                controller.Begin(controller.exiled, false);
+                controller.Begin(ModHelpers.GenerateExileInitProperties(Balancer.targetplayerright.Data, false));
                 IsSec = false;
                 controller.completeString = string.Empty;
 
                 controller.Text.gameObject.SetActive(false);
-                controller.Player.UpdateFromEitherPlayerDataOrCache(controller.exiled, PlayerOutfitType.Default, PlayerMaterial.MaskType.Exile, includePet: false);
+                controller.Player.UpdateFromEitherPlayerDataOrCache(controller.initData.networkedPlayer, PlayerOutfitType.Default, PlayerMaterial.MaskType.Exile, includePet: false);
                 controller.Player.ToggleName(active: false);
-                SkinViewData skin = ShipStatus.Instance.CosmeticsCache.GetSkin(controller.exiled.Outfits[PlayerOutfitType.Default].SkinId);
+                SkinViewData skin = ShipStatus.Instance.CosmeticsCache.GetSkin(controller.initData.outfit.SkinId);
                 controller.Player.FixSkinSprite(skin.EjectFrame);
                 AudioClip sound = null;
                 if (controller.EjectSound != null)
@@ -112,8 +116,7 @@ public class Bakery
                 }
                 new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f);
                 ExileController.Instance = __instance;
-                __instance.exiled = Balancer.targetplayerleft.Data;
-                exiled = __instance.exiled;
+                init = ModHelpers.GenerateExileInitProperties(Balancer.targetplayerleft.Data, false);
                 if (ModHelpers.IsMap(MapNames.Fungle))
                 {
                     ModHelpers.SetActiveAllObject(controller.gameObject.GetChildren(), "RaftAnimation", false);
@@ -124,8 +127,8 @@ public class Bakery
         }
         if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
         {
-            return Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, exiled, tie);
-        };
+            return Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, init);
+        }
         return false;
     }
     static bool IsSec;
@@ -196,7 +199,7 @@ public class Bakery
 
         // |:================================================:|
 
-        if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance.exiled?.PlayerId == Balancer.targetplayerleft.PlayerId)
+        if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance.initData?.networkedPlayer?.PlayerId == Balancer.targetplayerleft.PlayerId)
         {
             __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
         }
