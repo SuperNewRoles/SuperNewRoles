@@ -17,11 +17,4 @@ public static class AmongUsUtil
         if (IsCamTargetIsPlayer) PlayerControl.LocalPlayer.NetTransform.Halt();
         DestroyableSingleton<HudManager>.Instance.PlayerCam.Target = target ?? PlayerControl.LocalPlayer;
     }
-
-    public static void ToggleCamTarget(MonoBehaviour target1 = null, MonoBehaviour target2 = null)
-    {
-        if (target1 == null) target1 = PlayerControl.LocalPlayer;
-        if (target2 == null) target2 = PlayerControl.LocalPlayer;
-        SetCamTarget(CurrentCamTarget != target1 ? target1 : target2);
-    }
 }

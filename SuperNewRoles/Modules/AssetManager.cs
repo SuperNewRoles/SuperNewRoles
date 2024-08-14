@@ -22,7 +22,7 @@ public static class AssetManager
     private static Tuple<AssetBundleType, string>[] AssetPathes = new Tuple<AssetBundleType, string>[4]
     {
         new(AssetBundleType.Sprite, "snrsprites"),
-        new(AssetBundleType.Sound, "SNRSounds"),
+        new(AssetBundleType.Sound, "snrsounds"),
         new(AssetBundleType.Wavecannon, "WaveCannon.WaveCannonEffects"),
         new(AssetBundleType.BodyBuilder, "BodyBuilder.BodyBuilderPoses")
     };
