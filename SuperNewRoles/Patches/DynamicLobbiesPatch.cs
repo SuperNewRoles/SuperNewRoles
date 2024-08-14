@@ -222,10 +222,4 @@ public static class DynamicLobbies
             Logger.Info("Send all data message", "SendInitialData");
         }
     }
-
-    [HarmonyPatch(typeof(GameData), nameof(GameData.DirtyAllData))]
-    public static class GameDataDirtyAllDataPatch
-    {
-        public static bool Prefix() { return false; }
-    }
 }
