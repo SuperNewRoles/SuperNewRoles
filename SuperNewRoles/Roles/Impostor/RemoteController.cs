@@ -66,15 +66,14 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         TargetIcon = null;
         _UnderOperation = false;
         Timer = 2.5f;
-        if (player.AmOwner)
-        {
-            LightChild = new("RemoteLightChild") { layer = LayerExpansion.GetShadowLayer() };
-            LightChild.transform.position = new();
-            LightChild.transform.localScale = Vector3.one;
-            LightSource source = PlayerControl.LocalPlayer.LightPrefab;
-            LightChild.AddComponent<MeshFilter>().mesh = source.lightChildMesh;
-            LightChild.AddComponent<MeshRenderer>().material.shader = source.LightCutawayMaterial.shader;
-        }
+
+        LightChild = new("RemoteLightChild") { layer = LayerExpansion.GetShadowLayer() };
+        LightChild.transform.position = new();
+        LightChild.transform.localScale = Vector3.zero;
+        LightSource source = PlayerControl.LocalPlayer.LightPrefab;
+        LightChild.AddComponent<MeshFilter>().mesh = source.lightChildMesh;
+        LightChild.AddComponent<MeshRenderer>().material.shader = source.LightCutawayMaterial.shader;
+
         MarkingButton = new(
             null, this, MarkingButtonOnClick, alive => alive, CustomButtonCouldType.SetTarget | CustomButtonCouldType.CanMove, MarkingButtonOnMeetingEnd,
             AssetManager.GetAsset<Sprite>("RemoteControllerOperationButton.png", AssetManager.AssetBundleType.Sprite),
@@ -209,7 +208,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
 
     public void MarkingButtonOnClick()
     {
-        PlayerControl target = MarkingButton.SetTarget();
+        PlayerControl target = MarkingButton.CurrentTarget;
         if (target == null) return;
         new LateTask(() =>
         {
@@ -258,7 +257,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         if (TargetPlayer.inVent && ShipStatus.Instance.Systems[SystemTypes.Ventilation].Il2CppIs(out VentilationSystem ventilation))
         {
             TargetPlayer.MyPhysics.RpcExitVent(ventilation.PlayersInsideVents.TryGetValue(TargetPlayer.PlayerId, out byte value) ? value : 0);
-            ModHelpers.VentById(value).SetButtons(false);
+            ModHelpers.VentById(value)?.SetButtons(false);
         }
 
         MessageWriter writer = RpcWriter;
@@ -348,7 +347,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         if (Player.AmOwner)
         {
             AmongUsUtil.SetCamTarget(null);
-            Object.Destroy(LightChild);
+            LightChild.transform.localScale = Vector3.zero;
         }
         TargetPlayer = null;
         _UnderOperation = false;
@@ -517,14 +516,14 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
     }
 
     [HarmonyPatch(typeof(CustomNetworkTransform))]
-    public static class PlayerPhysicsPatch
+    public static class CustomNetworkTransformPatch
     {
         [HarmonyPatch(nameof(CustomNetworkTransform.Deserialize)), HarmonyPrefix]
         public static bool DeserializePrefix(CustomNetworkTransform __instance)
         {
-            if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role) ||
-                !role.UnderOperation || role.TargetPlayer != __instance.myPlayer) return true;
-            return false;
+            if (PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role) &&
+                role.UnderOperation && role.TargetPlayer == __instance.myPlayer) return false;
+            return true;
         }
     }
 
@@ -532,7 +531,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
     public static class LightSourcePatch
     {
         [HarmonyPatch(nameof(LightSource.Update)), HarmonyPostfix]
-        public static void UpdatePrefix()
+        public static void UpdatePostfix()
         {
             if (!PlayerControl.LocalPlayer.TryGetRoleBase(out RemoteController role)) return;
             if (role.UnderOperation)
