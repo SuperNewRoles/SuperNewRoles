@@ -159,7 +159,7 @@ public class CustomButton
             }
             catch (Exception e)
             {
-                if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
+                if (DebugModeManager.IsDebugMode) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
             }
             index++;
         }

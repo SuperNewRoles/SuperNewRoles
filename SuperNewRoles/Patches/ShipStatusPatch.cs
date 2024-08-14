@@ -130,7 +130,7 @@ class UpdateSystemPatch
             SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Comms)
             {
-                ChangeName.SetRoleNames();
+                ChangeName.UpdateRoleNames(ChangeNameType.SelfOnly);
             }
         }
     }

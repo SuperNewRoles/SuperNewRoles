@@ -142,7 +142,7 @@ public class Chief : RoleBase, ICrewmate, ICustomButton, IRpcHandler, ISupportSH
                         player.RpcSetRoleDesync(RoleTypes.Scientist, true, target);
                     }
                 }
-                ChangeName.SetRoleName(target);
+                ChangeName.UpdateRoleName(target, ChangeNameType.SelfOnly);
                 target.RpcShowGuardEffect(target);
             }, 0.25f);
 

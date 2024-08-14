@@ -66,7 +66,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
         /// <value>true : 送信しない / false : 送信する</value>
         private static bool IsDebugGameData => !WebConstants.IsWebDebug && IsGamePlayDebug;
         private static bool IsGamePlayDebug => // Mod(web以外)の動作確認中か
-            ConfigRoles.DebugMode.Value || AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay;
+            DebugModeManager.IsDebugMode || AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay;
 
         public static void OnGameEndSet(Dictionary<int, FinalStatus> FinalStatuss)
         {

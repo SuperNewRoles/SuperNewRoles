@@ -94,7 +94,7 @@ public static class DeviceClass
     {
         public static bool Prefix(MapConsole __instance)
         {
-            if (ConfigRoles.DebugMode.Value)
+            if (DebugModeManager.IsDebugMode)
             {
                 Logger.Info($"Admin Coordinate(x):{__instance.transform.position.x}", "Debug Mode");
                 Logger.Info($"Admin Coordinate(y):{__instance.transform.position.y}", "Debug Mode");

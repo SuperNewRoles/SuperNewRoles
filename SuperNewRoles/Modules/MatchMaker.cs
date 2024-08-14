@@ -329,7 +329,7 @@ public static class MatchTagOption
 
         // デバッグ : 600600 ~
         Color debugColor = (Color)Roles.RoleClass.Debugger.color;
-        bool notDebugMode = !ConfigRoles.DebugMode.Value;
+        bool notDebugMode = !DebugModeManager.IsDebugMode;
         DebugNewRolesTag = CreateMatchMakeTag(600700, true, Cs(debugColor, "DebugNewRolesTag"), false, null, isHeader: true, isHidden: notDebugMode);
         DebugNewFeaturesTag = CreateMatchMakeTag(600701, true, Cs(debugColor, "DebugNewFeaturesTag"), false, null, isHidden: notDebugMode);
         DebugAddFeaturesTag = CreateMatchMakeTag(600702, true, Cs(debugColor, "DebugAddFeaturesTag"), false, null, isHidden: notDebugMode);

@@ -9,7 +9,7 @@ public static class Zoom
 {
     public static void HudUpdate(HudManager __instance)
     {
-        if (ModeHandler.IsMode(ModeId.Default) && IsMouseZoom && CachedPlayer.LocalPlayer.Data.IsDead)
+        if (IsMouseZoom && CachedPlayer.LocalPlayer.Data.IsDead && ModeHandler.IsMode(ModeId.Default))
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {

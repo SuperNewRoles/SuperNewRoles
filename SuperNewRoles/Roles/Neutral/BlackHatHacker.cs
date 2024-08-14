@@ -347,27 +347,48 @@ public class BlackHatHacker
             }));
         }
 
+        private static GameObject PageTab;
+        private static GameObject ChangeTab;
+        private static TextMeshPro ChangeTabTextTMP;
+        private static TextMeshPro PageTabTextTMP;
+        private static TextMeshPro TabTextTMP;
+        private static ImportantTextTask RoleTaskTMP;
+
         [HarmonyPatch(nameof(HudManager.Update)), HarmonyPostfix]
         public static void UpdatePostfix(HudManager __instance)
         {
-            GameObject ChangeTab = __instance.TaskPanel?.transform.Find("ChangeTab")?.gameObject;
+            if (PageTab == null)
+                PageTab = __instance.TaskPanel?.transform?.Find("PageTab").gameObject;
+            if (ChangeTab == null)
+                ChangeTab = __instance.TaskPanel?.transform?.Find("ChangeTab")?.gameObject;
+            if (ChangeTabTextTMP == null)
+                ChangeTabTextTMP = ChangeTab.transform?.Find("ChangeTabText_TMP").GetComponent<TextMeshPro>();
+            if (PageTabTextTMP == null)
+                PageTabTextTMP = PageTab.transform?.Find("PageTabText_TMP").GetComponent<TextMeshPro>();
+            if (TabTextTMP == null)
+                TabTextTMP = __instance.TaskPanel?.tab?.transform?.Find("TabText_TMP").GetComponent<TextMeshPro>();
+
             ChangeTab.SetActive(PlayerControl.LocalPlayer.IsRole(RoleId.BlackHatHacker) || (PlayerControl.LocalPlayer.IsDead() && BlackHatHackerPlayerCount.GetSelection() != 0));
             Vector3 pos = ChangeTab.transform.localPosition;
             pos.x = __instance.TaskPanel.tab.transform.localPosition.x;
             ChangeTab.transform.localPosition = pos;
-            ChangeTab.transform.Find("ChangeTabText_TMP").GetComponent<TextMeshPro>().text = TaskTab ? ModTranslation.GetString("BlackHatHackerStatusOfInfection") : TaskText;
-            __instance.TaskPanel.tab.transform.Find("TabText_TMP").GetComponent<TextMeshPro>().text = !TaskTab && PlayerControl.LocalPlayer.IsRole(RoleId.BlackHatHacker) ?
-                                                                                                       ModTranslation.GetString("BlackHatHackerStatusOfInfection") : TaskText;
+            ChangeTabTextTMP.text = TaskTab ? ModTranslation.GetString("BlackHatHackerStatusOfInfection") : TaskText;
+            TabTextTMP.text = !TaskTab && PlayerControl.LocalPlayer.IsRole(RoleId.BlackHatHacker) ?
+                ModTranslation.GetString("BlackHatHackerStatusOfInfection") : TaskText;
 
-            GameObject PageTab = __instance.TaskPanel.transform.Find("PageTab").gameObject;
             PageTab.SetActive(!TaskTab && PlayerControl.LocalPlayer.IsDead());
             pos = PageTab.transform.localPosition;
             pos.x = __instance.TaskPanel.tab.transform.localPosition.x;
             PageTab.transform.localPosition = pos;
-            PageTab.transform.Find("PageTabText_TMP").GetComponent<TextMeshPro>().text = ModTranslation.GetString("BlackHatHackerPageChange");
-
+            PageTabTextTMP.text = ModTranslation.GetString("BlackHatHackerPageChange");
 
             if (TaskTab) return;
+
+            if (RoleTaskTMP == null)
+                RoleTaskTMP = PlayerControl.LocalPlayer.transform?.Find("RoleTask").GetComponent<ImportantTextTask>();
+
+            StringBuilder text = new(RoleTaskTMP.Text);
+            text.AppendLine();
             if (PlayerControl.LocalPlayer.IsAlive())
             {
                 if (!PlayerControl.LocalPlayer.IsRole(RoleId.BlackHatHacker))
@@ -376,24 +397,17 @@ public class BlackHatHacker
                     return;
                 }
                 if (!InfectionTimer.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) return;
-                StringBuilder text = new();
-                text.AppendLine(PlayerControl.LocalPlayer.transform.Find("RoleTask").GetComponent<ImportantTextTask>().Text);
-                text.AppendLine();
                 foreach (KeyValuePair<byte, float> data in InfectionTimer[PlayerControl.LocalPlayer.PlayerId])
                 {
                     double percentage = Math.Floor(data.Value / BlackHatHackerHackInfectiousTime.GetFloat() * 1000) / 1000;
                     string sabtext = !DeadPlayers.Contains(data.Key) ? (percentage < 1 ? percentage.ToString("P1") : ModTranslation.GetString("BlackHatHackerInfected")) : ModTranslation.GetString("FinalStatusDead");
                     text.AppendLine($"{ModHelpers.PlayerById(data.Key).Data.PlayerName}<pos=125%>{sabtext}");
                 }
-                __instance.TaskPanel.SetTaskText(text.ToString());
             }
-            else if (PlayerControl.LocalPlayer.IsDead())
+            else
             {
                 if (Page >= InfectionTimer.Count) Page = 0;
                 byte key = InfectionTimer.Keys.ToList()[Page];
-                StringBuilder text = new();
-                text.AppendLine(PlayerControl.LocalPlayer.transform.Find("RoleTask").GetComponent<ImportantTextTask>().Text);
-                text.AppendLine();
                 text.AppendLine($"{ModHelpers.PlayerById(key).Data.PlayerName} ({Page + 1} / {InfectionTimer.Count})");
                 foreach (KeyValuePair<byte, float> data in InfectionTimer[key])
                 {
@@ -401,8 +415,8 @@ public class BlackHatHacker
                     string sabtext = !DeadPlayers.Contains(data.Key) ? (percentage < 1 ? percentage.ToString("P1") : ModTranslation.GetString("BlackHatHackerInfected")) : ModTranslation.GetString("FinalStatusDead");
                     text.AppendLine($"{ModHelpers.PlayerById(data.Key).Data.PlayerName}<pos=125%>{sabtext}");
                 }
-                __instance.TaskPanel.SetTaskText(text.ToString());
             }
+            __instance.TaskPanel.SetTaskText(text.ToString());
         }
     }
 }
