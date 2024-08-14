@@ -118,7 +118,7 @@ static class HudManagerStartPatch
         //クールダウンリセット
     }
 
-    public static PlayerControl SetTarget(List<PlayerControl> untarget = null, bool Crewmateonly = false)
+    public static PlayerControl SetTarget(IEnumerable<PlayerControl> untarget = null, bool Crewmateonly = false)
     {
         return PlayerControlFixedUpdatePatch.SetTarget(untargetablePlayers: untarget, onlyCrewmates: Crewmateonly);
     }

@@ -17,11 +17,13 @@ using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
@@ -46,6 +48,42 @@ public class UsePlatformPlayerControlPatch
         return false;
     }
 }
+
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
+public static class PlayerPhysicsFixedUpdatePatch
+{
+    public static void Postfix(PlayerPhysics __instance)
+    {
+        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            return;
+        CustomRoles.OnPhysicsFixedUpdate(__instance);
+        InvisibleRole.PlayerPhysics_Postfix(__instance);
+        if (!ModeHandler.IsMode(ModeId.Default))
+            return;
+        RoleId PlayerRole = __instance.myPlayer.GetRole();
+        if (PlayerRole == RoleId.Kunoichi)
+            Kunoichi.PlayerPhysicsScientistPostfix(__instance);
+        else if (__instance.AmOwner && GameData.Instance && __instance.myPlayer.CanMove)
+        {
+            if (PlayerRole is RoleId.SpeedBooster or RoleId.EvilSpeedBooster)
+                SpeedBooster.PlayerPhysicsSpeedPatchPostfix(__instance);
+            else if (PlayerRole == RoleId.Squid && Squid.Abilitys.IsBoostSpeed)
+                __instance.body.velocity *= Squid.SquidBoostSpeed.GetFloat();
+        }
+        if (__instance.AmOwner && RoleClass.Speeder.IsSpeedDown ||
+            RoleClass.Freezer.IsSpeedDown ||
+            WaveCannonObject.Objects.Contains(__instance.myPlayer) ||
+            JumpDancer.JumpingPlayerIds.ContainsKey(__instance.myPlayer.PlayerId) ||
+            SpiderTrap.CatchingPlayers.ContainsKey(__instance.myPlayer.PlayerId) ||
+            RoleClass.Penguin.PenguinData.Any(x => x.Value != null && x.Value.PlayerId == __instance.myPlayer.PlayerId) ||
+            Rocket.RoleData.RocketData.Any(x => x.Value.Any(y => y.PlayerId == __instance.myPlayer.PlayerId))
+            )
+        {
+            __instance.body.velocity = new Vector2(0f, 0f);
+        }
+    }
+}
+
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
 public static class PlayerControlStartMeetingPatch
 {
@@ -474,7 +512,7 @@ class ReportDeadBodyPatch
 }
 public static class PlayerControlFixedUpdatePatch
 {
-    public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+    public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, IEnumerable<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
     {
         PlayerControl result = null;
         float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];

@@ -10,9 +10,9 @@ class KillOverlayA
     [HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.Initialize))]
     public static class OverlayKillAnimationInitializePatch
     {
-        public static void Postfix(OverlayKillAnimation __instance, NetworkedPlayerInfo kInfo, NetworkedPlayerInfo vInfo)
+        public static void Postfix(OverlayKillAnimation __instance, KillOverlayInitData initData)
         {
-            if (kInfo.PlayerId == vInfo.PlayerId)
+            if (initData.killerOutfit == initData.victimOutfit)
             {
                 if (!AprilFoolsMode.ShouldHorseAround())
                 {
@@ -43,13 +43,12 @@ class KillOverlayA
             }
         }
     }
-    [HarmonyPatch(typeof(KillOverlay), "ShowKillAnimation", new Type[] { typeof(OverlayKillAnimation), typeof(NetworkedPlayerInfo), typeof(NetworkedPlayerInfo) })]
+    [HarmonyPatch(typeof(KillOverlay), nameof(KillOverlay.ShowKillAnimation), [typeof(OverlayKillAnimation), typeof(KillOverlayInitData)])]
     public static class KillOverlayShowKillAnimationPatch
     {
-        public static void Prefix(KillOverlay __instance, ref OverlayKillAnimation killAnimation, NetworkedPlayerInfo killer, NetworkedPlayerInfo victim)
+        public static void Prefix(KillOverlay __instance, ref OverlayKillAnimation killAnimation, KillOverlayInitData initData)
         {
-            Logger.Info("Cohkoejhgmm\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ned!");
-            if (killer.PlayerId == victim.PlayerId)
+            if (initData.killerOutfit == initData.victimOutfit)
             {
                 //int index = ModHelpers.GetRandomIndex(__instance.KillAnims.ToList());
                 //0を変えることで強制的にキルアニメーションが変わる

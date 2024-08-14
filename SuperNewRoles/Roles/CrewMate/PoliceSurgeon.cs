@@ -193,8 +193,8 @@ internal static class PoliceSurgeon_AddActualDeathTime
         // 追放による死亡を記録する。(Airship以外)
         static void WrapUp_Postfix(ExileController __instance)
         {
-            if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
-            PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
+            if (__instance.initData?.networkedPlayer?.Object == null) __instance.initData.networkedPlayer = null;
+            PlayerControl exiledObject = __instance.initData.networkedPlayer != null ? __instance.initData.networkedPlayer.Object : null;
             AddActualDeathTime(DeadTiming.Exited, exiledObject);
         }
 
@@ -202,8 +202,8 @@ internal static class PoliceSurgeon_AddActualDeathTime
         // 追放による死亡を記録する。(Airship)
         static void WrapUpAndSpawn_Postfix(AirshipExileController __instance)
         {
-            if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
-            PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
+            if (__instance.initData?.networkedPlayer?.Object == null) __instance.initData.networkedPlayer = null;
+            PlayerControl exiledObject = __instance.initData?.networkedPlayer?.Object;
             AddActualDeathTime(DeadTiming.Exited, exiledObject);
         }
 #pragma warning restore 8321

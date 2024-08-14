@@ -225,8 +225,8 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         CanSidekick = false;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
         {
-            ChangeName.SetRoleName(Player);//名前も変える
-            ChangeName.SetRoleName(player);//名前も変える
+            ChangeName.UpdateRoleName(Player, ChangeNameType.AllPlayers); //名前も変える
+            ChangeName.UpdateRoleName(player, ChangeNameType.AllPlayers); //名前も変える
             SyncSetting.CustomSyncSettings(player);
         }
     }
@@ -278,7 +278,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         if (jackal.DesyncRole == RoleTypes.Shapeshifter)
             OneClickShapeshift.OneClickShaped(CreatedSidekickControl);
         CreatedSidekickControl.RpcShowGuardEffect(CreatedSidekickControl);
-        ChangeName.SetRoleName(CreatedSidekickControl);
+        ChangeName.UpdateRoleName(CreatedSidekickControl, ChangeNameType.SelfOnly);
         SyncSetting.CustomSyncSettings(CreatedSidekickControl);
     }
 
@@ -342,7 +342,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         if (!CanSidekick)
             return;
         SHR_IsSidekickMode = !SHR_IsSidekickMode;
-        ChangeName.SetRoleName(Player);
+        ChangeName.UpdateRoleName(Player, ChangeNameType.SelfOnly);
         return;
     }
     public void StartAntiBlackout()

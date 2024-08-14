@@ -39,7 +39,7 @@ public class CustomButtonInfo
     private CustomButtonCouldType CouldUseType { get; }
     private Func<bool> CouldUseFunc { get; }
     private Action OnMeetingEndsFunc { get; }
-    private Func<List<PlayerControl>> UntargetPlayer { get; }
+    private Func<IEnumerable<PlayerControl>> UntargetPlayer { get; }
     private Func<bool> TargetCrewmateOnly { get; }
     private Func<bool> StopCountCoolFunc { get; }
     private Func<float> GetCoolTimeFunc { get; }
@@ -112,7 +112,7 @@ public class CustomButtonInfo
         Action OnEffectEnds = null,
         bool HasAbilityCountText = false,
         string AbilityCountTextFormat = null,
-        Func<List<PlayerControl>> SetTargetUntargetPlayer = null,
+        Func<IEnumerable<PlayerControl>> SetTargetUntargetPlayer = null,
         Func<bool> SetTargetCrewmateOnly = null,
         Func<PlayerControl> SetTargetFunc = null,
         bool hasSecondButtonInfo = false)
