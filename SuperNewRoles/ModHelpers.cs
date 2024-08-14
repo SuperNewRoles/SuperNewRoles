@@ -659,12 +659,31 @@ public static class ModHelpers
         writer.Write((ushort)role);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
+    public static void InitClientCache()
+    {
+        PlayerClients = new();
+        PlayerClientIds = new(defaultvalue: -1);
+        foreach (InnerNet.ClientData clientData in AmongUsClient.Instance.allClients)
+        {
+            PlayerClients[clientData.Character] = clientData;
+            PlayerClientIds[clientData.Character] = clientData.Id;
+        }
+    }
+    public static void DestoryClientCache()
+    {
+        PlayerClients = null;
+        PlayerClientIds = null;
+    }
+    private static PlayerData<InnerNet.ClientData> PlayerClients;
+    private static PlayerData<int> PlayerClientIds;
     public static InnerNet.ClientData GetClient(this PlayerControl player)
     {
         if (AmongUsClient.Instance?.allClients == null)
             return null;
-        var client = AmongUsClient.Instance.allClients.FirstOrDefault(cd => cd.Character != null && cd.Character.PlayerId == player.PlayerId);
-        return client;
+        if (PlayerClients == null)
+            return AmongUsClient.Instance.allClients.FirstOrDefault(cd => cd.Character != null && cd.Character.PlayerId == player.PlayerId);
+        else
+            return PlayerClients[player];
     }
     public static T FirstOrDefault<T>(this Il2CppSystem.Collections.Generic.List<T> list, Func<T, bool> func)
     {
@@ -761,20 +780,14 @@ public static class ModHelpers
     }
     public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
-        List<T> newList = new(list.Count);
-        foreach (T item in list)
-        {
-            newList.Add(item);
-        }
+        List<T> newList = [.. list];
         return newList;
     }
     public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this IEnumerable<T> list)
     {
-        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count());
+        Il2CppSystem.Collections.Generic.List<T> newList = new();
         foreach (T item in list)
-        {
             newList.Add(item);
-        }
         return newList;
     }
     public static AudioClip loadAudioClipFromWavResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
@@ -821,8 +834,15 @@ public static class ModHelpers
     }
     public static int GetClientId(this PlayerControl player)
     {
-        var client = player.GetClient();
-        return client == null ? -1 : client.Id;
+        if (PlayerClientIds == null)
+        {
+            var client = player.GetClient();
+            return client == null ? -1 : client.Id;
+        }
+        else
+        {
+            return PlayerClientIds[player];
+        }
     }
     public static bool IsSuccessChance(int SuccessChance, int MaxChance = 10)
     {

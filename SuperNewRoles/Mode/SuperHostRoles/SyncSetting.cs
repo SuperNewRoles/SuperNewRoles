@@ -236,10 +236,9 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, MadRaccoon.RoleData.ShapeshifterDuration);
                 break;
             case RoleId.Madmate:
+            case RoleId.JackalFriends:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
-                break;
-            case RoleId.JackalFriends:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 60f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
@@ -274,38 +273,7 @@ public static class SyncSetting
         OptionDatas[player] = optdata.DeepCopy();
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }
-    public static void MurderSyncSetting(PlayerControl player)
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-        IGameOptions optdata = OptionDatas[player].DeepCopy();
-        bool blackout = false;
-        if (MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
-        {
-            SwitchSystem system = elec.CastFast<SwitchSystem>();
-            blackout = system != null && system.IsActive;
-        }
-
-
-        switch (player.GetRole())
-        {
-            case RoleId.Demon:
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Demon.CoolTime) * 2);
-                break;
-            case RoleId.Arsonist:
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Arsonist.CoolTime) * 2);
-                optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
-                if (blackout) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 1f);
-                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
-                break;
-            default:
-                return;
-        }
-        optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
-        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        else optdata.RpcSyncOption(player.GetClientId());
-    }
+    
     public static void GamblersetCool(PlayerControl player)
     {
         if (!AmongUsClient.Instance.AmHost) return;

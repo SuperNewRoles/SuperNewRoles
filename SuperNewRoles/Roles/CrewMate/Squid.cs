@@ -229,19 +229,6 @@ public class Squid
             }
         }
     }
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
-    public static class PlayerPhysicsSpeedPatch
-    {
-        public static void Postfix(PlayerPhysics __instance)
-        {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (ModeHandler.IsMode(ModeId.Default))
-            {
-                if (__instance.AmOwner && __instance.myPlayer.IsRole(RoleId.Squid) && Abilitys.IsBoostSpeed && __instance.myPlayer.CanMove && GameData.Instance)
-                    __instance.body.velocity *= SquidBoostSpeed.GetFloat();
-            }
-        }
-    }
     public class Ability
     {
         public bool IsKillGuard;

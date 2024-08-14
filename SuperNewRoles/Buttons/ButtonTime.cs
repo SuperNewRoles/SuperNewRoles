@@ -9,14 +9,35 @@ class ButtonTime
 {
     public static void Update()
     {
-        SpeedBoosterButton();
-        EvilSpeedBoosterButton();
-        LighterButton();
-        MovingButton();
-        TeleporterButton();
-        HawkDuration();
+        RoleId currentRole = PlayerControl.LocalPlayer.GetRole();
+        switch (currentRole)
+        {
+            case RoleId.SpeedBooster:
+                SpeedBoosterButton();
+                break;
+            case RoleId.EvilSpeedBooster:
+                EvilSpeedBoosterButton();
+                break;
+            case RoleId.Lighter:
+                LighterButton();
+                break;
+            case RoleId.Moving:
+            case RoleId.EvilMoving:
+                MovingButton();
+                break;
+            case RoleId.Teleporter:
+            case RoleId.NiceTeleporter:
+                TeleporterButton();
+                break;
+            case RoleId.Hawk:
+            case RoleId.MadHawk:
+                HawkDuration();
+                break;
+            case RoleId.Camouflager:
+                CamouflagerButton();
+                break;
+        }
         Patches.Clairvoyant.ClairvoyantDuration();
-        CamouflagerButton();
     }
     public static void HawkDuration()
     {
