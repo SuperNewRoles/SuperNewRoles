@@ -1299,7 +1299,17 @@ public static class ModHelpers
             yield return data;
         }
     }
+    public static IEnumerable<T> FindAll<T>(this Il2CppSystem.Collections.Generic.List<T> sources, Predicate<T> match)
+    {
+        foreach (T data in sources)
+        {
+            if (!match(data)) continue;
+            yield return data;
+        }
+    }
     public static IEnumerable<T2> ConvertAll<T1, T2>(this IEnumerable<T1> sources, Func<T1, T2> func)
+    { foreach (T1 data in sources) yield return func(data); }
+    public static IEnumerable<T2> ConvertAll<T1, T2>(this Il2CppSystem.Collections.Generic.List<T1> sources, Func<T1, T2> func)
     { foreach (T1 data in sources) yield return func(data); }
 }
 public static class CreateFlag

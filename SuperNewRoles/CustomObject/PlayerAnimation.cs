@@ -33,7 +33,8 @@ public class PlayerAnimation
     }
     public PlayerAnimation(PlayerControl Player)
     {
-        if (PlayerAnimations.Values.FirstOrDefault(anim => anim.Player != null) == null) PlayerAnimations = new();
+        if (PlayerAnimations.Values.FirstOrDefault(anim => anim.Player != null) == null)
+            PlayerAnimations = new();
         this.Player = Player;
         if (Player == null)
         {

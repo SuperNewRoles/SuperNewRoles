@@ -71,6 +71,8 @@ public class Slugger : RoleBase, IWrapUpHandler, IImpostor, ICustomButton, IRpcH
     }
     public void OnEffectEnds()
     {
+        if (RoleClass.IsMeeting)
+            return;
         List<PlayerControl> targets = new();
         //一気にキルできるか。後に設定で変更可に
         if (IsMultiKill.GetBool())
