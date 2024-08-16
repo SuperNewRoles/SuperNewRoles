@@ -140,10 +140,7 @@ class MeetingSheriff_Patch
 
     static void Postfix(MeetingHud __instance)
     {
-        if (AmongUsClient.Instance.AmHost)
-        {
-            PlayerAnimation.PlayerAnimations.Values.All(x => { x.RpcAnimation(RpcAnimationType.Stop); return false; });
-        }
+        new LateTask(() => PlayerAnimation.PlayerAnimations.Values.All(x => { x.HandleAnim(RpcAnimationType.Stop); return false; }), 0.5f);
         LadderDead.Reset();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
