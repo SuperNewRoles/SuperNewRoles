@@ -10,6 +10,9 @@ class CacheManager
     public static Dictionary<int, PlayerControl> LoversCache;
     public static Dictionary<int, PlayerControl> FakeLoversCache;
     public static Dictionary<int, PlayerControl> QuarreledCache;
+    public static Dictionary<byte, PlayerVoteArea> PlayerVoteAreaCache;
+    private static int lastMeetingHud;
+
     public static void Load()
     {
         MyRoleCache = new();
@@ -18,6 +21,7 @@ class CacheManager
         LoversCache = new();
         FakeLoversCache = new();
         QuarreledCache = new();
+        PlayerVoteAreaCache = new();
     }
     public static void ResetCache()
     {
@@ -26,6 +30,10 @@ class CacheManager
         ResetLoversCache();
         ResetMyRoleCache();
         ResetMyGhostRoleCache();
+    }
+    private static void ResetCacheMeeting()
+    {
+        ResetPlayerVoteAreaCache();
     }
     public static void ResetQuarreledCache()
     {
@@ -62,5 +70,31 @@ class CacheManager
         {
             MyGhostRoleCache[p.PlayerId] = p.GetGhostRole(false);
         }
+    }
+    private static void ResetPlayerVoteAreaCache()
+    {
+        if (!MeetingHud.Instance)
+        {
+            PlayerVoteAreaCache = null;
+            return;
+        }
+        PlayerVoteAreaCache = new();
+        foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+        {
+            PlayerVoteAreaCache[player.TargetPlayerId] = player;
+        }
+        if (PlayerVoteAreaCache.Count == 0)
+            PlayerVoteAreaCache = null;
+        lastMeetingHud = MeetingHud.Instance.GetInstanceID();
+    }
+    public static PlayerVoteArea GetVoteAreaById(byte playerId)
+    {
+        if (!MeetingHud.Instance)
+            return null;
+        if (lastMeetingHud != MeetingHud.Instance.GetInstanceID() || PlayerVoteAreaCache == null)
+            ResetPlayerVoteAreaCache();
+        if (!PlayerVoteAreaCache.TryGetValue(playerId, out PlayerVoteArea voteArea))
+            return null;
+        return voteArea;
     }
 }
