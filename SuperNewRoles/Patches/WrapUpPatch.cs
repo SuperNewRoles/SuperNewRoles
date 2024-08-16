@@ -175,14 +175,10 @@ class WrapUpPatch
         Speeder.WrapUp();
         CustomRoles.OnWrapUp(exiled?.Object);
         Rocket.WrapUp(exiled == null ? null : exiled.Object);
-        if (AmongUsClient.Instance.AmHost)
-        {
-            PlayerAnimation.PlayerAnimations.Values.All(x =>
-            {
-                x.RpcAnimation(RpcAnimationType.Stop);
-                return false;
-            });
-        }
+
+        PlayerAnimation.PlayerAnimations.Values.All(x => { x.HandleAnim(RpcAnimationType.Stop); return false; });
+        new LateTask(() => PlayerAnimation.PlayerAnimations.Values.All(x => { x.HandleAnim(RpcAnimationType.Stop); return false; }), 0.5f);
+
         SecretRoom.Reset();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Painter.WrapUp();
         Photographer.WrapUp();
