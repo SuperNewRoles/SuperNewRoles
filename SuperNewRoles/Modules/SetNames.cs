@@ -24,32 +24,17 @@ public class SetNamesClass
     {
         if (p.IsBot()) return;
         p.NameText().color = color;
-        if (MeetingHud.Instance)
-        {
-            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-            {
-                if (p.PlayerId == player.TargetPlayerId)
-                {
-                    player.NameText.color = color;
-                }
-            }
-        }
+        PlayerVoteArea area;
+        if ((area = CacheManager.GetVoteAreaById(p.PlayerId)) != null)
+            area.NameText.color = color;
     }
     public static void SetPlayerNameText(PlayerControl p, string text)
     {
         if (p.IsBot()) return;
         p.NameText().text = text;
-        if (MeetingHud.Instance)
-        {
-            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-            {
-                if (player.TargetPlayerId == p.PlayerId)
-                {
-                    player.NameText.text = text;
-                    return;
-                }
-            }
-        }
+        PlayerVoteArea area;
+        if ((area = CacheManager.GetVoteAreaById(p.PlayerId)) != null)
+            area.NameText.text = text;
     }
     public static void ResetNameTagsAndColors()
     {
@@ -94,7 +79,7 @@ public class SetNamesClass
         // Set the position every time bc it sometimes ends up in the wrong place due to camoflauge
         playerInfo.transform.localPosition = p.NameText().transform.localPosition + Vector3.up * 0.2f;
 
-        PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
+        PlayerVoteArea playerVoteArea = CacheManager.GetVoteAreaById(p.PlayerId);
         if ((!MeetingPlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro meetingInfo) || meetingInfo == null) && playerVoteArea != null)
         {
             meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppSystem.Runtime.Remoting.Lifetime;
@@ -59,7 +60,7 @@ public class FixedUpdate
     {
         if (PlayerControl.LocalPlayer.IsUseVent()) return;
         if (!ShipStatus.Instance) return;
-        List<NormalPlayerTask> tasks = PlayerControl.LocalPlayer.myTasks.ToList().FindAll(x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning).ConvertAll(x => x.Cast<NormalPlayerTask>());
+        List<NormalPlayerTask> tasks = PlayerControl.LocalPlayer.myTasks.FindAll(x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning).ConvertAll(x => x.Cast<NormalPlayerTask>()).ToList();
         foreach (Vent vent in ShipStatus.Instance.AllVents)
         {
             if (tasks.Exists(x => x.Data[0] == vent.Id)) continue;
@@ -76,6 +77,7 @@ public class FixedUpdate
         }
     }
     public static bool IsProDown;
+    private static int counter;
 
     public static void Postfix(PlayerControl __instance)
     {
@@ -95,8 +97,14 @@ public class FixedUpdate
             return;
         }
 
-        SetBasePlayerOutlines();
-        SetBaseVentMaterial();
+        counter++;
+        if (counter < 0 || counter > 5)
+        {
+            counter = 0;
+            SetBasePlayerOutlines();
+            SetBaseVentMaterial();
+        }
+
         LadderDead.FixedUpdate();
         CustomRoles.FixedUpdate();
         switch (ModeHandler.GetMode())
