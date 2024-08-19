@@ -153,7 +153,7 @@ public static class PVCreator
     static List<float> NextVentTime;
     public static void FixedUpdate()
     {
-        if (!ConfigRoles.DebugMode.Value) return;
+        if (!DebugModeManager.IsDebugMode) return;
         if (Is)
         {
             UpdateTime -= Time.fixedDeltaTime;

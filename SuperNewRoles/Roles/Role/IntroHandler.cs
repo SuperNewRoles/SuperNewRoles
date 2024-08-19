@@ -21,7 +21,7 @@ class IntroHandler
         }
         if (Mode.ModeHandler.IsMode(Mode.ModeId.Zombie)) Mode.Zombie.Main.SetTimer();
         if (Mode.ModeHandler.IsMode(Mode.ModeId.BattleRoyal)) Mode.BattleRoyal.Main.IsCountOK = true;
-        if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles)) Mode.SuperHostRoles.ChangeName.SetRoleNames();
+        if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles)) Mode.SuperHostRoles.ChangeName.UpdateRoleNames(Mode.SuperHostRoles.ChangeNameType.AllPlayers);
         if (Mode.ModeHandler.IsMode(Mode.ModeId.CopsRobbers)) Mode.CopsRobbers.Main.IsStart = true;
         if (Mode.ModeHandler.IsMode(Mode.ModeId.PantsRoyal)) Mode.PantsRoyal.main.IsStart = true;
     }

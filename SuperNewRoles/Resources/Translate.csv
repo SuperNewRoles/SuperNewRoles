@@ -1943,7 +1943,7 @@ BuskerPseudocideDurationOption,Duration of feigned death,死を偽装できる�
 BuskerPseudocideButtonName,Feign death,偽装死,假死,斷頭
 BuskerRebornButtonName,Reborn,復活,复活,接頭
 BuskerReallyDeadTimeText,Remain until really dead...,本当に死ぬまで残り...,距离真正死亡还剩……,距離真正的死亡還剩...
-UbiquitousName,Ubiquitous,ユビキタス,,天眼
+UbiquitousName,Ubiquitous,ユビキタス,天眼,天眼
 UbiquitousTitle1,My eyes exist everywhere.,私の目はどこにでも存在する,我无处不在,我能看到任何地方
 UbiquitousDescription,You can call up a drone and control it.\nYou can switch between the drone and your own view and fly freely around the map.\nIt can also hack into nearby doors and open them.\nIn addition， the drone called on the map can land on the map after a turn， providing ubiquitous information about its surroundings.\nHowever， while operating the drone， you are defenseless. You cannot even perform tasks.\nDo not be caught off guard.,ドローンを呼び出し、操作することが出来ます。\nドローンと自身の視界を切り替え、自由にマップ内を飛び回ることが出来ます。\nまた、近くのドアをハッキングし、開けることも出来ます。\n更に、マップ上に呼び出したドローンは、ターンを挟むとマップ上に着陸し、周囲の情報をユビキタスに伝えます。\nただし、ドローンを操作している間、あなたは無防備です。タスクも出来ません。\nゆめゆめ油断することなかれ。,天眼可以在行动阶段呼叫一台无人机进行操控。\n天眼可以自由切换视角为自己或无人机，并在地图上自由移动。\n无人机也可以黑入附近关闭的门并将其打开。\n此外，呼叫无人机的行动阶段结束后，无人机将降落在地图上，为天眼提供该处的视野。\n当天眼操纵无人机时，天眼本身没有防御手段，且不能做任务。\n在自己毫无防备时应当小心。,天眼屬於船員陣營。\n可以放出並操作無人機開往地圖上的任何地方，並且可以將視野在自己與無人機之間自由切換。\n並且可以駭入無人機周圍的門並將其開啟。\n也可以將無人機停在某處，為天眼提供更多情報。\n但小心，操作無人機時，將會失去任何防備，不要忘了保持警戒。
 UbiquitousCallCoolTimeOption,Call Cool Time,「呼び出す」のクールタイム,呼叫无人机冷却时间,「召喚」冷卻時間
@@ -1959,6 +1959,15 @@ UbiquitousOperationButton,Operation,操作,操纵,操作
 UbiquitousCallButton,Call,呼び出す,呼叫,召喚
 UbiquitousCallHomeButton,Call Home,呼び戻す,唤回,喚回
 UbiquitousDoorHackButton,Door Hack,ドアハック,黑入,駭入門
+RemoteControllerName,Remote Controller,リモコン,傀儡师
+RemoteControllerTitle1,Beep-beep-beep!,ピコピコピコッ！,哔哔哔！
+RemoteControllerDescription,The receiver can be attached to any crew member.\nThe attached crew can operate it at any time they wish.\nThe crew member can also kill the receiver while operating the receiver.\nIt is not obvious from the other person's point of view whether the crew is being operated or not.\nHowever， the operator himself is very defenseless.\nBe careful not to get too absorbed in the operation.,任意のクルーに受信機を取り付けることが出来ます。\n取り付けたクルーは好きなタイミングで操作することが出来ます。\nまた、操作したままそのクルーにキルさせることも出来ます。\n操作されているかどうかは、他者目線ではパッとはわかりません。\nただし、操作している自身はとっても無防備。\n操作に夢中になりすぎないよう、気をつけましょう。,傀儡师可以给任意玩家安装收信器。\n傀儡师可以在任意时间对被安装收信器的玩家进行操纵。\n被操纵中的玩家可以被其他玩家击杀。\n其他玩家不能分辨玩家是否被操纵。\n在操纵过程中，傀儡师不能移动。\n请小心，做好防备。
+RemoteControllerMarkingCoolTimeOption,Marking Cool Time,マーキングのクールタイム,安装收信器冷却
+RemoteControllerDurationOperation,Duration of operation,操作の持続時間,操纵持续时间
+RemoteControllerMarkingButtonName,Marking,マーキング,收信器
+RemoteControllerOperationButtonName,Operation!,操作!,操纵！
+RemoteControllerTarget,Objects of Interference,干渉対象,操纵对象：
+Permanence,Permanence,永続,持续
 
 #NewRoleTranslation
 
@@ -1967,8 +1976,8 @@ IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,顯示顏色深淺
 IsSaveLogWhenEndGame,Copy the log at the end of the match.,試合終了時ログをコピーする,游戏结束时复制一份游戏日志
 IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート,将大厅bgm静音,禁音大廳BGM
-ProcessorAffinityMask,Number of cores used by CPU<size=50%>(Switch according to load)</size>:,<size=100%>CPUの使用コア数</size>\n<size=39%>(負荷によって切り替えてください)</size><size=75%>:,CPU使用核心數(根據負載切換):,CPU使用核心數(根據負載切換):
-ProcessorAffinityMaskCoreName,Core,コア,
+ProcessorAffinityMask,Number of cores used by CPU<size=50%>(Switch according to load)</size>:,<size=100%>CPUの使用コア数</size>\n<size=39%>(負荷によって切り替えてください)</size><size=75%>:,使用的CPU核心数(根据游戏负载切换):,CPU使用核心數(根據負載切換):
+ProcessorAffinityMaskCoreName,Core,コア,核
 
 #SettingMatchTag
 SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,<color=#a9ceec>游戏房间标签</color>设置,<color=#93b69c>房間對局標籤</color>設定

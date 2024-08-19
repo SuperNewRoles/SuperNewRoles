@@ -141,14 +141,14 @@ public class AutoUpdate
             }
             if (newver == Version)
             {
-                if (ConfigRoles.DebugMode.Value)
+                if (DebugModeManager.IsDebugMode)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("最新バージョンです");
                 }
             }
             else
             {
-                if (ConfigRoles.DebugMode.Value)
+                if (DebugModeManager.IsDebugMode)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("古いバージョンです");
                 }
@@ -174,7 +174,7 @@ public class AutoUpdate
         }
         catch (System.Exception e)
         {
-            if (ConfigRoles.DebugMode.Value)
+            if (DebugModeManager.IsDebugMode)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("Error:" + e);
             }

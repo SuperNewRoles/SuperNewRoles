@@ -9,6 +9,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -129,7 +130,7 @@ class UpdateSystemPatch
             SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Comms)
             {
-                ChangeName.SetRoleNames();
+                ChangeName.UpdateRoleNames(ChangeNameType.SelfOnly);
             }
         }
     }
@@ -158,7 +159,8 @@ class LightPatch
 
         __result = player == null || player.IsDead
             ? __instance.MaxLightRadius
-            : player.Object.TryGetRoleBase(out Ubiquitous ubiquitous) && ubiquitous.UnderOperation
+            : (player.Object.TryGetRoleBase(out Ubiquitous ubiquitous) && ubiquitous.UnderOperation) ||
+              (player.Object.TryGetRoleBase(out RemoteController controller) && controller.UnderOperation)
             ? 0f
             : Squid.Abilitys.IsObstruction
             ? Mathf.Lerp(__instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), __instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), num)

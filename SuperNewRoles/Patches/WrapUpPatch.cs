@@ -31,14 +31,14 @@ class WrapUpPatch
     {
         public static IEnumerator WrapUpCoro(ExileController __instance)
         {
-            if (__instance.exiled != null)
+            if (__instance.initData?.networkedPlayer != null)
             {
-                PlayerControl @object = __instance.exiled.Object;
+                PlayerControl @object = __instance.initData.networkedPlayer?.Object;
                 if (@object)
                 {
                     @object.Exiled();
                 }
-                __instance.exiled.IsDead = true;
+                __instance.initData.networkedPlayer.IsDead = true;
             }
             if (DestroyableSingleton<TutorialManager>.InstanceExists || !GameManager.Instance.LogicFlow.IsGameOverDueToDeath())
             {
@@ -49,13 +49,13 @@ class WrapUpPatch
         }
         public static bool Prefix(ExileController __instance)
         {
-            WrapUpPatch.Prefix(__instance.exiled);
+            WrapUpPatch.Prefix(__instance.initData?.networkedPlayer);
             __instance.StartCoroutine(WrapUpCoro(__instance).WrapToIl2Cpp());
             return false;
         }
         public static void Postfix(ExileController __instance)
         {
-            WrapUpPatch.Postfix(__instance.exiled);
+            WrapUpPatch.Postfix(__instance, __instance.initData?.networkedPlayer);
         }
     }
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
@@ -63,17 +63,17 @@ class WrapUpPatch
     {
         public static bool Prefix(AirshipExileController __instance)
         {
-            WrapUpPatch.Prefix(__instance.exiled);
+            WrapUpPatch.Prefix(__instance.initData?.networkedPlayer);
             if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance != ExileController.Instance)
             {
-                if (__instance.exiled != null)
+                if (__instance.initData?.networkedPlayer != null)
                 {
-                    PlayerControl @object = __instance.exiled.Object;
+                    PlayerControl @object = __instance.initData?.networkedPlayer?.Object;
                     if (@object)
                     {
                         @object.Exiled();
                     }
-                    __instance.exiled.IsDead = true;
+                    __instance.initData.networkedPlayer.IsDead = true;
                 }
                 GameObject.Destroy(__instance.gameObject);
 
@@ -91,7 +91,7 @@ class WrapUpPatch
         }
         public static void Postfix(AirshipExileController __instance)
         {
-            WrapUpPatch.Postfix(__instance.exiled);
+            WrapUpPatch.Postfix(__instance, __instance.initData?.networkedPlayer);
         }
     }
     public static void Prefix(NetworkedPlayerInfo exiled)
@@ -131,7 +131,7 @@ class WrapUpPatch
             }
         }
     }
-    public static void Postfix(NetworkedPlayerInfo exiled)
+    public static void Postfix(ExileController __instance, NetworkedPlayerInfo exiled)
     {
         if (exiled != null && exiled.Object == null)
         {
@@ -175,14 +175,10 @@ class WrapUpPatch
         Speeder.WrapUp();
         CustomRoles.OnWrapUp(exiled?.Object);
         Rocket.WrapUp(exiled == null ? null : exiled.Object);
-        if (AmongUsClient.Instance.AmHost)
-        {
-            PlayerAnimation.PlayerAnimations.Values.All(x =>
-            {
-                x.RpcAnimation(RpcAnimationType.Stop);
-                return false;
-            });
-        }
+
+        PlayerAnimation.PlayerAnimations.Values.All(x => { x.HandleAnim(RpcAnimationType.Stop); return false; });
+        new LateTask(() => PlayerAnimation.PlayerAnimations.Values.All(x => { x.HandleAnim(RpcAnimationType.Stop); return false; }), 0.5f);
+
         SecretRoom.Reset();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Painter.WrapUp();
         Photographer.WrapUp();

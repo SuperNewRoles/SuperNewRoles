@@ -13,7 +13,7 @@ class SplashLogoAnimatorPatch
             SuperNewRolesPlugin.AgarthaLoad();
             IsAgarthaLoaded = true;
         }
-        if (ConfigRoles.DebugMode.Value)
+        if (DebugModeManager.IsDebugMode)
         {
             __instance.sceneChanger.AllowFinishLoadingScene();
             __instance.startedSceneLoad = true;

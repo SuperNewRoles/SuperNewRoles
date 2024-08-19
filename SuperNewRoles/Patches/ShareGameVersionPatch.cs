@@ -143,7 +143,7 @@ class ShareGameVersion
                     CustomOptionHolder.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
                     !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
                     !CustomOptionHolder.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
-                    !ConfigRoles.DebugMode.Value) //Debugモードでない時
+                    !DebugModeManager.IsDebugMode) //Debugモードでない時
                 {
                     // 警告を表示する
                     message += $"\n{ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff")}\n";

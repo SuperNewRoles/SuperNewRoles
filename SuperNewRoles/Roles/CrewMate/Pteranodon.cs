@@ -26,6 +26,7 @@ public static class Pteranodon
     public static List<PlayerControl> PteranodonPlayer;
     public static Color32 color = new(17, 128, 45, byte.MaxValue);
     public static bool IsPteranodonNow;
+    public static bool IsPteranodonAny;
     public static Vector2 StartPosition;
     public static Vector2 TargetPosition;
     public static Vector2 CurrentPosition;
@@ -50,9 +51,12 @@ public static class Pteranodon
         TargetPosition = new();
         Timer = 0;
         UsingPlayers = new();
+        IsPteranodonAny = false;
     }
     public static void FixedUpdateAll()
     {
+        if (UsingPlayers == null)
+            return;
         foreach (var data in UsingPlayers.ToArray())
         {
             PlayerControl target = ModHelpers.PlayerById(data.Key);
@@ -87,7 +91,11 @@ public static class Pteranodon
     {
         private static void Postfix(PlayerPhysics __instance)
         {
-            if ((__instance.myPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId && IsPteranodonNow) ||
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+                return;
+            if (!IsPteranodonAny)
+                return;
+            if ((IsPteranodonNow && __instance.myPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId) ||
                 UsingPlayers.ContainsKey(__instance.myPlayer.PlayerId))
             {
                 __instance.GetSkin().SetIdle(__instance.FlipX);
@@ -159,6 +167,7 @@ public static class Pteranodon
             player.NetTransform.enabled = false;
             player.Collider.enabled = false;
             player.moveable = false;
+            IsPteranodonAny = true;
         }
         else
         {
@@ -167,6 +176,8 @@ public static class Pteranodon
             player.Collider.enabled = true;
             player.transform.position = pos;
             player.moveable = true;
+            if (UsingPlayers.Count == 0)
+                IsPteranodonAny = false;
         }
     }
     // ここにコードを書きこんでください

@@ -235,32 +235,24 @@ internal static class Kunoichi
             RoleClass.Kunoichi.IsScientistPlayers[p.PlayerId] = false;
         }
     }
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
-    public static class PlayerPhysicsScientist
-    {
-        public static void Postfix(PlayerPhysics __instance)
-        {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (!ModeHandler.IsMode(ModeId.Default)) return;
-            if (__instance.myPlayer.IsRole(RoleId.Kunoichi))
-            {
-                var Scientist = __instance.myPlayer;
-                if (Scientist == null || Scientist.IsDead()) return;
-                var ison = RoleClass.Kunoichi.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.Kunoichi.IsScientistPlayers[__instance.myPlayer.PlayerId];
-                bool canSee = !ison || PlayerControl.LocalPlayer.IsDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
 
-                var opacity = canSee ? 0.1f : 0.0f;
-                if (ison)
-                {
-                    opacity = Math.Max(opacity, 0);
-                    Scientist.MyRend().material.SetFloat("_Outline", 0f);
-                }
-                else
-                {
-                    opacity = Math.Max(opacity, 1.5f);
-                }
-                SetOpacity(Scientist, opacity, canSee);
-            }
+    public static void PlayerPhysicsScientistPostfix(PlayerPhysics __instance)
+    {
+        var Scientist = __instance.myPlayer;
+        if (Scientist == null || Scientist.IsDead()) return;
+        var ison = RoleClass.Kunoichi.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.Kunoichi.IsScientistPlayers[__instance.myPlayer.PlayerId];
+        bool canSee = !ison || PlayerControl.LocalPlayer.IsDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
+
+        var opacity = canSee ? 0.1f : 0.0f;
+        if (ison)
+        {
+            opacity = Math.Max(opacity, 0);
+            Scientist.MyRend().material.SetFloat("_Outline", 0f);
         }
+        else
+        {
+            opacity = Math.Max(opacity, 1.5f);
+        }
+        SetOpacity(Scientist, opacity, canSee);
     }
 }

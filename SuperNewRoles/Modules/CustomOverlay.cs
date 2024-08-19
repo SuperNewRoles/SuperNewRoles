@@ -334,7 +334,7 @@ public class CustomOverlays
     {
         playerDataDictionary = new();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            if (!p.IsBot() || SuperNewRolesPlugin.IsBeta || ConfigRoles.DebugMode.Value)
+            if (!p.IsBot() || SuperNewRolesPlugin.IsBeta || DebugModeManager.IsDebugMode)
                 playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
 
         // 現在有効な役職の保存は, IntroPatchの IntroCutscene.CoBegin postfixで行っている。
@@ -654,7 +654,7 @@ public class CustomOverlays
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.IsBot() && !(SuperNewRolesPlugin.IsBeta || ConfigRoles.DebugMode.Value)) continue;
+                if (p.IsBot() && !(SuperNewRolesPlugin.IsBeta || DebugModeManager.IsDebugMode)) continue;
                 string data = GetPlayerData(p);
 
                 if (p.PlayerId < 5) leftBuilder.AppendLine(data);

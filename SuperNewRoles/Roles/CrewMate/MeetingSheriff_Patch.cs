@@ -117,35 +117,30 @@ class MeetingSheriff_Patch
     }
     static void Event(MeetingHud __instance)
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
+        if (!PlayerControl.LocalPlayer.IsRole(RoleId.MeetingSheriff) || PlayerControl.LocalPlayer.IsAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
+            return;
+        for (int i = 0; i < __instance.playerStates.Length; i++)
         {
-            for (int i = 0; i < __instance.playerStates.Length; i++)
-            {
-                PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
-                if (player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
-                {
-                    GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
-                    GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
-                    targetBox.name = "ShootButton";
-                    targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
-                    SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-                    renderer.sprite = RoleClass.MeetingSheriff.GetButtonSprite();
-                    PassiveButton button = targetBox.GetComponent<PassiveButton>();
-                    button.OnClick.RemoveAllListeners();
-                    int copiedIndex = i;
-                    button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => MeetingSheriffOnClick(copiedIndex, __instance)));
-                }
-            }
+            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+            var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+            if (player.IsDead() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                continue;
+            GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+            GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
+            targetBox.name = "ShootButton";
+            targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
+            SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+            renderer.sprite = RoleClass.MeetingSheriff.GetButtonSprite();
+            PassiveButton button = targetBox.GetComponent<PassiveButton>();
+            button.OnClick.RemoveAllListeners();
+            int copiedIndex = i;
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => MeetingSheriffOnClick(copiedIndex, __instance)));
         }
     }
 
     static void Postfix(MeetingHud __instance)
     {
-        if (AmongUsClient.Instance.AmHost)
-        {
-            PlayerAnimation.PlayerAnimations.Values.All(x => { x.RpcAnimation(RpcAnimationType.Stop); return false; });
-        }
+        new LateTask(() => PlayerAnimation.PlayerAnimations.Values.All(x => { x.HandleAnim(RpcAnimationType.Stop); return false; }), 0.5f);
         LadderDead.Reset();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
