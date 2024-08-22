@@ -112,7 +112,11 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         }
     }
 
-    public void CallAndHomeButtonMeetingEnd() => OperationButtonEffectEnds();
+    public void CallAndHomeButtonMeetingEnd()
+    {
+        OperationButtonEffectEnds();
+        CallAndHomeButtonChangeMode(true);
+    }
 
     public void CallAndHomeButtonChangeMode(bool is_call)
     {
