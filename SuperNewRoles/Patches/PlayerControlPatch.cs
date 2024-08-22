@@ -56,7 +56,6 @@ public static class PlayerPhysicsFixedUpdatePatch
     {
         if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
             return;
-        CustomRoles.OnPhysicsFixedUpdate(__instance);
         InvisibleRole.PlayerPhysics_Postfix(__instance);
         if (!ModeHandler.IsMode(ModeId.Default))
             return;
