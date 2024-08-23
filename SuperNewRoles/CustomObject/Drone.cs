@@ -95,13 +95,14 @@ public class Drone : MonoBehaviour
         transform.position = position;
     }
 
-    public void Destroy()
+    public void OnDestroy()
     {
         AllDrone.Remove(this);
         if (PlayerDrone.TryGetValue(Owner, out List<Drone> drones))
             drones.Remove(this);
-        Destroy(gameObject);
     }
+
+    public void Destroy() => Destroy(gameObject);
 
     public static Drone CreateActiveDrone(string id, Vector2 pos, PlayerControl owner)
     {
@@ -128,13 +129,15 @@ public class Drone : MonoBehaviour
 
     public static void CloseMeeting()
     {
+        List<Drone> removes = new();
         foreach (Drone drone in AllDrone)
         {
             if (drone.IsActive) continue;
             if (drone.RemainingTurn-- > 0) return;
-            AllDrone.Remove(drone);
-            drone.Destroy();
+            removes.Add(drone);
         }
+        foreach (Drone drone in removes)
+            drone.Destroy();
     }
 
     public static List<PlayerControl> GetPlayersVicinity(PlayerControl owner)
@@ -144,7 +147,7 @@ public class Drone : MonoBehaviour
         List<Drone> idle = PlayerDrone[owner].FindAll(x => !x.IsActive);
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player.PlayerId == owner.PlayerId) continue;
+            if (player.IsDead() || player.PlayerId == owner.PlayerId) continue;
             if (idle.Any(x => Vector2.Distance(x.transform.position, player.GetTruePosition()) <= ShipStatus.Instance.MaxLightRadius * Ubiquitous.DroneVisibilityRange.GetFloat()))
                 vicinity.Add(player);
         }

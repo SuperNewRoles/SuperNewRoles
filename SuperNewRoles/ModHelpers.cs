@@ -1311,6 +1311,8 @@ public static class ModHelpers
     { foreach (T1 data in sources) yield return func(data); }
     public static IEnumerable<T2> ConvertAll<T1, T2>(this Il2CppSystem.Collections.Generic.List<T1> sources, Func<T1, T2> func)
     { foreach (T1 data in sources) yield return func(data); }
+    public static void AllRun<T>(this IEnumerable<T> sources, Action<T> func)
+    { foreach (T data in sources) func(data); }
 }
 public static class CreateFlag
 {
