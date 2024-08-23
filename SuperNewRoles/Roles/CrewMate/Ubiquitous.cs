@@ -4,6 +4,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles.Role;
@@ -15,7 +16,7 @@ using Object = UnityEngine.Object;
 namespace SuperNewRoles.Roles.Crewmate;
 
 // Nebula役職 あつさんありがとうございました！
-public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, IMap, IDeathHandler, IHandleChangeRole, IRpcHandler
+public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, IMapEvent, IDeathHandler, IHandleChangeRole, IRpcHandler
 {
     public static new RoleInfo Roleinfo = new(
         typeof(Ubiquitous),
@@ -38,6 +39,7 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
     public static CustomOption DoorHackCoolTime;
     public static CustomOption DoorHackScope;
     public static CustomOption DroneVisibilityRange;
+    public static CustomOption MapShowPlayerColor;
     private static void CreateOption()
     {
         CallCoolTime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "UbiquitousCallCoolTimeOption", 10f, 0f, 60f, 2.5f, Optioninfo.RoleOption);
@@ -49,6 +51,7 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         DoorHackCoolTime = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "UbiquitousDoorHackCoolTimeOption", 30f, 2.5f, 60f, 2.5f, Optioninfo.RoleOption);
         DoorHackScope = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "UbiquitousDoorHackScopeOption", 0.5f, 0.25f, 5f, 0.25f, Optioninfo.RoleOption);
         DroneVisibilityRange = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "UbiquitousDroneVisibilityRangeOption", 1f, 0.25f, 5f, 0.25f, Optioninfo.RoleOption);
+        MapShowPlayerColor = CustomOption.Create(Optioninfo.OptionId++, false, CustomOptionType.Crewmate, "UbiquitousMapShowPlayerColor", false, Optioninfo.RoleOption);
     }
 
     public CustomButtonInfo[] CustomButtonInfos { get; }
@@ -109,7 +112,11 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         }
     }
 
-    public void CallAndHomeButtonMeetingEnd() => OperationButtonEffectEnds();
+    public void CallAndHomeButtonMeetingEnd()
+    {
+        OperationButtonEffectEnds();
+        CallAndHomeButtonChangeMode(true);
+    }
 
     public void CallAndHomeButtonChangeMode(bool is_call)
     {
@@ -120,15 +127,14 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
 
     public void DoorHackButtonClick()
     {
-        OpenableDoor[] doors = ShipStatus.Instance.AllDoors.ToArray();
-        foreach (OpenableDoor door in doors)
+        foreach (OpenableDoor door in ShipStatus.Instance.AllDoors)
         {
             if (door.IsOpen) continue;
             if (door.TryCast<AutoCloseDoor>()) continue;
             if (Vector2.Distance(MyDrone.transform.position, door.transform.position) > DoorHackScope.GetFloat() * 3) continue;
             if (door.TryCast<AutoOpenDoor>())
             {
-                doors.AllRun(x => { if (door.Room == x.Room) x.RpcSetDoorway(true); });
+                ShipStatus.Instance.AllDoors.AllRun(x => { if (door.Room == x.Room) x.RpcSetDoorway(true); });
                 continue;
             }
             door.RpcSetDoorway(true);
@@ -154,7 +160,7 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
 
     public void CloseMeeting() { }
 
-    public void AwakePostfix(MapBehaviour __instance)
+    public void MapAwakePostfix(MapBehaviour __instance)
     {
         MapHerePoints = new SpriteRenderer[PlayerControl.AllPlayerControls.Count - 1];
         for (int i = 0; i < MapHerePoints.Length; i++)
@@ -164,7 +170,7 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
         }
     }
 
-    public void FixedUpdatePostfix(MapBehaviour __instance)
+    public void MapFixedUpdatePostfix(MapBehaviour __instance)
     {
         List<PlayerControl> drone_player = Drone.GetPlayersVicinity(Player);
         for (int i = 0; i < MapHerePoints.Length; i++)
@@ -173,7 +179,8 @@ public class Ubiquitous : RoleBase, ICrewmate, ICustomButton, IMeetingHandler, I
             if (drone_player.Count > i)
             {
                 PlayerControl player = drone_player[i];
-                player.SetPlayerMaterialColors(renderer);
+                if (MapShowPlayerColor.GetBool()) player.SetPlayerMaterialColors(renderer);
+                else PlayerMaterial.SetColors(CustomColors.LighterColors.Contains(player.CurrentOutfit.ColorId) ? 7 : 6, renderer);
                 Vector3 pos = player.transform.position;
                 pos /= ShipStatus.Instance.MapScale;
                 pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);

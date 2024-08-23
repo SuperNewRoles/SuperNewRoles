@@ -30,7 +30,7 @@ GameCommonTasks,Common Tasks,通常タスク,普通任务,普通任務
 GameShortTasks,Short Tasks,ショートタスク,长任务,長任務
 GameLongTasks,Long Tasks,ロングタスク,短任务,短任務
 Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>帽,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>帽
-Visor_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Visors,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Visors,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>脸部装饰,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Visors
+Visor_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Visors,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Visors,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>脸部装饰,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>臉飾
 creditsMain,Create By ykundesu,Create By ykundesu,模组作者：ykundesu,模組作者：ykundesu
 creditsFull,Create By ykundesu,Create By ykundesu,模组作者：ykundesu,模組作者：ykundesu
 creditsVersion,SuperNewRoles v{0},SuperNewRoles v{0},SuperNewRoles v{0},SuperNewRoles v{0}
@@ -1955,19 +1955,20 @@ UbiquitousFlyingSpeedOption,Flying speed,飛行速度,无人机飞行速度,飛�
 UbiquitousDoorHackCoolTimeOption,Door Hack Cool Time,「ドアハック」のクールタイム,无人机黑入舱门冷却时间,「駭入門」冷卻時間
 UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲,无人机黑入舱门范围,「駭入門」範圍
 UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲,无人机视野,無人機可視範圍
+UbiquitousMapShowPlayerColor,Display on map in player colours,プレイヤーカラーでマップに表示する
 UbiquitousOperationButton,Operation,操作,操纵,操作
 UbiquitousCallButton,Call,呼び出す,呼叫,召喚
 UbiquitousCallHomeButton,Call Home,呼び戻す,唤回,喚回
 UbiquitousDoorHackButton,Door Hack,ドアハック,黑入,駭入門
-RemoteControllerName,Remote Controller,リモコン,傀儡师
-RemoteControllerTitle1,Beep-beep-beep!,ピコピコピコッ！,哔哔哔！
-RemoteControllerDescription,The receiver can be attached to any crew member.\nThe attached crew can operate it at any time they wish.\nThe crew member can also kill the receiver while operating the receiver.\nIt is not obvious from the other person's point of view whether the crew is being operated or not.\nHowever， the operator himself is very defenseless.\nBe careful not to get too absorbed in the operation.,任意のクルーに受信機を取り付けることが出来ます。\n取り付けたクルーは好きなタイミングで操作することが出来ます。\nまた、操作したままそのクルーにキルさせることも出来ます。\n操作されているかどうかは、他者目線ではパッとはわかりません。\nただし、操作している自身はとっても無防備。\n操作に夢中になりすぎないよう、気をつけましょう。,傀儡师可以给任意玩家安装收信器。\n傀儡师可以在任意时间对被安装收信器的玩家进行操纵。\n被操纵中的玩家可以被其他玩家击杀。\n其他玩家不能分辨玩家是否被操纵。\n在操纵过程中，傀儡师不能移动。\n请小心，做好防备。
-RemoteControllerMarkingCoolTimeOption,Marking Cool Time,マーキングのクールタイム,安装收信器冷却
-RemoteControllerDurationOperation,Duration of operation,操作の持続時間,操纵持续时间
-RemoteControllerMarkingButtonName,Marking,マーキング,收信器
-RemoteControllerOperationButtonName,Operation!,操作!,操纵！
-RemoteControllerTarget,Objects of Interference,干渉対象,操纵对象：
-Permanence,Permanence,永続,持续
+RemoteControllerName,Remote Controller,リモコン,傀儡师,思考者
+RemoteControllerTitle1,Beep-beep-beep!,ピコピコピコッ！,哔哔哔！,沒有人不被我掌控！
+RemoteControllerDescription,The receiver can be attached to any crew member.\nThe attached crew can operate it at any time they wish.\nThe crew member can also kill the receiver while operating the receiver.\nIt is not obvious from the other person's point of view whether the crew is being operated or not.\nHowever， the operator himself is very defenseless.\nBe careful not to get too absorbed in the operation.,任意のクルーに受信機を取り付けることが出来ます。\n取り付けたクルーは好きなタイミングで操作することが出来ます。\nまた、操作したままそのクルーにキルさせることも出来ます。\n操作されているかどうかは、他者目線ではパッとはわかりません。\nただし、操作している自身はとっても無防備。\n操作に夢中になりすぎないよう、気をつけましょう。,傀儡师可以给任意玩家安装收信器。\n傀儡师可以在任意时间对被安装收信器的玩家进行操纵。\n被操纵中的玩家可以被其他玩家击杀。\n其他玩家不能分辨玩家是否被操纵。\n在操纵过程中，傀儡师不能移动。\n请小心，做好防备。,思考者屬於內鬼陣營。\n可以給任意玩家安裝收訊器。\n思考者可以在任意時間對被安裝收訊器的玩家進行控制。\n被操控制的玩家可以被其他玩家擊殺。\n其他玩家不能分辨玩家是否被控制。\n在控制過程中，思考者不能移動。\n請小心，做好防備。
+RemoteControllerMarkingCoolTimeOption,Marking Cool Time,マーキングのクールタイム,安装收信器冷却,安裝收訊器冷卻時間
+RemoteControllerDurationOperation,Duration of operation,操作の持続時間,操纵持续时间,控制持續時間
+RemoteControllerMarkingButtonName,Marking,マーキング,收信器,收訊器
+RemoteControllerOperationButtonName,Operation!,操作!,操纵！,控制！
+RemoteControllerTarget,Objects of Interference,干渉対象,操纵对象：,控制對象：
+Permanence,Permanence,永続,持续,持續
 
 #NewRoleTranslation
 
@@ -1977,7 +1978,7 @@ IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅,
 IsSaveLogWhenEndGame,Copy the log at the end of the match.,試合終了時ログをコピーする,游戏结束时复制一份游戏日志
 IsMuteLobbyBGM,Mute Lobby BGM,ロビーBGMをミュート,将大厅bgm静音,禁音大廳BGM
 ProcessorAffinityMask,Number of cores used by CPU<size=50%>(Switch according to load)</size>:,<size=100%>CPUの使用コア数</size>\n<size=39%>(負荷によって切り替えてください)</size><size=75%>:,使用的CPU核心数(根据游戏负载切换):,CPU使用核心數(根據負載切換):
-ProcessorAffinityMaskCoreName,Core,コア,核
+ProcessorAffinityMaskCoreName,Core,コア,核,核心
 
 #SettingMatchTag
 SettingMatchTag,<color=#a9ceec>Match making Tag</color> Settings,<color=#93b69c>マッチメイキング タグ</color>の設定,<color=#a9ceec>游戏房间标签</color>设置,<color=#93b69c>房間對局標籤</color>設定
@@ -2045,12 +2046,12 @@ CursedSampleTaskUpperText2,The sample has completely deteriorated,サンプル�
 CursedWeaponsTaskScoreText,Destroyed : ({0}/{1}),破壊済み : ({0}/{1}),破坏 : ({0}/{1}),已破壞 : ({0}/{1})
 
 # AntiBlackOutMessages
-AntiBlackOutChatTitle,[Blackout Information],【暗転対策情報】,避免黑屏相关措施
-AntiBlackOutFirstDead,o avoid triggering a screen blackout， if a player is exiled before death， no one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、死亡者が発生するまでに追放された場合は表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。,为了防止游戏发生黑屏现象，若玩家在有玩家被击杀前被放逐，将不会显示该玩家的放逐动画而是显示出现平票。实际上该玩家依然会被放逐。
-AllExileWillDobuleVoted,To avoid triggering a screen blackout， not one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、追放はは表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。,为了防止游戏发生黑屏现象，将不会显示该玩家的放逐动画而是显示出现平票。实际上该玩家依然会被放逐。
-AntiBlackOutOnlyDesyncImpostorDead,You were the "DesyncImpostor" role， a type of Mod role. This means that even if there were impostors ejected， it would still say "No Impostors Remain." However， they would still be ejected from the game.Real exiled player is {0}.,あなたは「DesyncImpostor」というタイプのMod役職だったため、追放者がいる場合でも追放者がいないと表示されます。なお、実際には追放されます。\n実際に追放されたプレイヤー：{0},您是一种特殊的模组职业类型，因此即便有玩家被放逐依然会显示”没有被放逐的玩家“。实际上，那名玩家依然被放逐。被放逐的玩家是{0}。
-AntiBlackOutAliveCanViewDeadPlayerChat,Due to the effects of the screen blackout countermeasure， if you chat， your chat will also be displayed to the survivors.\nPlease refrain from chatting.,今からは、画面の暗転の対策の影響によりあなたがチャットを行った場合に生存者にも表示されてしまいます。\nチャットしないようにしてください。,由于为了防止游戏发生黑屏现象而作的措施，您的聊天内容会被展示给存活玩家。\n请不要进行聊天。
-AntiBlackOutEndAliveCanViewDeadPlayerChat,Chat is no longer shown to alive players.\nYou can chat with them!,チャットは生存者に表示されなくなりました。\nチャットしても大丈夫！,您的聊天内容不会被展示给存活玩家了。\n请畅所欲言吧。
+AntiBlackOutChatTitle,[Blackout Information],【暗転対策情報】,避免黑屏相关措施,【防止黑屏措施】
+AntiBlackOutFirstDead,o avoid triggering a screen blackout， if a player is exiled before death， no one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、死亡者が発生するまでに追放された場合は表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。,为了防止游戏发生黑屏现象，若玩家在有玩家被击杀前被放逐，将不会显示该玩家的放逐动画而是显示出现平票。实际上该玩家依然会被放逐。,為了避免遊戲發生黑屏現象，如果玩家在有玩家死亡前被放逐，將不會顯示該玩家的放逐動畫，而是顯示出現平票。實際上該玩家依然會被放逐。
+AllExileWillDobuleVoted,To avoid triggering a screen blackout， not one will be displayed as being exiled. However， they will still be exiled in reality， regardless of the display.,画面の暗転を対策する為、追放はは表示上は追放者はおらず、同数票として表示されます。なお、実際は追放されます。,为了防止游戏发生黑屏现象，将不会显示该玩家的放逐动画而是显示出现平票。实际上该玩家依然会被放逐。,為了避免遊戲發生黑屏現象，將不會顯示該玩家的放逐動畫，而是顯示出現平票。實際上該玩家依然會被放逐。
+AntiBlackOutOnlyDesyncImpostorDead,You were the "DesyncImpostor" role， a type of Mod role. This means that even if there were impostors ejected， it would still say "No Impostors Remain." However， they would still be ejected from the game.Real exiled player is {0}.,あなたは「DesyncImpostor」というタイプのMod役職だったため、追放者がいる場合でも追放者がいないと表示されます。なお、実際には追放されます。\n実際に追放されたプレイヤー：{0},您是一种特殊的模组职业类型，因此即便有玩家被放逐依然会显示”没有被放逐的玩家“。实际上，那名玩家依然被放逐。被放逐的玩家是{0}。,您是一種特殊的模組職業類型，因此即便有玩家被放逐依然會顯示“沒有被放逐的玩家”。實際上，那名玩家依然被放逐。被放逐的玩家是{0}。
+AntiBlackOutAliveCanViewDeadPlayerChat,Due to the effects of the screen blackout countermeasure， if you chat， your chat will also be displayed to the survivors.\nPlease refrain from chatting.,今からは、画面の暗転の対策の影響によりあなたがチャットを行った場合に生存者にも表示されてしまいます。\nチャットしないようにしてください。,由于为了防止游戏发生黑屏现象而作的措施，您的聊天内容会被展示给存活玩家。\n请不要进行聊天。,由於為了防止遊戲發生黑屏現象而作的措施，您的聊天內容會被展示給存活玩家。\n請不要進行聊天。
+AntiBlackOutEndAliveCanViewDeadPlayerChat,Chat is no longer shown to alive players.\nYou can chat with them!,チャットは生存者に表示されなくなりました。\nチャットしても大丈夫！,您的聊天内容不会被展示给存活玩家了。\n请畅所欲言吧。,您的聊天內容不會被展示給存活玩家了。\n請盡情聊天吧。
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！,歡迎遊玩Super New Roles（超新執業）！

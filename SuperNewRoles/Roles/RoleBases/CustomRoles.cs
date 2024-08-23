@@ -135,13 +135,6 @@ public static class CustomRoles
         }
     }
 
-    public static void OnPhysicsFixedUpdate(PlayerPhysics __instance)
-    {
-        RoleBase roleBase = __instance.myPlayer.GetRoleBase();
-        if (roleBase is IPlayerPhysics physics)
-            physics.FixedUpdate(__instance);
-    }
-
     public static void OnExild(DeadPlayer deadPlayer)
     {
         DeathInfo info = new(deadPlayer);
