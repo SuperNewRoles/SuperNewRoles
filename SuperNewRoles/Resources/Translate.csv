@@ -1955,6 +1955,7 @@ UbiquitousFlyingSpeedOption,Flying speed,飛行速度,无人机飞行速度,飛�
 UbiquitousDoorHackCoolTimeOption,Door Hack Cool Time,「ドアハック」のクールタイム,无人机黑入舱门冷却时间,「駭入門」冷卻時間
 UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲,无人机黑入舱门范围,「駭入門」範圍
 UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲,无人机视野,無人機可視範圍
+UbiquitousMapShowPlayerColor,Display on map in player colours,プレイヤーカラーでマップに表示する
 UbiquitousOperationButton,Operation,操作,操纵,操作
 UbiquitousCallButton,Call,呼び出す,呼叫,召喚
 UbiquitousCallHomeButton,Call Home,呼び戻す,唤回,喚回
