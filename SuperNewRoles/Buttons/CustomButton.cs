@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -316,7 +315,7 @@ public class CustomButton
             }
         }
 
-        actionButton.SetCoolDown(Timer, SyncSetting.KillCoolSet((HasEffect && isEffectActive) ? (IsEffectDurationInfinity ? 0f : EffectDuration) : MaxTimer));
+        actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? (IsEffectDurationInfinity ? 0f : EffectDuration) : MaxTimer);
         // Trigger OnClickEvent if the hotkey is being pressed down
         if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
     }
