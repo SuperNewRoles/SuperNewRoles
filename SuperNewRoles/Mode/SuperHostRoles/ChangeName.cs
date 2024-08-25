@@ -27,6 +27,7 @@ public static class ChangeName
         return result;
     }
     private static float UpdateTimer;
+    private static bool IsBlackOut = false;
     private const float UpdateTimerMax = 0.2f;
 
     private static void SetRoleName(PlayerControl player, ChangeNameType changeNameType)
@@ -89,9 +90,12 @@ public static class ChangeName
             return;
         // 暗転対策の途中にやられると美味しくないからパス
         if (AntiBlackOut.GamePlayers != null)
+        {
+            IsBlackOut = true;
             return;
+        }
         UpdateTimer -= Time.fixedDeltaTime;
-        if (UpdateTimer > 0 && UpdateTimer < 1f)
+        if (UpdateTimer > 0 && UpdateTimer < 1f && !IsBlackOut)
             return;
         foreach (var (player, changeNameType) in ChangeNameBuffers)
         {
@@ -99,6 +103,7 @@ public static class ChangeName
         }
         ChangeNameBuffers = new();
         UpdateTimer = UpdateTimerMax;
+        IsBlackOut = false;
     }
     public static void SetDefaultNames()
     {
