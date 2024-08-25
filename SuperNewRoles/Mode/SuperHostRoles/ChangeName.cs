@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -89,6 +86,9 @@ public static class ChangeName
     public static void FixedUpdate()
     {
         if (ChangeNameBuffers.Count == 0)
+            return;
+        // 暗転対策の途中にやられると美味しくないからパス
+        if (AntiBlackOut.GamePlayers != null)
             return;
         UpdateTimer -= Time.fixedDeltaTime;
         if (UpdateTimer > 0 && UpdateTimer < 1f)
