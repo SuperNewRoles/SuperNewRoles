@@ -46,6 +46,7 @@ public static class RoleClass
         ModHelpers.ColorControlDic = new();
         ModHelpers.VentIdControlDic = new();
         ReplayManager.ClearAndReloads();
+        ModHelpers.DestoryClientCache();
         BlockPlayers = new();
         IsMeeting = false;
         IsFirstMeetingEnd = false;
@@ -265,7 +266,7 @@ public static class RoleClass
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
         CacheManager.Load();
-        DebugModeManager.ClearAndReloads();
+        DebugModeManager.UpdateDebugModeState();
     }
 
     public static class Debugger
@@ -276,7 +277,7 @@ public static class RoleClass
 
         public static void ClearAndReload()
         {
-            AmDebugger = AmongUsClient.Instance.AmHost && ConfigRoles.DebugMode.Value && CustomOptionHolder.DebuggerOption.GetBool();
+            AmDebugger = AmongUsClient.Instance.AmHost && DebugModeManager.IsDebugMode && CustomOptionHolder.DebuggerOption.GetBool();
         }
     }
 

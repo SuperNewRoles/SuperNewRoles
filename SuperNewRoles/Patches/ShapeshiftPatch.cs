@@ -283,7 +283,7 @@ class RpcShapeshiftPatch
                             target.RpcMurderPlayer(target, true);
                             __instance.RpcShowGuardEffect(__instance);
                         }
-                        ChangeName.SetRoleName(__instance);
+                        ChangeName.UpdateRoleName(__instance, ChangeNameType.SelfOnly);
                     }
 
                     if (suicideResult.Item1)

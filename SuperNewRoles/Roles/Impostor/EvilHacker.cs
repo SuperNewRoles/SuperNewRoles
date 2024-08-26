@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMap
+public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMapEvent
 {
     public static new RoleInfo Roleinfo = new(
         typeof(EvilHacker),
@@ -124,7 +124,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMap
         return renderer;
     }
 
-    public void AwakePostfix(MapBehaviour __instance)
+    public void MapAwakePostfix(MapBehaviour __instance)
     {
         if (!MapShowsDoorState.GetBool()) return;
         if (!DoorClosedRendererPrefab) DoorClosedRendererPrefab = CreatePrefab();
@@ -143,7 +143,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMap
         }
     }
 
-    public void ShowPrefix(MapBehaviour __instance, MapOptions opts, ref bool __state)
+    public void MapShowPrefix(MapBehaviour __instance, MapOptions opts, ref bool __state)
     {
         if (!CanUseAdminDuringMeeting.GetBool() || !MeetingHud.Instance || opts.Mode != MapOptions.Modes.Normal) return;
         IsMyAdmin = true;
@@ -151,7 +151,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMap
         __state = true;
     }
 
-    public void ShowPostfix(MapBehaviour __instance, MapOptions opts)
+    public void MapShowPostfix(MapBehaviour __instance, MapOptions opts)
     {
         if (!SabotageMapShowsAdmin.GetBool() || MeetingHud.Instance || opts.Mode != MapOptions.Modes.Sabotage) return;
         IsMyAdmin = true;
@@ -167,7 +167,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMap
         __instance.countOverlay.transform.SetLocalZ(-3f);
     }
 
-    public void FixedUpdatePostfix(MapBehaviour __instance)
+    public void MapFixedUpdatePostfix(MapBehaviour __instance)
     {
         if (!MapShowsDoorState.GetBool()) return;
         var allDoors = ShipStatus.Instance.AllDoors;
@@ -183,7 +183,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMap
         }
     }
 
-    public void IsOpenStoppedPostfix(MapBehaviour __instance, ref bool __result)
+    public void IsMapOpenStoppedPostfix(MapBehaviour __instance, ref bool __result)
     {
         // イビルハッカーがアドミン中も動けるように
         if (__result && CanMoveWhenUsesAdmin.GetBool())

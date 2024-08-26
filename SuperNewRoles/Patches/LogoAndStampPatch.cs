@@ -59,6 +59,8 @@ public static class CredentialsPatch
     public static class HudManagerPatch
     {
         public static GameObject TextObject;
+        public static AspectPosition TextAspectPositionObject;
+        public static TextMeshPro TextTMPObject;
 
         [HarmonyPatch(nameof(HudManager.Start)), HarmonyPostfix]
         public static void StartPostfix(HudManager __instance)
@@ -67,32 +69,32 @@ public static class CredentialsPatch
             TextObject.name = "Version Text";
             TextObject.layer = 5;
             GameObject.Destroy(TextObject.GetComponent<RoomTracker>());
-            AspectPosition position = TextObject.AddComponent<AspectPosition>();
-            position.Alignment = AspectPosition.EdgeAlignments.LeftTop;
-            position.DistanceFromEdge = new(1.85f, 0.35f);
-            position.parentCam = Camera.main;
-            position.updateAlways = true;
-            position.useGUILayout = true;
-            TextMeshPro text = TextObject.GetComponent<TextMeshPro>();
-            text.fontSizeMax = 2;
-            text.fontSizeMin = 2;
-            text.alignment = TextAlignmentOptions.TopLeft;
-            text.autoSizeTextContainer = true;
-            text.enableWordWrapping = false;
+            TextAspectPositionObject = TextObject.AddComponent<AspectPosition>();
+            TextAspectPositionObject.Alignment = AspectPosition.EdgeAlignments.LeftTop;
+            TextAspectPositionObject.DistanceFromEdge = new(1.85f, 0.35f);
+            TextAspectPositionObject.parentCam = Camera.main;
+            TextAspectPositionObject.updateAlways = true;
+            TextAspectPositionObject.useGUILayout = true;
+            TextTMPObject = TextObject.GetComponent<TextMeshPro>();
+            TextTMPObject.fontSizeMax = 2;
+            TextTMPObject.fontSizeMin = 2;
+            TextTMPObject.alignment = TextAlignmentOptions.TopLeft;
+            TextTMPObject.autoSizeTextContainer = true;
+            TextTMPObject.enableWordWrapping = false;
         }
 
         [HarmonyPatch(nameof(HudManager.Update)), HarmonyPostfix]
         public static void UpdatePostfix()
         {
-            AspectPosition position = TextObject.GetComponent<AspectPosition>();
-            TextMeshPro text = TextObject.GetComponent<TextMeshPro>();
+            AspectPosition position = TextAspectPositionObject;
+            TextMeshPro text = TextTMPObject;
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
                 text.text = $"{baseCredentials}";
                 try
                 {
                     if (ModHelpers.IsDebugMode()) text.text += $"\n{ModTranslation.GetString("DebugModeOn")}";
-                    if (!ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.HideAndSeek))
+                    if (!ModeHandler.IsMode(ModeId.Default, ModeId.HideAndSeek))
                         text.text += $"\n{ModTranslation.GetString("SettingMode")}:{ModeHandler.GetThisModeIntro()}";
                 }
                 catch { }

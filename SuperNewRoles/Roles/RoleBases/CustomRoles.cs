@@ -61,13 +61,13 @@ public static class CustomRoles
             introHandler.OnIntroStartMe();
         }
     }
-    public static void OnIntroDestroy()
+    public static void OnIntroDestroy(IntroCutscene __instance)
     {
         RoleBaseManager.GetInterfaces<IIntroHandler>()
-            .Do(x => x.OnIntroDestory());
+            .Do(x => x.OnIntroDestory(__instance));
         if (PlayerControl.LocalPlayer.GetRoleBase() is IIntroHandler introHandler)
         {
-            introHandler.OnIntroDestoryMe();
+            introHandler.OnIntroDestoryMe(__instance);
         }
     }
     public static void NameHandler(bool CanSeeAllRole = false)
@@ -132,16 +132,6 @@ public static class CustomRoles
                     RoleBaseManager.ClearRole(player, roleBase);
                 AntiBlackOut.OnDisconnect(player.Data);
             }
-        }
-    }
-
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
-    public static class PlayerPhysicsSpeedPatch
-    {
-        public static void Postfix(PlayerPhysics __instance)
-        {
-            RoleBase roleBase = __instance.myPlayer.GetRoleBase();
-            if (roleBase is IPlayerPhysics physics) physics.FixedUpdate(__instance);
         }
     }
 

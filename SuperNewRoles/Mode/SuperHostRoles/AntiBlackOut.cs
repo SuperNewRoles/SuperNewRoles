@@ -232,7 +232,9 @@ public static class AntiBlackOut
 
                 SyncSetting.CustomSyncSettings(player);
                 player.RpcSetRole(ToRoleTypes, true);
-                new LateTask(() => player.RemainingEmergencies = numMeeting, 0.5f);
+                player.RemainingEmergencies = numMeeting;
+                new LateTask(() => player.RemainingEmergencies = numMeeting, 0.1f);
+
                 var desyncRole = RoleSelectHandler.GetDesyncRole(player.GetRole());
                 if (desyncRole.IsDesync && desyncRole.RoleType.IsImpostorRole())
                     DesyncPlayers.Add((player, desyncRole.RoleType));
@@ -248,7 +250,7 @@ public static class AntiBlackOut
                     int numMeeting = desyncDetail.player.RemainingEmergencies;
                     SyncSetting.CustomSyncSettings(desyncDetail.player);
                     desyncDetail.player.RpcSetRoleDesync(desyncDetail.role, true);
-                    new LateTask(() => desyncDetail.player.RemainingEmergencies = numMeeting, 0.5f);
+                    new LateTask(() => desyncDetail.player.RemainingEmergencies = numMeeting, 0.2f);
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         if (player == desyncDetail.player)
@@ -274,7 +276,7 @@ public static class AntiBlackOut
                 IsModdedSerialize = true;
                 RPCHelper.RpcSyncAllNetworkedPlayer();
                 IsModdedSerialize = false;
-                ChangeName.SetRoleNames();
+                ChangeName.UpdateRoleNames(ChangeNameType.AllPlayers);
                 RoleBaseManager.DoInterfaces<ISHRAntiBlackout>(x => x.EndAntiBlackout());
 
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));

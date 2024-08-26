@@ -135,7 +135,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         SendRpc(writer);
         RepairButtonInfo.AbilityCount = CanRepairCount;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            ChangeName.SetRoleName(Player);
+            ChangeName.UpdateRoleName(Player, ChangeNameType.SelfOnly);
     }
     private void AnalyzeOnClick()
     {
@@ -147,7 +147,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         SendRpc(writer);
         AnalyzeButtonInfo.AbilityCount = AnalysisCount;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            ChangeName.SetRoleName(Player);
+            ChangeName.UpdateRoleName(Player, ChangeNameType.SelfOnly);
     }
     private bool AnalyzeCouldUse()
     {

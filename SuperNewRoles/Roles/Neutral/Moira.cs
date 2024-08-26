@@ -146,7 +146,6 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
 
                 target1.SwapRoleRPC(target2);
 
-                ChangeName.SetRoleNames(sender: sender);
                 sender.SendMessage();
 
                 break;

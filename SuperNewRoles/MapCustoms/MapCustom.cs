@@ -98,7 +98,7 @@ class MapCustom
         SecretRoomOption = Create(103202, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
         AirShipAdditionalVents = Create(103203, false, CustomOptionType.Generic, "AdditionalVents", false, AirshipSetting);
         AirshipDisableMovingPlatform = Create(103204, false, CustomOptionType.Generic, "AirshipDisableMovingPlatformSetting", false, AirshipSetting);
-        RecordsAdminDestroy = Create(103205, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
+        RecordsAdminDestroy = Create(103205, true, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
         MoveElecPad = Create(103206, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
         AddWireTask = Create(103207, false, CustomOptionType.Generic, "AddWireTaskSetting", false, AirshipSetting);
         AntiTaskOverWall = Create(103208, false, CustomOptionType.Generic, "AntiTaskOverWallSetting", false, AirshipSetting);

@@ -134,18 +134,15 @@ public class Frankenstein
 
     public static void FixedUpdate()
     {
-        PlayerControl player = PlayerControl.LocalPlayer;
-        if (player.IsRole(RoleId.Frankenstein) && player.IsAlive())
+        if (!IsMonster(PlayerControl.LocalPlayer))
+            Vulture.FixedUpdate.Postfix();
+        else
         {
-            if (!IsMonster(player)) Vulture.FixedUpdate.Postfix();
-            else
+            foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
             {
-                foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
-                {
-                    if (arrow.Value?.arrow != null)
-                        Object.Destroy(arrow.Value.arrow);
-                    RoleClass.Vulture.DeadPlayerArrows.Remove(arrow.Key);
-                }
+                if (arrow.Value?.arrow != null)
+                    Object.Destroy(arrow.Value.arrow);
+                RoleClass.Vulture.DeadPlayerArrows.Remove(arrow.Key);
             }
         }
     }

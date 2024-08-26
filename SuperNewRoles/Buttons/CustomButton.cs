@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -159,7 +158,7 @@ public class CustomButton
             }
             catch (Exception e)
             {
-                if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
+                if (DebugModeManager.IsDebugMode) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
             }
             index++;
         }
@@ -316,7 +315,7 @@ public class CustomButton
             }
         }
 
-        actionButton.SetCoolDown(Timer, SyncSetting.KillCoolSet((HasEffect && isEffectActive) ? (IsEffectDurationInfinity ? 0f : EffectDuration) : MaxTimer));
+        actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? (IsEffectDurationInfinity ? 0f : EffectDuration) : MaxTimer);
         // Trigger OnClickEvent if the hotkey is being pressed down
         if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
     }

@@ -36,6 +36,7 @@ public static class ConfigRoles
     public static ConfigEntry<float> ReplayQualityTime { get; set; }
     public static bool IsSendAnalyticsPopupViewd;
     public static bool IsUpdated = false;
+
     public static void Load()
     {
         var issendanaly = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalyticsViewd", false);
@@ -45,6 +46,7 @@ public static class ConfigRoles
         StreamerMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Enable Streamer Mode", false);
         AutoUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Update", true);
         DebugMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Debug Mode", false);
+        DebugModeManager.UpdateDebugModeState();
         IsSaveLogWhenEndGame = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSaveLogWhenEndGame", false, "At the end of the match, a copy of the log that is being written is made.");
         AutoCopyGameCode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Copy Game Code", true);
         CustomProcessDown = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "CustomProcessDown", false);

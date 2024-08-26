@@ -39,12 +39,15 @@ public class FixSabotage
             return true;
         }
     }
+    // VanillaButtonEventsPatch.csに移行
+    /*
     [HarmonyPatch(typeof(UseButton), nameof(UseButton.SetTarget))]
     public static class UseButtonSetTargetPatch
     {
         public static bool Prefix(UseButton __instance, [HarmonyArgument(0)] IUsable target)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+            if (target == null) return true;
             if (IsBlocked(target))
             {
                 __instance.currentTarget = null;
@@ -57,6 +60,7 @@ public class FixSabotage
             return true;
         }
     }
+    //*/
     private static bool IsBlocked(TaskTypes type, RoleId role)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
@@ -69,7 +73,7 @@ public class FixSabotage
         if (type is TaskTypes.RestoreOxy && fixSabotage.Item4) return true;
         return false;
     }
-    private static bool IsBlocked(IUsable target)
+    public static bool IsBlocked(IUsable target)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return false;
         if (target == null) return false;

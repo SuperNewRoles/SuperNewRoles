@@ -43,92 +43,95 @@ class BlockTool
     public static float CameraTime = 0;
     public static float AdminTime = 0;
     public static float VitalTime = 0;
+
+    private static bool CheckGuardAndDistance(Vector2 player, Vector2 target, float distance)
+        => Vector2.Distance(player, target) <= UsableDistance;
+
     public static void FixedUpdate()
     {
         Count--;
         if (Count > 0) return;
         Count = 3;
-        if ((!MapOption.MapOption.CanUseAdmin ||
-            !MapOption.MapOption.CanUseVitalOrDoorLog ||
-            !MapOption.MapOption.CanUseCamera)
-            && !ModeHandler.IsMode(ModeId.Default))
+        if (ModeHandler.IsMode(ModeId.Default) ||
+            (
+              MapOption.MapOption.CanUseAdmin &&
+              MapOption.MapOption.CanUseVitalOrDoorLog &&
+              MapOption.MapOption.CanUseCamera
+            ))
+            return;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                try
-                {
-                    if (p.IsAlive() && !p.IsMod())
-                    {
-                        var cid = p.GetClientId();
-                        bool IsGuard = false;
-                        Vector2 playerposition = p.GetTruePosition();
-                        //カメラチェック
-                        if (!MapOption.MapOption.CanUseCamera && CameraPlayers.Contains(p.PlayerId)) IsGuard = true;
-                        //アドミンチェック
-                        if (!MapOption.MapOption.CanUseAdmin)
-                        {
-                            var AdminDistance = Vector2.Distance(playerposition, GetAdminTransform());
-                            if (AdminDistance <= UsableDistance) IsGuard = true;
-                        }
-                        //Polus用のアドミンチェック。Polusはアドミンが2つあるから
-                        if (!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2 && !MapOption.MapOption.CanUseAdmin)
-                        {
-                            var AdminDistance = Vector2.Distance(playerposition, new Vector2(24.66107f, -21.523f));
-                            if (AdminDistance <= UsableDistance) IsGuard = true;
-                        }
-                        //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
-                        if ((!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && !MapOption.MapOption.CanUseAdmin) || (!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.GetBool() && MapOption.MapOption.MapOptionSetting.GetBool()))
-                        {
-                            var AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
-                            if (AdminDistance <= UsableDistance) IsGuard = true;
-                        }
-                        //バイタルもしくはドアログを防ぐ
-                        if (!IsGuard && !MapOption.MapOption.CanUseVitalOrDoorLog)
-                        {
-                            float distance = UsableDistance;
-                            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2) distance += 0.5f;
-                            var AdminDistance = Vector2.Distance(playerposition, GetVitalOrDoorLogTransform());
-                            if (AdminDistance <= distance) IsGuard = true;
-                        }
-                        if (IsGuard && !p.inVent && MeetingHud.Instance == null)
-                        {
-                            if (!OldDesyncCommsPlayers.Contains(p.PlayerId))
-                                OldDesyncCommsPlayers.Add(p.PlayerId);
-                            MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cid);
-                            SabotageWriter.Write((byte)SystemTypes.Comms);
-                            MessageExtensions.WriteNetObject(SabotageWriter, p);
-                            SabotageWriter.Write((byte)128);
-                            AmongUsClient.Instance.FinishRpcImmediately(SabotageWriter);
-                        }
-                        else
-                        {
-                            if (!IsCom && OldDesyncCommsPlayers.Contains(p.PlayerId))
-                            {
-                                OldDesyncCommsPlayers.Remove(p.PlayerId);
-                                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cid);
-                                SabotageFixWriter.Write((byte)SystemTypes.Comms);
-                                MessageExtensions.WriteNetObject(SabotageFixWriter, p);
-                                SabotageFixWriter.Write((byte)16);
-                                AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
+            if (p.IsDead() || p.IsMod())
+                continue;
+            var cid = p.GetClientId();
 
-                                if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
-                                {
-                                    SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cid);
-                                    SabotageFixWriter.Write((byte)SystemTypes.Comms);
-                                    MessageExtensions.WriteNetObject(SabotageFixWriter, p);
-                                    SabotageFixWriter.Write((byte)17);
-                                    AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogError(e);
-                }
+            bool IsGuard = false;
+            Vector2 playerposition = p.GetTruePosition();
+            int currentMapId = GameManager.Instance.LogicOptions.currentGameOptions.MapId;
+
+            //カメラチェック
+            if (!MapOption.MapOption.CanUseCamera &&
+                CameraPlayers.Contains(p.PlayerId))
+                IsGuard = true;
+
+            //アドミンチェック
+            if (!IsGuard && !MapOption.MapOption.CanUseAdmin)
+            {
+                IsGuard = CheckGuardAndDistance(playerposition, GetAdminTransform(), UsableDistance);
+            }
+
+            //Polus用のアドミンチェック。Polusはアドミンが2つあるから
+            if (!IsGuard &&
+                currentMapId == 2 &&
+                !MapOption.MapOption.CanUseAdmin)
+            {
+                IsGuard = CheckGuardAndDistance(playerposition, new Vector2(24.66107f, -21.523f), UsableDistance);
+            }
+
+            //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
+            if (!IsGuard &&
+                currentMapId == 4 &&
+                // アドミンを使えない設定 or 
+                (!MapOption.MapOption.CanUseAdmin ||
+                  // アーカイブアドミンのみ使えない設定か
+                  (MapCustoms.MapCustom.RecordsAdminDestroy.GetBool()
+                    && MapOption.MapOption.MapOptionSetting.GetBool()
+                  )
+                ))
+            {
+                IsGuard = CheckGuardAndDistance(playerposition, new Vector2(19.9f, 12.9f), UsableDistance);
+            }
+
+            //バイタルもしくはドアログを防ぐ
+            if (!IsGuard && !MapOption.MapOption.CanUseVitalOrDoorLog)
+            {
+                float distance = UsableDistance;
+                if (currentMapId == 2)
+                    distance += 0.5f;
+                IsGuard = CheckGuardAndDistance(playerposition, GetVitalOrDoorLogTransform(), distance);
+            }
+            if (IsGuard && !p.inVent && MeetingHud.Instance == null)
+            {
+                if (!OldDesyncCommsPlayers.Contains(p.PlayerId))
+                    OldDesyncCommsPlayers.Add(p.PlayerId);
+                SendCommsRpc(128, p, cid);
+            }
+            else if (!IsCom && OldDesyncCommsPlayers.Contains(p.PlayerId))
+            {
+                OldDesyncCommsPlayers.Remove(p.PlayerId);
+                SendCommsRpc(16, p, cid);
+                if (currentMapId == 4)
+                    SendCommsRpc(17, p, cid);
             }
         }
+    }
+    private static void SendCommsRpc(byte type, PlayerControl p, int cid = -1)
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, cid);
+        writer.Write((byte)SystemTypes.Comms);
+        MessageExtensions.WriteNetObject(writer, p);
+        writer.Write(type);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static Vector2 GetAdminTransform()
     {
