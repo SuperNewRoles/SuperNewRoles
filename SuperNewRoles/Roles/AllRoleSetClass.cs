@@ -866,8 +866,6 @@ class AllRoleSetClass
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicPlayerCount,
             RoleId.EvilMechanic => EvilMechanic.EvilMechanicPlayerCount,
             RoleId.TheFirstLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount,
-            RoleId.TheSecondLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount,
-            RoleId.TheThirdLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount,
             RoleId.OrientalShaman => OrientalShaman.OrientalShamanPlayerCount,
             RoleId.Balancer => Balancer.BalancerPlayerCount,
             RoleId.Pteranodon => Pteranodon.PteranodonPlayerCount,

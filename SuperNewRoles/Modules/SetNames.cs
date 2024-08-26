@@ -483,7 +483,7 @@ public class SetNameUpdate
                 case RoleId.TheThirdLittlePig:
                     foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
                     {
-                        if (!players.Contains(PlayerControl.LocalPlayer)) continue;
+                        if (players.TrueForAll(x => x.PlayerId != PlayerControl.LocalPlayer.PlayerId)) continue;
                         foreach (PlayerControl p in players)
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
