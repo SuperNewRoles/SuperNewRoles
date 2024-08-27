@@ -11,7 +11,12 @@ class MorePatch
         public static void Postfix(PlayerControl __instance)
         {
             if (!RoleHelpers.IsComms())
-                ChangeName.UpdateRoleName(__instance, ChangeNameType.SelfOnly);
+            {
+                ChangeName.UpdateRoleName(
+                    __instance,
+                    Madmate.CheckImpostor(__instance) || JackalFriends.CheckJackal(__instance) ? ChangeNameType.AllPlayers : ChangeNameType.SelfOnly
+                );
+            }
         }
     }
 

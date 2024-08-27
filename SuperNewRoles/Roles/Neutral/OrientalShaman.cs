@@ -332,7 +332,7 @@ public static class OrientalShaman
                 PlayerControl player = ModHelpers.PlayerById(OrientalShamanCausative[PlayerControl.LocalPlayer.PlayerId]);
                 if (PlayerControl.LocalPlayer.IsDead() || IsDoNotDisplay || !player.IsRole(RoleId.ShermansServant))
                 {
-                    if (SeePositionArrow.arrow != null)
+                    if (SeePositionArrow?.arrow != null)
                         Object.Destroy(SeePositionArrow.arrow);
                     return;
                 }

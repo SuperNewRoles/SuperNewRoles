@@ -189,11 +189,36 @@ public static class AntiBlackOut
         if (GamePlayers == null)
             throw new NotImplementedException("GamePlayers is null");
 
+        foreach (GamePlayerData gamePlayerData in GamePlayers.Values)
+        {
+            PlayerControl player = gamePlayerData?.PlayerInfo?.Object;
+            if (player == null)
+            {
+                Logger.Error($"GamePlayerData({gamePlayerData.PlayerId}) is null.", "AntiBlackOutWrapUp");
+                continue;
+            }
+            RoleTypes ToRoleTypes = (player.IsDead() || gamePlayerData.IsDead) ?
+                     (gamePlayerData.roleTypes.IsImpostorRole() ?
+                      RoleTypes.ImpostorGhost : RoleTypes.CrewmateGhost) :
+                     gamePlayerData.roleTypes;
+            ISupportSHR supportSHR = (ISupportSHR)player.GetRoleBase();
+            if (supportSHR != null && player.IsAlive() && !supportSHR.IsDesync && !supportSHR.RealRole.IsImpostorRole())
+                ToRoleTypes = supportSHR.RealRole;
+            if (player.IsDead() && !RoleManager.IsGhostRole(ToRoleTypes))
+                Logger.Info($"What's this!? {ToRoleTypes} {player.PlayerId}");
+            int numMeeting = player.RemainingEmergencies;
+            // どーせIsDeadはtrueになるからfalseにして、壁抜けできるようにする
+            if (player.AmOwner && RoleManager.IsGhostRole(ToRoleTypes))
+                player.Data.IsDead = false;
+
+            player.SetRole(ToRoleTypes, true);
+            player.RemainingEmergencies = numMeeting;
+            new LateTask(() => player.RemainingEmergencies = numMeeting, 0.1f);
+        }
         foreach (GamePlayerData playerData in GamePlayers.Values)
         {
             if (playerData?.PlayerInfo != null)
                 playerData.PlayerInfo.IsDead = playerData.IsDead;
-
         }
 
         new LateTask(() => {
@@ -295,7 +320,7 @@ public static class AntiBlackOut
                 DestroySavedData();
             }, 0.2f);
             ProcessNow = false;
-        }, 0.75f);
+        }, 0.5f);
     }
     /*
     private static void SetAllDontDead(NetworkedPlayerInfo exiled)
