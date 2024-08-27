@@ -999,9 +999,6 @@ public static class RoleHelpers
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.Kunoichi:
-                RoleClass.Kunoichi.KunoichiPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Teleporter:
                 RoleClass.Teleporter.TeleporterPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1149,9 +1146,6 @@ public static class RoleHelpers
             case RoleId.MadStuntMan:
                 RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.MadHawk:
-                RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.NiceHawk:
                 RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1160,6 +1154,9 @@ public static class RoleHelpers
                 break;
             case RoleId.MadJester:
                 RoleClass.MadJester.MadJesterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadHawk:
+                RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.FalseCharges:
                 RoleClass.FalseCharges.FalseChargesPlayer.RemoveAll(ClearRemove);
@@ -1188,11 +1185,11 @@ public static class RoleHelpers
             case RoleId.MadSeer:
                 RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.TeleportingJackal:
-                RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.RemoteSheriff:
                 RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.TeleportingJackal:
+                RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.MadMaker:
                 RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
@@ -1251,8 +1248,14 @@ public static class RoleHelpers
             case RoleId.BlackCat:
                 RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.SecretlyKiller:
+                RoleClass.SecretlyKiller.SecretlyKillerPlayer.RemoveAll(ClearRemove);
+                break;
             case RoleId.Spy:
                 RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Kunoichi:
+                RoleClass.Kunoichi.KunoichiPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.DoubleKiller:
                 RoleClass.DoubleKiller.DoubleKillerPlayer.RemoveAll(ClearRemove);
@@ -1327,7 +1330,8 @@ public static class RoleHelpers
                 RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.GM:
-                if (RoleClass.GM.gm != null && player.PlayerId == RoleClass.GM.gm.PlayerId) RoleClass.GM.gm = null;
+                if (RoleClass.GM.gm != null && player.PlayerId == RoleClass.GM.gm.PlayerId)
+                    RoleClass.GM.gm = null;
                 break;
             case RoleId.Cracker:
                 RoleClass.Cracker.CrackerPlayer.RemoveAll(ClearRemove);
@@ -1376,6 +1380,15 @@ public static class RoleHelpers
                 break;
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.WiseMan:
+                WiseMan.WiseManPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NiceMechanic:
+                NiceMechanic.NiceMechanicPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilMechanic:
+                EvilMechanic.EvilMechanicPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.TheFirstLittlePig:
                 TheThreeLittlePigs.TheFirstLittlePig.Player.RemoveAll(ClearRemove);
