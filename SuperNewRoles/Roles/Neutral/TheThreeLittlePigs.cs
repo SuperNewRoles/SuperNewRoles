@@ -29,7 +29,7 @@ public class TheThreeLittlePigs
     public static void SetupCustomOptions()
     {
         TheThreeLittlePigsOption = new(OptionId, false, type, "TheThreeLittlePigsName", color, 1, role: RoleId.TheFirstLittlePig);
-        TheThreeLittlePigsTeamCount = CustomOption.Create(OptionId + 1, false, type, "QuarreledTeamCountSetting", 1f, 1f, 4f, 1f, TheThreeLittlePigsOption);
+        TheThreeLittlePigsTeamCount = CustomOption.Create(OptionId + 1, false, type, "QuarreledTeamCountSetting", 0f, 0f, 4f, 1f, TheThreeLittlePigsOption);
         TheThreeLittlePigsIsSettingNumberOfUniqueTasks = CustomOption.Create(OptionId + 2, false, type, "IsSettingNumberOfUniqueTasks", false, TheThreeLittlePigsOption);
         var TheThreeLittlePigsoption = SelectTask.TaskSetting(OptionId + 3, OptionId + 4, OptionId + 5, TheThreeLittlePigsIsSettingNumberOfUniqueTasks, type);
         TheThreeLittlePigsCommonTask = TheThreeLittlePigsoption.Item1;
