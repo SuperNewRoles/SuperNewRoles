@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -210,6 +211,7 @@ public static class CredentialsPatch
         {
             var template = __instance.transform.FindChild("StatsPopup");
             var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+            obj.GetComponent<StatsPopup>().SelectableButtons.ToList().ForEach(button => button.gameObject.SetActive(false));
             CreditsPopup = obj;
             GameObject.Destroy(obj.GetComponent<StatsPopup>());
 
