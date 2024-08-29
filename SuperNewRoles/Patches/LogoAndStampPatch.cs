@@ -213,7 +213,7 @@ public static class CredentialsPatch
             CreditsPopup = obj;
             GameObject.Destroy(obj.GetComponent<StatsPopup>());
 
-            var devTitletext = obj.transform.FindChild("StatNumsText_TMP");
+            var devTitletext = obj.transform.FindChild("StatsText_TMP");
             devTitletext.GetComponent<TextMeshPro>().text = ModTranslation.GetString("Developer");
             devTitletext.localPosition = new Vector3(-3.25f, -1.65f, -2f);
             devTitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
