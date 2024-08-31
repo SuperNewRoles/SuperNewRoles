@@ -99,9 +99,9 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
 
     public bool KillButtonDoClick(KillButton button)
     {
+        if (!button.isActiveAndEnabled || !button.currentTarget || button.isCoolingDown) return true;
         ResetCoolTime();
         if (!UnderOperation) return true;
-        if (!button.isActiveAndEnabled || !button.currentTarget || button.isCoolingDown) return true;
         ModHelpers.CheckMurderAttemptAndKill(TargetPlayer, button.currentTarget, showAnimation: true);
         button.SetTarget(null);
         OperationButtonOnEffectEnds();
