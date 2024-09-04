@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -194,7 +195,7 @@ public static class CredentialsPatch
                     {
                         if (current.HasValues)
                         {
-                            TransData += $"{current["name"]?.ToString()}<size=40%>({current["language"]?.ToString()})</size>\n";
+                            TransData += $"{current["name"]?.ToString()} <size=100%>({current["language"]?.ToString()})</size>\n";
                         }
                     }
                 }
@@ -210,45 +211,53 @@ public static class CredentialsPatch
         {
             var template = __instance.transform.FindChild("StatsPopup");
             var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+            obj.name = "CreditsPopup";
+            obj.GetComponent<StatsPopup>().SelectableButtons.ToList().ForEach(button => GameObject.Destroy(button.gameObject));
             CreditsPopup = obj;
             GameObject.Destroy(obj.GetComponent<StatsPopup>());
 
-            var devTitletext = obj.transform.FindChild("StatNumsText_TMP");
-            devTitletext.GetComponent<TextMeshPro>().text = ModTranslation.GetString("Developer");
-            devTitletext.localPosition = new Vector3(-3.25f, -1.65f, -2f);
-            devTitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
+            CreditsPopup.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
+            CreditsPopup.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
 
-            var devText = obj.transform.FindChild("StatsText_TMP");
-            devText.localPosition = new Vector3(-1f, -1.65f, -2f);
-            devText.localScale = new Vector3(1.25f, 1.25f, 1f);
-            devText.GetComponent<TextMeshPro>().text = DevsData;
-
-            var supporterTitletext = UnityEngine.Object.Instantiate(devTitletext, obj.transform);
-            supporterTitletext.GetComponent<TextMeshPro>().text = $"<align={"left"}>{ModTranslation.GetString("Supporter")}</align>";
-            supporterTitletext.localPosition = new Vector3(1.45f, -1.65f, -2f);
-            supporterTitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
-
-            var supporterText = UnityEngine.Object.Instantiate(devText, obj.transform);
-            supporterText.localPosition = new Vector3(3f, -1.65f, -2f);
-            supporterText.localScale = new Vector3(1.25f, 1.25f, 1f);
-            supporterText.GetComponent<TextMeshPro>().text = SupporterData;
-
-            var transTitletext = UnityEngine.Object.Instantiate(devTitletext, obj.transform);
-            transTitletext.GetComponent<TextMeshPro>().text = $"<align={"left"}>{ModTranslation.GetString("Translator")}</align>";
-            transTitletext.localPosition = new Vector3(1.45f, -4.5f, -2f);
-            transTitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
-
-            var transText = UnityEngine.Object.Instantiate(devText, obj.transform);
-            transText.localPosition = new Vector3(3f, -4.5f, -2f);
-            transText.localScale = new Vector3(1.25f, 1.25f, 1f);
-            transText.GetComponent<TextMeshPro>().text = TransData;
-
-            var textobj = obj.transform.FindChild("Title_TMP");
+            var textobj = CreditsPopup.transform.FindChild("Title_TMP");
             UnityEngine.Object.Destroy(textobj.GetComponent<TextTranslatorTMP>());
-            textobj.GetComponent<TextMeshPro>().text = ModTranslation.GetString("DevAndSpnTitle");
+            textobj.GetComponent<TextMeshPro>().text = "<size=200%>Credit for SNR</size>";
             textobj.localScale = new Vector3(1.5f, 1.5f, 1f);
-            obj.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
-            obj.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
+
+            var statsTextTransform = CreditsPopup.transform.FindChild("StatsText_TMP"); // Findの使用回数を減らす為に中身のないStatsTextを複製
+            statsTextTransform.gameObject.name = "CreditText_TMP";
+            const string titleFormat = $"<size=200%><align={"left"}>{{0}}</align></size>";
+            const string textFormat = $"<size=150%><align={"left"}>{{0}}</align></size>";
+
+            var developerTitleText = UnityEngine.Object.Instantiate(statsTextTransform, CreditsPopup.transform);
+            developerTitleText.gameObject.name = "DeveloperText";
+            developerTitleText.GetComponent<TextMeshPro>().text = string.Format(titleFormat, ModTranslation.GetString("Developer"));
+            developerTitleText.position = new Vector3(0.1f, -1.15f, -12f);
+            developerTitleText.localPosition = new Vector3(0.1f, -1.15f, -2f);
+            developerTitleText.localScale = new Vector3(1.5f, 1.5f, 1f);
+
+            var devText = UnityEngine.Object.Instantiate(developerTitleText, CreditsPopup.transform);
+            devText.position = new Vector3(-0.2f, -1.1f, -12f);
+            devText.localPosition = new Vector3(-0.2f, -1.1f, -2f);
+            devText.localScale = new Vector3(1.25f, 1.25f, 1f);
+            devText.GetComponent<TextMeshPro>().text = string.Format(textFormat, DevsData);
+
+            var transTitleText = UnityEngine.Object.Instantiate(statsTextTransform, CreditsPopup.transform);
+            transTitleText.gameObject.name = "TranslatorText";
+            transTitleText.GetComponent<TextMeshPro>().text = string.Format(titleFormat, ModTranslation.GetString("Translator"));
+            transTitleText.position = new Vector3(0.1f, -4.15f, -12f);
+            transTitleText.localPosition = new Vector3(0.1f, -4.15f, -2f);
+            transTitleText.localScale = new Vector3(1.5f, 1.5f, 1f);
+
+            var transText = UnityEngine.Object.Instantiate(transTitleText, CreditsPopup.transform);
+            transText.position = new Vector3(-0.2f, -4.1f, -12f);
+            transText.localPosition = new Vector3(-0.2f, -4.1f, -2f);
+            transText.localScale = new Vector3(1.25f, 1.25f, 1f);
+            transText.GetComponent<TextMeshPro>().text = string.Format(textFormat, TransData);
+
+            // サポーターは現在不在
+
+            UnityEngine.Object.Destroy(statsTextTransform.gameObject); // 用済みなオブジェクトを削除
         }
         static bool Downloaded = false;
         public static MainMenuManager instance;
