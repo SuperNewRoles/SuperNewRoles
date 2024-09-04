@@ -33,7 +33,7 @@ public static class SyncSetting
             blackout = system != null && system.IsActive;
         }
         else
-            blackout = isBlackOut.Value;
+            blackout = isBlackOut.HasValue ? isBlackOut.Value : false;
 
         if (PlusMode.PlusGameOptions.EnableFirstEmergencyCooldown)
         {
