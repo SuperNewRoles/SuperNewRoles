@@ -117,6 +117,7 @@ If the host includes this mod, the position will be available to all!<br>
 - Developer #9 : [Kuki](https://github.com/Kuki12345)
 - Developer #11 : [Glaceon](https://github.com/Glaceon-471) ([Misskey](https://misskey.io/@GlaceonSNR11)) ([𝕏 ( Old Twitter )](https://twitter.com/Glaceon_SNR11))
 - Developer #12 : [Seono](https://github.com/Seono968) ([𝕏 ( Old Twitter )](https://twitter.com/Rinforzando_960))
+- Developer #13 : [root-sbh](https://github.com/root-sbh)<br><br>
 - Developer #10 : [~~Sakurander~~](https://github.com/Sakurander)
 
 ## Supporter
