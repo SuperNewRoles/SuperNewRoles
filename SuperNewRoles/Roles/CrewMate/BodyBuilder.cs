@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles.Crewmate.BodyBuilder;
 
 // 提案者：Cade Mofu さん。ありがとうございます！
 [HarmonyPatch]
-public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IHandleChangeRole, IMeetingHandler, IRpcHandler
+public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IHandleChangeRole, IMeetingHandler, IRpcHandler, IFixedUpdaterMe
 {
     public static new RoleInfo Roleinfo = new(
         typeof(BodyBuilder),
@@ -65,6 +65,18 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
             "BodyBuilderButtonName", KeyCode.F
             );
         CustomButtonInfos = new CustomButtonInfo[1] { bodyBuilderButton };
+    }
+
+    public void FixedUpdateMeDefaultAlive() { }
+    public void FixedUpdateMeDefault()
+    {
+        if (myObject == null)
+            return;
+        if (Player.transform.position != lastPosition)
+        {
+            useAbility(false);
+        }
+        lastPosition = Player.transform.position;
     }
 
     private void useAbility(bool active = true)
@@ -170,6 +182,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
     // ポージング関係
     public static Dictionary<byte, GameObject> Prefabs { get; private set; } = new();
     private GameObject myObject;
+    private Vector3 lastPosition = Vector3.zero;
     private static Stream resourceAudioAssetBundleStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.BodyBuilder.BodyBuilderPoses.bundle");
     private static AssetBundle assetBundleBundle = AssetBundle.LoadFromMemory(resourceAudioAssetBundleStream.ReadFully());
     public static GameObject getPrefab(byte id)
@@ -219,15 +232,6 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         if (myObject != null)
             Object.Destroy(myObject);
         myObject = null;
-    }
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity)), HarmonyPostfix]
-    static void onMovePlayer(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
-    {
-        PlayerControl player = __instance.myPlayer;
-        if (!player.IsRole(RoleId.BodyBuilder) || direction == Vector2.zero || player.GetRoleBase<BodyBuilder>().myObject == null)
-            return;
-
-        player.GetRoleBase<BodyBuilder>().useAbility(false);
     }
     public void OnChangeRole()
         => useAbility(false);
