@@ -1753,15 +1753,8 @@ public static class CheckGameEndPatch
     }
     public static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 0 && !statistics.IsGuardPavlovs)
+        if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 0 && !statistics.IsGuardPavlovs && !statistics.MadKillerEndGuardByPromote)
         {
-            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
-            {
-                if (!p.IsImpostor() && !p.Data.Disconnected)
-                {
-                    return false;
-                }
-            }
             __instance.enabled = false;
             CustomEndGame((GameOverReason)CustomGameOverReason.JackalWin, false);
             return true;
@@ -1782,15 +1775,8 @@ public static class CheckGameEndPatch
 
     public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 0 && !statistics.IsGuardPavlovs)
+        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 0 && !statistics.IsGuardPavlovs && !statistics.MadKillerEndGuardByPromote)
         {
-            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
-            {
-                if (!p.IsImpostor() && !p.Data.Disconnected)
-                {
-                    return false;
-                }
-            }
             __instance.enabled = false;
             CustomEndGame(GameOverReason.HumansByVote, false);
             return true;
@@ -1903,10 +1889,8 @@ public static class CheckGameEndPatch
     }
     public static bool CheckAndEndGameForOwlWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 1 && !statistics.IsGuardPavlovs)
+        if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 1 && !statistics.IsGuardPavlovs && !statistics.MadKillerEndGuardByPromote)
         {
-            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
-                if (!p.IsImpostor() && !p.Data.Disconnected) return false;
             foreach (Owl role in RoleBaseManager.GetRoleBases<Owl>())
             {
                 PlayerControl player = role.Player;
@@ -1943,6 +1927,8 @@ public static class CheckGameEndPatch
         public int OwlAlive { get; set; }
         public int LoversAlive { get; set; }
         public bool IsGuardPavlovs { get; set; }
+        public bool MadKillerEndGuardByPromote { get; set; }
+
         public PlayerStatistics()
         {
             GetPlayerCounts();
@@ -2013,7 +1999,10 @@ public static class CheckGameEndPatch
                     }
                 }
             }
-            if (ModeHandler.IsMode(ModeId.HideAndSeek)) numTotalAlive += numImpostorsAlive;
+
+            if (ModeHandler.IsMode(ModeId.HideAndSeek))
+                numTotalAlive += numImpostorsAlive;
+
             TeamImpostorsAlive = numImpostorsAlive;
             TotalAlive = numTotalAlive;
             CrewAlive = numCrewAlive;
@@ -2025,6 +2014,8 @@ public static class CheckGameEndPatch
             HitmanAlive = numHitmanAlive;
             OwlAlive = numOwlAlive;
             LoversAlive = numLoversAlive;
+
+            // まだパグロフの犬を作れるかを判定する
             if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
             {
                 foreach (RoleBase rolebase in RoleBaseManager.GetRoleBaseOrigins<PavlovsOwner>())
@@ -2036,6 +2027,14 @@ public static class CheckGameEndPatch
                     IsGuardPavlovs = true;
                     break;
                 }
+            }
+            // マッドキラーが昇格する前にゲームが終了してしまうのを防ぐ
+            MadKillerEndGuardByPromote = false;
+            foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
+            {
+                if (p.IsImpostor() || p.IsDead())
+                    continue;
+                MadKillerEndGuardByPromote = true;
             }
         }
     }
