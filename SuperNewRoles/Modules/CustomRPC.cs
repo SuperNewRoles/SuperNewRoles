@@ -382,10 +382,17 @@ public enum CustomRPC
     WaveCannon,
     SetNormalizedVelocity,
     CustomSnapTo,
+    SetAttributeGuesser,
 }
 
 public static class RPCProcedure
 {
+    public static void SetAttributeGuesser(byte id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        AttributeGuesser.AttributeGuesserPlayer.Add(player);
+    }
     public static void RoleRpcHandler(MessageReader reader)
     {
         byte playerId = reader.ReadByte();
@@ -2033,6 +2040,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CustomSnapTo:
                         CustomSnapTo(reader.ReadByte(), NetHelpers.ReadVector2(reader));
+                        break;
+                    case CustomRPC.SetAttributeGuesser:
+                        SetAttributeGuesser(reader.ReadByte());
                         break;
                 }
             }

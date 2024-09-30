@@ -375,6 +375,15 @@ class AllRoleSetClass
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
+
+            try
+            {
+                AttributeGuesser.RandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
         }
     }
     public static void QuarreledRandomSelect()
@@ -485,6 +494,8 @@ class AllRoleSetClass
         }
         CacheManager.ResetLoversCache();
     }
+
+
     public static void SetPlayerNum()
     {
         ImpostorPlayerNum = CustomOptionHolder.impostorRolesCountMax.GetInt();

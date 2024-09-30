@@ -317,6 +317,13 @@ public static class RoleHelpers
         Writer.Write(player2.PlayerId);
         AmongUsClient.Instance.FinishRpcImmediately(Writer);
     }
+    public static void SetAttributeGuesserRPC(PlayerControl player)
+    {
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetAttributeGuesser);
+        writer.Write(player.PlayerId);
+        writer.EndRPC();
+        RPCProcedure.SetAttributeGuesser(player.PlayerId);
+    }
     public static void RemoveQuarreled(this PlayerControl player)
     {
         foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
