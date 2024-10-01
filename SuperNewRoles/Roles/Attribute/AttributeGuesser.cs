@@ -84,6 +84,8 @@ public static class AttributeGuesser
                     RoleHelpers.SetAttributeGuesserRPC(players[index]);
                     players.RemoveAt(index);
                 }
+                if (players.Count <= 0)
+                    return;
             }
         }
 
