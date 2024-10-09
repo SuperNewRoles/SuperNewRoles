@@ -1978,7 +1978,8 @@ AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出
 AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー)
 AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー)
 MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する
-MadmateSelfDestructive,,マッドメイト系役職は必ず自爆する
+MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する
+AttributeGuesserIntro,And guess what.,そして、推察せよ。
 
 #NewRoleTranslation
 

@@ -8,7 +8,6 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
 using UnityEngine;
-using UnityEngine.UIElements.UIR;
 
 namespace SuperNewRoles.Roles.Attribute;
 
@@ -141,7 +140,7 @@ public static class AttributeGuesser
         );
 
     public static bool IsAttributeGuesser(this PlayerControl player) =>
-        AttributeGuesserPlayer.Contains(player);
+        AttributeGuesserPlayer.Any(x => x.PlayerId == player.PlayerId);
 
     public static void UseCount()
     {
@@ -174,7 +173,7 @@ public static class AttributeGuesser
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
             int copiedIndex = i;
-            // button.OnClick.AddListener((Action)(() => GuesserOnClick(copiedIndex, __instance)));
+            button.OnClick.AddListener((Action)(() => GuesserOnClick(copiedIndex, __instance)));
         }
     }
 
@@ -433,13 +432,13 @@ public static class AttributeGuesser
                     var Role = focusedTarget.GetRole();
 
                     PlayerControl dyingTarget;
-                    if (Role == role)
+                    if (Role != role || (MadmateSelfDestructive.GetBool() && (PlayerControl.LocalPlayer.IsMadRoles() || PlayerControl.LocalPlayer.IsFriendRoles())))
                     {
-                        dyingTarget = focusedTarget;
+                        dyingTarget = PlayerControl.LocalPlayer;
                     }
                     else
                     {
-                        dyingTarget = PlayerControl.LocalPlayer;
+                        dyingTarget = focusedTarget;
                     }
 
 

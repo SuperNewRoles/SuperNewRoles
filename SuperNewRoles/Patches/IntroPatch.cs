@@ -7,6 +7,8 @@ using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
@@ -590,6 +592,7 @@ public class IntroPatch
                 //重複を持っていたらメッセージ追記
                 if (PlayerControl.LocalPlayer.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                 if (PlayerControl.LocalPlayer.IsQuarreled()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+                if (PlayerControl.LocalPlayer.IsAttributeGuesser()) __instance.RoleBlurbText.text += $"\n{ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, ModTranslation.GetString("AttributeGuesserIntro"))}";
 
                 ModeHandler.YouAreIntroHandler(__instance);
 
