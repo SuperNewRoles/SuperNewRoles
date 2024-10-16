@@ -868,6 +868,7 @@ class MeetingHudStartPatch
         Recorder.StartMeeting();
         ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
+        AttributeGuesser.StartMeetingPostfix();
         DeviceClass.OnStartMeeting();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
@@ -951,7 +952,7 @@ class MeetingHudStartPatch
                     break;
                 case RoleId.EvilGuesser:
                 case RoleId.NiceGuesser:
-                    Roles.Attribute.Guesser.StartMeetingPatch.Postfix(__instance);
+                    Guesser.StartMeetingPatch.Postfix(__instance);
                     break;
                 case RoleId.Knight:
                     KnightProtected_Patch.MeetingHudStartPostfix(__instance);
@@ -963,6 +964,8 @@ class MeetingHudStartPatch
                     Crook.Ability.InClientMode.MeetingHudStartPostfix(__instance);
                     break;
             }
+            if (PlayerControl.LocalPlayer.IsAttributeGuesser())
+                AttributeGuesser.StartMeetingPostfix(__instance);
         }
         else if (PlayerControl.LocalPlayer.IsDead())
         {

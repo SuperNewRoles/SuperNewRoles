@@ -1353,10 +1353,10 @@ WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キ
 WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,昇格時、波動砲を受け継ぐ,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班晉升時繼承重炮之力
 WaveCannonJackalSidekickType,Sidekick Type,サイドキックの種類,跟班类型,跟班類型
 WaveCannonJackalSidekickTypeSidekick,Sidekick,サイドキック,跟班,跟班
-WaveCannonJackalSidekickTypeJackalFriends,Jackal Friends,ジャッカルフレンズ,狼族朋友,狼族朋友
+WaveCannonJackalSidekickTypeJackalFriends,Jackal Friends,ジャッカルフレンズ,狈,狼族朋友
 WaveCannonJackalSidekickTypeWaveCannonSidekick,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
 WaveCannonJackalSidekickTypeBulletSidekick,Bullet,弾,人间大炮,子彈
-WaveCannonJackalCreateBulletToJackal,When a jackal dies，will bullet promote to jackal?,弾が昇格できる,人间大炮是否可以晋升为狼族,子彈是否可以晉升為狼族
+WaveCannonJackalCreateBulletToJackal,When a jackal dies，will bullet promote to jackal?,弾が昇格できる,人间大炮是否可以晋升为豺狼,子彈是否可以晉升為狼族
 WaveCannonJackalLoadBulletCoolTime,Bullet Load Cool Time,「装填」のクールタイム,人间大炮装填冷却时间,子彈裝填冷卻時間
 WaveCannonJackalBulletLoadedChargeTime,Charge Time at Bullet loaded,装填済みのチャージ時間,人间大炮装填后的充能时间,子彈裝填後的充能時間
 SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
@@ -1968,6 +1968,17 @@ RemoteControllerMarkingButtonName,Marking,マーキング,收信器,收訊器
 RemoteControllerOperationButtonName,Operation!,操作!,操纵！,控制！
 RemoteControllerTarget,Objects of Interference,干渉対象,操纵对象：,控制對象：
 Permanence,Permanence,永続,持续,持續
+
+AttributeGuesserOption,Attribute Guesser,モディファイアゲッサー
+AttributeGuesserMaximumAllocationImpostor,Maximum allocations (Imposter),最大割当数(インポスター)
+AttributeGuesserEmissionProbabilityImpostor,Emission probability (Imposter),排出確率(インポスター)
+AttributeGuesserMaximumAllocationNeutral,Maximum allocations (Neutral),最大割当数(第三陣営)
+AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出確率(第三陣営)
+AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー)
+AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー)
+MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する
+MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する
+AttributeGuesserIntro,And guess what.,そして、推察せよ。
 
 #NewRoleTranslation
 

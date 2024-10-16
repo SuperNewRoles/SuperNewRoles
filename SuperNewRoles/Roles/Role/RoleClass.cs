@@ -260,6 +260,7 @@ public static class RoleClass
         Spider.RoleData.ClearAndReload();
         Crook.RoleData.ClearAndReload();
         Frankenstein.ClearAndReload();
+        AttributeGuesser.ClearAndReload();
         TaskCount.IsClearTaskPlayer = null;
         // ロールクリア
         Quarreled.ClearAndReload();
