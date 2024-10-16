@@ -8,6 +8,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -362,6 +363,22 @@ public class SetNamesClass
             }
         }
     }
+    public static void AttributeGuesserSet()
+    {
+        if (CanGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+        {
+            foreach (PlayerControl player in AttributeGuesser.AttributeGuesserPlayer)
+            {
+                if (!player.NameText().text.Contains(ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕")))
+                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕"));
+            }
+        }
+        else if (PlayerControl.LocalPlayer.IsAttributeGuesser())
+        {
+            if (!PlayerControl.LocalPlayer.NameText().text.Contains(ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕")))
+                SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.NameText().text + ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕"));
+        }
+    }
 }
 public class SetNameUpdate
 {
@@ -572,6 +589,7 @@ public class SetNameUpdate
         }
         SetNamesClass.SatsumaimoSet();
         SetNamesClass.JumboSet();
+        SetNamesClass.AttributeGuesserSet();
 
         if (RoleClass.PartTimer.Data.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
         {
