@@ -1214,6 +1214,8 @@ public static class RPCProcedure
         RoleBase player2role = player2.GetRoleBase();
         RoleId player1id = player1.GetRole();
         RoleId player2id = player2.GetRole();
+        bool player1ag = player1.IsAttributeGuesser();
+        bool player2ag = player2.IsAttributeGuesser();
         if (player1role != null)
         {
             player1role.SetPlayer(player2);
@@ -1225,6 +1227,11 @@ public static class RPCProcedure
             player2.SetRole(player1id);
             Logger.Info($"{player2.name}を{player1id}に変更しました", "RPC.SwapRole.RoleId");
         }
+        if (player1ag)
+        {
+            AttributeGuesser.AttributeGuesserPlayer.RemoveAll(x => x.PlayerId == playerid1);
+            AttributeGuesser.AttributeGuesserPlayer.Add(player2);
+        }
         if (player2role != null)
         {
             player2role.SetPlayer(player1);
@@ -1235,6 +1242,11 @@ public static class RPCProcedure
             player1.ClearRole();
             player1.SetRole(player2id);
             Logger.Info($"{player1.name}を{player2id}に変更しました", "RPC.SwapRole.RoleId");
+        }
+        if (player2ag)
+        {
+            AttributeGuesser.AttributeGuesserPlayer.RemoveAll(x => x.PlayerId == playerid2);
+            AttributeGuesser.AttributeGuesserPlayer.Add(player1);
         }
         CacheManager.ResetMyRoleCache();
         RoleHelpers.ClearTaskUpdate();

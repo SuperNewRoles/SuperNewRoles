@@ -214,8 +214,7 @@ public static class AttributeGuesser
         exitButtonParent.transform.localPosition = new Vector3(2.725f, 2.1f, -200f);
         exitButtonParent.transform.localScale = new Vector3(0.25f, 0.9f, 1f);
         exitButtonParent.transform.SetAsFirstSibling();
-        exitButton.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
-        exitButton.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
+        (exitButton.GetComponent<PassiveButton>().OnClick = new()).AddListener((System.Action)(() =>
         {
             __instance.playerStates.ForEach(x => x.gameObject.SetActive(true));
             UnityEngine.Object.Destroy(container.gameObject);
@@ -231,6 +230,7 @@ public static class AttributeGuesser
             TeambuttonParent.SetParent(container);
             Transform Teambutton = UnityEngine.Object.Instantiate(buttonTemplate, TeambuttonParent);
             Teambutton.FindChild("ControllerHighlight").gameObject.SetActive(false);
+
             Transform TeambuttonMask = UnityEngine.Object.Instantiate(maskTemplate, TeambuttonParent);
             TMPro.TextMeshPro Teamlabel = UnityEngine.Object.Instantiate(textTemplate, Teambutton);
             // Teambutton.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
@@ -246,7 +246,7 @@ public static class AttributeGuesser
             Teamlabel.autoSizeTextContainer = true;
             static void CreateTeamButton(Transform Teambutton, TeamRoleType type)
             {
-                Teambutton.GetComponent<PassiveButton>().OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
+                (Teambutton.GetComponent<PassiveButton>().OnClick = new()).AddListener((UnityEngine.Events.UnityAction)(() =>
                 {
                     GuesserSelectRole(type);
                     ReloadPage();
@@ -297,7 +297,7 @@ public static class AttributeGuesser
             Pagelabel.transform.localScale *= 1.6f;
             Pagelabel.autoSizeTextContainer = true;
             if (!IsNext && Page <= 1) Pagebutton.GetComponent<SpriteRenderer>().color = new(1, 1, 1, 0.1f);
-            Pagebutton.GetComponent<PassiveButton>().OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
+            (Pagebutton.GetComponent<PassiveButton>().OnClick = new()).AddListener((UnityEngine.Events.UnityAction)(() =>
             {
                 Logger.Info("クリック");
                 if (IsNext) Page += 1;
@@ -415,7 +415,7 @@ public static class AttributeGuesser
             label.autoSizeTextContainer = true;
             int copiedIndex = i[(int)team];
 
-            button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
+            button.GetComponent<PassiveButton>().OnClick = new();
             if (PlayerControl.LocalPlayer.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
             {
                 if (selectedButton != button)
