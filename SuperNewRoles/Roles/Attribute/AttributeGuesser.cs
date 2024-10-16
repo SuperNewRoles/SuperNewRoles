@@ -258,7 +258,7 @@ public static class AttributeGuesser
             return true;
         }
         bool isSuccess = false;
-        if (target.GetRole() == role)
+        if (!(MadmateSelfDestructive.GetBool() && (PlayerControl.LocalPlayer.IsMadRoles() || PlayerControl.LocalPlayer.IsFriendRoles())) && target.GetRole() == role)
         {
             if (role == RoleId.DefaultRole)
             {
