@@ -1969,6 +1969,17 @@ RemoteControllerOperationButtonName,Operation!,操作!,操纵！,控制！
 RemoteControllerTarget,Objects of Interference,干渉対象,操纵对象：,控制對象：
 Permanence,Permanence,永続,持续,持續
 
+AttributeGuesserOption,Attribute Guesser,モディファイアゲッサー
+AttributeGuesserMaximumAllocationImpostor,Maximum allocations (Imposter),最大割当数(インポスター)
+AttributeGuesserEmissionProbabilityImpostor,Emission probability (Imposter),排出確率(インポスター)
+AttributeGuesserMaximumAllocationNeutral,Maximum allocations (Neutral),最大割当数(第三陣営)
+AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出確率(第三陣営)
+AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー)
+AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー)
+MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する
+MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する
+AttributeGuesserIntro,And guess what.,そして、推察せよ。
+
 #NewRoleTranslation
 
 #ConfigRoles

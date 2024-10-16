@@ -74,32 +74,29 @@ class Nekomata
         {
             random.RpcExiledUnchecked();
             random.RpcSetFinalStatus(FinalStatus.NekomataExiled);
-            if (RoleClass.NiceNekomata.IsChain &&
-                (random.IsRole(RoleId.NiceNekomata) || random.IsRole(RoleId.EvilNekomata) || random.IsRole(RoleId.BlackCat)))
+            if ((RoleClass.NiceNekomata.IsChain &&
+                (random.IsRole(RoleId.NiceNekomata)) || random.IsRole(RoleId.EvilNekomata) || random.IsRole(RoleId.BlackCat)))
             {
                 p.RemoveAt(rdm);
                 NekomataProc(p);
             }
-            if (random.IsRole(RoleId.Jester) || random.IsRole(RoleId.MadJester))
+            if (random.IsRole(RoleId.Jester) && (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0)))
             {
-                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
-                {
-                    RPCProcedure.ShareWinner(random.PlayerId);
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                    Writer.Write(random.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    RoleClass.Jester.IsJesterWin = true;
-                    GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
-                }
-                if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
-                {
-                    RPCProcedure.ShareWinner(random.PlayerId);
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                    Writer.Write(random.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    RoleClass.MadJester.IsMadJesterWin = true;
-                    GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
-                }
+                RPCProcedure.ShareWinner(random.PlayerId);
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                Writer.Write(random.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                RoleClass.Jester.IsJesterWin = true;
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
+            }
+            else if (random.IsRole(RoleId.MadJester) && (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0)))
+            {
+                RPCProcedure.ShareWinner(random.PlayerId);
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                Writer.Write(random.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                RoleClass.MadJester.IsMadJesterWin = true;
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
             }
         }
     }

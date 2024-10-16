@@ -1871,6 +1871,8 @@ public class CustomOptionHolder
         QuarreledTeamCount = Create(500101, true, CustomOptionType.Modifier, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
         QuarreledOnlyCrewmate = Create(500102, true, CustomOptionType.Modifier, "QuarreledOnlyCrewmateSetting", false, QuarreledOption);
 
+        AttributeGuesser.SetupCustomOption();
+
         JumboOption = SetupCustomRoleOption(500300, false, RoleId.Jumbo, type: CustomOptionType.Modifier);
         JumboPlayerCount = Create(500301, false, CustomOptionType.Modifier, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
         JumboCrewmateChance = Create(500302, false, CustomOptionType.Modifier, "JumboCrewmateChance", rates, JumboOption);
