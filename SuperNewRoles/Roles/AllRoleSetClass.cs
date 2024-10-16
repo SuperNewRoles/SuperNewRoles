@@ -241,6 +241,14 @@ class RoleManagerSelectRolesPatch
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
+            try
+            {
+                AttributeGuesser.RandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
             ChangeName.UpdateRoleNames(ChangeNameType.AllPlayers);
             return false;
         }

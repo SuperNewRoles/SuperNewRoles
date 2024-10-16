@@ -137,6 +137,26 @@ internal class AddChatPatch
             }
             else
             {
+                try
+                {
+                    if (lcmd == "/bt")
+                    {
+                        if (sourcePlayer.IsAttributeGuesser())
+                        {
+                            bool isCancelChat = true;
+                            if (AmongUsClient.Instance.AmHost)
+                            {
+                                if (Commands.Length > 1)
+                                    isCancelChat = AttributeGuesser.OnChatCommand(sourcePlayer, Commands[1..]);
+                                else
+                                    isCancelChat = AttributeGuesser.OnChatCommand(sourcePlayer, []);
+                            }
+                            if (isCancelChat) return false;
+                        }
+                    }
+                }
+                catch { }
+                
                 foreach (ISHRChatCommand shrChatCommand in RoleBaseManager.GetInterfaces<ISHRChatCommand>())
                 {
                     if (
@@ -151,18 +171,6 @@ internal class AddChatPatch
                         return false;
                     }
                 }
-            }
-            if (sourcePlayer.IsAttributeGuesser())
-            {
-                bool isCancelChat = true;
-                if (AmongUsClient.Instance.AmHost)
-                {
-                    if (Commands.Length > 1)
-                        isCancelChat = AttributeGuesser.OnChatCommand(sourcePlayer, Commands[1..]);
-                    else
-                        isCancelChat = AttributeGuesser.OnChatCommand(sourcePlayer, []);
-                }
-                if (isCancelChat) return false;
             }
         }
         bool isAdd = true;
