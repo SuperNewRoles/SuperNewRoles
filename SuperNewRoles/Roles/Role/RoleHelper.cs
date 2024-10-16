@@ -1518,9 +1518,6 @@ public static class RoleHelpers
                     // タスククリアか 個別表記
                     IsTaskClear = true;
                     break;
-                case RoleId.Sheriff when Chief.IsSheriffCreatedByChief(player.PlayerId):
-                    IsTaskClear = true;
-                    break;
                 case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
                 case RoleId.RemoteSheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
                 case RoleId.ToiletFan when ModeHandler.IsMode(ModeId.SuperHostRoles):
