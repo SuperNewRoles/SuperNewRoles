@@ -3,7 +3,9 @@ using System.Text;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -223,6 +225,8 @@ public static class ChangeName
             }
             MySuffix.Append(suffix);
         }
+        if (AttributeGuesser.IsAttributeGuesser(player))
+            MySuffix.Append(ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕"));
         //ここで役職名の部分を変える
         switch (PlayerRole)
         {
