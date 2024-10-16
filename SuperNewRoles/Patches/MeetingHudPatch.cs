@@ -868,6 +868,7 @@ class MeetingHudStartPatch
         Recorder.StartMeeting();
         ReplayLoader.StartMeeting();
         CustomRoles.OnMeetingStart();
+        AttributeGuesser.StartMeetingPostfix();
         DeviceClass.OnStartMeeting();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {

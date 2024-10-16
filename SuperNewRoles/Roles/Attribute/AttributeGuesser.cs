@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Attribute;
@@ -148,11 +151,152 @@ public static class AttributeGuesser
         GuesData.Local.ShotOnThisMeeting = true;
     }
 
+    private static string GuesserInfoTitle(this PlayerControl player) => $"<size=160%>{CustomOptionHolder.Cs(IntroData.GetIntrodata(player.GetRole(), player).color, player.GetRole() + "Name")}</size>";
+    private static string GetErrorText(string ErrorId)
+    {
+        return ModTranslation.GetString("GuesserError" + ErrorId) + "\n" +
+            ModTranslation.GetString("GuesserCommandUsage");
+    }
+
+    public static void StartMeetingPostfix()
+    {
+        foreach (KeyValuePair<PlayerControl, GuesserData> data in GuesData)
+        {
+            data.Value.CanShotCelebrityRemainingTurn--;
+            data.Value.ShotOnThisMeeting = false; if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
+                return;
+            if (data.Key.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+                (!AmongUsClient.Instance.AmHost || data.Key.IsMod()))
+                return;
+            new LateTask(() => AddChatPatch.SendCommand(data.Key, ModTranslation.GetString($"GuesserOnStartMeetingInfo{(data.Value.Count > 0 ? "Can" : "Cannot")}Shot", data.Value.Count) + "\n" + ModTranslation.GetString("GuesserCommandUsage"), data.Key.GuesserInfoTitle()), 1.75f);
+        }
+    }
+
+    public static bool OnChatCommand(PlayerControl player, string[] args)
+    {
+        if (player == null)
+            return true;
+        if (!player.IsAttributeGuesser())
+            return true;
+        if (player.IsDead())
+            return true;
+        if (args.Length < 2)
+        {
+            AddChatPatch.SendCommand(player,
+                ModTranslation.GetString("GuesserCommandUsage"),
+                player.GuesserInfoTitle()
+            );
+            return true;
+        }
+        if (GuesData[player].Count is not (-1) and <= 0)
+        {
+            AddChatPatch.SendCommand(player,
+                GetErrorText("NoCount"),
+                player.GuesserInfoTitle()
+            );
+            return true;
+        }
+        if (!GuesData[player].CanShotOneMeeting && GuesData[player].ShotOnThisMeeting)
+        {
+            AddChatPatch.SendCommand(player,
+                GetErrorText("ShotOnThisMeeting"),
+                player.GuesserInfoTitle()
+            );
+            return true;
+        }
+        PlayerControl target = ModHelpers.PlayerByColor(args[0]);
+        if (target == null || target == player)
+        {
+            AddChatPatch.SendCommand(player,
+                GetErrorText("NoneTarget"),
+                player.GuesserInfoTitle()
+            );
+            return true;
+        }
+        string RoleName = args[1];
+        bool isCrewmate = false;
+        RoleId? role = RoleId.DefaultRole;
+        if (RoleName.ToLower() is "impostor" or "impo" or "インポスター" or "インポ")
+            isCrewmate = false;
+        else if (RoleName.ToLower() is "crewmate" or "crew" or "クルーメイト" or "クルー")
+            isCrewmate = true;
+        else
+        {
+            role = RoleinformationText.GetRoleIdByName(RoleName);
+            if (role == null)
+            {
+                AddChatPatch.SendCommand(player,
+                    GetErrorText("NoneRole"),
+                    player.GuesserInfoTitle()
+                );
+                return true;
+            }
+            isCrewmate = CustomRoles.GetRoleTeam(role.Value) is TeamRoleType.Crewmate;
+        }
+        if (isCrewmate && GuesData[player].CannotShotCrew)
+        {
+            AddChatPatch.SendCommand(player,
+                GetErrorText("CannotShotCrew"),
+                player.GuesserInfoTitle()
+            );
+            return true;
+        }
+        else if (GuesData[player].CannotShotCelebrity)
+        {
+            AddChatPatch.SendCommand(player,
+                GetErrorText("CannotShotCelebrity"),
+                player.GuesserInfoTitle()
+            );
+            return true;
+        }
+        else if (target.IsDead())
+        {
+            AddChatPatch.SendCommand(player,
+                GetErrorText("TargetIsDead"),
+                player.GuesserInfoTitle()
+            );
+            return true;
+        }
+        bool isSuccess = false;
+        if (target.GetRole() == role)
+        {
+            if (role == RoleId.DefaultRole)
+            {
+                if ((target.IsCrew() && isCrewmate) ||
+                    (target.IsImpostor() && !isCrewmate))
+                {
+                    isSuccess = true;
+                }
+            }
+            else
+                isSuccess = true;
+        }
+        Logger.Info($"Guesser: {player.Data.PlayerName} guessed {target.Data.PlayerName} as {role} and {target.GetRole()} and {(isSuccess ? "success" : "failed")}");
+        PlayerControl targetPlayer = PlayerControl.LocalPlayer;
+        if (isSuccess) targetPlayer = target;
+        else targetPlayer = player;
+        UseCount();
+        targetPlayer.RpcInnerExiled();
+        AddChatPatch.SendCommand(null,
+           ModTranslation.GetString("GuesserPlayerWasDead", targetPlayer.Data.DefaultOutfit.PlayerName) + "\n",
+           ModTranslation.GetString("GuesserBigNewsTitle")
+        );
+        Mode.SuperHostRoles.Helpers.ShowReactorFlash(0.75f);
+
+        // Shoot player and send chat info if activated
+        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.GuesserShoot);
+        writer.Write(player.PlayerId);
+        writer.Write(targetPlayer.PlayerId);
+        writer.Write(targetPlayer.PlayerId);
+        writer.Write((byte)role);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        RPCProcedure.GuesserShoot(player.PlayerId, targetPlayer.PlayerId, targetPlayer.PlayerId, (byte)role);
+        return true;
+    }
+
     public static void StartMeetingPostfix(MeetingHud __instance)
     {
         if (!PlayerControl.LocalPlayer.IsAttributeGuesser()) return;
-        GuesData.Local.CanShotCelebrityRemainingTurn--;
-        GuesData.Local.ShotOnThisMeeting = false;
         if (ModeHandler.IsMode(ModeId.Default) && GuesData.Local.Count is > 0 or (-1))
             CreateGuesserButton(__instance);
     }
