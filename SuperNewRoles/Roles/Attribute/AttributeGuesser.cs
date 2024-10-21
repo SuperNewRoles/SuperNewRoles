@@ -160,10 +160,11 @@ public static class AttributeGuesser
 
     public static void StartMeetingPostfix()
     {
-        foreach (KeyValuePair<PlayerControl, GuesserData> data in GuesData)
+        foreach (KeyValuePair<PlayerControl, GuesserData> data in (Dictionary<PlayerControl, GuesserData>)GuesData)
         {
             data.Value.CanShotCelebrityRemainingTurn--;
-            data.Value.ShotOnThisMeeting = false; if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
+            data.Value.ShotOnThisMeeting = false;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
                 return;
             if (data.Key.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
                 (!AmongUsClient.Instance.AmHost || data.Key.IsMod()))
