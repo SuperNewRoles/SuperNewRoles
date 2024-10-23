@@ -980,9 +980,9 @@ public static class GameSettingMenuPatch
     {
         if ((previewOnly && Controller.currentTouchType == Controller.TouchType.Joystick) || !previewOnly)
         {
-            __instance.PresetsTab.gameObject.SetActive(false);
-            __instance.GameSettingsTab.gameObject.SetActive(false);
-            __instance.RoleSettingsTab.gameObject.SetActive(false);
+            __instance.PresetsTab?.gameObject.SetActive(false);
+            __instance.GameSettingsTab?.gameObject.SetActive(false);
+            __instance.RoleSettingsTab?.gameObject.SetActive(false);
             ModSettingsMenu?.gameObject.SetActive(false);
             __instance.GamePresetsButton.SelectButton(false);
             __instance.GameSettingsButton.SelectButton(false);
