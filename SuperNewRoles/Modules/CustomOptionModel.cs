@@ -915,17 +915,17 @@ public static class GameOptionsNextPagePatch
     }
 }
 
-[HarmonyPatch(typeof(RolesSettingsMenu))]
-public static class RolesSettingsMenuPatch
-{
-    [HarmonyPatch(nameof(RolesSettingsMenu.Awake)), HarmonyPostfix]
-    public static void SetAwakePostfix(RolesSettingsMenu __instance)
-    {
-        __instance.QuotaTabSelectables = new();
-        __instance.advancedSettingChildren = new();
-        __instance.roleChances = new();
-    }
-}
+//[HarmonyPatch(typeof(RolesSettingsMenu))]
+//public static class RolesSettingsMenuPatch
+//{
+//    [HarmonyPatch(nameof(RolesSettingsMenu.Awake)), HarmonyPostfix]
+//    public static void SetAwakePostfix(RolesSettingsMenu __instance)
+//    {
+//        __instance.QuotaTabSelectables = new();
+//        __instance.advancedSettingChildren = new();
+//        __instance.roleChances = new();
+//    }
+//}
 
 [HarmonyPatch(typeof(GameSettingMenu))]
 public static class GameSettingMenuPatch
@@ -1007,6 +1007,7 @@ public static class GameSettingMenuPatch
                     break;
                 case 2:
                     __instance.RoleSettingsTab.gameObject.SetActive(true);
+                    __instance.RoleSettingsTab.OpenMenu(false);
                     //__instance.MenuDescriptionText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleSettingsDescription, Array.Empty<Il2CppSystem.Object>());
                     break;
                 case 3:
