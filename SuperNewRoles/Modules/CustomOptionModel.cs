@@ -915,17 +915,17 @@ public static class GameOptionsNextPagePatch
     }
 }
 
-[HarmonyPatch(typeof(RolesSettingsMenu))]
-public static class RolesSettingsMenuPatch
-{
-    [HarmonyPatch(nameof(RolesSettingsMenu.Awake)), HarmonyPostfix]
-    public static void SetAwakePostfix(RolesSettingsMenu __instance)
-    {
-        __instance.QuotaTabSelectables = new();
-        __instance.advancedSettingChildren = new();
-        __instance.roleChances = new();
-    }
-}
+//[HarmonyPatch(typeof(RolesSettingsMenu))]
+//public static class RolesSettingsMenuPatch
+//{
+//    [HarmonyPatch(nameof(RolesSettingsMenu.Awake)), HarmonyPostfix]
+//    public static void SetAwakePostfix(RolesSettingsMenu __instance)
+//    {
+//        __instance.QuotaTabSelectables = new();
+//        __instance.advancedSettingChildren = new();
+//        __instance.roleChances = new();
+//    }
+//}
 
 [HarmonyPatch(typeof(GameSettingMenu))]
 public static class GameSettingMenuPatch
@@ -980,9 +980,9 @@ public static class GameSettingMenuPatch
     {
         if ((previewOnly && Controller.currentTouchType == Controller.TouchType.Joystick) || !previewOnly)
         {
-            __instance.PresetsTab.gameObject.SetActive(false);
-            __instance.GameSettingsTab.gameObject.SetActive(false);
-            __instance.RoleSettingsTab.gameObject.SetActive(false);
+            __instance.PresetsTab?.gameObject.SetActive(false);
+            __instance.GameSettingsTab?.gameObject.SetActive(false);
+            __instance.RoleSettingsTab?.gameObject.SetActive(false);
             ModSettingsMenu?.gameObject.SetActive(false);
             __instance.GamePresetsButton.SelectButton(false);
             __instance.GameSettingsButton.SelectButton(false);
@@ -992,11 +992,11 @@ public static class GameSettingMenuPatch
             switch (tabNum)
             {
                 case 0:
-                    __instance.PresetsTab.gameObject.SetActive(true);
+                    __instance.PresetsTab?.gameObject.SetActive(true);
                     //__instance.MenuDescriptionText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GamePresetsDescription, Array.Empty<Il2CppSystem.Object>());
                     break;
                 case 1:
-                    __instance.GameSettingsTab.gameObject.SetActive(true);
+                    __instance.GameSettingsTab?.gameObject.SetActive(true);
                     //__instance.MenuDescriptionText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSettingsDescription, Array.Empty<Il2CppSystem.Object>());
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameNumImpostors).Cast<NumberOption>().ValidRange = new(0f, 15f);
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameKillCooldown).Cast<NumberOption>().ValidRange = new(2.5f, 60f);
@@ -1006,11 +1006,12 @@ public static class GameSettingMenuPatch
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameShortTasks).Cast<NumberOption>().ValidRange = new(0f, 45f);
                     break;
                 case 2:
-                    __instance.RoleSettingsTab.gameObject.SetActive(true);
+                    __instance.RoleSettingsTab?.gameObject.SetActive(true);
+                    __instance.RoleSettingsTab.OpenMenu(false);
                     //__instance.MenuDescriptionText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleSettingsDescription, Array.Empty<Il2CppSystem.Object>());
                     break;
                 case 3:
-                    ModSettingsMenu.gameObject.SetActive(true);
+                    ModSettingsMenu?.gameObject.SetActive(true);
                     break;
             }
         }
