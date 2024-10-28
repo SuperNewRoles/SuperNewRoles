@@ -38,7 +38,7 @@ class AwakeMeetingPatch
     public static void Postfix()
     {
         RoleClass.IsMeeting = true;
-        MeetingHudUpdatePatch.Cash = false;
+        MeetingHudUpdatePatch.Cache = false;
     }
 
     private static void BatteryIconDestroy(MeetingHud __instance)
@@ -1058,10 +1058,10 @@ public static class AnonymousVotes
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 public class MeetingHudUpdatePatch
 {
-    public static bool Cash = false;
+    public static bool Cache = false;
     public static void Postfix(MeetingHud __instance)
     {
-        if (Cash != ConfigRoles.IsLightAndDarker.Value)
+        if (Cache != ConfigRoles.IsLightAndDarker.Value)
         {
             foreach (PlayerVoteArea player in __instance.playerStates)
             {
@@ -1069,7 +1069,7 @@ public class MeetingHudUpdatePatch
                 if (ConfigRoles.IsLightAndDarker.Value) player.NameText.text += GetLightAndDarkerText(CustomColors.LighterColors.Contains(target.Data.DefaultOutfit.ColorId));
                 else player.NameText.text = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
             }
-            Cash = ConfigRoles.IsLightAndDarker.Value;
+            Cache = ConfigRoles.IsLightAndDarker.Value;
         }
         
     }
