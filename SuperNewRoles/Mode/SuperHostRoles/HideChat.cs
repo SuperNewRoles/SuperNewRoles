@@ -78,13 +78,12 @@ public static class HideChat
         if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead() || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
             return;
         CustomRpcSender sender = new("HideChatSender", sendOption: Hazel.SendOption.Reliable, false);
-        OnAddChat(sender, player, message, isAdd);
-        //sender.SendMessage();
+        if (OnAddChat(sender, player, message, isAdd)) sender.SendMessage();
     }
-    public static void OnAddChat(CustomRpcSender sender, PlayerControl player, string message, bool isAdd)
+    public static bool OnAddChat(CustomRpcSender sender, PlayerControl player, string message, bool isAdd)
     {
         if (!RoleClass.IsMeeting || !HideChatEnabled || player.IsDead() || AntiBlackOut.GamePlayers != null)
-            return;
+            return false;
         bool IsNotEmpty = false;
         if (isAdd)
         {
@@ -108,7 +107,8 @@ public static class HideChat
             player.Data.IsDead = playerIsDead;
         }
         DesyncSetDead(sender, player?.Data);
-        if (!isAdd || IsNotEmpty) sender.SendMessage();
+        //foreachの結果、RPCSendChatPrivateが実行されなかった場合にSendMessageを行うと会議中チャットで落ちる？
+        return !isAdd || IsNotEmpty;
     }
 }
 public class AliveState
