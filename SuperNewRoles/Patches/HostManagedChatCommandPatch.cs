@@ -111,7 +111,7 @@ internal static class HostManagedChatCommandPatch
                 }
                 break;
             case CommandType.Winners:
-                if (OnGameEndPatch.PlayerData != null)
+                if (OnGameEndPatch.PlayerData != null && OnGameEndPatch.PlayerData.Count > 0)
                 {
                     SendCommand(commandUser.AmOwner ? null : commandUser, GetChatCommands.GetWinnerMessage(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
                 }
