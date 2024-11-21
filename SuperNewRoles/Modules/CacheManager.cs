@@ -97,4 +97,9 @@ class CacheManager
             return null;
         return voteArea;
     }
+    public static void SetMyRoleCache(PlayerControl p, RoleId role)
+    {
+        if (MyRoleCache == null || p == null) return;
+        MyRoleCache[p.PlayerId] = role;
+    }
 }

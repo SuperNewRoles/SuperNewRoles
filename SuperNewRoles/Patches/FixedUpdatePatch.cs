@@ -88,14 +88,14 @@ public class FixedUpdate
         PlayerAnimation.FixedAllUpdate();
         PVCreator.FixedUpdate();
 
-        VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
-        OldModeButtons.OldModeUpdate();
-
         // -- 以下ゲーム中のみ --
         if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
         {
             return;
         }
+
+        VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
+        OldModeButtons.OldModeUpdate();
 
         counter++;
         if (counter < 0 || counter > 5)
