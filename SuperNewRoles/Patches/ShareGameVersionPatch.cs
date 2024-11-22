@@ -69,7 +69,6 @@ class ShareGameVersion
 
             RoleClass.ClearAndReloadRoles();
             GameStartManagerUpdatePatch.Proce = 0;
-            GameStartManagerUpdatePatch.LastBlockStart = false;
             GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
         }
 
@@ -94,7 +93,6 @@ class ShareGameVersion
         public static Dictionary<int, PlayerVersion> VersionPlayers = new();
         public static int Proce;
         private static string currentText = "";
-        public static bool LastBlockStart;
 
         public static void Prefix(GameStartManager __instance)
         {
@@ -249,24 +247,11 @@ class ShareGameVersion
                     if (__instance.StartButton.enabled != false) __instance.StartButton.SetButtonEnableState(false);
                 }
             }
-            if (blockStart || hostModeInVanilla)
-            {
-                VersionErrorInfo.text = message;
-                VersionErrorInfo.enabled = true;
 
-                // ゲーム開始後はエラー表記を非表示にする
-                if ((__instance.startState == GameStartManager.StartingStates.Countdown && Mathf.CeilToInt(__instance.countDownTimer) <= 0) || __instance.startState == GameStartManager.StartingStates.Starting)
-                    VersionErrorInfo.enabled = false;
-            }
-            else
-            {
-                if (LastBlockStart)
-                {
-                    VersionErrorInfo.text = "";
-                    VersionErrorInfo.enabled = false;
-                }
-            }
-            LastBlockStart = blockStart;
+            bool IsVersionErrorInfoEnable = (blockStart || hostModeInVanilla) && !((__instance.startState == GameStartManager.StartingStates.Countdown && Mathf.CeilToInt(__instance.countDownTimer) <= 0) || __instance.startState == GameStartManager.StartingStates.Starting);
+            if (VersionErrorInfo.enabled != IsVersionErrorInfoEnable) VersionErrorInfo.enabled = IsVersionErrorInfoEnable;
+            if (IsVersionErrorInfoEnable) VersionErrorInfo.text = message;
+
             if (update) currentText = __instance.PlayerCounter.text;
             if (AmongUsClient.Instance.AmHost)
             {
