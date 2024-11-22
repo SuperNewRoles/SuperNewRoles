@@ -1848,12 +1848,16 @@ public static class RoleHelpers
         }
         return MyRole == role;
     }
-    public static RoleId GetRole(this PlayerControl player, bool IsCache = true)
+    public static RoleId GetRole(this PlayerControl player, bool UseCache = true)
     {
-        if (IsCache)
-        {
-            return CacheManager.MyRoleCache != null && player != null && CacheManager.MyRoleCache.TryGetValue(player.PlayerId, out RoleId roleId) ? roleId : RoleId.DefaultRole;
-        }
+        if (UseCache && CacheManager.MyRoleCache != null && player != null && CacheManager.MyRoleCache.TryGetValue(player.PlayerId, out RoleId roleId)) return roleId;
+        RoleId role = GetRoleInternal(player);
+        //Cacheを参照したにもかかわらずキャッシュが存在しない場合、キャッシュを新たに登録する
+        if (UseCache) CacheManager.SetMyRoleCache(player, role);
+        return role;
+    }
+    private static RoleId GetRoleInternal(PlayerControl player)
+    {
         //ロルベの場合はロルベのロールを返す
         RoleBase roleBase = player.GetRoleBase();
         if (roleBase != null)

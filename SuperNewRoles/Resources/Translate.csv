@@ -1353,10 +1353,10 @@ WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キ
 WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,昇格時、波動砲を受け継ぐ,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班晉升時繼承重炮之力
 WaveCannonJackalSidekickType,Sidekick Type,サイドキックの種類,跟班类型,跟班類型
 WaveCannonJackalSidekickTypeSidekick,Sidekick,サイドキック,跟班,跟班
-WaveCannonJackalSidekickTypeJackalFriends,Jackal Friends,ジャッカルフレンズ,狈,狼族朋友
-WaveCannonJackalSidekickTypeWaveCannonSidekick,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
+WaveCannonJackalSidekickTypeJackalFriends,Jackal Friends,ジャッカルフレンズ,狈,狽
+WaveCannonJackalSidekickTypeWaveCannonSidekick,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,重炮手跟班
 WaveCannonJackalSidekickTypeBulletSidekick,Bullet,弾,人间大炮,子彈
-WaveCannonJackalCreateBulletToJackal,When a jackal dies，will bullet promote to jackal?,弾が昇格できる,人间大炮是否可以晋升为豺狼,子彈是否可以晉升為狼族
+WaveCannonJackalCreateBulletToJackal,When a jackal dies，will bullet promote to jackal?,弾が昇格できる,人间大炮是否可以晋升为豺狼,子彈是否可以晉升為豺狼
 WaveCannonJackalLoadBulletCoolTime,Bullet Load Cool Time,「装填」のクールタイム,人间大炮装填冷却时间,子彈裝填冷卻時間
 WaveCannonJackalBulletLoadedChargeTime,Charge Time at Bullet loaded,装填済みのチャージ時間,人间大炮装填后的充能时间,子彈裝填後的充能時間
 SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
@@ -1954,7 +1954,7 @@ UbiquitousFlyingSpeedOption,Flying speed,飛行速度,无人机飞行速度,飛�
 UbiquitousDoorHackCoolTimeOption,Door Hack Cool Time,「ドアハック」のクールタイム,无人机黑入舱门冷却时间,「駭入門」冷卻時間
 UbiquitousDoorHackScopeOption,Scope of "Door Hack",「ドアハック」の範囲,无人机黑入舱门范围,「駭入門」範圍
 UbiquitousDroneVisibilityRangeOption,Drone visibility range,ドローンに映る範囲,无人机视野,無人機可視範圍
-UbiquitousMapShowPlayerColor,Display on map in player colours,プレイヤーカラーでマップに表示する
+UbiquitousMapShowPlayerColor,Display on map in player colours,プレイヤーカラーでマップに表示する,,在地圖上顯示玩家顏色
 UbiquitousOperationButton,Operation,操作,操纵,操作
 UbiquitousCallButton,Call,呼び出す,呼叫,召喚
 UbiquitousCallHomeButton,Call Home,呼び戻す,唤回,喚回
@@ -1969,16 +1969,16 @@ RemoteControllerOperationButtonName,Operation!,操作!,操纵！,控制！
 RemoteControllerTarget,Objects of Interference,干渉対象,操纵对象：,控制對象：
 Permanence,Permanence,永続,持续,持續
 
-AttributeGuesserOption,Attribute Guesser,モディファイアゲッサー
-AttributeGuesserMaximumAllocationImpostor,Maximum allocations (Imposter),最大割当数(インポスター)
-AttributeGuesserEmissionProbabilityImpostor,Emission probability (Imposter),排出確率(インポスター)
-AttributeGuesserMaximumAllocationNeutral,Maximum allocations (Neutral),最大割当数(第三陣営)
-AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出確率(第三陣営)
-AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー)
-AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー)
-MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する
-MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する
-AttributeGuesserIntro,And guess what.,そして、推察せよ。
+AttributeGuesserOption,Attribute Guesser,モディファイアゲッサー,,賭怪屬性
+AttributeGuesserMaximumAllocationImpostor,Maximum allocations (Imposter),最大割当数(インポスター),,屬性賦予最大數量(內鬼)
+AttributeGuesserEmissionProbabilityImpostor,Emission probability (Imposter),排出確率(インポスター),,賦予機率(內鬼)
+AttributeGuesserMaximumAllocationNeutral,Maximum allocations (Neutral),最大割当数(第三陣営),,屬性賦予最大數量(中立)
+AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出確率(第三陣営),,賦予機率(中立)
+AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー),,屬性賦予最大數量(船員)
+AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー),,賦予機率(船員)
+MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する,,排除叛徒系職業
+MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する,,叛徒系職業必定自爆
+AttributeGuesserIntro,And guess what.,そして、推察せよ。,,這次，你也帶上了狙擊槍。
 
 #NewRoleTranslation
 

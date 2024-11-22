@@ -85,7 +85,6 @@ public static class RoleClass
         MoveElecPad.ClearAndReload();
         AirShipRandomSpawn.ClearAndReload();
         Beacon.ClearBeacons();
-        MeetingHudUpdatePatch.ErrorNames = new();
         ReleaseGhostAbility.ClearAndReload();
         FixSabotage.ClearAndReload();
         Patches.CursedTasks.Main.ClearAndReload();
