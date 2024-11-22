@@ -282,6 +282,7 @@ class RoleManagerSelectRolesPatch
         {
             case ModeId.Default:
                 AllRoleSetClass.AllRoleSet();
+                CacheManager.ResetCache();
                 break;
             case ModeId.NotImpostorCheck:
                 Mode.NotImpostorCheck.SelectRolePatch.SetDesync();
