@@ -74,11 +74,10 @@ public static class VentAndSabo
         }
     }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
-    class MapBehaviourPatch
+    class MapBehaviourShowNormalMapPatch
     {
-        public static bool Prefix(MapBehaviour __instance, ref bool __state)
+        public static bool Prefix(MapBehaviour __instance)
         {
-            __state = false;
             if (!MeetingHud.Instance)
             {
                 if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
@@ -91,18 +90,29 @@ public static class VentAndSabo
                     });
                     return false;
                 }
-                if (PlayerControl.LocalPlayer.IsImpostor() && !PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
-                {
-                    PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Crewmate;
-                    __state = true;
-                    return true;
-                }
             }
             return true;
         }
-        public static void Postfix(ref bool __state)
+    }
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
+    class MapBehaviourShowSabotageMapPatch
+    {
+        public static bool Prefix(MapBehaviour __instance)
         {
-            if (__state) PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Impostor;
+            if (!MeetingHud.Instance)
+            {
+                if (!PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
+                {
+                    __instance.Close();
+                    FastDestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions()
+                    {
+                        Mode = MapOptions.Modes.Normal,
+                        AllowMovementWhileMapOpen = true
+                    });
+                    return false;
+                }
+            }
+            return true;
         }
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]

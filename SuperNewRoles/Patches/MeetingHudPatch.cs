@@ -35,7 +35,11 @@ namespace SuperNewRoles.Patches;
 class AwakeMeetingPatch
 {
     public static void Prefix(MeetingHud __instance) => BatteryIconDestroy(__instance);
-    public static void Postfix() => RoleClass.IsMeeting = true;
+    public static void Postfix()
+    {
+        RoleClass.IsMeeting = true;
+        MeetingHudUpdatePatch.Cache = false;
+    }
 
     private static void BatteryIconDestroy(MeetingHud __instance)
     {
@@ -1054,37 +1058,20 @@ public static class AnonymousVotes
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 public class MeetingHudUpdatePatch
 {
-    public static List<string> ErrorNames;
-    public static void Postfix()
+    public static bool Cache = false;
+    public static void Postfix(MeetingHud __instance)
     {
-        if (Instance)
+        if (Cache != ConfigRoles.IsLightAndDarker.Value)
         {
-            foreach (PlayerVoteArea player in Instance.playerStates)
+            foreach (PlayerVoteArea player in __instance.playerStates)
             {
-                PlayerControl target = null;
-                foreach (PlayerControl x in PlayerControl.AllPlayerControls)
-                {
-                    string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
-                    if (name == x.Data.PlayerName) target = x;
-                }
-                if (target != null)
-                {
-                    if (ConfigRoles.IsLightAndDarker.Value)
-                    {
-                        if (player.NameText.text.Contains(GetLightAndDarkerText(true)) ||
-                            player.NameText.text.Contains(GetLightAndDarkerText(false))) continue;
-                        player.NameText.text += GetLightAndDarkerText(CustomColors.LighterColors.Contains(target.Data.DefaultOutfit.ColorId));
-                    }
-                    else player.NameText.text = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
-                }
-                else
-                {
-                    if (ErrorNames.Contains(player.NameText.text)) continue;
-                    Logger.Error($"プレイヤーコントロールを取得できませんでした。 プレイヤー名 : {player.NameText.text}", "LightAndDarkerText");
-                    ErrorNames.Add(player.NameText.text);
-                }
+                PlayerControl target = player.TargetPlayerId.GetPlayerControl();
+                if (ConfigRoles.IsLightAndDarker.Value) player.NameText.text += GetLightAndDarkerText(CustomColors.LighterColors.Contains(target.Data.DefaultOutfit.ColorId));
+                else player.NameText.text = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
             }
+            Cache = ConfigRoles.IsLightAndDarker.Value;
         }
+        
     }
     public static string GetLightAndDarkerText(bool isLight) => $" ({(isLight ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"))[0]})";
 }
