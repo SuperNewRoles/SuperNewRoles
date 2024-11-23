@@ -29,7 +29,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.SilverBullet, 406800, true,
-            CoolTimeOption: (30,2.5f,60,2.5f, true),
+            CoolTimeOption: (30, 2.5f, 60, 2.5f, true),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.SilverBullet, introSound: RoleTypes.Engineer);
@@ -58,7 +58,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
 
     public RoleTypes RealRole => RoleTypes.Engineer;
 
-    public bool CanUseVent => ModeHandler.IsMode(ModeId.SuperHostRoles) ? !RoleHelpers.IsComms() : true;
+    public bool CanUseVent => ModeHandler.IsMode(ModeId.Default);
 
     public SilverBullet(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
@@ -70,8 +70,11 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
             (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SilverBulletAnalyzeButton.png", 115f),
             () => Optioninfo.CoolTime, new(), "SilverBulletAnalyzeButtonName",
-            UnityEngine.KeyCode.F, 49, CouldUse: AnalyzeCouldUse,
+            ModeHandler.IsMode(ModeId.Default) ? UnityEngine.KeyCode.F : null,
+            ModeHandler.IsMode(ModeId.Default) ? 49 : null,
+            CouldUse: AnalyzeCouldUse,
             HasAbilityCountText: true);
+
         RepairButtonInfo = new(CanRepairCount, this, RepairOnClick,
             (isAlive) => CanUseRepairOption.GetBool() && isAlive, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SilverBulletRepairButton.png", 115f),
@@ -173,7 +176,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                 text.Append(ModTranslation.GetString("SilverBulletVentNotUsed"));
             else
             {
-                text.Append(string.Format(ModTranslation.GetString("SilverBulletVentUsed"), usedPlayers.Count)+"\n\n");
+                text.Append(string.Format(ModTranslation.GetString("SilverBulletVentUsed"), usedPlayers.Count) + "\n\n");
                 if (AnalysisLightOption.GetBool())
                 {
                     text.AppendLine("|-----------------------");
@@ -183,11 +186,9 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                         PlayerControl player = ModHelpers.PlayerById(playerId);
                         text.AppendLine(string.Format(
                             ModTranslation.GetString(
-                                $"SilverBulletVentUsedColor{
-                                    (CustomColors.LighterColors.Contains(
+                                $"SilverBulletVentUsedColor{(CustomColors.LighterColors.Contains(
                                         player.Data.DefaultOutfit.ColorId
-                                    ) ? "Light" : "Dark")
-                                }"
+                                    ) ? "Light" : "Dark")}"
                             ), index)
                         );
                         index++;
@@ -224,7 +225,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         if (AnalysisCount <= 0)
         {
             LastUsedVentData = null;
-            Logger.Warn($"残り使用可能回数が0になったのでLastUsedVentDataをnullにしました。","SilverBullet");
+            Logger.Warn($"残り使用可能回数が0になったのでLastUsedVentDataをnullにしました。", "SilverBullet");
         }
     }
 
@@ -254,7 +255,8 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
     void ISupportSHR.BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
         RoleNameText.Append(ModHelpers.Cs(Roleinfo.RoleColor, $"({AnalysisCount})"));
-        if (CanUseRepairOption.GetBool()) {
+        if (CanUseRepairOption.GetBool())
+        {
             RoleNameText.Append(ModHelpers.Cs(RoleClass.ImpostorRed, $"({CanRepairCount})"));
         }
     }
