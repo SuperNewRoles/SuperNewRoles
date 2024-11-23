@@ -29,6 +29,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.SilverBullet, 406800, true,
+            VentOption: (true, true),
             CoolTimeOption: (30, 2.5f, 60, 2.5f, true),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
@@ -56,15 +57,21 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
     public CustomButtonInfo AnalyzeButtonInfo;
     public CustomButtonInfo RepairButtonInfo;
 
-    public RoleTypes RealRole => RoleTypes.Engineer;
+    public RoleTypes RealRole => Optioninfo.CanUseVent ? RoleTypes.Engineer : RoleTypes.Crewmate;
 
-    public bool CanUseVent => ModeHandler.IsMode(ModeId.Default);
+    public bool CanUseVent => ModeHandler.IsMode(ModeId.Default) ? Optioninfo.CanUseVent : nonModCanEnterVent;
+    /// <summary> 導入者と非導入者で, "CanUseVent"により行われる制御が異なる問題の補正に使用 </summary>
+    private readonly bool nonModCanEnterVent;
 
     public SilverBullet(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         AnalysisCount = AnalysisCountOption.GetInt();
         CanRepairCount = RepairCountOption.GetInt();
         LastUsedVentData = new();
+
+        nonModCanEnterVent = p.IsMod()
+            ? false // 導入者の場合、CanUseVentがtrueの時 ベントボタンを2つ有する。その為 ベント使用可否の判定を、CanUseVentでなく、RealRoleで行うようにする。
+            : Optioninfo.CanUseVent; // 非導入者の場合、通常通りの判定を行う。(導入者と同様の処理を行うと、ベントから排出されてしまう為、ベントが使用できなくなる。)
 
         AnalyzeButtonInfo = new(AnalysisCount, this, AnalyzeOnClick,
             (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
