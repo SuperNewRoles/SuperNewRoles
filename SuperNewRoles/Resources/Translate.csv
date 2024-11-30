@@ -604,7 +604,6 @@ TeleporterTitle1,Let's get everyone together,みんなを集めよう,把所有�
 TeleporterTitle2,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう,利用传送让他人远离尸体,利用傳送讓他人遠離屍體
 TeleporterDescription,This is an impostor role that allows for collective action.,集団行動をさせるインポスター役職です。,邪恶的传送师可以把所有人聚集到一起。,讓大家聚集行動的內鬼職業。
 TeleporterCooldownSetting,Teleporter Sabotage Kill Cooldown,テレポートのクールダウン,传送冷却,傳送冷卻
-TeleporterTeleportTimeSetting,Time to be teleported,テレポートされるまでの時間,传送所需时间,傳送所需時間
 TeleporterTeleportButton,Teleport,テレポート！,传送,傳送！
 TeleporterTPTextMessage,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!,传送师把你传送到{0},傳送師把你傳送到{0}！
 SpiritMediumName,Medium,霊媒師,通灵师,靈媒

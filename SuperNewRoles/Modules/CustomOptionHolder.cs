@@ -137,7 +137,6 @@ public class CustomOptionHolder
     public static CustomRoleOption TeleporterOption;
     public static CustomOption TeleporterPlayerCount;
     public static CustomOption TeleporterCoolTime;
-    public static CustomOption TeleporterDurationTime;
 
     public static CustomRoleOption SpiritMediumOption;
     public static CustomOption SpiritMediumPlayerCount;
@@ -455,7 +454,6 @@ public class CustomOptionHolder
     public static CustomRoleOption NiceTeleporterOption;
     public static CustomOption NiceTeleporterPlayerCount;
     public static CustomOption NiceTeleporterCoolTime;
-    public static CustomOption NiceTeleporterDurationTime;
 
     public static CustomRoleOption CelebrityOption;
     public static CustomOption CelebrityPlayerCount;
@@ -1132,7 +1130,6 @@ public class CustomOptionHolder
         TeleporterOption = SetupCustomRoleOption(203000, false, RoleId.Teleporter);
         TeleporterPlayerCount = Create(203001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);
         TeleporterCoolTime = Create(203002, false, CustomOptionType.Impostor, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleporterOption, format: "unitSeconds");
-        TeleporterDurationTime = Create(203003, false, CustomOptionType.Impostor, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleporterOption, format: "unitSeconds");
 
         FreezerOption = SetupCustomRoleOption(203100, false, RoleId.Freezer);
         FreezerPlayerCount = Create(203101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FreezerOption);
@@ -1796,7 +1793,6 @@ public class CustomOptionHolder
         NiceTeleporterOption = SetupCustomRoleOption(405100, false, RoleId.NiceTeleporter);
         NiceTeleporterPlayerCount = Create(405101, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceTeleporterOption);
         NiceTeleporterCoolTime = Create(405102, false, CustomOptionType.Crewmate, "NiceTeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, NiceTeleporterOption, format: "unitSeconds");
-        NiceTeleporterDurationTime = Create(405103, false, CustomOptionType.Crewmate, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, NiceTeleporterOption, format: "unitSeconds");
 
         NocturnalityOption = SetupCustomRoleOption(405200, true, RoleId.Nocturnality);
         NocturnalityPlayerCount = Create(405201, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);
