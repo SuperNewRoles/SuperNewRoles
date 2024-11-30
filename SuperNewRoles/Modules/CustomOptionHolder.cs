@@ -514,7 +514,6 @@ public class CustomOptionHolder
     public static CustomOption TeleportingJackalUseSabo;
     public static CustomOption TeleportingJackalIsImpostorLight;
     public static CustomOption TeleportingJackalCoolTime;
-    public static CustomOption TeleportingJackalDurationTime;
 
     public static CustomRoleOption MadMakerOption;
     public static CustomOption MadMakerPlayerCount;
@@ -1252,7 +1251,7 @@ public class CustomOptionHolder
 
         /* |: ========================= Neutral Settings ========================== :| */
 
-        
+
         JackalSeerOption = SetupCustomRoleOption(300200, true, RoleId.JackalSeer);
         JackalSeerPlayerCount = Create(300201, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
         JackalSeerMode = Create(300202, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
@@ -1274,7 +1273,6 @@ public class CustomOptionHolder
         TeleportingJackalIsImpostorLight = Create(300304, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, TeleportingJackalOption);
         TeleportingJackalUseSabo = Create(300305, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
         TeleportingJackalCoolTime = Create(300306, false, CustomOptionType.Neutral, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
-        TeleportingJackalDurationTime = Create(300307, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
 
         HitmanOption = SetupCustomRoleOption(303200, false, RoleId.Hitman);
         HitmanPlayerCount = Create(303201, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);

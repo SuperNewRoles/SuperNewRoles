@@ -1605,9 +1605,6 @@ public static class RoleClass
         public static bool IsUseSabo;
         public static bool IsImpostorLight;
         public static float CoolTime;
-        public static float DurationTime;
-        public static DateTime ButtonTimer;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
 
         public static void ClearAndReload()
         {
@@ -1617,7 +1614,6 @@ public static class RoleClass
             IsUseSabo = CustomOptionHolder.TeleportingJackalUseSabo.GetBool();
             IsImpostorLight = CustomOptionHolder.TeleportingJackalIsImpostorLight.GetBool();
             CoolTime = CustomOptionHolder.TeleportingJackalCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.TeleportingJackalDurationTime.GetFloat();
         }
     }
     public static class MadMaker
