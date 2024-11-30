@@ -49,7 +49,7 @@ public class Camouflager
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Camouflage);
         writer.Write(false);
         writer.EndRPC();
-        RPCProcedure.Camouflage(false);
+        RPCProcedure.Camouflage(false, new(defaultvalue: RoleClass.Camouflager.Color));
     }
 
     public static void RpcCamouflage()
@@ -63,13 +63,49 @@ public class Camouflager
         }
         else
         {
+            bool isRandomColor = CustomOptionHolder.CamouflagerCamouflageChangeColor.GetSelection() == 2;
+            PlayerData<byte> camouflageList = new(defaultvalue: RoleClass.Camouflager.Color);
+
+            if (isRandomColor)
+            {
+                System.Random random = new((int)DateTime.Now.Ticks);
+
+                List<byte> allColorList = new();
+                List<PlayerControl> playerList = new();
+
+                foreach (PlayerControl pc in CachedPlayer.AllPlayers)
+                {
+                    if (pc == null || pc.Data.Disconnected) continue;
+                    playerList.Add(pc);
+                    allColorList.Add((byte)pc.Data.DefaultOutfit.ColorId);
+                }
+
+                if (playerList.Count > 1)
+                {
+                    foreach (var p in playerList)
+                    {
+                        byte color;
+                        List<byte> colorTickets = new(allColorList); // 全員の色を抽選リストとしてコピー
+                        colorTickets.Remove((byte)p.Data.DefaultOutfit.ColorId); // 本人の色を抽選リストから抜く
+
+                        int colorIndex = random.Next(0, colorTickets.Count);
+                        color = colorTickets[colorIndex];
+
+                        camouflageList[p.PlayerId] = color;
+                    }
+                }
+                else { camouflageList[PlayerControl.LocalPlayer.PlayerId] = RoleClass.Camouflager.Color; } // カモフラ本人しかいない場合 (Dictionary変換時のエラーを防ぐ為に個別で代入)
+            }
+
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Camouflage);
             writer.Write(true);
+            writer.Write((byte)camouflageList.Count);
+            foreach (var (playerId, colorId) in camouflageList.GetDicts()) { writer.Write($"{playerId}-{colorId}"); }
             writer.EndRPC();
-            RPCProcedure.Camouflage(true);
+            RPCProcedure.Camouflage(true, camouflageList);
         }
     }
-    public static void Camouflage()
+    public static void Camouflage(PlayerData<byte> camouflageList = null)
     {
         RoleClass.Camouflager.IsCamouflage = true;
         RoleClass.Camouflager.ButtonTimer = DateTime.Now;
@@ -86,6 +122,15 @@ public class Camouflager
         {
             if (p == null) continue;
             if (p.Data.Disconnected) continue;
+            if (CustomOptionHolder.CamouflagerCamouflageChangeColor.GetSelection() == 2)
+            {
+                var colorId = camouflageList[p.PlayerId];
+
+                var colorName = Palette.PlayerColors.Length > colorId && colorId >= 0 ? OutfitManager.GetColorTranslation(Palette.ColorNames[colorId]) : "Error Color";
+                Logger.Info($"{p.name} => {colorName}({colorId})", "Camouflage Random Color");
+
+                outfit.ColorId = colorId;
+            }
             p.setOutfit(outfit, true);
         }
     }

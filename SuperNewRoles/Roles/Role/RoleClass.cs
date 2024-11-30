@@ -2662,7 +2662,7 @@ public static class RoleClass
             DemonMark = CustomOptionHolder.CamouflagerCamouflageDemon.GetBool();
             LoversMark = CustomOptionHolder.CamouflagerCamouflageLovers.GetBool();
             QuarreledMark = CustomOptionHolder.CamouflagerCamouflageQuarreled.GetBool();
-            Color = (byte)(CustomOptionHolder.CamouflagerCamouflageChangeColor.GetBool() ? CustomOptionHolder.CamouflagerCamouflageColor.GetSelection() : 15);
+            Color = (byte)(CustomOptionHolder.CamouflagerCamouflageChangeColor.GetSelection() == 1 ? CustomOptionHolder.CamouflagerCamouflageColor.GetSelection() : 15);
             ButtonTimer = DateTime.Now;
             IsCamouflage = false;
             Duration = DurationTime;
