@@ -1174,7 +1174,12 @@ public static class ModHelpers
     {
         if (CheckPlayer == null)
         {
-            Logger.Error($"CheckPlayer is null", "ModHelpers");
+            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+            {
+                var caller = new System.Diagnostics.StackFrame(1, false).GetMethod();
+                Logger.Error($"CheckPlayer is Null. => Called : {caller.DeclaringType.FullName}.{caller.Name}", caller.DeclaringType.Name);
+            }
+
             return false;
         }
 
