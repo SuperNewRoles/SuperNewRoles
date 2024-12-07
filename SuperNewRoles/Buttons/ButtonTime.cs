@@ -27,6 +27,7 @@ class ButtonTime
                 break;
             case RoleId.Teleporter:
             case RoleId.NiceTeleporter:
+            case RoleId.TeleportingJackal:
                 TeleporterButton();
                 break;
             case RoleId.Hawk:
