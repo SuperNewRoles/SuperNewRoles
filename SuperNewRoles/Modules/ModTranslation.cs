@@ -100,6 +100,8 @@ public static class ModTranslation
         //1行ずつ処理
         while (!sr.EndOfStream)
         {
+            i++;
+
             try
             {
                 // 行ごとの文字列
@@ -118,11 +120,12 @@ public static class ModTranslation
                     valuesList.Add(vl.Replace("\\n", "\n").Replace("，", ","));
                 }
                 dictionary.Add(values[0], valuesList.ToArray());
-                i++;
             }
-            catch
+            catch (System.Exception e)
             {
-                Logger.Error($"Error: Loading Translate.csv Line:{i}", "ModTranslation");
+                string[] EOL = ["\r\n"];
+                string[] error = e.ToString().Split(["\r\n"], System.StringSplitOptions.None);
+                Logger.Error($"Error: Loading Translate.csv Line:{i} => ({error[0]})", "ModTranslation");
             }
         }
     }
