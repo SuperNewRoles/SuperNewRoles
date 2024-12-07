@@ -127,9 +127,9 @@ public static class CustomRoles
                         if (x is IHandleDisconnect handleDisconnect)
                             handleDisconnect.OnDisconnect();
                     }
-               );
-                if (player.TryGetRoleBase(out RoleBase roleBase)) // nullチェック OK
-                    RoleBaseManager.ClearRole(player, roleBase);
+                );
+
+                if (player.TryGetRoleBase(out RoleBase roleBase)) RoleBaseManager.ClearRole(player, roleBase);
 
                 if (player != null)
                 {
