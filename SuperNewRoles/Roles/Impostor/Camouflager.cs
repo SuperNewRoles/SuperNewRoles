@@ -48,8 +48,9 @@ public class Camouflager
     {
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Camouflage);
         writer.Write(false);
+        writer.Write(0); // colorDataCountを0として送信
         writer.EndRPC();
-        RPCProcedure.Camouflage(false, new(defaultvalue: RoleClass.Camouflager.Color));
+        RPCProcedure.Camouflage(false);
     }
 
     public static void RpcCamouflage()
@@ -112,6 +113,7 @@ public class Camouflager
     public static void Camouflage(PlayerData<byte> camouflageList = null)
     {
         RoleClass.Camouflager.IsCamouflage = true;
+        if (camouflageList == null) camouflageList = new(defaultvalue: RoleClass.Camouflager.Color);
         RoleClass.Camouflager.ButtonTimer = DateTime.Now;
         NetworkedPlayerInfo.PlayerOutfit outfit = new()
         {

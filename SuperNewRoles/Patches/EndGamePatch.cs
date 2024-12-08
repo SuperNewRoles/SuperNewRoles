@@ -546,7 +546,7 @@ public static class OnGameEndPatch
     public static string WinText;
     public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
     {
-        Roles.Impostor.Camouflager.Camouflage(new(defaultvalue: RoleClass.Camouflager.Color));
+        Roles.Impostor.Camouflager.Camouflage();
         Roles.Impostor.Camouflager.ResetCamouflage();
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)

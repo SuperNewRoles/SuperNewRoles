@@ -822,8 +822,10 @@ public static class RPCProcedure
         }
     }
 
-    public static void Camouflage(bool Is, PlayerData<byte> camouflageList)
+    public static void Camouflage(bool Is, PlayerData<byte> camouflageList = null)
     {
+        if(camouflageList == null) camouflageList = new(defaultvalue: RoleClass.Camouflager.Color);
+
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             if (AmongUsClient.Instance.AmHost)
