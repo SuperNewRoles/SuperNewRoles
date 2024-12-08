@@ -122,7 +122,7 @@ public class Camouflager
         {
             if (p == null) continue;
             if (p.Data.Disconnected) continue;
-            if (CustomOptionHolder.CamouflagerCamouflageChangeColor.GetSelection() == 2)
+            if (CustomOptionHolder.CamouflagerCamouflageChangeColor.GetSelection() == 2 && camouflageList?.Count > 0)
             {
                 var colorId = camouflageList[p.PlayerId];
 
