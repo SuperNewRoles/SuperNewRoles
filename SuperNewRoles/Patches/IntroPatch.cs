@@ -49,6 +49,13 @@ public class IntroPatch
                 Logger.Info($"機体情報 : {(AmongUsClient.Instance.AmHost ? "ホスト機体" : "ゲスト機体")}", "Game Info");
                 Logger.Info($"MapId : {GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Game Info");
                 Logger.Info($"Mode : {ModeHandler.GetMode()}", "Game Info");
+                var serverText = !ModHelpers.IsCustomServer()
+                    ? $"CurrentRegion : {FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName.ToString()}"
+                    : FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name != null && FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name == RegionMenuOpenPatch.SNRServerName
+                        ? "Server : SuperNewRolesTokyo"
+                        : "Server : Custom";
+                Logger.Info(serverText, "Game Info");
+
             }
             Logger.Info("=================Player Info=================", "Intro Begin");
             Logger.Info("=================Player Data=================", "Player Info");

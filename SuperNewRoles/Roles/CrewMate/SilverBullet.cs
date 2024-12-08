@@ -29,7 +29,8 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.SilverBullet, 406800, true,
-            CoolTimeOption: (30,2.5f,60,2.5f, true),
+            VentOption: (true, true),
+            CoolTimeOption: (30, 2.5f, 60, 2.5f, true),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.SilverBullet, introSound: RoleTypes.Engineer);
@@ -56,9 +57,11 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
     public CustomButtonInfo AnalyzeButtonInfo;
     public CustomButtonInfo RepairButtonInfo;
 
-    public RoleTypes RealRole => RoleTypes.Engineer;
+    public RoleTypes RealRole => Optioninfo.CanUseVent ? RoleTypes.Engineer : RoleTypes.Crewmate;
 
-    public bool CanUseVent => ModeHandler.IsMode(ModeId.SuperHostRoles) ? !RoleHelpers.IsComms() : true;
+    public bool CanUseVent => ModeHandler.IsMode(ModeId.Default) ? Optioninfo.CanUseVent : nonModCanEnterVent;
+    /// <summary> 導入者と非導入者で, "CanUseVent"により行われる制御が異なる問題の補正に使用 </summary>
+    private readonly bool nonModCanEnterVent;
 
     public SilverBullet(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
@@ -66,12 +69,19 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         CanRepairCount = RepairCountOption.GetInt();
         LastUsedVentData = new();
 
+        nonModCanEnterVent = p.IsMod()
+            ? false // 導入者の場合、CanUseVentがtrueの時 ベントボタンを2つ有する。その為 ベント使用可否の判定を、CanUseVentでなく、RealRoleで行うようにする。
+            : Optioninfo.CanUseVent; // 非導入者の場合、通常通りの判定を行う。(導入者と同様の処理を行うと、ベントから排出されてしまう為、ベントが使用できなくなる。)
+
         AnalyzeButtonInfo = new(AnalysisCount, this, AnalyzeOnClick,
             (isAlive) => isAlive, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SilverBulletAnalyzeButton.png", 115f),
             () => Optioninfo.CoolTime, new(), "SilverBulletAnalyzeButtonName",
-            UnityEngine.KeyCode.F, 49, CouldUse: AnalyzeCouldUse,
+            ModeHandler.IsMode(ModeId.Default) ? UnityEngine.KeyCode.F : null,
+            ModeHandler.IsMode(ModeId.Default) ? 49 : null,
+            CouldUse: AnalyzeCouldUse,
             HasAbilityCountText: true);
+
         RepairButtonInfo = new(CanRepairCount, this, RepairOnClick,
             (isAlive) => CanUseRepairOption.GetBool() && isAlive, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SilverBulletRepairButton.png", 115f),
@@ -173,7 +183,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                 text.Append(ModTranslation.GetString("SilverBulletVentNotUsed"));
             else
             {
-                text.Append(string.Format(ModTranslation.GetString("SilverBulletVentUsed"), usedPlayers.Count)+"\n\n");
+                text.Append(string.Format(ModTranslation.GetString("SilverBulletVentUsed"), usedPlayers.Count) + "\n\n");
                 if (AnalysisLightOption.GetBool())
                 {
                     text.AppendLine("|-----------------------");
@@ -183,11 +193,9 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                         PlayerControl player = ModHelpers.PlayerById(playerId);
                         text.AppendLine(string.Format(
                             ModTranslation.GetString(
-                                $"SilverBulletVentUsedColor{
-                                    (CustomColors.LighterColors.Contains(
+                                $"SilverBulletVentUsedColor{(CustomColors.LighterColors.Contains(
                                         player.Data.DefaultOutfit.ColorId
-                                    ) ? "Light" : "Dark")
-                                }"
+                                    ) ? "Light" : "Dark")}"
                             ), index)
                         );
                         index++;
@@ -224,7 +232,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         if (AnalysisCount <= 0)
         {
             LastUsedVentData = null;
-            Logger.Warn($"残り使用可能回数が0になったのでLastUsedVentDataをnullにしました。","SilverBullet");
+            Logger.Warn($"残り使用可能回数が0になったのでLastUsedVentDataをnullにしました。", "SilverBullet");
         }
     }
 
@@ -254,7 +262,8 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
     void ISupportSHR.BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
         RoleNameText.Append(ModHelpers.Cs(Roleinfo.RoleColor, $"({AnalysisCount})"));
-        if (CanUseRepairOption.GetBool()) {
+        if (CanUseRepairOption.GetBool())
+        {
             RoleNameText.Append(ModHelpers.Cs(RoleClass.ImpostorRed, $"({CanRepairCount})"));
         }
     }

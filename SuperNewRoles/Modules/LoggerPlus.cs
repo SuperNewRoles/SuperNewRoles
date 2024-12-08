@@ -31,11 +31,10 @@ class LoggerPlus
         string splicingBranch = ReplaceUnusableStringsAsFileNames(ThisAssembly.Git.Branch);
         string version = SuperNewRolesPlugin.VersionString.Replace(".", "");
         version = ReplaceUnusableStringsAsFileNames(version);
-        string userType = AmongUsClient.Instance.AmHost || AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined ? "Host" : "Client";
         string splicingMemo = ReplaceUnusableStringsAsFileNames(memo);
 
         // ファイル名 & パス作成
-        string fileName = $"{date}_SNR_v{version}_{userType}_{splicingBranch}_{splicingMemo}.log";
+        string fileName = $"{date}_SNR_v{version}_{GetUserType()}_{splicingBranch}_{splicingMemo}.log";
         string filePath = GetFilePathAndCheckDirectory("SaveLogFolder", fileName);
 
         // 出力
@@ -66,12 +65,11 @@ class LoggerPlus
         // ファイル名に使用する変数作成
         string date = DateTime.Now.ToString("yyyyMMdd_HHmm");
         string version = ReplaceUnusableStringsAsFileNames(SuperNewRolesPlugin.VersionString.Replace(".", ""));
-        string userType = AmongUsClient.Instance.AmHost || AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined ? "Host" : "Client";
         string splicingBranch = ReplaceUnusableStringsAsFileNames(ThisAssembly.Git.Branch);
 
 
         // ファイル名 & パス作成
-        string fileName = $"{date}_SNR_v{version}_{userType}_GameCount_{IntroPatch.GameCount}_{splicingBranch}_{LogName}";
+        string fileName = $"{date}_SNR_v{version}_{GetUserType()}_GameCount_{IntroPatch.GameCount}_{splicingBranch}_{LogName}";
         string filePath = GetFilePathAndCheckDirectory("AutoSaveLogFolder", fileName);
 
         // 出力
@@ -89,6 +87,21 @@ class LoggerPlus
             Logger.Error(errorMessage, "EndGameAutoSave");
         }
     }
+
+    enum UserType
+    {
+        Client, // ゲーム外
+        Host,
+        PromotedHost, // ゲーム開始時はゲストだったが、プレイ中又はロビー内でホストに昇格したユーザ
+        Guest,
+    }
+
+    static UserType GetUserType() =>
+        AmongUsClient.Instance.GameState is not AmongUsClient.GameStates.Started and not InnerNet.InnerNetClient.GameStates.Ended
+            ? UserType.Client
+            : AmongUsClient.Instance.AmHost
+                ? (CachedPlayer.LocalPlayer.PlayerId == 0 ? UserType.Host : UserType.PromotedHost) // ホストの種類を判定
+                : UserType.Guest;
 
     /// <summary>
     /// stringsに含まれるファイル名に使用不可能な文字を"_"に置換する
