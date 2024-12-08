@@ -100,7 +100,11 @@ public class Camouflager
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Camouflage);
             writer.Write(true);
             writer.Write((byte)camouflageList.Count);
-            foreach (var (playerId, colorId) in camouflageList.GetDicts()) { writer.Write($"{playerId}-{colorId}"); }
+            foreach (var (playerId, colorId) in camouflageList.GetDicts())
+            {
+                writer.Write(playerId);
+                writer.Write(colorId);
+            }
             writer.EndRPC();
             RPCProcedure.Camouflage(true, camouflageList);
         }

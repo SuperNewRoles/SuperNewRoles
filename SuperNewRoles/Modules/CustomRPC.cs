@@ -1923,14 +1923,7 @@ public static class RPCProcedure
                         bool Is = reader.ReadBoolean();
                         byte colorDataCount = reader.ReadByte();
                         PlayerData<byte> camouflageList = new(defaultvalue: RoleClass.Camouflager.Color);
-
-                        // "PlayerId-ColorId"の構成で送信されている物を分解して保存する
-                        for (int i = 0; i < colorDataCount; i++)
-                        {
-                            string[] camouflageData = reader.ReadString().Split('-');
-                            camouflageList[byte.Parse(camouflageData[0])] = byte.Parse(camouflageData[1]);
-                        }
-
+                        for (int i = 0; i < colorDataCount; i++) { camouflageList[reader.ReadByte()] = reader.ReadByte(); /*playerId => colorId の順で送られてきたものを格納*/ }
                         Camouflage(Is, camouflageList);
                         break;
                     case CustomRPC.GuesserShoot:
