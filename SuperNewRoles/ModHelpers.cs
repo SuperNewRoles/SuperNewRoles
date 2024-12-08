@@ -1172,12 +1172,13 @@ public static class ModHelpers
 
     public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
     {
-        if (CheckPlayer == null)
+        if (CheckPlayer == null || listData == null || listData.Count <= 0)
         {
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 var caller = new System.Diagnostics.StackFrame(1, false).GetMethod();
-                Logger.Error($"CheckPlayer is Null. => Called : {caller.DeclaringType.FullName}.{caller.Name}", caller.DeclaringType.Name);
+                if (CheckPlayer == null) Logger.Error($"CheckPlayer is Null. => Called : {caller.DeclaringType.FullName}.{caller.Name}", caller.DeclaringType.Name);
+                if (!(listData?.Count > 0)) Logger.Error($"listData is Null. => Called : {caller.DeclaringType.FullName}.{caller.Name}", caller.DeclaringType.Name);
             }
 
             return false;
