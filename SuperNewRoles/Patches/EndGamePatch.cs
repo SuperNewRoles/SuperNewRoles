@@ -1280,7 +1280,7 @@ public static class OnGameEndPatch
         foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
         {
             if (p.IsDead() || !RoleClass.Tuna.IsTunaAddWin)
-                    continue;
+                continue;
             winners.Add(p.Data);
         }
         foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
@@ -1489,7 +1489,7 @@ class ExileControllerMessagePatch
         if (id is StringNames.GameDiscussTime && ModeHandler.IsMode(ModeId.Werewolf, false)) __result = ModTranslation.GetString("WerewolfAbilityTimeSetting");
         try
         {
-            if (ExileController.Instance!= null && ExileController.Instance.initData?.networkedPlayer != null && ModeHandler.IsMode(ModeId.Default))
+            if (ExileController.Instance != null && ExileController.Instance.initData?.networkedPlayer != null && ModeHandler.IsMode(ModeId.Default))
             {
                 PlayerControl player = ExileController.Instance.initData?.networkedPlayer?.Object;
                 if (player == null) return;

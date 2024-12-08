@@ -1087,8 +1087,8 @@ public class CustomOptionHolder
         CamouflagerCamouflageDemon = Create(202305, false, CustomOptionType.Impostor, "CamouflagerCamouflageDemonSetting", true, CamouflagerOption);
         CamouflagerCamouflageLovers = Create(202306, false, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
         CamouflagerCamouflageQuarreled = Create(202307, false, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
-        CamouflagerCamouflageChangeColor = Create(202308, false, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
-        CamouflagerCamouflageColor = Create(202309, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
+        CamouflagerCamouflageChangeColor = Create(202308, false, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", new string[] { "optionOff", "CamouflagerSingleColor", "CamouflagerRandomColor" }, CamouflagerOption);
+        CamouflagerCamouflageColor = Create(202309, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Camouflager.ColorOption, CamouflagerCamouflageChangeColor, openSelection: 1);
 
         SamuraiOption = SetupCustomRoleOption(202400, true, RoleId.Samurai);
         SamuraiPlayerCount = Create(202401, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SamuraiOption);

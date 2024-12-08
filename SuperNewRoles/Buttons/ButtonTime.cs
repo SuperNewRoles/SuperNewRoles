@@ -208,6 +208,7 @@ class ButtonTime
                 RoleClass.Camouflager.CamoDurationData = (float)((RoleClass.Camouflager.ButtonTimer + timeSpanData) - DateTime.Now).TotalSeconds;
                 if (RoleClass.Camouflager.CamoDurationData <= 0f)
                 {
+                    Roles.Impostor.Camouflager.RpcResetCamouflage();
                     Roles.Impostor.Camouflager.ResetCamouflage();
                 }
             }
