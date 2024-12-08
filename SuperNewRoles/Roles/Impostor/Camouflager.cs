@@ -85,14 +85,11 @@ public class Camouflager
                 {
                     foreach (var p in playerList)
                     {
-                        byte color;
                         List<byte> colorTickets = new(allColorList); // 全員の色を抽選リストとしてコピー
                         colorTickets.Remove((byte)p.Data.DefaultOutfit.ColorId); // 本人の色を抽選リストから抜く
 
                         int colorIndex = random.Next(0, colorTickets.Count);
-                        color = colorTickets[colorIndex];
-
-                        camouflageList[p.PlayerId] = color;
+                        camouflageList[p.PlayerId] = colorTickets[colorIndex];
                     }
                 }
                 else { camouflageList[PlayerControl.LocalPlayer.PlayerId] = RoleClass.Camouflager.Color; } // カモフラ本人しかいない場合 (Dictionary変換時のエラーを防ぐ為に個別で代入)
