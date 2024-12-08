@@ -421,14 +421,12 @@ public static class RoleClass
         public static List<PlayerControl> TeleporterPlayer;
         public static Color32 color = RoleClass.ImpostorRed;
         public static float CoolTime;
-        public static float DurationTime;
         public static DateTime ButtonTimer;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
         public static void ClearAndReload()
         {
             TeleporterPlayer = new();
             CoolTime = CustomOptionHolder.TeleporterCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.TeleporterDurationTime.GetFloat();
         }
     }
     public static class SpiritMedium
@@ -1430,15 +1428,12 @@ public static class RoleClass
         public static List<PlayerControl> NiceTeleporterPlayer;
         public static Color32 color = new(0, 0, 128, byte.MaxValue);
         public static float CoolTime;
-        public static float DurationTime;
         public static DateTime ButtonTimer;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
 
         public static void ClearAndReload()
         {
             NiceTeleporterPlayer = new();
             CoolTime = CustomOptionHolder.NiceTeleporterCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.NiceTeleporterDurationTime.GetFloat();
         }
     }
     public static class Celebrity
@@ -1605,9 +1600,6 @@ public static class RoleClass
         public static bool IsUseSabo;
         public static bool IsImpostorLight;
         public static float CoolTime;
-        public static float DurationTime;
-        public static DateTime ButtonTimer;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
 
         public static void ClearAndReload()
         {
@@ -1617,7 +1609,6 @@ public static class RoleClass
             IsUseSabo = CustomOptionHolder.TeleportingJackalUseSabo.GetBool();
             IsImpostorLight = CustomOptionHolder.TeleportingJackalIsImpostorLight.GetBool();
             CoolTime = CustomOptionHolder.TeleportingJackalCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.TeleportingJackalDurationTime.GetFloat();
         }
     }
     public static class MadMaker
@@ -2662,7 +2653,7 @@ public static class RoleClass
             DemonMark = CustomOptionHolder.CamouflagerCamouflageDemon.GetBool();
             LoversMark = CustomOptionHolder.CamouflagerCamouflageLovers.GetBool();
             QuarreledMark = CustomOptionHolder.CamouflagerCamouflageQuarreled.GetBool();
-            Color = (byte)(CustomOptionHolder.CamouflagerCamouflageChangeColor.GetBool() ? CustomOptionHolder.CamouflagerCamouflageColor.GetSelection() : 15);
+            Color = (byte)(CustomOptionHolder.CamouflagerCamouflageChangeColor.GetSelection() == 1 ? CustomOptionHolder.CamouflagerCamouflageColor.GetSelection() : 15);
             ButtonTimer = DateTime.Now;
             IsCamouflage = false;
             Duration = DurationTime;

@@ -137,7 +137,6 @@ public class CustomOptionHolder
     public static CustomRoleOption TeleporterOption;
     public static CustomOption TeleporterPlayerCount;
     public static CustomOption TeleporterCoolTime;
-    public static CustomOption TeleporterDurationTime;
 
     public static CustomRoleOption SpiritMediumOption;
     public static CustomOption SpiritMediumPlayerCount;
@@ -455,7 +454,6 @@ public class CustomOptionHolder
     public static CustomRoleOption NiceTeleporterOption;
     public static CustomOption NiceTeleporterPlayerCount;
     public static CustomOption NiceTeleporterCoolTime;
-    public static CustomOption NiceTeleporterDurationTime;
 
     public static CustomRoleOption CelebrityOption;
     public static CustomOption CelebrityPlayerCount;
@@ -514,7 +512,6 @@ public class CustomOptionHolder
     public static CustomOption TeleportingJackalUseSabo;
     public static CustomOption TeleportingJackalIsImpostorLight;
     public static CustomOption TeleportingJackalCoolTime;
-    public static CustomOption TeleportingJackalDurationTime;
 
     public static CustomRoleOption MadMakerOption;
     public static CustomOption MadMakerPlayerCount;
@@ -1090,8 +1087,8 @@ public class CustomOptionHolder
         CamouflagerCamouflageDemon = Create(202305, false, CustomOptionType.Impostor, "CamouflagerCamouflageDemonSetting", true, CamouflagerOption);
         CamouflagerCamouflageLovers = Create(202306, false, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
         CamouflagerCamouflageQuarreled = Create(202307, false, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
-        CamouflagerCamouflageChangeColor = Create(202308, false, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
-        CamouflagerCamouflageColor = Create(202309, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
+        CamouflagerCamouflageChangeColor = Create(202308, false, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", new string[] { "optionOff", "CamouflagerSingleColor", "CamouflagerRandomColor" }, CamouflagerOption);
+        CamouflagerCamouflageColor = Create(202309, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Camouflager.ColorOption, CamouflagerCamouflageChangeColor, openSelection: 1);
 
         SamuraiOption = SetupCustomRoleOption(202400, true, RoleId.Samurai);
         SamuraiPlayerCount = Create(202401, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SamuraiOption);
@@ -1133,7 +1130,6 @@ public class CustomOptionHolder
         TeleporterOption = SetupCustomRoleOption(203000, false, RoleId.Teleporter);
         TeleporterPlayerCount = Create(203001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);
         TeleporterCoolTime = Create(203002, false, CustomOptionType.Impostor, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleporterOption, format: "unitSeconds");
-        TeleporterDurationTime = Create(203003, false, CustomOptionType.Impostor, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleporterOption, format: "unitSeconds");
 
         FreezerOption = SetupCustomRoleOption(203100, false, RoleId.Freezer);
         FreezerPlayerCount = Create(203101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FreezerOption);
@@ -1252,7 +1248,7 @@ public class CustomOptionHolder
 
         /* |: ========================= Neutral Settings ========================== :| */
 
-        
+
         JackalSeerOption = SetupCustomRoleOption(300200, true, RoleId.JackalSeer);
         JackalSeerPlayerCount = Create(300201, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
         JackalSeerMode = Create(300202, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
@@ -1274,7 +1270,6 @@ public class CustomOptionHolder
         TeleportingJackalIsImpostorLight = Create(300304, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, TeleportingJackalOption);
         TeleportingJackalUseSabo = Create(300305, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
         TeleportingJackalCoolTime = Create(300306, false, CustomOptionType.Neutral, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
-        TeleportingJackalDurationTime = Create(300307, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
 
         HitmanOption = SetupCustomRoleOption(303200, false, RoleId.Hitman);
         HitmanPlayerCount = Create(303201, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);
@@ -1798,7 +1793,6 @@ public class CustomOptionHolder
         NiceTeleporterOption = SetupCustomRoleOption(405100, false, RoleId.NiceTeleporter);
         NiceTeleporterPlayerCount = Create(405101, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceTeleporterOption);
         NiceTeleporterCoolTime = Create(405102, false, CustomOptionType.Crewmate, "NiceTeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, NiceTeleporterOption, format: "unitSeconds");
-        NiceTeleporterDurationTime = Create(405103, false, CustomOptionType.Crewmate, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, NiceTeleporterOption, format: "unitSeconds");
 
         NocturnalityOption = SetupCustomRoleOption(405200, true, RoleId.Nocturnality);
         NocturnalityPlayerCount = Create(405201, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);

@@ -46,7 +46,7 @@ public class IntroData
         new() {{RoleId.Nun,"NunCombIntroDearPteranodon"},{RoleId.Pteranodon,"PteranodonCombIntroDearNun"}},
         new() {{RoleId.MedicalTechnologist,"MedicalTechnologistCombIntroToDoctor"}, {RoleId.Doctor,"DoctorCombIntro1"}},
         new() {{RoleId.MedicalTechnologist,"MedicalTechnologistCombIntroToPoliceSurgeon"}, {RoleId.PoliceSurgeon,"PoliceSurgeonCombIntro1"}},
-        new() {{RoleId.Jammer,"JammerCombIntroDearEvilScientist"},{RoleId.EvilScientist,"EvilScientistDearJammerCombIntro"}}
+        new() {{RoleId.Jammer,"JammerCombIntroDearEvilScientist"},{RoleId.EvilScientist,"EvilScientistCombIntroDearJammer"}}
     };
     public string NameKey;
     public string Name;

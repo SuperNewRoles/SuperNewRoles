@@ -604,7 +604,6 @@ TeleporterTitle1,Let's get everyone together,みんなを集めよう,把所有�
 TeleporterTitle2,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう,利用传送让他人远离尸体,利用傳送讓他人遠離屍體
 TeleporterDescription,This is an impostor role that allows for collective action.,集団行動をさせるインポスター役職です。,邪恶的传送师可以把所有人聚集到一起。,讓大家聚集行動的內鬼職業。
 TeleporterCooldownSetting,Teleporter Sabotage Kill Cooldown,テレポートのクールダウン,传送冷却,傳送冷卻
-TeleporterTeleportTimeSetting,Time to be teleported,テレポートされるまでの時間,传送所需时间,傳送所需時間
 TeleporterTeleportButton,Teleport,テレポート！,传送,傳送！
 TeleporterTPTextMessage,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!,传送师把你传送到{0},傳送師把你傳送到{0}！
 SpiritMediumName,Medium,霊媒師,通灵师,靈媒
@@ -1387,6 +1386,8 @@ CamouflagerCamouflageQuarreledSetting,Quarreled can still mark while activating 
 CamouflagerCamouflageChangeColorSetting,Change the color of camouflage,カモフラージュ中の色を変更する,自定义隐蔽色,自定義隱蔽色
 CamouflagerCamouflageColorSetting,Camouflage color,カモフラージュ中の色,隐蔽色,隱蔽色
 CamouflagerButtonName,Camouflager,カモフラージュ,隐蔽,隱蔽
+CamouflagerSingleColor,Single color,単色
+CamouflagerRandomColor,Random,ランダム
 PavlovsdogsName,Pavlov's dogs,パブロフの犬,巴甫洛夫的狗,巴甫洛夫的狗
 PavlovsownerName,Pavlov's owner,パブロフのオーナー,巴甫洛夫,巴甫洛夫
 PavlovsdogsTitle1,Let us be of service.,お役に立ってみせましょう,我好想做巴甫洛夫先生的狗啊,我好想做巴甫洛夫先生的狗啊
@@ -1934,7 +1935,6 @@ OwlNestBuildingButton,Nest-building,巣作り,筑巢,築巢
 OwlTransportButton,Transport,運搬,搬运,搬運
 OwlHideDeadBodyButton,Hide,隠す,藏匿,隱藏
 OwlSpecialBlackoutButton,Special Blackout,特殊停電,紧急停电,黑幕降臨
-Kill,Kill,キル,击杀,擊殺
 BuskerName,Busker,バスカー,街头艺人,接頭藝人
 BuskerTitle1,Did you think I was dead?　It was a magic trick!,死んだと思った？　手品でした～！,你什么时候产生了我被杀了的错觉？,你覺得我死了？這是魔術啦！
 BuskerDescription,Using the ability turns you into a corpse， allowing you to move around as a ghost.\nYou can't peek at roles， but you might be able to see things that are normally hidden?\nHowever，if the corpse is discovered or a meeting is called during the feigned death， you'll truly die， so be careful.\nLet's return to the living world before that happens.\nWhen you return， you'll revive at the place where you were moving as a ghost.\nOh， and don't forget to have fun and not lose sight of doing your tasks， okay?,能力を使用すると死体となり、幽霊となって移動することが出来るようになります。\n役職を盗み見ることは出来ませんが、普通だったら見られないものが見れるかも？\nただし、その死体を発見されたり、偽装死中に会議が呼ばれてしまうと本当に死んでしまうのでご注意を。\nそうなる前に現世に戻りましょう。\n戻った際は幽霊のときに移動していた先で復活します。\nそうそう、楽しくなってタスクをするのを忘れないようにね。,街头艺人可以发动技能"假死"，把自己变成一具尸体，并操控自己的灵魂移动。\n街头艺人不能确定他人的职业，但可以通过幽灵视野看到更多信息。\n不过请小心，若街头艺人的假死尸体被人报告，或假死过程中会议被召开，街头艺人将会真正死亡。\n在这些情况发生前，请及时复活。\n街头艺人复活后，将回到其尸体所在之处。\n在享受该职业之余，请不要忘记完成任务。,接頭藝人屬於船員陣營。\n當使用能力時，將會變成屍體並以幽靈的方式來進行移動，但無法窺視他人的職業。\n不過請注意，一旦在假死狀態中進入會議，將會立即死亡。\n\n有些人說表演斷頭沒啥用，但他們不知道的是，我還能以靈魂的方式四處遊走。\n欸等等，在我把頭接回去前，請不要報警。
