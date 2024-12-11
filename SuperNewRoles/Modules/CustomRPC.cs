@@ -822,8 +822,10 @@ public static class RPCProcedure
         }
     }
 
-    public static void Camouflage(bool Is)
+    public static void Camouflage(bool Is, PlayerData<byte> camouflageList = null)
     {
+        if(camouflageList == null) camouflageList = new(defaultvalue: RoleClass.Camouflager.Color);
+
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             if (AmongUsClient.Instance.AmHost)
@@ -834,7 +836,7 @@ public static class RPCProcedure
         }
         else
         {
-            if (Is) Roles.Impostor.Camouflager.Camouflage();
+            if (Is) Roles.Impostor.Camouflager.Camouflage(camouflageList);
             else Roles.Impostor.Camouflager.ResetCamouflage();
         }
     }
@@ -1920,7 +1922,11 @@ public static class RPCProcedure
                         SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
                         break;
                     case CustomRPC.Camouflage:
-                        Camouflage(reader.ReadBoolean());
+                        bool Is = reader.ReadBoolean();
+                        byte colorDataCount = reader.ReadByte();
+                        PlayerData<byte> camouflageList = new(defaultvalue: RoleClass.Camouflager.Color);
+                        for (int i = 0; i < colorDataCount; i++) { camouflageList[reader.ReadByte()] = reader.ReadByte(); /*playerId => colorId の順で送られてきたものを格納*/ }
+                        Camouflage(Is, camouflageList);
                         break;
                     case CustomRPC.GuesserShoot:
                         GuesserShoot(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());

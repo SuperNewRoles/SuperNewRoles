@@ -98,7 +98,12 @@ public static class Debugger
             Minigame.Instance.Close(); // シェイプシフト画面を完全に閉じるまで, マップは開けない。 処理終了待ちの為に, 以下のLateTaskを使用している。
             new LateTask(() =>
             {
+                RoleTypes myrole = PlayerControl.LocalPlayer.Data.Role.Role;
+
+                // ``MapBehaviour.ShowSabotageMap``によるサボタージュ能力封じを回避する為に、サボマップを開く前にインポスターになっている
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
                 DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new() { Mode = MapOptions.Modes.Sabotage });
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, myrole);
             }, 0.5f, "DebuggerSetSabotage");
         });
 

@@ -51,9 +51,11 @@ public static class MatchMaker
         ModeId modeId = ModeHandler.GetMode(false);
         foreach (CustomRoleOption opt in CustomRoleOption.RoleOptions.Values)
         {
+            if (opt == null) continue;
             if (opt.GetSelection() == 0) continue;
             if (opt.IsHidden(modeId)) continue;
             CustomOption countopt = options.FirstOrDefault(x => x.id == (opt.id + 1));
+            if (countopt == null) continue;
             for (int i = 0; i < (countopt.GetSelection() + 1); i++)
             {
                 ActivateRoles.Add(opt.RoleId.ToString());

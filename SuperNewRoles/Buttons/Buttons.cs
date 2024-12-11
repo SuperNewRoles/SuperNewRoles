@@ -1109,12 +1109,13 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal)
+                if (PlayerControl.LocalPlayer.GetRoleBase() is IJackal jackal)
                 {
                     JackalKillButton.MaxTimer = jackal.JackalKillCoolTime;
                     JackalKillButton.Timer = JackalKillButton.MaxTimer;
                 }
+                else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
+                else if (PlayerControl.LocalPlayer.IsRole(RoleId.TeleportingJackal)) { TeleportingJackal.EndMeeting(); }
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),
