@@ -1,5 +1,6 @@
 
 using AmongUs.GameOptions;
+using MS.Internal.Xml.XPath;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Role;
@@ -44,27 +45,28 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
 
     public void OnWrapUp()
     {
+        WrapUp();
+    }
+    public void OnWrapUp(PlayerControl exiled)
+    {
+        if (exiled == null) return;
+        WrapUp(exiled);
+    }
+
+    public void WrapUp(PlayerControl exiled = null)
+    {
         if (Player == null || Player.IsAlive() || !Player.IsRole(RoleId.NiceRedRidingHood)) return;
 
-        var canRevive = IsRviveableBasicConditions(out PlayerControl killer) && NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead(); // 基本条件 + キラーが死亡しているか
-        if (canRevive && !ReviveAbilityBlockEnabled(killer))
+        var canRevive = false;
+        if (exiled != null) canRevive = IsRevivableBasicConditions(out PlayerControl killer, false) && killer.PlayerId == exiled.PlayerId && !ReviveAbilityBlockEnabled(killer);  // 基本条件 + 追放者がキラーか
+        else canRevive = IsRevivableBasicConditions(out PlayerControl killer) && NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead() && !ReviveAbilityBlockEnabled(killer);  // 基本条件 + キラーが死亡しているか
+
+        if (canRevive)
         {
             Logger.Info($"復活判定(キル者[キル]) : 可", Roleinfo.NameKey);
             Revive();
         }
         else Logger.Info($"復活判定(キル者[キル]) : 不可", Roleinfo.NameKey);
-    }
-    public void OnWrapUp(PlayerControl exiled)
-    {
-        if (exiled == null || Player == null || Player.IsAlive() || !Player.IsRole(RoleId.NiceRedRidingHood)) return;
-
-        var canRevive = IsRviveableBasicConditions(out PlayerControl killer, false) && killer.PlayerId == exiled.PlayerId;  // 基本条件 + 追放者がキラーか
-        if (canRevive && !ReviveAbilityBlockEnabled(killer))
-        {
-            Logger.Info($"復活判定(キル者[追放]) : 可", Roleinfo.NameKey);
-            Revive();
-        }
-        else Logger.Info($"復活判定(キル者[追放]) : 不可", Roleinfo.NameKey);
     }
 
     /// <summary>
@@ -75,7 +77,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
     /// <param name="log">ログを記載するか</param>
     /// <returns>true: 復活 可 / false: 復活 不可</returns>
 
-    private bool IsRviveableBasicConditions(out PlayerControl killer, bool log = true)
+    private bool IsRevivableBasicConditions(out PlayerControl killer, bool log = true)
     {
         killer = null;
 
