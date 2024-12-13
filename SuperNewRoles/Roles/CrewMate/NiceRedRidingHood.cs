@@ -53,7 +53,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         if (deadPlayer.killerIfExisting == null) return;
 
         var killer = PlayerControl.AllPlayerControls.FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
-        if (killer == null) return;
+        if (killer == null || killer.PlayerId == Player.PlayerId) return;
 
         if ((killer.PlayerId == exiled.PlayerId) || (NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead()))
         {
@@ -66,7 +66,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
             if (AmongUsClient.Instance.AmHost
                 && ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
-                CustomRpcSender sender = CustomRpcSender.Create("Nice RedRidingHood", sendOption:Hazel.SendOption.Reliable);
+                CustomRpcSender sender = CustomRpcSender.Create("Nice RedRidingHood", sendOption: Hazel.SendOption.Reliable);
                 Player.Data.IsDead = true;
                 RPCHelper.RpcSyncNetworkedPlayer(sender, Player.Data);
                 sender.RpcSetRole(Player, RoleTypes.Crewmate, true);
@@ -82,12 +82,11 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         }
     }
 
-    public bool CanGhostSeeRole => GhostSeeRoleStatus;
-    public bool CanUseHauntAbility => GhostSeeRoleStatus;
-    private bool GhostSeeRoleStatus =>
-        RemainingCount <= 0 // 復活可能回数を使い切った場合
-            ? true
-            : DeadPlayer.deadPlayers?.FirstOrDefault(x => x.player?.PlayerId == Player.PlayerId)?.killerIfExisting == null // 追放, 又はキル者が登録されていない場合
-                ? true
-                : false;
+    public bool CanGhostSeeRole => GhostSeeRoleStatus();
+    public bool CanUseHauntAbility => GhostSeeRoleStatus();
+    private bool GhostSeeRoleStatus()
+    {
+        var killer = DeadPlayer.deadPlayers?.FirstOrDefault(x => x.player?.PlayerId == Player.PlayerId)?.killerIfExisting;
+        return RemainingCount <= 0 || killer == null || killer.PlayerId == Player.PlayerId;
+    }
 }
