@@ -75,9 +75,8 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
     /// 及び赤ずきんのキラーの取得を行う
     /// </summary>
     /// <param name="killer">赤ずきんをキルしたプレイヤー</param>
-    /// <param name="log">ログを記載するか</param>
+    /// <param name="log">ログを記載するか(追放無関係 WrapUpと, 追放有 WrapUpでの二重記載を防ぐ為に使用)</param>
     /// <returns>true: 復活 可 / false: 復活 不可</returns>
-
     private bool IsRevivableBasicConditions(out PlayerControl killer, bool log = true)
     {
         killer = null;
@@ -91,7 +90,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
 
         return true;
 
-        PlayerControl Killer()
+        PlayerControl Killer() // 赤ずきんをキルしたプレイヤーを取得
         {
             DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == Player.PlayerId)?.FirstOrDefault();
             if (deadPlayer.killerIfExisting == null) return null;
