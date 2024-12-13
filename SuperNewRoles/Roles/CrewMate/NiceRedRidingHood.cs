@@ -42,44 +42,93 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         RemainingCount = NiceRedRidingHoodCount.GetInt();
     }
 
+    public void OnWrapUp()
+    {
+        if (Player == null || Player.IsAlive() || !Player.IsRole(RoleId.NiceRedRidingHood)) return;
+
+        var canRevive = IsRviveableBasicConditions(out PlayerControl killer) && NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead(); // 基本条件 + キラーが死亡しているか
+        if (canRevive && !ReviveAbilityBlockEnabled(killer))
+        {
+            Logger.Info($"復活判定(キル者[キル]) : 可", Roleinfo.NameKey);
+            Revive();
+        }
+        else Logger.Info($"復活判定(キル者[キル]) : 不可", Roleinfo.NameKey);
+    }
     public void OnWrapUp(PlayerControl exiled)
     {
         if (exiled == null || Player == null || Player.IsAlive() || !Player.IsRole(RoleId.NiceRedRidingHood)) return;
 
-        Logger.Info($"赤ずきん残り復活回数 : {RemainingCount}", Roleinfo.NameKey);
-        if (RemainingCount <= 0) return;
-
-        DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == Player.PlayerId)?.FirstOrDefault();
-        if (deadPlayer.killerIfExisting == null) return;
-
-        var killer = PlayerControl.AllPlayerControls.FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
-        if (killer == null || killer.PlayerId == Player.PlayerId) return;
-
-        if ((killer.PlayerId == exiled.PlayerId) || (NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead()))
+        var canRevive = IsRviveableBasicConditions(out PlayerControl killer, false) && killer.PlayerId == exiled.PlayerId;  // 基本条件 + 追放者がキラーか
+        if (canRevive && !ReviveAbilityBlockEnabled(killer))
         {
-            bool IsDisabledRevive = EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer);
-            Logger.Info($"復活可否 : {!IsDisabledRevive}", Roleinfo.NameKey);
-
-            if (IsDisabledRevive) return;
-
-            Player.Revive();
-            if (AmongUsClient.Instance.AmHost
-                && ModeHandler.IsMode(ModeId.SuperHostRoles))
-            {
-                CustomRpcSender sender = CustomRpcSender.Create("Nice RedRidingHood", sendOption: Hazel.SendOption.Reliable);
-                Player.Data.IsDead = true;
-                RPCHelper.RpcSyncNetworkedPlayer(sender, Player.Data);
-                sender.RpcSetRole(Player, RoleTypes.Crewmate, true);
-            }
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(Player, RoleTypes.Crewmate);
-            DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == Player.PlayerId);
-            Patches.FinalStatusPatch.FinalStatusData.FinalStatuses[Player.PlayerId] = FinalStatus.Alive;
-
-            RemainingCount--;
-            Player.Data.IsDead = false;
-
-            Logger.Info($"復活完了 : {!IsDisabledRevive}", Roleinfo.NameKey);
+            Logger.Info($"復活判定(キル者[追放]) : 可", Roleinfo.NameKey);
+            Revive();
         }
+        else Logger.Info($"復活判定(キル者[追放]) : 不可", Roleinfo.NameKey);
+    }
+
+    /// <summary>
+    /// 赤ずきんの基本的な復活条件(使用回数が残っているか, 追放による死亡或いは自殺でないか)を満たしているかの判定
+    /// 及び赤ずきんのキラーの取得を行う
+    /// </summary>
+    /// <param name="killer">赤ずきんをキルしたプレイヤー</param>
+    /// <param name="log">ログを記載するか</param>
+    /// <returns>true: 復活 可 / false: 復活 不可</returns>
+
+    private bool IsRviveableBasicConditions(out PlayerControl killer, bool log = true)
+    {
+        killer = null;
+
+        if (log) Logger.Info($"赤ずきん残り復活回数 : {RemainingCount}", Roleinfo.NameKey);
+        if (RemainingCount <= 0) return false;
+
+        killer = Killer();
+        if (log) Logger.Info($"復活判定(追放, 自殺) : {(killer == null || killer.PlayerId == Player.PlayerId ? "可" : "不可")}", Roleinfo.NameKey);
+        if (killer == null || killer.PlayerId == Player.PlayerId) return false; // キラーが存在しない(追放) 或いは キラーが自分自身なら復活不可
+
+        return true;
+
+        PlayerControl Killer()
+        {
+            DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == Player.PlayerId)?.FirstOrDefault();
+            if (deadPlayer.killerIfExisting == null) return null;
+
+            return PlayerControl.AllPlayerControls.FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
+        }
+    }
+
+    /// <summary>赤ずきんの復活処理</summary>
+    private void Revive()
+    {
+        Player.Revive();
+        if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles))
+        {
+            CustomRpcSender sender = CustomRpcSender.Create("Nice RedRidingHood", sendOption: Hazel.SendOption.Reliable);
+            Player.Data.IsDead = true;
+            RPCHelper.RpcSyncNetworkedPlayer(sender, Player.Data);
+            sender.RpcSetRole(Player, RoleTypes.Crewmate, true);
+        }
+
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(Player, RoleTypes.Crewmate);
+        DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == Player.PlayerId);
+        Patches.FinalStatusPatch.FinalStatusData.FinalStatuses[Player.PlayerId] = FinalStatus.Alive;
+
+        RemainingCount--;
+        Player.Data.IsDead = false;
+
+        Logger.Info($"復活完了", Roleinfo.NameKey);
+    }
+
+    /// <summary>キラーが赤ずきんの復活を阻止するか</summary>
+    /// <param name="killer">赤ずきんをキルしたプレイヤー</param>
+    /// <returns>true: 阻止する / false: 阻止しない</returns>
+    private static bool ReviveAbilityBlockEnabled(PlayerControl killer)
+    {
+        if (killer == null) return false; // キラーが存在しない場合は, キラーによる復活能力ブロックは存在しない
+
+        if (EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer)) return true;
+
+        return false;
     }
 
     public bool CanGhostSeeRole => GhostSeeRoleStatus();
