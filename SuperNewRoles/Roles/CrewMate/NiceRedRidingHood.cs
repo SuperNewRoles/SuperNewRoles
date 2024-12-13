@@ -64,10 +64,10 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
 
         if (canRevive && !ReviveAbilityBlockEnabled(killer))
         {
-            Logger.Info($"復活判定(キル者[キル]) : 可", Roleinfo.NameKey);
+            Logger.Info($"復活判定(キル者[{(exiled != null ? "追放" : "キル")}]) : 可", Roleinfo.NameKey);
             Revive();
         }
-        else Logger.Info($"復活判定(キル者[キル]) : 不可", Roleinfo.NameKey);
+        else Logger.Info($"復活判定(キル者[{(exiled != null ? "追放" : "キル")}]) : 不可", Roleinfo.NameKey);
     }
 
     /// <summary>
@@ -82,11 +82,11 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
     {
         killer = null;
 
-        if (log) Logger.Info($"赤ずきん残り復活回数 : {RemainingCount}", Roleinfo.NameKey);
+        if (log) Logger.Info($"復活判定(残り復活回数) : {RemainingCount}回", Roleinfo.NameKey);
         if (RemainingCount <= 0) return false;
 
         killer = Killer();
-        if (log) Logger.Info($"復活判定(追放, 自殺) : {(killer == null || killer.PlayerId == Player.PlayerId ? "可" : "不可")}", Roleinfo.NameKey);
+        if (log) Logger.Info($"復活判定(赤ずきん[追放, 自殺]) : {(killer == null || killer.PlayerId == Player.PlayerId ? "可" : "不可")}", Roleinfo.NameKey);
         if (killer == null || killer.PlayerId == Player.PlayerId) return false; // キラーが存在しない(追放) 或いは キラーが自分自身なら復活不可
 
         return true;
