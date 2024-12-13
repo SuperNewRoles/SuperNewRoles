@@ -57,11 +57,12 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
     {
         if (Player == null || Player.IsAlive() || !Player.IsRole(RoleId.NiceRedRidingHood)) return;
 
-        var canRevive = false;
-        if (exiled != null) canRevive = IsRevivableBasicConditions(out PlayerControl killer, false) && killer.PlayerId == exiled.PlayerId && !ReviveAbilityBlockEnabled(killer);  // 基本条件 + 追放者がキラーか
-        else canRevive = IsRevivableBasicConditions(out PlayerControl killer) && NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead() && !ReviveAbilityBlockEnabled(killer);  // 基本条件 + キラーが死亡しているか
+        bool canRevive;
+        PlayerControl killer;
+        if (exiled != null) canRevive = IsRevivableBasicConditions(out killer, false) && killer.PlayerId == exiled.PlayerId;  // 基本条件 + 追放者がキラーか
+        else canRevive = IsRevivableBasicConditions(out killer) && NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead();  // 基本条件 + キラーが死亡しているか
 
-        if (canRevive)
+        if (canRevive && !ReviveAbilityBlockEnabled(killer))
         {
             Logger.Info($"復活判定(キル者[キル]) : 可", Roleinfo.NameKey);
             Revive();
