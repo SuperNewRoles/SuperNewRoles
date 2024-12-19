@@ -108,7 +108,7 @@ public class WaveCannonObject : CustomAnimation
     {
         if (!EffectPrefabs.TryGetValue((int)CurrentAnimType, out WaveCannonEffect prefab))
         {
-            EffectPrefabs[(int)CurrentAnimType] = prefab = AssetManager.GetAsset<GameObject>($"WaveCannon{CurrentAnimType.ToString()}.prefab", AssetManager.AssetBundleType.Wavecannon).GetComponent<WaveCannonEffect>();
+            EffectPrefabs[(int)CurrentAnimType] = prefab = AssetManager.GetAsset<GameObject>($"WaveCannon{(CurrentAnimType == WCAnimType.Santa ? WCAnimType.Cannon : CurrentAnimType).ToString()}.prefab", AssetManager.AssetBundleType.Wavecannon).GetComponent<WaveCannonEffect>();
         }
         return prefab;
     }
