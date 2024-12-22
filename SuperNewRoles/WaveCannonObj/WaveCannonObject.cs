@@ -193,6 +193,11 @@ public class WaveCannonObject : CustomAnimation
         CurrentAnimType = animType;
         Logger.Info("WaveCannon Animation:" + animType.ToString());
         CurrentAnimationHandler = CreateAnimHandler();
+        WCSantaHandler.WiseManVector = new();
+        WCSantaHandler.Angle = 0;
+        WCSantaHandler.reflection = false;
+        WCSantaHandler.Xdiff = 0;
+        WCSantaHandler.IsFlipX = FlipX;
         if (CurrentAnimationHandler == null)
         {
             throw new Exception($"Failed to create animation handler for {animType}" +
@@ -319,10 +324,13 @@ public class WaveCannonObject : CustomAnimation
     }
     public GameObject OldCreateRotationEffect(Vector3 PlayerPosition, float Angle)
     {
-        //PlayerPosition.x -= 13;
+        return null;
         float posvalue = PlayerPosition.x - effectrenders[0].transform.parent.position.x;
-        if (posvalue < 0)
-            posvalue *= -1;
+        WCSantaHandler.reflection = true;
+        WCSantaHandler.WiseManVector = PlayerPosition;
+        WCSantaHandler.Angle = Angle;
+        if (posvalue < 0) posvalue *= -1;
+        WCSantaHandler.Xdiff = posvalue;
         effectrenders[0].transform.parent.localScale = new(posvalue * 0.0145f, 1, 1);
         SpriteRenderer effectrender = OldCreateEffect();
         GameObject effect = effectrender.transform.parent.gameObject;
@@ -397,7 +405,7 @@ public class WaveCannonObject : CustomAnimation
         }
 
         // 賢者の判定
-        foreach (var data in WiseMan.WiseManData)
+        foreach (var data in WiseMan.WiseManData.ToArray())
         {
             if (data.Value == null) continue;
             PlayerControl player = ModHelpers.PlayerById(data.Key);
@@ -438,7 +446,7 @@ public class WaveCannonObject : CustomAnimation
     }
     public void OldShoot()
     {
-        foreach (var data in WiseMan.WiseManData)
+        foreach (var data in WiseMan.WiseManData.ToArray())
         {
             if (data.Value is null) continue;
             PlayerControl player = ModHelpers.PlayerById(data.Key);
@@ -498,7 +506,7 @@ public class WaveCannonObject : CustomAnimation
             return;
         }
         CurrentAnimationHandler.OnUpdate();
-        foreach (var data in WiseManData)
+        foreach (var data in WiseManData.ToArray())
         {
             if (data.Key is null) continue;
             if (data.Value.Item1 is null) continue;

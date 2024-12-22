@@ -88,7 +88,6 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                         .FirstOrDefault()?
                         .ResetCoolTime();
                     }
-                    //Santas.ForEach(santa => { if (santa != null) santa.transform.SetParent(null, true); });
                     Santas.ForEach(santa => { if (santa != null) santa.transform.SetParent(null, true); });
                     GameObject.Destroy(CannonObject.gameObject);
                 }
@@ -101,7 +100,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
         SantaHandler.transform.parent = CannonObject.transform;
         SantaHandler.transform.localPosition = new(-2.4f, 0.275f, 0.1f);
         SantaHandler.transform.localScale = new(-0.1f, 0.1f, 0.1f);
-        SantaHandler.IsFlipX = CannonObject.IsFlipX;
+        SantaHandler.moveX = 2.4f;
         Santas.Add(SantaHandler);
         //タイマーをリセット
         SantaSpawnTimer = SantaSpawnTimeInterval;
