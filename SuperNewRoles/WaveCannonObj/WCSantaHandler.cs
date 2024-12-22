@@ -5,6 +5,7 @@ public class WCSantaHandler : MonoBehaviour
 {
     public SpriteRenderer Renderer;
     public static readonly float SantaSpeed = 6.5f;
+    public bool IsFlipX;
     public void Start()
     {
         Renderer = gameObject.AddComponent<SpriteRenderer>();
@@ -12,9 +13,10 @@ public class WCSantaHandler : MonoBehaviour
     }
     public void Update()
     {
+        int flip = transform.parent == null && IsFlipX ? -1 : 1;
         if (transform.localScale.y < 0.725f)
-            transform.localScale += new Vector3(-0.05f, 0.05f, 0.05f);
-        transform.localPosition += new Vector3(SantaSpeed * Time.deltaTime, 0, 0);
+            transform.localScale += new Vector3(flip * -0.05f, 0.05f, 0.05f);
+        transform.localPosition += new Vector3(flip * SantaSpeed * Time.deltaTime, 0, 0);
         if (Vector2.Distance(transform.position, PlayerControl.LocalPlayer.transform.position) > 30)
             Destroy(gameObject);
     }
