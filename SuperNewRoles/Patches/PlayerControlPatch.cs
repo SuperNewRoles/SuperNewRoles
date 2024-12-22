@@ -69,8 +69,15 @@ public static class PlayerPhysicsFixedUpdatePatch
             else if (PlayerRole == RoleId.Squid && Squid.Abilitys.IsBoostSpeed)
                 __instance.body.velocity *= Squid.SquidBoostSpeed.GetFloat();
         }
-        if (__instance.AmOwner && RoleClass.Speeder.IsSpeedDown ||
-            RoleClass.Freezer.IsSpeedDown ||
+
+        // 移動速度 低下
+        if (__instance.AmOwner && RoleClass.Speeder.IsSpeedDown)
+        {
+            __instance.body.velocity /= 10f;
+        }
+
+        // 停止
+        if (RoleClass.Freezer.IsSpeedDown ||
             WaveCannonObject.Objects.Contains(__instance.myPlayer) ||
             JumpDancer.JumpingPlayerIds.ContainsKey(__instance.myPlayer.PlayerId) ||
             SpiderTrap.CatchingPlayers.ContainsKey(__instance.myPlayer.PlayerId) ||
@@ -172,18 +179,18 @@ public static class PlayerControlCheckVanishPatch
         bool result = CustomRoles.OnCheckVanish(__instance);
         if (result)
             return true;
-            __instance.RpcAppear(true);
-            new LateTask(() => __instance.HandleServerAppear(true),0f);
+        __instance.RpcAppear(true);
+        new LateTask(() => __instance.HandleServerAppear(true), 0f);
         return true;
     }
 }
-[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CheckAppear))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckAppear))]
 public static class PlayerControlCheckAppearPatch
 {
     public static bool Prefix(PlayerControl __instance, bool shouldAnimate)
         => CustomRoles.OnCheckAppear(__instance, shouldAnimate);
 }
-[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CmdCheckVanish))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckVanish))]
 public static class PlayerControlCmdCheckVanishPatch
 {
     public static bool Prefix(PlayerControl __instance)
@@ -196,7 +203,7 @@ public static class PlayerControlCmdCheckVanishPatch
         return true;
     }
 }
-[HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CmdCheckAppear))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckAppear))]
 public static class PlayerControlCmdCheckAppearPatch
 {
     public static bool Prefix(PlayerControl __instance, bool shouldAnimate)
