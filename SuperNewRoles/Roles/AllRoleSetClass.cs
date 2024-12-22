@@ -902,6 +902,7 @@ class AllRoleSetClass
             RoleId.Crook => Crook.CustomOptionData.PlayerCount,
             RoleId.Frankenstein => Frankenstein.FrankensteinPlayerCount,
             RoleId.FastMaker => CustomOptionHolder.FastMakerPlayerCount,
+            RoleId.HauntedWolf => HauntedWolf.CustomOptionData.PlayerCount,
             // プレイヤーカウント
             _ => null,
         };
