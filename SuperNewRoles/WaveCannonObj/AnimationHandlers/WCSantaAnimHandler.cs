@@ -18,6 +18,21 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
     private float SantaSpawnTimer;
     public static readonly float SantaSpawnTimeInterval = 0.3f;
 
+    public static Sprite[] CachedSpritesCharge = null;
+    public static Sprite[] ChargeSprites
+    {
+        get
+        {
+            if (CachedSpritesCharge == null)
+            {
+                CachedSpritesCharge = new Sprite[5];
+                for (int i = 1; i <= 5; i++)
+                    CachedSpritesCharge[i - 1] = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Charge_000{i}.png", 115f);
+            }
+            return CachedSpritesCharge;
+        }
+    }
+
     public Sprite ColliderSprite => WCDefaultAnimHandler.ColliderSpriteStatic;
 
     public WCSantaAnimHandler(WaveCannonObject waveCannonObject)
@@ -28,7 +43,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
     }
     public CustomAnimationOptions Init()
     {
-        return new CustomAnimationOptions(WCDefaultAnimHandler.ChargeSprites, 25, true, EffectSound: ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), IsEffectSoundLoop: true);
+        return new CustomAnimationOptions(ChargeSprites, 25, true, EffectSound: ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), IsEffectSoundLoop: true);
     }
 
     public void OnShot()
@@ -85,6 +100,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
         SantaHandler.transform.parent = CannonObject.transform;
         SantaHandler.transform.localPosition = new(-2.4f, 0.275f, 0.1f);
         SantaHandler.transform.localScale = new(-0.1f, 0.1f, 0.1f);
+        SantaHandler.moveX = 2.4f;
         Santas.Add(SantaHandler);
         //タイマーをリセット
         SantaSpawnTimer = SantaSpawnTimeInterval;
