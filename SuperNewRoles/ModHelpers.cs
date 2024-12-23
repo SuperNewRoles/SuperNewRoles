@@ -1172,9 +1172,11 @@ public static class ModHelpers
 
     public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
     {
+        if (CheckPlayer == null || listData == null || listData.Count <= 0) return false;
+
         foreach (PlayerControl Player in listData)
         {
-            if (Player is null) continue;
+            if (Player == null) continue;
             if (Player.PlayerId == CheckPlayer.PlayerId)
                 return true;
         }

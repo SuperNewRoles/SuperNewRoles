@@ -58,7 +58,7 @@ public class FixedUpdate
 
     static void SetBaseVentMaterial()
     {
-        if (PlayerControl.LocalPlayer.IsUseVent()) return;
+        if (PlayerControl.LocalPlayer.IsUseVent() || PlayerControl.LocalPlayer.IsRole(RoleTypes.Engineer)) return;
         if (!ShipStatus.Instance) return;
         List<NormalPlayerTask> tasks = PlayerControl.LocalPlayer.myTasks.FindAll(x => !x.IsComplete && x.TaskType is TaskTypes.VentCleaning).ConvertAll(x => x.Cast<NormalPlayerTask>()).ToList();
         foreach (Vent vent in ShipStatus.Instance.AllVents)

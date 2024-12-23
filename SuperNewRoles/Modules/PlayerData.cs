@@ -35,6 +35,7 @@ public class PlayerData<T>
     {
         get
         {
+            if (_data == null) _data = new();
             return _data.Values;
         }
     }

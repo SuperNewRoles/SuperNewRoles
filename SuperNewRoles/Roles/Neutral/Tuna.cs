@@ -31,7 +31,7 @@ public class Tuna
         {
             foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
             {
-                if (!RoleClass.IsFirstMeetingEnd || p.IsDead())
+                if (!RoleClass.IsFirstMeetingEnd || p.IsDead() || MapCustoms.AirShipRandomSpawn.IsLoading)
                     continue;
                 if (RoleClass.Tuna.Position[p.PlayerId] == (Vector2)p.transform.position)
                 {
