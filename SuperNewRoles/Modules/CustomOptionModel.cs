@@ -932,6 +932,8 @@ public static class GameSettingMenuPatch
 {
     public static ModSettingsMenu ModSettingsMenu;
     public static PassiveButton ModSettingsButton;
+    private static int LastOpenedTab = 1;
+    private static bool init;
 
     [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPrefix]
     public static void StartPrefix(GameSettingMenu __instance) => __instance.GameSettingsTab.HideForOnline = new Transform[] { };
@@ -959,9 +961,15 @@ public static class GameSettingMenuPatch
         (ModSettingsButton.OnClick = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: false); });
         (ModSettingsButton.OnMouseOver = new()).AddListener(() => { __instance.ChangeTab(3, previewOnly: true); });
 
-        //Start後、ModSettingsTabの表示前にRoleSettingsTabを経由すると表示バグが起こるので、あらかじめModSettingsTabを一度開くことで回避する
+        //初回のStart後、ModSettingsTabの表示前にRoleSettingsTabを経由すると表示バグが起こるので、あらかじめModSettingsTabを一度開くことで回避する
+        if (!init)
+        {
+            LastOpenedTab = 1;
+            init = true;
+        }
+        int NextOpenTab = LastOpenedTab;
         __instance.ChangeTab(3, previewOnly: false);
-        new LateTask(() => __instance.ChangeTab(1, previewOnly: false), 0f, "ChangeTab");
+        new LateTask(() => __instance.ChangeTab(NextOpenTab, previewOnly: false), 0f, "ChangeTab");
     }
 
     [HarmonyPatch(nameof(GameSettingMenu.Close)), HarmonyPostfix]
@@ -1044,6 +1052,8 @@ public static class GameSettingMenuPatch
                     break;
             }
         }
+
+        LastOpenedTab = tabNum;
         return false;
     }
 }
