@@ -393,7 +393,7 @@ public class WaveCannonObject : CustomAnimation
         else
             Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
 
-        foreach(WaveCannonEffect effect in WaveCannonEffects)
+        foreach (WaveCannonEffect effect in WaveCannonEffects)
             effect.SetChargeState(false);
 
         CurrentAnimationHandler.OnShot();
@@ -413,7 +413,7 @@ public class WaveCannonObject : CustomAnimation
 
             // 賢者が波動砲に触れているかを判定
             bool touching = false;
-            foreach(Collider2D collider in WaveColliders)
+            foreach (Collider2D collider in WaveColliders)
             {
                 if (!player.Collider.IsTouching(collider))
                     continue;
@@ -535,9 +535,13 @@ public class WaveCannonObject : CustomAnimation
                     if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
 
                     if (CurrentAnimType == WCAnimType.Santa)
+                    {
                         foreach (Collider2D collider in colliders) if (internalCheckCollision(player, collider)) return;
+                    }
                     else
+                    {
                         foreach (Collider2D WaveCollider in WaveColliders) if (internalCheckCollision(player, WaveCollider)) return;
+                    }
                 }
             }
         }
