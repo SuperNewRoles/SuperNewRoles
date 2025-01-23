@@ -31,6 +31,7 @@
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\net6.0\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
+        <Exec Command="start &quot;&quot; &quot;$(AmongUs)/Among Us.exe&quot;" />
     </Target>
 
     <ItemGroup>
