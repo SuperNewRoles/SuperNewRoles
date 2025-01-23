@@ -1,0 +1,21 @@
+using System.Collections.Generic;
+
+namespace SuperNewRoles;
+
+public static class Translations
+{
+    private static readonly Dictionary<string, Dictionary<string, string>> TranslationData = new()
+    {
+        // {TRANSLATION_DATA}
+    };
+
+    public static string Get(string key, string langCode = "ja")
+    {
+        if (TranslationData.TryGetValue(langCode, out var langDict) &&
+            langDict.TryGetValue(key, out var translation))
+        {
+            return translation;
+        }
+        return key;
+    }
+} 
