@@ -12,6 +12,7 @@ using Il2CppInterop.Runtime.Injection;
 using TMPro;
 using UnityEngine;
 using BepInEx.Logging;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles;
 
@@ -29,8 +30,11 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         Logger = Log;
         Instance = this;
-        Logger.LogInfo(Translations.Get("report"));
-        Logger.LogInfo($"SuperNewRoles {VersionInfo.VersionString} loaded");
-        await Task.Run(() => Harmony.PatchAll());
+        Task task = Task.Run(() => Harmony.PatchAll());
+        AssetManager.Load();
+        ModTranslation.Load();
+        Logger.LogInfo("SuperNewRoles loaded");
+        Logger.LogInfo(ModTranslation.GetString("TranslationTest"));
+        task.Wait();
     }
 }
