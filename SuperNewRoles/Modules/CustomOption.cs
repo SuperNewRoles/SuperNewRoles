@@ -47,7 +47,7 @@ public class CustomOption
     public object Value => _value;
     public object Selection => _selection;
     public string Id => Attribute.Id;
-    public object[] Selections;
+    public object[] Selections { get; }
 
     public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo)
     {
@@ -60,12 +60,19 @@ public class CustomOption
 
     public void UpdateSelection(byte value)
     {
+        if (value >= Selections.Length)
+        {
+            Logger.Warning($"Invalid selection value {value} for option {Id}. Using default.");
+            value = 0;
+        }
+
         try
         {
             _selection = value;
             _value = Selections[value];
             FieldInfo.SetValue(null, _value);
-            if (CustomOptionSaver.Loaded)
+
+            if (CustomOptionSaver.IsLoaded)
             {
                 CustomOptionSaver.Save();
             }
@@ -76,32 +83,14 @@ public class CustomOption
             throw;
         }
     }
-
-    private bool ValidateValue(object value) => Attribute.OptionType switch
-    {
-        CustomOptionType.Float => value is float,
-        CustomOptionType.Int => value is int,
-        CustomOptionType.Bool => value is bool,
-        CustomOptionType.Byte => value is byte,
-        CustomOptionType.Select => value.GetType().IsEnum,
-        _ => false
-    };
-
-    private string GetExpectedType() => Attribute.OptionType switch
-    {
-        CustomOptionType.Float => "float",
-        CustomOptionType.Int => "int",
-        CustomOptionType.Bool => "bool",
-        CustomOptionType.Byte => "byte",
-        CustomOptionType.Select => "enum",
-        _ => "unknown"
-    };
 }
+
 public static class CustomOptionSaver
 {
     private static readonly IOptionStorage Storage;
-    private const byte CurrentVersion = 0;
-    public static bool Loaded { get; private set; } = false;
+    private const byte CurrentVersion = 1;
+    private const int CurrentPreset = 0;
+    public static bool IsLoaded { get; private set; } = false;
 
     static CustomOptionSaver()
     {
@@ -117,35 +106,35 @@ public static class CustomOptionSaver
         try
         {
             Storage.EnsureStorageExists();
-            ReadAndSetOption();
-            Loaded = true;
+            ReadAndApplyOptions();
+            IsLoaded = true;
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to load options: {ex.Message}");
+            Logger.Error($"Option loading failed: {ex.Message}");
         }
     }
 
-    private static void ReadAndSetOption()
+    private static void ReadAndApplyOptions()
     {
         var (success, version, preset) = Storage.LoadOptionData();
         if (!success || version != CurrentVersion)
         {
-            Logger.Error($"Failed to load option data or unsupported version: {version}");
+            Logger.Warning($"Invalid option data version: {version}. Using default settings.");
             return;
         }
 
         var (optionsSuccess, options) = Storage.LoadPresetData(preset);
         if (!optionsSuccess)
         {
-            Logger.Error("Failed to load preset data");
+            Logger.Warning("Preset data loading failed. Using default settings.");
             return;
         }
 
-        ApplyOptions(options);
+        ApplyLoadedOptions(options);
     }
 
-    private static void ApplyOptions(Dictionary<string, byte> options)
+    private static void ApplyLoadedOptions(Dictionary<string, byte> options)
     {
         foreach (var option in CustomOptionManager.GetCustomOptions())
         {
@@ -155,35 +144,24 @@ public static class CustomOptionSaver
                 {
                     option.UpdateSelection(value);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Logger.Error($"Failed to update option {option.Id}: {ex.Message}");
+                    Logger.Warning($"Failed to apply option {option.Id}. Using default.");
                 }
             }
         }
     }
 
-    private static object ConvertOptionValue(CustomOptionType optionType, object value) => optionType switch
-    {
-        CustomOptionType.Select => value,
-        CustomOptionType.Float => Convert.ToSingle(value),
-        CustomOptionType.Int => Convert.ToInt32(value),
-        CustomOptionType.Bool => Convert.ToBoolean(value),
-        CustomOptionType.Byte => Convert.ToByte(value),
-        _ => throw new ArgumentException($"Unsupported option type: {optionType}")
-    };
-
     public static void Save()
     {
         try
         {
-            const int CurrentPreset = 0;
             Storage.SaveOptionData(CurrentVersion, CurrentPreset);
             Storage.SavePresetData(CurrentPreset, CustomOptionManager.GetCustomOptions());
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to save options: {ex.Message}");
+            Logger.Error($"Option saving failed: {ex.Message}");
         }
     }
 }

@@ -10,4 +10,8 @@ public static class Logger
     {
         SuperNewRolesPlugin.Instance.Log.LogError($"[{source}] {message}");
     }
+    public static void Warning(string message, string source = "SuperNewRoles")
+    {
+        SuperNewRolesPlugin.Instance.Log.LogWarning($"[{source}] {message}");
+    }
 }
