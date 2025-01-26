@@ -13,7 +13,7 @@ public static class Debugger
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
         {
             Logger.Info("Debugger Clicked");
-            CustomRPCManager.TestMethod(PlayerControl.LocalPlayer);
+            CustomRPCManager.TestMethod(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls.ToArray());
         }
     }
 }
