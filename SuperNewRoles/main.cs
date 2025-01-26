@@ -33,7 +33,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Task task = Task.Run(() => Harmony.PatchAll());
         AssetManager.Load();
         ModTranslation.Load();
-        CustomRPC.Load();
+        CustomRPCManager.Load();
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
