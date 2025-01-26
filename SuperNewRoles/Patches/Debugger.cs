@@ -1,3 +1,4 @@
+using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using UnityEngine;
@@ -13,7 +14,10 @@ public static class Debugger
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
         {
             Logger.Info("Debugger Clicked");
-            CustomRPCManager.TestMethod(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls.ToArray());
+            Logger.Info($"CustomOptionManager.TestInt Before: {CustomOptionManager.TestInt}");
+            CustomOptionManager.CustomOptions.FirstOrDefault().UpdateValue(1);
+            Logger.Info($"CustomOptionManager.TestInt After: {CustomOptionManager.TestInt}");
         }
     }
 }
+
