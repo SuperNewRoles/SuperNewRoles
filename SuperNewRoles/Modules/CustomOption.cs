@@ -1,45 +1,53 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace SuperNewRoles.Modules;
 
 public static class CustomOptionManager
 {
-    private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes = new();
-    private static List<CustomOption> _customOptios = new();
-    public static IReadOnlyList<CustomOption> CustomOptions => _customOptios;
-    private static Dictionary<int, CustomOption> _customOptionIds = new();
+    [CustomOptionInt("TestInt", 0, 100, 1, 5)]
+    public static int TestInt;
+    private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
+    private static List<CustomOption> CustomOptions { get; } = new();
+    public static IReadOnlyList<CustomOption> GetCustomOptions() => CustomOptions.AsReadOnly();
+
     public static void Load()
     {
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
         {
             foreach (var field in type.GetFields())
             {
-                if (field.GetCustomAttribute(typeof(CustomOptionBaseAttribute)) is CustomOptionBaseAttribute attribute)
+                var attribute = field.GetCustomAttribute<CustomOptionBaseAttribute>();
+                if (attribute != null)
                 {
                     CustomOptionAttributes[field.Name] = attribute;
                     attribute.SetFieldInfo(field);
-                    _customOptios.Add(new CustomOption(attribute, field));
+                    CustomOptions.Add(new CustomOption(attribute, field));
                 }
             }
         }
     }
 }
+
 public class CustomOption
 {
     public CustomOptionBaseAttribute Attribute { get; }
     public FieldInfo FieldInfo { get; }
     public object Value { get; private set; }
-    public int Id { get; }
-    public string[] selections { get; }
+    public string Id => Attribute.Id;
+    public string[] Selections => _selections ??= Attribute.GenerateSelections();
+    private string[] _selections;
+
     public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo)
     {
         Attribute = attribute;
         FieldInfo = fieldInfo;
-        Id = attribute.Id;
     }
+
     public void UpdateValue(object value)
     {
         if (!ValidateValue(value))
@@ -48,41 +56,21 @@ public class CustomOption
             return;
         }
         Value = value;
-        FieldInfo.SetValue(this.FieldInfo, this.Value);
+        FieldInfo.SetValue(this.FieldInfo, Value);
     }
-    private bool ValidateValue(object value)
+
+    private bool ValidateValue(object value) => Attribute.OptionType switch
     {
-        if (Attribute.OptionType == CustomOptionType.Float)
-        {
-            return value is float;
-        }
-        else if (Attribute.OptionType == CustomOptionType.Int)
-        {
-            return value is int;
-        }
-        else if (Attribute.OptionType == CustomOptionType.Bool)
-        {
-            return value is bool;
-        }
-        else if (Attribute.OptionType == CustomOptionType.String)
-        {
-            return value is string;
-        }
-        else if (Attribute.OptionType == CustomOptionType.Byte)
-        {
-            return value is byte;
-        }
-        else if (Attribute.OptionType == CustomOptionType.Select)
-        {
-            return value is Enum;
-        }
-        else
-        {
-            Logger.Error($"Invalid value type: {value.GetType()}");
-            return false;
-        }
-    }
+        CustomOptionType.Float => value is float,
+        CustomOptionType.Int => value is int,
+        CustomOptionType.Bool => value is bool,
+        CustomOptionType.String => value is string,
+        CustomOptionType.Byte => value is byte,
+        CustomOptionType.Select => value is Enum,
+        _ => false
+    };
 }
+
 public enum CustomOptionType
 {
     None,
@@ -93,145 +81,131 @@ public enum CustomOptionType
     Byte,
     Select
 }
-# nullable enable
-// CustomOptionFloat Attribute
+public static class ComputeMD5Hash
+{
+    private static MD5 md5 = MD5.Create();
+    public static string Compute(string str)
+    {
+        var inputBytes = System.Text.Encoding.UTF8.GetBytes(str);
+        var hashBytes = md5.ComputeHash(inputBytes);
+        return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant(); // ハッシュを16進数の文字列に変換
+    }
+}
 [AttributeUsage(AttributeTargets.Field)]
 public abstract class CustomOptionBaseAttribute : Attribute
 {
-    public int Id { get; }
+    public string Id { get; }
     [AllowNull]
-    public FieldInfo fieldInfo { get; private set; }
+    public FieldInfo FieldInfo { get; private set; }
     public string TranslationName { get; }
     public CustomOptionType OptionType { get; private set; } = CustomOptionType.None;
-    public CustomOptionBaseAttribute(string id, string? translationName = null)
+
+    protected CustomOptionBaseAttribute(string id, string? translationName = null)
     {
-        Id = id.GetHashCode();
-        if (this.TranslationName == null)
-            this.TranslationName = id;
-        else
-            this.TranslationName = translationName!;
+        Id = ComputeMD5Hash.Compute(id);
+        TranslationName = translationName ?? id;
     }
+
     public void SetFieldInfo(FieldInfo fieldInfo)
     {
-        this.fieldInfo = fieldInfo;
-        OptionType = fieldInfo.FieldType.IsEnum ? CustomOptionType.Select :
-            fieldInfo.FieldType == typeof(float) ? CustomOptionType.Float :
-            fieldInfo.FieldType == typeof(int) ? CustomOptionType.Int :
-            fieldInfo.FieldType == typeof(bool) ? CustomOptionType.Bool :
-            fieldInfo.FieldType == typeof(string) ? CustomOptionType.String :
-            fieldInfo.FieldType == typeof(byte) ? CustomOptionType.Byte :
-            CustomOptionType.None;
+        this.FieldInfo = fieldInfo;
+        OptionType = DetermineOptionType(fieldInfo);
     }
+
+    private static CustomOptionType DetermineOptionType(FieldInfo fieldInfo)
+    {
+        return fieldInfo.FieldType switch
+        {
+            var t when t.IsEnum => CustomOptionType.Select,
+            var t when t == typeof(float) => CustomOptionType.Float,
+            var t when t == typeof(int) => CustomOptionType.Int,
+            var t when t == typeof(bool) => CustomOptionType.Bool,
+            var t when t == typeof(string) => CustomOptionType.String,
+            var t when t == typeof(byte) => CustomOptionType.Byte,
+            _ => CustomOptionType.None
+        };
+    }
+
     public abstract string[] GenerateSelections();
     public abstract ushort GenerateDefaultSelection();
 }
+
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionSelectAttribute : CustomOptionBaseAttribute
 {
     public Enum[] Selections { get; }
-    public CustomOptionSelectAttribute(string id, Enum[] selections, string? translationName = null) : base(id, translationName)
+
+    public CustomOptionSelectAttribute(string id, Enum[] selections, string? translationName = null)
+        : base(id, translationName)
     {
         Selections = selections;
     }
+
+    public override string[] GenerateSelections() =>
+        Selections.Select(s => s.ToString()).ToArray();
+
+    public override ushort GenerateDefaultSelection() => 0;
+}
+
+[AttributeUsage(AttributeTargets.Field)]
+public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribute
+    where T : struct, IComparable<T>
+{
+    public T Min { get; }
+    public T Max { get; }
+    public T Step { get; }
+    public T DefaultValue { get; }
+
+    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null)
+        : base(id, translationName)
+    {
+        Min = min;
+        Max = max;
+        Step = step;
+        DefaultValue = defaultValue;
+    }
+
     public override string[] GenerateSelections()
     {
-        var selectionStrings = new List<string>();
-        foreach (var selection in Selections)
+        var selections = new List<string>();
+        for (T s = Min; Comparer<T>.Default.Compare(s, Max) <= 0; s = Add(s, Step))
         {
-            selectionStrings.Add(selection.ToString());
+            selections.Add(s.ToString());
         }
-        return selectionStrings.ToArray();
+        return selections.ToArray();
     }
-    public override ushort GenerateDefaultSelection()
-    {
-        return 0;
-    }
-}
-[AttributeUsage(AttributeTargets.Field)]
-public class CustomOptionFloatAttribute : CustomOptionBaseAttribute
-{
-    public float Min { get; }
-    public float Max { get; }
-    public float Step { get; }
-    public float DefaultValue { get; }
 
+    public override ushort GenerateDefaultSelection() =>
+        (ushort)(Convert.ToDouble(DefaultValue) / Convert.ToDouble(Step));
+
+    protected abstract T Add(T a, T b);
+}
+
+[AttributeUsage(AttributeTargets.Field)]
+public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
+{
     public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null)
-        : base(id, translationName)
-    {
-        Min = min;
-        Max = max;
-        Step = step;
-        DefaultValue = defaultValue;
-    }
-    public override string[] GenerateSelections()
-    {
-        List<string> selections = new();
-        for (float s = Min; s <= Max; s += Step)
-            selections.Add(s.ToString());
-        return selections.ToArray();
-    }
-    public override ushort GenerateDefaultSelection()
-    {
-        return (ushort)(DefaultValue / Step);
-    }
+        : base(id, min, max, step, defaultValue, translationName) { }
+
+    protected override float Add(float a, float b) => a + b;
 }
 
 [AttributeUsage(AttributeTargets.Field)]
-public class CustomOptionIntAttribute : CustomOptionBaseAttribute
+public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 {
-    public int Min { get; }
-    public int Max { get; }
-    public int Step { get; }
-    public int DefaultValue { get; }
-
     public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null)
-        : base(id, translationName)
-    {
-        Min = min;
-        Max = max;
-        Step = step;
-        DefaultValue = defaultValue;
-    }
-    public override string[] GenerateSelections()
-    {
-        List<string> selections = new();
-        for (int s = Min; s <= Max; s += Step)
-            selections.Add(s.ToString());
-        return selections.ToArray();
-    }
-    public override ushort GenerateDefaultSelection()
-    {
-        return (ushort)(DefaultValue / Step);
-    }
+        : base(id, min, max, step, defaultValue, translationName) { }
+
+    protected override int Add(int a, int b) => a + b;
 }
 
 [AttributeUsage(AttributeTargets.Field)]
-public class CustomOptionByteAttribute : CustomOptionBaseAttribute
+public class CustomOptionByteAttribute : CustomOptionNumericAttribute<byte>
 {
-    public byte Min { get; }
-    public byte Max { get; }
-    public byte Step { get; }
-    public byte DefaultValue { get; }
-
     public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null)
-        : base(id, translationName)
-    {
-        Min = min;
-        Max = max;
-        Step = step;
-        DefaultValue = defaultValue;
-    }
-    public override string[] GenerateSelections()
-    {
-        List<string> selections = new();
-        for (byte s = Min; s <= Max; s += Step)
-            selections.Add(s.ToString());
-        return selections.ToArray();
-    }
-    public override ushort GenerateDefaultSelection()
-    {
-        return (ushort)(DefaultValue / Step);
-    }
+        : base(id, min, max, step, defaultValue, translationName) { }
+
+    protected override byte Add(byte a, byte b) => (byte)(a + b);
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -244,14 +218,12 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
     {
         DefaultValue = defaultValue;
     }
-    public override string[] GenerateSelections()
-    {
-        return [ModTranslation.GetString("CustomOptionFalse"), ModTranslation.GetString("CustomOptionTrue")];
-    }
-    public override ushort GenerateDefaultSelection()
-    {
-        return (ushort)(DefaultValue ? 1 : 0);
-    }
+
+    public override string[] GenerateSelections() =>
+        [ModTranslation.GetString("CustomOptionFalse"), ModTranslation.GetString("CustomOptionTrue")];
+
+    public override ushort GenerateDefaultSelection() =>
+        (ushort)(DefaultValue ? 1 : 0);
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -264,14 +236,10 @@ public class CustomOptionStringAttribute : CustomOptionBaseAttribute
     {
         DefaultValue = defaultValue;
     }
-    public override string[] GenerateSelections()
-    {
-        return [DefaultValue];
-    }
-    public override ushort GenerateDefaultSelection()
-    {
-        return 0;
-    }
+
+    public override string[] GenerateSelections() => [DefaultValue];
+
+    public override ushort GenerateDefaultSelection() => 0;
 }
 
 #nullable disable

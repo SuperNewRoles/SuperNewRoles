@@ -15,7 +15,7 @@ public static class Debugger
         {
             Logger.Info("Debugger Clicked");
             Logger.Info($"CustomOptionManager.TestInt Before: {CustomOptionManager.TestInt}");
-            CustomOptionManager.CustomOptions.FirstOrDefault().UpdateValue(1);
+            CustomOptionManager.GetCustomOptions().FirstOrDefault().UpdateValue(1);
             Logger.Info($"CustomOptionManager.TestInt After: {CustomOptionManager.TestInt}");
         }
     }
