@@ -26,15 +26,18 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
 
-    public override async void Load()
+    public override void Load()
     {
         Logger = Log;
         Instance = this;
         Task task = Task.Run(() => Harmony.PatchAll());
         AssetManager.Load();
         ModTranslation.Load();
-        Logger.LogInfo("SuperNewRoles loaded");
-        Logger.LogInfo(ModTranslation.GetString("TranslationTest"));
+        CustomRPC.Load();
         task.Wait();
+        Logger.LogInfo("SuperNewRoles loaded");
+        Logger.LogInfo("--------------------------------");
+        Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
+        Logger.LogInfo("--------------------------------");
     }
 }

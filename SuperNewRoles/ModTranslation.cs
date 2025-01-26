@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
+using AmongUs.Data;
 
 namespace SuperNewRoles;
 
@@ -35,7 +36,7 @@ public static partial class ModTranslation
         }
         AllTranslations[SupportedLangs.Japanese] = japaneseTranslation;
         AllTranslations[SupportedLangs.English] = englishTranslation;
-        switch (DestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID)
+        switch (DataManager.Settings.Language.CurrentLanguage)
         {
             case SupportedLangs.Japanese:
                 CurrentTranslations = AllTranslations[SupportedLangs.Japanese];
