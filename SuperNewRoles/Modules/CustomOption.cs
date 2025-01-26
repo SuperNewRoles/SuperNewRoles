@@ -41,47 +41,74 @@ public class CustomOption
 {
     public CustomOptionBaseAttribute Attribute { get; }
     public FieldInfo FieldInfo { get; }
-    public object Value { get; private set; }
-    public object Selection { get; private set; }
+    private object _value;
+    private object _selection;
+
+    public object Value => _value;
+    public object Selection => _selection;
     public string Id => Attribute.Id;
     public string[] Selections => _selections ??= Attribute.GenerateSelections();
     private string[] _selections;
 
     public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo)
     {
-        Attribute = attribute;
-        FieldInfo = fieldInfo;
+        Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
+        FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
+
+        var defaultValue = attribute.GenerateDefaultSelection();
+        UpdateValue(defaultValue);
     }
 
     public void UpdateValue(object value)
     {
+        if (value == null)
+        {
+            throw new ArgumentNullException(nameof(value));
+        }
+
         if (!ValidateValue(value))
         {
-            Logger.Error($"Invalid value type: {value.GetType()}");
-            return;
+            throw new ArgumentException($"Invalid value type for option {Id}: Expected {GetExpectedType()}, got {value.GetType()}");
         }
-        if (Attribute.OptionType == CustomOptionType.String)
+
+        try
         {
-            Selection = value;
-        }
-        else
-        {
-            byte selec = 0;
-            foreach (var selection in Selections)
+            if (Attribute.OptionType == CustomOptionType.String)
             {
-                if (selection == value.ToString())
-                {
-                    Selection = selec;
-                    break;
-                }
-                selec++;
+                _selection = value;
+            }
+            else
+            {
+                _selection = GetSelectionIndex(value.ToString());
+            }
+
+            _value = value;
+            FieldInfo.SetValue(null, _value);
+
+            if (CustomOptionSaver.Loaded)
+            {
+                CustomOptionSaver.Save();
             }
         }
-        Value = value;
-        FieldInfo.SetValue(this.FieldInfo, Value);
-        // TODO: 後で設定画面を閉じる所に移動する
-        if (CustomOptionSaver.Loaded)
-            CustomOptionSaver.Save();
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to update option {Id}: {ex.Message}");
+            throw;
+        }
+    }
+
+    private byte GetSelectionIndex(string value)
+    {
+        byte index = 0;
+        foreach (var selection in Selections)
+        {
+            if (selection == value)
+            {
+                return index;
+            }
+            index++;
+        }
+        throw new ArgumentException($"Invalid selection value for option {Id}: {value}");
     }
 
     private bool ValidateValue(object value) => Attribute.OptionType switch
@@ -91,180 +118,267 @@ public class CustomOption
         CustomOptionType.Bool => value is bool,
         CustomOptionType.String => value is string,
         CustomOptionType.Byte => value is byte,
-        CustomOptionType.Select => value is Enum,
+        CustomOptionType.Select => value.GetType().IsEnum,
         _ => false
+    };
+
+    private string GetExpectedType() => Attribute.OptionType switch
+    {
+        CustomOptionType.Float => "float",
+        CustomOptionType.Int => "int",
+        CustomOptionType.Bool => "bool",
+        CustomOptionType.String => "string",
+        CustomOptionType.Byte => "byte",
+        CustomOptionType.Select => "enum",
+        _ => "unknown"
     };
 }
 public static class CustomOptionSaver
 {
-    static readonly DirectoryInfo directory = new("./SuperNewRolesNext/SaveData/");
-    public static readonly string OptionSaverFileName = $"{directory.FullName}/Options.{Extension}";
-    public const string Extension = "data";
-    public static readonly string PresetFileNameBase = $"{directory.FullName}/PresetOptions_";
-    public const byte Version = 0;
-    public static object FileLocker = new();
+    private static readonly IOptionStorage Storage;
+    private const byte CurrentVersion = 0;
     public static bool Loaded { get; private set; } = false;
+
+    static CustomOptionSaver()
+    {
+        Storage = new FileOptionStorage(
+            new DirectoryInfo("./SuperNewRolesNext/SaveData/"),
+            "Options.data",
+            "PresetOptions_"
+        );
+    }
+
     public static void Load()
     {
-        Logger.Info($"{directory.FullName}");
-        if (!directory.Exists)
+        try
         {
-            directory.Create();
-            directory.Attributes |= FileAttributes.Hidden;
+            Storage.EnsureStorageExists();
+            ReadAndSetOption();
+            Loaded = true;
         }
-        ReadAndSetOption();
-        Loaded = true;
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to load options: {ex.Message}");
+        }
     }
+
     private static void ReadAndSetOption()
     {
-        var (successed, version, preset) = LoadOptionDotData();
-        if (!successed)
+        var (success, version, preset) = Storage.LoadOptionData();
+        if (!success || version != CurrentVersion)
         {
+            Logger.Error($"Failed to load option data or unsupported version: {version}");
             return;
         }
-        if (version != Version)
+
+        var (optionsSuccess, options) = Storage.LoadPresetData(preset);
+        if (!optionsSuccess)
         {
-            switch (version)
-            {
-                default:
-                    Logger.Error($"Unsupported version: {version}");
-                    break;
-            }
+            Logger.Error("Failed to load preset data");
             return;
         }
-        var (successed2, options) = LoadPresetData(preset);
-        if (!successed2)
-        {
-            return;
-        }
+
+        ApplyOptions(options);
+    }
+
+    private static void ApplyOptions(Dictionary<string, object> options)
+    {
         foreach (var option in CustomOptionManager.GetCustomOptions())
         {
             if (options.TryGetValue(option.Id, out var value))
             {
-                switch (option.Attribute.OptionType)
+                try
                 {
-                    case CustomOptionType.Select:
-                        option.UpdateValue(option.Selections[(byte)value]);
-                        break;
-                    case CustomOptionType.String:
-                        option.UpdateValue((string)value);
-                        break;
-                    case CustomOptionType.Float:
-                        option.UpdateValue((float)value);
-                        break;
-                    case CustomOptionType.Int:
-                        option.UpdateValue(Convert.ToInt32(value));
-                        break;
-                    case CustomOptionType.Bool:
-                        option.UpdateValue((bool)value);
-                        break;
-                    case CustomOptionType.Byte:
-                        option.UpdateValue((byte)value);
-                        break;
+                    option.UpdateValue(ConvertOptionValue(option.Attribute.OptionType, value));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Failed to update option {option.Id}: {ex.Message}");
                 }
             }
         }
     }
-    private static (bool successed, Dictionary<string, object> options) LoadPresetData(int preset)
+
+    private static object ConvertOptionValue(CustomOptionType optionType, object value) => optionType switch
     {
-        lock (FileLocker)
+        CustomOptionType.Select => value,
+        CustomOptionType.String => (string)value,
+        CustomOptionType.Float => Convert.ToSingle(value),
+        CustomOptionType.Int => Convert.ToInt32(value),
+        CustomOptionType.Bool => Convert.ToBoolean(value),
+        CustomOptionType.Byte => Convert.ToByte(value),
+        _ => throw new ArgumentException($"Unsupported option type: {optionType}")
+    };
+
+    public static void Save()
+    {
+        try
         {
-            string fileName = PresetFileNameBase + preset + "." + Extension;
-            if (!File.Exists(fileName))
-            {
-                return (false, new());
-            }
-            using var fileStream = new FileStream(fileName, FileMode.Open);
-            using var binaryReader = new BinaryReader(fileStream);
-            if (!ReadCheckSum(binaryReader))
-            {
-                Logger.Error("Load PresetDataChecksum error");
-                return (false, new());
-            }
-            int optionCount = binaryReader.ReadInt32();
-            Dictionary<string, object> options = new();
-            for (int i = 0; i < optionCount; i++)
-            {
-                string id = binaryReader.ReadString();
-                bool isValueString = binaryReader.ReadBoolean();
-                if (isValueString)
-                {
-                    options[id] = binaryReader.ReadString();
-                }
-                else
-                {
-                    options[id] = binaryReader.ReadByte();
-                }
-            }
-            return (true, options);
+            const int CurrentPreset = 0;
+            Storage.SaveOptionData(CurrentVersion, CurrentPreset);
+            Storage.SavePresetData(CurrentPreset, CustomOptionManager.GetCustomOptions());
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to save options: {ex.Message}");
         }
     }
-    private static (bool successed, int version, int preset) LoadOptionDotData()
+}
+
+public interface IOptionStorage
+{
+    void EnsureStorageExists();
+    (bool success, byte version, int preset) LoadOptionData();
+    (bool success, Dictionary<string, object> options) LoadPresetData(int preset);
+    void SaveOptionData(byte version, int preset);
+    void SavePresetData(int preset, IEnumerable<CustomOption> options);
+}
+
+public class FileOptionStorage : IOptionStorage
+{
+    private readonly DirectoryInfo _directory;
+    private readonly string _optionFileName;
+    private readonly string _presetFileNameBase;
+    private static readonly object FileLocker = new();
+
+    public FileOptionStorage(DirectoryInfo directory, string optionFileName, string presetFileNameBase)
+    {
+        _directory = directory;
+        _optionFileName = Path.Combine(directory.FullName, optionFileName);
+        _presetFileNameBase = Path.Combine(directory.FullName, presetFileNameBase);
+    }
+
+    public void EnsureStorageExists()
+    {
+        if (!_directory.Exists)
+        {
+            _directory.Create();
+            _directory.Attributes |= FileAttributes.Hidden;
+        }
+    }
+
+    public (bool success, byte version, int preset) LoadOptionData()
     {
         lock (FileLocker)
         {
-            if (!File.Exists(OptionSaverFileName))
+            if (!File.Exists(_optionFileName))
             {
                 return (false, 0, 0);
             }
-            using var fileStream = new FileStream(OptionSaverFileName, FileMode.Open);
-            using var binaryReader = new BinaryReader(fileStream);
-            byte version = binaryReader.ReadByte();
-            if (!ReadCheckSum(binaryReader))
+
+            using var fileStream = new FileStream(_optionFileName, FileMode.Open);
+            using var reader = new BinaryReader(fileStream);
+
+            byte version = reader.ReadByte();
+            if (!ValidateChecksum(reader))
             {
-                Logger.Error("Load OptionDotDataChecksum error");
                 return (false, version, 0);
             }
-            int preset = binaryReader.ReadInt32();
+
+            int preset = reader.ReadInt32();
             return (true, version, preset);
         }
     }
-    private static void WriteCheckSum(BinaryWriter writer)
+
+    public (bool success, Dictionary<string, object> options) LoadPresetData(int preset)
+    {
+        lock (FileLocker)
+        {
+            string fileName = $"{_presetFileNameBase}{preset}.data";
+            if (!File.Exists(fileName))
+            {
+                return (false, new Dictionary<string, object>());
+            }
+
+            using var fileStream = new FileStream(fileName, FileMode.Open);
+            using var reader = new BinaryReader(fileStream);
+
+            if (!ValidateChecksum(reader))
+            {
+                return (false, new Dictionary<string, object>());
+            }
+
+            return (true, ReadOptions(reader));
+        }
+    }
+
+    public void SaveOptionData(byte version, int preset)
+    {
+        lock (FileLocker)
+        {
+            using var fileStream = new FileStream(_optionFileName, FileMode.Create);
+            using var writer = new BinaryWriter(fileStream);
+
+            writer.Write(version);
+            WriteChecksum(writer);
+            writer.Write(preset);
+        }
+    }
+
+    public void SavePresetData(int preset, IEnumerable<CustomOption> options)
+    {
+        lock (FileLocker)
+        {
+            string fileName = $"{_presetFileNameBase}{preset}.data";
+            using var fileStream = new FileStream(fileName, FileMode.Create);
+            using var writer = new BinaryWriter(fileStream);
+
+            WriteChecksum(writer);
+            WriteOptions(writer, options);
+        }
+    }
+
+    private static Dictionary<string, object> ReadOptions(BinaryReader reader)
+    {
+        int optionCount = reader.ReadInt32();
+        var options = new Dictionary<string, object>();
+
+        for (int i = 0; i < optionCount; i++)
+        {
+            string id = reader.ReadString();
+            bool isValueString = reader.ReadBoolean();
+            options[id] = isValueString ? reader.ReadString() : reader.ReadByte();
+        }
+
+        return options;
+    }
+
+    private static void WriteOptions(BinaryWriter writer, IEnumerable<CustomOption> options)
+    {
+        var optionsList = options.ToList();
+        writer.Write(optionsList.Count);
+
+        foreach (var option in optionsList)
+        {
+            writer.Write(option.Id);
+            if (option.Attribute.OptionType == CustomOptionType.String)
+            {
+                writer.Write(true);
+                writer.Write(option.Value as string);
+            }
+            else
+            {
+                writer.Write(false);
+                writer.Write((byte)option.Selection);
+            }
+        }
+    }
+
+    private static void WriteChecksum(BinaryWriter writer)
     {
         int random = ModHelpers.GetRandomInt(15);
         writer.Write((byte)random);
         writer.Write((byte)(random * random));
     }
-    private static bool ReadCheckSum(BinaryReader reader)
+
+    private static bool ValidateChecksum(BinaryReader reader)
     {
         int random = reader.ReadByte();
         int random2 = reader.ReadByte();
         return (random * random) == random2;
     }
-    public static void Save()
-    {
-        int Preset = 0;
-        lock (FileLocker)
-        {
-            using var fileStream = new FileStream(OptionSaverFileName, FileMode.Create);
-            using var binaryWriter = new BinaryWriter(fileStream);
-            binaryWriter.Write(Version);
-            WriteCheckSum(binaryWriter);
-            binaryWriter.Write(Preset);
-        }
-        lock (FileLocker)
-        {
-            using var fileStream = new FileStream(PresetFileNameBase + Preset + "." + Extension, FileMode.Create);
-            using var binaryWriter = new BinaryWriter(fileStream);
-            WriteCheckSum(binaryWriter);
-            binaryWriter.Write(CustomOptionManager.GetCustomOptions().Count);
-            foreach (var option in CustomOptionManager.GetCustomOptions())
-            {
-                binaryWriter.Write(option.Id);
-                if (option.Attribute.OptionType == CustomOptionType.String)
-                {
-                    binaryWriter.Write(true);
-                    binaryWriter.Write(option.Value as string);
-                }
-                else
-                {
-                    binaryWriter.Write(false);
-                    binaryWriter.Write((byte)option.Selection);
-                }
-            }
-        }
-    }
 }
+
 public enum CustomOptionType
 {
     None,
