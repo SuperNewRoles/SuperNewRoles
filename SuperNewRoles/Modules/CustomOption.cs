@@ -28,9 +28,9 @@ public static class CustomOptionManager
                 {
                     CustomOptionAttributes[field.Name] = attribute;
                     attribute.SetFieldInfo(field);
-                    CustomOption opt = new CustomOption(attribute, field);
+                    CustomOption opt = new(attribute, field);
                     CustomOptions.Add(opt);
-                    opt.UpdateValue(attribute.GenerateDefaultSelection());
+                    opt.UpdateSelection(attribute.GenerateDefaultSelection());
                 }
             }
         }
@@ -47,44 +47,24 @@ public class CustomOption
     public object Value => _value;
     public object Selection => _selection;
     public string Id => Attribute.Id;
-    public string[] Selections => _selections ??= Attribute.GenerateSelections();
-    private string[] _selections;
+    public object[] Selections;
 
     public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo)
     {
         Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
         FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
-
+        Selections = attribute.GenerateSelections();
         var defaultValue = attribute.GenerateDefaultSelection();
-        UpdateValue(defaultValue);
+        UpdateSelection(defaultValue);
     }
 
-    public void UpdateValue(object value)
+    public void UpdateSelection(byte value)
     {
-        if (value == null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
-
-        if (!ValidateValue(value))
-        {
-            throw new ArgumentException($"Invalid value type for option {Id}: Expected {GetExpectedType()}, got {value.GetType()}");
-        }
-
         try
         {
-            if (Attribute.OptionType == CustomOptionType.String)
-            {
-                _selection = value;
-            }
-            else
-            {
-                _selection = GetSelectionIndex(value.ToString());
-            }
-
-            _value = value;
+            _selection = value;
+            _value = Selections[value];
             FieldInfo.SetValue(null, _value);
-
             if (CustomOptionSaver.Loaded)
             {
                 CustomOptionSaver.Save();
@@ -97,26 +77,11 @@ public class CustomOption
         }
     }
 
-    private byte GetSelectionIndex(string value)
-    {
-        byte index = 0;
-        foreach (var selection in Selections)
-        {
-            if (selection == value)
-            {
-                return index;
-            }
-            index++;
-        }
-        throw new ArgumentException($"Invalid selection value for option {Id}: {value}");
-    }
-
     private bool ValidateValue(object value) => Attribute.OptionType switch
     {
         CustomOptionType.Float => value is float,
         CustomOptionType.Int => value is int,
         CustomOptionType.Bool => value is bool,
-        CustomOptionType.String => value is string,
         CustomOptionType.Byte => value is byte,
         CustomOptionType.Select => value.GetType().IsEnum,
         _ => false
@@ -127,7 +92,6 @@ public class CustomOption
         CustomOptionType.Float => "float",
         CustomOptionType.Int => "int",
         CustomOptionType.Bool => "bool",
-        CustomOptionType.String => "string",
         CustomOptionType.Byte => "byte",
         CustomOptionType.Select => "enum",
         _ => "unknown"
@@ -181,7 +145,7 @@ public static class CustomOptionSaver
         ApplyOptions(options);
     }
 
-    private static void ApplyOptions(Dictionary<string, object> options)
+    private static void ApplyOptions(Dictionary<string, byte> options)
     {
         foreach (var option in CustomOptionManager.GetCustomOptions())
         {
@@ -189,7 +153,7 @@ public static class CustomOptionSaver
             {
                 try
                 {
-                    option.UpdateValue(ConvertOptionValue(option.Attribute.OptionType, value));
+                    option.UpdateSelection(value);
                 }
                 catch (Exception ex)
                 {
@@ -202,7 +166,6 @@ public static class CustomOptionSaver
     private static object ConvertOptionValue(CustomOptionType optionType, object value) => optionType switch
     {
         CustomOptionType.Select => value,
-        CustomOptionType.String => (string)value,
         CustomOptionType.Float => Convert.ToSingle(value),
         CustomOptionType.Int => Convert.ToInt32(value),
         CustomOptionType.Bool => Convert.ToBoolean(value),
@@ -229,7 +192,7 @@ public interface IOptionStorage
 {
     void EnsureStorageExists();
     (bool success, byte version, int preset) LoadOptionData();
-    (bool success, Dictionary<string, object> options) LoadPresetData(int preset);
+    (bool success, Dictionary<string, byte> options) LoadPresetData(int preset);
     void SaveOptionData(byte version, int preset);
     void SavePresetData(int preset, IEnumerable<CustomOption> options);
 }
@@ -280,14 +243,14 @@ public class FileOptionStorage : IOptionStorage
         }
     }
 
-    public (bool success, Dictionary<string, object> options) LoadPresetData(int preset)
+    public (bool success, Dictionary<string, byte> options) LoadPresetData(int preset)
     {
         lock (FileLocker)
         {
             string fileName = $"{_presetFileNameBase}{preset}.data";
             if (!File.Exists(fileName))
             {
-                return (false, new Dictionary<string, object>());
+                return (false, new());
             }
 
             using var fileStream = new FileStream(fileName, FileMode.Open);
@@ -295,7 +258,7 @@ public class FileOptionStorage : IOptionStorage
 
             if (!ValidateChecksum(reader))
             {
-                return (false, new Dictionary<string, object>());
+                return (false, new());
             }
 
             return (true, ReadOptions(reader));
@@ -328,16 +291,15 @@ public class FileOptionStorage : IOptionStorage
         }
     }
 
-    private static Dictionary<string, object> ReadOptions(BinaryReader reader)
+    private static Dictionary<string, byte> ReadOptions(BinaryReader reader)
     {
         int optionCount = reader.ReadInt32();
-        var options = new Dictionary<string, object>();
+        var options = new Dictionary<string, byte>();
 
         for (int i = 0; i < optionCount; i++)
         {
             string id = reader.ReadString();
-            bool isValueString = reader.ReadBoolean();
-            options[id] = isValueString ? reader.ReadString() : reader.ReadByte();
+            options[id] = reader.ReadByte();
         }
 
         return options;
@@ -351,16 +313,7 @@ public class FileOptionStorage : IOptionStorage
         foreach (var option in optionsList)
         {
             writer.Write(option.Id);
-            if (option.Attribute.OptionType == CustomOptionType.String)
-            {
-                writer.Write(true);
-                writer.Write(option.Value as string);
-            }
-            else
-            {
-                writer.Write(false);
-                writer.Write((byte)option.Selection);
-            }
+            writer.Write((byte)option.Selection);
         }
     }
 
@@ -385,7 +338,6 @@ public enum CustomOptionType
     Float,
     Int,
     Bool,
-    String,
     Byte,
     Select
 }
@@ -428,14 +380,13 @@ public abstract class CustomOptionBaseAttribute : Attribute
             var t when t == typeof(float) => CustomOptionType.Float,
             var t when t == typeof(int) => CustomOptionType.Int,
             var t when t == typeof(bool) => CustomOptionType.Bool,
-            var t when t == typeof(string) => CustomOptionType.String,
             var t when t == typeof(byte) => CustomOptionType.Byte,
             _ => CustomOptionType.None
         };
     }
 
-    public abstract string[] GenerateSelections();
-    public abstract object GenerateDefaultSelection();
+    public abstract object[] GenerateSelections();
+    public abstract byte GenerateDefaultSelection();
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -449,10 +400,9 @@ public class CustomOptionSelectAttribute : CustomOptionBaseAttribute
         Selections = selections;
     }
 
-    public override string[] GenerateSelections() =>
-        Selections.Select(s => s.ToString()).ToArray();
+    public override object[] GenerateSelections() => Selections.Select(s => (object)s).ToArray();
 
-    public override object GenerateDefaultSelection() => GenerateSelections().FirstOrDefault();
+    public override byte GenerateDefaultSelection() => 0;
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -473,17 +423,15 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
         DefaultValue = defaultValue;
     }
 
-    public override string[] GenerateSelections()
+    public override object[] GenerateSelections()
     {
-        var selections = new List<string>();
+        var selections = new List<object>();
         for (T s = Min; Comparer<T>.Default.Compare(s, Max) <= 0; s = Add(s, Step))
         {
-            selections.Add(s.ToString());
+            selections.Add(s);
         }
         return selections.ToArray();
     }
-
-    public override object GenerateDefaultSelection() => DefaultValue;
 
     protected abstract T Add(T a, T b);
 }
@@ -495,6 +443,7 @@ public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
         : base(id, min, max, step, defaultValue, translationName) { }
 
     protected override float Add(float a, float b) => a + b;
+    public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -504,6 +453,7 @@ public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
         : base(id, min, max, step, defaultValue, translationName) { }
 
     protected override int Add(int a, int b) => a + b;
+    public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -513,6 +463,7 @@ public class CustomOptionByteAttribute : CustomOptionNumericAttribute<byte>
         : base(id, min, max, step, defaultValue, translationName) { }
 
     protected override byte Add(byte a, byte b) => (byte)(a + b);
+    public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -526,25 +477,8 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
         DefaultValue = defaultValue;
     }
 
-    public override string[] GenerateSelections() =>
-        [ModTranslation.GetString("CustomOptionFalse"), ModTranslation.GetString("CustomOptionTrue")];
+    public override object[] GenerateSelections() =>
+        [false, true];
 
-    public override object GenerateDefaultSelection() => DefaultValue;
+    public override byte GenerateDefaultSelection() => (byte)(DefaultValue ? 1 : 0);
 }
-
-[AttributeUsage(AttributeTargets.Field)]
-public class CustomOptionStringAttribute : CustomOptionBaseAttribute
-{
-    public string DefaultValue { get; }
-
-    public CustomOptionStringAttribute(string id, string defaultValue, string? translationName = null)
-        : base(id, translationName)
-    {
-        DefaultValue = defaultValue;
-    }
-
-    public override string[] GenerateSelections() => [DefaultValue];
-
-    public override object GenerateDefaultSelection() => 0;
-}
-#nullable disable
