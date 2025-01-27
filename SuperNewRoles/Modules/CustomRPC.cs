@@ -5,7 +5,6 @@ using System.Reflection;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Modules;
 
