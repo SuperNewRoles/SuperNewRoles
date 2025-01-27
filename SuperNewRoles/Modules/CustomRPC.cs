@@ -6,6 +6,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Modules;
 
@@ -53,13 +54,16 @@ public static class CustomRPCManager
     /// <summary>
     /// RPC メソッドを保存するディクショナリ
     /// </summary>
-    private static Dictionary<byte, MethodInfo> RpcMethods = new();
+    public static Dictionary<byte, MethodInfo> RpcMethods = new();
 
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
     /// </summary>
     private static byte SNRRpcId = byte.MaxValue;
-
+    /// <summary>
+    /// バージョン同期用のRPC識別子
+    /// </summary>
+    public static byte SNRSyncVersionRpc = byte.MaxValue - 1;
     /// <summary>
     /// RPCの受信状態を追跡するフラグ
     /// </summary>
@@ -178,6 +182,10 @@ public static class CustomRPCManager
 
                 IsRpcReceived = true;
                 method.Invoke(null, args.ToArray());
+            }
+            else if (callId == SNRSyncVersionRpc)
+            {
+                SyncVersion.ReceivedSyncVersion(reader);
             }
         }
     }
