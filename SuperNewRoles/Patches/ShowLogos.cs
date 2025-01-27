@@ -114,7 +114,7 @@ public static class VersionTextHandler
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     public static class ShowInGameLogosPatch
     {
-        private static GameObject _logoObject;
+        public static GameObject _logoObject;
         private static SpriteRenderer _logoRenderer;
         public static void Postfix(HudManager __instance)
         {
@@ -133,6 +133,17 @@ public static class VersionTextHandler
             versionText.transform.localScale = Vector3.one * 2.55f;
             versionText.transform.localPosition = new(-3f, -0.74f, 0f);
             versionText.SetText($"<color=#ffa500>v{VersionInfo.VersionString}</color>");
+        }
+    }
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
+    public static class ShipStatusPatch
+    {
+        public static void Postfix(ShipStatus __instance)
+        {
+            ShowInGameLogosPatch._logoObject.transform.SetPositionAndScale(
+                new(2.55f, 2.5f, -1f),
+                Vector3.one * 0.25f
+            );
         }
     }
 }
