@@ -111,7 +111,7 @@ public static class SyncVersion
         }
     }
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public static class HudManagerUpdatePatch
+    public static class SyncVersionHudManagerUpdatePatch
     {
         public static TextMeshPro ErrorText;
         public static void Postfix(HudManager __instance)
@@ -144,16 +144,19 @@ public static class SyncVersion
                 {
                     ErrorText = GameObject.Instantiate(__instance.roomTracker.text);
                     ErrorText.name = "SyncErrorText";
+                    GameObject.Destroy(ErrorText.gameObject.GetComponent<RoomTracker>());
                     ErrorText.transform.SetParent(__instance.transform);
                     // テキストの位置とスタイルを設定
                     ErrorText.transform.localPosition = new(0f, 0.25f, -19f);
-                    ErrorText.color = Color.red;
+                    // 明るめの赤
+                    ErrorText.color = new Color(1f, 0.2f, 0f, 1f);
                     ErrorText.fontSizeMin = 1.2f;
                     ErrorText.enableWordWrapping = false;
                 }
                 errors.Insert(0, ModTranslation.GetString("SyncError_Title"));
                 ErrorText.text = string.Join("\n", errors);
                 ErrorText.gameObject.SetActive(true);
+                ErrorText.transform.localScale = Vector3.one * (0.06f * errors.Count + 1.8f);
             }
             else if (ErrorText != null)
             {
