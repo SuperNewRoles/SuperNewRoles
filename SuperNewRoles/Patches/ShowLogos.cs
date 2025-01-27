@@ -61,8 +61,6 @@ public static class VersionTextHandler
     {
         static void Postfix(VersionShower __instance)
         {
-            if (GameObject.FindObjectOfType<MainMenuManager>() == null) return;
-
             CreateCredentialsText(__instance);
             CreateVersionText(__instance);
         }
@@ -110,6 +108,30 @@ public static class VersionTextHandler
                 : "";
 
             return branchInfo + ModTranslation.GetString("creditsMain");
+        }
+    }
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    public static class ShowInGameLogosPatch
+    {
+        private static GameObject _logoObject;
+        private static SpriteRenderer _logoRenderer;
+        public static void Postfix(HudManager __instance)
+        {
+            _logoObject = new("Logo");
+            _logoObject.layer = 5;
+            _logoObject.transform.SetParent(__instance.transform);
+            _logoObject.transform.localScale = Vector3.one * 0.35f;
+            _logoObject.transform.localPosition = new(-3.8f, 2.5f, -1f);
+            _logoRenderer = _logoObject.AddComponent<SpriteRenderer>();
+            _logoRenderer.sprite = AssetManager.GetAsset<Sprite>("banner", AssetManager.AssetBundleType.Sprite);
+            // バージョンテキスト
+            var versionText = GameObject.Instantiate(__instance.roomTracker.text);
+            versionText.name = "VersionText";
+            GameObject.Destroy(versionText.GetComponent<RoomTracker>());
+            versionText.transform.SetParent(_logoObject.transform);
+            versionText.transform.localScale = Vector3.one * 2.55f;
+            versionText.transform.localPosition = new(-3f, -0.74f, 0f);
+            versionText.SetText($"<color=#ffa500>v{VersionInfo.VersionString}</color>");
         }
     }
 }
