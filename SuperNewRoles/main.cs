@@ -111,4 +111,13 @@ public partial class SuperNewRolesPlugin : BasePlugin
             }
         }
     }
+
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+    public static class PlayerCountChange
+    {
+        public static void Prefix(GameStartManager __instance)
+        {
+            __instance.MinPlayers = 1;
+        }
+    }
 }
