@@ -61,6 +61,7 @@ public static class VersionTextHandler
     {
         static void Postfix(VersionShower __instance)
         {
+            if (GameObject.FindObjectOfType<MainMenuManager>() == null) return;
             CreateCredentialsText(__instance);
             CreateVersionText(__instance);
         }
