@@ -25,26 +25,32 @@ public static class SyncVersion
     public static Dictionary<byte, string> VersionMap = new();
     public static string CurrentHash = "";
     public static string CurrentRpcMap = "";
+    private const float TextBaseScale = 0.06f;
+    private const float TextBaseSize = 1.8f;
+    private const float ErrorTextYPosition = 0.25f;
     public static void Load()
     {
-        // dllのパスを取得して読み込み、ハッシュ化する
         string dllPath = Assembly.GetExecutingAssembly().Location;
-        // Load file bytes
         byte[] bytes = File.ReadAllBytes(dllPath);
         CurrentHash = ModHelpers.HashMD5(bytes);
-        // ランダムなテキストをCurrentRpcMapに設定
-        CurrentRpcMap = Guid.NewGuid().ToString(); // ランダムなGUIDを生成して設定
+
+        CurrentRpcMap = GenerateRpcMapBase();
         Logger.Info($"CurrentRpcMap: {CurrentRpcMap}");
-        string rpcMapBase = "";
-        // IdとMethod名とMethodの引数一覧のハッシュ
+    }
+    private static string GenerateRpcMapBase()
+    {
+        var rpcMapBuilder = new System.Text.StringBuilder();
         foreach (var method in CustomRPCManager.RpcMethods)
         {
-            string methodName = method.Value.Name;
             var parameters = method.Value.GetParameters();
-            string parameterList = string.Join(",", parameters.Select(p => p.ParameterType.Name));
-            rpcMapBase += $"{method.Key}:{methodName}({parameterList});";
+            rpcMapBuilder.Append(method.Key)
+                        .Append(':')
+                        .Append(method.Value.Name)
+                        .Append('(')
+                        .Append(string.Join(",", parameters.Select(p => p.ParameterType.Name)))
+                        .Append(");");
         }
-        // CurrentRpcMap = ModHelpers.HashMD5(rpcMapBase);
+        return ModHelpers.HashMD5(rpcMapBuilder.ToString());
     }
     public static void ReceivedSyncVersion(MessageReader reader)
     {
@@ -113,50 +119,72 @@ public static class SyncVersion
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class SyncVersionHudManagerUpdatePatch
     {
+        private static readonly System.Text.StringBuilder ErrorMessageBuilder = new();
+        private static string CreateErrorMessage(KeyValuePair<byte, SyncErrorType> kvp)
+        {
+            PlayerControl player = ModHelpers.GetPlayerById(kvp.Key);
+            if (player == null) return null;
+
+            return kvp.Value switch
+            {
+                SyncErrorType.VersionMismatch => ModTranslation.GetString("SyncError_VersionMismatch")
+                    .Replace("{player}", player.Data.PlayerName)
+                    .Replace("{version}", VersionMap.TryGetValue(kvp.Key, out var version) ? version : ""),
+                SyncErrorType.HashMismatch => ModTranslation.GetString("SyncError_HashMismatch")
+                    .Replace("{player}", player.Data.PlayerName),
+                SyncErrorType.RpcMapMismatch => ModTranslation.GetString("SyncError_RpcMapMismatch")
+                    .Replace("{player}", player.Data.PlayerName),
+                _ => null
+            };
+        }
+        private static void InitializeErrorText(HudManager instance)
+        {
+            if (ErrorText != null) return;
+
+            ErrorText = GameObject.Instantiate(instance.roomTracker.text);
+            ErrorText.name = "SyncErrorText";
+            GameObject.Destroy(ErrorText.gameObject.GetComponent<RoomTracker>());
+
+            ErrorText.transform.SetParent(instance.transform);
+            ErrorText.transform.localPosition = new Vector3(0f, ErrorTextYPosition, -19f);
+            ErrorText.color = new Color(1f, 0.2f, 0f, 1f);
+            ErrorText.fontSizeMin = 1.2f;
+            ErrorText.enableWordWrapping = false;
+        }
         public static TextMeshPro ErrorText;
+        private static List<string> errorCache = new();
         public static void Postfix(HudManager __instance)
         {
             if (!GameStartManager.InstanceExists)
             {
-                ErrorText.gameObject.SetActive(false);
+                if (ErrorText != null) ErrorText.gameObject.SetActive(false);
                 return;
             }
-            // IsErrorを元にエラー文を生成
-            List<string> errors = new();
-            foreach (var kvp in IsError)
-            {
-                PlayerControl player = ModHelpers.GetPlayerById(kvp.Key);
-                if (player == null || kvp.Value == SyncErrorType.NotMismatch) continue;
 
-                string errorMessage = kvp.Value switch
-                {
-                    SyncErrorType.VersionMismatch => ModTranslation.GetString("SyncError_VersionMismatch").Replace("{player}", player.Data.PlayerName).Replace("{version}", VersionMap[kvp.Key]),
-                    SyncErrorType.HashMismatch => ModTranslation.GetString("SyncError_HashMismatch").Replace("{player}", player.Data.PlayerName),
-                    SyncErrorType.RpcMapMismatch => ModTranslation.GetString("SyncError_RpcMapMismatch").Replace("{player}", player.Data.PlayerName),
-                    _ => ""
-                };
-                if (!string.IsNullOrEmpty(errorMessage))
-                    errors.Add(errorMessage);
-            }
-            if (errors.Count > 0)
+            errorCache.Clear();
+            foreach (var error in IsError)
             {
-                if (ErrorText == null)
+                var errorMessage = CreateErrorMessage(error);
+                if (!string.IsNullOrEmpty(errorMessage))
                 {
-                    ErrorText = GameObject.Instantiate(__instance.roomTracker.text);
-                    ErrorText.name = "SyncErrorText";
-                    GameObject.Destroy(ErrorText.gameObject.GetComponent<RoomTracker>());
-                    ErrorText.transform.SetParent(__instance.transform);
-                    // テキストの位置とスタイルを設定
-                    ErrorText.transform.localPosition = new(0f, 0.25f, -19f);
-                    // 明るめの赤
-                    ErrorText.color = new Color(1f, 0.2f, 0f, 1f);
-                    ErrorText.fontSizeMin = 1.2f;
-                    ErrorText.enableWordWrapping = false;
+                    errorCache.Add(errorMessage);
                 }
-                errors.Insert(0, ModTranslation.GetString("SyncError_Title"));
-                ErrorText.text = string.Join("\n", errors);
+            }
+
+            if (errorCache.Count > 0)
+            {
+                InitializeErrorText(__instance);
+
+                ErrorMessageBuilder.Clear();
+                ErrorMessageBuilder.AppendLine(ModTranslation.GetString("SyncError_Title"));
+                foreach (var error in errorCache)
+                {
+                    ErrorMessageBuilder.AppendLine(error);
+                }
+
+                ErrorText.text = ErrorMessageBuilder.ToString();
                 ErrorText.gameObject.SetActive(true);
-                ErrorText.transform.localScale = Vector3.one * (0.06f * errors.Count + 1.8f);
+                ErrorText.transform.localScale = Vector3.one * (TextBaseScale * (errorCache.Count + 1) + TextBaseSize);
             }
             else if (ErrorText != null)
             {
