@@ -4,82 +4,115 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-[HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
-public static class ShowInGameLogosPatch
-{
-    private static GameObject _logoObject;
-    private static SpriteRenderer _logoRenderer;
-    public static void Postfix(HudManager __instance)
-    {
-        _logoObject = new GameObject("Logo");
-        _logoObject.layer = 5;
-        _logoObject.transform.SetParent(__instance.transform);
-        _logoObject.transform.localScale = Vector3.one * 0.35f;
-        _logoObject.transform.localPosition = new(-3.8f, 2.5f, -1f);
-        _logoRenderer = _logoObject.AddComponent<SpriteRenderer>();
-        _logoRenderer.sprite = AssetManager.GetAsset<Sprite>("banner", AssetManager.AssetBundleType.Sprite);
-        // バージョンテキスト
-        var versionText = GameObject.Instantiate(__instance.roomTracker.text);
-        versionText.name = "VersionText";
-        GameObject.Destroy(versionText.GetComponent<RoomTracker>());
-        versionText.transform.SetParent(_logoObject.transform);
-        versionText.transform.localScale = Vector3.one * 2.55f;
-        versionText.transform.localPosition = new(-3f, -0.74f, 0f);
-        versionText.SetText($"<color=#ffa500>v{VersionInfo.VersionString}</color>");
-    }
-}
+// メインメニューのロゴ表示処理を担当するクラス
 [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
-public static class ShowLogos
+public static class MainMenuLogos
 {
+    // Transform拡張メソッド：位置とスケールを同時に設定する
+    /// <summary>
+    /// Transformの位置とスケールを一度に設定する拡張メソッド
+    /// </summary>
+    /// <param name="position">ローカル座標での位置</param>
+    /// <param name="scale">適用するスケール値</param>
+    public static void SetPositionAndScale(this Transform transform, Vector3 position, Vector3 scale)
+    {
+        transform.localPosition = position;
+        transform.localScale = scale;
+    }
     public static void Postfix()
     {
+        ShowModStamp();
+        CreateMainMenuLogo();
+    }
+
+    private static void ShowModStamp() =>
         FastDestroyableSingleton<ModManager>.Instance.ShowModStamp();
+
+    private static void CreateMainMenuLogo()
+    {
+        // アセットバンドルからロゴ画像を読み込み
         var logo = AssetManager.GetAsset<Sprite>("banner", AssetManager.AssetBundleType.Sprite);
         if (logo == null)
         {
-            Logger.Error("logo is null");
+            Logger.Error("ロゴ画像の読み込みに失敗しました");
             return;
         }
-        var logoObject = new GameObject("Logo");
-        logoObject.transform.localPosition = new(2.05f, 0.5f, 0);
-        logoObject.transform.localScale = Vector3.one * 0.75f;
+
+        // メインメニュー用ロゴオブジェクトの作成
+        var logoObject = new GameObject("MainMenuLogo")
+        {
+            transform =
+            {
+                localPosition = new Vector3(2.05f, 0.5f, 0),  // 右側に配置
+                localScale = Vector3.one * 0.75f  // 適切なサイズに縮小
+            }
+        };
+
         logoObject.AddComponent<SpriteRenderer>().sprite = logo;
     }
+}
 
-    public static string baseCredentials => $@"<size=130%>{UIConfig.ColorModName}</size> v{VersionInfo.VersionString}";
+// バージョン情報表示のハンドリングクラス
+public static class VersionTextHandler
+{
+    private const string ModColor = "#a6d289";
+    private const float VersionTextScale = 1.5f;
+    private const float CredentialsTextScale = 2.0f;
 
     [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
     private static class VersionShowerPatch
     {
-        public static string modColor = "#a6d289";
         static void Postfix(VersionShower __instance)
         {
-            if (GameObject.FindObjectOfType<MainMenuManager>() == null)
-                return;
-            var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
-            credentials.transform.position = new Vector3(2, -0.3f, 0);
-            credentials.transform.localScale = Vector3.one * 2;
-            //ブランチ名表示
-            string credentialsText = "";
-            if (Statics.IsBeta)//masterビルド以外の時
-            {
-                //色+ブランチ名+コミット番号
-                credentialsText = $"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
-            }
-            credentialsText += ModTranslation.GetString("creditsMain");
-            credentials.SetText(credentialsText);
+            if (GameObject.FindObjectOfType<MainMenuManager>() == null) return;
 
+            CreateCredentialsText(__instance);
+            CreateVersionText(__instance);
+        }
+
+        // クレジットテキスト生成処理
+        /// <summary>
+        /// 開発者クレジットテキストを作成し画面に表示する
+        /// </summary>
+        private static void CreateCredentialsText(VersionShower instance)
+        {
+            var credentials = Object.Instantiate(instance.text);
+            credentials.transform.SetPositionAndScale(
+                new Vector3(2, -0.3f, 0),
+                Vector3.one * CredentialsTextScale
+            );
+
+            credentials.SetText(GetCredentialsText());
             credentials.alignment = TMPro.TextAlignmentOptions.Center;
-            credentials.fontSize *= 0.9f;
-            /*_ = AutoUpdate.checkForUpdate(credentials);*/
+            credentials.fontSize *= 0.9f;  // 文字サイズ微調整
+        }
 
-            var version = UnityEngine.Object.Instantiate(credentials);
-            version.transform.position = new Vector3(2, -0.65f, 0);
-            version.transform.localScale = Vector3.one * 1.5f;
+        // バージョン情報テキスト生成処理
+        /// <summary>
+        /// モッドのバージョン情報テキストを作成し表示する
+        /// </summary>
+        private static void CreateVersionText(VersionShower instance)
+        {
+            var version = Object.Instantiate(instance.text);
+            version.transform.SetPositionAndScale(
+                new Vector3(2, -0.65f, 0),  // クレジットテキストの直下
+                Vector3.one * VersionTextScale
+            );
             version.SetText($"{Statics.ModName} v{Statics.VersionString}");
+        }
 
-            //            credentials.transform.SetParent(amongUsLogo.transform);
-            //            version.transform.SetParent(amongUsLogo.transform);
+        /// <summary>
+        /// Gitブランチ情報を含むクレジットテキストを生成
+        /// </summary>
+        /// <returns>フォーマット済みクレジット文字列</returns>
+        private static string GetCredentialsText()
+        {
+            // ベータ版の場合のみブランチ情報を表示
+            var branchInfo = Statics.IsBeta
+                ? $"\r\n<color={ModColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>"
+                : "";
+
+            return branchInfo + ModTranslation.GetString("creditsMain");
         }
     }
 }
