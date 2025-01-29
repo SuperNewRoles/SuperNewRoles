@@ -1,6 +1,9 @@
+using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace SuperNewRoles.Patches;
 
@@ -14,7 +17,8 @@ public static class Debugger
         {
             Logger.Info("Debugger Clicked");
             // CustomRPCManager.TestMethod(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls.ToArray());
-            GameObject.Instantiate(AssetManager.GetAsset<GameObject>("OptionMenu"));
+            CustomOptionsMenu.ShowOptionsMenu();
+            GameObject.Instantiate(AssetManager.GetAsset<GameObject>("GameObject"));
         }
     }
 }

@@ -30,6 +30,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         Logger = Log;
         Instance = this;
+        RegisterCustomObjects();
         Task task = Task.Run(() => Harmony.PatchAll());
         AssetManager.Load();
         ModTranslation.Load();
@@ -39,5 +40,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+    }
+    private static void RegisterCustomObjects()
+    {
+        ClassInjector.RegisterTypeInIl2Cpp<OptionsMenuSelectorData>();
     }
 }
