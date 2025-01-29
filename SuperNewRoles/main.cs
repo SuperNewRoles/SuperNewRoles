@@ -32,9 +32,15 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger = Log;
         Instance = this;
         Task task = Task.Run(() => Harmony.PatchAll());
+        if (!Directory.Exists("./SuperNewRolesNext"))
+        {
+            Directory.CreateDirectory("./SuperNewRolesNext");
+        }
         AssetManager.Load();
         ModTranslation.Load();
         CustomRPCManager.Load();
+        CustomOptionManager.Load();
+        CustomOptionSaver.Load();
         SyncVersion.Load();
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
