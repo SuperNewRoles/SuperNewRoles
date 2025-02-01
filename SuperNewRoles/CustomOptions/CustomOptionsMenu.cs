@@ -8,6 +8,9 @@ namespace SuperNewRoles.CustomOptions;
 public static class CustomOptionsMenu
 {
     private const string OptionsMenu_VanillaName = "Setting_Vanilla";
+    private const string OptionsMenu_CrewmateName = "Setting_Crewmate";
+    private const string OptionsMenu_ImpostorName = "Setting_Impostor";
+    private const string OptionsMenu_NeutralName = "Setting_Neutral";
     public static void ShowOptionsMenu()
     {
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("OptionsMenuSelector"));
@@ -38,10 +41,15 @@ public static class CustomOptionsMenu
                     if (categoryName == OptionsMenu_VanillaName)
                     {
                         SetVanillaTabActive(true);
+                        RoleOptionMenu.HideRoleOptionMenu();
                     }
                     else
                     {
                         SetVanillaTabActive(false);
+                        if (IsRoleOptionMenuCategory(categoryName))
+                            RoleOptionMenu.ShowRoleOptionMenu(ConvertToRoleOptionMenuType(categoryName));
+                        else
+                            RoleOptionMenu.HideRoleOptionMenu();
                     }
                 }));
                 passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
@@ -54,6 +62,20 @@ public static class CustomOptionsMenu
                 }));
             }
         }
+    }
+    private static bool IsRoleOptionMenuCategory(string categoryName)
+    {
+        return categoryName is OptionsMenu_CrewmateName or OptionsMenu_ImpostorName or OptionsMenu_NeutralName;
+    }
+    private static RoleOptionMenuType ConvertToRoleOptionMenuType(string categoryName)
+    {
+        return categoryName switch
+        {
+            OptionsMenu_CrewmateName => RoleOptionMenuType.Crewmate,
+            OptionsMenu_ImpostorName => RoleOptionMenuType.Impostor,
+            OptionsMenu_NeutralName => RoleOptionMenuType.Neutral,
+            _ => RoleOptionMenuType.Crewmate,
+        };
     }
     private static void SetVanillaTabActive(bool active)
     {

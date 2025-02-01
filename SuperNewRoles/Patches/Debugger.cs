@@ -18,7 +18,7 @@ public static class Debugger
             Logger.Info("Debugger Clicked");
             // CustomRPCManager.TestMethod(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls.ToArray());
             CustomOptionsMenu.ShowOptionsMenu();
-            GameObject.Instantiate(AssetManager.GetAsset<GameObject>("GameObject"));
+            RoleOptionMenu.ShowRoleOptionMenu(RoleOptionMenuType.Crewmate);
         }
     }
 }
