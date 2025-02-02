@@ -1,8 +1,8 @@
 # Key, 日本語, English,SChinese,TChinese
-creditsMain,Create By ykundesu,Create By ykundesu,模组作者：ykundesu,模組作者：ykundesu
-WelcomeNextSuperNewRoles,新しいSuperNewRolesへようこそ。,Welcome to the new SuperNewRoles!!!,欢迎来到新的SuperNewRoles!!!,歡迎來到新的SuperNewRoles!!!
+creditsMain,Created by ykundesu,Created by ykundesu,由 ykundesu 制作,由 ykundesu 製作
+WelcomeNextSuperNewRoles,新しいSuperNewRolesへ、ようこそ！,A warm welcome to the new SuperNewRoles!,热烈欢迎来到全新的 SuperNewRoles!,熱烈歡迎來到全新的 SuperNewRoles!
 
 # RoleOptionMenu
-RoleOptionMenuType.Impostor,インポスター,Impostor,Impostor,Impostor
-RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,Crewmate,Crewmate
-RoleOptionMenuType.Neutral,第三陣営,Neutral,Neutral,Neutral
+RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
+RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
+RoleOptionMenuType.Neutral,第三陣営,Neutral,第三陣營,第三陣營
