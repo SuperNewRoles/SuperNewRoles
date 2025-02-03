@@ -7,8 +7,9 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Modules;
 using UnityEngine.Networking.Types;
 using UnityEngine;
+using SuperNewRoles.Roles.Ability;
 
-namespace SuperNewRoles.Roles.Bases;
+namespace SuperNewRoles.Roles;
 
 internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : RoleBase<T>, new()
 {
@@ -77,15 +78,9 @@ interface IRoleBase
     public virtual void OnSetRole(PlayerControl player)
     {
         foreach (Type ability in Abilities.AsSpan())
-        {
             if (ability.IsAssignableFrom(typeof(AbilityBase)))
-            {
                 player.AddAbility((AbilityBase)Activator.CreateInstance(ability));
-            }
             else
-            {
                 Logger.Warning($"{ability.ToString()}はAbilityではないです。", "OnSetRole");
-            }
-        }
     }
 }

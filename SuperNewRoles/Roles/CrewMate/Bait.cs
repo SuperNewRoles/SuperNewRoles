@@ -7,11 +7,11 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Bases;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 using UnityEngine.Networking.Types;
 
-namespace SuperNewRoles.Roles;
+namespace SuperNewRoles.Roles.CrewMate;
 
 class Bait : RoleBase<Bait>
 {
