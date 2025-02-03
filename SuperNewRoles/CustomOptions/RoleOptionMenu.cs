@@ -255,7 +255,7 @@ public static class RoleOptionMenu
         scrollbar.localPosition = new Vector3(scrollbar.localPosition.x + 0.21f, scrollbar.localPosition.y, scrollbar.localPosition.z);
         scrollbarTrack.localPosition = new Vector3(scrollbarTrack.localPosition.x + 0.21f, scrollbarTrack.localPosition.y, scrollbarTrack.localPosition.z);
     }
-    public static int GenCount = 30;
+    public static int GenCount = 500;
     /// <summary>
     /// 初期コンテンツを生成する
     /// </summary>
@@ -384,13 +384,30 @@ public static class RoleOptionMenu
 
         obj.transform.Find("Text").GetComponent<TextMeshPro>().text = roleName;
         var passiveButton = obj.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[1];
+        passiveButton.Colliders[0] = obj.GetComponent<BoxCollider2D>();
         passiveButton.OnClick = new();
+        GameObject SelectedObject = null;
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
             Logger.Info($"Clicked {roleName}");
         }));
         passiveButton.OnMouseOut = new();
+        passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            if (SelectedObject == null)
+                SelectedObject = obj.transform.FindChild("Selected").gameObject;
+            SelectedObject.SetActive(false);
+            Logger.Info($"MouseOut {roleName}");
+        }));
         passiveButton.OnMouseOver = new();
+        passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            if (SelectedObject == null)
+                SelectedObject = obj.transform.FindChild("Selected").gameObject;
+            SelectedObject.SetActive(true);
+            Logger.Info($"MouseOver {roleName}");
+        }));
         return obj;
     }
 
@@ -403,21 +420,30 @@ public static class RoleOptionMenu
         private static void Postfix()
         {
             // RoleOptionMenuObjectDataが存在し、InnerScrollが設定されている場合のみ処理を行う
-            if (RoleOptionMenuObjectData != null && RoleOptionMenuObjectData.InnerScroll != null && cachedGameSettingMenu != null)
+            var data = RoleOptionMenuObjectData;
+            if (data != null && data.InnerScroll != null && cachedGameSettingMenu != null)
             {
-                // InnerScroll内の各子オブジェクトについて、Scrollerから見た相対座標を基に表示/非表示を判定する
-                for (int i = 0; i < RoleOptionMenuObjectData.CurrentScrollParent.childCount; i++)
+                Transform currentScrollParent = data.CurrentScrollParent;
+                Transform scrollerTransform = data.Scroller.transform;
+                int childCount = currentScrollParent.childCount;
+                for (int i = 0; i < childCount; i++)
                 {
-                    Transform child = RoleOptionMenuObjectData.CurrentScrollParent.GetChild(i);
-                    // Scrollerの座標空間におけるchildの相対位置を取得
-                    Vector3 relativePos = RoleOptionMenuObjectData.Scroller.transform.InverseTransformPoint(child.position);
+                    Transform child = currentScrollParent.GetChild(i);
+                    // Scrollerの座標空間におけるchildの相対位置を取得（Transformのキャッシュによる最適化）
+                    Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
                     if (i == 0)
                         Logger.Info($"child relative Y: {relativePos.y}");
                     // Scrollerの表示範囲に基づいて表示/非表示を決定
                     bool shouldDisplay = (relativePos.y < DISPLAY_UPPER_LIMIT && relativePos.y > DISPLAY_LOWER_LIMIT);
-                    child.gameObject.SetActive(shouldDisplay);
+                    // 現在の状態と比較して変更が必要な場合のみSetActiveを呼び出す
+                    if (child.gameObject.activeSelf != shouldDisplay)
+                    {
+                        child.gameObject.SetActive(shouldDisplay);
+                    }
                 }
-                RoleOptionMenuObjectData.ScrollPositionDictionary[RoleOptionMenuObjectData.CurrentRoleType] = RoleOptionMenuObjectData.InnerScroll.transform.localPosition.y;
+                // InnerScrollのTransformもキャッシュして辞書を更新
+                Transform innerScrollTransform = data.InnerScroll.transform;
+                data.ScrollPositionDictionary[data.CurrentRoleType] = innerScrollTransform.localPosition.y;
             }
         }
     }
