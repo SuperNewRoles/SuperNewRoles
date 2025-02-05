@@ -83,9 +83,11 @@ public class IntroPatch
 
                 if (AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame)
                 {
+                    var currentRegion = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion;
+
                     serverText = !ModHelpers.IsCustomServer()
-                        ? $"CurrentRegion : {FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName}"
-                        : FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name != null && FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name == RegionMenuOpenPatch.SNRServerName
+                        ? $"CurrentRegion : {currentRegion.TranslateName}"
+                        : currentRegion.Name != null && currentRegion.Name == RegionMenuOpenPatch.SNRServerName
                             ? "Server : SuperNewRolesTokyo"
                             : "Server : Custom";
                 }
