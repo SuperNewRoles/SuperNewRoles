@@ -50,7 +50,7 @@ public class IntroPatch
                 Logger.Info($"MapId : {GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Game Info");
                 Logger.Info($"Mode : {ModeHandler.GetMode()}", "Game Info");
                 var serverText = !ModHelpers.IsCustomServer()
-                    ? $"CurrentRegion : {FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName.ToString()}"
+                    ? $"CurrentRegion : {FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName}"
                     : FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name != null && FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name == RegionMenuOpenPatch.SNRServerName
                         ? "Server : SuperNewRolesTokyo"
                         : "Server : Custom";
