@@ -49,7 +49,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
     // public abstract void CreateCustomOption();
 }
 
-interface IRoleBase
+public interface IRoleBase
 {
     public RoleId Role { get; }
     public Color32 RoleColor { get; }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Modules;
 
@@ -17,20 +18,60 @@ public static class CustomOptionManager
     private static List<CustomOption> CustomOptions { get; } = new();
     public static IReadOnlyList<CustomOption> GetCustomOptions() => CustomOptions.AsReadOnly();
 
+    // カスタムオプションをロードするメソッド
     public static void Load()
     {
+        // 実行中のアセンブリ内のすべての型を取得
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
         {
+            // 各型のフィールドを取得
             foreach (var field in type.GetFields())
             {
+                RoleId? role = null;
+                // フィールドにカスタムオプション属性があるか確認
                 var attribute = field.GetCustomAttribute<CustomOptionBaseAttribute>();
                 if (attribute != null)
                 {
+                    // カスタムオプション属性を辞書に追加
                     CustomOptionAttributes[field.Name] = attribute;
+                    // フィールド情報を設定
                     attribute.SetFieldInfo(field);
-                    CustomOption opt = new(attribute, field);
+                    // フィールドがIRoleBaseインターフェースを実装しているか確認
+                    if (field.DeclaringType.GetInterfaces().Contains(typeof(IRoleBase)))
+                    {
+                        // 基底シングルトン型を取得
+                        var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(field.DeclaringType);
+                        // インスタンスプロパティを取得
+                        var instanceProperty = baseSingletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                        // インスタンスを取得
+                        var roleInstance = instanceProperty.GetValue(null);
+                        // 役職を取得
+                        role = ((IRoleBase)roleInstance).Role;
+                    }
+                    // カスタムオプションを作成し、リストに追加
+                    CustomOption opt = new(attribute, field, role);
                     CustomOptions.Add(opt);
+                    // デフォルトの値に更新
                     opt.UpdateSelection(attribute.GenerateDefaultSelection());
+                }
+            }
+        }
+
+        // 追加：各オプションについて、属性で指定された親フィールド名があれば関連付ける
+        foreach (var option in CustomOptions)
+        {
+            if (!string.IsNullOrEmpty(option.Attribute.ParentFieldName))
+            {
+                // 指定されたフィールド名と一致するオプションを親として検索
+                var parentOption = CustomOptions.FirstOrDefault(o => o.FieldInfo.Name == option.Attribute.ParentFieldName);
+                if (parentOption != null)
+                {
+                    option.SetParentOption(parentOption);
+                    Logger.Info($"親オプションを設定: {option.Name} -> {parentOption.Name}");
+                }
+                else
+                {
+                    Logger.Warning($"親オプションが見つかりませんでした: {option.Attribute.ParentFieldName}");
                 }
             }
         }
@@ -41,6 +82,7 @@ public class CustomOption
 {
     public CustomOptionBaseAttribute Attribute { get; }
     public FieldInfo FieldInfo { get; }
+    public string Name { get; }
     private object _value;
     private object _selection;
 
@@ -48,14 +90,16 @@ public class CustomOption
     public object Selection => _selection;
     public string Id => Attribute.Id;
     public object[] Selections { get; }
-
-    public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo)
+    public RoleId? ParentRole { get; private set; }
+    public CustomOption? ParentOption { get; private set; }
+    public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null)
     {
         Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
         FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
         Selections = attribute.GenerateSelections();
         var defaultValue = attribute.GenerateDefaultSelection();
         UpdateSelection(defaultValue);
+        Name = attribute.TranslationName;
     }
 
     public void UpdateSelection(byte value)
@@ -83,8 +127,32 @@ public class CustomOption
             throw;
         }
     }
-}
 
+    public void SetParentOption(CustomOption parent)
+    {
+        ParentOption = parent;
+    }
+}
+public static class RoleOptionManager
+{
+    public class RoleOption
+    {
+        public RoleId RoleId { get; }
+        public byte NumberOfCrews { get; }
+        public CustomOption[] Options { get; }
+        public RoleOption(RoleId roleId, byte numberOfCrews, CustomOption[] options)
+        {
+            RoleId = roleId;
+            NumberOfCrews = numberOfCrews;
+            Options = options;
+        }
+    }
+    public static RoleOption[] RoleOptions { get; private set; }
+    public static void Load()
+    {
+        // TODO: 後で作る
+    }
+}
 public static class CustomOptionSaver
 {
     private static readonly IOptionStorage Storage;
@@ -337,11 +405,13 @@ public abstract class CustomOptionBaseAttribute : Attribute
     public FieldInfo FieldInfo { get; private set; }
     public string TranslationName { get; }
     public CustomOptionType OptionType { get; private set; } = CustomOptionType.None;
+    public string? ParentFieldName { get; }
 
-    protected CustomOptionBaseAttribute(string id, string? translationName = null)
+    protected CustomOptionBaseAttribute(string id, string? translationName = null, string? parentFieldName = null)
     {
         Id = ComputeMD5Hash.Compute(id);
         TranslationName = translationName ?? id;
+        ParentFieldName = parentFieldName;
     }
 
     public void SetFieldInfo(FieldInfo fieldInfo)
@@ -372,8 +442,8 @@ public class CustomOptionSelectAttribute : CustomOptionBaseAttribute
 {
     public Enum[] Selections { get; }
 
-    public CustomOptionSelectAttribute(string id, Enum[] selections, string? translationName = null)
-        : base(id, translationName)
+    public CustomOptionSelectAttribute(string id, Enum[] selections, string? translationName = null, string? parentFieldName = null)
+        : base(id, translationName, parentFieldName)
     {
         Selections = selections;
     }
@@ -392,8 +462,8 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
     public T Step { get; }
     public T DefaultValue { get; }
 
-    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null)
-        : base(id, translationName)
+    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null, string? parentFieldName = null)
+        : base(id, translationName, parentFieldName)
     {
         Min = min;
         Max = max;
@@ -417,8 +487,8 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
 {
-    public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null)
-        : base(id, min, max, step, defaultValue, translationName) { }
+    public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null, string? parentFieldName = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName) { }
 
     protected override float Add(float a, float b) => a + b;
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
@@ -427,8 +497,8 @@ public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 {
-    public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null)
-        : base(id, min, max, step, defaultValue, translationName) { }
+    public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null, string? parentFieldName = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName) { }
 
     protected override int Add(int a, int b) => a + b;
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
@@ -437,8 +507,8 @@ public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionByteAttribute : CustomOptionNumericAttribute<byte>
 {
-    public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null)
-        : base(id, min, max, step, defaultValue, translationName) { }
+    public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null, string? parentFieldName = null)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName) { }
 
     protected override byte Add(byte a, byte b) => (byte)(a + b);
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
@@ -449,8 +519,8 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
 {
     public bool DefaultValue { get; }
 
-    public CustomOptionBoolAttribute(string id, bool defaultValue, string? translationName = null)
-        : base(id, translationName)
+    public CustomOptionBoolAttribute(string id, bool defaultValue, string? translationName = null, string? parentFieldName = null)
+        : base(id, translationName, parentFieldName)
     {
         DefaultValue = defaultValue;
     }

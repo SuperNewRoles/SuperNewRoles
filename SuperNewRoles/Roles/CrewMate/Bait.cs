@@ -36,6 +36,10 @@ class Bait : RoleBase<Bait>
     //TODO:要検討
     public override RoleTag[] RoleTags { get; } = [RoleTag.PowerPlayResistance];
 
+    [CustomOptionFloat("BaitReportTime", 0f, 10f, 0.1f, 0f)]
+    public static float BaitReportTime;
+    [CustomOptionInt("BaitReportType", 0, 1, 1, 0, parentFieldName: nameof(BaitReportTime))]
+    public static int BaitReportType;
 }
 
 class BaitAbility : AbilityBase
