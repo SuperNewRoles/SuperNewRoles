@@ -150,7 +150,14 @@ public static class RoleOptionManager
     public static RoleOption[] RoleOptions { get; private set; }
     public static void Load()
     {
-        // TODO: 後で作る
+        RoleOptions = CustomRoleManager.AllRoles
+        .Select(role =>
+        {
+            var options = CustomOptionManager.GetCustomOptions()
+            .Where(option => option.ParentRole == role.Role)
+            .ToArray();
+            return new RoleOption(role.Role, 0, options);
+        }).ToArray();
     }
 }
 public static class CustomOptionSaver
