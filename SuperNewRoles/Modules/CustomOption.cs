@@ -21,48 +21,50 @@ public static class CustomOptionManager
     // カスタムオプションをロードするメソッド
     public static void Load()
     {
-        // 実行中のアセンブリ内のすべての型を取得
+        LoadCustomOptions();
+        LinkParentOptions();
+    }
+
+    // 各フィールドからカスタムオプションを走査・生成してリストに追加する処理
+    private static void LoadCustomOptions()
+    {
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
         {
-            // 各型のフィールドを取得
             foreach (var field in type.GetFields())
             {
-                RoleId? role = null;
-                // フィールドにカスタムオプション属性があるか確認
                 var attribute = field.GetCustomAttribute<CustomOptionBaseAttribute>();
-                if (attribute != null)
+                if (attribute == null)
                 {
-                    // カスタムオプション属性を辞書に追加
-                    CustomOptionAttributes[field.Name] = attribute;
-                    // フィールド情報を設定
-                    attribute.SetFieldInfo(field);
-                    // フィールドがIRoleBaseインターフェースを実装しているか確認
-                    if (field.DeclaringType.GetInterfaces().Contains(typeof(IRoleBase)))
-                    {
-                        // 基底シングルトン型を取得
-                        var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(field.DeclaringType);
-                        // インスタンスプロパティを取得
-                        var instanceProperty = baseSingletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-                        // インスタンスを取得
-                        var roleInstance = instanceProperty.GetValue(null);
-                        // 役職を取得
-                        role = ((IRoleBase)roleInstance).Role;
-                    }
-                    // カスタムオプションを作成し、リストに追加
-                    CustomOption opt = new(attribute, field, role);
-                    CustomOptions.Add(opt);
-                    // デフォルトの値に更新
-                    opt.UpdateSelection(attribute.GenerateDefaultSelection());
+                    continue;
                 }
+                // カスタムオプション属性を辞書に追加
+                CustomOptionAttributes[field.Name] = attribute;
+                // フィールド情報を設定
+                attribute.SetFieldInfo(field);
+                RoleId? role = null;
+                if (field.DeclaringType.GetInterfaces().Contains(typeof(IRoleBase)))
+                {
+                    var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(field.DeclaringType);
+                    var instanceProperty = baseSingletonType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+                    var roleInstance = instanceProperty.GetValue(null);
+                    role = ((IRoleBase)roleInstance).Role;
+                }
+                // カスタムオプションを作成し、リストに追加
+                CustomOption option = new(attribute, field, role);
+                CustomOptions.Add(option);
+                // コンストラクタ内で既に UpdateSelection を実施しているため、
+                // 重複する設定処理は削除しました。
             }
         }
+    }
 
-        // 追加：各オプションについて、属性で指定された親フィールド名があれば関連付ける
+    // 属性で指定された親フィールド名があるオプションについて、親オプションと紐付ける処理
+    private static void LinkParentOptions()
+    {
         foreach (var option in CustomOptions)
         {
             if (!string.IsNullOrEmpty(option.Attribute.ParentFieldName))
             {
-                // 指定されたフィールド名と一致するオプションを親として検索
                 var parentOption = CustomOptions.FirstOrDefault(o => o.FieldInfo.Name == option.Attribute.ParentFieldName);
                 if (parentOption != null)
                 {
@@ -396,7 +398,7 @@ public enum CustomOptionType
 }
 public static class ComputeMD5Hash
 {
-    private static MD5 md5 = MD5.Create();
+    private static readonly MD5 md5 = MD5.Create();
     public static string Compute(string str)
     {
         var inputBytes = System.Text.Encoding.UTF8.GetBytes(str);
