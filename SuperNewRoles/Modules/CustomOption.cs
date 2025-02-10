@@ -23,6 +23,8 @@ public static class CustomOptionManager
     {
         LoadCustomOptions();
         LinkParentOptions();
+        RoleOptionManager.RoleOptionLoad();
+        CustomOptionSaver.SaverLoad();
     }
 
     // 各フィールドからカスタムオプションを走査・生成してリストに追加する処理
@@ -52,8 +54,6 @@ public static class CustomOptionManager
                 // カスタムオプションを作成し、リストに追加
                 CustomOption option = new(attribute, field, role);
                 CustomOptions.Add(option);
-                // コンストラクタ内で既に UpdateSelection を実施しているため、
-                // 重複する設定処理は削除しました。
             }
         }
     }
@@ -61,12 +61,13 @@ public static class CustomOptionManager
     // 属性で指定された親フィールド名があるオプションについて、親オプションと紐付ける処理
     private static void LinkParentOptions()
     {
+        // 各カスタムオプションをフィールド名をキーとするディクショナリに変換してキャッシュ
+        var optionsByFieldName = CustomOptions.ToDictionary(o => o.FieldInfo.Name);
         foreach (var option in CustomOptions)
         {
             if (!string.IsNullOrEmpty(option.Attribute.ParentFieldName))
             {
-                var parentOption = CustomOptions.FirstOrDefault(o => o.FieldInfo.Name == option.Attribute.ParentFieldName);
-                if (parentOption != null)
+                if (optionsByFieldName.TryGetValue(option.Attribute.ParentFieldName, out var parentOption))
                 {
                     option.SetParentOption(parentOption);
                     Logger.Info($"親オプションを設定: {option.Name} -> {parentOption.Name}");
@@ -140,7 +141,7 @@ public static class RoleOptionManager
     public class RoleOption
     {
         public RoleId RoleId { get; }
-        public byte NumberOfCrews { get; }
+        public byte NumberOfCrews { get; set; }
         public CustomOption[] Options { get; }
         public RoleOption(RoleId roleId, byte numberOfCrews, CustomOption[] options)
         {
@@ -150,7 +151,7 @@ public static class RoleOptionManager
         }
     }
     public static RoleOption[] RoleOptions { get; private set; }
-    public static void Load()
+    public static void RoleOptionLoad()
     {
         RoleOptions = CustomRoleManager.AllRoles
         .Select(role =>
@@ -178,7 +179,7 @@ public static class CustomOptionSaver
         );
     }
 
-    public static void Load()
+    public static void SaverLoad()
     {
         try
         {
@@ -316,7 +317,35 @@ public class FileOptionStorage : IOptionStorage
                 return (false, new());
             }
 
-            return (true, ReadOptions(reader));
+            Dictionary<string, byte> options = ReadOptions(reader);
+
+            // RoleOptionの情報が存在すれば読み込む
+            if (fileStream.Position < fileStream.Length)
+            {
+                int roleOptionCount = reader.ReadInt32();
+                for (int i = 0; i < roleOptionCount; i++)
+                {
+                    string roleIdStr = reader.ReadString();
+                    byte numberOfCrews = reader.ReadByte();
+
+                    // RoleIdの文字列から RoleId 列挙体へ変換
+                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj))
+                    {
+                        RoleId roleId = (RoleId)roleIdObj;
+                        // RoleOptionManager.RoleOptions内の該当するRoleOptionを更新
+                        foreach (var roleOption in RoleOptionManager.RoleOptions)
+                        {
+                            if (roleOption.RoleId.Equals(roleId))
+                            {
+                                roleOption.NumberOfCrews = numberOfCrews;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return (true, options);
         }
     }
 
@@ -343,6 +372,16 @@ public class FileOptionStorage : IOptionStorage
 
             WriteChecksum(writer);
             WriteOptions(writer, options);
+
+            // ここからRoleOptionのデータを書き出す処理を追加
+            var roleOptions = RoleOptionManager.RoleOptions;
+            writer.Write(roleOptions.Length); // RoleOptionの数を書き込み
+
+            foreach (var roleOption in roleOptions)
+            {
+                writer.Write(roleOption.RoleId.ToString());  // RoleIdを文字列として保存
+                writer.Write(roleOption.NumberOfCrews);        // NumberOfCrewsを保存
+            }
         }
     }
 

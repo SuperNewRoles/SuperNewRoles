@@ -42,8 +42,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ModTranslation.Load();
         CustomRPCManager.Load();
         CustomOptionManager.Load();
-        RoleOptionManager.Load();
-        CustomOptionSaver.Load();
         SyncVersion.Load();
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
