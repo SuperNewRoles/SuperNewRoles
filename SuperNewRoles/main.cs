@@ -14,6 +14,7 @@ using UnityEngine;
 using BepInEx.Logging;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles;
 
@@ -37,11 +38,11 @@ public partial class SuperNewRolesPlugin : BasePlugin
         {
             Directory.CreateDirectory("./SuperNewRolesNext");
         }
+        CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
         CustomRPCManager.Load();
         CustomOptionManager.Load();
-        CustomOptionSaver.Load();
         SyncVersion.Load();
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
