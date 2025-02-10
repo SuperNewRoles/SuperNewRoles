@@ -444,6 +444,13 @@ public static class RoleOptionMenu
                 // InnerScrollのTransformもキャッシュして辞書を更新
                 Transform innerScrollTransform = data.InnerScroll.transform;
                 data.ScrollPositionDictionary[data.CurrentRoleType] = innerScrollTransform.localPosition.y;
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                // 例えば最大距離100までチェックする場合
+                if (data.MenuObject.GetComponent<BoxCollider2D>().OverlapPoint(mousePos))
+                {
+                    Debug.Log("マウスポインターが対象のColliderに触れてる！");
+                    // TODO: メニューのScrollerのenable、SettingsScrollerのdisableにする
+                }
             }
         }
     }
