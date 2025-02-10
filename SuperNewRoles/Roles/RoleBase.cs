@@ -8,6 +8,7 @@ using SuperNewRoles.Modules;
 using UnityEngine.Networking.Types;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles;
 
@@ -45,7 +46,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
         }
     }
 
-    public abstract void CreateCustomOption();
+    // public abstract void CreateCustomOption();
 }
 
 interface IRoleBase

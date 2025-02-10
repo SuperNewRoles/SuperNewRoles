@@ -1,3 +1,5 @@
+using SuperNewRoles.Roles.Ability;
+
 namespace SuperNewRoles.Modules;
 
 public class ExPlayerControl
@@ -10,5 +12,16 @@ public class ExPlayerControl
         this.player = player;
         this.PlayerId = player.PlayerId;
         this.PlayerInfo = player.CachedPlayerData;
+    }
+    public static implicit operator PlayerControl(ExPlayerControl exPlayer)
+    {
+        return exPlayer.player;
+    }
+}
+public static class ExPlayerControlExtensions
+{
+    public static void AddAbility(this PlayerControl player, AbilityBase ability)
+    {
+        player.AddAbility(ability);
     }
 }
