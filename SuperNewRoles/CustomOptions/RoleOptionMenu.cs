@@ -62,6 +62,17 @@ public class RoleOptionMenuObjectData
     public Dictionary<RoleOptionMenuType, GameObject> RoleScrollDictionary { get; } = new();
     public Dictionary<RoleOptionMenuType, float> ScrollPositionDictionary { get; } = new();
     public RoleOptionMenuType CurrentRoleType { get; set; }
+
+    /// <summary>
+    /// メニューのBoxCollider2Dをキャッシュ
+    /// </summary>
+    public BoxCollider2D MenuObjectCollider { get; private set; }
+
+    /// <summary>
+    /// 設定メニューのスクローラーをキャッシュ
+    /// </summary>
+    public Scroller SettingsScroller { get; set; }
+
     /// <summary>
     /// コンストラクター：メニューオブジェクトからデータを初期化
     /// </summary>
@@ -70,6 +81,9 @@ public class RoleOptionMenuObjectData
         MenuObject = roleOptionMenuObject;
         TitleText = roleOptionMenuObject.transform.Find("TitleText").GetComponent<TextMeshPro>();
         CurrentRoleType = currentRoleType;
+
+        // BoxCollider2Dをキャッシュ
+        MenuObjectCollider = roleOptionMenuObject.GetComponent<BoxCollider2D>();
     }
 }
 
@@ -445,11 +459,24 @@ public static class RoleOptionMenu
                 Transform innerScrollTransform = data.InnerScroll.transform;
                 data.ScrollPositionDictionary[data.CurrentRoleType] = innerScrollTransform.localPosition.y;
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                // 例えば最大距離100までチェックする場合
-                if (data.MenuObject.GetComponent<BoxCollider2D>().OverlapPoint(mousePos))
+                // キャッシュしたColliderを使用
+                if (data.MenuObjectCollider != null && data.MenuObjectCollider.OverlapPoint(mousePos))
                 {
-                    Debug.Log("マウスポインターが対象のColliderに触れてる！");
-                    // TODO: メニューのScrollerのenable、SettingsScrollerのdisableにする
+                    // メニュー上にマウスがある場合、メニューのスクロールを有効化し、設定メニューのスクロールを無効化
+                    data.Scroller.enabled = true;
+                    if (data.SettingsScroller != null)
+                    {
+                        data.SettingsScroller.enabled = false;
+                    }
+                }
+                else
+                {
+                    // メニュー外にマウスがある場合、メニューのスクロールを無効化し、設定メニューのスクロールを有効化
+                    data.Scroller.enabled = false;
+                    if (data.SettingsScroller != null)
+                    {
+                        data.SettingsScroller.enabled = true;
+                    }
                 }
             }
         }

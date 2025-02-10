@@ -29,7 +29,7 @@ namespace SuperNewRoles.CustomOptions
             select_check_instance.transform.localPosition = Vector3.zero; //new Vector3(17.74f, 0f, 0f);
             select_check_instance.transform.localScale = Vector3.one * 2;
 
-
+            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller = Scroller;
         }
     }
 }
