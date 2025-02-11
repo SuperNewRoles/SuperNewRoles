@@ -74,6 +74,7 @@ public class RoleOptionMenuObjectData
     /// 設定メニューのスクローラーをキャッシュ
     /// </summary>
     public Scroller SettingsScroller { get; set; }
+    public Transform SettingsInner { get; set; }
 
     /// <summary>
     /// コンストラクター：メニューオブジェクトからデータを初期化
@@ -244,6 +245,7 @@ public static class RoleOptionMenu
     private static GameObject CreateBaseMenuObject()
     {
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(ROLE_OPTION_MENU_ASSET_NAME));
+        var mask = obj.transform.FindChild("Mask");
         var gameSettingMenu = GetGameSettingMenu();
         if (gameSettingMenu != null)
         {
@@ -305,7 +307,7 @@ public static class RoleOptionMenu
             string roleName = ModTranslation.GetString($"{roleInfo.Role}");
             GenerateRoleDetailButton(roleName, parent.transform, index, roleOption);
             index++;
-        }/*
+        }
         if (index < 25)
         {
             for (int i = 0; i < 250; i++)
@@ -313,7 +315,7 @@ public static class RoleOptionMenu
                 GenerateRoleDetailButton("ロールを追加", parent.transform, index, RoleOptionManager.RoleOptions.FirstOrDefault());
                 index++;
             }
-        }*/
+        }
 
         // スクロール範囲の調整
         data.Scroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
@@ -360,8 +362,8 @@ public static class RoleOptionMenu
         var Gradient = tabCopy.transform.Find("Gradient");
         if (Gradient != null)
         {
-            Gradient.transform.localPosition = new(4.45f, -3.98f, -20f);
-            Gradient.transform.localScale = new(0.552f, 0.6f, 7.2125f);
+            Gradient.transform.localPosition = new(5.77f, -3.98f, -20f);
+            Gradient.transform.localScale = new(0.774f, 0.6f, 7.2125f);
         }
         return tabCopy;
     }
@@ -467,7 +469,23 @@ public static class RoleOptionMenu
             // ロールオプションメニューを表示
             Logger.Info("RoleOptionMenuStartPatch");
             CustomOptionsMenu.ShowOptionsMenu();
+            // マスクが邪魔されるので非表示に
+            UpdateHostInfoMaskArea(false);
         }
+    }
+    [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Close))]
+    public static class RoleOptionMenuClosePatch
+    {
+        public static void Postfix()
+        {
+            UpdateHostInfoMaskArea(true);
+        }
+    }
+    private static void UpdateHostInfoMaskArea(bool active)
+    {
+        var maskArea = GameStartManager.Instance.transform.FindChild("StartGameArea/Host Info/Content/Player Area/MaskArea");
+        if (maskArea != null)
+            maskArea.gameObject.SetActive(active);
     }
     [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
     public static class RoleOptionMenuLateUpdatePatch

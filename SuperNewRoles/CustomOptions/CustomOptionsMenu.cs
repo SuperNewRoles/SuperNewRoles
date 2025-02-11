@@ -62,7 +62,7 @@ public static class CustomOptionsMenu
         var menuObject = CreateMenuObject();
         if (menuObject != null)
         {
-        SetupCategoryButtons(menuObject);
+            SetupCategoryButtons(menuObject);
         }
     }
 
@@ -96,7 +96,6 @@ public static class CustomOptionsMenu
 
     /// <summary>
     /// 設定カテゴリーのGameObjectを取得する
-    /// パフォーマンス改善：LINQの最適化とキャッシュの活用
     /// </summary>
     private static GameObject[] GetSettingCategories(GameObject menuObject)
     {
@@ -234,8 +233,8 @@ public static class CustomOptionsMenu
             {
                 // パフォーマンス改善：現在の状態と異なる場合のみSetActiveを呼び出す
                 if (obj.activeSelf != active)
-            {
-                obj.SetActive(active);
+                {
+                    obj.SetActive(active);
                 }
             }
         }
