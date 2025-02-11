@@ -150,7 +150,6 @@ namespace SuperNewRoles.CustomOptions
             // ScrollerとInnerをRoleOptionMenuに保存
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller = scroller;
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner = innerTransform;
-            ClickedRole(RoleOptionManager.RoleOptions[0]);
         }
         public static void ClickedRole(RoleOptionManager.RoleOption roleOption)
         {

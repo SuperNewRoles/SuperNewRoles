@@ -442,6 +442,7 @@ public static class RoleOptionMenu
         {
             Logger.Info($"Clicked {roleName}");
             // TODO: ロールの設定画面を表示する処理を追加
+            RoleOptionSettings.ClickedRole(roleOption);
         }));
         passiveButton.OnMouseOut = new();
         passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
