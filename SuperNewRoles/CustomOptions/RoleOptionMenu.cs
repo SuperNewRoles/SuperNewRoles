@@ -75,7 +75,7 @@ public class RoleOptionMenuObjectData
     /// </summary>
     public Scroller SettingsScroller { get; set; }
     public Transform SettingsInner { get; set; }
-
+    public GameObject BulkRoleSettingsMenu { get; set; }
     /// <summary>
     /// コンストラクター：メニューオブジェクトからデータを初期化
     /// </summary>
@@ -103,7 +103,7 @@ public static class RoleOptionMenu
     /// <summary>
     /// ロール詳細ボタンのアセット名
     /// </summary>
-    private const string ROLE_DETAIL_BUTTON_ASSET_NAME = "RoleDetailButton";
+    public const string ROLE_DETAIL_BUTTON_ASSET_NAME = "RoleDetailButton";
 
     /// <summary>
     /// スクロールバーの設定を定義する内部クラス
@@ -165,7 +165,8 @@ public static class RoleOptionMenu
         if (IsRoleOptionMenuNull())
         {
             RoleOptionMenuObjectData = InitializeRoleOptionMenuObject(type);
-
+            // 役職数一括設定を開くボタンを初期化
+            BulkRoleSettings.InitializeBulkRoleButton();
             // Scroll生成部分
             RoleOptionSettings.GenerateScroll(RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform);
         }
@@ -416,7 +417,15 @@ public static class RoleOptionMenu
         var innerscroll = tabCopy.transform.Find("Scroller/SliderInner").gameObject;
         return (scroller, innerscroll);
     }
-
+    private static void UpdateRoleDetailButtonColor(SpriteRenderer spriteRenderer, RoleOptionManager.RoleOption roleOption)
+    {
+        if (roleOption == null) return;
+        if (spriteRenderer == null) return;
+        if (roleOption.NumberOfCrews >= 1)
+            spriteRenderer.color = Color.white;
+        else
+            spriteRenderer.color = new Color(1, 1f, 1f, 0.6f);
+    }
     /// <summary>
     /// ロール詳細ボタンを生成する
     /// </summary>
@@ -434,13 +443,14 @@ public static class RoleOptionMenu
         float posX = -1.27f + col * 1.63f;
         float posY = 0.85f - row * 0.38f;
         obj.transform.localPosition = new Vector3(posX, posY, -0.21f);
-
         obj.transform.Find("Text").GetComponent<TextMeshPro>().text = roleName;
         var passiveButton = obj.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[1];
         passiveButton.Colliders[0] = obj.GetComponent<BoxCollider2D>();
         passiveButton.OnClick = new();
         GameObject SelectedObject = null;
+        var spriteRenderer = obj.GetComponent<SpriteRenderer>();
+        UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
             Logger.Info($"Clicked {roleName}");
@@ -463,6 +473,20 @@ public static class RoleOptionMenu
             SelectedObject.SetActive(true);
             Logger.Info($"MouseOver {roleName}");
         }));
+
+        // 右クリック検知用のコンポーネントを追加し、イベントを登録
+        var rightClickDetector = obj.AddComponent<RightClickDetector>();
+        rightClickDetector.OnRightClick.AddListener((UnityAction)(() =>
+        {
+            Logger.Info($"Right-Clicked {roleName}");
+            // TODO: 右クリック時の追加処理をここに記述（例：コンテキストメニューの表示など）
+            if (roleOption.NumberOfCrews >= 1)
+                roleOption.NumberOfCrews = 0;
+            else
+                roleOption.NumberOfCrews = 1;
+            UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
+        }));
+
         return obj;
     }
     [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]

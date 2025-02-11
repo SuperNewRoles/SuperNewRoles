@@ -15,6 +15,8 @@ using BepInEx.Logging;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.CustomOptions;
+using UnityEngine.EventSystems;
 
 namespace SuperNewRoles;
 
@@ -53,5 +55,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     private static void RegisterCustomObjects()
     {
         ClassInjector.RegisterTypeInIl2Cpp<OptionsMenuSelectorData>();
+        var rightClickDetectorOptions = new RegisterTypeOptions { Interfaces = new[] { typeof(IPointerClickHandler) } };
+        ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
     }
 }
