@@ -159,7 +159,12 @@ public static class RoleOptionMenu
     private static void InitializeMenuIfNeeded(RoleOptionMenuType type)
     {
         if (IsRoleOptionMenuNull())
+        {
             RoleOptionMenuObjectData = InitializeRoleOptionMenuObject(type);
+
+            // Scroll生成部分
+            RoleOptionSettings.GenerateScroll(RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform);
+        }
     }
 
     private static GameObject GetOrCreateRoleScrollContent(RoleOptionMenuType type)
@@ -454,7 +459,16 @@ public static class RoleOptionMenu
         }));
         return obj;
     }
-
+    [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
+    public static class RoleOptionMenuStartPatch
+    {
+        public static void Postfix()
+        {
+            // ロールオプションメニューを表示
+            Logger.Info("RoleOptionMenuStartPatch");
+            CustomOptionsMenu.ShowOptionsMenu();
+        }
+    }
     [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
     public static class RoleOptionMenuLateUpdatePatch
     {

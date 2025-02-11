@@ -16,11 +16,6 @@ public static class Debugger
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
         {
             Logger.Info("Debugger Clicked");
-            CustomOptionsMenu.ShowOptionsMenu();
-            RoleOptionMenu.ShowRoleOptionMenu(RoleOptionMenuType.Crewmate);
-
-            // Scroll生成部分
-            RoleOptionSettings.GenerateScroll(RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform);
         }
     }
 }
