@@ -107,6 +107,8 @@ namespace SuperNewRoles.CustomOptions
                 roleOption.NumberOfCrews--;
                 if (roleOption.NumberOfCrews < 0)
                     roleOption.NumberOfCrews = playerCount;
+                if (roleOption.NumberOfCrews > playerCount)
+                    roleOption.NumberOfCrews = playerCount;
                 selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
                 if (isExist)
                     RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);

@@ -323,7 +323,7 @@ public static class RoleOptionMenu
             GenerateRoleDetailButton(roleName, parent.transform, index, roleOption);
             index++;
         }
-        /*
+
         if (index < 25)
         {
             for (int i = 0; i < 250; i++)
@@ -331,7 +331,7 @@ public static class RoleOptionMenu
                 GenerateRoleDetailButton("ロールを追加", parent.transform, index, RoleOptionManager.RoleOptions.FirstOrDefault());
                 index++;
             }
-        }*/
+        }
 
         // スクロール範囲の調整
         data.Scroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
