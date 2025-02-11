@@ -5,6 +5,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
+using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
@@ -40,7 +41,10 @@ class Bait : RoleBase<Bait>
     public static float BaitReportTime;
     [CustomOptionInt("BaitReportType", 0, 1, 1, 0, parentFieldName: nameof(BaitReportTime))]
     public static int BaitReportType;
+
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 }
+
 
 class BaitAbility : AbilityBase
 {

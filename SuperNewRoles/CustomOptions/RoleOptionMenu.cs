@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 namespace SuperNewRoles.CustomOptions;
 
@@ -279,15 +281,42 @@ public static class RoleOptionMenu
         parent.transform.SetParent(data.InnerScroll.transform);
         parent.transform.localScale = Vector3.one;
         parent.transform.localPosition = Vector3.zero;
+
+        // RoleOptionsからボタンを生成
+        var roleOptions = RoleOptionManager.RoleOptions
+            .Where(ro =>
+            {
+                var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == ro.RoleId);
+                return roleInfo != null && roleInfo.OptionTeam == type;
+            })
+            .ToArray();
+
         int index = 0;
-        for (index = 0; index < GenCount; index++)
+        foreach (var roleOption in roleOptions)
         {
-            GenerateRoleDetailButton($"Role_{index + 1}_{type}", parent.transform, index);
-        }
-        data.Scroller.ContentYBounds.max = index < 25 ? 0 : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
+            var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleOption.RoleId);
+            if (roleInfo == null) continue;
+
+            string roleName = ModTranslation.GetString($"{roleInfo.Role}");
+            GenerateRoleDetailButton(roleName, parent.transform, index, roleOption);
+            index++;
+        }/*
+        if (index < 25)
+        {
+            for (int i = 0; i < 250; i++)
+            {
+                GenerateRoleDetailButton("ロールを追加", parent.transform, index, RoleOptionManager.RoleOptions.FirstOrDefault());
+                index++;
+            }
+        }*/
+
+        // スクロール範囲の調整
+        data.Scroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
+        Logger.Info($"index: {index} data.Scroller.ContentYBounds.max: {data.Scroller.ContentYBounds.max}");
         data.RoleScrollDictionary[type] = parent;
         return parent;
     }
+
     /// <summary>
     /// スクロールバーを作成する
     /// </summary>
@@ -381,7 +410,7 @@ public static class RoleOptionMenu
     /// <summary>
     /// ロール詳細ボタンを生成する
     /// </summary>
-    private static GameObject GenerateRoleDetailButton(string roleName, Transform innerscroll, int index)
+    private static GameObject GenerateRoleDetailButton(string roleName, Transform innerscroll, int index, RoleOptionManager.RoleOption roleOption)
     {
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(ROLE_DETAIL_BUTTON_ASSET_NAME));
         obj.transform.SetParent(innerscroll);
@@ -405,6 +434,7 @@ public static class RoleOptionMenu
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
             Logger.Info($"Clicked {roleName}");
+            // TODO: ロールの設定画面を表示する処理を追加
         }));
         passiveButton.OnMouseOut = new();
         passiveButton.OnMouseOut.AddListener((UnityAction)(() =>

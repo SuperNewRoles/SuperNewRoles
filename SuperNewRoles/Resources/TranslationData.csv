@@ -17,3 +17,6 @@ SyncError_VersionMismatch,{player}のバージョンが一致しません。(v{v
 SyncError_RpcMapMismatch,{player}の通信番号が一致しません。,{player}'s communication numbers do not match.,{player}的通信编号不匹配。,{player}的通訊編號不符。
 SyncError_HashMismatch,{player}の実行ファイルが一致しません。,{player}'s executable files do not match.,{player}的执行文件不匹配。,{player}的執行檔不符。
 SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。,{player} does not have SuperNewRoles installed.,{player}没有安装SuperNewRoles.,{player}沒有安裝SuperNewRoles.
+
+# Role
+Bait,ベイト,Bait,餌,餌
