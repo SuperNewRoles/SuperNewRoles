@@ -49,13 +49,7 @@ public class IntroPatch
                 Logger.Info($"機体情報 : {(AmongUsClient.Instance.AmHost ? "ホスト機体" : "ゲスト機体")}", "Game Info");
                 Logger.Info($"MapId : {GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Game Info");
                 Logger.Info($"Mode : {ModeHandler.GetMode()}", "Game Info");
-                var serverText = !ModHelpers.IsCustomServer()
-                    ? $"CurrentRegion : {FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName.ToString()}"
-                    : FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name != null && FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name == RegionMenuOpenPatch.SNRServerName
-                        ? "Server : SuperNewRolesTokyo"
-                        : "Server : Custom";
-                Logger.Info(serverText, "Game Info");
-
+                Logger.Info(ServerText(), "Game Info");
             }
             Logger.Info("=================Player Info=================", "Intro Begin");
             Logger.Info("=================Player Data=================", "Player Info");
@@ -82,6 +76,25 @@ public class IntroPatch
                 CustomOverlays.GetActivateRoles(true); // 現在の役職設定を取得し、辞書に保存するついでにlogに記載する
             }
             CustomRoles.OnIntroStart();
+
+            static string ServerText()
+            {
+                string serverText;
+
+                if (AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame)
+                {
+                    var currentRegion = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion;
+
+                    serverText = !ModHelpers.IsCustomServer()
+                        ? $"CurrentRegion : {currentRegion.TranslateName}"
+                        : currentRegion.Name != null && currentRegion.Name == RegionMenuOpenPatch.SNRServerName
+                            ? "Server : SuperNewRolesTokyo"
+                            : "Server : Custom";
+                }
+                else serverText = $"NetworkMode : {AmongUsClient.Instance.NetworkMode}";
+
+                return serverText;
+            }
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
