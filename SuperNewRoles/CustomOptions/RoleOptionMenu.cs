@@ -163,6 +163,10 @@ public static class RoleOptionMenu
         // CurrentRoleTypeを更新
         RoleOptionMenuObjectData.CurrentRoleType = type;
 
+        // 一括設定メニューを非表示にする
+        if (RoleOptionMenuObjectData.BulkRoleSettingsMenu != null)
+            RoleOptionMenuObjectData.BulkRoleSettingsMenu.SetActive(false);
+
         // スクロール位置とUI状態のリセット
         ResetScrollUIState(targetScroll, type);
     }

@@ -105,7 +105,7 @@ namespace SuperNewRoles.CustomOptions
                 if (15 >= playerCount)
                     playerCount = 15;
                 roleOption.NumberOfCrews--;
-                if (roleOption.NumberOfCrews <= 0)
+                if (roleOption.NumberOfCrews < 0)
                     roleOption.NumberOfCrews = playerCount;
                 selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
                 if (isExist)

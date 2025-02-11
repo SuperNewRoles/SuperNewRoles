@@ -7,9 +7,35 @@ namespace SuperNewRoles.CustomOptions
 {
     public static class BulkRoleSettings
     {
-        public static void InitializeBulkRoleSettingsMenu()
+        public static GameObject InitializeBulkRoleSettingsMenu()
         {
             // ロールの設定を初期化
+            var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("BulkRoleSettingsMenu"));
+            obj.transform.SetParent(RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform.parent);
+            obj.transform.localPosition = new Vector3(0, 0, -1f);
+            obj.transform.localScale = Vector3.one;
+
+            var ReturnButton = obj.transform.Find("ReturnButton").gameObject;
+            var passiveButton = ReturnButton.AddComponent<PassiveButton>();
+            passiveButton.OnClick = new();
+            passiveButton.OnClick.AddListener((UnityAction)(() =>
+            {
+                // 非表示も兼ねている
+                RoleOptionMenu.ShowRoleOptionMenu(RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleType);
+            }));
+            passiveButton.OnMouseOver = new();
+            passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+            {
+                ReturnButton.transform.Find("Selected").gameObject.SetActive(true);
+            }));
+            passiveButton.OnMouseOut = new();
+            passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+            {
+                ReturnButton.transform.Find("Selected").gameObject.SetActive(false);
+            }));
+
+            obj.transform.Find("BulkRoleTitleText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("BulkRoleButton");
+            return obj;
         }
         public static void InitializeBulkRoleButton()
         {
@@ -28,7 +54,7 @@ namespace SuperNewRoles.CustomOptions
             {
                 RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.SetActive(false);
                 if (RoleOptionMenu.RoleOptionMenuObjectData.BulkRoleSettingsMenu == null)
-                    InitializeBulkRoleSettingsMenu();
+                    RoleOptionMenu.RoleOptionMenuObjectData.BulkRoleSettingsMenu = InitializeBulkRoleSettingsMenu();
                 else
                     RoleOptionMenu.RoleOptionMenuObjectData.BulkRoleSettingsMenu.SetActive(true);
             }));
