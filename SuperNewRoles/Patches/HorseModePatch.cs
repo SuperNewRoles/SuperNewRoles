@@ -34,7 +34,7 @@ public class MainMenuPatch
         馬、いつか会うときまで...
         いいやつだったよ、馬。
         いつかまた会おう。
-         
+
         // Horse mode stuff
         var horseModeSelectionBehavior = new ClientModOptionsPatch.SelectionBehaviour("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
 
@@ -74,7 +74,8 @@ public class MainMenuPatch
         var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
         var spriteCreditsButton = CreditsButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
         hidebtn(passiveCreditsButton);
-        CreditsButton.transform.localPosition = new(2.925f, -1.1f, 0);
+        CreditsButton.transform.localPosition = new(2.025f, -1.1f, 0);
+        //CreditsButton.transform.localPosition = new(2.925f, -1.1f, 0); //MOD DLボタンがあった時の座標
 
         spriteCreditsButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreditsButton.png", 75f);
 
@@ -89,8 +90,9 @@ public class MainMenuPatch
         });
 
         //ModDownloader
+        //事故るユーザーが多いので消します。
 
-        var ModDownloaderButton = Object.Instantiate(bottomTemplate, null);
+        /* var ModDownloaderButton = Object.Instantiate(bottomTemplate, null);
         var passiveModDownloaderButton = ModDownloaderButton.GetComponent<PassiveButton>();
         var spriteModDownloaderButton = ModDownloaderButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
         hidebtn(passiveModDownloaderButton);
@@ -104,7 +106,7 @@ public class MainMenuPatch
         passiveModDownloaderButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
         {
             ModDownloader.OnPopupOpen(__instance);
-        });
+        }); */
     }
 }
 
