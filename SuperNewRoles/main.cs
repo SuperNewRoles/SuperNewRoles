@@ -48,4 +48,84 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
     }
+
+
+    // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
+    [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]
+    public static class AuthManagerCoConnectPatch
+    {
+        public static bool Prefix(AuthManager __instance)
+        {
+            if (!ModHelpers.IsCustomServer() ||
+                FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Servers.Any(x => x.UseDtls))
+                return true;
+            if (__instance.connection != null)
+                __instance.connection.Dispose();
+            __instance.connection = null;
+            return false;
+        }
+    }
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    class GetBroadcastVersionPatch
+    {
+        public static void Postfix(ref int __result)
+        {
+            if (AmongUsClient.Instance.NetworkMode is NetworkModes.LocalGame or NetworkModes.FreePlay) return;
+            __result += 25;
+        }
+    }
+    [HarmonyPatch(typeof(Constants), nameof(Constants.IsVersionModded))]
+    public static class ConstantsVersionModdedPatch
+    {
+        public static bool Prefix(ref bool __result)
+        {
+            __result = true;
+            return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
+    public static class AmBannedPatch
+    {
+        public static void Postfix(out bool __result) => __result = false;
+    }
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
+    public static class ChatControllerAwakePatch
+    {
+        public static void Prefix()
+        {
+            DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+        }
+        public static void Postfix(ChatController __instance)
+        {
+            DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                if (!__instance.isActiveAndEnabled) return;
+                __instance.Toggle();
+            }
+            else if (Input.GetKeyDown(KeyCode.F2))
+            {
+                __instance.SetVisible(false);
+                new LateTask(() =>
+                {
+                    __instance.SetVisible(true);
+                }, 0f, "AntiChatBug");
+            }
+            if (__instance.IsOpenOrOpening)
+            {
+                __instance.banButton.MenuButton.enabled = !__instance.IsAnimating;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+    public static class PlayerCountChange
+    {
+        public static void Prefix(GameStartManager __instance)
+        {
+            __instance.MinPlayers = 1;
+        }
+    }
 }
