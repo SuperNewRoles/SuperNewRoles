@@ -87,14 +87,20 @@ public class CustomOption
     public FieldInfo FieldInfo { get; }
     public string Name { get; }
     private object _value;
-    private object _selection;
+    private byte _selection;
 
     public object Value => _value;
-    public object Selection => _selection;
+    public byte Selection => _selection;
     public string Id => Attribute.Id;
     public object[] Selections { get; }
     public RoleId? ParentRole { get; private set; }
     public CustomOption? ParentOption { get; private set; }
+    /// <summary>
+    /// このオプションがブール値（true/false）のオプションかどうかを示します。
+    /// CustomOptionBoolAttributeが設定されている場合にtrueを返します。
+    /// </summary>
+    public bool IsBooleanOption { get; }
+
     public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null)
     {
         Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
@@ -103,6 +109,8 @@ public class CustomOption
         var defaultValue = attribute.GenerateDefaultSelection();
         UpdateSelection(defaultValue);
         Name = attribute.TranslationName;
+        ParentRole = parentRole;
+        IsBooleanOption = attribute is CustomOptionBoolAttribute;
     }
 
     public void UpdateSelection(byte value)
@@ -118,11 +126,6 @@ public class CustomOption
             _selection = value;
             _value = Selections[value];
             FieldInfo.SetValue(null, _value);
-
-            if (CustomOptionSaver.IsLoaded)
-            {
-                CustomOptionSaver.Save();
-            }
         }
         catch (Exception ex)
         {

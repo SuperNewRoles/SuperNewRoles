@@ -479,6 +479,9 @@ public static class RoleOptionMenu
         public static void Postfix()
         {
             UpdateHostInfoMaskArea(true);
+            // 設定を保存
+            if (CustomOptionSaver.IsLoaded)
+                CustomOptionSaver.Save();
         }
     }
     private static void UpdateHostInfoMaskArea(bool active)

@@ -39,12 +39,11 @@ class Bait : RoleBase<Bait>
 
     [CustomOptionFloat("BaitReportTime", 0f, 10f, 0.1f, 0f)]
     public static float BaitReportTime;
-    [CustomOptionInt("BaitReportType", 0, 1, 1, 0, parentFieldName: nameof(BaitReportTime))]
-    public static int BaitReportType;
+    [CustomOptionBool("BaitReportType", false, parentFieldName: nameof(BaitReportTime))]
+    public static bool BaitReportType;
 
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 }
-
 
 class BaitAbility : AbilityBase
 {

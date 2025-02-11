@@ -1,4 +1,6 @@
+using System.Linq;
 using SuperNewRoles.Modules;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,31 +10,40 @@ namespace SuperNewRoles.CustomOptions
     {
         public static int GenCount = 50;
         public static float Rate = 4.5f;
-        private static GameObject CreateOptionElement(Transform parent, ref float lastY, string prefabName)
+        private static GameObject CreateOptionElement(Transform parent, CustomOption option, ref float lastY, string prefabName)
         {
             var optionPrefab = AssetManager.GetAsset<GameObject>(prefabName);
             var optionInstance = UnityEngine.Object.Instantiate(optionPrefab, parent);
-            optionInstance.transform.localPosition = new Vector3(-0.22f, lastY, 0);
+            optionInstance.transform.localPosition = new Vector3(-0.22f, lastY, -5f);
             lastY -= 4.5f;
             optionInstance.transform.localScale = Vector3.one * 2;
+            optionInstance.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString(option.Name);
             return optionInstance;
         }
 
-        private static GameObject CreateCheckBox(Transform parent, ref float lastY)
+        private static GameObject CreateCheckBox(Transform parent, CustomOption option, ref float lastY)
         {
-            GameObject optionInstance = CreateOptionElement(parent, ref lastY, "Option_Check");
+            GameObject optionInstance = CreateOptionElement(parent, option, ref lastY, "Option_Check");
             var passiveButton = optionInstance.AddComponent<PassiveButton>();
             SpriteRenderer spriteRenderer = null;
-            Transform checkMark = optionInstance.transform.FindChild("CheckMark");
+            Transform checkMark = optionInstance.transform.Find("CheckMark");
+            checkMark.gameObject.SetActive((bool)option.Value);
             passiveButton.Colliders = new Collider2D[1];
             passiveButton.Colliders[0] = optionInstance.GetComponent<BoxCollider2D>();
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener((UnityAction)(() =>
             {
+                Logger.Info("クリックされた");
                 if (checkMark.gameObject.activeSelf)
                     checkMark.gameObject.SetActive(false);
                 else
                     checkMark.gameObject.SetActive(true);
+                if ((bool)option.Value)
+                    // false
+                    option.UpdateSelection(0);
+                else
+                    // true
+                    option.UpdateSelection(1);
             }));
             passiveButton.OnMouseOver = new();
             passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
@@ -52,9 +63,58 @@ namespace SuperNewRoles.CustomOptions
             return optionInstance;
         }
 
-        private static GameObject CreateSelect(Transform parent, ref float lastY)
+        private static GameObject CreateSelect(Transform parent, CustomOption option, ref float lastY)
         {
-            return CreateOptionElement(parent, ref lastY, "Option_Select");
+            GameObject optionInstance = CreateOptionElement(parent, option, ref lastY, "Option_Select");
+            var selectedText = optionInstance.transform.Find("SelectedText").gameObject.GetComponent<TextMeshPro>();
+            selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+            var passiveButton_Minus = optionInstance.transform.Find("Button_Minus").gameObject.AddComponent<PassiveButton>();
+            SpriteRenderer spriteRenderer_Minus = passiveButton_Minus.GetComponent<SpriteRenderer>();
+            passiveButton_Minus.OnClick = new();
+            passiveButton_Minus.OnClick.AddListener((UnityAction)(() =>
+            {
+                if (option.Selection > 0)
+                    option.UpdateSelection((byte)(option.Selection - 1));
+                else
+                    option.UpdateSelection((byte)(option.Selections.Length - 1));
+                selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+                Logger.Info("マイナスボタンがクリックされた");
+            }));
+            passiveButton_Minus.OnMouseOver = new();
+            passiveButton_Minus.OnMouseOver.AddListener((UnityAction)(() =>
+            {
+                spriteRenderer_Minus.color = new Color32(45, 235, 198, 255);
+            }));
+            passiveButton_Minus.OnMouseOut = new();
+            passiveButton_Minus.OnMouseOut.AddListener((UnityAction)(() =>
+            {
+                spriteRenderer_Minus.color = Color.white;
+            }));
+
+            var passiveButton_Plus = optionInstance.transform.Find("Button_Plus").gameObject.AddComponent<PassiveButton>();
+            SpriteRenderer spriteRenderer_Plus = passiveButton_Plus.GetComponent<SpriteRenderer>();
+            passiveButton_Plus.OnClick = new();
+            passiveButton_Plus.OnClick.AddListener((UnityAction)(() =>
+            {
+                if (option.Selection < option.Selections.Length - 1)
+                    option.UpdateSelection((byte)(option.Selection + 1));
+                else
+                    option.UpdateSelection(0);
+                selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+                Logger.Info("プラスボタンがクリックされた");
+            }));
+            passiveButton_Plus.OnMouseOver = new();
+            passiveButton_Plus.OnMouseOver.AddListener((UnityAction)(() =>
+            {
+                spriteRenderer_Plus.color = new Color32(45, 235, 198, 255);
+            }));
+            passiveButton_Plus.OnMouseOut = new();
+            passiveButton_Plus.OnMouseOut.AddListener((UnityAction)(() =>
+            {
+                spriteRenderer_Plus.color = Color.white;
+            }));
+
+            return optionInstance;
         }
 
         public static void GenerateScroll(Transform parent)
@@ -81,23 +141,8 @@ namespace SuperNewRoles.CustomOptions
             innerTransform.localScale = Vector3.one;
             innerTransform.localPosition = Vector3.zero;
             scroller.Inner = innerTransform;
-            float lastY = 4f;
-            int index = 0;
-            for (int i = 0; i < GenCount; i++)
-            {
-                // チェックボックスの生成
-                CreateCheckBox(innerTransform, ref lastY);
-                index++;
-            }
-            for (int i = 0; i < GenCount; i++)
-            {
-                // セレクトオプションの生成
-                CreateSelect(innerTransform, ref lastY);
-                index++;
-            }
 
             scroller.ContentYBounds = new(0, 0);
-            scroller.ContentYBounds.max = index < 5 ? 0f : (index - 4) * Rate;
 
             scroller.DragScrollSpeed = 3f;
             scroller.Colliders = new[] { RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform.FindChild("Hitbox_Settings").GetComponent<BoxCollider2D>() };
@@ -105,6 +150,44 @@ namespace SuperNewRoles.CustomOptions
             // ScrollerとInnerをRoleOptionMenuに保存
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller = scroller;
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner = innerTransform;
+            ClickedRole(RoleOptionManager.RoleOptions[0]);
+        }
+        public static void ClickedRole(RoleOptionManager.RoleOption roleOption)
+        {
+            float lastY = 4f;
+            int index = 0;
+            foreach (var option in roleOption.Options)
+            {
+                if (option.IsBooleanOption)
+                    CreateCheckBox(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, option, ref lastY);
+                else
+                    CreateSelect(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, option, ref lastY);
+                index++;
+            }/*
+            for (int i = 0; i < GenCount; i++)
+            {
+                // セレクトオプションの生成
+                CreateSelect(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, ref lastY);
+                index++;
+            }*/
+            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max = index < 5 ? 0f : (index - 4) * Rate;
+        }
+
+        private static string FormatOptionValue(object value, CustomOption option)
+        {
+            if (value is float floatValue)
+            {
+                var attribute = option.Attribute as CustomOptionFloatAttribute;
+                if (attribute != null)
+                {
+                    float step = attribute.Step;
+                    if (step >= 1f) return string.Format("{0:F0}", floatValue);
+                    else if (step >= 0.1f) return string.Format("{0:F1}", floatValue);
+                    else return string.Format("{0:F2}", floatValue);
+                }
+                return floatValue.ToString();
+            }
+            return value.ToString();
         }
     }
 }
