@@ -76,6 +76,12 @@ public class RoleOptionMenuObjectData
     public Scroller SettingsScroller { get; set; }
     public Transform SettingsInner { get; set; }
     public GameObject BulkRoleSettingsMenu { get; set; }
+
+    /// <summary>
+    /// RoleIdとRoleDetailButtonの対応を保存するDictionary
+    /// </summary>
+    public Dictionary<RoleId, GameObject> RoleDetailButtonDictionary { get; } = new();
+
     /// <summary>
     /// コンストラクター：メニューオブジェクトからデータを初期化
     /// </summary>
@@ -417,7 +423,7 @@ public static class RoleOptionMenu
         var innerscroll = tabCopy.transform.Find("Scroller/SliderInner").gameObject;
         return (scroller, innerscroll);
     }
-    private static void UpdateRoleDetailButtonColor(SpriteRenderer spriteRenderer, RoleOptionManager.RoleOption roleOption)
+    public static void UpdateRoleDetailButtonColor(SpriteRenderer spriteRenderer, RoleOptionManager.RoleOption roleOption)
     {
         if (roleOption == null) return;
         if (spriteRenderer == null) return;
@@ -486,6 +492,10 @@ public static class RoleOptionMenu
                 roleOption.NumberOfCrews = 1;
             UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
         }));
+
+        // RoleDetailButtonDictionaryに追加
+        if (roleOption != null)
+            RoleOptionMenuObjectData.RoleDetailButtonDictionary[roleOption.RoleId] = obj;
 
         return obj;
     }

@@ -19,14 +19,14 @@ namespace SuperNewRoles.CustomOptions
 
         private static readonly Color32 HoverColor = new(45, 235, 198, 255);
 
-        private static GameObject CreateOptionElement(Transform parent, CustomOption option, ref float lastY, string prefabName)
+        private static GameObject CreateOptionElement(Transform parent, string optionName, ref float lastY, string prefabName)
         {
             var optionPrefab = AssetManager.GetAsset<GameObject>(prefabName);
             var optionInstance = UnityEngine.Object.Instantiate(optionPrefab, parent);
             optionInstance.transform.localPosition = new Vector3(ElementXPosition, lastY, ElementZPosition);
             lastY -= DefaultRate;
             optionInstance.transform.localScale = Vector3.one * ElementScale;
-            optionInstance.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString(option.Name);
+            optionInstance.transform.Find("Text").GetComponent<TextMeshPro>().text = optionName;
             return optionInstance;
         }
 
@@ -56,7 +56,7 @@ namespace SuperNewRoles.CustomOptions
 
         private static GameObject CreateCheckBox(Transform parent, CustomOption option, ref float lastY)
         {
-            GameObject optionInstance = CreateOptionElement(parent, option, ref lastY, "Option_Check");
+            GameObject optionInstance = CreateOptionElement(parent, ModTranslation.GetString(option.Name), ref lastY, "Option_Check");
             var passiveButton = optionInstance.AddComponent<PassiveButton>();
             var checkMark = optionInstance.transform.Find("CheckMark");
 
@@ -82,12 +82,53 @@ namespace SuperNewRoles.CustomOptions
 
         private static GameObject CreateSelect(Transform parent, CustomOption option, ref float lastY)
         {
-            GameObject optionInstance = CreateOptionElement(parent, option, ref lastY, "Option_Select");
+            GameObject optionInstance = CreateOptionElement(parent, ModTranslation.GetString(option.Name), ref lastY, "Option_Select");
             var selectedText = optionInstance.transform.Find("SelectedText").GetComponent<TextMeshPro>();
             selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
 
             SetupSelectButtons(optionInstance, selectedText, option);
 
+            return optionInstance;
+        }
+        private static GameObject CreateNumberOfCrewsSelect(Transform parent, RoleOptionManager.RoleOption roleOption, ref float lastY)
+        {
+            GameObject optionInstance = CreateOptionElement(parent, ModTranslation.GetString("NumberOfCrews"), ref lastY, "Option_Select");
+            var selectedText = optionInstance.transform.Find("SelectedText").GetComponent<TextMeshPro>();
+            selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
+
+            var minusButton = optionInstance.transform.Find("Button_Minus").gameObject;
+            var minusPassiveButton = minusButton.AddComponent<PassiveButton>();
+            var minusSpriteRenderer = minusPassiveButton.GetComponent<SpriteRenderer>();
+            bool isExist = RoleOptionMenu.RoleOptionMenuObjectData.RoleDetailButtonDictionary.TryGetValue(roleOption.RoleId, out var roleDetailButton);
+            ConfigurePassiveButton(minusPassiveButton, () =>
+            {
+                byte playerCount = (byte)PlayerControl.AllPlayerControls.Count;
+                if (15 >= playerCount)
+                    playerCount = 15;
+                roleOption.NumberOfCrews--;
+                if (roleOption.NumberOfCrews <= 0)
+                    roleOption.NumberOfCrews = playerCount;
+                selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
+                if (isExist)
+                    RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            }, minusSpriteRenderer);
+
+            var plusButton = optionInstance.transform.Find("Button_Plus").gameObject;
+            var plusPassiveButton = plusButton.AddComponent<PassiveButton>();
+            var plusSpriteRenderer = plusPassiveButton.GetComponent<SpriteRenderer>();
+
+            ConfigurePassiveButton(plusPassiveButton, () =>
+            {
+                byte playerCount = (byte)PlayerControl.AllPlayerControls.Count;
+                if (15 >= playerCount)
+                    playerCount = 15;
+                roleOption.NumberOfCrews++;
+                if (roleOption.NumberOfCrews >= playerCount)
+                    roleOption.NumberOfCrews = 0;
+                selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
+                if (isExist)
+                    RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            }, plusSpriteRenderer);
             return optionInstance;
         }
 
@@ -186,6 +227,7 @@ namespace SuperNewRoles.CustomOptions
         private static int CreateRoleOptions(RoleOptionManager.RoleOption roleOption, ref float lastY)
         {
             int index = 0;
+            CreateNumberOfCrewsSelect(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, roleOption, ref lastY);
             foreach (var option in roleOption.Options)
             {
                 if (option.IsBooleanOption)
