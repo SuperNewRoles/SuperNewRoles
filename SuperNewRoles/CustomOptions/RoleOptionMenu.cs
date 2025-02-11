@@ -153,6 +153,9 @@ public static class RoleOptionMenu
         // スクロール表示制御
         UpdateScrollVisibility(targetScroll);
 
+        // CurrentRoleTypeを更新
+        RoleOptionMenuObjectData.CurrentRoleType = type;
+
         // スクロール位置とUI状態のリセット
         ResetScrollUIState(targetScroll, type);
     }
@@ -185,9 +188,9 @@ public static class RoleOptionMenu
 
     private static void ResetScrollUIState(GameObject targetScroll, RoleOptionMenuType type)
     {
-        ReSyncScrollbarPosition(type);
         RoleOptionMenuObjectData.CurrentScrollParent = targetScroll.transform;
         UpdateMenuTitle(type);
+        ReSyncScrollbarPosition(type);
         ShowMenu();
     }
 
@@ -430,7 +433,7 @@ public static class RoleOptionMenu
         int row = index / 4;   // 行番号を計算
         float posX = -1.27f + col * 1.63f;
         float posY = 0.85f - row * 0.38f;
-        obj.transform.localPosition = new Vector3(posX, posY, 0f);
+        obj.transform.localPosition = new Vector3(posX, posY, -0.21f);
 
         obj.transform.Find("Text").GetComponent<TextMeshPro>().text = roleName;
         var passiveButton = obj.AddComponent<PassiveButton>();
@@ -495,7 +498,7 @@ public static class RoleOptionMenu
     public static class RoleOptionMenuLateUpdatePatch
     {
         private static float DISPLAY_UPPER_LIMIT = 1.6f;
-        private static float DISPLAY_LOWER_LIMIT = -2.06f;
+        private static float DISPLAY_LOWER_LIMIT = -2.3f;
 
         private static void Postfix()
         {

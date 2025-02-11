@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using SuperNewRoles.Modules;
 using TMPro;
@@ -8,152 +9,182 @@ namespace SuperNewRoles.CustomOptions
 {
     public class RoleOptionSettings
     {
-        public static int GenCount = 50;
-        public static float Rate = 4.5f;
+        private const int GenCount = 50;
+        private const float DefaultRate = 4.5f;
+        private const float DefaultLastY = 4f;
+        private const float ElementXPosition = -0.22f;
+        private const float ElementZPosition = -5f;
+        private const float ElementScale = 2f;
+        private const float ScrollerXPosition = 18f;
+
+        private static readonly Color32 HoverColor = new(45, 235, 198, 255);
+
         private static GameObject CreateOptionElement(Transform parent, CustomOption option, ref float lastY, string prefabName)
         {
             var optionPrefab = AssetManager.GetAsset<GameObject>(prefabName);
             var optionInstance = UnityEngine.Object.Instantiate(optionPrefab, parent);
-            optionInstance.transform.localPosition = new Vector3(-0.22f, lastY, -5f);
-            lastY -= 4.5f;
-            optionInstance.transform.localScale = Vector3.one * 2;
+            optionInstance.transform.localPosition = new Vector3(ElementXPosition, lastY, ElementZPosition);
+            lastY -= DefaultRate;
+            optionInstance.transform.localScale = Vector3.one * ElementScale;
             optionInstance.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString(option.Name);
             return optionInstance;
+        }
+
+        private static void ConfigurePassiveButton(PassiveButton button, Action onClick, SpriteRenderer spriteRenderer = null)
+        {
+            button.OnClick = new();
+            button.OnClick.AddListener(onClick);
+            ConfigureButtonHoverEffects(button, spriteRenderer);
+        }
+
+        private static void ConfigureButtonHoverEffects(PassiveButton button, SpriteRenderer spriteRenderer)
+        {
+            button.OnMouseOver = new();
+            button.OnMouseOver.AddListener((UnityAction)(() =>
+            {
+                if (spriteRenderer != null)
+                    spriteRenderer.color = HoverColor;
+            }));
+
+            button.OnMouseOut = new();
+            button.OnMouseOut.AddListener((UnityAction)(() =>
+            {
+                if (spriteRenderer != null)
+                    spriteRenderer.color = Color.white;
+            }));
         }
 
         private static GameObject CreateCheckBox(Transform parent, CustomOption option, ref float lastY)
         {
             GameObject optionInstance = CreateOptionElement(parent, option, ref lastY, "Option_Check");
             var passiveButton = optionInstance.AddComponent<PassiveButton>();
-            SpriteRenderer spriteRenderer = null;
-            Transform checkMark = optionInstance.transform.Find("CheckMark");
-            checkMark.gameObject.SetActive((bool)option.Value);
-            passiveButton.Colliders = new Collider2D[1];
-            passiveButton.Colliders[0] = optionInstance.GetComponent<BoxCollider2D>();
-            passiveButton.OnClick = new();
-            passiveButton.OnClick.AddListener((UnityAction)(() =>
-            {
-                Logger.Info("クリックされた");
-                if (checkMark.gameObject.activeSelf)
-                    checkMark.gameObject.SetActive(false);
-                else
-                    checkMark.gameObject.SetActive(true);
-                if ((bool)option.Value)
-                    // false
-                    option.UpdateSelection(0);
-                else
-                    // true
-                    option.UpdateSelection(1);
-            }));
-            passiveButton.OnMouseOver = new();
-            passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
-            {
-                if (spriteRenderer == null)
-                    spriteRenderer = optionInstance.GetComponent<SpriteRenderer>();
-                spriteRenderer.color = new Color32(45, 235, 198, 255);
-            }));
-            passiveButton.OnMouseOut = new();
-            passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
-            {
-                if (spriteRenderer == null)
-                    spriteRenderer = optionInstance.GetComponent<SpriteRenderer>();
-                spriteRenderer.color = Color.white;
-            }));
+            var checkMark = optionInstance.transform.Find("CheckMark");
+
+            SetupCheckBoxButton(passiveButton, checkMark, option);
+            passiveButton.Colliders = new[] { optionInstance.GetComponent<BoxCollider2D>() };
 
             return optionInstance;
+        }
+
+        private static void SetupCheckBoxButton(PassiveButton passiveButton, Transform checkMark, CustomOption option)
+        {
+            checkMark.gameObject.SetActive((bool)option.Value);
+            var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
+
+            ConfigurePassiveButton(passiveButton, () =>
+            {
+                Logger.Info("クリックされた");
+                bool newValue = !checkMark.gameObject.activeSelf;
+                checkMark.gameObject.SetActive(newValue);
+                option.UpdateSelection(newValue ? (byte)1 : (byte)0);
+            }, spriteRenderer);
         }
 
         private static GameObject CreateSelect(Transform parent, CustomOption option, ref float lastY)
         {
             GameObject optionInstance = CreateOptionElement(parent, option, ref lastY, "Option_Select");
-            var selectedText = optionInstance.transform.Find("SelectedText").gameObject.GetComponent<TextMeshPro>();
+            var selectedText = optionInstance.transform.Find("SelectedText").GetComponent<TextMeshPro>();
             selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
-            var passiveButton_Minus = optionInstance.transform.Find("Button_Minus").gameObject.AddComponent<PassiveButton>();
-            SpriteRenderer spriteRenderer_Minus = passiveButton_Minus.GetComponent<SpriteRenderer>();
-            passiveButton_Minus.OnClick = new();
-            passiveButton_Minus.OnClick.AddListener((UnityAction)(() =>
-            {
-                if (option.Selection > 0)
-                    option.UpdateSelection((byte)(option.Selection - 1));
-                else
-                    option.UpdateSelection((byte)(option.Selections.Length - 1));
-                selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
-                Logger.Info("マイナスボタンがクリックされた");
-            }));
-            passiveButton_Minus.OnMouseOver = new();
-            passiveButton_Minus.OnMouseOver.AddListener((UnityAction)(() =>
-            {
-                spriteRenderer_Minus.color = new Color32(45, 235, 198, 255);
-            }));
-            passiveButton_Minus.OnMouseOut = new();
-            passiveButton_Minus.OnMouseOut.AddListener((UnityAction)(() =>
-            {
-                spriteRenderer_Minus.color = Color.white;
-            }));
 
-            var passiveButton_Plus = optionInstance.transform.Find("Button_Plus").gameObject.AddComponent<PassiveButton>();
-            SpriteRenderer spriteRenderer_Plus = passiveButton_Plus.GetComponent<SpriteRenderer>();
-            passiveButton_Plus.OnClick = new();
-            passiveButton_Plus.OnClick.AddListener((UnityAction)(() =>
-            {
-                if (option.Selection < option.Selections.Length - 1)
-                    option.UpdateSelection((byte)(option.Selection + 1));
-                else
-                    option.UpdateSelection(0);
-                selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
-                Logger.Info("プラスボタンがクリックされた");
-            }));
-            passiveButton_Plus.OnMouseOver = new();
-            passiveButton_Plus.OnMouseOver.AddListener((UnityAction)(() =>
-            {
-                spriteRenderer_Plus.color = new Color32(45, 235, 198, 255);
-            }));
-            passiveButton_Plus.OnMouseOut = new();
-            passiveButton_Plus.OnMouseOut.AddListener((UnityAction)(() =>
-            {
-                spriteRenderer_Plus.color = Color.white;
-            }));
+            SetupSelectButtons(optionInstance, selectedText, option);
 
             return optionInstance;
         }
 
+        private static void SetupSelectButtons(GameObject optionInstance, TextMeshPro selectedText, CustomOption option)
+        {
+            SetupMinusButton(optionInstance, selectedText, option);
+            SetupPlusButton(optionInstance, selectedText, option);
+        }
+
+        private static void SetupMinusButton(GameObject optionInstance, TextMeshPro selectedText, CustomOption option)
+        {
+            var minusButton = optionInstance.transform.Find("Button_Minus").gameObject;
+            var passiveButton = minusButton.AddComponent<PassiveButton>();
+            var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
+
+            ConfigurePassiveButton(passiveButton, () =>
+            {
+                byte newSelection = option.Selection > 0 ? (byte)(option.Selection - 1) : (byte)(option.Selections.Length - 1);
+                UpdateOptionSelection(option, newSelection, selectedText);
+                Logger.Info("マイナスボタンがクリックされた");
+            }, spriteRenderer);
+        }
+
+        private static void SetupPlusButton(GameObject optionInstance, TextMeshPro selectedText, CustomOption option)
+        {
+            var plusButton = optionInstance.transform.Find("Button_Plus").gameObject;
+            var passiveButton = plusButton.AddComponent<PassiveButton>();
+            var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
+
+            ConfigurePassiveButton(passiveButton, () =>
+            {
+                byte newSelection = option.Selection < option.Selections.Length - 1 ? (byte)(option.Selection + 1) : (byte)0;
+                UpdateOptionSelection(option, newSelection, selectedText);
+                Logger.Info("プラスボタンがクリックされた");
+            }, spriteRenderer);
+        }
+
+        private static void UpdateOptionSelection(CustomOption option, byte newSelection, TextMeshPro selectedText)
+        {
+            option.UpdateSelection(newSelection);
+            selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+        }
+
         public static void GenerateScroll(Transform parent)
         {
-            // Scrollerオブジェクトの生成と初期設定
-            GameObject scrollerObject = new("SettingsScroller");
-            Scroller scroller = scrollerObject.AddComponent<Scroller>();
-            scroller.transform.SetParent(parent);
-            scroller.gameObject.layer = 5; // UIレイヤー
-            scroller.transform.localScale = Vector3.one;
-            scroller.transform.localPosition = new Vector3(18f, 0f, 0f); // 親からの相対位置
-            scroller.allowX = false;
-            scroller.allowY = true;
-            scroller.active = true; // Scrollerを有効にする
-            // 初期速度は0
-            scroller.velocity = Vector2.zero;
-            // スクロール範囲は後で設定される可能性があるので、ここでは初期値として0を設定
-            scroller.ContentXBounds = new FloatRange(0, 0);
-            scroller.enabled = true;
+            var scrollerObject = CreateScrollerObject(parent);
+            var innerTransform = CreateInnerTransform(scrollerObject.transform);
+            ConfigureScroller(scrollerObject.GetComponent<Scroller>(), innerTransform);
+        }
 
-            // ScrollerのInner Transformを設定
-            Transform innerTransform = new GameObject("InnerContent").transform;
-            innerTransform.SetParent(scroller.transform);
+        private static GameObject CreateScrollerObject(Transform parent)
+        {
+            var scrollerObject = new GameObject("SettingsScroller");
+            var scroller = scrollerObject.AddComponent<Scroller>();
+            scroller.transform.SetParent(parent);
+            scroller.gameObject.layer = 5;
+            scroller.transform.localScale = Vector3.one;
+            scroller.transform.localPosition = new Vector3(ScrollerXPosition, 0f, 0f);
+
+            return scrollerObject;
+        }
+
+        private static Transform CreateInnerTransform(Transform scrollerTransform)
+        {
+            var innerTransform = new GameObject("InnerContent").transform;
+            innerTransform.SetParent(scrollerTransform);
             innerTransform.localScale = Vector3.one;
             innerTransform.localPosition = Vector3.zero;
+            return innerTransform;
+        }
+
+        private static void ConfigureScroller(Scroller scroller, Transform innerTransform)
+        {
+            scroller.allowX = false;
+            scroller.allowY = true;
+            scroller.active = true;
+            scroller.velocity = Vector2.zero;
+            scroller.ContentXBounds = new FloatRange(0, 0);
+            scroller.ContentYBounds = new FloatRange(0, 0);
+            scroller.enabled = true;
             scroller.Inner = innerTransform;
-
-            scroller.ContentYBounds = new(0, 0);
-
             scroller.DragScrollSpeed = 3f;
             scroller.Colliders = new[] { RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform.FindChild("Hitbox_Settings").GetComponent<BoxCollider2D>() };
 
-            // ScrollerとInnerをRoleOptionMenuに保存
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller = scroller;
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner = innerTransform;
         }
+
         public static void ClickedRole(RoleOptionManager.RoleOption roleOption)
         {
-            float lastY = 4f;
+            float lastY = DefaultLastY;
+            int index = CreateRoleOptions(roleOption, ref lastY);
+            UpdateScrollerBounds(index);
+        }
+
+        private static int CreateRoleOptions(RoleOptionManager.RoleOption roleOption, ref float lastY)
+        {
             int index = 0;
             foreach (var option in roleOption.Options)
             {
@@ -162,14 +193,14 @@ namespace SuperNewRoles.CustomOptions
                 else
                     CreateSelect(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, option, ref lastY);
                 index++;
-            }/*
-            for (int i = 0; i < GenCount; i++)
-            {
-                // セレクトオプションの生成
-                CreateSelect(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, ref lastY);
-                index++;
-            }*/
-            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max = index < 5 ? 0f : (index - 4) * Rate;
+            }
+            return index;
+        }
+
+        private static void UpdateScrollerBounds(int index)
+        {
+            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max =
+                index < 5 ? 0f : (index - 4) * DefaultRate;
         }
 
         private static string FormatOptionValue(object value, CustomOption option)
