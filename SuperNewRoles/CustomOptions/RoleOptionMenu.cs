@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using System;
 
 namespace SuperNewRoles.CustomOptions;
 
@@ -318,6 +319,7 @@ public static class RoleOptionMenu
             GenerateRoleDetailButton(roleName, parent.transform, index, roleOption);
             index++;
         }
+        /*
         if (index < 25)
         {
             for (int i = 0; i < 250; i++)
@@ -325,11 +327,10 @@ public static class RoleOptionMenu
                 GenerateRoleDetailButton("ロールを追加", parent.transform, index, RoleOptionManager.RoleOptions.FirstOrDefault());
                 index++;
             }
-        }
+        }*/
 
         // スクロール範囲の調整
         data.Scroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
-        Logger.Info($"index: {index} data.Scroller.ContentYBounds.max: {data.Scroller.ContentYBounds.max}");
         data.RoleScrollDictionary[type] = parent;
         return parent;
     }
@@ -425,8 +426,8 @@ public static class RoleOptionMenu
     }
     public static void UpdateRoleDetailButtonColor(SpriteRenderer spriteRenderer, RoleOptionManager.RoleOption roleOption)
     {
-        if (roleOption == null) return;
-        if (spriteRenderer == null) return;
+        if (roleOption == null) throw new Exception("roleOption is null");
+        if (spriteRenderer == null) throw new Exception("spriteRenderer is null");
         if (roleOption.NumberOfCrews >= 1)
             spriteRenderer.color = Color.white;
         else
@@ -459,7 +460,6 @@ public static class RoleOptionMenu
         UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
-            Logger.Info($"Clicked {roleName}");
             // TODO: ロールの設定画面を表示する処理を追加
             RoleOptionSettings.ClickedRole(roleOption);
         }));
@@ -469,7 +469,6 @@ public static class RoleOptionMenu
             if (SelectedObject == null)
                 SelectedObject = obj.transform.FindChild("Selected").gameObject;
             SelectedObject.SetActive(false);
-            Logger.Info($"MouseOut {roleName}");
         }));
         passiveButton.OnMouseOver = new();
         passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
@@ -477,14 +476,12 @@ public static class RoleOptionMenu
             if (SelectedObject == null)
                 SelectedObject = obj.transform.FindChild("Selected").gameObject;
             SelectedObject.SetActive(true);
-            Logger.Info($"MouseOver {roleName}");
         }));
 
         // 右クリック検知用のコンポーネントを追加し、イベントを登録
         var rightClickDetector = obj.AddComponent<RightClickDetector>();
         rightClickDetector.OnRightClick.AddListener((UnityAction)(() =>
         {
-            Logger.Info($"Right-Clicked {roleName}");
             // TODO: 右クリック時の追加処理をここに記述（例：コンテキストメニューの表示など）
             if (roleOption.NumberOfCrews >= 1)
                 roleOption.NumberOfCrews = 0;
@@ -504,8 +501,6 @@ public static class RoleOptionMenu
     {
         public static void Postfix()
         {
-            // ロールオプションメニューを表示
-            Logger.Info("RoleOptionMenuStartPatch");
             CustomOptionsMenu.ShowOptionsMenu();
             // マスクが邪魔されるので非表示に
             UpdateHostInfoMaskArea(false);
@@ -548,8 +543,6 @@ public static class RoleOptionMenu
                     Transform child = currentScrollParent.GetChild(i);
                     // Scrollerの座標空間におけるchildの相対位置を取得（Transformのキャッシュによる最適化）
                     Vector3 relativePos = scrollerTransform.InverseTransformPoint(child.position);
-                    if (i == 0)
-                        Logger.Info($"child relative Y: {relativePos.y}");
                     // Scrollerの表示範囲に基づいて表示/非表示を決定
                     bool shouldDisplay = (relativePos.y < DISPLAY_UPPER_LIMIT && relativePos.y > DISPLAY_LOWER_LIMIT);
                     // 現在の状態と比較して変更が必要な場合のみSetActiveを呼び出す

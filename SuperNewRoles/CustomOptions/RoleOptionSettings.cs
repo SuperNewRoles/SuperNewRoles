@@ -73,7 +73,6 @@ namespace SuperNewRoles.CustomOptions
 
             ConfigurePassiveButton(passiveButton, () =>
             {
-                Logger.Info("クリックされた");
                 bool newValue = !checkMark.gameObject.activeSelf;
                 checkMark.gameObject.SetActive(newValue);
                 option.UpdateSelection(newValue ? (byte)1 : (byte)0);
@@ -123,7 +122,7 @@ namespace SuperNewRoles.CustomOptions
                 if (15 >= playerCount)
                     playerCount = 15;
                 roleOption.NumberOfCrews++;
-                if (roleOption.NumberOfCrews >= playerCount)
+                if (roleOption.NumberOfCrews > playerCount)
                     roleOption.NumberOfCrews = 0;
                 selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
                 if (isExist)
@@ -148,7 +147,6 @@ namespace SuperNewRoles.CustomOptions
             {
                 byte newSelection = option.Selection > 0 ? (byte)(option.Selection - 1) : (byte)(option.Selections.Length - 1);
                 UpdateOptionSelection(option, newSelection, selectedText);
-                Logger.Info("マイナスボタンがクリックされた");
             }, spriteRenderer);
         }
 
@@ -162,7 +160,6 @@ namespace SuperNewRoles.CustomOptions
             {
                 byte newSelection = option.Selection < option.Selections.Length - 1 ? (byte)(option.Selection + 1) : (byte)0;
                 UpdateOptionSelection(option, newSelection, selectedText);
-                Logger.Info("プラスボタンがクリックされた");
             }, spriteRenderer);
         }
 
@@ -220,6 +217,10 @@ namespace SuperNewRoles.CustomOptions
         public static void ClickedRole(RoleOptionManager.RoleOption roleOption)
         {
             float lastY = DefaultLastY;
+            // parentを破棄
+            var parent = RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner.Find("Parent");
+            if (parent != null)
+                GameObject.Destroy(parent.gameObject);
             int index = CreateRoleOptions(roleOption, ref lastY);
             UpdateScrollerBounds(index);
         }
@@ -227,13 +228,18 @@ namespace SuperNewRoles.CustomOptions
         private static int CreateRoleOptions(RoleOptionManager.RoleOption roleOption, ref float lastY)
         {
             int index = 0;
-            CreateNumberOfCrewsSelect(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, roleOption, ref lastY);
+            var parent = new GameObject("Parent");
+            parent.transform.SetParent(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner);
+            parent.transform.localScale = Vector3.one;
+            parent.transform.localPosition = Vector3.zero;
+            parent.layer = 5;
+            CreateNumberOfCrewsSelect(parent.transform, roleOption, ref lastY);
             foreach (var option in roleOption.Options)
             {
                 if (option.IsBooleanOption)
-                    CreateCheckBox(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, option, ref lastY);
+                    CreateCheckBox(parent.transform, option, ref lastY);
                 else
-                    CreateSelect(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner, option, ref lastY);
+                    CreateSelect(parent.transform, option, ref lastY);
                 index++;
             }
             return index;
