@@ -36,7 +36,7 @@ public static class RegionMenuOpenPatch
             if (arrow == null || arrow.gameObject == null) return;
             UnityEngine.Object.DestroyImmediate(arrow.gameObject);
 
-            ipField.transform.localPosition = new Vector3(0.225f, -1f, -100f);
+            ipField.transform.localPosition = new Vector3(-2.76f, 1.8f, -100f);
             ipField.characterLimit = 30;
             ipField.AllowSymbols = true;
             ipField.ForceUppercase = false;
@@ -73,7 +73,7 @@ public static class RegionMenuOpenPatch
             if (arrow == null || arrow.gameObject == null) return;
             UnityEngine.Object.DestroyImmediate(arrow.gameObject);
 
-            portField.transform.localPosition = new Vector3(0.225f, -1.75f, -100f);
+            portField.transform.localPosition = new Vector3(-2.76f, 1f, -100f);
             portField.characterLimit = 5;
             portField.SetText(ConfigRoles.Port.Value.ToString());
             __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) =>
