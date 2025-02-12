@@ -133,6 +133,44 @@ namespace SuperNewRoles.CustomOptions
             return optionInstance;
         }
 
+        private static GameObject CreateAssignPerSelect(Transform parent, RoleOptionManager.RoleOption roleOption, ref float lastY)
+        {
+            GameObject optionInstance = CreateOptionElement(parent, ModTranslation.GetString("AssignPer"), ref lastY, "Option_Select");
+            var selectedText = optionInstance.transform.Find("SelectedText").GetComponent<TextMeshPro>();
+            selectedText.text = roleOption.Percentage + "%";
+
+            var minusButton = optionInstance.transform.Find("Button_Minus").gameObject;
+            var minusPassiveButton = minusButton.AddComponent<PassiveButton>();
+            var minusSpriteRenderer = minusPassiveButton.GetComponent<SpriteRenderer>();
+            bool isExist = RoleOptionMenu.RoleOptionMenuObjectData.RoleDetailButtonDictionary.TryGetValue(roleOption.RoleId, out var roleDetailButton);
+            ConfigurePassiveButton(minusPassiveButton, () =>
+            {
+                roleOption.Percentage -= 10;
+                if (roleOption.Percentage < 0)
+                    roleOption.Percentage = 100;
+                if (roleOption.Percentage > 100)
+                    roleOption.Percentage = 100;
+                selectedText.text = roleOption.Percentage + "%";
+                if (isExist)
+                    RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            }, minusSpriteRenderer);
+
+            var plusButton = optionInstance.transform.Find("Button_Plus").gameObject;
+            var plusPassiveButton = plusButton.AddComponent<PassiveButton>();
+            var plusSpriteRenderer = plusPassiveButton.GetComponent<SpriteRenderer>();
+
+            ConfigurePassiveButton(plusPassiveButton, () =>
+            {
+                roleOption.Percentage += 10;
+                if (roleOption.Percentage > 100)
+                    roleOption.Percentage = 100;
+                selectedText.text = roleOption.Percentage + "%";
+                if (isExist)
+                    RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+            }, plusSpriteRenderer);
+            return optionInstance;
+        }
+
         private static void SetupSelectButtons(GameObject optionInstance, TextMeshPro selectedText, CustomOption option)
         {
             SetupMinusButton(optionInstance, selectedText, option);
@@ -236,6 +274,7 @@ namespace SuperNewRoles.CustomOptions
             parent.transform.localPosition = Vector3.zero;
             parent.layer = 5;
             CreateNumberOfCrewsSelect(parent.transform, roleOption, ref lastY);
+            CreateAssignPerSelect(parent.transform, roleOption, ref lastY);
             foreach (var option in roleOption.Options)
             {
                 if (option.IsBooleanOption)

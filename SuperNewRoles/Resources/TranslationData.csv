@@ -13,6 +13,8 @@ CustomOptionTrue,有効,Enabled,有効,有効
 BulkRoleButton,役職数一括設定,Bulk Role Setting
 NumberOfCrews,人数,Number of Crewmates,人數,人數
 NumberOfCrewsSelected,{0}人,{0} Beans
+MaxPeople,最大人数,Max Beans,最大人數,最大人數
+AssignPer,確率,Assign Percentage,確率,確率
 
 # SyncError
 SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>發生錯誤。</size>,<size=150%>發生錯誤。</size>

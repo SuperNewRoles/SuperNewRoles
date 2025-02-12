@@ -79,6 +79,13 @@ public class RoleOptionMenuObjectData
     public GameObject BulkRoleSettingsMenu { get; set; }
 
     /// <summary>
+    /// 一括設定メニューのスクローラーとその内部コンテンツ
+    /// </summary>
+    public Scroller BulkSettingsScroller { get; set; }
+    public Transform BulkSettingsInner { get; set; }
+    public GameObject CurrentBulkSettingsParent { get; set; }
+
+    /// <summary>
     /// RoleIdとRoleDetailButtonの対応を保存するDictionary
     /// </summary>
     public Dictionary<RoleId, GameObject> RoleDetailButtonDictionary { get; } = new();
@@ -323,16 +330,16 @@ public static class RoleOptionMenu
             GenerateRoleDetailButton(roleName, parent.transform, index, roleOption);
             index++;
         }
-
-        if (index < 25)
-        {
-            for (int i = 0; i < 250; i++)
-            {
-                GenerateRoleDetailButton("ロールを追加", parent.transform, index, RoleOptionManager.RoleOptions.FirstOrDefault());
-                index++;
-            }
-        }
-
+        /*
+                if (index < 25)
+                {
+                    for (int i = 0; i < 250; i++)
+                    {
+                        GenerateRoleDetailButton("ロールを追加", parent.transform, index, RoleOptionManager.RoleOptions.FirstOrDefault());
+                        index++;
+                    }
+                }
+        */
         // スクロール範囲の調整
         data.Scroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
         data.RoleScrollDictionary[type] = parent;

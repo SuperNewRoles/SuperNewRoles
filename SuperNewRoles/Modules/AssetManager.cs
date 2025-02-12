@@ -68,19 +68,25 @@ public static class AssetManager
     /// <returns></returns>
     public static T GetAsset<T>(string path, AssetBundleType assetBundleType = AssetBundleType.Sprite) where T : UnityEngine.Object
     {
-        //_cachedAssetsにないなら読み込まれてないってことだからreturn
-        if (!_cachedAssets.TryGetValue((byte)assetBundleType, out var _data))
+        // 指定されたAssetBundleTypeのキャッシュが存在しない場合はnullを返す
+        if (!_cachedAssets.TryGetValue((byte)assetBundleType, out var cache))
             return null;
-        //キャッシュにあるならそれを返す
+
+        // 型情報の文字列表現を1度だけ取得してキャッシュキーを生成
         Il2CppSystem.Type il2CppType = Il2CppType.Of<T>();
-        if (_data.TryGetValue(path + il2CppType.ToString(), out UnityEngine.Object result))
-            return result.TryCast<T>();
-        //読み込む
-        T rs = Bundles[(byte)assetBundleType]
-              .LoadAsset<T>(path).DontUnload();
-        //キャッシュに保存
-        _data[path + il2CppType.ToString()] = rs;
-        return rs;
+        string cacheKey = path + il2CppType.ToString();
+
+        // キャッシュに存在する場合、その値を返す
+        if (cache.TryGetValue(cacheKey, out UnityEngine.Object cachedObj))
+            return cachedObj.TryCast<T>();
+
+        // AssetBundleからアセットを読み込み、DontUnloadを適用
+        T asset = Bundles[(byte)assetBundleType]
+                  .LoadAsset<T>(path).DontUnload();
+
+        // 読み込んだアセットをキャッシュに保存
+        cache[cacheKey] = asset;
+        return asset;
     }
 
     public static byte[] ReadFully(this Stream input)

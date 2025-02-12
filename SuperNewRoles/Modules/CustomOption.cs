@@ -145,11 +145,13 @@ public static class RoleOptionManager
     {
         public RoleId RoleId { get; }
         public byte NumberOfCrews { get; set; }
+        public int Percentage { get; set; }
         public CustomOption[] Options { get; }
-        public RoleOption(RoleId roleId, byte numberOfCrews, CustomOption[] options)
+        public RoleOption(RoleId roleId, byte numberOfCrews, int percentage, CustomOption[] options)
         {
             RoleId = roleId;
             NumberOfCrews = numberOfCrews;
+            Percentage = percentage;
             Options = options;
         }
     }
@@ -162,7 +164,7 @@ public static class RoleOptionManager
             var options = CustomOptionManager.GetCustomOptions()
             .Where(option => option.ParentRole == role.Role)
             .ToArray();
-            return new RoleOption(role.Role, 0, options);
+            return new RoleOption(role.Role, 0, 0, options);
         }).ToArray();
     }
 }
@@ -330,6 +332,7 @@ public class FileOptionStorage : IOptionStorage
                 {
                     string roleIdStr = reader.ReadString();
                     byte numberOfCrews = reader.ReadByte();
+                    int percentage = reader.ReadInt32();
 
                     // RoleIdの文字列から RoleId 列挙体へ変換
                     if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj))
@@ -341,6 +344,7 @@ public class FileOptionStorage : IOptionStorage
                             if (roleOption.RoleId.Equals(roleId))
                             {
                                 roleOption.NumberOfCrews = numberOfCrews;
+                                roleOption.Percentage = percentage;
                                 break;
                             }
                         }
@@ -383,7 +387,8 @@ public class FileOptionStorage : IOptionStorage
             foreach (var roleOption in roleOptions)
             {
                 writer.Write(roleOption.RoleId.ToString());  // RoleIdを文字列として保存
-                writer.Write(roleOption.NumberOfCrews);        // NumberOfCrewsを保存
+                writer.Write(roleOption.NumberOfCrews);      // NumberOfCrewsを保存
+                writer.Write(roleOption.Percentage);         // Percentageを保存
             }
         }
     }
