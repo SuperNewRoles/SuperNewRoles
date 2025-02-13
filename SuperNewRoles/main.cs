@@ -54,7 +54,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
     }
     private static void RegisterCustomObjects()
     {
-        ClassInjector.RegisterTypeInIl2Cpp<OptionsMenuSelectorData>();
         var rightClickDetectorOptions = new RegisterTypeOptions { Interfaces = new[] { typeof(IPointerClickHandler) } };
         ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
     }

@@ -24,7 +24,7 @@ public enum RoleOptionMenuType
 /// ロールオプションメニューのオブジェクトデータを管理するクラス
 /// メニューのオブジェクト、タイトルテキスト、スクローラーなどの情報を保持
 /// </summary>
-public class RoleOptionMenuObjectData
+public class RoleOptionMenuObjectData : OptionMenuBase
 {
     /// <summary>
     /// デフォルトのメニュースケール
@@ -101,7 +101,7 @@ public class RoleOptionMenuObjectData
     /// <summary>
     /// コンストラクター：メニューオブジェクトからデータを初期化
     /// </summary>
-    public RoleOptionMenuObjectData(GameObject roleOptionMenuObject, RoleOptionMenuType currentRoleType)
+    public RoleOptionMenuObjectData(GameObject roleOptionMenuObject, RoleOptionMenuType currentRoleType) : base()
     {
         MenuObject = roleOptionMenuObject;
         TitleText = roleOptionMenuObject.transform.Find("TitleText").GetComponent<TextMeshPro>();
@@ -109,6 +109,12 @@ public class RoleOptionMenuObjectData
 
         // BoxCollider2Dをキャッシュ
         MenuObjectCollider = roleOptionMenuObject.GetComponent<BoxCollider2D>();
+    }
+    public override void Hide()
+    {
+        if (MenuObject != null)
+            MenuObject.SetActive(false);
+        BulkRoleSettings.HideBulkRoleSettings();
     }
 }
 
@@ -233,7 +239,7 @@ public static class RoleOptionMenu
     /// ロールオプションメニューがnullかどうかをチェックする
     /// </summary>
     private static bool IsRoleOptionMenuNull() =>
-        RoleOptionMenuObjectData == null || RoleOptionMenuObjectData.MenuObject == null;
+        RoleOptionMenuObjectData?.MenuObject == null;
 
     /// <summary>
     /// メニューのタイトルを指定されたタイプに更新する

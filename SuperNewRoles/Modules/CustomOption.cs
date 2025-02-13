@@ -12,11 +12,23 @@ namespace SuperNewRoles.Modules;
 
 public static class CustomOptionManager
 {
-    [CustomOptionInt("TestInt", 0, 100, 1, 5)]
+    public static CustomOptionCategory PresetSettings;
+    public static CustomOptionCategory GeneralSettings;
+    public static CustomOptionCategory ModeSettings;
+    public static CustomOptionCategory GameSettings;
+    public static CustomOptionCategory MapSettings;
+    public static CustomOptionCategory MapEditSettings;
+
+    [CustomOptionInt("TestInt", 0, 100, 1, 5, parentFieldName: nameof(PresetSettings))]
     public static int TestInt;
+
+
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
     private static List<CustomOption> CustomOptions { get; } = new();
+    public static List<CustomOptionCategory> OptionCategories { get; } = new();
+    private static Dictionary<string, CustomOptionCategory> CategoryByFieldName { get; } = new();
     public static IReadOnlyList<CustomOption> GetCustomOptions() => CustomOptions.AsReadOnly();
+    public static IReadOnlyList<CustomOptionCategory> GetOptionCategories() => OptionCategories.AsReadOnly();
 
     // カスタムオプションをロードするメソッド
     public static void Load()
@@ -34,6 +46,15 @@ public static class CustomOptionManager
         {
             foreach (var field in type.GetFields())
             {
+                // カテゴリーフィールドの場合
+                if (field.FieldType == typeof(CustomOptionCategory))
+                {
+                    var category = new CustomOptionCategory(field.Name);
+                    field.SetValue(null, category);
+                    CategoryByFieldName[field.Name] = category;
+                    continue;
+                }
+
                 var attribute = field.GetCustomAttribute<CustomOptionBaseAttribute>();
                 if (attribute == null)
                 {
@@ -67,17 +88,27 @@ public static class CustomOptionManager
         {
             if (!string.IsNullOrEmpty(option.Attribute.ParentFieldName))
             {
-                if (optionsByFieldName.TryGetValue(option.Attribute.ParentFieldName, out var parentOption))
+                if (CategoryByFieldName.TryGetValue(option.Attribute.ParentFieldName, out var category))
+                {
+                    category.AddOption(option);
+                    Logger.Info($"オプションをカテゴリーに追加: {option.Name} -> {category.Name}");
+                }
+                else if (optionsByFieldName.TryGetValue(option.Attribute.ParentFieldName, out var parentOption))
                 {
                     option.SetParentOption(parentOption);
                     Logger.Info($"親オプションを設定: {option.Name} -> {parentOption.Name}");
                 }
                 else
                 {
-                    Logger.Warning($"親オプションが見つかりませんでした: {option.Attribute.ParentFieldName}");
+                    Logger.Warning($"親オプションまたはカテゴリーが見つかりませんでした: {option.Attribute.ParentFieldName}");
                 }
             }
         }
+    }
+
+    internal static void RegisterOptionCategory(CustomOptionCategory category)
+    {
+        OptionCategories.Add(category);
     }
 }
 
@@ -141,6 +172,7 @@ public class CustomOption
         parent.ChildrenOption.Add(this);
     }
 }
+
 public static class RoleOptionManager
 {
     public class RoleOption
@@ -170,6 +202,7 @@ public static class RoleOptionManager
         }).ToArray();
     }
 }
+
 public static class CustomOptionSaver
 {
     private static readonly IOptionStorage Storage;
@@ -445,6 +478,7 @@ public enum CustomOptionType
     Byte,
     Select
 }
+
 public static class ComputeMD5Hash
 {
     private static readonly MD5 md5 = MD5.Create();
@@ -455,6 +489,7 @@ public static class ComputeMD5Hash
         return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant(); // ハッシュを16進数の文字列に変換
     }
 }
+
 [AttributeUsage(AttributeTargets.Field)]
 public abstract class CustomOptionBaseAttribute : Attribute
 {
@@ -587,4 +622,36 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
         [false, true];
 
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue ? 1 : 0);
+}
+
+public class CustomOptionCategory
+{
+    public string Id { get; }
+    public string Name { get; }
+    public List<CustomOption> Options { get; } = new();
+
+    public CustomOptionCategory(string name)
+    {
+        Id = ComputeMD5Hash.Compute(name);
+        Name = name; // 後でTranslationを使用して翻訳する
+        RegisterCategory(this);
+    }
+
+    private static void RegisterCategory(CustomOptionCategory category)
+    {
+        CustomOptionManager.RegisterOptionCategory(category);
+    }
+
+    public void AddOption(CustomOption option)
+    {
+        if (!Options.Contains(option))
+        {
+            Options.Add(option);
+        }
+    }
+}
+
+public interface ICustomOptionCategory
+{
+    string CategoryName { get; }
 }

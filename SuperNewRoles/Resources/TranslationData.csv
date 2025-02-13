@@ -15,6 +15,12 @@ NumberOfCrews,人数,Number of Crewmates,人數,人數
 NumberOfCrewsSelected,{0}人,{0} Beans
 MaxPeople,最大人数,Max Beans,最大人數,最大人數
 AssignPer,確率,Assign Percentage,確率,確率
+PresetSettings,プリセット設定,Preset Settings,預設設定,預設設定
+GeneralSettings,全体設定,General Settings,整體設定,整體設定
+ModeSettings,モード設定,Mode Settings,模式設定,模式設定
+GameSettings,ゲーム設定,Game Settings,遊戲設定,遊戲設定
+MapSettings,マップ設定,Map Settings,地圖設定,地圖設定
+MapEditSettings,マップ改造,Map Edit Settings,地圖改造,地圖改造
 
 # SyncError
 SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>發生錯誤。</size>,<size=150%>發生錯誤。</size>

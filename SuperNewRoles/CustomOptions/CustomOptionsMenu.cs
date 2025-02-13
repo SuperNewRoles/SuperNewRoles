@@ -172,8 +172,7 @@ public static class CustomOptionsMenu
     {
         Logger.Info($"Category Clicked: {categoryName}");
 
-        RoleOptionMenu.HideRoleOptionMenu();
-        BulkRoleSettings.HideBulkRoleSettings();
+        OptionMenuBase.HideAll();
         SetVanillaTabActive(false);
 
         if (categoryName == MenuCategories.VANILLA)
