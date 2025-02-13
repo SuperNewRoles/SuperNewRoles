@@ -40,7 +40,7 @@ public static class StandardOptionMenu
         obj.transform.SetParent(StandardOptionMenuObjectData.Instance.LeftAreaInner.transform);
         obj.transform.localScale = Vector3.one * 0.48f;
 
-        obj.transform.localPosition = new Vector3(-3.61f, 1.7f - (index * 0.6f), -0.21f);
+        obj.transform.localPosition = new Vector3(-3.614f, 1.4f - (index * 0.6125f), -0.21f);
         obj.transform.Find("Text").GetComponent<TMPro.TextMeshPro>().text = text;
 
         var passiveButton = obj.AddComponent<PassiveButton>();
@@ -54,6 +54,10 @@ public static class StandardOptionMenu
         {
             // TODO: ロールの設定画面を表示する処理を追加
             Logger.Info("ロールの設定画面を表示する処理を追加");
+            if (CustomOptionManager.CategoryByFieldName.TryGetValue(text, out var category) && category == CustomOptionManager.PresetSettings)
+            {
+                ShowPresetOptionMenu();
+            }
         }));
 
         passiveButton.OnMouseOut = new();
@@ -73,6 +77,10 @@ public static class StandardOptionMenu
         }));
 
         return obj;
+    }
+    public static void ShowPresetOptionMenu()
+    {
+
     }
 }
 public class StandardOptionMenuObjectData : OptionMenuBase

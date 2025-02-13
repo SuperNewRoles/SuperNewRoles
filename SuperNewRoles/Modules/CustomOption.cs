@@ -26,7 +26,7 @@ public static class CustomOptionManager
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
     private static List<CustomOption> CustomOptions { get; } = new();
     public static List<CustomOptionCategory> OptionCategories { get; } = new();
-    private static Dictionary<string, CustomOptionCategory> CategoryByFieldName { get; } = new();
+    public static Dictionary<string, CustomOptionCategory> CategoryByFieldName { get; } = new();
     public static IReadOnlyList<CustomOption> GetCustomOptions() => CustomOptions.AsReadOnly();
     public static IReadOnlyList<CustomOptionCategory> GetOptionCategories() => OptionCategories.AsReadOnly();
 
