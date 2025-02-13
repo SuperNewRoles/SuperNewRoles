@@ -6,91 +6,95 @@ using UnityEngine.Events;
 namespace SuperNewRoles.CustomOptions;
 public static class StandardOptionMenu
 {
+    // UI要素生成のヘルパーメソッド
+    private static GameObject InstantiateUIElement(string assetName, Transform parent, Vector3 localPosition, Vector3 localScale)
+    {
+        GameObject obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(assetName), parent);
+        obj.transform.localScale = localScale;
+        obj.transform.localPosition = localPosition;
+        return obj;
+    }
+
     public static void ShowStandardOptionMenu()
     {
         if (StandardOptionMenuObjectData.Instance?.StandardOptionMenu == null)
             Initialize();
         StandardOptionMenuObjectData.Instance.StandardOptionMenu.SetActive(true);
     }
+
     public static void Initialize()
     {
-        var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("StandardOptionMenu"), RoleOptionMenu.GetGameSettingMenu().transform);
-        obj.transform.localScale = Vector3.one;
-        obj.transform.localPosition = new(0, 0, -2f);
-
-        new StandardOptionMenuObjectData(obj);
+        // ヘルパーを利用してStandardOptionMenuを生成
+        var menu = InstantiateUIElement("StandardOptionMenu", RoleOptionMenu.GetGameSettingMenu().transform, new Vector3(0, 0, -2f), Vector3.one);
+        new StandardOptionMenuObjectData(menu);
         int index = 0;
         foreach (var category in CustomOptionManager.OptionCategories)
         {
             GenerateRoleDetailButton(category, index++);
         }
     }
+
     /// <summary>
     /// ロール詳細ボタンを生成する
     /// </summary>
-    /// <param name="roleName">ロールの名前</param>
+    /// <param name="category">ロールのカテゴリー情報</param>
     /// <param name="index">ボタンのインデックス（位置計算用）</param>
-    /// <param name="roleOption">ロールのオプション情報</param>
     /// <returns>生成されたボタンのGameObject</returns>
-    public static GameObject GenerateRoleDetailButton(CustomOptionCategory categorya, int index)
+    public static GameObject GenerateRoleDetailButton(CustomOptionCategory category, int index)
     {
         if (StandardOptionMenuObjectData.Instance == null)
             return null;
 
-        var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(RoleOptionMenu.ROLE_DETAIL_BUTTON_ASSET_NAME));
-        obj.transform.SetParent(StandardOptionMenuObjectData.Instance.LeftAreaInner.transform);
-        obj.transform.localScale = Vector3.one * 0.48f;
+        // ヘルパーを利用してロール詳細ボタンを生成
+        var obj = InstantiateUIElement(RoleOptionMenu.ROLE_DETAIL_BUTTON_ASSET_NAME, StandardOptionMenuObjectData.Instance.LeftAreaInner.transform,
+            new Vector3(-3.614f, 1.4f - (index * 0.6125f), -0.21f), Vector3.one * 0.48f);
 
-        obj.transform.localPosition = new Vector3(-3.614f, 1.4f - (index * 0.6125f), -0.21f);
-        obj.transform.Find("Text").GetComponent<TMPro.TextMeshPro>().text = ModTranslation.GetString(categorya.Name);
+        // ボタンのテキストを設定
+        obj.transform.Find("Text").GetComponent<TMPro.TextMeshPro>().text = ModTranslation.GetString(category.Name);
 
         var passiveButton = obj.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[1] { obj.GetComponent<BoxCollider2D>() };
         passiveButton.OnClick = new();
 
-        GameObject selectedObject = null;
-        var spriteRenderer = obj.GetComponent<SpriteRenderer>();
+        // "Selected"オブジェクトを事前に取得
+        GameObject selectedObject = obj.transform.Find("Selected")?.gameObject;
 
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
-            // TODO: ロールの設定画面を表示する処理を追加
-            Logger.Info($"{categorya.Name}");
-            if (categorya == CustomOptionManager.PresetSettings)
+            Logger.Info($"{category.Name}");
+            if (category == CustomOptionManager.PresetSettings)
             {
                 ShowPresetOptionMenu();
             }
         }));
 
-        passiveButton.OnMouseOut = new();
+        passiveButton.OnMouseOut = new UnityEvent();
         passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
         {
-            if (selectedObject == null)
-                selectedObject = obj.transform.Find("Selected").gameObject;
-            selectedObject.SetActive(false);
+            selectedObject?.SetActive(false);
         }));
 
-        passiveButton.OnMouseOver = new();
+        passiveButton.OnMouseOver = new UnityEvent();
         passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
         {
-            if (selectedObject == null)
-                selectedObject = obj.transform.Find("Selected").gameObject;
-            selectedObject.SetActive(true);
+            selectedObject?.SetActive(true);
         }));
 
         return obj;
     }
+
     public static void ShowPresetOptionMenu()
     {
         float lastY = 1.6f;
         GenerateStandardOptionCheck(CustomOptionManager.CustomOptions.FirstOrDefault(x => x.IsBooleanOption), ref lastY);
         GenerateStandardOptionSelect(CustomOptionManager.CustomOptions.FirstOrDefault(x => !x.IsBooleanOption), ref lastY);
     }
+
     public static void GenerateStandardOptionCheck(CustomOption option, ref float lastY)
     {
-        // StandardOption_Check from AssetManager
-        var check = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("StandardOption_Check"), StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
-        check.transform.localScale = Vector3.one * 0.4f;
-        check.transform.localPosition = new Vector3(3.9f, lastY, -0.21f);
+        // ヘルパーを利用してStandardOption_Checkを生成
+        var check = InstantiateUIElement("StandardOption_Check", StandardOptionMenuObjectData.Instance.RightAreaInner.transform,
+            new Vector3(3.9f, lastY, -0.21f), Vector3.one * 0.4f);
         lastY -= 0.7f;
 
         // オプション名を設定
@@ -117,12 +121,12 @@ public static class StandardOptionMenu
             }
         }, spriteRenderer);
     }
+
     public static void GenerateStandardOptionSelect(CustomOption option, ref float lastY)
     {
-        // StandardOption_Selected from AssetManager
-        var selected = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("StandardOption_Select"), StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
-        selected.transform.localScale = Vector3.one * 0.4f;
-        selected.transform.localPosition = new Vector3(3.9f, lastY, -0.21f);
+        // ヘルパーを利用してStandardOption_Selectを生成
+        var selected = InstantiateUIElement("StandardOption_Select", StandardOptionMenuObjectData.Instance.RightAreaInner.transform,
+            new Vector3(3.9f, lastY, -0.21f), Vector3.one * 0.4f);
         lastY -= 0.7f;
 
         // オプション名を設定
@@ -185,13 +189,13 @@ public static class StandardOptionMenu
     {
         button.OnClick = new();
         button.OnClick.AddListener((UnityAction)onClick);
-        button.OnMouseOver = new();
+        button.OnMouseOver = new UnityEvent();
         button.OnMouseOver.AddListener((UnityAction)(() =>
         {
             if (spriteRenderer != null)
                 spriteRenderer.color = new Color32(45, 235, 198, 255);
         }));
-        button.OnMouseOut = new();
+        button.OnMouseOut = new UnityEvent();
         button.OnMouseOut.AddListener((UnityAction)(() =>
         {
             if (spriteRenderer != null)
@@ -199,6 +203,7 @@ public static class StandardOptionMenu
         }));
     }
 }
+
 public class StandardOptionMenuObjectData : OptionMenuBase
 {
     public static StandardOptionMenuObjectData Instance { get; private set; }
