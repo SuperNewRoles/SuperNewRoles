@@ -21,6 +21,7 @@ public static class CustomOptionsMenu
         public const string CREWMATE = "Setting_Crewmate";
         public const string IMPOSTOR = "Setting_Impostor";
         public const string NEUTRAL = "Setting_Neutral";
+        public const string STANDARD = "Setting_Standard";
     }
 
     /// <summary>
@@ -171,22 +172,23 @@ public static class CustomOptionsMenu
     {
         Logger.Info($"Category Clicked: {categoryName}");
 
+        RoleOptionMenu.HideRoleOptionMenu();
+        BulkRoleSettings.HideBulkRoleSettings();
+        SetVanillaTabActive(false);
+
         if (categoryName == MenuCategories.VANILLA)
         {
             SetVanillaTabActive(true);
-            RoleOptionMenu.HideRoleOptionMenu();
             return;
         }
-
-        SetVanillaTabActive(false);
 
         if (IsRoleOptionMenuCategory(categoryName))
         {
             RoleOptionMenu.ShowRoleOptionMenu(ConvertToRoleOptionMenuType(categoryName));
         }
-        else
+        else if (categoryName == MenuCategories.STANDARD)
         {
-            RoleOptionMenu.HideRoleOptionMenu();
+            StandardOptionMenu.ShowStandardOptionMenu();
         }
     }
 

@@ -123,13 +123,28 @@ namespace SuperNewRoles.CustomOptions
                 byte playerCount = (byte)PlayerControl.AllPlayerControls.Count;
                 if (15 >= playerCount)
                     playerCount = 15;
+                byte oldValue = roleOption.NumberOfCrews;
                 roleOption.NumberOfCrews++;
                 if (roleOption.NumberOfCrews > playerCount)
                     roleOption.NumberOfCrews = 0;
                 selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
                 if (isExist)
                     RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+
+                if (oldValue == 0 && roleOption.NumberOfCrews > 0 && roleOption.Percentage == 0)
+                {
+                    roleOption.Percentage = 100;
+                    var perText = optionInstance.transform.parent.Find("Option_Select(Clone)")?.Find("SelectedText")?.GetComponent<TextMeshPro>();
+                    if (perText != null)
+                    {
+                        perText.text = "100%";
+                    }
+                }
             }, plusSpriteRenderer);
+
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleNumbersOfCrewsText = selectedText;
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleId = roleOption.RoleId;
+
             return optionInstance;
         }
 
@@ -163,7 +178,7 @@ namespace SuperNewRoles.CustomOptions
             {
                 roleOption.Percentage += 10;
                 if (roleOption.Percentage > 100)
-                    roleOption.Percentage = 100;
+                    roleOption.Percentage = 0;
                 selectedText.text = roleOption.Percentage + "%";
                 if (isExist)
                     RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
@@ -209,49 +224,10 @@ namespace SuperNewRoles.CustomOptions
             selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
         }
 
-        public static void GenerateScroll(Transform parent)
+        public static void SetupScroll(Transform parent)
         {
-            var scrollerObject = CreateScrollerObject(parent);
-            var innerTransform = CreateInnerTransform(scrollerObject.transform);
-            ConfigureScroller(scrollerObject.GetComponent<Scroller>(), innerTransform);
-        }
-
-        private static GameObject CreateScrollerObject(Transform parent)
-        {
-            var scrollerObject = new GameObject("SettingsScroller");
-            var scroller = scrollerObject.AddComponent<Scroller>();
-            scroller.transform.SetParent(parent);
-            scroller.gameObject.layer = 5;
-            scroller.transform.localScale = Vector3.one;
-            scroller.transform.localPosition = new Vector3(ScrollerXPosition, 0f, 0f);
-
-            return scrollerObject;
-        }
-
-        private static Transform CreateInnerTransform(Transform scrollerTransform)
-        {
-            var innerTransform = new GameObject("InnerContent").transform;
-            innerTransform.SetParent(scrollerTransform);
-            innerTransform.localScale = Vector3.one;
-            innerTransform.localPosition = Vector3.zero;
-            return innerTransform;
-        }
-
-        private static void ConfigureScroller(Scroller scroller, Transform innerTransform)
-        {
-            scroller.allowX = false;
-            scroller.allowY = true;
-            scroller.active = true;
-            scroller.velocity = Vector2.zero;
-            scroller.ContentXBounds = new FloatRange(0, 0);
-            scroller.ContentYBounds = new FloatRange(0, 0);
-            scroller.enabled = true;
-            scroller.Inner = innerTransform;
-            scroller.DragScrollSpeed = 3f;
-            scroller.Colliders = new[] { RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform.FindChild("Hitbox_Settings").GetComponent<BoxCollider2D>() };
-
-            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller = scroller;
-            RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner = innerTransform;
+            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller = parent.transform.Find("SettingsScroller").GetComponent<Scroller>();
+            RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner = parent.transform.Find("SettingsScroller/InnerContent");
         }
 
         public static void ClickedRole(RoleOptionManager.RoleOption roleOption)
@@ -267,7 +243,6 @@ namespace SuperNewRoles.CustomOptions
 
         private static int CreateRoleOptions(RoleOptionManager.RoleOption roleOption, ref float lastY)
         {
-            int index = 0;
             var parent = new GameObject("Parent");
             parent.transform.SetParent(RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner);
             parent.transform.localScale = Vector3.one;
@@ -275,6 +250,7 @@ namespace SuperNewRoles.CustomOptions
             parent.layer = 5;
             CreateNumberOfCrewsSelect(parent.transform, roleOption, ref lastY);
             CreateAssignPerSelect(parent.transform, roleOption, ref lastY);
+            int index = 2;
             foreach (var option in roleOption.Options)
             {
                 if (option.IsBooleanOption)
@@ -290,6 +266,7 @@ namespace SuperNewRoles.CustomOptions
         {
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max =
                 index < 5 ? 0f : (index - 4) * DefaultRate;
+            Logger.Info($"Updated Max {index} {RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max}");
         }
 
         private static string FormatOptionValue(object value, CustomOption option)

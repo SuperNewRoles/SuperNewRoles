@@ -66,6 +66,9 @@ public class RoleOptionMenuObjectData
     public Dictionary<RoleOptionMenuType, float> ScrollPositionDictionary { get; } = new();
     public RoleOptionMenuType CurrentRoleType { get; set; }
 
+    public RoleId CurrentRoleId { get; set; }
+    public TextMeshPro CurrentRoleNumbersOfCrewsText { get; set; }
+
     /// <summary>
     /// メニューのBoxCollider2Dをキャッシュ
     /// </summary>
@@ -84,6 +87,11 @@ public class RoleOptionMenuObjectData
     public Scroller BulkSettingsScroller { get; set; }
     public Transform BulkSettingsInner { get; set; }
     public GameObject CurrentBulkSettingsParent { get; set; }
+
+    /// <summary>
+    /// 標準設定メニューのGameObject
+    /// </summary>
+    public GameObject StandardOptionMenu { get; set; }
 
     /// <summary>
     /// RoleIdとRoleDetailButtonの対応を保存するDictionary
@@ -143,7 +151,7 @@ public static class RoleOptionMenu
     /// <summary>
     /// GameSettingMenuを取得またはキャッシュから返す
     /// </summary>
-    private static GameSettingMenu GetGameSettingMenu()
+    public static GameSettingMenu GetGameSettingMenu()
     {
         if (cachedGameSettingMenu == null)
         {
@@ -171,8 +179,7 @@ public static class RoleOptionMenu
         RoleOptionMenuObjectData.CurrentRoleType = type;
 
         // 一括設定メニューを非表示にする
-        if (RoleOptionMenuObjectData.BulkRoleSettingsMenu != null)
-            RoleOptionMenuObjectData.BulkRoleSettingsMenu.SetActive(false);
+        BulkRoleSettings.HideBulkRoleSettings();
 
         // スクロール位置とUI状態のリセット
         ResetScrollUIState(targetScroll, type);
@@ -186,7 +193,7 @@ public static class RoleOptionMenu
             // 役職数一括設定を開くボタンを初期化
             BulkRoleSettings.InitializeBulkRoleButton();
             // Scroll生成部分
-            RoleOptionSettings.GenerateScroll(RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform);
+            RoleOptionSettings.SetupScroll(RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform);
         }
     }
 
@@ -499,6 +506,7 @@ public static class RoleOptionMenu
             else
                 roleOption.NumberOfCrews = 1;
             UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
+            UpdateNumOfCrewsSelect(roleOption);
         }));
 
         // RoleDetailButtonDictionaryに追加
@@ -533,6 +541,12 @@ public static class RoleOptionMenu
         var maskArea = GameStartManager.Instance.transform.FindChild("StartGameArea/Host Info/Content/Player Area/MaskArea");
         if (maskArea != null)
             maskArea.gameObject.SetActive(active);
+    }
+    public static void UpdateNumOfCrewsSelect(RoleOptionManager.RoleOption roleOption)
+    {
+        if (RoleOptionMenuObjectData == null) return;
+        if (RoleOptionMenuObjectData.CurrentRoleNumbersOfCrewsText != null && RoleOptionMenuObjectData.CurrentRoleId == roleOption.RoleId)
+            RoleOptionMenuObjectData.CurrentRoleNumbersOfCrewsText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
     }
     [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
     public static class RoleOptionMenuLateUpdatePatch

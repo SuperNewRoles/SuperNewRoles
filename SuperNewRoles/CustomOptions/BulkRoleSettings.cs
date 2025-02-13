@@ -47,27 +47,14 @@ namespace SuperNewRoles.CustomOptions
         public static void SetupScroller(GameObject obj)
         {
             var scrollerBase = obj.transform.Find("Scroller");
-            var scroller = scrollerBase.gameObject.AddComponent<Scroller>();
-            var innerTransform = new GameObject("InnerContent").transform;
-            innerTransform.SetParent(scrollerBase.transform);
-            innerTransform.localScale = Vector3.one;
-            innerTransform.localPosition = new(0, 0, -2f);
-
-            scroller.allowX = false;
-            scroller.allowY = true;
-            scroller.active = true;
-            scroller.velocity = Vector2.zero;
-            scroller.ContentXBounds = new FloatRange(0, 0);
-            // 縦のスクロールの幅
-            scroller.ContentYBounds = new FloatRange(0, 0);
-            scroller.enabled = true;
-            scroller.Inner = innerTransform;
-            scroller.DragScrollSpeed = 1f;
-            scroller.Colliders = new[] { scrollerBase.FindChild("Hitbox").GetComponent<BoxCollider2D>() };
-
             // RoleOptionMenuObjectDataに一括設定メニュー用のスクローラーと内部コンテンツを保存
-            RoleOptionMenu.RoleOptionMenuObjectData.BulkSettingsScroller = scroller;
-            RoleOptionMenu.RoleOptionMenuObjectData.BulkSettingsInner = innerTransform;
+            RoleOptionMenu.RoleOptionMenuObjectData.BulkSettingsScroller = scrollerBase.GetComponent<Scroller>();
+            RoleOptionMenu.RoleOptionMenuObjectData.BulkSettingsInner = scrollerBase.transform.Find("InnerContent");
+        }
+        public static void HideBulkRoleSettings()
+        {
+            if (RoleOptionMenu.RoleOptionMenuObjectData?.BulkRoleSettingsMenu != null)
+                RoleOptionMenu.RoleOptionMenuObjectData.BulkRoleSettingsMenu.SetActive(false);
         }
         private static void GenerateBulkRoleSetting(Transform innerTransform, int index, RoleOptionManager.RoleOption roleOption)
         {
@@ -146,6 +133,24 @@ namespace SuperNewRoles.CustomOptions
 
             text.text = newValue.ToString();
             roleOption.NumberOfCrews = (byte)newValue;
+
+            // 人数が0から1以上に変更され、かつ確率が0%の場合、100%に設定
+            if (currentValue == 0 && newValue > 0 && roleOption.Percentage == 0)
+            {
+                roleOption.Percentage = 100;
+                var perSelect = text.transform.parent.parent.Find("Select_Per");
+                if (perSelect != null)
+                {
+                    var perSelectedText = perSelect.Find("SelectedText").GetComponent<TextMeshPro>();
+                    if (perSelectedText != null)
+                    {
+                        perSelectedText.text = "100%";
+                    }
+                }
+            }
+            RoleOptionMenu.UpdateNumOfCrewsSelect(roleOption);
+            if (RoleOptionMenu.RoleOptionMenuObjectData.RoleDetailButtonDictionary.TryGetValue(roleOption.RoleId, out var roleDetailButton))
+                RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
         }
         private static void UpdatePercentageValue(TextMeshPro text, int delta, RoleOptionManager.RoleOption roleOption)
         {
@@ -182,7 +187,7 @@ namespace SuperNewRoles.CustomOptions
         {
             var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("BulkRoleButton"));
             obj.transform.SetParent(RoleOptionMenu.RoleOptionMenuObjectData.MenuObject.transform);
-            obj.transform.localPosition = new Vector3(4.7f, 8.55f, -2f);
+            obj.transform.localPosition = new Vector3(4.7f, 8.55f, -4f);
             obj.transform.localScale = Vector3.one * 2.15f;
 
             obj.transform.Find("Text").GetComponent<TextMeshPro>().text = ModTranslation.GetString("BulkRoleButton");
