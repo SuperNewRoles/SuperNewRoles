@@ -95,6 +95,7 @@ public class CustomOption
     public object[] Selections { get; }
     public RoleId? ParentRole { get; private set; }
     public CustomOption? ParentOption { get; private set; }
+    public List<CustomOption> ChildrenOption { get; } = new();
     /// <summary>
     /// このオプションがブール値（true/false）のオプションかどうかを示します。
     /// CustomOptionBoolAttributeが設定されている場合にtrueを返します。
@@ -137,6 +138,7 @@ public class CustomOption
     public void SetParentOption(CustomOption parent)
     {
         ParentOption = parent;
+        parent.ChildrenOption.Add(this);
     }
 }
 public static class RoleOptionManager
