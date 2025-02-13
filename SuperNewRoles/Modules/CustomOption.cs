@@ -24,7 +24,7 @@ public static class CustomOptionManager
 
 
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
-    private static List<CustomOption> CustomOptions { get; } = new();
+    public static List<CustomOption> CustomOptions { get; } = new();
     public static List<CustomOptionCategory> OptionCategories { get; } = new();
     public static Dictionary<string, CustomOptionCategory> CategoryByFieldName { get; } = new();
     public static IReadOnlyList<CustomOption> GetCustomOptions() => CustomOptions.AsReadOnly();
@@ -46,8 +46,8 @@ public static class CustomOptionManager
         {
             foreach (var field in type.GetFields())
             {
-                // カテゴリーフィールドの場合
-                if (field.FieldType == typeof(CustomOptionCategory))
+                // カテゴリーフィールドの場合、staticフィールドのみを対象にする
+                if (field.IsStatic && field.FieldType == typeof(CustomOptionCategory))
                 {
                     var category = new CustomOptionCategory(field.Name);
                     field.SetValue(null, category);
