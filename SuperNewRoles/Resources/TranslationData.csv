@@ -21,6 +21,8 @@ ModeSettings,モード設定,Mode Settings,模式設定,模式設定
 GameSettings,ゲーム設定,Game Settings,遊戲設定,遊戲設定
 MapSettings,マップ設定,Map Settings,地圖設定,地圖設定
 MapEditSettings,マップ改造,Map Edit Settings,地圖改造,地圖改造
+PresetDefault,プリセット {0},Preset {0}
+PresetSelected,プリセット {0},Preset {0},預設 {0},預設 {0}
 
 # SyncError
 SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>發生錯誤。</size>,<size=150%>發生錯誤。</size>

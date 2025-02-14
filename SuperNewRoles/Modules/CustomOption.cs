@@ -19,8 +19,22 @@ public static class CustomOptionManager
     public static CustomOptionCategory MapSettings;
     public static CustomOptionCategory MapEditSettings;
 
-    [CustomOptionInt("TestInt", 0, 100, 1, 5, parentFieldName: nameof(PresetSettings))]
+    [CustomOptionInt("TestInt", 0, 100, 1, 5, parentFieldName: nameof(GeneralSettings))]
     public static int TestInt;
+    [CustomOptionInt("TestInt2", 0, 100, 1, 5, parentFieldName: nameof(TestInt))]
+    public static int TestInt2;
+    [CustomOptionInt("TestInt3", 0, 100, 1, 5, parentFieldName: nameof(TestInt2))]
+    public static int TestInt3;
+    [CustomOptionInt("TestInt4", 0, 100, 1, 5, parentFieldName: nameof(TestInt))]
+    public static int TestInt4;
+    [CustomOptionInt("TestInt5", 0, 100, 1, 5, parentFieldName: nameof(GeneralSettings))]
+    public static int TestInt5;
+    [CustomOptionInt("TestInt6", 0, 100, 1, 5, parentFieldName: nameof(GameSettings))]
+    public static int TestInt6;
+    [CustomOptionInt("TestInt7", 0, 100, 1, 5, parentFieldName: nameof(TestInt6))]
+    public static int TestInt7;
+    [CustomOptionBool("TestInt8", false, parentFieldName: nameof(TestInt7))]
+    public static bool TestInt8;
 
 
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
@@ -207,8 +221,32 @@ public static class CustomOptionSaver
 {
     private static readonly IOptionStorage Storage;
     private const byte CurrentVersion = 1;
-    private const int CurrentPreset = 0;
+    private static int currentPreset = 0;
     public static bool IsLoaded { get; private set; } = false;
+    private static Dictionary<int, string> presetNames = new();
+    public static IReadOnlyDictionary<int, string> PresetNames => presetNames;
+
+    public static int CurrentPreset
+    {
+        get => currentPreset;
+        private set => currentPreset = value;
+    }
+
+    public static string GetPresetName(int preset)
+    {
+        if (presetNames.TryGetValue(preset, out var name))
+        {
+            return name;
+        }
+        return ModTranslation.GetString("PresetDefault", preset + 1);
+    }
+
+    public static void SetPresetName(int preset, string name)
+    {
+        if (preset < 0 || preset > 9) return;
+        presetNames[preset] = name;
+        Save();
+    }
 
     static CustomOptionSaver()
     {
@@ -225,11 +263,42 @@ public static class CustomOptionSaver
         {
             Storage.EnsureStorageExists();
             ReadAndApplyOptions();
+            LoadPresetNames();
             IsLoaded = true;
         }
         catch (Exception ex)
         {
             Logger.Error($"Option loading failed: {ex.Message}");
+        }
+    }
+
+    private static void LoadPresetNames()
+    {
+        var (success, names) = Storage.LoadPresetNames();
+        if (success)
+        {
+            presetNames = names;
+        }
+    }
+
+    public static void LoadPreset(int preset)
+    {
+        if (preset < 0 || preset > 9) return;
+        CurrentPreset = preset;
+        try
+        {
+            var (optionsSuccess, options) = Storage.LoadPresetData(preset);
+            if (!optionsSuccess)
+            {
+                Logger.Warning("Preset data loading failed. Using default settings.");
+                return;
+            }
+            ApplyLoadedOptions(options);
+            Storage.SaveOptionData(CurrentVersion, CurrentPreset);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Preset loading failed: {ex.Message}");
         }
     }
 
@@ -276,6 +345,7 @@ public static class CustomOptionSaver
         {
             Storage.SaveOptionData(CurrentVersion, CurrentPreset);
             Storage.SavePresetData(CurrentPreset, CustomOptionManager.GetCustomOptions());
+            Storage.SavePresetNames(presetNames);
         }
         catch (Exception ex)
         {
@@ -289,8 +359,10 @@ public interface IOptionStorage
     void EnsureStorageExists();
     (bool success, byte version, int preset) LoadOptionData();
     (bool success, Dictionary<string, byte> options) LoadPresetData(int preset);
+    (bool success, Dictionary<int, string> names) LoadPresetNames();
     void SaveOptionData(byte version, int preset);
     void SavePresetData(int preset, IEnumerable<CustomOption> options);
+    void SavePresetNames(Dictionary<int, string> presetNames);
 }
 
 public class FileOptionStorage : IOptionStorage
@@ -299,6 +371,7 @@ public class FileOptionStorage : IOptionStorage
     private readonly string _optionFileName;
     private readonly string _presetFileNameBase;
     private static readonly object FileLocker = new();
+    private readonly Dictionary<int, string> presetNames = new();
 
     public FileOptionStorage(DirectoryInfo directory, string optionFileName, string presetFileNameBase)
     {
@@ -335,6 +408,17 @@ public class FileOptionStorage : IOptionStorage
             }
 
             int preset = reader.ReadInt32();
+
+            // プリセット名を読み込む
+            presetNames.Clear();
+            int nameCount = reader.ReadInt32();
+            for (int i = 0; i < nameCount; i++)
+            {
+                int presetId = reader.ReadInt32();
+                string name = reader.ReadString();
+                presetNames[presetId] = name;
+            }
+
             return (true, version, preset);
         }
     }
@@ -391,6 +475,11 @@ public class FileOptionStorage : IOptionStorage
         }
     }
 
+    public (bool success, Dictionary<int, string> names) LoadPresetNames()
+    {
+        return (true, presetNames);
+    }
+
     public void SaveOptionData(byte version, int preset)
     {
         lock (FileLocker)
@@ -401,6 +490,14 @@ public class FileOptionStorage : IOptionStorage
             writer.Write(version);
             WriteChecksum(writer);
             writer.Write(preset);
+
+            // プリセット名を保存
+            writer.Write(presetNames.Count);
+            foreach (KeyValuePair<int, string> pair in presetNames)
+            {
+                writer.Write(pair.Key);
+                writer.Write(pair.Value);
+            }
         }
     }
 
@@ -426,6 +523,11 @@ public class FileOptionStorage : IOptionStorage
                 writer.Write(roleOption.Percentage);         // Percentageを保存
             }
         }
+    }
+
+    public void SavePresetNames(Dictionary<int, string> presetNames)
+    {
+        // 何もしない（OptionDataに統合したため）
     }
 
     private static Dictionary<string, byte> ReadOptions(BinaryReader reader)
