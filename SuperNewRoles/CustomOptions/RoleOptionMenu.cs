@@ -70,6 +70,11 @@ public class RoleOptionMenuObjectData : OptionMenuBase
     public TextMeshPro CurrentRoleNumbersOfCrewsText { get; set; }
 
     /// <summary>
+    /// 現在選択中のロールの確率表示用TextMeshPro
+    /// </summary>
+    public TextMeshPro CurrentRolePercentageText { get; set; }
+
+    /// <summary>
     /// メニューのBoxCollider2Dをキャッシュ
     /// </summary>
     public BoxCollider2D MenuObjectCollider { get; private set; }
@@ -99,6 +104,11 @@ public class RoleOptionMenuObjectData : OptionMenuBase
     public Dictionary<RoleId, GameObject> RoleDetailButtonDictionary { get; } = new();
 
     /// <summary>
+    /// 現在表示中の設定とそのテキストコンポーネントのリスト
+    /// </summary>
+    public List<(TextMeshPro Text, CustomOption Option)> CurrentOptionDisplays { get; } = new();
+
+    /// <summary>
     /// コンストラクター：メニューオブジェクトからデータを初期化
     /// </summary>
     public RoleOptionMenuObjectData(GameObject roleOptionMenuObject, RoleOptionMenuType currentRoleType) : base()
@@ -115,6 +125,33 @@ public class RoleOptionMenuObjectData : OptionMenuBase
         if (MenuObject != null)
             MenuObject.SetActive(false);
         BulkRoleSettings.HideBulkRoleSettings();
+    }
+
+    public override void UpdateOptionDisplay()
+    {
+        if (RoleDetailButtonDictionary == null)
+        {
+            return;
+        }
+        foreach (var roleButton in RoleDetailButtonDictionary)
+        {
+            var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleButton.Key);
+            if (roleOption != null)
+            {
+                RoleOptionMenu.UpdateRoleDetailButtonColor(roleButton.Value.GetComponent<SpriteRenderer>(), roleOption);
+            }
+        }
+
+        // RoleOptionSettingsの内容も更新
+        if (CurrentRoleId != RoleId.None)
+        {
+            var currentRoleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == CurrentRoleId);
+            if (currentRoleOption != null)
+            {
+                RoleOptionMenu.UpdateNumOfCrewsSelect(currentRoleOption);
+                RoleOptionSettings.UpdateSettingsDisplay(currentRoleOption);
+            }
+        }
     }
 }
 
@@ -552,7 +589,13 @@ public static class RoleOptionMenu
     {
         if (RoleOptionMenuObjectData == null) return;
         if (RoleOptionMenuObjectData.CurrentRoleNumbersOfCrewsText != null && RoleOptionMenuObjectData.CurrentRoleId == roleOption.RoleId)
+        {
             RoleOptionMenuObjectData.CurrentRoleNumbersOfCrewsText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
+            if (RoleOptionMenuObjectData.CurrentRolePercentageText != null)
+            {
+                RoleOptionMenuObjectData.CurrentRolePercentageText.text = roleOption.Percentage + "%";
+            }
+        }
     }
     [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
     public static class RoleOptionMenuLateUpdatePatch

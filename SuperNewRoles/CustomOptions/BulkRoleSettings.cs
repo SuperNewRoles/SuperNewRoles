@@ -138,14 +138,10 @@ namespace SuperNewRoles.CustomOptions
             if (currentValue == 0 && newValue > 0 && roleOption.Percentage == 0)
             {
                 roleOption.Percentage = 100;
-                var perSelect = text.transform.parent.parent.Find("Select_Per");
+                var perSelect = text.transform.parent.parent.Find("Select_Per/SelectedText")?.GetComponent<TextMeshPro>();
                 if (perSelect != null)
                 {
-                    var perSelectedText = perSelect.Find("SelectedText").GetComponent<TextMeshPro>();
-                    if (perSelectedText != null)
-                    {
-                        perSelectedText.text = "100%";
-                    }
+                    perSelect.text = "100%";
                 }
             }
             RoleOptionMenu.UpdateNumOfCrewsSelect(roleOption);

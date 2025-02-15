@@ -63,6 +63,11 @@ namespace SuperNewRoles.CustomOptions
             SetupCheckBoxButton(passiveButton, checkMark, option);
             passiveButton.Colliders = new[] { optionInstance.GetComponent<BoxCollider2D>() };
 
+            // チェックボックスの場合はSelectedTextの代わりにCheckMarkを使用するため、
+            // 特別な処理としてCheckMarkをTextとして扱う
+            var checkMarkTMP = checkMark.gameObject.AddComponent<TextMeshPro>();
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentOptionDisplays.Add((checkMarkTMP, option));
+
             return optionInstance;
         }
 
@@ -87,9 +92,12 @@ namespace SuperNewRoles.CustomOptions
 
             SetupSelectButtons(optionInstance, selectedText, option);
 
+            // 選択肢の表示とオプションをリストに追加
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentOptionDisplays.Add((selectedText, option));
+
             return optionInstance;
         }
-        private static GameObject CreateNumberOfCrewsSelect(Transform parent, RoleOptionManager.RoleOption roleOption, ref float lastY)
+        private static GameObject CreateNumberOfCrewsSelectAndPerSelect(Transform parent, RoleOptionManager.RoleOption roleOption, ref float lastY)
         {
             GameObject optionInstance = CreateOptionElement(parent, ModTranslation.GetString("NumberOfCrews"), ref lastY, "Option_Select");
             var selectedText = optionInstance.transform.Find("SelectedText").GetComponent<TextMeshPro>();
@@ -99,6 +107,7 @@ namespace SuperNewRoles.CustomOptions
             var minusPassiveButton = minusButton.AddComponent<PassiveButton>();
             var minusSpriteRenderer = minusPassiveButton.GetComponent<SpriteRenderer>();
             bool isExist = RoleOptionMenu.RoleOptionMenuObjectData.RoleDetailButtonDictionary.TryGetValue(roleOption.RoleId, out var roleDetailButton);
+
             ConfigurePassiveButton(minusPassiveButton, () =>
             {
                 byte playerCount = (byte)PlayerControl.AllPlayerControls.Count;
@@ -118,6 +127,10 @@ namespace SuperNewRoles.CustomOptions
             var plusPassiveButton = plusButton.AddComponent<PassiveButton>();
             var plusSpriteRenderer = plusPassiveButton.GetComponent<SpriteRenderer>();
 
+            // 確率設定のオプションを生成
+            var perOption = CreateAssignPerSelect(parent, roleOption, ref lastY);
+            var percentageText = perOption.transform.Find("SelectedText").GetComponent<TextMeshPro>();
+
             ConfigurePassiveButton(plusPassiveButton, () =>
             {
                 byte playerCount = (byte)PlayerControl.AllPlayerControls.Count;
@@ -134,15 +147,12 @@ namespace SuperNewRoles.CustomOptions
                 if (oldValue == 0 && roleOption.NumberOfCrews > 0 && roleOption.Percentage == 0)
                 {
                     roleOption.Percentage = 100;
-                    var perText = optionInstance.transform.parent.Find("Option_Select(Clone)")?.Find("SelectedText")?.GetComponent<TextMeshPro>();
-                    if (perText != null)
-                    {
-                        perText.text = "100%";
-                    }
+                    percentageText.text = "100%";
                 }
             }, plusSpriteRenderer);
 
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleNumbersOfCrewsText = selectedText;
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentRolePercentageText = percentageText;
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleId = roleOption.RoleId;
 
             return optionInstance;
@@ -237,6 +247,10 @@ namespace SuperNewRoles.CustomOptions
             var parent = RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner.Find("Parent");
             if (parent != null)
                 GameObject.Destroy(parent.gameObject);
+
+            // 表示リストをクリア
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentOptionDisplays.Clear();
+
             int index = CreateRoleOptions(roleOption, ref lastY);
             UpdateScrollerBounds(index);
         }
@@ -248,8 +262,7 @@ namespace SuperNewRoles.CustomOptions
             parent.transform.localScale = Vector3.one;
             parent.transform.localPosition = Vector3.zero;
             parent.layer = 5;
-            CreateNumberOfCrewsSelect(parent.transform, roleOption, ref lastY);
-            CreateAssignPerSelect(parent.transform, roleOption, ref lastY);
+            CreateNumberOfCrewsSelectAndPerSelect(parent.transform, roleOption, ref lastY);
             int index = 2;
             foreach (var option in roleOption.Options)
             {
@@ -284,6 +297,46 @@ namespace SuperNewRoles.CustomOptions
                 return floatValue.ToString();
             }
             return value.ToString();
+        }
+
+        /// <summary>
+        /// 設定画面の表示を更新する
+        /// </summary>
+        /// <param name="roleOption">更新対象のロールオプション</param>
+        public static void UpdateSettingsDisplay(RoleOptionManager.RoleOption roleOption)
+        {
+            var data = RoleOptionMenu.RoleOptionMenuObjectData;
+            if (data == null) return;
+
+            // 人数と確率の表示を更新
+            if (data.CurrentRoleId == roleOption.RoleId)
+            {
+                if (data.CurrentRoleNumbersOfCrewsText != null)
+                {
+                    data.CurrentRoleNumbersOfCrewsText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
+                }
+                if (data.CurrentRolePercentageText != null)
+                {
+                    data.CurrentRolePercentageText.text = roleOption.Percentage + "%";
+                }
+            }
+
+            // その他のオプションの表示を更新
+            if (data.CurrentOptionDisplays == null) return;
+            foreach (var (text, option) in data.CurrentOptionDisplays)
+            {
+                if (text == null) continue;
+
+                if (option.IsBooleanOption)
+                {
+                    // チェックボックスの場合、TextMeshProの親オブジェクト（CheckMark）の表示を切り替え
+                    text.transform.gameObject.SetActive((bool)option.Value);
+                }
+                else
+                {
+                    text.text = FormatOptionValue(option.Value, option);
+                }
+            }
         }
     }
 }

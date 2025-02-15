@@ -143,15 +143,12 @@ public static class StandardOptionMenu
             string text = writeBoxTextBoxTMP.text;
             // 現在の最大プリセット番号を取得
             int maxPreset = CustomOptionSaver.PresetNames.Any() ? CustomOptionSaver.PresetNames.Keys.Max() : -1;
+            int newPreset = maxPreset + 1;
             // 新しいプリセット番号（最大値+1、ただし9を超えない）
-            int newPreset = Mathf.Min(maxPreset + 1, 9);
-            if (newPreset <= 9)
-            {
-                CustomOptionSaver.Save(); // 現在のプリセットを保存
-                CustomOptionSaver.SetPresetName(newPreset, text);
-                CustomOptionSaver.LoadPreset(newPreset);
-                UpdatePresetText(selectedText, newPreset);
-            }
+            CustomOptionSaver.Save(); // 現在のプリセットを保存
+            CustomOptionSaver.SetPresetName(newPreset, text);
+            CustomOptionSaver.LoadPreset(newPreset);
+            UpdatePresetText(selectedText, newPreset);
             writeBoxTextBoxTMP.LoseFocus();
         });
 
@@ -166,6 +163,7 @@ public static class StandardOptionMenu
             int newPreset = CustomOptionSaver.CurrentPreset > 0 ? CustomOptionSaver.CurrentPreset - 1 : CustomOptionSaver.PresetNames.Keys.Max();
             CustomOptionSaver.LoadPreset(newPreset);
             UpdatePresetText(selectedText, newPreset);
+            OptionMenuBase.UpdateOptionDisplayAll();
             writeBoxTextBoxTMP.text = CustomOptionSaver.GetPresetName(newPreset);
         }, minusSpriteRenderer);
 
@@ -180,6 +178,7 @@ public static class StandardOptionMenu
             int newPreset = CustomOptionSaver.CurrentPreset < CustomOptionSaver.PresetNames.Keys.Max() ? CustomOptionSaver.CurrentPreset + 1 : 0;
             CustomOptionSaver.LoadPreset(newPreset);
             UpdatePresetText(selectedText, newPreset);
+            OptionMenuBase.UpdateOptionDisplayAll();
             writeBoxTextBoxTMP.text = CustomOptionSaver.GetPresetName(newPreset);
         }, plusSpriteRenderer);
 
@@ -194,12 +193,7 @@ public static class StandardOptionMenu
         {
             menuData.CurrentOptionMenu = existingMenu;
             existingMenu.SetActive(true);
-
-            // 既存メニューの設定値を更新
-            foreach (var option in category.Options)
-            {
-                UpdateOptionUIValues(option, existingMenu.transform);
-            }
+            menuData.UpdateOptionDisplay();
             return;
         }
 
@@ -330,7 +324,7 @@ public static class StandardOptionMenu
     private static void UpdateOptionSelection(CustomOption option, byte newSelection, TMPro.TextMeshPro selectedText)
     {
         option.UpdateSelection(newSelection);
-        selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+        StandardOptionMenuObjectData.Instance.UpdateOptionDisplay();
     }
 
     private static string FormatOptionValue(object value, CustomOption option)
@@ -474,5 +468,44 @@ public class StandardOptionMenuObjectData : OptionMenuBase
     {
         if (StandardOptionMenu != null)
             StandardOptionMenu.SetActive(false);
+    }
+
+    public override void UpdateOptionDisplay()
+    {
+        if (CurrentCategory == null || CurrentOptionMenu == null) return;
+
+        // カテゴリーのオプションを更新
+        if (CategoryOptionUIData.TryGetValue(CurrentCategory.Name, out var optionUIDataList))
+        {
+            foreach (var optionUIData in optionUIDataList)
+            {
+                var option = optionUIData.Option;
+                if (option.IsBooleanOption && optionUIData is CheckOptionUIData checkData)
+                {
+                    checkData.CheckMark.SetActive((bool)option.Value);
+                }
+                else if (!option.IsBooleanOption && optionUIData is SelectOptionUIData selectData)
+                {
+                    selectData.SelectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+                }
+            }
+        }
+    }
+
+    private string FormatOptionValue(object value, CustomOption option)
+    {
+        if (value is float floatValue)
+        {
+            var attribute = option.Attribute as CustomOptionFloatAttribute;
+            if (attribute != null)
+            {
+                float step = attribute.Step;
+                if (step >= 1f) return string.Format("{0:F0}", floatValue);
+                else if (step >= 0.1f) return string.Format("{0:F1}", floatValue);
+                else return string.Format("{0:F2}", floatValue);
+            }
+            return floatValue.ToString();
+        }
+        return value.ToString();
     }
 }

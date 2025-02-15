@@ -6,6 +6,7 @@ public abstract class OptionMenuBase
 {
     public static Dictionary<Type, OptionMenuBase> OptionMenus { get; } = new();
     public abstract void Hide();
+    public abstract void UpdateOptionDisplay();
     public OptionMenuBase()
     {
         Register(this);
@@ -20,6 +21,13 @@ public abstract class OptionMenuBase
         foreach (var optionMenu in OptionMenus.Values)
         {
             optionMenu.Hide();
+        }
+    }
+    public static void UpdateOptionDisplayAll()
+    {
+        foreach (var optionMenu in OptionMenus.Values)
+        {
+            optionMenu.UpdateOptionDisplay();
         }
     }
 }

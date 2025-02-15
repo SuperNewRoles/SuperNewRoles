@@ -2,6 +2,7 @@ namespace SuperNewRoles.Roles;
 
 public enum RoleId : short
 {
+    None = 0,
     Bait
 }
 
