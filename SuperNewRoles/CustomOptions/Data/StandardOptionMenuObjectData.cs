@@ -63,6 +63,8 @@ namespace SuperNewRoles.CustomOptions.Data
         /// </summary>
         public Dictionary<string, List<OptionUIDataBase>> CategoryOptionUIData { get; } = new();
 
+        public Dictionary<string, List<(CustomOption Option, GameObject GameObject)>> CategoryOptionObjects;
+
         public StandardOptionMenuObjectData(GameObject standardOptionMenu) : base()
         {
             Instance = this;
@@ -71,6 +73,7 @@ namespace SuperNewRoles.CustomOptions.Data
             RightArea = StandardOptionMenu.transform.Find("RightArea").gameObject;
             RightAreaScroller = RightArea.transform.Find("Scroller").GetComponent<Scroller>();
             RightAreaInner = RightAreaScroller.transform.Find("Inner").gameObject;
+            CategoryOptionObjects = new Dictionary<string, List<(CustomOption, GameObject)>>();
         }
 
         public void AddOptionUIData(string categoryName, CustomOption option, GameObject uiObject, bool isBooleanOption)

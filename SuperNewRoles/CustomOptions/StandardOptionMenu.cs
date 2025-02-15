@@ -433,12 +433,35 @@ public static class StandardOptionMenu
 
         var defaultMenu = CreateDefaultMenu(category.Name, parent);
         GenerateOptionsForCategory(category, defaultMenu.transform);
+        UpdateOptionsActive();
         RecalculateOptionsPosition(defaultMenu.transform, menuData.RightAreaScroller);
 
         menuData.StandardOptionMenus.Add(category.Name, defaultMenu);
         menuData.CurrentOptionMenu = defaultMenu;
     }
+    private static void UpdateOptionsActive()
+    {
+        var menuData = StandardOptionMenuObjectData.Instance;
+        if (!menuData.CategoryOptionObjects.TryGetValue(menuData.CurrentCategory.Name, out var optionObjects))
+            return;
 
+        foreach (var (option, gameObject) in optionObjects)
+        {
+            bool shouldBeActive = ShouldOptionBeActive(option);
+            gameObject.SetActive(shouldBeActive);
+        }
+    }
+    private static bool ShouldOptionBeActive(CustomOption option)
+    {
+        var parent = option.ParentOption;
+        while (parent != null)
+        {
+            if (parent.Selection == 0)
+                return false;
+            parent = parent.ParentOption;
+        }
+        return true;
+    }
     private static void RecalculateOptionsPosition(Transform menuTransform, Scroller scroller)
     {
         float lastY = 1.6f;
@@ -446,6 +469,8 @@ public static class StandardOptionMenu
         for (int i = 0; i < menuTransform.childCount; i++)
         {
             Transform child = menuTransform.GetChild(i);
+            if (!child.gameObject.activeSelf)
+                continue;
             child.localPosition = new Vector3(3.42f, lastY, -0.21f);
             lastY -= 0.7f;
             minY = lastY;
@@ -459,39 +484,45 @@ public static class StandardOptionMenu
 
     private static void GenerateOptionsForCategory(CustomOptionCategory category, Transform menuTransform)
     {
+        var optionObjects = new List<(CustomOption, GameObject)>();
         foreach (var option in category.Options)
         {
             // トップレベルのオプションはisChildフラグをfalseにして生成
-            GenerateStandardOption(option, menuTransform, false);
+            var obj = GenerateStandardOption(option, menuTransform, false);
+            optionObjects.Add((option, obj));
             // 子オプションがあれば再帰的に生成
-            GenerateChildOptions(option, menuTransform);
+            GenerateChildOptions(option, menuTransform, optionObjects);
         }
+        StandardOptionMenuObjectData.Instance.CategoryOptionObjects[category.Name] = optionObjects;
     }
 
-    private static void GenerateChildOptions(CustomOption parentOption, Transform menuTransform)
+    private static void GenerateChildOptions(CustomOption parentOption, Transform menuTransform, List<(CustomOption, GameObject)> optionObjects)
     {
         if (parentOption.ChildrenOption == null) return;
 
         foreach (var childOption in parentOption.ChildrenOption)
         {
-            GenerateStandardOption(childOption, menuTransform, true);
-            GenerateChildOptions(childOption, menuTransform);
+            var obj = GenerateStandardOption(childOption, menuTransform, true);
+            optionObjects.Add((childOption, obj));
+            GenerateChildOptions(childOption, menuTransform, optionObjects);
         }
     }
 
-    private static void GenerateStandardOption(CustomOption option, Transform parent, bool isChild)
+    private static GameObject GenerateStandardOption(CustomOption option, Transform parent, bool isChild)
     {
+        GameObject obj;
         if (option.IsBooleanOption)
         {
-            GenerateStandardOptionCheck(option, parent, isChild);
+            obj = GenerateStandardOptionCheck(option, parent, isChild);
         }
         else
         {
-            GenerateStandardOptionSelect(option, parent, isChild);
+            obj = GenerateStandardOptionSelect(option, parent, isChild);
         }
+        return obj;
     }
 
-    private static void GenerateStandardOptionCheck(CustomOption option, Transform parent, bool isChild)
+    private static GameObject GenerateStandardOptionCheck(CustomOption option, Transform parent, bool isChild)
     {
         var check = CreateOptionCheckObject(option, parent, isChild);
         var checkMark = check.transform.Find("CheckMark").gameObject;
@@ -508,6 +539,7 @@ public static class StandardOptionMenu
         );
 
         ConfigureCheckOptionButton(check, checkMark, option);
+        return check;
     }
 
     private static GameObject CreateOptionCheckObject(CustomOption option, Transform parent, bool isChild)
@@ -534,10 +566,12 @@ public static class StandardOptionMenu
             bool newValue = !checkMark.activeSelf;
             checkMark.SetActive(newValue);
             option.UpdateSelection(newValue ? (byte)1 : (byte)0);
+            UpdateOptionsActive();
+            RecalculateOptionsPosition(check.transform.parent, StandardOptionMenuObjectData.Instance.RightAreaScroller);
         }), spriteRenderer);
     }
 
-    private static void GenerateStandardOptionSelect(CustomOption option, Transform parent, bool isChild)
+    private static GameObject GenerateStandardOptionSelect(CustomOption option, Transform parent, bool isChild)
     {
         var selectObject = CreateOptionSelectObject(option, parent, isChild);
         var selectedText = selectObject.transform.Find("SelectedText").GetComponent<TMPro.TextMeshPro>();
@@ -552,6 +586,7 @@ public static class StandardOptionMenu
         );
 
         ConfigureSelectOptionButtons(selectObject, selectedText, option);
+        return selectObject;
     }
 
     private static GameObject CreateOptionSelectObject(CustomOption option, Transform parent, bool isChild)
@@ -608,6 +643,8 @@ public static class StandardOptionMenu
         }
 
         UpdateOptionSelection(option, newSelection, selectedText);
+        UpdateOptionsActive();
+        RecalculateOptionsPosition(selectedText.transform.parent.parent, StandardOptionMenuObjectData.Instance.RightAreaScroller);
     }
 
     private static void UpdateOptionSelection(CustomOption option, byte newSelection, TMPro.TextMeshPro selectedText)
