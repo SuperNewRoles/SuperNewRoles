@@ -4,6 +4,7 @@ using SuperNewRoles.Modules;
 using UnityEngine;
 using UnityEngine.Events;
 using SuperNewRoles.CustomOptions.Data;
+using TMPro;
 
 namespace SuperNewRoles.CustomOptions;
 
@@ -136,7 +137,13 @@ public static class StandardOptionMenu
         }
 
         var presetMenu = CreatePresetMenu();
-        ConfigurePresetMenu(presetMenu);
+        ConfigurePresetWriteBox(presetMenu);
+
+        // プリセットボタンを生成
+        var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
+        GeneratePresetButtons(rightAreaInner);
+
+        // ConfigurePresetMenu(presetMenu);
 
         menuData.StandardOptionMenus[CustomOptionManager.PresetSettings.Name] = presetMenu;
         menuData.CurrentOptionMenu = presetMenu;
@@ -144,21 +151,154 @@ public static class StandardOptionMenu
 
     private static GameObject CreatePresetMenu()
     {
-        return UIHelper.InstantiateUIElement(
+        var menu = UIHelper.InstantiateUIElement(
             "PresetMenu",
-            StandardOptionMenuObjectData.Instance.RightAreaInner.transform,
-            Vector3.zero,
+            StandardOptionMenuObjectData.Instance.RightArea.transform,
+            new(0, 0, -2f),
             Vector3.one);
+
+        // PresetTitleのテキストを翻訳
+        var presetTitle = menu.transform.Find("PresetTitle/Text").gameObject;
+        UIHelper.SetText(presetTitle, ModTranslation.GetString("PresetMenuTitle"));
+
+        var submitPreset = menu.transform.Find("SubmitPreset").gameObject;
+        var addPresetButton = submitPreset.transform.Find("AddPresetButton").gameObject;
+
+        // テキストの設定
+        UIHelper.SetText(addPresetButton, ModTranslation.GetString("AddPreset"));
+
+        // PassiveButtonの設定
+        var passiveButton = addPresetButton.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[1] { addPresetButton.GetComponent<BoxCollider2D>() };
+        var spriteRenderer = addPresetButton.GetComponent<SpriteRenderer>();
+
+        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
+        {
+            HandleAddPreset();
+        }), spriteRenderer);
+
+        return menu;
     }
 
-    private static void ConfigurePresetMenu(GameObject presetMenu)
+    private static void HandleAddPreset()
     {
-        var selectPresets = presetMenu.transform.Find("SelectPresets").gameObject;
-        var selectedText = selectPresets.transform.Find("SelectedText").GetComponent<TMPro.TextMeshPro>();
-        UpdatePresetText(selectedText, CustomOptionSaver.CurrentPreset);
+        var writeBox = StandardOptionMenuObjectData.Instance.CurrentOptionMenu.transform.Find("SubmitPreset/WriteBox");
+        var writeBoxTextBoxTMP = writeBox.GetComponent<TextBoxTMP>();
+        var writeBoxTMP = writeBox.transform.Find("Text").GetComponent<TextMeshPro>();
+        string text = writeBoxTextBoxTMP.text;
+        Logger.Info(text);
+        if (string.IsNullOrEmpty(text))
+            return;
+        int maxPreset = CustomOptionSaver.PresetNames.Any() ? CustomOptionSaver.PresetNames.Keys.Max() : -1;
+        int newPreset = maxPreset + 1;
 
-        ConfigurePresetWriteBox(presetMenu, selectedText);
-        ConfigurePresetNavigationButtons(selectPresets, selectedText);
+        CustomOptionSaver.SetPresetName(newPreset, text);
+        CustomOptionSaver.Save();
+        writeBoxTextBoxTMP.Clear();
+        GeneratePresetButtons(StandardOptionMenuObjectData.Instance.RightAreaInner);
+    }
+    private static void GeneratePresetButtons(GameObject container)
+    {
+        // 既存のボタンをクリア
+        for (int i = 0; i < container.transform.childCount; i++)
+        {
+            Transform child = container.transform.GetChild(i);
+            if (child.name.StartsWith("PresetButton"))
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+
+        float xPos = 1.42f;
+        float yPos = 1.6f;
+        const float ySpacing = -0.7f;
+
+        int index = 0;
+        foreach (var preset in CustomOptionSaver.PresetNames)
+        {
+            var buttonPosition = new Vector3(
+                xPos,
+                yPos + (index * ySpacing),
+                -0.21f
+            );
+
+            // プリセットボタンの生成
+            var presetButton = UIHelper.InstantiateUIElement(
+                "PresetButton",
+                container.transform,
+                buttonPosition,
+                Vector3.one * 0.4f
+            );
+            presetButton.name = $"PresetButton_{preset.Key}";
+
+            UIHelper.SetText(presetButton, preset.Value);
+            ConfigurePresetButton(presetButton, preset.Key);
+
+            // ゴミ箱ボタンの生成
+            var trashButton = presetButton.transform.Find("TrashButton").gameObject;
+            ConfigureTrashButton(trashButton, preset.Key);
+
+            index++;
+        }
+
+        // Scrollerの更新
+        if (StandardOptionMenuObjectData.Instance.RightAreaScroller != null)
+        {
+            float minY = yPos + ((index - 1) * ySpacing);
+            StandardOptionMenuObjectData.Instance.RightAreaScroller.ContentYBounds.max =
+                Mathf.Max(0f, -minY + 4.5f);
+        }
+    }
+
+    private static void ConfigurePresetButton(GameObject buttonObj, int presetId)
+    {
+        var passiveButton = buttonObj.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { buttonObj.GetComponent<BoxCollider2D>() };
+        var spriteRenderer = buttonObj.transform.Find("Background").GetComponent<SpriteRenderer>();
+
+        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
+        {
+            CustomOptionSaver.Save();
+            CustomOptionSaver.LoadPreset(presetId);
+            OptionMenuBase.UpdateOptionDisplayAll();
+        }), spriteRenderer, selectedObject: buttonObj.transform.Find("Selected")?.gameObject);
+    }
+
+    private static void ConfigureTrashButton(GameObject buttonObj, int presetId)
+    {
+        var passiveButton = buttonObj.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { buttonObj.GetComponent<BoxCollider2D>() };
+        var selectedObject = buttonObj.transform.Find("Selected")?.gameObject;
+        if (selectedObject != null)
+            selectedObject.SetActive(false);
+
+        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
+        {
+            HandleDeletePreset(presetId);
+        }));
+        passiveButton.OnMouseOver = new();
+        passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            selectedObject?.SetActive(true);
+        }));
+
+        passiveButton.OnMouseOut = new();
+        passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            selectedObject?.SetActive(false);
+        }));
+    }
+
+    private static void HandleDeletePreset(int presetId)
+    {
+        if (!CustomOptionSaver.PresetNames.ContainsKey(presetId))
+            return;
+
+        CustomOptionSaver.RemovePreset(presetId);
+
+        // プリセットボタンを再生成
+        var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
+        GeneratePresetButtons(rightAreaInner);
     }
 
     private static void ConfigurePresetNavigationButtons(GameObject selectPresets, TMPro.TextMeshPro selectedText)
@@ -208,51 +348,43 @@ public static class StandardOptionMenu
         selectedText.text = CustomOptionSaver.GetPresetName(newPreset);
     }
 
-    private static void ConfigurePresetWriteBox(GameObject presetMenu, TMPro.TextMeshPro selectedText)
+    private static void ConfigurePresetWriteBox(GameObject presetMenu)
     {
-        var writeBox = presetMenu.transform.Find("WriteBox").gameObject;
+        var writeBox = presetMenu.transform.Find("SubmitPreset/WriteBox").gameObject;
         var writeBoxTextBoxTMP = writeBox.GetComponent<TextBoxTMP>();
+        var writeBoxTMP = writeBox.transform.Find("Text").GetComponent<TextMeshPro>();
         var writeBoxPassiveButton = writeBox.AddComponent<PassiveButton>();
         var writeBoxSpriteRenderer = writeBox.transform.Find("Background").GetComponent<SpriteRenderer>();
 
-        ConfigureWriteBoxButton(writeBox, writeBoxPassiveButton, writeBoxSpriteRenderer, writeBoxTextBoxTMP);
-        ConfigureWriteBoxEnterEvent(writeBoxTextBoxTMP, selectedText);
+        UIHelper.SetText(writeBox, ModTranslation.GetString("PresetPleaseInput"));
+
+        ConfigureWriteBoxButton(writeBox, writeBoxPassiveButton, writeBoxSpriteRenderer, writeBoxTextBoxTMP, writeBoxTMP);
+        writeBoxTextBoxTMP.OnFocusLost = new();
+        writeBoxTextBoxTMP.OnFocusLost.AddListener((UnityAction)(() =>
+        {
+            if (string.IsNullOrEmpty(writeBoxTextBoxTMP.text))
+                UIHelper.SetText(writeBox, ModTranslation.GetString("PresetPleaseInput"));
+        }));
+        // ConfigureWriteBoxEnterEvent(writeBoxTextBoxTMP);
     }
 
     private static void ConfigureWriteBoxButton(
         GameObject writeBox,
         PassiveButton writeBoxPassiveButton,
         SpriteRenderer writeBoxSpriteRenderer,
-        TextBoxTMP writeBoxTextBoxTMP)
+        TextBoxTMP writeBoxTextBoxTMP,
+        TextMeshPro writeBoxTMP)
     {
         writeBoxPassiveButton.Colliders = new Collider2D[] { writeBox.GetComponent<BoxCollider2D>() };
 
         UIHelper.ConfigurePassiveButton(writeBoxPassiveButton, (UnityAction)(() =>
         {
             writeBoxTextBoxTMP.GiveFocus();
-        }), writeBoxSpriteRenderer);
+            if (string.IsNullOrEmpty(writeBoxTextBoxTMP.text))
+                writeBoxTMP.text = "";
+        }), writeBoxSpriteRenderer, Color.green);
     }
 
-    private static void ConfigureWriteBoxEnterEvent(TextBoxTMP writeBoxTextBoxTMP, TMPro.TextMeshPro selectedText)
-    {
-        writeBoxTextBoxTMP.OnEnter = new();
-        writeBoxTextBoxTMP.OnEnter.AddListener((UnityAction)delegate
-        {
-            HandlePresetNameEntered(writeBoxTextBoxTMP, selectedText);
-        });
-    }
-
-    private static void HandlePresetNameEntered(TextBoxTMP writeBoxTextBoxTMP, TMPro.TextMeshPro selectedText)
-    {
-        string text = writeBoxTextBoxTMP.text;
-        int maxPreset = CustomOptionSaver.PresetNames.Any() ? CustomOptionSaver.PresetNames.Keys.Max() : -1;
-        int newPreset = maxPreset + 1;
-
-        CustomOptionSaver.Save();
-        CustomOptionSaver.SetPresetName(newPreset, text);
-        UpdatePresetText(selectedText, newPreset);
-        writeBoxTextBoxTMP.text = "";
-    }
 
     public static void ShowDefaultOptionMenu(CustomOptionCategory category, Transform parent)
     {
@@ -265,66 +397,67 @@ public static class StandardOptionMenu
 
         var defaultMenu = CreateDefaultMenu(category.Name, parent);
         GenerateOptionsForCategory(category, defaultMenu.transform);
+        RecalculateOptionsPosition(defaultMenu.transform, menuData.RightAreaScroller);
 
         menuData.StandardOptionMenus.Add(category.Name, defaultMenu);
         menuData.CurrentOptionMenu = defaultMenu;
     }
 
-    private static void ShowExistingMenu(GameObject existingMenu, StandardOptionMenuObjectData menuData)
+    private static void RecalculateOptionsPosition(Transform menuTransform, Scroller scroller)
     {
-        menuData.CurrentOptionMenu = existingMenu;
-        existingMenu.SetActive(true);
-        menuData.UpdateOptionDisplay();
-    }
+        float lastY = 1.6f;
+        float minY = lastY;
+        for (int i = 0; i < menuTransform.childCount; i++)
+        {
+            Transform child = menuTransform.GetChild(i);
+            child.localPosition = new Vector3(3.42f, lastY, -0.21f);
+            lastY -= 0.7f;
+            minY = lastY;
+        }
 
-    private static GameObject CreateDefaultMenu(string categoryName, Transform parent)
-    {
-        var menu = new GameObject($"{categoryName}OptionMenu");
-        menu.transform.SetParent(parent);
-        menu.transform.localScale = Vector3.one;
-        menu.transform.localPosition = Vector3.zero;
-        return menu;
+        if (scroller != null)
+        {
+            scroller.ContentYBounds.max = Mathf.Max(0f, -minY + 4.5f);
+        }
     }
 
     private static void GenerateOptionsForCategory(CustomOptionCategory category, Transform menuTransform)
     {
-        float lastY = 1.6f;
-
         foreach (var option in category.Options)
         {
             // トップレベルのオプションはisChildフラグをfalseにして生成
-            GenerateStandardOption(option, menuTransform, false, ref lastY);
+            GenerateStandardOption(option, menuTransform, false);
             // 子オプションがあれば再帰的に生成
-            GenerateChildOptions(option, menuTransform, ref lastY);
+            GenerateChildOptions(option, menuTransform);
         }
     }
 
-    private static void GenerateChildOptions(CustomOption parentOption, Transform menuTransform, ref float lastY)
+    private static void GenerateChildOptions(CustomOption parentOption, Transform menuTransform)
     {
         if (parentOption.ChildrenOption == null) return;
 
         foreach (var childOption in parentOption.ChildrenOption)
         {
-            GenerateStandardOption(childOption, menuTransform, true, ref lastY);
-            GenerateChildOptions(childOption, menuTransform, ref lastY);
+            GenerateStandardOption(childOption, menuTransform, true);
+            GenerateChildOptions(childOption, menuTransform);
         }
     }
 
-    private static void GenerateStandardOption(CustomOption option, Transform parent, bool isChild, ref float lastY)
+    private static void GenerateStandardOption(CustomOption option, Transform parent, bool isChild)
     {
         if (option.IsBooleanOption)
         {
-            GenerateStandardOptionCheck(option, parent, isChild, ref lastY);
+            GenerateStandardOptionCheck(option, parent, isChild);
         }
         else
         {
-            GenerateStandardOptionSelect(option, parent, isChild, ref lastY);
+            GenerateStandardOptionSelect(option, parent, isChild);
         }
     }
 
-    private static void GenerateStandardOptionCheck(CustomOption option, Transform parent, bool isChild, ref float lastY)
+    private static void GenerateStandardOptionCheck(CustomOption option, Transform parent, bool isChild)
     {
-        var check = CreateOptionCheckObject(option, parent, isChild, ref lastY);
+        var check = CreateOptionCheckObject(option, parent, isChild);
         var checkMark = check.transform.Find("CheckMark").gameObject;
 
         // 初期状態を設定
@@ -341,16 +474,15 @@ public static class StandardOptionMenu
         ConfigureCheckOptionButton(check, checkMark, option);
     }
 
-    private static GameObject CreateOptionCheckObject(CustomOption option, Transform parent, bool isChild, ref float lastY)
+    private static GameObject CreateOptionCheckObject(CustomOption option, Transform parent, bool isChild)
     {
         var assetName = isChild ? "StandardChildOption_Check" : "StandardOption_Check";
         var check = UIHelper.InstantiateUIElement(
             assetName,
             parent,
-            new Vector3(3.42f, lastY, -0.21f),
+            Vector3.zero,
             Vector3.one * 0.4f);
 
-        lastY -= 0.7f;
         UIHelper.SetText(check, ModTranslation.GetString(option.Name));
         return check;
     }
@@ -369,9 +501,9 @@ public static class StandardOptionMenu
         }), spriteRenderer);
     }
 
-    private static void GenerateStandardOptionSelect(CustomOption option, Transform parent, bool isChild, ref float lastY)
+    private static void GenerateStandardOptionSelect(CustomOption option, Transform parent, bool isChild)
     {
-        var selectObject = CreateOptionSelectObject(option, parent, isChild, ref lastY);
+        var selectObject = CreateOptionSelectObject(option, parent, isChild);
         var selectedText = selectObject.transform.Find("SelectedText").GetComponent<TMPro.TextMeshPro>();
         selectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
 
@@ -386,16 +518,15 @@ public static class StandardOptionMenu
         ConfigureSelectOptionButtons(selectObject, selectedText, option);
     }
 
-    private static GameObject CreateOptionSelectObject(CustomOption option, Transform parent, bool isChild, ref float lastY)
+    private static GameObject CreateOptionSelectObject(CustomOption option, Transform parent, bool isChild)
     {
         var assetName = isChild ? "StandardChildOption_Select" : "StandardOption_Select";
         var selectObject = UIHelper.InstantiateUIElement(
             assetName,
             parent,
-            new Vector3(3.42f, lastY, -0.21f),
+            Vector3.zero,
             Vector3.one * 0.4f);
 
-        lastY -= 0.7f;
         UIHelper.SetText(selectObject, ModTranslation.GetString(option.Name));
         return selectObject;
     }
@@ -502,5 +633,21 @@ public static class StandardOptionMenu
                 UpdateOptionUIValues(childOption, menuTransform);
             }
         }
+    }
+
+    private static void ShowExistingMenu(GameObject existingMenu, StandardOptionMenuObjectData menuData)
+    {
+        menuData.CurrentOptionMenu = existingMenu;
+        existingMenu.SetActive(true);
+        menuData.UpdateOptionDisplay();
+    }
+
+    private static GameObject CreateDefaultMenu(string categoryName, Transform parent)
+    {
+        var menu = new GameObject($"{categoryName}OptionMenu");
+        menu.transform.SetParent(parent);
+        menu.transform.localScale = Vector3.one;
+        menu.transform.localPosition = Vector3.zero;
+        return menu;
     }
 }

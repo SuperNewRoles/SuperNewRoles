@@ -248,6 +248,16 @@ public static class CustomOptionSaver
         Save();
     }
 
+    public static void RemovePreset(int preset)
+    {
+        if (preset < 0 || preset > 9) return;
+        if (!presetNames.ContainsKey(preset)) return;
+
+        string _;
+        presetNames.Remove(preset, out _);
+        Save();
+    }
+
     static CustomOptionSaver()
     {
         Storage = new FileOptionStorage(

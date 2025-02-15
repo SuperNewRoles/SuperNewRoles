@@ -24,6 +24,14 @@ namespace SuperNewRoles.CustomOptions.Data
         /// 右エリアの内部コンテンツ
         /// </summary>
         public GameObject RightAreaInner { get; }
+        /// <summary>
+        /// 右エリア
+        /// </summary>
+        public GameObject RightArea { get; }
+        /// <summary>
+        /// 右エリアのスクローラー
+        /// </summary>
+        public Scroller RightAreaScroller { get; }
 
         /// <summary>
         /// 現在表示中のオプションメニュー
@@ -55,7 +63,9 @@ namespace SuperNewRoles.CustomOptions.Data
             Instance = this;
             StandardOptionMenu = standardOptionMenu;
             LeftAreaInner = StandardOptionMenu.transform.Find("LeftArea/Scroller/Inner").gameObject;
-            RightAreaInner = StandardOptionMenu.transform.Find("RightArea/Scroller/Inner").gameObject;
+            RightArea = StandardOptionMenu.transform.Find("RightArea").gameObject;
+            RightAreaScroller = RightArea.transform.Find("Scroller").GetComponent<Scroller>();
+            RightAreaInner = RightAreaScroller.transform.Find("Inner").gameObject;
         }
 
         public void AddOptionUIData(string categoryName, CustomOption option, GameObject uiObject, bool isBooleanOption)

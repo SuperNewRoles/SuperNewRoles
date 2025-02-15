@@ -22,7 +22,7 @@ namespace SuperNewRoles.CustomOptions
             return obj;
         }
 
-        public static void ConfigurePassiveButton(PassiveButton button, UnityAction onClick, SpriteRenderer spriteRenderer = null)
+        public static void ConfigurePassiveButton(PassiveButton button, UnityAction onClick, SpriteRenderer spriteRenderer = null, Color32? hoverColor = null, GameObject selectedObject = null)
         {
             button.OnClick = new();
             button.OnClick.AddListener(onClick);
@@ -30,14 +30,18 @@ namespace SuperNewRoles.CustomOptions
             button.OnMouseOver = new UnityEvent();
             button.OnMouseOver.AddListener((UnityAction)(() =>
             {
-                if (spriteRenderer != null)
-                    spriteRenderer.color = Constants.HoverColor;
+                if (selectedObject != null)
+                    selectedObject.SetActive(true);
+                else if (spriteRenderer != null)
+                    spriteRenderer.color = hoverColor ?? Constants.HoverColor;
             }));
 
             button.OnMouseOut = new UnityEvent();
             button.OnMouseOut.AddListener((UnityAction)(() =>
             {
-                if (spriteRenderer != null)
+                if (selectedObject != null)
+                    selectedObject.SetActive(false);
+                else if (spriteRenderer != null)
                     spriteRenderer.color = Color.white;
             }));
         }
