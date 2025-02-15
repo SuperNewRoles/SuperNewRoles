@@ -665,19 +665,19 @@ internal static class RoleinformationText
 
         SendCommand(target, Format(ModTranslation.GetString("RoleInfoError"), command));
     }
+    /// <summary>
+    /// 役職名からRoleIdを取得する
+    /// </summary>
+    /// <param name="Name">取得したい役職名 又は 役職のRoleId(string型)</param>
+    /// <returns>引数に対応するRoleId</returns>
     public static RoleId? GetRoleIdByName(string Name)
     {
-        (string[] roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(Name);
+        (string[] roleNameKeys, bool isSuccess) = ModTranslation.GetTranslateKey(Name);
 
-        string beforeIdChangeRoleName =
-            isSuccess
-                ? roleNameKey.FirstOrDefault(key => key.Contains("Name")).Replace("Name", "") ?? Name // 翻訳キーの取得に成功した場合, 配列から"Name"を含む要素を取得し そのから要素"Name"を外して, RoleIdに一致する役職名を取得する.
-                : Name; // 翻訳辞書からの取得に失敗した場合, 入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
-
-        // 参考 => https://qiita.com/masaru/items/a44dc30bfc18aac95015#fnref1
-        // 取得した役職名(string)からRoleIdを取得する。
-        var roleIdChange = Enum.TryParse(beforeIdChangeRoleName, out RoleId roleId) && Enum.IsDefined(typeof(RoleId), roleId);
-        return roleIdChange ? roleId : null;
+        return roleNameKeys
+            .Select(key => isSuccess && key.Contains("Name") ? key.Replace("Name", "") : key) // 翻訳キーの取得に成功していた場合、その文字列から"Name"を外す。取得に失敗していた場合、入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
+            .Select(key => Enum.TryParse<RoleId>(key, out var roleId) && Enum.IsDefined(typeof(RoleId), roleId) ? (RoleId?)roleId : null) // 取得した役職名又はRoleId(string)からRoleIdを取得する。(存在しなかった場合null)
+            .FirstOrDefault(roleId => roleId.HasValue); // 複数取得できた場合最初の要素のみ返す
     }
     internal static void YourRoleInfoSendCommand()
     {
