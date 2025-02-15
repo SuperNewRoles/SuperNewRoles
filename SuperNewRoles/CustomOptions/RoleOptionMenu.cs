@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 using System;
+using SuperNewRoles.CustomOptions.Data;
 
 namespace SuperNewRoles.CustomOptions;
 
