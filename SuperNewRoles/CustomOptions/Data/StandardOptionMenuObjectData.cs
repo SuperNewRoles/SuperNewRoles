@@ -34,6 +34,11 @@ namespace SuperNewRoles.CustomOptions.Data
         public Scroller RightAreaScroller { get; }
 
         /// <summary>
+        /// プリセットボタンのコンテナ
+        /// </summary>
+        public GameObject PresetButtonsContainer { get; set; }
+
+        /// <summary>
         /// 現在表示中のオプションメニュー
         /// </summary>
         public GameObject CurrentOptionMenu { get; set; }

@@ -91,6 +91,10 @@ public static class StandardOptionMenu
             menuData.CurrentOptionMenu.SetActive(false);
         menuData.CurrentOptionMenu = null;
 
+        // プリセットボタンのコンテナを非表示に
+        if (menuData.PresetButtonsContainer != null)
+            menuData.PresetButtonsContainer.SetActive(false);
+
         // 現在の選択ボタンを更新
         if (menuData.CurrentSelectedButton != null)
             menuData.CurrentSelectedButton.SetActive(false);
@@ -129,6 +133,9 @@ public static class StandardOptionMenu
     public static void ShowPresetOptionMenu()
     {
         var menuData = StandardOptionMenuObjectData.Instance;
+        // プリセットボタンを生成
+        var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
+        GeneratePresetButtons(rightAreaInner);
         if (menuData.StandardOptionMenus.TryGetValue(CustomOptionManager.PresetSettings.Name, out var menu))
         {
             menuData.CurrentOptionMenu = menu;
@@ -139,22 +146,40 @@ public static class StandardOptionMenu
         var presetMenu = CreatePresetMenu();
         ConfigurePresetWriteBox(presetMenu);
 
-        // プリセットボタンを生成
-        var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
-        GeneratePresetButtons(rightAreaInner);
-
-        // ConfigurePresetMenu(presetMenu);
+        ConfigurePresetTitle(presetMenu);
+        ConfigureNowPresetText(presetMenu);
 
         menuData.StandardOptionMenus[CustomOptionManager.PresetSettings.Name] = presetMenu;
         menuData.CurrentOptionMenu = presetMenu;
     }
-
+    private static void ConfigureNowPresetText(GameObject presetMenu)
+    {
+        var nowPresetText = presetMenu?.transform?.Find("NowPreset")?.gameObject;
+        if (nowPresetText == null)
+            return;
+        nowPresetText.transform.Find("StaticText").GetComponent<TextMeshPro>().text = ModTranslation.GetString("PresetSettings.NowPreset");
+        UpdateNowPresetText(presetMenu);
+    }
+    private static void UpdateNowPresetText(GameObject presetMenu)
+    {
+        var nowPresetText = presetMenu?.transform?.Find("NowPreset")?.gameObject;
+        if (nowPresetText == null)
+            return;
+        nowPresetText.transform.Find("NowPresetText").GetComponent<TextMeshPro>().text = CustomOptionSaver.GetPresetName(CustomOptionSaver.CurrentPreset);
+    }
+    private static void ConfigurePresetTitle(GameObject presetMenu)
+    {
+        var presetTitle = presetMenu?.transform?.Find("PresetTitle")?.gameObject;
+        if (presetTitle == null)
+            return;
+        UIHelper.SetText(presetTitle, ModTranslation.GetString("PresetSettings"));
+    }
     private static GameObject CreatePresetMenu()
     {
         var menu = UIHelper.InstantiateUIElement(
             "PresetMenu",
             StandardOptionMenuObjectData.Instance.RightArea.transform,
-            new(0, 0, -2f),
+            new(0, 0, -5f),
             Vector3.one);
 
         // PresetTitleのテキストを翻訳
@@ -194,24 +219,33 @@ public static class StandardOptionMenu
 
         CustomOptionSaver.SetPresetName(newPreset, text);
         CustomOptionSaver.Save();
+        CustomOptionSaver.CurrentPreset = newPreset;
         writeBoxTextBoxTMP.Clear();
+        writeBoxTMP.text = ModTranslation.GetString("PresetPleaseInput");
         GeneratePresetButtons(StandardOptionMenuObjectData.Instance.RightAreaInner);
+        UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
     }
     private static void GeneratePresetButtons(GameObject container)
     {
-        // 既存のボタンをクリア
-        for (int i = 0; i < container.transform.childCount; i++)
+        var menuData = StandardOptionMenuObjectData.Instance;
+
+        // 既存のコンテナを削除
+        if (menuData.PresetButtonsContainer != null)
         {
-            Transform child = container.transform.GetChild(i);
-            if (child.name.StartsWith("PresetButton"))
-            {
-                GameObject.Destroy(child.gameObject);
-            }
+            GameObject.Destroy(menuData.PresetButtonsContainer);
         }
 
-        float xPos = 1.42f;
-        float yPos = 1.6f;
-        const float ySpacing = -0.7f;
+        // 新しいコンテナを作成
+        var buttonsContainer = new GameObject("PresetButtonsContainer");
+        buttonsContainer.transform.SetParent(container.transform);
+        buttonsContainer.transform.localScale = Vector3.one;
+        buttonsContainer.transform.localPosition = new(0, 0, 4.7f);
+        menuData.PresetButtonsContainer = buttonsContainer;
+        buttonsContainer.SetActive(true);
+
+        float xPos = 1.25f;
+        float yPos = 1f;
+        const float ySpacing = -0.55f;
 
         int index = 0;
         foreach (var preset in CustomOptionSaver.PresetNames)
@@ -225,7 +259,7 @@ public static class StandardOptionMenu
             // プリセットボタンの生成
             var presetButton = UIHelper.InstantiateUIElement(
                 "PresetButton",
-                container.transform,
+                buttonsContainer.transform,
                 buttonPosition,
                 Vector3.one * 0.4f
             );
@@ -242,11 +276,10 @@ public static class StandardOptionMenu
         }
 
         // Scrollerの更新
-        if (StandardOptionMenuObjectData.Instance.RightAreaScroller != null)
+        if (menuData.RightAreaScroller != null)
         {
-            float minY = yPos + ((index - 1) * ySpacing);
-            StandardOptionMenuObjectData.Instance.RightAreaScroller.ContentYBounds.max =
-                Mathf.Max(0f, -minY + 4.5f);
+            float maxBound = index <= 4 ? 0f : ((index - 4) * 0.7f);
+            menuData.RightAreaScroller.ContentYBounds.max = maxBound;
         }
     }
 
@@ -258,8 +291,10 @@ public static class StandardOptionMenu
 
         UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
         {
+            Logger.Info($"Preset {presetId} selected");
             CustomOptionSaver.Save();
             CustomOptionSaver.LoadPreset(presetId);
+            UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
             OptionMenuBase.UpdateOptionDisplayAll();
         }), spriteRenderer, selectedObject: buttonObj.transform.Find("Selected")?.gameObject);
     }
@@ -299,6 +334,7 @@ public static class StandardOptionMenu
         // プリセットボタンを再生成
         var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
         GeneratePresetButtons(rightAreaInner);
+        UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
     }
 
     private static void ConfigurePresetNavigationButtons(GameObject selectPresets, TMPro.TextMeshPro selectedText)
@@ -343,7 +379,7 @@ public static class StandardOptionMenu
         }
 
         CustomOptionSaver.LoadPreset(newPreset);
-        UpdatePresetText(selectedText, newPreset);
+        UpdateNowPresetText(StandardOptionMenuObjectData.Instance.CurrentOptionMenu);
         OptionMenuBase.UpdateOptionDisplayAll();
         selectedText.text = CustomOptionSaver.GetPresetName(newPreset);
     }

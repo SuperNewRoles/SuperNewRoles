@@ -229,7 +229,7 @@ public static class CustomOptionSaver
     public static int CurrentPreset
     {
         get => currentPreset;
-        private set => currentPreset = value;
+        set => currentPreset = value;
     }
 
     public static string GetPresetName(int preset)
@@ -255,7 +255,25 @@ public static class CustomOptionSaver
 
         string _;
         presetNames.Remove(preset, out _);
+
         Save();
+        // 削除対象が現在のプリセットの場合
+        if (preset == CurrentPreset)
+        {
+            // プリセットIDの中で、削除対象より小さい中で一番大きいものを探す
+            // なければ、削除対象より大きい中で一番小さいものを探す
+            int newPreset = presetNames.Keys
+                .Where(id => id < preset)
+                .DefaultIfEmpty(
+                    presetNames.Keys
+                        .Where(id => id > preset)
+                        .DefaultIfEmpty(0)
+                        .Min()
+                )
+                .Max();
+            Logger.Info($"新しいプリセットID: {newPreset}");
+            LoadPreset(newPreset);
+        }
     }
 
     static CustomOptionSaver()
@@ -355,7 +373,6 @@ public static class CustomOptionSaver
         {
             Storage.SaveOptionData(CurrentVersion, CurrentPreset);
             Storage.SavePresetData(CurrentPreset, CustomOptionManager.GetCustomOptions());
-            Storage.SavePresetNames(presetNames);
         }
         catch (Exception ex)
         {
@@ -372,7 +389,6 @@ public interface IOptionStorage
     (bool success, Dictionary<int, string> names) LoadPresetNames();
     void SaveOptionData(byte version, int preset);
     void SavePresetData(int preset, IEnumerable<CustomOption> options);
-    void SavePresetNames(Dictionary<int, string> presetNames);
 }
 
 public class FileOptionStorage : IOptionStorage
@@ -533,11 +549,6 @@ public class FileOptionStorage : IOptionStorage
                 writer.Write(roleOption.Percentage);         // Percentageを保存
             }
         }
-    }
-
-    public void SavePresetNames(Dictionary<int, string> presetNames)
-    {
-        // 何もしない（OptionDataに統合したため）
     }
 
     private static Dictionary<string, byte> ReadOptions(BinaryReader reader)
