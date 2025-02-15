@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
@@ -195,12 +196,16 @@ public static class RoleOptionManager
         public byte NumberOfCrews { get; set; }
         public int Percentage { get; set; }
         public CustomOption[] Options { get; }
+        public Color32 RoleColor { get; }
         public RoleOption(RoleId roleId, byte numberOfCrews, int percentage, CustomOption[] options)
         {
             RoleId = roleId;
             NumberOfCrews = numberOfCrews;
             Percentage = percentage;
             Options = options;
+            // ロールの色情報を取得
+            var roleBase = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleId);
+            RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
         }
     }
     public static RoleOption[] RoleOptions { get; private set; }

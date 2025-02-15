@@ -512,7 +512,7 @@ public static class RoleOptionMenu
         float posX = -1.27f + col * 1.63f;
         float posY = 0.85f - row * 0.38f;
         obj.transform.localPosition = new Vector3(posX, posY, -0.21f);
-        obj.transform.Find("Text").GetComponent<TextMeshPro>().text = roleName;
+        obj.transform.Find("Text").GetComponent<TextMeshPro>().text = $"<b><color=#{ColorUtility.ToHtmlStringRGB(roleOption.RoleColor)}>{roleName}</color></b>";
         var passiveButton = obj.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[1];
         passiveButton.Colliders[0] = obj.GetComponent<BoxCollider2D>();
