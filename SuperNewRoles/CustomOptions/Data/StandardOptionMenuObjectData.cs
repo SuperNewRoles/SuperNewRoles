@@ -64,6 +64,7 @@ namespace SuperNewRoles.CustomOptions.Data
         public Dictionary<string, List<OptionUIDataBase>> CategoryOptionUIData { get; } = new();
 
         public Dictionary<string, List<(CustomOption Option, GameObject GameObject)>> CategoryOptionObjects;
+        public GameObject ModeMenu { get; set; }
 
         public StandardOptionMenuObjectData(GameObject standardOptionMenu) : base()
         {
@@ -125,7 +126,7 @@ namespace SuperNewRoles.CustomOptions.Data
                     }
                     else if (!option.IsBooleanOption && optionUIData is SelectOptionUIData selectData)
                     {
-                        selectData.SelectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
+                        selectData.SelectedText.text = option.GetCurrentSelectionString();
                     }
                 }
             }

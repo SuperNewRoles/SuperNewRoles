@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
 using SuperNewRoles.Modules;
+using System;
 
 namespace SuperNewRoles.CustomOptions
 {
@@ -55,15 +56,24 @@ namespace SuperNewRoles.CustomOptions
         {
             if (value is float floatValue)
             {
-                var attribute = option.Attribute as CustomOptionFloatAttribute;
-                if (attribute != null)
+                var floatAttribute = option.Attribute as CustomOptionFloatAttribute;
+                if (floatAttribute != null)
                 {
-                    float step = attribute.Step;
+                    float step = floatAttribute.Step;
                     if (step >= 1f) return string.Format("{0:F0}", floatValue);
                     else if (step >= 0.1f) return string.Format("{0:F1}", floatValue);
                     else return string.Format("{0:F2}", floatValue);
                 }
                 return floatValue.ToString();
+            }
+            else if (value is Enum enumValue)
+            {
+                var selectAttribute = option.Attribute as CustomOptionSelectAttribute;
+                if (selectAttribute != null)
+                {
+                    return ModTranslation.GetString($"{selectAttribute.TranslationPrefix}{enumValue}");
+                }
+                return enumValue.ToString();
             }
             return value.ToString();
         }

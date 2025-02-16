@@ -98,6 +98,10 @@ public static class StandardOptionMenu
         // 現在の選択ボタンを更新
         if (menuData.CurrentSelectedButton != null)
             menuData.CurrentSelectedButton.SetActive(false);
+
+        // ModeMenuを非表示に
+        if (menuData.ModeMenu != null)
+            menuData.ModeMenu.SetActive(false);
         menuData.CurrentSelectedButton = selectedObject;
         menuData.CurrentCategory = category;
         selectedObject?.SetActive(true);
@@ -107,12 +111,38 @@ public static class StandardOptionMenu
         {
             ShowPresetOptionMenu();
         }
+        else if (category == CustomOptionManager.ModeSettings)
+        {
+            ShowModeOptionMenu();
+        }
         else
         {
             ShowDefaultOptionMenu(category, menuData.RightAreaInner.transform);
         }
     }
-
+    private static void ShowModeOptionMenu()
+    {
+        if (StandardOptionMenuObjectData.Instance.ModeMenu == null)
+        {
+            // ModeMenu from asset
+            var modeMenu = UIHelper.InstantiateUIElement("ModeMenu",
+                StandardOptionMenuObjectData.Instance.RightArea.transform,
+            new Vector3(0, 0, -7f),
+                Vector3.one);
+            StandardOptionMenuObjectData.Instance.ModeMenu = modeMenu;
+        }
+        else
+            StandardOptionMenuObjectData.Instance.ModeMenu.SetActive(true);
+        var modeOptionText = StandardOptionMenuObjectData.Instance.ModeMenu.transform.Find("ModeOption/Text").GetComponent<TextMeshPro>();
+        modeOptionText.text = ModTranslation.GetString("ModeOption");
+        ConfigureModeOption(StandardOptionMenuObjectData.Instance.ModeMenu);
+        ShowDefaultOptionMenu(CustomOptionManager.ModeSettings, StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
+    }
+    private static void ConfigureModeOption(GameObject modeMenu)
+    {
+        var modeOption = modeMenu.transform.Find("ModeOption").gameObject;
+        ConfigureSelectOptionButtons(modeOption, modeOption.transform.Find("SelectedText").GetComponent<TextMeshPro>(), CustomOptionManager.GetCustomOptionByFieldName(nameof(CustomOptionManager.ModeOption)));
+    }
     private static void ConfigureButtonHoverEffects(PassiveButton button, GameObject selectedObject, CustomOptionCategory category)
     {
         button.OnMouseOut = new UnityEvent();
@@ -453,6 +483,8 @@ public static class StandardOptionMenu
     }
     private static bool ShouldOptionBeActive(CustomOption option)
     {
+        if (!option.ShouldDisplay())
+            return false;
         var parent = option.ParentOption;
         while (parent != null)
         {
@@ -575,7 +607,6 @@ public static class StandardOptionMenu
     {
         var selectObject = CreateOptionSelectObject(option, parent, isChild);
         var selectedText = selectObject.transform.Find("SelectedText").GetComponent<TMPro.TextMeshPro>();
-        selectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
 
         // UIデータを保存
         StandardOptionMenuObjectData.Instance.AddOptionUIData(
@@ -620,6 +651,8 @@ public static class StandardOptionMenu
         passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
         var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
 
+        selectedText.text = option.GetCurrentSelectionString();
+
         UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
         {
             HandleOptionSelection(option, selectedText, isIncrement);
@@ -644,12 +677,13 @@ public static class StandardOptionMenu
 
         UpdateOptionSelection(option, newSelection, selectedText);
         UpdateOptionsActive();
-        RecalculateOptionsPosition(selectedText.transform.parent.parent, StandardOptionMenuObjectData.Instance.RightAreaScroller);
+        RecalculateOptionsPosition(StandardOptionMenuObjectData.Instance.CurrentOptionMenu.transform, StandardOptionMenuObjectData.Instance.RightAreaScroller);
     }
 
     private static void UpdateOptionSelection(CustomOption option, byte newSelection, TMPro.TextMeshPro selectedText)
     {
         option.UpdateSelection(newSelection);
+        selectedText.text = option.GetCurrentSelectionString();
         StandardOptionMenuObjectData.Instance.UpdateOptionDisplay();
     }
 
