@@ -497,7 +497,7 @@ public static class StandardOptionMenu
     private static void RecalculateOptionsPosition(Transform menuTransform, Scroller scroller)
     {
         float lastY = 1.6f;
-        float minY = lastY;
+        int activeCount = 0;
         for (int i = 0; i < menuTransform.childCount; i++)
         {
             Transform child = menuTransform.GetChild(i);
@@ -505,12 +505,12 @@ public static class StandardOptionMenu
                 continue;
             child.localPosition = new Vector3(3.42f, lastY, -0.21f);
             lastY -= 0.7f;
-            minY = lastY;
+            activeCount++;
         }
 
         if (scroller != null)
         {
-            scroller.ContentYBounds.max = Mathf.Max(0f, -minY + 4.5f);
+            scroller.ContentYBounds.max = activeCount <= 6 ? 0f : (activeCount - 6) * 0.7f;
         }
     }
 

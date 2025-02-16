@@ -18,7 +18,6 @@ public static class DisplayMode
 {
     public static bool HasMode(DisplayModeId current, DisplayModeId target)
     {
-        Logger.Info($"HasMode: {current} {target} {target.HasFlag(current)}");
         return target.HasFlag(current);
     }
 
