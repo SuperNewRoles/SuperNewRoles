@@ -288,6 +288,8 @@ public static class RoleOptionManager
         }
     }
     public static RoleOption[] RoleOptions { get; private set; }
+    public static List<ExclusivityData> ExclusivitySettings { get; private set; } = new();
+
     public static void RoleOptionLoad()
     {
         RoleOptions = CustomOptionManager.GetCustomOptions()
@@ -298,6 +300,16 @@ public static class RoleOptionManager
             var options = group.ToArray();
             return new RoleOption(group.Key, (byte)group.Count(), 0, options);
         }).ToArray();
+    }
+
+    public static void AddExclusivitySetting(int maxAssign, string[] roles)
+    {
+        ExclusivitySettings.Add(new ExclusivityData(maxAssign, roles));
+    }
+
+    public static void ClearExclusivitySettings()
+    {
+        ExclusivitySettings.Clear();
     }
 }
 
@@ -579,6 +591,24 @@ public class FileOptionStorage : IOptionStorage
                         }
                     }
                 }
+
+                // 排他設定の読み込み
+                if (fileStream.Position < fileStream.Length)
+                {
+                    int exclusivityCount = reader.ReadInt32();
+                    RoleOptionManager.ClearExclusivitySettings();
+                    for (int i = 0; i < exclusivityCount; i++)
+                    {
+                        int maxAssign = reader.ReadInt32();
+                        int rolesCount = reader.ReadInt32();
+                        string[] roles = new string[rolesCount];
+                        for (int j = 0; j < rolesCount; j++)
+                        {
+                            roles[j] = reader.ReadString();
+                        }
+                        RoleOptionManager.AddExclusivitySetting(maxAssign, roles);
+                    }
+                }
             }
 
             return (true, options);
@@ -622,15 +652,28 @@ public class FileOptionStorage : IOptionStorage
             WriteChecksum(writer);
             WriteOptions(writer, options);
 
-            // ここからRoleOptionのデータを書き出す処理を追加
+            // RoleOptionのデータを書き出す
             var roleOptions = RoleOptionManager.RoleOptions;
-            writer.Write(roleOptions.Length); // RoleOptionの数を書き込み
+            writer.Write(roleOptions.Length);
 
             foreach (var roleOption in roleOptions)
             {
-                writer.Write(roleOption.RoleId.ToString());  // RoleIdを文字列として保存
-                writer.Write(roleOption.NumberOfCrews);      // NumberOfCrewsを保存
-                writer.Write(roleOption.Percentage);         // Percentageを保存
+                writer.Write(roleOption.RoleId.ToString());
+                writer.Write(roleOption.NumberOfCrews);
+                writer.Write(roleOption.Percentage);
+            }
+
+            // 排他設定の書き出し
+            var exclusivitySettings = RoleOptionManager.ExclusivitySettings;
+            writer.Write(exclusivitySettings.Count);
+            foreach (var setting in exclusivitySettings)
+            {
+                writer.Write(setting.MaxAssign);
+                writer.Write(setting.Roles.Length);
+                foreach (var role in setting.Roles)
+                {
+                    writer.Write(role);
+                }
             }
         }
     }
@@ -869,4 +912,16 @@ public class CustomOptionCategory
 public interface ICustomOptionCategory
 {
     string CategoryName { get; }
+}
+
+public class ExclusivityData
+{
+    public int MaxAssign { get; set; }
+    public string[] Roles { get; set; }
+
+    public ExclusivityData(int maxAssign, string[] roles)
+    {
+        MaxAssign = maxAssign;
+        Roles = roles;
+    }
 }

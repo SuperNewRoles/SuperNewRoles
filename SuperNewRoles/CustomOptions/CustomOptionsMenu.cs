@@ -22,6 +22,7 @@ public static class CustomOptionsMenu
         public const string IMPOSTOR = "Setting_Impostor";
         public const string NEUTRAL = "Setting_Neutral";
         public const string STANDARD = "Setting_Standard";
+        public const string EXCLUSIVITY = "Setting_Exclusivity";
     }
 
     /// <summary>
@@ -188,6 +189,10 @@ public static class CustomOptionsMenu
         else if (categoryName == MenuCategories.STANDARD)
         {
             StandardOptionMenu.ShowStandardOptionMenu();
+        }
+        else if (categoryName == MenuCategories.EXCLUSIVITY)
+        {
+            ExclusivityOptionMenu.ShowExclusivityOptionMenu();
         }
     }
 

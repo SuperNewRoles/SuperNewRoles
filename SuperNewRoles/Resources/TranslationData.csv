@@ -1,6 +1,11 @@
 # Key, 日本語, English,SChinese,TChinese
 creditsMain,Created by ykundesu,Created by ykundesu,由 ykundesu 制作,由 ykundesu 製作
 WelcomeNextSuperNewRoles,新しいSuperNewRolesへ、ようこそ！,A warm welcome to the new SuperNewRoles!,热烈欢迎来到全新的 SuperNewRoles!,熱烈歡迎來到全新的 SuperNewRoles!
+Close,閉じる,Close,閉閉,閉閉
+
+Impostor,インポスター,Impostor,内鬼,內鬼
+Crewmate,クルーメイト,Crewmate,船员,船員
+Neutral,第三陣営,Neutral,第三陣營,第三陣營
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
@@ -30,6 +35,12 @@ PresetSettings.NowPreset,現在のプリセット:,Current Preset:,現在的預�
 ModeId.Default,通常,Normal,通常,通常
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
+ExclusivityOptionMenuTitle,排他設定,Exclusivity Settings,排他設定,排他設定
+ExclusivityOptionMenuMaxText,最大排出数,Max Exclusivity,最大排出數,最大排出數
+ExclusivityOptionMenuAssignedRoleText,割当役職,Assigned Role,指派職位,指派職位
+ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
+ExclusivityEditMenuTitle,排他設定の編集,Edit Exclusivity Settings,编辑排他设置,編輯排他設置
+ExclusivityEditMenuGroupTitle,グループ {0}の設定,Group {0} Settings,组 {0} 设置,組 {0} 設置
 
 # SyncError
 SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>發生錯誤。</size>,<size=150%>發生錯誤。</size>
