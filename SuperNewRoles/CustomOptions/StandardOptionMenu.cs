@@ -747,6 +747,7 @@ public static class StandardOptionMenu
         menuData.CurrentOptionMenu = existingMenu;
         existingMenu.SetActive(true);
         menuData.UpdateOptionDisplay();
+        RecalculateOptionsPosition(existingMenu.transform, menuData.RightAreaScroller);
     }
 
     private static GameObject CreateDefaultMenu(string categoryName, Transform parent)
