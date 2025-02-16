@@ -18,6 +18,9 @@ namespace SuperNewRoles.CustomOptions.Data
         public GameObject MainAreaInner { get; }
         public GameObject ExclusivityOptionButtonContainer { get; set; }
         public GameObject ExclusivityEditMenu { get; set; }
+        public Scroller ExclusivityEditRightAreaScroller { get; set; }
+        public GameObject ExclusivityEditRightAreaInner { get; set; }
+        public GameObject RoleDetailButtonContainer { get; set; }
         public int CurrentEditingIndex { get; set; } = -1;
 
         public ExclusivityOptionMenuObjectData(GameObject exclusivityOptionMenu) : base()

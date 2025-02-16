@@ -1,6 +1,7 @@
 using System.Linq;
 using SuperNewRoles.CustomOptions.Data;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -147,6 +148,8 @@ public static class ExclusivityOptionMenu
             Vector3.one * 0.2f);
 
         instance.ExclusivityEditMenu = menu;
+        instance.ExclusivityEditRightAreaScroller = menu.transform.Find("RightArea").GetComponent<Scroller>();
+        instance.ExclusivityEditRightAreaInner = instance.ExclusivityEditRightAreaScroller.transform.Find("Inner").gameObject;
         var closeButton = menu.transform.Find("CloseButton").gameObject;
         UIHelper.SetText(closeButton, ModTranslation.GetString("Close"));
         var closePassiveButton = closeButton.AddComponent<PassiveButton>();
@@ -162,6 +165,7 @@ public static class ExclusivityOptionMenu
 
         InitializeEditMenuLeftButtons(menu);
     }
+
     private static void InitializeEditMenuLeftButtons(GameObject menu)
     {
         string[] buttons = ["Impostor", "Neutral", "Crewmate"];
@@ -173,10 +177,133 @@ public static class ExclusivityOptionMenu
             passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
             var spriteRenderer = button.transform.GetComponent<SpriteRenderer>();
             UIHelper.SetText(button, ModTranslation.GetString(buttons[i]));
+            var buttonType = buttons[i];
             UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
             {
+                Logger.Info($"buttonType: {buttonType}");
+                GenerateRoleDetailButtons(buttonType);
             }), spriteRenderer);
         }
+    }
+
+    private static void GenerateRoleDetailButtons(string roleType)
+    {
+        var instance = ExclusivityOptionMenuObjectData.Instance;
+        if (instance.ExclusivityEditRightAreaInner == null) return;
+
+        // 既存のコンテナを削除
+        if (instance.RoleDetailButtonContainer != null)
+            GameObject.Destroy(instance.RoleDetailButtonContainer);
+
+        // 新しいコンテナを作成
+        var container = new GameObject("RoleDetailButtonContainer");
+        container.transform.SetParent(instance.ExclusivityEditRightAreaInner.transform);
+        container.transform.localPosition = Vector3.zero;
+        container.transform.localScale = Vector3.one;
+        instance.RoleDetailButtonContainer = container;
+
+        // 陣営に応じたロールのリストを取得
+        var roles = RoleOptionManager.RoleOptions.Where(x =>
+        {
+            var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == x.RoleId);
+            if (roleInfo == null) return false;
+            return roleType switch
+            {
+                "Impostor" => roleInfo.AssignedTeam == AssignedTeamType.Impostor,
+                "Neutral" => roleInfo.AssignedTeam == AssignedTeamType.Neutral,
+                "Crewmate" => roleInfo.AssignedTeam == AssignedTeamType.Crewmate,
+                _ => false
+            };
+        }).ToList();
+
+        // ロールボタンを生成
+        int index = 0;
+        // デバッグ用に20回同じロールを生成
+        for (int i = 0; i < 20; i++)
+        {
+            var debugRole = RoleOptionManager.RoleOptions[0];
+            var button = GenerateRoleDetailButton(ModTranslation.GetString($"{debugRole.RoleId}"), container.transform, index, debugRole);
+            ConfigureRoleDetailButton(button, debugRole, instance.CurrentEditingIndex);
+            index++;
+        }
+        foreach (var roleOption in roles)
+        {
+            var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleOption.RoleId);
+            if (roleInfo == null) continue;
+
+            string roleName = ModTranslation.GetString($"{roleInfo.Role}");
+            var button = GenerateRoleDetailButton(roleName, container.transform, index, roleOption);
+            ConfigureRoleDetailButton(button, roleOption, instance.CurrentEditingIndex);
+            index++;
+        }
+
+        // スクロール範囲の調整
+        instance.ExclusivityEditRightAreaScroller.ContentYBounds.max = index < 25 ? 0f : (0.38f * ((index - 24) / 4 + 1)) - 0.5f;
+    }
+
+    private static GameObject GenerateRoleDetailButton(string roleName, Transform parent, int index, RoleOptionManager.RoleOption roleOption)
+    {
+        var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(RoleOptionMenu.ROLE_DETAIL_BUTTON_ASSET_NAME));
+        obj.transform.SetParent(parent);
+        obj.transform.localScale = Vector3.one * 1.6f;
+
+        // ボタンの位置を計算
+        int col = index % 4;
+        int row = index / 4;
+        float posX = -1.27f + col * 1.63f;
+        float posY = 0.85f - row * 0.38f;
+        obj.transform.localPosition = new Vector3(posX, posY, -0.21f);
+
+        // ロール名を設定
+        obj.transform.Find("Text").GetComponent<TextMeshPro>().text = $"<b><color=#{ColorUtility.ToHtmlStringRGB(roleOption.RoleColor)}>{roleName}</color></b>";
+
+        return obj;
+    }
+
+    private static void ConfigureRoleDetailButton(GameObject button, RoleOptionManager.RoleOption roleOption, int editingIndex)
+    {
+        var passiveButton = button.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
+        var spriteRenderer = button.GetComponent<SpriteRenderer>();
+        GameObject selectedObject = button.transform.Find("Selected").gameObject;
+
+        passiveButton.OnClick = new();
+        passiveButton.OnClick.AddListener((UnityAction)(() =>
+        {
+            var roleName = roleOption.RoleId.ToString();
+            var settings = RoleOptionManager.ExclusivitySettings[editingIndex];
+            var roles = settings.Roles.ToList();
+
+            if (roles.Contains(roleName))
+            {
+                roles.Remove(roleName);
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.6f);
+            }
+            else
+            {
+                roles.Add(roleName);
+                spriteRenderer.color = Color.white;
+            }
+
+            RoleOptionManager.ExclusivitySettings[editingIndex].Roles = roles.ToArray();
+            ReGenerateMenu();
+        }));
+
+        passiveButton.OnMouseOver = new();
+        passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+        {
+            selectedObject.SetActive(true);
+        }));
+
+        passiveButton.OnMouseOut = new();
+        passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+        {
+            selectedObject.SetActive(false);
+        }));
+
+        // 初期の選択状態を設定
+        var isSelected = RoleOptionManager.ExclusivitySettings[editingIndex].Roles.Contains(roleOption.RoleId.ToString());
+        spriteRenderer.color = isSelected ? Color.white : new Color(1f, 1f, 1f, 0.6f);
     }
 
     private static void UpdateEditMenuContent(int index)
