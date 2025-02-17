@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Modules;
@@ -175,14 +176,13 @@ public static class CustomOptionsMenu
 
         OptionMenuBase.HideAll();
         SetVanillaTabActive(false);
+        SetCurrentTab(categoryName);
 
         if (categoryName == MenuCategories.VANILLA)
         {
             SetVanillaTabActive(true);
-            return;
         }
-
-        if (IsRoleOptionMenuCategory(categoryName))
+        else if (IsRoleOptionMenuCategory(categoryName))
         {
             RoleOptionMenu.ShowRoleOptionMenu(ConvertToRoleOptionMenuType(categoryName));
         }
@@ -194,6 +194,35 @@ public static class CustomOptionsMenu
         {
             ExclusivityOptionMenu.ShowExclusivityOptionMenu();
         }
+    }
+
+    private static void SetCurrentTab(string categoryName)
+    {
+        var menuObject = GetGameSettingMenu()?.transform.Find(MENU_SELECTOR_ASSET_NAME + "(Clone)")?.gameObject;
+        if (menuObject == null)
+        {
+            Logger.Error($"menuObject is null: {categoryName}");
+            return;
+        }
+
+        var selectedObject = menuObject.transform.Find("Selected")?.gameObject;
+        if (selectedObject == null)
+        {
+            Logger.Error($"selectedObject is null: {categoryName}");
+            return;
+        }
+
+        var categoryObject = menuObject.transform.Find(categoryName)?.gameObject;
+        if (categoryObject == null)
+        {
+            Logger.Error($"categoryObject is null: {categoryName}");
+            return;
+        }
+
+        selectedObject.SetActive(true);
+        var position = selectedObject.transform.localPosition;
+        position.x = categoryObject.transform.localPosition.x + 3.95f;
+        selectedObject.transform.localPosition = position;
     }
 
     /// <summary>

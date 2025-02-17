@@ -135,6 +135,8 @@ public static class ExclusivityOptionMenu
 
         instance.ExclusivityOptionMenu.SetActive(false);
         instance.ExclusivityEditMenu.SetActive(true);
+        if (instance.RoleDetailButtonContainer != null)
+            GameObject.Destroy(instance.RoleDetailButtonContainer);
         UpdateEditMenuContent(index);
     }
 
@@ -219,13 +221,13 @@ public static class ExclusivityOptionMenu
         // ロールボタンを生成
         int index = 0;
         // デバッグ用に20回同じロールを生成
-        for (int i = 0; i < 20; i++)
+        /*for (int i = 0; i < 20; i++)
         {
             var debugRole = RoleOptionManager.RoleOptions[0];
             var button = GenerateRoleDetailButton(ModTranslation.GetString($"{debugRole.RoleId}"), container.transform, index, debugRole);
             ConfigureRoleDetailButton(button, debugRole, instance.CurrentEditingIndex);
             index++;
-        }
+        }*/
         foreach (var roleOption in roles)
         {
             var roleInfo = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleOption.RoleId);
@@ -245,13 +247,13 @@ public static class ExclusivityOptionMenu
     {
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(RoleOptionMenu.ROLE_DETAIL_BUTTON_ASSET_NAME));
         obj.transform.SetParent(parent);
-        obj.transform.localScale = Vector3.one * 1.6f;
+        obj.transform.localScale = Vector3.one * 1.45f;
 
         // ボタンの位置を計算
-        int col = index % 4;
-        int row = index / 4;
-        float posX = -1.27f + col * 1.63f;
-        float posY = 0.85f - row * 0.38f;
+        int col = index % 5;
+        int row = index / 5;
+        float posX = -10.65f + col * 7.725f;
+        float posY = 5.85f - row * 1.85f;
         obj.transform.localPosition = new Vector3(posX, posY, -0.21f);
 
         // ロール名を設定
