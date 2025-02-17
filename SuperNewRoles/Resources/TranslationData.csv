@@ -7,6 +7,9 @@ Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三陣營,第三陣營
 
+NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Let's work only for ourselves.Let's Take advantage of others.,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
+
+
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員

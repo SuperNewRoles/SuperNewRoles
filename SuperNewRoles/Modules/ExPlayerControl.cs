@@ -6,6 +6,8 @@ namespace SuperNewRoles.Modules;
 
 public class ExPlayerControl
 {
+    public static ExPlayerControl LocalPlayer;
+    private static ExPlayerControl _localPlayer;
     private static List<ExPlayerControl> _exPlayerControls { get; } = new();
     public static IReadOnlyList<ExPlayerControl> ExPlayerControls => _exPlayerControls.AsReadOnly();
     private static ExPlayerControl[] _exPlayerControlsArray;
@@ -14,6 +16,7 @@ public class ExPlayerControl
     public NetworkedPlayerInfo Data { get; }
     public byte PlayerId { get; }
     public RoleId Role { get; private set; }
+    public IRoleBase roleBase { get; private set; }
     public List<AbilityBase> PlayerAbilities { get; private set; } = new();
     public ExPlayerControl(PlayerControl player)
     {
@@ -35,6 +38,7 @@ public class ExPlayerControl
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
         {
             role.OnSetRole(player);
+            roleBase = role;
         }
     }
     public static void SetUpExPlayers()
@@ -45,11 +49,21 @@ public class ExPlayerControl
             _exPlayerControls.Add(new ExPlayerControl(player));
             _exPlayerControlsArray[player.PlayerId] = _exPlayerControls[^1];
         }
+        _localPlayer = _exPlayerControlsArray[PlayerControl.LocalPlayer.PlayerId];
     }
     public static ExPlayerControl ById(byte playerId)
     {
         return _exPlayerControlsArray[playerId];
     }
+    public bool IsCrewmate()
+        => roleBase.AssignedTeam == AssignedTeamType.Crewmate;
+    public bool IsImpostor()
+        => roleBase.AssignedTeam == AssignedTeamType.Impostor;
+    public bool IsNeutral()
+        => roleBase.AssignedTeam == AssignedTeamType.Neutral;
+    // TODO: 後でMADロールを追加したらここに追加する
+    public bool IsMadRoles()
+        => false;
 }
 public static class ExPlayerControlExtensions
 {
