@@ -55,6 +55,8 @@ public static class AssignRoles
         }
         foreach (var roleOption in RoleOptionManager.RoleOptions)
         {
+            if (roleOption.NumberOfCrews <= 0)
+                continue;
             if (roleOption.Percentage >= 100)
             {
                 AssignTickets_HundredPercent[roleOption.AssignTeam].Add(new AssignTickets(roleOption));
@@ -112,6 +114,10 @@ public static class AssignRoles
 
             AssignRole(targetPlayer, selectedTicket.RoleOption.RoleId);
             maxBeans--;
+        }
+        foreach (var player in targetPlayers)
+        {
+            AssignRole(player, isImpostor ? RoleId.Impostor : RoleId.Crewmate);
         }
     }
     private static void AssignRole(PlayerControl player, RoleId roleId)

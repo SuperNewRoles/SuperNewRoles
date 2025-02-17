@@ -3,6 +3,8 @@ namespace SuperNewRoles.Roles;
 public enum RoleId : short
 {
     None = 0,
+    Crewmate,
+    Impostor,
     Bait,
     BestFalseCharge,
 }
