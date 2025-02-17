@@ -8,6 +8,7 @@ class AmongUsClientStartPatch
 {
     public static void Postfix(AmongUsClient __instance)
     {
+        Logger.Info("CoStartGame");
         ExPlayerControl.SetUpExPlayers();
     }
 }

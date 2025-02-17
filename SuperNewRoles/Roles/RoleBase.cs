@@ -67,6 +67,7 @@ public interface IRoleBase
     public RoleTag[] RoleTags { get; }
     public RoleOptionMenuType OptionTeam { get; }
     public short IntroNum { get; }
+    public bool IsVanillaRole => QuoteMod == QuoteMod.Vanilla;
     /// <summary>
     /// CustomIntroSoundがnullの時に使用される
     /// </summary>

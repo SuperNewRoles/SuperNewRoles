@@ -11,6 +11,7 @@ public enum RoleId : short
 
 public enum QuoteMod : byte
 {
+    Vanilla,
     SuperNewRoles,
     NebulaOnTheShip,
     TownOfHost,

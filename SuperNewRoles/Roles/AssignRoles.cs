@@ -76,7 +76,8 @@ public static class AssignRoles
         List<PlayerControl> targetPlayers = new();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player.Data.Role.IsImpostor == isImpostor)
+            Logger.Info($"AssignTickets {player.Data.PlayerName} {player.Data.Role.IsImpostor} {isImpostor}");
+            if (player.Data.Role.IsImpostor == isImpostor && (isImpostor || ((ExPlayerControl)player).Role is RoleId.Crewmate or RoleId.None))
                 targetPlayers.Add(player);
         }
         if (targetPlayers.Count <= 0)

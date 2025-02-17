@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles;
 public static class ModHelpers
@@ -40,4 +41,31 @@ public static class ModHelpers
         return BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
     }
     public static ReadOnlySpan<T> AsSpan<T>(this List<T> list) => CollectionsMarshal.AsSpan(list);
+
+    public static bool IsComms()
+    {
+        try
+        {
+            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out ISystemType system)) return false;
+            HudOverrideSystemType hudOverride;
+            HqHudSystemType hqHud;
+            if ((hudOverride = system.TryCast<HudOverrideSystemType>()) != null) return hudOverride.IsActive;
+            if ((hqHud = system.TryCast<HqHudSystemType>()) != null) return hqHud.IsActive;
+
+            return false;
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.ToString(), "IsComms");
+            return false;
+        }
+    }
+    public static string Cs(Color c, string s)
+    {
+        return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
+    }
+    public static string ToByte(float f)
+    {
+        return ((byte)(f * 255)).ToString("X2");
+    }
 }

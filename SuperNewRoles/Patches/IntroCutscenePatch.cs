@@ -125,12 +125,10 @@ public static class IntroCutscenePatch
             if (ExPlayerControl.LocalPlayer.IsCrewmate())
             {
                 yourTeam = new();
+
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (p.PlayerId != ExPlayerControl.LocalPlayer.PlayerId)
-                    {
-                        yourTeam.Add(p);
-                    }
+                    yourTeam.Add(p);
                 }
             }
             else if (ExPlayerControl.LocalPlayer.IsImpostor())
@@ -177,5 +175,17 @@ public static class IntroCutscenePatch
             __instance.ImpostorText.gameObject.SetActive(true);
         __instance.BackgroundBar.material.color = color;
         __instance.TeamTitle.color = color;
+    }
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+    class OnDestroyPatch
+    {
+        public static void Postfix(IntroCutscene __instance)
+        {
+            foreach (var player in ExPlayerControl.ExPlayerControls)
+            {
+                NameText.UpdateNameInfo(player);
+            }
+            NameText.RegisterNameTextUpdateEvent();
+        }
     }
 }

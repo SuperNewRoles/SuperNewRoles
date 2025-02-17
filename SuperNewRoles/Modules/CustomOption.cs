@@ -265,6 +265,7 @@ public static class RoleOptionManager
         foreach (var role in CustomRoleManager.AllRoles)
         {
             if (role.Role == RoleId.None) continue;
+            if (role.IsVanillaRole) continue;
             var options = CustomOptionManager.GetCustomOptions()
             .Where(option => option.ParentRole == role.Role)
             .ToArray();

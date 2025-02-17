@@ -1,32 +1,37 @@
 using System.Collections.Generic;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
+using TMPro;
 
 namespace SuperNewRoles.Modules;
 
 public class ExPlayerControl
 {
-    public static ExPlayerControl LocalPlayer;
+    public static ExPlayerControl LocalPlayer => _localPlayer;
     private static ExPlayerControl _localPlayer;
     private static List<ExPlayerControl> _exPlayerControls { get; } = new();
     public static IReadOnlyList<ExPlayerControl> ExPlayerControls => _exPlayerControls.AsReadOnly();
     private static ExPlayerControl[] _exPlayerControlsArray;
     public static IReadOnlyCollection<ExPlayerControl> ExPlayerControlsArray => _exPlayerControlsArray;
-    private PlayerControl player;
+    public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
     public byte PlayerId { get; }
     public RoleId Role { get; private set; }
     public IRoleBase roleBase { get; private set; }
     public List<AbilityBase> PlayerAbilities { get; private set; } = new();
+
+    public TextMeshPro PlayerInfoText { get; set; }
+    public TextMeshPro MeetingInfoText { get; set; }
+
     public ExPlayerControl(PlayerControl player)
     {
-        this.player = player;
+        this.Player = player;
         this.PlayerId = player.PlayerId;
         this.Data = player.CachedPlayerData;
     }
     public static implicit operator PlayerControl(ExPlayerControl exPlayer)
     {
-        return exPlayer.player;
+        return exPlayer.Player;
     }
     public static implicit operator ExPlayerControl(PlayerControl player)
     {
@@ -37,7 +42,7 @@ public class ExPlayerControl
         Role = roleId;
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
         {
-            role.OnSetRole(player);
+            role.OnSetRole(Player);
             roleBase = role;
         }
     }
@@ -56,11 +61,11 @@ public class ExPlayerControl
         return _exPlayerControlsArray[playerId];
     }
     public bool IsCrewmate()
-        => roleBase.AssignedTeam == AssignedTeamType.Crewmate;
+        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate : !Data.Role.IsImpostor;
     public bool IsImpostor()
-        => roleBase.AssignedTeam == AssignedTeamType.Impostor;
+        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Impostor : Data.Role.IsImpostor;
     public bool IsNeutral()
-        => roleBase.AssignedTeam == AssignedTeamType.Neutral;
+        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     // TODO: 後でMADロールを追加したらここに追加する
     public bool IsMadRoles()
         => false;
@@ -68,6 +73,9 @@ public class ExPlayerControl
         => Data == null || Data.Disconnected || Data.IsDead;
     public bool IsAlive()
         => !IsDead();
+    // TODO: 後で書く
+    public bool IsTaskTriggerRole()
+        => roleBase != null ? IsCrewmate() : IsCrewmate();
 }
 public static class ExPlayerControlExtensions
 {
