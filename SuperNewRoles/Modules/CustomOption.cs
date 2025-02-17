@@ -295,14 +295,16 @@ public static class RoleOptionManager
 
     public static void RoleOptionLoad()
     {
-        RoleOptions = CustomOptionManager.GetCustomOptions()
-        .Where(option => option.ParentRole != null)
-        .GroupBy(option => option.ParentRole.Value)
-        .Select(group =>
+        List<RoleOption> _roleOptions = new();
+        foreach (var role in CustomRoleManager.AllRoles)
         {
-            var options = group.ToArray();
-            return new RoleOption(group.Key, (byte)group.Count(), 0, options);
-        }).ToArray();
+            if (role.Role == RoleId.None) continue;
+            var options = CustomOptionManager.GetCustomOptions()
+            .Where(option => option.ParentRole == role.Role)
+            .ToArray();
+            _roleOptions.Add(new RoleOption(role.Role, (byte)options.Length, 0, options));
+        }
+        RoleOptions = _roleOptions.ToArray();
     }
 
     public static void AddExclusivitySetting(int maxAssign, string[] roles)

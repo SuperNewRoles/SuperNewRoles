@@ -66,30 +66,62 @@ public static class AssignRoles
     {
         List<PlayerControl> targetPlayers = new();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player.Data.Role.IsImpostor == isImpostor)
+                targetPlayers.Add(player);
+        }
+        if (targetPlayers.Count <= 0)
+            return;
+
+        // 100%チケットの割り当て処理
+        while (tickets_hundred.Count > 0 && targetPlayers.Count > 0)
+        {
+            int ticketIndex = UnityEngine.Random.Range(0, tickets_hundred.Count);
+            AssignTickets selectedTicket = tickets_hundred[ticketIndex];
+            selectedTicket.IncrementRemainingAssignBeans();
+            if (selectedTicket.RemainingAssignBeans <= 0)
+                tickets_hundred.RemoveAt(ticketIndex);
+
+            int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
+            PlayerControl targetPlayer = targetPlayers[playerIndex];
+            targetPlayers.RemoveAt(playerIndex);
+
+            AssignRole(targetPlayer, selectedTicket.RoleOption.RoleId);
+        }
+
+        // 100%未満のチケットからランダムに選択して割り当てる
+        while (tickets_not_hundred.Count > 0 && targetPlayers.Count > 0)
+        {
+            int ticketIndex = UnityEngine.Random.Range(0, tickets_not_hundred.Count);
+            AssignTickets selectedTicket = tickets_not_hundred[ticketIndex];
+            selectedTicket.IncrementRemainingAssignBeans();
+            if (selectedTicket.RemainingAssignBeans <= 0)
+                tickets_not_hundred.RemoveAll(x => x.RoleOption == selectedTicket.RoleOption);
+
+            int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
+            PlayerControl targetPlayer = targetPlayers[playerIndex];
+            targetPlayers.RemoveAt(playerIndex);
+
+            AssignRole(targetPlayer, selectedTicket.RoleOption.RoleId);
+        }
+    }
+    private static void AssignRole(PlayerControl player, RoleId roleId)
+    {
+        Logger.Info($"Assigning role {roleId} to player {player.PlayerId}");
+        ((ExPlayerControl)player).RpcCustomSetRole(roleId);
     }
 }
-public struct AssignTickets : IComparable<AssignTickets>
+public struct AssignTickets
 {
     public RoleOptionManager.RoleOption RoleOption { get; }
+    public int RemainingAssignBeans { get; private set; }
     public AssignTickets(RoleOptionManager.RoleOption roleOption)
     {
         RoleOption = roleOption;
+        RemainingAssignBeans = roleOption.NumberOfCrews;
     }
-    public int CompareTo(AssignTickets other)
+    public void IncrementRemainingAssignBeans()
     {
-        return RoleOption.RoleId.CompareTo(other.RoleOption.RoleId);
-    }
-    public override int GetHashCode()
-    {
-        return RoleOption.RoleId.GetHashCode();
-    }
-    public override bool Equals(object obj)
-    {
-        if (obj == null) return false;
-        if (obj is AssignTickets other)
-        {
-            return RoleOption.RoleId == other.RoleOption.RoleId;
-        }
-        return false;
+        RemainingAssignBeans--;
     }
 }

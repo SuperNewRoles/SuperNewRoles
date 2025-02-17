@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Modules;
@@ -12,6 +13,8 @@ public class ExPlayerControl
     private PlayerControl player;
     public NetworkedPlayerInfo PlayerInfo { get; }
     public byte PlayerId { get; }
+    public RoleId PlayerRoleId { get; private set; }
+    public List<AbilityBase> PlayerAbilities { get; private set; } = new();
     public ExPlayerControl(PlayerControl player)
     {
         this.player = player;
@@ -21,6 +24,18 @@ public class ExPlayerControl
     public static implicit operator PlayerControl(ExPlayerControl exPlayer)
     {
         return exPlayer.player;
+    }
+    public static implicit operator ExPlayerControl(PlayerControl player)
+    {
+        return ById(player.PlayerId);
+    }
+    public void SetRole(RoleId roleId)
+    {
+        PlayerRoleId = roleId;
+        if (CustomRoleManager.TryGetRoleById(roleId, out var role))
+        {
+            role.OnSetRole(player);
+        }
     }
     public static void SetUpExPlayers()
     {
@@ -40,6 +55,8 @@ public static class ExPlayerControlExtensions
 {
     public static void AddAbility(this PlayerControl player, AbilityBase ability)
     {
-        player.AddAbility(ability);
+        ExPlayerControl exPlayer = player;
+        exPlayer.PlayerAbilities.Add(ability);
+        ability.Attach(player);
     }
 }

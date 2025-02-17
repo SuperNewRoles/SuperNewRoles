@@ -13,7 +13,7 @@ class BestFalseCharge : RoleBase<BestFalseCharge>
 {
     public override RoleId Role { get; } = RoleId.BestFalseCharge;
     public override Color32 RoleColor { get; } = Color.white;
-    public override List<Type> Abilities { get; } = [typeof(AutoExileAfterMeeting)];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new AutoExileAfterMeeting()];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;

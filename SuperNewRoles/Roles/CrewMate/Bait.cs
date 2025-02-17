@@ -21,7 +21,7 @@ class Bait : RoleBase<Bait>
     //public override string NameKey { get; } = RoleId.Bait.ToString();
 
     public override Color32 RoleColor { get; } = new(222, 184, 135, byte.MaxValue);
-    public override List<Type> Abilities { get; } = [typeof(BaitAbility)];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new BaitAbility()];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
