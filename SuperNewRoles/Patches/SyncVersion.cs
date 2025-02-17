@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
