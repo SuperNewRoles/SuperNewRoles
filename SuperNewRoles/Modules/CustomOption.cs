@@ -21,6 +21,11 @@ public static class CustomOptionManager
     [CustomOptionSelect("ModeOption", typeof(ModeId), "ModeId.", parentFieldName: nameof(ModeSettings))]
     public static ModeId ModeOption;
 
+    [CustomOptionBool("DebugMode", false, parentFieldName: nameof(GeneralSettings))]
+    public static bool DebugMode;
+    [CustomOptionBool("DebugModeNoGameEnd", false, parentFieldName: nameof(DebugMode))]
+    public static bool DebugModeNoGameEnd;
+
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
     public static List<CustomOption> CustomOptions { get; } = new();
     public static List<CustomOptionCategory> OptionCategories { get; } = new();

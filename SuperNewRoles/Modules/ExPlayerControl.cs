@@ -64,6 +64,10 @@ public class ExPlayerControl
     // TODO: 後でMADロールを追加したらここに追加する
     public bool IsMadRoles()
         => false;
+    public bool IsDead()
+        => Data == null || Data.Disconnected || Data.IsDead;
+    public bool IsAlive()
+        => !IsDead();
 }
 public static class ExPlayerControlExtensions
 {

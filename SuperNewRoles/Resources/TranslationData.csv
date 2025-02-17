@@ -44,6 +44,7 @@ ExclusivityOptionMenuAssignedRoleText,割当役職,Assigned Role,指派職位,�
 ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
 ExclusivityEditMenuTitle,排他設定の編集,Edit Exclusivity Settings,编辑排他设置,編輯排他設置
 ExclusivityEditMenuGroupTitle,グループ {0}の設定,Group {0} Settings,组 {0} 设置,組 {0} 設置
+DebugMode,デバッグモード,Debug Mode,偵錯模式,偵錯模式
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大內鬼數,最大內鬼數
