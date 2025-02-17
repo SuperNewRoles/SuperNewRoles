@@ -271,6 +271,7 @@ public static class RoleOptionManager
     public class RoleOption
     {
         public RoleId RoleId { get; }
+        public AssignedTeamType AssignTeam { get; }
         public byte NumberOfCrews { get; set; }
         public int Percentage { get; set; }
         public CustomOption[] Options { get; }
@@ -283,7 +284,10 @@ public static class RoleOptionManager
             Options = options;
             // ロールの色情報を取得
             var roleBase = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleId);
+            if (roleBase == null)
+                throw new Exception($"Role {roleId} not found");
             RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
+            AssignTeam = roleBase?.AssignedTeam ?? AssignedTeamType.Crewmate;
         }
     }
     public static RoleOption[] RoleOptions { get; private set; }
