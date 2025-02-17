@@ -64,8 +64,9 @@ public static class ModHelpers
     {
         return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
     }
-    public static string ToByte(float f)
+    public static byte ToByte(float f)
     {
-        return ((byte)(f * 255)).ToString("X2");
+        f = Mathf.Clamp01(f);
+        return (byte)(f * 255);
     }
 }
