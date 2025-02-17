@@ -13,78 +13,91 @@ public static class AssetManager
     {
         Sprite,
         Sound,
-        Wavecannon,
+        WaveCannon,
         BodyBuilder
     }
-    private static Dictionary<byte, Dictionary<string, UnityEngine.Object>> _cachedAssets { get; } = new();
+
+    // キャッシュ用のキー構造体を追加
+    private readonly struct AssetCacheKey
+    {
+        public readonly string Path;
+        public readonly Il2CppSystem.Type Type;
+
+        public AssetCacheKey(string path, Il2CppSystem.Type type)
+        {
+            Path = path;
+            Type = type;
+        }
+    }
+
+    // キャッシュ構造を最適化
+    private static readonly Dictionary<byte, Dictionary<AssetCacheKey, UnityEngine.Object>> _cachedAssets = new();
+    private static readonly Dictionary<AssetBundleType, byte> TypeToByte = new()
+    {
+        { AssetBundleType.Sprite, (byte)AssetBundleType.Sprite },
+    };
+
+    // AssetPathesの定義を最適化
+    private static readonly (AssetBundleType Type, string Path)[] AssetPathes =
+    {
+        (AssetBundleType.Sprite, "snrsprites"),
+    };
+
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
-    private static Tuple<AssetBundleType, string>[] AssetPathes = [
-        new(AssetBundleType.Sprite, "snrsprites"),/*
-        new(AssetBundleType.Sound, "snrsounds"),
-        new(AssetBundleType.Wavecannon, "WaveCannon.WaveCannonEffects"),
-        new(AssetBundleType.BodyBuilder, "BodyBuilder.BodyBuilderPoses")*/
-    ];
     public static void Load()
     {
         Logger.Info("-------Start AssetBundle-------");
         var ExcAssembly = Assembly.GetExecutingAssembly();
         foreach (var data in AssetPathes)
         {
-            Logger.Info($"Loading AssetBundle:" + data.Item1.ToString());
+            Logger.Info($"Loading AssetBundle: {data.Type}");
             try
             {
                 //AssemblyからAssetBundleファイルを読み込む
                 var BundleStream = ExcAssembly.
                     GetManifestResourceStream(
-                    $"SuperNewRoles.Resources.{data.Item2}.bundle"
+                    $"SuperNewRoles.Resources.{data.Path}.bundle"
                     );
                 //AssetBundleを読み込む
                 var assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
                 //読み込んだAssetBundleを保存
-                Bundles[(byte)data.Item1] = assetBundle;
+                Bundles[TypeToByte[data.Type]] = assetBundle;
                 //キャッシュ用のDictionaryを作成
-                _cachedAssets[(byte)data.Item1] = new();
+                _cachedAssets[TypeToByte[data.Type]] = new();
 
                 assetBundle.DontUnload();
 
                 BundleStream.Dispose();
-                Logger.Info($"Loaded AssetBundle:" + data.Item1.ToString());
+                Logger.Info($"Loaded AssetBundle: {data.Type}");
             }
             catch (Exception e)
             {
-                Logger.Error($"Failed to load AssetBundle:" + data.Item1.ToString(), "LoadAssetBundle");
+                Logger.Error($"Failed to load AssetBundle:" + data.Type.ToString(), "LoadAssetBundle");
                 Logger.Error(e.ToString(), "LoadAssetBundle");
             }
         }
         Logger.Info("-------End LoadAssetBundle-------");
     }
     /// <summary>
-    /// アセットをロードする
+    /// 指定されたパスからアセットを取得します
     /// </summary>
-    /// <typeparam name="T">読み込むタイプ(Spriteなど)</typeparam>
-    /// <param name="path">パス</param>
-    /// <param name="assetBundleType">保存しているAssetBundle</param>
-    /// <returns></returns>
+    /// <typeparam name="T">取得するアセットの型（Spriteなど）</typeparam>
+    /// <param name="path">アセットパス</param>
+    /// <param name="assetBundleType">使用するアセットバンドルの種類</param>
+    /// <returns>読み込まれたアセットまたはnull</returns>
     public static T GetAsset<T>(string path, AssetBundleType assetBundleType = AssetBundleType.Sprite) where T : UnityEngine.Object
     {
-        // 指定されたAssetBundleTypeのキャッシュが存在しない場合はnullを返す
-        if (!_cachedAssets.TryGetValue((byte)assetBundleType, out var cache))
+        var typeKey = TypeToByte[assetBundleType];
+        if (!_cachedAssets.TryGetValue(typeKey, out var typeCache))
             return null;
 
-        // 型情報の文字列表現を1度だけ取得してキャッシュキーを生成
-        Il2CppSystem.Type il2CppType = Il2CppType.Of<T>();
-        string cacheKey = path + il2CppType.ToString();
+        var cacheKey = new AssetCacheKey(path, Il2CppType.Of<T>());
+        if (typeCache.TryGetValue(cacheKey, out var cached))
+            return cached.TryCast<T>();
 
-        // キャッシュに存在する場合、その値を返す
-        if (cache.TryGetValue(cacheKey, out UnityEngine.Object cachedObj))
-            return cachedObj.TryCast<T>();
-
-        // AssetBundleからアセットを読み込み、DontUnloadを適用
-        T asset = Bundles[(byte)assetBundleType]
-                  .LoadAsset<T>(path).DontUnload();
-
-        // 読み込んだアセットをキャッシュに保存
-        cache[cacheKey] = asset;
+        var bundle = Bundles[typeKey];
+        var asset = bundle.LoadAsset<T>(path).DontUnload();
+        typeCache[cacheKey] = asset;
         return asset;
     }
 
