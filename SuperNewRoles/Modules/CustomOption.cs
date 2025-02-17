@@ -17,48 +17,9 @@ public static class CustomOptionManager
     public static CustomOptionCategory GameSettings;
     public static CustomOptionCategory MapSettings;
     public static CustomOptionCategory MapEditSettings;
+
     [CustomOptionSelect("ModeOption", typeof(ModeId), "ModeId.", parentFieldName: nameof(ModeSettings))]
     public static ModeId ModeOption;
-
-    [CustomOptionInt("TestInt", 0, 100, 1, 5, parentFieldName: nameof(ModeSettings))]
-    public static int TestInt;
-    [CustomOptionInt("TestInt2", 0, 100, 1, 5, parentFieldName: nameof(TestInt))]
-    public static int TestInt2;
-    [CustomOptionInt("TestInt3", 0, 100, 1, 5, parentFieldName: nameof(TestInt2))]
-    public static int TestInt3;
-    [CustomOptionInt("TestInt4", 0, 100, 1, 5, parentFieldName: nameof(TestInt), displayMode: DisplayModeId.BattleRoyal)]
-    public static int TestInt4;
-    [CustomOptionInt("TestInt9", 0, 100, 1, 5, parentFieldName: nameof(TestInt), displayMode: DisplayModeId.Default)]
-    public static int TestInt9;
-    [CustomOptionInt("TestInt10", 0, 100, 1, 5, parentFieldName: nameof(TestInt9))]
-    public static int TestInt10;
-    [CustomOptionInt("TestInt11", 0, 100, 1, 5, parentFieldName: nameof(TestInt10))]
-    public static int TestInt11;
-    [CustomOptionInt("TestInt12", 0, 100, 1, 5, parentFieldName: nameof(TestInt11))]
-    public static int TestInt12;
-    [CustomOptionInt("TestInt13", 0, 100, 1, 5, parentFieldName: nameof(TestInt12))]
-    public static int TestInt13;
-    [CustomOptionInt("TestInt14", 0, 100, 1, 5, parentFieldName: nameof(TestInt13))]
-    public static int TestInt14;
-    [CustomOptionInt("TestInt15", 0, 100, 1, 5, parentFieldName: nameof(TestInt14))]
-    public static int TestInt15;
-    [CustomOptionInt("TestInt16", 0, 100, 1, 5, parentFieldName: nameof(TestInt15))]
-    public static int TestInt16;
-    [CustomOptionInt("TestInt17", 0, 100, 1, 5, parentFieldName: nameof(TestInt16))]
-    public static int TestInt17;
-    [CustomOptionInt("TestInt18", 0, 100, 1, 5, parentFieldName: nameof(TestInt17))]
-    public static int TestInt18;
-
-
-    [CustomOptionInt("TestInt5", 0, 100, 1, 5, parentFieldName: nameof(GeneralSettings))]
-    public static int TestInt5;
-    [CustomOptionInt("TestInt6", 0, 100, 1, 5, parentFieldName: nameof(GameSettings))]
-    public static int TestInt6;
-    [CustomOptionInt("TestInt7", 0, 100, 1, 5, parentFieldName: nameof(TestInt6))]
-    public static int TestInt7;
-    [CustomOptionBool("TestInt8", false, parentFieldName: nameof(TestInt7))]
-    public static bool TestInt8;
-
 
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
     public static List<CustomOption> CustomOptions { get; } = new();

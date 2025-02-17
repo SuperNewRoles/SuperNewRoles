@@ -17,6 +17,13 @@ class RoleManagerSelectRolesPatch
 
 public static class AssignRoles
 {
+    [CustomOptionInt("AssignRoles_MaxImpostors", 1, 5, 1, 2, parentFieldName: nameof(CustomOptionManager.GeneralSettings))]
+    public static int MaxImpostors;
+    [CustomOptionInt("AssignRoles_MaxCrews", 1, 5, 1, 2, parentFieldName: nameof(CustomOptionManager.GeneralSettings))]
+    public static int MaxCrews;
+    [CustomOptionInt("AssignRoles_MaxNeutrals", 1, 5, 1, 2, parentFieldName: nameof(CustomOptionManager.GeneralSettings))]
+    public static int MaxNeutrals;
+
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_HundredPercent = new();
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_NotHundredPercent = new();
     public static void AssignCustomRoles()
@@ -26,17 +33,17 @@ public static class AssignRoles
         // Assign Impostors
         AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Impostor],
         AssignTickets_NotHundredPercent[AssignedTeamType.Impostor],
-        true, 0);
+        true, MaxImpostors);
 
         // Assign Neutral
         AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Neutral],
         AssignTickets_NotHundredPercent[AssignedTeamType.Neutral],
-        false, 0);
+        false, MaxNeutrals);
 
         // Assign Crews
         AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Crewmate],
         AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate],
-        false, 0);
+        false, MaxCrews);
 
     }
     private static void CreateTickets()
@@ -74,7 +81,7 @@ public static class AssignRoles
             return;
 
         // 100%チケットの割り当て処理
-        while (tickets_hundred.Count > 0 && targetPlayers.Count > 0)
+        while (tickets_hundred.Count > 0 && targetPlayers.Count > 0 && maxBeans > 0)
         {
             int ticketIndex = UnityEngine.Random.Range(0, tickets_hundred.Count);
             AssignTickets selectedTicket = tickets_hundred[ticketIndex];
@@ -87,10 +94,11 @@ public static class AssignRoles
             targetPlayers.RemoveAt(playerIndex);
 
             AssignRole(targetPlayer, selectedTicket.RoleOption.RoleId);
+            maxBeans--;
         }
 
         // 100%未満のチケットからランダムに選択して割り当てる
-        while (tickets_not_hundred.Count > 0 && targetPlayers.Count > 0)
+        while (tickets_not_hundred.Count > 0 && targetPlayers.Count > 0 && maxBeans > 0)
         {
             int ticketIndex = UnityEngine.Random.Range(0, tickets_not_hundred.Count);
             AssignTickets selectedTicket = tickets_not_hundred[ticketIndex];
@@ -103,6 +111,7 @@ public static class AssignRoles
             targetPlayers.RemoveAt(playerIndex);
 
             AssignRole(targetPlayer, selectedTicket.RoleOption.RoleId);
+            maxBeans--;
         }
     }
     private static void AssignRole(PlayerControl player, RoleId roleId)

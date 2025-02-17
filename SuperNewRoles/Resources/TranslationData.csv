@@ -42,6 +42,11 @@ ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
 ExclusivityEditMenuTitle,排他設定の編集,Edit Exclusivity Settings,编辑排他设置,編輯排他設置
 ExclusivityEditMenuGroupTitle,グループ {0}の設定,Group {0} Settings,组 {0} 设置,組 {0} 設置
 
+# AssignRoles
+AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大內鬼數,最大內鬼數
+AssignRoles_MaxCrews,最大 クルーメイト 選出数,Max Crewmates,最大船員數,最大船員數
+AssignRoles_MaxNeutrals,最大   第三陣営   選出数,Max Neutrals,最大第三陣營數,最大第三陣營數
+
 # SyncError
 SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>發生錯誤。</size>,<size=150%>發生錯誤。</size>
 SyncError_VersionMismatch,{player}のバージョンが一致しません。(v{version}),{player}'s version does not match. (v{version}),{player}的版本不匹配。(v{version}),{player}的版本不符。(v{version})
