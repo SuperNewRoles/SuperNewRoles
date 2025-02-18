@@ -655,10 +655,14 @@ internal static class RoleinformationText
     {
         (string[] roleNameKeys, bool isSuccess) = ModTranslation.GetTranslateKey(Name);
 
-        return roleNameKeys
-            .Select(key => isSuccess && key.Contains("Name") ? key.Replace("Name", "") : key) // 翻訳キーの取得に成功していた場合、その文字列から"Name"を外す。取得に失敗していた場合、入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
-            .Select(key => Enum.TryParse<RoleId>(key, out var roleId) && Enum.IsDefined(typeof(RoleId), roleId) ? (RoleId?)roleId : null) // 取得した役職名又はRoleId(string)からRoleIdを取得する。(存在しなかった場合null)
-            .FirstOrDefault(roleId => roleId.HasValue); // 複数取得できた場合最初の要素のみ返す
+        foreach (var key in roleNameKeys)
+        {
+            // 翻訳キーの取得に成功していた場合、その文字列から"Name"を外す。取得に失敗していた場合、入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
+            // 取得した役職名又はRoleId(string)からRoleIdを取得する。(存在しなかった場合null)
+            // 複数取得できた場合最初の要素のみ返す
+            if (Enum.TryParse<RoleId>(isSuccess ? key.Replace("Name", "") : key, out var roleId) && Enum.IsDefined(typeof(RoleId), roleId)) return roleId;
+        }
+        return default;
     }
     internal static void YourRoleInfoSendCommand()
     {
