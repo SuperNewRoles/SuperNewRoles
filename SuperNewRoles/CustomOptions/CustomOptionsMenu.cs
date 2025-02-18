@@ -31,7 +31,7 @@ public static class CustomOptionsMenu
     /// </summary>
     private static class MenuPositions
     {
-        public const float X_POSITION = -3.046f;
+        public const float X_POSITION = -3.042f;
         public const float Y_POSITION = 2.65f;
         public const float Z_POSITION = -1f;
         public const float SCALE = 0.31f;
