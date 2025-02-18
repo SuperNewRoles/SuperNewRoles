@@ -6,7 +6,9 @@ using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
@@ -53,12 +55,12 @@ class BaitAbility : AbilityBase
 {
 
     //何らかの要因で能力を失う時に使うのでListenerは保持しておく
-    public MurderEventListener killedEventListener;
+    public EventListener<MurderEventData> killedEventListener;
 
     public override void AttachToLocalPlayer()
     {
         //ここでEventListenerと紐付ける
-        killedEventListener = MurderEvent.AddKilledMeListener(OnKilled);
+        killedEventListener = MurderEvent.Instance.AddEventListener(OnKilled);
     }
 
     public override void Detach()
@@ -66,28 +68,25 @@ class BaitAbility : AbilityBase
         base.Detach();
         if (killedEventListener != null)
         {
-            MurderEvent.RemoveListener(killedEventListener);
+            MurderEvent.Instance.RemoveEventListener(killedEventListener);
             killedEventListener = null;
         }
     }
 
     public void OnKilled(MurderEventData data)
     {
-        //Reportの遅延呼び出しを行う(多分Coroutineがよいのでは？)
-        PlayerControl.LocalPlayer.StartCoroutine(DelayedReport().WrapToIl2Cpp());
-        return;
+        if (data.killer == PlayerControl.LocalPlayer)
+        {
+            //Reportの遅延呼び出しを行う(多分Coroutineがよいのでは？)
+            PlayerControl.LocalPlayer.StartCoroutine(DelayedReport().WrapToIl2Cpp());
+        }
 
         IEnumerator DelayedReport()
         {
-            yield return null;
-            /*
-            yield return new WaitForSeconds(ReportTime);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReportDeadBody, SendOption.Reliable, -1);
-            writer.Write(data.murderer.PlayerId);
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.ReportDeadBody(data.murderer.PlayerId, CachedPlayer.LocalPlayer.PlayerId);*/
+            yield return new WaitForSeconds(Bait.BaitReportTime);
+
+            data.killer.RpcCustomReportDeadBody(data.target.Data);
         }
     }
 }

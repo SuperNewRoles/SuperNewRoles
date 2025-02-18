@@ -18,7 +18,12 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
         foreach (EventListener<U> listener in listeners) listener.Do(obj);
     }
 
-    public void AddEventListener(EventListener<U> listener) => listeners.Add(listener);
+    public EventListener<U> AddEventListener(Action<U> action)
+    {
+        var listener = new EventListener<U>(action);
+        listeners.Add(listener);
+        return listener;
+    }
     public void RemoveEventListener(EventListener<U> listener) => listeners.Remove(listener);
 }
 /// <summary>
@@ -31,22 +36,35 @@ public abstract class EventTargetBase<T> : InternalEventTargetBase<T, EventListe
         foreach (EventListener listener in listeners) listener.Do();
     }
 
-    public void AddListener(EventListener listener) => listeners.Add(listener);
+    public EventListener AddListener(Action action)
+    {
+        var listener = new EventListener(action);
+        listeners.Add(listener);
+        return listener;
+    }
     public void RemoveListener(EventListener listener) => listeners.Remove(listener);
 }
 
 /// <summary>
 /// <para><typeparamref name="T" />: Singletonとする自分自身を指定</para>
 /// </summary>
-public abstract class InternalEventTargetBase<T, U> : BaseSingleton<T> where T : InternalEventTargetBase<T, U>, new() where U : IEventListener
+public abstract class InternalEventTargetBase<T, U> : BaseSingleton<T>, IEventTargetBase where T : InternalEventTargetBase<T, U>, new() where U : IEventListener
 {
     protected List<U> listeners { get; set; }
     protected override void Init()
     {
         listeners = new();
     }
+    public void RemoveListenerAll()
+    {
+        listeners.Clear();
+    }
 }
-
+public interface IEventTargetBase
+{
+    public abstract void RemoveListenerAll();
+}
 public interface IEventData
 {
+
 }

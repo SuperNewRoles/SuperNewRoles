@@ -14,4 +14,9 @@ public static class PlayerControlRpcExtensions
     {
         player.SetRole(roleId);
     }
+    [CustomRPC]
+    public static void RpcCustomReportDeadBody(this PlayerControl player, NetworkedPlayerInfo target)
+    {
+        player.ReportDeadBody(target);
+    }
 }

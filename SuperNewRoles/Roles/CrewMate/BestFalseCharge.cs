@@ -6,6 +6,7 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -26,18 +27,29 @@ class BestFalseCharge : RoleBase<BestFalseCharge>
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 }
 
-class AutoExileAfterMeeting : AbilityBase
+public class AutoExileAfterMeeting : AbilityBase
 {
+    public EventListener<WrapUpEventData> wrapUpEventListener;
     public override void AttachToLocalPlayer()
     {
-        WrapUpEvent.AddWrapUpListener(OnWrapUp);
+        wrapUpEventListener = WrapUpEvent.Instance.AddEventListener(OnWrapUp);
     }
     private void OnWrapUp(WrapUpEventData data)
     {
         PlayerControl.LocalPlayer.RpcExiledCustom();
+        if (wrapUpEventListener != null)
+        {
+            WrapUpEvent.Instance.RemoveEventListener(wrapUpEventListener);
+            wrapUpEventListener = null;
+        }
     }
     public override void Detach()
     {
         base.Detach();
+        if (wrapUpEventListener != null)
+        {
+            WrapUpEvent.Instance.RemoveEventListener(wrapUpEventListener);
+            wrapUpEventListener = null;
+        }
     }
 }

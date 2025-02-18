@@ -217,6 +217,9 @@ public static class CustomRPCManager
                     writer.Write(exPlayerControl.PlayerId);
                 }
                 break;
+            case NetworkedPlayerInfo networkedPlayerInfo:
+                writer.Write(networkedPlayerInfo.PlayerId);
+                break;
             case InnerNetObject innerNetObject:
                 writer.Write(innerNetObject.NetId);
                 break;
@@ -244,6 +247,7 @@ public static class CustomRPCManager
             Type t when t == typeof(PlayerControl[]) => ReadPlayerControlArray(reader),
             Type t when t == typeof(ExPlayerControl) => ExPlayerControl.ById(reader.ReadByte()),
             Type t when t == typeof(ExPlayerControl[]) => ReadExPlayerControlArray(reader),
+            Type t when t == typeof(NetworkedPlayerInfo) => GameData.Instance.GetPlayerById(reader.ReadByte()),
             Type t when t == typeof(RoleId) => (RoleId)reader.ReadInt32(),
             _ => throw new Exception($"Invalid type: {type}")
         };
