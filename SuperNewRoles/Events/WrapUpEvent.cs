@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
 namespace SuperNewRoles.Events;
 
-public class WrapUpEventData
+public class WrapUpEventData : IEventData
 {
     public NetworkedPlayerInfo exiled { get; }
     public WrapUpEventData(NetworkedPlayerInfo exiled)
@@ -14,36 +15,12 @@ public class WrapUpEventData
     }
 }
 
-public delegate void WrapUpEventListener(WrapUpEventData data);
-
-public static class WrapUpEvent
+public class WrapUpEvent : EventTargetBase<WrapUpEvent, WrapUpEventData>
 {
-    private static readonly List<WrapUpEventListener> wrapUpListeners = new();
-
-    public static WrapUpEventListener AddWrapUpListener(WrapUpEventListener listener)
+    public static void Invoke(NetworkedPlayerInfo exiled)
     {
-        wrapUpListeners.Add(listener);
-        return listener;
-    }
-
-    public static void RemoveWrapUpListener(WrapUpEventListener listener)
-    {
-        wrapUpListeners.Remove(listener);
-    }
-
-    public static void InvokeWrapUp(NetworkedPlayerInfo exiled)
-    {
-        foreach (var listener in wrapUpListeners.ToArray())
-        {
-            try
-            {
-                listener.Invoke(new WrapUpEventData(exiled));
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Error in wrap up event listener: {e}");
-            }
-        }
+        var data = new WrapUpEventData(exiled);
+        Instance.Awake(data);
     }
 }
 
@@ -52,14 +29,15 @@ public static class WrapUpPatch
 {
     public static void Postfix(ExileController __instance)
     {
-        WrapUpEvent.InvokeWrapUp(__instance.initData.networkedPlayer);
+        WrapUpEvent.Invoke(__instance.initData.networkedPlayer);
     }
 }
+
 [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
 public static class AirshipWrapUpPatch
 {
     public static void Postfix(AirshipExileController __instance)
     {
-        WrapUpEvent.InvokeWrapUp(__instance.initData.networkedPlayer);
+        WrapUpEvent.Invoke(__instance.initData.networkedPlayer);
     }
 }

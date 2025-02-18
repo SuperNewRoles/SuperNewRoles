@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SuperNewRoles.Modules.Events.Bases;
 
-abstract class EventListener<T> : IEventListener where T : IEventData
+public class EventListener<T> : IEventListener where T : IEventData
 {
     protected Action<T> action;
 
-    protected EventListener(Action<T> action)
+    public EventListener(Action<T> action)
     {
         this.action = action;
     }
@@ -22,11 +22,11 @@ abstract class EventListener<T> : IEventListener where T : IEventData
     }
 }
 
-abstract class EventListener : IEventListener
+public class EventListener : IEventListener
 {
     protected Action action;
 
-    protected EventListener(Action action)
+    public EventListener(Action action)
     {
         this.action = action;
     }
@@ -38,6 +38,6 @@ abstract class EventListener : IEventListener
     }
 }
 
-interface IEventListener
+public interface IEventListener
 {
 }

@@ -1,5 +1,6 @@
 using System.Linq;
 using SuperNewRoles.Events;
+using SuperNewRoles.Events.PCEvents;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -101,6 +102,22 @@ public static class NameText
     }
     public static void RegisterNameTextUpdateEvent()
     {
-        TaskCompleteEvent.AddTaskCompleteListener(x => UpdateNameInfo(x.player));
+        TaskCompleteEvent.Instance.AddEventListener(new(x => UpdateNameInfo(x.player)));
+        MurderEvent.Instance.AddEventListener(new(x =>
+        {
+            if (x.target?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId)
+            {
+                UpdateAllNameInfo();
+            }
+            UpdateNameInfo(x.killer);
+            UpdateNameInfo(x.target);
+        }));
+        WrapUpEvent.Instance.AddEventListener(new(x => UpdateAllNameInfo()));
+        MeetingStartEvent.Instance.AddEventListener(new(x => UpdateAllNameInfo()));
+    }
+    private static void UpdateAllNameInfo()
+    {
+        foreach (var player in ExPlayerControl.ExPlayerControls)
+            UpdateNameInfo(player);
     }
 }

@@ -13,7 +13,7 @@ namespace SuperNewRoles.Modules;
 /// 継承での使用例：
 /// 　class InheritClass2 : InheritClass<InheritClass2>
 /// </summary>
-abstract class BaseSingleton<T> where T : BaseSingleton<T>, new()
+public abstract class BaseSingleton<T> where T : BaseSingleton<T>, new()
 {
     private static T m_Instance;
 
@@ -57,7 +57,7 @@ abstract class BaseSingleton<T> where T : BaseSingleton<T>, new()
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     protected BaseSingleton() => Init();
 
