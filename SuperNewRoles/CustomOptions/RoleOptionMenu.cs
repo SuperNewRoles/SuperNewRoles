@@ -544,11 +544,17 @@ public static class RoleOptionMenu
         var rightClickDetector = obj.AddComponent<RightClickDetector>();
         rightClickDetector.OnRightClick.AddListener((UnityAction)(() =>
         {
-            // TODO: 右クリック時の追加処理をここに記述（例：コンテキストメニューの表示など）
+            // 対象が有効のとき
             if (roleOption.NumberOfCrews >= 1)
+            {
                 roleOption.NumberOfCrews = 0;
+                roleOption.Percentage = 0;
+            }
             else
+            {
                 roleOption.NumberOfCrews = 1;
+                roleOption.Percentage = 100;
+            }
             UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
             UpdateNumOfCrewsSelect(roleOption);
         }));

@@ -60,7 +60,7 @@ class BaitAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         //ここでEventListenerと紐付ける
-        killedEventListener = MurderEvent.Instance.AddEventListener(OnKilled);
+        killedEventListener = MurderEvent.Instance.AddListener(OnKilled);
     }
 
     public override void Detach()
@@ -68,7 +68,7 @@ class BaitAbility : AbilityBase
         base.Detach();
         if (killedEventListener != null)
         {
-            MurderEvent.Instance.RemoveEventListener(killedEventListener);
+            MurderEvent.Instance.RemoveListener(killedEventListener);
             killedEventListener = null;
         }
     }

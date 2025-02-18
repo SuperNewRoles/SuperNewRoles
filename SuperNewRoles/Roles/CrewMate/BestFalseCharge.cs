@@ -32,14 +32,14 @@ public class AutoExileAfterMeeting : AbilityBase
     public EventListener<WrapUpEventData> wrapUpEventListener;
     public override void AttachToLocalPlayer()
     {
-        wrapUpEventListener = WrapUpEvent.Instance.AddEventListener(OnWrapUp);
+        wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
     private void OnWrapUp(WrapUpEventData data)
     {
         PlayerControl.LocalPlayer.RpcExiledCustom();
         if (wrapUpEventListener != null)
         {
-            WrapUpEvent.Instance.RemoveEventListener(wrapUpEventListener);
+            WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
             wrapUpEventListener = null;
         }
     }
@@ -48,7 +48,7 @@ public class AutoExileAfterMeeting : AbilityBase
         base.Detach();
         if (wrapUpEventListener != null)
         {
-            WrapUpEvent.Instance.RemoveEventListener(wrapUpEventListener);
+            WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
             wrapUpEventListener = null;
         }
     }

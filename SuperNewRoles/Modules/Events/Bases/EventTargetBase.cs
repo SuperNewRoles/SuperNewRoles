@@ -18,13 +18,13 @@ public abstract class EventTargetBase<T, U> : InternalEventTargetBase<T, EventLi
         foreach (EventListener<U> listener in listeners) listener.Do(obj);
     }
 
-    public EventListener<U> AddEventListener(Action<U> action)
+    public EventListener<U> AddListener(Action<U> action)
     {
         var listener = new EventListener<U>(action);
         listeners.Add(listener);
         return listener;
     }
-    public void RemoveEventListener(EventListener<U> listener) => listeners.Remove(listener);
+    public void RemoveListener(EventListener<U> listener) => listeners.Remove(listener);
 }
 /// <summary>
 /// <para><typeparamref name="T" />: Singletonとする自分自身を指定</para>

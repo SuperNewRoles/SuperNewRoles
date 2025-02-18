@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,12 +24,14 @@ public abstract class CustomButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
-
+    private EventListener fixedUpdateEvent;
+    private EventListener<WrapUpEventData> wrapUpEvent;
     private ActionButton actionButton;
+    private IButtonEffect buttonEffect;
     public abstract Vector3 PositionOffset { get; }
     public abstract Vector3 LocalScale { get; }
     public abstract float Timer { get; set; }
-
+    public abstract float DefaultTimer { get; }
     public abstract string buttonText { get; }
 
     public abstract Sprite Sprite { get; }
@@ -43,7 +47,7 @@ public abstract class CustomButtonBase : AbilityBase
     public abstract bool CheckHasButton();
 
     public abstract void OnClick();
-    public abstract void OnMeetingEnds();
+    public virtual void OnMeetingEnds() { ResetTimer(); }
 
     /// <summary>
     /// カウントを進めるかの判定
@@ -64,10 +68,10 @@ public abstract class CustomButtonBase : AbilityBase
     /// </summary>
     public virtual void DecreaseTimer()
     {
-        Timer -= Time.deltaTime;
+        Timer -= Time.fixedDeltaTime;
     }
 
-    public abstract ActionButton textTemplate { get; }
+    public virtual ActionButton textTemplate => HudManager.Instance.AbilityButton;
 
     public CustomButtonBase() { }
 
@@ -86,19 +90,25 @@ public abstract class CustomButtonBase : AbilityBase
             actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
         }
         SetActive(false);
-
-        //FixedUpdateEvent.AddListener(OnFixedUpdate)
+        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        wrapUpEvent = WrapUpEvent.Instance.AddListener(x => OnMeetingEnds());
+        buttonEffect = this as IButtonEffect;
+        ResetTimer();
     }
 
-    public void OnFixedUpdate()
+    public virtual void OnFixedUpdate()
     {
         if (Timer > 0 && CheckDecreaseCoolCount()) DecreaseTimer();
-
+        SetActive(CheckHasButton());
+        actionButton.graphic.sprite = Sprite;
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
         actionButton.SetCoolDown(Timer, float.MaxValue);
-
+        actionButton.OverrideText(buttonText);
+        if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+        {
+            OnClickEvent();
+        }
         //以下はエフェクトがある(≒押したらカウントダウンが始まる)ときだけ呼ばれる
-        IButtonEffect buttonEffect = this as IButtonEffect;
         if (buttonEffect != null) buttonEffect.OnFixedUpdate(actionButton);
     }
 
@@ -108,7 +118,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = GrayOut;
             this.OnClick();
-
+            ResetTimer();
             IButtonEffect buttonEffect = this as IButtonEffect;
             if (buttonEffect != null) buttonEffect.OnClick(actionButton);
         }
@@ -117,13 +127,25 @@ public abstract class CustomButtonBase : AbilityBase
     {
         if (isActive)
         {
+            if (actionButton.gameObject.activeSelf) return;
             actionButton.gameObject.SetActive(true);
             actionButton.graphic.enabled = true;
         }
         else
         {
+            if (!actionButton.gameObject.activeSelf) return;
             actionButton.gameObject.SetActive(false);
             actionButton.graphic.enabled = false;
         }
+    }
+    public virtual void ResetTimer()
+    {
+        Timer = DefaultTimer;
+    }
+    public override void Detach()
+    {
+        base.Detach();
+        FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent);
+        WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
     }
 }

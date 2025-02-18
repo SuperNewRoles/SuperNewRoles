@@ -14,6 +14,10 @@ public static class NameText
         if (playerInfoText == null)
         {
             var nameText = player.Player.cosmetics.nameText;
+            if (nameText == null)
+            {
+                Logger.Error($"nameText is null: {player.Player.name}");
+            }
             playerInfoText = UnityEngine.Object.Instantiate(nameText, nameText.transform.parent);
             playerInfoText.fontSize *= 0.75f;
             playerInfoText.gameObject.name = "Info";
@@ -102,8 +106,8 @@ public static class NameText
     }
     public static void RegisterNameTextUpdateEvent()
     {
-        TaskCompleteEvent.Instance.AddEventListener(new(x => UpdateNameInfo(x.player)));
-        MurderEvent.Instance.AddEventListener(new(x =>
+        TaskCompleteEvent.Instance.AddListener(new(x => UpdateNameInfo(x.player)));
+        MurderEvent.Instance.AddListener(new(x =>
         {
             if (x.target?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId)
             {
@@ -112,8 +116,8 @@ public static class NameText
             UpdateNameInfo(x.killer);
             UpdateNameInfo(x.target);
         }));
-        WrapUpEvent.Instance.AddEventListener(new(x => UpdateAllNameInfo()));
-        MeetingStartEvent.Instance.AddEventListener(new(x => UpdateAllNameInfo()));
+        WrapUpEvent.Instance.AddListener(new(x => UpdateAllNameInfo()));
+        MeetingStartEvent.Instance.AddListener(new(x => UpdateAllNameInfo()));
     }
     private static void UpdateAllNameInfo()
     {
