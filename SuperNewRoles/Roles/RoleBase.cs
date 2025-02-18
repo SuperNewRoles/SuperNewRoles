@@ -8,7 +8,6 @@ using SuperNewRoles.Modules;
 using UnityEngine.Networking.Types;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.CustomOptions;
 
 namespace SuperNewRoles.Roles;

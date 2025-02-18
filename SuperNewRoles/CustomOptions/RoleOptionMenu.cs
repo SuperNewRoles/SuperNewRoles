@@ -225,6 +225,15 @@ public static class RoleOptionMenu
         // 一括設定メニューを非表示にする
         BulkRoleSettings.HideBulkRoleSettings();
 
+        // 右側の設定を破棄
+        if (RoleOptionMenuObjectData.CurrentRoleId != RoleId.None)
+        {
+            RoleOptionSettings.HideRoleSettings();
+            RoleOptionMenuObjectData.CurrentRoleId = RoleId.None;
+            RoleOptionMenuObjectData.CurrentRoleNumbersOfCrewsText = null;
+            RoleOptionMenuObjectData.CurrentRolePercentageText = null;
+        }
+
         // スクロール位置とUI状態のリセット
         ResetScrollUIState(targetScroll, type);
     }
