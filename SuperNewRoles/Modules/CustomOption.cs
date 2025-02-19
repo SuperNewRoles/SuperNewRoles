@@ -5,35 +5,172 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
-using SuperNewRoles.Helpers;
-
+using SuperNewRoles.Roles;
+using UnityEngine;
 namespace SuperNewRoles.Modules;
 
 public static class CustomOptionManager
 {
-    [CustomOptionInt("TestInt", 0, 100, 1, 5)]
-    public static int TestInt;
-    private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
-    private static List<CustomOption> CustomOptions { get; } = new();
-    public static IReadOnlyList<CustomOption> GetCustomOptions() => CustomOptions.AsReadOnly();
+    public static CustomOptionCategory PresetSettings;
+    public static CustomOptionCategory GeneralSettings;
+    public static CustomOptionCategory ModeSettings;
+    public static CustomOptionCategory GameSettings;
+    public static CustomOptionCategory MapSettings;
+    public static CustomOptionCategory MapEditSettings;
+    [CustomOptionSelect("ModeOption", typeof(ModeId), "ModeId.", parentFieldName: nameof(ModeSettings))]
+    public static ModeId ModeOption;
 
+    [CustomOptionInt("TestInt", 0, 100, 1, 5, parentFieldName: nameof(ModeSettings))]
+    public static int TestInt;
+    [CustomOptionInt("TestInt2", 0, 100, 1, 5, parentFieldName: nameof(TestInt))]
+    public static int TestInt2;
+    [CustomOptionInt("TestInt3", 0, 100, 1, 5, parentFieldName: nameof(TestInt2))]
+    public static int TestInt3;
+    [CustomOptionInt("TestInt4", 0, 100, 1, 5, parentFieldName: nameof(TestInt), displayMode: DisplayModeId.BattleRoyal)]
+    public static int TestInt4;
+    [CustomOptionInt("TestInt9", 0, 100, 1, 5, parentFieldName: nameof(TestInt), displayMode: DisplayModeId.Default)]
+    public static int TestInt9;
+    [CustomOptionInt("TestInt10", 0, 100, 1, 5, parentFieldName: nameof(TestInt9))]
+    public static int TestInt10;
+    [CustomOptionInt("TestInt11", 0, 100, 1, 5, parentFieldName: nameof(TestInt10))]
+    public static int TestInt11;
+    [CustomOptionInt("TestInt12", 0, 100, 1, 5, parentFieldName: nameof(TestInt11))]
+    public static int TestInt12;
+    [CustomOptionInt("TestInt13", 0, 100, 1, 5, parentFieldName: nameof(TestInt12))]
+    public static int TestInt13;
+    [CustomOptionInt("TestInt14", 0, 100, 1, 5, parentFieldName: nameof(TestInt13))]
+    public static int TestInt14;
+    [CustomOptionInt("TestInt15", 0, 100, 1, 5, parentFieldName: nameof(TestInt14))]
+    public static int TestInt15;
+    [CustomOptionInt("TestInt16", 0, 100, 1, 5, parentFieldName: nameof(TestInt15))]
+    public static int TestInt16;
+    [CustomOptionInt("TestInt17", 0, 100, 1, 5, parentFieldName: nameof(TestInt16))]
+    public static int TestInt17;
+    [CustomOptionInt("TestInt18", 0, 100, 1, 5, parentFieldName: nameof(TestInt17))]
+    public static int TestInt18;
+
+
+    [CustomOptionInt("TestInt5", 0, 100, 1, 5, parentFieldName: nameof(GeneralSettings))]
+    public static int TestInt5;
+    [CustomOptionInt("TestInt6", 0, 100, 1, 5, parentFieldName: nameof(GameSettings))]
+    public static int TestInt6;
+    [CustomOptionInt("TestInt7", 0, 100, 1, 5, parentFieldName: nameof(TestInt6))]
+    public static int TestInt7;
+    [CustomOptionBool("TestInt8", false, parentFieldName: nameof(TestInt7))]
+    public static bool TestInt8;
+
+
+    private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
+    public static List<CustomOption> CustomOptions { get; } = new();
+    public static List<CustomOptionCategory> OptionCategories { get; } = new();
+    public static Dictionary<string, CustomOptionCategory> CategoryByFieldName { get; } = new();
+    public static IReadOnlyList<CustomOption> GetCustomOptions() => CustomOptions.AsReadOnly();
+    public static IReadOnlyList<CustomOptionCategory> GetOptionCategories() => OptionCategories.AsReadOnly();
+
+    // カスタムオプションをロードするメソッド
     public static void Load()
     {
+        LoadCustomOptions();
+        LinkParentOptions();
+        RoleOptionManager.RoleOptionLoad();
+        CustomOptionSaver.SaverLoad();
+    }
+
+    // 各フィールドからカスタムオプションを走査・生成してリストに追加する処理
+    private static void LoadCustomOptions()
+    {
+        var fieldNames = new HashSet<string>();
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
         {
             foreach (var field in type.GetFields())
             {
-                var attribute = field.GetCustomAttribute<CustomOptionBaseAttribute>();
-                if (attribute != null)
+                // カテゴリーフィールドの場合、staticフィールドのみを対象にする
+                if (field.IsStatic && field.FieldType == typeof(CustomOptionCategory))
                 {
-                    CustomOptionAttributes[field.Name] = attribute;
-                    attribute.SetFieldInfo(field);
-                    CustomOption opt = new(attribute, field);
-                    CustomOptions.Add(opt);
-                    opt.UpdateSelection(attribute.GenerateDefaultSelection());
+                    if (!fieldNames.Add(field.Name))
+                    {
+                        throw new InvalidOperationException($"フィールド名が重複しています: {field.Name}");
+                    }
+                    var category = new CustomOptionCategory(field.Name);
+                    field.SetValue(null, category);
+                    CategoryByFieldName[field.Name] = category;
+                    continue;
+                }
+
+                var attribute = field.GetCustomAttribute<CustomOptionBaseAttribute>();
+                if (attribute == null)
+                {
+                    continue;
+                }
+
+                if (!fieldNames.Add(field.Name))
+                {
+                    throw new InvalidOperationException($"フィールド名が重複しています: {field.Name}");
+                }
+
+                // カスタムオプション属性を辞書に追加
+                CustomOptionAttributes[field.Name] = attribute;
+                // フィールド情報を設定
+                attribute.SetFieldInfo(field);
+                RoleId? role = null;
+                if (field.DeclaringType.GetInterfaces().Contains(typeof(IRoleBase)))
+                {
+                    var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(field.DeclaringType);
+                    var instanceProperty = baseSingletonType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+                    var roleInstance = instanceProperty.GetValue(null);
+                    role = ((IRoleBase)roleInstance).Role;
+                }
+                // カスタムオプションを作成し、リストに追加
+                CustomOption option = new(attribute, field, role);
+                CustomOptions.Add(option);
+            }
+        }
+    }
+
+    // 属性で指定された親フィールド名があるオプションについて、親オプションと紐付ける処理
+    private static void LinkParentOptions()
+    {
+        // 各カスタムオプションをフィールド名をキーとするディクショナリに変換してキャッシュ
+        var optionsByFieldName = CustomOptions.ToDictionary(o => o.FieldInfo.Name);
+        foreach (var option in CustomOptions)
+        {
+            if (!string.IsNullOrEmpty(option.Attribute.ParentFieldName))
+            {
+                if (CategoryByFieldName.TryGetValue(option.Attribute.ParentFieldName, out var category))
+                {
+                    category.AddOption(option);
+                    Logger.Info($"オプションをカテゴリーに追加: {option.Name} -> {category.Name}");
+                }
+                else if (optionsByFieldName.TryGetValue(option.Attribute.ParentFieldName, out var parentOption))
+                {
+                    option.SetParentOption(parentOption);
+                    Logger.Info($"親オプションを設定: {option.Name} -> {parentOption.Name}");
+                }
+                else
+                {
+                    Logger.Warning($"親オプションまたはカテゴリーが見つかりませんでした: {option.Attribute.ParentFieldName}");
                 }
             }
         }
+    }
+
+    internal static void RegisterOptionCategory(CustomOptionCategory category)
+    {
+        OptionCategories.Add(category);
+    }
+
+    public static CustomOption? GetCustomOptionByFieldName(string fieldName)
+    {
+        return CustomOptions.FirstOrDefault(option => option.FieldInfo.Name == fieldName);
+    }
+
+    public static CustomOption? GetCustomOption<T>(System.Linq.Expressions.Expression<Func<T>> expression)
+    {
+        if (expression.Body is System.Linq.Expressions.MemberExpression memberExpression)
+        {
+            return GetCustomOptionByFieldName(memberExpression.Member.Name);
+        }
+        return null;
     }
 }
 
@@ -41,21 +178,52 @@ public class CustomOption
 {
     public CustomOptionBaseAttribute Attribute { get; }
     public FieldInfo FieldInfo { get; }
+    public string Name { get; }
     private object _value;
-    private object _selection;
+    private byte _selection;
 
     public object Value => _value;
-    public object Selection => _selection;
+    public byte Selection => _selection;
     public string Id => Attribute.Id;
     public object[] Selections { get; }
+    public RoleId? ParentRole { get; private set; }
+    public CustomOption? ParentOption { get; private set; }
+    public List<CustomOption> ChildrenOption { get; } = new();
+    public DisplayModeId DisplayMode { get; private set; } = DisplayModeId.All;
 
-    public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo)
+    /// <summary>
+    /// このオプションがブール値（true/false）のオプションかどうかを示します。
+    /// CustomOptionBoolAttributeが設定されている場合にtrueを返します。
+    /// </summary>
+    public bool IsBooleanOption { get; }
+
+    public string GetCurrentSelectionString()
+    {
+        if (Attribute is CustomOptionFloatAttribute floatAttribute)
+        {
+            float step = floatAttribute.Step;
+            if (step >= 1f) return string.Format("{0:F0}", _value);
+            else if (step >= 0.1f) return string.Format("{0:F1}", _value);
+            else return string.Format("{0:F2}", _value);
+        }
+        else if (Attribute is CustomOptionSelectAttribute selectAttr)
+        {
+            return ModTranslation.GetString($"{selectAttr.TranslationPrefix}{Selections[Selection]}");
+        }
+        return Selections[Selection].ToString();
+    }
+
+    public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null)
     {
         Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
         FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
         Selections = attribute.GenerateSelections();
         var defaultValue = attribute.GenerateDefaultSelection();
         UpdateSelection(defaultValue);
+        Name = attribute.TranslationName;
+        ParentRole = parentRole;
+        IsBooleanOption = attribute is CustomOptionBoolAttribute;
+        DisplayMode = attribute.DisplayMode;
     }
 
     public void UpdateSelection(byte value)
@@ -71,11 +239,6 @@ public class CustomOption
             _selection = value;
             _value = Selections[value];
             FieldInfo.SetValue(null, _value);
-
-            if (CustomOptionSaver.IsLoaded)
-            {
-                CustomOptionSaver.Save();
-            }
         }
         catch (Exception ex)
         {
@@ -83,14 +246,130 @@ public class CustomOption
             throw;
         }
     }
+
+    public void SetParentOption(CustomOption parent)
+    {
+        ParentOption = parent;
+        parent.ChildrenOption.Add(this);
+    }
+
+    public bool ShouldDisplay()
+    {
+        return Modules.DisplayMode.HasMode(
+            Modules.DisplayMode.GetCurrentMode(),
+            this.DisplayMode);
+    }
+
+    public void SetDisplayMode(DisplayModeId mode)
+    {
+        DisplayMode = mode;
+    }
+}
+
+public static class RoleOptionManager
+{
+    public class RoleOption
+    {
+        public RoleId RoleId { get; }
+        public byte NumberOfCrews { get; set; }
+        public int Percentage { get; set; }
+        public CustomOption[] Options { get; }
+        public Color32 RoleColor { get; }
+        public RoleOption(RoleId roleId, byte numberOfCrews, int percentage, CustomOption[] options)
+        {
+            RoleId = roleId;
+            NumberOfCrews = numberOfCrews;
+            Percentage = percentage;
+            Options = options;
+            // ロールの色情報を取得
+            var roleBase = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleId);
+            RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
+        }
+    }
+    public static RoleOption[] RoleOptions { get; private set; }
+    public static List<ExclusivityData> ExclusivitySettings { get; private set; } = new();
+
+    public static void RoleOptionLoad()
+    {
+        RoleOptions = CustomOptionManager.GetCustomOptions()
+        .Where(option => option.ParentRole != null)
+        .GroupBy(option => option.ParentRole.Value)
+        .Select(group =>
+        {
+            var options = group.ToArray();
+            return new RoleOption(group.Key, (byte)group.Count(), 0, options);
+        }).ToArray();
+    }
+
+    public static void AddExclusivitySetting(int maxAssign, string[] roles)
+    {
+        ExclusivitySettings.Add(new ExclusivityData(maxAssign, roles));
+    }
+
+    public static void ClearExclusivitySettings()
+    {
+        ExclusivitySettings.Clear();
+    }
 }
 
 public static class CustomOptionSaver
 {
     private static readonly IOptionStorage Storage;
     private const byte CurrentVersion = 1;
-    private const int CurrentPreset = 0;
+    private static int currentPreset = 0;
     public static bool IsLoaded { get; private set; } = false;
+    private static Dictionary<int, string> presetNames = new();
+    public static IReadOnlyDictionary<int, string> PresetNames => presetNames;
+
+    public static int CurrentPreset
+    {
+        get => currentPreset;
+        set => currentPreset = value;
+    }
+
+    public static string GetPresetName(int preset)
+    {
+        if (presetNames.TryGetValue(preset, out var name))
+        {
+            return name;
+        }
+        return ModTranslation.GetString("PresetDefault", preset + 1);
+    }
+
+    public static void SetPresetName(int preset, string name)
+    {
+        if (preset < 0 || preset > 9) return;
+        presetNames[preset] = name;
+        Save();
+    }
+
+    public static void RemovePreset(int preset)
+    {
+        if (preset < 0 || preset > 9) return;
+        if (!presetNames.ContainsKey(preset)) return;
+
+        string _;
+        presetNames.Remove(preset, out _);
+
+        Save();
+        // 削除対象が現在のプリセットの場合
+        if (preset == CurrentPreset)
+        {
+            // プリセットIDの中で、削除対象より小さい中で一番大きいものを探す
+            // なければ、削除対象より大きい中で一番小さいものを探す
+            int newPreset = presetNames.Keys
+                .Where(id => id < preset)
+                .DefaultIfEmpty(
+                    presetNames.Keys
+                        .Where(id => id > preset)
+                        .DefaultIfEmpty(0)
+                        .Min()
+                )
+                .Max();
+            Logger.Info($"新しいプリセットID: {newPreset}");
+            LoadPreset(newPreset);
+        }
+    }
 
     static CustomOptionSaver()
     {
@@ -101,17 +380,48 @@ public static class CustomOptionSaver
         );
     }
 
-    public static void Load()
+    public static void SaverLoad()
     {
         try
         {
             Storage.EnsureStorageExists();
             ReadAndApplyOptions();
+            LoadPresetNames();
             IsLoaded = true;
         }
         catch (Exception ex)
         {
             Logger.Error($"Option loading failed: {ex.Message}");
+        }
+    }
+
+    private static void LoadPresetNames()
+    {
+        var (success, names) = Storage.LoadPresetNames();
+        if (success)
+        {
+            presetNames = names;
+        }
+    }
+
+    public static void LoadPreset(int preset)
+    {
+        if (preset < 0 || preset > 9) return;
+        CurrentPreset = preset;
+        try
+        {
+            var (optionsSuccess, options) = Storage.LoadPresetData(preset);
+            if (!optionsSuccess)
+            {
+                Logger.Warning("Preset data loading failed. Using default settings.");
+                return;
+            }
+            ApplyLoadedOptions(options);
+            Storage.SaveOptionData(CurrentVersion, CurrentPreset);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Preset loading failed: {ex.Message}");
         }
     }
 
@@ -171,6 +481,7 @@ public interface IOptionStorage
     void EnsureStorageExists();
     (bool success, byte version, int preset) LoadOptionData();
     (bool success, Dictionary<string, byte> options) LoadPresetData(int preset);
+    (bool success, Dictionary<int, string> names) LoadPresetNames();
     void SaveOptionData(byte version, int preset);
     void SavePresetData(int preset, IEnumerable<CustomOption> options);
 }
@@ -181,6 +492,7 @@ public class FileOptionStorage : IOptionStorage
     private readonly string _optionFileName;
     private readonly string _presetFileNameBase;
     private static readonly object FileLocker = new();
+    private readonly Dictionary<int, string> presetNames = new();
 
     public FileOptionStorage(DirectoryInfo directory, string optionFileName, string presetFileNameBase)
     {
@@ -217,6 +529,17 @@ public class FileOptionStorage : IOptionStorage
             }
 
             int preset = reader.ReadInt32();
+
+            // プリセット名を読み込む
+            presetNames.Clear();
+            int nameCount = reader.ReadInt32();
+            for (int i = 0; i < nameCount; i++)
+            {
+                int presetId = reader.ReadInt32();
+                string name = reader.ReadString();
+                presetNames[presetId] = name;
+            }
+
             return (true, version, preset);
         }
     }
@@ -239,8 +562,61 @@ public class FileOptionStorage : IOptionStorage
                 return (false, new());
             }
 
-            return (true, ReadOptions(reader));
+            Dictionary<string, byte> options = ReadOptions(reader);
+
+            // RoleOptionの情報が存在すれば読み込む
+            if (fileStream.Position < fileStream.Length)
+            {
+                int roleOptionCount = reader.ReadInt32();
+                for (int i = 0; i < roleOptionCount; i++)
+                {
+                    string roleIdStr = reader.ReadString();
+                    byte numberOfCrews = reader.ReadByte();
+                    int percentage = reader.ReadInt32();
+
+                    // RoleIdの文字列から RoleId 列挙体へ変換
+                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj))
+                    {
+                        RoleId roleId = (RoleId)roleIdObj;
+                        // RoleOptionManager.RoleOptions内の該当するRoleOptionを更新
+                        foreach (var roleOption in RoleOptionManager.RoleOptions)
+                        {
+                            if (roleOption.RoleId.Equals(roleId))
+                            {
+                                roleOption.NumberOfCrews = numberOfCrews;
+                                roleOption.Percentage = percentage;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // 排他設定の読み込み
+                if (fileStream.Position < fileStream.Length)
+                {
+                    int exclusivityCount = reader.ReadInt32();
+                    RoleOptionManager.ClearExclusivitySettings();
+                    for (int i = 0; i < exclusivityCount; i++)
+                    {
+                        int maxAssign = reader.ReadInt32();
+                        int rolesCount = reader.ReadInt32();
+                        string[] roles = new string[rolesCount];
+                        for (int j = 0; j < rolesCount; j++)
+                        {
+                            roles[j] = reader.ReadString();
+                        }
+                        RoleOptionManager.AddExclusivitySetting(maxAssign, roles);
+                    }
+                }
+            }
+
+            return (true, options);
         }
+    }
+
+    public (bool success, Dictionary<int, string> names) LoadPresetNames()
+    {
+        return (true, presetNames);
     }
 
     public void SaveOptionData(byte version, int preset)
@@ -253,6 +629,14 @@ public class FileOptionStorage : IOptionStorage
             writer.Write(version);
             WriteChecksum(writer);
             writer.Write(preset);
+
+            // プリセット名を保存
+            writer.Write(presetNames.Count);
+            foreach (KeyValuePair<int, string> pair in presetNames)
+            {
+                writer.Write(pair.Key);
+                writer.Write(pair.Value);
+            }
         }
     }
 
@@ -266,6 +650,30 @@ public class FileOptionStorage : IOptionStorage
 
             WriteChecksum(writer);
             WriteOptions(writer, options);
+
+            // RoleOptionのデータを書き出す
+            var roleOptions = RoleOptionManager.RoleOptions;
+            writer.Write(roleOptions.Length);
+
+            foreach (var roleOption in roleOptions)
+            {
+                writer.Write(roleOption.RoleId.ToString());
+                writer.Write(roleOption.NumberOfCrews);
+                writer.Write(roleOption.Percentage);
+            }
+
+            // 排他設定の書き出し
+            var exclusivitySettings = RoleOptionManager.ExclusivitySettings;
+            writer.Write(exclusivitySettings.Count);
+            foreach (var setting in exclusivitySettings)
+            {
+                writer.Write(setting.MaxAssign);
+                writer.Write(setting.Roles.Length);
+                foreach (var role in setting.Roles)
+                {
+                    writer.Write(role);
+                }
+            }
         }
     }
 
@@ -319,9 +727,10 @@ public enum CustomOptionType
     Byte,
     Select
 }
+
 public static class ComputeMD5Hash
 {
-    private static MD5 md5 = MD5.Create();
+    private static readonly MD5 md5 = MD5.Create();
     public static string Compute(string str)
     {
         var inputBytes = System.Text.Encoding.UTF8.GetBytes(str);
@@ -329,6 +738,7 @@ public static class ComputeMD5Hash
         return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant(); // ハッシュを16進数の文字列に変換
     }
 }
+
 [AttributeUsage(AttributeTargets.Field)]
 public abstract class CustomOptionBaseAttribute : Attribute
 {
@@ -337,11 +747,15 @@ public abstract class CustomOptionBaseAttribute : Attribute
     public FieldInfo FieldInfo { get; private set; }
     public string TranslationName { get; }
     public CustomOptionType OptionType { get; private set; } = CustomOptionType.None;
+    public string? ParentFieldName { get; }
+    public DisplayModeId DisplayMode { get; }
 
-    protected CustomOptionBaseAttribute(string id, string? translationName = null)
+    protected CustomOptionBaseAttribute(string id, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
     {
         Id = ComputeMD5Hash.Compute(id);
         TranslationName = translationName ?? id;
+        ParentFieldName = parentFieldName;
+        DisplayMode = displayMode;
     }
 
     public void SetFieldInfo(FieldInfo fieldInfo)
@@ -370,15 +784,21 @@ public abstract class CustomOptionBaseAttribute : Attribute
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionSelectAttribute : CustomOptionBaseAttribute
 {
-    public Enum[] Selections { get; }
+    private readonly string[] _selectionNames;
+    private readonly Type _enumType;
+    public string TranslationPrefix { get; }
 
-    public CustomOptionSelectAttribute(string id, Enum[] selections, string? translationName = null)
-        : base(id, translationName)
+    public CustomOptionSelectAttribute(string id, Type enumType, string translationPrefix, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
+        : base(id, translationName, parentFieldName, displayMode)
     {
-        Selections = selections;
+        if (!enumType.IsEnum) throw new ArgumentException("Type must be an enum", nameof(enumType));
+        _enumType = enumType;
+        _selectionNames = Enum.GetNames(enumType);
+        TranslationPrefix = translationPrefix;
     }
 
-    public override object[] GenerateSelections() => Selections.Select(s => (object)s).ToArray();
+    public override object[] GenerateSelections() =>
+        _selectionNames.Select(name => Enum.Parse(_enumType, name)).ToArray();
 
     public override byte GenerateDefaultSelection() => 0;
 }
@@ -392,8 +812,8 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
     public T Step { get; }
     public T DefaultValue { get; }
 
-    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null)
-        : base(id, translationName)
+    protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
+        : base(id, translationName, parentFieldName, displayMode)
     {
         Min = min;
         Max = max;
@@ -417,8 +837,8 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
 {
-    public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null)
-        : base(id, min, max, step, defaultValue, translationName) { }
+    public CustomOptionFloatAttribute(string id, float min, float max, float step, float defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
 
     protected override float Add(float a, float b) => a + b;
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
@@ -427,8 +847,8 @@ public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 {
-    public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null)
-        : base(id, min, max, step, defaultValue, translationName) { }
+    public CustomOptionIntAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
 
     protected override int Add(int a, int b) => a + b;
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
@@ -437,8 +857,8 @@ public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
 [AttributeUsage(AttributeTargets.Field)]
 public class CustomOptionByteAttribute : CustomOptionNumericAttribute<byte>
 {
-    public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null)
-        : base(id, min, max, step, defaultValue, translationName) { }
+    public CustomOptionByteAttribute(string id, byte min, byte max, byte step, byte defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
+        : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
 
     protected override byte Add(byte a, byte b) => (byte)(a + b);
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
@@ -449,8 +869,8 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
 {
     public bool DefaultValue { get; }
 
-    public CustomOptionBoolAttribute(string id, bool defaultValue, string? translationName = null)
-        : base(id, translationName)
+    public CustomOptionBoolAttribute(string id, bool defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
+        : base(id, translationName, parentFieldName, displayMode)
     {
         DefaultValue = defaultValue;
     }
@@ -459,4 +879,48 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
         [false, true];
 
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue ? 1 : 0);
+}
+
+public class CustomOptionCategory
+{
+    public string Id { get; }
+    public string Name { get; }
+    public List<CustomOption> Options { get; } = new();
+
+    public CustomOptionCategory(string name)
+    {
+        Id = ComputeMD5Hash.Compute(name);
+        Name = name; // 後でTranslationを使用して翻訳する
+        RegisterCategory(this);
+    }
+
+    private static void RegisterCategory(CustomOptionCategory category)
+    {
+        CustomOptionManager.RegisterOptionCategory(category);
+    }
+
+    public void AddOption(CustomOption option)
+    {
+        if (!Options.Contains(option))
+        {
+            Options.Add(option);
+        }
+    }
+}
+
+public interface ICustomOptionCategory
+{
+    string CategoryName { get; }
+}
+
+public class ExclusivityData
+{
+    public int MaxAssign { get; set; }
+    public string[] Roles { get; set; }
+
+    public ExclusivityData(int maxAssign, string[] roles)
+    {
+        MaxAssign = maxAssign;
+        Roles = roles;
+    }
 }

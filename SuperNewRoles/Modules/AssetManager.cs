@@ -35,22 +35,15 @@ public static class AssetManager
     private static readonly Dictionary<AssetBundleType, byte> TypeToByte = new()
     {
         { AssetBundleType.Sprite, (byte)AssetBundleType.Sprite },
-        { AssetBundleType.Sound, (byte)AssetBundleType.Sound },
-        { AssetBundleType.WaveCannon, (byte)AssetBundleType.WaveCannon },
-        { AssetBundleType.BodyBuilder, (byte)AssetBundleType.BodyBuilder }
     };
 
     // AssetPathesの定義を最適化
     private static readonly (AssetBundleType Type, string Path)[] AssetPathes =
     {
         (AssetBundleType.Sprite, "snrsprites"),
-        (AssetBundleType.Sound, "snrsounds"),
-        (AssetBundleType.WaveCannon, "WaveCannon.WaveCannonEffects"),
-        (AssetBundleType.BodyBuilder, "BodyBuilder.BodyBuilderPoses")
     };
 
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
-
     public static void Load()
     {
         Logger.Info("-------Start AssetBundle-------");

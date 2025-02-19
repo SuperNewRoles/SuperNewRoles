@@ -14,6 +14,9 @@ using UnityEngine;
 using BepInEx.Logging;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
+using SuperNewRoles.CustomOptions;
+using UnityEngine.EventSystems;
 
 namespace SuperNewRoles;
 
@@ -31,22 +34,28 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         Logger = Log;
         Instance = this;
+        RegisterCustomObjects();
         Task task = Task.Run(() => Harmony.PatchAll());
         if (!Directory.Exists("./SuperNewRolesNext"))
         {
             Directory.CreateDirectory("./SuperNewRolesNext");
         }
+        CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
         CustomRPCManager.Load();
         CustomOptionManager.Load();
-        CustomOptionSaver.Load();
         SyncVersion.Load();
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+    }
+    private static void RegisterCustomObjects()
+    {
+        var rightClickDetectorOptions = new RegisterTypeOptions { Interfaces = new[] { typeof(IPointerClickHandler) } };
+        ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
     }
 
 

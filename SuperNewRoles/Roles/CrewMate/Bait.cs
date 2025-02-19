@@ -5,6 +5,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
+using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability;
@@ -36,21 +37,20 @@ class Bait : RoleBase<Bait>
     //TODO:要検討
     public override RoleTag[] RoleTags { get; } = [RoleTag.PowerPlayResistance];
 
-    public static CustomRoleOption BaitOption;
-    public static CustomOption BaitPlayerCount;
-    public static CustomOption BaitReportTime;
+    [CustomOptionFloat("BaitReportTime", 0f, 10f, 0.1f, 0f)]
+    public static float BaitReportTime;
+    [CustomOptionBool("BaitReportType", false, parentFieldName: nameof(BaitReportTime))]
+    public static bool BaitReportType;
+    [CustomOptionBool("BaitReportType2", false, parentFieldName: nameof(BaitReportTime))]
+    public static bool BaitReportType2;
+    [CustomOptionBool("BaitReportType3", false, parentFieldName: nameof(BaitReportTime))]
+    public static bool BaitReportType3;
 
-    public override void CreateCustomOption()
-    {
-        BaitOption = CustomOption.SetupCustomRoleOption(OptionIdBase, true, Role);
-        BaitPlayerCount = CustomOption.Create(1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", 0, 0, 15, 1, BaitOption);
-        BaitReportTime = CustomOption.Create(2, true, CustomOptionType.Crewmate, "BaitReportTimeSetting", 2f, 1f, 4f, 0.5f, BaitOption);
-    }
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 }
 
 class BaitAbility : AbilityBase
 {
-    public static float ReportTime = 0f;
 
     //何らかの要因で能力を失う時に使うのでListenerは保持しておく
     public MurderEventListener killedEventListener;
@@ -59,7 +59,6 @@ class BaitAbility : AbilityBase
     {
         //ここでEventListenerと紐付ける
         killedEventListener = MurderEvent.AddKilledMeListener(OnKilled);
-        ReportTime = Bait.BaitReportTime.GetFloat();
     }
 
     public override void Detach()
@@ -75,18 +74,20 @@ class BaitAbility : AbilityBase
     public void OnKilled(MurderEventData data)
     {
         //Reportの遅延呼び出しを行う(多分Coroutineがよいのでは？)
-        CachedPlayer.LocalPlayer.PlayerControl.StartCoroutine(DelayedReport().WrapToIl2Cpp());
+        PlayerControl.LocalPlayer.StartCoroutine(DelayedReport().WrapToIl2Cpp());
         return;
 
         IEnumerator DelayedReport()
         {
+            yield return null;
+            /*
             yield return new WaitForSeconds(ReportTime);
 
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReportDeadBody, SendOption.Reliable, -1);
             writer.Write(data.murderer.PlayerId);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.ReportDeadBody(data.murderer.PlayerId, CachedPlayer.LocalPlayer.PlayerId);
+            RPCProcedure.ReportDeadBody(data.murderer.PlayerId, CachedPlayer.LocalPlayer.PlayerId);*/
         }
     }
 }

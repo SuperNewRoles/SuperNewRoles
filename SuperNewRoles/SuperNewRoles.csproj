@@ -4,7 +4,6 @@
         <Version>3.0.0.0</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
-        <AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
         <langVersion>preview</langVersion>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     </PropertyGroup>

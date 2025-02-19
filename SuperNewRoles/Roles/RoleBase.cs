@@ -8,6 +8,7 @@ using SuperNewRoles.Modules;
 using UnityEngine.Networking.Types;
 using UnityEngine;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.CustomOptions;
 
 namespace SuperNewRoles.Roles;
 
@@ -45,10 +46,12 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
         }
     }
 
-    public abstract void CreateCustomOption();
+    public abstract RoleOptionMenuType OptionTeam { get; }
+
+    // public abstract void CreateCustomOption();
 }
 
-interface IRoleBase
+public interface IRoleBase
 {
     public RoleId Role { get; }
     public Color32 RoleColor { get; }
@@ -62,6 +65,7 @@ interface IRoleBase
     public WinnerTeamType WinnerTeam { get; }
     public TeamTag TeamTag { get; }
     public RoleTag[] RoleTags { get; }
+    public RoleOptionMenuType OptionTeam { get; }
     public short IntroNum { get; }
     /// <summary>
     /// CustomIntroSoundがnullの時に使用される
