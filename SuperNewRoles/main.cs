@@ -17,6 +17,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
 using UnityEngine.EventSystems;
+using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles;
 
@@ -46,6 +47,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomRPCManager.Load();
         CustomOptionManager.Load();
         SyncVersion.Load();
+        EventListenerManager.Load();
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");

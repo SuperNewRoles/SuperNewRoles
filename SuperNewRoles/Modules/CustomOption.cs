@@ -17,48 +17,14 @@ public static class CustomOptionManager
     public static CustomOptionCategory GameSettings;
     public static CustomOptionCategory MapSettings;
     public static CustomOptionCategory MapEditSettings;
+
     [CustomOptionSelect("ModeOption", typeof(ModeId), "ModeId.", parentFieldName: nameof(ModeSettings))]
     public static ModeId ModeOption;
 
-    [CustomOptionInt("TestInt", 0, 100, 1, 5, parentFieldName: nameof(ModeSettings))]
-    public static int TestInt;
-    [CustomOptionInt("TestInt2", 0, 100, 1, 5, parentFieldName: nameof(TestInt))]
-    public static int TestInt2;
-    [CustomOptionInt("TestInt3", 0, 100, 1, 5, parentFieldName: nameof(TestInt2))]
-    public static int TestInt3;
-    [CustomOptionInt("TestInt4", 0, 100, 1, 5, parentFieldName: nameof(TestInt), displayMode: DisplayModeId.BattleRoyal)]
-    public static int TestInt4;
-    [CustomOptionInt("TestInt9", 0, 100, 1, 5, parentFieldName: nameof(TestInt), displayMode: DisplayModeId.Default)]
-    public static int TestInt9;
-    [CustomOptionInt("TestInt10", 0, 100, 1, 5, parentFieldName: nameof(TestInt9))]
-    public static int TestInt10;
-    [CustomOptionInt("TestInt11", 0, 100, 1, 5, parentFieldName: nameof(TestInt10))]
-    public static int TestInt11;
-    [CustomOptionInt("TestInt12", 0, 100, 1, 5, parentFieldName: nameof(TestInt11))]
-    public static int TestInt12;
-    [CustomOptionInt("TestInt13", 0, 100, 1, 5, parentFieldName: nameof(TestInt12))]
-    public static int TestInt13;
-    [CustomOptionInt("TestInt14", 0, 100, 1, 5, parentFieldName: nameof(TestInt13))]
-    public static int TestInt14;
-    [CustomOptionInt("TestInt15", 0, 100, 1, 5, parentFieldName: nameof(TestInt14))]
-    public static int TestInt15;
-    [CustomOptionInt("TestInt16", 0, 100, 1, 5, parentFieldName: nameof(TestInt15))]
-    public static int TestInt16;
-    [CustomOptionInt("TestInt17", 0, 100, 1, 5, parentFieldName: nameof(TestInt16))]
-    public static int TestInt17;
-    [CustomOptionInt("TestInt18", 0, 100, 1, 5, parentFieldName: nameof(TestInt17))]
-    public static int TestInt18;
-
-
-    [CustomOptionInt("TestInt5", 0, 100, 1, 5, parentFieldName: nameof(GeneralSettings))]
-    public static int TestInt5;
-    [CustomOptionInt("TestInt6", 0, 100, 1, 5, parentFieldName: nameof(GameSettings))]
-    public static int TestInt6;
-    [CustomOptionInt("TestInt7", 0, 100, 1, 5, parentFieldName: nameof(TestInt6))]
-    public static int TestInt7;
-    [CustomOptionBool("TestInt8", false, parentFieldName: nameof(TestInt7))]
-    public static bool TestInt8;
-
+    [CustomOptionBool("DebugMode", false, parentFieldName: nameof(GeneralSettings))]
+    public static bool DebugMode;
+    [CustomOptionBool("DebugModeNoGameEnd", false, parentFieldName: nameof(DebugMode))]
+    public static bool DebugModeNoGameEnd;
 
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
     public static List<CustomOption> CustomOptions { get; } = new();
@@ -271,6 +237,7 @@ public static class RoleOptionManager
     public class RoleOption
     {
         public RoleId RoleId { get; }
+        public AssignedTeamType AssignTeam { get; }
         public byte NumberOfCrews { get; set; }
         public int Percentage { get; set; }
         public CustomOption[] Options { get; }
@@ -283,7 +250,10 @@ public static class RoleOptionManager
             Options = options;
             // ロールの色情報を取得
             var roleBase = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleId);
+            if (roleBase == null)
+                throw new Exception($"Role {roleId} not found");
             RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
+            AssignTeam = roleBase?.AssignedTeam ?? AssignedTeamType.Crewmate;
         }
     }
     public static RoleOption[] RoleOptions { get; private set; }
@@ -291,14 +261,17 @@ public static class RoleOptionManager
 
     public static void RoleOptionLoad()
     {
-        RoleOptions = CustomOptionManager.GetCustomOptions()
-        .Where(option => option.ParentRole != null)
-        .GroupBy(option => option.ParentRole.Value)
-        .Select(group =>
+        List<RoleOption> _roleOptions = new();
+        foreach (var role in CustomRoleManager.AllRoles)
         {
-            var options = group.ToArray();
-            return new RoleOption(group.Key, (byte)group.Count(), 0, options);
-        }).ToArray();
+            if (role.Role == RoleId.None) continue;
+            if (role.IsVanillaRole) continue;
+            var options = CustomOptionManager.GetCustomOptions()
+            .Where(option => option.ParentRole == role.Role)
+            .ToArray();
+            _roleOptions.Add(new RoleOption(role.Role, (byte)options.Length, 0, options));
+        }
+        RoleOptions = _roleOptions.ToArray();
     }
 
     public static void AddExclusivitySetting(int maxAssign, string[] roles)

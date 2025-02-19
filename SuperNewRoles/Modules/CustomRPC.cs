@@ -6,6 +6,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Modules;
 
@@ -13,21 +14,8 @@ namespace SuperNewRoles.Modules;
 [AttributeUsage(AttributeTargets.Method)]
 public class CustomRPCAttribute : Attribute
 {
-    /// <summary>
-    /// RPC メソッドの一意の識別子
-    /// </summary>
-    public byte Id { get; private set; }
 
     public CustomRPCAttribute() { }
-
-    /// <summary>
-    /// RPC メソッドの識別子を設定
-    /// </summary>
-    /// <param name="id">割り当てる識別子</param>
-    public void SetId(byte id)
-    {
-        Id = id;
-    }
 }
 
 /// <summary>
@@ -35,25 +23,15 @@ public class CustomRPCAttribute : Attribute
 /// </summary>
 public static class CustomRPCManager
 {
-    /// <summary>
-    /// テスト用のRPCメソッド
-    /// </summary>
-    /// <param name="pc">プレイヤーコントロール</param>
-    [CustomRPC()]
-    public static void TestMethod(PlayerControl pc, PlayerControl[] pcArray)
-    {
-        Logger.Info($"TestMethod: {pc.PlayerId}");
-        Logger.Info($"TestMethod2: {pcArray.Length}");
-        foreach (var p in pcArray)
-        {
-            Logger.Info($"TestMethod3: {p.PlayerId}");
-        }
-    }
 
     /// <summary>
     /// RPC メソッドを保存するディクショナリ
     /// </summary>
     public static Dictionary<byte, MethodInfo> RpcMethods = new();
+    /// <summary>
+    /// RPC メソッドを保存するディクショナリ
+    /// </summary>
+    public static Dictionary<string, byte> RpcMethodIds = new();
 
     /// <summary>
     /// SuperNewRoles専用のRPC識別子
@@ -77,7 +55,7 @@ public static class CustomRPCManager
     private static string RpcHashGenerate(MethodInfo method, CustomRPCAttribute attribute)
     {
         // メソッドのハッシュ値を名前とメソッドの引数の型内容を元に生成
-        return method.Name + string.Join(",", method.GetParameters().Select(p => p.ParameterType.Name));
+        return GetMethodFullName(method) + string.Join(",", method.GetParameters().Select(p => p.ParameterType.Name));
     }
 
     /// <summary>
@@ -92,19 +70,21 @@ public static class CustomRPCManager
             .Where(m => m.GetCustomAttribute<CustomRPCAttribute>() != null)
             .OrderBy(m => RpcHashGenerate(m, m.GetCustomAttribute<CustomRPCAttribute>()))
             .ToList();
+        Logger.Info($"Found {methods.Count} RPC methods");
 
         // ソートされたハッシュ値に基づいてIDを割り当て
         for (byte i = 0; i < methods.Count; i++)
         {
-            methods[i].GetCustomAttribute<CustomRPCAttribute>().SetId(i);
+            var attribute = methods[i].GetCustomAttribute<CustomRPCAttribute>();
             // staticメソッドのみ許可
             if (!methods[i].IsStatic)
             {
                 Logger.Error($"CustomRPC: {methods[i].Name} is not static");
                 continue;
             }
-            RegisterRPC(methods[i], methods[i].GetCustomAttribute<CustomRPCAttribute>());
+            RegisterRPC(methods[i], i);
         }
+        Logger.Info($"Registered {RpcMethods.Count} RPC methods");
     }
 
 
@@ -113,7 +93,7 @@ public static class CustomRPCManager
     /// </summary>
     /// <param name="method">登録するメソッド</param>
     /// <param name="attribute">CustomRPCAttribute</param>
-    private static void RegisterRPC(MethodInfo method, CustomRPCAttribute attribute)
+    private static void RegisterRPC(MethodInfo method, byte id)
     {
         // RPC送信用の新しいメソッドを定義
         static bool NewMethod(object? __instance, object[] __args, MethodBase __originalMethod)
@@ -125,16 +105,10 @@ public static class CustomRPCManager
                 return true;
             }
 
-            // RPC属性を取得
-            CustomRPCAttribute attribute = __originalMethod.GetCustomAttribute<CustomRPCAttribute>();
-            if (attribute == null)
-            {
-                throw new Exception("CustomRPCAttribute is not found");
-            }
-
+            var id = RpcMethodIds[GetMethodFullName(__originalMethod)];
             // RPC送信の準備
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
-            writer.Write(attribute.Id);
+            writer.Write(id);
 
             // 引数を設定
             foreach (var arg in __args)
@@ -144,16 +118,25 @@ public static class CustomRPCManager
 
             // RPC送信
             AmongUsClient.Instance.FinishRpcImmediately(writer);
+            Logger.Info($"Sent RPC: {__originalMethod.Name}");
             return true;
         }
-
+        Logger.Info($"Registering RPC: {method.Name} {id}");
         var newMethod = NewMethod;
-        RpcMethods[attribute.Id] = method;
+        RpcMethods[id] = method;
+        RpcMethodIds[GetMethodFullName(method)] = id;
 
         // メソッドの中身をRPCを送信するものに入れ替える
         SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newMethod.Method));
     }
-
+    private static string GetMethodFullName(MethodInfo method)
+    {
+        return method.DeclaringType?.Name + "." + method.Name;
+    }
+    private static string GetMethodFullName(MethodBase method)
+    {
+        return method.DeclaringType?.Name + "." + method.Name;
+    }
     /// <summary>
     /// RPC受信を処理するハーモニーパッチ
     /// </summary>
@@ -165,10 +148,12 @@ public static class CustomRPCManager
         /// </summary>
         public static void Postfix(byte callId, MessageReader reader)
         {
+            Logger.Info($"Received RPC: {callId}");
             // SuperNewRoles専用のRPCの場合
             if (callId == SNRRpcId)
             {
                 byte id = reader.ReadByte();
+                Logger.Info($"Received RPC: {id}");
                 if (!RpcMethods.TryGetValue(id, out var method))
                     return;
 
@@ -180,6 +165,7 @@ public static class CustomRPCManager
                 }
 
                 IsRpcReceived = true;
+                Logger.Info($"Received RPC: {method.Name}");
                 method.Invoke(null, args.ToArray());
             }
             else if (callId == SNRSyncVersionRpc)
@@ -221,8 +207,24 @@ public static class CustomRPCManager
                     writer.Write(playerControl.PlayerId);
                 }
                 break;
+            case ExPlayerControl exPc:
+                writer.Write(exPc.PlayerId);
+                break;
+            case ExPlayerControl[] exPcArray:
+                writer.Write(exPcArray.Length);
+                foreach (var exPlayerControl in exPcArray)
+                {
+                    writer.Write(exPlayerControl.PlayerId);
+                }
+                break;
+            case NetworkedPlayerInfo networkedPlayerInfo:
+                writer.Write(networkedPlayerInfo.PlayerId);
+                break;
             case InnerNetObject innerNetObject:
                 writer.Write(innerNetObject.NetId);
+                break;
+            case RoleId roleId:
+                writer.Write((int)roleId);
                 break;
             default:
                 throw new Exception($"Invalid type: {obj.GetType()}");
@@ -243,6 +245,10 @@ public static class CustomRPCManager
             Type t when t == typeof(string) => reader.ReadString(),
             Type t when t == typeof(PlayerControl) => ModHelpers.GetPlayerById(reader.ReadByte()),
             Type t when t == typeof(PlayerControl[]) => ReadPlayerControlArray(reader),
+            Type t when t == typeof(ExPlayerControl) => ExPlayerControl.ById(reader.ReadByte()),
+            Type t when t == typeof(ExPlayerControl[]) => ReadExPlayerControlArray(reader),
+            Type t when t == typeof(NetworkedPlayerInfo) => GameData.Instance.GetPlayerById(reader.ReadByte()),
+            Type t when t == typeof(RoleId) => (RoleId)reader.ReadInt32(),
             _ => throw new Exception($"Invalid type: {type}")
         };
     }
@@ -257,6 +263,20 @@ public static class CustomRPCManager
         for (int i = 0; i < length; i++)
         {
             array[i] = ModHelpers.GetPlayerById(reader.ReadByte());
+        }
+        return array;
+    }
+
+    /// <summary>
+    /// ExPlayerControlの配列を読み取る
+    /// </summary>
+    private static ExPlayerControl[] ReadExPlayerControlArray(MessageReader reader)
+    {
+        int length = reader.ReadInt32();
+        ExPlayerControl[] array = new ExPlayerControl[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = ExPlayerControl.ById(reader.ReadByte());
         }
         return array;
     }

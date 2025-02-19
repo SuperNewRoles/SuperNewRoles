@@ -3,11 +3,16 @@ namespace SuperNewRoles.Roles;
 public enum RoleId : short
 {
     None = 0,
-    Bait
+    Crewmate,
+    Impostor,
+    Bait,
+    BestFalseCharge,
+    Sheriff,
 }
 
 public enum QuoteMod : byte
 {
+    Vanilla,
     SuperNewRoles,
     NebulaOnTheShip,
     TownOfHost,

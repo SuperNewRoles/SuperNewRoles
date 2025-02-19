@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SuperNewRoles.Modules;
@@ -8,6 +9,7 @@ namespace SuperNewRoles.Roles;
 public static class CustomRoleManager
 {
     public static IRoleBase[] AllRoles { get; private set; }
+    public static Dictionary<int, IRoleBase> AllRolesByRoleId { get; private set; }
     public static void Load()
     {
         AllRoles = Assembly.GetExecutingAssembly().GetTypes()
@@ -20,6 +22,7 @@ public static class CustomRoleManager
             // さらにBaseSingletonがついている型なので、BaseSingleton<T>のInstanceプロパティを取得する
             .Select(type =>
             {
+                Logger.Info($"Loading role: {type.FullName}");
                 var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(type);
                 var instanceProperty = baseSingletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
                 if (instanceProperty == null)
@@ -29,12 +32,15 @@ public static class CustomRoleManager
                 return (IRoleBase)instanceProperty.GetValue(null);
             })
             .ToArray();
-        // AllROlesの数と、その中のRoleIdをログにする
-        Logger.Info($"AllRolesの数: {AllRoles.Length}");
-        foreach (var role in AllRoles)
-        {
-            Logger.Info($"RoleId: {role.Role}");
-        }
+        AllRolesByRoleId = AllRoles.ToDictionary(role => (int)role.Role);
+    }
+    public static IRoleBase GetRoleById(RoleId roleId)
+    {
+        return AllRolesByRoleId.TryGetValue((int)roleId, out var role) ? role : null;
+    }
+    public static bool TryGetRoleById(RoleId roleId, out IRoleBase role)
+    {
+        return AllRolesByRoleId.TryGetValue((int)roleId, out role);
     }
 }
 

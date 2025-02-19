@@ -7,6 +7,9 @@ Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三陣營,第三陣營
 
+NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Let's work only for ourselves.Let's Take advantage of others.,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
+
+
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
@@ -41,6 +44,12 @@ ExclusivityOptionMenuAssignedRoleText,割当役職,Assigned Role,指派職位,�
 ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
 ExclusivityEditMenuTitle,排他設定の編集,Edit Exclusivity Settings,编辑排他设置,編輯排他設置
 ExclusivityEditMenuGroupTitle,グループ {0}の設定,Group {0} Settings,组 {0} 设置,組 {0} 設置
+DebugMode,デバッグモード,Debug Mode,偵錯模式,偵錯模式
+
+# AssignRoles
+AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大內鬼數,最大內鬼數
+AssignRoles_MaxCrews,最大 クルーメイト 選出数,Max Crewmates,最大船員數,最大船員數
+AssignRoles_MaxNeutrals,最大   第三陣営   選出数,Max Neutrals,最大第三陣營數,最大第三陣營數
 
 # SyncError
 SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>發生錯誤。</size>,<size=150%>發生錯誤。</size>
@@ -51,3 +60,5 @@ SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。
 
 # Role
 Bait,ベイト,Bait,餌,餌
+BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
+Sheriff,シェリフ,Sheriff,警長,警長

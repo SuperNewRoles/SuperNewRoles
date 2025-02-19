@@ -19,7 +19,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
 
     public abstract RoleId Role { get; }
     public abstract Color32 RoleColor { get; }
-    public abstract List<Type> Abilities { get; }
+    public abstract List<Func<AbilityBase>> Abilities { get; }
     public abstract QuoteMod QuoteMod { get; }
     public abstract AssignedTeamType AssignedTeam { get; }
     public abstract WinnerTeamType WinnerTeam { get; }
@@ -59,7 +59,7 @@ public interface IRoleBase
     /// 追加したいAbilityを[ typeof(HogeAbility), typeof(FugaAbility) ]の形でListとして用意する
     /// 役職選出時(OnSetRole)に自動でnewされます
     /// </summary>
-    public List<Type> Abilities { get; }
+    public List<Func<AbilityBase>> Abilities { get; }
     public QuoteMod QuoteMod { get; }
     public AssignedTeamType AssignedTeam { get; }
     public WinnerTeamType WinnerTeam { get; }
@@ -67,6 +67,7 @@ public interface IRoleBase
     public RoleTag[] RoleTags { get; }
     public RoleOptionMenuType OptionTeam { get; }
     public short IntroNum { get; }
+    public bool IsVanillaRole => QuoteMod == QuoteMod.Vanilla;
     /// <summary>
     /// CustomIntroSoundがnullの時に使用される
     /// </summary>
@@ -81,10 +82,9 @@ public interface IRoleBase
     /// </summary>
     public virtual void OnSetRole(PlayerControl player)
     {
-        foreach (Type ability in Abilities.AsSpan())
-            if (ability.IsAssignableFrom(typeof(AbilityBase)))
-                player.AddAbility((AbilityBase)Activator.CreateInstance(ability));
-            else
-                Logger.Warning($"{ability.ToString()}はAbilityではないです。", "OnSetRole");
+        foreach (Func<AbilityBase> ability in Abilities)
+        {
+            player.AddAbility(ability());
+        }
     }
 }
