@@ -338,5 +338,16 @@ namespace SuperNewRoles.CustomOptions
                 }
             }
         }
+
+        public static void HideRoleSettings()
+        {
+            var parent = RoleOptionMenu.RoleOptionMenuObjectData?.SettingsInner?.Find("Parent");
+            if (parent != null)
+                GameObject.Destroy(parent.gameObject);
+
+            // 表示リストをクリア
+            if (RoleOptionMenu.RoleOptionMenuObjectData?.CurrentOptionDisplays != null)
+                RoleOptionMenu.RoleOptionMenuObjectData.CurrentOptionDisplays.Clear();
+        }
     }
 }
