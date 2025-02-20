@@ -1,13 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
+using SuperNewRoles.Modules;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability.CustomButton;
 
 public abstract class TargetCustomButtonBase : CustomButtonBase
 {
-    public PlayerControl Target { get; protected set; }
+    public ExPlayerControl Target { get; protected set; }
+    public virtual bool ShowOutline { get; protected set; } = true;
+    public abstract Color32 OutlineColor { get; }
+    private PlayerControl _lastShowTarget;
     public abstract bool OnlyCrewmates { get; }
     public virtual bool TargetPlayersInVents { get; } = false;
     public virtual IEnumerable<PlayerControl> UntargetablePlayers { get; } = null;
@@ -17,6 +21,22 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     {
         base.OnFixedUpdate();
         Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: PlayerControl.LocalPlayer);
+        if (ShowOutline && _lastShowTarget != Target)
+        {
+            if (_lastShowTarget != null)
+                SetOutline(_lastShowTarget, false, OutlineColor);
+            if (Target != null)
+                SetOutline(Target, true, OutlineColor);
+            _lastShowTarget = Target;
+        }
+    }
+    private static void SetOutline(PlayerControl player, bool show, Color32 color)
+    {
+        var rend = player.cosmetics.currentBodySprite.BodySprite;
+        if (player == null || rend == null) return;
+        rend.material.SetFloat("_Outline", show ? 1f : 0f);
+        if (show)
+            rend.material.SetColor("_OutlineColor", color);
     }
     public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, IEnumerable<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
     {
