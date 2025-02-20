@@ -32,6 +32,9 @@ class Sheriff : RoleBase<Sheriff>
 
     [CustomOptionBool("SheriffCanKillNeutral", true)]
     public static bool SheriffCanKillNeutral;
+
+    [CustomOptionBool("SheriffCanKillImpostor", true)]
+    public static bool SheriffCanKillImpostor;
 }
 
 public class SheriffAbility : CustomButtonBase
