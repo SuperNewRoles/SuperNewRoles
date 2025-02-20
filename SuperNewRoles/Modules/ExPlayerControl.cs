@@ -31,6 +31,7 @@ public class ExPlayerControl
     }
     public static implicit operator PlayerControl(ExPlayerControl exPlayer)
     {
+        if (exPlayer == null) return null;
         return exPlayer.Player;
     }
     public static implicit operator ExPlayerControl(PlayerControl player)
