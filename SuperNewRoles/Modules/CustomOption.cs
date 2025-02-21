@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using HarmonyLib;
 using SuperNewRoles.Roles;
 using UnityEngine;
 namespace SuperNewRoles.Modules;
@@ -33,11 +34,79 @@ public static class CustomOptionManager
     public static IReadOnlyList<CustomOption> GetCustomOptions() => CustomOptions.AsReadOnly();
     public static IReadOnlyList<CustomOptionCategory> GetOptionCategories() => OptionCategories.AsReadOnly();
 
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
+    public static class AmongUsClientOnPlayerJoinedPatch
+    {
+        private static LateTask _lateTask;
+        public static void Postfix()
+        {
+            // ゲーム終了後の復帰からの同期で大量に通信を送るのを防ぐために
+            // 2秒内に来たプレイヤーは同時に同期する
+            if (_lateTask != null)
+                _lateTask.UpdateDelay(1.5f);
+            else
+                _lateTask = new LateTask(() =>
+                {
+                    RpcSyncOptionsAll();
+                    _lateTask = null;
+                }, 2f, "CustomOptionManager.RpcSyncOptionsAll");
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
+    public static class AmongUsClientStartGamePatch
+    {
+        public static void Postfix()
+        {
+            // ゲーム開始時に一度だけ同期する(AmongUsClient.StartGameが呼ばれるのはホストのみ)
+            if (AmongUsClient.Instance.AmHost)
+                RpcSyncOptionsAll();
+        }
+    }
+    [CustomRPC]
+    public static void RpcSyncOption(string optionId, byte selection)
+    {
+        var option = CustomOptions.FirstOrDefault(o => o.Id == optionId);
+        if (option == null)
+        {
+            Logger.Warning($"オプションが見つかりません: {optionId}");
+            return;
+        }
+        option.UpdateSelection(selection);
+    }
+    [CustomRPC]
+    public static void _RpcSyncOptionsAll(Dictionary<ushort, byte> options, bool resetToDefault)
+    {
+        if (resetToDefault)
+        {
+            foreach (var option in CustomOptions)
+            {
+                option.UpdateSelection(option.DefaultSelection);
+            }
+        }
+        foreach (var option in CustomOptions)
+        {
+            if (options.TryGetValue(option.IndexId, out var selection))
+                option.UpdateSelection(selection);
+        }
+    }
+    public static void RpcSyncOptionsAll()
+    {
+        var options = CustomOptions.Where(o => !o.IsDefaultValue).ToDictionary(o => o.IndexId, o => o.Selection);
+        int keysMax = options.Keys.Max();
+        for (int i = 0; i <= keysMax; i += 30)
+        {
+            var partialOptions = options
+                .Where(kvp => kvp.Key >= i && kvp.Key < i + 30)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            _RpcSyncOptionsAll(partialOptions, i == 0);
+        }
+    }
     // カスタムオプションをロードするメソッド
     public static void Load()
     {
         LoadCustomOptions();
         LinkParentOptions();
+        SortAndAssignIntIds();
         RoleOptionManager.RoleOptionLoad();
         CustomOptionSaver.SaverLoad();
     }
@@ -138,6 +207,15 @@ public static class CustomOptionManager
         }
         return null;
     }
+
+    private static void SortAndAssignIntIds()
+    {
+        CustomOptions.Sort((a, b) => String.Compare(a.Id, b.Id, StringComparison.Ordinal));
+        for (int i = 0; i < CustomOptions.Count; i++)
+        {
+            CustomOptions[i].IndexId = (ushort)i;
+        }
+    }
 }
 
 public class CustomOption
@@ -145,17 +223,26 @@ public class CustomOption
     public CustomOptionBaseAttribute Attribute { get; }
     public FieldInfo FieldInfo { get; }
     public string Name { get; }
-    private object _value;
-    private byte _selection;
+    private object _value_My;
+    private byte _selection_My;
+    private object _value_Host;
+    private byte _selection_Host;
+    private readonly object _defaultValue;
+    private readonly byte _defaultSelection;
 
-    public object Value => _value;
-    public byte Selection => _selection;
+    public object Value => (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost) ? _value_Host : _value_My;
+    public byte Selection => (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost) ? _selection_Host : _selection_My;
+    public byte MySelection => _selection_My;
     public string Id => Attribute.Id;
+    public ushort IndexId { get; internal set; }
     public object[] Selections { get; }
     public RoleId? ParentRole { get; private set; }
     public CustomOption? ParentOption { get; private set; }
     public List<CustomOption> ChildrenOption { get; } = new();
     public DisplayModeId DisplayMode { get; private set; } = DisplayModeId.All;
+    public bool IsDefaultValue => Selection == _defaultSelection;
+    public object DefaultValue => _defaultValue;
+    public byte DefaultSelection => _defaultSelection;
 
     /// <summary>
     /// このオプションがブール値（true/false）のオプションかどうかを示します。
@@ -168,9 +255,9 @@ public class CustomOption
         if (Attribute is CustomOptionFloatAttribute floatAttribute)
         {
             float step = floatAttribute.Step;
-            if (step >= 1f) return string.Format("{0:F0}", _value);
-            else if (step >= 0.1f) return string.Format("{0:F1}", _value);
-            else return string.Format("{0:F2}", _value);
+            if (step >= 1f) return string.Format("{0:F0}", Value);
+            else if (step >= 0.1f) return string.Format("{0:F1}", Value);
+            else return string.Format("{0:F2}", Value);
         }
         else if (Attribute is CustomOptionSelectAttribute selectAttr)
         {
@@ -184,12 +271,14 @@ public class CustomOption
         Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
         FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
         Selections = attribute.GenerateSelections();
-        var defaultValue = attribute.GenerateDefaultSelection();
-        UpdateSelection(defaultValue);
+        var defaultSelection = attribute.GenerateDefaultSelection();
+        UpdateSelection(defaultSelection);
         Name = attribute.TranslationName;
         ParentRole = parentRole;
         IsBooleanOption = attribute is CustomOptionBoolAttribute;
         DisplayMode = attribute.DisplayMode;
+        _defaultValue = Selections[defaultSelection];
+        _defaultSelection = defaultSelection;
     }
 
     public void UpdateSelection(byte value)
@@ -202,9 +291,18 @@ public class CustomOption
 
         try
         {
-            _selection = value;
-            _value = Selections[value];
-            FieldInfo.SetValue(null, _value);
+            bool isHost = AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost;
+            if (isHost)
+            {
+                _selection_Host = value;
+                _value_Host = Selections[value];
+            }
+            else
+            {
+                _selection_My = value;
+                _value_My = Selections[value];
+            }
+            FieldInfo.SetValue(null, Value);
         }
         catch (Exception ex)
         {
@@ -366,6 +464,7 @@ public static class CustomOptionSaver
         {
             Logger.Error($"Option loading failed: {ex.Message}");
         }
+
     }
 
     private static void LoadPresetNames()
@@ -672,7 +771,7 @@ public class FileOptionStorage : IOptionStorage
         foreach (var option in optionsList)
         {
             writer.Write(option.Id);
-            writer.Write((byte)option.Selection);
+            writer.Write((byte)option.MySelection);
         }
     }
 
@@ -897,3 +996,4 @@ public class ExclusivityData
         Roles = roles;
     }
 }
+
