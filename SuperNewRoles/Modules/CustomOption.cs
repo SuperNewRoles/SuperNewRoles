@@ -230,8 +230,8 @@ public class CustomOption
     private readonly object _defaultValue;
     private readonly byte _defaultSelection;
 
-    public object Value => (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost) ? _value_Host : _value_My;
-    public byte Selection => (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost) ? _selection_Host : _selection_My;
+    public object Value => (AmongUsClient.Instance != null && !AmongUsClient.Instance.AmHost) ? _value_Host : _value_My;
+    public byte Selection => (AmongUsClient.Instance != null && !AmongUsClient.Instance.AmHost) ? _selection_Host : _selection_My;
     public byte MySelection => _selection_My;
     public string Id => Attribute.Id;
     public ushort IndexId { get; internal set; }
@@ -291,7 +291,8 @@ public class CustomOption
 
         try
         {
-            bool isHost = AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost;
+            // isHostであれば保存されなくなる
+            bool isHost = AmongUsClient.Instance != null && !AmongUsClient.Instance.AmHost;
             if (isHost)
             {
                 _selection_Host = value;
