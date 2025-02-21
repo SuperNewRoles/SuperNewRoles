@@ -43,11 +43,13 @@ public static class CustomOptionManager
             // ゲーム終了後の復帰からの同期で大量に通信を送るのを防ぐために
             // 2秒内に来たプレイヤーは同時に同期する
             if (_lateTask != null)
-                return;
-            _lateTask = new LateTask(() =>
-            {
-                RpcSyncOptionsAll();
-            }, 2f, "CustomOptionManager.RpcSyncOptionsAll");
+                _lateTask.UpdateDelay(1f);
+            else
+                _lateTask = new LateTask(() =>
+                {
+                    RpcSyncOptionsAll();
+                    _lateTask = null;
+                }, 2f, "CustomOptionManager.RpcSyncOptionsAll");
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
