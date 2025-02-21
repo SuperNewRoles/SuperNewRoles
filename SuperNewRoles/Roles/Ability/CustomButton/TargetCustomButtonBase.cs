@@ -17,9 +17,9 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     public virtual IEnumerable<PlayerControl> UntargetablePlayers { get; } = null;
     public virtual PlayerControl TargetingPlayer => PlayerControl.LocalPlayer;
     public bool TargetIsExist => Target != null;
-    public override void OnFixedUpdate()
+    public override void OnUpdate()
     {
-        base.OnFixedUpdate();
+        base.OnUpdate();
         Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: PlayerControl.LocalPlayer);
         if (ShowOutline && _lastShowTarget != Target)
         {

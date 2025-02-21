@@ -19,4 +19,9 @@ public static class PlayerControlRpcExtensions
     {
         player.ReportDeadBody(target);
     }
+    [CustomRPC]
+    public static void RpcCustomMurderPlayer(this PlayerControl player, PlayerControl target, bool didSucceed)
+    {
+        player.MurderPlayer(target, didSucceed ? MurderResultFlags.Succeeded : MurderResultFlags.FailedError);
+    }
 }

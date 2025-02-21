@@ -188,6 +188,18 @@ public static class CustomRPCManager
             case int i:
                 writer.Write(i);
                 break;
+            case short s:
+                writer.Write(s);
+                break;
+            case ushort us:
+                writer.Write(us);
+                break;
+            case uint ui:
+                writer.Write(ui);
+                break;
+            case ulong ul:
+                writer.Write(ul);
+                break;
             case float f:
                 writer.Write(f);
                 break;
@@ -240,6 +252,10 @@ public static class CustomRPCManager
         {
             Type t when t == typeof(byte) => reader.ReadByte(),
             Type t when t == typeof(int) => reader.ReadInt32(),
+            Type t when t == typeof(short) => reader.ReadInt16(),
+            Type t when t == typeof(ushort) => reader.ReadUInt16(),
+            Type t when t == typeof(uint) => reader.ReadUInt32(),
+            Type t when t == typeof(ulong) => reader.ReadUInt64(),
             Type t when t == typeof(float) => reader.ReadSingle(),
             Type t when t == typeof(bool) => reader.ReadBoolean(),
             Type t when t == typeof(string) => reader.ReadString(),

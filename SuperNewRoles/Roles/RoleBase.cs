@@ -84,7 +84,7 @@ public interface IRoleBase
     {
         foreach (Func<AbilityBase> ability in Abilities)
         {
-            player.AddAbility(ability());
+            player.AddAbility(ability(), (ulong)(player.PlayerId * 1000000) + (ulong)((int)Role * 1000) + (ulong)(((ExPlayerControl)player).lastAbilityId++));
         }
     }
 }
