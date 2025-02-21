@@ -197,6 +197,46 @@ public static class CustomRPCManager
             case string s:
                 writer.Write(s);
                 break;
+            case Dictionary<string, string> dict:
+                writer.Write(dict.Count);
+                foreach (var kvp in dict)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+                break;
+            case Dictionary<string, int> dictInt:
+                writer.Write(dictInt.Count);
+                foreach (var kvp in dictInt)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+                break;
+            case Dictionary<byte, byte> dictByte:
+                writer.Write(dictByte.Count);
+                foreach (var kvp in dictByte)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+                break;
+            case Dictionary<string, byte> dictStringByte:
+                writer.Write(dictStringByte.Count);
+                foreach (var kvp in dictStringByte)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+                break;
+            case Dictionary<ushort, byte> dictUshortByte:
+                writer.Write(dictUshortByte.Count);
+                foreach (var kvp in dictUshortByte)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+                break;
             case PlayerControl pc:
                 writer.Write(pc.PlayerId);
                 break;
@@ -249,8 +289,32 @@ public static class CustomRPCManager
             Type t when t == typeof(ExPlayerControl[]) => ReadExPlayerControlArray(reader),
             Type t when t == typeof(NetworkedPlayerInfo) => GameData.Instance.GetPlayerById(reader.ReadByte()),
             Type t when t == typeof(RoleId) => (RoleId)reader.ReadInt32(),
+            Type t when t == typeof(Dictionary<string, string>) => ReadDictionary<string, string>(reader, r => r.ReadString(), r => r.ReadString()),
+            Type t when t == typeof(Dictionary<string, int>) => ReadDictionary<string, int>(reader, r => r.ReadString(), r => r.ReadInt32()),
+            Type t when t == typeof(Dictionary<byte, byte>) => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte()),
+            Type t when t == typeof(Dictionary<string, byte>) => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte()),
+            Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
             _ => throw new Exception($"Invalid type: {type}")
         };
+    }
+
+    /// <summary>
+    /// Dictionary を読み取るヘルパーメソッド
+    /// </summary>
+    private static Dictionary<TKey, TValue> ReadDictionary<TKey, TValue>(
+        MessageReader reader,
+        Func<MessageReader, TKey> keyReader,
+        Func<MessageReader, TValue> valueReader)
+    {
+        int count = reader.ReadInt32();
+        var dict = new Dictionary<TKey, TValue>();
+        for (int i = 0; i < count; i++)
+        {
+            var key = keyReader(reader);
+            var value = valueReader(reader);
+            dict[key] = value;
+        }
+        return dict;
     }
 
     /// <summary>

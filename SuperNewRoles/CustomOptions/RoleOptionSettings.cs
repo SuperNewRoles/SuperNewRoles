@@ -81,6 +81,12 @@ namespace SuperNewRoles.CustomOptions
                 bool newValue = !checkMark.gameObject.activeSelf;
                 checkMark.gameObject.SetActive(newValue);
                 option.UpdateSelection(newValue ? (byte)1 : (byte)0);
+
+                // ホストの場合、他のプレイヤーに同期
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    CustomOptionManager.RpcSyncOption(option.Id, newValue ? (byte)1 : (byte)0);
+                }
             }, spriteRenderer);
         }
 
@@ -232,6 +238,12 @@ namespace SuperNewRoles.CustomOptions
         {
             option.UpdateSelection(newSelection);
             selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+
+            // ホストの場合、他のプレイヤーに同期
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomOptionManager.RpcSyncOption(option.Id, newSelection);
+            }
         }
 
         public static void SetupScroll(Transform parent)

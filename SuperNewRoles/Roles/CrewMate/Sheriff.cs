@@ -32,12 +32,16 @@ class Sheriff : RoleBase<Sheriff>
 
     [CustomOptionBool("SheriffCanKillNeutral", true)]
     public static bool SheriffCanKillNeutral;
+
+    [CustomOptionBool("SheriffCanKillImpostor", true)]
+    public static bool SheriffCanKillImpostor;
 }
 
-public class SheriffAbility : CustomButtonBase
+public class SheriffAbility : TargetCustomButtonBase
 {
     public float KillCooldown { get; }
     public bool CanKillNeutral { get; }
+    public override Color32 OutlineColor => Sheriff.Instance.RoleColor;
 
     private float cooldownTimer = 0f;
     public override float Timer { get => cooldownTimer; set => cooldownTimer = value; }
@@ -49,6 +53,7 @@ public class SheriffAbility : CustomButtonBase
     public override Color? color => Color.yellow;
     protected override KeyCode? hotkey => KeyCode.Q;
     protected override int joystickkey => 0;
+    public override bool OnlyCrewmates => false;
     public SheriffAbility(float killCooldown, bool canKillNeutral)
     {
         KillCooldown = killCooldown;
@@ -56,27 +61,24 @@ public class SheriffAbility : CustomButtonBase
     }
     public override bool CheckIsAvailable()
     {
-        return true;
+        return TargetIsExist;
     }
 
     public override bool CheckHasButton() => !PlayerControl.LocalPlayer.Data.IsDead;
 
     public override void OnClick()
-    {/*
-        var target = PlayerControl.LocalPlayer.GetClosestPlayer();
-        if (target == null) return;
-
+    {
         // インポスターまたは設定で許可された場合のニュートラルを殺害
-        if (target.Data.Role.IsImpostor || (Sheriff.CanKillNeutral && target.Data.Role.IsNeutral))
+        if (Target.IsImpostor() || (CanKillNeutral && Target.IsNeutral()))
         {
-            target.RpcMurderPlayer(target);
-            Timer = Sheriff.KillCooldown;
+            // TODO: 後でRPCをCustomにする
+            PlayerControl.LocalPlayer.RpcMurderPlayer(Target.Player, true);
         }
         else
         {
             // 無実の人を殺そうとした場合、自分が死亡
-            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-        }*/
+            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
+        }
         Logger.Info("Clicked Sheriff Kill Button");
     }
 }

@@ -98,15 +98,30 @@ public abstract class CustomButtonBase : AbilityBase
 
     public virtual void OnFixedUpdate()
     {
+        if (PlayerControl.LocalPlayer?.Data == null || MeetingHud.Instance || ExileController.Instance || !CheckHasButton())
+        {
+            SetActive(false);
+            return;
+        }
+        SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
         if (Timer > 0 && CheckDecreaseCoolCount()) DecreaseTimer();
-        SetActive(CheckHasButton());
         actionButton.graphic.sprite = Sprite;
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
         actionButton.SetCoolDown(Timer, float.MaxValue);
         actionButton.OverrideText(buttonText);
-        if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+        if (CheckIsAvailable())
         {
-            OnClickEvent();
+            actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
+            actionButton.graphic.material.SetFloat("_Desat", 0f);
+            if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+            {
+                OnClickEvent();
+            }
+        }
+        else
+        {
+            actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
+            actionButton.graphic.material.SetFloat("_Desat", 1f);
         }
         //以下はエフェクトがある(≒押したらカウントダウンが始まる)ときだけ呼ばれる
         if (buttonEffect != null) buttonEffect.OnFixedUpdate(actionButton);

@@ -12,6 +12,7 @@ public class LateTask
     private static readonly object _lock = new();
     private static readonly List<LateTask> Tasks = new();
     private static readonly List<LateTask> AddTasks = new();
+    private static readonly List<LateTask> RemoveTasks = new();
 
     public string Name { get; }
     public float Timer { get; private set; }
@@ -33,6 +34,20 @@ public class LateTask
         }
 
         Logger.Info($"New LateTask \"{Name}\" created (Delay: {delayTime}s)", "LateTask");
+    }
+    public void Cancel()
+    {
+        lock (_lock)
+        {
+            RemoveTasks.Add(this);
+        }
+    }
+    public void UpdateDelay(float delayTime)
+    {
+        lock (_lock)
+        {
+            Timer = delayTime;
+        }
     }
 
     private bool Execute()
@@ -73,6 +88,11 @@ public class LateTask
             {
                 Tasks.AddRange(AddTasks);
                 AddTasks.Clear();
+            }
+            if (RemoveTasks.Count > 0)
+            {
+                Tasks.RemoveAll(t => RemoveTasks.Contains(t));
+                RemoveTasks.Clear();
             }
         }
     }

@@ -31,10 +31,12 @@ public class ExPlayerControl
     }
     public static implicit operator PlayerControl(ExPlayerControl exPlayer)
     {
+        if (exPlayer == null) return null;
         return exPlayer.Player;
     }
     public static implicit operator ExPlayerControl(PlayerControl player)
     {
+        if (player == null) return null;
         return ById(player.PlayerId);
     }
     public void SetRole(RoleId roleId)

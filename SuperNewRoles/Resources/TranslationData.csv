@@ -62,3 +62,6 @@ SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。
 Bait,ベイト,Bait,餌,餌
 BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
 Sheriff,シェリフ,Sheriff,警長,警長
+SheriffKillCooldown,キルクールタイム,Kill Cooldown,殺人冷卻時間,殺人冷卻時間
+SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以殺死第三陣營,可以殺死第三陣營
+SheriffCanKillImpostor,インポスターをキルできる,Can Kill Impostor,可以殺死內鬼,可以殺死內鬼
