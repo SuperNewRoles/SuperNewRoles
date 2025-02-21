@@ -678,6 +678,12 @@ public static class StandardOptionMenu
         UpdateOptionSelection(option, newSelection, selectedText);
         UpdateOptionsActive();
         RecalculateOptionsPosition(StandardOptionMenuObjectData.Instance.CurrentOptionMenu.transform, StandardOptionMenuObjectData.Instance.RightAreaScroller);
+
+        // ホストの場合、他のプレイヤーに同期
+        if (AmongUsClient.Instance.AmHost)
+        {
+            CustomOptionManager.RpcSyncOption(option.Id, newSelection);
+        }
     }
 
     private static void UpdateOptionSelection(CustomOption option, byte newSelection, TMPro.TextMeshPro selectedText)
