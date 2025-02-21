@@ -82,9 +82,16 @@ public interface IRoleBase
     /// </summary>
     public virtual void OnSetRole(PlayerControl player)
     {
-        foreach (Func<AbilityBase> ability in Abilities)
+        ExPlayerControl exPlayer = player;
+        foreach (var abilityFactory in Abilities)
         {
-            player.AddAbility(ability(), (ulong)(player.PlayerId * 1000000) + (ulong)((int)Role * 1000) + (ulong)(((ExPlayerControl)player).lastAbilityId++));
+            var abilityId = GenerateAbilityId(player.PlayerId, exPlayer.lastAbilityId++);
+            player.AddAbility(abilityFactory(), abilityId);
         }
+    }
+
+    private ulong GenerateAbilityId(byte playerId, int abilityIndex)
+    {
+        return (ulong)(playerId * 1000000) + (ulong)((int)Role * 1000) + (ulong)abilityIndex;
     }
 }
