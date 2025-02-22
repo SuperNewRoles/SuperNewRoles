@@ -24,9 +24,6 @@ class NiceGuesser : RoleBase<NiceGuesser>
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
-    [CustomOptionBool("NiceGuesserCanKillNeutral", true)]
-    public static bool NiceGuesserCanKillNeutral;
-
     [CustomOptionInt("NiceGuesserMaxShots", 1, 15, 1, 3)]
     public static int NiceGuesserMaxShots;
 
