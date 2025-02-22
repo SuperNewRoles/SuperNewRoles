@@ -13,7 +13,7 @@ public class GuesserAbility : CustomMeetingButtonBase
     private readonly bool cannotShootImpostor;
     private readonly bool cannotShootStar;
 
-    public override bool HasButtonLocalPlayer => false
+    public override bool HasButtonLocalPlayer => false;
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
 
@@ -44,39 +44,12 @@ public class GuesserAbility : CustomMeetingButtonBase
     public override void OnClick()
     {
         // TODO: 推測UI表示などの処理を実装
+        Logger.Info("GuesserAbility OnClick");
     }
 
     public void TryGuess(PlayerControl target, RoleId guessedRole)
     {
         if (target == null) return;
 
-        if (isEvilGuesser)
-        {
-            // Evil Guesserは正解すれば誰でも殺害可能
-            if (((ExPlayerControl)target).Role == guessedRole)
-            {
-                PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
-                Logger.Info($"Evil Guesser killed {target.name} by correctly guessing {guessedRole}");
-            }
-        }
-        else
-        {
-            // Nice Guesserはインポスターかニュートラル（設定による）のみ殺害可能
-            var targetEx = (ExPlayerControl)target;
-            if (targetEx.Role == guessedRole)
-            {
-                if (targetEx.IsImpostor() || (canKillNeutral && targetEx.IsNeutral()))
-                {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
-                    Logger.Info($"Nice Guesser killed {target.name} by correctly guessing {guessedRole}");
-                }
-                else
-                {
-                    // クルーメイトを当てても自滅
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-                    Logger.Info("Nice Guesser killed themselves for guessing a crewmate");
-                }
-            }
-        }
     }
 }

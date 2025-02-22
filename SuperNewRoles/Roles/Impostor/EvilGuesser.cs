@@ -12,7 +12,7 @@ class EvilGuesser : RoleBase<EvilGuesser>
 {
     public override RoleId Role { get; } = RoleId.EvilGuesser;
     public override Color32 RoleColor { get; } = new(255, 100, 100, byte.MaxValue);
-    public override List<Func<AbilityBase>> Abilities { get; } = new List<Func<AbilityBase>>() { () => new GuesserAbility(true, EvilGuesserMaxShots, EvilGuesserShotsPerMeeting, false, EvilGuesserCannotShootImpostor, EvilGuesserCannotShootStar) };
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(EvilGuesserMaxShots, EvilGuesserShotsPerMeeting, false, EvilGuesserCannotShootImpostor, EvilGuesserCannotShootStar)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;

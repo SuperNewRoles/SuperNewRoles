@@ -92,7 +92,7 @@ public static class CustomOptionManager
     public static void RpcSyncOptionsAll()
     {
         var options = CustomOptions.Where(o => !o.IsDefaultValue).ToDictionary(o => o.IndexId, o => o.Selection);
-        int keysMax = options.Keys.Max();
+        int keysMax = options.Keys.Count > 0 ? options.Keys.Max() : 0;
         for (int i = 0; i <= keysMax; i += 30)
         {
             var partialOptions = options
@@ -360,17 +360,23 @@ public static class RoleOptionManager
 
     public static void RoleOptionLoad()
     {
-        List<RoleOption> _roleOptions = new();
-        foreach (var role in CustomRoleManager.AllRoles)
-        {
-            if (role.Role == RoleId.None) continue;
-            if (role.IsVanillaRole) continue;
-            var options = CustomOptionManager.GetCustomOptions()
-            .Where(option => option.ParentRole == role.Role)
+        // パフォーマンス向上のため、カスタムオプションを一度だけ取得
+        var customOptions = CustomOptionManager.GetCustomOptions();
+
+        // RoleIdがNoneでなく、Vanillaロールでないロールだけを集める
+        var validRoles = CustomRoleManager.AllRoles
+            .Where(role => role.Role != RoleId.None && !role.IsVanillaRole);
+
+        // 各ロールに対応するカスタムオプションをフィルタリングしてRoleOptionを生成
+        RoleOptions = validRoles
+            .Select(role =>
+            {
+                var optionsForRole = customOptions
+                    .Where(option => option.ParentRole == role.Role)
+                    .ToArray();
+                return new RoleOption(role.Role, 0, 0, optionsForRole);
+            })
             .ToArray();
-            _roleOptions.Add(new RoleOption(role.Role, (byte)options.Length, 0, options));
-        }
-        RoleOptions = _roleOptions.ToArray();
     }
 
     public static void AddExclusivitySetting(int maxAssign, string[] roles)
@@ -532,6 +538,10 @@ public static class CustomOptionSaver
                     Logger.Warning($"Failed to apply option {option.Id}. Using default.");
                 }
             }
+            else
+            {
+                option.UpdateSelection(option.DefaultSelection);
+            }
         }
     }
 
@@ -648,18 +658,13 @@ public class FileOptionStorage : IOptionStorage
                     int percentage = reader.ReadInt32();
 
                     // RoleIdの文字列から RoleId 列挙体へ変換
-                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj))
+                    if (Enum.TryParse(typeof(RoleId), roleIdStr, out var roleIdObj) && roleIdObj is RoleId roleId)
                     {
-                        RoleId roleId = (RoleId)roleIdObj;
-                        // RoleOptionManager.RoleOptions内の該当するRoleOptionを更新
-                        foreach (var roleOption in RoleOptionManager.RoleOptions)
+                        var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleId);
+                        if (roleOption != null)
                         {
-                            if (roleOption.RoleId.Equals(roleId))
-                            {
-                                roleOption.NumberOfCrews = numberOfCrews;
-                                roleOption.Percentage = percentage;
-                                break;
-                            }
+                            roleOption.NumberOfCrews = numberOfCrews;
+                            roleOption.Percentage = percentage;
                         }
                     }
                 }
@@ -766,7 +771,7 @@ public class FileOptionStorage : IOptionStorage
 
     private static void WriteOptions(BinaryWriter writer, IEnumerable<CustomOption> options)
     {
-        var optionsList = options.ToList();
+        var optionsList = options.Where(o => o.IsDefaultValue).ToList();
         writer.Write(optionsList.Count);
 
         foreach (var option in optionsList)
