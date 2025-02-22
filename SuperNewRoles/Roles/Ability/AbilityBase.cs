@@ -8,12 +8,16 @@ namespace SuperNewRoles.Roles.Ability;
 
 public abstract class AbilityBase
 {
-    //Discordの通り
+    public ulong AbilityId { get; protected set; }
     public PlayerControl Player { get; private set; }
 
-    public void Attach(PlayerControl player)
+    public int Count { get; set; }
+    public bool HasCount => Count > 0;
+
+    public void Attach(PlayerControl player, ulong abilityId)
     {
         Player = player;
+        AbilityId = abilityId;
         if (player == PlayerControl.LocalPlayer)
             AttachToLocalPlayer();
         else

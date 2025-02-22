@@ -19,15 +19,18 @@ public class ExPlayerControl
     public RoleId Role { get; private set; }
     public IRoleBase roleBase { get; private set; }
     public List<AbilityBase> PlayerAbilities { get; private set; } = new();
+    public Dictionary<ulong, AbilityBase> PlayerAbilitiesDictionary { get; private set; } = new();
 
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
+    public int lastAbilityId { get; set; }
 
     public ExPlayerControl(PlayerControl player)
     {
         this.Player = player;
         this.PlayerId = player.PlayerId;
         this.Data = player.CachedPlayerData;
+        this.lastAbilityId = 0;
     }
     public static implicit operator PlayerControl(ExPlayerControl exPlayer)
     {
@@ -51,6 +54,7 @@ public class ExPlayerControl
     public static void SetUpExPlayers()
     {
         _exPlayerControlsArray = new ExPlayerControl[255];
+        _exPlayerControls.Clear();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             _exPlayerControls.Add(new ExPlayerControl(player));
@@ -71,6 +75,12 @@ public class ExPlayerControl
     // TODO: 後でMADロールを追加したらここに追加する
     public bool IsMadRoles()
         => false;
+    // TODO: 後で追加する
+    public bool IsFriendRoles()
+        => false;
+    // TODO: 後で追加する
+    public bool IsLovers()
+        => false;
     public bool IsDead()
         => Data == null || Data.Disconnected || Data.IsDead;
     public bool IsAlive()
@@ -78,13 +88,18 @@ public class ExPlayerControl
     // TODO: 後で書く
     public bool IsTaskTriggerRole()
         => roleBase != null ? IsCrewmate() : IsCrewmate();
+    public AbilityBase GetAbility(ulong abilityId)
+    {
+        return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
+    }
 }
 public static class ExPlayerControlExtensions
 {
-    public static void AddAbility(this PlayerControl player, AbilityBase ability)
+    public static void AddAbility(this PlayerControl player, AbilityBase ability, ulong abilityId)
     {
         ExPlayerControl exPlayer = player;
         exPlayer.PlayerAbilities.Add(ability);
-        ability.Attach(player);
+        exPlayer.PlayerAbilitiesDictionary.Add(abilityId, ability);
+        ability.Attach(player, abilityId);
     }
 }

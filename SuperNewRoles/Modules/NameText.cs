@@ -69,6 +69,8 @@ public static class NameText
     }
     public static void UpdateNameInfo(ExPlayerControl player)
     {
+        if (player == null || player.Player == null)
+            return;
         Initialize(player);
         string TaskText = "";
         try
@@ -83,6 +85,8 @@ public static class NameText
         string playerInfoText = "";
         string meetingInfoText = "";
         playerInfoText = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(player.Role.ToString()))}";
+        player.Data.Role.NameColor = player.roleBase.RoleColor;
+        player.Player.cosmetics.nameText.color = player.roleBase.RoleColor;
         /*if (GhostRoleNames != "")
         {
             playerInfoText = $"{CustomOptionHolder.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";

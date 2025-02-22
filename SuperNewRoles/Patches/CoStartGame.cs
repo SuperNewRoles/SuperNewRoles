@@ -11,6 +11,6 @@ class AmongUsClientStartPatch
     {
         Logger.Info("CoStartGame");
         ExPlayerControl.SetUpExPlayers();
-        EventListenerManager.CoStartGame();
+        EventListenerManager.ResetAllListener();
     }
 }
