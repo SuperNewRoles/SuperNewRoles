@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using TMPro;
@@ -62,6 +63,18 @@ public class ExPlayerControl
             roleBase = role;
         }
     }
+    public void Disconnected()
+    {
+        _exPlayerControls.Remove(this);
+        _exPlayerControlsArray[PlayerId] = null;
+        foreach (var ability in PlayerAbilities)
+        {
+            ability.Detach();
+        }
+        PlayerAbilities.Clear();
+        PlayerAbilitiesDictionary.Clear();
+
+    }
     public static void SetUpExPlayers()
     {
         _exPlayerControlsArray = new ExPlayerControl[255];
@@ -72,6 +85,12 @@ public class ExPlayerControl
             _exPlayerControlsArray[player.PlayerId] = _exPlayerControls[^1];
         }
         _localPlayer = _exPlayerControlsArray[PlayerControl.LocalPlayer.PlayerId];
+        DisconnectEvent.Instance.AddListener(x =>
+        {
+            ExPlayerControl exPlayer = (ExPlayerControl)x.disconnectedPlayer;
+            if (exPlayer != null)
+                exPlayer.Disconnected();
+        });
     }
     public static ExPlayerControl ById(byte playerId)
     {
