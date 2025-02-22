@@ -65,3 +65,14 @@ Sheriff,シェリフ,Sheriff,警長,警長
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,殺人冷卻時間,殺人冷卻時間
 SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以殺死第三陣營,可以殺死第三陣營
 SheriffCanKillImpostor,インポスターをキルできる,Can Kill Impostor,可以殺死內鬼,可以殺死內鬼
+
+# Guesser Options
+NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
+NiceGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议可射击次数,每次會議可射擊次數
+NiceGuesserCannotShootCrewmate,クルーメイトを打てない,Cannot Shoot Crewmate,不能射击船员,不能射擊船員
+NiceGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射击星星,不能射擊星星
+
+EvilGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
+EvilGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议可射击次数,每次會議可射擊次數
+EvilGuesserCannotShootImpostor,インポスターを打てない,Cannot Shoot Impostor,不能射击内鬼,不能射擊內鬼
+EvilGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射击星星,不能射擊星星

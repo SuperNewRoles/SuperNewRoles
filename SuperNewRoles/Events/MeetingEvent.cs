@@ -38,6 +38,14 @@ public class MeetingCloseEvent : EventTargetBase<MeetingCloseEvent>
     }
 }
 
+public class MeetingUpdateEvent : EventTargetBase<MeetingUpdateEvent>
+{
+    public static void Invoke()
+    {
+        Instance.Awake();
+    }
+}
+
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
 public static class MeetingStartPatch
 {
@@ -53,5 +61,14 @@ public static class MeetingClosePatch
     public static void Postfix()
     {
         MeetingCloseEvent.Invoke();
+    }
+}
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+public static class MeetingUpdatePatch
+{
+    public static void Postfix()
+    {
+        MeetingUpdateEvent.Invoke();
     }
 }

@@ -39,6 +39,11 @@ public class ExPlayerControl
         if (player == null) return null;
         return ById(player.PlayerId);
     }
+    public static implicit operator ExPlayerControl(PlayerVoteArea player)
+    {
+        if (player == null) return null;
+        return ById(player.TargetPlayerId);
+    }
     public void SetRole(RoleId roleId)
     {
         Role = roleId;

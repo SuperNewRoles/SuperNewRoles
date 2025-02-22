@@ -8,6 +8,8 @@ public enum RoleId : short
     Bait,
     BestFalseCharge,
     Sheriff,
+    NiceGuesser,
+    EvilGuesser,
 }
 
 public enum QuoteMod : byte
