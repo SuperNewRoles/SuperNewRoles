@@ -9,7 +9,6 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 {
-    private readonly int maxShots;
     private readonly int shotsPerMeeting;
     private readonly bool cannotShootCrewmate;
     private readonly bool cannotShootImpostor;
@@ -24,7 +23,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
     public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootImpostor, bool cannotShootCelebrity)
     {
-        this.maxShots = maxShots;
         this.shotsPerMeeting = shotsPerMeeting;
         this.cannotShootCrewmate = cannotShootCrewmate;
         this.cannotShootImpostor = cannotShootImpostor;
@@ -34,7 +32,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
     public override bool CheckHasButton(ExPlayerControl player)
     {
-        return !HideButtons && HasCount && player.IsAlive();
+        return !HideButtons && HasCount && player.IsAlive() && ShotThisMeeting < shotsPerMeeting;
     }
 
     public override bool CheckIsAvailable(ExPlayerControl player)
@@ -281,6 +279,14 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             if (rolebase == null)
                 throw new Exception("rolebaseがnullです");
             AssignedTeamType team = rolebase.AssignedTeam;
+
+            // チーム制限のチェック
+            if ((cannotShootCrewmate && rolebase.TeamTag == TeamTag.Crewmate) ||
+                (cannotShootImpostor && rolebase.TeamTag == TeamTag.Impostor))
+            {
+                return;
+            }
+
             if (teamButtonCount[(int)team] >= 40)
                 teamButtonCount[(int)team] = 0;
             Transform buttonParent = new GameObject().transform;
@@ -324,6 +330,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                               meetingHud.state == MeetingHud.VoteStates.Discussion) || exPlayer == null)
                             return;
                         this.UseAbilityCount();
+                        this.ShotThisMeeting++;
 
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;
