@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 
@@ -31,12 +32,19 @@ public static class GameSettingMenuPatch
         if (tabNum != 1)
             return;
 
-
+        if (__instance.GameSettingsTab == null || __instance.GameSettingsTab.Children == null)
+            throw new Exception("GameSettingsTab is null");
         foreach (var child in __instance.GameSettingsTab.Children)
         {
             if (validRanges.TryGetValue(child.Title, out var range))
             {
-                child.TryCast<NumberOption>().ValidRange = new(range.min, range.max);
+                var numberOption = child.TryCast<NumberOption>();
+                if (numberOption == null)
+                {
+                    Logger.Error("NumberOption is null");
+                    continue;
+                }
+                numberOption.ValidRange = new(range.min, range.max);
             }
         }
     }
