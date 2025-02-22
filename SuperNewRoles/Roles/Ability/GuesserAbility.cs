@@ -89,9 +89,9 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         var roleButtons = new System.Collections.Generic.Dictionary<AssignedTeamType, System.Collections.Generic.List<Transform>>();
         var roleSelectButtons = new System.Collections.Generic.Dictionary<AssignedTeamType, SpriteRenderer>();
         var pageButtons = new System.Collections.Generic.List<SpriteRenderer>();
-        var buttons = new System.Collections.Generic.List<Transform>();
+        System.Collections.Generic.List<Transform> buttons = new();
         Transform selectedButton = null;
-        System.Collections.Generic.List<int> teamButtonCount = new System.Collections.Generic.List<int> { 0, 0, 0 };
+        System.Collections.Generic.List<int> teamButtonCount = new() { 0, 0, 0 };
 
         // ミーティングHUD上のプレイヤー状態UIを非表示にする
         HideButtons = true;
@@ -361,17 +361,16 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         ReloadPage();
     }
     [CustomRPC]
-    public static void RpcShotGuesser(PlayerControl killer, PlayerControl dyingTarget, bool isMisFire)
+    public static void RpcShotGuesser(PlayerControl killer, ExPlayerControl dyingTarget, bool isMisFire)
     {
         if (killer == null || dyingTarget == null)
             return;
         if (dyingTarget == null) return;
-        dyingTarget.Exiled();
+        dyingTarget.Player.Exiled();
 
-        // TODO:後で書く
-        /* if (isMisFire) FinalStatusData.FinalStatuses[dyingTargetId] = FinalStatus.GuesserMisFire;
-        else FinalStatusData.FinalStatuses[dyingTargetId] = FinalStatus.GuesserKill;*/
-        if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
+        if (isMisFire) dyingTarget.FinalStatus = FinalStatus.GuesserMisFire;
+        else dyingTarget.FinalStatus = FinalStatus.GuesserKill;
+        if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.Player.KillSfx, false, 0.8f);
         if (MeetingHud.Instance)
         {
             foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)

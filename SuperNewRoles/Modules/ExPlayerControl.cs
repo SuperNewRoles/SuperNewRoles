@@ -24,7 +24,8 @@ public class ExPlayerControl
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
     public int lastAbilityId { get; set; }
-
+    private FinalStatus? _finalStatus;
+    public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
     public ExPlayerControl(PlayerControl player)
     {
         this.Player = player;
@@ -46,6 +47,11 @@ public class ExPlayerControl
     {
         if (player == null) return null;
         return ById(player.TargetPlayerId);
+    }
+    public static implicit operator ExPlayerControl(NetworkedPlayerInfo data)
+    {
+        if (data == null) return null;
+        return ById(data.PlayerId);
     }
     public void SetRole(RoleId roleId)
     {
