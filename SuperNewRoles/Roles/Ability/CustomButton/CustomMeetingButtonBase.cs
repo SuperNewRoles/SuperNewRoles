@@ -28,7 +28,8 @@ public abstract class CustomMeetingButtonBase : AbilityBase
     public abstract bool CheckIsAvailable(ExPlayerControl player);
     public abstract bool CheckHasButton(ExPlayerControl player);
 
-    public abstract void OnClick();
+    public abstract void OnClick(ExPlayerControl exPlayer, GameObject button);
+    public virtual void OnMeetingStart() { }
 
     public virtual ActionButton textTemplate => HudManager.Instance.AbilityButton;
 
@@ -42,6 +43,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
     }
     private void OnStartMeeting()
     {
+        OnMeetingStart();
         GenerateButton();
     }
     private void OnCloseMeeting()
@@ -99,7 +101,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
         }
         foreach (var button in targetButtons)
         {
-            if (button.Value == null || !button.Value.activeSelf) continue;
+            if (button.Value == null) continue;
             ExPlayerControl exPlayer = ExPlayerControl.ById(button.Key);
             if (exPlayer == null) continue;
             bool hasButton = CheckHasButton(exPlayer);
@@ -113,7 +115,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
     {
         if (CheckHasButton(exPlayer) && CheckIsAvailable(exPlayer))
         {
-            this.OnClick();
+            this.OnClick(exPlayer, button);
         }
     }
     private void SetEnabled(SpriteRenderer button, bool isEnabled)
