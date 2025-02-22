@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 class NiceGuesser : RoleBase<NiceGuesser>
 {
     public override RoleId Role { get; } = RoleId.NiceGuesser;
-    public override Color32 RoleColor { get; } = new(184, 251, 255, byte.MaxValue);
+    public override Color32 RoleColor { get; } = Color.yellow;
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(NiceGuesserMaxShots, NiceGuesserShotsPerMeeting, NiceGuesserCannotShootCrewmate, false, NiceGuesserCannotShootStar)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -28,10 +28,10 @@ class NiceGuesser : RoleBase<NiceGuesser>
     public static bool NiceGuesserCanKillNeutral;
 
     [CustomOptionInt("NiceGuesserMaxShots", 1, 15, 1, 3)]
-    public static int NiceGuesserMaxShots = 3;
+    public static int NiceGuesserMaxShots;
 
     [CustomOptionInt("NiceGuesserShotsPerMeeting", 1, 15, 1, 3)]
-    public static int NiceGuesserShotsPerMeeting = 3;
+    public static int NiceGuesserShotsPerMeeting;
 
     [CustomOptionBool("NiceGuesserCannotShootCrewmate", true)]
     public static bool NiceGuesserCannotShootCrewmate = true;

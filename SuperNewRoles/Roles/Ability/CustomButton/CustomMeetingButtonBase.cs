@@ -15,14 +15,15 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
-    private EventListener<MeetingStartEventData> startMeetingEvent;
+    private EventListener startMeetingEvent;
     private EventListener closeMeetingEvent;
+    private EventListener updateMeetingEvent;
     public abstract Sprite Sprite { get; }
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
     public abstract bool HasButtonLocalPlayer { get; }
 
-    private Dictionary<byte, GameObject> targetButtons;
-    private Dictionary<byte, SpriteRenderer> targetButtonSprites;
+    private Dictionary<byte, GameObject> targetButtons = new();
+    private Dictionary<byte, SpriteRenderer> targetButtonSprites = new();
 
     public abstract bool CheckIsAvailable(ExPlayerControl player);
     public abstract bool CheckHasButton(ExPlayerControl player);
@@ -37,8 +38,9 @@ public abstract class CustomMeetingButtonBase : AbilityBase
     {
         startMeetingEvent = MeetingStartEvent.Instance.AddListener(OnStartMeeting);
         closeMeetingEvent = MeetingCloseEvent.Instance.AddListener(OnCloseMeeting);
+        updateMeetingEvent = MeetingUpdateEvent.Instance.AddListener(OnMeetingUpdate);
     }
-    private void OnStartMeeting(MeetingStartEventData data)
+    private void OnStartMeeting()
     {
         GenerateButton();
     }
@@ -64,7 +66,8 @@ public abstract class CustomMeetingButtonBase : AbilityBase
             }
             targetButtons.Clear();
         }
-        if (MeetingHud.Instance == null) return;
+        if (MeetingHud.Instance == null)
+            throw new Exception("MeetingHud.Instance is null");
         foreach (var player in MeetingHud.Instance.playerStates)
         {
             if (player == null || player.AmDead) continue;
@@ -89,7 +92,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 
     public virtual void OnMeetingUpdate()
     {
-        if (PlayerControl.LocalPlayer?.Data == null || ExileController.Instance)
+        if (PlayerControl.LocalPlayer?.Data == null || ExileController.Instance || !MeetingHud.Instance || MeetingHud.Instance.state == MeetingHud.VoteStates.Results)
         {
             SetActiveAll(false);
             return;
@@ -143,5 +146,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
     {
         base.Detach();
         MeetingStartEvent.Instance.RemoveListener(startMeetingEvent);
+        MeetingCloseEvent.Instance.RemoveListener(closeMeetingEvent);
+        MeetingUpdateEvent.Instance.RemoveListener(updateMeetingEvent);
     }
 }

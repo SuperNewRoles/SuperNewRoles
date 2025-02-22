@@ -26,11 +26,6 @@ public class GuesserAbility : CustomMeetingButtonBase
         this.cannotShootStar = cannotShootStar;
     }
 
-    public override void AttachToLocalPlayer()
-    {
-        // TODO: 会議中の推測機能などを実装
-    }
-
     public override bool CheckHasButton(ExPlayerControl player)
     {
         return player.IsAlive();
