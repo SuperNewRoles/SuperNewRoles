@@ -771,7 +771,7 @@ public class FileOptionStorage : IOptionStorage
 
     private static void WriteOptions(BinaryWriter writer, IEnumerable<CustomOption> options)
     {
-        var optionsList = options.Where(o => o.IsDefaultValue).ToList();
+        var optionsList = options.Where(o => !o.IsDefaultValue).ToList();
         writer.Write(optionsList.Count);
 
         foreach (var option in optionsList)
@@ -902,9 +902,11 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
     public override object[] GenerateSelections()
     {
         var selections = new List<object>();
-        for (T s = Min; Comparer<T>.Default.Compare(s, Max) <= 0; s = Add(s, Step))
+        T currentValue = Min;
+        while (Comparer<T>.Default.Compare(currentValue, Max) <= 0)
         {
-            selections.Add(s);
+            selections.Add(currentValue);
+            currentValue = Add(currentValue, Step);
         }
         return selections.ToArray();
     }
@@ -919,7 +921,7 @@ public class CustomOptionFloatAttribute : CustomOptionNumericAttribute<float>
         : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
 
     protected override float Add(float a, float b) => a + b;
-    public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
+    public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -929,7 +931,7 @@ public class CustomOptionIntAttribute : CustomOptionNumericAttribute<int>
         : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
 
     protected override int Add(int a, int b) => a + b;
-    public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
+    public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -939,7 +941,7 @@ public class CustomOptionByteAttribute : CustomOptionNumericAttribute<byte>
         : base(id, min, max, step, defaultValue, translationName, parentFieldName, displayMode) { }
 
     protected override byte Add(byte a, byte b) => (byte)(a + b);
-    public override byte GenerateDefaultSelection() => (byte)(DefaultValue / Step);
+    public override byte GenerateDefaultSelection() => (byte)((DefaultValue - Min) / Step);
 }
 
 [AttributeUsage(AttributeTargets.Field)]
