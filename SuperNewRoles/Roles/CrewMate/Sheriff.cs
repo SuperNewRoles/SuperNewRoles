@@ -15,7 +15,14 @@ class Sheriff : RoleBase<Sheriff>
 {
     public override RoleId Role { get; } = RoleId.Sheriff;
     public override Color32 RoleColor { get; } = new(255, 255, 0, byte.MaxValue); // 黄色
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new SheriffAbility(SheriffKillCooldown, SheriffCanKillNeutral)];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new SheriffAbility(new SheriffAbilityData(
+        killCooldown: SheriffKillCooldown,
+        killCount: SheriffMaxKillCount,
+        canKillNeutral: SheriffCanKillNeutral,
+        canKillImpostor: SheriffCanKillImpostor,
+        canKillMadRoles: SheriffCanKillMadRoles,
+        canKillFriendRoles: SheriffCanKillFriendRoles,
+        canKillLovers: SheriffCanKillLovers))];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -29,23 +36,61 @@ class Sheriff : RoleBase<Sheriff>
 
     [CustomOptionFloat("SheriffKillCooldown", 0f, 60f, 2.5f, 25f)]
     public static float SheriffKillCooldown;
+    [CustomOptionInt("SheriffMaxKillCount", 1, 10, 1, 1)]
+    public static int SheriffMaxKillCount;
 
     [CustomOptionBool("SheriffCanKillNeutral", true)]
     public static bool SheriffCanKillNeutral;
 
     [CustomOptionBool("SheriffCanKillImpostor", true)]
     public static bool SheriffCanKillImpostor;
+    [CustomOptionBool("SheriffCanKillMadRoles", true)]
+    public static bool SheriffCanKillMadRoles;
+    [CustomOptionBool("SheriffCanKillFriendRoles", true)]
+    public static bool SheriffCanKillFriendRoles;
+    [CustomOptionBool("SheriffCanKillLovers", true)]
+    public static bool SheriffCanKillLovers;
+}
+public class SheriffAbilityData
+{
+    public float KillCooldown { get; set; }
+    public int KillCount { get; set; }
+    public bool CanKillNeutral { get; set; }
+    public bool CanKillImpostor { get; set; }
+    public bool CanKillMadRoles { get; set; }
+    public bool CanKillFriendRoles { get; set; }
+    public bool CanKillLovers { get; set; }
+    public SheriffAbilityData(float killCooldown, int killCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
+    {
+        KillCooldown = killCooldown;
+        KillCount = killCount;
+        CanKillNeutral = canKillNeutral;
+        CanKillImpostor = canKillImpostor;
+        CanKillMadRoles = canKillMadRoles;
+        CanKillFriendRoles = canKillFriendRoles;
+        CanKillLovers = canKillLovers;
+    }
+    public bool CanKill(PlayerControl killer, ExPlayerControl target)
+    {
+        if (target.IsImpostor())
+            return CanKillImpostor;
+        else if (target.IsNeutral())
+            return CanKillNeutral;
+        else if (target.IsMadRoles())
+            return CanKillMadRoles;
+        else if (target.IsFriendRoles())
+            return CanKillFriendRoles;
+        else if (target.IsLovers())
+            return CanKillLovers;
+        return false;
+    }
 }
 
-public class SheriffAbility : TargetCustomButtonBase
+public class SheriffAbility : TargetCustomButtonBase, IAbilityCount
 {
-    public float KillCooldown { get; }
-    public bool CanKillNeutral { get; }
+    public SheriffAbilityData SheriffAbilityData { get; }
     public override Color32 OutlineColor => Sheriff.Instance.RoleColor;
-
-    private float cooldownTimer = 0f;
-    public override float Timer { get => cooldownTimer; set => cooldownTimer = value; }
-    public override float DefaultTimer => KillCooldown;
+    public override float DefaultTimer => SheriffAbilityData.KillCooldown;
     public override Vector3 PositionOffset => new(0f, 1f, 0f);
     public override Vector3 LocalScale => Vector3.one;
     public override string buttonText => "Kill";
@@ -54,31 +99,24 @@ public class SheriffAbility : TargetCustomButtonBase
     protected override KeyCode? hotkey => KeyCode.Q;
     protected override int joystickkey => 0;
     public override bool OnlyCrewmates => false;
-    public SheriffAbility(float killCooldown, bool canKillNeutral)
+    public SheriffAbility(SheriffAbilityData sheriffAbilityData)
     {
-        KillCooldown = killCooldown;
-        CanKillNeutral = canKillNeutral;
+        SheriffAbilityData = sheriffAbilityData;
+        Count = SheriffAbilityData.KillCount;
     }
     public override bool CheckIsAvailable()
     {
         return TargetIsExist;
     }
 
-    public override bool CheckHasButton() => !PlayerControl.LocalPlayer.Data.IsDead;
+    public override bool CheckHasButton() => base.CheckHasButton() && HasCount;
 
     public override void OnClick()
     {
-        // インポスターまたは設定で許可された場合のニュートラルを殺害
-        if (Target.IsImpostor() || (CanKillNeutral && Target.IsNeutral()))
-        {
-            // TODO: 後でRPCをCustomにする
-            PlayerControl.LocalPlayer.RpcMurderPlayer(Target.Player, true);
-        }
-        else
-        {
-            // 無実の人を殺そうとした場合、自分が死亡
-            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
-        }
-        Logger.Info("Clicked Sheriff Kill Button");
+        this.UseAbilityCount();
+        PlayerControl MurderTarget = SheriffAbilityData.CanKill(PlayerControl.LocalPlayer, Target)
+                                    ? Target.Player
+                                    : PlayerControl.LocalPlayer;
+        PlayerControl.LocalPlayer.RpcCustomMurderPlayer(MurderTarget, true);
     }
 }

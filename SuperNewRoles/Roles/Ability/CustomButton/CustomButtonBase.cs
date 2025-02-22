@@ -24,13 +24,13 @@ public abstract class CustomButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
-    private EventListener fixedUpdateEvent;
+    private EventListener hudUpdateEvent;
     private EventListener<WrapUpEventData> wrapUpEvent;
     private ActionButton actionButton;
     private IButtonEffect buttonEffect;
     public abstract Vector3 PositionOffset { get; }
     public abstract Vector3 LocalScale { get; }
-    public abstract float Timer { get; set; }
+    public virtual float Timer { get; set; }
     public abstract float DefaultTimer { get; }
     public abstract string buttonText { get; }
 
@@ -44,7 +44,7 @@ public abstract class CustomButtonBase : AbilityBase
     protected abstract int joystickkey { get; }
 
     public abstract bool CheckIsAvailable();
-    public abstract bool CheckHasButton();
+    public virtual bool CheckHasButton() => !PlayerControl.LocalPlayer.Data.IsDead;
 
     public abstract void OnClick();
     public virtual void OnMeetingEnds() { ResetTimer(); }
@@ -58,7 +58,7 @@ public abstract class CustomButtonBase : AbilityBase
     public virtual bool CheckDecreaseCoolCount()
     {
         var localPlayer = PlayerControl.LocalPlayer;
-        var moveable = localPlayer.moveable;
+        var moveable = localPlayer.CanMove;
 
         return !localPlayer.inVent && moveable;
     }
@@ -68,7 +68,7 @@ public abstract class CustomButtonBase : AbilityBase
     /// </summary>
     public virtual void DecreaseTimer()
     {
-        Timer -= Time.fixedDeltaTime;
+        Timer -= Time.deltaTime;
     }
 
     public virtual ActionButton textTemplate => HudManager.Instance.AbilityButton;
@@ -90,13 +90,13 @@ public abstract class CustomButtonBase : AbilityBase
             actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
         }
         SetActive(false);
-        fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        hudUpdateEvent = HudUpdateEvent.Instance.AddListener(OnUpdate);
         wrapUpEvent = WrapUpEvent.Instance.AddListener(x => OnMeetingEnds());
         buttonEffect = this as IButtonEffect;
         ResetTimer();
     }
 
-    public virtual void OnFixedUpdate()
+    public virtual void OnUpdate()
     {
         if (PlayerControl.LocalPlayer?.Data == null || MeetingHud.Instance || ExileController.Instance || !CheckHasButton())
         {
@@ -160,7 +160,7 @@ public abstract class CustomButtonBase : AbilityBase
     public override void Detach()
     {
         base.Detach();
-        FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent);
+        HudUpdateEvent.Instance.RemoveListener(hudUpdateEvent);
         WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
     }
 }

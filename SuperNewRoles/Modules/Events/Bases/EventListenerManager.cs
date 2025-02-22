@@ -8,7 +8,7 @@ namespace SuperNewRoles.Modules.Events.Bases;
 public static class EventListenerManager
 {
     public static List<IEventTargetBase> listeners { get; } = new();
-    public static void CoStartGame()
+    public static void ResetAllListener()
     {
         foreach (var listener in listeners)
         {
@@ -60,6 +60,14 @@ public static class EventListenerManager
         foreach (var listener in listeners)
         {
             Logger.Info($"Loaded {listener.GetType().Name}");
+        }
+    }
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+    public static class GameStartManagerStartPatch
+    {
+        public static void Postfix()
+        {
+            ResetAllListener();
         }
     }
 }
