@@ -129,7 +129,7 @@ public class ExPlayerControl
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
     }
-    public void AttachAbility(AbilityBase ability, ulong abilityId)
+    private void AttachAbility(AbilityBase ability, ulong abilityId)
     {
         PlayerAbilities.Add(ability);
         PlayerAbilitiesDictionary.Add(abilityId, ability);
@@ -142,6 +142,10 @@ public class ExPlayerControl
             _impostorVisionAbilities.Add(impostorVisionAbility);
         }
         ability.Attach(Player, abilityId);
+    }
+    public void AttachAbility(AbilityBase ability)
+    {
+        AttachAbility(ability, IRoleBase.GenerateAbilityId(PlayerId, Role, lastAbilityId++));
     }
     public bool HasImpostorVision()
     {
@@ -168,8 +172,12 @@ public class ExPlayerControl
 }
 public static class ExPlayerControlExtensions
 {
-    public static void AddAbility(this ExPlayerControl player, AbilityBase ability, ulong abilityId)
+    public static void AddAbility(this ExPlayerControl player, AbilityBase ability)
     {
-        player.AttachAbility(ability, abilityId);
+        player.AttachAbility(ability);
+    }
+    public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)
+    {
+        return (ulong)(playerId * 1000000) + (ulong)((int)role * 1000) + (ulong)abilityIndex;
     }
 }

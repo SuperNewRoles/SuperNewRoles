@@ -85,8 +85,7 @@ public interface IRoleBase
         ExPlayerControl exPlayer = player;
         foreach (var abilityFactory in Abilities)
         {
-            var abilityId = GenerateAbilityId(player.PlayerId, Role, exPlayer.lastAbilityId++);
-            exPlayer.AddAbility(abilityFactory(), abilityId);
+            exPlayer.AddAbility(abilityFactory());
         }
     }
 

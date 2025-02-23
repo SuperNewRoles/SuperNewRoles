@@ -41,17 +41,20 @@ public class CustomVentAbility : CustomButtonBase
             // ベントに入っている途中に出れないように
             if (num < 10000)
             {
+                Vent.currentVent.SetButtons(false);
                 PlayerControl.LocalPlayer.MyPhysics?.RpcExitVent(Vent.currentVent.Id);
-                CurrentVent.SetButtons(false);
+                Logger.Info($"SetVentTarget: DEF");
             }
             return;
         }
+        Logger.Info($"SetVentTarget: ABC");
         CurrentVent = SetVentTarget();
         if (CurrentVent != null)
         {
             // ベントの使用処理を実装
             PlayerControl.LocalPlayer.MyPhysics?.RpcEnterVent(CurrentVent.Id);
             CurrentVent.SetButtons(true);
+            Logger.Info($"SetVentTarget: GHI");
         }
     }
     private static void SetVentOutline(Vent vent, bool show, Color32 color)

@@ -23,9 +23,9 @@ public class MadmateAbility : AbilityBase
         ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
         ExPlayerControl exPlayer = (ExPlayerControl)player;
 
-        exPlayer.AttachAbility(VentAbility, IRoleBase.GenerateAbilityId(player.PlayerId, RoleId.Madmate, exPlayer.lastAbilityId++));
-        exPlayer.AttachAbility(KnowImpostorAbility, IRoleBase.GenerateAbilityId(player.PlayerId, RoleId.Madmate, exPlayer.lastAbilityId++));
-        exPlayer.AttachAbility(ImpostorVisionAbility, IRoleBase.GenerateAbilityId(player.PlayerId, RoleId.Madmate, exPlayer.lastAbilityId++));
+        exPlayer.AttachAbility(VentAbility);
+        exPlayer.AttachAbility(KnowImpostorAbility);
+        exPlayer.AttachAbility(ImpostorVisionAbility);
 
         base.Attach(player, abilityId);
     }
