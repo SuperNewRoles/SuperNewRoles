@@ -281,8 +281,8 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             AssignedTeamType team = rolebase.AssignedTeam;
 
             // チーム制限のチェック
-            if ((cannotShootCrewmate && rolebase.TeamTag == TeamTag.Crewmate) ||
-                (cannotShootImpostor && rolebase.TeamTag == TeamTag.Impostor))
+            if ((cannotShootCrewmate && rolebase.WinnerTeam == WinnerTeamType.Crewmate) ||
+                (cannotShootImpostor && rolebase.WinnerTeam == WinnerTeamType.Impostor))
             {
                 return;
             }

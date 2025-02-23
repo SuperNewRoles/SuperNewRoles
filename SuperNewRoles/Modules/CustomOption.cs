@@ -223,10 +223,10 @@ public class CustomOption
     public CustomOptionBaseAttribute Attribute { get; }
     public FieldInfo FieldInfo { get; }
     public string Name { get; }
-    private object _value_My;
-    private byte _selection_My;
-    private object _value_Host;
-    private byte _selection_Host;
+    protected object _value_My;
+    protected byte _selection_My;
+    protected object _value_Host;
+    protected byte _selection_Host;
     private readonly object _defaultValue;
     private readonly byte _defaultSelection;
 
@@ -270,18 +270,52 @@ public class CustomOption
     {
         Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
         FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
-        Selections = attribute.GenerateSelections();
-        var defaultSelection = attribute.GenerateDefaultSelection();
-        UpdateSelection(defaultSelection);
-        Name = attribute.TranslationName;
-        ParentRole = parentRole;
-        IsBooleanOption = attribute is CustomOptionBoolAttribute;
-        DisplayMode = attribute.DisplayMode;
-        _defaultValue = Selections[defaultSelection];
-        _defaultSelection = defaultSelection;
+
+        if (attribute is CustomOptionTaskAttribute taskAttr)
+        {
+            // TaskOptionDataフィールド（TaskOptionData型）であることを前提とする。
+            object currentVal = fieldInfo.GetValue(null);
+            TaskOptionData taskData;
+            if (currentVal == null)
+            {
+                taskData = new TaskOptionData(taskAttr.ShortDefault, taskAttr.LongDefault, taskAttr.CommonDefault);
+                fieldInfo.SetValue(null, taskData);
+            }
+            else
+            {
+                taskData = (TaskOptionData)currentVal;
+            }
+
+            // この複合オプション自体には直接の選択肢は無いので空配列にする。
+            Selections = new object[0];
+            _defaultValue = taskData;
+            _defaultSelection = 0;
+
+            Name = attribute.TranslationName;
+            ParentRole = parentRole;
+            IsBooleanOption = false;
+            DisplayMode = attribute.DisplayMode;
+
+            // 子オプション（3つ）を作成して自分のChildrenOptionへ追加する
+            ChildrenOption.Add(new TaskChildOption(taskAttr, this, TaskChildOption.TaskPart.Short, taskData.Short));
+            ChildrenOption.Add(new TaskChildOption(taskAttr, this, TaskChildOption.TaskPart.Long, taskData.Long));
+            ChildrenOption.Add(new TaskChildOption(taskAttr, this, TaskChildOption.TaskPart.Common, taskData.Common));
+        }
+        else
+        {
+            Selections = attribute.GenerateSelections();
+            var defaultSelection = attribute.GenerateDefaultSelection();
+            UpdateSelection(defaultSelection);
+            Name = attribute.TranslationName;
+            ParentRole = parentRole;
+            IsBooleanOption = attribute is CustomOptionBoolAttribute;
+            DisplayMode = attribute.DisplayMode;
+            _defaultValue = Selections[defaultSelection];
+            _defaultSelection = defaultSelection;
+        }
     }
 
-    public void UpdateSelection(byte value)
+    public virtual void UpdateSelection(byte value)
     {
         if (value >= Selections.Length)
         {
@@ -1002,6 +1036,150 @@ public class ExclusivityData
     {
         MaxAssign = maxAssign;
         Roles = roles;
+    }
+}
+
+public class TaskOptionData
+{
+    public int Short { get; set; }
+    public int Long { get; set; }
+    public int Common { get; set; }
+
+    public TaskOptionData(int shortValue, int longValue, int commonValue)
+    {
+        Short = shortValue;
+        Long = longValue;
+        Common = commonValue;
+    }
+}
+
+[AttributeUsage(AttributeTargets.Field)]
+public class CustomOptionTaskAttribute : CustomOptionBaseAttribute
+{
+    public int ShortMin { get; }
+    public int ShortMax { get; }
+    public int ShortStep { get; }
+    public int ShortDefault { get; }
+
+    public int LongMin { get; }
+    public int LongMax { get; }
+    public int LongStep { get; }
+    public int LongDefault { get; }
+
+    public int CommonMin { get; }
+    public int CommonMax { get; }
+    public int CommonStep { get; }
+    public int CommonDefault { get; }
+
+    public CustomOptionTaskAttribute(
+         string id,
+         int shortMin, int shortMax, int shortStep, int shortDefault,
+         int longMin, int longMax, int longStep, int longDefault,
+         int commonMin, int commonMax, int commonStep, int commonDefault,
+         string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
+         : base(id, translationName, parentFieldName, displayMode)
+    {
+        ShortMin = shortMin;
+        ShortMax = shortMax;
+        ShortStep = shortStep;
+        ShortDefault = shortDefault;
+
+        LongMin = longMin;
+        LongMax = longMax;
+        LongStep = longStep;
+        LongDefault = longDefault;
+
+        CommonMin = commonMin;
+        CommonMax = commonMax;
+        CommonStep = commonStep;
+        CommonDefault = commonDefault;
+    }
+
+    public override object[] GenerateSelections()
+    {
+        // 複合オプションでは直接の選択肢は用いないので空配列
+        return new object[0];
+    }
+
+    public override byte GenerateDefaultSelection() => 0;
+}
+
+public class TaskChildOptionAttribute : CustomOptionIntAttribute
+{
+    public TaskChildOptionAttribute(string id, int min, int max, int step, int defaultValue, string? translationName = null)
+         : base(id, min, max, step, defaultValue, translationName)
+    {
+    }
+}
+
+public class TaskChildOption : CustomOption
+{
+    public enum TaskPart { Short, Long, Common }
+    public TaskPart Part { get; }
+
+    private readonly CustomOptionTaskAttribute _taskAttr;
+    private readonly CustomOption _parentOption;
+    private bool _initialized = false;
+
+    public TaskChildOption(CustomOptionTaskAttribute taskAttr, CustomOption parentOption, TaskPart part, int initialValue)
+         : base(
+             new TaskChildOptionAttribute(
+                 parentOption.Attribute.Id + "_" + part.ToString(),
+                 part == TaskPart.Short ? taskAttr.ShortMin : (part == TaskPart.Long ? taskAttr.LongMin : taskAttr.CommonMin),
+                 part == TaskPart.Short ? taskAttr.ShortMax : (part == TaskPart.Long ? taskAttr.LongMax : taskAttr.CommonMax),
+                 part == TaskPart.Short ? taskAttr.ShortStep : (part == TaskPart.Long ? taskAttr.LongStep : taskAttr.CommonStep),
+                 part == TaskPart.Short ? taskAttr.ShortDefault : (part == TaskPart.Long ? taskAttr.LongDefault : taskAttr.CommonDefault),
+                 parentOption.Name + "_" + part.ToString()
+             ),
+             parentOption.FieldInfo)
+    {
+        // ※ base コンストラクタ内で UpdateSelection が呼ばれる際、まだこの派生クラスのフィールドへは割り当てが完了していない可能性があるため、
+        // 本コンストラクタ内で必要なフィールドをすぐに初期化し、その後再度 UpdateSelection を呼び出して親フィールド（TaskOptionData）の更新を行う。
+        Part = part;
+        _taskAttr = taskAttr;
+        _parentOption = parentOption;
+        _initialized = true;
+        // 現在の内部選択状態 (_selection_My) を再適用し、親の TaskOptionData を更新する
+        UpdateSelection(_selection_My);
+    }
+
+    public override void UpdateSelection(byte value)
+    {
+        if (value >= Selections.Length)
+        {
+            Logger.Warning($"Invalid selection value {value} for task child option {Name}. Using default.");
+            value = 0;
+        }
+
+        // 内部選択状態を更新（通常の CustomOption と同様の処理）
+        if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost)
+        {
+            _selection_Host = value;
+            _value_Host = Selections[value];
+        }
+        else
+        {
+            _selection_My = value;
+            _value_My = Selections[value];
+        }
+        if (_initialized && _parentOption != null)
+        {
+            TaskOptionData data = (TaskOptionData)_parentOption.FieldInfo.GetValue(null);
+            int newVal = (int)Selections[value];
+            switch (Part)
+            {
+                case TaskPart.Short:
+                    data.Short = newVal;
+                    break;
+                case TaskPart.Long:
+                    data.Long = newVal;
+                    break;
+                case TaskPart.Common:
+                    data.Common = newVal;
+                    break;
+            }
+            _parentOption.FieldInfo.SetValue(null, data);
+        }
     }
 }
 
