@@ -26,25 +26,7 @@ class Madmate : RoleBase<Madmate>
 
     [CustomOptionBool("MadmateCanKnowImpostors", false)]
     public static bool MadmateCanKnowImpostors;
-    [CustomOptionTask(
-        "MadmateTaskOption",    // id
-        1,                      // defaultValue
-        0,                      // shortMin
-        5,                      // shortMax
-        1,                      // shortStep
-        1,                      // shortDefault
-        0,                      // longMin
-        5,                      // longMax
-        1,                      // longStep
-        1,                      // longDefault
-        0,                      // commonMin
-        2,                      // commonMax
-        1,                      // commonStep
-        1,                      // commonDefault
-        null,                   // translationName
-        null,                   // parentFieldName
-        DisplayModeId.All       // displayMode
-    )]
+    [CustomOptionTask("MadmateTaskOption", 1, 1, 1)]
     public static TaskOptionData MadmateTaskOption;
 
     [CustomOptionBool("MadmateHasImpostorVision", false)]

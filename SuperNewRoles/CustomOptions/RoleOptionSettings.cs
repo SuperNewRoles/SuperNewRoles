@@ -276,8 +276,10 @@ namespace SuperNewRoles.CustomOptions
             parent.layer = 5;
             CreateNumberOfCrewsSelectAndPerSelect(parent.transform, roleOption, ref lastY);
             int index = 2;
+            Logger.Info($"roleOption: {roleOption.RoleId}");
             foreach (var option in roleOption.Options)
             {
+                Logger.Info($"option: {option.Name}");
                 if (option.IsBooleanOption)
                     CreateCheckBox(parent.transform, option, ref lastY);
                 else
