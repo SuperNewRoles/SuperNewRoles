@@ -75,7 +75,7 @@ class BaitAbility : AbilityBase
 
     public void OnKilled(MurderEventData data)
     {
-        if (data.killer == PlayerControl.LocalPlayer)
+        if (data.target == PlayerControl.LocalPlayer)
         {
             //Reportの遅延呼び出しを行う(多分Coroutineがよいのでは？)
             PlayerControl.LocalPlayer.StartCoroutine(DelayedReport().WrapToIl2Cpp());
@@ -83,8 +83,8 @@ class BaitAbility : AbilityBase
 
         IEnumerator DelayedReport()
         {
-
-            yield return new WaitForSeconds(Bait.BaitReportTime);
+            if (Bait.BaitReportTime > 0)
+                yield return new WaitForSeconds(Bait.BaitReportTime);
 
             data.killer.RpcCustomReportDeadBody(data.target.Data);
         }
