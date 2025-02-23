@@ -47,26 +47,6 @@ public static class NameText
             }
         }
     }
-    public static (int completed, int total) TaskCompletedData(NetworkedPlayerInfo playerInfo)
-    {
-        if (playerInfo?.Tasks == null)
-            return (-1, -1);
-
-        int TotalTasks = 0;
-        int CompletedTasks = 0;
-
-        for (int j = 0; j < playerInfo.Tasks.Count; j++)
-        {
-            if (playerInfo.Tasks[j] == null)
-                continue;
-            TotalTasks++;
-            if (playerInfo.Tasks[j].Complete)
-            {
-                CompletedTasks++;
-            }
-        }
-        return (CompletedTasks, TotalTasks);
-    }
     public static void UpdateNameInfo(ExPlayerControl player)
     {
         if (player == null || player.Player == null)
@@ -77,7 +57,7 @@ public static class NameText
         {
             if (player.IsTaskTriggerRole())
             {
-                var (complete, all) = TaskCompletedData(player.Data);
+                var (complete, all) = ModHelpers.TaskCompletedData(player.Data);
                 TaskText += ModHelpers.Cs(Color.yellow, "(" + (ModHelpers.IsComms() ? "?" : complete.ToString()) + "/" + all.ToString() + ")");
             }
         }
@@ -99,9 +79,8 @@ public static class NameText
             player.Data.Role.NameColor = Color.white;
             player.Player.cosmetics.nameText.color = Color.white;
         }
-        player.PlayerInfoText.gameObject.SetActive(visiable);
-        if (player.MeetingInfoText != null)
-            player.MeetingInfoText.gameObject.SetActive(visiable);
+        UpdateVisiable(player);
+        NameTextUpdateEvent.Invoke(player);
     }
     public static void RegisterNameTextUpdateEvent()
     {
@@ -117,6 +96,21 @@ public static class NameText
         }));
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
         MeetingStartEvent.Instance.AddListener(UpdateAllNameInfo);
+        FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
+    }
+    private static void UpdateAllVisiable()
+    {
+        foreach (var player in ExPlayerControl.ExPlayerControls)
+            UpdateVisiable(player);
+    }
+    private static void UpdateVisiable(ExPlayerControl player)
+    {
+        if (player == null || player.Player == null)
+            return;
+        bool visiable = player.Player.Visible && (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead());
+        player.PlayerInfoText.gameObject.SetActive(visiable);
+        if (player.MeetingInfoText != null)
+            player.MeetingInfoText.gameObject.SetActive(visiable);
     }
     private static void UpdateAllNameInfo()
     {

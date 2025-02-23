@@ -85,13 +85,13 @@ public interface IRoleBase
         ExPlayerControl exPlayer = player;
         foreach (var abilityFactory in Abilities)
         {
-            var abilityId = GenerateAbilityId(player.PlayerId, exPlayer.lastAbilityId++);
-            player.AddAbility(abilityFactory(), abilityId);
+            var abilityId = GenerateAbilityId(player.PlayerId, Role, exPlayer.lastAbilityId++);
+            exPlayer.AddAbility(abilityFactory(), abilityId);
         }
     }
 
-    private ulong GenerateAbilityId(byte playerId, int abilityIndex)
+    public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)
     {
-        return (ulong)(playerId * 1000000) + (ulong)((int)Role * 1000) + (ulong)abilityIndex;
+        return (ulong)(playerId * 1000000) + (ulong)((int)role * 1000) + (ulong)abilityIndex;
     }
 }

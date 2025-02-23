@@ -14,7 +14,7 @@ public abstract class AbilityBase
     public int Count { get; set; }
     public bool HasCount => Count > 0;
 
-    public void Attach(PlayerControl player, ulong abilityId)
+    public virtual void Attach(PlayerControl player, ulong abilityId)
     {
         Player = player;
         AbilityId = abilityId;
