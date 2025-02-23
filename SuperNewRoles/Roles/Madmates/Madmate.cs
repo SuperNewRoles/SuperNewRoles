@@ -26,7 +26,7 @@ class Madmate : RoleBase<Madmate>
 
     [CustomOptionBool("MadmateCanKnowImpostors", false, "MadmateCanKnowImpostorsOption")]
     public static bool MadmateCanKnowImpostors;
-    [CustomOptionInt("MadmateNeededTaskCount", 0, 30, 1, 6, "MadmateNeededTaskCountOption")]
+    [CustomOptionInt("MadmateNeededTaskCount", 0, 30, 1, 6, "MadmateNeededTaskCountOption", parentFieldName: nameof(MadmateCanKnowImpostors))]
     public static int MadmateNeededTaskCount;
     [CustomOptionBool("MadmateCouldUseVent", false, "MadmateCouldUseVentOption")]
     public static bool MadmateCouldUseVent;

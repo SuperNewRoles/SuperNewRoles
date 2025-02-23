@@ -11,6 +11,7 @@ public enum RoleId : short
     NiceGuesser,
     EvilGuesser,
     Madmate,
+    BlackCat,
 }
 
 public enum QuoteMod : byte
