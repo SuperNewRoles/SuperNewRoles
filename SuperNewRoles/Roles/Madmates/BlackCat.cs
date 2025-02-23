@@ -30,7 +30,7 @@ class BlackCat : RoleBase<BlackCat>
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
     public override TeamTag TeamTag { get; } = TeamTag.Madmate;
     public override RoleTag[] RoleTags { get; } = [];
-    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
+    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
     [CustomOptionBool("BlackCatRevengeNotImpostorExile", true)]
     public static bool BlackCatRevengeNotImpostorExile;

@@ -24,12 +24,12 @@ class Madmate : RoleBase<Madmate>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
-    [CustomOptionBool("MadmateCanKnowImpostors", false, "MadmateCanKnowImpostorsOption")]
+    [CustomOptionBool("MadmateCanKnowImpostors", false)]
     public static bool MadmateCanKnowImpostors;
-    [CustomOptionInt("MadmateNeededTaskCount", 0, 30, 1, 6, "MadmateNeededTaskCountOption", parentFieldName: nameof(MadmateCanKnowImpostors))]
+    [CustomOptionInt("MadmateNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadmateCanKnowImpostors))]
     public static int MadmateNeededTaskCount;
-    [CustomOptionBool("MadmateCouldUseVent", false, "MadmateCouldUseVentOption")]
+    [CustomOptionBool("MadmateCouldUseVent", false)]
     public static bool MadmateCouldUseVent;
-    [CustomOptionBool("MadmateHasImpostorVision", false, "MadmateHasImpostorVisionOption")]
+    [CustomOptionBool("MadmateHasImpostorVision", false)]
     public static bool MadmateHasImpostorVision;
 }
