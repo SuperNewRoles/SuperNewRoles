@@ -139,6 +139,7 @@ public class PlayerStatistics
         {
             if (player.IsDead())
                 continue;
+            numTotalAlive++;
             if (player.IsImpostor())
             {
                 numImpostorsAlive++;
