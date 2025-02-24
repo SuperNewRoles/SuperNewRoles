@@ -4,6 +4,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine.Events;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -347,21 +348,49 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             ind++;
         }
 
+        List<RoleId> GeneratedButtons = new();
         // --- 役割ボタンの生成（IntroData／RoleInfo から） ---
         foreach (IRoleBase roleBase in CustomRoleManager.AllRoles)
         {
-            if (roleBase == null)
+            if (!IsValidRole(roleBase)) continue;
+
+            CreateRoleAndRelated(roleBase, GeneratedButtons);
+        }
+
+        void CreateRoleAndRelated(IRoleBase role, List<RoleId> generated)
+        {
+            CreateRole(role);
+            generated.Add(role.Role);
+
+            if (role.RelatedRoleIds == null) return;
+
+            foreach (var relatedId in role.RelatedRoleIds)
             {
-                Logger.Info("continueになりました:" + roleBase.Role, "Guesser");
-                continue;
+                if (generated.Contains(relatedId)) continue;
+
+                var relatedRole = CustomRoleManager.GetRoleById(relatedId);
+                if (relatedRole == null) continue;
+
+                CreateRoleAndRelated(relatedRole, generated);
             }
-            var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleBase.Role);
-            if (roleOption == null || roleOption.NumberOfCrews == 0 || roleOption.Percentage == 0)
+        }
+
+        bool IsValidRole(IRoleBase role)
+        {
+            if (role == null)
             {
-                Logger.Info("continueになりました:" + roleBase.Role, "Guesser");
-                continue;
+                Logger.Info("continueになりました:" + role.Role, "Guesser");
+                return false;
             }
-            CreateRole(roleBase);
+
+            var option = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == role.Role);
+            if (option == null || option.NumberOfCrews == 0 || option.Percentage == 0)
+            {
+                Logger.Info("continueになりました:" + role.Role, "Guesser");
+                return false;
+            }
+
+            return true;
         }
         container.localScale *= 0.75f;
         guesserSelectRole(AssignedTeamType.Crewmate);

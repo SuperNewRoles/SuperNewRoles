@@ -28,6 +28,7 @@ internal abstract class RoleBase<T> : BaseSingleton<T>, IRoleBase where T : Role
     public abstract short IntroNum { get; }
     public virtual RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
     public virtual AudioClip CustomIntroSound { get; } = null;
+    public virtual RoleId[] RelatedRoleIds { get; } = [];
     public AudioClip IntroSound
     {
         get
@@ -76,6 +77,8 @@ public interface IRoleBase
     /// こちらを設定するとIntroSoundTypeよりも優先される
     /// </summary>
     public AudioClip CustomIntroSound { get; }
+
+    public RoleId[] RelatedRoleIds { get; }
 
     /// <summary>
     /// AbilityはAbilitiesから自動でセットされるが、追加で他の処理を行いたい場合はOverrideすること
