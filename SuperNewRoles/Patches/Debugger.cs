@@ -20,4 +20,16 @@ public static class Debugger
         }
     }
 }
-
+[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+public static class GameStartManagerUpdatePatch
+{
+    public static void Postfix()
+    {
+        if (!CustomOptionManager.SkipStartGameCountdown)
+            return;
+        if (GameStartManager.InstanceExists && FastDestroyableSingleton<GameStartManager>.Instance.startState == GameStartManager.StartingStates.Countdown) // カウントダウン中
+        {
+            FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0; //カウント0
+        }
+    }
+}

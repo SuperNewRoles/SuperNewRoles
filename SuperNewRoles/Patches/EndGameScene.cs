@@ -96,7 +96,6 @@ public static class ShipStatusPatch
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
 public class EndGameManagerSetUpPatch
 {
-    public static bool IsHaison = false;
     public static TMPro.TMP_Text textRenderer;
     [HarmonyPatch(typeof(EndGameNavigation), nameof(EndGameNavigation.ShowProgression))]
     public class ShowProgressionPatch
@@ -146,7 +145,7 @@ public class EndGameManagerSetUpPatch
         string translated = ModTranslation.GetString(baseText);
 
         if (isHaison)
-            translated = ModTranslation.GetString("HaisonName");
+            translated = ModTranslation.GetString("Haison");
         else if (translated == ModTranslation.GetString("NoWinner"))
             translated = ModTranslation.GetString("NoWinnerText");
         else if (translated == ModTranslation.GetString("GodName"))
@@ -176,7 +175,7 @@ public class EndGameManagerSetUpPatch
 
         if (AdditionalTempData.winCondition == WinCondition.Haison)
         {
-            __instance.WinText.text = ModTranslation.GetString("HaisonName");
+            __instance.WinText.text = ModTranslation.GetString("Haison");
             __instance.WinText.color = HaisonColor;
         }
         else if (AdditionalTempData.winCondition == WinCondition.NoWinner)
@@ -193,7 +192,6 @@ public class EndGameManagerSetUpPatch
 
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(roleColor, winText);
-        IsHaison = false;
     }
 
     private static void CreatePlayerObjects(EndGameManager instance)
@@ -304,12 +302,11 @@ public static class OnGameEndPatch
     {
         // エンドゲームの結果からゲームオーバー理由を一時データに保存します。
         AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
-
+        if (AdditionalTempData.gameOverReason == (GameOverReason)CustomGameOverReason.Haison)
+            endGameResult.GameOverReason = GameOverReason.ImpostorDisconnect;
         // ゲームオーバー理由の整数値が10以上の場合、理由をImpostorByKillに上書きします。
-        if ((int)endGameResult.GameOverReason >= 10)
-        {
+        else if ((int)endGameResult.GameOverReason >= 9)
             endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
-        }
     }
 
     public static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) HandleEndGameProcess(GameOverReason gameOverReason)

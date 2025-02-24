@@ -107,4 +107,7 @@ public static class ModHelpers
             | (long)reader.FastByte() << 56;
         return output;
     }
+    /// <summary>keyCodesが押されているか</summary>
+    public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
+        keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
 }

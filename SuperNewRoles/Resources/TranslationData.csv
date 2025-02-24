@@ -48,6 +48,7 @@ DebugMode,デバッグモード,Debug Mode,偵錯模式,偵錯模式
 CustomOptionTask_Short,短いタスク,Short Tasks,短任務,短任務
 CustomOptionTask_Long,長いタスク,Long Tasks,长任務,長任務
 CustomOptionTask_Common,共通タスク,Common Tasks,共同任務,共同任務
+SkipStartGameCountdown,ゲーム開始カウントダウンをスキップ,Skip Game Start Countdown,跳过游戏开始倒计时,跳過遊戲開始倒計時
 
 # Win
 WinName,勝利,Win,勝利,勝利
