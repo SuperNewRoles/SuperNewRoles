@@ -24,6 +24,10 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 ExileEvent.Invoke(player);
                 break;
+            case CustomDeathType.FalseCharge:
+                player.Player.Exiled();
+                ExileEvent.Invoke(player);
+                break;
             case CustomDeathType.Kill:
                 if (source == null)
                     throw new Exception("Source is null");
@@ -48,4 +52,5 @@ public enum CustomDeathType
 {
     Exile,
     Kill,
+    FalseCharge,
 }

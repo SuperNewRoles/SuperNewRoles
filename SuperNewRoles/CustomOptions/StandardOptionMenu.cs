@@ -693,23 +693,6 @@ public static class StandardOptionMenu
         StandardOptionMenuObjectData.Instance.UpdateOptionDisplay();
     }
 
-    private static string FormatOptionValue(object value, CustomOption option)
-    {
-        if (value is float floatValue)
-        {
-            var attribute = option.Attribute as CustomOptionFloatAttribute;
-            if (attribute != null)
-            {
-                float step = attribute.Step;
-                if (step >= 1f) return string.Format("{0:F0}", floatValue);
-                else if (step >= 0.1f) return string.Format("{0:F1}", floatValue);
-                else return string.Format("{0:F2}", floatValue);
-            }
-            return floatValue.ToString();
-        }
-        return value.ToString();
-    }
-
     private static void UpdatePresetText(TMPro.TextMeshPro textComponent, int preset)
     {
         string presetName = CustomOptionSaver.GetPresetName(preset);
@@ -732,7 +715,7 @@ public static class StandardOptionMenu
                 }
                 else if (!option.IsBooleanOption && optionUIData is StandardOptionMenuObjectData.SelectOptionUIData selectData)
                 {
-                    selectData.SelectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+                    selectData.SelectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
                 }
                 break;
             }

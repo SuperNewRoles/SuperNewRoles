@@ -16,7 +16,7 @@ public static class Debugger
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
         {
             Logger.Info("Debugger Clicked");
-            PlayerControl.LocalPlayer.RpcExiledCustom();
+            ExPlayerControl.LocalPlayer.RpcExiledCustom();
         }
     }
 }

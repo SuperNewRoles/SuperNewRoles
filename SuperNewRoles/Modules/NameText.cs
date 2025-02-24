@@ -68,6 +68,8 @@ public static class NameText
         playerInfoText += TaskText;
         meetingInfoText = playerInfoText.Trim();
         player.PlayerInfoText.text = playerInfoText;
+        if (player.MeetingInfoText != null)
+            player.MeetingInfoText.text = meetingInfoText;
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead();
         if (visiable)
         {
