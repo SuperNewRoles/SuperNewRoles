@@ -53,6 +53,7 @@ CustomOptionTask_Common,共通タスク,Common Tasks,共同任務,共同任務
 WinName,勝利,Win,勝利,勝利
 Haison,廃村,Haison,廢村,廢村
 NoWinner,勝者なし,No Winner,没有胜者,沒有勝者
+FinalResults,最終結果,Final Results,最终结果,最終結果
 
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
