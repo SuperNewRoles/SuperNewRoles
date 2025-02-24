@@ -155,11 +155,13 @@ public class ExPlayerControl
         return _exPlayerControlsArray[playerId];
     }
     public bool IsCrewmate()
-        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate : !Data.Role.IsImpostor;
+        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() : !Data.Role.IsImpostor;
     public bool IsImpostor()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Impostor : Data.Role.IsImpostor;
     public bool IsNeutral()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
+    public bool IsImpostorWinTeam()
+        => IsImpostor() || IsMadRoles();
     // TODO: 後でMADロールを追加したらここに追加する
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));

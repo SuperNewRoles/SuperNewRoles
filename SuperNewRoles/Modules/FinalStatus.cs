@@ -12,6 +12,7 @@ public enum FinalStatus
     Exiled,
     GuesserKill,
     GuesserMisFire,
+    Sabotage,
 }
 
 public static class FinalStatusListener

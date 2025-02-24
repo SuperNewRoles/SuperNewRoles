@@ -49,6 +49,18 @@ CustomOptionTask_Short,短いタスク,Short Tasks,短任務,短任務
 CustomOptionTask_Long,長いタスク,Long Tasks,长任務,長任務
 CustomOptionTask_Common,共通タスク,Common Tasks,共同任務,共同任務
 
+# Win
+WinName,勝利,Win,勝利,勝利
+Haison,廃村,Haison,廢村,廢村
+NoWinner,勝者なし,No Winner,没有胜者,沒有勝者
+
+# FinalStatus
+FinalStatus.Alive,生存,Alive,生存,生存
+FinalStatus.Dead,死亡,Dead,死亡,死亡
+FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
+FinalStatus.Disonnected,切断,Disonnected,切断,切斷
+FinalStatus.Exile,追放,Exile,追放,追放
+
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
 AssignRoles_MaxCrews,最大 クルーメイト 選出数,Max Crewmates,最大船员数,最大船員數

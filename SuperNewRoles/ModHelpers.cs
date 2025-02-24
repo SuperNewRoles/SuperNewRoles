@@ -65,6 +65,10 @@ public static class ModHelpers
     {
         return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
     }
+    public static string CsWithTranslation(Color c, string s)
+    {
+        return Cs(c, ModTranslation.GetString(s));
+    }
     public static byte ToByte(float f)
     {
         f = Mathf.Clamp01(f);
