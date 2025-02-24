@@ -24,7 +24,7 @@ public class ExPlayerControl
     public IRoleBase roleBase { get; private set; }
     public List<AbilityBase> PlayerAbilities { get; private set; } = new();
     public Dictionary<ulong, AbilityBase> PlayerAbilitiesDictionary { get; private set; } = new();
-
+    public ExPlayerControl Parent { get; set; }
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
     public int lastAbilityId { get; set; }
@@ -168,7 +168,7 @@ public class ExPlayerControl
     public bool IsJackal()
         => HasAbility(nameof(JackalAbility));
     public bool IsSidekick()
-        => HasAbility(nameof(SidekickAbility));
+        => HasAbility(nameof(JSidekickAbility));
     public bool IsJackalTeam()
         => IsJackal() || IsSidekick();
     // TODO: 後で追加する

@@ -25,7 +25,7 @@ public class JackalAbility : AbilityBase
             () => JackData.CanKill,
             () => JackData.KillCooldown,
             onlyCrewmates: () => false,
-            isTargetable: (player) => !player.IsJackal()
+            isTargetable: (player) => !player.IsJackalTeam()
         );
 
         VentAbility = new CustomVentAbility(
@@ -38,7 +38,9 @@ public class JackalAbility : AbilityBase
             () => RoleId.Sidekick,
             () => RoleTypes.Crewmate,
             AssetManager.GetAsset<Sprite>("JackalSidekickButton.png"),
-            ModTranslation.GetString("SidekickButtonText")
+            ModTranslation.GetString("SidekickButtonText"),
+            (player) => !player.IsJackalTeam(),
+            sidekickedPromoteData: new(RoleId.Jackal, RoleTypes.Crewmate)
         );
 
         KnowJackalAbility = new KnowOtherAbility(
@@ -58,77 +60,6 @@ public class JackalAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-    }
-}
-
-public class CustomSidekickButtonAbility : TargetCustomButtonBase
-{
-    private readonly Func<bool> _canCreateSidekick;
-    private readonly Func<float?> _sidekickCooldown;
-    private readonly Func<RoleId> _sidekickRole;
-    private readonly Func<RoleTypes> _sidekickRoleVanilla;
-    private readonly Action<ExPlayerControl> _onSidekickCreated;
-    private readonly Sprite _sidekickSprite;
-    private readonly string _sidekickText;
-    public override Color32 OutlineColor => new Color32(0, 255, 255, 255);
-    public override Vector3 LocalScale => Vector3.one;
-    public override Sprite Sprite => _sidekickSprite;
-    public override string buttonText => _sidekickText;
-    public override Vector3 PositionOffset => new Vector3(0, 1.5f, 0);
-    protected override KeyCode? hotkey => KeyCode.F;
-    protected override int joystickkey => 1;
-    public override float DefaultTimer => _sidekickCooldown?.Invoke() ?? 0;
-    public override bool OnlyCrewmates => false;
-    public override Color? color => Color.cyan;
-    public override Func<ExPlayerControl, bool>? IsTargetable => (player) => !player.IsJackal();
-    public bool SidekickCreated { get; private set; }
-    public CustomSidekickButtonAbility(
-        Func<bool> canCreateSidekick,
-        Func<float?> sidekickCooldown,
-        Func<RoleId> sidekickRole,
-        Func<RoleTypes> sidekickRoleVanilla,
-        Sprite sidekickSprite,
-        string sidekickText,
-        Action<ExPlayerControl> onSidekickCreated = null)
-    {
-        _canCreateSidekick = canCreateSidekick;
-        _sidekickCooldown = sidekickCooldown;
-        _sidekickRole = sidekickRole;
-        _sidekickRoleVanilla = sidekickRoleVanilla;
-        _onSidekickCreated = onSidekickCreated;
-        _sidekickSprite = sidekickSprite;
-        _sidekickText = sidekickText;
-    }
-
-    public override void OnClick()
-    {
-        if (Target == null) return;
-        if (!_canCreateSidekick() || SidekickCreated) return;
-
-        RpcSidekicked(Target, _sidekickRole(), _sidekickRoleVanilla());
-        _onSidekickCreated?.Invoke(Target);
-        SidekickCreated = true;
-        ResetTimer();
-    }
-
-    public override bool CheckIsAvailable()
-    {
-        if (!TargetIsExist) return false;
-        if (!_canCreateSidekick()) return false;
-        if (!PlayerControl.LocalPlayer.CanMove || ExPlayerControl.LocalPlayer.IsDead()) return false;
-        return true;
-    }
-
-    public override bool CheckHasButton()
-    {
-        return _canCreateSidekick() && !SidekickCreated;
-    }
-    [CustomRPC]
-    public static void RpcSidekicked(ExPlayerControl player, RoleId roleId, RoleTypes roleType)
-    {
-        player.SetRole(roleId);
-        RoleManager.Instance.SetRole(player, roleType);
-        NameText.UpdateAllNameInfo();
     }
 }
 

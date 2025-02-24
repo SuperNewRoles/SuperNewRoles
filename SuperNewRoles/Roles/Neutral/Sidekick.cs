@@ -13,7 +13,7 @@ class Sidekick : RoleBase<Sidekick>
     public override RoleId Role { get; } = RoleId.Sidekick;
     public override Color32 RoleColor { get; } = Jackal.Instance.RoleColor;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new SidekickAbility(
+        () => new JSidekickAbility(
             canUseVent: Jackal.JackalCanUseVent
         )
     ];
@@ -27,37 +27,4 @@ class Sidekick : RoleBase<Sidekick>
     public override TeamTag TeamTag { get; } = TeamTag.Neutral;
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
-}
-
-public class SidekickAbility : AbilityBase
-{
-    public CustomVentAbility VentAbility { get; private set; }
-    public bool CanUseVent { get; }
-    public KnowOtherAbility KnowJackalAbility { get; private set; }
-    public SidekickAbility(bool canUseVent)
-    {
-        CanUseVent = canUseVent;
-    }
-
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
-    {
-        VentAbility = new CustomVentAbility(
-            () => CanUseVent
-        );
-        KnowJackalAbility = new KnowOtherAbility(
-            (player) => player.IsJackalTeam(),
-            () => true
-        );
-
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
-
-        AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(VentAbility, parentAbility);
-        exPlayer.AttachAbility(KnowJackalAbility, parentAbility);
-        base.Attach(player, abilityId, parent);
-    }
-
-    public override void AttachToLocalPlayer()
-    {
-    }
 }
