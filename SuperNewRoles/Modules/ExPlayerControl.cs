@@ -91,6 +91,7 @@ public class ExPlayerControl
     }
     private void DetachOldRole(RoleId roleId)
     {
+        List<AbilityBase> abilitiesToDetach = new();
         foreach (var ability in PlayerAbilities)
         {
             if (ability.Parent == null) continue;
@@ -100,17 +101,25 @@ public class ExPlayerControl
                 switch (parent)
                 {
                     case AbilityParentRole parentRole when parentRole.ParentRole.Role == roleId:
-                        ability.Detach();
-                        return;
+                        abilitiesToDetach.Add(ability);
+                        parent = null;
+                        break;
                     case AbilityParentAbility parentAbility:
                         parent = parentAbility.ParentAbility.Parent;
                         break;
                     default:
-                        return;
+                        parent = null;
+                        break;
                 }
             }
         }
-        ;
+        foreach (var ability in abilitiesToDetach)
+        {
+            ability.Detach();
+            PlayerAbilities.Remove(ability);
+            PlayerAbilitiesDictionary.Remove(ability.AbilityId);
+            _hasAbilityCache.Remove(ability.GetType().Name);
+        }
     }
     public void Disconnected()
     {

@@ -144,9 +144,9 @@ public abstract class CustomMeetingButtonBase : AbilityBase
         if (button == null && button.activeSelf == isActive) return;
         button.SetActive(isActive);
     }
-    public override void Detach()
+    public override void DetachToLocalPlayer()
     {
-        base.Detach();
+        base.DetachToLocalPlayer();
         MeetingStartEvent.Instance.RemoveListener(startMeetingEvent);
         MeetingCloseEvent.Instance.RemoveListener(closeMeetingEvent);
         MeetingUpdateEvent.Instance.RemoveListener(updateMeetingEvent);

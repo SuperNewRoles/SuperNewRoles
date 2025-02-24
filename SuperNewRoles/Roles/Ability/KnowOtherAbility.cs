@@ -49,9 +49,9 @@ public class KnowOtherAbility : AbilityBase
         player.Player.cosmetics.nameText.color = color;
     }
 
-    public override void Detach()
+    public override void DetachToLocalPlayer()
     {
-        base.Detach();
+        base.DetachToLocalPlayer();
         NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEvent);
     }
 }

@@ -31,7 +31,7 @@ class Jackal : RoleBase<Jackal>
     public override TeamTag TeamTag { get; } = TeamTag.Jackal;
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
-
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick];
     [CustomOptionFloat("JackalKillCooldown", 10f, 60f, 2.5f, 30f)]
     public static float JackalKillCooldown;
 

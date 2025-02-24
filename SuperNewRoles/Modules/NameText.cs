@@ -114,6 +114,8 @@ public static class NameText
     {
         if (player == null || player.Player == null)
             return;
+        if (visiable && player.PlayerInfoText == null)
+            UpdateNameInfo(player);
         player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.gameObject.SetActive(visiable);

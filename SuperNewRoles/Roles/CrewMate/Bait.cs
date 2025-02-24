@@ -63,9 +63,9 @@ class BaitAbility : AbilityBase
         killedEventListener = MurderEvent.Instance.AddListener(OnKilled);
     }
 
-    public override void Detach()
+    public override void DetachToLocalPlayer()
     {
-        base.Detach();
+        base.DetachToLocalPlayer();
         if (killedEventListener != null)
         {
             MurderEvent.Instance.RemoveListener(killedEventListener);
