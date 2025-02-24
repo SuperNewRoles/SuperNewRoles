@@ -68,7 +68,9 @@ Sheriff,シェリフ,Sheriff,警长,警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
 EvilGuesser,イビルゲッサー,Evil Guesser,内鬼猜疑者,內鬼猜疑者
 Madmate,マッドメイト,Madmate,瘋狂者,瘋狂者
-
+BlackCat,黒猫,Black Cat,黑猫,黑貓
+Jackal,ジャッカル,Jackal,杰克,傑克
+Sidekick,サイドキック,Sidekick,侧翼,側翼
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
 SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以杀第三阵营,可以殺第三陣營
@@ -94,3 +96,9 @@ MadmateNeededTaskCount,必要タスク数,Required Task Count,需要完成任务
 MadmateCouldUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 MadmateHasImpostorVision,インポスターの視界,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 BlackCatRevengeNotImpostorExile,インポスターを道連れしない,Do Not Exile Impostor,不带内鬼出局,不帶內鬼出局
+
+# Jackal Options
+JackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
+JackalCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+JackalCanCreateSidekick,サイドキックを作成できる,Can Create Sidekick,杰克可以创建边缘队员,傑克可以創建邊緣隊員
+JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cooldown,杰克边缘队员冷却时间,傑克邊緣隊員冷卻時間

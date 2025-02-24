@@ -52,7 +52,12 @@ public static class CustomRPCManager
     /// <param name="method">ハッシュ値を生成するメソッド</param>
     /// <param name="attribute">CustomRPCAttribute</param>
     /// <returns>メソッドのハッシュ文字列</returns>
-    private static string RpcHashGenerate(MethodInfo method, CustomRPCAttribute attribute)
+    private static string RpcHashGenerate(MethodInfo method)
+    {
+        // メソッドのハッシュ値を名前とメソッドの引数の型内容を元に生成
+        return GetMethodFullName(method) + string.Join(",", method.GetParameters().Select(p => p.ParameterType.Name));
+    }
+    private static string RpcHashGenerate(MethodBase method)
     {
         // メソッドのハッシュ値を名前とメソッドの引数の型内容を元に生成
         return GetMethodFullName(method) + string.Join(",", method.GetParameters().Select(p => p.ParameterType.Name));
@@ -68,7 +73,7 @@ public static class CustomRPCManager
             .GetTypes()
             .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
             .Where(m => m.GetCustomAttribute<CustomRPCAttribute>() != null)
-            .OrderBy(m => RpcHashGenerate(m, m.GetCustomAttribute<CustomRPCAttribute>()))
+            .OrderBy(m => RpcHashGenerate(m))
             .ToList();
         Logger.Info($"Found {methods.Count} RPC methods");
 
@@ -82,7 +87,7 @@ public static class CustomRPCManager
                 Logger.Error($"CustomRPC: {methods[i].Name} is not static");
                 continue;
             }
-            RegisterRPC(methods[i], i);
+            RegisterRPC(methods[i], attribute, i);
         }
         Logger.Info($"Registered {RpcMethods.Count} RPC methods");
     }
@@ -93,7 +98,7 @@ public static class CustomRPCManager
     /// </summary>
     /// <param name="method">登録するメソッド</param>
     /// <param name="attribute">CustomRPCAttribute</param>
-    private static void RegisterRPC(MethodInfo method, byte id)
+    private static void RegisterRPC(MethodInfo method, CustomRPCAttribute attribute, byte id)
     {
         // RPC送信用の新しいメソッドを定義
         static bool NewMethod(object? __instance, object[] __args, MethodBase __originalMethod)
@@ -105,7 +110,7 @@ public static class CustomRPCManager
                 return true;
             }
 
-            var id = RpcMethodIds[GetMethodFullName(__originalMethod)];
+            var id = RpcMethodIds[RpcHashGenerate(__originalMethod)];
             // RPC送信の準備
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, SNRRpcId, SendOption.Reliable, -1);
             writer.Write(id);
@@ -124,7 +129,7 @@ public static class CustomRPCManager
         Logger.Info($"Registering RPC: {method.Name} {id}");
         var newMethod = NewMethod;
         RpcMethods[id] = method;
-        RpcMethodIds[GetMethodFullName(method)] = id;
+        RpcMethodIds[RpcHashGenerate(method)] = id;
 
         // メソッドの中身をRPCを送信するものに入れ替える
         SuperNewRolesPlugin.Instance.Harmony.Patch(method, new HarmonyMethod(newMethod.Method));
@@ -180,6 +185,27 @@ public static class CustomRPCManager
     /// </summary>
     private static void Write(this MessageWriter writer, object obj)
     {
+        if (obj != null && obj.GetType().IsEnum)
+        {
+            var underlyingType = Enum.GetUnderlyingType(obj.GetType());
+            if (underlyingType == typeof(byte))
+                writer.Write((byte)(object)obj);
+            else if (underlyingType == typeof(short))
+                writer.Write((short)(object)obj);
+            else if (underlyingType == typeof(ushort))
+                writer.Write((ushort)(object)obj);
+            else if (underlyingType == typeof(int))
+                writer.Write((int)(object)obj);
+            else if (underlyingType == typeof(uint))
+                writer.Write((uint)(object)obj);
+            else if (underlyingType == typeof(ulong))
+                writer.Write((ulong)(object)obj);
+            else if (underlyingType == typeof(long))
+                writer.Write((long)(object)obj);
+            else
+                throw new Exception($"Unsupported enum underlying type: {underlyingType}");
+            return;
+        }
         switch (obj)
         {
             case byte b:
@@ -275,9 +301,6 @@ public static class CustomRPCManager
             case InnerNetObject innerNetObject:
                 writer.Write(innerNetObject.NetId);
                 break;
-            case RoleId roleId:
-                writer.Write((int)roleId);
-                break;
             default:
                 throw new Exception($"Invalid type: {obj.GetType()}");
         }
@@ -288,6 +311,19 @@ public static class CustomRPCManager
     /// </summary>
     private static object ReadFromType(this MessageReader reader, Type type)
     {
+        if (type.IsEnum)
+        {
+            var underlyingType = Enum.GetUnderlyingType(type);
+            object value = underlyingType == typeof(byte) ? reader.ReadByte()
+                         : underlyingType == typeof(short) ? reader.ReadInt16()
+                         : underlyingType == typeof(ushort) ? reader.ReadUInt16()
+                         : underlyingType == typeof(int) ? reader.ReadInt32()
+                         : underlyingType == typeof(uint) ? reader.ReadUInt32()
+                         : underlyingType == typeof(ulong) ? reader.ReadUInt64()
+                         : underlyingType == typeof(long) ? reader.ReadInt64()
+                         : throw new Exception($"Unsupported enum underlying type: {underlyingType}");
+            return Enum.ToObject(type, value);
+        }
         return type switch
         {
             Type t when t == typeof(byte) => reader.ReadByte(),

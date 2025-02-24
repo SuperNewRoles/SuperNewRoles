@@ -83,9 +83,10 @@ public interface IRoleBase
     public virtual void OnSetRole(PlayerControl player)
     {
         ExPlayerControl exPlayer = player;
+        AbilityParentRole parent = new(exPlayer, this);
         foreach (var abilityFactory in Abilities)
         {
-            exPlayer.AddAbility(abilityFactory());
+            exPlayer.AddAbility(abilityFactory(), parent);
         }
     }
 

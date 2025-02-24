@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using Hazel;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -88,5 +89,18 @@ public static class ModHelpers
             }
         }
         return (CompletedTasks, TotalTasks);
+    }
+    public static long ReadInt64(this MessageReader reader)
+    {
+
+        long output = (long)reader.FastByte()
+            | (long)reader.FastByte() << 8
+            | (long)reader.FastByte() << 16
+            | (long)reader.FastByte() << 24
+            | (long)reader.FastByte() << 32
+            | (long)reader.FastByte() << 40
+            | (long)reader.FastByte() << 48
+            | (long)reader.FastByte() << 56;
+        return output;
     }
 }

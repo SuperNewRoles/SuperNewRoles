@@ -103,16 +103,22 @@ public static class NameText
         foreach (var player in ExPlayerControl.ExPlayerControls)
             UpdateVisiable(player);
     }
-    private static void UpdateVisiable(ExPlayerControl player)
+    public static void UpdateVisiable(ExPlayerControl player)
     {
         if (player == null || player.Player == null)
             return;
         bool visiable = player.Player.Visible && (ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead());
+        UpdateVisiable(player, visiable);
+    }
+    public static void UpdateVisiable(ExPlayerControl player, bool visiable)
+    {
+        if (player == null || player.Player == null)
+            return;
         player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.gameObject.SetActive(visiable);
     }
-    private static void UpdateAllNameInfo()
+    public static void UpdateAllNameInfo()
     {
         foreach (var player in ExPlayerControl.ExPlayerControls)
             UpdateNameInfo(player);
