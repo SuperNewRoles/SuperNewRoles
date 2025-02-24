@@ -84,6 +84,7 @@ Madmate,マッドメイト,Madmate,瘋狂者,瘋狂者
 BlackCat,黒猫,Black Cat,黑猫,黑貓
 Jackal,ジャッカル,Jackal,杰克,傑克
 Sidekick,サイドキック,Sidekick,侧翼,側翼
+
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
 SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以杀第三阵营,可以殺第三陣營
@@ -115,3 +116,10 @@ JackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时�
 JackalCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 JackalCanCreateSidekick,サイドキックを作成できる,Can Create Sidekick,杰克可以创建边缘队员,傑克可以創建邊緣隊員
 JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cooldown,杰克边缘队员冷却时间,傑克邊緣隊員冷卻時間
+
+# Bait Options
+BaitReportTime,通報の遅延,Report Delay,通報延遲,通報延遲
+BaitWarnKiller,キラーに警告する,Warn Killer,警告殺手,警告殺手
+BaitRandomDelay,遅延を少しランダムにする,Random Delay,遅延的隨機,遅延的隨機
+BaitDelayVariation,遅延の幅,Delay Variation,遅延的變化,遅延的變化
+

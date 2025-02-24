@@ -7,6 +7,7 @@ using Hazel;
 using InnerNet;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
@@ -235,6 +236,18 @@ public static class CustomRPCManager
             case string s:
                 writer.Write(s);
                 break;
+            case Color color:
+                writer.Write(color.r);
+                writer.Write(color.g);
+                writer.Write(color.b);
+                writer.Write(color.a);
+                break;
+            case Color32 color32:
+                writer.Write(color32.r);
+                writer.Write(color32.g);
+                writer.Write(color32.b);
+                writer.Write(color32.a);
+                break;
             case Dictionary<string, string> dict:
                 writer.Write(dict.Count);
                 foreach (var kvp in dict)
@@ -346,6 +359,8 @@ public static class CustomRPCManager
             Type t when t == typeof(Dictionary<byte, byte>) => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<string, byte>) => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
+            Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
+            Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
             _ => throw new Exception($"Invalid type: {type}")
         };
     }

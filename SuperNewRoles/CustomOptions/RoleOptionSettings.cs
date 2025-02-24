@@ -273,16 +273,14 @@ namespace SuperNewRoles.CustomOptions
         // スクロール位置をリセットするメソッド
         private static void ResetScrollPosition()
         {
-            if (RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller != null &&
-                RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner != null)
+            var settingsInner = RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner;
+            var settingsScroller = RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller;
+
+            if (settingsInner != null && settingsScroller != null)
             {
                 // スクロール位置を一番上にリセット
-                RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner.localPosition = new Vector3(
-                    RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner.localPosition.x,
-                    0f,
-                    RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner.localPosition.z
-                );
-                RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.UpdateScrollBars();
+                settingsInner.localPosition = new Vector3(settingsInner.localPosition.x, 0f, settingsInner.localPosition.z);
+                settingsScroller.UpdateScrollBars();
             }
         }
 
