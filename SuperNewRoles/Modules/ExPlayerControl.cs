@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using TMPro;
@@ -24,7 +25,8 @@ public class ExPlayerControl
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
     public int lastAbilityId { get; set; }
-
+    private FinalStatus? _finalStatus;
+    public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
     public ExPlayerControl(PlayerControl player)
     {
         this.Player = player;
@@ -42,6 +44,16 @@ public class ExPlayerControl
         if (player == null) return null;
         return ById(player.PlayerId);
     }
+    public static implicit operator ExPlayerControl(PlayerVoteArea player)
+    {
+        if (player == null) return null;
+        return ById(player.TargetPlayerId);
+    }
+    public static implicit operator ExPlayerControl(NetworkedPlayerInfo data)
+    {
+        if (data == null) return null;
+        return ById(data.PlayerId);
+    }
     public void SetRole(RoleId roleId)
     {
         Role = roleId;
@@ -50,6 +62,18 @@ public class ExPlayerControl
             role.OnSetRole(Player);
             roleBase = role;
         }
+    }
+    public void Disconnected()
+    {
+        _exPlayerControls.Remove(this);
+        _exPlayerControlsArray[PlayerId] = null;
+        foreach (var ability in PlayerAbilities)
+        {
+            ability.Detach();
+        }
+        PlayerAbilities.Clear();
+        PlayerAbilitiesDictionary.Clear();
+
     }
     public static void SetUpExPlayers()
     {
@@ -61,6 +85,12 @@ public class ExPlayerControl
             _exPlayerControlsArray[player.PlayerId] = _exPlayerControls[^1];
         }
         _localPlayer = _exPlayerControlsArray[PlayerControl.LocalPlayer.PlayerId];
+        DisconnectEvent.Instance.AddListener(x =>
+        {
+            ExPlayerControl exPlayer = (ExPlayerControl)x.disconnectedPlayer;
+            if (exPlayer != null)
+                exPlayer.Disconnected();
+        });
     }
     public static ExPlayerControl ById(byte playerId)
     {

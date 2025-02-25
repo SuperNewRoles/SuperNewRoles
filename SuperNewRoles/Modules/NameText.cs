@@ -85,28 +85,23 @@ public static class NameText
         string playerInfoText = "";
         string meetingInfoText = "";
         playerInfoText = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(player.Role.ToString()))}";
-        player.Data.Role.NameColor = player.roleBase.RoleColor;
-        player.Player.cosmetics.nameText.color = player.roleBase.RoleColor;
-        /*if (GhostRoleNames != "")
-        {
-            playerInfoText = $"{CustomOptionHolder.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
-        }
-
-        if (attributeRoles.Count != 0)
-        {
-            foreach (var kvp in attributeRoles)
-            {
-                if (!kvp.Value.Item2) continue;
-                playerInfoText += $" + {CustomOptionHolder.Cs(kvp.Value.Item1, kvp.Key)}";
-            }
-        }*/
         playerInfoText += TaskText;
         meetingInfoText = playerInfoText.Trim();
         player.PlayerInfoText.text = playerInfoText;
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead();
+        if (visiable)
+        {
+            player.Data.Role.NameColor = player.roleBase.RoleColor;
+            player.Player.cosmetics.nameText.color = player.roleBase.RoleColor;
+        }
+        else
+        {
+            player.Data.Role.NameColor = Color.white;
+            player.Player.cosmetics.nameText.color = Color.white;
+        }
         player.PlayerInfoText.gameObject.SetActive(visiable);
         if (player.MeetingInfoText != null)
-            player.MeetingInfoText.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText;
+            player.MeetingInfoText.gameObject.SetActive(visiable);
     }
     public static void RegisterNameTextUpdateEvent()
     {
@@ -120,8 +115,8 @@ public static class NameText
             UpdateNameInfo(x.killer);
             UpdateNameInfo(x.target);
         }));
-        WrapUpEvent.Instance.AddListener(new(x => UpdateAllNameInfo()));
-        MeetingStartEvent.Instance.AddListener(new(x => UpdateAllNameInfo()));
+        WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
+        MeetingStartEvent.Instance.AddListener(UpdateAllNameInfo);
     }
     private static void UpdateAllNameInfo()
     {

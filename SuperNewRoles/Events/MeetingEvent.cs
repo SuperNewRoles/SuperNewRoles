@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace SuperNewRoles.Events;
 
-public class MeetingStartEventData : IEventData
+public class CalledMeetingEventData : IEventData
 {
     public PlayerControl reporter { get; }
     public NetworkedPlayerInfo target { get; }
     public bool isEmergencyMeeting { get; }
 
-    public MeetingStartEventData(PlayerControl reporter, NetworkedPlayerInfo target, bool isEmergencyMeeting)
+    public CalledMeetingEventData(PlayerControl reporter, NetworkedPlayerInfo target, bool isEmergencyMeeting)
     {
         this.reporter = reporter;
         this.target = target;
@@ -20,16 +20,21 @@ public class MeetingStartEventData : IEventData
     }
 }
 
-
-public class MeetingStartEvent : EventTargetBase<MeetingStartEvent, MeetingStartEventData>
+public class CalledMeetingEvent : EventTargetBase<CalledMeetingEvent, CalledMeetingEventData>
 {
     public static void Invoke(PlayerControl reporter, NetworkedPlayerInfo target, bool isEmergencyMeeting)
     {
-        var data = new MeetingStartEventData(reporter, target, isEmergencyMeeting);
+        var data = new CalledMeetingEventData(reporter, target, isEmergencyMeeting);
         Instance.Awake(data);
     }
 }
-
+public class MeetingStartEvent : EventTargetBase<MeetingStartEvent>
+{
+    public static void Invoke()
+    {
+        Instance.Awake();
+    }
+}
 public class MeetingCloseEvent : EventTargetBase<MeetingCloseEvent>
 {
     public static void Invoke()
@@ -38,20 +43,45 @@ public class MeetingCloseEvent : EventTargetBase<MeetingCloseEvent>
     }
 }
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
-public static class MeetingStartPatch
+public class MeetingUpdateEvent : EventTargetBase<MeetingUpdateEvent>
 {
-    public static void Postfix(PlayerControl __instance, NetworkedPlayerInfo target)
+    public static void Invoke()
     {
-        MeetingStartEvent.Invoke(__instance, target, false);
+        Instance.Awake();
     }
 }
 
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
+public static class CalledMeetingPatch
+{
+    public static void Postfix(PlayerControl __instance, NetworkedPlayerInfo target)
+    {
+        CalledMeetingEvent.Invoke(__instance, target, false);
+    }
+}
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+public static class MeetingStartPatch
+{
+    public static void Postfix()
+    {
+        MeetingStartEvent.Invoke();
+    }
+}
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
 public static class MeetingClosePatch
 {
     public static void Postfix()
     {
         MeetingCloseEvent.Invoke();
+    }
+}
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+public static class MeetingUpdatePatch
+{
+    public static void Postfix()
+    {
+        MeetingUpdateEvent.Invoke();
     }
 }
