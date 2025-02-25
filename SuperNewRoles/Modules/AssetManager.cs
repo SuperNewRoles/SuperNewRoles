@@ -12,9 +12,6 @@ public static class AssetManager
     public enum AssetBundleType : byte
     {
         Sprite,
-        Sound,
-        WaveCannon,
-        BodyBuilder
     }
 
     // キャッシュ用のキー構造体を追加
@@ -96,7 +93,14 @@ public static class AssetManager
             return cached.TryCast<T>();
 
         var bundle = Bundles[typeKey];
-        var asset = bundle.LoadAsset<T>(path).DontUnload();
+        var loadedAsset = bundle.LoadAsset<T>(path);
+        if (loadedAsset == null)
+        {
+            Logger.Error($"Failed to load Asset: {path}", "GetAsset");
+            typeCache[cacheKey] = null;
+            return null;
+        }
+        var asset = loadedAsset.DontUnload();
         typeCache[cacheKey] = asset;
         return asset;
     }

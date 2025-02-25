@@ -14,6 +14,7 @@ public enum RoleId : short
     BlackCat,
     Jackal,
     Sidekick,
+    Balancer,
 }
 
 public enum QuoteMod : byte
