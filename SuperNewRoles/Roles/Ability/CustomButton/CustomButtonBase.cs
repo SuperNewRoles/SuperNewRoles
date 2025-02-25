@@ -28,20 +28,17 @@ public abstract class CustomButtonBase : AbilityBase
     private EventListener<WrapUpEventData> wrapUpEvent;
     private ActionButton actionButton;
     private IButtonEffect buttonEffect;
-    public abstract Vector3 PositionOffset { get; }
-    public abstract Vector3 LocalScale { get; }
     public virtual float Timer { get; set; }
     public abstract float DefaultTimer { get; }
     public abstract string buttonText { get; }
 
     public abstract Sprite Sprite { get; }
-    public abstract Color? color { get; }
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
 
     //TODO:未実装
     //Updateで感知するよりも、button押したのをトリガーにするべきな気がするけどそれは可能か？
     protected abstract KeyCode? hotkey { get; }
-    protected abstract int joystickkey { get; }
+    // protected abstract int joystickkey { get; }
 
     public abstract bool CheckIsAvailable();
     public virtual bool CheckHasButton() => !PlayerControl.LocalPlayer.Data.IsDead;

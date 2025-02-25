@@ -94,13 +94,9 @@ public class SheriffAbility : TargetCustomButtonBase, IAbilityCount
     public SheriffAbilityData SheriffAbilityData { get; }
     public override Color32 OutlineColor => Sheriff.Instance.RoleColor;
     public override float DefaultTimer => SheriffAbilityData.KillCooldown;
-    public override Vector3 PositionOffset => new(0f, 1f, 0f);
-    public override Vector3 LocalScale => Vector3.one;
     public override string buttonText => "Kill";
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("SheriffKillButton.png");
-    public override Color? color => Color.yellow;
     protected override KeyCode? hotkey => KeyCode.Q;
-    protected override int joystickkey => 0;
     public override bool OnlyCrewmates => false;
     public SheriffAbility(SheriffAbilityData sheriffAbilityData)
     {

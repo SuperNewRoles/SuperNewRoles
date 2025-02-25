@@ -19,15 +19,11 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     private readonly string _sidekickText;
     private readonly Func<ExPlayerControl, bool>? _isTargetable;
     public override Color32 OutlineColor => new Color32(0, 255, 255, 255);
-    public override Vector3 LocalScale => Vector3.one;
     public override Sprite Sprite => _sidekickSprite;
     public override string buttonText => _sidekickText;
-    public override Vector3 PositionOffset => new Vector3(0, 1.5f, 0);
     protected override KeyCode? hotkey => KeyCode.F;
-    protected override int joystickkey => 1;
     public override float DefaultTimer => _sidekickCooldown?.Invoke() ?? 0;
     public override bool OnlyCrewmates => false;
-    public override Color? color => Color.cyan;
     public override Func<ExPlayerControl, bool>? IsTargetable => _isTargetable;
     public bool SidekickCreated { get; private set; }
     public CustomSidekickButtonAbility(

@@ -11,13 +11,9 @@ public class CustomSaboAbility : CustomButtonBase
     public Func<bool> CanSabotage { get; }
     public Action SabotageCallback { get; }
 
-    public override Color? color => Palette.ImpostorRed;
-    public override Vector3 LocalScale => Vector3.one;
     public override Sprite Sprite => HudManager.Instance?.SabotageButton?.graphic?.sprite;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SabotageLabel);
-    public override Vector3 PositionOffset => new Vector3(0, 1.5f, 0);
     protected override KeyCode? hotkey => KeyCode.F;
-    protected override int joystickkey => 0;
     public override float DefaultTimer => 0f;
 
     public CustomSaboAbility(Func<bool> canSabotage, Action sabotageCallback = null)

@@ -22,14 +22,9 @@ public class AreaKillButtonAbility : CustomButtonBase
     public string CustomButtonText { get; }
     public Color? CustomColor { get; }
     public bool IsUsed { get; private set; }
-
-    public override Color? color => CustomColor ?? Palette.ImpostorRed;
-    public override Vector3 LocalScale => Vector3.one;
     public override Sprite Sprite => CustomSprite ?? HudManager.Instance?.KillButton?.graphic?.sprite;
     public override string buttonText => CustomButtonText ?? FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
-    public override Vector3 PositionOffset => new Vector3(0, 1f, 0);
     protected override KeyCode? hotkey => KeyCode.F;
-    protected override int joystickkey => 0;
     public override float DefaultTimer => KillCooldown?.Invoke() ?? 0;
 
     public AreaKillButtonAbility(

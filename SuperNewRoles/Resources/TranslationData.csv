@@ -87,6 +87,7 @@ Jackal,ジャッカル,Jackal,杰克,傑克
 Sidekick,サイドキック,Sidekick,側翼,側翼
 SelfBomber,自爆魔,Self Bomber,自爆者,自爆者
 Samurai,侍,Samurai,侍,侍
+WaveCannon,波動砲,Wave Cannon,波动炮,波動砲
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -155,3 +156,12 @@ SamuraiKillCooldown,斬撃クールダウン,Slash Cooldown,斬擊冷卻時間,�
 SamuraiKillRadius,斬撃範囲,Slash Radius,斬擊範圍,斬擊範圍
 SamuraiOnlyKillCrewmates,クルーメイトのみを斬撃する,Only Kill Crewmates,只能杀船员,只能殺船員
 SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
+
+# WaveCannon
+WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
+WaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
+WaveCannonBeamRadius,波動砲範囲,Wave Cannon Radius,波动炮范围,波動砲範圍
+WaveCannonOnlyKillCrewmates,クルーメイトのみを攻撃する,Only Kill Crewmates,只能杀船员,只能殺船員
+WaveCannonIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
+WaveCannonTargetPlayersInVents,ベント内のプレイヤーも攻撃する,Target Players In Vents,攻击通风口内的玩家,攻擊通風口內的玩家
+WaveCannonCanSabotage,サボタージュ可能,Can Sabotage,可以破坏,可以破壞
