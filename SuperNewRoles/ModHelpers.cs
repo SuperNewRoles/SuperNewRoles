@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using Hazel;
+using SuperNewRoles.Modules;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -110,4 +111,52 @@ public static class ModHelpers
     /// <summary>keyCodesが押されているか</summary>
     public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
         keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
+    public static ExileController.InitProperties GenerateExileInitProperties(NetworkedPlayerInfo player, bool voteTie)
+    {
+        ExileController.InitProperties initProperties = new();
+        if (player != null)
+        {
+            initProperties.outfit = player.Outfits[PlayerOutfitType.Default];
+            initProperties.networkedPlayer = player;
+            initProperties.isImpostor = player.Role.IsImpostor;
+        }
+        initProperties.voteTie = voteTie;
+        initProperties.confirmImpostor = GameManager.Instance.LogicOptions.GetConfirmImpostor();
+        initProperties.totalImpostorCount = GameData.Instance.AllPlayers.Count((NetworkedPlayerInfo p) => p.Role.IsImpostor);
+        initProperties.remainingImpostorCount = GameData.Instance.AllPlayers.Count((NetworkedPlayerInfo p) => p.Role.IsImpostor && !p.IsDead && !p.Disconnected);
+        if (player != null && player.Role.IsImpostor && !player.Disconnected)
+            initProperties.remainingImpostorCount--;
+        return initProperties;
+    }
+    public static bool IsMap(this MapNames map)
+    {
+        return GameOptionsManager.Instance.CurrentGameOptions.MapId == (byte)map;
+    }
+    public static void SetActiveAllObject(this IEnumerable<GameObject> gameObjects, bool active)
+    {
+        foreach (GameObject gameObject in gameObjects)
+        {
+            if (gameObject == null) continue;
+            gameObject.SetActive(active);
+        }
+    }
+    public static void SetActiveAllObject(this IEnumerable<GameObject> gameObjects, string name, bool active)
+    {
+        foreach (GameObject gameObject in gameObjects)
+        {
+            if (gameObject == null) continue;
+            if (gameObject.name != name) continue;
+            gameObject.SetActive(active);
+        }
+    }
+    public static IEnumerable<GameObject> GetChildren(this GameObject gameObject)
+    {
+        List<GameObject> list = new();
+        foreach (Transform child in gameObject.transform)
+        {
+            if (child.gameObject == null) continue;
+            list.Add(child.gameObject);
+        }
+        return list;
+    }
 }

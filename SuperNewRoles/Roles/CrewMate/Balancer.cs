@@ -14,6 +14,7 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 using TMPro;
+using HarmonyLib;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -45,11 +46,14 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private EventListener meetingCloseEventListener;
     private EventListener fixedUpdateEventListener;
     private EventListener updateEventListener;
+    private EventListener<VotingCompleteEventData> votingCompleteEventListener;
+    private EventListener<WrapUpEventData> wrapUpEventListener;
     private List<PlayerControl> targetPlayers = new();
     public bool isAbilityUsed = false;
     private PlayerControl targetPlayerLeft;
     private PlayerControl targetPlayerRight;
     private bool isDoubleExile = false;
+    public static BalancerAbility BalancingAbility { get; private set; }
 
     // 天秤ボタン
     private BalancerMeetingButton balancerButton;
@@ -80,6 +84,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private static float rotate;
     private static float openMADENOTimer;
     public static int PleaseVoteAnimIndex;
+    private static ExileController additionalExileController;
 
     public enum BalancerState
     {
@@ -100,6 +105,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerLeft = null;
         targetPlayerRight = null;
         isAbilityUsed = false;
+        BalancingAbility = null;
     }
 
     public override void AttachToLocalPlayer()
@@ -118,10 +124,27 @@ class BalancerAbility : AbilityBase, IAbilityCount
         meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
         // FixedUpdateイベントにアニメーション更新処理を登録
         fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
+        votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
+        wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
     private void Update()
     {
 
+    }
+    public void OnWrapUp(WrapUpEventData data)
+    {
+        if (BalancingAbility != null &&
+            BalancingAbility.isDoubleExile &&
+            ExileController.Instance != additionalExileController &&
+            additionalExileController != null)
+        {
+            if (additionalExileController.initData?.networkedPlayer?.Object != null)
+            {
+                ((ExPlayerControl)additionalExileController.initData.networkedPlayer.Object).CustomDeath(CustomDeathType.Exile);
+            }
+            GameObject.Destroy(additionalExileController.gameObject);
+            additionalExileController = null;
+        }
     }
     public override void Detach()
     {
@@ -147,24 +170,69 @@ class BalancerAbility : AbilityBase, IAbilityCount
             FixedUpdateEvent.Instance.RemoveListener(updateEventListener);
             updateEventListener = null;
         }
+        if (votingCompleteEventListener != null)
+        {
+            VotingCompleteEvent.Instance.RemoveListener(votingCompleteEventListener);
+            votingCompleteEventListener = null;
+        }
+        if (BalancingAbility != null && BalancingAbility == this && AmongUsClient.Instance.AmHost)
+        {
+            EndBalancing();
+        }
+        if (BalancingAbility != null && BalancingAbility == this)
+        {
+            ClearAndReload();
+        }
     }
-
+    public void EndBalancing()
+    {
+        if (BalancingAbility != null && BalancingAbility == this)
+        {
+            if (MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote))
+            {
+                foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+                {
+                    List<byte> targetIds = new() { targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId };
+                    if (!targetIds.Contains(area.VotedFor))
+                    {
+                        area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
+                    }
+                }
+                bool tie;
+                var max = MeetingHud.Instance.CalculateVotes().MaxPair(out tie);
+                PlayerControl exiled = null;
+                if (!tie)
+                {
+                    exiled = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == max.Key);
+                }
+                MeetingHud.VoterState[] array = new MeetingHud.VoterState[MeetingHud.Instance.playerStates.Length];
+                for (int i = 0; i < MeetingHud.Instance.playerStates.Length; i++)
+                {
+                    PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
+                    MeetingHud.VoterState voterState = default;
+                    voterState.VoterId = playerVoteArea.TargetPlayerId;
+                    voterState.VotedForId = playerVoteArea.VotedFor;
+                    array[i] = voterState;
+                }
+                MeetingHud.Instance.RpcVotingComplete(array, exiled?.Data, tie);
+            }
+        }
+    }
+    public void OnVotingComplete(VotingCompleteEventData data)
+    {
+        if (data.IsTie && isAbilityUsed)
+        {
+            isDoubleExile = true;
+        }
+    }
     public void OnMeetingStart()
     {
-        if (isAbilityUsed) return;
-
-        // 会議時にローカルプレイヤーが生存していて能力が使用可能なら
-        ExPlayerControl exPlayer = (ExPlayerControl)Player;
-        if (exPlayer.IsAlive() && HasCount)
-        {
-            // CustomMeetingButtonBaseが自動的にボタンを表示するので、ここでは特に何もする必要はない
-        }
+        ClearAndReload();
     }
 
     public void OnMeetingClose()
     {
         // 会議終了時の処理
-        ClearAndReload();
     }
     [CustomRPC]
     public static void RpcStartAbility(ExPlayerControl source, PlayerControl player1, PlayerControl player2, ulong abilityId)
@@ -183,6 +251,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         // 天秤能力の使用処理
         targetPlayerLeft = player1;
         targetPlayerRight = player2;
+        BalancingAbility = this;
 
         PleaseVoteAnimIndex = 0;
         MeetingHud.Instance.SkipVoteButton.gameObject.SetActive(false);
@@ -360,6 +429,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
     {
         // 天秤状態が「NotBalance」の場合は何もしない
         if (CurrentState == BalancerState.NotBalance) return;
+        if (MeetingHud.Instance.state != MeetingHud.VoteStates.Discussion &&
+            MeetingHud.Instance.state != MeetingHud.VoteStates.Voted &&
+            MeetingHud.Instance.state != MeetingHud.VoteStates.NotVoted) return;
 
         // 選択したプレイヤーが切断または死亡した場合の処理
         if (targetPlayerLeft == null || targetPlayerRight == null ||
@@ -382,6 +454,20 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 MeetingHud.Instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), target.Data, false);
             }
             return;
+        }
+        else if (AmongUsClient.Instance.AmHost)
+        {
+            bool isEndVoting = true;
+            foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+            {
+                if (!area.AmDead && !area.DidVote)
+                {
+                    isEndVoting = false;
+                    break;
+                }
+            }
+            if (isEndVoting)
+                EndBalancing();
         }
 
         // 状態に応じたアニメーション処理
@@ -653,6 +739,74 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 break;
         }
     }
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
+    public class BalancerDoubleExilePatch
+    {
+        static bool IsSec;
+        private static TMPro.TextMeshPro confirmImpostorSecondText;
+        public static bool Prefix(
+            ExileController __instance,
+            ref ExileController.InitProperties init)
+        {
+            if (BalancingAbility == null || !BalancingAbility.isDoubleExile)
+                return true;
+
+            __instance.initData = init;
+
+            string printStr = "";
+
+            if (BalancingAbility != null && BalancingAbility.isDoubleExile)
+            {
+                if (!IsSec)
+                {
+                    IsSec = true;
+                    __instance.initData.networkedPlayer = null;
+                    ExileController controller = GameObject.Instantiate(__instance, __instance.transform.parent);
+                    controller.Begin(ModHelpers.GenerateExileInitProperties(BalancingAbility.targetPlayerRight.Data, false));
+                    IsSec = false;
+                    controller.completeString = string.Empty;
+
+                    controller.Text.gameObject.SetActive(false);
+                    controller.Player.UpdateFromEitherPlayerDataOrCache(controller.initData.networkedPlayer, PlayerOutfitType.Default, PlayerMaterial.MaskType.Exile, includePet: false);
+                    controller.Player.ToggleName(active: false);
+                    SkinViewData skin = ShipStatus.Instance.CosmeticsCache.GetSkin(controller.initData.outfit.SkinId);
+                    controller.Player.FixSkinSprite(skin.EjectFrame);
+                    BalancerAbility.additionalExileController = controller;
+                    AudioClip sound = null;
+                    if (controller.EjectSound != null)
+                    {
+                        sound = new(controller.EjectSound.Pointer);
+                    }
+                    controller.EjectSound = null;
+                    void createlate(int index)
+                    {
+                        new LateTask(() => { controller.StopAllCoroutines(); controller.StartCoroutine(controller.Animate()); }, 0.025f + index * 0.025f);
+                    }
+                    new LateTask(() => controller.StartCoroutine(controller.Animate()), 0f);
+                    for (int i = 0; i < 23; i++)
+                    {
+                        createlate(i);
+                    }
+                    new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f);
+                    ExileController.Instance = __instance;
+                    init = ModHelpers.GenerateExileInitProperties(BalancingAbility.targetPlayerLeft.Data, false);
+                    if (ModHelpers.IsMap(MapNames.Fungle))
+                    {
+                        ModHelpers.SetActiveAllObject(controller.gameObject.GetChildren(), "RaftAnimation", false);
+                        controller.transform.localPosition = new(-3.75f, -0.2f, -60f);
+                    }
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
+        public static void Postfix(ExileController __instance, ExileController.InitProperties init)
+        {
+            if (BalancingAbility.isDoubleExile)
+                __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
+        }
+    }
 }
 
 // 天秤会議ボタンクラス
@@ -708,6 +862,8 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
         if (player.IsDead()) return false;
         if (firstSelectedTarget != null && firstSelectedTarget.PlayerId == player.PlayerId) return false;
+        if (parentAbility.isAbilityUsed) return false;
+        if (BalancerAbility.BalancingAbility != null) return false;
         return true;
     }
 
@@ -732,3 +888,4 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         }
     }
 }
+
