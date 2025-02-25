@@ -84,7 +84,9 @@ EvilGuesser,イビルゲッサー,Evil Guesser,内鬼猜疑者,內鬼猜疑者
 Madmate,マッドメイト,Madmate,瘋狂者,瘋狂者
 BlackCat,黒猫,Black Cat,黑猫,黑貓
 Jackal,ジャッカル,Jackal,杰克,傑克
-Sidekick,サイドキック,Sidekick,侧翼,側翼
+Sidekick,サイドキック,Sidekick,側翼,側翼
+SelfBomber,自爆魔,Self Bomber,自爆者,自爆者
+Samurai,侍,Samurai,侍,侍
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -139,3 +141,17 @@ BalancerTitleTextGetBalance,バランスを求めよ。,Seek balance.,寻求平�
 BalancerAbilityUseText,能力発動,Ability activated,能力發動,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
 BalancerDoubleExileText,どちらも追放された...,Both were exiled...,两名玩家都被驱逐了...,兩名玩家都被驅逐了...
+
+# SelfBomber
+SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
+SelfBomberCooldown,爆発クールダウン,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
+SelfBomberExplosionRadius,爆発範囲,Explosion Radius,爆炸范围,爆炸範圍
+SelfBomberOnlyKillCrewmates,クルーメイトのみを爆発する,Only Kill Crewmates,只能杀船员,只能殺船員
+SelfBomberIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
+
+# Samurai
+SamuraiKillButtonText,斬撃,Slash,斬擊,斬擊
+SamuraiKillCooldown,斬撃クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
+SamuraiKillRadius,斬撃範囲,Slash Radius,斬擊範圍,斬擊範圍
+SamuraiOnlyKillCrewmates,クルーメイトのみを斬撃する,Only Kill Crewmates,只能杀船员,只能殺船員
+SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁

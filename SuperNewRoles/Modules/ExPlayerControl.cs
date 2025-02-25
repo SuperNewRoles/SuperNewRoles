@@ -32,6 +32,7 @@ public class ExPlayerControl
     public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
 
     private CustomVentAbility _customVentAbility;
+    private CustomSaboAbility _customSaboAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
 
@@ -185,6 +186,8 @@ public class ExPlayerControl
         => roleBase != null ? IsCrewmate() : IsCrewmate();
     public bool CanUseVent()
         => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : IsImpostor();
+    public bool CanSabotage()
+        => _customSaboAbility != null ? _customSaboAbility.CheckCanSabotage() : IsImpostor();
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
@@ -200,6 +203,10 @@ public class ExPlayerControl
         else if (ability is ImpostorVisionAbility impostorVisionAbility)
         {
             _impostorVisionAbilities.Add(impostorVisionAbility);
+        }
+        else if (ability is CustomSaboAbility customSaboAbility)
+        {
+            _customSaboAbility = customSaboAbility;
         }
         ability.Attach(Player, abilityId, parent);
         _hasAbilityCache.Clear();
@@ -226,6 +233,10 @@ public class ExPlayerControl
         else if (ability is ImpostorVisionAbility impostorVisionAbility)
         {
             _impostorVisionAbilities.Remove(impostorVisionAbility);
+        }
+        else if (ability is CustomSaboAbility customSaboAbility)
+        {
+            _customSaboAbility = null;
         }
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);

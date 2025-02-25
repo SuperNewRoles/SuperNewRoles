@@ -15,6 +15,8 @@ public enum RoleId : short
     Jackal,
     Sidekick,
     Balancer,
+    Samurai,
+    SelfBomber,
 }
 
 public enum QuoteMod : byte

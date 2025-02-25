@@ -33,6 +33,9 @@ public static class CustomDeathExtensions
                     throw new Exception("Source is null");
                 source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 break;
+            case CustomDeathType.Suicide:
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -53,4 +56,5 @@ public enum CustomDeathType
     Exile,
     Kill,
     FalseCharge,
+    Suicide,
 }

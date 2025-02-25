@@ -185,6 +185,8 @@ public static class IntroCutscenePatch
                 NameText.UpdateNameInfo(player);
             }
             NameText.RegisterNameTextUpdateEvent();
+            SaboAndVent.RegisterListener();
+            FinalStatusListener.LoadListener();
         }
     }
 }
