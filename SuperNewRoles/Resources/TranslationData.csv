@@ -126,6 +126,7 @@ BaitDelayVariation,遅延の幅,Delay Variation,遅延的變化,遅延的變化
 
 # Balancer Options
 BalancerVoteTime,天秤会議時間,Balancer Vote Time,天秤会议时间,天秤會議時間
+BalancerUseCount,使用可能回数,Useable Count,可使用次数,可使用次數
 
 # Balancer UI Texts
 BalancerTitleTextEither,どちらかが追放される...,One of them will be exiled...,其中一个将被驱逐...,其中一個將被驅逐...

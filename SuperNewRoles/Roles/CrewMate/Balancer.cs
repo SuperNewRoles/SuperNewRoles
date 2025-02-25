@@ -37,6 +37,10 @@ class Balancer : RoleBase<Balancer>
     [CustomOptionFloat("BalancerVoteTime", 0f, 180f, 2.5f, 30f)]
     public static float BalancerVoteTime;
 
+    // 天秤使用回数
+    [CustomOptionInt("BalancerUseCount", 1, 10, 1, 1)]
+    public static int BalancerUseCount;
+
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 }
 
@@ -110,7 +114,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
     public override void AttachToLocalPlayer()
     {
-        Count = 1; // 一会議に一回のみ使用可能
+        Count = Balancer.BalancerUseCount; // 設定された回数だけ使用可能
         updateEventListener = FixedUpdateEvent.Instance.AddListener(Update);
     }
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
