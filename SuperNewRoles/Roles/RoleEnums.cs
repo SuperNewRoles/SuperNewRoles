@@ -14,6 +14,7 @@ public enum RoleId : short
     BlackCat,
     Jackal,
     Sidekick,
+    JackalFriends,
     Balancer,
     Samurai,
     SelfBomber,

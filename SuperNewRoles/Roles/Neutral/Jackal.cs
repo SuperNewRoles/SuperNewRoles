@@ -18,7 +18,10 @@ class Jackal : RoleBase<Jackal>
             killCooldown: JackalKillCooldown,
             canUseVent: JackalCanUseVent,
             canCreateSidekick: JackalCanCreateSidekick,
-            sidekickCooldown: JackalSidekickCooldown
+            sidekickCooldown: JackalSidekickCooldown,
+            isImpostorVision: JackalImpostorVision,
+            isInfiniteJackal: JackalInfiniteJackal,
+            sidekickType: JackalSidekickType
         ))
     ];
 
@@ -31,16 +34,31 @@ class Jackal : RoleBase<Jackal>
     public override TeamTag TeamTag { get; } = TeamTag.Jackal;
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
-    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick];
-    [CustomOptionFloat("JackalKillCooldown", 10f, 60f, 2.5f, 30f)]
+    public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends];
+
+    [CustomOptionFloat("JackalKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float JackalKillCooldown;
 
     [CustomOptionBool("JackalCanUseVent", true)]
     public static bool JackalCanUseVent;
 
+    [CustomOptionBool("JackalImpostorVision", true)]
+    public static bool JackalImpostorVision;
+
     [CustomOptionBool("JackalCanCreateSidekick", true)]
     public static bool JackalCanCreateSidekick;
 
-    [CustomOptionFloat("JackalSidekickCooldown", 10f, 60f, 2.5f, 30f, parentFieldName: nameof(JackalCanCreateSidekick))]
+    [CustomOptionFloat("JackalSidekickCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(JackalCanCreateSidekick))]
     public static float JackalSidekickCooldown;
+
+    [CustomOptionBool("JackalInfiniteJackal", true)]
+    public static bool JackalInfiniteJackal;
+
+    [CustomOptionSelect("JackalSidekickType", typeof(JackalSidekickType), "JackalSidekickType.", parentFieldName: nameof(JackalCanCreateSidekick))]
+    public static JackalSidekickType JackalSidekickType;
+}
+public enum JackalSidekickType
+{
+    Sidekick = RoleId.Sidekick,
+    Friends = RoleId.JackalFriends,
 }

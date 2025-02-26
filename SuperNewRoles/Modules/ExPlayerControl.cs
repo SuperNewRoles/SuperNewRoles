@@ -165,18 +165,16 @@ public class ExPlayerControl
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()
         => IsImpostor() || IsMadRoles();
-    // TODO: 後でMADロールを追加したらここに追加する
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));
     public bool IsFriendRoles()
-        => false;
+        => roleBase?.Role == RoleId.JackalFriends;
     public bool IsJackal()
         => HasAbility(nameof(JackalAbility));
     public bool IsSidekick()
         => HasAbility(nameof(JSidekickAbility));
     public bool IsJackalTeam()
-        => IsJackal() || IsSidekick();
-    // TODO: 後で追加する
+        => IsJackal() || IsSidekick() || IsFriendRoles();
     public bool IsLovers()
         => false;
     public bool IsDead()

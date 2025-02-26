@@ -3,6 +3,8 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using AmongUs.GameOptions;
+using SuperNewRoles.Roles.Neutral;
+using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -13,6 +15,7 @@ public class JackalAbility : AbilityBase
     public CustomVentAbility VentAbility { get; private set; }
     public CustomSidekickButtonAbility SidekickAbility { get; private set; }
     public KnowOtherAbility KnowJackalAbility { get; private set; }
+    public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
 
     public JackalAbility(JackalData jackData)
     {
@@ -35,17 +38,32 @@ public class JackalAbility : AbilityBase
         SidekickAbility = new CustomSidekickButtonAbility(
             () => JackData.CanCreateSidekick,
             () => JackData.SidekickCooldown,
-            () => RoleId.Sidekick,
+            () => JackData.SidekickType == JackalSidekickType.Friends ? RoleId.JackalFriends : RoleId.Sidekick,
             () => RoleTypes.Crewmate,
             AssetManager.GetAsset<Sprite>("JackalSidekickButton.png"),
             ModTranslation.GetString("SidekickButtonText"),
             (player) => !player.IsJackalTeam(),
-            sidekickedPromoteData: new(RoleId.Jackal, RoleTypes.Crewmate)
+            sidekickedPromoteData: JackData.SidekickType == JackalSidekickType.Sidekick ? new(RoleId.Jackal, RoleTypes.Crewmate) : null,
+            onSidekickCreated: (player) =>
+            {
+                if (JackData.SidekickType == JackalSidekickType.Sidekick)
+                {
+                    var jsidekick = player.PlayerAbilities.FirstOrDefault(x => x is JSidekickAbility);
+                    if (jsidekick is JSidekickAbility jsidekickAbility)
+                    {
+                        JSidekickAbility.RpcSetCanInfinite(JackData.IsInfiniteJackal, jsidekickAbility.AbilityId, player);
+                    }
+                }
+            }
         );
 
         KnowJackalAbility = new KnowOtherAbility(
             (player) => player.IsJackalTeam(),
             () => true
+        );
+
+        ImpostorVisionAbility = new ImpostorVisionAbility(
+            () => JackData.IsImpostorVision
         );
 
         ExPlayerControl exPlayer = (ExPlayerControl)player;
@@ -54,6 +72,7 @@ public class JackalAbility : AbilityBase
         exPlayer.AttachAbility(VentAbility, parentAbility);
         exPlayer.AttachAbility(SidekickAbility, parentAbility);
         exPlayer.AttachAbility(KnowJackalAbility, parentAbility);
+        exPlayer.AttachAbility(ImpostorVisionAbility, parentAbility);
 
         base.Attach(player, abilityId, parent);
     }
@@ -68,15 +87,29 @@ public class JackalData
     public bool CanKill { get; }
     public float KillCooldown { get; }
     public bool CanUseVent { get; }
-    public bool CanCreateSidekick { get; }
+    public bool CanCreateSidekick { get; set; }
     public float SidekickCooldown { get; }
+    public bool IsImpostorVision { get; }
+    public bool IsInfiniteJackal { get; }
+    public JackalSidekickType SidekickType { get; }
 
-    public JackalData(bool canKill, float killCooldown, bool canUseVent, bool canCreateSidekick, float sidekickCooldown)
+    public JackalData(
+        bool canKill,
+        float killCooldown,
+        bool canUseVent,
+        bool canCreateSidekick,
+        float sidekickCooldown,
+        bool isImpostorVision = true,
+        bool isInfiniteJackal = true,
+        JackalSidekickType sidekickType = JackalSidekickType.Sidekick)
     {
         CanKill = canKill;
         KillCooldown = killCooldown;
         CanUseVent = canUseVent;
         CanCreateSidekick = canCreateSidekick;
         SidekickCooldown = sidekickCooldown;
+        IsImpostorVision = isImpostorVision;
+        IsInfiniteJackal = isInfiniteJackal;
+        SidekickType = sidekickType;
     }
 }
