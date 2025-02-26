@@ -22,7 +22,7 @@ class Balancer : RoleBase<Balancer>
 {
     public override RoleId Role { get; } = RoleId.Balancer;
     public override Color32 RoleColor { get; } = new(255, 128, 0, byte.MaxValue);
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new BalancerAbility()];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new BalancerAbility(BalancerUseCount)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -99,7 +99,10 @@ class BalancerAbility : AbilityBase, IAbilityCount
         WaitVote
     }
     public BalancerState CurrentState { get; private set; } = BalancerState.NotBalance;
-
+    public BalancerAbility(int useCount)
+    {
+        Count = useCount; // 設定された回数だけ使用可能
+    }
     // 天秤の状態をリセットするメソッド
     private void ClearAndReload()
     {
@@ -110,11 +113,16 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerRight = null;
         isAbilityUsed = false;
         BalancingAbility = null;
+
+        // 天秤ボタンの状態もリセット
+        if (balancerButton != null)
+        {
+            balancerButton.firstSelectedTarget = null;
+        }
     }
 
     public override void AttachToLocalPlayer()
     {
-        Count = Balancer.BalancerUseCount; // 設定された回数だけ使用可能
         updateEventListener = FixedUpdateEvent.Instance.AddListener(Update);
     }
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
@@ -261,6 +269,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
         MeetingHud.Instance.SkipVoteButton.gameObject.SetActive(false);
         // 能力使用回数を減らす
         isAbilityUsed = true;
+        // 注：UseAbilityCountメソッドは既にOnClickで呼び出されているため、
+        // ここでは単にフラグを設定するだけ
 
         // 会議時間を変更
         MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - Balancer.BalancerVoteTime - 6.5f;
@@ -818,7 +828,7 @@ class BalancerMeetingButton : CustomMeetingButtonBase
 {
     private BalancerAbility parentAbility;
     private Sprite _sprite;
-    private PlayerControl firstSelectedTarget;
+    public PlayerControl firstSelectedTarget;
 
     public BalancerMeetingButton(BalancerAbility parent)
     {
@@ -866,9 +876,12 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
         if (player.IsDead()) return false;
         if (firstSelectedTarget != null && firstSelectedTarget.PlayerId == player.PlayerId) return false;
+        // 現在の会議で既に能力を使用している場合はボタンを表示しない
         if (parentAbility.isAbilityUsed) return false;
+        // 既に天秤会議が進行中の場合はボタンを表示しない
         if (BalancerAbility.BalancingAbility != null) return false;
-        return true;
+        // 能力使用回数が残っているかどうかをチェック
+        return parentAbility.HasCount;
     }
 
     // ボタンがクリックされた時の処理
