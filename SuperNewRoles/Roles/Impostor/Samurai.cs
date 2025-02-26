@@ -25,7 +25,10 @@ class Samurai : RoleBase<Samurai>
             customDeathType: CustomDeathType.Samurai
         ),
         () => new CustomSaboAbility(
-            canSabotage: () => false
+            canSabotage: () => SamuraiCanSabotage
+        ),
+        () => new CustomVentAbility(
+            canUseVent: () => SamuraiCanUseVent
         )
     ];
 
@@ -50,4 +53,10 @@ class Samurai : RoleBase<Samurai>
 
     [CustomOptionBool("SamuraiIgnoreWalls", false)]
     public static bool SamuraiIgnoreWalls;
+
+    [CustomOptionBool("SamuraiCanUseVent", true)]
+    public static bool SamuraiCanUseVent;
+
+    [CustomOptionBool("SamuraiCanSabotage", true)]
+    public static bool SamuraiCanSabotage;
 }

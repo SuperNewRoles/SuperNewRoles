@@ -166,6 +166,8 @@ SamuraiKillCooldown,必殺技クールダウン,Slash Cooldown,斬擊冷卻時�
 SamuraiKillRadius,必殺技の範囲,Slash Radius,斬擊範圍,斬擊範圍
 SamuraiOnlyKillCrewmates,クルーメイトのみを必殺技する,Only Kill Crewmates,只能杀船员,只能殺船員
 SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
+SamuraiCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+SamuraiCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 
 # WaveCannon
 WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
