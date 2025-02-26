@@ -1,6 +1,8 @@
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.CrewMate;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -64,7 +66,13 @@ public static class NameText
         catch { }
         string playerInfoText = "";
         string meetingInfoText = "";
-        playerInfoText = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(player.Role.ToString()))}";
+        string roleName = player.roleBase.Role.ToString();
+        // ベスト冤罪ヤーは生きてる時は自覚できない
+        if (player.roleBase.Role == RoleId.BestFalseCharge && player.AmOwner && player.IsDead())
+        {
+            roleName = Crewmate.Instance.Role.ToString();
+        }
+        playerInfoText = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(roleName))}";
         playerInfoText += TaskText;
         meetingInfoText = playerInfoText.Trim();
         player.PlayerInfoText.text = playerInfoText;
