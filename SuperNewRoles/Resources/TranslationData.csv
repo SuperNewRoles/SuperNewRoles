@@ -84,6 +84,7 @@ EvilGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次�
 EvilGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议射击次数,每次會議射擊次數
 EvilGuesserCannotShootImpostor,インポスターを打てない,Cannot Shoot Impostor,不能射击内鬼,不能射擊內鬼
 EvilGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射击星星,不能射擊星星
+EvilGuesserCannotShootCrewmate,クルーメイトを打てない,Cannot Shoot Crewmate,不能射击船员,不能射擊船員
 
 # Guesser UI
 NextPage,次へ,Next,下一页,下一頁
