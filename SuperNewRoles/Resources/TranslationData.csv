@@ -63,6 +63,9 @@ FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.Disonnected,切断,Disonnected,切断,切斷
 FinalStatus.Exile,追放,Exile,追放,追放
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
+FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
+FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
+FinalStatus.Suicide,自殺,Suicide,自殺,自殺
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
