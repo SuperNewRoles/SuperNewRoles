@@ -17,6 +17,9 @@ public enum FinalStatus
     WaveCannon,
     FalseCharge,
     Suicide,
+    Samurai,
+    BombBySelfBomb,
+    SelfBomb,
 }
 
 public static class FinalStatusListener

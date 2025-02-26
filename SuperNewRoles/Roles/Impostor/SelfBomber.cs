@@ -23,10 +23,11 @@ class SelfBomber : RoleBase<SelfBomber>
             killedCallback: (killedPlayers) => {
                 // 自分自身も爆発に巻き込まれて死亡
                 var localPlayer = ExPlayerControl.LocalPlayer;
-                localPlayer.RpcCustomDeath(localPlayer, CustomDeathType.Suicide);
+                localPlayer.RpcCustomDeath(localPlayer, CustomDeathType.SelfBomb);
             },
             customSprite: AssetManager.GetAsset<Sprite>("SelfBomberBomButton.png"),
-            customButtonText: ModTranslation.GetString("SelfBomberKillButtonText")
+            customButtonText: ModTranslation.GetString("SelfBomberKillButtonText"),
+            customDeathType: CustomDeathType.BombBySelfBomb
         )
     ];
 

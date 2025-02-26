@@ -66,6 +66,9 @@ FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
 FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
 FinalStatus.Suicide,自殺,Suicide,自殺,自殺
+FinalStatus.Samurai,サムライ,Samurai,侍,侍
+FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
+FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
@@ -158,10 +161,10 @@ SelfBomberOnlyKillCrewmates,クルーメイトのみを爆発する,Only Kill Cr
 SelfBomberIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 
 # Samurai
-SamuraiKillButtonText,斬撃,Slash,斬擊,斬擊
-SamuraiKillCooldown,斬撃クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
-SamuraiKillRadius,斬撃範囲,Slash Radius,斬擊範圍,斬擊範圍
-SamuraiOnlyKillCrewmates,クルーメイトのみを斬撃する,Only Kill Crewmates,只能杀船员,只能殺船員
+SamuraiKillButtonText,必殺技,Slash,斬擊,斬擊
+SamuraiKillCooldown,必殺技クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
+SamuraiKillRadius,必殺技の範囲,Slash Radius,斬擊範圍,斬擊範圍
+SamuraiOnlyKillCrewmates,クルーメイトのみを必殺技する,Only Kill Crewmates,只能杀船员,只能殺船員
 SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 
 # WaveCannon

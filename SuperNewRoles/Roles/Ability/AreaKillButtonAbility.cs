@@ -21,6 +21,7 @@ public class AreaKillButtonAbility : CustomButtonBase
     public Sprite CustomSprite { get; }
     public string CustomButtonText { get; }
     public Color? CustomColor { get; }
+    public CustomDeathType CustomDeathType { get; }
     public bool IsUsed { get; private set; }
     public override Sprite Sprite => CustomSprite ?? HudManager.Instance?.KillButton?.graphic?.sprite;
     public override string buttonText => CustomButtonText ?? FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
@@ -39,7 +40,8 @@ public class AreaKillButtonAbility : CustomButtonBase
         Action<List<ExPlayerControl>> killedCallback = null,
         Sprite customSprite = null,
         string customButtonText = null,
-        Color? customColor = null)
+        Color? customColor = null,
+        CustomDeathType customDeathType = CustomDeathType.Kill)
     {
         CanKill = canKill;
         KillRadius = killRadius;
@@ -53,7 +55,7 @@ public class AreaKillButtonAbility : CustomButtonBase
         CustomSprite = customSprite;
         CustomButtonText = customButtonText;
         CustomColor = customColor;
-
+        CustomDeathType = customDeathType;
         IsUsed = false;
     }
 
@@ -93,7 +95,7 @@ public class AreaKillButtonAbility : CustomButtonBase
                 Constants.ShipAndObjectsMask)))
             {
                 // キルを実行
-                localPlayer.RpcCustomDeath(player, CustomDeathType.Kill);
+                localPlayer.RpcCustomDeath(player, CustomDeathType);
                 killedPlayers.Add(player);
 
                 // 最大キル数に達したらループを抜ける

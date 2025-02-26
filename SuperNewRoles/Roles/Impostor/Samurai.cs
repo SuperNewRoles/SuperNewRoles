@@ -21,7 +21,8 @@ class Samurai : RoleBase<Samurai>
             targetPlayersInVents: () => true,
             ignoreWalls: () => SamuraiIgnoreWalls,
             customSprite: AssetManager.GetAsset<Sprite>("SamuraiButton.png"),
-            customButtonText: ModTranslation.GetString("SamuraiKillButtonText")
+            customButtonText: ModTranslation.GetString("SamuraiKillButtonText"),
+            customDeathType: CustomDeathType.Samurai
         ),
         () => new CustomSaboAbility(
             canSabotage: () => false
