@@ -187,6 +187,7 @@ public static class IntroCutscenePatch
             NameText.RegisterNameTextUpdateEvent();
             SaboAndVent.RegisterListener();
             FinalStatusListener.LoadListener();
+            CustomDeathExtensions.Register();
         }
     }
 }

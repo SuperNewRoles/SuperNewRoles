@@ -13,7 +13,7 @@ class WaveCannon : RoleBase<WaveCannon>
     public override RoleId Role { get; } = RoleId.WaveCannon;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new WaveCannonAbility(WaveCannonCooldown)
+        () => new WaveCannonAbility(WaveCannonCooldown, WaveCannonDuration)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
@@ -26,7 +26,15 @@ class WaveCannon : RoleBase<WaveCannon>
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
-    [CustomOptionFloat("WaveCannonCooldown", 10f, 60f, 2.5f, 30f)]
+    [CustomOptionFloat("WaveCannonCooldown", 2.5f, 180f, 2.5f, 20f)]
     public static float WaveCannonCooldown;
+
+    [CustomOptionFloat("WaveCannonDuration", 0.5f, 15f, 0.5f, 3f)]
+    public static float WaveCannonDuration;
+
+    [CustomOptionBool("WaveCannonSyncKillCoolTime", false)]
+    public static bool IsSyncKillCoolTime;
+    [CustomOptionSelect("WaveCannonAnimationType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.")]
+    public static WaveCannonTypeForOption AnimationTypeOption;
 }
 

@@ -192,6 +192,10 @@ public class ExPlayerControl
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
     }
+    public T GetAbility<T>(ulong abilityId) where T : AbilityBase
+    {
+        return GetAbility(abilityId) as T;
+    }
     private void AttachAbility(AbilityBase ability, ulong abilityId, AbilityParentBase parent)
     {
         PlayerAbilities.Add(ability);

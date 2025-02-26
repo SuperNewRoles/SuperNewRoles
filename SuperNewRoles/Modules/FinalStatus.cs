@@ -13,6 +13,7 @@ public enum FinalStatus
     GuesserKill,
     GuesserMisFire,
     Sabotage,
+    WaveCannon,
 }
 
 public static class FinalStatusListener

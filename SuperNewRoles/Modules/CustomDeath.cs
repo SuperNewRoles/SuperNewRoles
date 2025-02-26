@@ -36,6 +36,10 @@ public static class CustomDeathExtensions
             case CustomDeathType.Suicide:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
                 break;
+            case CustomDeathType.WaveCannon:
+                player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                player.FinalStatus = FinalStatus.WaveCannon;
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -57,4 +61,5 @@ public enum CustomDeathType
     Kill,
     FalseCharge,
     Suicide,
+    WaveCannon,
 }

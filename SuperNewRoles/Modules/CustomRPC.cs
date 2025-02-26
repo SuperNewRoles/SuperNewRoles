@@ -15,8 +15,11 @@ namespace SuperNewRoles.Modules;
 [AttributeUsage(AttributeTargets.Method)]
 public class CustomRPCAttribute : Attribute
 {
-
-    public CustomRPCAttribute() { }
+    public bool OnlyOtherPlayer { get; }
+    public CustomRPCAttribute(bool onlyOtherPlayer = false)
+    {
+        OnlyOtherPlayer = onlyOtherPlayer;
+    }
 }
 
 /// <summary>
@@ -124,8 +127,9 @@ public static class CustomRPCManager
 
             // RPC送信
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            Logger.Info($"Sent RPC: {__originalMethod.Name}");
-            return true;
+            var attr = __originalMethod.GetCustomAttribute<CustomRPCAttribute>();
+            Logger.Info($"Sent RPC: {__originalMethod.Name} {attr?.OnlyOtherPlayer}");
+            return !attr?.OnlyOtherPlayer ?? true;
         }
         Logger.Info($"Registering RPC: {method.Name} {id}");
         var newMethod = NewMethod;

@@ -62,6 +62,7 @@ FinalStatus.Dead,死亡,Dead,死亡,死亡
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.Disonnected,切断,Disonnected,切断,切斷
 FinalStatus.Exile,追放,Exile,追放,追放
+FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
@@ -160,8 +161,10 @@ SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 # WaveCannon
 WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
 WaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
-WaveCannonBeamRadius,波動砲範囲,Wave Cannon Radius,波动炮范围,波動砲範圍
-WaveCannonOnlyKillCrewmates,クルーメイトのみを攻撃する,Only Kill Crewmates,只能杀船员,只能殺船員
-WaveCannonIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
-WaveCannonTargetPlayersInVents,ベント内のプレイヤーも攻撃する,Target Players In Vents,攻击通风口内的玩家,攻擊通風口內的玩家
-WaveCannonCanSabotage,サボタージュ可能,Can Sabotage,可以破坏,可以破壞
+WaveCannonDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
+WaveCannonSyncKillCoolTime,波動砲とキルボタンのクールタイムを同期する,Sync the Wave Cannon and Kill Button Cooldowns,同步波动炮和击杀按钮冷却时间,同步波動砲和殺人按鈕冷卻時間
+WaveCannonAnimationType,アニメーションタイプ,Animation Type,动画类型,動畫類型
+WaveCannonAnimationType.Tank,戦車,Tank,战车,戰車
+WaveCannonAnimationType.Cannon,大砲,Cannon,大炮,大砲
+WaveCannonAnimationType.Santa,サンタ,Santa,圣诞老人,聖誕老人
+WaveCannonAnimationType.Bullet,弾丸,Bullet,子弹,子彈
