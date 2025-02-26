@@ -332,7 +332,7 @@ public static class OnGameEndPatch
             case CustomGameOverReason.Haison:
                 return GetHaisonWinInfo(emptyReviveList);
             case CustomGameOverReason.JackalWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive() && p.IsJackal()),
+                return (ExPlayerControl.ExPlayerControls.Where(p => p.IsJackal()),
                         WinCondition.JackalWin,
                         emptyReviveList);
             default:
@@ -343,14 +343,14 @@ public static class OnGameEndPatch
 
     private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetCrewmateWinInfo(List<NetworkedPlayerInfo> reviveList)
     {
-        return (ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive() && p.IsCrewmate()),
+        return (ExPlayerControl.ExPlayerControls.Where(p => p.IsCrewmate()),
                 WinCondition.CrewmateWin,
                 reviveList);
     }
 
     private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetImpostorWinInfo(List<NetworkedPlayerInfo> reviveList)
     {
-        return (ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive() && p.IsImpostorWinTeam()),
+        return (ExPlayerControl.ExPlayerControls.Where(p => p.IsImpostorWinTeam()),
                 WinCondition.ImpostorWin,
                 reviveList);
     }
