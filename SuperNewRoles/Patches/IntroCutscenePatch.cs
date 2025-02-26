@@ -188,6 +188,18 @@ public static class IntroCutscenePatch
             SaboAndVent.RegisterListener();
             FinalStatusListener.LoadListener();
             CustomDeathExtensions.Register();
+
+            ReAssignTasks();
+        }
+        private static void ReAssignTasks()
+        {
+            foreach (var player in ExPlayerControl.ExPlayerControls)
+            {
+                if (player.IsTaskTriggerRole())
+                {
+                    player.CustomTaskAbility.AssignTasks();
+                }
+            }
         }
     }
 }

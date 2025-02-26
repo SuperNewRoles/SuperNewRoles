@@ -59,7 +59,7 @@ public static class NameText
         {
             if (player.IsTaskTriggerRole())
             {
-                var (complete, all) = ModHelpers.TaskCompletedData(player.Data);
+                var (complete, all) = player.GetAllTaskForShowProgress();
                 TaskText += ModHelpers.Cs(Color.yellow, "(" + (ModHelpers.IsComms() ? "?" : complete.ToString()) + "/" + all.ToString() + ")");
             }
         }

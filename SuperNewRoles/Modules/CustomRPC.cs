@@ -318,6 +318,13 @@ public static class CustomRPCManager
             case InnerNetObject innerNetObject:
                 writer.Write(innerNetObject.NetId);
                 break;
+            case List<byte> byteList:
+                writer.Write(byteList.Count);
+                foreach (var b in byteList)
+                {
+                    writer.Write(b);
+                }
+                break;
             default:
                 throw new Exception($"Invalid type: {obj.GetType()}");
         }
@@ -365,6 +372,7 @@ public static class CustomRPCManager
             Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
             Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
+            Type t when t == typeof(List<byte>) => ReadByteList(reader),
             _ => throw new Exception($"Invalid type: {type}")
         };
     }
@@ -414,5 +422,19 @@ public static class CustomRPCManager
             array[i] = ExPlayerControl.ById(reader.ReadByte());
         }
         return array;
+    }
+
+    /// <summary>
+    /// List<byte>を読み取る
+    /// </summary>
+    private static List<byte> ReadByteList(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        List<byte> list = new List<byte>(count);
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(reader.ReadByte());
+        }
+        return list;
     }
 }

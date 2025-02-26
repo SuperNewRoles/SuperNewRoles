@@ -116,6 +116,8 @@ MadmateNeededTaskCount,必要タスク数,Required Task Count,需要完成任务
 MadmateCouldUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 MadmateHasImpostorVision,インポスターの視界,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 BlackCatRevengeNotImpostorExile,インポスターを道連れしない,Do Not Exile Impostor,不带内鬼出局,不帶內鬼出局
+MadmateIsSpecialTasks,タスク数を変更する,Change Task Count,改变任务数,改變任務數
+MadmateSpecialTasks,タスク数,Task Count,任务数,任務數
 
 # Jackal Options
 JackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間

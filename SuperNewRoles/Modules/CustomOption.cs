@@ -177,7 +177,17 @@ public static class CustomOptionManager
     private static void LinkParentOptions()
     {
         // 各カスタムオプションをフィールド名をキーとするディクショナリに変換してキャッシュ
-        var optionsByFieldName = CustomOptions.ToDictionary(o => o.FieldInfo.Name);
+        var taskOptionNames = new[]
+        {
+            nameof(CustomOptionTaskAttribute.CommonValue),
+            nameof(CustomOptionTaskAttribute.LongValue),
+            nameof(CustomOptionTaskAttribute.ShortValue)
+        };
+
+        var optionsByFieldName = CustomOptions
+            .Where(o => !taskOptionNames.Contains(o.FieldInfo.Name))
+            .ToDictionary(o => o.FieldInfo.Name);
+
         foreach (var option in CustomOptions)
         {
             if (!string.IsNullOrEmpty(option.Attribute.ParentFieldName))

@@ -12,7 +12,8 @@ class Madmate : RoleBase<Madmate>
 {
     public override RoleId Role { get; } = RoleId.Madmate;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new MadmateAbility(new(MadmateHasImpostorVision, MadmateCouldUseVent, MadmateCanKnowImpostors, MadmateNeededTaskCount))];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new MadmateAbility(
+        new(MadmateHasImpostorVision, MadmateCouldUseVent, MadmateCanKnowImpostors, MadmateNeededTaskCount, MadmateIsSpecialTasks ? MadmateSpecialTasks : null))];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
@@ -28,6 +29,11 @@ class Madmate : RoleBase<Madmate>
     public static bool MadmateCanKnowImpostors;
     [CustomOptionInt("MadmateNeededTaskCount", 0, 30, 1, 6, parentFieldName: nameof(MadmateCanKnowImpostors))]
     public static int MadmateNeededTaskCount;
+    [CustomOptionBool("MadmateIsSpecialTasks", false)]
+    public static bool MadmateIsSpecialTasks;
+    [CustomOptionTask("MadmateSpecialTasks", 1, 1, 1, parentFieldName: nameof(MadmateIsSpecialTasks))]
+    public static TaskOptionData MadmateSpecialTasks;
+
     [CustomOptionBool("MadmateCouldUseVent", false)]
     public static bool MadmateCouldUseVent;
     [CustomOptionBool("MadmateHasImpostorVision", false)]

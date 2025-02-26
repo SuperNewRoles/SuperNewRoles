@@ -18,7 +18,7 @@ class BlackCat : RoleBase<BlackCat>
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
 
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new MadmateAbility(new(BlackCatHasImpostorVision, BlackCatCouldUseVent, BlackCatCanKnowImpostors, BlackCatNeededTaskCount)),
+        () => new MadmateAbility(new(BlackCatHasImpostorVision, BlackCatCouldUseVent, BlackCatCanKnowImpostors, BlackCatNeededTaskCount, BlackCatIsSpecialTasks ? BlackCatSpecialTasks : null)),
         () => new RevengeExileAbility(BlackCatRevengeNotImpostorExile)
     ];
 
@@ -35,17 +35,22 @@ class BlackCat : RoleBase<BlackCat>
     [CustomOptionBool("BlackCatRevengeNotImpostorExile", true)]
     public static bool BlackCatRevengeNotImpostorExile;
 
-    [CustomOptionBool("MadmateCouldUseVent", true)]
+    [CustomOptionBool("BlackCatCouldUseVent", true, translationName: "MadmateCouldUseVent")]
     public static bool BlackCatCouldUseVent;
 
-    [CustomOptionBool("MadmateHasImpostorVision", true)]
+    [CustomOptionBool("BlackCatHasImpostorVision", true, translationName: "MadmateHasImpostorVision")]
     public static bool BlackCatHasImpostorVision;
 
-    [CustomOptionBool("MadmateCanKnowImpostors", true)]
+    [CustomOptionBool("BlackCatCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]
     public static bool BlackCatCanKnowImpostors;
 
-    [CustomOptionInt("MadmateNeededTaskCount", 0, 10, 1, 1, parentFieldName: nameof(BlackCatCanKnowImpostors))]
+    [CustomOptionInt("BlackCatNeededTaskCount", 0, 10, 1, 1, parentFieldName: nameof(BlackCatCanKnowImpostors))]
     public static int BlackCatNeededTaskCount;
+
+    [CustomOptionBool("BlackCatIsSpecialTasks", false, translationName: "MadmateIsSpecialTasks")]
+    public static bool BlackCatIsSpecialTasks;
+    [CustomOptionTask("BlackCatSpecialTasks", 1, 1, 1, translationName: "MadmateSpecialTasks", parentFieldName: nameof(BlackCatIsSpecialTasks))]
+    public static TaskOptionData BlackCatSpecialTasks;
 }
 public class RevengeExileAbility : AbilityBase
 {

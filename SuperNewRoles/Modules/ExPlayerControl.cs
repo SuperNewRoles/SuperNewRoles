@@ -33,6 +33,8 @@ public class ExPlayerControl
 
     private CustomVentAbility _customVentAbility;
     private CustomSaboAbility _customSaboAbility;
+    private CustomTaskAbility _customTaskAbility;
+    public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
 
@@ -181,9 +183,22 @@ public class ExPlayerControl
         => Data == null || Data.Disconnected || Data.IsDead;
     public bool IsAlive()
         => !IsDead();
-    // TODO: 後で書く
     public bool IsTaskTriggerRole()
-        => roleBase != null ? IsCrewmate() : IsCrewmate();
+        => _customTaskAbility != null ? _customTaskAbility.CheckIsTaskTrigger()?.isTaskTrigger ?? IsCrewmate() : IsCrewmate();
+    public (int complete, int all) GetAllTaskForShowProgress()
+    {
+        (int complete, int all) result = ModHelpers.TaskCompletedData(Data);
+        if (_customTaskAbility == null)
+        {
+            return result;
+        }
+        var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, result.all);
+        if (isTaskTrigger)
+        {
+            return result;
+        }
+        return (result.complete, all);
+    }
     public bool CanUseVent()
         => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : IsImpostor();
     public bool CanSabotage()
@@ -211,6 +226,10 @@ public class ExPlayerControl
         else if (ability is CustomSaboAbility customSaboAbility)
         {
             _customSaboAbility = customSaboAbility;
+        }
+        else if (ability is CustomTaskAbility customTaskAbility)
+        {
+            _customTaskAbility = customTaskAbility;
         }
         ability.Attach(Player, abilityId, parent);
         _hasAbilityCache.Clear();
@@ -241,6 +260,10 @@ public class ExPlayerControl
         else if (ability is CustomSaboAbility customSaboAbility)
         {
             _customSaboAbility = null;
+        }
+        else if (ability is CustomTaskAbility customTaskAbility)
+        {
+            _customTaskAbility = null;
         }
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);
