@@ -310,7 +310,7 @@ namespace SuperNewRoles.CustomOptions
         {
             // スクロールバーの範囲を設定
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max =
-                index < 5 ? 0.1f : (index - 4) * DefaultRate; // 最小値を0.1fに設定して常にスクロールバーが表示されるようにする
+                index < 5 ? 0.1f : (index - 4) * DefaultRate + 2f; // 最小値を0.1fに設定して常にスクロールバーが表示されるようにする
 
             // スクロールバーを表示するために必要な設定
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ScrollbarYBounds = new FloatRange(0, 1);
