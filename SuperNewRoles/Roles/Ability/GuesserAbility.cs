@@ -12,7 +12,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 {
     private readonly int shotsPerMeeting;
     private readonly bool cannotShootCrewmate;
-    private readonly bool cannotShootImpostor;
     private readonly bool cannotShootCelebrity;
 
     // ※ 画面上に既にUIが存在しているか確認するためのフィールド
@@ -22,11 +21,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private int ShotThisMeeting;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
 
-    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootImpostor, bool cannotShootCelebrity)
+    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity)
     {
         this.shotsPerMeeting = shotsPerMeeting;
         this.cannotShootCrewmate = cannotShootCrewmate;
-        this.cannotShootImpostor = cannotShootImpostor;
         this.cannotShootCelebrity = cannotShootCelebrity;
         Count = maxShots;
     }
@@ -282,8 +280,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             AssignedTeamType team = rolebase.AssignedTeam;
 
             // チーム制限のチェック
-            if ((cannotShootCrewmate && rolebase.WinnerTeam == WinnerTeamType.Crewmate) ||
-                (cannotShootImpostor && rolebase.WinnerTeam == WinnerTeamType.Impostor))
+            if (cannotShootCrewmate && rolebase.Role == RoleId.Crewmate)
             {
                 return;
             }
