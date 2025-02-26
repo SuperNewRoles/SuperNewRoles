@@ -12,7 +12,7 @@ class EvilGuesser : RoleBase<EvilGuesser>
 {
     public override RoleId Role { get; } = RoleId.EvilGuesser;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(EvilGuesserMaxShots, EvilGuesserShotsPerMeeting, false, EvilGuesserCannotShootImpostor, EvilGuesserCannotShootStar)];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new GuesserAbility(EvilGuesserMaxShots, EvilGuesserShotsPerMeeting, EvilGuesserCannotShootCrewmate, EvilGuesserCannotShootStar)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Impostor;
@@ -30,9 +30,9 @@ class EvilGuesser : RoleBase<EvilGuesser>
     [CustomOptionInt("EvilGuesserShotsPerMeeting", 1, 15, 1, 3)]
     public static int EvilGuesserShotsPerMeeting = 3;
 
-    [CustomOptionBool("EvilGuesserCannotShootImpostor", true)]
-    public static bool EvilGuesserCannotShootImpostor = true;
-
     [CustomOptionBool("EvilGuesserCannotShootStar", true)]
     public static bool EvilGuesserCannotShootStar = true;
+
+    [CustomOptionBool("EvilGuesserCannotShootCrewmate", true)]
+    public static bool EvilGuesserCannotShootCrewmate = true;
 }
