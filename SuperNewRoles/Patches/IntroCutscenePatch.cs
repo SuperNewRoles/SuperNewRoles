@@ -190,6 +190,8 @@ public static class IntroCutscenePatch
             CustomDeathExtensions.Register();
 
             ReAssignTasks();
+
+            NameText.UpdateAllNameInfo();
         }
         private static void ReAssignTasks()
         {

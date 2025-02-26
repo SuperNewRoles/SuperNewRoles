@@ -193,10 +193,6 @@ public class ExPlayerControl
             return result;
         }
         var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, result.all);
-        if (isTaskTrigger)
-        {
-            return result;
-        }
         return (result.complete, all);
     }
     public bool CanUseVent()

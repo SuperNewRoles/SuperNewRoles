@@ -55,6 +55,12 @@ public class CustomTaskAbility : AbilityBase
         var shuffledLongTasks = longTasks.ToSystemList().Shuffled();
         ShipStatus.Instance.AddTasksFromList(ref startIndex, assignTaskData.Long, taskList, types, shuffledLongTasks.ToIl2CppList());
 
+        Logger.Info($"タスク数: {taskList.Count}");
+        foreach (var task in taskList)
+        {
+            Logger.Info($"タスク: {task}");
+        }
+        Logger.Info("--------------------------------");
         // タスクをプレイヤーに割り当てる
         if (taskList.Count > 0)
         {

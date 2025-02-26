@@ -21,11 +21,21 @@ public static class Il2CppExtensions
     }
     public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this System.Collections.Generic.List<T> list)
     {
-        return new Il2CppSystem.Collections.Generic.List<T>(list.WrapToIl2Cpp().TryCast<Il2CppSystem.Collections.Generic.IEnumerable<T>>());
+        var il2cppList = new Il2CppSystem.Collections.Generic.List<T>();
+        foreach (var item in list)
+        {
+            il2cppList.Add(item);
+        }
+        return il2cppList;
     }
     public static System.Collections.Generic.List<T> ToSystemList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
     {
-        return [.. CollectionExtensions.WrapToManaged(list.TryCast<Il2CppSystem.Collections.IEnumerable>()).Cast<T>()];
+        var systemList = new System.Collections.Generic.List<T>();
+        foreach (var item in list)
+        {
+            systemList.Add(item);
+        }
+        return systemList;
     }
     public static System.Collections.Generic.List<T> ToSystemList<T>(this Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppArrayBase<T> array)
     {
