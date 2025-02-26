@@ -137,7 +137,11 @@ public static class CustomOptionManager
                 {
                     continue;
                 }
-
+                if (attribute is CustomOptionTaskAttribute taskAttribute)
+                {
+                    taskAttribute.SetupAttributes(field, ref fieldNames, CustomOptions, CustomOptionAttributes);
+                    continue;
+                }
                 if (!fieldNames.Add(field.Name))
                 {
                     throw new InvalidOperationException($"フィールド名が重複しています: {field.Name}");
@@ -159,6 +163,11 @@ public static class CustomOptionManager
                 CustomOption option = new(attribute, field, role);
                 CustomOptions.Add(option);
             }
+        }
+        Logger.Info("CustomOptions");
+        foreach (var option in CustomOptions)
+        {
+            Logger.Info($"option: {option.Name}");
         }
     }
 
@@ -210,10 +219,10 @@ public static class CustomOptionManager
 
     private static void SortAndAssignIntIds()
     {
-        CustomOptions.Sort((a, b) => String.Compare(a.Id, b.Id, StringComparison.Ordinal));
-        for (int i = 0; i < CustomOptions.Count; i++)
+        var sortedOptions = CustomOptions.OrderBy(x => x.Id).ToList();
+        for (int i = 0; i < sortedOptions.Count; i++)
         {
-            CustomOptions[i].IndexId = (ushort)i;
+            sortedOptions[i].IndexId = (ushort)i;
         }
     }
 }
@@ -223,10 +232,10 @@ public class CustomOption
     public CustomOptionBaseAttribute Attribute { get; }
     public FieldInfo FieldInfo { get; }
     public string Name { get; }
-    private object _value_My;
-    private byte _selection_My;
-    private object _value_Host;
-    private byte _selection_Host;
+    protected object _value_My;
+    protected byte _selection_My;
+    protected object _value_Host;
+    protected byte _selection_Host;
     private readonly object _defaultValue;
     private readonly byte _defaultSelection;
 
@@ -243,7 +252,7 @@ public class CustomOption
     public bool IsDefaultValue => Selection == _defaultSelection;
     public object DefaultValue => _defaultValue;
     public byte DefaultSelection => _defaultSelection;
-
+    public bool IsTaskOption { get; }
     /// <summary>
     /// このオプションがブール値（true/false）のオプションかどうかを示します。
     /// CustomOptionBoolAttributeが設定されている場合にtrueを返します。
@@ -266,22 +275,24 @@ public class CustomOption
         return Selections[Selection].ToString();
     }
 
-    public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null)
+    public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null, bool isTaskOption = false)
     {
         Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
         FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
+
         Selections = attribute.GenerateSelections();
         var defaultSelection = attribute.GenerateDefaultSelection();
-        UpdateSelection(defaultSelection);
         Name = attribute.TranslationName;
         ParentRole = parentRole;
         IsBooleanOption = attribute is CustomOptionBoolAttribute;
         DisplayMode = attribute.DisplayMode;
         _defaultValue = Selections[defaultSelection];
         _defaultSelection = defaultSelection;
+        IsTaskOption = isTaskOption;
+        UpdateSelection(defaultSelection);
     }
 
-    public void UpdateSelection(byte value)
+    public virtual void UpdateSelection(byte value)
     {
         if (value >= Selections.Length)
         {
@@ -303,7 +314,22 @@ public class CustomOption
                 _selection_My = value;
                 _value_My = Selections[value];
             }
-            FieldInfo.SetValue(null, Value);
+            if (!IsTaskOption)
+                FieldInfo.SetValue(null, Value);
+
+            // 値が変更されたときにイベントを発火
+            if (Attribute is CustomOptionNumericAttribute<int> intAttr)
+            {
+                intAttr.OnValueChanged((int)Value);
+            }
+            else if (Attribute is CustomOptionNumericAttribute<float> floatAttr)
+            {
+                floatAttr.OnValueChanged((float)Value);
+            }
+            else if (Attribute is CustomOptionNumericAttribute<byte> byteAttr)
+            {
+                byteAttr.OnValueChanged((byte)Value);
+            }
         }
         catch (Exception ex)
         {
@@ -361,18 +387,22 @@ public static class RoleOptionManager
     public static void RoleOptionLoad()
     {
         // パフォーマンス向上のため、カスタムオプションを一度だけ取得
-        var customOptions = CustomOptionManager.GetCustomOptions();
+        var customOptions = CustomOptionManager.CustomOptions; // IReadOnlyListではなく直接Listを使用
 
         // RoleIdがNoneでなく、Vanillaロールでないロールだけを集める
         var validRoles = CustomRoleManager.AllRoles
-            .Where(role => role.Role != RoleId.None && !role.IsVanillaRole);
+            .Where(role => role.Role != RoleId.None && !role.IsVanillaRole)
+            .OrderBy(role => role.OptionTeam)  // まずOptionTeamで並び替え
+            .ThenBy(role => role.Role);        // 次にRoleIdで並び替え
 
         // 各ロールに対応するカスタムオプションをフィルタリングしてRoleOptionを生成
         RoleOptions = validRoles
             .Select(role =>
             {
+                // CustomOptionsの順序を保持したまま、該当するロールのオプションを取得
                 var optionsForRole = customOptions
                     .Where(option => option.ParentRole == role.Role)
+                    .OrderBy(option => customOptions.IndexOf(option))  // CustomOptionsの順序を維持
                     .ToArray();
                 return new RoleOption(role.Role, 0, 0, optionsForRole);
             })
@@ -889,6 +919,7 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
     public T Max { get; }
     public T Step { get; }
     public T DefaultValue { get; }
+    public event Action<T> ValueChanged;
 
     protected CustomOptionNumericAttribute(string id, T min, T max, T step, T defaultValue, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.All)
         : base(id, translationName, parentFieldName, displayMode)
@@ -912,6 +943,11 @@ public abstract class CustomOptionNumericAttribute<T> : CustomOptionBaseAttribut
     }
 
     protected abstract T Add(T a, T b);
+
+    public void OnValueChanged(T value)
+    {
+        ValueChanged?.Invoke(value);
+    }
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -1004,4 +1040,3 @@ public class ExclusivityData
         Roles = roles;
     }
 }
-

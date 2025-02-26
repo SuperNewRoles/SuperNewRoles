@@ -1,40 +1,40 @@
 # Key, 日本語, English,SChinese,TChinese
 creditsMain,Created by ykundesu,Created by ykundesu,由 ykundesu 制作,由 ykundesu 製作
-WelcomeNextSuperNewRoles,新しいSuperNewRolesへ、ようこそ！,A warm welcome to the new SuperNewRoles!,热烈欢迎来到全新的 SuperNewRoles!,熱烈歡迎來到全新的 SuperNewRoles!
-Close,閉じる,Close,閉閉,閉閉
+WelcomeNextSuperNewRoles,新しいSuperNewRolesへ、ようこそ！,Welcome to the new SuperNewRoles!,欢迎来到全新的 SuperNewRoles!,歡迎來到全新的 SuperNewRoles!
+Close,閉じる,Close,关闭,關閉
 
 Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
-Neutral,第三陣営,Neutral,第三陣營,第三陣營
+Neutral,第三陣営,Neutral,第三阵营,第三陣營
 
-NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Let's work only for ourselves.Let's Take advantage of others.,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
+NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Think only about yourself. Use others.,只考虑自己。利用他人。,只考慮自己。利用他人。
 
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
-RoleOptionMenuType.Neutral,第三陣営,Neutral,第三陣營,第三陣營
+RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 
 # CustomOption
-CustomOptionFalse,無効,Disabled,无效,無効
-CustomOptionTrue,有効,Enabled,有効,有効
-BulkRoleButton,役職数一括設定,Bulk Role Setting
-NumberOfCrews,人数,Number of Crewmates,人數,人數
-NumberOfCrewsSelected,{0}人,{0} Beans
-MaxPeople,最大人数,Max Beans,最大人數,最大人數
-AssignPer,確率,Assign Percentage,確率,確率
-PresetSettings,プリセット設定,Preset Settings,預設設定,預設設定
-GeneralSettings,全体設定,General Settings,整體設定,整體設定
-ModeSettings,モード設定,Mode Settings,模式設定,模式設定
-GameSettings,ゲーム設定,Game Settings,遊戲設定,遊戲設定
-MapSettings,マップ設定,Map Settings,地圖設定,地圖設定
-MapEditSettings,マップ改造,Map Edit Settings,地圖改造,地圖改造
-PresetDefault,プリセット {0},Preset {0},預設 {0},預設 {0}
-PresetSelected,プリセット {0},Preset {0},預設 {0},預設 {0}
-AddPreset,プリセットを追加,Add Preset,新增預設,新增預設
-PresetMenuTitle,プリセット,Preset,預設,預設
-PresetPleaseInput,ここにプリセット名を入力,Please input preset name here,請在此輸入預設名稱,請在此輸入預設名稱
-PresetSettings.NowPreset,現在のプリセット:,Current Preset:,現在的預設:,現在的預設:
+CustomOptionFalse,無効,Disabled,无效,无效
+CustomOptionTrue,有効,Enabled,启用,啟用
+BulkRoleButton,役職数一括設定,Bulk Role Setting,批量设置角色,批量設定角色
+NumberOfCrews,人数,Number of Crewmates,船员人数,船員人數
+NumberOfCrewsSelected,{0}人,{0} people,{0}人,{0}人
+MaxPeople,最大人数,Maximum Number of People,最大人数,最大人數
+AssignPer,確率,Probability,概率,機率
+PresetSettings,プリセット設定,Preset Settings,预设设置,預設設定
+GeneralSettings,全体設定,General Settings,整体设置,整體設定
+ModeSettings,モード設定,Mode Settings,模式设置,模式設定
+GameSettings,ゲーム設定,Game Settings,游戏设置,遊戲設定
+MapSettings,マップ設定,Map Settings,地图设置,地圖設定
+MapEditSettings,マップ改造,Map Edit Settings,地图改造,地圖改造
+PresetDefault,プリセット {0},Preset {0},预设 {0},預設 {0}
+PresetSelected,プリセット {0},Preset {0},预设 {0},預設 {0}
+AddPreset,プリセットを追加,Add Preset,新增预设,新增預設
+PresetMenuTitle,プリセット,Preset,预设,預設
+PresetPleaseInput,ここにプリセット名を入力,Please enter preset name here,请输入预设名称,請在此輸入預設名稱
+PresetSettings.NowPreset,現在のプリセット:,Current Preset:,当前预设:,現在的預設:
 ModeId.Default,通常,Normal,通常,通常
 ModeId.BattleRoyal,バトルロイヤル,Battle Royale,戰鬥皇家,戰鬥皇家
 ModeOption,モード,Mode,模式,模式
@@ -45,42 +45,52 @@ ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
 ExclusivityEditMenuTitle,排他設定の編集,Edit Exclusivity Settings,编辑排他设置,編輯排他設置
 ExclusivityEditMenuGroupTitle,グループ {0}の設定,Group {0} Settings,组 {0} 设置,組 {0} 設置
 DebugMode,デバッグモード,Debug Mode,偵錯模式,偵錯模式
+CustomOptionTask_Short,短いタスク,Short Tasks,短任務,短任務
+CustomOptionTask_Long,長いタスク,Long Tasks,长任務,長任務
+CustomOptionTask_Common,共通タスク,Common Tasks,共同任務,共同任務
 
 # AssignRoles
-AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大內鬼數,最大內鬼數
-AssignRoles_MaxCrews,最大 クルーメイト 選出数,Max Crewmates,最大船員數,最大船員數
-AssignRoles_MaxNeutrals,最大   第三陣営   選出数,Max Neutrals,最大第三陣營數,最大第三陣營數
+AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
+AssignRoles_MaxCrews,最大 クルーメイト 選出数,Max Crewmates,最大船员数,最大船員數
+AssignRoles_MaxNeutrals,最大   第三陣営   選出数,Max Neutrals,最大第三阵营数,最大第三陣營數
 
 # SyncError
-SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>發生錯誤。</size>,<size=150%>發生錯誤。</size>
+SyncError_Title,<size=150%>エラーが発生しました。</size>,<size=150%>Error occurred.</size>,<size=150%>发生错误。</size>,<size=150%>發生錯誤。</size>
 SyncError_VersionMismatch,{player}のバージョンが一致しません。(v{version}),{player}'s version does not match. (v{version}),{player}的版本不匹配。(v{version}),{player}的版本不符。(v{version})
-SyncError_RpcMapMismatch,{player}の通信番号が一致しません。,{player}'s communication numbers do not match.,{player}的通信编号不匹配。,{player}的通訊編號不符。
-SyncError_HashMismatch,{player}の実行ファイルが一致しません。,{player}'s executable files do not match.,{player}的执行文件不匹配。,{player}的執行檔不符。
-SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。,{player} does not have SuperNewRoles installed.,{player}没有安装SuperNewRoles.,{player}沒有安裝SuperNewRoles.
+SyncError_RpcMapMismatch,{player}の通信番号が一致しません。, {player}'s communication numbers do not match.,{player}的通信编号不匹配。, {player}的通訊編號不符。
+SyncError_HashMismatch,{player}の実行ファイルが一致しません。, {player}'s executable files do not match.,{player}的执行文件不匹配。,{player}的執行檔不符。
+SyncError_NotInstalled,{player}にSuperNewRolesが導入されていません。, {player} does not have SuperNewRoles installed.,{player}没有安装SuperNewRoles.,{player}沒有安裝SuperNewRoles.
 
 # Role
 Bait,ベイト,Bait,餌,餌
 BaitReportTime,遅延時間,Delay Time,遲延時間,遲延時間
 BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳冤罪者
-Sheriff,シェリフ,Sheriff,警長,警長
+Sheriff,シェリフ,Sheriff,警长,警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
 EvilGuesser,イビルゲッサー,Evil Guesser,内鬼猜疑者,內鬼猜疑者
+Madmate,マッドメイト,Madmate,瘋狂者,瘋狂者
 
 # Sheriff Options
-SheriffKillCooldown,キルクールタイム,Kill Cooldown,殺人冷卻時間,殺人冷卻時間
-SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以殺死第三陣營,可以殺死第三陣營
-SheriffCanKillImpostor,インポスターをキルできる,Can Kill Impostor,可以殺死內鬼,可以殺死內鬼
+SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
+SheriffCanKillNeutral,第三陣営をキルできる,Can Kill Neutral,可以杀第三阵营,可以殺第三陣營
+SheriffCanKillImpostor,インポスターをキルできる,Can Kill Impostor,可以杀内鬼,可以殺內鬼
 
 # Guesser Options
 NiceGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
-NiceGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议可射击次数,每次會議可射擊次數
+NiceGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议射击次数,每次會議射擊次數
 NiceGuesserCannotShootCrewmate,クルーメイトを打てない,Cannot Shoot Crewmate,不能射击船员,不能射擊船員
 NiceGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射击星星,不能射擊星星
 EvilGuesserMaxShots,打てる最大数,Maximum Number of Shots,最大射击次数,最大射擊次數
-EvilGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议可射击次数,每次會議可射擊次數
+EvilGuesserShotsPerMeeting,1会議に打てる回数,Shots Per Meeting,每次会议射击次数,每次會議射擊次數
 EvilGuesserCannotShootImpostor,インポスターを打てない,Cannot Shoot Impostor,不能射击内鬼,不能射擊內鬼
 EvilGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射击星星,不能射擊星星
 
 # Guesser UI
 NextPage,次へ,Next,下一页,下一頁
 PreviousPage,前へ,Previous,上一页,上一頁
+
+# Madmate Options
+MadmateCanKnowImpostorsOption,インポスターが分かる,Can Know Impostors,可以知道内鬼,可以知道內鬼
+MadmateNeededTaskCountOption,必要タスク数,Required Task Count,需要完成任务数,需要完成任務數
+MadmateCouldUseVentOption,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+MadmateHasImpostorVisionOption,インポスターの視界,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野

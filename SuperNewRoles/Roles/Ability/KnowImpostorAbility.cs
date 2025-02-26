@@ -1,0 +1,50 @@
+using System;
+using UnityEngine;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Events;
+
+namespace SuperNewRoles.Roles.Ability;
+
+public class KnowImpostorAbility : AbilityBase
+{
+    public Func<ExPlayerControl, bool> CanKnowImpostors { get; }
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
+
+    public KnowImpostorAbility(Func<ExPlayerControl, bool> canKnowImpostors)
+    {
+        CanKnowImpostors = canKnowImpostors;
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (CanKnowImpostors(data.Player))
+            UpdateImpostorNameColors(Palette.ImpostorRed);
+    }
+
+    private void UpdateImpostorNameColors(Color color)
+    {
+        foreach (var player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player.IsImpostor())
+                UpdatePlayerNameColor(player, color);
+        }
+    }
+
+    private void UpdatePlayerNameColor(ExPlayerControl player, Color color)
+    {
+        player.Data.Role.NameColor = color;
+        player.Player.cosmetics.nameText.color = color;
+    }
+
+    public override void Detach()
+    {
+        base.Detach();
+        NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEvent);
+    }
+}

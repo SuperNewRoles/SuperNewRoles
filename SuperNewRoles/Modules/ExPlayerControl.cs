@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
@@ -27,6 +28,10 @@ public class ExPlayerControl
     public int lastAbilityId { get; set; }
     private FinalStatus? _finalStatus;
     public FinalStatus FinalStatus { get { return _finalStatus ?? FinalStatus.Alive; } set { _finalStatus = value; } }
+
+    private CustomVentAbility _customVentAbility;
+    private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
+
     public ExPlayerControl(PlayerControl player)
     {
         this.Player = player;
@@ -118,18 +123,61 @@ public class ExPlayerControl
     // TODO: 後で書く
     public bool IsTaskTriggerRole()
         => roleBase != null ? IsCrewmate() : IsCrewmate();
+    public bool CanUseVent()
+        => _customVentAbility != null ? _customVentAbility.CheckCanUseVent() : IsImpostor();
     public AbilityBase GetAbility(ulong abilityId)
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
     }
+    private void AttachAbility(AbilityBase ability, ulong abilityId)
+    {
+        PlayerAbilities.Add(ability);
+        PlayerAbilitiesDictionary.Add(abilityId, ability);
+        if (ability is CustomVentAbility customVentAbility)
+        {
+            _customVentAbility = customVentAbility;
+        }
+        else if (ability is ImpostorVisionAbility impostorVisionAbility)
+        {
+            _impostorVisionAbilities.Add(impostorVisionAbility);
+        }
+        ability.Attach(Player, abilityId);
+    }
+    public void AttachAbility(AbilityBase ability)
+    {
+        AttachAbility(ability, IRoleBase.GenerateAbilityId(PlayerId, Role, lastAbilityId++));
+    }
+    public bool HasImpostorVision()
+    {
+        if (_impostorVisionAbilities.Count == 0) return IsImpostor();
+        return _impostorVisionAbilities.FirstOrDefault(x => x.HasImpostorVision?.Invoke() == true) != null;
+    }
+    public void DetachAbility(ulong abilityId)
+    {
+        if (PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability))
+        {
+            ability.Detach();
+        }
+        if (ability is CustomVentAbility customVentAbility)
+        {
+            _customVentAbility = null;
+        }
+        else if (ability is ImpostorVisionAbility impostorVisionAbility)
+        {
+            _impostorVisionAbilities.Remove(impostorVisionAbility);
+        }
+        PlayerAbilities.Remove(ability);
+        PlayerAbilitiesDictionary.Remove(abilityId);
+    }
 }
 public static class ExPlayerControlExtensions
 {
-    public static void AddAbility(this PlayerControl player, AbilityBase ability, ulong abilityId)
+    public static void AddAbility(this ExPlayerControl player, AbilityBase ability)
     {
-        ExPlayerControl exPlayer = player;
-        exPlayer.PlayerAbilities.Add(ability);
-        exPlayer.PlayerAbilitiesDictionary.Add(abilityId, ability);
-        ability.Attach(player, abilityId);
+        player.AttachAbility(ability);
+    }
+    public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)
+    {
+        return (ulong)(playerId * 1000000) + (ulong)((int)role * 1000) + (ulong)abilityIndex;
     }
 }

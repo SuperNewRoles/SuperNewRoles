@@ -69,4 +69,24 @@ public static class ModHelpers
         f = Mathf.Clamp01(f);
         return (byte)(f * 255);
     }
+    public static (int completed, int total) TaskCompletedData(NetworkedPlayerInfo playerInfo)
+    {
+        if (playerInfo?.Tasks == null)
+            return (-1, -1);
+
+        int TotalTasks = 0;
+        int CompletedTasks = 0;
+
+        for (int j = 0; j < playerInfo.Tasks.Count; j++)
+        {
+            if (playerInfo.Tasks[j] == null)
+                continue;
+            TotalTasks++;
+            if (playerInfo.Tasks[j].Complete)
+            {
+                CompletedTasks++;
+            }
+        }
+        return (CompletedTasks, TotalTasks);
+    }
 }

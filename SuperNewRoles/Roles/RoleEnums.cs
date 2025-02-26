@@ -10,6 +10,7 @@ public enum RoleId : short
     Sheriff,
     NiceGuesser,
     EvilGuesser,
+    Madmate,
 }
 
 public enum QuoteMod : byte
