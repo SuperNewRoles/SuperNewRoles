@@ -844,7 +844,7 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         }
     }
 
-    public override bool HasButtonLocalPlayer => false;
+    public override bool HasButtonLocalPlayer => true;
 
     // ボタンがクリック可能かどうか
     public override bool CheckIsAvailable(ExPlayerControl player)
