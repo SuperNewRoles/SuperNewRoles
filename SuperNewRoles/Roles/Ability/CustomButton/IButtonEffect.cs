@@ -31,6 +31,14 @@ internal interface IButtonEffect
             this.isEffectActive = true;
         }
     }
+    public virtual void OnCancel(ActionButton actionButton)
+    {
+        if (isEffectActive)
+        {
+            isEffectActive = false;
+            OnEffectEnds();
+        }
+    }
 
     public void OnFixedUpdate(ActionButton actionButton)
     {

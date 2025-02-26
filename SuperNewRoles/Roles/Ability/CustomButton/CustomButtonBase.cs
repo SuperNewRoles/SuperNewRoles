@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,8 +90,12 @@ public abstract class CustomButtonBase : AbilityBase
         SetActive(false);
         hudUpdateEvent = HudUpdateEvent.Instance.AddListener(OnUpdate);
         wrapUpEvent = WrapUpEvent.Instance.AddListener(x => OnMeetingEnds());
-        buttonEffect = this as IButtonEffect;
         ResetTimer();
+    }
+    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    {
+        base.Attach(player, abilityId, parent);
+        buttonEffect = this as IButtonEffect;
     }
 
     public virtual void OnUpdate()
@@ -106,13 +111,23 @@ public abstract class CustomButtonBase : AbilityBase
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
         actionButton.SetCoolDown(Timer, float.MaxValue);
         actionButton.OverrideText(buttonText);
-        if (CheckIsAvailable())
+        if (CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
             if (Input.GetKeyDown(hotkey ?? KeyCode.None))
             {
                 OnClickEvent();
+            }
+        }
+        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable)
+        {
+            actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
+            actionButton.graphic.material.SetFloat("_Desat", 0f);
+            if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+            {
+                buttonEffect.OnCancel(actionButton);
+                ResetTimer();
             }
         }
         else
@@ -126,13 +141,18 @@ public abstract class CustomButtonBase : AbilityBase
 
     public void OnClickEvent()
     {
-        if (this.Timer <= 0f && CheckIsAvailable())
+        if (this.Timer <= 0f && CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
             actionButton.graphic.color = GrayOut;
             this.OnClick();
             ResetTimer();
-            IButtonEffect buttonEffect = this as IButtonEffect;
             if (buttonEffect != null) buttonEffect.OnClick(actionButton);
+        }
+        else if (buttonEffect != null && buttonEffect.isEffectActive && buttonEffect.effectCancellable)
+        {
+            actionButton.graphic.color = Palette.EnabledColor;
+            buttonEffect.OnCancel(actionButton);
+            ResetTimer();
         }
     }
     public void SetActive(bool isActive)
