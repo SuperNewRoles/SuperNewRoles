@@ -59,7 +59,7 @@ public static class CustomDeathExtensions
                 break;
             case CustomDeathType.BombBySelfBomb:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
-                FinalStatusManager.SetFinalStatus(player, FinalStatus.SelfBomb);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.BombBySelfBomb);
                 break;
             case CustomDeathType.SelfBomb:
                 player.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);

@@ -41,6 +41,10 @@ class Balancer : RoleBase<Balancer>
     [CustomOptionInt("BalancerUseCount", 1, 10, 1, 1)]
     public static int BalancerUseCount;
 
+    // 未投票時ランダムに投票する
+    [CustomOptionBool("BalancerRandomVoteWhenNoVote", true)]
+    public static bool BalancerRandomVoteWhenNoVote;
+
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 }
 
@@ -203,13 +207,26 @@ class BalancerAbility : AbilityBase, IAbilityCount
         {
             if (MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote))
             {
-                foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+                // 未投票時ランダムに投票する設定がONの場合のみ、投票先を変更する
+                if (Balancer.BalancerRandomVoteWhenNoVote)
                 {
-                    List<byte> targetIds = new() { targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId };
-                    if (!targetIds.Contains(area.VotedFor))
+                    foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
                     {
-                        area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
+                        List<byte> targetIds = new() { targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId };
+                        if (!targetIds.Contains(area.VotedFor))
+                        {
+                            area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
+                        }
                     }
+                }
+                else
+                {
+                    foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+                    {
+                        if (area.VotedFor < 250)
+                            area.VotedFor = 255;
+                    }
+
                 }
                 bool tie;
                 var max = MeetingHud.Instance.CalculateVotes().MaxPair(out tie);
