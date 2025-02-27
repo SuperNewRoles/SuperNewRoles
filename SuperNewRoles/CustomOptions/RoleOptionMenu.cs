@@ -567,7 +567,7 @@ public static class RoleOptionMenu
             }
             UpdateRoleDetailButtonColor(spriteRenderer, roleOption);
             UpdateNumOfCrewsSelect(roleOption);
-            RoleOptionManager.RpcSyncRoleOption(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
+            RoleOptionManager.RpcSyncRoleOptionDelay(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
         }));
 
         // RoleDetailButtonDictionaryに追加

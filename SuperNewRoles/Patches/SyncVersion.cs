@@ -150,6 +150,7 @@ public static class SyncVersion
                 MAX_RETRY_COUNT,
                 SYNC_RETRY_DELAY
             );
+            RoleOptionManager.DelayedSyncTasks.Clear();
 
         }
     }

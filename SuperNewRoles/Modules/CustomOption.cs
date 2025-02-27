@@ -375,6 +375,10 @@ public class CustomOption
 
 public static class RoleOptionManager
 {
+    // 遅延同期用のディクショナリとLateTaskを追加
+    public static readonly Dictionary<RoleId, LateTask> DelayedSyncTasks = new();
+    private static readonly float SyncDelay = 0.5f; // 0.5秒の遅延
+
     public class RoleOption
     {
         public RoleId RoleId { get; }
@@ -460,6 +464,41 @@ public static class RoleOptionManager
             return;
         }
         roleOption.UpdateValues(numberOfCrews, percentage);
+    }
+
+    /// <summary>
+    /// 遅延付きでロールオプションを同期します。
+    /// 同じロールに対する複数の変更は、最後の変更のみが送信されます。
+    /// </summary>
+    /// <param name="roleId">ロールID</param>
+    /// <param name="numberOfCrews">クルー数</param>
+    /// <param name="percentage">確率</param>
+    public static void RpcSyncRoleOptionDelay(RoleId roleId, byte numberOfCrews, int percentage)
+    {
+        // ホストでない場合は何もしない
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        // 既存のタスクがあれば遅延をリセット
+        if (DelayedSyncTasks.TryGetValue(roleId, out var existingTask))
+        {
+            existingTask.UpdateDelay(SyncDelay);
+        }
+        else
+        {
+            // 新しいタスクを作成
+            var task = new LateTask(() =>
+            {
+                var opt = RoleOptions.FirstOrDefault(o => o.RoleId == roleId);
+                if (opt == null) return;
+                // 実際の同期を実行
+                RpcSyncRoleOption(roleId, opt.NumberOfCrews, opt.Percentage);
+                // タスクとペンディング変更を削除
+                DelayedSyncTasks.Remove(roleId);
+            }, SyncDelay, $"SyncRoleOption_{roleId}");
+
+            // タスクを保存
+            DelayedSyncTasks[roleId] = task;
+        }
     }
 
     [CustomRPC]
