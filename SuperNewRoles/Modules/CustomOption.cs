@@ -50,6 +50,7 @@ public static class CustomOptionManager
                 _lateTask = new LateTask(() =>
                 {
                     RpcSyncOptionsAll();
+                    RoleOptionManager.RpcSyncRoleOptionsAll();
                     _lateTask = null;
                 }, 2f, "CustomOptionManager.RpcSyncOptionsAll");
         }
@@ -61,7 +62,10 @@ public static class CustomOptionManager
         {
             // ゲーム開始時に一度だけ同期する(AmongUsClient.StartGameが呼ばれるのはホストのみ)
             if (AmongUsClient.Instance.AmHost)
+            {
                 RpcSyncOptionsAll();
+                RoleOptionManager.RpcSyncRoleOptionsAll();
+            }
         }
     }
     [CustomRPC]
@@ -375,15 +379,59 @@ public static class RoleOptionManager
     {
         public RoleId RoleId { get; }
         public AssignedTeamType AssignTeam { get; }
-        public byte NumberOfCrews { get; set; }
-        public int Percentage { get; set; }
+        private byte _numberOfCrews_My;
+        private byte _numberOfCrews_Host;
+        private int _percentage_My;
+        private int _percentage_Host;
+        public byte NumberOfCrews
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _numberOfCrews_Host : _numberOfCrews_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _numberOfCrews_Host = value;
+                }
+                else
+                {
+                    _numberOfCrews_My = value;
+                    // ホストの場合は、変更を他のプレイヤーに同期
+                    if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+                    {
+                        RpcSyncRoleOption(RoleId, _numberOfCrews_My, _percentage_My);
+                    }
+                }
+            }
+        }
+        public int Percentage
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _percentage_Host : _percentage_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _percentage_Host = value;
+                }
+                else
+                {
+                    _percentage_My = value;
+                    // ホストの場合は、変更を他のプレイヤーに同期
+                    if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+                    {
+                        RpcSyncRoleOption(RoleId, _numberOfCrews_My, _percentage_My);
+                    }
+                }
+            }
+        }
         public CustomOption[] Options { get; }
         public Color32 RoleColor { get; }
         public RoleOption(RoleId roleId, byte numberOfCrews, int percentage, CustomOption[] options)
         {
             RoleId = roleId;
-            NumberOfCrews = numberOfCrews;
-            Percentage = percentage;
+            _numberOfCrews_My = numberOfCrews;
+            _percentage_My = percentage;
             Options = options;
             // ロールの色情報を取得
             var roleBase = CustomRoleManager.AllRoles.FirstOrDefault(r => r.Role == roleId);
@@ -392,9 +440,57 @@ public static class RoleOptionManager
             RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
             AssignTeam = roleBase?.AssignedTeam ?? AssignedTeamType.Crewmate;
         }
+
+        public void UpdateValues(byte numberOfCrews, int percentage)
+        {
+            bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+            if (isHost)
+            {
+                _numberOfCrews_Host = numberOfCrews;
+                _percentage_Host = percentage;
+            }
+            else
+            {
+                _numberOfCrews_My = numberOfCrews;
+                _percentage_My = percentage;
+            }
+        }
     }
     public static RoleOption[] RoleOptions { get; private set; }
     public static List<ExclusivityData> ExclusivitySettings { get; private set; } = new();
+
+    [CustomRPC]
+    public static void RpcSyncRoleOption(RoleId roleId, byte numberOfCrews, int percentage)
+    {
+        var roleOption = RoleOptions.FirstOrDefault(o => o.RoleId == roleId);
+        if (roleOption == null)
+        {
+            Logger.Warning($"ロールオプションが見つかりません: {roleId}");
+            return;
+        }
+        roleOption.UpdateValues(numberOfCrews, percentage);
+    }
+
+    [CustomRPC]
+    public static void _RpcSyncRoleOptionsAll(Dictionary<byte, (byte, int)> options)
+    {
+        foreach (var roleOption in RoleOptions)
+        {
+            if (options.TryGetValue((byte)roleOption.RoleId, out var values))
+            {
+                roleOption.UpdateValues(values.Item1, values.Item2);
+            }
+        }
+    }
+
+    public static void RpcSyncRoleOptionsAll()
+    {
+        // 変更されたロールオプションだけを送信
+        var roleOptions = RoleOptions.ToDictionary(
+            o => (byte)o.RoleId,
+            o => (o.NumberOfCrews, o.Percentage));
+        _RpcSyncRoleOptionsAll(roleOptions);
+    }
 
     public static void RoleOptionLoad()
     {

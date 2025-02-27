@@ -292,6 +292,15 @@ public static class CustomRPCManager
                     writer.Write(kvp.Value);
                 }
                 break;
+            case Dictionary<byte, (byte, int)> dictByteWithTuple:
+                writer.Write(dictByteWithTuple.Count);
+                foreach (var kvp in dictByteWithTuple)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value.Item1);
+                    writer.Write(kvp.Value.Item2);
+                }
+                break;
             case PlayerControl pc:
                 writer.Write(pc.PlayerId);
                 break;
@@ -370,6 +379,7 @@ public static class CustomRPCManager
             Type t when t == typeof(Dictionary<byte, byte>) => ReadDictionary<byte, byte>(reader, r => r.ReadByte(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<string, byte>) => ReadDictionary<string, byte>(reader, r => r.ReadString(), r => r.ReadByte()),
             Type t when t == typeof(Dictionary<ushort, byte>) => ReadDictionary<ushort, byte>(reader, r => r.ReadUInt16(), r => r.ReadByte()),
+            Type t when t == typeof(Dictionary<byte, (byte, int)>) => ReadDictionaryWithTuple(reader),
             Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
             Type t when t == typeof(List<byte>) => ReadByteList(reader),
@@ -392,6 +402,23 @@ public static class CustomRPCManager
             var key = keyReader(reader);
             var value = valueReader(reader);
             dict[key] = value;
+        }
+        return dict;
+    }
+
+    /// <summary>
+    /// タプルを含むDictionaryを読み取るヘルパーメソッド
+    /// </summary>
+    private static Dictionary<byte, (byte, int)> ReadDictionaryWithTuple(MessageReader reader)
+    {
+        int count = reader.ReadInt32();
+        var dict = new Dictionary<byte, (byte, int)>();
+        for (int i = 0; i < count; i++)
+        {
+            byte key = reader.ReadByte();
+            byte tupleItem1 = reader.ReadByte();
+            int tupleItem2 = reader.ReadInt32();
+            dict[key] = (tupleItem1, tupleItem2);
         }
         return dict;
     }
