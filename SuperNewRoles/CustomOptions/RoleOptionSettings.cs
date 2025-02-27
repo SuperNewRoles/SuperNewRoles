@@ -71,6 +71,91 @@ namespace SuperNewRoles.CustomOptions
             return optionInstance;
         }
 
+        /// <summary>
+        /// オプションが表示されるべきかを判断します
+        /// </summary>
+        /// <param name="option">チェック対象のオプション</param>
+        /// <returns>表示すべき場合はtrue、非表示にすべき場合はfalse</returns>
+        private static bool ShouldOptionBeActive(CustomOption option)
+        {
+            if (!option.ShouldDisplay())
+                return false;
+
+            // 親オプションをチェック
+            var parent = option.ParentOption;
+            while (parent != null)
+            {
+                // 親オプションが無効（Selectionが0）ならfalse
+                if (parent.Selection == 0)
+                    return false;
+                parent = parent.ParentOption;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// すべてのオプションの表示状態を更新します
+        /// </summary>
+        /// <param name="parentTransform">オプションの親Transform</param>
+        /// <param name="roleOption">現在のロールオプション</param>
+        private static void UpdateOptionsActive(Transform parentTransform, RoleOptionManager.RoleOption roleOption)
+        {
+            if (parentTransform == null || roleOption == null)
+                return;
+
+            // 子オプションの表示状態を更新
+            foreach (var option in roleOption.Options)
+            {
+                UpdateOptionAndChildrenActive(parentTransform, option);
+            }
+        }
+
+        /// <summary>
+        /// オプションとその子オプションの表示状態を再帰的に更新します
+        /// </summary>
+        /// <param name="parentTransform">オプションの親Transform</param>
+        /// <param name="option">更新対象のオプション</param>
+        private static void UpdateOptionAndChildrenActive(Transform parentTransform, CustomOption option)
+        {
+            // このオプションのGameObjectを探す
+            var optionObj = FindOptionGameObject(parentTransform, ModTranslation.GetString(option.Name));
+            if (optionObj != null)
+            {
+                // 表示状態を更新
+                bool shouldBeActive = ShouldOptionBeActive(option);
+                optionObj.SetActive(shouldBeActive);
+            }
+
+            // 子オプションも更新
+            if (option.ChildrenOption != null)
+            {
+                foreach (var childOption in option.ChildrenOption)
+                {
+                    UpdateOptionAndChildrenActive(parentTransform, childOption);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 指定した名前のオプションGameObjectを探します
+        /// </summary>
+        /// <param name="parentTransform">検索対象の親Transform</param>
+        /// <param name="optionName">オプション名</param>
+        /// <returns>見つかったGameObject、または見つからない場合はnull</returns>
+        private static GameObject FindOptionGameObject(Transform parentTransform, string optionName)
+        {
+            for (int i = 0; i < parentTransform.childCount; i++)
+            {
+                Transform child = parentTransform.GetChild(i);
+                TextMeshPro textComp = child.Find("Text")?.GetComponent<TextMeshPro>();
+                if (textComp != null && textComp.text == optionName)
+                {
+                    return child.gameObject;
+                }
+            }
+            return null;
+        }
+
         private static void SetupCheckBoxButton(PassiveButton passiveButton, Transform checkMark, CustomOption option)
         {
             checkMark.gameObject.SetActive((bool)option.Value);
@@ -81,6 +166,9 @@ namespace SuperNewRoles.CustomOptions
                 bool newValue = !checkMark.gameObject.activeSelf;
                 checkMark.gameObject.SetActive(newValue);
                 option.UpdateSelection(newValue ? (byte)1 : (byte)0);
+
+                // 表示状態を更新
+                UpdateDisplayAfterOptionChange(passiveButton.transform.parent, option);
 
                 // ホストの場合、他のプレイヤーに同期
                 if (AmongUsClient.Instance.AmHost)
@@ -239,11 +327,51 @@ namespace SuperNewRoles.CustomOptions
             option.UpdateSelection(newSelection);
             selectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
 
+            // 表示状態を更新
+            UpdateDisplayAfterOptionChange(selectedText.transform.parent.parent, option);
+
             // ホストの場合、他のプレイヤーに同期
             if (AmongUsClient.Instance.AmHost)
             {
                 CustomOptionManager.RpcSyncOption(option.Id, newSelection);
             }
+        }
+
+        /// <summary>
+        /// オプション変更後に表示状態を更新するヘルパーメソッド
+        /// </summary>
+        /// <param name="parentTransform">親Transform</param>
+        /// <param name="changedOption">変更されたオプション</param>
+        private static void UpdateDisplayAfterOptionChange(Transform parentTransform, CustomOption changedOption)
+        {
+            // 子オプションを持つ場合のみ表示状態を更新
+            if ((changedOption.ChildrenOption != null && changedOption.ChildrenOption.Count > 0) ||
+                changedOption.ParentOption != null) // 親を持つ場合も更新（同じカテゴリの他のオプションが影響を受ける可能性がある）
+            {
+                var roleId = RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleId;
+                var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == roleId);
+                if (roleOption != null)
+                {
+                    Transform topParent = FindTopParent(parentTransform);
+                    UpdateOptionsActive(topParent, roleOption);
+                    RecalculateOptionsPosition(topParent, RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 最上位の親Transformを見つける
+        /// </summary>
+        /// <param name="transform">子Transform</param>
+        /// <returns>最上位の親Transform</returns>
+        private static Transform FindTopParent(Transform transform)
+        {
+            Transform current = transform;
+            while (current.parent != null && current.parent.name != "InnerContent" && current.parent.name != "SettingsScroller")
+            {
+                current = current.parent;
+            }
+            return current;
         }
 
         public static void SetupScroll(Transform parent)
@@ -262,6 +390,9 @@ namespace SuperNewRoles.CustomOptions
 
             // 表示リストをクリア
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentOptionDisplays.Clear();
+
+            // 現在のロールオプションを保存（RoleIdだけでなく、直接ロールオプションへの参照も保持）
+            RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleId = roleOption.RoleId;
 
             int index = CreateRoleOptions(roleOption, ref lastY);
             UpdateScrollerBounds(index);
@@ -284,6 +415,36 @@ namespace SuperNewRoles.CustomOptions
             }
         }
 
+        /// <summary>
+        /// 表示されているオプションの位置を再計算します
+        /// </summary>
+        /// <param name="parentTransform">オプションの親Transform</param>
+        /// <param name="scroller">スクロールコンポーネント</param>
+        private static void RecalculateOptionsPosition(Transform parentTransform, Scroller scroller)
+        {
+            float lastY = DefaultLastY;
+            int activeCount = 0;
+
+            for (int i = 0; i < parentTransform.childCount; i++)
+            {
+                Transform child = parentTransform.GetChild(i);
+                if (!child.gameObject.activeSelf)
+                    continue;
+
+                // オプションの位置を更新
+                child.localPosition = new Vector3(ElementXPosition, lastY, ElementZPosition);
+                lastY -= DefaultRate;
+                activeCount++;
+            }
+
+            // スクロールバーの範囲を設定
+            if (scroller != null)
+            {
+                scroller.ContentYBounds.max = activeCount <= 4 ? 0.1f : (activeCount - 4) * DefaultRate + 2f;
+                scroller.UpdateScrollBars();
+            }
+        }
+
         private static int CreateRoleOptions(RoleOptionManager.RoleOption roleOption, ref float lastY)
         {
             var parent = new GameObject("Parent");
@@ -303,6 +464,13 @@ namespace SuperNewRoles.CustomOptions
                     CreateSelect(parent.transform, option, ref lastY);
                 index++;
             }
+
+            // オプションの表示状態を初期化
+            UpdateOptionsActive(parent.transform, roleOption);
+
+            // 表示状態更新後に位置を再計算
+            RecalculateOptionsPosition(parent.transform, RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller);
+
             return index;
         }
 
@@ -358,6 +526,14 @@ namespace SuperNewRoles.CustomOptions
                 {
                     text.text = UIHelper.FormatOptionValue(option.Value, option);
                 }
+            }
+
+            // 親オプションに基づいて子オプションの表示状態を更新
+            var parent = data.SettingsInner?.Find("Parent");
+            if (parent != null && roleOption != null)
+            {
+                UpdateOptionsActive(parent, roleOption);
+                RecalculateOptionsPosition(parent, data.SettingsScroller);
             }
         }
 
