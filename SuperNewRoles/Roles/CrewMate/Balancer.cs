@@ -57,6 +57,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private PlayerControl targetPlayerLeft;
     private PlayerControl targetPlayerRight;
     private bool isDoubleExile = false;
+    public bool isOnePlayerDead = false; // 片方のプレイヤーが死亡したかどうかのフラグ
     public static BalancerAbility BalancingAbility { get; private set; }
 
     // 天秤ボタン
@@ -128,16 +129,16 @@ class BalancerAbility : AbilityBase, IAbilityCount
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         base.Attach(player, abilityId, parent);
-        // 天秤ボタンを初期化
-        balancerButton = new BalancerMeetingButton(this);
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
-        exPlayer.AddAbility(balancerButton, new AbilityParentAbility(this));
         meetingStartEventListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
         // FixedUpdateイベントにアニメーション更新処理を登録
         fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
         votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
         wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        // 天秤ボタンを初期化
+        balancerButton = new BalancerMeetingButton(this);
+        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        exPlayer.AddAbility(balancerButton, new AbilityParentAbility(this));
     }
     private void Update()
     {
@@ -461,6 +462,9 @@ class BalancerAbility : AbilityBase, IAbilityCount
             {
                 target = targetPlayerRight;
             }
+
+            // 片方のプレイヤーが死亡したフラグを設定
+            isOnePlayerDead = true;
 
             // 会議を終了する処理（ホストのみ実行）
             if (AmongUsClient.Instance.AmHost && target != null)
@@ -817,8 +821,18 @@ class BalancerAbility : AbilityBase, IAbilityCount
         }
         public static void Postfix(ExileController __instance, ExileController.InitProperties init)
         {
-            if (BalancingAbility.isDoubleExile)
-                __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
+            if (BalancingAbility != null)
+            {
+                if (BalancingAbility.isDoubleExile)
+                {
+                    __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
+                }
+                else if (BalancingAbility.isOnePlayerDead)
+                {
+                    // 片方のプレイヤーが死亡した場合のテキスト
+                    __instance.completeString = ModTranslation.GetString("BalancerOnePlayerDeadText");
+                }
+            }
         }
     }
 }

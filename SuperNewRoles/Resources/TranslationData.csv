@@ -152,6 +152,7 @@ BalancerTitleTextGetBalance,バランスを求めよ。,Seek balance.,寻求平�
 BalancerAbilityUseText,能力発動,Ability activated,能力發動,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
 BalancerDoubleExileText,どちらも追放された...,Both were exiled...,两名玩家都被驱逐了...,兩名玩家都被驅逐了...
+BalancerOnePlayerDeadText,こうなる運命だったのだ...,It was destined to be this way...,这就是命运...,這就是命運...
 
 # SelfBomber
 SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
