@@ -18,18 +18,21 @@ public abstract class WaveCannonObjectBase
     public abstract Collider2D[] HitColliders { get; }
     public abstract float ShootTime { get; }
     public abstract GameObject WaveCannonObject { get; }
+    public abstract bool HidePlayer { get; }
+    public virtual Vector3 startPositionOffset => Vector3.zero;
     private bool isShooting = false;
     private Vector3 startPosition { get; }
     private float timer;
     private bool detached = false;
-    public WaveCannonObjectBase(WaveCannonAbility ability)
+
+    public WaveCannonObjectBase(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition)
     {
         this.ability = ability;
         new LateTask(() => this.fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate), 0f);
         isShooting = false;
-        startPosition = ability.Player.transform.position;
+        this.startPosition = startPosition;
+        ability.Player.NetTransform.RpcSnapTo(startPosition);
         OnFixedUpdate();
-        Logger.Info("StartPosition:" + startPosition.x + "," + startPosition.y + "," + startPosition.z);
         timer = ShootTime;
     }
     private void OnFixedUpdate()
@@ -40,20 +43,30 @@ public abstract class WaveCannonObjectBase
             Detach();
             return;
         }
+        if (HidePlayer)
+        {
+            ability.Player.cosmetics.currentBodySprite.BodySprite.gameObject.SetActive(false);
+            ability.Player.cosmetics.gameObject.SetActive(false);
+        }
         if (ability.Player.AmOwner)
         {
             ability.Player.transform.position = startPosition;
             ability.Player.MyPhysics.body.velocity = Vector2.zero;
             ability.Player.moveable = false;
         }
+        ability.Player.transform.position = startPosition;
         if (isShooting)
         {
             OnAnimationUpdateShooting();
             if (!ability.Player.AmOwner) return;
+            Logger.Info("Shooting");
             foreach (var collider in HitColliders)
             {
+                Logger.Info("Collider");
+
                 foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
                 {
+                    Logger.Info("Player:" + player.PlayerId);
                     if (player.IsDead()) continue;
                     if (player.PlayerId == ability.Player.PlayerId) continue;
                     if (!collider.IsTouching(player.Player.Collider)) continue;
@@ -76,29 +89,35 @@ public abstract class WaveCannonObjectBase
         isShooting = true;
         OnAnimationShoot();
     }
-    public void Detach()
+    public virtual void Detach()
     {
         Logger.Info("Detached");
         new LateTask(() => FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent), 0f);
         detached = true;
         if (WaveCannonObject != null)
             GameObject.Destroy(WaveCannonObject);
+        if (HidePlayer)
+        {
+            ability.Player.cosmetics.currentBodySprite.BodySprite.gameObject.SetActive(true);
+            ability.Player.cosmetics.gameObject.SetActive(true);
+        }
         ability.Player.moveable = true;
+        ability.Player.MyPhysics.Animations.PlayIdleAnimation();
     }
     [CustomRPC]
-    public static void RpcSpawnFromType(ExPlayerControl source, WaveCannonType type, ulong abilityId)
+    public static void RpcSpawnFromType(ExPlayerControl source, WaveCannonType type, ulong abilityId, bool isFlipX, Vector3 startPosition)
     {
         WaveCannonAbility ability = source.GetAbility<WaveCannonAbility>(abilityId);
         if (ability == null) return;
-        WaveCannonObjectBase obj = SpawnFromType(type, ability);
+        WaveCannonObjectBase obj = SpawnFromType(type, ability, isFlipX, startPosition);
         ability.SpawnedWaveCannonObject(obj);
     }
-    public static WaveCannonObjectBase SpawnFromType(WaveCannonType type, WaveCannonAbility ability)
+    public static WaveCannonObjectBase SpawnFromType(WaveCannonType type, WaveCannonAbility ability, bool isFlipX, Vector3 startPosition)
     {
         switch (type)
         {
-            case WaveCannonType.Cannon:
-                return new WaveCannonObjectCannon(ability);
+            case WaveCannonType.Tank:
+                return new WaveCannonObjectTank(ability, isFlipX, startPosition);
             default:
                 throw new Exception($"Invalid wave cannon type: {type}");
         }

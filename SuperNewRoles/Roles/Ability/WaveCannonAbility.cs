@@ -21,17 +21,19 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     protected override KeyCode? hotkey => KeyCode.F;
     public override float DefaultTimer => coolDown;
     public WaveCannonObjectBase WaveCannonObject { get; private set; }
+    private WaveCannonType type;
 
-    public WaveCannonAbility(float coolDown, float effectDuration)
+    public WaveCannonAbility(float coolDown, float effectDuration, WaveCannonType type)
     {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
+        this.type = type;
     }
     public override void OnClick()
     {
         //TODO:波動砲発射
         Logger.Info("波動砲発射！");
-        WaveCannonObjectBase.RpcSpawnFromType(PlayerControl.LocalPlayer, WaveCannonType.Cannon, this.AbilityId);
+        WaveCannonObjectBase.RpcSpawnFromType(PlayerControl.LocalPlayer, type, this.AbilityId, PlayerControl.LocalPlayer.MyPhysics.FlipX, PlayerControl.LocalPlayer.transform.position);
         ResetTimer();
     }
 
@@ -48,6 +50,12 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public void SpawnedWaveCannonObject(WaveCannonObjectBase waveCannonObject)
     {
         WaveCannonObject = waveCannonObject;
+    }
+    [CustomRPC]
+    public static void RPCShootCannon(ExPlayerControl source, ulong abilityId)
+    {
+        var ability = source.GetAbility<WaveCannonAbility>(abilityId);
+        ability?.WaveCannonObject?.OnShoot();
     }
 }
 

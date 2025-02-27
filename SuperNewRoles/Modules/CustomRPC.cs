@@ -337,6 +337,15 @@ public static class CustomRPCManager
                     writer.Write(b);
                 }
                 break;
+            case Vector2 v2:
+                writer.Write(v2.x);
+                writer.Write(v2.y);
+                break;
+            case Vector3 v3:
+                writer.Write(v3.x);
+                writer.Write(v3.y);
+                writer.Write(v3.z);
+                break;
             default:
                 throw new Exception($"Invalid type: {obj.GetType()}");
         }
@@ -386,6 +395,8 @@ public static class CustomRPCManager
             Type t when t == typeof(Color) => new Color(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Color32) => new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte()),
             Type t when t == typeof(List<byte>) => ReadByteList(reader),
+            Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
+            Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
             _ => throw new Exception($"Invalid type: {type}")
         };
     }

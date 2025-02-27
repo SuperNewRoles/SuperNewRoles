@@ -188,6 +188,7 @@ public static class IntroCutscenePatch
             SaboAndVent.RegisterListener();
             FinalStatusListener.LoadListener();
             CustomDeathExtensions.Register();
+            PoolablePrefabManager.OnIntroCutsceneDestroy(__instance);
 
             ReAssignTasks();
 
