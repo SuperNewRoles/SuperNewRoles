@@ -175,4 +175,22 @@ public static class ModHelpers
         list.Shuffle();
         return list;
     }
+    public static void Write(this MessageWriter writer, short value)
+    {
+        writer.Buffer[writer.Position++] = (byte)value;
+        writer.Buffer[writer.Position++] = (byte)(value >> 8);
+        if (writer.Position > writer.Length) writer.Length = writer.Position;
+    }
+    public static void Write(this MessageWriter writer, long value)
+    {
+        writer.Buffer[writer.Position++] = (byte)value;
+        writer.Buffer[writer.Position++] = (byte)(value >> 8);
+        writer.Buffer[writer.Position++] = (byte)(value >> 16);
+        writer.Buffer[writer.Position++] = (byte)(value >> 24);
+        writer.Buffer[writer.Position++] = (byte)(value >> 32);
+        writer.Buffer[writer.Position++] = (byte)(value >> 40);
+        writer.Buffer[writer.Position++] = (byte)(value >> 48);
+        writer.Buffer[writer.Position++] = (byte)(value >> 56);
+        if (writer.Position > writer.Length) writer.Length = writer.Position;
+    }
 }

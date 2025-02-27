@@ -396,11 +396,6 @@ public static class RoleOptionManager
                 else
                 {
                     _numberOfCrews_My = value;
-                    // ホストの場合は、変更を他のプレイヤーに同期
-                    if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
-                    {
-                        RpcSyncRoleOption(RoleId, _numberOfCrews_My, _percentage_My);
-                    }
                 }
             }
         }
@@ -418,10 +413,6 @@ public static class RoleOptionManager
                 {
                     _percentage_My = value;
                     // ホストの場合は、変更を他のプレイヤーに同期
-                    if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
-                    {
-                        RpcSyncRoleOption(RoleId, _numberOfCrews_My, _percentage_My);
-                    }
                 }
             }
         }

@@ -215,6 +215,7 @@ namespace SuperNewRoles.CustomOptions
                 selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", roleOption.NumberOfCrews);
                 if (isExist)
                     RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+                RoleOptionManager.RpcSyncRoleOption(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
             }, minusSpriteRenderer);
 
             var plusButton = optionInstance.transform.Find("Button_Plus").gameObject;
@@ -243,6 +244,7 @@ namespace SuperNewRoles.CustomOptions
                     roleOption.Percentage = 100;
                     percentageText.text = "100%";
                 }
+                RoleOptionManager.RpcSyncRoleOption(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
             }, plusSpriteRenderer);
 
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleNumbersOfCrewsText = selectedText;
@@ -272,6 +274,7 @@ namespace SuperNewRoles.CustomOptions
                 selectedText.text = roleOption.Percentage + "%";
                 if (isExist)
                     RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+                RoleOptionManager.RpcSyncRoleOption(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
             }, minusSpriteRenderer);
 
             var plusButton = optionInstance.transform.Find("Button_Plus").gameObject;
@@ -286,6 +289,7 @@ namespace SuperNewRoles.CustomOptions
                 selectedText.text = roleOption.Percentage + "%";
                 if (isExist)
                     RoleOptionMenu.UpdateRoleDetailButtonColor(roleDetailButton.GetComponent<SpriteRenderer>(), roleOption);
+                RoleOptionManager.RpcSyncRoleOption(roleOption.RoleId, roleOption.NumberOfCrews, roleOption.Percentage);
             }, plusSpriteRenderer);
             return optionInstance;
         }

@@ -196,7 +196,7 @@ public static class CustomRPCManager
             if (underlyingType == typeof(byte))
                 writer.Write((byte)(object)obj);
             else if (underlyingType == typeof(short))
-                writer.Write((short)(object)obj);
+                ModHelpers.Write(writer, (short)(object)obj);
             else if (underlyingType == typeof(ushort))
                 writer.Write((ushort)(object)obj);
             else if (underlyingType == typeof(int))
@@ -206,7 +206,7 @@ public static class CustomRPCManager
             else if (underlyingType == typeof(ulong))
                 writer.Write((ulong)(object)obj);
             else if (underlyingType == typeof(long))
-                writer.Write((long)(object)obj);
+                ModHelpers.Write(writer, (long)obj);
             else
                 throw new Exception($"Unsupported enum underlying type: {underlyingType}");
             return;
@@ -220,7 +220,7 @@ public static class CustomRPCManager
                 writer.Write(i);
                 break;
             case short s:
-                writer.Write(s);
+                ModHelpers.Write(writer, s);
                 break;
             case ushort us:
                 writer.Write(us);
@@ -230,6 +230,9 @@ public static class CustomRPCManager
                 break;
             case ulong ul:
                 writer.Write(ul);
+                break;
+            case long l:
+                ModHelpers.Write(writer, l);
                 break;
             case float f:
                 writer.Write(f);
