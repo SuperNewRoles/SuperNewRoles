@@ -21,6 +21,7 @@ public enum RoleId : short
     WaveCannon,
     WaveCannonJackal,
     Tuna,
+    Teruteru,
 }
 
 public enum QuoteMod : byte

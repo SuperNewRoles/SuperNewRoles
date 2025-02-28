@@ -59,9 +59,9 @@ FinalResults,最終結果,Final Results,最终结果,最終結果
 # FinalStatus
 FinalStatus.Alive,生存,Alive,生存,生存
 FinalStatus.Kill,キル,Kill,击杀,擊殺
+FinalStatus.Exiled,追放,Exiled,追放,追放
 FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
 FinalStatus.Disonnected,切断,Disonnected,切断,切斷
-FinalStatus.Exile,追放,Exile,追放,追放
 FinalStatus.WaveCannon,蒸発,Vaporize,蒸发,蒸發
 FinalStatus.FalseCharge,冤罪,False Charge,冤罪,冤罪
 FinalStatus.Revange,道連れ,Revange,道連れ,道連れ
@@ -69,6 +69,7 @@ FinalStatus.Suicide,自殺,Suicide,自殺,自殺
 FinalStatus.Samurai,サムライ,Samurai,侍,侍
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
+FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
@@ -97,6 +98,7 @@ Samurai,侍,Samurai,侍,侍
 WaveCannon,波動砲,Wave Cannon,波动炮,波動砲
 WaveCannonJackal,波動砲ジャッカル,Wave Cannon Jackal,波动炮杰克,波動砲傑克
 Tuna,マグロ,Tuna,金枪鱼,金槍魚
+Teruteru,てるてる,Teruteru,特鲁特鲁,特魯特魯
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -203,3 +205,9 @@ WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类�
 
 # Tuna
 TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間
+
+# Teruteru
+TeruteruCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+TeruteruRequireTaskCompletion,タスク完了が必要,Require Task Completion,需要完成任务,需要完成任務
+TeruteruRequiredTaskCount,必要タスク数,Required Task Count,需要完成的任务数,需要完成的任務數
+TeruteruCustomTaskCount,タスク数を変更する,Change Task Count,更改任务数,更改任務數

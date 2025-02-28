@@ -19,7 +19,8 @@ public enum WinCondition
     Haison = CustomGameOverReason.Haison,
     NoWinner = CustomGameOverReason.NoWinner,
     // カスタム勝利条件のために予約
-    TunaWin
+    TunaWin,
+    TeruteruWin
 }
 public enum CustomGameOverReason
 {
@@ -28,6 +29,7 @@ public enum CustomGameOverReason
     NoWinner = 32,
     JackalWin = 33,
     TunaWin = 34,
+    TeruteruWin = 35,
 }
 
 static class AdditionalTempData
@@ -140,6 +142,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.TunaWin:
                 baseText = "Tuna";
                 roleColor = Tuna.Instance.RoleColor;
+                break;
+            case WinCondition.TeruteruWin:
+                baseText = "Teruteru";
+                roleColor = Teruteru.Instance.RoleColor;
                 break;
             default:
                 baseText = "";
@@ -351,6 +357,10 @@ public static class OnGameEndPatch
             case CustomGameOverReason.TunaWin:
                 return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Tuna),
                         WinCondition.TunaWin,
+                        emptyReviveList);
+            case CustomGameOverReason.TeruteruWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Teruteru),
+                        WinCondition.TeruteruWin,
                         emptyReviveList);
             default:
                 Logger.Error("不明なゲームオーバー理由:" + reason);
