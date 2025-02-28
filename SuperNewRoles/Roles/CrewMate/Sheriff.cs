@@ -89,33 +89,39 @@ public class SheriffAbilityData
     }
 }
 
-public class SheriffAbility : TargetCustomButtonBase, IAbilityCount
+public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
 {
     public SheriffAbilityData SheriffAbilityData { get; }
-    public override Color32 OutlineColor => Sheriff.Instance.RoleColor;
-    public override float DefaultTimer => SheriffAbilityData.KillCooldown;
-    public override string buttonText => "Kill";
-    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("SheriffKillButton.png");
-    protected override KeyCode? hotkey => KeyCode.Q;
-    public override bool OnlyCrewmates => false;
-    public SheriffAbility(SheriffAbilityData sheriffAbilityData)
+
+    public SheriffAbility(SheriffAbilityData sheriffAbilityData) : base(
+        canKill: () => true && sheriffAbilityData.KillCount > 0,
+        killCooldown: () => sheriffAbilityData.KillCooldown,
+        onlyCrewmates: () => false,
+        targetPlayersInVents: () => false)
     {
         SheriffAbilityData = sheriffAbilityData;
         Count = SheriffAbilityData.KillCount;
-    }
-    public override bool CheckIsAvailable()
-    {
-        return TargetIsExist;
     }
 
     public override bool CheckHasButton() => base.CheckHasButton() && HasCount;
 
     public override void OnClick()
     {
+        if (Target == null) return;
+        if (!CanKill()) return;
+
         this.UseAbilityCount();
-        PlayerControl MurderTarget = SheriffAbilityData.CanKill(PlayerControl.LocalPlayer, Target)
-                                    ? Target.Player
-                                    : PlayerControl.LocalPlayer;
-        PlayerControl.LocalPlayer.RpcCustomMurderPlayer(MurderTarget, true);
+
+        if (SheriffAbilityData.CanKill(PlayerControl.LocalPlayer, Target))
+        {
+            // 正当なキル
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
+        }
+        else
+        {
+            // 誤射の場合は自分が死ぬ
+            ExPlayerControl.LocalPlayer.RpcCustomDeath(ExPlayerControl.LocalPlayer, CustomDeathType.Kill);
+        }
+        ResetTimer();
     }
 }
