@@ -73,6 +73,9 @@ class Tuna : RoleBase<Tuna>
             }
             if (isMeeting)
                 return;
+            // イントロ中は何もしない
+            if (FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+                return;
 
             // 現在の位置を取得
             Vector2 currentPosition = Player.transform.position;

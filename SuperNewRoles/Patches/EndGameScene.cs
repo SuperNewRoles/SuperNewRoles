@@ -19,7 +19,7 @@ public enum WinCondition
     Haison = CustomGameOverReason.Haison,
     NoWinner = CustomGameOverReason.NoWinner,
     // カスタム勝利条件のために予約
-    CustomWin
+    TunaWin
 }
 public enum CustomGameOverReason
 {
@@ -27,6 +27,7 @@ public enum CustomGameOverReason
     Haison = 31,
     NoWinner = 32,
     JackalWin = 33,
+    TunaWin = 34,
 }
 
 static class AdditionalTempData
@@ -135,6 +136,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.JackalWin:
                 baseText = "Jackal";
                 roleColor = Jackal.Instance.RoleColor;
+                break;
+            case WinCondition.TunaWin:
+                baseText = "Tuna";
+                roleColor = Tuna.Instance.RoleColor;
                 break;
             default:
                 baseText = "";
@@ -309,8 +314,16 @@ public static class OnGameEndPatch
             endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
     }
 
-    public static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) HandleEndGameProcess(GameOverReason gameOverReason)
+    public static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) HandleEndGameProcess(ref GameOverReason gameOverReason)
     {
+        foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
+        {
+            if (player == null) continue;
+            if (player.Role == RoleId.Tuna && player.IsAlive())
+            {
+                gameOverReason = (GameOverReason)CustomGameOverReason.TunaWin;
+            }
+        }
         return GetWinningTeamInfo((CustomGameOverReason)gameOverReason);
     }
 
@@ -334,6 +347,10 @@ public static class OnGameEndPatch
             case CustomGameOverReason.JackalWin:
                 return (ExPlayerControl.ExPlayerControls.Where(p => p.IsJackal()),
                         WinCondition.JackalWin,
+                        emptyReviveList);
+            case CustomGameOverReason.TunaWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Tuna),
+                        WinCondition.TunaWin,
                         emptyReviveList);
             default:
                 Logger.Error("不明なゲームオーバー理由:" + reason);
@@ -371,7 +388,7 @@ public static class OnGameEndPatch
 
         CollectPlayerRoleData(gameOverReason);
 
-        var (winners, winCondition, willRevivePlayers) = HandleEndGameProcess(gameOverReason);
+        var (winners, winCondition, willRevivePlayers) = HandleEndGameProcess(ref gameOverReason);
         EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
         foreach (var winner in winners)
             EndGameResult.CachedWinners.Add(new CachedPlayerData(winner.Data));
@@ -379,6 +396,7 @@ public static class OnGameEndPatch
         foreach (NetworkedPlayerInfo player in willRevivePlayers)
             player.IsDead = false;
 
+        AdditionalTempData.gameOverReason = gameOverReason;
         AdditionalTempData.winCondition = winCondition;
     }
 
