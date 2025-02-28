@@ -3,6 +3,8 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.WaveCannonObj;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -12,7 +14,7 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     // IButtonEffect
     private float effectDuration;
     public float EffectDuration => effectDuration;
-    public Action OnEffectEnds => () => { WaveCannonObject?.OnShoot(); };
+    public Action OnEffectEnds => () => { RpcShootCannon(PlayerControl.LocalPlayer, AbilityId); };
     public bool isEffectActive { get; set; }
     public float EffectTimer { get; set; }
 
@@ -22,12 +24,14 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public override float DefaultTimer => coolDown;
     public WaveCannonObjectBase WaveCannonObject { get; private set; }
     private WaveCannonType type;
-
-    public WaveCannonAbility(float coolDown, float effectDuration, WaveCannonType type)
+    public bool isResetKillCooldown { get; }
+    private EventListener<MurderEventData> _onMurderEvent;
+    public WaveCannonAbility(float coolDown, float effectDuration, WaveCannonType type, bool isResetKillCooldown = false)
     {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
         this.type = type;
+        this.isResetKillCooldown = isResetKillCooldown;
     }
     public override void OnClick()
     {
@@ -35,6 +39,21 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
         Logger.Info("波動砲発射！");
         WaveCannonObjectBase.RpcSpawnFromType(PlayerControl.LocalPlayer, type, this.AbilityId, PlayerControl.LocalPlayer.MyPhysics.FlipX, PlayerControl.LocalPlayer.transform.position);
         ResetTimer();
+    }
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _onMurderEvent = MurderEvent.Instance.AddListener(x =>
+        {
+            if (isResetKillCooldown && x.killer == PlayerControl.LocalPlayer)
+                ExPlayerControl.LocalPlayer.ResetKillCooldown();
+        });
+    }
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        if (_onMurderEvent != null)
+            MurderEvent.Instance.RemoveListener(_onMurderEvent);
     }
 
     public override bool CheckIsAvailable()
@@ -52,7 +71,7 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
         WaveCannonObject = waveCannonObject;
     }
     [CustomRPC]
-    public static void RPCShootCannon(ExPlayerControl source, ulong abilityId)
+    public static void RpcShootCannon(ExPlayerControl source, ulong abilityId)
     {
         var ability = source.GetAbility<WaveCannonAbility>(abilityId);
         ability?.WaveCannonObject?.OnShoot();

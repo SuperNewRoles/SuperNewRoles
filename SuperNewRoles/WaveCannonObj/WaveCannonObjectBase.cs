@@ -24,8 +24,8 @@ public abstract class WaveCannonObjectBase
     private Vector3 startPosition { get; }
     private float timer;
     private bool detached = false;
-
-    public WaveCannonObjectBase(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition)
+    private bool isResetKillCooldown;
+    public WaveCannonObjectBase(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown)
     {
         this.ability = ability;
         new LateTask(() => this.fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate), 0f);
@@ -34,6 +34,7 @@ public abstract class WaveCannonObjectBase
         ability.Player.NetTransform.RpcSnapTo(startPosition);
         OnFixedUpdate();
         timer = ShootTime;
+        this.isResetKillCooldown = isResetKillCooldown;
     }
     private void OnFixedUpdate()
     {
@@ -89,8 +90,19 @@ public abstract class WaveCannonObjectBase
         isShooting = true;
         OnAnimationShoot();
     }
+    [CustomRPC(true)]
+    public static void RpcDetach(ExPlayerControl source, ulong abilityId)
+    {
+        WaveCannonAbility ability = source.GetAbility<WaveCannonAbility>(abilityId);
+        if (ability == null) return;
+        WaveCannonObjectBase obj = ability.WaveCannonObject;
+        if (obj == null) return;
+        obj.Detach();
+    }
     public virtual void Detach()
     {
+        if (ability?.Player?.AmOwner == true)
+            RpcDetach(ability.Player, ability.AbilityId);
         Logger.Info("Detached");
         new LateTask(() => FixedUpdateEvent.Instance.RemoveListener(fixedUpdateEvent), 0f);
         detached = true;
@@ -103,21 +115,23 @@ public abstract class WaveCannonObjectBase
         }
         ability.Player.moveable = true;
         ability.Player.MyPhysics.Animations.PlayIdleAnimation();
+        if (ability.Player.AmOwner && isResetKillCooldown)
+            ExPlayerControl.LocalPlayer.ResetKillCooldown();
     }
     [CustomRPC]
     public static void RpcSpawnFromType(ExPlayerControl source, WaveCannonType type, ulong abilityId, bool isFlipX, Vector3 startPosition)
     {
         WaveCannonAbility ability = source.GetAbility<WaveCannonAbility>(abilityId);
         if (ability == null) return;
-        WaveCannonObjectBase obj = SpawnFromType(type, ability, isFlipX, startPosition);
+        WaveCannonObjectBase obj = SpawnFromType(type, ability, isFlipX, startPosition, ability.isResetKillCooldown);
         ability.SpawnedWaveCannonObject(obj);
     }
-    public static WaveCannonObjectBase SpawnFromType(WaveCannonType type, WaveCannonAbility ability, bool isFlipX, Vector3 startPosition)
+    public static WaveCannonObjectBase SpawnFromType(WaveCannonType type, WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown = false)
     {
         switch (type)
         {
             case WaveCannonType.Tank:
-                return new WaveCannonObjectTank(ability, isFlipX, startPosition);
+                return new WaveCannonObjectTank(ability, isFlipX, startPosition, isResetKillCooldown);
             default:
                 throw new Exception($"Invalid wave cannon type: {type}");
         }

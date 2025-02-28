@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
+using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
@@ -76,6 +78,27 @@ public class ExPlayerControl
         hasAbility = PlayerAbilities.Any(x => x.GetType().Name == abilityName);
         _hasAbilityCache[abilityName] = hasAbility;
         return hasAbility;
+    }
+    public void ResetKillCooldown()
+    {
+        if (!AmOwner) return;
+        if (FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
+        {
+            float coolTime = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            SetKillTimerUnchecked(coolTime, coolTime);
+        }
+        PlayerAbilities.ForEach(x =>
+        {
+            if (x is CustomKillButtonAbility customKillButtonAbility)
+            {
+                customKillButtonAbility.ResetTimer();
+            }
+        });
+    }
+    public void SetKillTimerUnchecked(float time, float maxTime)
+    {
+        Player.killTimer = Mathf.Clamp(time, 0f, maxTime);
+        FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(Player.killTimer, maxTime);
     }
     public void SetRole(RoleId roleId)
     {

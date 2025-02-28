@@ -129,9 +129,7 @@ public static class CustomOptionManager
                 if (field.IsStatic && field.FieldType == typeof(CustomOptionCategory))
                 {
                     if (!fieldNames.Add(field.Name))
-                    {
-                        throw new InvalidOperationException($"フィールド名が重複しています: {field.Name}");
-                    }
+                        throw new InvalidOperationException($"Category field name is duplicated: {field.Name}");
                     var category = new CustomOptionCategory(field.Name);
                     field.SetValue(null, category);
                     CategoryByFieldName[field.Name] = category;
@@ -150,7 +148,7 @@ public static class CustomOptionManager
                 }
                 if (!fieldNames.Add(field.Name))
                 {
-                    throw new InvalidOperationException($"フィールド名が重複しています: {field.Name}");
+                    throw new InvalidOperationException($"Field name is duplicated: {field.Name}");
                 }
 
                 // カスタムオプション属性を辞書に追加

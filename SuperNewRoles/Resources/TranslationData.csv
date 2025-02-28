@@ -129,8 +129,13 @@ MadmateSpecialTasks,タスク数,Task Count,任务数,任務數
 # Jackal Options
 JackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
 JackalCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+JackalImpostorVision,インポスターの視界,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
+JackalInfiniteJackal,無限ジャッカル,Infinite Jackal,无限杰克,無限傑克
 JackalCanCreateSidekick,サイドキックを作成できる,Can Create Sidekick,杰克可以创建边缘队员,傑克可以創建邊緣隊員
 JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cooldown,杰克边缘队员冷却时间,傑克邊緣隊員冷卻時間
+JackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,邊緣隊員類型
+JackalSidekickType.Sidekick,サイドキック,Sidekick,边缘队员,邊緣隊員
+JackalSidekickType.Friends,ジャッカルフレンズ,Jackal Friends,杰克朋友,傑克朋友
 
 # Bait Options
 BaitReportTime,通報の遅延,Report Delay,通報延遲,通報延遲

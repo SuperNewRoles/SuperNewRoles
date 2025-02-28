@@ -6,12 +6,12 @@ namespace SuperNewRoles.WaveCannonObj;
 
 public class WaveCannonObjectTank : WaveCannonObjectBase
 {
-    public WaveCannonObjectTank(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition) : base(ability, isFlipX, startPosition)
+    public WaveCannonObjectTank(WaveCannonAbility ability, bool isFlipX, Vector3 startPosition, bool isResetKillCooldown) : base(ability, isFlipX, startPosition, isResetKillCooldown)
     {
         // 砲台のコンテナオブジェクトを生成
         _gameObject = new GameObject("WaveCannonObjectTank");
         _gameObject.transform.localScale = new Vector3(isFlipX ? -1 : 1, 1, 1);
-        _gameObject.transform.localPosition = startPosition - new Vector3(0, 0.15f, 1.2f);
+        _gameObject.transform.localPosition = startPosition - new Vector3(0, 0.15f, 100f);
 
         // 砲台の見た目を生成
         TankSpriteObject = new GameObject("TankSpriteObject");

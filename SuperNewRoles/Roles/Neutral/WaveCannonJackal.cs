@@ -16,18 +16,19 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new JackalAbility(new JackalData(
             canKill: true,
-            killCooldown: JackalKillCooldown,
-            canUseVent: JackalCanUseVent,
-            canCreateSidekick: JackalCanCreateSidekick,
-            sidekickCooldown: JackalSidekickCooldown,
-            isImpostorVision: JackalImpostorVision,
-            isInfiniteJackal: JackalInfiniteJackal,
-            sidekickType: JackalSidekickType
+            killCooldown: WaveCannonJackalKillCooldown,
+            canUseVent: WaveCannonJackalCanUseVent,
+            canCreateSidekick: WaveCannonJackalCanCreateSidekick,
+            sidekickCooldown: WaveCannonJackalSidekickCooldown,
+            isImpostorVision: WaveCannonJackalImpostorVision,
+            isInfiniteJackal: WaveCannonJackalInfiniteJackal,
+            sidekickType: WaveCannonJackalSidekickType
         )),
         () => new WaveCannonAbility(
-            coolDown: WaveCannonCooldown,
-            effectDuration: WaveCannonEffectDuration,
-            type: WaveCannonType
+            coolDown: WaveCannonJackalCooldown,
+            effectDuration: WaveCannonJackalEffectDuration,
+            type: WaveCannonJackalType,
+            isResetKillCooldown: WaveCannonJackalIsSyncKillCoolTime
         )
     ];
 
@@ -43,32 +44,35 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     public override RoleId[] RelatedRoleIds { get; } = [RoleId.Sidekick, RoleId.JackalFriends];
 
     [CustomOptionFloat("WaveCannonJackalKillCooldown", 2.5f, 60f, 2.5f, 30f)]
-    public static float JackalKillCooldown;
+    public static float WaveCannonJackalKillCooldown;
 
     [CustomOptionBool("WaveCannonJackalCanUseVent", true)]
-    public static bool JackalCanUseVent;
+    public static bool WaveCannonJackalCanUseVent;
 
     [CustomOptionBool("WaveCannonJackalImpostorVision", true)]
-    public static bool JackalImpostorVision;
+    public static bool WaveCannonJackalImpostorVision;
 
     [CustomOptionBool("WaveCannonJackalCanCreateSidekick", true)]
-    public static bool JackalCanCreateSidekick;
+    public static bool WaveCannonJackalCanCreateSidekick;
 
-    [CustomOptionFloat("WaveCannonJackalSidekickCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(JackalCanCreateSidekick))]
-    public static float JackalSidekickCooldown;
+    [CustomOptionFloat("WaveCannonJackalSidekickCooldown", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(WaveCannonJackalCanCreateSidekick))]
+    public static float WaveCannonJackalSidekickCooldown;
 
     [CustomOptionBool("WaveCannonJackalInfiniteJackal", true)]
-    public static bool JackalInfiniteJackal;
+    public static bool WaveCannonJackalInfiniteJackal;
 
-    [CustomOptionSelect("WaveCannonJackalSidekickType", typeof(JackalSidekickType), "JackalSidekickType.", parentFieldName: nameof(JackalCanCreateSidekick))]
-    public static JackalSidekickType JackalSidekickType;
+    [CustomOptionSelect("WaveCannonJackalSidekickType", typeof(JackalSidekickType), "JackalSidekickType.", parentFieldName: nameof(WaveCannonJackalCanCreateSidekick))]
+    public static JackalSidekickType WaveCannonJackalSidekickType;
 
     [CustomOptionFloat("WaveCannonJackalWaveCannonCooldown", 10f, 60f, 5f, 30f)]
-    public static float WaveCannonCooldown;
+    public static float WaveCannonJackalCooldown;
 
     [CustomOptionFloat("WaveCannonJackalWaveCannonEffectDuration", 1f, 10f, 1f, 6f)]
-    public static float WaveCannonEffectDuration;
+    public static float WaveCannonJackalEffectDuration;
+
+    [CustomOptionBool("WaveCannonJackalSyncKillCoolTime", true, translationName: "WaveCannonSyncKillCoolTime")]
+    public static bool WaveCannonJackalIsSyncKillCoolTime;
 
     [CustomOptionSelect("WaveCannonJackalWaveCannonType", typeof(WaveCannonTypeForOption), "WaveCannonAnimationType.")]
-    public static WaveCannonType WaveCannonType = WaveCannonType.Tank;
+    public static WaveCannonType WaveCannonJackalType = WaveCannonType.Tank;
 }

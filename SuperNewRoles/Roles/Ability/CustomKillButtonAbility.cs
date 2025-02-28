@@ -22,7 +22,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override bool OnlyCrewmates => OnlyCrewmatesValue?.Invoke() ?? false;
     public override bool TargetPlayersInVents => TargetPlayersInVentsValue?.Invoke() ?? false;
     public override Func<ExPlayerControl, bool>? IsTargetable => IsTargetableValue;
-    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown = null, Func<bool> onlyCrewmates = null, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null)
+    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown, Func<bool> onlyCrewmates, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null)
     {
         CanKill = canKill;
         KillCooldown = killCooldown;

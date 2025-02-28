@@ -13,7 +13,7 @@ class WaveCannon : RoleBase<WaveCannon>
     public override RoleId Role { get; } = RoleId.WaveCannon;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities { get; } = [
-        () => new WaveCannonAbility(WaveCannonCooldown, WaveCannonDuration, (WaveCannonType)AnimationTypeOption)
+        () => new WaveCannonAbility(WaveCannonCooldown, WaveCannonDuration, (WaveCannonType)AnimationTypeOption, IsSyncKillCoolTime)
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
