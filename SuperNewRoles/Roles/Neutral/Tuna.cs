@@ -43,10 +43,12 @@ class Tuna : RoleBase<Tuna>
         private EventListener _updateListener;
         private EventListener<WrapUpEventData> _wrapUpListener;
         private bool isMeeting = false;
+        private bool isMoveStarted = false;
 
         public DeathIfIdlingAbility(TunaData data)
         {
             _data = data;
+            isMoveStarted = false;
         }
 
         public override void AttachToLocalPlayer()
@@ -73,12 +75,16 @@ class Tuna : RoleBase<Tuna>
             }
             if (isMeeting)
                 return;
-            // イントロ中は何もしない
-            if (FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
-                return;
 
             // 現在の位置を取得
             Vector2 currentPosition = Player.transform.position;
+
+            // イントロ中は何もしない
+            if (FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+            {
+                _lastPosition = currentPosition;
+                return;
+            }
 
             // 位置が変わっているかチェック
             bool isCurrentlyMoving = Vector2.Distance(_lastPosition, currentPosition) > 0.0001f;
