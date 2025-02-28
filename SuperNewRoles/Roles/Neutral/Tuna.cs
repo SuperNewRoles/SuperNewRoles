@@ -89,6 +89,16 @@ class Tuna : RoleBase<Tuna>
             // 位置が変わっているかチェック
             bool isCurrentlyMoving = Vector2.Distance(_lastPosition, currentPosition) > 0.0001f;
 
+            // isMoveStartedが無効かつ動いた場合は有効にする
+            if (!isMoveStarted && isCurrentlyMoving)
+            {
+                isMoveStarted = true;
+            }
+
+            // isMoveStartedが無効な場合はタイマーを進めない
+            if (!isMoveStarted)
+                return;
+
             // 移動状態が変わった場合
             if (isCurrentlyMoving != _isMoving)
             {

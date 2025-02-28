@@ -200,7 +200,7 @@ public class EndGameManagerSetUpPatch
         foreach (var additionalWinCondition in AdditionalTempData.additionalWinConditions)
         {
             (string additionalWinText, Color additionalRoleColor, bool additionalIsHaison) = ProcessWinText(additionalWinCondition);
-            winText += $" + {ModHelpers.Cs(additionalRoleColor, additionalWinText)}";
+            winText += $" <color=white>+</color> {ModHelpers.Cs(additionalRoleColor, additionalWinText)}";
         }
 
         textRenderer.color = AdditionalTempData.winCondition == WinCondition.Haison ? Color.clear : roleColor;
@@ -372,7 +372,7 @@ public static class OnGameEndPatch
         }
 
         var (winners, winCondition, willRevivePlayers) = GetWinningTeamInfo((CustomGameOverReason)gameOverReason);
-        if (opportunistAlive)
+        if (opportunistAlive && winCondition != WinCondition.Haison)
         {
             foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
             {
