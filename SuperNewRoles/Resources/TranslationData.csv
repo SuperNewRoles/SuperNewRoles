@@ -96,6 +96,7 @@ SelfBomber,自爆魔,Self Bomber,自爆者,自爆者
 Samurai,侍,Samurai,侍,侍
 WaveCannon,波動砲,Wave Cannon,波动炮,波動砲
 WaveCannonJackal,波動砲ジャッカル,Wave Cannon Jackal,波动炮杰克,波動砲傑克
+Tuna,マグロ,Tuna,金枪鱼,金槍魚
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -199,3 +200,6 @@ WaveCannonJackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队
 WaveCannonJackalWaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
 WaveCannonJackalWaveCannonEffectDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
 WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类型,波動砲類型
+
+# Tuna
+TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間

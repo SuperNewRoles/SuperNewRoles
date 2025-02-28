@@ -20,6 +20,7 @@ public enum RoleId : short
     SelfBomber,
     WaveCannon,
     WaveCannonJackal,
+    Tuna,
 }
 
 public enum QuoteMod : byte
