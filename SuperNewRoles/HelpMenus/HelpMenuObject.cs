@@ -1,0 +1,177 @@
+using UnityEngine;
+using TMPro;
+using SuperNewRoles.Modules;
+using UnityEngine.Events;
+using System;
+using System.Reflection;
+using System.Linq;
+using HarmonyLib;
+
+namespace SuperNewRoles.HelpMenus;
+
+public static class HelpMenuObjectManager
+{
+    private static GameObject helpMenuObject;
+    private static FadeCoroutine fadeCoroutine;
+    public static HelpMenuCategoryBase[] categories;
+    public static HelpMenuCategoryBase? CurrentCategory;
+    private static void Initialize()
+    {
+        if (categories == null || categories.Length == 0)
+            SetUpCategories();
+        CurrentCategory = null;
+        var parent = HudManager.Instance.transform;
+        helpMenuObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("HelpMenuObject"), parent);
+        helpMenuObject.transform.localPosition = new Vector3(0f, 0f, -500f);
+        helpMenuObject.transform.localScale = Vector3.one;
+        helpMenuObject.transform.localRotation = Quaternion.identity;
+        helpMenuObject.SetActive(true);
+        helpMenuObject.AddComponent<PassiveButton>().Colliders = new Collider2D[] { helpMenuObject.GetComponent<BoxCollider2D>() };
+        // フェードイン処理
+        fadeCoroutine = helpMenuObject.AddComponent<FadeCoroutine>();
+        fadeCoroutine.StartFadeIn(helpMenuObject, 0.115f);
+
+        // 左側のボタンをセットアップ
+        SetUpLeftButtons();
+    }
+    private static void SetUpCategories()
+    {
+        // HelpMenuCategoryBaseを継承した全ての型を取得
+        var categoryTypes = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(type => type.IsSubclassOf(typeof(HelpMenuCategoryBase)) && !type.IsAbstract)
+            .ToArray();
+
+        // 各カテゴリのインスタンスを作成して配列に格納
+        categories = new HelpMenuCategoryBase[categoryTypes.Length];
+        for (int i = 0; i < categoryTypes.Length; i++)
+        {
+            categories[i] = (HelpMenuCategoryBase)Activator.CreateInstance(categoryTypes[i]);
+        }
+    }
+    private static void SetUpLeftButtons()
+    {
+        // LeftButtonsを取得
+        var leftButtons = helpMenuObject.transform.Find("LeftButtons").gameObject;
+
+        // BulkRoleButtonをアセットから取得
+        var bulkRoleButtonAsset = AssetManager.GetAsset<GameObject>("BulkRoleButton");
+
+        var rightContainer = helpMenuObject.transform.Find("RightContainer").gameObject;
+
+        // ボタンを設定
+        for (int i = 0; i < categories.Length; i++)
+        {
+            // BulkRoleButtonを複製して設置
+            var bulkRoleButton = GameObject.Instantiate(bulkRoleButtonAsset, leftButtons.transform);
+            bulkRoleButton.name = $"HelpMenuButton_{categories[i].Name}";
+            bulkRoleButton.transform.localScale = Vector3.one * 0.36f;
+            bulkRoleButton.transform.localPosition = new Vector3(-2.83f, (categories.Length - 1) * 0.25f - i * 0.5f, 0f); // Y座標を0を中心に0.5ずつずらして配置
+
+            // テキストを設定
+            bulkRoleButton.transform.Find("Text").GetComponent<TextMeshPro>().text =
+                ModTranslation.GetString($"HelpMenu.{categories[i].Name}");
+
+            // Selectedオブジェクトを取得
+            GameObject selectedObject = bulkRoleButton.transform.Find("Selected").gameObject;
+
+            // PassiveButtonを追加
+            var passiveButton = bulkRoleButton.AddComponent<PassiveButton>();
+            passiveButton.Colliders = new Collider2D[1];
+            passiveButton.Colliders[0] = bulkRoleButton.GetComponent<BoxCollider2D>();
+            passiveButton.OnClick = new();
+
+            // クリック時の処理
+            int index = i; // ループ変数をキャプチャしないようにコピー
+            passiveButton.OnClick.AddListener((UnityAction)(() =>
+            {
+                Logger.Info($"{bulkRoleButton.name}がクリックされました");
+                CurrentCategory = categories[index];
+                categories[index].Show(rightContainer);
+
+                // 選択されたボタンのSelectedを表示する
+                selectedObject.SetActive(true);
+            }));
+
+            // 初期状態でCurrentCategoryと一致する場合のみSelectedを表示
+            if (CurrentCategory == categories[i])
+            {
+                selectedObject.SetActive(true);
+            }
+            else
+            {
+                selectedObject.SetActive(false);
+            }
+
+            // マウスオーバー時の処理
+            passiveButton.OnMouseOver = new();
+            passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
+            {
+                selectedObject.SetActive(true);
+            }));
+
+            // マウスアウト時の処理
+            passiveButton.OnMouseOut = new();
+            passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
+            {
+                if (CurrentCategory != categories[index]) // CurrentCategoryと異なる場合のみ非表示にする
+                {
+                    selectedObject.SetActive(false);
+                }
+            }));
+        }
+    }
+    public static void ShowOrHideHelpMenu()
+    {
+        if (helpMenuObject == null)
+        {
+            Initialize();
+        }
+        else
+        {
+            fadeCoroutine.ReverseFade();
+        }
+    }
+    public static void HideHelpMenu()
+    {
+        if (helpMenuObject == null || fadeCoroutine == null) return;
+        fadeCoroutine.StartFadeOut(helpMenuObject, 0.115f);
+    }
+    // overlayを閉じる時。
+    [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
+    public static class KeyboardJoystickUpdatePatch
+    {
+        public static void Postfix(KeyboardJoystick __instance)
+        {
+            Logger.Info("KeyboardJoystickUpdatePostfix");
+            // Overlayが非表示なら処理を省略する
+            if (helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isAvtive)
+            {
+                return;
+            }
+
+            // チャットがアクティブ、またはEsc, Tab, Hキーのいずれかが押された場合、
+            // Overlayが表示されているなら非表示に切り替える
+            bool isChatActive = FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening;
+            bool isCancelKeyPressed = Input.GetKeyDown(KeyCode.Escape);
+            if (isChatActive || isCancelKeyPressed)
+            {
+                HideHelpMenu();
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+    public static class GameStartManagerUpdatePatch
+    {
+        public static void Postfix(GameStartManager __instance)
+        {
+            bool enabled = helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isAvtive;
+            __instance.StartButton.enabled = enabled;
+            __instance.LobbyInfoPane.EditButton.enabled = enabled;
+            PassiveButton p = null;
+            if (__instance.LobbyInfoPane.HostViewButton != null)
+                __instance.LobbyInfoPane.HostViewButton.enabled = enabled;
+            if (__instance.LobbyInfoPane.ClientViewButton != null)
+                __instance.LobbyInfoPane.ClientViewButton.enabled = enabled;
+        }
+    }
+}

@@ -18,6 +18,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOptions;
 using UnityEngine.EventSystems;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.HelpMenus;
 
 namespace SuperNewRoles;
 
@@ -58,6 +59,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         var rightClickDetectorOptions = new RegisterTypeOptions { Interfaces = new[] { typeof(IPointerClickHandler) } };
         ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
+        ClassInjector.RegisterTypeInIl2Cpp<FadeCoroutine>();
     }
 
 

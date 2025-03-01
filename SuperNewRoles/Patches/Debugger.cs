@@ -1,9 +1,13 @@
+using System.Collections;
 using System.Linq;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using SuperNewRoles.HelpMenus;
 
 namespace SuperNewRoles.Patches;
 
@@ -15,8 +19,10 @@ public static class Debugger
         // Shift Ctrl + D
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
         {
-            Logger.Info("Debugger Clicked");
-            ExPlayerControl.LocalPlayer.RpcExiledCustom();
+        }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            HelpMenuObjectManager.ShowOrHideHelpMenu();
         }
     }
 }
