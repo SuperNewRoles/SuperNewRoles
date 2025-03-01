@@ -71,6 +71,11 @@ FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被�
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
 
+# HelpMenu
+HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
+HelpMenu.MyRoleInformation.InLobbyText,ゲーム中に自分の役職が表示されます。,Your role will be displayed during the game.,游戏过程中会显示你的角色。,遊戲過程中會顯示你的角色。
+
+
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
 AssignRoles_MaxCrews,最大 クルーメイト 選出数,Max Crewmates,最大船员数,最大船員數
@@ -205,6 +210,7 @@ WaveCannonJackalWaveCannonEffectDuration,波動砲の充填時間,Wave Cannon Fi
 WaveCannonJackalWaveCannonType,波動砲タイプ,Wave Cannon Type,波动炮类型,波動砲類型
 
 # Tuna
+Tuna.Description,止まるな、動き続けろ！一瞬の油断が命取りだ...\n俊敏に泳ぎ続ける。マグロだから！,Don't stop, keep moving... A moment's lapse could be fatal! Keep swimming swiftly... like a tuna!,不要停，持续游动…片刻松懈将致命！如金枪鱼般敏捷游动…,不要停，持續游動…片刻鬆懈將致命！如鮪魚般敏捷游動…
 TunaStopTimeLimit,停止可能時間,Tuna Stop Time Limit,金枪鱼停止时间,金槍魚停止時間
 
 # Teruteru

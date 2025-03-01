@@ -69,7 +69,7 @@ public static class HelpMenuObjectManager
 
             // テキストを設定
             bulkRoleButton.transform.Find("Text").GetComponent<TextMeshPro>().text =
-                ModTranslation.GetString($"HelpMenu.{categories[i].Name}");
+                $"<b>{ModTranslation.GetString($"HelpMenu.{categories[i].Name}")}</b>";
 
             // Selectedオブジェクトを取得
             GameObject selectedObject = bulkRoleButton.transform.Find("Selected").gameObject;
@@ -85,8 +85,11 @@ public static class HelpMenuObjectManager
             passiveButton.OnClick.AddListener((UnityAction)(() =>
             {
                 Logger.Info($"{bulkRoleButton.name}がクリックされました");
+                if (CurrentCategory != null && CurrentCategory != categories[index])
+                    CurrentCategory.Hide(rightContainer);
                 CurrentCategory = categories[index];
-                categories[index].Show(rightContainer);
+                CurrentCategory.Show(rightContainer);
+                CurrentCategory.UpdateShow();
 
                 // 選択されたボタンのSelectedを表示する
                 selectedObject.SetActive(true);
@@ -130,6 +133,10 @@ public static class HelpMenuObjectManager
         {
             fadeCoroutine.ReverseFade();
         }
+        if (fadeCoroutine.isAvtive)
+        {
+            CurrentCategory?.UpdateShow();
+        }
     }
     public static void HideHelpMenu()
     {
@@ -142,7 +149,6 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            Logger.Info("KeyboardJoystickUpdatePostfix");
             // Overlayが非表示なら処理を省略する
             if (helpMenuObject == null || fadeCoroutine == null || !fadeCoroutine.isAvtive)
             {
