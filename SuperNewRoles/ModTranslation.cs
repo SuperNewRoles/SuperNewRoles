@@ -27,8 +27,8 @@ public static partial class ModTranslation
             if (parts.Length >= 3)
             {
                 string key = parts[0].Trim();
-                string japanese = parts[1].Trim();
-                string english = parts[2].Trim();
+                string japanese = parts[1];
+                string english = parts[2];
 
                 japaneseTranslation.Add(key, japanese);
                 englishTranslation.Add(key, english);
