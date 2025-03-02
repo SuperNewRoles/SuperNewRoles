@@ -98,7 +98,7 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
             newRole.gameObject.SetActive(true);
             newRole.transform.localPosition = new Vector3(0, yPos, 0);
 
-            newRole.text = $"{ModTranslation.GetString(role.RoleId.ToString())} x{role.NumberOfCrews} ({role.Percentage}%)\n";
+            newRole.text = $"{ModHelpers.CsWithTranslation(role.RoleColor, role.RoleId.ToString())} x{role.NumberOfCrews} ({role.Percentage}%)\n";
 
             PassiveButton passiveButton = newRole.gameObject.AddComponent<PassiveButton>();
             passiveButton.Colliders = new Collider2D[] { newRole.GetComponent<BoxCollider2D>() };
