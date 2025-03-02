@@ -9,8 +9,11 @@ namespace SuperNewRoles.HelpMenus.MenuCategories;
 public class MyRoleInfomationMenu : HelpMenuCategoryBase
 {
     public override string Name => "MyRoleInformation";
+    public override HelpMenuCategory Category => HelpMenuCategory.MyRoleInfomation;
     private GameObject Container;
     private GameObject MenuObject;
+    private GameObject selectedButton;
+
     public override void Show(GameObject Container)
     {
         if (MenuObject != null)
@@ -65,13 +68,14 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
             }
 
             // サンプルボタンの代わりに実際の役職ボタンを生成
-            IRoleBase[] roles = [ExPlayerControl.LocalPlayer.roleBase; // 役職IDのリストを取得（実装に応じて要調整）
+            IRoleBase[] roles = [ExPlayerControl.LocalPlayer.roleBase]; // 役職IDのリストを取得（実装に応じて要調整）
             var bulkRoleButtonAsset = AssetManager.GetAsset<GameObject>("BulkRoleButton");
 
             // ボタン生成位置の基準値
             float baseY = 0f;
             float yInterval = 0.8f; // ボタン間の垂直間隔
 
+            GameObject firstButton = null;
             for (int i = 0; i < roles.Length; i++)
             {
                 var role = roles[i];
@@ -91,8 +95,14 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
                     // 3個以上の場合も中心に揃える（例: 3個なら、i=0で2, i=1で0, i=2で-2）
                     posX = (((totalRoles - 1) / 2 - i) * 2);
                 }
-                CreateRoleButton(role, roleButtonsContainer.transform, new Vector3(posX, 0f, 0f));
+                var button = CreateRoleButton(role, roleButtonsContainer.transform, new Vector3(posX, 0f, 0f));
+                if (i == 0)
+                    firstButton = button;
             }
+            if (firstButton != null)
+                OnRoleButtonClicked(ExPlayerControl.LocalPlayer.roleBase, firstButton);
+            else
+                OnRoleButtonClicked(ExPlayerControl.LocalPlayer.roleBase, null);
         }
         else
         {
@@ -107,7 +117,7 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
     }
 
     // 役職ボタン生成用のヘルパー関数
-    private void CreateRoleButton(IRoleBase role, Transform parent, Vector3 position)
+    private GameObject CreateRoleButton(IRoleBase role, Transform parent, Vector3 position)
     {
         var bulkRoleButtonAsset = AssetManager.GetAsset<GameObject>("BulkRoleButton");
         var bulkRoleButton = GameObject.Instantiate(bulkRoleButtonAsset, parent);
@@ -128,26 +138,44 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
         {
-            OnRoleButtonClicked(role);
+            OnRoleButtonClicked(role, bulkRoleButton);
         }));
 
         // マウスオーバー/アウト処理
         passiveButton.OnMouseOver = new();
         passiveButton.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() =>
         {
-            bulkRoleButton.transform.Find("Selected")?.gameObject.SetActive(true);
+            if (bulkRoleButton != selectedButton)
+                bulkRoleButton.transform.Find("Selected")?.gameObject.SetActive(true);
         }));
 
         passiveButton.OnMouseOut = new();
         passiveButton.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() =>
         {
-            bulkRoleButton.transform.Find("Selected")?.gameObject.SetActive(false);
+            if (bulkRoleButton != selectedButton)
+                bulkRoleButton.transform.Find("Selected")?.gameObject.SetActive(false);
         }));
+
+        return bulkRoleButton;
     }
 
     // ボタンクリック時の処理
-    private void OnRoleButtonClicked(IRoleBase role)
+    private void OnRoleButtonClicked(IRoleBase role, GameObject buttonObject)
     {
+        if (buttonObject == null) return;
+
+        // Deactivate previous selected button's "Selected"
+        if (selectedButton != null)
+        {
+            var prevSelected = selectedButton.transform.Find("Selected");
+            if (prevSelected != null) prevSelected.gameObject.SetActive(false);
+        }
+
+        // Activate new selected button's "Selected"
+        var newSelected = buttonObject.transform.Find("Selected");
+        if (newSelected != null) newSelected.gameObject.SetActive(true);
+        selectedButton = buttonObject;
+
         Logger.Info($"{role.Role} ボタンがクリックされました");
         ShowRoleInformation(role);
     }
@@ -210,7 +238,7 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
     }
 
     /// <summary>陣営に応じた色を取得（TODO: 後でModHelpersとかに移動）</summary>
-    private Color GetTeamColor(AssignedTeamType team)
+    public static Color GetTeamColor(AssignedTeamType team)
     {
         return team switch
         {

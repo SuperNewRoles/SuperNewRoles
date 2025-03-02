@@ -46,6 +46,7 @@ public static class HelpMenuObjectManager
         {
             categories[i] = (HelpMenuCategoryBase)Activator.CreateInstance(categoryTypes[i]);
         }
+        categories = categories.OrderBy(x => (int)x.Category).ToArray();
     }
     private static void SetUpLeftButtons()
     {

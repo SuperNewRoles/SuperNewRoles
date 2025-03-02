@@ -26,6 +26,7 @@ public class FadeCoroutine : MonoBehaviour
     /// <param name="duration">フェードにかける時間</param>///
     public void StartFadeIn(GameObject parent, float duration)
     {
+        gameObject.SetActive(true);
         isFadeIn = true;
         isFadeOut = false;
         this.parent = parent;
@@ -52,6 +53,7 @@ public class FadeCoroutine : MonoBehaviour
     /// <param name="duration">フェードにかける時間</param>
     public void StartFadeOut(GameObject parent, float duration)
     {
+        gameObject.SetActive(true);
         isFadeOut = true;
         isFadeIn = false;
         this.parent = parent;
@@ -120,6 +122,9 @@ public class FadeCoroutine : MonoBehaviour
         float progress = Mathf.Clamp01(elapsed / duration);
         float alpha = isFadeIn ? progress : 1f - progress;
         ApplyAlphaToRenderers(alpha);
+        bool active = alpha > 0f;
+        if (gameObject.activeSelf != active)
+            gameObject.SetActive(active);
     }
 
     /// <summary>

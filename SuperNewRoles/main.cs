@@ -24,6 +24,12 @@ namespace SuperNewRoles;
 
 [BepInAutoPlugin(PluginConfig.Id, PluginConfig.Name)]
 [BepInProcess(PluginConfig.ProcessName)]
+[BepInIncompatibility("com.emptybottle.townofhost")]
+[BepInIncompatibility("me.eisbison.theotherroles")]
+[BepInIncompatibility("me.yukieiji.extremeroles")]
+[BepInIncompatibility("com.tugaru.TownOfPlus")]
+[BepInIncompatibility("com.emptybottle.townofhost")]
+[BepInIncompatibility("jp.ykundesu.agartha")]
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);

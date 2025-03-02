@@ -6,6 +6,7 @@ Close,閉じる,Close,关闭,關閉
 Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
+People,{0}人,{0} people,{0}人,{0}人
 
 NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Think only about yourself. Use others.,只考虑自己。利用他人。,只考慮自己。利用他人。
 
@@ -75,6 +76,7 @@ FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
 HelpMenu.MyRoleInformation.InLobbyText,ゲーム中に自分の役職が表示されます。,Your role will be displayed during the game.,游戏过程中会显示你的角色。,遊戲過程中會顯示你的角色。
 HelpMenu.MyRoleInformation.RoleSettingsTitle,役職設定,Role Settings,角色设置,角色設定
+HelpMenu.AssignmentsSettingInfomation,配役情報,Assignments Information,配役信息,配役資訊
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
