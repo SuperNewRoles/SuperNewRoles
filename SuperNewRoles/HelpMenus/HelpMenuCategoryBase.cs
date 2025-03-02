@@ -9,6 +9,7 @@ public abstract class HelpMenuCategoryBase
     public abstract void Show(GameObject Container);
     public abstract void Hide(GameObject Container);
     public abstract void UpdateShow();
+    public virtual void OnUpdate() { }
 }
 
 public enum HelpMenuCategory

@@ -6,6 +6,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 using HarmonyLib;
+using System.Collections.Generic;
 
 namespace SuperNewRoles.HelpMenus;
 
@@ -14,6 +15,7 @@ public static class HelpMenuObjectManager
     private static GameObject helpMenuObject;
     private static FadeCoroutine fadeCoroutine;
     public static HelpMenuCategoryBase[] categories;
+    public static Dictionary<string, GameObject> selectedButtons;
     public static HelpMenuCategoryBase? CurrentCategory;
     private static void Initialize()
     {
@@ -26,6 +28,8 @@ public static class HelpMenuObjectManager
         helpMenuObject.transform.localScale = Vector3.one;
         helpMenuObject.transform.localRotation = Quaternion.identity;
         helpMenuObject.SetActive(true);
+
+        helpMenuObject.AddComponent<HelpMenuObjectComponent>();
         // フェードイン処理
         fadeCoroutine = helpMenuObject.AddComponent<FadeCoroutine>();
         fadeCoroutine.StartFadeIn(helpMenuObject, 0.115f);
@@ -58,6 +62,8 @@ public static class HelpMenuObjectManager
 
         var rightContainer = helpMenuObject.transform.Find("RightContainer").gameObject;
 
+        selectedButtons = new();
+
         // ボタンを設定
         for (int i = 0; i < categories.Length; i++)
         {
@@ -73,6 +79,7 @@ public static class HelpMenuObjectManager
 
             // Selectedオブジェクトを取得
             GameObject selectedObject = bulkRoleButton.transform.Find("Selected").gameObject;
+            selectedButtons[categories[i].Name] = selectedObject;
 
             // PassiveButtonを追加
             var passiveButton = bulkRoleButton.AddComponent<PassiveButton>();
@@ -85,7 +92,11 @@ public static class HelpMenuObjectManager
             passiveButton.OnClick.AddListener((UnityAction)(() =>
             {
                 if (CurrentCategory != null && CurrentCategory != categories[index])
+                {
                     CurrentCategory.Hide(rightContainer);
+                    if (selectedButtons.TryGetValue(CurrentCategory.Name, out var oldSelectedObject))
+                        oldSelectedObject.SetActive(false);
+                }
                 CurrentCategory = categories[index];
                 CurrentCategory.Show(rightContainer);
                 CurrentCategory.UpdateShow();
@@ -178,5 +189,12 @@ public static class HelpMenuObjectManager
             if (__instance.LobbyInfoPane.ClientViewButton != null)
                 __instance.LobbyInfoPane.ClientViewButton.enabled = enabled;
         }
+    }
+}
+public class HelpMenuObjectComponent : MonoBehaviour
+{
+    public void OnClick()
+    {
+        HelpMenuObjectManager.CurrentCategory?.OnUpdate();
     }
 }
