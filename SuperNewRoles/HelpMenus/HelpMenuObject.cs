@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Linq;
 using HarmonyLib;
 using System.Collections.Generic;
+using SuperNewRoles.CustomOptions;
 
 namespace SuperNewRoles.HelpMenus;
 
@@ -36,6 +37,9 @@ public static class HelpMenuObjectManager
 
         // 左側のボタンをセットアップ
         SetUpLeftButtons();
+
+        // ヘルプメニューを表示するときにホスト情報のマスクエリアを非表示にする
+        RoleOptionMenu.UpdateHostInfoMaskArea(false);
     }
     private static void SetUpCategories()
     {
@@ -142,6 +146,10 @@ public static class HelpMenuObjectManager
         else
         {
             fadeCoroutine.ReverseFade();
+
+            // ヘルプメニューの表示状態によってマスクエリアの表示を切り替える
+            // fadeCoroutine.isActiveが反転する前に呼ばれるため、現在の状態の逆を設定
+            RoleOptionMenu.UpdateHostInfoMaskArea(!fadeCoroutine.isAvtive);
         }
         if (fadeCoroutine.isAvtive)
         {
@@ -152,6 +160,9 @@ public static class HelpMenuObjectManager
     {
         if (helpMenuObject == null || fadeCoroutine == null) return;
         fadeCoroutine.StartFadeOut(helpMenuObject, 0.115f);
+
+        // ヘルプメニューを非表示にするときにホスト情報のマスクエリアを表示する
+        RoleOptionMenu.UpdateHostInfoMaskArea(true);
     }
     // overlayを閉じる時。
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]

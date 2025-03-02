@@ -597,7 +597,7 @@ public static class RoleOptionMenu
                 CustomOptionSaver.Save();
         }
     }
-    private static void UpdateHostInfoMaskArea(bool active)
+    public static void UpdateHostInfoMaskArea(bool active)
     {
         var maskArea = GameStartManager.Instance.transform.FindChild("StartGameArea/Host Info/Content/Player Area/MaskArea");
         if (maskArea != null)

@@ -25,6 +25,9 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
         MenuObject.transform.localPosition = Vector3.zero;
         MenuObject.transform.localScale = Vector3.one;
         MenuObject.transform.localRotation = Quaternion.identity;
+
+        // RoleDetailMenuにMenuObjectを設定
+        RoleDetailMenu.SetMenuObject(MenuObject);
     }
     public override void UpdateShow()
     {
@@ -100,9 +103,9 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
                     firstButton = button;
             }
             if (firstButton != null)
-                OnRoleButtonClicked(ExPlayerControl.LocalPlayer.roleBase, firstButton);
+                RoleDetailMenu.OnRoleButtonClicked(ExPlayerControl.LocalPlayer.roleBase, firstButton);
             else
-                OnRoleButtonClicked(ExPlayerControl.LocalPlayer.roleBase, null);
+                RoleDetailMenu.OnRoleButtonClicked(ExPlayerControl.LocalPlayer.roleBase, null);
         }
         else
         {
@@ -138,7 +141,7 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
         {
-            OnRoleButtonClicked(role, bulkRoleButton);
+            RoleDetailMenu.OnRoleButtonClicked(role, bulkRoleButton);
         }));
 
         // マウスオーバー/アウト処理
@@ -158,94 +161,4 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
 
         return bulkRoleButton;
     }
-
-    // ボタンクリック時の処理
-    private void OnRoleButtonClicked(IRoleBase role, GameObject buttonObject)
-    {
-        if (buttonObject == null) return;
-
-        // Deactivate previous selected button's "Selected"
-        if (selectedButton != null)
-        {
-            var prevSelected = selectedButton.transform.Find("Selected");
-            if (prevSelected != null) prevSelected.gameObject.SetActive(false);
-        }
-
-        // Activate new selected button's "Selected"
-        var newSelected = buttonObject.transform.Find("Selected");
-        if (newSelected != null) newSelected.gameObject.SetActive(true);
-        selectedButton = buttonObject;
-
-        Logger.Info($"{role.Role} ボタンがクリックされました");
-        ShowRoleInformation(role);
-    }
-
-    /// <summary>
-    /// 役職の情報を表示する
-    /// </summary>
-    /// <param name="role">表示する役職</param>
-    private void ShowRoleInformation(IRoleBase role)
-    {
-        Transform roleInformation = MenuObject.transform.Find("Scroller/RoleInformation");
-        if (roleInformation == null)
-        {
-            Logger.Error("RoleInformationオブジェクトが見つかりませんでした。");
-            return;
-        }
-
-        roleInformation.gameObject.SetActive(true);
-
-        // テキスト設定処理を共通化
-        SetTextComponent(roleInformation, "RoleName", role.RoleColor, $"{role.Role}");
-        SetTextComponent(roleInformation, "RoleTeam", GetTeamColor(role.AssignedTeam), role.AssignedTeam.ToString());
-        SetTextComponent(roleInformation, "RoleDescription", Color.white, $"{role.Role}.Description");
-        SetTextComponent(roleInformation, "RoleSettingsTitle", Color.white, "HelpMenu.MyRoleInformation.RoleSettingsTitle");
-        string roleSettings = GenerateRoleSettingsText(role);
-        SetTextComponent(roleInformation, "RoleSettings", Color.white, roleSettings);
-    }
-
-    private string GenerateRoleSettingsText(IRoleBase role)
-    {
-        var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(o => o.RoleId == role.Role);
-        if (roleOption == null)
-        {
-            return $"{role.Role}.Settings";
-        }
-        var settings = roleOption.Options.Where(o => o.ShouldDisplay()).Select(o => $"{ModTranslation.GetString(o.Name)}: {o.GetCurrentSelectionString()}");
-
-        // 設定項目数に応じてスクローラーの高さを調整
-        float contentHeight = (settings.Count() - 2) * 0.267f + 0.15f; // 1項目あたり0.2の高さ
-        var scroller = MenuObject.transform.Find("Scroller")?.GetComponent<Scroller>();
-        if (scroller != null)
-        {
-            scroller.ContentYBounds.max = contentHeight;
-        }
-
-        return string.Join("\n", settings);
-    }
-
-    #region HelperMethods
-    /// <summary>テキストコンポーネントの設定を共通処理化</summary>
-    private void SetTextComponent(Transform parent, string childName, Color color, string text)
-    {
-        var textComponent = parent.Find(childName)?.GetComponent<TextMeshPro>();
-        if (textComponent != null)
-        {
-            textComponent.text = ModHelpers.CsWithTranslation(color, text);
-        }
-        else
-            Logger.Error($"{childName} TextMeshProコンポーネントが見つかりませんでした。");
-    }
-
-    /// <summary>陣営に応じた色を取得（TODO: 後でModHelpersとかに移動）</summary>
-    public static Color GetTeamColor(AssignedTeamType team)
-    {
-        return team switch
-        {
-            AssignedTeamType.Crewmate => Color.white,
-            AssignedTeamType.Neutral => Color.gray,
-            _ => Palette.ImpostorRed
-        };
-    }
-    #endregion
 }
