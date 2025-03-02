@@ -171,6 +171,20 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
         SetTextComponent(roleInformation, "RoleName", role.RoleColor, $"{role.Role}");
         SetTextComponent(roleInformation, "RoleTeam", GetTeamColor(role.AssignedTeam), role.AssignedTeam.ToString());
         SetTextComponent(roleInformation, "RoleDescription", Color.white, $"{role.Role}.Description");
+        SetTextComponent(roleInformation, "RoleSettingsTitle", Color.white, "HelpMenu.MyRoleInformation.RoleSettingsTitle");
+        string roleSettings = GenerateRoleSettingsText(role);
+        SetTextComponent(roleInformation, "RoleSettings", Color.white, roleSettings);
+    }
+
+    private string GenerateRoleSettingsText(IRoleBase role)
+    {
+        var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(o => o.RoleId == role.Role);
+        if (roleOption == null)
+        {
+            return $"{role.Role}.Settings";
+        }
+        var settings = roleOption.Options.Select(o => $"{o.Name}: {o.GetCurrentSelectionString()}");
+        return string.Join("\n", settings);
     }
 
     #region HelperMethods

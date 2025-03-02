@@ -213,7 +213,7 @@ public class PlayerStatistics
         !IsKillerExist;
 
     private bool IsKillerWin(int killerAlive)
-        => killerAlive >= TotalAlive - killerAlive && TotalKiller == killerAlive;
+        => killerAlive >= TotalAlive - killerAlive && TotalKiller == killerAlive && killerAlive != 0;
 
     public PlayerStatistics()
     {
