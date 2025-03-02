@@ -41,6 +41,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         {
             Directory.CreateDirectory("./SuperNewRolesNext");
         }
+        Encryption.SetEncryptKey();
         CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
