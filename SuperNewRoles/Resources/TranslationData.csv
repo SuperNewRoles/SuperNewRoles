@@ -16,8 +16,6 @@ RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 
 # CustomOption
-CustomOptionFalse,無効,Disabled,无效,无效
-CustomOptionTrue,有効,Enabled,启用,啟用
 BulkRoleButton,役職数一括設定,Bulk Role Setting,批量设置角色,批量設定角色
 NumberOfCrews,人数,Number of Crewmates,船员人数,船員人數
 NumberOfCrewsSelected,{0}人,{0} people,{0}人,{0}人
