@@ -26,7 +26,6 @@ public static class HelpMenuObjectManager
         helpMenuObject.transform.localScale = Vector3.one;
         helpMenuObject.transform.localRotation = Quaternion.identity;
         helpMenuObject.SetActive(true);
-        helpMenuObject.AddComponent<PassiveButton>().Colliders = new Collider2D[] { helpMenuObject.GetComponent<BoxCollider2D>() };
         // フェードイン処理
         fadeCoroutine = helpMenuObject.AddComponent<FadeCoroutine>();
         fadeCoroutine.StartFadeIn(helpMenuObject, 0.115f);
@@ -84,7 +83,6 @@ public static class HelpMenuObjectManager
             int index = i; // ループ変数をキャプチャしないようにコピー
             passiveButton.OnClick.AddListener((UnityAction)(() =>
             {
-                Logger.Info($"{bulkRoleButton.name}がクリックされました");
                 if (CurrentCategory != null && CurrentCategory != categories[index])
                     CurrentCategory.Hide(rightContainer);
                 CurrentCategory = categories[index];

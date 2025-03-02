@@ -65,7 +65,7 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
             }
 
             // サンプルボタンの代わりに実際の役職ボタンを生成
-            IRoleBase[] roles = [ExPlayerControl.LocalPlayer.roleBase, CustomRoleManager.AllRoles.FirstOrDefault(x => x != null)]; // 役職IDのリストを取得（実装に応じて要調整）
+            IRoleBase[] roles = [ExPlayerControl.LocalPlayer.roleBase; // 役職IDのリストを取得（実装に応じて要調整）
             var bulkRoleButtonAsset = AssetManager.GetAsset<GameObject>("BulkRoleButton");
 
             // ボタン生成位置の基準値
@@ -183,7 +183,16 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
         {
             return $"{role.Role}.Settings";
         }
-        var settings = roleOption.Options.Select(o => $"{o.Name}: {o.GetCurrentSelectionString()}");
+        var settings = roleOption.Options.Where(o => o.ShouldDisplay()).Select(o => $"{ModTranslation.GetString(o.Name)}: {o.GetCurrentSelectionString()}");
+
+        // 設定項目数に応じてスクローラーの高さを調整
+        float contentHeight = (settings.Count() - 2) * 0.267f + 0.15f; // 1項目あたり0.2の高さ
+        var scroller = MenuObject.transform.Find("Scroller")?.GetComponent<Scroller>();
+        if (scroller != null)
+        {
+            scroller.ContentYBounds.max = contentHeight;
+        }
+
         return string.Join("\n", settings);
     }
 
