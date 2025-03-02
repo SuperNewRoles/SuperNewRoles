@@ -119,7 +119,7 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
                 newRole.GetComponent<TextMeshPro>().color = Color.white; // 白色に戻す
             }));
 
-            yPos -= 0.5f; // Y座標を調整
+            yPos -= 0.2f; // Y座標を調整
         }
     }
 
