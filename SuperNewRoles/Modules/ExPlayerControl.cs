@@ -79,6 +79,13 @@ public class ExPlayerControl
         _hasAbilityCache[abilityName] = hasAbility;
         return hasAbility;
     }
+    public bool IsTaskComplete()
+    {
+        (int completed, int total) = ModHelpers.TaskCompletedData(Data);
+        if (_customTaskAbility == null) return completed >= total;
+        var (isTaskTrigger, all) = _customTaskAbility.CheckIsTaskTrigger() ?? (false, total);
+        return isTaskTrigger && completed >= all;
+    }
     public void ResetKillCooldown()
     {
         if (!AmOwner) return;

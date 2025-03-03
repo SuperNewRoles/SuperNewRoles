@@ -22,6 +22,7 @@ public enum WinCondition
     TunaWin,
     TeruteruWin,
     OpportunistWin,
+    WorkpersonWin,
 }
 public enum CustomGameOverReason
 {
@@ -31,6 +32,7 @@ public enum CustomGameOverReason
     JackalWin = 33,
     TunaWin = 34,
     TeruteruWin = 35,
+    WorkpersonWin = 36,
 }
 
 static class AdditionalTempData
@@ -162,6 +164,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.OpportunistWin:
                 baseText = "Opportunist";
                 roleColor = Opportunist.Instance.RoleColor;
+                break;
+            case WinCondition.WorkpersonWin:
+                baseText = "Workperson";
+                roleColor = Workperson.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";
@@ -413,6 +419,10 @@ public static class OnGameEndPatch
             case CustomGameOverReason.TeruteruWin:
                 return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Teruteru),
                         WinCondition.TeruteruWin,
+                        emptyReviveList);
+            case CustomGameOverReason.WorkpersonWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Workperson && p.IsTaskComplete()),
+                        WinCondition.WorkpersonWin,
                         emptyReviveList);
             default:
                 Logger.Error("不明なゲームオーバー理由:" + reason);

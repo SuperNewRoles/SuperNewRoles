@@ -110,6 +110,7 @@ Tuna,マグロ,Tuna,金枪鱼,金槍魚
 Teruteru,てるてる,Teruteru,特鲁特鲁,特魯特魯
 Opportunist,オポチュニスト,Opportunist,机会主义者,機會主義者
 Chief,村長,Chief,村长,村長
+Workperson,仕事人,Workperson,工作人员,工作人員
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -240,3 +241,8 @@ ChiefSheriffCanKillMadRoles,マッドロールをキル出来る,Can Kill Mad Ro
 ChiefSheriffCanKillNeutral,第三陣営をキル出来る,Can Kill Neutral,能击杀第三阵营,能擊殺第三陣營
 ChiefSheriffCanKillFriendRoles,フレンド系の役職をキル出来る,Can Kill Friend Roles,能击杀友方角色,能擊殺友方角色
 ChiefSheriffCanKillLovers,ラバーズをキル出来る,Can Kill Lovers,能击杀恋人,能擊殺戀人
+
+# Workperson
+WorkpersonNeedAliveToWin,生存していないと勝利出来ない,Need Alive To Win,需要存活才能获胜,需要存活才能獲勝
+WorkpersonUseCustomTaskSetting,タスク数を固有で設定するか,Use Custom Task Setting,是否使用自定义任务设置,是否使用自定義任務設置
+WorkpersonDesc,タスクを全て完了すると単独勝利します。,Win alone by completing all tasks.,完成所有任务后单独获胜。,完成所有任務後單獨獲勝。

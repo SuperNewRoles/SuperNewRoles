@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -92,7 +94,6 @@ public static class CheckGameEndPatch
 
         return null;
     }
-
     private static VictoryType? DeterminePlayerBasedVictory(GameState state)
     {
         var stats = new PlayerStatistics();
