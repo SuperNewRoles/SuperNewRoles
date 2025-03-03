@@ -27,9 +27,6 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
 
     public override void Show(GameObject Container)
     {
-        if (MenuObject != null)
-            GameObject.Destroy(MenuObject);
-
         this.Container = Container;
 
         // 役職詳細表示中なら閉じる
@@ -37,6 +34,13 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
         {
             CloseRoleDetail();
             isShowingRoleDetail = false;
+        }
+
+        // 既存のMenuObjectがあれば破棄
+        if (MenuObject != null)
+        {
+            GameObject.Destroy(MenuObject);
+            MenuObject = null;
         }
 
         // MyRoleInfomationHelpMenu from AssetManager
@@ -47,6 +51,9 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
 
         // 左側のボタンを保存
         LeftButtonsObject = GameObject.Find("HelpMenuObject/LeftButtons");
+
+        // 表示を更新
+        UpdateShow();
     }
 
     public override void UpdateShow()
@@ -74,49 +81,86 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
     }
     private void SetupInformation(Transform infoObject, string team, AssignedTeamType assignedTeam, int maxRoles)
     {
+        // 指定チームのオブジェクトを取得
         var info = infoObject.Find(team);
         if (info == null)
         {
             Logger.Error($"{team}オブジェクトが見つかりませんでした。");
             return;
         }
+
+        // 「TeamName」テキストコンポーネントの設定
         var teamNameTMP = info.Find("TeamName").GetComponent<TextMeshPro>();
-        teamNameTMP.text = ModHelpers.CsWithTranslation(RoleDetailMenu.GetTeamColor(assignedTeam), team) + " (" + ModTranslation.GetString("People", maxRoles) + ")";
+        if (teamNameTMP != null)
+        {
+            teamNameTMP.text = $"{ModHelpers.CsWithTranslation(RoleDetailMenu.GetTeamColor(assignedTeam), team)} ({ModTranslation.GetString("People", maxRoles)})";
+        }
+        else
+        {
+            Logger.Error("TeamName TextMeshProコンポーネントが見つかりませんでした。");
+        }
 
-        // Rolesテンプレートを取得
+        // Rolesのテンプレートを取得し非表示に設定
         var rolesTemplate = info.Find("Roles").GetComponent<TextMeshPro>();
-        rolesTemplate.gameObject.SetActive(false); // テンプレートは非表示に
+        if (rolesTemplate == null)
+        {
+            Logger.Error("Rolesテンプレートが見つかりませんでした。");
+            return;
+        }
+        rolesTemplate.gameObject.SetActive(false);
 
+        // 既存のロールテキストを削除（テンプレート以外）
+        foreach (GameObject child in info.gameObject.GetChildren())
+        {
+            if (child.name.StartsWith("Roles(Clone)"))
+            {
+                GameObject.Destroy(child);
+            }
+        }
+
+        // ロール情報の表示開始位置
         float yPos = 1.42f;
+
+        // ロールの基本テキストを生成するローカル関数
+        string GetRoleText(RoleOptionManager.RoleOption role, Color? color = null) =>
+            $"{ModHelpers.CsWithTranslation(color ?? role.RoleColor, role.RoleId.ToString())} x{role.NumberOfCrews} ({role.Percentage}%)\n";
+
+        // 各ロールについて処理
         foreach (var role in RoleOptionManager.RoleOptions)
         {
-            if (role.AssignTeam != assignedTeam) continue;
-            if (role.Percentage == 0 || role.NumberOfCrews == 0) continue;
+            if (role.AssignTeam != assignedTeam || role.Percentage == 0 || role.NumberOfCrews == 0)
+                continue;
 
-            // Rolesを複製して位置調整
+            // テンプレートからロール情報オブジェクトを複製
             var newRole = GameObject.Instantiate(rolesTemplate, info);
             newRole.gameObject.SetActive(true);
             newRole.transform.localPosition = new Vector3(0, yPos, 0);
 
-            newRole.text = $"{ModHelpers.CsWithTranslation(role.RoleColor, role.RoleId.ToString())} x{role.NumberOfCrews} ({role.Percentage}%)\n";
+            string baseRoleText = GetRoleText(role);
+            newRole.text = baseRoleText;
 
+            // PassiveButtonの設定
+            var boxCollider = newRole.GetComponent<BoxCollider2D>();
             PassiveButton passiveButton = newRole.gameObject.AddComponent<PassiveButton>();
-            passiveButton.Colliders = new Collider2D[] { newRole.GetComponent<BoxCollider2D>() };
+            passiveButton.Colliders = new Collider2D[] { boxCollider };
+
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener((UnityAction)(() =>
             {
                 Logger.Info($"{role.RoleId} Selected");
                 ShowRoleDetail(role.RoleId);
             }));
+
             passiveButton.OnMouseOver = new();
             passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
             {
-                newRole.GetComponent<TextMeshPro>().color = Color.green; // 緑色に変更
+                newRole.text = ModHelpers.Cs(Color.green, GetRoleText(role, Color.green));
             }));
+
             passiveButton.OnMouseOut = new();
             passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
             {
-                newRole.GetComponent<TextMeshPro>().color = Color.white; // 白色に戻す
+                newRole.text = baseRoleText;
             }));
 
             yPos -= 0.2f; // Y座標を調整
@@ -279,7 +323,11 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
 
         // Assignmentsのタブを再表示
         if (MenuObject != null)
+        {
             MenuObject.SetActive(true);
+            // 表示内容を更新し直す
+            DelayTask.UpdateOrAdd(() => UpdateShow(), 0.1f, ref _updateShowTask, "UpdateShowTask");
+        }
 
         // 左側のボタンを再表示
         if (LeftButtonsObject != null)
