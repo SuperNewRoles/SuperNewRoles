@@ -599,6 +599,8 @@ public static class RoleOptionMenu
     }
     public static void UpdateHostInfoMaskArea(bool active)
     {
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
+            return;
         var maskArea = GameStartManager.Instance.transform.FindChild("StartGameArea/Host Info/Content/Player Area/MaskArea");
         if (maskArea != null)
             maskArea.gameObject.SetActive(active);

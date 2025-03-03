@@ -78,6 +78,7 @@ HelpMenu.MyRoleInformation.InLobbyText,ゲーム中に自分の役職が表示�
 HelpMenu.MyRoleInformation.RoleSettingsTitle,役職設定,Role Settings,角色设置,角色設定
 HelpMenu.AssignmentsSettingInfomation,配役情報,Assignments Information,配役信息,配役資訊
 HelpMenu.ModSettingsInformation,MOD設定情報,MOD Settings Information,MOD设置信息,MOD設定資訊
+HelpMenu.RoleDictionary,役職辞典,Role Dictionary,角色辞典,角色辭典
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
@@ -221,3 +222,9 @@ TeruteruCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风�
 TeruteruRequireTaskCompletion,タスク完了が必要,Require Task Completion,需要完成任务,需要完成任務
 TeruteruRequiredTaskCount,必要タスク数,Required Task Count,需要完成的任务数,需要完成的任務數
 TeruteruCustomTaskCount,タスク数を変更する,Change Task Count,更改任务数,更改任務數
+
+# RoleDictionary
+RoleDictionary,役職辞典,Role Dictionary,角色词典,角色詞典
+ImpostorButton,インポスター,Impostor,内鬼,內鬼
+NeutralButton,第三陣営,Neutral,第三阵营,第三陣營
+CrewmateButton,クルーメイト,Crewmate,船员,船員

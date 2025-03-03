@@ -1,3 +1,5 @@
+using SuperNewRoles.CustomOptions;
+
 namespace SuperNewRoles.Roles;
 
 public enum RoleId : short
@@ -56,9 +58,9 @@ public enum WinnerTeamType : byte
 
 public enum AssignedTeamType : byte
 {
-    Crewmate,
-    Impostor,
-    Neutral,
+    Crewmate = RoleOptionMenuType.Crewmate,
+    Impostor = RoleOptionMenuType.Impostor,
+    Neutral = RoleOptionMenuType.Neutral,
 }
 
 public enum RoleTag : byte

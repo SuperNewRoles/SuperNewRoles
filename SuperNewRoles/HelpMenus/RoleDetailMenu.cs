@@ -1,4 +1,5 @@
 using System.Linq;
+using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -145,6 +146,16 @@ public static class RoleDetailMenu
         {
             AssignedTeamType.Crewmate => Color.white,
             AssignedTeamType.Neutral => Color.gray,
+            _ => Palette.ImpostorRed
+        };
+    }
+    /// <summary>陣営に応じた色を取得</summary>
+    public static Color GetTeamColor(RoleOptionMenuType team)
+    {
+        return team switch
+        {
+            RoleOptionMenuType.Crewmate => Color.white,
+            RoleOptionMenuType.Neutral => Color.gray,
             _ => Palette.ImpostorRed
         };
     }

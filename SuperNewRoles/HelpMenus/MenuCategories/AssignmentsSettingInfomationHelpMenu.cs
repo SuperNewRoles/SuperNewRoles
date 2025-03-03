@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
+using SuperNewRoles.HelpMenus;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -177,129 +178,8 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
         // 役職詳細表示中フラグを設定
         isShowingRoleDetail = true;
 
-        // Assignmentsのタブを非表示にする
-        if (MenuObject != null)
-            MenuObject.SetActive(false);
-
-        // 左側のボタンを非表示にする
-        if (LeftButtonsObject != null)
-            LeftButtonsObject.SetActive(false);
-
-        // MyRoleInfomationHelpMenuをAssetManagerから取得
-        RoleDetailObject = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("MyRoleInfomationHelpMenu"), Container.transform);
-        RoleDetailObject.transform.localPosition = Vector3.zero;
-        RoleDetailObject.transform.localScale = Vector3.one;
-        RoleDetailObject.transform.localRotation = Quaternion.identity;
-
-        var mask = RoleDetailObject.transform.Find("Mask");
-        if (mask != null)
-        {
-            mask.transform.localScale = new Vector3(mask.transform.localScale.x, 4.19f, mask.transform.localScale.z);
-            mask.transform.localPosition = new Vector3(mask.transform.localPosition.x, 0, mask.transform.localPosition.z);
-        }
-        var scroller = RoleDetailObject.transform.Find("Scroller");
-        if (scroller != null)
-        {
-            scroller.transform.localPosition = new Vector3(scroller.transform.localPosition.x, 0.45f, scroller.transform.localPosition.z);
-        }
-
-        // RoleDetailMenuにMenuObjectを設定
-        RoleDetailMenu.SetMenuObject(RoleDetailObject);
-
-        // InLobbyTextを非表示にする
-        var inLobbyText = RoleDetailObject.transform.Find("InLobbyText")?.gameObject;
-        if (inLobbyText != null)
-            inLobbyText.SetActive(false);
-
-        // 役職ボタンを生成
-        var roleButtonsContainer = RoleDetailObject.transform.Find("RoleButtons")?.gameObject;
-        if (roleButtonsContainer != null)
-        {
-            // roleButtonsContainerの子ボタン削除
-            foreach (var child in roleButtonsContainer.GetChildren())
-            {
-                if (child.name.StartsWith("RoleButton_"))
-                    GameObject.Destroy(child);
-            }
-
-            // 選択された役職のIRoleBaseを取得
-            IRoleBase roleBase = CustomRoleManager.GetRoleById(roleId);
-            if (roleBase != null)
-            {
-                // 役職ボタンを生成
-                var button = CreateRoleButton(roleBase, roleButtonsContainer.transform, Vector3.zero);
-                // 役職詳細を表示
-                RoleDetailMenu.OnRoleButtonClicked(roleBase, button);
-            }
-            else
-            {
-                Logger.Error($"役職ID {roleId} のIRoleBaseが見つかりませんでした。");
-            }
-        }
-        else
-        {
-            Logger.Error("RoleButtonsコンテナが見つかりませんでした。");
-        }
-
-        // 閉じるボタンを追加
-        var closeButton = RoleDetailObject.transform.Find("CloseButton")?.gameObject;
-        if (closeButton == null)
-        {
-            // 閉じるボタンがない場合は作成
-            closeButton = new GameObject("CloseButton");
-            closeButton.transform.SetParent(RoleDetailObject.transform);
-            closeButton.transform.localPosition = new Vector3(2.5f, 2.5f, 0);
-            closeButton.transform.localScale = Vector3.one;
-
-            // ボタンのコンポーネント追加
-            var buttonRenderer = closeButton.AddComponent<SpriteRenderer>();
-            buttonRenderer.sprite = AssetManager.GetAsset<Sprite>("CloseButton");
-
-            var collider = closeButton.AddComponent<BoxCollider2D>();
-            collider.size = new Vector2(0.5f, 0.5f);
-
-            var passiveButton = closeButton.AddComponent<PassiveButton>();
-            passiveButton.Colliders = new Collider2D[] { collider };
-            passiveButton.OnClick = new();
-            passiveButton.OnClick.AddListener((UnityAction)(() =>
-            {
-                CloseRoleDetail();
-            }));
-        }
-        else
-        {
-            // 既存の閉じるボタンのイベント設定
-            var passiveButton = closeButton.GetComponent<PassiveButton>();
-            if (passiveButton != null)
-            {
-                passiveButton.OnClick = new();
-                passiveButton.OnClick.AddListener((UnityAction)(() =>
-                {
-                    CloseRoleDetail();
-                }));
-            }
-        }
-
-        // 戻るボタンを追加
-        var backButton = new GameObject("BackButton");
-        backButton.transform.SetParent(RoleDetailObject.transform);
-        backButton.transform.localPosition = new Vector3(-2.5f, 2.5f, 0);
-        backButton.transform.localScale = Vector3.one;
-
-        // ボタンのコンポーネント追加
-        var backButtonRenderer = backButton.AddComponent<SpriteRenderer>();
-        backButtonRenderer.sprite = AssetManager.GetAsset<Sprite>("BackButton");
-
-        var backCollider = backButton.AddComponent<BoxCollider2D>();
-        backCollider.size = new Vector2(0.5f, 0.5f);
-
-        var backPassiveButton = backButton.AddComponent<PassiveButton>();
-        backPassiveButton.Colliders = new Collider2D[] { backCollider };
-        backPassiveButton.OnClick = new();
-        backPassiveButton.OnClick.AddListener((UnityAction)(() =>
-        {
-            CloseRoleDetail();
-        }));
+        // 役職詳細オブジェクトを作成
+        RoleDetailObject = RoleDetailHelper.ShowRoleDetail(roleId, Container, MenuObject, CloseRoleDetail);
 
         // 現在表示中の役職IDを保存
         currentDisplayedRoleId = roleId;
@@ -311,33 +191,15 @@ public class AssignmentsSettingInfomationHelpMenu : HelpMenuCategoryBase
     // 役職詳細を閉じる
     private void CloseRoleDetail()
     {
-        // 役職詳細を削除
-        if (RoleDetailObject != null)
-        {
-            GameObject.Destroy(RoleDetailObject);
-            RoleDetailObject = null;
-        }
+        // ヘルパークラスを使用して役職詳細を閉じる
+        RoleDetailHelper.CloseRoleDetail(RoleDetailObject, MenuObject);
+        RoleDetailObject = null;
 
         // 役職詳細表示中フラグをリセット
         isShowingRoleDetail = false;
 
-        // Assignmentsのタブを再表示
-        if (MenuObject != null)
-        {
-            MenuObject.SetActive(true);
-            // 表示内容を更新し直す
-            DelayTask.UpdateOrAdd(() => UpdateShow(), 0.1f, ref _updateShowTask, "UpdateShowTask");
-        }
-
-        // 左側のボタンを再表示
-        if (LeftButtonsObject != null)
-            LeftButtonsObject.SetActive(true);
-
-        // 現在表示中の役職IDをリセット
-        currentDisplayedRoleId = RoleId.None;
-
-        // 役職設定のハッシュをリセット
-        lastRoleSettingsHash = string.Empty;
+        // 表示内容を更新し直す
+        DelayTask.UpdateOrAdd(() => UpdateShow(), 0.1f, ref _updateShowTask, "UpdateShowTask");
     }
 
     // 役職ボタン生成用のヘルパー関数

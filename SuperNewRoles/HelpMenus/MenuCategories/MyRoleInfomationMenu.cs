@@ -35,7 +35,7 @@ public class MyRoleInfomationMenu : HelpMenuCategoryBase
         if (MenuObject == null) return;
 
         // ロビーにいるかどうかを判定
-        bool inLobby = GameStartManager.InstanceExists;
+        bool inLobby = AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined;
         // "InLobbyText"オブジェクトを取得
         var inLobbyText = MenuObject.transform.Find("InLobbyText")?.gameObject;
 
