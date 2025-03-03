@@ -19,6 +19,7 @@ public static class Encryption
     HQIDAQAB
     -----END PUBLIC KEY-----";
 
+    //AESキーを設定する。一度のみ呼び出すこと
     public static void SetEncryptKey(){
         Key = RandomByte(16);
         SuperNewRolesPlugin.Instance.Log.LogInfo(EncryptKey());
@@ -33,6 +34,7 @@ public static class Encryption
         return randomBytes;
     }
 
+    //AESキーをRSAで暗号化して返却する
     private static string EncryptKey(){
         using RSA rsa = RSA.Create();
         rsa.ImportFromPem(rsaPublicKey.ToCharArray());
@@ -40,6 +42,7 @@ public static class Encryption
         return $"$SNRKST${Convert.ToBase64String(encryptedKey)}$SNRKET$";
     }
 
+    //文章をAESで暗号化して返却する
     public static string Encrypt(string plainText){
         using Aes aesAlg = Aes.Create();
         aesAlg.Key = Key;

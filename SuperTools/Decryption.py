@@ -9,6 +9,7 @@ import re
 
 def GetKey():
     try:
+        print("AESキーを取得しています")
         with open("LogOutput.log","r") as file:
             AES_E_Key = ""
             for line in file:
@@ -17,6 +18,8 @@ def GetKey():
                 if AES_E_Key_list != []:
                     AES_E_Key = AES_E_Key_list[0]
                     break
+            if AES_E_Key == "":
+                raise
             with open("private_key.pem","rb") as file2:
                 RSA_Key = ser.load_pem_private_key(
                     file2.read(),
@@ -30,17 +33,19 @@ def GetKey():
                     label = None
                 )
             )
+            print("AESキーの取得に成功しました")
             return AES_Key
     except Exception as e:
         print(f"Error:{str(e)}")
         input("Please enter any key...")
         exit()
 
-def decoding():
+def Decoding():
     try:
         key = GetKey()
         with open("LogOutput.log","r") as file:
             with open("DecryptedLogOutput.log","w") as file2:
+                print("暗号文を復号しています")
                 for line in file:
                     textlist =  re.findall(re.escape("$SNRST$")+ r'(.*?)' +re.escape("$SNRET$"),
                                             "".join(line))
@@ -62,9 +67,12 @@ def decoding():
                         file2.writelines(newline)
                     else:
                         file2.writelines(line)
+        print("復号が終了しました")
 
     except Exception as e:
         print(f"Error:{str(e)}")
         input("Please enter any key...")
+        exit()
 
-decoding()
+Decoding()
+input("Please enter any key...")
