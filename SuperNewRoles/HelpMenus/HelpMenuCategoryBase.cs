@@ -16,4 +16,5 @@ public enum HelpMenuCategory
 {
     MyRoleInfomation,
     AssignmentsSettingInfomation,
+    ModSettingsInformation,
 }

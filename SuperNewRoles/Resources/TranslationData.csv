@@ -77,6 +77,7 @@ HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信�
 HelpMenu.MyRoleInformation.InLobbyText,ゲーム中に自分の役職が表示されます。,Your role will be displayed during the game.,游戏过程中会显示你的角色。,遊戲過程中會顯示你的角色。
 HelpMenu.MyRoleInformation.RoleSettingsTitle,役職設定,Role Settings,角色设置,角色設定
 HelpMenu.AssignmentsSettingInfomation,配役情報,Assignments Information,配役信息,配役資訊
+HelpMenu.ModSettingsInformation,MOD設定情報,MOD Settings Information,MOD设置信息,MOD設定資訊
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
