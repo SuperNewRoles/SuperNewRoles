@@ -27,6 +27,7 @@ public enum RoleId : short
     Opportunist,
     Chief,
     Workperson,
+    SerialKiller,
 }
 
 public enum QuoteMod : byte

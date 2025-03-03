@@ -111,6 +111,7 @@ Teruteru,てるてる,Teruteru,特鲁特鲁,特魯特魯
 Opportunist,オポチュニスト,Opportunist,机会主义者,機會主義者
 Chief,村長,Chief,村长,村長
 Workperson,仕事人,Workperson,工作人员,工作人員
+SerialKiller,シリアルキラー,Serial Killer,连环杀手,連環殺手
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -246,3 +247,11 @@ ChiefSheriffCanKillLovers,ラバーズをキル出来る,Can Kill Lovers,能击�
 WorkpersonNeedAliveToWin,生存していないと勝利出来ない,Need Alive To Win,需要存活才能获胜,需要存活才能獲勝
 WorkpersonUseCustomTaskSetting,タスク数を固有で設定するか,Use Custom Task Setting,是否使用自定义任务设置,是否使用自定義任務設置
 WorkpersonDesc,タスクを全て完了すると単独勝利します。,Win alone by completing all tasks.,完成所有任务后单独获胜。,完成所有任務後單獨獲勝。
+
+# SerialKiller
+SerialKillerResetOnMeeting,会議に入るとリセットされる,Reset on Meeting,会议时重置,會議時重置
+SerialKillerKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
+SerialKillerSuicideTime,自殺までの時間,Time Until Suicide,自杀前的时间,自殺前的時間
+SerialKillerCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+SerialKillerCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
+SerialKillerSuicideText,自殺まで{0}秒,Suicide in {0} seconds,自杀前{0}秒,自殺前{0}秒

@@ -37,7 +37,10 @@ public class ChangeKillTimerAbility : AbilityBase
         {
             // キルが発生した時にKillTimerを設定
             float killTime = KillTimerGetter();
-            ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
+            new LateTask(() =>
+            {
+                ((ExPlayerControl)Player).SetKillTimerUnchecked(killTime, killTime);
+            }, 0.017f);
         }
     }
 

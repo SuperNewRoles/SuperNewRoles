@@ -31,7 +31,10 @@ public class CustomTaskAbility : AbilityBase
         if (ShipStatus.Instance == null) return;
 
         // プレイヤーが存在しない場合は処理しない
-        if (PlayerControl.LocalPlayer == null) return;
+        if (Player == null) return;
+
+        // ローカルプレイヤーでない場合は処理しない（各プレイヤーが自分自身のタスクのみを設定するようにする）
+        if (!Player.AmOwner) return;
 
         // タスクリストを作成
         Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
@@ -64,7 +67,7 @@ public class CustomTaskAbility : AbilityBase
         // タスクをプレイヤーに割り当てる
         if (taskList.Count > 0)
         {
-            RpcUncheckedSetTasks(PlayerControl.LocalPlayer, taskList.ToSystemList());
+            RpcUncheckedSetTasks(Player, taskList.ToSystemList());
         }
     }
     [CustomRPC]

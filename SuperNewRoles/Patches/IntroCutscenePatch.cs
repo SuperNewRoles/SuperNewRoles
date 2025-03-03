@@ -196,12 +196,11 @@ public static class IntroCutscenePatch
         }
         private static void ReAssignTasks()
         {
-            foreach (var player in ExPlayerControl.ExPlayerControls)
+            // ローカルプレイヤーのみがタスクを再割り当てする
+            var localPlayer = ExPlayerControl.LocalPlayer;
+            if (localPlayer != null && localPlayer.CustomTaskAbility != null && localPlayer.CustomTaskAbility.assignTaskData != null)
             {
-                if (player.CustomTaskAbility != null && player.CustomTaskAbility.assignTaskData != null)
-                {
-                    player.CustomTaskAbility.AssignTasks();
-                }
+                localPlayer.CustomTaskAbility.AssignTasks();
             }
         }
     }
