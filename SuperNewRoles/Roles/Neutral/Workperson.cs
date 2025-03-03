@@ -14,11 +14,11 @@ namespace SuperNewRoles.Roles.Neutral;
 class Workperson : RoleBase<Workperson>
 {
     [CustomOptionBool("WorkpersonNeedAliveToWin", false)]
-    public static bool NeedAliveToWin;
+    public static bool WorkpersonNeedAliveToWin;
     [CustomOptionBool("WorkpersonUseCustomTaskSetting", true)]
-    public static bool UseCustomTaskSetting;
-    [CustomOptionTask("WorkpersonTask", 8, 8, 8)]
-    public static TaskOptionData? TaskData;
+    public static bool WorkpersonUseCustomTaskSetting;
+    [CustomOptionTask("WorkpersonTask", 8, 8, 8, parentFieldName: nameof(WorkpersonUseCustomTaskSetting))]
+    public static TaskOptionData WorkpersonTaskData;
 
     public override RoleId Role { get; } = RoleId.Workperson;
     public override Color32 RoleColor { get; } = new(210, 180, 140, byte.MaxValue);
@@ -31,8 +31,9 @@ class Workperson : RoleBase<Workperson>
 
             return (true, taskData.total);
         },
-        TaskData
-    )];
+        WorkpersonTaskData
+    ),
+    () => new WorkpersonAbility(WorkpersonNeedAliveToWin)];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -48,6 +49,11 @@ class Workperson : RoleBase<Workperson>
 public class WorkpersonAbility : AbilityBase
 {
     private EventListener<TaskCompleteEventData> _taskCompleteListener;
+    private bool _needAliveToWin { get; }
+    public WorkpersonAbility(bool needAliveToWin)
+    {
+        _needAliveToWin = needAliveToWin;
+    }
     public override void AttachToLocalPlayer()
     {
         _taskCompleteListener = TaskCompleteEvent.Instance.AddListener(OnTaskComplete);
@@ -57,8 +63,8 @@ public class WorkpersonAbility : AbilityBase
         if (data.player.PlayerId != PlayerControl.LocalPlayer.PlayerId) return;
         if (ExPlayerControl.LocalPlayer.IsTaskComplete())
         {
+            if (_needAliveToWin && !ExPlayerControl.LocalPlayer.IsAlive()) return;
             CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.WorkpersonWin);
-
         }
     }
     public override void DetachToLocalPlayer()

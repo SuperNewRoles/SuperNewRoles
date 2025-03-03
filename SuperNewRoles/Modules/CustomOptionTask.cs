@@ -87,6 +87,8 @@ namespace SuperNewRoles.Modules
             customOptions.Add(shortOption);
             customOptions.Add(longOption);
             customOptions.Add(commonOption);
+
+            Logger.Info($"TaskOptionData初期値: Short={TaskData.Short}, Long={TaskData.Long}, Common={TaskData.Common}");
         }
         private CustomOption SetupAttribute(CustomOptionIntAttribute attribute, FieldInfo field, FieldInfo meField)
         {
@@ -103,36 +105,41 @@ namespace SuperNewRoles.Modules
             // カスタムオプションを作成し、リストに追加
             CustomOption option = new(attribute, field, role, isTaskOption: true);
             meField.SetValue(null, TaskData);
+
+            // ValueChangedイベントハンドラーを設定
+            if (attribute == ShortOption)
+            {
+                attribute.ValueChanged += OnShortOptionValueChanged;
+            }
+            else if (attribute == LongOption)
+            {
+                attribute.ValueChanged += OnLongOptionValueChanged;
+            }
+            else if (attribute == CommonOption)
+            {
+                attribute.ValueChanged += OnCommonOptionValueChanged;
+            }
+
             return option;
-        }
-
-        // このメソッドを利用して、各CustomOptionIntAttributeを後付で設定できます。
-        public void AttachOptions(CustomOptionIntAttribute shortOption, CustomOptionIntAttribute longOption, CustomOptionIntAttribute commonOption)
-        {
-            ShortOption = shortOption;
-            LongOption = longOption;
-            CommonOption = commonOption;
-
-            // 値変更時のハンドラを設定
-            ShortOption.ValueChanged += OnShortOptionValueChanged;
-            LongOption.ValueChanged += OnLongOptionValueChanged;
-            CommonOption.ValueChanged += OnCommonOptionValueChanged;
         }
 
         private void OnShortOptionValueChanged(int val)
         {
+            Logger.Info($"ShortOption値が変更されました: {val}");
             TaskData.Short = val;
             ValueChanged?.Invoke(val);
         }
 
         private void OnLongOptionValueChanged(int val)
         {
+            Logger.Info($"LongOption値が変更されました: {val}");
             TaskData.Long = val;
             ValueChanged?.Invoke(val);
         }
 
         private void OnCommonOptionValueChanged(int val)
         {
+            Logger.Info($"CommonOption値が変更されました: {val}");
             TaskData.Common = val;
             ValueChanged?.Invoke(val);
         }
