@@ -91,7 +91,7 @@ public class SheriffAbilityData
 
 public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
 {
-    public SheriffAbilityData SheriffAbilityData { get; }
+    public SheriffAbilityData SheriffAbilityData { get; set; }
 
     public SheriffAbility(SheriffAbilityData sheriffAbilityData) : base(
         canKill: () => true && sheriffAbilityData.KillCount > 0,

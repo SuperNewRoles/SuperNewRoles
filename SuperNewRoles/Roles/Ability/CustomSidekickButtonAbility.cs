@@ -14,6 +14,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     private readonly Func<RoleId> _sidekickRole;
     private readonly Func<RoleTypes> _sidekickRoleVanilla;
     private readonly Action<ExPlayerControl> _onSidekickCreated;
+    private readonly Func<ExPlayerControl, bool>? _sidekickSuccess;
     private readonly SidekickedPromoteData? _sidekickedPromoteData;
     private readonly Sprite _sidekickSprite;
     private readonly string _sidekickText;
@@ -34,6 +35,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         Sprite sidekickSprite,
         string sidekickText,
         Func<ExPlayerControl, bool>? isTargetable,
+        Func<ExPlayerControl, bool>? sidekickSuccess = null,
         SidekickedPromoteData? sidekickedPromoteData = null,
         Action<ExPlayerControl> onSidekickCreated = null)
     {
@@ -44,6 +46,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         _onSidekickCreated = onSidekickCreated;
         _sidekickSprite = sidekickSprite;
         _sidekickText = sidekickText;
+        _sidekickSuccess = sidekickSuccess;
         _sidekickedPromoteData = sidekickedPromoteData;
         _isTargetable = isTargetable;
     }
@@ -52,11 +55,13 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     {
         if (Target == null) return;
         if (!_canCreateSidekick() || SidekickCreated) return;
-
-        RpcSidekicked(Player, Target, _sidekickRole(), _sidekickRoleVanilla());
-        if (_sidekickedPromoteData != null)
+        if (_sidekickSuccess == null || _sidekickSuccess(Target))
         {
-            new LateTask(() => RpcSetPromoteAbility(Player, Target, _sidekickedPromoteData.PromoteToRole, _sidekickedPromoteData.PromoteToRoleVanilla), 0.05f);
+            RpcSidekicked(Player, Target, _sidekickRole(), _sidekickRoleVanilla());
+            if (_sidekickedPromoteData != null)
+            {
+                new LateTask(() => RpcSetPromoteAbility(Player, Target, _sidekickedPromoteData.PromoteToRole, _sidekickedPromoteData.PromoteToRoleVanilla), 0.05f);
+            }
         }
         _onSidekickCreated?.Invoke(Target);
         SidekickCreated = true;

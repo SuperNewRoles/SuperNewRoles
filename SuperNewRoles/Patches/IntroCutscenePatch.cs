@@ -198,7 +198,7 @@ public static class IntroCutscenePatch
         {
             foreach (var player in ExPlayerControl.ExPlayerControls)
             {
-                if (player.IsTaskTriggerRole())
+                if (player.CustomTaskAbility != null && player.CustomTaskAbility.assignTaskData != null)
                 {
                     player.CustomTaskAbility.AssignTasks();
                 }

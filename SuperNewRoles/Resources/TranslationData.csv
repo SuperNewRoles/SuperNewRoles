@@ -109,6 +109,7 @@ WaveCannonJackal,波動砲ジャッカル,Wave Cannon Jackal,波动炮杰克,波
 Tuna,マグロ,Tuna,金枪鱼,金槍魚
 Teruteru,てるてる,Teruteru,特鲁特鲁,特魯特魯
 Opportunist,オポチュニスト,Opportunist,机会主义者,機會主義者
+Chief,村長,Chief,村长,村長
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -228,3 +229,14 @@ RoleDictionary,役職辞典,Role Dictionary,角色词典,角色詞典
 ImpostorButton,インポスター,Impostor,内鬼,內鬼
 NeutralButton,第三陣営,Neutral,第三阵营,第三陣營
 CrewmateButton,クルーメイト,Crewmate,船员,船員
+
+# Chief
+ChiefDescription,任命：1試合に一度だけ対象をシェリフに任命することが出来ます。インポスターを任命した場合は自身が死亡します。,Appointment: Once per game, you can appoint a target as Sheriff. If you appoint an Impostor, you will die.,任命：每局游戏仅能任命一名玩家为警长。若任命内鬼，你将死亡。,任命：每局遊戲僅能任命一名玩家為警長。若任命內鬼，你將死亡。
+ChiefAppoint,任命,Appoint,任命,任命
+ChiefSheriffKillCooldown,任命されたシェリフのキルクールタイム,Appointed Sheriff Kill Cooldown,任命警长的击杀冷却时间,任命警長的擊殺冷卻時間
+ChiefSheriffMaxKillCount,任命されたシェリフの最大キル数,Appointed Sheriff Max Kill Count,任命警长的最大击杀次数,任命警長的最大擊殺次數
+ChiefSheriffCanKillImpostor,インポスターをキル出来る,Can Kill Impostor,能击杀内鬼,能擊殺內鬼
+ChiefSheriffCanKillMadRoles,マッドロールをキル出来る,Can Kill Mad Roles,能击杀背叛者,能擊殺背叛者
+ChiefSheriffCanKillNeutral,第三陣営をキル出来る,Can Kill Neutral,能击杀第三阵营,能擊殺第三陣營
+ChiefSheriffCanKillFriendRoles,フレンド系の役職をキル出来る,Can Kill Friend Roles,能击杀友方角色,能擊殺友方角色
+ChiefSheriffCanKillLovers,ラバーズをキル出来る,Can Kill Lovers,能击杀恋人,能擊殺戀人

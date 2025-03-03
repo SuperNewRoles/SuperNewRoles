@@ -25,6 +25,7 @@ public enum RoleId : short
     Tuna,
     Teruteru,
     Opportunist,
+    Chief,
 }
 
 public enum QuoteMod : byte
