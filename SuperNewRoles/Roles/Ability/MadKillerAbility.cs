@@ -18,7 +18,7 @@ public record MadKillerData(
 
 public class MadKillerAbility : AbilityBase
 {
-    private readonly MadKillerData _data;
+    private MadKillerData _data;
     private bool _isAwakened;
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _visionAbility;
@@ -26,11 +26,13 @@ public class MadKillerAbility : AbilityBase
     private EventListener<DieEventData> _dieEventListener;
     private EventListener<DisconnectEventData> _disconnectEventListener;
     public SideKillerAbility ownerAbility;
+    private bool _cannotBeSeenBeforePromotion;
 
     public MadKillerAbility(MadKillerData data)
     {
         _data = data;
         _isAwakened = false;
+        _cannotBeSeenBeforePromotion = false;
     }
 
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
@@ -39,7 +41,7 @@ public class MadKillerAbility : AbilityBase
 
         _ventAbility = new CustomVentAbility(() => _data.couldUseVent || _isAwakened);
         _visionAbility = new ImpostorVisionAbility(() => _data.hasImpostorVision);
-        _knowImpostorAbility = new KnowImpostorAbility(() => true);
+        _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion);
 
         ExPlayerControl exPlayer = (ExPlayerControl)player;
         AbilityParentAbility parentAbility = new(this);
@@ -88,5 +90,32 @@ public class MadKillerAbility : AbilityBase
         base.DetachToLocalPlayer();
         DieEvent.Instance.RemoveListener(_dieEventListener);
         DisconnectEvent.Instance.RemoveListener(_disconnectEventListener);
+    }
+
+    // 新しい設定を適用するメソッド
+    public void UpdateSettings(bool canUseVent, bool hasImpostorVision, bool cannotBeSeenBeforePromotion)
+    {
+        _data = _data with { couldUseVent = canUseVent, hasImpostorVision = hasImpostorVision };
+        _cannotBeSeenBeforePromotion = cannotBeSeenBeforePromotion;
+    }
+
+    // 他のプレイヤーから見えるかどうかを判定するメソッド
+    public bool IsVisibleTo(PlayerControl viewer)
+    {
+        if (!_cannotBeSeenBeforePromotion)
+            return true;
+
+        if (_isAwakened)
+            return true;
+
+        // サイドキラー自身からは見える
+        if (ownerAbility?.Player != null && viewer.PlayerId == ownerAbility.Player.PlayerId)
+            return true;
+
+        // 自分自身からは見える
+        if (viewer.PlayerId == Player.PlayerId)
+            return true;
+
+        return false;
     }
 }

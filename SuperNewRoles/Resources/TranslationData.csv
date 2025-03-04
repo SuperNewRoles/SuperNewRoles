@@ -278,3 +278,6 @@ PavlovsDogResetSuicideTimeOnMeeting,会議で自爆タイムをリセットす�
 SideKillerSidekickButtonName,浸食する,Infect,感染,感染
 SideKillerKillCooldown,サイドキラーのクールタイム,SideKiller Cooldown,边缘杀手冷却时间,邊緣殺手冷卻時間
 MadKillerKillCooldown,マッドキラーのクールタイム,MadKiller Cooldown,疯狂杀手冷却时间,瘋狂殺手冷卻時間
+MadKillerCanUseVent,マッドキラーがベントを使用出来る,MadKiller Can Use Vent,疯狂杀手可以使用通风口,瘋狂殺手可以使用通風口
+MadKillerHasImpostorVision,マッドキラーが人外視野,MadKiller Has Impostor Vision,疯狂杀手拥有内鬼视野,瘋狂殺手擁有內鬼視野
+CannotSeeMadKillerBeforePromotion,昇格前のマッドキラーを視認できない,Cannot See MadKiller Before Promotion,无法在晋升前看到疯狂杀手,無法在晉升前看到瘋狂殺手

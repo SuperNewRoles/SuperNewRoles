@@ -9,7 +9,10 @@ namespace SuperNewRoles.Roles.Ability;
 
 public record SideKillerData(
     float killCooldown,
-    float madKillerKillCooldown
+    float madKillerKillCooldown,
+    bool madKillerCanUseVent,
+    bool madKillerHasImpostorVision,
+    bool cannotSeeMadKillerBeforePromotion
 );
 
 public class SideKillerAbility : AbilityBase
@@ -55,7 +58,7 @@ public class SideKillerAbility : AbilityBase
         );
 
         _knowOtherAbility = new KnowOtherAbility(
-            (player) => player.Role == RoleId.MadKiller,
+            (player) => player.Role == RoleId.MadKiller && !_data.cannotSeeMadKillerBeforePromotion,
             () => true
         );
 
@@ -75,5 +78,12 @@ public class SideKillerAbility : AbilityBase
     {
         owner.madKillerAbility = madKiller;
         madKiller.ownerAbility = owner;
+
+        // 新しい設定を適用
+        madKiller.UpdateSettings(
+            owner._data.madKillerCanUseVent,
+            owner._data.madKillerHasImpostorVision,
+            owner._data.cannotSeeMadKillerBeforePromotion
+        );
     }
 }

@@ -17,7 +17,10 @@ class SideKiller : RoleBase<SideKiller>
     {
         () => new SideKillerAbility(new SideKillerData(
             killCooldown: SideKillerKillCooldown,
-            madKillerKillCooldown: MadKillerKillCooldown
+            madKillerKillCooldown: MadKillerKillCooldown,
+            madKillerCanUseVent: MadKillerCanUseVent,
+            madKillerHasImpostorVision: MadKillerHasImpostorVision,
+            cannotSeeMadKillerBeforePromotion: CannotSeeMadKillerBeforePromotion
         ))
     };
 
@@ -37,4 +40,13 @@ class SideKiller : RoleBase<SideKiller>
 
     [CustomOptionFloat("MadKillerKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float MadKillerKillCooldown;
+
+    [CustomOptionBool("MadKillerCanUseVent", false)]
+    public static bool MadKillerCanUseVent;
+
+    [CustomOptionBool("MadKillerHasImpostorVision", false)]
+    public static bool MadKillerHasImpostorVision;
+
+    [CustomOptionBool("CannotSeeMadKillerBeforePromotion", false)]
+    public static bool CannotSeeMadKillerBeforePromotion;
 }
