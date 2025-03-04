@@ -11,14 +11,14 @@ namespace SuperNewRoles.Roles.CrewMate;
 class HomeSecurityGuard : RoleBase<HomeSecurityGuard>
 {
     public override RoleId Role { get; } = RoleId.HomeSecurityGuard;
-    public override Color32 RoleColor { get; } = new Color32(200, 200, 200, byte.MaxValue); // グレー色
+    public override Color32 RoleColor { get; } = new(0, 255, 0, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CustomTaskAbility(
         () => {
             var exPlayer = ExPlayerControl.LocalPlayer;
             if (exPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId) return (false, 0);
-            return (true, 0); // タスク数を0に設定
+            return (true, 0);
         },
-        new TaskOptionData(0, 0, 0) // タスク数を0に設定
+        new TaskOptionData(1, 0, 0)
     )];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
