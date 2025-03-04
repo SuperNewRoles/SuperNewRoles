@@ -23,6 +23,7 @@ public enum WinCondition
     TeruteruWin,
     OpportunistWin,
     WorkpersonWin,
+    VultureWin,
 }
 public enum CustomGameOverReason
 {
@@ -33,6 +34,7 @@ public enum CustomGameOverReason
     TunaWin = 34,
     TeruteruWin = 35,
     WorkpersonWin = 36,
+    VultureWin = 37,
 }
 
 static class AdditionalTempData
@@ -168,6 +170,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.WorkpersonWin:
                 baseText = "Workperson";
                 roleColor = Workperson.Instance.RoleColor;
+                break;
+            case WinCondition.VultureWin:
+                baseText = "Vulture";
+                roleColor = Vulture.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";

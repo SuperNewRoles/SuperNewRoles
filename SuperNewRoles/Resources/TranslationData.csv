@@ -119,6 +119,7 @@ MadKiller,マッドキラー,MadKiller,疯狂杀手,瘋狂殺手
 EvilGambler,イビルギャンブラー,Evil Gambler,,
 HomeSecurityGuard,自宅警備員,Home Security Guard,家庭安保员,家庭安保員
 Seer,シーア,Seer,预言家,預言家
+Vulture,ヴァルチャー,Vulture,秃鹫,禿鷲
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -307,3 +308,11 @@ CelebrityDescription,みんなから自分がスターと分かります\n周囲
 CelebrityKeepNameColorAfterRoleChange,役職が変わっても名前の色がスターのままになる,Keep name color as Celebrity even if role changes,即使角色改变也保持明星姓名颜色,即使角色改變也保持明星姓名顏色
 CelebrityEnableGlowEffect,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか,Enable screen glow effect every kill cooldown during task phase,是否在任务阶段每次击杀冷却结束时闪亮屏幕,是否在任務階段每次擊殺冷卻結束時閃亮屏幕
 CelebrityGlowOnlyWhileAlive,画面が光るのは生きている間のみか(会議更新),Screen glows only while alive (updates on meeting),屏幕仅在活着时闪烁（会议更新）,螢幕僅在活著時閃爍（會議更新）
+
+# Vulture
+VultureCooldown,ヴァルチャークールダウン,Vulture Cooldown,秃鹫冷却时间,禿鷲冷卻時間
+VultureRequiredBodies,勝利死体数,Required Bodies for Win,胜利所需尸体数,勝利所需屍體數
+VultureCanUseVent,ベントに入れる,Can Use Vent,可以使用通风口,可以使用通風口
+VultureShowArrows,死体を指す矢印を表示する,Show Arrows to Dead Bodies,显示指向尸体的箭头,顯示指向屍體的箭頭
+VultureEatButton,食らう,Eat,吞食,吞食
+VultureWin,ヴァルチャー勝利,Vulture Win,秃鹫胜利,禿鷲勝利

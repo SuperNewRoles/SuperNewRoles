@@ -36,6 +36,7 @@ public enum RoleId : short
     HomeSecurityGuard,
     Seer,
     Celebrity,
+    Vulture,
 }
 
 public enum QuoteMod : byte
