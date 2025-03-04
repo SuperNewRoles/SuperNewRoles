@@ -64,7 +64,7 @@ public class ChiefAbility : AbilityBase
     {
         // 任命ボタンの作成
         _sidekickButton = new CustomSidekickButtonAbility(
-            canCreateSidekick: () => _canAppointSheriff,
+            canCreateSidekick: created => _canAppointSheriff && !created,
             sidekickCooldown: () => 0f, // 一度しか使えないのでクールダウンは不要
             sidekickRole: () => RoleId.Sheriff,
             sidekickRoleVanilla: () => RoleTypes.Crewmate,

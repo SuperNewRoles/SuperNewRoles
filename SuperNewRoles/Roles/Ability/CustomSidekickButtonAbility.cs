@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class CustomSidekickButtonAbility : TargetCustomButtonBase
 {
-    private readonly Func<bool> _canCreateSidekick;
+    private readonly Func<bool, bool> _canCreateSidekick;
     private readonly Func<float?> _sidekickCooldown;
     private readonly Func<RoleId> _sidekickRole;
     private readonly Func<RoleTypes> _sidekickRoleVanilla;
@@ -26,9 +26,9 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     public override float DefaultTimer => _sidekickCooldown?.Invoke() ?? 0;
     public override bool OnlyCrewmates => false;
     public override Func<ExPlayerControl, bool>? IsTargetable => _isTargetable;
-    public bool SidekickCreated { get; private set; }
+    private bool _sidekickCreated = false;
     public CustomSidekickButtonAbility(
-        Func<bool> canCreateSidekick,
+        Func<bool, bool> canCreateSidekick,
         Func<float?> sidekickCooldown,
         Func<RoleId> sidekickRole,
         Func<RoleTypes> sidekickRoleVanilla,
@@ -54,7 +54,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     public override void OnClick()
     {
         if (Target == null) return;
-        if (!_canCreateSidekick() || SidekickCreated) return;
+        if (!_canCreateSidekick(_sidekickCreated)) return;
         if (_sidekickSuccess == null || _sidekickSuccess(Target))
         {
             RpcSidekicked(Player, Target, _sidekickRole(), _sidekickRoleVanilla());
@@ -64,21 +64,21 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
             }
         }
         _onSidekickCreated?.Invoke(Target);
-        SidekickCreated = true;
+        _sidekickCreated = true;
         ResetTimer();
     }
 
     public override bool CheckIsAvailable()
     {
         if (!TargetIsExist) return false;
-        if (!_canCreateSidekick()) return false;
+        if (!_canCreateSidekick(_sidekickCreated)) return false;
         if (!PlayerControl.LocalPlayer.CanMove || ExPlayerControl.LocalPlayer.IsDead()) return false;
         return true;
     }
 
     public override bool CheckHasButton()
     {
-        return _canCreateSidekick() && !SidekickCreated;
+        return _canCreateSidekick(_sidekickCreated);
     }
     [CustomRPC]
     public static void RpcSidekicked(ExPlayerControl source, ExPlayerControl player, RoleId roleId, RoleTypes roleType)

@@ -112,6 +112,8 @@ Opportunist,オポチュニスト,Opportunist,机会主义者,機會主義者
 Chief,村長,Chief,村长,村長
 Workperson,仕事人,Workperson,工作人员,工作人員
 SerialKiller,シリアルキラー,Serial Killer,连环杀手,連環殺手
+PavlovsOwner,パブロフのオーナー,Pavlov's Owner,帕夫洛夫的主人,帕夫洛夫的主人
+PavlovsDog,パブロフの犬,Pavlov's Dog,帕夫洛夫的狗,帕夫洛夫的狗
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -255,3 +257,17 @@ SerialKillerSuicideTime,自殺までの時間,Time Until Suicide,自杀前的时
 SerialKillerCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 SerialKillerCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 SerialKillerSuicideText,自殺まで{0}秒,Suicide in {0} seconds,自杀前{0}秒,自殺前{0}秒
+
+# Pavlovs
+PavlovsOwnerCanUseVent,オーナーがベントを使用できる,Owner can use vents
+PavlovsOwnerSidekickCooldown,指名のクールタイム,Appointment Cooldown
+PavlovsOwnerMaxSidekickCount,1試合内に指名できる回数,Maximum Appointments per Game
+PavlovsOwnerSuicideOnImpostorSidekick,インポスターを指名すると自爆する,Suicide when Appointing Impostor
+PavlovsOwnerIsImpostorVision,オーナーがインポスターの視界,Owner has Impostor Vision
+PavlovsDogButtonText,ｲﾇ,dog
+PavlovsDogCanUseVent,犬がベントを使用できる,Dog can use vents
+PavlovsDogIsImpostorVision,犬がインポスターの視界,Dog has Impostor Vision
+PavlovsDogKillCooldown,犬のキルクールタイム,Dog's Kill Cooldown
+PavlovsDogRampageKillCooldown,暴走時のキルクールタイム,Rampage Kill Cooldown
+PavlovsDogRampageSuicideTime,暴走時の自爆タイム,Rampage Suicide Time
+PavlovsDogResetSuicideTimeOnMeeting,会議で自爆タイムをリセットする,Reset Suicide Timer on Meeting

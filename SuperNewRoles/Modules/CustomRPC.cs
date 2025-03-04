@@ -7,6 +7,7 @@ using Hazel;
 using InnerNet;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -355,6 +356,15 @@ public static class CustomRPCManager
                 writer.Write(v3.y);
                 writer.Write(v3.z);
                 break;
+            case AbilityBase abilityBase:
+                if (abilityBase == null || abilityBase.Player == null)
+                    writer.Write(byte.MaxValue);
+                else
+                {
+                    writer.Write(abilityBase.Player.PlayerId);
+                    writer.Write(abilityBase.AbilityId);
+                }
+                break;
             default:
                 throw new Exception($"Invalid type: {obj.GetType()}");
         }
@@ -406,10 +416,22 @@ public static class CustomRPCManager
             Type t when t == typeof(List<byte>) => ReadByteList(reader),
             Type t when t == typeof(Vector2) => new Vector2(reader.ReadSingle(), reader.ReadSingle()),
             Type t when t == typeof(Vector3) => new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),
+            Type t when t.IsSubclassOf(typeof(AbilityBase)) => ReadAbilityBase(reader),
             _ => throw new Exception($"Invalid type: {type}")
         };
     }
-
+    /// <summary>
+    /// AbilityBaseを読み取るヘルパーメソッド
+    /// </summary>
+    private static object ReadAbilityBase(MessageReader reader)
+    {
+        byte playerId = reader.ReadByte();
+        if (playerId == byte.MaxValue) return null;
+        ulong abilityId = reader.ReadUInt64();
+        ExPlayerControl exPlayer = ExPlayerControl.ById(playerId);
+        if (exPlayer == null) return null;
+        return exPlayer.GetAbility(abilityId);
+    }
     /// <summary>
     /// Dictionary を読み取るヘルパーメソッド
     /// </summary>

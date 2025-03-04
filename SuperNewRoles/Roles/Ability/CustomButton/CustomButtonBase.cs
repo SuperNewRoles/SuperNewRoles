@@ -76,6 +76,7 @@ public abstract class CustomButtonBase : AbilityBase
     public override void AttachToLocalPlayer()
     {
         actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
+        actionButton.graphic.color = Color.white;
         PassiveButton button = actionButton.GetComponent<PassiveButton>();
         button.OnClick = new Button.ButtonClickedEvent();
         button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };

@@ -112,9 +112,12 @@ public static class RoleDetailMenu
             return $"{role.Role}.Settings";
         }
         var settings = roleOption.Options.Where(o => o.ShouldDisplay())
-            .Select(o => $"{ModTranslation.GetString(o.Name)}: {o.GetCurrentSelectionString()}")
-            .Prepend($"{ModTranslation.GetString("AssignPer")}: {roleOption.Percentage}%")
-            .Prepend($"{ModTranslation.GetString("NumberOfCrews")}: {roleOption.NumberOfCrews}");
+            .Select(o => $"{ModTranslation.GetString(o.Name)}: {o.GetCurrentSelectionString()}");
+
+        if (role.OptionTeam != RoleOptionMenuType.Hidden)
+            settings = settings.Prepend($"{ModTranslation.GetString("AssignPer")}: {roleOption.Percentage}%")
+                    .Prepend($"{ModTranslation.GetString("NumberOfCrews")}: {roleOption.NumberOfCrews}");
+
 
         // 設定項目数に応じてスクローラーの高さを調整
         float contentHeight = (settings.Count() - 2) * 0.267f + 0.15f; // 1項目あたり0.2の高さ

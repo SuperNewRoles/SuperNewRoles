@@ -195,6 +195,8 @@ public class ExPlayerControl
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
     public bool IsImpostorWinTeam()
         => IsImpostor() || IsMadRoles();
+    public bool IsPavlovsTeam()
+        => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner;
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));
     public bool IsFriendRoles()

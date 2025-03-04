@@ -28,6 +28,8 @@ public enum RoleId : short
     Chief,
     Workperson,
     SerialKiller,
+    PavlovsOwner,
+    PavlovsDog,
 }
 
 public enum QuoteMod : byte

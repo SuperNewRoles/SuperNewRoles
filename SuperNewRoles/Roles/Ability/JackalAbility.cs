@@ -36,7 +36,7 @@ public class JackalAbility : AbilityBase
         );
 
         SidekickAbility = new CustomSidekickButtonAbility(
-            () => JackData.CanCreateSidekick,
+            (bool sidekickCreated) => JackData.CanCreateSidekick && !sidekickCreated,
             () => JackData.SidekickCooldown,
             () => JackData.SidekickType == JackalSidekickType.Friends ? RoleId.JackalFriends : RoleId.Sidekick,
             () => RoleTypes.Crewmate,
