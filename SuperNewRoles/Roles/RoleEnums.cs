@@ -30,6 +30,8 @@ public enum RoleId : short
     SerialKiller,
     PavlovsOwner,
     PavlovsDog,
+    SideKiller,
+    MadKiller,
 }
 
 public enum QuoteMod : byte
