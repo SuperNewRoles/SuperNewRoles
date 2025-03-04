@@ -415,7 +415,7 @@ public static class OnGameEndPatch
             case CustomGameOverReason.Haison:
                 return GetHaisonWinInfo(emptyReviveList);
             case CustomGameOverReason.JackalWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p.IsJackal()),
+                return (ExPlayerControl.ExPlayerControls.Where(p => p.IsJackalTeamWins()),
                         WinCondition.JackalWin,
                         emptyReviveList);
             case CustomGameOverReason.TunaWin:

@@ -44,9 +44,9 @@ ExclusivityOptionMenuGroupText,グループ {0},Group {0},群組 {0},群組 {0}
 ExclusivityEditMenuTitle,排他設定の編集,Edit Exclusivity Settings,编辑排他设置,編輯排他設置
 ExclusivityEditMenuGroupTitle,グループ {0}の設定,Group {0} Settings,组 {0} 设置,組 {0} 設置
 DebugMode,デバッグモード,Debug Mode,偵錯模式,偵錯模式
-CustomOptionTask_Short,短いタスク,Short Tasks,短任務,短任務
-CustomOptionTask_Long,長いタスク,Long Tasks,长任務,長任務
-CustomOptionTask_Common,共通タスク,Common Tasks,共同任務,共同任務
+CustomOptionTask_Short,ショートタスク,Short Tasks,短任務,短任務
+CustomOptionTask_Long,ロングタスク,Long Tasks,长任務,長任務
+CustomOptionTask_Common,通常タスク,Common Tasks,共同任務,共同任務
 SkipStartGameCountdown,ゲーム開始カウントダウンをスキップ,Skip Game Start Countdown,跳过游戏开始倒计时,跳過遊戲開始倒計時
 CustomOptionTrue,有効,Enabled,启用,啟用
 CustomOptionFalse,無効,Disabled,无效,无效
@@ -189,14 +189,14 @@ BalancerRandomVoteWhenNoVote,未投票時ランダムに投票する,Random Vote
 SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
 SelfBomberCooldown,爆発クールダウン,Explosion Cooldown,爆炸冷却时间,爆炸冷卻時間
 SelfBomberExplosionRadius,爆発範囲,Explosion Radius,爆炸范围,爆炸範圍
-SelfBomberOnlyKillCrewmates,クルーメイトのみを爆発する,Only Kill Crewmates,只能杀船员,只能殺船員
+SelfBomberOnlyKillCrewmates,クルーメイトのみをキルする,Only Kill Crewmates,只能杀船员,只能殺船員
 SelfBomberIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 
 # Samurai
 SamuraiKillButtonText,必殺技,Slash,斬擊,斬擊
 SamuraiKillCooldown,必殺技クールダウン,Slash Cooldown,斬擊冷卻時間,斬擊冷卻時間
 SamuraiKillRadius,必殺技の範囲,Slash Radius,斬擊範圍,斬擊範圍
-SamuraiOnlyKillCrewmates,クルーメイトのみを必殺技する,Only Kill Crewmates,只能杀船员,只能殺船員
+SamuraiOnlyKillCrewmates,クルーメイトのみをキルする,Only Kill Crewmates,只能杀船员,只能殺船員
 SamuraiIgnoreWalls,壁を無視する,Ignore Walls,忽略墙壁,忽略牆壁
 SamuraiCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 SamuraiCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞

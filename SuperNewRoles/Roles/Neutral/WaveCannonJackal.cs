@@ -64,7 +64,7 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     [CustomOptionSelect("WaveCannonJackalSidekickType", typeof(JackalSidekickType), "JackalSidekickType.", parentFieldName: nameof(WaveCannonJackalCanCreateSidekick))]
     public static JackalSidekickType WaveCannonJackalSidekickType;
 
-    [CustomOptionFloat("WaveCannonJackalWaveCannonCooldown", 10f, 60f, 5f, 30f)]
+    [CustomOptionFloat("WaveCannonJackalWaveCannonCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float WaveCannonJackalCooldown;
 
     [CustomOptionFloat("WaveCannonJackalWaveCannonEffectDuration", 1f, 10f, 1f, 6f)]

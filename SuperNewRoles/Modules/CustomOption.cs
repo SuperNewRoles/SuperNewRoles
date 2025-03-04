@@ -42,6 +42,7 @@ public static class CustomOptionManager
         private static LateTask _lateTask;
         public static void Postfix()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             // ゲーム終了後の復帰からの同期で大量に通信を送るのを防ぐために
             // 2秒内に来たプレイヤーは同時に同期する
             if (_lateTask != null)
@@ -61,11 +62,9 @@ public static class CustomOptionManager
         public static void Postfix()
         {
             // ゲーム開始時に一度だけ同期する(AmongUsClient.StartGameが呼ばれるのはホストのみ)
-            if (AmongUsClient.Instance.AmHost)
-            {
-                RpcSyncOptionsAll();
-                RoleOptionManager.RpcSyncRoleOptionsAll();
-            }
+            if (!AmongUsClient.Instance.AmHost) return;
+            RpcSyncOptionsAll();
+            RoleOptionManager.RpcSyncRoleOptionsAll();
         }
     }
     [CustomRPC]

@@ -34,7 +34,7 @@ class Seer : RoleBase<Seer>
     [CustomOptionBool("Seer.LimitSoulDuration", false)]
     public static bool LimitSoulDuration = false;
 
-    [CustomOptionFloat("Seer.SoulDuration", 10f, 60f, 5f, 30f, parentFieldName: nameof(LimitSoulDuration))]
+    [CustomOptionFloat("Seer.SoulDuration", 2.5f, 60f, 2.5f, 30f, parentFieldName: nameof(LimitSoulDuration))]
     public static float SoulDuration = 30f;
 }
 public enum SeerMode

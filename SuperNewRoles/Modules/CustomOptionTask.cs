@@ -84,11 +84,11 @@ namespace SuperNewRoles.Modules
             var longOption = SetupAttribute(LongOption, longField, meField);
             var commonOption = SetupAttribute(CommonOption, commonField, meField);
 
-            customOptions.Add(shortOption);
-            customOptions.Add(longOption);
+            // 通常、ロング、ショートの順にタスクオプションを追加
             customOptions.Add(commonOption);
-
-            Logger.Info($"TaskOptionData初期値: Short={TaskData.Short}, Long={TaskData.Long}, Common={TaskData.Common}");
+            customOptions.Add(longOption);
+            customOptions.Add(shortOption);
+            Logger.Info($"TaskOptionData初期値: Common={TaskData.Common}, Long={TaskData.Long}, Short={TaskData.Short}");
         }
         private CustomOption SetupAttribute(CustomOptionIntAttribute attribute, FieldInfo field, FieldInfo meField)
         {

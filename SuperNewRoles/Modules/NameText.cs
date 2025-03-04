@@ -68,7 +68,7 @@ public static class NameText
         string meetingInfoText = "";
         string roleName = player.roleBase.Role.ToString();
         // ベスト冤罪ヤーは生きてる時は自覚できない
-        if (player.roleBase.Role == RoleId.BestFalseCharge && player.AmOwner && player.IsDead())
+        if (player.Role == RoleId.BestFalseCharge && player.AmOwner && player.IsAlive())
         {
             roleName = Crewmate.Instance.Role.ToString();
         }

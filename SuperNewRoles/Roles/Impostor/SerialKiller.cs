@@ -41,10 +41,10 @@ class SerialKiller : RoleBase<SerialKiller>
     [CustomOptionBool("SerialKillerResetOnMeeting", false)]
     public static bool SerialKillerResetOnMeeting;
 
-    [CustomOptionFloat("SerialKillerKillCooldown", 10f, 60f, 2.5f, 25f)]
+    [CustomOptionFloat("SerialKillerKillCooldown", 2.5f, 120f, 2.5f, 20f)]
     public static float SerialKillerKillCooldown;
 
-    [CustomOptionFloat("SerialKillerSuicideTime", 10f, 120f, 5f, 30f)]
+    [CustomOptionFloat("SerialKillerSuicideTime", 2.5f, 120f, 2.5f, 40f)]
     public static float SerialKillerSuicideTime;
 
     [CustomOptionBool("SerialKillerCanUseVent", true)]

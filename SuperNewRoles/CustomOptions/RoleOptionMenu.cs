@@ -16,10 +16,10 @@ namespace SuperNewRoles.CustomOptions;
 /// </summary>
 public enum RoleOptionMenuType
 {
-    Hidden,
-    Impostor,
     Crewmate,
+    Impostor,
     Neutral,
+    Hidden,
 }
 
 /// <summary>

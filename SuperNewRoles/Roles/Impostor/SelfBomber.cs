@@ -41,7 +41,7 @@ class SelfBomber : RoleBase<SelfBomber>
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
-    [CustomOptionFloat("SelfBomberCooldown", 10f, 60f, 2.5f, 30f)]
+    [CustomOptionFloat("SelfBomberCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float SelfBomberCooldown;
 
     [CustomOptionFloat("SelfBomberExplosionRadius", 1f, 5f, 0.5f, 3f)]

@@ -39,7 +39,7 @@ class Vulture : RoleBase<Vulture>
     public override RoleId[] RelatedRoleIds { get; } = [];
 
     // Vultureの設定
-    [CustomOptionFloat("VultureCooldown", 10f, 60f, 2.5f, 30f)]
+    [CustomOptionFloat("VultureCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float VultureCooldown;
 
     [CustomOptionInt("VultureRequiredBodies", 1, 10, 1, 3)]

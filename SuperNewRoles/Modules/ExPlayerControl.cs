@@ -215,6 +215,8 @@ public class ExPlayerControl
     public bool IsSidekick()
         => HasAbility(nameof(JSidekickAbility));
     public bool IsJackalTeam()
+        => IsJackal() || IsSidekick();
+    public bool IsJackalTeamWins()
         => IsJackal() || IsSidekick() || IsFriendRoles();
     public bool IsLovers()
         => false;

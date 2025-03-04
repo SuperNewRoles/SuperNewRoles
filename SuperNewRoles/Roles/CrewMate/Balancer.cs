@@ -213,7 +213,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
                     foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
                     {
                         List<byte> targetIds = new() { targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId };
-                        if (!targetIds.Contains(area.VotedFor))
+                        if (!area.AmDead && !targetIds.Contains(area.VotedFor))
                         {
                             area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
                         }
@@ -223,7 +223,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 {
                     foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
                     {
-                        if (area.VotedFor < 250)
+                        if (!area.AmDead && area.VotedFor < 250)
                             area.VotedFor = 255;
                     }
 
@@ -764,8 +764,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 break;
 
             case BalancerState.WaitVote:
-                // 投票フェーズ中の処理
-                // 目の回転処理を継続
+                leftPlayerArea.transform.localPosition = new(-2.9f, 0, -0.9f);
+                rightPlayerArea.transform.localPosition = new(2.3f, 0, -0.9f);
                 if (eyeBackRender != null)
                 {
                     rotate -= Time.fixedDeltaTime * 25f;
@@ -904,7 +904,6 @@ class BalancerMeetingButton : CustomMeetingButtonBase
     {
         // 自分自身にはボタンを表示しない
         if (ExPlayerControl.LocalPlayer.IsDead()) return false;
-        if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
         if (player.IsDead()) return false;
         if (firstSelectedTarget != null && firstSelectedTarget.PlayerId == player.PlayerId) return false;
         // 現在の会議で既に能力を使用している場合はボタンを表示しない
@@ -924,8 +923,6 @@ class BalancerMeetingButton : CustomMeetingButtonBase
         {
             // 1人目のターゲットを選択
             firstSelectedTarget = clickedPlayer;
-            // 通知（任意）
-            // TODO: 必要に応じて通知を実装
         }
         else
         {
