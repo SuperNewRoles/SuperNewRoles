@@ -297,3 +297,13 @@ Seer.Mode.FlashOnly,死の点滅のみ,Flash Only,仅死亡闪光,僅死亡閃�
 Seer.Mode.SoulOnly,霊魂のみ,Soul Only,仅灵魂,僅靈魂
 Seer.LimitSoulDuration,霊魂の表示時間を制限する,Limit Soul Duration,限制灵魂显示时间,限制靈魂顯示時間
 Seer.SoulDuration,霊魂の表示時間,Soul Duration,灵魂显示时间,靈魂顯示時間
+
+# Role Names
+Celebrity,スター,Celebrity,明星,明星
+CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
+CelebrityDescription,みんなから自分がスターと分かります\n周囲は縋るその希望に\n信じた結果齎す事など考えもせず,Everyone knows you're a Celebrity\nOthers cling to that hope\nWithout considering what trusting would bring,每个人都知道你是明星\n周围人都依靠着那份希望\n却从未想过相信的后果,每個人都知道你是明星\n周圍人都依靠著那份希望\n卻從未想過相信的後果
+
+# Celebrity Role Settings
+CelebrityKeepNameColorAfterRoleChange,役職が変わっても名前の色がスターのままになる,Keep name color as Celebrity even if role changes,即使角色改变也保持明星姓名颜色,即使角色改變也保持明星姓名顏色
+CelebrityEnableGlowEffect,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか,Enable screen glow effect every kill cooldown during task phase,是否在任务阶段每次击杀冷却结束时闪亮屏幕,是否在任務階段每次擊殺冷卻結束時閃亮屏幕
+CelebrityGlowOnlyWhileAlive,画面が光るのは生きている間のみか(会議更新),Screen glows only while alive (updates on meeting),屏幕仅在活着时闪烁（会议更新）,螢幕僅在活著時閃爍（會議更新）
