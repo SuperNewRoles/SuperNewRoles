@@ -34,6 +34,7 @@ public enum RoleId : short
     MadKiller,
     EvilGambler,
     HomeSecurityGuard,
+    Seer,
 }
 
 public enum QuoteMod : byte

@@ -118,6 +118,7 @@ SideKiller,サイドキラー,SideKiller,边缘杀手,邊緣殺手
 MadKiller,マッドキラー,MadKiller,疯狂杀手,瘋狂殺手
 EvilGambler,イビルギャンブラー,Evil Gambler,,
 HomeSecurityGuard,自宅警備員,Home Security Guard,家庭安保员,家庭安保員
+Seer,シーア,Seer,预言家,預言家
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -288,3 +289,11 @@ CannotSeeMadKillerBeforePromotion,昇格前のマッドキラーを視認でき�
 EvilGamblerSuccessKillCooldown,成功時のキルクールタイム,Success Kill Cooldown,,
 EvilGamblerFailureKillCooldown,失敗時のキルクールタイム,Failure Kill Cooldown,,
 EvilGamblerSuccessChance,成功確率,Success Chance,,
+
+# Seer
+Seer.Mode,モード,Mode,模式,模式
+Seer.Mode.Both,両方,Both,两者,兩者
+Seer.Mode.FlashOnly,死の点滅のみ,Flash Only,仅死亡闪光,僅死亡閃光
+Seer.Mode.SoulOnly,霊魂のみ,Soul Only,仅灵魂,僅靈魂
+Seer.LimitSoulDuration,霊魂の表示時間を制限する,Limit Soul Duration,限制灵魂显示时间,限制靈魂顯示時間
+Seer.SoulDuration,霊魂の表示時間,Soul Duration,灵魂显示时间,靈魂顯示時間
