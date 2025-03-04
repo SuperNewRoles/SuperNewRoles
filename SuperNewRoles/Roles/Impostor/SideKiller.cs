@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Impostor;
 class SideKiller : RoleBase<SideKiller>
 {
     public override RoleId Role => RoleId.SideKiller;
-    public override Color32 RoleColor => new(255, 100, 100, byte.MaxValue);
+    public override Color32 RoleColor => Palette.ImpostorRed;
     public override List<Func<AbilityBase>> Abilities => new()
     {
         () => new SideKillerAbility(new SideKillerData(

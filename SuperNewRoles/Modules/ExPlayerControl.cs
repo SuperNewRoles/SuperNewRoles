@@ -36,6 +36,7 @@ public class ExPlayerControl
     private CustomVentAbility _customVentAbility;
     private CustomSaboAbility _customSaboAbility;
     private CustomTaskAbility _customTaskAbility;
+    private CustomKillButtonAbility _customKillButtonAbility;
     public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
@@ -121,6 +122,14 @@ public class ExPlayerControl
         {
             Logger.Error($"Role {roleId} not found");
         }
+    }
+    public bool HasCustomKillButton()
+    {
+        return _customKillButtonAbility != null;
+    }
+    public bool CanKill()
+    {
+        return _customKillButtonAbility != null && _customKillButtonAbility.CanKill();
     }
     private void DetachOldRole(RoleId roleId)
     {
@@ -241,21 +250,23 @@ public class ExPlayerControl
     {
         PlayerAbilities.Add(ability);
         PlayerAbilitiesDictionary.Add(abilityId, ability);
-        if (ability is CustomVentAbility customVentAbility)
+        switch (ability)
         {
-            _customVentAbility = customVentAbility;
-        }
-        else if (ability is ImpostorVisionAbility impostorVisionAbility)
-        {
-            _impostorVisionAbilities.Add(impostorVisionAbility);
-        }
-        else if (ability is CustomSaboAbility customSaboAbility)
-        {
-            _customSaboAbility = customSaboAbility;
-        }
-        else if (ability is CustomTaskAbility customTaskAbility)
-        {
-            _customTaskAbility = customTaskAbility;
+            case CustomVentAbility customVentAbility:
+                _customVentAbility = customVentAbility;
+                break;
+            case ImpostorVisionAbility impostorVisionAbility:
+                _impostorVisionAbilities.Add(impostorVisionAbility);
+                break;
+            case CustomSaboAbility customSaboAbility:
+                _customSaboAbility = customSaboAbility;
+                break;
+            case CustomTaskAbility customTaskAbility:
+                _customTaskAbility = customTaskAbility;
+                break;
+            case CustomKillButtonAbility customKillButtonAbility:
+                _customKillButtonAbility = customKillButtonAbility;
+                break;
         }
         ability.Attach(Player, abilityId, parent);
         _hasAbilityCache.Clear();
@@ -275,21 +286,23 @@ public class ExPlayerControl
         {
             ability.Detach();
         }
-        if (ability is CustomVentAbility customVentAbility)
+        switch (ability)
         {
-            _customVentAbility = null;
-        }
-        else if (ability is ImpostorVisionAbility impostorVisionAbility)
-        {
-            _impostorVisionAbilities.Remove(impostorVisionAbility);
-        }
-        else if (ability is CustomSaboAbility customSaboAbility)
-        {
-            _customSaboAbility = null;
-        }
-        else if (ability is CustomTaskAbility customTaskAbility)
-        {
-            _customTaskAbility = null;
+            case CustomVentAbility customVentAbility:
+                _customVentAbility = null;
+                break;
+            case ImpostorVisionAbility impostorVisionAbility:
+                _impostorVisionAbilities.Remove(impostorVisionAbility);
+                break;
+            case CustomSaboAbility customSaboAbility:
+                _customSaboAbility = null;
+                break;
+            case CustomTaskAbility customTaskAbility:
+                _customTaskAbility = null;
+                break;
+            case CustomKillButtonAbility customKillButtonAbility:
+                _customKillButtonAbility = null;
+                break;
         }
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);

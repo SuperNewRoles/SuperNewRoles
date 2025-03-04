@@ -15,8 +15,10 @@ public class SaboAndVent
     {
         bool ventActive = ExPlayerControl.LocalPlayer.CanUseVent();
         bool saboActive = ExPlayerControl.LocalPlayer.CanSabotage();
+        bool killDisabled = ExPlayerControl.LocalPlayer.HasCustomKillButton();
         SetVentActive(ventActive);
         SetSaboActive(saboActive);
+        SetKillActive(killDisabled);
     }
     private static void SetVentActive(bool ventActive)
     {
@@ -27,6 +29,11 @@ public class SaboAndVent
     {
         if (!saboActive)
             HudManager.Instance.SabotageButton.gameObject.SetActive(false);
+    }
+    private static void SetKillActive(bool killDisabled)
+    {
+        if (killDisabled)
+            HudManager.Instance.KillButton.gameObject.SetActive(false);
     }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
     class MapBehaviourShowNormalMapPatch

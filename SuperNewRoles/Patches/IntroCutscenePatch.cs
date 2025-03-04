@@ -189,6 +189,7 @@ public static class IntroCutscenePatch
             FinalStatusListener.LoadListener();
             CustomDeathExtensions.Register();
             PoolablePrefabManager.OnIntroCutsceneDestroy(__instance);
+            SetTargetPatch.Register();
 
             ReAssignTasks();
 
