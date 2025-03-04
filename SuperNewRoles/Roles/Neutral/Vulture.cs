@@ -150,9 +150,11 @@ public class EatDeadBodyAbility : CustomButtonBase
         CheckWinCondition();
     }
 
+    public bool canWin => _eatenBodies >= _data.RequiredBodies;
+
     private void CheckWinCondition()
     {
-        if (_eatenBodies >= _data.RequiredBodies)
+        if (canWin)
         {
             CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.VultureWin);
         }

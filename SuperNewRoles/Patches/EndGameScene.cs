@@ -430,6 +430,10 @@ public static class OnGameEndPatch
                 return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Workperson && p.IsTaskComplete()),
                         WinCondition.WorkpersonWin,
                         emptyReviveList);
+            case CustomGameOverReason.VultureWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Vulture && p.PlayerAbilities.FirstOrDefault(x => x is EatDeadBodyAbility eatDeadBodyAbility && eatDeadBodyAbility.canWin) != null),
+                        WinCondition.VultureWin,
+                        emptyReviveList);
             default:
                 Logger.Error("不明なゲームオーバー理由:" + reason);
                 return (null, WinCondition.None, emptyReviveList);
