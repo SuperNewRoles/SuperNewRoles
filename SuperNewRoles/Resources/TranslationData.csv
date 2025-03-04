@@ -116,6 +116,8 @@ PavlovsOwner,パブロフのオーナー,Pavlov's Owner,帕夫洛夫的主人,�
 PavlovsDog,パブロフの犬,Pavlov's Dog,帕夫洛夫的狗,帕夫洛夫的狗
 SideKiller,サイドキラー,SideKiller,边缘杀手,邊緣殺手
 MadKiller,マッドキラー,MadKiller,疯狂杀手,瘋狂殺手
+EvilGambler,イビルギャンブラー,Evil Gambler,,
+HomeSecurityGuard,自宅警備員,Home Security Guard,家庭安保员,家庭安保員
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -281,3 +283,8 @@ MadKillerKillCooldown,マッドキラーのクールタイム,MadKiller Cooldown
 MadKillerCanUseVent,マッドキラーがベントを使用出来る,MadKiller Can Use Vent,疯狂杀手可以使用通风口,瘋狂殺手可以使用通風口
 MadKillerHasImpostorVision,マッドキラーが人外視野,MadKiller Has Impostor Vision,疯狂杀手拥有内鬼视野,瘋狂殺手擁有內鬼視野
 CannotSeeMadKillerBeforePromotion,昇格前のマッドキラーを視認できない,Cannot See MadKiller Before Promotion,无法在晋升前看到疯狂杀手,無法在晉升前看到瘋狂殺手
+
+# EvilGambler
+EvilGamblerSuccessKillCooldown,成功時のキルクールタイム,Success Kill Cooldown,,
+EvilGamblerFailureKillCooldown,失敗時のキルクールタイム,Failure Kill Cooldown,,
+EvilGamblerSuccessChance,成功確率,Success Chance,,

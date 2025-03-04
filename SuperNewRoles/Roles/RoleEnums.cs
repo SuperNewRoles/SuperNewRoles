@@ -32,6 +32,8 @@ public enum RoleId : short
     PavlovsDog,
     SideKiller,
     MadKiller,
+    EvilGambler,
+    HomeSecurityGuard,
 }
 
 public enum QuoteMod : byte
