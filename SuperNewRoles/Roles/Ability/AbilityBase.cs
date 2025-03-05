@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.Roles.Ability;
 
 public abstract class AbilityBase
 {
     public ulong AbilityId { get; protected set; }
-    public PlayerControl Player => Parent.Player;
+    public ExPlayerControl Player => Parent.Player;
     public AbilityParentBase Parent { get; private set; }
 
     public int Count { get; set; }

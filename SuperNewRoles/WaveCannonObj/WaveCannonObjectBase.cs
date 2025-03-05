@@ -53,7 +53,7 @@ public abstract class WaveCannonObjectBase
         {
             ability.Player.transform.position = startPosition;
             ability.Player.MyPhysics.body.velocity = Vector2.zero;
-            ability.Player.moveable = false;
+            ability.Player.Player.moveable = false;
         }
         ability.Player.transform.position = startPosition;
         if (isShooting)
@@ -113,7 +113,7 @@ public abstract class WaveCannonObjectBase
             ability.Player.cosmetics.currentBodySprite.BodySprite.gameObject.SetActive(true);
             ability.Player.cosmetics.gameObject.SetActive(true);
         }
-        ability.Player.moveable = true;
+        ability.Player.Player.moveable = true;
         ability.Player.MyPhysics.Animations.PlayIdleAnimation();
         if (ability.Player.AmOwner && isResetKillCooldown)
             ExPlayerControl.LocalPlayer.ResetKillCooldown();

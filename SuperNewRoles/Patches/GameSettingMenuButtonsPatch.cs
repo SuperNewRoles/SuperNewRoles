@@ -41,6 +41,8 @@ public static class GameSettingMenuButtonsPatch
         // フラグを設定
         HasSwappedButtons = true;
 
+        __instance.ChangeTab(0, false);
+
         // ログ出力
         Logger.Info("ゲームプリセットボタンとゲーム設定ボタンの位置とイベントを入れ替えました");
     }

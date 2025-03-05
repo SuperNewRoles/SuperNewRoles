@@ -18,6 +18,7 @@ public static class HelpMenuObjectManager
     public static HelpMenuCategoryBase[] categories;
     public static Dictionary<string, GameObject> selectedButtons;
     public static HelpMenuCategoryBase? CurrentCategory;
+    public const HelpMenuCategory DEFAULT_MENU = HelpMenuCategory.MyRoleInfomation;
     private static void Initialize()
     {
         if (categories == null || categories.Length == 0)
@@ -40,6 +41,10 @@ public static class HelpMenuObjectManager
 
         // ヘルプメニューを表示するときにホスト情報のマスクエリアを非表示にする
         RoleOptionMenu.UpdateHostInfoMaskArea(false);
+
+        CurrentCategory = categories.FirstOrDefault(c => c.Category == DEFAULT_MENU);
+        CurrentCategory.Show(helpMenuObject.transform.Find("RightContainer").gameObject);
+        CurrentCategory.UpdateShow();
     }
     private static void SetUpCategories()
     {
@@ -84,6 +89,10 @@ public static class HelpMenuObjectManager
             // Selectedオブジェクトを取得
             GameObject selectedObject = bulkRoleButton.transform.Find("Selected").gameObject;
             selectedButtons[categories[i].Name] = selectedObject;
+            if (CurrentCategory == categories[i])
+            {
+                selectedObject.SetActive(true);
+            }
 
             // PassiveButtonを追加
             var passiveButton = bulkRoleButton.AddComponent<PassiveButton>();

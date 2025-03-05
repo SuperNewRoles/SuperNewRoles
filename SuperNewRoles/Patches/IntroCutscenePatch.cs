@@ -2,7 +2,10 @@ using System.Collections;
 using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions.Categories;
+using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -120,7 +123,7 @@ public static class IntroCutscenePatch
     /// <param name="yourTeam">チームを表示するプレイヤーのリスト</param>
     public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
-        if (CustomOptionManager.ModeOption == ModeId.Default)
+        if (Categories.ModeOption == ModeId.Default)
         {
             if (ExPlayerControl.LocalPlayer.IsCrewmate())
             {
@@ -194,6 +197,12 @@ public static class IntroCutscenePatch
             ReAssignTasks();
 
             NameText.UpdateAllNameInfo();
+
+            // 情報機器制限の設定を初期化
+            if (GeneralSettingOptions.DeviceOptions)
+            {
+                DevicesPatch.ClearAndReload();
+            }
         }
         private static void ReAssignTasks()
         {

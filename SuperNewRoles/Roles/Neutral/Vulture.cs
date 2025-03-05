@@ -95,7 +95,7 @@ public class EatDeadBodyAbility : CustomButtonBase
     public override bool CheckIsAvailable()
     {
         // プレイヤーが死んでいない、会議中でない、ベント内でない場合に使用可能
-        if (Player.Data.IsDead || MeetingHud.Instance || Player.inVent)
+        if (Player.Data.IsDead || MeetingHud.Instance || Player.Player.inVent)
             return false;
 
         // 近くに死体があるか確認

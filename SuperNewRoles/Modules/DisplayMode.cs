@@ -1,4 +1,5 @@
 using System;
+using SuperNewRoles.CustomOptions.Categories;
 
 namespace SuperNewRoles.Modules;
 [Flags]
@@ -23,7 +24,7 @@ public static class DisplayMode
 
     public static DisplayModeId GetCurrentMode()
     {
-        switch (CustomOptionManager.ModeOption)
+        switch (Categories.ModeOption)
         {
             case ModeId.Default:
                 return DisplayModeId.Default;

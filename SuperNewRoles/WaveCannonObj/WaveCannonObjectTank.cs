@@ -25,7 +25,7 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
         _tankspriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
         _tankspriteRenderer.maskInteraction = SpriteMaskInteraction.None;
         PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(_tankspriteRenderer, false);
-        PlayerMaterial.SetColors(ability.Player.CurrentOutfit.ColorId, _tankspriteRenderer);
+        PlayerMaterial.SetColors(ability.Player.Player.CurrentOutfit.ColorId, _tankspriteRenderer);
 
         // 砲台に乗っているプレイヤーを生成
         _player = PoolablePrefabManager.GeneratePlayer(ability.Player);

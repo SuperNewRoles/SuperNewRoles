@@ -63,6 +63,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
     private bool isDoubleExile = false;
     public bool isOnePlayerDead = false; // 片方のプレイヤーが死亡したかどうかのフラグ
     public static BalancerAbility BalancingAbility { get; private set; }
+    public static MeetingHud currentMeetingHud;
 
     // 天秤ボタン
     private BalancerMeetingButton balancerButton;
@@ -118,7 +119,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerRight = null;
         isAbilityUsed = false;
         BalancingAbility = null;
-
+        currentMeetingHud = null;
         // 天秤ボタンの状態もリセット
         if (balancerButton != null)
         {
@@ -282,6 +283,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         targetPlayerLeft = player1;
         targetPlayerRight = player2;
         BalancingAbility = this;
+        currentMeetingHud = MeetingHud.Instance;
 
         PleaseVoteAnimIndex = 0;
         MeetingHud.Instance.SkipVoteButton.gameObject.SetActive(false);

@@ -6,27 +6,21 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using HarmonyLib;
+using SuperNewRoles.CustomOptions;
+using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Roles;
 using UnityEngine;
 namespace SuperNewRoles.Modules;
 
 public static class CustomOptionManager
 {
-    public static CustomOptionCategory PresetSettings;
-    public static CustomOptionCategory GeneralSettings;
-    public static CustomOptionCategory ModeSettings;
-    public static CustomOptionCategory GameSettings;
-    public static CustomOptionCategory MapSettings;
-    public static CustomOptionCategory MapEditSettings;
 
-    [CustomOptionSelect("ModeOption", typeof(ModeId), "ModeId.", parentFieldName: nameof(ModeSettings))]
-    public static ModeId ModeOption;
 
-    [CustomOptionBool("DebugMode", false, parentFieldName: nameof(GeneralSettings))]
+    [CustomOptionBool("DebugMode", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool DebugMode;
     [CustomOptionBool("DebugModeNoGameEnd", false, parentFieldName: nameof(DebugMode))]
     public static bool DebugModeNoGameEnd;
-    [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(GeneralSettings))]
+    [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool SkipStartGameCountdown;
 
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
@@ -274,16 +268,9 @@ public class CustomOption
 
     public string GetCurrentSelectionString()
     {
-        if (Attribute is CustomOptionFloatAttribute floatAttribute)
+        if (Attribute is CustomOptionFloatAttribute or CustomOptionSelectAttribute)
         {
-            float step = floatAttribute.Step;
-            if (step >= 1f) return string.Format("{0:F0}", Value);
-            else if (step >= 0.1f) return string.Format("{0:F1}", Value);
-            else return string.Format("{0:F2}", Value);
-        }
-        else if (Attribute is CustomOptionSelectAttribute selectAttr)
-        {
-            return ModTranslation.GetString($"{selectAttr.TranslationPrefix}{Selections[Selection]}");
+            return UIHelper.FormatOptionValue(Value, this);
         }
         else if (Attribute is CustomOptionBoolAttribute boolAttr)
         {
@@ -294,19 +281,27 @@ public class CustomOption
 
     public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null, bool isTaskOption = false)
     {
-        Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
-        FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
+        try
+        {
+            Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
+            FieldInfo = fieldInfo ?? throw new ArgumentNullException(nameof(fieldInfo));
 
-        Selections = attribute.GenerateSelections();
-        var defaultSelection = attribute.GenerateDefaultSelection();
-        Name = attribute.TranslationName;
-        ParentRole = parentRole;
-        IsBooleanOption = attribute is CustomOptionBoolAttribute;
-        DisplayMode = attribute.DisplayMode;
-        _defaultValue = Selections[defaultSelection];
-        _defaultSelection = defaultSelection;
-        IsTaskOption = isTaskOption;
-        UpdateSelection(defaultSelection);
+            Selections = attribute.GenerateSelections();
+            var defaultSelection = attribute.GenerateDefaultSelection();
+            Name = attribute.TranslationName;
+            ParentRole = parentRole;
+            IsBooleanOption = attribute is CustomOptionBoolAttribute;
+            DisplayMode = attribute.DisplayMode;
+            _defaultValue = Selections[defaultSelection];
+            _defaultSelection = defaultSelection;
+            IsTaskOption = isTaskOption;
+            UpdateSelection(defaultSelection);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to create CustomOption: {attribute.TranslationName}");
+            throw;
+        }
     }
 
     public virtual void UpdateSelection(byte value)

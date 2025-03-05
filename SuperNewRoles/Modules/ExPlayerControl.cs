@@ -20,6 +20,13 @@ public class ExPlayerControl
     public static IReadOnlyCollection<ExPlayerControl> ExPlayerControlsArray => _exPlayerControlsArray;
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
+    public PlayerPhysics MyPhysics => Player?.MyPhysics;
+    public CustomNetworkTransform NetTransform => Player?.NetTransform;
+    public CosmeticsLayer cosmetics => Player?.cosmetics;
+    public bool moveable => Player?.moveable ?? false;
+    public Vector2 GetTruePosition() => Player?.GetTruePosition() ?? Vector2.zero;
+    public float MaxReportDistance => Player?.MaxReportDistance ?? 1f;
+    public Transform transform => Player?.transform;
     public byte PlayerId { get; }
     public bool AmOwner { get; private set; }
     public RoleId Role { get; private set; }

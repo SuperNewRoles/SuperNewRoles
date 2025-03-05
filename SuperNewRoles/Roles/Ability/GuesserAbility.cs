@@ -31,7 +31,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
     public override bool CheckHasButton(ExPlayerControl player)
     {
-        return !HideButtons && HasCount && player.IsAlive() && ShotThisMeeting < shotsPerMeeting;
+        return ExPlayerControl.LocalPlayer.IsAlive() && !HideButtons && HasCount && player.IsAlive() && ShotThisMeeting < shotsPerMeeting;
     }
 
     public override bool CheckIsAvailable(ExPlayerControl player)
@@ -279,12 +279,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                 throw new Exception("rolebaseがnullです");
             AssignedTeamType team = rolebase.AssignedTeam;
 
-            // チーム制限のチェック
-            if (cannotShootCrewmate && rolebase.Role == RoleId.Crewmate)
-            {
-                return;
-            }
-
             if (teamButtonCount[(int)team] >= 40)
                 teamButtonCount[(int)team] = 0;
             Transform buttonParent = new GameObject().transform;
@@ -379,6 +373,12 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                 Logger.Info("continueになりました:" + role.Role, "Guesser");
                 return false;
             }
+            if (role.Role == RoleId.Crewmate && !cannotShootCrewmate)
+                return true;
+            else if (role.Role == RoleId.Impostor)
+                return true;
+            else if (role.Role == RoleId.Celebrity && cannotShootCelebrity)
+                return false;
 
             var option = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == role.Role);
             if (option == null || option.NumberOfCrews == 0 || option.Percentage == 0)

@@ -18,6 +18,7 @@ public class CelebrityAbility : AbilityBase
 {
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
     private EventListener _fixedUpdateEvent;
+    private EventListener _meetingStartEvent;
     private float _glowTimer = 0f;
     private bool _isAlive = true;
     public CelebrityData Data;
@@ -33,31 +34,31 @@ public class CelebrityAbility : AbilityBase
     {
         base.Attach(player, abilityId, parent);
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+        _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _isAlive = ExPlayerControl.LocalPlayer.IsAlive();
     }
-
+    private void OnMeetingStart()
+    {
+        _glowTimer = 0f;
+        _isAlive = Player.IsAlive();
+    }
     // 名前の色を更新するイベントハンドラ
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         // 他のプレイヤーから自分がスターと分かるように、スターの名前の色を変更する
-        UpdateCelebrityNameColor();
+        UpdateCelebrityNameColor(data);
     }
 
     // 固定更新イベントハンドラ - 発光効果を管理
     private void OnFixedUpdate()
     {
         if (!Data.EnableGlowEffect) return;
-
+        if (MeetingHud.Instance != null || ExileController.Instance != null) return;
         // 生存状態の確認
-        bool currentIsAlive = ExPlayerControl.LocalPlayer.IsAlive();
-        if (currentIsAlive != _isAlive)
+        if (Data.GlowOnlyWhileAlive && !_isAlive)
         {
-            _isAlive = currentIsAlive;
-            if (Data.GlowOnlyWhileAlive && !_isAlive)
-            {
-                // 死亡して発光を止める設定の場合
-                return;
-            }
+            // 死亡して発光を止める設定の場合
+            return;
         }
 
         // キルクールタイム経過ごとに発光
@@ -78,21 +79,10 @@ public class CelebrityAbility : AbilityBase
     }
 
     // スターの名前の色を更新
-    private void UpdateCelebrityNameColor()
+    private void UpdateCelebrityNameColor(NameTextUpdateEventData data)
     {
-        Color32 celebrityColor = new Color32(255, 215, 0, byte.MaxValue);
-
-        foreach (var player in ExPlayerControl.ExPlayerControls)
-        {
-            // スター役職を持っているかどうか
-            bool isCelebrity = player.Role == RoleId.Celebrity;
-
-            if (isCelebrity)
-            {
-                // 名前の色を変更
-                UpdatePlayerNameColor(player, celebrityColor);
-            }
-        }
+        if (data.Player.Role == RoleId.Celebrity)
+            UpdatePlayerNameColor(data.Player, Celebrity.Instance.RoleColor);
     }
 
     // プレイヤーの名前の色を更新
@@ -116,5 +106,7 @@ public class CelebrityAbility : AbilityBase
         base.Detach();
         if (_nameTextUpdateEvent != null)
             NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEvent);
+        if (_meetingStartEvent != null)
+            MeetingStartEvent.Instance.RemoveListener(_meetingStartEvent);
     }
 }

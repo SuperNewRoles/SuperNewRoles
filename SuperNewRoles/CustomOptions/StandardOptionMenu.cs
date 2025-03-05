@@ -107,11 +107,11 @@ public static class StandardOptionMenu
         selectedObject?.SetActive(true);
 
         // 適切なメニューを表示
-        if (category == CustomOptionManager.PresetSettings)
+        if (category == Categories.Categories.PresetSettings)
         {
             ShowPresetOptionMenu();
         }
-        else if (category == CustomOptionManager.ModeSettings)
+        else if (category == Categories.Categories.ModeSettings)
         {
             ShowModeOptionMenu();
         }
@@ -136,12 +136,12 @@ public static class StandardOptionMenu
         var modeOptionText = StandardOptionMenuObjectData.Instance.ModeMenu.transform.Find("ModeOption/Text").GetComponent<TextMeshPro>();
         modeOptionText.text = $"<b>{ModTranslation.GetString("ModeOption")}</b>";
         ConfigureModeOption(StandardOptionMenuObjectData.Instance.ModeMenu);
-        ShowDefaultOptionMenu(CustomOptionManager.ModeSettings, StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
+        ShowDefaultOptionMenu(Categories.Categories.ModeSettings, StandardOptionMenuObjectData.Instance.RightAreaInner.transform);
     }
     private static void ConfigureModeOption(GameObject modeMenu)
     {
         var modeOption = modeMenu.transform.Find("ModeOption").gameObject;
-        ConfigureSelectOptionButtons(modeOption, modeOption.transform.Find("SelectedText").GetComponent<TextMeshPro>(), CustomOptionManager.GetCustomOptionByFieldName(nameof(CustomOptionManager.ModeOption)));
+        ConfigureSelectOptionButtons(modeOption, modeOption.transform.Find("SelectedText").GetComponent<TextMeshPro>(), CustomOptionManager.GetCustomOptionByFieldName(nameof(Categories.Categories.ModeOption)));
     }
     private static void ConfigureButtonHoverEffects(PassiveButton button, GameObject selectedObject, CustomOptionCategory category)
     {
@@ -166,7 +166,7 @@ public static class StandardOptionMenu
         // プリセットボタンを生成
         var rightAreaInner = StandardOptionMenuObjectData.Instance.RightAreaInner;
         GeneratePresetButtons(rightAreaInner);
-        if (menuData.StandardOptionMenus.TryGetValue(CustomOptionManager.PresetSettings.Name, out var menu))
+        if (menuData.StandardOptionMenus.TryGetValue(Categories.Categories.PresetSettings.Name, out var menu))
         {
             menuData.CurrentOptionMenu = menu;
             menu.SetActive(true);
@@ -179,7 +179,7 @@ public static class StandardOptionMenu
         ConfigurePresetTitle(presetMenu);
         ConfigureNowPresetText(presetMenu);
 
-        menuData.StandardOptionMenus[CustomOptionManager.PresetSettings.Name] = presetMenu;
+        menuData.StandardOptionMenus[Categories.Categories.PresetSettings.Name] = presetMenu;
         menuData.CurrentOptionMenu = presetMenu;
     }
     private static void ConfigureNowPresetText(GameObject presetMenu)
