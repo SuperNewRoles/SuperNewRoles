@@ -194,4 +194,8 @@ public static class ModHelpers
         writer.Buffer[writer.Position++] = (byte)(value >> 56);
         if (writer.Position > writer.Length) writer.Length = writer.Position;
     }
+    public static int GetRandomIndex<T>(List<T> list)
+    {
+        return UnityEngine.Random.Range(0, list.Count);
+    }
 }

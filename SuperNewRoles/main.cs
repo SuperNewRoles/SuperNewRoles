@@ -19,6 +19,7 @@ using SuperNewRoles.CustomOptions;
 using UnityEngine.EventSystems;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.HelpMenus;
+using SuperNewRoles.MapCustoms;
 
 namespace SuperNewRoles;
 

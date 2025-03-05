@@ -10,7 +10,11 @@ public static class GeneralSettingOptions
     [CustomOptionBool("BanNoFriendCodePlayers", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool BanNoFriendCodePlayers;
 
-    // 情報機器制限の設定
+    // |:========== MODカラー禁止の設定 ==========:|
+    [CustomOptionBool("DisableModColor", false, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool DisableModColor;
+
+    // |:========== 情報機器制限の設定 ==========:|
     [CustomOptionBool("DeviceOptions", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool DeviceOptions;
 

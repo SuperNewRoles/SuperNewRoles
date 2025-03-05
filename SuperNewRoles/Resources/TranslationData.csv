@@ -43,6 +43,15 @@ ModeSettings,モード設定,Mode Settings,模式设置,模式設定
 GameSettings,ゲーム設定,Game Settings,游戏设置,遊戲設定
 MapSettings,マップ設定,Map Settings,地图设置,地圖設定
 MapEditSettings,マップ改造,Map Edit Settings,地图改造,地圖改造
+WireTaskIsRandom,配線タスクランダム,Random Wire Task,随机接线任务,隨機接線任務
+WireTaskNum,配線タスク数,Number of Wire Tasks,接线任务数量,接線任務數量
+DisableModColor,MODカラー禁止,Disable MOD Colors,禁用MOD颜色,禁用MOD顏色
+AirshipRandomSpawn,ランダムスポーン,Random Spawn,随机出生点,隨機出生點
+RecordsAdminDestroy,アーカイブアドミン封印,Seal Records Admin,封印档案室管理地图,封印檔案室管理地圖
+AntiTaskOverWall,壁越しタスク禁止,Disable Tasks Through Walls,禁止隔墙任务,禁止隔牆任務
+ModifyGapRoomOneWayShadow,昇降機の影変更,Modify Gap Room Shadow,修改升降机阴影,修改升降機陰影
+GapRoomShadowIgnoresImpostors,インポスターは下から上を見れる,Impostors Can See Up From Below,内鬼可以从下方看到上方,內鬼可以從下方看到上方
+DisableGapRoomShadowForNonImpostor,非インポスターは上から下を見れない,Non-Impostors Cannot See Down From Above,非内鬼不能从上方看到下方,非內鬼不能從上方看到下方
 PresetDefault,プリセット {0},Preset {0},预设 {0},預設 {0}
 PresetSelected,プリセット {0},Preset {0},预设 {0},預設 {0}
 AddPreset,プリセットを追加,Add Preset,新增预设,新增預設
