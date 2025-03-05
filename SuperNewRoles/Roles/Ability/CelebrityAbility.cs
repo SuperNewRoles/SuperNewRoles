@@ -6,6 +6,7 @@ using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles.Crewmate;
 using AmongUs.GameOptions;
+using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -93,6 +94,11 @@ public class CelebrityAbility : AbilityBase
 
         if (player.Player != null && player.Player.cosmetics != null && player.Player.cosmetics.nameText != null)
             player.Player.cosmetics.nameText.color = color;
+        PlayerVoteArea voteArea;
+        if (MeetingHud.Instance != null && (voteArea = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == player.PlayerId)) != null)
+        {
+            voteArea.NameText.color = color;
+        }
     }
 
     public override void DetachToLocalPlayer()

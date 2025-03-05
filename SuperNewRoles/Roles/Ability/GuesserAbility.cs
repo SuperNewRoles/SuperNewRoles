@@ -13,24 +13,35 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private readonly int shotsPerMeeting;
     private readonly bool cannotShootCrewmate;
     private readonly bool cannotShootCelebrity;
+    private readonly bool CelebrityLimitedTurns;
+    private readonly int CelebrityLimitedTurnsCount;
 
     // ※ 画面上に既にUIが存在しているか確認するためのフィールド
     private GameObject guesserUI;
     private bool HideButtons = false;
     public override bool HasButtonLocalPlayer => false;
     private int ShotThisMeeting;
+    private int MeetingCount = 0;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
 
-    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity)
+    public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3)
     {
         this.shotsPerMeeting = shotsPerMeeting;
         this.cannotShootCrewmate = cannotShootCrewmate;
         this.cannotShootCelebrity = cannotShootCelebrity;
+        this.CelebrityLimitedTurns = celebrityLimitedTurns;
+        this.CelebrityLimitedTurnsCount = celebrityLimitedTurnsCount;
         Count = maxShots;
     }
 
     public override bool CheckHasButton(ExPlayerControl player)
     {
+        // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
+        // 指定されたターン数まではスターを撃てないようにする
+        if (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && player.Role == RoleId.Celebrity)
+        {
+            return false;
+        }
         return ExPlayerControl.LocalPlayer.IsAlive() && !HideButtons && HasCount && player.IsAlive() && ShotThisMeeting < shotsPerMeeting;
     }
 
@@ -46,6 +57,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             GameObject.Destroy(guesserUI);
         guesserUI = null;
         ShotThisMeeting = 0;
+        MeetingCount++;
     }
     public override void OnMeetingUpdate()
     {
@@ -77,6 +89,13 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             return;
 
         if (exPlayer.IsDead()) return;
+
+        // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
+        // 指定されたターン数まではスターを撃てないようにする
+        if (cannotShootCelebrity && CelebrityLimitedTurns && MeetingCount < CelebrityLimitedTurnsCount && exPlayer.Role == RoleId.Celebrity)
+        {
+            return;
+        }
 
         // UI生成に必要なローカル変数群
         int Page = 1;
@@ -378,7 +397,12 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             else if (role.Role == RoleId.Impostor)
                 return true;
             else if (role.Role == RoleId.Celebrity && cannotShootCelebrity)
-                return false;
+            {
+                // スターを撃てない設定がONで、撃てないターンを制限する設定がONの場合、
+                // 指定されたターン数以降はスターを撃てるようにする
+                if (!CelebrityLimitedTurns || MeetingCount < CelebrityLimitedTurnsCount)
+                    return false;
+            }
 
             var option = RoleOptionManager.RoleOptions.FirstOrDefault(x => x.RoleId == role.Role);
             if (option == null || option.NumberOfCrews == 0 || option.Percentage == 0)
