@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
@@ -16,6 +17,7 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     public virtual bool TargetPlayersInVents { get; } = false;
     public virtual IEnumerable<PlayerControl> UntargetablePlayers { get; } = null;
     public virtual PlayerControl TargetingPlayer => PlayerControl.LocalPlayer;
+    public virtual Func<ExPlayerControl, bool>? IsTargetable { get; } = null;
     public bool TargetIsExist => Target != null;
     public override void OnUpdate()
     {
@@ -38,7 +40,7 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
         if (show)
             rend.material.SetColor("_OutlineColor", color);
     }
-    public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, IEnumerable<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+    public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, IEnumerable<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null, Func<ExPlayerControl, bool> isTargetable = null)
     {
         PlayerControl result = null;
         float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
@@ -56,6 +58,8 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
                 playerInfo.IsDead ||
                 (onlyCrewmates && playerInfo.Role.IsImpostor)
                )
+                continue;
+            if (isTargetable != null && !isTargetable(playerInfo))
                 continue;
             PlayerControl @object = playerInfo.Object;
             if (untargetablePlayers != null &&

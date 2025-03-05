@@ -60,9 +60,11 @@ namespace SuperNewRoles.CustomOptions
                 if (floatAttribute != null)
                 {
                     float step = floatAttribute.Step;
-                    if (step >= 1f) return string.Format("{0:F0}", floatValue);
-                    else if (step >= 0.1f) return string.Format("{0:F1}", floatValue);
-                    else return string.Format("{0:F2}", floatValue);
+                    if (Mathf.Abs(floatValue - Mathf.Round(floatValue)) < 0.00001f)
+                        return string.Format("{0:F0}", floatValue);
+
+                    if (step >= 0.1f && Mathf.Abs((floatValue * 10) - Mathf.Round(floatValue * 10)) < 0.00001f)
+                        return string.Format("{0:F1}", floatValue);
                 }
                 return floatValue.ToString();
             }

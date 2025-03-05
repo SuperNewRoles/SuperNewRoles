@@ -9,14 +9,15 @@ namespace SuperNewRoles.Roles.Ability;
 public abstract class AbilityBase
 {
     public ulong AbilityId { get; protected set; }
-    public PlayerControl Player { get; private set; }
+    public PlayerControl Player => Parent.Player;
+    public AbilityParentBase Parent { get; private set; }
 
     public int Count { get; set; }
     public bool HasCount => Count > 0;
 
-    public virtual void Attach(PlayerControl player, ulong abilityId)
+    public virtual void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
-        Player = player;
+        Parent = parent;
         AbilityId = abilityId;
         if (player == PlayerControl.LocalPlayer)
             AttachToLocalPlayer();
@@ -28,8 +29,19 @@ public abstract class AbilityBase
 
     public virtual void AttachToOthers() { }
 
-    public virtual void Detach()
+    public void Detach()
     {
-        Player = null;
+        if (Player == PlayerControl.LocalPlayer)
+            DetachToLocalPlayer();
+        else
+            DetachToOthers();
+    }
+    public virtual void DetachToLocalPlayer()
+    {
+
+    }
+    public virtual void DetachToOthers()
+    {
+
     }
 }

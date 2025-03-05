@@ -1,0 +1,442 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using HarmonyLib;
+using SuperNewRoles.Modules;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
+using UnityEngine;
+
+namespace SuperNewRoles.Patches;
+
+public enum WinCondition
+{
+    None,
+    CrewmateWin,
+    JackalWin,
+    ImpostorWin,
+    Haison = CustomGameOverReason.Haison,
+    NoWinner = CustomGameOverReason.NoWinner,
+    // カスタム勝利条件のために予約
+    CustomWin
+}
+public enum CustomGameOverReason
+{
+    None = 30,
+    Haison = 31,
+    NoWinner = 32,
+    JackalWin = 33,
+}
+
+static class AdditionalTempData
+{
+    private static readonly object _lock = new object();
+
+    private static List<PlayerRoleInfo> _playerRoles = new();
+    private static List<WinCondition> _additionalWinConditions = new();
+
+    public static GameOverReason gameOverReason { get; set; }
+    public static WinCondition winCondition { get; set; } = WinCondition.None;
+
+    public static IReadOnlyList<PlayerRoleInfo> playerRoles => _playerRoles;
+    public static IReadOnlyList<WinCondition> additionalWinConditions => _additionalWinConditions;
+
+    public static void AddPlayerRole(PlayerRoleInfo roleInfo)
+    {
+        lock (_lock)
+        {
+            _playerRoles.Add(roleInfo);
+        }
+    }
+
+    public static void Clear()
+    {
+        lock (_lock)
+        {
+            _playerRoles.Clear();
+            _additionalWinConditions.Clear();
+            winCondition = WinCondition.None;
+        }
+    }
+
+    internal class PlayerRoleInfo
+    {
+        public string PlayerName { get; set; }
+        public string NameSuffix { get; set; }
+        public IRoleBase roleBase { get; set; }
+        public string RoleString { get; set; }
+        public int TasksCompleted { get; set; }
+        public int TasksTotal { get; set; }
+        public int PlayerId { get; set; }
+        public int ColorId { get; set; }
+        public FinalStatus Status { get; internal set; }
+        public RoleId RoleId { get; set; }
+        public RoleId GhostRoleId { get; set; }
+        public string AttributeRoleName { get; set; }
+        public bool isImpostor { get; set; }
+
+        public PlayerRoleInfo Clone()
+        {
+            return (PlayerRoleInfo)MemberwiseClone();
+        }
+    }
+}
+
+[HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.IsGameOverDueToDeath))]
+public static class ShipStatusPatch
+{
+    public static bool Prefix(ref bool __result)
+    {
+        __result = false;
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
+public class EndGameManagerSetUpPatch
+{
+    public static TMPro.TMP_Text textRenderer;
+    [HarmonyPatch(typeof(EndGameNavigation), nameof(EndGameNavigation.ShowProgression))]
+    public class ShowProgressionPatch
+    {
+        public static void Prefix()
+        {
+            if (textRenderer != null)
+            {
+                textRenderer.gameObject.SetActive(false);
+            }
+        }
+    }
+    #region ProcessWinText
+    static Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
+    public static (string text, Color color, bool isHaison) ProcessWinText(GameOverReason gameOverReason, WinCondition winCondition)
+    {
+        string baseText;
+        Color roleColor;
+        switch (winCondition)
+        {
+            case WinCondition.CrewmateWin:
+                baseText = "Crewmate";
+                roleColor = Palette.White;
+                break;
+            case WinCondition.ImpostorWin:
+                baseText = "Impostor";
+                roleColor = Palette.ImpostorRed;
+                break;
+            case WinCondition.Haison:
+                baseText = "Haison";
+                roleColor = HaisonColor;
+                break;
+            case WinCondition.NoWinner:
+                baseText = "NoWinner";
+                roleColor = Color.white;
+                break;
+            case WinCondition.JackalWin:
+                baseText = "Jackal";
+                roleColor = Jackal.Instance.RoleColor;
+                break;
+            default:
+                baseText = "";
+                roleColor = Color.white;
+                break;
+        }
+        bool isHaison = winCondition == WinCondition.Haison;
+        string translated = ModTranslation.GetString(baseText);
+
+        if (isHaison)
+            translated = ModTranslation.GetString("Haison");
+        else if (translated == ModTranslation.GetString("NoWinner"))
+            translated = ModTranslation.GetString("NoWinnerText");
+        else if (translated == ModTranslation.GetString("GodName"))
+            translated = $"{translated} {ModTranslation.GetString("GodWinText")}";
+        else
+            translated = $"{translated} {ModTranslation.GetString("WinName")}";
+
+        return (translated, roleColor, isHaison);
+    }
+    #endregion
+
+    public static void Postfix(EndGameManager __instance)
+    {
+        CreatePlayerObjects(__instance);
+
+        // ボーナステキストの設定
+        GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
+        bonusTextObject.transform.position = new Vector3(__instance.WinText.transform.position.x, __instance.WinText.transform.position.y - 0.8f, __instance.WinText.transform.position.z);
+        bonusTextObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+        textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
+        textRenderer.text = "";
+
+        (string winText, Color roleColor, bool isHaison) = ProcessWinText(AdditionalTempData.gameOverReason, AdditionalTempData.winCondition);
+
+        textRenderer.color = AdditionalTempData.winCondition == WinCondition.Haison ? Color.clear : roleColor;
+        __instance.BackgroundBar.material.SetColor("_Color", roleColor);
+
+        if (AdditionalTempData.winCondition == WinCondition.Haison)
+        {
+            __instance.WinText.text = ModTranslation.GetString("Haison");
+            __instance.WinText.color = HaisonColor;
+        }
+        else if (AdditionalTempData.winCondition == WinCondition.NoWinner)
+        {
+            __instance.WinText.text = ModTranslation.GetString("NoWinner");
+            __instance.WinText.color = Color.white;
+            roleColor = Color.white;
+        }
+
+        if (AdditionalTempData.winCondition != WinCondition.Haison)
+            textRenderer.text = winText;
+
+        CreateRoleSummary(__instance);
+
+        AdditionalTempData.Clear();
+        OnGameEndPatch.WinText = ModHelpers.Cs(roleColor, winText);
+    }
+
+    private static void CreatePlayerObjects(EndGameManager instance)
+    {
+        // 既存のプレイヤーオブジェクトを削除
+        foreach (PoolablePlayer pb in instance.transform.GetComponentsInChildren<PoolablePlayer>())
+        {
+            UnityEngine.Object.Destroy(pb.gameObject);
+        }
+
+        int totalCount = Mathf.CeilToInt(7.5f);
+        IEnumerable<CachedPlayerData> winners = EndGameResult.CachedWinners.ToArray().OrderBy(b => !b.IsYou ? 0 : -1);
+        int i = -1;
+        foreach (CachedPlayerData data in winners)
+        {
+            i++;
+            int direction = (i % 2 == 0) ? -1 : 1;
+            int index = (i + 1) / 2;
+            float factor = (float)index / totalCount;
+            float scaleFactor = Mathf.Lerp(1f, 0.75f, factor);
+            float zOffset = (i == 0) ? -8f : -1f;
+
+            PoolablePlayer playerObj = UnityEngine.Object.Instantiate(instance.PlayerPrefab, instance.transform);
+            playerObj.transform.localPosition = new Vector3(direction * index * scaleFactor, FloatRange.SpreadToEdges(-1.125f, 0f, index, totalCount), zOffset + index * 0.01f) * 0.9f;
+
+            float playerScale = Mathf.Lerp(1f, 0.65f, factor) * 0.9f;
+            Vector3 scaleVector = new Vector3(playerScale, playerScale, 1f);
+            playerObj.transform.localScale = scaleVector;
+
+            if (data.IsDead)
+            {
+                playerObj.SetBodyAsGhost();
+                playerObj.SetDeadFlipX(i % 2 == 0);
+            }
+            else
+            {
+                playerObj.SetFlipX(i % 2 == 0);
+            }
+
+            playerObj.UpdateFromPlayerOutfit(data.Outfit, PlayerMaterial.MaskType.None, data.IsDead, true);
+            playerObj.cosmetics.nameText.color = Color.white;
+            playerObj.cosmetics.nameText.transform.localScale = new Vector3(1f / scaleVector.x, 1f / scaleVector.y, 1f / scaleVector.z);
+            playerObj.cosmetics.nameText.transform.localPosition = new Vector3(playerObj.cosmetics.nameText.transform.localPosition.x, playerObj.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
+            playerObj.cosmetics.nameText.text = data.PlayerName;
+
+            foreach (var roleInfo in AdditionalTempData.playerRoles)
+            {
+                if (roleInfo.PlayerName != data.PlayerName) continue;
+                playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString()))}";
+            }
+        }
+    }
+
+    private static void CreateRoleSummary(EndGameManager instance)
+    {
+        try
+        {
+            var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
+            GameObject roleSummary = UnityEngine.Object.Instantiate(instance.WinText.gameObject);
+            roleSummary.transform.position = new Vector3(instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
+            roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
+
+            var summaryBuilder = new StringBuilder();
+            summaryBuilder.AppendLine(ModTranslation.GetString("FinalResults"));
+
+            foreach (var roleInfo in AdditionalTempData.playerRoles)
+            {
+                var taskInfo = roleInfo.TasksTotal > 0 ? $"<color=#FAD934FF>({roleInfo.TasksCompleted}/{roleInfo.TasksTotal})</color>" : "";
+                string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
+                string result = $"{ModHelpers.Cs(Palette.PlayerColors[roleInfo.ColorId], roleInfo.PlayerName)}{roleInfo.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{ModTranslation.GetString("FinalStatus." + roleInfo.Status)} - {roleText}";
+                summaryBuilder.AppendLine(result);
+            }
+
+            TMPro.TMP_Text summaryTextMesh = roleSummary.GetComponent<TMPro.TMP_Text>();
+            summaryTextMesh.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            summaryTextMesh.color = Color.white;
+            summaryTextMesh.outlineWidth *= 1.2f;
+            summaryTextMesh.fontSizeMin = 1.25f;
+            summaryTextMesh.fontSizeMax = 1.25f;
+            summaryTextMesh.fontSize = 1.25f;
+
+            var rectTransform = summaryTextMesh.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
+            summaryTextMesh.text = summaryBuilder.ToString();
+        }
+        catch (Exception e)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
+        }
+    }
+}
+
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
+// このクラスはゲーム終了時の処理にフックするパッチクラスです。
+public static class OnGameEndPatch
+{
+    // 勝者のプレイヤーコントロールを保持します。
+    public static PlayerControl WinnerPlayer;
+    // カスタムゲームオーバー理由を保持するための変数（null許容型）。
+    public static CustomGameOverReason? EndData = null;
+    // 勝利時に表示するテキスト（カスタムの勝利メッセージなど）。
+    public static string WinText;
+
+    // ゲーム終了直前に呼ばれるプレフィックスメソッドです。
+    // このメソッドはHarmonyによって、ゲーム終了処理が実行される前に呼ばれ、
+    // endGameResultの内容を加工または解析するために使用されます。
+    public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
+    {
+        // エンドゲームの結果からゲームオーバー理由を一時データに保存します。
+        AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
+        if (AdditionalTempData.gameOverReason == (GameOverReason)CustomGameOverReason.Haison)
+            endGameResult.GameOverReason = GameOverReason.ImpostorDisconnect;
+        // ゲームオーバー理由の整数値が10以上の場合、理由をImpostorByKillに上書きします。
+        else if ((int)endGameResult.GameOverReason >= 9)
+            endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
+    }
+
+    public static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) HandleEndGameProcess(GameOverReason gameOverReason)
+    {
+        return GetWinningTeamInfo((CustomGameOverReason)gameOverReason);
+    }
+
+    private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetWinningTeamInfo(CustomGameOverReason reason)
+    {
+        var emptyReviveList = new List<NetworkedPlayerInfo>();
+
+        switch (reason)
+        {
+            case (CustomGameOverReason)GameOverReason.HumansByTask:
+            case (CustomGameOverReason)GameOverReason.HumansByVote:
+            case (CustomGameOverReason)GameOverReason.HumansDisconnect:
+                return GetCrewmateWinInfo(emptyReviveList);
+            case (CustomGameOverReason)GameOverReason.ImpostorByKill:
+            case (CustomGameOverReason)GameOverReason.ImpostorBySabotage:
+            case (CustomGameOverReason)GameOverReason.ImpostorByVote:
+            case (CustomGameOverReason)GameOverReason.ImpostorDisconnect:
+                return GetImpostorWinInfo(emptyReviveList);
+            case CustomGameOverReason.Haison:
+                return GetHaisonWinInfo(emptyReviveList);
+            case CustomGameOverReason.JackalWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive() && p.IsJackal()),
+                        WinCondition.JackalWin,
+                        emptyReviveList);
+            default:
+                Logger.Error("不明なゲームオーバー理由:" + reason);
+                return (null, WinCondition.None, emptyReviveList);
+        }
+    }
+
+    private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetCrewmateWinInfo(List<NetworkedPlayerInfo> reviveList)
+    {
+        return (ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive() && p.IsCrewmate()),
+                WinCondition.CrewmateWin,
+                reviveList);
+    }
+
+    private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetImpostorWinInfo(List<NetworkedPlayerInfo> reviveList)
+    {
+        return (ExPlayerControl.ExPlayerControls.Where(p => p.IsAlive() && p.IsImpostorWinTeam()),
+                WinCondition.ImpostorWin,
+                reviveList);
+    }
+
+    private static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) GetHaisonWinInfo(List<NetworkedPlayerInfo> reviveList)
+    {
+        return (ExPlayerControl.ExPlayerControls,
+                WinCondition.Haison,
+                reviveList);
+    }
+
+    // ゲーム終了後に呼ばれるポストフィックスメソッドです。
+    // このメソッドはゲーム終了後に勝者情報を確定し、各プレイヤーの状態を更新するために使用されます。
+    public static void Postfix()
+    {
+        GameOverReason gameOverReason = AdditionalTempData.gameOverReason;
+        AdditionalTempData.Clear();
+
+        CollectPlayerRoleData(gameOverReason);
+
+        var (winners, winCondition, willRevivePlayers) = HandleEndGameProcess(gameOverReason);
+        EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+        foreach (var winner in winners)
+            EndGameResult.CachedWinners.Add(new CachedPlayerData(winner.Data));
+
+        foreach (NetworkedPlayerInfo player in willRevivePlayers)
+            player.IsDead = false;
+
+        AdditionalTempData.winCondition = winCondition;
+    }
+
+    private static void CollectPlayerRoleData(GameOverReason gameOverReason)
+    {
+        foreach (var p in GameData.Instance.AllPlayers)
+        {
+            if (!IsValidPlayer(p)) continue;
+
+            var playerInfo = CreatePlayerInfo(p, gameOverReason);
+            AdditionalTempData.AddPlayerRole(playerInfo);
+        }
+    }
+
+    private static bool IsValidPlayer(NetworkedPlayerInfo player)
+    {
+        return player != null && player.Object != null;
+    }
+
+    private static AdditionalTempData.PlayerRoleInfo CreatePlayerInfo(NetworkedPlayerInfo player, GameOverReason gameOverReason)
+    {
+        ExPlayerControl exPlayer = player;
+        var (tasksCompleted, tasksTotal) = GetPlayerTaskInfo(exPlayer);
+        UpdatePlayerStatusForSabotage(player, exPlayer, gameOverReason);
+
+        return new AdditionalTempData.PlayerRoleInfo()
+        {
+            PlayerName = player.DefaultOutfit.PlayerName,
+            NameSuffix = "",
+            PlayerId = player.PlayerId,
+            ColorId = player.DefaultOutfit.ColorId,
+            TasksTotal = tasksTotal,
+            TasksCompleted = tasksCompleted,
+            RoleId = exPlayer.Role,
+            isImpostor = exPlayer.IsImpostor(),
+            Status = exPlayer.FinalStatus,
+            roleBase = exPlayer.roleBase
+        };
+    }
+
+    private static (int completed, int total) GetPlayerTaskInfo(ExPlayerControl player)
+    {
+        if (player.IsImpostor())
+        {
+            return (0, 0);
+        }
+        return ModHelpers.TaskCompletedData(player.Data);
+    }
+
+    private static void UpdatePlayerStatusForSabotage(NetworkedPlayerInfo player, ExPlayerControl exPlayer, GameOverReason gameOverReason)
+    {
+        if (gameOverReason == GameOverReason.ImpostorBySabotage && !player.IsDead && !player.Role.IsImpostor)
+        {
+            player.IsDead = true;
+            if (exPlayer.IsAlive())
+            {
+                exPlayer.FinalStatus = FinalStatus.Sabotage;
+            }
+        }
+    }
+}

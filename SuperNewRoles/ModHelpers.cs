@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using Hazel;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -64,6 +65,10 @@ public static class ModHelpers
     {
         return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
     }
+    public static string CsWithTranslation(Color c, string s)
+    {
+        return Cs(c, ModTranslation.GetString(s));
+    }
     public static byte ToByte(float f)
     {
         f = Mathf.Clamp01(f);
@@ -89,4 +94,20 @@ public static class ModHelpers
         }
         return (CompletedTasks, TotalTasks);
     }
+    public static long ReadInt64(this MessageReader reader)
+    {
+
+        long output = (long)reader.FastByte()
+            | (long)reader.FastByte() << 8
+            | (long)reader.FastByte() << 16
+            | (long)reader.FastByte() << 24
+            | (long)reader.FastByte() << 32
+            | (long)reader.FastByte() << 40
+            | (long)reader.FastByte() << 48
+            | (long)reader.FastByte() << 56;
+        return output;
+    }
+    /// <summary>keyCodesが押されているか</summary>
+    public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
+        keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
 }

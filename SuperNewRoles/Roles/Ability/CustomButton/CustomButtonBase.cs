@@ -157,10 +157,11 @@ public abstract class CustomButtonBase : AbilityBase
     {
         Timer = DefaultTimer;
     }
-    public override void Detach()
+    public override void DetachToLocalPlayer()
     {
-        base.Detach();
+        base.DetachToLocalPlayer();
         HudUpdateEvent.Instance.RemoveListener(hudUpdateEvent);
         WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
+        GameObject.Destroy(actionButton.gameObject);
     }
 }

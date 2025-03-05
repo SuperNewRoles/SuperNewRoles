@@ -5,9 +5,9 @@ namespace SuperNewRoles.Modules;
 public static class PlayerControlRpcExtensions
 {
     [CustomRPC]
-    public static void RpcExiledCustom(this PlayerControl player)
+    public static void RpcExiledCustom(this ExPlayerControl player)
     {
-        player.Exiled();
+        player.CustomDeath(CustomDeathType.Exile);
     }
     [CustomRPC]
     public static void RpcCustomSetRole(this ExPlayerControl player, RoleId roleId)

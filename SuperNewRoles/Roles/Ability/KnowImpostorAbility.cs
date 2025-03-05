@@ -8,10 +8,10 @@ namespace SuperNewRoles.Roles.Ability;
 
 public class KnowImpostorAbility : AbilityBase
 {
-    public Func<ExPlayerControl, bool> CanKnowImpostors { get; }
+    public Func<bool> CanKnowImpostors { get; }
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
 
-    public KnowImpostorAbility(Func<ExPlayerControl, bool> canKnowImpostors)
+    public KnowImpostorAbility(Func<bool> canKnowImpostors)
     {
         CanKnowImpostors = canKnowImpostors;
     }
@@ -23,7 +23,7 @@ public class KnowImpostorAbility : AbilityBase
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
-        if (CanKnowImpostors(data.Player))
+        if (CanKnowImpostors())
             UpdateImpostorNameColors(Palette.ImpostorRed);
     }
 
@@ -42,9 +42,9 @@ public class KnowImpostorAbility : AbilityBase
         player.Player.cosmetics.nameText.color = color;
     }
 
-    public override void Detach()
+    public override void DetachToLocalPlayer()
     {
-        base.Detach();
+        base.DetachToLocalPlayer();
         NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEvent);
     }
 }

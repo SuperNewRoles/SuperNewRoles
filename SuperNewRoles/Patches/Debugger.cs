@@ -16,8 +16,20 @@ public static class Debugger
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
         {
             Logger.Info("Debugger Clicked");
-            PlayerControl.LocalPlayer.RpcExiledCustom();
+            ExPlayerControl.LocalPlayer.RpcExiledCustom();
         }
     }
 }
-
+[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+public static class GameStartManagerUpdatePatch
+{
+    public static void Postfix()
+    {
+        if (!CustomOptionManager.SkipStartGameCountdown)
+            return;
+        if (GameStartManager.InstanceExists && FastDestroyableSingleton<GameStartManager>.Instance.startState == GameStartManager.StartingStates.Countdown) // カウントダウン中
+        {
+            FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0; //カウント0
+        }
+    }
+}

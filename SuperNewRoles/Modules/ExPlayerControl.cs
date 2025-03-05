@@ -3,6 +3,7 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 
 namespace SuperNewRoles.Modules;
@@ -18,11 +19,12 @@ public class ExPlayerControl
     public PlayerControl Player { get; }
     public NetworkedPlayerInfo Data { get; }
     public byte PlayerId { get; }
+    public bool AmOwner { get; private set; }
     public RoleId Role { get; private set; }
     public IRoleBase roleBase { get; private set; }
     public List<AbilityBase> PlayerAbilities { get; private set; } = new();
     public Dictionary<ulong, AbilityBase> PlayerAbilitiesDictionary { get; private set; } = new();
-
+    public ExPlayerControl Parent { get; set; }
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
     public int lastAbilityId { get; set; }
@@ -31,6 +33,7 @@ public class ExPlayerControl
 
     private CustomVentAbility _customVentAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
+    private Dictionary<string, bool> _hasAbilityCache = new();
 
     public ExPlayerControl(PlayerControl player)
     {
@@ -38,6 +41,7 @@ public class ExPlayerControl
         this.PlayerId = player.PlayerId;
         this.Data = player.CachedPlayerData;
         this.lastAbilityId = 0;
+        this.AmOwner = player.AmOwner;
     }
     public static implicit operator PlayerControl(ExPlayerControl exPlayer)
     {
@@ -59,13 +63,62 @@ public class ExPlayerControl
         if (data == null) return null;
         return ById(data.PlayerId);
     }
+    public bool HasAbility(string abilityName)
+    {
+        if (_hasAbilityCache.TryGetValue(abilityName, out bool hasAbility))
+        {
+            return hasAbility;
+        }
+
+        hasAbility = PlayerAbilities.Any(x => x.GetType().Name == abilityName);
+        _hasAbilityCache[abilityName] = hasAbility;
+        return hasAbility;
+    }
     public void SetRole(RoleId roleId)
     {
+        if (Role == roleId) return;
+        DetachOldRole(Role);
         Role = roleId;
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
         {
             role.OnSetRole(Player);
             roleBase = role;
+        }
+        else
+        {
+            Logger.Error($"Role {roleId} not found");
+        }
+    }
+    private void DetachOldRole(RoleId roleId)
+    {
+        List<AbilityBase> abilitiesToDetach = new();
+        foreach (var ability in PlayerAbilities)
+        {
+            if (ability.Parent == null) continue;
+            var parent = ability.Parent;
+            while (parent != null)
+            {
+                switch (parent)
+                {
+                    case AbilityParentRole parentRole when parentRole.ParentRole.Role == roleId:
+                        abilitiesToDetach.Add(ability);
+                        parent = null;
+                        break;
+                    case AbilityParentAbility parentAbility:
+                        parent = parentAbility.ParentAbility.Parent;
+                        break;
+                    default:
+                        parent = null;
+                        break;
+                }
+            }
+        }
+        foreach (var ability in abilitiesToDetach)
+        {
+            ability.Detach();
+            PlayerAbilities.Remove(ability);
+            PlayerAbilitiesDictionary.Remove(ability.AbilityId);
+            _hasAbilityCache.Remove(ability.GetType().Name);
         }
     }
     public void Disconnected()
@@ -78,7 +131,7 @@ public class ExPlayerControl
         }
         PlayerAbilities.Clear();
         PlayerAbilitiesDictionary.Clear();
-
+        _hasAbilityCache.Clear();
     }
     public static void SetUpExPlayers()
     {
@@ -102,17 +155,24 @@ public class ExPlayerControl
         return _exPlayerControlsArray[playerId];
     }
     public bool IsCrewmate()
-        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate : !Data.Role.IsImpostor;
+        => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() : !Data.Role.IsImpostor;
     public bool IsImpostor()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Impostor : Data.Role.IsImpostor;
     public bool IsNeutral()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Neutral : false;
+    public bool IsImpostorWinTeam()
+        => IsImpostor() || IsMadRoles();
     // TODO: 後でMADロールを追加したらここに追加する
     public bool IsMadRoles()
-        => false;
-    // TODO: 後で追加する
+        => HasAbility(nameof(MadmateAbility));
     public bool IsFriendRoles()
         => false;
+    public bool IsJackal()
+        => HasAbility(nameof(JackalAbility));
+    public bool IsSidekick()
+        => HasAbility(nameof(JSidekickAbility));
+    public bool IsJackalTeam()
+        => IsJackal() || IsSidekick();
     // TODO: 後で追加する
     public bool IsLovers()
         => false;
@@ -129,7 +189,7 @@ public class ExPlayerControl
     {
         return PlayerAbilitiesDictionary.TryGetValue(abilityId, out var ability) ? ability : null;
     }
-    private void AttachAbility(AbilityBase ability, ulong abilityId)
+    private void AttachAbility(AbilityBase ability, ulong abilityId, AbilityParentBase parent)
     {
         PlayerAbilities.Add(ability);
         PlayerAbilitiesDictionary.Add(abilityId, ability);
@@ -141,11 +201,12 @@ public class ExPlayerControl
         {
             _impostorVisionAbilities.Add(impostorVisionAbility);
         }
-        ability.Attach(Player, abilityId);
+        ability.Attach(Player, abilityId, parent);
+        _hasAbilityCache.Clear();
     }
-    public void AttachAbility(AbilityBase ability)
+    public void AttachAbility(AbilityBase ability, AbilityParentBase parent)
     {
-        AttachAbility(ability, IRoleBase.GenerateAbilityId(PlayerId, Role, lastAbilityId++));
+        AttachAbility(ability, IRoleBase.GenerateAbilityId(PlayerId, Role, lastAbilityId++), parent);
     }
     public bool HasImpostorVision()
     {
@@ -168,13 +229,14 @@ public class ExPlayerControl
         }
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);
+        _hasAbilityCache.Clear();
     }
 }
 public static class ExPlayerControlExtensions
 {
-    public static void AddAbility(this ExPlayerControl player, AbilityBase ability)
+    public static void AddAbility(this ExPlayerControl player, AbilityBase ability, AbilityParentBase parent)
     {
-        player.AttachAbility(ability);
+        player.AttachAbility(ability, parent);
     }
     public static ulong GenerateAbilityId(byte playerId, RoleId role, int abilityIndex)
     {

@@ -1,3 +1,4 @@
+using System;
 using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 
@@ -10,7 +11,12 @@ public static class CustomDeathExtensions
     {
         player.CustomDeath(deathType);
     }
-    public static void CustomDeath(this ExPlayerControl player, CustomDeathType deathType)
+    [CustomRPC]
+    public static void RpcCustomDeath(this ExPlayerControl source, ExPlayerControl target, CustomDeathType deathType)
+    {
+        CustomDeath(target, deathType, source);
+    }
+    public static void CustomDeath(this ExPlayerControl player, CustomDeathType deathType, ExPlayerControl source = null)
     {
         switch (deathType)
         {
@@ -18,6 +24,17 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 ExileEvent.Invoke(player);
                 break;
+            case CustomDeathType.FalseCharge:
+                player.Player.Exiled();
+                ExileEvent.Invoke(player);
+                break;
+            case CustomDeathType.Kill:
+                if (source == null)
+                    throw new Exception("Source is null");
+                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                break;
+            default:
+                throw new Exception($"Invalid death type: {deathType}");
         }
     }
     public static void Register()
@@ -35,4 +52,5 @@ public enum CustomDeathType
 {
     Exile,
     Kill,
+    FalseCharge,
 }

@@ -26,6 +26,8 @@ public static class CustomOptionManager
     public static bool DebugMode;
     [CustomOptionBool("DebugModeNoGameEnd", false, parentFieldName: nameof(DebugMode))]
     public static bool DebugModeNoGameEnd;
+    [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(GeneralSettings))]
+    public static bool SkipStartGameCountdown;
 
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
     public static List<CustomOption> CustomOptions { get; } = new();

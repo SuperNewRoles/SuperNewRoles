@@ -48,6 +48,20 @@ DebugMode,デバッグモード,Debug Mode,偵錯模式,偵錯模式
 CustomOptionTask_Short,短いタスク,Short Tasks,短任務,短任務
 CustomOptionTask_Long,長いタスク,Long Tasks,长任務,長任務
 CustomOptionTask_Common,共通タスク,Common Tasks,共同任務,共同任務
+SkipStartGameCountdown,ゲーム開始カウントダウンをスキップ,Skip Game Start Countdown,跳过游戏开始倒计时,跳過遊戲開始倒計時
+
+# Win
+WinName,勝利,Win,勝利,勝利
+Haison,廃村,Haison,廢村,廢村
+NoWinner,勝者なし,No Winner,没有胜者,沒有勝者
+FinalResults,最終結果,Final Results,最终结果,最終結果
+
+# FinalStatus
+FinalStatus.Alive,生存,Alive,生存,生存
+FinalStatus.Dead,死亡,Dead,死亡,死亡
+FinalStatus.Sabotage,サボタージュ,Sabotage,破坏,破壞
+FinalStatus.Disonnected,切断,Disonnected,切断,切斷
+FinalStatus.Exile,追放,Exile,追放,追放
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
@@ -69,6 +83,9 @@ Sheriff,シェリフ,Sheriff,警长,警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
 EvilGuesser,イビルゲッサー,Evil Guesser,内鬼猜疑者,內鬼猜疑者
 Madmate,マッドメイト,Madmate,瘋狂者,瘋狂者
+BlackCat,黒猫,Black Cat,黑猫,黑貓
+Jackal,ジャッカル,Jackal,杰克,傑克
+Sidekick,サイドキック,Sidekick,侧翼,側翼
 
 # Sheriff Options
 SheriffKillCooldown,キルクールタイム,Kill Cooldown,杀人冷却时间,殺人冷卻時間
@@ -96,3 +113,16 @@ MadmateNeededTaskCount,必要タスク数,Required Task Count,需要完成任务
 MadmateCouldUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
 MadmateHasImpostorVision,インポスターの視界,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 BlackCatRevengeNotImpostorExile,インポスターを道連れしない,Do Not Exile Impostor,不带内鬼出局,不帶內鬼出局
+
+# Jackal Options
+JackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
+JackalCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风口,可以使用通風口
+JackalCanCreateSidekick,サイドキックを作成できる,Can Create Sidekick,杰克可以创建边缘队员,傑克可以創建邊緣隊員
+JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cooldown,杰克边缘队员冷却时间,傑克邊緣隊員冷卻時間
+
+# Bait Options
+BaitReportTime,通報の遅延,Report Delay,通報延遲,通報延遲
+BaitWarnKiller,キラーに警告する,Warn Killer,警告殺手,警告殺手
+BaitRandomDelay,遅延を少しランダムにする,Random Delay,遅延的隨機,遅延的隨機
+BaitDelayVariation,遅延の幅,Delay Variation,遅延的變化,遅延的變化
+

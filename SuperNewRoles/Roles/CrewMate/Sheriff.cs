@@ -33,21 +33,24 @@ class Sheriff : RoleBase<Sheriff>
     public override TeamTag TeamTag { get; } = TeamTag.Crewmate;
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
-
     [CustomOptionFloat("SheriffKillCooldown", 0f, 60f, 2.5f, 25f)]
     public static float SheriffKillCooldown;
+
     [CustomOptionInt("SheriffMaxKillCount", 1, 10, 1, 1)]
     public static int SheriffMaxKillCount;
+
+    [CustomOptionBool("SheriffCanKillImpostor", true)]
+    public static bool SheriffCanKillImpostor;
+
+    [CustomOptionBool("SheriffCanKillMadRoles", true)]
+    public static bool SheriffCanKillMadRoles;
 
     [CustomOptionBool("SheriffCanKillNeutral", true)]
     public static bool SheriffCanKillNeutral;
 
-    [CustomOptionBool("SheriffCanKillImpostor", true)]
-    public static bool SheriffCanKillImpostor;
-    [CustomOptionBool("SheriffCanKillMadRoles", true)]
-    public static bool SheriffCanKillMadRoles;
     [CustomOptionBool("SheriffCanKillFriendRoles", true)]
     public static bool SheriffCanKillFriendRoles;
+
     [CustomOptionBool("SheriffCanKillLovers", true)]
     public static bool SheriffCanKillLovers;
 }

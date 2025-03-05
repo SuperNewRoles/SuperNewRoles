@@ -15,7 +15,7 @@ public class MadmateAbility : AbilityBase
     {
         MadData = madData;
     }
-    public override void Attach(PlayerControl player, ulong abilityId)
+    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
 
         VentAbility = new CustomVentAbility(() => MadData.CouldUseVent);
@@ -23,11 +23,12 @@ public class MadmateAbility : AbilityBase
         ImpostorVisionAbility = new ImpostorVisionAbility(() => MadData.HasImpostorVision);
         ExPlayerControl exPlayer = (ExPlayerControl)player;
 
-        exPlayer.AttachAbility(VentAbility);
-        exPlayer.AttachAbility(KnowImpostorAbility);
-        exPlayer.AttachAbility(ImpostorVisionAbility);
+        AbilityParentAbility parentAbility = new(this);
+        exPlayer.AttachAbility(VentAbility, parentAbility);
+        exPlayer.AttachAbility(KnowImpostorAbility, parentAbility);
+        exPlayer.AttachAbility(ImpostorVisionAbility, parentAbility);
 
-        base.Attach(player, abilityId);
+        base.Attach(player, abilityId, parent);
     }
 
     public override void AttachToLocalPlayer()
@@ -41,11 +42,11 @@ public class MadmateData
     private bool _couldKnowImpostors;
     private int _taskNeeded;
     private bool _lastTaskChecked;
-    public bool CouldKnowImpostors(ExPlayerControl exPlayer)
+    public bool CouldKnowImpostors()
     {
         if (!_couldKnowImpostors) return false;
         if (_lastTaskChecked) return true;
-        var (complete, all) = ModHelpers.TaskCompletedData(exPlayer.Data);
+        var (complete, all) = ModHelpers.TaskCompletedData(ExPlayerControl.LocalPlayer.Data);
         if (complete == -1 || all == -1) return false;
         return _lastTaskChecked = complete >= _taskNeeded;
     }

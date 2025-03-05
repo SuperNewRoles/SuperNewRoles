@@ -36,16 +36,13 @@ public class AutoExileAfterMeeting : AbilityBase
     }
     private void OnWrapUp(WrapUpEventData data)
     {
-        PlayerControl.LocalPlayer.RpcExiledCustom();
-        if (wrapUpEventListener != null)
-        {
-            WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
-            wrapUpEventListener = null;
-        }
+        if (ExPlayerControl.LocalPlayer.IsDead())
+            return;
+        ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.FalseCharge);
     }
-    public override void Detach()
+    public override void DetachToLocalPlayer()
     {
-        base.Detach();
+        base.DetachToLocalPlayer();
         if (wrapUpEventListener != null)
         {
             WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);

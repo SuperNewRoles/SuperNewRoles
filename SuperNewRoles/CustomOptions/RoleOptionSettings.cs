@@ -94,7 +94,7 @@ namespace SuperNewRoles.CustomOptions
         {
             GameObject optionInstance = CreateOptionElement(parent, ModTranslation.GetString(option.Name), ref lastY, "Option_Select");
             var selectedText = optionInstance.transform.Find("SelectedText").GetComponent<TextMeshPro>();
-            selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+            selectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
 
             SetupSelectButtons(optionInstance, selectedText, option);
 
@@ -237,7 +237,7 @@ namespace SuperNewRoles.CustomOptions
         private static void UpdateOptionSelection(CustomOption option, byte newSelection, TextMeshPro selectedText)
         {
             option.UpdateSelection(newSelection);
-            selectedText.text = FormatOptionValue(option.Selections[option.Selection], option);
+            selectedText.text = UIHelper.FormatOptionValue(option.Selections[option.Selection], option);
 
             // ホストの場合、他のプレイヤーに同期
             if (AmongUsClient.Instance.AmHost)
@@ -265,6 +265,23 @@ namespace SuperNewRoles.CustomOptions
 
             int index = CreateRoleOptions(roleOption, ref lastY);
             UpdateScrollerBounds(index);
+
+            // スクロール位置をリセット
+            ResetScrollPosition();
+        }
+
+        // スクロール位置をリセットするメソッド
+        private static void ResetScrollPosition()
+        {
+            var settingsInner = RoleOptionMenu.RoleOptionMenuObjectData.SettingsInner;
+            var settingsScroller = RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller;
+
+            if (settingsInner != null && settingsScroller != null)
+            {
+                // スクロール位置を一番上にリセット
+                settingsInner.localPosition = new Vector3(settingsInner.localPosition.x, 0f, settingsInner.localPosition.z);
+                settingsScroller.UpdateScrollBars();
+            }
         }
 
         private static int CreateRoleOptions(RoleOptionManager.RoleOption roleOption, ref float lastY)
@@ -291,26 +308,17 @@ namespace SuperNewRoles.CustomOptions
 
         private static void UpdateScrollerBounds(int index)
         {
+            // スクロールバーの範囲を設定
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max =
-                index < 5 ? 0f : (index - 4) * DefaultRate;
-            Logger.Info($"Updated Max {index} {RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max}");
-        }
+                index < 5 ? 0.1f : (index - 4) * DefaultRate; // 最小値を0.1fに設定して常にスクロールバーが表示されるようにする
 
-        private static string FormatOptionValue(object value, CustomOption option)
-        {
-            if (value is float floatValue)
-            {
-                var attribute = option.Attribute as CustomOptionFloatAttribute;
-                if (attribute != null)
-                {
-                    float step = attribute.Step;
-                    if (step >= 1f) return string.Format("{0:F0}", floatValue);
-                    else if (step >= 0.1f) return string.Format("{0:F1}", floatValue);
-                    else return string.Format("{0:F2}", floatValue);
-                }
-                return floatValue.ToString();
-            }
-            return value.ToString();
+            // スクロールバーを表示するために必要な設定
+            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ScrollbarYBounds = new FloatRange(0, 1);
+
+            // スクロールバーを更新
+            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.UpdateScrollBars();
+
+            Logger.Info($"Updated Max {index} {RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max}");
         }
 
         /// <summary>
@@ -348,7 +356,7 @@ namespace SuperNewRoles.CustomOptions
                 }
                 else
                 {
-                    text.text = FormatOptionValue(option.Value, option);
+                    text.text = UIHelper.FormatOptionValue(option.Value, option);
                 }
             }
         }

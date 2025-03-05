@@ -43,18 +43,15 @@ public class CustomVentAbility : CustomButtonBase
             {
                 Vent.currentVent.SetButtons(false);
                 PlayerControl.LocalPlayer.MyPhysics?.RpcExitVent(Vent.currentVent.Id);
-                Logger.Info($"SetVentTarget: DEF");
             }
             return;
         }
-        Logger.Info($"SetVentTarget: ABC");
         CurrentVent = SetVentTarget();
         if (CurrentVent != null)
         {
             // ベントの使用処理を実装
             PlayerControl.LocalPlayer.MyPhysics?.RpcEnterVent(CurrentVent.Id);
             CurrentVent.SetButtons(true);
-            Logger.Info($"SetVentTarget: GHI");
         }
     }
     private static void SetVentOutline(Vent vent, bool show, Color32 color)
