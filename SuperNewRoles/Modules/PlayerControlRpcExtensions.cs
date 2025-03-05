@@ -1,4 +1,5 @@
 using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Modules;
 
@@ -23,5 +24,10 @@ public static class PlayerControlRpcExtensions
     public static void RpcCustomMurderPlayer(this PlayerControl player, PlayerControl target, bool didSucceed)
     {
         player.MurderPlayer(target, didSucceed ? MurderResultFlags.Succeeded : MurderResultFlags.FailedError);
+    }
+    [CustomRPC]
+    public static void RpcCustomSnapTo(this ExPlayerControl player, Vector2 pos)
+    {
+        player.NetTransform.SnapTo(pos);
     }
 }

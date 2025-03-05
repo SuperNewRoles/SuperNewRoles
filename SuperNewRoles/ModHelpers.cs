@@ -198,4 +198,40 @@ public static class ModHelpers
     {
         return UnityEngine.Random.Range(0, list.Count);
     }
+    /// <summary>
+    /// 2つの位置が指定された距離以内かどうかを確認します
+    /// </summary>
+    /// <param name="pos">位置1</param>
+    /// <param name="pos2">位置2</param>
+    /// <param name="distance">最大距離</param>
+    /// <returns>距離以内の場合はtrue</returns>
+    public static bool IsPositionDistance(Vector2 pos, Vector2 pos2, float distance)
+    {
+        float dis = Vector2.Distance(pos, pos2);
+        return dis <= distance;
+    }
+
+    /// <summary>
+    /// リストからランダムな要素を取得します
+    /// </summary>
+    /// <typeparam name="T">リストの型</typeparam>
+    /// <param name="list">リスト</param>
+    /// <returns>ランダムな要素</returns>
+    public static T GetRandom<T>(this List<T> list)
+    {
+        if (list == null || list.Count == 0) return default;
+        return list[UnityEngine.Random.Range(0, list.Count)];
+    }
+
+    /// <summary>
+    /// リストからランダムなインデックスを取得します
+    /// </summary>
+    /// <typeparam name="T">リストの型</typeparam>
+    /// <param name="list">リスト</param>
+    /// <returns>ランダムなインデックス</returns>
+    public static int GetRandomIndex<T>(this IEnumerable<T> list)
+    {
+        var array = list as T[] ?? list.ToArray();
+        return UnityEngine.Random.Range(0, array.Length);
+    }
 }
