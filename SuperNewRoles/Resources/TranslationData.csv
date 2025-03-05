@@ -334,3 +334,22 @@ VultureRequiredBodies,勝利死体数,Required Bodies for Win,胜利所需尸体
 VultureCanUseVent,ベントに入れる,Can Use Vent,可以使用通风口,可以使用通風口
 VultureShowArrows,死体を指す矢印を表示する,Show Arrows to Dead Bodies,显示指向尸体的箭头,顯示指向屍體的箭頭
 VultureEatButton,食らう,Eat,吞食,吞食
+
+# マップ設定関連
+VentAnimationPlaySetting,ベントアニメーションを有効にする,Enable Vent Animation,启用通风口动画,啟用通風口動畫
+ReactorDurationSetting,緊急タスク継続時間の設定,Reactor Duration Settings,紧急任务持续时间设置,緊急任務持續時間設置
+SkeldReactorTime,The Skeld リアクター継続時間,The Skeld Reactor Duration,The Skeld 反应堆持续时间,The Skeld 反應堆持續時間
+SkeldLifeSuppTime,The Skeld 酸素継続時間,The Skeld Oxygen Duration,The Skeld 氧气持续时间,The Skeld 氧氣持續時間
+MiraReactorTime,MIRA HQ リアクター継続時間,MIRA HQ Reactor Duration,MIRA HQ 反应堆持续时间,MIRA HQ 反應堆持續時間
+MiraLifeSuppTime,MIRA HQ 酸素継続時間,MIRA HQ Oxygen Duration,MIRA HQ 氧气持续时间,MIRA HQ 氧氣持續時間
+PolusReactorTime,Polus リアクター継続時間,Polus Reactor Duration,Polus 反应堆持续时间,Polus 反應堆持續時間
+AirshipReactorTime,Airship リアクター継続時間,Airship Reactor Duration,Airship 反应堆持续时间,Airship 反應堆持續時間
+FungleReactorTime,The Fungle リアクター継続時間,The Fungle Reactor Duration,The Fungle 反应堆持续时间,The Fungle 反應堆持續時間
+LadderCoolChangeSetting,梯子クールダウンの設定,Ladder Cooldown Settings,梯子冷却时间设置,梯子冷卻時間設置
+LadderCoolTimeSetting,梯子クールダウン時間,Ladder Cooldown Time,梯子冷却时间,梯子冷卻時間
+LadderImpostorCoolChangeSetting,インポスター用梯子クールダウンの設定,Impostor Ladder Cooldown Settings,内鬼梯子冷却时间设置,內鬼梯子冷卻時間設置
+LadderImpostorCoolTimeSetting,インポスター用梯子クールダウン時間,Impostor Ladder Cooldown Time,内鬼梯子冷却时间,內鬼梯子冷卻時間
+ZiplineCoolChangeSetting,ジップラインクールダウンの設定,Zipline Cooldown Settings,滑索冷却时间设置,滑索冷卻時間設置
+ZiplineCoolTimeSetting,ジップラインクールダウン時間,Zipline Cooldown Time,滑索冷却时间,滑索冷卻時間
+ZiplineImpostorCoolChangeSetting,インポスター用ジップラインクールダウンの設定,Impostor Zipline Cooldown Settings,内鬼滑索冷却时间设置,內鬼滑索冷卻時間設置
+ZiplineImpostorCoolTimeSetting,インポスター用ジップラインクールダウン時間,Impostor Zipline Cooldown Time,内鬼滑索冷却时间,內鬼滑索冷卻時間
