@@ -22,9 +22,11 @@ class Vulture : RoleBase<Vulture>
         () => new EatDeadBodyAbility(new VultureData(
             cooldown: VultureCooldown,
             requiredBodies: VultureRequiredBodies,
-            canUseVent: VultureCanUseVent,
             showArrows: VultureShowArrows
-        ))
+        )),
+        () => new CustomVentAbility(
+            canUseVent: () => VultureCanUseVent
+        )
     ];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
@@ -56,14 +58,12 @@ public class VultureData
 {
     public float Cooldown { get; }
     public int RequiredBodies { get; }
-    public bool CanUseVent { get; }
     public bool ShowArrows { get; }
 
-    public VultureData(float cooldown, int requiredBodies, bool canUseVent, bool showArrows)
+    public VultureData(float cooldown, int requiredBodies, bool showArrows)
     {
         Cooldown = cooldown;
         RequiredBodies = requiredBodies;
-        CanUseVent = canUseVent;
         ShowArrows = showArrows;
     }
 }
@@ -163,12 +163,6 @@ public class EatDeadBodyAbility : CustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-
-        // ベント使用可能設定
-        if (_data.CanUseVent)
-        {
-            Player.Data.Role.CanVent = true;
-        }
 
         // 矢印表示のイベントリスナーを設定
         if (_data.ShowArrows)
