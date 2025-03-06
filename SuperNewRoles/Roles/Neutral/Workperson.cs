@@ -13,13 +13,6 @@ namespace SuperNewRoles.Roles.Neutral;
 
 class Workperson : RoleBase<Workperson>
 {
-    [CustomOptionBool("WorkpersonNeedAliveToWin", false)]
-    public static bool WorkpersonNeedAliveToWin;
-    [CustomOptionBool("WorkpersonUseCustomTaskSetting", true)]
-    public static bool WorkpersonUseCustomTaskSetting;
-    [CustomOptionTask("WorkpersonTask", 8, 8, 8, parentFieldName: nameof(WorkpersonUseCustomTaskSetting))]
-    public static TaskOptionData WorkpersonTaskData;
-
     public override RoleId Role { get; } = RoleId.Workperson;
     public override Color32 RoleColor { get; } = new(210, 180, 140, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CustomTaskAbility(
@@ -33,7 +26,10 @@ class Workperson : RoleBase<Workperson>
         },
         WorkpersonTaskData
     ),
-    () => new WorkpersonAbility(WorkpersonNeedAliveToWin)];
+    () => new WorkpersonAbility(WorkpersonNeedAliveToWin),
+    () => new CustomVentAbility(
+        canUseVent: () => WorkpersonCanUseVent
+    )];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -45,6 +41,15 @@ class Workperson : RoleBase<Workperson>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
     public override RoleId[] RelatedRoleIds { get; } = [];
+
+    [CustomOptionBool("WorkpersonNeedAliveToWin", false)]
+    public static bool WorkpersonNeedAliveToWin;
+    [CustomOptionBool("WorkpersonUseCustomTaskSetting", true)]
+    public static bool WorkpersonUseCustomTaskSetting;
+    [CustomOptionTask("WorkpersonTask", 8, 8, 8, parentFieldName: nameof(WorkpersonUseCustomTaskSetting))]
+    public static TaskOptionData WorkpersonTaskData;
+    [CustomOptionBool("WorkpersonCanUseVent", false)]
+    public static bool WorkpersonCanUseVent;
 }
 public class WorkpersonAbility : AbilityBase
 {

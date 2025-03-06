@@ -285,6 +285,7 @@ ChiefSheriffCanKillLovers,ラバーズをキル出来る,Can Kill Lovers,能击�
 WorkpersonNeedAliveToWin,生存していないと勝利出来ない,Need Alive To Win,需要存活才能获胜,需要存活才能獲勝
 WorkpersonUseCustomTaskSetting,タスク数を固有で設定するか,Use Custom Task Setting,是否使用自定义任务设置,是否使用自定義任務設置
 WorkpersonDesc,タスクを全て完了すると単独勝利します。,Win alone by completing all tasks.,完成所有任务后单独获胜。,完成所有任務後單獨獲勝。
+WorkpersonCanUseVent,ベントに入れる,Can Use Vent,可以使用通风口,可以使用通風口
 
 # SerialKiller
 SerialKillerResetOnMeeting,会議に入るとリセットされる,Reset on Meeting,会议时重置,會議時重置
