@@ -105,6 +105,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         WaitVote
     }
     public BalancerState CurrentState { get; private set; } = BalancerState.NotBalance;
+    private TextMeshPro limitText;
     public BalancerAbility(int useCount)
     {
         Count = useCount; // 設定された回数だけ使用可能
@@ -259,6 +260,11 @@ class BalancerAbility : AbilityBase, IAbilityCount
     public void OnMeetingStart()
     {
         ClearAndReload();
+        limitText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, MeetingHud.Instance.transform);
+        limitText.text = ModTranslation.GetString("BalancerLimitText", Count);
+        limitText.enableWordWrapping = false;
+        limitText.transform.localScale = Vector3.one * 0.5f;
+        limitText.transform.localPosition += new Vector3(-3.05f, 2.7f, 0);
     }
 
     public void OnMeetingClose()
@@ -766,8 +772,12 @@ class BalancerAbility : AbilityBase, IAbilityCount
                 break;
 
             case BalancerState.WaitVote:
+                foreach (var area in MeetingHud.Instance.playerStates)
+                    area.gameObject.SetActive(false);
                 leftPlayerArea.transform.localPosition = new(-2.9f, 0, -0.9f);
                 rightPlayerArea.transform.localPosition = new(2.3f, 0, -0.9f);
+                leftPlayerArea.gameObject.SetActive(true);
+                rightPlayerArea.gameObject.SetActive(true);
                 if (eyeBackRender != null)
                 {
                     rotate -= Time.fixedDeltaTime * 25f;

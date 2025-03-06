@@ -211,7 +211,8 @@ BalancerAbilityUseText,能力發動,Ability activated,能力發動,能力發動
 BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
 BalancerDoubleExileText,どちらも追放された...,Both were exiled...,两名玩家都被驱逐了...,兩名玩家都被驅逐了...
 BalancerOnePlayerDeadText,こうなる運命だったのだ...,It was destined to be this way...,这就是命运...,這就是命運...
-BalancerRandomVoteWhenNoVote,未投票時ランダムに投票する,Random Vote When No Vote,未投票时随机投票,未投票時隨機投票
+BalancerRandomVoteWhenNoVote,未投票時ランダムに投票する,Random Vote When No Vote,未投票時随机投票,未投票時隨機投票
+BalancerLimitText,天秤残り{0}回,Balancer Limit {0} times,天秤剩余{0}次,天秤剩餘{0}次
 
 # SelfBomber
 SelfBomberKillButtonText,爆発,Explosion,爆炸,爆炸
