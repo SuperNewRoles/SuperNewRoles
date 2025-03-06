@@ -76,7 +76,7 @@ public class VotingCompleteEvent : EventTargetBase<VotingCompleteEvent, VotingCo
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
-public static class MeetingStartPatch
+public static class CalledMeetingPatch
 {
     public static void Postfix(PlayerControl __instance, NetworkedPlayerInfo target)
     {
@@ -85,7 +85,7 @@ public static class MeetingStartPatch
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-public static class MeetingStartPatch2
+public static class MeetingStartPatch
 {
     public static void Postfix()
     {
