@@ -21,7 +21,8 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private bool HideButtons = false;
     public override bool HasButtonLocalPlayer => false;
     private int ShotThisMeeting;
-    private int MeetingCount = 0;
+    private int MeetingCount = -1;
+    private TMPro.TextMeshPro limitText;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("TargetIcon.png");
 
     public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3)
@@ -58,6 +59,16 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         guesserUI = null;
         ShotThisMeeting = 0;
         MeetingCount++;
+
+        // 残り使用回数を表示するテキストを作成
+        if (Player.IsDead()) return;
+        if (limitText != null)
+            GameObject.Destroy(limitText.gameObject);
+        limitText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, MeetingHud.Instance.transform);
+        limitText.text = ModTranslation.GetString("GuesserLimitText", Count);
+        limitText.enableWordWrapping = false;
+        limitText.transform.localScale = Vector3.one * 0.5f;
+        limitText.transform.localPosition += new Vector3(-3.05f, 2.7f, 0);
     }
     public override void OnMeetingUpdate()
     {
@@ -67,6 +78,11 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             if (guesserUI != null)
                 GameObject.Destroy(guesserUI);
             guesserUI = null;
+
+            // プレイヤーが死亡した場合、テキストも削除
+            if (limitText != null)
+                GameObject.Destroy(limitText.gameObject);
+            limitText = null;
         }
         base.OnMeetingUpdate();
     }
@@ -342,6 +358,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
                             return;
                         this.UseAbilityCount();
                         this.ShotThisMeeting++;
+
+                        // 残り使用回数を更新
+                        if (limitText != null)
+                            limitText.text = ModTranslation.GetString("GuesserLimitText", Count);
 
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;

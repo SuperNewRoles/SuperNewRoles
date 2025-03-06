@@ -30,7 +30,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 
     public abstract void OnClick(ExPlayerControl exPlayer, GameObject button);
     public virtual void OnMeetingStart() { }
-
+    public virtual void OnMeetingClose() { }
     public virtual ActionButton textTemplate => HudManager.Instance.AbilityButton;
 
     public CustomMeetingButtonBase() { }
@@ -48,6 +48,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
     }
     private void OnCloseMeeting()
     {
+        OnMeetingClose();
         DestroyAllButton();
     }
     private void DestroyAllButton()

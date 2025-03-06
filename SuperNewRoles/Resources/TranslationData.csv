@@ -164,6 +164,7 @@ EvilGuesserCannotShootStar,スターを打てない,Cannot Shoot Star,不能射�
 EvilGuesserCannotShootCrewmate,クルーメイトを打てない,Cannot Shoot Crewmate,不能射击船员,不能射擊船員
 EvilGuesserLimitedTurns,撃てないターンを制限する,Limit Turns Cannot Shoot,限制不能射击的回合,限制不能射擊的回合
 EvilGuesserLimitedTurnsCount,ターン数,Number of Turns,回合数,回合數
+GuesserLimitText,ゲッサー残り{0}回,Guesser Limit {0} times,猜疑者剩余{0}次,猜疑者剩餘{0}次
 
 # Guesser UI
 NextPage,次へ,Next,下一页,下一頁

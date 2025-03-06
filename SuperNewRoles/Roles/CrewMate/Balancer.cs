@@ -136,7 +136,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
     {
         base.Attach(player, abilityId, parent);
         meetingStartEventListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClose);
+        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClosed);
         // FixedUpdateイベントにアニメーション更新処理を登録
         fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
         votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);
@@ -148,7 +148,16 @@ class BalancerAbility : AbilityBase, IAbilityCount
     }
     private void Update()
     {
-
+        if (limitText == null) return;
+        if (Player.IsDead())
+        {
+            GameObject.Destroy(limitText.gameObject);
+            limitText = null;
+        }
+        else
+        {
+            limitText.text = ModTranslation.GetString("BalancerLimitText", Count);
+        }
     }
     public void OnWrapUp(WrapUpEventData data)
     {
@@ -260,6 +269,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
     public void OnMeetingStart()
     {
         ClearAndReload();
+        if (!Player.AmOwner) return;
         limitText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, MeetingHud.Instance.transform);
         limitText.text = ModTranslation.GetString("BalancerLimitText", Count);
         limitText.enableWordWrapping = false;
@@ -267,9 +277,12 @@ class BalancerAbility : AbilityBase, IAbilityCount
         limitText.transform.localPosition += new Vector3(-3.05f, 2.7f, 0);
     }
 
-    public void OnMeetingClose()
+    public void OnMeetingClosed()
     {
         // 会議終了時の処理
+        if (limitText != null)
+            GameObject.Destroy(limitText.gameObject);
+        limitText = null;
     }
     [CustomRPC]
     public static void RpcStartAbility(ExPlayerControl source, PlayerControl player1, PlayerControl player2, ulong abilityId)
