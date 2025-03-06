@@ -180,7 +180,18 @@ public class EatDeadBodyAbility : CustomButtonBase
 
     private void OnFixedUpdate()
     {
-        if (!_data.ShowArrows || Player.Data.IsDead) return;
+        if (Player.IsDead())
+        {
+            if (_deadBodyArrows.Count <= 0) return;
+            foreach (var arrow in _deadBodyArrows.Values)
+            {
+                if (arrow?.arrow != null)
+                    UnityEngine.Object.Destroy(arrow.arrow);
+            }
+            _deadBodyArrows.Clear();
+            return;
+        }
+        if (!_data.ShowArrows) return;
 
         // DeadBodyの検索を一度だけ行い、ParentIdでグループ化してキャッシュ
         DeadBody[] allDeadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
