@@ -15,7 +15,7 @@ public class CustomVentAbility : CustomButtonBase
     public Func<float?> VentCooldown { get; }
     public Func<float?> VentDuration { get; }
 
-    public override Sprite Sprite => HudManager.Instance?.ImpostorVentButton?.graphic?.sprite; // TODO: 適切なスプライトを設定する必要があります
+    public override Sprite Sprite => HudManager.Instance?.ImpostorVentButton?.graphic?.sprite;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.VentLabel);
     protected override KeyCode? hotkey => KeyCode.V;
     public override float DefaultTimer => VentCooldown?.Invoke() ?? 0;
@@ -164,5 +164,20 @@ public class CustomVentAbility : CustomButtonBase
     public bool CheckCanUseVent()
     {
         return CanUseVent();
+    }
+}
+[HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
+public class VentSetButtonsPatch
+{
+    public static bool Prefix(Vent __instance, ref float __result, out bool canUse, out bool couldUse)
+    {
+        if (!ExPlayerControl.LocalPlayer.CanUseVent())
+        {
+            canUse = couldUse = false;
+            __result = 0;
+            return false;
+        }
+        canUse = couldUse = true;
+        return true;
     }
 }
