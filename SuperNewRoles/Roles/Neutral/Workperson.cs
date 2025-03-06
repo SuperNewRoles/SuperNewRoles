@@ -64,7 +64,7 @@ public class WorkpersonAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsTaskComplete())
         {
             if (_needAliveToWin && !ExPlayerControl.LocalPlayer.IsAlive()) return;
-            CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.WorkpersonWin);
+            new LateTask(() => CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.WorkpersonWin), 0.2f);
         }
     }
     public override void DetachToLocalPlayer()
