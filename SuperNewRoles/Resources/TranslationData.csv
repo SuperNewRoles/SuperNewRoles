@@ -230,7 +230,6 @@ SamuraiCanUseVent,ベントを使用できる,Can Use Vents,可以使用通风�
 SamuraiCanSabotage,サボタージュを使用できる,Can Sabotage,可以使用破坏,可以使用破壞
 
 # WaveCannon
-WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
 WaveCannonCooldown,波動砲クールダウン,Wave Cannon Cooldown,波动炮冷却时间,波動砲冷卻時間
 WaveCannonDuration,波動砲の充填時間,Wave Cannon Fill Time,波动炮充填时间,波動砲充填時間
 WaveCannonSyncKillCoolTime,波動砲とキルボタンのクールタイムを同期する,Sync the Wave Cannon and Kill Button Cooldowns,同步波动炮和击杀按钮冷却时间,同步波動砲和殺人按鈕冷卻時間
@@ -239,6 +238,7 @@ WaveCannonAnimationType.Tank,戦車,Tank,战车,戰車
 WaveCannonAnimationType.Cannon,大砲,Cannon,大炮,大砲
 WaveCannonAnimationType.Santa,サンタ,Santa,圣诞老人,聖誕老人
 WaveCannonAnimationType.Bullet,弾丸,Bullet,子弹,子彈
+WaveCannonButtonText,波動砲,Wave Cannon,波动炮,波動砲
 
 # WaveCannonJackal
 WaveCannonJackalKillCooldown,キルクールダウン,Kill Cooldown,杰克击杀冷却时间,傑克殺人冷卻時間
@@ -293,18 +293,18 @@ SerialKillerCanSabotage,サボタージュを使用できる,Can Sabotage,可以
 SerialKillerSuicideText,自殺まで{0}秒,Suicide in {0} seconds,自杀前{0}秒,自殺前{0}秒
 
 # Pavlovs
-PavlovsOwnerCanUseVent,オーナーがベントを使用できる,Owner can use vents
-PavlovsOwnerSidekickCooldown,指名のクールタイム,Appointment Cooldown
-PavlovsOwnerMaxSidekickCount,1試合内に指名できる回数,Maximum Appointments per Game
-PavlovsOwnerSuicideOnImpostorSidekick,インポスターを指名すると自爆する,Suicide when Appointing Impostor
-PavlovsOwnerIsImpostorVision,オーナーがインポスターの視界,Owner has Impostor Vision
-PavlovsDogButtonText,ｲﾇ,dog
-PavlovsDogCanUseVent,犬がベントを使用できる,Dog can use vents
-PavlovsDogIsImpostorVision,犬がインポスターの視界,Dog has Impostor Vision
-PavlovsDogKillCooldown,犬のキルクールタイム,Dog's Kill Cooldown
-PavlovsDogRampageKillCooldown,暴走時のキルクールタイム,Rampage Kill Cooldown
-PavlovsDogRampageSuicideTime,暴走時の自爆タイム,Rampage Suicide Time
-PavlovsDogResetSuicideTimeOnMeeting,会議で自爆タイムをリセットする,Reset Suicide Timer on Meeting
+PavlovsOwnerCanUseVent,オーナーがベントを使用できる,Owner can use vents,主人可以使用通风口,主人可以使用通風口
+PavlovsOwnerSidekickCooldown,指名のクールタイム,Appointment Cooldown,指定冷却时间,指定冷卻時間
+PavlovsOwnerMaxSidekickCount,1試合内に指名できる回数,Maximum Appointments per Game,每局游戏最大指定次数,每局遊戲最大指定次數
+PavlovsOwnerSuicideOnImpostorSidekick,インポスターを指名すると自爆する,Suicide when Appointing Impostor,指定内鬼时自杀,指定內鬼時自殺
+PavlovsOwnerIsImpostorVision,オーナーがインポスターの視界,Owner has Impostor Vision,主人拥有内鬼视野,主人擁有內鬼視野
+PavlovsDogButtonText,ｲﾇ,dog,狗,狗
+PavlovsDogCanUseVent,犬がベントを使用できる,Dog can use vents,狗可以使用通风口,狗可以使用通風口
+PavlovsDogIsImpostorVision,犬がインポスターの視界,Dog has Impostor Vision,狗拥有内鬼视野,狗擁有內鬼視野
+PavlovsDogKillCooldown,犬のキルクールタイム,Dog's Kill Cooldown,狗的击杀冷却时间,狗的擊殺冷卻時間
+PavlovsDogRampageKillCooldown,暴走時のキルクールタイム,Rampage Kill Cooldown,暴走时的击杀冷却时间,暴走時的擊殺冷卻時間
+PavlovsDogRampageSuicideTime,暴走時の自爆タイム,Rampage Suicide Time,暴走时的自杀时间,暴走時的自殺時間
+PavlovsDogResetSuicideTimeOnMeeting,会議で自爆タイムをリセットする,Reset Suicide Timer on Meeting,会议时重置自杀计时器,會議時重置自殺計時器
 
 # SideKiller
 SideKillerSidekickButtonName,浸食する,Infect,感染,感染
@@ -315,9 +315,9 @@ MadKillerHasImpostorVision,マッドキラーが人外視野,MadKiller Has Impos
 CannotSeeMadKillerBeforePromotion,昇格前のマッドキラーを視認できない,Cannot See MadKiller Before Promotion,无法在晋升前看到疯狂杀手,無法在晉升前看到瘋狂殺手
 
 # EvilGambler
-EvilGamblerSuccessKillCooldown,成功時のキルクールタイム,Success Kill Cooldown,,
-EvilGamblerFailureKillCooldown,失敗時のキルクールタイム,Failure Kill Cooldown,,
-EvilGamblerSuccessChance,成功確率,Success Chance,,
+EvilGamblerSuccessKillCooldown,成功時のキルクールタイム,Success Kill Cooldown,成功时的击杀冷却时间,成功時的擊殺冷卻時間
+EvilGamblerFailureKillCooldown,失敗時のキルクールタイム,Failure Kill Cooldown,失败时的击杀冷却时间,失敗時的擊殺冷卻時間
+EvilGamblerSuccessChance,成功確率,Success Chance,成功概率,成功機率
 
 # Seer
 Seer.Mode,モード,Mode,模式,模式
@@ -362,3 +362,12 @@ ZiplineCoolChangeSetting,ジップラインクールダウンの設定,Zipline C
 ZiplineCoolTimeSetting,ジップラインクールダウン時間,Zipline Cooldown Time,滑索冷却时间,滑索冷卻時間
 ZiplineImpostorCoolChangeSetting,インポスター用ジップラインクールダウンの設定,Impostor Zipline Cooldown Settings,内鬼滑索冷却时间设置,內鬼滑索冷卻時間設置
 ZiplineImpostorCoolTimeSetting,インポスター用ジップラインクールダウン時間,Impostor Zipline Cooldown Time,内鬼滑索冷却时间,內鬼滑索冷卻時間
+FungleHandler.FungleSpawnType.Default,通常,Default,默认,預設
+FungleHandler.FungleSpawnType.Random,ランダム,Random,随机,隨機
+FungleHandler.FungleSpawnType.Select,選択,Select,选择,選擇
+TheFungleSetting,The Fungle設定,The Fungle Settings,The Fungle设置,The Fungle設置
+TheFungleSpawnType,スポーンタイプ,Spawn Type,出生点类型,出生點類型
+TheFungleAdditionalAdmin,追加アドミン,Additional Admin,额外管理地图,額外管理地圖
+TheFunglePowerOutageSabotage,停電サボタージュ,Power Outage Sabotage,停电破坏,停電破壞
+TheFungleHideSporeMask,胞子マスク非表示,Hide Spore Mask,隐藏孢子面具,隱藏孢子面具
+TheFungleHideSporeMaskOnlyImpostor,インポスターのみ非表示,Hide Only for Impostor,僅对内鬼隐藏,僅對內鬼隱藏

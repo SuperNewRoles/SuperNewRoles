@@ -11,7 +11,7 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
         // 砲台のコンテナオブジェクトを生成
         _gameObject = new GameObject("WaveCannonObjectTank");
         _gameObject.transform.localScale = new Vector3(isFlipX ? -1 : 1, 1, 1);
-        _gameObject.transform.localPosition = startPosition - new Vector3(0, 0.15f, 100f);
+        _gameObject.transform.localPosition = startPosition - new Vector3(0, 0.15f, 5f);
 
         // 砲台の見た目を生成
         TankSpriteObject = new GameObject("TankSpriteObject");
@@ -41,7 +41,7 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
         _tankObj = GameObject.Instantiate(tankObj, _gameObject.transform);
         _tankObj.transform.localScale = Vector3.one;
         _tankObj.transform.localPosition = new(0.75f, 0, 1);
-        _colliders = _tankObj.GetComponentsInChildren<Collider2D>();
+        _colliders = _tankObj.GetComponentsInChildren<Collider2D>(true);
     }
     public override void Detach()
     {
@@ -58,7 +58,7 @@ public class WaveCannonObjectTank : WaveCannonObjectBase
     // WaveCannonObjectBase の抽象メンバーを実装
     public override Collider2D[] HitColliders => _colliders;
     private Collider2D[] _colliders;
-    public override float ShootTime => 6f;
+    public override float ShootTime => 2.88f;
     private GameObject _gameObject;
     private GameObject _tankObj;
     public override GameObject WaveCannonObject => _gameObject;

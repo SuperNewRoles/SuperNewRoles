@@ -43,7 +43,8 @@ public static class MapCustomHandler
                MapEditSettingsOptions.AirshipRandomSpawn ||
                MapEditSettingsOptions.RecordsAdminDestroy ||
                MapEditSettingsOptions.AntiTaskOverWall ||
-               MapEditSettingsOptions.ModifyGapRoomOneWayShadow;
+               MapEditSettingsOptions.ModifyGapRoomOneWayShadow ||
+               MapEditSettingsOptions.TheFungleSetting;
     }
 
     /// <summary>

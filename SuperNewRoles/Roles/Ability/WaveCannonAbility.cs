@@ -19,7 +19,7 @@ public class WaveCannonAbility : CustomButtonBase, IButtonEffect
     public float EffectTimer { get; set; }
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("WaveCannonButton.png");
-    public override string buttonText => "波動砲";
+    public override string buttonText => ModTranslation.GetString("WaveCannonButtonText");
     protected override KeyCode? hotkey => KeyCode.F;
     public override float DefaultTimer => coolDown;
     public WaveCannonObjectBase WaveCannonObject { get; private set; }

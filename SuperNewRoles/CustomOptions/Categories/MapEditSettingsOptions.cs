@@ -1,3 +1,4 @@
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
 
 namespace SuperNewRoles.CustomOptions.Categories;
@@ -32,4 +33,26 @@ public static class MapEditSettingsOptions
 
     [CustomOptionBool("DisableGapRoomShadowForNonImpostor", true, parentFieldName: nameof(ModifyGapRoomOneWayShadow))]
     public static bool DisableGapRoomShadowForNonImpostor;
+
+    // |:========== (TheFungle)スポーンタイプの設定 ==========:|
+    [CustomOptionBool("TheFungleSetting", false, parentFieldName: nameof(Categories.MapEditSettings))]
+    public static bool TheFungleSetting;
+
+    [CustomOptionSelect("TheFungleSpawnType", typeof(FungleHandler.FungleSpawnType), "FungleHandler.FungleSpawnType.", parentFieldName: nameof(TheFungleSetting))]
+    public static FungleHandler.FungleSpawnType TheFungleSpawnType;
+
+    // |:========== (TheFungle)追加アドミンの設定 ==========:|
+    [CustomOptionBool("TheFungleAdditionalAdmin", false, parentFieldName: nameof(TheFungleSetting))]
+    public static bool TheFungleAdditionalAdmin;
+
+    // |:========== (TheFungle)停電サボタージュの設定 ==========:|
+    [CustomOptionBool("TheFunglePowerOutageSabotage", false, parentFieldName: nameof(TheFungleSetting))]
+    public static bool TheFunglePowerOutageSabotage;
+
+    // |:========== (TheFungle)胞子マスク非表示の設定 ==========:|
+    [CustomOptionBool("TheFungleHideSporeMask", false, parentFieldName: nameof(TheFungleSetting))]
+    public static bool TheFungleHideSporeMask;
+
+    [CustomOptionBool("TheFungleHideSporeMaskOnlyImpostor", false, parentFieldName: nameof(TheFungleHideSporeMask))]
+    public static bool TheFungleHideSporeMaskOnlyImpostor;
 }

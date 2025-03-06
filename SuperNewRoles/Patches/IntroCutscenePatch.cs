@@ -4,6 +4,7 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Events;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
@@ -193,6 +194,9 @@ public static class IntroCutscenePatch
             CustomDeathExtensions.Register();
             PoolablePrefabManager.OnIntroCutsceneDestroy(__instance);
             SetTargetPatch.Register();
+
+            FungleAdditionalAdmin.AddAdmin();
+            FungleAdditionalElectrical.CreateElectrical();
 
             ReAssignTasks();
 

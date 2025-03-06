@@ -60,14 +60,10 @@ public abstract class WaveCannonObjectBase
         {
             OnAnimationUpdateShooting();
             if (!ability.Player.AmOwner) return;
-            Logger.Info("Shooting");
             foreach (var collider in HitColliders)
             {
-                Logger.Info("Collider");
-
                 foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
                 {
-                    Logger.Info("Player:" + player.PlayerId);
                     if (player.IsDead()) continue;
                     if (player.PlayerId == ability.Player.PlayerId) continue;
                     if (!collider.IsTouching(player.Player.Collider)) continue;
