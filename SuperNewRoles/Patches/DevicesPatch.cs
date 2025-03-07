@@ -37,26 +37,26 @@ public static class DevicesPatch
         DeviceTypes = new();
         DeviceTimers = new();
 
-        IsAdminRestrict = GeneralSettingOptions.RestrictAdmin;
-        IsCameraRestrict = GeneralSettingOptions.RestrictCamera;
-        IsVitalRestrict = GeneralSettingOptions.RestrictVital;
+        IsAdminRestrict = MapEditSettingsOptions.DeviceAdminOption == DeviceOptionType.Restrict;
+        IsCameraRestrict = MapEditSettingsOptions.DeviceCameraOption == DeviceOptionType.Restrict;
+        IsVitalRestrict = MapEditSettingsOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.Restrict;
 
-        if (GeneralSettingOptions.RestrictDevicesTimeOption)
+        if (MapEditSettingsOptions.DeviceOptions)
         {
             if (IsAdminRestrict)
             {
                 DeviceTypes.Add(DeviceType.Admin.ToString());
-                DeviceTimers[DeviceType.Admin.ToString()] = GeneralSettingOptions.DeviceUseAdminTime;
+                DeviceTimers[DeviceType.Admin.ToString()] = MapEditSettingsOptions.DeviceUseAdminTime;
             }
             if (IsCameraRestrict)
             {
                 DeviceTypes.Add(DeviceType.Camera.ToString());
-                DeviceTimers[DeviceType.Camera.ToString()] = GeneralSettingOptions.DeviceUseCameraTime;
+                DeviceTimers[DeviceType.Camera.ToString()] = MapEditSettingsOptions.DeviceUseCameraTime;
             }
             if (IsVitalRestrict)
             {
                 DeviceTypes.Add(DeviceType.Vital.ToString());
-                DeviceTimers[DeviceType.Vital.ToString()] = GeneralSettingOptions.DeviceUseVitalOrDoorLogTime;
+                DeviceTimers[DeviceType.Vital.ToString()] = MapEditSettingsOptions.DeviceUseVitalOrDoorLogTime;
             }
         }
         SyncTimer = 0f;
@@ -95,7 +95,7 @@ public static class DevicesPatch
     {
         public static bool Prefix(MapConsole __instance)
         {
-            bool IsUse = GeneralSettingOptions.DeviceOptions && GeneralSettingOptions.CanUseDeviceSetting ? GeneralSettingOptions.DeviceUseAdmin : true;
+            bool IsUse = !MapEditSettingsOptions.DeviceOptions || MapEditSettingsOptions.DeviceAdminOption != DeviceOptionType.CantUse;
             return IsUse;
         }
     }
@@ -103,12 +103,20 @@ public static class DevicesPatch
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
     class MapCountOverlayAwakePatch
     {
+        [HarmonyPostfix]
         public static void Postfix(MapCountOverlay __instance)
         {
-            if (!IsAdminRestrict)
-                return;
-            // RPCを送信
-            RpcSetDeviceUseStatus((byte)DeviceType.Admin, PlayerControl.LocalPlayer, true);
+            if (IsAdminRestrict)
+            {
+                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, __instance.transform);
+                TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
+                TimeRemaining.transform.localPosition = new Vector3(0, -1, -100f);
+                TimeRemaining.transform.localScale = Vector3.one * 0.5f;
+                TimeRemaining.gameObject.SetActive(true);
+
+                // RPCを送信
+                RpcSetDeviceUseStatus((byte)DeviceType.Admin, PlayerControl.LocalPlayer, true);
+            }
         }
     }
 
@@ -178,12 +186,26 @@ public static class DevicesPatch
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
     class VitalsMinigameBeginPatch
     {
+        [HarmonyPrefix]
+        static bool Prefix()
+        {
+            bool IsUse = !MapEditSettingsOptions.DeviceOptions || MapEditSettingsOptions.DeviceVitalOrDoorLogOption != DeviceOptionType.CantUse;
+            return IsUse;
+        }
+
         static void Postfix(VitalsMinigame __instance)
         {
-            if (!IsVitalRestrict)
-                return;
-            // RPCを送信
-            RpcSetDeviceUseStatus((byte)DeviceType.Vital, PlayerControl.LocalPlayer, true);
+            if (IsVitalRestrict)
+            {
+                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, __instance.transform);
+                TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
+                TimeRemaining.transform.localPosition = new Vector3(0, 0, -50f);
+                TimeRemaining.transform.localScale = Vector3.one * 0.3f;
+                TimeRemaining.gameObject.SetActive(true);
+
+                // RPCを送信
+                RpcSetDeviceUseStatus((byte)DeviceType.Vital, PlayerControl.LocalPlayer, true);
+            }
         }
     }
 
@@ -260,11 +282,25 @@ public static class DevicesPatch
 
     static void CameraOpen()
     {
-        IsCameraCloseNow = false;
-        if (!IsCameraRestrict)
-            return;
-        // RPCを送信
-        RpcSetDeviceUseStatus((byte)DeviceType.Camera, PlayerControl.LocalPlayer, true);
+        if (MapEditSettingsOptions.DeviceOptions && MapEditSettingsOptions.DeviceCameraOption != DeviceOptionType.CantUse)
+        {
+            IsCameraCloseNow = false;
+            if (IsCameraRestrict)
+            {
+                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, Camera.main.transform);
+                TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
+                TimeRemaining.transform.localPosition = new Vector3(0, -1.8f, -250f);
+                TimeRemaining.transform.localScale = Vector3.one * 0.3f;
+                TimeRemaining.gameObject.SetActive(true);
+
+                // RPCを送信
+                RpcSetDeviceUseStatus((byte)DeviceType.Camera, PlayerControl.LocalPlayer, true);
+            }
+        }
+        else
+        {
+            CameraClose();
+        }
     }
 
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Close))]

@@ -10,21 +10,24 @@ People,{0}人,{0} people,{0}人,{0}人
 
 # 情報機器制限
 DeviceOptions,情報機器制限,Device Options,设备限制,設備限制
-CanUseDeviceSetting,ON/OFF切り替え,ON/OFF Toggle,开关切换,開關切換
-DeviceUseAdminSetting,アドミンを使用可能にする,Enable Admin Use,允许使用管理地图,允許使用管理地圖
-DeviceUseVitalOrDoorLogSetting,バイタル・ドアログを使用可能にする,Enable Vital/Doorlog Use,允许使用生命体征/门禁记录,允許使用生命體徵/門禁記錄
-DeviceUseCameraSetting,カメラを使用可能にする,Enable Camera Use,允许使用摄像头,允許使用攝像頭
-RestrictDevicesTimeOption,時間制限,Time Limit,时间限制,時間限制
-RestrictAdmin,アドミン制限,Admin Restriction,管理地图限制,管理地圖限制
-RestrictVital,バイタル制限,Vital Restriction,生命体征限制,生命體徵限制
-RestrictCamera,カメラ制限,Camera Restriction,摄像头限制,攝像頭限制
-DeviceTimeSetting,制限時間,Limit Time,限制时间,限制時間
+DeviceAdminOption,アドミン設定,Admin Settings,管理地图设置,管理地圖設置
+DeviceVitalOrDoorLogOption,バイタル・ドアログ設定,Vital/Doorlog Settings,生命体征/门禁记录设置,生命體徵/門禁記錄設置
+DeviceCameraOption,カメラ設定,Camera Settings,摄像头设置,攝像頭設置
+DeviceOptionType.None,使用可能,Disabled,禁用,禁用
+DeviceOptionType.CantUse,使用不可,Enabled,启用,啟用
+DeviceOptionType.Restrict,時間制限,Time Limit,时间限制,時間限制
+DeviceTimeSettingAdmin,アドミンの制限時間,Admin Limit Time,管理地图限制时间,管理地圖限制時間
+DeviceTimeSettingVitalOrDoorLog,バイタル・ドアログの制限時間,Vital/Doorlog Limit Time,生命体征/门禁记录限制时间,生命體徵/門禁記錄限制時間
+DeviceTimeSettingCamera,カメラの制限時間,Camera Limit Time,摄像头限制时间,攝像頭限制時間
 
 NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Think only about yourself. Use others.,只考虑自己。利用他人。,只考慮自己。利用他人。
 
 # GeneralSettings
 KickNonPCPlayers,PC以外をキックする,Kick Non-PC Players,踢出非PC玩家,踢出非PC玩家
 BanNoFriendCodePlayers,フレンドコードを持っていない人をBANする,Ban Players Without Friend Code,封禁没有好友代码的玩家,封禁沒有好友代碼的玩家
+
+# GameSettings
+CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task, the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
@@ -46,6 +49,7 @@ MapEditSettings,マップ改造,Map Edit Settings,地图改造,地圖改造
 WireTaskIsRandom,配線タスクランダム,Random Wire Task,随机接线任务,隨機接線任務
 WireTaskNum,配線タスク数,Number of Wire Tasks,接线任务数量,接線任務數量
 DisableModColor,MODカラー禁止,Disable MOD Colors,禁用MOD颜色,禁用MOD顏色
+AirshipSetting,Airship 設定,Airship Settings,飞艇设置,飛艇設置
 AirshipRandomSpawn,ランダムスポーン,Random Spawn,随机出生点,隨機出生點
 RecordsAdminDestroy,アーカイブアドミン封印,Seal Records Admin,封印档案室管理地图,封印檔案室管理地圖
 AntiTaskOverWall,壁越しタスク禁止,Disable Tasks Through Walls,禁止隔墙任务,禁止隔牆任務
@@ -189,6 +193,7 @@ JackalSidekickCooldown,サイドキック 作成クールダウン,Sidekick Cool
 JackalSidekickType,サイドキックタイプ,Sidekick Type,边缘队员类型,邊緣隊員類型
 JackalSidekickType.Sidekick,サイドキック,Sidekick,边缘队员,邊緣隊員
 JackalSidekickType.Friends,ジャッカルフレンズ,Jackal Friends,杰克朋友,傑克朋友
+SidekickButtonText,サイドキック,Sidekick,边缘队员,邊緣隊員
 
 # Bait Options
 BaitReportTime,通報の遅延,Report Delay,通報延遲,通報延遲

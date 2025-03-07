@@ -38,12 +38,7 @@ public static class MapCustomHandler
     /// <returns>いずれかのカスタム機能が有効な場合はtrue</returns>
     private static bool IsAnyCustomOptionEnabled()
     {
-        return MapEditSettingsOptions.WireTaskIsRandom ||
-               GeneralSettingOptions.DisableModColor ||
-               MapEditSettingsOptions.AirshipRandomSpawn ||
-               MapEditSettingsOptions.RecordsAdminDestroy ||
-               MapEditSettingsOptions.AntiTaskOverWall ||
-               MapEditSettingsOptions.ModifyGapRoomOneWayShadow ||
+        return MapEditSettingsOptions.AirshipRandomSpawn ||
                MapEditSettingsOptions.TheFungleSetting;
     }
 

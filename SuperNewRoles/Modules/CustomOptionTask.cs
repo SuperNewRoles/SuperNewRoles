@@ -43,14 +43,14 @@ namespace SuperNewRoles.Modules
 
         public event Action<int> ValueChanged;
 
-        public CustomOptionTaskAttribute(string id, int shortDefault, int longDefault, int commonDefault, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.Default)
-            : base(id, translationName, parentFieldName, displayMode)
+        public CustomOptionTaskAttribute(string id, int shortDefault, int longDefault, int commonDefault, string? translationName = null, string? parentFieldName = null, DisplayModeId displayMode = DisplayModeId.Default, object? parentActiveValue = null)
+            : base(id, translationName, parentFieldName, displayMode, parentActiveValue)
         {
             // TaskDataのみを初期化して、個別オプションは後付（AttachOptionsメソッド経由）とします
             TaskData = new TaskOptionData(shortDefault, longDefault, commonDefault);
-            ShortOption = new CustomOptionIntAttribute(id + "_Short", 0, 20, 1, shortDefault, "CustomOptionTask_Short", parentFieldName, displayMode);
-            LongOption = new CustomOptionIntAttribute(id + "_Long", 0, 20, 1, longDefault, "CustomOptionTask_Long", parentFieldName, displayMode);
-            CommonOption = new CustomOptionIntAttribute(id + "_Common", 0, 20, 1, commonDefault, "CustomOptionTask_Common", parentFieldName, displayMode);
+            ShortOption = new CustomOptionIntAttribute(id + "_Short", 0, 20, 1, shortDefault, "CustomOptionTask_Short", parentFieldName, displayMode, parentActiveValue);
+            LongOption = new CustomOptionIntAttribute(id + "_Long", 0, 20, 1, longDefault, "CustomOptionTask_Long", parentFieldName, displayMode, parentActiveValue);
+            CommonOption = new CustomOptionIntAttribute(id + "_Common", 0, 20, 1, commonDefault, "CustomOptionTask_Common", parentFieldName, displayMode, parentActiveValue);
         }
         public void SetupAttributes(FieldInfo meField, ref HashSet<string> fieldNames, List<CustomOption> customOptions, Dictionary<string, CustomOptionBaseAttribute> customOptionAttributes)
         {

@@ -4,9 +4,6 @@ namespace SuperNewRoles.CustomOptions.Categories;
 
 public static class MapSettingOptions
 {
-    // |:========== ベントアニメーション有効化の設定 ==========:|
-    [CustomOptionBool("VentAnimationPlaySetting", true, parentFieldName: nameof(Categories.MapSettings))]
-    public static bool VentAnimationPlaySetting;
 
     // |:========== 緊急タスク継続時間の設定 ==========:|
     [CustomOptionBool("ReactorDurationSetting", false, parentFieldName: nameof(Categories.MapSettings))]

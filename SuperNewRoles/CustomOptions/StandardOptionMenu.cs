@@ -481,19 +481,7 @@ public static class StandardOptionMenu
             gameObject.SetActive(shouldBeActive);
         }
     }
-    private static bool ShouldOptionBeActive(CustomOption option)
-    {
-        if (!option.ShouldDisplay())
-            return false;
-        var parent = option.ParentOption;
-        while (parent != null)
-        {
-            if (parent.Selection == 0)
-                return false;
-            parent = parent.ParentOption;
-        }
-        return true;
-    }
+    private static bool ShouldOptionBeActive(CustomOption option) => option.ShouldDisplay();
     private static void RecalculateOptionsPosition(Transform menuTransform, Scroller scroller)
     {
         float lastY = 1.6f;
