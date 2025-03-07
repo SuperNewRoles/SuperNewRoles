@@ -80,7 +80,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return _canCreateSidekick(_sidekickCreated);
+        return ExPlayerControl.LocalPlayer.IsAlive() && _canCreateSidekick(_sidekickCreated);
     }
     [CustomRPC]
     public static void RpcSidekicked(ExPlayerControl source, ExPlayerControl player, RoleId roleId, RoleTypes roleType)

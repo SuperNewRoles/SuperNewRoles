@@ -86,6 +86,7 @@ public static class NameText
             player.Data.Role.NameColor = Color.white;
             player.Player.cosmetics.nameText.color = Color.white;
         }
+
         UpdateVisiable(player);
         NameTextUpdateEvent.Invoke(player);
     }

@@ -53,7 +53,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
 
     public override bool CheckHasButton()
     {
-        return CanKill();
+        return ExPlayerControl.LocalPlayer.IsAlive() && CanKill();
     }
 
     [CustomRPC]

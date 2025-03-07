@@ -45,7 +45,7 @@ public class JSidekickAbility : AbilityBase
             {
                 promoteOnParentDeathAbility.OnPromoted += () =>
                 {
-                    if (canInfinite)
+                    if (!canInfinite)
                     {
                         var jackal = player.PlayerAbilities.FirstOrDefault(x => x is JackalAbility);
                         if (jackal is JackalAbility jackalAbility)
