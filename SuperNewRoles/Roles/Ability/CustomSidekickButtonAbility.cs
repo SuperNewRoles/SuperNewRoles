@@ -19,6 +19,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     private readonly Sprite _sidekickSprite;
     private readonly string _sidekickText;
     private readonly Func<ExPlayerControl, bool>? _isTargetable;
+    public Action<float> OnCooldownStarted;
     public override Color32 OutlineColor => new Color32(0, 255, 255, 255);
     public override Sprite Sprite => _sidekickSprite;
     public override string buttonText => _sidekickText;
@@ -66,6 +67,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         _onSidekickCreated?.Invoke(Target);
         _sidekickCreated = true;
         ResetTimer();
+        OnCooldownStarted?.Invoke(DefaultTimer);
     }
 
     public override bool CheckIsAvailable()

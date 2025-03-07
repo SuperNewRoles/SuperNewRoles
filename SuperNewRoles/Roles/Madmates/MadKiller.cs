@@ -4,6 +4,7 @@ using AmongUs.GameOptions;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Madmates;
@@ -15,9 +16,9 @@ class MadKiller : RoleBase<MadKiller>
     public override List<Func<AbilityBase>> Abilities => new()
     {
         () => new MadKillerAbility(new MadKillerData(
-            hasImpostorVision: true,
-            couldUseVent: false,
-            killCooldown: 0f
+            hasImpostorVision: SideKiller.MadKillerHasImpostorVision,
+            couldUseVent: SideKiller.MadKillerCanUseVent,
+            killCooldown: SideKiller.MadKillerKillCooldown
         ))
     };
 

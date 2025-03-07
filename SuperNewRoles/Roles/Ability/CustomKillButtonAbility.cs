@@ -13,6 +13,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public Func<bool> TargetPlayersInVentsValue { get; }
     public Func<ExPlayerControl, bool> IsTargetableValue { get; }
     public Action<ExPlayerControl> KilledCallback { get; }
+    public Action<float> OnCooldownStarted;
 
     public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
     public override Sprite Sprite => HudManager.Instance?.KillButton?.graphic?.sprite;
@@ -39,6 +40,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
 
         ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
         ResetTimer();
+        OnCooldownStarted?.Invoke(DefaultTimer);
     }
 
     public override bool CheckIsAvailable()

@@ -26,25 +26,22 @@ public static class NameText
             player.PlayerInfoText = playerInfoText;
         }
 
-        // Set the position every time bc it sometimes ends up in the wrong place due to camoflauge
         playerInfoText.transform.localPosition = player.Player.cosmetics.nameText.transform.localPosition + Vector3.up * 0.2f;
 
         var meetingInfo = player.MeetingInfoText;
-        if (MeetingHud.Instance != null)
+        if (MeetingHud.Instance != null && player.VoteArea != null)
         {
-            var playerVoteArea = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == player.PlayerId);
-            if (meetingInfo == null && playerVoteArea != null)
+            if (meetingInfo == null)
             {
-                meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
+                meetingInfo = Object.Instantiate(player.VoteArea.NameText, player.VoteArea.NameText.transform.parent);
                 meetingInfo.transform.localPosition += Vector3.down * 0.1f;
                 meetingInfo.fontSize = 1.5f;
                 meetingInfo.gameObject.name = "Info";
                 player.MeetingInfoText = meetingInfo;
             }
-            // Set player name higher to align in middle
-            if (meetingInfo != null && playerVoteArea != null)
+            if (meetingInfo != null)
             {
-                var playerName = playerVoteArea.NameText;
+                var playerName = player.VoteArea.NameText;
                 playerName.transform.localPosition = new Vector3(0.3384f, 0.0311f + 0.0683f, -0.1f);
             }
         }

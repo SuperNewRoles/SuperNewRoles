@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
 using AmongUs.GameOptions;
+using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 
@@ -35,7 +38,8 @@ public class SideKillerAbility : AbilityBase
         _killAbility = new CustomKillButtonAbility(
             () => true,
             () => _data.killCooldown,
-            () => false
+            () => true,
+            isTargetable: (player) => SetTargetPatch.ValidMadkiller(player)
         );
 
         _sidekickAbility = new CustomSidekickButtonAbility(
@@ -71,6 +75,26 @@ public class SideKillerAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
+        // クールタイムの同期を実装
+        if (_killAbility != null)
+        {
+            _killAbility.OnCooldownStarted += SyncCooldowns;
+        }
+
+        if (_sidekickAbility != null)
+        {
+            _sidekickAbility.OnCooldownStarted += SyncCooldowns;
+        }
+    }
+
+    private void SyncCooldowns(float cooldown)
+    {
+        // サイドキラーのキルクールタイムとサイドキックボタンのクールタイムを同期
+        if (_killAbility != null && _sidekickAbility != null)
+        {
+            _killAbility.ResetTimer();
+            _sidekickAbility.ResetTimer();
+        }
     }
 
     [CustomRPC]
@@ -78,12 +102,5 @@ public class SideKillerAbility : AbilityBase
     {
         owner.madKillerAbility = madKiller;
         madKiller.ownerAbility = owner;
-
-        // 新しい設定を適用
-        madKiller.UpdateSettings(
-            owner._data.madKillerCanUseVent,
-            owner._data.madKillerHasImpostorVision,
-            owner._data.cannotSeeMadKillerBeforePromotion
-        );
     }
 }

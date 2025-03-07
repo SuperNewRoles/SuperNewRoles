@@ -87,8 +87,17 @@ public static class CalledMeetingPatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 public static class MeetingStartPatch
 {
-    public static void Postfix()
+    public static void Postfix(MeetingHud __instance)
     {
+        // 全てのExPlayerControlにPlayerVoteAreaを設定
+        foreach (var playerState in __instance.playerStates)
+        {
+            var exPlayer = Modules.ExPlayerControl.ById(playerState.TargetPlayerId);
+            if (exPlayer != null)
+            {
+                exPlayer.VoteArea = playerState;
+            }
+        }
         MeetingStartEvent.Invoke();
     }
 }
@@ -116,5 +125,20 @@ public static class VotingCompletePatch
     public static void Postfix(Il2CppStructArray<MeetingHud.VoterState> states, ref NetworkedPlayerInfo exiled, bool tie)
     {
         VotingCompleteEvent.Invoke(states, exiled, tie);
+    }
+}
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
+public static class MeetingHudOnDestroyPatch
+{
+    public static void Postfix()
+    {
+        // 全てのExPlayerControlのVoteAreaをnullに設定
+        foreach (var exPlayer in Modules.ExPlayerControl.ExPlayerControls)
+        {
+            if (exPlayer != null)
+            {
+                exPlayer.VoteArea = null;
+            }
+        }
     }
 }

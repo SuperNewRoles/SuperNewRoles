@@ -94,10 +94,9 @@ public class CelebrityAbility : AbilityBase
 
         if (player.Player != null && player.Player.cosmetics != null && player.Player.cosmetics.nameText != null)
             player.Player.cosmetics.nameText.color = color;
-        PlayerVoteArea voteArea;
-        if (MeetingHud.Instance != null && (voteArea = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == player.PlayerId)) != null)
+        if (player.VoteArea != null)
         {
-            voteArea.NameText.color = color;
+            player.VoteArea.NameText.color = color;
         }
     }
 

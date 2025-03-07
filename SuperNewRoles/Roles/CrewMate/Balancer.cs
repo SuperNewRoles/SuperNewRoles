@@ -214,50 +214,45 @@ class BalancerAbility : AbilityBase, IAbilityCount
     }
     public void EndBalancing()
     {
-        if (BalancingAbility != null && BalancingAbility == this)
+        if (BalancingAbility != this) return;
+        if (!MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote)) return;
+        // 未投票時ランダムに投票する設定がONの場合のみ、投票先を変更する
+        if (Balancer.BalancerRandomVoteWhenNoVote)
         {
-            if (MeetingHud.Instance.playerStates.All((PlayerVoteArea ps) => ps.AmDead || ps.DidVote))
+            List<byte> targetIds = [targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId];
+            foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
             {
-                // 未投票時ランダムに投票する設定がONの場合のみ、投票先を変更する
-                if (Balancer.BalancerRandomVoteWhenNoVote)
+                if (!area.AmDead && !targetIds.Contains(area.VotedFor))
                 {
-                    foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
-                    {
-                        List<byte> targetIds = new() { targetPlayerLeft.PlayerId, targetPlayerRight.PlayerId };
-                        if (!area.AmDead && !targetIds.Contains(area.VotedFor))
-                        {
-                            area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
-                        }
-                    }
+                    area.VotedFor = targetIds[UnityEngine.Random.Range(0, targetIds.Count)];
                 }
-                else
-                {
-                    foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
-                    {
-                        if (!area.AmDead && area.VotedFor < 250)
-                            area.VotedFor = 255;
-                    }
-
-                }
-                bool tie;
-                var max = MeetingHud.Instance.CalculateVotes().MaxPair(out tie);
-                PlayerControl exiled = null;
-                if (!tie)
-                {
-                    exiled = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == max.Key);
-                }
-                MeetingHud.VoterState[] array = new MeetingHud.VoterState[MeetingHud.Instance.playerStates.Length];
-                for (int i = 0; i < MeetingHud.Instance.playerStates.Length; i++)
-                {
-                    PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
-                    MeetingHud.VoterState voterState = default;
-                    voterState.VoterId = playerVoteArea.TargetPlayerId;
-                    voterState.VotedForId = playerVoteArea.VotedFor;
-                    array[i] = voterState;
-                }
-                MeetingHud.Instance.RpcVotingComplete(array, exiled?.Data, tie);
             }
         }
+        else
+        {
+            foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+            {
+                if (!area.AmDead && area.VotedFor < 250)
+                    area.VotedFor = 255;
+            }
+        }
+        bool tie;
+        var max = MeetingHud.Instance.CalculateVotes().MaxPair(out tie);
+        PlayerControl exiled = null;
+        if (!tie)
+        {
+            exiled = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == max.Key);
+        }
+        MeetingHud.VoterState[] array = new MeetingHud.VoterState[MeetingHud.Instance.playerStates.Length];
+        for (int i = 0; i < MeetingHud.Instance.playerStates.Length; i++)
+        {
+            PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
+            MeetingHud.VoterState voterState = default;
+            voterState.VoterId = playerVoteArea.TargetPlayerId;
+            voterState.VotedForId = playerVoteArea.VotedFor;
+            array[i] = voterState;
+        }
+        MeetingHud.Instance.RpcVotingComplete(array, exiled?.Data, tie);
     }
     public void OnVotingComplete(VotingCompleteEventData data)
     {

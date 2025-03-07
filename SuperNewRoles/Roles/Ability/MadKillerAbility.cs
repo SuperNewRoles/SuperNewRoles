@@ -7,6 +7,7 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using AmongUs.GameOptions;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -19,41 +20,56 @@ public record MadKillerData(
 public class MadKillerAbility : AbilityBase
 {
     private MadKillerData _data;
+    public bool IsAwakened => _isAwakened;
     private bool _isAwakened;
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _visionAbility;
     private KnowImpostorAbility _knowImpostorAbility;
     private EventListener<DieEventData> _dieEventListener;
     private EventListener<DisconnectEventData> _disconnectEventListener;
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
     public SideKillerAbility ownerAbility;
+    public CustomKillButtonAbility _killButtonAbility;
     private bool _cannotBeSeenBeforePromotion;
+    private float _currentKillCooldown;
 
     public MadKillerAbility(MadKillerData data)
     {
         _data = data;
         _isAwakened = false;
         _cannotBeSeenBeforePromotion = false;
+        _currentKillCooldown = data.killCooldown;
     }
 
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         base.Attach(player, abilityId, parent);
-
-        _ventAbility = new CustomVentAbility(() => _data.couldUseVent || _isAwakened);
-        _visionAbility = new ImpostorVisionAbility(() => _data.hasImpostorVision);
-        _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion);
-
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
-        AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(_ventAbility, parentAbility);
-        exPlayer.AttachAbility(_visionAbility, parentAbility);
-        exPlayer.AttachAbility(_knowImpostorAbility, parentAbility);
+        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
-
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (data.Player == Player && ExPlayerControl.LocalPlayer.IsImpostor())
+        {
+            if (!_cannotBeSeenBeforePromotion || !_isAwakened) return;
+            data.Player.cosmetics.nameText.color = Palette.ImpostorRed;
+            if (data.Player.VoteArea != null)
+                data.Player.VoteArea.NameText.color = Palette.ImpostorRed;
+        }
+    }
     public override void AttachToLocalPlayer()
     {
         _dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
         _disconnectEventListener = DisconnectEvent.Instance.AddListener(OnPlayerDisconnect);
+        _ventAbility = new CustomVentAbility(() => _data.couldUseVent);
+        _visionAbility = new ImpostorVisionAbility(() => _data.hasImpostorVision);
+        _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion);
+        _killButtonAbility = new CustomKillButtonAbility(() => _isAwakened, () => _currentKillCooldown, () => true, isTargetable: (player) => SetTargetPatch.ValidMadkiller(player));
+
+        AbilityParentAbility parentAbility = new(this);
+        Player.AttachAbility(_ventAbility, parentAbility);
+        Player.AttachAbility(_visionAbility, parentAbility);
+        Player.AttachAbility(_knowImpostorAbility, parentAbility);
+        Player.AttachAbility(_killButtonAbility, parentAbility);
     }
 
     private void OnPlayerDead(DieEventData data)
@@ -93,29 +109,10 @@ public class MadKillerAbility : AbilityBase
     }
 
     // 新しい設定を適用するメソッド
-    public void UpdateSettings(bool canUseVent, bool hasImpostorVision, bool cannotBeSeenBeforePromotion)
+    public void UpdateSettings(bool canUseVent, bool hasImpostorVision, bool cannotBeSeenBeforePromotion, float killCooldown)
     {
         _data = _data with { couldUseVent = canUseVent, hasImpostorVision = hasImpostorVision };
         _cannotBeSeenBeforePromotion = cannotBeSeenBeforePromotion;
-    }
-
-    // 他のプレイヤーから見えるかどうかを判定するメソッド
-    public bool IsVisibleTo(PlayerControl viewer)
-    {
-        if (!_cannotBeSeenBeforePromotion)
-            return true;
-
-        if (_isAwakened)
-            return true;
-
-        // サイドキラー自身からは見える
-        if (ownerAbility?.Player != null && viewer.PlayerId == ownerAbility.Player.PlayerId)
-            return true;
-
-        // 自分自身からは見える
-        if (viewer.PlayerId == Player.PlayerId)
-            return true;
-
-        return false;
+        _currentKillCooldown = killCooldown;
     }
 }

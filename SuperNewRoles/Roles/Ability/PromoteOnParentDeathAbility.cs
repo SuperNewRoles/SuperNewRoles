@@ -4,6 +4,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -58,6 +59,8 @@ public class PromoteOnParentDeathAbility : AbilityBase
         if (Owner.Player == null) return;
         ExPlayerControl exPlayer = Player;
         if (exPlayer.Role == PromoteRole) return;
+        if (exPlayer.IsDead()) return;
+
         RpcPromote(exPlayer, PromoteRole, PromoteRoleVanilla);
         OnPromoted?.Invoke();
     }
