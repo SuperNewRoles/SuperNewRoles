@@ -203,7 +203,7 @@ public static class IntroCutscenePatch
             NameText.UpdateAllNameInfo();
 
             // 情報機器制限の設定を初期化
-            if (MapEditSettingsOptions.DeviceOptions)
+            if (MapSettingOptions.DeviceOptions)
             {
                 DevicesPatch.ClearAndReload();
             }

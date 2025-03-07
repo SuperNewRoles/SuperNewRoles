@@ -37,26 +37,26 @@ public static class DevicesPatch
         DeviceTypes = new();
         DeviceTimers = new();
 
-        IsAdminRestrict = MapEditSettingsOptions.DeviceAdminOption == DeviceOptionType.Restrict;
-        IsCameraRestrict = MapEditSettingsOptions.DeviceCameraOption == DeviceOptionType.Restrict;
-        IsVitalRestrict = MapEditSettingsOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.Restrict;
+        IsAdminRestrict = MapSettingOptions.DeviceAdminOption == DeviceOptionType.Restrict;
+        IsCameraRestrict = MapSettingOptions.DeviceCameraOption == DeviceOptionType.Restrict;
+        IsVitalRestrict = MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.Restrict;
 
-        if (MapEditSettingsOptions.DeviceOptions)
+        if (MapSettingOptions.DeviceOptions)
         {
             if (IsAdminRestrict)
             {
                 DeviceTypes.Add(DeviceType.Admin.ToString());
-                DeviceTimers[DeviceType.Admin.ToString()] = MapEditSettingsOptions.DeviceUseAdminTime;
+                DeviceTimers[DeviceType.Admin.ToString()] = MapSettingOptions.DeviceUseAdminTime;
             }
             if (IsCameraRestrict)
             {
                 DeviceTypes.Add(DeviceType.Camera.ToString());
-                DeviceTimers[DeviceType.Camera.ToString()] = MapEditSettingsOptions.DeviceUseCameraTime;
+                DeviceTimers[DeviceType.Camera.ToString()] = MapSettingOptions.DeviceUseCameraTime;
             }
             if (IsVitalRestrict)
             {
                 DeviceTypes.Add(DeviceType.Vital.ToString());
-                DeviceTimers[DeviceType.Vital.ToString()] = MapEditSettingsOptions.DeviceUseVitalOrDoorLogTime;
+                DeviceTimers[DeviceType.Vital.ToString()] = MapSettingOptions.DeviceUseVitalOrDoorLogTime;
             }
         }
         SyncTimer = 0f;
@@ -95,7 +95,7 @@ public static class DevicesPatch
     {
         public static bool Prefix(MapConsole __instance)
         {
-            bool IsUse = !MapEditSettingsOptions.DeviceOptions || MapEditSettingsOptions.DeviceAdminOption != DeviceOptionType.CantUse;
+            bool IsUse = !MapSettingOptions.DeviceOptions || MapSettingOptions.DeviceAdminOption != DeviceOptionType.CantUse;
             return IsUse;
         }
     }
@@ -186,15 +186,10 @@ public static class DevicesPatch
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
     class VitalsMinigameBeginPatch
     {
-        [HarmonyPrefix]
-        static bool Prefix()
-        {
-            bool IsUse = !MapEditSettingsOptions.DeviceOptions || MapEditSettingsOptions.DeviceVitalOrDoorLogOption != DeviceOptionType.CantUse;
-            return IsUse;
-        }
-
         static void Postfix(VitalsMinigame __instance)
         {
+            if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.CantUse)
+                __instance.Close();
             if (IsVitalRestrict)
             {
                 TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, __instance.transform);
@@ -282,7 +277,7 @@ public static class DevicesPatch
 
     static void CameraOpen()
     {
-        if (MapEditSettingsOptions.DeviceOptions && MapEditSettingsOptions.DeviceCameraOption != DeviceOptionType.CantUse)
+        if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption != DeviceOptionType.CantUse)
         {
             IsCameraCloseNow = false;
             if (IsCameraRestrict)

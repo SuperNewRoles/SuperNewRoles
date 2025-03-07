@@ -14,12 +14,12 @@ public static class CommonCustom
     {
         static void Postfix(NormalPlayerTask __instance)
         {
-            if (__instance.TaskType != TaskTypes.FixWiring || !MapEditSettingsOptions.WireTaskIsRandom) return;
+            if (__instance.TaskType != TaskTypes.FixWiring || !MapSettingOptions.WireTaskIsRandom) return;
             List<Console> orgList = ShipStatus.Instance.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(__instance.TaskType)).ToList<global::Console>();
             List<Console> list = new(orgList);
 
-            __instance.MaxStep = MapEditSettingsOptions.WireTaskNum;
-            __instance.Data = new byte[MapEditSettingsOptions.WireTaskNum];
+            __instance.MaxStep = MapSettingOptions.WireTaskNum;
+            __instance.Data = new byte[MapSettingOptions.WireTaskNum];
             for (int i = 0; i < __instance.Data.Length; i++)
             {
                 if (list.Count == 0)
