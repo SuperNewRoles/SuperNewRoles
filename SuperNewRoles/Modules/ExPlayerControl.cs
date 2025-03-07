@@ -5,6 +5,7 @@ using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.SuperTrophies;
 using TMPro;
 using UnityEngine;
 
@@ -120,10 +121,14 @@ public class ExPlayerControl
     {
         if (Role == roleId) return;
         DetachOldRole(Role);
+        if (AmOwner)
+            SuperTrophyManager.DetachTrophy(Role);
         Role = roleId;
         if (CustomRoleManager.TryGetRoleById(roleId, out var role))
         {
             role.OnSetRole(Player);
+            if (AmOwner)
+                SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
         }
         else
@@ -170,6 +175,8 @@ public class ExPlayerControl
             PlayerAbilitiesDictionary.Remove(ability.AbilityId);
             _hasAbilityCache.Remove(ability.GetType().Name);
         }
+        if (AmOwner)
+            SuperTrophyManager.DetachTrophy(abilitiesToDetach);
     }
     public void Disconnected()
     {
@@ -260,6 +267,7 @@ public class ExPlayerControl
     {
         PlayerAbilities.Add(ability);
         PlayerAbilitiesDictionary.Add(abilityId, ability);
+        SuperTrophyManager.RegisterTrophy(ability);
         switch (ability)
         {
             case CustomVentAbility customVentAbility:
@@ -296,6 +304,7 @@ public class ExPlayerControl
         {
             ability.Detach();
         }
+        SuperTrophyManager.DetachTrophy(ability);
         switch (ability)
         {
             case CustomVentAbility customVentAbility:

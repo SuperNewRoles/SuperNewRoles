@@ -5,6 +5,8 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.WaveCannonObj;
 using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.SuperTrophies;
+using System.Linq;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -90,4 +92,66 @@ public enum WaveCannonType
     Cannon,
     Santa,
     Bullet,
+}
+public class WaveCannonFiveShotTrophy : SuperTrophyAbility<WaveCannonFiveShotTrophy>
+{
+    public override TrophiesEnum TrophyId => TrophiesEnum.WaveCannonFiveShot;
+    public override TrophyRank TrophyRank => TrophyRank.Bronze;
+
+    private WaveCannonAbility _waveCannonAbility;
+    private EventListener<MurderEventData> _onMurderEvent;
+
+    private int _lastInstanceId;
+    private int _killedCounter;
+    public const int NeededKilledCount = 2;
+    public override Type[] TargetAbilities => new Type[] { typeof(WaveCannonAbility) };
+
+    public override void OnRegister()
+    {
+        // WaveCannonAbility の取得とカウンターの初期化
+        _waveCannonAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
+            .FirstOrDefault(x => x is WaveCannonAbility) as WaveCannonAbility;
+        _killedCounter = 0;
+
+        // 殺害イベントのリスナーを登録
+        _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
+    }
+
+    private void HandleMurderEvent(MurderEventData data)
+    {
+        // ローカルプレイヤーによるアクション以外は無視する
+        if (data.killer != PlayerControl.LocalPlayer)
+        {
+            return;
+        }
+
+        // WaveCannonObject と内部の WaveCannonObject が有効か確認
+        var cannonObj = _waveCannonAbility?.WaveCannonObject?.WaveCannonObject;
+        if (cannonObj == null)
+        {
+            return;
+        }
+
+        int currentInstanceId = cannonObj.GetInstanceID();
+        if (currentInstanceId != _lastInstanceId)
+        {
+            _killedCounter = 0;
+            _lastInstanceId = currentInstanceId;
+        }
+
+        _killedCounter++;
+        if (_killedCounter >= NeededKilledCount)
+        {
+            Complete();
+        }
+    }
+
+    public override void OnDetached()
+    {
+        if (_onMurderEvent != null)
+        {
+            MurderEvent.Instance.RemoveListener(_onMurderEvent);
+            _onMurderEvent = null;
+        }
+    }
 }

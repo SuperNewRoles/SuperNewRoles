@@ -6,6 +6,7 @@ using HarmonyLib;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.SuperTrophies;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -469,6 +470,9 @@ public static class OnGameEndPatch
         AdditionalTempData.Clear();
 
         CollectPlayerRoleData(gameOverReason);
+
+        // トロフィー処理を実行
+        SuperTrophyManager.OnEndGame();
 
         var (winners, winCondition, willRevivePlayers) = HandleEndGameProcess(ref gameOverReason);
         EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();

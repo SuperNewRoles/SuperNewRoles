@@ -20,6 +20,7 @@ using UnityEngine.EventSystems;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.HelpMenus;
 using SuperNewRoles.MapCustoms;
+using SuperNewRoles.SuperTrophies;
 
 namespace SuperNewRoles;
 
@@ -56,6 +57,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomOptionManager.Load();
         SyncVersion.Load();
         EventListenerManager.Load();
+        SuperTrophyManager.Load();
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
