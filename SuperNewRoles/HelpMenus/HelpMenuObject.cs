@@ -18,7 +18,8 @@ public static class HelpMenuObjectManager
     public static HelpMenuCategoryBase[] categories;
     public static Dictionary<string, GameObject> selectedButtons;
     public static HelpMenuCategoryBase? CurrentCategory;
-    public const HelpMenuCategory DEFAULT_MENU = HelpMenuCategory.MyRoleInfomation;
+    public const HelpMenuCategory DEFAULT_MENU_GAME = HelpMenuCategory.MyRoleInfomation;
+    public const HelpMenuCategory DEFAULT_MENU_LOBBY = HelpMenuCategory.AssignmentsSettingInfomation;
     private static void Initialize()
     {
         if (categories == null || categories.Length == 0)
@@ -42,7 +43,10 @@ public static class HelpMenuObjectManager
         // ヘルプメニューを表示するときにホスト情報のマスクエリアを非表示にする
         RoleOptionMenu.UpdateHostInfoMaskArea(false);
 
-        CurrentCategory = categories.FirstOrDefault(c => c.Category == DEFAULT_MENU);
+        var defaultNow =
+            AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started
+            ? DEFAULT_MENU_GAME : DEFAULT_MENU_LOBBY;
+        CurrentCategory = categories.FirstOrDefault(c => c.Category == defaultNow);
         CurrentCategory.Show(helpMenuObject.transform.Find("RightContainer").gameObject);
         CurrentCategory.UpdateShow();
     }
@@ -154,6 +158,47 @@ public static class HelpMenuObjectManager
         }
         else
         {
+            // ロビーの場合は毎回「配役情報」カテゴリに戻す
+            bool inLobby = AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined;
+            if (inLobby)
+            {
+                // 配役情報カテゴリに切り替える
+                var rightContainer = helpMenuObject.transform.Find("RightContainer").gameObject;
+                if (CurrentCategory != null && CurrentCategory.Category != DEFAULT_MENU_LOBBY)
+                {
+                    CurrentCategory.Hide(rightContainer);
+                    if (selectedButtons.TryGetValue(CurrentCategory.Name, out var oldSelectedObject))
+                        oldSelectedObject.SetActive(false);
+
+                    CurrentCategory = categories.FirstOrDefault(c => c.Category == DEFAULT_MENU_LOBBY);
+                    if (CurrentCategory != null)
+                    {
+                        CurrentCategory.Show(rightContainer);
+                        if (selectedButtons.TryGetValue(CurrentCategory.Name, out var newSelectedObject))
+                            newSelectedObject.SetActive(true);
+                    }
+                }
+            }
+            else
+            {
+                // ゲーム中は自分の役職情報に戻す
+                var rightContainer = helpMenuObject.transform.Find("RightContainer").gameObject;
+                if (CurrentCategory != null && CurrentCategory.Category != DEFAULT_MENU_GAME)
+                {
+                    CurrentCategory.Hide(rightContainer);
+                    if (selectedButtons.TryGetValue(CurrentCategory.Name, out var oldSelectedObject))
+                        oldSelectedObject.SetActive(false);
+
+                    CurrentCategory = categories.FirstOrDefault(c => c.Category == DEFAULT_MENU_GAME);
+                    if (CurrentCategory != null)
+                    {
+                        CurrentCategory.Show(rightContainer);
+                        if (selectedButtons.TryGetValue(CurrentCategory.Name, out var newSelectedObject))
+                            newSelectedObject.SetActive(true);
+                    }
+                }
+            }
+
             fadeCoroutine.ReverseFade();
 
             // ヘルプメニューの表示状態によってマスクエリアの表示を切り替える
@@ -208,6 +253,34 @@ public static class HelpMenuObjectManager
                 __instance.LobbyInfoPane.HostViewButton.enabled = enabled;
             if (__instance.LobbyInfoPane.ClientViewButton != null)
                 __instance.LobbyInfoPane.ClientViewButton.enabled = enabled;
+        }
+    }
+
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+    public static class OnGameStartedPatch
+    {
+        public static void Postfix()
+        {
+            // ヘルプメニューが表示されている場合は自分の役職情報カテゴリに戻す
+            if (helpMenuObject != null && fadeCoroutine != null && fadeCoroutine.isAvtive)
+            {
+                var rightContainer = helpMenuObject.transform.Find("RightContainer").gameObject;
+                if (CurrentCategory != null && CurrentCategory.Category != DEFAULT_MENU_GAME)
+                {
+                    CurrentCategory.Hide(rightContainer);
+                    if (selectedButtons.TryGetValue(CurrentCategory.Name, out var oldSelectedObject))
+                        oldSelectedObject.SetActive(false);
+
+                    CurrentCategory = categories.FirstOrDefault(c => c.Category == DEFAULT_MENU_GAME);
+                    if (CurrentCategory != null)
+                    {
+                        CurrentCategory.Show(rightContainer);
+                        if (selectedButtons.TryGetValue(CurrentCategory.Name, out var newSelectedObject))
+                            newSelectedObject.SetActive(true);
+                        CurrentCategory.UpdateShow();
+                    }
+                }
+            }
         }
     }
 }
