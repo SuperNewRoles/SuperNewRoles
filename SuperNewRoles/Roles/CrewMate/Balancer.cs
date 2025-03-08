@@ -50,8 +50,8 @@ class Balancer : RoleBase<Balancer>
 
 class BalancerAbility : AbilityBase, IAbilityCount
 {
-    private EventListener meetingStartEventListener;
-    private EventListener meetingCloseEventListener;
+    private EventListener<MeetingStartEventData> meetingStartEventListener;
+    private EventListener<MeetingCloseEventData> meetingCloseEventListener;
     private EventListener fixedUpdateEventListener;
     private EventListener updateEventListener;
     private EventListener<VotingCompleteEventData> votingCompleteEventListener;
@@ -135,8 +135,8 @@ class BalancerAbility : AbilityBase, IAbilityCount
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         base.Attach(player, abilityId, parent);
-        meetingStartEventListener = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
-        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(OnMeetingClosed);
+        meetingStartEventListener = MeetingStartEvent.Instance.AddListener(x => OnMeetingStart());
+        meetingCloseEventListener = MeetingCloseEvent.Instance.AddListener(x => OnMeetingClosed());
         // FixedUpdateイベントにアニメーション更新処理を登録
         fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(FixedUpdateAnimation);
         votingCompleteEventListener = VotingCompleteEvent.Instance.AddListener(OnVotingComplete);

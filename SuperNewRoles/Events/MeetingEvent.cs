@@ -29,18 +29,45 @@ public class CalledMeetingEvent : EventTargetBase<CalledMeetingEvent, CalledMeet
         Instance.Awake(data);
     }
 }
-public class MeetingStartEvent : EventTargetBase<MeetingStartEvent>
+
+public class MeetingStartEventData : IEventData
 {
-    public static void Invoke()
+    public int meetingCount { get; }
+
+    public MeetingStartEventData(int meetingCount)
     {
-        Instance.Awake();
+        this.meetingCount = meetingCount;
     }
 }
-public class MeetingCloseEvent : EventTargetBase<MeetingCloseEvent>
+
+public class MeetingStartEvent : EventTargetBase<MeetingStartEvent, MeetingStartEventData>
+{
+    public static int MeetingCount { get; private set; } = 0;
+
+    public static void Invoke()
+    {
+        MeetingCount++;
+        var data = new MeetingStartEventData(MeetingCount);
+        Instance.Awake(data);
+    }
+}
+
+public class MeetingCloseEventData : IEventData
+{
+    public int meetingCount { get; }
+
+    public MeetingCloseEventData(int meetingCount)
+    {
+        this.meetingCount = meetingCount;
+    }
+}
+
+public class MeetingCloseEvent : EventTargetBase<MeetingCloseEvent, MeetingCloseEventData>
 {
     public static void Invoke()
     {
-        Instance.Awake();
+        var data = new MeetingCloseEventData(MeetingStartEvent.MeetingCount);
+        Instance.Awake(data);
     }
 }
 

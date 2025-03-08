@@ -7,6 +7,8 @@ using SuperNewRoles.Roles.Ability;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.Events.PCEvents;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -48,5 +50,33 @@ public class AutoExileAfterMeeting : AbilityBase
             WrapUpEvent.Instance.RemoveListener(wrapUpEventListener);
             wrapUpEventListener = null;
         }
+    }
+}
+
+public class BestFalseChargeNotExiledGameEndTrophy : SuperTrophyRole<BestFalseChargeNotExiledGameEndTrophy>
+{
+    public override TrophiesEnum TrophyId => TrophiesEnum.BestFalseChargeNotExiledGameEnd;
+
+    public override TrophyRank TrophyRank => TrophyRank.Gold;
+
+    public override RoleId[] TargetRoles => [RoleId.BestFalseCharge];
+
+    private EventListener<DieEventData> dieEventListener;
+
+    public override void OnRegister()
+    {
+        Complete();
+        dieEventListener = DieEvent.Instance.AddListener(OnDie);
+    }
+    private void OnDie(DieEventData data)
+    {
+        if (data.player != ExPlayerControl.LocalPlayer)
+            return;
+        InComplete();
+    }
+
+    public override void OnDetached()
+    {
+        // 役職変わってもいいから問題なし
     }
 }

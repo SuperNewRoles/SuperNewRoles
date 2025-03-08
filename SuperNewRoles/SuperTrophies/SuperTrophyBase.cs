@@ -35,6 +35,10 @@ public abstract class SuperTrophyBase<T> : BaseSingleton<T>, ISuperTrophy where 
     {
         SuperTrophyManager.CompleteTrophy(this);
     }
+    public void InComplete()
+    {
+        SuperTrophyManager.CompleteTrophy(this);
+    }
 }
 
 public abstract class SuperTrophyAbility<T> : SuperTrophyBase<T>, ISuperTrophyAbility where T : SuperTrophyAbility<T>, new()

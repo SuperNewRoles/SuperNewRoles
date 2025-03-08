@@ -4,6 +4,15 @@ public enum TrophiesEnum
 {
     FirstBlood,
     WaveCannonFiveShot,
+    WaveCannonOneThousandShot,
+    BaitAutoReport,
+    BaitKillerExiled,
+    BestFalseChargeNotExiledGameEnd,
+    GuesserPerfectShot,
+    GuesserTripleKill,
+    GuesserImpostorHunter,
+    GuesserFirstMeetingKill,
+    GuesserSharpshooter,
 }
 public enum TrophyRank
 {

@@ -104,7 +104,7 @@ public static class NameText
         }));
         DieEvent.Instance.AddListener(x => UpdateAllNameInfo());
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
-        MeetingStartEvent.Instance.AddListener(UpdateAllNameInfo);
+        MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
     }
     private static void UpdateAllVisiable()

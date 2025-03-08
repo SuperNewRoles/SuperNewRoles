@@ -69,6 +69,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<RightClickDetector>();
         ClassInjector.RegisterTypeInIl2Cpp<FadeCoroutine>();
         ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
+        ClassInjector.RegisterTypeInIl2Cpp<GotTrophyUI.SlideAnimator>();
     }
 
 

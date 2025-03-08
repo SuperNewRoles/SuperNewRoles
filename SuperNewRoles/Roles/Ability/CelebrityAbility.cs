@@ -19,7 +19,7 @@ public class CelebrityAbility : AbilityBase
 {
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEvent;
     private EventListener _fixedUpdateEvent;
-    private EventListener _meetingStartEvent;
+    private EventListener<MeetingStartEventData> _meetingStartEvent;
     private float _glowTimer = 0f;
     private bool _isAlive = true;
     public CelebrityData Data;
@@ -38,7 +38,7 @@ public class CelebrityAbility : AbilityBase
         _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _isAlive = ExPlayerControl.LocalPlayer.IsAlive();
     }
-    private void OnMeetingStart()
+    private void OnMeetingStart(MeetingStartEventData data)
     {
         _glowTimer = 0f;
         _isAlive = Player.IsAlive();

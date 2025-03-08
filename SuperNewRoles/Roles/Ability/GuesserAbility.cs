@@ -448,6 +448,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         if (isMisFire) dyingTarget.FinalStatus = FinalStatus.GuesserMisFire;
         else dyingTarget.FinalStatus = FinalStatus.GuesserKill;
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.Player.KillSfx, false, 0.8f);
+
+        // GuesserShotEventを発行
+        Events.GuesserShotEvent.Invoke(killer, dyingTarget.Player, isMisFire);
+
         if (MeetingHud.Instance)
         {
             foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)

@@ -68,6 +68,10 @@ public static class SuperTrophyManager
         Logger.Info($"Trophy '{trophy.TrophyId}' has been completed.");
         willComplete.Add(trophy);
     }
+    public static void InCompleteTrophy(ISuperTrophy trophy)
+    {
+        willComplete.Remove(trophy);
+    }
     public static void CoStartGame()
     {
         willComplete.Clear();
@@ -82,6 +86,7 @@ public static class SuperTrophyManager
 
         // トロフィーデータを保存
         SuperTrophySaver.SaveData();
+        GotTrophyUI.Initialize(willComplete);
     }
     public static void RegisterTrophy(AbilityBase ability)
     {

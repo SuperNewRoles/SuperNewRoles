@@ -379,3 +379,15 @@ TheFungleAdditionalAdmin,追加アドミン,Additional Admin,额外管理地图,
 TheFunglePowerOutageSabotage,停電サボタージュ,Power Outage Sabotage,停电破坏,停電破壞
 TheFungleHideSporeMask,胞子マスク非表示,Hide Spore Mask,隐藏孢子面具,隱藏孢子面具
 TheFungleHideSporeMaskOnlyImpostor,インポスターのみ非表示,Hide Only for Impostor,僅对内鬼隐藏,僅對內鬼隱藏
+
+# ゲッサートロフィー
+GuesserPerfectShot,完璧なショット,Perfect Shot,完美射击,完美射擊
+GuesserPerfectShotDescription,1回のミーティングで外さずに撃つ,Shoot without missing in a meeting,在一次会议中不失手射击,在一次會議中不失手射擊
+GuesserTripleKill,トリプルキル,Triple Kill,三连杀,三連殺
+GuesserTripleKillDescription,1回のミーティングで3人以上正確に撃つ,Accurately shoot at least 3 people in a meeting,在一次会议中精确射击至少3人,在一次會議中精確射擊至少3人
+GuesserImpostorHunter,インポスターハンター,Impostor Hunter,内鬼猎人,內鬼獵人
+GuesserImpostorHunterDescription,インポスターを3人以上正確に撃つ,Accurately shoot at least 3 impostors,精确射击至少3个内鬼,精確射擊至少3個內鬼
+GuesserFirstMeetingKill,初戦の勝利,First Meeting Victory,首次会议胜利,首次會議勝利
+GuesserFirstMeetingKillDescription,最初の会議で誰かを正確に撃つ,Accurately shoot someone in the first meeting,在第一次会议中精确射击某人,在第一次會議中精確射擊某人
+GuesserSharpshooter,鋭い射手,Sharpshooter,神射手,神射手
+GuesserSharpshooterDescription,連続で5回成功させる,Successfully shoot 5 times in a row,连续成功射击5次,連續成功射擊5次

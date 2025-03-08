@@ -28,7 +28,7 @@ public class PavlovsDogAbility : AbilityBase
     private ImpostorVisionAbility _visionAbility;
     private KnowOtherAbility _knowOtherAbility;
     private EventListener<DieEventData> _dieEventListener;
-    private EventListener _meetingCloseListener;
+    private EventListener<MeetingCloseEventData> _meetingCloseListener;
     public PavlovsOwnerAbility ownerAbility;
     public PavlovsDogAbility(PavlovsDogData data)
     {
@@ -70,7 +70,7 @@ public class PavlovsDogAbility : AbilityBase
     public override void AttachToLocalPlayer()
     {
         _dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
-        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(OnMeetingEnd);
+        _meetingCloseListener = MeetingCloseEvent.Instance.AddListener(x => OnMeetingEnd());
     }
 
     private void OnPlayerDead(DieEventData data)

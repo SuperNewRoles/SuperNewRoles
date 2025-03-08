@@ -240,6 +240,9 @@ public class EndGameManagerSetUpPatch
 
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(roleColor, winText);
+
+        // トロフィー処理を実行
+        SuperTrophyManager.OnEndGame();
     }
 
     private static void CreatePlayerObjects(EndGameManager instance)
@@ -470,9 +473,6 @@ public static class OnGameEndPatch
         AdditionalTempData.Clear();
 
         CollectPlayerRoleData(gameOverReason);
-
-        // トロフィー処理を実行
-        SuperTrophyManager.OnEndGame();
 
         var (winners, winCondition, willRevivePlayers) = HandleEndGameProcess(ref gameOverReason);
         EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();

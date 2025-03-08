@@ -15,8 +15,8 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
-    private EventListener startMeetingEvent;
-    private EventListener closeMeetingEvent;
+    private EventListener<MeetingStartEventData> startMeetingEvent;
+    private EventListener<MeetingCloseEventData> closeMeetingEvent;
     private EventListener updateMeetingEvent;
     public abstract Sprite Sprite { get; }
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
@@ -37,8 +37,8 @@ public abstract class CustomMeetingButtonBase : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
-        startMeetingEvent = MeetingStartEvent.Instance.AddListener(OnStartMeeting);
-        closeMeetingEvent = MeetingCloseEvent.Instance.AddListener(OnCloseMeeting);
+        startMeetingEvent = MeetingStartEvent.Instance.AddListener(x => OnStartMeeting());
+        closeMeetingEvent = MeetingCloseEvent.Instance.AddListener(x => OnCloseMeeting());
         updateMeetingEvent = MeetingUpdateEvent.Instance.AddListener(OnMeetingUpdate);
     }
     private void OnStartMeeting()

@@ -155,3 +155,47 @@ public class WaveCannonFiveShotTrophy : SuperTrophyAbility<WaveCannonFiveShotTro
         }
     }
 }
+public class WaveCannonOneThousandShotTrophy : SuperTrophyAbility<WaveCannonOneThousandShotTrophy>
+{
+    public override TrophiesEnum TrophyId => TrophiesEnum.WaveCannonOneThousandShot;
+    public override TrophyRank TrophyRank => TrophyRank.Bronze;
+
+    public override Type[] TargetAbilities => [typeof(WaveCannonAbility)];
+
+    private WaveCannonAbility _waveCannonAbility;
+    private EventListener<MurderEventData> _onMurderEvent;
+
+    public override void OnRegister()
+    {
+        _waveCannonAbility = ExPlayerControl.LocalPlayer.PlayerAbilities
+            .FirstOrDefault(x => x is WaveCannonAbility) as WaveCannonAbility;
+        _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
+    }
+    private void HandleMurderEvent(MurderEventData data)
+    {
+        if (data.killer != PlayerControl.LocalPlayer)
+        {
+            return;
+        }
+
+        var cannonObj = _waveCannonAbility?.WaveCannonObject?.WaveCannonObject;
+        if (cannonObj == null)
+        {
+            return;
+        }
+
+        TrophyData++;
+        if (TrophyData >= 1000)
+        {
+            Complete();
+        }
+    }
+    public override void OnDetached()
+    {
+        if (_onMurderEvent != null)
+        {
+            MurderEvent.Instance.RemoveListener(_onMurderEvent);
+            _onMurderEvent = null;
+        }
+    }
+}
