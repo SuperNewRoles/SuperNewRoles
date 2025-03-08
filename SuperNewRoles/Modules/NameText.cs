@@ -102,7 +102,7 @@ public static class NameText
             UpdateNameInfo(x.killer);
             UpdateNameInfo(x.target);
         }));
-        DieEvent.Instance.AddListener(x => UpdateAllNameInfo());
+        DieEvent.Instance.AddListener(x => { new LateTask(() => UpdateAllNameInfo(), 0.1f); });
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
         MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
