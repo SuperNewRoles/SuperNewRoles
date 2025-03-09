@@ -7,6 +7,8 @@ using SuperNewRoles.Roles.Ability.CustomButton;
 using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using System.Linq;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -47,6 +49,14 @@ class Chief : RoleBase<Chief>
 
     [CustomOptionBool("ChiefSheriffCanKillLovers", true)]
     public static bool ChiefSheriffCanKillLovers;
+
+    // 任命のクールタイム設定を追加
+    [CustomOptionFloat("ChiefAppointCooldown", 0f, 60f, 2.5f, 30f)]
+    public static float ChiefAppointCooldown;
+
+    // 作成したシェリフがわかる設定を追加
+    [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
+    public static bool ChiefCanSeeCreatedSheriff;
 }
 
 public class ChiefAbility : AbilityBase
@@ -54,6 +64,8 @@ public class ChiefAbility : AbilityBase
     private CustomSidekickButtonAbility _sidekickButton;
     private bool _canAppointSheriff = true;
     private SheriffAbilityData _sheriffAbilityData;
+    private SheriffAbility _createdSheriff = null;
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
 
     public ChiefAbility(SheriffAbilityData sheriffAbilityData)
     {
@@ -65,7 +77,7 @@ public class ChiefAbility : AbilityBase
         // 任命ボタンの作成
         _sidekickButton = new CustomSidekickButtonAbility(
             canCreateSidekick: created => _canAppointSheriff && !created,
-            sidekickCooldown: () => 0f, // 一度しか使えないのでクールダウンは不要
+            sidekickCooldown: () => Chief.ChiefAppointCooldown, // クールダウンを設定値に変更
             sidekickRole: () => RoleId.Sheriff,
             sidekickRoleVanilla: () => RoleTypes.Crewmate,
             sidekickSprite: AssetManager.GetAsset<Sprite>("ChiefSidekickButton.png"), // 既存のスプライトを利用
@@ -78,6 +90,12 @@ public class ChiefAbility : AbilityBase
         ExPlayerControl exPlayer = ExPlayerControl.LocalPlayer;
         AbilityParentAbility abilityParentAbility = new(this);
         exPlayer.AttachAbility(_sidekickButton, abilityParentAbility);
+
+        _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+    public override void DetachToLocalPlayer()
+    {
+        NameTextUpdateEvent.Instance.RemoveListener(_nameTextUpdateEventListener);
     }
 
     // 対象を任命可能かどうかの判定
@@ -106,23 +124,33 @@ public class ChiefAbility : AbilityBase
             new LateTask(() =>
             {
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
-            }, 0.5f);
+            }, 0f);
         }
         else
         {
             SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
             if (sheriffAbility == null)
                 throw new Exception("SheriffAbilityが見つかりません");
-            RpcSheriffSetAbility(target, sheriffAbility.AbilityId, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers);
+            _createdSheriff = sheriffAbility;
+            RpcSheriffSetAbility(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers);
         }
     }
     [CustomRPC]
-    public static void RpcSheriffSetAbility(ExPlayerControl target, ulong abilityId, float killCooldown, int maxKillCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
+    public static void RpcSheriffSetAbility(ExPlayerControl target, SheriffAbility sheriffAbility, float killCooldown, int maxKillCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
     {
-        SheriffAbility sheriffAbility = target.GetAbility<SheriffAbility>(abilityId);
-        if (sheriffAbility == null)
-            throw new Exception("SheriffAbilityが見つかりません");
-
         sheriffAbility.SheriffAbilityData = new(killCooldown, maxKillCount, canKillNeutral, canKillImpostor, canKillMadRoles, canKillFriendRoles, canKillLovers);
+        if (sheriffAbility.Player.AmOwner)
+            sheriffAbility.ResetTimer();
+        sheriffAbility.Count = maxKillCount;
+    }
+
+    // 作成したシェリフを表示するための処理を追加
+    public void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (_createdSheriff?.Player != null &&
+            Chief.ChiefCanSeeCreatedSheriff &&
+            data.Player.PlayerId == _createdSheriff.Player.PlayerId &&
+            _createdSheriff.Player.IsAlive())
+            NameText.SetNameTextColor(_createdSheriff.Player, Sheriff.Instance.RoleColor);
     }
 }

@@ -285,6 +285,8 @@ ChiefSheriffCanKillMadRoles,マッドロールをキル出来る,Can Kill Mad Ro
 ChiefSheriffCanKillNeutral,第三陣営をキル出来る,Can Kill Neutral,能击杀第三阵营,能擊殺第三陣營
 ChiefSheriffCanKillFriendRoles,フレンド系の役職をキル出来る,Can Kill Friend Roles,能击杀友方角色,能擊殺友方角色
 ChiefSheriffCanKillLovers,ラバーズをキル出来る,Can Kill Lovers,能击杀恋人,能擊殺戀人
+ChiefAppointCooldown,任命のクールタイム,Appointment Cooldown,任命冷却时间,任命冷卻時間
+ChiefCanSeeCreatedSheriff,作成したシェリフがわかる,Can See Created Sheriff,能看到已任命的警长,能看到已任命的警長
 
 # Workperson
 WorkpersonNeedAliveToWin,生存していないと勝利出来ない,Need Alive To Win,需要存活才能获胜,需要存活才能獲勝

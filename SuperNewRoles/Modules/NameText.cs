@@ -90,6 +90,12 @@ public static class NameText
         UpdateVisiable(player);
         NameTextUpdateEvent.Invoke(player);
     }
+    public static void SetNameTextColor(ExPlayerControl player, Color color)
+    {
+        player.Player.cosmetics.nameText.color = color;
+        if (player.VoteArea != null)
+            player.VoteArea.NameText.color = color;
+    }
     public static void RegisterNameTextUpdateEvent()
     {
         TaskCompleteEvent.Instance.AddListener(new(x => UpdateNameInfo(x.player)));

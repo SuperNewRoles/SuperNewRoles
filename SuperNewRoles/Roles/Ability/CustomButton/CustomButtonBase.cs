@@ -110,7 +110,7 @@ public abstract class CustomButtonBase : AbilityBase
         if (Timer > 0 && CheckDecreaseCoolCount()) DecreaseTimer();
         actionButton.graphic.sprite = Sprite;
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
-        actionButton.SetCoolDown(Timer, float.MaxValue);
+        actionButton.SetCoolDown(Timer, DefaultTimer);
         actionButton.OverrideText(buttonText);
         if (CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
