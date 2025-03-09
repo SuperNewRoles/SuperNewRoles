@@ -101,14 +101,10 @@ public static class NameText
         TaskCompleteEvent.Instance.AddListener(new(x => UpdateNameInfo(x.player)));
         MurderEvent.Instance.AddListener(new(x =>
         {
-            if (x.target?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId)
-            {
-                UpdateAllNameInfo();
-            }
             UpdateNameInfo(x.killer);
             UpdateNameInfo(x.target);
         }));
-        DieEvent.Instance.AddListener(x => { new LateTask(() => UpdateAllNameInfo(), 0.1f); });
+        DieEvent.Instance.AddListener(x => { if (x.player?.PlayerId == ExPlayerControl.LocalPlayer?.PlayerId) new LateTask(() => UpdateAllNameInfo(), 0.5f); });
         WrapUpEvent.Instance.AddListener(x => UpdateAllNameInfo());
         MeetingStartEvent.Instance.AddListener(x => UpdateAllNameInfo());
         FixedUpdateEvent.Instance.AddListener(UpdateAllVisiable);
