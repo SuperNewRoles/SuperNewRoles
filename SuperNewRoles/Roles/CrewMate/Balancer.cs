@@ -781,11 +781,12 @@ class BalancerAbility : AbilityBase, IAbilityCount
 
             case BalancerState.WaitVote:
                 foreach (var area in MeetingHud.Instance.playerStates)
-                    area.gameObject.SetActive(false);
+                {
+                    if (area.TargetPlayerId != targetPlayerLeft.PlayerId && area.TargetPlayerId != targetPlayerRight.PlayerId)
+                        area.gameObject.SetActive(false);
+                }
                 leftPlayerArea.transform.localPosition = new(-2.9f, 0, -0.9f);
                 rightPlayerArea.transform.localPosition = new(2.3f, 0, -0.9f);
-                leftPlayerArea.gameObject.SetActive(true);
-                rightPlayerArea.gameObject.SetActive(true);
                 if (eyeBackRender != null)
                 {
                     rotate -= Time.fixedDeltaTime * 25f;
