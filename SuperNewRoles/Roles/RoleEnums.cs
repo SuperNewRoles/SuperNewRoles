@@ -79,4 +79,5 @@ public enum RoleTag : byte
 {
     SpecialKiller,
     PowerPlayResistance,
+    Information,
 }

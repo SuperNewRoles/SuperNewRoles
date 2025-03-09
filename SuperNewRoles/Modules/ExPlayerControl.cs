@@ -170,10 +170,7 @@ public class ExPlayerControl
         }
         foreach (var ability in abilitiesToDetach)
         {
-            ability.Detach();
-            PlayerAbilities.Remove(ability);
-            PlayerAbilitiesDictionary.Remove(ability.AbilityId);
-            _hasAbilityCache.Remove(ability.GetType().Name);
+            DetachAbility(ability.AbilityId);
         }
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);

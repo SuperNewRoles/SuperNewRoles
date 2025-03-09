@@ -14,6 +14,7 @@ public record SeerData
     public SeerMode Mode;
     public bool LimitSoulDuration;
     public float SoulDuration;
+    public bool IsCustomSoulColor; // イビルシーアかどうかのフラグを追加
 }
 /// <summary>
 /// シーア役職の能力クラス
@@ -24,6 +25,9 @@ public class SeerAbility : AbilityBase
     private EventListener<DieEventData> dieEventListener;
     private EventListener<WrapUpEventData> wrapUpEventListener;
     public SeerData Data;
+    // 通常シーア用の固定霊魂カラーID
+    private const int DefaultSoulColorId = 0; // 赤色を使用
+
     public SeerAbility(SeerData data)
     {
         Data = data;
@@ -42,11 +46,26 @@ public class SeerAbility : AbilityBase
         if (mode == SeerMode.Both || mode == SeerMode.SoulOnly)
         {
             // 死亡位置を記録
-            deadBodyPositions.Add((data.player.transform.position, data.player.Data.DefaultOutfit.ColorId));
+            int colorId;
+            if (Data.IsCustomSoulColor)
+            {
+                // イビルシーアの場合はプレイヤーの色を使用
+                colorId = data.player.Data.DefaultOutfit.ColorId;
+            }
+            else
+            {
+                // 通常シーアの場合は固定色を使用
+                colorId = DefaultSoulColorId;
+            }
+
+            deadBodyPositions.Add((data.player.transform.position, colorId));
+
+            // 霊魂を即表示（会議を待たずに表示）
+            CreateSoul(data.player.transform.position, colorId);
         }
 
         // モードが「死の点滅が見える」または「両方」の場合
-        if (mode == Data.Mode || mode == SeerMode.FlashOnly)
+        if (mode == SeerMode.Both || mode == SeerMode.FlashOnly)
         {
             // 死亡時に画面を青く光らせる
             FlashHandler.ShowFlash(Seer.Instance.RoleColor);
@@ -62,42 +81,48 @@ public class SeerAbility : AbilityBase
         // 霊魂を表示
         foreach ((Vector3, int) posAndColor in deadBodyPositions)
         {
-            GameObject soul = new();
             (Vector3 pos, int soulColorId) = posAndColor;
-            soul.transform.position = pos;
-            soul.layer = 5;
-            var rend = soul.AddComponent<SpriteRenderer>();
-            rend.sprite = GetSoulSprite();
-            rend.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
-            rend.maskInteraction = SpriteMaskInteraction.None;
-            PlayerMaterial.SetColors(soulColorId, rend);
-            PlayerMaterial.Properties Properties = new()
-            {
-                MaskLayer = 0,
-                MaskType = PlayerMaterial.MaskType.None,
-                ColorId = soulColorId,
-            };
-            rend.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
-
-            // 時間経過で霊魂が消える設定の場合
-            if (Data.LimitSoulDuration)
-            {
-                float soulDuration = Data.SoulDuration;
-                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(soulDuration, new Action<float>((p) =>
-                {
-                    if (rend != null)
-                    {
-                        var tmp = rend.color;
-                        tmp.a = Mathf.Clamp01(1 - p);
-                        rend.color = tmp;
-                    }
-                    if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
-                })));
-            }
+            CreateSoul(pos, soulColorId);
         }
 
         // 霊魂の位置をリセット
         deadBodyPositions = new();
+    }
+
+    // 霊魂を作成する共通メソッド
+    private void CreateSoul(Vector3 position, int colorId)
+    {
+        GameObject soul = new();
+        soul.transform.position = position;
+        soul.layer = 5;
+        var rend = soul.AddComponent<SpriteRenderer>();
+        rend.sprite = GetSoulSprite();
+        rend.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+        rend.maskInteraction = SpriteMaskInteraction.None;
+        PlayerMaterial.SetColors(colorId, rend);
+        PlayerMaterial.Properties Properties = new()
+        {
+            MaskLayer = 0,
+            MaskType = PlayerMaterial.MaskType.None,
+            ColorId = colorId,
+        };
+        rend.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
+
+        // 時間経過で霊魂が消える設定の場合
+        if (Data.LimitSoulDuration)
+        {
+            float soulDuration = Data.SoulDuration;
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(soulDuration, new Action<float>((p) =>
+            {
+                if (rend != null)
+                {
+                    var tmp = rend.color;
+                    tmp.a = Mathf.Clamp01(1 - p);
+                    rend.color = tmp;
+                }
+                if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
+            })));
+        }
     }
 
     private static Sprite soulSprite;
