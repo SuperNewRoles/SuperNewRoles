@@ -15,25 +15,25 @@ public static class MapSettingOptions
     [CustomOptionBool("ReactorDurationSetting", false, parentFieldName: nameof(Categories.MapSettings))]
     public static bool ReactorDurationOption;
 
-    [CustomOptionFloat("SkeldReactorTime", 0f, 30f, 1f, 20f, parentFieldName: nameof(ReactorDurationOption))]
+    [CustomOptionFloat("SkeldReactorTime", 0f, 30f, 2.5f, 20f, parentFieldName: nameof(ReactorDurationOption))]
     public static float SkeldReactorTimeLimit;
 
-    [CustomOptionFloat("SkeldLifeSuppTime", 0f, 30f, 1f, 20f, parentFieldName: nameof(ReactorDurationOption))]
+    [CustomOptionFloat("SkeldLifeSuppTime", 0f, 30f, 2.5f, 20f, parentFieldName: nameof(ReactorDurationOption))]
     public static float SkeldLifeSuppTimeLimit;
 
-    [CustomOptionFloat("MiraReactorTime", 0f, 45f, 1f, 30f, parentFieldName: nameof(ReactorDurationOption))]
+    [CustomOptionFloat("MiraReactorTime", 0f, 45f, 2.5f, 30f, parentFieldName: nameof(ReactorDurationOption))]
     public static float MiraReactorTimeLimit;
 
-    [CustomOptionFloat("MiraLifeSuppTime", 0f, 45f, 1f, 30f, parentFieldName: nameof(ReactorDurationOption))]
+    [CustomOptionFloat("MiraLifeSuppTime", 0f, 45f, 2.5f, 30f, parentFieldName: nameof(ReactorDurationOption))]
     public static float MiraLifeSuppTimeLimit;
 
-    [CustomOptionFloat("PolusReactorTime", 0f, 60f, 1f, 40f, parentFieldName: nameof(ReactorDurationOption))]
+    [CustomOptionFloat("PolusReactorTime", 0f, 60f, 2.5f, 40f, parentFieldName: nameof(ReactorDurationOption))]
     public static float PolusReactorTimeLimit;
 
-    [CustomOptionFloat("AirshipReactorTime", 0f, 90f, 1f, 60f, parentFieldName: nameof(ReactorDurationOption))]
+    [CustomOptionFloat("AirshipReactorTime", 0f, 90f, 2.5f, 60f, parentFieldName: nameof(ReactorDurationOption))]
     public static float AirshipReactorTimeLimit;
 
-    [CustomOptionFloat("FungleReactorTime", 0f, 60f, 1f, 40f, parentFieldName: nameof(ReactorDurationOption))]
+    [CustomOptionFloat("FungleReactorTime", 0f, 60f, 2.5f, 40f, parentFieldName: nameof(ReactorDurationOption))]
     public static float FungleReactorTimeLimit;
 
 
@@ -45,21 +45,21 @@ public static class MapSettingOptions
     [CustomOptionSelect("DeviceAdminOption", typeof(DeviceOptionType), "DeviceOptionType.", parentFieldName: nameof(DeviceOptions))]
     public static DeviceOptionType DeviceAdminOption;
 
-    [CustomOptionFloat("DeviceTimeSettingAdmin", 0f, 120f, 1f, 10f, parentFieldName: nameof(DeviceAdminOption), parentActiveValue: DeviceOptionType.Restrict)]
+    [CustomOptionFloat("DeviceTimeSettingAdmin", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(DeviceAdminOption), parentActiveValue: DeviceOptionType.Restrict)]
     public static float DeviceUseAdminTime;
 
     // バイタル/ドアログ設定
     [CustomOptionSelect("DeviceVitalOrDoorLogOption", typeof(DeviceOptionType), "DeviceOptionType.", parentFieldName: nameof(DeviceOptions))]
     public static DeviceOptionType DeviceVitalOrDoorLogOption;
 
-    [CustomOptionFloat("DeviceTimeSettingVitalOrDoorLog", 0f, 120f, 1f, 10f, parentFieldName: nameof(DeviceVitalOrDoorLogOption), parentActiveValue: DeviceOptionType.Restrict)]
+    [CustomOptionFloat("DeviceTimeSettingVitalOrDoorLog", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(DeviceVitalOrDoorLogOption), parentActiveValue: DeviceOptionType.Restrict)]
     public static float DeviceUseVitalOrDoorLogTime;
 
     // カメラ設定
     [CustomOptionSelect("DeviceCameraOption", typeof(DeviceOptionType), "DeviceOptionType.", parentFieldName: nameof(DeviceOptions))]
     public static DeviceOptionType DeviceCameraOption;
 
-    [CustomOptionFloat("DeviceTimeSettingCamera", 0f, 120f, 1f, 10f, parentFieldName: nameof(DeviceCameraOption), parentActiveValue: DeviceOptionType.Restrict)]
+    [CustomOptionFloat("DeviceTimeSettingCamera", 0f, 120f, 2.5f, 10f, parentFieldName: nameof(DeviceCameraOption), parentActiveValue: DeviceOptionType.Restrict)]
     public static float DeviceUseCameraTime;
     // |:========== 梯子クールダウンの設定 ==========:|
     [CustomOptionBool("LadderCoolChangeSetting", false, parentFieldName: nameof(Categories.MapSettings))]

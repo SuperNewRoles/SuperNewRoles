@@ -20,7 +20,7 @@ public static class DevicesPatch
     public static bool IsCameraRestrict;
     public static TextMeshPro TimeRemaining;
     static HashSet<string> DeviceTypes = new();
-    public static Dictionary<string, HashSet<PlayerControl>> UsePlayers = new();
+    public static Dictionary<string, HashSet<byte>> UsePlayers = new();
     public static Dictionary<string, float> DeviceTimers = new();
     public static float SyncTimer;
     public enum DeviceType
@@ -61,7 +61,11 @@ public static class DevicesPatch
         }
         SyncTimer = 0f;
     }
-
+    private static bool ValidPlayer(byte playerId)
+    {
+        ExPlayerControl player = ExPlayerControl.ById(playerId);
+        return player != null && player.IsAlive();
+    }
     public static void FixedUpdate()
     {
         if (!AmongUsClient.Instance.AmHost)
@@ -72,7 +76,7 @@ public static class DevicesPatch
                 continue;
             if (timer <= 0)
                 continue;
-            UsePlayers[deviceType].RemoveWhere(player => player == null || player.Data == null || player.Data.Disconnected || player.Data.IsDead);
+            UsePlayers[deviceType].RemoveWhere(playerId => !ValidPlayer(playerId));
             if (UsePlayers[deviceType].Count <= 0)
                 continue;
             DeviceTimers[deviceType] -= Time.fixedDeltaTime;
@@ -100,7 +104,7 @@ public static class DevicesPatch
         }
     }
 
-    [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
+    [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Awake))]
     class MapCountOverlayAwakePatch
     {
         [HarmonyPostfix]
@@ -108,14 +112,28 @@ public static class DevicesPatch
         {
             if (IsAdminRestrict)
             {
-                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, __instance.transform);
-                TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
-                TimeRemaining.transform.localPosition = new Vector3(0, -1, -100f);
-                TimeRemaining.transform.localScale = Vector3.one * 0.5f;
-                TimeRemaining.gameObject.SetActive(true);
+                if (DeviceTimers[DeviceType.Admin.ToString()] <= 0)
+                {
+                    MapBehaviour.Instance.Close();
+                    return;
+                }
+                if (TimeRemaining == null)
+                {
+                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
+                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+                    TimeRemaining.transform.position = Vector3.zero;
+                    TimeRemaining.transform.localPosition = new Vector3(2.75f, 4.65f);
+                    TimeRemaining.transform.localScale *= 2f;
+                    TimeRemaining.color = Palette.White;
+                    TimeRemaining.text = "";
+                }
 
                 // RPCを送信
-                RpcSetDeviceUseStatus((byte)DeviceType.Admin, PlayerControl.LocalPlayer, true);
+                RpcSetDeviceUseStatus(DeviceType.Admin, PlayerControl.LocalPlayer.PlayerId, true);
+            }
+            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceAdminOption == DeviceOptionType.CantUse)
+            {
+                MapBehaviour.Instance.Close();
             }
         }
     }
@@ -126,6 +144,11 @@ public static class DevicesPatch
         public static bool Prefix(MapCountOverlay __instance)
         {
             if (IsAdminRestrict && DeviceTimers[DeviceType.Admin.ToString()] <= 0)
+            {
+                MapBehaviour.Instance.Close();
+                return false;
+            }
+            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption == DeviceOptionType.CantUse)
             {
                 MapBehaviour.Instance.Close();
                 return false;
@@ -148,17 +171,8 @@ public static class DevicesPatch
             }
             if (!AmongUsClient.Instance.AmHost)
                 DeviceTimers[DeviceType.Admin.ToString()] -= Time.deltaTime;
-            if (TimeRemaining == null)
-            {
-                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                TimeRemaining.transform.position = Vector3.zero;
-                TimeRemaining.transform.localPosition = new Vector3(3.25f, 5.25f);
-                TimeRemaining.transform.localScale *= 2f;
-                TimeRemaining.color = Palette.White;
-            }
-            TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Admin.ToString()]).ToString(@"mm\:ss\.ff");
-            TimeRemaining.gameObject.SetActive(true);
+            if (TimeRemaining != null)
+                TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Admin.ToString()]).ToString(@"mm\:ss\.ff");
         }
     }
 
@@ -169,15 +183,12 @@ public static class DevicesPatch
         {
             if (!IsAdminRestrict)
                 return;
-            if (!AmongUsClient.Instance.AmHost)
+            if (TimeRemaining != null)
             {
-                // RPCを送信
-                RpcSetDeviceUseStatus((byte)DeviceType.Admin, PlayerControl.LocalPlayer, false);
+                GameObject.Destroy(TimeRemaining.gameObject);
+                TimeRemaining = null;
             }
-            else
-            {
-                UsePlayers[DeviceType.Admin.ToString()].Remove(PlayerControl.LocalPlayer);
-            }
+            RpcSetDeviceUseStatus(DeviceType.Admin, PlayerControl.LocalPlayer.PlayerId, false);
         }
     }
     #endregion
@@ -190,16 +201,22 @@ public static class DevicesPatch
         {
             if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.CantUse)
                 __instance.Close();
-            if (IsVitalRestrict)
+            else if (IsVitalRestrict && DeviceTimers[DeviceType.Vital.ToString()] <= 0)
+                __instance.Close();
+            else if (IsVitalRestrict)
             {
-                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, __instance.transform);
-                TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
-                TimeRemaining.transform.localPosition = new Vector3(0, 0, -50f);
-                TimeRemaining.transform.localScale = Vector3.one * 0.3f;
-                TimeRemaining.gameObject.SetActive(true);
-
+                if (TimeRemaining == null)
+                {
+                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
+                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+                    TimeRemaining.transform.position = Vector3.zero;
+                    TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
+                    TimeRemaining.transform.localScale *= 1.8f;
+                    TimeRemaining.color = Palette.White;
+                    TimeRemaining.text = "";
+                }
                 // RPCを送信
-                RpcSetDeviceUseStatus((byte)DeviceType.Vital, PlayerControl.LocalPlayer, true);
+                RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, true);
             }
         }
     }
@@ -211,15 +228,8 @@ public static class DevicesPatch
         {
             if (__instance is not VitalsMinigame || !IsVitalRestrict)
                 return;
-            if (!AmongUsClient.Instance.AmHost)
-            {
-                // RPCを送信
-                RpcSetDeviceUseStatus((byte)DeviceType.Vital, PlayerControl.LocalPlayer, false);
-            }
-            else
-            {
-                UsePlayers[DeviceType.Vital.ToString()].Remove(PlayerControl.LocalPlayer);
-            }
+            // RPCを送信
+            RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, false);
         }
     }
 
@@ -233,6 +243,11 @@ public static class DevicesPatch
                 __instance.Close();
                 return;
             }
+            else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.CantUse)
+            {
+                __instance.Close();
+                return;
+            }
 
             if (!IsVitalRestrict) return;
             if (PlayerControl.LocalPlayer.Data.IsDead)
@@ -242,17 +257,8 @@ public static class DevicesPatch
             }
             if (!AmongUsClient.Instance.AmHost)
                 DeviceTimers[DeviceType.Vital.ToString()] -= Time.deltaTime;
-            if (TimeRemaining == null)
-            {
-                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                TimeRemaining.transform.position = Vector3.zero;
-                TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
-                TimeRemaining.transform.localScale *= 1.8f;
-                TimeRemaining.color = Palette.White;
-            }
-            TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Vital.ToString()]).ToString(@"mm\:ss\.ff");
-            TimeRemaining.gameObject.SetActive(true);
+            if (TimeRemaining != null)
+                TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Vital.ToString()]).ToString(@"mm\:ss\.ff");
         }
     }
     #endregion
@@ -264,37 +270,33 @@ public static class DevicesPatch
         IsCameraCloseNow = true;
         if (!IsCameraRestrict)
             return;
-        if (!AmongUsClient.Instance.AmHost)
-        {
-            // RPCを送信
-            RpcSetDeviceUseStatus((byte)DeviceType.Camera, PlayerControl.LocalPlayer, false);
-        }
-        else
-        {
-            UsePlayers[DeviceType.Camera.ToString()].Remove(PlayerControl.LocalPlayer);
-        }
+        // RPCを送信
+        RpcSetDeviceUseStatus(DeviceType.Camera, PlayerControl.LocalPlayer.PlayerId, false);
     }
 
-    static void CameraOpen()
+    static void CameraOpen(Transform instance)
     {
         if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption != DeviceOptionType.CantUse)
         {
             IsCameraCloseNow = false;
             if (IsCameraRestrict)
             {
-                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, Camera.main.transform);
-                TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
-                TimeRemaining.transform.localPosition = new Vector3(0, -1.8f, -250f);
-                TimeRemaining.transform.localScale = Vector3.one * 0.3f;
-                TimeRemaining.gameObject.SetActive(true);
-
+                if (TimeRemaining == null)
+                {
+                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, instance);
+                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+                    TimeRemaining.transform.position = Vector3.zero;
+                    TimeRemaining.transform.localPosition =
+                        GameManager.Instance.LogicOptions.currentGameOptions.MapId == 5 ?
+                        new(2.3f, 4.2f, -10) :
+                        new(0.95f, 4.45f, -10f);
+                    TimeRemaining.transform.localScale *= 1.8f;
+                    TimeRemaining.color = Palette.White;
+                    TimeRemaining.text = "";
+                }
                 // RPCを送信
-                RpcSetDeviceUseStatus((byte)DeviceType.Camera, PlayerControl.LocalPlayer, true);
+                RpcSetDeviceUseStatus(DeviceType.Camera, PlayerControl.LocalPlayer.PlayerId, true);
             }
-        }
-        else
-        {
-            CameraClose();
         }
     }
 
@@ -310,28 +312,56 @@ public static class DevicesPatch
         public static void Postfix() => CameraClose();
     }
 
+    [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Close))]
+    class FungleSurveillanceMinigameClosePatch
+    {
+        public static void Postfix() => CameraClose();
+    }
+
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Begin))]
     class PlanetSurveillanceMinigameBeginPatch
     {
-        public static void Postfix() => CameraOpen();
+        public static void Postfix(PlanetSurveillanceMinigame __instance) => CameraOpen(__instance.transform);
     }
 
     [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Begin))]
     class SurveillanceMinigameBeginPatch
     {
-        public static void Postfix() => CameraOpen();
+        public static void Postfix(SurveillanceMinigame __instance) => CameraOpen(__instance.transform);
     }
 
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Begin))]
     class FungleSurveillanceMinigameBeginPatch
     {
-        public static void Postfix() => CameraOpen();
+        public static void Postfix(FungleSurveillanceMinigame __instance) => CameraOpen(__instance.transform);
     }
 
-    [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Close))]
-    class FungleSurveillanceMinigameClosePatch
+    private static void UpdateCameraTimer(Transform targetTransform, Action closeAction, Vector3 taskTextLocalPosition)
     {
-        public static void Postfix() => CameraClose();
+        if (IsCameraRestrict && DeviceTimers[DeviceType.Camera.ToString()] <= 0)
+        {
+            closeAction();
+            return;
+        }
+        if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption == DeviceOptionType.CantUse)
+        {
+            closeAction();
+            return;
+        }
+        if (!IsCameraRestrict)
+            return;
+        if (PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            if (TimeRemaining != null)
+                GameObject.Destroy(TimeRemaining.gameObject);
+            return;
+        }
+        if (IsCameraCloseNow)
+            return;
+        if (!AmongUsClient.Instance.AmHost)
+            DeviceTimers[DeviceType.Camera.ToString()] -= Time.deltaTime;
+        if (TimeRemaining != null)
+            TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Camera.ToString()]).ToString(@"mm\:ss\.ff");
     }
 
     [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Update))]
@@ -339,32 +369,7 @@ public static class DevicesPatch
     {
         public static void Postfix(SurveillanceMinigame __instance)
         {
-            if (IsCameraRestrict && DeviceTimers[DeviceType.Camera.ToString()] <= 0)
-            {
-                __instance.Close();
-                return;
-            }
-
-            if (!IsCameraRestrict) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead)
-            {
-                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
-                return;
-            }
-            if (IsCameraCloseNow) return;
-            if (!AmongUsClient.Instance.AmHost)
-                DeviceTimers[DeviceType.Camera.ToString()] -= Time.deltaTime;
-            if (TimeRemaining == null)
-            {
-                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                TimeRemaining.transform.position = Vector3.zero;
-                TimeRemaining.transform.localPosition = new Vector3(0.95f, 4.45f, -10f);
-                TimeRemaining.transform.localScale *= 1.8f;
-                TimeRemaining.color = Palette.White;
-            }
-            TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Camera.ToString()]).ToString(@"mm\:ss\.ff");
-            TimeRemaining.gameObject.SetActive(true);
+            UpdateCameraTimer(__instance.transform, () => __instance.Close(), new Vector3(0.95f, 4.45f, -10f));
         }
     }
 
@@ -373,32 +378,7 @@ public static class DevicesPatch
     {
         public static void Postfix(PlanetSurveillanceMinigame __instance)
         {
-            if (IsCameraRestrict && DeviceTimers[DeviceType.Camera.ToString()] <= 0)
-            {
-                __instance.Close();
-                return;
-            }
-
-            if (!IsCameraRestrict) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead)
-            {
-                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
-                return;
-            }
-            if (IsCameraCloseNow) return;
-            if (!AmongUsClient.Instance.AmHost)
-                DeviceTimers[DeviceType.Camera.ToString()] -= Time.deltaTime;
-            if (TimeRemaining == null)
-            {
-                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                TimeRemaining.transform.position = Vector3.zero;
-                TimeRemaining.transform.localPosition = new Vector3(0.95f, 4.45f, -10f);
-                TimeRemaining.transform.localScale *= 1.8f;
-                TimeRemaining.color = Palette.White;
-            }
-            TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Camera.ToString()]).ToString(@"mm\:ss\.ff");
-            TimeRemaining.gameObject.SetActive(true);
+            UpdateCameraTimer(__instance.transform, () => __instance.Close(), new Vector3(0.95f, 4.45f, -10f));
         }
     }
 
@@ -407,39 +387,14 @@ public static class DevicesPatch
     {
         public static void Postfix(FungleSurveillanceMinigame __instance)
         {
-            if (IsCameraRestrict && DeviceTimers[DeviceType.Camera.ToString()] <= 0)
-            {
-                __instance.Close();
-                return;
-            }
-
-            if (!IsCameraRestrict) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead)
-            {
-                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
-                return;
-            }
-            if (IsCameraCloseNow) return;
-            if (!AmongUsClient.Instance.AmHost)
-                DeviceTimers[DeviceType.Camera.ToString()] -= Time.deltaTime;
-            if (TimeRemaining == null)
-            {
-                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                TimeRemaining.transform.position = Vector3.zero;
-                TimeRemaining.transform.localPosition = new Vector3(2.3f, 4.2f, -10f);
-                TimeRemaining.transform.localScale *= 1.8f;
-                TimeRemaining.color = Palette.White;
-            }
-            TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Camera.ToString()]).ToString(@"mm\:ss\.ff");
-            TimeRemaining.gameObject.SetActive(true);
+            UpdateCameraTimer(__instance.transform, () => __instance.Close(), new Vector3(2.3f, 4.2f, -10f));
         }
     }
     #endregion
 
     #region CustomRPC メソッド
     // デバイスの使用時間を設定するRPC
-    [CustomRPC]
+    [CustomRPC(onlyOtherPlayer: true)]
     public static void RpcSetDeviceTime(string deviceType, float time)
     {
         DeviceTimers[deviceType] = time;
@@ -448,11 +403,9 @@ public static class DevicesPatch
 
     // デバイスの使用状態を設定するRPC
     [CustomRPC]
-    public static void RpcSetDeviceUseStatus(byte deviceTypeByte, PlayerControl player, bool isOpen)
+    public static void RpcSetDeviceUseStatus(DeviceType deviceType, byte player, bool isOpen)
     {
-        DeviceType deviceType = (DeviceType)deviceTypeByte;
-        if (player == null)
-            return;
+        Logger.Info($"SET {deviceType}:{player}:{isOpen}");
 
         if (isOpen)
         {
