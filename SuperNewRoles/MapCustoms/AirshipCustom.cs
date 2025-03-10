@@ -49,28 +49,19 @@ public static class AirshipCustom
                 }
             }
 
-            // 昇降機の影変更
-            if (MapEditSettingsOptions.ModifyGapRoomOneWayShadow)
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapEditSettingsOptions.ModifyGapRoomOneWayShadow && ShipStatus.Instance.FastRooms.TryGetValue(SystemTypes.GapRoom, out var gapRoom))
             {
-                var gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;
-                var shadowObj = gapRoom.transform.FindChild("Shadow");
-                if (shadowObj != null)
+                var gapRoomShadow = gapRoom.GetComponentInChildren<OneWayShadows>();
+                var amImpostorLight = ExPlayerControl.LocalPlayer.IsImpostor() || ExPlayerControl.LocalPlayer.HasImpostorVision();
+                if (MapEditSettingsOptions.GapRoomShadowIgnoresImpostors && amImpostorLight)
                 {
-                    var shadow = shadowObj.GetComponent<SpriteRenderer>();
-                    if (shadow != null)
-                    {
-                        // インポスターが下から上を見ることができる設定
-                        if (MapEditSettingsOptions.GapRoomShadowIgnoresImpostors)
-                        {
-                            shadow.material.SetInt("_Mask", 2);
-                        }
-
-                        // 非インポスターが上から下を見ることができない設定
-                        if (MapEditSettingsOptions.DisableGapRoomShadowForNonImpostor)
-                        {
-                            shadow.material.SetInt("_Mask", 1);
-                        }
-                    }
+                    // オブジェクトを非アクティブにすると影判定自体が消えるのでどちらからでも見通せる
+                    gapRoomShadow.gameObject.SetActive(false);
+                }
+                else if (MapEditSettingsOptions.DisableGapRoomShadowForNonImpostor && !amImpostorLight)
+                {
+                    // OneWayShadowsを無効にしても影判定は残るので普通の壁のような双方向の影になる
+                    gapRoomShadow.enabled = false;
                 }
             }
         }
