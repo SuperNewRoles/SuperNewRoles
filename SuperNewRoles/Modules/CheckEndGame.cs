@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Patches;
@@ -203,56 +204,40 @@ public class PlayerStatistics
     public int TeamJackalAlive { get; }
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
+
     public bool IsKillerExist => TotalKiller > 0;
 
-    public bool IsImpostorDominating =>
-        IsKillerWin(TeamImpostorsAlive);
-
-    public bool IsJackalDominating =>
-        IsKillerWin(TeamJackalAlive);
-
-    public bool IsCrewmateVictory =>
-        !IsKillerExist;
-
-    public bool IsPavlovsWin =>
-        IsKillerWin(TeamPavlovsAlive);
-
-    private bool IsKillerWin(int killerAlive)
-        => killerAlive >= TotalAlive - killerAlive && TotalKiller == killerAlive && killerAlive != 0;
+    public bool IsImpostorDominating => IsKillerWin(TeamImpostorsAlive);
+    public bool IsJackalDominating => IsKillerWin(TeamJackalAlive);
+    public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive);
+    public bool IsCrewmateVictory => !IsKillerExist;
 
     public PlayerStatistics()
     {
-        var stats = CalculatePlayerStats();
-        TeamImpostorsAlive = stats.impostors;
-        CrewAlive = stats.crew;
-        TeamJackalAlive = stats.jackal;
-        TeamPavlovsAlive = stats.pavlovs;
-        TotalAlive = stats.total;
-        TotalKiller = stats.impostors + stats.jackal + stats.pavlovs;
+        // 生存中のプレイヤーのみを抽出
+        var alivePlayers = GetAlivePlayers();
+
+        // 各チームの生存者数をLINQで計算（条件が増えた場合もここを修正しやすい）
+        TeamImpostorsAlive = alivePlayers.Count(player => player.IsImpostor());
+        CrewAlive = alivePlayers.Count(player => player.IsCrewmate());
+        TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
+        TeamPavlovsAlive = alivePlayers.Count(player => player.IsPavlovsTeam());
+
+        TotalAlive = alivePlayers.Count();
+        TotalKiller = TeamImpostorsAlive + TeamJackalAlive + TeamPavlovsAlive;
     }
 
-    private static (int impostors, int crew, int jackal, int pavlovs, int total) CalculatePlayerStats()
+    // ExPlayerControl配列から生存しているプレイヤーを返すヘルパーメソッド
+    private static IEnumerable<ExPlayerControl> GetAlivePlayers()
     {
-        int impostors = 0;
-        int crew = 0;
-        int jackal = 0;
-        int pavlovs = 0;
-        int total = 0;
-        foreach (var player in ExPlayerControl.ExPlayerControlsArray)
-        {
-            if (player == null || player.IsDead()) continue;
+        return ExPlayerControl.ExPlayerControlsArray
+            .Where(player => player != null && !player.IsDead());
+    }
 
-            if (player.IsImpostor())
-                impostors++;
-            else if (player.IsCrewmate())
-                crew++;
-            else if (player.IsJackalTeam())
-                jackal++;
-            else if (player.IsPavlovsTeam())
-                pavlovs++;
-            total++;
-        }
-
-        return (impostors, crew, jackal, pavlovs, total);
+    // 勝利条件の判定ロジックを切り出し、変更しやすいようにしている
+    // 対象チームのキラー数が、全体の半数以上かつ全キラーがそのチームである場合、勝利と判定
+    private bool IsKillerWin(int teamAlive)
+    {
+        return teamAlive >= TotalAlive - teamAlive && TotalKiller == teamAlive && teamAlive != 0;
     }
 }
