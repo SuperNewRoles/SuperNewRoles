@@ -89,7 +89,7 @@ public static class CustomRPCManager
             .Where(m => m.GetCustomAttribute<CustomRPCAttribute>() != null)
             .OrderBy(m => RpcHashGenerate(m))
             .ToList();
-        Logger.Info($"Found {methods.Count} RPC methods");
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Start loading {methods.Count} RPC methods");
 
         // ソートされたハッシュ値に基づいてIDを割り当て
         for (byte i = 0; i < methods.Count; i++)
@@ -101,9 +101,10 @@ public static class CustomRPCManager
                 Logger.Error($"CustomRPC: {methods[i].Name} is not static");
                 continue;
             }
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading RPC method ({i + 1}/{methods.Count}): {methods[i].Name}");
             RegisterRPC(methods[i], attribute, i);
         }
-        Logger.Info($"Registered {RpcMethods.Count} RPC methods");
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Registered {RpcMethods.Count} RPC methods");
     }
 
 

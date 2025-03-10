@@ -43,11 +43,12 @@ public static class AssetManager
     private static Dictionary<byte, AssetBundle> Bundles { get; } = new(3);
     public static void Load()
     {
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading AssetBundles...");
         Logger.Info("-------Start AssetBundle-------");
         var ExcAssembly = Assembly.GetExecutingAssembly();
         foreach (var data in AssetPathes)
         {
-            Logger.Info($"Loading AssetBundle: {data.Type}");
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading AssetBundle: {data.Type}");
             try
             {
                 //AssemblyからAssetBundleファイルを読み込む
@@ -73,6 +74,7 @@ public static class AssetManager
                 Logger.Error(e.ToString(), "LoadAssetBundle");
             }
         }
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] AssetBundles loaded");
         Logger.Info("-------End LoadAssetBundle-------");
     }
     /// <summary>

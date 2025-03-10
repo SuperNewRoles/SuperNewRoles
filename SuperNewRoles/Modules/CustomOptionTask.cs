@@ -92,7 +92,6 @@ namespace SuperNewRoles.Modules
         }
         private CustomOption SetupAttribute(CustomOptionIntAttribute attribute, FieldInfo field, FieldInfo meField)
         {
-            Logger.Info($"field.DeclaringType: {meField.DeclaringType.Name}");
             attribute.SetFieldInfo(field);
             RoleId? role = null;
             if (meField.DeclaringType.GetInterfaces().Contains(typeof(IRoleBase)))

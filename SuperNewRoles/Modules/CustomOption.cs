@@ -114,6 +114,7 @@ public static class CustomOptionManager
     private static void LoadCustomOptions()
     {
         var fieldNames = new HashSet<string>();
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading CustomOptions...");
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
         {
             foreach (var field in type.GetFields())
@@ -161,16 +162,13 @@ public static class CustomOptionManager
                 CustomOptions.Add(option);
             }
         }
-        Logger.Info("CustomOptions");
-        foreach (var option in CustomOptions)
-        {
-            Logger.Info($"option: {option.Name}");
-        }
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] {CustomOptions.Count} CustomOptions loaded");
     }
 
     // 属性で指定された親フィールド名があるオプションについて、親オプションと紐付ける処理
     private static void LinkParentOptions()
     {
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Linking parent options...");
         // 各カスタムオプションをフィールド名をキーとするディクショナリに変換してキャッシュ
         var taskOptionNames = new[]
         {
@@ -203,6 +201,7 @@ public static class CustomOptionManager
                 }
             }
         }
+        SuperNewRolesPlugin.Logger.LogInfo("[Splash] Parent options linked");
     }
 
     internal static void RegisterOptionCategory(CustomOptionCategory category)

@@ -14,25 +14,26 @@ public static class SuperTrophyManager
     {
         Logger.Info("SuperTrophyManager: Load");
         trophies = new();
-        var allTypes = Assembly.GetExecutingAssembly().GetTypes();
+        var allTypes = Assembly.GetExecutingAssembly().GetTypes().Where(x => IsSuperTrophyType(x)).ToList();
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Found {allTypes.Count} super trophy types");
+        int index = 0;
         foreach (var type in allTypes)
         {
-            if (IsSuperTrophyType(type))
+            index++;
+            SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading super trophy ({index}/{allTypes.Count}): {type.Name}");
+            Logger.Info($"SuperTrophyManager: Load {type.FullName}");
+            var instance = (ISuperTrophy)type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)?.GetValue(null);
+            if (instance != null)
             {
-                Logger.Info($"SuperTrophyManager: Load {type.FullName}");
-                var instance = (ISuperTrophy)type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)?.GetValue(null);
-                if (instance != null)
-                {
-                    trophies.Add(instance);
-                    Logger.Info($"Loaded trophy: {type.FullName}");
-                }
-                else
-                {
-                    Logger.Error($"Failed to get instance for trophy: {type.FullName}");
-                }
+                trophies.Add(instance);
+                Logger.Info($"Loaded trophy: {type.FullName}");
+            }
+            else
+            {
+                Logger.Error($"Failed to get instance for trophy: {type.FullName}");
             }
         }
-
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] SuperTrophyManager: Loaded {trophies.Count} trophies");
         // トロフィーデータを読み込む
         SuperTrophySaver.Initialize();
     }

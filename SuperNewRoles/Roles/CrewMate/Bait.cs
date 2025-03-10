@@ -140,10 +140,12 @@ public class BaitAutoReportTrophy : SuperTrophyAbility<BaitAutoReportTrophy>
         _onMurderEvent = MurderEvent.Instance.AddListener(HandleMurderEvent);
         _onCalledMeetingEvent = CalledMeetingEvent.Instance.AddListener(HandleCalledMeetingEvent);
         _killedMe = false;
+        Logger.Info("BaitAutoReportTrophy OnRegister");
     }
 
     private void HandleMurderEvent(MurderEventData data)
     {
+        Logger.Info("BaitAutoReportTrophy HandleMurderEvent: " + data.target.name + " " + data.killer.name);
         if (data.target != PlayerControl.LocalPlayer)
         {
             return;
@@ -153,7 +155,8 @@ public class BaitAutoReportTrophy : SuperTrophyAbility<BaitAutoReportTrophy>
 
     private void HandleCalledMeetingEvent(CalledMeetingEventData data)
     {
-        if (data.target != PlayerControl.LocalPlayer)
+        Logger.Info("BaitAutoReportTrophy HandleCalledMeetingEvent: " + data.target.name + " " + data.reporter.name + " " + _killedMe);
+        if (data.target.PlayerId != PlayerControl.LocalPlayer.PlayerId)
             return;
         if (_killedMe)
             Complete();
