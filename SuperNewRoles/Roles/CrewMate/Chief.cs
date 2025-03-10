@@ -128,20 +128,26 @@ public class ChiefAbility : AbilityBase
         }
         else
         {
+            bool isOldHasTak = target.IsTaskTriggerRole();
             SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
             if (sheriffAbility == null)
                 throw new Exception("SheriffAbilityが見つかりません");
             _createdSheriff = sheriffAbility;
-            RpcSheriffSetAbility(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers);
+            RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, isOldHasTak);
         }
     }
     [CustomRPC]
-    public static void RpcSheriffSetAbility(ExPlayerControl target, SheriffAbility sheriffAbility, float killCooldown, int maxKillCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers)
+    public static void RpcChiefAppointSheriff(ExPlayerControl target, SheriffAbility sheriffAbility, float killCooldown, int maxKillCount, bool canKillNeutral, bool canKillImpostor, bool canKillMadRoles, bool canKillFriendRoles, bool canKillLovers, bool isOldHasTak)
     {
         sheriffAbility.SheriffAbilityData = new(killCooldown, maxKillCount, canKillNeutral, canKillImpostor, canKillMadRoles, canKillFriendRoles, canKillLovers);
         if (sheriffAbility.Player.AmOwner)
             sheriffAbility.ResetTimer();
         sheriffAbility.Count = maxKillCount;
+        if (!isOldHasTak)
+        {
+            CustomTaskAbility customTaskAbility = new(() => (false, 0));
+            target.AttachAbility(customTaskAbility, new AbilityParentAbility(sheriffAbility));
+        }
     }
 
     // 作成したシェリフを表示するための処理を追加
