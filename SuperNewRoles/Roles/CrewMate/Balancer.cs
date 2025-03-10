@@ -269,7 +269,7 @@ class BalancerAbility : AbilityBase, IAbilityCount
         limitText.text = ModTranslation.GetString("BalancerLimitText", Count);
         limitText.enableWordWrapping = false;
         limitText.transform.localScale = Vector3.one * 0.5f;
-        limitText.transform.localPosition += new Vector3(-3.15f, 2.27f, -10);
+        limitText.transform.localPosition = new Vector3(-3.15f, 2.27f, -10);
     }
 
     public void OnMeetingClosed()

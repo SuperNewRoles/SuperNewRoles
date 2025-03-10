@@ -15,7 +15,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
     private readonly bool cannotShootCelebrity;
     private readonly bool CelebrityLimitedTurns;
     private readonly int CelebrityLimitedTurnsCount;
-
+    private readonly int maxShots;
     // ※ 画面上に既にUIが存在しているか確認するためのフィールド
     private GameObject guesserUI;
     private bool HideButtons = false;
@@ -27,6 +27,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
     public GuesserAbility(int maxShots, int shotsPerMeeting, bool cannotShootCrewmate, bool cannotShootCelebrity, bool celebrityLimitedTurns = false, int celebrityLimitedTurnsCount = 3)
     {
+        this.maxShots = maxShots;
         this.shotsPerMeeting = shotsPerMeeting;
         this.cannotShootCrewmate = cannotShootCrewmate;
         this.cannotShootCelebrity = cannotShootCelebrity;
@@ -65,10 +66,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         if (limitText != null)
             GameObject.Destroy(limitText.gameObject);
         limitText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, MeetingHud.Instance.transform);
-        limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(shotsPerMeeting, Count) - ShotThisMeeting);
+        limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(maxShots, shotsPerMeeting) - ShotThisMeeting);
         limitText.enableWordWrapping = false;
         limitText.transform.localScale = Vector3.one * 0.5f;
-        limitText.transform.localPosition += new Vector3(-3.15f, 2.27f, -10);
+        limitText.transform.localPosition = new Vector3(-3.15f, 2.27f, -10);
         limitText.gameObject.SetActive(true);
     }
     public override void OnMeetingUpdate()
@@ -362,7 +363,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
                         // 残り使用回数を更新
                         if (limitText != null)
-                            limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(shotsPerMeeting, Count) - ShotThisMeeting);
+                            limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(maxShots, shotsPerMeeting) - ShotThisMeeting);
 
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;
