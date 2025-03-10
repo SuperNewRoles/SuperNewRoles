@@ -51,9 +51,7 @@ public class MadKillerAbility : AbilityBase
         if (data.Player == Player && ExPlayerControl.LocalPlayer.IsImpostor())
         {
             if (!_cannotBeSeenBeforePromotion || !_isAwakened) return;
-            data.Player.cosmetics.nameText.color = Palette.ImpostorRed;
-            if (data.Player.VoteArea != null)
-                data.Player.VoteArea.NameText.color = Palette.ImpostorRed;
+            NameText.SetNameTextColor(data.Player, Palette.ImpostorRed);
         }
     }
     public override void AttachToLocalPlayer()
@@ -91,12 +89,14 @@ public class MadKillerAbility : AbilityBase
     private void Awaken()
     {
         _isAwakened = true;
+        if (Player.IsDead()) return;
         RpcMadkillerAwaken(Player);
     }
 
     [CustomRPC]
     public static void RpcMadkillerAwaken(ExPlayerControl player)
     {
+        if (player.IsDead()) return;
         RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
         NameText.UpdateAllNameInfo();
     }

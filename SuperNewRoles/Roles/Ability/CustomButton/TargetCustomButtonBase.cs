@@ -22,7 +22,7 @@ public abstract class TargetCustomButtonBase : CustomButtonBase
     public override void OnUpdate()
     {
         base.OnUpdate();
-        Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: PlayerControl.LocalPlayer);
+        Target = SetTarget(onlyCrewmates: OnlyCrewmates, targetPlayersInVents: TargetPlayersInVents, untargetablePlayers: UntargetablePlayers, targetingPlayer: PlayerControl.LocalPlayer, isTargetable: IsTargetable);
         if (ShowOutline && _lastShowTarget != Target)
         {
             if (_lastShowTarget != null)

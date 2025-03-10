@@ -79,14 +79,18 @@ public static class NameText
         if (visiable)
         {
             player.Data.Role.NameColor = player.roleBase.RoleColor;
-            player.Player.cosmetics.nameText.color = player.roleBase.RoleColor;
+            SetNameTextColor(player, player.roleBase.RoleColor);
+        }
+        else if (ExPlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor())
+        {
+            player.Data.Role.NameColor = Palette.ImpostorRed;
+            SetNameTextColor(player, Palette.ImpostorRed);
         }
         else
         {
             player.Data.Role.NameColor = Color.white;
-            player.Player.cosmetics.nameText.color = Color.white;
+            SetNameTextColor(player, Color.white);
         }
-
         UpdateVisiable(player);
         NameTextUpdateEvent.Invoke(player);
     }

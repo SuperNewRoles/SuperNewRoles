@@ -71,20 +71,23 @@ public class SideKillerAbility : AbilityBase
         exPlayer.AttachAbility(_killAbility, parentAbility);
         exPlayer.AttachAbility(_sidekickAbility, parentAbility);
         exPlayer.AttachAbility(_knowOtherAbility, parentAbility);
+
+        if (Player.AmOwner)
+        {
+            // クールタイムの同期を実装
+            if (_killAbility != null)
+            {
+                _killAbility.OnCooldownStarted += SyncCooldowns;
+            }
+            if (_sidekickAbility != null)
+            {
+                _sidekickAbility.OnCooldownStarted += SyncCooldowns;
+            }
+        }
     }
 
     public override void AttachToLocalPlayer()
     {
-        // クールタイムの同期を実装
-        if (_killAbility != null)
-        {
-            _killAbility.OnCooldownStarted += SyncCooldowns;
-        }
-
-        if (_sidekickAbility != null)
-        {
-            _sidekickAbility.OnCooldownStarted += SyncCooldowns;
-        }
     }
 
     private void SyncCooldowns(float cooldown)
