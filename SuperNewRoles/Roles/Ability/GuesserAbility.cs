@@ -65,10 +65,10 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         if (limitText != null)
             GameObject.Destroy(limitText.gameObject);
         limitText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, MeetingHud.Instance.transform);
-        limitText.text = ModTranslation.GetString("GuesserLimitText", Count, shotsPerMeeting - ShotThisMeeting);
+        limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(shotsPerMeeting, Count) - ShotThisMeeting);
         limitText.enableWordWrapping = false;
         limitText.transform.localScale = Vector3.one * 0.5f;
-        limitText.transform.localPosition += new Vector3(-2.95f, 2.27f, 0);
+        limitText.transform.localPosition += new Vector3(-3.15f, 2.27f, -10);
         limitText.gameObject.SetActive(true);
     }
     public override void OnMeetingUpdate()
@@ -362,7 +362,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
 
                         // 残り使用回数を更新
                         if (limitText != null)
-                            limitText.text = ModTranslation.GetString("GuesserLimitText", Count, shotsPerMeeting - ShotThisMeeting);
+                            limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(shotsPerMeeting, Count) - ShotThisMeeting);
 
                         var targetRole = exPlayer.Role;
                         ExPlayerControl dyingTarget = (targetRole == rolebase.Role) ? exPlayer : PlayerControl.LocalPlayer;
