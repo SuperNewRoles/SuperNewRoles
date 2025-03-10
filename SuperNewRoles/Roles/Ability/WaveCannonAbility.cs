@@ -101,7 +101,7 @@ public class WaveCannonFiveShotTrophy : SuperTrophyAbility<WaveCannonFiveShotTro
 
     private int _lastInstanceId;
     private int _killedCounter;
-    public const int NeededKilledCount = 2;
+    public const int NeededKilledCount = 5;
     public override Type[] TargetAbilities => new Type[] { typeof(WaveCannonAbility) };
 
     public override void OnRegister()
