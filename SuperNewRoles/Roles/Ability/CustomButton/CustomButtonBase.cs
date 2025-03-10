@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,12 @@ public enum AvailableType
     NotNearDoor = 0x008, // 8
     NotMoving = 0x010, // 16
     SetVent = 0x020, // 32
+}
+public enum ShowTextType
+{
+    Hidden,
+    Show,
+    ShowWithCount,
 }
 public abstract class CustomButtonBase : AbilityBase
 {
@@ -46,6 +53,10 @@ public abstract class CustomButtonBase : AbilityBase
 
     public abstract void OnClick();
     public virtual void OnMeetingEnds() { ResetTimer(); }
+
+    public virtual ShowTextType showTextType { get; } = ShowTextType.Hidden;
+    public virtual string showText { get; } = "";
+    private TextMeshPro _text;
 
     /// <summary>
     /// カウントを進めるかの判定
@@ -83,6 +94,8 @@ public abstract class CustomButtonBase : AbilityBase
         if (actionButton.usesRemainingText != null) actionButton.usesRemainingText.transform.parent.gameObject.SetActive(false);
         button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
 
+        GenerateText();
+
         if (textTemplate)
         {
             UnityEngine.Object.Destroy(actionButton.buttonLabelText);
@@ -93,6 +106,18 @@ public abstract class CustomButtonBase : AbilityBase
         wrapUpEvent = WrapUpEvent.Instance.AddListener(x => OnMeetingEnds());
         ResetTimer();
     }
+
+    private void GenerateText()
+    {
+        _text = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, actionButton.transform);
+        _text.text = "";
+        _text.enableWordWrapping = false;
+        _text.transform.localScale = Vector3.one * 0.5f;
+        _text.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+        _text.gameObject.SetActive(true);
+        _text.text = "";
+    }
+
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         base.Attach(player, abilityId, parent);
@@ -106,7 +131,8 @@ public abstract class CustomButtonBase : AbilityBase
             SetActive(false);
             return;
         }
-        SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
+        bool active = HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled;
+        SetActive(active);
         if (Timer > 0 && CheckDecreaseCoolCount()) DecreaseTimer();
         actionButton.graphic.sprite = Sprite;
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
@@ -136,10 +162,27 @@ public abstract class CustomButtonBase : AbilityBase
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
             actionButton.graphic.material.SetFloat("_Desat", 1f);
         }
+        UpdateText();
         //以下はエフェクトがある(≒押したらカウントダウンが始まる)ときだけ呼ばれる
         if (buttonEffect != null) buttonEffect.OnFixedUpdate(actionButton);
     }
-
+    private void UpdateText()
+    {
+        switch (showTextType)
+        {
+            case ShowTextType.Hidden:
+                _text.text = "";
+                break;
+            case ShowTextType.Show:
+                _text.text = showText;
+                break;
+            case ShowTextType.ShowWithCount:
+                _text.text = string.Format(showText, Count);
+                break;
+            default:
+                throw new Exception($"showTextTypeが{showTextType}の場合はshowTextを設定してください");
+        }
+    }
     public void OnClickEvent()
     {
         if (this.Timer <= 0f && CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))

@@ -12,8 +12,6 @@ using UnityEngine;
 namespace SuperNewRoles.Roles.Ability;
 
 public record PavlovsOwnerData(
-    bool canUseVent,
-    bool isImpostorVision,
     float sidekickCooldown,
     int maxSidekickCount,
     bool suicideOnImpostorSidekick
@@ -23,9 +21,7 @@ public class PavlovsOwnerAbility : AbilityBase
 {
     private readonly PavlovsOwnerData _data;
     private int _sidekickCount;
-    private CustomVentAbility _ventAbility;
     private CustomSidekickButtonAbility _sidekickAbility;
-    private ImpostorVisionAbility _visionAbility;
     private KnowOtherAbility _knowOtherAbility;
     private PavlovsDogAbility dogAbility;
 
@@ -39,31 +35,7 @@ public class PavlovsOwnerAbility : AbilityBase
     {
         base.Attach(player, abilityId, parent);
 
-        _ventAbility = new CustomVentAbility(() => _data.canUseVent);
-        _visionAbility = new ImpostorVisionAbility(() => _data.isImpostorVision);
-        _sidekickAbility = new CustomSidekickButtonAbility(
-            _ => _data.maxSidekickCount <= 0 || _sidekickCount < _data.maxSidekickCount,
-            () => _data.sidekickCooldown,
-            () => RoleId.PavlovsDog,
-            () => RoleTypes.Crewmate,
-            AssetManager.GetAsset<Sprite>("PavlovsownerCreatedogButton.png"),
-            ModTranslation.GetString("PavlovsDogButtonText"),
-            null,
-            sidekickSuccess: (player) => (dogAbility == null || dogAbility.Player == null || ((ExPlayerControl)dogAbility.Player).IsDead()) && (!_data.suicideOnImpostorSidekick || !player.IsImpostor()),
-            onSidekickCreated: (player) =>
-            {
-                _sidekickCount++;
-                if (_data.suicideOnImpostorSidekick && player.IsImpostor())
-                {
-                    ExPlayerControl exPlayer = (ExPlayerControl)Player;
-                    exPlayer.RpcCustomDeath(CustomDeathType.Suicide);
-                }
-                else
-                {
-                    dogAbility = player.PlayerAbilities.FirstOrDefault(x => x is PavlovsDogAbility) as PavlovsDogAbility;
-                }
-            }
-        );
+        _sidekickAbility = CreateSidekickAbility(player);
         _knowOtherAbility = new KnowOtherAbility(
             p => p.IsPavlovsTeam(),
             () => true
@@ -71,10 +43,44 @@ public class PavlovsOwnerAbility : AbilityBase
 
         ExPlayerControl exPlayer = (ExPlayerControl)player;
         AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(_ventAbility, parentAbility);
-        exPlayer.AttachAbility(_visionAbility, parentAbility);
         exPlayer.AttachAbility(_sidekickAbility, parentAbility);
         exPlayer.AttachAbility(_knowOtherAbility, parentAbility);
+    }
+
+    private CustomSidekickButtonAbility CreateSidekickAbility(PlayerControl player)
+    {
+        return new CustomSidekickButtonAbility(
+            _ => CanCreateSidekick(player),
+            () => _data.sidekickCooldown,
+            () => RoleId.PavlovsDog,
+            () => RoleTypes.Crewmate,
+            AssetManager.GetAsset<Sprite>("PavlovsownerCreatedogButton.png"),
+            ModTranslation.GetString("PavlovsDogButtonText"),
+            isTargetable: x => !x.IsPavlovsTeam(),
+            sidekickCount: () => _sidekickCount,
+            sidekickSuccess: (player) => !_data.suicideOnImpostorSidekick || !player.IsImpostor(),
+            onSidekickCreated: (p) => OnSidekickCreated(player, p),
+            showSidekickLimitText: () => _data.maxSidekickCount > 0
+        );
+    }
+
+    private bool CanCreateSidekick(ExPlayerControl player)
+    {
+        return (dogAbility == null || dogAbility.Player == null || dogAbility.Player.IsDead()) &&
+               (_data.maxSidekickCount <= 0 || _sidekickCount < _data.maxSidekickCount);
+    }
+
+    private void OnSidekickCreated(ExPlayerControl owner, ExPlayerControl sidekick)
+    {
+        _sidekickCount++;
+        if (_data.suicideOnImpostorSidekick && owner.IsImpostor())
+        {
+            owner.RpcCustomDeath(CustomDeathType.Suicide);
+        }
+        else
+        {
+            RpcSetDogAbility(this, sidekick.PlayerAbilities.FirstOrDefault(x => x is PavlovsDogAbility) as PavlovsDogAbility);
+        }
     }
 
     public override void AttachToLocalPlayer()

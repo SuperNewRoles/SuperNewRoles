@@ -15,8 +15,6 @@ class PavlovsOwner : RoleBase<PavlovsOwner>
     public override List<Func<AbilityBase>> Abilities => new()
     {
         () => new PavlovsOwnerAbility(new(
-            canUseVent: PavlovsOwnerCanUseVent,
-            isImpostorVision: PavlovsOwnerIsImpostorVision,
             sidekickCooldown: PavlovsOwnerSidekickCooldown,
             maxSidekickCount: PavlovsOwnerMaxSidekickCount,
             suicideOnImpostorSidekick: PavlovsOwnerSuicideOnImpostorSidekick
@@ -29,16 +27,11 @@ class PavlovsOwner : RoleBase<PavlovsOwner>
     public override RoleTag[] RoleTags => new[] { RoleTag.SpecialKiller };
     public override short IntroNum => 1;
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Neutral;
-    [CustomOptionBool("PavlovsOwnerCanUseVent", true)]
-    public static bool PavlovsOwnerCanUseVent;
-
-    [CustomOptionBool("PavlovsOwnerIsImpostorVision", true)]
-    public static bool PavlovsOwnerIsImpostorVision;
 
     [CustomOptionFloat("PavlovsOwnerSidekickCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float PavlovsOwnerSidekickCooldown;
 
-    [CustomOptionInt("PavlovsOwnerMaxSidekickCount", 1, 10, 1, 5)]
+    [CustomOptionInt("PavlovsOwnerMaxSidekickCount", 0, 10, 1, 2)]
     public static int PavlovsOwnerMaxSidekickCount;
 
     [CustomOptionBool("PavlovsOwnerSuicideOnImpostorSidekick", true)]

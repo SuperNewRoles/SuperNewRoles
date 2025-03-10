@@ -201,6 +201,7 @@ public class PlayerStatistics
     public int CrewAlive { get; }
     public int TotalAlive { get; }
     public int TeamJackalAlive { get; }
+    public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
     public bool IsKillerExist => TotalKiller > 0;
 
@@ -213,6 +214,9 @@ public class PlayerStatistics
     public bool IsCrewmateVictory =>
         !IsKillerExist;
 
+    public bool IsPavlovsWin =>
+        IsKillerWin(TeamPavlovsAlive);
+
     private bool IsKillerWin(int killerAlive)
         => killerAlive >= TotalAlive - killerAlive && TotalKiller == killerAlive && killerAlive != 0;
 
@@ -222,37 +226,33 @@ public class PlayerStatistics
         TeamImpostorsAlive = stats.impostors;
         CrewAlive = stats.crew;
         TeamJackalAlive = stats.jackal;
+        TeamPavlovsAlive = stats.pavlovs;
         TotalAlive = stats.total;
-        TotalKiller = stats.impostors + stats.jackal;
+        TotalKiller = stats.impostors + stats.jackal + stats.pavlovs;
     }
 
-    private static (int impostors, int crew, int jackal, int total) CalculatePlayerStats()
+    private static (int impostors, int crew, int jackal, int pavlovs, int total) CalculatePlayerStats()
     {
         int impostors = 0;
         int crew = 0;
         int jackal = 0;
+        int pavlovs = 0;
         int total = 0;
-
         foreach (var player in ExPlayerControl.ExPlayerControlsArray)
         {
             if (player == null || player.IsDead()) continue;
 
             if (player.IsImpostor())
-            {
                 impostors++;
-            }
             else if (player.IsCrewmate())
-            {
                 crew++;
-            }
             else if (player.IsJackalTeam())
-            {
                 jackal++;
-            }
-
+            else if (player.IsPavlovsTeam())
+                pavlovs++;
             total++;
         }
 
-        return (impostors, crew, jackal, total);
+        return (impostors, crew, jackal, pavlovs, total);
     }
 }

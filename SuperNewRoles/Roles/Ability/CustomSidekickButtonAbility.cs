@@ -28,6 +28,10 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     public override bool OnlyCrewmates => false;
     public override Func<ExPlayerControl, bool>? IsTargetable => _isTargetable;
     private bool _sidekickCreated = false;
+    private Func<int> _sidekickCount = null;
+    private Func<bool> _showSidekickLimitText = null;
+    public override ShowTextType showTextType => _showSidekickLimitText == null ? ShowTextType.Hidden : ShowTextType.ShowWithCount;
+    public override string showText => ModTranslation.GetString("SidekickRemainingText");
     public CustomSidekickButtonAbility(
         Func<bool, bool> canCreateSidekick,
         Func<float?> sidekickCooldown,
@@ -35,10 +39,12 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         Func<RoleTypes> sidekickRoleVanilla,
         Sprite sidekickSprite,
         string sidekickText,
+        Func<int> sidekickCount,
         Func<ExPlayerControl, bool>? isTargetable,
         Func<ExPlayerControl, bool>? sidekickSuccess = null,
         SidekickedPromoteData? sidekickedPromoteData = null,
-        Action<ExPlayerControl> onSidekickCreated = null)
+        Action<ExPlayerControl> onSidekickCreated = null,
+        Func<bool> showSidekickLimitText = null)
     {
         _canCreateSidekick = canCreateSidekick;
         _sidekickCooldown = sidekickCooldown;
@@ -50,6 +56,8 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         _sidekickSuccess = sidekickSuccess;
         _sidekickedPromoteData = sidekickedPromoteData;
         _isTargetable = isTargetable;
+        _sidekickCount = sidekickCount;
+        _showSidekickLimitText = showSidekickLimitText;
     }
 
     public override void OnClick()

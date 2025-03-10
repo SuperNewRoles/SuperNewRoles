@@ -82,6 +82,7 @@ public class ChiefAbility : AbilityBase
             sidekickRoleVanilla: () => RoleTypes.Crewmate,
             sidekickSprite: AssetManager.GetAsset<Sprite>("ChiefSidekickButton.png"), // 既存のスプライトを利用
             sidekickText: ModTranslation.GetString("ChiefAppoint"),
+            sidekickCount: () => 1,
             isTargetable: IsTargetable,
             sidekickSuccess: target => !target.IsImpostor(),
             onSidekickCreated: OnSheriffAppointed

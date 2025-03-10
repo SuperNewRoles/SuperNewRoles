@@ -23,7 +23,11 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override bool OnlyCrewmates => OnlyCrewmatesValue?.Invoke() ?? false;
     public override bool TargetPlayersInVents => TargetPlayersInVentsValue?.Invoke() ?? false;
     public override Func<ExPlayerControl, bool>? IsTargetable => IsTargetableValue;
-    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown, Func<bool> onlyCrewmates, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null)
+    public override ShowTextType showTextType => _showTextType?.Invoke() ?? ShowTextType.Hidden;
+    public override string showText => _showText?.Invoke() ?? "";
+    private Func<ShowTextType> _showTextType { get; } = () => ShowTextType.Hidden;
+    private Func<string> _showText { get; } = () => "";
+    public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown, Func<bool> onlyCrewmates, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null, Func<ShowTextType> showTextType = null, Func<string> showText = null)
     {
         CanKill = canKill;
         KillCooldown = killCooldown;
@@ -31,6 +35,8 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
         TargetPlayersInVentsValue = targetPlayersInVents;
         IsTargetableValue = isTargetable;
         KilledCallback = killedCallback;
+        _showTextType = showTextType;
+        _showText = showText;
     }
 
     public override void OnClick()

@@ -8,6 +8,8 @@ Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
 People,{0}人,{0} people,{0}人,{0}人
 
+SidekickRemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
+
 # 情報機器制限
 DeviceOptions,情報機器制限,Device Options,设备限制,設備限制
 DeviceAdminOption,アドミン設定,Admin Settings,管理地图设置,管理地圖設置
@@ -308,7 +310,7 @@ PavlovsOwnerSidekickCooldown,指名のクールタイム,Appointment Cooldown,�
 PavlovsOwnerMaxSidekickCount,1試合内に指名できる回数,Maximum Appointments per Game,每局游戏最大指定次数,每局遊戲最大指定次數
 PavlovsOwnerSuicideOnImpostorSidekick,インポスターを指名すると自爆する,Suicide when Appointing Impostor,指定内鬼时自杀,指定內鬼時自殺
 PavlovsOwnerIsImpostorVision,オーナーがインポスターの視界,Owner has Impostor Vision,主人拥有内鬼视野,主人擁有內鬼視野
-PavlovsDogButtonText,ｲﾇ,dog,狗,狗
+PavlovsDogButtonText,刷り込み,Conditioning,条件反射,條件反射
 PavlovsDogCanUseVent,犬がベントを使用できる,Dog can use vents,狗可以使用通风口,狗可以使用通風口
 PavlovsDogIsImpostorVision,犬がインポスターの視界,Dog has Impostor Vision,狗拥有内鬼视野,狗擁有內鬼視野
 PavlovsDogKillCooldown,犬のキルクールタイム,Dog's Kill Cooldown,狗的击杀冷却时间,狗的擊殺冷卻時間

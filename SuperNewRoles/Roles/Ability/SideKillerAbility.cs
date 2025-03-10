@@ -49,7 +49,8 @@ public class SideKillerAbility : AbilityBase
             () => RoleTypes.Crewmate,
             AssetManager.GetAsset<Sprite>("JackalSidekickButton.png"),
             ModTranslation.GetString("SideKillerSidekickButtonName"),
-            (player) => player.IsCrewmate(),
+            sidekickCount: () => 1,
+            isTargetable: (player) => player.IsCrewmate(),
             sidekickedPromoteData: new(RoleId.MadKiller, RoleTypes.Impostor),
             onSidekickCreated: (player) =>
             {
