@@ -71,7 +71,7 @@ public class ChiefAbility : AbilityBase
     {
         _sheriffAbilityData = sheriffAbilityData;
     }
-
+    private bool _hasOldTask = false;
     public override void AttachToLocalPlayer()
     {
         // 任命ボタンの作成
@@ -84,7 +84,11 @@ public class ChiefAbility : AbilityBase
             sidekickText: ModTranslation.GetString("ChiefAppoint"),
             sidekickCount: () => 1,
             isTargetable: IsTargetable,
-            sidekickSuccess: target => !target.IsImpostor(),
+            sidekickSuccess: target =>
+            {
+                _hasOldTask = target.IsTaskTriggerRole();
+                return !target.IsImpostor();
+            },
             onSidekickCreated: OnSheriffAppointed
         );
 
@@ -129,12 +133,11 @@ public class ChiefAbility : AbilityBase
         }
         else
         {
-            bool isOldHasTak = target.IsTaskTriggerRole();
             SheriffAbility sheriffAbility = target.PlayerAbilities.FirstOrDefault(ability => ability is SheriffAbility) as SheriffAbility;
             if (sheriffAbility == null)
                 throw new Exception("SheriffAbilityが見つかりません");
             _createdSheriff = sheriffAbility;
-            RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, isOldHasTak);
+            RpcChiefAppointSheriff(target, sheriffAbility, _sheriffAbilityData.KillCooldown, _sheriffAbilityData.KillCount, _sheriffAbilityData.CanKillNeutral, _sheriffAbilityData.CanKillImpostor, _sheriffAbilityData.CanKillMadRoles, _sheriffAbilityData.CanKillFriendRoles, _sheriffAbilityData.CanKillLovers, _hasOldTask);
         }
     }
     [CustomRPC]
