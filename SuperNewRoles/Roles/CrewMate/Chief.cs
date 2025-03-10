@@ -16,7 +16,10 @@ class Chief : RoleBase<Chief>
 {
     public override RoleId Role { get; } = RoleId.Chief;
     public override Color32 RoleColor { get; } = Sheriff.Instance.RoleColor;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new ChiefAbility(new SheriffAbilityData(ChiefSheriffKillCooldown, ChiefSheriffMaxKillCount, ChiefSheriffCanKillNeutral, ChiefSheriffCanKillImpostor, ChiefSheriffCanKillMadRoles, ChiefSheriffCanKillFriendRoles, ChiefSheriffCanKillLovers))];
+    public override List<Func<AbilityBase>> Abilities { get; } = [() => new ChiefAbility(
+        new(ChiefSheriffKillCooldown, ChiefSheriffMaxKillCount, ChiefSheriffCanKillNeutral, ChiefSheriffCanKillImpostor, ChiefSheriffCanKillMadRoles, ChiefSheriffCanKillFriendRoles, ChiefSheriffCanKillLovers),
+        ChiefCanSeeCreatedSheriff
+    )];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Crewmate;
@@ -28,7 +31,8 @@ class Chief : RoleBase<Chief>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Crewmate;
 
-    // カスタムオプション：任命されるシェリフ用の設定
+    [CustomOptionFloat("ChiefAppointCooldown", 0f, 60f, 2.5f, 30f)]
+    public static float ChiefAppointCooldown;
     [CustomOptionFloat("ChiefSheriffKillCooldown", 0f, 60f, 2.5f, 25f)]
     public static float ChiefSheriffKillCooldown;
 
@@ -50,10 +54,6 @@ class Chief : RoleBase<Chief>
     [CustomOptionBool("ChiefSheriffCanKillLovers", true)]
     public static bool ChiefSheriffCanKillLovers;
 
-    // 任命のクールタイム設定を追加
-    [CustomOptionFloat("ChiefAppointCooldown", 0f, 60f, 2.5f, 30f)]
-    public static float ChiefAppointCooldown;
-
     // 作成したシェリフがわかる設定を追加
     [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
     public static bool ChiefCanSeeCreatedSheriff;
@@ -66,10 +66,11 @@ public class ChiefAbility : AbilityBase
     private SheriffAbilityData _sheriffAbilityData;
     private SheriffAbility _createdSheriff = null;
     private EventListener<NameTextUpdateEventData> _nameTextUpdateEventListener;
-
-    public ChiefAbility(SheriffAbilityData sheriffAbilityData)
+    private bool _canSeeCreatedSheriff;
+    public ChiefAbility(SheriffAbilityData sheriffAbilityData, bool canSeeCreatedSheriff)
     {
         _sheriffAbilityData = sheriffAbilityData;
+        _canSeeCreatedSheriff = canSeeCreatedSheriff;
     }
     private bool _hasOldTask = false;
     public override void AttachToLocalPlayer()
@@ -152,13 +153,14 @@ public class ChiefAbility : AbilityBase
             CustomTaskAbility customTaskAbility = new(() => (false, 0));
             target.AttachAbility(customTaskAbility, new AbilityParentAbility(sheriffAbility));
         }
+        NameText.UpdateAllNameInfo();
     }
 
     // 作成したシェリフを表示するための処理を追加
     public void OnNameTextUpdate(NameTextUpdateEventData data)
     {
         if (_createdSheriff?.Player != null &&
-            Chief.ChiefCanSeeCreatedSheriff &&
+            _canSeeCreatedSheriff &&
             data.Player.PlayerId == _createdSheriff.Player.PlayerId &&
             _createdSheriff.Player.IsAlive())
             NameText.SetNameTextColor(_createdSheriff.Player, Sheriff.Instance.RoleColor);
