@@ -9,6 +9,7 @@ using SuperNewRoles.Modules;
 using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules.Events.Bases;
+using UnityEngine.AddressableAssets;
 
 namespace SuperNewRoles.Roles.Crewmate;
 

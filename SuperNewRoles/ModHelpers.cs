@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;
 using SuperNewRoles.Modules;
 using UnityEngine;
@@ -233,5 +234,17 @@ public static class ModHelpers
     {
         var array = list as T[] ?? list.ToArray();
         return UnityEngine.Random.Range(0, array.Length);
+    }
+    public static IEnumerable<T> GetSystemEnumerable<T>(this Il2CppSystem.Collections.IEnumerable list)
+    {
+        var castedList = list.WrapToManaged().OfType<T>();
+        foreach (var item in castedList)
+        {
+            yield return item;
+        }
+    }
+    public static IEnumerable<T> GetSystemEnumerable<T>(this Il2CppSystem.Collections.Generic.IEnumerable<T> list)
+    {
+        return GetSystemEnumerable<T>(list.TryCast<Il2CppSystem.Collections.IEnumerable>());
     }
 }
