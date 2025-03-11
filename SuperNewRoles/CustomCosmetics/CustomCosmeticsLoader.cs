@@ -13,229 +13,248 @@ using Newtonsoft.Json.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
 
-namespace SuperNewRoles.CustomCosmetics;
-
-public class CustomCosmeticsData
+namespace SuperNewRoles.CustomCosmetics
 {
-    public Dictionary<string, string> assetbundles { get; set; }
-}
-
-public class CustomCosmeticsLoader
-{
-    public static string[] CustomCosmeticsURLs = [
-        // "https://example.com/custom_cosmetics.json",
-        "./SuperNewRolesNext/debug_assets.json",
-    ];
-
-    private static readonly HttpClient client = new();
-    private static readonly int maxRetryAttempts = 1;
-    private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
-    private static readonly MD5 md5 = MD5.Create();
-    private static readonly List<string> notLoadedAssetBundles = new();
-    private static readonly List<CustomCosmeticsPackage> loadedPackages = new();
-    public static async void Load()
+    public class CustomCosmeticsData
     {
-        foreach (string url in CustomCosmeticsURLs)
-        {
-            try
-            {
-                string jsonContent;
-                if (url.StartsWith("./") || url.StartsWith("../"))
-                {
-                    jsonContent = File.ReadAllText(url);
-                }
-                else
-                {
-                    jsonContent = await client.GetStringAsync(url);
-                }
+        public Dictionary<string, string> assetbundles { get; set; }
+    }
 
-                // JSONをパース
-                JObject json = JObject.Parse(jsonContent);
-                JToken assetbundles = json["assetbundles"];
-                if (assetbundles == null)
+    public class CustomCosmeticsLoader
+    {
+        // 配信元URLの初期化（必要に応じて他のURLも追加可能）
+        public static string[] CustomCosmeticsURLs = new string[]
+        {
+            // "https://example.com/custom_cosmetics.json",
+            "./SuperNewRolesNext/debug_assets.json",
+        };
+
+        private static readonly HttpClient client = new HttpClient();
+        private static readonly int maxRetryAttempts = 1;
+        private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
+        private static readonly MD5 md5 = MD5.Create();
+        private static readonly List<string> notLoadedAssetBundles = new List<string>();
+        private static readonly List<CustomCosmeticsPackage> loadedPackages = new List<CustomCosmeticsPackage>();
+
+        public static async Task Load()
+        {
+            foreach (string url in CustomCosmeticsURLs)
+            {
+                try
                 {
-                    Logger.Error($"assetbundlesが見つかりません: {url}");
-                    continue;
-                }
-                // アセットバンドルをダウンロード
-                if (assetbundles != null)
-                {
-                    for (var assetBundle = assetbundles.First; assetBundle != null; assetBundle = assetBundle.Next)
+                    string jsonContent = url.StartsWith("./") || url.StartsWith("../")
+                        ? File.ReadAllText(url)
+                        : await client.GetStringAsync(url);
+
+                    // JSONをパース
+                    JObject json = JObject.Parse(jsonContent);
+                    JToken assetBundlesToken = json["assetbundles"];
+                    if (assetBundlesToken == null)
                     {
-                        string assetBundleUrl = assetBundle["url"].ToString();
-                        string exceptedHash = assetBundle["hash"].ToString();
-                        string? savedPath = await DownloadAssetBundleWithRetry(assetBundleUrl, exceptedHash);
-                        if (savedPath != null)
+                        Logger.Error($"assetbundlesが見つかりません: {url}");
+                        continue;
+                    }
+
+                    // 各assetbundle要素についてダウンロードを試行
+                    for (var assetBundle = assetBundlesToken.First; assetBundle != null; assetBundle = assetBundle.Next)
+                    {
+                        string assetBundleUrl = assetBundle["url"]?.ToString() ?? "";
+                        string expectedHash = assetBundle["hash"]?.ToString() ?? "";
+                        string? savedPath = await DownloadAssetBundleWithRetry(assetBundleUrl, expectedHash);
+                        if (!string.IsNullOrEmpty(savedPath))
                         {
                             notLoadedAssetBundles.Add(savedPath);
                         }
                     }
                 }
-            }
-            catch (HttpRequestException e)
-            {
-                Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url}\nHTTPリクエストエラー: {e.StatusCode}\n{e}");
-            }
-            catch (System.Exception e)
-            {
-                Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url}\n{e}");
-            }
-        }
-        try
-        {
-            while (notLoadedAssetBundles.Count > 0)
-            {
-                AssetBundle assetBundle = LoadAssetBundle(notLoadedAssetBundles[0]);
-                string[] packages = GetPackages(assetBundle);
-                foreach (string package in packages)
+                catch (HttpRequestException e)
                 {
-                    Logger.Info($"パッケージ: {package}");
+                    Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url}\nHTTPリクエストエラー: {e.StatusCode}\n{e}");
                 }
-                LoadPackages(assetBundle, packages);
-                notLoadedAssetBundles.RemoveAt(0);
+                catch (Exception e)
+                {
+                    Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url}\n{e}");
+                }
+            }
+
+            // ダウンロードされたアセットバンドルを順次読み込みパッケージを取り出す
+            try
+            {
+                while (notLoadedAssetBundles.Count > 0)
+                {
+                    string bundlePath = notLoadedAssetBundles[0];
+                    AssetBundle assetBundle = LoadAssetBundle(bundlePath);
+                    string[] packages = GetPackages(assetBundle);
+                    foreach (string package in packages)
+                    {
+                        Logger.Info($"パッケージ: {package}");
+                    }
+                    LoadPackages(assetBundle, packages);
+                    notLoadedAssetBundles.RemoveAt(0);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {e}");
             }
         }
-        catch (System.Exception e)
+
+        private static void LoadPackages(AssetBundle assetBundle, string[] packages)
         {
-            Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {e}");
-        }
-    }
-    private static void LoadPackages(AssetBundle assetBundle, string[] packages)
-    {
-        foreach (string package in packages)
-        {
-            string packageJson = assetBundle.LoadAsset<TextAsset>($"assets/hats/{package}/package.json").text;
-            JObject packageJsonObject = JObject.Parse(packageJson);
-            JToken packageInfo = packageJsonObject["package"];
-            if (packageInfo == null)
+            foreach (string package in packages)
             {
-                Logger.Error($"パッケージ: {package} に package が見つかりません");
-                continue;
-            }
-            CustomCosmeticsPackage cosmeticsPackage = new(
-                packageInfo["name"].ToString(),
-                packageInfo["name_en"]?.ToString(),
-                (int)packageInfo["parseversion"]
-            );
-            loadedPackages.Add(cosmeticsPackage);
-            Logger.Info($"{cosmeticsPackage.name} {cosmeticsPackage.version}");
-            JToken hats = packageJsonObject["hats"];
-            if (hats == null)
-            {
-                Logger.Error($"パッケージ: {package} に hats が見つかりません");
-                continue;
-            }
-            List<CustomCosmeticsHat> customCosmeticsHats = [];
-            for (var hat = hats.First; hat != null; hat = hat.Next)
-            {
-                CustomCosmeticsHat customCosmeticsHat = new(
-                    name: hat["name"].ToString(),
-                    name_en: hat["name_en"]?.ToString(),
-                    hat_id: hat["hat_id"].ToString(),
-                    path_base: $"Assets/Hats/{package}/{hat["hat_id"].ToString()}/",
-                    author: hat["author"].ToString(),
-                    package: cosmeticsPackage,
-                    options: new(hat)
+                // package.jsonをロードするパスを組み立て、読み込み
+                string packageJsonPath = $"assets/hats/{package}/package.json";
+                TextAsset packageTextAsset = assetBundle.LoadAsset<TextAsset>(packageJsonPath);
+                if (packageTextAsset == null)
+                {
+                    Logger.Error($"パッケージ: {package} の package.json が読み込めません");
+                    continue;
+                }
+                string packageJson = packageTextAsset.text;
+                JObject packageJsonObject = JObject.Parse(packageJson);
+                JToken packageInfo = packageJsonObject["package"];
+                if (packageInfo == null)
+                {
+                    Logger.Error($"パッケージ: {package} に package が見つかりません");
+                    continue;
+                }
+                CustomCosmeticsPackage cosmeticsPackage = new(
+                    packageInfo["name"].ToString(),
+                    packageInfo["name_en"]?.ToString(),
+                    (int)packageInfo["parseversion"]
                 );
-                customCosmeticsHats.Add(customCosmeticsHat);
+                loadedPackages.Add(cosmeticsPackage);
+                Logger.Info($"{cosmeticsPackage.name} {cosmeticsPackage.version}");
+
+                JToken hatsToken = packageJsonObject["hats"];
+                if (hatsToken == null)
+                {
+                    Logger.Error($"パッケージ: {package} に hats が見つかりません");
+                    continue;
+                }
+                var customCosmeticsHats = new List<CustomCosmeticsHat>();
+                for (var hat = hatsToken.First; hat != null; hat = hat.Next)
+                {
+                    CustomCosmeticsHat customCosmeticsHat = new(
+                        name: hat["name"].ToString(),
+                        name_en: hat["name_en"]?.ToString(),
+                        hat_id: hat["hat_id"].ToString(),
+                        path_base: $"Assets/Hats/{package}/{hat["hat_id"].ToString()}/",
+                        author: hat["author"].ToString(),
+                        package: cosmeticsPackage,
+                        options: new(hat)
+                    );
+                    customCosmeticsHats.Add(customCosmeticsHat);
+                }
+                cosmeticsPackage.hats = customCosmeticsHats.ToArray();
             }
-            cosmeticsPackage.hats = customCosmeticsHats.ToArray();
         }
-    }
-    private static string[] GetPackages(AssetBundle assetBundle)
-    {
-        Logger.Info($"---アセットバンドル: {assetBundle.name}---");
-        foreach (string assetName in assetBundle.GetAllAssetNames())
+
+        private static string[] GetPackages(AssetBundle assetBundle)
         {
-            Logger.Info($"アセット: {assetName}");
+            return assetBundle.GetAllAssetNames()
+                .Select(path => path.Split('/'))
+                .Where(segments => segments.Length >= 4 &&
+                                   string.Equals(segments[0], "Assets", StringComparison.OrdinalIgnoreCase) &&
+                                   string.Equals(segments[1], "Hats", StringComparison.OrdinalIgnoreCase) &&
+                                   !string.IsNullOrEmpty(segments[2]))
+                .Select(segments => segments[2])
+                .Distinct()
+                .ToArray();
         }
-        Logger.Info("--------------------------------");
-        return assetBundle.GetAllAssetNames()
-            .Select(path => path.Split('/'))
-            .Where(segments => segments.Length >= 4 &&
-                               string.Equals(segments[0], "Assets", StringComparison.OrdinalIgnoreCase) &&
-                               string.Equals(segments[1], "Hats", StringComparison.OrdinalIgnoreCase) &&
-                               !string.IsNullOrEmpty(segments[2]))
-            .Select(segments => segments[2])
-            .Distinct()
-            .ToArray();
-    }
-    private static AssetBundle LoadAssetBundle(string assetBundlePath)
-    {
-        AssetBundle assetBundle3 = AssetBundle.LoadFromFile(assetBundlePath);
-        assetBundle3.DontUnload();
-        Logger.Info($"アセットバンドルをロードしました: {assetBundlePath} {assetBundle3 != null}");
-        return assetBundle3;
+
+        private static AssetBundle LoadAssetBundle(string assetBundlePath)
+        {
+            AssetBundle assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+            assetBundle.DontUnload();
+            Logger.Info($"アセットバンドルをロードしました: {assetBundlePath} {assetBundle != null}");
+            return assetBundle;
+        }
+
+        private static async Task<string?> DownloadAssetBundleWithRetry(string assetBundleUrl, string expectedHash)
+        {
+            string fileName = Path.GetFileName(assetBundleUrl);
+            string targetPath = $"./SuperNewRolesNext/CustomCosmetics/{fileName}/{expectedHash}.bundle";
+            if (File.Exists(targetPath))
+            {
+                Logger.Info($"アセットバンドルが既に存在します: {targetPath}");
+                return targetPath;
+            }
+
+            for (int attempt = 0; attempt < maxRetryAttempts; attempt++)
+            {
+                try
+                {
+                    byte[] assetBundleData = assetBundleUrl.StartsWith("./") || assetBundleUrl.StartsWith("../")
+                        ? File.ReadAllBytes(assetBundleUrl)
+                        : await client.GetByteArrayAsync(assetBundleUrl);
+
+                    // MD5ハッシュを計算
+                    string fileHash = BitConverter.ToString(md5.ComputeHash(assetBundleData))
+                        .Replace("-", "")
+                        .ToLower();
+                    string savePath = $"./SuperNewRolesNext/CustomCosmetics/{fileName}/{fileHash}.bundle";
+
+                    // ディレクトリ作成と古いファイルの削除
+                    string directory = Path.GetDirectoryName(savePath) ?? "";
+                    Directory.CreateDirectory(directory);
+                    foreach (string file in Directory.GetFiles(directory))
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error($"アセットバンドルの削除に失敗しました: {file}\n{ex}");
+                        }
+                    }
+
+                    // アセットバンドルの保存
+                    File.WriteAllBytes(savePath, assetBundleData);
+                    Logger.Info($"アセットバンドルをダウンロードしました: {assetBundleUrl} -> {savePath}");
+                    return savePath;
+                }
+                catch (HttpRequestException e)
+                {
+                    Logger.Error($"アセットバンドルのダウンロードに失敗しました: {assetBundleUrl}\nHTTPリクエストエラー: {e.StatusCode}\n{e}");
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"アセットバンドルのダウンロードに失敗しました: {assetBundleUrl}\n{e}");
+                }
+
+                Logger.Warning($"リトライします ({attempt + 1}/{maxRetryAttempts}) ... URL: {assetBundleUrl}");
+                await Task.Delay(retryDelay);
+            }
+
+            Logger.Error($"アセットバンドルのダウンロードに最大リトライ回数({maxRetryAttempts})を超えました: {assetBundleUrl}");
+            return null;
+        }
     }
 
-    private static async Task<string?> DownloadAssetBundleWithRetry(string assetBundleUrl, string exceptedHash)
+    [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Start))]
+    public static class SplashManagerStartPatch
     {
-        string fileName = Path.GetFileName(assetBundleUrl);
-        string savedPath = $"./SuperNewRolesNext/CustomCosmetics/{fileName}/{exceptedHash}.bundle";
-        if (File.Exists(savedPath))
+        public static void Postfix(SplashManager __instance)
         {
-            Logger.Info($"アセットバンドルが既に存在します: {savedPath}");
-            return savedPath;
+            // メインスレッドで非同期処理を開始
+            _ = LoadCosmeticsAsync();
+            Logger.Info("SplashManagerStartPatch");
         }
-        for (int i = 0; i < maxRetryAttempts; ++i)
+
+        // Unityのメインスレッドで安全に非同期処理を実行するためのメソッド
+        private static async Task LoadCosmeticsAsync()
         {
             try
             {
-                byte[] assetBundleData;
-                if (assetBundleUrl.StartsWith("./") || assetBundleUrl.StartsWith("../"))
-                {
-                    assetBundleData = File.ReadAllBytes(assetBundleUrl);
-                }
-                else
-                {
-                    assetBundleData = await client.GetByteArrayAsync(assetBundleUrl);
-                }
-
-                // md5を計算
-                string fileHash = BitConverter.ToString(md5.ComputeHash(assetBundleData)).Replace("-", "").ToLower();
-                string savePath = $"./SuperNewRolesNext/CustomCosmetics/{fileName}/{fileHash}.bundle";
-
-                // ディレクトリを作る
-                Directory.CreateDirectory(Path.GetDirectoryName(savePath));
-                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(savePath)))
-                {
-                    try
-                    {
-                        File.Delete(file);
-                    }
-                    catch (System.Exception e)
-                    {
-                        Logger.Error($"アセットバンドルの削除に失敗しました: {file}\n{e}");
-                    }
-                }
-
-                // アセットバンドルを保存
-                File.WriteAllBytes(savePath, assetBundleData);
-                Logger.Info($"アセットバンドルをダウンロードしました: {assetBundleUrl} -> {savePath}");
-                return savePath; // 成功したらリトライしない
+                await CustomCosmeticsLoader.Load();
             }
-            catch (HttpRequestException e)
+            catch (Exception e)
             {
-                Logger.Error($"アセットバンドルのダウンロードに失敗しました: {assetBundleUrl}\nHTTPリクエストエラー: {e.StatusCode}\n{e}");
+                Logger.Error($"カスタムコスメティックのロード中にエラーが発生しました: {e}");
             }
-            catch (System.Exception e)
-            {
-                Logger.Error($"アセットバンドルのダウンロードに失敗しました: {assetBundleUrl}\n{e}");
-            }
-
-            Logger.Warning($"リトライします ({i + 1}/{maxRetryAttempts}) ... URL: {assetBundleUrl}");
-            await Task.Delay(retryDelay);
         }
-
-        Logger.Error($"アセットバンドルのダウンロードに最大リトライ回数({maxRetryAttempts})を超えました: {assetBundleUrl}");
-        return null;
-    }
-}
-[HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Start))]
-public static class SplashManagerStartPatch
-{
-    public static void Postfix(SplashManager __instance)
-    {
-        CustomCosmeticsLoader.Load();
     }
 }
