@@ -15,8 +15,7 @@ class HomeSecurityGuard : RoleBase<HomeSecurityGuard>
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new CustomTaskAbility(
         () => {
             var exPlayer = ExPlayerControl.LocalPlayer;
-            if (exPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId) return (false, 0);
-            return (true, 0);
+            return (false, 0);
         },
         new TaskOptionData(1, 0, 0)
     )];
