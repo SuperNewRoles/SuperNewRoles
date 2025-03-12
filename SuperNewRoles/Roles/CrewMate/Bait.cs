@@ -156,7 +156,7 @@ public class BaitAutoReportTrophy : SuperTrophyAbility<BaitAutoReportTrophy>
     private void HandleCalledMeetingEvent(CalledMeetingEventData data)
     {
         Logger.Info("BaitAutoReportTrophy HandleCalledMeetingEvent: " + data.target.name + " " + data.reporter.name + " " + _killedMe);
-        if (data.target.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+        if (data.target == null || data.target.PlayerId != PlayerControl.LocalPlayer.PlayerId)
             return;
         if (_killedMe)
             Complete();

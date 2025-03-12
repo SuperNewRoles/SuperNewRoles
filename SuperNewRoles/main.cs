@@ -21,6 +21,8 @@ using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.HelpMenus;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.CustomCosmetics.UI;
+using SuperNewRoles.CustomCosmetics;
 
 namespace SuperNewRoles;
 
@@ -58,6 +60,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         SyncVersion.Load();
         EventListenerManager.Load();
         SuperTrophyManager.Load();
+        CustomCosmeticsSaver.Load();
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
@@ -70,6 +73,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<FadeCoroutine>();
         ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<GotTrophyUI.SlideAnimator>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsCostumeSlot>();
     }
 
 

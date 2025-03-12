@@ -15,21 +15,29 @@ public static class CustomCosmeticsUIStart
     {
         public const float X_POSITION = -2.895f;
         public const float Y_POSITION = 2.1f;
-        public const float Z_POSITION = -10f;
+        public const float Z_POSITION = -13f;
         public const float SCALE = 0.26f;
     }
 
     private const string MENU_SELECTOR_ASSET_NAME = "CosmeticMenuSelector";
-    public static List<ICustomCosmeticsMenu> Menus = null;
+    private static List<ICustomCosmeticsMenu> Menus = null;
+    private static ICustomCosmeticsMenu CurrentMenu = null;
 
     public static void Start(PlayerCustomizationMenu menu)
     {
+        CurrentMenu = null;
         MenusInitialize();
         HideDefaultUI(menu);
         var menuObject = CreateMenuObject(menu);
         if (menuObject != null)
             SetupCategoryButtons(menuObject);
         CreateMenuFrame(menuObject, menu);
+        HandleCategoryClick("cosmetic_costume", menuObject);
+    }
+    public static void Update(PlayerCustomizationMenu menu)
+    {
+        if (CurrentMenu != null)
+            CurrentMenu.Update();
     }
     private static void MenusInitialize()
     {
@@ -76,8 +84,9 @@ public static class CustomCosmeticsUIStart
         ModHelpers.SetActiveAllObject(menu.gameObject.GetChildren(), false);
         menu.transform.Find("Tint").gameObject.SetActive(true);
         menu.transform.Find("Background").gameObject.SetActive(true);
-        ModHelpers.SetActiveAllObject(menu.transform.Find("Background").gameObject.GetChildren(), true);
-        menu.transform.Find("Background/RightPanel").gameObject.SetActive(false);
+        menu.transform.Find("Background/RightPanel").localPosition = new(2.688f, 0, -15f);
+        // ModHelpers.SetActiveAllObject(menu.transform.Find("Background").gameObject.GetChildren(), true);
+        // menu.transform.Find("Background/RightPanel").gameObject.SetActive(false);
     }
 
     private static GameObject CreateMenuObject(PlayerCustomizationMenu menu)
@@ -155,6 +164,9 @@ public static class CustomCosmeticsUIStart
         Logger.Info($"Cosmetic Category Clicked: {categoryName}");
         SetCurrentTab(categoryName, menuObject);
         var menu = Menus.Find(m => "cosmetic_" + m.MenuType.ToString() == categoryName);
+        if (CurrentMenu != null)
+            CurrentMenu.Hide();
+        CurrentMenu = menu;
         if (menu != null)
             menu.Initialize();
     }
@@ -205,6 +217,14 @@ public static class CustomCosmeticsUIStart
         public static void Postfix(PlayerCustomizationMenu __instance)
         {
             Start(__instance);
+        }
+    }
+    [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Update))]
+    public static class PlayerCustomizationMenu_Update_Patch
+    {
+        public static void Postfix(PlayerCustomizationMenu __instance)
+        {
+            Update(__instance);
         }
     }
 }

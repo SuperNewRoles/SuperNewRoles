@@ -33,9 +33,9 @@ namespace SuperNewRoles.CustomCosmetics
         private static readonly int maxRetryAttempts = 1;
         private static readonly TimeSpan retryDelay = TimeSpan.FromSeconds(5);
         private static readonly MD5 md5 = MD5.Create();
-        private static readonly List<string> notLoadedAssetBundles = new List<string>();
-        private static readonly List<CustomCosmeticsPackage> loadedPackages = new List<CustomCosmeticsPackage>();
-
+        private static readonly List<string> notLoadedAssetBundles = new();
+        private static readonly List<CustomCosmeticsPackage> loadedPackages = new();
+        public static List<CustomCosmeticsPackage> LoadedPackages => loadedPackages;
         public static async Task Load()
         {
             foreach (string url in CustomCosmeticsURLs)
@@ -133,7 +133,7 @@ namespace SuperNewRoles.CustomCosmetics
                     Logger.Error($"パッケージ: {package} に hats が見つかりません");
                     continue;
                 }
-                var customCosmeticsHats = new List<CustomCosmeticsHat>();
+                List<CustomCosmeticsHat> customCosmeticsHats = new();
                 for (var hat = hatsToken.First; hat != null; hat = hat.Next)
                 {
                     CustomCosmeticsHat customCosmeticsHat = new(
@@ -143,7 +143,8 @@ namespace SuperNewRoles.CustomCosmetics
                         path_base: $"Assets/Hats/{package}/{hat["hat_id"].ToString()}/",
                         author: hat["author"].ToString(),
                         package: cosmeticsPackage,
-                        options: new(hat)
+                        options: new(hat),
+                        assetBundle: assetBundle
                     );
                     customCosmeticsHats.Add(customCosmeticsHat);
                 }

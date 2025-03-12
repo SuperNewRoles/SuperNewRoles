@@ -1,5 +1,7 @@
 using System;
 using Newtonsoft.Json.Linq;
+using SuperNewRoles.Modules;
+using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics;
 
@@ -26,7 +28,9 @@ public class CustomCosmeticsHat
     public string author { get; }
     public CustomCosmeticsPackage package { get; }
     public CustomCosmeticsHatOptions options { get; }
-    public CustomCosmeticsHat(string name, string name_en, string hat_id, string path_base, string author, CustomCosmeticsPackage package, CustomCosmeticsHatOptions options)
+    private AssetBundle assetBundle { get; }
+    public string ProdId => "Modded_" + hat_id;
+    public CustomCosmeticsHat(string name, string name_en, string hat_id, string path_base, string author, CustomCosmeticsPackage package, CustomCosmeticsHatOptions options, AssetBundle assetBundle)
     {
         this.name = name;
         this.name_en = name_en ?? name;
@@ -35,6 +39,11 @@ public class CustomCosmeticsHat
         this.author = author;
         this.package = package;
         this.options = options;
+        this.assetBundle = assetBundle;
+    }
+    public Sprite LoadFrontSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "front.png");
     }
 }
 
