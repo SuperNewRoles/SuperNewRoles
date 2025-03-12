@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Modules.Events.Bases;
 using UnityEngine;
 
@@ -51,6 +52,29 @@ public class MeetingUpdateEvent : EventTargetBase<MeetingUpdateEvent>
     }
 }
 
+public class VotingCompleteEventData : IEventData
+{
+    public Il2CppStructArray<MeetingHud.VoterState> States { get; }
+    public NetworkedPlayerInfo Exiled { get; }
+    public bool IsTie { get; }
+
+    public VotingCompleteEventData(Il2CppStructArray<MeetingHud.VoterState> states, NetworkedPlayerInfo exiled, bool isTie)
+    {
+        States = states;
+        Exiled = exiled;
+        IsTie = isTie;
+    }
+}
+
+public class VotingCompleteEvent : EventTargetBase<VotingCompleteEvent, VotingCompleteEventData>
+{
+    public static void Invoke(Il2CppStructArray<MeetingHud.VoterState> states, NetworkedPlayerInfo exiled, bool tie)
+    {
+        var data = new VotingCompleteEventData(states, exiled, tie);
+        Instance.Awake(data);
+    }
+}
+
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
 public static class CalledMeetingPatch
 {
@@ -83,5 +107,14 @@ public static class MeetingUpdatePatch
     public static void Postfix()
     {
         MeetingUpdateEvent.Invoke();
+    }
+}
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
+public static class VotingCompletePatch
+{
+    public static void Postfix(Il2CppStructArray<MeetingHud.VoterState> states, ref NetworkedPlayerInfo exiled, bool tie)
+    {
+        VotingCompleteEvent.Invoke(states, exiled, tie);
     }
 }

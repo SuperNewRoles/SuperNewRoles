@@ -29,7 +29,7 @@ public abstract class AbilityBase
 
     public virtual void AttachToOthers() { }
 
-    public void Detach()
+    public virtual void Detach()
     {
         if (Player == PlayerControl.LocalPlayer)
             DetachToLocalPlayer();

@@ -126,3 +126,18 @@ BaitWarnKiller,キラーに警告する,Warn Killer,警告殺手,警告殺手
 BaitRandomDelay,遅延を少しランダムにする,Random Delay,遅延的隨機,遅延的隨機
 BaitDelayVariation,遅延の幅,Delay Variation,遅延的變化,遅延的變化
 
+# Balancer Options
+BalancerVoteTime,天秤会議時間,Balancer Vote Time,天秤会议时间,天秤會議時間
+BalancerUseCount,使用可能回数,Useable Count,可使用次数,可使用次數
+
+# Balancer UI Texts
+BalancerTitleTextEither,どちらかが追放される...,One of them will be exiled...,其中一个将被驱逐...,其中一個將被驅逐...
+BalancerTitleTextAverage,はかりにかけられる運命,Fate on the scales,命运的天平,命運的天平
+BalancerTitleTextYouVoteEither,どちらかに入れる?,Vote for one of them...,投票给其中一个...,投票給其中一個...
+BalancerTitleTextEitherExile,追放者の運命が決まる...,The fate of the exiled is decided...,被驱逐者的命运已定...,被驅逐者的命運已定...
+BalancerTitleTextWhoIsImpostor,どっちがインポスター？,Which one is the Impostor?,哪一个是内鬼？,哪一個是內鬼？
+BalancerTitleTextPleaseVote,どちらかに入れろ,Put it one way or the other.,到底要选哪个呢,誰的罪孽更深呢
+BalancerTitleTextGetBalance,バランスを求めよ。,Seek balance.,寻求平衡,尋求平衡
+BalancerAbilityUseText,能力発動,Ability activated,能力發動,能力發動
+BalancerVoteText,どちらかに投票せよ！,Vote for one or the other!,请选择一名玩家投票！,將票投給其中一邊！
+BalancerDoubleExileText,どちらも追放された...,Both were exiled...,两名玩家都被驱逐了...,兩名玩家都被驅逐了...

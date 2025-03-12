@@ -128,6 +128,7 @@ public abstract class CustomMeetingButtonBase : AbilityBase
         {
             foreach (var button in targetButtons)
             {
+                if (button.Value == null) continue;
                 SetActive(button.Value, isActive);
             }
         }
@@ -135,13 +136,14 @@ public abstract class CustomMeetingButtonBase : AbilityBase
         {
             foreach (var button in targetButtons)
             {
+                if (button.Value == null) continue;
                 SetActive(button.Value, isActive);
             }
         }
     }
     private void SetActive(GameObject button, bool isActive)
     {
-        if (button == null && button.activeSelf == isActive) return;
+        if (button == null || button.activeSelf == isActive) return;
         button.SetActive(isActive);
     }
     public override void DetachToLocalPlayer()
