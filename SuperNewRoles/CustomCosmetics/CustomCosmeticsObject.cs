@@ -45,6 +45,10 @@ public class CustomCosmeticsHat
     {
         return assetBundle.LoadAsset<Sprite>(path_base + "front.png");
     }
+    public Sprite LoadFrontLeftSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "front_left.png");
+    }
     public Sprite LoadClimbSprite()
     {
         return assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
@@ -52,6 +56,10 @@ public class CustomCosmeticsHat
     public Sprite LoadBackSprite()
     {
         return assetBundle.LoadAsset<Sprite>(path_base + "back.png");
+    }
+    public Sprite LoadBackLeftSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "back_left.png");
     }
     public Sprite LoadFlipSprite()
     {
@@ -66,7 +74,9 @@ public class CustomCosmeticsHat
 public class CustomCosmeticsHatOptions
 {
     public HatOptionType front { get; }
+    public HatOptionType front_left { get; }
     public HatOptionType back { get; }
+    public HatOptionType back_left { get; }
     public HatOptionType flip { get; }
     public HatOptionType flip_back { get; }
     public HatOptionType climb { get; }
@@ -74,17 +84,21 @@ public class CustomCosmeticsHatOptions
 
     public CustomCosmeticsHatOptions(JToken optionsJson)
     {
-        front = GetOption(optionsJson, "front", useBaseFlag: true);
-        back = GetOption(optionsJson, "back", useBaseFlag: true);
-        flip = GetOption(optionsJson, "flip", useBaseFlag: true);
-        flip_back = GetOption(optionsJson, "flip_back", useBaseFlag: true);
-        climb = GetOption(optionsJson, "climb", useBaseFlag: true);
+        front = GetOption(optionsJson, "front", true);
+        front_left = GetOption(optionsJson, "front_left");
+        back = GetOption(optionsJson, "back");
+        back_left = GetOption(optionsJson, "back_left");
+        flip = GetOption(optionsJson, "flip");
+        flip_back = GetOption(optionsJson, "flip_back");
+        climb = GetOption(optionsJson, "climb");
         blockVisors = GetBool(optionsJson["block_visors"]);
     }
-    public CustomCosmeticsHatOptions(HatOptionType front, HatOptionType back, HatOptionType flip, HatOptionType flip_back, HatOptionType climb, bool blockVisors = false)
+    public CustomCosmeticsHatOptions(HatOptionType front, HatOptionType front_left, HatOptionType back, HatOptionType back_left, HatOptionType flip, HatOptionType flip_back, HatOptionType climb, bool blockVisors = false)
     {
         this.front = front;
+        this.front_left = front_left;
         this.back = back;
+        this.back_left = back_left;
         this.flip = flip;
         this.flip_back = flip_back;
         this.climb = climb;
@@ -95,19 +109,20 @@ public class CustomCosmeticsHatOptions
     /// 指定されたプレフィックスに対してオプション値を取得します。
     /// useBaseFlagがtrueの場合、adaptiveがfalseならベースフラグの値を反映し、falseの場合は常にNoAdaptiveとなります。
     /// </summary>
-    private HatOptionType GetOption(JToken json, string keyPrefix, bool useBaseFlag)
+    private HatOptionType GetOption(JToken json, string keyPrefix, bool defaultOption = false)
     {
         // ヘルパーローカル関数：トークンからbool値を安全に取得する
 
         HatOptionType option;
         if (GetBool(json[$"{keyPrefix}_adaptive"]))
             option = HatOptionType.Adaptive;
-        else if (useBaseFlag)
-        {
-            option = GetBool(json[keyPrefix]) ? HatOptionType.NoAdaptive : HatOptionType.None;
-        }
         else
-            option = HatOptionType.NoAdaptive;
+        {
+            if (json[keyPrefix] == null && defaultOption)
+                option = HatOptionType.NoAdaptive;
+            else
+                option = GetBool(json[keyPrefix]) ? HatOptionType.NoAdaptive : HatOptionType.None;
+        }
 
         if (GetBool(json[$"{keyPrefix}_bounce"]))
             option |= HatOptionType.Bounce;

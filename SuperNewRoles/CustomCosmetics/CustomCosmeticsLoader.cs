@@ -148,7 +148,7 @@ public class CustomCosmeticsLoader
                     assetBundle: assetBundle
                 );
                 customCosmeticsHats.Add(customCosmeticsHat);
-                moddedHats.Add(customCosmeticsHat.hat_id, customCosmeticsHat);
+                moddedHats.Add(customCosmeticsHat.ProdId, customCosmeticsHat);
             }
             cosmeticsPackage.hats = customCosmeticsHats.ToArray();
         }

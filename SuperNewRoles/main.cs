@@ -23,6 +23,7 @@ using SuperNewRoles.MapCustoms;
 using SuperNewRoles.SuperTrophies;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 
 namespace SuperNewRoles;
 
@@ -74,6 +75,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<HelpMenuObjectComponent>();
         ClassInjector.RegisterTypeInIl2Cpp<GotTrophyUI.SlideAnimator>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsCostumeSlot>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomHatLayer>();
     }
 
 

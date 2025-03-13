@@ -1,6 +1,8 @@
+using AmongUs.Data;
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.UI;
 using UnityEngine;
+using static CosmeticsLayer;
 
 namespace SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 
@@ -11,17 +13,55 @@ public static class CosmeticsHats
         PlayerControl.LocalPlayer.RpcSetHat(hatId);
     }
 }
-[HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.Awake))]
-public static class PoolablePlayer_SetHat
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetHat), [typeof(string), typeof(int)])]
+public static class PoolablePlayer_SetHat_String
 {
-    public static void Postfix(PoolablePlayer __instance, int id)
+    public static void Postfix(CosmeticsLayer __instance, string hatId, int color)
     {
-        __instance.RpcSetHat(id);
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.hat1?.SetHat(hatId, color);
+        __instance.OnCosmeticSet?.Invoke(hatId, color, CosmeticKind.HAT);
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetHat), [typeof(HatData), typeof(int)])]
+public static class PoolablePlayer_SetHat_HatData
+{
+    public static void Postfix(CosmeticsLayer __instance, HatData hatData, int color)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.hat1?.SetHat(new CosmeticDataWrapperHat(hatData), color);
+        __instance.OnCosmeticSet?.Invoke(hatData.ProdId, color, CosmeticKind.HAT);
+    }
+}
+[HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.UpdateFromDataManager))]
+public static class PoolablePlayer_UpdateFromDataManager
+{
+    public static void Postfix(PoolablePlayer __instance)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
+        customCosmeticsLayer?.hat2?.SetHat(CustomCosmeticsSaver.CurrentHat2Id, DataManager.Player.Customization.Color);
+    }
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHat))]
+public static class PlayerControl_SetHat
+{
+    public static void Postfix(PlayerControl __instance, string hatId, int colorId)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
+        customCosmeticsLayer?.hat2?.SetHat(hatId, colorId);
+    }
+}
+[HarmonyPatch(typeof(HatParent), nameof(HatParent.LateUpdate))]
+public static class HatParent_LateUpdate
+{
+    public static void Postfix(HatParent __instance)
+    {
+        __instance.FrontLayer.enabled = false;
+        __instance.BackLayer.enabled = false;
     }
 }
 public class CustomHatLayer : MonoBehaviour
 {
-    public int layer;
     public SpriteRenderer BackLayer;
 
     public SpriteRenderer FrontLayer;
@@ -30,14 +70,12 @@ public class CustomHatLayer : MonoBehaviour
 
     private PlayerMaterial.Properties matProperties;
 
-    private HatOptions options;
-
     private bool shouldFaceLeft;
 
     private const float ClimbZOffset = -0.02f;
 
     public ICustomCosmeticHat CustomCosmeticHat { get; set; }
-    public CosmeticDataWrapperHat Hat => CustomCosmeticHat as CosmeticDataWrapperHat;
+    public ICosmeticData Hat => CustomCosmeticHat as ICosmeticData;
 
     public bool Visible
     {
@@ -82,6 +120,7 @@ public class CustomHatLayer : MonoBehaviour
 
     public void SetHat(string hatId, int color)
     {
+        Logger.Info($"SetHat: {hatId}, {color}");
         if (DestroyableSingleton<HatManager>.InstanceExists)
         {
             ICosmeticData hat;
@@ -108,7 +147,7 @@ public class CustomHatLayer : MonoBehaviour
     {
         if (Hat == null) return;
         SetMaterialColor(color);
-        UnloadAsset();
+        DontUnloadAsset();
         Hat.LoadAsync(() =>
         {
             PopulateFromViewData();
@@ -139,7 +178,7 @@ public class CustomHatLayer : MonoBehaviour
 
     public void SetClimbAnim()
     {
-        if (options.ShowForClimb)
+        if (CustomCosmeticHat.Options.climb != HatOptionType.None)
         {
             base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y, -0.02f);
             BackLayer.enabled = false;
@@ -174,19 +213,17 @@ public class CustomHatLayer : MonoBehaviour
 
     private void UnloadAsset()
     {
-        CustomCosmeticHat.SetDoUnload();
+        CustomCosmeticHat?.SetDoUnload();
     }
-
-    public void SetOptions(HatOptions b)
+    private void DontUnloadAsset()
     {
-        options = b;
-        options.Initialized = true;
+        CustomCosmeticHat?.SetDontUnload();
     }
 
     private void UpdateMaterial()
     {
         PlayerMaterial.MaskType maskType = matProperties.MaskType;
-        if (Hat.Asset != null && Hat.PreviewCrewmateColor)
+        if (Hat.PreviewCrewmateColor)
         {
             if (maskType == PlayerMaterial.MaskType.ComplexUI || maskType == PlayerMaterial.MaskType.ScrollingUI)
             {
@@ -226,6 +263,7 @@ public class CustomHatLayer : MonoBehaviour
         }
         BackLayer.material.SetInt(PlayerMaterial.MaskLayer, matProperties.MaskLayer);
         FrontLayer.material.SetInt(PlayerMaterial.MaskLayer, matProperties.MaskLayer);
+        // Logger.Info($"UpdateMaterial!!!!!!!!!!!!!!!!!!: {Hat.PreviewCrewmateColor}");
         if (Hat.Asset != null && Hat.PreviewCrewmateColor)
         {
             PlayerMaterial.SetColors(matProperties.ColorId, BackLayer);
@@ -248,17 +286,17 @@ public class CustomHatLayer : MonoBehaviour
             {
                 spriteAnimNodeSync.NodeId = (Hat.NoBounce ? 1 : 0);
             }*/
-        if (Hat.Options.front != HatOptionType.None)
+        if (CustomCosmeticHat.Options.front != HatOptionType.None)
         {
             FrontLayer.enabled = true;
-            FrontLayer.sprite = Hat.Asset;
+            FrontLayer.sprite = CustomCosmeticHat.Front;
         }
-        if (Hat.Options.back != HatOptionType.None)
+        if (CustomCosmeticHat.Options.back != HatOptionType.None)
         {
             BackLayer.enabled = true;
-            BackLayer.sprite = Hat.Asset;
+            BackLayer.sprite = CustomCosmeticHat.Back;
         }
-        if (options.Initialized && HideHat())
+        if (HideHat())
         {
             FrontLayer.enabled = false;
             BackLayer.enabled = false;
@@ -276,32 +314,24 @@ public class CustomHatLayer : MonoBehaviour
 
     public bool HideHat()
     {
-        if (!options.VisorBlockingHatsAllowed)
-        {
-            return CustomCosmeticHat.BlocksVisors;
-        }
         return false;
     }
 
-    private void LateUpdate()
+    public void LateUpdate()
     {
         if (!Parent || !HasHat() || Hat.Asset == null)
         {
             return;
         }
-        if (FrontLayer.sprite != CustomCosmeticHat.Climb && FrontLayer.sprite != CustomCosmeticHat.FloorImage)
+        if (FrontLayer.sprite != CustomCosmeticHat.Climb)
         {
-            if ((Hat.InFront || (bool)hatViewData.BackImage) && (bool)hatViewData.LeftMainImage)
+            if (CustomCosmeticHat.Options.front != HatOptionType.None && CustomCosmeticHat.Options.front_left != HatOptionType.None)
             {
-                FrontLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? hatViewData.LeftMainImage : hatViewData.MainImage);
+                FrontLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.FrontLeft : CustomCosmeticHat.Front);
             }
-            if ((bool)hatViewData.BackImage && (bool)hatViewData.LeftBackImage)
+            if (CustomCosmeticHat.Options.back != HatOptionType.None && CustomCosmeticHat.Options.back_left != HatOptionType.None)
             {
-                BackLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? hatViewData.LeftBackImage : hatViewData.BackImage);
-            }
-            else if (!hatViewData.BackImage && !Hat.InFront && (bool)hatViewData.LeftMainImage)
-            {
-                BackLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? hatViewData.LeftMainImage : hatViewData.MainImage);
+                BackLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.BackLeft : CustomCosmeticHat.Back);
             }
         }
         /*

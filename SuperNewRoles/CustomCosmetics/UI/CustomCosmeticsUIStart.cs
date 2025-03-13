@@ -85,6 +85,7 @@ public static class CustomCosmeticsUIStart
         menu.transform.Find("Tint").gameObject.SetActive(true);
         menu.transform.Find("Background").gameObject.SetActive(true);
         menu.transform.Find("Background/RightPanel").localPosition = new(2.688f, 0, -15f);
+        GameObject.Destroy(menu.transform.Find("Background/RightPanel").GetComponent<AspectPosition>());
         // ModHelpers.SetActiveAllObject(menu.transform.Find("Background").gameObject.GetChildren(), true);
         // menu.transform.Find("Background/RightPanel").gameObject.SetActive(false);
     }
