@@ -125,4 +125,8 @@ public static class AssetManager
 
         return obj;
     }
+    public static void Unload(this UnityEngine.Object obj)
+    {
+        obj.hideFlags &= ~HideFlags.DontUnloadUnusedAsset;
+    }
 }

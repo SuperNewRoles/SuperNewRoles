@@ -45,6 +45,22 @@ public class CustomCosmeticsHat
     {
         return assetBundle.LoadAsset<Sprite>(path_base + "front.png");
     }
+    public Sprite LoadClimbSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
+    }
+    public Sprite LoadBackSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "back.png");
+    }
+    public Sprite LoadFlipSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "flip.png");
+    }
+    public Sprite LoadFlipBackSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png");
+    }
 }
 
 public class CustomCosmeticsHatOptions
@@ -54,14 +70,25 @@ public class CustomCosmeticsHatOptions
     public HatOptionType flip { get; }
     public HatOptionType flip_back { get; }
     public HatOptionType climb { get; }
+    public bool blockVisors { get; }
 
     public CustomCosmeticsHatOptions(JToken optionsJson)
     {
-        front = GetOption(optionsJson, "front", useBaseFlag: false);
+        front = GetOption(optionsJson, "front", useBaseFlag: true);
         back = GetOption(optionsJson, "back", useBaseFlag: true);
         flip = GetOption(optionsJson, "flip", useBaseFlag: true);
         flip_back = GetOption(optionsJson, "flip_back", useBaseFlag: true);
         climb = GetOption(optionsJson, "climb", useBaseFlag: true);
+        blockVisors = GetBool(optionsJson["block_visors"]);
+    }
+    public CustomCosmeticsHatOptions(HatOptionType front, HatOptionType back, HatOptionType flip, HatOptionType flip_back, HatOptionType climb, bool blockVisors = false)
+    {
+        this.front = front;
+        this.back = back;
+        this.flip = flip;
+        this.flip_back = flip_back;
+        this.climb = climb;
+        this.blockVisors = blockVisors;
     }
 
     /// <summary>
@@ -71,7 +98,6 @@ public class CustomCosmeticsHatOptions
     private HatOptionType GetOption(JToken json, string keyPrefix, bool useBaseFlag)
     {
         // ヘルパーローカル関数：トークンからbool値を安全に取得する
-        bool GetBool(JToken token) => token != null && token.Type == JTokenType.Boolean && (bool)token;
 
         HatOptionType option;
         if (GetBool(json[$"{keyPrefix}_adaptive"]))
@@ -90,6 +116,7 @@ public class CustomCosmeticsHatOptions
 
         return option;
     }
+    static bool GetBool(JToken token) => token != null && token.Type == JTokenType.Boolean && (bool)token;
 }
 [Flags]
 public enum HatOptionType

@@ -13,9 +13,9 @@ public static class CustomCosmeticsUIStart
 {
     private static class MenuPositions
     {
-        public const float X_POSITION = -2.895f;
-        public const float Y_POSITION = 2.1f;
-        public const float Z_POSITION = -13f;
+        public const float X_POSITION = -3.07f;
+        public const float Y_POSITION = 2.153f;
+        public const float Z_POSITION = -15f;
         public const float SCALE = 0.26f;
     }
 
@@ -206,8 +206,8 @@ public static class CustomCosmeticsUIStart
     private static void CreateMenuFrame(GameObject menuObject, PlayerCustomizationMenu menu)
     {
         var frame = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticMenuFrame"), menu.transform);
-        frame.transform.localPosition = new(0, -0.1f, -10);
-        frame.transform.localScale = Vector3.one * 0.27f;
+        frame.transform.localPosition = new(0, -0.1f, -11.5f);
+        frame.transform.localScale = Vector3.one * 0.28f;
     }
 
 
