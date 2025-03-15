@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Il2CppInterop.Runtime;
+using PowerTools;
 using SuperNewRoles.Modules;
 using UnityEngine;
 
@@ -32,8 +33,8 @@ public class CustomCosmeticsLayer
     public CustomCosmeticsLayer(CosmeticsLayer cosmeticsLayer)
     {
         this.cosmeticsLayer = cosmeticsLayer;
-        hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.2f));
-        hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.1f));
+        hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.5f));
+        hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.5f));
     }
 
     private CustomHatLayer CreateHatLayer(CosmeticsLayer baseLayer, string hatName, Vector3 frontOffset, Vector3 backOffset)
@@ -41,21 +42,37 @@ public class CustomCosmeticsLayer
         // 新しいCustomHatLayerの生成と共通設定の適用
         CustomHatLayer hatLayer = new GameObject(hatName, Il2CppType.Of<CustomHatLayer>()).GetComponent<CustomHatLayer>();
         hatLayer.transform.parent = baseLayer.hat.transform.parent;
-        hatLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, -0.2f);
+        hatLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, -0.5f);
         hatLayer.transform.localScale = Vector3.one;
         hatLayer.Parent = baseLayer.hat.Parent;
+        hatLayer.gameObject.layer = baseLayer.gameObject.layer;
+
+        if (baseLayer.hat.SpriteSyncNode == null)
+            baseLayer.hat.SpriteSyncNode = baseLayer.hat.GetComponent<SpriteAnimNodeSync>();
+        if (baseLayer.hat.SpriteSyncNode != null)
+        {
+            SpriteAnimNodeSync nodeSync = hatLayer.gameObject.AddComponent<SpriteAnimNodeSync>();
+            nodeSync.Parent = baseLayer.currentBodySprite.BodySprite.GetComponent<SpriteAnimNodes>();
+            nodeSync.ParentRenderer = baseLayer.currentBodySprite.BodySprite;
+            nodeSync.Renderer = baseLayer.currentBodySprite.BodySprite;
+            nodeSync.NodeId = 1;
+        }
+        else
+            Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
 
         // フロントレイヤーの作成と設定
         hatLayer.FrontLayer = new GameObject("front", Il2CppType.Of<SpriteRenderer>()).GetComponent<SpriteRenderer>();
         hatLayer.FrontLayer.transform.parent = hatLayer.transform;
         hatLayer.FrontLayer.transform.localPosition = frontOffset;
         hatLayer.FrontLayer.transform.localScale = Vector3.one;
+        hatLayer.FrontLayer.gameObject.layer = baseLayer.gameObject.layer;
+
         // バックレイヤーの作成と設定
         hatLayer.BackLayer = new GameObject("back", Il2CppType.Of<SpriteRenderer>()).GetComponent<SpriteRenderer>();
         hatLayer.BackLayer.transform.parent = hatLayer.transform;
         hatLayer.BackLayer.transform.localPosition = backOffset;
         hatLayer.BackLayer.transform.localScale = Vector3.one;
-
+        hatLayer.BackLayer.gameObject.layer = baseLayer.gameObject.layer;
         return hatLayer;
     }
 }

@@ -1,6 +1,8 @@
 using AmongUs.Data;
 using HarmonyLib;
+using PowerTools;
 using SuperNewRoles.CustomCosmetics.UI;
+using SuperNewRoles.Modules;
 using UnityEngine;
 using static CosmeticsLayer;
 
@@ -11,6 +13,38 @@ public static class CosmeticsHats
     public static void SetHat(string hatId)
     {
         PlayerControl.LocalPlayer.RpcSetHat(hatId);
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetNamePosition))]
+public static class CosmeticsLayer_SetNamePosition
+{
+    public static void Postfix(CosmeticsLayer __instance, Vector3 newPosition)
+    {
+        newPosition.z = -1f;
+        __instance.nameTextContainer.transform.localPosition = newPosition;
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetAsLocalPlayer))]
+public static class PlayerControl_Start
+{
+    public static void Postfix(CosmeticsLayer __instance)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.hat1?.SetLocalPlayer(true);
+        customCosmeticsLayer?.hat2?.SetLocalPlayer(true);
+        PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
+    }
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ClientInitialize))]
+public static class PlayerControl_ClientInitialize
+{
+    public static void Postfix(PlayerControl __instance)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
+        PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
+        PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat1, DataManager.Player.Customization.Hat, PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
+        customCosmeticsLayer?.hat1?.SetLocalPlayer(false);
+        customCosmeticsLayer?.hat2?.SetLocalPlayer(false);
     }
 }
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetHat), [typeof(string), typeof(int)])]
@@ -62,6 +96,7 @@ public static class HatParent_LateUpdate
 }
 public class CustomHatLayer : MonoBehaviour
 {
+    public CosmeticsLayer CosmeticLayer;
     public SpriteRenderer BackLayer;
 
     public SpriteRenderer FrontLayer;
@@ -73,6 +108,7 @@ public class CustomHatLayer : MonoBehaviour
     private bool shouldFaceLeft;
 
     private const float ClimbZOffset = -0.02f;
+    private SpriteAnimNodeSync spriteSyncNode;
 
     public ICustomCosmeticHat CustomCosmeticHat { get; set; }
     public ICosmeticData Hat => CustomCosmeticHat as ICosmeticData;
@@ -223,7 +259,7 @@ public class CustomHatLayer : MonoBehaviour
     private void UpdateMaterial()
     {
         PlayerMaterial.MaskType maskType = matProperties.MaskType;
-        if (Hat.PreviewCrewmateColor)
+        if (Hat != null && Hat.PreviewCrewmateColor)
         {
             if (maskType == PlayerMaterial.MaskType.ComplexUI || maskType == PlayerMaterial.MaskType.ScrollingUI)
             {
@@ -263,8 +299,7 @@ public class CustomHatLayer : MonoBehaviour
         }
         BackLayer.material.SetInt(PlayerMaterial.MaskLayer, matProperties.MaskLayer);
         FrontLayer.material.SetInt(PlayerMaterial.MaskLayer, matProperties.MaskLayer);
-        // Logger.Info($"UpdateMaterial!!!!!!!!!!!!!!!!!!: {Hat.PreviewCrewmateColor}");
-        if (Hat.Asset != null && Hat.PreviewCrewmateColor)
+        if (Hat != null && Hat.Asset != null && Hat.PreviewCrewmateColor)
         {
             PlayerMaterial.SetColors(matProperties.ColorId, BackLayer);
             PlayerMaterial.SetColors(matProperties.ColorId, FrontLayer);
@@ -280,12 +315,12 @@ public class CustomHatLayer : MonoBehaviour
     {
         UpdateMaterial();
         if (Hat.Asset == null) return;
-        /*
-            SpriteAnimNodeSync spriteAnimNodeSync = SpriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
-            if ((bool)spriteAnimNodeSync)
-            {
-                spriteAnimNodeSync.NodeId = (Hat.NoBounce ? 1 : 0);
-            }*/
+
+        SpriteAnimNodeSync spriteAnimNodeSync = spriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
+        if ((bool)spriteAnimNodeSync)
+        {
+            spriteAnimNodeSync.NodeId = !CustomCosmeticHat.Options.front.HasFlag(HatOptionType.Bounce) ? 1 : 0;
+        }
         if (CustomCosmeticHat.Options.front != HatOptionType.None)
         {
             FrontLayer.enabled = true;
@@ -305,11 +340,11 @@ public class CustomHatLayer : MonoBehaviour
 
     public void UpdateBounceHatZipline()
     {
-        /*SpriteAnimNodeSync spriteAnimNodeSync = SpriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
+        SpriteAnimNodeSync spriteAnimNodeSync = spriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
         if ((bool)spriteAnimNodeSync)
         {
             spriteAnimNodeSync.NodeId = 1;
-        }*/
+        }
     }
 
     public bool HideHat()
@@ -323,6 +358,7 @@ public class CustomHatLayer : MonoBehaviour
         {
             return;
         }
+        FlipX = Parent.flipX;
         if (FrontLayer.sprite != CustomCosmeticHat.Climb)
         {
             if (CustomCosmeticHat.Options.front != HatOptionType.None && CustomCosmeticHat.Options.front_left != HatOptionType.None)
@@ -334,14 +370,13 @@ public class CustomHatLayer : MonoBehaviour
                 BackLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.BackLeft : CustomCosmeticHat.Back);
             }
         }
-        /*
-        else if (FrontLayer.sprite == hatViewData.ClimbImage || FrontLayer.sprite == hatViewData.LeftClimbImage)
+        else if (FrontLayer.sprite == CustomCosmeticHat.Climb || FrontLayer.sprite == CustomCosmeticHat.ClimbLeft)
         {
-            SpriteAnimNodeSync spriteAnimNodeSync = SpriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
+            SpriteAnimNodeSync spriteAnimNodeSync = spriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
             if ((bool)spriteAnimNodeSync)
             {
                 spriteAnimNodeSync.NodeId = 0;
             }
-        }*/
+        }
     }
 }

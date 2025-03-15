@@ -69,6 +69,10 @@ public class CustomCosmeticsHat
     {
         return assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png");
     }
+    public Sprite LoadClimbLeftSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "climb_left.png");
+    }
 }
 
 public class CustomCosmeticsHatOptions

@@ -1,3 +1,5 @@
+using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
+using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -29,5 +31,27 @@ public static class PlayerControlRpcExtensions
     public static void RpcCustomSnapTo(this ExPlayerControl player, Vector2 pos)
     {
         player.NetTransform.SnapTo(pos);
+    }
+    [CustomRPC]
+    public static void RpcCustomSetCosmetics(this PlayerControl player, CostumeTabType menuType, string cosmeticsId, int colorId)
+    {
+        switch (menuType)
+        {
+            case CostumeTabType.Hat1:
+                player.SetHat(cosmeticsId, colorId);
+                break;
+            case CostumeTabType.Hat2:
+                CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics).hat2.SetHat(cosmeticsId, colorId);
+                break;
+            case CostumeTabType.Visor1:
+                player.SetVisor(cosmeticsId, colorId);
+                break;
+            case CostumeTabType.Visor2:
+                //todo
+                break;
+            case CostumeTabType.Skin:
+                player.SetSkin(cosmeticsId, colorId);
+                break;
+        }
     }
 }

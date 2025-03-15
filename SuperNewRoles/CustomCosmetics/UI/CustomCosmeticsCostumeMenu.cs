@@ -34,6 +34,7 @@ public interface ICustomCosmeticHat
 {
     CustomCosmeticsHatOptions Options { get; }
     Sprite Climb { get; }
+    Sprite ClimbLeft { get; }
     Sprite Front { get; }
     Sprite FrontLeft { get; }
     Sprite Back { get; }
@@ -103,6 +104,7 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
     public CustomCosmeticsHatOptions Options => _options;
 
     public Sprite Climb => hatViewData?.GetAsset()?.ClimbImage;
+    public Sprite ClimbLeft => hatViewData?.GetAsset()?.LeftClimbImage;
     public Sprite Front => hatViewData?.GetAsset()?.MainImage;
     public Sprite FrontLeft => hatViewData?.GetAsset()?.LeftMainImage;
     public Sprite Back => hatViewData?.GetAsset()?.BackImage;
@@ -175,21 +177,28 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
     public void SetDontUnload()
     {
         _data.LoadFrontSprite()?.DontUnload();
+        _data.LoadFrontLeftSprite()?.DontUnload();
         _data.LoadBackSprite()?.DontUnload();
+        _data.LoadBackLeftSprite()?.DontUnload();
         _data.LoadClimbSprite()?.DontUnload();
+        _data.LoadClimbLeftSprite()?.DontUnload();
         _data.LoadFlipSprite()?.DontUnload();
         _data.LoadFlipBackSprite()?.DontUnload();
     }
     public void SetDoUnload()
     {
         _data.LoadFrontSprite()?.Unload();
+        _data.LoadFrontLeftSprite()?.Unload();
         _data.LoadBackSprite()?.Unload();
+        _data.LoadBackLeftSprite()?.Unload();
         _data.LoadClimbSprite()?.Unload();
+        _data.LoadClimbLeftSprite()?.Unload();
         _data.LoadFlipSprite()?.Unload();
         _data.LoadFlipBackSprite()?.Unload();
     }
     public bool BlocksVisors => Options.blockVisors;
     public Sprite Climb => _data.LoadClimbSprite();
+    public Sprite ClimbLeft => _data.LoadClimbLeftSprite();
     public Sprite Front => _data.LoadFrontSprite();
     public Sprite FrontLeft => _data.LoadFrontLeftSprite();
     public Sprite Back => _data.LoadBackSprite();
@@ -310,7 +319,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                     // TODO:後で
                 }
                 else
-                    CustomCosmeticsSaver.SetVisor1Id(cosmetic.ProdId);
+                {
+                    DataManager.Player.Customization.Visor = cosmetic.ProdId;
+                    if (PlayerControl.LocalPlayer != null)
+                        PlayerControl.LocalPlayer.RpcSetVisor(cosmetic.ProdId);
+                    DataManager.Player.Save();
+                }
             }, (cosmetic) =>
             {
                 obj.PreviewArea.SetVisor(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
@@ -334,19 +348,16 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             }
             ICosmeticData getHat()
             {
-                if (string.IsNullOrEmpty(CustomCosmeticsSaver.CurrentHat1Id))
-                    return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
-                else
-                    return CustomCosmeticsSaver.CurrentHat1Id.StartsWith("Modded_") ?
-                    new ModdedHatDataWrapper(CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).First(hat => hat.ProdId == CustomCosmeticsSaver.CurrentHat1Id)) :
-                    new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(CustomCosmeticsSaver.CurrentHat1Id));
+                return DataManager.Player.Customization.Hat.StartsWith("Modded_") ?
+                    new ModdedHatDataWrapper(CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).First(hat => hat.ProdId == DataManager.Player.Customization.Hat)) :
+                    new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
             }
             ShowCostumeTab(CostumeTabType.Hat1, obj, combinedCosmetics, getHat, (cosmetic) =>
             {
                 DataManager.Player.Customization.Hat = cosmetic.ProdId;
                 if (PlayerControl.LocalPlayer != null)
                     PlayerControl.LocalPlayer.RpcSetHat(cosmetic.ProdId);
-                CustomCosmeticsSaver.SetHat1Id(cosmetic.ProdId);
+                DataManager.Player.Save();
             }, (cosmetic) =>
             {
                 CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).hat1.SetHat(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
@@ -414,6 +425,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             ShowCostumeTab(CostumeTabType.Hat2, obj, combinedCosmetics, getHat, (cosmetic) =>
                 {
                     CustomCosmeticsSaver.SetHat2Id(cosmetic.ProdId);
+                    if (PlayerControl.LocalPlayer != null)
+                        PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat2, cosmetic.ProdId, PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
                 }, (cosmetic) =>
                 {
                     CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).hat2.SetHat(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
