@@ -47,6 +47,15 @@ public interface ICustomCosmeticHat
     void SetDontUnload();
     void SetDoUnload();
 }
+public interface ICustomCosmeticVisor
+{
+    CustomCosmeticsVisorOptions Options { get; }
+    Sprite Climb { get; }
+    Sprite Idle { get; }
+    Sprite IdleLeft { get; }
+    void SetDontUnload();
+    void SetDoUnload();
+}
 
 // 標準のCosmeticDataをラップするクラス
 public abstract class CosmeticDataWrapper : ICosmeticData
@@ -131,14 +140,29 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
         }
     }
 }
-public class CosmeticDataWrapperVisor : CosmeticDataWrapper
+public class CosmeticDataWrapperVisor : CosmeticDataWrapper, ICustomCosmeticVisor
 {
     public CosmeticDataWrapperVisor(VisorData data) : base(data)
     {
+        _options = new(adaptive: data.PreviewCrewmateColor, flip: false);
     }
     private AddressableAsset<VisorViewData> visorViewData;
     public override Sprite Asset => visorViewData?.GetAsset()?.IdleFrame;
     public override Sprite Asset_Back => null;
+    public CustomCosmeticsVisorOptions Options => _options;
+    private CustomCosmeticsVisorOptions _options;
+    public Sprite Climb => visorViewData?.GetAsset()?.ClimbFrame;
+    public Sprite Idle => visorViewData?.GetAsset()?.IdleFrame;
+    public Sprite IdleLeft => visorViewData?.GetAsset()?.LeftIdleFrame;
+    public void SetDontUnload()
+    {
+        // なんもなくていいとおもう
+    }
+    public void SetDoUnload()
+    {
+        if (visorViewData == null) return;
+        visorViewData.Unload();
+    }
     public override void LoadAsync(Action onSuccess)
     {
         if (_data is VisorData visor)
@@ -238,40 +262,61 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
         onSuccess();
     }
 }
-/*
-// ModdedVisorDataをラップするクラス
-public class ModdedVisorDataWrapper : ICosmeticData
-{
-    private readonly ModdedVisorData _data;
 
-    public ModdedVisorDataWrapper(ModdedVisorData data)
+// ModdedVisorDataをラップするクラス
+public class ModdedVisorDataWrapper : ICosmeticData, ICustomCosmeticVisor
+{
+    private readonly CustomCosmeticsVisor _data;
+    public CustomCosmeticsVisorOptions Options => _data.options;
+    public string Author => _data.author;
+
+    public ModdedVisorDataWrapper(CustomCosmeticsVisor data)
     {
+        if (data == null)
+            throw new Exception("data is null");
         _data = data;
     }
+    public void SetDontUnload()
+    {
+        _data.LoadIdleSprite()?.DontUnload();
+        _data.LoadLeftIdleSprite()?.DontUnload();
+        _data.LoadClimbSprite()?.DontUnload();
+    }
+    public void SetDoUnload()
+    {/*
+        _data.LoadIdleSprite()?.Unload();
+        _data.LoadLeftIdleSprite()?.Unload();
+        _data.LoadClimbSprite()?.Unload();*/
+    }
+    public bool BlocksVisors => false;
+    public Sprite Climb => _data.LoadClimbSprite()?.DontUnload();
+    public Sprite ClimbLeft => null;
+    public Sprite Idle => _data.LoadIdleSprite()?.DontUnload();
+    public Sprite IdleLeft => _data.LoadLeftIdleSprite()?.DontUnload();
 
-    public string ProdId => _data.Id;
-    public bool PreviewCrewmateColor => true; // 通常はバイザーはクルーメイトの色を反映する
+    public string ProdId => _data.ProdId;
+    public bool PreviewCrewmateColor => _data.options.adaptive; // バイザーがクルーメイトの色を反映するかどうか
+
+    public Sprite Asset => _data.LoadIdleSprite();
+    public Sprite Asset_Back => null;
 
     public void SetPreview(SpriteRenderer renderer, int colorId)
     {
         // ModdedVisorDataのプレビュー設定ロジック
-        renderer.sprite = _data.MainImage;
-        // 必要に応じて追加の設定
+        renderer.sprite = _data.LoadIdleSprite();
     }
 
     public string GetItemName()
     {
-        return ModTranslation.GetString(_data.TranslationKey) ?? _data.Name;
+        return FastDestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID == SupportedLangs.Japanese ? _data.name : _data.name_en;
     }
 
-    // CosmeticDataに変換するメソッド（必要に応じて）
-    public CosmeticData ToCosmeticData()
+    public void LoadAsync(Action onSuccess)
     {
-        // ModdedVisorDataからCosmeticDataへの変換ロジック
-        // 実装は実際のデータ構造に依存します
-        return null;
+        SetDontUnload();
+        onSuccess?.Invoke();
     }
-}*/
+}
 
 public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmeticsCostumeMenu>
 {
@@ -397,22 +442,19 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
 
             ICosmeticData getVisor()
             {
-                return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
+                return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(CustomCosmeticsSaver.CurrentVisor2Id));
             }
             ShowCostumeTab(CostumeTabType.Visor2, obj, combinedCosmetics, getVisor, (cosmetic) =>
             {
                 CustomCosmeticsSaver.SetVisor2Id(cosmetic.ProdId);
+                if (PlayerControl.LocalPlayer != null)
+                    PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Visor2, cosmetic.ProdId, PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
 
                 // プレビュー画像を更新
                 UpdateButtonPreview(visorButton02, cosmetic);
             }, (cosmetic) =>
             {
-                if (cosmetic is ModdedHatDataWrapper moddedHat)
-                {
-                    // TODO:後で
-                }
-                else
-                    obj.PreviewArea.SetVisor(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
+                CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).visor2.SetVisor(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
             });
         });
 

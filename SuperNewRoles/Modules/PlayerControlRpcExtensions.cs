@@ -47,7 +47,7 @@ public static class PlayerControlRpcExtensions
                 player.SetVisor(cosmeticsId, colorId);
                 break;
             case CostumeTabType.Visor2:
-                //todo
+                CustomCosmeticsLayers.ExistsOrInitialize(player.cosmetics).visor2.SetVisor(cosmeticsId, colorId);
                 break;
             case CostumeTabType.Skin:
                 player.SetSkin(cosmeticsId, colorId);

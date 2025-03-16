@@ -76,6 +76,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<GotTrophyUI.SlideAnimator>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsCostumeSlot>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomHatLayer>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomVisorLayer>();
     }
 
 

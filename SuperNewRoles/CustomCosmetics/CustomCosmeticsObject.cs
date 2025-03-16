@@ -11,6 +11,7 @@ public class CustomCosmeticsPackage
     public string name_en { get; }
     public int version { get; }
     public CustomCosmeticsHat[] hats { get; set; } = [];
+    public CustomCosmeticsVisor[] visors { get; set; } = [];
     public CustomCosmeticsPackage(string name, string name_en, int version)
     {
         this.name = name;
@@ -75,6 +76,56 @@ public class CustomCosmeticsHat
     }
 }
 
+public class CustomCosmeticsVisor
+{
+    public string name { get; }
+    public string name_en { get; }
+    public string visor_id { get; }
+    public string path_base { get; }
+    public string author { get; }
+    public CustomCosmeticsPackage package { get; }
+    public CustomCosmeticsVisorOptions options { get; }
+    private AssetBundle assetBundle { get; }
+    public string ProdId => "Modded_" + visor_id;
+    public CustomCosmeticsVisor(string name, string name_en, string visor_id, string path_base, string author, CustomCosmeticsPackage package, CustomCosmeticsVisorOptions options, AssetBundle assetBundle)
+    {
+        this.name = name;
+        this.name_en = name_en ?? name;
+        this.visor_id = visor_id;
+        this.path_base = path_base;
+        this.author = author;
+        this.package = package;
+        this.options = options;
+        this.assetBundle = assetBundle;
+    }
+    public Sprite LoadIdleSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "idle.png");
+    }
+    public Sprite LoadLeftIdleSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "idle_left.png");
+    }
+    public Sprite LoadClimbSprite()
+    {
+        return assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
+    }
+}
+public class CustomCosmeticsVisorOptions
+{
+    public bool adaptive { get; }
+    public bool flip { get; }
+    public CustomCosmeticsVisorOptions(JToken optionsJson)
+    {
+        adaptive = CustomCosmeticsHatOptions.GetBool(optionsJson["adaptive"]);
+        flip = CustomCosmeticsHatOptions.GetBool(optionsJson["flip"]);
+    }
+    public CustomCosmeticsVisorOptions(bool adaptive, bool flip)
+    {
+        this.adaptive = adaptive;
+        this.flip = flip;
+    }
+}
 public class CustomCosmeticsHatOptions
 {
     public HatOptionType front { get; }
@@ -149,7 +200,7 @@ public class CustomCosmeticsHatOptions
 
         return option;
     }
-    static bool GetBool(JToken token) => token != null && token.Type == JTokenType.Boolean && (bool)token;
+    public static bool GetBool(JToken token) => token != null && token.Type == JTokenType.Boolean && (bool)token;
 }
 [Flags]
 public enum HatOptionType

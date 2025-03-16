@@ -37,6 +37,7 @@ public class CustomCosmeticsLoader
     private static readonly List<CustomCosmeticsPackage> loadedPackages = new();
     public static List<CustomCosmeticsPackage> LoadedPackages => loadedPackages;
     private static readonly Dictionary<string, CustomCosmeticsHat> moddedHats = new();
+    private static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
     public static async Task Load()
     {
         foreach (string url in CustomCosmeticsURLs)
@@ -151,6 +152,40 @@ public class CustomCosmeticsLoader
                 moddedHats.Add(customCosmeticsHat.ProdId, customCosmeticsHat);
             }
             cosmeticsPackage.hats = customCosmeticsHats.ToArray();
+
+            string visorsPath = $"assets/visors/{package}/package.json";
+            TextAsset visorsTextAsset = assetBundle.LoadAsset<TextAsset>(visorsPath);
+            if (visorsTextAsset == null)
+            {
+                Logger.Error($"パッケージ: {package} の visors が読み込めません");
+                continue;
+            }
+            // バイザーの読み込み
+            JToken visorsToken = JObject.Parse(visorsTextAsset.text)["visors"];
+            if (visorsToken != null)
+            {
+                List<CustomCosmeticsVisor> customCosmeticsVisors = new();
+                for (var visor = visorsToken.First; visor != null; visor = visor.Next)
+                {
+                    CustomCosmeticsVisor customCosmeticsVisor = new(
+                        name: visor["name"].ToString(),
+                        name_en: visor["name_en"]?.ToString(),
+                        visor_id: visor["visor_id"].ToString(),
+                        path_base: $"Assets/Visors/{package}/{visor["visor_id"].ToString()}/",
+                        author: visor["author"].ToString(),
+                        package: cosmeticsPackage,
+                        options: new(visor),
+                        assetBundle: assetBundle
+                    );
+                    customCosmeticsVisors.Add(customCosmeticsVisor);
+                    moddedVisors.Add(customCosmeticsVisor.ProdId, customCosmeticsVisor);
+                }
+                cosmeticsPackage.visors = customCosmeticsVisors.ToArray();
+            }
+            else
+            {
+                cosmeticsPackage.visors = [];
+            }
         }
     }
     public static CustomCosmeticsHat? GetModdedHat(string hatId)
@@ -161,6 +196,16 @@ public class CustomCosmeticsLoader
     {
         return moddedHats.TryGetValue(hatId, out var hat) ? new ModdedHatDataWrapper(hat) : null;
     }
+
+    public static CustomCosmeticsVisor? GetModdedVisor(string visorId)
+    {
+        return moddedVisors.TryGetValue(visorId, out var visor) ? visor : null;
+    }
+    public static ICosmeticData? GetModdedVisorData(string visorId)
+    {
+        return moddedVisors.TryGetValue(visorId, out var visor) ? new ModdedVisorDataWrapper(visor) : null;
+    }
+
     private static string[] GetPackages(AssetBundle assetBundle)
     {
         return assetBundle.GetAllAssetNames()

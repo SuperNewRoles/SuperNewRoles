@@ -29,14 +29,52 @@ public class CustomCosmeticsLayer
     public CosmeticsLayer cosmeticsLayer;
     public CustomHatLayer hat1;
     public CustomHatLayer hat2;
+    public CustomVisorLayer visor1;
+    public CustomVisorLayer visor2;
 
     public CustomCosmeticsLayer(CosmeticsLayer cosmeticsLayer)
     {
         this.cosmeticsLayer = cosmeticsLayer;
-        hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.6f));
-        hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.5f));
+        visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f);
+        hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.7f));
+        hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.6f));
+        visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f);
     }
+    private CustomVisorLayer CreateVisorLayer(CosmeticsLayer cosmeticsLayer, string visorName, float z)
+    {
+        CustomVisorLayer visorLayer = new GameObject(visorName, Il2CppType.Of<CustomVisorLayer>()).GetComponent<CustomVisorLayer>();
+        visorLayer.CosmeticLayer = cosmeticsLayer;
+        visorLayer.transform.parent = cosmeticsLayer.transform;
+        visorLayer.transform.localScale = Vector3.one;
+        visorLayer.transform.localRotation = Quaternion.identity;
+        visorLayer.gameObject.layer = cosmeticsLayer.gameObject.layer;
+        visorLayer.Image = visorLayer.gameObject.AddComponent<SpriteRenderer>();
 
+        // 位置を設定する前に親子関係を確立
+        visorLayer.transform.localPosition = Vector3.zero;
+        // 明示的にワールド座標をリセット
+        visorLayer.transform.position = cosmeticsLayer.transform.position;
+        // その後、ローカル座標を設定
+        visorLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, z);
+
+        Logger.Info("visorLayer.transform.localPosition: " + visorLayer.transform.localPosition);
+        visorLayer.SetLocalZ(z);
+
+        var nodes = cosmeticsLayer.currentBodySprite.BodySprite.GetComponent<SpriteAnimNodes>();
+        var anims = cosmeticsLayer.transform.parent.GetComponentInChildren<PlayerAnimations>();
+        if (nodes != null && anims != null)
+        {
+            SpriteAnimNodeSync nodeSync = visorLayer.gameObject.AddComponent<SpriteAnimNodeSync>();
+            nodeSync.Parent = nodes;
+            nodeSync.ParentRenderer = cosmeticsLayer.currentBodySprite.BodySprite;
+            nodeSync.Renderer = cosmeticsLayer.currentBodySprite.BodySprite;
+            nodeSync.NodeId = 1;
+            anims.group.NodeSyncs.Add(nodeSync);
+        }
+
+        // if (cosmeticsLayer.visor)
+        return visorLayer;
+    }
     private CustomHatLayer CreateHatLayer(CosmeticsLayer baseLayer, string hatName, Vector3 frontOffset, Vector3 backOffset)
     {
         // 新しいCustomHatLayerの生成と共通設定の適用
