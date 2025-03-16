@@ -33,7 +33,7 @@ public class CustomCosmeticsLayer
     public CustomCosmeticsLayer(CosmeticsLayer cosmeticsLayer)
     {
         this.cosmeticsLayer = cosmeticsLayer;
-        hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.5f));
+        hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.6f));
         hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.5f));
     }
 
@@ -56,6 +56,7 @@ public class CustomCosmeticsLayer
             nodeSync.ParentRenderer = baseLayer.currentBodySprite.BodySprite;
             nodeSync.Renderer = baseLayer.currentBodySprite.BodySprite;
             nodeSync.NodeId = 1;
+            cosmeticsLayer.transform.parent.GetComponentInChildren<PlayerAnimations>().group.NodeSyncs.Add(nodeSync);
         }
         else
             Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
@@ -66,13 +67,14 @@ public class CustomCosmeticsLayer
         hatLayer.FrontLayer.transform.localPosition = frontOffset;
         hatLayer.FrontLayer.transform.localScale = Vector3.one;
         hatLayer.FrontLayer.gameObject.layer = baseLayer.gameObject.layer;
-
+        hatLayer.FrontLayer.material = baseLayer.hat.FrontLayer.material;
         // バックレイヤーの作成と設定
         hatLayer.BackLayer = new GameObject("back", Il2CppType.Of<SpriteRenderer>()).GetComponent<SpriteRenderer>();
         hatLayer.BackLayer.transform.parent = hatLayer.transform;
         hatLayer.BackLayer.transform.localPosition = backOffset;
         hatLayer.BackLayer.transform.localScale = Vector3.one;
         hatLayer.BackLayer.gameObject.layer = baseLayer.gameObject.layer;
+        hatLayer.BackLayer.material = baseLayer.hat.BackLayer.material;
         return hatLayer;
     }
 }

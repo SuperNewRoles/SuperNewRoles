@@ -32,7 +32,10 @@ public static class PlayerControl_Start
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
         customCosmeticsLayer?.hat1?.SetLocalPlayer(true);
         customCosmeticsLayer?.hat2?.SetLocalPlayer(true);
-        PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
+        new LateTask(() =>
+        {
+            PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+        }, 0.1f, "SetHat2");
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ClientInitialize))]
@@ -74,6 +77,17 @@ public static class PoolablePlayer_UpdateFromDataManager
     {
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
         customCosmeticsLayer?.hat2?.SetHat(CustomCosmeticsSaver.CurrentHat2Id, DataManager.Player.Customization.Color);
+    }
+}
+[HarmonyPatch(typeof(PoolablePlayer), nameof(PoolablePlayer.UpdateFromEitherPlayerDataOrCache))]
+public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
+{
+    public static void Postfix(PoolablePlayer __instance, NetworkedPlayerInfo pData)
+    {
+        if (pData.Object == null) return;
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
+        CustomCosmeticsLayer pcLayer = CustomCosmeticsLayers.ExistsOrInitialize(pData.Object.cosmetics);
+        customCosmeticsLayer?.hat2?.SetHat(pcLayer.hat2.Hat?.ProdId ?? "", pData.DefaultOutfit.ColorId);
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHat))]
@@ -140,7 +154,7 @@ public class CustomHatLayer : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
         UnloadAsset();
     }
@@ -183,7 +197,7 @@ public class CustomHatLayer : MonoBehaviour
     {
         if (Hat == null) return;
         SetMaterialColor(color);
-        DontUnloadAsset();
+        UnloadAsset();
         Hat.LoadAsync(() =>
         {
             PopulateFromViewData();

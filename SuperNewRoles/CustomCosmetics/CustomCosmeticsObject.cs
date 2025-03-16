@@ -85,16 +85,30 @@ public class CustomCosmeticsHatOptions
     public HatOptionType flip_back { get; }
     public HatOptionType climb { get; }
     public bool blockVisors { get; }
-
+    /*
+        public CustomCosmeticsHatOptions(JToken optionsJson)
+        {
+            front = GetOption(optionsJson, "front", true);
+            front_left = GetOption(optionsJson, "front_left");
+            back = GetOption(optionsJson, "back");
+            back_left = GetOption(optionsJson, "back_left");
+            flip = GetOption(optionsJson, "flip");
+            flip_back = GetOption(optionsJson, "flip_back");
+            climb = GetOption(optionsJson, "climb");
+            blockVisors = GetBool(optionsJson["block_visors"]);
+        }*/
     public CustomCosmeticsHatOptions(JToken optionsJson)
     {
-        front = GetOption(optionsJson, "front", true);
-        front_left = GetOption(optionsJson, "front_left");
-        back = GetOption(optionsJson, "back");
-        back_left = GetOption(optionsJson, "back_left");
-        flip = GetOption(optionsJson, "flip");
-        flip_back = GetOption(optionsJson, "flip_back");
-        climb = GetOption(optionsJson, "climb");
+        bool adaptive = GetBool(optionsJson["adaptive"]);
+        bool bounce = GetBool(optionsJson["bounce"]);
+        bool behind = GetBool(optionsJson["behind"]);
+        front = GetOption(optionsJson, "front", adaptive: adaptive, bounce: bounce, behind: behind, defaultOption: true);
+        front_left = GetOption(optionsJson, "front_left", adaptive: adaptive, bounce: bounce, behind: behind);
+        back = GetOption(optionsJson, "back", adaptive: adaptive, bounce: bounce, behind: behind);
+        back_left = GetOption(optionsJson, "back_left", adaptive: adaptive, bounce: bounce, behind: behind);
+        flip = GetOption(optionsJson, "flip", adaptive: adaptive, bounce: bounce, behind: behind);
+        flip_back = GetOption(optionsJson, "flip_back", adaptive: adaptive, bounce: bounce, behind: behind);
+        climb = GetOption(optionsJson, "climb", adaptive: adaptive, bounce: bounce, behind: behind);
         blockVisors = GetBool(optionsJson["block_visors"]);
     }
     public CustomCosmeticsHatOptions(HatOptionType front, HatOptionType front_left, HatOptionType back, HatOptionType back_left, HatOptionType flip, HatOptionType flip_back, HatOptionType climb, bool blockVisors = false)
@@ -113,7 +127,7 @@ public class CustomCosmeticsHatOptions
     /// 指定されたプレフィックスに対してオプション値を取得します。
     /// useBaseFlagがtrueの場合、adaptiveがfalseならベースフラグの値を反映し、falseの場合は常にNoAdaptiveとなります。
     /// </summary>
-    private HatOptionType GetOption(JToken json, string keyPrefix, bool defaultOption = false)
+    private HatOptionType GetOption(JToken json, string keyPrefix, bool defaultOption = false, bool adaptive = false, bool bounce = false, bool behind = false)
     {
         // ヘルパーローカル関数：トークンからbool値を安全に取得する
 
@@ -123,14 +137,14 @@ public class CustomCosmeticsHatOptions
         else
         {
             if (json[keyPrefix] == null && defaultOption)
-                option = HatOptionType.NoAdaptive;
+                option = adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive;
             else
-                option = GetBool(json[keyPrefix]) ? HatOptionType.NoAdaptive : HatOptionType.None;
+                option = GetBool(json[keyPrefix]) ? (adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive) : HatOptionType.None;
         }
 
-        if (GetBool(json[$"{keyPrefix}_bounce"]))
+        if (bounce || GetBool(json[$"{keyPrefix}_bounce"]))
             option |= HatOptionType.Bounce;
-        if (GetBool(json[$"{keyPrefix}_behind"]))
+        if (behind || GetBool(json[$"{keyPrefix}_behind"]))
             option |= HatOptionType.Behind;
 
         return option;

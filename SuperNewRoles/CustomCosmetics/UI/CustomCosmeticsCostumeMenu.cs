@@ -26,8 +26,10 @@ public interface ICosmeticData
     string ProdId { get; }
     bool PreviewCrewmateColor { get; }
     Sprite Asset { get; }
+    Sprite Asset_Back { get; }
     void SetPreview(SpriteRenderer renderer, int colorId);
     string GetItemName();
+    string Author { get; }
     void LoadAsync(Action onSuccess);
 }
 public interface ICustomCosmeticHat
@@ -58,8 +60,9 @@ public abstract class CosmeticDataWrapper : ICosmeticData
 
     public string ProdId => _data.ProdId;
     public bool PreviewCrewmateColor => _data.PreviewCrewmateColor;
-
+    public string Author => "Vanilla";
     public abstract Sprite Asset { get; }
+    public abstract Sprite Asset_Back { get; }
 
     public void SetPreview(SpriteRenderer renderer, int colorId)
     {
@@ -114,6 +117,7 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
 
     private AddressableAsset<HatViewData> hatViewData;
     public override Sprite Asset => hatViewData?.GetAsset()?.MainImage;
+    public override Sprite Asset_Back => hatViewData?.GetAsset()?.BackImage;
     public override void LoadAsync(Action onSuccess)
     {
         // Logger.Info("Wrrapperrrr!!!!!!!!!!!!!!!!!!");
@@ -134,6 +138,7 @@ public class CosmeticDataWrapperVisor : CosmeticDataWrapper
     }
     private AddressableAsset<VisorViewData> visorViewData;
     public override Sprite Asset => visorViewData?.GetAsset()?.IdleFrame;
+    public override Sprite Asset_Back => null;
     public override void LoadAsync(Action onSuccess)
     {
         if (_data is VisorData visor)
@@ -152,6 +157,7 @@ public class CosmeticDataWrapperSkin : CosmeticDataWrapper
     }
     private AddressableAsset<SkinViewData> skinViewData;
     public override Sprite Asset => skinViewData?.GetAsset()?.IdleFrame;
+    public override Sprite Asset_Back => null;
     public override void LoadAsync(Action onSuccess)
     {
         if (_data is SkinData skin)
@@ -169,9 +175,12 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
 {
     private readonly CustomCosmeticsHat _data;
     public CustomCosmeticsHatOptions Options => _data.options;
+    public string Author => _data.author;
 
     public ModdedHatDataWrapper(CustomCosmeticsHat data)
     {
+        if (data == null)
+            throw new Exception("data is null");
         _data = data;
     }
     public void SetDontUnload()
@@ -186,7 +195,7 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
         _data.LoadFlipBackSprite()?.DontUnload();
     }
     public void SetDoUnload()
-    {
+    {/*
         _data.LoadFrontSprite()?.Unload();
         _data.LoadFrontLeftSprite()?.Unload();
         _data.LoadBackSprite()?.Unload();
@@ -194,22 +203,23 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
         _data.LoadClimbSprite()?.Unload();
         _data.LoadClimbLeftSprite()?.Unload();
         _data.LoadFlipSprite()?.Unload();
-        _data.LoadFlipBackSprite()?.Unload();
+        _data.LoadFlipBackSprite()?.Unload();*/
     }
     public bool BlocksVisors => Options.blockVisors;
-    public Sprite Climb => _data.LoadClimbSprite();
-    public Sprite ClimbLeft => _data.LoadClimbLeftSprite();
-    public Sprite Front => _data.LoadFrontSprite();
-    public Sprite FrontLeft => _data.LoadFrontLeftSprite();
-    public Sprite Back => _data.LoadBackSprite();
-    public Sprite BackLeft => _data.LoadBackLeftSprite();
-    public Sprite Flip => _data.LoadFlipSprite();
-    public Sprite FlipBack => _data.LoadFlipBackSprite();
+    public Sprite Climb => _data.LoadClimbSprite()?.DontUnload();
+    public Sprite ClimbLeft => _data.LoadClimbLeftSprite()?.DontUnload();
+    public Sprite Front => _data.LoadFrontSprite()?.DontUnload();
+    public Sprite FrontLeft => _data.LoadFrontLeftSprite()?.DontUnload();
+    public Sprite Back => _data.LoadBackSprite()?.DontUnload();
+    public Sprite BackLeft => _data.LoadBackLeftSprite()?.DontUnload();
+    public Sprite Flip => _data.LoadFlipSprite()?.DontUnload();
+    public Sprite FlipBack => _data.LoadFlipBackSprite()?.DontUnload();
 
     public string ProdId => _data.ProdId;
     public bool PreviewCrewmateColor => _data.options.front == HatOptionType.Adaptive; // 通常はハットはクルーメイトの色を反映する
 
     public Sprite Asset => _data.LoadFrontSprite();
+    public Sprite Asset_Back => _data.LoadBackSprite();
 
     public void SetPreview(SpriteRenderer renderer, int colorId)
     {
@@ -324,6 +334,9 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                     if (PlayerControl.LocalPlayer != null)
                         PlayerControl.LocalPlayer.RpcSetVisor(cosmetic.ProdId);
                     DataManager.Player.Save();
+
+                    // プレビュー画像を更新
+                    UpdateButtonPreview(visorButton01, cosmetic);
                 }
             }, (cosmetic) =>
             {
@@ -348,9 +361,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             }
             ICosmeticData getHat()
             {
-                return DataManager.Player.Customization.Hat.StartsWith("Modded_") ?
-                    new ModdedHatDataWrapper(CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).First(hat => hat.ProdId == DataManager.Player.Customization.Hat)) :
-                    new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
+                if (!DataManager.Player.Customization.Hat.StartsWith("Modded_"))
+                    return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
+                var moddedHat = CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).FirstOrDefault(hat => hat.ProdId == DataManager.Player.Customization.Hat);
+                if (moddedHat != null)
+                    return new ModdedHatDataWrapper(moddedHat);
+                return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
             }
             ShowCostumeTab(CostumeTabType.Hat1, obj, combinedCosmetics, getHat, (cosmetic) =>
             {
@@ -358,6 +374,9 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 if (PlayerControl.LocalPlayer != null)
                     PlayerControl.LocalPlayer.RpcSetHat(cosmetic.ProdId);
                 DataManager.Player.Save();
+
+                // プレビュー画像を更新
+                UpdateButtonPreview(hatButton01, cosmetic);
             }, (cosmetic) =>
             {
                 CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).hat1.SetHat(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
@@ -383,6 +402,9 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             ShowCostumeTab(CostumeTabType.Visor2, obj, combinedCosmetics, getVisor, (cosmetic) =>
             {
                 CustomCosmeticsSaver.SetVisor2Id(cosmetic.ProdId);
+
+                // プレビュー画像を更新
+                UpdateButtonPreview(visorButton02, cosmetic);
             }, (cosmetic) =>
             {
                 if (cosmetic is ModdedHatDataWrapper moddedHat)
@@ -418,15 +440,26 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 if (string.IsNullOrEmpty(CustomCosmeticsSaver.CurrentHat2Id))
                     return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
                 else
-                    return CustomCosmeticsSaver.CurrentHat2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix) ?
-                    new ModdedHatDataWrapper(CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).First(hat => hat.ProdId == CustomCosmeticsSaver.CurrentHat2Id)) :
-                    new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(CustomCosmeticsSaver.CurrentHat2Id));
+                {
+                    if (CustomCosmeticsSaver.CurrentHat2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
+                    {
+                        var moddedHat = CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).FirstOrDefault(hat => hat.ProdId == CustomCosmeticsSaver.CurrentHat2Id);
+                        if (moddedHat != null)
+                            return new ModdedHatDataWrapper(moddedHat);
+                        return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
+                    }
+                    else
+                        return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(CustomCosmeticsSaver.CurrentHat2Id));
+                }
             }
             ShowCostumeTab(CostumeTabType.Hat2, obj, combinedCosmetics, getHat, (cosmetic) =>
                 {
                     CustomCosmeticsSaver.SetHat2Id(cosmetic.ProdId);
                     if (PlayerControl.LocalPlayer != null)
                         PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat2, cosmetic.ProdId, PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
+
+                    // プレビュー画像を更新
+                    UpdateButtonPreview(hatButton02, cosmetic);
                 }, (cosmetic) =>
                 {
                     CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).hat2.SetHat(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
@@ -442,11 +475,17 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 DataManager.Player.Customization.Skin = cosmetic.ProdId;
                 if (PlayerControl.LocalPlayer != null)
                     PlayerControl.LocalPlayer.RpcSetSkin(cosmetic.ProdId);
+
+                // プレビュー画像を更新
+                UpdateButtonPreview(skinButton, cosmetic);
             }, (cosmetic) =>
             {
                 obj.PreviewArea.SetSkin(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
             });
         });
+
+        // 初期プレビューの設定
+        InitializeButtonPreviews();
     }
 
     private void SetupButton(GameObject button, string buttonName, string translated, System.Action onClick)
@@ -501,7 +540,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     private List<Transform> activeSlots;
     private void ShowCostumeTab(CostumeTabType tabType, PlayerCustomizationMenu obj, List<ICosmeticData> unlockedCosmetics, Func<ICosmeticData> currentCosmeticFunc, Action<ICosmeticData> onSet, Action<ICosmeticData> onPreview)
     {
-        string currentCosmeticId = currentCosmeticFunc().ProdId;
+        string currentCosmeticId = currentCosmeticFunc()?.ProdId ?? "";
         slots = [];
         activeSlots = [];
         slotToGroupMap = null;
@@ -602,7 +641,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         if (cosmetic != null)
         {
             onPreview(cosmetic);
-            obj.SetItemName(cosmetic.GetItemName());
+            if (cosmetic.ProdId.StartsWith("Modded_"))
+            {
+                obj.SetItemName(cosmetic.GetItemName() + "\n by " + cosmetic.Author);
+            }
+            else
+                obj.SetItemName(cosmetic.GetItemName());
         }
     }
 
@@ -766,6 +810,93 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         GameObject.Destroy(kisekae);
         if (CurrentCostumeTab != null)
             GameObject.Destroy(CurrentCostumeTab);
+    }
+
+    // ボタンのプレビュー画像を更新するメソッド
+    private void UpdateButtonPreview(GameObject button, ICosmeticData cosmetic)
+    {
+        var previewRenderer = button.transform.Find("Preview")?.GetComponent<SpriteRenderer>();
+        var previewRendererBack = button.transform.Find("PreviewBack")?.GetComponent<SpriteRenderer>();
+        if (previewRenderer != null && previewRendererBack != null && cosmetic != null)
+        {
+            // アセットを非同期ロード
+            cosmetic.LoadAsync(() =>
+            {
+                // ロード完了後にスプライトを設定
+                previewRenderer.sprite = cosmetic.Asset;
+                previewRendererBack.sprite = cosmetic.Asset_Back;
+                // 色適応が必要な場合は色を設定
+                if (cosmetic.PreviewCrewmateColor)
+                {
+                    previewRenderer.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+                    PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(previewRenderer, false);
+                    PlayerMaterial.SetColors(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color, previewRenderer);
+                    previewRendererBack.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+                    PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(previewRendererBack, false);
+                    PlayerMaterial.SetColors(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color, previewRendererBack);
+                }
+                else
+                {
+                    previewRenderer.material = FastDestroyableSingleton<HatManager>.Instance.DefaultShader;
+                    previewRendererBack.material = FastDestroyableSingleton<HatManager>.Instance.DefaultShader;
+                }
+            });
+        }
+    }
+
+    // 初期プレビューの設定
+    private void InitializeButtonPreviews()
+    {
+        // Visor1のプレビュー初期化
+        var visor1Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
+        UpdateButtonPreview(visorButton01, visor1Data);
+
+        // Hat1のプレビュー初期化
+        ICosmeticData hat1Data;
+        if (DataManager.Player.Customization.Hat.StartsWith("Modded_"))
+        {
+            var moddedHat = CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).FirstOrDefault(hat => hat.ProdId == DataManager.Player.Customization.Hat);
+            if (moddedHat != null)
+                hat1Data = new ModdedHatDataWrapper(moddedHat);
+            else
+                hat1Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
+        }
+        else
+        {
+            hat1Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
+        }
+        UpdateButtonPreview(hatButton01, hat1Data);
+
+        // Visor2のプレビュー初期化
+        string visor2Id = CustomCosmeticsSaver.CurrentVisor2Id;
+        if (string.IsNullOrEmpty(visor2Id))
+            visor2Id = "visor_EmptyVisor";
+        var visor2Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(visor2Id));
+        UpdateButtonPreview(visorButton02, visor2Data);
+
+        // Hat2のプレビュー初期化
+        ICosmeticData hat2Data;
+        if (string.IsNullOrEmpty(CustomCosmeticsSaver.CurrentHat2Id))
+        {
+            hat2Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
+        }
+        else if (CustomCosmeticsSaver.CurrentHat2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
+        {
+            var moddedHat = CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).FirstOrDefault(hat => hat.ProdId == CustomCosmeticsSaver.CurrentHat2Id);
+            if (moddedHat != null)
+                hat2Data = new ModdedHatDataWrapper(moddedHat);
+            else
+                hat2Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
+        }
+        else
+        {
+            hat2Data = new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(CustomCosmeticsSaver.CurrentHat2Id));
+        }
+        UpdateButtonPreview(hatButton02, hat2Data);
+
+        // Skinのプレビュー初期化
+        var skinData = new CosmeticDataWrapperSkin(FastDestroyableSingleton<HatManager>.Instance.GetSkinById(DataManager.Player.Customization.Skin));
+        UpdateButtonPreview(skinButton, skinData);
     }
 }
 public class CustomCosmeticsCostumeSlot : MonoBehaviour
