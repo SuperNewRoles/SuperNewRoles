@@ -86,12 +86,13 @@ public class CustomCosmeticsLoader
             {
                 string bundlePath = notLoadedAssetBundles[0];
                 AssetBundle assetBundle = LoadAssetBundle(bundlePath);
-                string[] packages = GetPackages(assetBundle);
-                foreach (string package in packages)
+                string[] packagesHats = GetPackages(assetBundle, "Hats");
+                string[] packagesVisors = GetPackages(assetBundle, "Visors");
+                foreach (string package in packagesHats)
                 {
                     Logger.Info($"パッケージ: {package}");
                 }
-                LoadPackages(assetBundle, packages);
+                LoadPackages(assetBundle, packagesHats, packagesVisors);
                 notLoadedAssetBundles.RemoveAt(0);
             }
         }
@@ -101,17 +102,16 @@ public class CustomCosmeticsLoader
         }
     }
 
-    private static void LoadPackages(AssetBundle assetBundle, string[] packages)
+    private static void LoadPackages(AssetBundle assetBundle, string[] packagesHats, string[] packagesVisors)
     {
-        foreach (string package in packages)
+        foreach (string package in packagesHats)
         {
             // package.jsonをロードするパスを組み立て、読み込み
             string packageJsonPath = $"assets/hats/{package}/package.json";
             TextAsset packageTextAsset = assetBundle.LoadAsset<TextAsset>(packageJsonPath);
             if (packageTextAsset == null)
             {
-                Logger.Error($"パッケージ: {package} の package.json が読み込めません");
-                continue;
+                Logger.Error($"パッケージ: {package} の package.json が読み込めません(Hats)");
             }
             string packageJson = packageTextAsset.text;
             JObject packageJsonObject = JObject.Parse(packageJson);
@@ -130,38 +130,55 @@ public class CustomCosmeticsLoader
             Logger.Info($"{cosmeticsPackage.name} {cosmeticsPackage.version}");
 
             JToken hatsToken = packageJsonObject["hats"];
-            if (hatsToken == null)
+            if (hatsToken != null)
             {
+                List<CustomCosmeticsHat> customCosmeticsHats = new();
+                for (var hat = hatsToken.First; hat != null; hat = hat.Next)
+                {
+                    CustomCosmeticsHat customCosmeticsHat = new(
+                        name: hat["name"].ToString(),
+                        name_en: hat["name_en"]?.ToString(),
+                        hat_id: hat["hat_id"].ToString(),
+                        path_base: $"Assets/Hats/{package}/{hat["hat_id"].ToString()}/",
+                        author: hat["author"].ToString(),
+                        package: cosmeticsPackage,
+                        options: new(hat),
+                        assetBundle: assetBundle
+                    );
+                    customCosmeticsHats.Add(customCosmeticsHat);
+                    moddedHats.Add(customCosmeticsHat.ProdId, customCosmeticsHat);
+                }
+                cosmeticsPackage.hats = customCosmeticsHats.ToArray();
+            }
+            else
                 Logger.Error($"パッケージ: {package} に hats が見つかりません");
-                continue;
-            }
-            List<CustomCosmeticsHat> customCosmeticsHats = new();
-            for (var hat = hatsToken.First; hat != null; hat = hat.Next)
-            {
-                CustomCosmeticsHat customCosmeticsHat = new(
-                    name: hat["name"].ToString(),
-                    name_en: hat["name_en"]?.ToString(),
-                    hat_id: hat["hat_id"].ToString(),
-                    path_base: $"Assets/Hats/{package}/{hat["hat_id"].ToString()}/",
-                    author: hat["author"].ToString(),
-                    package: cosmeticsPackage,
-                    options: new(hat),
-                    assetBundle: assetBundle
-                );
-                customCosmeticsHats.Add(customCosmeticsHat);
-                moddedHats.Add(customCosmeticsHat.ProdId, customCosmeticsHat);
-            }
-            cosmeticsPackage.hats = customCosmeticsHats.ToArray();
-
+        }
+        foreach (string package in packagesVisors)
+        {
             string visorsPath = $"assets/visors/{package}/package.json";
             TextAsset visorsTextAsset = assetBundle.LoadAsset<TextAsset>(visorsPath);
             if (visorsTextAsset == null)
             {
-                Logger.Error($"パッケージ: {package} の visors が読み込めません");
+                Logger.Error($"パッケージ: {package} の package.json が読み込めません(Visors)");
                 continue;
             }
             // バイザーの読み込み
-            JToken visorsToken = JObject.Parse(visorsTextAsset.text)["visors"];
+            JObject packageJsonObject = JObject.Parse(visorsTextAsset.text);
+            JToken packageInfo = packageJsonObject["package"];
+            if (packageInfo == null)
+            {
+                Logger.Error($"パッケージ: {package} に package が見つかりません");
+                continue;
+            }
+            CustomCosmeticsPackage cosmeticsPackage = loadedPackages.FirstOrDefault(p => p.name == packageInfo["name"].ToString() && p.name_en == packageInfo["name_en"]?.ToString() && p.version == (int)packageInfo["parseversion"]) ?? new(
+                packageInfo["name"].ToString(),
+                packageInfo["name_en"]?.ToString(),
+                (int)packageInfo["parseversion"]
+            );
+            loadedPackages.Add(cosmeticsPackage);
+            Logger.Info($"{cosmeticsPackage.name} {cosmeticsPackage.version}");
+
+            JToken visorsToken = packageJsonObject["visors"];
             if (visorsToken != null)
             {
                 List<CustomCosmeticsVisor> customCosmeticsVisors = new();
@@ -206,13 +223,13 @@ public class CustomCosmeticsLoader
         return moddedVisors.TryGetValue(visorId, out var visor) ? new ModdedVisorDataWrapper(visor) : null;
     }
 
-    private static string[] GetPackages(AssetBundle assetBundle)
+    private static string[] GetPackages(AssetBundle assetBundle, string type)
     {
         return assetBundle.GetAllAssetNames()
             .Select(path => path.Split('/'))
             .Where(segments => segments.Length >= 4 &&
                                string.Equals(segments[0], "Assets", StringComparison.OrdinalIgnoreCase) &&
-                               string.Equals(segments[1], "Hats", StringComparison.OrdinalIgnoreCase) &&
+                               string.Equals(segments[1], type, StringComparison.OrdinalIgnoreCase) &&
                                !string.IsNullOrEmpty(segments[2]))
             .Select(segments => segments[2])
             .Distinct()

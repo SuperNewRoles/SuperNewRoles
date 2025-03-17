@@ -25,6 +25,8 @@ public interface ICosmeticData
 {
     string ProdId { get; }
     bool PreviewCrewmateColor { get; }
+    string Package { get; }
+    string Package_EN { get; }
     Sprite Asset { get; }
     Sprite Asset_Back { get; }
     void SetPreview(SpriteRenderer renderer, int colorId);
@@ -67,6 +69,8 @@ public abstract class CosmeticDataWrapper : ICosmeticData
         _data = data;
     }
 
+    public abstract string Package { get; }
+    public abstract string Package_EN { get; }
     public string ProdId => _data.ProdId;
     public bool PreviewCrewmateColor => _data.PreviewCrewmateColor;
     public string Author => "Vanilla";
@@ -111,6 +115,10 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
         if (hatViewData == null) return;
         hatViewData.Unload();
     }
+
+    public override string Package => "バニラハット";
+    public override string Package_EN => "Vanilla Hats";
+
     public bool BlocksVisors => (_data as HatData).BlocksVisors;
     private CustomCosmeticsHatOptions _options;
     public CustomCosmeticsHatOptions Options => _options;
@@ -154,6 +162,10 @@ public class CosmeticDataWrapperVisor : CosmeticDataWrapper, ICustomCosmeticViso
     public Sprite Climb => visorViewData?.GetAsset()?.ClimbFrame;
     public Sprite Idle => visorViewData?.GetAsset()?.IdleFrame;
     public Sprite IdleLeft => visorViewData?.GetAsset()?.LeftIdleFrame;
+
+    public override string Package => "バニラバイザー";
+    public override string Package_EN => "Vanilla Visors";
+
     public void SetDontUnload()
     {
         // なんもなくていいとおもう
@@ -182,6 +194,10 @@ public class CosmeticDataWrapperSkin : CosmeticDataWrapper
     private AddressableAsset<SkinViewData> skinViewData;
     public override Sprite Asset => skinViewData?.GetAsset()?.IdleFrame;
     public override Sprite Asset_Back => null;
+
+    public override string Package => "バニラスキン";
+    public override string Package_EN => "Vanilla Skins";
+
     public override void LoadAsync(Action onSuccess)
     {
         if (_data is SkinData skin)
@@ -200,6 +216,9 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
     private readonly CustomCosmeticsHat _data;
     public CustomCosmeticsHatOptions Options => _data.options;
     public string Author => _data.author;
+
+    public string Package => _data.package.name;
+    public string Package_EN => _data.package.name_en;
 
     public ModdedHatDataWrapper(CustomCosmeticsHat data)
     {
@@ -269,6 +288,9 @@ public class ModdedVisorDataWrapper : ICosmeticData, ICustomCosmeticVisor
     private readonly CustomCosmeticsVisor _data;
     public CustomCosmeticsVisorOptions Options => _data.options;
     public string Author => _data.author;
+
+    public string Package => _data.package.name;
+    public string Package_EN => _data.package.name_en;
 
     public ModdedVisorDataWrapper(CustomCosmeticsVisor data)
     {
@@ -351,6 +373,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
 
     private void SetupButtons(PlayerCustomizationMenu obj)
     {
+        obj.SetItemName("");
         // VisorButton01のセットアップ
         visorButton01 = kisekae.transform.Find("Buttons/VisorButton01").gameObject;
         SetupButton(visorButton01, "VisorButton01", GetTabName(CostumeTabType.Visor1), () =>
@@ -362,30 +385,31 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             {
                 combinedCosmetics.Add(new CosmeticDataWrapperVisor(cosmetic));
             }
+            foreach (var moddedVisor in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.visors))
+            {
+                combinedCosmetics.Add(new ModdedVisorDataWrapper(moddedVisor));
+            }
             ICosmeticData getVisor()
             {
-                return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
+                if (!DataManager.Player.Customization.Visor.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
+                    return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
+                var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(DataManager.Player.Customization.Visor);
+                if (moddedVisor != null)
+                    return new ModdedVisorDataWrapper(moddedVisor);
+                return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_NoVisor"));
             }
             ShowCostumeTab(CostumeTabType.Visor1, obj, combinedCosmetics, getVisor, (cosmetic) =>
             {
-                // TODO: ModdedVisorDataWrapperに後で変える
-                if (cosmetic is ModdedHatDataWrapper moddedHat)
-                {
-                    // TODO:後で
-                }
-                else
-                {
-                    DataManager.Player.Customization.Visor = cosmetic.ProdId;
-                    if (PlayerControl.LocalPlayer != null)
-                        PlayerControl.LocalPlayer.RpcSetVisor(cosmetic.ProdId);
-                    DataManager.Player.Save();
+                DataManager.Player.Customization.Visor = cosmetic.ProdId;
+                if (PlayerControl.LocalPlayer != null)
+                    PlayerControl.LocalPlayer.RpcSetVisor(cosmetic.ProdId);
+                DataManager.Player.Save();
 
-                    // プレビュー画像を更新
-                    UpdateButtonPreview(visorButton01, cosmetic);
-                }
+                // プレビュー画像を更新
+                UpdateButtonPreview(visorButton01, cosmetic);
             }, (cosmetic) =>
             {
-                obj.PreviewArea.SetVisor(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
+                CustomCosmeticsLayers.ExistsOrInitialize(obj.PreviewArea.cosmetics).visor1.SetVisor(cosmetic.ProdId, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
             });
         });
 
@@ -406,12 +430,12 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             }
             ICosmeticData getHat()
             {
-                if (!DataManager.Player.Customization.Hat.StartsWith("Modded_"))
+                if (!DataManager.Player.Customization.Hat.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                     return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
-                var moddedHat = CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).FirstOrDefault(hat => hat.ProdId == DataManager.Player.Customization.Hat);
+                var moddedHat = CustomCosmeticsLoader.GetModdedHat(DataManager.Player.Customization.Hat);
                 if (moddedHat != null)
                     return new ModdedHatDataWrapper(moddedHat);
-                return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(DataManager.Player.Customization.Hat));
+                return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
             }
             ShowCostumeTab(CostumeTabType.Hat1, obj, combinedCosmetics, getHat, (cosmetic) =>
             {
@@ -439,10 +463,27 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             {
                 combinedCosmetics.Add(new CosmeticDataWrapperVisor(cosmetic));
             }
+            foreach (var moddedVisor in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.visors))
+            {
+                combinedCosmetics.Add(new ModdedVisorDataWrapper(moddedVisor));
+            }
 
             ICosmeticData getVisor()
             {
-                return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(CustomCosmeticsSaver.CurrentVisor2Id));
+                if (string.IsNullOrEmpty(CustomCosmeticsSaver.CurrentVisor2Id))
+                    return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_NoVisor"));
+                else
+                {
+                    if (CustomCosmeticsSaver.CurrentVisor2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
+                    {
+                        var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(CustomCosmeticsSaver.CurrentVisor2Id);
+                        if (moddedVisor != null)
+                            return new ModdedVisorDataWrapper(moddedVisor);
+                        return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_NoVisor"));
+                    }
+                    else
+                        return new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(CustomCosmeticsSaver.CurrentVisor2Id));
+                }
             }
             ShowCostumeTab(CostumeTabType.Visor2, obj, combinedCosmetics, getVisor, (cosmetic) =>
             {
@@ -485,7 +526,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 {
                     if (CustomCosmeticsSaver.CurrentHat2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                     {
-                        var moddedHat = CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).FirstOrDefault(hat => hat.ProdId == CustomCosmeticsSaver.CurrentHat2Id);
+                        var moddedHat = CustomCosmeticsLoader.GetModdedHat(CustomCosmeticsSaver.CurrentHat2Id);
                         if (moddedHat != null)
                             return new ModdedHatDataWrapper(moddedHat);
                         return new CosmeticDataWrapperHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById("hat_NoHat"));
@@ -609,71 +650,117 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         scroller = CurrentCostumeTab.transform.Find("LeftArea/Scroller").GetComponent<Scroller>();
         Transform inner = scroller.transform.Find("Inner");
 
-        for (int i = 0; i < totalItems; i++)
+        SortedDictionary<string, List<ICosmeticData>> packagedCosmetics = new();
+
+        foreach (var cosmetic in unlockedCosmetics)
         {
-            int row = i / itemsPerRow;
-            int col = i % itemsPerRow;
+            if (packagedCosmetics.ContainsKey(cosmetic.Package))
+                packagedCosmetics[cosmetic.Package].Add(cosmetic);
+            else
+                packagedCosmetics[cosmetic.Package] = [cosmetic];
+        }
+        int allI = itemsPerRow;
+        const float offSetY = 1.1f;
+        int package_i = 0;
+        foreach (var package in packagedCosmetics)
+        {
+            float lastY_temp = 0;
+            Logger.Info($"Package: {package.Key} {package.Value.Count}");
 
-            int index = i;
+            // パッケージ名を表示するテキストを追加
+            GameObject packageText = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticPackageText"), CurrentCostumeTab.transform);
+            packageText.transform.SetParent(inner);
+            packageText.transform.localScale = Vector3.one * 0.7f;
+            TextMeshPro textMesh = packageText.GetComponent<TextMeshPro>();
+            textMesh.fontSize = 1.8f;
+            textMesh.alignment = TextAlignmentOptions.TopLeft;
+            textMesh.text = FastDestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID == SupportedLangs.Japanese ? package.Key : package.Value.First().Package_EN;
+            textMesh.color = Color.white;
+            textMesh.fontStyle = FontStyles.Bold;
+            textMesh.enableWordWrapping = false;
+            textMesh.rectTransform.sizeDelta = new Vector2(35f, 2f);
 
-            var slot = GameObject.Instantiate(costumeSlot, inner);
-            slots.Add(slot.transform);
-            slot.Awake();
+            // パッケージテキストの位置を設定
+            int row = allI / itemsPerRow;
+            packageText.transform.localPosition = new(-6.7f, 2.63f - row * 2.6f + 2.4f + offSetY, -10);
 
-            var cosmeticData = unlockedCosmetics[i];
-
-            if (cosmeticData.PreviewCrewmateColor)
+            for (int i = 0; i < package.Value.Count; i++)
             {
-                slot.spriteRenderer.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
-                PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(slot.spriteRenderer, false);
-                PlayerMaterial.SetColors(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color, slot.spriteRenderer);
-            }
+                int index = i;
 
-            slot.transform.localPosition = new(-15.78f + col * 2.63f, 2.63f - row * 2.6f, -10);
-            slot.transform.localScale = Vector3.one * 0.8f;
-            slot.button.Colliders = new Collider2D[] { slot.GetComponent<BoxCollider2D>() };
-            slot.button.OnClick = new();
-            slot.button.OnClick.AddListener((UnityAction)(() =>
-            {
-                Logger.Info("Slot clicked");
-                if (selectedButton != null)
+                // 各アイテムの行と列を計算
+                int col = allI % itemsPerRow;
+                int itemRow = allI / itemsPerRow;
+
+                var slot = GameObject.Instantiate(costumeSlot, inner);
+                slots.Add(slot.transform);
+                slot.Awake();
+
+                var cosmeticData = package.Value[i];
+
+                if (cosmeticData.PreviewCrewmateColor)
                 {
-                    selectedButton.SelectButton(false);
-                    selectedButton.transform.Find("Selected").gameObject.SetActive(false);
+                    slot.spriteRenderer.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+                    PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(slot.spriteRenderer, false);
+                    PlayerMaterial.SetColors(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color, slot.spriteRenderer);
                 }
-                slot.button.SelectButton(true);
-                selectedButton = slot.button;
-                selectedButton.transform.Find("Selected").gameObject.SetActive(true);
-                SetCosmetic(unlockedCosmetics[index], onSet);
-            }));
-            slot.button.OnMouseOver = new();
-            slot.button.OnMouseOver.AddListener((UnityAction)(() =>
+
+                slot.transform.localPosition = new(-15.78f + col * 2.63f, 2.63f - itemRow * 2.6f + offSetY, -10);
+                slot.transform.localScale = Vector3.one * 0.8f;
+                slot.button.Colliders = new Collider2D[] { slot.GetComponent<BoxCollider2D>() };
+                slot.button.OnClick = new();
+                slot.button.OnClick.AddListener((UnityAction)(() =>
+                {
+                    Logger.Info("Slot clicked");
+                    if (selectedButton != null)
+                    {
+                        selectedButton.SelectButton(false);
+                        selectedButton.transform.Find("Selected").gameObject.SetActive(false);
+                    }
+                    slot.button.SelectButton(true);
+                    selectedButton = slot.button;
+                    selectedButton.transform.Find("Selected").gameObject.SetActive(true);
+                    SetCosmetic(package.Value[index], onSet);
+                }));
+                slot.button.OnMouseOver = new();
+                slot.button.OnMouseOver.AddListener((UnityAction)(() =>
+                {
+                    if (selectedButton != slot.button)
+                        slot.transform.Find("Selected").gameObject.SetActive(true);
+                    PreviewCosmetic(package.Value[index], obj, onPreview);
+                }));
+                slot.button.OnMouseOut = new();
+                slot.button.OnMouseOut.AddListener((UnityAction)(() =>
+                {
+                    if (selectedButton != slot.button)
+                        slot.transform.Find("Selected").gameObject.SetActive(false);
+                    PreviewCosmetic(currentCosmeticFunc(), obj, onPreview);
+                }));
+                slot.gameObject.SetActive(true);
+                cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
+                if (cosmeticData.ProdId == currentCosmeticId)
+                {
+                    slot.button.SelectButton(true);
+                    selectedButton = slot.button;
+                    selectedButton.transform.Find("Selected").gameObject.SetActive(true);
+                }
+                allI++;
+            }
+            package_i++;
+            if (package_i < packagedCosmetics.Count)
             {
-                if (selectedButton != slot.button)
-                    slot.transform.Find("Selected").gameObject.SetActive(true);
-                PreviewCosmetic(unlockedCosmetics[index], obj, onPreview);
-            }));
-            slot.button.OnMouseOut = new();
-            slot.button.OnMouseOut.AddListener((UnityAction)(() =>
-            {
-                if (selectedButton != slot.button)
-                    slot.transform.Find("Selected").gameObject.SetActive(false);
-                PreviewCosmetic(currentCosmeticFunc(), obj, onPreview);
-            }));
-            slot.gameObject.SetActive(true);
-            cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
-            if (cosmeticData.ProdId == currentCosmeticId)
-            {
-                slot.button.SelectButton(true);
-                selectedButton = slot.button;
-                selectedButton.transform.Find("Selected").gameObject.SetActive(true);
+                // パッケージ間に余白を追加
+                if (allI % itemsPerRow == 0)
+                    allI += itemsPerRow; // 次の行から始める
+                else
+                    allI += (itemsPerRow * 2) - (allI % itemsPerRow); // 現在の行を埋めて次の行をスキップ
             }
         }
         float contentYBounds = 0;
-        if (totalItems > 35)
+        if (allI > 35)
         {
-            int extraRows = Mathf.CeilToInt((totalItems - 35) / (float)itemsPerRow);
-            contentYBounds = extraRows * 2.6f + 0.15f;
+            int extraRows = Mathf.CeilToInt((allI - 35) / (float)itemsPerRow);
+            contentYBounds = extraRows * 2.6f + 0.45f - offSetY;
         }
         scroller.ContentYBounds = new(0, contentYBounds);
     }
@@ -724,124 +811,46 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     {
         if (scroller == null) return;
 
-        // transform参照をローカル変数にキャッシュして毎回の参照コストを削減
-        Transform innerTransform = scroller.Inner.transform;
-        Transform scrollerTransform = scroller.transform;
+        // スクロール位置が変化したときだけ処理
+        float currentInnerY = scroller.Inner.transform.localPosition.y;
+        if (Mathf.Approximately(currentInnerY, lastInnerY)) return;
 
-        float currentInnerY = innerTransform.localPosition.y;
-        if (currentInnerY == lastInnerY) return; // 変化がなければ処理を省略
-
-        float deltaY = currentInnerY - lastInnerY;
         lastInnerY = currentInnerY;
 
-        if (slots.Count <= 35) return;
+        if (slots.Count <= 35) return; // 少ない場合は常に全部表示
 
-        int totalSlots = slots.Count;
-        int totalGroups = Mathf.CeilToInt(totalSlots / 7f);
+        // 可視範囲の計算
+        float viewportHeight = 10f; // ビューポートの高さ
+        float upperBound = 5f; // 上側の表示境界
+        float lowerBound = -5f - viewportHeight; // 下側の表示境界
 
-        // 代表スロットの位置と行間隔を利用して可視範囲のグループのみを計算する
-        Vector3 firstGroupPos = scrollerTransform.InverseTransformPoint(slots[0].position);
-        float firstGroupY = firstGroupPos.y;
-        float spacing = 2.6f; // デフォルトの間隔
-        if (slots.Count >= 7)
+        // バッファを追加（少し余裕を持たせる）
+        upperBound += 5f;
+        lowerBound -= 5f;
+
+        // 各スロットごとに可視判定
+        for (int i = 0; i < slots.Count; i++)
         {
-            spacing = Mathf.Abs(scrollerTransform.InverseTransformPoint(slots[7].position).y - firstGroupY);
-            if (spacing < 0.001f) spacing = 2.6f;
-        }
+            Transform slot = slots[i];
+            Vector3 slotWorldPos = slot.position;
+            Vector3 viewportPos = scroller.transform.InverseTransformPoint(slotWorldPos);
 
-        float upperBound = 12.6f; // 可視上限
-        float lowerBound = -15.3f; // 可視下限
+            bool isVisible = viewportPos.y <= upperBound && viewportPos.y >= lowerBound;
 
-        // 可視範囲に入るグループのインデックス範囲を算出する（バッファを少し追加）
-        int visibleStartGroup = Mathf.Max(0, Mathf.FloorToInt((firstGroupY - upperBound - 2.0f) / spacing));
-        int visibleEndGroup = Mathf.Min(totalGroups - 1, Mathf.CeilToInt((firstGroupY - lowerBound + 2.0f) / spacing));
-
-        // 前回のアクティブグループ範囲を取得
-        int prevFirstGroup = -1;
-        int prevLastGroup = -1;
-
-        // スロットとグループのマッピングを保持するDictionaryを使用
-        // 初回実行時に初期化
-        if (slotToGroupMap == null)
-        {
-            slotToGroupMap = new Dictionary<Transform, int>();
-            for (int i = 0; i < slots.Count; i++)
+            // 表示状態を更新（現在と異なる場合のみ）
+            if (isVisible != slot.gameObject.activeSelf)
             {
-                slotToGroupMap[slots[i]] = i / 7;
-            }
-        }
+                slot.gameObject.SetActive(isVisible);
 
-        if (activeSlots.Count > 0)
-        {
-            // Dictionaryから直接グループ番号を取得
-            prevFirstGroup = slotToGroupMap[activeSlots[0]];
-            prevLastGroup = slotToGroupMap[activeSlots[activeSlots.Count - 1]];
-        }
-
-        // 更新が必要かどうかを判定
-        bool needUpdate = false;
-        if (activeSlots.Count == 0 || visibleStartGroup != prevFirstGroup || visibleEndGroup != prevLastGroup)
-        {
-            needUpdate = true;
-        }
-
-        // 更新が必要な場合のみ処理を実行
-        if (needUpdate)
-        {
-            // 更新範囲を厳密に可視範囲のみに制限（バッファは既に追加済み）
-            int updateStartGroup = visibleStartGroup;
-            int updateEndGroup = visibleEndGroup;
-
-            // 現在のアクティブスロットを非アクティブにする（可視範囲外になったもののみ）
-            for (int i = activeSlots.Count - 1; i >= 0; i--)
-            {
-                var slot = activeSlots[i];
-                int group = slotToGroupMap[slot];
-                if (group < updateStartGroup || group > updateEndGroup)
+                // アクティブスロットリストの更新
+                if (isVisible)
                 {
-                    slot.gameObject.SetActive(false);
-                    activeSlots.RemoveAt(i);
+                    if (!activeSlots.Contains(slot))
+                        activeSlots.Add(slot);
                 }
-            }
-
-            // 新しく可視範囲に入ったグループのスロットをアクティブにする
-            for (int g = updateStartGroup; g <= updateEndGroup; g++)
-            {
-                int startIndex = g * 7;
-                int endIndex = Mathf.Min(startIndex + 7, totalSlots);
-
-                // このグループのスロットが既にアクティブかチェック
-                bool groupAlreadyActive = false;
-                if (activeSlots.Count > 0)
+                else
                 {
-                    for (int j = startIndex; j < endIndex; j++)
-                    {
-                        if (j < totalSlots && slots[j].gameObject.activeSelf)
-                        {
-                            groupAlreadyActive = true;
-                            break;
-                        }
-                    }
-                }
-
-                // 既にアクティブなグループはスキップ
-                if (groupAlreadyActive) continue;
-
-                // 代表スロットで可視判定
-                Vector3 repPos = scrollerTransform.InverseTransformPoint(slots[startIndex].position);
-                bool groupActive = repPos.y > lowerBound && repPos.y < upperBound;
-
-                if (groupActive)
-                {
-                    for (int j = startIndex; j < endIndex; j++)
-                    {
-                        if (j < totalSlots)
-                        {
-                            var slot = slots[j];
-                            slot.gameObject.SetActive(true);
-                            activeSlots.Add(slot);
-                        }
-                    }
+                    activeSlots.Remove(slot);
                 }
             }
         }
@@ -859,6 +868,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     {
         var previewRenderer = button.transform.Find("Preview")?.GetComponent<SpriteRenderer>();
         var previewRendererBack = button.transform.Find("PreviewBack")?.GetComponent<SpriteRenderer>();
+        Logger.Info($"UpdateButtonPreview: {button.name}, {cosmetic.ProdId}");
         if (previewRenderer != null && previewRendererBack != null && cosmetic != null)
         {
             // アセットを非同期ロード
@@ -890,14 +900,26 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     private void InitializeButtonPreviews()
     {
         // Visor1のプレビュー初期化
-        var visor1Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
+        ICosmeticData visor1Data;
+        if (DataManager.Player.Customization.Visor.StartsWith("Modded_"))
+        {
+            var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(DataManager.Player.Customization.Visor);
+            if (moddedVisor != null)
+                visor1Data = new ModdedVisorDataWrapper(moddedVisor);
+            else
+                visor1Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
+        }
+        else
+        {
+            visor1Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(DataManager.Player.Customization.Visor));
+        }
         UpdateButtonPreview(visorButton01, visor1Data);
 
         // Hat1のプレビュー初期化
         ICosmeticData hat1Data;
         if (DataManager.Player.Customization.Hat.StartsWith("Modded_"))
         {
-            var moddedHat = CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).FirstOrDefault(hat => hat.ProdId == DataManager.Player.Customization.Hat);
+            var moddedHat = CustomCosmeticsLoader.GetModdedHat(DataManager.Player.Customization.Hat);
             if (moddedHat != null)
                 hat1Data = new ModdedHatDataWrapper(moddedHat);
             else
@@ -910,10 +932,23 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         UpdateButtonPreview(hatButton01, hat1Data);
 
         // Visor2のプレビュー初期化
-        string visor2Id = CustomCosmeticsSaver.CurrentVisor2Id;
-        if (string.IsNullOrEmpty(visor2Id))
-            visor2Id = "visor_EmptyVisor";
-        var visor2Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(visor2Id));
+        ICosmeticData visor2Data;
+        if (string.IsNullOrEmpty(CustomCosmeticsSaver.CurrentVisor2Id))
+        {
+            visor2Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_EmptyVisor"));
+        }
+        else if (CustomCosmeticsSaver.CurrentVisor2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
+        {
+            var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(CustomCosmeticsSaver.CurrentVisor2Id);
+            if (moddedVisor != null)
+                visor2Data = new ModdedVisorDataWrapper(moddedVisor);
+            else
+                visor2Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById("visor_EmptyVisor"));
+        }
+        else
+        {
+            visor2Data = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(CustomCosmeticsSaver.CurrentVisor2Id));
+        }
         UpdateButtonPreview(visorButton02, visor2Data);
 
         // Hat2のプレビュー初期化
@@ -924,7 +959,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         }
         else if (CustomCosmeticsSaver.CurrentHat2Id.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
         {
-            var moddedHat = CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats).FirstOrDefault(hat => hat.ProdId == CustomCosmeticsSaver.CurrentHat2Id);
+            var moddedHat = CustomCosmeticsLoader.GetModdedHat(CustomCosmeticsSaver.CurrentHat2Id);
             if (moddedHat != null)
                 hat2Data = new ModdedHatDataWrapper(moddedHat);
             else

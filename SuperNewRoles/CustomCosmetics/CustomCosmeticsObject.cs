@@ -18,6 +18,10 @@ public class CustomCosmeticsPackage
         this.name_en = name_en;
         this.version = version;
     }
+    public override string ToString()
+    {
+        return $"{name} (ver.{version})";
+    }
 }
 
 public class CustomCosmeticsHat
