@@ -229,7 +229,7 @@ public static class CustomCosmeticsUIStart
             ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, __instance.ControllerSelectable);
             try
             {
-                __instance.OpenTab(__instance.Tabs[0].Tab);
+                UpdateToDefault(__instance);
             }
             catch (Exception e)
             {
@@ -247,6 +247,18 @@ public static class CustomCosmeticsUIStart
             Start(__instance);
             return false;
         }
+    }
+    public static void UpdateToDefault(PlayerCustomizationMenu __instance)
+    {
+        bool flag = ActiveInputManager.currentControlType == ActiveInputManager.InputType.Joystick;
+        __instance.glyphL.SetActive(false);
+        __instance.glyphR.SetActive(false);
+        ControllerManager.Instance.ClearDestroyedSelectableUiElements();
+        __instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.None);
+        __instance.PreviewArea.ToggleName(active: false);
+        __instance.PreviewArea.gameObject.SetActive(true);
+        __instance.nameplateMaskArea.SetActive(false);
+        __instance.cubeArea.SetActive(false);
     }
     [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Update))]
     public static class PlayerCustomizationMenu_Update_Patch

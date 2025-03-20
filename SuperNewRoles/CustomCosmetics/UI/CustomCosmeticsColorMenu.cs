@@ -14,6 +14,7 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
 
     private GameObject colorMenu;
     private List<GameObject> allUnAvailableButtons;
+    private List<PassiveButton> allButtons;
 
     public override void Initialize()
     {
@@ -52,6 +53,7 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
         }
 
         allUnAvailableButtons = new();
+        allButtons = new();
 
         // 各カラーに対してボタンを作成し、イベントリスナーを登録
         for (int i = 0; i < Palette.PlayerColors.Length; i++)
@@ -67,6 +69,7 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
             // PassiveButton を追加して、イベント設定を行う
             PassiveButton passiveButton = button.AddComponent<PassiveButton>();
             passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
+            allButtons.Add(passiveButton);
 
             // OnClick イベント
             passiveButton.OnClick = new();
@@ -136,6 +139,10 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
         for (int i = 0; i < allUnAvailableButtons.Count; i++)
         {
             allUnAvailableButtons[i].SetActive(usedColors.Contains(i));
+        }
+        for (int i = 0; i < allButtons.Count; i++)
+        {
+            allButtons[i].enabled = !usedColors.Contains(i);
         }
     }
 
