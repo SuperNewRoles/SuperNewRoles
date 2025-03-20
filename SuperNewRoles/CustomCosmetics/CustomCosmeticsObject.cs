@@ -46,37 +46,65 @@ public class CustomCosmeticsHat
         this.options = options;
         this.assetBundle = assetBundle;
     }
+
+    // キャッシュ
+    private Sprite _loadFrontSprite;
+    private Sprite _loadFrontLeftSprite;
+    private Sprite _loadClimbSprite;
+    private Sprite _loadBackSprite;
+    private Sprite _loadBackLeftSprite;
+    private Sprite _loadFlipSprite;
+    private Sprite _loadFlipBackSprite;
+    private Sprite _loadClimbLeftSprite;
+    // キャッシュ
+
     public Sprite LoadFrontSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "front.png");
+        if (_loadFrontSprite == null)
+            _loadFrontSprite = assetBundle.LoadAsset<Sprite>(path_base + "front.png").DontUnload();
+        return _loadFrontSprite;
     }
     public Sprite LoadFrontLeftSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "front_left.png");
+        if (_loadFrontLeftSprite == null)
+            _loadFrontLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "front_left.png").DontUnload();
+        return _loadFrontLeftSprite;
     }
     public Sprite LoadClimbSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
+        if (_loadClimbSprite == null)
+            _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png").DontUnload();
+        return _loadClimbSprite;
     }
     public Sprite LoadBackSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "back.png");
+        if (_loadBackSprite == null)
+            _loadBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "back.png").DontUnload();
+        return _loadBackSprite;
     }
     public Sprite LoadBackLeftSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "back_left.png");
+        if (_loadBackLeftSprite == null)
+            _loadBackLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "back_left.png").DontUnload();
+        return _loadBackLeftSprite;
     }
     public Sprite LoadFlipSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "flip.png");
+        if (_loadFlipSprite == null)
+            _loadFlipSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png").DontUnload();
+        return _loadFlipSprite;
     }
     public Sprite LoadFlipBackSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png");
+        if (_loadFlipBackSprite == null)
+            _loadFlipBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png").DontUnload();
+        return _loadFlipBackSprite;
     }
     public Sprite LoadClimbLeftSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "climb_left.png");
+        if (_loadClimbLeftSprite == null)
+            _loadClimbLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb_left.png").DontUnload();
+        return _loadClimbLeftSprite;
     }
 }
 
@@ -102,17 +130,30 @@ public class CustomCosmeticsVisor
         this.options = options;
         this.assetBundle = assetBundle;
     }
+
+    // キャッシュ
+    private Sprite _loadIdleSprite;
+    private Sprite _loadLeftIdleSprite;
+    private Sprite _loadClimbSprite;
+    // キャッシュ
+
     public Sprite LoadIdleSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "idle.png");
+        if (_loadIdleSprite == null)
+            _loadIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle.png").DontUnload();
+        return _loadIdleSprite;
     }
     public Sprite LoadLeftIdleSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "idle_left.png");
+        if (_loadLeftIdleSprite == null)
+            _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle_left.png").DontUnload();
+        return _loadLeftIdleSprite;
     }
     public Sprite LoadClimbSprite()
     {
-        return assetBundle.LoadAsset<Sprite>(path_base + "climb.png");
+        if (_loadClimbSprite == null)
+            _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png").DontUnload();
+        return _loadClimbSprite;
     }
 }
 public class CustomCosmeticsVisorOptions

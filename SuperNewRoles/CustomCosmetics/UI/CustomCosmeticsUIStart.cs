@@ -25,6 +25,7 @@ public static class CustomCosmeticsUIStart
 
     public static void Start(PlayerCustomizationMenu menu)
     {
+        Logger.Info("CustomCosmeticsUIStart Start");
         CurrentMenu = null;
         MenusInitialize();
         HideDefaultUI(menu);
@@ -215,9 +216,36 @@ public static class CustomCosmeticsUIStart
     [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Start))]
     public static class PlayerCustomizationMenu_Start_Patch
     {
-        public static void Postfix(PlayerCustomizationMenu __instance)
+        public static bool Prefix(PlayerCustomizationMenu __instance)
         {
+            if ((bool)PlayerCustomizationMenu.Instance && PlayerCustomizationMenu.Instance != __instance)
+            {
+                UnityEngine.Object.Destroy(PlayerCustomizationMenu.Instance.gameObject);
+            }
+            else
+            {
+                PlayerCustomizationMenu.Instance = __instance;
+            }
+            ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, __instance.ControllerSelectable);
+            try
+            {
+                __instance.OpenTab(__instance.Tabs[0].Tab);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("PlayerCustomizationMenu::Start: OpenTab failed");
+                Logger.Error(e.Message);
+            }
+            if (DestroyableSingleton<HudManager>.InstanceExists)
+            {
+                DestroyableSingleton<HudManager>.Instance.PlayerCam.OverrideScreenShakeEnabled = false;
+            }
+            if (DestroyableSingleton<GameStartManager>.InstanceExists)
+            {
+                DestroyableSingleton<GameStartManager>.Instance.CloseGameOptionsMenus();
+            }
             Start(__instance);
+            return false;
         }
     }
     [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Update))]

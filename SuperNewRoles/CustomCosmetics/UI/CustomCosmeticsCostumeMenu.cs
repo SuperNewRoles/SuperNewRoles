@@ -358,7 +358,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     public override void Initialize()
     {
         // CosmeticMenuKisekae
-        var obj = GameObject.FindObjectOfType<PlayerCustomizationMenu>();
+        var obj = PlayerCustomizationMenu.Instance;
         kisekae = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticMenuKisekae"), obj.transform);
         kisekae.transform.localPosition = new(0.31f, -0.085f, -15f);
         kisekae.transform.localScale = Vector3.one * 0.28f;

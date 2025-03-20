@@ -56,8 +56,25 @@ public static class AssetManager
                     GetManifestResourceStream(
                     $"SuperNewRoles.Resources.{data.Path}.bundle"
                     );
-                //AssetBundleを読み込む
-                var assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
+                // SuperNewRolesNext/snrsprites.bundleに保存する
+                AssetBundle assetBundle = null;
+                /*try
+                {
+                    File.WriteAllBytes(
+                        $"./SuperNewRolesNext/{data.Path}.bundle",
+                        BundleStream.ReadFully()
+                    );
+                    //AssetBundleを読み込む
+                    assetBundle = AssetBundle.LoadFromFile(
+                        $"./SuperNewRolesNext/{data.Path}.bundle"
+                    );
+                }
+                catch (Exception e)
+                {
+                    assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
+                    Logger.Error(e.ToString(), "LoadAssetBundle");
+                }*/
+                assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
                 //読み込んだAssetBundleを保存
                 Bundles[TypeToByte[data.Type]] = assetBundle;
                 //キャッシュ用のDictionaryを作成

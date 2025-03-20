@@ -34,6 +34,8 @@ public static class PlayerControlRpcExtensions
     }
     [CustomRPC]
     public static void RpcCustomSetCosmetics(this PlayerControl player, CostumeTabType menuType, string cosmeticsId, int colorId)
+        => player.CustomSetCosmetics(menuType, cosmeticsId, colorId);
+    public static void CustomSetCosmetics(this PlayerControl player, CostumeTabType menuType, string cosmeticsId, int colorId)
     {
         switch (menuType)
         {

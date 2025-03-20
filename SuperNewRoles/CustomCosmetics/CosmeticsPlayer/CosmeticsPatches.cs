@@ -33,16 +33,35 @@ public static class PlayerControl_Start
         }, 0.1f, "SetHat2");
     }
 }
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
+public static class AmongUsClient_OnPlayerJoined
+{
+    private static DelayTask delayTask;
+    public static void Postfix(InnerNet.ClientData data)
+    {
+        if (PlayerControl.LocalPlayer != null)
+        {
+            DelayTask.UpdateOrAdd(() =>
+            {
+                PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat2, CustomCosmeticsSaver.CurrentHat2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+                PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Visor2, CustomCosmeticsSaver.CurrentVisor2Id, (PlayerControl.LocalPlayer.Data?.DefaultOutfit?.ColorId).GetValueOrDefault());
+            }, 0.15f, ref delayTask, "SetHat2");
+        }
+    }
+}
 [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetFlipX))]
 public static class VisorLayer_SetFlipX
 {
     public static void Postfix(VisorLayer __instance, bool flipX)
     {
-        CustomVisorLayer[] customVisorLayers = __instance.transform.parent.gameObject.GetComponentsInChildren<CustomVisorLayer>();
-        foreach (CustomVisorLayer customVisorLayer in customVisorLayers)
+        var (layer1, layer2) = CustomCosmeticsLayers.GetVisorLayers(__instance);
+        if (layer1 != null)
         {
-            //todo:後でパフォーマンス改善
-            customVisorLayer.SetFlipX(flipX);
+            layer1.SetFlipX(flipX);
+        }
+        if (layer2 != null)
+        {
+            layer2.SetFlipX(flipX);
         }
     }
 }

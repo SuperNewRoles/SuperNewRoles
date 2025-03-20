@@ -34,7 +34,7 @@ namespace SuperNewRoles;
 [BepInIncompatibility("me.yukieiji.extremeroles")]
 [BepInIncompatibility("com.tugaru.TownOfPlus")]
 [BepInIncompatibility("com.emptybottle.townofhost")]
-[BepInIncompatibility("jp.ykundesu.agartha")]
+// [BepInIncompatibility("jp.ykundesu.agartha")]
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new Harmony(PluginConfig.Id);
@@ -49,10 +49,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
         Instance = this;
         RegisterCustomObjects();
         Task task = Task.Run(() => Harmony.PatchAll());
+
         if (!Directory.Exists("./SuperNewRolesNext"))
         {
             Directory.CreateDirectory("./SuperNewRolesNext");
         }
+
         CustomRoleManager.Load();
         AssetManager.Load();
         ModTranslation.Load();
@@ -62,6 +64,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         EventListenerManager.Load();
         SuperTrophyManager.Load();
         CustomCosmeticsSaver.Load();
+
+        Logger.LogInfo("Waiting for Harmony patch");
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");

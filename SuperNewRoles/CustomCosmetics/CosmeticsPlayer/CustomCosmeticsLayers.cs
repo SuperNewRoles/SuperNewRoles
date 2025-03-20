@@ -9,6 +9,8 @@ namespace SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 public static class CustomCosmeticsLayers
 {
     public static Dictionary<int, CustomCosmeticsLayer> layers = new();
+    public static Dictionary<int, CustomVisorLayer> visorLayer1s = new();
+    public static Dictionary<int, CustomVisorLayer> visorLayer2s = new();
     public static bool Exists(CosmeticsLayer cosmeticsLayer)
     {
         return layers.ContainsKey(cosmeticsLayer.GetInstanceID());
@@ -22,6 +24,10 @@ public static class CustomCosmeticsLayers
     public static void Initialize(CosmeticsLayer cosmeticsLayer)
     {
         layers[cosmeticsLayer.GetInstanceID()] = new CustomCosmeticsLayer(cosmeticsLayer);
+    }
+    public static (CustomVisorLayer layer1, CustomVisorLayer layer2) GetVisorLayers(VisorLayer visorLayer)
+    {
+        return (visorLayer1s.TryGetValue(visorLayer.GetInstanceID(), out var layer1) ? layer1 : null, visorLayer2s.TryGetValue(visorLayer.GetInstanceID(), out var layer2) ? layer2 : null);
     }
 }
 public class CustomCosmeticsLayer
@@ -39,6 +45,8 @@ public class CustomCosmeticsLayer
         hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.7f));
         hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.6f));
         visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f);
+        CustomCosmeticsLayers.visorLayer1s[cosmeticsLayer.visor.GetInstanceID()] = visor1;
+        CustomCosmeticsLayers.visorLayer2s[cosmeticsLayer.visor.GetInstanceID()] = visor2;
     }
     private CustomVisorLayer CreateVisorLayer(CosmeticsLayer cosmeticsLayer, string visorName, float z)
     {

@@ -247,4 +247,14 @@ public static class ModHelpers
     {
         return GetSystemEnumerable<T>(list.TryCast<Il2CppSystem.Collections.IEnumerable>());
     }
+    public static T TryGetIndex<T>(this List<T> list, int index)
+    {
+        if (index < 0 || index >= list.Count) return default;
+        return list[index];
+    }
+    public static T TryGetIndex<T>(this T[] array, int index)
+    {
+        if (index < 0 || index >= array.Length) return default;
+        return array[index];
+    }
 }

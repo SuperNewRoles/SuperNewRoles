@@ -10,7 +10,7 @@ namespace SuperNewRoles;
 
 public static class PluginConfig
 {
-    public const string Id = "jp.ykundesu.supernewroles";
+    public const string Id = "jp.ykundesu.supernewrolesnext";
     public const string Name = "SuperNewRoles";
     public const string ProcessName = "Among Us.exe";
 }
