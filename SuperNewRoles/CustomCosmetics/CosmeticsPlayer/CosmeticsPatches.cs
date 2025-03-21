@@ -83,6 +83,7 @@ public static class PlayerControl_ClientInitialize
         customCosmeticsLayer?.visor2?.SetLocalPlayer(false);
     }
 }
+
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetHat), [typeof(string), typeof(int)])]
 public static class PoolablePlayer_SetHat_String
 {
@@ -145,30 +146,24 @@ public static class PoolablePlayer_UpdateFromEitherPlayerDataOrCache
         customCosmeticsLayer?.visor2?.SetVisor(pcLayer.visor2.Visor?.ProdId ?? "", pData.DefaultOutfit.ColorId);
     }
 }
-/*
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHat))]
-public static class PlayerControl_SetHat
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.AnimateClimb))]
+public static class CosmeticsLayer_AnimateClimb
 {
-    public static void Postfix(PlayerControl __instance, string hatId, int colorId)
+    public static void Postfix(CosmeticsLayer __instance)
     {
-        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
-        customCosmeticsLayer?.hat2?.SetHat(hatId, colorId);
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.hat1?.SetClimbAnim();
+        customCosmeticsLayer?.hat2?.SetClimbAnim();
+        customCosmeticsLayer?.visor1?.SetClimbAnim(__instance.bodyType);
+        customCosmeticsLayer?.visor2?.SetClimbAnim(__instance.bodyType);
     }
 }
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetVisor))]
-public static class PlayerControl_SetVisor
-{
-    public static void Postfix(PlayerControl __instance, string visorId, int colorId)
-    {
-        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance.cosmetics);
-        customCosmeticsLayer?.visor2?.SetVisor(visorId, colorId);
-    }
-}*/
 [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetVisor), [typeof(string), typeof(int)])]
 public static class VisorLayer_SetVisor
 {
     public static void Postfix(VisorLayer __instance, string visorId, int colorId)
     {
+        if (StoreMenu.InstanceExists) return;
         __instance.Image.enabled = false;
     }
 }
@@ -177,7 +172,10 @@ public static class HatParent_LateUpdate
 {
     public static void Postfix(HatParent __instance)
     {
-        __instance.FrontLayer.enabled = false;
-        __instance.BackLayer.enabled = false;
+        if (StoreMenu.InstanceExists) return;
+        if (__instance.FrontLayer != null)
+            __instance.FrontLayer.enabled = false;
+        if (__instance.BackLayer != null)
+            __instance.BackLayer.enabled = false;
     }
 }

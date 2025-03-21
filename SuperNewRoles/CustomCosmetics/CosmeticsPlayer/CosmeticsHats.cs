@@ -127,7 +127,7 @@ public class CustomHatLayer : MonoBehaviour
 
     public void SetClimbAnim()
     {
-        if (CustomCosmeticHat.Options.climb != HatOptionType.None)
+        if (!CustomCosmeticHat.Options.climb.HasFlag(HatOptionType.None))
         {
             base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y, -0.02f);
             BackLayer.enabled = false;
@@ -234,12 +234,12 @@ public class CustomHatLayer : MonoBehaviour
         {
             spriteAnimNodeSync.NodeId = !CustomCosmeticHat.Options.front.HasFlag(HatOptionType.Bounce) ? 1 : 0;
         }
-        if (CustomCosmeticHat.Options.front != HatOptionType.None)
+        if (!CustomCosmeticHat.Options.front.HasFlag(HatOptionType.None))
         {
             FrontLayer.enabled = true;
             FrontLayer.sprite = CustomCosmeticHat.Front;
         }
-        if (CustomCosmeticHat.Options.back != HatOptionType.None)
+        if (!CustomCosmeticHat.Options.back.HasFlag(HatOptionType.None))
         {
             BackLayer.enabled = true;
             BackLayer.sprite = CustomCosmeticHat.Back;
@@ -274,11 +274,11 @@ public class CustomHatLayer : MonoBehaviour
         FlipX = Parent.flipX;
         if (FrontLayer.sprite != CustomCosmeticHat.Climb)
         {
-            if (CustomCosmeticHat.Options.front != HatOptionType.None && CustomCosmeticHat.Options.front_left != HatOptionType.None)
+            if (!CustomCosmeticHat.Options.front.HasFlag(HatOptionType.None) && !CustomCosmeticHat.Options.front_left.HasFlag(HatOptionType.None))
             {
                 FrontLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.FrontLeft : CustomCosmeticHat.Front);
             }
-            if (CustomCosmeticHat.Options.back != HatOptionType.None && CustomCosmeticHat.Options.back_left != HatOptionType.None)
+            if (!CustomCosmeticHat.Options.back.HasFlag(HatOptionType.None) && !CustomCosmeticHat.Options.back_left.HasFlag(HatOptionType.None))
             {
                 BackLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.BackLeft : CustomCosmeticHat.Back);
             }
