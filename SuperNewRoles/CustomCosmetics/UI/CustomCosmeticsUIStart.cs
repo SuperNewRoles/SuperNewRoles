@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AmongUs.Data;
 using HarmonyLib;
 using SuperNewRoles.Modules;
 using UnityEngine;
@@ -165,6 +166,9 @@ public static class CustomCosmeticsUIStart
     {
         Logger.Info($"Cosmetic Category Clicked: {categoryName}");
         SetCurrentTab(categoryName, menuObject);
+
+        PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.None);
+
         var menu = Menus.Find(m => "cosmetic_" + m.MenuType.ToString() == categoryName);
         if (CurrentMenu != null)
             CurrentMenu.Hide();
@@ -255,7 +259,9 @@ public static class CustomCosmeticsUIStart
         __instance.glyphR.SetActive(false);
         ControllerManager.Instance.ClearDestroyedSelectableUiElements();
         __instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.None);
+        __instance.PreviewArea.SetPetIdle(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.PetId : DataManager.Player.Customization.Pet, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.CurrentOutfit.ColorId : DataManager.Player.Customization.Color);
         __instance.PreviewArea.ToggleName(active: false);
+        __instance.PreviewArea.TogglePet(active: true);
         __instance.PreviewArea.gameObject.SetActive(true);
         __instance.nameplateMaskArea.SetActive(false);
         __instance.cubeArea.SetActive(false);
