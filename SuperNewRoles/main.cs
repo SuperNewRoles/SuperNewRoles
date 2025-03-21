@@ -64,6 +64,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         EventListenerManager.Load();
         SuperTrophyManager.Load();
         CustomCosmeticsSaver.Load();
+        CustomColors.Load();
 
         Logger.LogInfo("Waiting for Harmony patch");
         task.Wait();

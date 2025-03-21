@@ -26,6 +26,8 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
         colorMenu.transform.localPosition = new Vector3(0.33f, -0.22f, -15f);
         colorMenu.transform.localScale = Vector3.one * 0.28f;
 
+        Scroller scroller = colorMenu.GetComponentInChildren<Scroller>();
+
         // Innerコンテナの取得とカテゴリ名の設定
         Transform inner = colorMenu.transform.Find("LeftArea/Scroller/Inner");
         inner.Find("CategoryText").GetComponent<TextMeshPro>().text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Colors);
@@ -114,6 +116,12 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
 
             buttons.Add(button);
         }
+
+        if (Palette.PlayerColors.Length <= 60)
+            scroller.ContentYBounds.max = 0;
+        else
+            scroller.ContentYBounds.max = (((Palette.PlayerColors.Length - 60) / colorsPerRow) + 1) * 1.4f;
+        scroller.DragScrollSpeed = 1.4f;
     }
 
     private void UpdateShowingColor(int index)

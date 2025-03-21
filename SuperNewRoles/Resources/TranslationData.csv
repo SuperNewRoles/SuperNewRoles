@@ -10,6 +10,73 @@ People,{0}人,{0} people,{0}人,{0}人
 
 SidekickRemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
 
+# Colors
+# CustomColors
+colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
+colorBordeaux,ボルドー,Bordeaux,枣红,波爾多紅
+colorOlive,オリーブ,Olive,橄榄绿,橄欖綠
+colorTurqoise,ターコイズ,Turqoise,绿松石,綠松石藍
+colorMint,ミント,Mint,薄荷绿,薄荷綠
+colorLavender,ラベンダー,Lavender,薰衣紫,薰衣紫
+colorNougat,ヌガー,Nougat,棕褐,棕褐
+colorPeach,ピーチ,Peach,桃红,桃紅
+colorWasabi,ワサビ,Wasabi,芥末绿,芥末綠
+colorHotPink,ホットピンク,Hot Pink,热粉,艷粉
+colorPetrol,ペトロールブルー,Petrol Blue,油画蓝,油藍
+colorLemon,レモン,Lemon,柠檬黄,檸檬黃
+colorSignalOrange,シグナルオレンジ,Signal Orange,信号橙,信號橙
+colorTeal,ティール,Teal,蓝绿,青綠
+colorBlurple,ブラープル,Blurple,蓝紫,藍紫
+colorSunrise,サンライズ,Sunrise,日出红,日出紅
+colorIce,アイス,Ice,冰蓝,冰藍
+colorPitchBlack,真っ黒,Pitch Black,纯黑,極黑
+colorDarkmagenta,ダークマゼンタ,Dark Magenta,深品红,深洋紅
+colorMintcream,ミントクリーム,Mint Cream,奶油白,薄荷乳白
+colorLeaf,葉,Leaf,叶绿,葉綠
+colorEmerald,エメラルド,Emerald,翡翠,翡翠
+colorBrightyellow,嫩黄,Bright yellow,嫩黄,濃黃
+colorDarkaqua,濃い水色,Dark aqua,湖绿,湖水綠
+colorMatcha,抹茶,Matcha,抹茶,抹茶
+colorPitchwhite,真っ白,Pitch white,纯白,極白
+colorDarksky,雨空,Dark sky,乌云,雨天
+colorIntenseblue,墨蓝,Intense blue,淡藍
+colorBlueclosertoblack,若黑藍,Blue closer to black,黑蓝,若黑藍
+colorSunkengreenishblue,沈んだ緑みの青,Sunken greenish blue,绿蓝,墮綠藍
+colorAzi,アジ,Azi,竹荚鱼,竹莢魚
+colorPitchred,真っ赤,Pitch red,纯红,極紅
+colorPitchblue,真っ青,Pitch blue,纯蓝,極藍
+colorPitchgreen,真っ緑,Pitch green,纯绿,極綠
+colorPitchyellow,真っ黄色,Pitch yellow,纯黄,極黃
+colorBackblue,影青,Back blue,影青,影青
+colorMildpurple,穏やかな紫,Mild purple,淡紫,溫紫
+colorAshishreddishpurplecolor,灰みの赤紫系の色,Ashish reddish purple color,灰红,灰紅紫
+colorMelon,メロン,Melon,瓜绿,瓜綠
+colorCrasyublue,クラッシュブルー,Crasyu Blue,深海蓝,碧海
+colorLightgreen,ライトグリーン,Light Green,浅绿,亮綠
+colorAzuki,小豆,Azuki,小豆,紅豆
+colorSnow,雪,Snow,雪,雪白
+colorLightMagenta,ライトマゼンタ,LightMagenta,浅品红,淺洋紅
+colorPeachFlower,桃花,PeachFlower,桃花,桃紅
+colorPlum,梅,Plum,梅,梅紅
+colorSkyBlue,青空,SkyBlue,天蓝,天藍
+colorLightCyan,ライトシアン,LightCyan,浅青,淡青
+colorLightOrange,ライトオレンジ,LightOrange,浅橙,亮橘
+colorSprout,新芽,Sprout,新芽,新芽綠
+colorNega,ネガ,Nega,负片滤镜,負片
+colorGold,金色,Gold,金色,金色
+colorWineRed,ワインレッド,WineRed,酒红,酒紅
+colorCrazyRed,クレイジーレッド,CrazyRed,大红,瘋狂紅
+colorTokiwaGreen,常磐緑,TokiwaGreen,常青绿,常磐綠
+colorPosi,ポジ,Posi,正片滤镜,正片
+colorXmasRed,クリスマスレッド,XmasRed,圣诞红,聖誕紅
+colorXmasGreen,クリスマスグリーン,XmasGreen,圣诞绿,聖誕綠
+colorCyberRed,サイバーレッド,CyberRed,赛博红,電馭紅
+colorCyberYellow,サイバーイエロー,CyberYellow,赛博黄,電馭黃
+colorCyberGreen,サイバーグリーン,CyberGreen,赛博绿,電馭綠
+colorCyberBlue,サイバーブルー,CyberBlue,赛博蓝,電馭藍
+colorCyberPurple,サイバーパープル,CyberPurple,赛博紫,電馭紫
+colorHalloweenOrange,ハロウィンオレンジ,HalloweenOrange,万圣橙,萬聖橘
+
 # 情報機器制限
 DeviceOptions,情報機器制限,Device Options,设备限制,設備限制
 DeviceAdminOption,アドミン設定,Admin Settings,管理地图设置,管理地圖設置

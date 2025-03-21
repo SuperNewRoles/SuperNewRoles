@@ -257,4 +257,8 @@ public static class ModHelpers
         if (index < 0 || index >= array.Length) return default;
         return array[index];
     }
+    public static byte ParseToByte(this string str)
+    {
+        return byte.Parse(str);
+    }
 }

@@ -88,7 +88,7 @@ public class CustomCosmeticsLayer
         // 新しいCustomHatLayerの生成と共通設定の適用
         CustomHatLayer hatLayer = new GameObject(hatName, Il2CppType.Of<CustomHatLayer>()).GetComponent<CustomHatLayer>();
         hatLayer.transform.parent = baseLayer.hat.transform.parent;
-        hatLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, -0.6f);
+        hatLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, -0.5999f);
         hatLayer.transform.localScale = Vector3.one;
         hatLayer.Parent = baseLayer.hat.Parent;
         hatLayer.gameObject.layer = baseLayer.gameObject.layer;
