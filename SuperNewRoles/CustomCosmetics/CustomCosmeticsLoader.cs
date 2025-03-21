@@ -26,7 +26,7 @@ public class CustomCosmeticsLoader
     public static string[] CustomCosmeticsURLs = new string[]
     {
             // "https://example.com/custom_cosmetics.json",
-            // "./SuperNewRolesNext/debug_assets.json",
+            "./SuperNewRolesNext/debug_assets.json",
     };
     public const string ModdedPrefix = "Modded_";
     private static readonly HttpClient client = new();

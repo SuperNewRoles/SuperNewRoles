@@ -103,7 +103,7 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
             {
                 if (selectedColorId != index)
                     SetButtonSelected(button, false);
-                UpdateShowingColor(index);
+                UpdateShowingColor(selectedColorId);
             }));
 
             // 初期状態で選択中のボタンの場合は表示をONにする
@@ -122,8 +122,11 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
         menu.PreviewArea.SetBodyColor(index);
         menu.PreviewArea.SetPetColor(index);
         menu.PreviewArea.SetSkin(DataManager.Player.Customization.Skin, index);
-        menu.PreviewArea.SetHat(DataManager.Player.Customization.Hat, index);
-        menu.PreviewArea.SetVisor(DataManager.Player.Customization.Visor, index);
+        CustomCosmeticsLayer layer = CustomCosmeticsLayers.ExistsOrInitialize(menu.PreviewArea.cosmetics);
+        layer.hat1.SetMaterialColor(index);
+        layer.hat2.SetMaterialColor(index);
+        layer.visor1.SetMaterialColor(index);
+        layer.visor2.SetMaterialColor(index);
     }
 
     public override void Update()
