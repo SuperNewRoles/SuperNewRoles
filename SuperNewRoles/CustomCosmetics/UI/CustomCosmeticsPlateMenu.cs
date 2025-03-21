@@ -25,10 +25,17 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
         playerVoteArea = PlayerCustomizationMenu.Instance.nameplateMaskArea.GetComponent<PlayerVoteArea>();
         playerVoteArea.PreviewNameplate(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate);
         playerVoteArea.gameObject.SetActive(true);
+        playerVoteArea.transform.localPosition = new(-0.06f, -0.4f, -70.71f);
+        playerVoteArea.transform.localScale = Vector3.one;
+
+        PlayerCustomizationMenu.Instance.PreviewArea.gameObject.SetActive(false);
 
         var unlockedNamePlates = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedNamePlates();
 
         string currentCosmeticId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate;
+        NamePlateData currentNamePlate = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(currentCosmeticId);
+        PlayerCustomizationMenu.Instance.SetItemName(currentNamePlate.GetItemName());
+
         slots = [];
         activeSlots = [];
         slotToGroupMap = null;
@@ -142,6 +149,7 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
     public override void Hide()
     {
         PlayerCustomizationMenu.Instance.nameplateMaskArea.SetActive(false);
+        PlayerCustomizationMenu.Instance.PreviewArea.gameObject.SetActive(true);
         GameObject.Destroy(CurrentCostumeTab);
     }
 }

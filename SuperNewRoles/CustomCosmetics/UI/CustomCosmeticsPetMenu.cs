@@ -23,6 +23,9 @@ public class CustomCosmeticsPetMenu : CustomCosmeticsMenuBase<CustomCosmeticsPet
         var unlockedPets = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedPets();
 
         string currentCosmeticId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.PetId : DataManager.Player.Customization.Pet;
+        PetData currentPet = FastDestroyableSingleton<HatManager>.Instance.GetPetById(currentCosmeticId);
+        PlayerCustomizationMenu.Instance.SetItemName(currentPet.GetItemName());
+
         slots = [];
         activeSlots = [];
         slotToGroupMap = null;

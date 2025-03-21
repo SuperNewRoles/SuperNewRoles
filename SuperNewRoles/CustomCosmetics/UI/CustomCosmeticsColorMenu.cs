@@ -34,6 +34,8 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
         int selectedColorId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.CurrentOutfit.ColorId : DataManager.Player.Customization.Color;
         List<GameObject> buttons = new();
 
+        PlayerCustomizationMenu.Instance.SetItemName(Palette.GetColorName(selectedColorId));
+
         // ローカル関数：ボタンの位置を計算する
         Vector3 CalculateButtonPosition(int index)
         {

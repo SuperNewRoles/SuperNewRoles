@@ -7,6 +7,7 @@ public class CustomCosmeticsCubeMenu : CustomCosmeticsMenuBase<CustomCosmeticsCu
     public override void Initialize()
     {
         PlayerCustomizationMenu instance = PlayerCustomizationMenu.Instance;
+        instance.SetItemName("");
         instance.cubesTab.gameObject.SetActive(true);
         instance.cubeArea.SetActive(true);
         instance.cubesTab.transform.localPosition = new(instance.cubesTab.transform.localPosition.x, instance.cubesTab.transform.localPosition.y, -20);
@@ -24,6 +25,7 @@ public class CustomCosmeticsCubeMenu : CustomCosmeticsMenuBase<CustomCosmeticsCu
         PlayerCustomizationMenu instance = PlayerCustomizationMenu.Instance;
         instance.cubesTab.gameObject.SetActive(false);
         instance.cubeArea.SetActive(false);
+        instance.PreviewArea.gameObject.SetActive(true);
     }
 
 }
