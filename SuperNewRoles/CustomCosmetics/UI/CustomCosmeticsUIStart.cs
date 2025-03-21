@@ -259,13 +259,17 @@ public static class CustomCosmeticsUIStart
         __instance.PreviewArea.gameObject.SetActive(true);
         __instance.nameplateMaskArea.SetActive(false);
         __instance.cubeArea.SetActive(false);
+        __instance.equipButton.SetActive(false);
     }
     [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Update))]
     public static class PlayerCustomizationMenu_Update_Patch
     {
-        public static void Postfix(PlayerCustomizationMenu __instance)
+        public static bool Prefix(PlayerCustomizationMenu __instance)
         {
+            if (ShipStatus.Instance)
+                __instance.DestroyObj();
             Update(__instance);
+            return false;
         }
     }
 }
