@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
 using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
@@ -41,10 +44,15 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static SuperNewRolesPlugin Instance;
     public static ManualLogSource Logger { get; private set; }
 
+    public static int MainThreadId { get; private set; }
+    private readonly List<Action> _mainThreadActions = new();
+    private readonly object _mainThreadActionsLock = new();
+
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
 
     public override void Load()
     {
+        MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
         Instance = this;
         RegisterCustomObjects();
@@ -84,6 +92,45 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<CustomVisorLayer>();
     }
 
+    public void ExecuteInMainThread(Action action)
+    {
+        if (Thread.CurrentThread.ManagedThreadId == MainThreadId)
+        {
+            action();
+        }
+        else
+        {
+            lock (_mainThreadActionsLock)
+            {
+                _mainThreadActions.Add(action);
+            }
+        }
+    }
+
+    public void Update()
+    {
+        if (_mainThreadActions.Count > 0)
+        {
+            List<Action> actionsToExecute;
+            lock (_mainThreadActionsLock)
+            {
+                actionsToExecute = new List<Action>(_mainThreadActions);
+                _mainThreadActions.Clear();
+            }
+
+            foreach (var action in actionsToExecute)
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError($"Error executing action on main thread: {e}");
+                }
+            }
+        }
+    }
 
     // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
     [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]

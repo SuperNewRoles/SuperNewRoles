@@ -158,6 +158,18 @@ public static class CosmeticsLayer_AnimateClimb
         customCosmeticsLayer?.visor2?.SetClimbAnim(__instance.bodyType);
     }
 }
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetHatAndVisorIdle))]
+public static class CosmeticsLayer_SetHatAndVisorIdle
+{
+    public static void Postfix(CosmeticsLayer __instance, int colorId)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.hat1?.SetIdleAnim(colorId);
+        customCosmeticsLayer?.hat2?.SetIdleAnim(colorId);
+        customCosmeticsLayer?.visor1?.SetIdleAnim(colorId);
+        customCosmeticsLayer?.visor2?.SetIdleAnim(colorId);
+    }
+}
 [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetVisor), [typeof(string), typeof(int)])]
 public static class VisorLayer_SetVisor
 {

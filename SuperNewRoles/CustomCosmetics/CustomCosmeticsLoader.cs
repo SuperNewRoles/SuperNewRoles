@@ -13,6 +13,9 @@ using Newtonsoft.Json.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Modules;
 using SuperNewRoles.CustomCosmetics.UI;
+using Il2CppInterop.Runtime;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using System.Threading;
 
 namespace SuperNewRoles.CustomCosmetics;
 public class CustomCosmeticsData
@@ -26,7 +29,12 @@ public class CustomCosmeticsLoader
     public static string[] CustomCosmeticsURLs = new string[]
     {
             // "https://example.com/custom_cosmetics.json",
-            "./SuperNewRolesNext/debug_assets.json",
+            // "./SuperNewRolesNext/debug_assets.json",
+            "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/refs/heads/master/CustomHats.json",
+            "https://raw.githubusercontent.com/catudon1276/CatudonCostume/refs/heads/main/CustomCostumes.json",
+            "https://raw.githubusercontent.com/catudon1276/Mememura-Hats/refs/heads/main/CustomHats.json",
+            "https://raw.githubusercontent.com/Ujet222/TOPHats/refs/heads/main/CustomHats.json",
+            // "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomHats.json",
     };
     public const string ModdedPrefix = "Modded_";
     private static readonly HttpClient client = new();
@@ -38,6 +46,8 @@ public class CustomCosmeticsLoader
     public static List<CustomCosmeticsPackage> LoadedPackages => loadedPackages;
     private static readonly Dictionary<string, CustomCosmeticsHat> moddedHats = new();
     private static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
+    private static readonly Dictionary<string, List<(string, string)>> willDownloads = new();
+    private static readonly Dictionary<string, byte[]> downloadedSprites = new();
     public static async Task Load()
     {
         foreach (string url in CustomCosmeticsURLs)
@@ -51,23 +61,112 @@ public class CustomCosmeticsLoader
                 // JSONをパース
                 JObject json = JObject.Parse(jsonContent);
                 JToken assetBundlesToken = json["assetbundles"];
-                if (assetBundlesToken == null)
+                if (assetBundlesToken != null)
                 {
-                    Logger.Error($"assetbundlesが見つかりません: {url}");
-                    continue;
-                }
 
-                // 各assetbundle要素についてダウンロードを試行
-                for (var assetBundle = assetBundlesToken.First; assetBundle != null; assetBundle = assetBundle.Next)
-                {
-                    string assetBundleUrl = assetBundle["url"]?.ToString() ?? "";
-                    string expectedHash = assetBundle["hash"]?.ToString() ?? "";
-                    string? savedPath = await DownloadAssetBundleWithRetry(assetBundleUrl, expectedHash);
-                    if (!string.IsNullOrEmpty(savedPath))
+                    // 各assetbundle要素についてダウンロードを試行
+                    for (var assetBundle = assetBundlesToken.First; assetBundle != null; assetBundle = assetBundle.Next)
                     {
-                        notLoadedAssetBundles.Add(savedPath);
+                        string assetBundleUrl = assetBundle["url"]?.ToString() ?? "";
+                        string expectedHash = assetBundle["hash"]?.ToString() ?? "";
+                        string? savedPath = await DownloadAssetBundleWithRetry(assetBundleUrl, expectedHash);
+                        if (!string.IsNullOrEmpty(savedPath))
+                        {
+                            notLoadedAssetBundles.Add(savedPath);
+                        }
                     }
                 }
+                else
+                {
+                    Logger.Error($"assetbundlesが見つかりません: {url}");
+                }
+
+                JToken hatsToken = json["hats"];
+                if (hatsToken != null)
+                {
+                    Dictionary<string, CustomCosmeticsPackage> customCosmeticsPackages = new();
+                    for (var hat = hatsToken.First; hat != null; hat = hat.Next)
+                    {
+                        string packageName = hat["package"]?.ToString() ?? "NONE_PACKAGE";
+                        if (!customCosmeticsPackages.ContainsKey(packageName))
+                        {
+                            customCosmeticsPackages[packageName] = new CustomCosmeticsPackage(
+                                packageName,
+                                packageName,
+                                0
+                            );
+                            loadedPackages.Add(customCosmeticsPackages[packageName]);
+                        }
+                        bool adaptive = hat["adaptive"] != null ? (bool)hat["adaptive"] : false;
+                        bool resource_bounce = hat["resource"]?.ToString().Contains("bounce") ?? false;
+                        bool flip_bounce = hat["flipresource"]?.ToString().Contains("bounce") ?? false;
+                        bool climb_bounce = hat["climbresource"]?.ToString().Contains("bounce") ?? false;
+                        bool back_bounce = hat["backresource"]?.ToString().Contains("bounce") ?? false;
+                        bool backflip_bounce = hat["backflipresource"]?.ToString().Contains("bounce") ?? false;
+
+                        var front = adaptive ? HatOptionType.Adaptive : HatOptionType.NoAdaptive;
+                        if (resource_bounce)
+                            front |= HatOptionType.Bounce;
+                        var front_left = HatOptionType.None;
+                        var back = adaptive ? HatOptionType.Adaptive : hat["backresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        if (resource_bounce)
+                            back |= HatOptionType.Bounce;
+                        var back_left = HatOptionType.None;
+                        var backflip = adaptive ? HatOptionType.Adaptive : hat["backflipresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        if (resource_bounce)
+                            backflip |= HatOptionType.Bounce;
+                        var flip = adaptive ? HatOptionType.Adaptive : hat["flipresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        if (resource_bounce)
+                            flip |= HatOptionType.Bounce;
+                        var climb = adaptive ? HatOptionType.Adaptive : hat["climbresource"] != null ? HatOptionType.NoAdaptive : HatOptionType.None;
+                        if (resource_bounce)
+                            climb |= HatOptionType.Bounce;
+
+
+                        var hatOption = new CustomCosmeticsHatOptions(
+                            front,
+                            front_left,
+                            back,
+                            back_left,
+                            backflip,
+                            flip,
+                            climb
+                        );
+
+                        CustomCosmeticsHat customCosmeticsHat = new(
+                            hat["name"].ToString(),
+                            hat["name"]?.ToString(),
+                            hat["name"].ToString(),
+                            $"./SuperNewRolesNext/CustomCosmetics/{customCosmeticsPackages[packageName].name}/{hat["name"].ToString()}_",
+                            hat["author"].ToString(),
+                            customCosmeticsPackages[packageName],
+                            hatOption,
+                            null
+                        );
+                        customCosmeticsPackages[packageName].hats.Add(customCosmeticsHat);
+                        moddedHats[customCosmeticsHat.ProdId] = customCosmeticsHat;
+
+                        string packagenamed = customCosmeticsPackages[packageName].name;
+                        if (!willDownloads.ContainsKey(packagenamed))
+                            willDownloads.Add(packagenamed, []);
+                        willDownloads[packagenamed].Add((hat["name"].ToString() + "_front", getpath(url, hat["resource"]?.ToString())));
+                        if (hat["resourceleft"] != null)
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_front_left", getpath(url, hat["resourceleft"]?.ToString())));
+                        if (hat["backresource"] != null)
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_back", getpath(url, hat["backresource"]?.ToString())));
+                        if (hat["backresourceleft"] != null)
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_back_left", getpath(url, hat["backresourceleft"]?.ToString())));
+                        if (hat["backflipresource"] != null)
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_backflip", getpath(url, hat["backflipresource"]?.ToString())));
+                        if (hat["flipresource"] != null)
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_flip", getpath(url, hat["flipresource"]?.ToString())));
+                        if (hat["climbresource"] != null)
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_climb", getpath(url, hat["climbresource"]?.ToString())));
+                    }
+                }
+                else
+                    Logger.Error($"hatsが見つかりません: {url}");
+
             }
             catch (HttpRequestException e)
             {
@@ -78,6 +177,8 @@ public class CustomCosmeticsLoader
                 Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {url}\n{e}");
             }
         }
+
+        Task.Run(DownloadSprites);
 
         // ダウンロードされたアセットバンドルを順次読み込みパッケージを取り出す
         try
@@ -99,6 +200,49 @@ public class CustomCosmeticsLoader
         catch (Exception e)
         {
             Logger.Error($"カスタムコスメティックの読み込みに失敗しました: {e}");
+        }
+
+    }
+    private static string getpath(string url, string path)
+    {
+        if (string.IsNullOrEmpty(path))
+        {
+            return "";
+        }
+
+        path = "hats/" + path;
+
+        // もし path が既に絶対パスならそのまま返す
+        if (Uri.TryCreate(path, UriKind.Absolute, out Uri absoluteUri))
+        {
+            return absoluteUri.ToString();
+        }
+
+        try
+        {
+            // ローカルファイルの場合はそのまま返す
+            if (url.StartsWith("./") || url.StartsWith("../"))
+            {
+                string baseDir = Path.GetDirectoryName(Path.GetFullPath(url)) ?? "";
+                return Path.Combine(baseDir, path);
+            }
+
+            // url から基底URLを作成し、相対パスを解決する
+            if (Uri.TryCreate(url, UriKind.Absolute, out Uri baseUri))
+            {
+                Uri resultUri = new Uri(baseUri, path);
+                return resultUri.ToString();
+            }
+            else
+            {
+                Logger.Error($"無効なURL形式です: {url}");
+                return path;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"getpathの処理中にエラーが発生しました: url = {url}, path = {path}\n{ex}");
+            return path;
         }
     }
 
@@ -132,7 +276,6 @@ public class CustomCosmeticsLoader
             JToken hatsToken = packageJsonObject["hats"];
             if (hatsToken != null)
             {
-                List<CustomCosmeticsHat> customCosmeticsHats = new();
                 for (var hat = hatsToken.First; hat != null; hat = hat.Next)
                 {
                     CustomCosmeticsHat customCosmeticsHat = new(
@@ -145,10 +288,9 @@ public class CustomCosmeticsLoader
                         options: new(hat),
                         assetBundle: assetBundle
                     );
-                    customCosmeticsHats.Add(customCosmeticsHat);
-                    moddedHats.Add(customCosmeticsHat.ProdId, customCosmeticsHat);
+                    cosmeticsPackage.hats.Add(customCosmeticsHat);
+                    moddedHats[customCosmeticsHat.ProdId] = customCosmeticsHat;
                 }
-                cosmeticsPackage.hats = customCosmeticsHats.ToArray();
             }
             else
                 Logger.Error($"パッケージ: {package} に hats が見つかりません");
@@ -181,7 +323,6 @@ public class CustomCosmeticsLoader
             JToken visorsToken = packageJsonObject["visors"];
             if (visorsToken != null)
             {
-                List<CustomCosmeticsVisor> customCosmeticsVisors = new();
                 for (var visor = visorsToken.First; visor != null; visor = visor.Next)
                 {
                     CustomCosmeticsVisor customCosmeticsVisor = new(
@@ -194,10 +335,9 @@ public class CustomCosmeticsLoader
                         options: new(visor),
                         assetBundle: assetBundle
                     );
-                    customCosmeticsVisors.Add(customCosmeticsVisor);
-                    moddedVisors.Add(customCosmeticsVisor.ProdId, customCosmeticsVisor);
+                    cosmeticsPackage.visors.Add(customCosmeticsVisor);
+                    moddedVisors[customCosmeticsVisor.ProdId] = customCosmeticsVisor;
                 }
-                cosmeticsPackage.visors = customCosmeticsVisors.ToArray();
             }
             else
             {
@@ -304,24 +444,152 @@ public class CustomCosmeticsLoader
         Logger.Error($"アセットバンドルのダウンロードに最大リトライ回数({maxRetryAttempts})を超えました: {assetBundleUrl}");
         return null;
     }
+    public static void DownloadSprites()
+    {
+        using HttpClient client = new();
+        string basePath = "./SuperNewRolesNext/CustomCosmetics/";
+        const int MAX_CONCURRENT_DOWNLOADS = 20; // 同時に処理する定数個数
+        using SemaphoreSlim semaphore = new(MAX_CONCURRENT_DOWNLOADS);
+        List<Task> downloadTasks = new();
+
+        try
+        {
+            // ベースディレクトリが存在することを確認
+            Directory.CreateDirectory(basePath);
+
+            foreach (var package in willDownloads)
+            {
+                Logger.Info($"Downloading sprites for {package.Key}");
+
+                // パッケージディレクトリの作成
+                string packagePath = Path.Combine(basePath, package.Key);
+                Directory.CreateDirectory(packagePath);
+
+                foreach (var (spriteName, spritePath) in package.Value)
+                {
+                    if (string.IsNullOrEmpty(spritePath))
+                    {
+                        Logger.Error($"Invalid sprite path for {spriteName}");
+                        continue;
+                    }
+
+                    downloadTasks.Add(Task.Run(() =>
+                    {
+                        semaphore.Wait();
+                        try
+                        {
+                            Logger.Info($"Downloading sprite {spriteName} from {spritePath}");
+                            var response = client.GetAsync(spritePath, HttpCompletionOption.ResponseContentRead);
+                            response.Wait();
+                            if (response.Result.StatusCode != HttpStatusCode.OK)
+                            {
+                                Logger.Error($"Failed to download sprite {spriteName} from {spritePath} ({response.Result.StatusCode})");
+                                return;
+                            }
+
+                            string filePath = Path.Combine(packagePath, $"{spriteName}.png").Replace("\\", "/");
+                            using var responseStream = response.Result.Content.ReadAsStreamAsync().Result;
+                            downloadedSprites[filePath] = responseStream.ReadFully();
+                            using var fileStream = File.Create(filePath);
+                            responseStream.Write(downloadedSprites[filePath]);
+                            Logger.Info($"Downloaded sprite {spriteName} to {filePath}");
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error($"Error downloading sprite {spriteName} from {spritePath}: {e.Message}");
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"Error in DownloadSprites: {e}");
+        }
+
+        Task.WhenAll(downloadTasks).Wait();
+    }
+    public static Sprite LoadSpriteFromPath(string path)
+    {
+        Logger.Info($"LoadSpriteFromPath: {path}");
+        try
+        {
+            if (File.Exists(path))
+            {
+                // UnityのUIスレッドで実行するために、メインスレッドで処理を行う
+                Sprite result = null;
+
+                // メインスレッドでなければ、メインスレッドに処理を移す
+                if (Thread.CurrentThread.ManagedThreadId != SuperNewRolesPlugin.MainThreadId)
+                {
+                    SuperNewRolesPlugin.Instance.ExecuteInMainThread(() =>
+                    {
+                        result = CreateSpriteFromPath(path);
+                    });
+                    return result;
+                }
+                else
+                {
+                    return CreateSpriteFromPath(path);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine("Error loading texture from disk: " + path + "\n" + ex);
+        }
+        return null;
+    }
+
+    private static Sprite CreateSpriteFromPath(string path)
+    {
+        Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
+        byte[] byteTexture;
+        if (!downloadedSprites.TryGetValue(path, out byteTexture))
+            byteTexture = File.ReadAllBytes(path);
+        else
+            Logger.Warning("Used Sprites");
+        LoadImage(texture, byteTexture, false);
+        if (texture == null)
+            return null;
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
+        if (sprite == null)
+            return null;
+        texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+        sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+        return sprite;
+    }
+    internal delegate bool d_LoadImage(IntPtr tex, IntPtr data, bool markNonReadable);
+    internal static d_LoadImage iCall_LoadImage;
+    private static bool LoadImage(Texture2D tex, byte[] data, bool markNonReadable)
+    {
+        if (iCall_LoadImage == null)
+            iCall_LoadImage = IL2CPP.ResolveICall<d_LoadImage>("UnityEngine.ImageConversion::LoadImage");
+        var il2cppArray = (Il2CppStructArray<byte>)data;
+        return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
+    }
 }
 
 [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Start))]
 public static class SplashManagerStartPatch
 {
+    private static Task? loadTask;
     public static void Postfix(SplashManager __instance)
     {
         // メインスレッドで非同期処理を開始
-        _ = LoadCosmeticsAsync();
+        LoadCosmeticsAsync();
         Logger.Info("SplashManagerStartPatch");
     }
 
-    // Unityのメインスレッドで安全に非同期処理を実行するためのメソッド
-    private static async Task LoadCosmeticsAsync()
+    private static void LoadCosmeticsAsync()
     {
         try
         {
-            await CustomCosmeticsLoader.Load();
+            loadTask = CustomCosmeticsLoader.Load();
         }
         catch (Exception e)
         {

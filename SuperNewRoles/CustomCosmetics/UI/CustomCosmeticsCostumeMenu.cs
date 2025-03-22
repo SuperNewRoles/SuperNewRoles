@@ -802,13 +802,14 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             case CostumeTabType.Skin:
                 return FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SkinLabel);
             default:
-                throw new System.Exception($"Invalid costume tab type: {tabType}");
+                throw new Exception($"Invalid costume tab type: {tabType}");
         }
     }
     private Dictionary<Transform, int> slotToGroupMap;
 
     public override void Update()
     {
+        return;
         if (scroller == null) return;
 
         // スクロール位置が変化したときだけ処理

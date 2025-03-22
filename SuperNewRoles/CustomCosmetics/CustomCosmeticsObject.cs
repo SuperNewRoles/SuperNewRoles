@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.Modules;
 using UnityEngine;
@@ -10,8 +12,8 @@ public class CustomCosmeticsPackage
     public string name { get; }
     public string name_en { get; }
     public int version { get; }
-    public CustomCosmeticsHat[] hats { get; set; } = [];
-    public CustomCosmeticsVisor[] visors { get; set; } = [];
+    public List<CustomCosmeticsHat> hats { get; set; } = [];
+    public List<CustomCosmeticsVisor> visors { get; set; } = [];
     public CustomCosmeticsPackage(string name, string name_en, int version)
     {
         this.name = name;
@@ -34,7 +36,7 @@ public class CustomCosmeticsHat
     public CustomCosmeticsPackage package { get; }
     public CustomCosmeticsHatOptions options { get; }
     private AssetBundle assetBundle { get; }
-    public string ProdId => "Modded_" + hat_id;
+    public string ProdId => "Modded_" + package.name + "_" + hat_id;
     public CustomCosmeticsHat(string name, string name_en, string hat_id, string path_base, string author, CustomCosmeticsPackage package, CustomCosmeticsHatOptions options, AssetBundle assetBundle)
     {
         this.name = name;
@@ -58,52 +60,111 @@ public class CustomCosmeticsHat
     private Sprite _loadClimbLeftSprite;
     // キャッシュ
 
+    public bool IsLoadedAllSprites()
+    {
+        return _loadFrontSprite != null && _loadFrontLeftSprite != null && _loadClimbSprite != null && _loadBackSprite != null && _loadBackLeftSprite != null && _loadFlipSprite != null && _loadFlipBackSprite != null && _loadClimbLeftSprite != null;
+    }
+
     public Sprite LoadFrontSprite()
     {
         if (_loadFrontSprite == null)
-            _loadFrontSprite = assetBundle.LoadAsset<Sprite>(path_base + "front.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadFrontSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "front.png");
+            else
+                _loadFrontSprite = assetBundle.LoadAsset<Sprite>(path_base + "front.png")?.DontUnload();
+        }
         return _loadFrontSprite;
     }
     public Sprite LoadFrontLeftSprite()
     {
+        if (options.front_left.HasFlag(HatOptionType.None))
+            return null;
         if (_loadFrontLeftSprite == null)
-            _loadFrontLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "front_left.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadFrontLeftSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "front_left.png");
+            else
+                _loadFrontLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "front_left.png")?.DontUnload();
+        }
         return _loadFrontLeftSprite;
     }
     public Sprite LoadClimbSprite()
     {
+        if (options.climb.HasFlag(HatOptionType.None))
+            return null;
         if (_loadClimbSprite == null)
-            _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadClimbSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "climb.png");
+            else
+                _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png")?.DontUnload();
+        }
         return _loadClimbSprite;
     }
     public Sprite LoadBackSprite()
     {
+        if (options.back.HasFlag(HatOptionType.None))
+            return null;
         if (_loadBackSprite == null)
-            _loadBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "back.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadBackSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "back.png");
+            else
+                _loadBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "back.png")?.DontUnload();
+        }
         return _loadBackSprite;
     }
     public Sprite LoadBackLeftSprite()
     {
+        if (options.back_left.HasFlag(HatOptionType.None))
+            return null;
         if (_loadBackLeftSprite == null)
-            _loadBackLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "back_left.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadBackLeftSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "back_left.png");
+            else
+                _loadBackLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "back_left.png")?.DontUnload();
+        }
         return _loadBackLeftSprite;
     }
     public Sprite LoadFlipSprite()
     {
+        if (options.flip.HasFlag(HatOptionType.None))
+            return null;
         if (_loadFlipSprite == null)
-            _loadFlipSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadFlipSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "flip.png");
+            else
+                _loadFlipSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png")?.DontUnload();
+        }
         return _loadFlipSprite;
     }
     public Sprite LoadFlipBackSprite()
     {
+        if (options.flip_back.HasFlag(HatOptionType.None))
+            return null;
         if (_loadFlipBackSprite == null)
-            _loadFlipBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadFlipBackSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "flip_back.png");
+            else
+                _loadFlipBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip_back.png")?.DontUnload();
+        }
         return _loadFlipBackSprite;
     }
     public Sprite LoadClimbLeftSprite()
     {
+        if (options.climb.HasFlag(HatOptionType.None))
+            return null;
         if (_loadClimbLeftSprite == null)
-            _loadClimbLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb_left.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadClimbLeftSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "climb_left.png");
+            else
+                _loadClimbLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb_left.png")?.DontUnload();
+        }
         return _loadClimbLeftSprite;
     }
 }
@@ -118,7 +179,7 @@ public class CustomCosmeticsVisor
     public CustomCosmeticsPackage package { get; }
     public CustomCosmeticsVisorOptions options { get; }
     private AssetBundle assetBundle { get; }
-    public string ProdId => "Modded_" + visor_id;
+    public string ProdId => "Modded_" + package.name + "_" + visor_id;
     public CustomCosmeticsVisor(string name, string name_en, string visor_id, string path_base, string author, CustomCosmeticsPackage package, CustomCosmeticsVisorOptions options, AssetBundle assetBundle)
     {
         this.name = name;
@@ -137,22 +198,42 @@ public class CustomCosmeticsVisor
     private Sprite _loadClimbSprite;
     // キャッシュ
 
+    public bool IsLoadedAllSprites()
+    {
+        return _loadIdleSprite != null && _loadLeftIdleSprite != null && _loadClimbSprite != null;
+    }
+
     public Sprite LoadIdleSprite()
     {
         if (_loadIdleSprite == null)
-            _loadIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadIdleSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "idle.png");
+            else
+                _loadIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle.png")?.DontUnload();
+        }
         return _loadIdleSprite;
     }
     public Sprite LoadLeftIdleSprite()
     {
         if (_loadLeftIdleSprite == null)
-            _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle_left.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadLeftIdleSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "idle_left.png");
+            else
+                _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle_left.png")?.DontUnload();
+        }
         return _loadLeftIdleSprite;
     }
     public Sprite LoadClimbSprite()
     {
         if (_loadClimbSprite == null)
-            _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png")?.DontUnload();
+        {
+            if (assetBundle == null)
+                _loadClimbSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "climb.png");
+            else
+                _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png")?.DontUnload();
+        }
         return _loadClimbSprite;
     }
 }
