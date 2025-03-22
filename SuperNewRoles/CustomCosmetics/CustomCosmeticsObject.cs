@@ -208,7 +208,7 @@ public class CustomCosmeticsVisor
         if (_loadIdleSprite == null)
         {
             if (assetBundle == null)
-                _loadIdleSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "idle.png");
+                _loadIdleSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "idle.png", options.isSNR);
             else
                 _loadIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle.png")?.DontUnload();
         }
@@ -219,7 +219,7 @@ public class CustomCosmeticsVisor
         if (_loadLeftIdleSprite == null)
         {
             if (assetBundle == null)
-                _loadLeftIdleSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "idle_left.png");
+                _loadLeftIdleSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "idle_left.png", options.isSNR);
             else
                 _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle_left.png")?.DontUnload();
         }
@@ -230,7 +230,7 @@ public class CustomCosmeticsVisor
         if (_loadClimbSprite == null)
         {
             if (assetBundle == null)
-                _loadClimbSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "climb.png");
+                _loadClimbSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "climb.png", options.isSNR);
             else
                 _loadClimbSprite = assetBundle.LoadAsset<Sprite>(path_base + "climb.png")?.DontUnload();
         }
@@ -241,15 +241,18 @@ public class CustomCosmeticsVisorOptions
 {
     public bool adaptive { get; }
     public bool flip { get; }
+    public bool isSNR { get; }
     public CustomCosmeticsVisorOptions(JToken optionsJson)
     {
         adaptive = CustomCosmeticsHatOptions.GetBool(optionsJson["adaptive"]);
         flip = CustomCosmeticsHatOptions.GetBool(optionsJson["flip"]);
+        isSNR = CustomCosmeticsHatOptions.GetBool(optionsJson["IsSNR"]);
     }
-    public CustomCosmeticsVisorOptions(bool adaptive, bool flip)
+    public CustomCosmeticsVisorOptions(bool adaptive, bool flip, bool isSNR)
     {
         this.adaptive = adaptive;
         this.flip = flip;
+        this.isSNR = isSNR;
     }
 }
 public class CustomCosmeticsHatOptions

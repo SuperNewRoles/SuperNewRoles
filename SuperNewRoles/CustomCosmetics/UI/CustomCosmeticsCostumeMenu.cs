@@ -152,7 +152,7 @@ public class CosmeticDataWrapperVisor : CosmeticDataWrapper, ICustomCosmeticViso
 {
     public CosmeticDataWrapperVisor(VisorData data) : base(data)
     {
-        _options = new(adaptive: data.PreviewCrewmateColor, flip: false);
+        _options = new(adaptive: data.PreviewCrewmateColor, flip: false, isSNR: false);
     }
     private AddressableAsset<VisorViewData> visorViewData;
     public override Sprite Asset => visorViewData?.GetAsset()?.IdleFrame;

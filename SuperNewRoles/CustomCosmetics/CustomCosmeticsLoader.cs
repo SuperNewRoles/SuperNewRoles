@@ -16,6 +16,7 @@ using SuperNewRoles.CustomCosmetics.UI;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System.Threading;
+using UnityEngine.ProBuilder;
 
 namespace SuperNewRoles.CustomCosmetics;
 public class CustomCosmeticsData
@@ -29,12 +30,14 @@ public class CustomCosmeticsLoader
     public static string[] CustomCosmeticsURLs = new string[]
     {
             // "https://example.com/custom_cosmetics.json",
-            // "./SuperNewRolesNext/debug_assets.json",
+            "./SuperNewRolesNext/debug_assets.json",
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/refs/heads/master/CustomHats.json",
-            "https://raw.githubusercontent.com/catudon1276/CatudonCostume/refs/heads/main/CustomCostumes.json",
+            "https://raw.githubusercontent.com/catudon1276/CatudonCostume/refs/heads/main/CustomHats.json",
             "https://raw.githubusercontent.com/catudon1276/Mememura-Hats/refs/heads/main/CustomHats.json",
-            "https://raw.githubusercontent.com/Ujet222/TOPHats/refs/heads/main/CustomHats.json",
-            // "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomHats.json",
+            // "https://raw.githubusercontent.com/Ujet222/TOPHats/refs/heads/main/CustomHats.json",
+            "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomHats.json",
+            "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomVisors.json",
+            "https://raw.githubusercontent.com/Ujet222/TOPVisors/refs/heads/main/CustomVisors.json",
     };
     public const string ModdedPrefix = "Modded_";
     private static readonly HttpClient client = new();
@@ -149,23 +152,74 @@ public class CustomCosmeticsLoader
                         string packagenamed = customCosmeticsPackages[packageName].name;
                         if (!willDownloads.ContainsKey(packagenamed))
                             willDownloads.Add(packagenamed, []);
-                        willDownloads[packagenamed].Add((hat["name"].ToString() + "_front", getpath(url, hat["resource"]?.ToString())));
+                        willDownloads[packagenamed].Add((hat["name"].ToString() + "_front", getpath(url, "hats/" + hat["resource"]?.ToString())));
                         if (hat["resourceleft"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_front_left", getpath(url, hat["resourceleft"]?.ToString())));
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_front_left", getpath(url, "hats/" + hat["resourceleft"]?.ToString())));
                         if (hat["backresource"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_back", getpath(url, hat["backresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_back", getpath(url, "hats/" + hat["backresource"]?.ToString())));
                         if (hat["backresourceleft"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_back_left", getpath(url, hat["backresourceleft"]?.ToString())));
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_back_left", getpath(url, "hats/" + hat["backresourceleft"]?.ToString())));
                         if (hat["backflipresource"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_backflip", getpath(url, hat["backflipresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_backflip", getpath(url, "hats/" + hat["backflipresource"]?.ToString())));
                         if (hat["flipresource"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_flip", getpath(url, hat["flipresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_flip", getpath(url, "hats/" + hat["flipresource"]?.ToString())));
                         if (hat["climbresource"] != null)
-                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_climb", getpath(url, hat["climbresource"]?.ToString())));
+                            willDownloads[packagenamed].Add((hat["name"].ToString() + "_climb", getpath(url, "hats/" + hat["climbresource"]?.ToString())));
                     }
                 }
                 else
                     Logger.Error($"hatsが見つかりません: {url}");
+
+                // visorsとVisorsの両方のパターンがあるので
+                JToken visorsToken = json["visors"] ?? json["Visors"];
+                if (visorsToken != null)
+                {
+                    Dictionary<string, CustomCosmeticsPackage> customCosmeticsPackages = loadedPackages.ToDictionary(p => p.name);
+                    for (var visor = visorsToken.First; visor != null; visor = visor.Next)
+                    {
+                        string packageName = visor["package"]?.ToString() ?? "NONE_PACKAGE";
+                        if (!customCosmeticsPackages.ContainsKey(packageName))
+                        {
+                            customCosmeticsPackages[packageName] = new CustomCosmeticsPackage(
+                                packageName,
+                                packageName,
+                                0
+                            );
+                            loadedPackages.Add(customCosmeticsPackages[packageName]);
+                        }
+                        bool adaptive = visor["adaptive"] != null ? (bool)visor["adaptive"] : false;
+
+                        var visorOption = new CustomCosmeticsVisorOptions(
+                            adaptive,
+                            visor["flipresource"] != null,
+                            visor["IsSNR"] != null ? (bool)visor["IsSNR"] : false
+                        );
+
+                        CustomCosmeticsVisor customCosmeticsVisor = new(
+                            visor["name"].ToString(),
+                            visor["name"]?.ToString(),
+                            visor["name"].ToString(),
+                            $"./SuperNewRolesNext/CustomCosmetics/{customCosmeticsPackages[packageName].name}/{visor["name"].ToString()}_",
+                            visor["author"].ToString(),
+                            customCosmeticsPackages[packageName],
+                            visorOption,
+                            null
+                        );
+                        customCosmeticsPackages[packageName].visors.Add(customCosmeticsVisor);
+                        moddedVisors[customCosmeticsVisor.ProdId] = customCosmeticsVisor;
+
+                        string packagenamed = customCosmeticsPackages[packageName].name;
+                        if (!willDownloads.ContainsKey(packagenamed))
+                            willDownloads.Add(packagenamed, []);
+                        willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["resource"]?.ToString())));
+                        if (visor["resourceleft"] != null)
+                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_idle_left", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["resourceleft"]?.ToString())));
+                        if (visor["flipresource"] != null)
+                            willDownloads[packagenamed].Add((visor["name"].ToString() + "_flip", getpath(url, json["visors"] != null ? "visors/" : "Visors/" + visor["flipresource"]?.ToString())));
+                    }
+                }
+                else
+                    Logger.Error($"visorsが見つかりません: {url}");
 
             }
             catch (HttpRequestException e)
@@ -209,8 +263,6 @@ public class CustomCosmeticsLoader
         {
             return "";
         }
-
-        path = "hats/" + path;
 
         // もし path が既に絶対パスならそのまま返す
         if (Uri.TryCreate(path, UriKind.Absolute, out Uri absoluteUri))
@@ -491,7 +543,7 @@ public class CustomCosmeticsLoader
                             using var responseStream = response.Result.Content.ReadAsStreamAsync().Result;
                             downloadedSprites[filePath] = responseStream.ReadFully();
                             using var fileStream = File.Create(filePath);
-                            responseStream.Write(downloadedSprites[filePath]);
+                            fileStream.Write(downloadedSprites[filePath]);
                             Logger.Info($"Downloaded sprite {spriteName} to {filePath}");
                         }
                         catch (Exception e)
@@ -567,11 +619,74 @@ public class CustomCosmeticsLoader
     internal static d_LoadImage iCall_LoadImage;
     private static bool LoadImage(Texture2D tex, byte[] data, bool markNonReadable)
     {
+        Logger.Info($"Current Thread: {Thread.CurrentThread.ManagedThreadId}");
         if (iCall_LoadImage == null)
             iCall_LoadImage = IL2CPP.ResolveICall<d_LoadImage>("UnityEngine.ImageConversion::LoadImage");
         var il2cppArray = (Il2CppStructArray<byte>)data;
-        return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
+        return ImageConversion.LoadImage(tex, il2cppArray, markNonReadable);
+        // return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
     }
+
+    /// <summary>
+    /// バイザー画像を読み込む
+    /// </summary>
+    /// <param name="path">読み込む画像の(ユーザストレージ内の)絶対パス</param>
+    /// <param name="isSNR">SNRの独自規格で読み込むか</param>
+    /// <param name="fromDisk">キャッシュを使用せずに読み込むか</param>
+    /// <returns>バイザー画像</returns>
+    public static Sprite CreateVisorSprite(string path, bool isSNR)
+    {
+        Sprite sprite = isSNR ? SNRVisorLoadSprite(path) : CreateSprite(path);
+        return sprite;
+    }
+
+    private static Sprite CreateSprite(string path)
+    {
+        if (!File.Exists(path))
+        {
+            Logger.Error($"ファイルが存在しません: {path}");
+            return null;
+        }
+        Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
+        byte[] byteTexture = File.ReadAllBytes(path);
+        LoadImage(texture, byteTexture, false);
+        if (texture == null)
+            return null;
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
+        if (sprite == null)
+            return null;
+        texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+        sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+        return sprite;
+    }
+
+    /// <summary>
+    /// バイザー画像を, SNR独自規格で読み込む (画像サイズを一定(115f)に変更し読み込む)
+    /// </summary>
+    /// <param name="path">読み込む画像の(ユーザストレージ内の)絶対パス</param>
+    /// <returns>バイザー画像</returns>
+    private static Sprite SNRVisorLoadSprite(string path)
+    {
+        try
+        {
+            byte[] bytes = File.ReadAllBytes(path);
+            Texture2D texture = new(2, 2);
+
+            LoadImage(texture, bytes, false);
+
+            Rect rect = new(0f, 0f, texture.width, texture.height);
+            Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 115f);
+
+            if (sprite == null) return null;
+
+            texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+            sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+            return sprite;
+        }
+        catch { }
+        return null;
+    }
+
 }
 
 [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Start))]
