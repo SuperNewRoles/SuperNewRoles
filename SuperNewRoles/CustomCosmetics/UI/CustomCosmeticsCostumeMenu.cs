@@ -8,6 +8,7 @@ using AmongUs.Data;
 using System;
 using Innersloth.Assets;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
+using Sentry.Unity.NativeUtils;
 
 namespace SuperNewRoles.CustomCosmetics.UI;
 
@@ -204,6 +205,29 @@ public class CosmeticDataWrapperSkin : CosmeticDataWrapper
         }
     }
 }
+public class CosmeticDataWrapperNamePlate : CosmeticDataWrapper
+{
+    public CosmeticDataWrapperNamePlate(NamePlateData data) : base(data)
+    {
+    }
+    private AddressableAsset<NamePlateViewData> namePlateViewData;
+    public override Sprite Asset => namePlateViewData?.GetAsset()?.Image;
+    public override Sprite Asset_Back => null;
+
+    public override string Package => "バニラスキン";
+    public override string Package_EN => "Vanilla Skins";
+
+    public override void LoadAsync(Action onSuccess)
+    {
+        if (_data is NamePlateData namePlate)
+        {
+            if (namePlateViewData == null)
+                namePlateViewData = namePlate.CreateAddressableAsset();
+            if (namePlateViewData != null)
+                namePlateViewData.LoadAsync((Il2CppSystem.Action)onSuccess);
+        }
+    }
+}
 
 // ModdedHatDataをラップするクラス
 public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
@@ -327,6 +351,43 @@ public class ModdedVisorDataWrapper : ICosmeticData, ICustomCosmeticVisor
     public void LoadAsync(Action onSuccess)
     {
         SetDontUnload();
+        onSuccess?.Invoke();
+    }
+}
+
+public class ModdedNamePlateDataWrapper : ICosmeticData
+{
+    private readonly CustomCosmeticsNamePlate _data;
+    public string Author => _data.author;
+
+    public string Package => _data.package.name;
+    public string Package_EN => _data.package.name_en;
+
+    public ModdedNamePlateDataWrapper(CustomCosmeticsNamePlate data)
+    {
+        if (data == null)
+            throw new Exception("data is null");
+        _data = data;
+    }
+
+    public string ProdId => _data.ProdId;
+    public bool PreviewCrewmateColor => false;
+
+    public Sprite Asset => _data.LoadSprite();
+    public Sprite Asset_Back => null;
+
+    public void SetPreview(SpriteRenderer renderer, int colorId)
+    {
+        renderer.sprite = Asset;
+    }
+
+    public string GetItemName()
+    {
+        return _data.name + "\nby " + _data.author;
+    }
+
+    public void LoadAsync(Action onSuccess)
+    {
         onSuccess?.Invoke();
     }
 }
@@ -505,7 +566,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 combinedCosmetics.Add(new CosmeticDataWrapperHat(cosmetic));
             }
 
-            foreach (var moddedHat in CustomCosmeticsLoader.LoadedPackages.SelectMany(package => package.hats))
+            foreach (var moddedHat in CustomCosmeticsLoader.moddedHats.Values)
             {
                 combinedCosmetics.Add(new ModdedHatDataWrapper(moddedHat));
             }
@@ -761,7 +822,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         if (cosmetic != null)
         {
             onPreview(cosmetic);
-            if (cosmetic.ProdId.StartsWith("Modded_"))
+            if (cosmetic.ProdId.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
             {
                 obj.SetItemName(cosmetic.GetItemName() + "\n by " + cosmetic.Author);
             }
@@ -893,7 +954,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     {
         // Visor1のプレビュー初期化
         ICosmeticData visor1Data;
-        if (DataManager.Player.Customization.Visor.StartsWith("Modded_"))
+        if (DataManager.Player.Customization.Visor.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
         {
             var moddedVisor = CustomCosmeticsLoader.GetModdedVisor(DataManager.Player.Customization.Visor);
             if (moddedVisor != null)
@@ -909,7 +970,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
 
         // Hat1のプレビュー初期化
         ICosmeticData hat1Data;
-        if (DataManager.Player.Customization.Hat.StartsWith("Modded_"))
+        if (DataManager.Player.Customization.Hat.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
         {
             var moddedHat = CustomCosmeticsLoader.GetModdedHat(DataManager.Player.Customization.Hat);
             if (moddedHat != null)

@@ -14,6 +14,7 @@ public class CustomCosmeticsPackage
     public int version { get; }
     public List<CustomCosmeticsHat> hats { get; set; } = [];
     public List<CustomCosmeticsVisor> visors { get; set; } = [];
+    public List<CustomCosmeticsNamePlate> namePlates { get; set; } = [];
     public CustomCosmeticsPackage(string name, string name_en, int version)
     {
         this.name = name;
@@ -36,7 +37,7 @@ public class CustomCosmeticsHat
     public CustomCosmeticsPackage package { get; }
     public CustomCosmeticsHatOptions options { get; }
     private AssetBundle assetBundle { get; }
-    public string ProdId => "Modded_" + package.name + "_" + hat_id;
+    public string ProdId => CustomCosmeticsLoader.ModdedPrefix + package.name + "_" + hat_id;
     public CustomCosmeticsHat(string name, string name_en, string hat_id, string path_base, string author, CustomCosmeticsPackage package, CustomCosmeticsHatOptions options, AssetBundle assetBundle)
     {
         this.name = name;
@@ -153,7 +154,7 @@ public class CustomCosmeticsVisor
     public CustomCosmeticsPackage package { get; }
     public CustomCosmeticsVisorOptions options { get; }
     private AssetBundle assetBundle { get; }
-    public string ProdId => "Modded_" + package.name + "_" + visor_id;
+    public string ProdId => CustomCosmeticsLoader.ModdedPrefix + package.name + "_" + visor_id;
     public CustomCosmeticsVisor(string name, string name_en, string visor_id, string path_base, string author, CustomCosmeticsPackage package, CustomCosmeticsVisorOptions options, AssetBundle assetBundle)
     {
         this.name = name;
@@ -215,6 +216,50 @@ public class CustomCosmeticsVisor
         return _loadClimbSprite;
     }
 }
+
+public class CustomCosmeticsNamePlate
+{
+    public string name { get; }
+    public string name_en { get; }
+    public string plate_id { get; }
+    public string path_base { get; }
+    public string author { get; }
+    public CustomCosmeticsPackage package { get; }
+    private AssetBundle assetBundle { get; }
+    public string ProdId => CustomCosmeticsLoader.ModdedPrefix + package.name + "_" + plate_id;
+    public CustomCosmeticsNamePlate(string name, string name_en, string plate_id, string path_base, string author, CustomCosmeticsPackage package, AssetBundle assetBundle)
+    {
+        this.name = name;
+        this.name_en = name_en ?? name;
+        this.plate_id = plate_id;
+        this.path_base = path_base;
+        this.author = author;
+        this.package = package;
+        this.assetBundle = assetBundle;
+    }
+
+    // キャッシュ
+    private Sprite _loadSprite;
+    // キャッシュ
+
+    public bool IsLoadedAllSprites()
+    {
+        return _loadSprite != null;
+    }
+
+    public Sprite LoadSprite()
+    {
+        if (_loadSprite == null)
+        {
+            if (assetBundle == null)
+                _loadSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "plate.png");
+            else
+                _loadSprite = assetBundle.LoadAsset<Sprite>(path_base + "plate.png")?.DontUnload();
+        }
+        return _loadSprite;
+    }
+}
+
 public class CustomCosmeticsVisorOptions
 {
     public bool adaptive { get; }

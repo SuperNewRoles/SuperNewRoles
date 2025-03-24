@@ -64,7 +64,7 @@ public class CustomVisorLayer : MonoBehaviour
         if (DestroyableSingleton<HatManager>.InstanceExists)
         {
             ICosmeticData visor;
-            if (visorId.StartsWith("Modded_"))
+            if (visorId.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                 visor = CustomCosmeticsLoader.GetModdedVisorData(visorId);
             else
                 visor = new CosmeticDataWrapperVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(visorId));

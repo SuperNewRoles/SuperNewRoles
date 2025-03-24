@@ -73,7 +73,7 @@ public class CustomHatLayer : MonoBehaviour
         if (DestroyableSingleton<HatManager>.InstanceExists)
         {
             ICosmeticData hat;
-            if (hatId.StartsWith("Modded_"))
+            if (hatId.StartsWith(CustomCosmeticsLoader.ModdedPrefix))
                 hat = CustomCosmeticsLoader.GetModdedHatData(hatId);
             else
                 hat = new CosmeticDataWrapperHat(DestroyableSingleton<HatManager>.Instance.GetHatById(hatId));

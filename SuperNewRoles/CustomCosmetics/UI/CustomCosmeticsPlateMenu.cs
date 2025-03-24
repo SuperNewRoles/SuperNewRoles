@@ -30,7 +30,15 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
 
         PlayerCustomizationMenu.Instance.PreviewArea.gameObject.SetActive(false);
 
-        var unlockedNamePlates = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedNamePlates();
+        List<ICosmeticData> unlockedNamePlates = new();
+        foreach (var namePlate in FastDestroyableSingleton<HatManager>.Instance.GetUnlockedNamePlates())
+        {
+            unlockedNamePlates.Add(new CosmeticDataWrapperNamePlate(namePlate));
+        }
+        foreach (var namePlate in CustomCosmeticsLoader.moddedNamePlates.Values)
+        {
+            unlockedNamePlates.Add(new ModdedNamePlateDataWrapper(namePlate));
+        }
 
         string currentCosmeticId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate;
         NamePlateData currentNamePlate = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(currentCosmeticId);
@@ -110,16 +118,15 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
             {
                 if (selectedButton != slot.button)
                     slot.transform.Find("Selected").gameObject.SetActive(false);
-                PreviewCosmetic(FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate));
+                var currentProdId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.NamePlateId : DataManager.Player.Customization.NamePlate;
+                ICosmeticData cosmetic = currentProdId.StartsWith(CustomCosmeticsLoader.ModdedPrefix) ? new ModdedNamePlateDataWrapper(CustomCosmeticsLoader.GetModdedNamePlate(currentProdId)) : new CosmeticDataWrapperNamePlate(FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(currentProdId));
+                PreviewCosmetic(cosmetic);
             }));
             slot.gameObject.SetActive(true);
-            if (!cosmeticData.IsEmpty)
+            cosmeticData.LoadAsync(() =>
             {
-                slot.StartCoroutine(slot.CoLoadAssetAsync(cosmeticData.TryCast<IAddressableAssetProvider<NamePlateViewData>>(), (Action<NamePlateViewData>)delegate (NamePlateViewData viewData)
-                {
-                    slot.spriteRenderer.sprite = viewData?.Image;
-                }));
-            }
+                slot.spriteRenderer.sprite = cosmeticData.Asset;
+            });
             // cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
             if (cosmeticData.ProdId == currentCosmeticId)
             {
@@ -137,11 +144,14 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
         }
         scroller.ContentYBounds = new(0, contentYBounds);
     }
-    private void PreviewCosmetic(NamePlateData namePlate)
+    private void PreviewCosmetic(ICosmeticData cosmeticData)
     {
-        if (namePlate == null) return;
-        PlayerCustomizationMenu.Instance.SetItemName(namePlate.GetItemName());
-        playerVoteArea.PreviewNameplate(namePlate.ProdId);
+        if (cosmeticData == null) return;
+        PlayerCustomizationMenu.Instance.SetItemName(cosmeticData.GetItemName());
+        cosmeticData.LoadAsync(() =>
+        {
+            playerVoteArea.Background.sprite = cosmeticData.Asset;
+        });
     }
     public override void Update()
     {

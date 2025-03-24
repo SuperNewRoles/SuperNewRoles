@@ -47,8 +47,9 @@ public class CustomCosmeticsLoader
     private static readonly List<string> notLoadedAssetBundles = new();
     private static readonly List<CustomCosmeticsPackage> loadedPackages = new();
     public static List<CustomCosmeticsPackage> LoadedPackages => loadedPackages;
-    private static readonly Dictionary<string, CustomCosmeticsHat> moddedHats = new();
-    private static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
+    public static readonly Dictionary<string, CustomCosmeticsHat> moddedHats = new();
+    public static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
+    public static readonly Dictionary<string, CustomCosmeticsNamePlate> moddedNamePlates = new();
     private static readonly Dictionary<string, List<(string, string)>> willDownloads = new();
     private static readonly Dictionary<string, byte[]> downloadedSprites = new();
     public static void Load()
@@ -220,6 +221,42 @@ public class CustomCosmeticsLoader
                 else
                     Logger.Error($"visorsが見つかりません: {url}");
 
+                // nameplatesとNamePlatesの両方のパターンがあるので
+                JToken namePlatesToken = json["nameplates"];
+                if (namePlatesToken != null)
+                {
+                    Dictionary<string, CustomCosmeticsPackage> customCosmeticsPackages = loadedPackages.ToDictionary(p => p.name);
+                    for (var namePlate = namePlatesToken.First; namePlate != null; namePlate = namePlate.Next)
+                    {
+                        string packageName = namePlate["package"]?.ToString() ?? "NONE_PACKAGE";
+                        if (!customCosmeticsPackages.ContainsKey(packageName))
+                        {
+                            customCosmeticsPackages[packageName] = new CustomCosmeticsPackage(
+                                packageName,
+                                packageName,
+                                0
+                            );
+                            loadedPackages.Add(customCosmeticsPackages[packageName]);
+                        }
+
+                        CustomCosmeticsNamePlate customCosmeticsNamePlate = new(
+                            namePlate["name"].ToString(),
+                            namePlate["name"]?.ToString(),
+                            namePlate["name"].ToString(),
+                            $"./SuperNewRolesNext/CustomCosmetics/{customCosmeticsPackages[packageName].name}/{namePlate["name"].ToString()}_",
+                            namePlate["author"].ToString(),
+                            customCosmeticsPackages[packageName],
+                            null
+                        );
+                        customCosmeticsPackages[packageName].namePlates.Add(customCosmeticsNamePlate);
+                        moddedNamePlates[customCosmeticsNamePlate.ProdId] = customCosmeticsNamePlate;
+
+                        string packagenamed = customCosmeticsPackages[packageName].name;
+                        if (!willDownloads.ContainsKey(packagenamed))
+                            willDownloads.Add(packagenamed, []);
+                        willDownloads[packagenamed].Add((namePlate["name"].ToString() + "_plate", getpath(url, "nameplates/" + namePlate["resource"]?.ToString())));
+                    }
+                }
             }
             catch (HttpRequestException e)
             {
@@ -242,11 +279,12 @@ public class CustomCosmeticsLoader
                 AssetBundle assetBundle = LoadAssetBundle(bundlePath);
                 string[] packagesHats = GetPackages(assetBundle, "Hats");
                 string[] packagesVisors = GetPackages(assetBundle, "Visors");
+                string[] packagesNamePlates = GetPackages(assetBundle, "NamePlates");
                 foreach (string package in packagesHats)
                 {
                     Logger.Info($"パッケージ: {package}");
                 }
-                LoadPackages(assetBundle, packagesHats, packagesVisors);
+                LoadPackages(assetBundle, packagesHats, packagesVisors, packagesNamePlates);
                 notLoadedAssetBundles.RemoveAt(0);
             }
         }
@@ -297,7 +335,7 @@ public class CustomCosmeticsLoader
         }
     }
 
-    private static void LoadPackages(AssetBundle assetBundle, string[] packagesHats, string[] packagesVisors)
+    private static void LoadPackages(AssetBundle assetBundle, string[] packagesHats, string[] packagesVisors, string[] packagesNamePlates)
     {
         foreach (string package in packagesHats)
         {
@@ -322,7 +360,7 @@ public class CustomCosmeticsLoader
                 (int)packageInfo["parseversion"]
             );
             loadedPackages.Add(cosmeticsPackage);
-            Logger.Info($"{cosmeticsPackage.name} {cosmeticsPackage.version}");
+            Logger.Info($"hats {cosmeticsPackage.name} {cosmeticsPackage.version}");
 
             JToken hatsToken = packageJsonObject["hats"];
             if (hatsToken != null)
@@ -373,7 +411,7 @@ public class CustomCosmeticsLoader
             {
                 loadedPackages.Add(cosmeticsPackage);
             }
-            Logger.Info($"{cosmeticsPackage.name} {cosmeticsPackage.version}");
+            Logger.Info($"visors {cosmeticsPackage.name} {cosmeticsPackage.version}");
 
             JToken visorsToken = packageJsonObject["visors"];
             if (visorsToken != null)
@@ -399,6 +437,57 @@ public class CustomCosmeticsLoader
                 cosmeticsPackage.visors = [];
             }
         }
+        foreach (string package in packagesNamePlates)
+        {
+            string namePlatesPath = $"assets/nameplates/{package}/package.json";
+            TextAsset namePlatesTextAsset = assetBundle.LoadAsset<TextAsset>(namePlatesPath);
+            if (namePlatesTextAsset == null)
+            {
+                Logger.Error($"パッケージ: {package} の package.json が読み込めません(NamePlates)");
+                continue;
+            }
+            JObject packageJsonObject = JObject.Parse(namePlatesTextAsset.text);
+            JToken packageInfo = packageJsonObject["package"];
+            if (packageInfo == null)
+            {
+                Logger.Error($"パッケージ: {package} に package が見つかりません");
+                continue;
+            }
+            CustomCosmeticsPackage cosmeticsPackage = loadedPackages.FirstOrDefault(p => p.name == packageInfo["name"].ToString() && p.name_en == packageInfo["name_en"]?.ToString() && p.version == (int)packageInfo["parseversion"]) ?? new(
+                packageInfo["name"].ToString(),
+                packageInfo["name_en"]?.ToString(),
+                (int)packageInfo["parseversion"]
+            );
+            // パッケージが見つからなかった場合のみ追加する
+            if (!loadedPackages.Contains(cosmeticsPackage))
+            {
+                loadedPackages.Add(cosmeticsPackage);
+            }
+            Logger.Info($"nameplates {cosmeticsPackage.name} {cosmeticsPackage.version}");
+
+            JToken namePlatesToken = packageJsonObject["nameplates"];
+            if (namePlatesToken != null)
+            {
+                for (var namePlate = namePlatesToken.First; namePlate != null; namePlate = namePlate.Next)
+                {
+                    CustomCosmeticsNamePlate customCosmeticsNamePlate = new(
+                        name: namePlate["name"].ToString(),
+                        name_en: namePlate["name_en"]?.ToString(),
+                        plate_id: namePlate["nameplate_id"].ToString(),
+                        path_base: $"Assets/NamePlates/{package}/{namePlate["nameplate_id"].ToString()}/",
+                        author: namePlate["author"].ToString(),
+                        package: cosmeticsPackage,
+                        assetBundle: assetBundle
+                    );
+                    cosmeticsPackage.namePlates.Add(customCosmeticsNamePlate);
+                    moddedNamePlates[customCosmeticsNamePlate.ProdId] = customCosmeticsNamePlate;
+                }
+            }
+            else
+            {
+                cosmeticsPackage.namePlates = [];
+            }
+        }
     }
     public static CustomCosmeticsHat? GetModdedHat(string hatId)
     {
@@ -416,6 +505,16 @@ public class CustomCosmeticsLoader
     public static ICosmeticData? GetModdedVisorData(string visorId)
     {
         return moddedVisors.TryGetValue(visorId, out var visor) ? new ModdedVisorDataWrapper(visor) : null;
+    }
+
+    public static CustomCosmeticsNamePlate? GetModdedNamePlate(string namePlateId)
+    {
+        return moddedNamePlates.TryGetValue(namePlateId, out var namePlate) ? namePlate : null;
+    }
+
+    public static ICosmeticData? GetModdedNamePlateData(string namePlateId)
+    {
+        return moddedNamePlates.TryGetValue(namePlateId, out var namePlate) ? new ModdedNamePlateDataWrapper(namePlate) : null;
     }
 
     private static string[] GetPackages(AssetBundle assetBundle, string type)
