@@ -315,7 +315,6 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             if (rolebase == null)
                 throw new Exception("rolebaseがnullです");
             AssignedTeamType team = rolebase.AssignedTeam;
-
             if (teamButtonCount[(int)team] >= 40)
                 teamButtonCount[(int)team] = 0;
             Transform buttonParent = new GameObject().transform;

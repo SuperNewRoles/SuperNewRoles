@@ -38,7 +38,7 @@ class EvilGuesser : RoleBase<EvilGuesser>
 
     [CustomOptionInt("EvilGuesserLimitedTurnsCount", 1, 15, 1, 3, parentFieldName: nameof(EvilGuesserLimitedTurns))]
     public static int EvilGuesserLimitedTurnsCount = 3;
-
+    
     [CustomOptionBool("EvilGuesserCannotShootCrewmate", true)]
     public static bool EvilGuesserCannotShootCrewmate = true;
 }
