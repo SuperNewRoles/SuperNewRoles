@@ -43,9 +43,7 @@ public static class CustomCosmeticsUIStart
         // 現在のメニューが存在する場合は更新
         CurrentMenu?.Update();
 
-
         var player = ReInput.players.GetPlayer(0);
-        Logger.Info("vec: " + player.GetButton(39).ToString() + " " + player.GetButton(40).ToString() + " " + player.GetButton(42).ToString() + " " + player.GetButton(44).ToString() + " " + player.GetAxis(2).ToString() + " " + player.GetAxis(3).ToString());
 
         // 進む: ボタンID 34
         if (player.GetButtonDown(34))

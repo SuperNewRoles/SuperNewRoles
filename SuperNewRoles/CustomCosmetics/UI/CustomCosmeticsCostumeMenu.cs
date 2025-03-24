@@ -619,6 +619,9 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             });
         });
 
+        ControllerManager.Instance.SetCurrentSelected(visorButton01.GetComponent<PassiveButton>());
+        visorButton01.GetComponent<PassiveButton>().ReceiveMouseOver();
+
         // 初期プレビューの設定
         InitializeButtonPreviews();
     }
@@ -800,6 +803,13 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 ControllerManager.Instance.AddSelectableUiElement(slot.button);
                 allI++;
             }
+
+            if (selectedButton != null)
+            {
+                ControllerManager.Instance.SetCurrentSelected(selectedButton);
+                selectedButton.ReceiveMouseOver();
+            }
+
             package_i++;
             if (package_i < packagedCosmetics.Count)
             {

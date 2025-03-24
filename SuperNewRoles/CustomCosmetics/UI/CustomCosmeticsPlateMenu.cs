@@ -137,6 +137,11 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
             }
             allI++;
         }
+        if (selectedButton != null)
+        {
+            ControllerManager.Instance.SetCurrentSelected(selectedButton);
+            selectedButton.ReceiveMouseOver();
+        }
         float contentYBounds = 0;
         if (allI > 10)
         {
@@ -144,7 +149,6 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
             contentYBounds = extraRows * 2.6f + 0.45f - offSetY;
         }
         scroller.ContentYBounds = new(0, contentYBounds);
-        ControllerManager.Instance.SetCurrentSelected(slots[0].GetComponent<CustomCosmeticsCostumeSlot>().button);
     }
     private void PreviewCosmetic(ICosmeticData cosmeticData)
     {

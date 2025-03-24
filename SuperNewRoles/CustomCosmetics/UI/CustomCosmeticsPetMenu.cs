@@ -122,6 +122,13 @@ public class CustomCosmeticsPetMenu : CustomCosmeticsMenuBase<CustomCosmeticsPet
             }
             allI++;
         }
+
+        if (selectedButton != null)
+        {
+            ControllerManager.Instance.SetCurrentSelected(selectedButton);
+            selectedButton.ReceiveMouseOver();
+        }
+
         float contentYBounds = 0;
         if (allI > 35)
         {

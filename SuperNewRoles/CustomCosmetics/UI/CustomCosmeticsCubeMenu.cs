@@ -20,6 +20,8 @@ public class CustomCosmeticsCubeMenu : CustomCosmeticsMenuBase<CustomCosmeticsCu
         {
             ControllerManager.Instance.AddSelectableUiElement(button.Button);
         }
+        ControllerManager.Instance.SetCurrentSelected(instance.cubesTab.GetDefaultSelectable().Button);
+        instance.cubesTab.GetDefaultSelectable().Button.ReceiveMouseOver();
     }
     public override void Update()
     {

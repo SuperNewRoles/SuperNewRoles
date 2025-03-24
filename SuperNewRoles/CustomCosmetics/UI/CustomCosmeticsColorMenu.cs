@@ -34,7 +34,7 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
 
         const int colorsPerRow = 10;
         int selectedColorId = PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.CurrentOutfit.ColorId : DataManager.Player.Customization.Color;
-        List<GameObject> buttons = new();
+        List<PassiveButton> buttons = new();
 
         PlayerCustomizationMenu.Instance.SetItemName(Palette.GetColorName(selectedColorId));
 
@@ -84,9 +84,9 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
                     PlayerControl.LocalPlayer.CmdCheckColor((byte)index);
 
                 // 前回選択されたボタンの Selected 表示を解除
-                GameObject previousButton = buttons.TryGetIndex(selectedColorId);
+                PassiveButton previousButton = buttons.TryGetIndex(selectedColorId);
                 if (previousButton != null)
-                    SetButtonSelected(previousButton, false);
+                    SetButtonSelected(previousButton.gameObject, false);
 
                 selectedColorId = index;
                 UpdateShowingColor(index);
@@ -116,10 +116,15 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
 
             ControllerManager.Instance.AddSelectableUiElement(passiveButton);
 
-            buttons.Add(button);
+            buttons.Add(passiveButton);
         }
 
-        ControllerManager.Instance.SetCurrentSelected(allButtons[0]);
+        var selectedColorButton = buttons.TryGetIndex(selectedColorId);
+        if (selectedColorButton != null)
+        {
+            ControllerManager.Instance.SetCurrentSelected(selectedColorButton);
+            selectedColorButton.ReceiveMouseOver();
+        }
 
         if (Palette.PlayerColors.Length <= 60)
             scroller.ContentYBounds.max = 0;
