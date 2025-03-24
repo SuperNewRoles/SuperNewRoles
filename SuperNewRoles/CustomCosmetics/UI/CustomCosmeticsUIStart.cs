@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using AmongUs.Data;
 using HarmonyLib;
+using Rewired;
 using SuperNewRoles.Modules;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,7 +24,7 @@ public static class CustomCosmeticsUIStart
     private const string MENU_SELECTOR_ASSET_NAME = "CosmeticMenuSelector";
     private static List<ICustomCosmeticsMenu> Menus = null;
     private static ICustomCosmeticsMenu CurrentMenu = null;
-
+    private static GameObject MenuObject = null;
     public static void Start(PlayerCustomizationMenu menu)
     {
         Logger.Info("CustomCosmeticsUIStart Start");
@@ -35,12 +36,51 @@ public static class CustomCosmeticsUIStart
             SetupCategoryButtons(menuObject);
         CreateMenuFrame(menuObject, menu);
         HandleCategoryClick("cosmetic_costume", menuObject);
+        MenuObject = menuObject;
     }
     public static void Update(PlayerCustomizationMenu menu)
     {
-        if (CurrentMenu != null)
-            CurrentMenu.Update();
+        // 現在のメニューが存在する場合は更新
+        CurrentMenu?.Update();
+
+
+        var player = ReInput.players.GetPlayer(0);
+        Logger.Info("vec: " + player.GetButton(39).ToString() + " " + player.GetButton(40).ToString() + " " + player.GetButton(42).ToString() + " " + player.GetButton(44).ToString() + " " + player.GetAxis(2).ToString() + " " + player.GetAxis(3).ToString());
+
+        // 進む: ボタンID 34
+        if (player.GetButtonDown(34))
+        {
+            SwitchMenu(menu, 1);
+        }
+        // 戻る: ボタンID 35
+        else if (player.GetButtonDown(35))
+        {
+            SwitchMenu(menu, -1);
+        }
+        else if (player.GetButtonDown(29) && CurrentMenu?.MenuType == CustomCosmeticsMenuType.cube)
+        {
+            menu.ViewCube();
+        }
     }
+
+    /// <summary>
+    /// オフセットに応じたメニュー切替処理を行うヘルパー
+    /// </summary>
+    private static void SwitchMenu(PlayerCustomizationMenu menu, int offset)
+    {
+        if (Menus == null || Menus.Count == 0)
+        {
+            Logger.Warning("No menus available.");
+            return;
+        }
+
+        int currentIndex = Menus.IndexOf(CurrentMenu);
+        int newIndex = (currentIndex + offset + Menus.Count) % Menus.Count;
+        var selectedMenu = Menus[newIndex];
+
+        HandleCategoryClick("cosmetic_" + selectedMenu.MenuType.ToString(), MenuObject);
+    }
+
     private static void MenusInitialize()
     {
         if (Menus != null)
@@ -62,6 +102,7 @@ public static class CustomCosmeticsUIStart
         Menus = customMenuTypes
             .Select(t => t.GetProperty("Instance", flags)?.GetValue(null) as ICustomCosmeticsMenu)
             .Where(menu => menu != null)
+            .OrderBy(menu => menu.MenuType)
             .ToList();
 
         Logger.Info($"Menus: {string.Join(", ", Menus.Select(m => m.MenuType))}");

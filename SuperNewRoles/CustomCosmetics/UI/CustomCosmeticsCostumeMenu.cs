@@ -648,6 +648,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityAction)(() => onClick()));
 
+        ControllerManager.Instance.AddSelectableUiElement(passiveButton);
+
         // ハイライト処理
         GameObject selectedObject = button.transform.Find("Selected")?.gameObject;
         if (selectedObject != null)
@@ -716,7 +718,6 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         int package_i = 0;
         foreach (var package in packagedCosmetics)
         {
-            float lastY_temp = 0;
             Logger.Info($"Package: {package.Key} {package.Value.Count}");
 
             // パッケージ名を表示するテキストを追加
@@ -796,6 +797,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                     selectedButton = slot.button;
                     selectedButton.transform.Find("Selected").gameObject.SetActive(true);
                 }
+                ControllerManager.Instance.AddSelectableUiElement(slot.button);
                 allI++;
             }
             package_i++;

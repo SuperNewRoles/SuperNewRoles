@@ -110,6 +110,9 @@ public class CustomCosmeticsPetMenu : CustomCosmeticsMenuBase<CustomCosmeticsPet
                 PreviewCosmetic(FastDestroyableSingleton<HatManager>.Instance.GetPetById(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.PetId : DataManager.Player.Customization.Pet));
             }));
             slot.gameObject.SetActive(true);
+
+            ControllerManager.Instance.AddSelectableUiElement(slot.button);
+
             cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
             if (cosmeticData.ProdId == currentCosmeticId)
             {

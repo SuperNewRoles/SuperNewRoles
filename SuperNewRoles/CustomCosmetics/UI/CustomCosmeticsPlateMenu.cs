@@ -122,6 +122,7 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
                 ICosmeticData cosmetic = currentProdId.StartsWith(CustomCosmeticsLoader.ModdedPrefix) ? new ModdedNamePlateDataWrapper(CustomCosmeticsLoader.GetModdedNamePlate(currentProdId)) : new CosmeticDataWrapperNamePlate(FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(currentProdId));
                 PreviewCosmetic(cosmetic);
             }));
+            ControllerManager.Instance.AddSelectableUiElement(slot.button);
             slot.gameObject.SetActive(true);
             cosmeticData.LoadAsync(() =>
             {
@@ -143,6 +144,7 @@ public class CustomCosmeticsPlateMenu : CustomCosmeticsMenuBase<CustomCosmeticsP
             contentYBounds = extraRows * 2.6f + 0.45f - offSetY;
         }
         scroller.ContentYBounds = new(0, contentYBounds);
+        ControllerManager.Instance.SetCurrentSelected(slots[0].GetComponent<CustomCosmeticsCostumeSlot>().button);
     }
     private void PreviewCosmetic(ICosmeticData cosmeticData)
     {

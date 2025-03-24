@@ -114,8 +114,12 @@ public class CustomCosmeticsColorMenu : CustomCosmeticsMenuBase<CustomCosmeticsC
             if (index == selectedColorId)
                 SetButtonSelected(button, true);
 
+            ControllerManager.Instance.AddSelectableUiElement(passiveButton);
+
             buttons.Add(button);
         }
+
+        ControllerManager.Instance.SetCurrentSelected(allButtons[0]);
 
         if (Palette.PlayerColors.Length <= 60)
             scroller.ContentYBounds.max = 0;
