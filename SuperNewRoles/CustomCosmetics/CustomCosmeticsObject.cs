@@ -76,19 +76,6 @@ public class CustomCosmeticsHat
         }
         return _loadFrontSprite;
     }
-    public Sprite LoadFrontLeftSprite()
-    {
-        if (options.front_left.HasFlag(HatOptionType.None))
-            return null;
-        if (_loadFrontLeftSprite == null)
-        {
-            if (assetBundle == null)
-                _loadFrontLeftSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "front_left.png");
-            else
-                _loadFrontLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "front_left.png")?.DontUnload();
-        }
-        return _loadFrontLeftSprite;
-    }
     public Sprite LoadClimbSprite()
     {
         if (options.climb.HasFlag(HatOptionType.None))
@@ -114,19 +101,6 @@ public class CustomCosmeticsHat
                 _loadBackSprite = assetBundle.LoadAsset<Sprite>(path_base + "back.png")?.DontUnload();
         }
         return _loadBackSprite;
-    }
-    public Sprite LoadBackLeftSprite()
-    {
-        if (options.back_left.HasFlag(HatOptionType.None))
-            return null;
-        if (_loadBackLeftSprite == null)
-        {
-            if (assetBundle == null)
-                _loadBackLeftSprite = CustomCosmeticsLoader.LoadSpriteFromPath(path_base + "back_left.png");
-            else
-                _loadBackLeftSprite = assetBundle.LoadAsset<Sprite>(path_base + "back_left.png")?.DontUnload();
-        }
-        return _loadBackLeftSprite;
     }
     public Sprite LoadFlipSprite()
     {
@@ -216,17 +190,21 @@ public class CustomCosmeticsVisor
     }
     public Sprite LoadLeftIdleSprite()
     {
+        if (!options.flip)
+            return null;
         if (_loadLeftIdleSprite == null)
         {
             if (assetBundle == null)
-                _loadLeftIdleSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "idle_left.png", options.isSNR);
+                _loadLeftIdleSprite = CustomCosmeticsLoader.CreateVisorSprite(path_base + "flip.png", options.isSNR);
             else
-                _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "idle_left.png")?.DontUnload();
+                _loadLeftIdleSprite = assetBundle.LoadAsset<Sprite>(path_base + "flip.png")?.DontUnload();
         }
         return _loadLeftIdleSprite;
     }
     public Sprite LoadClimbSprite()
     {
+        if (!options.climb)
+            return null;
         if (_loadClimbSprite == null)
         {
             if (assetBundle == null)
@@ -241,11 +219,13 @@ public class CustomCosmeticsVisorOptions
 {
     public bool adaptive { get; }
     public bool flip { get; }
+    public bool climb { get; }
     public bool isSNR { get; }
     public CustomCosmeticsVisorOptions(JToken optionsJson)
     {
         adaptive = CustomCosmeticsHatOptions.GetBool(optionsJson["adaptive"]);
         flip = CustomCosmeticsHatOptions.GetBool(optionsJson["flip"]);
+        climb = CustomCosmeticsHatOptions.GetBool(optionsJson["climb"]);
         isSNR = CustomCosmeticsHatOptions.GetBool(optionsJson["IsSNR"]);
     }
     public CustomCosmeticsVisorOptions(bool adaptive, bool flip, bool isSNR)
@@ -258,13 +238,12 @@ public class CustomCosmeticsVisorOptions
 public class CustomCosmeticsHatOptions
 {
     public HatOptionType front { get; }
-    public HatOptionType front_left { get; }
     public HatOptionType back { get; }
-    public HatOptionType back_left { get; }
     public HatOptionType flip { get; }
     public HatOptionType flip_back { get; }
     public HatOptionType climb { get; }
     public bool blockVisors { get; }
+    public bool HideBody { get; }
     /*
         public CustomCosmeticsHatOptions(JToken optionsJson)
         {
@@ -283,24 +262,22 @@ public class CustomCosmeticsHatOptions
         bool bounce = GetBool(optionsJson["bounce"]);
         bool behind = GetBool(optionsJson["behind"]);
         front = GetOption(optionsJson, "front", adaptive: adaptive, bounce: bounce, behind: behind, defaultOption: true);
-        front_left = GetOption(optionsJson, "front_left", adaptive: adaptive, bounce: bounce, behind: behind);
         back = GetOption(optionsJson, "back", adaptive: adaptive, bounce: bounce, behind: behind);
-        back_left = GetOption(optionsJson, "back_left", adaptive: adaptive, bounce: bounce, behind: behind);
         flip = GetOption(optionsJson, "flip", adaptive: adaptive, bounce: bounce, behind: behind);
         flip_back = GetOption(optionsJson, "flip_back", adaptive: adaptive, bounce: bounce, behind: behind);
         climb = GetOption(optionsJson, "climb", adaptive: adaptive, bounce: bounce, behind: behind);
+        HideBody = GetBool(optionsJson["hideBody"]);
         blockVisors = GetBool(optionsJson["block_visors"]);
     }
-    public CustomCosmeticsHatOptions(HatOptionType front, HatOptionType front_left, HatOptionType back, HatOptionType back_left, HatOptionType flip, HatOptionType flip_back, HatOptionType climb, bool blockVisors = false)
+    public CustomCosmeticsHatOptions(HatOptionType front, HatOptionType back, HatOptionType flip, HatOptionType flip_back, HatOptionType climb, bool hideBody, bool blockVisors = false)
     {
         this.front = front;
-        this.front_left = front_left;
         this.back = back;
-        this.back_left = back_left;
         this.flip = flip;
         this.flip_back = flip_back;
         this.climb = climb;
         this.blockVisors = blockVisors;
+        this.HideBody = hideBody;
     }
 
     /// <summary>

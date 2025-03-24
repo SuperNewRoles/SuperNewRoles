@@ -92,6 +92,7 @@ public class CustomCosmeticsLayer
         hatLayer.transform.localScale = Vector3.one;
         hatLayer.Parent = baseLayer.hat.Parent;
         hatLayer.gameObject.layer = baseLayer.gameObject.layer;
+        hatLayer.CosmeticLayer = baseLayer;
 
         if (baseLayer.hat.SpriteSyncNode == null)
             baseLayer.hat.SpriteSyncNode = baseLayer.hat.GetComponent<SpriteAnimNodeSync>();

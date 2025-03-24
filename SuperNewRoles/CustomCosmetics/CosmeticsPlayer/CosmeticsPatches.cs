@@ -158,6 +158,61 @@ public static class CosmeticsLayer_AnimateClimb
         customCosmeticsLayer?.visor2?.SetClimbAnim(__instance.bodyType);
     }
 }
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.Visible), MethodType.Setter)]
+public static class CosmeticsLayer_Visible
+{
+    public static void Postfix(CosmeticsLayer __instance, bool value)
+    {
+        __instance.UpdateVisibility();
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.UpdateVisibility))]
+public static class CosmeticsLayer_UpdateVisibility
+{
+    public static void Postfix(CosmeticsLayer __instance)
+    {
+        Logger.Info($"UpdateVisibility: {__instance.visible}");
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer.hat1.Visible = __instance.visible;
+        customCosmeticsLayer.hat2.Visible = __instance.visible;
+        customCosmeticsLayer.visor1.Visible = __instance.visible;
+        customCosmeticsLayer.visor2.Visible = __instance.visible;
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetBodyCosmeticsVisible))]
+public static class CosmeticsLayer_SetBodyCosmeticsVisible
+{
+    public static void Postfix(CosmeticsLayer __instance, bool b)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer.hat1.Visible = b;
+        customCosmeticsLayer.hat2.Visible = b;
+        customCosmeticsLayer.visor1.Visible = b;
+        customCosmeticsLayer.visor2.Visible = b;
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetHatVisorVisible))]
+public static class CosmeticsLayer_SetHatVisorVisible
+{
+    public static void Postfix(CosmeticsLayer __instance, bool isVisible)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer.hat1.Visible = isVisible;
+        customCosmeticsLayer.hat2.Visible = isVisible;
+        customCosmeticsLayer.visor1.Visible = isVisible;
+        customCosmeticsLayer.visor2.Visible = isVisible;
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.ToggleHat))]
+public static class CosmeticsLayer_ToggleHat
+{
+    public static void Postfix(CosmeticsLayer __instance, bool b)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer.hat1.Visible = b;
+        customCosmeticsLayer.hat2.Visible = b;
+    }
+}
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetHatAndVisorIdle))]
 public static class CosmeticsLayer_SetHatAndVisorIdle
 {

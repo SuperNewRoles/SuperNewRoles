@@ -35,8 +35,8 @@ public class CustomCosmeticsLoader
             "https://raw.githubusercontent.com/catudon1276/CatudonCostume/refs/heads/main/CustomHats.json",
             "https://raw.githubusercontent.com/catudon1276/Mememura-Hats/refs/heads/main/CustomHats.json",
             // "https://raw.githubusercontent.com/Ujet222/TOPHats/refs/heads/main/CustomHats.json",
-            "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomHats.json",
-            "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomVisors.json",
+            // "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomHats.json",
+            // "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/refs/heads/main/CustomVisors.json",
             "https://raw.githubusercontent.com/Ujet222/TOPVisors/refs/heads/main/CustomVisors.json",
     };
     public const string ModdedPrefix = "Modded_";
@@ -51,7 +51,7 @@ public class CustomCosmeticsLoader
     private static readonly Dictionary<string, CustomCosmeticsVisor> moddedVisors = new();
     private static readonly Dictionary<string, List<(string, string)>> willDownloads = new();
     private static readonly Dictionary<string, byte[]> downloadedSprites = new();
-    public static async Task Load()
+    public static void Load()
     {
         foreach (string url in CustomCosmeticsURLs)
         {
@@ -59,7 +59,7 @@ public class CustomCosmeticsLoader
             {
                 string jsonContent = url.StartsWith("./") || url.StartsWith("../")
                     ? File.ReadAllText(url)
-                    : await client.GetStringAsync(url);
+                    : client.GetStringAsync(url).Result;
 
                 // JSONをパース
                 JObject json = JObject.Parse(jsonContent);
@@ -72,7 +72,7 @@ public class CustomCosmeticsLoader
                     {
                         string assetBundleUrl = assetBundle["url"]?.ToString() ?? "";
                         string expectedHash = assetBundle["hash"]?.ToString() ?? "";
-                        string? savedPath = await DownloadAssetBundleWithRetry(assetBundleUrl, expectedHash);
+                        string? savedPath = DownloadAssetBundleWithRetry(assetBundleUrl, expectedHash).Result;
                         if (!string.IsNullOrEmpty(savedPath))
                         {
                             notLoadedAssetBundles.Add(savedPath);
@@ -127,13 +127,12 @@ public class CustomCosmeticsLoader
 
 
                         var hatOption = new CustomCosmeticsHatOptions(
-                            front,
-                            front_left,
-                            back,
-                            back_left,
-                            backflip,
-                            flip,
-                            climb
+                            front: front,
+                            back: back,
+                            flip: flip,
+                            flip_back: backflip,
+                            climb: climb,
+                            hideBody: hat["hideBody"] != null ? (bool)hat["hideBody"] : false
                         );
 
                         CustomCosmeticsHat customCosmeticsHat = new(
@@ -369,7 +368,11 @@ public class CustomCosmeticsLoader
                 packageInfo["name_en"]?.ToString(),
                 (int)packageInfo["parseversion"]
             );
-            loadedPackages.Add(cosmeticsPackage);
+            // パッケージが見つからなかった場合のみ追加する
+            if (!loadedPackages.Contains(cosmeticsPackage))
+            {
+                loadedPackages.Add(cosmeticsPackage);
+            }
             Logger.Info($"{cosmeticsPackage.name} {cosmeticsPackage.version}");
 
             JToken visorsToken = packageJsonObject["visors"];
@@ -686,13 +689,11 @@ public class CustomCosmeticsLoader
         catch { }
         return null;
     }
-
 }
 
 [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Start))]
 public static class SplashManagerStartPatch
 {
-    private static Task? loadTask;
     public static void Postfix(SplashManager __instance)
     {
         // メインスレッドで非同期処理を開始
@@ -704,7 +705,7 @@ public static class SplashManagerStartPatch
     {
         try
         {
-            loadTask = CustomCosmeticsLoader.Load();
+            CustomCosmeticsLoader.Load();
         }
         catch (Exception e)
         {

@@ -95,6 +95,10 @@ public class CustomHatLayer : MonoBehaviour
     private void SetHat(int color)
     {
         if (Hat == null) return;
+        if (CustomCosmeticHat?.Options?.HideBody ?? false)
+            CosmeticLayer.currentBodySprite.BodySprite.enabled = false;
+        else
+            CosmeticLayer.currentBodySprite.BodySprite.enabled = true;
         SetMaterialColor(color);
         UnloadAsset();
         Hat.LoadAsync(() =>
@@ -271,16 +275,18 @@ public class CustomHatLayer : MonoBehaviour
         {
             return;
         }
+        if (CustomCosmeticHat?.Options?.HideBody ?? false)
+            CosmeticLayer.currentBodySprite.BodySprite.enabled = false;
         FlipX = Parent.flipX;
         if (FrontLayer.sprite != CustomCosmeticHat.Climb)
         {
-            if (!CustomCosmeticHat.Options.front.HasFlag(HatOptionType.None) && !CustomCosmeticHat.Options.front_left.HasFlag(HatOptionType.None))
+            if (!CustomCosmeticHat.Options.front.HasFlag(HatOptionType.None) && !CustomCosmeticHat.Options.flip.HasFlag(HatOptionType.None))
             {
-                FrontLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.FrontLeft : CustomCosmeticHat.Front);
+                FrontLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.Flip : CustomCosmeticHat.Front);
             }
-            if (!CustomCosmeticHat.Options.back.HasFlag(HatOptionType.None) && !CustomCosmeticHat.Options.back_left.HasFlag(HatOptionType.None))
+            if (!CustomCosmeticHat.Options.back.HasFlag(HatOptionType.None) && !CustomCosmeticHat.Options.flip_back.HasFlag(HatOptionType.None))
             {
-                BackLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.BackLeft : CustomCosmeticHat.Back);
+                BackLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.FlipBack : CustomCosmeticHat.Back);
             }
         }
         else if (FrontLayer.sprite == CustomCosmeticHat.Climb || FrontLayer.sprite == CustomCosmeticHat.ClimbLeft)

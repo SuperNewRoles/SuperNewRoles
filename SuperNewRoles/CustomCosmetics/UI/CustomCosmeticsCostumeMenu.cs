@@ -40,9 +40,7 @@ public interface ICustomCosmeticHat
     Sprite Climb { get; }
     Sprite ClimbLeft { get; }
     Sprite Front { get; }
-    Sprite FrontLeft { get; }
     Sprite Back { get; }
-    Sprite BackLeft { get; }
     Sprite Flip { get; }
     Sprite FlipBack { get; }
     bool BlocksVisors { get; }
@@ -99,12 +97,11 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
     public CosmeticDataWrapperHat(HatData data) : base(data)
     {
         _options = new(front: data.PreviewCrewmateColor ? HatOptionType.Adaptive : HatOptionType.NoAdaptive,
-        front_left: HatOptionType.None,
         back: data.InFront ? HatOptionType.None : data.PreviewCrewmateColor ? HatOptionType.Adaptive : HatOptionType.NoAdaptive,
-        back_left: HatOptionType.None,
         flip: HatOptionType.None,
         flip_back: HatOptionType.None,
-        climb: HatOptionType.None);
+        climb: HatOptionType.None,
+        hideBody: false);
     }
     public void SetDontUnload()
     {
@@ -126,11 +123,9 @@ public class CosmeticDataWrapperHat : CosmeticDataWrapper, ICustomCosmeticHat
     public Sprite Climb => hatViewData?.GetAsset()?.ClimbImage;
     public Sprite ClimbLeft => hatViewData?.GetAsset()?.LeftClimbImage;
     public Sprite Front => hatViewData?.GetAsset()?.MainImage;
-    public Sprite FrontLeft => hatViewData?.GetAsset()?.LeftMainImage;
     public Sprite Back => hatViewData?.GetAsset()?.BackImage;
-    public Sprite BackLeft => hatViewData?.GetAsset()?.LeftBackImage;
-    public Sprite Flip => null;
-    public Sprite FlipBack => null;
+    public Sprite Flip => hatViewData?.GetAsset()?.LeftMainImage;
+    public Sprite FlipBack => hatViewData?.GetAsset()?.LeftBackImage;
 
     private AddressableAsset<HatViewData> hatViewData;
     public override Sprite Asset => hatViewData?.GetAsset()?.MainImage;
@@ -229,9 +224,7 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
     public void SetDontUnload()
     {
         _data.LoadFrontSprite()?.DontUnload();
-        _data.LoadFrontLeftSprite()?.DontUnload();
         _data.LoadBackSprite()?.DontUnload();
-        _data.LoadBackLeftSprite()?.DontUnload();
         _data.LoadClimbSprite()?.DontUnload();
         _data.LoadClimbLeftSprite()?.DontUnload();
         _data.LoadFlipSprite()?.DontUnload();
@@ -252,9 +245,7 @@ public class ModdedHatDataWrapper : ICosmeticData, ICustomCosmeticHat
     public Sprite Climb => _data.LoadClimbSprite()?.DontUnload();
     public Sprite ClimbLeft => _data.LoadClimbLeftSprite()?.DontUnload();
     public Sprite Front => _data.LoadFrontSprite()?.DontUnload();
-    public Sprite FrontLeft => _data.LoadFrontLeftSprite()?.DontUnload();
     public Sprite Back => _data.LoadBackSprite()?.DontUnload();
-    public Sprite BackLeft => _data.LoadBackLeftSprite()?.DontUnload();
     public Sprite Flip => _data.LoadFlipSprite()?.DontUnload();
     public Sprite FlipBack => _data.LoadFlipBackSprite()?.DontUnload();
 
