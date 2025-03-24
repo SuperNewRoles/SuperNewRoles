@@ -619,8 +619,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             });
         });
 
-        ControllerManager.Instance.SetCurrentSelected(visorButton01.GetComponent<PassiveButton>());
-        visorButton01.GetComponent<PassiveButton>().ReceiveMouseOver();
+        ControllerManager.Instance.SetCurrentSelected(visorButton02.GetComponent<PassiveButton>());
+        visorButton02.GetComponent<PassiveButton>().ReceiveMouseOver();
 
         // 初期プレビューの設定
         InitializeButtonPreviews();
