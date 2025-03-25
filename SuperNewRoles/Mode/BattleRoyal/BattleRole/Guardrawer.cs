@@ -34,7 +34,7 @@ public class Guardrawer : BattleRoyalRole
                 if (p.IsBot()) continue;
                 if (p.PlayerId == CurrentPlayer.PlayerId) continue;
                 if (p.IsDead()) continue;
-                if (Vector2.Distance(p.GetTruePosition(), CurrentPlayer.GetTruePosition()) > GameOptionsData.KillDistances[0]) continue;
+                if (Vector2.Distance(p.GetTruePosition(), CurrentPlayer.GetTruePosition()) > NormalGameOptionsV09.KillDistances.FirstOrDefault()) continue;
                 p.RpcSnapTo(CurrentPlayer.transform.position);
             }
             if (AbilityTime <= 0)

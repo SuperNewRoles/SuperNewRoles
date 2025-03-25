@@ -236,15 +236,15 @@ public class EndGameManagerSetUpPatch
         {
             switch (gameOverReason)
             {
-                case GameOverReason.HumansByTask:
-                case GameOverReason.HumansByVote:
-                case GameOverReason.HumansDisconnect:
+                case GameOverReason.CrewmatesByTask:
+                case GameOverReason.CrewmatesByVote:
+                case GameOverReason.CrewmateDisconnect:
                     text = "CrewmateName";
                     RoleColor = Palette.White;
                     break;
-                case GameOverReason.ImpostorByKill:
-                case GameOverReason.ImpostorBySabotage:
-                case GameOverReason.ImpostorByVote:
+                case GameOverReason.ImpostorsByKill:
+                case GameOverReason.ImpostorsBySabotage:
+                case GameOverReason.ImpostorsByVote:
                 case GameOverReason.ImpostorDisconnect:
                 //MadJester勝利をインポスター勝利とみなす
                 case (GameOverReason)CustomGameOverReason.MadJesterWin:
@@ -532,7 +532,7 @@ public class CustomPlayerData
             finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId];
         else if (p.IsDead)
             finalStatus = FinalStatus.Exiled;
-        else if (gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor)
+        else if (gameOverReason == GameOverReason.ImpostorsBySabotage && !p.Role.IsImpostor)
             finalStatus = FinalStatus.Sabotage;
     }
 }
@@ -574,7 +574,7 @@ public static class OnGameEndPatch
                 Logger.Info(e.ToString(), "解析エラー");
             }
         }
-        if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
+        if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorsByKill;
 
     }
     private static List<NetworkedPlayerInfo> ProcessGetWinnersToRemove()
@@ -699,8 +699,8 @@ public static class OnGameEndPatch
 
         bool IsProcessReplaceWin = true;
 
-        bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
-        bool ImpostorWin = gameOverReason is GameOverReason.ImpostorByKill or GameOverReason.ImpostorBySabotage or GameOverReason.ImpostorByVote;
+        bool saboWin = gameOverReason == GameOverReason.ImpostorsBySabotage;
+        bool ImpostorWin = gameOverReason is GameOverReason.ImpostorsByKill or GameOverReason.ImpostorsBySabotage or GameOverReason.ImpostorsByVote;
         bool TaskerWin = gameOverReason == (GameOverReason)CustomGameOverReason.TaskerWin;
         bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
         bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
@@ -713,7 +713,7 @@ public static class OnGameEndPatch
         bool PavlovsTeamWin = gameOverReason == (GameOverReason)CustomGameOverReason.PavlovsTeamWin;
         bool LoversBreakerWin = gameOverReason == (GameOverReason)CustomGameOverReason.LoversBreakerWin;
         bool NoWinner = gameOverReason == (GameOverReason)CustomGameOverReason.NoWinner;
-        bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
+        bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask or GameOverReason.ImpostorDisconnect;
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
         bool CrookWin = gameOverReason == (GameOverReason)CustomGameOverReason.CrookWin;
         bool OwlWin = gameOverReason == (GameOverReason)CustomGameOverReason.OwlWin;
@@ -924,7 +924,7 @@ public static class OnGameEndPatch
         if (ModeHandler.IsMode(ModeId.Zombie))
         {
             winners = new();
-            if (gameOverReason == GameOverReason.ImpostorByKill)
+            if (gameOverReason == GameOverReason.ImpostorsByKill)
             {
                 winCondition = WinCondition.Default;
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -1034,7 +1034,7 @@ public static class OnGameEndPatch
         foreach (PlayerControl player in OrientalShaman.OrientalShamanPlayer)
         {
             if (!OrientalShaman.OrientalShamanCrewTaskWinHijack.GetBool() &&
-                AdditionalTempData.gameOverReason == GameOverReason.HumansByTask) break;
+                AdditionalTempData.gameOverReason == GameOverReason.CrewmatesByTask) break;
             if (player.IsDead())
                 continue;
             if (OrientalShaman.OrientalShamanWinTask.GetBool())
@@ -1072,15 +1072,15 @@ public static class OnGameEndPatch
                 continue;
             if (RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId))
             {
-                if (gameOverReason is not (GameOverReason.ImpostorByKill or
-                    GameOverReason.ImpostorBySabotage or
-                    GameOverReason.ImpostorByVote or
+                if (gameOverReason is not (GameOverReason.ImpostorsByKill or
+                    GameOverReason.ImpostorsBySabotage or
+                    GameOverReason.ImpostorsByVote or
                     GameOverReason.ImpostorDisconnect))
                     continue;
             }
-            else if (gameOverReason is not (GameOverReason.HumansByTask or
-                GameOverReason.HumansByVote or
-                GameOverReason.HumansDisconnect))
+            else if (gameOverReason is not (GameOverReason.CrewmatesByTask or
+                GameOverReason.CrewmatesByVote or
+                GameOverReason.CrewmateDisconnect))
                 continue;
             if (!spereseted)
                 winners = [];
@@ -1315,16 +1315,16 @@ public static class OnGameEndPatch
             if (player.IsDead() || CustomOptionHolder.StefinderSoloWin.GetBool())
                 continue;
             if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
-               (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
-                AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
-                AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
+               (AdditionalTempData.gameOverReason == GameOverReason.CrewmatesByTask ||
+                AdditionalTempData.gameOverReason == GameOverReason.CrewmatesByVote ||
+                AdditionalTempData.gameOverReason == GameOverReason.CrewmateDisconnect))
             {
                 winners.Add(player.Data);
             }
             if (RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
-               (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill ||
-                AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage ||
-                AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
+               (AdditionalTempData.gameOverReason == GameOverReason.ImpostorsByKill ||
+                AdditionalTempData.gameOverReason == GameOverReason.ImpostorsBySabotage ||
+                AdditionalTempData.gameOverReason == GameOverReason.ImpostorsByVote ||
                 AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
             {
                 winners.Add(player.Data);
@@ -1402,7 +1402,7 @@ public static class OnGameEndPatch
                 finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId];
             else if (p.IsDead)
                 finalStatus = FinalStatus.Exiled;
-            else if (gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor)
+            else if (gameOverReason == GameOverReason.ImpostorsBySabotage && !p.Role.IsImpostor)
                 finalStatus = FinalStatus.Sabotage;
             FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] = finalStatus;
 
@@ -1429,7 +1429,7 @@ public static class OnGameEndPatch
                 PlayerId = p.PlayerId,
                 ColorId = p.DefaultOutfit.ColorId,
                 TasksTotal = tasksTotal,
-                TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
+                TasksCompleted = gameOverReason == GameOverReason.CrewmatesByTask ? tasksTotal : tasksCompleted,
                 Status = finalStatus,
                 AttributeRoleName = attributeRoleName,
                 RoleId = playerrole,
@@ -1671,7 +1671,7 @@ public static class CheckGameEndPatch
         if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
             __instance.enabled = false;
-            CustomEndGame(GameOverReason.HumansByTask, false);
+            CustomEndGame(GameOverReason.CrewmatesByTask, false);
             return true;
         }
         return false;
@@ -1716,9 +1716,9 @@ public static class CheckGameEndPatch
             __instance.enabled = false;
             var endReason = GameData.LastDeathReason switch
             {
-                DeathReason.Exile => GameOverReason.ImpostorByVote,
-                DeathReason.Kill => GameOverReason.ImpostorByKill,
-                _ => GameOverReason.ImpostorByVote,
+                DeathReason.Exile => GameOverReason.ImpostorsByVote,
+                DeathReason.Kill => GameOverReason.ImpostorsByKill,
+                _ => GameOverReason.ImpostorsByVote,
             };
             if (Demon.IsDemonWinFlag())
             {
@@ -1778,7 +1778,7 @@ public static class CheckGameEndPatch
         if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.OwlAlive == 0 && !statistics.IsGuardPavlovs && !statistics.MadKillerEndGuardByPromote)
         {
             __instance.enabled = false;
-            CustomEndGame(GameOverReason.HumansByVote, false);
+            CustomEndGame(GameOverReason.CrewmatesByVote, false);
             return true;
         }
         return false;
@@ -1838,7 +1838,8 @@ public static class CheckGameEndPatch
                 CustomEndGame((GameOverReason)CustomGameOverReason.FoxWin, false);
             }
             return true;
-        };
+        }
+        ;
         return false;
     }
     public static bool CheckAndEndGameForSuicidalIdeationWin(ShipStatus __instance)
@@ -1910,7 +1911,7 @@ public static class CheckGameEndPatch
     public static void EndGameForSabotage(ShipStatus __instance)
     {
         __instance.enabled = false;
-        CustomEndGame(GameOverReason.ImpostorBySabotage, false);
+        CustomEndGame(GameOverReason.ImpostorsBySabotage, false);
         return;
     }
     public class PlayerStatistics
