@@ -122,6 +122,7 @@ public static class MainMenuManagerPatch
 
         private static IEnumerator EnterCodeSlideCo(MainMenuManager instance)
         {
+            SetBackgroundCover(instance, true);
             // オンラインボタンの表示と初期位置の設定
             instance.onlineButtons.SetActive(true);
             SetContainerX(instance.onlineButtonsContainer, 0f);
@@ -148,6 +149,7 @@ public static class MainMenuManagerPatch
             instance.onlineButtons.SetActive(false);
             instance.enterCodeHeader.SetActive(true);
             instance.animating = false;
+            SetBackgroundCover(instance, true);
         }
     }
 
@@ -156,10 +158,9 @@ public static class MainMenuManagerPatch
     {
         public static bool Prefix(MainMenuManager __instance)
         {
-            if (!__instance.animating)
-            {
-                __instance.StartCoroutine(AnimateEnterCodeExitSlideCo(__instance).WrapToIl2Cpp());
-            }
+            if (__instance.animating) return false;
+            SetBackgroundCover(__instance, true);
+            __instance.StartCoroutine(AnimateEnterCodeExitSlideCo(__instance).WrapToIl2Cpp());
             return false;
         }
 
@@ -192,7 +193,6 @@ public static class MainMenuManagerPatch
             instance.onlineHeader.SetActive(true);
             instance.animating = false;
             instance.OpenOnlineMenu();
-            SetBackgroundCover(instance, false);
         }
     }
 }
