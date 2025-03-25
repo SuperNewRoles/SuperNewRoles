@@ -793,7 +793,10 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                     PreviewCosmetic(currentCosmeticFunc(), obj, onPreview);
                 }));
                 slot.gameObject.SetActive(true);
-                cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
+                cosmeticData.LoadAsync(() =>
+                {
+                    cosmeticData.SetPreview(slot.spriteRenderer, PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
+                });
                 if (cosmeticData.ProdId == currentCosmeticId)
                 {
                     slot.button.SelectButton(true);

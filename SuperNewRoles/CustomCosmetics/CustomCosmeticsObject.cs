@@ -351,7 +351,8 @@ public class CustomCosmeticsHatOptions
 
         return option;
     }
-    public static bool GetBool(JToken token) => token != null && token.Type == JTokenType.Boolean && (bool)token;
+    public static bool GetBool(JToken token, bool defaultValue = false)
+        => token != null && token.Type == JTokenType.Boolean ? (bool)token : defaultValue;
 }
 [Flags]
 public enum HatOptionType

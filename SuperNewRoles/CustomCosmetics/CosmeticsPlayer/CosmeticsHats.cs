@@ -1,3 +1,4 @@
+using System;
 using AmongUs.Data;
 using HarmonyLib;
 using PowerTools;
@@ -9,6 +10,7 @@ using static CosmeticsLayer;
 namespace SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 public class CustomHatLayer : MonoBehaviour
 {
+    public int LayerNumber;
     public CosmeticsLayer CosmeticLayer;
     public SpriteRenderer BackLayer;
 
@@ -21,7 +23,7 @@ public class CustomHatLayer : MonoBehaviour
     private bool shouldFaceLeft;
 
     private const float ClimbZOffset = -0.02f;
-    private SpriteAnimNodeSync spriteSyncNode;
+    public SpriteAnimNodeSync spriteSyncNode;
 
     public ICustomCosmeticHat CustomCosmeticHat { get; set; }
     public ICosmeticData Hat => CustomCosmeticHat as ICosmeticData;
@@ -94,17 +96,31 @@ public class CustomHatLayer : MonoBehaviour
 
     private void SetHat(int color)
     {
-        if (Hat == null) return;
-        if (CustomCosmeticHat?.Options?.HideBody ?? false)
-            CosmeticLayer.currentBodySprite.BodySprite.enabled = false;
-        else
-            CosmeticLayer.currentBodySprite.BodySprite.enabled = true;
+        if (Hat == null)
+            return;
+
+        var clayer = CustomCosmeticsLayers.ExistsOrInitialize(CosmeticLayer);
+
+        // レイヤー番号に応じた設定を行う
+        switch (LayerNumber)
+        {
+            case 1:
+                clayer.HideBody.hat1 = CustomCosmeticHat?.Options?.HideBody ?? false;
+                break;
+            case 2:
+                clayer.HideBody.hat2 = CustomCosmeticHat?.Options?.HideBody ?? false;
+                break;
+            default:
+                throw new Exception("Invalid layer number");
+        }
+
+        // BodySpriteの表示状態を更新（どちらかが隠れる設定の場合は非表示）
+        if (CosmeticLayer.currentBodySprite != null)
+            CosmeticLayer.currentBodySprite.BodySprite.enabled = !(clayer.HideBody.hat1 || clayer.HideBody.hat2);
+
         SetMaterialColor(color);
         UnloadAsset();
-        Hat.LoadAsync(() =>
-        {
-            PopulateFromViewData();
-        });
+        Hat.LoadAsync(() => PopulateFromViewData());
     }
 
     public void SetIdleAnim(int colorId)
@@ -271,30 +287,46 @@ public class CustomHatLayer : MonoBehaviour
 
     public void LateUpdate()
     {
-        if (!Parent || !HasHat() || Hat.Asset == null)
+        if (Parent == null || !HasHat() || Hat.Asset == null)
         {
             return;
         }
-        if (CustomCosmeticHat?.Options?.HideBody ?? false)
-            CosmeticLayer.currentBodySprite.BodySprite.enabled = false;
+
+        var clayer = CustomCosmeticsLayers.ExistsOrInitialize(CosmeticLayer);
+        if (clayer == null)
+            Logger.Error("clayer is null");
+        else
+        {
+            // BodySprite の表示状態を更新
+            bool shouldHideBody = clayer.HideBody.hat1 || clayer.HideBody.hat2;
+            if (CosmeticLayer.currentBodySprite != null)
+                CosmeticLayer.currentBodySprite.BodySprite.enabled = !shouldHideBody;
+        }
+
+        // 向き (左右反転) の更新
         FlipX = Parent.flipX;
+
+        // Climb 状態でない場合、通常のハット表示を更新
         if (FrontLayer.sprite != CustomCosmeticHat.Climb)
         {
-            if (!CustomCosmeticHat.Options.front.HasFlag(HatOptionType.None) && !CustomCosmeticHat.Options.flip.HasFlag(HatOptionType.None))
+            if (!CustomCosmeticHat.Options.front.HasFlag(HatOptionType.None) &&
+                !CustomCosmeticHat.Options.flip.HasFlag(HatOptionType.None))
             {
-                FrontLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.Flip : CustomCosmeticHat.Front);
+                FrontLayer.sprite = (Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.Flip : CustomCosmeticHat.Front;
             }
-            if (!CustomCosmeticHat.Options.back.HasFlag(HatOptionType.None) && !CustomCosmeticHat.Options.flip_back.HasFlag(HatOptionType.None))
+            if (!CustomCosmeticHat.Options.back.HasFlag(HatOptionType.None) &&
+                !CustomCosmeticHat.Options.flip_back.HasFlag(HatOptionType.None))
             {
-                BackLayer.sprite = ((Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.FlipBack : CustomCosmeticHat.Back);
+                BackLayer.sprite = (Parent.flipX || shouldFaceLeft) ? CustomCosmeticHat.FlipBack : CustomCosmeticHat.Back;
             }
         }
+        // Climb 状態の場合は、spriteSyncNode の NodeId を更新
         else if (FrontLayer.sprite == CustomCosmeticHat.Climb || FrontLayer.sprite == CustomCosmeticHat.ClimbLeft)
         {
-            SpriteAnimNodeSync spriteAnimNodeSync = spriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
-            if ((bool)spriteAnimNodeSync)
+            var syncNode = spriteSyncNode ?? GetComponent<SpriteAnimNodeSync>();
+            if (syncNode != null)
             {
-                spriteAnimNodeSync.NodeId = 0;
+                syncNode.NodeId = 0;
             }
         }
     }

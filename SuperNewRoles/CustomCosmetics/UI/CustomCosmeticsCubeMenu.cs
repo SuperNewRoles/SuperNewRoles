@@ -31,6 +31,7 @@ public class CustomCosmeticsCubeMenu : CustomCosmeticsMenuBase<CustomCosmeticsCu
         {
             instance.cubesTab.ClickEquip();
         }
+        instance.SetItemName("");
     }
     public override void Hide()
     {

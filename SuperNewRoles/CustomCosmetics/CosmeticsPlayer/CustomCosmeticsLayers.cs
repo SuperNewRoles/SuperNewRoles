@@ -11,19 +11,19 @@ public static class CustomCosmeticsLayers
     public static Dictionary<int, CustomCosmeticsLayer> layers = new();
     public static Dictionary<int, CustomVisorLayer> visorLayer1s = new();
     public static Dictionary<int, CustomVisorLayer> visorLayer2s = new();
-    public static bool Exists(CosmeticsLayer cosmeticsLayer)
+    public static bool Exists(CosmeticsLayer cosmeticsLayer, out CustomCosmeticsLayer layer)
     {
-        return layers.ContainsKey(cosmeticsLayer.GetInstanceID());
+        return layers.TryGetValue(cosmeticsLayer.GetInstanceID(), out layer);
     }
     public static CustomCosmeticsLayer ExistsOrInitialize(CosmeticsLayer cosmeticsLayer)
     {
-        if (!Exists(cosmeticsLayer))
-            Initialize(cosmeticsLayer);
-        return layers[cosmeticsLayer.GetInstanceID()];
+        if (!Exists(cosmeticsLayer, out var layer))
+            layer = Initialize(cosmeticsLayer);
+        return layer;
     }
-    public static void Initialize(CosmeticsLayer cosmeticsLayer)
+    public static CustomCosmeticsLayer Initialize(CosmeticsLayer cosmeticsLayer)
     {
-        layers[cosmeticsLayer.GetInstanceID()] = new CustomCosmeticsLayer(cosmeticsLayer);
+        return layers[cosmeticsLayer.GetInstanceID()] = new CustomCosmeticsLayer(cosmeticsLayer);
     }
     public static (CustomVisorLayer layer1, CustomVisorLayer layer2) GetVisorLayers(VisorLayer visorLayer)
     {
@@ -37,13 +37,16 @@ public class CustomCosmeticsLayer
     public CustomHatLayer hat2;
     public CustomVisorLayer visor1;
     public CustomVisorLayer visor2;
+    public (bool hat1, bool hat2) HideBody = (false, false);
 
     public CustomCosmeticsLayer(CosmeticsLayer cosmeticsLayer)
     {
         this.cosmeticsLayer = cosmeticsLayer;
         visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f);
         hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.7f));
+        hat1.LayerNumber = 1;
         hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.6f));
+        hat2.LayerNumber = 2;
         visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f);
         CustomCosmeticsLayers.visorLayer1s[cosmeticsLayer.visor.GetInstanceID()] = visor1;
         CustomCosmeticsLayers.visorLayer2s[cosmeticsLayer.visor.GetInstanceID()] = visor2;
@@ -104,6 +107,7 @@ public class CustomCosmeticsLayer
             nodeSync.Renderer = baseLayer.currentBodySprite.BodySprite;
             nodeSync.NodeId = 1;
             cosmeticsLayer.transform.parent.GetComponentInChildren<PlayerAnimations>().group.NodeSyncs.Add(nodeSync);
+            hatLayer.spriteSyncNode = nodeSync;
         }
         else
             Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
