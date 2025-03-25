@@ -113,7 +113,7 @@ public static class Assassin
         if (RoleClass.Assassin.IsImpostorWin)
         {
             MapUtilities.CachedShipStatus.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByVote, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorsByVote, false);
         }
         var exile = Main.RealExiled;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && exile != null && exile.IsRole(RoleId.Assassin))

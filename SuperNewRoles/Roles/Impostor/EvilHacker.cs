@@ -81,7 +81,7 @@ public class EvilHacker : RoleBase, IImpostor, ICustomButton, IMapEvent
         MapNames mapId = (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId;
         UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
         if (mapId is MapNames.Skeld or MapNames.Dleks) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
-        else if (mapId is MapNames.Mira) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
+        else if (mapId is MapNames.MiraHQ) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
         else if (mapId == MapNames.Airship) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
         return button.Image;
     }

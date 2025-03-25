@@ -20,7 +20,7 @@ public class LongKiller : BattleRoyalRole
         longKillers.Add(this);
         PlayerAbility ability = PlayerAbility.GetPlayerAbility(player);
         ability.MyKillCoolTime *= 1.3f;
-        ability.MyKillDistance = GameOptionsData.KillDistances.Length - 1;
+        ability.MyKillDistance = NormalGameOptionsV09.KillDistances.Length - 1;
     }
     public static void Clear()
     {

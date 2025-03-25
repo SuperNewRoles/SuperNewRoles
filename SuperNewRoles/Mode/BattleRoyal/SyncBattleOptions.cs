@@ -40,7 +40,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             optdata.SetFloat(FloatOptionNames.ImpostorLightMod, ability.Light);
             optdata.SetFloat(FloatOptionNames.KillCooldown, ability.KillCoolTime);
             if (!ability.CanMove) optdata.SetFloat(FloatOptionNames.PlayerSpeedMod, 0f);
-            if (player.IsRole(RoleId.KingPoster) && KingPoster.KingPosters.FirstOrDefault(x => x.CurrentPlayer == player).IsAbilityUsingNow) optdata.SetInt(Int32OptionNames.KillDistance, GameOptionsData.KillDistances.Length - 1);
+            if (player.IsRole(RoleId.KingPoster) && KingPoster.KingPosters.FirstOrDefault(x => x.CurrentPlayer == player).IsAbilityUsingNow) optdata.SetInt(Int32OptionNames.KillDistance, NormalGameOptionsV09.KillDistances.Length - 1);
 
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {

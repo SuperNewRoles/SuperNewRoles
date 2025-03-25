@@ -41,7 +41,7 @@ public static class Main
     public static Dictionary<MapNames, List<SystemTypes>> Rooms = new()
         {
             { MapNames.Skeld, new List<SystemTypes>() { SystemTypes.Comms, SystemTypes.Nav, SystemTypes.Security } },
-            { MapNames.Mira, new List<SystemTypes>() { SystemTypes.Comms, SystemTypes.Greenhouse, SystemTypes.Launchpad, SystemTypes.Storage } },
+            { MapNames.MiraHQ, new List<SystemTypes>() { SystemTypes.Comms, SystemTypes.Greenhouse, SystemTypes.Launchpad, SystemTypes.Storage } },
             { MapNames.Polus, new List<SystemTypes>() { SystemTypes.Electrical, SystemTypes.Specimens, SystemTypes.Weapons } },
             { MapNames.Airship, new List<SystemTypes>() { SystemTypes.Records, SystemTypes.Security, SystemTypes.VaultRoom } }
         };
@@ -68,19 +68,19 @@ public static class Main
         if (impostorwin)
         {
             __instance.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorsByKill, false);
             return true;
         }
         else if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
             __instance.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.CrewmatesByTask, false);
             return true;
         }
         else if (ImpostorCount <= 0)
         {
             __instance.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.CrewmatesByTask, false);
             return true;
         }
         else if (SuperHostRoles.EndGameCheck.CheckAndEndGameForFoxHouwaWin(__instance))
@@ -154,7 +154,7 @@ public static class Main
                 {
                     case MapNames.Skeld:
                         return new Vector2(4.5f, -15.5f);
-                    case MapNames.Mira:
+                    case MapNames.MiraHQ:
                         return new Vector2();
                 }
                 break;

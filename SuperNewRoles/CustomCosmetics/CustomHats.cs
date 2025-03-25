@@ -800,12 +800,19 @@ public class CustomHatLoader
 
             foreach (var file in markedfordownload)
             {
-                var hatFileResponse = await http.GetAsync($"{repo}/hats/{file}", HttpCompletionOption.ResponseContentRead);
-                //SuperNewRolesPlugin.Logger.LogInfo(file);
-                if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
-                using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
-                using var fileStream = File.Create($"{filePath}\\{file}");
-                responseStream.CopyTo(fileStream);
+                try
+                {
+                    var hatFileResponse = await http.GetAsync($"{repo}/hats/{file}", HttpCompletionOption.ResponseContentRead);
+                    //SuperNewRolesPlugin.Logger.LogInfo(file);
+                    if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
+                    using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
+                    using var fileStream = File.Create($"{filePath}\\{file}");
+                    responseStream.CopyTo(fileStream);
+                }
+                catch (System.Exception ex)
+                {
+                    SuperNewRolesPlugin.Instance.Log.LogError("HatsError: " + ex.ToString());
+                }
             }
             if (!CachedRepos.Contains(repo))
             {
