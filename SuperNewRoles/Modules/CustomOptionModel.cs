@@ -573,8 +573,8 @@ public class CustomOptionBlank : CustomOption
     }
 }
 
-[HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
-class RoleOptionsDataGetNumPerGamePatch
+[HarmonyPatch(typeof(RoleOptionsCollectionV09), nameof(RoleOptionsCollectionV09.GetNumPerGame))]
+class RoleOptionsCollectionV09GetNumPerGamePatch
 {
     public static void Postfix(ref int __result, ref RoleTypes role)
     {
@@ -718,7 +718,8 @@ class GameOptionsDataPatch
     public static void UpdateData()
     {
         bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool();
-        if (hideSettings) {
+        if (hideSettings)
+        {
             ResultPages = new()
             {
                 GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count)

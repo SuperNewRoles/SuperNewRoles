@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.Data;
+using AmongUs.Data.Player;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
@@ -116,7 +118,7 @@ public static class SelectTask
             if (__instance.AmOwner)
             {
                 DestroyableSingleton<HudManager>.Instance.TaskStuff.SetActive(true);
-                StatsManager.Instance.IncrementStat(StringNames.StatsGamesStarted);
+                DataManager.Player.Stats.IncrementStat(StatID.GamesStarted);
                 if (!DestroyableSingleton<TutorialManager>.InstanceExists) DestroyableSingleton<AchievementManager>.Instance.OnMatchStart(__instance.Data.Role.Role);
             }
             ModHelpers.DestroyList(__instance.myTasks);

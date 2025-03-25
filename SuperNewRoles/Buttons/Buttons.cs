@@ -1694,7 +1694,7 @@ static class HudManagerStartPatch
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
                 //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
                 var reason = (GameOverReason)CustomGameOverReason.ArsonistWin;
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorsByKill;
                 if (AmongUsClient.Instance.AmHost)
                 {
                     CheckGameEndPatch.CustomEndGame(reason, false);
@@ -2085,7 +2085,8 @@ static class HudManagerStartPatch
             PositionSwapperNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
             PositionSwapperButton.buttonText = ModTranslation.GetString("PositionSwapperButtonName");
             PositionSwapperButton.showButtonText = true;
-        };
+        }
+        ;
 
         SecretlyKillerMainButton = new(
             () =>
@@ -2164,7 +2165,8 @@ static class HudManagerStartPatch
             SecretlyKillNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
             SecretlyKillerSecretlyKillButton.buttonText = ModTranslation.GetString("SecretlyKillButtonName");
             SecretlyKillerSecretlyKillButton.showButtonText = true;
-        };
+        }
+        ;
 
         Clairvoyant.SetupCustomButtons(__instance);
 

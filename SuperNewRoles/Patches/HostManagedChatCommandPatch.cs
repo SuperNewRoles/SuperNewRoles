@@ -633,26 +633,7 @@ internal static class RoleinformationText
         if (!AmongUsClient.Instance.AmHost) return;
 
         PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
-        /*
-        (string[] roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(command);
 
-        string beforeIdChangeRoleName =
-            isSuccess
-                ? roleNameKey.FirstOrDefault(key => key.Contains("Name")).Replace("Name", "") ?? command // 翻訳キーの取得に成功した場合, 配列から"Name"を含む要素を取得し そのから要素"Name"を外して, RoleIdに一致する役職名を取得する.
-                : command; // 翻訳辞書からの取得に失敗した場合, 入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
-
-        string roleName = "NONE", roleInfo = "";
-
-        // 参考 => https://qiita.com/masaru/items/a44dc30bfc18aac95015#fnref1
-        // 取得した役職名(string)からRoleIdを取得する。
-        var roleIdChange = Enum.TryParse(beforeIdChangeRoleName, out RoleId roleId) && Enum.IsDefined(typeof(RoleId), roleId);
-        if (roleIdChange)
-        {
-            (roleName, roleInfo) = RoleInfo.GetRoleInfo(roleId, AmongUsClient.Instance.AmHost);
-            if (roleName == "NONE") roleInfo = Format(roleInfo, command); // RoleIdからの役職情報の取得に失敗していた場合, 入力した役職名を追加する。
-            SendCommand(target, roleInfo, roleName);
-            return;
-        }*/
         string roleName = "NONE";
         RoleId? roleId = GetRoleIdByName(command);
         if (roleId.HasValue)
@@ -665,19 +646,23 @@ internal static class RoleinformationText
 
         SendCommand(target, Format(ModTranslation.GetString("RoleInfoError"), command));
     }
+    /// <summary>
+    /// 役職名からRoleIdを取得する
+    /// </summary>
+    /// <param name="Name">取得したい役職名 又は 役職のRoleId(string型)</param>
+    /// <returns>引数に対応するRoleId</returns>
     public static RoleId? GetRoleIdByName(string Name)
     {
-        (string[] roleNameKey, bool isSuccess) = ModTranslation.GetTranslateKey(Name);
+        (string[] roleNameKeys, bool isSuccess) = ModTranslation.GetTranslateKey(Name);
 
-        string beforeIdChangeRoleName =
-            isSuccess
-                ? roleNameKey.FirstOrDefault(key => key.Contains("Name")).Replace("Name", "") ?? Name // 翻訳キーの取得に成功した場合, 配列から"Name"を含む要素を取得し そのから要素"Name"を外して, RoleIdに一致する役職名を取得する.
-                : Name; // 翻訳辞書からの取得に失敗した場合, 入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
-
-        // 参考 => https://qiita.com/masaru/items/a44dc30bfc18aac95015#fnref1
-        // 取得した役職名(string)からRoleIdを取得する。
-        var roleIdChange = Enum.TryParse(beforeIdChangeRoleName, out RoleId roleId) && Enum.IsDefined(typeof(RoleId), roleId);
-        return roleIdChange ? roleId : null;
+        foreach (var key in roleNameKeys)
+        {
+            // 翻訳キーの取得に成功していた場合、その文字列から"Name"を外す。取得に失敗していた場合、入力された文字のまま (失敗処理は, RoleIdで入力された場合も含む)
+            // 取得した役職名又はRoleId(string)からRoleIdを取得する。(存在しなかった場合null)
+            // 複数取得できた場合最初の要素のみ返す
+            if (Enum.TryParse<RoleId>(isSuccess ? key.Replace("Name", "") : key, out var roleId) && Enum.IsDefined(typeof(RoleId), roleId)) return roleId;
+        }
+        return default;
     }
     internal static void YourRoleInfoSendCommand()
     {

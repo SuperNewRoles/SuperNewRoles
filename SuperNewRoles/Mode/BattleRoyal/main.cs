@@ -218,7 +218,7 @@ class Main
             if (players.Count <= 0)
             {
                 __instance.enabled = false;
-                GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
+                GameManager.Instance.RpcEndGame(GameOverReason.CrewmatesByVote, false);
                 return true;
             }
             bool Flag = false;
@@ -259,7 +259,7 @@ class Main
             }
             catch { SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal:Error] Winners Erroe"); }
             __instance.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.CrewmatesByTask, false);
             return true;
         }
         else
@@ -288,13 +288,13 @@ class Main
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
                 }
-                GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
+                GameManager.Instance.RpcEndGame(GameOverReason.ImpostorsByKill, false);
                 return true;
             }
             else if (alives == 0)
             {
                 __instance.enabled = false;
-                GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
+                GameManager.Instance.RpcEndGame(GameOverReason.CrewmatesByVote, false);
                 return true;
             }
         }

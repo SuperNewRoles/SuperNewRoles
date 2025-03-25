@@ -91,7 +91,7 @@ public static class main
         RPCHelper.RpcSyncAllNetworkedPlayer();
         new LateTask(() =>
         {
-            GameManager.Instance.LogicOptions.Manager.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.LogicOptions.Manager.RpcEndGame(GameOverReason.CrewmatesByTask, false);
         }, 0.1f);
     }
     public static void AssignPants()
