@@ -56,7 +56,7 @@ class Main
     {
         if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
-            CustomEndGame(__instance, GameOverReason.HumansByTask, false);
+            CustomEndGame(__instance, GameOverReason.CrewmatesByTask, false);
             return true;
         }
         return false;
@@ -68,9 +68,9 @@ class Main
         {
             var endReason = GameData.LastDeathReason switch
             {
-                DeathReason.Exile => GameOverReason.ImpostorByVote,
-                DeathReason.Kill => GameOverReason.ImpostorByKill,
-                _ => GameOverReason.ImpostorByVote,
+                DeathReason.Exile => GameOverReason.ImpostorsByVote,
+                DeathReason.Kill => GameOverReason.ImpostorsByKill,
+                _ => GameOverReason.ImpostorsByVote,
             };
             CustomEndGame(__instance, endReason, false);
             return true;
@@ -82,14 +82,14 @@ class Main
     {
         if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive == 0)
         {
-            CustomEndGame(__instance, GameOverReason.HumansByVote, false);
+            CustomEndGame(__instance, GameOverReason.CrewmatesByVote, false);
             return true;
         }
         return false;
     }
     public static void EndGameForSabotage(ShipStatus __instance)
     {
-        CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
+        CustomEndGame(__instance, GameOverReason.ImpostorsBySabotage, false);
         return;
     }
 }

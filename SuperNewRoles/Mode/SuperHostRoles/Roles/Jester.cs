@@ -75,7 +75,7 @@ class Jester
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[SHR:Error] Mad Jester WrapUp Error:" + e);
                 }
-                EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, (CustomGameOverReason)GameOverReason.ImpostorByVote, false);
+                EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, (CustomGameOverReason)GameOverReason.ImpostorsByVote, false);
             }
         }
     }
