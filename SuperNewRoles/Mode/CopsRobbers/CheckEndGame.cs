@@ -18,7 +18,7 @@ public static class CheckEndGame
         if (impostorwin)
         {
             __instance.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorsByKill, false);
             return false;
         }
         else if (CustomOptionHolder.FoxCanHouwaWin.GetBool())
@@ -29,7 +29,7 @@ public static class CheckEndGame
         else if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
             __instance.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.CrewmatesByTask, false);
             return false;
         }
         else

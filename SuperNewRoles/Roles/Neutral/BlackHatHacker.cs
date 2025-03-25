@@ -273,7 +273,7 @@ public class BlackHatHacker
             PlayerControl player = ModHelpers.PlayerById(id);
             if (!player) continue;
             if (player.IsDead()) continue;
-            float scope = GameOptionsData.KillDistances[Mathf.Clamp(BlackHatHackerInfectionScope.GetSelection(), 0, 2)];
+            float scope = GameOptionsManager.Instance.currentGameMode == GameModes.Normal ? NormalGameOptionsV09.KillDistances[Mathf.Clamp(BlackHatHackerInfectionScope.GetSelection(), 0, 2)] : HideNSeekGameOptionsV09.KillDistances[Mathf.Clamp(BlackHatHackerInfectionScope.GetSelection(), 0, 2)];
             List<PlayerControl> infection = PlayerControl.AllPlayerControls.ToList().
                                             FindAll(x => !x.AmOwner && Vector3.Distance(player.transform.position, x.transform.position) <= scope);
             foreach (PlayerControl target in infection) InfectionTimer[PlayerControl.LocalPlayer.PlayerId][target.PlayerId] += Time.fixedDeltaTime;

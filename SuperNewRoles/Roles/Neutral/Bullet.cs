@@ -39,7 +39,7 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
         LoadBulletButtonInfo = new(null, this, LoadBulletOnClick,
             (isAlive) => isAlive && SidekickedParent?.IsLoadedBullet == false, CustomButtonCouldType.CanMove, null,
             ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BulletLoadBulletButton.png", 115f),
-            WaveCannonJackal.BulletLoadBulletCooltime.GetFloat, new(1,2), "BulletLoadBulletButtonName",
+            WaveCannonJackal.BulletLoadBulletCooltime.GetFloat, new(1, 2), "BulletLoadBulletButtonName",
             KeyCode.F, 49, CouldUse: IsNearParent);
         CustomButtonInfos = [LoadBulletButtonInfo];
     }
@@ -55,7 +55,7 @@ public class Bullet : RoleBase, ISidekick, INeutral, IVentAvailable, ISaboAvaila
             return false;
         if (SidekickedParent?.Player == null)
             return false;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameManager.Instance.LogicOptions.GetKillDistance();
         if (!MapUtilities.CachedShipStatus) return false;
         if (Player.inVent) return false;
 
