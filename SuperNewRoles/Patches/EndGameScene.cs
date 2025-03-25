@@ -366,9 +366,9 @@ public static class OnGameEndPatch
         AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
         if (AdditionalTempData.gameOverReason == (GameOverReason)CustomGameOverReason.Haison)
             endGameResult.GameOverReason = GameOverReason.ImpostorDisconnect;
-        // ゲームオーバー理由の整数値が10以上の場合、理由をImpostorByKillに上書きします。
+        // ゲームオーバー理由の整数値が10以上の場合、理由をImpostorsByKillに上書きします。
         else if ((int)endGameResult.GameOverReason >= 9)
-            endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
+            endGameResult.GameOverReason = GameOverReason.ImpostorsByKill;
     }
 
     public static (IEnumerable<ExPlayerControl> Winners, WinCondition winCondition, List<NetworkedPlayerInfo> WillRevivePlayers) HandleEndGameProcess(ref GameOverReason gameOverReason)
@@ -418,13 +418,13 @@ public static class OnGameEndPatch
 
         switch (reason)
         {
-            case (CustomGameOverReason)GameOverReason.HumansByTask:
-            case (CustomGameOverReason)GameOverReason.HumansByVote:
-            case (CustomGameOverReason)GameOverReason.HumansDisconnect:
+            case (CustomGameOverReason)GameOverReason.CrewmatesByTask:
+            case (CustomGameOverReason)GameOverReason.CrewmatesByVote:
+            case (CustomGameOverReason)GameOverReason.CrewmateDisconnect:
                 return GetCrewmateWinInfo(emptyReviveList);
-            case (CustomGameOverReason)GameOverReason.ImpostorByKill:
-            case (CustomGameOverReason)GameOverReason.ImpostorBySabotage:
-            case (CustomGameOverReason)GameOverReason.ImpostorByVote:
+            case (CustomGameOverReason)GameOverReason.ImpostorsByKill:
+            case (CustomGameOverReason)GameOverReason.ImpostorsBySabotage:
+            case (CustomGameOverReason)GameOverReason.ImpostorsByVote:
             case (CustomGameOverReason)GameOverReason.ImpostorDisconnect:
                 return GetImpostorWinInfo(emptyReviveList);
             case CustomGameOverReason.Haison:
@@ -552,7 +552,7 @@ public static class OnGameEndPatch
 
     private static void UpdatePlayerStatusForSabotage(NetworkedPlayerInfo player, ExPlayerControl exPlayer, GameOverReason gameOverReason)
     {
-        if (gameOverReason == GameOverReason.ImpostorBySabotage && !player.IsDead && !player.Role.IsImpostor)
+        if (gameOverReason == GameOverReason.ImpostorsBySabotage && !player.IsDead && !player.Role.IsImpostor)
         {
             player.IsDead = true;
             if (exPlayer.IsAlive())

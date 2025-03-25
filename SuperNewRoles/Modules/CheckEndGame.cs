@@ -127,11 +127,11 @@ public static class CheckGameEndPatch
 
     private static GameOverReason MapVictoryTypeToGameOverReason(VictoryType victoryType) => victoryType switch
     {
-        VictoryType.ImpostorKill => GameOverReason.ImpostorByKill,
-        VictoryType.ImpostorVote => GameOverReason.ImpostorByVote,
-        VictoryType.ImpostorSabotage => GameOverReason.ImpostorBySabotage,
-        VictoryType.CrewmateTask => GameOverReason.HumansByTask,
-        VictoryType.CrewmateVote => GameOverReason.HumansByVote,
+        VictoryType.ImpostorKill => GameOverReason.ImpostorsByKill,
+        VictoryType.ImpostorVote => GameOverReason.ImpostorsByVote,
+        VictoryType.ImpostorSabotage => GameOverReason.ImpostorsBySabotage,
+        VictoryType.CrewmateTask => GameOverReason.CrewmatesByTask,
+        VictoryType.CrewmateVote => GameOverReason.CrewmatesByVote,
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };

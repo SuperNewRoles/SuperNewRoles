@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using AmongUs.Data;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -70,9 +71,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
         target.gameObject.layer = LayerMask.NameToLayer("Ghost");
         if (target.AmOwner)
         {
-            StatsManager instance = StatsManager.Instance;
-            if (instance != null)
-                instance.IncrementStat(StringNames.StatsTimesMurdered);
+            DataManager.Player.Stats.IncrementStat(StatID.TimesMurdered);
             if (Minigame.Instance)
                 Minigame.Instance.Close();
             if (MapBehaviour.Instance)
@@ -83,7 +82,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
         target.MyPhysics.ResetMoveState();
         target.NetTransform.RpcSnapTo(target.transform.position);
         if (killer.AmOwner)
-            StatsManager.Instance.IncrementStat(StringNames.StatsTimesMurdered);
+            DataManager.Player.Stats.IncrementStat(StatID.TimesMurdered);
         if (FastDestroyableSingleton<HudManager>.Instance != null)
             FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(killer.Data, target.Data);
     }
