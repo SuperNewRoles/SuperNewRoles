@@ -315,12 +315,13 @@ public partial class SuperNewRolesPlugin : BasePlugin
             return false;
         }
     }
-
+    // Reactor来たら確認
+    /*
     [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
     public static class AmBannedPatch
     {
         public static void Postfix(out bool __result) => __result = false;
-    }
+    }*/
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
     public static class ChatControllerAwakePatch
     {

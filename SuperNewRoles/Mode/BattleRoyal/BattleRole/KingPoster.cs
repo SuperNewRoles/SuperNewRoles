@@ -59,7 +59,7 @@ public class KingPoster : BattleRoyalRole
                     if (p.PlayerId == CurrentPlayer.PlayerId) continue;
                     if (p.IsDead()) continue;
                     //ショートの距離か判定
-                    if (Vector2.Distance(p.transform.position, CurrentPlayer.transform.position) > GameOptionsData.KillDistances[0]) continue;
+                    if (Vector2.Distance(p.transform.position, CurrentPlayer.transform.position) > NormalGameOptionsV09.KillDistances.FirstOrDefault()) continue;
                     if (BattleTeam.GetTeam(CurrentPlayer).IsTeam(p)) continue;
                     CurrentPlayer.RpcMurderPlayer(p, true);
                 }

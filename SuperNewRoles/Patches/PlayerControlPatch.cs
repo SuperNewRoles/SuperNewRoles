@@ -521,7 +521,7 @@ public static class PlayerControlFixedUpdatePatch
     public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, IEnumerable<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameManager.Instance.LogicOptions.GetKillDistance();
         if (!MapUtilities.CachedShipStatus) return result;
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
@@ -561,7 +561,7 @@ public static class PlayerControlFixedUpdatePatch
     public static PlayerControl JackalSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameManager.Instance.LogicOptions.GetKillDistance();
         if (!MapUtilities.CachedShipStatus) return result;
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
@@ -606,7 +606,7 @@ public static class PlayerControlFixedUpdatePatch
         PlayerControl result = null;
         if (!MapUtilities.CachedShipStatus) return result;
 
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameManager.Instance.LogicOptions.GetKillDistance();
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
         if (!targetingPlayer.Data.IsDead)
         {

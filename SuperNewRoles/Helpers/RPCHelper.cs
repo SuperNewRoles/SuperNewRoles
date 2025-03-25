@@ -195,7 +195,7 @@ public static class RPCHelper
             Instance.VotingComplete(states, exiled, tie);
         else
         {
-            Logger.Info("Desync Send Now ->"+seer.GetClientId().ToString());
+            Logger.Info("Desync Send Now ->" + seer.GetClientId().ToString());
             MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(Instance.NetId, (byte)RpcCalls.VotingComplete, SendOption.Reliable, targetClientId: seer.GetClientId());
             val.WritePacked(states.Length);
             foreach (VoterState voterState in states)
@@ -531,8 +531,9 @@ public static class RPCHelper
             int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
             player.SetHat(hatId, valueOrDefault);
         }
-        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetHat, seePlayer);
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetHatStr, seePlayer);
         messageWriter.Write(hatId);
+        messageWriter.Write(player.GetNextRpcSequenceId(RpcCalls.SetHatStr));
         messageWriter.EndRPC();
     }
     public static void RpcSetVisorUnchecked(this PlayerControl player, string visorId, PlayerControl seePlayer = null)
@@ -542,8 +543,9 @@ public static class RPCHelper
             int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
             player.SetVisor(visorId, valueOrDefault);
         }
-        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetVisor, seePlayer);
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetVisorStr, seePlayer);
         messageWriter.Write(visorId);
+        messageWriter.Write(player.GetNextRpcSequenceId(RpcCalls.SetVisorStr));
         messageWriter.EndRPC();
     }
     public static void RpcSetSkinUnchecked(this PlayerControl player, string skinId, PlayerControl seePlayer = null)
@@ -553,8 +555,9 @@ public static class RPCHelper
             int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
             player.SetSkin(skinId, valueOrDefault);
         }
-        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetSkin, seePlayer);
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetSkinStr, seePlayer);
         messageWriter.Write(skinId);
+        messageWriter.Write(player.GetNextRpcSequenceId(RpcCalls.SetSkinStr));
         messageWriter.EndRPC();
     }
     public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, NetworkedPlayerInfo exiled, bool tie, PlayerControl SeePlayer)

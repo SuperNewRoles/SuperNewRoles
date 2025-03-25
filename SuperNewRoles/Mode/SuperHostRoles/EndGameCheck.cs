@@ -91,7 +91,7 @@ class EndGameCheck
             p.RpcSetRole(RoleTypes.GuardianAngel);
         }
 
-        if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
+        if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorsByKill || reason == GameOverReason.ImpostorsBySabotage || reason == GameOverReason.ImpostorsByVote || reason == GameOverReason.ImpostorDisconnect))
         {
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -159,7 +159,7 @@ class EndGameCheck
         EndGameDetail.SetEndGameDetail(ModHelpers.Cs(color, text), ShowTargets);
         _ = new LateTask(() => RPCHelper.RpcSyncAllNetworkedPlayer(), 0.2f);
         _ = new LateTask(() => ChangeName.UpdateRoleNames(ChangeNameType.EndGame), 0.25f);
-        _ = new LateTask(() => GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByVote, showAd), 0.4f);
+        _ = new LateTask(() => GameManager.Instance.RpcEndGame(GameOverReason.ImpostorsByVote, showAd), 0.4f);
     }
     public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
     {
@@ -202,7 +202,7 @@ class EndGameCheck
         if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)//&& Chat.WinCond == null)
         {
             Chat.WinCond = CustomGameOverReason.CrewmateWin;
-            CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.HumansByTask, false);
+            CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.CrewmatesByTask, false);
             return true;
         }
         return false;
@@ -234,7 +234,7 @@ class EndGameCheck
                 }
             }
             __instance.enabled = false;
-            CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.HumansByVote, false);
+            CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.CrewmatesByVote, false);
             return true;
         }
         return false;
@@ -247,9 +247,9 @@ class EndGameCheck
             __instance.enabled = false;
             var endReason = GameData.LastDeathReason switch
             {
-                DeathReason.Exile => GameOverReason.ImpostorByVote,
-                DeathReason.Kill => GameOverReason.ImpostorByKill,
-                _ => GameOverReason.ImpostorByVote,
+                DeathReason.Exile => GameOverReason.ImpostorsByVote,
+                DeathReason.Kill => GameOverReason.ImpostorsByKill,
+                _ => GameOverReason.ImpostorsByVote,
             };
             if (Demon.IsDemonWinFlag())
             {
@@ -348,13 +348,14 @@ class EndGameCheck
                 CustomEndGame(__instance, CustomGameOverReason.FoxWin, false);
             }
             return true;
-        };
+        }
+        ;
         return false;
     }
     public static void EndGameForSabotage(ShipStatus __instance)
     {
         Chat.WinCond = CustomGameOverReason.ImpostorWin;
-        CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.ImpostorBySabotage, false);
+        CustomEndGame(__instance, (CustomGameOverReason)GameOverReason.ImpostorsBySabotage, false);
     }
 }
 public static class EndGameDetail

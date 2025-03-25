@@ -51,7 +51,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     public PavlovsDogs(PlayerControl p) : base(p, Roleinfo, null, Introinfo)
     {
         UpdatedToOwnerDead = false;
-        PavlovsKillButton = new(null,this,KillOnClick,(isAlive) => isAlive,
+        PavlovsKillButton = new(null, this, KillOnClick, (isAlive) => isAlive,
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             null, FastDestroyableSingleton<HudManager>.Instance.KillButton.graphic.sprite,
             () => OwnerDead ?
@@ -109,7 +109,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     public static PlayerControl SetTarget(bool IsPavlovsTeamTarget = false)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameManager.Instance.LogicOptions.GetKillDistance();
         if (!MapUtilities.CachedShipStatus) return result;
         PlayerControl targetingPlayer = PlayerControl.LocalPlayer;
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
@@ -202,7 +202,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     }
     public void BuildSetting(IGameOptions gameOptions)
     {
-        Logger.Info("PavlovsDogsRunAwayTime: "+ PavlovsOwner.RunAwayDeathTime.GetFloat());
+        Logger.Info("PavlovsDogsRunAwayTime: " + PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.ShapeshifterCooldown, PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.ShapeshifterDuration, PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.KillCooldown,

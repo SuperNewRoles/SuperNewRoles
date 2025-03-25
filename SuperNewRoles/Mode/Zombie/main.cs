@@ -64,13 +64,13 @@ static class Main
         if (IsZombieWin)
         {
             __instance.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorsByKill, false);
             return true;
         }
         if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
             __instance.enabled = false;
-            GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.CrewmatesByVote, false);
             return true;
         }
         return false;
