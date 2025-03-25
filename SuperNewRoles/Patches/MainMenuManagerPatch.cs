@@ -8,22 +8,25 @@ namespace SuperNewRoles.Patches;
 
 public static class MainMenuManagerPatch
 {
-    private static GameObject BackgroundCover;
+    private static SpriteRenderer BackgroundCover;
 
     // BackgroundCoverの有効状態を管理するヘルパーメソッド
-    private static void SetBackgroundCover(MainMenuManager instance, bool active)
+    private static void SetBackgroundCover(MainMenuManager instance, bool enterCode)
     {
-        if (active)
+        if (BackgroundCover == null)
         {
-            if (BackgroundCover == null)
-            {
-                BackgroundCover = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("BackgroundCover"), instance.transform);
-            }
-            BackgroundCover.SetActive(true);
+            BackgroundCover = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("BackgroundCover"), instance.transform).GetComponent<SpriteRenderer>();
+            BackgroundCover.transform.localScale = new(0.715f, 0.4f, 0.8f);
         }
-        else if (BackgroundCover != null)
+        if (enterCode)
         {
-            BackgroundCover.SetActive(false);
+            BackgroundCover.transform.localPosition = new Vector3(7, -0.2f, -0.1f);
+            BackgroundCover.color = new Color(1, 1, 1, 1);
+        }
+        else
+        {
+            BackgroundCover.transform.localPosition = new Vector3(7, -0.2f, 2);
+            BackgroundCover.color = new Color(1, 1, 1, 0.35f);
         }
     }
 
@@ -55,27 +58,65 @@ public static class MainMenuManagerPatch
         yield return Effects.Slide2D(container, overshoot, end, duration2);
     }
 
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
+    public static class MainMenuManagerStartPatch
+    {
+        public static void Postfix(MainMenuManager __instance)
+        {
+            SetBackgroundCover(__instance, false);
+        }
+    }
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.ResetScreen))]
+    public static class MainMenuManagerResetScreenPatch
+    {
+        public static void Postfix(MainMenuManager __instance)
+        {
+            SetBackgroundCover(__instance, false);
+        }
+    }
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu))]
+    public static class MainMenuManagerOpenGameModeMenuPatch
+    {
+        public static void Postfix(MainMenuManager __instance)
+        {
+            SetBackgroundCover(__instance, true);
+        }
+    }
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenOnlineMenu))]
+    public static class MainMenuManagerOpenOnlineMenuPatch
+    {
+        public static void Postfix(MainMenuManager __instance)
+        {
+            SetBackgroundCover(__instance, true);
+        }
+    }
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenAccountMenu))]
+    public static class MainMenuManagerOpenAccountMenuPatch
+    {
+        public static void Postfix(MainMenuManager __instance)
+        {
+            SetBackgroundCover(__instance, true);
+        }
+    }
+
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenEnterCodeMenu))]
     public static class MainMenuManagerOpenEnterCodeMenuPatch
     {
         public static bool Prefix(MainMenuManager __instance, bool animate)
         {
+            if (__instance.animating) return false;
             SetBackgroundCover(__instance, true);
+            SetupEnterCodeMenu(__instance);
 
-            if (!__instance.animating)
+            if (animate)
             {
-                SetupEnterCodeMenu(__instance);
-
-                if (animate)
-                {
-                    __instance.StartCoroutine(EnterCodeSlideCo(__instance).WrapToIl2Cpp());
-                    return false;
-                }
-
-                __instance.enterCodeHeader.SetActive(true);
-                SetContainerX(__instance.enterCodeContainer, 0f);
-                SetContainerX(__instance.onlineButtonsContainer, 0f);
+                __instance.StartCoroutine(EnterCodeSlideCo(__instance).WrapToIl2Cpp());
+                return false;
             }
+
+            __instance.enterCodeHeader.SetActive(true);
+            SetContainerX(__instance.enterCodeContainer, 0f);
+            SetContainerX(__instance.onlineButtonsContainer, 0f);
             return false;
         }
 
