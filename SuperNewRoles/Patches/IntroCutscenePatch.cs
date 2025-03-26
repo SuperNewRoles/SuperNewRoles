@@ -8,6 +8,7 @@ using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -206,6 +207,13 @@ public static class IntroCutscenePatch
             if (MapSettingOptions.DeviceOptions)
             {
                 DevicesPatch.ClearAndReload();
+            }
+            foreach (var ability in ExPlayerControl.LocalPlayer.PlayerAbilities)
+            {
+                if (ability is CustomButtonBase customButtonBase && customButtonBase.IsFirstCooldownTenSeconds)
+                {
+                    customButtonBase.SetCoolTenSeconds();
+                }
             }
         }
         private static void ReAssignTasks()

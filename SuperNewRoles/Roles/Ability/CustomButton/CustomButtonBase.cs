@@ -43,6 +43,8 @@ public abstract class CustomButtonBase : AbilityBase
     public abstract Sprite Sprite { get; }
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
 
+    public virtual bool IsFirstCooldownTenSeconds => true;
+
     //TODO:未実装
     //Updateで感知するよりも、button押したのをトリガーにするべきな気がするけどそれは可能か？
     protected abstract KeyCode? hotkey { get; }
@@ -80,7 +82,7 @@ public abstract class CustomButtonBase : AbilityBase
         Timer -= Time.deltaTime;
     }
 
-    public virtual ActionButton textTemplate => HudManager.Instance.AbilityButton;
+    public virtual ActionButton textTemplate => HudManager.Instance.UseButton;
 
     public CustomButtonBase() { }
 
@@ -89,7 +91,7 @@ public abstract class CustomButtonBase : AbilityBase
         actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
         actionButton.graphic.color = Color.white;
         PassiveButton button = actionButton.GetComponent<PassiveButton>();
-        button.OnClick = new Button.ButtonClickedEvent();
+        button.OnClick = new();
         button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
         if (actionButton.usesRemainingText != null) actionButton.usesRemainingText.transform.parent.gameObject.SetActive(false);
         button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
@@ -100,6 +102,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             UnityEngine.Object.Destroy(actionButton.buttonLabelText);
             actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
+            actionButton.buttonLabelText.transform.localPosition = new(0, -0.56f, -10);
         }
         SetActive(false);
         hudUpdateEvent = HudUpdateEvent.Instance.AddListener(OnUpdate);
@@ -224,5 +227,9 @@ public abstract class CustomButtonBase : AbilityBase
         HudUpdateEvent.Instance.RemoveListener(hudUpdateEvent);
         WrapUpEvent.Instance.RemoveListener(wrapUpEvent);
         GameObject.Destroy(actionButton.gameObject);
+    }
+    public void SetCoolTenSeconds()
+    {
+        Timer = 10f;
     }
 }

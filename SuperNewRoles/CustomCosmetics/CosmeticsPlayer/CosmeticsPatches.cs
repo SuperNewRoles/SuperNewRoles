@@ -65,6 +65,26 @@ public static class VisorLayer_SetFlipX
         }
     }
 }
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetDeadFlipX))]
+public static class CosmeticsLayer_SetDeadFlipX
+{
+    public static void Postfix(CosmeticsLayer __instance, bool flipped)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.visor1?.SetFlipX(flipped);
+        customCosmeticsLayer?.visor2?.SetFlipX(flipped);
+    }
+}
+[HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.SetFlipXWithoutPet))]
+public static class CosmeticsLayer_SetFlipXWithoutPet
+{
+    public static void Postfix(CosmeticsLayer __instance, bool flipped)
+    {
+        CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
+        customCosmeticsLayer?.visor1?.SetFlipX(flipped);
+        customCosmeticsLayer?.visor2?.SetFlipX(flipped);
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ClientInitialize))]
 public static class PlayerControl_ClientInitialize
 {
