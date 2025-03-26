@@ -69,8 +69,9 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         limitText.text = ModTranslation.GetString("GuesserLimitText", Count, Math.Min(maxShots, shotsPerMeeting) - ShotThisMeeting);
         limitText.enableWordWrapping = false;
         limitText.transform.localScale = Vector3.one * 0.5f;
-        limitText.transform.localPosition = new Vector3(-3.15f, 2.27f, -10);
+        limitText.transform.localPosition = new Vector3(-3.58f, 2.27f, -10);
         limitText.gameObject.SetActive(true);
+        limitText.alignment = TMPro.TextAlignmentOptions.Left;
     }
     public override void OnMeetingUpdate()
     {
