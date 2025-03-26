@@ -1386,8 +1386,8 @@ CamouflagerCamouflageQuarreledSetting,Quarreled can still mark while activating 
 CamouflagerCamouflageChangeColorSetting,Change the color of camouflage,カモフラージュ中の色を変更する,自定义隐蔽色,自定義隱蔽色
 CamouflagerCamouflageColorSetting,Camouflage color,カモフラージュ中の色,隐蔽色,隱蔽色
 CamouflagerButtonName,Camouflager,カモフラージュ,隐蔽,隱蔽
-CamouflagerSingleColor,Single color,単色
-CamouflagerRandomColor,Random,ランダム
+CamouflagerSingleColor,Single color,単色,,單色
+CamouflagerRandomColor,Random,ランダム,,隨機
 PavlovsdogsName,Pavlov's dogs,パブロフの犬,巴甫洛夫的狗,巴甫洛夫的狗
 PavlovsownerName,Pavlov's owner,パブロフのオーナー,巴甫洛夫,巴甫洛夫
 PavlovsdogsTitle1,Let us be of service.,お役に立ってみせましょう,我好想做巴甫洛夫先生的狗啊,我好想做巴甫洛夫先生的狗啊
