@@ -217,7 +217,13 @@ public class ExPlayerControl
     public bool IsImpostorWinTeam()
         => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller;
     public bool IsPavlovsTeam()
-        => Role == RoleId.PavlovsOwner || PlayerAbilities.FirstOrDefault(x => x is PavlovsOwnerAbility)?.Count > 0;
+    {
+        if (Role == RoleId.PavlovsDog)
+            return true;
+        if (PlayerAbilities.FirstOrDefault(x => x is PavlovsOwnerAbility) is PavlovsOwnerAbility ownerAbility)
+            return ownerAbility.HasRemainingDogCount();
+        return false;
+    }
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));
     public bool IsFriendRoles()
@@ -323,6 +329,10 @@ public class ExPlayerControl
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);
         _hasAbilityCache.Clear();
+    }
+    public override string ToString()
+    {
+        return $"{Data?.PlayerName}({PlayerId}): {Role} {PlayerAbilities.Count}";
     }
 }
 public static class ExPlayerControlExtensions

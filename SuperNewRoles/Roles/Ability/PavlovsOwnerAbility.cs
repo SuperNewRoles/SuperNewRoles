@@ -68,7 +68,7 @@ public class PavlovsOwnerAbility : AbilityBase
     {
         return player.IsAlive() &&
             (dogAbility == null || dogAbility.Player == null || dogAbility.Player.IsDead()) &&
-            (_data.maxSidekickCount <= 0 || _sidekickCount < _data.maxSidekickCount);
+            HasRemainingDogCount();
     }
 
     private void OnSidekickCreated(ExPlayerControl owner, ExPlayerControl sidekick)
@@ -97,5 +97,9 @@ public class PavlovsOwnerAbility : AbilityBase
     {
         owner.dogAbility = dog;
         dog.ownerAbility = owner;
+    }
+    public bool HasRemainingDogCount()
+    {
+        return _data.maxSidekickCount <= 0 || _sidekickCount < _data.maxSidekickCount;
     }
 }

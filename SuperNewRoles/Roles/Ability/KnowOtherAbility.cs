@@ -27,20 +27,11 @@ public class KnowOtherAbility : AbilityBase
 
     private void OnNameTextUpdate(NameTextUpdateEventData data)
     {
-        UpdateImpostorNameColors();
-    }
-
-    private void UpdateImpostorNameColors()
-    {
-        foreach (var player in ExPlayerControl.ExPlayerControls)
-        {
-            if (!CanKnowOther(player))
-                continue;
-            if (IsShowRole())
-                NameText.UpdateVisiable(player, true);
-            Color32 color = Color?.Invoke(player) ?? player.roleBase.RoleColor;
-            UpdatePlayerNameColor(player, color);
-        }
+        if (!CanKnowOther(data.Player)) return;
+        if (IsShowRole())
+            NameText.UpdateVisiable(data.Player, true);
+        Color32 color = Color?.Invoke(data.Player) ?? data.Player.roleBase.RoleColor;
+        UpdatePlayerNameColor(data.Player, color);
     }
 
     private void UpdatePlayerNameColor(ExPlayerControl player, Color color)
