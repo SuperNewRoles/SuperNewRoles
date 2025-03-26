@@ -18,7 +18,9 @@ class MadKiller : RoleBase<MadKiller>
         () => new MadKillerAbility(new MadKillerData(
             hasImpostorVision: SideKiller.MadKillerHasImpostorVision,
             couldUseVent: SideKiller.MadKillerCanUseVent,
-            killCooldown: SideKiller.MadKillerKillCooldown
+            killCooldown: SideKiller.MadKillerKillCooldown,
+            cannotBeSeenBeforePromotion: SideKiller.CannotSeeMadKillerBeforePromotion,
+            cannotSeeImpostorBeforePromotion: SideKiller.MadKillerCannotSeeImpostorBeforePromotion
         ))
     };
 

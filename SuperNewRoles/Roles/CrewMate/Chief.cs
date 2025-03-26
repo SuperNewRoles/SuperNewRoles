@@ -34,6 +34,10 @@ class Chief : RoleBase<Chief>
 
     [CustomOptionFloat("ChiefAppointCooldown", 0f, 60f, 2.5f, 30f)]
     public static float ChiefAppointCooldown;
+
+    [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
+    public static bool ChiefCanSeeCreatedSheriff;
+
     [CustomOptionFloat("ChiefSheriffKillCooldown", 0f, 60f, 2.5f, 25f)]
     public static float ChiefSheriffKillCooldown;
 
@@ -54,10 +58,6 @@ class Chief : RoleBase<Chief>
 
     [CustomOptionBool("ChiefSheriffCanKillLovers", true)]
     public static bool ChiefSheriffCanKillLovers;
-
-    // 作成したシェリフがわかる設定を追加
-    [CustomOptionBool("ChiefCanSeeCreatedSheriff", false)]
-    public static bool ChiefCanSeeCreatedSheriff;
 }
 
 public class ChiefAbility : AbilityBase

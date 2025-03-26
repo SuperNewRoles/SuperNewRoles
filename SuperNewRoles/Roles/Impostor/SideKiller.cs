@@ -49,4 +49,7 @@ class SideKiller : RoleBase<SideKiller>
 
     [CustomOptionBool("CannotSeeMadKillerBeforePromotion", false)]
     public static bool CannotSeeMadKillerBeforePromotion;
+
+    [CustomOptionBool("MadKillerCannotSeeImpostorBeforePromotion", false, parentFieldName: nameof(CannotSeeMadKillerBeforePromotion))]
+    public static bool MadKillerCannotSeeImpostorBeforePromotion;
 }

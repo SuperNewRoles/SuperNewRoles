@@ -14,7 +14,9 @@ namespace SuperNewRoles.Roles.Ability;
 public record MadKillerData(
     bool hasImpostorVision,
     bool couldUseVent,
-    float killCooldown
+    float killCooldown,
+    bool cannotBeSeenBeforePromotion,
+    bool cannotSeeImpostorBeforePromotion
 );
 
 public class MadKillerAbility : AbilityBase
@@ -37,7 +39,7 @@ public class MadKillerAbility : AbilityBase
     {
         _data = data;
         _isAwakened = false;
-        _cannotBeSeenBeforePromotion = false;
+        _cannotBeSeenBeforePromotion = data.cannotBeSeenBeforePromotion;
         _currentKillCooldown = data.killCooldown;
     }
 
@@ -50,7 +52,7 @@ public class MadKillerAbility : AbilityBase
     {
         if (data.Player == Player && ExPlayerControl.LocalPlayer.IsImpostor())
         {
-            if (!_cannotBeSeenBeforePromotion || !_isAwakened) return;
+            if (_cannotBeSeenBeforePromotion && !_isAwakened) return;
             NameText.SetNameTextColor(data.Player, Palette.ImpostorRed);
         }
     }
@@ -60,7 +62,7 @@ public class MadKillerAbility : AbilityBase
         _disconnectEventListener = DisconnectEvent.Instance.AddListener(OnPlayerDisconnect);
         _ventAbility = new CustomVentAbility(() => _data.couldUseVent);
         _visionAbility = new ImpostorVisionAbility(() => _data.hasImpostorVision);
-        _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion);
+        _knowImpostorAbility = new KnowImpostorAbility(() => !_cannotBeSeenBeforePromotion && !_data.cannotSeeImpostorBeforePromotion);
         _killButtonAbility = new CustomKillButtonAbility(() => _isAwakened, () => _currentKillCooldown, () => true, isTargetable: (player) => SetTargetPatch.ValidMadkiller(player));
 
         AbilityParentAbility parentAbility = new(this);
