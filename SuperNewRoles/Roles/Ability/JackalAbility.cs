@@ -47,14 +47,20 @@ public class JackalAbility : AbilityBase
             sidekickedPromoteData: JackData.SidekickType == JackalSidekickType.Sidekick ? new(RoleId.Jackal, RoleTypes.Crewmate) : null,
             onSidekickCreated: (player) =>
             {
-                if (JackData.SidekickType == JackalSidekickType.Sidekick)
+                new LateTask(() =>
                 {
-                    var jsidekick = player.PlayerAbilities.FirstOrDefault(x => x is JSidekickAbility);
-                    if (jsidekick is JSidekickAbility jsidekickAbility)
+                    if (JackData.SidekickType == JackalSidekickType.Sidekick)
                     {
-                        JSidekickAbility.RpcSetCanInfinite(JackData.IsInfiniteJackal, jsidekickAbility.AbilityId, player);
+                        Logger.Info("Sidekick created: " + player.Data.PlayerName);
+                        var jsidekick = player.PlayerAbilities.FirstOrDefault(x => x is JSidekickAbility);
+                        Logger.Info("jsidekick: " + jsidekick);
+                        if (jsidekick is JSidekickAbility jsidekickAbility)
+                        {
+                            Logger.Info("jsidekickAbility: " + jsidekickAbility);
+                            JSidekickAbility.RpcSetCanInfinite(JackData.IsInfiniteJackal, jsidekickAbility.AbilityId, player);
+                        }
                     }
-                }
+                }, 0.5f);
             }
         );
 
