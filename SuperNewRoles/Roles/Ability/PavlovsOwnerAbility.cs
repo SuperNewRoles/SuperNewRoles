@@ -57,7 +57,7 @@ public class PavlovsOwnerAbility : AbilityBase
             AssetManager.GetAsset<Sprite>("PavlovsownerCreatedogButton.png"),
             ModTranslation.GetString("PavlovsDogButtonText"),
             isTargetable: x => !x.IsPavlovsTeam(),
-            sidekickCount: () => _sidekickCount,
+            sidekickCount: () => _data.maxSidekickCount > 0 ? _data.maxSidekickCount - _sidekickCount : 0,
             sidekickSuccess: (player) => !_data.suicideOnImpostorSidekick || !player.IsImpostor(),
             onSidekickCreated: (p) => OnSidekickCreated(player, p),
             showSidekickLimitText: () => _data.maxSidekickCount > 0
@@ -66,14 +66,15 @@ public class PavlovsOwnerAbility : AbilityBase
 
     private bool CanCreateSidekick(ExPlayerControl player)
     {
-        return (dogAbility == null || dogAbility.Player == null || dogAbility.Player.IsDead()) &&
-               (_data.maxSidekickCount <= 0 || _sidekickCount < _data.maxSidekickCount);
+        return player.IsAlive() &&
+            (dogAbility == null || dogAbility.Player == null || dogAbility.Player.IsDead()) &&
+            (_data.maxSidekickCount <= 0 || _sidekickCount < _data.maxSidekickCount);
     }
 
     private void OnSidekickCreated(ExPlayerControl owner, ExPlayerControl sidekick)
     {
         _sidekickCount++;
-        if (_data.suicideOnImpostorSidekick && owner.IsImpostor())
+        if (_data.suicideOnImpostorSidekick && sidekick.IsImpostor())
         {
             owner.RpcCustomDeath(CustomDeathType.Suicide);
         }

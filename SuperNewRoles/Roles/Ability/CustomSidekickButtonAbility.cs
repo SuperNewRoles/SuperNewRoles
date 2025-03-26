@@ -58,6 +58,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         _isTargetable = isTargetable;
         _sidekickCount = sidekickCount;
         _showSidekickLimitText = showSidekickLimitText;
+        Count = sidekickCount();
     }
 
     public override void OnClick()
@@ -76,6 +77,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         _sidekickCreated = true;
         ResetTimer();
         OnCooldownStarted?.Invoke(DefaultTimer);
+        Count--;
     }
 
     public override bool CheckIsAvailable()

@@ -34,7 +34,7 @@ public abstract class CustomButtonBase : AbilityBase
     //奪える能力の場合はIRobableを継承し、Serializer/DeSerializerを実装
     private EventListener hudUpdateEvent;
     private EventListener<WrapUpEventData> wrapUpEvent;
-    private ActionButton actionButton;
+    public ActionButton actionButton { get; private set; }
     private IButtonEffect buttonEffect;
     public virtual float Timer { get; set; }
     public abstract float DefaultTimer { get; }
@@ -82,7 +82,7 @@ public abstract class CustomButtonBase : AbilityBase
         Timer -= Time.deltaTime;
     }
 
-    public virtual ActionButton textTemplate => HudManager.Instance.UseButton;
+    public virtual ActionButton textTemplate => HudManager.Instance.AbilityButton;
 
     public CustomButtonBase() { }
 

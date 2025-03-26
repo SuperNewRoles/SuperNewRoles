@@ -384,6 +384,7 @@ PavlovsDogKillCooldown,犬のキルクールタイム,Dog's Kill Cooldown,狗的
 PavlovsDogRampageKillCooldown,暴走時のキルクールタイム,Rampage Kill Cooldown,暴走时的击杀冷却时间,暴走時的擊殺冷卻時間
 PavlovsDogRampageSuicideTime,暴走時の自爆タイム,Rampage Suicide Time,暴走时的自杀时间,暴走時的自殺時間
 PavlovsDogResetSuicideTimeOnMeeting,会議で自爆タイムをリセットする,Reset Suicide Timer on Meeting,会议时重置自杀计时器,會議時重置自殺計時器
+PavlovsDogTimerText,自爆まで{0}秒,Suicide in {0} seconds,自爆前{0}秒,自爆前{0}秒
 
 # SideKiller
 SideKillerSidekickButtonName,浸食する,Infect,感染,感染

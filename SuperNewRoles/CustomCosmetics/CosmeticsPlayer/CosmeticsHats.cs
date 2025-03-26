@@ -116,7 +116,7 @@ public class CustomHatLayer : MonoBehaviour
 
         // BodySpriteの表示状態を更新（どちらかが隠れる設定の場合は非表示）
         if (CosmeticLayer.currentBodySprite != null)
-            CosmeticLayer.currentBodySprite.BodySprite.enabled = !(clayer.HideBody.hat1 || clayer.HideBody.hat2);
+            CosmeticLayer.currentBodySprite.BodySprite.enabled = !(clayer.HideBody.hat1 || clayer.HideBody.hat2) && CosmeticLayer.Visible;
 
         SetMaterialColor(color);
         UnloadAsset();
@@ -300,7 +300,7 @@ public class CustomHatLayer : MonoBehaviour
             // BodySprite の表示状態を更新
             bool shouldHideBody = clayer.HideBody.hat1 || clayer.HideBody.hat2;
             if (CosmeticLayer.currentBodySprite != null)
-                CosmeticLayer.currentBodySprite.BodySprite.enabled = !shouldHideBody;
+                CosmeticLayer.currentBodySprite.BodySprite.enabled = !shouldHideBody && CosmeticLayer.Visible;
         }
 
         // 向き (左右反転) の更新

@@ -17,7 +17,8 @@ public enum VictoryType
     ImpostorSabotage,
     CrewmateTask,
     CrewmateVote,
-    JackalDomination
+    JackalDomination,
+    PavlovsWin
 }
 
 public enum SabotageSystemType
@@ -109,6 +110,10 @@ public static class CheckGameEndPatch
         if (stats.IsJackalDominating)
             return VictoryType.JackalDomination;
 
+        // パブロフ勝利
+        if (stats.IsPavlovsWin)
+            return VictoryType.PavlovsWin;
+
         // クルーメイト勝利
         if (stats.IsCrewmateVictory)
             return VictoryType.CrewmateVote;
@@ -133,6 +138,7 @@ public static class CheckGameEndPatch
         VictoryType.CrewmateTask => GameOverReason.CrewmatesByTask,
         VictoryType.CrewmateVote => GameOverReason.CrewmatesByVote,
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
+        VictoryType.PavlovsWin => (GameOverReason)CustomGameOverReason.PavlovsWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };
 }

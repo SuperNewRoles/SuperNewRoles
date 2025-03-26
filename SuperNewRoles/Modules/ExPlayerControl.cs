@@ -217,7 +217,7 @@ public class ExPlayerControl
     public bool IsImpostorWinTeam()
         => IsImpostor() || IsMadRoles() || Role == RoleId.MadKiller;
     public bool IsPavlovsTeam()
-        => Role is RoleId.PavlovsDog or RoleId.PavlovsOwner;
+        => Role == RoleId.PavlovsOwner || PlayerAbilities.FirstOrDefault(x => x is PavlovsOwnerAbility)?.Count > 0;
     public bool IsMadRoles()
         => HasAbility(nameof(MadmateAbility));
     public bool IsFriendRoles()
