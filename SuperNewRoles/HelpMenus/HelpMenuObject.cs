@@ -162,10 +162,8 @@ public static class HelpMenuObjectManager
         foreach (var playerState in MeetingHud.Instance.playerStates)
         {
             var maskArea = playerState.transform.Find("MaskArea");
-            if (maskArea != null)
-            {
+            if (maskArea != null && maskArea.gameObject.activeSelf != active)
                 maskArea.gameObject.SetActive(active);
-            }
         }
     }
 

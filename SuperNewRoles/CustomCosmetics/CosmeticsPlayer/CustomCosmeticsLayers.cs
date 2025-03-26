@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Il2CppInterop.Runtime;
 using PowerTools;
@@ -13,7 +14,7 @@ public static class CustomCosmeticsLayers
     public static Dictionary<int, CustomVisorLayer> visorLayer2s = new();
     public static bool Exists(CosmeticsLayer cosmeticsLayer, out CustomCosmeticsLayer layer)
     {
-        return layers.TryGetValue(cosmeticsLayer.GetInstanceID(), out layer);
+        return layers.TryGetValue(cosmeticsLayer.GetInstanceID(), out layer) ? layers != null : false;
     }
     public static CustomCosmeticsLayer ExistsOrInitialize(CosmeticsLayer cosmeticsLayer)
     {
@@ -23,7 +24,20 @@ public static class CustomCosmeticsLayers
     }
     public static CustomCosmeticsLayer Initialize(CosmeticsLayer cosmeticsLayer)
     {
-        return layers[cosmeticsLayer.GetInstanceID()] = new CustomCosmeticsLayer(cosmeticsLayer);
+        if (cosmeticsLayer.hat == null || cosmeticsLayer.visor == null)
+        {
+            Logger.Error("Initialize failed: " + cosmeticsLayer.name);
+            return null;
+        }
+        try
+        {
+            return layers[cosmeticsLayer.GetInstanceID()] = new CustomCosmeticsLayer(cosmeticsLayer);
+        }
+        catch (Exception e)
+        {
+            Logger.Error("Initialize failed: " + e.Message);
+            return layers[cosmeticsLayer.GetInstanceID()] = null;
+        }
     }
     public static (CustomVisorLayer layer1, CustomVisorLayer layer2) GetVisorLayers(VisorLayer visorLayer)
     {
@@ -42,10 +56,11 @@ public class CustomCosmeticsLayer
     public CustomCosmeticsLayer(CosmeticsLayer cosmeticsLayer)
     {
         this.cosmeticsLayer = cosmeticsLayer;
+        var hat = cosmeticsLayer.hat;
         visor1 = CreateVisorLayer(cosmeticsLayer, "visor1", -0.8f);
-        hat1 = CreateHatLayer(cosmeticsLayer, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.7f));
+        hat1 = CreateHatLayer(cosmeticsLayer, hat, "hat1", new Vector3(0f, 0f, -0.2f), new Vector3(0f, 0f, 0.7f));
         hat1.LayerNumber = 1;
-        hat2 = CreateHatLayer(cosmeticsLayer, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.6f));
+        hat2 = CreateHatLayer(cosmeticsLayer, hat, "hat2", new Vector3(0f, 0f, -0.1f), new Vector3(0f, 0f, 0.6f));
         hat2.LayerNumber = 2;
         visor2 = CreateVisorLayer(cosmeticsLayer, "visor2", -0.51f);
         CustomCosmeticsLayers.visorLayer1s[cosmeticsLayer.visor.GetInstanceID()] = visor1;
@@ -53,7 +68,7 @@ public class CustomCosmeticsLayer
     }
     private CustomVisorLayer CreateVisorLayer(CosmeticsLayer cosmeticsLayer, string visorName, float z)
     {
-        CustomVisorLayer visorLayer = new GameObject(visorName, Il2CppType.Of<CustomVisorLayer>()).GetComponent<CustomVisorLayer>();
+        CustomVisorLayer visorLayer = new GameObject(visorName).AddComponent<CustomVisorLayer>();
         visorLayer.CosmeticLayer = cosmeticsLayer;
         visorLayer.transform.parent = cosmeticsLayer.transform;
         visorLayer.transform.localScale = Vector3.one;
@@ -86,20 +101,20 @@ public class CustomCosmeticsLayer
         // if (cosmeticsLayer.visor)
         return visorLayer;
     }
-    private CustomHatLayer CreateHatLayer(CosmeticsLayer baseLayer, string hatName, Vector3 frontOffset, Vector3 backOffset)
+    private CustomHatLayer CreateHatLayer(CosmeticsLayer baseLayer, HatParent hatParent, string hatName, Vector3 frontOffset, Vector3 backOffset)
     {
         // 新しいCustomHatLayerの生成と共通設定の適用
-        CustomHatLayer hatLayer = new GameObject(hatName, Il2CppType.Of<CustomHatLayer>()).GetComponent<CustomHatLayer>();
-        hatLayer.transform.parent = baseLayer.hat.transform.parent;
+        CustomHatLayer hatLayer = new GameObject(hatName).AddComponent<CustomHatLayer>();
+        hatLayer.transform.parent = cosmeticsLayer.transform;
         hatLayer.transform.localPosition = new Vector3(-0.04f, 0.575f, -0.5999f);
         hatLayer.transform.localScale = Vector3.one;
-        hatLayer.Parent = baseLayer.hat.Parent;
+        hatLayer.Parent = hatParent.Parent;
         hatLayer.gameObject.layer = baseLayer.gameObject.layer;
         hatLayer.CosmeticLayer = baseLayer;
 
-        if (baseLayer.hat.SpriteSyncNode == null)
-            baseLayer.hat.SpriteSyncNode = baseLayer.hat.GetComponent<SpriteAnimNodeSync>();
-        if (baseLayer.hat.SpriteSyncNode != null)
+        if (hatParent.SpriteSyncNode == null)
+            hatParent.SpriteSyncNode = hatParent.GetComponent<SpriteAnimNodeSync>();
+        if (hatParent.SpriteSyncNode != null)
         {
             SpriteAnimNodeSync nodeSync = hatLayer.gameObject.AddComponent<SpriteAnimNodeSync>();
             nodeSync.Parent = baseLayer.currentBodySprite.BodySprite.GetComponent<SpriteAnimNodes>();
@@ -114,19 +129,19 @@ public class CustomCosmeticsLayer
             Logger.Info("NULLLLLLLLLLLLLLLLLLLLLL");
 
         // フロントレイヤーの作成と設定
-        hatLayer.FrontLayer = new GameObject("front", Il2CppType.Of<SpriteRenderer>()).GetComponent<SpriteRenderer>();
+        hatLayer.FrontLayer = new GameObject("front").AddComponent<SpriteRenderer>();
         hatLayer.FrontLayer.transform.parent = hatLayer.transform;
         hatLayer.FrontLayer.transform.localPosition = frontOffset;
         hatLayer.FrontLayer.transform.localScale = Vector3.one;
         hatLayer.FrontLayer.gameObject.layer = baseLayer.gameObject.layer;
-        hatLayer.FrontLayer.material = baseLayer.hat.FrontLayer.material;
+        hatLayer.FrontLayer.material = hatParent.FrontLayer.material;
         // バックレイヤーの作成と設定
-        hatLayer.BackLayer = new GameObject("back", Il2CppType.Of<SpriteRenderer>()).GetComponent<SpriteRenderer>();
+        hatLayer.BackLayer = new GameObject("back").AddComponent<SpriteRenderer>();
         hatLayer.BackLayer.transform.parent = hatLayer.transform;
         hatLayer.BackLayer.transform.localPosition = backOffset;
         hatLayer.BackLayer.transform.localScale = Vector3.one;
         hatLayer.BackLayer.gameObject.layer = baseLayer.gameObject.layer;
-        hatLayer.BackLayer.material = baseLayer.hat.BackLayer.material;
+        hatLayer.BackLayer.material = hatParent.BackLayer.material;
         return hatLayer;
     }
 }
