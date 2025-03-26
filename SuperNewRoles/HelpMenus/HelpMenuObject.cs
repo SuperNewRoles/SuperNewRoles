@@ -43,6 +43,9 @@ public static class HelpMenuObjectManager
         // ヘルプメニューを表示するときにホスト情報のマスクエリアを非表示にする
         RoleOptionMenu.UpdateHostInfoMaskArea(false);
 
+        // 会議中の場合、playerStatesのMaskAreaを非表示にする
+        UpdateMeetingHudMaskAreas(false);
+
         var defaultNow =
             AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started
             ? DEFAULT_MENU_GAME : DEFAULT_MENU_LOBBY;
@@ -150,6 +153,22 @@ public static class HelpMenuObjectManager
             }));
         }
     }
+
+    // MeetingHudのMaskAreaを更新するヘルパーメソッド
+    private static void UpdateMeetingHudMaskAreas(bool active)
+    {
+        if (MeetingHud.Instance == null) return;
+
+        foreach (var playerState in MeetingHud.Instance.playerStates)
+        {
+            var maskArea = playerState.transform.Find("MaskArea");
+            if (maskArea != null)
+            {
+                maskArea.gameObject.SetActive(active);
+            }
+        }
+    }
+
     public static void ShowOrHideHelpMenu()
     {
         if (helpMenuObject == null)
@@ -203,7 +222,9 @@ public static class HelpMenuObjectManager
 
             // ヘルプメニューの表示状態によってマスクエリアの表示を切り替える
             // fadeCoroutine.isActiveが反転する前に呼ばれるため、現在の状態の逆を設定
-            RoleOptionMenu.UpdateHostInfoMaskArea(!fadeCoroutine.isAvtive);
+            bool shouldShowMaskAreas = !fadeCoroutine.isAvtive;
+            RoleOptionMenu.UpdateHostInfoMaskArea(shouldShowMaskAreas);
+            UpdateMeetingHudMaskAreas(shouldShowMaskAreas);
         }
         if (fadeCoroutine.isAvtive)
         {
@@ -215,8 +236,9 @@ public static class HelpMenuObjectManager
         if (helpMenuObject == null || fadeCoroutine == null) return;
         fadeCoroutine.StartFadeOut(helpMenuObject, 0.115f);
 
-        // ヘルプメニューを非表示にするときにホスト情報のマスクエリアを表示する
+        // ヘルプメニューを非表示にするときにホスト情報とMeetingHudのマスクエリアを表示する
         RoleOptionMenu.UpdateHostInfoMaskArea(true);
+        UpdateMeetingHudMaskAreas(true);
     }
     // overlayを閉じる時。
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]

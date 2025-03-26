@@ -154,7 +154,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
         exitButtonParent.localScale = new Vector3(0.25f, 0.9f, 1f);
         exitButtonParent.SetAsFirstSibling();
         var exitPassive = exitButton.GetComponent<PassiveButton>();
-        exitPassive.OnClick.RemoveAllListeners();
+        exitPassive.OnClick = new();
         exitPassive.ClickSound = null;
         exitPassive.OnClick.AddListener((UnityAction)(() =>
         {
@@ -195,7 +195,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             void CreateTeamButton(Transform tb, AssignedTeamType type)
             {
                 var passiveButton = tb.GetComponent<PassiveButton>();
-                passiveButton.OnClick.RemoveAllListeners();
+                passiveButton.OnClick = new();
                 passiveButton.ClickSound = null;
                 passiveButton.OnClick.AddListener((UnityAction)(() =>
                 {
@@ -281,7 +281,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             if (!isNext && Page <= 1)
                 pageButton.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.1f);
             var pagePassive = pageButton.GetComponent<PassiveButton>();
-            pagePassive.OnClick.RemoveAllListeners();
+            pagePassive.OnClick = new();
             pagePassive.ClickSound = null;
             pagePassive.OnClick.AddListener((UnityAction)(() =>
             {
@@ -339,7 +339,7 @@ public class GuesserAbility : CustomMeetingButtonBase, IAbilityCount
             label.transform.localScale *= 1.6f;
             label.autoSizeTextContainer = true;
             PassiveButton passiveButton = button.GetComponent<PassiveButton>();
-            passiveButton.OnClick.RemoveAllListeners();
+            passiveButton.OnClick = new();
             passiveButton.ClickSound = null;
             if (ExPlayerControl.LocalPlayer.IsAlive())
             {

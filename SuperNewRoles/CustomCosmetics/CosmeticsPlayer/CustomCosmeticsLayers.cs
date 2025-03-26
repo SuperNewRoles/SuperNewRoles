@@ -106,7 +106,8 @@ public class CustomCosmeticsLayer
             nodeSync.ParentRenderer = baseLayer.currentBodySprite.BodySprite;
             nodeSync.Renderer = baseLayer.currentBodySprite.BodySprite;
             nodeSync.NodeId = 1;
-            cosmeticsLayer.transform.parent.GetComponentInChildren<PlayerAnimations>().group.NodeSyncs.Add(nodeSync);
+            // ここで cosmeticsLayer ではなく baseLayer を使用するのが正しい
+            baseLayer.transform.parent.GetComponentInChildren<PlayerAnimations>()?.group?.NodeSyncs?.Add(nodeSync);
             hatLayer.spriteSyncNode = nodeSync;
         }
         else

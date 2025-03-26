@@ -37,7 +37,7 @@ public abstract class SuperTrophyBase<T> : BaseSingleton<T>, ISuperTrophy where 
     }
     public void InComplete()
     {
-        SuperTrophyManager.CompleteTrophy(this);
+        SuperTrophyManager.InCompleteTrophy(this);
     }
 }
 

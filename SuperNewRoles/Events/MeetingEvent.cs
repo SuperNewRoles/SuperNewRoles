@@ -42,7 +42,7 @@ public class MeetingStartEventData : IEventData
 
 public class MeetingStartEvent : EventTargetBase<MeetingStartEvent, MeetingStartEventData>
 {
-    public static int MeetingCount { get; private set; } = 0;
+    public static int MeetingCount = -1;
 
     public static void Invoke()
     {
@@ -167,5 +167,13 @@ public static class MeetingHudOnDestroyPatch
                 exPlayer.VoteArea = null;
             }
         }
+    }
+}
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
+public static class CoStartGamePatch
+{
+    public static void Postfix()
+    {
+        MeetingStartEvent.MeetingCount = -1;
     }
 }

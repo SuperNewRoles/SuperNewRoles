@@ -65,12 +65,14 @@ public static class SuperTrophyManager
     private static List<ISuperTrophy> willComplete = new();
     public static void CompleteTrophy(ISuperTrophy trophy)
     {
+        if (willComplete.Contains(trophy) || trophy.Completed) return;
         // トロフィーを獲得したことをログに記録
         Logger.Info($"Trophy '{trophy.TrophyId}' has been completed.");
         willComplete.Add(trophy);
     }
     public static void InCompleteTrophy(ISuperTrophy trophy)
     {
+        if (!willComplete.Contains(trophy) || !trophy.Completed) return;
         willComplete.Remove(trophy);
     }
     public static void CoStartGame()

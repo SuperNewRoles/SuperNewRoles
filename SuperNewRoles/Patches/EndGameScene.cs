@@ -9,6 +9,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.SuperTrophies;
 using UnityEngine;
+using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Patches;
 
@@ -499,6 +500,8 @@ public static class OnGameEndPatch
 
         AdditionalTempData.gameOverReason = gameOverReason;
         AdditionalTempData.winCondition = winCondition;
+
+        EndGameEvent.Invoke(AdditionalTempData.gameOverReason, winners.ToList());
     }
 
     private static void CollectPlayerRoleData(GameOverReason gameOverReason)
