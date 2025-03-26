@@ -27,9 +27,12 @@ public static class AssignRoles
 
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_HundredPercent = new();
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_NotHundredPercent = new();
+    private static List<RoleId> AssignedRoleIds = new(); // 既にアサインされた役職のIDを追跡
+
     public static void AssignCustomRoles()
     {
         CreateTickets();
+        AssignedRoleIds.Clear(); // 役職アサイン前にクリア
 
         // Assign Impostors
         AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Impostor],
@@ -96,13 +99,23 @@ public static class AssignRoles
             PlayerControl targetPlayer = targetPlayers[playerIndex];
             targetPlayers.RemoveAt(playerIndex);
 
-            AssignRole(targetPlayer, selectedTicket.RoleOption.RoleId);
+            RoleId roleId = selectedTicket.RoleOption.RoleId;
+            AssignRole(targetPlayer, roleId);
+            AssignedRoleIds.Add(roleId); // アサインした役職を追跡
             maxBeans--;
+
+            // 排他設定を再度適用（次のループのために）
+            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, tickets_hundred, tickets_not_hundred);
         }
 
         // 100%未満のチケットからランダムに選択して割り当てる
         while (tickets_not_hundred.Count > 0 && targetPlayers.Count > 0 && maxBeans > 0)
         {
+            // 排他設定を適用
+            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, tickets_not_hundred, tickets_hundred);
+            if (tickets_not_hundred.Count == 0)
+                break;
+
             int ticketIndex = UnityEngine.Random.Range(0, tickets_not_hundred.Count);
             AssignTickets selectedTicket = tickets_not_hundred[ticketIndex];
             selectedTicket.IncrementRemainingAssignBeans();
@@ -113,8 +126,13 @@ public static class AssignRoles
             PlayerControl targetPlayer = targetPlayers[playerIndex];
             targetPlayers.RemoveAt(playerIndex);
 
-            AssignRole(targetPlayer, selectedTicket.RoleOption.RoleId);
+            RoleId roleId = selectedTicket.RoleOption.RoleId;
+            AssignRole(targetPlayer, roleId);
+            AssignedRoleIds.Add(roleId); // アサインした役職を追跡
             maxBeans--;
+
+            // 排他設定を再度適用（次のループのために）
+            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, tickets_not_hundred, tickets_hundred);
         }
         foreach (var player in targetPlayers)
         {

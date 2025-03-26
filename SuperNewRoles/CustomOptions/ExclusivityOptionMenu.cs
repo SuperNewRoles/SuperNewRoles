@@ -60,7 +60,7 @@ public static class ExclusivityOptionMenu
             : 0;
         selectedText.text = maxAssign.ToString();
 
-        button.transform.Find("AssignedText").GetComponent<TextMeshPro>().text = string.Join(", ", exclusivitySetting.Select(x => ModTranslation.GetString(x)));
+        button.transform.Find("AssignedText").GetComponent<TextMeshPro>().text = string.Join(", ", exclusivitySetting.Select(x => ModTranslation.GetString(x.ToString())));
 
         ConfigureMaxAssignSelectButtons(maxAssignSelect, selectedText, index);
 
@@ -272,7 +272,7 @@ public static class ExclusivityOptionMenu
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
-            var roleName = roleOption.RoleId.ToString();
+            var roleName = roleOption.RoleId;
             var settings = RoleOptionManager.ExclusivitySettings[editingIndex];
             var roles = settings.Roles.ToList();
 
@@ -287,7 +287,7 @@ public static class ExclusivityOptionMenu
                 spriteRenderer.color = Color.white;
             }
 
-            RoleOptionManager.ExclusivitySettings[editingIndex].Roles = roles.ToArray();
+            RoleOptionManager.ExclusivitySettings[editingIndex].Roles = roles;
             ReGenerateMenu();
         }));
 
@@ -304,7 +304,7 @@ public static class ExclusivityOptionMenu
         }));
 
         // 初期の選択状態を設定
-        var isSelected = RoleOptionManager.ExclusivitySettings[editingIndex].Roles.Contains(roleOption.RoleId.ToString());
+        var isSelected = RoleOptionManager.ExclusivitySettings[editingIndex].Roles.Contains(roleOption.RoleId);
         spriteRenderer.color = isSelected ? Color.white : new Color(1f, 1f, 1f, 0.6f);
     }
 
@@ -313,7 +313,7 @@ public static class ExclusivityOptionMenu
         var instance = ExclusivityOptionMenuObjectData.Instance;
         var roles = index < RoleOptionManager.ExclusivitySettings.Count
             ? RoleOptionManager.ExclusivitySettings[index].Roles
-            : new string[] { };
+            : new();
         instance.ExclusivityEditMenu.transform.Find("TitleText").GetComponent<TextMeshPro>().text =
             $"<b>{ModTranslation.GetString("ExclusivityEditMenuGroupTitle", index + 1)}</b>";
     }

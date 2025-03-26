@@ -579,6 +579,44 @@ public static class RoleOptionManager
     {
         ExclusivitySettings.Clear();
     }
+
+    /// <summary>
+    /// 排他設定を適用します。
+    /// 役職がアサインされた際に、同じ排他グループ内の他の役職をアサインテーブルから除外します。
+    /// </summary>
+    /// <param name="assignedRoleIds">既にアサインされた役職のIDリスト</param>
+    /// <param name="ticketsToUpdate">更新するチケットリスト</param>
+    public static void ApplyExclusivitySettings(List<RoleId> assignedRoleIds, List<AssignTickets> ticketsToUpdate, List<AssignTickets> ticketsToUpdate2)
+    {
+        if (ExclusivitySettings.Count == 0 || assignedRoleIds.Count == 0 || ticketsToUpdate.Count == 0)
+            return;
+
+        // チケットを削除する役職IDのセットを作成
+        HashSet<RoleId> rolesToRemove = new();
+
+        // 各排他設定をチェック
+        foreach (var exclusivity in ExclusivitySettings)
+        {
+            // この排他グループ内の既にアサインされた役職の数をカウント
+            var assignedInGroupCount = exclusivity.Roles.Count(roleId => assignedRoleIds.Contains(roleId));
+
+            // 設定された最大数に達した場合、このグループの残りの役職をアサインから除外
+            if (assignedInGroupCount >= exclusivity.MaxAssign)
+            {
+                foreach (var roleId in exclusivity.Roles)
+                {
+                    rolesToRemove.Add(roleId);
+                }
+            }
+        }
+
+        // 除外すべき役職のチケットをリストから削除
+        if (rolesToRemove.Count > 0)
+        {
+            ticketsToUpdate.RemoveAll(ticket => rolesToRemove.Contains(ticket.RoleOption.RoleId));
+            ticketsToUpdate2.RemoveAll(ticket => rolesToRemove.Contains(ticket.RoleOption.RoleId));
+        }
+    }
 }
 
 public static class CustomOptionSaver
@@ -937,10 +975,10 @@ public class FileOptionStorage : IOptionStorage
             foreach (var setting in exclusivitySettings)
             {
                 writer.Write(setting.MaxAssign);
-                writer.Write(setting.Roles.Length);
+                writer.Write(setting.Roles.Count);
                 foreach (var role in setting.Roles)
                 {
-                    writer.Write(role);
+                    writer.Write(role.ToString());
                 }
             }
         }
@@ -1195,11 +1233,11 @@ public interface ICustomOptionCategory
 public class ExclusivityData
 {
     public int MaxAssign { get; set; }
-    public string[] Roles { get; set; }
+    public List<RoleId> Roles { get; set; }
 
     public ExclusivityData(int maxAssign, string[] roles)
     {
         MaxAssign = maxAssign;
-        Roles = roles;
+        Roles = roles.Select(role => Enum.Parse<RoleId>(role)).ToList();
     }
 }
