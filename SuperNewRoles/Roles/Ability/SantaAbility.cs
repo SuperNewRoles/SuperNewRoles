@@ -27,6 +27,8 @@ public class SantaAbility : AbilityBase
                 _tickets.Add(role.role);
             }
         }
+        if (_tickets.Count == 0)
+            data.Roles.ForEach(role => _tickets.Add(role.role));
     }
     public override void AttachToLocalPlayer()
     {

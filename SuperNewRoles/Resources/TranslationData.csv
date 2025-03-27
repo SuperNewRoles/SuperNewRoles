@@ -221,6 +221,7 @@ Seer,シーア,Seer,预言家,預言家
 Vulture,ヴァルチャー,Vulture,秃鹫,禿鷲
 Datahacker,データハッカー,Datahacker,数据黑客,數據駭客
 Santa,サンタ,Santa,圣诞老人,聖誕老人
+BlackSanta,ブラックサンタ,Black Santa,黑圣诞老人,黑聖誕老人
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -516,13 +517,21 @@ SantaCanUseAbilityCount,プレゼント数,Number of Times Ability Can Be Used,�
 SantaTryLoverToDeath,ラバーズにプレゼントを渡せない,Can't give a present to Lovers,
 SantaTryMadmateToDeath,マッド役職にプレゼントを渡せない,Can't give a present to MadRoles.
 SantaTryJackalFriendsToDeath,ジャッカルフレンズにプレゼントを渡せない,Can't give a present to Jackal Friend Roles.
-SantaSpeedBoosterPercentage,スピードブースターの確率,Speed Booster Percentage,速度提升者百分比,速度提升者百分比
-SantaClergymanPercentage,聖職者の確率,Clergyman Percentage,牧师百分比,牧師百分比
-SantaNiceGuesserPercentage,ナイスゲッサーの確率,Nice Guesser Percentage,好人猜疑者百分比,好人猜疑者百分比
-SantaLighterPercentage,ライターの確率,Lighter Percentage,照明者百分比,照明者百分比
-SantaSheriffPercentage,シェリフの確率,Sheriff Percentage,警长百分比,警長百分比
-SantaBalancerPercentage,天秤の確率,Balancer Percentage,平衡者百分比,平衡者百分比
-SantaCelebrityPercentage,スターの確率,Celebrity Percentage,明星百分比,明星百分比
-SantaHomeSecurityGuardPercentage,自宅警備員の確率,Home Security Guard Percentage,家庭安保员百分比,家庭安保員百分比
-SantaSuicidalIdeationPercentage,自殺志願者の確率,Suicidal Ideation Percentage,自杀倾向者百分比,自殺傾向者百分比
 SantaButtonText,プレゼント!,Presents!
+SantaSpeedBoosterPercentage,スピードブースターの確率(%),Speed Booster Percentage (%),速度提升者百分比,速度提升者百分比
+SantaClergymanPercentage,聖職者の確率(%),Clergyman Percentage (%),牧师百分比,牧師百分比
+SantaNiceGuesserPercentage,ナイスゲッサーの確率(%),Nice Guesser Percentag (%)e,好人猜疑者百分比,好人猜疑者百分比
+SantaLighterPercentage,ライターの確率(%),Lighter Percentage (%),照明者百分比,照明者百分比
+SantaSheriffPercentage,シェリフの確率(%),Sheriff Percentage (%),警长百分比,警長百分比
+SantaBalancerPercentage,天秤の確率(%),Balancer Percentage (%),平衡者百分比,平衡者百分比
+SantaCelebrityPercentage,スターの確率(%),Celebrity Percentage (%),明星百分比,明星百分比
+SantaHomeSecurityGuardPercentage,自宅警備員の確率(%),Home Security Guard Percentage (%),家庭安保员百分比,家庭安保員百分比
+SantaSuicidalIdeationPercentage,自殺志願者の確率(%),Suicidal Ideation Percentage (%),自杀倾向者百分比,自殺傾向者百分比
+
+# BlackSanta Options
+BlackSantaEvilGuesserPercentage,イビルゲッサーの確率(%),Evil Guesser Percentage (%),邪恶猜疑者百分比,邪惡猜疑者百分比
+BlackSantaEvilMechanicPercentage,イビルメカニックの確率(%),Evil Mechanic Percentage (%),邪恶机械师百分比,邪惡機械師百分比
+BlackSantaSelfBomberPercentage,自爆魔の確率(%),Self Bomber Percentage (%),自爆者百分比,自爆者百分比
+BlackSantaSluggerPercentage,スラッガーの確率(%),Slugger Percentage (%),猛击者百分比,猛擊者百分比
+BlackSantaPenguinPercentage,ペンギンの確率(%),Penguin Percentage (%),企鹅百分比,企鵝百分比
+BlackSantaWaveCannonPercentage,波動砲の確率(%),Wave Cannon Percentage (%),波浪炮百分比,波浪砲百分比

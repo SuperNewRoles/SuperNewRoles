@@ -58,22 +58,22 @@ internal class Santa : RoleBase<Santa>
     // 役職たちの設定
     // ==============================
 
-    [CustomOptionInt("SantaSpeedBoosterPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaSpeedBoosterPercentage", 0, 100, 5, 0)]
     public static int SantaSpeedBoosterPercentage;
-    [CustomOptionInt("SantaClergymanPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaClergymanPercentage", 0, 100, 5, 0)]
     public static int SantaClergymanPercentage;
-    [CustomOptionInt("SantaNiceGuesserPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaNiceGuesserPercentage", 0, 100, 5, 0)]
     public static int SantaNiceGuesserPercentage;
-    [CustomOptionInt("SantaLighterPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaLighterPercentage", 0, 100, 5, 0)]
     public static int SantaLighterPercentage;
-    [CustomOptionInt("SantaSheriffPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaSheriffPercentage", 0, 100, 5, 0)]
     public static int SantaSheriffPercentage;
-    [CustomOptionInt("SantaBalancerPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaBalancerPercentage", 0, 100, 5, 0)]
     public static int SantaBalancerPercentage;
-    [CustomOptionInt("SantaCelebrityPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaCelebrityPercentage", 0, 100, 5, 0)]
     public static int SantaCelebrityPercentage;
-    [CustomOptionInt("SantaHomeSecurityGuardPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaHomeSecurityGuardPercentage", 0, 100, 5, 0)]
     public static int SantaHomeSecurityGuardPercentage;
-    [CustomOptionInt("SantaSuicidalIdeationPercentage", 0, 100, 5, 100)]
+    [CustomOptionInt("SantaSuicidalIdeationPercentage", 0, 100, 5, 0)]
     public static int SantaSuicidalIdeationPercentage;
 }

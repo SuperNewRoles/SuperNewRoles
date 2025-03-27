@@ -39,6 +39,7 @@ public enum RoleId : short
     Vulture,
     Datahacker,
     Santa,
+    BlackSanta,
 }
 
 public enum QuoteMod : byte
