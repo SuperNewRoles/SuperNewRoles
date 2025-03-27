@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
+using SuperNewRoles.Ability;
 using SuperNewRoles.Events;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Ability;
@@ -46,6 +47,7 @@ public class ExPlayerControl
     private CustomSaboAbility _customSaboAbility;
     private CustomTaskAbility _customTaskAbility;
     private CustomKillButtonAbility _customKillButtonAbility;
+    private KillableAbility _killableAbility;
     public CustomTaskAbility CustomTaskAbility => _customTaskAbility;
     private List<ImpostorVisionAbility> _impostorVisionAbilities = new();
     private Dictionary<string, bool> _hasAbilityCache = new();
@@ -140,9 +142,9 @@ public class ExPlayerControl
     {
         return _customKillButtonAbility != null;
     }
-    public bool CanKill()
+    public bool showKillButtonVanilla()
     {
-        return _customKillButtonAbility != null && _customKillButtonAbility.CanKill();
+        return _customKillButtonAbility == null && (_killableAbility == null || _killableAbility.CanKill);
     }
     private void DetachOldRole(RoleId roleId)
     {
@@ -290,6 +292,9 @@ public class ExPlayerControl
             case CustomKillButtonAbility customKillButtonAbility:
                 _customKillButtonAbility = customKillButtonAbility;
                 break;
+            case KillableAbility killableAbility:
+                _killableAbility = killableAbility;
+                break;
         }
         ability.Attach(Player, abilityId, parent);
         _hasAbilityCache.Clear();
@@ -326,6 +331,9 @@ public class ExPlayerControl
                 break;
             case CustomKillButtonAbility customKillButtonAbility:
                 _customKillButtonAbility = null;
+                break;
+            case KillableAbility killableAbility:
+                _killableAbility = null;
                 break;
         }
         PlayerAbilities.Remove(ability);

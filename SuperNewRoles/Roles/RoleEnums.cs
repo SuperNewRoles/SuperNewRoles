@@ -40,6 +40,7 @@ public enum RoleId : short
     Datahacker,
     Santa,
     BlackSanta,
+    Penguin,
 }
 
 public enum QuoteMod : byte

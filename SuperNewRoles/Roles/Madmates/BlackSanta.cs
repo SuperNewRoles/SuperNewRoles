@@ -28,7 +28,7 @@ class BlackSanta : RoleBase<BlackSanta>
                     // (RoleId.EvilMechanic, BlackSantaEvilMechanicPercentage),
                     (RoleId.SelfBomber, BlackSantaSelfBomberPercentage),
                     // (RoleId.Slugger, BlackSantaSluggerPercentage),
-                    // (RoleId.Penguin, BlackSantaPenguinPercentage),
+                    (RoleId.Penguin, BlackSantaPenguinPercentage),
                     (RoleId.WaveCannon, BlackSantaWaveCannonPercentage),
                 }
             )

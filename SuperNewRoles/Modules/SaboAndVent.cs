@@ -15,7 +15,7 @@ public class SaboAndVent
     {
         bool ventActive = ExPlayerControl.LocalPlayer.CanUseVent();
         bool saboActive = ExPlayerControl.LocalPlayer.CanSabotage();
-        bool killDisabled = ExPlayerControl.LocalPlayer.HasCustomKillButton();
+        bool killDisabled = ExPlayerControl.LocalPlayer.HasCustomKillButton() || !ExPlayerControl.LocalPlayer.showKillButtonVanilla();
         SetVentActive(ventActive);
         SetSaboActive(saboActive);
         SetKillActive(killDisabled);

@@ -13,6 +13,8 @@ public enum TrophiesEnum
     GuesserImpostorHunter,
     GuesserFirstMeetingKill,
     GuesserSharpshooter,
+    PenguinKill,
+    PenguinHundredKill,
 }
 public enum TrophyRank
 {

@@ -222,6 +222,7 @@ Vulture,ヴァルチャー,Vulture,秃鹫,禿鷲
 Datahacker,データハッカー,Datahacker,数据黑客,數據駭客
 Santa,サンタ,Santa,圣诞老人,聖誕老人
 BlackSanta,ブラックサンタ,Black Santa,黑圣诞老人,黑聖誕老人
+Penguin,ペンギン,Penguin,企鹅,企鵝
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -535,3 +536,16 @@ BlackSantaSelfBomberPercentage,自爆魔の確率(%),Self Bomber Percentage (%),
 BlackSantaSluggerPercentage,スラッガーの確率(%),Slugger Percentage (%),猛击者百分比,猛擊者百分比
 BlackSantaPenguinPercentage,ペンギンの確率(%),Penguin Percentage (%),企鹅百分比,企鵝百分比
 BlackSantaWaveCannonPercentage,波動砲の確率(%),Wave Cannon Percentage (%),波浪炮百分比,波浪砲百分比
+
+# Penguin Options
+PenguinButtonText,ぺチペチ,Penguin!,企鵝!,企鵝!
+PenguinCooldown,クールダウン,Attach Cooldown,黏贴冷却时间,黏貼冷卻時間
+PenguinDuration,持続時間,Attach Duration,黏贴持续时间,黏貼持續時間
+PenguinMeetingKill,会議中に殺害する,Kill during meeting,会议期间杀死,會議期間殺死
+PenguinCanDefaulKill,通常キルできる,Can default kill,可以默认杀死,可以預設殺死
+
+# Penguin Trophies
+PenguinKill,ペンギンの餌食,Penguin's Prey,企鹅的猎物,企鵝的獵物
+PenguinKillDescription,ペンギンの能力でプレイヤーを1人キルした,Killed one player with Penguin ability,使用企鹅能力击杀一名玩家,使用企鵝能力擊殺一名玩家
+PenguinHundredKill,ペンギンハンター,Penguin Hunter,企鹅猎人,企鵝獵人
+PenguinHundredKillDescription,ペンギンの能力で累計100人キルした,Killed a total of 100 players with Penguin ability,使用企鹅能力累计击杀100名玩家,使用企鵝能力累計擊殺100名玩家
