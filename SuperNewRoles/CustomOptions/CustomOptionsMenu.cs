@@ -221,7 +221,7 @@ public static class CustomOptionsMenu
 
         selectedObject.SetActive(true);
         var position = selectedObject.transform.localPosition;
-        position.x = categoryObject.transform.localPosition.x + 3.95f;
+        position.x = categoryObject.transform.localPosition.x + 4.02f;
         selectedObject.transform.localPosition = position;
     }
 

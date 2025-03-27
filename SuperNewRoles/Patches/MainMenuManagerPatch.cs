@@ -11,7 +11,7 @@ public static class MainMenuManagerPatch
     private static SpriteRenderer BackgroundCover;
 
     // BackgroundCoverの有効状態を管理するヘルパーメソッド
-    private static void SetBackgroundCover(MainMenuManager instance, bool enterCode)
+    private static void SetBackgroundCover(MainMenuManager instance, bool enterCode, bool superDark)
     {
         if (BackgroundCover == null)
         {
@@ -21,7 +21,7 @@ public static class MainMenuManagerPatch
         if (enterCode)
         {
             BackgroundCover.transform.localPosition = new Vector3(7, -0.2f, -0.1f);
-            BackgroundCover.color = new Color(1, 1, 1, 1);
+            BackgroundCover.color = new Color(1, 1, 1, superDark ? 1f : 0.6f);
         }
         else
         {
@@ -63,7 +63,7 @@ public static class MainMenuManagerPatch
     {
         public static void Postfix(MainMenuManager __instance)
         {
-            SetBackgroundCover(__instance, false);
+            SetBackgroundCover(__instance, false, false);
         }
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.ResetScreen))]
@@ -71,7 +71,7 @@ public static class MainMenuManagerPatch
     {
         public static void Postfix(MainMenuManager __instance)
         {
-            SetBackgroundCover(__instance, false);
+            SetBackgroundCover(__instance, false, false);
         }
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu))]
@@ -79,7 +79,7 @@ public static class MainMenuManagerPatch
     {
         public static void Postfix(MainMenuManager __instance)
         {
-            SetBackgroundCover(__instance, true);
+            SetBackgroundCover(__instance, true, false);
         }
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenOnlineMenu))]
@@ -87,7 +87,7 @@ public static class MainMenuManagerPatch
     {
         public static void Postfix(MainMenuManager __instance)
         {
-            SetBackgroundCover(__instance, true);
+            SetBackgroundCover(__instance, true, true);
         }
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenAccountMenu))]
@@ -95,7 +95,7 @@ public static class MainMenuManagerPatch
     {
         public static void Postfix(MainMenuManager __instance)
         {
-            SetBackgroundCover(__instance, true);
+            SetBackgroundCover(__instance, true, false);
         }
     }
 
@@ -105,7 +105,7 @@ public static class MainMenuManagerPatch
         public static bool Prefix(MainMenuManager __instance, bool animate)
         {
             if (__instance.animating) return false;
-            SetBackgroundCover(__instance, true);
+            SetBackgroundCover(__instance, true, true);
             SetupEnterCodeMenu(__instance);
 
             if (animate)
@@ -122,7 +122,7 @@ public static class MainMenuManagerPatch
 
         private static IEnumerator EnterCodeSlideCo(MainMenuManager instance)
         {
-            SetBackgroundCover(instance, true);
+            SetBackgroundCover(instance, true, true);
             // オンラインボタンの表示と初期位置の設定
             instance.onlineButtons.SetActive(true);
             SetContainerX(instance.onlineButtonsContainer, 0f);
@@ -149,7 +149,7 @@ public static class MainMenuManagerPatch
             instance.onlineButtons.SetActive(false);
             instance.enterCodeHeader.SetActive(true);
             instance.animating = false;
-            SetBackgroundCover(instance, true);
+            SetBackgroundCover(instance, true, true);
         }
     }
 
@@ -159,7 +159,7 @@ public static class MainMenuManagerPatch
         public static bool Prefix(MainMenuManager __instance)
         {
             if (__instance.animating) return false;
-            SetBackgroundCover(__instance, true);
+            SetBackgroundCover(__instance, true, true);
             __instance.StartCoroutine(AnimateEnterCodeExitSlideCo(__instance).WrapToIl2Cpp());
             return false;
         }
