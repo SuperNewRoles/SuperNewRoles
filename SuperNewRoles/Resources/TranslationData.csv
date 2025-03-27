@@ -10,7 +10,6 @@ People,{0}人,{0} people,{0}人,{0}人
 
 SidekickRemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
 
-# Colors
 # CustomColors
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
 colorBordeaux,ボルドー,Bordeaux,枣红,波爾多紅
@@ -176,6 +175,9 @@ HelpMenu.MyRoleInformation.RoleSettingsTitle,役職設定,Role Settings,角色�
 HelpMenu.AssignmentsSettingInfomation,配役情報,Assignments Information,配役信息,配役資訊
 HelpMenu.ModSettingsInformation,MOD設定情報,MOD Settings Information,MOD设置信息,MOD設定資訊
 HelpMenu.RoleDictionary,役職辞典,Role Dictionary,角色辞典,角色辭典
+HelpMenu.NoneOptions1,204: Not content: この役職に設定がありませんでした。,204: Not content: This role has no settings.,204: Not content: 此角色没有设置。,204: Not content: 此角色沒有設定。
+HelpMenu.NoneOptions2,役職の設定が見つかりませんでした。おにぎりでも食べて落ち着きましょう。,We couldn't find the role setting. Take a break and have a rice ball.,我们找不到角色设置。吃个饭冷静一下吧。,我們找不到角色設定。吃個飯冷靜一下吧。
+
 
 # AssignRoles
 AssignRoles_MaxImpostors,最大 インポスター 選出数,Max Impostors,最大内鬼数,最大內鬼數
@@ -218,6 +220,7 @@ HomeSecurityGuard,自宅警備員,Home Security Guard,家庭安保员,家庭安�
 Seer,シーア,Seer,预言家,預言家
 Vulture,ヴァルチャー,Vulture,秃鹫,禿鷲
 Datahacker,データハッカー,Datahacker,数据黑客,數據駭客
+Santa,サンタ,Santa,圣诞老人,聖誕老人
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -506,3 +509,20 @@ Datahacker.CanSeeKillingNeutral,キル第三だけがわかる,Can only see kill
 Datahacker.CanSeeCrew,クルーメイトがわかる,Can see Crewmates,可以看到船员,可以看到船員
 Datahacker.CanSeeMadmates,マッド系役職がわかる,Can see Madmate roles,可以看到疯狂者角色,可以看到瘋狂者角色
 Datahacker.CanSeeRoleNames,役職名もわかる,Can see role names,可以看到角色名称,可以看到角色名稱
+
+# Santa Options
+SantaAbilityCooldown,能力のクールダウン,Ability Cooldown,能力冷却时间,能力冷卻時間
+SantaCanUseAbilityCount,プレゼント数,Number of Times Ability Can Be Used,能力可使用次数,能力可使用次數
+SantaTryLoverToDeath,ラバーズにプレゼントを渡せない,Can't give a present to Lovers,
+SantaTryMadmateToDeath,マッド役職にプレゼントを渡せない,Can't give a present to MadRoles.
+SantaTryJackalFriendsToDeath,ジャッカルフレンズにプレゼントを渡せない,Can't give a present to Jackal Friend Roles.
+SantaSpeedBoosterPercentage,スピードブースターの確率,Speed Booster Percentage,速度提升者百分比,速度提升者百分比
+SantaClergymanPercentage,聖職者の確率,Clergyman Percentage,牧师百分比,牧師百分比
+SantaNiceGuesserPercentage,ナイスゲッサーの確率,Nice Guesser Percentage,好人猜疑者百分比,好人猜疑者百分比
+SantaLighterPercentage,ライターの確率,Lighter Percentage,照明者百分比,照明者百分比
+SantaSheriffPercentage,シェリフの確率,Sheriff Percentage,警长百分比,警長百分比
+SantaBalancerPercentage,天秤の確率,Balancer Percentage,平衡者百分比,平衡者百分比
+SantaCelebrityPercentage,スターの確率,Celebrity Percentage,明星百分比,明星百分比
+SantaHomeSecurityGuardPercentage,自宅警備員の確率,Home Security Guard Percentage,家庭安保员百分比,家庭安保員百分比
+SantaSuicidalIdeationPercentage,自殺志願者の確率,Suicidal Ideation Percentage,自杀倾向者百分比,自殺傾向者百分比
+SantaButtonText,プレゼント!,Presents!

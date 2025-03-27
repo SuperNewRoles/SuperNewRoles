@@ -107,9 +107,14 @@ public static class RoleDetailMenu
     public static string GenerateRoleSettingsText(IRoleBase role)
     {
         var roleOption = RoleOptionManager.RoleOptions.FirstOrDefault(o => o.RoleId == role.Role);
+        var scroller = menuObject.transform.Find("Scroller")?.GetComponent<Scroller>();
         if (roleOption == null)
         {
-            return $"{role.Role}.Settings";
+            // random 1~2
+            int num = Random.Range(1, 3);
+            if (scroller != null)
+                scroller.ContentYBounds.max = 0.2f;
+            return ModTranslation.GetString($"HelpMenu.NoneOptions{num}");
         }
         var settings = roleOption.Options.Where(o => o.ShouldDisplay())
             .Select(o => $"{ModTranslation.GetString(o.Name)}: {o.GetCurrentSelectionString()}");
@@ -121,11 +126,8 @@ public static class RoleDetailMenu
 
         // 設定項目数に応じてスクローラーの高さを調整
         float contentHeight = (settings.Count() - 2) * 0.267f + 0.15f; // 1項目あたり0.2の高さ
-        var scroller = menuObject.transform.Find("Scroller")?.GetComponent<Scroller>();
         if (scroller != null)
-        {
             scroller.ContentYBounds.max = contentHeight;
-        }
 
         return string.Join("\n", settings);
     }
