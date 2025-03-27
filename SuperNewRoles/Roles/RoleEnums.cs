@@ -37,6 +37,7 @@ public enum RoleId : short
     Seer,
     Celebrity,
     Vulture,
+    Datahacker,
 }
 
 public enum QuoteMod : byte
@@ -46,6 +47,7 @@ public enum QuoteMod : byte
     NebulaOnTheShip,
     TownOfHost,
     TheOtherRoles,
+    TheOtherRolesGM
 }
 
 public enum TeamTag : byte

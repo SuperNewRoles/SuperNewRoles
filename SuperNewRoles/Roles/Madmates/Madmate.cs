@@ -15,7 +15,7 @@ class Madmate : RoleBase<Madmate>
     public override List<Func<AbilityBase>> Abilities { get; } = [() => new MadmateAbility(
         new(MadmateHasImpostorVision, MadmateCouldUseVent, MadmateCanKnowImpostors, MadmateNeededTaskCount, MadmateIsSpecialTasks ? MadmateSpecialTasks : null))];
 
-    public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
+    public override QuoteMod QuoteMod { get; } = QuoteMod.TheOtherRoles;
     public override RoleTypes IntroSoundType { get; } = RoleTypes.Shapeshifter;
     public override short IntroNum { get; } = 1;
 
