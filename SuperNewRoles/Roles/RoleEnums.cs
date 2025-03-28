@@ -41,6 +41,7 @@ public enum RoleId : short
     Santa,
     BlackSanta,
     Penguin,
+    Pusher,
 }
 
 public enum QuoteMod : byte

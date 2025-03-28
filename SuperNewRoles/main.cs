@@ -27,6 +27,7 @@ using SuperNewRoles.SuperTrophies;
 using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles;
 
@@ -90,6 +91,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<CustomCosmeticsCostumeSlot>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomHatLayer>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomVisorLayer>();
+        ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
+        ClassInjector.RegisterTypeInIl2Cpp<CustomPlayerAnimationSimple>();
     }
 
     public void ExecuteInMainThread(Action action)

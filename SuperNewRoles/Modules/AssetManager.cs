@@ -58,22 +58,6 @@ public static class AssetManager
                     );
                 // SuperNewRolesNext/snrsprites.bundleに保存する
                 AssetBundle assetBundle = null;
-                /*try
-                {
-                    File.WriteAllBytes(
-                        $"./SuperNewRolesNext/{data.Path}.bundle",
-                        BundleStream.ReadFully()
-                    );
-                    //AssetBundleを読み込む
-                    assetBundle = AssetBundle.LoadFromFile(
-                        $"./SuperNewRolesNext/{data.Path}.bundle"
-                    );
-                }
-                catch (Exception e)
-                {
-                    assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
-                    Logger.Error(e.ToString(), "LoadAssetBundle");
-                }*/
                 assetBundle = AssetBundle.LoadFromMemory(BundleStream.ReadFully());
                 //読み込んだAssetBundleを保存
                 Bundles[TypeToByte[data.Type]] = assetBundle;
@@ -122,6 +106,14 @@ public static class AssetManager
         var asset = loadedAsset.DontUnload();
         typeCache[cacheKey] = asset;
         return asset;
+    }
+
+    public static AudioSource PlaySoundFromBundle(string path, bool loop = false)
+    {
+        var asset = GetAsset<AudioClip>(path, AssetBundleType.Sprite);
+        if (asset == null)
+            throw new Exception($"Failed to load Asset: {path}");
+        return SoundManager.Instance.PlaySound(asset, loop);
     }
 
     public static byte[] ReadFully(this Stream input)
