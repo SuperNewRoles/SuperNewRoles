@@ -96,6 +96,7 @@ NeutralSubIntro,自分の事だけ考えろ。他人の事は利用せよ。,Thi
 # GeneralSettings
 KickNonPCPlayers,PC以外をキックする,Kick Non-PC Players,踢出非PC玩家,踢出非PC玩家
 BanNoFriendCodePlayers,フレンドコードを持っていない人をBANする,Ban Players Without Friend Code,封禁没有好友代码的玩家,封禁沒有好友代碼的玩家
+PetOnlyMe,ペットを自分のみに表示する,Show only my pet,只显示我的宠物,只顯示我的寵物
 
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task, the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務

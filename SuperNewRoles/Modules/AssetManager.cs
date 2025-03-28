@@ -15,7 +15,7 @@ public static class AssetManager
     }
 
     // キャッシュ用のキー構造体を追加
-    private readonly struct AssetCacheKey
+    private readonly struct AssetCacheKey : IEquatable<AssetCacheKey>
     {
         public readonly string Path;
         public readonly Il2CppSystem.Type Type;
@@ -24,6 +24,25 @@ public static class AssetManager
         {
             Path = path;
             Type = type;
+        }
+
+        // IEquatable<T>を実装して高速な比較を実現
+        public bool Equals(AssetCacheKey other)
+        {
+            return Path == other.Path && Type == other.Type;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is AssetCacheKey other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+            hash = hash * 31 + (Path?.GetHashCode() ?? 0);
+            hash = hash * 31 + (Type?.GetHashCode() ?? 0);
+            return hash;
         }
     }
 
@@ -62,7 +81,7 @@ public static class AssetManager
                 //読み込んだAssetBundleを保存
                 Bundles[TypeToByte[data.Type]] = assetBundle;
                 //キャッシュ用のDictionaryを作成
-                _cachedAssets[TypeToByte[data.Type]] = new();
+                _cachedAssets[TypeToByte[data.Type]] = new(EqualityComparer<AssetCacheKey>.Default);
 
                 assetBundle.DontUnload();
 

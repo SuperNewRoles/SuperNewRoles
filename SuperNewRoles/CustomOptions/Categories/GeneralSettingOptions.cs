@@ -13,4 +13,7 @@ public static class GeneralSettingOptions
     // |:========== MODカラー禁止の設定 ==========:|
     [CustomOptionBool("DisableModColor", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool DisableModColor;
+
+    [CustomOptionBool("PetOnlyMe", true, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool PetOnlyMe;
 }

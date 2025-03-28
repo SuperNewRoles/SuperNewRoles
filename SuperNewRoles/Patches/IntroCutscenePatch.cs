@@ -203,6 +203,15 @@ public static class IntroCutscenePatch
 
             NameText.UpdateAllNameInfo();
 
+            if (GeneralSettingOptions.PetOnlyMe)
+            {
+                foreach (var player in ExPlayerControl.ExPlayerControls)
+                {
+                    if (player.AmOwner) continue;
+                    player.Player.SetPet("");
+                }
+            }
+
             // 情報機器制限の設定を初期化
             if (MapSettingOptions.DeviceOptions)
             {
