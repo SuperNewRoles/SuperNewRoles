@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SuperNewRolesのみで使えるAmong Usの部屋に直接入室するためのページです。">
+  <title>Among Us Connection</title>
+  <!-- ファビコン設定 -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="favicon.ico" type="image/x-icon">
+  <!-- OGP タグ -->
+  <meta property="og:title" content="SuperNewRoles DirectConnect">
+  <meta property="og:description" content="SuperNewRolesのみで使えるAmong Usの部屋に直接入室するためのページです。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://joinroom.supernewroles.com">
+  <meta property="og:image" content="https://joinroom.supernewroles.com/ogp.png">
+  <meta property="og:site_name" content="SuperNewRoles DirectConnect">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- Twitter Card タグ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SuperNewRoles DirectConnect">
+  <meta name="twitter:description" content="SuperNewRolesのみで使えるAmong Usの部屋に直接入室するためのページです。">
+  <meta name="twitter:image" content="https://joinroom.supernewroles.com/ogp.png">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="star-container" id="starBackground"></div>
+
+    <!-- スマートフォン向けメッセージ -->
+    <div class="dialog" id="mobile-message" style="display: none;">
+      <img src="banner.png" alt="SuperNewRoles Banner" class="banner" loading="lazy"><br>
+      <svg class="error-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <div class="error-text">スマートフォンからは使用できません。PCからご利用ください。</div>
+    </div>
+
+    <!-- PC向けコンテンツ -->
+    <div class="dialog" id="pc-content">
+      <img src="banner.png" alt="SuperNewRoles Banner" class="banner">
+      <div id="connecting-screen">
+        <div class="loading-spinner"></div>
+        <div class="connecting-text">AmongUsに接続しています...</div>
+      </div>
+
+      <div id="error-screen" style="display: none;">
+        <svg class="error-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="error-text" id="error-text"></div>
+        <button class="retry-button">再試行</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js" async></script>
+</body>
+
+</html>

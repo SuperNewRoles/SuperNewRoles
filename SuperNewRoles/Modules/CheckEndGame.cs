@@ -18,7 +18,8 @@ public enum VictoryType
     CrewmateTask,
     CrewmateVote,
     JackalDomination,
-    PavlovsWin
+    PavlovsWin,
+    ArsonistWin
 }
 
 public enum SabotageSystemType
@@ -118,6 +119,10 @@ public static class CheckGameEndPatch
         if (stats.IsCrewmateVictory)
             return VictoryType.CrewmateVote;
 
+        // アルソニスト勝利
+        if (stats.IsArsonistWin)
+            return VictoryType.ArsonistWin;
+
         return null;
     }
 
@@ -139,6 +144,7 @@ public static class CheckGameEndPatch
         VictoryType.CrewmateVote => GameOverReason.CrewmatesByVote,
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
         VictoryType.PavlovsWin => (GameOverReason)CustomGameOverReason.PavlovsWin,
+        VictoryType.ArsonistWin => (GameOverReason)CustomGameOverReason.ArsonistWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };
 }
@@ -210,6 +216,7 @@ public class PlayerStatistics
     public int TeamJackalAlive { get; }
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
+    public int ArsonistAlive { get; }
 
     public bool IsKillerExist => TotalKiller > 0;
 
@@ -217,6 +224,7 @@ public class PlayerStatistics
     public bool IsJackalDominating => IsKillerWin(TeamJackalAlive);
     public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive);
     public bool IsCrewmateVictory => !IsKillerExist;
+    public bool IsArsonistWin => ArsonistAlive > 0 && ArsonistAlive == TotalAlive;
 
     public PlayerStatistics()
     {
@@ -228,7 +236,7 @@ public class PlayerStatistics
         CrewAlive = alivePlayers.Count(player => player.IsCrewmate());
         TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
         TeamPavlovsAlive = alivePlayers.Count(player => player.IsPavlovsTeam());
-
+        ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
         TotalAlive = alivePlayers.Count();
         TotalKiller = TeamImpostorsAlive + TeamJackalAlive + TeamPavlovsAlive;
     }

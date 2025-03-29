@@ -28,6 +28,7 @@ using SuperNewRoles.CustomCosmetics.UI;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.API;
 
 namespace SuperNewRoles;
 
@@ -74,6 +75,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         SuperTrophyManager.Load();
         CustomCosmeticsSaver.Load();
         CustomColors.Load();
+        ApiServerManager.Initialize();
 
         Logger.LogInfo("Waiting for Harmony patch");
         task.Wait();

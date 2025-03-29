@@ -74,6 +74,10 @@ public static class CustomDeathExtensions
                 ExileEvent.Invoke(player);
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Push);
                 break;
+            case CustomDeathType.Ignite:
+                player.Player.Exiled();
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.Ignite);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -102,4 +106,5 @@ public enum CustomDeathType
     SelfBomb,
     Tuna,
     Push,
+    Ignite,
 }

@@ -1,0 +1,133 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a202c;
+    position: relative;
+}
+
+.banner {
+    max-width: 80%;
+    margin-bottom: 2rem;
+    z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .banner {
+        max-width: 90%;
+        margin-bottom: 1rem;
+    }
+}
+
+.dialog {
+    padding: 3rem;
+    max-width: 600px;
+    width: 90%;
+    background-color: rgba(31, 41, 55, 0.8);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    text-align: center;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 6rem;
+    height: 6rem;
+    border: 6px solid #3b82f6;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 2rem;
+}
+
+.error-icon {
+    width: 6rem;
+    height: 6rem;
+    margin: 0 auto 2rem;
+    color: #ef4444;
+}
+
+.connecting-text {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #60a5fa;
+}
+
+.error-text {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #f87171;
+}
+
+.retry-button {
+    margin-top: 2.5rem;
+    padding: 0.75rem 2rem;
+    background-color: #2563eb;
+    color: white;
+    font-weight: 600;
+    font-size: 1.25rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+    background-color: #1d4ed8;
+}
+
+.star-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.7;
+    animation: twinkle 3s infinite alternate;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes moveRight {
+    from {
+        transform: translateX(-100px);
+    }
+
+    to {
+        transform: translateX(100vw);
+    }
+}

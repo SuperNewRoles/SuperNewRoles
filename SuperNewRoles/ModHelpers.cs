@@ -16,6 +16,10 @@ public static class ModHelpers
     {
         return PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(player => player.PlayerId == id);
     }
+    public static string GetRandomFormat(string format, int min, int max)
+    {
+        return format.Replace("{0}", GetRandomInt(max, min).ToString());
+    }
 
     public static bool IsCustomServer()
     {

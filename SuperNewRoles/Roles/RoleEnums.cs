@@ -39,10 +39,12 @@ public enum RoleId : short
     Vulture,
     Datahacker,
     Santa,
+    Arsonist,
     BlackSanta,
     Penguin,
     Pusher,
     EvilHacker,
+    JumpDancer,
 }
 
 public enum QuoteMod : byte
@@ -61,7 +63,6 @@ public enum TeamTag : byte
     Impostor,
     Neutral,
     Lover,
-    Arsonist,
     Jackal,
     Madmate,
     Agi,

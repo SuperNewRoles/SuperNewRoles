@@ -112,7 +112,7 @@ public static class AssetManager
 
         var cacheKey = new AssetCacheKey(path, Il2CppType.Of<T>());
         if (typeCache.TryGetValue(cacheKey, out var cached))
-            return cached.TryCast<T>();
+            return cached?.TryCast<T>();
 
         var bundle = Bundles[typeKey];
         var loadedAsset = bundle.LoadAsset<T>(path);

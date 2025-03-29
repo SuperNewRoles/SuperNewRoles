@@ -46,9 +46,9 @@ public abstract class CustomButtonBase : AbilityBase
     private IButtonEffect buttonEffect;
     public virtual float Timer { get; set; }
     public abstract float DefaultTimer { get; }
-    private float DefaultTimerAdjusted => DefaultTimer <= 0f ? 0.001f : DefaultTimer;
+    private float DefaultTimerAdjusted => DefaultTimer <= 0f ? MaybeZero : DefaultTimer;
     public abstract string buttonText { get; }
-
+    private const float MaybeZero = 0.001f;
     public abstract Sprite Sprite { get; }
     private static readonly Color GrayOut = new(1f, 1f, 1f, 0.3f);
 
@@ -158,7 +158,7 @@ public abstract class CustomButtonBase : AbilityBase
         }
         bool active = HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled;
         SetActive(active);
-        if (Timer > 0 && CheckDecreaseCoolCount()) DecreaseTimer();
+        if (Timer > 0 && (Timer == MaybeZero || CheckDecreaseCoolCount())) DecreaseTimer();
         actionButton.graphic.sprite = Sprite;
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
         actionButton.SetCoolDown(Timer, DefaultTimerAdjusted);

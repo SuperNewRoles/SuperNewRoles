@@ -171,6 +171,7 @@ FinalStatus.Samurai,サムライ,Samurai,侍,侍
 FinalStatus.BombBySelfBomb,爆破,Bomb by Self Bomber,自爆被卷入,自爆被卷入
 FinalStatus.SelfBomb,自爆,Self Bomb,自爆,自爆
 FinalStatus.Tuna,水揚げ,Tuna,水揚げ,水揚げ
+FinalStatus.Ignite,炎上,Ignite,着火,著火
 
 # HelpMenu
 HelpMenu.MyRoleInformation,自分の役職,My Role Information,我的角色信息,我的角色資訊
@@ -229,6 +230,8 @@ BlackSanta,ブラックサンタ,Black Santa,黑圣诞老人,黑聖誕老人
 Penguin,ペンギン,Penguin,企鹅,企鵝
 Pusher,突き落と師,Pusher
 EvilHacker,イビルハッカー,Evil Hacker,邪恶黑客,邪惡黑客
+Arsonist,アーソニスト,Arsonist,纵火犯,縱火犯
+JumpDancer,ジャンプダンサー,Jump Dancer,舞跳者,跳躍舞者
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -570,4 +573,11 @@ EvilHackerCanSeeDeadBodiesOnAdmin,死体の位置がわかる,Can See Dead Bodie
 EvilHackerShowDoorInfoOnMap,マップにドアの開閉情報を表示する,Show Door Info On Map,在地图上显示门的开关信息,在地圖上顯示門的開關資訊
 EvilHackerCanCreateMadmate,マッドメイトを指名出来る,Can Create Madmate,可以指定疯狂船员,可以指定瘋狂船員
 EvilHackerMadmateCooldown,「狂わせる」クールタイム,Madmate Creation Cooldown,指定疯狂船员冷却时间,指定瘋狂船員冷卻時間
-CreateMadmateButtonText,狂わせる,
+CreateMadmateButtonText,狂わせる,Create Madmate,指定疯狂船员,指定瘋狂船員
+
+# Arsonist
+ArsonistDouseButtonText,油をかける,Douse,浇油,潑油
+ArsonistIgniteButtonText,点火,Ignite,点燃,點燃
+
+# JumpDancer
+JumpDancerButtonName,ジャンプ,Jump,跳跃,跳躍

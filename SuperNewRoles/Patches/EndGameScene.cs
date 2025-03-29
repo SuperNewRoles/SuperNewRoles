@@ -28,6 +28,7 @@ public enum WinCondition
     WorkpersonWin,
     VultureWin,
     PavlovsWin,
+    ArsonistWin,
 }
 public enum CustomGameOverReason
 {
@@ -39,7 +40,8 @@ public enum CustomGameOverReason
     TeruteruWin = 35,
     WorkpersonWin = 36,
     VultureWin = 37,
-    PavlovsWin,
+    PavlovsWin = 38,
+    ArsonistWin = 39,
 }
 
 static class AdditionalTempData
@@ -184,6 +186,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.PavlovsWin:
                 baseText = "PavlovsDog";
                 roleColor = PavlovsDog.Instance.RoleColor;
+                break;
+            case WinCondition.ArsonistWin:
+                baseText = "Arsonist";
+                roleColor = Arsonist.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";
@@ -453,6 +459,10 @@ public static class OnGameEndPatch
             case CustomGameOverReason.PavlovsWin:
                 return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.IsPavlovsTeam()),
                         WinCondition.PavlovsWin,
+                        emptyReviveList);
+            case CustomGameOverReason.ArsonistWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Arsonist),
+                        WinCondition.ArsonistWin,
                         emptyReviveList);
             default:
                 Logger.Error("不明なゲームオーバー理由:" + reason);

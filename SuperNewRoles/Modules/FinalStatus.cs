@@ -22,6 +22,7 @@ public enum FinalStatus
     SelfBomb,
     Tuna,
     Push,
+    Ignite,
 }
 
 public static class FinalStatusListener
