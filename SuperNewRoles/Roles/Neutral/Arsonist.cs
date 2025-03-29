@@ -31,15 +31,15 @@ class Arsonist : RoleBase<Arsonist>
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
 
-    [CustomOptionFloat("ArsonistDouseCooldown", 2.5f, 60f, 2.5f, 10f)]
+    [CustomOptionFloat("ArsonistDouseCooldown", 2.5f, 60f, 2.5f, 10f, translationName: "CoolTime")]
     public static float ArsonistDouseCooldown;
 
     [CustomOptionFloat("ArsonistDouseDuration", 0.5f, 10f, 0.5f, 1f)]
     public static float ArsonistDouseDuration;
 
-    [CustomOptionBool("ArsonistCanUseVent", true)]
+    [CustomOptionBool("ArsonistCanUseVent", true, translationName: "CanUseVent")]
     public static bool ArsonistCanUseVent;
 
-    [CustomOptionBool("ArsonistImpostorVision", true)]
+    [CustomOptionBool("ArsonistImpostorVision", true, translationName: "HasImpostorVision")]
     public static bool ArsonistImpostorVision;
 }

@@ -8,8 +8,11 @@ Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
 People,{0}人,{0} people,{0}人,{0}人
 
+# 共通設定テキスト
 CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
 DurationTime,継続時間,Duration Time,持续时间,持續時間
+CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
+HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 
 SidekickRemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
 
@@ -576,6 +579,7 @@ EvilHackerMadmateCooldown,「狂わせる」クールタイム,Madmate Creation 
 CreateMadmateButtonText,狂わせる,Create Madmate,指定疯狂船员,指定瘋狂船員
 
 # Arsonist
+ArsonistDouseDuration,油をかける時間,Douse Duration,浇油时间,潑油時間
 ArsonistDouseButtonText,油をかける,Douse,浇油,潑油
 ArsonistIgniteButtonText,点火,Ignite,点燃,點燃
 
