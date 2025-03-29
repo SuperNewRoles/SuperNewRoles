@@ -19,7 +19,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override Color32 OutlineColor => ExPlayerControl.LocalPlayer.roleBase.RoleColor;
     public override Sprite Sprite => HudManager.Instance?.KillButton?.graphic?.sprite;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
-    protected override KeyCode? hotkey => KeyCode.Q;
+    protected override KeyType keytype => KeyType.Kill;
     public override float DefaultTimer => KillCooldown?.Invoke() ?? 0;
     public override bool OnlyCrewmates => OnlyCrewmatesValue?.Invoke() ?? false;
     public override bool TargetPlayersInVents => TargetPlayersInVentsValue?.Invoke() ?? false;

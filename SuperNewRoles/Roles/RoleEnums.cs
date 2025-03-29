@@ -42,6 +42,7 @@ public enum RoleId : short
     BlackSanta,
     Penguin,
     Pusher,
+    EvilHacker,
 }
 
 public enum QuoteMod : byte

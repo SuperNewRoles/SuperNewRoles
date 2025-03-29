@@ -90,7 +90,7 @@ public class EatDeadBodyAbility : CustomButtonBase
     public override Sprite Sprite => _sprite;
     private Sprite _sprite;
     private string _buttonText;
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => KeyType.Ability1;
 
     public override bool CheckIsAvailable()
     {

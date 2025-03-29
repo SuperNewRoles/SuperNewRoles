@@ -7,6 +7,7 @@ using SuperNewRoles.Modules;
 using TMPro;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using SuperNewRoles.Roles.Ability;
 
 namespace SuperNewRoles.Patches;
 
@@ -15,7 +16,9 @@ namespace SuperNewRoles.Patches;
 /// </summary>
 public static class DevicesPatch
 {
-    public static bool IsAdminRestrict;
+    public static bool DontCountBecausePortableAdmin;
+    private static bool isAdminRestrictOption;
+    public static bool IsAdminRestrict => DontCountBecausePortableAdmin ? false : isAdminRestrictOption;
     public static bool IsVitalRestrict;
     public static bool IsCameraRestrict;
     public static TextMeshPro TimeRemaining;
@@ -37,7 +40,7 @@ public static class DevicesPatch
         DeviceTypes = new();
         DeviceTimers = new();
 
-        IsAdminRestrict = MapSettingOptions.DeviceAdminOption == DeviceOptionType.Restrict;
+        isAdminRestrictOption = MapSettingOptions.DeviceAdminOption == DeviceOptionType.Restrict;
         IsCameraRestrict = MapSettingOptions.DeviceCameraOption == DeviceOptionType.Restrict;
         IsVitalRestrict = MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.Restrict;
 
@@ -66,6 +69,17 @@ public static class DevicesPatch
         ExPlayerControl player = ExPlayerControl.ById(playerId);
         return player != null && player.IsAlive();
     }
+    private static void CreateRemainingTextIfNeeded(Transform Parent)
+    {
+        if (TimeRemaining != null) return;
+        TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, Parent);
+        TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+        TimeRemaining.transform.position = Vector3.zero;
+        TimeRemaining.transform.localPosition = new Vector3(2.75f, 4.65f);
+        TimeRemaining.transform.localScale *= 2f;
+        TimeRemaining.color = Palette.White;
+        TimeRemaining.text = "";
+    }
     public static void FixedUpdate()
     {
         if (!AmongUsClient.Instance.AmHost)
@@ -77,14 +91,15 @@ public static class DevicesPatch
             if (timer <= 0)
                 continue;
             UsePlayers[deviceType].RemoveWhere(playerId => !ValidPlayer(playerId));
+
             if (UsePlayers[deviceType].Count <= 0)
                 continue;
+
             DeviceTimers[deviceType] -= Time.fixedDeltaTime;
+
             if (SyncTimer <= 0)
             {
-                // RPCを送信する
                 RpcSetDeviceTime(deviceType, DeviceTimers[deviceType]);
-                Logger.Info($"Sync {deviceType}:{DeviceTimers[deviceType]}");
             }
         }
         if (SyncTimer <= 0)
@@ -99,12 +114,13 @@ public static class DevicesPatch
     {
         public static bool Prefix(MapConsole __instance)
         {
+            DontCountBecausePortableAdmin = false;
             bool IsUse = !MapSettingOptions.DeviceOptions || MapSettingOptions.DeviceAdminOption != DeviceOptionType.CantUse;
             return IsUse;
         }
     }
 
-    [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Awake))]
+    [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
     class MapCountOverlayAwakePatch
     {
         [HarmonyPostfix]
@@ -117,18 +133,9 @@ public static class DevicesPatch
                     MapBehaviour.Instance.Close();
                     return;
                 }
-                if (TimeRemaining == null)
-                {
-                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, __instance.transform);
-                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
-                    TimeRemaining.transform.position = Vector3.zero;
-                    TimeRemaining.transform.localPosition = new Vector3(2.75f, 4.65f);
-                    TimeRemaining.transform.localScale *= 2f;
-                    TimeRemaining.color = Palette.White;
-                    TimeRemaining.text = "";
-                }
+                CreateRemainingTextIfNeeded(__instance.transform);
 
-                // RPCを送信
+                Logger.Info($"[Admin Open] RpcSetDeviceUseStatus Called: Player={PlayerControl.LocalPlayer.PlayerId}, IsOpen=true");
                 RpcSetDeviceUseStatus(DeviceType.Admin, PlayerControl.LocalPlayer.PlayerId, true);
             }
             else if (MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceAdminOption == DeviceOptionType.CantUse)
@@ -153,7 +160,98 @@ public static class DevicesPatch
                 MapBehaviour.Instance.Close();
                 return false;
             }
-            return true;
+            CreateAdmins(__instance);
+            return false;
+        }
+
+        private static void CreateAdmins(MapCountOverlay __instance)
+        {
+            AdvancedAdminAbility advancedAdminAbility = ExPlayerControl.LocalPlayer.GetAbility<AdvancedAdminAbility>();
+            bool commsActive = !(advancedAdminAbility?.Data.canUseAdminDuringComms ?? false) && ModHelpers.IsComms();
+
+            if (!__instance.isSab && commsActive)
+            {
+                __instance.isSab = true;
+                __instance.BackgroundColor.SetColor(Palette.DisabledGrey);
+                __instance.SabotageText.gameObject.SetActive(true);
+                return;
+            }
+
+            if (__instance.isSab && !commsActive)
+            {
+                __instance.isSab = false;
+                __instance.BackgroundColor.SetColor(Color.green);
+                __instance.SabotageText.gameObject.SetActive(false);
+            }
+
+            // インポスターや死体の色が変わる役職等が増えたらここに条件を追加
+            bool canSeeImpostorIcon = advancedAdminAbility?.Data.distinctionImpostor ?? false;
+            bool canSeeDeadIcon = advancedAdminAbility?.Data.distinctionDead ?? false;
+
+            for (int i = 0; i < __instance.CountAreas.Length; i++)
+            {
+                CounterArea counterArea = __instance.CountAreas[i];
+
+                // ロミジュリと絵画の部屋をアドミンの対象から外す
+                if (!commsActive && counterArea.RoomType > SystemTypes.Hallway)
+                {
+                    PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms[counterArea.RoomType];
+
+                    if (plainShipRoom != null && plainShipRoom.roomArea)
+                    {
+                        HashSet<int> hashSet = new();
+                        int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
+                        int count = 0;
+                        List<int> colors = new();
+                        // 死体の色で表示する数
+                        int numDeadIcons = 0;
+                        // インポスターの色で表示する数
+                        int numImpostorIcons = 0;
+
+                        for (int j = 0; j < num; j++)
+                        {
+                            Collider2D collider2D = __instance.buffer[j];
+                            if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies)
+                            {
+                                if (canSeeDeadIcon)
+                                {
+                                    numDeadIcons++;
+                                }
+
+                                count++;
+                                colors.Add(ModHelpers.GetPlayerById(collider2D.GetComponent<DeadBody>().ParentId).CurrentOutfit.ColorId);
+                            }
+                            else
+                            {
+                                ExPlayerControl component = collider2D.GetComponent<PlayerControl>();
+                                if (component?.Player == null) continue;
+                                if (component.Data == null || component.Data.Disconnected || component.Data.IsDead) continue;
+                                if (!__instance.showLivePlayerPosition && component.AmOwner) continue;
+                                if (!hashSet.Add(component.PlayerId)) continue;
+
+                                if (((ExPlayerControl)component).GetAbility<HideInAdminAbility>()?.IsHideInAdmin ?? false) continue;
+                                count++;
+                                colors.Add(component.Player.CurrentOutfit.ColorId);
+                                if (canSeeImpostorIcon && component.IsImpostor())
+                                {
+                                    numImpostorIcons++;
+                                }
+                            }
+                        }
+                        counterArea.UpdateCount(count);
+
+                        foreach (PoolableBehavior icon in counterArea.myIcons)
+                        {
+                            Material material = icon.GetComponent<SpriteRenderer>().material;
+                            Color iconColor = numImpostorIcons-- > 0 ? Palette.ImpostorRed : numDeadIcons-- > 0 ? Color.gray : Color.yellow;
+                            material.SetColor(PlayerMaterial.BackColor, iconColor);
+                            material.SetColor(PlayerMaterial.BodyColor, iconColor);
+                        }
+                    }
+                    else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");
+                }
+                else counterArea.UpdateCount(0);
+            }
         }
 
         public static void Postfix(MapCountOverlay __instance)
@@ -188,6 +286,7 @@ public static class DevicesPatch
                 GameObject.Destroy(TimeRemaining.gameObject);
                 TimeRemaining = null;
             }
+            Logger.Info($"[Admin Close] RpcSetDeviceUseStatus Called: Player={PlayerControl.LocalPlayer.PlayerId}, IsOpen=false");
             RpcSetDeviceUseStatus(DeviceType.Admin, PlayerControl.LocalPlayer.PlayerId, false);
         }
     }
@@ -215,7 +314,6 @@ public static class DevicesPatch
                     TimeRemaining.color = Palette.White;
                     TimeRemaining.text = "";
                 }
-                // RPCを送信
                 RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, true);
             }
         }
@@ -228,7 +326,6 @@ public static class DevicesPatch
         {
             if (__instance is not VitalsMinigame || !IsVitalRestrict)
                 return;
-            // RPCを送信
             RpcSetDeviceUseStatus(DeviceType.Vital, PlayerControl.LocalPlayer.PlayerId, false);
         }
     }
@@ -270,7 +367,6 @@ public static class DevicesPatch
         IsCameraCloseNow = true;
         if (!IsCameraRestrict)
             return;
-        // RPCを送信
         RpcSetDeviceUseStatus(DeviceType.Camera, PlayerControl.LocalPlayer.PlayerId, false);
     }
 
@@ -294,7 +390,6 @@ public static class DevicesPatch
                     TimeRemaining.color = Palette.White;
                     TimeRemaining.text = "";
                 }
-                // RPCを送信
                 RpcSetDeviceUseStatus(DeviceType.Camera, PlayerControl.LocalPlayer.PlayerId, true);
             }
         }
@@ -393,7 +488,6 @@ public static class DevicesPatch
     #endregion
 
     #region CustomRPC メソッド
-    // デバイスの使用時間を設定するRPC
     [CustomRPC(onlyOtherPlayer: true)]
     public static void RpcSetDeviceTime(string deviceType, float time)
     {
@@ -401,21 +495,30 @@ public static class DevicesPatch
         Logger.Info($"SET {deviceType}:{DeviceTimers[deviceType]}");
     }
 
-    // デバイスの使用状態を設定するRPC
     [CustomRPC]
     public static void RpcSetDeviceUseStatus(DeviceType deviceType, byte player, bool isOpen)
     {
-        Logger.Info($"SET {deviceType}:{player}:{isOpen}");
+        Logger.Info($"[RPC] RpcSetDeviceUseStatus Received: Device={deviceType}, Player={player}, IsOpen={isOpen}, IsHost={AmongUsClient.Instance.AmHost}");
+
+        string deviceTypeStr = deviceType.ToString();
+        if (!UsePlayers.ContainsKey(deviceTypeStr))
+        {
+            Logger.Warning($"[RPC] RpcSetDeviceUseStatus: Invalid device type string '{deviceTypeStr}' received.");
+            return;
+        }
+
+        Logger.Info($"[RPC] RpcSetDeviceUseStatus Before: UsePlayers[{deviceTypeStr}].Count={UsePlayers[deviceTypeStr].Count}, Contains({player})={UsePlayers[deviceTypeStr].Contains(player)}");
 
         if (isOpen)
         {
-            if (!UsePlayers[deviceType.ToString()].Contains(player))
-                UsePlayers[deviceType.ToString()].Add(player);
+            if (!UsePlayers[deviceTypeStr].Contains(player))
+                UsePlayers[deviceTypeStr].Add(player);
         }
         else
         {
-            UsePlayers[deviceType.ToString()].Remove(player);
+            UsePlayers[deviceTypeStr].Remove(player);
         }
+        Logger.Info($"[RPC] RpcSetDeviceUseStatus After: UsePlayers[{deviceTypeStr}].Count={UsePlayers[deviceTypeStr].Count}");
     }
     #endregion
 }

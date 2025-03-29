@@ -35,7 +35,7 @@ public class ExPlayerControl
     public IRoleBase roleBase { get; private set; }
     public List<AbilityBase> PlayerAbilities { get; private set; } = new();
     public Dictionary<ulong, AbilityBase> PlayerAbilitiesDictionary { get; private set; } = new();
-    public ExPlayerControl Parent { get; set; }
+    private Dictionary<string, AbilityBase> _abilityCache = new();
     public TextMeshPro PlayerInfoText { get; set; }
     public TextMeshPro MeetingInfoText { get; set; }
     public PlayerVoteArea VoteArea { get; set; }
@@ -274,6 +274,7 @@ public class ExPlayerControl
     {
         PlayerAbilities.Add(ability);
         PlayerAbilitiesDictionary.Add(abilityId, ability);
+        _abilityCache[ability.GetType().Name] = ability;
         SuperTrophyManager.RegisterTrophy(ability);
         switch (ability)
         {
@@ -338,7 +339,12 @@ public class ExPlayerControl
         }
         PlayerAbilities.Remove(ability);
         PlayerAbilitiesDictionary.Remove(abilityId);
+        _abilityCache.Remove(ability.GetType().Name);
         _hasAbilityCache.Clear();
+    }
+    public T GetAbility<T>() where T : AbilityBase
+    {
+        return _abilityCache.TryGetValue(typeof(T).Name, out var ability) ? ability as T : null;
     }
     public override string ToString()
     {

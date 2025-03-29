@@ -20,10 +20,11 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     private readonly string _sidekickText;
     private readonly Func<ExPlayerControl, bool>? _isTargetable;
     public Action<float> OnCooldownStarted;
+    private readonly bool _isSubButton;
     public override Color32 OutlineColor => new Color32(0, 255, 255, 255);
     public override Sprite Sprite => _sidekickSprite;
     public override string buttonText => _sidekickText;
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => _isSubButton ? KeyType.Ability2 : KeyType.Ability1;
     public override float DefaultTimer => _sidekickCooldown?.Invoke() ?? 0;
     public override bool OnlyCrewmates => false;
     public override Func<ExPlayerControl, bool>? IsTargetable => _isTargetable;
@@ -44,7 +45,8 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         Func<ExPlayerControl, bool>? sidekickSuccess = null,
         SidekickedPromoteData? sidekickedPromoteData = null,
         Action<ExPlayerControl> onSidekickCreated = null,
-        Func<bool> showSidekickLimitText = null)
+        Func<bool> showSidekickLimitText = null,
+        bool isSubButton = false)
     {
         _canCreateSidekick = canCreateSidekick;
         _sidekickCooldown = sidekickCooldown;
@@ -59,6 +61,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         _sidekickCount = sidekickCount;
         _showSidekickLimitText = showSidekickLimitText;
         Count = sidekickCount();
+        _isSubButton = isSubButton;
     }
 
     public override void OnClick()

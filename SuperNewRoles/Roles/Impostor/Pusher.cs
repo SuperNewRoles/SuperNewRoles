@@ -75,7 +75,7 @@ public class PusherAbility : TargetCustomButtonBase
 
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PusherPushButton.png");
     public override string buttonText => ModTranslation.GetString("PusherButtonName");
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => coolDown;
     public override Color32 OutlineColor => Pusher.Instance.RoleColor;
 

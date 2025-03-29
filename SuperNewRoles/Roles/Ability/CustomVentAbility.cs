@@ -17,7 +17,7 @@ public class CustomVentAbility : CustomButtonBase
 
     public override Sprite Sprite => HudManager.Instance?.ImpostorVentButton?.graphic?.sprite;
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.VentLabel);
-    protected override KeyCode? hotkey => KeyCode.V;
+    protected override KeyType keytype => KeyType.Vent;
     public override float DefaultTimer => VentCooldown?.Invoke() ?? 0;
 
     public CustomVentAbility(Func<bool> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null)

@@ -228,6 +228,7 @@ Santa,サンタ,Santa,圣诞老人,聖誕老人
 BlackSanta,ブラックサンタ,Black Santa,黑圣诞老人,黑聖誕老人
 Penguin,ペンギン,Penguin,企鹅,企鵝
 Pusher,突き落と師,Pusher
+EvilHacker,イビルハッカー,Evil Hacker,邪恶黑客,邪惡黑客
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -557,3 +558,16 @@ PenguinHundredKillDescription,ペンギンの能力で累計100人キルした,K
 
 # Pusher
 PusherButtonName,ドン！,Push!
+
+# EvilHacker Settings
+EvilHackerCanMoveWhileUsingAdmin,アドミン使用中に移動出来る,Can Move While Using Admin,使用管理地图时可以移动,使用管理地圖時可以移動
+EvilHackerCanUseAdminDuringComms,コミュサボ中もアドミンを使用出来る,Can Use Admin During Comms Sabotage,通讯破坏期间仍可使用管理地图,通訊破壞期間仍可使用管理地圖
+EvilHackerHasEnhancedAdmin,強化版アドミンを持つ,Has Enhanced Admin,拥有增强版管理地图,擁有增強版管理地圖
+EvilHackerCanUseAdminInMeeting,会議中にアドミンを使用出来る,Can Use Admin During Meetings,会议期间可以使用管理地图,會議期間可以使用管理地圖
+EvilHackerShowAdminOnSabotageMap,サボタージュマップにもアドミンを表示する,Show Admin On Sabotage Map,在破坏地图上显示管理地图,在破壞地圖上顯示管理地圖
+EvilHackerCanSeeImpostorsOnAdmin,インポスターの位置がわかる,Can See Impostors On Admin,可以在管理地图上看到内鬼位置,可以在管理地圖上看到內鬼位置
+EvilHackerCanSeeDeadBodiesOnAdmin,死体の位置がわかる,Can See Dead Bodies On Admin,可以在管理地图上看到尸体位置,可以在管理地圖上看到屍體位置
+EvilHackerShowDoorInfoOnMap,マップにドアの開閉情報を表示する,Show Door Info On Map,在地图上显示门的开关信息,在地圖上顯示門的開關資訊
+EvilHackerCanCreateMadmate,マッドメイトを指名出来る,Can Create Madmate,可以指定疯狂船员,可以指定瘋狂船員
+EvilHackerMadmateCooldown,「狂わせる」クールタイム,Madmate Creation Cooldown,指定疯狂船员冷却时间,指定瘋狂船員冷卻時間
+CreateMadmateButtonText,狂わせる,

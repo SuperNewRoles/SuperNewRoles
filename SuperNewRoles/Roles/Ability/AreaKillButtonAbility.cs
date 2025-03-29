@@ -25,7 +25,7 @@ public class AreaKillButtonAbility : CustomButtonBase
     public bool IsUsed { get; private set; }
     public override Sprite Sprite => CustomSprite ?? HudManager.Instance?.KillButton?.graphic?.sprite;
     public override string buttonText => CustomButtonText ?? FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => KillCooldown?.Invoke() ?? 0;
 
     public AreaKillButtonAbility(

@@ -28,7 +28,7 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     private EventListener<MeetingStartEventData> _onMeetingStartEvent;
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("PenguinButton.png");
     public override string buttonText => ModTranslation.GetString("PenguinButtonText");
-    protected override KeyCode? hotkey => KeyCode.F;
+    protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => coolDown;
     public override Color32 OutlineColor => Penguin.Instance.RoleColor;
 

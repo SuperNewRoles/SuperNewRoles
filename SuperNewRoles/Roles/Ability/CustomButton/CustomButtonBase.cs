@@ -28,6 +28,14 @@ public enum ShowTextType
     Show,
     ShowWithCount,
 }
+public enum KeyType
+{
+    None,
+    Kill,
+    Ability1,
+    Ability2,
+    Vent,
+}
 public abstract class CustomButtonBase : AbilityBase
 {
     //エフェクトがある(≒押したらカウントダウンが始まる？)ボタンの場合は追加でIButtonEffectを継承すること
@@ -38,6 +46,7 @@ public abstract class CustomButtonBase : AbilityBase
     private IButtonEffect buttonEffect;
     public virtual float Timer { get; set; }
     public abstract float DefaultTimer { get; }
+    private float DefaultTimerAdjusted => DefaultTimer <= 0f ? 0.001f : DefaultTimer;
     public abstract string buttonText { get; }
 
     public abstract Sprite Sprite { get; }
@@ -47,7 +56,7 @@ public abstract class CustomButtonBase : AbilityBase
 
     //TODO:未実装
     //Updateで感知するよりも、button押したのをトリガーにするべきな気がするけどそれは可能か？
-    protected abstract KeyCode? hotkey { get; }
+    protected abstract KeyType keytype { get; }
     // protected abstract int joystickkey { get; }
 
     public abstract bool CheckIsAvailable();
@@ -72,6 +81,19 @@ public abstract class CustomButtonBase : AbilityBase
         var moveable = localPlayer.CanMove;
 
         return !localPlayer.inVent && moveable;
+    }
+
+    private static KeyCode GetKeyCode(KeyType keyType)
+    {
+        return keyType switch
+        {
+            KeyType.None => KeyCode.None,
+            KeyType.Kill => KeyCode.Q,
+            KeyType.Ability1 => KeyCode.F,
+            KeyType.Ability2 => KeyCode.F,
+            KeyType.Vent => KeyCode.V,
+            _ => throw new Exception($"keyTypeが{keyType}の場合はGetKeyCodeを実装してください"),
+        };
     }
 
     /// <summary>
@@ -139,13 +161,13 @@ public abstract class CustomButtonBase : AbilityBase
         if (Timer > 0 && CheckDecreaseCoolCount()) DecreaseTimer();
         actionButton.graphic.sprite = Sprite;
         //エフェクト中は直後のbuttonEffect.Updateで表記が上書きされる……はず
-        actionButton.SetCoolDown(Timer, DefaultTimer);
+        actionButton.SetCoolDown(Timer, DefaultTimerAdjusted);
         actionButton.OverrideText(buttonText);
         if (CheckIsAvailable() && (buttonEffect == null || !buttonEffect.isEffectActive))
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
-            if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+            if (Input.GetKeyDown(GetKeyCode(keytype)))
             {
                 OnClickEvent();
             }
@@ -154,7 +176,7 @@ public abstract class CustomButtonBase : AbilityBase
         {
             actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
             actionButton.graphic.material.SetFloat("_Desat", 0f);
-            if (Input.GetKeyDown(hotkey ?? KeyCode.None))
+            if (Input.GetKeyDown(GetKeyCode(keytype)))
             {
                 buttonEffect.OnCancel(actionButton);
                 ResetTimer();
@@ -162,7 +184,8 @@ public abstract class CustomButtonBase : AbilityBase
         }
         else
         {
-            actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
+            actionButton.graphic.color = GrayOut;
+            actionButton.buttonLabelText.color = Palette.DisabledClear;
             actionButton.graphic.material.SetFloat("_Desat", 1f);
         }
         UpdateText();
@@ -219,7 +242,7 @@ public abstract class CustomButtonBase : AbilityBase
     }
     public virtual void ResetTimer()
     {
-        Timer = DefaultTimer;
+        Timer = DefaultTimerAdjusted;
     }
     public override void DetachToLocalPlayer()
     {
