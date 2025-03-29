@@ -47,7 +47,7 @@ class SerialKiller : RoleBase<SerialKiller>
     [CustomOptionFloat("SerialKillerSuicideTime", 2.5f, 120f, 2.5f, 40f)]
     public static float SerialKillerSuicideTime;
 
-    [CustomOptionBool("SerialKillerCanUseVent", true)]
+    [CustomOptionBool("SerialKillerCanUseVent", true, translationName: "CanUseVent")]
     public static bool SerialKillerCanUseVent;
 
     [CustomOptionBool("SerialKillerCanSabotage", true)]

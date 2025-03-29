@@ -48,7 +48,7 @@ class Workperson : RoleBase<Workperson>
     public static bool WorkpersonUseCustomTaskSetting;
     [CustomOptionTask("WorkpersonTask", 8, 8, 8, parentFieldName: nameof(WorkpersonUseCustomTaskSetting))]
     public static TaskOptionData WorkpersonTaskData;
-    [CustomOptionBool("WorkpersonCanUseVent", false)]
+    [CustomOptionBool("WorkpersonCanUseVent", false, translationName: "CanUseVent")]
     public static bool WorkpersonCanUseVent;
 }
 public class WorkpersonAbility : AbilityBase

@@ -46,10 +46,10 @@ class WaveCannonJackal : RoleBase<WaveCannonJackal>
     [CustomOptionFloat("WaveCannonJackalKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float WaveCannonJackalKillCooldown;
 
-    [CustomOptionBool("WaveCannonJackalCanUseVent", true)]
+    [CustomOptionBool("WaveCannonJackalCanUseVent", true, translationName: "CanUseVent")]
     public static bool WaveCannonJackalCanUseVent;
 
-    [CustomOptionBool("WaveCannonJackalImpostorVision", true)]
+    [CustomOptionBool("WaveCannonJackalImpostorVision", true, translationName: "HasImpostorVision")]
     public static bool WaveCannonJackalImpostorVision;
 
     [CustomOptionBool("WaveCannonJackalCanCreateSidekick", true)]

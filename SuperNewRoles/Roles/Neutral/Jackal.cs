@@ -39,10 +39,10 @@ class Jackal : RoleBase<Jackal>
     [CustomOptionFloat("JackalKillCooldown", 2.5f, 60f, 2.5f, 30f)]
     public static float JackalKillCooldown;
 
-    [CustomOptionBool("JackalCanUseVent", true)]
+    [CustomOptionBool("JackalCanUseVent", true, translationName: "CanUseVent")]
     public static bool JackalCanUseVent;
 
-    [CustomOptionBool("JackalImpostorVision", true)]
+    [CustomOptionBool("JackalImpostorVision", true, translationName: "HasImpostorVision")]
     public static bool JackalImpostorVision;
 
     [CustomOptionBool("JackalCanCreateSidekick", true)]

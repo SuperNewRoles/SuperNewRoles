@@ -34,8 +34,8 @@ class Madmate : RoleBase<Madmate>
     [CustomOptionTask("MadmateSpecialTasks", 1, 1, 1, parentFieldName: nameof(MadmateIsSpecialTasks))]
     public static TaskOptionData MadmateSpecialTasks;
 
-    [CustomOptionBool("MadmateCouldUseVent", false)]
+    [CustomOptionBool("MadmateCouldUseVent", false, translationName: "CanUseVent")]
     public static bool MadmateCouldUseVent;
-    [CustomOptionBool("MadmateHasImpostorVision", false)]
+    [CustomOptionBool("MadmateHasImpostorVision", false, translationName: "HasImpostorVision")]
     public static bool MadmateHasImpostorVision;
 }

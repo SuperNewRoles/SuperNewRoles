@@ -47,7 +47,7 @@ class Vulture : RoleBase<Vulture>
     [CustomOptionInt("VultureRequiredBodies", 1, 10, 1, 3)]
     public static int VultureRequiredBodies;
 
-    [CustomOptionBool("VultureCanUseVent", false)]
+    [CustomOptionBool("VultureCanUseVent", false, translationName: "CanUseVent")]
     public static bool VultureCanUseVent;
 
     [CustomOptionBool("VultureShowArrows", true)]

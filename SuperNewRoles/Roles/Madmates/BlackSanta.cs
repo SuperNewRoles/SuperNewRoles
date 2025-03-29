@@ -44,10 +44,10 @@ class BlackSanta : RoleBase<BlackSanta>
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Crewmate;
 
     // マッドメイト機能
-    [CustomOptionBool("BlackSantaCouldUseVent", true, translationName: "MadmateCouldUseVent")]
+    [CustomOptionBool("BlackSantaCouldUseVent", true, translationName: "CanUseVent")]
     public static bool BlackSantaCouldUseVent;
 
-    [CustomOptionBool("BlackSantaHasImpostorVision", true, translationName: "MadmateHasImpostorVision")]
+    [CustomOptionBool("BlackSantaHasImpostorVision", true, translationName: "HasImpostorVision")]
     public static bool BlackSantaHasImpostorVision;
 
     [CustomOptionBool("BlackSantaCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]

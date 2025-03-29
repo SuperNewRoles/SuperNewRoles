@@ -35,10 +35,10 @@ class BlackCat : RoleBase<BlackCat>
     [CustomOptionBool("BlackCatRevengeNotImpostorExile", true)]
     public static bool BlackCatRevengeNotImpostorExile;
 
-    [CustomOptionBool("BlackCatCouldUseVent", true, translationName: "MadmateCouldUseVent")]
+    [CustomOptionBool("BlackCatCouldUseVent", true, translationName: "CanUseVent")]
     public static bool BlackCatCouldUseVent;
 
-    [CustomOptionBool("BlackCatHasImpostorVision", true, translationName: "MadmateHasImpostorVision")]
+    [CustomOptionBool("BlackCatHasImpostorVision", true, translationName: "HasImpostorVision")]
     public static bool BlackCatHasImpostorVision;
 
     [CustomOptionBool("BlackCatCanKnowImpostors", true, translationName: "MadmateCanKnowImpostors")]

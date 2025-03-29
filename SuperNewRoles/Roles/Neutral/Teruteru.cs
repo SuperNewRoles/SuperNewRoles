@@ -35,10 +35,10 @@ class Teruteru : RoleBase<Teruteru>
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Neutral;
     public override RoleId[] RelatedRoleIds { get; } = [];
 
-    [CustomOptionBool("TeruteruCanUseVent", false, parentFieldName: nameof(Role))]
+    [CustomOptionBool("TeruteruCanUseVent", false, translationName: "CanUseVent")]
     public static bool CanUseVent;
 
-    [CustomOptionBool("TeruteruRequireTaskCompletion", false, parentFieldName: nameof(Role))]
+    [CustomOptionBool("TeruteruRequireTaskCompletion", false)]
     public static bool RequireTaskCompletion;
 
     [CustomOptionInt("TeruteruRequiredTaskCount", 1, 15, 1, 3, parentFieldName: nameof(RequireTaskCompletion))]
