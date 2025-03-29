@@ -101,7 +101,7 @@ public static class Arsonist
         if (!RoleClass.Arsonist.IsDouse)
             return;
         Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameManager.Instance.LogicOptions.GetKillDistance();
         Vector2 vector = RoleClass.Arsonist.DouseTarget.GetTruePosition() - truePosition;
         float magnitude = vector.magnitude;
         if (magnitude > num || PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))

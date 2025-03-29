@@ -183,7 +183,7 @@ public class Pusher : RoleBase, IImpostor, ICustomButton, IRpcHandler, IFixedUpd
     private void UpdateUntargetPlayers()
     {
         _untargetPlayers = new();
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)] + 1f;
+        float num = GameManager.Instance.LogicOptions.GetKillDistance() + 1f;
         Vector2 truePosition = Player.GetTruePosition();
         foreach (PlayerControl @object in PlayerControl.AllPlayerControls)
         {
