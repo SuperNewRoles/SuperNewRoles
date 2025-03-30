@@ -589,3 +589,9 @@ JackalFriendsCouldKnowJackals,ジャッカルを知れる,Could Know Jackals,可
 JackalFriendsTaskNeed,知るためのタスク数,Task Needed to Know Jackals,需要知道杰克任务数,需要知道傑克任務數
 JackalFriendsCustomTaskCount,タスク数を独自にする,Custom Task Count,自定义任务数,自訂任務數
 JackalFriendsDontAssignIfJackalNotAssigned,ジャッカルがいないときに割選出しない,Don't Assign If Jackal Not Assigned,杰克不在时不要分配,傑克不在時不要分配
+
+# WellBehaver
+WellBehaverLimitTrashCountSetting,ゴミの上限数,Limit Trash Count,垃圾上限,垃圾上限
+WellBehaverFrequencyGarbageDumpingSetting,ゴミ投棄の頻度,Frequency of Garbage Dumping,垃圾倾倒频率,垃圾傾倒頻率
+WellBehaverCanAllPlayerSeeGarbageSetting,全員がゴミを見れる,All Players Can See Garbage,所有玩家可以看到垃圾,所有玩家可以看到垃圾
+WellBehaverPickUpGarbageButtonName,ゴミを拾う,Pick Up Garbage,捡起垃圾,撿起垃圾

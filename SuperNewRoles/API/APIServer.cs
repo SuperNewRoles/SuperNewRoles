@@ -22,10 +22,18 @@ public static class ApiServerManager
 
     public static void Initialize()
     {
-        listener = new HttpListener();
-        listener.Prefixes.Add("http://" + domain + ":" + port + "/");
-        listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
-        listener.Start();
+        try
+        {
+            listener = new HttpListener();
+            listener.Prefixes.Add("http://" + domain + ":" + port + "/");
+            listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
+            listener.Start();
+        }
+        catch (HttpListenerException e)
+        {
+            Logger.Error("HttpListenerException: " + e.Message);
+            return;
+        }
 
         listenerThread = new Thread(startListener);
         listenerThread.Start();

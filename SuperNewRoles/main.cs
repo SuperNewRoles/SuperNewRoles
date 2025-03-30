@@ -52,6 +52,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public static bool IsEpic => Constants.GetPurchasingPlatformType() == PlatformConfig.EpicGamesStoreName;
 
+    // 複数起動中の場合に絶対に重複しない数
+    private static int ProcessNumber = 0;
+
     public override void Load()
     {
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
@@ -77,12 +80,52 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomColors.Load();
         ApiServerManager.Initialize();
 
+        CheckStarts();
+
         Logger.LogInfo("Waiting for Harmony patch");
         task.Wait();
         Logger.LogInfo("SuperNewRoles loaded");
         Logger.LogInfo("--------------------------------");
         Logger.LogInfo(ModTranslation.GetString("WelcomeNextSuperNewRoles"));
         Logger.LogInfo("--------------------------------");
+    }
+
+    private static FileStream _fs;
+
+    private static void CheckStarts()
+    {
+        // SuperNewRolesNext/Startsディレクトリのパスを取得
+        string startsDir = Path.Combine(".", "SuperNewRolesNext", "Starts");
+        // ディレクトリが存在しなければ作成
+        if (!Directory.Exists(startsDir))
+        {
+            Directory.CreateDirectory(startsDir);
+        }
+        int index = 0;
+        while (true)
+        {
+            try
+            {
+                // 書き込み可能かチェックするため、独占モードでファイルをオープン
+                string filePath = Path.Combine(startsDir, $"{index}.txt");
+                _fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
+
+                // 書き込みテストとして内容を記述する
+                byte[] content = Encoding.UTF8.GetBytes("Process check");
+                _fs.Write(content, 0, content.Length);
+
+                // 書き込みに成功したので、そのインデックスをProcessNumberに設定
+                ProcessNumber = index;
+                SuperNewRoles.Logger.Info($"Started AmongUs {index} times");
+                break;
+            }
+            catch (IOException)
+            {
+                // 書き込み不可の場合は次のファイル番号を試す
+                SuperNewRoles.Logger.Warning($"Checking ProcessNumber: {index}");
+                index++;
+            }
+        }
     }
     private static void RegisterCustomObjects()
     {
@@ -211,11 +254,9 @@ public partial class SuperNewRolesPlugin : BasePlugin
         }
     }
 
-    // v16.0.0で多重起動が出来ないのを対策するコード
-    // リリースまでにはちゃんとしたやつに修正しておいてください
     [HarmonyPatch(typeof(AbstractUserSaveData), nameof(AbstractUserSaveData.HandleSave))]
     public static class BlockSaveUserDataPatch
     {
-        public static bool Prefix() => false;
+        public static bool Prefix() => ProcessNumber == 0;
     }
 }
