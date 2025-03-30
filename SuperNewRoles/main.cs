@@ -210,4 +210,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
             __instance.MinPlayers = 1;
         }
     }
+
+    // v16.0.0で多重起動が出来ないのを対策するコード
+    // リリースまでにはちゃんとしたやつに修正しておいてください
+    [HarmonyPatch(typeof(AbstractUserSaveData), nameof(AbstractUserSaveData.HandleSave))]
+    public static class BlockSaveUserDataPatch
+    {
+        public static bool Prefix() => false;
+    }
 }
