@@ -541,7 +541,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             {
                 CustomCosmeticsSaver.SetVisor2Id(cosmetic.ProdId);
                 if (PlayerControl.LocalPlayer != null)
-                    PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Visor2, cosmetic.ProdId, PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
+                    PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Visor2, cosmetic.ProdId, PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
 
                 // プレビュー画像を更新
                 UpdateButtonPreview(visorButton02, cosmetic);
@@ -591,7 +591,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 {
                     CustomCosmeticsSaver.SetHat2Id(cosmetic.ProdId);
                     if (PlayerControl.LocalPlayer != null)
-                        PlayerControl.LocalPlayer.RpcCustomSetCosmetics(CostumeTabType.Hat2, cosmetic.ProdId, PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
+                        PlayerControlRpcExtensions.RpcCustomSetCosmetics(PlayerControl.LocalPlayer.PlayerId, CostumeTabType.Hat2, cosmetic.ProdId, PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
 
                     // プレビュー画像を更新
                     UpdateButtonPreview(hatButton02, cosmetic);

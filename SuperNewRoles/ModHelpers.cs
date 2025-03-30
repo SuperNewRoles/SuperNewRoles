@@ -12,10 +12,6 @@ using UnityEngine;
 namespace SuperNewRoles;
 public static class ModHelpers
 {
-    public static PlayerControl GetPlayerById(byte id)
-    {
-        return PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(player => player.PlayerId == id);
-    }
     public static string GetRandomFormat(string format, int min, int max)
     {
         return format.Replace("{0}", GetRandomInt(max, min).ToString());
@@ -264,5 +260,25 @@ public static class ModHelpers
     public static byte ParseToByte(this string str)
     {
         return byte.Parse(str);
+    }
+
+    private static bool IsSameOutfit(NetworkedPlayerInfo.PlayerOutfit shifterOutfit, NetworkedPlayerInfo.PlayerOutfit targetOutfit) =>
+            !(shifterOutfit.ColorId == targetOutfit.ColorId
+            && shifterOutfit.HatId == targetOutfit.HatId
+            && shifterOutfit.PetId == targetOutfit.PetId
+            && shifterOutfit.SkinId == targetOutfit.SkinId
+            && shifterOutfit.VisorId == targetOutfit.VisorId
+            && shifterOutfit.PlayerName == targetOutfit.PlayerName);
+
+    public static void setOutfit(this PlayerControl pc, NetworkedPlayerInfo.PlayerOutfit outfit)
+    {
+        pc.Data.Outfits[PlayerOutfitType.Shapeshifted] = outfit;
+        if (IsSameOutfit(pc.Data.DefaultOutfit, outfit)) pc.CurrentOutfitType = PlayerOutfitType.Shapeshifted;
+        pc.RawSetName(outfit.PlayerName);
+        pc.RawSetHat(outfit.HatId, outfit.ColorId);
+        pc.RawSetVisor(outfit.VisorId, outfit.ColorId);
+        pc.RawSetColor(outfit.ColorId);
+        pc.RawSetPet(outfit.PetId, outfit.ColorId);
+        pc.RawSetSkin(outfit.SkinId, outfit.ColorId);
     }
 }

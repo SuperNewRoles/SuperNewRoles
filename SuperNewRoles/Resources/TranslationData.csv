@@ -3,6 +3,16 @@ creditsMain,Created by ykundesu,Created by ykundesu,由 ykundesu 制作,由 ykun
 WelcomeNextSuperNewRoles,新しいSuperNewRolesへ、ようこそ！,Welcome to the new SuperNewRoles!,欢迎来到全新的 SuperNewRoles!,歡迎來到全新的 SuperNewRoles!
 Close,閉じる,Close,关闭,關閉
 
+# 役職名
+Role.Matryoshka,マトリョーシカ,Matryoshka,套娃,俄羅斯套娃
+
+# 役職説明
+RoleDescription.Matryoshka,死体の外見を着ることができる裏切り者です。,An impostor who can wear the appearance of dead bodies.,可以穿戴尸体外观的内鬼。,可以穿戴屍體外觀的內鬼。
+
+# マトリョーシカ関連
+Matryoshka.Report,死体を着用中に報告可能にする,Allow reporting while wearing a dead body,允许在穿戴尸体时举报,允許在穿戴屍體時舉報
+MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体,穿戴/脫下屍體
+
 Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
 Neutral,第三陣営,Neutral,第三阵营,第三陣營
@@ -245,6 +255,7 @@ SuicideWisher,スーサイドウィッシャー,Suicide Wisher,自杀愿望者,�
 JackalFriends,ジャッカルフレンズ,Jackal Friends
 WellBehaver,品行方正,WellBehaver
 NekoKabocha,ネコカボチャ,NekoKabocha,猫南瓜,貓南瓜
+Matryoshka,マトリョーシカ,Matryoshka
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -603,3 +614,11 @@ NekoKabocha.CanRevengeCrewmate,クルーメイトに復讐できる,Can Revenge 
 NekoKabocha.CanRevengeNeutral,第三陣営に復讐できる,Can Revenge Neutral,可以对第三阵营复仇,可以對第三陣營復仇
 NekoKabocha.CanRevengeImpostor,インポスターに復讐できる,Can Revenge Impostor,可以对内鬼复仇,可以對內鬼復仇
 NekoKabocha.CanRevengeExiled,追放時に復讐できる,Can Revenge When Exiled,被放逐时可以复仇,被放逐時可以復仇
+
+# Matryoshka
+MatryoshkaWearLimit,纏える回数,Number of times you can wear it,恐怖套娃最大套娃次数,恐怖套娃最大套娃次數
+MatryoshkaAddKillCoolTime,死体まといの増加キルクールタイムタイム,Increased kill-cool time time for corpse coats,恐怖套娃每次套娃追加的击杀冷却,恐怖套娃每次套娃增加的擊殺冷却
+MatryoshkaWearReport,まとい中でも通報可能,can be called in while the body is still circled,恐怖套娃可以在套娃状态下报告,恐怖套娃可以在套娃狀態下報告
+MatryoshkaWearTime,まとえる時間,Coiling time,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
+MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
+MatryoshkaTakeOffButtonName,脱ぐ,Take Off,解除,解除

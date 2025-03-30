@@ -219,7 +219,7 @@ public static class DevicesPatch
                                 }
 
                                 count++;
-                                colors.Add(ModHelpers.GetPlayerById(collider2D.GetComponent<DeadBody>().ParentId).CurrentOutfit.ColorId);
+                                colors.Add(ExPlayerControl.ById(collider2D.GetComponent<DeadBody>().ParentId).Player.CurrentOutfit.ColorId);
                             }
                             else
                             {

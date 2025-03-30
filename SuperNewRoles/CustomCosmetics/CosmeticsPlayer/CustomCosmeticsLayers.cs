@@ -26,7 +26,7 @@ public static class CustomCosmeticsLayers
     {
         if (cosmeticsLayer.hat == null || cosmeticsLayer.visor == null)
         {
-            Logger.Error("Initialize failed: " + cosmeticsLayer.name);
+            Logger.Error("Initialize failed: " + cosmeticsLayer?.name ?? "NONAME");
             return null;
         }
         try

@@ -14,6 +14,7 @@
         <ApplicationIcon />
         <Win32Resource />
         <AssemblyName>SuperNewRoles</AssemblyName>
+        <NoWarn>CS0649;CS863;</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

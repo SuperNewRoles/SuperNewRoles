@@ -131,9 +131,9 @@ public static class CustomRPCManager
             writer.Write(id);
 
             // 引数を設定
-            foreach (var arg in __args)
+            for (int i = 0; i < __args.Length; i++)
             {
-                writer.Write(arg);
+                writer.Write(__args[i], __originalMethod.GetParameters()[i].ParameterType);
             }
 
             // RPC送信
@@ -199,11 +199,11 @@ public static class CustomRPCManager
     /// <summary>
     /// オブジェクトをMessageWriterに書き込む拡張メソッド
     /// </summary>
-    private static void Write(this MessageWriter writer, object obj)
+    private static void Write(this MessageWriter writer, object obj, Type type)
     {
-        if (obj != null && obj.GetType().IsEnum)
+        if (obj != null && type.IsEnum)
         {
-            var underlyingType = Enum.GetUnderlyingType(obj.GetType());
+            var underlyingType = Enum.GetUnderlyingType(type);
             if (underlyingType == typeof(byte))
                 writer.Write((byte)(object)obj);
             else if (underlyingType == typeof(short))
@@ -266,108 +266,213 @@ public static class CustomRPCManager
                 writer.Write(color32.b);
                 writer.Write(color32.a);
                 break;
-            case Dictionary<string, string> dict:
-                writer.Write(dict.Count);
-                foreach (var kvp in dict)
+            default:
+                if (type == typeof(Dictionary<byte, byte>))
                 {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<byte, byte>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value);
+                        }
+                    }
                 }
-                break;
-            case Dictionary<string, int> dictInt:
-                writer.Write(dictInt.Count);
-                foreach (var kvp in dictInt)
+                else if (type == typeof(Dictionary<string, int>))
                 {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<string, int>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value);
+                        }
+                    }
                 }
-                break;
-            case Dictionary<byte, byte> dictByte:
-                writer.Write(dictByte.Count);
-                foreach (var kvp in dictByte)
+                else if (type == typeof(Dictionary<byte, byte>))
                 {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<byte, byte>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value);
+                        }
+                    }
                 }
-                break;
-            case Dictionary<string, byte> dictStringByte:
-                writer.Write(dictStringByte.Count);
-                foreach (var kvp in dictStringByte)
+                else if (type == typeof(Dictionary<string, byte>))
                 {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<string, byte>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value);
+                        }
+                    }
                 }
-                break;
-            case Dictionary<ushort, byte> dictUshortByte:
-                writer.Write(dictUshortByte.Count);
-                foreach (var kvp in dictUshortByte)
+                else if (type == typeof(Dictionary<ushort, byte>))
                 {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<ushort, byte>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value);
+                        }
+                    }
                 }
-                break;
-            case Dictionary<byte, (byte, int)> dictByteWithTuple:
-                writer.Write(dictByteWithTuple.Count);
-                foreach (var kvp in dictByteWithTuple)
+                else if (type == typeof(Dictionary<byte, (byte, int)>))
                 {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value.Item1);
-                    writer.Write(kvp.Value.Item2);
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var dict = obj as Dictionary<byte, (byte, int)>;
+                        writer.Write(dict.Count);
+                        foreach (var kvp in dict)
+                        {
+                            writer.Write(kvp.Key);
+                            writer.Write(kvp.Value.Item1);
+                            writer.Write(kvp.Value.Item2);
+                        }
+                    }
                 }
-                break;
-            case PlayerControl pc:
-                writer.Write(pc.PlayerId);
-                break;
-            case PlayerControl[] pcArray:
-                writer.Write(pcArray.Length);
-                foreach (var playerControl in pcArray)
+                else if (type == typeof(PlayerControl))
                 {
-                    writer.Write(playerControl.PlayerId);
+                    if (obj == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write((obj as PlayerControl)?.PlayerId ?? byte.MaxValue);
                 }
-                break;
-            case ExPlayerControl exPc:
-                writer.Write(exPc.PlayerId);
-                break;
-            case ExPlayerControl[] exPcArray:
-                writer.Write(exPcArray.Length);
-                foreach (var exPlayerControl in exPcArray)
+                else if (type == typeof(PlayerControl[]))
                 {
-                    writer.Write(exPlayerControl.PlayerId);
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var pcArray = obj as PlayerControl[];
+                        writer.Write(pcArray.Length);
+                        foreach (var playerControl in pcArray)
+                        {
+                            if (playerControl == null)
+                                writer.Write(byte.MaxValue);
+                            else
+                                writer.Write(playerControl.PlayerId);
+                        }
+                    }
                 }
-                break;
-            case NetworkedPlayerInfo networkedPlayerInfo:
-                writer.Write(networkedPlayerInfo.PlayerId);
-                break;
-            case InnerNetObject innerNetObject:
-                writer.Write(innerNetObject.NetId);
-                break;
-            case List<byte> byteList:
-                writer.Write(byteList.Count);
-                foreach (var b in byteList)
+                else if (type == typeof(ExPlayerControl))
                 {
-                    writer.Write(b);
+                    if (obj == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write((obj as ExPlayerControl)?.PlayerId ?? byte.MaxValue);
                 }
-                break;
-            case Vector2 v2:
-                writer.Write(v2.x);
-                writer.Write(v2.y);
-                break;
-            case Vector3 v3:
-                writer.Write(v3.x);
-                writer.Write(v3.y);
-                writer.Write(v3.z);
-                break;
-            case AbilityBase abilityBase:
-                if (abilityBase == null || abilityBase.Player == null)
-                    writer.Write(byte.MaxValue);
+                else if (type == typeof(ExPlayerControl[]))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var exPcArray = obj as ExPlayerControl[];
+                        writer.Write(exPcArray.Length);
+                        foreach (var exPlayerControl in exPcArray)
+                        {
+                            if (exPlayerControl == null)
+                                writer.Write(byte.MaxValue);
+                            else
+                                writer.Write(exPlayerControl.PlayerId);
+                        }
+                    }
+                }
+                else if (type == typeof(NetworkedPlayerInfo))
+                {
+                    if (obj == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                        writer.Write((obj as NetworkedPlayerInfo)?.PlayerId ?? byte.MaxValue);
+                }
+                else if (type.IsSubclassOf(typeof(InnerNetObject)))
+                {
+                    if (obj == null)
+                        writer.Write(uint.MaxValue);
+                    else
+                        writer.Write((obj as InnerNetObject)?.NetId ?? uint.MaxValue);
+                }
+                else if (type == typeof(List<byte>))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        var byteList = obj as List<byte>;
+                        writer.Write(byteList.Count);
+                        foreach (var b in byteList)
+                        {
+                            writer.Write(b);
+                        }
+                    }
+                }
+                else if (type.IsSubclassOf(typeof(AbilityBase)))
+                {
+                    var abilityBase = obj as AbilityBase;
+                    if (obj == null || abilityBase?.Player == null)
+                        writer.Write(byte.MaxValue);
+                    else
+                    {
+                        writer.Write(abilityBase.Player.PlayerId);
+                        writer.Write(abilityBase.AbilityId);
+                    }
+                }
+                else if (type == typeof(Vector2))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        Vector2 v2 = (Vector2)obj;
+                        writer.Write(v2.x);
+                        writer.Write(v2.y);
+                    }
+                }
+                else if (type == typeof(Vector3))
+                {
+                    if (obj == null)
+                        writer.Write(0);
+                    else
+                    {
+                        Vector3 v3 = (Vector3)obj;
+                        writer.Write(v3.x);
+                        writer.Write(v3.y);
+                        writer.Write(v3.z);
+                    }
+                }
                 else
                 {
-                    writer.Write(abilityBase.Player.PlayerId);
-                    writer.Write(abilityBase.AbilityId);
+                    throw new Exception($"Invalid type: {obj.GetType()}");
                 }
                 break;
-            default:
-                throw new Exception($"Invalid type: {obj.GetType()}");
         }
     }
 
@@ -400,7 +505,7 @@ public static class CustomRPCManager
             Type t when t == typeof(float) => reader.ReadSingle(),
             Type t when t == typeof(bool) => reader.ReadBoolean(),
             Type t when t == typeof(string) => reader.ReadString(),
-            Type t when t == typeof(PlayerControl) => ModHelpers.GetPlayerById(reader.ReadByte()),
+            Type t when t == typeof(PlayerControl) => (PlayerControl)ExPlayerControl.ById(reader.ReadByte()),
             Type t when t == typeof(PlayerControl[]) => ReadPlayerControlArray(reader),
             Type t when t == typeof(ExPlayerControl) => ExPlayerControl.ById(reader.ReadByte()),
             Type t when t == typeof(ExPlayerControl[]) => ReadExPlayerControlArray(reader),
@@ -478,7 +583,7 @@ public static class CustomRPCManager
         PlayerControl[] array = new PlayerControl[length];
         for (int i = 0; i < length; i++)
         {
-            array[i] = ModHelpers.GetPlayerById(reader.ReadByte());
+            array[i] = (PlayerControl)ExPlayerControl.ById(reader.ReadByte());
         }
         return array;
     }
