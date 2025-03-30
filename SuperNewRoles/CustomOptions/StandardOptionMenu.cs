@@ -41,6 +41,8 @@ public static class StandardOptionMenu
         int index = 0;
         foreach (var category in CustomOptionManager.OptionCategories)
         {
+            if (category.IsModifier)
+                continue;
             GenerateRoleDetailButton(category, index++);
         }
     }

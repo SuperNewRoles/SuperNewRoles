@@ -24,6 +24,7 @@ public static class CustomOptionsMenu
         public const string NEUTRAL = "Setting_Neutral";
         public const string STANDARD = "Setting_Standard";
         public const string EXCLUSIVITY = "Setting_Exclusivity";
+        public const string Setting_Modifier = "Setting_Modifier";
     }
 
     /// <summary>
@@ -178,21 +179,26 @@ public static class CustomOptionsMenu
         SetVanillaTabActive(false);
         SetCurrentTab(categoryName);
 
-        if (categoryName == MenuCategories.VANILLA)
+        switch (categoryName)
         {
-            SetVanillaTabActive(true);
-        }
-        else if (IsRoleOptionMenuCategory(categoryName))
-        {
-            RoleOptionMenu.ShowRoleOptionMenu(ConvertToRoleOptionMenuType(categoryName));
-        }
-        else if (categoryName == MenuCategories.STANDARD)
-        {
-            StandardOptionMenu.ShowStandardOptionMenu();
-        }
-        else if (categoryName == MenuCategories.EXCLUSIVITY)
-        {
-            ExclusivityOptionMenu.ShowExclusivityOptionMenu();
+            case MenuCategories.VANILLA:
+                SetVanillaTabActive(true);
+                break;
+            case MenuCategories.STANDARD:
+                StandardOptionMenu.ShowStandardOptionMenu();
+                break;
+            case MenuCategories.EXCLUSIVITY:
+                ExclusivityOptionMenu.ShowExclusivityOptionMenu();
+                break;
+            case MenuCategories.Setting_Modifier:
+                ModifierOptionMenu.ShowModifierOptionMenu();
+                break;
+            default:
+                if (IsRoleOptionMenuCategory(categoryName))
+                {
+                    RoleOptionMenu.ShowRoleOptionMenu(ConvertToRoleOptionMenuType(categoryName));
+                }
+                break;
         }
     }
 

@@ -384,10 +384,11 @@ namespace SuperNewRoles.CustomOptions
             RoleOptionMenu.RoleOptionMenuObjectData.CurrentRoleId = roleOption.RoleId;
 
             int index = CreateRoleOptions(roleOption, ref lastY);
-            UpdateScrollerBounds(index);
 
             // スクロール位置をリセット
             ResetScrollPosition();
+
+            UpdateScrollerBounds(index);
         }
 
         // スクロール位置をリセットするメソッド
@@ -468,9 +469,6 @@ namespace SuperNewRoles.CustomOptions
             // スクロールバーの範囲を設定
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ContentYBounds.max =
                 index < 4 ? 0.1f : index == 4 ? 2.1f : (index - 4) * DefaultRate + 2f; // 最小値を0.1fに設定して常にスクロールバーが表示されるようにする
-
-            // スクロールバーを表示するために必要な設定
-            RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.ScrollbarYBounds = new FloatRange(0, 1);
 
             // スクロールバーを更新
             RoleOptionMenu.RoleOptionMenuObjectData.SettingsScroller.UpdateScrollBars();

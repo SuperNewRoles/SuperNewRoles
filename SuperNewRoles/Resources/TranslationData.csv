@@ -109,6 +109,10 @@ RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
 RoleOptionMenuType.Crewmate,クルーメイト,Crewmate,船员,船員
 RoleOptionMenuType.Neutral,第三陣営,Neutral,第三阵营,第三陣營
 
+# MadRolesOption
+MadRolesOptionCategory,<b><color=red>マッド役職共通設定</color></b>,<b><color=red>Mad Roles Common Settings</color></b>,<b><color=red>疯狂角色共通设置</color></b>,<b><color=red>瘋狂角色共通設置</color></b>
+MadRolesTest,マッド役職テスト,Mad Roles Test,疯狂角色测试,瘋狂角色測試
+
 # CustomOption
 BulkRoleButton,役職数一括設定,Bulk Role Setting,批量设置角色,批量設定角色
 NumberOfCrews,人数,Number of Crewmates,船员人数,船員人數
@@ -235,6 +239,8 @@ Pusher,突き落と師,Pusher
 EvilHacker,イビルハッカー,Evil Hacker,邪恶黑客,邪惡黑客
 Arsonist,アーソニスト,Arsonist,纵火犯,縱火犯
 JumpDancer,ジャンプダンサー,Jump Dancer,舞跳者,跳躍舞者
+Celebrity,スター,Celebrity,明星,明星
+SuicideWisher,スーサイドウィッシャー,Suicide Wisher,自杀愿望者,自殺願望者
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -446,11 +452,8 @@ Seer.Mode.SoulOnly,霊魂のみ,Soul Only,仅灵魂,僅靈魂
 Seer.LimitSoulDuration,霊魂の表示時間を制限する,Limit Soul Duration,限制灵魂显示时间,限制靈魂顯示時間
 Seer.SoulDuration,霊魂の表示時間,Soul Duration,灵魂显示时间,靈魂顯示時間
 
-# Role Names
-Celebrity,スター,Celebrity,明星,明星
+# Celebrity
 CelebrityIntro,みんなのスター！！,The Celebrity!!,大家的明星！！,大家的明星！！
-
-# Celebrity Role Settings
 CelebrityKeepNameColorAfterRoleChange,役職が変わっても名前の色がスターのままになる,Keep name color as Celebrity even if role changes,即使角色改变也保持明星姓名颜色,即使角色改變也保持明星姓名顏色
 CelebrityEnableGlowEffect,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか,Enable screen glow effect every kill cooldown during task phase,是否在任务阶段每次击杀冷却结束时闪亮屏幕,是否在任務階段每次擊殺冷卻結束時閃亮屏幕
 CelebrityGlowOnlyWhileAlive,画面が光るのは生きている間のみか(会議更新),Screen glows only while alive (updates on meeting),屏幕仅在活着时闪烁（会议更新）,螢幕僅在活著時閃爍（會議更新）
@@ -575,3 +578,6 @@ ArsonistIgniteButtonText,点火,Ignite,点燃,點燃
 
 # JumpDancer
 JumpDancerButtonName,ジャンプ,Jump,跳跃,跳躍
+
+# SuicideWisher
+SuicideWisherButtonText,自殺,Suicide,自杀,自殺

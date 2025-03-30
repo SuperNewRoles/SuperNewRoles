@@ -45,6 +45,7 @@ public enum RoleId : short
     Pusher,
     EvilHacker,
     JumpDancer,
+    SuicideWisher,
 }
 
 public enum QuoteMod : byte

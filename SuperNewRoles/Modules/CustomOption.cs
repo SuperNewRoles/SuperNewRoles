@@ -23,6 +23,13 @@ public static class CustomOptionManager
     [CustomOptionBool("SkipStartGameCountdown", false, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool SkipStartGameCountdown;
 
+    [Modifier]
+    public static CustomOptionCategory MadRolesOptionCategory;
+    [CustomOptionBool("MadRolesTest", false, parentFieldName: nameof(MadRolesOptionCategory))]
+    public static bool MadRolesTest;
+
+
+
     private static Dictionary<string, CustomOptionBaseAttribute> CustomOptionAttributes { get; } = new();
     public static List<CustomOption> CustomOptions { get; } = new();
     public static List<CustomOptionCategory> OptionCategories { get; } = new();
@@ -124,7 +131,7 @@ public static class CustomOptionManager
                 {
                     if (!fieldNames.Add(field.Name))
                         throw new InvalidOperationException($"Category field name is duplicated: {field.Name}");
-                    var category = new CustomOptionCategory(field.Name);
+                    var category = new CustomOptionCategory(field.Name, isModifier: field.GetCustomAttribute<ModifierAttribute>() != null);
                     field.SetValue(null, category);
                     CategoryByFieldName[field.Name] = category;
                     continue;
@@ -1198,17 +1205,24 @@ public class CustomOptionBoolAttribute : CustomOptionBaseAttribute
     public override byte GenerateDefaultSelection() => (byte)(DefaultValue ? 1 : 0);
 }
 
+[AttributeUsage(AttributeTargets.Field)]
+public class ModifierAttribute : Attribute
+{
+    public ModifierAttribute() { }
+}
 public class CustomOptionCategory
 {
     public string Id { get; }
     public string Name { get; }
     public List<CustomOption> Options { get; } = new();
+    public bool IsModifier { get; }
 
-    public CustomOptionCategory(string name)
+    public CustomOptionCategory(string name, bool isModifier = false)
     {
         Id = ComputeMD5Hash.Compute(name);
         Name = name; // 後でTranslationを使用して翻訳する
         RegisterCategory(this);
+        IsModifier = isModifier;
     }
 
     private static void RegisterCategory(CustomOptionCategory category)
