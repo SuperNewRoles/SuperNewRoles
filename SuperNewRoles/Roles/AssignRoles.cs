@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomOptions.Categories;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Roles;
 
@@ -43,6 +44,12 @@ public static class AssignRoles
         AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Neutral],
         AssignTickets_NotHundredPercent[AssignedTeamType.Neutral],
         false, MaxNeutrals);
+
+        if (JackalFriends.JackalFriendsDontAssignIfJackalNotAssigned && !ExPlayerControl.ExPlayerControls.Any(player => player.IsJackalTeam()))
+        {
+            AssignTickets_HundredPercent[AssignedTeamType.Crewmate].RemoveAll(ticket => ticket.RoleOption.RoleId == RoleId.JackalFriends);
+            AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate].RemoveAll(ticket => ticket.RoleOption.RoleId == RoleId.JackalFriends);
+        }
 
         // Assign Crews
         AssignTickets(AssignTickets_HundredPercent[AssignedTeamType.Crewmate],

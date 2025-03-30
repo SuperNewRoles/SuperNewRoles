@@ -41,6 +41,9 @@ class JackalFriends : RoleBase<JackalFriends>
     [CustomOptionBool("JackalFriendsCouldKnowJackals", true)]
     public static bool JackalFriendsCouldKnowJackals;
 
+    [CustomOptionBool("JackalFriendsDontAssignIfJackalNotAssigned", true)]
+    public static bool JackalFriendsDontAssignIfJackalNotAssigned;
+
     [CustomOptionInt("JackalFriendsTaskNeed", 0, 10, 1, 0, parentFieldName: nameof(JackalFriendsCouldKnowJackals))]
     public static int JackalFriendsTaskNeed;
 

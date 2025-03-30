@@ -588,3 +588,4 @@ SuicideWisherButtonText,自殺,Suicide,自杀,自殺
 JackalFriendsCouldKnowJackals,ジャッカルを知れる,Could Know Jackals,可以知道杰克,可以知道傑克
 JackalFriendsTaskNeed,知るためのタスク数,Task Needed to Know Jackals,需要知道杰克任务数,需要知道傑克任務數
 JackalFriendsCustomTaskCount,タスク数を独自にする,Custom Task Count,自定义任务数,自訂任務數
+JackalFriendsDontAssignIfJackalNotAssigned,ジャッカルがいないときに割選出しない,Don't Assign If Jackal Not Assigned,杰克不在时不要分配,傑克不在時不要分配
