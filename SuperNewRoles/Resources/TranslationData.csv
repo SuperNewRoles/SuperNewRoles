@@ -243,6 +243,8 @@ JumpDancer,ジャンプダンサー,Jump Dancer,舞跳者,跳躍舞者
 Celebrity,スター,Celebrity,明星,明星
 SuicideWisher,スーサイドウィッシャー,Suicide Wisher,自杀愿望者,自殺願望者
 JackalFriends,ジャッカルフレンズ,Jackal Friends
+WellBehaver,品行方正,WellBehaver
+NekoKabocha,ネコカボチャ,NekoKabocha,猫南瓜,貓南瓜
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -595,3 +597,9 @@ WellBehaverLimitTrashCountSetting,ゴミの上限数,Limit Trash Count,垃圾上
 WellBehaverFrequencyGarbageDumpingSetting,ゴミ投棄の頻度,Frequency of Garbage Dumping,垃圾倾倒频率,垃圾傾倒頻率
 WellBehaverCanAllPlayerSeeGarbageSetting,全員がゴミを見れる,All Players Can See Garbage,所有玩家可以看到垃圾,所有玩家可以看到垃圾
 WellBehaverPickUpGarbageButtonName,ゴミを拾う,Pick Up Garbage,捡起垃圾,撿起垃圾
+
+# NekoKabocha
+NekoKabocha.CanRevengeCrewmate,クルーメイトに復讐できる,Can Revenge Crewmate,可以对船员复仇,可以對船員復仇
+NekoKabocha.CanRevengeNeutral,第三陣営に復讐できる,Can Revenge Neutral,可以对第三阵营复仇,可以對第三陣營復仇
+NekoKabocha.CanRevengeImpostor,インポスターに復讐できる,Can Revenge Impostor,可以对内鬼复仇,可以對內鬼復仇
+NekoKabocha.CanRevengeExiled,追放時に復讐できる,Can Revenge When Exiled,被放逐时可以复仇,被放逐時可以復仇

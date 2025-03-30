@@ -47,6 +47,7 @@ public enum RoleId : short
     JumpDancer,
     SuicideWisher,
     WellBehaver,
+    NekoKabocha,
 }
 
 public enum QuoteMod : byte
