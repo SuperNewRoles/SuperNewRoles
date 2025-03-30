@@ -1,36 +1,46 @@
 using AmongUs.GameOptions;
+using SuperNewRoles.Events.PCEvents;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Roles.Ability;
 
+public record JFriendData(bool CanUseVent, bool IsImpostorVision, bool CouldKnowJackals, int TaskNeeded, TaskOptionData SpecialTasks);
 public class JFriendAbility : AbilityBase
 {
-    public bool CanUseVent { get; }
-    public bool IsImpostorVision { get; }
 
     public CustomVentAbility VentAbility { get; private set; }
     public KnowOtherAbility KnowJackalAbility { get; private set; }
     public ImpostorVisionAbility ImpostorVisionAbility { get; private set; }
-
-    public JFriendAbility(bool canUseVent, bool isImpostorVision)
+    public CustomTaskAbility CustomTaskAbility { get; private set; }
+    private EventListener<TaskCompleteEventData> _taskCompleteEvent;
+    private readonly JFriendData Data;
+    private bool _canKnowJackal;
+    public JFriendAbility(JFriendData data)
     {
-        CanUseVent = canUseVent;
-        IsImpostorVision = isImpostorVision;
+        Data = data;
     }
 
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
         VentAbility = new CustomVentAbility(
-            () => CanUseVent
+            () => Data.CanUseVent
         );
         KnowJackalAbility = new KnowOtherAbility(
-            (player) => player.IsJackalTeam(),
+            (player) => CanKnowJackal() && player.IsJackalTeam(),
             () => true
         );
         ImpostorVisionAbility = new ImpostorVisionAbility(
-            () => IsImpostorVision
+            () => Data.IsImpostorVision
         );
+        CustomTaskAbility = new CustomTaskAbility(
+            () => (true, Data.TaskNeeded),
+            Data.SpecialTasks
+        );
+
+        _taskCompleteEvent = TaskCompleteEvent.Instance.AddListener(x => RecalucateTaskComplete(x.player));
+        RecalucateTaskComplete(player);
 
         ExPlayerControl exPlayer = (ExPlayerControl)player;
 
@@ -38,10 +48,26 @@ public class JFriendAbility : AbilityBase
         exPlayer.AttachAbility(VentAbility, parentAbility);
         exPlayer.AttachAbility(KnowJackalAbility, parentAbility);
         exPlayer.AttachAbility(ImpostorVisionAbility, parentAbility);
+        exPlayer.AttachAbility(CustomTaskAbility, parentAbility);
+
         base.Attach(player, abilityId, parent);
     }
-
+    private bool CanKnowJackal()
+    {
+        return _canKnowJackal;
+    }
     public override void AttachToLocalPlayer()
     {
+    }
+    private void RecalucateTaskComplete(PlayerControl player)
+    {
+        if (player != Player) return;
+        if (!Data.CouldKnowJackals) _canKnowJackal = false;
+        else
+        {
+            var (complete, all) = ModHelpers.TaskCompletedData(ExPlayerControl.LocalPlayer.Data);
+            if (complete == -1 || all == -1) _canKnowJackal = false;
+            else _canKnowJackal = complete >= Data.TaskNeeded;
+        }
     }
 }

@@ -13,6 +13,7 @@ CoolTime,クールタイム,Cool Time,冷却时间,冷卻時間
 DurationTime,継続時間,Duration Time,持续时间,持續時間
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
+TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
 
 SidekickRemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
 
@@ -241,6 +242,7 @@ Arsonist,アーソニスト,Arsonist,纵火犯,縱火犯
 JumpDancer,ジャンプダンサー,Jump Dancer,舞跳者,跳躍舞者
 Celebrity,スター,Celebrity,明星,明星
 SuicideWisher,スーサイドウィッシャー,Suicide Wisher,自杀愿望者,自殺願望者
+JackalFriends,ジャッカルフレンズ,Jackal Friends
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -581,3 +583,8 @@ JumpDancerButtonName,ジャンプ,Jump,跳跃,跳躍
 
 # SuicideWisher
 SuicideWisherButtonText,自殺,Suicide,自杀,自殺
+
+# JackalFriends
+JackalFriendsCouldKnowJackals,ジャッカルを知れる,Could Know Jackals,可以知道杰克,可以知道傑克
+JackalFriendsTaskNeed,知るためのタスク数,Task Needed to Know Jackals,需要知道杰克任务数,需要知道傑克任務數
+JackalFriendsCustomTaskCount,タスク数を独自にする,Custom Task Count,自定义任务数,自訂任務數

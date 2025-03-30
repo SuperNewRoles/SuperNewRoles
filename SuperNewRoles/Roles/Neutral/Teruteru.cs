@@ -17,10 +17,11 @@ class Teruteru : RoleBase<Teruteru>
     public override Color32 RoleColor { get; } = new Color32(255, 165, 0, byte.MaxValue);
     public override List<Func<AbilityBase>> Abilities { get; } = [
         () => new TeruteruAbility(new TeruteruData(
-            canUseVent: CanUseVent,
-            requireTaskCompletion: RequireTaskCompletion,
-            requiredTaskCount: RequiredTaskCount,
-            customTaskCount: CustomTaskCount
+            canUseVent: TeruteruCanUseVent,
+            requireTaskCompletion: TeruteruRequireTaskCompletion,
+            requiredTaskCount: TeruteruRequiredTaskCount,
+            customTaskCount: TeruteruCustomTaskCount,
+            teruteruTaskOption: TeruteruTaskOption
         ))
     ];
 
@@ -36,19 +37,19 @@ class Teruteru : RoleBase<Teruteru>
     public override RoleId[] RelatedRoleIds { get; } = [];
 
     [CustomOptionBool("TeruteruCanUseVent", false, translationName: "CanUseVent")]
-    public static bool CanUseVent;
+    public static bool TeruteruCanUseVent;
 
     [CustomOptionBool("TeruteruRequireTaskCompletion", false)]
-    public static bool RequireTaskCompletion;
+    public static bool TeruteruRequireTaskCompletion;
 
-    [CustomOptionInt("TeruteruRequiredTaskCount", 1, 15, 1, 3, parentFieldName: nameof(RequireTaskCompletion))]
-    public static int RequiredTaskCount;
+    [CustomOptionInt("TeruteruRequiredTaskCount", 1, 15, 1, 3, parentFieldName: nameof(TeruteruRequireTaskCompletion))]
+    public static int TeruteruRequiredTaskCount;
 
-    [CustomOptionBool("TeruteruCustomTaskCount", false, parentFieldName: nameof(RequireTaskCompletion))]
-    public static bool CustomTaskCount;
+    [CustomOptionBool("TeruteruCustomTaskCount", false, parentFieldName: nameof(TeruteruRequireTaskCompletion))]
+    public static bool TeruteruCustomTaskCount;
 
-    [CustomOptionTask("TeruteruTaskOption", 1, 1, 1, parentFieldName: nameof(CustomTaskCount))]
-    public static TaskOptionData TaskOption;
+    [CustomOptionTask("TeruteruTaskOption", 1, 1, 1, parentFieldName: nameof(TeruteruCustomTaskCount))]
+    public static TaskOptionData TeruteruTaskOption;
 }
 
 public class TeruteruAbility : AbilityBase
@@ -124,12 +125,12 @@ public class TeruteruData
     public bool CustomTaskCount { get; }
     public TaskOptionData TeruteruTaskOption { get; }
 
-    public TeruteruData(bool canUseVent, bool requireTaskCompletion, int requiredTaskCount, bool customTaskCount)
+    public TeruteruData(bool canUseVent, bool requireTaskCompletion, int requiredTaskCount, bool customTaskCount, TaskOptionData teruteruTaskOption)
     {
         CanUseVent = canUseVent;
         RequireTaskCompletion = requireTaskCompletion;
         RequiredTaskCount = requiredTaskCount;
         CustomTaskCount = customTaskCount;
-        TeruteruTaskOption = Teruteru.TaskOption;
+        TeruteruTaskOption = teruteruTaskOption;
     }
 }
