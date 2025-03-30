@@ -5,13 +5,18 @@ Close,閉じる,Close,关闭,關閉
 
 # 役職名
 Role.Matryoshka,マトリョーシカ,Matryoshka,套娃,俄羅斯套娃
+Role.Amnesiac,忘却者,Amnesiac,失忆者,失憶者
 
 # 役職説明
 RoleDescription.Matryoshka,死体の外見を着ることができる裏切り者です。,An impostor who can wear the appearance of dead bodies.,可以穿戴尸体外观的内鬼。,可以穿戴屍體外觀的內鬼。
+RoleDescription.Amnesiac,死体をレポートするとその死体の人の役職になる第三陣営です。勝利条件は変化先の役職に依存します。,This is the Neutral role where reporting a corpse results in the role of the person of the corpse. Winning conditions depend on the role of the change destination.,失忆者属于独立阵营，可以通过报告尸体来获得那名被报告的玩家的职业。失忆者的胜利条件与获得的职业相同。,失憶者屬於中立陣營，當舉報屍體時將成為死者的原職業。勝利條件取決於所成為職業而定。
 
 # マトリョーシカ関連
 Matryoshka.Report,死体を着用中に報告可能にする,Allow reporting while wearing a dead body,允许在穿戴尸体时举报,允許在穿戴屍體時舉報
 MatryoshkaButtonText,死体を着る/脱ぐ,Wear/Remove Body,穿戴/脱下尸体,穿戴/脫下屍體
+
+# 忘却者関連
+Amnesiac.RoleChangeNotification,あなたは次の役職になりました: ,You have become the following role: ,你现在的职业变为: ,你現在的職業變為: 
 
 Impostor,インポスター,Impostor,内鬼,內鬼
 Crewmate,クルーメイト,Crewmate,船员,船員
@@ -256,6 +261,7 @@ JackalFriends,ジャッカルフレンズ,Jackal Friends
 WellBehaver,品行方正,WellBehaver
 NekoKabocha,ネコカボチャ,NekoKabocha,猫南瓜,貓南瓜
 Matryoshka,マトリョーシカ,Matryoshka
+Amnesiac,忘却者,Amnesiac
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -622,3 +628,6 @@ MatryoshkaWearReport,まとい中でも通報可能,can be called in while the b
 MatryoshkaWearTime,まとえる時間,Coiling time,恐怖套娃套娃持续时间,恐怖套娃套娃持續時間
 MatryoshkaPutOnButtonName,着る,Put On,套娃,套娃
 MatryoshkaTakeOffButtonName,脱ぐ,Take Off,解除,解除
+
+# Amnesiac
+AmnesiacShowDeadBodyArrows,死体の矢印を表示する,Show Dead Body Arrows,显示尸体箭头,顯示屍體箭頭

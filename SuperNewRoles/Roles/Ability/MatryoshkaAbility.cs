@@ -26,9 +26,7 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
     public bool isEffectActive { get; set; }
 
     public Action OnEffectEnds => () => RpcSetMatryoshkaDeadBody(this, null, false);
-    //todo:あとで
     public float EffectDuration => Data.WearTime;
-    //todo:あとで
     public virtual bool effectCancellable => true;
 
     public float EffectTimer { get; set; }

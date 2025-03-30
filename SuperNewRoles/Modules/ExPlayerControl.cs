@@ -177,6 +177,89 @@ public class ExPlayerControl
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(abilitiesToDetach);
     }
+    public void ReverseRole(ExPlayerControl target)
+    {
+        if (target == null || target.Player == null) return;
+
+        // 自分と相手のAbilitiesとRoleを保存
+        List<(AbilityBase ability, ulong abilityId)> myAbilities = new();
+        List<(AbilityBase ability, ulong abilityId)> targetAbilities = new();
+
+        foreach (var ability in PlayerAbilities.ToArray())
+        {
+            if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
+            {
+                myAbilities.Add((ability, ability.AbilityId));
+                PlayerAbilities.Remove(ability);
+                PlayerAbilitiesDictionary.Remove(ability.AbilityId);
+                _abilityCache.Remove(ability.GetType().Name);
+                _hasAbilityCache.Remove(ability.GetType().Name);
+            }
+        }
+
+        foreach (var ability in target.PlayerAbilities.ToArray())
+        {
+            if (ability != null && ability.Parent != null && ability.Parent is not AbilityParentPlayer)
+            {
+                targetAbilities.Add((ability, ability.AbilityId));
+                target.PlayerAbilities.Remove(ability);
+                target.PlayerAbilitiesDictionary.Remove(ability.AbilityId);
+                target._abilityCache.Remove(ability.GetType().Name);
+                target._hasAbilityCache.Remove(ability.GetType().Name);
+            }
+        }
+
+        // 両方のプレイヤーのRoleを保存
+        RoleId myRole = Role;
+        RoleId targetRole = target.Role;
+
+        // 両方のプレイヤーからAbilitiesをすべてDetach
+        foreach (var abilityData in myAbilities)
+        {
+            DetachAbility(abilityData.abilityId);
+        }
+
+        foreach (var abilityData in targetAbilities)
+        {
+            target.DetachAbility(abilityData.abilityId);
+        }
+
+        // お互いのRoleを入れ替え
+
+        if (Player.AmOwner)
+            SuperTrophyManager.DetachTrophy(Role);
+
+        Role = targetRole;
+        roleBase = target.roleBase;
+        target.Role = myRole;
+        target.roleBase = roleBase;
+
+        // アタッチする
+        foreach (var ability in myAbilities)
+        {
+            var currentParent = ability.ability.Parent;
+            while (currentParent != null && currentParent is AbilityParentAbility)
+            {
+                currentParent = (currentParent as AbilityParentAbility).ParentAbility.Parent;
+            }
+            if (currentParent is AbilityParentRole parentRole)
+                (currentParent as AbilityParentRole).Player = target;
+            target.AttachAbility(ability.ability, currentParent);
+        }
+        foreach (var ability in targetAbilities)
+        {
+            var currentParent = ability.ability.Parent;
+            while (currentParent != null && currentParent is AbilityParentAbility)
+            {
+                currentParent = (currentParent as AbilityParentAbility).ParentAbility.Parent;
+            }
+            if (currentParent is AbilityParentRole parentRole)
+                (currentParent as AbilityParentRole).Player = Player;
+            target.AttachAbility(ability.ability, currentParent);
+        }
+        // 名前情報を更新
+        NameText.UpdateAllNameInfo();
+    }
     public void Disconnected()
     {
         _exPlayerControls.Remove(this);

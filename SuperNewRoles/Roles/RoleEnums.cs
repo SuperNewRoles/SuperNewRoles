@@ -49,6 +49,7 @@ public enum RoleId : short
     WellBehaver,
     NekoKabocha,
     Matryoshka,
+    Amnesiac,
 }
 
 public enum QuoteMod : byte
