@@ -46,7 +46,7 @@ class FalseCharges : RoleBase<FalseCharges>
 public class FalseChargesAbility : TargetCustomButtonBase
 {
     private readonly FalseChargesData _data;
-    private EventListener<ExileEventData> _playerExiledListener;
+    private EventListener<WrapUpEventData> _wrapUpListener;
 
     private int _turn;
     private PlayerControl _target;
@@ -59,10 +59,10 @@ public class FalseChargesAbility : TargetCustomButtonBase
     public override void AttachToLocalPlayer()
     {
         base.AttachToLocalPlayer();
-        _playerExiledListener = ExileEvent.Instance.AddListener(OnPlayerExiled);
+        _wrapUpListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
-    private void OnPlayerExiled(ExileEventData data)
+    private void OnWrapUp(WrapUpEventData data)
     {
         _turn--;
         // 追放されたプレイヤーがいる場合
@@ -76,7 +76,7 @@ public class FalseChargesAbility : TargetCustomButtonBase
     public override void DetachToLocalPlayer()
     {
         // イベントリスナーを削除
-        _playerExiledListener?.RemoveListener();
+        _wrapUpListener?.RemoveListener();
     }
 
     public override Color32 OutlineColor => FalseCharges.Instance.RoleColor;
