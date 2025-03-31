@@ -53,6 +53,7 @@ public enum RoleId : short
     Conjurer,
     Doppelganger,
     FalseCharges,
+    Pteranodon,
 }
 
 public enum QuoteMod : byte

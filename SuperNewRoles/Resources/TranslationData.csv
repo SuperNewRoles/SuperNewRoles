@@ -645,3 +645,8 @@ DoppelgangerButtonText,変身,Shapeshift,变身,變身
 # FalseCharges
 FalseChargesExileTurn,冤罪の範囲のターン,Turn of the false accusation range,冤罪师栽赃后可以获胜的会议轮数,冤罪師栽贓後可以獲勝的會議輪數
 FalseCharges.ButtonTitle,冤罪,False Charge,栽赃,栽贓
+
+# プテラノドン
+Role.Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
+Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
+Pteranodon.ButtonTitle,飛行,Fly,飞行,飛行

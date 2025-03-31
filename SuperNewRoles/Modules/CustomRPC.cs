@@ -448,7 +448,10 @@ public static class CustomRPCManager
                 else if (type == typeof(Vector2))
                 {
                     if (obj == null)
-                        writer.Write(0);
+                    {
+                        writer.Write(0f);
+                        writer.Write(0f);
+                    }
                     else
                     {
                         Vector2 v2 = (Vector2)obj;
@@ -459,7 +462,11 @@ public static class CustomRPCManager
                 else if (type == typeof(Vector3))
                 {
                     if (obj == null)
-                        writer.Write(0);
+                    {
+                        writer.Write(0f);
+                        writer.Write(0f);
+                        writer.Write(0f);
+                    }
                     else
                     {
                         Vector3 v3 = (Vector3)obj;
