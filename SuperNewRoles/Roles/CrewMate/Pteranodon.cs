@@ -169,7 +169,12 @@ public class PteranodonAbility : CustomButtonBase
             Vector3 position = Player.Player.transform.position;
 
             if (Player.AmOwner)
+            {
                 SetStatusRPC(this, false, position, _startPosition, 0f);
+                Player.NetTransform.RpcSnapTo(position);
+            }
+            else
+                Player.NetTransform.SnapTo(position);
             return;
         }
 
