@@ -4,7 +4,9 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HarmonyLib;
 using SuperNewRoles.Events;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using TMPro;
 using UnityEngine;
@@ -60,7 +62,7 @@ public abstract class CustomButtonBase : AbilityBase
     // protected abstract int joystickkey { get; }
 
     public abstract bool CheckIsAvailable();
-    public virtual bool CheckHasButton() => !PlayerControl.LocalPlayer.Data.IsDead;
+    public virtual bool CheckHasButton() => Player == ExPlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead;
 
     public abstract void OnClick();
     public virtual void OnMeetingEnds() { ResetTimer(); }
@@ -254,5 +256,17 @@ public abstract class CustomButtonBase : AbilityBase
     public void SetCoolTenSeconds()
     {
         Timer = 10f;
+    }
+
+    [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
+    public class AbilityUpdate
+    {
+        public static void Postfix(AbilityButton __instance)
+        {
+            if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
+            {
+                __instance.commsDown.SetActive(false);
+            }
+        }
     }
 }

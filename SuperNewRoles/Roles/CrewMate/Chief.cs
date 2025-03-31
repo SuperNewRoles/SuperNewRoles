@@ -74,7 +74,7 @@ public class ChiefAbility : AbilityBase
         _canSeeCreatedSheriff = canSeeCreatedSheriff;
     }
     private bool _hasOldTask = false;
-    public override void AttachToLocalPlayer()
+    public override void AttachToAlls()
     {
         // 任命ボタンの作成
         _sidekickButton = new CustomSidekickButtonAbility(
@@ -99,6 +99,9 @@ public class ChiefAbility : AbilityBase
         exPlayer.AttachAbility(_sidekickButton, abilityParentAbility);
 
         _nameTextUpdateEventListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+    public override void AttachToLocalPlayer()
+    {
     }
     public override void DetachToLocalPlayer()
     {

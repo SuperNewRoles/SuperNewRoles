@@ -449,7 +449,7 @@ public static class OnGameEndPatch
                         WinCondition.TeruteruWin,
                         emptyReviveList);
             case CustomGameOverReason.WorkpersonWin:
-                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Workperson && p.IsTaskComplete()),
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Workperson),
                         WinCondition.WorkpersonWin,
                         emptyReviveList);
             case CustomGameOverReason.VultureWin:

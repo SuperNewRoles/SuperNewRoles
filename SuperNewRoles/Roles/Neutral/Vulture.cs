@@ -157,18 +157,6 @@ public class EatDeadBodyAbility : CustomButtonBase
 
     public override void AttachToLocalPlayer()
     {
-        base.AttachToLocalPlayer();
-    }
-
-    private void OnWrapUp(WrapUpEventData data)
-    {
-        // 会議終了時の処理
-        ResetTimer();
-    }
-
-    public override void DetachToLocalPlayer()
-    {
-        base.DetachToLocalPlayer();
     }
 
     [CustomRPC]

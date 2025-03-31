@@ -18,7 +18,7 @@ public class JSidekickAbility : AbilityBase
         CanUseVent = canUseVent;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
         VentAbility = new CustomVentAbility(
             () => CanUseVent
@@ -27,29 +27,34 @@ public class JSidekickAbility : AbilityBase
             (player) => player.IsJackalTeam(),
             () => true
         );
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
 
         AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(VentAbility, parentAbility);
-        base.Attach(player, abilityId, parent);
+        Player.AttachAbility(VentAbility, parentAbility);
+        Player.AttachAbility(KnowJackalAbility, parentAbility);
     }
     [CustomRPC]
-    public static void RpcSetCanInfinite(bool canInfinite, ulong abilityId, ExPlayerControl player)
+    public static void RpcSetCanInfinite(bool canInfinite, JSidekickAbility jsidekick)
     {
-        var jsidekick = player.GetAbility<JSidekickAbility>(abilityId);
+        Logger.Info("RpcSetCanInfinite1: " + canInfinite);
         if (jsidekick != null)
         {
+            Logger.Info("RpcSetCanInfinite2: " + canInfinite);
             jsidekick.canInfinite = canInfinite;
-            var pOnParentDeathAbility = player.PlayerAbilities.FirstOrDefault(x => x is PromoteOnParentDeathAbility);
+            var pOnParentDeathAbility = jsidekick.Player.PlayerAbilities.FirstOrDefault(x => x is PromoteOnParentDeathAbility);
+            Logger.Info("RpcSetCanInfinite3: " + pOnParentDeathAbility);
             if (pOnParentDeathAbility is PromoteOnParentDeathAbility promoteOnParentDeathAbility)
             {
+                Logger.Info("RpcSetCanInfinite4: " + promoteOnParentDeathAbility);
                 promoteOnParentDeathAbility.OnPromoted += () =>
                 {
+                    Logger.Info("RpcSetCanInfinite5: " + canInfinite);
                     if (!canInfinite)
                     {
-                        var jackal = player.PlayerAbilities.FirstOrDefault(x => x is JackalAbility);
+                        Logger.Info("RpcSetCanInfinite6: " + canInfinite);
+                        var jackal = jsidekick.Player.PlayerAbilities.FirstOrDefault(x => x is JackalAbility);
                         if (jackal is JackalAbility jackalAbility)
                         {
+                            Logger.Info("RpcSetCanInfinite7: " + jackalAbility);
                             jackalAbility.JackData.CanCreateSidekick = false;
                         }
                     }

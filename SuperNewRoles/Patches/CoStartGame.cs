@@ -1,4 +1,5 @@
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.SuperTrophies;
@@ -14,5 +15,6 @@ class AmongUsClientStartPatch
         ExPlayerControl.SetUpExPlayers();
         EventListenerManager.ResetAllListener();
         SuperTrophyManager.CoStartGame();
+        Garbage.ClearAndReload();
     }
 }

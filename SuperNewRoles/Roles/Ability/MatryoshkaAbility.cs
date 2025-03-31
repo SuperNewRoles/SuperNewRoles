@@ -52,9 +52,8 @@ public class MatryoshkaAbility : CustomButtonBase, IButtonEffect, IAbilityCount
         return base.CheckHasButton() && HasCount;
     }
 
-    public override void AttachToLocalPlayer()
+    public override void AttachToAlls()
     {
-        base.AttachToLocalPlayer();
         changeKillTimerAbility = new ChangeKillTimerAbility(() => GameOptionsManager.Instance.CurrentGameOptions.GetFloat(AmongUs.GameOptions.FloatOptionNames.KillCooldown) + Data.AdditionalKillCoolTime * Counter);
 
         ExPlayerControl.LocalPlayer.AttachAbility(changeKillTimerAbility, new AbilityParentAbility(this));

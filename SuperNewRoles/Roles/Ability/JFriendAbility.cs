@@ -22,7 +22,7 @@ public class JFriendAbility : AbilityBase
         Data = data;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
         VentAbility = new CustomVentAbility(
             () => Data.CanUseVent
@@ -40,17 +40,13 @@ public class JFriendAbility : AbilityBase
         );
 
         _taskCompleteEvent = TaskCompleteEvent.Instance.AddListener(x => RecalucateTaskComplete(x.player));
-        RecalucateTaskComplete(player);
-
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
+        RecalucateTaskComplete(Player);
 
         AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(VentAbility, parentAbility);
-        exPlayer.AttachAbility(KnowJackalAbility, parentAbility);
-        exPlayer.AttachAbility(ImpostorVisionAbility, parentAbility);
-        exPlayer.AttachAbility(CustomTaskAbility, parentAbility);
-
-        base.Attach(player, abilityId, parent);
+        Player.AttachAbility(VentAbility, parentAbility);
+        Player.AttachAbility(KnowJackalAbility, parentAbility);
+        Player.AttachAbility(ImpostorVisionAbility, parentAbility);
+        Player.AttachAbility(CustomTaskAbility, parentAbility);
     }
     private bool CanKnowJackal()
     {

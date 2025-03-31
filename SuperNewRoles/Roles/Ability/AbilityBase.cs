@@ -27,7 +27,7 @@ public abstract class AbilityBase
         AttachToAlls();
     }
 
-    public abstract void AttachToLocalPlayer();
+    public virtual void AttachToLocalPlayer() { }
 
     public virtual void AttachToOthers() { }
 

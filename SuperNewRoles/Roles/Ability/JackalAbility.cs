@@ -22,7 +22,7 @@ public class JackalAbility : AbilityBase
         JackData = jackData;
     }
 
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
         KillAbility = new CustomKillButtonAbility(
             () => JackData.CanKill,
@@ -57,7 +57,7 @@ public class JackalAbility : AbilityBase
                         if (jsidekick is JSidekickAbility jsidekickAbility)
                         {
                             Logger.Info("jsidekickAbility: " + jsidekickAbility);
-                            JSidekickAbility.RpcSetCanInfinite(JackData.IsInfiniteJackal, jsidekickAbility.AbilityId, player);
+                            JSidekickAbility.RpcSetCanInfinite(JackData.IsInfiniteJackal, jsidekickAbility);
                         }
                     }
                 }, 0.5f);
@@ -73,15 +73,12 @@ public class JackalAbility : AbilityBase
             () => JackData.IsImpostorVision
         );
 
-        ExPlayerControl exPlayer = (ExPlayerControl)player;
         AbilityParentAbility parentAbility = new(this);
-        exPlayer.AttachAbility(KillAbility, parentAbility);
-        exPlayer.AttachAbility(VentAbility, parentAbility);
-        exPlayer.AttachAbility(SidekickAbility, parentAbility);
-        exPlayer.AttachAbility(KnowJackalAbility, parentAbility);
-        exPlayer.AttachAbility(ImpostorVisionAbility, parentAbility);
-
-        base.Attach(player, abilityId, parent);
+        Player.AttachAbility(KillAbility, parentAbility);
+        Player.AttachAbility(VentAbility, parentAbility);
+        Player.AttachAbility(SidekickAbility, parentAbility);
+        Player.AttachAbility(KnowJackalAbility, parentAbility);
+        Player.AttachAbility(ImpostorVisionAbility, parentAbility);
     }
 
     public override void AttachToLocalPlayer()

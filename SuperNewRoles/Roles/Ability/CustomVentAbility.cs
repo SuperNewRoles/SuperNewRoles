@@ -19,6 +19,7 @@ public class CustomVentAbility : CustomButtonBase
     public override string buttonText => FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.VentLabel);
     protected override KeyType keytype => KeyType.Vent;
     public override float DefaultTimer => VentCooldown?.Invoke() ?? 0;
+    public override bool IsFirstCooldownTenSeconds => DefaultTimer > 0.1f;
 
     public CustomVentAbility(Func<bool> canUseVent, Func<float?> ventCooldown = null, Func<float?> ventDuration = null)
     {

@@ -274,7 +274,7 @@ public class ExPlayerControl
     }
     public static void SetUpExPlayers()
     {
-        _exPlayerControlsArray = new ExPlayerControl[255];
+        _exPlayerControlsArray = new ExPlayerControl[256];
         _exPlayerControls.Clear();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {

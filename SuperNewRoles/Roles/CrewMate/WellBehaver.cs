@@ -101,21 +101,22 @@ public class WellBehaverAbility : AbilityBase
         _limitTrashCount = int.MaxValue;
     }
 
-    public override void AttachToLocalPlayer()
+    public override void AttachToAlls()
     {
         button = new WellBehaverButtonAbility();
-        ExPlayerControl.LocalPlayer.AttachAbility(button, new AbilityParentAbility(this));
-
-        _wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
-        _fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
-
+        Player.AttachAbility(button, new AbilityParentAbility(this));
         new LateTask(() => _limitTrashCount = Data.LimitTrashCount * ExPlayerControl.ExPlayerControls.Count(x => x.Role == RoleId.WellBehaver), 1f);
         ReAssignGarbager();
     }
 
+    public override void AttachToLocalPlayer()
+    {
+        _wrapUpEventListener = WrapUpEvent.Instance.AddListener(OnWrapUp);
+        _fixedUpdateEventListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+    }
+
     public override void DetachToLocalPlayer()
     {
-        base.DetachToLocalPlayer();
         _wrapUpEventListener?.RemoveListener();
         _fixedUpdateEventListener?.RemoveListener();
     }

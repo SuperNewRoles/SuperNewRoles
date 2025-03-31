@@ -42,6 +42,9 @@ public class MadKillerAbility : AbilityBase
         _cannotBeSeenBeforePromotion = data.cannotBeSeenBeforePromotion;
         _currentKillCooldown = data.killCooldown;
     }
+    public override void AttachToLocalPlayer()
+    {
+    }
 
     public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
     {
@@ -56,7 +59,7 @@ public class MadKillerAbility : AbilityBase
             NameText.SetNameTextColor(data.Player, Palette.ImpostorRed);
         }
     }
-    public override void AttachToLocalPlayer()
+    public override void AttachToAlls()
     {
         _dieEventListener = DieEvent.Instance.AddListener(OnPlayerDead);
         _disconnectEventListener = DisconnectEvent.Instance.AddListener(OnPlayerDisconnect);

@@ -30,7 +30,12 @@ public class SantaAbility : AbilityBase
         if (_tickets.Count == 0)
             data.Roles.ForEach(role => _tickets.Add(role.role));
     }
+
     public override void AttachToLocalPlayer()
+    {
+    }
+
+    public override void AttachToAlls()
     {
         ButtonAbility = new(
             canCreateSidekick: (_) => ButtonAbility.HasCount,

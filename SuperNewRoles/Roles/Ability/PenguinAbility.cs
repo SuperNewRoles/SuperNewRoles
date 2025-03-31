@@ -73,9 +73,8 @@ public class PenguinAbility : TargetCustomButtonBase, IButtonEffect
     {
         return PlayerControl.LocalPlayer.CanMove && Target != null && Target.IsAlive();
     }
-    public override void AttachToLocalPlayer()
+    public override void AttachToAlls()
     {
-        base.AttachToLocalPlayer();
         _onMeetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         customKillButtonAbility = new KillableAbility(() => CanKill || (targetPlayer != null && targetPlayer.IsAlive()));
         Player.AttachAbility(customKillButtonAbility, new AbilityParentAbility(this));

@@ -31,9 +31,8 @@ public class CelebrityAbility : AbilityBase
     {
         _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
     }
-    public override void Attach(PlayerControl player, ulong abilityId, AbilityParentBase parent)
+    public override void AttachToAlls()
     {
-        base.Attach(player, abilityId, parent);
         _nameTextUpdateEvent = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
         _meetingStartEvent = MeetingStartEvent.Instance.AddListener(OnMeetingStart);
         _isAlive = ExPlayerControl.LocalPlayer.IsAlive();

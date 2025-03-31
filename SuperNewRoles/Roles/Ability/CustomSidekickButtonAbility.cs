@@ -71,9 +71,10 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
         if (_sidekickSuccess == null || _sidekickSuccess(Target))
         {
             RpcSidekicked(Player, Target, _sidekickRole(), _sidekickRoleVanilla());
+            var target = Target;
             if (_sidekickedPromoteData != null)
             {
-                new LateTask(() => RpcSetPromoteAbility(Player, Target, _sidekickedPromoteData.PromoteToRole, _sidekickedPromoteData.PromoteToRoleVanilla), 0.05f);
+                new LateTask(() => RpcSetPromoteAbility(Player, target, _sidekickedPromoteData.PromoteToRole, _sidekickedPromoteData.PromoteToRoleVanilla), 0.05f);
             }
         }
         _onSidekickCreated?.Invoke(Target);

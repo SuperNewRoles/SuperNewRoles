@@ -45,6 +45,10 @@ public class ArsonistAbility : AbilityBase
 
     public override void AttachToLocalPlayer()
     {
+    }
+
+    public override void AttachToAlls()
+    {
         _douseAbility = new DouseButtonAbility(
             douseCooldown: _data.DouseCooldown,
             douseDuration: _data.DouseDuration,
