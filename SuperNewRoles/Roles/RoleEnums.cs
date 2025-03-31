@@ -50,6 +50,7 @@ public enum RoleId : short
     NekoKabocha,
     Matryoshka,
     Amnesiac,
+    Conjurer,
 }
 
 public enum QuoteMod : byte
@@ -93,4 +94,6 @@ public enum RoleTag : byte
     SpecialKiller,
     PowerPlayResistance,
     Information,
+    Killer,
+    CustomObject,
 }
