@@ -18,12 +18,12 @@ public record AdvancedAdminData(
 )
 {
     public bool CanUseAdvancedAdmin => AdvancedAdmin?.Invoke() ?? true;
-    public bool canUseAdminDuringComms => CanUseAdminDuringComms?.Invoke() ?? false;
-    public bool canUseAdminDuringMeeting => CanUseAdminDuringMeeting?.Invoke() ?? false;
-    public bool sabotageMapShowsAdmin => SabotageMapShowsAdmin?.Invoke() ?? false;
-    public bool distinctionImpostor => DistinctionImpostor?.Invoke() ?? false;
-    public bool distinctionDead => DistinctionDead?.Invoke() ?? false;
-    public bool showDoorClosedMarks => ShowDoorClosedMarks?.Invoke() ?? false;
+    public bool canUseAdminDuringComms => CanUseAdvancedAdmin && (CanUseAdminDuringComms?.Invoke() ?? false);
+    public bool canUseAdminDuringMeeting => CanUseAdvancedAdmin && (CanUseAdminDuringMeeting?.Invoke() ?? false);
+    public bool sabotageMapShowsAdmin => CanUseAdvancedAdmin && (SabotageMapShowsAdmin?.Invoke() ?? false);
+    public bool distinctionImpostor => CanUseAdvancedAdmin && (DistinctionImpostor?.Invoke() ?? false);
+    public bool distinctionDead => CanUseAdvancedAdmin && (DistinctionDead?.Invoke() ?? false);
+    public bool showDoorClosedMarks => CanUseAdvancedAdmin && (ShowDoorClosedMarks?.Invoke() ?? false);
 }
 public class AdvancedAdminAbility : AbilityBase
 {
@@ -57,7 +57,7 @@ public class AdvancedAdminAbility : AbilityBase
     }
     private void OnMapBehaviourShowPrefix(MapBehaviourShowPrefixEventData data)
     {
-        if (!Data.canUseAdminDuringMeeting || !MeetingHud.Instance || data.opts.Mode != MapOptions.Modes.Normal) return;
+        if (!Data.CanUseAdvancedAdmin || !Data.canUseAdminDuringMeeting || !MeetingHud.Instance || data.opts.Mode != MapOptions.Modes.Normal) return;
         DevicesPatch.DontCountBecausePortableAdmin = true;
         data.opts.Mode = MapOptions.Modes.CountOverlay;
     }
@@ -96,7 +96,7 @@ public class AdvancedAdminAbility : AbilityBase
     }
     private void OnMapBehaviourAwakePostfix(MapBehaviourAwakePostfixEventData data)
     {
-        if (!Data.showDoorClosedMarks) return;
+        if (!Data.showDoorClosedMarks || !data.__instance.IsOpen) return;
         if (!DoorClosedRendererPrefab) DoorClosedRendererPrefab = CreatePrefab();
         var allDoors = ShipStatus.Instance.AllDoors;
         var mapScale = ShipStatus.Instance.MapScale;
@@ -114,7 +114,7 @@ public class AdvancedAdminAbility : AbilityBase
     }
     private void OnMapBehaviourFixedUpdatePostfix(MapBehaviourFixedUpdatePostfixEventData data)
     {
-        if (!Data.showDoorClosedMarks) return;
+        if (!Data.showDoorClosedMarks || !data.__instance.IsOpen) return;
         var allDoors = ShipStatus.Instance.AllDoors;
         for (int i = 0; i < allDoors.Length; i++)
         {

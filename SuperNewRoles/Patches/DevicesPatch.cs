@@ -195,7 +195,7 @@ public static class DevicesPatch
                 // ロミジュリと絵画の部屋をアドミンの対象から外す
                 if (!commsActive && counterArea.RoomType > SystemTypes.Hallway)
                 {
-                    PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms[counterArea.RoomType];
+                    PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms.TryGetValue(counterArea.RoomType, out var room) ? room : null;
 
                     if (plainShipRoom != null && plainShipRoom.roomArea)
                     {
