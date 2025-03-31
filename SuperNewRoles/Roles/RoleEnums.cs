@@ -51,6 +51,7 @@ public enum RoleId : short
     Matryoshka,
     Amnesiac,
     Conjurer,
+    Doppelganger,
 }
 
 public enum QuoteMod : byte
