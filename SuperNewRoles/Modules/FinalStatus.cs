@@ -23,6 +23,7 @@ public enum FinalStatus
     Tuna,
     Push,
     Ignite,
+    FalseCharges,
 }
 
 public static class FinalStatusListener

@@ -52,6 +52,7 @@ public enum RoleId : short
     Amnesiac,
     Conjurer,
     Doppelganger,
+    FalseCharges,
 }
 
 public enum QuoteMod : byte

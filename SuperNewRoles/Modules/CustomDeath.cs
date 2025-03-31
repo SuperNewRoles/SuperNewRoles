@@ -78,6 +78,10 @@ public static class CustomDeathExtensions
                 player.Player.Exiled();
                 FinalStatusManager.SetFinalStatus(player, FinalStatus.Ignite);
                 break;
+            case CustomDeathType.FalseCharges:
+                source.Player.MurderPlayer(player.Player, MurderResultFlags.Succeeded);
+                FinalStatusManager.SetFinalStatus(player, FinalStatus.FalseCharges);
+                break;
             default:
                 throw new Exception($"Invalid death type: {deathType}");
         }
@@ -107,4 +111,5 @@ public enum CustomDeathType
     Tuna,
     Push,
     Ignite,
+    FalseCharges,
 }
