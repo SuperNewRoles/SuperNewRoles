@@ -54,6 +54,7 @@ public enum RoleId : short
     Doppelganger,
     FalseCharges,
     Pteranodon,
+    Hitman,
 }
 
 public enum QuoteMod : byte

@@ -257,6 +257,7 @@ Amnesiac,忘却者,Amnesiac
 Conjurer,魔術師,Conjurer,魔术师,魔術師
 Doppelganger,ドッペルゲンガー,Doppelganger
 FalseCharges,冤罪師,False Charges,冤罪师,冤罪師
+Hitman,殺し屋,Hitman,刺客,刺客
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -651,3 +652,13 @@ FalseCharges.ButtonTitle,冤罪,False Charge,栽赃,栽贓
 Role.Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
 Pteranodon,プテラノドン,Pteranodon,翼龙,翼龍
 Pteranodon.ButtonTitle,飛行,Fly,飞行,飛行
+
+# Hitman
+HitmanChangeTargetTime,ターゲットがリセットされる時間,Target reset time,目标重置时间,目標重置時間
+HitmanWinKillCount,勝利に必要な成功数,Required kill count for victory,胜利所需的杀人成功数,勝利所需的殺人成功數
+HitmanIsOutMission,任務が遂行できないと自爆する,Self-destruct if mission fails,任务失败时自爆,任務失敗時自爆
+HitmanOutMissionLimit,失敗可能数,Allowed failure count,允许的失败次数,允許的失敗次數
+HitmanFaildTimer,失敗まで残り{0}秒,Failure remaining {0}s,失败前剩余{0}秒,失敗前剩餘{0}秒
+
+# CustomGameOverReason
+CustomGameOverReason.HitmanWin,殺し屋の勝利,Victory of the Hitman,刺客的胜利,刺客的勝利

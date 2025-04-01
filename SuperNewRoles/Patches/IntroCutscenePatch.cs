@@ -208,6 +208,7 @@ public static class IntroCutscenePatch
                 foreach (var player in ExPlayerControl.ExPlayerControls)
                 {
                     if (player.AmOwner) continue;
+                    if (player.IsDead() || player.Player == null || player.cosmetics == null) continue;
                     player.Player.SetPet("");
                 }
             }

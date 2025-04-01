@@ -47,6 +47,7 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
 
         ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
         ResetTimer();
+        KilledCallback?.Invoke(Target);
         OnCooldownStarted?.Invoke(DefaultTimer);
     }
 

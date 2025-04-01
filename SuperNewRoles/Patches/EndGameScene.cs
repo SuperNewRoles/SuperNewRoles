@@ -30,6 +30,7 @@ public enum WinCondition
     PavlovsWin,
     ArsonistWin,
     FalseChargesWin,
+    HitmanWin,
 }
 public enum CustomGameOverReason
 {
@@ -44,6 +45,7 @@ public enum CustomGameOverReason
     PavlovsWin = 38,
     ArsonistWin = 39,
     FalseChargesWin = 40,
+    HitmanWin = 41,
 }
 
 static class AdditionalTempData
@@ -196,6 +198,10 @@ public class EndGameManagerSetUpPatch
             case WinCondition.FalseChargesWin:
                 baseText = "FalseCharges";
                 roleColor = FalseCharges.Instance.RoleColor;
+                break;
+            case WinCondition.HitmanWin:
+                baseText = "Hitman";
+                roleColor = Hitman.Instance.RoleColor;
                 break;
             default:
                 baseText = "Unknown";
@@ -473,6 +479,10 @@ public static class OnGameEndPatch
             case CustomGameOverReason.FalseChargesWin:
                 return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.FalseCharges),
                         WinCondition.FalseChargesWin,
+                        emptyReviveList);
+            case CustomGameOverReason.HitmanWin:
+                return (ExPlayerControl.ExPlayerControls.Where(p => p != null && p.Role == RoleId.Hitman),
+                        WinCondition.HitmanWin,
                         emptyReviveList);
             default:
                 Logger.Error("不明なゲームオーバー理由:" + reason);
