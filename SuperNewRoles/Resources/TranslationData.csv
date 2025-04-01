@@ -454,6 +454,7 @@ MadKillerKillCooldown,マッドキラーのクールタイム,MadKiller Cooldown
 MadKillerCanUseVent,マッドキラーがベントを使用出来る,MadKiller Can Use Vent,疯狂杀手可以使用通风口,瘋狂殺手可以使用通風口
 MadKillerHasImpostorVision,マッドキラーがインポスター視界,MadKiller Has Impostor Vision,疯狂杀手拥有内鬼视野,瘋狂殺手擁有內鬼視野
 CannotSeeMadKillerBeforePromotion,昇格前のマッドキラーを視認できない,Cannot See MadKiller Before Promotion,无法在晋升前看到疯狂杀手,無法在晉升前看到瘋狂殺手
+MadKillerCannotSeeImpostorBeforePromotion,昇格前のマッドキラーがインポスターを視認できない,MadKiller Cannot See Impostor Before Promotion,无法在晋升前看到疯狂杀手内鬼,無法在晉升前看到瘋狂殺手內鬼
 
 # EvilGambler
 EvilGamblerSuccessKillCooldown,成功時のキルクールタイム,Success Kill Cooldown,成功时的击杀冷却时间,成功時的擊殺冷卻時間
