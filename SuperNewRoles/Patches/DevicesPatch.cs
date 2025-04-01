@@ -167,7 +167,6 @@ public static class DevicesPatch
         {
             AdvancedAdminAbility advancedAdminAbility = ExPlayerControl.LocalPlayer.GetAbility<AdvancedAdminAbility>();
             bool commsActive = !(advancedAdminAbility?.Data.canUseAdminDuringComms ?? false) && ModHelpers.IsComms();
-            Logger.Info($"commsActive:{commsActive}");
 
             if (!__instance.isSab && commsActive)
             {

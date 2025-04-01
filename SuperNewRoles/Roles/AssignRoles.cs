@@ -19,11 +19,11 @@ class RoleManagerSelectRolesPatch
 
 public static class AssignRoles
 {
-    [CustomOptionInt("AssignRoles_MaxImpostors", 1, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
+    [CustomOptionInt("AssignRoles_MaxImpostors", 0, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
     public static int MaxImpostors;
-    [CustomOptionInt("AssignRoles_MaxCrews", 1, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
+    [CustomOptionInt("AssignRoles_MaxCrews", 0, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
     public static int MaxCrews;
-    [CustomOptionInt("AssignRoles_MaxNeutrals", 1, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
+    [CustomOptionInt("AssignRoles_MaxNeutrals", 0, 15, 1, 2, parentFieldName: nameof(Categories.GeneralSettings))]
     public static int MaxNeutrals;
 
     private static Dictionary<AssignedTeamType, List<AssignTickets>> AssignTickets_HundredPercent = new();

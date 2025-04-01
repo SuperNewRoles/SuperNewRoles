@@ -191,7 +191,6 @@ public static class CosmeticsLayer_UpdateVisibility
 {
     public static void Postfix(CosmeticsLayer __instance)
     {
-        Logger.Info($"UpdateVisibility: {__instance.visible}");
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(__instance);
         customCosmeticsLayer.hat1.Visible = __instance.visible;
         customCosmeticsLayer.hat2.Visible = __instance.visible;
