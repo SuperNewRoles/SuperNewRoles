@@ -40,9 +40,9 @@ public static class DevicesPatch
         DeviceTypes = new();
         DeviceTimers = new();
 
-        isAdminRestrictOption = MapSettingOptions.DeviceAdminOption == DeviceOptionType.Restrict;
-        IsCameraRestrict = MapSettingOptions.DeviceCameraOption == DeviceOptionType.Restrict;
-        IsVitalRestrict = MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.Restrict;
+        isAdminRestrictOption = MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceAdminOption == DeviceOptionType.Restrict;
+        IsCameraRestrict = MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceCameraOption == DeviceOptionType.Restrict;
+        IsVitalRestrict = MapSettingOptions.DeviceOptions && MapSettingOptions.DeviceVitalOrDoorLogOption == DeviceOptionType.Restrict;
 
         if (MapSettingOptions.DeviceOptions)
         {
@@ -123,7 +123,6 @@ public static class DevicesPatch
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
     class MapCountOverlayAwakePatch
     {
-        [HarmonyPostfix]
         public static void Postfix(MapCountOverlay __instance)
         {
             if (IsAdminRestrict)
@@ -168,6 +167,7 @@ public static class DevicesPatch
         {
             AdvancedAdminAbility advancedAdminAbility = ExPlayerControl.LocalPlayer.GetAbility<AdvancedAdminAbility>();
             bool commsActive = !(advancedAdminAbility?.Data.canUseAdminDuringComms ?? false) && ModHelpers.IsComms();
+            Logger.Info($"commsActive:{commsActive}");
 
             if (!__instance.isSab && commsActive)
             {

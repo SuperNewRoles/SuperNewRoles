@@ -44,7 +44,7 @@ public static class HelpMenuObjectManager
         RoleOptionMenu.UpdateHostInfoMaskArea(false);
 
         // 会議中の場合、playerStatesのMaskAreaを非表示にする
-        UpdateMeetingHudMaskAreas(false);
+        ModHelpers.UpdateMeetingHudMaskAreas(false);
 
         var defaultNow =
             AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started
@@ -154,19 +154,6 @@ public static class HelpMenuObjectManager
         }
     }
 
-    // MeetingHudのMaskAreaを更新するヘルパーメソッド
-    private static void UpdateMeetingHudMaskAreas(bool active)
-    {
-        if (MeetingHud.Instance == null) return;
-
-        foreach (var playerState in MeetingHud.Instance.playerStates)
-        {
-            var maskArea = playerState.transform.Find("MaskArea");
-            if (maskArea != null && maskArea.gameObject.activeSelf != active)
-                maskArea.gameObject.SetActive(active);
-        }
-    }
-
     public static void ShowOrHideHelpMenu()
     {
         if (helpMenuObject == null)
@@ -222,7 +209,7 @@ public static class HelpMenuObjectManager
             // fadeCoroutine.isActiveが反転する前に呼ばれるため、現在の状態の逆を設定
             bool shouldShowMaskAreas = !fadeCoroutine.isAvtive;
             RoleOptionMenu.UpdateHostInfoMaskArea(shouldShowMaskAreas);
-            UpdateMeetingHudMaskAreas(shouldShowMaskAreas);
+            ModHelpers.UpdateMeetingHudMaskAreas(shouldShowMaskAreas);
         }
         if (fadeCoroutine.isAvtive)
         {
@@ -236,7 +223,7 @@ public static class HelpMenuObjectManager
 
         // ヘルプメニューを非表示にするときにホスト情報とMeetingHudのマスクエリアを表示する
         RoleOptionMenu.UpdateHostInfoMaskArea(true);
-        UpdateMeetingHudMaskAreas(true);
+        ModHelpers.UpdateMeetingHudMaskAreas(true);
     }
     // overlayを閉じる時。
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]

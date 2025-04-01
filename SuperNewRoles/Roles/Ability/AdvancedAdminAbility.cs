@@ -32,6 +32,8 @@ public class AdvancedAdminAbility : AbilityBase
     private EventListener<MapBehaviourShowPostfixEventData> MapBehaviourShowPostfixEventListener;
     private EventListener<MapBehaviourAwakePostfixEventData> MapBehaviourAwakePostfixEventListener;
     private EventListener<MapBehaviourFixedUpdatePostfixEventData> MapBehaviourFixedUpdatePostfixEventListener;
+    private EventListener<MapBehaviourClosePostfixEventData> MapBehaviourClosePostfixEventListener;
+
     public AdvancedAdminAbility(AdvancedAdminData data)
     {
         this.Data = data;
@@ -42,6 +44,7 @@ public class AdvancedAdminAbility : AbilityBase
         MapBehaviourShowPostfixEventListener = MapBehaviourShowPostfixEvent.Instance.AddListener(OnMapBehaviourShowPostfix);
         MapBehaviourAwakePostfixEventListener = MapBehaviourAwakePostfixEvent.Instance.AddListener(OnMapBehaviourAwakePostfix);
         MapBehaviourFixedUpdatePostfixEventListener = MapBehaviourFixedUpdatePostfixEvent.Instance.AddListener(OnMapBehaviourFixedUpdatePostfix);
+        MapBehaviourClosePostfixEventListener = MapBehaviourClosePostfixEvent.Instance.AddListener(OnMapBehaviourClosePostfix);
     }
     public override void DetachToLocalPlayer()
     {
@@ -54,11 +57,14 @@ public class AdvancedAdminAbility : AbilityBase
             MapBehaviourAwakePostfixEvent.Instance.RemoveListener(MapBehaviourAwakePostfixEventListener);
         if (MapBehaviourFixedUpdatePostfixEventListener != null)
             MapBehaviourFixedUpdatePostfixEvent.Instance.RemoveListener(MapBehaviourFixedUpdatePostfixEventListener);
+        if (MapBehaviourClosePostfixEventListener != null)
+            MapBehaviourClosePostfixEvent.Instance.RemoveListener(MapBehaviourClosePostfixEventListener);
     }
     private void OnMapBehaviourShowPrefix(MapBehaviourShowPrefixEventData data)
     {
         if (!Data.CanUseAdvancedAdmin || !Data.canUseAdminDuringMeeting || !MeetingHud.Instance || data.opts.Mode != MapOptions.Modes.Normal) return;
         DevicesPatch.DontCountBecausePortableAdmin = true;
+        ModHelpers.UpdateMeetingHudMaskAreas(false);
         data.opts.Mode = MapOptions.Modes.CountOverlay;
     }
     private void OnMapBehaviourShowPostfix(MapBehaviourShowPostfixEventData data)
@@ -111,6 +117,11 @@ public class AdvancedAdminAbility : AbilityBase
             mark.gameObject.SetActive(true);
             mark.enabled = false;
         }
+    }
+    private void OnMapBehaviourClosePostfix(MapBehaviourClosePostfixEventData data)
+    {
+        if (!Data.CanUseAdvancedAdmin || !Data.canUseAdminDuringMeeting || !MeetingHud.Instance) return;
+        ModHelpers.UpdateMeetingHudMaskAreas(true);
     }
     private void OnMapBehaviourFixedUpdatePostfix(MapBehaviourFixedUpdatePostfixEventData data)
     {

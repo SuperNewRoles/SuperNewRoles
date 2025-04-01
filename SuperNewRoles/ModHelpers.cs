@@ -43,6 +43,19 @@ public static class ModHelpers
     {
         return BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
     }
+
+    // MeetingHudのMaskAreaを更新するヘルパーメソッド
+    public static void UpdateMeetingHudMaskAreas(bool active)
+    {
+        if (MeetingHud.Instance == null) return;
+
+        foreach (var playerState in MeetingHud.Instance.playerStates)
+        {
+            var maskArea = playerState.transform.Find("MaskArea");
+            if (maskArea != null && maskArea.gameObject.activeSelf != active)
+                maskArea.gameObject.SetActive(active);
+        }
+    }
     public static ReadOnlySpan<T> AsSpan<T>(this List<T> list) => CollectionsMarshal.AsSpan(list);
 
     public static bool IsComms()

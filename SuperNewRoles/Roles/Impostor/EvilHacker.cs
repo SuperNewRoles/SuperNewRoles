@@ -114,7 +114,7 @@ public class EvilHackerAbility : AbilityBase
         ));
 
         _advancedAdminAbility = new AdvancedAdminAbility(new AdvancedAdminData(
-            AdvancedAdmin: () => true,
+            AdvancedAdmin: () => Data.hasEnhancedAdmin,
             CanUseAdminDuringComms: () => Data.canUseAdminDuringComms,
             CanUseAdminDuringMeeting: () => Data.canUseAdminInMeeting,
             SabotageMapShowsAdmin: () => Data.showAdminOnSabotageMap,
