@@ -47,7 +47,7 @@ public class SideKillerAbility : AbilityBase
             () => _data.killCooldown,
             () => RoleId.MadKiller,
             () => RoleTypes.Crewmate,
-            AssetManager.GetAsset<Sprite>("JackalSidekickButton.png"),
+            AssetManager.GetAsset<Sprite>("SideKillerSidekickButton.png"),
             ModTranslation.GetString("SideKillerSidekickButtonName"),
             sidekickCount: () => 1,
             isTargetable: (player) => player.IsCrewmate(),

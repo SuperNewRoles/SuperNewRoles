@@ -24,5 +24,7 @@ public static class GameDataRecomputeTaskCountsPatch
         }
         if (__instance.TotalTasks <= 0)
             __instance.TotalTasks = 1;
+        else if (__instance.TotalTasks != __instance.CompletedTasks)
+            __instance.TotalTasks += 2;
     }
 }
