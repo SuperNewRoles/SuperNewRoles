@@ -94,7 +94,7 @@ public class ChiefAbility : AbilityBase
             onSidekickCreated: OnSheriffAppointed
         );
 
-        ExPlayerControl exPlayer = ExPlayerControl.LocalPlayer;
+        ExPlayerControl exPlayer = Player;
         AbilityParentAbility abilityParentAbility = new(this);
         exPlayer.AttachAbility(_sidekickButton, abilityParentAbility);
 

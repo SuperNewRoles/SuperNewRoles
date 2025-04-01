@@ -112,14 +112,14 @@ public static class AssignRoles
             maxBeans--;
 
             // 排他設定を再度適用（次のループのために）
-            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, tickets_hundred, tickets_not_hundred);
+            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, AssignTickets_NotHundredPercent.Values.ToArray(), AssignTickets_HundredPercent.Values.ToArray());
         }
 
         // 100%未満のチケットからランダムに選択して割り当てる
         while (tickets_not_hundred.Count > 0 && targetPlayers.Count > 0 && maxBeans > 0)
         {
             // 排他設定を適用
-            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, tickets_not_hundred, tickets_hundred);
+            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, AssignTickets_NotHundredPercent.Values.ToArray(), AssignTickets_HundredPercent.Values.ToArray());
             if (tickets_not_hundred.Count == 0)
                 break;
 
@@ -139,7 +139,7 @@ public static class AssignRoles
             maxBeans--;
 
             // 排他設定を再度適用（次のループのために）
-            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, tickets_not_hundred, tickets_hundred);
+            RoleOptionManager.ApplyExclusivitySettings(AssignedRoleIds, AssignTickets_NotHundredPercent.Values.ToArray(), AssignTickets_HundredPercent.Values.ToArray());
         }
         foreach (var player in targetPlayers)
         {
