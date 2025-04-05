@@ -27,7 +27,8 @@ class Hitman : RoleBase<Hitman>
             WinKillCount: HitmanWinKillCount,
             IsOutMission: HitmanIsOutMission,
             OutMissionLimit: HitmanOutMissionLimit,
-            CanUseVent: HitmanCanUseVent
+            CanUseVent: HitmanCanUseVent,
+            HasImpostorVision: HitmanHasImpostorVision
         ))
     ];
 
@@ -43,7 +44,7 @@ class Hitman : RoleBase<Hitman>
     public override RoleId[] RelatedRoleIds { get; } = [];
 
     // 殺し屋の設定
-    [CustomOptionFloat("HitmanKillCooldown", 10f, 60f, 2.5f, 25f, translationName: "CoolTime")]
+    [CustomOptionFloat("HitmanKillCooldown", 2.5f, 60f, 2.5f, 25f, translationName: "CoolTime")]
     public static float HitmanKillCooldown;
 
     [CustomOptionFloat("HitmanChangeTargetTime", 10f, 60f, 2.5f, 35f)]
@@ -60,6 +61,8 @@ class Hitman : RoleBase<Hitman>
 
     [CustomOptionBool("HitmanCanUseVent", false, translationName: "CanUseVent")]
     public static bool HitmanCanUseVent;
+    [CustomOptionBool("HitmanHasImpostorVision", false, translationName: "HasImpostorVision")]
+    public static bool HitmanHasImpostorVision;
 
 }
 
@@ -69,7 +72,8 @@ public record HitmanData(
     int WinKillCount,
     int OutMissionLimit,
     bool CanUseVent,
-    bool IsOutMission
+    bool IsOutMission,
+    bool HasImpostorVision
 );
 
 public class HitmanAbility : AbilityBase
@@ -77,6 +81,7 @@ public class HitmanAbility : AbilityBase
     private CustomKillButtonAbility _killButtonAbility;
     private CustomVentAbility _ventAbility;
     private ShowPlayerUIAbility _showPlayerUIAbility;
+    private ImpostorVisionAbility _impostorVisionAbility;
 
     public HitmanData Data { get; set; }
 
@@ -88,6 +93,8 @@ public class HitmanAbility : AbilityBase
 
     private EventListener _fixedUpdateListener;
     private EventListener<MurderEventData> _murderListener;
+
+    private Arrow ArrowToTarget;
 
     public HitmanAbility(HitmanData data)
     {
@@ -108,10 +115,14 @@ public class HitmanAbility : AbilityBase
         _showPlayerUIAbility = new ShowPlayerUIAbility(
             getPlayerList: () => [_currentTarget]
         );
+        _impostorVisionAbility = new ImpostorVisionAbility(
+            hasImpostorVision: () => Data.HasImpostorVision
+        );
 
         Player.AttachAbility(_killButtonAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_ventAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_showPlayerUIAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
     }
     public override void AttachToLocalPlayer()
     {
@@ -119,11 +130,14 @@ public class HitmanAbility : AbilityBase
         _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
         _murderListener = MurderEvent.Instance.AddListener(OnMurder);
         reSelect();
+        ArrowToTarget = new Arrow(Hitman.Instance.RoleColor);
     }
     public override void DetachToLocalPlayer()
     {
         _fixedUpdateListener?.RemoveListener();
         _murderListener?.RemoveListener();
+        GameObject.Destroy(ArrowToTarget?.arrow.gameObject);
+        ArrowToTarget = null;
     }
     private void OnFixedUpdate()
     {
@@ -135,9 +149,10 @@ public class HitmanAbility : AbilityBase
             reSelect();
             return;
         }
+        ArrowToTarget?.Update(_currentTarget.transform.position);
         if (_timer <= 0)
         {
-            _timer = Data.ChangeTargetTime;
+            IncreaseFailedCount();
             reSelect();
         }
     }
@@ -155,6 +170,7 @@ public class HitmanAbility : AbilityBase
     }
     public void OnMurder(MurderEventData data)
     {
+        if (ExPlayerControl.LocalPlayer.IsDead()) return;
         if (_currentTarget == data.target)
             SuccessfulKill();
         else

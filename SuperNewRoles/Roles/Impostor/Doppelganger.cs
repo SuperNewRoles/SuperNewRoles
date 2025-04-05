@@ -31,12 +31,12 @@ class Doppelganger : RoleBase<Doppelganger>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
-    [CustomOptionFloat("DoppelgangerCoolTime", 10f, 180f, 2.5f, 30f)]
+    [CustomOptionFloat("DoppelgangerCoolTime", 2.5f, 180f, 2.5f, 30f)]
     public static float DoppelgangerCoolTime;
-    [CustomOptionFloat("DoppelgangerDurationTime", 5f, 60f, 2.5f, 15f)]
+    [CustomOptionFloat("DoppelgangerDurationTime", 2.5f, 60f, 2.5f, 15f)]
     public static float DoppelgangerDurationTime;
-    [CustomOptionFloat("DoppelgangerSucCool", 5f, 60f, 2.5f, 15f)]
+    [CustomOptionFloat("DoppelgangerSucCool", 2.5f, 60f, 2.5f, 15f)]
     public static float DoppelgangerSucCool;
-    [CustomOptionFloat("DoppelgangerNotSucCool", 5f, 60f, 2.5f, 30f)]
+    [CustomOptionFloat("DoppelgangerNotSucCool", 2.5f, 60f, 2.5f, 45f)]
     public static float DoppelgangerNotSucCool;
 }

@@ -172,6 +172,7 @@ public class DouseButtonAbility : TargetCustomButtonBase, IButtonEffect
             _onDoused?.Invoke(_currentTarget);
         }
         _currentTarget = null;
+        ResetTimer();
     }
 
     public override void OnUpdate()
@@ -185,6 +186,7 @@ public class DouseButtonAbility : TargetCustomButtonBase, IButtonEffect
             {
                 isEffectActive = false;
                 actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                Timer = 0.0001f;
                 return;
             }
         }

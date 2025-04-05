@@ -24,7 +24,7 @@ public class DoppelgangerAbility : CustomButtonBase, IButtonEffect
     public override float DefaultTimer => CoolTime;
 
     public override ShowTextType showTextType => ShowTextType.Show;
-    public override string showText => string.Format(ModTranslation.GetString("DoppelgangerDurationTimerText"), (int)EffectTimer);
+    public override string showText => isEffectActive ? string.Format(ModTranslation.GetString("DoppelgangerDurationTimerText"), (int)EffectTimer) : "";
 
     public bool isEffectActive { get; set; }
 
@@ -32,6 +32,7 @@ public class DoppelgangerAbility : CustomButtonBase, IButtonEffect
     {
         _shapeTarget = null;
         PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.CanMove);
+        ResetTimer();
     };
 
     public float EffectDuration => DurationTime;
@@ -86,6 +87,7 @@ public class DoppelgangerAbility : CustomButtonBase, IButtonEffect
 
     private void OnShapeshift(ShapeshiftEventData data)
     {
+        if (data.shapeshifter == data.target) return;
         _shapeTarget = data.target;
         EffectTimer = DurationTime;
     }
@@ -99,6 +101,7 @@ public class DoppelgangerAbility : CustomButtonBase, IButtonEffect
     private EventListener<MurderEventData> _murderEvent;
     private EventListener<ShapeshiftEventData> _shapeshiftEvent;
     private EventListener _fixedUpdateEvent;
+    private EventListener<WrapUpEventData> _wrapUpEvent;
 
     public override void AttachToLocalPlayer()
     {
@@ -106,6 +109,7 @@ public class DoppelgangerAbility : CustomButtonBase, IButtonEffect
         _murderEvent = MurderEvent.Instance.AddListener(OnMurderPlayer);
         _shapeshiftEvent = ShapeshiftEvent.Instance.AddListener(OnShapeshift);
         _fixedUpdateEvent = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _wrapUpEvent = WrapUpEvent.Instance.AddListener(OnWrapUp);
     }
 
     public override void DetachToLocalPlayer()
@@ -114,6 +118,13 @@ public class DoppelgangerAbility : CustomButtonBase, IButtonEffect
         _murderEvent?.RemoveListener();
         _shapeshiftEvent?.RemoveListener();
         _fixedUpdateEvent?.RemoveListener();
+        _wrapUpEvent?.RemoveListener();
+    }
+
+    private void OnWrapUp(WrapUpEventData data)
+    {
+        ResetTimer();
+        PlayerControl.LocalPlayer.RpcShapeshiftModded(ExPlayerControl.LocalPlayer, false);
     }
 
     public class DoppelgangerAbilityOption

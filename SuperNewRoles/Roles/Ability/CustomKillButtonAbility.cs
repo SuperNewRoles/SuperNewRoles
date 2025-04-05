@@ -3,6 +3,8 @@ using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using AmongUs.Data;
+using SuperNewRoles.Events.PCEvents;
+using SuperNewRoles.Modules.Events.Bases;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -28,6 +30,8 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
     public override string showText => _showText?.Invoke() ?? "";
     private Func<ShowTextType> _showTextType { get; } = () => ShowTextType.Hidden;
     private Func<string> _showText { get; } = () => "";
+
+    private EventListener<MurderEventData> _murderListener;
     public CustomKillButtonAbility(Func<bool> canKill, Func<float?> killCooldown, Func<bool> onlyCrewmates, Func<bool> targetPlayersInVents = null, Func<ExPlayerControl, bool> isTargetable = null, Action<ExPlayerControl> killedCallback = null, Func<ShowTextType> showTextType = null, Func<string> showText = null)
     {
         CanKill = canKill;
@@ -38,6 +42,24 @@ public class CustomKillButtonAbility : TargetCustomButtonBase
         KilledCallback = killedCallback;
         _showTextType = showTextType;
         _showText = showText;
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        base.AttachToLocalPlayer();
+        _murderListener = MurderEvent.Instance.AddListener(OnMurder);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        base.DetachToLocalPlayer();
+        _murderListener?.RemoveListener();
+    }
+
+    private void OnMurder(MurderEventData data)
+    {
+        if (data.killer == ExPlayerControl.LocalPlayer && data.killer.AmOwner)
+            ResetTimer();
     }
 
     public override void OnClick()

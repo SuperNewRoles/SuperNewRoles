@@ -28,21 +28,17 @@ class NekoKabocha : RoleBase<NekoKabocha>
     public override RoleTag[] RoleTags { get; } = [RoleTag.SpecialKiller];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
-    // 役職のオプション設定
-    [CustomOptionFloat("KillCooldown", 2.5f, 120f, 2.5f, 40f)]
-    public static float KillCooldown;
-
     [CustomOptionBool("NekoKabocha.CanRevengeCrewmate", true)]
-    public static bool CanRevengeCrewmate;
+    public static bool NekoKabochaCanRevengeCrewmate;
 
     [CustomOptionBool("NekoKabocha.CanRevengeNeutral", true)]
-    public static bool CanRevengeNeutral;
+    public static bool NekoKabochaCanRevengeNeutral;
 
     [CustomOptionBool("NekoKabocha.CanRevengeImpostor", true)]
-    public static bool CanRevengeImpostor;
+    public static bool NekoKabochaCanRevengeImpostor;
 
     [CustomOptionBool("NekoKabocha.CanRevengeExiled", true)]
-    public static bool CanRevengeExiled;
+    public static bool NekoKabochaCanRevengeExiled;
 }
 
 public class NekoKabochaRevenge : AbilityBase
@@ -68,23 +64,21 @@ public class NekoKabochaRevenge : AbilityBase
             ExPlayerControl killer = data.killer;
 
             // 殺害したプレイヤーのタイプに基づいて復讐できるかどうかを判断
-            if (killer.IsCrewmate() && NekoKabocha.CanRevengeCrewmate)
+            if (killer.IsCrewmate() && NekoKabocha.NekoKabochaCanRevengeCrewmate)
                 canRevenge = true;
-            else if (killer.IsNeutral() && NekoKabocha.CanRevengeNeutral)
+            else if (killer.IsNeutral() && NekoKabocha.NekoKabochaCanRevengeNeutral)
                 canRevenge = true;
-            else if (killer.IsImpostor() && NekoKabocha.CanRevengeImpostor)
+            else if (killer.IsImpostor() && NekoKabocha.NekoKabochaCanRevengeImpostor)
                 canRevenge = true;
 
-            if (canRevenge && AmongUsClient.Instance.AmHost)
-            {
+            if (canRevenge)
                 ExPlayerControl.LocalPlayer.RpcCustomDeath(killer, CustomDeathType.Kill);
-            }
         }
     }
 
     private void OnWrapUp(WrapUpEventData data)
     {
-        if (NekoKabocha.CanRevengeExiled &&
+        if (NekoKabocha.NekoKabochaCanRevengeExiled &&
             data.exiled != null && data.exiled.Object != null &&
             data.exiled == ExPlayerControl.LocalPlayer)
         {

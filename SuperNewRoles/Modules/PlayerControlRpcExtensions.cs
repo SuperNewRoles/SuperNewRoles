@@ -57,4 +57,9 @@ public static class PlayerControlRpcExtensions
                 break;
         }
     }
+    [CustomRPC]
+    public static void RpcShapeshiftModded(this PlayerControl shapeshifter, PlayerControl target, bool animate)
+    {
+        shapeshifter.Shapeshift(target, animate);
+    }
 }
