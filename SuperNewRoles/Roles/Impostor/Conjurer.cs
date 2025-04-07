@@ -10,6 +10,7 @@ using SuperNewRoles.Events;
 using Hazel;
 using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Ability;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -17,7 +18,10 @@ class Conjurer : RoleBase<Conjurer>
 {
     public override RoleId Role => RoleId.Conjurer;
     public override Color32 RoleColor => Palette.ImpostorRed;
-    public override List<Func<AbilityBase>> Abilities => [() => new ConjurerAbility(new(ConjurerCanAddLength, ConjurerCanKillImpostor, ConjurerShowFlash))];
+    public override List<Func<AbilityBase>> Abilities => [
+        () => new ConjurerAbility(new(ConjurerCanAddLength, ConjurerCanKillImpostor, ConjurerShowFlash, ConjurerBeaconCooldown)),
+        () => new KillableAbility(() => false)
+    ];
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
     public override RoleTypes IntroSoundType => RoleTypes.Impostor;
@@ -29,8 +33,11 @@ class Conjurer : RoleBase<Conjurer>
     public override RoleTag[] RoleTags => [RoleTag.SpecialKiller, RoleTag.Killer, RoleTag.CustomObject];
     public override RoleOptionMenuType OptionTeam => RoleOptionMenuType.Impostor;
 
-    [CustomOptionFloat("ConjurerCanAddLengthOption", 0.5f, 40f, 0.5f, 10f)]
+    [CustomOptionFloat("ConjurerCanAddLengthOption", 0.5f, 40f, 1f, 10f)]
     public static float ConjurerCanAddLength;
+
+    [CustomOptionFloat("ConjurerBeaconCooldownOption", 5f, 60f, 1f, 15f)]
+    public static float ConjurerBeaconCooldown;
 
     [CustomOptionBool("ConjurerCanKillImpostorOption", false)]
     public static bool ConjurerCanKillImpostor;
@@ -42,7 +49,6 @@ class Conjurer : RoleBase<Conjurer>
 public class ConjurerAbility : AbilityBase
 {
     public ConjurerAbilityData Data { get; }
-    public int Count { get; private set; }
     public Vector2[] Positions { get; }
     private ConjurerBeaconButton beaconButton;
     private ConjurerStartButton startButton;
@@ -118,7 +124,7 @@ public class ConjurerAbility : AbilityBase
         }
         if (Data.ShowFlash)
         {
-            FlashHandler.RpcShowFlashAll(Palette.ImpostorRed, 1f);
+            FlashHandler.RpcShowFlashAll(Palette.Blue, 1f);
         }
         ConjurerBeacon.ClearBeacons();
         startButton.ResetTimer();
@@ -151,7 +157,7 @@ public class ConjurerAbility : AbilityBase
     }
 }
 
-public record ConjurerAbilityData(float CanAddLength, bool CanKillImpostor, bool ShowFlash);
+public record ConjurerAbilityData(float CanAddLength, bool CanKillImpostor, bool ShowFlash, float ConjurerBeaconCooldown);
 
 // ビーコンボタン
 public class ConjurerBeaconButton : CustomButtonBase
@@ -164,10 +170,10 @@ public class ConjurerBeaconButton : CustomButtonBase
         AttachToLocalPlayer();
     }
 
-    public override float DefaultTimer => 10f;
+    public override float DefaultTimer => ability.Data.ConjurerBeaconCooldown;
     public override string buttonText => ModTranslation.GetString("ConjurerBeaconName");
     public override Sprite Sprite => AssetManager.GetAsset<Sprite>("ConjurerBeaconButton.png");
-    protected override KeyType keytype => KeyType.Kill;
+    protected override KeyType keytype => KeyType.Ability2;
 
     public override bool CheckIsAvailable() => CanAddBeacon();
 

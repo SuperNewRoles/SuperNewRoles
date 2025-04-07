@@ -34,6 +34,8 @@ class Matryoshka : RoleBase<Matryoshka>
     public override RoleTag[] RoleTags { get; } = [];
     public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Impostor;
 
+    [CustomOptionFloat("MatryoshkaCoolTime", 0f, 180f, 2.5f, 30f, translationName: "MatryoshkaCoolTime")]
+    public static float MatryoshkaCoolTime;
     [CustomOptionInt("MatryoshkaWearLimit", 1, 15, 1, 3)]
     public static int MatryoshkaWearLimit;
     [CustomOptionBool("MatryoshkaWearReport", false)]
@@ -42,6 +44,4 @@ class Matryoshka : RoleBase<Matryoshka>
     public static float MatryoshkaWearTime;
     [CustomOptionFloat("MatryoshkaAddKillCoolTime", 0f, 30f, 0.5f, 2.5f)]
     public static float MatryoshkaAddKillCoolTime;
-    [CustomOptionFloat("MatryoshkaCoolTime", 0f, 180f, 2.5f, 30f)]
-    public static float MatryoshkaCoolTime;
 }

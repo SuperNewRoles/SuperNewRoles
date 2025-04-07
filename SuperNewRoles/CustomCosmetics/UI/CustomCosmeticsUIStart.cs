@@ -135,8 +135,11 @@ public static class CustomCosmeticsUIStart
     {
         var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>(MENU_SELECTOR_ASSET_NAME));
         obj.transform.SetParent(menu.transform, false);
-        obj.transform.localPosition = new Vector3(MenuPositions.X_POSITION, MenuPositions.Y_POSITION, MenuPositions.Z_POSITION);
         obj.transform.localScale = Vector3.one * MenuPositions.SCALE;
+        var aspectPosition = obj.AddComponent<AspectPosition>();
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Center;
+        aspectPosition.DistanceFromEdge = new(MenuPositions.X_POSITION, MenuPositions.Y_POSITION, MenuPositions.Z_POSITION);
+        aspectPosition.OnEnable();
         return obj;
     }
 
@@ -251,8 +254,11 @@ public static class CustomCosmeticsUIStart
     private static void CreateMenuFrame(GameObject menuObject, PlayerCustomizationMenu menu)
     {
         var frame = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticMenuFrame"), menu.transform);
-        frame.transform.localPosition = new(0, -0.1f, -11.5f);
         frame.transform.localScale = Vector3.one * 0.28f;
+        var aspectPosition = frame.AddComponent<AspectPosition>();
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Center;
+        aspectPosition.DistanceFromEdge = new(0, -0.1f, -11.5f);
+        aspectPosition.OnEnable();
     }
 
 

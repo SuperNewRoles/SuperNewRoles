@@ -64,9 +64,10 @@ public class FalseChargesAbility : TargetCustomButtonBase
 
     private void OnWrapUp(WrapUpEventData data)
     {
+        Logger.Info($"OnWrapUp: {data.exiled?.PlayerId ?? 255} {_target?.PlayerId ?? 255}");
         _turn--;
         // 追放されたプレイヤーがいる場合
-        if (data.exiled == null || data.exiled != _target) return;
+        if (data.exiled == null || data.exiled.PlayerId != _target?.PlayerId) return;
         if (_turn >= 0)
         {
             CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.FalseChargesWin);

@@ -294,7 +294,7 @@ public class ExPlayerControl
         return _exPlayerControlsArray[playerId];
     }
     public bool IsKiller()
-        => IsImpostor() || Role == RoleId.PavlovsDog || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton();
+        => IsImpostor() || Role == RoleId.PavlovsDog || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
     public bool IsCrewmate()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() : !Data.Role.IsImpostor;
     public bool IsImpostor()

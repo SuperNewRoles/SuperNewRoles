@@ -6,16 +6,18 @@ namespace SuperNewRoles.Events;
 public class NameTextUpdateEventData : IEventData
 {
     public ExPlayerControl Player { get; }
-    public NameTextUpdateEventData(ExPlayerControl player)
+    public bool Visiable { get; }
+    public NameTextUpdateEventData(ExPlayerControl player, bool visiable)
     {
         Player = player;
+        Visiable = visiable;
     }
 }
 public class NameTextUpdateEvent : EventTargetBase<NameTextUpdateEvent, NameTextUpdateEventData>
 {
-    public static void Invoke(ExPlayerControl player)
+    public static void Invoke(ExPlayerControl player, bool visiable)
     {
-        var data = new NameTextUpdateEventData(player);
+        var data = new NameTextUpdateEventData(player, visiable);
         Instance.Awake(data);
     }
 }

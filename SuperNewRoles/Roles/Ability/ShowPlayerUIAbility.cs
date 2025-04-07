@@ -59,8 +59,12 @@ public class ShowPlayerUIAbility : AbilityBase
         _playerUIContainer.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
         _playerUIContainer.transform.localPosition = new(-4.19f, -2.4f, 0f);
         _playerUIContainer.transform.localScale = Vector3.one * 0.5f;
-
+        var aspectPosition = _playerUIContainer.gameObject.AddComponent<AspectPosition>();
+        aspectPosition.Alignment = AspectPosition.EdgeAlignments.Left;
+        aspectPosition.DistanceFromEdge = new(0.5f, -2.45f);
+        aspectPosition.OnEnable();
         var playerUIObjectPrefab = FastDestroyableSingleton<HudManager>.Instance.IntroPrefab.PlayerPrefab;
+        int index = 0;
         foreach (var player in playerList)
         {
             if (player == null) continue;
@@ -68,6 +72,8 @@ public class ShowPlayerUIAbility : AbilityBase
             _playerUIObjects.Add((player.PlayerId, playerUIObject.gameObject));
             playerUIObject.UpdateFromEitherPlayerDataOrCache(player.Data, PlayerOutfitType.Default, PlayerMaterial.MaskType.None, false);
             playerUIObject?.cosmetics?.colorBlindText?.gameObject?.SetActive(false);
+            playerUIObject.transform.localPosition = new(index * 1.5f, 0f, -0.3f);
+            index++;
         }
 
         // _lastPlayerListを更新する

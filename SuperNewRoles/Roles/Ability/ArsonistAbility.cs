@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
+using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Modules.Events.Bases;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Ability;
@@ -34,17 +37,18 @@ public class ArsonistAbility : AbilityBase
 {
     private readonly ArsonistData _data;
     private List<byte> _dousedPlayers = new();
+    private List<ExPlayerControl> _dousedPlayersControls = new();
     private DouseButtonAbility _douseAbility;
     private IgniteButtonAbility _igniteAbility;
     private CustomVentAbility _ventAbility;
     private ImpostorVisionAbility _impostorVisionAbility;
+    private ShowPlayerUIAbility _showPlayerUIAbility;
+
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
+
     public ArsonistAbility(ArsonistData data)
     {
         _data = data;
-    }
-
-    public override void AttachToLocalPlayer()
-    {
     }
 
     public override void AttachToAlls()
@@ -64,11 +68,33 @@ public class ArsonistAbility : AbilityBase
         _impostorVisionAbility = new ImpostorVisionAbility(
             hasImpostorVision: () => _data.IsImpostorVision
         );
+        _showPlayerUIAbility = new ShowPlayerUIAbility(
+            getPlayerList: () => _dousedPlayersControls
+        );
 
         Player.AddAbility(_douseAbility, new AbilityParentAbility(this));
         Player.AddAbility(_igniteAbility, new AbilityParentAbility(this));
         Player.AddAbility(_ventAbility, new AbilityParentAbility(this));
         Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
+        Player.AddAbility(_showPlayerUIAbility, new AbilityParentAbility(this));
+    }
+
+    public override void AttachToLocalPlayer()
+    {
+        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
+    }
+
+    public override void DetachToLocalPlayer()
+    {
+        _nameTextUpdateListener.RemoveListener();
+    }
+
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (!_dousedPlayers.Contains(data.Player.PlayerId)) return;
+        data.Player.cosmetics.nameText.text += ModHelpers.Cs(Arsonist.Instance.RoleColor, " §");
+        if (data.Player.VoteArea != null)
+            data.Player.VoteArea.NameText.text += ModHelpers.Cs(Arsonist.Instance.RoleColor, " §");
     }
 
     private bool IsDousable(ExPlayerControl target)
@@ -79,10 +105,7 @@ public class ArsonistAbility : AbilityBase
     private void OnPlayerDoused(ExPlayerControl target)
     {
         if (!_dousedPlayers.Contains(target.PlayerId))
-        {
-            _dousedPlayers.Add(target.PlayerId);
-            RpcDousePlayer(Player, target);
-        }
+            RpcDousePlayer(this, target);
     }
 
     private bool CanIgnite()
@@ -95,12 +118,12 @@ public class ArsonistAbility : AbilityBase
     }
 
     [CustomRPC]
-    public static void RpcDousePlayer(ExPlayerControl source, ExPlayerControl target)
+    public static void RpcDousePlayer(ArsonistAbility source, ExPlayerControl target)
     {
-        var sourceComponent = source.GetAbility<ArsonistAbility>();
-        if (sourceComponent != null && !sourceComponent._dousedPlayers.Contains(target.PlayerId))
+        if (!source._dousedPlayers.Contains(target.PlayerId))
         {
-            sourceComponent._dousedPlayers.Add(target.PlayerId);
+            source._dousedPlayers.Add(target.PlayerId);
+            source._dousedPlayersControls.Add(target);
         }
     }
 

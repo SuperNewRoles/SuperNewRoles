@@ -93,6 +93,7 @@ public class HitmanAbility : AbilityBase
 
     private EventListener _fixedUpdateListener;
     private EventListener<MurderEventData> _murderListener;
+    private EventListener<NameTextUpdateEventData> _nameTextUpdateListener;
 
     private Arrow ArrowToTarget;
 
@@ -123,6 +124,8 @@ public class HitmanAbility : AbilityBase
         Player.AttachAbility(_ventAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_showPlayerUIAbility, new AbilityParentAbility(this));
         Player.AttachAbility(_impostorVisionAbility, new AbilityParentAbility(this));
+
+        _nameTextUpdateListener = NameTextUpdateEvent.Instance.AddListener(OnNameTextUpdate);
     }
     public override void AttachToLocalPlayer()
     {
@@ -138,6 +141,22 @@ public class HitmanAbility : AbilityBase
         _murderListener?.RemoveListener();
         GameObject.Destroy(ArrowToTarget?.arrow.gameObject);
         ArrowToTarget = null;
+    }
+    public override void DetachToAlls()
+    {
+        base.DetachToAlls();
+        _nameTextUpdateListener?.RemoveListener();
+    }
+    private void OnNameTextUpdate(NameTextUpdateEventData data)
+    {
+        if (data.Player != Player) return;
+        if (!data.Visiable) return;
+        string hitmanText = ModHelpers.Cs(Hitman.Instance.RoleColor, $"({_successCount}/{Data.WinKillCount})");
+        if (Data.IsOutMission)
+            hitmanText += ModHelpers.Cs(Color.red, $"({_failedCount}/{Data.OutMissionLimit})");
+        Player.PlayerInfoText.text += hitmanText;
+        if (Player.MeetingInfoText != null)
+            Player.MeetingInfoText.text += hitmanText;
     }
     private void OnFixedUpdate()
     {
@@ -166,7 +185,7 @@ public class HitmanAbility : AbilityBase
         _failedCount++;
         if (Data.IsOutMission && _failedCount >= Data.OutMissionLimit)
             ExPlayerControl.LocalPlayer.RpcCustomDeath(CustomDeathType.Suicide);
-
+        RpcSyncCount();
     }
     public void OnMurder(MurderEventData data)
     {
@@ -186,5 +205,24 @@ public class HitmanAbility : AbilityBase
             CustomRpcExts.RpcEndGameForHost((GameOverReason)CustomGameOverReason.HitmanWin);
         }
         reSelect();
+        RpcSyncCount();
+    }
+    private void RpcSyncCount()
+    {
+        RpcSyncCount(this, _successCount, _failedCount);
+    }
+
+    [CustomRPC]
+    public static void RpcSyncCount(HitmanAbility ability, int successCount, int failedCount)
+    {
+        if (ability != null)
+            ability.SetCount(successCount, failedCount);
+        else
+            Logger.Error("HitmanAbility is null");
+    }
+    private void SetCount(int successCount, int failedCount)
+    {
+        _successCount = successCount;
+        _failedCount = failedCount;
     }
 }

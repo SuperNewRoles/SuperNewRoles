@@ -75,6 +75,7 @@ public static class NameText
         player.PlayerInfoText.text = playerInfoText;
         if (player.MeetingInfoText != null)
             player.MeetingInfoText.text = meetingInfoText;
+        player.cosmetics.nameText.text = player.Player.CurrentOutfit.PlayerName;
         bool visiable = ExPlayerControl.LocalPlayer.PlayerId == player.PlayerId || ExPlayerControl.LocalPlayer.IsDead();
         if (visiable)
         {
@@ -92,7 +93,7 @@ public static class NameText
             SetNameTextColor(player, Color.white);
         }
         UpdateVisiable(player);
-        NameTextUpdateEvent.Invoke(player);
+        NameTextUpdateEvent.Invoke(player, visiable);
     }
     public static void SetNameTextColor(ExPlayerControl player, Color color)
     {
