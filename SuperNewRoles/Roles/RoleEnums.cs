@@ -57,6 +57,7 @@ public enum RoleId : short
     Hitman,
     NiceButtoner,
     EvilButtoner,
+    Mayor,
 }
 
 public enum QuoteMod : byte
