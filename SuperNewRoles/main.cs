@@ -57,6 +57,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public override void Load()
     {
+        Log.LogInfo("test");
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
         Instance = this;

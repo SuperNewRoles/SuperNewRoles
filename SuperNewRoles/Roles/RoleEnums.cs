@@ -55,6 +55,8 @@ public enum RoleId : short
     FalseCharges,
     Pteranodon,
     Hitman,
+    NiceButtoner,
+    EvilButtoner,
 }
 
 public enum QuoteMod : byte

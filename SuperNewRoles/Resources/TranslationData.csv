@@ -22,7 +22,7 @@ DurationTime,継続時間,Duration Time,持续时间,持續時間
 CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以使用通風口
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
-
+UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
 SidekickRemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
 
 # CustomColors
@@ -259,6 +259,8 @@ Conjurer,魔術師,Conjurer,魔术师,魔術師
 Doppelganger,ドッペルゲンガー,Doppelganger
 FalseCharges,冤罪師,False Charges,冤罪师,冤罪師
 Hitman,殺し屋,Hitman,刺客,刺客
+NiceButtoner,ナイスボタナー,Nice Buttoner
+EvilButtoner,イビルボタナー,Evil Buttoner
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -663,3 +665,6 @@ HitmanFaildTimer,失敗まで残り{0}秒,Failure remaining {0}s,失败前剩余
 
 # CustomGameOverReason
 CustomGameOverReason.HitmanWin,殺し屋の勝利,Victory of the Hitman,刺客的胜利,刺客的勝利
+
+# ボタナー
+ButtonerButtonText,ポチッ,Push!
