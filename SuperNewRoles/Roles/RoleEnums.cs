@@ -58,6 +58,7 @@ public enum RoleId : short
     NiceButtoner,
     EvilButtoner,
     Mayor,
+    Worshiper,
 }
 
 public enum QuoteMod : byte
