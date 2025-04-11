@@ -50,7 +50,7 @@ public static class SyncSpawn
 
     public static IEnumerator WaitForSpawn()
     {
-        const float EaseLevel = 0.8f; // 0~1の範囲で指定（1に近いほど最初が速く、後が遅くなる）
+        const float EaseLevel = 0.55f; // 0~1の範囲で指定（1に近いほど最初が速く、後が遅くなる）
 
         float startTime = Time.time;
         GameObject selectedButton = spawnInMinigame.LocationButtons.FirstOrDefault(x => x.GetComponent<ButtonAnimRolloverHandler>().StaticOutImage == SpawnLocation.Image).gameObject;
