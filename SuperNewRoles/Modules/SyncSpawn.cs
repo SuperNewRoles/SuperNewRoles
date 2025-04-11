@@ -60,7 +60,7 @@ public static class SyncSpawn
         yield return null;
 
         Vector3 initialPos = selectedButton.transform.localPosition;
-        Vector3 targetPos = new Vector3(0f, -0.25f, 0f);
+        Vector3 targetPos = new(0f, -0.25f, 0f);
         float fadeDuration = 0.2f; // フェードアウトにかかる時間
         float moveDelay = 0.1f;    // 移動開始前の遅延
         float moveDuration = 0.4f; // 選択ボタンの移動にかかる時間

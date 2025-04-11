@@ -5,6 +5,11 @@ using SuperNewRoles.CustomOptions;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability;
 using UnityEngine;
+using System.Linq;
+using SuperNewRoles.Events;
+using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.SuperTrophies;
+using SuperNewRoles.Patches; // CheckGameEndEventData のため
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -49,4 +54,160 @@ class SelfBomber : RoleBase<SelfBomber>
 
     [CustomOptionBool("SelfBomberOnlyKillCrewmates", false)]
     public static bool SelfBomberOnlyKillCrewmates;
+}
+
+// --- Trophies ---
+/// <summary>
+/// セルフボンバーが一度の爆発で3人以上キルするとトロフィーを獲得するクラス
+/// </summary>
+public class SelfBomberTripleKillTrophy : SuperTrophyRole<SelfBomberTripleKillTrophy>
+{
+    public override TrophiesEnum TrophyId => TrophiesEnum.SelfBomberTripleKill;
+    public override TrophyRank TrophyRank => TrophyRank.Gold;
+    public override RoleId[] TargetRoles => [RoleId.SelfBomber];
+
+    private EventListener<AreaKillEventData> _onAreaKillEvent;
+
+    public override void OnRegister()
+    {
+        _onAreaKillEvent = AreaKillEvent.Instance.AddListener(HandleAreaKillEvent);
+    }
+
+    private void HandleAreaKillEvent(AreaKillEventData data)
+    {
+        if (data.killer == PlayerControl.LocalPlayer &&
+            (data.deathType == CustomDeathType.SelfBomb || data.deathType == CustomDeathType.BombBySelfBomb) &&
+            data.killedPlayers.Count >= 3)
+        {
+            Complete();
+        }
+    }
+
+    public override void OnDetached()
+    {
+        if (_onAreaKillEvent != null)
+        {
+            AreaKillEvent.Instance.RemoveListener(_onAreaKillEvent);
+            _onAreaKillEvent = null;
+        }
+    }
+}
+
+/// <summary>
+/// セルフボンバーが最後のインポスターとして自爆し、勝利するとトロフィーを獲得するクラス
+/// </summary>
+public class SelfBomberSacrificeWinTrophy : SuperTrophyRole<SelfBomberSacrificeWinTrophy>
+{
+    public override TrophiesEnum TrophyId => TrophiesEnum.SelfBomberSacrificeWin;
+    public override TrophyRank TrophyRank => TrophyRank.Gold;
+    public override RoleId[] TargetRoles => [RoleId.SelfBomber];
+
+    private EventListener<AreaKillEventData> _onAreaKillEvent;
+    private EventListener<EndGameEventData> _onEndGameEvent;
+    private bool _selfBombedThisRound = false;
+
+    public override void OnRegister()
+    {
+        _onAreaKillEvent = AreaKillEvent.Instance.AddListener(HandleAreaKillEvent);
+        _onEndGameEvent = EndGameEvent.Instance.AddListener(HandleEndGameEvent);
+        _selfBombedThisRound = false;
+    }
+
+    private void HandleAreaKillEvent(AreaKillEventData data)
+    {
+        if (data.killer == PlayerControl.LocalPlayer &&
+            (data.deathType == CustomDeathType.SelfBomb || data.deathType == CustomDeathType.BombBySelfBomb) &&
+            !ExPlayerControl.ExPlayerControls.Any(x => x.IsAlive() && x.IsImpostor() && !x.AmOwner))
+        {
+            _selfBombedThisRound = true;
+        }
+    }
+
+    private void HandleEndGameEvent(EndGameEventData data)
+    {
+        if (!_selfBombedThisRound) return;
+
+        var localPlayer = ExPlayerControl.LocalPlayer;
+        bool isImpostorWin = data.winners.Any(w => w.PlayerId == localPlayer.PlayerId);
+
+        if (localPlayer?.PlayerId == PlayerControl.LocalPlayer.PlayerId &&
+            _selfBombedThisRound &&
+            isImpostorWin)
+        {
+            Complete();
+        }
+        _selfBombedThisRound = false;
+    }
+
+    public override void OnDetached()
+    {
+        if (_onAreaKillEvent != null)
+        {
+            AreaKillEvent.Instance.RemoveListener(_onAreaKillEvent);
+            _onAreaKillEvent = null;
+        }
+        if (_onEndGameEvent != null)
+        {
+            EndGameEvent.Instance.RemoveListener(_onEndGameEvent);
+            _onEndGameEvent = null;
+        }
+    }
+}
+
+/// <summary>
+/// セルフボンバーがベント付近で爆発キルを行うとトロフィーを獲得するクラス
+/// </summary>
+public class SelfBomberVentKillTrophy : SuperTrophyRole<SelfBomberVentKillTrophy>
+{
+    public override TrophiesEnum TrophyId => TrophiesEnum.SelfBomberVentKill;
+    public override TrophyRank TrophyRank => TrophyRank.Bronze;
+    public override RoleId[] TargetRoles => [RoleId.SelfBomber];
+
+    private EventListener<AreaKillEventData> _onAreaKillEvent;
+    private const float VentKillRadius = 2.5f;
+
+    public override void OnRegister()
+    {
+        _onAreaKillEvent = AreaKillEvent.Instance.AddListener(HandleAreaKillEvent);
+    }
+
+    private void HandleAreaKillEvent(AreaKillEventData data)
+    {
+        if (data.killer != PlayerControl.LocalPlayer ||
+            !(data.deathType == CustomDeathType.SelfBomb || data.deathType == CustomDeathType.BombBySelfBomb))
+            return;
+
+        var vents = ShipStatus.Instance.AllVents;
+        bool nearVentKill = false;
+
+        foreach (var killedPlayer in data.killedPlayers)
+        {
+            // killedPlayerがnullでないか、死亡していないか再確認 (念のため)
+            if (killedPlayer?.Player == null || killedPlayer.IsDead()) continue;
+
+            foreach (var vent in vents)
+            {
+                if (Vector2.Distance(killedPlayer.GetTruePosition(), vent.transform.position) <= VentKillRadius)
+                {
+                    nearVentKill = true;
+                    break;
+                }
+            }
+            if (nearVentKill) break;
+        }
+
+        if (nearVentKill)
+        {
+            Complete();
+        }
+    }
+
+    public override void OnDetached()
+    {
+        if (_onAreaKillEvent != null)
+        {
+            AreaKillEvent.Instance.RemoveListener(_onAreaKillEvent);
+            _onAreaKillEvent = null;
+        }
+    }
 }

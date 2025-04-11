@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles.Ability.CustomButton;
+using SuperNewRoles.Events;
 
 namespace SuperNewRoles.Roles.Ability;
 
@@ -104,6 +105,12 @@ public class AreaKillButtonAbility : CustomButtonBase
         }
         IsUsed = true;
         KilledCallback?.Invoke(killedPlayers);
+
+        if (killedPlayers.Count > 0)
+        {
+            AreaKillEvent.Invoke(localPlayer, killedPlayers, CustomDeathType);
+        }
+
         if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
             CustomRpcExts.RpcEndGameForHost(GameOverReason.ImpostorsByKill);
         ResetTimer();
