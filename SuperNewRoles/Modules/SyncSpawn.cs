@@ -50,6 +50,8 @@ public static class SyncSpawn
 
     public static IEnumerator WaitForSpawn()
     {
+        const float EaseLevel = 0.8f; // 0~1の範囲で指定（1に近いほど最初が速く、後が遅くなる）
+
         float startTime = Time.time;
         GameObject selectedButton = spawnInMinigame.LocationButtons.FirstOrDefault(x => x.GetComponent<ButtonAnimRolloverHandler>().StaticOutImage == SpawnLocation.Image).gameObject;
         List<GameObject> notSelectedButtons = spawnInMinigame.LocationButtons
@@ -59,7 +61,7 @@ public static class SyncSpawn
 
         Vector3 initialPos = selectedButton.transform.localPosition;
         Vector3 targetPos = new Vector3(0f, -0.25f, 0f);
-        float fadeDuration = 0.2f; // フェードアウトにかかる時間（遅延なし）
+        float fadeDuration = 0.2f; // フェードアウトにかかる時間
         float moveDelay = 0.1f;    // 移動開始前の遅延
         float moveDuration = 0.4f; // 選択ボタンの移動にかかる時間
         bool fadeFinished = false;
@@ -79,7 +81,7 @@ public static class SyncSpawn
         {
             float elapsed = Time.time - startTime;
 
-            // フェードアウトの処理（即開始、0.2秒かけてフェードアウト）
+            // フェードアウト処理（即開始、0.2秒かけてフェードアウト）
             if (!fadeFinished)
             {
                 if (elapsed < fadeDuration)
@@ -107,7 +109,8 @@ public static class SyncSpawn
                 }
             }
 
-            // 選択ボタンの移動処理（0.1秒の遅延後、0.4秒かけて滑らかに移動、動き出しは早く、終わりは遅くなるようにイージング適用）
+            // 選択ボタンの移動処理
+            // イージング関数を調整可能に変更
             if (!moveFinished)
             {
                 if (elapsed < moveDelay)
@@ -117,7 +120,12 @@ public static class SyncSpawn
                 else if (elapsed < moveDelay + moveDuration)
                 {
                     float normalizedTime = Mathf.Clamp01((elapsed - moveDelay) / moveDuration);
-                    float easeValue = Mathf.Sin(normalizedTime * (Mathf.PI * 0.5f)); // 動き出し早く、終盤で徐々に減速
+
+                    // EaseLevelに基づいてイージング関数を調整
+                    // EaseLevel=0の場合は線形補間、1に近づくほど初速が速く後半が遅くなる
+                    float power = 1f + 3f * EaseLevel; // 1.0～4.0の範囲で調整
+                    float easeValue = 1f - Mathf.Pow(1f - normalizedTime, power);
+
                     selectedButton.transform.localPosition = Vector3.Lerp(initialPos, targetPos, easeValue);
                 }
                 else
@@ -127,7 +135,7 @@ public static class SyncSpawn
                 }
             }
 
-            // 両方のアニメーションが完了したら、全てのボタンのOnMouseOutを呼び出し、ボタンを無効化する
+            // アニメーション完了後、全ボタンのOnMouseOutを呼び出し、無効化する
             if (fadeFinished && moveFinished && !animationFinished)
             {
                 foreach (var button in spawnInMinigame.LocationButtons)
@@ -139,13 +147,14 @@ public static class SyncSpawn
             }
 
             if (spawnInMinigame == null) yield break;
-            if (SpawnedPlayers.Count >= ExPlayerControl.ExPlayerControls.Count && spawnInMinigame != null && AmongUsClient.Instance.AmHost)
+            int aliveCount = ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive());
+            if (SpawnedPlayers.Count >= aliveCount && spawnInMinigame != null && AmongUsClient.Instance.AmHost)
             {
                 new LateTask(() => RpcAllSelectedFromHost(), 0f);
             }
             spawnInMinigame.Text.text = ModTranslation.GetString("WaitingSpawnText",
-                ExPlayerControl.ExPlayerControls.Count - SpawnedPlayers.Count,
-                ExPlayerControl.ExPlayerControls.Count);
+                aliveCount - SpawnedPlayers.Count,
+                aliveCount);
             yield return null;
         }
     }
