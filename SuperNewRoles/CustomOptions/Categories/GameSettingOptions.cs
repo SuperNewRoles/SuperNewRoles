@@ -9,4 +9,6 @@ public static class GameSettingOptions
     // |:========== ベントアニメーション有効化の設定 ==========:|
     [CustomOptionBool("VentAnimationPlaySetting", true, parentFieldName: nameof(Categories.GameSettings))]
     public static bool VentAnimationPlaySetting;
+    [CustomOptionBool("SyncSpawn", false, parentFieldName: nameof(Categories.GameSettings))]
+    public static bool SyncSpawn;
 }

@@ -110,8 +110,12 @@ KickNonPCPlayers,PC以外をキックする,Kick Non-PC Players,踢出非PC玩�
 BanNoFriendCodePlayers,フレンドコードを持っていない人をBANする,Ban Players Without Friend Code,封禁没有好友代码的玩家,封禁沒有好友代碼的玩家
 PetOnlyMe,ペットを自分のみに表示する,Show only my pet,只显示我的宠物,只顯示我的寵物
 
+# SyncSpawn
+WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crewmates,等待中... {0}/{1} 船员,等待中... {0}/{1} 船員
+
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task, the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
+SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
