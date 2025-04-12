@@ -74,6 +74,10 @@ class RevenantAbility : TargetCustomButtonBase
     public override bool CheckHasButton()
         => Player == ExPlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data.IsDead;
 
+    public override Func<ExPlayerControl, bool> IsTargetable => (player) => !player.IsImpostor();
+
+    public Dictionary<ExPlayerControl, GameObject> NecromancerHitodamas = [];
+
     public RevenantAbility(RevenantAbilityData data)
     {
         Data = data;
@@ -95,6 +99,7 @@ class RevenantAbility : TargetCustomButtonBase
         _shipStatusLightListener = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
         _emergencyCheckListener = EmergencyCheckEvent.Instance.AddListener(OnEmergencyCheck);
         _hudManagerUpdateListener = HudUpdateEvent.Instance.AddListener(OnHudManagerUpdate);
+        NecromancerHitodamas = new();
     }
     public override void DetachToAlls()
     {
@@ -240,12 +245,24 @@ class RevenantAbility : TargetCustomButtonBase
             if (player.AmOwner)
                 ability.AmHaunted = true;
             ability.HauntedPlayers.Add((Time.time + ability.Data.HauntDuration, player));
+            if (ExPlayerControl.LocalPlayer.Role is RoleId.Necromancer or RoleId.Revenant)
+            {
+                ability.NecromancerHitodamas[player] = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("NecromancerHitodama"));
+                ability.NecromancerHitodamas[player].transform.SetParent(player.transform);
+                ability.NecromancerHitodamas[player].transform.localPosition = new(0, 0.6f, -0.0001f);
+                ability.NecromancerHitodamas[player].transform.localScale = Vector3.one * 0.8f;
+            }
         }
         else
         {
             if (player.AmOwner)
                 ability.AmHaunted = false;
             ability.HauntedPlayers.RemoveAll(haunted => haunted.player == player);
+            if (ability.NecromancerHitodamas.ContainsKey(player) && ExPlayerControl.LocalPlayer.Role is RoleId.Necromancer or RoleId.Revenant)
+            {
+                GameObject.Destroy(ability.NecromancerHitodamas[player]);
+                ability.NecromancerHitodamas.Remove(player);
+            }
         }
     }
     private void OnHudManagerUpdate()
