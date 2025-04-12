@@ -23,7 +23,7 @@ CanUseVent,ベントを使用できる,Can Use Vent,可以使用通风口,可以
 HasImpostorVision,インポスターの視界を持つ,Has Impostor Vision,拥有内鬼视野,擁有內鬼視野
 TaskOption,タスクを個別で設定するか,Set tasks individually,独立设置任务,獨立設置任務
 UseLimit,使用可能回数,Usage Limit,可使用次数,可使用次數
-SidekickRemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
+RemainingText,残り{0}回,Remaining {0} times,剩余 {0} 次,剩餘 {0} 次
 
 # CustomColors
 colorSalmon,サーモン,Salmon,鲑鱼红,鮭魚紅
@@ -116,6 +116,7 @@ WaitingSpawnText,ロドー中... 残り:{0}/{1}クルー,Waiting... {0}/{1} Crew
 # GameSettings
 CannotTaskTrigger,タスクに関係ない役職の場合、タスクをできなくする,If the role is not related to the task, the task cannot be done,如果角色与任务无关，则无法完成任务,如果角色與任務無關，則無法完成任務
 SyncSpawn,スポーンを同期する(選択スポーンのみ),Sync Spawn (Selected Spawn Only),同步出生点(仅选择出生点),同步出生點(僅選擇出生點)
+AdvancedRandom,よりランダムな乱数を使用する,Use a more random random number,使用更随机的随机数,使用更隨機的隨機數
 
 # RoleOptionMenu
 RoleOptionMenuType.Impostor,インポスター,Impostor,内鬼,內鬼
@@ -267,6 +268,8 @@ NiceButtoner,ナイスボタナー,Nice Buttoner
 EvilButtoner,イビルボタナー,Evil Buttoner
 Mayor,メイヤー,Mayor
 Worshiper,崇拝者,Worshiper,崇拜者,崇拜者
+Necromancer,ネクロマンサー,Necromancer
+Revenant,レヴェナント,Revenant
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -680,3 +683,20 @@ MayorVoteAdditionalVote,追加投票数,Additional Vote
 
 # Worshiper
 SuicideButtonText,自滅,Suicide,自杀,自殺
+
+# Necromancer
+NecromancerIntro1,死すれば我が力となりて,If you die\, you become my power,,
+Necromancer.Description,自陣営を増やす能力を有するインポスターです。幽霊を見ることが出来、幽霊に「呪縛」ボタンを押すと、対象のプレイヤーの役職をレヴェナントに変更します。,An impostor who has the ability to increase their own camp. They can see ghosts\, and pressing the "Curse" button on a ghost changes the target player's role to Revenant.,,
+NecromancerCurseCooldown,「呪縛」クールタイム,Curse Cooldown,,
+NecromancerMaxRevenants,レヴェナント作成可能数,Max Revenants,,
+NecromancerCurseButtonText,呪縛,Curse,詛咒,詛咒
+
+# Revenant
+RevenantIntro1,永遠たる呪縛,Eternal Curse,,
+Revenant.Description,インポスター陣営に属する幽霊役職です。タスクターンに使用出来る能力を有します。「呪う」ボタンを押すと対象に取り憑き、視界を奪います。,A ghost role belonging to the Impostor team. Has an ability that can be used during the task turn. Pressing the "Haunt" button possesses the target and steals their vision.,,
+RevenantRequiredTasks,能力に必要なタスク個数,Required Tasks for Ability,,
+RevenantHauntDuration,視界を奪う時間,Haunt Duration,,
+RevenantHauntVision,効果中の視界,Vision During Haunt,,
+RevenantCannotReportWhileHaunted,呪われている間会議を起こせない,Cannot Report While Haunted,,
+RevenantHauntCannotReportText,呪われていて押せない,Cannot press because cursed,,
+RevenantHauntButtonText,呪う,Haunt,詛咒,詛咒

@@ -16,4 +16,7 @@ public static class GeneralSettingOptions
 
     [CustomOptionBool("PetOnlyMe", true, parentFieldName: nameof(Categories.GeneralSettings))]
     public static bool PetOnlyMe;
+
+    [CustomOptionBool("AdvancedRandom", true, parentFieldName: nameof(Categories.GeneralSettings))]
+    public static bool AdvancedRandom;
 }

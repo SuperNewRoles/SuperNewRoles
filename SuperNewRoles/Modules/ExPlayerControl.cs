@@ -291,6 +291,7 @@ public class ExPlayerControl
     }
     public static ExPlayerControl ById(byte playerId)
     {
+        if (_exPlayerControlsArray == null) return null;
         return _exPlayerControlsArray[playerId];
     }
     public bool IsKiller()

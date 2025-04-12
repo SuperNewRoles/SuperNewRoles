@@ -68,7 +68,7 @@ public abstract class CustomButtonBase : AbilityBase
     public virtual void OnMeetingEnds() { ResetTimer(); }
 
     public virtual ShowTextType showTextType { get; } = ShowTextType.Hidden;
-    public virtual string showText { get; } = "";
+    public virtual string showText { get; } = string.Empty;
     private TextMeshPro _text;
 
     /// <summary>
@@ -205,7 +205,10 @@ public abstract class CustomButtonBase : AbilityBase
                 _text.text = showText;
                 break;
             case ShowTextType.ShowWithCount:
-                _text.text = string.Format(showText, Count);
+                _text.text = string.Format(
+                    string.IsNullOrEmpty(showText)
+                    ? ModTranslation.GetString("RemainingText")
+                    : showText, Count);
                 break;
             default:
                 throw new Exception($"showTextTypeが{showTextType}の場合はshowTextを設定してください");

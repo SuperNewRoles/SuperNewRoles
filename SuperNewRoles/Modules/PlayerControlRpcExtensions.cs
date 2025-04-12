@@ -19,6 +19,12 @@ public static class PlayerControlRpcExtensions
         player.SetRole(roleId);
     }
     [CustomRPC]
+    public static void RpcCustomSetRoleInGame(this ExPlayerControl player, RoleId roleId)
+    {
+        player.SetRole(roleId);
+        NameText.UpdateNameInfo(player);
+    }
+    [CustomRPC]
     public static void RpcCustomReportDeadBody(this PlayerControl player, NetworkedPlayerInfo target)
     {
         player.ReportDeadBody(target);

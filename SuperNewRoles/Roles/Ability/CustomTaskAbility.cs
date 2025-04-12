@@ -74,10 +74,6 @@ public class CustomTaskAbility : AbilityBase
     public static void RpcUncheckedSetTasks(PlayerControl player, System.Collections.Generic.List<byte> taskList)
     {
         player.Data.SetTasks(taskList.ToArray());
-    }
-
-    public override void AttachToLocalPlayer()
-    {
-
+        NameText.UpdateNameInfo(player);
     }
 }

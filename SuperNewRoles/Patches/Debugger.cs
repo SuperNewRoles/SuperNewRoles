@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using SuperNewRoles.HelpMenus;
+using System.Collections.Generic;
 
 namespace SuperNewRoles.Patches;
 

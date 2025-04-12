@@ -12,6 +12,8 @@ using UnityEngine;
 namespace SuperNewRoles;
 public static class ModHelpers
 {
+    private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
+
     public static string GetRandomFormat(string format, int min, int max)
     {
         return format.Replace("{0}", GetRandomInt(max, min).ToString());
@@ -31,7 +33,13 @@ public static class ModHelpers
     /// <returns></returns>
     public static int GetRandomInt(int max, int min = 0)
     {
-        return UnityEngine.Random.Range(min, max + 1);
+        if (min > max)
+        {
+            // minとmaxが逆の場合は入れ替える
+            (min, max) = (max, min);
+        }
+        // RandomNumberGenerator.GetInt32は `toExclusive` なので max + 1 する
+        return RandomNumberGenerator.GetInt32(min, max + 1);
     }
     private static MD5 md5 = MD5.Create();
     public static string HashMD5(string str)
@@ -179,7 +187,8 @@ public static class ModHelpers
         // Fisher–Yatesアルゴリズムを使ってリストをシャッフル
         for (int i = list.Count - 1; i > 0; i--)
         {
-            int j = UnityEngine.Random.Range(0, i + 1);
+            // UnityEngine.Random.Range(0, i + 1) を GetRandomInt(0, i) に置き換え
+            int j = GetRandomInt(i); // 0 から i までのランダムなインデックスを取得
             T temp = list[i];
             list[i] = list[j];
             list[j] = temp;
@@ -210,7 +219,8 @@ public static class ModHelpers
     }
     public static int GetRandomIndex<T>(List<T> list)
     {
-        return UnityEngine.Random.Range(0, list.Count);
+        if (list == null || list.Count == 0) return -1; // リストが空の場合は -1 を返すなどのエラーハンドリングを追加
+        return GetRandomInt(list.Count - 1); // 0 から list.Count - 1 までのインデックス
     }
     /// <summary>
     /// 2つの位置が指定された距離以内かどうかを確認します
@@ -234,7 +244,8 @@ public static class ModHelpers
     public static T GetRandom<T>(this List<T> list)
     {
         if (list == null || list.Count == 0) return default;
-        return list[UnityEngine.Random.Range(0, list.Count)];
+        // GetRandomIndex を使用するように変更
+        return list[GetRandomIndex(list)];
     }
 
     /// <summary>
@@ -246,7 +257,9 @@ public static class ModHelpers
     public static int GetRandomIndex<T>(this IEnumerable<T> list)
     {
         var array = list as T[] ?? list.ToArray();
-        return UnityEngine.Random.Range(0, array.Length);
+        if (array.Length == 0) return -1; // 配列が空の場合は -1 を返す
+        // GetRandomInt を使用するように変更
+        return GetRandomInt(array.Length - 1); // 0 から array.Length - 1 までのインデックス
     }
     public static IEnumerable<T> GetSystemEnumerable<T>(this Il2CppSystem.Collections.IEnumerable list)
     {

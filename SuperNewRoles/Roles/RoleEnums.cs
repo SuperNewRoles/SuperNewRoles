@@ -59,6 +59,8 @@ public enum RoleId : short
     EvilButtoner,
     Mayor,
     Worshiper,
+    Necromancer,
+    Revenant,
 }
 
 public enum QuoteMod : byte
@@ -104,4 +106,5 @@ public enum RoleTag : byte
     Information,
     Killer,
     CustomObject,
+    GhostRole,
 }

@@ -32,7 +32,7 @@ public class CustomSidekickButtonAbility : TargetCustomButtonBase
     private Func<int> _sidekickCount = null;
     private Func<bool> _showSidekickLimitText = null;
     public override ShowTextType showTextType => _showSidekickLimitText == null ? ShowTextType.Hidden : ShowTextType.ShowWithCount;
-    public override string showText => ModTranslation.GetString("SidekickRemainingText");
+    public override string showText => ModTranslation.GetString("RemainingText");
     public CustomSidekickButtonAbility(
         Func<bool, bool> canCreateSidekick,
         Func<float?> sidekickCooldown,

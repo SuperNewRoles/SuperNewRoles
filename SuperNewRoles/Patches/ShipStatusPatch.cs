@@ -1,5 +1,6 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
+using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using UnityEngine;
 
@@ -37,6 +38,7 @@ class LightPatch
         {
             __result = GetNeutralLightRadius(__instance, false);
         }
+        __result = ShipStatusLightEvent.Invoke(player, __result);
         return false;
     }
 
