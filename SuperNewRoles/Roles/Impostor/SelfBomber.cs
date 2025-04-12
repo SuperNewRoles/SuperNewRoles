@@ -32,7 +32,14 @@ class SelfBomber : RoleBase<SelfBomber>
             },
             customSprite: AssetManager.GetAsset<Sprite>("SelfBomberBomButton.png"),
             customButtonText: ModTranslation.GetString("SelfBomberKillButtonText"),
-            customDeathType: CustomDeathType.BombBySelfBomb
+            customDeathType: CustomDeathType.BombBySelfBomb,
+            callback: () =>
+            {
+                var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SelfBomberEffect"), PlayerControl.LocalPlayer.transform);
+                obj.AddComponent<DestroyOnAnimationEndObject>();
+                obj.transform.localPosition = new(0,0,-0.5f);
+                obj.transform.localScale = Vector3.oneVector * 0.8f;
+            }
         )
     ];
 

@@ -27,7 +27,14 @@ class Samurai : RoleBase<Samurai>
             ignoreWalls: () => SamuraiIgnoreWalls,
             customSprite: AssetManager.GetAsset<Sprite>("SamuraiButton.png"),
             customButtonText: ModTranslation.GetString("SamuraiKillButtonText"),
-            customDeathType: CustomDeathType.Samurai
+            customDeathType: CustomDeathType.Samurai,
+            callback: () =>
+            {
+                var obj = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("SamuraiEffect"), PlayerControl.LocalPlayer.transform);
+                obj.AddComponent<DestroyOnAnimationEndObject>();
+                obj.transform.localPosition = new(0,0,-0.5f);
+                obj.transform.localScale = Vector3.oneVector * 0.8f;
+            }
         ),
         () => new CustomSaboAbility(
             canSabotage: () => SamuraiCanSabotage

@@ -140,6 +140,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<PushedPlayerDeadbody>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomPlayerAnimationSimple>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomAnimationObject>();
+        ClassInjector.RegisterTypeInIl2Cpp<DestroyOnAnimationEndObject>();
     }
 
     public void ExecuteInMainThread(Action action)

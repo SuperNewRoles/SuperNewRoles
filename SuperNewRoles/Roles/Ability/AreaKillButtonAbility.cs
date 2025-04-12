@@ -28,7 +28,7 @@ public class AreaKillButtonAbility : CustomButtonBase
     public override string buttonText => CustomButtonText ?? FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.KillLabel);
     protected override KeyType keytype => KeyType.Ability1;
     public override float DefaultTimer => KillCooldown?.Invoke() ?? 0;
-
+    public Action Callback { get; }
     public AreaKillButtonAbility(
         Func<bool> canKill,
         Func<float> killRadius,
@@ -42,7 +42,9 @@ public class AreaKillButtonAbility : CustomButtonBase
         Sprite customSprite = null,
         string customButtonText = null,
         Color? customColor = null,
-        CustomDeathType customDeathType = CustomDeathType.Kill)
+        CustomDeathType customDeathType = CustomDeathType.Kill,
+        Action callback = null
+    )
     {
         CanKill = canKill;
         KillRadius = killRadius;
@@ -58,6 +60,7 @@ public class AreaKillButtonAbility : CustomButtonBase
         CustomColor = customColor;
         CustomDeathType = customDeathType;
         IsUsed = false;
+        Callback = callback;
     }
 
     public override void OnClick()
@@ -114,6 +117,7 @@ public class AreaKillButtonAbility : CustomButtonBase
         if (ExPlayerControl.ExPlayerControls.Count(x => x.IsAlive()) == 0)
             CustomRpcExts.RpcEndGameForHost(GameOverReason.ImpostorsByKill);
         ResetTimer();
+        Callback?.Invoke();
     }
 
     public override bool CheckIsAvailable()
