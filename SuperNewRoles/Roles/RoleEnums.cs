@@ -61,6 +61,7 @@ public enum RoleId : short
     Worshiper,
     Necromancer,
     Revenant,
+    Teleporter,
 }
 
 public enum QuoteMod : byte
@@ -107,4 +108,6 @@ public enum RoleTag : byte
     Killer,
     CustomObject,
     GhostRole,
+    Support,
+    ImpostorTeam,
 }
