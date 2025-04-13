@@ -29,6 +29,7 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.API;
+using AmongUs.Data.Player;
 
 namespace SuperNewRoles;
 
@@ -183,6 +184,15 @@ public partial class SuperNewRolesPlugin : BasePlugin
         }
     }
 
+    [HarmonyPatch(typeof(PlayerBanData), nameof(PlayerBanData.IsBanned), MethodType.Getter)]
+    public static class PlayerBanDataIsBannedPatch
+    {
+        public static bool Prefix(ref bool __result)
+        {
+            __result = false;
+            return false;
+        }
+    }
     // https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/Manager/AuthManagerPatch.cs
     [HarmonyPatch(typeof(AuthManager), nameof(AuthManager.CoConnect))]
     public static class AuthManagerCoConnectPatch

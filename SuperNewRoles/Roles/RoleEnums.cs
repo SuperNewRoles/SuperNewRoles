@@ -62,6 +62,7 @@ public enum RoleId : short
     Necromancer,
     Revenant,
     Teleporter,
+    Pursuer,
 }
 
 public enum QuoteMod : byte
