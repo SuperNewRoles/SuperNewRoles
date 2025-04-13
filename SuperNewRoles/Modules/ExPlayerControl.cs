@@ -123,7 +123,7 @@ public class ExPlayerControl
     }
     public void SetModifierRole(ModifierRoleId modifierRoleId)
     {
-        if (modifierRoleId.HasFlag(modifierRoleId)) return;
+        if (ModifierRole.HasFlag(modifierRoleId)) return;
         DetachOldRole(Role, ModifierRole);
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);

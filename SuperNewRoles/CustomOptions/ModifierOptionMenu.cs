@@ -533,6 +533,7 @@ public static class ModifierOptionMenu
         // Generate regular CustomOptions
         foreach (var option in category.Options)
         {
+            if (option.ParentOption != null) continue;
             var obj = GenerateStandardOption(option, menuTransform, false);
             optionObjects.Add((option, obj));
             GenerateChildOptions(option, menuTransform, optionObjects);

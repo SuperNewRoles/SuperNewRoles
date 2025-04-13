@@ -70,7 +70,7 @@ public enum RoleId : short
 public enum ModifierRoleId : short
 {
     None = 0,
-    Guesser = 1 << 0,
+    ModifierGuesser = 1 << 0,
 }
 
 public enum QuoteMod : byte

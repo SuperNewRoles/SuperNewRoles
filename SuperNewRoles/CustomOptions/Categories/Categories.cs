@@ -10,7 +10,6 @@ public static class Categories
     public static CustomOptionCategory GameSettings;
     public static CustomOptionCategory MapSettings;
     public static CustomOptionCategory MapEditSettings;
-    public static CustomOptionCategory ModifierSettings;
 
     [CustomOptionSelect("ModeOption", typeof(ModeId), "ModeId.", parentFieldName: nameof(ModeSettings))]
     public static ModeId ModeOption;

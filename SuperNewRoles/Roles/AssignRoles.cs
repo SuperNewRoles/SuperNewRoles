@@ -131,7 +131,7 @@ public static class AssignRoles
             if (selectedTicket.RemainingAssignBeans <= 0)
                 tickets_not_hundred.RemoveAll(x => x.RoleOption == selectedTicket.RoleOption);
 
-            int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
+            int playerIndex = targetPlayers.GetRandomIndex();
             PlayerControl targetPlayer = targetPlayers[playerIndex];
             targetPlayers.RemoveAt(playerIndex);
 
@@ -153,59 +153,82 @@ public static class AssignRoles
         Logger.Info($"Assigning role {roleId} to player {player.PlayerId}");
         ((ExPlayerControl)player).RpcCustomSetRole(roleId);
     }
-
     private static void AssignModifiers()
     {
-        // 全プレイヤーに対してModifierをアサインする
+        Logger.Info("AssignModifiers() 開始: Modifierのアサイン処理を開始します。");
         var allPlayers = ExPlayerControl.ExPlayerControls;
+        Logger.Info($"AssignModifiers: 全プレイヤー数 = {allPlayers.Count}");
         var allModifiers = CustomRoleManager.AllModifiers;
+        Logger.Info($"AssignModifiers: 全Modifier数 = {allModifiers.Length}");
 
         foreach (var modifierBase in allModifiers)
         {
-            // 各Modifierに対して、オプションから確率を取得
             var modifierRoleId = modifierBase.ModifierRole;
+            Logger.Info($"AssignModifiers: Modifier処理開始 - ModifierRole = {modifierRoleId}");
 
             // モディファイアのオプションから確率を取得
-            var modifierRoleOption = GetModifierPercentage(modifierRoleId);
+            var modifierRoleOption = RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
+            if (modifierRoleOption == null)
+            {
+                Logger.Info($"AssignModifiers: ModifierRoleOptionが見つからないため、ModifierRole {modifierRoleId} をスキップします。");
+                continue;
+            }
+            if (modifierRoleOption.Percentage <= 0)
+            {
+                Logger.Info($"AssignModifiers: ModifierRoleOptionのパーセンテージが0以下のため、ModifierRole {modifierRoleId} をスキップします。");
+                continue;
+            }
 
-            if (modifierRoleOption == null || modifierRoleOption.Percentage <= 0) continue;
+            List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls
+                .Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam))
+                .ToList();
+            Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} に適用可能なプレイヤー数 = {targetPlayers.Count}");
 
-            List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls.Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam)).ToList();
             for (int i = 0; i < modifierRoleOption.NumberOfCrews; i++)
             {
-                // 各プレイヤーに対して確率ロール
-                if (ModHelpers.GetRandomInt(0, 100) > modifierRoleOption.Percentage)
+                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1}/{modifierRoleOption.NumberOfCrews} 開始");
+                int randomRoll = ModHelpers.GetRandomInt(0, 100);
+                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} のランダム値 = {randomRoll} (閾値: {modifierRoleOption.Percentage})");
+                if (randomRoll > modifierRoleOption.Percentage)
+                {
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} はランダム判定により割り当てをスキップします。");
                     continue;
-                int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
+                }
+                if (targetPlayers.Count == 0)
+                {
+                    Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - ループ {i + 1} で対象プレイヤーが存在しないため、ループを終了します。");
+                    break;
+                }
+                int playerIndex = targetPlayers.GetRandomIndex();
+                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - 選択されたプレイヤーインデックス = {playerIndex}");
                 PlayerControl targetPlayer = targetPlayers[playerIndex];
+                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - 選択されたプレイヤーID = {targetPlayer.PlayerId}");
                 targetPlayers.RemoveAt(playerIndex);
-                // 確率に基づいてアサイン判定
+                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - プレイヤー {targetPlayer.PlayerId} を対象リストから削除しました。");
+                Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} - プレイヤー {targetPlayer.PlayerId} に対してModifierの割り当てを試みます。");
                 AssignModifier(targetPlayer, modifierRoleId);
             }
+            Logger.Info($"AssignModifiers: ModifierRole {modifierRoleId} の処理が完了しました。");
         }
-    }
-
-    private static RoleOptionManager.ModifierRoleOption GetModifierPercentage(ModifierRoleId modifierRoleId)
-    {
-        // ModifierOptionsクラスからパーセンテージを取得
-        return RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
+        Logger.Info("AssignModifiers() 終了: 全てのModifier処理が完了しました。");
     }
 
     private static void AssignModifier(PlayerControl player, ModifierRoleId modifierRoleId)
     {
+        Logger.Info($"AssignModifier: プレイヤー {player.PlayerId} に ModifierRole {modifierRoleId} の割り当て処理を開始します。");
         ExPlayerControl exPlayer = player;
 
         // 既存のモディファイアとフラグの状態を確認
         if (exPlayer.ModifierRole.HasFlag(modifierRoleId))
-            return; // 既に同じモディファイアが割り当てられている場合はスキップ
+        {
+            Logger.Info($"AssignModifier: プレイヤー {player.PlayerId} は既にModifierRole {modifierRoleId} を保持しているため、割り当てをスキップします。");
+            return;
+        }
 
-        // 既存のModifierRoleと新しいモディファイアを組み合わせる
+        Logger.Info($"AssignModifier: プレイヤー {player.PlayerId} にModifierRole {modifierRoleId} を割り当てます。");
         ModifierRoleId newModifierRole = modifierRoleId;
-
-        // RPC経由でモディファイアを適用する
         exPlayer.RpcCustomSetModifierRole(newModifierRole);
-
-        Logger.Info($"Assigning modifier {modifierRoleId} to player {player.PlayerId}");
+        Logger.Info($"AssignModifier: RPCを使用してプレイヤー {player.PlayerId} にModifierRole {modifierRoleId} を適用しました。");
     }
 }
 public struct AssignTickets
