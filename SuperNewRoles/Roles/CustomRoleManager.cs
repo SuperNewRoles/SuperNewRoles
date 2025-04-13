@@ -9,11 +9,14 @@ namespace SuperNewRoles.Roles;
 public static class CustomRoleManager
 {
     public static IRoleBase[] AllRoles { get; private set; }
+    public static IModifierBase[] AllModifiers { get; private set; }
     public static Dictionary<int, IRoleBase> AllRolesByRoleId { get; private set; }
+    public static Dictionary<int, IModifierBase> AllModifiersByModifierRoleId { get; private set; }
     public static void Load()
     {
         SuperNewRolesPlugin.Logger.LogInfo("[Splash] Loading Roles...");
         int loadedRoles = 0;
+        int loadedModifiers = 0;
         AllRoles = Assembly.GetExecutingAssembly().GetTypes()
             // まずIRoleBaseインターフェースを実装している型を取得
             .Where(type => typeof(IRoleBase).IsAssignableFrom(type))
@@ -35,8 +38,27 @@ public static class CustomRoleManager
                 return (IRoleBase)instanceProperty.GetValue(null);
             })
             .ToArray();
+        AllModifiers = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(type => typeof(IModifierBase).IsAssignableFrom(type))
+            .Where(type => type.BaseType != null &&
+                           type.BaseType.IsGenericType &&
+                           type.BaseType.GetGenericTypeDefinition() == typeof(ModifierBase<>))
+            .Select(type =>
+            {
+                loadedModifiers++;
+                SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Loading modifier {loadedModifiers}: {type.Name}");
+                var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(type);
+                var instanceProperty = baseSingletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                if (instanceProperty == null)
+                {
+                    throw new InvalidOperationException($"Type {type.FullName} does not have a public static Instance property.");
+                }
+                return (IModifierBase)instanceProperty.GetValue(null);
+            })
+            .ToArray();
         AllRolesByRoleId = AllRoles.ToDictionary(role => (int)role.Role);
-        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Role loading complete ({loadedRoles} roles)");
+        AllModifiersByModifierRoleId = AllModifiers.ToDictionary(modifier => (int)modifier.ModifierRole);
+        SuperNewRolesPlugin.Logger.LogInfo($"[Splash] Role loading complete ({loadedRoles} roles, {loadedModifiers} modifiers)");
     }
     public static IRoleBase GetRoleById(RoleId roleId)
     {
@@ -45,6 +67,14 @@ public static class CustomRoleManager
     public static bool TryGetRoleById(RoleId roleId, out IRoleBase role)
     {
         return AllRolesByRoleId.TryGetValue((int)roleId, out role);
+    }
+    public static IModifierBase GetModifierById(ModifierRoleId modifierRoleId)
+    {
+        return AllModifiersByModifierRoleId.TryGetValue((int)modifierRoleId, out var modifier) ? modifier : null;
+    }
+    public static bool TryGetModifierById(ModifierRoleId modifierRoleId, out IModifierBase modifier)
+    {
+        return AllModifiersByModifierRoleId.TryGetValue((int)modifierRoleId, out modifier);
     }
 }
 

@@ -32,7 +32,9 @@ public class ExPlayerControl
     public byte PlayerId { get; }
     public bool AmOwner { get; private set; }
     public RoleId Role { get; private set; }
+    public ModifierRoleId ModifierRole { get; private set; }
     public IRoleBase roleBase { get; private set; }
+    public List<IModifierBase> ModifierRoleBases { get; private set; } = new();
     public List<AbilityBase> PlayerAbilities { get; private set; } = new();
     public Dictionary<ulong, AbilityBase> PlayerAbilitiesDictionary { get; private set; } = new();
     private Dictionary<string, AbilityBase> _abilityCache = new();
@@ -119,10 +121,29 @@ public class ExPlayerControl
         Player.killTimer = Mathf.Clamp(time, 0f, maxTime);
         FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(Player.killTimer, maxTime);
     }
+    public void SetModifierRole(ModifierRoleId modifierRoleId)
+    {
+        if (modifierRoleId.HasFlag(modifierRoleId)) return;
+        DetachOldRole(Role, ModifierRole);
+        if (AmOwner)
+            SuperTrophyManager.DetachTrophy(Role);
+        ModifierRole |= modifierRoleId;
+        if (CustomRoleManager.TryGetModifierById(modifierRoleId, out var modifier))
+        {
+            modifier.OnSetRole(Player);
+            if (AmOwner)
+                SuperTrophyManager.RegisterTrophy(modifierRoleId);
+            ModifierRoleBases.Add(modifier);
+        }
+        else
+        {
+            Logger.Error($"Modifier {modifierRoleId} not found");
+        }
+    }
     public void SetRole(RoleId roleId)
     {
         if (Role == roleId) return;
-        DetachOldRole(Role);
+        DetachOldRole(Role, ModifierRole);
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
         Role = roleId;
@@ -146,7 +167,7 @@ public class ExPlayerControl
     {
         return _customKillButtonAbility == null && (_killableAbility == null || _killableAbility.CanKill);
     }
-    private void DetachOldRole(RoleId roleId)
+    private void DetachOldRole(RoleId roleId, ModifierRoleId modifierRoleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
         foreach (var ability in PlayerAbilities)
@@ -158,6 +179,10 @@ public class ExPlayerControl
                 switch (parent)
                 {
                     case AbilityParentRole parentRole when parentRole.ParentRole.Role == roleId:
+                        abilitiesToDetach.Add(ability);
+                        parent = null;
+                        break;
+                    case AbilityParentModifier parentModifier when modifierRoleId.HasFlag(parentModifier.ParentModifier.ModifierRole):
                         abilitiesToDetach.Add(ability);
                         parent = null;
                         break;
@@ -244,6 +269,8 @@ public class ExPlayerControl
             }
             if (currentParent is AbilityParentRole parentRole)
                 (currentParent as AbilityParentRole).Player = target;
+            if (currentParent is AbilityParentModifier parentModifier)
+                (currentParent as AbilityParentModifier).Player = target;
             target.AttachAbility(ability.ability, currentParent);
         }
         foreach (var ability in targetAbilities)
@@ -255,6 +282,8 @@ public class ExPlayerControl
             }
             if (currentParent is AbilityParentRole parentRole)
                 (currentParent as AbilityParentRole).Player = Player;
+            else if (currentParent is AbilityParentModifier parentModifier)
+                (currentParent as AbilityParentModifier).Player = Player;
             target.AttachAbility(ability.ability, currentParent);
         }
         // 名前情報を更新

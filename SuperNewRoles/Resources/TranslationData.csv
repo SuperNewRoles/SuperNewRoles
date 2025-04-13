@@ -131,6 +131,7 @@ MadRolesTest,マッド役職テスト,Mad Roles Test,疯狂角色测试,瘋狂�
 BulkRoleButton,役職数一括設定,Bulk Role Setting,批量设置角色,批量設定角色
 NumberOfCrews,人数,Number of Crewmates,船员人数,船員人數
 NumberOfCrewsSelected,{0}人,{0} people,{0}人,{0}人
+NumberOfCrewsPostfix,人, crews
 MaxPeople,最大人数,Maximum Number of People,最大人数,最大人數
 AssignPer,確率,Probability,概率,機率
 PresetSettings,プリセット設定,Preset Settings,预设设置,預設設定

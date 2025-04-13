@@ -1,3 +1,4 @@
+using System;
 using SuperNewRoles.CustomOptions;
 
 namespace SuperNewRoles.Roles;
@@ -63,6 +64,13 @@ public enum RoleId : short
     Revenant,
     Teleporter,
     Pursuer,
+}
+
+[Flags]
+public enum ModifierRoleId : short
+{
+    None = 0,
+    Guesser = 1 << 0,
 }
 
 public enum QuoteMod : byte

@@ -140,6 +140,20 @@ public static class SuperTrophyManager
             }
         }
     }
+    public static void RegisterTrophy(ModifierRoleId modifierRoleId)
+    {
+        foreach (var trophy in trophies)
+        {
+            if (trophy.Completed) continue;
+            if (trophy is ISuperTrophyModifier superTrophyModifier)
+            {
+                if (superTrophyModifier.TargetModifiers.Contains(modifierRoleId))
+                {
+                    superTrophyModifier.OnRegister();
+                }
+            }
+        }
+    }
     public static void DetachTrophy(RoleId roleId)
     {
         foreach (var trophy in trophies)

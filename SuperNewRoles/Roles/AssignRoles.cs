@@ -56,6 +56,8 @@ public static class AssignRoles
         AssignTickets_NotHundredPercent[AssignedTeamType.Crewmate],
         false, MaxCrews);
 
+        // Assign Modifiers
+        AssignModifiers();
     }
     private static void CreateTickets()
     {
@@ -150,6 +152,60 @@ public static class AssignRoles
     {
         Logger.Info($"Assigning role {roleId} to player {player.PlayerId}");
         ((ExPlayerControl)player).RpcCustomSetRole(roleId);
+    }
+
+    private static void AssignModifiers()
+    {
+        // 全プレイヤーに対してModifierをアサインする
+        var allPlayers = ExPlayerControl.ExPlayerControls;
+        var allModifiers = CustomRoleManager.AllModifiers;
+
+        foreach (var modifierBase in allModifiers)
+        {
+            // 各Modifierに対して、オプションから確率を取得
+            var modifierRoleId = modifierBase.ModifierRole;
+
+            // モディファイアのオプションから確率を取得
+            var modifierRoleOption = GetModifierPercentage(modifierRoleId);
+
+            if (modifierRoleOption == null || modifierRoleOption.Percentage <= 0) continue;
+
+            List<ExPlayerControl> targetPlayers = ExPlayerControl.ExPlayerControls.Where(x => modifierBase.AssignedTeams.Count <= 0 || modifierBase.AssignedTeams.Contains(x.roleBase.AssignedTeam)).ToList();
+            for (int i = 0; i < modifierRoleOption.NumberOfCrews; i++)
+            {
+                // 各プレイヤーに対して確率ロール
+                if (ModHelpers.GetRandomInt(0, 100) > modifierRoleOption.Percentage)
+                    continue;
+                int playerIndex = UnityEngine.Random.Range(0, targetPlayers.Count);
+                PlayerControl targetPlayer = targetPlayers[playerIndex];
+                targetPlayers.RemoveAt(playerIndex);
+                // 確率に基づいてアサイン判定
+                AssignModifier(targetPlayer, modifierRoleId);
+            }
+        }
+    }
+
+    private static RoleOptionManager.ModifierRoleOption GetModifierPercentage(ModifierRoleId modifierRoleId)
+    {
+        // ModifierOptionsクラスからパーセンテージを取得
+        return RoleOptionManager.ModifierRoleOptions.FirstOrDefault(x => x.ModifierRoleId == modifierRoleId);
+    }
+
+    private static void AssignModifier(PlayerControl player, ModifierRoleId modifierRoleId)
+    {
+        ExPlayerControl exPlayer = player;
+
+        // 既存のモディファイアとフラグの状態を確認
+        if (exPlayer.ModifierRole.HasFlag(modifierRoleId))
+            return; // 既に同じモディファイアが割り当てられている場合はスキップ
+
+        // 既存のModifierRoleと新しいモディファイアを組み合わせる
+        ModifierRoleId newModifierRole = modifierRoleId;
+
+        // RPC経由でモディファイアを適用する
+        exPlayer.RpcCustomSetModifierRole(newModifierRole);
+
+        Logger.Info($"Assigning modifier {modifierRoleId} to player {player.PlayerId}");
     }
 }
 public struct AssignTickets

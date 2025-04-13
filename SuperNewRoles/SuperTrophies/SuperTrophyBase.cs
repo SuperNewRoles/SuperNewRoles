@@ -24,6 +24,12 @@ public interface ISuperTrophyRole : ISuperTrophy
     public abstract void OnRegister();
     public abstract void OnDetached();
 }
+public interface ISuperTrophyModifier : ISuperTrophy
+{
+    public ModifierRoleId[] TargetModifiers { get; }
+    public abstract void OnRegister();
+    public abstract void OnDetached();
+}
 
 public abstract class SuperTrophyBase<T> : BaseSingleton<T>, ISuperTrophy where T : SuperTrophyBase<T>, new()
 {
@@ -51,6 +57,13 @@ public abstract class SuperTrophyAbility<T> : SuperTrophyBase<T>, ISuperTrophyAb
 public abstract class SuperTrophyRole<T> : SuperTrophyBase<T>, ISuperTrophyRole where T : SuperTrophyRole<T>, new()
 {
     public abstract RoleId[] TargetRoles { get; }
+    public abstract void OnRegister();
+    public abstract void OnDetached();
+}
+
+public abstract class SuperTrophyModifier<T> : SuperTrophyBase<T>, ISuperTrophyModifier where T : SuperTrophyModifier<T>, new()
+{
+    public abstract ModifierRoleId[] TargetModifiers { get; }
     public abstract void OnRegister();
     public abstract void OnDetached();
 }

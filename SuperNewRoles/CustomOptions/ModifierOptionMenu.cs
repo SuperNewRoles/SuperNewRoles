@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Modules;
@@ -5,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using SuperNewRoles.CustomOptions.Data;
 using TMPro;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.CustomOptions;
 
@@ -43,11 +45,15 @@ public static class ModifierOptionMenu
         {
             if (!category.IsModifier)
                 continue;
-            GenerateRoleDetailButton(category, index++);
+            GenerateRoleDetailButton(new ModifierOptionMenuObjectData.ModifierCategoryDataCategory(category), index++);
+        }
+        foreach (var modifier in RoleOptionManager.ModifierRoleOptions)
+        {
+            GenerateRoleDetailButton(new ModifierOptionMenuObjectData.ModifierCategoryDataModifier(modifier), index++);
         }
     }
 
-    public static GameObject GenerateRoleDetailButton(CustomOptionCategory category, int index)
+    public static GameObject GenerateRoleDetailButton(ModifierOptionMenuObjectData.ModifierCategoryDataBase category, int index)
     {
         if (ModifierOptionMenuObjectData.Instance == null)
             return null;
@@ -69,7 +75,7 @@ public static class ModifierOptionMenu
         return obj;
     }
 
-    private static void ConfigureButton(GameObject buttonObj, CustomOptionCategory category)
+    private static void ConfigureButton(GameObject buttonObj, ModifierOptionMenuObjectData.ModifierCategoryDataBase category)
     {
         var passiveButton = buttonObj.AddComponent<PassiveButton>();
         passiveButton.Colliders = new Collider2D[1] { buttonObj.GetComponent<BoxCollider2D>() };
@@ -83,7 +89,7 @@ public static class ModifierOptionMenu
         ConfigureButtonHoverEffects(passiveButton, selectedObject, category);
     }
 
-    private static void HandleButtonClick(CustomOptionCategory category, GameObject selectedObject)
+    private static void HandleButtonClick(ModifierOptionMenuObjectData.ModifierCategoryDataBase category, GameObject selectedObject)
     {
         Logger.Info($"{category.Name}");
         var menuData = ModifierOptionMenuObjectData.Instance;
@@ -111,30 +117,7 @@ public static class ModifierOptionMenu
         // 適切なメニューを表示
         ShowDefaultOptionMenu(category, menuData.RightAreaInner.transform);
     }
-    private static void ShowModeOptionMenu()
-    {
-        if (ModifierOptionMenuObjectData.Instance.ModeMenu == null)
-        {
-            // ModeMenu from asset
-            var modeMenu = UIHelper.InstantiateUIElement("ModeMenu",
-                ModifierOptionMenuObjectData.Instance.RightArea.transform,
-            new Vector3(0, 0, -7f),
-                Vector3.one);
-            ModifierOptionMenuObjectData.Instance.ModeMenu = modeMenu;
-        }
-        else
-            ModifierOptionMenuObjectData.Instance.ModeMenu.SetActive(true);
-        var modeOptionText = ModifierOptionMenuObjectData.Instance.ModeMenu.transform.Find("ModeOption/Text").GetComponent<TextMeshPro>();
-        modeOptionText.text = $"<b>{ModTranslation.GetString("ModeOption")}</b>";
-        ConfigureModeOption(ModifierOptionMenuObjectData.Instance.ModeMenu);
-        ShowDefaultOptionMenu(Categories.Categories.ModeSettings, ModifierOptionMenuObjectData.Instance.RightAreaInner.transform);
-    }
-    private static void ConfigureModeOption(GameObject modeMenu)
-    {
-        var modeOption = modeMenu.transform.Find("ModeOption").gameObject;
-        ConfigureSelectOptionButtons(modeOption, modeOption.transform.Find("SelectedText").GetComponent<TextMeshPro>(), CustomOptionManager.GetCustomOptionByFieldName(nameof(Categories.Categories.ModeOption)));
-    }
-    private static void ConfigureButtonHoverEffects(PassiveButton button, GameObject selectedObject, CustomOptionCategory category)
+    private static void ConfigureButtonHoverEffects(PassiveButton button, GameObject selectedObject, ModifierOptionMenuObjectData.ModifierCategoryDataBase category)
     {
         button.OnMouseOut = new UnityEvent();
         button.OnMouseOut.AddListener((UnityAction)(() =>
@@ -443,7 +426,7 @@ public static class ModifierOptionMenu
     }
 
 
-    public static void ShowDefaultOptionMenu(CustomOptionCategory category, Transform parent)
+    public static void ShowDefaultOptionMenu(ModifierOptionMenuObjectData.ModifierCategoryDataBase category, Transform parent)
     {
         var menuData = ModifierOptionMenuObjectData.Instance;
         if (menuData.StandardOptionMenus.TryGetValue(category.Name, out var existingMenu))
@@ -477,34 +460,84 @@ public static class ModifierOptionMenu
     {
         float lastY = 1.6f;
         int activeCount = 0;
-        for (int i = 0; i < menuTransform.childCount; i++)
+        var menuData = ModifierOptionMenuObjectData.Instance;
+
+        // Process modifier-specific GameObjects
+        if (menuData.CategoryModifierOptionGameObjects.TryGetValue(menuData.CurrentCategory.Name, out var modifierGameObjects))
         {
-            Transform child = menuTransform.GetChild(i);
-            if (!child.gameObject.activeSelf)
-                continue;
-            child.localPosition = new Vector3(3.42f, lastY, -0.21f);
-            lastY -= 0.7f;
-            activeCount++;
+            foreach (var gameObject in modifierGameObjects)
+            {
+                if (!gameObject.activeSelf) continue; // Assuming these can also be deactivated
+                gameObject.transform.localPosition = new Vector3(3.42f, lastY, -0.21f);
+                lastY -= 0.7f;
+                activeCount++;
+            }
         }
+
+        // Process standard CustomOptions
+        if (menuData.CategoryOptionObjects.TryGetValue(menuData.CurrentCategory.Name, out var optionObjects))
+        {
+            foreach (var (option, gameObject) in optionObjects)
+            {
+                if (!gameObject.activeSelf) continue;
+                gameObject.transform.localPosition = new Vector3(3.42f, lastY, -0.21f);
+                lastY -= 0.7f;
+                activeCount++;
+            }
+        }
+
 
         if (scroller != null)
         {
-            scroller.ContentYBounds.max = activeCount <= 6 ? 0f : (activeCount - 6) * 0.7f;
+            // Adjust content bounds based on the total number of active items
+            float requiredHeight = activeCount * 0.7f;
+            float viewHeight = 4.2f; // Approximate height of the view area (adjust if necessary)
+            scroller.ContentYBounds.max = Mathf.Max(0f, requiredHeight - viewHeight);
+            menuTransform.localPosition = new Vector3(menuTransform.localPosition.x, 0, menuTransform.localPosition.z);
         }
     }
 
-    private static void GenerateOptionsForCategory(CustomOptionCategory category, Transform menuTransform)
+    private static void GenerateOptionsForCategory(ModifierOptionMenuObjectData.ModifierCategoryDataBase category, Transform menuTransform)
     {
+        var menuData = ModifierOptionMenuObjectData.Instance;
         var optionObjects = new List<(CustomOption, GameObject)>();
+        var modifierGameObjects = new List<GameObject>(); // List for modifier-specific GameObjects
+
+        if (category is ModifierOptionMenuObjectData.ModifierCategoryDataModifier modifierCategoryData)
+        {
+            // Generate UI for NumOfCrews
+            var numCrewsObj = GenerateModifierNumberOptionSelect(
+                modifierCategoryData.ModifierOption,
+                menuTransform,
+                "NumberOfCrews",
+                () => modifierCategoryData.ModifierOption.NumberOfCrews,
+                (val) => modifierCategoryData.ModifierOption.NumberOfCrews = (byte)val,
+                0, 15, 1, ModTranslation.GetString("NumberOfCrewsPostfix"), false // isChild = false for top-level modifier options
+            );
+            modifierGameObjects.Add(numCrewsObj);
+
+            // Generate UI for Percentage
+            var percentageObj = GenerateModifierNumberOptionSelect(
+                modifierCategoryData.ModifierOption,
+                menuTransform,
+                "AssignPer",
+                () => modifierCategoryData.ModifierOption.Percentage,
+                (val) => modifierCategoryData.ModifierOption.Percentage = (int)val,
+                0, 100, 5, "%", false // isChild = false
+            );
+            modifierGameObjects.Add(percentageObj);
+
+            menuData.CategoryModifierOptionGameObjects[category.Name] = modifierGameObjects; // Store modifier GameObjects
+        }
+
+        // Generate regular CustomOptions
         foreach (var option in category.Options)
         {
-            // トップレベルのオプションはisChildフラグをfalseにして生成
             var obj = GenerateStandardOption(option, menuTransform, false);
             optionObjects.Add((option, obj));
-            // 子オプションがあれば再帰的に生成
             GenerateChildOptions(option, menuTransform, optionObjects);
         }
-        ModifierOptionMenuObjectData.Instance.CategoryOptionObjects[category.Name] = optionObjects;
+        menuData.CategoryOptionObjects[category.Name] = optionObjects;
     }
 
     private static void GenerateChildOptions(CustomOption parentOption, Transform menuTransform, List<(CustomOption, GameObject)> optionObjects)
@@ -638,7 +671,7 @@ public static class ModifierOptionMenu
         }), spriteRenderer);
     }
 
-    private static void HandleOptionSelection(CustomOption option, TMPro.TextMeshPro selectedText, bool isIncrement)
+    private static void HandleOptionSelection(CustomOption option, TextMeshPro selectedText, bool isIncrement)
     {
         byte newSelection;
         if (isIncrement)
@@ -660,9 +693,7 @@ public static class ModifierOptionMenu
 
         // ホストの場合、他のプレイヤーに同期
         if (AmongUsClient.Instance.AmHost)
-        {
             CustomOptionManager.RpcSyncOption(option.Id, newSelection);
-        }
     }
 
     private static void UpdateOptionSelection(CustomOption option, byte newSelection, TMPro.TextMeshPro selectedText)
@@ -725,5 +756,98 @@ public static class ModifierOptionMenu
         menu.transform.localScale = Vector3.one;
         menu.transform.localPosition = Vector3.zero;
         return menu;
+    }
+
+    private static GameObject GenerateModifierNumberOptionSelect(
+        RoleOptionManager.ModifierRoleOption modifierOption,
+        Transform parent,
+        string nameKey,
+        Func<float> getter,
+        Action<float> setter,
+        float min, float max, float step,
+        string suffix,
+        bool isChild)
+    {
+        var assetName = isChild ? "StandardChildOption_Select" : "StandardOption_Select";
+        var selectObject = UIHelper.InstantiateUIElement(
+            assetName,
+            parent,
+            Vector3.zero,
+            Vector3.one * 0.4f);
+
+        UIHelper.SetText(selectObject, ModTranslation.GetString(nameKey));
+        var selectedText = selectObject.transform.Find("SelectedText").GetComponent<TMPro.TextMeshPro>();
+        selectedText.text = getter().ToString() + suffix; // Initial display
+
+        ConfigureModifierNumberSelectButtons(selectObject, selectedText, modifierOption, getter, setter, min, max, step, suffix);
+        return selectObject;
+    }
+
+    private static void ConfigureModifierNumberSelectButtons(
+        GameObject selectObject,
+        TextMeshPro selectedText,
+        RoleOptionManager.ModifierRoleOption modifierOption,
+        Func<float> getter,
+        Action<float> setter,
+        float min, float max, float step,
+        string suffix)
+    {
+        ConfigureModifierNumberSelectButton(selectObject, "Button_Minus", selectedText, modifierOption, getter, setter, min, max, step, suffix, false);
+        ConfigureModifierNumberSelectButton(selectObject, "Button_Plus", selectedText, modifierOption, getter, setter, min, max, step, suffix, true);
+    }
+
+    private static void ConfigureModifierNumberSelectButton(
+        GameObject selectObject,
+        string buttonName,
+        TextMeshPro selectedText,
+        RoleOptionManager.ModifierRoleOption modifierOption,
+        Func<float> getter,
+        Action<float> setter,
+        float min, float max, float step,
+        string suffix,
+        bool isIncrement)
+    {
+        var button = selectObject.transform.Find(buttonName).gameObject;
+        var passiveButton = button.AddComponent<PassiveButton>();
+        passiveButton.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
+        var spriteRenderer = passiveButton.GetComponent<SpriteRenderer>();
+
+        UIHelper.ConfigurePassiveButton(passiveButton, (UnityAction)(() =>
+        {
+            HandleModifierNumberSelection(selectedText, modifierOption, getter, setter, min, max, step, suffix, isIncrement);
+        }), spriteRenderer);
+    }
+
+    private static void HandleModifierNumberSelection(
+        TextMeshPro selectedText,
+        RoleOptionManager.ModifierRoleOption modifierOption,
+        Func<float> getter,
+        Action<float> setter,
+        float min, float max, float step,
+        string suffix,
+        bool isIncrement)
+    {
+        float currentValue = getter();
+        float newValue;
+
+        if (isIncrement)
+        {
+            newValue = currentValue + step;
+            if (newValue > max) newValue = min;
+        }
+        else
+        {
+            newValue = currentValue - step;
+            if (newValue < min) newValue = max;
+        }
+
+        setter(newValue);
+        selectedText.text = newValue.ToString() + suffix;
+
+        // ホストの場合、他のプレイヤーに同期
+        if (AmongUsClient.Instance.AmHost)
+        {
+            RoleOptionManager.RpcSyncModifierRoleOption(modifierOption.ModifierRoleId, modifierOption.NumberOfCrews, modifierOption.Percentage);
+        }
     }
 }

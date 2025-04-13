@@ -45,7 +45,7 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
     /// <summary>
     /// 現在選択中のカテゴリー
     /// </summary>
-    public CustomOptionCategory CurrentCategory { get; set; }
+    public ModifierCategoryDataBase CurrentCategory { get; set; }
 
     /// <summary>
     /// 現在選択中のボタン
@@ -63,6 +63,7 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
     public Dictionary<string, List<OptionUIDataBase>> CategoryOptionUIData { get; } = new();
 
     public Dictionary<string, List<(CustomOption Option, GameObject GameObject)>> CategoryOptionObjects;
+    public Dictionary<string, List<GameObject>> CategoryModifierOptionGameObjects { get; private set; }
     public GameObject ModeMenu { get; set; }
 
     public ModifierOptionMenuObjectData(GameObject standardOptionMenu) : base()
@@ -74,6 +75,7 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
         RightAreaScroller = RightArea.transform.Find("Scroller").GetComponent<Scroller>();
         RightAreaInner = RightAreaScroller.transform.Find("Inner").gameObject;
         CategoryOptionObjects = new Dictionary<string, List<(CustomOption, GameObject)>>();
+        CategoryModifierOptionGameObjects = new Dictionary<string, List<GameObject>>();
     }
 
     public void AddOptionUIData(string categoryName, CustomOption option, GameObject uiObject, bool isBooleanOption)
@@ -129,6 +131,25 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
                 }
             }
         }
+
+        // Modifier固有オプションの表示を更新
+        if (CurrentCategory is ModifierCategoryDataModifier modCategory && CategoryModifierOptionGameObjects.TryGetValue(CurrentCategory.Name, out var modifierGameObjects))
+        {
+            // ここで NumOfCrews と Percentage の GameObject を見つけてテキストを更新
+            // 例えば、GameObject の名前に基づいて探すか、あるいは GameObject と対応する値の種類（NumOfCrews/Percentage）をペアで保存しておく必要がある
+            // 今回は簡略化のため、リストの順序（0番目がNumOfCrews, 1番目がPercentage）に依存すると仮定する
+            if (modifierGameObjects.Count >= 2)
+            {
+                // NumOfCrews の更新
+                var numCrewsText = modifierGameObjects[0]?.transform.Find("SelectedText")?.GetComponent<TextMeshPro>();
+                if (numCrewsText != null) numCrewsText.text = modCategory.ModifierOption.NumberOfCrews.ToString();
+
+                // Percentage の更新
+                var percentageText = modifierGameObjects[1]?.transform.Find("SelectedText")?.GetComponent<TextMeshPro>();
+                if (percentageText != null) percentageText.text = $"{modCategory.ModifierOption.Percentage}%";
+            }
+
+        }
     }
 
     public abstract class OptionUIDataBase
@@ -144,6 +165,30 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
 
     public class SelectOptionUIData : OptionUIDataBase
     {
-        public TMPro.TextMeshPro SelectedText { get; set; }
+        public TextMeshPro SelectedText { get; set; }
+    }
+
+    public abstract class ModifierCategoryDataBase
+    {
+        public string Name { get; set; }
+        public IEnumerable<CustomOption> Options { get; set; }
+    }
+    public class ModifierCategoryDataCategory : ModifierCategoryDataBase
+    {
+        public ModifierCategoryDataCategory(CustomOptionCategory category)
+        {
+            Name = category.Name;
+            Options = category.Options;
+        }
+    }
+    public class ModifierCategoryDataModifier : ModifierCategoryDataBase
+    {
+        public RoleOptionManager.ModifierRoleOption ModifierOption { get; }
+        public ModifierCategoryDataModifier(RoleOptionManager.ModifierRoleOption modifier)
+        {
+            ModifierOption = modifier;
+            Name = ModHelpers.CsWithTranslation(ModifierOption.RoleColor, modifier.ModifierRoleId.ToString());
+            Options = modifier.Options;
+        }
     }
 }
