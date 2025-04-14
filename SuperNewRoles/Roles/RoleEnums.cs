@@ -66,6 +66,12 @@ public enum RoleId : short
     Pursuer,
 }
 
+public enum GhostRoleId : short
+{
+    None = 0,
+    Cantera,
+}
+
 [Flags]
 public enum ModifierRoleId : short
 {

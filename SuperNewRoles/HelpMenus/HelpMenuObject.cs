@@ -8,6 +8,7 @@ using System.Linq;
 using HarmonyLib;
 using System.Collections.Generic;
 using SuperNewRoles.CustomOptions;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.HelpMenus;
 
@@ -268,6 +269,7 @@ public static class HelpMenuObjectManager
     {
         public static void Postfix()
         {
+            GhostAssignRole.ClearAndReloads();
             // ヘルプメニューが表示されている場合は自分の役職情報カテゴリに戻す
             if (helpMenuObject != null && fadeCoroutine != null && fadeCoroutine.isAvtive)
             {

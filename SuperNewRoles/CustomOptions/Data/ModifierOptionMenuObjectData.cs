@@ -172,6 +172,7 @@ public class ModifierOptionMenuObjectData : OptionMenuBase
     {
         public string Name { get; set; }
         public IEnumerable<CustomOption> Options { get; set; }
+        public bool HiddenOption { get; set; } = false;
     }
     public class ModifierCategoryDataCategory : ModifierCategoryDataBase
     {

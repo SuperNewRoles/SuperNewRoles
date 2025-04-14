@@ -149,24 +149,31 @@ public static class CustomOptionManager
                 CustomOptionAttributes[field.Name] = attribute;
                 // フィールド情報を設定
                 attribute.SetFieldInfo(field);
-                RoleId? role = null;
-                ModifierRoleId? modifierRole = null;
+                RoleId? parentRole = null;
+                GhostRoleId? parentGhostRole = null;
+                ModifierRoleId? parentModifierRole = null;
                 if (field.DeclaringType.GetInterfaces().Contains(typeof(IRoleBase)))
                 {
                     var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(field.DeclaringType);
                     var instanceProperty = baseSingletonType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
                     var roleInstance = instanceProperty.GetValue(null);
-                    role = ((IRoleBase)roleInstance).Role;
+                    parentRole = ((IRoleBase)roleInstance).Role;
+                }
+                if (field.DeclaringType.GetInterfaces().Contains(typeof(IGhostRoleBase)))
+                {
+                    var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(field.DeclaringType);
+                    var instanceProperty = baseSingletonType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+                    var roleInstance = instanceProperty.GetValue(null);
+                    parentGhostRole = ((IGhostRoleBase)roleInstance).Role;
                 }
                 if (field.DeclaringType.GetInterfaces().Contains(typeof(IModifierBase)))
                 {
                     var baseSingletonType = typeof(BaseSingleton<>).MakeGenericType(field.DeclaringType);
                     var instanceProperty = baseSingletonType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
                     var roleInstance = instanceProperty.GetValue(null);
-                    modifierRole = ((IModifierBase)roleInstance).ModifierRole;
+                    parentModifierRole = ((IModifierBase)roleInstance).ModifierRole;
                 }
-                Logger.Info($"ModifierRole: {modifierRole}");
-                CustomOption option = new(attribute: attribute, fieldInfo: field, parentRole: role, parentModifierRole: modifierRole);
+                CustomOption option = new(attribute: attribute, fieldInfo: field, parentRole: parentRole, parentGhostRole: parentGhostRole, parentModifierRole: parentModifierRole);
                 CustomOptions.Add(option);
             }
         }
@@ -260,6 +267,7 @@ public class CustomOption
     public ushort IndexId { get; internal set; }
     public object[] Selections { get; }
     public RoleId? ParentRole { get; private set; }
+    public GhostRoleId? ParentGhostRole { get; private set; }
     public ModifierRoleId? ParentModifierRole { get; private set; }
     public CustomOption? ParentOption { get; private set; }
     public List<CustomOption> ChildrenOption { get; } = new();
@@ -287,7 +295,7 @@ public class CustomOption
         return Selections[Selection].ToString();
     }
 
-    public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null, ModifierRoleId? parentModifierRole = null, bool isTaskOption = false)
+    public CustomOption(CustomOptionBaseAttribute attribute, FieldInfo fieldInfo, RoleId? parentRole = null, GhostRoleId? parentGhostRole = null, ModifierRoleId? parentModifierRole = null, bool isTaskOption = false)
     {
         try
         {
@@ -298,6 +306,7 @@ public class CustomOption
             var defaultSelection = attribute.GenerateDefaultSelection();
             Name = attribute.TranslationName;
             ParentRole = parentRole;
+            ParentGhostRole = parentGhostRole;
             ParentModifierRole = parentModifierRole;
             IsBooleanOption = attribute is CustomOptionBoolAttribute;
             DisplayMode = attribute.DisplayMode;
@@ -416,6 +425,7 @@ public static class RoleOptionManager
     // 遅延同期用のディクショナリとLateTaskを追加
     public static readonly Dictionary<RoleId, LateTask> DelayedSyncTasks = new();
     public static readonly Dictionary<ModifierRoleId, LateTask> DelayedSyncTasksModifier = new();
+    public static readonly Dictionary<GhostRoleId, LateTask> DelayedSyncTasksGhost = new(); // GhostRole用 RoleId -> GhostRoleId
     private static readonly float SyncDelay = 0.5f; // 0.5秒の遅延
 
     public class RoleOption
@@ -560,9 +570,80 @@ public static class RoleOptionManager
             }
         }
     }
+    public class GhostRoleOption
+    {
+        public GhostRoleId RoleId { get; } // RoleId -> GhostRoleId
+        private byte _numberOfCrews_My;
+        private byte _numberOfCrews_Host;
+        private int _percentage_My;
+        private int _percentage_Host;
+        public byte NumberOfCrews
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _numberOfCrews_Host : _numberOfCrews_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _numberOfCrews_Host = value;
+                }
+                else
+                {
+                    _numberOfCrews_My = value;
+                }
+            }
+        }
+        public int Percentage
+        {
+            get => (AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost) ? _percentage_Host : _percentage_My;
+            set
+            {
+                bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+                if (isHost)
+                {
+                    _percentage_Host = value;
+                }
+                else
+                {
+                    _percentage_My = value;
+                    // ホストの場合は、変更を他のプレイヤーに同期
+                }
+            }
+        }
+        public CustomOption[] Options { get; }
+        public Color32 RoleColor { get; }
+        public GhostRoleOption(GhostRoleId roleId, byte numberOfCrews, int percentage, CustomOption[] options) // RoleId -> GhostRoleId
+        {
+            RoleId = roleId;
+            _numberOfCrews_My = numberOfCrews;
+            _percentage_My = percentage;
+            Options = options;
+            // ロールの色情報を取得
+            var roleBase = CustomRoleManager.AllGhostRoles.FirstOrDefault(r => r.Role == roleId);
+            if (roleBase == null)
+                throw new Exception($"GhostRole {roleId} not found");
+            RoleColor = roleBase?.RoleColor ?? new Color32(255, 255, 255, 255);
+        }
+
+        public void UpdateValues(byte numberOfCrews, int percentage)
+        {
+            bool isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmConnected && !AmongUsClient.Instance.AmHost;
+            if (isHost)
+            {
+                _numberOfCrews_Host = numberOfCrews;
+                _percentage_Host = percentage;
+            }
+            else
+            {
+                _numberOfCrews_My = numberOfCrews;
+                _percentage_My = percentage;
+            }
+        }
+    }
 
     public static RoleOption[] RoleOptions { get; private set; }
     public static ModifierRoleOption[] ModifierRoleOptions { get; private set; }
+    public static GhostRoleOption[] GhostRoleOptions { get; private set; } // GhostRole用
     public static List<ExclusivityData> ExclusivitySettings { get; private set; } = new();
 
     [CustomRPC]
@@ -652,6 +733,46 @@ public static class RoleOptionManager
         }
     }
 
+    public static void RpcSyncGhostRoleOptionDelay(GhostRoleId roleId, byte numberOfCrews, int percentage) // RoleId -> GhostRoleId
+    {
+        // ホストでない場合は何もしない
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        // 既存のタスクがあれば遅延をリセット
+        if (DelayedSyncTasksGhost.TryGetValue(roleId, out var existingTask))
+        {
+            existingTask.UpdateDelay(SyncDelay);
+        }
+        else
+        {
+            // 新しいタスクを作成
+            var task = new LateTask(() =>
+            {
+                var opt = GhostRoleOptions.FirstOrDefault(o => o.RoleId == roleId);
+                if (opt == null) return;
+                // 実際の同期を実行 (GhostRoleも通常のRoleOptionとして同期)
+                RpcSyncGhostRoleOption(roleId, opt.NumberOfCrews, opt.Percentage); // Change to RpcSyncGhostRoleOption
+                // タスクとペンディング変更を削除
+                DelayedSyncTasksGhost.Remove(roleId);
+            }, SyncDelay, $"SyncGhostRoleOption_{roleId}");
+
+            // タスクを保存
+            DelayedSyncTasksGhost[roleId] = task;
+        }
+    }
+
+    [CustomRPC]
+    public static void RpcSyncGhostRoleOption(GhostRoleId roleId, byte numberOfCrews, int percentage) // RoleId -> GhostRoleId
+    {
+        var roleOption = GhostRoleOptions.FirstOrDefault(o => o.RoleId == roleId);
+        if (roleOption == null)
+        {
+            Logger.Warning($"ゴーストロールオプションが見つかりません: {roleId}");
+            return;
+        }
+        roleOption.UpdateValues(numberOfCrews, percentage);
+    }
+
     [CustomRPC]
     public static void _RpcSyncRoleOptionsAll(Dictionary<byte, (byte, int)> options)
     {
@@ -674,6 +795,17 @@ public static class RoleOptionManager
             }
         }
     }
+    [CustomRPC]
+    public static void _RpcSyncGhostRoleOptionsAll(Dictionary<byte, (byte, int)> options) // GhostRole用
+    {
+        foreach (var ghostRoleOption in GhostRoleOptions)
+        {
+            if (options.TryGetValue((byte)ghostRoleOption.RoleId, out var values))
+            {
+                ghostRoleOption.UpdateValues(values.Item1, values.Item2);
+            }
+        }
+    }
 
     public static void RpcSyncRoleOptionsAll()
     {
@@ -686,6 +818,10 @@ public static class RoleOptionManager
             o => (byte)o.ModifierRoleId,
             o => (o.NumberOfCrews, o.Percentage));
         _RpcSyncModifierRoleOptionsAll(modifierRoleOptions);
+        var ghostRoleOptions = GhostRoleOptions.ToDictionary( // GhostRole用
+            o => (byte)o.RoleId,
+            o => (o.NumberOfCrews, o.Percentage));
+        _RpcSyncGhostRoleOptionsAll(ghostRoleOptions); // GhostRole用
     }
 
     public static void RoleOptionLoad()
@@ -705,7 +841,7 @@ public static class RoleOptionManager
             {
                 // CustomOptionsの順序を保持したまま、該当するロールのオプションを取得
                 var optionsForRole = customOptions
-                    .Where(option => option.ParentRole == role.Role)
+                    .Where(option => option.ParentRole == role.Role) // GhostRoleでないもののみ
                     .OrderBy(option => customOptions.IndexOf(option))  // CustomOptionsの順序を維持
                     .ToArray();
                 return new RoleOption(role.Role, 0, 0, optionsForRole);
@@ -727,6 +863,20 @@ public static class RoleOptionManager
             })
             .ToArray();
 
+        // GhostRoleのオプションを読み込む
+        var validGhostRoles = CustomRoleManager.AllGhostRoles
+            .Where(role => role.Role != GhostRoleId.None && !role.IsVanillaRole)
+            .OrderBy(role => role.Role); // RoleIdで並び替え
+        GhostRoleOptions = validGhostRoles
+            .Select(role =>
+            {
+                var optionsForRole = customOptions
+                    .Where(option => option.ParentGhostRole == role.Role) // Use ParentGhostRole
+                    .OrderBy(option => customOptions.IndexOf(option))
+                    .ToArray();
+                return new GhostRoleOption(role.Role, 0, 0, optionsForRole);
+            })
+            .ToArray();
     }
 
     public static void AddExclusivitySetting(int maxAssign, string[] roles)
@@ -1097,10 +1247,28 @@ public class FileOptionStorage : IOptionStorage
                                 }
                             }
                         }
+                        if (fileStream.Position < fileStream.Length)
+                        {
+                            int ghostRoleCount = reader.ReadInt32();
+                            for (int i = 0; i < ghostRoleCount; i++)
+                            {
+                                string ghostRoleIdStr = reader.ReadString();
+                                byte numberOfCrews = reader.ReadByte();
+                                int percentage = reader.ReadInt32();
+                                if (Enum.TryParse(typeof(GhostRoleId), ghostRoleIdStr, out var ghostRoleIdObj) && ghostRoleIdObj is GhostRoleId ghostRoleId)
+                                {
+                                    var ghostRoleOption = RoleOptionManager.GhostRoleOptions.FirstOrDefault(x => x.RoleId == ghostRoleId);
+                                    if (ghostRoleOption != null)
+                                    {
+                                        ghostRoleOption.NumberOfCrews = numberOfCrews;
+                                        ghostRoleOption.Percentage = percentage;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-
             return (true, options);
         }
     }
@@ -1174,6 +1342,16 @@ public class FileOptionStorage : IOptionStorage
                 writer.Write(modifierRoleOption.ModifierRoleId.ToString());
                 writer.Write(modifierRoleOption.NumberOfCrews);
                 writer.Write(modifierRoleOption.Percentage);
+            }
+
+            // GhostRoleOptionのデータを書き出す
+            var ghostRoleOptions = RoleOptionManager.GhostRoleOptions;
+            writer.Write(ghostRoleOptions.Length);
+            foreach (var ghostRoleOption in ghostRoleOptions)
+            {
+                writer.Write(ghostRoleOption.RoleId.ToString());
+                writer.Write(ghostRoleOption.NumberOfCrews);
+                writer.Write(ghostRoleOption.Percentage);
             }
         }
     }

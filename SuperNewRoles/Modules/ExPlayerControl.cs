@@ -33,8 +33,10 @@ public class ExPlayerControl
     public bool AmOwner { get; private set; }
     public RoleId Role { get; private set; }
     public ModifierRoleId ModifierRole { get; private set; }
+    public GhostRoleId GhostRole { get; private set; }
     public IRoleBase roleBase { get; private set; }
     public List<IModifierBase> ModifierRoleBases { get; private set; } = new();
+    public IGhostRoleBase GhostRoleBase { get; private set; }
     public List<AbilityBase> PlayerAbilities { get; private set; } = new();
     public Dictionary<ulong, AbilityBase> PlayerAbilitiesDictionary { get; private set; } = new();
     private Dictionary<string, AbilityBase> _abilityCache = new();
@@ -139,6 +141,30 @@ public class ExPlayerControl
             Logger.Error($"Modifier {modifierRoleId} not found");
         }
     }
+    public void SetGhostRole(GhostRoleId ghostRoleId)
+    {
+        if (GhostRole == ghostRoleId) return;
+        DetachOldGhostRole(GhostRole);
+        if (AmOwner)
+            SuperTrophyManager.DetachTrophy(GhostRole);
+        GhostRole = ghostRoleId;
+        if (CustomRoleManager.TryGetGhostRoleById(ghostRoleId, out var role))
+        {
+            role.OnSetRole(Player);
+            if (AmOwner)
+                SuperTrophyManager.RegisterTrophy(Role);
+            GhostRoleBase = role;
+            foreach (var modifier in ModifierRoleBases)
+            {
+                if (!modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
+                    DetachOldModifierRole(modifier.ModifierRole);
+            }
+        }
+        else
+        {
+            Logger.Error($"GhostRole {ghostRoleId} not found");
+        }
+    }
     public void SetRole(RoleId roleId)
     {
         if (Role == roleId) return;
@@ -163,6 +189,7 @@ public class ExPlayerControl
             Logger.Error($"Role {roleId} not found");
         }
     }
+
     public bool HasCustomKillButton()
     {
         return _customKillButtonAbility != null;
@@ -183,6 +210,37 @@ public class ExPlayerControl
                 switch (parent)
                 {
                     case AbilityParentRole parentRole when parentRole.ParentRole.Role == roleId:
+                        abilitiesToDetach.Add(ability);
+                        parent = null;
+                        break;
+                    case AbilityParentAbility parentAbility:
+                        parent = parentAbility.ParentAbility.Parent;
+                        break;
+                    default:
+                        parent = null;
+                        break;
+                }
+            }
+        }
+        foreach (var ability in abilitiesToDetach)
+        {
+            DetachAbility(ability.AbilityId);
+        }
+        if (AmOwner)
+            SuperTrophyManager.DetachTrophy(abilitiesToDetach);
+    }
+    private void DetachOldGhostRole(GhostRoleId ghostRoleId)
+    {
+        List<AbilityBase> abilitiesToDetach = new();
+        foreach (var ability in PlayerAbilities)
+        {
+            if (ability.Parent == null) continue;
+            var parent = ability.Parent;
+            while (parent != null)
+            {
+                switch (parent)
+                {
+                    case AbilityParentGhostRole parentGhostRole when parentGhostRole.ParentGhostRole.Role == ghostRoleId:
                         abilitiesToDetach.Add(ability);
                         parent = null;
                         break;

@@ -37,6 +37,17 @@ public class AbilityParentModifier : AbilityParentBase
         ParentModifier = modifier;
     }
 }
+public class AbilityParentGhostRole : AbilityParentBase
+{
+    public override ExPlayerControl Player { get; set; }
+    public IGhostRoleBase ParentGhostRole { get; }
+    public AbilityParentGhostRole(ExPlayerControl player, IGhostRoleBase ghostRole)
+    {
+        Player = player;
+        ParentGhostRole = ghostRole;
+    }
+}
+
 public class AbilityParentAbility : AbilityParentBase
 {
     public override ExPlayerControl Player { get => ParentAbility.Player; set => throw new Exception("AbilityParentAbilityはPlayerを設定できません"); }

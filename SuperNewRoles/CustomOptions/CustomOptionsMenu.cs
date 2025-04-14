@@ -25,6 +25,7 @@ public static class CustomOptionsMenu
         public const string STANDARD = "Setting_Standard";
         public const string EXCLUSIVITY = "Setting_Exclusivity";
         public const string Setting_Modifier = "Setting_Modifier";
+        public const string Setting_Ghost = "Setting_Ghost";
     }
 
     /// <summary>
@@ -192,6 +193,9 @@ public static class CustomOptionsMenu
                 break;
             case MenuCategories.Setting_Modifier:
                 ModifierOptionMenu.ShowModifierOptionMenu();
+                break;
+            case MenuCategories.Setting_Ghost:
+                GhostOptionMenu.ShowGhostOptionMenu();
                 break;
             default:
                 if (IsRoleOptionMenuCategory(categoryName))

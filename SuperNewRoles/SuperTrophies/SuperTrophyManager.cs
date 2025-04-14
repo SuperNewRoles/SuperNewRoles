@@ -154,6 +154,20 @@ public static class SuperTrophyManager
             }
         }
     }
+    public static void RegisterTrophy(GhostRoleId ghostRoleId)
+    {
+        foreach (var trophy in trophies)
+        {
+            if (trophy.Completed) continue;
+            if (trophy is ISuperTrophyGhostRole superTrophyGhostRole)
+            {
+                if (superTrophyGhostRole.TargetGhostRoles.Contains(ghostRoleId))
+                {
+                    superTrophyGhostRole.OnRegister();
+                }
+            }
+        }
+    }
     public static void DetachTrophy(RoleId roleId)
     {
         foreach (var trophy in trophies)
@@ -164,6 +178,20 @@ public static class SuperTrophyManager
                 if (superTrophyRole.TargetRoles.Contains(roleId))
                 {
                     superTrophyRole.OnDetached();
+                }
+            }
+        }
+    }
+    public static void DetachTrophy(GhostRoleId ghostRoleId)
+    {
+        foreach (var trophy in trophies)
+        {
+            if (trophy.Completed) continue;
+            if (trophy is ISuperTrophyGhostRole superTrophyGhostRole)
+            {
+                if (superTrophyGhostRole.TargetGhostRoles.Contains(ghostRoleId))
+                {
+                    superTrophyGhostRole.OnDetached();
                 }
             }
         }
