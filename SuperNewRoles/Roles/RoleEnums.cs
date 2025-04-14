@@ -71,6 +71,8 @@ public enum ModifierRoleId : short
 {
     None = 0,
     ModifierGuesser = 1 << 0,
+    ModifierMadmate = 1 << 1,
+    MakeMadmateModifier = 1 << 2,
 }
 
 public enum QuoteMod : byte

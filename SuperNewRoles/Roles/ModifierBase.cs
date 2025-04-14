@@ -25,6 +25,7 @@ internal abstract class ModifierBase<T> : BaseSingleton<T>, IModifierBase where 
     public abstract TeamTag TeamTag { get; }
     public abstract RoleTag[] RoleTags { get; }
     public abstract short IntroNum { get; }
+    public abstract string ModifierMark { get; }
     public virtual RoleId[] RelatedRoleIds { get; } = [];
     public int OptionIdBase
     {
@@ -52,6 +53,7 @@ public interface IModifierBase
     public RoleTag[] RoleTags { get; }
     public short IntroNum { get; }
     public bool IsVanillaRole => QuoteMod == QuoteMod.Vanilla;
+    public string ModifierMark { get; }
 
     public RoleId[] RelatedRoleIds { get; }
 

@@ -61,6 +61,13 @@ public static class IntroCutscenePatch
                     __instance.RoleBlurbText.color = player.Data.Role.TeamColor;//イントロの簡易説明の色を変更
                 }
 
+                foreach (var modifier in player.ModifierRoleBases)
+                {
+                    __instance.RoleText.text = modifier.ModifierMark.Replace("{0}", __instance.RoleText.text);
+                    var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
+                    __instance.RoleBlurbText.text += "\n" + ModTranslation.GetString($"{modifier.ModifierRole}Intro{randomIntroNum}");
+                }
+
                 //プレイヤーを作成&位置変更
                 __instance.ourCrewmate = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, false);
                 __instance.ourCrewmate.gameObject.SetActive(false);

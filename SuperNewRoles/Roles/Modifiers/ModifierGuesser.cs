@@ -16,7 +16,7 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
 
     public override QuoteMod QuoteMod => QuoteMod.SuperNewRoles;
 
-    public override List<AssignedTeamType> AssignedTeams => [AssignedTeamType.Crewmate, AssignedTeamType.Impostor, AssignedTeamType.Neutral];
+    public override List<AssignedTeamType> AssignedTeams => [];
 
     public override WinnerTeamType WinnerTeam => WinnerTeamType.Crewmate;
 
@@ -25,7 +25,7 @@ class ModifierGuesser : ModifierBase<ModifierGuesser>
     public override RoleTag[] RoleTags => [];
 
     public override short IntroNum => 1;
-
+    public override string ModifierMark => ModHelpers.Cs(RoleColor, "⊕");
 
     [CustomOptionInt("ModifierGuesserMaxShots", 1, 15, 1, 3, translationName: "EvilGuesserMaxShots")]
     public static int ModifierGuesserMaxShots = 3;

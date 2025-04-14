@@ -63,13 +63,17 @@ public static class NameText
         catch { }
         string playerInfoText = "";
         string meetingInfoText = "";
-        string roleName = player.roleBase.Role.ToString();
+        string roleName = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(player.roleBase.Role.ToString()))}";
         // ベスト冤罪ヤーは生きてる時は自覚できない
         if (player.Role == RoleId.BestFalseCharge && player.AmOwner && player.IsAlive())
         {
-            roleName = Crewmate.Instance.Role.ToString();
+            roleName = $"{ModHelpers.Cs(Crewmate.Instance.RoleColor, Crewmate.Instance.Role.ToString())}";
         }
-        playerInfoText = $"{ModHelpers.Cs(player.roleBase.RoleColor, ModTranslation.GetString(roleName))}";
+        foreach (var modifier in player.ModifierRoleBases)
+        {
+            roleName = modifier.ModifierMark.Replace("{0}", roleName);
+        }
+        playerInfoText =
         playerInfoText += TaskText;
         meetingInfoText = playerInfoText.Trim();
         player.PlayerInfoText.text = playerInfoText;

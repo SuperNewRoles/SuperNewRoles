@@ -124,7 +124,6 @@ public class ExPlayerControl
     public void SetModifierRole(ModifierRoleId modifierRoleId)
     {
         if (ModifierRole.HasFlag(modifierRoleId)) return;
-        DetachOldRole(Role, ModifierRole);
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
         ModifierRole |= modifierRoleId;
@@ -143,7 +142,7 @@ public class ExPlayerControl
     public void SetRole(RoleId roleId)
     {
         if (Role == roleId) return;
-        DetachOldRole(Role, ModifierRole);
+        DetachOldRole(Role);
         if (AmOwner)
             SuperTrophyManager.DetachTrophy(Role);
         Role = roleId;
@@ -153,6 +152,11 @@ public class ExPlayerControl
             if (AmOwner)
                 SuperTrophyManager.RegisterTrophy(Role);
             roleBase = role;
+            foreach (var modifier in ModifierRoleBases)
+            {
+                if (!modifier.AssignedTeams.Contains(roleBase.AssignedTeam))
+                    DetachOldModifierRole(modifier.ModifierRole);
+            }
         }
         else
         {
@@ -167,7 +171,7 @@ public class ExPlayerControl
     {
         return _customKillButtonAbility == null && (_killableAbility == null || _killableAbility.CanKill);
     }
-    private void DetachOldRole(RoleId roleId, ModifierRoleId modifierRoleId)
+    private void DetachOldRole(RoleId roleId)
     {
         List<AbilityBase> abilitiesToDetach = new();
         foreach (var ability in PlayerAbilities)
@@ -182,6 +186,33 @@ public class ExPlayerControl
                         abilitiesToDetach.Add(ability);
                         parent = null;
                         break;
+                    case AbilityParentAbility parentAbility:
+                        parent = parentAbility.ParentAbility.Parent;
+                        break;
+                    default:
+                        parent = null;
+                        break;
+                }
+            }
+        }
+        foreach (var ability in abilitiesToDetach)
+        {
+            DetachAbility(ability.AbilityId);
+        }
+        if (AmOwner)
+            SuperTrophyManager.DetachTrophy(abilitiesToDetach);
+    }
+    private void DetachOldModifierRole(ModifierRoleId modifierRoleId)
+    {
+        List<AbilityBase> abilitiesToDetach = new();
+        foreach (var ability in PlayerAbilities)
+        {
+            if (ability.Parent == null) continue;
+            var parent = ability.Parent;
+            while (parent != null)
+            {
+                switch (parent)
+                {
                     case AbilityParentModifier parentModifier when modifierRoleId.HasFlag(parentModifier.ParentModifier.ModifierRole):
                         abilitiesToDetach.Add(ability);
                         parent = null;
@@ -342,7 +373,7 @@ public class ExPlayerControl
         return false;
     }
     public bool IsMadRoles()
-        => HasAbility(nameof(MadmateAbility));
+        => HasAbility(nameof(MadmateAbility));//|| HasAbility(nameof(ModifierMadmateAbility));
     public bool IsFriendRoles()
         => roleBase?.Role == RoleId.JackalFriends;
     public bool IsJackal()
