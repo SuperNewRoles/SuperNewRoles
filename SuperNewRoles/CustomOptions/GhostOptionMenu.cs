@@ -124,7 +124,7 @@ public static class GhostOptionMenu
             UpdateRoleDetailButtonColor(spriteRenderer, ghostRoleOption);
             passiveButton.OnClick.AddListener((UnityAction)(() =>
             {
-                ClickedGhostRole(ghostRoleOption);
+                ClickedGhostRole(spriteRenderer, ghostRoleOption);
             }));
             // 右クリック検知用のコンポーネントを追加し、イベントを登録
             var rightClickDetector = obj.AddComponent<RightClickDetector>();
@@ -149,7 +149,7 @@ public static class GhostOptionMenu
                 // 右側の設定も更新
                 if (data.CurrentGhostRoleId == ghostRoleOption.RoleId)
                 {
-                    ShowRightSettings(ghostRoleOption); // 右側の設定UIを再描画
+                    ShowRightSettings(spriteRenderer, ghostRoleOption); // 右側の設定UIを再描画
                 }
             }));
             passiveButton.OnMouseOut = new();
@@ -177,20 +177,20 @@ public static class GhostOptionMenu
     {
         if (ghostRoleOption == null) throw new Exception("ghostRoleOption is null");
         if (spriteRenderer == null) throw new Exception("spriteRenderer is null");
-        if (ghostRoleOption.NumberOfCrews >= 1)
+        if (ghostRoleOption.NumberOfCrews > 0 && ghostRoleOption.Percentage > 0)
             spriteRenderer.color = Color.white;
         else
             spriteRenderer.color = new Color(1, 1f, 1f, 0.6f);
     }
 
-    private static void ClickedGhostRole(RoleOptionManager.GhostRoleOption ghostRoleOption)
+    private static void ClickedGhostRole(SpriteRenderer spriteRenderer, RoleOptionManager.GhostRoleOption ghostRoleOption)
     {
         var data = GhostOptionMenuObjectData.Instance;
         data.CurrentGhostRoleId = ghostRoleOption.RoleId;
-        ShowRightSettings(ghostRoleOption);
+        ShowRightSettings(spriteRenderer, ghostRoleOption);
     }
 
-    private static void ShowRightSettings(RoleOptionManager.GhostRoleOption ghostRoleOption)
+    private static void ShowRightSettings(SpriteRenderer spriteRenderer, RoleOptionManager.GhostRoleOption ghostRoleOption)
     {
         var data = GhostOptionMenuObjectData.Instance;
         // 既存の設定UIを破棄
@@ -205,7 +205,7 @@ public static class GhostOptionMenu
         data.CurrentSettingsParent.transform.localPosition = Vector3.zero;
         data.CurrentSettingsParent.layer = 5;
         // 人数・確率セレクタ
-        CreateNumberOfCrewsSelectAndPerSelect(data.CurrentSettingsParent.transform, ghostRoleOption, ref lastY);
+        CreateNumberOfCrewsSelectAndPerSelect(spriteRenderer, data.CurrentSettingsParent.transform, ghostRoleOption, ref lastY);
         int index = 2;
         // カスタムオプション
         foreach (var option in ghostRoleOption.Options)
@@ -376,7 +376,7 @@ public static class GhostOptionMenu
         optionInstance.transform.Find("Text").GetComponent<TextMeshPro>().text = optionName;
         return optionInstance;
     }
-    private static GameObject CreateNumberOfCrewsSelectAndPerSelect(Transform parent, RoleOptionManager.GhostRoleOption ghostRoleOption, ref float lastY)
+    private static GameObject CreateNumberOfCrewsSelectAndPerSelect(SpriteRenderer spriteRenderer, Transform parent, RoleOptionManager.GhostRoleOption ghostRoleOption, ref float lastY)
     {
         var data = GhostOptionMenuObjectData.Instance;
         GameObject optionInstance = CreateOptionElement(parent, ModTranslation.GetString("NumberOfCrews"), ref lastY, "Option_Select");
@@ -394,6 +394,7 @@ public static class GhostOptionMenu
             if (ghostRoleOption.NumberOfCrews > playerCount)
                 ghostRoleOption.NumberOfCrews = playerCount;
             selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", ghostRoleOption.NumberOfCrews);
+            UpdateRoleDetailButtonColor(spriteRenderer, ghostRoleOption);
             RoleOptionManager.RpcSyncGhostRoleOptionDelay(ghostRoleOption.RoleId, ghostRoleOption.NumberOfCrews, ghostRoleOption.Percentage);
         }, minusSpriteRenderer);
         var plusButton = optionInstance.transform.Find("Button_Plus").gameObject;
@@ -406,12 +407,12 @@ public static class GhostOptionMenu
             ghostRoleOption.NumberOfCrews++;
             if (ghostRoleOption.NumberOfCrews > playerCount)
                 ghostRoleOption.NumberOfCrews = 0;
-            selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", ghostRoleOption.NumberOfCrews);
             if (oldValue == 0 && ghostRoleOption.NumberOfCrews > 0 && ghostRoleOption.Percentage == 0)
             {
                 ghostRoleOption.Percentage = 100;
-                // percentageTextは後で設定
             }
+            selectedText.text = ModTranslation.GetString("NumberOfCrewsSelected", ghostRoleOption.NumberOfCrews);
+            UpdateRoleDetailButtonColor(spriteRenderer, ghostRoleOption);
             RoleOptionManager.RpcSyncGhostRoleOptionDelay(ghostRoleOption.RoleId, ghostRoleOption.NumberOfCrews, ghostRoleOption.Percentage);
         }, plusSpriteRenderer);
         // 確率設定

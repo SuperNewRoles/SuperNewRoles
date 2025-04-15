@@ -63,7 +63,6 @@ public static class IntroCutscenePatch
 
                 foreach (var modifier in player.ModifierRoleBases)
                 {
-                    __instance.RoleText.text = modifier.ModifierMark.Replace("{0}", __instance.RoleText.text);
                     var randomIntroNum = Random.Range(1, modifier.IntroNum + 1);
                     __instance.RoleBlurbText.text += "\n" + ModTranslation.GetString($"{modifier.ModifierRole}Intro{randomIntroNum}");
                 }

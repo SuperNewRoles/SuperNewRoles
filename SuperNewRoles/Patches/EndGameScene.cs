@@ -95,6 +95,8 @@ static class AdditionalTempData
         public string PlayerName { get; set; }
         public string NameSuffix { get; set; }
         public IRoleBase roleBase { get; set; }
+        public IGhostRoleBase ghostRoleBase { get; set; }
+        public List<IModifierBase> modifierRoleBases { get; set; }
         public string RoleString { get; set; }
         public int TasksCompleted { get; set; }
         public int TasksTotal { get; set; }
@@ -102,11 +104,12 @@ static class AdditionalTempData
         public int ColorId { get; set; }
         public FinalStatus Status { get; internal set; }
         public RoleId RoleId { get; set; }
-        public RoleId GhostRoleId { get; set; }
+        public GhostRoleId GhostRoleId { get; set; }
+        public ModifierRoleId ModifierRoleId { get; set; }
         public string AttributeRoleName { get; set; }
         public bool isImpostor { get; set; }
         public string Hat2Id { get; set; }
-
+        public string Visor2Id { get; set; }
         public PlayerRoleInfo Clone()
         {
             return (PlayerRoleInfo)MemberwiseClone();
@@ -320,8 +323,16 @@ public class EndGameManagerSetUpPatch
             foreach (var roleInfo in AdditionalTempData.playerRoles)
             {
                 if (roleInfo.PlayerName != data.PlayerName) continue;
-                playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString()))}";
+                string roleText = ModHelpers.CsWithTranslation(roleInfo.roleBase.RoleColor, roleInfo.roleBase.Role.ToString());
+                if (roleInfo.GhostRoleId != GhostRoleId.None)
+                    roleText = $"{ModHelpers.CsWithTranslation(roleInfo.ghostRoleBase.RoleColor, roleInfo.GhostRoleId.ToString())} ({roleText}) ";
+                foreach (var modifier in roleInfo.modifierRoleBases)
+                {
+                    roleText = modifier.ModifierMark.Replace("{0}", roleText);
+                }
+                playerObj.cosmetics.nameText.text = $"{roleInfo.PlayerName}{roleInfo.NameSuffix}\n{string.Join("\n", roleText)}";
                 customCosmeticsLayer.hat2?.SetHat(roleInfo.Hat2Id, roleInfo.ColorId);
+                customCosmeticsLayer.visor2?.SetVisor(roleInfo.Visor2Id, roleInfo.ColorId);
             }
         }
     }
@@ -558,6 +569,7 @@ public static class OnGameEndPatch
 
         CustomCosmeticsLayer customCosmeticsLayer = CustomCosmeticsLayers.ExistsOrInitialize(player.Object.cosmetics);
         string hat2Id = customCosmeticsLayer?.hat2?.Hat?.ProdId ?? "";
+        string visor2Id = customCosmeticsLayer?.visor2?.Visor?.ProdId ?? "";
         return new AdditionalTempData.PlayerRoleInfo()
         {
             PlayerName = player.DefaultOutfit.PlayerName,
@@ -567,10 +579,15 @@ public static class OnGameEndPatch
             TasksTotal = tasksTotal,
             TasksCompleted = tasksCompleted,
             RoleId = exPlayer.Role,
+            GhostRoleId = exPlayer.GhostRole,
+            ModifierRoleId = exPlayer.ModifierRole,
             isImpostor = exPlayer.IsImpostor(),
             Status = exPlayer.FinalStatus,
             roleBase = exPlayer.roleBase,
+            ghostRoleBase = exPlayer.GhostRoleBase,
+            modifierRoleBases = exPlayer.ModifierRoleBases,
             Hat2Id = hat2Id,
+            Visor2Id = visor2Id,
         };
     }
 

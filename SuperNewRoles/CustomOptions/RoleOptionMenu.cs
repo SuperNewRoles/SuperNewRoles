@@ -500,7 +500,7 @@ public static class RoleOptionMenu
     {
         if (roleOption == null) throw new Exception("roleOption is null");
         if (spriteRenderer == null) throw new Exception("spriteRenderer is null");
-        if (roleOption.NumberOfCrews >= 1)
+        if (roleOption.NumberOfCrews > 0 && roleOption.Percentage > 0)
             spriteRenderer.color = Color.white;
         else
             spriteRenderer.color = new Color(1, 1f, 1f, 0.6f);
