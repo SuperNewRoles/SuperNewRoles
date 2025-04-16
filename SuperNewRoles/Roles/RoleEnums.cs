@@ -61,7 +61,6 @@ public enum RoleId : short
     Mayor,
     Worshiper,
     Necromancer,
-    Revenant,
     Teleporter,
     Pursuer,
 }
@@ -70,6 +69,7 @@ public enum GhostRoleId : short
 {
     None = 0,
     Cantera,
+    Revenant,
 }
 
 [Flags]

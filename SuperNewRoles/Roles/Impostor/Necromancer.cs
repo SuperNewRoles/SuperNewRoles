@@ -56,7 +56,7 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
     public override Color32 OutlineColor => Palette.ImpostorRed;
     public override bool OnlyCrewmates => false;
     public override Func<bool> IsDeadPlayerOnly => () => true;
-    public override Func<ExPlayerControl, bool> IsTargetable => (player) => player.Role != RoleId.Revenant;
+    public override Func<ExPlayerControl, bool> IsTargetable => (player) => player.GhostRole != GhostRoleId.Revenant;
     public override bool CheckIsAvailable() => Target != null && ExPlayerControl.LocalPlayer.Player.CanMove;
     protected override KeyType keytype => KeyType.Ability1;
 
@@ -85,13 +85,9 @@ public class NecromancerCurseButtonAbility : TargetCustomButtonBase, IAbilityCou
     [CustomRPC]
     public static void RpcAssignRevenant(ExPlayerControl player)
     {
-        Logger.Info($"AssignRevenant1");
-        player.SetRole(RoleId.Revenant);
-        Logger.Info($"AssignRevenant2");
+        player.SetGhostRole(GhostRoleId.Revenant);
         RoleManager.Instance.SetRole(player, RoleTypes.CrewmateGhost);
-        Logger.Info($"AssignRevenant3");
         NameText.UpdateNameInfo(player);
-        Logger.Info($"AssignRevenant4");
     }
 }
 
@@ -112,12 +108,12 @@ public class NecromancerRevenantArrowAbility : AbilityBase
     {
         foreach (var data in _arrows.ToArray())
         {
-            if (data.player?.Role != RoleId.Revenant)
+            if (data.player?.GhostRole != GhostRoleId.Revenant)
             {
                 GameObject.Destroy(data.arrow.arrow);
             }
         }
-        _arrows.RemoveAll(x => x.player?.Role != RoleId.Revenant);
+        _arrows.RemoveAll(x => x.player?.GhostRole != GhostRoleId.Revenant);
     }
 
     public override void DetachToLocalPlayer()
@@ -131,7 +127,7 @@ public class NecromancerRevenantArrowAbility : AbilityBase
         if (ExPlayerControl.LocalPlayer.IsDead()) return;
         foreach (ExPlayerControl player in ExPlayerControl.ExPlayerControls)
         {
-            if (player.Role != RoleId.Revenant) continue;
+            if (player.GhostRole != GhostRoleId.Revenant) continue;
             var arrow = _arrows.FirstOrDefault(arrow => arrow.player == player);
             if (arrow == default)
                 _arrows.Add((player, new Arrow(Necromancer.Instance.RoleColor)));

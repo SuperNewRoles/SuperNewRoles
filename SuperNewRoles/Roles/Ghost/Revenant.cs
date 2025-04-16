@@ -13,11 +13,12 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 
-class Revenant : RoleBase<Revenant>
+class Revenant : GhostRoleBase<Revenant>
 {
-    public override RoleId Role { get; } = RoleId.Revenant;
+    public override GhostRoleId Role { get; } = GhostRoleId.Revenant;
     public override Color32 RoleColor { get; } = Palette.ImpostorRed;
-    public override List<Func<AbilityBase>> Abilities { get; } = [() => new RevenantAbility(
+    public override List<Func<AbilityBase>> Abilities { get; } = [
+        () => new RevenantAbility(
         new(
             RequiredTasks: Necromancer.RevenantRequiredTasks,
             HauntDuration: Necromancer.RevenantHauntDuration,
@@ -27,14 +28,14 @@ class Revenant : RoleBase<Revenant>
     )];
 
     public override QuoteMod QuoteMod { get; } = QuoteMod.SuperNewRoles;
-    public override RoleTypes IntroSoundType { get; } = RoleTypes.Phantom;
     public override short IntroNum { get; } = 1;
 
     public override AssignedTeamType AssignedTeam { get; } = AssignedTeamType.Impostor;
     public override WinnerTeamType WinnerTeam { get; } = WinnerTeamType.Impostor;
     public override TeamTag TeamTag { get; } = TeamTag.Impostor;
     public override RoleTag[] RoleTags { get; } = [RoleTag.GhostRole];
-    public override RoleOptionMenuType OptionTeam { get; } = RoleOptionMenuType.Hidden;
+    public override RoleId[] RelatedRoleIds => [RoleId.Necromancer];
+    public override bool HiddenOption => true;
 }
 
 public record RevenantAbilityData(int RequiredTasks, int HauntDuration, float HauntVision, bool CannotReportWhileHaunted);
@@ -78,6 +79,8 @@ class RevenantAbility : TargetCustomButtonBase
 
     public Dictionary<ExPlayerControl, GameObject> NecromancerHitodamas = [];
 
+    private CustomHauntToAbility customHauntToAbility;
+
     public RevenantAbility(RevenantAbilityData data)
     {
         Data = data;
@@ -91,7 +94,9 @@ class RevenantAbility : TargetCustomButtonBase
             () => (true, Data.RequiredTasks),
             taskOptionData
         );
+        customHauntToAbility = new CustomHauntToAbility(() => HauntedPlayers?.FirstOrDefault().player);
         Player.AttachAbility(customTaskAbility, new AbilityParentAbility(this));
+        Player.AttachAbility(customHauntToAbility, new AbilityParentAbility(this));
 
         if (Player.AmOwner)
             ReassignTasks();
@@ -245,7 +250,7 @@ class RevenantAbility : TargetCustomButtonBase
             if (player.AmOwner)
                 ability.AmHaunted = true;
             ability.HauntedPlayers.Add((Time.time + ability.Data.HauntDuration, player));
-            if (ExPlayerControl.LocalPlayer.Role is RoleId.Necromancer or RoleId.Revenant)
+            if (ExPlayerControl.LocalPlayer.Role == RoleId.Necromancer || ExPlayerControl.LocalPlayer.GhostRole == GhostRoleId.Revenant)
             {
                 ability.NecromancerHitodamas[player] = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("NecromancerHitodama"));
                 ability.NecromancerHitodamas[player].transform.SetParent(player.transform);
@@ -258,7 +263,7 @@ class RevenantAbility : TargetCustomButtonBase
             if (player.AmOwner)
                 ability.AmHaunted = false;
             ability.HauntedPlayers.RemoveAll(haunted => haunted.player == player);
-            if (ability.NecromancerHitodamas.ContainsKey(player) && ExPlayerControl.LocalPlayer.Role is RoleId.Necromancer or RoleId.Revenant)
+            if (ability.NecromancerHitodamas.ContainsKey(player) && (ExPlayerControl.LocalPlayer.Role == RoleId.Necromancer || ExPlayerControl.LocalPlayer.GhostRole == GhostRoleId.Revenant))
             {
                 GameObject.Destroy(ability.NecromancerHitodamas[player]);
                 ability.NecromancerHitodamas.Remove(player);
