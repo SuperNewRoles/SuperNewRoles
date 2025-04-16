@@ -225,7 +225,7 @@ BestFalseCharge,ベスト冤罪ヤー,Best False Charge,最佳冤罪者,最佳�
 Sheriff,シェリフ,Sheriff,警长,警長
 NiceGuesser,ナイスゲッサー,Nice Guesser,好人猜疑者,好人猜疑者
 EvilGuesser,イビルゲッサー,Evil Guesser,内鬼猜疑者,內鬼猜疑者
-Madmate,マッドメイト,Madmate,瘋狂者,瘋狂者
+Madmate,マッドメイト,Madmate,疯友,瘋友
 BlackCat,黒猫,Black Cat,黑猫,黑貓
 Jackal,ジャッカル,Jackal,杰克,傑克
 Sidekick,サイドキック,Sidekick,側翼,側翼
@@ -251,7 +251,7 @@ Datahacker,データハッカー,Datahacker,数据黑客,數據駭客
 Santa,サンタ,Santa,圣诞老人,聖誕老人
 BlackSanta,ブラックサンタ,Black Santa,黑圣诞老人,黑聖誕老人
 Penguin,ペンギン,Penguin,企鹅,企鵝
-Pusher,突き落と師,Pusher
+Pusher,突き落と師,Pusher,推落者,推落者
 EvilHacker,イビルハッカー,Evil Hacker,邪恶黑客,邪惡黑客
 Arsonist,アーソニスト,Arsonist,纵火犯,縱火犯
 JumpDancer,ジャンプダンサー,Jump Dancer,舞跳者,跳躍舞者
@@ -265,7 +265,7 @@ Amnesiac,忘却者,Amnesiac
 Conjurer,魔術師,Conjurer,魔术师,魔術師
 Doppelganger,ドッペルゲンガー,Doppelganger
 FalseCharges,冤罪師,False Charges,冤罪师,冤罪師
-Hitman,殺し屋,Hitman,刺客,刺客
+Hitman,殺し屋,Hitman,杀手,殺手
 NiceButtoner,ナイスボタナー,Nice Buttoner
 EvilButtoner,イビルボタナー,Evil Buttoner
 Mayor,メイヤー,Mayor
@@ -550,7 +550,7 @@ Datahacker.CanSeeImpostor,インポスターがわかる,Can see Impostors,可�
 Datahacker.CanSeeNeutral,第三陣営がわかる,Can see Neutrals,可以看到第三阵营,可以看到第三陣營
 Datahacker.CanSeeKillingNeutral,キル第三だけがわかる,Can only see killing Neutrals,只能看到可击杀的第三阵营,只能看到可擊殺的第三陣營
 Datahacker.CanSeeCrew,クルーメイトがわかる,Can see Crewmates,可以看到船员,可以看到船員
-Datahacker.CanSeeMadmates,マッド系役職がわかる,Can see Madmate roles,可以看到疯狂者角色,可以看到瘋狂者角色
+Datahacker.CanSeeMadmates,マッド系役職がわかる,Can see Madmate roles,可以看到疯友角色,可以看到瘋友角色
 Datahacker.CanSeeRoleNames,役職名もわかる,Can see role names,可以看到角色名称,可以看到角色名稱
 
 # Santa Options
@@ -714,3 +714,9 @@ TeleporterWaitingTime,テレポート待機時間,Waiting Time,等待時間,等�
 
 # Pursuer
 PursuerUpdateInterval,追跡更新間隔,Update Interval,更新间隔,更新間隔
+
+# Cantera
+CanteraChangedVision,変更後の視界,Changed Vision,改变后的视野,改變後的視野
+CanteraIsLimitUses,使用回数制限を有効にする,Enable Limit Uses,启用使用次数限制,啟用使用次數限制
+CanteraMaxUses,使用可能回数,Max Uses,最大使用次数,最大使用次數
+CanteraButtonText,灯火,Light,灯火,燈火
