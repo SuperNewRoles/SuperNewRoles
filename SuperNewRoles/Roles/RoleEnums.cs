@@ -70,6 +70,7 @@ public enum GhostRoleId : short
     None = 0,
     Cantera,
     Revenant,
+    Mirage,
 }
 
 [Flags]
