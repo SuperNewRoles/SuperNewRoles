@@ -63,6 +63,7 @@ public enum RoleId : short
     Necromancer,
     Teleporter,
     Pursuer,
+    Bakery,
 }
 
 public enum GhostRoleId : short

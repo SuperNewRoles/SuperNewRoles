@@ -216,6 +216,11 @@ public static class GhostOptionMenu
                 CreateSelect(data.CurrentSettingsParent.transform, option, ref lastY);
             index++;
         }
+        foreach (var option in ghostRoleOption.Options)
+        {
+            if (option.ParentOption == null)
+                UpdateOptionsActive(data.CurrentSettingsParent.transform, option);
+        }
         // スクロール位置リセット
         if (data.SettingsInner != null && data.SettingsScroller != null)
         {
@@ -331,10 +336,11 @@ public static class GhostOptionMenu
     }
     private static void UpdateOptionsActive(Transform parentTransform, CustomOption changedOption)
     {
-        foreach (Transform child in parentTransform)
+        for (int i = 0; i < parentTransform.childCount; i++)
         {
+            var child = parentTransform.GetChild(i);
             var textComp = child.Find("Text")?.GetComponent<TextMeshPro>();
-            if (textComp != null && changedOption.Name == textComp.text)
+            if (textComp != null && ModTranslation.GetString(changedOption.Name) == textComp.text)
             {
                 child.gameObject.SetActive(changedOption.ShouldDisplay());
             }
