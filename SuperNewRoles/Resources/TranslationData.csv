@@ -735,4 +735,3 @@ BakeryExileText2,パン屋がパンを焼いたようだ...,Bakery baked bread,�
 # MadRaccoon
 MadRaccoonShapeshiftCooldown,MadRaccoon Shapeshift Cooldown,シェイプシフトクールダウン
 MadRaccoonShapeshiftDuration,MadRaccoon Shapeshift Duration,シェイプシフト持続時間
-DoppelgangerDurationTimerText,Shape Duration: {0}s,変身:{0}秒
