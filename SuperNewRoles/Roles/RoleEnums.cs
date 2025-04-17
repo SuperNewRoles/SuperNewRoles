@@ -15,6 +15,7 @@ public enum RoleId : short
     EvilGuesser,
     Madmate,
     BlackCat,
+    MadRaccoon,
     Jackal,
     Sidekick,
     JackalFriends,

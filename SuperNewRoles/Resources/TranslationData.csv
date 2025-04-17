@@ -278,6 +278,7 @@ ModifierGuesser,モディファイアゲッサー,Modifier Guesser
 Cantera,カンテラ,Cantera
 Mirage,ミラージュ,Mirage
 Bakery,パン屋,Bakery
+MadRaccoon,MadRaccoon,化け狸
 
 # Descriptions
 BestFalseCharge.Description,特に能力を有さないクルーメイトです。\n死亡するまでこの役職だと自覚出来ません。\n最初の会議が終了すると、そのまま死亡します。,The ultimate red herring! A Crewmate with no abilities who lives in blissful ignorance.\nThey won't realize they have this role until they're dead—talk about a rude awakening!\nAfter the first meeting ends, they die faster than someone saying "I saw Blue vent!",这是一个没有特殊能力的船员。\n在死亡之前他们不会意识到自己拥有这个角色。\n第一场会议结束后，他们会直接死亡。,這是一個沒有特殊能力的船員。\n在死亡之前他們不會察覺自己擁有這個角色。\n第一場會議結束後，他們會直接死亡。
@@ -730,3 +731,9 @@ MirageLimitCount,使用可能回数,Max Uses,最大使用次数,最大使用次�
 # Bakery
 BakeryExileText,パン屋がパンを焼いたようだ...,Bakery baked bread,面包屋烤了面包,麵包屋烤了麵包
 BakeryExileText2,パン屋がパンを焼いたようだ...,Bakery baked bread,面包屋烤了面包,麵包屋烤了麵包
+
+# MadRaccoon
+MadRaccoonShapeshiftCooldown,MadRaccoon Shapeshift Cooldown,シェイプシフトクールダウン
+MadRaccoonShapeshiftDuration,MadRaccoon Shapeshift Duration,シェイプシフト持続時間
+DoppelgangerButtonText,Shapeshift,化ける
+DoppelgangerDurationTimerText,Shape Duration: {0}s,変身:{0}秒
