@@ -680,6 +680,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     private List<Transform> activeSlots;
     private void ShowCostumeTab(CostumeTabType tabType, PlayerCustomizationMenu obj, List<ICosmeticData> unlockedCosmetics, Func<ICosmeticData> currentCosmeticFunc, Action<ICosmeticData> onSet, Action<ICosmeticData> onPreview)
     {
+        if (tabType != CostumeTabType.Skin)
+            CustomCosmeticsUIStart.SetFrameType(CustomCosmeticsUIStart.FrameType.Category);
         string currentCosmeticId = currentCosmeticFunc()?.ProdId ?? "";
         slots = [];
         activeSlots = [];
@@ -695,6 +697,10 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         CurrentCostumeTab.transform.localScale = Vector3.one * 0.27f;
         CurrentCostumeTab.transform.Find("LeftArea/Scroller/Inner/CategoryText").GetComponent<TextMeshPro>().text = GetTabName(tabType);
 
+        var categoryScroller = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CategoryScroller"), CurrentCostumeTab.transform);
+        categoryScroller.transform.localPosition = new(-0.05f, -0.085f, -20);
+        categoryScroller.transform.localScale = Vector3.one * 1.05f;
+        var categoryScrollerscroller = categoryScroller.GetComponentInChildren<Scroller>();
         var slotBase = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticItemSlot"), CurrentCostumeTab.transform);
         var slotBasePassive = slotBase.AddComponent<PassiveButton>();
         slotBase.SetActive(false);
@@ -702,7 +708,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         CustomCosmeticsCostumeSlot costumeSlot = slotBase.AddComponent<CustomCosmeticsCostumeSlot>();
         PassiveButton selectedButton = null;
 
-        int itemsPerRow = 7;
+        int itemsPerRow = tabType != CostumeTabType.Skin ? 6 : 7;
         int totalItems = unlockedCosmetics.Count;
         scroller = CurrentCostumeTab.transform.Find("LeftArea/Scroller").GetComponent<Scroller>();
         Transform inner = scroller.transform.Find("Inner");
@@ -717,8 +723,9 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 packagedCosmetics[cosmetic.Package] = [cosmetic];
         }
         int allI = itemsPerRow;
-        const float offSetY = 1.1f;
+        float offSetY = tabType != CostumeTabType.Skin ? 1.3f : 1.1f;
         int package_i = 0;
+        Dictionary<string, PassiveButton> categoryFirstCosmetics = new();
         foreach (var package in packagedCosmetics)
         {
             Logger.Info($"Package: {package.Key} {package.Value.Count}");
@@ -726,7 +733,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
             // パッケージ名を表示するテキストを追加
             GameObject packageText = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CosmeticPackageText"), CurrentCostumeTab.transform);
             packageText.transform.SetParent(inner);
-            packageText.transform.localScale = Vector3.one * 0.7f;
+            packageText.transform.localScale = Vector3.one * (tabType != CostumeTabType.Skin ? 0.78f : 0.7f);
             TextMeshPro textMesh = packageText.GetComponent<TextMeshPro>();
             textMesh.fontSize = 1.8f;
             textMesh.alignment = TextAlignmentOptions.TopLeft;
@@ -738,7 +745,7 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
 
             // パッケージテキストの位置を設定
             int row = allI / itemsPerRow;
-            packageText.transform.localPosition = new(-6.7f, 2.63f - row * 2.6f + 2.4f + offSetY, -10);
+            packageText.transform.localPosition = new(tabType != CostumeTabType.Skin ? -5.8f : -6.7f, 2.63f - row * (tabType != CostumeTabType.Skin ? 2.68f : 2.6f) + 2.4f + offSetY, -10);
 
             for (int i = 0; i < package.Value.Count; i++)
             {
@@ -761,8 +768,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                     PlayerMaterial.SetColors(PlayerControl.LocalPlayer != null ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color, slot.spriteRenderer);
                 }
 
-                slot.transform.localPosition = new(-15.78f + col * 2.63f, 2.63f - itemRow * 2.6f + offSetY, -10);
-                slot.transform.localScale = Vector3.one * 0.8f;
+                slot.transform.localPosition = tabType != CostumeTabType.Skin ? new(-15.69f + col * 2.77f, 2.63f - itemRow * 2.68f + offSetY, -10) : new(-15.78f + col * 2.63f, 2.63f - itemRow * 2.6f + offSetY, -10);
+                slot.transform.localScale = Vector3.one * (tabType != CostumeTabType.Skin ? 0.85f : 0.8f);
                 slot.button.Colliders = new Collider2D[] { slot.GetComponent<BoxCollider2D>() };
                 slot.button.OnClick = new();
                 slot.button.OnClick.AddListener((UnityAction)(() =>
@@ -805,6 +812,10 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 }
                 ControllerManager.Instance.AddSelectableUiElement(slot.button);
                 allI++;
+                if (!categoryFirstCosmetics.ContainsKey(package.Key))
+                {
+                    categoryFirstCosmetics[package.Key] = slot.button;
+                }
             }
 
             if (selectedButton != null)
@@ -812,6 +823,21 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                 ControllerManager.Instance.SetCurrentSelected(selectedButton);
                 selectedButton.ReceiveMouseOver();
             }
+
+            var category = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("CategoryTubButton"), categoryScrollerscroller.Inner);
+            category.transform.localScale = Vector3.one * 0.98f;
+            category.transform.localPosition = new(1.95f, 4.6f - package_i * 2.6f, -10);
+            category.transform.Find("Text").GetComponent<TextMeshPro>().text = package.Key;
+            PassiveButton categoryButton = category.AddComponent<PassiveButton>();
+            categoryButton.Colliders = new Collider2D[] { category.GetComponentInChildren<BoxCollider2D>() };
+            categoryButton.OnClick = new();
+            categoryButton.OnClick.AddListener((UnityAction)(() =>
+            {
+                Logger.Info($"Category clicked: {package.Key}");
+                scroller.Inner.transform.localPosition = new(0, -categoryFirstCosmetics[package.Key].transform.localPosition.y + 3.5f, 0);
+            }));
+            categoryButton.OnMouseOut = new();
+            categoryButton.OnMouseOver = new();
 
             package_i++;
             if (package_i < packagedCosmetics.Count)
@@ -823,11 +849,15 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
                     allI += (itemsPerRow * 2) - (allI % itemsPerRow); // 現在の行を埋めて次の行をスキップ
             }
         }
+        if (packagedCosmetics.Count > 6)
+        {
+            categoryScrollerscroller.ContentYBounds.max = (packagedCosmetics.Count - 6) * 2.65f + 0.6f;
+        }
         float contentYBounds = 0;
         if (allI > 35)
         {
             int extraRows = Mathf.CeilToInt((allI - 35) / (float)itemsPerRow);
-            contentYBounds = extraRows * 2.6f + 0.45f - offSetY;
+            contentYBounds = extraRows * 2.7f + 2.45f - offSetY;
         }
         scroller.ContentYBounds = new(0, contentYBounds);
     }
