@@ -681,7 +681,11 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
     private void ShowCostumeTab(CostumeTabType tabType, PlayerCustomizationMenu obj, List<ICosmeticData> unlockedCosmetics, Func<ICosmeticData> currentCosmeticFunc, Action<ICosmeticData> onSet, Action<ICosmeticData> onPreview)
     {
         if (tabType != CostumeTabType.Skin)
+        {
             CustomCosmeticsUIStart.SetFrameType(CustomCosmeticsUIStart.FrameType.Category);
+            obj.PreviewArea.transform.localPosition = new(0.2f, -0.25f, -3f);
+            obj.itemName.transform.localPosition = new(0.25f, -1.74f, -5f);
+        }
         string currentCosmeticId = currentCosmeticFunc()?.ProdId ?? "";
         slots = [];
         activeSlots = [];
@@ -959,6 +963,8 @@ public class CustomCosmeticsCostumeMenu : CustomCosmeticsMenuBase<CustomCosmetic
         GameObject.Destroy(kisekae);
         if (CurrentCostumeTab != null)
             GameObject.Destroy(CurrentCostumeTab);
+        PlayerCustomizationMenu.Instance.PreviewArea.transform.localPosition = new(0f, -0.25f, -3f);
+        PlayerCustomizationMenu.Instance.itemName.transform.localPosition = new(0f, -1.74f, -5f);
     }
 
     // ボタンのプレビュー画像を更新するメソッド
