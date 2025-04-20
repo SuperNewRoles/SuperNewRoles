@@ -9,7 +9,7 @@ public static class FixDeadbodies
     // (プレイヤー, 死体ID) → DeadBody を格納
     public static readonly Dictionary<(byte, int), DeadBody> Deadbodies = new();
     // 登録済み死体の高速チェック用
-    private static readonly HashSet<DeadBody> _deadBodySet = new();
+    private static readonly HashSet<int> _deadBodySet = new();
     // プレイヤー毎の次の死体ID
     private static readonly Dictionary<byte, int> _nextIds = new();
     // 次回に移動する予定の情報
@@ -43,7 +43,7 @@ public static class FixDeadbodies
                 {
                     if (body.ParentId != targetId) continue;
                     // 新規死体のみ追加
-                    if (!_deadBodySet.Add(body)) continue;
+                    if (!_deadBodySet.Add(body.GetInstanceID())) continue;
 
                     Deadbodies[(target.PlayerId, nextId)] = body;
                     Logger.Info($"Deadbodies: {target.PlayerId} {nextId}");
@@ -85,6 +85,36 @@ public static class FixDeadbodies
                                 if (dyUp >= 0f && dyUp <= pairDistance / 2f)
                                     body.transform.position = nearest.transform.position + new Vector3(0.15f, -0.01f, -0.15f);
                             }
+                        }
+                    }
+
+                    // MovingPlatform に同じ判定ロジックを適用（x軸方向）
+                    var platforms = Object.FindObjectsOfType<MovingPlatformBehaviour>();
+                    MovingPlatformBehaviour nearestPlatform = null;
+                    float minPlatDist = float.MaxValue;
+                    foreach (var platform in platforms)
+                    {
+                        float dist = Vector2.Distance(body.transform.position, platform.transform.position);
+                        if (dist < minPlatDist)
+                        {
+                            minPlatDist = dist;
+                            nearestPlatform = platform;
+                        }
+                    }
+                    if (nearestPlatform != null && nearestPlatform.Target != null && nearestPlatform.Target.PlayerId == body.ParentId)
+                    {
+                        var leftPos = nearestPlatform.transform.parent.TransformPoint(nearestPlatform.LeftUsePosition) + new Vector3(0.3f, 0.2f, 0f);
+                        var rightPos = nearestPlatform.transform.parent.TransformPoint(nearestPlatform.RightUsePosition) + new Vector3(-0.3f, 0.2f, 0f);
+                        float pairXDist = Mathf.Abs(leftPos.x - rightPos.x);
+                        Logger.Info($"pairXDist: {pairXDist}");
+                        // 近い方にdeadbodyテレポート
+                        if (Mathf.Abs(body.transform.position.x - leftPos.x) < Mathf.Abs(body.transform.position.x - rightPos.x))
+                        {
+                            body.transform.position = leftPos;
+                        }
+                        else
+                        {
+                            body.transform.position = rightPos;
                         }
                     }
 
