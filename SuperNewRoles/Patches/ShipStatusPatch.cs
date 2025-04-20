@@ -12,6 +12,7 @@ class LightPatch
 {
     public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] NetworkedPlayerInfo player, ref float __result)
     {
+        if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
         // 電気系システムから明るさ補正値を計算
         float num = 1f;
         if (__instance.Systems.ContainsKey(SystemTypes.Electrical))
