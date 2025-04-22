@@ -30,6 +30,7 @@ using SuperNewRoles.CustomCosmetics.CosmeticsPlayer;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.API;
 using AmongUs.Data.Player;
+using SuperNewRoles.RequestInGame;
 
 namespace SuperNewRoles;
 
@@ -142,6 +143,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<CustomPlayerAnimationSimple>();
         ClassInjector.RegisterTypeInIl2Cpp<CustomAnimationObject>();
         ClassInjector.RegisterTypeInIl2Cpp<DestroyOnAnimationEndObject>();
+        ClassInjector.RegisterTypeInIl2Cpp<SelectButtonsMenuCloseAnimation>();
+        ClassInjector.RegisterTypeInIl2Cpp<SelectButtonsMenuOpenAnimation>();
     }
 
     public void ExecuteInMainThread(Action action)
