@@ -84,6 +84,21 @@ public static class ModHelpers
             return false;
         }
     }
+    public static bool IsElectrical()
+    {
+        try
+        {
+            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType system)) return false;
+            SwitchSystem electrical;
+            if ((electrical = system.TryCast<SwitchSystem>()) != null) return electrical.IsActive;
+            return false;
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.ToString(), "IsElectrical");
+            return false;
+        }
+    }
     public static string Cs(Color c, string s)
     {
         return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
