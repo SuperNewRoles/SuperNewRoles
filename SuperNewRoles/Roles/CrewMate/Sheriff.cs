@@ -117,11 +117,13 @@ public class SheriffAbility : CustomKillButtonAbility, IAbilityCount
         {
             // 正当なキル
             ExPlayerControl.LocalPlayer.RpcCustomDeath(Target, CustomDeathType.Kill);
+            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SheriffKill);
         }
         else
         {
             // 誤射の場合は自分が死ぬ
             ExPlayerControl.LocalPlayer.RpcCustomDeath(ExPlayerControl.LocalPlayer, CustomDeathType.Kill);
+            FinalStatusManager.RpcSetFinalStatus(ExPlayerControl.LocalPlayer, FinalStatus.SheriffSelfDeath);
         }
         ResetTimer();
     }

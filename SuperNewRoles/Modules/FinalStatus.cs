@@ -24,6 +24,8 @@ public enum FinalStatus
     Push,
     Ignite,
     FalseCharges,
+    SheriffSelfDeath,
+    SheriffKill,
 }
 
 public static class FinalStatusListener
@@ -47,7 +49,6 @@ public static class FinalStatusManager
     {
         SetFinalStatus(exPlayer, finalStatus);
     }
-    [CustomRPC]
     public static void SetFinalStatus(ExPlayerControl exPlayer, FinalStatus finalStatus)
     {
         exPlayer.FinalStatus = finalStatus;
