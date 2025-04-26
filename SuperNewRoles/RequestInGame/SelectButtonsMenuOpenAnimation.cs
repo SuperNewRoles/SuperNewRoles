@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace SuperNewRoles.RequestInGame
         // アニメーション時間（秒）
         public float duration = 0.15f;
         private bool isOpen = false;
+        public Action onOpen;
 
         /// <summary>
         /// メニューを開くアニメーションを開始します。
@@ -24,6 +26,7 @@ namespace SuperNewRoles.RequestInGame
         {
             if (isOpen) return;
             isOpen = true;
+            onOpen?.Invoke();
             StartCoroutine(OpenCoroutine().WrapToIl2Cpp());
         }
 

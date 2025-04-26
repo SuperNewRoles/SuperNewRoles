@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace SuperNewRoles.RequestInGame
         // アニメーション時間（秒）
         public float duration = 0.15f;
         private bool isClose = false;
+        public Action onClose;
         /// <summary>
         /// メニューを閉じるアニメーションを開始します。
         /// </summary>
@@ -21,6 +23,7 @@ namespace SuperNewRoles.RequestInGame
         {
             if (isClose) return;
             isClose = true;
+            onClose?.Invoke();
             StartCoroutine(CloseCoroutine().WrapToIl2Cpp());
         }
 

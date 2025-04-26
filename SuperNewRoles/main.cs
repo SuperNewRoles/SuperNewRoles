@@ -148,6 +148,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<SelectButtonsMenuCloseAnimation>();
         ClassInjector.RegisterTypeInIl2Cpp<SelectButtonsMenuOpenAnimation>();
         ClassInjector.RegisterTypeInIl2Cpp<LoadingUIComponent>();
+        ClassInjector.RegisterTypeInIl2Cpp<ActionOnEsc>();
     }
 
     public void ExecuteInMainThread(Action action)

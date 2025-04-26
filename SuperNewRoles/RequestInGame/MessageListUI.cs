@@ -35,7 +35,13 @@ public class MessageListUI
                         passiveButton.OnClick = new();
                         passiveButton.OnClick.AddListener((UnityAction)(() =>
                         {
-                            MessagesUI.ShowMessagesUI(messageListUI.transform.parent, thread);
+                            GameObject messagesUI = MessagesUI.ShowMessagesUI(messageListUI.transform.parent, thread);
+                            SelectButtonsMenu.SetReturnButtonActive(parent.gameObject, () =>
+                            {
+                                messageListUI.SetActive(true);
+                                GameObject.Destroy(messagesUI);
+                                SelectButtonsMenu.SetReturnButtonNonActive(parent.gameObject);
+                            });
                             messageListUI.SetActive(false);
                         }));
                         passiveButton.OnMouseOut = new();

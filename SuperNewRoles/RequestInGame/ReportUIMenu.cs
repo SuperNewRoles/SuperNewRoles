@@ -57,14 +57,14 @@ public class ReportUIMenu
             errorMessage = "Title cannot be empty";
             return false;
         }
-        if (title.Length <= 3)
+        if (title.Length <= 2)
         {
             errorMessage = "Title must be longer than 2 characters";
             return false;
         }
-        if (description.Length <= 10)
+        if (description.Length <= 9)
         {
-            errorMessage = "Description must be longer than 2 characters";
+            errorMessage = "Description must be longer than 10 characters";
             return false;
         }
         errorMessage = null;
