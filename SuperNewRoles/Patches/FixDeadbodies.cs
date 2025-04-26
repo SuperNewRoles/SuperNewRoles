@@ -46,7 +46,6 @@ public static class FixDeadbodies
                     if (!_deadBodySet.Add(body.GetInstanceID())) continue;
 
                     Deadbodies[(target.PlayerId, nextId)] = body;
-                    Logger.Info($"Deadbodies: {target.PlayerId} {nextId}");
                     // LadderのDestinationを使ってLadderペアと距離を計算し、条件を満たす場合に死体を通報できる場所に移動
                     Ladder nearest = null;
                     float minDist = float.MaxValue;
@@ -61,27 +60,21 @@ public static class FixDeadbodies
                     }
                     if (nearest != null && nearest.Destination != null)
                     {
-                        Logger.Info($"Ladder: {nearest.Id} {nearest.Destination.Id}");
                         var other = nearest.Destination;
                         float pairDistance = Vector2.Distance(nearest.transform.position, other.transform.position);
-                        Logger.Info($"Pair Distance: {pairDistance}");
                         float dx = Mathf.Abs(body.transform.position.x - nearest.transform.position.x);
-                        Logger.Info($"DX: {dx}");
                         float dy = Mathf.Abs(body.transform.position.y - nearest.transform.position.y);
-                        Logger.Info($"DY: {dy}");
                         if (dx <= 0.5f)
                         {
                             if (nearest.IsTop)
                             {
                                 float dyDown = nearest.transform.position.y - body.transform.position.y;
-                                Logger.Info($"dyDown: {dyDown}");
                                 if (dyDown >= 0f && dyDown <= pairDistance / 2f)
                                     body.transform.position = nearest.transform.position + new Vector3(0.15f, 0.01f, -0.15f);
                             }
                             else
                             {
                                 float dyUp = body.transform.position.y - nearest.transform.position.y;
-                                Logger.Info($"dyUp: {dyUp}");
                                 if (dyUp >= 0f && dyUp <= pairDistance / 2f)
                                     body.transform.position = nearest.transform.position + new Vector3(0.15f, -0.01f, -0.15f);
                             }
@@ -106,7 +99,6 @@ public static class FixDeadbodies
                         var leftPos = nearestPlatform.transform.parent.TransformPoint(nearestPlatform.LeftUsePosition) + new Vector3(0.3f, 0.2f, 0f);
                         var rightPos = nearestPlatform.transform.parent.TransformPoint(nearestPlatform.RightUsePosition) + new Vector3(-0.3f, 0.2f, 0f);
                         float pairXDist = Mathf.Abs(leftPos.x - rightPos.x);
-                        Logger.Info($"pairXDist: {pairXDist}");
                         // 近い方にdeadbodyテレポート
                         if (Mathf.Abs(body.transform.position.x - leftPos.x) < Mathf.Abs(body.transform.position.x - rightPos.x))
                         {
