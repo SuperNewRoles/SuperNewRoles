@@ -3,6 +3,7 @@ using System.Linq;
 using SuperNewRoles.Events;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Modules.Events.Bases;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Ability.CustomButton;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -26,8 +27,11 @@ public class OwlAbility : AbilityBase
     private int _deadBodyCount;
 
     private CustomKillButtonAbility _customKillButtonAbility;
+    private CustomVentAbility _customVentAbility;
+    private ImpostorVisionAbility _impostorVisionAbility;
     private OwlNestAbility _nestAbility;
     private OwlDeadBodyTransportAbility _deadBodyTransportAbility;
+    private OwlSpecialBlackoutAbility _specialBlackoutAbility;
     
     public OwlAbility(OwlData data)
     {
@@ -42,28 +46,39 @@ public class OwlAbility : AbilityBase
             () => _data.KillCooldown,
             () => false
         );
+        _customVentAbility = new(
+            () => _data.CanUseVent
+        );
+        _impostorVisionAbility = new(
+            ModHelpers.IsElectrical
+        );
         _nestAbility = new(
-            vent => { if (_nestVent == null) RpcNestVent(this, vent.Id); }
+            vent => { if (_nestVent == null) RpcSetNestVent(this, vent.Id); }
         );
         _deadBodyTransportAbility = new(
             () => _nestVent,
-            () => RpcNestVent(this, _deadBodyCount + 1)
+            () => RpcSetDeadBodyCount(this, _deadBodyCount + 1),
+            () => _data.CanTransportOutsideOfBlackout || ModHelpers.IsElectrical()
+        );
+        _specialBlackoutAbility = new(
+            _data.SpecialBlackoutCool,
+            _data.SpecialBlackoutTime,
+            () => _deadBodyCount >= _data.CanSpecialBlackoutDeadBodyCount
         );
 
         Player.AddAbility(_customKillButtonAbility, new AbilityParentAbility(this));
+        Player.AddAbility(_customVentAbility, new AbilityParentAbility(this));
+        Player.AddAbility(_impostorVisionAbility, new AbilityParentAbility(this));
         Player.AddAbility(_nestAbility, new AbilityParentAbility(this));
         Player.AddAbility(_deadBodyTransportAbility, new AbilityParentAbility(this));
+        Player.AddAbility(_specialBlackoutAbility, new AbilityParentAbility(this));
     }
 
     [CustomRPC]
-    public static void RpcNestVent(OwlAbility ability, int value) => ability._nestVent = Array.Find<Vent>(ShipStatus.Instance.AllVents, x => x.Id == value);
+    public static void RpcSetNestVent(OwlAbility ability, int value) => ability._nestVent = Array.Find<Vent>(ShipStatus.Instance.AllVents, x => x.Id == value);
 
     [CustomRPC]
-    public static void RpcDeadBodyCount(OwlAbility ability, int value)
-    {
-        ability._deadBodyCount = value;
-        Logger.Info($"_deadBodyCount : {ability._deadBodyCount}");
-    }
+    public static void RpcSetDeadBodyCount(OwlAbility ability, int value) => ability._deadBodyCount = value;
 }
 
 public class OwlNestAbility : VentTargetCustomButtonBase, IAbilityCount
@@ -103,7 +118,7 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
     protected override KeyType keytype => KeyType.Ability1;
     public override bool IsFirstCooldownTenSeconds => false;
     bool IButtonEffect.isEffectActive { get; set; }
-    Action IButtonEffect.OnEffectEnds => () => DeadBodyInTransport = null;
+    Action IButtonEffect.OnEffectEnds => OnEffectEnds;
     float IButtonEffect.EffectDuration => 0;
     float IButtonEffect.EffectTimer { get; set; }
     bool IButtonEffect.IsEffectDurationInfinity => true;
@@ -116,16 +131,18 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
     private Vent _nestVent = null;
     private bool _nestBuilt = false;
     private readonly Action _deadBodyCountIncrement;
+    private readonly Func<bool> _canUse;
 
     private DeadBody _candidateTarget;
     public DeadBody DeadBodyInTransport { get; private set; }
     
     private EventListener _fixedUpdateListener;
 
-    public OwlDeadBodyTransportAbility(Func<Vent> nestVent, Action deadBodyCountIncrement)
+    public OwlDeadBodyTransportAbility(Func<Vent> nestVent, Action deadBodyCountIncrement, Func<bool> canUse)
     {
         _getNestVent = nestVent;
         _deadBodyCountIncrement = deadBodyCountIncrement;
+        _canUse = canUse;
     }
 
     public override void AttachToAlls()
@@ -136,7 +153,6 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
 
     public override void DetachToAlls()
     {
-        
         base.DetachToAlls();
         _fixedUpdateListener?.RemoveListener();
     }
@@ -147,7 +163,7 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
         if (DeadBodyInTransport == null)
         {
             _candidateTarget = GetDeadBody();
-            return _candidateTarget != null;
+            return _candidateTarget != null && _canUse();
         }
         else return true;
     }
@@ -160,26 +176,25 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
             if (_nestVent == null) return false;
             _nestBuilt = true;
         }
-        return base.CheckHasButton();
+        return base.CheckHasButton() && _canUse();
     }
 
     public override void OnClick()
     {
-        if (DeadBodyInTransport == null)
+        if (_candidateTarget == null) return;
+        RpcDeadBodyInTransport(this, _candidateTarget.ParentId);
+    }
+
+    public override void OnMeetingEnds() => RpcDeadBodyInTransport(this);
+
+    private void OnEffectEnds()
+    {
+        DeadBody body = DeadBodyInTransport;
+        RpcDeadBodyInTransport(this);
+        if (CanHideDeadBody())
         {
-            if (_candidateTarget == null) return;
-            RpcDeadBodyInTransport(this, _candidateTarget.ParentId);
-        }
-        else
-        {
-            DeadBody body = DeadBodyInTransport;
-            RpcDeadBodyInTransport(this, byte.MaxValue);
-            Logger.Info($"CanHideDeadBody() : {CanHideDeadBody()}");
-            if (CanHideDeadBody())
-            {
-                RpcHideDeadBody(body.ParentId);
-                _deadBodyCountIncrement();
-            }
+            RpcHideDeadBody(body.ParentId);
+            _deadBodyCountIncrement();
         }
     }
 
@@ -227,7 +242,7 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
     }
 
     [CustomRPC]
-    public static void RpcDeadBodyInTransport(OwlDeadBodyTransportAbility ability, byte id)
+    public static void RpcDeadBodyInTransport(OwlDeadBodyTransportAbility ability, byte id = byte.MaxValue)
     {
         if (id == byte.MaxValue)
         {
@@ -255,5 +270,86 @@ public class OwlDeadBodyTransportAbility : CustomButtonBase, IButtonEffect
                 break;
             }
         }
+    }
+}
+
+public class OwlSpecialBlackoutAbility : CustomButtonBase, IButtonEffect
+{
+    public override float DefaultTimer => _cooldown;
+    public override string buttonText => ModTranslation.GetString("OwlSpecialBlackoutButton");
+    public override Sprite Sprite => AssetManager.GetAsset<Sprite>("OwlSpecialBlackoutButton.png");
+    protected override KeyType keytype => KeyType.Ability2;
+    bool IButtonEffect.isEffectActive { get; set; }
+    Action IButtonEffect.OnEffectEnds => OnEffectEnds;
+    float IButtonEffect.EffectDuration => _effectDuration;
+    float IButtonEffect.EffectTimer { get; set; }
+
+    private readonly float _cooldown;
+    private readonly float _effectDuration;
+    private Func<bool> _canUse;
+    public bool IsSpecialBlackout;
+    private float _contractionTimer;
+
+    private EventListener _fixedUpdateListener;
+    private EventListener<ShipStatusLightEventData> _shipStatusLightListener;
+
+    public OwlSpecialBlackoutAbility(float cooldown, float effectDuration, Func<bool> canUse)
+    {
+        _cooldown = cooldown;
+        _effectDuration = effectDuration;
+        _canUse = canUse;
+        IsSpecialBlackout = false;
+        _contractionTimer = 1;
+    }
+
+    public override void AttachToOthers()
+    {
+        base.AttachToOthers();
+        _fixedUpdateListener = FixedUpdateEvent.Instance.AddListener(OnFixedUpdate);
+        _shipStatusLightListener = ShipStatusLightEvent.Instance.AddListener(OnShipStatusLight);
+    }
+
+    public override void DetachToOthers()
+    {
+        base.DetachToOthers();
+        _fixedUpdateListener?.RemoveListener();
+        _shipStatusLightListener?.RemoveListener();
+    }
+
+    public override bool CheckIsAvailable() => true;
+
+    public override bool CheckHasButton() => base.CheckHasButton() && _canUse();
+
+    public override void OnClick() => RpcSpecialBlackout(this, true);
+
+    public override void OnMeetingEnds()
+    {
+        base.OnMeetingEnds();
+        OnEffectEnds();
+    }
+
+    private void OnEffectEnds() => RpcSpecialBlackout(this, false);
+
+    private void OnFixedUpdate()
+    {
+        if (IsSpecialBlackout ? _contractionTimer <= 0 : _contractionTimer >= 1) return;
+        _contractionTimer = Mathf.Clamp01(_contractionTimer + (Time.fixedDeltaTime * 2 * (IsSpecialBlackout ? -1 : 1)));
+    }
+
+    private void OnShipStatusLight(ShipStatusLightEventData data)
+    {
+        ShipStatus status = ShipStatus.Instance;
+        if (status == null) return;
+        if (data.player == null || data.player.IsDead) return;
+        if (((ExPlayerControl)data.player).HasImpostorVision()) return;
+        if (!IsSpecialBlackout && _contractionTimer >= 1) return;
+        data.lightRadius = LightPatch.GetNeutralLightRadius(status, false, _contractionTimer);
+    }
+
+    [CustomRPC]
+    public static void RpcSpecialBlackout(OwlSpecialBlackoutAbility ability, bool isBlackout)
+    {
+        ability.IsSpecialBlackout = isBlackout;
+        ability._contractionTimer = isBlackout ? 1 : 0;
     }
 }

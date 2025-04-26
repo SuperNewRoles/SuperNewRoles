@@ -19,7 +19,8 @@ public enum VictoryType
     CrewmateVote,
     JackalDomination,
     PavlovsWin,
-    ArsonistWin
+    ArsonistWin,
+    OwlWin,
 }
 
 public enum SabotageSystemType
@@ -123,6 +124,10 @@ public static class CheckGameEndPatch
         if (stats.IsArsonistWin)
             return VictoryType.ArsonistWin;
 
+        // フクロウ勝利
+        if (stats.IsOwlWin)
+            return VictoryType.OwlWin;
+
         return null;
     }
 
@@ -145,6 +150,7 @@ public static class CheckGameEndPatch
         VictoryType.JackalDomination => (GameOverReason)CustomGameOverReason.JackalWin,
         VictoryType.PavlovsWin => (GameOverReason)CustomGameOverReason.PavlovsWin,
         VictoryType.ArsonistWin => (GameOverReason)CustomGameOverReason.ArsonistWin,
+        VictoryType.OwlWin => (GameOverReason)CustomGameOverReason.OwlWin,
         _ => throw new ArgumentException($"無効な勝利タイプ: {victoryType}")
     };
 }
@@ -217,6 +223,7 @@ public class PlayerStatistics
     public int TeamPavlovsAlive { get; }
     public int TotalKiller { get; }
     public int ArsonistAlive { get; }
+    public int OwlAlive { get; }
 
     public bool IsKillerExist => TotalKiller > 0;
 
@@ -225,6 +232,7 @@ public class PlayerStatistics
     public bool IsPavlovsWin => IsKillerWin(TeamPavlovsAlive);
     public bool IsCrewmateVictory => !IsKillerExist;
     public bool IsArsonistWin => ArsonistAlive > 0 && ArsonistAlive == TotalAlive;
+    public bool IsOwlWin => IsKillerWin(OwlAlive) && OwlAlive == 1;
 
     public PlayerStatistics()
     {
@@ -237,8 +245,9 @@ public class PlayerStatistics
         TeamJackalAlive = alivePlayers.Count(player => player.IsJackalTeam());
         TeamPavlovsAlive = alivePlayers.Count(player => player.IsPavlovsTeam());
         ArsonistAlive = alivePlayers.Count(player => player.Role == RoleId.Arsonist);
+        OwlAlive = alivePlayers.Count(player => player.Role == RoleId.Owl);
         TotalAlive = alivePlayers.Count();
-        TotalKiller = TeamImpostorsAlive + TeamJackalAlive + TeamPavlovsAlive;
+        TotalKiller = TeamImpostorsAlive + TeamJackalAlive + TeamPavlovsAlive + OwlAlive;
     }
 
     // ExPlayerControl配列から生存しているプレイヤーを返すヘルパーメソッド

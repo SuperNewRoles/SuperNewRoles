@@ -48,8 +48,8 @@ class LightPatch
         if (isImpostor) return shipStatus.MaxLightRadius * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
 
         float lerpValue = 1;
-        if (shipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)) lerpValue = elec.TryCast<SwitchSystem>().Value / 255f;
         if (timer.HasValue) lerpValue = timer.Value;
+        else if (shipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec)) lerpValue = elec.TryCast<SwitchSystem>().Value / 255f;
         var LocalPlayer = PlayerControl.LocalPlayer;
         // 反転
         // lerpValue = 1 - lerpValue;
