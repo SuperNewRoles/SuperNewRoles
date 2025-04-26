@@ -127,6 +127,21 @@ public static class AssetManager
         return asset;
     }
 
+    public static GameObject Instantiate(string path, Transform parent, AssetBundleType assetBundleType = AssetBundleType.Sprite)
+    {
+        var asset = GetAsset<GameObject>(path, assetBundleType);
+        if (asset == null)
+            throw new Exception($"Failed to load Asset: {path}");
+        return GameObject.Instantiate(asset, parent);
+    }
+    public static T Instantiate<T>(string path, Transform parent, AssetBundleType assetBundleType = AssetBundleType.Sprite) where T : Component
+    {
+        var asset = GetAsset<GameObject>(path, assetBundleType);
+        if (asset == null)
+            throw new Exception($"Failed to load Asset: {path}");
+        return GameObject.Instantiate(asset, parent).GetComponent<T>();
+    }
+
     public static AudioSource PlaySoundFromBundle(string path, bool loop = false)
     {
         var asset = GetAsset<AudioClip>(path, AssetBundleType.Sprite);

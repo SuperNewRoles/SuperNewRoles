@@ -54,13 +54,28 @@ public class CustomCosmeticsLoader
     private static readonly Dictionary<string, byte[]> downloadedSprites = new();
     public static void Load()
     {
-        foreach (string url in CustomCosmeticsURLs)
+        client.Timeout = TimeSpan.FromSeconds(5);
+
+        // JSONコンテンツを一括取得
+        var fetchTasks = CustomCosmeticsURLs.Select(url =>
+            new
+            {
+                Url = url,
+                ContentTask = url.StartsWith("./") || url.StartsWith("../")
+                    ? Task.FromResult(File.ReadAllText(url))
+                    : client.GetStringAsync(url)
+            }
+        ).ToArray();
+        // 全タスクを待機
+        Task.WaitAll(fetchTasks.Select(ft => ft.ContentTask).ToArray());
+
+        // 置き換え: foreach (string url in CustomCosmeticsURLs) から始まるループを以下に変更:
+        foreach (var ft in fetchTasks)
         {
+            string url = ft.Url;
             try
             {
-                string jsonContent = url.StartsWith("./") || url.StartsWith("../")
-                    ? File.ReadAllText(url)
-                    : client.GetStringAsync(url).Result;
+                string jsonContent = ft.ContentTask.Result;
 
                 // JSONをパース
                 JObject json = JObject.Parse(jsonContent);

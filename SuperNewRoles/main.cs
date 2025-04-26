@@ -59,7 +59,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public override void Load()
     {
-        Log.LogInfo("test");
+        BepInEx.Logging.Logger.Listeners.Add(new SNRLogListener());
+
         MainThreadId = Thread.CurrentThread.ManagedThreadId;
         Logger = Log;
         Instance = this;
@@ -82,6 +83,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         CustomCosmeticsSaver.Load();
         CustomColors.Load();
         ApiServerManager.Initialize();
+        RequestInGameManager.Load();
 
         CheckStarts();
 
@@ -145,6 +147,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<DestroyOnAnimationEndObject>();
         ClassInjector.RegisterTypeInIl2Cpp<SelectButtonsMenuCloseAnimation>();
         ClassInjector.RegisterTypeInIl2Cpp<SelectButtonsMenuOpenAnimation>();
+        ClassInjector.RegisterTypeInIl2Cpp<LoadingUIComponent>();
     }
 
     public void ExecuteInMainThread(Action action)

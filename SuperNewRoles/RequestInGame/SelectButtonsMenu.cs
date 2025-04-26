@@ -35,16 +35,22 @@ public class SelectButtonsMenu
         closeAnimator.menu = background;
         closeButton.OnClick.AddListener((UnityAction)(() => closeAnimator.Close()));
         backButton.OnClick.AddListener((UnityAction)(() => closeAnimator.Close()));
-        GameObject top = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("BugReport_Top"), background.transform);
-        top.transform.localPosition = new(0f, -0.7f, -10f);
-        top.transform.localScale = Vector3.one * 1f;
-        UpdateTranslations(top);
         var openAnimator = background.AddComponent<SelectButtonsMenuOpenAnimation>();
         openAnimator.menu = background;
         openAnimator.targetScale = Vector3.one * 0.5f;
         openAnimator.Open();
+        ShowMainMenuUI(background);
+    }
+
+    public static void ShowMainMenuUI(GameObject background)
+    {
+        GameObject top = GameObject.Instantiate(AssetManager.GetAsset<GameObject>("BugReport_Top"), background.transform);
+        top.transform.localPosition = new(0f, -0.7f, -10f);
+        top.transform.localScale = Vector3.one * 1f;
+        UpdateTranslations(top);
         UpdateButtons(top);
     }
+
     public static void UpdateTranslations(GameObject top)
     {
         top.transform.Find("DiscordMessage").GetComponent<TextMeshPro>().text = ModTranslation.GetString("RequestInGameDiscordText");
@@ -63,10 +69,10 @@ public class SelectButtonsMenu
         foreach (string buttonName in Enum.GetNames(typeof(RequestInGameType)))
         {
             GameObject button = buttons.transform.Find("Button_" + buttonName).gameObject;
-            SetupButton(button, () => { GameObject.Instantiate(AssetManager.GetAsset<GameObject>("ReportUI"), top.transform.parent).transform.localPosition = new(0f, 0f, -10f); GameObject.Destroy(top); });
+            SetupButton(button, () => { ReportUIMenu.ShowReportUIMenu(top, (RequestInGameType)Enum.Parse(typeof(RequestInGameType), buttonName)); GameObject.Destroy(top); });
         }
         SetupButton(buttons.transform.Find("Button_Discord").gameObject, () => { Application.OpenURL("https://supernewroles.com/discord"); });
-        SetupButton(buttons.transform.Find("Button_MessageBox").gameObject, () => { Logger.Info("clicked!:MessageBox"); });
+        SetupButton(buttons.transform.Find("Button_MessageBox").gameObject, () => { MessageListUI.ShowMessageListUI(top.transform.parent); GameObject.Destroy(top); });
     }
     private static void SetupButton(GameObject button, Action onClick)
     {
