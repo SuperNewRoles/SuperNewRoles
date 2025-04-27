@@ -211,9 +211,10 @@ public class DatahackerAbility : AbilityBase
         if (exposedToImpostors && arrow == null)
         {
             arrow = new Arrow(Datahacker.Instance.RoleColor);
+            arrow.arrow.SetActive(false);
             NameText.UpdateNameInfo(Player);
         }
-        else if (hackingCompleted && !oldhackingCompleted)
+        if (hackingCompleted && !oldhackingCompleted)
             NameText.UpdateAllNameInfo();
     }
 
@@ -222,7 +223,7 @@ public class DatahackerAbility : AbilityBase
     /// </summary>
     private void UpdateArrow()
     {
-        if (!hackingData.ShowArrowWhenExposed || !ExPlayerControl.LocalPlayer.IsKiller() || !exposedToImpostors)
+        if (!hackingData.ShowArrowWhenExposed || !ExPlayerControl.LocalPlayer.IsNonCrewKiller() || !exposedToImpostors)
         {
             if (arrow != null && arrow.arrow != null && arrow.arrow.activeSelf)
                 arrow.arrow.SetActive(false);

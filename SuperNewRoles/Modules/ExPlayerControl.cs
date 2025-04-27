@@ -414,6 +414,10 @@ public class ExPlayerControl
     }
     public bool IsKiller()
         => IsImpostor() || Role == RoleId.PavlovsDog || Role == RoleId.MadKiller || IsJackal() || HasCustomKillButton() || Role == RoleId.Hitman;
+
+    public bool IsNonCrewKiller()
+        => IsKiller() && !IsCrewmate();
+
     public bool IsCrewmate()
         => roleBase != null ? roleBase.AssignedTeam == AssignedTeamType.Crewmate && !IsMadRoles() : !Data.Role.IsImpostor;
     public bool IsImpostor()
