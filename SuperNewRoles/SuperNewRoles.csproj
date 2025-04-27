@@ -44,6 +44,7 @@
         <PackageReference Include="Microsoft.Build" Version="17.12.6" />
         <PackageReference Include="Microsoft.Build.Framework" Version="17.12.6" />
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.12.6" />
+        <PackageReference Include="System.Text.Json" Version="8.0.0" />
     </ItemGroup>
     
 </Project>
